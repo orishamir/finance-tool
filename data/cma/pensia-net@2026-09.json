@@ -1,0 +1,6756 @@
+{
+  "dataset": "pensia-net",
+  "report_period": "2026-09",
+  "source": {
+    "url": "https://data.gov.il/dataset/pensia-net",
+    "title": "פנסיה נט, resource 2024-today (id 6d47d6b5-cb08-488b-b333-f1e717b1e1bd), CSV downloaded from https://data.gov.il/dataset/3a1ca8fa-738b-4890-b52f-e8f7ce1e6145/resource/6d47d6b5-cb08-488b-b333-f1e717b1e1bd/download/file.csv; resource last_modified 2026-10-22T04:00:40; rows with REPORT_PERIOD 202609",
+    "publisher": "Capital Market, Insurance and Savings Authority (data.gov.il)",
+    "strength": "primary"
+  },
+  "checked": "2026-10-23",
+  "raw": {
+    "archive_key": "cma/pensia-net/2026-10-23.csv.gz",
+    "sha256": "20083ef3576bc9ca780aac517a30d1d02a7709b44f5f3bfc151fbf878d8b18d6"
+  },
+  "funds": [
+    {
+      "fund_id": 1589,
+      "names": {
+        "cma": [
+          "מיטב פנסיה מקיפה עוקב מדדי מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-12-31",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.11",
+        "AVG_DEPOSIT_FEE": "1.25"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 1619,
+      "names": {
+        "cma": [
+          "מנורה מבטחים משלימה מסלול לבני 60 ומעלה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-12-31",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.26",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 1645,
+      "names": {
+        "cma": [
+          "מנורה מבטחים משלימה מסלול לבני 50-60"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-12-31",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.26",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 1653,
+      "names": {
+        "cma": [
+          "מנורה מבטחים משלימה מסלול לבני 50 ומטה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-12-31",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.26",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2002,
+      "names": {
+        "cma": [
+          "כלל פנסיה כללי"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2011-10-05",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.52"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2004,
+      "names": {
+        "cma": [
+          "כלל פנסיה הלכה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2011-10-05",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.52"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2009,
+      "names": {
+        "cma": [
+          "מנורה מבטחים פנסיה - כללי"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2011-11-13",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.73"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2013,
+      "names": {
+        "cma": [
+          "מנורה מבטחים פנסיה - מסלול לבני 60 ומעלה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2011-11-13",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.73"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2015,
+      "names": {
+        "cma": [
+          "מנורה מבטחים פנסיה - מסלול לבני 50-60"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2011-11-13",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.73"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2063,
+      "names": {
+        "cma": [
+          "מנורה מבטחים פנסיה - מסלול מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-03-12",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.73"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2102,
+      "names": {
+        "cma": [
+          "מגדל מקפת אישית כללי"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-07-08",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.56"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2104,
+      "names": {
+        "cma": [
+          "מיטב פנסיה מקיפה אשראי ואג\"ח"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-07-08",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.11",
+        "AVG_DEPOSIT_FEE": "1.25"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2105,
+      "names": {
+        "cma": [
+          "מיטב פנסיה מקיפה מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-07-08",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.11",
+        "AVG_DEPOSIT_FEE": "1.25"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2108,
+      "names": {
+        "cma": [
+          "מיטב פנסיה כללית אשראי ואג\"ח"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-07-08",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2109,
+      "names": {
+        "cma": [
+          "מיטב פנסיה כללית מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-07-08",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2112,
+      "names": {
+        "cma": [
+          "מגדל מקפת אישית הלכה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-07-08",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.56"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2142,
+      "names": {
+        "cma": [
+          "מגדל מקפת אישית מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-10",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.56"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2143,
+      "names": {
+        "cma": [
+          "מגדל מקפת אישית כספי (שקלי)"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-10",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.56"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2144,
+      "names": {
+        "cma": [
+          "מגדל מקפת אישית אשראי ואג\"ח"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-10",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.56"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2145,
+      "names": {
+        "cma": [
+          "מגדל מקפת משלימה כללי"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-10",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.12"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2146,
+      "names": {
+        "cma": [
+          "מגדל מקפת משלימה מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-10",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.12"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2147,
+      "names": {
+        "cma": [
+          "מגדל מקפת משלימה כספי (שקלי)"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-10",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.12"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2148,
+      "names": {
+        "cma": [
+          "מגדל מקפת משלימה אשראי ואג\"ח"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-10",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.12"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2149,
+      "names": {
+        "cma": [
+          "מגדל מקפת משלימה הלכה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-10",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.12"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2155,
+      "names": {
+        "cma": [
+          "מיטב פנסיה מקיפה לבני 50 ומטה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.11",
+        "AVG_DEPOSIT_FEE": "1.25"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2156,
+      "names": {
+        "cma": [
+          "מיטב פנסיה מקיפה הלכה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.11",
+        "AVG_DEPOSIT_FEE": "1.25"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2157,
+      "names": {
+        "cma": [
+          "מיטב פנסיה מקיפה מקבלי קצבה קיימים"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.11",
+        "AVG_DEPOSIT_FEE": "1.25"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2158,
+      "names": {
+        "cma": [
+          "מיטב פנסיה כללית לבני 50 ומטה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2159,
+      "names": {
+        "cma": [
+          "מיטב פנסיה כללית הלכה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2160,
+      "names": {
+        "cma": [
+          "מיטב פנסיה כללית מקבלי קצבה קיימים"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2164,
+      "names": {
+        "cma": [
+          "הראל פנסיה כללית - כללי"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.14"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2172,
+      "names": {
+        "cma": [
+          "הראל  פנסיה - גילעד כללי"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.16",
+        "AVG_DEPOSIT_FEE": "1.47"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2173,
+      "names": {
+        "cma": [
+          "הראל פנסיה - הלכה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.16",
+        "AVG_DEPOSIT_FEE": "1.47"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2174,
+      "names": {
+        "cma": [
+          "הראל פנסיה - אשראי ואג\"ח"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.16",
+        "AVG_DEPOSIT_FEE": "1.47"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2175,
+      "names": {
+        "cma": [
+          "הראל פנסיה - מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.16",
+        "AVG_DEPOSIT_FEE": "1.47"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2176,
+      "names": {
+        "cma": [
+          "כלל פנסיה משלימה - כללי"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.04"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2177,
+      "names": {
+        "cma": [
+          "הראל פנסיה - מנוף כללי"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.16",
+        "AVG_DEPOSIT_FEE": "1.47"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2182,
+      "names": {
+        "cma": [
+          "מנורה מבטחים פנסיה - מסלול הלכה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.73"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2184,
+      "names": {
+        "cma": [
+          "מנורה מבטחים פנסיה - מסלול לבני 50 ומטה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.73"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2187,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה מקיפה - מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.53"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2188,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה מקיפה אשראי ואג\"ח"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.53"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2189,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה מקיפה -כספי (שקלי)"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.53"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2196,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה מקיפה למקבלי קצבה קיימים"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-12",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.24"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2201,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה מקיפה - מסלול מקבלי קצבה קיימים"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-13",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.53"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2202,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה כללית - מסלול מקבלי קצבה קיימים"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-13",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.13",
+        "AVG_DEPOSIT_FEE": "1.28"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2203,
+      "names": {
+        "cma": [
+          "הראל  פנסיה - מקבלי קצבה קיימים"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-13",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.16",
+        "AVG_DEPOSIT_FEE": "1.47"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2204,
+      "names": {
+        "cma": [
+          "הראל פנסיה כללית - מקבלי קצבה קיימים"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-13",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.14"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2205,
+      "names": {
+        "cma": [
+          "כלל פנסיה למקבלי קצבה קיימים"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-13",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.52"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2206,
+      "names": {
+        "cma": [
+          "כלל פנסיה משלימה למקבלי קצבה קיימים"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-13",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.04"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2207,
+      "names": {
+        "cma": [
+          "מגדל מקפת אישית  למקבלי קצבה קיימים"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-13",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.56"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2208,
+      "names": {
+        "cma": [
+          "מגדל מקפת משלימה למקבלי קצבה קיימים"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-13",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.12"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2212,
+      "names": {
+        "cma": [
+          "מנורה מבטחים פנסיה מקבלי קצבה קיימים"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-13",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.73"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 2213,
+      "names": {
+        "cma": [
+          "מנורה מבטחים משלימה - מקבלי קצבה קיימים"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2012-09-13",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.26",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 7234,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה משלימה - מסלול לבני 50 ומטה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-12-31",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.13",
+        "AVG_DEPOSIT_FEE": "1.28"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 7235,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה משלימה - מסלול לבני 50 עד 60"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-12-31",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.13",
+        "AVG_DEPOSIT_FEE": "1.28"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 7236,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה משלימה - מסלול לבני 60 ומעלה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-12-31",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.13",
+        "AVG_DEPOSIT_FEE": "1.28"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 8318,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה משלימה - מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2013-12-31",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.13",
+        "AVG_DEPOSIT_FEE": "1.28"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 8319,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה משלימה - אשראי ואג\"ח"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2013-12-31",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.13",
+        "AVG_DEPOSIT_FEE": "1.28"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 8320,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה משלימה - כספי (שקלי)"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2013-12-31",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.13",
+        "AVG_DEPOSIT_FEE": "1.28"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 8561,
+      "names": {
+        "cma": [
+          "מנורה מבטחים פנסיה קצבה לזכאים קיימים"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2014-11-09",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.73"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 8580,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה כללית למקבלי קצבה קיימים"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2014-09-22",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.24"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 8588,
+      "names": {
+        "cma": [
+          "הראל פנסיה  - קצבה לזכאים קיימים"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-01-07",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.16",
+        "AVG_DEPOSIT_FEE": "1.47"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 8602,
+      "names": {
+        "cma": [
+          "מגדל מקפת אישית קצבה לזכאים קיימים"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-01-07",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.56"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 8603,
+      "names": {
+        "cma": [
+          "מגדל מקפת אישית הלכה למקבלי קצבה קיימים"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-01-07",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.56"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 8604,
+      "names": {
+        "cma": [
+          "מגדל מקפת משלימה הלכה למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-03-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.12"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 8645,
+      "names": {
+        "cma": [
+          "מיטב פנסיה מקיפה קצבה לזכאים קיימים"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2014-11-04",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.11",
+        "AVG_DEPOSIT_FEE": "1.25"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 8801,
+      "names": {
+        "cma": [
+          "מגדל מקפת אישית לבני 50 ומטה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-02-24",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.56"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 8802,
+      "names": {
+        "cma": [
+          "מגדל מקפת אישית לבני 50 עד 60"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-02-24",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.56"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 8803,
+      "names": {
+        "cma": [
+          "מגדל מקפת אישית לבני 60 ומעלה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-02-24",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.56"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 8806,
+      "names": {
+        "cma": [
+          "הראל פנסיה- הלכה למקבלי קצבה קיימים"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-05-14",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.16",
+        "AVG_DEPOSIT_FEE": "1.47"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9097,
+      "names": {
+        "cma": [
+          "הראל פנסיה - כספי (שקלי)"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-05-14",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.16",
+        "AVG_DEPOSIT_FEE": "1.47"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9453,
+      "names": {
+        "cma": [
+          "מגדל מקפת משלימה לבני 50 ומטה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2016-01-04",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.12"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9454,
+      "names": {
+        "cma": [
+          "מגדל מקפת משלימה לבני 50 עד 60"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2016-01-04",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.12"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9455,
+      "names": {
+        "cma": [
+          "מגדל מקפת משלימה לבני 60 ומעלה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2016-01-04",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.12"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9633,
+      "names": {
+        "cma": [
+          "כלל פנסיה משלימה לבני 50 ומטה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-12-28",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.04"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9634,
+      "names": {
+        "cma": [
+          "כלל פנסיה משלימה לבני 50 עד 60"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-12-28",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.04"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9635,
+      "names": {
+        "cma": [
+          "כלל פנסיה משלימה לבני 60 ומעלה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-12-28",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.04"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9647,
+      "names": {
+        "cma": [
+          "כלל פנסיה מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-11-15",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.52"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9648,
+      "names": {
+        "cma": [
+          "כלל פנסיה אשראי ואג\"ח"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-11-15",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.52"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9649,
+      "names": {
+        "cma": [
+          "כלל פנסיה קצבה לזכאים קיימים"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-11-15",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.52"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9650,
+      "names": {
+        "cma": [
+          "כלל פנסיה מסלול הלכה למקבלי קצבה קיימים"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-11-15",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.52"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9654,
+      "names": {
+        "cma": [
+          "כלל פנסיה לבני 50 ומטה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-11-15",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.52"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9655,
+      "names": {
+        "cma": [
+          "כלל פנסיה לבני 50-60"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-11-15",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.52"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9656,
+      "names": {
+        "cma": [
+          "כלל פנסיה לבני 60 ומעלה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-11-15",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.52"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9757,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה מקיפה מסלול לבני 50 ומטה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-11-12",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.24"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9758,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה מקיפה מסלול לבני 50-60"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-11-12",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.24"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9759,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה מקיפה מסלול לבני 60 ומעלה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-11-12",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.24"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9760,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה מקיפה הלכה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-11-12",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.24"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9761,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה כללית מסלול לבני 50 ומטה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-11-12",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.24"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9762,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה כללית מסלול לבני 50 עד 60"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-11-12",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.24"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9763,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה כללית מסלול לבני 60 ומעלה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-11-12",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.24"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9823,
+      "names": {
+        "cma": [
+          "הראל פנסיה - גילאי 50 ומטה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-11-10",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.16",
+        "AVG_DEPOSIT_FEE": "1.47"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9827,
+      "names": {
+        "cma": [
+          "הראל פנסיה - גילאי 50 עד 60"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-11-10",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.16",
+        "AVG_DEPOSIT_FEE": "1.47"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9829,
+      "names": {
+        "cma": [
+          "הראל פנסיה - גילאי 60 ומעלה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-11-10",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.16",
+        "AVG_DEPOSIT_FEE": "1.47"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9856,
+      "names": {
+        "cma": [
+          "הראל פנסיה כללית - גילאי 60 ומעלה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-11-23",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.14"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9858,
+      "names": {
+        "cma": [
+          "הראל פנסיה כללית - גילאי 50 עד 60"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-11-23",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.14"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9862,
+      "names": {
+        "cma": [
+          "הראל פנסיה כללית - גילאי 50 ומטה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-11-23",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.14"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9967,
+      "names": {
+        "cma": [
+          "מיטב פנסיה מקיפה לבני 50 עד 60"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-11-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.11",
+        "AVG_DEPOSIT_FEE": "1.25"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9968,
+      "names": {
+        "cma": [
+          "מיטב פנסיה מקיפה לבני 60 ומעלה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-11-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.11",
+        "AVG_DEPOSIT_FEE": "1.25"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9972,
+      "names": {
+        "cma": [
+          "מיטב פנסיה כללית לבני 50 עד 60"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-11-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9973,
+      "names": {
+        "cma": [
+          "מיטב פנסיה כללית לבני 60 ומעלה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-11-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9974,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה מקיפה  - מסלול לבני 50 ומטה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-12-31",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.53"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9975,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה מקיפה - מסלול לבני 50 עד 60"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-12-31",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.53"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9976,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה מקיפה - מסלול לבני 60 ומעלה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-12-31",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.53"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9979,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה מקיפה -מסלול עוקב מדדי אג\"ח"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-12-31",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.53"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9984,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה מקיפה - מסלול הלכה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-12-31",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.53"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 9987,
+      "names": {
+        "cma": [
+          "מסלול קצבה לזכאים קיימים"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2015-12-31",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.53"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 12027,
+      "names": {
+        "cma": [
+          "הראל  פנסיה - בסיסי למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2018-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.16",
+        "AVG_DEPOSIT_FEE": "1.47"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 12028,
+      "names": {
+        "cma": [
+          "הראל פנסיה -  הלכה למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2018-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.16",
+        "AVG_DEPOSIT_FEE": "1.47"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 12119,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה מקיפה - מסלול בסיסי למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2018-01-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.53"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 12120,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה משלימה - מסלול בסיסי למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2018-01-18",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.13",
+        "AVG_DEPOSIT_FEE": "1.28"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 12138,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה מקיפה בסיסי למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2018-01-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.24"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 12139,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה כללית בסיסי למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2018-01-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.24"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 12140,
+      "names": {
+        "cma": [
+          "הראל פנסיה כללית - בסיסי למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2018-01-04",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.14"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 12145,
+      "names": {
+        "cma": [
+          "מגדל מקפת אישית בסיסי למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2018-01-14",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.56"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 12146,
+      "names": {
+        "cma": [
+          "מגדל מקפת אישית הלכה למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2018-01-14",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.56"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 12147,
+      "names": {
+        "cma": [
+          "מגדל מקפת אישית עוקב מדדים למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2018-01-14",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.56"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 12152,
+      "names": {
+        "cma": [
+          "מגדל מקפת משלימה בסיסי למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2018-01-18",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.12"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 12154,
+      "names": {
+        "cma": [
+          "מנורה מבטחים משלימה - בסיסי למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2018-01-09",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.26",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 12155,
+      "names": {
+        "cma": [
+          "מנורה מבטחים פנסיה בסיסי למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2018-01-03",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.73"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 12157,
+      "names": {
+        "cma": [
+          "מיטב פנסיה מקיפה בסיסי למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2018-01-17",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.11",
+        "AVG_DEPOSIT_FEE": "1.25"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 12158,
+      "names": {
+        "cma": [
+          "מיטב פנסיה כללית בסיסי למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2018-01-18",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 12176,
+      "names": {
+        "cma": [
+          "כלל פנסיה מסלול הלכה למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2018-02-18",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.52"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 12177,
+      "names": {
+        "cma": [
+          "כלל פנסיה מסלול בסיסי למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2018-02-18",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.52"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 12251,
+      "names": {
+        "cma": [
+          "כלל פנסיה משלימה בסיסי למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2018-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.04"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 12419,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה מקיפה מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2018-05-31",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.24"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 12966,
+      "names": {
+        "cma": [
+          "מיטב פנסיה מקיפה הלכה למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2020-07-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.11",
+        "AVG_DEPOSIT_FEE": "1.25"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13211,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה כללית מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2020-09-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.24"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13212,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה כללית הלכה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2020-09-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.24"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13213,
+      "names": {
+        "cma": [
+          "כלל פנסיה כספי (שקלי)"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2020-04-07",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.52"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13214,
+      "names": {
+        "cma": [
+          "כלל פנסיה משלימה כספי(שקלי)"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2020-05-07",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.04"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13260,
+      "names": {
+        "cma": [
+          "מיטב פנסיה מקיפה עוקב מדד S1;P500"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2020-11-22",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.11",
+        "AVG_DEPOSIT_FEE": "1.25"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13278,
+      "names": {
+        "cma": [
+          "הראל פנסיה כללית מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2020-09-23",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.14"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13279,
+      "names": {
+        "cma": [
+          "הראל פנסיה כללית כספי (שקלי)"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2020-09-23",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.14"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13285,
+      "names": {
+        "cma": [
+          "מיטב פנסיה כללית עוקב מדד S1;P500"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2020-11-22",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13286,
+      "names": {
+        "cma": [
+          "מיטב פנסיה כללית הלכה למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2020-11-22",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13335,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה מקיפה עוקב מדד S1;P500"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2020-12-31",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.53"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13347,
+      "names": {
+        "cma": [
+          "כלל פנסיה עוקב מדד s1;p 500"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2020-12-27",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.52"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13349,
+      "names": {
+        "cma": [
+          "מנורה מבטחים פנסיה אשראי ואג\"ח"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2020-12-29",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.73"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13350,
+      "names": {
+        "cma": [
+          "מנורה מבטחים פנסיה עוקב מדדי מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2020-12-29",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.73"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13351,
+      "names": {
+        "cma": [
+          "מנורה מבטחים משלימה אשראי ואג\"ח"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2020-12-29",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.26",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13352,
+      "names": {
+        "cma": [
+          "מנורה מבטחים משלימה עוקב מדדי מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2020-12-29",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.26",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13415,
+      "names": {
+        "cma": [
+          "הראל פנסיה עוקב מדד s1;p 500"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2021-02-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.16",
+        "AVG_DEPOSIT_FEE": "1.47"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13424,
+      "names": {
+        "cma": [
+          "הראל פנסיה כללית עוקב מדד s1;p"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2021-02-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.14"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13465,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה משלימה עוקב מדד S1;P500"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2021-05-19",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.13",
+        "AVG_DEPOSIT_FEE": "1.28"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13572,
+      "names": {
+        "cma": [
+          "מגדל מקפת אישית עוקב מדד S1;P500"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2021-04-19",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.56"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13627,
+      "names": {
+        "cma": [
+          "מגדל מקפת משלימה עוקב מדד S1;P500"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2021-05-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.12"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13684,
+      "names": {
+        "cma": [
+          "הראל פנסיה כללית הלכה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2021-10-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.14"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13685,
+      "names": {
+        "cma": [
+          "הראל פנסיה כללית- הלכה למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2021-10-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.14"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13698,
+      "names": {
+        "cma": [
+          "כלל פנסיה משלימה מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2021-12-31",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.04"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13819,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה מקיפה עוקב מדדי מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-02-14",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.24"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13820,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה כללית עוקב מדדי מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-02-14",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.24"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13875,
+      "names": {
+        "cma": [
+          "מנורה מבטחים משלימה עוקב מדד S1;P500"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-02-22",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.26",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13887,
+      "names": {
+        "cma": [
+          "מנורה מבטחים פנסיה עוקב מדד S1;P500"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-02-22",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.73"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13909,
+      "names": {
+        "cma": [
+          "מור פנסיה מקיפה - מסלול לבני 50 ומטה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-02-22",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13910,
+      "names": {
+        "cma": [
+          "מור פנסיה מקיפה - מסלול לבני 50 עד 60"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-02-22",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13911,
+      "names": {
+        "cma": [
+          "מור פנסיה מקיפה - מסלול לבני 60 ומעלה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-02-22",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13912,
+      "names": {
+        "cma": [
+          "מור פנסיה מקיפה - מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-02-22",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13913,
+      "names": {
+        "cma": [
+          "מור פנסיה מקיפה - אשראי ואג\"ח"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-02-22",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13914,
+      "names": {
+        "cma": [
+          "מור פנסיה מקיפה - כספי (שקלי)"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-02-22",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13915,
+      "names": {
+        "cma": [
+          "מור פנסיה מקיפה - עוקב מדדי מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-02-22",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13916,
+      "names": {
+        "cma": [
+          "מור פנסיה מקיפה - מסלול בסיסי למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-02-22",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13919,
+      "names": {
+        "cma": [
+          "מור פנסיה כללית - מסלול לבני 50 ומטה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-02-22",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13920,
+      "names": {
+        "cma": [
+          "מור פנסיה כללית - מסלול לבני 50 עד 60"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-02-22",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13921,
+      "names": {
+        "cma": [
+          "מור פנסיה כללית - מסלול לבני 60 ומעלה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-02-22",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13922,
+      "names": {
+        "cma": [
+          "מור פנסיה כללית - מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-02-22",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13923,
+      "names": {
+        "cma": [
+          "מור פנסיה כללית - אשראי ואג\"ח"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-02-22",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13925,
+      "names": {
+        "cma": [
+          "מור פנסיה כללית - עוקב מדדי מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-02-22",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13926,
+      "names": {
+        "cma": [
+          "מור פנסיה כללית - כספי (שקלי)"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-02-22",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 13927,
+      "names": {
+        "cma": [
+          "מור פנסיה כללית - מסלול בסיסי למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-02-22",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14037,
+      "names": {
+        "cma": [
+          "אינפיניטי מקיפה  מסלול לבני 50 ומטה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אינפיניטי השתלמות, גמל ופנסיה בע\"מ",
+        "legal_id": "513621110"
+      },
+      "controlling_corporation": "אינפיניטי ניהול תיקי השקעות (בישראל ובעולם) בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-03-28",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14038,
+      "names": {
+        "cma": [
+          "אינפיניטי מקיפה מסלול לבני 50 עד 60"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אינפיניטי השתלמות, גמל ופנסיה בע\"מ",
+        "legal_id": "513621110"
+      },
+      "controlling_corporation": "אינפיניטי ניהול תיקי השקעות (בישראל ובעולם) בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-03-28",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14039,
+      "names": {
+        "cma": [
+          "אינפיניטי מקיפה מסלול לבני 60 ומעלה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אינפיניטי השתלמות, גמל ופנסיה בע\"מ",
+        "legal_id": "513621110"
+      },
+      "controlling_corporation": "אינפיניטי ניהול תיקי השקעות (בישראל ובעולם) בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-03-28",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14040,
+      "names": {
+        "cma": [
+          "אינפיניטי מקיפה עוקב מדדי מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אינפיניטי השתלמות, גמל ופנסיה בע\"מ",
+        "legal_id": "513621110"
+      },
+      "controlling_corporation": "אינפיניטי ניהול תיקי השקעות (בישראל ובעולם) בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-03-28",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14042,
+      "names": {
+        "cma": [
+          "אינפיניטי מקיפה הלכה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אינפיניטי השתלמות, גמל ופנסיה בע\"מ",
+        "legal_id": "513621110"
+      },
+      "controlling_corporation": "אינפיניטי ניהול תיקי השקעות (בישראל ובעולם) בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-03-28",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14043,
+      "names": {
+        "cma": [
+          "מסלול בסיסי למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אינפיניטי השתלמות, גמל ופנסיה בע\"מ",
+        "legal_id": "513621110"
+      },
+      "controlling_corporation": "אינפיניטי ניהול תיקי השקעות (בישראל ובעולם) בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-03-28",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14045,
+      "names": {
+        "cma": [
+          "אינפיניטי כללית מסלול לבני 50 ומטה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אינפיניטי השתלמות, גמל ופנסיה בע\"מ",
+        "legal_id": "513621110"
+      },
+      "controlling_corporation": "אינפיניטי ניהול תיקי השקעות (בישראל ובעולם) בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-03-28",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.17",
+        "AVG_DEPOSIT_FEE": "1"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14046,
+      "names": {
+        "cma": [
+          "אינפיניטי כללית מסלול לבני 50 עד 60"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אינפיניטי השתלמות, גמל ופנסיה בע\"מ",
+        "legal_id": "513621110"
+      },
+      "controlling_corporation": "אינפיניטי ניהול תיקי השקעות (בישראל ובעולם) בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-03-28",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.17",
+        "AVG_DEPOSIT_FEE": "1"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14047,
+      "names": {
+        "cma": [
+          "אינפיניטי כללית מסלול לבני 60 ומעלה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אינפיניטי השתלמות, גמל ופנסיה בע\"מ",
+        "legal_id": "513621110"
+      },
+      "controlling_corporation": "אינפיניטי ניהול תיקי השקעות (בישראל ובעולם) בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-03-28",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.17",
+        "AVG_DEPOSIT_FEE": "1"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14048,
+      "names": {
+        "cma": [
+          "אינפיניטי כללית עוקב מדדי מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אינפיניטי השתלמות, גמל ופנסיה בע\"מ",
+        "legal_id": "513621110"
+      },
+      "controlling_corporation": "אינפיניטי ניהול תיקי השקעות (בישראל ובעולם) בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-03-28",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.17",
+        "AVG_DEPOSIT_FEE": "1"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14049,
+      "names": {
+        "cma": [
+          "אינפיניטי כללית הלכה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אינפיניטי השתלמות, גמל ופנסיה בע\"מ",
+        "legal_id": "513621110"
+      },
+      "controlling_corporation": "אינפיניטי ניהול תיקי השקעות (בישראל ובעולם) בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-03-28",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.17",
+        "AVG_DEPOSIT_FEE": "1"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14050,
+      "names": {
+        "cma": [
+          "מסלול בסיסי למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אינפיניטי השתלמות, גמל ופנסיה בע\"מ",
+        "legal_id": "513621110"
+      },
+      "controlling_corporation": "אינפיניטי ניהול תיקי השקעות (בישראל ובעולם) בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-03-28",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.17",
+        "AVG_DEPOSIT_FEE": "1"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14054,
+      "names": {
+        "cma": [
+          "אינפיניטי מקיפה עוקב מדד S1;P 500"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אינפיניטי השתלמות, גמל ופנסיה בע\"מ",
+        "legal_id": "513621110"
+      },
+      "controlling_corporation": "אינפיניטי ניהול תיקי השקעות (בישראל ובעולם) בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-03-28",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14058,
+      "names": {
+        "cma": [
+          "אינפיניטי כללית עוקב מדד S1;P 500"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אינפיניטי השתלמות, גמל ופנסיה בע\"מ",
+        "legal_id": "513621110"
+      },
+      "controlling_corporation": "אינפיניטי ניהול תיקי השקעות (בישראל ובעולם) בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-03-28",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.17",
+        "AVG_DEPOSIT_FEE": "1"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14082,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה משלימה- שריעה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2022-06-26",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.13",
+        "AVG_DEPOSIT_FEE": "1.28"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14192,
+      "names": {
+        "cma": [
+          "הראל פנסיה כללית עוקב מדדים גמיש"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.14"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14193,
+      "names": {
+        "cma": [
+          "הראל פנסיה כללית משולב סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.14"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14194,
+      "names": {
+        "cma": [
+          "הראל פנסיה כללית קיימות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.14"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14198,
+      "names": {
+        "cma": [
+          "הראל  פנסיה- עוקב מדדים גמיש"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.16",
+        "AVG_DEPOSIT_FEE": "1.47"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14199,
+      "names": {
+        "cma": [
+          "הראל  פנסיה- משולב סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.16",
+        "AVG_DEPOSIT_FEE": "1.47"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14200,
+      "names": {
+        "cma": [
+          "הראל  פנסיה- קיימות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.16",
+        "AVG_DEPOSIT_FEE": "1.47"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14231,
+      "names": {
+        "cma": [
+          "כלל פנסיה משלימה משולב סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.04"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14232,
+      "names": {
+        "cma": [
+          "כלל פנסיה משולב סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.52"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14233,
+      "names": {
+        "cma": [
+          "כלל פנסיה עוקב מדדים גמיש"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.52"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14238,
+      "names": {
+        "cma": [
+          "כלל פנסיה משלימה עוקב מדדים גמיש"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.04"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14242,
+      "names": {
+        "cma": [
+          "מגדל מקפת אישית משולב סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.56"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14243,
+      "names": {
+        "cma": [
+          "מגדל מקפת אישית עוקב מדדים - גמיש"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.56"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14244,
+      "names": {
+        "cma": [
+          "מגדל מקפת משלימה משולב סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.12"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14245,
+      "names": {
+        "cma": [
+          "מגדל מקפת משלימה עוקב מדדים - גמיש"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.12"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14259,
+      "names": {
+        "cma": [
+          "מיטב פנסיה מקיפה משולב סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.11",
+        "AVG_DEPOSIT_FEE": "1.25"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14260,
+      "names": {
+        "cma": [
+          "מיטב פנסיה מקיפה עוקב מדדים גמיש"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.11",
+        "AVG_DEPOSIT_FEE": "1.25"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14261,
+      "names": {
+        "cma": [
+          "מיטב פנסיה מקיפה קיימות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.11",
+        "AVG_DEPOSIT_FEE": "1.25"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14267,
+      "names": {
+        "cma": [
+          "מיטב פנסיה כללית משולב סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14268,
+      "names": {
+        "cma": [
+          "מיטב פנסיה כללית עוקב מדדים גמיש"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14269,
+      "names": {
+        "cma": [
+          "מיטב פנסיה כללית קיימות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14277,
+      "names": {
+        "cma": [
+          "מנורה מבטחים פנסיה משולב סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.73"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14278,
+      "names": {
+        "cma": [
+          "מנורה מבטחים פנסיה עוקב מדדים גמיש"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.73"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14285,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה מקיפה  משולב סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.53"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14286,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה מקיפה עוקב מדדים גמיש"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.53"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14287,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה משלימה עוקב מדדים גמיש"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.13",
+        "AVG_DEPOSIT_FEE": "1.28"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14288,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה משלימה משולב סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.13",
+        "AVG_DEPOSIT_FEE": "1.28"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14302,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה מקיפה משולב סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.24"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14303,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה מקיפה עוקב מדדים גמיש"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.24"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14304,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה כללית משולב סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.24"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14305,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה כללית עוקב מדדים גמיש"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.24"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14308,
+      "names": {
+        "cma": [
+          "מנורה מבטחים משלימה משולב סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.26",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14309,
+      "names": {
+        "cma": [
+          "מנורה מבטחים משלימה עוקב מדדים גמיש"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.26",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14333,
+      "names": {
+        "cma": [
+          "אינפיניטי פנסיה מקיפה משולב סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אינפיניטי השתלמות, גמל ופנסיה בע\"מ",
+        "legal_id": "513621110"
+      },
+      "controlling_corporation": "אינפיניטי ניהול תיקי השקעות (בישראל ובעולם) בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14334,
+      "names": {
+        "cma": [
+          "אינפיניטי פנסיה מקיפה עוקב מדדים גמיש"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אינפיניטי השתלמות, גמל ופנסיה בע\"מ",
+        "legal_id": "513621110"
+      },
+      "controlling_corporation": "אינפיניטי ניהול תיקי השקעות (בישראל ובעולם) בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14335,
+      "names": {
+        "cma": [
+          "אינפיניטי פנסיה כללית משולב סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אינפיניטי השתלמות, גמל ופנסיה בע\"מ",
+        "legal_id": "513621110"
+      },
+      "controlling_corporation": "אינפיניטי ניהול תיקי השקעות (בישראל ובעולם) בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.17",
+        "AVG_DEPOSIT_FEE": "1"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14336,
+      "names": {
+        "cma": [
+          "אינפיניטי פנסיה כללית עוקב מדדים גמיש"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אינפיניטי השתלמות, גמל ופנסיה בע\"מ",
+        "legal_id": "513621110"
+      },
+      "controlling_corporation": "אינפיניטי ניהול תיקי השקעות (בישראל ובעולם) בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.17",
+        "AVG_DEPOSIT_FEE": "1"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14337,
+      "names": {
+        "cma": [
+          "מור פנסיה כללית - משולב סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14338,
+      "names": {
+        "cma": [
+          "מור פנסיה כללית - עוקב מדדים גמיש"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14339,
+      "names": {
+        "cma": [
+          "מור פנסיה מקיפה - משולב סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14340,
+      "names": {
+        "cma": [
+          "מור פנסיה מקיפה - עוקב מדדים גמיש"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14348,
+      "names": {
+        "cma": [
+          "מנורה מבטחים פנסיה קיימות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.73"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14677,
+      "names": {
+        "cma": [
+          "מנורה מבטחים משלימה מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-07-06",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.26",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14795,
+      "names": {
+        "cma": [
+          "כלל פנסיה משלימה עוקב מדד  s1;p500"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-11-27",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.04"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14850,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה מקיפה עוקב מדד S1;P500"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-09-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.24"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14854,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה כללית עוקב מדד S1;P 500"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-09-11",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.24"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14929,
+      "names": {
+        "cma": [
+          "מגדל מקפת אישית עוקב מדדי מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-12-03",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.56"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 14930,
+      "names": {
+        "cma": [
+          "מגדל מקפת משלימה עוקב מדדי מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2023-12-03",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.12"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15038,
+      "names": {
+        "cma": [
+          "הראל  פנסיה עוקב מדדי מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.16",
+        "AVG_DEPOSIT_FEE": "1.47"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15039,
+      "names": {
+        "cma": [
+          "הראל פנסיה כללית עוקב מדדי מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.14"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15091,
+      "names": {
+        "cma": [
+          "כלל פנסיה משלימה עוקב מדדי מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-03-07",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.04"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15092,
+      "names": {
+        "cma": [
+          "כלל פנסיה עוקב מדדי מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-03-07",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.52"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15217,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה מקיפה אג\"ח סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.53"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15218,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה מקיפה מניות סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.53"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15219,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה מקיפה עוקב מדדי מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.53"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15220,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה משלימה אג\"ח סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.13",
+        "AVG_DEPOSIT_FEE": "1.28"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15221,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה משלימה מניות סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.13",
+        "AVG_DEPOSIT_FEE": "1.28"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15222,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה משלימה עוקב מדדי אג\"ח"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.13",
+        "AVG_DEPOSIT_FEE": "1.28"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15223,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה משלימה עוקב מדדי מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.13",
+        "AVG_DEPOSIT_FEE": "1.28"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15224,
+      "names": {
+        "cma": [
+          "הפניקס פנסיה משלימה הלכה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הפניקס פנסיה וגמל בע\"מ ",
+        "legal_id": "513026484"
+      },
+      "controlling_corporation": "הפניקס אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.13",
+        "AVG_DEPOSIT_FEE": "1.28"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15263,
+      "names": {
+        "cma": [
+          "מור פנסיה מקיפה  מתמחים באפיקי השקעה סחירים מניות סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15264,
+      "names": {
+        "cma": [
+          "מור פנסיה מקיפה מתמחים באפיקי השקעה סחירים אג\"ח סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15265,
+      "names": {
+        "cma": [
+          "מור פנסיה מקיפה עוקבי מדדים עוקב מדדי אג\"ח"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15266,
+      "names": {
+        "cma": [
+          "מור פנסיה מקיפה  עוקבי מדדים עוקב מדד s1;p 500"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15267,
+      "names": {
+        "cma": [
+          "מור פנסיה מקיפה עוקבי מדדים עוקב מדדים - למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15270,
+      "names": {
+        "cma": [
+          "מור פנסיה כללית מתמחים באפיקי השקעה סחירים מניות סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15271,
+      "names": {
+        "cma": [
+          "מור פנסיה כללית מתמחים באפיקי השקעה סחירים אג\"ח סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15272,
+      "names": {
+        "cma": [
+          "מור פנסיה כללית עוקבי מדדים עוקב מדדי אג\"ח"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15273,
+      "names": {
+        "cma": [
+          "מור פנסיה כללית עוקבי מדדים עוקב מדד s1;p 500"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15274,
+      "names": {
+        "cma": [
+          "מור פנסיה כללית עוקבי מדדים עוקב מדדים - למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15276,
+      "names": {
+        "cma": [
+          "הראל פנסיה אג\"ח סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.16",
+        "AVG_DEPOSIT_FEE": "1.47"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15277,
+      "names": {
+        "cma": [
+          "הראל פנסיה מניות סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.16",
+        "AVG_DEPOSIT_FEE": "1.47"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15278,
+      "names": {
+        "cma": [
+          "הראל פנסיה עוקב מדדי אג\"ח"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.16",
+        "AVG_DEPOSIT_FEE": "1.47"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15279,
+      "names": {
+        "cma": [
+          "הראל פנסיה כללית מניות סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.14"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15280,
+      "names": {
+        "cma": [
+          "הראל פנסיה כללית אג\"ח סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.14"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15281,
+      "names": {
+        "cma": [
+          "הראל פנסיה כללית אשראי ואג\"ח"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.14"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15282,
+      "names": {
+        "cma": [
+          "הראל פנסיה כללית עוקב מדדי אג\"ח"
+        ]
+      },
+      "managing_corporation": {
+        "name": "הראל פנסיה וגמל בע\"מ",
+        "legal_id": "512267592"
+      },
+      "controlling_corporation": "הראל השקעות בביטוח ושירותים פיננסיים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.14"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15313,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה כללית הלכה למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.24"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15314,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה מקיפה הלכה למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.24"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15342,
+      "names": {
+        "cma": [
+          "מנורה מבטחים פנסיה מסלול אג\"ח ממשלות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-06-30",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.73"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15359,
+      "names": {
+        "cma": [
+          "מיטב פנסיה מקיפה אג\"ח סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-07-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.11",
+        "AVG_DEPOSIT_FEE": "1.25"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15360,
+      "names": {
+        "cma": [
+          "מיטב פנסיה מקיפה מניות סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-07-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.11",
+        "AVG_DEPOSIT_FEE": "1.25"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15361,
+      "names": {
+        "cma": [
+          "מיטב פנסיה כללית מניות סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-07-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15362,
+      "names": {
+        "cma": [
+          "מיטב פנסיה כללית עוקב מדדי מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-07-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15432,
+      "names": {
+        "cma": [
+          "כלל פנסיה מניות סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-09-23",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.52"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15433,
+      "names": {
+        "cma": [
+          "כלל פנסיה אג\"ח סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-09-23",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.52"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15434,
+      "names": {
+        "cma": [
+          "כלל פנסיה משלימה מניות סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-09-23",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.04"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15435,
+      "names": {
+        "cma": [
+          "כלל פנסיה משלימה אג\"ח סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2024-09-23",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.04"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15524,
+      "names": {
+        "cma": [
+          "מגדל מקפת אישית מניות סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2025-02-19",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.56"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15525,
+      "names": {
+        "cma": [
+          "מגדל מקפת אישית עוקב מדדי אג\"ח"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2025-02-19",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.56"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15526,
+      "names": {
+        "cma": [
+          "מגדל מקפת משלימה מניות סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2025-02-20",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.12"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15527,
+      "names": {
+        "cma": [
+          "מגדל מקפת משלימה עוקב מדדי אג\"ח"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2025-02-20",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.12"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15661,
+      "names": {
+        "cma": [
+          "מנורה מבטחים פנסיה עוקב מדדים למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2025-06-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.73"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15665,
+      "names": {
+        "cma": [
+          "מיטב פנסיה כללית  עוקב מדדים למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2025-06-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.07"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15666,
+      "names": {
+        "cma": [
+          "מיטב פנסיה מקיפה עוקב מדדים למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מיטב גמל ופנסיה בע\"מ",
+        "legal_id": "512065202"
+      },
+      "controlling_corporation": "מיטב דש השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2025-06-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.11",
+        "AVG_DEPOSIT_FEE": "1.25"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15673,
+      "names": {
+        "cma": [
+          "מנורה מבטחים משלימה עוקב מדדים למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2025-06-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.26",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15685,
+      "names": {
+        "cma": [
+          "אינפיניטי פנסיה מקיפה מניות"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אינפיניטי השתלמות, גמל ופנסיה בע\"מ",
+        "legal_id": "513621110"
+      },
+      "controlling_corporation": "אינפיניטי ניהול תיקי השקעות (בישראל ובעולם) בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2025-06-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15686,
+      "names": {
+        "cma": [
+          "אינפיניטי פנסיה כללית מניות "
+        ]
+      },
+      "managing_corporation": {
+        "name": "אינפיניטי השתלמות, גמל ופנסיה בע\"מ",
+        "legal_id": "513621110"
+      },
+      "controlling_corporation": "אינפיניטי ניהול תיקי השקעות (בישראל ובעולם) בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2025-06-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.17",
+        "AVG_DEPOSIT_FEE": "1"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15783,
+      "names": {
+        "cma": [
+          "מנורה מבטחים פנסיה מניות סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2026-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.15",
+        "AVG_DEPOSIT_FEE": "1.73"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15784,
+      "names": {
+        "cma": [
+          "מנורה מבטחים משלימה מניות סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מנורה מבטחים פנסיה וגמל בע\"מ",
+        "legal_id": "512245812"
+      },
+      "controlling_corporation": "מנורה מבטחים החזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2026-01-01",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.26",
+        "AVG_DEPOSIT_FEE": "1.05"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15785,
+      "names": {
+        "cma": [
+          "מגדל מקפת משלימה עוקב מדדים למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מגדל מקפת קרנות פנסיה וקופות גמל בע\"מ",
+        "legal_id": "512237744"
+      },
+      "controlling_corporation": "שלמה אליהו אחזקות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2025-12-31",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.18",
+        "AVG_DEPOSIT_FEE": "1.12"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15813,
+      "names": {
+        "cma": [
+          "כלל פנסיה עוקב מדדים למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2026-01-26",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.14",
+        "AVG_DEPOSIT_FEE": "1.52"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15814,
+      "names": {
+        "cma": [
+          "כלל פנסיה משלימה עוקב מדדים למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "כלל פנסיה וגמל בע\"מ",
+        "legal_id": "512244146"
+      },
+      "controlling_corporation": "אחר",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2026-01-26",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "0.19",
+        "AVG_DEPOSIT_FEE": "1.04"
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15840,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה מקיפה עוקב מדדים למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2026-03-26",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "",
+        "AVG_DEPOSIT_FEE": ""
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15841,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה מקיפה מניות סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2026-03-26",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "",
+        "AVG_DEPOSIT_FEE": ""
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15842,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה כללית מניות סחיר"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2026-03-26",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "",
+        "AVG_DEPOSIT_FEE": ""
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15843,
+      "names": {
+        "cma": [
+          "אלטשולר שחם פנסיה כללית עוקב מדדים למקבלי קצבה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "אלטשולר שחם גמל ופנסיה בע\"מ",
+        "legal_id": "513173393"
+      },
+      "controlling_corporation": "אלטשולר שחם פיננסים בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2026-03-26",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "",
+        "AVG_DEPOSIT_FEE": ""
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15892,
+      "names": {
+        "cma": [
+          "מור פנסיה מקיפה הלכה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות חדשות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2026-03-25",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "",
+        "AVG_DEPOSIT_FEE": ""
+      },
+      "fees": null
+    },
+    {
+      "fund_id": 15893,
+      "names": {
+        "cma": [
+          "מור פנסיה כללית - הלכה"
+        ]
+      },
+      "managing_corporation": {
+        "name": "מור גמל ופנסיה בע\"מ",
+        "legal_id": "514956465"
+      },
+      "controlling_corporation": "י.ד מור השקעות בע\"מ",
+      "fund_classification": "קרנות כלליות",
+      "target_population": "",
+      "specialization": "",
+      "sub_specialization": "",
+      "inception_date": "2026-03-25",
+      "raw_fields": {
+        "AVG_ANNUAL_MANAGEMENT_FEE": "",
+        "AVG_DEPOSIT_FEE": ""
+      },
+      "fees": null
+    }
+  ]
+}
