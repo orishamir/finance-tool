@@ -1,0 +1,24 @@
+{
+  "id": "tie-threshold",
+  "method_id": "P-01",
+  "value": {
+    "value": 0.5,
+    "unit": "pct",
+    "state": "sourced",
+    "source": {
+      "url": "docs/parameters-rationale.md#tie-threshold",
+      "title": "Founder rationale: tie threshold",
+      "publisher": "founder",
+      "strength": "primary"
+    },
+    "checked": "2026-10-22",
+    "effective_from": "2026-10-22",
+    "effective_to": null,
+    "update_rule": "founder",
+    "notes": ""
+  },
+  "rationale": "Two options whose real values at the horizon differ by less than 0.5% of the larger one are shown as a tie. A difference that small is not worth acting on.",
+  "signed_off_by": "founder",
+  "signed_off_on": "2026-10-22",
+  "shown_as": "site parameter"
+}
