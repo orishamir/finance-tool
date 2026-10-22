@@ -60,6 +60,10 @@ These were open questions in `docs/discovery.md`, or were raised by the review. 
 - **Process is part of the price.** Getting the real fee and switching provider are where people get hurt (UX report 4.5).
 - **Real terms by default.** Every projected value is shown in real terms, with nominal available on request; the deflator is defined in `docs/method.md`.
 
+**Principle the founder adds** (2026-10-22):
+
+- **Interactive by default.** Every graph and computed number responds to the person's inputs. The inputs a computation uses (the assumptions in `docs/method.md` §2.2) start from a sourced value or a site parameter, can be changed on the page where the result is shown, and once changed are shown as "entered by you" (D7). Rules from `il-finance` are not inputs and cannot be changed by the person; site parameters that are judgements (the tie threshold, verdict thresholds, sensitivity bounds) are shown, not edited, so a ranking cannot be tuned into a different answer.
+
 ---
 
 ## 3. Capabilities
@@ -327,3 +331,4 @@ Not changed: everything else in section 1 remains as drafted and still awaits co
 ## Appendix C: founder changes, 2026-10-22, third round
 
 1. **Guide-page timeline made fully editable** (3.1 In and Out). The timeline opens on the illustrative scenario and every value behind it can be changed on the page, with changed values shown as "entered by you". Reason: the founder expects people to change fields and watch graphs on nearly every page, not only in the goal comparison (`docs/architecture.md` gap 8.9, K8).
+2. **"Interactive by default" added as a principle** (section 2), generalising item 1 to every capability. Re-check of the capabilities it touches: 3.2, 3.4, 3.5 and 3.6 already take their inputs from the person and recompute; 3.1 now does (item 1); 3.10's fit mark recomputes from the saved goal; 3.3's marks follow the comparison they belong to; 3.7 and the rules and parameters pages of 3.8 show no computed number, so nothing changes there. Exposure mode (3.2, R5) already takes returns as "entered by you" (D9).
