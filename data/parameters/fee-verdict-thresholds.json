@@ -1,0 +1,57 @@
+{
+  "id": "fee-verdict-thresholds",
+  "method_id": "P-03",
+  "negotiate_nis": {
+    "value": 1000,
+    "unit": "nis",
+    "state": "sourced",
+    "source": {
+      "url": "docs/parameters-rationale.md#fee-verdict-thresholds",
+      "title": "Founder's choice, made by Claude at his request: fee verdict thresholds",
+      "publisher": "founder",
+      "strength": "primary"
+    },
+    "checked": "2026-10-23",
+    "effective_from": "2026-10-23",
+    "effective_to": null,
+    "update_rule": "founder",
+    "notes": "real cost over the horizon"
+  },
+  "avoid_nis": {
+    "value": 2500,
+    "unit": "nis",
+    "state": "sourced",
+    "source": {
+      "url": "docs/parameters-rationale.md#fee-verdict-thresholds",
+      "title": "Founder's choice, made by Claude at his request: fee verdict thresholds",
+      "publisher": "founder",
+      "strength": "primary"
+    },
+    "checked": "2026-10-23",
+    "effective_from": "2026-10-23",
+    "effective_to": null,
+    "update_rule": "founder",
+    "notes": "real cost over the horizon"
+  },
+  "negotiate_share": {
+    "value": 10,
+    "unit": "pct",
+    "state": "sourced",
+    "source": {
+      "url": "docs/parameters-rationale.md#fee-verdict-thresholds",
+      "title": "Founder's choice, made by Claude at his request: fee verdict thresholds",
+      "publisher": "founder",
+      "strength": "primary"
+    },
+    "checked": "2026-10-23",
+    "effective_from": "2026-10-23",
+    "effective_to": null,
+    "update_rule": "founder",
+    "notes": "share of total fee drag; method F-62 does not use it yet"
+  },
+  "rationale": "A fee is worth a phone call when it costs 1,000 NIS or more in today's money over the horizon and a cheaper reference exists, and worth avoiding when it costs 2,500 NIS or more and another option removes it. Below about 1,000 NIS over several years, the call is not worth the time.",
+  "chosen_by": "Claude, at the founder's request (2026-10-23: \"do whatever you think fits\")",
+  "signed_off_by": "founder",
+  "signed_off_on": "2026-10-23",
+  "shown_as": "site parameter"
+}

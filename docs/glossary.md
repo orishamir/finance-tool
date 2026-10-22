@@ -1,6 +1,6 @@
 # Glossary
 
-Written 2026-10-23 by the UX writer with six research passes over the il-finance rule base (`.claude/skills/il-finance/references/`). Status: **draft for founder review.** UI text is in `docs/copy.md`.
+Written 2026-10-23 by the UX writer with six research passes over the il-finance rule base (`.claude/skills/il-finance/references/`). Status: **in force** (2026-10-23; the founder asked Claude to settle it). UI text is in `docs/copy.md`.
 
 Every explanation below comes from the rule base, never from memory. Each row gives the official Hebrew term (the spelling of the most official source in the rule base), a plain one-line explanation, other spellings people meet in apps, ads and statements, and the source: the rule IDs, the document, the date it was checked and how strong it is. Explanations hold no figures; figures change and the site shows them as sourced numbers.
 

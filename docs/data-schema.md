@@ -2,7 +2,7 @@
 
 Written 2026-10-22 by the financial modeler, for `docs/method.md`. Every number the engine reads comes from a file in one of the collections below. No value appears without a source URL and a checked date (CLAUDE.md standing rule, D3).
 
-Status: **draft for founder review.** Nothing under `data/` exists yet; the first files are written by the data-researcher after this schema is approved.
+Status: **in force.** On 2026-10-23 the founder asked Claude to settle every open item ("do whatever you think fits"); Claude did, and the founder has not reviewed this document line by line.
 
 ---
 
@@ -76,7 +76,7 @@ Wrapper IDs (`data/instruments/wrappers/`): `current-account`, `bank-deposit`, `
 
 Exposure IDs (`data/instruments/exposures/`): `cash-nis`, `cash-fx`, `makam`, `gov-bond-unlinked`, `gov-bond-linked`, `index-<index-code>` (for example `index-sp500`, `index-ta125`), `track-<cma-classification>` for provident tracks, `general-track`.
 
-Dimensions (`data/dimensions/`): the vocabulary in `il-finance` README (`tax-at-exit`, `fee-management-balance`, ...), plus any of the proposed additions the founder adopts (coverage.md F5).
+Dimensions (`data/dimensions/`): the vocabulary in `il-finance` README (`tax-at-exit`, `fee-management-balance`, ...), plus any of the proposed additions the founder adopts (coverage.md F5; **answered 2026-10-23: none adopted for release 1**, the 26 rows of `docs/glossary.md` section 2 stand).
 
 ---
 
@@ -123,7 +123,7 @@ The rules themselves stay in `il-finance` (markdown). This collection holds only
 }
 ```
 
-`sensitivity-bounds` (P-02) holds one entry per assumption ID (`A-01` ...) with `lo` and `hi` value objects. `fee-verdict-thresholds` (P-03) holds `negotiate_nis`, `avoid_nis`, `negotiate_share`. `classification-fit` (P-04) holds an array of `{ "classification": "<CMA value, exact spelling>", "horizon_min_years", "horizon_max_years", "max_fall_pct" }`. `illustrative-scenario` (P-05) holds the inputs by assumption ID. `golden-tolerance` (P-06) holds `abs_nis` and `rel_pct`. The values are the founder's; none is proposed here.
+`sensitivity-bounds` (P-02) holds one entry per assumption ID (`A-01` ...) with `lo` and `hi` value objects. `fee-verdict-thresholds` (P-03) holds `negotiate_nis`, `avoid_nis`, `negotiate_share`. `classification-fit` (P-04) holds an array of `{ "classification": "<CMA value, exact spelling>", "horizon_min_years", "horizon_max_years", "max_fall_pct" }`. `illustrative-scenario` (P-05) holds `inputs` (`amount_now`, `monthly_deposit`, `horizon_years`, `A-01`, `A-02`, `cash_rate`) and `sliders` (`min`, `max`, `step` for the monthly deposit and the years). `golden-tolerance` (P-06) holds `abs_nis` and `rel_pct`. The values are the founder's (`docs/parameters-rationale.md`).
 
 ### 3.3 `data/instruments/wrappers/` — one record per wrapper (D6)
 

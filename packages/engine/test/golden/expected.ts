@@ -7,7 +7,7 @@ const root = new URL("../../../../", import.meta.url);
 const scenarios = readFileSync(new URL("tests/golden/scenarios.md", root), "utf8");
 const workings = readFileSync(new URL("tests/golden/workings.md", root), "utf8");
 const toleranceFile = JSON.parse(
-  readFileSync(new URL("tests/golden/provisional-parameters/golden-tolerance.json", root), "utf8"),
+  readFileSync(new URL("data/parameters/golden-tolerance.json", root), "utf8"),
 );
 
 /** P-06: 1 NIS or 0.01%, whichever is larger (docs/parameters-rationale.md). */

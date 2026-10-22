@@ -1,0 +1,216 @@
+{
+  "id": "sensitivity-bounds",
+  "method_id": "P-02",
+  "bounds": {
+    "A-01": {
+      "lo": {
+        "value": 0,
+        "unit": "pct_per_year",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#sensitivity-bounds",
+          "title": "Founder's choice, made by Claude at his request: sensitivity bounds",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      },
+      "hi": {
+        "value": 10,
+        "unit": "pct_per_year",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#sensitivity-bounds",
+          "title": "Founder's choice, made by Claude at his request: sensitivity bounds",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      }
+    },
+    "A-02": {
+      "lo": {
+        "value": 0,
+        "unit": "pct_per_year",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#sensitivity-bounds",
+          "title": "Founder's choice, made by Claude at his request: sensitivity bounds",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      },
+      "hi": {
+        "value": 5,
+        "unit": "pct_per_year",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#sensitivity-bounds",
+          "title": "Founder's choice, made by Claude at his request: sensitivity bounds",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      }
+    },
+    "A-03": {
+      "lo": {
+        "value": -3,
+        "unit": "pct_per_year",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#sensitivity-bounds",
+          "title": "Founder's choice, made by Claude at his request: sensitivity bounds",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      },
+      "hi": {
+        "value": 3,
+        "unit": "pct_per_year",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#sensitivity-bounds",
+          "title": "Founder's choice, made by Claude at his request: sensitivity bounds",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      }
+    },
+    "A-06": {
+      "lo": {
+        "value": 0,
+        "unit": "pct_per_year",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#sensitivity-bounds",
+          "title": "Founder's choice, made by Claude at his request: sensitivity bounds",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      },
+      "hi": {
+        "value": 3,
+        "unit": "pct_per_year",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#sensitivity-bounds",
+          "title": "Founder's choice, made by Claude at his request: sensitivity bounds",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      }
+    },
+    "fee_rates": {
+      "lo": {
+        "value": 0.5,
+        "unit": "count",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#sensitivity-bounds",
+          "title": "Founder's choice, made by Claude at his request: sensitivity bounds",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "multiplier on the current rate"
+      },
+      "hi": {
+        "value": 2,
+        "unit": "count",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#sensitivity-bounds",
+          "title": "Founder's choice, made by Claude at his request: sensitivity bounds",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "multiplier on the current rate"
+      },
+      "notes": "multiplier on each fee rate, one fee at a time"
+    },
+    "horizon": {
+      "lo": {
+        "value": -2,
+        "unit": "years",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#sensitivity-bounds",
+          "title": "Founder's choice, made by Claude at his request: sensitivity bounds",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "years from the chosen horizon"
+      },
+      "hi": {
+        "value": 2,
+        "unit": "years",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#sensitivity-bounds",
+          "title": "Founder's choice, made by Claude at his request: sensitivity bounds",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "years from the chosen horizon"
+      }
+    }
+  },
+  "rationale": "Wide enough to show whether the answer depends on a guess: yearly return 0% to 10%, inflation 0% to 5%, the shekel against a foreign currency 3% a year either way, the cost inside a fund 0% to 3% a year, each fee from half to double one at a time, and the horizon two years shorter or longer.",
+  "chosen_by": "Claude, at the founder's request (2026-10-23: \"do whatever you think fits\")",
+  "signed_off_by": "founder",
+  "signed_off_on": "2026-10-23",
+  "shown_as": "site parameter"
+}

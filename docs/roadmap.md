@@ -16,7 +16,7 @@ Capability map (product.md number, short name, release):
 |---|---|---|
 | 3.8 | Rule base (`il-finance`) | R1 |
 | 3.8 | Site parameters (`data/parameters/`) | R1 (first values), signed off per release as they are used |
-| 3.8 | Method (`docs/method.md`) and test cases (`tests/cases/`) | R1 (for what R1 computes), extended every release |
+| 3.8 | Method (`docs/method.md`) and test cases (`tests/golden/`) | R1 (for what R1 computes), extended every release |
 | 3.8 | Reader-facing rule link, rules page, parameters page | R1 |
 | 3.8 | Change log | R1 (written), R5 (read by saved-state revisit) |
 | 3.1 | Instrument guide, tier-1 wrappers and exposures | R1 |

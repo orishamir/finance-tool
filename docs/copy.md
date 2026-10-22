@@ -1,7 +1,7 @@
 # Hebrew copy, release 1
 
 Written 2026-10-23 as the site's UX writer, from `docs/flows.md` (screens and briefs), `docs/design-system.md`, the design review of the same day, and the design plugin's `ux-copy` skill with the `hebrew-content-writer` skill.
-Status: **draft for founder review.** Financial terms and their one-line explanations are in `docs/glossary.md`, each with its source in the il-finance rule base.
+Status: **in force** (2026-10-23; the founder asked Claude to settle the wording, design-system Q3). Financial terms and their one-line explanations are in `docs/glossary.md`, each with its source in the il-finance rule base.
 
 ---
 
@@ -24,7 +24,7 @@ Status: **draft for founder review.** Financial terms and their one-line explana
 
 | Element | Hebrew |
 |---|---|
-| Site name | `{שם האתר}` (not chosen yet) |
+| Site name | מקור |
 | Search button (screen-reader name) | חיפוש |
 | Search field placeholder (PC header) | הדביקו שם של מוצר, מסלול או מונח |
 | Menu button (screen-reader name) | תפריט |

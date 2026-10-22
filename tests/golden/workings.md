@@ -134,16 +134,16 @@ For each difference: what the method says, what the rule base says (with its sou
 - Q13 (S40): every wrapper's terms from S01, S05, S06, S08, S11, S14 and S20.
 - Q14 (S41): π 3%, as S11.
 - Q17:
-  - S46: r_g 6%, π 2.5%; P-04 set as a provisional default.
+  - S46: r_g 6%, π 2.5%; P-04 from data/parameters.
   - S49: cash held as S11, bonds as S15.
   - S50: two brokers built from S44's bank A.
 
 **Closed 2026-10-23 as technical choices Claude makes (the founder deferred these):**
-- P-04 (classification fit) set as a provisional default in `tests/golden/provisional-parameters/classification-fit.json`.
+- P-04 (classification fit) in `data/parameters/classification-fit.json`.
 - Q16: S44 and S45 assumptions kept as stated in Q16.
 - Q18 (ii) and (iii): insurance charged on all deposits, as entered; salary constant.
 - Q18 (i): the S27 title "credit cap not binding" is wrong (the cap binds). That is a text fix for the scenario author; the numbers already follow the rule.
-- P-02, P-03 and P-06 set as provisional defaults in `tests/golden/provisional-parameters/`, with the reasons in `docs/parameters-rationale.md`.
+- P-02, P-03 and P-06 in `data/parameters/`, with the reasons in `docs/parameters-rationale.md`.
 
 **Closed 2026-10-22 as under the founder's 0.5% line (current choice kept):**
 - Q1: paying each month a month later moves S14 by 0.23% and S39 by 0.28%.
@@ -970,7 +970,7 @@ Status: computed.
 | 4 | Pension extra deposit: existing 6% × 144,000 = 8,640 > cap 8,148 → no credit on new money; exit blocked (G-03) and locked to 60: listed, not ranked | [TXP-02](<https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf>), [TXP-14](<https://he.wikisource.org/wiki/פקודת_מס_הכנסה>) | listed |
 | 5 | Tie test between the two ranked rows with θ = 0.5% (P-01) | method F-80 | gap 9.20% → not a tie (θ = 0.5%) |
 | 6 | Deciding formula: the larger of the gaps in fee drag (V without fees − V) and in tax at exit, brokerage minus kupat gemel lehashkaa, real | method F-80 | fee drag gap 58,000.39; tax gap -9,164.67 → fee drag |
-| 7 | Sensitivity: move each guess to the provisional P-02 bounds (bisection if the winner changes) | method F-81; tests/golden/provisional-parameters/sensitivity-bounds.json | no change flips the result within the bounds |
+| 7 | Sensitivity: move each guess to the P-02 bounds (bisection if the winner changes) | method F-81; data/parameters/sensitivity-bounds.json | no change flips the result within the bounds |
 
 | Guess | Base | At the bounds |
 |---|---|---|
@@ -984,7 +984,7 @@ Status: computed.
 | kgl direct expenses (× rate) | 1 | no flip at 0.5; no flip at 2 |
 
 
-**Expected (as written to scenarios.md):** Computed: brokerage (S14 ETF) real V_T/I_T = 572,640.51, nominal 938,338.16; kupat gemel lehashkaa (S20 fees) real 630,640.90 with 25% real (label "secondary source"), 629,850.66 with 15% nominal. Pension: listed, not ranked (locked, G-03; no credit on new money since 6% × 144,000 > 8,148). Ranking: 1. kupat gemel lehashkaa, 2. brokerage; gap 9.20% → not a tie (θ = 0.5%). Deciding formula: fee drag (the brokerage pays 113,833.04 in fees against 55,832.65, real; tax at exit 31,048.97 against 40,213.63). Hishtalmut: listed, not ranked (employee, product D15). Sensitivity (provisional P-02 bounds): no change flips the result within the bounds.
+**Expected (as written to scenarios.md):** Computed: brokerage (S14 ETF) real V_T/I_T = 572,640.51, nominal 938,338.16; kupat gemel lehashkaa (S20 fees) real 630,640.90 with 25% real (label "secondary source"), 629,850.66 with 15% nominal. Pension: listed, not ranked (locked, G-03; no credit on new money since 6% × 144,000 > 8,148). Ranking: 1. kupat gemel lehashkaa, 2. brokerage; gap 9.20% → not a tie (θ = 0.5%). Deciding formula: fee drag (the brokerage pays 113,833.04 in fees against 55,832.65, real; tax at exit 31,048.97 against 40,213.63). Hishtalmut: listed, not ranked (employee, product D15). Sensitivity (P-02 bounds): no change flips the result within the bounds.
 
 ### S40 Wrapper mode: the founder's apartment case
 
@@ -1107,10 +1107,10 @@ Status: computed.
 | 2 | Balance fee 0.74% (cap 2%); direct expenses 0.11% inside the return | [KH-22](<https://www.nevo.co.il/law_html/law01/500_714.htm>), [PF-10](<https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(הוצאות_ישירות_בשל_ביצוע_עסקאות)>) | — |
 | 3 | Real values with all fees, none, and each fee removed | method F-61 (output definition) | V(F) 300,266.26, V(∅) 320,931.05 |
 | 4 | Regulator reference: Gemel-Net study-fund track averages 0.34–0.74 (units not confirmed) | [KH-23](<https://as-invest.co.il/media/khpp32k5/אלטשולר-שחם-השתלמות-תקנון-מהדורת-שינויים-דצמבר-2024.pdf>) | reference |
-| 5 | Verdicts with the provisional P-03 thresholds: negotiate if the cost is at least 1,000.00 and a lower reference exists (balance fee: Gemel-Net averages go down to 0.34%); direct expenses have no collected reference (G-14) | method F-62; tests/golden/provisional-parameters/fee-verdict-thresholds.json | balance fee: worth negotiating; direct expenses: not worth the effort |
+| 5 | Verdicts with the P-03 thresholds: negotiate if the cost is at least 1,000.00 and a lower reference exists (balance fee: Gemel-Net averages go down to 0.34%); direct expenses have no collected reference (G-14) | method F-62; data/parameters/fee-verdict-thresholds.json | balance fee: worth negotiating; direct expenses: not worth the effort |
 
 
-**Expected (as written to scenarios.md):** Real V_T/I_T with fees 300,266.26; total fee drag 20,664.79; cost of balance fee 0.74% = 17,901.59; cost of direct expenses 0.11% = 2,587.05; interaction remainder 176.15; value of cutting the balance fee to 0.34% = 9,530.01 (all real NIS over 10 years). Verdicts (provisional P-03): balance fee "worth negotiating" (reference 0.34%, KH-23); direct expenses "not worth the effort" (no reference collected). Subject to Q20.
+**Expected (as written to scenarios.md):** Real V_T/I_T with fees 300,266.26; total fee drag 20,664.79; cost of balance fee 0.74% = 17,901.59; cost of direct expenses 0.11% = 2,587.05; interaction remainder 176.15; value of cutting the balance fee to 0.34% = 9,530.01 (all real NIS over 10 years). Verdicts (P-03): balance fee "worth negotiating" (reference 0.34%, KH-23); direct expenses "not worth the effort" (no reference collected). Subject to Q20.
 
 ### S43 Fee materiality on a brokerage plan
 
@@ -1181,14 +1181,14 @@ Status: computed.
 
 | Step | What | Rule | Value |
 |---|---|---|---|
-| 0 | Filled-in inputs | — | **filled in:** r_g 6%, π 2.5% (as the long-term example); fit table P-04 set as a provisional default |
+| 0 | Filled-in inputs | — | **filled in:** r_g 6%, π 2.5% (as the long-term example); fit table P-04 |
 | 1 | Consolidation: annuity fund to annuity fund is a permitted transfer route; barred only in the reg. 4 cases | [PF-17](<https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)>) | allowed |
 | 2 | Fee cost over 15 years, real: V(no fee) − V(fee), gross (exit blocked for annuity funds) | method F-61; [PF-02](<https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)>) | see result |
-| 3 | Fit marks from the provisional table | method F-70; tests/golden/provisional-parameters/classification-fit.json | {'מניות': 'fits', 'כללי': 'fits'} |
+| 3 | Fit marks from the P-04 table | method F-70; data/parameters/classification-fit.json | {'מניות': 'fits', 'כללי': 'fits'} |
 | 4 | Child-savings default check | (CS OQ10) | blocked |
 
 
-**Expected (as written to scenarios.md):** Consolidation: allowed (annuity fund to annuity fund, PF-17); barred only if a loan, attachment or started annuity applies. Fee cost over 15 years (real): 0.9% on 80,000 = 16,723.25; 0.6% on 40,000 = 5,698.23; moving the 80,000 into the 0.6% fund is worth 5,326.80. Fit marks (provisional table): "כללי" fits, "מניות" fits. Child-savings default check blocked (CS OQ10). Filled in: r_g 6%, π 2.5%.
+**Expected (as written to scenarios.md):** Consolidation: allowed (annuity fund to annuity fund, PF-17); barred only if a loan, attachment or started annuity applies. Fee cost over 15 years (real): 0.9% on 80,000 = 16,723.25; 0.6% on 40,000 = 5,698.23; moving the 80,000 into the 0.6% fund is worth 5,326.80. Fit marks (P-04 table): "כללי" fits, "מניות" fits. Child-savings default check blocked (CS OQ10). Filled in: r_g 6%, π 2.5%.
 
 ### S47 Illustrative timeline for guide pages
 

@@ -86,9 +86,8 @@ def load_parameter(pid):
 THETA = load_parameter('tie-threshold')  # P-01, percent
 
 
-# Founder-signed parameters live in data/parameters/; Claude's provisional
-# defaults wait in tests/golden/provisional-parameters/ until he approves them.
-PARAMETER_DIRS = ['data/parameters', 'tests/golden/provisional-parameters']
+# Site parameters live in data/parameters/ (signed off by the founder).
+PARAMETER_DIRS = ['data/parameters']
 
 
 def param_src(pid):
@@ -1358,11 +1357,11 @@ def s39_s48():
         f'| 4 | Pension extra deposit: existing 6% × 144,000 = 8,640 > cap 8,148 → no credit on new money; exit blocked (G-03) and locked to 60: listed, not ranked | {L("TXP-02", "TXP-14")} | listed |\n'
         f'| 5 | Tie test between the two ranked rows with θ = {THETA}% (P-01) | method F-80 | {tie_text(ek["realV25"], out["real_V"])} |\n'
         f'| 6 | Deciding formula: the larger of the gaps in fee drag (V without fees − V) and in tax at exit, brokerage minus kupat gemel lehashkaa, real | method F-80 | fee drag gap {f2(factors["fee drag"])}; tax gap {f2(factors["tax at exit"])} → {decider} |\n'
-        f'| 7 | Sensitivity: move each guess to the provisional P-02 bounds (bisection if the winner changes) | method F-81; {param_src("sensitivity-bounds")} | {sens_text} |\n\n'
+        f'| 7 | Sensitivity: move each guess to the P-02 bounds (bisection if the winner changes) | method F-81; {param_src("sensitivity-bounds")} | {sens_text} |\n\n'
         + table(['Guess', 'Base', 'At the bounds'], sens_rows) + '\n'
     )
     section('S39', "Wrapper mode: the founder's ETF-vs-provident case", 'computed', body,
-            f'Computed: brokerage (S14 ETF) real V_T/I_T = {f2(out["real_V"])}, nominal {f2(out["V"])}; kupat gemel lehashkaa (S20 fees) real {f2(ek["realV25"])} with 25% real (label "secondary source"), {f2(ek["realV15"])} with 15% nominal. Pension: listed, not ranked (locked, G-03; no credit on new money since 6% × 144,000 > 8,148). Ranking: 1. kupat gemel lehashkaa, 2. brokerage; {tie_text(ek["realV25"], out["real_V"])}. Deciding formula: {decider} (the brokerage pays {f2(drag_b)} in fees against {f2(drag_k)}, real; tax at exit {f2(tax_b)} against {f2(tax_k)}). Hishtalmut: listed, not ranked (employee, product D15). Sensitivity (provisional P-02 bounds): {sens_text}.')
+            f'Computed: brokerage (S14 ETF) real V_T/I_T = {f2(out["real_V"])}, nominal {f2(out["V"])}; kupat gemel lehashkaa (S20 fees) real {f2(ek["realV25"])} with 25% real (label "secondary source"), {f2(ek["realV15"])} with 15% nominal. Pension: listed, not ranked (locked, G-03; no credit on new money since 6% × 144,000 > 8,148). Ranking: 1. kupat gemel lehashkaa, 2. brokerage; {tie_text(ek["realV25"], out["real_V"])}. Deciding formula: {decider} (the brokerage pays {f2(drag_b)} in fees against {f2(drag_k)}, real; tax at exit {f2(tax_b)} against {f2(tax_k)}). Hishtalmut: listed, not ranked (employee, product D15). Sensitivity (P-02 bounds): {sens_text}.')
     body = (
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
         f'| 1 | Re-run S39 brokerage with the TXS-09 rate set to 30% (test only) | {L("TXS-09")} | real V_T {f2(out30["real_V"])} |\n'
@@ -1412,9 +1411,9 @@ def s42():
         return 'not worth the effort'
     v_bal = verdict(c_bal, True)
     v_dir = verdict(c_dir, False)
-    body += (f'| 5 | Verdicts with the provisional P-03 thresholds: negotiate if the cost is at least {f2(neg)} and a lower reference exists (balance fee: Gemel-Net averages go down to 0.34%); direct expenses have no collected reference (G-14) | method F-62; {param_src("fee-verdict-thresholds")} | balance fee: {v_bal}; direct expenses: {v_dir} |\n')
+    body += (f'| 5 | Verdicts with the P-03 thresholds: negotiate if the cost is at least {f2(neg)} and a lower reference exists (balance fee: Gemel-Net averages go down to 0.34%); direct expenses have no collected reference (G-14) | method F-62; {param_src("fee-verdict-thresholds")} | balance fee: {v_bal}; direct expenses: {v_dir} |\n')
     section('S42', "Fee materiality on the founder's hishtalmut", 'computed', body,
-            f'Real V_T/I_T with fees {f2(vF)}; total fee drag {f2(total)}; cost of balance fee 0.74% = {f2(c_bal)}; cost of direct expenses 0.11% = {f2(c_dir)}; interaction remainder {f2(rem)}; value of cutting the balance fee to 0.34% = {f2(red)} (all real NIS over 10 years). Verdicts (provisional P-03): balance fee "{v_bal}" (reference 0.34%, KH-23); direct expenses "{v_dir}" (no reference collected). Subject to Q20.')
+            f'Real V_T/I_T with fees {f2(vF)}; total fee drag {f2(total)}; cost of balance fee 0.74% = {f2(c_bal)}; cost of direct expenses 0.11% = {f2(c_dir)}; interaction remainder {f2(rem)}; value of cutting the balance fee to 0.34% = {f2(red)} (all real NIS over 10 years). Verdicts (P-03): balance fee "{v_bal}" (reference 0.34%, KH-23); direct expenses "{v_dir}" (no reference collected). Subject to Q20.')
 
 
 def s43():
@@ -1767,14 +1766,14 @@ def s46_fill():
             marks[row['classification']] = ('fits' if 15 >= row['horizon_min_years']['value'] and 30 >= row['max_fall_pct']['value'] else 'does not fit')
     body = (
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
-        f'| 0 | Filled-in inputs | — | {filled("r_g 6%, π 2.5% (as the long-term example); fit table P-04 set as a provisional default")} |\n'
+        f'| 0 | Filled-in inputs | — | {filled("r_g 6%, π 2.5% (as the long-term example); fit table P-04")} |\n'
         f'| 1 | Consolidation: annuity fund to annuity fund is a permitted transfer route; barred only in the reg. 4 cases | {L("PF-17")} | allowed |\n'
         f'| 2 | Fee cost over 15 years, real: V(no fee) − V(fee), gross (exit blocked for annuity funds) | method F-61; {L("PF-02")} | see result |\n'
-        f'| 3 | Fit marks from the provisional table | method F-70; {param_src("classification-fit")} | {marks or "not set"} |\n'
+        f'| 3 | Fit marks from the P-04 table | method F-70; {param_src("classification-fit")} | {marks or "not set"} |\n'
         '| 4 | Child-savings default check | (CS OQ10) | blocked |\n'
     )
     section('S46', 'Holdings review: parental kupot gemel', 'computed', body,
-            f'Consolidation: allowed (annuity fund to annuity fund, PF-17); barred only if a loan, attachment or started annuity applies. Fee cost over 15 years (real): 0.9% on 80,000 = {f2(a0 - a_fee)}; 0.6% on 40,000 = {f2(b0 - b_fee)}; moving the 80,000 into the 0.6% fund is worth {f2(a_moved - a_fee)}. Fit marks (provisional table): "כללי" {marks.get("כללי", "no rule")}, "מניות" {marks.get("מניות", "no rule")}. Child-savings default check blocked (CS OQ10). Filled in: r_g 6%, π 2.5%.')
+            f'Consolidation: allowed (annuity fund to annuity fund, PF-17); barred only if a loan, attachment or started annuity applies. Fee cost over 15 years (real): 0.9% on 80,000 = {f2(a0 - a_fee)}; 0.6% on 40,000 = {f2(b0 - b_fee)}; moving the 80,000 into the 0.6% fund is worth {f2(a_moved - a_fee)}. Fit marks (P-04 table): "כללי" {marks.get("כללי", "no rule")}, "מניות" {marks.get("מניות", "no rule")}. Child-savings default check blocked (CS OQ10). Filled in: r_g 6%, π 2.5%.')
 
 
 def s47_fill():

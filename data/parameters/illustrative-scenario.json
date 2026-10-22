@@ -1,0 +1,209 @@
+{
+  "id": "illustrative-scenario",
+  "method_id": "P-05",
+  "inputs": {
+    "amount_now": {
+      "value": 10000,
+      "unit": "nis",
+      "state": "sourced",
+      "source": {
+        "url": "docs/parameters-rationale.md#illustrative-scenario",
+        "title": "Founder's choice, made by Claude at his request: illustrative scenario",
+        "publisher": "founder",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": "2026-10-23",
+      "effective_to": null,
+      "update_rule": "founder",
+      "notes": ""
+    },
+    "monthly_deposit": {
+      "value": 500,
+      "unit": "nis_per_month",
+      "state": "sourced",
+      "source": {
+        "url": "docs/parameters-rationale.md#illustrative-scenario",
+        "title": "Founder's choice, made by Claude at his request: illustrative scenario",
+        "publisher": "founder",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": "2026-10-23",
+      "effective_to": null,
+      "update_rule": "founder",
+      "notes": ""
+    },
+    "horizon_years": {
+      "value": 10,
+      "unit": "years",
+      "state": "sourced",
+      "source": {
+        "url": "docs/parameters-rationale.md#illustrative-scenario",
+        "title": "Founder's choice, made by Claude at his request: illustrative scenario",
+        "publisher": "founder",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": "2026-10-23",
+      "effective_to": null,
+      "update_rule": "founder",
+      "notes": ""
+    },
+    "A-01": {
+      "value": 5,
+      "unit": "pct_per_year",
+      "state": "sourced",
+      "source": {
+        "url": "docs/parameters-rationale.md#illustrative-scenario",
+        "title": "Founder's choice, made by Claude at his request: illustrative scenario",
+        "publisher": "founder",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": "2026-10-23",
+      "effective_to": null,
+      "update_rule": "founder",
+      "notes": "gross yearly return for market products (funds, ETFs, provident, hishtalmut, pension); a starting value, not a forecast (D9)"
+    },
+    "A-02": {
+      "value": 2,
+      "unit": "pct_per_year",
+      "state": "sourced",
+      "source": {
+        "url": "docs/parameters-rationale.md#illustrative-scenario",
+        "title": "Founder's choice, made by Claude at his request: illustrative scenario",
+        "publisher": "founder",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": "2026-10-23",
+      "effective_to": null,
+      "update_rule": "founder",
+      "notes": "yearly inflation"
+    },
+    "cash_rate": {
+      "value": 3.5,
+      "unit": "pct_per_year",
+      "state": "sourced",
+      "source": {
+        "url": "docs/parameters-rationale.md#illustrative-scenario",
+        "title": "Founder's choice, made by Claude at his request: illustrative scenario",
+        "publisher": "founder",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": "2026-10-23",
+      "effective_to": null,
+      "update_rule": "founder",
+      "notes": "yearly rate for cash-like products (deposit, money-market fund, makam, government bond, current account); stands in for the sourced series A-20 to A-25 until they arrive in release 2"
+    }
+  },
+  "sliders": {
+    "monthly_deposit": {
+      "min": {
+        "value": 0,
+        "unit": "nis_per_month",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#illustrative-scenario",
+          "title": "Founder's choice, made by Claude at his request: illustrative scenario",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      },
+      "max": {
+        "value": 10000,
+        "unit": "nis_per_month",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#illustrative-scenario",
+          "title": "Founder's choice, made by Claude at his request: illustrative scenario",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      },
+      "step": {
+        "value": 100,
+        "unit": "nis_per_month",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#illustrative-scenario",
+          "title": "Founder's choice, made by Claude at his request: illustrative scenario",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      }
+    },
+    "horizon_years": {
+      "min": {
+        "value": 1,
+        "unit": "years",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#illustrative-scenario",
+          "title": "Founder's choice, made by Claude at his request: illustrative scenario",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      },
+      "max": {
+        "value": 40,
+        "unit": "years",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#illustrative-scenario",
+          "title": "Founder's choice, made by Claude at his request: illustrative scenario",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      },
+      "step": {
+        "value": 1,
+        "unit": "years",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#illustrative-scenario",
+          "title": "Founder's choice, made by Claude at his request: illustrative scenario",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      }
+    }
+  },
+  "rationale": "The graph opens on 10,000 NIS today, 500 NIS a month, for 10 years, with 5% a year for market products, 3.5% for cash-like products and 2% inflation. These are round, middle-of-the-road starting values for someone starting to save, not a forecast; change any of them on the page. They are the values the test scenarios use, so every guide graph is checked. The sliders run from 0 to 10,000 NIS a month and from 1 to 40 years; larger values can be typed.",
+  "chosen_by": "Claude, at the founder's request (2026-10-23: \"do whatever you think fits\")",
+  "signed_off_by": "founder",
+  "signed_off_on": "2026-10-23",
+  "shown_as": "site parameter"
+}

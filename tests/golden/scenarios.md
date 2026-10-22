@@ -1,6 +1,6 @@
 # Golden scenarios: inputs only
 
-Written 2026-10-22 by the financial modeler. Each scenario fixes every input the engine needs and names the formulas in `docs/method.md` it exercises. The founder adds the expected results from his own spreadsheet in the "Expected" block of each scenario; until then the block is empty. Tolerance is P-06.
+Written 2026-10-22 by the financial modeler. Each scenario fixes every input the engine needs and names the formulas in `docs/method.md` it exercises. The founder adds the expected results from his own spreadsheet in the "Expected" block of each scenario. **2026-10-23:** the founder asked Claude to settle this; the independent check (`expected_calc.py`, its lines under each "Expected" block) stands as the expected result until a spreadsheet replaces it. Tolerance is P-06.
 
 How to read a scenario:
 
@@ -305,7 +305,7 @@ Exercises F-80 ranking and ties (P-01), F-81 sensitivity (P-02), B1 to B3, dimen
 - Market: r_g 6% entered; π 2.5% entered.
 - Wrappers: brokerage with S14's ETF; kupat gemel lehashkaa as S20; hishtalmut own-money as S23 (clock from month 0; exit after 6 years is lawful); pension extra deposit as S27 (listed, not ranked: locked and G-03).
 - Expected: _(founder)_: ranking, the deciding formula per F-80, tie status, the sensitivity flips for r_g, π and the balance fee within the bounds the founder sets in P-02.
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S39): Computed: brokerage (S14 ETF) real V_T/I_T = 572,640.51, nominal 938,338.16; kupat gemel lehashkaa (S20 fees) real 630,640.90 with 25% real (label "secondary source"), 629,850.66 with 15% nominal. Pension: listed, not ranked (locked, G-03; no credit on new money since 6% × 144,000 > 8,148). Ranking: 1. kupat gemel lehashkaa, 2. brokerage; gap 9.20% → not a tie (θ = 0.5%). Deciding formula: fee drag (the brokerage pays 113,833.04 in fees against 55,832.65, real; tax at exit 31,048.97 against 40,213.63). Hishtalmut: listed, not ranked (employee, product D15). Sensitivity (provisional P-02 bounds): no change flips the result within the bounds.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S39): Computed: brokerage (S14 ETF) real V_T/I_T = 572,640.51, nominal 938,338.16; kupat gemel lehashkaa (S20 fees) real 630,640.90 with 25% real (label "secondary source"), 629,850.66 with 15% nominal. Pension: listed, not ranked (locked, G-03; no credit on new money since 6% × 144,000 > 8,148). Ranking: 1. kupat gemel lehashkaa, 2. brokerage; gap 9.20% → not a tie (θ = 0.5%). Deciding formula: fee drag (the brokerage pays 113,833.04 in fees against 55,832.65, real; tax at exit 31,048.97 against 40,213.63). Hishtalmut: listed, not ranked (employee, product D15). Sensitivity (P-02 bounds): no change flips the result within the bounds.
 
 ### S40 Wrapper mode: the founder's apartment case
 Exercises eligibility filters (section 8, D13 constraints), B3, and the coverage line (F-83, product D17).
@@ -326,7 +326,7 @@ Exercises F-61, F-62 (P-03), regulator reference (KH-23 averages), caps (KH-22).
 - Holding: balance 120,000; own 300/month; employer 900/month; balance fee 0.74%; direct expenses 0.11%; horizon 10 years; r_g 6%; π 2.5%.
 - Reduction tested: fee to 0.34%.
 - Expected: _(founder)_: cost of each fee line, interaction remainder, value of the reduction, verdict under the founder's thresholds.
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S42): Real V_T/I_T with fees 300,266.26; total fee drag 20,664.79; cost of balance fee 0.74% = 17,901.59; cost of direct expenses 0.11% = 2,587.05; interaction remainder 176.15; value of cutting the balance fee to 0.34% = 9,530.01 (all real NIS over 10 years). Verdicts (provisional P-03): balance fee "worth negotiating" (reference 0.34%, KH-23); direct expenses "not worth the effort" (no reference collected). Subject to Q20.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S42): Real V_T/I_T with fees 300,266.26; total fee drag 20,664.79; cost of balance fee 0.74% = 17,901.59; cost of direct expenses 0.11% = 2,587.05; interaction remainder 176.15; value of cutting the balance fee to 0.34% = 9,530.01 (all real NIS over 10 years). Verdicts (P-03): balance fee "worth negotiating" (reference 0.34%, KH-23); direct expenses "not worth the effort" (no reference collected). Subject to Q20.
 
 ### S43 Fee materiality on a brokerage plan
 Exercises F-61 across trade, custody, spread, fund fees and FX.
@@ -352,7 +352,7 @@ Exercises D4 entered level in F-63.
 Exercises F-70 (P-04), F-72 (PF-17, PF-18), hand-off to F-61.
 - Holdings: two provident funds for annuity at different managers, balances 80,000 and 40,000, fees 0.9%/0% and 0.6%/0%, classifications "כללי" and "מניות"; a child-savings plan; horizon 15 years; loss filter 30%.
 - Expected: _(founder)_: fit marks, consolidation answer with rule IDs, the fee figures, the child-savings default check flagged (CS OQ10).
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S46): Consolidation: allowed (annuity fund to annuity fund, PF-17); barred only if a loan, attachment or started annuity applies. Fee cost over 15 years (real): 0.9% on 80,000 = 16,723.25; 0.6% on 40,000 = 5,698.23; moving the 80,000 into the 0.6% fund is worth 5,326.80. Fit marks (provisional table): "כללי" fits, "מניות" fits. Child-savings default check blocked (CS OQ10). Filled in: r_g 6%, π 2.5%.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S46): Consolidation: allowed (annuity fund to annuity fund, PF-17); barred only if a loan, attachment or started annuity applies. Fee cost over 15 years (real): 0.9% on 80,000 = 16,723.25; 0.6% on 40,000 = 5,698.23; moving the 80,000 into the 0.6% fund is worth 5,326.80. Fit marks (P-04 table): "כללי" fits, "מניות" fits. Child-savings default check blocked (CS OQ10). Filled in: r_g 6%, π 2.5%.
 
 ### S47 Illustrative timeline for guide pages
 Exercises F-67 with P-05.
