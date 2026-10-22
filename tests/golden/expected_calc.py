@@ -86,9 +86,22 @@ def load_parameter(pid):
 THETA = load_parameter('tie-threshold')  # P-01, percent
 
 
+# Founder-signed parameters live in data/parameters/; Claude's provisional
+# defaults wait in tests/golden/provisional-parameters/ until he approves them.
+PARAMETER_DIRS = ['data/parameters', 'tests/golden/provisional-parameters']
+
+
+def param_src(pid):
+    for d in PARAMETER_DIRS:
+        rel = f'{d}/{pid}.json'
+        if os.path.exists(os.path.join(ROOT, rel)):
+            return rel
+    return None
+
+
 def load_parameter_file(pid):
-    path = os.path.join(ROOT, 'data', 'parameters', pid + '.json')
-    return json.load(open(path, encoding='utf-8')) if os.path.exists(path) else None
+    rel = param_src(pid)
+    return json.load(open(os.path.join(ROOT, rel), encoding='utf-8')) if rel else None
 
 
 def tie_text(v1, v2):
@@ -1345,7 +1358,7 @@ def s39_s48():
         f'| 4 | Pension extra deposit: existing 6% × 144,000 = 8,640 > cap 8,148 → no credit on new money; exit blocked (G-03) and locked to 60: listed, not ranked | {L("TXP-02", "TXP-14")} | listed |\n'
         f'| 5 | Tie test between the two ranked rows with θ = {THETA}% (P-01) | method F-80 | {tie_text(ek["realV25"], out["real_V"])} |\n'
         f'| 6 | Deciding formula: the larger of the gaps in fee drag (V without fees − V) and in tax at exit, brokerage minus kupat gemel lehashkaa, real | method F-80 | fee drag gap {f2(factors["fee drag"])}; tax gap {f2(factors["tax at exit"])} → {decider} |\n'
-        f'| 7 | Sensitivity: move each guess to the provisional P-02 bounds (bisection if the winner changes) | method F-81; data/parameters/sensitivity-bounds.json | {sens_text} |\n\n'
+        f'| 7 | Sensitivity: move each guess to the provisional P-02 bounds (bisection if the winner changes) | method F-81; {param_src("sensitivity-bounds")} | {sens_text} |\n\n'
         + table(['Guess', 'Base', 'At the bounds'], sens_rows) + '\n'
     )
     section('S39', "Wrapper mode: the founder's ETF-vs-provident case", 'computed', body,
@@ -1399,7 +1412,7 @@ def s42():
         return 'not worth the effort'
     v_bal = verdict(c_bal, True)
     v_dir = verdict(c_dir, False)
-    body += (f'| 5 | Verdicts with the provisional P-03 thresholds: negotiate if the cost is at least {f2(neg)} and a lower reference exists (balance fee: Gemel-Net averages go down to 0.34%); direct expenses have no collected reference (G-14) | method F-62; data/parameters/fee-verdict-thresholds.json | balance fee: {v_bal}; direct expenses: {v_dir} |\n')
+    body += (f'| 5 | Verdicts with the provisional P-03 thresholds: negotiate if the cost is at least {f2(neg)} and a lower reference exists (balance fee: Gemel-Net averages go down to 0.34%); direct expenses have no collected reference (G-14) | method F-62; {param_src("fee-verdict-thresholds")} | balance fee: {v_bal}; direct expenses: {v_dir} |\n')
     section('S42', "Fee materiality on the founder's hishtalmut", 'computed', body,
             f'Real V_T/I_T with fees {f2(vF)}; total fee drag {f2(total)}; cost of balance fee 0.74% = {f2(c_bal)}; cost of direct expenses 0.11% = {f2(c_dir)}; interaction remainder {f2(rem)}; value of cutting the balance fee to 0.34% = {f2(red)} (all real NIS over 10 years). Verdicts (provisional P-03): balance fee "{v_bal}" (reference 0.34%, KH-23); direct expenses "{v_dir}" (no reference collected). Subject to Q20.')
 
@@ -1737,7 +1750,7 @@ def s46_fill():
         f'| 0 | Filled-in inputs | — | {filled("r_g 6%, π 2.5% (as the long-term example); fit table P-04 set as a provisional default")} |\n'
         f'| 1 | Consolidation: annuity fund to annuity fund is a permitted transfer route; barred only in the reg. 4 cases | {L("PF-17")} | allowed |\n'
         f'| 2 | Fee cost over 15 years, real: V(no fee) − V(fee), gross (exit blocked for annuity funds) | method F-61; {L("PF-02")} | see result |\n'
-        f'| 3 | Fit marks from the provisional table | method F-70; data/parameters/classification-fit.json | {marks or "not set"} |\n'
+        f'| 3 | Fit marks from the provisional table | method F-70; {param_src("classification-fit")} | {marks or "not set"} |\n'
         '| 4 | Child-savings default check | (CS OQ10) | blocked |\n'
     )
     section('S46', 'Holdings review: parental kupot gemel', 'computed', body,
