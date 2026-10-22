@@ -54,7 +54,7 @@ Deposits: an employee's own pension deposit earns a **35% tax credit** (`זיכ�
 
 ### TXP-06 s.47(b1) deduction for a beneficiary member (the self-employed case)
 - Rule: A beneficiary member may deduct payments to a provident fund for annuity up to (1) 11% of "income for a self-employed member" (`הכנסה לעמית עצמאי`: taxable income up to the s.47(a)(1) amount, less insured income), and (2) for amounts not deducted under (1), 7% of "additional income" (`הכנסה נוספת`), plus up to 4% more for amounts above 12% of it. The guide calls these the first and second tiers (`רובד ראשון`, `רובד שני`).
-- Conditions / exceptions: Additional income is the lower of (1) taxable income that is not insured income, up to the s.47(a)(1) amount, and (2) taxable income up to 2.5 times that amount, less the higher of insured income and that amount. In the second tier, the deposits that made the person a beneficiary member (up to 16% of the average wage) are not deducted again (s.47(b1)(2) and the guide's examples). Amounts deducted under s.47(b) cannot be deducted under (b1) and vice versa (s.47(b2)). A beneficiary member can also deduct for a child aged 18 or over. The guide says deposits cannot be moved between spouses for beneficiary-member purposes.
+- Conditions / exceptions: Additional income is the lower of (1) taxable income that is not insured income, up to the s.47(a)(1) amount, and (2) taxable income up to 2.5 times that amount, less the higher of insured income and that amount. In the second tier, the deposits that made the person a beneficiary member (up to 16% of the average wage) are not deducted again (s.47(b1)(2) and the guide's examples). Amounts deducted under s.47(b) cannot be deducted under (b1) and vice versa (s.47(b2)). A beneficiary member can also deduct for a child aged 18 or over. The guide says deposits cannot be moved between spouses for beneficiary-member purposes. **[2026-10-22 browser pass 3: the guide's worked example of the split is TXP-31.]**
 - Figures: 11%; 7% (+4%); booklet 2026: "תקרת הכנסה לעמית עצמאי 47(א)" 9,700/month; "תקרת הכנסה נוספת 47(א)(5)" 24,250/month (= 2.5 × 9,700). Frozen 2024 to 2027.
 - Source: [Ordinance](<https://he.wikisource.org/wiki/פקודת_מס_הכנסה>) s.47(a), (b1), (b2) · checked 2026-10-22 · primary (mirror). [Booklet 2026](<https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf>) p.12 · primary. [Guide 2025](<https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf>) printed pp.60-62 · primary.
 - Dimensions: `tax-at-deposit`, `deposit-ceiling`, `eligibility`
@@ -251,6 +251,17 @@ Deposits: an employee's own pension deposit earns a **35% tax credit** (`זיכ�
 - Source: [Tax Authority, form 161 (accessible .docx), part B](<https://www.gov.il/BlobFolder/service/notice-of-retirement/he/161-2023.%20docx.docx>), via the [service page](https://www.gov.il/he/service/notice-of-retirement) · checked 2026-10-22 · primary
 - Dimensions: `tax-at-exit`, `annuity-vs-lump-sum`, `transfer-switch-process`
 - Likely to change: no.
+
+### TXP-31 Beneficiary member with income that is not work income: how one year's deposits split between deduction and credit
+- Rule: The guide works this through for a person whose taxable income is not from work (240,000 NIS) and who deposits 40,000 NIS to a provident fund for annuity as a self-employed member. It is a beneficiary member (TXP-03).
+  - First tier: 11% of "income for a self-employed member" (taxable income up to 116,400, less insured income) is deducted: 11% × 116,400.
+  - Second tier: amounts deducted in the first tier, and the deposits that made the person a beneficiary member, are left out. The base is the year's deposits minus the beneficiary threshold: 40,000 − 24,069 = 15,931 (2025 threshold). "Additional income" is 116,400. Of that base, up to 7% of additional income is deducted, plus the part above 12% of additional income, up to 4% more. In the example 15,931 / 116,400 = 13.7%, so 7% + 1.7% = 8.7% × 116,400 = 10,127.
+  - Total deduction 12,804 + 10,127 = 22,931. The rest of the deposit, 40,000 − 22,931 = 17,069, "תילקח בחשבון לחישוב הזיכוי": it is credited under s.45A(e) (TXP-04).
+- Conditions / exceptions: The guide prints the first-tier figure as "12,408", but 11% × 116,400 = 12,804, the figure its own total uses. The 13.7% is rounded in the guide; computed exactly, the second tier is 8,148 + (15,931 − 13,968) = 10,111. For 2026 the threshold is 26,436 (TXP-03). The guide also says the online system computes both this route and the ordinary one (track A) and the person may be better off under track A (TXP-03).
+- Figures: 11%, 7%, 4%, 12%; 116,400 (frozen 2024-2027); threshold 24,069 (2025) / 26,436 (2026).
+- Source: [Tax Authority, "דע זכויותיך וחובותיך 2025"](https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf), printed pp.61-62 (PDF pp.63-64), "הניכוי לפי מסלול ב' ל'עמית מוטב'", example ב "הכנסה שאינה הכנסת עבודה בלבד" · checked 2026-10-22 · primary (page image; downloaded and read, browser pass 3)
+- Dimensions: `tax-at-deposit`, `deposit-ceiling`, `eligibility`
+- Likely to change: yes (threshold yearly with the average wage; caps frozen to 2027).
 
 ## Terms
 

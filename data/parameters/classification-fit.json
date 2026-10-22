@@ -1,0 +1,112 @@
+{
+  "id": "classification-fit",
+  "method_id": "P-04",
+  "table": [
+    {
+      "classification": "מניות",
+      "horizon_min_years": {
+        "value": 10,
+        "unit": "years",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md",
+          "title": "Provisional default set by Claude (founder deferred)",
+          "publisher": "Claude, for the founder",
+          "strength": "entered"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "provisional"
+      },
+      "horizon_max_years": {
+        "value": null,
+        "unit": "years",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md",
+          "title": "Provisional default set by Claude (founder deferred)",
+          "publisher": "Claude, for the founder",
+          "strength": "entered"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "provisional"
+      },
+      "max_fall_pct": {
+        "value": 30,
+        "unit": "pct",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md",
+          "title": "Provisional default set by Claude (founder deferred)",
+          "publisher": "Claude, for the founder",
+          "strength": "entered"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "provisional"
+      }
+    },
+    {
+      "classification": "כללי",
+      "horizon_min_years": {
+        "value": 5,
+        "unit": "years",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md",
+          "title": "Provisional default set by Claude (founder deferred)",
+          "publisher": "Claude, for the founder",
+          "strength": "entered"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "provisional"
+      },
+      "horizon_max_years": {
+        "value": null,
+        "unit": "years",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md",
+          "title": "Provisional default set by Claude (founder deferred)",
+          "publisher": "Claude, for the founder",
+          "strength": "entered"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "provisional"
+      },
+      "max_fall_pct": {
+        "value": 20,
+        "unit": "pct",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md",
+          "title": "Provisional default set by Claude (founder deferred)",
+          "publisher": "Claude, for the founder",
+          "strength": "entered"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "provisional"
+      }
+    }
+  ],
+  "rationale": "A track fits when the goal's horizon is at least the minimum and the person accepts a fall at least this large. Only the two classifications the examples use are listed; any other gets 'no rule'.",
+  "signed_off_by": "provisional default set by Claude on 2026-10-23; the founder deferred this technical choice and can change it",
+  "signed_off_on": null,
+  "shown_as": "site parameter (provisional)"
+}
