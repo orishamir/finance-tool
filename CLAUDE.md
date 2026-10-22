@@ -53,6 +53,7 @@ re-check the capabilities that depend on it.
 - `docs/design-system.md` — tokens, conventions and the release 1 components
 - `docs/flows.md` — user flows for release 1 (approved 2026-10-23), the screens they need and a design brief per screen
 - `docs/copy.md`, `docs/glossary.md` — all Hebrew UI text, and a sourced one-line explanation for every financial term
+- `docs/design-spec.md` — developer handoff for the approved release 1 screens
 
 ## Design system
 

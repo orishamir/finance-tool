@@ -315,6 +315,8 @@ Why "בשקלים של העתיד" rather than "נומינלי": the reader sees
 | The calculation failed | לא הצלחנו לחשב את הגרף. רעננו את העמוד ונסו שוב. |
 | Page not found | העמוד הזה לא קיים. אולי הקישור ישן. · לעמוד הראשי · לחיפוש |
 | Data older than its cadence (page banner) | חלק מהנתונים בעמוד לא עודכנו מאז `{תאריך}`. הם מסומנים בשעון. |
+| Calculation not loaded yet (field state) | טוען… |
+| A catalogued fund number no longer in the regulator's data | לא נמצא בנתוני הרשות |
 
 ---
 
