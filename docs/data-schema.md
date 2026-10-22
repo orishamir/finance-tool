@@ -58,7 +58,7 @@ Field rules:
 
 **Dates and money.** Dates are `YYYY-MM-DD`. Money is in NIS unless `currency` says otherwise. Percentages are stored as numbers in percent (`1.05` means 1.05%), never as fractions, to match how every source prints them.
 
-**Hebrew.** Any name an institution, regulator or statement uses is stored exactly as the source spells it, in a `names` block, so the decoder (3.10) and term matching (3.1) can match strings.
+**Hebrew.** Any name an institution, regulator or statement uses is stored exactly as the source spells it, in a `names` block, so the catalogue (3.10) and term matching (3.1) can match strings.
 
 ---
 
@@ -174,7 +174,11 @@ The rules themselves stay in `il-finance` (markdown). This collection holds only
 
 For cash-like exposures `return_source.mode` is `series` and `series` names the `data/series/` ID (A-20 to A-24).
 
-### 3.5 `data/funds/` — hand-collected fund variants (dependency 6, N4)
+`variants` lists the funds that have a `data/funds/` record. It is not the candidate set: for Israeli funds and foreign funds traded on TASE the workbench takes every fund in the latest list in `data/fund-lists/` that matches the exposure (§3.14, method F-65, product D17), and a fund with no record here is shown as not evaluated.
+
+### 3.5 `data/funds/` — hand-collected fund details (dependency 6, N4)
+
+One record per fund whose details have been collected. The set of Israeli funds and of foreign funds traded on TASE that the workbench chooses from is `data/fund-lists/` (§3.14); foreign-domiciled funds traded abroad exist only here, because no complete list of them was found (method G-29).
 
 ```json
 {
@@ -308,19 +312,24 @@ ISA category averages (MF-18, MF-19, ETF-17), CMA fee averages per track (from t
 
 ### 3.10 `data/catalog/` — institution-facing names (3.10)
 
+Names the CMA data and the Maya export do not hold: an institution's own name for a product or track where it differs from the regulator's name, and bank deposit and savings-plan products. One entry per name and institution.
+
 ```json
 {
-  "id": "meitav-app-open-new-saving",
+  "id": "meitav-kaspi-shikli",
   "institution": "meitav",
-  "where_seen": "app:Meitav, button 'פתיחת חיסכון חדש'",
+  "where_seen": "Meitav operations flyer (פלייר תפעולי), https://www.meitav.co.il/media/0lhfrzgy/פלייר-תפעולי-מונגש.pdf",
   "seen_on": "2026-10-22",
-  "seen_by": "founder",
-  "names": { "he": ["פתיחת חיסכון חדש"] },
-  "maps_to": { "wrapper_id": "kupat-gemel-lehashkaa", "cma_fund_id": 7857, "track_ids": [7978, 7860, "..."], "default_track_id": 7978 },
-  "near_duplicates": [{ "name": "גמל להשקעה כללי", "resolution": "distinct funds 7978 and <id> per CMA data | one fund listed twice | unresolved (CAT OQ12, OQ13)" }],
+  "seen_by": "il-finance CAT-11, CAT-13",
+  "names": { "he": ["כספי (שיקלי)"] },
+  "maps_to": { "wrapper_id": "kupat-gemel-lehashkaa", "cma_fund_id": 7857, "track_ids": [7861] },
+  "near_duplicates": [],
   "status": "catalogued | not-catalogued-yet"
 }
 ```
+
+- `cma_fund_id` and `track_ids` are empty for a bank product; `maps_to` then names the wrapper and, once collected, the `data/terms/deposits/` record.
+- `near_duplicates` records names that one institution uses for more than one product or track, with the resolution from the data, or "unresolved".
 
 ### 3.11 `data/terms/` — term matching (3.1) and `data/dimensions/` (3.3)
 
@@ -338,7 +347,7 @@ ISA category averages (MF-18, MF-19, ETF-17), CMA fee averages per track (from t
 
 ### 3.13 `data/cma/` — CMA fund and track records (3.10, F-64, F-70, 3.6)
 
-Added 2026-10-22 (approved by the founder, `docs/architecture.md` gap 8.1). One file per dataset per report period, written by the pipeline: `cma/<dataset>@<YYYY-MM>.json`, where `dataset` is `gemelnet` (provident, hishtalmut, gemel lehashkaa, child savings) or `pensia-net` (pension). The latest period is the one the decoder and the track workbench read.
+Added 2026-10-22 (approved by the founder, `docs/architecture.md` gap 8.1). One file per dataset per report period, written by the pipeline: `cma/<dataset>@<YYYY-MM>.json`, where `dataset` is `gemelnet` (provident, hishtalmut, gemel lehashkaa, child savings) or `pensia-net` (pension). The latest period is the one the catalogue and the track workbench read.
 
 ```json
 {
@@ -366,11 +375,48 @@ Added 2026-10-22 (approved by the founder, `docs/architecture.md` gap 8.1). One 
 ```
 
 - Text fields are stored exactly as the source spells them (§1, Hebrew), after decoding the CSV from Windows-1255.
-- Only the fields a formula or capability uses are kept: identity, names, manager and classification for the decoder (3.10) and the fit mark (F-70), and the two fee fields for the track workbench (F-64). Other CMA fields are added when a capability needs them.
+- Only the fields a formula or capability uses are kept: identity, names, manager and classification for the catalogue (3.10) and the fit mark (F-70), and the two fee fields for the track workbench (F-64). Other CMA fields are added when a capability needs them.
 - **Fee fields stay raw until their definitions are confirmed** (product.md dependency 4, discovery O11). Until then `raw_fields` holds them as received and `fees` is `null`, and the site shows names and classification only. Once confirmed, `fees` holds `avg_annual_management_fee` and `avg_deposit_fee` as value objects with their unit, and validation requires them.
 - Change-log lines for fee fields carry `affects_rankings: true`; names and classification changes carry `false` (§3.12).
 
 ---
+
+### 3.14 `data/fund-lists/` — the fund lists (3.4 fund variants, 3.10, product D17)
+
+Added 2026-10-23 for product D17. One file per list per save, saved by hand each month because the pages block scripts:
+
+- `fund-lists/maya-mutual-funds@<YYYY-MM-DD>.json`, from the export of TASE's Maya fund list (CAT-33, CAT-34): the Israeli open-end funds (mutual funds, tracking funds and money-market funds).
+- `fund-lists/tase-foreign-funds@<YYYY-MM-DD>.json`, from TASE's list of foreign funds traded on TASE (ETF-32): fund number, name, manager, classification and reference index, in the same shape with the fields that list has.
+
+Together they are the set of funds the workbench chooses from (method F-65, F-83) and that a fund manager's catalogue page lists. The Maya file:
+
+```json
+{
+  "export": "maya-mutual-funds",
+  "exported_on": "2026-10-22",
+  "source": { "url": "https://maya.tase.co.il/he/funds/mutual-funds", "checked": "2026-10-22", "strength": "primary" },
+  "funds": [
+    {
+      "fund_number": "<as in the export>",
+      "names": { "he": ["<as in the export>"] },
+      "manager": "<as in the export>",
+      "trustee": "<as in the export>",
+      "classification": ["<top heading>", "<main heading>", "<sub heading>"],
+      "characteristics": ["<as in the export>"],
+      "exposure_code": "<as in the export>",
+      "reference_asset": "<as in the export>",
+      "tax_status": "<as in the export>",
+      "distribution_fee_class": "<as in the export>",
+      "management_fee": { "value": null, "unit": "pct_per_year", "...": "value object" },
+      "trustee_fee": { "value": null, "unit": "pct_per_year", "...": "value object" },
+      "data_date": "YYYY-MM-DD"
+    }
+  ]
+}
+```
+
+- Only the fields the catalogue, the candidate set (F-65 matches on classification and reference asset) and the fee comparison use are kept; prices and returns are not, since the site does not rank by past return (product.md section 4).
+- Republishing terms are not confirmed (product.md dependency 7). Until they are, the lists are used to build the candidate set and counts, and the pages link to the source for the list itself.
 
 ## 4. Validation (run before every build)
 
@@ -384,3 +430,4 @@ Added 2026-10-22 (approved by the founder, `docs/architecture.md` gap 8.1). One 
 8. Every `data/funds/` record names its `exposure_id` and its `exposure_id` lists it under `variants`.
 9. Dimension marks in wrappers and funds are regenerated from `rule_ids`, never edited by hand.
 10. Every `cma_fund_id` and `track_ids` entry in `data/catalog/` exists in the latest `data/cma/` period of its dataset; one that has disappeared is reported, not silently dropped.
+11. Every Israeli fund and every foreign fund traded on TASE in `data/funds/` has its fund number in the latest matching list in `data/fund-lists/`; one that has disappeared is reported, not silently dropped.

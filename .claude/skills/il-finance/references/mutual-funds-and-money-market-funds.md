@@ -469,7 +469,7 @@ An Israeli mutual fund (קרן נאמנות) is a trust: a trustee holds the ass
 ## Proposed dimensions
 
 - `order-timing`: when an order is priced and executed (designated hour, pricing days, fixed dates). Changes the outcome for a saver who needs money on a given day (MF-10, MF-14, MF-35).
-- `product-marking`: codes and marks in a product's name that state binding limits (exposure profile, "(!)", headings, series dates). Feeds the decoder (MF-43 to MF-48).
+- `product-marking`: codes and marks in a product's name that state binding limits (exposure profile, "(!)", headings, series dates). Feeds the catalogue (MF-43 to MF-48).
 - `fee-performance`: fees that depend on returns (performance fee, variable fee band) (MF-28).
 - `fund-closure-merger`: the fund can be merged, liquidated or closed to new money (MF-12, MF-52).
 

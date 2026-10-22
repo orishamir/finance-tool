@@ -2,7 +2,7 @@
 
 Written 2026-10-22 by the financial modeler from `docs/product.md` (D1 to D13), `docs/roadmap.md`, and the `il-finance` rule base (`.claude/skills/il-finance/references/`, 803 rules, checked 2026-10-22). Every rule is cited by its ID; no rule is stated from memory. Where the rule base is open, the formula is marked **blocked** and the engine must not compute it (D10).
 
-Status: **draft for founder review.** Basis decisions B1 to B3 were chosen by the founder on 2026-10-22 (section 1). The golden scenarios in `tests/golden/scenarios.md` exercise every formula below; the founder adds expected results from his own spreadsheet.
+Status: **draft for founder review.** F-83 and gaps G-28 to G-30 added 2026-10-23 for product D17 ("no blind spots"). Basis decisions B1 to B3 were chosen by the founder on 2026-10-22 (section 1). The golden scenarios in `tests/golden/scenarios.md` exercise every formula below; the founder adds expected results from his own spreadsheet.
 
 How to read it:
 
@@ -257,7 +257,7 @@ The person's outlay `C_m` is net money. Where a wrapper returns part of a deposi
 
 ## 10. Outputs built on the ledger
 
-**F-60 Idle-cash preset (3.2).** Monthly cost of leaving `B` where it is `= B × [(1 + r_alt)^(1/12) − (1 + r_cc)^(1/12)]`, after tax, where `r_cc` is A-25 taxed per F-26 and `r_alt` is each liquid option's net rate (daily money-market fund F-23 with F-40; one-month deposit F-21 at A-21 labelled "average paid at this bank last month", and at A-26 labelled "entered by you"; makam F-24). The part that must stay available (D13) is excluded from `B`.
+**F-60 Idle-cash preset (3.2).** Monthly cost of leaving `B` where it is `= B × [(1 + r_alt)^(1/12) − (1 + r_cc)^(1/12)]`, after tax, where `r_cc` is A-25 taxed per F-26 and `r_alt` is each liquid option's net rate (daily money-market fund F-23 with F-40; one-month deposit F-21 at A-21 labelled "average paid at this bank last month", and at A-26 labelled "entered by you"; makam F-24). The part that must stay available (D13) is excluded from `B`. The candidate set is wrapper mode's (F-83): the current account is the baseline; the options above are compared against it; every other tier-1 wrapper and tier-2 instrument is accounted for by F-83, those the preset does not run as "not evaluated" with G-28.
 
 **F-61 Fee materiality (3.5).** For a wrapper or holding with fee set `F`: total drag `= V_T^{real}(∅) − V_T^{real}(F)`; cost of fee `f` `= V_T^{real}(F \ {f}) − V_T^{real}(F)`; interaction remainder `= total − Σ_f cost_f`, reported as a line. Value of a stated reduction `f → f'` `= V_T^{real}(F[f → f']) − V_T^{real}(F)`. All runs hold A-01 to A-29 fixed. The regulator reference for `f` is the average for that provider class and fee type (D4): CMA averages for provident tracks (CAT, KH-23, PEN-24), ISA category averages for funds (MF-18, MF-19, ETF-17), BoI FEES_DASH for banks (BRK-26), TASE's per-member averages for brokers (BRK-33, corrects D4 per coverage.md F2); "no reference available" otherwise. Caps are shown beside the fee: PF-02 to PF-08, PEN-21, PEN-22, KH-22.
 
@@ -265,9 +265,9 @@ The person's outlay `C_m` is net money. Where a wrapper returns part of a deposi
 
 **F-63 Provider workbench (3.4).** For each provider `p` with tariff `F_p` at the chosen fee level (list, regulator average, entered; D4): `cost_p(horizon) = V_T^{real}(∅) − V_T^{real}(F_p)`; `cost_p(year 1) = V_12(∅) − V_12(F_p)` nominal; broken into fee types by F-61. Behaviour from A-28 drives the trade, FX and custody counts. Ties by F-80. A provider without a tariff is a row "not comparable, data missing" with the reason from `data/fees/`.
 
-**F-64 Track workbench.** Every track of the provider for the wrapper from the CMA data, with `AVG_ANNUAL_MANAGEMENT_FEE` and `AVG_DEPOSIT_FEE` (units to be confirmed, CAT OQ2, KGL OQ14: shown only after the field definitions are confirmed, product.md dependency 4) and the fit mark from F-70.
+**F-64 Track workbench.** Every track of every provider for the wrapper from the latest CMA period (F-83), with `AVG_ANNUAL_MANAGEMENT_FEE` and `AVG_DEPOSIT_FEE` (units to be confirmed, CAT OQ2, KGL OQ14: shown only after the field definitions are confirmed, product.md dependency 4) and the fit mark from F-70.
 
-**F-65 Fund variants.** For a chosen exposure, each `data/funds/` variant runs F-08 with its own `δ` (A-06 to A-11), currency (F-04), distribution policy (F-20) and domicile rules (F-40). Accumulating foreign-domiciled funds are taxed only at sale under the TXF-11 reading, which one secondary source supports. Their value is computed and labelled "secondary source: not confirmed by the Tax Authority", and the variant is listed, not ranked.
+**F-65 Fund variants.** For a chosen exposure, the candidates are every Israeli fund in the latest Maya export that matches the exposure by classification and reference asset (CAT-34), every foreign fund traded on TASE in TASE's latest list that matches it (ETF-32), and every foreign-domiciled fund traded abroad in `data/funds/` for the exposure (F-83). Each candidate with a `data/funds/` record runs F-08 with its own `δ` (A-06 to A-11), currency (F-04), distribution policy (F-20) and domicile rules (F-40). Accumulating foreign-domiciled funds are taxed only at sale under the TXF-11 reading, which one secondary source supports. Their value is computed and labelled "secondary source: not confirmed by the Tax Authority", and the variant is listed, not ranked. A candidate without a `data/funds/` record is "not evaluated: details not collected"; foreign-domiciled funds traded abroad that are not in `data/funds/` are one group line (G-29).
 
 **F-66 Switching cost.** Brokerage: moving from fund A to fund B at month `s` is a sale (TXS-21): tax per F-40 on A's lots at `s`, the net proceeds open B's lot. Provident: a track switch or a transfer to the same kind of fund costs nothing (TXK-04, TXH-17, TXH-19, PF-19, PF-23); a hishtalmut moves whole, never in part (PF-18, KH-17). Cost of switching `= V_T(no switch) − V_T(switch)`.
 
@@ -288,6 +288,18 @@ The person's outlay `C_m` is net money. Where a wrapper returns part of a deposi
 **F-81 Sensitivity panel.** For each assumption `a` in P-02 with bounds `[a_lo, a_hi]`: move `a` from its current value towards each bound by bisection, re-running F-80, until the top option changes or the bound is reached; report the smallest change that flips the result ("flips if `a` moves from `x` to `y`") or "no flip within bounds". Shared by 3.2, 3.4, 3.5 and 3.6.
 
 **F-82 Revisit (3.9).** A saved comparison stores every `A-nn`, `P-nn`, the rule figures and data versions used (by file and `checked` date). On revisit the engine re-runs with current versions, lists the entries whose values differ, and reports whether F-80's top option and tie set are unchanged.
+
+**F-83 Candidate set and coverage line (product D17).** Every comparison starts from its full candidate set and accounts for each candidate exactly once.
+
+- **Candidate sets.** 3.2 wrapper mode and its presets: every tier-1 wrapper record (the wrapper IDs in data-schema §2; D2, D6) and every tier-2 instrument on the "not covered yet" list (D2). 3.2 exposure mode: every exposure record. 3.4 providers: every provider in the provider list for the wrapper (F-63). 3.4 tracks and the catalogue fit mark: every track for the wrapper in the latest CMA period, at every managing company (F-64, F-70). 3.4 fund variants: as F-65. The tracks, providers and fund variants inside a wrapper are not candidates of 3.2; its coverage line links to 3.4 for them.
+- **Outcome.** Each candidate gets one outcome, with its reason as a code (rule ID, G-ID, constraint or missing data item). When more than one applies, the first in this order is used:
+  1. **not eligible**: a rule bars this person or this money (section 8; a track open only to a sector or employer, CAT-10);
+  2. **excluded by the person's constraint**: section 8's constraint filters, or the loss filter (F-71);
+  3. **not evaluated**: the run lacks an input (no tariff, no product terms, no fund record), the instrument is tier 2 (G-24), or the method has no run for it yet (a gap whose effect says "not evaluated", for example G-28 or G-30). A gap that blocks one rule inside a run that otherwise works, such as an exit tax, is not this outcome but B3 (item 4);
+  4. **listed, not ranked**: B3 (locked at the horizon, or a rule in its run blocked by a gap), D15, or a ceiling that keeps the wrapper from taking the same money (F-05);
+  5. **ranked**: F-80. In the idle-cash preset (F-60) this reads "compared against the current account", and the current account is the baseline.
+- **Output.** `considered = N`, the count per outcome, and every candidate that is not ranked with its outcome and reason. A group the site knows exists but does not hold one by one (G-29) is one line with the count held. Invariant: every candidate appears exactly once and the counts sum to `N`.
+- **Tests.** A golden scenario may restrict the candidate set to exercise a formula (S39 compares four wrappers); the site never restricts it. S40 and S41 test the full coverage line.
 
 ---
 
@@ -324,6 +336,9 @@ Each gap names the open question in `il-finance`. The output shows the affected 
 | G-25 | Loans against a hishtalmut or gemel lehashkaa, group life cover deductions (KH-21, KH-25, KGL-18) | Terms not sourced (KH OQ4) | Not modelled; dimension listed |
 | G-26 | Money-market fund order cut-off and settlement day (MF OQ3, OQ4) | Open | Liquidity shown as "same or next business day, unconfirmed" |
 | G-27 | NI and health on interest taxed at marginal rates (s.125C(d)), for example study-fund gains withdrawn early | Outside the s.350(a)(6) exemption wording (TXG-27); employee NI rates and the disregard for employees are not in the rule base (TXG OQ2(b)) | F-47 charges income tax only; flagged |
+| G-28 | Idle-cash preset runs only the cash options with a sourced or entered rate | F-60 runs the one-month deposit, the daily money-market fund and makam. A renewable money-market fund can be left only on its fixed dates (MF-35), so it does not fit money kept idle; a cash-like track inside a kupat gemel lehashkaa or another provident wrapper has only past yields, which are history (product.md section 4); a government bond's value before maturity moves with bond prices, for which no sourced series exists (D9); savings-plan terms are not collected yet (R4); brokerage holdings need an entered return (D9) | Each is "not evaluated (G-28)" in the preset's coverage line (F-83), with a link to the full goal comparison |
+| G-29 | Foreign-domiciled funds traded abroad have no complete list | Neither the rule base nor the data track found one (ETF OQ4; the foreign funds traded on TASE are listed, ETF-32); `data/funds/` holds the ones collected | F-65 compares those held; the rest are one group line, "not held one by one", in the coverage line (F-83) |
+| G-30 | Monthly deposits into a renewable money-market fund | F-23 sets the exit for a deposit; which series a later monthly deposit buys, and when (units of a new series are offered from seven days after the series date, MF-35), is not set | With monthly deposits the renewable fund is "not evaluated (G-30)" in the coverage line (F-83); a goal with an amount now and no monthly deposit runs F-23 |
 
 ---
 
@@ -333,4 +348,5 @@ Each gap names the open question in `il-finance`. The output shows the affected 
 - The golden tests compare against the founder's spreadsheet within P-06.
 - Every figure the engine reads carries its tax year or effective date; a run in tax year `y` reads the figure for `y`, and refuses to run with a figure whose `effective_to` has passed, showing "figure not updated" (D3).
 - A rule of strength `open` never enters a formula. A rule of strength `secondary` or `institution` enters and labels the number. The dimension checklist is derived from the rules used in the run, not hand-marked (product.md 3.3).
+- Every comparison test checks F-83's invariant: each candidate appears exactly once, with one outcome.
 - `tests/golden/scenarios.md` is the test file named by the founder; `docs/product.md` 3.8 calls the same thing `tests/cases/`. One of the two names should be changed to match.

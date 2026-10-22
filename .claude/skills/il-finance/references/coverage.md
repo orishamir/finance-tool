@@ -36,8 +36,8 @@ These apply to the whole knowledge base, not to one topic.
    "not searched, budget ran out" and may close with a targeted search pass. Google search inside the
    Chrome browser has no such limit and was used in the browser pass.
 4. **Some gaps need your own material.** Only you can supply:
-   - the Meitav app's "open a new saving" menu and its eight tracks, as a screenshot or typed list
-     (CAT OQ12, OQ19);
+   - ~~the Meitav app's "open a new saving" menu and its eight tracks~~ (CAT OQ12, OQ19): not needed
+     since 2026-10-23, because the site lists every track from the data (product.md D17);
    - a payslip from you and from a friend (no official source gives the line labels; KH OQ5, PEN OQ11,
      TXP OQ16);
    - the annual statements of your own funds (PF OQ5, CS OQ11);
@@ -160,11 +160,11 @@ The guide page has a fixed structure. These are the parts not yet sourced for ea
   - tax on moving securities in kind between your own accounts, which only institutions describe (SW OQ11);
   - how to remove an agent already attached to an account (SW OQ16).
 
-## 8. Section 3.10, product decoder
+## 8. Section 3.10, catalogue of every option (was "catalogue of every option" until 2026-10-23)
 
 - **CMA side (R1).** The catalogue is covered. Your Meitav "general twice" question:
   - In Gemel-Net, Meitav's kupat gemel lehashkaa (fund 7857) has 16 tracks and only one "כללי" (track 7978, the default).
-  - The duplicate you saw may be "מיטב קידס", which is a kupat gemel lehashkaa opened in a child's name (CAT OQ13). It can't be settled without the app's own screens.
+  - The duplicate you saw may be "מיטב קידס", which is a kupat gemel lehashkaa opened in a child's name (CAT OQ13). It can't be settled without the app's own screens, and since 2026-10-23 it does not need to be: the site lists all 16 tracks and every Meitav product in the data, so whatever the app's second "כללי" is, it is covered (product.md D17).
   - Altshuler has the same pattern: "כללי" alongside "כללי ב'", which has been closed to new members since 2016 (KH).
 - **Bank side (R4).** BPN catalogues 286 names from 10 bank brands. Gaps:
   - no names yet for Discount, Bank of Jerusalem, One Zero or Esh Israel (BPN OQ1, OQ5);

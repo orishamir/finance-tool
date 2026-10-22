@@ -21,7 +21,7 @@ How to read it:
 | K5 | **Data validated against the schema before every build**, including the cross-file checks in data-schema §4. | Founder brief; data-schema §4 |
 | K6 | **Scheduled refresh** at the cadences of product.md §6, keeping dated snapshots because no public archive exists, appending to the change log, and never hiding a stale number. | D3, product.md §6, data-schema §3.12 |
 | K7 | **Hebrew, right to left, phone first**, with numbers, percentages, fund numbers and Latin names embedded in Hebrew text. | CLAUDE.md, product.md §2 |
-| K8 | **Interactive on nearly every page.** People change fields and watch graphs respond. Guide pages take optional inputs and carry a timeline graph (3.1), the decoder shows a fit mark against the saved goal (3.10), and R2 to R5 are all tools (comparison, workbench, fee materiality, holdings). The person's goal and inputs follow them from page to page. Only the rules, parameters and terms pages are pure reference. | founder, 2026-10-22; product.md 3.1, 3.10; roadmap.md |
+| K8 | **Interactive on nearly every page.** People change fields and watch graphs respond. Guide pages take optional inputs and carry a timeline graph (3.1), the catalogue shows a fit mark against the saved goal (3.10), and R2 to R5 are all tools (comparison, workbench, fee materiality, holdings). The person's goal and inputs follow them from page to page. Only the rules, parameters and terms pages are pure reference. | founder, 2026-10-22; product.md 3.1, 3.10; roadmap.md |
 | K9 | **Saved state is local, versioned and portable**: automatic in R2, export and import in R3, revisit against the change log in R5. Old export files must keep importing. | 3.9, N3 |
 | K10 | **Data sources are awkward**: CMA CSVs are Windows-1255, data.gov.il has a WAF that rejects some queries, CBS requires a User-Agent, gov.il, TASE and ISA block scripts. All research fetches were made from a home machine, so access from cloud IPs is unverified. | data-landscape.md §1 |
 | K11 | **Non-commercial, small audience, one maintainer.** Low running cost and few moving parts beat scale. The founder does DevOps, so self-hosting is available but not required. | CLAUDE.md, founder brief |
@@ -32,8 +32,8 @@ How to read it:
 ## 2. Shape of the system
 
 ```
- sources (data.gov.il CMA + MoF, BoI EDGE, CBS)        hand-collected (tariffs, funds, catalog,
-            │  scheduled fetch                          deposit terms, rules figures, parameters)
+ sources (data.gov.il CMA + MoF, BoI EDGE, CBS)        hand-collected (tariffs, funds, Maya fund list,
+            │  scheduled fetch                          catalog, deposit terms, rules figures, parameters)
             ▼                                                       │  pull request
    pipeline: fetch → raw archive → normalise → validate → diff ─────┤
             │  commit (or PR when a sanity check trips)             │
@@ -95,6 +95,7 @@ Per adapter: **fetch** (with the User-Agent and download-URL quirks from data-la
 | CBS CPI | R2 | daily check; monthly data | `data/series/cpi` |
 | MoF child-savings rates (data.gov.il) | R2 | daily | `data/series/mof-child-savings-rates` |
 | Tariffs, `data/funds/`, `data/catalog/`, `data/terms/deposits/` | R1 (catalog), R4 (rest) | manual | by hand or by the data-researcher agent, through a pull request |
+| Maya fund-list export (CAT-33, CAT-34) and TASE's list of foreign funds traded on TASE (ETF-32): the set the fund-variant workbench chooses from (product D17) | R4 | manual, monthly (the pages block scripts) | `data/fund-lists/` (data-schema §3.14), through a pull request |
 
 **Commit policy.** A refresh that passes validation and the sanity checks is committed directly. A refresh that trips a sanity check (a field disappears, a row count drops sharply, a value outside a plausible range, an encoding change) opens a pull request instead and alerts. Sanity ranges are pipeline configuration, not site parameters: they never reach a displayed number.
 
@@ -119,7 +120,7 @@ A TypeScript package with no dependencies on the UI, the DOM, the network or the
 - refuses a figure whose `effective_to` is before the run date ("figure not updated", method §13);
 - records every rule it served. The run's **dimension checklist is derived from that record** (method §13: "derived from the rules used in the run, not hand-marked"), so a rule that enters the rule base as open turns a dimension to blocked without a page edit (3.3 "works when").
 
-**Inputs and outputs.** Inputs are typed by assumption ID (`A-01` … `A-29`) and parameter ID (`P-01` … `P-06`), each a value object, so the state of every input (sourced or entered) is known to the engine. Outputs are value objects with `state: computed` and `computed_from` (formula ID and input references), plus the monthly ledger series, fees by type, tax during and at exit, labels, G-flags and the rules used. The engine returns **codes, never Hebrew text**: the site maps codes (formula, G-ID, rule ID, deciding factor from F-80) to copy. This keeps the engine testable in isolation and the wording in one place.
+**Inputs and outputs.** Inputs are typed by assumption ID (`A-01` … `A-29`) and parameter ID (`P-01` … `P-06`), each a value object, so the state of every input (sourced or entered) is known to the engine. Outputs are value objects with `state: computed` and `computed_from` (formula ID and input references), plus the monthly ledger series, fees by type, tax during and at exit, labels, G-flags and the rules used. Every comparison also returns its coverage line (method F-83): the candidate count and one outcome code with its reason for each candidate. The engine returns **codes, never Hebrew text**: the site maps codes (formula, G-ID, rule ID, deciding factor from F-80) to copy. This keeps the engine testable in isolation and the wording in one place.
 
 **Arithmetic.** IEEE double precision, rounding only for display (method §13). The method uses fractional powers (F-02, F-07, F-24), which decimal libraries handle poorly; double precision is far beyond the agora-level accuracy the golden tolerance (P-06) will ask for. Dates are civil dates (`YYYY-MM-DD`) and month indices; no time zones inside the engine.
 
@@ -129,11 +130,11 @@ A TypeScript package with no dependencies on the UI, the DOM, the network or the
 
 ### 3.5 Site
 
-**One interactive app, every page pre-rendered.** Each page is generated from `data/` at build so its first view arrives as HTML, then becomes interactive: fields the person can change, and graphs and numbers that recompute through the engine as they do. Pages: one guide page per tier-1 wrapper and exposure (3.1) with its optional inputs and timeline graph, the tier-2 "not covered yet" page, one decoder page per managing company listing every fund and track from the CMA data (3.10) with search and the fit mark, and from R2 the tools. The rules, parameters and terms pages are reference text. Guide prose is written in Hebrew in content files; every figure inside it is a component that reads a value object, never a typed number (section 3.7).
+**One interactive app, every page pre-rendered.** Each page is generated from `data/` at build so its first view arrives as HTML, then becomes interactive: fields the person can change, and graphs and numbers that recompute through the engine as they do. Pages: one guide page per tier-1 wrapper and exposure (3.1) with its optional inputs and timeline graph, the tier-2 "not covered yet" page, one catalogue page per managing company listing every fund and track from the CMA data (3.10) with search and the fit mark (from R4 also each fund manager's funds from the Maya list), and from R2 the tools. The rules, parameters and terms pages are reference text. Guide prose is written in Hebrew in content files; every figure inside it is a component that reads a value object, never a typed number (section 3.7).
 
-**Inputs follow the person.** The goal, profile inputs and entered values live in one app-wide state, saved locally (3.6), so a horizon set on a guide page or a goal set in the comparison is already filled in on the decoder and the workbench. Where an input appears on a page that product.md does not list it for, that is a product question, not an engineering one (gap 8.9).
+**Inputs follow the person.** The goal, profile inputs and entered values live in one app-wide state, saved locally (3.6), so a horizon set on a guide page or a goal set in the comparison is already filled in on the catalogue and the workbench. Where an input appears on a page that product.md does not list it for, that is a product question, not an engineering one (gap 8.9).
 
-**Tools** (added from R2): goal comparison with presets and sensitivity, decoder search and fit mark, fee materiality, holdings review, workbench, playbook, revisit. They load a **resolved data bundle**: the rule figures for the current tax year, parameters, wrapper records, latest series values and averages, stamped with a `data_version` (commit and build date). Manager-level CMA data and fund lists are split into small files and loaded on demand.
+**Tools** (added from R2): goal comparison with presets and sensitivity, catalogue search and fit mark, fee materiality, holdings review, workbench, playbook, revisit. They load a **resolved data bundle**: the rule figures for the current tax year, parameters, wrapper records, the tier-2 list, latest series values and averages, stamped with a `data_version` (commit and build date). A comparison's candidate set is built from the bundle and never from what a page happens to show (product D17, method F-83). Manager-level CMA data and fund lists are split into small files and loaded on demand.
 
 **Provenance on every number.** One component renders every number. It takes a value object, never a bare number, and shows the state (sourced, computed, entered by you), and on tap: the source with its date, the rule and its strength, the formula and inputs for a computed number, "site parameter" with its rationale, and the stale flag. It uses the native HTML popover, so it works in the pre-rendered first view before any script has loaded.
 
@@ -141,7 +142,7 @@ A TypeScript package with no dependencies on the UI, the DOM, the network or the
 
 **Charts.** Our own SVG chart components (section 3.9), pre-rendered at build and redrawn in the browser on every field change. The direction of the time axis is a question for the founder (gap 8.6).
 
-**Decoder search.** A small client-side index built at build time over CMA fund names, `data/catalog/` names and `data/terms/`. Hebrew normalisation before matching: final letter forms, geresh and gershayim against ASCII quotes, maqaf against hyphen, niqqud stripped, whitespace collapsed. A name with no match is recorded in local state as "not catalogued yet" (3.10).
+**Catalogue search.** A small client-side index built at build time over CMA fund names, `data/catalog/` names, `data/terms/` and, from R4, the Maya fund names. Hebrew normalisation before matching: final letter forms, geresh and gershayim against ASCII quotes, maqaf against hyphen, niqqud stripped, whitespace collapsed. A name with no match is recorded in local state as "not catalogued yet" (3.10).
 
 **What the site does not load.** No analytics, no third-party scripts, no external fonts or CDNs at run time (D1, product.md §4). Pages carry `noindex` (gap 8.7).
 
@@ -167,7 +168,7 @@ The rule is enforced in layers, so no single slip shows an untraced number:
 | Level | What | Tool |
 |---|---|---|
 | Engine, golden | Every scenario in `tests/golden/scenarios.md` as a machine-readable case; expected values come from the founder's spreadsheet; tolerance P-06 | unit test runner |
-| Engine, properties | Invariants that need no expected value: no fees and no tax gives the gross path; a higher fee never raises the value; real equals nominal when inflation is zero; a blocked rule always yields "listed, not ranked" | property-based testing |
+| Engine, properties | Invariants that need no expected value: no fees and no tax gives the gross path; a higher fee never raises the value; real equals nominal when inflation is zero; a blocked rule always yields "listed, not ranked"; every candidate of a comparison appears exactly once in its coverage line (F-83) | property-based testing |
 | Engine, coverage of the method | Every F-ID in `docs/method.md` is implemented or listed as not yet implemented for the release | unit test |
 | Data | The validator (3.2) on the real `data/` and on fixtures that must fail | unit test runner |
 | Pipeline | Each adapter against recorded raw responses, including a Windows-1255 CSV | unit test runner |
@@ -181,10 +182,10 @@ Engine and data tests run on every change; the browser tests run before each rel
 Polished interface and good-looking graphs are a requirement (K12), so they get their own step and their own components rather than being left to a library's defaults.
 
 - **Design before building pages.** Before the R1 pages are built, a design pass produces:
-  - design tokens: a Hebrew type scale and font, colour palette, spacing, light and dark;
+  - design tokens: a Hebrew type scale and font, colour palette, spacing; dark only (founder, 2026-10-22; `docs/design-system.md`);
   - the visual language for the three number states (sourced, computed, entered by you), the stale flag and "site parameter";
   - a chart style guide;
-  - mockups of three key screens at phone and PC widths, for the founder to approve: a guide page, a decoder page and the R2 comparison.
+  - mockups of three key screens at phone and PC widths, for the founder to approve: a guide page, a company page of the catalogue and the R2 comparison.
   Pages are then built to the approved mockups. Each later release starts with mockups of its new screens.
 - **Our own chart components, not an off-the-shelf chart library.** Charts are SVG components built from D3's scale, shape and axis modules, the approach interactive-graphics teams use. Off-the-shelf chart libraries are quick to start with but fight back on exactly what this site needs:
   - right-to-left layout with Hebrew labels, legend order and axis placement;
@@ -310,10 +311,10 @@ What each release adds to each component. Capabilities and their order are those
 
 | | R1 understand | R2 decide for a goal | R3 fees and holdings | R4 providers, funds, switching | R5 exposures, revisit, growth |
 |---|---|---|---|---|---|
-| **Schema and validator** | all collections R1 uses; cross-file checks; change-log check; content digit check | series, averages | holdings and export format | `data/fees/`, `data/funds/`, `data/terms/deposits/` in use | tier-2 records as they graduate |
-| **Pipeline** | CMA adapters, raw archive, change log, dead-man check; runner spike (section 6); catalogue scaffolding helper | BoI, CBS, MoF adapters; terms gate | uncatalogued-names import helper | tariff and fund scaffolding helpers | none new |
-| **Engine** | resolver and gating; registry; F-01 to F-28, F-33, F-40 to F-46, F-50, F-51, F-54 as needed for the guide timelines (F-67); dimension marks | F-30 to F-32, F-47 to F-49 (blocked where the method says), F-52, F-53, F-60, F-80, F-81; worker | F-61, F-62, F-64, F-70, F-72 | F-12 to F-14 at full tariff detail, F-63, F-65, F-66 | F-71, F-82 |
-| **Site** | design pass and approved mockups (3.9); design tokens and chart components; app shell and shared input state; guide pages with optional inputs and live timeline graphs; tier-2 page, rules, parameters, terms; per-manager decoder pages and search; provenance component | comparison tool with presets, ranking, ties, sensitivity, idle-cash preset; decoder fit mark | fee materiality, holdings review, track workbench | provider workbench, fund variants, bank-product decoder, playbook rendered from rule entries | exposure mode with entered returns; revisit and "what changed since" |
+| **Schema and validator** | all collections R1 uses; cross-file checks; change-log check; content digit check | series, averages | holdings and export format | `data/fees/`, `data/funds/`, `data/fund-lists/`, `data/terms/deposits/` in use | tier-2 records as they graduate |
+| **Pipeline** | CMA adapters, raw archive, change log, dead-man check; runner spike (section 6); catalogue scaffolding helper | BoI, CBS, MoF adapters; terms gate | uncatalogued-names import helper | tariff and fund scaffolding helpers; fund-list import helper | none new |
+| **Engine** | resolver and gating; registry; F-01 to F-28, F-33, F-40 to F-46, F-50, F-51, F-54 as needed for the guide timelines (F-67); dimension marks | F-30 to F-32, F-47 to F-49 (blocked where the method says), F-52, F-53, F-60, F-80, F-81, F-83; worker | F-61, F-62, F-64, F-70, F-72 | F-12 to F-14 at full tariff detail, F-63, F-65, F-66 | F-71, F-82 |
+| **Site** | design pass and approved mockups (3.9); design tokens and chart components; app shell and shared input state; guide pages with optional inputs and live timeline graphs; tier-2 page, rules, parameters, terms; per-manager catalogue pages and search; provenance component | comparison tool with presets, ranking, ties, sensitivity, idle-cash preset; coverage line; catalogue fit mark | fee materiality, holdings review, track workbench | provider workbench, fund variants, bank products and Maya funds in the catalogue, playbook rendered from rule entries | exposure mode with entered returns; revisit and "what changed since" |
 | **Local state** | guide inputs and uncatalogued names, versioned | automatic saved state, manifest and persistence request | export and import with migrations | none new | saved comparisons re-run (they already store what they used, from R2) |
 | **Tests** | golden scenarios for the R1 formulas; property tests; provenance crawl | golden apartment and ETF-vs-provident cases; sensitivity cases | 3.5 and 3.6 cases on the founder's holdings; old-format import | provider ranking case (one versus ten trades a month) | revisit before and after a rule change |
 
@@ -325,7 +326,7 @@ Two R1 items gate everything after them, in this order: the schema and validator
 
 Each needs a decision or a document change; none is filled in here.
 
-1. **No collection for CMA fund records.** The decoder (3.10, R1), the track workbench (F-64) and holdings review (3.6) read every fund and track per manager from the CMA datasets, and `data/catalog/` points to `cma_fund_id`, but `docs/data-schema.md` defines no collection that holds them. Proposal: `data/cma/<dataset>@<YYYY-MM>.json`, one normalised file per dataset per report period, holding only the fields the method uses, each in value-object form. Needs the founder's approval and an entry in data-schema §3; the field units wait for O11 (product.md dependency 4). **Approved by the founder on 2026-10-22**; added as `docs/data-schema.md` §3.13.
+1. **No collection for CMA fund records.** The catalogue (3.10, R1), the track workbench (F-64) and holdings review (3.6) read every fund and track per manager from the CMA datasets, and `data/catalog/` points to `cma_fund_id`, but `docs/data-schema.md` defines no collection that holds them. Proposal: `data/cma/<dataset>@<YYYY-MM>.json`, one normalised file per dataset per report period, holding only the fields the method uses, each in value-object form. Needs the founder's approval and an entry in data-schema §3; the field units wait for O11 (product.md dependency 4). **Approved by the founder on 2026-10-22**; added as `docs/data-schema.md` §3.13.
 2. **Tax-year figures over a multi-year horizon.** method.md §13 says a run in tax year `y` reads the figures for `y`; the golden scenarios fix every figure at 2026. The method does not say explicitly that today's figures apply to every future month of the projection. The engine will do that, as the scenarios do, once method.md states it.
 3. **`tests/cases/` or `tests/golden/`.** product.md says one, method.md and the repository use the other (method §13 already notes it). The architecture uses `tests/golden/`, which exists; product.md should be changed to match.
 4. **Strength vocabularies differ.** `il-finance` uses `primary`, `institution`, `secondary` (and open questions); data-schema adds `primary-mirror` and `entered`. The validator will check `data/rules/` strength against the rule base, so the mapping between the two needs writing down in data-schema §1.

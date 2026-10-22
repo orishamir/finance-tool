@@ -1,7 +1,7 @@
 # Kupat gemel lehashkaa (investment provident fund)
 
 Checked: 2026-10-22 · Owner: domain-specialist
-Serves: `docs/product.md` 3.1 (instrument guide page), 3.2 (wrapper record: ceiling, liquidity, fee bases), 3.3 (dimension checklist), 3.4 (tracks and providers), 3.10 (decoder: the founder's Meitav "open a new saving" button opens this wrapper). Release 1 (README file list).
+Serves: `docs/product.md` 3.1 (instrument guide page), 3.2 (wrapper record: ceiling, liquidity, fee bases), 3.3 (dimension checklist), 3.4 (tracks and providers), 3.10 (catalogue: the founder's Meitav "open a new saving" button opens this wrapper). Release 1 (README file list).
 Scope: what the product is, legal basis, who may open one, deposits and the ceiling, withdrawals, transfers in and out, tracks as categories, the default track, fee bases and the regulated maximum, fee discounts, beneficiaries, sector funds, and the managing companies that offer it.
 Out of scope: tax at deposit, during and at exit, including the annuity exemption at 60 (`tax-gemel-lehashkaa-ira-child.md`); the self-directed variant (`ira-self-directed.md`); fee caps and transfer regulations shared by all CMA products (`provident-family-common.md`); the per-manager track list and the Meitav app case in detail (`tracks-catalogue-and-decoder.md`); the government child-savings programme (`child-savings.md`).
 

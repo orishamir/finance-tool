@@ -1714,18 +1714,38 @@ def s41_fill():
     n = (1 + mrate(0.0325) - 0.0018 / 12) ** 12 - 1
     net = n - 0.25 * max(0.0, n - pi)
     rows.append(['daily money-market fund (BoI 3.25%, δ 0.18%), one-year hold', f2(B * ((1 + net) ** (1 / 12) - (1 + cc) ** (1 / 12)))])
+    # coverage line (F-83): the current account is the baseline, the three cash options are compared
+    cov = [('current account', 'baseline', 'where the money is now (F-60)')]
+    cov += [(c, 'compared', 'F-60') for c in ('bank deposit, one month', 'makam', 'daily money-market fund')]
+    cs = 'takes the NII amounts and the parent\'s matching deposit only (method section 8; CS-02, CS-04, CS-16)'
+    cov += [(c, 'not eligible', cs) for c in ('child savings, provident route', 'child savings, bank route')]
+    cov += [(c, 'not evaluated', 'not run by the idle-cash preset (G-28); see the full goal comparison') for c in (
+        'savings plan', 'renewable money-market fund', 'government bond', 'brokerage account', 'kupat gemel lehashkaa',
+        'keren hishtalmut', 'comprehensive pension fund', 'general pension fund', 'provident fund for annuity',
+        'IRA in a study fund', 'IRA in a provident fund')]
+    cov += [(t, 'not evaluated', 'tier 2, open questions (G-24)') for t in (
+        'savings policies', 'executive insurance', 'structured deposits', 'corporate bonds', 'managed and robo portfolios',
+        'foreign-currency deposits', 'REITs', 'gold via funds', 'Amendment 190 deposits')]
+    L('CS-02', 'CS-04', 'CS-16')
+    order = ['baseline', 'compared', 'not eligible', 'not evaluated']
+    counts = [(o, sum(1 for c in cov if c[1] == o)) for o in order]
+    assert len({c[0] for c in cov}) == len(cov) == sum(n for _, n in counts)
     body = (
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
         f'| 0 | Filled-in inputs | — | {filled("π 3% (as the daily money-market fund example)")} |\n'
         f'| 1 | Amount considered: 80,000 − 20,000 that must stay available = 60,000 | product D13 | 60,000 |\n'
         f'| 2 | Current account 0.5%, 15% withheld; deposits and makam 85% of the rate after tax | {L("TXI-08", "TXI-03", "TXI-11")} | — |\n'
         f'| 3 | Daily money-market fund: one-year return {pct(n, 3)}, tax 25% of the part above inflation → {pct(net, 3)} after tax | {L("MF-34", "TXS-12")} | — |\n'
-        f'| 4 | Monthly cost = 60,000 × [(1 + r_alt after tax)^(1/12) − (1 + r_cc after tax)^(1/12)] | method F-60 | see table |\n\n'
+        f'| 4 | Monthly cost = 60,000 × [(1 + r_alt after tax)^(1/12) − (1 + r_cc after tax)^(1/12)] | method F-60 | see table |\n'
+        f'| 5 | Coverage line: every tier-1 wrapper and tier-2 instrument accounted for once; the preset runs only the cash options with a sourced or entered rate | method F-60, F-83, G-28; product D17 | see second table |\n\n'
         + table(['Alternative', 'Monthly cost of leaving 60,000 in the current account'], rows)
+        + '\n\n' + table(['Candidate', 'Outcome', 'Reason'], [[c, o, r] for c, o, r in cov])
+        + f'\n\nConsidered {len(cov)}: ' + ', '.join(f'{o} {n}' for o, n in counts)
     )
     section('S41', 'Idle-cash preset', 'computed', body,
             'Monthly cost of leaving 60,000 in the current account: ' + '; '.join(f'{r[0]} {r[1]}' for r in rows) +
-            '. BoI rate labelled as the source of the fund\'s return (proxy). Filled in: π 3% for the fund row.')
+            '. BoI rate labelled as the source of the fund\'s return (proxy). Coverage line (F-83): considered ' + str(len(cov)) + '; ' + '; '.join(f'{o} {n}' for o, n in counts) +
+            '; child savings (both routes) not eligible; savings plan, renewable money-market fund, government bond, brokerage account and the provident wrappers not evaluated (G-28); tier 2 not evaluated (G-24). Filled in: π 3% for the fund row.')
 
 
 def s46_fill():
@@ -1912,6 +1932,14 @@ def s40_fill():
     rows.append(('fixed-rate government bond, 3.75% coupon', bd, f'trade {f2(bd_fees["trade"])}, custody {f2(bd_fees["custody"])}, tax {f2(bd_tax)}'))
     s14, _, o14, _ = run_etf(T, 100000.0, 4000.0, 0.05, 0.025)
     rows.append(('ETF in a bank brokerage account (r_g 5%)', o14['V'], f'fees {f2(sum(s14.fees.values()) + o14["exit_commission"] + o14["exit_spread"])}, exit tax {f2(o14["tax"])}'))
+    # current account for the compared money: eligible (any time), so it is ranked too (F-83)
+    ca = ca_tax = 0.0
+    for m in range(1, T + 1):
+        ca += sum(c for c, _ in sched.get(m, []))
+        it = ca * mrate(0.005)
+        ca_tax += 0.15 * it
+        ca += 0.85 * it
+    rows.append(('current account at 0.5%', ca, f'tax during {f2(ca_tax)}'))
     ranked = sorted(rows, key=lambda r: -r[1])
     IT = path.I(T)
     # kupat gemel lehashkaa: the 83,641 ceiling binds in year 1
@@ -1922,6 +1950,30 @@ def s40_fill():
         sk[m].append((4000.0 * path.I(m), m))
     rk = run_provident(T, sk, 0.05, path, direct=0.0010, balfee=lambda m: 0.008)
     ek = kgl_exit(rk, path, T)
+    # coverage line (F-83): one outcome per tier-1 wrapper and tier-2 instrument
+    cov = [(r[0], 'ranked', f'rank {i + 1}') for i, r in enumerate(ranked)]
+    # the other tier-1 wrapper records (data-schema §2 wrapper IDs)
+    cs = 'takes the NII amounts and the parent\'s matching deposit only, not this money (method section 8; CS-02, CS-04, CS-16)'
+    cov += [
+        ('savings plan', 'not evaluated', 'no savings-plan terms among the inputs (production: data/terms/deposits/, R4)'),
+        ('renewable money-market fund', 'not evaluated', 'monthly deposits into fixed-date series are not set (G-30)'),
+        ('kupat gemel lehashkaa', 'listed, not ranked', 'the yearly ceiling takes only part of the money (KGL-02, KGL-04; F-05)'),
+        ('keren hishtalmut', 'listed, not ranked', 'employee (product D15); locked 6 years (TXH-09)'),
+        ('comprehensive pension fund', 'listed, not ranked', 'locked to 60 (PEN-26)'),
+        ('general pension fund', 'listed, not ranked', 'locked to 60 (PEN-26)'),
+        ('provident fund for annuity', 'listed, not ranked', 'exit as pension, locked to 60 (PEN-34, PEN-26)'),
+        ('IRA in a study fund', 'listed, not ranked', 'as the study fund it is held in (IRA-25)'),
+        ('IRA in a provident fund', 'listed, not ranked', 'as the provident fund it is held in (IRA-25)'),
+        ('child savings, provident route', 'not eligible', cs),
+        ('child savings, bank route', 'not eligible', cs),
+    ]
+    L('KGL-02', 'KGL-04', 'TXH-09', 'PEN-26', 'PEN-34', 'IRA-25', 'CS-02', 'CS-04', 'CS-16')  # register the rules cited in the coverage reasons
+    cov += [(t, 'not evaluated', 'tier 2, open questions (G-24)') for t in (
+        'savings policies', 'executive insurance', 'structured deposits', 'corporate bonds', 'managed and robo portfolios',
+        'foreign-currency deposits', 'REITs', 'gold via funds', 'Amendment 190 deposits')]
+    order = ['ranked', 'listed, not ranked', 'not eligible', 'excluded by the person\'s constraint', 'not evaluated']
+    counts = [(o, sum(1 for c in cov if c[1] == o)) for o in order]
+    assert len({c[0] for c in cov}) == len(cov) == sum(n for _, n in counts)
     # the 50,000 kept available in the current account
     cab = 50000.0
     for m in range(1, T + 1):
@@ -1935,13 +1987,18 @@ def s40_fill():
         f'| 4 | Bond: bought at par plus accrued interest; the full coupon taxed 15% (whether the accrued interest paid offsets it is open, so the conservative reading is used; under 0.5%) | {L("TXI-15", "TXI-16", "TXI-12")} | — |\n'
         f'| 5 | Kupat gemel lehashkaa: 100,000 now exceeds the 83,641 yearly ceiling; it takes 83,641 and nothing more in year 1, so {f2(routed)} goes to the next goal. It cannot take the same money, so it is listed, not ranked | {L("KGL-02", "KGL-03", "KGL-04")}; method F-05 | value {f2(ek["V25"])} on what it takes |\n'
         f'| 6 | Study fund: employee, and locked for 6 years → listed, not ranked. Pension: locked to 60 → listed | product D15; {L("TXH-09", "PEN-26")} | listed |\n'
-        f'| 7 | Rank by real value at 4 years after fees and tax; tie test between the top two with θ = {THETA}% | method F-80 | see table |\n\n'
+        f'| 7 | Rank by real value at 4 years after fees and tax; tie test between the top two with θ = {THETA}%. The current account also takes the compared money (exit any time), so it is ranked | method F-80, F-83; {L("TXI-08")} | see table |\n'
+        f'| 8 | Coverage line: every tier-1 wrapper and tier-2 instrument accounted for once | method F-83; product D17 | see second table |\n\n'
         + table(['Rank', 'Option', 'Nominal V', 'Real V', 'Fees and tax'],
                 [[i + 1, r[0], f2(r[1]), f2(r[1] / IT), r[2]] for i, r in enumerate(ranked)])
+        + '\n\n' + table(['Candidate', 'Outcome', 'Reason'], [[c, o, r] for c, o, r in cov])
+        + f'\n\nConsidered {len(cov)}: ' + ', '.join(f'{o} {n}' for o, n in counts)
     )
     section('S40', "Wrapper mode: the founder's apartment case", 'computed', body,
             f'Ranked (real at 4 years, same money in each): ' + '; '.join(f'{i + 1}. {r[0]} {f2(r[1] / IT)}' for i, r in enumerate(ranked)) +
-            f'. Top two: {tie_text(ranked[0][1], ranked[1][1])}. The 50,000 kept available in the current account grows to {f2(cab)} ({f2(cab / IT)} real). Kupat gemel lehashkaa: listed, not ranked (the 83,641 ceiling takes only part of year 1; {f2(routed)} routed to the next goal). Study fund and pension: listed, not ranked (locked). Filled in: every wrapper\'s terms from the earlier examples.')
+            f'. Top two: {tie_text(ranked[0][1], ranked[1][1])}. The 50,000 kept available in the current account grows to {f2(cab)} ({f2(cab / IT)} real). Kupat gemel lehashkaa: listed, not ranked (the 83,641 ceiling takes only part of year 1; {f2(routed)} routed to the next goal). Study fund and pension: listed, not ranked (locked). Coverage line (F-83): considered {len(cov)}; ' + '; '.join(f'{o} {n}' for o, n in counts) +
+            '; not ranked, with reasons: ' + '; '.join(f'{c} ({o}: {r})' for c, o, r in cov if o != 'ranked') +
+            '. Fund variants, tracks and providers inside each wrapper: compared in the workbench (3.4). Filled in: every wrapper\'s terms from the earlier examples.')
 
 
 def main():

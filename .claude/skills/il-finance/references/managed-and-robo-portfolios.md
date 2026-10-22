@@ -1,7 +1,7 @@
 # Managed and robo portfolios (ניהול תיקי השקעות, תיק השקעות דיגיטלי)
 
 Checked: 2026-10-22 · Owner: domain-specialist
-Serves: product.md 3.1, the tier-2 "not covered yet" page (D2; roadmap R1). D2 graduation to tier 1 (roadmap R5 and ongoing). 3.10 decoder, where a manager's app or site offers a managed or "digital" portfolio, for example Meitav Manager. D4: an ISA-reported fee average by portfolio size exists for this provider class. D11: robo risk questionnaires.
+Serves: product.md 3.1, the tier-2 "not covered yet" page (D2; roadmap R1). D2 graduation to tier 1 (roadmap R5 and ongoing). 3.10 catalogue, where a manager's app or site offers a managed or "digital" portfolio, for example Meitav Manager. D4: an ISA-reported fee average by portfolio size exists for this provider class. D11: robo risk questionnaires.
 Scope: in:
 - the legal basis and licence;
 - the duties a portfolio manager owes: loyalty, care, suitability, the written agreement, reporting, records, special risks, conflicts, affiliation and benefits;
@@ -540,7 +540,7 @@ Digital offerings confirmed on own pages: Meitav Manager, Phoenix digital portfo
    - Where the account is held and in whose name (Meitav Trade? a bank?).
    - The Meitav funds used per track, and their fees.
    - Whether holdings can be moved in kind on exit.
-   - Whether the product appears in the Meitav app, for the decoder.
+   - Whether the product appears in the Meitav app, for the catalogue.
    - Tried: Manager page, routes page, disclosure page. Probably in the Manager agreement, which is shown at online joining, or by asking Meitav.
 5. **Meitav private-client fee rates by portfolio size.** The page says the fee falls with size but gives no rates. Not published on the pages read.
 6. **Phoenix digital portfolio.** Fee, custodian, the legal entity's full name, and whether its funds are group funds (Kesem). Tried: product page. Probably the XNES tariff (https://www.xnes.co.il/media/nwogkoos/taarifon.pdf, not opened in this pass) and the agreement.

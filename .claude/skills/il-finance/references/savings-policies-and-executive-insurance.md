@@ -371,7 +371,7 @@ D2: a tier-2 instrument moves to tier 1 when it has a sourced record and its tax
   1. Tax: the whole of TXA (capital gains basis, real gain, notional redemption, switch and inter-insurer transfer treatment). Under D10 nothing computes until these are at least secondary.
   2. Whether any regulatory fee cap exists (open question 2). Without it, fee comparisons can use only each insurer's contractual maximum and the CMA average.
   3. Minimums, payout times and partial-withdrawal rules for the remaining six insurers (open questions 5, 14), needed for the workbench (3.4).
-  4. No way to tell savings-policy tracks from executive tracks in Bituach-Net (INS-23). The decoder (3.10) needs a hand-kept `data/catalog/` mapping from insurer product names to tracks.
+  4. No way to tell savings-policy tracks from executive tracks in Bituach-Net (INS-23). The catalogue (3.10) needs a hand-kept `data/catalog/` mapping from insurer product names to tracks.
   5. The inter-insurer transfer route (open question 7).
 
 **Executive insurance**
