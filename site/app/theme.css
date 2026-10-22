@@ -1,0 +1,349 @@
+/*
+ * Design tokens. What each token is for, and the components that use them: docs/design-system.md.
+ *
+ * Three tiers:
+ *   1. Palette (--palette-*): raw oklch ramps. Never used by components.
+ *   2. Semantic roles (--background, --entered, --chart-fee, ...): what a colour means,
+ *      one value each (the site is dark only). Components use only these.
+ *   3. Tailwind utilities (@theme inline at the end): bg-background, text-entered, ...
+ *      Tailwind's default colours are removed, so a raw palette step cannot be reached from a class.
+ *
+ * Contrast of every text and mark pair was checked (docs/design-system.md 2.2); re-check after
+ * changing any value. The palette keeps its light steps; no light theme exists.
+ */
+
+/* ---------------------------------------------------------------- 1. Palette
+ * Hue ramps share one lightness ladder (50: 0.975 … 950: 0.24), so step 700 is always dark
+ * enough for text on a light surface and step 300 for text on a dark one.
+ * Chroma is reduced where a step would fall outside sRGB. */
+:root {
+  /* Warm grey: page, surfaces, text, borders */
+  --palette-neutral-0: oklch(0.995 0.002 80);
+  --palette-neutral-50: oklch(0.978 0.004 80);
+  --palette-neutral-100: oklch(0.955 0.005 80);
+  --palette-neutral-150: oklch(0.93 0.006 80);
+  --palette-neutral-200: oklch(0.9 0.007 80);
+  --palette-neutral-300: oklch(0.82 0.008 80);
+  --palette-neutral-400: oklch(0.7 0.009 80);
+  --palette-neutral-500: oklch(0.58 0.01 80);
+  --palette-neutral-600: oklch(0.5 0.01 80);
+  --palette-neutral-700: oklch(0.4 0.009 80);
+  --palette-neutral-800: oklch(0.31 0.008 80);
+  --palette-neutral-850: oklch(0.27 0.007 80);
+  --palette-neutral-900: oklch(0.235 0.006 80);
+  --palette-neutral-950: oklch(0.2 0.005 80);
+  --palette-neutral-975: oklch(0.17 0.004 80);
+
+  /* Teal: actions, links, focus; in charts, the value of the money */
+  --palette-teal-50: oklch(0.975 0.014 190);
+  --palette-teal-100: oklch(0.945 0.029 190);
+  --palette-teal-200: oklch(0.895 0.052 190);
+  --palette-teal-300: oklch(0.82 0.081 190);
+  --palette-teal-400: oklch(0.73 0.104 190);
+  --palette-teal-500: oklch(0.64 0.109 190);
+  --palette-teal-600: oklch(0.55 0.095 190);
+  --palette-teal-700: oklch(0.47 0.081 190);
+  --palette-teal-800: oklch(0.39 0.066 190);
+  --palette-teal-900: oklch(0.31 0.053 190);
+  --palette-teal-950: oklch(0.24 0.042 190);
+
+  /* Blue ink: "entered by you", the person's own pen */
+  --palette-blue-50: oklch(0.975 0.01 262);
+  --palette-blue-100: oklch(0.945 0.026 262);
+  --palette-blue-200: oklch(0.895 0.05 262);
+  --palette-blue-300: oklch(0.82 0.088 262);
+  --palette-blue-400: oklch(0.73 0.138 262);
+  --palette-blue-500: oklch(0.64 0.192 262);
+  --palette-blue-600: oklch(0.55 0.2 262);
+  --palette-blue-700: oklch(0.47 0.18 262);
+  --palette-blue-800: oklch(0.39 0.15 262);
+  --palette-blue-900: oklch(0.31 0.12 262);
+  --palette-blue-950: oklch(0.24 0.09 262);
+
+  /* Violet: "computed" */
+  --palette-violet-50: oklch(0.975 0.014 302);
+  --palette-violet-100: oklch(0.945 0.03 302);
+  --palette-violet-200: oklch(0.895 0.06 302);
+  --palette-violet-300: oklch(0.82 0.108 302);
+  --palette-violet-400: oklch(0.73 0.168 302);
+  --palette-violet-500: oklch(0.64 0.2 302);
+  --palette-violet-600: oklch(0.55 0.2 302);
+  --palette-violet-700: oklch(0.47 0.18 302);
+  --palette-violet-800: oklch(0.39 0.15 302);
+  --palette-violet-900: oklch(0.31 0.12 302);
+  --palette-violet-950: oklch(0.24 0.09 302);
+
+  /* Amber: caution (stale, secondary or institution source) */
+  --palette-amber-50: oklch(0.975 0.018 70);
+  --palette-amber-100: oklch(0.945 0.039 70);
+  --palette-amber-200: oklch(0.895 0.074 70);
+  --palette-amber-300: oklch(0.82 0.115 70);
+  --palette-amber-400: oklch(0.73 0.149 70);
+  --palette-amber-500: oklch(0.64 0.139 70);
+  --palette-amber-600: oklch(0.55 0.119 70);
+  --palette-amber-700: oklch(0.47 0.102 70);
+  --palette-amber-800: oklch(0.39 0.084 70);
+  --palette-amber-900: oklch(0.31 0.067 70);
+  --palette-amber-950: oklch(0.24 0.054 70);
+
+  /* Red: blocked by an open rule; input errors */
+  --palette-red-50: oklch(0.975 0.012 27);
+  --palette-red-100: oklch(0.945 0.026 27);
+  --palette-red-200: oklch(0.895 0.054 27);
+  --palette-red-300: oklch(0.82 0.1 27);
+  --palette-red-400: oklch(0.73 0.166 27);
+  --palette-red-500: oklch(0.64 0.2 27);
+  --palette-red-600: oklch(0.55 0.2 27);
+  --palette-red-700: oklch(0.47 0.18 27);
+  --palette-red-800: oklch(0.39 0.15 27);
+  --palette-red-900: oklch(0.31 0.12 27);
+  --palette-red-950: oklch(0.24 0.09 27);
+
+  /* Green: considered, covered */
+  --palette-green-50: oklch(0.975 0.018 150);
+  --palette-green-100: oklch(0.945 0.037 150);
+  --palette-green-200: oklch(0.895 0.068 150);
+  --palette-green-300: oklch(0.82 0.105 150);
+  --palette-green-400: oklch(0.73 0.135 150);
+  --palette-green-500: oklch(0.64 0.15 150);
+  --palette-green-600: oklch(0.55 0.15 150);
+  --palette-green-700: oklch(0.47 0.129 150);
+  --palette-green-800: oklch(0.39 0.106 150);
+  --palette-green-900: oklch(0.31 0.086 150);
+  --palette-green-950: oklch(0.24 0.068 150);
+
+  /* Orange: fees, in charts only */
+  --palette-orange-50: oklch(0.975 0.012 48);
+  --palette-orange-100: oklch(0.945 0.029 48);
+  --palette-orange-200: oklch(0.895 0.059 48);
+  --palette-orange-300: oklch(0.82 0.11 48);
+  --palette-orange-400: oklch(0.73 0.162 48);
+  --palette-orange-500: oklch(0.64 0.174 48);
+  --palette-orange-600: oklch(0.55 0.15 48);
+  --palette-orange-700: oklch(0.47 0.128 48);
+  --palette-orange-800: oklch(0.39 0.107 48);
+  --palette-orange-900: oklch(0.31 0.086 48);
+  --palette-orange-950: oklch(0.24 0.067 48);
+
+  /* Rose: tax, in charts only */
+  --palette-rose-50: oklch(0.975 0.013 358);
+  --palette-rose-100: oklch(0.945 0.029 358);
+  --palette-rose-200: oklch(0.895 0.059 358);
+  --palette-rose-300: oklch(0.82 0.111 358);
+  --palette-rose-400: oklch(0.73 0.171 358);
+  --palette-rose-500: oklch(0.64 0.19 358);
+  --palette-rose-600: oklch(0.55 0.19 358);
+  --palette-rose-700: oklch(0.47 0.171 358);
+  --palette-rose-800: oklch(0.39 0.143 358);
+  --palette-rose-900: oklch(0.31 0.114 358);
+  --palette-rose-950: oklch(0.24 0.086 358);
+}
+
+/* ---------------------------------------------------------------- 2. Semantic roles
+ * The site is dark only (founder, 2026-10-22). */
+:root {
+  color-scheme: dark;
+
+  /* Surfaces and text, lighter as they rise. Names follow shadcn/ui, so copied components pick them up unchanged. */
+  --background: var(--palette-neutral-975);
+  --foreground: var(--palette-neutral-100);
+  --card: var(--palette-neutral-950);
+  --card-foreground: var(--foreground);
+  --popover: var(--palette-neutral-900); /* popovers and sheets */
+  --popover-foreground: var(--foreground);
+  --muted: var(--palette-neutral-900);
+  --muted-foreground: var(--palette-neutral-400);
+  --secondary: var(--palette-neutral-850);
+  --secondary-foreground: var(--foreground);
+  --accent: var(--palette-neutral-850); /* hover and pressed wash on rows and menu items */
+  --accent-foreground: var(--foreground);
+  --border: var(--palette-neutral-850); /* dividers and card edges (decorative) */
+  --input: var(--palette-neutral-600); /* field and control edges (3:1 or more) */
+  --ring: var(--palette-teal-400);
+  --overlay: oklch(0 0 0 / 0.6); /* behind a bottom sheet or dialog */
+
+  /* Action */
+  --primary: var(--palette-teal-300);
+  --primary-foreground: var(--palette-neutral-975);
+  --link: var(--palette-teal-300);
+  --destructive: var(--palette-red-300);
+
+  /* The three number states (D7) */
+  --sourced: var(--palette-neutral-500); /* solid hairline under a sourced number */
+  --computed: var(--palette-violet-400); /* dotted underline and mark of a computed number */
+  --computed-subtle: var(--palette-violet-950);
+  --entered: var(--palette-blue-300); /* text of a value the person entered */
+  --entered-subtle: var(--palette-blue-950); /* highlight behind it */
+
+  /* Flags and marks */
+  --caution: var(--palette-amber-400); /* icon: stale (D3), secondary or institution source (D10) */
+  --caution-foreground: var(--palette-amber-200);
+  --caution-subtle: var(--palette-amber-950);
+  --blocked: var(--palette-red-400); /* icon and hatch: blocked by an open rule (D10, method §12) */
+  --blocked-foreground: var(--palette-red-200);
+  --blocked-subtle: var(--palette-red-950);
+  --positive: var(--palette-green-400); /* icon: dimension considered (3.3) */
+  --positive-foreground: var(--palette-green-200);
+  --positive-subtle: var(--palette-green-950);
+
+  /* Charts. Value, fee and tax families pass the categorical checks (all pairs) on the card surface;
+     fee and tax steps pass the ordinal checks. */
+  --chart-grid: var(--palette-neutral-850);
+  --chart-axis: var(--palette-neutral-700);
+  --chart-text: var(--muted-foreground);
+  --chart-crosshair: var(--palette-neutral-300);
+  --chart-contributions: var(--palette-neutral-300); /* money put in: a neutral line over the bands */
+  --chart-value: var(--palette-teal-500); /* growth, net of fees and tax */
+  --chart-net: var(--palette-teal-200); /* the headline line: net value at each month */
+  --chart-fee: var(--palette-orange-500);
+  --chart-fee-1: var(--palette-orange-700);
+  --chart-fee-2: var(--palette-orange-600);
+  --chart-fee-3: var(--palette-orange-500);
+  --chart-fee-4: var(--palette-orange-400);
+  --chart-tax: var(--palette-rose-600);
+  --chart-tax-1: var(--palette-rose-600); /* tax during */
+  --chart-tax-2: var(--palette-rose-400); /* tax at exit */
+  --chart-entered: var(--palette-blue-400); /* dashed: a series that rests on a return the person entered */
+  --chart-blocked: var(--blocked); /* hatch over a part the method cannot compute */
+  --chart-marker: var(--palette-neutral-400); /* "locked until", exit points */
+}
+
+/* ---------------------------------------------------------------- Non-colour tokens */
+:root {
+  /* Layout */
+  --gutter: clamp(1rem, 4vw, 2rem); /* page side padding: 16px on a phone, up to 32px */
+  --section-gap: clamp(2.5rem, 7vw, 4rem); /* between page sections */
+  --target: 2.75rem; /* minimum touch target, 44px */
+  --field-height: 3rem; /* inputs and primary buttons, 48px */
+
+  /* Hebrew text */
+  --word-spacing-hebrew: 0.05em;
+
+  /* Provenance marks under numbers (D7) */
+  --num-underline-thickness: 1px; /* sourced: solid */
+  --num-dotted-thickness: 2px; /* computed: dotted needs the extra weight to read as dots */
+  --num-underline-offset: 0.3em;
+
+  /* Motion. Set to zero when the device asks for reduced motion. */
+  --duration-fast: 120ms; /* press, hover, toggles */
+  --duration-base: 200ms; /* sheets, popovers, disclosure */
+  --duration-chart: 400ms; /* graphs and numbers moving to new values after an input changes */
+
+  /* Stacking (popovers and sheets use the top layer and need none) */
+  --z-sticky: 20;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-chart: 0ms;
+  }
+}
+
+/* ---------------------------------------------------------------- 3. Tailwind theme */
+@theme {
+  --color-*: initial; /* no default palette: only the semantic colours below exist as utilities */
+  --tracking-*: initial; /* never letter-space Hebrew */
+
+  /* Latin face first: Inter has no Hebrew, so Hebrew falls through to Heebo glyph by glyph.
+     Arial (has Hebrew) holds the layout while the web fonts load. ₪ comes from Heebo. */
+  --font-sans: "Inter Variable", "Heebo Variable", Arial, sans-serif;
+
+  /* Type scale for Hebrew: body never below 16px, taller line heights than Latin */
+  --text-xs: 0.8125rem; /* 13px: captions, axis ticks, source dates */
+  --text-xs--line-height: 1.5;
+  --text-sm: 0.875rem; /* 14px: secondary text, labels, table cells on a phone */
+  --text-sm--line-height: 1.6;
+  --text-base: 1rem; /* 16px: body, inputs (16px stops iOS zooming into a field) */
+  --text-base--line-height: 1.7;
+  --text-lg: 1.125rem; /* 18px: lede, card titles, h3 */
+  --text-lg--line-height: 1.6;
+  --text-xl: 1.25rem; /* 20px: h2 on a phone */
+  --text-xl--line-height: 1.45;
+  --text-2xl: 1.5rem; /* 24px: h1 on a phone, h2 on PC */
+  --text-2xl--line-height: 1.4;
+  --text-3xl: 1.875rem; /* 30px: h1 on PC */
+  --text-3xl--line-height: 1.3;
+  --text-figure: 2rem; /* 32px: a headline number (digits only) */
+  --text-figure--line-height: 1.15;
+
+  --radius-sm: 0.25rem; /* badges, tags */
+  --radius-md: 0.5rem; /* inputs, buttons, chips */
+  --radius-lg: 0.75rem; /* cards, popovers */
+  --radius-xl: 1.25rem; /* top corners of a bottom sheet */
+
+  --shadow-sm: 0 1px 2px oklch(0.2 0.01 80 / 0.06);
+  --shadow-md: 0 2px 8px -2px oklch(0.2 0.01 80 / 0.1), 0 1px 2px oklch(0.2 0.01 80 / 0.06);
+  --shadow-lg: 0 12px 32px -8px oklch(0.2 0.01 80 / 0.18), 0 2px 6px oklch(0.2 0.01 80 / 0.08);
+
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-exit: cubic-bezier(0.3, 0, 1, 1);
+
+  --container-measure: 38rem; /* prose line length; check real Hebrew lines in the browser */
+  --container-page: 72rem;
+}
+
+@theme inline {
+  --spacing-gutter: var(--gutter);
+  --spacing-section: var(--section-gap);
+  --spacing-target: var(--target);
+  --spacing-field: var(--field-height);
+  --radius-field: var(--radius-md);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-overlay: var(--overlay);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-link: var(--link);
+  --color-destructive: var(--destructive);
+
+  --color-sourced: var(--sourced);
+  --color-computed: var(--computed);
+  --color-computed-subtle: var(--computed-subtle);
+  --color-entered: var(--entered);
+  --color-entered-subtle: var(--entered-subtle);
+
+  --color-caution: var(--caution);
+  --color-caution-foreground: var(--caution-foreground);
+  --color-caution-subtle: var(--caution-subtle);
+  --color-blocked: var(--blocked);
+  --color-blocked-foreground: var(--blocked-foreground);
+  --color-blocked-subtle: var(--blocked-subtle);
+  --color-positive: var(--positive);
+  --color-positive-foreground: var(--positive-foreground);
+  --color-positive-subtle: var(--positive-subtle);
+
+  --color-chart-grid: var(--chart-grid);
+  --color-chart-axis: var(--chart-axis);
+  --color-chart-text: var(--chart-text);
+  --color-chart-crosshair: var(--chart-crosshair);
+  --color-chart-contributions: var(--chart-contributions);
+  --color-chart-value: var(--chart-value);
+  --color-chart-net: var(--chart-net);
+  --color-chart-fee: var(--chart-fee);
+  --color-chart-fee-1: var(--chart-fee-1);
+  --color-chart-fee-2: var(--chart-fee-2);
+  --color-chart-fee-3: var(--chart-fee-3);
+  --color-chart-fee-4: var(--chart-fee-4);
+  --color-chart-tax: var(--chart-tax);
+  --color-chart-tax-1: var(--chart-tax-1);
+  --color-chart-tax-2: var(--chart-tax-2);
+  --color-chart-entered: var(--chart-entered);
+  --color-chart-blocked: var(--chart-blocked);
+  --color-chart-marker: var(--chart-marker);
+}

@@ -1,8 +1,37 @@
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/heebo";
 @import "tailwindcss";
+@import "./theme.css";
 
-/* Right to left throughout: use logical utilities (ms-, me-, ps-, pe-, start-, end-), never left/right.
-   Design tokens (fonts, colours, spacing) come from the design pass, docs/architecture.md 3.9. */
-html {
-  background: white;
-  color: #111;
+/* Right to left throughout: use logical utilities (ms-, me-, ps-, pe-, inset-s-, inset-e-), never left/right.
+   Tokens are in theme.css; how to use them is in docs/design-system.md. */
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--border);
+  }
+
+  html {
+    background: var(--background);
+    color: var(--foreground);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+    word-spacing: var(--word-spacing-hebrew);
+    text-rendering: optimizeLegibility;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--entered-subtle);
+  }
 }
