@@ -1,0 +1,208 @@
+{
+ "passed": 20,
+ "total": 20,
+ "results": [
+  {
+   "query": "for the idle-cash preset I need to know: how is a קרן כספית taxed when I redeem it, compared with a regular shekel bank deposit? is it 15% or 25% and on what base",
+   "should_trigger": true,
+   "triggered": true,
+   "pass": true,
+   "first_tools": [
+    "Skill:{\"skill\": \"il-finance\", \"args\": \"money-market fund (קרן כספית) taxation on redem"
+   ]
+  },
+  {
+   "query": "my friend is 58, salaried, keren hishtalmut open since 2017. her employer deposits 7.5% on a 19k salary. if she withdraws next year is any of it taxable?",
+   "should_trigger": true,
+   "triggered": true,
+   "pass": true,
+   "first_tools": [
+    "Skill:{\"skill\": \"il-finance\", \"args\": \"keren hishtalmut withdrawal tax: salaried emplo"
+   ]
+  },
+  {
+   "query": "write tests/cases/etf-vs-gemel.md: same S&P 500 exposure held in a brokerage account vs a kupat gemel lehashkaa for 20 years, include the exit tax and the tax on switching tracks",
+   "should_trigger": true,
+   "triggered": true,
+   "pass": true,
+   "first_tools": [
+    "Skill:{\"skill\": \"il-finance\"}"
+   ]
+  },
+  {
+   "query": "what's the maximum management fee a new comprehensive pension fund is allowed to charge on deposits and on the balance? my statement shows 1.49% from deposits",
+   "should_trigger": true,
+   "triggered": true,
+   "pass": true,
+   "first_tools": [
+    "Skill:{\"skill\": \"il-finance\", \"args\": \"Management-fee caps for a new comprehensive pen"
+   ]
+  },
+  {
+   "query": "in the meitav app i see 'מיטב כספית 13112026 מתחדש' - what kind of product is that and is it exempt or taxable",
+   "should_trigger": true,
+   "triggered": true,
+   "pass": true,
+   "first_tools": [
+    "Skill:{\"skill\": \"il-finance\", \"args\": \"Decode product name 'מיטב כספית 13112026 מתחדש'"
+   ]
+  },
+  {
+   "query": "draft the 'how it's taxed' section of the guide page for חיסכון לכל ילד - what happens at 18 and at 21",
+   "should_trigger": true,
+   "triggered": true,
+   "pass": true,
+   "first_tools": [
+    "Skill:{\"skill\": \"il-finance\", \"args\": \"child savings (חיסכון לכל ילד) taxation: withdr"
+   ]
+  },
+  {
+   "query": "for the fund variants comparison: does an israeli resident face US estate tax holding an S&P 500 ETF domiciled in the US vs an irish UCITS one? need the rule with a source",
+   "should_trigger": true,
+   "triggered": true,
+   "pass": true,
+   "first_tools": [
+    "Skill:{\"skill\": \"il-finance\", \"args\": \"US estate tax for Israeli resident holding US-d"
+   ]
+  },
+  {
+   "query": "bank discount offers 'פצ\"מ דולר 6-12 חודשים'. what is this deposit and how is the interest taxed?",
+   "should_trigger": true,
+   "triggered": true,
+   "pass": true,
+   "first_tools": [
+    "Skill:{\"skill\": \"il-finance\", \"args\": \"Decode the bank product name 'פצ\\\"מ דולר 6-12 ח"
+   ]
+  },
+  {
+   "query": "add the 2026 annual deposit ceiling for kupat gemel lehashkaa to data/ with its source and date",
+   "should_trigger": true,
+   "triggered": true,
+   "pass": true,
+   "first_tools": [
+    "Skill:{\"skill\": \"il-finance\", \"args\": \"kupat gemel lehashkaa annual deposit ceiling 20"
+   ]
+  },
+  {
+   "query": "i'm leaving my job next month. what do i choose on form 161 for the severance money if i want to keep the tax exemption for later?",
+   "should_trigger": true,
+   "triggered": true,
+   "pass": true,
+   "first_tools": [
+    "Skill:{\"skill\": \"il-finance\", \"args\": \"Severance pay (pitzuim) on leaving a job: Form "
+   ]
+  },
+  {
+   "query": "the comparison table breaks on mobile in RTL - the shekel sign ends up on the wrong side of the number. fix the CSS",
+   "should_trigger": false,
+   "triggered": false,
+   "pass": true,
+   "first_tools": [
+    "Glob:{\"pattern\": \"**/*.{css,scss,html,tsx,jsx,vue,svelte,astro}\"}",
+    "Grep:{\"pattern\": \"₪|comparison|השוואה\", \"-i\": true, \"glob\": \"!research/**\"}"
+   ]
+  },
+  {
+   "query": "translate the intro paragraph of the money-market fund guide page into natural, friendly Hebrew for my friends",
+   "should_trigger": false,
+   "triggered": false,
+   "pass": true,
+   "first_tools": [
+    "Grep:{\"pattern\": \"(?i)money.?market|קרן כספית|kaspit\", \"output_mode\": \"files_with_mat",
+    "Glob:{\"pattern\": \"**/*guide*\"}",
+    "Grep:{\"pattern\": \"(?i)guide|money.?market|כספית\", \"path\": \"docs\", \"output_mode\": \"con"
+   ]
+  },
+  {
+   "query": "set up vitest and a github action that runs everything in tests/cases on every push",
+   "should_trigger": false,
+   "triggered": false,
+   "pass": true,
+   "first_tools": [
+    "Glob:{\"pattern\": \"{package.json,tests/**,.github/**,vitest.config.*,tsconfig.json}\"}",
+    "Grep:{\"pattern\": \"(?i)vitest|test cases|tests/cases|github action|CI\\\\b\", \"path\": \"do",
+    "Grep:{\"pattern\": \"(?i)typescript|node|framework|stack|static site|hosting|github|json",
+    "Agent:{\"description\": \"Set up vitest and CI\", \"subagent_type\": \"general-purpose\", \"run",
+    "ToolSearch:{\"query\": \"select:Bash,Write,Edit\", \"max_results\": 5}"
+   ]
+  },
+  {
+   "query": "my cousin in texas asked what the 401k contribution limit is for 2026 and whether a roth IRA is better for him",
+   "should_trigger": false,
+   "triggered": false,
+   "pass": true,
+   "first_tools": []
+  },
+  {
+   "query": "refactor the sensitivity panel react component so the chart doesn't re-render on every slider move",
+   "should_trigger": false,
+   "triggered": false,
+   "pass": true,
+   "first_tools": [
+    "Grep:{\"pattern\": \"(?i)sensitivity\", \"output_mode\": \"files_with_matches\"}",
+    "Glob:{\"pattern\": \"**/*.{jsx,tsx,js,ts}\"}",
+    "Grep:{\"pattern\": \"(?i)sensitivity\", \"path\": \"docs\", \"output_mode\": \"content\", \"-C\": 2"
+   ]
+  },
+  {
+   "query": "write a script that pulls the bank of israel policy rate series from the EDGE API every day and saves it under data/series/",
+   "should_trigger": false,
+   "triggered": false,
+   "pass": true,
+   "first_tools": [
+    "Grep:{\"pattern\": \"(?i)edge|policy rate|ריבית|series|daily|scheduled|cron|Bank of Isra",
+    "Glob:{\"pattern\": \"data/**/*\"}",
+    "Read:{\"file_path\": \"/home/ori/.claude/projects/-home-ori-dev-finance-tool/memory/pm-d",
+    "Grep:{\"pattern\": \"(?i)edge\\\\.boi|edge api|sdmx|BR_|policy rate|ריבית בנק ישראל|series",
+    "Read:{\"file_path\": \"/home/ori/dev/finance-tool/docs/product.md\", \"offset\": 215, \"limi"
+   ]
+  },
+  {
+   "query": "make a chart comparing how the TA-35 did last month against the S&P 500",
+   "should_trigger": false,
+   "triggered": false,
+   "pass": true,
+   "first_tools": [
+    "Grep:{\"pattern\": \"TA-35|TA35|S&P|SPX|ת\\\"א 35|ת״א-35\", \"path\": \"/home/ori/dev/finance-",
+    "Glob:{\"pattern\": \"data/**/*\"}",
+    "Agent:{\"subagent_type\": \"data-researcher\", \"description\": \"Collect TA-35 and S&P 500 S",
+    "Glob:{\"pattern\": \"data/**\", \"path\": \"/home/ori/dev/finance-tool\"}",
+    "SubagentHandback:{\"message\": \"I could not collect any of the data, and I wrote no files. I did no"
+   ]
+  },
+  {
+   "query": "fix the typo in the release 3 heading of docs/roadmap.md",
+   "should_trigger": false,
+   "triggered": false,
+   "pass": true,
+   "first_tools": [
+    "Grep:{\"pattern\": \"^#\", \"path\": \"/home/ori/dev/finance-tool/docs/roadmap.md\", \"output_",
+    "Read:{\"file_path\": \"/home/ori/dev/finance-tool/docs/roadmap.md\", \"offset\": 1, \"limit\"",
+    "Grep:{\"pattern\": \"[^\\\\x00-\\\\x7F]|  |\\\\t\", \"path\": \"/home/ori/dev/finance-tool/docs/ro"
+   ]
+  },
+  {
+   "query": "what's the cheapest stocks and shares ISA platform in the UK for a monthly £200 deposit",
+   "should_trigger": false,
+   "triggered": false,
+   "pass": true,
+   "first_tools": [
+    "Agent:{\"description\": \"UK ISA platform fees research\", \"subagent_type\": \"general-purpo",
+    "ToolSearch:{\"query\": \"web search fetch\", \"max_results\": 5}",
+    "Agent:{\"description\": \"ISA fees batch A\", \"subagent_type\": \"general-purpose\", \"run_in_",
+    "Agent:{\"description\": \"ISA fees batch B\", \"subagent_type\": \"general-purpose\", \"run_in_",
+    "Agent:{\"description\": \"ISA fees batch C\", \"subagent_type\": \"general-purpose\", \"run_in_"
+   ]
+  },
+  {
+   "query": "summarise the founder interview section of docs/discovery.md in five bullet points",
+   "should_trigger": false,
+   "triggered": false,
+   "pass": true,
+   "first_tools": [
+    "Grep:{\"pattern\": \"^#+ \", \"path\": \"/home/ori/dev/finance-tool/docs/discovery.md\", \"out",
+    "Read:{\"file_path\": \"/home/ori/dev/finance-tool/docs/discovery.md\", \"offset\": 18, \"lim"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,312 @@
+# Tax on Israeli securities and Israeli funds (shares, bonds, mutual funds, money-market funds, ETFs)
+
+Checked: 2026-10-22 · Owner: tax-specialist
+Serves: product.md 3.1 (instrument guide: money-market fund, ETF and mutual-fund pages), 3.2 (wrapper mode and the idle-cash preset), 3.3 (dimension checklist), 3.4 (fund variants), 3.8 (rule base). Roadmap release 1 (instrument guide) and release 2 (closes tax report Q15, which blocks the idle-cash preset).
+Scope: what an individual Israeli resident pays on Israeli-listed shares and bonds and on Israeli mutual funds, money-market funds, tracking funds and ETFs (קרנות סל). Covers capital gains, distributions, dividends, losses, withholding, switching, and the currency component of shekel funds that hold foreign assets. Out of scope: foreign-domiciled funds and foreign securities (`tax-securities-foreign.md`, TXF); interest on deposits, makam and bonds (`tax-interest-deposits-bonds.md`, TXI); brackets, surtax, filing, National Insurance on passive income (`tax-general.md`, TXG); REITs (`tax-tier2-other.md`, TX2); switching inside provident wrappers (`tax-gemel-lehashkaa-ira-child.md` TXK, `tax-hishtalmut.md` TXH, `tax-pension-gemel-lekitzba.md` TXP). None of those files existed on 2026-10-22, so pointers are by file name only.
+
+How the law was read: the Income Tax Ordinance and the regulations were read on Hebrew Wikisource (a mirror of the official text, same status as Nevo in the README). The fetch tool shows at most 125 characters per quote, so long provisions were read in pieces. The Tax Authority guide and the prospectuses were read as page images. Page numbers for the Tax Authority guide (S5) are the printed numbers; the PDF page is the printed number plus 2.
+
+## Summary
+
+- Shares and most securities: 25% of the **real** gain (the gain above CPI), withheld by the bank or TASE member when you sell. 30% for a substantial shareholder. Unlinked bonds: 15% of the **whole (nominal)** gain.
+- An Israeli mutual fund, including a money-market fund and an ETF (קרן סל), is either an **exempt fund** (קרן נאמנות פטורה) or a **taxable fund** (קרן נאמנות חייבת). Each fund's prospectus states which, in the field "מסלול המס".
+- Exempt fund: the fund pays nothing. You pay 25% of your real gain only when you sell or redeem, and 25% on any distribution. Taxable fund: the fund pays tax on its income at the rates an individual would pay. You pay nothing on redemption or on distributions, but a loss on its units cannot be offset.
+- **Money-market funds (Q15):** both money-market prospectuses read here are exempt funds. A saver pays nothing while holding. On redemption the bank withholds 25% of the real (CPI-adjusted) gain. The 15%-of-nominal rate that applies to a shekel deposit does **not** apply to the saver in an exempt money-market fund. No taxable money-market fund was found, but the market was not surveyed (open question 1).
+- Losses: in the same year they offset capital gains, and also interest and dividends from securities taxed at up to 25%. Unused losses carry forward without a time limit, but only against capital gains, and only if a return was filed for the year of the loss. The bank nets gains and losses only inside itself; netting across banks needs an annual return.
+- Moving from one fund or security to another is a sale and is taxed. There is no tax-free switch in a brokerage account.
+
+## Rules
+
+### TXS-01 Capital gain on Israeli-listed shares: rate
+- Rule: An individual pays tax on real capital gain at the s.121 rates, but at no more than 25%. The gain is treated as the top slice of their taxable income. In the Ordinance's words: "בשיעור שלא יעלה על 25%" and "ויראו את רווח ההון כשלב הגבוה ביותר בסולם הכנסתו החייבת". A substantial shareholder (בעל מניות מהותי) who sells securities of that company pays up to 30%.
+- Conditions / exceptions: The 30% case is s.91(b)(2). The Tax Authority guide defines a substantial shareholder as someone holding at least 10% of any means of control, directly or indirectly, alone or with another, at the time of sale or in the preceding 12 months (S5 p.38 defines this for dividends; S5 p.47 applies the test "בעת המכירה, או בשנים שקדמה לה"). Assets bought before 2012 have a linear split with older rates. That is not relevant to a new saver and is left out. Age 60+: see TXS-23.
+- Figures: 25%; 30% (in force 2026; fixed in law).
+- Source: [Income Tax Ordinance](https://he.wikisource.org/wiki/פקודת_מס_הכנסה), s.91(b)(1), (b)(2) · checked 2026-10-22 · primary. [Tax Authority guide "דע זכויותיך וחובותיך 2025"](https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf), p.47 ("רווחי הון מניירות ערך סחירים בבורסה ... חייבים במס בשיעור של 25%"), p.116 (2026 special-rate table: "רווח הון ממכירת ניירות ערך - 15%, 20%, 25%, 30%") · checked 2026-10-22 · primary
+- Dimensions: `tax-at-exit`
+- Likely to change: yes. The Minister can change rates by order in some cases (TXS-03). Rates are set by Knesset legislation.
+
+### TXS-02 Real vs nominal: the inflationary amount
+- Rule: Capital gain splits into real gain and the inflationary amount (סכום אינפלציוני). The inflationary amount is the part of the gain equal to the excess of the CPI-adjusted original price over the original price. Real gain is "ריווח ההון פחות הסכום האינפלציוני". Only the "taxable inflationary amount" (סכום אינפלציוני חייב), meaning the amount accrued up to 31.12.1993, is taxed, at 10%. The rest of the inflationary amount is exempt.
+- Conditions / exceptions: The index (מדד) is the CPI as last published before the relevant day. For a security held by an individual that is denominated in or linked to foreign currency, the exchange rate is the index (TXS-04).
+- Figures: 10% on the pre-1994 inflationary amount. Nothing on the inflationary amount accrued after 1993.
+- Source: [Income Tax Ordinance](https://he.wikisource.org/wiki/פקודת_מס_הכנסה), s.88 definitions "סכום אינפלציוני", "סכום אינפלציוני חייב", "ריווח הון ריאלי", "מדד"; s.91(c) ("המס על הסכום האינפלציוני החייב יהיה 10%.") · checked 2026-10-22 · primary. [Tax Authority guide 2025](https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf), p.46 ("יתרת הסכום האינפלציוני אינה חייבת במס") · checked 2026-10-22 · primary
+- Dimensions: `real-vs-nominal`, `tax-at-exit`
+- Likely to change: no
+
+### TXS-03 Unlinked bonds and other unlinked debt: 15% of the whole gain
+- Rule: The capital gain on selling a bond, commercial paper, loan or "מילווה" that is not linked to the CPI is taxed at no more than 15% (20% for a substantial shareholder). "ויראו את כל רווח ההון כרווח הון ריאלי": the whole nominal gain is taxed and there is no inflation relief. "Not linked" also covers partial linkage: "או שהוא צמוד בחלקו לשיעור עליית המדד, כולו או חלקו".
+- Conditions / exceptions: s.91(b)(3)(b): "שר האוצר רשאי לשנות בצו את שיעור המס ... בהתאם לשינוי במדד". Whether such an order was ever made was not checked (open question 10). This covers capital gains on a bond. Interest and discount income on bonds and makam are in TXI. s.97(a)(1) exempts gains on certain listed non-convertible bonds issued before 8.5.2000; that is legacy only.
+- Figures: 15% / 20% (in force 2026).
+- Source: [Income Tax Ordinance](https://he.wikisource.org/wiki/פקודת_מס_הכנסה), s.91(b)(3)(a)-(c) · checked 2026-10-22 · primary
+- Dimensions: `real-vs-nominal`, `tax-at-exit`
+- Likely to change: yes (Minister's order power)
+
+### TXS-04 Securities in foreign currency: the exchange rate is the index
+- Rule: For a security held by an individual that is denominated in or linked to foreign currency, the exchange rate is the index: "לענין נייר ערך בידי יחיד, הנקוב במטבע חוץ או שערכו צמוד למטבע חוץ, יראו את שער המטבע כמדד". The real gain is therefore the gain above the change in that currency, not above CPI.
+- Conditions / exceptions: This applies to Israeli-listed securities and fund units that are denominated in or linked to foreign currency (for example dollar-denominated units, TXS-14). Foreign securities: see TXF.
+- Figures: none
+- Source: [Income Tax Ordinance](https://he.wikisource.org/wiki/פקודת_מס_הכנסה), s.88 definition "מדד" · checked 2026-10-22 · primary
+- Dimensions: `real-vs-nominal`, `currency`
+- Likely to change: no
+
+### TXS-05 Withholding by banks and TASE members on securities sales
+- Rule: A "financial institution" (מוסד כספי, defined as "תאגיד בנקאי או חבר בורסה") that pays sale proceeds to an individual withholds 25% of the real capital gain. For an unlinked security it withholds 15% of the (nominal) capital gain.
+- Conditions / exceptions: These regulations set no lower rate for age or low income (TXS-23). For a sale of traded securities, no 30-day report is needed if the tax was withheld in full: "במכירת ניירות ערך סחירים אין להגיש הודעה כאמור אם נוכה המס כחוק". If it was not withheld (for example at a broker that does not withhold), the saver must file an annual return and report twice a year, by 31 July (January-June) and by 31 January (July-December), paying an advance with each report. Filing thresholds are in TXG.
+- Figures: 25% real; 15% nominal (unlinked).
+- Source: [Income Tax Regulations (withholding from proceeds ... on sale of a security, sale of a unit in a mutual fund or a future transaction), 5763-2002](https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מתמורה,_מתשלום_או_מרווח_הון_במכירת_נייר_ערך,_במכירת_יחידה_בקרן_נאמנות_או_בעסקה_עתידית)), reg.1 (definition "מוסד כספי"), reg.2(a), 2(b) · checked 2026-10-22 · primary (Wikisource shows the last amendment as תשע"ח; see open question 3). [Tax Authority guide 2025](https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf), p.46 (30-day report and semi-annual reporting), p.117 (section "ו. דיווח ותשלום מקדמות בגין עסקאות בניירות ערך") · checked 2026-10-22 · primary
+- Dimensions: `tax-at-exit`, `reporting-obligation`
+- Likely to change: no
+
+### TXS-06 Which lot is sold, and which fees reduce the gain
+- Rule: When identical securities bought at different times are sold, they are treated as sold in order of purchase (first in, first out) unless the seller proves to the assessing officer the purchase date and price of a specific security. "Identical securities" includes units in the same mutual fund, if they are managed by one portfolio manager. Also: "בחישוב רווח ההון במכירת ניירות ערך יותרו בניכוי מהתמורה ההוצאות שהוצאו באותה שנת מס". "Expenses" means management and custody fees for securities transactions ("דמי ניהול ודמי משמורת ... בעד פעולות בניירות ערך").
+- Conditions / exceptions: Only expenses from the same tax year count. Whether banks apply the expense deduction at withholding, or only through an annual return, was not found (open question 12).
+- Figures: none
+- Source: [Income Tax Regulations (computing capital gain on sale of a traded security, government loan or unit in a mutual fund), 5763-2002](https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(חישוב_רווח_הון_במכירת_נייר_ערך_הנסחר_בבורסה,_מילווה_המדינה_או_יחידה_בקרן_נאמנות)), reg.1 (definitions "הוצאות", "ניירות ערך זהים"), reg.5, reg.6(a) · checked 2026-10-22 · primary
+- Dimensions: `tax-at-exit`, `fee-custody`, `fee-management-balance`
+- Likely to change: no
+
+### TXS-07 Two tax tracks for an Israeli mutual fund, fixed in its prospectus
+- Rule: The Ordinance has two kinds of fund. A "taxable mutual fund" is one whose fund agreement or prospectus says it will be taxable. An "exempt mutual fund" is one whose agreement or prospectus says so "בקביעה שאינה ניתנת לשינוי" (irrevocably), or a taxable fund whose manager notified the Tax Authority at least 30 days before a tax year that it becomes exempt from the first day of that year. On such a switch, all the fund's assets are treated as sold on the last day of the year of the notice, and the fund pays the tax within 30 days. For unit holders whose gain is exempt, that day becomes the purchase date and the value on that day becomes the original price. There is no path from exempt to taxable.
+- Conditions / exceptions: "Mutual fund", "unit", "unit holder" and "prospectus" take their meaning from the Joint Investment Trust Law (חוק השקעות משותפות בנאמנות). Prospectuses show the track in the field "מסלול המס" (for example "מסלול המס: פטורה").
+- Figures: notice at least 30 days before the tax year.
+- Source: [Income Tax Ordinance](https://he.wikisource.org/wiki/פקודת_מס_הכנסה), s.88 definitions "קרן נאמנות", "קרן נאמנות חייבת", "קרן נאמנות פטורה"; s.88A · checked 2026-10-22 · primary. [Migdal Mutual Funds, main prospectus 30.1.2025](https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf), ch.25.2.3 · checked 2026-10-22 · institution
+- Dimensions: `tax-during`, `tax-at-exit`
+- Likely to change: no
+
+### TXS-08 Exempt fund: what the fund itself pays
+- Rule: "הכנסותיה ורווחיה של קרן נאמנות פטורה פטורים ממס". Interest, dividends and gains inside an exempt fund are not taxed in Israel while they stay in the fund. The fund may not deduct interest or linkage expenses.
+- Conditions / exceptions: (a) Tax withheld from REIT income passed to an exempt fund is final. The fund gets no exemption, refund, credit or offset for it (Migdal 25.2.2.2; s.64A5(a)(4) refers to withholding from such income). REIT detail is in TX2. (b) Foreign tax may be charged inside the fund (TXS-15).
+- Figures: none
+- Source: [Income Tax Ordinance](https://he.wikisource.org/wiki/פקודת_מס_הכנסה), s.129C(a)(1), (a)(4) · checked 2026-10-22 · primary. [Migdal main prospectus 30.1.2025](https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf), ch.25.2.2.1-25.2.2.3 · checked 2026-10-22 · institution
+- Dimensions: `tax-during`
+- Likely to change: no
+
+### TXS-09 Exempt fund: what the saver pays on sale or redemption
+- Rule: An individual's real capital gain on selling or redeeming a unit in an exempt fund is taxed under s.91(b)(1): at most 25%, as the top slice of income. The bank or TASE member withholds 25% of the real gain: "חייב המשלם למוכר שהוא יחיד בעל יחידה בקרן נאמנות פטורה, רווח הון ריאלי בשל מכירה או פדיון של יחידה, ינכה ממנו מס בשיעור של 25%". The fund manager's prospectus says the same: "רווח הון ריאלי במכירה או בפדיון של יחידה בקרן יהיה חייב במס בשיעור שלא יעלה על 25% ויראו את רווח ההון כשלב הגבוה ביותר בסולם הכנסתו החייבת של בעל היחידה".
+- Conditions / exceptions: Real gain is measured against CPI for shekel units (TXS-02), against the exchange rate for units denominated in or linked to foreign currency, and against the fund's "principal currency" for a foreign-investment fund (TXS-14). The prospectus describes the case of a resident individual who is not a substantial shareholder, has no business or bookkept securities income, claimed no financing expenses, and is not liable to surtax. It applies to units bought from 1.1.2006. Surtax: see TXG. Age 60+: see TXS-23.
+- Figures: up to 25% of real gain; 25% withheld (2026; fixed in law).
+- Source: [Income Tax Ordinance](https://he.wikisource.org/wiki/פקודת_מס_הכנסה), s.91(b)(1) (s.91(b1) names "מכירת יחידה בקרן נאמנות פטורה" among sales excluded from the pre-2012 linear split) · checked 2026-10-22 · primary. [Withholding regulations 5763-2002](https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מתמורה,_מתשלום_או_מרווח_הון_במכירת_נייר_ערך,_במכירת_יחידה_בקרן_נאמנות_או_בעסקה_עתידית)), reg.3A · checked 2026-10-22 · primary. [Migdal main prospectus 30.1.2025](https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf), ch.25.2, 25.2.2.4 · checked 2026-10-22 · institution
+- Dimensions: `tax-at-exit`, `real-vs-nominal`
+- Likely to change: no
+
+### TXS-10 Exempt fund: distributions
+- Rule: "רווחים שחילק מנהל קרן נאמנות פטורה לבעל יחידה שהוא יחיד, וההכנסה אינה מהווה בידיו הכנסה מעסק או ממשלח יד, חייבים במס בשיעור של 25%". The fund manager withholds 25% when paying an individual.
+- Conditions / exceptions: Whether the fund distributes depends on its prospectus (distribution policy; MF/ETF domain files). Whether such a distribution can absorb a securities loss under s.92(a)(4) was not found (open question 7).
+- Figures: 25% (2026).
+- Source: [Income Tax Ordinance](https://he.wikisource.org/wiki/פקודת_מס_הכנסה), s.125B1(b) · checked 2026-10-22 · primary. [Income Tax Regulations (withholding from interest, dividends and certain gains), 5766-2005](https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מריבית,_מדיבידנד_ומרווחים_מסוימים)), reg.10(b) · checked 2026-10-22 · primary. [Migdal main prospectus 30.1.2025](https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf), ch.25.2.2.6 · checked 2026-10-22 · institution
+- Dimensions: `distribution-policy`, `tax-during`
+- Likely to change: no
+
+### TXS-11 Taxable fund: the fund pays, the saver does not, and losses are lost
+- Rule: The taxable income of a taxable fund is taxed at the rates that would apply if an individual (not in business) had received it, "אלא אם כן נקבע במפורש אחרת". Where no special rate exists, the top s.121 rate applies. The individual unit holder is exempt on sale or redemption (s.97(a)(7): "רווח הון שהיה ליחיד במכירה או בפדיון של יחידה בקרן נאמנות חייבת") and on distributions (s.125B1(a)). A loss on units of a taxable fund cannot be offset against gains or income of any kind.
+- Conditions / exceptions: Why losses are lost: s.92(a)(1) offsets only a loss that "אילו היה ריווח הון היה מתחייב עליו במס". The Tax Authority guide says "הפסד ממכירת נכס שאילו היה רווח היה פטור ממס, אינו בגדר הפסד הון". The prospectus says "הפסד הון שנוצר לבעל יחידה מפדיון יחידות בקרן אינו ניתן לקיזוז כנגד רווחים או הכנסות מכל מקור שהוא". A taxable fund's inflationary amount on securities is measured by CPI (Migdal 25.2.1.3). Derived, not stated in one place: by s.129C(a)(2) read with s.125C(c) and s.91(b)(3), a taxable fund holding unlinked shekel interest instruments bears 15% of the nominal interest and gains at fund level, and the saver pays nothing more. The bizportal secondary source (S10) says the same. No Tax Authority sentence was found that says this in those words (open question 11).
+- Figures: individual rates applied at fund level (for example 15% unlinked interest, 25% real gains); 0% to the unit holder.
+- Source: [Income Tax Ordinance](https://he.wikisource.org/wiki/פקודת_מס_הכנסה), s.129C(a)(2), s.97(a)(7), s.125B1(a), s.92(a)(1) · checked 2026-10-22 · primary. [Tax Authority guide 2025](https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf), p.47 · checked 2026-10-22 · primary. [Migdal main prospectus 30.1.2025](https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf), ch.25.2.1.1-25.2.1.7 · checked 2026-10-22 · institution
+- Dimensions: `tax-during`, `tax-at-exit`, `loss-offset`, `real-vs-nominal`
+- Likely to change: no
+
+### TXS-12 Money-market funds: what a saver pays, and on what base (closes Q15)
+- Rule: No tax rule specific to money-market funds was found. The Ordinance sections that deal with funds (s.88, 88A, 91, 94, 97, 101A, 125B1, 129C, 129D) use only "exempt" and "taxable" fund, never "קרן כספית". A money-market fund is taxed under its tax track (TXS-07 to TXS-11). Both money-market fund prospectuses read state "מסלול המס: פטורה":
+  - Yelin Lapidot (00) כספית ניהול נזילות, fund no. 5139258, new-fund prospectus 26.11.2024 ("סוג הקרן: קרן פתוחה, קרן כספית").
+  - Migdal (00) כספית שקלית, fund no. 5102991, Part A of 17.2.2014.
+
+  For such a fund, a saver therefore pays:
+  - Nothing while holding. The fund's shekel interest and discount income is exempt inside the fund (TXS-08).
+  - 25% of the real gain on redemption or sale: the gain above CPI over the holding period. The bank or TASE member withholds it (TXS-09).
+  - 25% on any distribution (TXS-10).
+
+  The 15%-of-nominal rate that applies to a shekel deposit or a makam held directly (TXI) does not apply to the saver in an exempt money-market fund. A unit is not a bond, and reg.2(b) (15%) covers unlinked securities, while reg.3A sets 25% of real gain for exempt-fund units.
+- Conditions / exceptions: (a) A loss on redemption can be offset (TXS-17 to TXS-19), unlike a loss on a deposit. (b) If a money-market fund were taxable, the fund would bear tax at individual rates on its income, which is 15% of nominal interest on unlinked shekel instruments (derived, TXS-11), and the saver would pay nothing and could not offset a loss. No taxable money-market fund was found, but the market was not surveyed (open question 1). (c) The Yelin Lapidot prospectus (footnote 3) says an exempt fund may still pay tax on income from securities traded abroad or dual-listed (TXS-15). Under that fund's investment policy, foreign-traded assets may not exceed 10% of its net assets. (d) The tax track is per fund and must be read from each fund's prospectus; `data/funds/` needs a "מסלול המס" field. (e) Whether CPI deflation over the holding period changes the base was not found (open question 15).
+- Figures: 0% during; 25% of real gain at exit; 25% of distributions (2026).
+- Source: [Income Tax Ordinance](https://he.wikisource.org/wiki/פקודת_מס_הכנסה), s.88, s.91(b)(1), s.125B1, s.129C · checked 2026-10-22 · primary. [Withholding regulations 5763-2002](https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מתמורה,_מתשלום_או_מרווח_הון_במכירת_נייר_ערך,_במכירת_יחידה_בקרן_נאמנות_או_בעסקה_עתידית)), reg.2(b), reg.3A · checked 2026-10-22 · primary. [Yelin Lapidot (00) כספית ניהול נזילות, new-fund prospectus 26.11.2024](https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629214-00.pdf), p.1 and footnote 3, p.2 item 12 · checked 2026-10-22 · institution. [Migdal (00) כספית שקלית, prospectus Part A 17.2.2014](https://mayafiles.tase.co.il/rpdf/878001-879000/p878453-00.pdf), p.1 · checked 2026-10-22 · institution. Agreeing secondary source: [bizportal, "מיסוי קרנות נאמנות: 25% ריאלי, 15% נומינלי", 12.8.2026](https://www.bizportal.co.il/guides/news/article/20038659) · checked 2026-10-22 · secondary
+- Dimensions: `tax-at-exit`, `tax-during`, `real-vs-nominal`, `loss-offset`
+- Likely to change: no for the law. A given fund's track can change only from taxable to exempt (TXS-07).
+
+### TXS-13 Israeli tracking funds and ETFs (קרנות מחקות, קרנות סל)
+- Rule: Israeli tracking funds and ETFs are mutual funds under the same prospectus regime, so TXS-07 to TXS-11 apply to them. One manager's 2025 prospectus states that all its tracking funds, including ETFs, are exempt funds: "כל הקרנות המחקות, לרבות קרנות הסל, המנוהלות על ידי מנהל הקרן, הינן קרנות פטורות לצורך מס ואין להן מאפייני מס מיוחדים נוספים". The exceptions are 4 named funds that are exempt and also foreign-investment funds with the dollar as principal currency (TXS-14).
+- Conditions / exceptions: This is one manager's statement. Other managers' prospectuses were not read (open question 1). A saver in an exempt ETF is taxed only on sale (25% of real gain, withheld) and on distributions (25%).
+- Figures: as TXS-09, TXS-10.
+- Source: [Migdal main prospectus 30.1.2025](https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf), p.8 (section "לעניין מסלול המס ומאפייני מס מיוחדים של הקרנות המחקות, לרבות קרנות הסל"), ch.25 · checked 2026-10-22 · institution
+- Dimensions: `tax-at-exit`, `distribution-policy`
+- Likely to change: no
+
+### TXS-14 Currency component of a shekel fund that holds foreign assets
+- Rule: Which index measures a fund unit's real gain depends on how the unit is denominated and on the fund's status:
+  - Shekel units of an ordinary exempt fund: CPI (s.88 "מדד").
+  - Units denominated in or linked to foreign currency: that exchange rate (s.88; Migdal 25.3: "לעניין יחידה בידי יחיד בקרן נאמנות פטורה הנקובה במטבע חוץ או שערכה צמוד למטבע חוץ, יראו את שער המטבע כמדד").
+  - A "foreign-investment fund" (קרן נאמנות להשקעות חוץ): the inflationary amount uses the "principal currency" exchange rate chosen in its prospectus. This is an exempt fund with at least 90% of its investments in each tax year in assets whose interest is paid by, or whose inflationary amount is computed by, that currency's exchange rate.
+
+  Derived: for a shekel-denominated fund holding foreign assets that is not a foreign-investment fund, the inflationary amount follows CPI. Any part of the gain that comes from the shekel weakening faster than CPI is therefore taxed as real gain, and a stronger shekel reduces the gain.
+- Conditions / exceptions: A deviation from the 90% test for a cumulative period of up to 10 days in a tax year does not count. The prospectus reports a Tax Authority position in Income Tax circular 7/2003 (22.5.2003) on longer deviations: units redeemed before the deviation are taxed as in a foreign-investment fund. Units redeemed after it are taxed as if the fund had never been one, with CPI for the whole holding period. The circular itself was not read (open question 2), so this sub-rule is institution strength only.
+- Figures: 90% test; 10-day tolerance.
+- Source: [Income Tax Ordinance](https://he.wikisource.org/wiki/פקודת_מס_הכנסה), s.88 "מדד" · checked 2026-10-22 · primary. [Income Tax Regulations (computing the inflationary amount on sale of a unit in a mutual fund), 5763-2003](https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(חישוב_סכום_אינפלציוני_במכירת_יחידה_בקרן_נאמנות)), definitions and reg.2 · checked 2026-10-22 · primary. [Migdal main prospectus 30.1.2025](https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf), ch.25.3, 25.4 · checked 2026-10-22 · institution
+- Dimensions: `real-vs-nominal`, `currency`, `tax-at-exit`
+- Likely to change: no
+
+### TXS-15 Foreign tax inside an Israeli exempt fund
+- Rule: An Israeli exempt fund "עשויה להיות מחויבת, בין היתר, בתשלום מס בחו"ל" on income and gains from securities traded abroad, dual-listed securities, and securities of foreign issuers traded only in Israel. This is "בנוסף למס שבעל יחידות בקרן ישלם בגין פדיון יחידות הקרן בגין הרווח הריאלי שנצבר לו". The foreign tax is a cost inside the fund, and the saver still pays Israeli tax on the full real gain.
+- Conditions / exceptions: No primary source was found on whether the unit holder can credit that foreign tax (open question 8). Rates and treaty detail are in TXF.
+- Figures: none
+- Source: [Migdal main prospectus 30.1.2025](https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf), ch.25.7 · checked 2026-10-22 · institution. [Yelin Lapidot new-fund prospectus 26.11.2024](https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629214-00.pdf), p.1 footnote 3 · checked 2026-10-22 · institution
+- Dimensions: `foreign-withholding-domicile`, `tax-during`
+- Likely to change: no
+
+### TXS-16 Dividends from Israeli companies
+- Rule: A dividend received by an individual is taxed at 25%, or 30% if the individual is a substantial shareholder at receipt or at any time in the previous 12 months. The payer withholds 25% (30% for a substantial shareholder). The Tax Authority guide also lists dividends from an approved or benefited enterprise at 15%, and from a preferred enterprise at 20%.
+- Conditions / exceptions: The 15% and 20% rates depend on the paying company's status. A saver sees them on the annual withholding certificate (form 867), not in advance. The guide says the return is filled from the payer's annual certificate, which states each income type, the rate and the tax withheld. National Insurance and health tax on dividends: see TXG. Offset against securities losses: TXS-17.
+- Figures: 25% / 30% (2026 table); 15% / 20% for enterprise dividends.
+- Source: [Income Tax Ordinance](https://he.wikisource.org/wiki/פקודת_מס_הכנסה), s.125B(1), (2) · checked 2026-10-22 · primary. [Withholding regulations (interest, dividends and certain gains) 5766-2005](https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מריבית,_מדיבידנד_ומרווחים_מסוימים)), reg.2(a)(1), (2) · checked 2026-10-22 · primary. [Tax Authority guide 2025](https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf), p.38 (dividend paragraphs 1-4), p.116 (2026 table "דיבידנד- 25%, 30%") · checked 2026-10-22 · primary
+- Dimensions: `distribution-policy`, `tax-during`
+- Likely to change: no
+
+### TXS-17 Loss offset in the same year
+- Rule: A capital loss is offset first against real capital gain. Each remaining shekel of loss offsets 3.5 shekels of taxable inflationary amount. Capital losses offset only capital gains (including on traded securities) and real-estate betterment. In addition, a loss on a security in the same tax year can offset interest or dividends paid on that security, and interest or dividends on other securities, provided the tax rate on that interest or dividend does not exceed 25%. A loss on an asset whose gain would have been exempt is not a capital loss. A loss on an asset abroad is offset first against foreign gains (detail in TXF).
+- Conditions / exceptions: The 25% condition excludes, for example, dividends taxed at 30% to a substantial shareholder. The offset against interest and dividends is same-year only (TXS-18). Losses on taxable-fund units cannot be offset (TXS-11). s.92(a)(5): securities expenses set by the Minister and not deducted in the year count as a securities loss.
+- Figures: 1 : 1 against real gain; 1 : 3.5 against taxable inflationary amount; 25% rate ceiling for interest and dividend offset.
+- Source: [Income Tax Ordinance](https://he.wikisource.org/wiki/פקודת_מס_הכנסה), s.92(a)(1), (3), (4), (5) · checked 2026-10-22 · primary. [Tax Authority guide 2025](https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf), p.47 (section "4. הפסדי הון וקיזוז רווח הון", and "ובלבד ששיעור המס החל על הריבית או הדיבידנד אינו עולה על 25%") · checked 2026-10-22 · primary
+- Dimensions: `loss-offset`
+- Likely to change: no
+
+### TXS-18 Carrying losses forward
+- Rule: A loss not offset in its year is carried to the following years, one after another, without a time limit. It can be used only against capital gains (and betterment), not against interest or dividends. The condition is that a return was filed for the year of the loss: "ובלבד שהוגש לפקיד השומה דוח לשנת המס שבה היה ההפסד". The guide: "הפסד מועבר מני"ע סחירים שנוצר בשנת המס 2006 ואילך, ניתן לקיזוז בשנות המס הבאות כנגד כל רווח הון ..., אך לא כנגד ריבית ודיבידנד". A carried loss is entered in field 48 of the return.
+- Conditions / exceptions: A securities loss from up to 31.12.2005 can still offset interest and dividends taxed at no more than 20%. That is legacy. A foreign carried loss goes first against foreign gains (TXF).
+- Figures: no time limit.
+- Source: [Income Tax Ordinance](https://he.wikisource.org/wiki/פקודת_מס_הכנסה), s.92(b) · checked 2026-10-22 · primary. [Tax Authority guide 2025](https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf), p.45 (field 48), p.47 · checked 2026-10-22 · primary
+- Dimensions: `loss-offset`, `reporting-obligation`
+- Likely to change: no
+
+### TXS-19 Netting at the bank vs across institutions
+- Rule: When computing the gain for withholding, the financial institution offsets capital losses from securities and future transactions under s.92 only if (1) the loss came from a security it manages, and (2) the gain arose in the same tax year, before or after the loss. If a portfolio moves from one manager to another, the assessing officer may allow offset of losses incurred at the previous manager, on conditions he sets. Offsetting across banks or brokers needs an annual return. The prospectus says: "קיזוז הפסדים שלא בוצע על ידי בנק או חבר בורסה אחר שבאמצעותו הוחזקו יחידות הקרן מותנה בהגשת דו"ח שנתי למס הכנסה". In the return, traded-securities gains and losses go on form 1322 (appendix C), based on the institutions' annual certificates (form 867).
+- Conditions / exceptions: The guide (p.39) says the interest payer (for example the bank) may already have offset a securities loss against interest when withholding. The regulation that provides for this was not found in the two withholding regulations read (open question 5). Joint account: payments to partners in an account are treated as equal shares unless the assessing officer is shown otherwise (reg.10).
+- Figures: none
+- Source: [Withholding regulations 5763-2002](https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מתמורה,_מתשלום_או_מרווח_הון_במכירת_נייר_ערך,_במכירת_יחידה_בקרן_נאמנות_או_בעסקה_עתידית)), reg.9(a), (b), (d), reg.10 · checked 2026-10-22 · primary. [Tax Authority guide 2025](https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf), p.39, p.40 (form 867), p.45 (form 1322) · checked 2026-10-22 · primary. [Migdal main prospectus 30.1.2025](https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf), ch.25.2.2.5 · checked 2026-10-22 · institution
+- Dimensions: `loss-offset`, `reporting-obligation`
+- Likely to change: no
+
+### TXS-20 Spouses: whose gain it is
+- Rule: Capital gain, like other income that is not from personal effort, is attributed to the spouse with the higher personal-effort income. If the gain comes from an asset that belonged to one spouse before the marriage, or that one spouse inherited, it can be attributed to that spouse. The guide also notes that capital gains may be attributed to the registered or the unregistered spouse when the return is filed.
+- Conditions / exceptions: Whether one spouse's securities loss can offset the other spouse's gain was not found (open question 4).
+- Figures: none
+- Source: [Tax Authority guide 2025](https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf), p.46 ("שיוך הרווח"), p.45 · checked 2026-10-22 · primary
+- Dimensions: `loss-offset`, `reporting-obligation`
+- Likely to change: no
+
+### TXS-21 Switching between funds or securities is a sale
+- Rule: "Sale" includes "חליפין, ויתור, הסבה, העברה, הענקה, מתנה, פדיון" and any other event by which an asset leaves a person's possession, except inheritance. Redeeming one mutual fund to buy another, or selling one ETF or share to buy another, is therefore a sale. Tax is due (withheld, TXS-05 and TXS-09) on any real gain, even if the money never leaves the account.
+- Conditions / exceptions: s.101A(a)(12) lets the Finance Minister set "מקרים שבהם יראו יחידה בקרן נאמנות פטורה כנמכרת וכנרכשת מחדש". No order or regulation under it was found (open question 9). The contrast is the provident wrappers, where moving between tracks or funds is not a tax event: see TXK (kupat gemel lehashkaa, IRA), TXH (keren hishtalmut), TXP (pension). In a brokerage account, the deferral that tax-free switching gives in those wrappers is lost at every switch.
+- Figures: none
+- Source: [Income Tax Ordinance](https://he.wikisource.org/wiki/פקודת_מס_הכנסה), s.88 definition "מכירה"; s.101A(a)(12) · checked 2026-10-22 · primary
+- Dimensions: `switching-tax-event`
+- Likely to change: no
+
+### TXS-22 Exempt fund vs taxable fund: what changes for the saver
+- Rule: This summarizes TXS-08 to TXS-11; it adds no new law.
+  - Exempt fund: tax is deferred to exit, charged on real gain, at the saver's rate (top slice, up to 25%, and possibly lower at age 60+). Losses can be offset.
+  - Taxable fund: tax is paid each year inside the fund at individual rates (15% nominal on unlinked shekel interest, derived). Nothing is due at exit, and losses are lost.
+- Conditions / exceptions: Which one is cheaper is a computation for `docs/method.md` (it depends on CPI, return and horizon), not a rule.
+- Figures: as above.
+- Source: as TXS-08 to TXS-11 · checked 2026-10-22 · primary · links from the cited rules: [1](<https://he.wikisource.org/wiki/פקודת_מס_הכנסה>), [2](<https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf>), [3](<https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מתמורה,_מתשלום_או_מרווח_הון_במכירת_נייר_ערך,_במכירת_יחידה_בקרן_נאמנות_או_בעסקה_עתידית)>), [4](<https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מריבית,_מדיבידנד_ומרווחים_מסוימים)>), [5](<https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf>)
+- Dimensions: `tax-during`, `tax-at-exit`, `real-vs-nominal`, `loss-offset`
+- Likely to change: no
+
+### TXS-23 Age 60 and over
+- Rule: The guide says: "אם הינך בן 60 ומעלה, שיעורי המס ההתחלתיים שיחולו לגבי רווח ההון הריאלי שנצמח לך יהיו נמוכים מהאמור לעיל", following the personal-effort brackets. s.121(b)(1) extends the reduced brackets to the taxable income of an individual "שמלאו לו 60 שנים". The withholding regulations still set a flat 25% (reg.2, 3A); they contain no age or low-income rate.
+- Conditions / exceptions: How a 60+ saver recovers withholding above their rate (annual return, or a coordination procedure) was not confirmed. Nor was whether the rule reaches exempt-fund redemptions in practice (open question 6). No reduced capital-gains rate for a low-income saver under 60 was found in what was read. The general bracket rule is in TXG.
+- Figures: 2026 brackets are in TXG.
+- Source: [Tax Authority guide 2025](https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf), p.46 · checked 2026-10-22 · primary. [Income Tax Ordinance](https://he.wikisource.org/wiki/פקודת_מס_הכנסה), s.121(b)(1) · checked 2026-10-22 · primary
+- Dimensions: `age-or-use-exemption`, `tax-at-exit`
+- Likely to change: yes, the brackets change by law (TXG)
+
+### TXS-24 Each fund's tax status is published by TASE, and some money-market funds are taxable
+- Rule: Maya's fund-data export gives every Israeli open-end fund a tax status ("מעמד מס"). On 2026-10-22: 1,986 exempt ("פטורה"), 21 taxable ("חייבת") and 2 taxable for non-residents. Of 73 money-market funds, 71 are exempt and 2 are taxable: 5103403 "הראל כספית דולר נזיל חיבת" (a foreign-currency money-market fund) and 5137559 "מגדל כספית מחלקת חודשי" (a shekel fund that distributes monthly). Several other taxable funds are distributing funds ("מחלקת").
+- Conditions / exceptions: TXS-11 and TXS-12 still decide what a saver pays in each case; this rule only shows that the status must be read per fund and where to read it. It answers TXS OQ1 and narrows F1, because the tax track no longer depends only on each prospectus.
+- Figures: counts as above, 2026-10-22.
+- Source: [Maya, רשימת קרנות — "הורדת נתונים" export](https://maya.tase.co.il/he/funds/mutual-funds) · checked 2026-10-22 · primary
+- Dimensions: `fund-tax-track`, `tax-during`, `tax-at-exit`, `distribution-policy`
+- Likely to change: yes, as funds open or change.
+
+## Terms
+
+| Hebrew | English | Meaning | Where it appears | Source |
+|---|---|---|---|---|
+| קרן נאמנות | mutual fund | Fund under the Joint Investment Trust Law | Law, prospectus, app | Ordinance s.88 |
+| קרן נאמנות פטורה / קרן פטורה | exempt mutual fund | The fund pays no tax; the unit holder pays at exit | Law, prospectus ("מסלול המס: פטורה"), fund names (for example "...כספית פטורה") | s.88; S7, S8 |
+| קרן נאמנות חייבת / קרן חייבת | taxable mutual fund | The fund pays tax; the unit holder is exempt | Law, prospectus | s.88, s.97(a)(7) |
+| מסלול המס | tax track | The prospectus field stating exempt or taxable | Prospectus Part A | S7, S8 |
+| קרן כספית | money-market fund | ISA fund classification. Not a tax term; no Ordinance section read uses it | Prospectus ("סוג הקרן"), app, ads | S7, S8 |
+| קרן מחקה / קרן סל | tracking fund / ETF | Mutual funds that track an index; same tax regime | Prospectus, app | S6 p.8 |
+| קרן נאמנות להשקעות חוץ | foreign-investment fund | Exempt fund with at least 90% in assets indexed to a principal currency; gain measured in that currency | Regulations, prospectus | S4; S6 ch.25.4 |
+| שער המטבע העיקרי | principal-currency rate | The currency a foreign-investment fund chose in its prospectus | Regulations, prospectus | S4 |
+| יחידה / בעל יחידה | unit / unit holder | A share in a mutual fund / its owner | Law, statement | s.88 |
+| פדיון | redemption | Selling units back to the fund. Counts as a sale | Statement, app | s.88 "מכירה" |
+| מכירה | sale | Includes exchange and redemption | Law | s.88 |
+| רווח הון ריאלי | real capital gain | Gain minus the inflationary amount | Law, form 867, statement | s.88 |
+| סכום אינפלציוני | inflationary amount | The CPI (or FX) part of the gain | Law, form 1322 | s.88 |
+| מדד | index | CPI, or the exchange rate for FX securities | Law | s.88 |
+| אינו צמוד למדד | not linked | Not linked or only partly linked to CPI; 15% nominal | Law, regulations | s.91(b)(3)(c); reg.1 |
+| בעל מניות מהותי | substantial shareholder | 10% or more of any means of control, now or in the past 12 months | Law, form 1301 | S5 p.38 |
+| מוסד כספי | financial institution | A bank or TASE member that withholds | Regulations | S2 reg.1 |
+| חבר בורסה | TASE member | Exchange member (bank or non-bank broker) | Regulations, statement | S2 reg.1 |
+| ניכוי במקור | withholding at source | Tax deducted by the payer | Statement, form 867 | S2 |
+| קיזוז הפסדים / הפסד הון | loss offset / capital loss | Netting losses against gains | Statement, form 1322 | s.92; S5 p.47 |
+| הפסד מועבר | carried-forward loss | Loss used in later years; capital gains only | Form 1301 field 48 | S5 pp.45, 47 |
+| ניירות ערך זהים | identical securities | Same issuer and type, or units of the same fund, with one manager; FIFO applies | Regulations | S3 reg.1 |
+| רווחים שחילק מנהל קרן | fund distribution | Profits paid out by a fund | Law, statement | s.125B1 |
+| טופס 867 | form 867 | The institution's annual certificate of income and tax withheld | Bank statement, return | S5 p.40 |
+| טופס 1322 (נספח ג') | form 1322 (appendix C) | Return appendix for traded-securities gains and losses | Return | S5 p.45 |
+| טופס 1399 | form 1399 | Report of a capital gain or loss on a sale | Return | S5 pp.45-47 |
+
+## Institutions
+
+Not applicable to a tax file. Fund managers and fund lists are in `mutual-funds-and-money-market-funds.md` (MF) and `etfs-and-index-funds.md` (ETF). Each fund's tax track is in its prospectus (Part A), published on Maya (TASE) and magna (ISA).
+
+## Open questions
+
+1. **Tax track across all money-market funds and ETFs.** Two money-market funds and one manager's ETF range were read; all are exempt. Is any money-market fund or ETF taxable today? Tried: the Maya fund pages (render empty to the fetch tool), and the Maya HTML filing H1629214 (encoding garbled). The PDF of that filing was read. Where: each fund's Part A "מסלול המס" on maya.tase.co.il or magna.isa.gov.il, or a TASE fund-data export with a tax-track field. **[2026-10-22 browser pass 2: Closed by TXS-24: 2 taxable money-market funds exist; status is published per fund on Maya.]**
+2. **Income Tax circular 7/2003 (foreign-investment funds).** Known only through the Migdal prospectus 25.4.2. Tried: gov.il landing page `https://www.gov.il/he/departments/policies/income-tax-professional-inst-7-2003` (HTTP 403), and a guessed BlobFolder PDF (404). Where: the gov.il circulars index, or the Tax Authority professional-circulars archive.
+3. **Current consolidated text of the two withholding regulations.** Wikisource lists the last amendments as תשע"ח 442 and 444. Have later amendments changed reg.2, 3A, 9 or 10, for example around the 2025 capital surtax? Where: Reshumot (Kovetz HaTakanot) or the Knesset/Nevo consolidated text.
+4. **Loss offset between spouses.** Can one spouse's securities loss offset the other's gain in the joint return? Nothing found in the guide pages read or in s.92. Where: form 1322 instructions, or a Tax Authority FAQ on joint computation.
+5. **Regulation basis for the bank offsetting a securities loss against interest or dividends at withholding.** The guide (p.39) says the payer may do it. Neither withholding regulation read contains it. Where: other withholding regulations, or a Tax Authority instruction to banks.
+6. **Age 60+ in practice.** Does the lower bracket reach exempt-fund and securities gains withheld at a flat 25%, and how is the excess recovered (annual return, or tax coordination)? Pointer to TXG.
+7. **Exempt-fund distributions and s.92(a)(4).** Does a 25% distribution under s.125B1(b) count as a "dividend" that a securities loss can absorb in the same year? Not found.
+8. **Foreign tax paid inside an Israeli exempt fund.** Is any credit available to the unit holder? The prospectuses say the saver's tax is "in addition". Where: s.199-210, or a Tax Authority ruling. Pointer to TXF.
+9. **s.101A(a)(12) deemed sale and repurchase of exempt-fund units.** Has an order or regulation ever been issued? Not found.
+10. **Has the Minister changed the 15% rate (s.91(b)(3)(b), s.125C(c)(2))?** Shared with TXI and with tax report Q3.
+11. **Fund-level rate in a taxable fund holding unlinked shekel assets.** This file derives 15% of nominal interest and gains from s.129C(a)(2) read with s.125C(c) and s.91(b)(3), and a secondary source agrees. A Tax Authority sentence saying it directly was not found. Only matters if a taxable money-market fund exists (question 1).
+12. **Fee deduction (reg.6(a) of the computation regulations).** Do banks deduct same-year management and custody fees when withholding, or only through a return?
+13. **Bank of Israel money-market fund pages** ([savings products](https://www.boi.org.il/information/bank-paymnts/savingsandinvestmentproducts/moneyfund/), [financial education](https://www.boi.org.il/information/bank-paymnts/financial-education/moneyfund/)) were blocked by a Radware browser check. They may hold a regulator's plain-language tax summary to cross-check TXS-12.
+14. **"המועד הקובע" in s.88.** Its date was not read. It matters only for the computation regulations' expense definition and for old holdings.
+15. **Falling CPI.** If CPI falls over the holding period of a shekel exempt-fund unit (for example a money-market fund), is the taxable base still the real gain, which would then be larger than the nominal gain? Or does the s.88 definition of the inflationary amount ("עולה") stop at zero? Not found.
+
+Note: the shared web-search budget for this session ran out during the research. Questions 1, 2 and 5 may close with a few more searches in a follow-up session.
+
+## Left out and why
+
+- Pre-2012 and pre-2003 linear-split computations, bonds issued before 8.5.2000 (s.97(a)(1)), and units bought before 1.1.2006: only very old holdings are affected.
+- Securities-lending fees in a taxable fund (the prospectus reports 15%): a fund-level detail with no saver choice attached.
+- Bonus shares and bonus units (s.94(a)), options, futures (reg.3): not a saver's core path.
+- Foreign residents' exemptions (s.97(b2), s.101A(a)(8)): the audience is Israeli residents.
+- Companies as unit holders (reg.3B, withholding at the s.126 rate): the audience is individuals.
+- REIT taxation: TX2. Surtax, filing thresholds, National Insurance: TXG.
+
+## Proposed dimensions
+
+- `fund-tax-track`: exempt vs taxable mutual fund (TXS-07). It changes when tax is paid, on what base, and whether losses can be used. It applies to every Israeli fund variant in 3.4 and must be read per fund from the prospectus.
+
+## Sources
+
+| Code | Title | Publisher | Strength | Checked |
+|---|---|---|---|---|
+| S1 | [Income Tax Ordinance (consolidated)](https://he.wikisource.org/wiki/פקודת_מס_הכנסה), read via `?action=raw` in 100k-character chunks: s.7, 64A3, 64A5, 88, 88A, 91, 92, 94, 97, 101A, 105, 121, 125B, 125B1, 125C, 129C, 129D, 135B, 164 | Knesset legislation, Hebrew Wikisource mirror | primary | 2026-10-22 |
+| S2 | [Income Tax Regulations (withholding from proceeds, payment or capital gain on sale of a security, unit in a mutual fund or future transaction), 5763-2002](https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מתמורה,_מתשלום_או_מרווח_הון_במכירת_נייר_ערך,_במכירת_יחידה_בקרן_נאמנות_או_בעסקה_עתידית)) | Regulation, Wikisource mirror (last amendment shown תשע"ח) | primary | 2026-10-22 |
+| S3 | [Income Tax Regulations (computing capital gain on sale of a traded security, government loan or unit in a mutual fund), 5763-2002](https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(חישוב_רווח_הון_במכירת_נייר_ערך_הנסחר_בבורסה,_מילווה_המדינה_או_יחידה_בקרן_נאמנות)) | Regulation, Wikisource mirror | primary | 2026-10-22 |
+| S4 | [Income Tax Regulations (computing the inflationary amount on sale of a unit in a mutual fund), 5763-2003](https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(חישוב_סכום_אינפלציוני_במכירת_יחידה_בקרן_נאמנות)) | Regulation, Wikisource mirror | primary | 2026-10-22 |
+| S4b | [Income Tax Regulations (withholding from interest, dividends and certain gains), 5766-2005](https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מריבית,_מדיבידנד_ומרווחים_מסוימים)) | Regulation, Wikisource mirror (last amendment shown תשע"ח 444) | primary | 2026-10-22 |
+| S5 | [Tax Authority, "דע זכויותיך וחובותיך 2025"](https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf), printed pp.38-47, 116-117 read as page images | Israel Tax Authority | primary | 2026-10-22 |
+| S6 | [Migdal Mutual Funds Ltd, main prospectus (תשקיף עיקרי), 30.1.2025](https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf), p.8, ch.25 (pp.59-61) | Fund manager | institution | 2026-10-22 |
+| S7 | [Yelin Lapidot (00) כספית ניהול נזילות, new-fund prospectus, 26.11.2024](https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629214-00.pdf), pp.1-2 | Fund manager | institution | 2026-10-22 |
+| S8 | [Migdal (00) כספית שקלית, prospectus Part A, 17.2.2014](https://mayafiles.tase.co.il/rpdf/878001-879000/p878453-00.pdf), p.1 (old; corroborates S7 only) | Fund manager | institution | 2026-10-22 |
+| S10 | [bizportal, "מיסוי קרנות נאמנות: 25% ריאלי, 15% נומינלי ומתי כל אחד עדיף", 12.8.2026](https://www.bizportal.co.il/guides/news/article/20038659) | Press guide | secondary | 2026-10-22 |
+| blocked | Bank of Israel money-market fund pages (Radware check); gov.il circular 7/2003 (403 and 404); Maya fund pages 5141098 and others (empty JS shell); Maya HTML filing H1629214 (garbled, PDF used instead) | various | not used | 2026-10-22 |
+
+Discovery report `research/discovery/tax-landscape.md` sections 0, 2, 8, 10, 12 were used as leads only. Every claim above was re-read in the source cited.

@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+/* Right to left throughout: use logical utilities (ms-, me-, ps-, pe-, start-, end-), never left/right.
+   Design tokens (fonts, colours, spacing) come from the design pass, docs/architecture.md 3.9. */
+html {
+  background: white;
+  color: #111;
+}
