@@ -999,7 +999,8 @@ Status: computed.
 | 4 | Bond: bought at par plus accrued interest; the full coupon taxed 15% (whether the accrued interest paid offsets it is open, so the conservative reading is used; under 0.5%) | [TXI-15](<https://he.wikisource.org/wiki/פקודת_מס_הכנסה>), [TXI-16](<https://he.wikisource.org/wiki/פקודת_מס_הכנסה>), [TXI-12](<https://he.wikisource.org/wiki/פקודת_מס_הכנסה>) | — |
 | 5 | Kupat gemel lehashkaa: 100,000 now exceeds the 83,641 yearly ceiling; it takes 83,641 and nothing more in year 1, so 65,006.55 goes to the next goal. It cannot take the same money, so it is listed, not ranked | [KGL-02](<https://fs.knesset.gov.il//20/law/20_lsr_343169.pdf>), [KGL-03](<https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf>), [KGL-04](<https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf>); method F-05 | value 258,650.91 on what it takes |
 | 6 | Study fund: employee, and locked for 6 years → listed, not ranked. Pension: locked to 60 → listed | product D15; [TXH-09](<https://he.wikisource.org/wiki/פקודת_מס_הכנסה>), [PEN-26](<https://he.wikisource.org/wiki/חוק_גיל_פרישה>) | listed |
-| 7 | Rank by real value at 4 years after fees and tax; tie test between the top two with θ = 0.5% | method F-80 | see table |
+| 7 | Rank by real value at 4 years after fees and tax; tie test between the top two with θ = 0.5%. The current account also takes the compared money (exit any time), so it is ranked | method F-80, F-83; [TXI-08](<https://www.btl.gov.il/Laws1/02_0103_100269.pdf>) | see table |
+| 8 | Coverage line: every tier-1 wrapper and tier-2 instrument accounted for once | method F-83; product D17 | see second table |
 
 | Rank | Option | Nominal V | Real V | Fees and tax |
 |---|---|---|---|---|
@@ -1008,8 +1009,40 @@ Status: computed.
 | 3 | daily money-market fund (BoI 3.25%, δ 0.18%) | 326,280.83 | 295,594.33 | exit tax 1,322.49 |
 | 4 | ETF in a bank brokerage account (r_g 5%) | 323,549.24 | 293,119.64 | fees 17,361.64, exit tax 2,406.13 |
 | 5 | fixed-rate government bond, 3.75% coupon | 322,050.47 | 291,761.83 | trade 2,355.00, custody 3,367.37, tax 5,143.23 |
+| 6 | current account at 0.5% | 305,450.13 | 276,722.74 | tax during 607.13 |
 
-**Expected (as written to scenarios.md):** Ranked (real at 4 years, same money in each): 1. makam ladder at 3.9% 296,362.17; 2. bank deposits, one-month ladder at 3.5% 296,034.36; 3. daily money-market fund (BoI 3.25%, δ 0.18%) 295,594.33; 4. ETF in a bank brokerage account (r_g 5%) 293,119.64; 5. fixed-rate government bond, 3.75% coupon 291,761.83. Top two: gap 0.11% → tie (θ = 0.5%). The 50,000 kept available in the current account grows to 50,855.14 (46,072.25 real). Kupat gemel lehashkaa: listed, not ranked (the 83,641 ceiling takes only part of year 1; 65,006.55 routed to the next goal). Study fund and pension: listed, not ranked (locked). Filled in: every wrapper's terms from the earlier examples.
+| Candidate | Outcome | Reason |
+|---|---|---|
+| makam ladder at 3.9% | ranked | rank 1 |
+| bank deposits, one-month ladder at 3.5% | ranked | rank 2 |
+| daily money-market fund (BoI 3.25%, δ 0.18%) | ranked | rank 3 |
+| ETF in a bank brokerage account (r_g 5%) | ranked | rank 4 |
+| fixed-rate government bond, 3.75% coupon | ranked | rank 5 |
+| current account at 0.5% | ranked | rank 6 |
+| savings plan | not evaluated | no savings-plan terms among the inputs (production: data/terms/deposits/, R4) |
+| renewable money-market fund | not evaluated | monthly deposits into fixed-date series are not set (G-30) |
+| kupat gemel lehashkaa | listed, not ranked | the yearly ceiling takes only part of the money (KGL-02, KGL-04; F-05) |
+| keren hishtalmut | listed, not ranked | employee (product D15); locked 6 years (TXH-09) |
+| comprehensive pension fund | listed, not ranked | locked to 60 (PEN-26) |
+| general pension fund | listed, not ranked | locked to 60 (PEN-26) |
+| provident fund for annuity | listed, not ranked | exit as pension, locked to 60 (PEN-34, PEN-26) |
+| IRA in a study fund | listed, not ranked | as the study fund it is held in (IRA-25) |
+| IRA in a provident fund | listed, not ranked | as the provident fund it is held in (IRA-25) |
+| child savings, provident route | not eligible | takes the NII amounts and the parent's matching deposit only, not this money (method section 8; CS-02, CS-04, CS-16) |
+| child savings, bank route | not eligible | takes the NII amounts and the parent's matching deposit only, not this money (method section 8; CS-02, CS-04, CS-16) |
+| savings policies | not evaluated | tier 2, open questions (G-24) |
+| executive insurance | not evaluated | tier 2, open questions (G-24) |
+| structured deposits | not evaluated | tier 2, open questions (G-24) |
+| corporate bonds | not evaluated | tier 2, open questions (G-24) |
+| managed and robo portfolios | not evaluated | tier 2, open questions (G-24) |
+| foreign-currency deposits | not evaluated | tier 2, open questions (G-24) |
+| REITs | not evaluated | tier 2, open questions (G-24) |
+| gold via funds | not evaluated | tier 2, open questions (G-24) |
+| Amendment 190 deposits | not evaluated | tier 2, open questions (G-24) |
+
+Considered 26: ranked 6, listed, not ranked 7, not eligible 2, excluded by the person's constraint 0, not evaluated 11
+
+**Expected (as written to scenarios.md):** Ranked (real at 4 years, same money in each): 1. makam ladder at 3.9% 296,362.17; 2. bank deposits, one-month ladder at 3.5% 296,034.36; 3. daily money-market fund (BoI 3.25%, δ 0.18%) 295,594.33; 4. ETF in a bank brokerage account (r_g 5%) 293,119.64; 5. fixed-rate government bond, 3.75% coupon 291,761.83; 6. current account at 0.5% 276,722.74. Top two: gap 0.11% → tie (θ = 0.5%). The 50,000 kept available in the current account grows to 50,855.14 (46,072.25 real). Kupat gemel lehashkaa: listed, not ranked (the 83,641 ceiling takes only part of year 1; 65,006.55 routed to the next goal). Study fund and pension: listed, not ranked (locked). Coverage line (F-83): considered 26; ranked 6; listed, not ranked 7; not eligible 2; excluded by the person's constraint 0; not evaluated 11; not ranked, with reasons: savings plan (not evaluated: no savings-plan terms among the inputs (production: data/terms/deposits/, R4)); renewable money-market fund (not evaluated: monthly deposits into fixed-date series are not set (G-30)); kupat gemel lehashkaa (listed, not ranked: the yearly ceiling takes only part of the money (KGL-02, KGL-04; F-05)); keren hishtalmut (listed, not ranked: employee (product D15); locked 6 years (TXH-09)); comprehensive pension fund (listed, not ranked: locked to 60 (PEN-26)); general pension fund (listed, not ranked: locked to 60 (PEN-26)); provident fund for annuity (listed, not ranked: exit as pension, locked to 60 (PEN-34, PEN-26)); IRA in a study fund (listed, not ranked: as the study fund it is held in (IRA-25)); IRA in a provident fund (listed, not ranked: as the provident fund it is held in (IRA-25)); child savings, provident route (not eligible: takes the NII amounts and the parent's matching deposit only, not this money (method section 8; CS-02, CS-04, CS-16)); child savings, bank route (not eligible: takes the NII amounts and the parent's matching deposit only, not this money (method section 8; CS-02, CS-04, CS-16)); savings policies (not evaluated: tier 2, open questions (G-24)); executive insurance (not evaluated: tier 2, open questions (G-24)); structured deposits (not evaluated: tier 2, open questions (G-24)); corporate bonds (not evaluated: tier 2, open questions (G-24)); managed and robo portfolios (not evaluated: tier 2, open questions (G-24)); foreign-currency deposits (not evaluated: tier 2, open questions (G-24)); REITs (not evaluated: tier 2, open questions (G-24)); gold via funds (not evaluated: tier 2, open questions (G-24)); Amendment 190 deposits (not evaluated: tier 2, open questions (G-24)). Fund variants, tracks and providers inside each wrapper: compared in the workbench (3.4). Filled in: every wrapper's terms from the earlier examples.
 
 ### S41 Idle-cash preset
 
@@ -1022,6 +1055,7 @@ Status: computed.
 | 2 | Current account 0.5%, 15% withheld; deposits and makam 85% of the rate after tax | [TXI-08](<https://www.btl.gov.il/Laws1/02_0103_100269.pdf>), [TXI-03](<https://he.wikisource.org/wiki/פקודת_מס_הכנסה>), [TXI-11](<https://he.wikisource.org/wiki/פקודת_מס_הכנסה>) | — |
 | 3 | Daily money-market fund: one-year return 3.065%, tax 25% of the part above inflation → 3.049% after tax | [MF-34](<https://boi.org.il/media/npifkjqk/הוראה-a447.pdf>), [TXS-12](<https://he.wikisource.org/wiki/פקודת_מס_הכנסה>) | — |
 | 4 | Monthly cost = 60,000 × [(1 + r_alt after tax)^(1/12) − (1 + r_cc after tax)^(1/12)] | method F-60 | see table |
+| 5 | Coverage line: every tier-1 wrapper and tier-2 instrument accounted for once; the preset runs only the cash options with a sourced or entered rate | method F-60, F-83, G-28; product D17 | see second table |
 
 | Alternative | Monthly cost of leaving 60,000 in the current account |
 |---|---|
@@ -1030,7 +1064,38 @@ Status: computed.
 | makam 3.9% (no commission given) | 142.07 |
 | daily money-market fund (BoI 3.25%, δ 0.18%), one-year hold | 129.13 |
 
-**Expected (as written to scenarios.md):** Monthly cost of leaving 60,000 in the current account: one-month deposit, bank average 3.2% ("average paid at this bank last month") 113.12; one-month deposit, own offer 3.6% ("entered by you") 129.69; makam 3.9% (no commission given) 142.07; daily money-market fund (BoI 3.25%, δ 0.18%), one-year hold 129.13. BoI rate labelled as the source of the fund's return (proxy). Filled in: π 3% for the fund row.
+| Candidate | Outcome | Reason |
+|---|---|---|
+| current account | baseline | where the money is now (F-60) |
+| bank deposit, one month | compared | F-60 |
+| makam | compared | F-60 |
+| daily money-market fund | compared | F-60 |
+| child savings, provident route | not eligible | takes the NII amounts and the parent's matching deposit only (method section 8; CS-02, CS-04, CS-16) |
+| child savings, bank route | not eligible | takes the NII amounts and the parent's matching deposit only (method section 8; CS-02, CS-04, CS-16) |
+| savings plan | not evaluated | not run by the idle-cash preset (G-28); see the full goal comparison |
+| renewable money-market fund | not evaluated | not run by the idle-cash preset (G-28); see the full goal comparison |
+| government bond | not evaluated | not run by the idle-cash preset (G-28); see the full goal comparison |
+| brokerage account | not evaluated | not run by the idle-cash preset (G-28); see the full goal comparison |
+| kupat gemel lehashkaa | not evaluated | not run by the idle-cash preset (G-28); see the full goal comparison |
+| keren hishtalmut | not evaluated | not run by the idle-cash preset (G-28); see the full goal comparison |
+| comprehensive pension fund | not evaluated | not run by the idle-cash preset (G-28); see the full goal comparison |
+| general pension fund | not evaluated | not run by the idle-cash preset (G-28); see the full goal comparison |
+| provident fund for annuity | not evaluated | not run by the idle-cash preset (G-28); see the full goal comparison |
+| IRA in a study fund | not evaluated | not run by the idle-cash preset (G-28); see the full goal comparison |
+| IRA in a provident fund | not evaluated | not run by the idle-cash preset (G-28); see the full goal comparison |
+| savings policies | not evaluated | tier 2, open questions (G-24) |
+| executive insurance | not evaluated | tier 2, open questions (G-24) |
+| structured deposits | not evaluated | tier 2, open questions (G-24) |
+| corporate bonds | not evaluated | tier 2, open questions (G-24) |
+| managed and robo portfolios | not evaluated | tier 2, open questions (G-24) |
+| foreign-currency deposits | not evaluated | tier 2, open questions (G-24) |
+| REITs | not evaluated | tier 2, open questions (G-24) |
+| gold via funds | not evaluated | tier 2, open questions (G-24) |
+| Amendment 190 deposits | not evaluated | tier 2, open questions (G-24) |
+
+Considered 26: baseline 1, compared 3, not eligible 2, not evaluated 20
+
+**Expected (as written to scenarios.md):** Monthly cost of leaving 60,000 in the current account: one-month deposit, bank average 3.2% ("average paid at this bank last month") 113.12; one-month deposit, own offer 3.6% ("entered by you") 129.69; makam 3.9% (no commission given) 142.07; daily money-market fund (BoI 3.25%, δ 0.18%), one-year hold 129.13. BoI rate labelled as the source of the fund's return (proxy). Coverage line (F-83): considered 26; baseline 1; compared 3; not eligible 2; not evaluated 20; child savings (both routes) not eligible; savings plan, renewable money-market fund, government bond, brokerage account and the provident wrappers not evaluated (G-28); tier 2 not evaluated (G-24). Filled in: π 3% for the fund row.
 
 ### S42 Fee materiality on the founder's hishtalmut
 
@@ -1209,9 +1274,11 @@ Strength is the one recorded on the rule's first source.
 | [BRK-26](<https://edge.boi.org.il/FusionEdgeServer/sdmx/v2/data/dataflow/BOI.BankingSupervision/FEES_DASH/1.0/?format=csv&lastNObservations=1&labels=name>) | Regulator averages exist for banks only | 2026-10-22 | primary; |
 | [BRK-33](<https://market.tase.co.il/he/market_data/trading_fees>) | TASE publishes average fees actually charged, per member, including non-bank brokers | 2026-10-22 | primary |
 | [BRK-36](<https://www.inter-il.com/regulation-and-security/>) | Interactive Israel: tax withholding service and fee claims | 2026-10-22 | institution |
+| [CS-02](<https://www.btl.gov.il/benefits/children/Pages/תנאי%20זכאות.aspx>) | Who is eligible, and when deposits start and stop | 2026-10-22 | primary |
 | [CS-03](<https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/default.aspx>) | NII basic monthly deposit | 2026-10-22 | primary. Law 74ב(א)(1), 74ה(4) (Wikisource mirror) |
 | [CS-04](<https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/HisahonKupot.aspx>) | Parental addition from the child allowance ("doubling") | 2026-10-22 | primary. NII FAQ (above) |
 | [CS-13](<https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx>) | Grants by birth cohort | 2026-10-22 | primary |
+| [CS-16](<https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx>) | If the money is not withdrawn | 2026-10-22 | primary |
 | [CS-18](<https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/sum.aspx>) | Management fees: who pays and until when | 2026-10-22 | primary |
 | [CS-23](<https://data.gov.il/api/3/action/package_show?id=savingsplaninterest>) | Public data on bank rates is stale | 2026-10-22 | primary |
 | [ETF-06](<https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf>) | ETF price on the exchange is not the NAV | 2026-10-22 | institution |
@@ -1227,6 +1294,7 @@ Strength is the one recorded on the rule's first source.
 | [GOV-23](<https://www.boi.org.il/boi_files/hanpaka.pdf>) | Makam issue schedule | 2026-10-22 | primary |
 | [IRA-17](<https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&q=אישי&filters={"REPORT_PERIOD":202609}>) | Management fee level and cap | 2026-10-22 | primary; |
 | [IRA-21](<https://www.meitav.co.il/media/r2djwzpw/26061426l-תוצאות-מכרז-לניהול-אישי-2026-לאומי.pdf>) | Meitav: brokerage tariffs inside the IRA, effective 01.05.2026 | 2026-10-22 | institution |
+| [IRA-25](<https://www.calcalist.co.il/market/article/bjnkrerfa>) | Liquidity and withdrawal follow the underlying product | 2026-10-22 | secondary |
 | [KGL-02](<https://fs.knesset.gov.il//20/law/20_lsr_343169.pdf>) | Annual deposit ceiling: one ceiling per person across all managers, CPI-linked | 2026-10-22 | primary. The current law text on |
 | [KGL-03](<https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf>) | The 2026 ceiling figure | 2026-10-22 | institution. Wikisource annotates section 22(א) with "(... בשנת 2026, 83,641 ש״ח)" |
 | [KGL-04](<https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf>) | When the ceiling is checked, and the deadline for counting a deposit in a year | 2026-10-22 | institution |
@@ -1252,6 +1320,7 @@ Strength is the one recorded on the rule's first source.
 | [PEN-22](<https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)>) | Fee caps for a provident fund for annuity | 2026-10-22 | primary (mirror); |
 | [PEN-23](<https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf>) | Selected (default) pension funds and their fees | 2026-10-22 | primary; |
 | [PEN-26](<https://he.wikisource.org/wiki/חוק_גיל_פרישה>) | Retirement ages | 2026-10-22 | primary (mirror); |
+| [PEN-34](<https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)>) | What a provident fund for annuity is since 2008 | 2026-10-22 | primary (mirror); |
 | [PEN-35](<https://www.moreinvest.co.il/מוצרים/גמל-ופנסיה/קופות-גמל/>) | Provident fund for annuity versus pension fund | 2026-10-22 | institution; |
 | [PF-02](<https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)>) | Cap for provident funds (regulation 2): 1.05% a year of balance and 4% of deposits | 2026-10-22 | primary (regulation text read through two mirrors) |
 | [PF-04](<https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)>) | Cap for a new comprehensive pension fund: 0.5% a year of balance and 6% of deposits | 2026-10-22 | primary. Corroborated: Menora Mivtachim Pension publishes "up to 0.50% of total assets" and "up to 6.00% of contributions" under these regulations for Jan to Sep 2026 ( |

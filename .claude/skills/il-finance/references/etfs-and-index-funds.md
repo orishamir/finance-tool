@@ -196,7 +196,7 @@ Out (and where): the general mutual-fund framework (trustee, open-fund pricing a
 - Conditions / exceptions: Examples: "אי.בי.אי. סל (4D) S&P 500", TASE no. 1148162, closed fund, ETF; "ילין לפידות מחקה (4D) S&P 500", TASE no. 5139282, open fund. Fund names change: the IBI ETF was called "פסגות S&P 500 (4D) ETF" until 08.05.2024. Whether security numbers follow a pattern by fund type was observed in examples only (open question 15).
 - Figures: none.
 - Source: [IBI ETF annual report, p.1, p.8](https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf) · checked 2026-10-22 · institution. [Yalin Lapidot annual report, p.1](https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf) · checked 2026-10-22 · institution.
-- Dimensions: currency, (decoder) identifier
+- Dimensions: currency, (catalogue) identifier
 - Likely to change: no.
 
 ### ETF-21 ETF closure and capacity

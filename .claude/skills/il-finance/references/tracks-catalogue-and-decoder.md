@@ -1,7 +1,7 @@
-# CMA fund catalogue, track naming and the product decoder
+# CMA fund catalogue, track naming and the catalogue of every option
 
 Checked: 2026-10-22 · Owner: domain-specialist
-Serves: product.md 3.10 (product decoder), 3.4 (workbench, tracks), 3.6 (holdings review), dependency 4 (CMA field definitions, discovery O11) and 6a (`data/catalog/`), § 6 refresh; roadmap R1 (decoder, CMA refresh), R3 (tracks workbench)
+Serves: product.md 3.10 (catalogue of every option), 3.4 (workbench, tracks), 3.6 (holdings review), dependency 4 (CMA field definitions, discovery O11) and 6a (`data/catalog/`), § 6 refresh; roadmap R1 (catalogue, CMA refresh), R3 (tracks workbench)
 Scope: in: the three CMA monthly datasets on data.gov.il (Gemel-Net, Pension-Net, Bituach-Net) and the `transfer_bank` crosswalk; what each field means, its unit, period and gross/net basis as far as sources allow; identifiers (fund vs track); classification and specialization values; how merged and renamed tracks appear; the CMA circular on investment tracks (naming, categories, defaults); the Meitav kupat gemel lehashkaa case end to end; where the ISA-side fund list is (not found); refresh and new-period detection. Out: fee caps and transfer rules (`provident-family-common.md`), wrapper rules (`kupat-gemel-lehashkaa.md`, `keren-hishtalmut.md`, `pension-and-gemel-lekitzba.md`, `child-savings.md`, `ira-self-directed.md`), tax (tax files), the meaning of ISA exposure codes (`mutual-funds-and-money-market-funds.md`).
 
 ## Summary
@@ -10,7 +10,7 @@ Scope: in: the three CMA monthly datasets on data.gov.il (Gemel-Net, Pension-Net
 - In Gemel-Net, `FUND_ID` is the **track's** income-tax number. The fund (קופה) number, for example Meitav's 7857 "מיטב גמל להשקעה", is not in Gemel-Net. It is in the `transfer_bank` dataset, which maps fund number to track number (CAT-09, CAT-30).
 - Since the CMA circular on investment tracks (2022-9-28 as amended by 2022-9-30), a track's name must match the CMA's list of tracks and its policy. Misleading words such as "בטוחה" or "סולידית" are banned. Specialized tracks fall into five clusters (CAT-14 to CAT-21). Institutions implemented the new names on 1.7.2024. The CMA's list itself was not obtained (open question 9).
 - Meitav: in report period 202609, kupat gemel lehashkaa fund 7857 has **16** public tracks and exactly **one** named "כללי" (7978), which Meitav marks as the default track at joining. The data rules out two distinct "general" investment-provident tracks at Meitav. What the app's duplicate is could not be seen without the app (CAT-25 to CAT-28, open question 12).
-- The same standard track name can hold quite different mixes at different managers, and the actual mix can change without a rename (CAT-12, CAT-24). The decoder must show the CMA record (classification, fee, exposures with date), not infer content from the name.
+- The same standard track name can hold quite different mixes at different managers, and the actual mix can change without a rename (CAT-12, CAT-24). The catalogue must show the CMA record (classification, fee, exposures with date), not infer content from the name.
 
 ## Rules
 
@@ -87,7 +87,7 @@ Scope: in: the three CMA monthly datasets on data.gov.il (Gemel-Net, Pension-Net
 - Likely to change: no
 
 ### CAT-10 Classification and specialization fields and their current values
-- Rule: Four fields classify a row. (1) `FUND_CLASSIFICATION`, the product type. (2) `TARGET_POPULATION`, open to all or to a sector or employer. (3) `SPECIALIZATION` and (4) `SUB_SPECIALIZATION`, the primary and secondary investment specialization. These are the CMA-side keys for the decoder's "what is this" and for 3.6's fit check.
+- Rule: Four fields classify a row. (1) `FUND_CLASSIFICATION`, the product type. (2) `TARGET_POPULATION`, open to all or to a sector or employer. (3) `SPECIALIZATION` and (4) `SUB_SPECIALIZATION`, the primary and secondary investment specialization. These are the CMA-side keys for the catalogue's "what is this" and for 3.6's fit check.
 - Conditions / exceptions: Values read from the live data. Spelling and spacing should be confirmed from the raw cp1255 CSV before exact matching (open question 20).
   - Gemel-Net `FUND_CLASSIFICATION` (2024+): "תגמולים ואישית לפיצויים", "קרנות השתלמות", "קופת גמל להשקעה", "קופת גמל להשקעה - חסכון לילד", "מרכזית לפיצויים", "מטרה אחרת". The dictionary's description instead says "קופת גמל להשקעה חיסכון לכל ילד".
   - Pension-Net: "קרנות חדשות", "קרנות כלליות".
@@ -146,7 +146,7 @@ Scope: in: the three CMA monthly datasets on data.gov.il (Gemel-Net, Pension-Net
 
 ### CAT-13 Merged, renamed and legacy tracks: how they appear
 - Rule: A renamed track keeps its income-tax number. Meitav's 2024 tables map each old name to the same number, for example 7861 "מסלול שקלי טווח קצר" → "כספי (שקלי)". A merged track is absorbed into an existing track, which keeps its own number. In the data the merged track's assets drop to 0 in the merger month and the track then disappears: 7981's last row is 202407 with `TOTAL_ASSETS` 0. Meitav's notice: track 7981 "מיטב גמל להשקעה מסלול אג"ח עד 10% מניות" merged into 7862 "מיטב גמל להשקעה אשראי ואג"ח" on 1.7.24, "בכפוף לאישור הממונה". The change was automatic, members needed to do nothing, and their rights were stated not to be harmed. The CMA circular allows a track to be closed only if it has no members or assets, or through a merger "בהתאם להוראות הדין" (s.14).
-- Conditions / exceptions: Because the dataset has no closure-date or successor field (CAT-02), a track that disappears cannot be linked to its successor from the data alone. The decoder needs the institution's notice or a hand-kept mapping in `data/catalog/`. A statement or app showing an old name must be matched by number.
+- Conditions / exceptions: Because the dataset has no closure-date or successor field (CAT-02), a track that disappears cannot be linked to its successor from the data alone. The catalogue needs the institution's notice or a hand-kept mapping in `data/catalog/`. A statement or app showing an old name must be matched by number.
 - Figures: n/a
 - Source: [7981 series](https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={"FUND_ID":7981}&sort=REPORT_PERIOD); [Meitav merger notice 7981](https://www.meitav.co.il/media/41anarx5/%D7%9E%D7%99%D7%96%D7%95%D7%92-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-7981.pdf); [Meitav merger summary](https://www.meitav.co.il/media/r0wh30iv/%D7%A8%D7%99%D7%9B%D7%95%D7%96-%D7%9E%D7%99%D7%96%D7%95%D7%92%D7%99%D7%9D-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf); [CMA circular 2022-9-30](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf) appendix s.14 · checked 2026-10-22 · primary, institution
 - Dimensions: transfer-switch-process
@@ -170,7 +170,7 @@ Scope: in: the three CMA monthly datasets on data.gov.il (Gemel-Net, Pension-Net
 
 ### CAT-16 Misleading track and fund names are prohibited
 - Rule: An institution may not call a provident fund, an insurance fund, a non-insurance-fund policy or a track by a name that misleads or implies a guarantee of achieving or meeting a qualitative or quantitative criterion, or from which the way investments are managed could be inferred. The circular's examples: "בטוחה, רווחית, סולידית, יציבה, איתנה, אגרסיבית" (s.8).
-- Conditions / exceptions: Marketing names of products (CAT-11) are not addressed by this text beyond "שם של קופת גמל". The decoder can flag any such word seen in an app as not a CMA track name.
+- Conditions / exceptions: Marketing names of products (CAT-11) are not addressed by this text beyond "שם של קופת גמל". The catalogue can flag any such word seen in an app as not a CMA track name.
 - Figures: n/a
 - Source: [CMA circular 2022-9-30](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf) appendix s.8, p.7 · checked 2026-10-22 · primary
 - Dimensions: regulator
@@ -222,14 +222,14 @@ Scope: in: the three CMA monthly datasets on data.gov.il (Gemel-Net, Pension-Net
 
 ### CAT-21 Changes to a track's specialization, deviations, and notice to members
 - Rule: An institution may change the specialization of a specialized track (as set out in the list) only if its board approves that the change better reflects the track's investment mix as actually managed (s.12(א)). It must notify members at least 45 days and at most three months before the change, including the reasons, what the change means for management flexibility, a before-and-after comparison of the regulatory policy, and the member's right to move to any track in the fund or to another fund (s.12(ב)). In a track's first year the institution may deviate from the regulatory policy while the track's assets are too small to follow it (s.13(א)).
-- Conditions / exceptions: Meitav's May 2024 notices for 7980 and 7861 follow this form: before and after names and policies, and the right to move at any time. Meitav also states that the changes "הורחבה גמישות ניהול השקעות נכסי המסלולים". The decoder should show the date of a track's last policy change where known.
+- Conditions / exceptions: Meitav's May 2024 notices for 7980 and 7861 follow this form: before and after names and policies, and the right to move at any time. Meitav also states that the changes "הורחבה גמישות ניהול השקעות נכסי המסלולים". The catalogue should show the date of a track's last policy change where known.
 - Figures: 45 days to 3 months notice.
 - Source: [CMA circular 2022-9-30](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf) appendix ss.12 to 13, pp.7 to 8; [Meitav notice 7980](https://www.meitav.co.il/media/53vlo3zc/שינוי-התמחות-גמל-להשקעה-7980.pdf); [Meitav notice 7861](https://www.meitav.co.il/media/sisdprky/שינוי-התמחות-גמל-להשקעה-7861.pdf) · checked 2026-10-22 · primary, institution
 - Dimensions: transfer-switch-process, fee-change-over-time
 - Likely to change: no
 
 ### CAT-22 The CMA list of standard tracks: what is known without the list
-- Rule: The standard names in use after 1.7.2024 are known from the data (CAT-10) and institutions (CAT-17), not from the CMA list. Each name's regulatory policy is set by the CMA list (CAT-15), which was not obtained. Until it is, the decoder may state a track's **category and classification from the CMA data** and its **policy text from the institution's bylaw notice** (CAT-23), labelled "institution".
+- Rule: The standard names in use after 1.7.2024 are known from the data (CAT-10) and institutions (CAT-17), not from the CMA list. Each name's regulatory policy is set by the CMA list (CAT-15), which was not obtained. Until it is, the catalogue may state a track's **category and classification from the CMA data** and its **policy text from the institution's bylaw notice** (CAT-23), labelled "institution".
 - Conditions / exceptions: An older CMA list exists, "רשימת מסלולי השקעה" (2015, regulation_2015-9-7a.pdf). It was seen only as a search title and not read; it is superseded by the 2022 circular's list.
 - Figures: n/a
 - Source: as CAT-10, CAT-15, CAT-17 · checked 2026-10-22 · primary (data), institution · links from the cited rules: [1](<https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22FUND_CLASSIFICATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22>), [2](<https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22SPECIALIZATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22>), [3](<https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22TARGET_POPULATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22>), [4](<https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22FUND_CLASSIFICATION%22%20FROM%20%226d47d6b5-cb08-488b-b333-f1e717b1e1bd%22>), [5](<https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22FUND_CLASSIFICATION%22%20FROM%20%22c6c62cc7-fe02-4b18-8f3e-813abfbb4647%22>), [6](<https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf>)
@@ -252,7 +252,7 @@ Scope: in: the three CMA monthly datasets on data.gov.il (Gemel-Net, Pension-Net
 
 ### CAT-24 Regulatory policy vs expected policy: the same name can hold a changing mix
 - Rule: The circular distinguishes "מדיניות השקעה תקנונית" (the policy set in the fund bylaws or the policy's tracks appendix) from "מדיניות השקעה צפויה" (the institution's declared expected policy, per circular 2009-9-13). The name is tied to the regulatory policy only (CAT-15). Within it, the actual mix can change without a rename. Meitav's notice: from 1.7.2026 its "עוקב מדדים גמיש" tracks (481 study fund, 7979 investment provident, 14265 tagmulim, 14260 comprehensive pension, 14268 general pension) move "מחשיפה של כ 50% מניות וחשיפה של 100% לחו״ל" to a "more balanced" policy with variable Israel and abroad allocation and about 55% equities, "ינוהל באופן אקטיבי".
-- Conditions / exceptions: For this reason, the decoder's "exposure in plain Hebrew" must come from the dated CMA exposure fields (CAT-03), labelled computed, with the period, and not from the track name. Example of how far the same standard name can differ: Meitav's "משולב סחיר" (15349) in 202609 shows equity exposure 98.7% and foreign exposure 1.2% of assets (computed), while Harel describes its "משולב סחיר" as about 100% abroad (institution, Harel).
+- Conditions / exceptions: For this reason, the catalogue's "exposure in plain Hebrew" must come from the dated CMA exposure fields (CAT-03), labelled computed, with the period, and not from the track name. Example of how far the same standard name can differ: Meitav's "משולב סחיר" (15349) in 202609 shows equity exposure 98.7% and foreign exposure 1.2% of assets (computed), while Harel describes its "משולב סחיר" as about 100% abroad (institution, Harel).
 - Figures: Meitav 2026 change: about 50% to about 55% equities; effective 1.7.2026.
 - Source: [CMA circular 2022-9-30](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf) appendix s.2; [Meitav flexible-index notice](https://www.meitav.co.il/provident_pension/flexible_index_tracker_actively_managed_indices/); [Harel reform page](https://www.harel-group.co.il/long-term-savings/information/reform); Gemel-Net 202609 (CAT-25) · checked 2026-10-22 · primary, institution, computed
 - Dimensions: currency, fee-change-over-time
@@ -312,7 +312,7 @@ Scope: in: the three CMA monthly datasets on data.gov.il (Gemel-Net, Pension-Net
   - (a) The app shows 7978 twice, once as the "general, most common" preset and once in the full list.
   - (b) One entry belongs to another product that lands in a general track, for example "מיטב קידס" (CAT-27), or a Meitav study fund or tagmulim general track.
   - (c) One entry is 7979 under its old label "פאסיבי - כללי" (CAT-26).
-  The app also shows eight tracks against the 16 on the website and in the data; which eight, and why, could not be seen. Needs the founder's screenshots or typed list (open question 12).
+  The app also shows eight tracks against the 16 on the website and in the data; which eight, and why, could not be seen. Needs the founder's screenshots or typed list (open question 12); not needed for the site since 2026-10-23 (product.md D17).
 - Figures: 16 tracks (data, website) vs 8 (founder's description of the app).
 - Source: as CAT-25 to CAT-27; product.md 3.10 for the app description · checked 2026-10-22 · primary (data), institution · links from the cited rules: [1](<https://www.meitav.co.il/provident_pension/kupa_gemel_invest_reports/>), [2](<https://www.meitav.co.il/media/0lhfrzgy/פלייר-תפעולי-מונגש.pdf>), [3](<https://www.meitav.co.il/media/41anarx5/%D7%9E%D7%99%D7%96%D7%95%D7%92-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-7981.pdf>), [4](<https://www.meitav.co.il/media/r0wh30iv/%D7%A8%D7%99%D7%9B%D7%95%D7%96-%D7%9E%D7%99%D7%96%D7%95%D7%92%D7%99%D7%9D-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf>), [5](<https://www.meitav.co.il/provident_pension/provident_invest/>), [6](<https://www.meitav.co.il/provident_pension/saving_kids/>)
 - Dimensions: regulator
@@ -365,7 +365,7 @@ Scope: in: the three CMA monthly datasets on data.gov.il (Gemel-Net, Pension-Net
 
 ### CAT-34 Maya's fund export: the fields available per mutual fund
 - Rule: The Maya fund list's export ("הורדת נתונים", a CSV) has one row per open-end fund (2,009 on 2026-10-22) with: fund name, fund number, equity and FX exposure codes, three classification levels, characteristics, manager, trustee, tax status, management fee, trustee fee, assets, data date, buy and redemption prices, daily change, returns (month, year to date, 12 months), standard deviation, reference asset, and distribution-fee class.
-- Conditions / exceptions: Counts on 2026-10-22: 15 managers, 4 trustees; distribution-fee class 0.35% (1,082 funds), none (845, the tracking funds), 0.1% (73, all money-market funds), 0.2% (9). The export is the mutual-fund counterpart of the CMA datasets and can serve the decoder for fund names. Terms of use for republishing were not checked (data track).
+- Conditions / exceptions: Counts on 2026-10-22: 15 managers, 4 trustees; distribution-fee class 0.35% (1,082 funds), none (845, the tracking funds), 0.1% (73, all money-market funds), 0.2% (9). The export is the mutual-fund counterpart of the CMA datasets and can serve the catalogue for fund names. Terms of use for republishing were not checked (data track).
 - Figures: as above.
 - Source: [Maya, רשימת קרנות](https://maya.tase.co.il/he/funds/mutual-funds) · checked 2026-10-22 · primary
 - Dimensions: `product-marking`, `fee-management-balance`
@@ -373,7 +373,7 @@ Scope: in: the three CMA monthly datasets on data.gov.il (Gemel-Net, Pension-Net
 
 ## Proposed dimensions
 
-- `default-track`: which track a saver lands in without choosing (CAT-18, CAT-19, CAT-25). It matters for 3.6 ("did you choose this?") and for the decoder's "most common".
+- `default-track`: which track a saver lands in without choosing (CAT-18, CAT-19, CAT-25). It matters for 3.6 ("did you choose this?") and for the catalogue's "most common".
 - `track-mandate`: the gap between a track's name, its regulatory policy and its current actual mix (CAT-15, CAT-23, CAT-24).
 
 ## Terms
@@ -484,7 +484,7 @@ Open to all (12):
 
 Sector or employer funds (6): גל (teachers), הנדסאים וטכנאים, האוניברסיטה העברית, יחד רופאים, מחוג (Israel Electric), עמ"י.
 
-The full list of managing companies per product is in research/discovery/domain-landscape.md 5.1, taken from the same data. The decoder should pull it from Gemel-Net each month, not from this list.
+The full list of managing companies per product is in research/discovery/domain-landscape.md 5.1, taken from the same data. The catalogue should pull it from Gemel-Net each month, not from this list.
 
 ## Open questions
 
@@ -499,14 +499,14 @@ The full list of managing companies per product is in research/discovery/domain-
 9. **The CMA list of investment tracks** ("רשימת מסלולי השקעה", circular s.10) with each name's regulatory policy was not obtained. Web search for it returned only institution pages and drafts, and this turn's search budget was then exhausted. Likely at gov.il under the CMA's circulars or "רשימות" pages; gov.il BlobFolder PDFs did download by script, so the PDF may be reachable once its URL is known. The old 2015 list URL seen in a search title was `https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1456/he/regulation_2015-9-7a.pdf`. It was not opened and is superseded.
 10. **Start-date deferral.** The CMA instrument that moved the start from 1.1.2024 (circular 2022-9-30) to 1.7.2024 (as stated by Meitav and Harel) was not seen. It is probably a later amendment circular on gov.il.
 11. **Money-market track period (s.6א).** Whether it applies to investment provident funds and study funds, and how Meitav implements it for 7861. Sources: Meitav bylaws (תקנון) for fund 7857; CMA FAQ.
-12. **Meitav app (product.md 3.10 example).** The "open a new saving" button, the 8 tracks shown, the "general, most common" and "choose myself" options, and the duplicate "general" could not be seen; the join page returned a title only. Needs the founder to type or screenshot the menu and list. CAT-28 lists the three hypotheses the data leaves open.
+12. **Meitav app (product.md 3.10 example).** The "open a new saving" button, the 8 tracks shown, the "general, most common" and "choose myself" options, and the duplicate "general" could not be seen; the join page returned a title only. Needs the founder to type or screenshot the menu and list. CAT-28 lists the three hypotheses the data leaves open. **[2026-10-23: Not needed. The founder meant that the site must cover every option, not explain the app (product.md D17, appendix E). The site lists all 16 tracks from the data, so which eight the app shows does not change coverage.]**
 13. **"מיטב קידס".** Whether it is fund 7857 (same join URL) or a separate fund. Source: Meitav Kids terms or the founder's app.
 14. **ISA mutual-fund list.** Where the public list with names, classification and exposure codes is published and in what format. Tried: `https://www.new.isa.gov.il/nav-index/api/mutualfunds-search` (empty shell), `https://www.tase.co.il/he/market_data/funds`, which redirected to `https://market.tase.co.il/he/market_data/funds` (403), and the ISA 2024 report (no mention). Likely at ISA's mutual-fund search, MAGNA, or TASE DataHub (data-landscape 1.6, 1.7). Owner of the code meanings: `mutual-funds-and-money-market-funds.md`. **[2026-10-22 browser pass: Closed by CAT-33 (Maya).]**
 15. **Pension fees reported at fund level?** All Meitav comprehensive-pension tracks show 0.11 and 1.25 in 202609. Same sources as item 1.
 16. **Operator codes.** The meaning and use of "קוד מזרחי", "קוד נס פנסיה" and the "קידוד" string (512065202000000000078570000000) on Meitav notices; possibly clearing-house product codes. Not needed for R1.
 17. **Track 15472 "אג"ח ממשלות".** CMA inception 2024-12-17, but Meitav's founding date is 01/07/2026, YTD yield is null in both sources, and assets are 4.7 NIS m. When was it opened to the public? Source: Meitav notice or bylaws amendment.
 18. **Track-name prefix rules and the 2024 draft regulation** on moving default-track members to age-matched tracks. Both were seen only as search titles or snippets (tazkirim.gov.il) and were not opened.
-19. **Which of Meitav's other products** (IRA "בניהול אישי" in tagmulim 1486 and study fund 1487, Kids) the app offers under "open a new saving". Same as item 12.
+19. **Which of Meitav's other products** (IRA "בניהול אישי" in tagmulim 1486 and study fund 1487, Kids) the app offers under "open a new saving". Same as item 12. **[2026-10-23: Not needed, as item 12: every Meitav product in the data is in the catalogue whatever the app shows.]**
 20. **Exact spellings** in classification values (מסוים vs מסויים, שיקלי vs שקלי) for string matching. Confirm from the raw cp1255 CSV.
 21. **Dictionary vs data mismatches.** The gemel dictionary lists "קופת גמל להשקעה חיסכון לכל ילד", while the data has "קופת גמל להשקעה - חסכון לילד". Pension's net-flow description contradicts the data (CAT-08). Report to the CMA, or simply rely on the data and document it.
 
