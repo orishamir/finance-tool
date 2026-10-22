@@ -1,0 +1,27 @@
+{
+  "name": "finance-tool",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "site"
+  ],
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "vitest run",
+    "validate": "npm run validate -w @finance-tool/pipeline",
+    "build": "npm run build -w site",
+    "dev": "npm run dev -w site",
+    "check": "npm run typecheck && npm test && npm run validate && npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "fast-check": "^4.10.2",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5"
+  }
+}
