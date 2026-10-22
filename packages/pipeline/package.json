@@ -1,0 +1,16 @@
+{
+  "name": "@finance-tool/pipeline",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p .",
+    "validate": "tsx src/cli.ts validate"
+  },
+  "dependencies": {
+    "@finance-tool/schema": "*",
+    "zod": "^4.6.7"
+  }
+}

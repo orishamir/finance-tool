@@ -1,0 +1,22 @@
+[
+  {"query": "for the idle-cash preset I need to know: how is a קרן כספית taxed when I redeem it, compared with a regular shekel bank deposit? is it 15% or 25% and on what base", "should_trigger": true},
+  {"query": "my friend is 58, salaried, keren hishtalmut open since 2017. her employer deposits 7.5% on a 19k salary. if she withdraws next year is any of it taxable?", "should_trigger": true},
+  {"query": "write tests/cases/etf-vs-gemel.md: same S&P 500 exposure held in a brokerage account vs a kupat gemel lehashkaa for 20 years, include the exit tax and the tax on switching tracks", "should_trigger": true},
+  {"query": "what's the maximum management fee a new comprehensive pension fund is allowed to charge on deposits and on the balance? my statement shows 1.49% from deposits", "should_trigger": true},
+  {"query": "in the meitav app i see 'מיטב כספית 13112026 מתחדש' - what kind of product is that and is it exempt or taxable", "should_trigger": true},
+  {"query": "draft the 'how it's taxed' section of the guide page for חיסכון לכל ילד - what happens at 18 and at 21", "should_trigger": true},
+  {"query": "for the fund variants comparison: does an israeli resident face US estate tax holding an S&P 500 ETF domiciled in the US vs an irish UCITS one? need the rule with a source", "should_trigger": true},
+  {"query": "bank discount offers 'פצ\"מ דולר 6-12 חודשים'. what is this deposit and how is the interest taxed?", "should_trigger": true},
+  {"query": "add the 2026 annual deposit ceiling for kupat gemel lehashkaa to data/ with its source and date", "should_trigger": true},
+  {"query": "i'm leaving my job next month. what do i choose on form 161 for the severance money if i want to keep the tax exemption for later?", "should_trigger": true},
+  {"query": "the comparison table breaks on mobile in RTL - the shekel sign ends up on the wrong side of the number. fix the CSS", "should_trigger": false},
+  {"query": "translate the intro paragraph of the money-market fund guide page into natural, friendly Hebrew for my friends", "should_trigger": false},
+  {"query": "set up vitest and a github action that runs everything in tests/cases on every push", "should_trigger": false},
+  {"query": "my cousin in texas asked what the 401k contribution limit is for 2026 and whether a roth IRA is better for him", "should_trigger": false},
+  {"query": "refactor the sensitivity panel react component so the chart doesn't re-render on every slider move", "should_trigger": false},
+  {"query": "write a script that pulls the bank of israel policy rate series from the EDGE API every day and saves it under data/series/", "should_trigger": false},
+  {"query": "make a chart comparing how the TA-35 did last month against the S&P 500", "should_trigger": false},
+  {"query": "fix the typo in the release 3 heading of docs/roadmap.md", "should_trigger": false},
+  {"query": "what's the cheapest stocks and shares ISA platform in the UK for a monthly £200 deposit", "should_trigger": false},
+  {"query": "summarise the founder interview section of docs/discovery.md in five bullet points", "should_trigger": false}
+]

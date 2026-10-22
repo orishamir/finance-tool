@@ -1,0 +1,486 @@
+# Pension fund and provident fund for annuity
+
+Checked: 2026-10-22 · Owner: domain-specialist
+Serves: `docs/product.md` 3.1 (instrument guide), 3.2 (salary and contribution inputs, "where to find this on the payslip"), 3.3 (dimension checklist), 3.4 (tracks), 3.6 (holdings review), 3.10 (decoder for pension and gemel tracks). Release 1 file per `research/knowledge/README.md`.
+Scope: mandatory pension for employees and the self-employed; new comprehensive and general pension funds (ceilings, insured salary, insurance cover, stopping deposits); investment tracks, designated bonds and the guaranteed-return mechanism, actuarial balancing; selected (default) pension funds; regulated fee caps for pension funds, provident funds and pensioners; withdrawal, retirement ages, minimum pension, severance on leaving a job, death; provident fund for annuity (tagmulim and personal severance); payslip fields; institutions.
+Out (and where it lives): tax at deposit, during and at exit, sections 45A and 47, employer-contribution tax, annuity exemption (`tax-pension-gemel-lekitzba.md`, TXP); executive insurance and insurance-company policies (`savings-policies-and-executive-insurance.md`, INS); Amendment 190 (`tax-insurance-and-amendment-190.md`, TXA); fee caps and transfer rules shared by all CMA products, fee-discount rules in general, payment-timing regulations, statements and the clearing house (`provident-family-common.md`, PF); the switching process (`switching-and-transfers.md`, SW); track naming and the CMA catalogue (`tracks-catalogue-and-decoder.md`, CAT).
+
+## Summary
+
+Every employee in Israel aged 21 (men) or 20 (women) and up must be insured in a pension product after a six-month waiting period (or from day one, paid retroactively, if they already had a pension). The minimum rates since 1 January 2017 are 6% employee, 6.5% employer, 6% severance, on wages up to the national average wage. Self-employed people must deposit 4.45% of income up to half the average wage and 12.55% from half to the full average wage into an annuity-type fund. The default product is a new comprehensive pension fund (קרן פנסיה חדשה מקיפה): savings plus pooled disability and survivors' insurance, with 30% of assets covered by a state guaranteed-return mechanism and actuarial balancing that can move everyone's balance. Deposits above a ceiling (20.5% of twice the average wage a month) go to a general pension fund (קרן פנסיה כללית). If an employee does not choose, the employer must use one of four "selected" funds (Infinity, Altshuler Shaham, Mor, Meitav, from 1 Nov 2024 for four years) at 1% of deposits plus 0.22% of balance, fixed for at least 10 years. The legal maximum is 6% of deposits plus 0.5% a year of the balance. Money is locked until retirement (old-age pension from 60 at the earliest) except the severance component and a few narrow cases. A provident fund for annuity (קופת גמל לתגמולים ואישית לפיצויים) holds the same kind of money without insurance cover and without the guaranteed-return mechanism, and pays an annuity only by transferring the money to a pension fund or insurer.
+
+## Rules
+
+### Mandatory pension for employees
+
+### PEN-01 Who the mandatory-pension extension order covers
+- Rule: The consolidated extension order for mandatory pension (צו הרחבה [נוסח משולב] לפנסיה חובה, 2011) applies to every employee employed or to be employed in any workplace in Israel, except employees who already have a pension arrangement at least as good (from 1.1.2014, an arrangement at 17.5% of wages or more).
+- Conditions / exceptions: Does not apply below age 20 for women and 21 for men ("מי שטרם מלאו לו - באישה 20 שנים ובגבר 21 שנים"); on reaching that age, earlier employment counts toward the waiting period. Excludes a person who retired at mandatory retirement age and receives a pension (National Insurance benefits are not a pension for this purpose). Existing better arrangements (collective agreements, older pension funds) are preserved (section 5).
+- Figures: ages 20 and 21; threshold 17.5% of wages for "better arrangement" from 1.1.2014. Fixed in the order.
+- Source: [צו הרחבה (נוסח משולב) לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011, scan on gov.il](https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf), sections 3 and 4, pp. 6939-6941 · checked 2026-10-22 · primary. Text cross-checked against [Hilan mirror of the consolidated order](https://www.hilan.co.il/%D7%9E%D7%A8%D7%9B%D7%96-%D7%99%D7%93%D7%A2/%D7%97%D7%A7%D7%99%D7%A7%D7%94/%D7%A6%D7%95%D7%95%D7%99-%D7%94%D7%A8%D7%97%D7%91%D7%94/%D7%A6%D7%95-%D7%94%D7%A8%D7%97%D7%91%D7%94-%D7%91%D7%99%D7%98%D7%95%D7%97-%D7%A4%D7%A0%D7%A1%D7%99%D7%95%D7%A0%D7%99-%D7%9E%D7%A7%D7%99%D7%A3-%D7%91%D7%9E%D7%A9%D7%A7/%D7%A6%D7%95-%D7%94%D7%A8%D7%97%D7%91%D7%94-%D7%A0%D7%95%D7%A1%D7%97-%D7%9E%D7%A9%D7%95%D7%9C%D7%91-%D7%9C%D7%A4%D7%A0%D7%A1%D7%99%D7%94-%D7%97%D7%95%D7%91%D7%94-%D7%91%D7%AA%D7%95%D7%A7%D7%A3-%D7%9E-27-%D7%91%D7%A1%D7%A4%D7%98%D7%9E%D7%91%D7%A8-2011/) · checked 2026-10-22 · secondary (mirror)
+- Dimensions: eligibility, regulator
+- Likely to change: no
+
+### PEN-02 Waiting period
+- Rule: An employee is entitled to pension insurance and contributions immediately after six months from the start of work ("מיד בתום 6 חודשים מתחילת העבודה", the תקופת המתנה). An employee who starts work while already insured in any pension insurance is entitled to contributions from the first day of work; the contributions are paid after 3 months of work or at the end of the tax year, whichever is earlier, retroactively to the first day, and the waiting period does not apply.
+- Conditions / exceptions: The 2008 transitional periods (9 months) are spent. Applies to employees covered by PEN-01.
+- Figures: 6 months; 3 months for retroactive payment. Fixed in the order.
+- Source: [Extension order 2011 (scan)](https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf), section 6(ה)-(ו), p. 6941 · checked 2026-10-22 · primary; same text in the Hilan mirror (above) · secondary
+- Dimensions: eligibility, liquidity-lockup
+- Likely to change: no
+
+### PEN-03 Minimum contribution rates
+- Rule: From 1 January 2017 the minimum contributions are 6% employee (תגמולי עובד), 6.5% employer (תגמולי מעסיק) and 6% employer for severance (פיצויים), 18.5% in total, of the wage on which the obligation applies (PEN-04). These are minimums; an employment agreement may set more.
+- Conditions / exceptions: In an insurance fund (executive insurance) or a provident fund that is not a pension fund, the employer's tagmulim payment may include the cost of loss-of-work-capacity insurance needed to secure 75% of the wage, provided the employer's tagmulim share alone is not below 5% and the employer total for tagmulim plus that insurance does not exceed 7.5%. An employer with a section-14 arrangement at 8.33% continues it when the employee moves to a pension fund.
+- Figures: history: 17.5% (5.5% employee, 6% employer, 6% severance) from 1.1.2014 under the 2011 order table; 18% (5.75%, 6.25%, 6%) from 1.7.2016; 18.5% (6%, 6.5%, 6%) from 1.1.2017. Fixed in the agreement; no later change found (open question 2).
+- Source: [General collective agreement (framework) to increase pension contributions, signed 3.4.2016, registered 15.06.2016 no. 7008/2016](https://www.prisha.co.il/UserFiles/File/pdf/hoz/kibuzi03042016.pdf), section 3, pp. 1-2 (scan of the registered document, third-party host) · checked 2026-10-22 · primary; [Harel letter "הגדלת שיעורי הפקדה למוצר פנסיוני בהתאם לצו ההרחבה", June 2016](https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf), p. 1 (states the extension order was signed 26 May 2016 and applies to all employees whose rates are lower) · checked 2026-10-22 · institution; [Extension order 2011](https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf), section 6(ד) table · checked 2026-10-22 · primary
+- Dimensions: deposit-ceiling, eligibility, minimum
+- Likely to change: yes, rates are set by collective agreement and extension order; a new agreement would change them
+
+### PEN-04 Wage base for mandatory contributions
+- Rule: The insured wage is the employee's wage and its components as defined in the Severance Pay Law and its regulations ("שכר העובד ורכיביו כמשמעם בחוק ובתקנות פיצויי פיטורים"), and the obligation applies to the wage paid or to the national average wage as updated from time to time, whichever is lower ("הנמוך מבין השניים").
+- Conditions / exceptions: The order does not require contributions on wages above the average wage; arrangements above it come from the employment agreement. The 2016 agreement defines its wage base ("השכר הקובע") as the wage under the agreement that applies to the employee, and not less than the insured wage under the mandatory-pension agreement. The average wage is the National Insurance figure under section 2 of the National Insurance Law.
+- Figures: average wage 2026: NIS 13,769 a month (Harel 2026 table, institution; NII publication not reached, open question 5). Updated by NII.
+- Source: [Extension order 2011](https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf), sections 2(ב), 6(ב)-(ג) · checked 2026-10-22 · primary; [2016 collective agreement](https://www.prisha.co.il/UserFiles/File/pdf/hoz/kibuzi03042016.pdf), section 2(א) · checked 2026-10-22 · primary; [Harel, תקרות וסכומים לשנת 2026](https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf), p. 1 "שכר ממוצע במשק" · checked 2026-10-22 · institution
+- Dimensions: deposit-ceiling, eligibility
+- Likely to change: yes, the average wage is updated by NII each year
+
+### PEN-05 Products that satisfy the order, and severance in place of severance pay
+- Rule: The employee may choose, in writing to the employer within 60 days of starting work, comprehensive pension including a provident fund for annuity approved by the Commissioner, provided it includes death and disability cover, in the same fund or another. If the employee does not choose, the employer insures them in a new comprehensive pension fund. Employer severance payments under the order replace statutory severance pay for the wage and periods they cover (section 14 of the Severance Pay Law). Severance deposits are not returned to the employer except where the employee withdrew money before a qualifying event (death, disability, retirement at 60 or older) or where severance rights were removed under sections 16-17 of the Severance Pay Law.
+- Conditions / exceptions: Section 3(ג) preserves the employee's right to move to another fund. An employer may top up severance to 8.33% (section 9). Pension, disability and survivors rights follow the fund's bylaws (section 10).
+- Figures: 60 days to choose. Fixed.
+- Source: [Extension order 2011](https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf), sections 3, 7-10, pp. 6939-6942 · checked 2026-10-22 · primary; [Hilan mirror](https://www.hilan.co.il/%D7%9E%D7%A8%D7%9B%D7%96-%D7%99%D7%93%D7%A2/%D7%97%D7%A7%D7%99%D7%A7%D7%94/%D7%A6%D7%95%D7%95%D7%99-%D7%94%D7%A8%D7%97%D7%91%D7%94/%D7%A6%D7%95-%D7%94%D7%A8%D7%97%D7%91%D7%94-%D7%91%D7%99%D7%98%D7%95%D7%97-%D7%A4%D7%A0%D7%A1%D7%99%D7%95%D7%A0%D7%99-%D7%9E%D7%A7%D7%99%D7%A3-%D7%91%D7%9E%D7%A9%D7%A7/%D7%A6%D7%95-%D7%94%D7%A8%D7%97%D7%91%D7%94-%D7%A0%D7%95%D7%A1%D7%97-%D7%9E%D7%A9%D7%95%D7%9C%D7%91-%D7%9C%D7%A4%D7%A0%D7%A1%D7%99%D7%94-%D7%97%D7%95%D7%91%D7%94-%D7%91%D7%AA%D7%95%D7%A7%D7%A3-%D7%9E-27-%D7%91%D7%A1%D7%A4%D7%98%D7%9E%D7%91%D7%A8-2011/), sections 3, 8 · checked 2026-10-22 · secondary (mirror)
+- Dimensions: insurance-cover, eligibility, liquidity-lockup
+- Likely to change: no
+
+### PEN-06 Employee choice of fund and the employer's default
+- Rule: An employee entitled to join a provident fund may choose any fund intended for the purpose set by law or agreement, and the employer may not condition payment on a particular fund (Provident Funds Law section 20(א)). If the employee did not choose after being given the opportunity, the employer may deposit in a default fund (section 20(ב)). Under the CMA circular, a managing company may accept such an employee only if its fund is a selected pension fund (קרן נבחרת) under the distribution mechanism, or a default fund chosen by the employer through a competitive process. From 1 June 2025 employers must place non-choosing employees in one of the selected funds by an automatic distribution mechanism; employers with fewer than 50 employees may choose among the selected funds at their discretion.
+- Conditions / exceptions: An employer that runs its own competitive process for a default fund may sign for up to 5 years; the employees join that fund's default investment and insurance tracks, and its default insurance cover must include at least disability cover for a 25% loss of work capacity and death cover that includes a lifetime spouse pension. The managing company of a default fund may not condition joining or its fee on buying other products it or a related party markets.
+- Figures: 50 employees; 5-year limit; 25% disability threshold. Set by circular.
+- Source: [Provident Funds Law, section 20 (Wikisource mirror)](<https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)>) · checked 2026-10-22 · primary (mirror of the law; latest amendment shown ס"ח תשפ"ו 912); [CMA circular 2024-9-6 "הוראות לעניין בחירת קופת גמל - עדכון", 25.8.2024](<https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf>), annex sections 3, 7, 11-12 · checked 2026-10-22 · primary; [CMA, דוח הממונה על שוק ההון לשנת 2024](https://adif-web-bucket.s3-eu-west-1.amazonaws.com/%D7%93%D7%95%D7%97%20%D7%94%D7%9E%D7%9E%D7%95%D7%A0%D7%94%20%D7%A2%D7%9C%20%D7%A9%D7%95%D7%A7%20%D7%94%D7%94%D7%95%D7%9F%20%D7%9C%D7%A9%D7%A0%D7%AA%202024.pdf), p. 10 · checked 2026-10-22 · primary (official report, third-party host)
+- Dimensions: eligibility, transfer-switch-process, regulator
+- Likely to change: yes, the selected-fund process is re-run every four years
+
+### PEN-07 Mandatory pension deposits for the self-employed
+- Rule: A self-employed person must deposit into a provident fund for annuity, by the end of the tax year, 4.45% of the part of "income liable for deposit" (הכנסה חייבת בהפקדה) up to half the average wage, and 12.55% of the part above half and up to the average wage. Deposits made by or for them on insured employee income are deducted from the amount due.
+- Conditions / exceptions: Not liable at the end of the tax year if under 21, if they have reached early retirement age under the Retirement Age Law, or if fewer than six months have passed since first VAT registration as a dealer; also not liable if aged 55 or more on the law's effective date. Part of each year's deposits is assigned to an unemployment-savings component (מרכיב חיסכון למצב אבטלה): the lower of one-third of the deposits or an annual amount set by reference to section 9(7א)(א)(2) of the Income Tax Ordinance. Enforcement: the Fines Collection Center sends a notice to a liable person who earned above 12 times the minimum wage and did not deposit; 90 days to pay; failure is an offence with a NIS 500 fine, indexed. The offence applies to deposits for tax year 2018 onward.
+- Figures: 4.45% and 12.55%. 2026 (Harel, institution): half average wage NIS 6,884.5; average wage NIS 13,769; maximum required NIS 1,170.24 a month. Amounts follow the average wage.
+- Source: [חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2017 ו-2018), chapter ב', sections 2-11, 18 (Wikisource mirror)](https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%94%D7%94%D7%AA%D7%99%D7%99%D7%A2%D7%9C%D7%95%D7%AA_%D7%94%D7%9B%D7%9C%D7%9B%D7%9C%D7%99%D7%AA_(%D7%AA%D7%99%D7%A7%D7%95%D7%A0%D7%99_%D7%97%D7%A7%D7%99%D7%A7%D7%94_%D7%9C%D7%94%D7%A9%D7%92%D7%AA_%D7%99%D7%A2%D7%93%D7%99_%D7%94%D7%AA%D7%A7%D7%A6%D7%99%D7%91_%D7%9C%D7%A9%D7%A0%D7%95%D7%AA_%D7%94%D7%AA%D7%A7%D7%A6%D7%99%D7%91_2017_%D7%95-2018)) · checked 2026-10-22 · primary (mirror); [Harel 2026 table](https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf), p. 1 "פנסיית חובה לעצמאים" · checked 2026-10-22 · institution
+- Dimensions: eligibility, minimum, deposit-ceiling, reporting-obligation
+- Likely to change: yes, amounts follow the average wage; the start year of the section-3 obligation was not stated in what was read (open question 4)
+
+### Fund types, ceilings and insured salary
+
+### PEN-08 New comprehensive pension fund and its monthly deposit ceiling
+- Rule: A new comprehensive pension fund (קרן פנסיה מקיפה חדשה) is a pension fund approved by the Commissioner and by the Tax Authority as a provident fund for annuity, approved after 1 January 1995, whose bylaws give the member old-age pension, survivors' pension and disability pension rights. Monthly deposits to it may not exceed the monthly deposit ceiling, which is the lower of (a) the comprehensive-fund monthly ceiling defined in the Income Tax regulations and (b) 22.83% of all the salary components the employer reports.
+- Conditions / exceptions: Deposits above the ceiling, and deposits for a disabled member above the partial-disability deposit ceiling, are moved to the member's account in the general pension fund of the same manager (PEN-10).
+- Figures: comprehensive-fund monthly ceiling 2026: NIS 5,645.29 (Harel: 20.5% of twice the average wage); Mor April 2026 bylaws: NIS 5,645. 22.83% factor fixed in bylaws. Updated with the average wage.
+- Source: [Extension order 2011](https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf), section 2(ד) definition · checked 2026-10-22 · primary; [Mor comprehensive fund bylaws, version 01.06.2025](https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf), section 1 definitions "תקרת הפקדה חודשית", sections 16, 18 · checked 2026-10-22 · institution; [Mor general fund bylaws, version 01.04.2026](https://www.moreinvest.co.il/media/hphjzxvl/תקנון-קרן-פנסיה-כללית.pdf), section 1 "תקרת הפקדה חודשית לקרן פנסיה מקיפה" · checked 2026-10-22 · institution; [Harel 2026 table](https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf), p. 1 · checked 2026-10-22 · institution
+- Dimensions: deposit-ceiling, insurance-cover
+- Likely to change: yes, average-wage-linked
+
+### PEN-09 Insured salary and determining salary
+- Rule: The comprehensive fund infers the insured salary (שכר מבוטח) from contributions: for an employee member, the tagmulim contributions for the month divided by 12.5%, or by the actual tagmulim rate if that is higher; for a self-employed member, contributions divided by 16% unless the member proves a rate of at least 12.5%. Insurance benefits use the determining salary (שכר קובע): the highest of the average updated insured salary over the last 12 months, the last 3 months, or the 12 months before the last 12, capped at 3 times the average wage in the comprehensive fund and 4 times in the general fund.
+- Conditions / exceptions: For a month without deposits while still insured, the last determining salary computed applies. Several sources of deposits are added up.
+- Figures: 12.5%, 16%; cap 3x average wage (comprehensive), 4x (general). 2026: NIS 41,307 and NIS 55,706 (Harel, institution). Average-wage-linked.
+- Source: [Mor comprehensive bylaws 01.06.2025](https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf), section 1 "שכר מבוטח", "שכר קובע" · checked 2026-10-22 · institution; [Mor general bylaws 01.04.2026](https://www.moreinvest.co.il/media/hphjzxvl/תקנון-קרן-פנסיה-כללית.pdf), section 1 · checked 2026-10-22 · institution; [Harel 2026 table](https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf), p. 1 · checked 2026-10-22 · institution
+- Dimensions: insurance-cover, deposit-ceiling
+- Likely to change: yes, average-wage-linked caps; bylaws can change
+
+### PEN-10 General pension fund
+- Rule: A general pension fund (קרן פנסיה כללית) is defined in the extension order as a new pension fund that is not entitled to designated bonds. A member of the comprehensive fund whose deposits exceed the comprehensive ceiling is joined to the same manager's general fund automatically, even without a joining request, from the date the excess deposit is received. The excess is transferred by the fifth day of the month after the deposit, and no management fee is charged on the transfer itself.
+- Conditions / exceptions: The management fee on money transferred from the comprehensive fund may not exceed the member's comprehensive-fund fee rate, unless agreed otherwise with the member, employer or employee organisation (comprehensive bylaws section 18(ב)-(ג)). The manager notifies the member in writing within 14 days of the first transfer, including the lack or existence of insurance cover on that part of the salary and the option to buy cover. The general fund is not an eligible fund for the guaranteed-return mechanism (PEN-18 lists only old and new comprehensive funds).
+- Figures: fee caps 4% of deposits and 1.05% a year of balance (PEN-21). Insured-salary cap 4x average wage.
+- Source: [Extension order 2011](https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf), section 2 definitions · checked 2026-10-22 · primary; [Mor general bylaws 01.04.2026](https://www.moreinvest.co.il/media/hphjzxvl/תקנון-קרן-פנסיה-כללית.pdf), sections 8, 14, 18 · checked 2026-10-22 · institution; [Mor comprehensive bylaws 01.06.2025](https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf), section 18 · checked 2026-10-22 · institution
+- Dimensions: deposit-ceiling, fee-management-balance, fee-deposit, insurance-cover
+- Likely to change: no
+
+### Insurance cover
+
+### PEN-11 Insurance tracks and the default insurance track
+- Rule: A member may choose, on joining and at any later time, one of eight insurance tracks (מסלולי ביטוח). The default track (מסלול ברירת המחדל) is "75% disability and 100% survivors": disability cover at the maximum 75% and survivors cover at the maximum 100% for women at any joining age and men joining up to age 40; for men joining from 41 the survivors cover is lower than the maximum. Other tracks combine disability at 37.5% or 75% with survivors at 40%, 60% or 100%, including a "for retirees at 60" track. A member may also pick any combination of disability 37.5%, 50%, 62.5% or 75% and survivors 40%, 60%, 80% or 100%, within the maximums allowed for their joining age.
+- Conditions / exceptions: The member chooses the insurance end age (גיל תום תקופת הביטוח) among 60, 62, 64 or 67, not below the minimum old-age eligibility age and not above mandatory retirement age; after it the member becomes uninsured. On joining or renewal after more than 12 months without a choice, the default track applies with end age 67 for men and women and double disability pension in the first two months. An insured member who reaches 60 may waive disability and/or survivors cover. Changing tracks does not change the age at which cover started.
+- Figures: 75%/100% default; options as listed. Fixed in bylaws.
+- Source: [Mor comprehensive bylaws 01.06.2025](https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf), sections 24, 25, 27, 28, 29, 32 · checked 2026-10-22 · institution
+- Dimensions: insurance-cover
+- Likely to change: no (bylaws-level; CMA uniform bylaws not read, open question 13)
+
+### PEN-12 Disability cover
+- Rule: A disabled member (נכה) is an insured member who lost at least 25% of the capacity to work in their own job and in any other suitable job, for more than 90 consecutive days; full disability (נכה מלא) is at least 75%. The disability pension equals the insured disability rate times the determining salary for full disability, times the degree of disability for partial disability, and 133% for a dependent ("סיעודי") full disability, provided the pension does not exceed the determining salary. Payment starts from the 61st day after the qualifying event and continues until the earliest of the insurance end age, the end of the disability, or death. While disabled, the fund credits monthly contributions to the disabled member's account (זקיפת דמי גמולים לעמית נכה), so old-age savings continue.
+- Conditions / exceptions: Progressive disability cover (קצבת נכות מתפתחת) raises the pension by 2% a year if bought. Double disability pension (קצבת נכות כפולה) in the first two months is default cover. A partial-disability member may keep insurance for the remaining salary by paying insurance costs. Medical decisions follow the fund doctor, medical committee and appeals committee.
+- Figures: 25%, 75%, 90 days, 61st day, 133%, 2% a year. Fixed in bylaws.
+- Source: [Mor comprehensive bylaws 01.06.2025](https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf), section 1 definitions "נכה", "נכה מלא", "נכה סיעודי", sections 26-27, 69-75 (bylaws pp. 51-54) · checked 2026-10-22 · institution. The day-61 figure was read from a page image; verify against the text (open question 16).
+- Dimensions: insurance-cover
+- Likely to change: no
+
+### PEN-13 Survivors cover
+- Rule: The survivors' pension of an insured member is the determining salary times the survivors insurance rate chosen (the basic survivors pension), split as: widow or widower 60% (or the rate set for a child with disabilities); each orphan 40% (an only orphan with no widow 100%); a dependent parent 20%; in total not above the basic survivors pension. Several widows or parents share equally.
+- Conditions / exceptions: Orphan means a child under 21, or a child with disabilities. A member without survivors may waive survivors cover for up to 24 months at a time (renewable); if they marry or have a child during the waiver and die within 90 days of it, survivors are still entitled. A member with children and no spouse may waive spouse cover. On death of an uninsured member, a different calculation applies (bylaws section on "שאירי עמית לא מבוטח", not read).
+- Figures: 60%, 40%, 100%, 20%; 24-month waiver; 90 days. Fixed in bylaws.
+- Source: [Mor comprehensive bylaws 01.06.2025](https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf), section 1 "יתום", sections 30-31א, 94-96 (bylaws pp. 29-31, 63-64) · checked 2026-10-22 · institution
+- Dimensions: insurance-cover
+- Likely to change: no
+
+### PEN-14 Qualifying period, medical underwriting and insurance cap
+- Rule: The fund may require medical underwriting (חיתום רפואי) only on joining, renewal of insurance, a real salary increase above 15%, or an increase of cover. A qualifying period (תקופת אכשרה) of 60 months applies to a qualifying event caused by an illness, accident or condition that existed before joining or renewal; 12 months for self-inflicted injury. A member who withdraws or transfers money from the tagmulim component gets a new 60-month qualifying period for the cover that money financed. Total expected insurance cost may not exceed 35% of expected accumulated deposits before fees and insurance (insurance cap, תקרת הכיסוי הביטוחי).
+- Conditions / exceptions: Withdrawal for old-age pension via a gemel for investment, and transfers to a former spouse under the pension-splitting law, are excluded from the new-qualifying-period rule. Joining or renewal is decided within 14 days; medical underwriting results within 30 days of documents, not later than 90 days.
+- Figures: 60 months, 12 months, 15%, 35%, 14/30/90 days. Fixed in bylaws.
+- Source: [Mor comprehensive bylaws 01.06.2025](https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf), sections 13, 34, 35, 39 and annex א · checked 2026-10-22 · institution
+- Dimensions: insurance-cover, transfer-switch-process
+- Likely to change: no
+
+### PEN-15 Cost of insurance
+- Rule: Insurance premiums (דמי ביטוח) for death risk are computed by actuarial factors by sex, birth year, age, insurance rate, determining salary and accrued balance; disability premiums by sex, age, birth year, insurance rate and determining salary (bylaws annexes ד to ז). They are deducted monthly from the tagmulim component of the member's account, only while the member is insured. The fund reinsures the risks; reinsurance premiums do not exceed the premiums charged to members, except for special catastrophe risks, which are deducted from fund assets.
+- Conditions / exceptions: Insurance stops being charged once the member is uninsured (end age, waiver, end of extension). Rates per age are in annexes not read (open question 7).
+- Figures: not collected.
+- Source: [Mor comprehensive bylaws 01.06.2025](https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf), sections 7, 38, 40 · checked 2026-10-22 · institution
+- Dimensions: insurance-cover, fee-change-over-time
+- Likely to change: yes, actuarial factors change with Commissioner approval
+
+### PEN-16 What happens when deposits stop: insurance extension and insurance arrangement
+- Rule: When a member stops being active (no deposits), insurance continues automatically for five full consecutive months (ארכת ביטוח), with the cost deducted from the balance. Before the extension ends, the member may ask for an insurance arrangement (הסדר ביטוח): keep cover by paying insurance from the balance or by depositing, for up to 24 consecutive months from the end of activity (including the extension), or a shorter period equal to the continuity of deposits if the member was active less than 24 months. Both end at the earliest of: deposits resuming, transfer of the tagmulim money to another fund, the member's request, insufficient balance, death, insurance end age, or start of a pension.
+- Conditions / exceptions: After that the member is an uninsured member (עמית לא מבוטח). Renewal after more than 12 months without being insured needs a full joining request, may involve medical underwriting, starts a new qualifying period and uses the default insurance track if no choice is made. The term "ריסק זמני" was not found in the bylaws read (open question 12).
+- Figures: 5 months; 24 months; 12 months. Fixed in bylaws.
+- Source: [Mor comprehensive bylaws 01.06.2025](https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf), sections 13(א), 28, 36, 37 (bylaws pp. 16, 28, 35-36) · checked 2026-10-22 · institution
+- Dimensions: insurance-cover, liquidity-lockup
+- Likely to change: no
+
+### Investment tracks, guaranteed return and actuarial balancing
+
+### PEN-17 Investment tracks and the age-dependent default
+- Rule: The default investment track is an age-dependent track (מסלול השקעות תלוי גיל): a track for members up to 50, one for 50 to 60, and one for 60 and over; a member is moved automatically to the track for their age in the month after reaching it, unless they chose otherwise, and may stay in a track that does not match their age. Other tracks are specialised (for example equity, shekel cash, combined traded, equity traded, bond traded, equity-index tracker, flexible-index tracker, bond-index tracker, S&P 500 tracker; a halacha track was added from 01.04.2026). Pensioners have separate tracks (a basic track for annuitants and an index-tracker annuitant track).
+- Conditions / exceptions: In every track, the assets invested in designated "ערד" bonds or in the guaranteed-return channel are outside the track's stated policy (PEN-18). A member may move all or part of balance or deposits between tracks; the transfer is made within 3 business days. Severance money from a specific employer can go to a non-default track only if the employer agreed, the member is entitled to it, or an unconditional-entitlement arrangement applies. A member who joins without choosing goes to the default track; a member renewing after 12 months keeps the old track for the old balance and the default for new deposits.
+- Figures: age bands 50 and 60; 3 business days. Fixed in bylaws.
+- Source: [Mor comprehensive bylaws 01.06.2025](https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf), sections 19-22 (bylaws pp. 19-25) · checked 2026-10-22 · institution; [Mor change summary for the 01.04.2026 edition](https://www.moreinvest.co.il/media/zkmhas4r/res_מסמך-שינויים-פנסיה-מקיפה.pdf), row 4 (halacha track per CMA circular 2022-9-30 and notice 2024-1471) · checked 2026-10-22 · institution
+- Dimensions: transfer-switch-process, switching-tax-event, protection
+- Likely to change: yes, the CMA 2026 plan includes an investment-tracks circular (domain landscape S29)
+
+### PEN-18 Guaranteed-return mechanism (replacing new designated bonds)
+- Rule: The state guarantees a return top-up to eligible pension funds: old (ותיקה) and new comprehensive (חדשה מקיפה) funds. For 30% of eligible assets (70% for "existing entitled" members, those entitled before 1 January 2004) the target return is an annual 5.15% ("ריבית שנתית בשיעור 5.15%"). From the determining date (1 October 2022) the covered share is computed monthly, net of designated bonds; in a new comprehensive or multi-track fund those assets are invested in a guaranteed-return track that mirrors the largest track. After each 60-month period, a return above the cumulative target goes to a designated fund; a shortfall is paid by the state, first from that fund and then from the budget. The guarantee for a given asset holds for 60 months plus two further 60-month periods even if the rules change. The designated fund's money cannot be attached.
+- Conditions / exceptions: Designated bonds (איגרות חוב מיועדות) are the non-tradable "ערד" and "מירון" series issued to pension funds; bonds already issued remain until redeemed. The minister reports each year by 30 May. The general fund and provident funds for annuity are not eligible funds.
+- Figures: 30%, 70%, 5.15%, 60 months, from 1.10.2022. Fixed in law; whether 5.15% is CPI-linked is not stated in the text read (open question 8).
+- Source: [Provident Funds Law, chapter ג' סימן ה'1, sections 34א-34ז (Wikisource mirror)](<https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)>) · checked 2026-10-22 · primary (mirror); [Mor comprehensive bylaws 01.06.2025](https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf), section 19 ("ערד" / "אפיק השקעה מובטח תשואה") · checked 2026-10-22 · institution
+- Dimensions: protection, real-vs-nominal, regulator
+- Likely to change: yes, the law allows the minister to change details by regulation; the target and share are policy choices
+
+### PEN-19 Actuarial balancing
+- Rule: Each year (and quarter), the fund's actuary prepares a full actuarial balance, and members' and pensioners' rights are updated by the actuarial surplus or deficit (עודף או גירעון אקטוארי). Surplus or deficit from demographic factors (mortality, disability, survivors and so on) applies to all members by updating their balances, and to pensioners by updating pensions. Surplus or deficit from returns and the capitalisation interest applies only to pensioners, through a pensioners' reserve (עתודה למקבלי קצבה) of up to 1% of obligations to pensioners; returns on members' balances do not create a surplus or deficit for members.
+- Conditions / exceptions: Each pensioners' investment track has its own reserve.
+- Figures: 1% reserve. Actuarial surplus or deficit by fund, 2024: Infinity 0.57%, Altshuler Shaham 0.27%, Mor 0.17%, Phoenix 0%, Meitav 0.29%, Clal −0.03%, Harel 0%, Migdal Makefet 0.15%, Menora Mivtachim −0.10% (CMA report table ד-13).
+- Source: [Mor comprehensive bylaws 01.06.2025](https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf), section 109 (bylaws p. 71) · checked 2026-10-22 · institution; [CMA report 2024](https://adif-web-bucket.s3-eu-west-1.amazonaws.com/%D7%93%D7%95%D7%97%20%D7%94%D7%9E%D7%9E%D7%95%D7%A0%D7%94%20%D7%A2%D7%9C%20%D7%A9%D7%95%D7%A7%20%D7%94%D7%94%D7%95%D7%9F%20%D7%9C%D7%A9%D7%A0%D7%AA%202024.pdf), table ד-13, p. 57 · checked 2026-10-22 · primary (third-party host). The Pension-Net dataset carries a monthly `ACTUARIAL_ADJUSTMENT` field (data landscape 1.2.1).
+- Dimensions: insurance-cover, fee-change-over-time, protection
+- Likely to change: yes, yearly
+
+### PEN-20 Actuarial assumptions behind annuity conversion
+- Rule: Conversion factors, insurance premiums and commutation amounts are computed on assumptions set by the Commissioner, including an effective real return ("ריבית שנתית להיוון") after deducting the maximum management fee, mortality tables, disability tables and a mortality-improvement model; a change of assumptions requires updating the factors, subject to the Commissioner's approval. Old-age pension is computed by the factors in force at the first eligibility date.
+- Conditions / exceptions: Annuity factors use the member's real age data at retirement, not assumptions.
+- Figures: effective real return for annuitants at bylaws approval: 4.38% gross a year, net of the maximum management fee. Set by CMA circulars.
+- Source: [Mor comprehensive bylaws 01.06.2025](https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf), sections 45, 110 (bylaws pp. 39, 72) · checked 2026-10-22 · institution
+- Dimensions: real-vs-nominal, fee-change-over-time
+- Likely to change: yes, with CMA demographic and interest updates
+
+### Fees
+
+### PEN-21 Regulated fee caps for pension funds and pensioners
+- Rule: Maximum management fees under the Management Fees Regulations: new comprehensive fund up to 0.5% a year of the balance and up to 6% of deposits; from pensioners up to 0.5% a year of assets backing pension obligations, and up to 0.3% for old-age pensioners whose pension started on or after 1 February 2022; for a pension below the minimum pension, up to 6% of the difference between the minimum pension and the pension paid. New general fund: up to 1.05% a year of the balance and up to 4% of deposits; pensioners up to 0.6% (pensions from 1 January 2013), up to 2% (earlier pensions), 0.3% for old-age pensions from 1 February 2022.
+- Conditions / exceptions: Multi-track funds apply caps per track. The fee charged on a disabled member's balance may not exceed the fee charged before disability (bylaws). Accounts of unreachable or deceased members: up to 0.3% a year, with conditions (regulation 8).
+- Figures: as above; monthly equivalents in bylaws 0.04157% (0.5%), 0.02497% (0.3%), 0.08708% (1.05%). Fixed in regulation (latest amendment ק"ת תשפ"ב 1812).
+- Source: [תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע"ב-2012, regulations 3, 6, 8 (Wikisource mirror)](<https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)>) · checked 2026-10-22 · primary (mirror); [Mor comprehensive bylaws 01.06.2025](https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf), section 8 · checked 2026-10-22 · institution; [Mor general bylaws 01.04.2026](https://www.moreinvest.co.il/media/hphjzxvl/תקנון-קרן-פנסיה-כללית.pdf), section 8 · checked 2026-10-22 · institution
+- Dimensions: fee-management-balance, fee-deposit, fee-change-over-time
+- Likely to change: yes, caps are set by regulation with Finance Committee approval (Provident Funds Law section 32(ב))
+
+### PEN-22 Fee caps for a provident fund for annuity
+- Rule: A provident fund (other than study, self-directed, central and other-purpose funds) may charge up to 1.05% a year of the balance and up to 4% of deposits; from pensioners up to 0.6% a year of assets backing pension obligations; old-age pensioners in insurance-based funds from 1 February 2022 up to 0.3%. For money deposited before tax year 2008, the fund may charge the higher of those rates or a monthly amount of up to NIS 6, indexed.
+- Conditions / exceptions: Self-directed funds (IRA) are under regulation 4 (up to 2% of balance), see `ira-self-directed.md`.
+- Figures: 1.05%, 4%, 0.6%, 0.3%, NIS 6 a month (indexed). Fixed in regulation.
+- Source: [Management Fees Regulations 2012, regulations 2, 4 (Wikisource mirror)](<https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)>) · checked 2026-10-22 · primary (mirror); [Mor gemel standard bylaws 18.02.2026](https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf), section 44 · checked 2026-10-22 · institution
+- Dimensions: fee-management-balance, fee-deposit
+- Likely to change: yes, by regulation
+
+### PEN-23 Selected (default) pension funds and their fees
+- Rule: The Commissioner sets at least two new comprehensive pension funds as selected funds (קרן נבחרת), by a competitive process, each serving as the default fund for employees who did not choose. From 1 November 2024 one period of four years applies. The fourth process selected the funds of Infinity, Altshuler Shaham, Mor and Meitav. The management fee for new members is 1% of deposits and 0.22% of the balance, guaranteed for at least 10 years from joining. Members may, if active, ask to convert part of the balance fee into a deposit fee under a "more beneficial fee mix" formula (הרכב דמי ניהול מיטיב, circular annex ג').
+- Conditions / exceptions: The 10-year guarantee is "יהיו בתוקף למשך 10 שנים לפחות ממועד הצטרפותו לקרן" for a new member who joined during the period the fund was selected. Mor lists five alternative mixes from 1.2% of deposits plus 0.20% of balance to 2.7% plus 0.05%; choosing one does not change the 10-year period; if deposits stop for more than six months Mor may return the member to the default 1% plus 0.22%; only members who joined after 1 November 2024 may request an alternative (Mor's page, institution). Other selected funds' alternatives were not checked (open question 15).
+- Figures: 4 funds; four years from 1.11.2024 (end date 31.10.2028 derived from that, not seen in an official text); 1% + 0.22%; 10 years. Set by circular and tender.
+- Source: [CMA circular 2024-9-6, 25.8.2024](<https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf>), annex sections 2 ("המועד הקובע"), 4, 5 and annex ג', explanatory notes pp. 13-14 · checked 2026-10-22 · primary; [CMA report 2024](https://adif-web-bucket.s3-eu-west-1.amazonaws.com/%D7%93%D7%95%D7%97%20%D7%94%D7%9E%D7%9E%D7%95%D7%A0%D7%94%20%D7%A2%D7%9C%20%D7%A9%D7%95%D7%A7%20%D7%94%D7%94%D7%95%D7%9F%20%D7%9C%D7%A9%D7%A0%D7%AA%202024.pdf), p. 10 "ההליך הרביעי לקביעת קרנות פנסיה נבחרות" · checked 2026-10-22 · primary (third-party host); [Mor selected pension fund page](https://www.moreinvest.co.il/%D7%9E%D7%95%D7%A6%D7%A8%D7%99%D7%9D/%D7%92%D7%9E%D7%9C-%D7%95%D7%A4%D7%A0%D7%A1%D7%99%D7%94/%D7%A7%D7%A8%D7%9F-%D7%A4%D7%A0%D7%A1%D7%99%D7%94/) · checked 2026-10-22 · institution
+- Dimensions: fee-management-balance, fee-deposit, fee-change-over-time, eligibility
+- Likely to change: yes, a new process is due before the four-year period ends
+
+### PEN-24 Regulator reference for fees actually charged
+- Rule: The CMA publishes average management fees actually charged. In 2024, new comprehensive pension funds charged on average 0.15% of assets and 1.57% of deposits; for comparison provident funds 0.54% of assets and 0.09% of deposits. By fund, for the employees of each fund's five largest employers versus all members (balance / deposits): Menora 0.07%/2.06% vs 0.15%/1.73%; Harel 0.07%/1.18% vs 0.16%/1.51%; Clal 0.11%/1.13% vs 0.15%/1.54%; Migdal Makefet 0.15%/1.47% vs 0.16%/1.61%; Altshuler Shaham 0.14%/1.39% vs 0.14%/1.30%; Phoenix 0.10%/1.43% vs 0.15%/1.55%; Meitav 0.09%/1.21% vs 0.11%/1.31%; Mor 0.21%/1% vs 0.20%/1%; Infinity 0.18%/1% vs 0.18%/1%.
+- Conditions / exceptions: These are averages, not prices a person can get; per D4 they are a reference level next to the list price and the person's own fee. Monthly per-track averages are in Pension-Net (`AVG_ANNUAL_MANAGEMENT_FEE`, `AVG_DEPOSIT_FEE`; field units unconfirmed, discovery O11).
+- Figures: 2024 calendar year. Published yearly.
+- Source: [CMA report 2024](https://adif-web-bucket.s3-eu-west-1.amazonaws.com/%D7%93%D7%95%D7%97%20%D7%94%D7%9E%D7%9E%D7%95%D7%A0%D7%94%20%D7%A2%D7%9C%20%D7%A9%D7%95%D7%A7%20%D7%94%D7%94%D7%95%D7%9F%20%D7%9C%D7%A9%D7%A0%D7%AA%202024.pdf), charts ד-1, ד-2 and table ד-8, pp. 49-50 · checked 2026-10-22 · primary (third-party host)
+- Dimensions: fee-management-balance, fee-deposit
+- Likely to change: yes, yearly
+
+### PEN-25 Fee discounts and what can end them (provident fund bylaws)
+- Rule: In the standard provident-fund bylaws, a manager may offer a member a fee below the maximum provided the offer is for at least two years. The manager may raise the fee before the discount period ends only if the member is told so in a separate document within three months of the discount, and only in listed cases: deposits stopped for reasons not caused by the employer, full or partial withdrawal or transfer to another fund or track, the discount was given because of a workplace the member has left, or a pre-agreed fee mechanism tied to the balance. A fee increase takes effect two months after notice to the member and their licensed adviser, and not earlier than the date stated.
+- Conditions / exceptions: These are provident-fund (gemel) bylaws. The pension-fund bylaws read set only the caps (section 8); the cross-product rule on discounts after leaving an employer belongs in `provident-family-common.md` (open question 10).
+- Figures: 2 years, 3 months, 2 months. Fixed in bylaws.
+- Source: [Mor gemel standard bylaws ("תקנון תקני") 18.02.2026](https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf), sections 45-46 · checked 2026-10-22 · institution
+- Dimensions: fee-change-over-time
+- Likely to change: no
+
+### Withdrawal and pension
+
+### PEN-26 Retirement ages
+- Rule: Under the Retirement Age Law, retirement age (גיל פרישה) is 67 for men and 65 for women; early retirement age (גיל פרישה מוקדמת) is 60 for both; mandatory retirement age (גיל פרישת חובה) is 67 for both. Women born up to December 1969 have a transitional retirement age (for example 1965: 63 years 9 months; 1969: 64 years 9 months). In the pension fund, the minimum old-age eligibility age (גיל זכאות מינימלי לקצבת זקנה) is the early retirement age, 60.
+- Conditions / exceptions: Women born from 1970 fall under the general rule of 65 (inference from section 3 and the schedule's last row, open question 20).
+- Figures: 60, 65, 67. Fixed in law (latest amendment shown ס"ח תשפ"ב 250).
+- Source: [חוק גיל פרישה, התשס"ד-2004, sections 3-6, 9 and schedule (Wikisource mirror)](https://he.wikisource.org/wiki/חוק_גיל_פרישה) · checked 2026-10-22 · primary (mirror); [Mor comprehensive bylaws 01.06.2025](https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf), section 1 definitions · checked 2026-10-22 · institution
+- Dimensions: age-or-use-exemption, liquidity-lockup
+- Likely to change: yes, retirement age for women has been changed by legislation before
+
+### PEN-27 Old-age pension: when and how it is computed
+- Rule: A member may start an old-age pension (קצבת זקנה) from the minimum eligibility age or any later date they choose, provided they do not receive a disability pension from the fund. The pension equals the balance divided by the conversion factor (מקדם המרה) of the annex in force, by the member's age, spouse's age, children, guaranteed-payment period and survivors' rates chosen. The member chooses a spouse survivors' rate of at least 30% of the old-age pension, total survivors' rates up to 100%, and optionally a guaranteed-payment period (תקופת תשלומים מובטחים) of 60, 120, 180 or 240 months, ending no later than age 87. A member may convert only part of the balance. After the first payment the choices cannot be changed.
+- Conditions / exceptions: A notice is sent six months before insurance end age or mandatory retirement age. The pension is paid by the third of each month for the previous month and is updated by the CPI and by actuarial balancing (PEN-19). The member may ask for up to three months' pension retroactively, if they were of eligible age. Deposits may continue after the insurance end age, mandatory retirement age, and after the pension started.
+- Figures: 30%, 100%, 60/120/180/240 months, age 87. Fixed in bylaws.
+- Source: [Mor comprehensive bylaws 01.06.2025](https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf), sections 41-50, 53 (bylaws pp. 38-42) · checked 2026-10-22 · institution
+- Dimensions: liquidity-lockup, real-vs-nominal
+- Likely to change: no
+
+### PEN-28 Commutation and the minimum annuity amount
+- Rule: At the pension request, a member may commute (היוון) the part of the pension above the minimum annuity amount (סכום קצבה מזערי) into a lump sum; and may commute up to 25% of the pension for up to five years, provided the remaining pension is not below the minimum annuity amount. The minimum annuity amount is defined in Provident Funds Law section 23(ה) and updated each 1 January by the CPI.
+- Conditions / exceptions: Commutation requests cannot be withdrawn after the first payment. During a 5-year commutation, the pension is reduced, then returns to the full amount.
+- Figures: minimum annuity amount NIS 3,850 at 2008 values, NIS 5,306 for 2026 (law page; Mor April 2026 bylaws; Harel table). CPI-linked annually.
+- Source: [Provident Funds Law, section 23(א)(1)(א), 23(ה)-(ו) (Wikisource mirror)](<https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)>) · checked 2026-10-22 · primary (mirror); [Mor comprehensive bylaws 01.06.2025](https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf), section 51 · checked 2026-10-22 · institution; [Mor general bylaws 01.04.2026](https://www.moreinvest.co.il/media/hphjzxvl/תקנון-קרן-פנסיה-כללית.pdf), section 1 "סכום קצבה מזערי" · checked 2026-10-22 · institution
+- Dimensions: liquidity-lockup, age-or-use-exemption
+- Likely to change: yes, CPI-linked; tax consequences of commutation are in TXP
+
+### PEN-29 Minimum pension and small balances
+- Rule: A minimum pension (קצבת מינימום) is a pension lower than 5% of the average wage; the fund may charge a pensioner whose pension is below it up to 6% of the difference, and the member may defer the pension instead. Separately, a member who reached mandatory retirement age, whose total balances do not exceed the minimum accumulation amount (סכום צבירה מזערי), and who gets no annuity (or annuities up to the minimum annuity amount), may withdraw as a lump sum. The law also allows withdrawal without other conditions where the total in the member's accounts at that fund does not exceed NIS 8,000 (2016 values, CPI-linked), for the fund types named in section 23(ב)(1א).
+- Conditions / exceptions: The text read names "קופת גמל לחיסכון" and old funds in section 23(ב)(1א); whether new pension funds are covered was not confirmed from the text read.
+- Figures: minimum pension 2026 (April 2026 bylaws): NIS 688.45 (5% of average wage); minimum accumulation NIS 80,000 at 2008 values, NIS 110,250 for 2026; NIS 8,000 at 2016 values (2026 figure not found). CPI-linked or average-wage-linked as stated.
+- Source: [Mor comprehensive bylaws 01.06.2025](https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf), section 1 "קצבת מינימום", section 52 · checked 2026-10-22 · institution; [Mor general bylaws 01.04.2026](https://www.moreinvest.co.il/media/hphjzxvl/תקנון-קרן-פנסיה-כללית.pdf), section 1 · checked 2026-10-22 · institution; [Provident Funds Law, section 23(א)(1)(ב)(3), 23(ב)(1א), 23(ה)-(ו) (Wikisource mirror)](<https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)>) · checked 2026-10-22 · primary (mirror)
+- Dimensions: minimum, liquidity-lockup
+- Likely to change: yes, linked to average wage and CPI
+
+### PEN-30 Lump-sum withdrawal before retirement (product side)
+- Rule: A lump-sum withdrawal from a provident fund for annuity (which includes pension funds), other than by commuting a pension, may be made only from: the severance component (מרכיב הפיצויים); a new account under section 23(א)(2א) or (2ב); a non-old fund after mandatory retirement age with a balance up to the minimum accumulation amount (PEN-29); employee money deposited before 1 January 2000 if the member reached 60 or left a job and did not start another within six months; specified older self-employed money; or where the minister's health and economic conditions (section 23(ב)(1)) or the small-balance rule (23(ב)(1א)) are met. The pension bylaws add that withdrawal from the tagmulim component is only for a member not receiving a disability pension, and that a withdrawn amount ends all pension rights tied to it.
+- Conditions / exceptions: Withdrawing tagmulim money starts a new 60-month qualifying period for the cover it financed (PEN-14). The CMA 2026 plan includes unified withdrawal rules (domain landscape S29); not checked. Tax on withdrawals is in TXP.
+- Figures: as in PEN-29.
+- Source: [Provident Funds Law, section 23(א)(1)(ב) (Wikisource mirror)](<https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)>) · checked 2026-10-22 · primary (mirror); [Mor comprehensive bylaws 01.06.2025](https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf), sections 103, 106 (bylaws pp. 69-70) · checked 2026-10-22 · institution
+- Dimensions: liquidity-lockup, tax-at-exit
+- Likely to change: yes, CMA plans unified withdrawal rules
+
+### PEN-31 Severance component when leaving a job
+- Rule: A member may withdraw money the employer deposited to the severance component according to the employer-employee relationship and the member's entitlement under the law. Where an unconditional-entitlement arrangement applies (section 14 type, "הסדר זכאות ללא תנאי"), the amount is the higher of the employer's severance deposits indexed by the CPI or the severance balance. Instead of withdrawing, the member may transfer the severance money (after tax for the non-exempt part) to a new account in an annuity fund that accepts no further deposits (section 23(א)(2א)). An employer may ask for severance money it deposited only per the law; the fund notifies the member at least 60 days before paying the employer (or a shorter period set by a court).
+- Conditions / exceptions: In the provident fund standard bylaws, an employee may withdraw severance after the fund receives the employer's notice of the employee's leaving. Under the extension order, severance deposits cannot return to the employer except as in PEN-05.
+- Figures: 60 days. Fixed.
+- Source: [Mor comprehensive bylaws 01.06.2025](https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf), sections 103(א)(2), 103(ב), 104 · checked 2026-10-22 · institution; [Mor gemel standard bylaws 18.02.2026](https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf), sections 12, 17 · checked 2026-10-22 · institution; [Provident Funds Law, section 23(א)(2א), 23(א)(3) (Wikisource mirror)](<https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)>) · checked 2026-10-22 · primary (mirror)
+- Dimensions: liquidity-lockup, tax-at-exit, insurance-cover
+- Likely to change: no
+
+### PEN-32 Death
+- Rule: On the death of a member or a pensioner, money due to survivors is paid as survivors' pensions under the bylaws. If there are no survivors, the balance is paid to the beneficiaries (מוטבים) named in writing, by the rates the member set or in equal shares; if there are no beneficiaries, to the heirs. A pensioner who chose a guaranteed-payment period and has no survivors: beneficiaries get the commuted value of the remaining guaranteed payments.
+- Conditions / exceptions: In the provident fund bylaws, a small balance (up to NIS 5,000, indexed) may be paid without a probate order to a spouse, parent or child, after three years and with conditions. A beneficiary may move the money to a new account in their own name (section 23(א)(2ב)).
+- Figures: NIS 5,000 (gemel, indexed).
+- Source: [Mor comprehensive bylaws 01.06.2025](https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf), sections 1 "מוטב", 50(ג), 105 · checked 2026-10-22 · institution; [Mor gemel standard bylaws 18.02.2026](https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf), sections 31-34 · checked 2026-10-22 · institution
+- Dimensions: insurance-cover, liquidity-lockup
+- Likely to change: no
+
+### PEN-33 Processing times
+- Rule: Pension fund service times (bylaws annex א and sections): joining without medical underwriting up to 14 days; notice of joining up to 10 days; transfer of excess deposits to the general fund by the fifth of the next month; switching investment tracks up to 3 business days; old-age pension request approved within 10 days, first payment by the third of the month after eligibility; withdrawal request answered within 2 days and approved withdrawal paid within 4 business days. Provident fund: withdrawal paid within 4 business days.
+- Conditions / exceptions: Payment dates falling on the first three business days of a month may be moved to the fourth business day.
+- Figures: as listed. Fixed in bylaws.
+- Source: [Mor comprehensive bylaws 01.06.2025](https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf), sections 22(ד), 108 and annex א · checked 2026-10-22 · institution; [Mor gemel standard bylaws 18.02.2026](https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf), section 18 · checked 2026-10-22 · institution
+- Dimensions: transfer-switch-process, liquidity-lockup
+- Likely to change: no
+
+### Provident fund for annuity
+
+### PEN-34 What a provident fund for annuity is since 2008
+- Rule: Approval of a fund as a provident fund for tagmulim (קופת גמל לתגמולים) or a personal severance fund (קופת גמל אישית לפיצויים) covers money deposited for tax years before 2008 only. The current product is run under standard bylaws as "קופת גמל לחיסכון, קופת גמל לתגמולים וקופת גמל אישית לפיצויים": new money is pension savings for retirement; Gemel-Net classifies it as "תגמולים ואישית לפיצויים". The fund does not pay annuities itself ("קופת גמל לא משלמת לקצבה"): withdrawal of tagmulim as an annuity is done by transferring the money to a pension fund or an insurance fund (קופת ביטוח). A non-annuity withdrawal of tagmulim is allowed only at mandatory retirement age with total balances up to the minimum accumulation amount and no annuity above the minimum, from a new account (severance or beneficiary money), or under health and economic conditions.
+- Conditions / exceptions: Money deposited up to the end of tax year 2007 (employee) can be withdrawn at 60, or under older conditions (for money before 2 January 2005: at 60 after retiring or cutting work by 50%, or after leaving a job and not starting another within six months, or 13 months at an employer that does not pay to an annuity fund). Self-employed: money to 31 December 2005 after 15 years from first deposit or at 60; from 1 January 2006 at 60. Tax treatment of each is in TXP.
+- Figures: as stated. Fixed in law and bylaws.
+- Source: [Provident Funds Law, section 13(א)(4) (Wikisource mirror)](<https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)>) · checked 2026-10-22 · primary (mirror); [Mor gemel standard bylaws 18.02.2026](https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf), title page, sections 13-15 · checked 2026-10-22 · institution; [Gemel-Net query, period 202609](https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&filters=%7B%22REPORT_PERIOD%22%3A202609%7D&fields=FUND_CLASSIFICATION,TARGET_POPULATION&distinct=true&limit=200) · checked 2026-10-22 · primary
+- Dimensions: liquidity-lockup, age-or-use-exemption, regulator
+- Likely to change: no
+
+### PEN-35 Provident fund for annuity versus pension fund
+- Rule: A provident fund for annuity has no pooled insurance cover ("אינו כולל כיסויים ביטוחיים" on Mor's product page; the standard bylaws include an insurance section only where the manager buys insurance for members), is not an eligible fund for the guaranteed-return mechanism (PEN-18), has no actuarial balancing of members' balances, and its annuity terms are set by the pension fund or insurer the money is moved to at retirement. It satisfies mandatory pension only if death and disability cover is held elsewhere (PEN-05). Fee caps are 4% of deposits and 1.05% of balance (PEN-22), against 6% and 0.5% in a comprehensive pension fund.
+- Conditions / exceptions: The bylaws set deposit limits of 7.5% employer tagmulim, 7% employee tagmulim and 8.33% severance of the employee's wage. Members may borrow against the fund: up to 80% of liquid money and up to 30% of non-liquid money (excluding severance), for up to 7 years, and total loans up to 10% of fund assets.
+- Figures: 7.5%, 7%, 8.33%; loans 80%/30%/7 years/10%. Fixed in bylaws.
+- Source: [Mor gemel product page](https://www.moreinvest.co.il/מוצרים/גמל-ופנסיה/קופות-גמל/) · checked 2026-10-22 · institution; [Mor gemel standard bylaws 18.02.2026](https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf), sections 8.3, 14.1, 47, insurance section footnote · checked 2026-10-22 · institution; [Provident Funds Law, section 34ב (Wikisource mirror)](<https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)>) · checked 2026-10-22 · primary (mirror)
+- Dimensions: insurance-cover, protection, fee-management-balance, fee-deposit, liquidity-lockup
+- Likely to change: no
+
+### Payslip
+
+### PEN-36 What a payslip must show about pension deposits
+- Rule: Under the Wage Protection Law, every employee must get a written payslip that includes: the total pay counted for pension or other social rights, broken down by the right it counts toward (תוספת item 5(6), "המובאים בחשבון לעניין זכויות פנסיוניות"); each deduction to a provident fund, by fund and amount (item 6(4), "ניכוי לקופת גמל, שיפורט לפי הקופה שאליה הניכוי מיועד וסכומו"); and the employer's payments for social benefits not paid to the employee, including employer contributions to a provident fund (item 7, "לרבות הפרשות המעסיק לקופת גמל").
+- Conditions / exceptions: The law does not require the payslip to show the contribution rate (percent) or to name the severance part separately. A person can derive their rates as: employee rate = employee pension deduction ÷ pensionable pay; employer rate = employer tagmulim payment ÷ pensionable pay; severance rate = employer severance payment ÷ pensionable pay (a computation for `docs/method.md`, not a rule). The comprehensive fund infers the insured salary from tagmulim deposits (PEN-09), so the annual fund statement's insured-salary figure is a second place to check. The exact line labels on payslips were not sourced (open question 11).
+- Figures: none.
+- Source: [חוק הגנת השכר, התשי"ח-1958, section 24 and תוספת items 5(6), 6(4), 7 (Wikisource mirror)](https://he.wikisource.org/wiki/חוק_הגנת_השכר) · checked 2026-10-22 · primary (mirror)
+- Dimensions: reporting-obligation, deposit-ceiling
+- Likely to change: no
+
+## Terms
+
+| Hebrew | English | Meaning | Where it appears (app, statement, ad, law) | Source |
+|---|---|---|---|---|
+| צו הרחבה [נוסח משולב] לפנסיה חובה | Consolidated extension order for mandatory pension | Order extending the 2011 collective agreement to all employees | Law (Yalkut), payroll | [Extension order 2011](https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf) |
+| תקופת המתנה | Waiting period | 6 months before contributions start | Law, HR | same, s. 6(ה) |
+| תגמולי עובד / תגמולי מעסיק | Employee / employer benefit contributions | The tagmulim parts of the contribution | Payslip, statement, law | [Harel 2016 letter](https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf) |
+| פיצויים / מרכיב הפיצויים | Severance / severance component | Employer severance deposits and the account part holding them | Statement, payslip, law | [Provident Funds Law s. 23](<https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)>) |
+| מרכיב התגמולים | Benefits component | Account part holding tagmulim money | Statement, bylaws | [Mor bylaws](https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf) s. 1 |
+| השכר הממוצע במשק | Average wage in the economy | NII figure, base for ceilings | Law, tables | [Harel 2026](https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf) |
+| קרן פנסיה מקיפה חדשה / קרן פנסיה חדשה מקיפה | New comprehensive pension fund | Pension fund with old-age, disability and survivors cover | Ads, statement, law | Extension order s. 2(ד); [Management Fees Regulations](<https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)>) |
+| קרן פנסיה כללית / קרן חדשה כללית | General pension fund | Fund receiving deposits above the comprehensive ceiling | Statement, law | Extension order s. 2; Mor general bylaws |
+| קרן פנסיה ותיקה | Old pension fund | Fund approved before 1.1.1995 | Law, CMA reports | Extension order s. 2(ה) |
+| קרן נבחרת / קרן פנסיה נבחרת | Selected pension fund | Default fund chosen by the CMA process | Ads, employer letters | [CMA circular 2024-9-6](<https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf>) |
+| קופת ברירת מחדל | Default fund | Fund for an employee who did not choose | Law, circular | same; Provident Funds Law s. 20 |
+| הרכב דמי ניהול מיטיב | More beneficial fee mix | Formula-based swap of balance fee for deposit fee | Selected funds' pages | CMA circular annex ג' |
+| תקרת הפקדה חודשית | Monthly deposit ceiling | Maximum monthly deposit to the comprehensive fund | Bylaws, tables | Mor bylaws s. 1 |
+| שכר מבוטח | Insured salary | Salary inferred from tagmulim deposits | Statement, bylaws | Mor bylaws s. 1 |
+| שכר קובע | Determining salary | Salary base for insurance benefits | Statement, bylaws | Mor bylaws s. 1 |
+| מסלול ביטוח / מסלול ברירת המחדל | Insurance track / default track | Chosen mix of disability and survivors cover | App, statement | Mor bylaws s. 24 |
+| שיעור כיסוי ביטוחי | Insurance cover rate | Percent of determining salary insured | Statement | Mor bylaws s. 1, 24 |
+| גיל תום תקופת הביטוח | Insurance end age | Age when cover ends | Statement, forms | Mor bylaws s. 25 |
+| דמי ביטוח | Insurance premiums | Monthly cost of risk cover deducted from balance | Statement | Mor bylaws s. 38 |
+| תקרת הכיסוי הביטוחי | Insurance cap | Insurance cost ≤35% of expected deposits | Bylaws | Mor bylaws s. 39 |
+| ארכת ביטוח | Insurance extension | 5 months of cover after deposits stop | Letters, bylaws | Mor bylaws s. 36 |
+| הסדר ביטוח | Insurance arrangement | Paid continuation of cover up to 24 months | Forms, bylaws | Mor bylaws s. 37 |
+| תקופת אכשרה | Qualifying period | Exclusion for pre-existing conditions | Bylaws | Mor bylaws s. 34 |
+| חיתום רפואי | Medical underwriting | Health questionnaire or tests on joining | Forms | Mor bylaws s. 35 |
+| עמית פעיל / לא פעיל | Active / inactive member | Member with / without current deposits | Statement | Mor bylaws s. 1 |
+| עמית מבוטח / לא מבוטח | Insured / uninsured member | Member with / without risk cover | Statement | Mor bylaws s. 1 |
+| עמית שכיר / עמית עצמאי | Employee / self-employed member | Member by source of deposits | Statement | Mor bylaws s. 1 |
+| נכה / נכה מלא / נכה חלקי / נכה סיעודי | Disabled / fully / partially / dependent disabled | Disability classes (25%, 75%) | Bylaws, claims | Mor bylaws s. 1 |
+| קצבת נכות / קצבת נכות מתפתחת / קצבת נכות כפולה | Disability pension / progressive / double | Disability benefit variants | Bylaws | Mor bylaws s. 26-27, 69-71 |
+| קצבת שארים / שאיר / אלמן / יתום | Survivors' pension / survivor / widow(er) / orphan | Benefits on death | Statement, bylaws | Mor bylaws s. 1, 94 |
+| ויתור על כיסוי ביטוחי לשארים | Waiver of survivors cover | For members without survivors, up to 24 months | Forms | Mor bylaws s. 30 |
+| מוטב / הוראת מוטבים | Beneficiary / beneficiary instruction | Named recipient if no survivors | Forms | Mor bylaws s. 1 |
+| מסלול השקעות תלוי גיל | Age-dependent investment track | Default track by age band | App, statement | Mor bylaws s. 19 |
+| מסלול בסיסי למקבלי קצבה | Basic track for annuitants | Pensioners' default track | Statement | Mor bylaws s. 20 |
+| איגרות חוב מיועדות / "ערד" / "מירון" | Designated bonds | Non-tradable state bonds for pension funds | Law, reports | Provident Funds Law s. 1, 34ב |
+| הבטחת תשואה / תשואת היעד / אפיק השקעה מובטח תשואה | Guaranteed return / target return / guaranteed-return channel | State top-up to 5.15% on 30% of assets | Law, bylaws, press | Provident Funds Law s. 34א-34ז; Mor bylaws s. 19 |
+| עודף או גירעון אקטוארי / מאזן אקטוארי | Actuarial surplus or deficit / actuarial balance | Yearly adjustment of rights | Statement, Pension-Net | Mor bylaws s. 109 |
+| עתודה למקבלי קצבה | Pensioners' reserve | Up to 1% buffer for pensioners | Bylaws | Mor bylaws s. 109 |
+| מקדם המרה | Conversion factor | Balance ÷ factor = monthly pension | Statement, bylaws | Mor bylaws s. 45 |
+| קצבת זקנה | Old-age pension | Retirement annuity | Statement | Mor bylaws ch. ו' |
+| גיל זכאות מינימלי לקצבת זקנה | Minimum old-age eligibility age | 60 | Bylaws | Mor bylaws s. 1 |
+| גיל פרישה / גיל פרישה מוקדמת / גיל פרישת חובה | Retirement age / early / mandatory | 67/65, 60, 67 | Law | [Retirement Age Law](https://he.wikisource.org/wiki/חוק_גיל_פרישה) |
+| תקופת תשלומים מובטחים | Guaranteed payment period | 60-240 months of guaranteed pension | Forms | Mor bylaws s. 50 |
+| היוון | Commutation | Lump sum in place of part of the pension | Forms, law | Mor bylaws s. 51; law s. 23 |
+| סכום קצבה מזערי | Minimum annuity amount | Pension floor for commutation (NIS 5,306, 2026) | Law, bylaws | Law s. 23(ה) |
+| סכום צבירה מזערי | Minimum accumulation amount | Small-balance threshold at retirement (NIS 110,250, 2026) | Law | Law s. 23(ה) |
+| קצבת מינימום | Minimum pension | Pension below 5% of average wage | Bylaws | Mor bylaws s. 1, 52 |
+| הסדר זכאות ללא תנאי | Unconditional-entitlement arrangement | Severance released to employee regardless of reason | Bylaws, law | Mor bylaws s. 103(ב) |
+| חשבון חדש (שלא ניתן להפקיד אליו) | New account (no further deposits) | Account for released severance or beneficiary money | Law, bylaws | Law s. 23(א)(2א)-(2ב) |
+| קופת גמל לתגמולים / קופת גמל אישית לפיצויים | Provident fund for benefits / personal severance fund | Pre-2008 fund approvals; current standard bylaws name | Statement, law | Law s. 13(א)(4); Mor gemel bylaws |
+| קופת גמל לחיסכון | Provident savings fund | Name in the current standard bylaws | Bylaws, law | Mor gemel bylaws |
+| קופת גמל משלמת לקצבה / לא משלמת לקצבה | Annuity-paying / non-annuity-paying fund | Whether the fund pays the annuity itself | Bylaws, law | Mor gemel bylaws s. 12, 14 |
+| תגמולים ואישית לפיצויים | Gemel-Net classification | Dataset label for these funds | CMA data | [Gemel-Net](https://data.gov.il/dataset/gemelnet) |
+| קרנות חדשות / קרנות כלליות | Pension-Net classifications | Dataset labels for comprehensive and general funds | CMA data | [Pension-Net](https://data.gov.il/dataset/pensia-net) |
+| מרכיב חיסכון למצב אבטלה | Unemployment-savings component | Self-employed deposit share withdrawable when unemployed | Law | Efficiency Law ch. ב' s. 5 |
+| הכנסה חייבת בהפקדה | Income liable for deposit | Self-employed base for mandatory deposits | Law | Efficiency Law ch. ב' s. 2 |
+| תלוש שכר / ניכוי לקופת גמל / הפרשות המעסיק לקופת גמל | Payslip / provident-fund deduction / employer contributions | Required payslip items | Payslip, law | [Wage Protection Law](https://he.wikisource.org/wiki/חוק_הגנת_השכר) |
+
+## Institutions
+
+| Managing company (legal name, as in the dataset) | New and general pension funds (Pension-Net, 202609) | Provident fund for annuity, general public (Gemel-Net, 202609) | Selected fund from 1.11.2024 |
+|---|---|---|---|
+| איילון קופות גמל בע"מ | | ✓ | |
+| אינפיניטי השתלמות, גמל ופנסיה בע"מ | ✓ | ✓ | ✓ |
+| אלטשולר שחם גמל ופנסיה בע"מ | ✓ | ✓ | ✓ |
+| אנליסט קופות גמל בע"מ | | ✓ | |
+| אקטיון בע"מ | | ✓ | |
+| גלובלנט ניהול קופות גמל בע"מ | | ✓ | |
+| הפניקס פנסיה וגמל בע"מ | ✓ | ✓ | |
+| הראל פנסיה וגמל בע"מ | ✓ | ✓ | |
+| ילין לפידות ניהול קופות גמל בע"מ | | ✓ | |
+| כלל פנסיה וגמל בע"מ | ✓ | ✓ | |
+| מגדל מקפת קרנות פנסיה וקופות גמל בע"מ | ✓ | ✓ | |
+| מור גמל ופנסיה בע"מ | ✓ | ✓ | ✓ |
+| מיטב גמל ופנסיה בע"מ | ✓ | ✓ | ✓ |
+| מנורה מבטחים פנסיה וגמל בע"מ | ✓ | ✓ | |
+| סלייס גמל בע"מ | | ✓ | |
+
+- Pension managers: 9, each reporting both "קרנות חדשות" and "קרנות כלליות" in Pension-Net, resource `6d47d6b5-cb08-488b-b333-f1e717b1e1bd`, REPORT_PERIOD 202609, distinct MANAGING_CORPORATION × FUND_CLASSIFICATION = 18 rows. [Query](https://data.gov.il/api/3/action/datastore_search?resource_id=6d47d6b5-cb08-488b-b333-f1e717b1e1bd&filters=%7B%22REPORT_PERIOD%22%3A202609%7D&fields=MANAGING_CORPORATION,FUND_CLASSIFICATION&distinct=true&limit=200), checked 2026-10-22, primary.
+- Provident fund for annuity, general public: 15 managers in Gemel-Net, resource `a30dcbea-a1d2-482c-ae29-8f781f5025fb`, REPORT_PERIOD 202609, FUND_CLASSIFICATION "תגמולים ואישית לפיצויים", TARGET_POPULATION "כלל האוכלוסיה" (total 15; read in two sorted pages). [Query](https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&filters=%7B%22REPORT_PERIOD%22%3A202609%2C%22FUND_CLASSIFICATION%22%3A%22%D7%AA%D7%92%D7%9E%D7%95%D7%9C%D7%99%D7%9D%20%D7%95%D7%90%D7%99%D7%A9%D7%99%D7%AA%20%D7%9C%D7%A4%D7%99%D7%A6%D7%95%D7%99%D7%99%D7%9D%22%2C%22TARGET_POPULATION%22%3A%22%D7%9B%D7%9C%D7%9C%20%D7%94%D7%90%D7%95%D7%9B%D7%9C%D7%95%D7%A1%D7%99%D7%94%22%7D&fields=MANAGING_CORPORATION&distinct=true&limit=100&sort=MANAGING_CORPORATION%20asc), checked 2026-10-22, primary. The same classification also has sector and single-employer funds ("עובדי סקטור מסויים", "עובדי מפעל/גוף מסויים"), not open to the public and not listed.
+- Fund counts at end-2024 (CMA report table ד-1, p. 45): 9 new comprehensive funds, 9 new general funds, 10 old balanced funds, 8 old funds under special management, 4 central provident funds for annuity. New comprehensive fund members at end-2024: 5,395,324, of which 3,103,513 active (table ד-10, p. 54).
+- Selected funds from [CMA report 2024](https://adif-web-bucket.s3-eu-west-1.amazonaws.com/%D7%93%D7%95%D7%97%20%D7%94%D7%9E%D7%9E%D7%95%D7%A0%D7%94%20%D7%A2%D7%9C%20%D7%A9%D7%95%D7%A7%20%D7%94%D7%94%D7%95%D7%9F%20%D7%9C%D7%A9%D7%A0%D7%AA%202024.pdf) p. 10, checked 2026-10-22.
+
+## Open questions
+
+1. **Official text of the 2016 extension order.** Tried: the registered 2016 collective agreement (read), Harel's June 2016 letter (says signed 26 May 2016), searches. Not opened: the order itself. Probably in Yalkut Hapirsumim 2016 or the Ministry of Labour extension-orders pages on gov.il (blocked to scripts).
+2. **Any change to minimum rates after 1.1.2017.** No later agreement or order found; the web-search budget ran out before a dedicated check. Check the Ministry of Labour extension-orders list.
+3. **Readability of the 2011 order scan.** The gov.il PDF is an image scan; section texts were read from the image and cross-checked against the Hilan mirror. A text copy from Reshumot or Nevo would remove doubt.
+4. **Start year of the self-employed deposit obligation (section 3 of the 2017-2018 Efficiency Law).** The Wikisource text read stated effective dates only for sections 7 and 9. The full text past character 100,000 was not read.
+5. **NII publication of the 2026 average wage (NIS 13,769).** Only institution tables (Harel; Mor bylaws for derived ceilings). Tried the NII rates page; it has no figure. Probably on the NII "שיעורי דמי ביטוח" sub-pages or the NII yearly circular.
+6. **Income Tax regulation defining the comprehensive-fund deposit ceiling (20.5% × 2 × average wage).** Only Harel states the formula. The regulation (תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל)) was not opened; belongs jointly with TXP.
+7. **Insurance cost tables and conversion factors.** Bylaws annexes ד to י"ב (premium factors, conversion factors) are in a separate XLSX (Mor lists "נספחים מור מקיפה" XLSX for 2022) and were not read. Needed for any insurance-cost comparison between funds.
+8. **Is the 5.15% target return CPI-linked?** The law text read says "ריבית שנתית בשיעור 5.15%"; press says real. Read section 34ב in full (Wikisource or Knesset PDF of the 2021 amendment).
+9. **Designated bonds still held and redemption profile.** Whether any new "ערד" bonds are issued after 1.10.2022, and how much of each fund still holds them; Ministry of Finance (Accountant General) reports.
+10. **Fee discounts in pension funds after leaving an employer.** The pension bylaws read set only caps; the provident standard bylaws (PEN-25) cover gemel. The CMA consolidated circular on fees probably holds the pension rule; for `provident-family-common.md`.
+11. **Payslip line labels.** The law fixes the content (PEN-36) but no official list of labels was found; payroll vendors use their own. Tried Hilan knowledge centre (no payslip guide). Best route: collect real payslips from the founder and friends into `data/terms/`.
+12. **"ריסק זמני".** Not found in the bylaws read; its meaning and whether it is a fund feature or a separate insurer product are unverified. Check the managers' and insurers' product pages.
+13. **CMA uniform bylaws for comprehensive funds.** Only Mor's bylaws were read; the insurance and track rules (PEN-11 to PEN-17, PEN-27) may differ in detail at other funds. The CMA uniform-bylaws circular on gov.il was not reached.
+14. **Official CMA notice listing the 2024 selected funds and the end date of the period.** The CMA annual report (third-party host) and Mor's page were used. The gov.il notice was not reached (search results mention a notice of 19.09.2024 but it was not opened).
+15. **Alternative fee mixes at Infinity, Altshuler Shaham and Meitav.** Only Mor's alternatives were read.
+16. **Disability pension start day (61st day).** Read from a page image of Mor's bylaws section 72(א); verify against the text version.
+17. **CMA unified withdrawal rules and retirement circular (2026 plan).** Status not checked.
+18. **Default investment track of the provident fund for annuity.** The standard bylaws refer to annex א for the default track; the annex was not read.
+19. **Annuity in practice from a provident fund for annuity.** Which insurers or pension funds accept transfers for annuity, and on what conversion factors.
+20. **Women's retirement age for those born from 1970.** Inferred as 65 from section 3; the schedule stops at December 1969.
+21. **Coverage above the average wage.** The extension order requires contributions only up to the average wage; whether employers must insure the full wage depends on the employment agreement. No general rule found.
+22. **Small-balance withdrawal (NIS 8,000, 2016 values) for new pension funds.** Which fund types section 23(ב)(1א) covers, and the 2026 indexed amount.
+
+## Left out and why
+
+- Tax at deposit, during and at exit (sections 45A, 47, 9(7א), 3(ה3), annuity exemption, commutation tax, severance grant exemption): belongs to `tax-pension-gemel-lekitzba.md`. The Harel 2026 table's tax figures were noted for that file, not used here.
+- Executive insurance and insurance-company pension policies (קופות ביטוח): `savings-policies-and-executive-insurance.md`. The extension order allows them; their terms were not researched.
+- Amendment 190: `tax-insurance-and-amendment-190.md`.
+- Old pension funds (ותיקות) and budgetary pension: closed to new members; a person can hold them but cannot choose them.
+- Central provident funds for annuity (קופות גמל מרכזיות לקצבה) and central severance funds: employer products.
+- Sector-only and single-employer provident funds: not open to the general public (Gemel-Net target population).
+- Pension splitting on divorce (חוק לחלוקת חיסכון פנסיוני בין בני זוג שנפרדו): mentioned only where bylaws refer to it; not a saving decision.
+- Loans from pension funds: bylaws allow them (section 23) but terms are in a separate document not read.
+- National Insurance old-age pension: a state benefit, not a product.
+- The 2005 industry-sector extension order (prisha.co.il, zav2006.pdf): opened, but superseded by the general order and not used.
+- Disability claim procedure in detail (doctors, committees, appeals): process, not product choice; times summarised in PEN-33 only.
+
+## Proposed dimensions
+
+- `actuarial-adjustment`: the balance or pension can change by an actuarial surplus or deficit unrelated to the person's own investment return (PEN-19). Applies to pension funds only.
+- `default-assignment`: what a person gets if they never choose (default fund, default investment track, default insurance track) and which fee is locked for how long (PEN-06, PEN-11, PEN-17, PEN-23).
+- `employer-dependence`: rights or fees that depend on the current employer (severance release, fee discounts given through the workplace, employer's fund choice) (PEN-05, PEN-25, PEN-31).
+
+## Found for other files
+
+- `tax-pension-gemel-lekitzba.md` (TXP): Harel 2026 table pp. 1-2: employee tagmulim tax benefit up to 7% on wages up to NIS 9,700; exempt employer contribution up to 7.5% on income up to NIS 34,423 a month and total exempt deposit up to NIS 30,980 a year; severance 8.33% up to NIS 45,600; exempt severance grant per year of work NIS 13,750; self-employed 11% deduction plus 5% or 5.5% credit up to NIS 232,800 a year; "עמית מוטב" threshold 16% of the average wage (NIS 165,228 a year in 2026); section 45A and 47 table. Provident standard bylaws 14.3: tagmulim withdrawn not as annuity is taxed at the rate in the regulatory arrangement. All institution-level; need Tax Authority confirmation.
+- `provident-family-common.md` (PF): fee-discount rules (gemel standard bylaws sections 45-46); employer payment deadlines (gemel bylaws 8.4: the earlier of seven business days from the salary payment or fifteen days from the end of the month for which the salary is paid; late-payment interest from the 16th of the month after the work month, section 9); transfer blocks (attachment or unpaid loan, gemel bylaws 23); statements (annual within three months of year end; quarterly within 60 days, not required if no deposits or transfers in the quarter and balance below NIS 50,000, gemel bylaws 40-41); CMA 2024 average fees for provident funds 0.54% of assets and 0.09% of deposits (CMA report pp. 49-50); clearing-house service indicators (CMA report table ד-18, p. 60).
+- `tracks-catalogue-and-decoder.md` (CAT): Mor pension track names (מניות, כספי (שקלי), משולב סחיר, מניות סחיר, אג"ח סחיר, עוקב מדדי מניות, עוקב מדדים גמיש, עוקב מדדי אג"ח, עוקב מדד S&P 500, הלכה from 01.04.2026, מסלול בסיסי למקבלי קצבה, מסלול עוקב מדדים למקבלי קצבה), each with exposure bands such as 75%-120%; investment-tracks reform fully in force June 2024 with a closed list of tracks (CMA report p. 10); CMA notice 2024-1471 "רשימת מסלולי השקעה - תיקון" and circular 2022-9-30.
+- `child-savings.md` (CS): 2024 legislative work to let child-savings money move from banks to provident funds (CMA report p. 10).
+- `regulators-and-protection.md` (REG) and `ira-self-directed.md` (IRA): Slice Gemel placed under a court-appointed manager (2023), IRA-type funds sold to Phoenix in October 2024 (CMA report p. 11); the guaranteed-return designated fund cannot be attached (Provident Funds Law s. 34ה).
+- `savings-policies-and-executive-insurance.md` (INS): extension-order rule that employer tagmulim in insurance funds may include loss-of-work-capacity cover up to 7.5% in total with at least 5% tagmulim; Harel 2016 "פוליסה הפרשית" fees 3% of premium and 0.5% of balance, 1.05% if premiums stop (Harel 2016 letter p. 3); CMA report tables ד-14 to ד-17 on life-insurance price spread.
+- `switching-and-transfers.md` (SW): pension renewal after 12 months without insurance triggers medical underwriting and a new qualifying period (PEN-14, PEN-16); transfer of tagmulim money starts a new 60-month qualifying period.
+- `tax-general.md` (TXG): definition of the average wage (NII law section 2(ב)) used across ceilings.
+
+## Sources
+
+| Title | Publisher | Strength | URL | Checked |
+|---|---|---|---|---|
+| צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan) | Minister of Industry, Trade and Labour; hosted on gov.il | primary | https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf | 2026-10-22 |
+| צו הרחבה (נוסח משולב) לפנסיה חובה, text mirror | Hilan | secondary (mirror) | https://www.hilan.co.il/%D7%9E%D7%A8%D7%9B%D7%96-%D7%99%D7%93%D7%A2/%D7%97%D7%A7%D7%99%D7%A7%D7%94/%D7%A6%D7%95%D7%95%D7%99-%D7%94%D7%A8%D7%97%D7%91%D7%94/%D7%A6%D7%95-%D7%94%D7%A8%D7%97%D7%91%D7%94-%D7%91%D7%99%D7%98%D7%95%D7%97-%D7%A4%D7%A0%D7%A1%D7%99%D7%95%D7%A0%D7%99-%D7%9E%D7%A7%D7%99%D7%A3-%D7%91%D7%9E%D7%A9%D7%A7/%D7%A6%D7%95-%D7%94%D7%A8%D7%97%D7%91%D7%94-%D7%A0%D7%95%D7%A1%D7%97-%D7%9E%D7%A9%D7%95%D7%9C%D7%91-%D7%9C%D7%A4%D7%A0%D7%A1%D7%99%D7%94-%D7%97%D7%95%D7%91%D7%94-%D7%91%D7%AA%D7%95%D7%A7%D7%A3-%D7%9E-27-%D7%91%D7%A1%D7%A4%D7%98%D7%9E%D7%91%D7%A8-2011/ | 2026-10-22 |
+| הסכם קיבוצי כללי (מסגרת) להגדלת הפרשות לביטוח פנסיוני במשק, 3.4.2016, registered 7008/2016 | Histadrut and Presidium of Business Organisations; scan hosted by prisha.co.il | primary (third-party host) | https://www.prisha.co.il/UserFiles/File/pdf/hoz/kibuzi03042016.pdf | 2026-10-22 |
+| הגדלת שיעורי הפקדה למוצר פנסיוני בהתאם לצו ההרחבה, June 2016 | Harel | institution | https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf | 2026-10-22 |
+| תקרות וסכומים לשנת 2026 (March 2026) | Harel | institution | https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf | 2026-10-22 |
+| תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 | Mor Gemel & Pension | institution | https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf | 2026-10-22 |
+| מסמך ריכוז שינויים בקרן הפנסיה המקיפה, 23.2.2026 (for the 01.04.2026 edition) | Mor | institution | https://www.moreinvest.co.il/media/zkmhas4r/res_מסמך-שינויים-פנסיה-מקיפה.pdf | 2026-10-22 |
+| Mor pension bylaws index (current comprehensive edition 01.04.2026 listed, not read in full) | Mor | institution | https://www.moreinvest.co.il/מוצרים/גמל-ופנסיה/קרן-פנסיה/תקנון-קרן-הפנסיה/ | 2026-10-22 |
+| תקנון קרן פנסיה מור פנסיה כללית, version 01.04.2026 | Mor | institution | https://www.moreinvest.co.il/media/hphjzxvl/תקנון-קרן-פנסיה-כללית.pdf | 2026-10-22 |
+| קרן פנסיה נבחרת product page | Mor | institution | https://www.moreinvest.co.il/%D7%9E%D7%95%D7%A6%D7%A8%D7%99%D7%9D/%D7%92%D7%9E%D7%9C-%D7%95%D7%A4%D7%A0%D7%A1%D7%99%D7%94/%D7%A7%D7%A8%D7%9F-%D7%A4%D7%A0%D7%A1%D7%99%D7%94/ | 2026-10-22 |
+| חוזר גופים מוסדיים 2024-9-6 "הוראות לעניין בחירת קופת גמל - עדכון", 25.8.2024 | CMA | primary | https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf | 2026-10-22 |
+| דוח הממונה על שוק ההון, הביטוח והחיסכון לשנת 2024 | CMA; hosted on a third-party S3 bucket | primary (third-party host) | https://adif-web-bucket.s3-eu-west-1.amazonaws.com/%D7%93%D7%95%D7%97%20%D7%94%D7%9E%D7%9E%D7%95%D7%A0%D7%94%20%D7%A2%D7%9C%20%D7%A9%D7%95%D7%A7%20%D7%94%D7%94%D7%95%D7%9F%20%D7%9C%D7%A9%D7%A0%D7%AA%202024.pdf | 2026-10-22 |
+| חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס"ה-2005 (to ס"ח תשפ"ו 912) | Knesset; Wikisource mirror | primary (mirror) | https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל) | 2026-10-22 |
+| תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע"ב-2012 (to ק"ת תשפ"ב 1812) | Minister of Finance; Wikisource mirror | primary (mirror) | https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול) | 2026-10-22 |
+| חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2017 ו-2018), chapter ב' | Knesset; Wikisource mirror | primary (mirror) | https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%94%D7%94%D7%AA%D7%99%D7%99%D7%A2%D7%9C%D7%95%D7%AA_%D7%94%D7%9B%D7%9C%D7%9B%D7%9C%D7%99%D7%AA_(%D7%AA%D7%99%D7%A7%D7%95%D7%A0%D7%99_%D7%97%D7%A7%D7%99%D7%A7%D7%94_%D7%9C%D7%94%D7%A9%D7%92%D7%AA_%D7%99%D7%A2%D7%93%D7%99_%D7%94%D7%AA%D7%A7%D7%A6%D7%99%D7%91_%D7%9C%D7%A9%D7%A0%D7%95%D7%AA_%D7%94%D7%AA%D7%A7%D7%A6%D7%99%D7%91_2017_%D7%95-2018) | 2026-10-22 |
+| חוק גיל פרישה, התשס"ד-2004 (to ס"ח תשפ"ב 250) | Knesset; Wikisource mirror | primary (mirror) | https://he.wikisource.org/wiki/חוק_גיל_פרישה | 2026-10-22 |
+| חוק הגנת השכר, התשי"ח-1958, section 24 and תוספת | Knesset; Wikisource mirror | primary (mirror) | https://he.wikisource.org/wiki/חוק_הגנת_השכר | 2026-10-22 |
+| תקנון תקני לקופת גמל לחיסכון, קופת גמל לתגמולים וקופת גמל אישית לפיצויים, "אלפא מור", 18.02.2026 | Mor | institution | https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf | 2026-10-22 |
+| קופות גמל product page | Mor | institution | https://www.moreinvest.co.il/מוצרים/גמל-ופנסיה/קופות-גמל/ | 2026-10-22 |
+| Pension-Net dataset, resource 6d47d6b5-cb08-488b-b333-f1e717b1e1bd, period 202609 (CKAN query) | CMA via data.gov.il | primary | https://data.gov.il/api/3/action/datastore_search?resource_id=6d47d6b5-cb08-488b-b333-f1e717b1e1bd&filters=%7B%22REPORT_PERIOD%22%3A202609%7D&fields=MANAGING_CORPORATION,FUND_CLASSIFICATION&distinct=true&limit=200 | 2026-10-22 |
+| Gemel-Net dataset, resource a30dcbea-a1d2-482c-ae29-8f781f5025fb, period 202609 (CKAN queries) | CMA via data.gov.il | primary | https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&filters=%7B%22REPORT_PERIOD%22%3A202609%7D&fields=FUND_CLASSIFICATION,TARGET_POPULATION&distinct=true&limit=200 | 2026-10-22 |
+| Tried, not usable: Kol Zchut "קרנות פנסיה נבחרות" (403); NII rates page (no average-wage figure); prisha.co.il zav2006.pdf (2005 industry order, superseded); Hilan knowledge centre (no payslip guide) | various | not used | https://www.kolzchut.org.il/he/%D7%A7%D7%A8%D7%A0%D7%95%D7%AA_%D7%A4%D7%A0%D7%A1%D7%99%D7%94_%D7%A0%D7%91%D7%97%D7%A8%D7%95%D7%AA_(%D7%A7%D7%A8%D7%A0%D7%95%D7%AA_%D7%91%D7%A8%D7%99%D7%A8%D7%AA_%D7%9E%D7%97%D7%93%D7%9C) ; https://www.btl.gov.il/Insurance/Rates/Pages/default.aspx ; https://www.prisha.co.il/UserFiles/File/pdf/law/zav2006.pdf ; https://www.hilan.co.il/מרכז-ידע/ | 2026-10-22 |
