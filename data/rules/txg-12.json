@@ -1,0 +1,13 @@
+{
+  "id": "TXG-12",
+  "title": "Capital gain, real gain and inflationary amount (definitions)",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "real-vs-nominal",
+    "tax-at-exit",
+    "currency"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-general.md",
+  "checked": "2026-10-22"
+}

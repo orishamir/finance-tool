@@ -1,0 +1,35 @@
+{
+  "id": "TXI-14",
+  "title": "CPI-linked government bond (Galil type): real interest and real gain, up to 25%",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "real-vs-nominal",
+    "tax-during",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "rate": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance, s.91(b)(1); State Loan Regulations (Linked Government Bond type) 2006, ss.1, 5, 8",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXI-14"
+      ],
+      "state": "sourced",
+      "notes": "CPI-linked government bond: real interest (linkage exempt, TXI-05) and real capital gain, both at a maximum of 25% as the top slice (\"שלא יעלה על 25%\"). il-finance lists the bond regulations (Nevo mirror) as the rule's first source, so the rule-level strength is primary-mirror; the Ordinance text is recorded there as primary. Guide 2025 p.39 item 2 agrees."
+    }
+  },
+  "il_finance_file": "tax-interest-deposits-bonds.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,35 @@
+{
+  "id": "TXS-03",
+  "title": "Unlinked bonds and other unlinked debt: 15% of the whole gain",
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "rate": {
+      "value": 15,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance, s.91(b)(3)(a)-(c)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXS-03"
+      ],
+      "state": "sourced",
+      "notes": "Capital gain on selling an unlinked bond, commercial paper, loan or \"מילווה\": no more than 15% (20% for a substantial shareholder), the whole nominal gain taxed (no inflation relief). The Minister may change the rate by order (s.91(b)(3)(b)); whether an order was ever made was not checked."
+    }
+  },
+  "il_finance_file": "tax-securities-israeli.md",
+  "checked": "2026-10-22"
+}

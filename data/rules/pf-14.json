@@ -1,0 +1,13 @@
+{
+  "id": "PF-14",
+  "title": "When a manager may raise the fee before the discount period ends",
+  "strength": "primary",
+  "dimensions": [
+    "fee-change-over-time",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-22"
+}

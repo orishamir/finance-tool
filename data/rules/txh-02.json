@@ -1,0 +1,34 @@
+{
+  "id": "TXH-02",
+  "title": "Determining salary (`משכורת קובעת`): definition and update",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "deposit-ceiling"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "determining_salary_cap": {
+      "value": 15712,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance, s.3(e) (law-text list: 15,400 until 2004; 15,712 from March 2004); Tax Authority deductions booklet 2026 p.12 (188,544 per year)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2004-03-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXH-02"
+      ],
+      "state": "sourced",
+      "notes": "Determining salary (\"משכורת קובעת\") cap: twice the cost-of-living-allowance ceiling. Not CPI-linked, not in s.120B; updated only if the cost-of-living ceiling changes, and in practice unchanged since March 2004 (inferred from the law text and the 2026 table, which shows 188,544 per year = 15,712 x 12). update_rule \"fixed in law\" is the nearest value in the schema list."
+    }
+  },
+  "il_finance_file": "tax-hishtalmut.md",
+  "checked": "2026-10-22"
+}

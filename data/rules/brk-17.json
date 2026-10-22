@@ -1,0 +1,11 @@
+{
+  "id": "BRK-17",
+  "title": "Banks may not charge a custody fee on makam or money-market funds",
+  "strength": "primary",
+  "dimensions": [
+    "fee-custody"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,34 @@
+{
+  "id": "TXF-13",
+  "title": "W-8BEN: given to the withholding agent; otherwise 30% may apply",
+  "strength": "primary",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "us_withholding_without_form": {
+      "value": 30,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.irs.gov/forms-pubs/about-form-w-8-ben",
+        "title": "IRS, About Form W-8BEN (last reviewed 02-Oct-2026); Instructions for Form W-8BEN (rev. 10/2021)",
+        "publisher": "US Internal Revenue Service",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-13"
+      ],
+      "state": "sourced",
+      "notes": "\"Failure to provide a Form W-8BEN when requested may lead to withholding at the foreign-person withholding rate of 30%.\" The form goes to the withholding agent, not the IRS. Validity: from the date signed until the last day of the third succeeding calendar year, unless circumstances change."
+    }
+  },
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,155 @@
+{
+  "id": "CS-13",
+  "title": "Grants by birth cohort",
+  "strength": "primary",
+  "dimensions": [
+    "age-or-use-exemption",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "grant_age_3": {
+      "value": 291,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
+        "title": "National Insurance Institute, child savings: withdrawal page; savings-amount page; law 74ב(א)(1), 74ג(ב)-(ג)",
+        "publisher": "National Insurance Institute (BTL)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "cpi-linked 1 jan",
+      "rule_ids": [
+        "CS-13"
+      ],
+      "state": "sourced",
+      "notes": "Grant for a child born from 1.1.2017 (the 2017+ cohort; children born earlier get a grant at 18 instead). 2026 amount. Paid at age 3. 250 NIS in 2017 (law); 284 in 2025 (NII report). CPI-updated each 1 January from 2017 (s.74ג(ג))."
+    },
+    "grant_bar_mitzvah": {
+      "value": 291,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
+        "title": "National Insurance Institute, child savings: withdrawal page; savings-amount page; law 74ב(א)(1), 74ג(ב)-(ג)",
+        "publisher": "National Insurance Institute (BTL)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "cpi-linked 1 jan",
+      "rule_ids": [
+        "CS-13"
+      ],
+      "state": "sourced",
+      "notes": "Grant for a child born from 1.1.2017 (the 2017+ cohort; children born earlier get a grant at 18 instead). 2026 amount. Paid at age 13 for a boy and age 12 for a girl (the rule's wording: 'NIS 291 at age 13 (boys) or 12 (girls)'). 250 NIS in 2017 (law); 284 in 2025 (NII report). CPI-updated each 1 January."
+    },
+    "grant_age_21": {
+      "value": 582,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
+        "title": "National Insurance Institute, child savings: withdrawal page; savings-amount page; law 74ב(א)(1), 74ג(ב)-(ג)",
+        "publisher": "National Insurance Institute (BTL)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "cpi-linked 1 jan",
+      "rule_ids": [
+        "CS-13"
+      ],
+      "state": "sourced",
+      "notes": "Grant for a child born from 1.1.2017 (the 2017+ cohort; children born earlier get a grant at 18 instead). 2026 amount. Paid at age 21, only if nothing (even partially) was withdrawn before 21 (s.74ג(ב)). 500 NIS in 2017 (law); 568 in 2025 (NII report). Same amount for every cohort."
+    },
+    "age_first_grant": {
+      "value": 3,
+      "unit": "years",
+      "source": {
+        "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
+        "title": "National Insurance Institute, child savings: withdrawal page; savings-amount page; law 74ב(א)(1), 74ג(ב)-(ג)",
+        "publisher": "National Insurance Institute (BTL)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "CS-13"
+      ],
+      "state": "sourced",
+      "notes": "Age of the first grant for the 2017+ cohort (law 74ב(א)(1)(ב)): 'NIS 291 at age 3'."
+    },
+    "age_bar_mitzvah_boy": {
+      "value": 13,
+      "unit": "years",
+      "source": {
+        "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
+        "title": "National Insurance Institute, child savings: withdrawal page; savings-amount page; law 74ב(א)(1), 74ג(ב)-(ג)",
+        "publisher": "National Insurance Institute (BTL)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "CS-13"
+      ],
+      "state": "sourced",
+      "notes": "Age of the second grant for a boy, 2017+ cohort: 'NIS 291 at age 13 (boys) or 12 (girls)'."
+    },
+    "age_bar_mitzvah_girl": {
+      "value": 12,
+      "unit": "years",
+      "source": {
+        "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
+        "title": "National Insurance Institute, child savings: withdrawal page; savings-amount page; law 74ב(א)(1), 74ג(ב)-(ג)",
+        "publisher": "National Insurance Institute (BTL)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "CS-13"
+      ],
+      "state": "sourced",
+      "notes": "Age of the second grant for a girl, 2017+ cohort: 'NIS 291 at age 13 (boys) or 12 (girls)'."
+    },
+    "age_last_grant": {
+      "value": 21,
+      "unit": "years",
+      "source": {
+        "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
+        "title": "National Insurance Institute, child savings: withdrawal page; savings-amount page; law 74ב(א)(1), 74ג(ב)-(ג)",
+        "publisher": "National Insurance Institute (BTL)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "CS-13"
+      ],
+      "state": "sourced",
+      "notes": "Age of the last grant, paid if nothing was withdrawn before then (law 74ג(ב): 'בהגיע הילד הזכאי לגיל 21')."
+    }
+  },
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-22"
+}

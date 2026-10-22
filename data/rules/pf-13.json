@@ -1,0 +1,34 @@
+{
+  "id": "PF-13",
+  "title": "A fee discount must last a minimum period",
+  "strength": "primary",
+  "dimensions": [
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "min_discount_years": {
+      "value": 5,
+      "unit": "years",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
+        "title": "CMA institutional-bodies circular 2017-9-15 \"דמי ניהול במכשירי החיסכון הפנסיוני – תיקון\", 11 Sep 2017, ss.3(א), 3(ה), 5, 6",
+        "publisher": "Capital Market, Insurance and Savings Authority (Israel)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2018-04-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-13"
+      ],
+      "state": "sourced",
+      "notes": "Minimum period a fee discount below the legal maximum must stay valid (\"חמש שנים או יותר\"). A CMA circular, not a regulation: update_rule \"fixed in regulation\" is the nearest value in the schema list. Conflict recorded in il-finance: the Altshuler Shaham gemel lehashkaa bylaws (March 2025, s.36.1) say two years (institution). Resolved for computation as 5 years: the circular covers kupat gemel lehashkaa managers (s.5(a) excludes only sector and guaranteed-return funds) and the bylaws' 2 years matches the superseded circular 2012-9-22. Whether the circular was later folded into the consolidated circular with a change is unchecked."
+    }
+  },
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-22"
+}

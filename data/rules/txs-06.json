@@ -1,0 +1,13 @@
+{
+  "id": "TXS-06",
+  "title": "Which lot is sold, and which fees reduce the gain",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "fee-custody",
+    "fee-management-balance"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-securities-israeli.md",
+  "checked": "2026-10-22"
+}

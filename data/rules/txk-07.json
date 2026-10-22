@@ -1,0 +1,36 @@
+{
+  "id": "TXK-07",
+  "title": "Base is the real gain; the manager withholds 25%",
+  "strength": "institution",
+  "dimensions": [
+    "real-vs-nominal",
+    "tax-at-exit",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "rate": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.harel-group.co.il/long-term-savings/funding-saving/join/doclib/%d7%92%d7%9e%d7%9c%20%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94.pdf",
+        "title": "Harel kupat gemel lehashkaa flyer (2023): \"בניכוי 25% מס רווחי הון על הרווח הריאלי בלבד\"",
+        "publisher": "Harel Insurance and Finance",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TXK-07"
+      ],
+      "state": "sourced",
+      "notes": "Manager withholds 25% on the REAL gain only at lump-sum withdrawal. Institution strength: a Bizportal article (secondary) says 'עד 25% על הרווח הריאלי'. The legal route that exempts the inflation part was not found (Tax Authority guide 2025 p.87 says s.9(13) 'לא יחולו על חשבון בקופת גמל'; open question 2), and the withholding regulation for this payment was not found (open question 3). update_rule 'provider-set' is the nearest value in the schema list: the basis is the manager's own document, not a located statute. Likely-to-change 'yes' via TXK-21."
+    }
+  },
+  "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
+  "checked": "2026-10-22"
+}

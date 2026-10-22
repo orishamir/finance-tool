@@ -1,0 +1,12 @@
+{
+  "id": "TXI-05",
+  "title": "Linkage on a fully linked asset is exempt, so only real interest is taxed",
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal",
+    "tax-during"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-interest-deposits-bonds.md",
+  "checked": "2026-10-22"
+}

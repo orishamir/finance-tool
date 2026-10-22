@@ -1,0 +1,34 @@
+{
+  "id": "TXS-10",
+  "title": "Exempt fund: distributions",
+  "strength": "primary",
+  "dimensions": [
+    "distribution-policy",
+    "tax-during"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "rate": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance, s.125B1(b); Withholding Regulations 2005, reg. 10(b)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXS-10"
+      ],
+      "state": "sourced",
+      "notes": "Distributions of an Israeli exempt fund to an individual (not business income) are taxed at 25%, withheld by the fund manager at 25%."
+    }
+  },
+  "il_finance_file": "tax-securities-israeli.md",
+  "checked": "2026-10-22"
+}

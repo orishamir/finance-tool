@@ -1,0 +1,54 @@
+{
+  "id": "PF-02",
+  "title": "Cap for provident funds (regulation 2): 1.05% a year of balance and 4% of deposits",
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-deposit"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "balance_cap": {
+      "value": 1.05,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 2(א)(1) (Hebrew Wikisource; cross-read on Nevo)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2014-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-02"
+      ],
+      "state": "sourced",
+      "notes": "Maximum management fee of a \"קופת גמל\" (kupat gemel lehashkaa among them), per year, of each member's accumulated balance. In force since 2014 (a transitional 1.1% applied to 31 Dec 2013, reg. 7). Excludes fund types with their own caps (hishtalmut, IRA, pension). Legacy accounts (pre-2008 contributions, non-insurance fund) may be charged up to NIS 6 a month instead (reg. 2(א)(2א)); that amount was not read."
+    },
+    "deposit_cap": {
+      "value": 4,
+      "unit": "pct_of_deposit",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 2(א)(2) (Hebrew Wikisource; cross-read on Nevo)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2014-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-02"
+      ],
+      "state": "sourced",
+      "notes": "Maximum fee of a kupat gemel (as defined for reg. 2) on the payments transferred for each member, as a share of each deposit."
+    }
+  },
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-22"
+}

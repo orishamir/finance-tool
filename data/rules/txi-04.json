@@ -1,0 +1,13 @@
+{
+  "id": "TXI-04",
+  "title": "What counts as \"linked\": the index, partly linked, prime-linked, FX",
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal",
+    "currency",
+    "tax-during"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-interest-deposits-bonds.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,37 @@
+{
+  "id": "KH-22",
+  "title": "Fee cap: up to 2% a year of the balance, and no deposit fee is authorised",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-deposit",
+    "regulator"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "balance_cap": {
+      "value": 2,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/500_714.htm",
+        "title": "Provident Funds (Management Fees) Regulations 2012, regs. 2(ב), 4, 6, 8, 10, 12 (ק\"ת 7131, 21.6.2012), Nevo",
+        "publisher": "Knesset legislation (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2013-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "KH-22",
+        "PF-06"
+      ],
+      "state": "sourced",
+      "notes": "Study fund: management fee from the balance \"בשיעור שלא יעלה על 2% לשנה\", applied to each track as a separate account. In force since 1.1.2013, amended ק\"ת 7358 (24.3.2014) and ק\"ת 9942 (24.1.2022). No deposit fee is authorised (inference from reg. 4 and law s.32(א))."
+    }
+  },
+  "il_finance_file": "keren-hishtalmut.md",
+  "checked": "2026-10-22"
+}

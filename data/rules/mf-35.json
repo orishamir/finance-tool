@@ -1,0 +1,11 @@
+{
+  "id": "MF-35",
+  "title": "Renewable (fixed-date) money-market funds (קרן כספית מתחדשת / קרנות כספיות מועדים קבועים)",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-22"
+}

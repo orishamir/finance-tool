@@ -1,0 +1,36 @@
+{
+  "id": "CS-18",
+  "title": "Management fees: who pays and until when",
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-deposit",
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "fee_after_21": {
+      "value": 0.23,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
+        "title": "Harel child-savings standard bylaw, April 2026, ss.31-33 (0.23% of balance, 0% of deposits); Altshuler Q&A states the same after 21",
+        "publisher": "Harel Insurance and Finance",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "CS-18"
+      ],
+      "state": "sourced",
+      "notes": "Yearly fee on the balance once the child is 21 (until 21 the National Insurance Institute pays the cost, at 0.23% a year to provident funds per the NII 2025 report, p.1, primary). Institution strength for the after-21 rate: Harel's bylaw and an Altshuler Q&A; whether 0.23% holds at all nine or ten managers was not checked (open question 8). A manager may raise it after 21 by notice (Harel s.33). The rule-level strength 'primary' is the law s.74ב(ה) (NII bears the cost); this figure is institution."
+    }
+  },
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-22"
+}

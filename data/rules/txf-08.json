@@ -1,0 +1,35 @@
+{
+  "id": "TXF-08",
+  "title": "Dividends from foreign companies and foreign funds: 25%",
+  "strength": "primary",
+  "dimensions": [
+    "tax-during",
+    "distribution-policy"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "rate": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94",
+        "title": "Income Tax Ordinance, s.125B(1); Tax Authority guide 2025 p.116, \"שיעורי המס מההכנסות בשנת המס 2026\"",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-08"
+      ],
+      "state": "sourced",
+      "notes": "Dividends from foreign companies and funds: 25% (30% for a substantial shareholder in the paying company, not stored here). Listed in the 2026 Tax Authority table as \"דיבידנד מחברות זרות- 25%, 30%\". Budget-sensitive rate."
+    }
+  },
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-10-22"
+}

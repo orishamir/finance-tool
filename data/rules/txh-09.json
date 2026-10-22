@@ -1,0 +1,56 @@
+{
+  "id": "TXH-09",
+  "title": "Exempt withdrawal after 6 years",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "age-or-use-exemption",
+    "tax-at-exit",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "lock_years": {
+      "value": 6,
+      "unit": "years",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance, s.9(16A)(a)-(d), s.9(16B)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXH-09"
+      ],
+      "state": "sourced",
+      "notes": "Exempt withdrawal when 6 years have passed since the first payment date of the account (gains only on benefited deposits, TXH-08). Conditional: after any withdrawal the account is closed to further payments (except TXH-10). The proposals in TXH-22 would end the exemption on gains after year 6."
+    },
+    "lock_years_retirement_or_study": {
+      "value": 3,
+      "unit": "years",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance, s.1, s.9(16A)(a)-(b), s.9(16B)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXH-10"
+      ],
+      "state": "sourced",
+      "notes": "NOT STATED IN TXH-09. This figure belongs to il-finance rule TXH-10 (3 years from the first payment date for an individual who reached retirement age, or for amounts used for the member's study; one third of the balance may be withdrawn for study in Israel without closing the account). It is stored here only because the engine reads it from the TXH-09 file; source and rule_ids are TXH-10's."
+    }
+  },
+  "il_finance_file": "tax-hishtalmut.md",
+  "checked": "2026-10-22"
+}

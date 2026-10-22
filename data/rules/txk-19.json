@@ -1,0 +1,11 @@
+{
+  "id": "TXK-19",
+  "title": "Child savings: deposits, the parental addition and grants are not income",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-deposit"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
+  "checked": "2026-10-22"
+}

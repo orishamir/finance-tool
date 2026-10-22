@@ -1,0 +1,13 @@
+{
+  "id": "KGL-04",
+  "title": "When the ceiling is checked, and the deadline for counting a deposit in a year",
+  "strength": "institution",
+  "dimensions": [
+    "deposit-ceiling",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "kupat-gemel-lehashkaa.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,11 @@
+{
+  "id": "TXH-18",
+  "title": "Gains are not taxed while in the fund",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "tax-during"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-hishtalmut.md",
+  "checked": "2026-10-22"
+}

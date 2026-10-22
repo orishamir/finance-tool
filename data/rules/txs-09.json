@@ -1,0 +1,34 @@
+{
+  "id": "TXS-09",
+  "title": "Exempt fund: what the saver pays on sale or redemption",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "real-vs-nominal"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "rate": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance, s.91(b)(1); Withholding Regulations 2002, reg. 3A",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXS-09"
+      ],
+      "state": "sourced",
+      "notes": "Exempt fund, sale or redemption by an individual: tax at most 25% of the real gain (top slice of income), and 25% of the real gain withheld by the bank or TASE member (reg. 3A). The ceiling and the withholding rate are both 25%. Real gain is measured against the CPI for shekel units. Age 60+ see TXS-23."
+    }
+  },
+  "il_finance_file": "tax-securities-israeli.md",
+  "checked": "2026-10-22"
+}

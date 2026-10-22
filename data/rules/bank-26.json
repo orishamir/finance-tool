@@ -1,0 +1,12 @@
+{
+  "id": "BANK-26",
+  "title": "CPI-linked vs unlinked deposits",
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal",
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-22"
+}

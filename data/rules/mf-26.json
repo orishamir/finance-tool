@@ -1,0 +1,12 @@
+{
+  "id": "MF-26",
+  "title": "What a distributor may charge the unit holder directly",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "fee-trade",
+    "fee-custody"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-22"
+}

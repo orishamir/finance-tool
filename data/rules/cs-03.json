@@ -1,0 +1,35 @@
+{
+  "id": "CS-03",
+  "title": "NII basic monthly deposit",
+  "strength": "primary",
+  "dimensions": [
+    "deposit-ceiling",
+    "real-vs-nominal"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "monthly_deposit": {
+      "value": 58,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/sum.aspx",
+        "title": "National Insurance Institute, child savings: savings amount page (effective 01.01.2026)",
+        "publisher": "National Insurance Institute (BTL)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "cpi-linked 1 jan",
+      "rule_ids": [
+        "CS-03"
+      ],
+      "state": "sourced",
+      "notes": "NIS 58 a month per child in 2026, paid by the National Insurance Institute on the 20th. Updated each 1 January by the CPI rise (reg. 12); the update was skipped on 1 January 2025 (law s.74ה(4)), when the amount stayed at the 2024 level (NIS 57). NIS 50 at the 2017 start. Law 74ב(א)(1) bracket also reads 'בשנת 2026, 58 ש״ח'."
+    }
+  },
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-22"
+}

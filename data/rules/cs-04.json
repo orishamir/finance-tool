@@ -1,0 +1,35 @@
+{
+  "id": "CS-04",
+  "title": "Parental addition from the child allowance (\"doubling\")",
+  "strength": "primary",
+  "dimensions": [
+    "deposit-ceiling",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "monthly_addition": {
+      "value": 58,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/HisahonKupot.aspx",
+        "title": "National Insurance Institute, child savings: parental addition (doubling) page",
+        "publisher": "National Insurance Institute (BTL)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "cpi-linked 1 jan",
+      "rule_ids": [
+        "CS-04"
+      ],
+      "state": "sourced",
+      "notes": "Optional parental addition taken from the child allowance, NIS 58 a month in 2026 (NIS 57 in 2025), so NIS 116 a month goes in with the basic deposit. The rule states the figure but the requester named no figure for CS-04; the name monthly_addition is this file's own choice. The amount is fixed by a Finance Minister order (s.74ב(א)(3)); NII pages give only NIS 58."
+    }
+  },
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-22"
+}

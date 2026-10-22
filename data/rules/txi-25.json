@@ -1,0 +1,13 @@
+{
+  "id": "TXI-25",
+  "title": "Negative linkage does not reduce the tax on interest, and the linkage loss cannot be offset",
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal",
+    "tax-during",
+    "loss-offset"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-interest-deposits-bonds.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,58 @@
+{
+  "id": "TXS-12",
+  "title": "Money-market funds: what a saver pays, and on what base (closes Q15)",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "tax-during",
+    "real-vs-nominal",
+    "loss-offset"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "rate": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance, ss.88, 91(b)(1), 125B1, 129C; Withholding Regulations 2002, regs. 2(b), 3A",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXS-12",
+        "TXS-09"
+      ],
+      "state": "sourced",
+      "notes": "Money-market fund holder (exempt fund, tax track read from each fund's prospectus): 0% while holding, 25% of the real gain (above CPI) on redemption or sale, withheld, and 25% on any distribution. The 15%-of-nominal rate of a deposit or makam held directly does not apply to the saver in an exempt money-market fund. No tax rule specific to money-market funds exists."
+    },
+    "taxable_fund_rate": {
+      "value": 15,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.bizportal.co.il/guides/news/article/20038659",
+        "title": "bizportal, \"מיסוי קרנות נאמנות: 25% ריאלי, 15% נומינלי\", 12.8.2026",
+        "publisher": "bizportal",
+        "strength": "secondary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXS-12",
+        "TXS-11"
+      ],
+      "state": "sourced",
+      "notes": "Applies only if a money-market fund is a taxable fund (none was found; the market was not surveyed, open question 1). il-finance TXS-12 condition (b) and TXS-11 mark this as DERIVED, not stated in one source: by s.129C(a)(2) with s.125C(c) and s.91(b)(3), a taxable fund holding unlinked shekel interest instruments bears 15% of the nominal interest and gains at fund level, and the saver pays nothing more and cannot offset a loss. No Tax Authority sentence says this in those words (open question 11). The only source that states it is the agreeing secondary article cited here, so strength is secondary."
+    }
+  },
+  "il_finance_file": "tax-securities-israeli.md",
+  "checked": "2026-10-22"
+}

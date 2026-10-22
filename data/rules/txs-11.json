@@ -1,0 +1,14 @@
+{
+  "id": "TXS-11",
+  "title": "Taxable fund: the fund pays, the saver does not, and losses are lost",
+  "strength": "primary",
+  "dimensions": [
+    "tax-during",
+    "tax-at-exit",
+    "loss-offset",
+    "real-vs-nominal"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-securities-israeli.md",
+  "checked": "2026-10-22"
+}

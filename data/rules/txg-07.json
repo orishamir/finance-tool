@@ -1,0 +1,13 @@
+{
+  "id": "TXG-07",
+  "title": "\"Maximum rate\" vs \"fixed rate\" on special-rate income; capital income as the top slice",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "tax-during",
+    "age-or-use-exemption"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-general.md",
+  "checked": "2026-10-22"
+}

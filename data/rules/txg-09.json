@@ -1,0 +1,57 @@
+{
+  "id": "TXG-09",
+  "title": "Surtax (מס נוסף, \"מס יסף\"), base 3%",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "tax-during",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2028-01-15",
+  "figures": {
+    "rate": {
+      "value": 3,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+        "title": "Tax Authority deductions booklet 2026, p.11 (\"מס נוסף על הכנסות גבוהות\")",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXG-09"
+      ],
+      "state": "sourced",
+      "notes": "Surtax (\"מס נוסף\", \"מס יסף\") base 3% on taxable income above the threshold. Applies also to capped-rate income such as capital-market income. Taxable income for this purpose excludes the inflationary amount."
+    },
+    "threshold": {
+      "value": 721560,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+        "title": "Tax Authority deductions booklet 2026, p.11 (\"מס נוסף על הכנסות גבוהות\")",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2024-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "frozen 2025-2027",
+      "rule_ids": [
+        "TXG-09",
+        "TXG-06"
+      ],
+      "state": "sourced",
+      "notes": "NIS per year (= 60,130 NIS per month, the employer withholding threshold on salary). Valid 2024 to 2027 (frozen, TXG-06); indexed from 2028. Ordinance s.121B(a) editorial note: 'בשנים 2024–2027, 721,560 ש״ח'."
+    }
+  },
+  "il_finance_file": "tax-general.md",
+  "checked": "2026-10-22"
+}

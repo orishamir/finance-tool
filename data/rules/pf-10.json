@@ -1,0 +1,14 @@
+{
+  "id": "PF-10",
+  "title": "Direct investment-management expenses are charged on top of the management fee, from a closed list",
+  "strength": "primary",
+  "dimensions": [
+    "fee-direct-expenses",
+    "fee-trade",
+    "fee-custody"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-22"
+}

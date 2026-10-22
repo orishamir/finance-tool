@@ -1,0 +1,36 @@
+{
+  "id": "TXF-27",
+  "title": "US estate tax exposure of a non-US person holding US-situs assets",
+  "strength": "primary",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "estate-situs"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "estate_threshold": {
+      "value": 60000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.irs.gov/individuals/international-taxpayers/some-nonresidents-with-us-assets-must-file-estate-tax-returns",
+        "title": "IRS, Some nonresidents with U.S. assets must file estate tax returns (last reviewed 27-Jun-2026); Instructions for Form 706-NA (09/2025)",
+        "publisher": "US Internal Revenue Service",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-27"
+      ],
+      "state": "sourced",
+      "currency": "USD",
+      "notes": "AMOUNT IS IN US DOLLARS, NOT NIS: USD 60,000. The schema unit list has no currency-neutral money unit, so unit is 'nis' only because no better unit exists; read the 'currency' field. This is the filing threshold: the executor of a nonresident non-citizen files Form 706-NA when the fair market value at death of US-situated assets exceeds USD 60,000. Not stated to be indexed. Israel has no estate-tax treaty with the US."
+    }
+  },
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-10-22"
+}

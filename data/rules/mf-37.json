@@ -1,0 +1,12 @@
+{
+  "id": "MF-37",
+  "title": "The expected yield is net of fees, before tax, and not guaranteed",
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance",
+    "real-vs-nominal"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-22"
+}

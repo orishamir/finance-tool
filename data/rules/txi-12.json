@@ -1,0 +1,36 @@
+{
+  "id": "TXI-12",
+  "title": "Selling an unlinked government bond or makam before maturity: capital gain up to 15%, all treated as real",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "real-vs-nominal",
+    "switching-tax-event"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "rate": {
+      "value": 15,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance, s.91(b)(3); Withholding Regulations 2002, reg. 2(b)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXI-12"
+      ],
+      "state": "sourced",
+      "notes": "Capital gain on selling an unlinked government bond or makam before maturity: maximum rate \"שלא יעלה על 15%\", the whole gain treated as real (no inflation deduction); 15% withheld. A substantial shareholder pays up to 20%. The Minister may change the rate by order (s.91(b)(3)(b))."
+    }
+  },
+  "il_finance_file": "tax-interest-deposits-bonds.md",
+  "checked": "2026-10-22"
+}

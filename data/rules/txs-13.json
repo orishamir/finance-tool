@@ -1,0 +1,36 @@
+{
+  "id": "TXS-13",
+  "title": "Israeli tracking funds and ETFs (קרנות מחקות, קרנות סל)",
+  "strength": "institution",
+  "dimensions": [
+    "tax-at-exit",
+    "distribution-policy"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "rate": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf",
+        "title": "Migdal main prospectus 30.1.2025, p.8 and ch.25",
+        "publisher": "Migdal Mutual Funds (TASE Maya filing)",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXS-13",
+        "TXS-09",
+        "TXS-10"
+      ],
+      "state": "sourced",
+      "notes": "Israeli tracking funds and ETFs are exempt funds under one manager's 2025 prospectus: a saver pays 25% of the real gain on sale (withheld) and 25% on distributions (as TXS-09 and TXS-10). The rule rests on one manager's statement; other managers' prospectuses were not read (open question 1). The 25% itself is law (TXS-09, TXS-10)."
+    }
+  },
+  "il_finance_file": "tax-securities-israeli.md",
+  "checked": "2026-10-22"
+}

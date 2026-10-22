@@ -1,0 +1,34 @@
+{
+  "id": "TXF-02",
+  "title": "Rate on the real capital gain",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "rate": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94",
+        "title": "Income Tax Ordinance, s.91(b)(1)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-02"
+      ],
+      "state": "sourced",
+      "notes": "Real capital gain: maximum rate \"שלא יעלה על 25%\", top slice of income. No separate rate for foreign assets. Guide 2025 pp.47, 116 agree. The rate has been a target of budget proposals; re-check with each budget law."
+    }
+  },
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-10-22"
+}

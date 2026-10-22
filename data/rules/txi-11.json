@@ -1,0 +1,33 @@
+{
+  "id": "TXI-11",
+  "title": "Makam held to redemption: the discount is interest at 15%",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "rate": {
+      "value": 15,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance, s.125C(a),(c); Withholding Regulations 2005, regs. 1, 5",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXI-11"
+      ],
+      "state": "sourced",
+      "notes": "Makam discount held to redemption is interest on an unlinked asset, taxed and withheld at 15%. Conflict recorded in il-finance: one line in the Tax Authority guide 2025 p.39 (\"ריבית על אגרות חוב\" item 3, about unlinked traded bonds issued before 8.5.2000) says \"דמי ניכיון על מק\"מ\" are taxed at 20% at realization; il-finance reads it as legacy text that conflicts with s.125C(c) and uses 15% (open question 3 in tax-interest-deposits-bonds.md)."
+    }
+  },
+  "il_finance_file": "tax-interest-deposits-bonds.md",
+  "checked": "2026-10-22"
+}
