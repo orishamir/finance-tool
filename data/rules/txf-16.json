@@ -1,0 +1,12 @@
+{
+  "id": "TXF-16",
+  "title": "Tax suffered inside a foreign fund is a fund-level cost, not creditable in Israel",
+  "strength": "primary",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "distribution-policy"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-10-22"
+}

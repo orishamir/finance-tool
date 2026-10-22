@@ -1,0 +1,13 @@
+{
+  "id": "TXS-23",
+  "title": "Age 60 and over",
+  "strength": "primary",
+  "dimensions": [
+    "age-or-use-exemption",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-15",
+  "il_finance_file": "tax-securities-israeli.md",
+  "checked": "2026-10-22"
+}

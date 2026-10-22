@@ -1,0 +1,55 @@
+{
+  "id": "TXK-06",
+  "title": "Rate on that interest: up to 25%, as the top slice of income",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "real-vs-nominal"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "rate": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/api/rest_v1/page/pdf/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance, s.125C(a)-(e) (Wikisource PDF p.131)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXK-06"
+      ],
+      "state": "sourced",
+      "notes": "Interest deemed under s.3(ה4)(3) on a lump-sum withdrawal from a kupat gemel lehashkaa: maximum rate \"שלא יעלה על 25%\", top slice of income (s.125C(b)). Whether the balance is an \"asset linked to the index\" (25% on real) or not (15% on nominal) is not stated by any official source; managers apply 25% on real (TXK-07). Likely-to-change is \"yes\" because il-finance points to TXK-21 (proposed uniform 25% on real gains across products, not law)."
+    },
+    "nominal_rate": {
+      "value": 15,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/api/rest_v1/page/pdf/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance, s.125C(c)(1) (Wikisource PDF p.131)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXK-06"
+      ],
+      "state": "sourced",
+      "notes": "s.125C(c) limb: 15% of the nominal interest where the interest is paid on an asset not CPI-linked or only partly linked. Used as the sensitivity alternative (method F-44). The Minister may change the 15% by order (s.125C(c)(2))."
+    }
+  },
+  "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
+  "checked": "2026-10-22"
+}

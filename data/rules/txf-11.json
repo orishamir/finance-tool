@@ -1,0 +1,13 @@
+{
+  "id": "TXF-11",
+  "title": "No Israeli deemed-distribution rule found for a non-controlling holder of a listed foreign fund",
+  "strength": "primary",
+  "dimensions": [
+    "distribution-policy",
+    "tax-during",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-10-22"
+}

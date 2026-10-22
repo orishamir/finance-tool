@@ -1,0 +1,35 @@
+{
+  "id": "KGL-03",
+  "title": "The 2026 ceiling figure",
+  "strength": "institution",
+  "dimensions": [
+    "deposit-ceiling"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "ceiling": {
+      "value": 83641,
+      "unit": "nis",
+      "source": {
+        "url": "https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf",
+        "title": "Harel, \"תקרות וסכומים לשנת 2026\" (PDF created 2026-03-08), p.1, \"תקרת הפקדה שנתית לגמל להשקעה ... 83,641 ₪\"",
+        "publisher": "Harel Insurance and Finance",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "cpi-linked 1 jan",
+      "rule_ids": [
+        "KGL-02",
+        "KGL-03"
+      ],
+      "state": "sourced",
+      "notes": "NIS per person per calendar year, 2026, across all kupat gemel lehashkaa accounts. Institution sources only: Harel, Phoenix, Meitav and the Hebrew University fund give 83,641; Altshuler gives 83,641.09. The official update notice was not reached (open question 1), and the CPI rise (83,641.09 / 70,000 = 1.1949) could not be checked against CBS data. Updated every 1 January."
+    }
+  },
+  "il_finance_file": "kupat-gemel-lehashkaa.md",
+  "checked": "2026-10-22"
+}

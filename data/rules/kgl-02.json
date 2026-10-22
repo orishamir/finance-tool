@@ -1,0 +1,35 @@
+{
+  "id": "KGL-02",
+  "title": "Annual deposit ceiling: one ceiling per person across all managers, CPI-linked",
+  "strength": "primary",
+  "dimensions": [
+    "deposit-ceiling",
+    "real-vs-nominal"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "base_ceiling": {
+      "value": 70000,
+      "unit": "nis",
+      "source": {
+        "url": "https://fs.knesset.gov.il//20/law/20_lsr_343169.pdf",
+        "title": "Sefer HaChukim 2554, p.885, Amendment 15 section 3 (adding to section 22(א) of the Provident Funds Law)",
+        "publisher": "Knesset (Sefer HaChukim)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "KGL-02"
+      ],
+      "state": "sourced",
+      "notes": "THIS IS THE BASE, NOT THE CURRENT CEILING. NIS 70,000 per tax year (שנת כספים) in the law, indexed every 1 January by the CPI rise, first against the CPI known on 1 July 2016. The 2026 ceiling is KGL-03 'ceiling'. One ceiling per member across all managers. A private bill to raise it to NIS 300,000 passed a preliminary reading (20 Mar 2024, secondary report); status open (open question 12)."
+    }
+  },
+  "il_finance_file": "kupat-gemel-lehashkaa.md",
+  "checked": "2026-10-22"
+}

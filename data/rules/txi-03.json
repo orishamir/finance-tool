@@ -1,0 +1,36 @@
+{
+  "id": "TXI-03",
+  "title": "15% on interest from an asset that is not fully CPI-linked",
+  "strength": "primary",
+  "dimensions": [
+    "tax-during",
+    "tax-at-exit",
+    "real-vs-nominal"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "rate": {
+      "value": 15,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance, s.125C(c)(1)-(2)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXI-03"
+      ],
+      "state": "sourced",
+      "notes": "Fixed rate (\"בשיעור של 15%\", not \"not exceeding\"), on the whole nominal interest, no inflation deduction. The Finance Minister may change it by order (s.125C(c)(2)); no such order was found. Same rate in Tax Authority guide 2025 p.40 (field 21)."
+    }
+  },
+  "il_finance_file": "tax-interest-deposits-bonds.md",
+  "checked": "2026-10-22"
+}

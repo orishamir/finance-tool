@@ -1,0 +1,12 @@
+{
+  "id": "BANK-18",
+  "title": "No securities custody fee on makam or money-market funds at a bank",
+  "strength": "primary",
+  "dimensions": [
+    "fee-custody",
+    "fee-trade"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-22"
+}

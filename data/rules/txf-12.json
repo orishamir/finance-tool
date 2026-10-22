@@ -1,0 +1,35 @@
+{
+  "id": "TXF-12",
+  "title": "US withholding on US dividends paid to an Israeli resident: treaty cap 25%",
+  "strength": "primary",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "tax-during",
+    "distribution-policy"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "us_withholding": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.irs.gov/pub/irs-trty/israel.pdf",
+        "title": "US-Israel Income Tax Convention, IRS consolidated text, Art. 12(1)-(2); IRS Tax Treaty Table 1 (rev. May 2023), Israel row, footnote w",
+        "publisher": "US Internal Revenue Service",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "1995-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-12"
+      ],
+      "state": "sourced",
+      "notes": "Treaty cap on US withholding on US-source dividends paid to an Israeli resident (Art. 12(2)(a)). Treaty, not statute: update_rule 'fixed in law' is the nearest value in the schema list. effective_from is the treaty's general effective date (Art. 31, per the IRS text). 12.5% applies only to a corporate recipient with at least 10% of the voting stock (Art. 12(2)(b)); 30% is the no-treaty rate (see TXF-13). Requires documented foreign status (TXF-13). IRS table is rev. May 2023."
+    }
+  },
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-10-22"
+}

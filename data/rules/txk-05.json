@@ -1,0 +1,13 @@
+{
+  "id": "TXK-05",
+  "title": "Lump-sum withdrawal: gains are treated as interest income",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
+  "checked": "2026-10-22"
+}

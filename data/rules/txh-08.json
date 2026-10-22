@@ -1,0 +1,55 @@
+{
+  "id": "TXH-08",
+  "title": "What counts as a \"benefited deposit\" (`הפקדה מוטבת`)",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "deposit-ceiling",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "own_benefited_pct": {
+      "value": 2.5,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance, s.9(16A)(c)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXH-08"
+      ],
+      "state": "sourced",
+      "notes": "Employee's benefited deposit: up to 2.5% of the determining salary (TXH-02); alternatives in the law are one third of the employer's payment at the s.3(e) rate, or another rate in a collective agreement approved before 12 June 2002."
+    },
+    "self_employed_benefited": {
+      "value": 20566,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+        "title": "Tax Authority deductions booklet 2026, p.12 (\"הפקדה מוטבת 9(16א) ו-(16ב)\")",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2025-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXH-08"
+      ],
+      "state": "sourced",
+      "notes": "NIS per year, self-employed benefited deposit (s.9(16B)). The law lists 19,920 (2023), 20,520 (2024) and 20,566 (2025 and 2026); no 2027 figure is listed. Conflict: the Chief Economist paper (Oct 2025, p.5 note 11) gives 'about 20,538' for 2025 (open question 3). The mechanism that moved the figure from 2024 to 2025 during the freeze is unknown; update_rule 'fixed in law' is the nearest value in the schema list. Deposits between the deduction ceiling (13,203) and this amount are not deductible but their gains are exempt."
+    }
+  },
+  "il_finance_file": "tax-hishtalmut.md",
+  "checked": "2026-10-22"
+}

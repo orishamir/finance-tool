@@ -1,0 +1,55 @@
+{
+  "id": "TXI-20",
+  "title": "Low-income deduction from deposit and savings-plan interest (s.125D(b)), any age",
+  "strength": "primary",
+  "dimensions": [
+    "age-or-use-exemption",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2028-01-01",
+  "figures": {
+    "favoured_ceiling": {
+      "value": 69840,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+        "title": "Tax Authority deductions booklet from January 2026 (updated April 2026), p.14, \"ניכוי מריבית - תקרה מוטבת 125ד(א)\"",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2024-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "frozen 2025-2027",
+      "rule_ids": [
+        "TXI-20"
+      ],
+      "state": "sourced",
+      "notes": "NIS per year (the unit list has no nis-per-year; value is an annual amount). Applies for 2024-2027 per the statutory footnote and repeated for 2026 in the booklet. Indexed to the CPI under s.120B but frozen for 2025-2027; indexation resumes 1.1.2028. Income of the individual and spouse up to this ceiling gets the full deduction; above it the deduction is reduced by the excess (s.125D)."
+    },
+    "deduction": {
+      "value": 10920,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+        "title": "Tax Authority deductions booklet from January 2026 (updated April 2026), p.14, \"פטור למעוט הכנסה 125ד(ב)\"",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2024-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "frozen 2025-2027",
+      "rule_ids": [
+        "TXI-20"
+      ],
+      "state": "sourced",
+      "notes": "NIS per year, deductible from deposit and savings-plan interest only (not bonds or makam), not more than the interest. Frozen 2025-2027 like the ceiling; indexation resumes 1.1.2028."
+    }
+  },
+  "il_finance_file": "tax-interest-deposits-bonds.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "TXG-13",
+  "title": "Inflationary amount: taxed only for the part built up before 1994",
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-general.md",
+  "checked": "2026-10-22"
+}

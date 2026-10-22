@@ -1,0 +1,13 @@
+{
+  "id": "TXF-17",
+  "title": "Foreign tax credit: what qualifies",
+  "strength": "primary",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "tax-during",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-10-22"
+}

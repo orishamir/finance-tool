@@ -1,0 +1,12 @@
+{
+  "id": "ETF-06",
+  "title": "ETF price on the exchange is not the NAV",
+  "strength": "institution",
+  "dimensions": [
+    "fee-trade",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-22"
+}

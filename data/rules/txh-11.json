@@ -1,0 +1,57 @@
+{
+  "id": "TXH-11",
+  "title": "Gains on non-benefited deposits: interest income, up to 25%",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "real-vs-nominal",
+    "deposit-ceiling",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "rate": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+        "title": "Tax Authority guide 2025, p.40, section \"ד. ריבית ורווחים מקרן השתלמות (סעיף 15)\"; p.87 (row 9(13)); Ordinance ss.3(e4)(1), 125C(b)",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXH-11"
+      ],
+      "state": "sourced",
+      "notes": "Gains accrued from 1.1.2003 on deposits above the ceiling, withdrawn after the holding period: maximum rate \"שלא יעלה על 25%\" (s.125C(b), top slice of income); the fund withholds 25%. The rule base does NOT say the base is the real gain: real vs nominal base, the treatment of the linkage part, and whether 15% (s.125C(c)) can ever apply are unsettled (open question 1; guide p.87 says the s.9(13) linkage exemption does not apply to a provident fund account). Strength is primary (the Tax Authority guide), not institution."
+    },
+    "real_base": {
+      "value": true,
+      "unit": "boolean",
+      "source": {
+        "url": "https://www.moreinvest.co.il/%D7%9B%D7%AA%D7%91%D7%95%D7%AA/%D7%AA%D7%A7%D7%A8%D7%AA-%D7%94%D7%A4%D7%A7%D7%93%D7%94-%D7%9C%D7%A7%D7%A8%D7%9F-%D7%94%D7%A9%D7%AA%D7%9C%D7%9E%D7%95%D7%AA/",
+        "title": "Mor, \"תקרת הפקדה לקרן השתלמות\"; also Clal, \"מהי תקרת ההפקדה לקרן השתלמות?\" (https://www.clalbit.co.il/educationfund/faq/educationfundmax/)",
+        "publisher": "Mor Investment House; Clal Insurance",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TXH-11"
+      ],
+      "state": "sourced",
+      "notes": "Base of the 25%: the real gain. The Tax Authority guide gives no base (tax-hishtalmut.md open question 1); two managers state the real gain (browser pass 3, 2026-10-22). Institution strength: computes with a label (coverage F1, method G-04)."
+    }
+  },
+  "il_finance_file": "tax-hishtalmut.md",
+  "checked": "2026-10-22"
+}

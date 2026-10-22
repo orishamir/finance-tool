@@ -1,0 +1,57 @@
+{
+  "id": "TXG-10",
+  "title": "Additional 2% surtax on capital-source income (closes Q11)",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "tax-during",
+    "surtax"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "rate": {
+      "value": 2,
+      "unit": "pct",
+      "source": {
+        "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf",
+        "title": "Sefer HaChukim 3342, 26.12.2024, p.150 s.1(2)(c) (adding s.121B(a1)), p.152 s.3(b)",
+        "publisher": "Knesset (Sefer HaChukim)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2025-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXG-10"
+      ],
+      "state": "sourced",
+      "notes": "Additional 2% on the part of taxable income FROM CAPITAL SOURCES above the threshold (on top of the 3%). The threshold is tested on capital-source income alone, not on total income. In force for income produced or received from 1.1.2025."
+    },
+    "threshold": {
+      "value": 721560,
+      "unit": "nis",
+      "source": {
+        "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf",
+        "title": "Sefer HaChukim 3342, 26.12.2024, p.150 s.1(2)(c) (adding s.121B(a1)), p.152 s.3(b)",
+        "publisher": "Knesset (Sefer HaChukim)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2025-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "frozen 2025-2027",
+      "rule_ids": [
+        "TXG-10",
+        "TXG-06"
+      ],
+      "state": "sourced",
+      "notes": "NIS per year, the same amount as the 3% surtax threshold (TXG-09), tested on capital-source income alone. Frozen 2025 to 2027."
+    }
+  },
+  "il_finance_file": "tax-general.md",
+  "checked": "2026-10-22"
+}

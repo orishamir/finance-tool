@@ -1,0 +1,300 @@
+{
+  "id": "TXG-04",
+  "title": "Age 60 and over: lower brackets on all taxable income",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "age-or-use-exemption",
+    "tax-at-exit",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-15",
+  "figures": {
+    "brackets": [
+      {
+        "up_to": {
+          "value": 84120,
+          "unit": "nis",
+          "source": {
+            "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\", p.10 (2026 tables)",
+            "publisher": "Israel Tax Authority",
+            "strength": "primary"
+          },
+          "checked": "2026-10-22",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "tax_year": 2026,
+          "update_rule": "frozen 2025-2027",
+          "rule_ids": [
+            "TXG-04",
+            "TXG-02"
+          ],
+          "state": "sourced",
+          "notes": "NIS per year of taxable income. up_to is the upper edge of the band (inclusive). Reduced schedule for an individual who reached 60 in the tax year, applied to ALL taxable income (Ordinance s.121(b)(1)), except income that had to be in improperly kept books. The 2026 band amounts are the TXG-02 personal-effort amounts (booklet p.10), which TXG-04 states as 10% to 84,120."
+        },
+        "rate": {
+          "value": 10,
+          "unit": "pct",
+          "source": {
+            "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\", p.10 (2026 tables)",
+            "publisher": "Israel Tax Authority",
+            "strength": "primary"
+          },
+          "checked": "2026-10-22",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "tax_year": 2026,
+          "update_rule": "fixed in law",
+          "rule_ids": [
+            "TXG-04",
+            "TXG-02"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "up_to": {
+          "value": 120720,
+          "unit": "nis",
+          "source": {
+            "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\", p.10 (2026 tables)",
+            "publisher": "Israel Tax Authority",
+            "strength": "primary"
+          },
+          "checked": "2026-10-22",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "tax_year": 2026,
+          "update_rule": "frozen 2025-2027",
+          "rule_ids": [
+            "TXG-04",
+            "TXG-02"
+          ],
+          "state": "sourced",
+          "notes": "NIS per year of taxable income. up_to is the upper edge of the band (inclusive). Band 14%: 84,121 to 120,720 (TXG-04)."
+        },
+        "rate": {
+          "value": 14,
+          "unit": "pct",
+          "source": {
+            "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\", p.10 (2026 tables)",
+            "publisher": "Israel Tax Authority",
+            "strength": "primary"
+          },
+          "checked": "2026-10-22",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "tax_year": 2026,
+          "update_rule": "fixed in law",
+          "rule_ids": [
+            "TXG-04",
+            "TXG-02"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "up_to": {
+          "value": 228000,
+          "unit": "nis",
+          "source": {
+            "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\", p.10 (2026 tables)",
+            "publisher": "Israel Tax Authority",
+            "strength": "primary"
+          },
+          "checked": "2026-10-22",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "tax_year": 2026,
+          "update_rule": "frozen 2025-2027",
+          "rule_ids": [
+            "TXG-04",
+            "TXG-02"
+          ],
+          "state": "sourced",
+          "notes": "NIS per year of taxable income. up_to is the upper edge of the band (inclusive). Band 20%: 120,721 to 228,000 (TXG-04)."
+        },
+        "rate": {
+          "value": 20,
+          "unit": "pct",
+          "source": {
+            "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\", p.10 (2026 tables)",
+            "publisher": "Israel Tax Authority",
+            "strength": "primary"
+          },
+          "checked": "2026-10-22",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "tax_year": 2026,
+          "update_rule": "fixed in law",
+          "rule_ids": [
+            "TXG-04",
+            "TXG-02"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "up_to": {
+          "value": 301200,
+          "unit": "nis",
+          "source": {
+            "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\", p.10 (2026 tables)",
+            "publisher": "Israel Tax Authority",
+            "strength": "primary"
+          },
+          "checked": "2026-10-22",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "tax_year": 2026,
+          "update_rule": "frozen 2025-2027",
+          "rule_ids": [
+            "TXG-04",
+            "TXG-02"
+          ],
+          "state": "sourced",
+          "notes": "NIS per year of taxable income. up_to is the upper edge of the band (inclusive). Band 31%: 228,001 to 301,200 (TXG-04)."
+        },
+        "rate": {
+          "value": 31,
+          "unit": "pct",
+          "source": {
+            "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\", p.10 (2026 tables)",
+            "publisher": "Israel Tax Authority",
+            "strength": "primary"
+          },
+          "checked": "2026-10-22",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "tax_year": 2026,
+          "update_rule": "fixed in law",
+          "rule_ids": [
+            "TXG-04",
+            "TXG-02"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "up_to": {
+          "value": 560280,
+          "unit": "nis",
+          "source": {
+            "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\", p.10 (2026 tables)",
+            "publisher": "Israel Tax Authority",
+            "strength": "primary"
+          },
+          "checked": "2026-10-22",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "tax_year": 2026,
+          "update_rule": "frozen 2025-2027",
+          "rule_ids": [
+            "TXG-04",
+            "TXG-02",
+            "TXG-03"
+          ],
+          "state": "sourced",
+          "notes": "NIS per year of taxable income. up_to is the upper edge of the band (inclusive). Band 35%: 301,201 to 560,280. NOT stated in TXG-04 itself (which lists only 10/14/20/31% for 60+); taken from the 2026 schedule in TXG-02 and TXG-03 (the same 35% and 47% above 301,200 for every taxpayer), as method F-42 describes the schedule as 10/14/20/31/35/47%."
+        },
+        "rate": {
+          "value": 35,
+          "unit": "pct",
+          "source": {
+            "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\", p.10 (2026 tables)",
+            "publisher": "Israel Tax Authority",
+            "strength": "primary"
+          },
+          "checked": "2026-10-22",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "tax_year": 2026,
+          "update_rule": "fixed in law",
+          "rule_ids": [
+            "TXG-04",
+            "TXG-02",
+            "TXG-03"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "up_to": {
+          "value": null,
+          "unit": "nis",
+          "source": {
+            "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\", p.10 (2026 tables)",
+            "publisher": "Israel Tax Authority",
+            "strength": "primary"
+          },
+          "checked": "2026-10-22",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "tax_year": 2026,
+          "update_rule": "frozen 2025-2027",
+          "rule_ids": [
+            "TXG-04",
+            "TXG-02",
+            "TXG-03"
+          ],
+          "state": "sourced",
+          "notes": "no upper limit"
+        },
+        "rate": {
+          "value": 47,
+          "unit": "pct",
+          "source": {
+            "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\", p.10 (2026 tables)",
+            "publisher": "Israel Tax Authority",
+            "strength": "primary"
+          },
+          "checked": "2026-10-22",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "tax_year": 2026,
+          "update_rule": "fixed in law",
+          "rule_ids": [
+            "TXG-04",
+            "TXG-02",
+            "TXG-03"
+          ],
+          "state": "sourced"
+        }
+      }
+    ],
+    "age": {
+      "value": 60,
+      "unit": "years",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance, s.121(b)(1), \"הכנסה חייבת בשנת המס של יחיד שמלאו לו 60 שנים\"",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXG-04"
+      ],
+      "state": "sourced",
+      "notes": "The test is reaching 60 during the tax year (\"מי שמלאו לו שישים שנה בשנת המס\"). The age rule itself is not expected to change; the bands move with TXG-02."
+    }
+  },
+  "il_finance_file": "tax-general.md",
+  "checked": "2026-10-22"
+}

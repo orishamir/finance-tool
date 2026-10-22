@@ -1,0 +1,36 @@
+{
+  "id": "TXI-15",
+  "title": "Unlinked government bonds (Shahar type, fixed; Gilon type, variable): the rate follows linkage, not the product name",
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal",
+    "tax-during",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "rate": {
+      "value": 15,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance, ss.125C(c), 91(b)(3)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXI-15"
+      ],
+      "state": "sourced",
+      "notes": "Unlinked government bonds (Shahar and Gilon types): coupons at 15% of the nominal coupon (TXI-03), sale or redemption gain at up to 15% with the whole gain treated as real (TXI-12). The test is whether the principal is CPI-linked, not the product name. Whether every Gilon series is unlinked was not confirmed (open question 8). Rate can be changed by ministerial order."
+    }
+  },
+  "il_finance_file": "tax-interest-deposits-bonds.md",
+  "checked": "2026-10-22"
+}
