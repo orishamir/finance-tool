@@ -269,7 +269,7 @@ The person's outlay `C_m` is net money. Where a wrapper returns part of a deposi
 
 **F-66 Switching cost.** Brokerage: moving from fund A to fund B at month `s` is a sale (TXS-21): tax per F-40 on A's lots at `s`, the net proceeds open B's lot. Provident: a track switch or a transfer to the same kind of fund costs nothing (TXK-04, TXH-17, TXH-19, PF-19, PF-23); a hishtalmut moves whole, never in part (PF-18, KH-17). Cost of switching `= V_T(no switch) − V_T(switch)`.
 
-**F-67 Illustrative timeline (3.1).** F-08 run with P-05 for each tier-1 wrapper; series shown: cumulative contributions, gross value, cumulative fees by type, tax during, tax at exit, real value. The rules used are listed beside it by ID.
+**F-67 Illustrative timeline (3.1).** F-08 run for each tier-1 wrapper on P-05, with any value the person has entered replacing its P-05 counterpart (product.md 3.1, changed 2026-10-22); series shown: cumulative contributions, gross value, cumulative fees by type, tax during, tax at exit, real value. The rules used are listed beside it by ID.
 
 **F-70 Classification fit (3.4, 3.6).** A track's CMA classification (`SPECIALIZATION`, `SUB_SPECIALIZATION`, KH-20, CAT) is looked up in P-04 against the goal's horizon band and the person's loss filter (A-29). The mark is "fits", "does not fit", or "no rule" when the classification is not in the table. No asset mix is used (product.md 3.6).
 

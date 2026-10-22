@@ -334,10 +334,10 @@ Each needs a decision or a document change; none is filled in here.
 7. **Search engines and analytics.** The site is not for the general public (product.md §4) and holds no personal data on a server (D1). Proposal: `noindex` on every page and no analytics of any kind. Neither is written down yet. **Founder, 2026-10-22: not a concern now.** Nothing is added for either until it is raised again.
 8. **Data terms as a release gate.** The terms gate (3.3) means BoI series stay hidden until EDGE terms are confirmed or the data.gov.il fallback is in place (dependency 7). If neither is done before R2, the idle-cash preset ships without the per-bank average, showing the link-out instead.
 
-9. **Which fields each page offers.** product.md 3.1 gives guide pages optional age, employment type and horizon, and an illustrative timeline. It does not say whether the amount, the monthly contribution or the return used by that graph can be changed on the guide page, or only in the comparison (3.2). The architecture supports either; the choice belongs in product.md.
+9. **Which fields each page offers.** product.md 3.1 gives guide pages optional age, employment type and horizon, and an illustrative timeline. It does not say whether the amount, the monthly contribution or the return used by that graph can be changed on the guide page, or only in the comparison (3.2). The architecture supports either; the choice belongs in product.md. **Founder, 2026-10-22: every value behind the guide graph is editable, starting from the illustrative scenario** (product.md 3.1, appendix C; method.md F-67).
 
 ---
 
 ## 9. Next step
 
-Stack chosen (C) and hosting chosen (GitHub Pages). Still open: gap 8.9. Scaffolding starts with `git init`, the workspace, the schema package and the validator. The design pass (3.9) runs alongside, and no page is built before its mockup is approved.
+Stack chosen (C), hosting chosen (GitHub Pages), gap 8.9 answered. Scaffolding starts with `git init`, the workspace, the schema package and the validator. The design pass (3.9) runs alongside, and no page is built before its mockup is approved.
