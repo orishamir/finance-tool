@@ -2,7 +2,7 @@
 
 Written 2026-10-22 by the financial modeler from `docs/product.md` (D1 to D13), `docs/roadmap.md`, and the `il-finance` rule base (`.claude/skills/il-finance/references/`, 803 rules, checked 2026-10-22). Every rule is cited by its ID; no rule is stated from memory. Where the rule base is open, the formula is marked **blocked** and the engine must not compute it (D10).
 
-Status: **draft for founder review.** F-83 and gaps G-28 to G-30 added 2026-10-23 for product D17 ("no blind spots"). Basis decisions B1 to B3 were chosen by the founder on 2026-10-22 (section 1). The golden scenarios in `tests/golden/scenarios.md` exercise every formula below; the founder adds expected results from his own spreadsheet.
+Status: **in force.** On 2026-10-23 the founder asked Claude to settle every open item ("do whatever you think fits"); Claude did, and the founder has not reviewed this document line by line. F-83 and gaps G-28 to G-30 added 2026-10-23 for product D17 ("no blind spots"). Basis decisions B1 to B3 were chosen by the founder on 2026-10-22 (section 1). The golden scenarios in `tests/golden/scenarios.md` exercise every formula below; the founder adds expected results from his own spreadsheet.
 
 How to read it:
 
@@ -77,7 +77,7 @@ Values are the founder's, with rationale and sign-off date, shown as "site param
 | P-02 | Sensitivity bounds per assumption (how far A-01, A-02, A-03, A-06, fee rates and the horizon may be moved) | F-81 |
 | P-03 | Fee-verdict thresholds (real shekel cost over the horizon, and share of total drag) for "worth negotiating", "worth avoiding", "not worth the effort" | F-62 |
 | P-04 | Classification-to-horizon fit table (which CMA track classifications fit which horizon band and loss filter) | F-70 |
-| P-05 | Illustrative scenario for guide pages (amount, monthly, horizon, `r_g`, `π`) | F-90 |
+| P-05 | Illustrative scenario for guide pages (amount, monthly, horizon, `r_g`, `π`, and a rate for cash-like products until the A-20 to A-25 series exist) | F-67 |
 | P-06 | Tolerance for golden tests (absolute NIS and relative) | tests |
 
 ---
@@ -349,4 +349,4 @@ Each gap names the open question in `il-finance`. The output shows the affected 
 - Every figure the engine reads carries its tax year or effective date; a run in tax year `y` reads the figure for `y`, and refuses to run with a figure whose `effective_to` has passed, showing "figure not updated" (D3).
 - A rule of strength `open` never enters a formula. A rule of strength `secondary` or `institution` enters and labels the number. The dimension checklist is derived from the rules used in the run, not hand-marked (product.md 3.3).
 - Every comparison test checks F-83's invariant: each candidate appears exactly once, with one outcome.
-- `tests/golden/scenarios.md` is the test file named by the founder; `docs/product.md` 3.8 calls the same thing `tests/cases/`. One of the two names should be changed to match.
+- `tests/golden/scenarios.md` is the test file named by the founder. **Answered 2026-10-23:** the name is `tests/golden/`; `docs/product.md` and `docs/roadmap.md` were changed to match.

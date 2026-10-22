@@ -1,7 +1,7 @@
 # Design system
 
 Written 2026-10-22 by the product designer from `docs/product.md` (D1 to D13, section 3), `docs/roadmap.md` (release 1), `docs/architecture.md` (K7, K8, K12, 3.5, 3.9, gap 8.6), `docs/method.md` and `docs/data-schema.md`.
-Status: **look approved by the founder on 2026-10-23**; the label wording and the site name are still open (section 5). The tokens are live in `site/app/theme.css`. Mockups (architecture 3.9) of the guide page and the company page at phone and PC widths (the company page was redrawn on 2026-10-23 as one list, in the same look, after the app-mirroring view was removed, product.md appendix E), built from what is defined here: https://claude.ai/artifact/T2WWNHiNhqXxSkmssTFbCS (2026-10-23; the founder approved the look the same day). No page is built before its mockup is approved.
+Status: **look approved by the founder on 2026-10-23**; the label wording and the site name were settled on 2026-10-23 (section 5). The tokens are live in `site/app/theme.css`. Mockups (architecture 3.9) of the guide page and the company page at phone and PC widths (the company page was redrawn on 2026-10-23 as one list, in the same look, after the app-mirroring view was removed, product.md appendix E), built from what is defined here: https://claude.ai/artifact/T2WWNHiNhqXxSkmssTFbCS (2026-10-23; the founder approved the look the same day). No page is built before its mockup is approved.
 
 What this document covers:
 
@@ -390,8 +390,8 @@ Defined when their release starts, from its mockups: the ranked list with tie ba
 |---|---|---|
 | Q1 | The look: colours, type, layout. | **Approved 2026-10-23** after the mockups ("I like the UI look"). The faces were approved 2026-10-22 (2.4). |
 | Q2 | Light, dark or both? | **Answered 2026-10-22: dark only.** |
-| Q3 | Wording of the fixed Hebrew labels (2.9). | Open. They appear in the mockups; change any that read wrong. |
-| Q7 | The site's name, for the header. | Open. |
+| Q3 | Wording of the fixed Hebrew labels (2.9). | **Answered 2026-10-23:** the labels stand as drafted in `docs/copy.md` (the founder asked Claude to settle it). Change any that read wrong. |
+| Q7 | The site's name, for the header. | **Answered 2026-10-23: "מקור"** (chosen by Claude at the founder's request): short, and it names the site's promise, a source for every number. |
 
 **Decided by Claude, provisional** (technical choices, not put to the founder):
 
@@ -399,4 +399,4 @@ Defined when their release starts, from its mockups: the ranked list with tie ba
 |---|---|---|
 | Q4 | Chart axis ticks carry a `data-scale` attribute, and the provenance crawl (architecture 3.7 item 5) allows digits inside it. | Ticks are scale marks, not figures; without this the crawl fails every chart. |
 | Q5 | Shekel amounts keep the two decimals of method §13 for now. Revisit when the first guide page is built. | Rounding for display is a method convention; changing it belongs in `docs/method.md`. |
-| Q6 | Slider ranges are set when the timeline is built, stored with the illustrative scenario in `data/parameters/`, marked as Claude's provisional default. | They limit only the slider, not what can be typed. |
+| Q6 | Slider ranges are stored with the illustrative scenario in `data/parameters/illustrative-scenario.json`. **Set 2026-10-23** and signed off by the founder (chosen by Claude at his request): monthly deposit 0 to 10,000 NIS in steps of 100, years 1 to 40. | They limit only the slider, not what can be typed. |

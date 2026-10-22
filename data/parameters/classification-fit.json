@@ -1,0 +1,113 @@
+{
+  "id": "classification-fit",
+  "method_id": "P-04",
+  "table": [
+    {
+      "classification": "מניות",
+      "horizon_min_years": {
+        "value": 10,
+        "unit": "years",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#classification-fit",
+          "title": "Founder's choice, made by Claude at his request: classification fit",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      },
+      "horizon_max_years": {
+        "value": null,
+        "unit": "years",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#classification-fit",
+          "title": "Founder's choice, made by Claude at his request: classification fit",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      },
+      "max_fall_pct": {
+        "value": 30,
+        "unit": "pct",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#classification-fit",
+          "title": "Founder's choice, made by Claude at his request: classification fit",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      }
+    },
+    {
+      "classification": "כללי",
+      "horizon_min_years": {
+        "value": 5,
+        "unit": "years",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#classification-fit",
+          "title": "Founder's choice, made by Claude at his request: classification fit",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      },
+      "horizon_max_years": {
+        "value": null,
+        "unit": "years",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#classification-fit",
+          "title": "Founder's choice, made by Claude at his request: classification fit",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      },
+      "max_fall_pct": {
+        "value": 20,
+        "unit": "pct",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#classification-fit",
+          "title": "Founder's choice, made by Claude at his request: classification fit",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      }
+    }
+  ],
+  "rationale": "An equity track (מניות) fits a horizon of 10 years or more, for someone who accepts a fall of 30% on the way; a general track (כללי) fits 5 years or more and a fall of 20%. The other regulator classifications hold very different mixes under one name (for example index trackers of shares and of bonds), so they show \"no rule\" until the table uses the sub-classification.",
+  "chosen_by": "Claude, at the founder's request (2026-10-23: \"do whatever you think fits\")",
+  "signed_off_by": "founder",
+  "signed_off_on": "2026-10-23",
+  "shown_as": "site parameter"
+}
