@@ -156,6 +156,7 @@ The rules themselves stay in `il-finance` (markdown). This collection holds only
 - `tax_*.formula` points to `docs/method.md`; `blocked_by` lists open-question IDs; when non-empty the engine applies B3.
 - `dimensions` is computed from `rule_ids` at build time (product.md 3.3) and stored for display; a hand edit is not allowed.
 - A closed wrapper (for example after a future merger of wrappers, D6) keeps its record with `effective_to` set.
+- The schema is `wrapperRecord` in `packages/schema` (added 2026-10-23). It is strict: a field not named above is an error. Which fields become a run's inputs is in `docs/method.md` §2.4.
 
 ### 3.4 `data/instruments/exposures/` — one record per exposure type
 
