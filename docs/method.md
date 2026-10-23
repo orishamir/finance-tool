@@ -80,6 +80,45 @@ Values are the founder's, with rationale and sign-off date, shown as "site param
 | P-05 | Illustrative scenario for guide pages (amount, monthly, horizon, `r_g`, `π`, and a rate for cash-like products until the A-20 to A-25 series exist) | F-67 |
 | P-06 | Tolerance for golden tests (absolute NIS and relative) | tests |
 
+### 2.4 From a wrapper record and P-05 to a run's inputs
+
+Added 2026-10-23. `runInputs` in the engine (`packages/engine/src/inputs.ts`) builds the inputs of one run from three things: a wrapper record (`docs/data-schema.md` §3.3), the parameters in `data/parameters/`, and the instrument terms that neither of them holds. It is the step behind F-67 and, from R2, behind every comparison that starts from wrapper records (F-83). Values pass through unchanged. The only conversions are percent to a fraction (`5` becomes `0.05`) and years to months. Anything missing or unexpected, or that the engine cannot compute yet, stops the build with the field named. It never falls back to a default or drops a field. A run the method cannot evaluate yet stops with its gap, as F-83 "not evaluated": monthly deposits into a renewable money-market fund stop with G-30.
+
+**Wrapper record.** It is checked against the schema (`packages/schema`, `wrapperRecord`); a field the schema does not name is an error at every level.
+
+| Record field | Run input |
+|---|---|
+| `id` | Chooses the run. `kupat-gemel-lehashkaa` and `keren-hishtalmut` use the provident run (F-27), with `wrapper` = the ID. `bank-deposit`, `savings-plan` and `current-account` use the deposit run (F-21, F-22, F-26), with `deposit.kind` = `deposit`, `savings-plan` or `current-account`. `money-market-fund-daily`, `money-market-fund-renewable` and `brokerage-account` use the securities run (F-08, F-23), and so does `ira-hishtalmut`, with the IRA manager's fee and clock (F-51). `makam` uses the makam run (F-24) and `government-bond` the bond run (F-25). The other wrappers stop with the reason: pension and provident fund for annuity wait for F-30 to F-32 and F-49 (R2); child savings runs on the NII amounts (F-54), not on P-05; an IRA provident fund waits for F-48 and F-49, which are blocked (G-03, G-06). |
+| `deposit_side_tax.formula`, `tax_during.formula`, `tax_at_exit.formula` | Not inputs. Each must be a formula the engine computes (the formula registry); a pending one stops with its release, for example F-30 "R2". |
+| `fee_caps`, `ceiling`, `lawful_exit`, `switch_is_tax_event` | Not inputs. The run reads the same figures from `data/rules/` by rule ID through the figure resolver (PF-02, PF-06, KGL-03, TXH-09 and so on), so tax year and `effective_to` are checked there (§13). The record carries them for the guide page. |
+| `tax_at_exit.blocked_by`, `tax_at_exit.labels` | Not inputs. The run raises B3 and its labels from the rules it reads; the ranking reads `blocked_by` (F-80, R2). |
+| `names`, `regulator`, `fee_bases_allowed`, `transfer_routes`, `eligibility`, `protection`, `dimensions`, `tier`, `open_questions`, `effective_to`, `checked` | Not inputs; page and validation only. |
+
+**P-05, `data/parameters/illustrative-scenario.json`.** Exactly one record with `method_id` P-05 must be present, with exactly these six inputs, each a value object with a number in the unit shown. A value the person entered (state `entered`, same unit) replaces its P-05 counterpart (F-67). P-05's `sliders` are page controls, not run inputs. P-01 to P-04 and P-06 are not run inputs.
+
+| P-05 input | Unit | Run input |
+|---|---|---|
+| `amount_now` | `nis` | `goal.amountNow` (C_0, F-05) |
+| `monthly_deposit` | `nis_per_month` | `goal.monthly` (C, F-05) |
+| `horizon_years` | `years` | `goal.months` = 12 × years (T, F-01); must be a whole number of months |
+| `A-01` | `pct_per_year` | `market.grossReturn` ÷ 100 for the provident run and for funds held as securities (`brokerage-account`, `ira-hishtalmut`) |
+| `A-02` | `pct_per_year` | `market.inflation` ÷ 100 for every run |
+| `cash_rate` | `pct_per_year` | ÷ 100, in place of the sourced rate the product would use (A-20 to A-25, R2): `deposit.rate` (A-21, A-25), the money-market funds' `market.grossReturn` (A-20, A-24), `makam.yield` (A-22), `bond.coupon` (A-23) |
+
+`goal.contributions` and `goal.firstMonth` are not set, so A-04 "constant real" and month 1 in January apply.
+
+**Instrument terms.** The provider's fees and the instrument's own terms are not in the wrapper record or in P-05. The caller passes them as the run takes them (rates as fractions), from `data/fees/`, `data/funds/` and `data/terms/` or as entered by the person. Each run accepts only its own terms, and each term only its own fields; a missing one, or one the run would not read, stops the build. A field such as `rate` inside `deposit` would override a P-05 value, so it is refused rather than allowed to replace P-05 without notice.
+
+| Run | Required | Optional |
+|---|---|---|
+| Provident | `fees` (F-11 deposit, F-15 balance, A-18 direct expenses, A-19 discount); for `keren-hishtalmut` also `hishtalmut` (A-12) | none |
+| Deposit | `deposit` (A-15 term, A-16 linkage) | none |
+| Securities | `fund` (kind and A-06 to A-11), `tariff` (F-12 to F-17); for `ira-hishtalmut` also `ira` (manager's balance fee, clock start; F-51) | `broker`, `currency` (A-03, quote currency of A-01) |
+| Makam | `tariff` (buy and sell lines only) | `makam` (series term) |
+| Bond | `bond` (linkage, coupon frequency, A-27), `tariff` (buy, sell, custody) | none |
+
+The fund's kind must suit the wrapper: `money-market-daily` or `money-market-taxable` for `money-market-fund-daily`, `money-market-renewable` for `money-market-fund-renewable`, and `israeli-fund`, `tase-foreign-fund` or `foreign-fund` for `brokerage-account` and `ira-hishtalmut`. The taxable kind sits under the daily wrapper because the engine runs it with a daily fund's liquidity (F-23, S13). That is a modelling choice, not a rule. The rule base names the two taxable funds (TXS-24) but not whether each is daily or renewable, so each fund's own record must say. The profile (A-12 to A-14) passes through unchanged.
+
 ---
 
 ## 3. Time, money and the deflator
