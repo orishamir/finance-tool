@@ -209,6 +209,7 @@
     }
   },
   "rationale": "Wide enough to show whether the answer depends on a guess: yearly return 0% to 10%, inflation 0% to 5%, the shekel against a foreign currency 3% a year either way, the cost inside a fund 0% to 3% a year, each fee from half to double one at a time, and the horizon two years shorter or longer.",
+  "rationale_he": "רחב מספיק כדי להראות אם התשובה תלויה בניחוש: תשואה שנתית 0% עד 10%, אינפלציה 0% עד 5%, השקל מול מטבע זר 3% בשנה לכל כיוון, העלות בתוך קרן 0% עד 3% בשנה, כל עמלה מחצי עד כפול, אחת בכל פעם, והאופק שנתיים קצר או ארוך יותר.",
   "chosen_by": "Claude, at the founder's request (2026-10-23: \"do whatever you think fits\")",
   "signed_off_by": "founder",
   "signed_off_on": "2026-10-23",

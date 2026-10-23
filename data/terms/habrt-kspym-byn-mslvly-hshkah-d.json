@@ -1,0 +1,29 @@
+{
+  "id": "habrt-kspym-byn-mslvly-hshkah-d",
+  "he": "העברת כספים בין מסלולי השקעה",
+  "en": null,
+  "meaning": "העברה של הכסף ממסלול השקעה אחד לאחר באותה קופה, בלי לעבור לחברה אחרת",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [
+    "שינוי מסלולי השקעה"
+  ],
+  "rule_ids": [
+    "PEN-17",
+    "PF-14",
+    "PF-23"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לאישור_ולניהול_קופות_גמל)",
+    "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964 (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

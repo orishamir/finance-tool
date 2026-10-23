@@ -1,0 +1,74 @@
+{
+  "id": "government-bond-unlinked",
+  "names": {
+    "he": [
+      "אג\"ח ממשלתית לא צמודה",
+      "ממשלתית שקלית",
+      "אג\"ח בריבית קבועה",
+      "אג\"ח בריבית משתנה",
+      "שחר",
+      "גילון"
+    ],
+    "en": [
+      "Unlinked government bond (fixed or floating rate)"
+    ]
+  },
+  "one_line_he": "הלוואה למדינה בשקלים לשנים, בלי הצמדה למדד: קופון בריבית קבועה שנקבעה בהנפקה או בריבית משתנה לפי תשואת המק״מ, והשווי הנקוב חוזר בפדיון.",
+  "kind": "other",
+  "currency": "ILS",
+  "cash_like": false,
+  "return_source": {
+    "mode": "entered",
+    "series": null
+  },
+  "variants": [],
+  "wrapper_ids": [
+    "government-bond",
+    "brokerage-account",
+    "ira-hishtalmut",
+    "ira-provident",
+    "money-market-fund-daily",
+    "money-market-fund-renewable",
+    "kupat-gemel-lehashkaa",
+    "keren-hishtalmut"
+  ],
+  "rule_ids": [
+    "GOV-02",
+    "GOV-08",
+    "GOV-09",
+    "GOV-10",
+    "GOV-13",
+    "GOV-14",
+    "GOV-15",
+    "GOV-16",
+    "GOV-17",
+    "GOV-19",
+    "GOV-21",
+    "TXI-03",
+    "TXI-09",
+    "TXI-12",
+    "TXI-13",
+    "TXI-15",
+    "TXI-16",
+    "TXI-17",
+    "TXS-03",
+    "BRK-16",
+    "MF-29",
+    "CAT-10",
+    "CAT-17",
+    "CAT-18",
+    "CAT-23",
+    "IRA-11"
+  ],
+  "open_questions": [
+    "GOV-OQ4",
+    "GOV-OQ5",
+    "GOV-OQ7",
+    "GOV-OQ8",
+    "GOV-OQ9",
+    "GOV-OQ12",
+    "TXI-OQ5",
+    "TXI-OQ8"
+  ],
+  "checked": "2026-10-23"
+}

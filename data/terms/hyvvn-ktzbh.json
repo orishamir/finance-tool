@@ -1,0 +1,29 @@
+{
+  "id": "hyvvn-ktzbh",
+  "he": "היוון קצבה",
+  "en": null,
+  "meaning": "המרה של חלק מהקצבה החודשית לסכום חד פעמי, כך שהקצבה שנשארת קטנה יותר",
+  "where": [
+    "tax-form"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [
+    "היוון",
+    "קצבה מהוונת"
+  ],
+  "rule_ids": [
+    "PEN-28",
+    "TXP-17"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf",
+    "title": "Tax Authority, Income Tax circular 2/2013 (27.5.2013)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

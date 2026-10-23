@@ -1,0 +1,27 @@
+{
+  "id": "krn-mchkh-a",
+  "he": "קרן מחקה",
+  "en": null,
+  "meaning": "קרן נאמנות שמטרתה להשיג את תשואת מדד מסוים, בלי להתחייב לכך; לרוב דמי הניהול בה נמוכים מבקרן אקטיבית",
+  "where": [
+    "app",
+    "fund-name"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [
+    "קרן מחקה פתוחה"
+  ],
+  "rule_ids": [
+    "MF-06",
+    "MF-25"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
+    "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "TXK-25",
+  "title": "Child savings: the annuity route, stated by NII but without a clear statutory basis",
+  "title_he": "חיסכון לכל ילד: מסלול הקצבה לפי הביטוח הלאומי",
+  "strength": "primary",
+  "dimensions": [
+    "age-or-use-exemption",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "text_he": "הביטוח הלאומי אומר שאם החיסכון נשאר בקופת הגמל עד הפרישה, הילד יוכל לקבל אותו כקצבה בלי מס רווחי הון. הפטור על 'קצבה מוכרת' נשען על 'תשלומים פטורים' ששילם יחיד בעד עצמו; הפקדות הביטוח הלאומי וההורים אינן כאלה, ולכן הבסיס בחוק לא ברור (שאלה פתוחה 1).",
+  "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
+  "checked": "2026-10-22"
+}

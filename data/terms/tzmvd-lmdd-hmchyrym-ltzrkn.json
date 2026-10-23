@@ -1,0 +1,31 @@
+{
+  "id": "tzmvd-lmdd-hmchyrym-ltzrkn",
+  "he": "צמוד למדד המחירים לצרכן",
+  "en": null,
+  "meaning": "הסכום מתעדכן לפי מדד המחירים לצרכן, כך שהוא עולה כשהמחירים עולים; הריבית באה בנוסף",
+  "where": [
+    "provider-site",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "bank-deposit",
+    "government-bond",
+    "savings-plan"
+  ],
+  "variants": [
+    "צמוד למדד",
+    "+ הצמדה למדד"
+  ],
+  "rule_ids": [
+    "BANK-14",
+    "BANK-26",
+    "TXI-05"
+  ],
+  "source": {
+    "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
+    "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24)",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

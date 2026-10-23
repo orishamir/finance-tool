@@ -1,0 +1,27 @@
+{
+  "id": "hprshy-htzmdh-c",
+  "he": "הפרשי הצמדה",
+  "en": null,
+  "meaning": "החלק מהרווח ששווה לעליית מדד המחירים לצרכן, כלומר לאינפלציה",
+  "where": [
+    "law",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXH-11",
+    "TXK-05",
+    "TXK-07"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/api/rest_v1/page/pdf/פקודת_מס_הכנסה",
+    "title": "פקודת מס הכנסה, consolidated text (Wikisource rendered PDF)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

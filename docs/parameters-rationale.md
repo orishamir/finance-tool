@@ -22,6 +22,14 @@ P-05, `data/parameters/illustrative-scenario.json`, with the slider ranges (desi
 
 **Why:** round starting values for someone beginning to save, not a forecast. They match the test scenario for guide pages (S47), so every guide graph is checked. The cash-like rate stands in for the Bank of Israel series that arrive in release 2 (method A-20 to A-25), and the page shows it as a site parameter. The sliders cover what most people would try; a larger value can be typed.
 
+**Representative instrument (`instruments`):** for each wrapper, the data records the illustrative run takes its terms from (deposit terms, fund, fees provider, government-bond series rule); wrappers whose records are not collected yet have no entry and their guide page shows no timeline.
+
+**Why:** chosen by Claude at the founder's request, 2026-10-23: the representative instrument is the first collected record of each kind; revisable. The page names the records it used, and every term shown carries that record's source.
+
+**Study fund run:** the `keren-hishtalmut` entry sets `employment` to `self-employed`, because an employee's run needs a salary, which comes from the person's entered profile and not from a site parameter; the self-employed run needs none (A-12, TXH-08).
+
+**Income (`annual_income`):** 144,000 NIS a year, the income of the founder's own case (12,000 a month), read only by runs that need an income (the self-employed study-fund deduction, TXH-05); the person's entered income replaces it. **Why:** chosen by Claude at the founder's request, 2026-10-23, the founder's own case; revisable.
+
 ## Sensitivity bounds
 
 P-02, `data/parameters/sensitivity-bounds.json`.
@@ -44,6 +52,8 @@ P-03, `data/parameters/fee-verdict-thresholds.json`.
 
 **Why:** below about 1,000 NIS over several years, a phone call is not worth the time.
 
+**Pension and annuity tracks (`instruments`, added 2026-10-23, second release 2 pass):** no managing company publishes a list fee for a general pension fund or a provident fund for annuity, so, as for the study fund, the comparison uses the regulator's average on a named track (method 2.4). `pension-general` names track **2158**, "מיטב פנסיה כללית לבני 50 ומטה" (Meitav, classification "קרנות כלליות", the age-banded default track for someone under 50, which fits the founder's 22): the CMA reports the pension fees per fund and not per track (CAT-39), so every Meitav general-pension track shows the same 0.14% balance and 1.07% deposit average for 2025, and the choice moves no number. `provident-for-annuity` names track **923**, "מיטב בטחון" (Meitav, classification "תגמולים ואישית לפיצויים", specialization and sub-specialization "כללי"; the other "כללי" track in that classification, 1486, is a personally managed product with a different fee). The regulator has no separate classification for a provident fund for annuity, so this classification is the nearest the data offers; the comprehensive pension fund keeps Meitav's list fee lines. **Why:** the first collected Meitav track of each kind, chosen by Claude at the founder's request, revisable; the page names the track and every fee carries the CMA record's source and year. The insurance cost (A-17) is not a site parameter: the person enters it, and a pension fund without it is "not evaluated".
+
 ## Classification fit
 
 P-04, `data/parameters/classification-fit.json`.
@@ -62,3 +72,7 @@ P-06, `data/parameters/golden-tolerance.json`.
 **Values:** 1 NIS or 0.01%, whichever is larger.
 
 **Why:** the engine and the independent check use the same conventions, so they should agree to the shekel.
+
+## Goal presets
+
+Added 2026-10-23 for release 2 (P-07, `data/parameters/goal-presets.json`), chosen by Claude at the founder's request; revisable. A preset fills starting values into the goal form (product D13) and never an amount: liquid reserve one year with the whole amount kept available at once and withdrawable at any time (the idle-cash entry point); purchase at a known date four years (the founder's apartment case, S40); long-term wealth twenty years (the founder's ETF-vs-provident case, S39); lump sum ten years with no monthly deposit (the illustrative scenario); a child eighteen years (the child-savings withdrawal age, CS-14), to be shortened by the child's age. The horizon slider runs from one to forty years in whole years.

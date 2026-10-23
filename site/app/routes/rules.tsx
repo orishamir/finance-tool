@@ -1,7 +1,7 @@
 // The rules page (flows 6.9, 6.14): every rule the site uses, grouped by topic, each card an anchor target.
 import { useLoaderData } from "react-router";
 import type { Route } from "./+types/rules";
-import { rulesPage as copy, site } from "../copy";
+import { rulesPage as copy, site, topicName } from "../copy";
 import { SectionIndex, useCurrentSection } from "../components/guide/sections";
 import { RuleCard } from "../components/provenance";
 import { PageShell } from "../components/shell";
@@ -10,8 +10,8 @@ import { Card } from "../components/ui";
 export async function loader() {
   const { loadChecklistRows, loadRules, today } = await import("../lib/data.server");
   const rules = loadRules();
-  const files = [...new Set(Object.values(rules).map((r) => r.il_finance_file))].sort((a, b) => (copy.groups[a] ?? a).localeCompare(copy.groups[b] ?? b, "he"));
-  const groups = files.map((file) => ({ id: file.replace(/\.md$/, ""), file, title: copy.groups[file] ?? file, ids: Object.values(rules).filter((r) => r.il_finance_file === file).map((r) => r.id).sort() }));
+  const files = [...new Set(Object.values(rules).map((r) => r.il_finance_file))].sort((a, b) => topicName(a).localeCompare(topicName(b), "he"));
+  const groups = files.map((file) => ({ id: file.replace(/\.md$/, ""), file, title: topicName(file), ids: Object.values(rules).filter((r) => r.il_finance_file === file).map((r) => r.id).sort() }));
   return { rules, groups, dimensions: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])), today: today() };
 }
 
@@ -40,7 +40,7 @@ export default function Rules() {
               </h2>
               <ul className="grid gap-4 lg:grid-cols-2">
                 {g.ids.map((id) => (
-                  <Card as="li" key={id} id={id} className="scroll-mt-[112px] lg:scroll-mt-[88px]">
+                  <Card as="li" key={id} id={id} className="scroll-mt-[112px] lg:scroll-mt-[88px] min-w-0 [overflow-wrap:anywhere]">
                     <RuleCard id={id} data={pd} inline />
                   </Card>
                 ))}

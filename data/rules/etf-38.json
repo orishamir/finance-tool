@@ -1,0 +1,165 @@
+{
+  "id": "ETF-38",
+  "title": "S&P 500 eligibility and selection: U.S.-domiciled companies on a U.S. exchange with total market capitalisation of at least US$ 22.7 billion, liquid and profitable, chosen by the Index Committee to a fixed count of 500 with sector balance",
+  "title_he": "המדד האמריקני: תנאי הכניסה והבחירה על ידי ועדת המדדים",
+  "strength": "primary",
+  "dimensions": [
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-23",
+  "figures": {
+    "min_market_cap_usd": {
+      "value": 22700000000,
+      "unit": "usd",
+      "source": {
+        "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
+        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome's PDF viewer)",
+        "publisher": "S&P Dow Jones Indices",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "ETF-38"
+      ],
+      "state": "sourced",
+      "notes": "\"S&P 500: US$ 22.7 billion or more\" of total company-level market capitalisation (methodology p.8, July 2026); the guideline targets the 85th percentile of the Total Market Index and is reviewed at the beginning of each calendar quarter."
+    },
+    "min_float_share_of_threshold": {
+      "value": 50,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
+        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome's PDF viewer)",
+        "publisher": "S&P Dow Jones Indices",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-38"
+      ],
+      "state": "sourced",
+      "notes": "The security's float-adjusted market capitalisation must be at least 50% of the index's minimum total market capitalisation threshold (p.8)."
+    },
+    "min_investable_weight_factor": {
+      "value": 0.1,
+      "unit": "count",
+      "source": {
+        "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
+        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome's PDF viewer)",
+        "publisher": "S&P Dow Jones Indices",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-38"
+      ],
+      "state": "sourced",
+      "notes": "S&P Composite 1500 constituents need an investable weight factor (float share) of at least 0.1 (p.9)."
+    },
+    "min_monthly_shares_traded": {
+      "value": 250000,
+      "unit": "count",
+      "source": {
+        "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
+        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome's PDF viewer)",
+        "publisher": "S&P Dow Jones Indices",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-38"
+      ],
+      "state": "sourced",
+      "notes": "\"The stock should trade a minimum of 250,000 shares in each of the six months leading up to the evaluation date\" (p.9)."
+    },
+    "min_liquidity_ratio_at_addition": {
+      "value": 0.75,
+      "unit": "count",
+      "source": {
+        "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
+        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome's PDF viewer)",
+        "publisher": "S&P Dow Jones Indices",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-38"
+      ],
+      "state": "sourced",
+      "notes": "Float-adjusted liquidity ratio (annual dollar value traded divided by float-adjusted market capitalisation) at least 0.75 at the time of addition; current constituents have no minimum (p.9)."
+    },
+    "ipo_seasoning_months": {
+      "value": 12,
+      "unit": "months",
+      "source": {
+        "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
+        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome's PDF viewer)",
+        "publisher": "S&P Dow Jones Indices",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-38"
+      ],
+      "state": "sourced",
+      "notes": "\"IPOs should be traded on an eligible exchange for at least 12 months before being considered for addition\"; no fast track for Composite 1500 candidates (p.10)."
+    },
+    "wait_after_removal_years": {
+      "value": 1,
+      "unit": "years",
+      "source": {
+        "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
+        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome's PDF viewer)",
+        "publisher": "S&P Dow Jones Indices",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-38"
+      ],
+      "state": "sourced",
+      "notes": "A company removed from a Composite 1500 index must wait a minimum of one year before being screened again (p.18)."
+    }
+  },
+  "text_he": "לפי המתודולוגיה של עורך המדד, למדד נכנסות רק חברות אמריקאיות שנסחרות בבורסה אמריקאית, עם שווי שוק כולל מעל סף שנבדק כל רבעון, מסחר סדיר במניה ורווח חשבונאי חיובי ברבעון האחרון ובארבעת הרבעונים האחרונים יחד. חברה חדשה בבורסה ממתינה שנה לפני שהיא נשקלת. את ההרכב קובעת ועדת מדדים לפי התנאים האלה ולפי איזון בין ענפים, ומספר החברות קבוע: חמש מאות.",
+  "figure_names_he": {
+    "min_market_cap_usd": "שווי שוק מינימלי לכניסה, בדולרים",
+    "min_float_share_of_threshold": "חלק מינימלי של סף הכניסה בידי הציבור",
+    "min_investable_weight_factor": "שיעור מינימלי של מניות בידי הציבור",
+    "min_monthly_shares_traded": "מספר מניות מינימלי שנסחר בכל חודש",
+    "min_liquidity_ratio_at_addition": "יחס סחירות מינימלי בכניסה",
+    "ipo_seasoning_months": "המתנה אחרי הנפקה, בחודשים",
+    "wait_after_removal_years": "המתנה אחרי יציאה מהמדד, בשנים"
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-23"
+}

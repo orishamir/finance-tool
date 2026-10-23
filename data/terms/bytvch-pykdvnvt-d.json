@@ -1,0 +1,38 @@
+{
+  "id": "bytvch-pykdvnvt-d",
+  "he": "ביטוח פיקדונות",
+  "en": null,
+  "meaning": "הגנה בחוק על כספים בבנק אם הבנק נכשל; בישראל אין כזו כיום, והנושא בבדיקה",
+  "where": [],
+  "wrapper_ids": [
+    "bank-deposit",
+    "brokerage-account",
+    "child-savings-bank",
+    "child-savings-provident",
+    "current-account",
+    "government-bond",
+    "ira-hishtalmut",
+    "ira-provident",
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa",
+    "makam",
+    "money-market-fund-daily",
+    "money-market-fund-renewable",
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity",
+    "savings-plan"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "REG-04",
+    "REG-05"
+  ],
+  "source": {
+    "url": "https://boi.org.il/media/5folwk5o/119.pdf",
+    "title": "חוק לקידום התחרות בשוק הבנקאות (תיקוני חקיקה), התשפ\"ו-2026 (BoI-hosted PDF)",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "TXP-01",
+  "title": "Credit versus deduction: what each is worth",
+  "title_he": "זיכוי מול ניכוי: כמה שווה כל אחד",
+  "text_he": "הפקדה לקופת גמל לקצבה מזכה בזיכוי ממס בשיעור הזיכוי מהסכום ששולם, בלי קשר למדרגת המס של המפקיד. ניכוי, לעומת זאת, מקטין את ההכנסה החייבת, ולכן שוויו הוא שיעור המס השולי של האדם. סכום שנוכה לא נספר שוב לזיכוי, ותשלומים של האדם או של בן זוגו נספרים; הזיכוי חל גם על תשלומים לשמירת זכויות פנסיה ועל ביטוח קצבת שאירים. הפקודה נקראה בעותק בוויקיטקסט ואומתה מול המדריך של רשות המסים.",
+  "figure_names_he": {
+    "credit_pct": "שיעור הזיכוי"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "tax-at-deposit"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "credit_pct": {
+      "value": 35,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance s.45A(b) (Wikisource mirror); Tax Authority guide 2025 pp.60, 68: \"הזיכוי הוא בשיעור של 35% מתשלומיך\"",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXP-01"
+      ],
+      "state": "sourced",
+      "notes": "Credit on qualifying amounts paid to a provident fund for annuity, regardless of the person's bracket. A deduction under s.47 is worth the marginal rate instead, and an amount deducted is not credited again (s.47(c))."
+    }
+  },
+  "il_finance_file": "tax-pension-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

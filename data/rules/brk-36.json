@@ -1,0 +1,16 @@
+{
+  "id": "BRK-36",
+  "title": "Interactive Israel states it withholds Israeli tax on IBKR accounts opened through it, and claims no custody or inactivity fees",
+  "title_he": "אינטראקטיב ישראל מצהירה: מנכה מס ישראלי, בלי דמי משמרת",
+  "text_he": "אינטראקטיב ישראל מצהירה באתרה שבעזרת חברה בשם HYBRID היא מחשבת ומנכה מס ישראלי על רווחי הון, דיבידנדים וריבית בחשבונות אינטראקטיב ברוקרס שנפתחו דרכה, בחינם, ליחידים תושבי ישראל ולחשבונות משותפים. היא מצהירה גם שאין דמי משמרת ודמי חוסר פעילות, שיש עמלת מינימום לעסקה, ושמשיכה אחת בחודש חינם ואחריה בתשלום. אלה הצהרות שיווקיות של החברה עצמה; אם לניכוי יש אישור של רשות המסים, ואיך הוא מתיישב עם חובת הדיווח של החוסך, לא נבדק.",
+  "strength": "institution",
+  "dimensions": [
+    "reporting-obligation",
+    "fee-trade",
+    "fee-custody"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-22"
+}

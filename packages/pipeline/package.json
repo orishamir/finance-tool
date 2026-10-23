@@ -7,7 +7,8 @@
   },
   "scripts": {
     "typecheck": "tsc -p .",
-    "validate": "tsx src/cli.ts validate"
+    "validate": "tsx src/cli.ts validate",
+    "refresh": "tsx src/cli.ts refresh"
   },
   "dependencies": {
     "@finance-tool/schema": "*",

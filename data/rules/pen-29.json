@@ -1,0 +1,40 @@
+{
+  "id": "PEN-29",
+  "title": "Minimum pension and small balances",
+  "title_he": "קצבת מינימום ויתרות קטנות",
+  "text_he": "קצבת מינימום היא קצבה שנמוכה מחלק קטן מהשכר הממוצע; מפנסיונר שקצבתו נמוכה ממנה הקרן רשאית לגבות דמי ניהול מההפרש, והעמית רשאי לדחות את הקצבה במקום. בנפרד, עמית שהגיע לגיל פרישת חובה, שסך יתרותיו לא עולה על סכום הצבירה המזערי ושאינו מקבל קצבה (או מקבל קצבאות עד הסכום המזערי), רשאי למשוך את הכסף כסכום חד פעמי. החוק גם מתיר משיכה בלי תנאים נוספים כשסך הכסף בחשבונות העמית באותה קופה קטן מסכום נמוך קבוע, לסוגי הקופות שבסעיף; אם קרנות פנסיה חדשות כלולות בכך לא אומת מהנוסח שנקרא. החוק נקרא בעותק בוויקיטקסט, והסכומים מתקנונים של חברה מנהלת.",
+  "figure_names_he": {
+    "minimum_accumulation": "סכום הצבירה המזערי"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "minimum",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "minimum_accumulation": {
+      "value": 110250,
+      "unit": "nis",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+        "title": "Provident Funds Law, section 23(א)(1)(ב)(3), 23(ה)-(ו) (Wikisource mirror; NIS 80,000 at 2008 values); Mor general bylaws 01.04.2026, s.1",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "cpi-linked 1 jan",
+      "rule_ids": [
+        "PEN-29"
+      ],
+      "state": "sourced",
+      "notes": "Minimum accumulation amount (סכום צבירה מזערי) for 2026: a member past mandatory retirement age whose total balances do not exceed it, and who receives no annuity above the minimum annuity amount, may withdraw as a lump sum. CPI-linked."
+    }
+  },
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,27 @@
+{
+  "id": "rybyt-zkvt",
+  "he": "ריבית זכות",
+  "en": null,
+  "meaning": "ריבית על כסף שיושב בחשבון ולא מושקע; תלויה בתנאי בית ההשקעות, ולא תמיד משולמת.",
+  "where": [
+    "statement",
+    "tariff"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [
+    "ריבית בגין יתרת זכות"
+  ],
+  "rule_ids": [
+    "BRK-08",
+    "BRK-25"
+  ],
+  "source": {
+    "url": "https://mayafiles.tase.co.il/reports/1149001-1150000/E1149190.pdf",
+    "title": "TASE, אישור הרשויות לתיקון תקנון והנחיות הבורסה: החזקת נכסים פיננסיים של לקוחות חש\"ב, 4.3.2018",
+    "publisher": "Tel Aviv Stock Exchange",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

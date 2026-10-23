@@ -1,0 +1,34 @@
+{
+  "id": "rvvch-hvn-ryaly-b",
+  "he": "רווח הון ריאלי",
+  "en": null,
+  "meaning": "הרווח פחות החלק שרק מפצה על עליית המחירים במשק מאז הקנייה; עליו משלמים מס רווחי הון.",
+  "where": [
+    "statement",
+    "tax-form"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500"
+  ],
+  "variants": [
+    "ריווח הון ריאלי",
+    "רווח ריאלי"
+  ],
+  "rule_ids": [
+    "TXF-03",
+    "TXG-12",
+    "TXS-02",
+    "TXS-04",
+    "TXS-09"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

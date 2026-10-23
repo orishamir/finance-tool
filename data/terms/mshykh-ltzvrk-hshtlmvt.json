@@ -1,0 +1,27 @@
+{
+  "id": "mshykh-ltzvrk-hshtlmvt",
+  "he": "משיכה לצורך השתלמות",
+  "en": null,
+  "meaning": "משיכה מקרן השתלמות לתשלום על לימודים מקצועיים; פטורה ממס כבר אחרי תקופה קצרה יותר",
+  "where": [
+    "bylaws",
+    "form"
+  ],
+  "wrapper_ids": [
+    "keren-hishtalmut"
+  ],
+  "variants": [
+    "יציאה להשתלמות"
+  ],
+  "rule_ids": [
+    "KH-13",
+    "TXH-10"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "Tax Authority, דע זכויותיך וחובותיך 2025",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

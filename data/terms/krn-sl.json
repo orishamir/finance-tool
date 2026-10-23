@@ -1,0 +1,34 @@
+{
+  "id": "krn-sl",
+  "he": "קרן סל",
+  "en": null,
+  "meaning": "קרן שעוקבת אחרי מדד, ויחידותיה נקנות ונמכרות בבורסה לאורך כל יום המסחר.",
+  "where": [
+    "ad",
+    "app",
+    "fund-name"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500",
+    "index-ta125"
+  ],
+  "variants": [
+    "ETF"
+  ],
+  "rule_ids": [
+    "ETF-01",
+    "ETF-03",
+    "ETF-04",
+    "ETF-18"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf",
+    "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2024",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "id": "hvrat-mynvy-mvtbym",
+  "he": "הוראת מינוי מוטבים",
+  "en": null,
+  "meaning": "הוראה שנותנים לקופה מי יקבלו את הכסף שבה במקרה של פטירה",
+  "where": [
+    "bylaws",
+    "form"
+  ],
+  "wrapper_ids": [
+    "child-savings-bank",
+    "child-savings-provident",
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa"
+  ],
+  "variants": [
+    "מוטב",
+    "הוראת מוטבים"
+  ],
+  "rule_ids": [
+    "CS-17",
+    "KGL-17",
+    "KH-26"
+  ],
+  "source": {
+    "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
+    "title": "תקנון תקני לקופת גמל להשקעה, אלטשולר שחם חיסכון פלוס, מרץ 2025",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

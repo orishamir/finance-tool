@@ -1,0 +1,60 @@
+{
+  "id": "PEN-01",
+  "title": "Who the mandatory-pension extension order covers",
+  "title_he": "על מי חל צו ההרחבה לפנסיה חובה",
+  "text_he": "צו ההרחבה לפנסיה חובה חל על כל עובד בכל מקום עבודה בישראל, חוץ ממי שכבר יש לו הסדר פנסיוני טוב לפחות כמוהו. הצו לא חל מתחת לגיל המינימום לנשים ולגברים, אבל עבודה לפני הגיל הזה נספרת לתקופת ההמתנה. הצו גם לא חל על מי שפרש בגיל פרישת חובה ומקבל פנסיה (קצבאות ביטוח לאומי לא נחשבות פנסיה לעניין זה), והסדרים טובים יותר, כמו הסכמים קיבוציים וקרנות ותיקות, נשמרים. הנוסח נקרא בסריקה באתר הממשלה ואומת מול עותק באתר של חברת שכר.",
+  "figure_names_he": {
+    "minimum_age_men": "גיל מינימום לגברים",
+    "minimum_age_women": "גיל מינימום לנשים"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "eligibility",
+    "regulator"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "minimum_age_men": {
+      "value": 21,
+      "unit": "years",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
+        "title": "צו הרחבה (נוסח משולב) לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011, section 4 (p. 6940): \"מי שטרם מלאו לו - באישה 20 שנים ובגבר 21 שנים\"",
+        "publisher": "Minister of Industry, Trade and Labour (scan hosted on gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "PEN-01"
+      ],
+      "state": "sourced",
+      "notes": "The order does not apply below age 21 for men; earlier employment counts toward the waiting period once the age is reached."
+    },
+    "minimum_age_women": {
+      "value": 20,
+      "unit": "years",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
+        "title": "צו הרחבה (נוסח משולב) לפנסיה חובה, 2011, section 4 (p. 6940)",
+        "publisher": "Minister of Industry, Trade and Labour (scan hosted on gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "PEN-01"
+      ],
+      "state": "sourced",
+      "notes": "The order does not apply below age 20 for women."
+    }
+  },
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,23 @@
+{
+  "id": "mslvl-mvrchb-plvs",
+  "he": "מסלול מורחב פלוס",
+  "en": null,
+  "meaning": "המסלול המורחב ועוד שירותים שהבנק עצמו בוחר להוסיף לחבילה",
+  "where": [
+    "tariff"
+  ],
+  "wrapper_ids": [
+    "current-account"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "BANK-17"
+  ],
+  "source": {
+    "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
+    "title": "Banking Rules (Customer Service) (Fees) 2008, consolidated to 9.4.2025, BoI copy",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "id": "BANK-21",
+  "title": "Deposit without a current account (\"closed system\")",
+  "title_he": "הפקדה בלי חשבון עובר ושב: חשבון במערכת סגורה",
+  "text_he": "כל בנק שאינו בנק בעל היקף פעילות קטן חייב לאפשר לאדם פרטי להפקיד כסף בפיקדון שקלי דרך חשבון במערכת סגורה, בפשטות ובנוחות וגם באופן מקוון. הכסף מגיע רק מחשבון של אותו אדם בבנק אחר או בבנק הדואר, וחוזר רק לחשבון שממנו הגיע; הלקוח יכול להסמיך בכתב את הבנק הקולט לטפל בכל השלבים, והבנק המקורי לא רשאי להשפיע עליו באופן לא הוגן. כסף בחשבון כזה לא ניתן לשעבוד או לקיזוז, ועמלת ההעברה לא תהיה גבוהה מהעברה רגילה. חל על פיקדונות שקליים בלבד; הגדרת 'בנק קטן' לא נקראה.",
+  "figure_names_he": {
+    "in_force_from": "מועד התחילה של החוק"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "eligibility",
+    "transfer-switch-process",
+    "liquidity-lockup",
+    "minimum"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "in_force_from": {
+      "value": "2025-12-01",
+      "unit": "text",
+      "source": {
+        "url": "https://fs.knesset.gov.il/25/law/25_lsr_6803031.pdf",
+        "title": "Banking (Customer Service) Law, Amendment 38, Sefer HaHukim 3413, 14.5.2025, p.638, new s.5B2 and s.5",
+        "publisher": "Knesset (Sefer HaHukim)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2025-12-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "BANK-21"
+      ],
+      "state": "sourced",
+      "notes": "From 1 December 2025 every bank that is not a \"bank with a small scope of activity\" must let an individual open a shekel deposit through a closed-system account: money comes only from the same person's account at another bank or the Postal Bank and returns only there. Which banks count as small is open (BANK OQ5)."
+    }
+  },
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-22"
+}

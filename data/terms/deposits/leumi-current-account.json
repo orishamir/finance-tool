@@ -1,0 +1,151 @@
+{
+  "id": "leumi-current-account",
+  "bank": "leumi",
+  "names": {
+    "447": [
+      "יתרות זכות בחשבון",
+      "שיעורי ריבית על יתרות זכות בחשבון בשקלים",
+      "ריבית זכות"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": [
+      "עו\"ש"
+    ]
+  },
+  "type_447": "יתרות זכות בחשבון",
+  "wrapper_id": "current-account",
+  "term_months": {
+    "value": null,
+    "unit": "months",
+    "source": {
+      "url": "https://www.leumi.co.il/he/savings/interest-rate-table/print-pdf/leumi",
+      "title": "בנק לאומי, 'שיעורי הריבית על הפיקדונות ועל יתרות זכות בחשבון' (פרסום לפי הוראה 447, קובץ PDF להדפסה), 'הנתונים נכונים ליום: 25.10.2026', ריבית הפריים P = 4.75% החל מתאריך 03.09.2026, 'שיעורי ריבית על יתרות זכות בחשבון בשקלים' (עמ' 79-80 מתוך 80)",
+      "publisher": "Bank Leumi le-Israel B.M.",
+      "strength": "institution"
+    },
+    "checked": "2026-10-23",
+    "effective_from": "2026-10-25",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-09"
+    ],
+    "state": "sourced",
+    "notes": "a current account has no term; the page prints no term (interest is computed daily and credited quarterly)."
+  },
+  "rate_type": "fixed",
+  "anchor": null,
+  "spread": null,
+  "rate_offered": {
+    "value": 1.0,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.leumi.co.il/he/savings/interest-rate-table/print-pdf/leumi",
+      "title": "בנק לאומי, 'שיעורי הריבית על הפיקדונות ועל יתרות זכות בחשבון' (פרסום לפי הוראה 447, קובץ PDF להדפסה), 'הנתונים נכונים ליום: 25.10.2026', ריבית הפריים P = 4.75% החל מתאריך 03.09.2026, 'שיעורי ריבית על יתרות זכות בחשבון בשקלים' (עמ' 79-80 מתוך 80), 'שיעור הריבית הנומינלית השנתית המוצעת: 1.00%', 'סוג ריבית: קבועה'",
+      "publisher": "Bank Leumi le-Israel B.M.",
+      "strength": "institution"
+    },
+    "checked": "2026-10-23",
+    "effective_from": "2026-10-25",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-09",
+      "BANK-13"
+    ],
+    "state": "sourced",
+    "notes": "Nominal annual rate before tax, fixed ('קבועה', 'בשיעור קבוע כפי שיפורסם מעת לעת על ידי הבנק'). Conditions as printed: the interest is paid on a balance of up to NIS 10,000 ('הריבית תשולם על יתרה של עד ₪10,000 ללקוחות זכאים') to private customers (individuals) who meet all of: (1) salary or pension deposited to the Leumi account by integration (one salary for a single account, two for a joint account) and (2) hold at least one of: a Leumi mortgage charge in the salary account, a minimum NIS 7,000 monthly charge on a Leumi-issued credit card, or a securities deposit at Leumi with portfolio value above NIS 0. Computed for each calendar day whose closing balance was positive, in the month after the month in which the conditions were met, at the daily rate = annual rate / days in the year (365 or 366); credited quarterly on the first business day of each calendar quarter for the past quarter; credited automatically to the shekel current account without any agreement; 'מהריבית ינוכה מס כחוק'; the bank may change the rate at any time and may change or cancel the arrangement without notice; not for Pepper customers; all conditions must hold in the same account. History printed on p. 80: from 1/05/2025 to 31/01/2026 the tariff rate was 2.00% under the same eligibility criteria. The page prints 'הנתונים נכונים ליום 25.10.2026' (two days after the read date)."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Income Tax Ordinance s.125C(c)(1): 15% on interest from an asset not linked to the CPI (Hebrew Wikisource mirror); read through il-finance TXI-03 and TXI-04",
+      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "strength": "primary-mirror"
+    },
+    "checked": "2026-10-23",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08",
+      "BANK-09"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel credit balance: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate (TXI-04); the bank withholds 15% on any interest it pays an individual, current-account credit interest included (TXI-08); the page prints 'מהריבית ינוכה מס כחוק'."
+  },
+  "amount_range": {
+    "min": {
+      "value": null,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.leumi.co.il/he/savings/interest-rate-table/print-pdf/leumi",
+        "title": "בנק לאומי, 'שיעורי הריבית על הפיקדונות ועל יתרות זכות בחשבון' (פרסום לפי הוראה 447, קובץ PDF להדפסה), 'הנתונים נכונים ליום: 25.10.2026', ריבית הפריים P = 4.75% החל מתאריך 03.09.2026, 'שיעורי ריבית על יתרות זכות בחשבון בשקלים' (עמ' 79-80 מתוך 80)",
+        "publisher": "Bank Leumi le-Israel B.M.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-23",
+      "effective_from": "2026-10-25",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-09"
+      ],
+      "state": "sourced",
+      "notes": "No minimum balance is printed; the interest is computed on each day whose closing balance was positive, so no figure for a minimum is stated."
+    },
+    "max": {
+      "value": 10000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.leumi.co.il/he/savings/interest-rate-table/print-pdf/leumi",
+        "title": "בנק לאומי, 'שיעורי הריבית על הפיקדונות ועל יתרות זכות בחשבון' (פרסום לפי הוראה 447, קובץ PDF להדפסה), 'הנתונים נכונים ליום: 25.10.2026', ריבית הפריים P = 4.75% החל מתאריך 03.09.2026, 'שיעורי ריבית על יתרות זכות בחשבון בשקלים' (עמ' 79-80 מתוך 80), 'הריבית תשולם על יתרה של עד ₪10,000 ללקוחות זכאים'",
+        "publisher": "Bank Leumi le-Israel B.M.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-23",
+      "effective_from": "2026-10-25",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-09"
+      ],
+      "state": "sourced",
+      "notes": "Ceiling of the balance that earns the interest; a balance above it earns the rate only on the first NIS 10,000 as the page reads."
+    }
+  },
+  "break": {
+    "allowed": true,
+    "penalty": "none",
+    "mechanism_text": "Current account: money is available at any time; no break mechanism is printed (the 447 credit-balance table has no break column).",
+    "rule_ids": [
+      "BANK-09"
+    ]
+  },
+  "exit_points": {
+    "exists": false,
+    "every_months": null
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "snapshot": "2026-10-23",
+  "source": {
+    "url": "https://www.leumi.co.il/he/savings/interest-rate-table/print-pdf/leumi",
+    "title": "בנק לאומי, 'שיעורי הריבית על הפיקדונות ועל יתרות זכות בחשבון' (פרסום לפי הוראה 447, קובץ PDF להדפסה), 'הנתונים נכונים ליום: 25.10.2026', ריבית הפריים P = 4.75% החל מתאריך 03.09.2026, 'שיעורי ריבית על יתרות זכות בחשבון בשקלים' (עמ' 79-80 מתוך 80) (טופס 50208 12.25); also shown on https://www.leumi.co.il/he/savings/interest-rate-table under 'שיעורי ריבית עו\"ש על יתרות זכות בחשבון בשקלים'",
+    "publisher": "Bank Leumi le-Israel B.M.",
+    "strength": "institution"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "id": "agch-mmshltyt-tzmvdh",
+  "he": "אג\"ח ממשלתית צמודה",
+  "en": null,
+  "meaning": "איגרת חוב של המדינה שהסכום והריבית שלה עולים או יורדים לפי מדד המחירים לצרכן",
+  "where": [
+    "app",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "government-bond"
+  ],
+  "variants": [
+    "ממשלתית צמודה",
+    "ממצ\"מ"
+  ],
+  "rule_ids": [
+    "GOV-11",
+    "GOV-12",
+    "TXI-14"
+  ],
+  "source": {
+    "url": "https://www.nevo.co.il/law_html/law01/999_564.htm",
+    "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), תשס\"ו-2006 (Nevo mirror)",
+    "publisher": "Nevo legal database",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "hyvvn-ktzbh-mvkrt",
+  "he": "היוון קצבה מוכרת",
+  "en": null,
+  "meaning": "קבלת קצבה מוכרת כסכום חד־פעמי במקום תשלומים חודשיים; המס מוטל רק על חלק הרווח.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "TXA-19",
+    "TXA-20",
+    "TXA-22"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+    "title": "פקודת מס הכנסה (Wikisource consolidated text)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

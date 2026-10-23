@@ -1,0 +1,14 @@
+{
+  "id": "TXI-01",
+  "title": "\"Interest\" includes the makam discount",
+  "title_he": "'ריבית' כוללת גם את הניכיון על מק״ם",
+  "text_he": "לעניין שיעורי המס על ריבית, 'ריבית' כוללת גם דמי ניכיון. לכן הניכיון על מק״ם או על כל אג״ח ניכיון הוא הכנסת ריבית ולא רווח הון כשהוא משולם בפדיון. מכירה לפני הפדיון, ופדיון שיוצר הפסד הון, מטופלים בכללים נפרדים.",
+  "strength": "primary",
+  "dimensions": [
+    "tax-during",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-interest-deposits-bonds.md",
+  "checked": "2026-10-22"
+}

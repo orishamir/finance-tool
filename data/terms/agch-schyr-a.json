@@ -1,0 +1,26 @@
+{
+  "id": "agch-schyr-a",
+  "he": "אג\"ח סחיר",
+  "en": null,
+  "meaning": "איגרת חוב שאפשר לקנות ולמכור בבורסה גם לפני מועד הפדיון, במחיר השוק של אותו יום",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [
+    "government-bond",
+    "makam"
+  ],
+  "variants": [
+    "איגרות חוב ממשלתיות סחירות"
+  ],
+  "rule_ids": [
+    "GOV-17"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf",
+    "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2024, glossary (מילון מונחים)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

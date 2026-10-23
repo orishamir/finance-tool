@@ -1,0 +1,28 @@
+{
+  "id": "rybyt-hpryym",
+  "he": "ריבית הפריים",
+  "en": null,
+  "meaning": "ריבית הבסיס של הבנקים, שזזה יחד עם ריבית בנק ישראל; לפיה נקבעת הריבית ברוב הפיקדונות בריבית משתנה",
+  "where": [
+    "ad",
+    "provider-site"
+  ],
+  "wrapper_ids": [
+    "bank-deposit",
+    "savings-plan"
+  ],
+  "variants": [
+    "פריים",
+    "ריבית פריים"
+  ],
+  "rule_ids": [
+    "BANK-25"
+  ],
+  "source": {
+    "url": "https://www.bankhapoalim.co.il/interest-update",
+    "title": "Bank Hapoalim, \"שינויים בריבית בנק ישראל וריבית הפריים\"",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

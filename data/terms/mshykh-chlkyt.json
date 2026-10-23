@@ -1,0 +1,31 @@
+{
+  "id": "mshykh-chlkyt",
+  "he": "משיכה חלקית",
+  "en": null,
+  "meaning": "משיכה של חלק מהכסף בלבד, כשהיתרה נשארת בקופה",
+  "where": [
+    "app",
+    "form"
+  ],
+  "wrapper_ids": [
+    "child-savings-bank",
+    "child-savings-provident",
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "CS-13",
+    "KGL-08",
+    "KH-13",
+    "KH-15",
+    "TXK-13"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/api/rest_v1/page/pdf/פקודת_מס_הכנסה",
+    "title": "פקודת מס הכנסה, consolidated text (Wikisource rendered PDF)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

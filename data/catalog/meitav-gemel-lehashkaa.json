@@ -1,0 +1,39 @@
+{
+  "id": "meitav-gemel-lehashkaa",
+  "institution": "meitav",
+  "where_seen": "Meitav, קופת גמל להשקעה – תכנית חיסכון לכל מטרה, https://www.meitav.co.il/provident_pension/provident_invest/; Meitav operations flyer (פלייר תפעולי), p.3 \"גמל להשקעה - מ.ה קופה 7857\", https://www.meitav.co.il/media/0lhfrzgy/פלייר-תפעולי-מונגש.pdf; Meitav merger notice, מיזוג מסלולי השקעה בקופת הגמל \"מיטב גמל להשקעה\" (7857), May 2024, tree diagrams before and after the merger, https://www.meitav.co.il/media/41anarx5/מיזוג-גמל-להשקעה-7981.pdf; Meitav, רשימת מסלולי ההשקעה בקופת הגמל להשקעה של מיטב (דוחות תשואה גמל להשקעה), https://www.meitav.co.il/provident_pension/kupa_gemel_invest_reports/",
+  "seen_on": "2026-10-23",
+  "seen_by": "this collection; il-finance CAT-11, CAT-25, CAT-27",
+  "names": {
+    "he": [
+      "מיטב גמל להשקעה",
+      "קופת גמל להשקעה – תכנית חיסכון לכל מטרה",
+      "קופת גמל להשקעה"
+    ]
+  },
+  "maps_to": {
+    "wrapper_id": "kupat-gemel-lehashkaa",
+    "cma_fund_id": 7857,
+    "track_ids": [
+      7978,
+      7860,
+      7867,
+      13259,
+      15349,
+      7980,
+      7862,
+      7979,
+      7863,
+      15350,
+      14270,
+      15348,
+      7861,
+      15351,
+      15347,
+      15472
+    ]
+  },
+  "near_duplicates": [],
+  "status": "catalogued",
+  "notes": "The fund (קופה) as a whole: \"מיטב גמל להשקעה\", income-tax number 7857, managed by מיטב גמל ופנסיה בע\"מ; its 16 tracks in the regulator's 2026-09 list are the track_ids. \"קופת גמל להשקעה – תכנית חיסכון לכל מטרה\" is the product page's title. Joining online (gemel-invest.meitav.co.il/Join?pt=11&pn=gemelInvestM) lands in the default track 7978 unless another is chosen (CAT-27)."
+}

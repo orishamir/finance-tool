@@ -1,0 +1,39 @@
+{
+  "id": "CS-15",
+  "title": "Early withdrawal for a medical condition",
+  "title_he": "משיכה מוקדמת בשל מצב רפואי של הילד",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "age-or-use-exemption"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "medical_grant": {
+      "value": 582,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
+        "title": "National Insurance Institute, child savings: withdrawal page (medical early withdrawal: a NIS 582 grant is deposited instead of at 18); law 74ד",
+        "publisher": "National Insurance Institute (BTL)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "cpi-linked 1 jan",
+      "rule_ids": [
+        "CS-15"
+      ],
+      "state": "sourced",
+      "notes": "2026 amount. How the grant differs by birth cohort is CS OQ6: law 74ד(ב) (read as a mirror summary) says the age-3 and age-13 sums are added, NII's page describes the NIS 582 grant."
+    }
+  },
+  "text_he": "לפני גיל 18 מושכים רק למימון צרכים רפואיים של הילד, כשמצב רפואי מסכן את חייו, גופו או נפשו, ורופא מטעם הביטוח הלאומי אישר. עם האישור מופקד מענק וההורה רשאי למשוך; ההפקדות החודשיות נמשכות עד 18.",
+  "figure_names_he": {
+    "medical_grant": "מענק במשיכה רפואית מוקדמת"
+  },
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-22"
+}

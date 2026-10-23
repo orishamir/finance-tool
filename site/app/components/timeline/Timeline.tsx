@@ -2,11 +2,11 @@
 // assumption chips (phone), readout, table, rules used; the values sheet (phone) or panel (PC) beside it.
 import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import type { P05Input } from "@finance-tool/engine";
-import { buttons, computedInputs as ci, guide as copy, system, values as valuesCopy } from "../../copy";
+import { buttons, computedInputs as ci, guide as copy, guideBlocks, provenance as provCopy, system, values as valuesCopy } from "../../copy";
 import { p05Number, p05Range, p05Value, p05Units, runTimeline, type Bundle, type Timeline as TimelineData, type TimelineResult, type YearPoint } from "../../lib/engine";
 import { fmt } from "../../lib/format";
 import { useInputs, type Employment } from "../../lib/inputs";
-import { computed, entered as enteredValue, ruleFigure, weaker, type SiteValue, type Strength } from "../../lib/value";
+import { computed, entered as enteredValue, feeLabel, feeYear, ruleFigure, weaker, type SiteValue, type Strength } from "../../lib/value";
 import { TimelineChart, type ChartPoint, type Marker } from "../chart/TimelineChart";
 import { IconPencil, IconReset } from "../icons";
 import { Num, RuleRef, RulesLine, StateTag } from "../provenance";
@@ -21,12 +21,14 @@ export interface TimelineProps {
   wrapperName: string;
   /** The rule and figure that set the age a marker is drawn at (TXG-04 "age" for the 60+ rules). */
   ageMarker?: { ruleId: string; figure: string } | null;
+  /** When the money becomes free (flows 6.5): the lock-up's years, or the age of an `at_age` exit (drawn once an age is entered). */
+  lock?: { years: SiteValue | null; age: SiteValue | null } | null;
 }
 
 type Mode = "real" | "nominal";
 const inputKeys: P05Input[] = ["amount_now", "monthly_deposit", "horizon_years", "A-01", "A-02"];
 
-export function Timeline({ bundle, initial, wrapperName, ageMarker }: TimelineProps) {
+export function Timeline({ bundle, initial, wrapperName, ageMarker, lock }: TimelineProps) {
   const { state, ready, setEntered, setAge, setEmployment, resetAll } = useInputs();
   const [mode, setMode] = useState<Mode>("real");
   const [hover, setHover] = useState<number | null>(null);
@@ -65,6 +67,7 @@ export function Timeline({ bundle, initial, wrapperName, ageMarker }: TimelinePr
     const feeInputs: Record<string, SiteValue> = {};
     if (bundle.feeValues.balance) feeInputs[ci.balanceFee] = bundle.feeValues.balance;
     if (bundle.feeValues.deposit) feeInputs[ci.depositFee] = bundle.feeValues.deposit;
+    for (const [key, label] of Object.entries(guideBlocks.terms.labels)) if (bundle.feeValues[key] && typeof bundle.feeValues[key]!.value === "number") feeInputs[feeLabel(label, feeYear(bundle.feeValues[key]!))] = bundle.feeValues[key]!;
     const rules = rulesUsed(timeline);
     const taxRate = feeRule("TXK-07", "rate");
     const yearValues = (p: YearPoint, m: Mode) => {
@@ -106,6 +109,13 @@ export function Timeline({ bundle, initial, wrapperName, ageMarker }: TimelinePr
     }
   }
 
+  if (lock && timeline.kind === "ok") {
+    let year: number | null = null;
+    if (lock.years && typeof lock.years.value === "number") year = lock.years.value;
+    else if (lock.age && typeof lock.age.value === "number" && state.age !== null) year = lock.age.value - state.age;
+    if (year !== null && year > 0 && year <= timeline.horizon && !markers.some((m) => m.year === year && m.label === copy.markers.free)) markers.push({ year, label: copy.markers.free });
+  }
+
   const openSheet = (field: P05Input | "all") => {
     setFocusField(field);
     headlineRef.current?.scrollIntoView({ block: "start", behavior: "auto" });
@@ -118,8 +128,8 @@ export function Timeline({ bundle, initial, wrapperName, ageMarker }: TimelinePr
   return (
     <div className="flex flex-col lg:flex-row-reverse lg:items-start gap-6">
       <div className="flex-1 min-w-0 bg-card border border-border rounded-lg p-4 md:p-6 flex flex-col gap-4" aria-labelledby={titleId}>
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-          <div className="flex flex-col gap-2.5">
+        <div className="flex flex-col gap-3 lg:flex-row lg:flex-wrap lg:items-start lg:justify-between">
+          <div className="flex flex-col gap-2.5 min-w-0">
             <h3 id={titleId} className="text-lg font-semibold">
               {copy.graphTitle}
             </h3>
@@ -137,7 +147,7 @@ export function Timeline({ bundle, initial, wrapperName, ageMarker }: TimelinePr
               {headline && <StateTag state="computed" />}
             </div>
           </div>
-          <SegmentedControl label={copy.modeLabel} options={[{ value: "real", label: copy.modes.real }, { value: "nominal", label: copy.modes.nominal }]} value={mode} onChange={setMode} className="lg:w-auto lg:min-w-[300px]" />
+          <SegmentedControl label={copy.modeLabel} options={[{ value: "real", label: copy.modes.real }, { value: "nominal", label: copy.modes.nominal }]} value={mode} onChange={setMode} className="lg:w-auto lg:min-w-[260px] max-w-full" />
         </div>
 
         {timeline.kind === "ok" ? (
@@ -231,6 +241,7 @@ export function Timeline({ bundle, initial, wrapperName, ageMarker }: TimelinePr
       <aside className="hidden lg:block w-[300px] shrink-0 bg-card border border-border rounded-lg p-5" aria-label={valuesCopy.title}>
         <h3 className="text-lg font-semibold mb-4">{valuesCopy.title}</h3>
         {panel}
+        <TermsList bundle={bundle} />
         {anyEntered && <ResetAll onReset={resetAll} />}
       </aside>
 
@@ -239,6 +250,7 @@ export function Timeline({ bundle, initial, wrapperName, ageMarker }: TimelinePr
           {valuesCopy.title}
         </h2>
         {sheetOpen && panel}
+        {sheetOpen && <TermsList bundle={bundle} />}
         {anyEntered && <ResetAll onReset={resetAll} />}
       </Sheet>
     </div>
@@ -255,6 +267,46 @@ function ResetAll({ onReset }: { onReset: () => void }) {
 
 function labelOf(key: P05Input): string {
   return (valuesCopy.fields as Record<string, string>)[key] ?? key;
+}
+
+/** The product terms the run read (flows 6.5): each a provenance number, in the order of the label table; not editable. */
+function TermsList({ bundle }: { bundle: Bundle }) {
+  const rows = Object.entries(guideBlocks.terms.labels).filter(([key]) => bundle.feeValues[key]);
+  const employment = bundle.feeValues.employment;
+  if (rows.length === 0 && !employment) return null;
+  const show = (key: string, v: SiteValue) => {
+    if (key === "linkage") return guideBlocks.terms.linkage[String(v.value)] ?? undefined;
+    if (v.unit === "months" && typeof v.value === "number") return fmt.months(v.value);
+    return undefined;
+  };
+  const unitWord = (v: SiteValue) => (provCopy.unit as Record<string, string>)[v.unit] ?? "";
+  return (
+    <div className="flex flex-col gap-2 border-t border-border pt-4 mt-1">
+      <h4 className="font-medium">{guideBlocks.terms.title}</h4>
+      <p className="text-xs text-muted-foreground">{guideBlocks.terms.line}</p>
+      <dl className="readout">
+        {rows.map(([key, label]) => {
+          const v = bundle.feeValues[key]!;
+          return (
+            <div key={key} className="readout-row">
+              <dt>{feeLabel(label, feeYear(v))}</dt>
+              <dd>
+                <Num value={v} display={show(key, v)} /> {unitWord(v)}
+              </dd>
+            </div>
+          );
+        })}
+        {employment && (
+          <div className="readout-row">
+            <dt>{valuesCopy.fields.employment}</dt>
+            <dd>
+              <Num value={employment} display={(valuesCopy.employment as Record<string, string>)[String(employment.value)]} />
+            </dd>
+          </div>
+        )}
+      </dl>
+    </div>
+  );
 }
 
 /** The fields, in the order of design-spec 4; used both in the phone sheet and the PC panel. */

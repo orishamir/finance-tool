@@ -1,0 +1,14 @@
+{
+  "id": "CS-05",
+  "title": "Protection of the money",
+  "title_he": "הגנה על הכסף: שייך לילד ולא ניתן לעיקול",
+  "strength": "primary",
+  "dimensions": [
+    "protection",
+    "regulator"
+  ],
+  "likely_to_change": "no",
+  "text_he": "הכסף שייך לילד ומוחזק בנאמנות של ההורה שמקבל את הקצבה. אי אפשר להעביר, לשעבד או לעקל אותו. בבנק ההסכם מבטיח שהיתרה לא תרד מהסכומים שהביטוח הלאומי הפקיד, במונחים נומינליים; בקופת גמל לא נמצאה הבטחה כזו.",
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-22"
+}

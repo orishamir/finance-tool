@@ -1,0 +1,102 @@
+{
+  "id": "GOV-14",
+  "title": "Floating-rate bond (ממשלתית בריבית משתנה, formerly \"גילון\")",
+  "title_he": "אג\"ח ממשלתית בריבית משתנה (לשעבר גילון)",
+  "text_he": "לפי מילון יחידת ניהול החוב זו איגרת לא צמודה שהריבית בה נקבעת מתשואת המק\"ם הממוצעת לתקופה של שנה, ומונפקת לשנתיים או יותר. לפי תקנות \"גילון חדש\" הריבית היא ממוצע משוקלל של תשואות המק\"ם שנותרו לו בין שלושה חודשים לשנה, בימי המסחר שלפני סוף תקופת הריבית, בתוספת מרווח שנקבע בהנפקה עד תקרת המרווח; הקופון לא יורד מתחת לרצפה, ותקופות הריבית אחרי הראשונה הן באורך שבתקנות. שני המקורות מתארים את ריבית הייחוס אחרת, ואיזו תקנה חלה על הסדרות שמונפקות היום היא שאלה פתוחה. התקנות נקראו בעותק באתר נבו.",
+  "figure_names_he": {
+    "linkage": "הצמדה",
+    "coupon_every_months": "תדירות תשלום הקופון (חודשים)",
+    "margin_cap": "תקרת המרווח מעל תשואת המק\"ם",
+    "coupon_floor": "רצפת הקופון"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "real-vs-nominal",
+    "distribution-policy"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "linkage": {
+      "value": "unlinked",
+      "unit": "text",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf",
+        "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2024, מילון מונחים",
+        "publisher": "Ministry of Finance, Accountant General",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "GOV-14"
+      ],
+      "state": "sourced",
+      "notes": "An unlinked government bond with a variable rate set from the average makam yield (glossary p. 41, \"אג\"ח בריבית משתנה\"; 1999 regulations). Whether every series auctioned now is unlinked is TXI open question 8; which regulation governs the current series is GOV open question 5."
+    },
+    "coupon_every_months": {
+      "value": 3,
+      "unit": "months",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/221_031.htm",
+        "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), תשנ\"ט-1999 (Nevo mirror)",
+        "publisher": "Minister of Finance (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "GOV-14"
+      ],
+      "state": "sourced",
+      "notes": "Under the 1999 \"גילון חדש\" regulations, interest periods after the first are three months (regs. 4, 5, 7). It was not established which regulation governs the series auctioned now (GOV open question 5), so this frequency is the 1999 regulations' and must be checked against the series' terms before the run uses it."
+    },
+    "margin_cap": {
+      "value": 4,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/221_031.htm",
+        "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), תשנ\"ט-1999 (Nevo mirror)",
+        "publisher": "Minister of Finance (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "GOV-14"
+      ],
+      "state": "sourced",
+      "notes": "Margin over the makam reference yield, set at issue, of no more than 4% (1999 regulations)."
+    },
+    "coupon_floor": {
+      "value": 0,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/221_031.htm",
+        "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), תשנ\"ט-1999 (Nevo mirror)",
+        "publisher": "Minister of Finance (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "GOV-14"
+      ],
+      "state": "sourced",
+      "notes": "The coupon \"לא יפחת מ-0%\" (1999 regulations, reg. 9)."
+    }
+  },
+  "il_finance_file": "government-bonds-and-makam.md",
+  "checked": "2026-10-22"
+}

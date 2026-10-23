@@ -1,0 +1,29 @@
+{
+  "id": "meitav-chisachon-lekol-yeled-halacha",
+  "institution": "meitav",
+  "where_seen": "Meitav, רשימת מסלולי ההשקעה בתוכנית חסכון לכל ילד של מיטב (דוחות תשואה חסכון לכל ילד), https://www.meitav.co.il/provident_pension/kids_reports/; Meitav, חיסכון לכל ילד – מידע להורים, https://www.meitav.co.il/provident_pension/saving_for_every_kid/",
+  "seen_on": "2026-10-23",
+  "seen_by": "this collection",
+  "names": {
+    "he": [
+      "מיטב חסכון לכל ילד - הלכה",
+      "מסלול הלכה"
+    ]
+  },
+  "maps_to": {
+    "wrapper_id": "child-savings-provident",
+    "cma_fund_id": null,
+    "track_ids": [
+      11388
+    ]
+  },
+  "near_duplicates": [
+    {
+      "name": "עוקב S&P 500",
+      "track_ids": [],
+      "resolution": "unresolved: the kid page says Meitav has \"מסלול נוסף – עוקב S&P 500\" in child savings, but the regulator's 2026-09 list and Meitav's reports page show only four child-savings tracks; the halacha track's equity exposure tracks the S&P 500 since 1.11.2024, which may be what the page means; see entry meitav-chisachon-lekol-yeled-okev-sp500"
+    }
+  ],
+  "status": "catalogued",
+  "notes": "Track of Meitav's child-savings investment provident fund (regulator classification \"קופת גמל להשקעה - חסכון לילד\"), the kupat gemel lehashkaa side of the National Insurance \"חיסכון לכל ילד\" programme. cma_fund_id is null: no Meitav document read gives the parent fund number. The reports page adds: \"החל מיום 1.11.2024 ונכון למועד הפרסום – נכסי המסלול בחשיפה מנייתית עוקבת אחר מדד s&p500\"."
+}

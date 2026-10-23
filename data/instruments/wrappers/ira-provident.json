@@ -1,0 +1,339 @@
+{
+  "id": "ira-provident",
+  "names": {
+    "he": [
+      "קופת גמל בניהול אישי",
+      "קופת גמל לתגמולים בניהול אישי",
+      "גמל IRA",
+      "IRA"
+    ],
+    "statement": [
+      "קופת גמל בניהול אישי"
+    ],
+    "app": [
+      "גמל בניהול אישי",
+      "IRA"
+    ]
+  },
+  "regulator": {
+    "value": "CMA",
+    "unit": "text",
+    "source": {
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ss.1 (\"קופת גמל בניהול אישי\"), 13, 39, 57 (Wikisource mirror)",
+      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "strength": "primary-mirror"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "REG-17",
+      "IRA-01",
+      "TXK-16",
+      "IRA-02"
+    ],
+    "state": "sourced",
+    "notes": "A self-directed provident fund is a provident fund for tagmulim or annuity approved under s.13(א) of the Provident Funds Law for one member who directs its investments (s.1); its managing company is under the CMA Commissioner's supervision (s.39(א)). A pension fund cannot be self-directed (IRA-02). In Gemel-Net every such fund is classified 'תגמולים ואישית לפיצויים' (IRA-03)."
+  },
+  "fee_bases_allowed": [
+    "balance",
+    "trade",
+    "custody",
+    "fx",
+    "direct_expenses"
+  ],
+  "fee_caps": {
+    "balance": {
+      "value": 2,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 4 (Hebrew Wikisource; cross-read on Nevo)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2013-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-06",
+        "IRA-17",
+        "IRA-16"
+      ],
+      "state": "sourced",
+      "notes": "Management Fees Regulations 2012, reg. 4: a managing company of a keren hishtalmut or an IRA (קופת גמל בניהול אישי) may charge 'בשיעור שלא יעלה על 2% לשנה' of the balance. Which cap applies to IRA funds after the 2017 amendment deleted the reference to income-tax regulation 41ח(ב)(1) is IRA OQ3; PF reads reg. 4 at 2%. The member's own agreement sets the rate (IRA-17); Gemel-Net 202609 averages for IRA funds run 0.15% to 0.36%."
+    },
+    "deposit": {
+      "value": 0,
+      "unit": "pct_of_deposit",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 4 (Hebrew Wikisource; cross-read on Nevo)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2013-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-06",
+        "IRA-17"
+      ],
+      "state": "sourced",
+      "notes": "Reading, not a quoted figure: regulation 4 authorises a fee from the balance only and has no fee-from-deposits item, and law s.32(א) forbids any charge not allowed (PF-06). No IRA fund reports a deposit fee in Gemel-Net 202609 (IRA-17)."
+    },
+    "trade": {
+      "value": null,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
+        "title": "IRA regulations, regs. 7 (closed list of charges), 12 (competitive process) (Nevo mirror, summarising fetch)",
+        "publisher": "Minister of Finance regulations (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "IRA-16",
+        "IRA-18",
+        "IRA-21"
+      ],
+      "state": "sourced",
+      "notes": "No cap. Buy and sell commissions are charged to the fund on top of the management fee, at the tariff of the broker the member picks from the winners of the managing company's competitive process (at least every 3 years, at least 4 participants). Meitav's 2026 tariffs per broker are in IRA-21 and belong in data/fees/ (R4)."
+    },
+    "custody": {
+      "value": null,
+      "unit": "pct_of_balance_per_period",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
+        "title": "IRA regulations, regs. 7 (closed list of charges), 12 (competitive process) (Nevo mirror, summarising fetch)",
+        "publisher": "Minister of Finance regulations (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "IRA-16",
+        "IRA-22"
+      ],
+      "state": "sourced",
+      "notes": "No cap beyond: custody fees may not exceed what the same managing company's non-IRA funds pay (reg. 7(א)(2), 2017). Meitav Trade exempts custody inside an IRA; bank brokers charge per their tariff (IRA OQ6)."
+    }
+  },
+  "ceiling": {
+    "per": "person_total_across_all_ira_accounts",
+    "amount": {
+      "value": 6303528,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.meitav.co.il/provident_pension/ira/",
+        "title": "Meitav, IRA product page: \"קיימת מגבלת הפקדה בסך של 6,303,528 ₪ נכון לשנת 2026\" (read 2026-10-23)",
+        "publisher": "Meitav Gemel and Pension",
+        "strength": "institution"
+      },
+      "checked": "2026-10-23",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "cpi-linked 1 jan",
+      "rule_ids": [
+        "IRA-07",
+        "IRA-08",
+        "IRA-27"
+      ],
+      "state": "sourced",
+      "notes": "NOT A YEARLY DEPOSIT CEILING: the total that may sit in the member's IRA funds under reg. 2(א)(4) to (6) (index-tracking money, members who meet the pension or savings test, new accounts), four times 'הסכום הקובע' across all the member's IRA accounts, less capital money under (2) and (3). 2026 figure from Meitav's page only (institution; IRA OQ8). The 2025 draft would delete the capital and index routes and double the pension and savings tests (IRA-27). The pension-side deposit ceilings and credits of a provident fund for annuity apply to deposits (TXP-02)."
+    }
+  },
+  "deposit_side_tax": {
+    "formula": "F-31",
+    "rule_ids": [
+      "TXP-02",
+      "TXK-17",
+      "IRA-23"
+    ]
+  },
+  "tax_during": {
+    "formula": "F-27",
+    "rule_ids": [
+      "TXP-13",
+      "TXK-17",
+      "TXK-18"
+    ]
+  },
+  "tax_at_exit": {
+    "formula": "F-49",
+    "rule_ids": [
+      "TXK-17",
+      "TXP-14",
+      "TXP-18",
+      "PEN-34",
+      "PEN-30",
+      "PEN-26"
+    ],
+    "blocked_by": [
+      "PEN-OQ7",
+      "TXP-OQ3"
+    ],
+    "labels": [
+      "blocked: the lawful exit is an annuity paid by a pension fund or an insurer the money is moved to, and no conversion factors are collected (F-49, G-03, PEN OQ7)",
+      "blocked: an early withdrawal is taxed at the higher of 35% and the marginal rate, with the taxable base open (F-48, G-06, TXP OQ3)",
+      "F-51: the IRA follows the tax of the wrapper it was approved as (TXK-17)"
+    ]
+  },
+  "lawful_exit": {
+    "kind": "at_age",
+    "age": {
+      "value": 60,
+      "unit": "years",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
+        "title": "Retirement Age Law 2004, s.5 (early retirement age 60) (Wikisource mirror); Provident Funds Law s.13(א)(4)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "PEN-26",
+        "PEN-34",
+        "IRA-25"
+      ],
+      "state": "sourced",
+      "notes": "Early retirement age, 60 for men and women: the minimum old-age eligibility age. The fund does not pay annuities itself; the money is moved to a pension fund or an insurance fund to be paid as an annuity (PEN-34)."
+    },
+    "text": "as for any provident fund for annuity: new money (from 2008) leaves lawfully only as an annuity, by moving it to a pension fund or an insurer from age 60; before that a lump sum only from the severance component on leaving a job, from a new account for released severance or beneficiary money, for small balances past mandatory retirement age, or under health and income conditions (PEN-30); a non-compliant withdrawal is taxed at the higher of 35% and the marginal rate (TXP-18); a withdrawal or a cash transfer out waits until the holdings the member chose are sold (IRA-23, IRA-25)"
+  },
+  "switch_is_tax_event": {
+    "value": false,
+    "unit": "boolean",
+    "source": {
+      "url": "https://he.wikisource.org/api/rest_v1/page/pdf/פקודת_מס_הכנסה",
+      "title": "Income Tax Ordinance (Wikisource PDF), s.9(2)(a) (fund income exempt), s.9(16A) (study-fund exemption after 6 years); no provision uses \"בניהול אישי\"",
+      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "strength": "primary-mirror"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXK-17",
+      "PF-23",
+      "IRA-23"
+    ],
+    "state": "sourced",
+    "notes": "Trading inside the account is the fund's own activity: the fund-level exemption of s.9(2)(a) covers any קופת גמל, so sales, dividends and interest inside an IRA are not taxed while the money stays inside (TXK-17). A transfer to a regular provident fund for annuity, or between IRA funds (in cash or in kind), is a transfer under the transfer regulations, not a withdrawal (IRA-23)."
+  },
+  "transfer_routes": [
+    {
+      "to": "provident-for-annuity",
+      "condition": "the receiving company chooses cash or in kind",
+      "rule_ids": [
+        "IRA-23",
+        "PF-17",
+        "SW-23"
+      ]
+    },
+    {
+      "to": "ira-provident",
+      "condition": "the member chooses cash or in kind",
+      "rule_ids": [
+        "IRA-23"
+      ]
+    },
+    {
+      "to": "pension-comprehensive",
+      "condition": "into an annuity-paying fund, to receive an annuity; pension money cannot come back into an IRA",
+      "rule_ids": [
+        "PF-17",
+        "PEN-34",
+        "IRA-02"
+      ]
+    }
+  ],
+  "eligibility": {
+    "rule_ids": [
+      "IRA-01",
+      "IRA-02",
+      "IRA-03",
+      "IRA-05",
+      "IRA-07",
+      "IRA-08",
+      "IRA-09",
+      "IRA-10",
+      "IRA-27",
+      "IRA-15"
+    ],
+    "text": "only listed kinds of provident money: capital money that is withdrawable at retirement, money invested in index-tracking funds or ETNs, money of a member who receives an old-age pension of at least the minimum pension amount (NIS 5,306 a month in 2026) or holds 'הסכום הקובע' (NIS 1,575,882 in 2026) in a non-IRA annuity fund, and money in a new account; pension-fund money cannot be self-directed and must first move to an IRA provident fund, losing its insurance cover; severance money needs the employer's approval; the member, or a licensed portfolio manager, gives the instructions; no regulatory minimum was found (Meitav suggests from about NIS 200,000); a 2025 draft would keep only members with twice the pension or savings test"
+  },
+  "protection": {
+    "rule_ids": [
+      "REG-18",
+      "REG-19",
+      "IRA-26",
+      "IRA-12",
+      "IRA-13",
+      "IRA-14",
+      "IRA-28",
+      "IRA-11"
+    ],
+    "text": "the fund's assets are held in trust, separately from the managing company's property, and if the company fails management moves to another company; the investment risk is the member's own, with no investment committee; the regulations limit concentration (10% per issuer, 5% options, 10% collateral) and forbid borrowing, and only tradable securities, deposits, structured products, foreign currency and fund units in Israel or an approved foreign country may be held; what protects the securities if the managing company or the broker fails was not found (IRA OQ11), and two IRA managers have had failures since 2023 (press); no pooled insurance cover, unlike a pension fund"
+  },
+  "tier": 1,
+  "open_questions": [
+    "IRA-OQ1",
+    "IRA-OQ2",
+    "IRA-OQ3",
+    "IRA-OQ4",
+    "IRA-OQ8",
+    "IRA-OQ11",
+    "PEN-OQ7",
+    "TXP-OQ3",
+    "TXK-OQ7",
+    "TXK-OQ8"
+  ],
+  "checked": "2026-10-23",
+  "dimensions": {
+    "age-or-use-exemption": "blocked:PEN-OQ7",
+    "currency": "covered",
+    "deposit-ceiling": "covered",
+    "eligibility": "covered",
+    "fee-change-over-time": "covered",
+    "fee-custody": "covered",
+    "fee-deposit": "covered",
+    "fee-exit": "covered",
+    "fee-fx": "covered",
+    "fee-management-balance": "covered",
+    "fee-trade": "covered",
+    "foreign-withholding-domicile": "covered",
+    "insurance-cover": "covered",
+    "liquidity-lockup": "covered",
+    "loss-offset": "blocked:TXK-OQ10",
+    "minimum": "covered",
+    "protection": "covered",
+    "regulator": "covered",
+    "switching-tax-event": "covered",
+    "tax-at-deposit": "covered",
+    "tax-at-exit": "blocked:PEN-OQ7",
+    "tax-during": "covered",
+    "transfer-switch-process": "covered"
+  }
+}

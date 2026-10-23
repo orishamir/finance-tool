@@ -1,0 +1,28 @@
+{
+  "id": "aygrvt-chvb-mmshltyvt",
+  "he": "איגרות חוב ממשלתיות",
+  "en": null,
+  "meaning": "הלוואה שנותנים למדינה וניתן לקנות ולמכור בבורסה; המדינה מחזירה את הסכום במועד שנקבע, ולרוב משלמת גם ריבית",
+  "where": [
+    "app",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "government-bond"
+  ],
+  "variants": [
+    "אג\"ח ממשלתית"
+  ],
+  "rule_ids": [
+    "GOV-02",
+    "GOV-08",
+    "GOV-17"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2025/he/annual-debt-report_annual-debt-report-2025-accessible-version-he.pdf",
+    "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2025",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

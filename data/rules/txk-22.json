@@ -1,0 +1,15 @@
+{
+  "id": "TXK-22",
+  "title": "Child savings: the provident track is a kupat gemel lehashkaa",
+  "title_he": "חיסכון לכל ילד: מסלול הקופה הוא קופת גמל להשקעה",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "eligibility",
+    "transfer-switch-process",
+    "switching-tax-event"
+  ],
+  "likely_to_change": "no",
+  "text_he": "חוק הביטוח הלאומי קובע שהחיסכון מנוהל 'בקופת גמל להשקעה', וגם ברירת המחדל כשלא בוחרים היא קופת גמל להשקעה. לפני 18 ההורה יכול להעביר לקופה אחרת מהרשימה; אחרי 18 הילד. האם מעבר כזה פטור ממס לא נאמר בטקסטים; בהיקש מקופת גמל להשקעה הוא אינו משיכה, אבל זה לא אושר לחיסכון לכל ילד (שאלה פתוחה 1).",
+  "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
+  "checked": "2026-10-22"
+}

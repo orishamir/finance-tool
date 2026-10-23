@@ -1,0 +1,27 @@
+{
+  "id": "shkr-kvba",
+  "he": "שכר קובע",
+  "en": null,
+  "meaning": "השכר שלפיו קרן הפנסיה מחשבת קצבת נכות או קצבה למשפחה, לפי ממוצעים של השכר המבוטח",
+  "where": [
+    "statement"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "PEN-09",
+    "PEN-12",
+    "PEN-13"
+  ],
+  "source": {
+    "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+    "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

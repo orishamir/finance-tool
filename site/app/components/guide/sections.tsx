@@ -308,7 +308,7 @@ export function InstitutionChips({ companies, allHref }: { companies: { id: stri
   return (
     <p className="flex flex-wrap items-center gap-2">
       {companies.map((c) => (
-        <Link key={c.id} to={`/companies/${c.id}`} className="a-chip">
+        <Link key={c.id} to={`/companies/${c.id}`} className="a-chip max-w-full !whitespace-normal py-1.5 !rounded-xl">
           <bdi>{c.name}</bdi>
         </Link>
       ))}

@@ -1,0 +1,14 @@
+{
+  "id": "TXI-13",
+  "title": "Discount added to the redemption proceeds when redemption creates a capital loss",
+  "title_he": "ניכיון שמתווסף לתמורת הפדיון כשנוצר הפסד הון",
+  "text_he": "בפדיון של אג״ח, מילווה מדינה או מילווה קצר מועד שמשולמים עליהם גם דמי ניכיון, דמי הניכיון מתווספים לתמורת הפדיון, עד גובה הפסד ההון, כשמתקיימים שלושה תנאים: רווח ההון ממכירת האג״ח אינו פטור, נוצר הפסד הון בפדיון, והפודה אינו בעל שליטה ולא החזיק באג״ח מההנפקה. דמי ניכיון שמטופלים כך אינם הכנסת ריבית. זה רלוונטי למי שקנה מק״ם או אג״ח ניכיון בבורסה ולא בהנפקה.",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "loss-offset"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-interest-deposits-bonds.md",
+  "checked": "2026-10-22"
+}

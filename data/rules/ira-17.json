@@ -1,0 +1,61 @@
+{
+  "id": "IRA-17",
+  "title": "Management fee level and cap",
+  "title_he": "גובה דמי הניהול והתקרה שלהם",
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "gemelnet_fee_min": {
+      "value": 0.15,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&q=אישי&filters={\"REPORT_PERIOD\":202609}",
+        "title": "CMA Gemel-Net dataset, resource 2024-today, REPORT_PERIOD 202609, AVG_ANNUAL_MANAGEMENT_FEE of the IRA funds (lowest: Phoenix 2023)",
+        "publisher": "Capital Market, Insurance and Savings Authority (Gemel-Net via data.gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-09-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "IRA-17"
+      ],
+      "state": "sourced",
+      "notes": "Lowest reported average annual management fee among the 13 IRA funds that report one for 202609. The field's unit is not defined in the dataset; read as percent a year (CAT). Monthly data; the member's own agreement sets the actual fee."
+    },
+    "gemelnet_fee_max": {
+      "value": 0.36,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&q=אישי&filters={\"REPORT_PERIOD\":202609}",
+        "title": "CMA Gemel-Net dataset, resource 2024-today, REPORT_PERIOD 202609, AVG_ANNUAL_MANAGEMENT_FEE of the IRA funds (highest: Migdal 8890)",
+        "publisher": "Capital Market, Insurance and Savings Authority (Gemel-Net via data.gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-09-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "IRA-17"
+      ],
+      "state": "sourced",
+      "notes": "Highest reported average annual management fee among the IRA funds for 202609 (Menora 15367 and Slice 1514 report none). Same caveats as gemelnet_fee_min."
+    }
+  },
+  "text_he": "דמי הניהול הם השיעור שנכתב בהסכם של כל עמית; בטופס של מיטב השורה ריקה ומולאה לכל עמית, והחברה 'רשאית להעלות את דמי ניהול בכפוף להוראות הדין'. בגמל-נט לתקופה 202609 דמי הניהול הממוצעים של קופות הניהול האישי נעים בין 0.15 ל-0.36, ואין דמי ניהול מהפקדה. איזו תקרה חלה אחרי תיקון 2017 לא נמצא (שאלה פתוחה 3).",
+  "figure_names_he": {
+    "gemelnet_fee_min": "דמי ניהול ממוצעים, הנמוכים בגמל-נט",
+    "gemelnet_fee_max": "דמי ניהול ממוצעים, הגבוהים בגמל-נט"
+  },
+  "il_finance_file": "ira-self-directed.md",
+  "checked": "2026-10-22"
+}

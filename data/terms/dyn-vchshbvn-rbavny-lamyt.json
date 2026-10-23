@@ -1,0 +1,26 @@
+{
+  "id": "dyn-vchshbvn-rbavny-lamyt",
+  "he": "דין וחשבון רבעוני לעמית",
+  "en": null,
+  "meaning": "דוח על החשבון שמוצג באזור האישי באתר בכל רבעון, חוץ מהרבעון האחרון של השנה",
+  "where": [
+    "app",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "PF-26"
+  ],
+  "source": {
+    "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
+    "title": "תקנון תקני לקופת גמל להשקעה אלטשולר שחם חיסכון פלוס, March 2025 (Altshuler Shaham)",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

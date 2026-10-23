@@ -1,0 +1,103 @@
+{
+  "id": "BANK-17",
+  "title": "Current-account fee tracks: basic, extended, extended plus",
+  "title_he": "מסלולי עמלות עובר ושב: בסיסי, מורחב ומורחב פלוס",
+  "text_he": "כל בנק חייב להציע מסלול בסיסי ומסלול מורחב לעמלות עובר ושב ולאפשר לכל לקוח להצטרף; המסלול הבסיסי כולל עד מספר פעולות בפקיד ועד מספר פעולות בערוץ ישיר בחודש, המסלול המורחב כולל יותר מכל אחד מהם, ומסלול מורחב פלוס מוסיף שירותים שהבנק קובע. פעולות מעבר למסלול מחויבות לפי התעריפון המלא, וההצטרפות והביטול נכנסים לתוקף בראשון לחודש שאחרי ההודעה. לאזרח ותיק, לאדם עם מוגבלות ולעסק קטן הבנק חייב לבדוק כל שנה אם היו משלמים פחות במסלול, ואם כן לצרף אותם אליו ולהודיע להם. הבנקים משתמשים בשמות משלהם למסלולים.",
+  "figure_names_he": {
+    "basic_teller_actions": "פעולות בפקיד בחודש במסלול הבסיסי",
+    "basic_direct_actions": "פעולות בערוץ ישיר בחודש במסלול הבסיסי",
+    "extended_teller_actions": "פעולות בפקיד בחודש במסלול המורחב",
+    "extended_direct_actions": "פעולות בערוץ ישיר בחודש במסלול המורחב"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "fee-deposit",
+    "eligibility",
+    "age-or-use-exemption"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "basic_teller_actions": {
+      "value": 1,
+      "unit": "count",
+      "source": {
+        "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
+        "title": "Banking Rules (Customer Service) (Fees) 2008, consolidated to the amendment of 9.4.2025, BoI copy, s.1, s.4A",
+        "publisher": "Bank of Israel (Banking Supervision)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BANK-17"
+      ],
+      "state": "sourced",
+      "notes": "Basic track (מסלול בסיסי): up to one teller action a month (fees rules s.1 definition). Every bank must offer it and let any customer join (s.4A). Its price is price-controlled; the order and the price were not read (BANK OQ9)."
+    },
+    "basic_direct_actions": {
+      "value": 10,
+      "unit": "count",
+      "source": {
+        "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
+        "title": "Banking Rules (Customer Service) (Fees) 2008, consolidated to the amendment of 9.4.2025, BoI copy, s.1, s.4A",
+        "publisher": "Bank of Israel (Banking Supervision)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BANK-17"
+      ],
+      "state": "sourced",
+      "notes": "Basic track: up to ten direct-channel actions a month."
+    },
+    "extended_teller_actions": {
+      "value": 10,
+      "unit": "count",
+      "source": {
+        "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
+        "title": "Banking Rules (Customer Service) (Fees) 2008, consolidated to the amendment of 9.4.2025, BoI copy, s.1, s.4A",
+        "publisher": "Bank of Israel (Banking Supervision)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BANK-17"
+      ],
+      "state": "sourced",
+      "notes": "Extended track (מסלול מורחב): up to ten teller actions a month."
+    },
+    "extended_direct_actions": {
+      "value": 50,
+      "unit": "count",
+      "source": {
+        "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
+        "title": "Banking Rules (Customer Service) (Fees) 2008, consolidated to the amendment of 9.4.2025, BoI copy, s.1, s.4A",
+        "publisher": "Bank of Israel (Banking Supervision)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BANK-17"
+      ],
+      "state": "sourced",
+      "notes": "Extended track: up to fifty direct-channel actions a month. Actions beyond a track are charged per the full tariff."
+    }
+  },
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-22"
+}

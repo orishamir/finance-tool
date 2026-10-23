@@ -1,0 +1,23 @@
+{
+  "id": "hbtcht-krn",
+  "he": "הבטחת קרן",
+  "en": null,
+  "meaning": "התחייבות בתנאי המוצר שלא תקבלו בחזרה פחות מהסכום שהפקדתם, למשל אם המדד ירד",
+  "where": [
+    "ad"
+  ],
+  "wrapper_ids": [
+    "bank-deposit"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "BANK-26"
+  ],
+  "source": {
+    "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+    "title": "Bank Yahav deposit rate board 13_26 (effective 06/10/2026)",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

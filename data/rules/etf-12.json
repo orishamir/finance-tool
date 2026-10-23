@@ -1,0 +1,13 @@
+{
+  "id": "ETF-12",
+  "title": "The exposure code in an Israeli fund name, for example (4D): a digit for equity exposure and a letter for foreign-currency exposure",
+  "title_he": "קוד החשיפה בשם הקרן: ספרה למניות, אות למטבע חוץ",
+  "text_he": "שמות הקרנות הישראליות נושאים קוד פרופיל חשיפה: ספרה לחשיפה למניות ואות לחשיפה למטבע חוץ. דוחות הקרנות מגדירים את הספרה שבדוגמאות כחשיפה למניות עד מעט יותר ממלוא שווי הנכסים הנקי, בערך מוחלט, ואת האות שבהן כחשיפה דומה למטבע חוץ; קרן מנוטרלת מט\"ח של אי.בי.אי על מדד אמריקני נושאת אות אחרת ואת המילים מנוטרלת מט\"ח בשמה. רק הצירוף שבדוגמאות נקרא בבירור; שאר הסולם מגיע מדיווח שהטקסט העברי שלו לא נפתח כראוי, וזו שאלה פתוחה.",
+  "strength": "institution",
+  "dimensions": [
+    "currency"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-22"
+}

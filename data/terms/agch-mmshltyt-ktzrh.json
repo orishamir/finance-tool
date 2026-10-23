@@ -1,0 +1,26 @@
+{
+  "id": "agch-mmshltyt-ktzrh",
+  "he": "אג\"ח ממשלתית קצרה",
+  "en": null,
+  "meaning": "איגרת חוב של המדינה לתקופה של עד שנה, בלי ריבית: קונים בפחות מהסכום שמוחזר בסוף",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [
+    "government-bond",
+    "makam"
+  ],
+  "variants": [
+    "איגרות חוב קצרות"
+  ],
+  "rule_ids": [
+    "GOV-15"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf",
+    "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2024, glossary (מילון מונחים)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

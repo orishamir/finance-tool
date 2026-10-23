@@ -1,0 +1,82 @@
+{
+  "id": "IRA-14",
+  "title": "Compliance checks and blocking of the account",
+  "title_he": "בדיקת עמידה במגבלות וחסימת החשבון",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "liquidity-lockup",
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "check_interval_months": {
+      "value": 3,
+      "unit": "months",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
+        "title": "IRA regulations, reg. 5(ב)-(ג) (Nevo mirror, summarising fetch)",
+        "publisher": "Minister of Finance regulations (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "IRA-14"
+      ],
+      "state": "sourced",
+      "notes": "Compliance is checked on the last day of each quarter. The 2025 draft would make the quarterly check a minimum."
+    },
+    "breach_notice_business_days": {
+      "value": 7,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
+        "title": "IRA regulations, reg. 5(ב)-(ג) (Nevo mirror, summarising fetch)",
+        "publisher": "Minister of Finance regulations (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "IRA-14"
+      ],
+      "state": "sourced",
+      "notes": "Written notice to the member or portfolio manager of a breach caused by a new investment."
+    },
+    "breach_cure_business_days": {
+      "value": 45,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
+        "title": "IRA regulations, reg. 5(ב)-(ג) (Nevo mirror, summarising fetch)",
+        "publisher": "Minister of Finance regulations (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "IRA-14"
+      ],
+      "state": "sourced",
+      "notes": "Time to fix the breach; if not fixed, every action except fixing it, deposits and withdrawals is blocked."
+    }
+  },
+  "text_he": "החברה בודקת עמידה במגבלות ביום האחרון של כל רבעון. חריגה מהשקעה חדשה מדווחת לעמית בכתב בתוך 7 ימי עסקים ויש לתקן בתוך 45 ימי עסקים; אחרת החשבון נחסם לכל פעולה חוץ מתיקון החריגה, הפקדות ומשיכות.",
+  "figure_names_he": {
+    "check_interval_months": "תדירות בדיקת המגבלות (חודשים)",
+    "breach_notice_business_days": "ימי עסקים להודעה על חריגה",
+    "breach_cure_business_days": "ימי עסקים לתיקון חריגה"
+  },
+  "il_finance_file": "ira-self-directed.md",
+  "checked": "2026-10-22"
+}

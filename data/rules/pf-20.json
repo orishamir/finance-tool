@@ -1,0 +1,14 @@
+{
+  "id": "PF-20",
+  "title": "Transfer process: the request goes to the receiving fund; the member can cancel until the money moves",
+  "title_he": "תהליך ההעברה: הבקשה לקופה המקבלת וביטול עד המעבר",
+  "text_he": "העמית חותם על בקשת העברה אצל הקופה המקבלת, שבודקת זכאות ומעבירה את הבקשה לקופה המעבירה אלקטרונית בתוך יומיים עסקים. אם הקופה המעבירה לא יכולה להעביר, היא מודיעה בתוך כמה ימי עסקים עם סיבה מרשימה קבועה. העמית רשאי לבטל בחתימה על הודעת ביטול כל עוד הכסף לא הועבר, וכל קופה שולחת לו אישור על ההעברה. בקשה של עמית פעיל שלא בוצעה בתוך מאה ועשרים יום מחתימתה פוקעת, אלא אם הצהיר שלא יופקדו עוד הפקדות.",
+  "strength": "primary",
+  "dimensions": [
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-22"
+}

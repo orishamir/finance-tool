@@ -1,0 +1,14 @@
+{
+  "id": "IRA-13",
+  "title": "No borrowing, pledging or loans",
+  "title_he": "אין אשראי, שעבוד או הלוואות",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "text_he": "החברה המנהלת לא תיטול אשראי, לא תשעבד נכסים, לא תערוב ולא תלווה לעמיתים בהשקעות לפי תקנות הניהול האישי (תקנה 8). לכן אין מסחר במינוף מעבר למגבלת הבטוחות.",
+  "il_finance_file": "ira-self-directed.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,33 @@
+{
+  "id": "zykvy-mmsy-chvtz",
+  "he": "זיכוי ממסי חוץ",
+  "en": null,
+  "meaning": "הורדה של המס ששולם בחו\"ל מהמס בישראל על אותה הכנסה, עד גובה המס הישראלי עליה.",
+  "where": [
+    "tax-form"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500"
+  ],
+  "variants": [
+    "זיכוי מס זר",
+    "זיכוי חו\"ל"
+  ],
+  "rule_ids": [
+    "TXF-06",
+    "TXF-17",
+    "TXF-18",
+    "TXF-19",
+    "TXF-20"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

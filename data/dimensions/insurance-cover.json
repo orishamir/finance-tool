@@ -1,0 +1,29 @@
+{
+  "id": "insurance-cover",
+  "he": "כיסוי ביטוחי",
+  "one_line": "האם חלק מהכסף משמש לביטוח, כמו נכות או שאירים, ומה הכיסוי נותן",
+  "source": {
+    "url": "docs/product.md#33-dimension-checklist-or-what-you-are-not-considering",
+    "title": "product.md 3.3 and glossary.md section 2",
+    "publisher": "project",
+    "strength": "primary",
+    "checked": "2026-10-23"
+  },
+  "rule_ids": [
+    "IRA-02",
+    "KH-25",
+    "PEN-05",
+    "PEN-08",
+    "PEN-09",
+    "PEN-10",
+    "PEN-11",
+    "PEN-12",
+    "PEN-13",
+    "PEN-15",
+    "PEN-16",
+    "PEN-19",
+    "PEN-31",
+    "PEN-35",
+    "SW-22"
+  ]
+}

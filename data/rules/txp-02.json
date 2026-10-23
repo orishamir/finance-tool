@@ -1,0 +1,104 @@
+{
+  "id": "TXP-02",
+  "title": "Employee's own deposit: s.45A credit and its ceiling (not a beneficiary member)",
+  "title_he": "הפקדת העובד: הזיכוי ותקרתו למי שאינו עמית מוטב",
+  "text_he": "למי שאינו עמית מוטב, הסכום שעליו ניתן הזיכוי הוא הגבוה מבין רצפת ההפקדה לבין הנמוך מבין הסכום ששולם בפועל והשיעור המזוכה מההכנסה המזכה (שיעור נמוך יותר למי שאין לו הכנסת עבודה). ההכנסה המזכה למי שיש לו רק הכנסת עבודה היא ההכנסה החייבת עד תקרת ההכנסה המזכה; בתוך השיעור, ביטוח קצבת שאירים נספר רק עד חלק קטן מההכנסה המזכה, וביטוח חיים, שאירים ותשלומים על הכנסה שאינה מעבודה יחד עד חלק גדול יותר. הפקדת העובד מופיעה בטופס השנתי מהמעסיק והזיכוי מחושב בדוח השנתי; אם תוכנת השכר נותנת את הזיכוי כל חודש הוא שאלה פתוחה. התקרה והרצפה צמודות למדד וקפואות לשנים הקרובות; הפקודה נקראה בעותק בוויקיטקסט.",
+  "figure_names_he": {
+    "credited_pct_of_income": "השיעור המזוכה מההכנסה המזכה",
+    "eligible_income_cap": "תקרת ההכנסה המזכה (שנתי)",
+    "credit_floor": "רצפת ההפקדה שמזכה (שנתי)",
+    "credited_pct_no_work_income": "השיעור המזוכה למי שאין לו הכנסת עבודה"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "tax-at-deposit",
+    "deposit-ceiling",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "credited_pct_of_income": {
+      "value": 7,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance s.45A(d) (Wikisource mirror): \"7% מהכנסתו המזכה\"",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXP-02"
+      ],
+      "state": "sourced",
+      "notes": "For someone with work income who is not a beneficiary member: the credit is counted on deposits up to 7% of eligible income (5% without work income). Within it, survivors'-annuity insurance at most 1.5% and life insurance plus non-work payments at most 5%."
+    },
+    "eligible_income_cap": {
+      "value": 116400,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+        "title": "Tax Authority deductions booklet 2026, p.12, row \"תקרת הכנסה מזכה 47(א)(1)(1) - רק מהכנסת עבודה\" (9,700 a month)",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2024-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "frozen 2025-2027",
+      "rule_ids": [
+        "TXP-02"
+      ],
+      "state": "sourced",
+      "notes": "NIS per year. Eligible income (הכנסה מזכה) for someone with only work income is taxable income up to this cap. Base 84,000 (2004), CPI-indexed under s.120B and frozen at the 1.1.2024 value for 2025 to 2027 (TXP-27). Not tied to the average wage."
+    },
+    "credit_floor": {
+      "value": 2268,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+        "title": "Tax Authority deductions booklet 2026, p.12, row \"45א(ד)\" (189 a month); guide 2025 p.68",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2024-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "frozen 2025-2027",
+      "rule_ids": [
+        "TXP-02"
+      ],
+      "state": "sourced",
+      "notes": "NIS per year. A credit is given for a minimum deposit of 2,268 NIS regardless of the income cap. Frozen 2025 to 2027."
+    },
+    "credited_pct_no_work_income": {
+      "value": 5,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance s.45A(d) (Wikisource mirror): \"5% מהכנסתו המזכה\" for an individual with no work income",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXP-02"
+      ],
+      "state": "sourced",
+      "notes": "Someone with no work income (business income only) who is not a beneficiary member: the credit is counted on deposits up to 5% of eligible income (TXP-02 rule text; the work-income rate is credited_pct_of_income). Added 2026-10-23 from the rule base's figure for the no-work-income limb."
+    }
+  },
+  "il_finance_file": "tax-pension-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

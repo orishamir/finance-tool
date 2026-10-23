@@ -1,0 +1,26 @@
+{
+  "id": "tvps-161",
+  "he": "טופס 161",
+  "en": null,
+  "meaning": "טופס שהמעסיק ממלא כשעוזבים עבודה, ובו בוחרים מה יקרה לכספי הפיצויים מבחינת מס",
+  "where": [],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [
+    "הודעה על פרישה מעבודה"
+  ],
+  "rule_ids": [
+    "TXP-29",
+    "TXP-30"
+  ],
+  "source": {
+    "url": "https://www.gov.il/he/service/notice-of-retirement",
+    "title": "Tax Authority, הודעה על פרישה מעבודה (טופס 161 חדש), service page",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

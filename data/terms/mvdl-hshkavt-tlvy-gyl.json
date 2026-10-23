@@ -1,0 +1,35 @@
+{
+  "id": "mvdl-hshkavt-tlvy-gyl",
+  "he": "מודל השקעות תלוי גיל",
+  "en": null,
+  "meaning": "שיטה שבה החיסכון עובר אוטומטית למסלול שמתאים לגיל; כשלא בוחרים מסלול, מצטרפים אליה",
+  "where": [
+    "app",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [
+    "מסלול השקעות תלוי גיל",
+    "מדרגות",
+    "לבני 50 ומטה",
+    "לבני 50 עד 60",
+    "לבני 60 ומעלה"
+  ],
+  "rule_ids": [
+    "CAT-17",
+    "CAT-18",
+    "CAT-19",
+    "PEN-17"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+    "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

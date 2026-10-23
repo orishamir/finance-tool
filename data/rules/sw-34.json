@@ -1,0 +1,15 @@
+{
+  "id": "SW-34",
+  "title": "Non-bank brokers: no cap on fees for moving securities out was found; tariffs charge per security",
+  "title_he": "העברת ניירות ערך מבית השקעות: אין תקרה, מחיר לנייר",
+  "text_he": "לא נמצא כלל שמגביל מה חבר בורסה שאינו בנק גובה על העברת ניירות ערך החוצה. תעריפון אי.בי.אי גובה סכום לנייר להעברה לאותו לקוח בחבר אחר, עם מקסימום ליום, וסכום גבוה יותר לנייר לחשבון בבעלות אחרת; בחו״ל הסכום לנייר נקוב בדולרים. אלטשולר שחם טרייד מציינת שאינה גובה עמלה על קליטת תיק, וכתבה מדווחת שיציאה מברוקר יכולה לעלות מאות או אלפי שקלים. אלה נתוני תעריפון, לא כללים.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-exit",
+    "fee-custody"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-22"
+}

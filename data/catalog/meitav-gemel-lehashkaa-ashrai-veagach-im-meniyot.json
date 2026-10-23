@@ -1,0 +1,24 @@
+{
+  "id": "meitav-gemel-lehashkaa-ashrai-veagach-im-meniyot",
+  "institution": "meitav",
+  "where_seen": "Meitav, רשימת מסלולי ההשקעה בקופת הגמל להשקעה של מיטב (דוחות תשואה גמל להשקעה), https://www.meitav.co.il/provident_pension/kupa_gemel_invest_reports/; Meitav operations flyer (פלייר תפעולי), p.3 \"גמל להשקעה - מ.ה קופה 7857\", https://www.meitav.co.il/media/0lhfrzgy/פלייר-תפעולי-מונגש.pdf; Meitav merger notice, מיזוג מסלולי השקעה בקופת הגמל \"מיטב גמל להשקעה\" (7857), May 2024, tree diagrams before and after the merger, https://www.meitav.co.il/media/41anarx5/מיזוג-גמל-להשקעה-7981.pdf",
+  "seen_on": "2026-10-23",
+  "seen_by": "this collection; il-finance CAT-23, CAT-25, CAT-26",
+  "names": {
+    "he": [
+      "מיטב גמל להשקעה אשראי ואג\"ח עם מניות (עד 25% במניות)",
+      "מיטב גמל להשקעה אשראי ואג\"ח עם מניות (עד 25% מניות)",
+      "מיטב גמל להשקעה מסלול אג\"ח עד 20% במניות"
+    ]
+  },
+  "maps_to": {
+    "wrapper_id": "kupat-gemel-lehashkaa",
+    "cma_fund_id": 7857,
+    "track_ids": [
+      7980
+    ]
+  },
+  "near_duplicates": [],
+  "status": "catalogued",
+  "notes": "Track of Meitav's investment provident fund \"מיטב גמל להשקעה\", fund (קופה) number 7857 (flyer p.3; merger notice). Old name(s) until 30.6.2024, same track number (flyer p.3, CAT-13, CAT-26): מיטב גמל להשקעה מסלול אג\"ח עד 20% במניות. Spelling: the tracks page and the regulator write \"(עד 25% במניות)\"; the flyer and the merger notice's tree write \"(עד 25% מניות)\". Listed under the page's group \"מסלולים עד 25% מניות\" together with 15348 and 15351, which are different tracks with similar names."
+}

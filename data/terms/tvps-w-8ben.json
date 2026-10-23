@@ -1,0 +1,27 @@
+{
+  "id": "tvps-w-8ben",
+  "he": "טופס W-8BEN",
+  "en": null,
+  "meaning": "טופס אמריקאי שנותנים לברוקר כדי להצהיר שאינכם אמריקאים ולשלם פחות מס בארה\"ב על דיבידנדים.",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXF-12",
+    "TXF-13"
+  ],
+  "source": {
+    "url": "https://www.irs.gov/forms-pubs/about-form-w-8-ben",
+    "title": "IRS, About Form W-8BEN",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

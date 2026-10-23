@@ -1,0 +1,14 @@
+{
+  "id": "SW-23",
+  "title": "Provident fund for annuity: same process, no insurance to carry",
+  "title_he": "ניוד קופת גמל לקצבה: אותו תהליך, בלי ביטוח",
+  "text_he": "קופת גמל לקצבה (תגמולים ופיצויים אישיים) עוברת לפי אותו חוזר ובחלק הטופס המתאים, בין קופות לקצבה ובין קופות תגמולים. אין בה ביטוח משותף, ולכן כלל רציפות הביטוח חל רק כשהקופה הקולטת היא קרן פנסיה. היא יכולה לעבור לקופת גמל בניהול אישי רק בסוגי כסף מותרים ועד התקרה, וכספי פיצויים רק באישור המעסיק.",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "transfer-switch-process",
+    "eligibility"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-22"
+}

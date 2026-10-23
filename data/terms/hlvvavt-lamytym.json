@@ -1,0 +1,28 @@
+{
+  "id": "hlvvavt-lamytym",
+  "he": "הלוואות לעמיתים",
+  "en": null,
+  "meaning": "הלוואה שחלק מהקופות נותנות לחוסכים בהן; מה שלא הוחזר יורד מהסכום כשמושכים",
+  "where": [
+    "bylaws",
+    "form"
+  ],
+  "wrapper_ids": [
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "IRA-13",
+    "KGL-10",
+    "KGL-18",
+    "KH-21"
+  ],
+  "source": {
+    "url": "https://infinity.co.il/wp-content/uploads/2025/07/תקנון-גמל-להשקעה-בתוקף-מיום-1.7.2024.pdf",
+    "title": "תקנון תקני לקופת גמל להשקעה, אינפיניטי גמל להשקעה, 1.7.2024",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

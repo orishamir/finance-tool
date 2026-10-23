@@ -1,0 +1,31 @@
+{
+  "id": "mslvl-hshkah-bryrt-mchdl",
+  "he": "מסלול השקעה ברירת מחדל",
+  "en": null,
+  "meaning": "המסלול שאליו נכנס הכסף כשלא בוחרים מסלול השקעה בעת ההצטרפות",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [
+    "מסלול ברירת מחדל",
+    "מסלול ברירת המחדל בעת ההצטרפות לקופת הגמל"
+  ],
+  "rule_ids": [
+    "CAT-18",
+    "CAT-19",
+    "PEN-17",
+    "PF-24"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+    "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

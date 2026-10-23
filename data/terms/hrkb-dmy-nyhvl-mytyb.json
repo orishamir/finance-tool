@@ -1,0 +1,25 @@
+{
+  "id": "hrkb-dmy-nyhvl-mytyb",
+  "he": "הרכב דמי ניהול מיטיב",
+  "en": null,
+  "meaning": "אפשרות בקרן פנסיה נבחרת להחליף חלק מדמי הניהול מהחיסכון בדמי ניהול גבוהים יותר מההפקדה, לפי נוסחה",
+  "where": [
+    "ad"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "PEN-23"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf",
+    "title": "CMA circular 2024-9-6 \"הוראות לעניין בחירת קופת גמל - עדכון\", 25.8.2024",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

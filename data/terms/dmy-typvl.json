@@ -1,0 +1,28 @@
+{
+  "id": "dmy-typvl",
+  "he": "דמי טיפול",
+  "en": null,
+  "meaning": "עמלה חודשית קבועה שחלק מבתי ההשקעות גובים על עצם החזקת החשבון, בלי קשר לפעולות.",
+  "where": [
+    "statement",
+    "tariff"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [
+    "דמי שימוש",
+    "דמי שימוש / דמי טיפול",
+    "דמי ניהול תקופתיים"
+  ],
+  "rule_ids": [
+    "BRK-24"
+  ],
+  "source": {
+    "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+    "title": "IBI, תעריפון עמלות, נכון ל-1.7.2026",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

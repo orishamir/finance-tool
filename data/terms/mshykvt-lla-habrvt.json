@@ -1,0 +1,20 @@
+{
+  "id": "mshykvt-lla-habrvt",
+  "he": "משיכות ללא העברות",
+  "en": null,
+  "meaning": "סך הכסף ששולם לחוסכים מהמסלול בחודש, בלי כסף שהועבר לקופות אחרות",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "CAT-03",
+    "CAT-08"
+  ],
+  "source": {
+    "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+    "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

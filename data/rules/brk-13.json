@@ -1,0 +1,13 @@
+{
+  "id": "BRK-13",
+  "title": "The TASE nominee company registers listed securities and passes dividends and interest to the final holders",
+  "title_he": "החברה לרישומים רושמת ניירות ומעבירה דיבידנדים וריבית למחזיקים",
+  "text_he": "החברה לרישומים, חברה בת בבעלות מלאה של הבורסה, רושמת ניירות ערך על שמה במרשמי המנפיקים, מפקידה אותם במסלקה לטובת חברי המסלקה, משמשת נאמן של המסלקה על המלאי הזה, ומעבירה אירועי חברה ותשלומים כמו דיבידנדים וריבית למחזיקים הסופיים. רוב החברות הרשומות בבורסה משתמשות בה.",
+  "strength": "primary",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,26 @@
+{
+  "id": "dyn-vchshbvn-shnty-lamyt",
+  "he": "דין וחשבון שנתי לעמית",
+  "en": null,
+  "meaning": "דוח שהחברה המנהלת שולחת פעם בשנה על החשבון, ובו בין השאר התשואה, שיעור ההוצאות והעלות הצפויה",
+  "where": [
+    "statement"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "PF-12",
+    "PF-26"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(הוצאות_ישירות_בשל_ביצוע_עסקאות)",
+    "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008 (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

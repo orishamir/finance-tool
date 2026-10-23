@@ -1,0 +1,27 @@
+{
+  "id": "nks-makb",
+  "he": "נכס מעקב",
+  "en": null,
+  "meaning": "מה שקרן מחקה מנסה לחקות לפי מסמכי הקרן: מדד, ולפעמים גם שער מטבע, כמו דולר.",
+  "where": [
+    "prospectus"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "ETF-01",
+    "ETF-10"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf",
+    "title": "רשות ניירות ערך, הוראה למנהלי קרנות נאמנות בדבר ניהול ההשקעות בקרן מחקה (עדכון 3, 15.10.2024)",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "BRK-21",
+  "title": "Banks: notice of fee changes at least two weeks before, in writing for continuing services",
+  "title_he": "בנקים: הודעה על שינוי עמלות לפי ימי ההודעה המוקדמת",
+  "text_he": "בנק חייב להודיע לכל לקוחותיו על שינוי בתנאי החשבון, ובכלל זה בתעריפון העמלות, לפי ימי ההודעה המוקדמת לפני השינוי; על שינוי לטובת הלקוח מותר להודיע בתוך ימי עסקים ספורים אחריו. ההודעות מתפרסמות בשני עיתונים יומיים, על לוח בסניף ובאתר תחת הכותרת הודעות על שינויים, וכשהשינוי מעלה עמלות על שירותים מתמשכים, ובהם לפי הקריאה גם עמלות ניירות ערך, הבנק חייב להודיע ללקוח גם בכתב מראש. הנוסח שנקרא עדכני לתיקון ישן יחסית, ולבתי השקעות לא נמצא כלל דומה.",
+  "figure_names_he": {
+    "notice_days": "ימי ההודעה המוקדמת לפני שינוי"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "notice_days": {
+      "value": 14,
+      "unit": "days",
+      "source": {
+        "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",
+        "title": "Banking (Service to Customer) (Proper Disclosure) Rules 1992, consolidated, s.5(א)",
+        "publisher": "Bank of Israel",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BRK-21"
+      ],
+      "state": "sourced",
+      "notes": "At least two weeks' notice before a change in account terms or fee tariffs (s.5(א)(1)); a change in the client's favour may be notified up to three business days after. Consolidated text current to 30.12.2014; later amendments not checked (BRK OQ13)."
+    }
+  },
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-22"
+}

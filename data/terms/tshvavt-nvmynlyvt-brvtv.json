@@ -1,0 +1,23 @@
+{
+  "id": "tshvavt-nvmynlyvt-brvtv",
+  "he": "תשואות נומינליות ברוטו",
+  "en": null,
+  "meaning": "תשואות לפני ניכוי דמי ניהול ולפני מס, ובלי התאמה לעליית המחירים במשק",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [
+    "תשואה נומינלית ברוטו",
+    "התשואה הינה לפני ניכוי דמי ניהול"
+  ],
+  "rule_ids": [
+    "CAT-04",
+    "CAT-32"
+  ],
+  "source": {
+    "url": "https://gemelnet.cma.gov.il/views/dafMakdim_Link3.aspx",
+    "title": "Gemel-Net, מקורות המידע והנחות מערכת (CMA)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

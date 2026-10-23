@@ -1,0 +1,25 @@
+{
+  "id": "mslkt-hbvrsh",
+  "he": "מסלקת הבורסה",
+  "en": null,
+  "meaning": "הגוף של הבורסה שמבטיח שכל עסקה בבורסה תושלם, ושבו מוחזקים ניירות הערך הנסחרים בה.",
+  "where": [
+    "statement"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "BRK-07",
+    "BRK-10",
+    "BRK-12"
+  ],
+  "source": {
+    "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a",
+    "title": "TASE, דוח תקופתי לשנת 2025",
+    "publisher": "Tel Aviv Stock Exchange",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

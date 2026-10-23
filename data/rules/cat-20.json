@@ -1,0 +1,15 @@
+{
+  "id": "CAT-20",
+  "title": "Money-market (כספי) track: the member chooses a holding period of 6, 12 or 24 months and the track the money moves to after it",
+  "title_he": "מסלול כספי: בוחרים תקופת החזקה ומסלול המשך",
+  "text_he": "עמית שבוחר מסלול השקעה כספי חייב לבחור בהצטרפות תקופת החזקה, חצי שנה, שנה או שנתיים, ואת המסלול שאליו הגוף יעביר את הכסף בסוף התקופה. חודש עד חודשיים לפני סוף התקופה הגוף מודיע לעמית, והעמית רשאי לבחור מסלול אחר או תקופה כספית חדשה. הכלל לא חל על מי שבחר במסלול הכספי לפני תחילת החוזר. אם הסעיף חל גם על קופת גמל להשקעה לא כתוב בנוסח, ותנאי ההצטרפות למסלול הכספי של מיטב בקופת גמל להשקעה לא נראו.",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "tracks-catalogue-and-decoder.md",
+  "checked": "2026-10-22"
+}

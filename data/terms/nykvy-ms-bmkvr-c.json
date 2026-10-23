@@ -1,0 +1,26 @@
+{
+  "id": "nykvy-ms-bmkvr-c",
+  "he": "ניכוי מס במקור",
+  "en": null,
+  "meaning": "מס שהקופה מורידה מהסכום ומעבירה לרשות המסים כבר בזמן המשיכה, לפני שהכסף מגיע אליכם",
+  "where": [
+    "form",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXH-15",
+    "TXK-07"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+    "title": "Tax Authority, לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה לחודש ינואר 2026 ואילך (מעודכן לאפריל 2026)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

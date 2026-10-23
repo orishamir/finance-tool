@@ -1,0 +1,34 @@
+{
+  "id": "vtk",
+  "he": "ותק",
+  "en": null,
+  "meaning": "הזמן שעבר ממועד התשלום הראשון לקרן; לפיו נקבע מתי אפשר למשוך בפטור ממס",
+  "where": [
+    "app",
+    "bylaws",
+    "form"
+  ],
+  "wrapper_ids": [
+    "ira-hishtalmut",
+    "ira-provident",
+    "keren-hishtalmut"
+  ],
+  "variants": [
+    "וותק",
+    "וותק הפקדות"
+  ],
+  "rule_ids": [
+    "IRA-23",
+    "KH-11",
+    "KH-14",
+    "TXH-09",
+    "TXH-10"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "Tax Authority, דע זכויותיך וחובותיך 2025",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -4,6 +4,7 @@ import type { SearchEntry } from "../lib/search";
 
 export async function loader() {
   const { loadCma, loadTerms, loadWrappers } = await import("../lib/data.server");
+  const { loadCatalog, loadExposures } = await import("../lib/instruments.server");
   const { normalize } = await import("../lib/search");
   const { search } = await import("../copy");
   const entries: SearchEntry[] = [];
@@ -13,11 +14,23 @@ export async function loader() {
   }
   const cma = loadCma();
   for (const t of cma.tracks) entries.push({ kind: "track", name: t.name, line: `${t.companyName} · ${t.classification}`, href: `/companies/${t.companyId}/${t.fundId}`, norm: normalize(t.name) });
+  const exposures = loadExposures();
+  for (const e of exposures) for (const name of [...e.names.he, ...e.names.en]) entries.push({ kind: "guide", name, line: search.groups.guide, href: `/exposure/${e.id}`, norm: normalize(name) });
+  // every name the catalogue records: the track when it names one, else the company page, else the product's guide page
+  for (const c of loadCatalog()) {
+    const first = cma.tracks.find((t) => c.maps_to.track_ids.includes(t.fundId));
+    const wrapper = wrappers.find((w) => w.id === c.maps_to.wrapper_id);
+    const href = first ? (c.maps_to.track_ids.length === 1 ? `/companies/${first.companyId}/${first.fundId}` : `/companies/${first.companyId}`) : wrapper ? `/guide/${wrapper.id}` : "/guide";
+    const line = [first?.companyName, wrapper?.names.he[0]].filter(Boolean).join(" · ");
+    for (const name of c.names.he) entries.push({ kind: "product", name, line, href, norm: normalize(name) });
+  }
   for (const term of loadTerms()) {
-    const guide = term.where.map((w) => w.match(/^guide:([a-z0-9-]+)$/)?.[1]).find((id) => id && wrappers.some((w) => w.id === id));
-    if (!guide) continue;
-    const page = wrappers.find((w) => w.id === guide)!.names.he[0]!;
-    for (const name of [term.he, ...term.variants]) entries.push({ kind: "term", name, line: `${search.termLine} ${page}`, href: `/guide/${guide}#terms`, norm: normalize(name) });
+    const guide = term.wrapperIds.find((id) => wrappers.some((w) => w.id === id));
+    const exposure = guide ? undefined : term.exposureIds.find((id) => exposures.some((e) => e.id === id));
+    if (!guide && !exposure) continue;
+    const page = guide ? wrappers.find((w) => w.id === guide)!.names.he[0]! : exposures.find((e) => e.id === exposure)!.names.he[0]!;
+    const href = guide ? `/guide/${guide}#terms` : `/exposure/${exposure}#terms`;
+    for (const name of [term.he, ...term.variants]) entries.push({ kind: "term", name, line: `${search.termLine} ${page}`, href, norm: normalize(name) });
   }
   return Response.json(entries);
 }

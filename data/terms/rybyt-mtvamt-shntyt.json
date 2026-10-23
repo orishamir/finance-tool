@@ -1,0 +1,27 @@
+{
+  "id": "rybyt-mtvamt-shntyt",
+  "he": "ריבית מתואמת שנתית",
+  "en": null,
+  "meaning": "הריבית לשנה כשמחשבים גם ריבית על ריבית, לפי מספר הפעמים שהריבית מתווספת במהלך השנה",
+  "where": [
+    "ad",
+    "provider-site"
+  ],
+  "wrapper_ids": [
+    "bank-deposit"
+  ],
+  "variants": [
+    "ריבית מתואמת"
+  ],
+  "rule_ids": [
+    "BANK-04",
+    "BANK-11"
+  ],
+  "source": {
+    "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
+    "title": "Banking Rules (Customer Service) (Fair Disclosure and Delivery of Documents) 1992, consolidated to 30.12.2014, BoI copy",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

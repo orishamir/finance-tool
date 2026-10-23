@@ -88,7 +88,8 @@ const terms = {
 function withP05(values: Partial<Record<string, number>>, extra: Record<string, ValueObject> = {}) {
   return parameters.map((p) => {
     if (p.method_id !== "P-05") return p;
-    const inputs = { ...(p.inputs as Record<string, ValueObject>) };
+    // The optional income is left out unless a test passes it in `extra`.
+    const { annual_income: _income, ...inputs } = { ...(p.inputs as Record<string, ValueObject>) };
     for (const [k, v] of Object.entries(values)) inputs[k] = { ...inputs[k]!, value: v! };
     return { ...p, inputs: { ...inputs, ...extra } };
   });
@@ -165,6 +166,26 @@ describe("a record's values reach the engine unchanged", () => {
     });
   });
 
+  it("P-05's annual income is the run's income unless the caller's profile has one, and an entered income replaces it", () => {
+    expect((parameters.find((p) => p.method_id === "P-05")!.inputs as Record<string, ValueObject>).annual_income!.value).toBe(144_000);
+    const byDefault = runInputs(records.kgl, parameters, terms.kgl, { scenarioIncome: true });
+    expect(byDefault.input).toMatchObject({ profile: { annualIncome: 144_000 } });
+    // Without the option (a comparison) no income is invented for the person.
+    expect((runInputs(records.kgl, parameters, terms.kgl).input as { profile: object }).profile).not.toHaveProperty("annualIncome");
+    const own = runInputs(records.kgl, parameters, terms.kgl, { scenarioIncome: true, profile: { annualIncome: 90_000 } });
+    expect(own.input).toMatchObject({ profile: { annualIncome: 90_000 } });
+    const entered = runInputs(records.kgl, parameters, terms.kgl, { scenarioIncome: true, entered: { annual_income: vo(200_000, "nis", "entered") } });
+    expect(entered.input).toMatchObject({ profile: { annualIncome: 200_000 } });
+    fails(() => runInputs(records.kgl, parameters, terms.kgl, { entered: { annual_income: vo(200_000, "pct_per_year", "entered") } }), /annual_income.*nis/);
+  });
+
+  it("a P-05 without annual_income still builds a deposit run, with no income in the profile", () => {
+    const six = withP05({});
+    const plan = runInputs(records.deposit, six, terms.deposit, { scenarioIncome: true });
+    expect(plan.input).toMatchObject({ profile: {} });
+    expect((plan.input as { profile: object }).profile).not.toHaveProperty("annualIncome");
+  });
+
   it("the instrument terms are passed as given, and the study fund's A-12 with them", () => {
     const hishtalmut = { employment: "employee" as const, monthlySalary: 12_000, clockStartMonth: 0 };
     const fees = { deposit: 0, balance: 0.006, direct: 0.0011, discount: { months: 24, listRate: 0.0105 } };
@@ -186,8 +207,8 @@ describe("a missing or unexpected field fails loudly", () => {
   });
 
   it("in a formula the record names that the engine does not compute yet", () => {
-    const pension = { ...records.kgl, deposit_side_tax: { formula: "F-30", rule_ids: [] } };
-    fails(() => runInputs(pension, parameters, terms.kgl), /F-30.*R2/);
+    const later = { ...records.kgl, deposit_side_tax: { formula: "F-61", rule_ids: [] } };
+    fails(() => runInputs(later, parameters, terms.kgl), /F-61.*R3/);
     fails(() => runInputs({ ...records.kgl, tax_at_exit: { ...records.kgl.tax_at_exit, formula: "F-99" } }, parameters, terms.kgl), /F-99/);
   });
 

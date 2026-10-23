@@ -1,0 +1,229 @@
+{
+  "id": "ETF-41",
+  "title": "TA-125's own rules: the shares of TA-35 and TA-90, a weight cap the index committee set at 5% (the rules allow up to 10%), entry and exit by average-market-value rank in the two parent indices",
+  "title_he": "ת״א 125: מדדי האם, תקרת משקל, כניסה",
+  "strength": "primary",
+  "dimensions": [
+    "currency",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-15",
+  "figures": {
+    "constituents": {
+      "value": 125,
+      "unit": "count",
+      "source": {
+        "url": "https://market.tase.co.il/he/market_data/index/137/about",
+        "title": "TASE, ת\"א-125 אודות המדד (index 137; read in Chrome 2026-10-23)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-41"
+      ],
+      "state": "sourced",
+      "notes": "Index page \"מס' ני\"ע במדד: 125\"; annex 3: the shares of TA-35 (35) and TA-90 (90)."
+    },
+    "weight_cap": {
+      "value": 5,
+      "unit": "pct",
+      "source": {
+        "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
+        "title": "TASE, מדריך מעו\"ף - הנחיות על פי החלק השביעי לתקנון, update 173 to 25.12.2025 (annex 3 page stamped 2.11.2023)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-41"
+      ],
+      "state": "sourced",
+      "notes": "Annex 3 footnote: \"ועדת מדדים החליטה כי תקרת המשקל של המדד תהיה 5%\" (page stamped 2.11.2023); the index page states \"מגבלת משקל 5%\" (read 2026-10-23)."
+    },
+    "weight_cap_ceiling": {
+      "value": 10,
+      "unit": "pct",
+      "source": {
+        "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
+        "title": "TASE, מדריך מעו\"ף - הנחיות על פי החלק השביעי לתקנון, update 173 to 25.12.2025 (annex 3 page stamped 2.11.2023)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-41"
+      ],
+      "state": "sourced",
+      "notes": "Annex 3 section 5: the committee sets the cap \"ובלבד שלא תעלה על 10%\"."
+    },
+    "ta35_constituents": {
+      "value": 35,
+      "unit": "count",
+      "source": {
+        "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
+        "title": "TASE, מדריך מעו\"ף - הנחיות על פי החלק השביעי לתקנון, update 173 to 25.12.2025 (annex 3 page stamped 2.11.2023)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-41"
+      ],
+      "state": "sourced",
+      "notes": "Annex 1 section 3."
+    },
+    "ta35_entry_rank": {
+      "value": 30,
+      "unit": "count",
+      "source": {
+        "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
+        "title": "TASE, מדריך מעו\"ף - הנחיות על פי החלק השביעי לתקנון, update 173 to 25.12.2025 (annex 3 page stamped 2.11.2023)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-41"
+      ],
+      "state": "sourced",
+      "notes": "Annex 1 section 4b: a share enters TA-35 when ranked 30 or higher by average market value."
+    },
+    "ta35_exit_rank": {
+      "value": 40,
+      "unit": "count",
+      "source": {
+        "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
+        "title": "TASE, מדריך מעו\"ף - הנחיות על פי החלק השביעי לתקנון, update 173 to 25.12.2025 (annex 3 page stamped 2.11.2023)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-41"
+      ],
+      "state": "sourced",
+      "notes": "Annex 1 section 4b: a share leaves TA-35 when ranked 40 or lower."
+    },
+    "ta90_constituents": {
+      "value": 90,
+      "unit": "count",
+      "source": {
+        "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
+        "title": "TASE, מדריך מעו\"ף - הנחיות על פי החלק השביעי לתקנון, update 173 to 25.12.2025 (annex 3 page stamped 2.11.2023)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-41"
+      ],
+      "state": "sourced",
+      "notes": "Annex 4 section 3."
+    },
+    "ta90_entry_rank": {
+      "value": 80,
+      "unit": "count",
+      "source": {
+        "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
+        "title": "TASE, מדריך מעו\"ף - הנחיות על פי החלק השביעי לתקנון, update 173 to 25.12.2025 (annex 3 page stamped 2.11.2023)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-41"
+      ],
+      "state": "sourced",
+      "notes": "Annex 4 section 4b: a share enters TA-90 when ranked 80 or higher among the shares meeting its thresholds."
+    },
+    "ta90_exit_rank": {
+      "value": 100,
+      "unit": "count",
+      "source": {
+        "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
+        "title": "TASE, מדריך מעו\"ף - הנחיות על פי החלק השביעי לתקנון, update 173 to 25.12.2025 (annex 3 page stamped 2.11.2023)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-41"
+      ],
+      "state": "sourced",
+      "notes": "Annex 4 section 4b: a share leaves TA-90 when ranked 100 or lower."
+    },
+    "max_foreign_shares_per_country": {
+      "value": 4,
+      "unit": "count",
+      "source": {
+        "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
+        "title": "TASE, מדריך מעו\"ף - הנחיות על פי החלק השביעי לתקנון, update 173 to 25.12.2025 (annex 3 page stamped 2.11.2023)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-41"
+      ],
+      "state": "sourced",
+      "notes": "Annexes 1 and 4 footnote: the committee decided that no more than 4 foreign shares linked to the same country are included."
+    }
+  },
+  "text_he": "לפי הנחיות הבורסה, המדד מורכב מהמניות שנכללות בשני מדדי האם שלו, מדד שלושים וחמש המניות הגדולות ומדד התשעים שאחריהן, ומתעדכן יחד איתם. בכל אחד משני המדדים האלה המניות מדורגות לפי שווי השוק הממוצע: מניה נכנסת כשהיא מדורגת מספיק גבוה ויוצאת כשהיא יורדת מתחת לדירוג היציאה, כך שלא מחליפים מניה על כל שינוי קטן. ועדת המדדים קובעת תקרת משקל למניה בודדת במדד, עד הגבול שההנחיות מתירות, והיא קבעה חמישה אחוזים.",
+  "figure_names_he": {
+    "constituents": "מספר ניירות הערך במדד",
+    "weight_cap": "תקרת המשקל למניה",
+    "weight_cap_ceiling": "הגבול העליון לתקרת המשקל בהנחיות",
+    "ta35_constituents": "מספר המניות בת\"א-35",
+    "ta35_entry_rank": "דירוג כניסה לת\"א-35",
+    "ta35_exit_rank": "דירוג יציאה מת\"א-35",
+    "ta90_constituents": "מספר המניות בת\"א-90",
+    "ta90_entry_rank": "דירוג כניסה לת\"א-90",
+    "ta90_exit_rank": "דירוג יציאה מת\"א-90",
+    "max_foreign_shares_per_country": "מספר מרבי של מניות חו\"ל מאותה מדינה"
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-23"
+}

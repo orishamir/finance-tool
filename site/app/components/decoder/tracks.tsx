@@ -4,8 +4,11 @@ import { useId, type ReactNode } from "react";
 import { Link } from "react-router";
 import { company as copy } from "../../copy";
 import type { Track } from "../../lib/data.server";
+import type { SiteValue } from "../../lib/value";
+import { FeeNum } from "./fees";
 import { IconAlert, IconDrillIn, IconSearch } from "../icons";
 import { useOpenSearch } from "../shell";
+import { RowFit } from "../compare/fit";
 import { Card, cx, Tag } from "../ui";
 
 export type Resolution = "distinct" | "twice" | "unresolved";
@@ -14,6 +17,8 @@ export interface TrackRowView {
   track: Track;
   href: string;
   isDefault?: boolean;
+  /** The regulator's balance-fee average of the track (not a ranking: the list keeps its order). */
+  fee?: SiteValue;
 }
 
 export interface Group {
@@ -24,7 +29,7 @@ export interface Group {
 }
 
 /** Rows that share a name are drawn together under one banner; the resolution comes from the data. */
-export function groupTracks(rows: TrackRowView[]): Group[] {
+export function groupTracks(rows: TrackRowView[], known: { name: string; trackIds: number[]; resolution: Resolution }[] = []): Group[] {
   const byName = new Map<string, TrackRowView[]>();
   for (const r of rows) {
     const list = byName.get(r.track.name) ?? [];
@@ -40,7 +45,9 @@ export function groupTracks(rows: TrackRowView[]): Group[] {
     if (list.length === 1) out.push({ key: `${r.track.fundId}`, tracks: list });
     else {
       const ids = new Set(list.map((x) => x.track.fundId));
-      out.push({ key: `dup-${r.track.name}`, tracks: list, dup: ids.size === list.length ? "distinct" : ids.size === 1 ? "twice" : "unresolved" });
+      // the catalogue's own resolution (near_duplicates) wins when it names this name and one of these tracks
+      const given = known.find((k) => k.name === r.track.name && (k.trackIds.length === 0 || k.trackIds.some((id) => ids.has(id))));
+      out.push({ key: `dup-${r.track.name}`, tracks: list, dup: given?.resolution ?? (ids.size === list.length ? "distinct" : ids.size === 1 ? "twice" : "unresolved") });
     }
   }
   return out;
@@ -64,7 +71,8 @@ function Holds({ t }: { t: Track }) {
   );
 }
 
-export function TrackList({ groups }: { groups: Group[] }) {
+export function TrackList({ groups, feeHead }: { groups: Group[]; feeHead?: string }) {
+  const cols = feeHead ? 6 : 5;
   const bannerId = useId();
   return (
     <>
@@ -85,7 +93,7 @@ export function TrackList({ groups }: { groups: Group[] }) {
           ),
         )}
       </Card>
-      <Card className="hidden md:block p-0 md:p-0 overflow-hidden">
+      <Card className="hidden md:block p-0 md:p-0 overflow-x-auto">
         <table className="tbl">
           <thead>
             <tr>
@@ -96,7 +104,8 @@ export function TrackList({ groups }: { groups: Group[] }) {
               <th scope="col">{copy.pcColumns.fund}</th>
               <th scope="col">{copy.pcColumns.classification}</th>
               <th scope="col">{copy.pcColumns.holds}</th>
-              <th scope="col" className="w-10">
+              {feeHead && <th scope="col" className="!whitespace-normal min-w-28">{feeHead}</th>}
+              <th scope="col" className="w-10 md:w-auto">
                 <span className="sr-only">{copy.pcColumns.open}</span>
               </th>
             </tr>
@@ -108,7 +117,7 @@ export function TrackList({ groups }: { groups: Group[] }) {
                 rows.push(
                   <tr key={`${g.key}-banner`} className="dup-row">
                     <td className="dup-bar" />
-                    <td colSpan={5} className="!pb-1 !border-b-0">
+                    <td colSpan={cols} className="!pb-1 !border-b-0">
                       <span className="dup-banner !p-0">
                         <IconAlert size={16} className="text-caution shrink-0" />
                         {copy.sameName[g.dup]}
@@ -133,10 +142,14 @@ export function TrackList({ groups }: { groups: Group[] }) {
                     <td className="text-muted-foreground">
                       <bdi>{r.track.subSpecialization}</bdi>
                     </td>
+                    {feeHead && <td>{r.fee && <FeeNum value={r.fee} size="cell" />}</td>}
                     <td>
-                      <Link to={r.href} aria-label={r.track.name} className="inline-flex size-target items-center justify-center -my-2">
-                        <IconDrillIn className="text-muted-foreground" />
-                      </Link>
+                      <span className="inline-flex items-center gap-2 whitespace-nowrap">
+                        <RowFit track={r.track} />
+                        <Link to={r.href} aria-label={r.track.name} className="inline-flex size-target items-center justify-center -my-2">
+                          <IconDrillIn className="text-muted-foreground" />
+                        </Link>
+                      </span>
                     </td>
                   </tr>,
                 );
@@ -151,18 +164,31 @@ export function TrackList({ groups }: { groups: Group[] }) {
 
 function TrackRow({ row }: { row: TrackRowView }) {
   const { track: t } = row;
+  // The fee is a provenance button, which cannot sit inside the link: it gets its own line under it.
   return (
-    <Link to={row.href} className="track">
-      <span className="flex flex-col gap-0.5 min-w-0">
-        <span className="font-medium flex flex-wrap items-center gap-2">
-          <bdi>{t.name}</bdi>
-          {row.isDefault && <Tag tone="parameter">{copy.default}</Tag>}
+    <div className={cx("track", row.fee && "!flex-col !items-stretch !gap-1")}>
+      <Link to={row.href} className="flex items-center justify-between gap-3 min-w-0">
+        <span className="flex flex-col gap-0.5 min-w-0">
+          <span className="font-medium flex flex-wrap items-center gap-2">
+            <bdi>{t.name}</bdi>
+            {row.isDefault && <Tag tone="parameter">{copy.default}</Tag>}
+          </span>
+          <TrackLine t={t} />
+          <Holds t={t} />
+          <RowFit track={t} />
         </span>
-        <TrackLine t={t} />
-        <Holds t={t} />
-      </span>
-      <IconDrillIn className="text-muted-foreground shrink-0" />
-    </Link>
+        <span className="flex items-center gap-2 shrink-0">
+          <IconDrillIn className="text-muted-foreground" />
+        </span>
+      </Link>
+      {row.fee && (
+        <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5">
+          {copy.feeRow}
+          {t.dataset === "pensia-net" && <> {copy.feeRowWhole}</>}:
+          <FeeNum value={row.fee} />
+        </span>
+      )}
+    </div>
   );
 }
 

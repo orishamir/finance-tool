@@ -1,0 +1,24 @@
+{
+  "id": "nyhvl-atzmy",
+  "he": "ניהול עצמי",
+  "en": null,
+  "meaning": "אפשרות בקופה בניהול אישי שבה אתם עצמכם קונים ומוכרים את ההשקעות",
+  "where": [
+    "form"
+  ],
+  "wrapper_ids": [
+    "ira-hishtalmut",
+    "ira-provident"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "IRA-05"
+  ],
+  "source": {
+    "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
+    "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), תש\"ע-2009 (Nevo mirror)",
+    "publisher": "Nevo legal database",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

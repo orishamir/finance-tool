@@ -1,0 +1,30 @@
+{
+  "id": "tknyt-chyskvn",
+  "he": "תכנית חיסכון",
+  "en": null,
+  "meaning": "חיסכון בבנק שאליו מפקידים סכומים מדי פעם, למשל כל חודש בהוראת קבע, לתקופה מוסכמת בריבית",
+  "where": [
+    "ad",
+    "app",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "savings-plan"
+  ],
+  "variants": [
+    "תוכנית חיסכון",
+    "חיסכון"
+  ],
+  "rule_ids": [
+    "BANK-02",
+    "BANK-28",
+    "TXI-07"
+  ],
+  "source": {
+    "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
+    "title": "Banking Rules (Customer Service) (Fair Disclosure and Delivery of Documents) 1992, consolidated to 30.12.2014, BoI copy",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

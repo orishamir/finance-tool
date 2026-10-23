@@ -1,0 +1,31 @@
+{
+  "id": "mank-c",
+  "he": "מענק",
+  "en": null,
+  "meaning": "סכום חד־פעמי שהביטוח הלאומי מוסיף לחיסכון בגילים קבועים; את המענק האחרון מקבלים רק אם לא משכו קודם",
+  "where": [
+    "provider-site",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "child-savings-bank",
+    "child-savings-provident"
+  ],
+  "variants": [
+    "מענק המשיכה הראשון",
+    "מענק המשיכה השני",
+    "מענק ההתמדה"
+  ],
+  "rule_ids": [
+    "CS-13",
+    "CS-15",
+    "TXK-19"
+  ],
+  "source": {
+    "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
+    "title": "National Insurance, משיכת החיסכון",
+    "publisher": "National Insurance Institute",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "kvpt-bryrt-mchdl",
+  "he": "קופת ברירת מחדל",
+  "en": null,
+  "meaning": "הקופה שאליה המעסיק מפקיד את כספי הפנסיה כשלא בוחרים קופה בעצמכם",
+  "where": [
+    "payslip"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "PEN-06",
+    "PEN-23"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf",
+    "title": "CMA circular 2024-9-6 \"הוראות לעניין בחירת קופת גמל - עדכון\", 25.8.2024",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

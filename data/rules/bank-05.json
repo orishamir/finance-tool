@@ -1,0 +1,60 @@
+{
+  "id": "BANK-05",
+  "title": "Auto-renewing deposits and the renewal notice",
+  "title_he": "פיקדון מתחדש אוטומטית והודעת החידוש",
+  "text_he": "פיקדון שמתחדש אוטומטית לפי הוראה קבועה של הלקוח לא נחשב לפיקדון חדש לעניין חובת הגילוי בהסכם. בפיקדון לשנה או יותר הבנק חייב להודיע על מועד החידוש בחלון ימים לפני המועד, לא מוקדם מהמקסימום ולא מאוחר מהמינימום, ולציין שהריבית לתקופת החידוש מופיעה בלוח בסניף מיום החידוש. בפיקדונות קצרים משנה, לוח הריביות המרוכז של הבנק מראה אם יש חידוש אוטומטי וכמה תקופות חידוש אפשריות.",
+  "figure_names_he": {
+    "renewal_notice_min_days": "מינימום ימים לפני החידוש לשליחת ההודעה",
+    "renewal_notice_max_days": "מקסימום ימים לפני החידוש לשליחת ההודעה"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "renewal_notice_min_days": {
+      "value": 21,
+      "unit": "days",
+      "source": {
+        "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
+        "title": "Banking Rules (Customer Service) (Fair Disclosure and Delivery of Documents) 1992, consolidated to 30.12.2014, BoI copy, s.9",
+        "publisher": "Bank of Israel (Banking Supervision)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BANK-05"
+      ],
+      "state": "sourced",
+      "notes": "For a deposit of one year or more that renews automatically: the bank notifies the renewal date no later than 21 days before it (disclosure rules s.9)."
+    },
+    "renewal_notice_max_days": {
+      "value": 45,
+      "unit": "days",
+      "source": {
+        "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
+        "title": "Banking Rules (Customer Service) (Fair Disclosure and Delivery of Documents) 1992, consolidated to 30.12.2014, BoI copy, s.9",
+        "publisher": "Bank of Israel (Banking Supervision)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BANK-05"
+      ],
+      "state": "sourced",
+      "notes": "The same notice is sent no earlier than 45 days before the renewal date (disclosure rules s.9)."
+    }
+  },
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-22"
+}

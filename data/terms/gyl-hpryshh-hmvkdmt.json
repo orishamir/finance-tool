@@ -1,0 +1,25 @@
+{
+  "id": "gyl-hpryshh-hmvkdmt",
+  "he": "גיל הפרישה המוקדמת",
+  "en": null,
+  "meaning": "גיל שקבוע בחוק גיל פרישה, שממנו אפשר להעביר כסף מגמל להשקעה לקופה שמשלמת קצבה",
+  "where": [
+    "form"
+  ],
+  "wrapper_ids": [
+    "kupat-gemel-lehashkaa"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "KGL-09",
+    "KH-12",
+    "TXK-10"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
+    "title": "חוק גיל פרישה, התשס\"ד-2004 (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

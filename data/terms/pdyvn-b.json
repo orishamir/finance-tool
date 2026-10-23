@@ -1,0 +1,27 @@
+{
+  "id": "pdyvn-b",
+  "he": "פדיון",
+  "en": null,
+  "meaning": "מכירת יחידות של קרן בחזרה לקרן עצמה; לעניין מס נחשבת למכירה רגילה.",
+  "where": [
+    "app",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "ETF-04",
+    "ETF-26",
+    "TXS-09",
+    "TXS-21"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+    "title": "פקודת מס הכנסה (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

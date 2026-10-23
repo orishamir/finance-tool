@@ -1,0 +1,14 @@
+{
+  "id": "GOV-07",
+  "title": "Makam auction circular: what the Bank of Israel announces before each auction",
+  "title_he": "חוזר המכרז: מה בנק ישראל מודיע לפני כל מכרז",
+  "text_he": "כל מכרז נערך במועד ובתנאים של חוזר שבנק ישראל מפרסם זמן קצר לפני יום המכרז. החוזר עשוי לכלול את סוג המכרז, יום המכרז, השעה האחרונה להזמנות ויום התשלום, ולכל סדרה את מספרה בבנק ישראל, מספר הנייר בבורסה, מועד הפדיון, הימים לפדיון, הכמות המוצעת, כמות להזמנות לא תחרותיות ותשואה מרבית. החוזר מתפרסם באתר בנק ישראל ודרך רויטרס או בלומברג, והפרטים נשלחים לחברי המסלקה במערכת הממוחשבת.",
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "government-bonds-and-makam.md",
+  "checked": "2026-10-22"
+}

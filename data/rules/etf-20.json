@@ -1,0 +1,13 @@
+{
+  "id": "ETF-20",
+  "title": "Israeli fund units are denominated in shekels and identified by a TASE security number; 'סל' marks an ETF, 'מחקה' an open tracking fund",
+  "title_he": "יחידות קרן ישראלית: בשקלים, מספר נייר, סל או מחקה",
+  "text_he": "יחידות של קרן ישראלית נקובות בשקלים, ולכל קרן יש מספר נייר ערך בבורסה. השם מסמן את הסוג: המילה סל לקרן סל והמילה מחקה לקרן מחקה פתוחה, ואחריהן קוד החשיפה והמדד. שמות קרנות משתנים: קרן הסל של אי.בי.אי נקראה בעבר על שם פסגות. אם מספרי הניירות עוקבים אחרי תבנית לפי סוג קרן נצפה בדוגמאות בלבד.",
+  "strength": "institution",
+  "dimensions": [
+    "currency"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-22"
+}

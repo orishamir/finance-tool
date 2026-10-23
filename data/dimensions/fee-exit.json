@@ -1,0 +1,30 @@
+{
+  "id": "fee-exit",
+  "he": "עמלת יציאה",
+  "one_line": "עמלה או קנס שנגבים כשמושכים, פודים או עוזבים, בעיקר לפני הזמן",
+  "source": {
+    "url": "docs/product.md#33-dimension-checklist-or-what-you-are-not-considering",
+    "title": "product.md 3.3 and glossary.md section 2",
+    "publisher": "project",
+    "strength": "primary",
+    "checked": "2026-10-23"
+  },
+  "rule_ids": [
+    "BANK-06",
+    "BRK-16",
+    "BRK-18",
+    "BRK-24",
+    "CS-16",
+    "ETF-05",
+    "IRA-15",
+    "IRA-22",
+    "KGL-08",
+    "MF-22",
+    "PF-01",
+    "PF-19",
+    "SW-26",
+    "SW-32",
+    "SW-33",
+    "SW-34"
+  ]
+}

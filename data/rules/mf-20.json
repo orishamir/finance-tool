@@ -1,0 +1,13 @@
+{
+  "id": "MF-20",
+  "title": "Trustee fee (שכר נאמן)",
+  "title_he": "שכר הנאמן בקרן נאמנות",
+  "text_he": "שכר הנאמן הוא תנאי בהסכם הקרן, ונגבה כמו דמי הניהול: אחוז מהנכסים, מחושב כל יום ויורד מנכסי הקרן. לא נמצאה תקרה. הטווח והממוצע שמדריך הרשות מביא ישנים, ונתון עדכני לא נמצא.",
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-22"
+}

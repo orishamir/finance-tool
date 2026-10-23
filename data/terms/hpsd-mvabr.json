@@ -1,0 +1,24 @@
+{
+  "id": "hpsd-mvabr",
+  "he": "הפסד מועבר",
+  "en": null,
+  "meaning": "הפסד שלא נוצל באותה שנה ומקטין רווחי הון בשנים הבאות, בתנאי שהוגש דוח שנתי למס הכנסה.",
+  "where": [
+    "tax-form"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXF-23",
+    "TXS-18"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

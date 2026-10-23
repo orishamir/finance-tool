@@ -1,0 +1,24 @@
+{
+  "id": "krn-y",
+  "he": "קרן י'",
+  "en": null,
+  "meaning": "שם של תיק השקעות בחברת ביטוח, שמחזיק כספי פוליסות משתתפות ברווחים לפי התקופה שבה הונפקו.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [
+    "קרן ט'",
+    "קרן ח'",
+    "קרן י' חדשה"
+  ],
+  "rule_ids": [
+    "INS-16",
+    "INS-23"
+  ],
+  "source": {
+    "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=c6c62cc7-fe02-4b18-8f3e-813abfbb4647&filters=%7B%22REPORT_PERIOD%22%3A202609%7D&fields=FUND_ID,FUND_NAME,PARENT_COMPANY_NAME,FUND_CLASSIFICATION,TOTAL_ASSETS,AVG_ANNUAL_MANAGEMENT_FEE,AVG_DEPOSIT_FEE&limit=500&sort=PARENT_COMPANY_NAME%20asc",
+    "title": "CMA Bituach-Net, REPORT_PERIOD 202609 (data.gov.il)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

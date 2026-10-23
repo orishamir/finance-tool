@@ -1,0 +1,22 @@
+{
+  "id": "tshvah-mtztbrt-mtchylt-hshnh",
+  "he": "תשואה מצטברת מתחילת השנה",
+  "en": null,
+  "meaning": "התשואה של המסלול מתחילת השנה ועד חודש הדיווח, לפני ניכוי דמי ניהול",
+  "where": [
+    "statement"
+  ],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "CAT-04",
+    "CAT-05"
+  ],
+  "source": {
+    "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+    "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

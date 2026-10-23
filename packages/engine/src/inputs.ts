@@ -8,13 +8,14 @@ import type { BondInput } from "./ledgers/bond.ts";
 import type { Profile } from "./ledgers/common.ts";
 import type { DepositInput } from "./ledgers/deposit.ts";
 import type { MakamInput } from "./ledgers/makam.ts";
+import type { PensionInput } from "./ledgers/pension.ts";
 import type { ProvidentInput } from "./ledgers/provident.ts";
 import { NotEvaluatedError, type Fund, type SecuritiesInput } from "./ledgers/securities.ts";
 import { formulas, pending, runs } from "./registry.ts";
+import { RecordInputError } from "./resolver.ts";
 import type { RunContext, RunResult } from "./result.ts";
 
-/** A record, a parameter or an input does not make a run; the message names the field. */
-export class RecordInputError extends Error {}
+export { RecordInputError };
 
 /** P-05 inputs (data-schema §3.2) and the unit each must carry. */
 const p05Units = {
@@ -24,9 +25,13 @@ const p05Units = {
   "A-01": "pct_per_year",
   "A-02": "pct_per_year",
   cash_rate: "pct_per_year",
+  annual_income: "nis",
 } as const satisfies Record<string, ValueObject["unit"]>;
 
 export type P05Input = keyof typeof p05Units;
+
+/** The only P-05 input a record may leave out: it is read by runs that need an income (TXH-05), not by every run. */
+const p05Optional: readonly P05Input[] = ["annual_income"];
 
 /**
  * What the run needs that neither the wrapper record nor P-05 holds: the provider's fees and the
@@ -38,6 +43,10 @@ export interface InstrumentTerms {
   fees?: ProvidentInput["fees"];
   /** Keren hishtalmut: A-12 employment, salary and the start of the 6-year clock. */
   hishtalmut?: ProvidentInput["hishtalmut"];
+  /** Pension and provident fund for annuity: A-12 employment, income, existing deposits, employer rates. */
+  pension?: PensionInput["pension"];
+  /** Pension: A-17 insurance cost as a share of each deposit, entered by the person (F-53, G-12). Not for a provident fund for annuity (PEN-35). */
+  insurance?: PensionInput["insurance"];
   /** Deposits and current accounts: A-15 term and A-16 linkage. */
   deposit?: Pick<DepositInput["deposit"], "termMonths" | "linkage">;
   /** Funds: the fund's kind and drag (A-06 to A-11). */
@@ -58,21 +67,27 @@ export interface RunInputOptions {
   entered?: Partial<Record<P05Input, ValueObject>>;
   /** A-12 to A-14, as entered. */
   profile?: Profile;
+  /** Take P-05's illustrative `annual_income` as the profile's income when the profile has none. Only the guide page's illustrative run sets it; a comparison never invents an income for the person. */
+  scenarioIncome?: boolean;
 }
 
 export type RunPlan =
   | { run: "runProvident"; input: ProvidentInput }
+  | { run: "runPension"; input: PensionInput }
   | { run: "runDeposit"; input: DepositInput }
   | { run: "runSecurities"; input: SecuritiesInput }
   | { run: "runMakam"; input: MakamInput }
   | { run: "runBond"; input: BondInput };
 
-type Family = "provident" | "deposit" | "securities" | "makam" | "bond";
+type Family = "provident" | "pension" | "deposit" | "securities" | "makam" | "bond";
 
 /** The run each wrapper uses, and the instrument terms it takes (required, then optional). */
 const runOf: Partial<Record<WrapperId, Family>> = {
   "kupat-gemel-lehashkaa": "provident",
   "keren-hishtalmut": "provident",
+  "pension-comprehensive": "pension",
+  "pension-general": "pension",
+  "provident-for-annuity": "pension",
   "bank-deposit": "deposit",
   "savings-plan": "deposit",
   "current-account": "deposit",
@@ -85,9 +100,6 @@ const runOf: Partial<Record<WrapperId, Family>> = {
 };
 
 const notRun: Partial<Record<WrapperId, string>> = {
-  "pension-comprehensive": "deposit-side credit F-30 to F-32 and exit F-49 come in R2",
-  "pension-general": "deposit-side credit F-30 to F-32 and exit F-49 come in R2",
-  "provident-for-annuity": "deposit-side credit F-30 to F-32 and exit F-49 come in R2",
   "child-savings-provident": "runs on the NII amounts (F-54), not on P-05",
   "child-savings-bank": "runs on the NII amounts (F-54), not on P-05",
   "ira-provident": "exit F-48 and F-49 are blocked (G-03, G-06)",
@@ -95,6 +107,7 @@ const notRun: Partial<Record<WrapperId, string>> = {
 
 const termKeys: Record<Family, { required: (keyof InstrumentTerms)[]; optional: (keyof InstrumentTerms)[] }> = {
   provident: { required: ["fees"], optional: [] },
+  pension: { required: ["fees", "pension"], optional: ["insurance"] },
   deposit: { required: ["deposit"], optional: [] },
   securities: { required: ["fund", "tariff"], optional: ["broker", "currency"] },
   makam: { required: ["tariff"], optional: ["makam"] },
@@ -104,7 +117,9 @@ const termKeys: Record<Family, { required: (keyof InstrumentTerms)[]; optional: 
 /** Fields of each nested term; any other field (a rate, a yield) would override P-05, so it is an error. */
 const nestedKeys: Partial<Record<keyof InstrumentTerms, string[]>> = {
   fees: ["deposit", "balance", "direct", "discount"],
-  hishtalmut: ["employment", "monthlySalary", "clockStartMonth"],
+  hishtalmut: ["employment", "monthlySalary", "clockStartMonth", "earlyWithdrawal", "employerRate"],
+  pension: ["employment", "monthlySalary", "annualIncome", "existingEmployeeRate", "employer"],
+  insurance: ["rate"],
   deposit: ["termMonths", "linkage"],
   currency: ["returnIn", "fxChange"],
   ira: ["managerFee", "clockStartMonth"],
@@ -158,9 +173,12 @@ export function runInputs(
   if (!Number.isInteger(months)) throw new RecordInputError(`P-05 horizon_years: ${p05.horizon_years} years is not a whole number of months`);
   const goal = { amountNow: p05.amount_now, monthly: p05.monthly_deposit, months };
   const inflation = p05["A-02"] / 100;
-  // P-05's cash rate stands in for the sourced rates A-20 to A-25 of cash-like products until R2.
+  // P-05's cash rate is the default for a cash-like product; a comparison replaces it per candidate with the
+  // product's sourced or entered rate (A-20 to A-25, `withCashRate`).
   const cashRate = p05.cash_rate / 100;
-  const profile = options.profile ?? {};
+  // P-05's income is a default for the illustrative run only: the caller's own income (the person's entered income) wins.
+  const profile: Profile = { ...(options.profile ?? {}) };
+  if (options.scenarioIncome && profile.annualIncome === undefined && p05.annual_income !== undefined) profile.annualIncome = p05.annual_income;
   const t = instrument;
 
   switch (family) {
@@ -174,6 +192,19 @@ export function runInputs(
       };
       if (t.hishtalmut) input.hishtalmut = t.hishtalmut;
       return { run: "runProvident", input };
+    }
+    case "pension": {
+      // The pension's net outlay is P-05's monthly deposit (F-30 finds the gross deposit); A-17 is entered.
+      const input: PensionInput = {
+        wrapper: w.id as PensionInput["wrapper"],
+        goal,
+        market: { grossReturn: p05["A-01"] / 100, inflation },
+        fees: t.fees!,
+        insurance: t.insurance ?? { rate: 0 },
+        pension: t.pension!,
+        profile,
+      };
+      return { run: "runPension", input };
     }
     case "deposit": {
       const kind = depositKind[w.id as keyof typeof depositKind];
@@ -200,6 +231,8 @@ export function runPlanned(plan: RunPlan, ctx: RunContext): RunResult {
   switch (plan.run) {
     case "runProvident":
       return runs.runProvident(plan.input, ctx);
+    case "runPension":
+      return runs.runPension(plan.input, ctx);
     case "runDeposit":
       return runs.runDeposit(plan.input, ctx);
     case "runSecurities":
@@ -252,12 +285,17 @@ function checkTerms(id: WrapperId, family: Family, t: InstrumentTerms) {
   for (const key of lines ? Object.keys(t.tariff!) : []) {
     if (!lines!.includes(key)) throw new RecordInputError(`instrument.tariff.${key} is not read by the ${family} run for ${id}`);
   }
+  // A-17: a pension fund needs the insurance cost, entered; a provident fund for annuity has none (PEN-35).
+  if (family === "pension") {
+    if (id === "provident-for-annuity" && t.insurance) throw new RecordInputError(`instrument.insurance is not an input for ${id}: it has no pooled insurance (PEN-35)`);
+    if (id !== "provident-for-annuity" && !t.insurance) throw new RecordInputError(`instrument.insurance is missing: ${id} needs the insurance cost A-17 (entered by the person, G-12)`);
+  }
   const kinds = fundKinds[id];
   if (kinds && !kinds.includes(t.fund!.kind)) throw new RecordInputError(`instrument.fund.kind "${t.fund!.kind}" is not a fund of ${id}`);
 }
 
-/** P-05's six inputs as numbers in their units, each replaced by the person's entered value when there is one. */
-function scenario(parameters: readonly unknown[], entered: Partial<Record<string, ValueObject>>): Record<P05Input, number> {
+/** P-05's seven inputs (the seventh optional) as numbers in their units, each replaced by the person's entered value when there is one. */
+function scenario(parameters: readonly unknown[], entered: Partial<Record<string, ValueObject>>): Record<Exclude<P05Input, "annual_income">, number> & { annual_income?: number } {
   const found = parameters.filter((p) => (p as { method_id?: unknown })?.method_id === "P-05");
   if (found.length !== 1) throw new RecordInputError(`data/parameters/ holds ${found.length} records for P-05; the run needs exactly one`);
   const p = parse(parameterRecord, found[0], "P-05");
@@ -277,6 +315,7 @@ function scenario(parameters: readonly unknown[], entered: Partial<Record<string
     const own = entered[key];
     const where = own ? `entered ${key}` : `P-05 inputs.${key}`;
     const raw = own ?? (inputs as Record<string, unknown>)[key];
+    if (raw === undefined && p05Optional.includes(key)) continue;
     if (raw === undefined) throw new RecordInputError(`${where} is missing`);
     const v = parse(valueObject, raw, where);
     if (own && v.state !== "entered") throw new RecordInputError(`${where}: a value the person entered has state "entered", not "${v.state}"`);

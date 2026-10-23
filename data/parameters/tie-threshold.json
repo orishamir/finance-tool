@@ -18,6 +18,7 @@
     "notes": ""
   },
   "rationale": "Two options whose real values at the horizon differ by less than 0.5% of the larger one are shown as a tie. A difference that small is not worth acting on.",
+  "rationale_he": "שתי אפשרויות שהערכים הריאליים שלהן באופק נבדלים בפחות מ-0.5% מהגדול מביניהם מוצגות כתיקו. הפרש קטן כל כך לא שווה לפעול עליו.",
   "signed_off_by": "founder",
   "signed_off_on": "2026-10-22",
   "shown_as": "site parameter"

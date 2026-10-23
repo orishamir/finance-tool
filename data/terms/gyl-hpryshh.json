@@ -1,0 +1,27 @@
+{
+  "id": "gyl-hpryshh",
+  "he": "גיל הפרישה",
+  "en": null,
+  "meaning": "הגיל שקבוע בחוק גיל פרישה; מגיל זה התקופה למשיכה בפטור מקרן השתלמות מתקצרת",
+  "where": [
+    "bylaws",
+    "form"
+  ],
+  "wrapper_ids": [
+    "keren-hishtalmut"
+  ],
+  "variants": [
+    "גיל פרישה"
+  ],
+  "rule_ids": [
+    "KH-12",
+    "TXH-10"
+  ],
+  "source": {
+    "url": "https://www.nevo.co.il/law_html/law01/255_001b.htm",
+    "title": "פקודת מס הכנסה, s.1 definitions (Nevo mirror)",
+    "publisher": "Nevo legal database",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

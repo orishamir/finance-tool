@@ -1,0 +1,60 @@
+{
+  "id": "PF-04",
+  "title": "Cap for a new comprehensive pension fund: 0.5% a year of balance and 6% of deposits",
+  "title_he": "תקרת דמי הניהול לקרן פנסיה חדשה מקיפה",
+  "text_he": "חברה מנהלת של קרן פנסיה חדשה מקיפה רשאית לגבות מהיתרה של כל עמית עד תקרת דמי הניהול השנתיים מהיתרה, ומהתשלומים שמועברים לקרן בעדו עד תקרת דמי הניהול מההפקדה. למקבלי קצבת זקנה תקרה נמוכה יותר, ויש כלל נפרד לקצבאות מתחת לקצבת המינימום. בקרן פנסיה הנחה חלה על כל היתרה, וכשיש הנחות שונות על יתרות שונות, הגבוהה חלה על הכול. מנורה מבטחים מפרסמת את אותן תקרות.",
+  "figure_names_he": {
+    "balance_cap": "תקרת דמי הניהול השנתיים מהיתרה",
+    "deposit_cap": "תקרת דמי הניהול מההפקדה"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-deposit"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "balance_cap": {
+      "value": 0.5,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 3(א) (Hebrew Wikisource; Nevo mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-04"
+      ],
+      "state": "sourced",
+      "notes": "Maximum fee of a new comprehensive pension fund (קרן חדשה מקיפה) per year of each member's balance. Old-age annuitants from 1 Feb 2022: up to 0.3% (reg. 3(א)(1א)). Corroborated by Menora Mivtachim's published caps for 2026 (institution)."
+    },
+    "deposit_cap": {
+      "value": 6,
+      "unit": "pct_of_deposit",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 3(א): \"מתוך התשלומים המועברים לקרן בשל כל עמית – בשיעור שלא יעלה על 6%\"",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-04"
+      ],
+      "state": "sourced",
+      "notes": "Maximum fee on payments transferred to a new comprehensive pension fund for each member."
+    }
+  },
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-22"
+}

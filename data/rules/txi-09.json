@@ -1,0 +1,81 @@
+{
+  "id": "TXI-09",
+  "title": "Withholding by other payers (bond coupons, makam discount)",
+  "title_he": "ניכוי במקור אצל משלם שאינו בנק: קופונים וניכיון מק״ם",
+  "text_he": "משלם שאינו בנק, שמשלם ריבית ליחיד, מנכה מס במקור בשיעור הניכוי הרגיל; על נכס שאינו צמוד למדד הוא מנכה בשיעור הניכוי לנכס לא צמוד, למעט תוכנית חיסכון בפוליסת ביטוח משתתפת ברווחים. ריבית על אג״ח או מילווה מדינה שהונפקו לפני היום הקובע מנוכית בשיעור הניכוי לאג״ח ישנות, כשהיא חייבת במס. 'מילווה מדינה' כולל מק״ם, ולכן הניכיון על מק״ם מנוכה בשיעור לנכס לא צמוד. ריבית שפטורה לפי התקנות על מילוות מדינה לא מנוכית.",
+  "figure_names_he": {
+    "withholding_rate_unlinked": "שיעור הניכוי במקור על ריבית לא צמודה",
+    "withholding_rate_linked": "שיעור הניכוי במקור על ריבית צמודה",
+    "withholding_rate_pre_2000_bond": "שיעור הניכוי במקור על אג״ח שהונפקו לפני היום הקובע"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "tax-during",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "withholding_rate_unlinked": {
+      "value": 15,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
+        "title": "Income Tax (Withholding from Interest, Dividend and Certain Profits) Regulations 2005, consolidated to 27.12.2017 (copy on the National Insurance site)",
+        "publisher": "Finance Ministry; copy on National Insurance site",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXI-09"
+      ],
+      "state": "sourced",
+      "notes": "A payer other than a bank withholds 15% on interest on an asset not linked to the index (reg. 5). A \"state loan\" (reg. 1) includes a loan under the Short-Term Loan Law 1984, so the makam discount and unlinked government-bond coupons are withheld at 15%."
+    },
+    "withholding_rate_linked": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
+        "title": "Income Tax (Withholding from Interest, Dividend and Certain Profits) Regulations 2005, consolidated to 27.12.2017 (copy on the National Insurance site)",
+        "publisher": "Finance Ministry; copy on National Insurance site",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXI-09"
+      ],
+      "state": "sourced",
+      "notes": "A payer other than a bank withholds 25% on interest paid to an individual (reg. 5), for example the real coupon of a CPI-linked government bond (TXI-14)."
+    },
+    "withholding_rate_pre_2000_bond": {
+      "value": 35,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
+        "title": "Income Tax (Withholding from Interest, Dividend and Certain Profits) Regulations 2005, consolidated to 27.12.2017 (copy on the National Insurance site)",
+        "publisher": "Finance Ministry; copy on National Insurance site",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXI-09"
+      ],
+      "state": "sourced",
+      "notes": "Interest on a bond or state loan issued before 8 May 2000 (\"היום הקובע\") is withheld at 35% where taxable. Legacy only; nothing in scope predates it."
+    }
+  },
+  "il_finance_file": "tax-interest-deposits-bonds.md",
+  "checked": "2026-10-22"
+}

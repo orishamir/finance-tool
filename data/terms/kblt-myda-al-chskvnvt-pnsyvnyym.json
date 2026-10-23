@@ -1,0 +1,25 @@
+{
+  "id": "kblt-myda-al-chskvnvt-pnsyvnyym",
+  "he": "קבלת מידע על חסכונות פנסיוניים",
+  "en": null,
+  "meaning": "שירות חינמי של רשות שוק ההון לאיתור חשבונות פנסיה, גמל, השתלמות וביטוח לא פעילים על שמכם",
+  "where": [],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [
+    "הר הכסף"
+  ],
+  "rule_ids": [
+    "PF-32"
+  ],
+  "source": {
+    "url": "https://www.gov.il/he/service/pension_savings_search",
+    "title": "CMA, קבלת מידע על חסכונות פנסיוניים (service page)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "id": "amyt-shkyr-ee56",
+  "he": "עמית שכיר",
+  "en": null,
+  "meaning": "הפקדה לקופה בתור שכירים, דרך המעסיק; ההבחנה משפיעה על הטבות המס ועל חישוב הביטוח",
+  "where": [
+    "statement",
+    "tax-form"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "PEN-09",
+    "TXP-02",
+    "TXP-26"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

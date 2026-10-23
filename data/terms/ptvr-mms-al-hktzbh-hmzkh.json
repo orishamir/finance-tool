@@ -1,0 +1,30 @@
+{
+  "id": "ptvr-mms-al-hktzbh-hmzkh",
+  "he": "פטור ממס על הקצבה המזכה",
+  "en": null,
+  "meaning": "החלק מהקצבה בפרישה שלא משלמים עליו מס, עד תקרה; מבקשים אותו מרשות המסים",
+  "where": [
+    "tax-form"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [
+    "קיצבה - שיעור הפטור"
+  ],
+  "rule_ids": [
+    "TXP-14",
+    "TXP-15",
+    "TXP-16",
+    "TXP-28"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+    "title": "Tax Authority, monthly deductions booklet from January 2026, updated April 2026",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

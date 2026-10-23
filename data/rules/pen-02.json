@@ -1,0 +1,39 @@
+{
+  "id": "PEN-02",
+  "title": "Waiting period",
+  "title_he": "תקופת ההמתנה עד תחילת ההפקדות",
+  "text_he": "עובד זכאי לביטוח פנסיוני ולהפקדות מיד בתום תקופת ההמתנה מתחילת העבודה. מי שמתחיל לעבוד כשהוא כבר מבוטח בביטוח פנסיוני זכאי להפקדות מהיום הראשון: הן משולמות אחרי שלושה חודשי עבודה או בסוף שנת המס, המוקדם מביניהם, רטרואקטיבית ליום הראשון, ותקופת ההמתנה לא חלה עליו. תקופות המעבר הארוכות יותר מתחילת הצו כבר חלפו.",
+  "figure_names_he": {
+    "waiting_months": "תקופת ההמתנה (חודשים)"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "eligibility",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "waiting_months": {
+      "value": 6,
+      "unit": "months",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
+        "title": "צו הרחבה (נוסח משולב) לפנסיה חובה, 2011, section 6(ה)-(ו) (p. 6941): \"מיד בתום 6 חודשים מתחילת העבודה\"",
+        "publisher": "Minister of Industry, Trade and Labour (scan hosted on gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "PEN-02"
+      ],
+      "state": "sourced",
+      "notes": "An employee already insured in a pension product when starting work is entitled from the first day, paid retroactively after 3 months or at the end of the tax year."
+    }
+  },
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,16 @@
+{
+  "id": "CAT-38",
+  "title": "How funds report fee rates to the CMA: the monthly report's quarterly fee codes",
+  "title_he": "איך הקופות מדווחות דמי ניהול לרשות: קודי הדיווח הרבעוניים",
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation",
+    "fee-management-balance",
+    "fee-deposit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "text_he": "קופות וקרנות מדווחות לרשות דמי ניהול מנכסים ומהפקדות מדי רבעון, כשיעור שנגבה בפועל מסך הנכסים או מסך ההפקדות. מבנה כזה הוא ממוצע המשוקלל בנכסים, אך לא נאמר שהנתון המפורסם נגזר ממנו. לכן שיטת השקלול של הנתון באתר נשארת שאלה פתוחה.",
+  "il_finance_file": "tracks-catalogue-and-decoder.md",
+  "checked": "2026-10-23"
+}

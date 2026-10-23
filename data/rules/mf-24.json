@@ -1,0 +1,80 @@
+{
+  "id": "MF-24",
+  "title": "Distribution fee (עמלת הפצה): caps by fund type",
+  "title_he": "עמלת הפצה: תקרות לפי סוג קרן",
+  "text_he": "מנהל קרן רשאי לשלם למפיץ עמלת הפצה על יחידות שמוחזקות דרכו, באותו שיעור ובאותם תנאים לכל מנהל שמבקש את אותו שירות. העמלה לא תעלה על תקרה שנתית שמחולקת לשיעור יומי ומוחלת על שווי היחידות במחיר הפדיון של אותו יום, ותקרה זו נקבעת לפי סוג הקרן: קרן כספית, קרן שרובה אג״ח קצר ופיקדונות, וכל קרן אחרת (כולל קרן חוץ). סוג הקרן מופיע בתשקיף. לפי מדריך הרשות, בפועל המנהלים משלמים את העמלה לבנקים לפי הסכמי הפצה.",
+  "figure_names_he": {
+    "distribution_fee_cap_money_market": "תקרת עמלת ההפצה: קרן כספית",
+    "distribution_fee_cap_type1": "תקרת עמלת ההפצה: קרן שרובה אג״ח קצר ופיקדונות",
+    "distribution_fee_cap_type3": "תקרת עמלת ההפצה: כל קרן אחרת"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "fee-management-balance"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "distribution_fee_cap_money_market": {
+      "value": 0.1,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(עמלת_הפצה)",
+        "title": "תקנות השקעות משותפות בנאמנות (עמלת הפצה), התשס\"ו-2006, regulation 3 (type 4 fund: 0.1%/365 a day) (Wikisource mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "MF-24"
+      ],
+      "state": "sourced",
+      "notes": "Maximum distribution fee a fund manager may pay a distributor for a money-market fund (type 4), as a daily rate on the units' value at that day's redemption price. Paid by the manager out of its own fee, not charged to the holder while a distribution agreement exists (MF-26). Leumi's tariff (01/10/2026) lists the same rate."
+    },
+    "distribution_fee_cap_type1": {
+      "value": 0.2,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(עמלת_הפצה)",
+        "title": "Distribution fee regulations, regulation 3 (type 1 fund)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "MF-24"
+      ],
+      "state": "sourced",
+      "notes": "Type 1: maximum equity exposure grade 1 and at least 85% in short-term government bonds, top-rated short-term bonds or deposits."
+    },
+    "distribution_fee_cap_type3": {
+      "value": 0.35,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(עמלת_הפצה)",
+        "title": "Distribution fee regulations, regulation 3 (type 3 fund)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "MF-24"
+      ],
+      "state": "sourced",
+      "notes": "Type 3: a foreign fund or any fund that is neither type 1 nor type 4."
+    }
+  },
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-22"
+}

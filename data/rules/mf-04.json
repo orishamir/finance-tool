@@ -1,0 +1,14 @@
+{
+  "id": "MF-04",
+  "title": "Units are offered to the public only under an ISA-permitted prospectus, for up to 12 months at a time",
+  "title_he": "יחידות מוצעות לציבור רק לפי תשקיף שהרשות התירה",
+  "text_he": "יחידות בקרן מוצעות לציבור רק לפי תשקיף שרשות ניירות ערך התירה לפרסם. בקרן פתוחה שיחידותיה כבר בידי הציבור, תקופת ההצעה מתחילה בתאריך התשקיף ומסתיימת לכל המאוחר כעבור שנה. לפי מדריך הרשות, כל הקרנות של מנהל אחד מוצעות בתשקיף עיקרי אחד שמתפרסם פעם בשנה, קרן חדשה מקבלת גם תשקיף משלה, ומידע מאוחר יותר מופיע בדוח השנתי, בדוחות החודשיים ובדיווחים המיידיים. קרן כספית מתחדשת מוצעת בתשקיף אחד לכל הסדרות שלה.",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "regulator",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-22"
+}

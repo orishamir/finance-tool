@@ -1,0 +1,31 @@
+{
+  "id": "mslvl-hshkah-d",
+  "he": "מסלול השקעה",
+  "en": null,
+  "meaning": "אפשרות השקעה בתוך קופה, עם מדיניות השקעה משלה; בקופה אחת יש בדרך כלל כמה מסלולים",
+  "where": [
+    "app",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [
+    "מסלולי השקעה"
+  ],
+  "rule_ids": [
+    "CAT-09",
+    "CAT-15",
+    "PF-07",
+    "PF-23"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+    "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

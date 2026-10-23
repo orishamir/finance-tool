@@ -206,6 +206,12 @@
   --chart-entered: var(--palette-blue-400); /* dashed: a series that rests on a return the person entered */
   --chart-blocked: var(--blocked); /* hatch over a part the method cannot compute */
   --chart-marker: var(--palette-neutral-400); /* "locked until", exit points */
+  /* The comparison chart (design-system 6.5): the ranking is ordinal, so one hue in steps (lighter is better);
+     the baseline is neutral. Width and a direct label also tell the lines apart. */
+  --chart-option-1: var(--palette-teal-200);
+  --chart-option-2: var(--palette-teal-400);
+  --chart-option-3: var(--palette-teal-600);
+  --chart-baseline: var(--palette-neutral-300);
 }
 
 /* ---------------------------------------------------------------- Non-colour tokens */
@@ -346,4 +352,8 @@
   --color-chart-entered: var(--chart-entered);
   --color-chart-blocked: var(--chart-blocked);
   --color-chart-marker: var(--chart-marker);
+  --color-chart-option-1: var(--chart-option-1);
+  --color-chart-option-2: var(--chart-option-2);
+  --color-chart-option-3: var(--chart-option-3);
+  --color-chart-baseline: var(--chart-baseline);
 }

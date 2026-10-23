@@ -1,0 +1,41 @@
+{
+  "id": "TXH-01",
+  "title": "Employer deposit within the limits is not taxed at deposit (employee)",
+  "title_he": "הפקדת המעסיק בגבולות לא ממוסה בהפקדה",
+  "text_he": "סכומים שהמעסיק מפקיד לקרן השתלמות בעד העובד בגבולות המותרים נחשבים הכנסת עבודה רק כשהעובד מקבל אותם, ולא כשהם משולמים לקרן. הגבול הוא השיעור שבהסכם הקיבוצי, עד שיעור הפקדת המעסיק הפטורה מהמשכורת הקובעת; לעובדי הוראה בקרנות מסוימות השיעור גבוה יותר. המשכורת הקובעת מוגבלת בתקרה שמופיעה בכלל נפרד. לפי נייר הכלכלן הראשי, ההפקדה בגבולות פטורה גם מביטוח לאומי ומס בריאות; חוק הביטוח הלאומי עצמו לא נקרא.",
+  "figure_names_he": {
+    "employer_exempt_pct": "שיעור הפקדת המעסיק הפטורה מהמשכורת הקובעת"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "tax-at-deposit",
+    "deposit-ceiling",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "employer_exempt_pct": {
+      "value": 7.5,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance, s.3(e) (\"סעיף 3(ה)\"): employer payments within the collective-agreement rate, capped at 7.5% of the determining salary (8.4% for a teacher), are work income only \"בעת שקיבל אותם\"",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXH-01"
+      ],
+      "state": "sourced",
+      "notes": "Share of the determining salary (TXH-02, capped at 15,712 NIS a month) the employer may pay into a study fund without the payment being taxed as salary when paid. 8.4% applies only to members of three named teachers' funds. The resulting maximum exempt employer deposit for 2026 (7.5% x 188,544 = 14,140.80 NIS a year) is a computation, not a published figure. Lowering the salary ceiling is the option the Chief Economist preferred (TXH-22)."
+    }
+  },
+  "il_finance_file": "tax-hishtalmut.md",
+  "checked": "2026-10-22"
+}

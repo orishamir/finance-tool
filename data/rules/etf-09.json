@@ -1,0 +1,80 @@
+{
+  "id": "ETF-09",
+  "title": "Tracking difference is reported per year in the annual report; two S&P 500 examples for 2025",
+  "title_he": "פער העקיבה בדוח השנתי: שתי דוגמאות על המדד האמריקני",
+  "text_he": "הדוח השנתי של קרן מחקה ישראלית משווה את התשואה השקלית של הקרן לשינוי בנכס המעקב שנקבע בתשקיף, ומביא את הסבר המנהל לפער. אלה שתי דוגמאות על אותו מדד אמריקני, לא כלל על כל הקרנות: קרן הסל של אי.בי.אי פיגרה אחרי נכס המעקב, והמנהל מייחס את הפער בעיקר להוצאות הקרן; הקרן המחקה הפתוחה של ילין לפידות עלתה עליו, והמנהל מייחס את העודף לחשיפה דרך נגזרים כשיתר הנכסים מושקעים בנכסים נזילים. המספרים הם לשנה קלנדרית אחת ומתחלפים כל שנה.",
+  "figure_names_he": {
+    "ibi_sp500_fund_return_2025": "תשואת קרן הסל של אי.בי.אי על S&P 500 בשנה המדווחת",
+    "ibi_sp500_tracking_asset_return_2025": "שינוי נכס המעקב באותה שנה",
+    "yalin_sp500_fund_return_2025": "תשואת הקרן המחקה של ילין לפידות על S&P 500 בשנה המדווחת"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "fee-management-balance"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "ibi_sp500_fund_return_2025": {
+      "value": 1.85,
+      "unit": "pct",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
+        "title": "IBI, annual report of אי.בי.אי. סל (4D) S&P 500 (1148162), 31.12.2025",
+        "publisher": "IBI Mutual Funds (Maya)",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "ETF-09"
+      ],
+      "state": "sourced",
+      "notes": "IBI S&P 500 ETF (1148162), calendar 2025: fund 1.85% vs tracking asset 2.61%; the manager attributes the gap mainly to expenses of about 0.8085%."
+    },
+    "ibi_sp500_tracking_asset_return_2025": {
+      "value": 2.61,
+      "unit": "pct",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
+        "title": "IBI, annual report of אי.בי.אי. סל (4D) S&P 500 (1148162), 31.12.2025",
+        "publisher": "IBI Mutual Funds (Maya)",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "ETF-09"
+      ],
+      "state": "sourced"
+    },
+    "yalin_sp500_fund_return_2025": {
+      "value": 2.98,
+      "unit": "pct",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
+        "title": "Yalin Lapidot, annual report of ילין לפידות מחקה (4D) S&P 500 (5139282), 31.12.2025",
+        "publisher": "Yalin Lapidot (Maya)",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "ETF-09"
+      ],
+      "state": "sourced",
+      "notes": "Yalin Lapidot open tracking fund S&P 500 (5139282), calendar 2025: fund 2.98% vs 2.61%; the manager attributes the excess to exposure through derivatives."
+    }
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-22"
+}

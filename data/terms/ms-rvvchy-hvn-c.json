@@ -1,0 +1,30 @@
+{
+  "id": "ms-rvvchy-hvn-c",
+  "he": "מס רווחי הון",
+  "en": null,
+  "meaning": "מס על הרווח כשמושכים כסף מהקופה; בגמל להשקעה החוק מסווג אותו כמס על ריבית",
+  "where": [
+    "ad",
+    "provider-site"
+  ],
+  "wrapper_ids": [
+    "child-savings-bank",
+    "child-savings-provident",
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXH-17",
+    "TXK-05",
+    "TXK-07",
+    "TXK-20"
+  ],
+  "source": {
+    "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/tax.aspx",
+    "title": "National Insurance FAQ, tax on withdrawal",
+    "publisher": "National Insurance Institute",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

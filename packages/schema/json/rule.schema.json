@@ -66,6 +66,8 @@
                 "type": "string",
                 "enum": [
                   "nis",
+                  "usd",
+                  "eur",
                   "pct",
                   "pct_per_year",
                   "pct_of_deposit",
@@ -252,6 +254,8 @@
                       "type": "string",
                       "enum": [
                         "nis",
+                        "usd",
+                        "eur",
                         "pct",
                         "pct_per_year",
                         "pct_of_deposit",
@@ -441,6 +445,8 @@
                       "type": "string",
                       "enum": [
                         "nis",
+                        "usd",
+                        "eur",
                         "pct",
                         "pct_per_year",
                         "pct_of_deposit",
@@ -618,6 +624,8 @@
                       "type": "string",
                       "enum": [
                         "nis",
+                        "usd",
+                        "eur",
                         "pct",
                         "pct_per_year",
                         "pct_of_deposit",
@@ -789,6 +797,24 @@
             }
           }
         ]
+      }
+    },
+    "title_he": {
+      "type": "string",
+      "minLength": 1
+    },
+    "text_he": {
+      "type": "string",
+      "minLength": 1
+    },
+    "figure_names_he": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
       }
     },
     "il_finance_file": {

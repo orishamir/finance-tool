@@ -1,0 +1,20 @@
+{
+  "id": "pnsyh-nt",
+  "he": "פנסיה נט",
+  "en": null,
+  "meaning": "מאגר נתונים חודשי של רשות שוק ההון על כל מסלולי קרנות הפנסיה החדשות והכלליות",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "CAT-01",
+    "CAT-29"
+  ],
+  "source": {
+    "url": "https://data.gov.il/api/3/action/package_show?id=pensia-net",
+    "title": "Pensia-Net dataset metadata (CMA via data.gov.il)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

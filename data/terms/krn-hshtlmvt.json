@@ -1,0 +1,32 @@
+{
+  "id": "krn-hshtlmvt",
+  "he": "קרן השתלמות",
+  "en": null,
+  "meaning": "חיסכון שהמעסיק ואתם מפקידים אליו מהשכר, או עצמאים בעצמם; אחרי תקופה שקבע החוק אפשר למשוך בפטור ממס",
+  "where": [
+    "ad",
+    "app",
+    "gemel-net",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "keren-hishtalmut"
+  ],
+  "variants": [
+    "קרנות השתלמות"
+  ],
+  "rule_ids": [
+    "KH-01",
+    "KH-02",
+    "KH-04",
+    "KH-10",
+    "TXH-09"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "Tax Authority, דע זכויותיך וחובותיך 2025",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

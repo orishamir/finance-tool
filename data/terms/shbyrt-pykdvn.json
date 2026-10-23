@@ -1,0 +1,26 @@
+{
+  "id": "shbyrt-pykdvn",
+  "he": "שבירת פיקדון",
+  "en": null,
+  "meaning": "משיכת כסף מפיקדון לפני סוף התקופה ושלא בתחנת יציאה; לפעמים זה לא אפשרי, ולפעמים כרוך בקנס",
+  "where": [
+    "app",
+    "provider-site"
+  ],
+  "wrapper_ids": [
+    "bank-deposit",
+    "savings-plan"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "BANK-06",
+    "BANK-14"
+  ],
+  "source": {
+    "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
+    "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24)",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

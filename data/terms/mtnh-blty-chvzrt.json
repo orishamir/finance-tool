@@ -1,0 +1,24 @@
+{
+  "id": "mtnh-blty-chvzrt",
+  "he": "מתנה בלתי חוזרת",
+  "en": null,
+  "meaning": "פתיחת קופה על שם מישהו אחר, למשל ילד: הכסף כבר לא שלכם ואי אפשר לקחת אותו בחזרה",
+  "where": [
+    "ad"
+  ],
+  "wrapper_ids": [
+    "kupat-gemel-lehashkaa"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "KGL-06",
+    "KGL-21"
+  ],
+  "source": {
+    "url": "https://www.meitav.co.il/provident_pension/provident_invest/",
+    "title": "Meitav, קופת גמל להשקעה product page",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "pdyvn-mvkdm",
+  "he": "פדיון מוקדם",
+  "en": null,
+  "meaning": "קנייה חוזרת של איגרות חוב בידי המדינה לפני מועד הפדיון, במחיר השוק; זו בחירה של המדינה בלבד",
+  "where": [],
+  "wrapper_ids": [
+    "government-bond"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "GOV-16"
+  ],
+  "source": {
+    "url": "https://www.nevo.co.il/law_html/law01/999_564.htm",
+    "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), תשס\"ו-2006 (Nevo mirror)",
+    "publisher": "Nevo legal database",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

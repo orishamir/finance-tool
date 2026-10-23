@@ -1,0 +1,26 @@
+{
+  "id": "gylvn-chdsh",
+  "he": "גילון חדש",
+  "en": null,
+  "meaning": "סוג של איגרות חוב ממשלתיות בריבית משתנה, שהריבית בהן מתעדכנת לפי התשואה של מק\"מ",
+  "where": [
+    "ad",
+    "law"
+  ],
+  "wrapper_ids": [
+    "government-bond"
+  ],
+  "variants": [
+    "גילון"
+  ],
+  "rule_ids": [
+    "GOV-14"
+  ],
+  "source": {
+    "url": "https://www.nevo.co.il/law_html/law01/221_031.htm",
+    "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), תשנ\"ט-1999 (Nevo mirror)",
+    "publisher": "Nevo legal database",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

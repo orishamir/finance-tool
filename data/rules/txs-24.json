@@ -1,0 +1,63 @@
+{
+  "id": "TXS-24",
+  "title": "Each fund's tax status is published by TASE, and some money-market funds are taxable",
+  "title_he": "מעמד המס של כל קרן מתפרסם בבורסה",
+  "text_he": "הבורסה מפרסמת בייצוא נתוני הקרנות של מאיה לכל קרן פתוחה ישראלית מעמד מס, פטורה או חייבת. ביום הבדיקה רוב הקרנות הכספיות היו פטורות ומעטות חייבות: אחת קרן כספית במטבע חוץ ואחת קרן שקלית שמחלקת כל חודש, וגם כמה קרנות חייבות אחרות הן קרנות מחלקות. מה החוסך משלם בכל מקרה נקבע לפי הכללים על קרן פטורה וקרן חייבת; הכלל הזה רק מראה שצריך לקרוא את המעמד לכל קרן בנפרד ואיפה. המספרים משתנים כשקרנות נפתחות או משתנות.",
+  "figure_names_he": {
+    "money_market_funds_count": "קרנות כספיות ברשימת הבורסה",
+    "money_market_funds_taxable": "מתוכן קרנות חייבות"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "fund-tax-track",
+    "tax-during",
+    "tax-at-exit",
+    "distribution-policy"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-15",
+  "figures": {
+    "money_market_funds_count": {
+      "value": 73,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "Maya (TASE), רשימת קרנות, \"הורדת נתונים\" export, field \"מעמד מס\", 2026-10-22",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-10-22",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "TXS-24"
+      ],
+      "state": "sourced",
+      "notes": "Money-market funds in the Maya open-end fund export on 2026-10-22. Changes as funds open or close."
+    },
+    "money_market_funds_taxable": {
+      "value": 2,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "Maya (TASE) fund export, field \"מעמד מס\", 2026-10-22",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-10-22",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "TXS-24"
+      ],
+      "state": "sourced",
+      "notes": "Taxable (\"חייבת\") money-market funds: 5103403 הראל כספית דולר נזיל חיבת (a foreign-currency fund) and 5137559 מגדל כספית מחלקת חודשי (a shekel fund that distributes monthly). The other 71 are exempt (\"פטורה\"). The status must be read per fund."
+    }
+  },
+  "il_finance_file": "tax-securities-israeli.md",
+  "checked": "2026-10-22"
+}

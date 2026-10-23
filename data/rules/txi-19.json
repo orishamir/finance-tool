@@ -1,0 +1,40 @@
+{
+  "id": "TXI-19",
+  "title": "Maximum rate vs fixed rate: people aged 60 or over can pay less than 25% on linked interest",
+  "title_he": "שיעור מרבי לעומת קבוע: הקלה בגיל הזכאות על ריבית",
+  "text_he": "המדריך מסביר ששיעור מס מיוחד הוא שיעור מרבי או שיעור קבוע: שיעור מרבי הוא תקרה, ומי שזכאי למדרגות נמוכות יותר משלם לפיהן. המדרגות המופחתות חלות על כל ההכנסה החייבת של יחיד שהגיע לגיל הזכאות, לא רק על הכנסה מיגיעה אישית; למי שצעיר יותר אין מדרגה שנמוכה מהתקרה על ריבית, ולכן התקרה קובעת. לכן אדם בגיל הזכאות עם הכנסה כוללת נמוכה יכול לשלם פחות מהתקרה על ריבית ריאלית מפיקדונות ואג״ח צמודים. השיעור על ריבית לא צמודה מנוסח כשיעור קבוע ונראה בלי הקלת מדרגות, אבל המדריך לא אומר זאת במפורש (שאלה פתוחה); הריבית היא השלב העליון, ולכן המדרגות הנמוכות מגיעות רק אחרי הכנסה אחרת.",
+  "figure_names_he": {
+    "age": "גיל הזכאות למדרגות המופחתות"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "age-or-use-exemption",
+    "tax-during"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-15",
+  "figures": {
+    "age": {
+      "value": 60,
+      "unit": "years",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance (Hebrew Wikisource mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXI-19"
+      ],
+      "state": "sourced",
+      "notes": "s.121(b)(1): the reduced brackets apply to the taxable income of an individual aged 60 or over, so a person with low total income can pay less than the 25% ceiling on real interest from linked bonds (a maximum rate). The 15% on unlinked interest is worded as a fixed rate; whether it is reduced for people aged 60 or over is TXI open question 9. Brackets are in TXG-04."
+    }
+  },
+  "il_finance_file": "tax-interest-deposits-bonds.md",
+  "checked": "2026-10-22"
+}

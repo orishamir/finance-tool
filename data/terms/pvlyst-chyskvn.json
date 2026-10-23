@@ -1,0 +1,26 @@
+{
+  "id": "pvlyst-chyskvn",
+  "he": "פוליסת חיסכון",
+  "en": null,
+  "meaning": "פוליסת ביטוח חיים שמשמשת לחיסכון: הכסף מושקע במסלול שנבחר, בלי תקרת הפקדה שנתית ובלי הטבת מס בהפקדה.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [
+    "פוליסה משתתפת ברווחים",
+    "תכנית חיסכון בפוליסת ביטוח חיים"
+  ],
+  "rule_ids": [
+    "INS-01",
+    "INS-02",
+    "INS-08",
+    "TXA-01",
+    "TXA-02"
+  ],
+  "source": {
+    "url": "https://library.mevaker.gov.il/sites/DigitalLibrary/Documents/2024/The-cost-of-living/2024-The-cost-of-living-104-Hon.pdf",
+    "title": "State Comptroller, הפיקוח של רשות שוק ההון על הגופים המוסדיים המנהלים חיסכון ארוך טווח, January 2024, summary p. 336",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "IRA-22",
+  "title": "Meitav Trade: operating fees inside the IRA",
+  "title_he": "מיטב טרייד: עמלות תפעול בתוך הקופה האישית",
+  "strength": "institution",
+  "dimensions": [
+    "fee-custody",
+    "fee-fx",
+    "fee-exit",
+    "currency"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "text_he": "במיטב טרייד בתוך קופה אישית: דמי משמרת פטורים; טיפול בריביות ודיבידנדים 0.07%; העברה שקלית 20 ₪ (60 ₪ בזה\"ב); העברת מט\"ח החוצה 20 יחידות מטבע ועמלת סוכן; העברת ניירות לבנק אחר 20 ₪ לנייר ישראלי (עד 99 ₪ לתיק) ו-10 דולר לנייר זר. עמלת המרת מט\"ח לא פורסמה (שאלה פתוחה 6).",
+  "il_finance_file": "ira-self-directed.md",
+  "checked": "2026-10-22"
+}

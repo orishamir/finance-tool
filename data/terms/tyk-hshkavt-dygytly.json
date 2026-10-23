@@ -1,0 +1,23 @@
+{
+  "id": "tyk-hshkavt-dygytly",
+  "he": "תיק השקעות דיגיטלי",
+  "en": null,
+  "meaning": "תיק השקעות מנוהל שמצטרפים אליו באינטרנט; שאלון קובע את רמת הסיכון ומדיניות ההשקעה.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [
+    "ניהול תיק השקעות דיגיטלי"
+  ],
+  "rule_ids": [
+    "MGD-19",
+    "MGD-20",
+    "MGD-21"
+  ],
+  "source": {
+    "url": "https://www.meitav.co.il/portfolio_management/manager/",
+    "title": "Meitav, מיטב מנג'ר product page",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

@@ -24,10 +24,10 @@ export function Button({ variant = "secondary", className, children, type = "but
   );
 }
 
-export function LinkButton({ to, children, className, variant = "secondary" }: { to: string; children: ReactNode; className?: string; variant?: "primary" | "secondary" }) {
+export function LinkButton({ to, children, className, variant = "secondary", onClick }: { to: string; children: ReactNode; className?: string; variant?: "primary" | "secondary"; onClick?: () => void }) {
   const styles = variant === "primary" ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-accent";
   return (
-    <Link to={to} className={cx("inline-flex items-center justify-center gap-2 font-medium h-field lg:h-10 px-5 rounded-md", styles, className)}>
+    <Link to={to} onClick={onClick} className={cx("inline-flex items-center justify-center gap-2 font-medium h-field lg:h-10 px-5 rounded-md", styles, className)}>
       {children}
     </Link>
   );

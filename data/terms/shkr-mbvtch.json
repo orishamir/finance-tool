@@ -1,0 +1,26 @@
+{
+  "id": "shkr-mbvtch",
+  "he": "שכר מבוטח",
+  "en": null,
+  "meaning": "השכר שקרן הפנסיה מסיקה מגובה ההפקדות החודשיות, ושממנו נגזר הביטוח לנכות ולמוות",
+  "where": [
+    "statement"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "PEN-09",
+    "PEN-36"
+  ],
+  "source": {
+    "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+    "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

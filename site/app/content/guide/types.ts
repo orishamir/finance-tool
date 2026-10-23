@@ -19,3 +19,13 @@ export interface GuideContent {
   risks: (p: ContentProps) => ReactNode;
   use: (p: ContentProps) => ReactNode;
 }
+
+/** Prose of an exposure guide page (flows 6.6: no timeline, no money-in-and-out section). */
+export interface ExposureContent {
+  what: (p: ContentProps) => ReactNode;
+  /** Optional line above the "how to hold it" cards (which wrappers can hold it, and any tax caveat). */
+  holdNote?: (p: ContentProps) => ReactNode;
+  risks: (p: ContentProps) => ReactNode;
+  /** Glossary terms the prose opens with <Term>, so their cards ship with the page. */
+  termIds: string[];
+}

@@ -1,0 +1,16 @@
+{
+  "id": "BRK-27",
+  "title": "Who deducts tax: the clearing house pays interest and dividends gross; an Israeli bank withholds where the law requires; a foreign broker's withholding is open",
+  "title_he": "מי מנכה מס: המסלקה, הבנק הישראלי והברוקר הזר",
+  "text_he": "מסלקת הבורסה מזכה ריבית, הפרשי הצמדה ודיבידנדים ברוטו, לפני מס. לפי התנאים של בנק לאומי, כשחוק, ובכלל זה חוק זר, או הסכם מחייבים את הבנק לנכות מס, הוא מנכה אותו מכספי הלקוח אלא אם הלקוח מציג אישור פטור. אינטראקטיב ישראל מצהירה שאינה אחראית לחיובי הברוקר הזר ואינה נותנת ייעוץ מס, ובשום מקור שנקרא לא כתוב שאינטראקטיב ברוקרס מנכה מס ישראלי. אם בתי השקעות ישראליים מנכים מס במקור, ומה ברוקר זר מנכה, הן שאלות פתוחות.",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "tax-during",
+    "reporting-obligation",
+    "foreign-withholding-domicile"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-22"
+}

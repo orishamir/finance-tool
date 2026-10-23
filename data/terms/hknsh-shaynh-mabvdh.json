@@ -1,0 +1,40 @@
+{
+  "id": "hknsh-shaynh-mabvdh",
+  "he": "הכנסה שאינה מעבודה",
+  "en": null,
+  "meaning": "בביטוח לאומי: הכנסה שלא באה משכר או מעסק, כמו ריבית, דיבידנד או שכר דירה",
+  "where": [],
+  "wrapper_ids": [
+    "bank-deposit",
+    "brokerage-account",
+    "child-savings-bank",
+    "child-savings-provident",
+    "current-account",
+    "government-bond",
+    "ira-hishtalmut",
+    "ira-provident",
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa",
+    "makam",
+    "money-market-fund-daily",
+    "money-market-fund-renewable",
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity",
+    "savings-plan"
+  ],
+  "variants": [
+    "הכנסה שלא מעבודה"
+  ],
+  "rule_ids": [
+    "TXG-26",
+    "TXG-28"
+  ],
+  "source": {
+    "url": "https://www.btl.gov.il/Insurance/National%20Insurance/type_list/income_not_from_work/Pages/HovtTaslom.aspx",
+    "title": "המוסד לביטוח לאומי, מי שיש לו הכנסה שאינה מעבודה: חובת תשלום ושיעורי דמי ביטוח",
+    "publisher": "National Insurance Institute",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

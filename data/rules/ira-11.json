@@ -1,0 +1,16 @@
+{
+  "id": "IRA-11",
+  "title": "What may be held",
+  "title_he": "במה מותר להשקיע בניהול אישי",
+  "strength": "primary",
+  "dimensions": [
+    "currency",
+    "foreign-withholding-domicile",
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "text_he": "מ-2017 מותר להשקיע רק בניירות ערך סחירים, פיקדונות, מוצרים מובנים, מטבע חוץ, יחידות בקרן נאמנות וקרנות חוץ, ורק בישראל ובמדינת חוץ מאושרת (מיטב: דירוג BBB לפחות או חברה ב-OECD). טיוטת 2025 תבטל מוצרים מובנים ותצמצם את הגדרת קרן חוץ.",
+  "il_finance_file": "ira-self-directed.md",
+  "checked": "2026-10-22"
+}

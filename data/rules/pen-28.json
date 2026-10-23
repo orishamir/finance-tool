@@ -1,0 +1,40 @@
+{
+  "id": "PEN-28",
+  "title": "Commutation and the minimum annuity amount",
+  "title_he": "היוון קצבה וסכום הקצבה המזערי",
+  "text_he": "בבקשת הקצבה עמית רשאי להוון, כלומר לקבל כסכום חד פעמי, את חלק הקצבה שמעל סכום הקצבה המזערי, וכן להוון חלק מהקצבה לתקופה מוגבלת, בתנאי שהקצבה שנשארת לא נמוכה מהסכום המזערי. סכום הקצבה המזערי מוגדר בחוק קופות הגמל ומתעדכן בתחילת כל שנה לפי המדד. אי אפשר לבטל בקשת היוון אחרי התשלום הראשון; בהיוון לתקופה הקצבה מוקטנת ואחר כך חוזרת למלואה. החוק נקרא בעותק בוויקיטקסט, ותנאי הקרן מתקנון של חברה מנהלת.",
+  "figure_names_he": {
+    "minimum_annuity": "סכום הקצבה המזערי"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "liquidity-lockup",
+    "age-or-use-exemption"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "minimum_annuity": {
+      "value": 5306,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+        "title": "Provident Funds Law, section 23(ה)-(ו) (Wikisource mirror; NIS 3,850 at 2008 values, 5,306 for 2026); Mor general bylaws 01.04.2026, s.1 \"סכום קצבה מזערי\"; Harel 2026 table",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "cpi-linked 1 jan",
+      "rule_ids": [
+        "PEN-28"
+      ],
+      "state": "sourced",
+      "notes": "Minimum annuity amount (סכום קצבה מזערי): the pension that must remain after commuting the rest into a lump sum. Updated each 1 January by the CPI."
+    }
+  },
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

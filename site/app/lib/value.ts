@@ -16,7 +16,7 @@ export interface SiteValue extends ValueObject {
   /** The weakest strength among everything a computed value rests on (D10 labels travel). */
   weakest?: Strength;
   /** For a site parameter: its rationale and sign-off (copy 3.8). */
-  parameter?: { rationale: string; signedOffOn: string | null; provisional: boolean };
+  parameter?: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null; provisional: boolean };
   /** Rules a computed value read, with the strength the run recorded. */
   rulesUsed?: { id: string; strength: Strength }[];
   /** Engine flags (G-IDs, open questions) that qualify the value. */
@@ -108,4 +108,48 @@ export function staleCma(reportPeriod: string, today: string): Staleness | null 
   const [y, m] = reportPeriod.split("-").map(Number) as [number, number];
   const limit = new Date(Date.UTC(y, m - 1 + 2, 1)).toISOString().slice(0, 10);
   return today >= limit ? { since: reportPeriod, cadence: "monthly" } : null;
+}
+
+/**
+ * A CMA fee average belongs to a calendar year (CAT-36). It is stale once the previous calendar year is
+ * older than that year, i.e. a newer year's average should have appeared in the January rows.
+ * `effectiveTo` is the fee's `effective_to` (YYYY-12-31), `today` is YYYY-MM-DD.
+ */
+export function staleCmaFee(effectiveTo: string | null, today: string): Staleness | null {
+  if (!effectiveTo) return null;
+  const feeYear = Number(effectiveTo.slice(0, 4));
+  return Number(today.slice(0, 4)) - 1 > feeYear ? { since: effectiveTo, cadence: "yearly" } : null;
+}
+
+/** A CMA fee average (data-schema 3.13) as a site value: the file's value object plus the yearly stale rule. */
+export function cmaFeeValue(v: ValueObject, today: string): SiteValue {
+  return { ...v, stale: staleCmaFee(v.effective_to, today) };
+}
+
+/** The calendar year a CMA fee average belongs to (its `effective_from`), or null. */
+export function feeYear(v: Pick<ValueObject, "effective_from">): string | null {
+  return v.effective_from ? v.effective_from.slice(0, 4) : null;
+}
+
+/**
+ * A track list ships one fee pair per track; the source, dates and rule ids are the same for all of them, so
+ * the list carries the value object once (`template`) and, per track, the number and its own note only.
+ */
+export interface CompactFee {
+  value: number | null;
+  /** Sent only when it differs from the template's note (a missing value, a negative one). */
+  notes?: string;
+}
+
+export function compactFee(v: ValueObject, template: ValueObject): CompactFee {
+  return v.notes && v.notes !== template.notes ? { value: v.value as number | null, notes: v.notes } : { value: v.value as number | null };
+}
+
+export function expandFee(c: CompactFee, template: SiteValue): SiteValue {
+  return { ...template, value: c.value, notes: c.notes ?? template.notes };
+}
+
+/** Fills "{year}" in a label with a fee's year; without a year the clause is left out. */
+export function feeLabel(template: string, year: string | null): string {
+  return year ? template.replace("{year}", year) : template.replace(/ בשנת \{year\}/, "").replace(/, \{year\}/, "").replace(" {year}", "");
 }

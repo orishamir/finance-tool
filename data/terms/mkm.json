@@ -1,0 +1,33 @@
+{
+  "id": "mkm",
+  "he": "מק\"מ",
+  "en": null,
+  "meaning": "הלוואה קצרה למדינה, עד שנה, שבנק ישראל מוכר לציבור: קונים בפחות מהסכום שמקבלים בסוף",
+  "where": [
+    "app",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "makam",
+    "money-market-fund-daily",
+    "money-market-fund-renewable"
+  ],
+  "variants": [
+    "מק\"ם",
+    "מילווה קצר מועד",
+    "מלווה קצר מועד"
+  ],
+  "rule_ids": [
+    "GOV-01",
+    "GOV-03",
+    "GOV-22",
+    "GOV-23"
+  ],
+  "source": {
+    "url": "https://www.boi.org.il/information/bank-paymnts/savingsandinvestmentproducts/makam/",
+    "title": "BoI, מק\"ם (consumer page, updated 25/02/2025)",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

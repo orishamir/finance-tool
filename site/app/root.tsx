@@ -5,6 +5,10 @@ import { InputsProvider } from "./lib/inputs";
 import NotFound from "./routes/not-found";
 import { system } from "./copy";
 
+export function links() {
+  return [{ rel: "icon", type: "image/svg+xml", href: `${import.meta.env.BASE_URL}favicon.svg` }];
+}
+
 export function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="he" dir="rtl">

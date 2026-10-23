@@ -1,0 +1,28 @@
+{
+  "id": "hshkr-hmmvtza-bmshk",
+  "he": "השכר הממוצע במשק",
+  "en": null,
+  "meaning": "נתון שהביטוח הלאומי מפרסם ומעדכן, ולפיו נקבעות תקרות רבות של הפקדות והטבות מס בפנסיה",
+  "where": [],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [
+    "שכר ממוצע במשק"
+  ],
+  "rule_ids": [
+    "PEN-04",
+    "TXP-03",
+    "TXP-10",
+    "TXP-27"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
+    "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "id": "chshb",
+  "he": "חש\"ב",
+  "en": null,
+  "meaning": "חבר בורסה שאינו בנק, למשל זרוע המסחר של בית השקעות; הבורסה מפקחת גם על יציבותו הכספית.",
+  "where": [],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [
+    "חבר שאינו בנק",
+    "חברים שאינם בנקים (חש\"בים)"
+  ],
+  "rule_ids": [
+    "BRK-01",
+    "BRK-03",
+    "BRK-04",
+    "BRK-07"
+  ],
+  "source": {
+    "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a",
+    "title": "TASE, דוח תקופתי לשנת 2025",
+    "publisher": "Tel Aviv Stock Exchange",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

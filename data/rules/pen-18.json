@@ -1,0 +1,62 @@
+{
+  "id": "PEN-18",
+  "title": "Guaranteed-return mechanism (replacing new designated bonds)",
+  "title_he": "מנגנון הבטחת התשואה במקום איגרות מיועדות",
+  "text_he": "המדינה מבטיחה השלמת תשואה לקרנות זכאיות: קרנות ותיקות וקרנות חדשות מקיפות. על חלק מהנכסים הזכאים (חלק גדול יותר לעמיתים שהיו זכאים לפני המועד שבחוק) חלה תשואת היעד השנתית; החלק המכוסה מחושב כל חודש בניכוי איגרות מיועדות, ובקרן חדשה מקיפה הוא מושקע באפיק מובטח תשואה שמשקף את המסלול הגדול ביותר. בתום כל תקופת בדיקה, תשואה מעל היעד המצטבר עוברת לקרן ייעודית, וחוסר משולם על ידי המדינה, קודם מהקרן הייעודית ואחר כך מהתקציב; ההבטחה על נכס נתון נמשכת לתקופת הבדיקה ולשתי תקופות נוספות גם אם הכללים ישתנו. איגרות מיועדות שכבר הונפקו נשארות עד פדיונן, הקרן הכללית וקופות גמל לקצבה לא זכאיות, ואם היעד צמוד למדד לא כתוב בנוסח שנקרא; החוק נקרא בעותק בוויקיטקסט.",
+  "figure_names_he": {
+    "guaranteed_share": "חלק הנכסים בהבטחת התשואה",
+    "target_return": "תשואת היעד השנתית"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "protection",
+    "real-vs-nominal",
+    "regulator"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "guaranteed_share": {
+      "value": 30,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+        "title": "Provident Funds Law, chapter ג' סימן ה'1, sections 34א-34ז (Wikisource mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2022-10-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "PEN-18"
+      ],
+      "state": "sourced",
+      "notes": "Share of a new comprehensive fund's eligible assets covered by the state return top-up (70% for members entitled before 1 January 2004). The general fund and provident funds for annuity are not eligible funds."
+    },
+    "target_return": {
+      "value": 5.15,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+        "title": "Provident Funds Law, s.34ב-34ג (Wikisource mirror): \"ריבית שנתית בשיעור 5.15%\"",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2022-10-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "PEN-18"
+      ],
+      "state": "sourced",
+      "notes": "Annual target return on the covered share, checked over each 60-month period. Whether it is CPI-linked is not stated in the text read (pension-and-gemel-lekitzba.md open question 8); REG-21 reads the same sections as target plus CPI (real). Contradiction recorded; the figure is shown, not computed with."
+    }
+  },
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

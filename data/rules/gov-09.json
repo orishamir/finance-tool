@@ -1,0 +1,39 @@
+{
+  "id": "GOV-09",
+  "title": "How tradable government bonds are issued",
+  "title_he": "איך מונפקות אג״ח ממשלתיות סחירות",
+  "text_he": "הגיוס המקומי נעשה במכרזים שבועיים. יחידת ניהול החוב משתמשת גם במכרזי החלף, שמחליפים איגרות קצרות בארוכות, ובמכרזים הפוכים שבהם המדינה קונה איגרות בחזרה לפני הפדיון. לכל מכרז יש יחס כיסוי: הכמות המבוקשת חלקי הכמות שהונפקה, והממוצע כאן הוא נתון שנתי מהדוח של היחידה. במאגר הנתונים של משרד האוצר נראו רשומות קטנות נוספות לאותן סדרות ביום שאחרי המכרז, ומה הן לא הובהר.",
+  "figure_names_he": {
+    "cover_ratio_2025": "יחס הכיסוי הממוצע במכרזים (שנה אחרונה)"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-30",
+  "figures": {
+    "cover_ratio_2025": {
+      "value": 4.5,
+      "unit": "count",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2025/he/annual-debt-report_annual-debt-report-2025-accessible-version-he.pdf",
+        "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2025 (file dated April 2026)",
+        "publisher": "Ministry of Finance, Accountant General",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2025-01-01",
+      "effective_to": "2025-12-31",
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "GOV-09"
+      ],
+      "state": "sourced",
+      "notes": "Average cover ratio (quantity demanded over quantity issued) in the 2025 weekly auctions, about 4.5 (p. 19). Auctions are weekly; the Unit also runs switch auctions (מכרזי החלף) and buyback auctions (מכרזים הפוכים; none in 2025)."
+    }
+  },
+  "il_finance_file": "government-bonds-and-makam.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,34 @@
+{
+  "id": "kvpt-gml-lktzbh-d",
+  "he": "קופת גמל לקצבה",
+  "en": null,
+  "meaning": "השם בחוק לכל קופה שמיועדת לשלם קצבה חודשית בפרישה, כולל קרנות הפנסיה",
+  "where": [
+    "law",
+    "statement",
+    "tax-form"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [
+    "קופת גמל לקיצבה",
+    "קופ\"ג לקצבה",
+    "קופ\"ג לקיצבה"
+  ],
+  "rule_ids": [
+    "PEN-34",
+    "REG-17",
+    "TXP-01",
+    "TXP-24"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+    "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

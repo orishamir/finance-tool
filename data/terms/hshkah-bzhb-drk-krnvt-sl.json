@@ -1,0 +1,27 @@
+{
+  "id": "hshkah-bzhb-drk-krnvt-sl",
+  "he": "השקעה בזהב דרך קרנות סל",
+  "en": null,
+  "meaning": "קרן נאמנות או קרן סל שעוקבת אחרי מחיר הזהב, במקום החזקה ישירה של זהב פיזי.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [
+    "השקעה בזהב דרך שוק ההון"
+  ],
+  "rule_ids": [
+    "RG-14",
+    "RG-16",
+    "RG-17",
+    "RG-19",
+    "RG-23",
+    "TX2-13",
+    "TX2-14"
+  ],
+  "source": {
+    "url": "https://www.meitav.co.il/portfolio_management/study/investing_in_gold_through_etfs/",
+    "title": "Meitav, תנודתיות בשווקים? אפשרות להשקעה בזהב דרך קרנות סל, 29.9.2025",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

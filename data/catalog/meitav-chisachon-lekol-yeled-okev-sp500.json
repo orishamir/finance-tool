@@ -1,0 +1,29 @@
+{
+  "id": "meitav-chisachon-lekol-yeled-okev-sp500",
+  "institution": "meitav",
+  "where_seen": "Meitav, חיסכון לכל ילד – מידע להורים, https://www.meitav.co.il/provident_pension/saving_for_every_kid/",
+  "seen_on": "2026-10-23",
+  "seen_by": "this collection",
+  "names": {
+    "he": [
+      "עוקב S&P 500",
+      "מסלול המחקה את תשואות מדד ה- S&P500 האמריקאי"
+    ]
+  },
+  "maps_to": {
+    "wrapper_id": "child-savings-provident",
+    "cma_fund_id": null,
+    "track_ids": []
+  },
+  "near_duplicates": [
+    {
+      "name": "מיטב חסכון לכל ילד - הלכה",
+      "track_ids": [
+        11388
+      ],
+      "resolution": "unresolved: the only Meitav child-savings track whose published policy mentions the S&P 500 (equity exposure tracking the index since 1.11.2024), but Meitav does not say the two are the same"
+    }
+  ],
+  "status": "not-catalogued-yet",
+  "notes": "The kid page (\"מהם מסלולי ההשקעה המומלצים\") says: \"במיטב קיים אף מסלול נוסף – עוקב S&P 500\", and the intro mentions \"מסלול המחקה את תשואות מדד ה- S&P500 האמריקאי\". No such track exists in the regulator's 2026-09 child-savings list for Meitav (four tracks: 11385 to 11388) or on Meitav's own child-savings reports page. Missing: a Meitav document naming the track and its fund number, or confirmation that the page means the halacha track 11388."
+}

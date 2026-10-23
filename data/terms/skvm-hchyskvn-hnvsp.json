@@ -1,0 +1,30 @@
+{
+  "id": "skvm-hchyskvn-hnvsp",
+  "he": "סכום החיסכון הנוסף",
+  "en": null,
+  "meaning": "תוספת חודשית, בגובה ההפקדה של הביטוח הלאומי, שיורדת מקצבת הילדים לחיסכון; אפשר להפעיל ולבטל בכל עת",
+  "where": [
+    "provider-site"
+  ],
+  "wrapper_ids": [
+    "child-savings-bank",
+    "child-savings-provident"
+  ],
+  "variants": [
+    "הפקדה נוספת",
+    "הכפלת סכום החיסכון",
+    "להכפיל את סכום החיסכון"
+  ],
+  "rule_ids": [
+    "CS-04",
+    "CS-21",
+    "TXK-19"
+  ],
+  "source": {
+    "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/HisahonKupot.aspx",
+    "title": "National Insurance, הכפלת סכום החיסכון",
+    "publisher": "National Insurance Institute",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "nykvy",
+  "he": "ניכוי",
+  "en": null,
+  "meaning": "סכום שמפחיתים מההכנסה שחייבת במס, ולכן החיסכון במס תלוי בשיעור המס שלכם",
+  "where": [],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXP-01",
+    "TXP-05",
+    "TXP-06"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

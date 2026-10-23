@@ -1,0 +1,199 @@
+{
+  "id": "child-savings-bank",
+  "names": {
+    "he": [
+      "חיסכון לכל ילד בבנק",
+      "חיסכון לכל ילד",
+      "חיסכון ארוך טווח לילד",
+      "תכנית חיסכון לכל ילד"
+    ],
+    "statement": [
+      "הסכם חיסכון ארוך טווח לילד",
+      "חשבון עו\"ש תמורה"
+    ],
+    "app": [
+      "חיסכון לכל ילד"
+    ]
+  },
+  "regulator": {
+    "value": "BoI",
+    "unit": "text",
+    "source": {
+      "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/default.aspx",
+      "title": "National Insurance Institute, תכנית חיסכון לכל ילד (programme page): opened \"בקופת גמל או בבנק לפי בחירתכם\"",
+      "publisher": "National Insurance Institute (BTL)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "REG-23",
+      "REG-01",
+      "CS-22",
+      "CS-25"
+    ],
+    "state": "sourced",
+    "notes": "The National Insurance Institute runs the programme and the Ministry of Finance (Accountant General) picks the banks by tender; the money is a bank deposit at one of the nine participating banks, each a banking corporation under the Supervisor of Banks (Bank of Israel). NII's page names no supervising regulator for the bank option (REG-23); Yahav's agreement refers to bank-supervision directives (institution)."
+  },
+  "fee_bases_allowed": [
+    "exit"
+  ],
+  "fee_caps": {},
+  "ceiling": null,
+  "deposit_side_tax": {
+    "formula": "F-33",
+    "rule_ids": [
+      "TXK-19"
+    ]
+  },
+  "tax_during": {
+    "formula": "F-27",
+    "rule_ids": [
+      "TXK-20"
+    ]
+  },
+  "tax_at_exit": {
+    "formula": "F-50",
+    "rule_ids": [
+      "TXK-20",
+      "TXK-23",
+      "TXI-02",
+      "TXI-03"
+    ],
+    "blocked_by": [],
+    "labels": [
+      "secondary source: 25% of the real gain on a CPI-linked track, 15% of the nominal gain on an unlinked or prime track, withheld by the bank (TXK-23; the official texts give no rate for child savings, TXK OQ1; method G-17)"
+    ]
+  },
+  "lawful_exit": {
+    "kind": "at_child_age",
+    "age": {
+      "value": 18,
+      "unit": "years",
+      "source": {
+        "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
+        "title": "National Insurance Institute, child savings: withdrawal page (from 18 with a parent's signature, from 21 alone); law 74ג(ב)",
+        "publisher": "National Insurance Institute (BTL)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "CS-14",
+        "CS-13",
+        "CS-15",
+        "CS-16"
+      ],
+      "state": "sourced",
+      "notes": "Redemption age: the child may withdraw from 18 (from the end of the month of the 18th birthday), with a parent's signature until 21 and alone from 21 (CS-14). Any withdrawal before 21 forfeits the NIS 582 (2026) age-21 grant (CS-13)."
+    },
+    "payout_business_days": {
+      "value": 3,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.leumi.co.il/Saving-Kids",
+        "title": "Bank Leumi, child-savings withdrawal page (processed within 3 business days)",
+        "publisher": "Bank Leumi",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "CS-14"
+      ],
+      "state": "sourced",
+      "notes": "Leumi's digital request withdraws the whole balance, closes the account and is processed within 3 business days; Leumi pays only into a current account held solely in the child's name. Other banks' timing was not read (CS OQ12)."
+    },
+    "text": "from 18 with a parent's signature, from 21 alone; a withdrawal before 21 forfeits the age-21 grant; before 18 only for the child's medical needs with an NII-appointed doctor's approval (CS-15); the bank track is fixed until 18 unless an exit-station type was chosen, which allows a track change every 5 years (CS-10, CS-12); money not withdrawn at 18 renews at the bank for further saving periods, and breaking such a period early can lose interest and linkage (CS-16)"
+  },
+  "switch_is_tax_event": {
+    "value": null,
+    "unit": "boolean",
+    "source": {
+      "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/mavar.aspx",
+      "title": "National Insurance Institute, child savings: change of saving body or track page (bank track only at an exit station; one-time move of future deposits to a provident fund)",
+      "publisher": "National Insurance Institute (BTL)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "CS-12",
+      "CS-10",
+      "TXK-22"
+    ],
+    "state": "sourced",
+    "notes": "Unknown: no source read states the tax treatment of a track change at a bank exit station, or of redirecting future deposits to a provident fund (TXK OQ1). The product side: the bank track can change only at an exit station, every 5 years, and only if that type was chosen; the plan can never move to another bank; since January 2025 future deposits may be redirected once to a provident fund while the balance stays at the bank (CS-12)."
+  },
+  "transfer_routes": [
+    {
+      "to": "child-savings-provident",
+      "condition": "future deposits only, once, since January 2025; the balance already saved stays at the bank",
+      "rule_ids": [
+        "CS-12",
+        "CS-21"
+      ]
+    }
+  ],
+  "eligibility": {
+    "rule_ids": [
+      "CS-02",
+      "CS-03",
+      "CS-06",
+      "CS-07",
+      "CS-21",
+      "CS-22",
+      "CS-04",
+      "CS-10"
+    ],
+    "text": "every child for whom child allowance is paid, from birth to 18; the parent who receives the allowance must actively choose one of the nine participating banks and a track (fixed unlinked, variable prime-based, or fixed CPI-linked, each with or without an exit station every 5 years) within six months of birth, because the default is a provident fund, not a bank; the parent may turn on the addition from the child allowance at any time; no other money can be deposited"
+  },
+  "protection": {
+    "rule_ids": [
+      "CS-05",
+      "CS-25",
+      "REG-23",
+      "REG-04",
+      "REG-06"
+    ],
+    "text": "the money belongs to the child, is held in trust by the parent and cannot be transferred, pledged or attached; the bank promises that the balance will not fall below the sums NII deposited, in nominal terms, and the interest is known in advance; the money is a bank deposit with no deposit insurance in Israel: if a bank fails the Governor may, with Government approval, announce a guarantee, but is not obliged to"
+  },
+  "tier": 1,
+  "open_questions": [
+    "TXK-OQ1",
+    "CS-OQ8",
+    "CS-OQ12",
+    "CS-OQ14",
+    "CS-OQ5"
+  ],
+  "checked": "2026-10-23",
+  "dimensions": {
+    "age-or-use-exemption": "covered",
+    "deposit-ceiling": "covered",
+    "eligibility": "covered",
+    "fee-exit": "covered",
+    "fee-management-balance": "covered",
+    "liquidity-lockup": "covered",
+    "minimum": "covered",
+    "protection": "covered",
+    "real-vs-nominal": "covered",
+    "regulator": "covered",
+    "switching-tax-event": "blocked:TXK-OQ1",
+    "tax-at-deposit": "covered",
+    "tax-at-exit": "covered",
+    "tax-during": "covered",
+    "transfer-switch-process": "covered"
+  }
+}

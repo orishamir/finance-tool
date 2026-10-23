@@ -1,0 +1,27 @@
+{
+  "id": "amlt-hptzh",
+  "he": "עמלת הפצה",
+  "en": null,
+  "meaning": "עמלה שמנהל הקרן משלם לבנק או לבית ההשקעות שדרכו מחזיקים את היחידות, בשיעור שהתקנות מגבילות",
+  "where": [
+    "tariff"
+  ],
+  "wrapper_ids": [
+    "brokerage-account",
+    "money-market-fund-daily",
+    "money-market-fund-renewable"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "MF-24",
+    "MF-25",
+    "MF-26"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
+    "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "id": "TXF-01",
+  "title": "An Israeli resident is taxed on capital gains from selling assets in Israel and abroad; a security issued outside Israel is a security",
+  "title_he": "תושב ישראל ממוסה על רווח הון בישראל ומחוצה לה",
+  "text_he": "תושב ישראל חייב במס על רווח הון ממכירת נכס, גם בישראל וגם מחוץ לה: נכס בפקודת מס הכנסה כולל רכוש בישראל ומחוצה לה, ונייר ערך כולל נייר ערך שהונפק מחוץ לישראל. לעולים חדשים ולתושבים חוזרים ותיקים יש פטור לתקופה קצובה על נכסים בחו\"ל, והפסד על נכס שהרווח עליו היה פטור אינו הפסד מותר בקיזוז.",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-10-22"
+}

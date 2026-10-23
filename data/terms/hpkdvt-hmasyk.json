@@ -1,0 +1,28 @@
+{
+  "id": "hpkdvt-hmasyk",
+  "he": "הפקדות המעסיק",
+  "en": null,
+  "meaning": "הכסף שהמעסיק מוסיף לקרן ההשתלמות שלכם כאחוז מהשכר; עד התקרה אין עליו מס בזמן ההפקדה",
+  "where": [
+    "payslip",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "keren-hishtalmut"
+  ],
+  "variants": [
+    "הפרשות המעביד"
+  ],
+  "rule_ids": [
+    "KH-04",
+    "TXH-01",
+    "TXH-03"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf",
+    "title": "Ministry of Finance, Chief Economist, על הטבת המס בקרן השתלמות – ניתוח מדיניות (October 2025)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

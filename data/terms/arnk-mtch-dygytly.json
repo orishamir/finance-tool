@@ -1,0 +1,20 @@
+{
+  "id": "arnk-mtch-dygytly",
+  "he": "ארנק מט\"ח דיגיטלי",
+  "en": null,
+  "meaning": "ארנק תשלומים דיגיטלי שמחזיק יתרות במטבעות זרים; התנאים שלו אינם מגדירים את היתרה כפיקדון.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "FXD-14",
+    "FXD-16"
+  ],
+  "source": {
+    "url": "https://laya.as-invest.co.il/Pages/additional-info/terms-of-use-service",
+    "title": "LAYA, תנאי השימוש בשירות, effective March 2026",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

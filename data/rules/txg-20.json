@@ -1,0 +1,15 @@
+{
+  "id": "TXG-20",
+  "title": "Securities trades from which full tax was not withheld (for example at a foreign broker): half-yearly reports and advances, and an annual return",
+  "title_he": "ניירות ערך בלי ניכוי מלא במקור: דיווח חצי-שנתי ומקדמות",
+  "text_he": "מי שיש לו רווחי הון מניירות ערך סחירים, בארץ או בחו״ל, שלא נוכה מהם מס מלא במקור, חייב לדווח ולשלם מקדמה פעמיים בשנה: עד סוף יולי על מכירות במחצית הראשונה, ועד סוף ינואר על מכירות במחצית השנייה של השנה הקודמת. המקדמה היא לפי השיעורים שחלים. המדריך מוסיף שאדם כזה חייב להגיש דוח שנתי. בנק או ברוקר ישראלי שמנכה במקור מסיר את החובה; הסתירה לכאורה עם מסלול הפטור מדוח כש'שולמה מקדמה' היא שאלה פתוחה.",
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation",
+    "foreign-withholding-domicile",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-general.md",
+  "checked": "2026-10-22"
+}

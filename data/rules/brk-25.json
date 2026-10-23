@@ -1,0 +1,14 @@
+{
+  "id": "BRK-25",
+  "title": "Interest on idle cash in the account is a tariff line at non-bank members, with conditions",
+  "title_he": "ריבית על כסף פנוי בחשבון: שורת תעריפון בבתי השקעות",
+  "text_he": "בתעריפוני בתי ההשקעות יש שורה לריבית על יתרת זכות בחשבון, עם תנאים כמו סוג לקוח או מינימום, ואצל חלקם בלי ריבית על יתרות במטבע חוץ. לפי תקנון הבורסה חבר שאינו בנק חייב לדווח ללקוח על הריבית שכספו הניב. בחשבון בנק הכסף הפנוי נשאר בחשבון העובר ושב. אלה תעריפוני הגופים עצמם.",
+  "strength": "institution",
+  "dimensions": [
+    "currency"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-22"
+}

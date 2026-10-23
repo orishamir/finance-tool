@@ -1,0 +1,13 @@
+{
+  "id": "BRK-22",
+  "title": "Banks: a securities custody agreement must be in writing and shown to the client before signing",
+  "title_he": "בנקים: הסכם פיקדון ניירות ערך בכתב, לקריאה לפני החתימה",
+  "text_he": "הסכם פיקדון ניירות ערך למשמרת הוא אחד ההסכמים שבנק חייב לערוך בכתב ולתת ללקוח לקרוא לפני החתימה. הכלל קבוע בכללי הבנקאות בעניין גילוי נאות ומסירת מסמכים.",
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-22"
+}

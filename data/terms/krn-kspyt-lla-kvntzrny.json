@@ -1,0 +1,24 @@
+{
+  "id": "krn-kspyt-lla-kvntzrny",
+  "he": "קרן כספית ללא קונצרני",
+  "en": null,
+  "meaning": "קרן כספית שמחזיקה רק ניירות ערך שהמדינה הנפיקה, בלי איגרות חוב של חברות, לצד פיקדונות ומזומן",
+  "where": [
+    "fund-name"
+  ],
+  "wrapper_ids": [
+    "money-market-fund-daily",
+    "money-market-fund-renewable"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "MF-32"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/MoneyMarketFundReg24.pdf",
+    "title": "ISA, הוראה למנהלי קרנות ונאמנים בדבר תנאים שיחולו לגבי קרן כספית (2024)",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

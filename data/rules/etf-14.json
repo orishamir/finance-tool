@@ -1,0 +1,103 @@
+{
+  "id": "ETF-14",
+  "title": "Variable management fee of an Israeli tracking fund: tied to tracking difference, symmetric, capped by category, changeable on 1 January",
+  "title_he": "דמי ניהול משתנים: נגזרים מפער העקיבה, סימטריים, מוגבלים בתקרה",
+  "text_he": "דמי ניהול משתנים הם חלק משכר המנהל שנגזר מתשואת הקרן ומפער העקיבה שלה: כשפער העקיבה בסוף יום מסחר שלילי, המנהל משלם לקרן דמי ניהול שליליים באותו שיעור בתוך יום עסקים, ועליו להחזיק ערבות בנקאית או פיקדון אצל הנאמן לכיסוי. בערך מוחלט הדמים המשתנים אינם יכולים לעלות על שיעור עמלת היצירה והפדיון של קטגוריית הקרן; המנהל גובה דמים חיוביים פעם ברבעון אחרי אישור הנאמן, ורשאי לשנות את השיעור בתחילת כל שנה. רק קרנות מחקות שאינן ממונפות או בחסר רשאיות לגבות דמים משתנים, וגם קרן פתוחה יכולה; אחרי הודעת פירוק לא נגבים דמים ולא נוצר חוב. התקנות אינן מפרטות איך מחושבים הדמים החיוביים, וכל תשקיף מתאר את המנגנון שלו.",
+  "figure_names_he": {
+    "variable_fee_cap_max": "התקרה הגבוהה ביותר לדמי ניהול משתנים",
+    "variable_fee_cap_israeli_bonds_or_equities": "תקרת דמי הניהול המשתנים לקרנות על אג\"ח או מניות ישראליות",
+    "variable_fee_cap_other": "תקרת דמי הניהול המשתנים לשאר הקרנות",
+    "variable_fee_cap_foreign_indices": "תקרת דמי הניהול המשתנים לקרנות על מדדים זרים או בלי דמי ניהול משתנים"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "variable_fee_cap_max": {
+      "value": 0.3,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(קרנות_מחקות)",
+        "title": "Joint Investment Trust (Tracking Funds) Regulations 2018 (Hebrew Wikisource mirror)",
+        "publisher": "Legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-14"
+      ],
+      "state": "sourced",
+      "notes": "In absolute value the variable fee may not exceed the fund category's creation and redemption fee rate: 0.1%, 0.2% or 0.3% (ETF-05). Only tracking funds that are not leveraged or inverse may have one. Largest of the three category caps, kept under this key; the caps by category are the other variable_fee_cap_* figures."
+    },
+    "variable_fee_cap_israeli_bonds_or_equities": {
+      "value": 0.1,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(קרנות_מחקות)",
+        "title": "Joint Investment Trust (Tracking Funds) Regulations 2018 (Hebrew Wikisource mirror)",
+        "publisher": "Legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-14"
+      ],
+      "state": "sourced",
+      "notes": "Category cap, the creation and redemption fee rate of the fund's category (ETF-05): funds with over 50% exposure to Israeli bonds or to Israeli equities with low creation costs. In absolute value the variable fee may not exceed it. Added 2026-10-23; variable_fee_cap_max is the largest of the three."
+    },
+    "variable_fee_cap_other": {
+      "value": 0.2,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(קרנות_מחקות)",
+        "title": "Joint Investment Trust (Tracking Funds) Regulations 2018 (Hebrew Wikisource mirror)",
+        "publisher": "Legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-14"
+      ],
+      "state": "sourced",
+      "notes": "Category cap, the creation and redemption fee rate of the fund's category (ETF-05): all other funds. In absolute value the variable fee may not exceed it. Added 2026-10-23; variable_fee_cap_max is the largest of the three."
+    },
+    "variable_fee_cap_foreign_indices": {
+      "value": 0.3,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(קרנות_מחקות)",
+        "title": "Joint Investment Trust (Tracking Funds) Regulations 2018 (Hebrew Wikisource mirror)",
+        "publisher": "Legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-14"
+      ],
+      "state": "sourced",
+      "notes": "Category cap, the creation and redemption fee rate of the fund's category (ETF-05): funds with over 50% exposure to foreign-traded indices, or funds without a variable fee. In absolute value the variable fee may not exceed it. Added 2026-10-23; variable_fee_cap_max is the largest of the three."
+    }
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-22"
+}

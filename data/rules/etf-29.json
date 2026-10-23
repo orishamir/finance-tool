@@ -1,0 +1,14 @@
+{
+  "id": "ETF-29",
+  "title": "UCITS ETF units are bought and sold on the exchange through an intermediary, not from the fund; the price can differ from NAV",
+  "title_he": "יחידות קרן סל אירופית נקנות דרך מתווך, לא מהקרן",
+  "text_he": "בלאקרוק מצהירה שיחידות של קרן סל אירופית (UCITS) שנקנו בשוק המשני בדרך כלל אי אפשר למכור בחזרה לקרן ישירות. משקיע שאינו משתתף מורשה חייב לקנות ולמכור דרך מתווך, כמו ברוקר, עשוי לשלם עמלות ומסים נוספים, ועשוי לשלם יותר משווי הנכסים הנקי בקנייה ולקבל פחות ממנו במכירה. המסמך אינו מכוון לתושבי ארצות הברית וקנדה. זו הצהרת המנפיק.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-trade",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-22"
+}

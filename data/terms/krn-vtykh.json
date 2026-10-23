@@ -1,0 +1,42 @@
+{
+  "id": "krn-vtykh",
+  "he": "קרן ותיקה",
+  "en": null,
+  "meaning": "קרן פנסיה מהסוג הישן, שאושרה לפני הקרנות החדשות ופועלת לפי כללים אחרים",
+  "where": [],
+  "wrapper_ids": [
+    "bank-deposit",
+    "brokerage-account",
+    "child-savings-bank",
+    "child-savings-provident",
+    "current-account",
+    "government-bond",
+    "ira-hishtalmut",
+    "ira-provident",
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa",
+    "makam",
+    "money-market-fund-daily",
+    "money-market-fund-renewable",
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity",
+    "savings-plan"
+  ],
+  "variants": [
+    "קרן פנסיה ותיקה"
+  ],
+  "rule_ids": [
+    "REG-17",
+    "REG-21",
+    "TXP-12",
+    "TXP-24"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
+    "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

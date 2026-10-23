@@ -1,0 +1,14 @@
+{
+  "id": "BANK-01",
+  "title": "A bank may not unreasonably refuse a deposit or a current account",
+  "title_he": "הבנק לא רשאי לסרב לפיקדון או לעובר ושב",
+  "text_he": "בנק לא רשאי לסרב סירוב בלתי סביר לקבל פיקדון כספי, בשקלים או במטבע חוץ, או לפתוח ולנהל חשבון עובר ושב בשקלים, כל עוד החשבון ביתרת זכות והלקוח עומד בהסכם החשבון. הצבת תנאים בלתי סבירים נחשבת לסירוב. אין חובה לתת אשראי. כללי הזיהוי למניעת הלבנת הון עדיין יכולים להיות מחסום, ולכן קיים מסלול ההפקדה במערכת סגורה.",
+  "strength": "primary",
+  "dimensions": [
+    "eligibility",
+    "regulator"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-22"
+}

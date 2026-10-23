@@ -1,0 +1,27 @@
+{
+  "id": "isin",
+  "he": "ISIN",
+  "en": null,
+  "meaning": "קוד שמזהה כל נייר ערך זר, ואף כל גרסה של אותה קרן; תחילת הקוד מראה את מדינת הרישום.",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "ETF-27",
+    "ETF-28"
+  ],
+  "source": {
+    "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/cspx-ishares-core-s-p-500-ucits-etf-fund-fact-sheet-en-gb.pdf",
+    "title": "iShares Core S&P 500 UCITS ETF USD (Acc) factsheet, Sep 2026",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

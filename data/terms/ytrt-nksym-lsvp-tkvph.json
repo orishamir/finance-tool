@@ -1,0 +1,19 @@
+{
+  "id": "ytrt-nksym-lsvp-tkvph",
+  "he": "יתרת נכסים לסוף תקופה",
+  "en": null,
+  "meaning": "סך הכסף שמנוהל במסלול בסוף החודש, של כל החוסכים יחד",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "CAT-03"
+  ],
+  "source": {
+    "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+    "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

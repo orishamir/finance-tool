@@ -1,0 +1,60 @@
+{
+  "id": "ETF-35",
+  "title": "TASE updates its share universes and index compositions every half year (first Thursday of May and November) and the weight parameters every quarter",
+  "title_he": "הבורסה מעדכנת מאגרים והרכבי מדדים חצי-שנתית ומשקלים רבעונית",
+  "text_he": "הרכב מאגרי תמר ורימון ומדדי המניות שנבנים מהם מתעדכן לפי מספר עדכוני ההרכב בשנה, בתום המסחר ביום חמישי הראשון של מאי ושל נובמבר; אם אין מסחר בתל אביב או בניו יורק באותו יום, העדכון נדחה ליום הראשון שיש בו מסחר בשתיהן. העדכון מתפרסם מראש ונקבע מנתוני מועד קובע שקודם לו, חוץ מקריטריון החזקות הציבור, שמועדו הקובע הוא סוף מרס לעדכון מאי וסוף ספטמבר לעדכון נובמבר. ארבעת פרמטרי המשקל הקבועים מתעדכנים לפי מספר עדכוני הפרמטרים בשנה, בתום המסחר ביום חמישי הראשון של פברואר, מאי, אוגוסט ונובמבר, גם הם מנתוני מועד קובע ובפרסום מראש. הרפורמה בנזילות של הבורסה העבירה את עדכון הפרמטרים מחודשי לרבעוני והגבילה את המסלול המהיר למניות חדשות וגדולות.",
+  "figure_names_he": {
+    "composition_updates_per_year": "מספר עדכוני ההרכב בשנה",
+    "parameter_updates_per_year": "מספר עדכוני פרמטרי המשקל בשנה"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-15",
+  "figures": {
+    "composition_updates_per_year": {
+      "value": 2,
+      "unit": "count",
+      "source": {
+        "url": "https://www.tase.co.il/he/content/knowledge_center/index_universe/",
+        "title": "TASE, מאגרי המניות למדדים - תמר ורימון (read through TASE's content API, route /content/knowledge_center/index_universe)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-35"
+      ],
+      "state": "sourced",
+      "notes": "At the end of trading on the first Thursday of May and of November; published two weeks before; record date three weeks before (public holdings: 31 March and 30 September)."
+    },
+    "parameter_updates_per_year": {
+      "value": 4,
+      "unit": "count",
+      "source": {
+        "url": "https://www.tase.co.il/he/content/knowledge_center/calculating_shares_weight/",
+        "title": "TASE, קביעת משקל המניה במדד (read through TASE's content API, route /content/knowledge_center/calculating_shares_weight)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-35"
+      ],
+      "state": "sourced",
+      "notes": "First Thursday of February, May, August and November."
+    }
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-23"
+}

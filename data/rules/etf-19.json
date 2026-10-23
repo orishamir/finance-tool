@@ -1,0 +1,13 @@
+{
+  "id": "ETF-19",
+  "title": "Distribution policy of Israeli funds: the IBI S&P 500 ETF is an accumulating fund (one fund's policy, not a rule for all)",
+  "title_he": "מדיניות חלוקה: קרן הסל של אי.בי.אי היא קרן צבירה",
+  "text_he": "קרן הסל של אי.בי.אי על המדד האמריקני היא קרן צבירה: אלא אם המנהל יחליט אחרת, היא אינה רשאית לשלם תשלומים לבעלי היחידות. זו מדיניות של קרן אחת לפי הדוח השנתי שלה, לא כלל על כל קרנות הסל הישראליות; איך ממוסה הצבירה כתוב בכללי המס על ניירות ערך ישראליים.",
+  "strength": "institution",
+  "dimensions": [
+    "distribution-policy"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-22"
+}

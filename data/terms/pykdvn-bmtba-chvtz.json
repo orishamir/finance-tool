@@ -1,0 +1,30 @@
+{
+  "id": "pykdvn-bmtba-chvtz",
+  "he": "פיקדון במטבע חוץ",
+  "en": null,
+  "meaning": "פיקדון בבנק במטבע זר, כמו דולר או אירו; שוויו בשקלים עולה ויורד עם שער החליפין.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [
+    "פיקדון מט\"ח",
+    "פמ\"ח",
+    "פיקדון בדולר ארה\"ב",
+    "פיקדון דולרי",
+    "פקדונות מטבע"
+  ],
+  "rule_ids": [
+    "FXD-01",
+    "FXD-02",
+    "FXD-07",
+    "FXD-16",
+    "TX2-01",
+    "TX2-02"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "Israel Tax Authority, \"דע זכויותיך וחובותיך 2025\", printed pp. 40, 52",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

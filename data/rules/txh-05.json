@@ -1,0 +1,62 @@
+{
+  "id": "TXH-05",
+  "title": "Self-employed deduction (s.17(5A))",
+  "title_he": "ניכוי לעצמאי על הפקדה לקרן השתלמות",
+  "text_he": "יחיד עם הכנסה מעסק או ממשלח יד רשאי לנכות סכומים ששילם לקרן השתלמות לעצמאים, עד שיעור הניכוי מההכנסה הקובעת. ההכנסה הקובעת היא ההכנסה החייבת מעסק או ממשלח יד לפני הניכוי הזה, עד תקרת ההכנסה הקובעת לשנה. התקרה צמודה מבסיס ישן, אבל החוק קובע אותה בסכום קבוע לכמה שנים (הקפאה), והערך שאחריהן לא ידוע. מי שגם שכיר וגם עצמאי, התקרה שלו מופחתת.",
+  "figure_names_he": {
+    "deduction_pct": "שיעור הניכוי מההכנסה הקובעת",
+    "income_ceiling": "תקרת ההכנסה הקובעת לשנה"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "tax-at-deposit",
+    "deposit-ceiling",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "deduction_pct": {
+      "value": 4.5,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance, s.17(5A): deduction of amounts paid to a self-employed study fund up to 4.5% of the determining income (\"הכנסה קובעת\")",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXH-05"
+      ],
+      "state": "sourced",
+      "notes": "Share of determining income (taxable business or professional income before this deduction, capped at income_ceiling) an individual with business or professional income may deduct. Someone who is also an employee has a reduced ceiling (TXH-06)."
+    },
+    "income_ceiling": {
+      "value": 293397,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+        "title": "Tax Authority deductions booklet from January 2026 (updated April 2026), p.12, row \"תקרת הכנסה קובעת בקרן השתלמות לעצמאיים 17(5א)\"; Ordinance s.17(5A) lists 293,397 for 2024 to 2027",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2024-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "frozen 2024-2027",
+      "rule_ids": [
+        "TXH-05"
+      ],
+      "state": "sourced",
+      "notes": "NIS per year. Ceiling on the determining income; the maximum deduction is 4.5% x 293,397 = 13,203 NIS (stated by the Tax Authority for 2025; the 2026 maximum is computed here). Indexed from a 1995 base of 156,000 but fixed in the law at 293,397 through 2027; the value for 2028 is unknown."
+    }
+  },
+  "il_finance_file": "tax-hishtalmut.md",
+  "checked": "2026-10-22"
+}

@@ -1,5 +1,7 @@
 # Design system
 
+> Release 2 section added 2026-10-23: section 6, components for release 2.
+
 Written 2026-10-22 by the product designer from `docs/product.md` (D1 to D13, section 3), `docs/roadmap.md` (release 1), `docs/architecture.md` (K7, K8, K12, 3.5, 3.9, gap 8.6), `docs/method.md` and `docs/data-schema.md`.
 Status: **look approved by the founder on 2026-10-23**; the label wording and the site name were settled on 2026-10-23 (section 5). The tokens are live in `site/app/theme.css`. Mockups (architecture 3.9) of the guide page and the company page at phone and PC widths (the company page was redrawn on 2026-10-23 as one list, in the same look, after the app-mirroring view was removed, product.md appendix E), built from what is defined here: https://claude.ai/artifact/T2WWNHiNhqXxSkmssTFbCS (2026-10-23; the founder approved the look the same day). No page is built before its mockup is approved.
 
@@ -400,3 +402,123 @@ Defined when their release starts, from its mockups: the ranked list with tie ba
 | Q4 | Chart axis ticks carry a `data-scale` attribute, and the provenance crawl (architecture 3.7 item 5) allows digits inside it. | Ticks are scale marks, not figures; without this the crawl fails every chart. |
 | Q5 | Shekel amounts keep the two decimals of method §13 for now. Revisit when the first guide page is built. | Rounding for display is a method convention; changing it belongs in `docs/method.md`. |
 | Q6 | Slider ranges are stored with the illustrative scenario in `data/parameters/illustrative-scenario.json`. **Set 2026-10-23** and signed off by the founder (chosen by Claude at his request): monthly deposit 0 to 10,000 NIS in steps of 100, years 1 to 40. | They limit only the slider, not what can be typed. |
+
+
+---
+
+## 6. Components for release 2
+
+Added 2026-10-23 from the R2 contents of `docs/roadmap.md`: 3.2 wrapper mode with presets (D13), the ranked list and ties (D5), the coverage line (D17, method F-83), the chart, "X is best because Y" (F-80), the sensitivity panel (F-81), the idle-cash preset (F-60), 3.9 saved state (local, automatic), and the 3.10 fit mark (F-70). The briefs are in `docs/flows.md` section 9 and the handoff in `docs/design-spec.md` sections 6 to 10. Every component below uses the tokens of section 2; the only additions are the chart roles in 6.5, with the reason there. The release 1 components are reused unchanged: the provenance number and sheet (3.2), the inputs (3.3), the dimension checklist (3.6), the track row (3.7), and the primitives (3.9).
+
+### 6.1 Goal form
+
+Called for by 3.2 In (goal attributes, presets, profile with "where to find this on the payslip", constraints), D8, D12, D13, D15, and method A-12, A-01, A-02, G-19, G-22.
+
+| Component | Spec |
+|---|---|
+| **Preset chips** | A single-choice row of chips (`rounded-full`, 44 px tall, 1 px `border`, `bg-card`; the chosen one `bg-foreground text-background`, weight 500). Six: the five presets of D13 and "בלי נקודת התחלה". Scrolls sideways on a phone and bleeds to the edge; wraps at `md`. Choosing one fills the goal fields from the preset's parameter record and sets every filled field to the parameter state; a chip is never a submit. One line under the row names what was filled. Use Radix ToggleGroup single with `dir="rtl"`. |
+| **Goal fields** | The release 1 field anatomy (3.3) for: name (text, `dir="auto"`), horizon (slider field, years), amount now (number field, ₪), monthly contribution (slider field, ₪), must stay available (number field, ₪) with a month picker beside it ("מאיזה תאריך", a native `<input type="month">` styled as a field), and the constraints: a switch row (Radix Switch, 44 px row, label at the start, the switch at the end, `bg-primary` when on) for "withdrawable at any time", and a blocked row for "no annual tax return" drawn as a blocked callout inside the card (G-22). The loss filter line is quiet text, not a control (R5). |
+| **Profile fields** | Age as a stepper; employment as the segmented control; salary as a number field; contribution rates as a **percent pair**: two percent fields side by side under one label ("מעסיק", "עובד"), each a number field with "%" suffix, 48 px, equal width, 12 px gap; two yes/no segmented controls for "pension through work" and "hishtalmut through work". Self-employed swaps the hishtalmut pair for one yearly amount field. |
+| **Payslip disclosure** | A disclosure "איפה זה בתלוש" under the salary field and each percent pair. Body: the rule's text rendered from the rule base (PEN-36) with its rule chip, then the G-19 line that payslip labels have no official source. Never a label name typed into the page. |
+| **Goals list** | Shown above the cards when more than one goal exists (D12): the goals as chips in their order, each with up and down icon buttons (44 px) and "מטרה נוספת" as a quiet button. The current goal's chip is filled. One line explains the order. |
+| **Form footer** | The one primary button, "להשוואה", sticky at the bottom on a phone (`bg-background/90`, top `border`, safe-area padding); under it the save line in `text-xs muted` with a `Check` icon ("נשמר אוטומטית במכשיר הזה"). |
+
+Why fill-and-edit rather than a wizard: D13 says the presets are an easy entry, not a type; a person who starts from "none" sees every attribute at once, and a person who starts from a preset sees what it chose for them in the parameter state and changes only what matters. The three cards keep the goal, the person and the assumptions apart, matching method §2's split between the goal, A-12 and A-01/A-02.
+
+### 6.2 Assumptions for the comparison
+
+Called for by product.md §2 "interactive by default" and D7, D9; method A-01, A-02, P-02.
+
+The release 1 inputs sheet and panel (3.3) with the comparison's fields: horizon, amount now, monthly contribution, must stay available, the return on the invested part, inflation, and the two constraints. The assumptions strip under the chart shows them as chips in their states, ending in "כל ההנחות". Two rules specific to R2:
+
+- **The return field** (A-01) has no start value. Its empty state reads "לא הוזן: האתר לא מנחש תשואה" in `muted`. The options that need it are "not evaluated" until it is filled (coverage list), and once filled they enter the ranking and their series are drawn dashed (6.5).
+- **A sensitivity suggestion:** when a sensitivity row (6.6) opens the sheet, the flipping value sits in the field as a pre-filled suggestion in `muted-foreground` text with "הצעה מהבדיקה" and a button "לאמץ"; accepting makes it entered. The person never has the flipping value applied without that tap.
+
+### 6.3 Ranked list and coverage
+
+Called for by 3.2 Out (ranked list, locked and when, deciding rule, ties), D5, D10, D16, D17, method B1 to B3, F-80, F-83.
+
+**Ranked row.** A `card` row, `rounded-lg`, padding 16 px (24 at `md`), gap 8 px. Anatomy, start to end on PC and top to bottom on a phone: the rank as a 28 px circle (`bg-secondary`, `text-sm` weight 600; rank 1 `bg-primary text-primary-foreground`); the option's name (h3, `text-lg`, a link to its guide page); the headline figure, `text-figure` weight 600, a computed Num with "מחושב" under it and the label "נשאר לכם במועד המטרה, בכסף של היום"; the tag row: tie tag, locked tag, secondary-source tag; the line "מכריע: {נוסחה}" in `text-sm muted-foreground` with the formula's two figures as Nums (only on rank 2 and below: it explains the gap to the row above); the assumption chips the row rests on (3.3 strip style, read-only, entered ones blue); a chevron at the end opening the row's detail sheet. The row's whole surface is not a link; the name and the chevron are, so the Nums stay tappable.
+
+**Tie tag.** `Tag` in `bg-secondary` with an `Equal` icon (Lucide `Equal`, not mirrored) and "שקולה ל־{שם}". On a tie of three or more, "שקולות: {שמות}". Tied rows are drawn joined by a 3 px `border` bar at the inline start (like the near-duplicate group of 3.7, in neutral, not caution), so a tie reads as one block. The rank circles of tied rows show the same rank.
+
+**Locked tag.** `Tag` in `muted` with `Lock` in `muted-foreground` (not `blocked`: locked is a product term, not an open rule) and "נעול עד {תאריך}".
+
+**Listed row.** The ranked row in quiet form for "listed, not ranked" (F-83 outcome 4): no rank circle (a `Minus` in its place), name in `text-foreground`, the reason line first in `text-sm` ("שכירים: מופקדת רק דרך המעסיק"; "נעולה עד {תאריך}: הערך במועד השחרור"; "התקרה השנתית לוקחת רק חלק מהכסף"; "המס ביציאה חסום: שאלה פתוחה {קוד}" with `Lock` in `blocked`), and the figure at `text-xl` rather than figure size, labelled "במועד השחרור" (D16) or "לפני מס" for a blocked exit tax. Everything else as the ranked row.
+
+**Deciding line.** Always the formula's name from F-80's four (deposit-side relief, fee drag, tax at exit, lock-up) in the fixed wording of copy 6.2, with the two figures. Never a free sentence.
+
+**Coverage line.** One sentence in a `card` with a `Disclosure` summary (44 px): "נבדקו {N} אפשרויות: …" with every count a computed Num; the five outcome counts in F-83's order. Open: the **coverage list**: groups in F-83's order (not eligible, excluded by constraint, not evaluated, listed not ranked, ranked), each an h4 with its count and icon; the ranked group collapsed by default. Each row: the option's name (link to its guide page, or to the "not covered yet" page for tier 2); the outcome word as a `Tag` with its icon; the reason in `text-sm muted-foreground`, words first, code after ("עוד לא נבדקה: אין עדיין תנאים של תוכניות חיסכון. G-28"); a group line ("קרנות זרות הנסחרות בחו״ל: {מספר} מוחזקות אחת־אחת, השאר לא") where the site holds a set as a group (G-29, from R4). Last line: where tracks and funds inside a product are shown. The invariant is visible: the counts in the sentence equal the rows in the list.
+
+**Outcome icons and colours** (every outcome has an icon and a word; colour is secondary):
+
+| Outcome (F-83) | Word | Icon | Colour |
+|---|---|---|---|
+| ranked | דורגה | `Check` | `positive` |
+| listed, not ranked | מוצגת, לא מדורגת | `Minus`, or `Lock` when a blocked rule is the reason | `muted-foreground`, `blocked` for the lock |
+| excluded by the person's constraint | נפסלה לפי האילוץ שלכם | `Pencil` (it is the person's own setting) | `entered` |
+| not eligible | לא מתאימה לכם | `Ban` (Lucide, not mirrored) | `muted-foreground` |
+| not evaluated | עוד לא נבדקה | `CircleDashed` (Lucide) | `caution` when the site must fix it, `muted-foreground` when the person can (a missing input, linked) |
+
+Why the ranked group is collapsed: the coverage line exists to show what is *not* in the ranking (D17); the ranked options are already on the page.
+
+### 6.4 Why, and the idle-cash rows
+
+Called for by 3.2 Out ("X is best because Y"; idle-cash monthly cost with its labels), D4, D5, method F-60, F-80.
+
+**Why headline.** The sentence under the h1 in `text-lg` at `max-w-measure`, built from copy 6.2's patterns: the winner as a link, the deciding formula's two figures as computed Nums, the horizon as a Num. A tie uses the tie pattern with the threshold as a site-parameter Num. A secondary-source rule on the winner adds the caution tag after the sentence. Under it the quiet button "למה" (44 px).
+
+**Why sheet.** A sheet (phone) or card (PC) with the top two options as two columns (phone: stacked, the winner first): rows for deposit-side relief, fees, tax during, tax at exit, lock-up, and the result, each a computed Num; the deciding row carries a `bg-computed-subtle` wash across both columns and the word "מכריע"; then the rules line and the dimension marks that differ between the two (`Check` rows only). The F-61-style decomposition behind it is the engine's; the sheet only shows it.
+
+**Cost row (idle cash).** A row in the result card: the option's name (weight 500), under it the rate it rests on as a Num with its label as a `Tag` after the value, and at the end the monthly cost as a computed Num in `text-xl` with "בחודש" in `text-xs muted`. The three labels:
+
+| Rate | Label tag | Tag style |
+|---|---|---|
+| A-21, the bank's average | הממוצע ששולם ב{בנק} בחודש שעבר | sourced (`muted` tag, `FileText`) |
+| A-26, the person's offer | הוזן על ידך | entered (`entered` on `entered-subtle`, `Pencil`) |
+| A-20, A-22, a sourced series | ממקור: {שם הסדרה} | sourced |
+
+The entered-offer row sits directly under the bank-average row and the two share a 3 px `border` bar at the start, so they read as one pair. The headline above the rows is the largest cost, figure size. The baseline (A-25) is one quiet line under the rows.
+
+**Bank chips.** A single-choice chip row (as the preset chips) of the banks in the Bank of Israel series, names as the series writes them, with "לא לבחור" first; remembered on the device.
+
+### 6.5 Comparison chart
+
+Called for by 3.2 Out ("a chart of projected value over time for the top options on one axis"), D7, D9, D10, and the categorical-palette note in 2.3.
+
+- **Form.** A line chart over time, time left to right (V3), one value axis in shekels, real by default with the segmented control for nominal. One line per option: the top three ranked options, plus the baseline (the current account) when the comparison has one. Up to four lines; the rest of the ranking is in the list and the table view. No bands: fees and tax per option are in the why sheet and the row detail, not on this chart.
+- **Colour, new roles.** Four roles are added to `theme.css`: `chart-option-1` (teal-200), `chart-option-2` (teal-400), `chart-option-3` (teal-600) and `chart-baseline` (neutral-300). Why new roles are unavoidable: 2.3 left the categorical palette undefined, and no existing chart role may be reused for an option (fee and tax hues would carry their meaning across from the timeline; blue and violet are the number states; amber, red and green are the flags). Why one hue in steps rather than four hues: the ranking is ordinal, so an ordinal ramp says what the lines mean (lighter is better, as surfaces lighten as they rise), and the site keeps its one accent (V5). Validate the three teal steps against each other and the card with the dataviz validator when the chart is built; if 400 and 600 fail the ordinal check, use 300 and 700. Each line also differs by width (2.5 / 2 / 1.5 px, baseline 1.5 px) and is directly labelled, so no line depends on colour (V6).
+- **Entered return.** A line that rests on a return the person entered is drawn dashed 6/4, in its own option colour, and its direct label carries the `Pencil` glyph; the caption under the chart is release 1's ("הקו המקווקו מבוסס על תשואה שהזנתם"). Why not `chart-entered` blue for the line itself: with up to three entered-return series the lines would be indistinguishable; the dash, the glyph and the caption carry the meaning, the colour carries the option. A line resting on a sourced series is solid. In S40 the ETF line is dashed and the makam, deposit and money-market lines are solid.
+- **Labels.** Direct labels at the right end of each line: the option's short name and its value at the horizon (a Num), stacked without overlap (nudge apart by the label height; the order of labels follows the order of the line ends). Tied options' labels are joined by a bracket with "שקולות". Legend above in reading order as chips with 14 × 3 px swatches (dashed swatch for an entered-return series).
+- **Markers, blocked parts, readout, table view, size, states** as the timeline (3.4): a `chart-marker` line for the horizon and for any unlock date drawn for a listed option the person pins; a 45° hatch over a part the method cannot compute; crosshair and readout with one row per line; "הצגה כטבלה" with one column per line; 240 px on a phone, 320 px at `lg`; dims while recomputing; lines and labels move to new values over `--duration-chart`, and a change of rank re-orders the list rows with the same duration.
+- **Pin a listed option** (chosen 2026-10-23, revisable): a listed row's detail sheet has "להציג בגרף"; its line is drawn in `chart-baseline` style with a `Lock` glyph in its label and stops at its unlock date marker. At most one pinned line at a time.
+
+### 6.6 Sensitivity panel
+
+Called for by 3.2 Out (sensitivity panel, "within bounds set as site parameters"), product.md §2 ("site parameters … shown, not edited"), method F-81, P-02.
+
+**Sensitivity row.** One row per assumption in P-02, in a `card` list with `border` dividers, 56 px minimum. Start: the assumption's name (weight 500) and its current value as a Num in its state. Then the finding in `text-sm`: "מתהפך אם … תעבור מ־{ערך} ל־{ערך}" with both values as computed Nums and the new winner's name, or "לא מתהפך בטווח שנבדק: {מ} עד {עד}" with the bounds as site-parameter Nums. Rows that flip come first, sorted by the smallest relative move; they carry a `bg-computed-subtle` wash and are buttons that open the assumptions sheet at that field with the suggestion (6.2). Rows that do not flip are plain. A row the engine could not run (a blocked rule on the way) shows the lock and the question. Under the list: the footer line that the bounds are a site parameter, with the parameter's tag and a link to the parameters page.
+
+Why no slider in the panel: the panel answers "what would change the answer"; changing the assumption is the sheet's job, one tap away, so the ranking cannot be tuned from the panel and the bounds stay visibly fixed.
+
+### 6.7 Saved-goal strip
+
+Called for by 3.9 (one local state per browser, automatic), D1, D12, and the fit mark's need for a saved goal (3.10).
+
+A `card` row, 56 px, `rounded-lg`: at the start a `Target` icon (Lucide) in `muted-foreground`; the goal's name in weight 500 (or the preset's name); "{שנים} · {סכום}" as Nums in their states; "נשמר במכשיר הזה" in `text-xs muted-foreground`; at the end the actions: "לתוצאה" and "עריכה" as links (44 px), and a `MoreHorizontal` icon button opening a small popover with "מטרה נוספת" and "מחיקה מהמכשיר" (the delete asks once, inline: "למחוק את המטרה מהמכשיר הזה?" with "מחיקה" in `destructive` text and "ביטול"). With several goals, chips under the row in their order (D12), the current one filled. The compact form on company and track pages is one `text-sm` line with "שינוי". Sticky under the header on the result page on a phone, until the ranked list scrolls past.
+
+Why a strip and not a page: the goal is context for every other page (the fit mark, the result), so it must be visible and editable from anywhere without a "my goals" destination the site does not have (D1: no accounts).
+
+### 6.8 Fit mark
+
+Called for by 3.10 Out ("a fit mark against the person's saved goal, with a link to run the comparison"), roadmap R2, method F-70, P-04, D11 (loss filter deferred to R5), D17.
+
+- **Track page card:** heading "מתאים למטרה שלכם?"; the mark as a 24 px icon with its word at `text-lg` weight 500: `Check` in `positive` "מתאים", `Minus` in `muted-foreground` "לא מתאים", `CircleHelp` (Lucide) in `muted-foreground` "אין כלל לסיווג הזה"; the line naming the goal and its horizon with "לפי האופק בלבד"; the rule line with the fit table as a site-parameter chip and the classification used; the primary link "להשוואה למטרה הזו" and the quiet link "שינוי המטרה". No saved goal: the empty state with "אין מטרה שמורה" and the link to the goal form.
+- **Company page row mark:** at the end of each track row, before the chevron: the icon, and from `md` the word in `text-xs`. No mark when there is no rule or no goal. Above the list, the compact strip line.
+- Colours: `positive` for fits; "does not fit" and "no rule" in `muted-foreground`, never `blocked` or `destructive`: not fitting is an answer, not a problem. A stale CMA period puts the clock on the mark, since its classification input is stale.
+
+### 6.9 First page and menu additions
+
+Called for by 3.2 (idle cash "meant to be the first thing a friend sees") and flow 11.
+
+A third door card on the first page, "כסף שיושב בעו״ש", in the same card style as the two doors; a menu row and footer link "השוואה למטרה". The saved-goal strip above the doors when a goal exists. Chosen 2026-10-23, revisable: the first page was approved with two doors (flows.md section 5, question 1).

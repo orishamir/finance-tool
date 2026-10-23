@@ -1,0 +1,26 @@
+{
+  "id": "hshah-hyavdh",
+  "he": "השעה היעודה",
+  "en": null,
+  "meaning": "השעה שעד אליה הוראה בקרן מקבלת את מחיר אותו יום; הוראה מאוחרת יותר מקבלת את המחיר הבא",
+  "where": [
+    "app",
+    "prospectus"
+  ],
+  "wrapper_ids": [
+    "brokerage-account",
+    "money-market-fund-daily",
+    "money-market-fund-renewable"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "MF-10"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
+    "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

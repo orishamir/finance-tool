@@ -1,0 +1,38 @@
+{
+  "id": "GOV-17",
+  "title": "Tradable means sellable before maturity; where trading happens",
+  "title_he": "סחירה פירושה ניתנת למכירה לפני הפדיון; איפה סוחרים",
+  "text_he": "איגרת סחירה היא איגרת שאפשר לסחור בה בשוק המשני אחרי הקנייה; באיגרת לא סחירה אי אפשר. איגרות חוב ממשלתיות נסחרות במקביל בבורסה בתל אביב, במערכת MTS שפתוחה רק לעושי שוק ראשיים, ומחוץ לבורסה, ורוב המחזור עובר בבורסה. מק\"ם נרשם למסחר בבורסה אחרי כל מכרז. יחידת המסחר, אופן ציטוט המחיר, שעות המסחר ומחזור הסליקה בבורסה לא היו קריאים, ולא נקראה אמירה רשמית לציבור על סיכון המחיר לפני הפדיון.",
+  "figure_names_he": {
+    "tase_share_of_turnover": "חלק הבורסה במחזור המסחר השנתי"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "tase_share_of_turnover": {
+      "value": 83.0,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2025/he/annual-debt-report_annual-debt-report-2025-accessible-version-he.pdf",
+        "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2025 (file dated April 2026)",
+        "publisher": "Ministry of Finance, Accountant General",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2025-01-01",
+      "effective_to": "2025-12-31",
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "GOV-17"
+      ],
+      "state": "sourced",
+      "notes": "Share of 2025 government-bond trading turnover on TASE (p. 27); MTS 4.4% (primary market makers only), OTC 12.6%. The trading unit, hours and settlement cycle on TASE were not readable (GOV open question 7)."
+    }
+  },
+  "il_finance_file": "government-bonds-and-makam.md",
+  "checked": "2026-10-22"
+}

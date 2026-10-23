@@ -1,0 +1,30 @@
+{
+  "id": "ytrh-tzbvrh-d",
+  "he": "יתרה צבורה",
+  "en": null,
+  "meaning": "הסכום שנצבר לזכותכם בחשבון בקופה עד היום",
+  "where": [
+    "app",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [
+    "היתרה הצבורה",
+    "יתרת הכספים הצבורה"
+  ],
+  "rule_ids": [
+    "PF-02",
+    "PF-06"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+    "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

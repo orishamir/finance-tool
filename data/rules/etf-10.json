@@ -1,0 +1,13 @@
+{
+  "id": "ETF-10",
+  "title": "The tracking asset of an unhedged Israeli fund on a foreign index includes the currency (for example 'S&P 500 100%, דולר ארה\"ב 100%', net total return)",
+  "title_he": "נכס המעקב בקרן לא מנוטרלת כולל את המטבע",
+  "text_he": "בקרן ישראלית לא מנוטרלת על מדד זר, התשקיף מגדיר את נכס המעקב כמדד בתוספת המטבע: המדד האמריקני במלואו והדולר במלואו, כשהמדד מחושב כתשואה כוללת נטו. כך מגדירות אותו גם קרן הסל של אי.בי.אי וגם הקרן המחקה הפתוחה של ילין לפידות. המנהל חייב לנטרל חשיפה למטבע חוץ שאינה נובעת מנכס המעקב, חוץ מחשיפה מזערית לצרכים תפעוליים. גרסה מנוטרלת מט\"ח היא נכס מעקב אחר, עם קוד חשיפה אחר.",
+  "strength": "institution",
+  "dimensions": [
+    "currency"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,40 @@
+{
+  "id": "TXP-11",
+  "title": "Employer severance deposit: not taxed at deposit up to the severance ceiling",
+  "title_he": "הפקדת המעסיק לפיצויים: לא ממוסה עד התקרה",
+  "text_he": "הפקדות המעסיקים למרכיב הפיצויים בקופות גמל לקצבה, מעל תקרת הפיצויים, הן הכנסת עבודה במועד ההפקדה; עד התקרה הן הכנסה רק כשהעובד מקבל אותן. תקרת הפיצויים היא שכר העובד במועד ההפקדה או הסכום הקבוע, הנמוך מביניהם, והסכום מתעדכן בתחילת כל שנה לפי עליית השכר הממוצע. להשלמת פיצויים יש תקרה נפרדת: תקרת הפיצויים כפול שנות העבודה אצל אותו מעסיק, בניכוי סכומים חייבים שכבר שולמו עבור השנים האלה; התקנות מגבילות את הפקדת המעסיק לפיצויים לשיעור הדרוש לכיסוי חובתו. חוברת רשות המסים מסמנת את הסכום כשנתי, ואיך חלק השכר במועד ההפקדה מיושם על פני שנה הוא שאלה פתוחה; הפקודה נקראה בעותק בוויקיטקסט.",
+  "figure_names_he": {
+    "severance_ceiling": "תקרת הפיצויים (שנתי)"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "tax-at-deposit",
+    "deposit-ceiling"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "severance_ceiling": {
+      "value": 45600,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+        "title": "Tax Authority deductions booklet 2026, p.12, row \"תקרת סכום הפיצויים להפקדה 3(ה3) 45,600 לשנה\"; Ordinance s.3(e3)(1a)",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "average-wage-linked",
+      "rule_ids": [
+        "TXP-11"
+      ],
+      "state": "sourced",
+      "notes": "Employer severance deposits above the lower of the employee's salary on the deposit date and this amount are work income when paid. 44,100 (2025), 41,500 (2024), 39,300 (2023); 32,000 at the 2017 base. Indexed each 1 January by the rise in the average wage, rounded to 100 NIS; not frozen. How the \"salary on the deposit date\" limb is applied over a year is open question 5."
+    }
+  },
+  "il_finance_file": "tax-pension-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

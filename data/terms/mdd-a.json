@@ -1,0 +1,25 @@
+{
+  "id": "mdd-a",
+  "he": "מדד",
+  "en": null,
+  "meaning": "בדרך כלל מדד המחירים לצרכן; בנכס במטבע חוץ או צמוד אליו, שער המטבע משמש כמדד",
+  "where": [
+    "statement"
+  ],
+  "wrapper_ids": [
+    "bank-deposit",
+    "government-bond"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "BANK-14",
+    "TXI-04"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "Israel Tax Authority, דע זכויותיך וחובותיך 2025",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

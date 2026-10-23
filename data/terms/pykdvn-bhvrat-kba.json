@@ -1,0 +1,27 @@
+{
+  "id": "pykdvn-bhvrat-kba",
+  "he": "פיקדון בהוראת קבע",
+  "en": null,
+  "meaning": "חיסכון שאליו עובר סכום קבוע מהעו\"ש באופן אוטומטי כל חודש",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [
+    "savings-plan"
+  ],
+  "variants": [
+    "הוראות קבע",
+    "הו\"ק"
+  ],
+  "rule_ids": [
+    "BANK-28",
+    "BANK-31"
+  ],
+  "source": {
+    "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+    "title": "Discount 447 table, \"פיקדון בהוראת קבע\" filter",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

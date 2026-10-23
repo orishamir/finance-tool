@@ -1,0 +1,24 @@
+{
+  "id": "dmy-bytvch-bryavt",
+  "he": "דמי ביטוח בריאות",
+  "en": null,
+  "meaning": "תשלום חובה למימון ביטוח הבריאות הממלכתי, שנגבה כמו ביטוח לאומי ועל אותה הכנסה",
+  "where": [
+    "payslip"
+  ],
+  "wrapper_ids": [],
+  "variants": [
+    "מס בריאות"
+  ],
+  "rule_ids": [
+    "TXG-26",
+    "TXG-34"
+  ],
+  "source": {
+    "url": "https://www.btl.gov.il/Insurance/National%20Insurance/type_list/income_not_from_work/Pages/HovtTaslom.aspx",
+    "title": "המוסד לביטוח לאומי, מי שיש לו הכנסה שאינה מעבודה: חובת תשלום ושיעורי דמי ביטוח",
+    "publisher": "National Insurance Institute",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

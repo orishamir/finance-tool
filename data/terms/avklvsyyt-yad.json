@@ -1,0 +1,21 @@
+{
+  "id": "avklvsyyt-yad",
+  "he": "אוכלוסיית יעד",
+  "en": null,
+  "meaning": "למי המסלול פתוח: לכל הציבור, או רק לעובדים של מקום עבודה או ענף מסוים",
+  "where": [
+    "gemel-net"
+  ],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "CAT-10"
+  ],
+  "source": {
+    "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22TARGET_POPULATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22",
+    "title": "Gemel-Net 2024+ data, distinct TARGET_POPULATION values (CMA via data.gov.il)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

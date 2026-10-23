@@ -1,0 +1,28 @@
+{
+  "id": "askt-hchlp-shaynh-bmymvn",
+  "he": "עסקת החלף שאינה במימון",
+  "en": null,
+  "meaning": "דרך לקבל את תשואת המדד בחוזה מול גוף פיננסי, במקום לקנות את המניות; יש סיכון שהגוף לא ישלם.",
+  "where": [
+    "prospectus"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500"
+  ],
+  "variants": [
+    "עסקאות סוואפ לא ממומנות"
+  ],
+  "rule_ids": [
+    "ETF-11"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf",
+    "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2024",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

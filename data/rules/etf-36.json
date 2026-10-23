@@ -1,0 +1,102 @@
+{
+  "id": "ETF-36",
+  "title": "How a share's weight in a TASE share index is set: free-float value from five parameters, a per-index weight cap, a liquidity grade; computed every 15 seconds",
+  "title_he": "איך נקבע משקל מניה במדד מניות של הבורסה",
+  "text_he": "משקל מניה במדד הוא שווי החזקות הציבור שלה המחושב למדד, מכפלה של חמישה פרמטרים: שער הבסיס, מספר המניות למדד שנקבע פעם ברבעון, שיעור החזקות הציבור המעוגל לאחוז שלם ושהשינוי בו בכל עדכון מוגבל, פקטור מגבלת המשקל ומדרגת הנזילות; רק השער דינמי, והשאר קבועים בין עדכון רבעוני לעדכון. פקטור מגבלת המשקל מתאים מניות גדולות לתקרת המשקל שנקבעה לכל מדד, ובין עדכונים משקל מניה מוגבלת נע עם המחירים; מדרגת הנזילות מסווגת כל מניה לקבוצות לפי הגבוה מבין מחזור יומי חציוני ומהירות מחזור חציונית בחלון החודשים שנקבע, מדרגה יכולה לזוז בצעד אחד לעדכון ומניה חדשה מתחילה בנמוכה. מאז המועד שנקבע הבורסה משקללת לפי שווי החזקות הציבור ולא לפי שווי שוק מלא, המתודולוגיה עוקבת אחרי עקרונות FTSE, ורוב המדדים מחושבים בזמן אמת. תקרת המשקל של כל מדד, ובהם ת\"א־125, קבועה בכללי המדד שלא נקראו.",
+  "figure_names_he": {
+    "public_holdings_change_cap": "השינוי המרבי בשיעור החזקות הציבור בעדכון",
+    "liquidity_grades": "מספר מדרגות הנזילות",
+    "liquidity_window_months": "חלון החודשים למדידת הנזילות",
+    "free_float_weighting_since": "מועד המעבר לשקלול לפי החזקות הציבור"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "currency"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-15",
+  "figures": {
+    "public_holdings_change_cap": {
+      "value": 5,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.tase.co.il/he/content/knowledge_center/calculating_shares_weight/",
+        "title": "TASE, קביעת משקל המניה במדד (read through TASE's content API, route /content/knowledge_center/calculating_shares_weight)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-36"
+      ],
+      "state": "sourced",
+      "notes": "A share's public-holdings rate may change by at most 5 percentage points per quarterly update."
+    },
+    "liquidity_grades": {
+      "value": 8,
+      "unit": "count",
+      "source": {
+        "url": "https://www.tase.co.il/he/content/knowledge_center/calculating_shares_weight/",
+        "title": "TASE, קביעת משקל המניה במדד (read through TASE's content API, route /content/knowledge_center/calculating_shares_weight)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-36"
+      ],
+      "state": "sourced",
+      "notes": "Groups A to H with weight factors 1, 0.8, 0.6, 0.45, 0.35, 0.25, 0.2, 0.1, by the higher of median daily turnover and median turnover velocity over six months; one step per update."
+    },
+    "liquidity_window_months": {
+      "value": 6,
+      "unit": "months",
+      "source": {
+        "url": "https://www.tase.co.il/he/content/knowledge_center/calculating_shares_weight/",
+        "title": "TASE, קביעת משקל המניה במדד (read through TASE's content API, route /content/knowledge_center/calculating_shares_weight)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-36"
+      ],
+      "state": "sourced"
+    },
+    "free_float_weighting_since": {
+      "value": "2008-02-01",
+      "unit": "text",
+      "source": {
+        "url": "https://www.tase.co.il/he/content/knowledge_center/indices_overview/",
+        "title": "TASE, מדדי הבורסה (read through TASE's content API, route /content/knowledge_center/indices_overview)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-36"
+      ],
+      "state": "sourced",
+      "notes": "Since February 2008 weights follow the value of public holdings rather than full market value (TASE overview page; the page gives the month, not the day)."
+    }
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-23"
+}

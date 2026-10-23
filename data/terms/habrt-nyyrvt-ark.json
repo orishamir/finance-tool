@@ -1,0 +1,24 @@
+{
+  "id": "habrt-nyyrvt-ark",
+  "he": "העברת ניירות ערך",
+  "en": null,
+  "meaning": "העברת ניירות ערך וקרנות לחשבון אחר, למשל לבנק או לבית השקעות אחר; כרוכה בעמלה.",
+  "where": [
+    "tariff"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "BRK-16",
+    "BRK-18"
+  ],
+  "source": {
+    "url": "https://boi.org.il/media/w2lgmymp/159a.pdf",
+    "title": "בנק ישראל, כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "id": "TXK-16",
+  "title": "IRA: in law, a provident fund in personal management",
+  "title_he": "ניהול אישי בחוק: קופת גמל בניהול אישי",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "regulator",
+    "eligibility"
+  ],
+  "likely_to_change": "no",
+  "text_he": "חוק קופות הגמל מגדיר 'קופת גמל בניהול אישי': קופה שאושרה לעמית אחד, שרשאי לתת הוראות על השקעת הכספים. לכן קופה בניהול אישי היא קופת גמל מהסוג שבו אושרה: קרן השתלמות, קופה לקצבה וכדומה.",
+  "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
+  "checked": "2026-10-22"
+}

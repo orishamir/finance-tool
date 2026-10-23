@@ -1,0 +1,252 @@
+{
+  "id": "keren-hishtalmut",
+  "names": {
+    "he": [
+      "קרן השתלמות",
+      "קרנות השתלמות",
+      "קרן השתלמות לעצמאים"
+    ],
+    "statement": [
+      "קרן השתלמות"
+    ],
+    "app": [
+      "קרן השתלמות לשכירים",
+      "קרן השתלמות לעצמאים"
+    ]
+  },
+  "regulator": {
+    "value": "CMA",
+    "unit": "text",
+    "source": {
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ss.1, 13, 39 (Wikisource mirror)",
+      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "strength": "primary-mirror"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "REG-17"
+    ],
+    "state": "sourced",
+    "notes": "A study fund is a provident fund \"intended to pay study allowances\" (s.1); managing companies are under the Commissioner's supervision (s.39(א)) and the fund is approved under s.13."
+  },
+  "fee_bases_allowed": [
+    "balance",
+    "direct_expenses"
+  ],
+  "fee_caps": {
+    "balance": {
+      "value": 2,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/500_714.htm",
+        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 4 (Nevo mirror; cross-read on Wikisource): \"בשיעור שלא יעלה על 2% לשנה\"",
+        "publisher": "Knesset legislation (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2013-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "KH-22",
+        "PF-06"
+      ],
+      "state": "sourced",
+      "notes": "Maximum management fee of a study fund, per year, of each member's accumulated balance; applies to each track as a separate account (reg. 6). In force since 1.1.2013. Reg. 4 authorises only a fee on the balance and law s.32(א) forbids any charge not allowed, so no deposit fee (inference; Gemel-Net reports no deposit fee on any study-fund track, KH-23). Reported averages for 2026-09: 0.34% to 0.74% outside IRA tracks (KH-23)."
+    }
+  },
+  "ceiling": null,
+  "deposit_side_tax": {
+    "formula": "F-33",
+    "rule_ids": [
+      "TXH-04",
+      "TXH-01",
+      "TXH-03",
+      "TXH-05"
+    ]
+  },
+  "tax_during": {
+    "formula": "F-27",
+    "rule_ids": [
+      "TXH-18",
+      "TXH-17"
+    ]
+  },
+  "tax_at_exit": {
+    "formula": "F-46",
+    "rule_ids": [
+      "TXH-09",
+      "TXH-10",
+      "TXH-08",
+      "TXH-02",
+      "TXH-11",
+      "TXH-13",
+      "TXH-15"
+    ],
+    "blocked_by": [],
+    "labels": [
+      "institution source: real base of the 25% on gains from deposits above the benefited amount (TXH-11)",
+      "early withdrawal (F-47) pending R2: taxed at marginal rates, 47% withheld (TXH-13, TXH-15)"
+    ]
+  },
+  "lawful_exit": {
+    "kind": "after_years",
+    "years": {
+      "value": 6,
+      "unit": "years",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance, s.9(16A)(a)-(d), s.9(16B) (Wikisource mirror); Altshuler Shaham study-fund bylaws 1.12.2024, s.9.1",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXH-09",
+        "KH-10",
+        "KH-11"
+      ],
+      "state": "sourced",
+      "notes": "Exempt withdrawal, for any purpose, from the end of 6 years from the first payment date (the earlier of the end of the month the first payment was paid in and the end of the month it was paid for, not before the start of that tax year). 3 years at retirement age or for the member's study (TXH-10, KH-12). After any withdrawal the account closes to further payments; later deposits open a new account with a new clock (KH-15). Earlier withdrawal is allowed and taxed (TXH-13), not forbidden."
+    },
+    "payout_business_days": {
+      "value": 4,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.as-invest.co.il/media/10040/בקשה-למשיכת-כספים-מקרן-השתלמות.pdf",
+        "title": "Altshuler Shaham \"בקשה למשיכת כספים מקרן השתלמות\", form MH4015_210519, guidance section 1",
+        "publisher": "Altshuler Shaham Gemel and Pension",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "KH-16"
+      ],
+      "state": "sourced",
+      "notes": "Within 4 business days of a full and proper request, by bank transfer to the member's own account (Altshuler). Other managers not checked; the legal timetable was not read (KH OQ16)."
+    },
+    "text": "the money becomes free 6 years after the first payment date (3 years at retirement age, or for the member's study); withdrawing earlier is allowed but taxed as work income on the employer's benefited deposits and at the rates for income not from personal effort on the gains, with 47% withheld (TXH-13, TXH-15; method F-47, pending R2, so the site does not compute it yet); the 2025 to 2027 proposals to narrow the exemption are not law (TXH-22)"
+  },
+  "switch_is_tax_event": {
+    "value": false,
+    "unit": "boolean",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf",
+      "title": "Ministry of Finance, Chief Economist, \"על הטבת המס בקרן השתלמות – ניתוח מדיניות\", October 2025, p.5 item 2 (\"פטור ממס רווחי הון בעת שינוי הרכב הנכסים (דחיית מס)\"); Income Tax Rules 1964, rule 33ב",
+      "publisher": "Ministry of Finance, Chief Economist",
+      "strength": "primary"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXH-17",
+      "PF-23",
+      "KH-18"
+    ],
+    "state": "sourced",
+    "notes": "A track switch inside the fund is not a tax event and is completed within 3 business days. A whole-balance transfer to another study fund carries the account's history (TXH-19); no primary text says in so many words that it is not a withdrawal (TXH OQ11)."
+  },
+  "transfer_routes": [
+    {
+      "to": "keren-hishtalmut",
+      "condition": "whole balance only; no partial transfer",
+      "rule_ids": [
+        "PF-17",
+        "PF-18",
+        "KH-17",
+        "PF-19",
+        "SW-20",
+        "TXH-19"
+      ]
+    },
+    {
+      "to": "provident-for-annuity",
+      "condition": "only money the member could withdraw tax-exempt",
+      "rule_ids": [
+        "PF-17",
+        "KH-17",
+        "TXH-19"
+      ]
+    },
+    {
+      "to": "pension-comprehensive",
+      "condition": "only money the member could withdraw tax-exempt",
+      "rule_ids": [
+        "PF-17",
+        "KH-17"
+      ]
+    }
+  ],
+  "eligibility": {
+    "rule_ids": [
+      "KH-01",
+      "KH-02",
+      "KH-03",
+      "KH-04",
+      "KH-08",
+      "KH-09",
+      "TXH-05"
+    ],
+    "text": "a salaried employee only through an employer that pays in under a personal contract, a collective agreement or an extension order, usually 7.5% employer and 2.5% employee of salary; a self-employed person with business or professional income may open one at any time and deduct up to 4.5% of income; some funds stop accepting deposits once the employer stops paying"
+  },
+  "protection": {
+    "rule_ids": [
+      "PF-29",
+      "REG-18",
+      "REG-19",
+      "KH-21"
+    ],
+    "text": "assets are held in trust, separately from the managing company's property, and cannot be attached; if the company fails, management moves to another company; the state does not guarantee the fund's value; bylaws allow loans against the fund and a pledge only once the money is withdrawable"
+  },
+  "tier": 1,
+  "open_questions": [
+    "KH-OQ1",
+    "KH-OQ2",
+    "KH-OQ3",
+    "KH-OQ4",
+    "KH-OQ6",
+    "KH-OQ8",
+    "KH-OQ11",
+    "TXH-OQ1",
+    "TXH-OQ2",
+    "TXH-OQ5",
+    "TXH-OQ11"
+  ],
+  "checked": "2026-10-23",
+  "dimensions": {
+    "age-or-use-exemption": "covered",
+    "deposit-ceiling": "covered",
+    "eligibility": "covered",
+    "fee-deposit": "covered",
+    "fee-exit": "covered",
+    "fee-management-balance": "covered",
+    "liquidity-lockup": "covered",
+    "minimum": "covered",
+    "protection": "covered",
+    "real-vs-nominal": "covered",
+    "regulator": "covered",
+    "reporting-obligation": "covered",
+    "switching-tax-event": "covered",
+    "tax-at-deposit": "covered",
+    "tax-at-exit": "covered",
+    "tax-during": "covered",
+    "transfer-switch-process": "covered"
+  }
+}

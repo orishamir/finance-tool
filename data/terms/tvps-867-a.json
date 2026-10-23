@@ -1,0 +1,26 @@
+{
+  "id": "tvps-867-a",
+  "he": "טופס 867",
+  "en": null,
+  "meaning": "אישור שנתי ממי ששילם לכם ריבית, על הריבית ועל המס שנוכה ממנה, לשימוש בדוח השנתי",
+  "where": [
+    "app",
+    "tax-form"
+  ],
+  "wrapper_ids": [
+    "bank-deposit"
+  ],
+  "variants": [
+    "טופס 0867"
+  ],
+  "rule_ids": [
+    "TXI-08"
+  ],
+  "source": {
+    "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
+    "title": "Income Tax (Withholding from Interest, Dividend and Certain Profits) Regulations 2005, consolidated to 27.12.2017 (copy on btl.gov.il)",
+    "publisher": "National Insurance Institute",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

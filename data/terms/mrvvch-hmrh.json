@@ -1,0 +1,27 @@
+{
+  "id": "mrvvch-hmrh",
+  "he": "מרווח המרה",
+  "en": null,
+  "meaning": "תוספת שהבנק או בית ההשקעות מוסיפים לשער המטבע בהמרה; עלות שלא תמיד מופיעה כעמלה נפרדת.",
+  "where": [
+    "tariff"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "BRK-23",
+    "BRK-24"
+  ],
+  "source": {
+    "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+    "title": "IBI, תעריפון עמלות, נכון ל-1.7.2026",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

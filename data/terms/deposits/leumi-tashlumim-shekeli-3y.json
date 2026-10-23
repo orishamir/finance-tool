@@ -1,0 +1,154 @@
+{
+  "id": "leumi-tashlumim-shekeli-3y",
+  "bank": "leumi",
+  "names": {
+    "447": [
+      "פיקדון ל-3 שנים",
+      "דגם: 503/3 תשלומים שקלי ל-3 שנים",
+      "תשלומים שקלי ל-3 שנים"
+    ],
+    "app": [
+      "חיסכון חודשי למטרה"
+    ],
+    "ad": [],
+    "abbrev": []
+  },
+  "type_447": "פיקדון ל-3 שנים",
+  "wrapper_id": "savings-plan",
+  "term_months": {
+    "value": 36,
+    "unit": "months",
+    "source": {
+      "url": "https://www.leumi.co.il/he/savings/interest-rate-table/print-pdf/leumi",
+      "title": "בנק לאומי, 'שיעורי הריבית על הפיקדונות ועל יתרות זכות בחשבון' (פרסום לפי הוראה 447, קובץ PDF להדפסה), 'הנתונים נכונים ליום: 25.10.2026', ריבית הפריים P = 4.75% החל מתאריך 03.09.2026, שורת 'פיקדון ל-3 שנים, דגם: 503/3 תשלומים שקלי ל-3 שנים' (עמ' 33)",
+      "publisher": "Bank Leumi le-Israel B.M.",
+      "strength": "institution"
+    },
+    "checked": "2026-10-23",
+    "effective_from": "2026-10-25",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-28",
+      "BANK-27"
+    ],
+    "state": "sourced",
+    "notes": "Printed as 'פיקדון ל-3 שנים'; recorded as 36 months. 'תשלומים' is Leumi's name for a periodic-deposit (savings-plan) product; the rate-table page describes 'חיסכון חודשי למטרה - הפקדה חודשית קבועה (הכוונה לחיסכון בתשלומים)'."
+  },
+  "rate_type": "fixed",
+  "anchor": null,
+  "spread": null,
+  "rate_offered": {
+    "value": 1.5,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.leumi.co.il/he/savings/interest-rate-table/print-pdf/leumi",
+      "title": "בנק לאומי, 'שיעורי הריבית על הפיקדונות ועל יתרות זכות בחשבון' (פרסום לפי הוראה 447, קובץ PDF להדפסה), 'הנתונים נכונים ליום: 25.10.2026', ריבית הפריים P = 4.75% החל מתאריך 03.09.2026, שורת 'פיקדון ל-3 שנים, דגם: 503/3 תשלומים שקלי ל-3 שנים', 'שיעור הריבית המוצעת (נומינלי שנתי)' (עמ' 33)",
+      "publisher": "Bank Leumi le-Israel B.M.",
+      "strength": "institution"
+    },
+    "checked": "2026-10-23",
+    "effective_from": "2026-10-25",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-04",
+      "BANK-13",
+      "BANK-28"
+    ],
+    "state": "sourced",
+    "notes": "Nominal annual rate before tax; the row also prints 'ריבית מתואמת: 1.50%'; digital benefit column '-'. Single amount tier. Page prints 'הנתונים נכונים ליום 25.10.2026'. A sister product on the same page, 'תשלומים פריים ל-3 שנים' (דגם 504/1), is variable at P-3.2%=1.55% with exit points after 6 months and every 3 months after; 'תשלומים שקלי ל-5 שנים' (דגם 506/6) is fixed 2.00%."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Income Tax Ordinance s.125C(c)(1): 15% on interest from an asset not linked to the CPI (Hebrew Wikisource mirror); read through il-finance TXI-03 and TXI-04",
+      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "strength": "primary-mirror"
+    },
+    "checked": "2026-10-23",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel deposit ('לא צמוד'): interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08)."
+  },
+  "amount_range": {
+    "min": {
+      "value": 100,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.leumi.co.il/he/savings/interest-rate-table/print-pdf/leumi",
+        "title": "בנק לאומי, 'שיעורי הריבית על הפיקדונות ועל יתרות זכות בחשבון' (פרסום לפי הוראה 447, קובץ PDF להדפסה), 'הנתונים נכונים ליום: 25.10.2026', ריבית הפריים P = 4.75% החל מתאריך 03.09.2026, שורת 'פיקדון ל-3 שנים, דגם: 503/3', 'טווח סכום להפקדה' 100 - 10,000 (עמ' 33)",
+        "publisher": "Bank Leumi le-Israel B.M.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-23",
+      "effective_from": "2026-10-25",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "The table prints the range '100 - 10,000' in the deposit-amount column; for a periodic-deposit product this is read as the amount per deposit, but the page does not say so in words."
+    },
+    "max": {
+      "value": 10000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.leumi.co.il/he/savings/interest-rate-table/print-pdf/leumi",
+        "title": "בנק לאומי, 'שיעורי הריבית על הפיקדונות ועל יתרות זכות בחשבון' (פרסום לפי הוראה 447, קובץ PDF להדפסה), 'הנתונים נכונים ליום: 25.10.2026', ריבית הפריים P = 4.75% החל מתאריך 03.09.2026, שורת 'פיקדון ל-3 שנים, דגם: 503/3', 'טווח סכום להפקדה' 100 - 10,000 (עמ' 33)",
+        "publisher": "Bank Leumi le-Israel B.M.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-23",
+      "effective_from": "2026-10-25",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "Upper bound as printed; see min for the per-deposit reading."
+    }
+  },
+  "break": {
+    "allowed": false,
+    "penalty": "not_allowed",
+    "mechanism_text": "'אפשרות לשבירת פיקדון: אין אפשרות שבירה' (column of the 447 table for this product).",
+    "rule_ids": [
+      "BANK-06"
+    ]
+  },
+  "exit_points": {
+    "exists": false,
+    "every_months": null
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "snapshot": "2026-10-23",
+  "source": {
+    "url": "https://www.leumi.co.il/he/savings/interest-rate-table/print-pdf/leumi",
+    "title": "בנק לאומי, 'שיעורי הריבית על הפיקדונות ועל יתרות זכות בחשבון' (פרסום לפי הוראה 447, קובץ PDF להדפסה), 'הנתונים נכונים ליום: 25.10.2026', ריבית הפריים P = 4.75% החל מתאריך 03.09.2026, עמ' 33 מתוך 80 (טופס 50208 12.25); also shown on https://www.leumi.co.il/he/savings/interest-rate-table",
+    "publisher": "Bank Leumi le-Israel B.M.",
+    "strength": "institution"
+  }
+}

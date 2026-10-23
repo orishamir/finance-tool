@@ -1,0 +1,39 @@
+{
+  "id": "mnhl-mvrshh",
+  "he": "מנהל מורשה",
+  "en": null,
+  "meaning": "מי שמתמנה לנהל בנק, חברת ביטוח או חברה מנהלת שלא עומדים בהתחייבויות שלהם",
+  "where": [],
+  "wrapper_ids": [
+    "bank-deposit",
+    "brokerage-account",
+    "child-savings-bank",
+    "child-savings-provident",
+    "current-account",
+    "government-bond",
+    "ira-hishtalmut",
+    "ira-provident",
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa",
+    "makam",
+    "money-market-fund-daily",
+    "money-market-fund-renewable",
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity",
+    "savings-plan"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "REG-06",
+    "REG-19",
+    "REG-22"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות",
+    "title": "פקודת הבנקאות, 1941 (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

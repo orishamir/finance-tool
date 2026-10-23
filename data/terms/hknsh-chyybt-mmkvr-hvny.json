@@ -1,0 +1,39 @@
+{
+  "id": "hknsh-chyybt-mmkvr-hvny",
+  "he": "הכנסה חייבת ממקור הוני",
+  "en": null,
+  "meaning": "לעניין המס הנוסף: כל הכנסה חייבת שאינה משכר, מעסק או מעבודה אישית, כמו ריבית, דיבידנד ורווח הון",
+  "where": [],
+  "wrapper_ids": [
+    "bank-deposit",
+    "brokerage-account",
+    "child-savings-bank",
+    "child-savings-provident",
+    "current-account",
+    "government-bond",
+    "ira-hishtalmut",
+    "ira-provident",
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa",
+    "makam",
+    "money-market-fund-daily",
+    "money-market-fund-renewable",
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity",
+    "savings-plan"
+  ],
+  "variants": [
+    "הכנסה חייבת ממקורות הוניים"
+  ],
+  "rule_ids": [
+    "TXG-10"
+  ],
+  "source": {
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf",
+    "title": "Sefer HaChukim 3342, 26.12.2024: Economic Efficiency Law (Freeze of Tax Updates and Surtax) 2024",
+    "publisher": "Knesset",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

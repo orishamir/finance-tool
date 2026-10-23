@@ -1,0 +1,33 @@
+{
+  "id": "tgmvlym-vayshyt-lpytzvyym",
+  "he": "תגמולים ואישית לפיצויים",
+  "en": null,
+  "meaning": "קופת גמל לחיסכון לפרישה בלי ביטוח; כדי לקבל ממנה קצבה, מעבירים את הכסף לקרן פנסיה או לחברת ביטוח",
+  "where": [
+    "app",
+    "gemel-net",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [
+    "קופת גמל לתגמולים",
+    "קופת גמל אישית לפיצויים",
+    "קופת גמל לחיסכון"
+  ],
+  "rule_ids": [
+    "CAT-10",
+    "PEN-34",
+    "PEN-35"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+    "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

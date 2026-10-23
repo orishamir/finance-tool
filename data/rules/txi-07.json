@@ -1,0 +1,14 @@
+{
+  "id": "TXI-07",
+  "title": "Timing: deposits and savings plans are taxed on withdrawal; tax is withheld when interest is paid",
+  "title_he": "עיתוי: פיקדונות ותוכניות חיסכון ממוסים במשיכה, בניכוי במקור",
+  "text_he": "רווחים שנצברו בפיקדונות ובתוכניות חיסכון ממוסים בעת המשיכה. הבנק מנכה את המס במקור כשהוא משלם את הריבית ליחיד. לא נמצא כלל מיוחד לשבירת פיקדון מוקדמת: הניכוי חל על הריבית ששולמה בפועל, כך ששבירה שמקטינה את הריבית מקטינה את הבסיס, אבל אף מקור לא אומר זאת במילים.",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-interest-deposits-bonds.md",
+  "checked": "2026-10-22"
+}

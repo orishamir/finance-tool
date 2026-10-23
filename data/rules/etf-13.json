@@ -1,0 +1,82 @@
+{
+  "id": "ETF-13",
+  "title": "Fee layers in an Israeli tracking fund or ETF: fixed and variable management fees, trustee fee, commissions, tax expenses; two S&P 500 examples",
+  "title_he": "שכבות העלות בקרן מחקה או קרן סל ישראלית",
+  "text_he": "הדוח השנתי של קרן מחקה ישראלית מפרט את ההוצאות שנשלמו מנכסי הקרן כאחוז משווי הנכסים הנקי הממוצע: דמי ניהול קבועים, דמי ניהול משתנים אם יש, שכר נאמן, עמלות והוצאות, והוצאות מס. אלה נוספות על העלויות בצד הבורסה, המרווח או הפרמיה במסחר ועמלות היצירה והפדיון בפקודות ישירות, ועל עמלות הברוקר. בדוגמאות, קרן הסל של אי.בי.אי גבתה דמי ניהול קבועים ומשתנים ושכר נאמן, ואילו הקרן המחקה הפתוחה של ילין לפידות גבתה רק שכר נאמן, בלי דמי ניהול ובלי תוספת; החוק מאפשר למנהל לחייב את הקרן בעמלות עסקאות. הדמים נקבעים לכל קרן ויכולים להשתנות.",
+  "figure_names_he": {
+    "ibi_sp500_total_expenses_2025": "סך ההוצאות של קרן הסל של אי.בי.אי על S&P 500 בשנה המדווחת",
+    "ibi_sp500_fixed_fee_2025": "דמי הניהול הקבועים של קרן הסל של אי.בי.אי",
+    "yalin_sp500_total_expenses_2025": "סך ההוצאות של הקרן המחקה של ילין לפידות על S&P 500 בשנה המדווחת"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-trade",
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "ibi_sp500_total_expenses_2025": {
+      "value": 1.1085,
+      "unit": "pct",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
+        "title": "IBI, annual report of אי.בי.אי. סל (4D) S&P 500 (1148162), 31.12.2025",
+        "publisher": "IBI Mutual Funds (Maya)",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13"
+      ],
+      "state": "sourced",
+      "notes": "IBI S&P 500 ETF, 2025: fixed 0.80%, variable 0.30%, trustee 0.0085%. Trustee fee changes to 0.015% from 1 July 2026."
+    },
+    "ibi_sp500_fixed_fee_2025": {
+      "value": 0.8,
+      "unit": "pct",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
+        "title": "IBI, annual report of אי.בי.אי. סל (4D) S&P 500 (1148162), 31.12.2025",
+        "publisher": "IBI Mutual Funds (Maya)",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13"
+      ],
+      "state": "sourced"
+    },
+    "yalin_sp500_total_expenses_2025": {
+      "value": 0.02,
+      "unit": "pct",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
+        "title": "Yalin Lapidot, annual report of ילין לפידות מחקה (4D) S&P 500 (5139282), 31.12.2025",
+        "publisher": "Yalin Lapidot (Maya)",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13"
+      ],
+      "state": "sourced",
+      "notes": "Yalin Lapidot open tracking fund S&P 500, 2025: manager 0%, variable 0%, trustee 0.02%, no front load."
+    }
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,33 @@
+{
+  "id": "fee-change-over-time",
+  "he": "שינוי עמלות לאורך זמן",
+  "one_line": "האם העמלה יכולה לעלות בהמשך, למשל כשהנחה נגמרת, ואיך מודיעים על כך",
+  "source": {
+    "url": "docs/product.md#33-dimension-checklist-or-what-you-are-not-considering",
+    "title": "product.md 3.3 and glossary.md section 2",
+    "publisher": "project",
+    "strength": "primary",
+    "checked": "2026-10-23"
+  },
+  "rule_ids": [
+    "BANK-19",
+    "BANK-25",
+    "BRK-21",
+    "CAT-06",
+    "CAT-24",
+    "CAT-36",
+    "CS-18",
+    "ETF-13",
+    "ETF-14",
+    "IRA-17",
+    "KGL-16",
+    "KH-25",
+    "MF-17",
+    "PEN-15",
+    "PEN-19",
+    "PEN-21",
+    "PEN-23",
+    "PF-13",
+    "PF-14"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "id": "chvskym-hmadypym-sykvn-mvat",
+  "he": "חוסכים המעדיפים סיכון מועט",
+  "en": null,
+  "meaning": "מסלול בחיסכון לכל ילד ברמת הסיכון הנמוכה מבין מסלולי הסיכון",
+  "where": [
+    "app",
+    "gemel-net",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "child-savings-bank",
+    "child-savings-provident"
+  ],
+  "variants": [
+    "סיכון מועט"
+  ],
+  "rule_ids": [
+    "CS-07",
+    "CS-08",
+    "CS-24"
+  ],
+  "source": {
+    "url": "https://hly.gov.il/ProvidentFunds.html",
+    "title": "hly.gov.il, מידע על ניהול החיסכון בקופות הגמל",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

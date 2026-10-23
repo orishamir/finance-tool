@@ -1,0 +1,13 @@
+{
+  "id": "KH-07",
+  "title": "Deposits above the tax-advantaged ceiling are accepted",
+  "title_he": "הפקדות מעל התקרה המוטבת מתקבלות",
+  "text_he": "הקרנות מקבלות הפקדות מעל התקרה המוטבת במס. לפי טבלת הראל, הפקדות מעבר לתקרה נזקפות לעובד כשווי מס ויחויבו במס רווח הון במשיכה. בניגוד לקופת גמל להשקעה, בחוק לא נמצאה תקרה בשקלים לסך ההפקדות לקרן השתלמות. הקרן מפרידה בין כסף מוטב לכסף שאינו מוטב, והמס על כל אחד מופיע בכללי המס.",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "deposit-ceiling"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "keren-hishtalmut.md",
+  "checked": "2026-10-22"
+}

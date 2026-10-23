@@ -1,0 +1,31 @@
+{
+  "id": "msy-chvtz",
+  "he": "מסי חוץ",
+  "en": null,
+  "meaning": "מס שמדינה זרה גובה מתושב ישראל על הכנסה שנוצרה בה, כמו מס על דיבידנד אמריקאי.",
+  "where": [
+    "statement",
+    "tax-form"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500"
+  ],
+  "variants": [
+    "מסי־חוץ"
+  ],
+  "rule_ids": [
+    "TXF-12",
+    "TXF-16",
+    "TXF-17"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+    "title": "פקודת מס הכנסה (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

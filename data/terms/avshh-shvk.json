@@ -1,0 +1,25 @@
+{
+  "id": "avshh-shvk",
+  "he": "עושה שוק",
+  "en": null,
+  "meaning": "גוף שמתחייב להציע בכל יום מסחר מחיר קנייה ומחיר מכירה ליחידות של קרן סל.",
+  "where": [
+    "prospectus"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "ETF-03",
+    "ETF-18",
+    "ETF-26"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
+    "title": "חוק השקעות משותפות בנאמנות, תשנ\"ד-1994 (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

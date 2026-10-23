@@ -6,6 +6,7 @@ import { Num } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { Card, Tag } from "../components/ui";
 import { fmt } from "../lib/format";
+import { fieldLabel, unitText } from "../lib/parameter-labels";
 import type { SiteValue } from "../lib/value";
 
 interface Entry {
@@ -29,14 +30,14 @@ function walk(node: unknown, path: string[], out: Entry[]) {
 export async function loader() {
   const { loadParameters, loadParameterUses, today } = await import("../lib/data.server");
   const uses = loadParameterUses();
-  const skip = new Set(["id", "method_id", "rationale", "signed_off_by", "signed_off_on", "shown_as", "chosen_by"]);
+  const skip = new Set(["id", "method_id", "rationale", "rationale_he", "signed_off_by", "signed_off_on", "shown_as", "chosen_by"]);
   const parameters = loadParameters()
     .sort((a, b) => a.method_id.localeCompare(b.method_id))
     .map((p) => {
       const entries: Entry[] = [];
       for (const [k, v] of Object.entries(p)) if (!skip.has(k)) walk(v, [k], entries);
-      const values = entries.map((e) => ({ ...e, value: { ...e.value, parameter: { rationale: p.rationale, signedOffOn: p.signed_off_on, provisional: (e.value.notes ?? "").startsWith("provisional") } } }));
-      return { id: p.id, methodId: p.method_id, rationale: p.rationale, chosenBy: (p as { chosen_by?: string }).chosen_by ?? null, signedOffOn: p.signed_off_on, values, usedIn: uses[p.method_id] ?? [] };
+      const values = entries.map((e) => ({ ...e, label: fieldLabel(p.method_id, e.path, p as unknown as Record<string, unknown>), value: { ...e.value, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null, signedOffOn: p.signed_off_on, provisional: (e.value.notes ?? "").startsWith("provisional") } } }));
+      return { id: p.id, methodId: p.method_id, rationale: p.rationale, rationaleHe: p.rationale_he ?? null, chosenBy: (p as { chosen_by?: string }).chosen_by ?? null, signedOffOn: p.signed_off_on, values, usedIn: uses[p.method_id] ?? [] };
     });
   return { parameters, today: today() };
 }
@@ -69,11 +70,10 @@ export default function Parameters() {
                 <dl className="readout">
                   {p.values.map((e) => (
                     <div key={e.path} className="readout-row">
-                      <dt>
-                        <bdi dir="ltr" className="text-xs">{e.path}</bdi>
-                      </dt>
+                      <dt>{e.label}</dt>
                       <dd>
-                        <Num value={e.value} />
+                        <Num value={e.value} display={unitText(e.path, e.value).display} />
+                        {unitText(e.path, e.value).suffix && <span className="text-sm text-muted-foreground">{unitText(e.path, e.value).suffix}</span>}
                         {e.value.parameter?.provisional && <Tag tone="caution">{copy.provisional}</Tag>}
                       </dd>
                     </div>
@@ -83,7 +83,7 @@ export default function Parameters() {
               <dl className="sheet-dl">
                 <dt className="text-sm text-muted-foreground">{copy.rows.why}</dt>
                 <dd className="text-sm">
-                  <bdi dir="ltr">{p.rationale}</bdi>
+                  {p.rationaleHe ? p.rationaleHe : <bdi dir="ltr">{p.rationale}</bdi>}
                 </dd>
                 <dt className="text-sm text-muted-foreground">{copy.rows.approved}</dt>
                 <dd>
