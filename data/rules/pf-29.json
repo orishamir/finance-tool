@@ -1,0 +1,11 @@
+{
+  "id": "PF-29",
+  "title": "Fund assets are held in trust, separately from the manager's property, and cannot be attached",
+  "strength": "primary",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-22"
+}

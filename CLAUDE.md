@@ -3,7 +3,13 @@
 Personal, non-commercial website that helps me and a few friends and family
 make saving and investing decisions in Israel.
 
-## Status: defined, not built
+## Status: release 1 screens built, data partly filled
+
+The release 1 screens were built on 2026-10-23 from `docs/design-spec.md` (see
+`docs/data-inventory.md` for what data each one reads and what is still
+missing). One guide page has data (kupat gemel lehashkaa); the other wrapper
+records, the exposure records, `data/terms/`, `data/dimensions/` and
+`data/catalog/` are not written yet.
 
 `docs/product.md` defines the site: who it is for, the capabilities, the
 decisions D1 to D13 (confirmed 2026-10-22, open to revision as I learn more),
@@ -48,7 +54,7 @@ re-check the capabilities that depend on it.
 - `packages/schema/` — data schemas (Zod) for `docs/data-schema.md`; `json/` holds the exported JSON Schema
 - `packages/engine/` — calculation engine, one function per `docs/method.md` formula; no I/O
 - `packages/pipeline/` — validator (and, later, refresh adapters)
-- `site/` — React Router app, pre-rendered, Hebrew right to left
+- `site/` — React Router app, pre-rendered, Hebrew right to left; `site/app/copy.ts` holds the UI strings, `site/app/content/guide/` the prose of each guide page
 - `docs/architecture.md` — stack and design (React chosen 2026-10-22)
 - `docs/design-system.md` — tokens, conventions and the release 1 components
 - `docs/flows.md` — user flows for release 1 (approved 2026-10-23), the screens they need and a design brief per screen

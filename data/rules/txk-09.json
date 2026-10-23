@@ -1,0 +1,35 @@
+{
+  "id": "TXK-09",
+  "title": "Recognized annuity is exempt from age 60",
+  "strength": "primary",
+  "dimensions": [
+    "age-or-use-exemption",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "age": {
+      "value": 60,
+      "unit": "years",
+      "source": {
+        "url": "https://he.wikisource.org/api/rest_v1/page/pdf/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance, s.9A(b1) (Wikisource PDF p.25)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXK-09"
+      ],
+      "state": "sourced",
+      "notes": "A recognized annuity received by an individual who has reached 60 is exempt, with no ceiling and no income test in the statute."
+    }
+  },
+  "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
+  "checked": "2026-10-22"
+}

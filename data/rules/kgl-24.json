@@ -1,0 +1,13 @@
+{
+  "id": "KGL-24",
+  "title": "The 2026 ceiling checks out against official CPI data",
+  "strength": "primary",
+  "dimensions": [
+    "deposit-ceiling",
+    "real-vs-nominal"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "kupat-gemel-lehashkaa.md",
+  "checked": "2026-10-22"
+}

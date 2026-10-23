@@ -1,0 +1,36 @@
+{
+  "id": "KGL-08",
+  "title": "Withdrawal at any time, in full or in part",
+  "strength": "institution",
+  "dimensions": [
+    "liquidity-lockup",
+    "fee-exit",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "payout_business_days": {
+      "value": 4,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
+        "title": "Altshuler Shaham \"חיסכון פלוס\" gemel lehashkaa bylaws, March 2025, clauses 11–15",
+        "publisher": "Altshuler Shaham Gemel and Pension",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "KGL-08"
+      ],
+      "state": "sourced",
+      "notes": "Paid within four business days of a complete, signed request; identical in the Infinity (1.7.2024) and Yachad Rofim (25.7.2024) bylaws. If that date falls in the first three business days of a month, payment may be deferred to the fourth business day. Meitav's product page also says \"תוך 4 ימי עסקים\"."
+    }
+  },
+  "il_finance_file": "kupat-gemel-lehashkaa.md",
+  "checked": "2026-10-22"
+}

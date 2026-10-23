@@ -1,0 +1,12 @@
+{
+  "id": "PF-17",
+  "title": "A member may transfer money between provident funds; which routes are allowed",
+  "strength": "primary",
+  "dimensions": [
+    "transfer-switch-process",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-22"
+}

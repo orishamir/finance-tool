@@ -1,0 +1,37 @@
+{
+  "id": "TXK-10",
+  "title": "The route to the exemption: transfer to a provident fund for annuity from age 60",
+  "strength": "primary",
+  "dimensions": [
+    "age-or-use-exemption",
+    "transfer-switch-process",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "early_retirement_age": {
+      "value": 60,
+      "unit": "years",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
+        "title": "Retirement Age Law, s.5: \"גיל 60 לגבר ולאישה\"",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXK-10",
+        "KGL-09"
+      ],
+      "state": "sourced",
+      "notes": "From the early retirement age the balance may be moved to a provident fund for annuity, into an annuitants' track, for an annuity only (transfer regulations reg. 2(א)(7), 2(ב)(2))."
+    }
+  },
+  "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
+  "checked": "2026-10-22"
+}

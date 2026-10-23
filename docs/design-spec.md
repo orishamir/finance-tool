@@ -290,6 +290,8 @@ Where the reader changes the values behind the graph (flow 3). A bottom sheet on
 
 ## 5. Screen 4: company page in the decoder
 
+> **Built 2026-10-23 as one list.** The app-mirroring view described below (`ProductMappingCard`, `AppQuestionCard`, the view switch) was removed on 2026-10-23 (product.md appendix E, flows 6.11, the redrawn mockup) and is not built. The page is: back link, h1, the data-month line, the fees-pending callout, "כל המסלולים של {חברה}", one disclosure per regulator product type (the first open, each with its track count and a link to the product's guide page), the track list with same-name groups, and the paste card (PC: in the side column with the product card). `TrackList`, `NearDuplicateGroup`, `Tag`, `Callout` and `PasteCard` are as specified below.
+
 ### Overview
 
 What a managing company offers, decoded (flow 5). The default view shows what the company's app shows, from `data/catalog/`; the second view lists every track in the regulator's data (`data/cma/`). The mockup shows an example company with the Meitav-style flow: a "פתיחת חיסכון חדש" button, a two-option question and eight tracks, two of them with the same name.

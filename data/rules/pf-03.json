@@ -1,0 +1,12 @@
+{
+  "id": "PF-03",
+  "title": "Kupat gemel lehashkaa falls under the regulation-2 cap (4% of deposits, 1.05% of balance)",
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-deposit"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,13 @@
+{
+  "id": "KGL-16",
+  "title": "Fee discounts: minimum duration and when they can end early",
+  "strength": "institution",
+  "dimensions": [
+    "fee-change-over-time",
+    "fee-management-balance",
+    "fee-deposit"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "kupat-gemel-lehashkaa.md",
+  "checked": "2026-10-22"
+}
