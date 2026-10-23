@@ -1,0 +1,14 @@
+{
+  "id": "REG-23",
+  "title": "Child savings: protection follows where the parents put it",
+  "title_he": "חיסכון לכל ילד: ההגנה הולכת אחרי הבחירה של ההורים",
+  "strength": "primary",
+  "dimensions": [
+    "protection",
+    "regulator"
+  ],
+  "likely_to_change": "no",
+  "text_he": "התכנית נפתחת 'בקופת גמל או בבנק לפי בחירתכם'. בקופת גמל הנכסים מוחזקים בנאמנות ובנפרד מרכוש החברה המנהלת, ואם היא קורסת הניהול עובר לחברה אחרת. בבנק הכסף הוא פיקדון בנקאי בלי ביטוח פיקדונות.",
+  "il_finance_file": "regulators-and-protection.md",
+  "checked": "2026-10-22"
+}

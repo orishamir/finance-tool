@@ -1,0 +1,28 @@
+{
+  "id": "krn-nzylh",
+  "he": "קרן נזילה",
+  "en": null,
+  "meaning": "קרן השתלמות שעבר בה הזמן שקבע החוק, כך שאפשר למשוך ממנה בפטור ממס",
+  "where": [
+    "app",
+    "form"
+  ],
+  "wrapper_ids": [
+    "keren-hishtalmut"
+  ],
+  "variants": [
+    "נזילות"
+  ],
+  "rule_ids": [
+    "KH-10",
+    "TXH-09",
+    "TXH-10"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "Tax Authority, דע זכויותיך וחובותיך 2025",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

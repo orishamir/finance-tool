@@ -1,0 +1,28 @@
+{
+  "id": "agch-brybyt-kbvah",
+  "he": "אג\"ח בריבית קבועה",
+  "en": null,
+  "meaning": "איגרת חוב של המדינה בשקלים, שלא צמודה למדד, ומשלמת ריבית קבועה שנקבעה מראש",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [
+    "government-bond"
+  ],
+  "variants": [
+    "ממשלתית",
+    "ממש\"ק",
+    "ממשלתית שקלית"
+  ],
+  "rule_ids": [
+    "GOV-13",
+    "TXI-15"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf",
+    "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2024, glossary (מילון מונחים)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

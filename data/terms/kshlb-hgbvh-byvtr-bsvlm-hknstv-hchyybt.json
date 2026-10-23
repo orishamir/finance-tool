@@ -1,0 +1,38 @@
+{
+  "id": "kshlb-hgbvh-byvtr-bsvlm-hknstv-hchyybt",
+  "he": "כשלב הגבוה ביותר בסולם הכנסתו החייבת",
+  "en": null,
+  "meaning": "רווח הון וריבית נספרים מעל שאר ההכנסה, ולכן ממוסים במדרגות שמעליה",
+  "where": [],
+  "wrapper_ids": [
+    "bank-deposit",
+    "brokerage-account",
+    "child-savings-bank",
+    "child-savings-provident",
+    "current-account",
+    "government-bond",
+    "ira-hishtalmut",
+    "ira-provident",
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa",
+    "makam",
+    "money-market-fund-daily",
+    "money-market-fund-renewable",
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity",
+    "savings-plan"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXG-04",
+    "TXG-07"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw",
+    "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

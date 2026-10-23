@@ -1,0 +1,32 @@
+{
+  "id": "brvkr-zr",
+  "he": "ברוקר זר",
+  "en": null,
+  "meaning": "חברת מסחר בניירות ערך בחו\"ל, שאינה חברה בבורסה בתל אביב ואינה בפיקוח רשות ניירות ערך בישראל.",
+  "where": [
+    "ad",
+    "app"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "BRK-01",
+    "BRK-06",
+    "BRK-14",
+    "BRK-35",
+    "BRK-36",
+    "TXF-22"
+  ],
+  "source": {
+    "url": "https://www.nevo.co.il/law_html/law00/70349.htm",
+    "title": "חוק ניירות ערך, תשכ\"ח-1968 (Nevo mirror)",
+    "publisher": "Nevo legal database",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

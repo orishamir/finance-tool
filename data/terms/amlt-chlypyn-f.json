@@ -1,0 +1,20 @@
+{
+  "id": "amlt-chlypyn-f",
+  "he": "עמלת חליפין",
+  "en": null,
+  "meaning": "עמלה שהבנק גובה על המרת כסף בין שקלים למטבע זר, או בין שני מטבעות זרים.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "FXD-05",
+    "FXD-06"
+  ],
+  "source": {
+    "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
+    "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, First Schedule part 5, consolidated to 9.4.2025 (BoI copy)",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

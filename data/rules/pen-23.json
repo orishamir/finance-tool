@@ -1,0 +1,84 @@
+{
+  "id": "PEN-23",
+  "title": "Selected (default) pension funds and their fees",
+  "title_he": "קרנות הפנסיה הנבחרות ודמי הניהול שלהן",
+  "text_he": "הממונה קובע לפחות שתי קרנות פנסיה חדשות מקיפות כקרנות נבחרות בהליך תחרותי, וכל אחת משמשת ברירת מחדל לעובדים שלא בחרו, לתקופה של ארבע שנים מהמועד הקובע. בהליך הרביעי נבחרו הקרנות של אינפיניטי, אלטשולר שחם, מור ומיטב. דמי הניהול לעמיתים חדשים הם דמי ההפקדה ודמי הצבירה של הקרן הנבחרת, ומובטחים לתקופת ההבטחה לפחות ממועד ההצטרפות, למי שהצטרף בזמן שהקרן נבחרת. עמית פעיל רשאי לבקש להמיר חלק מדמי הצבירה בדמי הפקדה לפי נוסחת \"הרכב דמי ניהול מיטיב\"; החלופות של מור נקראו מהעמוד שלה (מקור מוסדי), ושל שאר הקרנות לא נבדקו.",
+  "figure_names_he": {
+    "selected_deposit_fee": "דמי ניהול מההפקדות בקרן נבחרת",
+    "selected_balance_fee": "דמי ניהול מהצבירה בקרן נבחרת",
+    "guarantee_years": "תקופת הבטחת דמי הניהול (שנים)"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-deposit",
+    "fee-change-over-time",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "selected_deposit_fee": {
+      "value": 1,
+      "unit": "pct_of_deposit",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf",
+        "title": "CMA circular 2024-9-6 \"הוראות לעניין בחירת קופת גמל - עדכון\", 25.8.2024, annex sections 4, 5; CMA report 2024 p. 10",
+        "publisher": "Capital Market, Insurance and Savings Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2024-11-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PEN-23"
+      ],
+      "state": "sourced",
+      "notes": "Fee from deposits for new members of a selected pension fund (Infinity, Altshuler Shaham, Mor, Meitav from 1 November 2024, for four years). Guaranteed for at least 10 years from joining."
+    },
+    "selected_balance_fee": {
+      "value": 0.22,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf",
+        "title": "CMA circular 2024-9-6, 25.8.2024, annex sections 4, 5",
+        "publisher": "Capital Market, Insurance and Savings Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2024-11-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PEN-23"
+      ],
+      "state": "sourced",
+      "notes": "Fee from the balance for new members of a selected pension fund. Members may convert part of the balance fee into a deposit fee under the \"more beneficial fee mix\" formula (annex ג')."
+    },
+    "guarantee_years": {
+      "value": 10,
+      "unit": "years",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf",
+        "title": "CMA circular 2024-9-6, annex section 5: \"יהיו בתוקף למשך 10 שנים לפחות ממועד הצטרפותו לקרן\"",
+        "publisher": "Capital Market, Insurance and Savings Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2024-11-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PEN-23"
+      ],
+      "state": "sourced",
+      "notes": "The selected fund's fee holds for at least 10 years from joining for a member who joined while the fund was selected. The four-year selection period runs from 1.11.2024; its end date (31.10.2028) is derived, not seen in an official text."
+    }
+  },
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

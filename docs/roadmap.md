@@ -1,7 +1,7 @@
 # Roadmap
 
-Written 2026-10-22 from `docs/product.md` (confirmed the same day, decisions D1 to D13, open to revision).
-Status: **approved by the founder on 2026-10-22.** Nothing is built. R1 starts only when the founder says so.
+Written 2026-10-22 from `docs/product.md` (confirmed the same day, decisions D1 to D13, open to revision). Updated 2026-10-23 for D17, "no blind spots" (product.md appendix E).
+Status: **approved by the founder on 2026-10-22.** Updated 2026-10-23: release 1 is built with its data; release 2's engine, design and series adapters are done and its screens are being built. The dated "Status" paragraphs under each release say what exists and what is open.
 
 How to read it:
 
@@ -16,19 +16,19 @@ Capability map (product.md number, short name, release):
 |---|---|---|
 | 3.8 | Rule base (`il-finance`) | R1 |
 | 3.8 | Site parameters (`data/parameters/`) | R1 (first values), signed off per release as they are used |
-| 3.8 | Method (`docs/method.md`) and test cases (`tests/cases/`) | R1 (for what R1 computes), extended every release |
+| 3.8 | Method (`docs/method.md`) and test cases (`tests/golden/`) | R1 (for what R1 computes), extended every release |
 | 3.8 | Reader-facing rule link, rules page, parameters page | R1 |
 | 3.8 | Change log | R1 (written), R5 (read by saved-state revisit) |
 | 3.1 | Instrument guide, tier-1 wrappers and exposures | R1 |
 | 3.1 | Tier-2 "not covered yet" page | R1 |
 | 3.1 | Term matching (`data/terms/`) | R1 |
 | 3.3 | Dimension checklist | R1 |
-| 3.10 | Product decoder, managers in the CMA data | R1 |
-| 3.10 | Product decoder, bank products | R4 |
-| 3.10 | Decoder fit mark against a saved goal | R2 |
+| 3.10 | Catalogue of every option, managers in the CMA data | R1 |
+| 3.10 | Catalogue of every option, bank products and mutual funds | R4 |
+| 3.10 | Catalogue fit mark against a saved goal | R2 |
 | § 6 | Data refresh and snapshots, CMA and `data/catalog/` | R1 |
 | § 6 | Data refresh, Bank of Israel, CBS, Ministry of Finance series | R2 |
-| § 6 | Data refresh, tariff and `data/funds/` snapshots | R4 |
+| § 6 | Data refresh, tariff and `data/funds/` snapshots, and the fund lists (Maya, TASE foreign funds) | R4 |
 | 3.2 | Goal comparison, wrapper mode | R2 |
 | 3.2 | Idle-cash preset | R2 |
 | 3.2 | Sensitivity panel (shared engine feature) | R2 |
@@ -49,32 +49,45 @@ Capability map (product.md number, short name, release):
 
 ## Release 1: understand
 
-**The smallest set the founder would actually use.** It answers his first concrete use case from the interview: open the Meitav app, press "open a new saving", and understand what the button opens and what every one of the eight tracks is. It also delivers the first half of his success test: learn what each instrument is for, how it works, and when it beats another, with graphs.
+**The smallest set the founder would actually use.** It puts every track the managing companies offer into the site's catalogue, all 16 tracks of the kupat gemel lehashkaa behind the Meitav app's "open a new saving" included (the app itself shows eight), so that every comparison from R2 on starts aware of every option (D17). It also delivers the first half of his success test: learn what each instrument is for, how it works, and when it beats another, with graphs.
 
 **In it**
 
 - **3.8 Rule base, parameters, method, change log.** The `il-finance` rule base seeded from the tax report (sections 1 to 9) and the domain report (ceilings, liquidity, caps), each rule with source, strength and date, and the 22 tax and 23 domain open questions marked open. First site parameters with founder sign-off. `docs/method.md` covering only what R1 computes (the illustrative timeline on guide pages: compounding, fee bases, tax at exit, the deflator). `tests/cases/` for those. The reader-facing rule link next to every rule-dependent number, the rules page, the parameters page. The change log is written from the first data refresh, though nothing reads it yet.
 - **3.1 Instrument guide**, one page per tier-1 wrapper and exposure type in the fixed structure, with the illustrative timeline visual, and the tier-2 "not covered yet" page naming the open question per instrument. Term matching from `data/terms/`.
 - **3.3 Dimension checklist**, hand-maintained in `data/dimensions/`, shown on every guide page with each dimension marked covered, not applicable or blocked by an open rule.
-- **3.10 Product decoder** for every managing company in the CMA datasets: the complete list of funds and tracks per manager with classification and fee, plus `data/catalog/` seeded from the founder's own apps, starting with the Meitav menu. Output: wrapper, fund record, exposure in plain Hebrew, dimension checklist, near-duplicates resolved from the data. The fit mark against a saved goal waits for R2.
+- **3.10 Catalogue of every option** for every managing company in the CMA datasets: the complete list of funds and tracks per manager with classification and fee, plus `data/catalog/` for the names the CMA data does not hold (an institution's own name for a track), starting with Meitav's. Output: wrapper, fund record, exposure in plain Hebrew, why a person might pick it, dimension checklist, near-duplicates resolved from the data. The fit mark against a saved goal waits for R2.
 - **§ 6 Data refresh** for the CMA datasets (monthly) and `data/catalog/` (manual), with the stale flag.
 
-**Why first.** Everything later computes on top of the rule base; it cannot be skipped. The guide, checklist and decoder are the founder's stated first need and run on the single best data source in the landscape (CMA fund-level data, free, monthly, history from 1999). They need no expected return, no tariff and no blocked register. They are usable for a friend on day one: "what is this thing my bank is offering".
+**Why first.** Everything later computes on top of the rule base; it cannot be skipped. The guide and checklist are the founder's stated first need, and the catalogue is the set of options every later comparison chooses from. All three run on the single best data source in the landscape (CMA fund-level data, free, monthly, history from 1999). They need no expected return, no tariff and no blocked register. They are usable for a friend on day one: "what is this fund or track my manager is offering".
 
 **Depends on**
 
-- Data: CMA fund datasets with field definitions confirmed (product.md dependency 4; discovery O11). `data/instruments/` wrapper and exposure records (dependency 3). `data/catalog/` seeded from the founder's apps (dependency 6a). `data/terms/`, `data/dimensions/`.
+- Data: CMA fund datasets with field definitions confirmed (product.md dependency 4; discovery O11). `data/instruments/` wrapper and exposure records (dependency 3). `data/catalog/` seeded with the names the CMA data does not hold, starting with Meitav's (dependency 6a). `data/terms/`, `data/dimensions/`.
 - Rules: tier-1 wrapper tax treatment from the tax report. Open rules do not block R1 pages; they are shown as blocked dimensions.
 - Other: `CLAUDE.md` already updated (dependency 10).
 
 **Risks**
 
-- The CMA field definitions (gross or net, percent or fraction, how averages are computed) are unconfirmed. Until they are, no fee or yield can be shown; the decoder would show names and classification only. Mitigation: confirm first, from the regulator's "sources and assumptions" pages, by hand if blocked.
+- The CMA field definitions (gross or net, percent or fraction, how averages are computed) are unconfirmed. Until they are, no fee or yield can be shown; the catalogue would show names and classification only. Mitigation: confirm first, from the regulator's "sources and assumptions" pages, by hand if blocked.
 - The illustrative timeline on guide pages is a computation and needs method.md and a test case per wrapper before it can be shown. Risk of shipping pages without the visual the founder asked for.
-- Track names repeat within a manager (the founder's "general" twice). If the CMA data does not disambiguate them, the decoder must say so rather than guess.
+- Track names can repeat or nearly repeat within a manager (CAT-12). If the CMA data does not disambiguate them, the catalogue must say so rather than guess.
 - Hebrew labelling of tracks: the 2022 track-naming reform changed names; statements and apps may still use old names. `data/terms/` must carry both.
 
-**Done when** product.md criterion 5 holds for the Meitav app, and a friend can read the money-market fund page and say what it is, how to buy it, what it costs, how it is taxed and when a deposit beats it (3.1 "works when").
+**Done when** the catalogue part of product.md criterion 5 holds for the Meitav app (all 16 tracks of its kupat gemel lehashkaa in the catalogue, each explained; the comparisons that consider them arrive in R2 and R3), and a friend can read the money-market fund page and say what it is, how to buy it, what it costs, how it is taxed and when a deposit beats it (3.1 "works when").
+
+**Status 2026-10-23: built, with data.** Every release 1 screen is built from `docs/design-spec.md` (guide list, 17 guide pages, 7 exposure pages, the not-covered page, companies, company and track pages, rules, parameters, search). The data behind them is written: all 17 wrapper records and 7 exposure records in `data/instruments/`; 430 rules in `data/rules/`, each with its rule in plain Hebrew (`text_he`); 449 terms in `data/terms/` and 26 dimensions in `data/dimensions/`, generated from the glossary; `data/catalog/` seeded with 38 Meitav entries; the CMA snapshots of 2026-09 with their fee fields as value objects; the list-fee snapshots of Meitav and Leumi (`data/fees/`), three fund records (`data/funds/`) and Leumi's three deposit terms (`data/terms/deposits/`), which the illustrative scenario names as the representative instrument of each wrapper (P-05 `instruments`, method §2.4). The refresh workflow (`.github/workflows/refresh.yml`, daily, with `refresh-watchdog.yml`) fetches the CMA datasets and commits them, then dispatches the CI workflow. **The CMA fee fields are confirmed** (discovery O11, CAT-35 to CAT-41): percent, the average actually charged over the previous calendar year; how the average is weighted is still open (CAT OQ2), so the site says "ממוצע" and the year, not "משוקלל". The fee column and the per-track fee line are shown, with the year in the heading.
+
+*The acceptance test.* All 16 tracks of Meitav's kupat gemel lehashkaa (fund 7857) are in the catalogue with Meitav's own names, old names and same-name resolutions, the default track marked (`default_at_joining`); the company page lists them with the regulator's fee for each. The money-market fund page exists with its timeline (the daily fund bought through a bank, Altshuler Shaham 5138763 at Leumi's tariff).
+
+*Still open.*
+
+- **The study fund's list fee.** No managing company publishes one (Phoenix's snapshot in `data/fees/` records the search), so the study-fund timeline runs on the regulator's average actually charged for the named track (Meitav 880), labelled as such (method §2.4).
+- **The renewable money-market fund** with monthly deposits stops on gap G-30 (which series a later deposit buys); its timeline runs only for the amount now.
+- **The IRA study fund** has no manager fee collected, so its page shows no timeline.
+- **Pension and child-savings pages show no timeline by design:** the pension exit is blocked (G-03, G-06) and child savings runs on the National Insurance amounts, not on P-05 (method §2.4).
+- **The Bank of Israel series** are not shown: see the release 2 status and product D20.
+- **Two founder settings for the refresh workflow**, both in the repository on GitHub: Settings > Actions > General > "Allow GitHub Actions to create and approve pull requests" (needed only when a refresh fails its sanity check and opens a pull request), and nothing else: the dispatch of the CI workflow after a refresh commit runs with the default token, so no personal token is needed.
 
 ---
 
@@ -84,20 +97,20 @@ Capability map (product.md number, short name, release):
 
 **In it**
 
-- **3.2 Goal comparison, wrapper mode**, with goal attributes and presets (D13), the ranked list, the chart, the plain-Hebrew "X is best because Y", ties (D5), the dimension checklist with considered, not applicable and blocked marks, and the **sensitivity panel** as a shared engine feature.
-- **3.2 Idle-cash preset**: two inputs plus the person's own deposit offer entered by them; Bank of Israel figures labelled "average paid at this bank last month".
+- **3.2 Goal comparison, wrapper mode**, with goal attributes and presets (D13), the ranked list, the coverage line (D17: every tier-1 wrapper and tier-2 instrument accounted for, with the reason for each one not ranked), the chart, the plain-Hebrew "X is best because Y", ties (D5), the dimension checklist with considered, not applicable and blocked marks, and the **sensitivity panel** as a shared engine feature.
+- **3.2 Idle-cash preset**: two inputs plus the person's own deposit offer entered by them; Bank of Israel figures labelled "average paid at this bank last month"; its coverage line names the options outside the preset and why (method F-60, G-28).
 - **3.9 Saved state, local and automatic**, so a goal persists between visits. No export yet.
-- **3.10 Decoder fit mark** against the saved goal, with a link to run the comparison.
+- **3.10 Catalogue fit mark** against the saved goal, with a link to run the comparison.
 - **§ 6 Data refresh** for the Bank of Israel series (daily and monthly), CBS CPI (monthly) and Ministry of Finance child-savings rates (daily).
 
-**Why second.** Founder's rank 1 and the second half of his success test. Wrapper mode needs no expected equity return (D9), so it is honest with today's data. The idle-cash preset is the shortest path for a friend and the founder's own situation. Saved state is needed so the decoder can say "this track fits your goal".
+**Why second.** Founder's rank 1 and the second half of his success test. Wrapper mode needs no expected equity return (D9), so it is honest with today's data. The idle-cash preset is the shortest path for a friend and the founder's own situation. Saved state is needed so the catalogue can say "this track fits your goal".
 
 **Depends on**
 
 - R1 in full.
 - Rules: the tax treatment of every tier-1 wrapper at the primary or secondary level (D10). **The money-market and mutual-fund taxation rule is an open question in the tax report (Q15) and must be closed before the idle-cash preset can ship**, since it compares deposits with money-market funds. Interest taxation by linkage (tax report section 1) and the wrapper rules (section 3) must be at least secondary.
 - Data: Bank of Israel EDGE terms confirmed, or the data.gov.il fallback used (dependency 7); CBS terms. Fee data per wrapper type: CMA averages, the ISA category average for mutual funds and money-market funds.
-- Method and test cases extended to the comparison engine, including the founder's apartment case and his ETF-vs-provident case.
+- Method and test cases extended to the comparison engine, including the founder's apartment case (which also tests the coverage line, F-83) and his ETF-vs-provident case.
 
 **Risks**
 
@@ -107,6 +120,15 @@ Capability map (product.md number, short name, release):
 - The founder's salary and contribution inputs touch ceilings tied to the average wage, which change yearly (tax report 10); the rule base must carry the tax year on each figure.
 
 **Done when** product.md criterion 1 (the founder moves the idle cash using the site) and criterion 2 (he names a dimension he had not thought of) can be attempted, and the test cases pass.
+
+**Status 2026-10-23: engine and design done, screens being built.**
+
+- **Engine.** Done: the deposit-side formulas F-30 to F-32, the blocked-wrapper exit F-45, F-48 and F-49, the study fund's early withdrawal F-47, the employer line F-52, the insurance cost F-53, the idle-cash preset F-60, the ranking F-80, the sensitivity panel F-81 and the candidate set F-83 (`packages/engine/src/registry.ts`). Golden scenarios S23 to S30 (study fund, pension, provident for annuity), S39 to S41 (the founder's ETF-vs-provident case, his apartment case, the idle-cash preset) and S50 (tie) pass. Goal presets are P-07 (`data/parameters/goal-presets.json`, product D21).
+- **Design.** The release 2 flows, screens and components are specified: `docs/flows.md` §7 to §9, `docs/design-spec.md` §6 to §10, `docs/design-system.md` §6, `docs/copy.md` §6, `docs/glossary.md` §7.
+- **Screens.** Built: the goal form (`/goal`) and the comparison result (`/goal/compare`). In progress: the idle-cash screen, the catalogue fit mark and the saved-goal strip.
+- **Series.** CBS CPI (`data/series/cbs-cpi.json`, open licence v2.1 confirmed, with the prescribed attribution line) and the Ministry of Finance child-savings rates (`data/series/mof-child-savings-rates.json`, data.gov.il licence confirmed) are collected, with adapters in `packages/pipeline/src/adapters/` and in the daily refresh workflow.
+- **The gate that changed.** **The Bank of Israel's terms of use do not permit republication** without the Bank's prior written consent, and the data.gov.il copies the product named as the first fallback (dependency 7) do not exist for any of the three series (policy rate, per-bank deposit averages, makam yields; checked 2026-10-23, discovery O14). So the product's second fallback applies, "link out and show no number" (product D20): the policy rate, the per-bank deposit averages and the makam yields are links to the Bank's pages, the idle-cash preset runs on the rates the person enters (A-26, and A-20 and A-22 as "entered by you"), and the refresh workflow does not fetch EDGE. Writing to the Bank for consent is the founder's call; the "§ 6 Data refresh, Bank of Israel series" row of the capability map waits on it.
+- **Still open from "Depends on":** TASE DataHub terms (O13) are not needed by R2 and stay open; the A-21 series dictionary (which EDGE code labels which bank and term) is confirmed only by inference and matters only if consent is given.
 
 ---
 
@@ -118,7 +140,7 @@ Capability map (product.md number, short name, release):
 
 - **3.5 Fee materiality**: per-fee shekel cost over the horizon, ranked, verdicts from site parameters, regulator average or "no reference available", negotiation text, fee-drag chart, sensitivity panel.
 - **3.6 Holdings review**: holdings entered from the statement with "where to find it", classification fit, consolidation per transfer rules, child-savings default check, fees handed to 3.5.
-- **3.4 Workbench, tracks**: every track each provider offers for the chosen wrapper, with CMA fee and classification, fit mark, other exposures collapsed.
+- **3.4 Workbench, tracks**: every track each provider offers for the chosen wrapper, with CMA fee and classification, fit mark, other exposures collapsed, and the coverage line (D17).
 - **3.9 Export and import** of saved state as a versioned file, so the founder can help a friend.
 
 **Why third.** The founder's own fee question ("which battles to fight") and his parental kupot gemel are both answerable from data already in hand; neither needs a tariff or a blocked register. Tracks are the part of the provider workbench the CMA data covers completely. Export arrives here because R3 is the first release where a friend's inputs are worth carrying between devices.
@@ -147,17 +169,17 @@ Capability map (product.md number, short name, release):
 **In it**
 
 - **3.4 Workbench, providers**: tariff-based total cost per provider over the holding period, three fee levels (D4), ties, minimums, supervision and protection status, cumulative-cost chart, "not comparable, data missing" rows.
-- **3.4 Workbench, fund variants**: `data/funds/` hand-collected per exposure, compared on fee, domicile and distribution policy, with blocked dimensions where the tax rule is open (accumulating foreign funds, tax report Q1).
-- **3.10 Decoder, bank products**: deposit and savings-plan names from tariff snapshots and product pages mapped to wrapper records.
+- **3.4 Workbench, fund variants**: every Israeli fund for the exposure from the Maya fund list, every foreign fund traded on TASE from TASE's list, plus the foreign-domiciled funds traded abroad in `data/funds/`, compared on fee, domicile and distribution policy, with blocked dimensions where the tax rule is open (accumulating foreign funds, tax report Q1). A fund whose details are not in `data/funds/` yet is shown as not evaluated (D17); foreign-domiciled funds traded abroad are named as a group, since no complete list exists.
+- **3.10 Catalogue, bank products and mutual funds**: deposit and savings-plan names from tariff snapshots and product pages mapped to wrapper records; each fund manager's Israeli funds from the Maya fund list.
 - **3.7 Switching playbook**: steps rendered from rule-base entries, post-switch checklist, reminder to record offers.
-- **§ 6 Data refresh**: tariff snapshots (manual, at least quarterly) and `data/funds/` versions.
+- **§ 6 Data refresh**: tariff snapshots (manual, at least quarterly), the fund lists from Maya and TASE (monthly, by hand) and `data/funds/` versions.
 
-**Why fourth.** Founder's rank 2, placed after R3 only because its data is the weakest in the landscape: per-institution PDFs with no archive, blocked registers, no regulator average for non-bank brokers, no licensed fund-level feed. Starting with the providers whose tariffs are structured (Leumi, Mizrahi, Discount) gives a usable table early; the rest fill in as snapshots are collected. The playbook comes here because this is the release after which people switch.
+**Why fourth.** Founder's rank 2, placed after R3 only because its data is the weakest in the landscape: per-institution PDFs with no archive, blocked registers, no regulator average for non-bank brokers, and for funds only a list read by hand (Maya) with each fund's details collected one by one. Starting with the providers whose tariffs are structured (Leumi, Mizrahi, Discount) gives a usable table early; the rest fill in as snapshots are collected. The playbook comes here because this is the release after which people switch.
 
 **Depends on**
 
 - R1 to R3.
-- Data: tariff snapshots (dependency 5; Meitav, Yalin Lapidot, One Zero, Jerusalem, Clal, Infinity blocked or not located); blocked registers fetched by hand for the provider list (dependency 8: bank list, TASE members, ISA licensees); `data/funds/` seeded for the exposures named first (N4); TASE DataHub terms if any TASE data is used (dependency 7).
+- Data: tariff snapshots (dependency 5; Meitav, Yalin Lapidot, One Zero, Jerusalem, Clal, Infinity blocked or not located); blocked registers fetched by hand for the provider list (dependency 8: bank list, TASE members, ISA licensees); the Maya fund-list export, TASE's foreign-fund list and their republication terms (dependencies 6 and 7; CAT-34, ETF-32); `data/funds/` details seeded for the exposures named first (N4); TASE DataHub terms if any TASE data is used (dependency 7).
 - Rules: which fee types apply to which wrapper; clearing-house and consent rules for the playbook, which need a manual source pass because gov.il blocks scripts (dependency 9); transfer rules.
 - Parameters: tie threshold applied to provider totals.
 
@@ -166,10 +188,11 @@ Capability map (product.md number, short name, release):
 - The largest data risk in the roadmap. Tariffs go stale within a quarter; without snapshots, D3's stale flag fires constantly. Mitigation: ship with few providers and say so, rather than many with stale numbers.
 - Negotiated prices are not published; the table shows list, average and "entered by you" only. The founder's expectation of "the best deal" must be set to "the best listed deal, unless you enter an offer".
 - Fund variants depend on a tax rule that is open (Q1). Accumulating foreign funds may remain "blocked" for a long time.
+- Most Israeli funds will show as "not evaluated: details not collected" until `data/funds/` grows, and foreign-domiciled funds traded abroad have no complete list (ETF OQ4). The table says so rather than looking complete. If the Maya terms do not allow republishing, the table links out to Maya for the full list and says how many funds it holds.
 - The playbook cannot state a process rule without a regulator source; if the source pass fails, the playbook ships as experience-only content, labelled as such.
-- The bank-product decoder has no regulator catalogue behind it (N6); completeness is whatever the catalogue holds.
+- The bank-product catalogue has no regulator list behind it (N6); completeness is whatever the catalogue holds.
 
-**Done when** for "ETF in a brokerage account with a given monthly purchase" the table ranks the providers with collected tariffs and shows which fee type decides, every provider without a tariff is listed as missing, and a person switching a hishtalmut can follow the playbook without the forum.
+**Done when** for "ETF in a brokerage account with a given monthly purchase" the table ranks the providers with collected tariffs and shows which fee type decides, every provider without a tariff is listed as missing, every Israeli fund that tracks the chosen index appears (compared or not evaluated), and a person switching a hishtalmut can follow the playbook without the forum.
 
 ---
 
@@ -179,7 +202,7 @@ Capability map (product.md number, short name, release):
 
 **In it**
 
-- **3.2 Exposure mode**: which exposure type suits the horizon and the loss filter; cash-like exposures from sourced series, equity and bond returns entered by the person and labelled so (D9). A sourced scenario file is added only if one with a defensible source exists (N5).
+- **3.2 Exposure mode**: which exposure type suits the horizon and the loss filter, with the coverage line over every exposure record (D17); cash-like exposures from sourced series, equity and bond returns entered by the person and labelled so (D9). A sourced scenario file is added only if one with a defensible source exists (N5).
 - **3.9 Revisit against the change log**: a saved comparison re-run after rule, parameter or data changes, reporting what changed and whether the ranking holds; the reader-facing "what changed since" view of the change log.
 - **D2 Tier-2 graduation**: for each tier-2 instrument whose record is sourced and whose tax questions are closed, promotion to tier 1 across 3.1, 3.2, 3.3, 3.4 and 3.10. Ongoing after R5.
 
@@ -207,7 +230,7 @@ Nothing from `docs/product.md` section 3 is dropped: every capability and part i
 
 | Item | Where in product.md | Reason not planned |
 |---|---|---|
-| Photo or screenshot input to the decoder | 3.10 In | Needs server-side processing, excluded by D1. The person types or pastes the name instead. |
+| Photo or screenshot input to the catalogue search | 3.10 In | Needs server-side processing, excluded by D1. The person types or pastes the name instead. |
 | Multi-profile switching on one device | Appendix A, review item 27 | Cut in review; export and import (R3) cover the founder helping a friend. |
 | Offer tracker | Appendix A, review item 26 | Cut in review; the playbook (R4) reminds the person to record offers. |
 | Glossary as a separate capability | Appendix A, review item 16 | Folded into 3.1 and 3.6 as `data/terms/` (R1). |

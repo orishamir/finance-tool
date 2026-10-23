@@ -1,0 +1,39 @@
+{
+  "id": "MF-38",
+  "title": "Advance redemption notice and pre-date reminders in renewable funds",
+  "title_he": "הודעה מוקדמת לפדיון ותזכורות בקרנות מתחדשות",
+  "text_he": "קרן כספית במועדים קבועים רשאית להתנות פדיון בהודעה מוקדמת רק אם המרווח בין המועדים הקבועים ארוך מהמרווח המזערי שההוראה קובעת. כשהמרווח הוא באורך הזה או יותר, מנהל הקרן שולח לבעלי היחידות דרך המפיצים, כמה חודשים לפני המועד הקבוע, דיווח שמזכיר את המועד, את האפשרות לפדות, ושבלי הודעה ההשקעה מתחדשת אוטומטית.",
+  "figure_names_he": {
+    "advance_notice_min_interval_years": "מרווח מזערי בין מועדים קבועים לדרישת הודעה מוקדמת"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "advance_notice_min_interval_years": {
+      "value": 1,
+      "unit": "years",
+      "source": {
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/MoneyMarketFundReg24.pdf",
+        "title": "ISA money-market directive (2024), sections 6 and 7.4 (pp. 33-34)",
+        "publisher": "Israel Securities Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2024-10-03",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "MF-38"
+      ],
+      "state": "sourced",
+      "notes": "A fixed-date money-market fund may make redemption conditional on advance notice only if the interval between fixed dates is more than one year. Where the interval is one year or more, holders get a reminder report 90 to 60 days before the fixed date."
+    }
+  },
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-22"
+}

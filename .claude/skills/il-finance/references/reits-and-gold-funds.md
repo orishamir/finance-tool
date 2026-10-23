@@ -315,14 +315,14 @@ Out (and where): physical gold (bars, coins) is out of scope under D2 and is not
 
 ### RG-23 An active "gold and mining" fund is not a gold-price fund
 - Rule: Funder quotes the policy of קסם אקטיב זהב וכרייה (5123211). It sets the fund's exposure to the gold price, "לרבות באמצעות השקעה במניות של חברות הפועלות בתחום של כריית זהב", at "לא יפחת מ-75%". Funder classes the fund under foreign equities by sector.
-- Conditions / exceptions: Exposure through mining shares behaves like equities, not like the metal. Meitav's article says mining shares can diverge from the gold price (RG-17 source). A decoder should not treat "זהב" in a fund name as gold-price exposure without reading the policy.
+- Conditions / exceptions: Exposure through mining shares behaves like equities, not like the metal. Meitav's article says mining shares can diverge from the gold price (RG-17 source). The catalogue should not treat "זהב" in a fund name as gold-price exposure without reading the policy.
 - Figures: at least 75%.
 - Source: [Funder fund 5123211](https://www.funder.co.il/fund/5123211) · checked 2026-10-22 · secondary. [Meitav article, 29.9.2025](https://www.meitav.co.il/portfolio_management/study/investing_in_gold_through_etfs/) · checked 2026-10-22 · institution
 - Dimensions: (proposed) legal-form
 - Proposed dimension: product-marking (as in `mutual-funds-and-money-market-funds.md`)
 - Likely to change: no
 
-## What a saver must check (feeds the dimension checklist and decoder)
+## What a saver must check (feeds the dimension checklist and catalogue)
 
 | # | Check | Applies to | Rule |
 |---|---|---|---|

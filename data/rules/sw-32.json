@@ -1,0 +1,42 @@
+{
+  "id": "SW-32",
+  "title": "Deposit \"portability\" today: new money via a closed-system account; an existing deposit moves only at maturity or by breaking it",
+  "title_he": "ניוד פיקדונות היום: כסף חדש במערכת סגורה בלבד",
+  "text_he": "הסעיף 'הפקדת כספים במערכת סגורה - ניוד פיקדונות' בתוקף ממועד התחילה: כל בנק שאינו קטן חייב לאפשר לאדם פרטי להפקיד שקלים דרך חשבון במערכת סגורה, בפשטות וגם באופן מקוון; הכסף מגיע מחשבון של אותו אדם בבנק אחר ומושב רק אליו. לפיקדון קיים אין חוק שמאפשר להעביר אותו לבנק אחר בתנאיו: הוא עובר בפירעון, בתחנת יציאה, או בשבירה בתנאי הבנק, ובמעבר חשבון הוא נשאר בבנק הישן עד הפירעון. הצעת חוק פרטית לניוד פיקדונות אמיתי, בלי שבירה ובריבית לא נמוכה מהממוצע בבנק הקולט, מונחת לדיון מוקדם ולא התקדמה.",
+  "figure_names_he": {
+    "in_force_from": "מועד התחילה של הסעיף"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "transfer-switch-process",
+    "liquidity-lockup",
+    "fee-exit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "in_force_from": {
+      "value": "2025-12-01",
+      "unit": "text",
+      "source": {
+        "url": "https://fs.knesset.gov.il/25/law/25_lsr_6803031.pdf",
+        "title": "Banking (Customer Service) Law, Amendment 38, Sefer HaHukim 3413, 14.5.2025, p.638, new s.5B2 and s.5",
+        "publisher": "Knesset (Sefer HaHukim)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2025-12-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "SW-32",
+        "BANK-21"
+      ],
+      "state": "sourced",
+      "notes": "Section 5B2 (\"הפקדת כספים במערכת סגורה - ניוד פיקדונות\") in force from 1 December 2025. No law lets a running deposit move to another bank on its terms: it moves at maturity or an exit point, or by breaking it on the bank's terms (BANK-06). Bill P/5281/25 (true portability) sits at preliminary stage; the Competition Authority's portability directive is under appeal (BANK-24)."
+    }
+  },
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-22"
+}

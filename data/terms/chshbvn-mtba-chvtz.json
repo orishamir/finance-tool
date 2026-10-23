@@ -1,0 +1,24 @@
+{
+  "id": "chshbvn-mtba-chvtz",
+  "he": "חשבון מטבע חוץ",
+  "en": null,
+  "meaning": "חשבון עובר ושב בבנק שהכסף בו מוחזק במטבע זר ולא בשקלים.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [
+    "חשבון מט\"ח",
+    "עו\"ש מט\"ח"
+  ],
+  "rule_ids": [
+    "FXD-05",
+    "FXD-06",
+    "TX2-04"
+  ],
+  "source": {
+    "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
+    "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, First Schedule part 5, consolidated to 9.4.2025 (BoI copy)",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

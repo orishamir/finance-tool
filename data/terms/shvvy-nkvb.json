@@ -1,0 +1,29 @@
+{
+  "id": "shvvy-nkvb",
+  "he": "שווי נקוב",
+  "en": null,
+  "meaning": "הסכום הבסיסי של איגרת חוב או מק\"מ, שלפיו מחזירים את הכסף בפדיון; מחיר הקנייה יכול להיות שונה",
+  "where": [
+    "statement"
+  ],
+  "wrapper_ids": [
+    "government-bond",
+    "makam"
+  ],
+  "variants": [
+    "ערך נקוב",
+    "ע.נ."
+  ],
+  "rule_ids": [
+    "GOV-03",
+    "GOV-11",
+    "GOV-15"
+  ],
+  "source": {
+    "url": "https://www.boi.org.il/media/ytal5ozx/makam.pdf",
+    "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\"",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "mshykh-shla-kdyn",
+  "he": "משיכה שלא כדין",
+  "en": null,
+  "meaning": "משיכת כסף מקופה לקצבה שלא בדרך שהחוק מתיר; היא ממוסה בשיעור גבוה, עם חריגים מעטים",
+  "where": [],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [
+    "תשלום שלא כדין מקופת גמל לקצבה"
+  ],
+  "rule_ids": [
+    "TXP-18"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

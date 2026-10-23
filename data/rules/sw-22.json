@@ -1,0 +1,14 @@
+{
+  "id": "SW-22",
+  "title": "Pension fund: insurance first, then route; automatic consolidation of inactive accounts",
+  "title_he": "ניוד קרן פנסיה: ביטוח קודם, ואיחוד חשבונות לא פעילים",
+  "text_he": "העברת פנסיה נעשית לפי תהליך הניוד הכללי, עם חלק הטופס הייעודי וטופס הביטוח; רציפות הביטוח מטופלת בכלל נפרד. כשעמית מצטרף לקרן פנסיה, חשבונות לא פעילים שלו בקרנות פנסיה אחרות מאותרים ומועברים אליה אלא אם הוא מתנגד בתוך התקופה שנקבעה. כספי פנסיה לא יכולים לעבור לקופת גמל בניהול אישי, ועמית שעדיין פעיל בקרן לא מקיפה לא יכול לעבור לקרן מקיפה. היחס המיסויי להעברה בין קרנות פנסיה לא נכתב בכללי המס (שאלה פתוחה).",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "transfer-switch-process",
+    "insurance-cover"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,27 @@
+{
+  "id": "hpkdh-mvtbt",
+  "he": "הפקדה מוטבת",
+  "en": null,
+  "meaning": "החלק מההפקדות לקרן השתלמות, עד התקרה, שהרווחים עליו פטורים ממס במשיכה אחרי התקופה",
+  "where": [
+    "statement"
+  ],
+  "wrapper_ids": [
+    "keren-hishtalmut"
+  ],
+  "variants": [
+    "תשלומי ההפקדה המוטבת"
+  ],
+  "rule_ids": [
+    "TXH-08",
+    "TXH-09",
+    "TXH-11"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "Tax Authority, דע זכויותיך וחובותיך 2025",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

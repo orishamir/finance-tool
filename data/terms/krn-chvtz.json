@@ -1,0 +1,37 @@
+{
+  "id": "krn-chvtz",
+  "he": "קרן חוץ",
+  "en": null,
+  "meaning": "קרן שהוקמה בחו\"ל ומוצעת לציבור בישראל, בדרך כלל בבורסה בתל אביב; רשות ניירות ערך לא מפקחת עליה.",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500"
+  ],
+  "variants": [
+    "קרנות \"מגוירות\"",
+    "קרן חוץ (ETF)",
+    "קרנות חוץ נסחרות"
+  ],
+  "rule_ids": [
+    "ETF-22",
+    "ETF-23",
+    "ETF-24",
+    "ETF-26",
+    "ETF-32",
+    "TXF-04",
+    "TXF-05",
+    "TXF-06"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf",
+    "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2024",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "kvpt-bytvch",
+  "he": "קופת ביטוח",
+  "en": null,
+  "meaning": "השם בחוק לתכנית ביטוח שאושרה כקופת גמל; בשוק קוראים לה ביטוח מנהלים.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [
+    "תכנית ביטוח"
+  ],
+  "rule_ids": [
+    "INS-13",
+    "INS-14",
+    "TXA-12",
+    "TXA-13",
+    "TXA-14"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+    "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, s. 1, 13(ב) (Wikisource)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

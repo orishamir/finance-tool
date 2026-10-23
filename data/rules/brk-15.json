@@ -1,0 +1,15 @@
+{
+  "id": "BRK-15",
+  "title": "TASE must publish members' fees in comparable form; a member must tell a new client so before opening the account",
+  "title_he": "הבורסה מפרסמת את עמלות חבריה בצורה שמאפשרת השוואה",
+  "text_he": "הבורסה חייבת לפרסם באתרה את העמלות שחבריה גובים מלקוחותיהם, כולל עמלות מסחר וסליקה וכל שינוי בהן, בצורה שמאפשרת השוואה; החברים חייבים לדווח לה על עמלותיהם ועל שינויים, והבורסה מדווחת מדי שנה לוועדת הכספים של הכנסת. לפני פתיחת חשבון ניירות ערך חבר בורסה חייב לומר ללקוח שהעמלות מתפרסמות כך. נוסח החוק נקרא באתר שמעתיק אותו.",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "fee-trade",
+    "fee-custody",
+    "regulator"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-22"
+}

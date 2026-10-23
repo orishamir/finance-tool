@@ -1,0 +1,28 @@
+{
+  "id": "krn-kspyt-mtch",
+  "he": "קרן כספית מט\"ח",
+  "en": null,
+  "meaning": "קרן כספית שחשופה למטבע חוץ או שהיחידות שלה במטבע חוץ; שינוי בשער המטבע משנה את שוויה בשקלים",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [
+    "money-market-fund-daily",
+    "money-market-fund-renewable"
+  ],
+  "variants": [
+    "כספית מט\"חית עם קונצרני"
+  ],
+  "rule_ids": [
+    "MF-32",
+    "MF-41",
+    "MF-42"
+  ],
+  "source": {
+    "url": "https://boi.org.il/media/npifkjqk/הוראה-a447.pdf",
+    "title": "BoI directive A447, draft text marked \"טיוטה\"",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

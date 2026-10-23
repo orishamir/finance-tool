@@ -1,0 +1,25 @@
+{
+  "id": "tkvpt-hmtnh",
+  "he": "תקופת המתנה",
+  "en": null,
+  "meaning": "התקופה מתחילת עבודה חדשה ועד שהמעסיק חייב להתחיל להפריש לפנסיה, אם לא הייתה לכם פנסיה קודם",
+  "where": [
+    "payslip"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "PEN-02"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
+    "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

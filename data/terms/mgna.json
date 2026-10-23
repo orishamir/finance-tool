@@ -1,0 +1,21 @@
+{
+  "id": "mgna",
+  "he": "מגנ\"א",
+  "en": null,
+  "meaning": "אתר הדיווחים של רשות ניירות ערך, שבו מתפרסמים התשקיף והדוחות של כל קרן נאמנות",
+  "where": [],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "MF-50"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
+    "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

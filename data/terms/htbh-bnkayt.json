@@ -1,0 +1,25 @@
+{
+  "id": "htbh-bnkayt",
+  "he": "הטבה בנקאית",
+  "en": null,
+  "meaning": "הנחה בעמלה או ריבית טובה יותר לתקופה מוגבלת; הבנק חייב להודיע מראש לפני שהיא נגמרת",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [
+    "bank-deposit",
+    "current-account"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "BANK-12",
+    "BANK-19"
+  ],
+  "source": {
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_4048300.pdf",
+    "title": "Banking (Customer Service) Law, Amendment 37, Sefer HaHukim 3152, 28.1.2024",
+    "publisher": "Knesset",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

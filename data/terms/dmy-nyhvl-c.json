@@ -1,0 +1,38 @@
+{
+  "id": "dmy-nyhvl-c",
+  "he": "דמי ניהול",
+  "en": null,
+  "meaning": "תשלום שהחברה המנהלת גובה מהכסף שבקופה, כאחוז מהיתרה בכל שנה, ולפעמים גם מכל הפקדה",
+  "where": [
+    "ad",
+    "app",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "child-savings-bank",
+    "child-savings-provident",
+    "ira-hishtalmut",
+    "ira-provident",
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa"
+  ],
+  "variants": [
+    "דמי ניהול מהיתרה הצבורה",
+    "דמי ניהול מהפקדה",
+    "שיעור דמי ניהול מצבירה (שנתי)"
+  ],
+  "rule_ids": [
+    "CS-18",
+    "IRA-16",
+    "IRA-17",
+    "KGL-14",
+    "KH-22"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+    "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

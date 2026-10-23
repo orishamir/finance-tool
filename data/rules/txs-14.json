@@ -1,0 +1,61 @@
+{
+  "id": "TXS-14",
+  "title": "Which index measures a fund unit's real gain: CPI for shekel units, the exchange rate for currency-denominated units and for foreign-investment funds",
+  "title_he": "איזה מדד מודד את הרווח הריאלי על יחידת קרן",
+  "text_he": "המדד שמולו מודדים את הרווח הריאלי על יחידה תלוי במטבע שבו היחידה נקובה ובמעמד הקרן: ביחידות שקליות של קרן פטורה רגילה זה מדד המחירים לצרכן; ביחידות שנקובות במטבע חוץ או צמודות אליו זה שער אותו מטבע; ובקרן להשקעות חוץ, קרן פטורה שלפחות החלק המזערי מהשקעותיה בכל שנת מס צמוד למטבע עיקרי שנבחר בתשקיף, זה שער המטבע העיקרי. לכן בקרן שקלית שמחזיקה נכסים זרים ואינה קרן להשקעות חוץ, רווח שנובע מהיחלשות השקל מעבר למדד ממוסה כרווח ריאלי, והתחזקות השקל מקטינה את הרווח. חריגה מהתנאי של עד ימי החריגה המותרים בשנה לא נחשבת; מה קורה בחריגה ארוכה יותר ידוע רק מתיאור של התשקיף על חוזר של רשות המסים שלא נקרא, ולכן חלק זה במעמד מקור מוסדי בלבד.",
+  "figure_names_he": {
+    "foreign_investment_fund_threshold": "חלק מזערי של ההשקעות הצמוד למטבע העיקרי",
+    "tolerance_days": "ימי חריגה מותרים בשנת מס"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal",
+    "currency",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "foreign_investment_fund_threshold": {
+      "value": 90,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(חישוב_סכום_אינפלציוני_במכירת_יחידה_בקרן_נאמנות)",
+        "title": "Income Tax Regulations (computing the inflationary amount on sale of a unit in a mutual fund) 2003, definitions and reg.2",
+        "publisher": "Legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXS-14"
+      ],
+      "state": "sourced",
+      "notes": "A foreign-investment fund (קרן נאמנות להשקעות חוץ) is an exempt fund with at least 90% of its investments in each tax year in assets indexed to its principal currency; its inflationary amount uses that currency's exchange rate. A shekel fund holding foreign assets that is not such a fund uses the CPI, so currency moves beyond CPI are taxed as real gain."
+    },
+    "tolerance_days": {
+      "value": 10,
+      "unit": "days",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(חישוב_סכום_אינפלציוני_במכירת_יחידה_בקרן_נאמנות)",
+        "title": "Income Tax Regulations (computing the inflationary amount on sale of a unit in a mutual fund) 2003, definitions and reg.2",
+        "publisher": "Legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXS-14"
+      ],
+      "state": "sourced",
+      "notes": "A cumulative deviation from the 90% test of up to 10 days in a tax year does not count."
+    }
+  },
+  "il_finance_file": "tax-securities-israeli.md",
+  "checked": "2026-10-22"
+}

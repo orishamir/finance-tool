@@ -1,0 +1,33 @@
+{
+  "id": "chvskym-hmadypym-sykvn-mvgbr",
+  "he": "חוסכים המעדיפים סיכון מוגבר",
+  "en": null,
+  "meaning": "מסלול בחיסכון לכל ילד ברמת הסיכון הגבוהה מבין מסלולי הסיכון; לרוב אליו נכנס הכסף כשההורים לא בוחרים",
+  "where": [
+    "app",
+    "gemel-net",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "child-savings-bank",
+    "child-savings-provident"
+  ],
+  "variants": [
+    "סיכון מוגבר",
+    "מסלול סיכון מוגבר",
+    "חיסכון לילד -חוסכים המעדיפים סיכון גבוה"
+  ],
+  "rule_ids": [
+    "CS-07",
+    "CS-08",
+    "CS-09",
+    "CS-24"
+  ],
+  "source": {
+    "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/nolad.aspx",
+    "title": "National Insurance, פתיחת תכנית לילד שנולד",
+    "publisher": "National Insurance Institute",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

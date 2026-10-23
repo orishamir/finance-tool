@@ -1,0 +1,40 @@
+{
+  "id": "PEN-04",
+  "title": "Wage base for mandatory contributions",
+  "title_he": "השכר שעליו חלה חובת ההפקדה",
+  "text_he": "השכר המבוטח הוא שכר העובד ורכיביו כמשמעותם בחוק פיצויי פיטורים ובתקנותיו, והחובה חלה על השכר המשולם או על השכר הממוצע במשק, הנמוך מביניהם. הצו לא מחייב הפקדות על שכר שמעל השכר הממוצע; הסדר על החלק הזה בא מהסכם העבודה. השכר הממוצע הוא הנתון של הביטוח הלאומי, ונלקח כאן מדף הנתונים של רשות המסים (חוברת הניכויים 2026), כי פרסום הביטוח הלאומי לא הושג; טבלה של חברת ביטוח נותנת את אותו נתון.",
+  "figure_names_he": {
+    "average_wage": "השכר הממוצע במשק"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "deposit-ceiling",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "average_wage": {
+      "value": 13769,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+        "title": "Tax Authority deductions booklet 2026, p.12, row \"שכר ממוצע במשק 13,769\"",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "average-wage-linked",
+      "rule_ids": [
+        "PEN-04"
+      ],
+      "state": "sourced",
+      "notes": "National Insurance average wage for 2026, the cap on the wage on which the mandatory contributions apply. Source upgraded 2026-10-23 to the Tax Authority booklet 2026 p.12 row (primary), the one TXP-03 cites; Harel's table \"תקרות וסכומים לשנת 2026\" (March 2026, p.1, \"שכר ממוצע במשק\", institution) gives the same 13,769. The NII publication itself was not reached. Updated by NII each year."
+    }
+  },
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

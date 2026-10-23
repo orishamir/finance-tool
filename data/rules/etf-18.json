@@ -1,0 +1,79 @@
+{
+  "id": "ETF-18",
+  "title": "Market size end-2025 and how ETF trading happens: most ETF turnover involves a market maker",
+  "title_he": "איך נסחרות קרנות סל: רוב המחזור מול עושה שוק",
+  "text_he": "לסוף השנה שנדווחה רשות ניירות ערך מונה כמה קרנות סל, כמה קרנות מחקות פתוחות וכמה קרנות חוץ יש בישראל, ואת סך הנכסים של כל קבוצה. הרשות מציינת שקרנות סל וקרנות מחקות פתוחות עוקבות אחרי מדדים באותה דרך אבל עונות על צורכי מסחר ונזילות שונים: רוב מחזור המסחר בקרנות סל נעשה בעסקאות שעושה שוק צד להן, והקרנות עצמן סוחרות עם עושה השוק בעסקאות תמהיל גדולות ולא במסחר בבורסה. בישראל אין סדרות של אותה קרן: קרנות שנבדלות רק במטבע, בחשיפת מט\"ח, במעמד מס או בסוג משקיע הן קרנות נפרדות, וזו סיבה אחת למספר הגדול.",
+  "figure_names_he": {
+    "etf_count": "מספר קרנות הסל",
+    "open_tracking_fund_count": "מספר הקרנות המחקות הפתוחות",
+    "foreign_fund_count": "מספר קרנות החוץ"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "etf_count": {
+      "value": 465,
+      "unit": "count",
+      "source": {
+        "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf",
+        "title": "ISA, פעילות קרנות נאמנות בישראל 2025 (Funder-hosted copy)",
+        "publisher": "Israel Securities Authority (third-party host)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "ETF-18"
+      ],
+      "state": "sourced",
+      "notes": "End-2025: 465 ETFs (NIS 216.5 bn), 799 open tracking funds (NIS 128.9 bn), 46 foreign funds (NIS 19.9 bn)."
+    },
+    "open_tracking_fund_count": {
+      "value": 799,
+      "unit": "count",
+      "source": {
+        "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf",
+        "title": "ISA, פעילות קרנות נאמנות בישראל 2025 (Funder-hosted copy)",
+        "publisher": "Israel Securities Authority (third-party host)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "ETF-18"
+      ],
+      "state": "sourced"
+    },
+    "foreign_fund_count": {
+      "value": 46,
+      "unit": "count",
+      "source": {
+        "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf",
+        "title": "ISA, פעילות קרנות נאמנות בישראל 2025 (Funder-hosted copy)",
+        "publisher": "Israel Securities Authority (third-party host)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "ETF-18"
+      ],
+      "state": "sourced"
+    }
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,42 @@
+{
+  "id": "mdd-hmchyrym-ltzrkn",
+  "he": "מדד המחירים לצרכן",
+  "en": null,
+  "meaning": "מדד רשמי שמפרסמת הלשכה המרכזית לסטטיסטיקה; לפיו מחשבים הצמדה ואת החלק האינפלציוני ברווח",
+  "where": [
+    "app",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "bank-deposit",
+    "brokerage-account",
+    "child-savings-bank",
+    "child-savings-provident",
+    "current-account",
+    "government-bond",
+    "ira-hishtalmut",
+    "ira-provident",
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa",
+    "makam",
+    "money-market-fund-daily",
+    "money-market-fund-renewable",
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity",
+    "savings-plan"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "BANK-26",
+    "TXG-12",
+    "TXG-14"
+  ],
+  "source": {
+    "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
+    "title": "Bank of Israel, Directive 447 (concentrated publication of deposit rates), Annex A",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

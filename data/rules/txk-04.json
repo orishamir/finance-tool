@@ -1,0 +1,15 @@
+{
+  "id": "TXK-04",
+  "title": "Track switches and transfers between kupot gemel lehashkaa are not taxed",
+  "title_he": "מעבר מסלול והעברה בין קופות גמל להשקעה אינם ממוסים",
+  "text_he": "המס על קופת גמל להשקעה חל על סכומים שיחיד 'משך' ממנה. מעבר בין מסלולים בתוך הקופה, או העברת היתרה לקופת גמל להשקעה אחרת, אינם משיכה, ובהעברה מועדי ההפקדה לקופה המעבירה נחשבים מועדי הפקדה לקופה המקבלת. בחוק אין משפט מפורש שאומר 'אין אירוע מס'; המסקנה נשענת על נוסח המשיכה ועל הפטור ברמת הקופה, וחברה מנהלת אומרת זאת במפורש. העברה למוצר אחר, למשל לחשבון השקעות, היא משיכה.",
+  "strength": "primary",
+  "dimensions": [
+    "switching-tax-event",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
+  "checked": "2026-10-22"
+}

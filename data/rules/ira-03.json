@@ -1,0 +1,14 @@
+{
+  "id": "IRA-03",
+  "title": "Product types offered as IRA: tagmulim and study funds only, in the data",
+  "title_he": "אילו מוצרים קיימים בניהול אישי בפועל",
+  "strength": "primary",
+  "dimensions": [
+    "eligibility",
+    "regulator"
+  ],
+  "likely_to_change": "no",
+  "text_he": "בגמל-נט לתקופה 202609 כל קופה בניהול אישי מסווגת 'תגמולים ואישית לפיצויים' או 'קרנות השתלמות'; אין 'קופת גמל להשקעה' בניהול אישי, וההגדרה בחוק לא מונה אותה. 15 קופות של 7 חברות.",
+  "il_finance_file": "ira-self-directed.md",
+  "checked": "2026-10-22"
+}

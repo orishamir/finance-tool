@@ -1,0 +1,14 @@
+{
+  "id": "MF-17",
+  "title": "Management fees may be raised only on 1 January",
+  "title_he": "העלאת דמי ניהול רק בתחילת השנה",
+  "text_he": "העלאה של דמי הניהול נעשית רק ביום הראשון של השנה, והורדה אפשרית בכל זמן; כך כתוב בדוח השנתי של רשות ניירות ערך. מדריך הרשות מייחס את זה למתווה וולונטרי שבו מנהלי הקרנות מעלים דמי ניהול או תוספת רק בתחילת השנה אחרי פרסום הודעה במהלכה, וקרן חדשה רשאית להעלות לראשונה רק כחצי שנה אחרי ההצעה הראשונה. הבסיס מתואר כוולונטרי ולא כחוק, ואם הוא מחייב היום לא נמצא.",
+  "strength": "primary",
+  "dimensions": [
+    "fee-change-over-time",
+    "fee-management-balance"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,15 @@
+{
+  "id": "IRA-15",
+  "title": "Written agreement; member may cancel at any time without charge",
+  "title_he": "הסכם בכתב, וביטול בכל עת בלי תשלום",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "fee-exit",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "text_he": "החברה חותמת עם כל עמית הסכם בכתב שמפרט את דמי הניהול וההוצאות, כולל עמלות ודמי משמרת, ואת זכות העמית לבטל את ההסכם בכל עת בלי תשלום. תנאי שמוותר על חובות החברה בטל.",
+  "il_finance_file": "ira-self-directed.md",
+  "checked": "2026-10-22"
+}

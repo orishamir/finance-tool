@@ -1,0 +1,26 @@
+{
+  "id": "kybva-zkvyvt",
+  "he": "קיבוע זכויות",
+  "en": null,
+  "meaning": "בקשה לרשות המסים בגיל הפרישה, שבה קובעים כמה מהקצבה תהיה פטורה ממס וכמה אפשר להוון בפטור",
+  "where": [],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [
+    "טופס 161ד"
+  ],
+  "rule_ids": [
+    "TXP-16",
+    "TXP-28"
+  ],
+  "source": {
+    "url": "https://www.gov.il/he/service/itc-request-for-fixed-rights-at-retirement-age",
+    "title": "Tax Authority, בקשה לקיבוע זכויות - פטור ממס על הקצבה המזכה או היוון קצבה מזכה (טופס 161ד), service page",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

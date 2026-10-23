@@ -1,0 +1,30 @@
+{
+  "id": "mrvvch-tzytvt-shl-pkvdvt-knyyh-vmkyrh",
+  "he": "מרווח ציטוט של פקודות קנייה ומכירה",
+  "en": null,
+  "meaning": "הפער בין המחיר שמציעים לקנות בו למחיר שמבקשים למכור בו בבורסה; עלות שמשלמים בכל קנייה ומכירה.",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500"
+  ],
+  "variants": [
+    "מרווח ציטוט (BID-ASK SPREAD) חציוני"
+  ],
+  "rule_ids": [
+    "ETF-06",
+    "ETF-07",
+    "ETF-29"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf",
+    "title": "רשות ניירות ערך, הוראה למנהלי קרנות נאמנות בדבר ניהול ההשקעות בקרן מחקה (עדכון 3, 15.10.2024)",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

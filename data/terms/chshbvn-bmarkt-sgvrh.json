@@ -1,0 +1,29 @@
+{
+  "id": "chshbvn-bmarkt-sgvrh",
+  "he": "חשבון במערכת סגורה",
+  "en": null,
+  "meaning": "חשבון לפיקדון בבנק אחר בלי לפתוח שם עו\"ש; הכסף מגיע רק מהחשבון שלכם וחוזר רק אליו",
+  "where": [
+    "ad",
+    "law"
+  ],
+  "wrapper_ids": [
+    "bank-deposit"
+  ],
+  "variants": [
+    "פיקדון ללא חשבון עו\"ש",
+    "פיקדון ללקוחות כל הבנקים",
+    "פיקדונות ללקוחות כל הבנקים",
+    "מערכת סגורה"
+  ],
+  "rule_ids": [
+    "BANK-21"
+  ],
+  "source": {
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_6803031.pdf",
+    "title": "Banking (Customer Service) Law, Amendment 38, Sefer HaHukim 3413, 14.5.2025",
+    "publisher": "Knesset",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,347 @@
+{
+  "id": "brokerage-account",
+  "names": {
+    "he": [
+      "חשבון ניירות ערך",
+      "תיק ניירות ערך"
+    ],
+    "statement": [
+      "פיקדון ניירות ערך",
+      "פקדון ני\"ע",
+      "תיק ניירות ערך"
+    ],
+    "app": [
+      "תיק ניירות ערך"
+    ]
+  },
+  "regulator": {
+    "value": "TASE (ISA-supervised exchange) for every member; the Bank of Israel for banks' stability",
+    "unit": "text",
+    "source": {
+      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a",
+      "title": "TASE periodic report 2025, 1.7.2, 1.7.2.3, 1.31.6, 1.31.9, pp.17 to 18, 75 to 76",
+      "publisher": "Tel Aviv Stock Exchange",
+      "strength": "primary"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "BRK-01",
+      "BRK-04",
+      "REG-13",
+      "BRK-32"
+    ],
+    "state": "sourced",
+    "notes": "Trading on TASE goes only through TASE members: banks, non-bank members (חש\"בים) and remote members (BRK-01, BRK-32). TASE supervises members under its rules, which the ISA approves; for banks that supervision covers trading and conduct only, their stability being the Bank of Israel's (BRK-04). The ISA supervises TASE itself (REG-13). A foreign broker reached under a section 49A permit is not ISA-supervised (BRK-06); a pending broker-dealer bill would add an ISA licence (BRK-05, secondary)."
+  },
+  "fee_bases_allowed": [
+    "trade",
+    "custody",
+    "fx",
+    "fixed_period",
+    "distribution_handling",
+    "transfer_out"
+  ],
+  "fee_caps": {
+    "trade": {
+      "value": null,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://boi.org.il/media/w2lgmymp/159a.pdf",
+        "title": "Banking (Service to Customer) (Fees) Rules 2008, consolidated to 5.11.2024, first schedule part 4(א)(1)",
+        "publisher": "Bank of Israel",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BRK-15",
+        "BRK-16",
+        "BRK-19",
+        "BRK-21",
+        "BRK-24",
+        "BRK-33"
+      ],
+      "state": "sourced",
+      "notes": "No regulatory cap. For banks the rules fix the fee type (a percentage of the trade with a minimum and a maximum, separately for shares and bonds and for makam) but each bank sets the price; a direct-channel fee must be lower than the clerk fee; two weeks' notice of changes. Non-bank members follow the same part structure; their tariff is a ceiling and negotiated prices exist. TASE publishes every member's average fees actually charged, by security type and portfolio band."
+    },
+    "custody": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://boi.org.il/media/w2lgmymp/159a.pdf",
+        "title": "Banking (Service to Customer) (Fees) Rules 2008, consolidated to 5.11.2024, first schedule part 4(א)(5) and notes",
+        "publisher": "Bank of Israel",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BRK-16",
+        "BRK-17",
+        "BANK-18",
+        "BRK-24",
+        "MF-26"
+      ],
+      "state": "sourced",
+      "notes": "No regulatory cap on the rate (banks: a percentage with a maximum per deposit, price set by the bank). Banks may not charge it at all on makam or on money-market fund units (BRK-17, BANK-18); whether non-bank members may is open (BRK OQ11). Non-bank members name it דמי משמרת or דמי ניהול/טיפול פיקדון ני\"ע."
+    },
+    "fx": {
+      "value": null,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://boi.org.il/media/w2lgmymp/159a.pdf",
+        "title": "Banking (Service to Customer) (Fees) Rules 2008, consolidated to 5.11.2024, first schedule part 5 (עמלת חליפין)",
+        "publisher": "Bank of Israel",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BRK-16",
+        "BRK-23",
+        "BRK-24"
+      ],
+      "state": "sourced",
+      "notes": "No regulatory cap. A bank converts at its rate plus the conversion fee when a foreign security is paid for or sold without enough foreign currency in the account (Leumi terms); non-bank members charge a conversion fee or a spread on the rate (מרווח המרה)."
+    },
+    "fixed_period": {
+      "value": null,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+        "title": "IBI tariff (1.7.2026); Excellence, Altshuler Shaham Trade and Psagot tariffs read 2026-10-22",
+        "publisher": "IBI; Excellence; Altshuler Shaham Trade; Psagot",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BRK-24",
+        "BRK-28"
+      ],
+      "state": "sourced",
+      "notes": "A monthly account fee (דמי טיפול, דמי שימוש, דמי ניהול תקופתיים) and a monthly fee for advanced systems or real-time quotes appear in non-bank tariffs; no cap found. Whether a bank may charge a monthly fee on a securities account that is not in part 4 of the tariff is open (BRK OQ10)."
+    },
+    "distribution_handling": {
+      "value": null,
+      "unit": "pct",
+      "source": {
+        "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+        "title": "Altshuler Shaham Trade and Psagot tariffs (fee on interest, dividend and redemption payments), read 2026-10-22",
+        "publisher": "Altshuler Shaham Trade; Psagot",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BRK-24",
+        "BRK-13"
+      ],
+      "state": "sourced",
+      "notes": "A fee on dividend, coupon and redemption payments appears in some non-bank tariffs (טיפול בתשלומי ריבית/דיבידנד); no cap found. The clearing house and the nominee company pass the payments to the member gross."
+    },
+    "transfer_out": {
+      "value": 10,
+      "unit": "nis_per_transfer",
+      "source": {
+        "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
+        "title": "Banking (Service to Customer) (Fees) Rules 2008, consolidated to 9.4.2025, first schedule part 4(א)(6) notes, part 5 item 10",
+        "publisher": "Bank of Israel",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BRK-18",
+        "SW-33",
+        "SW-34"
+      ],
+      "state": "sourced",
+      "notes": "Banks only: moving the portfolio to the same client's account at another financial body on closing the account costs at most NIS 10 for the transfer and third-party costs; while the account stays open the per-transfer price is supervised and set outside the rules (not found, BRK OQ12; Discount lists NIS 5 per transfer, institution). Non-bank members have no cap found and charge per security (SW-34)."
+    }
+  },
+  "ceiling": null,
+  "deposit_side_tax": {
+    "formula": "F-33",
+    "rule_ids": []
+  },
+  "tax_during": {
+    "formula": "F-20",
+    "rule_ids": [
+      "TXS-08",
+      "TXS-10",
+      "TXS-15",
+      "TXS-16",
+      "TXF-08",
+      "TXF-10",
+      "TXF-05",
+      "TXF-12",
+      "TXF-13",
+      "TXF-16",
+      "TXF-17",
+      "TXF-18",
+      "TXF-11",
+      "TXF-21",
+      "BRK-27"
+    ]
+  },
+  "tax_at_exit": {
+    "formula": "F-40",
+    "rule_ids": [
+      "TXS-01",
+      "TXS-02",
+      "TXS-03",
+      "TXS-04",
+      "TXS-05",
+      "TXS-06",
+      "TXS-09",
+      "TXS-13",
+      "TXS-14",
+      "TXS-17",
+      "TXS-18",
+      "TXS-19",
+      "TXS-23",
+      "TXF-01",
+      "TXF-02",
+      "TXF-03",
+      "TXF-04",
+      "TXF-14",
+      "TXF-22",
+      "TXF-23",
+      "TXG-13",
+      "TXG-17",
+      "TXG-20",
+      "TXI-12",
+      "TXI-14"
+    ],
+    "blocked_by": [],
+    "labels": [
+      "secondary source: an accumulating foreign-domiciled fund is taxed only at sale (TXF-11; TXF OQ1)",
+      "institution source: tax when securities move between accounts without a sale (SW-36; SW OQ11)"
+    ]
+  },
+  "lawful_exit": {
+    "kind": "trading_day",
+    "text": "any TASE trading day (Monday to Friday since 5.1.2026): sell on the exchange, or redeem Israeli ETF and fund units through the member; the proceeds settle through the TASE clearing house. The settlement cycle for secondary trades is not sourced (GOV OQ7). Foreign funds on TASE and foreign-domiciled funds are sold on an exchange only."
+  },
+  "switch_is_tax_event": {
+    "value": true,
+    "unit": "boolean",
+    "source": {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Income Tax Ordinance, s.88 definition of \"מכירה\" (includes exchange and redemption); s.101A(a)(12)",
+      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXS-21",
+      "TXS-05",
+      "SW-36"
+    ],
+    "state": "sourced",
+    "notes": "Selling one fund or security to buy another is a sale: tax on any real gain is withheld even if the money never leaves the account (TXS-21). Moving securities in kind to your own account at another member is described by institutions as not a tax event, with the cost basis carried over; no Tax Authority source was read (SW-36, SW OQ11)."
+  },
+  "transfer_routes": [],
+  "eligibility": {
+    "rule_ids": [
+      "BRK-01",
+      "BRK-28",
+      "BRK-32",
+      "BRK-22",
+      "BRK-29",
+      "ETF-04",
+      "ETF-26"
+    ],
+    "text": "anyone who opens a securities account at a bank that is a TASE member or at a non-bank TASE member (a written custody agreement at a bank); minimums are provider-set (Fair from NIS 250; Meitav Trade NIS 5,000 or 10,000, inconsistent on its own page); rules for minors' accounts were not found (BRK OQ17); a foreign broker is reached directly or through a section 49A permit holder (BRK OQ9); trading is on TASE trading days, Monday to Friday since 5.1.2026"
+  },
+  "protection": {
+    "rule_ids": [
+      "BRK-04",
+      "BRK-07",
+      "BRK-08",
+      "BRK-10",
+      "BRK-12",
+      "BRK-13",
+      "REG-15",
+      "REG-16",
+      "REG-04",
+      "REG-06",
+      "BRK-06",
+      "BRK-35",
+      "REG-26",
+      "REG-27"
+    ],
+    "text": "at a non-bank member, TASE rules require client securities and cash to be held apart from the member's own, in trust, at the clearing house and at banks, with a yearly independent audit; no statute segregating them was found, and what happens if the member fails is open (REG OQ9, BRK OQ3). At a bank, securities are registered through the nominee company and kept apart from the bank's own in its books (one bank's terms); what happens to them if the bank fails is not sourced (REG OQ10, BRK OQ5), and deposits are not insured. The clearing house guarantees settlement between members, not a client's balance. No Israeli investor-compensation scheme was found. Abroad: SIPC for a US broker-dealer and the Irish scheme for IB Ireland, as stated by those bodies"
+  },
+  "dimensions": {
+    "age-or-use-exemption": "covered",
+    "currency": "covered",
+    "distribution-policy": "covered",
+    "eligibility": "covered",
+    "fee-account": "covered",
+    "fee-change-over-time": "covered",
+    "fee-custody": "covered",
+    "fee-exit": "covered",
+    "fee-fx": "covered",
+    "fee-management-balance": "covered",
+    "fee-trade": "covered",
+    "foreign-withholding-domicile": "covered",
+    "liquidity-lockup": "covered",
+    "loss-offset": "covered",
+    "minimum": "covered",
+    "protection": "blocked:REG-OQ9",
+    "real-vs-nominal": "covered",
+    "regulator": "covered",
+    "reporting-obligation": "covered",
+    "switching-tax-event": "covered",
+    "tax-at-exit": "covered",
+    "tax-during": "covered",
+    "transfer-switch-process": "covered"
+  },
+  "tier": 1,
+  "open_questions": [
+    "BRK-OQ3",
+    "BRK-OQ5",
+    "BRK-OQ9",
+    "BRK-OQ10",
+    "BRK-OQ11",
+    "BRK-OQ12",
+    "BRK-OQ16",
+    "BRK-OQ17",
+    "REG-OQ9",
+    "REG-OQ10",
+    "TXF-OQ1",
+    "TXF-OQ3",
+    "SW-OQ11",
+    "GOV-OQ7",
+    "TXS-OQ12"
+  ],
+  "checked": "2026-10-23"
+}

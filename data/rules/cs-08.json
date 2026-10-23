@@ -1,0 +1,15 @@
+{
+  "id": "CS-08",
+  "title": "Provident-fund option: managers and tracks",
+  "title_he": "מסלול הקופה: החברות המנהלות והמסלולים",
+  "strength": "primary",
+  "dimensions": [
+    "regulator",
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "text_he": "במסלול הקופה הכסף יושב בקופה בסיווג 'קופת גמל להשקעה - חסכון לילד'. כל חברה מציעה חלק מחמישה מסלולים: סיכון מועט, בינוני, מוגבר, הלכה ושריעה. בוחרים מסלול אחד; אי אפשר לפצל.",
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-22"
+}

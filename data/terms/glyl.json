@@ -1,0 +1,24 @@
+{
+  "id": "glyl",
+  "he": "גליל",
+  "en": null,
+  "meaning": "שם ותיק לאיגרות חוב ממשלתיות צמודות למדד המחירים לצרכן",
+  "where": [
+    "ad"
+  ],
+  "wrapper_ids": [
+    "government-bond"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "GOV-11",
+    "GOV-19"
+  ],
+  "source": {
+    "url": "https://he.wikipedia.org/wiki/איגרות_חוב_ממשלתיות_בישראל",
+    "title": "Wikipedia, איגרות חוב ממשלתיות בישראל (last edited 21 Jul 2026)",
+    "publisher": "see title",
+    "strength": "secondary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "mshykt-kspym-kdyn",
+  "he": "משיכת כספים כדין",
+  "en": null,
+  "meaning": "משיכה מקרן השתלמות אחרי התקופה שקבע החוק, או לצורך השתלמות, ולכן בפטור ממס",
+  "where": [
+    "form"
+  ],
+  "wrapper_ids": [
+    "keren-hishtalmut"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "KH-10",
+    "TXH-09",
+    "TXH-10"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "Tax Authority, דע זכויותיך וחובותיך 2025",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

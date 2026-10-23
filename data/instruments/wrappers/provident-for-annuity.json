@@ -1,0 +1,287 @@
+{
+  "id": "provident-for-annuity",
+  "names": {
+    "he": [
+      "תגמולים ואישית לפיצויים",
+      "קופת גמל לתגמולים",
+      "קופת גמל אישית לפיצויים",
+      "קופת גמל לחיסכון",
+      "קופת גמל לקצבה"
+    ],
+    "statement": [
+      "קופת גמל לחיסכון, קופת גמל לתגמולים וקופת גמל אישית לפיצויים"
+    ],
+    "app": [
+      "קופת גמל"
+    ]
+  },
+  "regulator": {
+    "value": "CMA",
+    "unit": "text",
+    "source": {
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ss.1, 13, 39 (Wikisource mirror)",
+      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "strength": "primary-mirror"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "REG-17"
+    ],
+    "state": "sourced",
+    "notes": "A provident fund for tagmulim or a personal severance fund is a provident fund approved under s.13; since 2008 new money in it is pension savings, a provident fund for annuity that does not itself pay the annuity (s.13(א)(4), PEN-34). Managing companies are under the Commissioner's supervision (s.39(א))."
+  },
+  "fee_bases_allowed": [
+    "deposit",
+    "balance",
+    "direct_expenses"
+  ],
+  "fee_caps": {
+    "deposit": {
+      "value": 4,
+      "unit": "pct_of_deposit",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 2(א)(2) (Hebrew Wikisource; Nevo mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2014-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-02",
+        "PEN-22"
+      ],
+      "state": "sourced",
+      "notes": "Maximum fee on payments transferred for each member to a provident fund under regulation 2 (tagmulim and personal severance funds among them). The 2024 average charged in provident funds was 0.09% of deposits (PEN-24)."
+    },
+    "balance": {
+      "value": 1.05,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 2(א)(1) (Hebrew Wikisource; Nevo mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2014-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-02",
+        "PEN-22"
+      ],
+      "state": "sourced",
+      "notes": "Maximum fee per year of each member's balance. Money deposited before tax year 2008: the higher of this or up to NIS 6 a month, indexed (reg. 2(א)(2א)); pensioners 0.6%, 0.3% for old-age pensions in insurance-based funds from 1 February 2022. The 2024 average charged was 0.54% of assets (PEN-24)."
+    }
+  },
+  "ceiling": null,
+  "deposit_side_tax": {
+    "formula": "F-31",
+    "rule_ids": [
+      "TXP-01",
+      "TXP-02",
+      "TXP-03",
+      "TXP-04",
+      "TXP-05",
+      "TXP-06",
+      "TXP-10",
+      "TXP-11",
+      "TXP-27",
+      "TXP-24"
+    ]
+  },
+  "tax_during": {
+    "formula": "F-27",
+    "rule_ids": [
+      "TXP-13"
+    ]
+  },
+  "tax_at_exit": {
+    "formula": "F-49",
+    "rule_ids": [
+      "TXP-14",
+      "TXP-15",
+      "TXP-17",
+      "TXP-18",
+      "TXP-19",
+      "TXP-21",
+      "TXP-12",
+      "TXP-24",
+      "PEN-34",
+      "PEN-29"
+    ],
+    "blocked_by": [
+      "PEN-OQ7",
+      "PEN-OQ19",
+      "TXP-OQ3"
+    ],
+    "labels": [
+      "blocked: the fund does not pay annuities; who accepts the money for an annuity and on what conversion factors is open (PEN OQ19, PEN OQ7; G-03)",
+      "blocked: early withdrawal's taxable base open (TXP OQ3; G-06)",
+      "how gains on the lump sums the law allows are taxed is open (TXP OQ9)"
+    ]
+  },
+  "lawful_exit": {
+    "kind": "at_age",
+    "age": {
+      "value": 60,
+      "unit": "years",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
+        "title": "Retirement Age Law 2004, s.5 (early retirement age, 60 for men and women) (Wikisource mirror); Mor comprehensive pension fund bylaws 01.06.2025, s.1 \"גיל זכאות מינימלי לקצבת זקנה\" and s.41",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "PEN-26",
+        "PEN-34",
+        "PEN-30"
+      ],
+      "state": "sourced",
+      "notes": "The fund does not pay an annuity itself (\"קופת גמל לא משלמת לקצבה\"): money deposited from 2008 is taken as an annuity by transferring it to a pension fund or an insurer, from that fund's minimum eligibility age, 60 (PEN-26, PEN-34). Employee money deposited up to the end of 2007 can be withdrawn as a lump sum at 60 (PEN-34)."
+    },
+    "payout_business_days": {
+      "value": 4,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf",
+        "title": "Mor standard bylaws for a provident savings fund, tagmulim fund and personal severance fund (\"אלפא מור\"), 18.02.2026, s.18",
+        "publisher": "Mor Gemel and Pension",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "PEN-33"
+      ],
+      "state": "sourced",
+      "notes": "An approved withdrawal is paid within 4 business days (Mor standard provident bylaws)."
+    },
+    "text": "new money (from 2008) leaves lawfully only as an annuity, by moving it to a pension fund or an insurer from age 60; before that only the severance component on leaving a job, a new account for released severance or beneficiary money, small balances past mandatory retirement age, or health and income conditions allow a lump sum; a non-compliant withdrawal is taxed at the higher of 35% and the marginal rate with the base open (TXP OQ3), so early withdrawal is a blocked route (F-48, G-06); the annuity is blocked too, because no conversion factors are collected and who accepts the money is open (F-49, G-03, PEN OQ7, PEN OQ19)"
+  },
+  "switch_is_tax_event": {
+    "value": false,
+    "unit": "boolean",
+    "source": {
+      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לאישור_ולניהול_קופות_גמל)",
+      "title": "Income Tax Regulations (Rules for Approval and Management of Provident Funds) 1964, reg. 33ב (Wikisource mirror); Income Tax Ordinance s.9(2); Mor standard provident bylaws 18.02.2026",
+      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "strength": "primary-mirror"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "PF-23",
+      "TXP-13"
+    ],
+    "state": "sourced",
+    "notes": "A track switch inside the fund is completed within 3 business days and is not a withdrawal; the member is taxed only at exit. Whether a transfer between annuity funds is tax-neutral is not stated in the tax rule base (SW OQ8)."
+  },
+  "transfer_routes": [
+    {
+      "to": "provident-for-annuity",
+      "rule_ids": [
+        "PF-17",
+        "PF-19",
+        "PF-20",
+        "SW-23"
+      ]
+    },
+    {
+      "to": "pension-comprehensive",
+      "condition": "into an annuity-paying fund; insurance underwriting and qualifying period start at the receiving fund",
+      "rule_ids": [
+        "PF-17",
+        "SW-23",
+        "PEN-34",
+        "SW-22"
+      ]
+    },
+    {
+      "to": "pension-general",
+      "condition": "into an annuity-paying fund",
+      "rule_ids": [
+        "PF-17",
+        "SW-23",
+        "PEN-34"
+      ]
+    },
+    {
+      "to": "ira-provident",
+      "condition": "permitted money types only, up to the IRA ceiling; severance money only with the employer's approval",
+      "rule_ids": [
+        "SW-23"
+      ]
+    }
+  ],
+  "eligibility": {
+    "rule_ids": [
+      "PEN-34",
+      "PEN-35",
+      "PEN-05",
+      "PEN-07",
+      "PEN-06"
+    ],
+    "text": "employees, through an employer, and the self-employed; the bylaws take up to 7.5% employer tagmulim, 7% employee tagmulim and 8.33% severance of the wage; it satisfies mandatory pension only if death and disability cover is held elsewhere, and a self-employed person may meet the deposit duty in it; no pooled insurance, no guaranteed-return share, no actuarial balancing"
+  },
+  "protection": {
+    "rule_ids": [
+      "PF-29",
+      "REG-18",
+      "REG-19",
+      "PEN-35"
+    ],
+    "text": "assets are held in trust, separately from the managing company's property, and cannot be attached; if the company fails, management moves to another company; the state does not guarantee the fund's value; the fund is not an eligible fund for the state guaranteed-return mechanism and has no actuarial balancing, so the balance moves only with the track's investments"
+  },
+  "tier": 1,
+  "open_questions": [
+    "PEN-OQ18",
+    "PEN-OQ19",
+    "PEN-OQ7",
+    "TXP-OQ3",
+    "TXP-OQ9",
+    "SW-OQ8"
+  ],
+  "checked": "2026-10-23",
+  "dimensions": {
+    "age-or-use-exemption": "covered",
+    "deposit-ceiling": "covered",
+    "eligibility": "covered",
+    "fee-deposit": "covered",
+    "fee-exit": "covered",
+    "fee-management-balance": "covered",
+    "insurance-cover": "covered",
+    "liquidity-lockup": "covered",
+    "minimum": "covered",
+    "protection": "covered",
+    "real-vs-nominal": "covered",
+    "regulator": "covered",
+    "reporting-obligation": "covered",
+    "switching-tax-event": "blocked:SW-OQ8",
+    "tax-at-deposit": "covered",
+    "tax-at-exit": "blocked:PEN-OQ19",
+    "tax-during": "covered",
+    "transfer-switch-process": "covered"
+  }
+}

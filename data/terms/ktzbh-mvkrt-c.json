@@ -1,0 +1,27 @@
+{
+  "id": "ktzbh-mvkrt-c",
+  "he": "קצבה מוכרת",
+  "en": null,
+  "meaning": "החלק מקצבה שנובע מכספים שהפקדתם בלי הטבת מס, למשל מגמל להשקעה; פטור ממס מגיל שקבוע בחוק",
+  "where": [
+    "law",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "kupat-gemel-lehashkaa"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXK-08",
+    "TXK-09",
+    "TXK-10",
+    "TXK-21"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/api/rest_v1/page/pdf/פקודת_מס_הכנסה",
+    "title": "פקודת מס הכנסה, consolidated text (Wikisource rendered PDF)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

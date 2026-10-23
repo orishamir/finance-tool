@@ -1,0 +1,26 @@
+{
+  "id": "hprshvt-hmasyk-lkvpt-gml",
+  "he": "הפרשות המעסיק לקופת גמל",
+  "en": null,
+  "meaning": "ההפקדות שהמעסיק מעביר לקופה בשבילכם מעבר לשכר, כולל לפיצויים; התלוש חייב להציג אותן",
+  "where": [
+    "payslip"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "PEN-36",
+    "TXP-25"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/חוק_הגנת_השכר",
+    "title": "חוק הגנת השכר, התשי\"ח-1958, s.24 and תוספת (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

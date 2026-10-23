@@ -1,0 +1,28 @@
+{
+  "id": "mamd-ms",
+  "he": "מעמד מס",
+  "en": null,
+  "meaning": "הסיווג של קרן נאמנות ישראלית כקרן פטורה או קרן חייבת; קובע מתי ועל מה משלמים מס.",
+  "where": [
+    "app",
+    "prospectus"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [
+    "מסלול המס"
+  ],
+  "rule_ids": [
+    "TXS-07",
+    "TXS-22",
+    "TXS-24"
+  ],
+  "source": {
+    "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+    "title": "Maya (TASE), רשימת קרנות, הורדת נתונים",
+    "publisher": "Tel Aviv Stock Exchange",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

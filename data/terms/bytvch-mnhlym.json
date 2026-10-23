@@ -1,0 +1,26 @@
+{
+  "id": "bytvch-mnhlym",
+  "he": "ביטוח מנהלים",
+  "en": null,
+  "meaning": "פוליסה של חברת ביטוח שאושרה כקופת גמל, בעיקר לפנסיה, ולעיתים כוללת גם ביטוח חיים ואובדן כושר עבודה.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [
+    "ביטוח חיים (מנהלים)"
+  ],
+  "rule_ids": [
+    "INS-13",
+    "INS-14",
+    "INS-15",
+    "INS-18",
+    "INS-19",
+    "TXA-12"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+    "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, s. 1, 13(ב) (Wikisource)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

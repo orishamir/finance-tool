@@ -1,0 +1,39 @@
+{
+  "id": "MF-30",
+  "title": "Money-market fund: average life (duration) limits",
+  "title_he": "קרן כספית: מגבלות משך החיים הממוצע",
+  "text_he": "בקרן כספית שאינה קרן מועדים קבועים, משך החיים הממוצע של כל הנכסים לא יעלה בשום רגע על משך החיים הממוצע המרבי. בקרן כספית במועדים קבועים, המגבלה חלה על הנכסים שנפרעים אחרי המועד הקבוע הבא, בתוספת הימים שנותרו עד אותו מועד. התקנות הישנות יותר קובעות את אותה מגבלה לקרן כספית, ומגבלה קצרה יותר לקרן פיקדונות והלוואות.",
+  "figure_names_he": {
+    "max_average_life_days": "משך חיים ממוצע מרבי"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-10-01",
+  "figures": {
+    "max_average_life_days": {
+      "value": 90,
+      "unit": "days",
+      "source": {
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/MoneyMarketFundReg24.pdf",
+        "title": "ISA money-market directive (2024), section 1.2 (p. 28)",
+        "publisher": "Israel Securities Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2024-10-03",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "MF-30"
+      ],
+      "state": "sourced",
+      "notes": "Maximum average life (משך חיים ממוצע) of all assets of a money-market fund that is not a fixed-date fund, at any time. For a fixed-date fund the limit is 90 days plus the days remaining to the next fixed date, applied to assets maturing after it. The older assets regulations carry the same 90 days."
+    }
+  },
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-22"
+}

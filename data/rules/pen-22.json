@@ -1,0 +1,63 @@
+{
+  "id": "PEN-22",
+  "title": "Fee caps for a provident fund for annuity",
+  "title_he": "תקרות דמי הניהול לקופת גמל לקצבה",
+  "text_he": "קופת גמל (שאינה קרן השתלמות, קופה בניהול אישי, קופה מרכזית או קופה למטרה אחרת) רשאית לגבות עד התקרה מהצבירה ועד התקרה מההפקדות; מפנסיונרים עד שיעור מהנכסים שעומדים כנגד התחייבויות הקצבה, ונמוך יותר למקבלי קצבת זקנה חדשים בקופות ביטוח. על כסף שהופקד לפני שנת המס שבתקנות הקופה רשאית לגבות את הגבוה מבין השיעורים האלה או סכום חודשי קבוע, צמוד למדד. קופות בניהול אישי נמצאות תחת תקנה אחרת. התקנות נקראו בעותק בוויקיטקסט, ותקנון של חברה מנהלת אומת מולן.",
+  "figure_names_he": {
+    "balance_cap": "תקרת דמי ניהול מהצבירה",
+    "deposit_cap": "תקרת דמי ניהול מההפקדות"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-deposit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "balance_cap": {
+      "value": 1.05,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+        "title": "Management Fees Regulations 2012, regulations 2, 4 (Wikisource mirror); Mor gemel standard bylaws 18.02.2026, s.44",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PEN-22",
+        "PF-02"
+      ],
+      "state": "sourced",
+      "notes": "Provident fund (other than study, self-directed, central and other-purpose funds): up to 1.05% a year of the balance. Money deposited before tax year 2008: the higher of this or up to NIS 6 a month, indexed."
+    },
+    "deposit_cap": {
+      "value": 4,
+      "unit": "pct_of_deposit",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+        "title": "Management Fees Regulations 2012, regulation 2 (Wikisource mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PEN-22",
+        "PF-02"
+      ],
+      "state": "sourced",
+      "notes": "Up to 4% of deposits. Pensioners: 0.6% of assets backing pension obligations; 0.3% for old-age pensioners in insurance-based funds from 1 February 2022."
+    }
+  },
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

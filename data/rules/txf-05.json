@@ -1,0 +1,63 @@
+{
+  "id": "TXF-05",
+  "title": "A foreign fund traded on TASE (קרן חוץ): Israeli withholding as for any traded security, 25% of the real gain and 25% on distributions",
+  "title_he": "קרן חוץ בבורסה: ניכוי במקור ישראלי כבכל נייר סחיר",
+  "text_he": "מאחר שקרן חוץ היא יחידה לפי חוק השקעות משותפות בנאמנות, חלות עליה הוראות הניכוי במקור שחלות על ניירות ערך נסחרים: במכירה הגוף המשלם מנכה מהרווח הריאלי לפי שיעור הניכוי במקור ומקזז הפסדים על ניירות שהוא מנהל באותה שנת מס; בחלוקה ליחיד מנכים לפי שיעור הניכוי מחלוקה, לחברה לפי שיעור מס החברות, ובעל יחידות תושב חוץ פטור מניכוי. המקור הוא מכתב של רשות המסים לבורסה ולאיגודי החברים יחד עם תקנות הניכוי במקור, ועמוד קרנות הסל של בנק לאומי חוזר על אותם כללים. מכתב מנהלי ותקנות יכולים להשתנות.",
+  "figure_names_he": {
+    "withholding_rate_real_gain": "שיעור הניכוי במקור מהרווח הריאלי",
+    "distribution_withholding": "שיעור הניכוי במקור מחלוקה ליחיד"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "tax-during",
+    "distribution-policy",
+    "foreign-withholding-domicile"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "withholding_rate_real_gain": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "http://www.capitax.co.il/Attachments/04072019.pdf",
+        "title": "Tax Authority, capital-market taxation department, letter \"ניכוי מס במקור – קרנות חוץ\", 4.7.2019 (capitax.co.il mirror)",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-05"
+      ],
+      "state": "sourced",
+      "notes": "Withholding regulations 2002 reg.2(a) applied to TASE foreign funds by the Tax Authority's letter of 4.7.2019 (sections 4, 4.1.1). An administrative letter, not law: whether it is still in force is TXF OQ10."
+    },
+    "distribution_withholding": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "http://www.capitax.co.il/Attachments/04072019.pdf",
+        "title": "Tax Authority, capital-market taxation department, letter \"ניכוי מס במקור – קרנות חוץ\", 4.7.2019 (capitax.co.il mirror)",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-05"
+      ],
+      "state": "sourced",
+      "notes": "Distribution to an individual: withheld at the s.125B(1) rate (letter section 4.1.2)."
+    }
+  },
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-10-22"
+}

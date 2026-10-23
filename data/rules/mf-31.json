@@ -1,0 +1,40 @@
+{
+  "id": "MF-31",
+  "title": "Money-market fund: concentration and liquidity limits",
+  "title_he": "קרן כספית: מגבלות ריכוזיות ונזילות",
+  "text_he": "הוראת הרשות מגבילה כמה מנכסי הקרן הכספית יכולים להיות בתעודות חוב בסך הכול ואצל מנפיק אחד, בפיקדונות ארוכים מכמה ימי עסקים בקרן יומית, ובנכסים לא רשומים למסחר. בקרן יומית, המזומן והפיקדונות לזמן קצוב בבנק אחד לא יעלו על החלק המרבי בבנק אחד, חוץ מאשר בתקופה קצרה אחרי ההצעה הראשונה; בקרן מועדים קבועים מגבלת הבנק האחד לא חלה, ולפי דברי ההסבר היא יכולה להחזיק את כל נכסיה בפיקדונות שנפרעים לפני המועד הקבוע. חריגה קצרה שמתוקנת בתוך זמן קצוב לא נחשבת הפרה.",
+  "figure_names_he": {
+    "max_single_bank_share": "חלק מרבי בבנק אחד (קרן יומית)"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "protection",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-10-01",
+  "figures": {
+    "max_single_bank_share": {
+      "value": 35,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/MoneyMarketFundReg24.pdf",
+        "title": "ISA money-market directive (2024), section 1.3.3.2 (pp. 28-30)",
+        "publisher": "Israel Securities Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2024-10-03",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "MF-31"
+      ],
+      "state": "sourced",
+      "notes": "In a daily fund, cash and fixed-term deposits at any one bank may be at most 35% of net assets, except during 45 days after first offering. Raised from 25% (explanatory notes p. 13). Does not apply to fixed-date funds."
+    }
+  },
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-22"
+}

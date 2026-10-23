@@ -1,0 +1,40 @@
+{
+  "id": "BRK-18",
+  "title": "Banks: supervised price for moving securities to the client's own account elsewhere; at most NIS 10 on closing the account",
+  "title_he": "בנקים: מחיר בפיקוח להעברת ניירות ערך לחשבון אותו לקוח",
+  "text_he": "העברת ניירות ערך מבנק נגבית בשני מחירים: לחשבון של אותו לקוח בגוף פיננסי אחר, סכום בשקלים לכל העברה שמחירו בפיקוח; ולחשבון של לקוח אחר, אחוז מהתיק עם מינימום ומקסימום. אותו לקוח כולל גם חשבון משותף עם בן או בת הזוג. בסגירת החשבון, העברה לחשבון של אותו לקוח לא תעלה על תקרת העמלה להעברת התיק בתוספת הוצאות צד ג', כפי שנקרא מהנוסח המאוחד של הכללים. המחיר המפוקח עצמו נקבע מחוץ לכללים ולא נמצא.",
+  "figure_names_he": {
+    "closing_transfer_cap": "תקרת העמלה להעברת התיק בסגירת חשבון"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "fee-exit",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "closing_transfer_cap": {
+      "value": 10,
+      "unit": "nis_per_transfer",
+      "source": {
+        "url": "https://boi.org.il/media/w2lgmymp/159a.pdf",
+        "title": "Banking (Service to Customer) (Fees) Rules 2008, consolidated to 5.11.2024, first schedule part 4",
+        "publisher": "Bank of Israel",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BRK-18"
+      ],
+      "state": "sourced",
+      "notes": "Transfer of securities to the same client's account at another financial body on closing the account: not more than NIS 10 for the portfolio transfer and third-party costs (part 4(א)(6) note, as read from the consolidated rules). The supervised per-transfer price while the account stays open is set outside the rules and was not found (BRK OQ12; SW-33 cites Discount's NIS 5 per transfer, institution)."
+    }
+  },
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-22"
+}

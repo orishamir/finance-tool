@@ -1,0 +1,41 @@
+{
+  "id": "SW-26",
+  "title": "Moving a current account: online, through the receiving bank, at no cost",
+  "title_he": "מעבר חשבון עובר ושב: מקוון, דרך הבנק הקולט, בחינם",
+  "text_he": "תיקון לחוק הבנקאות מחייב את הבנקים לאפשר ללקוח להעביר את פעילותו הפיננסית מבנק אחד (המקורי) לאחר (הקולט) באופן מקוון, נוח, אמין, מאובטח וללא עלות ללקוח, ממועד התחילה. כללי הנגיד קובעים איזו פעילות ואילו סוגי חשבונות נכללים, והוראת הפיקוח על הבנקים קובעת את התהליך: הבקשה מוגשת לבנק הקולט בכל ערוץ שהוא מציע, לפחות באתר ובסניף, והוא מטפל בכל פנייה על המעבר; הבנק המקורי מטפל בפעילות שנשארה אצלו. הבקשה דורשת הסכמה של כל בעלי החשבון, ואין הגבלה על מספר ההעברות. סוגי החשבונות שהכללים מכסים לא נקראו, ויש בנקים שעשויים להיות פטורים.",
+  "figure_names_he": {
+    "in_force_from": "מועד התחילה של הסעיף בחוק"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "transfer-switch-process",
+    "fee-exit",
+    "regulator"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-07-31",
+  "figures": {
+    "in_force_from": {
+      "value": "2021-09-22",
+      "unit": "text",
+      "source": {
+        "url": "https://boi.org.il/media/0zllhi2z/h2670.pdf",
+        "title": "BoI circular h-2670, 17.8.2021, s.4",
+        "publisher": "Bank of Israel (Banking Supervision)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2021-09-22",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "SW-26"
+      ],
+      "state": "sourced",
+      "notes": "Section 5B1 of the Banking (Customer Service) Law (account switching \"באופן מקוון, נוח, אמין, מאובטח וללא עלות ללקוח\") in force from 22 September 2021 (circular h-2670 s.4). Process in directive 448; the account types the Governor's rules cover were not read (SW OQ9)."
+    }
+  },
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-22"
+}

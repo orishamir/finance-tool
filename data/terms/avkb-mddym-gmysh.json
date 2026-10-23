@@ -1,0 +1,27 @@
+{
+  "id": "avkb-mddym-gmysh",
+  "he": "עוקב מדדים גמיש",
+  "en": null,
+  "meaning": "מסלול שמשקיע באמצעות מוצרים שעוקבים אחרי כמה מדדים שונים של מניות ואיגרות חוב, בתמהיל שהחברה קובעת",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [],
+  "variants": [
+    "עוקב מדדים - גמיש",
+    "פאסיבי - כללי"
+  ],
+  "rule_ids": [
+    "CAT-18",
+    "CAT-23",
+    "CAT-24",
+    "CAT-26"
+  ],
+  "source": {
+    "url": "https://www.meitav.co.il/media/r0wh30iv/%D7%A8%D7%99%D7%9B%D7%95%D7%96-%D7%9E%D7%99%D7%96%D7%95%D7%92%D7%99%D7%9D-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf",
+    "title": "ריכוז מיזוגים, Meitav merger and policy summary (Meitav)",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

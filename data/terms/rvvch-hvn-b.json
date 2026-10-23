@@ -1,0 +1,30 @@
+{
+  "id": "rvvch-hvn-b",
+  "he": "רווח הון",
+  "en": null,
+  "meaning": "הרווח ממכירת נכס, כמו מניה או יחידה בקרן: מה שמקבלים במכירה פחות מה ששילמו בקנייה.",
+  "where": [
+    "statement",
+    "tax-form"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [
+    "ריווח הון",
+    "רווחי הון"
+  ],
+  "rule_ids": [
+    "TXF-01",
+    "TXG-12",
+    "TXS-01",
+    "TXS-21"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

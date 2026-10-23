@@ -1,0 +1,28 @@
+{
+  "id": "mvtzry-shvk-hksp",
+  "he": "מוצרי שוק הכסף",
+  "en": null,
+  "meaning": "הכותרת שתחתיה בנקים מציגים יחד פיקדונות, קרנות כספיות ומק\"מ, בלי להעדיף אף אחד מהם",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [
+    "bank-deposit",
+    "makam",
+    "money-market-fund-daily",
+    "money-market-fund-renewable"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "BANK-15",
+    "GOV-20",
+    "MF-39"
+  ],
+  "source": {
+    "url": "https://boi.org.il/media/gcmk52bw/447a.pdf",
+    "title": "BoI directive 447A \"פרסום מידע מרוכז על קרנות כספיות ומק\"מ\" (04/25)",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

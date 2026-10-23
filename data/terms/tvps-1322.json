@@ -1,0 +1,26 @@
+{
+  "id": "tvps-1322",
+  "he": "טופס 1322",
+  "en": null,
+  "meaning": "נספח לדוח השנתי למס הכנסה שמסכם רווחים והפסדים ממכירת ניירות ערך נסחרים.",
+  "where": [
+    "tax-form"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [
+    "נספח ג'"
+  ],
+  "rule_ids": [
+    "TXF-22",
+    "TXS-19"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

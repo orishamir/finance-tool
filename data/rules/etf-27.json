@@ -1,0 +1,16 @@
+{
+  "id": "ETF-27",
+  "title": "TASE-listed iShares funds, as BlackRock states: accumulating, shekel-denominated, with foreign-currency exposure, no variable management fee",
+  "title_he": "קרנות iShares בבורסה: צוברות, בשקלים, עם חשיפת מט\"ח",
+  "text_he": "חוברת של בלאקרוק ישראל על קרנות iShares הרשומות בישראל מתארת אותן כרשומות בבורסה בתל אביב, צוברות דיבידנד, נקובות בשקלים, עם חשיפת מט\"ח, ועם עלות כוללת ידועה מאחר שאין דמי ניהול משתנים. דף הקרן של iShares על המדד האמריקני מונה את הבורסה בתל אביב בין הרישומים האחרים של אותה סדרה צוברת בדולרים. טבלת הקרנות, המספרים, הסימולים והעמלות בחוברת הייתה קטנה מכדי לקרוא בביטחון, והחוברת אינה מתוארכת. אלה הצהרות החברה עצמה, ורשימת הקרנות משתנה.",
+  "strength": "institution",
+  "dimensions": [
+    "distribution-policy",
+    "currency",
+    "fee-management-balance"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,60 @@
+{
+  "id": "SW-35",
+  "title": "Moving a portfolio: open an account at the receiver, then ask the current institution; not every security can move",
+  "title_he": "העברת תיק: פותחים חשבון אצל הקולט ומבקשים מהנוכחי",
+  "text_he": "מקורות מוסדיים מתארים אותו סדר: פותחים חשבון במוסד הקולט, מגישים בקשת העברה למוסד הנוכחי עם פרטי החשבון החדש, והקולט מטפל בקליטה. לפי לאומי, הבקשה כוללת רק ניירות שכבר זוכו או חויבו בפועל, אי אפשר להעביר שברי ניירות, העברה לאותו בעלים דורשת הוכחת בעלות על החשבון הקולט, וקרנות נאמנות דורשות טופס חתום נפרד. אלטשולר שחם טרייד מציינת שלא כל נייר ניתן להעברה אוטומטית, ונוקבת במספר ימי מסחר מרבי לניירות ישראליים ובמספר גבוה יותר לניירות זרים. אלה הצהרות מוסדיות; לא נמצא כלל של רגולטור על לוח הזמנים בין ברוקרים.",
+  "figure_names_he": {
+    "israeli_securities_trading_days": "ימי מסחר להעברת ניירות ישראליים (אלטשולר שחם טרייד)",
+    "foreign_securities_trading_days": "ימי מסחר להעברת ניירות זרים (אלטשולר שחם טרייד)"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "transfer-switch-process",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "israeli_securities_trading_days": {
+      "value": 5,
+      "unit": "days",
+      "source": {
+        "url": "https://www.as-invest.co.il/",
+        "title": "Altshuler Shaham Trade, portfolio-transfer FAQ; Leumi online securities-transfer instructions; Meitav Trade article 03/08/2026",
+        "publisher": "Altshuler Shaham Trade; Bank Leumi; Meitav Trade",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "SW-35"
+      ],
+      "state": "sourced",
+      "notes": "Altshuler Shaham Trade: up to 5 trading days for Israeli securities, up to 14 for foreign ones. Institution statements; no regulator rule on the broker-to-broker timeline was found."
+    },
+    "foreign_securities_trading_days": {
+      "value": 14,
+      "unit": "days",
+      "source": {
+        "url": "https://www.as-invest.co.il/",
+        "title": "Altshuler Shaham Trade, portfolio-transfer FAQ; Leumi online securities-transfer instructions; Meitav Trade article 03/08/2026",
+        "publisher": "Altshuler Shaham Trade; Bank Leumi; Meitav Trade",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "SW-35"
+      ],
+      "state": "sourced"
+    }
+  },
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-22"
+}

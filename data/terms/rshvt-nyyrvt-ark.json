@@ -1,0 +1,40 @@
+{
+  "id": "rshvt-nyyrvt-ark",
+  "he": "רשות ניירות ערך",
+  "en": null,
+  "meaning": "הרשות שמפקחת על קרנות נאמנות וקרנות סל, מנהלי תיקים, יועצי השקעות והבורסה, כדי לשמור על ענייני המשקיעים",
+  "where": [],
+  "wrapper_ids": [
+    "bank-deposit",
+    "brokerage-account",
+    "child-savings-bank",
+    "child-savings-provident",
+    "current-account",
+    "government-bond",
+    "ira-hishtalmut",
+    "ira-provident",
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa",
+    "makam",
+    "money-market-fund-daily",
+    "money-market-fund-renewable",
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity",
+    "savings-plan"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "REG-07",
+    "REG-08",
+    "REG-10",
+    "REG-13"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/חוק_ניירות_ערך",
+    "title": "חוק ניירות ערך (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

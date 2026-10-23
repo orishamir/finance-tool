@@ -1,0 +1,30 @@
+{
+  "id": "fee-custody",
+  "he": "דמי ניהול פיקדון ניירות ערך",
+  "one_line": "עמלה קבועה על החזקת ניירות הערך בחשבון, גם כשלא מבצעים בו פעולות",
+  "source": {
+    "url": "docs/product.md#33-dimension-checklist-or-what-you-are-not-considering",
+    "title": "product.md 3.3 and glossary.md section 2",
+    "publisher": "project",
+    "strength": "primary",
+    "checked": "2026-10-23"
+  },
+  "rule_ids": [
+    "BANK-18",
+    "BRK-15",
+    "BRK-16",
+    "BRK-17",
+    "BRK-24",
+    "BRK-33",
+    "BRK-36",
+    "GOV-21",
+    "IRA-16",
+    "IRA-21",
+    "IRA-22",
+    "MF-26",
+    "MF-27",
+    "PF-10",
+    "SW-34",
+    "TXS-06"
+  ]
+}

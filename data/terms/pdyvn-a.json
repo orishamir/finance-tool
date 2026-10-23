@@ -1,0 +1,33 @@
+{
+  "id": "pdyvn-a",
+  "he": "פדיון",
+  "en": null,
+  "meaning": "קבלת הכסף בחזרה: באיגרת חוב, כשהמדינה מחזירה את הסכום בסוף התקופה; בקרן נאמנות, כשמוכרים את היחידות בחזרה לקרן",
+  "where": [
+    "app",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "brokerage-account",
+    "government-bond",
+    "makam",
+    "money-market-fund-daily",
+    "money-market-fund-renewable"
+  ],
+  "variants": [
+    "מועד הפדיון"
+  ],
+  "rule_ids": [
+    "GOV-03",
+    "GOV-11",
+    "MF-09",
+    "MF-11"
+  ],
+  "source": {
+    "url": "https://www.boi.org.il/media/ytal5ozx/makam.pdf",
+    "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\"",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

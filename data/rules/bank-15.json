@@ -1,0 +1,16 @@
+{
+  "id": "BANK-15",
+  "title": "Directive 447A: money-market products shown together (deposits, money-market funds, makam)",
+  "title_he": "מוצרי שוק הכסף: פיקדונות, קרנות כספיות ומק״ם יחד",
+  "text_he": "בנק שדרכו אפשר לרכוש קרנות כספיות או מק״ם חייב לפרסם מידע מרוכז על פיקדונות, קרנות כספיות ומק״ם יחד, תחת הכותרת 'מוצרי שוק הכסף'. הסינון הראשון הוא תקופת ההשקעה והמטבע, אין להעדיף מוצר אחד על אחר, והבנק חייב להסביר איך קונים קרנות ומק״ם. נתוני הקרנות והמק״ם מתעדכנים לפחות פעם ביום, ובאזור האישי הלקוח רואה את כל אחזקותיו בשלושת המוצרים יחד. התשואה הצפויה של קרן היא הערכת המנהל, לא הבטחה, לפני מס ועמלות בנק; בחירה בתקופה מעל שנה לא מציגה קרנות ומק״ם.",
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation",
+    "regulator",
+    "liquidity-lockup",
+    "currency"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-22"
+}

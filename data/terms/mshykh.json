@@ -1,0 +1,36 @@
+{
+  "id": "mshykh",
+  "he": "משיכה",
+  "en": null,
+  "meaning": "הוצאת כסף מהקופה אל חשבון הבנק שלכם, כולו או חלקו; לעיתים יש עליה מס",
+  "where": [
+    "app",
+    "form",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "child-savings-bank",
+    "child-savings-provident",
+    "ira-hishtalmut",
+    "ira-provident",
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa"
+  ],
+  "variants": [
+    "משיכת כספים"
+  ],
+  "rule_ids": [
+    "CS-14",
+    "KGL-08",
+    "KH-10",
+    "KH-16",
+    "TXK-05"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/api/rest_v1/page/pdf/פקודת_מס_הכנסה",
+    "title": "פקודת מס הכנסה, consolidated text (Wikisource rendered PDF)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

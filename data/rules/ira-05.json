@@ -1,0 +1,14 @@
+{
+  "id": "IRA-05",
+  "title": "Who gives investment instructions",
+  "title_he": "מי נותן את הוראות ההשקעה",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "text_he": "הכסף מושקע רק לפי הוראות העמית, ישירות או דרך מנהל תיקים שיש לו איתו הסכם בכתב. לכל חשבון אדם אחד מוסמך להורות; העמית בוחר אותו ויכול להחליף בכל עת. מיטב מציעה 'ניהול עצמי' או 'ניהול באמצעות מנהל תיק' בייפוי כוח.",
+  "il_finance_file": "ira-self-directed.md",
+  "checked": "2026-10-22"
+}

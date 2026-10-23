@@ -19,6 +19,12 @@ export const ruleRecord = z
     likely_to_change: z.enum(["yes", "no"]),
     recheck_date: isoDate.nullable().optional(),
     figures: z.record(z.string(), figure).optional(),
+    /** 2-4 sentences of plain Hebrew shown on the rule card; `title` (English) stays the key the rules page falls back to. */
+    /** Hebrew title for lists and cards (added 2026-10-23); the English `title` stays the fallback. */
+    title_he: z.string().min(1).optional(),
+    text_he: z.string().min(1).optional(),
+    /** Figure key to Hebrew name, for the rule card. */
+    figure_names_he: z.record(z.string(), z.string().min(1)).optional(),
     il_finance_file: z.string().regex(/\.md$/),
     checked: isoDate,
   })

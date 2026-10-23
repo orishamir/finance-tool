@@ -1,0 +1,60 @@
+{
+  "id": "TXG-17",
+  "title": "Exemption from filing: ceilings, and the salary-vs-surtax threshold",
+  "title_he": "פטור מהגשת דוח: התקרות וסף השכר מול מס יסף",
+  "text_he": "תושב שהכנסתו היא רק מהסוגים המנויים, כל אחת מתחת לתקרה שלה ועם ניכוי מס מלא במקור (או פטור, או מקדמה כשהכלל מאפשר), פטור מהגשת דוח שנתי. תקרת הריבית מכסה ריבית, דמי ניכיון והצמדה מפיקדונות, תוכניות חיסכון, קופות גמל ואג״ח סחירות; תקרת ניירות הערך היא על תמורת המכירה (מחזור), לא על הרווח, וכוללת ניירות זרים ומק״ם. תקרת השכר לא קובעת בפועל, כי מי שחייב במס נוסף חייב להגיש דוח בכל מקרה. שתי התקרות מסומנות במקורות לשנת המס הקודמת; ההקפאה מרמזת שהן זהות השנה, אבל לא נמצא מקור שמסומן לשנה הנוכחית.",
+  "figure_names_he": {
+    "interest_ceiling": "תקרת הריבית לפטור מהגשת דוח",
+    "securities_proceeds_ceiling": "תקרת תמורת מכירת ניירות ערך לפטור מהגשת דוח"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-03-31",
+  "figures": {
+    "interest_ceiling": {
+      "value": 717000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+        "title": "Tax Authority, דע זכויותיך וחובותיך 2025",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2025,
+      "update_rule": "frozen 2025-2027",
+      "rule_ids": [
+        "TXG-17"
+      ],
+      "state": "sourced",
+      "notes": "Interest, discount fees and linkage from deposits, savings plans, provident funds and traded bonds, where full tax was withheld (guide p.4). Labelled \"for tax year 2025\"; the 2026 value is expected to be the same because of the freeze (TXG-06), but no source labelled 2026 was found (TXG open question 5)."
+    },
+    "securities_proceeds_ceiling": {
+      "value": 2810000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+        "title": "Tax Authority, דע זכויותיך וחובותיך 2025",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2025,
+      "update_rule": "frozen 2025-2027",
+      "rule_ids": [
+        "TXG-17"
+      ],
+      "state": "sourced",
+      "notes": "Sale proceeds (turnover) from traded securities, including short-term loans, where full tax was withheld, an exemption applied or an advance was paid (guide p.4). Tax year 2025; see interest_ceiling."
+    }
+  },
+  "il_finance_file": "tax-general.md",
+  "checked": "2026-10-22"
+}

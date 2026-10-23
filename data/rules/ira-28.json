@@ -1,0 +1,15 @@
+{
+  "id": "IRA-28",
+  "title": "Failures at IRA managers (context for protection)",
+  "title_he": "כשלים אצל מנהלי קופות בניהול אישי",
+  "strength": "secondary",
+  "dimensions": [
+    "protection",
+    "regulator"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "text_he": "לא כללים אלא אירועים מדווחים: סלייס גמל נמצאת בניהול מורשה שמינתה רשות שוק ההון ב-2024, אחרי שכספי חוסכים הושקעו בהשקעות אלטרנטיביות וכספם הוקפא; נגד גלובלנט הוגשה בקשה לתובענה ייצוגית על הפניה לקרנות זרות לא נזילות (טענות בלבד). מקורות עיתונאיים; פרסום אכיפה רשמי לא הושג.",
+  "il_finance_file": "ira-self-directed.md",
+  "checked": "2026-10-22"
+}

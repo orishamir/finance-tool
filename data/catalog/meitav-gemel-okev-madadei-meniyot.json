@@ -1,0 +1,23 @@
+{
+  "id": "meitav-gemel-okev-madadei-meniyot",
+  "institution": "meitav",
+  "where_seen": "Meitav operations flyer (פלייר תפעולי), p.1 \"קופת גמל - מ.ה קופה 874\", https://www.meitav.co.il/media/0lhfrzgy/פלייר-תפעולי-מונגש.pdf",
+  "seen_on": "2026-10-23",
+  "seen_by": "this collection; il-finance CAT-26",
+  "names": {
+    "he": [
+      "מיטב גמל עוקב מדדי מניות",
+      "מיטב גמל פאסיבי מדדי מניות"
+    ]
+  },
+  "maps_to": {
+    "wrapper_id": "provident-for-annuity",
+    "cma_fund_id": 874,
+    "track_ids": [
+      1689
+    ]
+  },
+  "near_duplicates": [],
+  "status": "catalogued",
+  "notes": "Track of Meitav's fund number 874 (flyer). Old name(s) until 30.6.2024, same track number (CAT-13, CAT-26): מיטב גמל פאסיבי מדדי מניות."
+}

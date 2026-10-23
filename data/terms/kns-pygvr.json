@@ -1,0 +1,21 @@
+{
+  "id": "kns-pygvr",
+  "he": "קנס פיגור",
+  "en": null,
+  "meaning": "קנס על מס שלא שולם בזמן, לפי מספר שבועות האיחור, נוסף על הצמדה וריבית",
+  "where": [],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXG-23"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "shynvy-htmchvt",
+  "he": "שינוי התמחות",
+  "en": null,
+  "meaning": "שינוי של ההתמחות של מסלול מתמחה, שמחייב הודעה מראש לחוסכים עם השוואה בין המדיניות הישנה לחדשה",
+  "where": [
+    "statement"
+  ],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "CAT-21"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+    "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

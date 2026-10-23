@@ -1,0 +1,13 @@
+{
+  "id": "REG-01",
+  "title": "Supervisor of Banks: legal basis and powers",
+  "title_he": "המפקח על הבנקים: בסיס בחוק וסמכויות",
+  "text_he": "הנגיד רשאי למנות מפקח על הבנקים. המפקח הוא עובד בנק ישראל, ובידיו הפיקוח הכללי והביקורת על כל תאגיד בנקאי, עם סמכות לדרוש מידע ומסמכים מכל תאגיד בנקאי. הכלל חל על כל 'תאגיד בנקאי' כהגדרתו בחוק הבנקאות (רישוי).",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "regulator"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "regulators-and-protection.md",
+  "checked": "2026-10-22"
+}

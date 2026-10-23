@@ -1,0 +1,28 @@
+{
+  "id": "agch-kvntzrnyvt",
+  "he": "אג\"ח קונצרניות",
+  "en": null,
+  "meaning": "נייר ערך שחברה מנפיקה לציבור ומתחייבת לשלם עליו קרן וריבית; המדינה אינה ערבה לו.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [
+    "אג\"ח חברות",
+    "איגרות חוב תאגידיות",
+    "איגרות החוב הקונצרניות"
+  ],
+  "rule_ids": [
+    "CORP-01",
+    "CORP-16",
+    "CORP-18",
+    "CORP-24",
+    "TX2-06",
+    "TX2-07"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/חוק_ניירות_ערך",
+    "title": "חוק ניירות ערך, התשכ\"ח-1968 (Wikisource)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

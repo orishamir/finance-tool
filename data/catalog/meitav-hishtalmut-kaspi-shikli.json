@@ -1,0 +1,23 @@
+{
+  "id": "meitav-hishtalmut-kaspi-shikli",
+  "institution": "meitav",
+  "where_seen": "Meitav operations flyer (פלייר תפעולי), p.2 \"קרן השתלמות - מ.ה קופה 880\", https://www.meitav.co.il/media/0lhfrzgy/פלייר-תפעולי-מונגש.pdf",
+  "seen_on": "2026-10-23",
+  "seen_by": "this collection; il-finance CAT-26",
+  "names": {
+    "he": [
+      "מיטב השתלמות כספי (שיקלי)",
+      "מיטב השתלמות שקלי טווח קצר"
+    ]
+  },
+  "maps_to": {
+    "wrapper_id": "keren-hishtalmut",
+    "cma_fund_id": 880,
+    "track_ids": [
+      1370
+    ]
+  },
+  "near_duplicates": [],
+  "status": "catalogued",
+  "notes": "Track of Meitav's fund number 880 (flyer). Old name(s) until 30.6.2024, same track number (CAT-13, CAT-26): מיטב השתלמות שקלי טווח קצר. The regulator writes \"כספי (שקלי)\"; the flyer \"כספי (שיקלי)\"."
+}

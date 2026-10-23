@@ -1,0 +1,29 @@
+{
+  "id": "pykdvn",
+  "he": "פיקדון",
+  "en": null,
+  "meaning": "כסף שמפקידים בבנק לתקופה מוסכמת, ובתמורה הבנק משלם עליו ריבית",
+  "where": [
+    "ad",
+    "app",
+    "provider-site",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "bank-deposit"
+  ],
+  "variants": [
+    "פקדון"
+  ],
+  "rule_ids": [
+    "BANK-02",
+    "BANK-14"
+  ],
+  "source": {
+    "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
+    "title": "Banking Rules (Customer Service) (Fair Disclosure and Delivery of Documents) 1992, consolidated to 30.12.2014, BoI copy",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

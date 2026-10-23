@@ -1,0 +1,14 @@
+{
+  "id": "KH-09",
+  "title": "Not every fund accepts every status; what happens when the employer stops paying",
+  "title_he": "המשך הפקדות כשהמעסיק מפסיק או כשהמעמד משתנה",
+  "text_he": "הקרנות נבדלות במי רשאי להמשיך להפקיד. בהראל, הקרן לא ממשיכה לקבל הפקדות לעמית שהמעסיק שלו הפסיק להפקיד, מכל סיבה, או שנעשה עצמאי; העמית יכול אז למשוך לפי כללי הוותק. באלטשולר שחם, שכיר שהפסיק לעבוד רשאי להמשיך לחסוך כעצמאי, ועצמאי שנעשה שכיר ממשיך כשכיר. בהחלפת עבודה החשבון נשאר בקרן; אם המעסיק החדש מפקיד אליו ובאיזה שיעור תלוי בהסכם החדש ובבחירת העובד.",
+  "strength": "institution",
+  "dimensions": [
+    "eligibility",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "keren-hishtalmut.md",
+  "checked": "2026-10-22"
+}

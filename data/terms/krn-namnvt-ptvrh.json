@@ -1,0 +1,36 @@
+{
+  "id": "krn-namnvt-ptvrh",
+  "he": "קרן נאמנות פטורה",
+  "en": null,
+  "meaning": "קרן נאמנות ישראלית שפטורה ממס בישראל על רווחיה; המשקיעים משלמים מס רק במכירה או כשהקרן משלמת להם.",
+  "where": [
+    "app",
+    "prospectus"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500",
+    "index-ta125"
+  ],
+  "variants": [
+    "קרן פטורה",
+    "פטורה"
+  ],
+  "rule_ids": [
+    "TXS-07",
+    "TXS-08",
+    "TXS-09",
+    "TXS-10",
+    "TXS-13",
+    "TXS-24"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+    "title": "פקודת מס הכנסה (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

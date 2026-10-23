@@ -1,0 +1,39 @@
+{
+  "id": "KH-16",
+  "title": "Withdrawal process and payment",
+  "title_he": "תהליך המשיכה והתשלום",
+  "text_he": "באלטשולר שחם משיכה דורשת טופס חתום, צילום תעודת זהות ואסמכתה לחשבון הבנק. התשלום בהעברה בנקאית בלבד, לחשבון של העמית עצמו, בתוך ימי העסקים לתשלום המשיכה מקבלת בקשה מלאה ותקינה; אם המועד נופל בימי העסקים הראשונים של החודש, הוא נדחה. החברה רשאית לעכב בקשה לאימות זהות, והסכום משולם בניכוי הלוואה או שעבוד. חברות אחרות לא נבדקו, ולוח הזמנים שבדין לא נקרא.",
+  "figure_names_he": {
+    "payout_business_days": "ימי עסקים לתשלום המשיכה (אלטשולר שחם)"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "liquidity-lockup",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "payout_business_days": {
+      "value": 4,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.as-invest.co.il/media/10040/בקשה-למשיכת-כספים-מקרן-השתלמות.pdf",
+        "title": "Altshuler Shaham, \"בקשה למשיכת כספים מקרן השתלמות\", form MH4015_210519, guidance section 1: \"הינו 4 ימי עסקים ויספר מיום קבלת הבקשה מלאה ותקינה בחברה\"",
+        "publisher": "Altshuler Shaham Gemel and Pension",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "KH-16"
+      ],
+      "state": "sourced",
+      "notes": "Payment by bank transfer to the member's own account within 4 business days of a full and proper request (Altshuler). If the payment day falls in the first three business days of a month it moves to the next business day. Other managers' timing was not checked; the legal timetable was not read (keren-hishtalmut.md open question 16)."
+    }
+  },
+  "il_finance_file": "keren-hishtalmut.md",
+  "checked": "2026-10-22"
+}

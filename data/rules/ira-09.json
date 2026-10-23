@@ -1,0 +1,14 @@
+{
+  "id": "IRA-09",
+  "title": "Severance money needs employer approval",
+  "title_he": "כספי פיצויים נכנסים רק באישור המעסיק",
+  "strength": "primary",
+  "dimensions": [
+    "eligibility",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "no",
+  "text_he": "כספי מרכיב הפיצויים שבאים במקום פיצויי פיטורים (סעיף 14) לא נכנסים לקופה בניהול אישי אלא באישור המעסיק, או במכתב שחרור ממעסיק קודם.",
+  "il_finance_file": "ira-self-directed.md",
+  "checked": "2026-10-22"
+}

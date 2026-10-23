@@ -1,0 +1,15 @@
+{
+  "id": "CS-07",
+  "title": "Default when the parent does not choose",
+  "title_he": "ברירת המחדל כשההורה לא בוחר",
+  "strength": "primary",
+  "dimensions": [
+    "eligibility",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "text_he": "אם לא בוחרים בתוך שישה חודשים, הכסף נכנס לקופת גמל להשקעה. הקופה והמסלול הולכים אחרי אח גדול שנבחרה לו קופה; אחרת למסלול 'חוסכים המעדיפים סיכון מוגבר'. הכלל השתנה שלוש פעמים מאז 2020. איך נבחרת הקופה לילד ראשון לא נאמר (שאלה פתוחה 4).",
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,105 @@
+{
+  "id": "TXP-14",
+  "title": "Qualifying annuity (`קצבה מזכה`): partial exemption from retirement age",
+  "title_he": "קצבה מזכה: פטור חלקי מגיל הפרישה",
+  "text_he": "קצבה מזכה שמקבל יחיד שהגיע לגיל פרישה פטורה ממס עד השיעור הפטור מתקרת הקצבה המזכה, והשיעור עולה בשנים הקרובות לפי החוק. קצבה מזכה היא כל הקצבאות ממעסיק, מקופת גמל או מביטוח אובדן כושר עבודה, חוץ מקצבה מוכרת, וקצבאות שאירים מחוץ לסעיף; הסכום הפטור זהה לכל מי שזכאי, לא חלק מהקצבה של כל אדם, ולעולם לא עולה על הקצבה עצמה. גיל הפרישה הוא לפי חוק גיל פרישה, מי שפרש בשל נכות קבועה בדרגה גבוהה נחשב כמי שהגיע אליו, וגיל הזכאות הוא המאוחר מבין גיל הפרישה ותחילת הקצבה; מענקי פרישה פטורים מקטינים את הפטור הזה. התקרה צמודה למדד וקפואה לשנים הקרובות; הפקודה נקראה בעותק בוויקיטקסט ואומתה מול חוברת רשות המסים.",
+  "figure_names_he": {
+    "exempt_share": "השיעור הפטור מתקרת הקצבה המזכה",
+    "annuity_ceiling": "תקרת הקצבה המזכה (חודשי)"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "tax-at-exit",
+    "age-or-use-exemption"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "exempt_share": {
+      "by_tax_year": {
+        "2026": {
+          "value": 57.5,
+          "unit": "pct",
+          "source": {
+            "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+            "title": "Income Tax Ordinance s.9A(b), (g) as amended by Amendment 275 (Wikisource mirror); Tax Authority deductions booklet 2026, p.6 (Amendment 275 table) and p.12 row \"תקרת הפטור ל'קיצבה מזכה' 9א(ב) - בשיעור 57.5%\"",
+            "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+            "strength": "primary-mirror"
+          },
+          "checked": "2026-10-22",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "tax_year": 2026,
+          "update_rule": "fixed in law",
+          "rule_ids": [
+            "TXP-14"
+          ],
+          "state": "sourced",
+          "notes": "Share of the qualifying-annuity ceiling that is exempt for an individual who reached retirement age: 57% (2025), 57.5% (2026), 62.5% (2027), 67% from 2028. The exempt amount is the same for everyone who qualifies and never exceeds the annuity itself; exempt severance grants reduce it (TXP-15)."
+        },
+        "2027": {
+          "value": 62.5,
+          "unit": "pct",
+          "source": {
+            "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+            "title": "Income Tax Ordinance s.9A(b), (g) as amended by Amendment 275 (Wikisource mirror); Tax Authority deductions booklet 2026, p.6 (Amendment 275 table) and p.12 row \"תקרת הפטור ל'קיצבה מזכה' 9א(ב) - בשיעור 57.5%\"",
+            "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+            "strength": "primary-mirror"
+          },
+          "checked": "2026-10-22",
+          "effective_from": "2027-01-01",
+          "effective_to": null,
+          "tax_year": 2027,
+          "update_rule": "fixed in law",
+          "rule_ids": [
+            "TXP-14"
+          ],
+          "state": "sourced",
+          "notes": "Share of the qualifying-annuity ceiling that is exempt for an individual who reached retirement age: 57% (2025), 57.5% (2026), 62.5% (2027), 67% from 2028. The exempt amount is the same for everyone who qualifies and never exceeds the annuity itself; exempt severance grants reduce it (TXP-15)."
+        },
+        "2028": {
+          "value": 67,
+          "unit": "pct",
+          "source": {
+            "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+            "title": "Income Tax Ordinance s.9A(b), (g) as amended by Amendment 275 (Wikisource mirror); Tax Authority deductions booklet 2026, p.6 (Amendment 275 table) and p.12 row \"תקרת הפטור ל'קיצבה מזכה' 9א(ב) - בשיעור 57.5%\"",
+            "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+            "strength": "primary-mirror"
+          },
+          "checked": "2026-10-22",
+          "effective_from": "2028-01-01",
+          "effective_to": null,
+          "tax_year": 2028,
+          "update_rule": "fixed in law",
+          "rule_ids": [
+            "TXP-14"
+          ],
+          "state": "sourced",
+          "notes": "Share of the qualifying-annuity ceiling that is exempt for an individual who reached retirement age: 57% (2025), 57.5% (2026), 62.5% (2027), 67% from 2028. The exempt amount is the same for everyone who qualifies and never exceeds the annuity itself; exempt severance grants reduce it (TXP-15)."
+        }
+      }
+    },
+    "annuity_ceiling": {
+      "value": 9430,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+        "title": "Tax Authority deductions booklet 2026, p.12, row \"תקרת 'קיצבה מזכה' 9א(א)\"",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2024-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "frozen 2025-2027",
+      "rule_ids": [
+        "TXP-14"
+      ],
+      "state": "sourced",
+      "notes": "Qualifying-annuity ceiling (תקרת הקצבה המזכה), NIS per month, 2024 to 2027 (8,190 in 2012; 9,120 in 2023). CPI-indexed under s.120B and frozen for 2025 to 2027; re-indexed from 1.1.2028. For 2026 the exempt amount is 57.5% x 9,430 = 5,422 NIS a month (booklet)."
+    }
+  },
+  "il_finance_file": "tax-pension-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

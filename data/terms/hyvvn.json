@@ -1,0 +1,26 @@
+{
+  "id": "hyvvn",
+  "he": "היוון",
+  "en": null,
+  "meaning": "קבלת קצבה, כולה או חלקה, כסכום אחד במקום תשלומים לאורך זמן",
+  "where": [
+    "law",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "kupat-gemel-lehashkaa"
+  ],
+  "variants": [
+    "היוון קצבה"
+  ],
+  "rule_ids": [
+    "TXK-11"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/api/rest_v1/page/pdf/פקודת_מס_הכנסה",
+    "title": "פקודת מס הכנסה, consolidated text (Wikisource rendered PDF)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

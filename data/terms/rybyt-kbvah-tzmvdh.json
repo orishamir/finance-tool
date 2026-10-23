@@ -1,0 +1,25 @@
+{
+  "id": "rybyt-kbvah-tzmvdh",
+  "he": "ריבית קבועה צמודה",
+  "en": null,
+  "meaning": "מסלול בנקאי בחיסכון לכל ילד עם ריבית ידועה מראש, והסכום מתעדכן גם לפי מדד המחירים לצרכן",
+  "where": [
+    "provider-site"
+  ],
+  "wrapper_ids": [
+    "child-savings-bank",
+    "child-savings-provident"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "CS-10",
+    "CS-25"
+  ],
+  "source": {
+    "url": "https://hly.gov.il/Differences.html",
+    "title": "hly.gov.il, ההבדלים בין חיסכון בקופת גמל לחיסכון בבנק",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

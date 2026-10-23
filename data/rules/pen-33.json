@@ -1,0 +1,39 @@
+{
+  "id": "PEN-33",
+  "title": "Processing times",
+  "title_he": "זמני הטיפול בקרן הפנסיה",
+  "text_he": "זמני השירות של קרן הפנסיה לפי התקנון: הצטרפות בלי חיתום רפואי והודעה על הצטרפות בתוך ימים ספורים; העברת הפקדות עודפות לקרן הכללית בתחילת החודש הבא; מעבר בין מסלולי השקעה בתוך ימי עסקים ספורים; אישור בקשה לקצבת זקנה בתוך ימים ספורים ותשלום ראשון בתחילת החודש שאחרי הזכאות; תשובה לבקשת משיכה בתוך יומיים ותשלום משיכה מאושרת בתוך ימי העסקים לתשלום, בקרן פנסיה ובקופת גמל כאחד. תשלום שחל בשלושת ימי העסקים הראשונים של החודש עשוי להידחות ליום העסקים הרביעי. הזמנים לקוחים מתקנונים של חברה מנהלת אחת.",
+  "figure_names_he": {
+    "payout_business_days": "ימי עסקים לתשלום משיכה מאושרת"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "transfer-switch-process",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "payout_business_days": {
+      "value": 4,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+        "title": "Mor comprehensive pension fund bylaws, version 01.06.2025, s.22(ד), 108 and annex א; Mor gemel standard bylaws 18.02.2026, s.18",
+        "publisher": "Mor Gemel and Pension",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "PEN-33"
+      ],
+      "state": "sourced",
+      "notes": "An approved withdrawal is paid within 4 business days (pension fund and provident fund alike); a request is answered within 2 days. Payment dates in the first three business days of a month may move to the fourth. Bylaws-level (Mor)."
+    }
+  },
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

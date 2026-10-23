@@ -1,0 +1,67 @@
+{
+  "id": "government-bond-cpi",
+  "names": {
+    "he": [
+      "אג\"ח ממשלתית צמודה",
+      "ממשלתית צמודה",
+      "גליל"
+    ],
+    "en": [
+      "CPI-linked government bond"
+    ]
+  },
+  "one_line_he": "הלוואה למדינה בשקלים לשנה לפחות, שהקרן והריבית שלה צמודות למדד המחירים לצרכן: קופון קבוע כמה פעמים בשנה, והקרן חוזרת בפדיון מותאמת לשינוי במדד.",
+  "kind": "other",
+  "currency": "ILS",
+  "cash_like": false,
+  "return_source": {
+    "mode": "entered",
+    "series": null
+  },
+  "variants": [],
+  "wrapper_ids": [
+    "government-bond",
+    "brokerage-account",
+    "ira-hishtalmut",
+    "ira-provident",
+    "kupat-gemel-lehashkaa",
+    "keren-hishtalmut"
+  ],
+  "rule_ids": [
+    "GOV-02",
+    "GOV-08",
+    "GOV-09",
+    "GOV-10",
+    "GOV-11",
+    "GOV-12",
+    "GOV-16",
+    "GOV-17",
+    "GOV-19",
+    "GOV-21",
+    "TXI-02",
+    "TXI-05",
+    "TXI-09",
+    "TXI-14",
+    "TXI-16",
+    "TXI-17",
+    "TXI-25",
+    "TXS-01",
+    "TXS-02",
+    "BRK-16",
+    "CAT-10",
+    "CAT-17",
+    "CAT-18",
+    "IRA-11"
+  ],
+  "open_questions": [
+    "GOV-OQ6",
+    "GOV-OQ7",
+    "GOV-OQ8",
+    "GOV-OQ9",
+    "GOV-OQ12",
+    "TXI-OQ5",
+    "TXI-OQ6",
+    "TXS-OQ15"
+  ],
+  "checked": "2026-10-23"
+}

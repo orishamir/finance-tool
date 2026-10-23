@@ -1,0 +1,29 @@
+{
+  "id": "krn-kspyt",
+  "he": "קרן כספית",
+  "en": null,
+  "meaning": "קרן נאמנות שמשקיעה רק בנכסים קצרי טווח עם סיכון נמוך שהלווה לא יחזיר, כמו מק\"מ ופיקדונות בנקאיים",
+  "where": [
+    "ad",
+    "app",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "money-market-fund-daily",
+    "money-market-fund-renewable"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "MF-07",
+    "MF-29",
+    "MF-30",
+    "MF-41"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/MoneyMarketFundReg24.pdf",
+    "title": "ISA, הוראה למנהלי קרנות ונאמנים בדבר תנאים שיחולו לגבי קרן כספית (2024)",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

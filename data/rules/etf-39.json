@@ -1,0 +1,81 @@
+{
+  "id": "ETF-39",
+  "title": "How the S&P 500 is weighted and maintained: float-adjusted market-capitalisation weights by the divisor method, composition changes as needed with at least three business days' notice, share counts updated quarterly",
+  "title_he": "איך המדד האמריקני משוקלל ומתוחזק",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-10-23",
+  "figures": {
+    "rebalances_per_year": {
+      "value": 4,
+      "unit": "count",
+      "source": {
+        "url": "https://www.spglobal.com/spdji/en/indices/equity/sp-500/",
+        "title": "S&P Dow Jones Indices, S&P 500® index page (read in Chrome 2026-10-23; curl returns 403)",
+        "publisher": "S&P Dow Jones Indices",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-39"
+      ],
+      "state": "sourced",
+      "notes": "Index page: \"Rebalancing Frequency: Quarterly in March, June, September, and December\". The methodology: share counts are updated quarterly, while composition changes are made as needed with no scheduled reconstitution (p.17)."
+    },
+    "announcement_notice_business_days": {
+      "value": 3,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
+        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome's PDF viewer)",
+        "publisher": "S&P Dow Jones Indices",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-39"
+      ],
+      "state": "sourced",
+      "notes": "\"Index additions and deletions are announced with at least three business days advance notice. Less than three business days' notice may be given at the discretion of the Index Committee.\" (p.17)"
+    },
+    "iwf_change_threshold": {
+      "value": 5,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
+        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome's PDF viewer)",
+        "publisher": "S&P Dow Jones Indices",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-39"
+      ],
+      "state": "sourced",
+      "notes": "Float-factor changes are made at the quarterly review only if they are at least 5% of current shares outstanding and relate to a single corporate action (p.17)."
+    }
+  },
+  "text_he": "משקל כל חברה במדד הוא שווי השוק של המניות שלה שבידי הציבור, ואין במדד עצמו תקרת משקל לחברה אחת. אין מועד קבוע להחלפת חברות: ועדת המדדים מכניסה ומוציאה חברות לפי הצורך, למשל אחרי מיזוג או רכישה, ומודיעה על כך לפחות שלושה ימי עסקים מראש. מספר המניות של כל חברה מתעדכן פעם ברבעון, במרץ, ביוני, בספטמבר ובדצמבר.",
+  "figure_names_he": {
+    "rebalances_per_year": "עדכונים בשנה",
+    "announcement_notice_business_days": "הודעה מראש על שינוי, בימי עסקים",
+    "iwf_change_threshold": "שינוי מינימלי בשיעור המניות בידי הציבור לעדכון"
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-23"
+}

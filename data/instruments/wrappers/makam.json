@@ -1,0 +1,180 @@
+{
+  "id": "makam",
+  "names": {
+    "he": [
+      "מק\"מ",
+      "מק\"ם",
+      "מילווה קצר מועד"
+    ],
+    "statement": [],
+    "app": [
+      "מק\"מ"
+    ]
+  },
+  "regulator": {
+    "value": "BoI",
+    "unit": "text",
+    "source": {
+      "url": "https://www.nevo.co.il/law_html/law00/72417.htm",
+      "title": "חוק מילווה קצר מועד, תשמ\"ד-1984 (Nevo mirror)",
+      "publisher": "Knesset legislation (Nevo mirror)",
+      "strength": "primary-mirror"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "GOV-01",
+      "GOV-05",
+      "BRK-04",
+      "REG-13"
+    ],
+    "state": "sourced",
+    "notes": "The state borrows; the Bank of Israel sells the bills to the public by auction, administers the loan and runs the register (Short-Term Loan Law ss.1(א), 4, 5, 6, 10). The securities account that holds the paper is supervised separately: a bank by the Supervisor of Banks, a non-bank TASE member by TASE under the ISA (BRK-04, REG-13)."
+  },
+  "fee_bases_allowed": [
+    "trade",
+    "custody"
+  ],
+  "fee_caps": {
+    "custody": {
+      "value": 0,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
+        "title": "Banking (Service to Customer) (Fees) Rules 2008, First Schedule part 4 (BoI copy, consolidated to 9.4.2025)",
+        "publisher": "Bank of Israel, Supervisor of Banks",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BRK-17",
+        "BANK-18",
+        "BRK-16"
+      ],
+      "state": "sourced",
+      "notes": "A bank may not charge \"דמי ניהול פיקדון ניירות ערך\" for makam (First Schedule part 4(א)(5) note 2). Buy, sell and redemption commissions in part 4 still apply, with a separate makam line priced by each bank (BRK-16). Whether a non-bank TASE member may charge custody on makam is open (BRK open question 11)."
+    }
+  },
+  "ceiling": null,
+  "deposit_side_tax": {
+    "formula": "F-33",
+    "rule_ids": []
+  },
+  "tax_during": {
+    "formula": "F-24",
+    "rule_ids": [
+      "TXI-01",
+      "TXI-11",
+      "TXI-03",
+      "TXI-09",
+      "TXI-19",
+      "TXG-15",
+      "TXG-27",
+      "GOV-03",
+      "GOV-06",
+      "GOV-22",
+      "GOV-23"
+    ]
+  },
+  "tax_at_exit": {
+    "formula": "F-40",
+    "rule_ids": [
+      "TXI-12",
+      "TXI-13",
+      "TXI-17",
+      "TXS-05",
+      "TXG-17",
+      "TXG-28"
+    ],
+    "blocked_by": [],
+    "labels": [
+      "conflict noted: the Tax Authority guide 2025 (p.39) says 20% on makam discount, the statute (s.125C(c)) says 15%; the site computes 15% and flags it (TXI OQ3, G-09)"
+    ]
+  },
+  "lawful_exit": {
+    "kind": "trading_day",
+    "text": "Any trading day: makam is listed on TASE after each auction and can be sold at the market price of the day (GOV-04, GOV-17, GOV-22). Held to the redemption date, the Bank of Israel pays the face value (GOV-03). The settlement cycle for a secondary sale on TASE was not readable (GOV open question 7), so no payout-days figure is recorded."
+  },
+  "switch_is_tax_event": {
+    "value": true,
+    "unit": "boolean",
+    "source": {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Income Tax Ordinance (Hebrew Wikisource mirror)",
+      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-12",
+      "TXS-21"
+    ],
+    "state": "sourced",
+    "notes": "Selling one makam series to buy another is a sale (s.88 \"מכירה\"): the gain on a sale before redemption is a capital gain on an unlinked asset at up to 15%, withheld by the bank or member (TXI-12, TXS-05)."
+  },
+  "transfer_routes": [],
+  "eligibility": {
+    "rule_ids": [
+      "GOV-22",
+      "GOV-05",
+      "GOV-04",
+      "BANK-15",
+      "BRK-32"
+    ],
+    "text": "any individual with a securities account at a bank or at a non-bank TASE member (BRK-32): a purchase on TASE on any trading day, or a bid in the monthly issue auction through the account (GOV-22). Only TASE clearing-house members bid directly (GOV-05); the minimum and fee for an individual's auction order are open (GOV open question 2), and the TASE trading unit and minimum trade were not readable (GOV open question 7). A bank through which makam can be bought must show it next to deposits and money-market funds under \"מוצרי שוק הכסף\" and explain how to buy it (BANK-15)"
+  },
+  "protection": {
+    "rule_ids": [
+      "GOV-02",
+      "GOV-01",
+      "BRK-07",
+      "BRK-10",
+      "REG-16",
+      "REG-06"
+    ],
+    "text": "the face value is paid from the state's general revenues, an obligation of the state and not of the bank or broker (GOV-02). The paper sits in a securities account: at a non-bank TASE member client securities are held apart from the member's own, in trust at the TASE clearing house, under TASE rules (BRK-07; no statute was found, REG open question 9); at a bank they are registered through the nominee company, pooled, and separated from the bank's own in its books (BRK-10, one bank's terms). What happens to client securities if a bank fails was not found in an official source (REG open question 10); a guarantee of a failing bank's deposits is discretionary (REG-06)"
+  },
+  "dimensions": {
+    "age-or-use-exemption": "blocked:TXI-OQ9",
+    "currency": "covered",
+    "distribution-policy": "covered",
+    "eligibility": "covered",
+    "fee-custody": "covered",
+    "fee-exit": "covered",
+    "fee-fx": "covered",
+    "fee-trade": "covered",
+    "liquidity-lockup": "covered",
+    "loss-offset": "covered",
+    "minimum": "blocked:GOV-OQ7",
+    "protection": "covered",
+    "real-vs-nominal": "covered",
+    "regulator": "covered",
+    "reporting-obligation": "covered",
+    "switching-tax-event": "covered",
+    "tax-at-exit": "covered",
+    "tax-during": "covered",
+    "transfer-switch-process": "covered"
+  },
+  "tier": 1,
+  "open_questions": [
+    "GOV-OQ2",
+    "GOV-OQ3",
+    "GOV-OQ7",
+    "TXI-OQ3",
+    "TXI-OQ9",
+    "BRK-OQ11",
+    "REG-OQ10"
+  ],
+  "checked": "2026-10-23"
+}

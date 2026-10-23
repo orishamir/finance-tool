@@ -1,0 +1,24 @@
+{
+  "id": "gyl-pryshh",
+  "he": "גיל פרישה",
+  "en": null,
+  "meaning": "הגיל הרגיל לפרישה מעבודה לפי החוק, שונה לגברים ולנשים; ממנו חלה למשל הקלה במס על הקצבה",
+  "where": [],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "PEN-26",
+    "TXP-14"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+    "title": "Tax Authority, monthly deductions booklet from January 2026, updated April 2026",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

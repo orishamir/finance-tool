@@ -1,0 +1,28 @@
+{
+  "id": "tshvah-lpdyvn",
+  "he": "תשואה לפדיון",
+  "en": null,
+  "meaning": "שיעור הרווח לשנה אם קונים במחיר של היום ומחזיקים עד הפדיון; בבנק מוצג לפני עמלות ומס",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [
+    "government-bond",
+    "makam"
+  ],
+  "variants": [
+    "תשואה אפקטיבית לפדיון במונחים שנתיים"
+  ],
+  "rule_ids": [
+    "BANK-15",
+    "GOV-06",
+    "GOV-20"
+  ],
+  "source": {
+    "url": "https://www.boi.org.il/media/ytal5ozx/makam.pdf",
+    "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\"",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

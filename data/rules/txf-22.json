@@ -1,0 +1,14 @@
+{
+  "id": "TXF-22",
+  "title": "Securities sold at a foreign broker with no Israeli withholding: report and pay an advance by 31 July and 31 January, and file an annual return",
+  "title_he": "מכירה אצל ברוקר זר בלי ניכוי: מקדמות חצי-שנתיות ודוח",
+  "text_he": "כשלא נוכה מס במקור במכירת נייר ערך הרשום למסחר בבורסה, בישראל או בחו\"ל, והמוכר חייב בהגשת דוח, הוא מדווח על רווח ההון בסוף יולי ובסוף ינואר של כל שנת מס על המכירות בחצי השנה שלפני חודש הדיווח, ומשלם מקדמה בגובה המס על הרווח. רשות המסים מחילה זאת רק על ניירות שלא נוכה מהם מלוא המס; מכירות שנוכה מהן המס במלואו אינן טעונות דיווח כזה. המכירות מסוכמות בטופס 1325 ומועברות לטופס 1322, ונדרש דוח שנתי: לפי המדריך, מי שלא נוכה לו המס חייב להגיש דוח.",
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-10-22"
+}

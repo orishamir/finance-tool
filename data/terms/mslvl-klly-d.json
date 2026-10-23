@@ -1,0 +1,30 @@
+{
+  "id": "mslvl-klly-d",
+  "he": "מסלול כללי",
+  "en": null,
+  "meaning": "מסלול שאינו מתמחה בסוג השקעה מסוים; החברה המנהלת קובעת את התמהיל בתוך מה שהחוק מתיר",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [
+    "כללי"
+  ],
+  "rule_ids": [
+    "CAT-17",
+    "CAT-18",
+    "CAT-19",
+    "CAT-23"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+    "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

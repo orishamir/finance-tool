@@ -1,0 +1,39 @@
+{
+  "id": "BANK-19",
+  "title": "Notice before a banking benefit ends (21 days)",
+  "title_he": "הודעה מראש לפני סיום הטבה בנקאית",
+  "text_he": "בנק חייב להודיע ללקוח, לפחות מספר ימים מראש, על סיום הטבה בנקאית, כלומר הטבה בריבית או בעמלה שנמשכת יותר משלושה חודשים לפי ההסכם, או על סיום שלב בהטבה מדורגת, גם אם הבנק מחדש אותה אחר כך בתנאים אחרים. ההודעה בכתב, בדרך המהירה ביותר שזמינה ללקוח אלא אם ביקש אחרת, וגם בערוץ ההודעות המוסכם. הכלל חל גם על הטבות ריבית על יתרות זכות ועל פיקדונות, לא רק על עמלות.",
+  "figure_names_he": {
+    "notice_days": "ימי הודעה מראש לפני סיום ההטבה"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "fee-change-over-time",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "notice_days": {
+      "value": 21,
+      "unit": "days",
+      "source": {
+        "url": "https://fs.knesset.gov.il/25/law/25_lsr_4048300.pdf",
+        "title": "Banking (Customer Service) Law, Amendment 37, Sefer HaHukim 3152, 28.1.2024, p.496, s.1 (new s.5A1A) and s.5",
+        "publisher": "Knesset (Sefer HaHukim)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "BANK-19"
+      ],
+      "state": "sourced",
+      "notes": "A bank must notify the customer at least 21 days before a banking benefit (an interest-rate or fee benefit lasting more than three months) ends, or before a stage of a stepped benefit ends. Effective six months after publication on 28.1.2024 (s.5); the date is not computed here."
+    }
+  },
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-22"
+}

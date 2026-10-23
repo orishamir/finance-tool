@@ -1,0 +1,81 @@
+{
+  "id": "MF-13",
+  "title": "Redemptions can be suspended",
+  "title_he": "אפשר להשעות פדיונות",
+  "text_he": "אפשר להשעות פדיונות בקרן במקרים חריגים. יו״ר רשות ניירות ערך רשאי להשעות הצעה או פדיון לתקופה קצרה אחרי התייעצות עם יו״ר הבורסה, ולתקופה ארוכה יותר כשהאינטרס של בעלי היחידות בסכנה; מנהל הקרן, באישור הנאמן, רשאי להשעות פדיונות לתקופה קצרה בגלל שיבוש תפעולי חמור. הארכה דורשת אישור של השר, עד לתקרה כוללת של ימים רצופים, וההשעיה מתפרסמת בעיתון. הסעיף נקרא דרך תקציר של אתר שמעתיק את החוק, והתנאים המדויקים לא נבדקו מילה במילה.",
+  "figure_names_he": {
+    "manager_suspension_days": "ימי מסחר להשעיה בידי מנהל הקרן",
+    "isa_suspension_days": "ימי מסחר להשעיה בידי יו״ר הרשות",
+    "max_suspension_days": "ימים רצופים מרביים בסך הכול"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "liquidity-lockup",
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "manager_suspension_days": {
+      "value": 3,
+      "unit": "days",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
+        "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, section 48 (Wikisource mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "MF-13"
+      ],
+      "state": "sourced",
+      "notes": "Trading days a manager, with trustee approval, may suspend redemptions for a serious operational disruption; the ISA chair may also suspend for up to 3 trading days after consulting the TASE chair. Read through a summarising fetch (MF open question 12)."
+    },
+    "isa_suspension_days": {
+      "value": 7,
+      "unit": "days",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
+        "title": "Law, section 48 (Wikisource mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "MF-13"
+      ],
+      "state": "sourced",
+      "notes": "Trading days the ISA chair may suspend offering or redemption where holders' interests are at risk."
+    },
+    "max_suspension_days": {
+      "value": 60,
+      "unit": "days",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
+        "title": "Law, section 48 (Wikisource mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "MF-13"
+      ],
+      "state": "sourced",
+      "notes": "Consecutive days in total with ministerial approval of extensions."
+    }
+  },
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-22"
+}

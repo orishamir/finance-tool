@@ -1,0 +1,39 @@
+{
+  "id": "TXH-10",
+  "title": "Exempt withdrawal after 3 years: retirement age, or used for study",
+  "title_he": "משיכה פטורה בתקופה מקוצרת: גיל פרישה או השתלמות",
+  "text_he": "התקופה מתקצרת לשנות ההמתנה המקוצרות ממועד התשלום הראשון למי שהגיע לגיל הפרישה, ולסכומים ששימשו להשתלמות של העמית; לעצמאי ההשתלמות צריכה לשמור על רמתו המקצועית בתחום עיסוקו. משיכה להשתלמות בארץ של עד שליש מהיתרה לא סוגרת את החשבון, אם לא הייתה משיכה כזו בשנים-עשר החודשים שלפניה. 'גיל הפרישה' מוגדר בפקודה לפי חוק גיל פרישה; איזה גיל מהחוק חל, ואיזה אישורים הקרן דורשת להשתלמות, לא ממוקרים.",
+  "figure_names_he": {
+    "lock_years": "שנות ההמתנה המקוצרות"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "age-or-use-exemption",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "lock_years": {
+      "value": 3,
+      "unit": "years",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance, s.1, s.9(16A)(a)-(b), s.9(16B)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXH-10"
+      ],
+      "state": "sourced",
+      "notes": "3 years from the first payment date for an employee or self-employed individual who has reached retirement age, and for amounts used for the member's study. A study withdrawal in Israel of up to one third of the balance does not close the account if no such withdrawal was made in the preceding 12 months (s.9(16A)(b)). Which age in the Retirement Age Law applies is open question 5 (KH-12 infers s.3: 67 men, 65 women)."
+    }
+  },
+  "il_finance_file": "tax-hishtalmut.md",
+  "checked": "2026-10-22"
+}

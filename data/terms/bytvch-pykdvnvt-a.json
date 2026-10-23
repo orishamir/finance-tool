@@ -1,0 +1,21 @@
+{
+  "id": "bytvch-pykdvnvt-a",
+  "he": "ביטוח פיקדונות",
+  "en": null,
+  "meaning": "ערבות של המדינה לכסף שהופקד בבנק; בישראל אין חוק כזה, יש רק הצעת חוק",
+  "where": [],
+  "wrapper_ids": [
+    "bank-deposit"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "BANK-23"
+  ],
+  "source": {
+    "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf",
+    "title": "Deposit-insurance bill P/6522/25, text tabled 02.02.2026",
+    "publisher": "Knesset",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

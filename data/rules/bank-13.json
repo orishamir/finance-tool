@@ -1,0 +1,40 @@
+{
+  "id": "BANK-13",
+  "title": "Directive 447: concentrated publication of deposit and credit-balance rates (since 1 April 2025)",
+  "title_he": "פרסום מרוכז של ריביות הפיקדונות ויתרות הזכות",
+  "text_he": "כל בנק חייב לפרסם פרסום מרוכז של הריביות המינימליות שהוא מתחייב לשלם על פיקדונות ועל יתרות זכות בעובר ושב, במבנה אחיד שקבע הפיקוח על הבנקים: קודם סוגי הפיקדונות השקליים המקובלים, אחריהם סוגי פיקדונות נוספים. הריביות הן שנתיות נומינליות, לפני מס; בריבית משתנה מוצגים העוגן, המרווח והתוצאה, וכל טווח סכום בשורה נפרדת. הפרסום חייב להופיע בכל סניף, באתר ובאפליקציה, עם קישור בולט למידע ההשוואתי של בנק ישראל וכלי חיפוש לסינון פיקדונות. ההוראה בתוקף ממועד התחילה; בנק שמציע סוג פיקדון אחד בלבד מחויב רק לפורמט ההצגה.",
+  "figure_names_he": {
+    "in_force_from": "מועד התחילה של ההוראה"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation",
+    "regulator"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "in_force_from": {
+      "value": "2025-04-01",
+      "unit": "text",
+      "source": {
+        "url": "https://boi.org.il/media/nxzbaarp/h2781.pdf",
+        "title": "BoI circular 2781-06, 20 May 2024 (directive 447), s.11",
+        "publisher": "Bank of Israel (Banking Supervision)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2025-04-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BANK-13"
+      ],
+      "state": "sourced",
+      "notes": "Directive 447 version 1 took effect on 1 April 2025 (circular 2781-06 s.11). Rates in the publication are annual nominal percentages before tax (directive s.5). Whether 447 has been amended since 5/24 is open (BANK OQ2)."
+    }
+  },
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-22"
+}

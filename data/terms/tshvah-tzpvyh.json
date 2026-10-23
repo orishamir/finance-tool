@@ -1,0 +1,28 @@
+{
+  "id": "tshvah-tzpvyh",
+  "he": "תשואה צפויה",
+  "en": null,
+  "meaning": "הערכה של מנהל הקרן לתשואה בקרן כספית מתחדשת, במונחים שנתיים, אחרי דמי ניהול ולפני מס; לא מובטחת",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [
+    "money-market-fund-daily",
+    "money-market-fund-renewable"
+  ],
+  "variants": [
+    "תשואה צפויה נטו"
+  ],
+  "rule_ids": [
+    "BANK-15",
+    "MF-36",
+    "MF-37"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/MoneyMarketFundReg24.pdf",
+    "title": "ISA, הוראה למנהלי קרנות ונאמנים בדבר תנאים שיחולו לגבי קרן כספית (2024)",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

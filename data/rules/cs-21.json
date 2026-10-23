@@ -1,0 +1,14 @@
+{
+  "id": "CS-21",
+  "title": "Who may act on the plan",
+  "title_he": "מי רשאי לפעול בתוכנית: ההורה ואחר כך הילד",
+  "strength": "primary",
+  "dimensions": [
+    "eligibility",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפני גיל 18 רק ההורה שמקבל את קצבת הילדים יכול לבחור או לשנות גוף ומסלול, או להפעיל ולבטל את ההכפלה. מגיל 18 רק הילד משנה קופה או מסלול; משיכה בין 18 ל-21 דורשת חתימת הורה.",
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,25 @@
+{
+  "id": "gml-lhshkah",
+  "he": "גמל להשקעה",
+  "en": null,
+  "meaning": "השם המקוצר של קופת גמל להשקעה, שמופיע בשמות של קופות ומסלולים ובפרסומות",
+  "where": [
+    "ad",
+    "app",
+    "gemel-net"
+  ],
+  "wrapper_ids": [
+    "kupat-gemel-lehashkaa"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "KGL-01"
+  ],
+  "source": {
+    "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb",
+    "title": "CMA Gemel-Net dataset, resource 2024-today, report period 202609",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

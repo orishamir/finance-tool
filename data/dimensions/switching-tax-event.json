@@ -1,0 +1,29 @@
+{
+  "id": "switching-tax-event",
+  "he": "מס במעבר בין השקעות",
+  "one_line": "האם העברה בין מסלולים, קרנות או גופים נחשבת מכירה שחייבת במס, או עוברת בלי מס",
+  "source": {
+    "url": "docs/product.md#33-dimension-checklist-or-what-you-are-not-considering",
+    "title": "product.md 3.3 and glossary.md section 2",
+    "publisher": "project",
+    "strength": "primary",
+    "checked": "2026-10-23"
+  },
+  "rule_ids": [
+    "IRA-23",
+    "KH-18",
+    "MF-52",
+    "PEN-17",
+    "PF-23",
+    "SW-20",
+    "SW-29",
+    "SW-36",
+    "TXH-17",
+    "TXH-19",
+    "TXI-12",
+    "TXK-04",
+    "TXK-17",
+    "TXK-22",
+    "TXS-21"
+  ]
+}

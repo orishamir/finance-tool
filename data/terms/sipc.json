@@ -1,0 +1,24 @@
+{
+  "id": "sipc",
+  "he": "SIPC",
+  "en": null,
+  "meaning": "גוף אמריקאי שמפצה לקוחות של ברוקר אמריקאי שקרס, עד תקרה; לא מגן מפני ירידה בערך ההשקעה.",
+  "where": [
+    "ad"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "BRK-14",
+    "BRK-35"
+  ],
+  "source": {
+    "url": "https://www.sipc.org/for-investors/what-sipc-protects",
+    "title": "SIPC, What SIPC Protects",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

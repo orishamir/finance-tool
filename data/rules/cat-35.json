@@ -1,0 +1,14 @@
+{
+  "id": "CAT-35",
+  "title": "Fee fields are percent values, as both CMA portals print them",
+  "title_he": "שדות העמלה הם ערכים באחוזים",
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-deposit"
+  ],
+  "likely_to_change": "no",
+  "text_he": "שני השדות מוצגים באחוזים, כפי ששני אתרי הרשות מציגים אותם. דמי הניהול מהצבירה הם שיעור שנתי מהנכסים, ודמי הניהול מההפקדות הם חלק מההפקדות באותה שנה, לא שיעור שנתי. שדה ריק אינו אפס: הוא אומר שהנתון לא דווח.",
+  "il_finance_file": "tracks-catalogue-and-decoder.md",
+  "checked": "2026-10-23"
+}

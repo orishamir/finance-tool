@@ -6,6 +6,8 @@ export const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "date must be YYY
 /** data-schema §2, units. */
 export const unit = z.enum([
   "nis",
+  "usd",
+  "eur",
   "pct",
   "pct_per_year",
   "pct_of_deposit",
@@ -82,3 +84,47 @@ export const valueObject = z
   });
 
 export type ValueObject = z.infer<typeof valueObject>;
+
+/** data-schema §2, fee bases (`fee.base`). */
+export const feeBase = z.enum([
+  "deposit",
+  "balance",
+  "trade",
+  "custody",
+  "fx",
+  "exit",
+  "fixed_period",
+  "distribution_handling",
+  "spread",
+  "creation_redemption",
+  "transfer_out",
+  "load",
+  "redemption_deduction",
+  "variable_management",
+  "trustee",
+  "direct_expenses",
+  "insurance_premium",
+]);
+
+/** data-schema §2, wrapper IDs (`data/instruments/wrappers/`). */
+export const wrapperId = z.enum([
+  "current-account",
+  "bank-deposit",
+  "savings-plan",
+  "money-market-fund-daily",
+  "money-market-fund-renewable",
+  "makam",
+  "government-bond",
+  "brokerage-account",
+  "kupat-gemel-lehashkaa",
+  "keren-hishtalmut",
+  "pension-comprehensive",
+  "pension-general",
+  "provident-for-annuity",
+  "child-savings-provident",
+  "child-savings-bank",
+  "ira-hishtalmut",
+  "ira-provident",
+]);
+
+export type WrapperId = z.infer<typeof wrapperId>;
