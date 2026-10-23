@@ -1,0 +1,13 @@
+{
+  "id": "KGL-10",
+  "title": "Transfers between funds",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "transfer-switch-process",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "kupat-gemel-lehashkaa.md",
+  "checked": "2026-10-22"
+}

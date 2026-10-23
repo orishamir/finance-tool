@@ -1,0 +1,13 @@
+{
+  "id": "TXK-04",
+  "title": "Track switches and transfers between kupot gemel lehashkaa are not taxed",
+  "strength": "primary",
+  "dimensions": [
+    "switching-tax-event",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
+  "checked": "2026-10-22"
+}

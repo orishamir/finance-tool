@@ -1,0 +1,12 @@
+{
+  "id": "KGL-14",
+  "title": "Fee bases and the regulated maximum",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-deposit"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "kupat-gemel-lehashkaa.md",
+  "checked": "2026-10-22"
+}

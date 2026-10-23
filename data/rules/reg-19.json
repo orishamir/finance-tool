@@ -1,0 +1,12 @@
+{
+  "id": "REG-19",
+  "title": "If a managing company fails: management moves to another company",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "protection",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "regulators-and-protection.md",
+  "checked": "2026-10-22"
+}

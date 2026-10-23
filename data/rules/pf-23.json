@@ -1,0 +1,35 @@
+{
+  "id": "PF-23",
+  "title": "Track switching: within three business days; no fee or frequency limit in the regulation",
+  "strength": "primary",
+  "dimensions": [
+    "transfer-switch-process",
+    "switching-tax-event"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "switch_business_days": {
+      "value": 3,
+      "unit": "business_days",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לאישור_ולניהול_קופות_גמל)",
+        "title": "Income Tax Regulations (Rules for Approval and Management of Provident Funds) 1964, reg. 33ב(ב) (Wikisource)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-23"
+      ],
+      "state": "sourced",
+      "notes": "For a kupat gemel lehashkaa the three business days come from the bylaws (Altshuler clauses 20.1 to 20.4); the regulation does not name the product."
+    }
+  },
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-22"
+}

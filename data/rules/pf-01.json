@@ -1,0 +1,14 @@
+{
+  "id": "PF-01",
+  "title": "Only a closed list of charges may come out of a provident-family account",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-deposit",
+    "fee-exit",
+    "regulator"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-22"
+}

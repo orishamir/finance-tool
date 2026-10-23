@@ -1,0 +1,34 @@
+{
+  "id": "PF-19",
+  "title": "Transfer deadline 10 business days; late-transfer compensation from the manager's fees; no transfer fee",
+  "strength": "primary",
+  "dimensions": [
+    "transfer-switch-process",
+    "fee-exit"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "transfer_business_days": {
+      "value": 10,
+      "unit": "business_days",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)",
+        "title": "Provident Funds (Transfer of Money between Provident Funds) Regulations 2008, reg. 5(א) (Wikisource; cross-read on Nevo)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-19"
+      ],
+      "state": "sourced",
+      "notes": "From a complete, signed request; the Commissioner may approve up to 20 more business days in special cases."
+    }
+  },
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-22"
+}

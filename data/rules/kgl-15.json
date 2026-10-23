@@ -1,0 +1,34 @@
+{
+  "id": "KGL-15",
+  "title": "A published list price (example, not a cap)",
+  "strength": "institution",
+  "dimensions": [
+    "fee-management-balance"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "list_balance_fee": {
+      "value": 0.8,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.meitav.co.il/provident_pension/provident_invest/",
+        "title": "Meitav, קופת גמל להשקעה product page: \"דמי הניהול ... עומדים על שיעור של 0.8% מהצבירה ונגבים באופן שנתי\"",
+        "publisher": "Meitav Gemel and Pension",
+        "strength": "institution"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "KGL-15"
+      ],
+      "state": "sourced",
+      "notes": "A list price for new members who join digitally, not a cap; the company may raise it as the law allows (page read 2026-10-22 and again 2026-10-23). The fee a member actually pays is set by the member's own agreement (D4)."
+    }
+  },
+  "il_finance_file": "kupat-gemel-lehashkaa.md",
+  "checked": "2026-10-22"
+}

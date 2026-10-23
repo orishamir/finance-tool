@@ -1,0 +1,110 @@
+{
+  "id": "meitav",
+  "provider": {
+    "name_he": "מיטב גמל ופנסיה בע\"מ",
+    "class": "provident-manager",
+    "regulator": "CMA",
+    "tase_member": false,
+    "protection_rule_ids": [
+      "PF-29",
+      "REG-18",
+      "REG-19"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.meitav.co.il/provident_pension/provident_invest/",
+    "title": "מיטב, עמוד המוצר קופת גמל להשקעה (דמי ניהול, תקרת הפקדה, זמן משיכה)",
+    "published": null,
+    "format": "html"
+  },
+  "snapshot": "2026-10-23",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "meitav-kgl-balance-list",
+      "base": "balance",
+      "applies_to": [
+        "kupat-gemel-lehashkaa"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.8,
+        "unit": "pct_per_year",
+        "source": {
+          "url": "https://www.meitav.co.il/provident_pension/provident_invest/",
+          "title": "Meitav, קופת גמל להשקעה: \"דמי הניהול ... עומדים על שיעור של 0.8% מהצבירה ונגבים באופן שנתי מהכספים המנוהלים בקופה\"",
+          "publisher": "Meitav Gemel and Pension",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "KGL-15",
+          "PF-02"
+        ],
+        "state": "sourced",
+        "notes": "List price for new members who join digitally; the company may raise it as the law allows. A member's own agreement sets the fee actually paid (D4). This is the list fee the guide page's illustrative timeline runs on (method F-67, scenario S47 via S20)."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": "digital",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "0.8% מהצבירה"
+        ]
+      }
+    },
+    {
+      "id": "meitav-kgl-deposit-list",
+      "base": "deposit",
+      "applies_to": [
+        "kupat-gemel-lehashkaa"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0,
+        "unit": "pct_of_deposit",
+        "source": {
+          "url": "https://www.meitav.co.il/provident_pension/provident_invest/",
+          "title": "Meitav, קופת גמל להשקעה product page: the only fee named is 0.8% of the balance; no fee on deposits is listed",
+          "publisher": "Meitav Gemel and Pension",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "KGL-15",
+          "PF-02"
+        ],
+        "state": "sourced",
+        "notes": "Recorded as 0 because the page names a single fee, on the balance, and none on deposits, as golden scenario S20 assumes. Gemel-Net 202609 reports AVG_DEPOSIT_FEE 0 for Meitav's public gemel lehashkaa tracks, but that field's definition is unconfirmed (product dependency 4). Re-check against the joining agreement."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": "digital",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": []
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "notice_rule_ids": [
+    "PF-16"
+  ]
+}

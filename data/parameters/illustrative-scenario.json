@@ -205,5 +205,83 @@
   "chosen_by": "Claude, at the founder's request (2026-10-23: \"do whatever you think fits\")",
   "signed_off_by": "founder",
   "signed_off_on": "2026-10-23",
-  "shown_as": "site parameter"
+  "shown_as": "site parameter",
+  "ranges": {
+    "age": {
+      "min": {
+        "value": 0,
+        "unit": "years",
+        "source": {
+          "url": "docs/parameters-rationale.md#illustrative-scenario",
+          "title": "Provisional range for the guide page's input fields, set by Claude",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "founder",
+        "rule_ids": [],
+        "state": "sourced",
+        "notes": "provisional: lowest age the age field accepts; set by Claude on 2026-10-23 for the values sheet's error messages (copy 3.7), not yet signed off by the founder"
+      },
+      "max": {
+        "value": 120,
+        "unit": "years",
+        "source": {
+          "url": "docs/parameters-rationale.md#illustrative-scenario",
+          "title": "Provisional range for the guide page's input fields, set by Claude",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "founder",
+        "rule_ids": [],
+        "state": "sourced",
+        "notes": "provisional: highest age the age field accepts; set by Claude on 2026-10-23 for the values sheet's error messages (copy 3.7), not yet signed off by the founder"
+      }
+    },
+    "pct": {
+      "min": {
+        "value": -50,
+        "unit": "pct_per_year",
+        "source": {
+          "url": "docs/parameters-rationale.md#illustrative-scenario",
+          "title": "Provisional range for the guide page's input fields, set by Claude",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "founder",
+        "rule_ids": [],
+        "state": "sourced",
+        "notes": "provisional: lowest yearly percentage the return and inflation fields accept; set by Claude on 2026-10-23 for the values sheet's error messages (copy 3.7), not yet signed off by the founder"
+      },
+      "max": {
+        "value": 50,
+        "unit": "pct_per_year",
+        "source": {
+          "url": "docs/parameters-rationale.md#illustrative-scenario",
+          "title": "Provisional range for the guide page's input fields, set by Claude",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "founder",
+        "rule_ids": [],
+        "state": "sourced",
+        "notes": "provisional: highest yearly percentage the return and inflation fields accept; set by Claude on 2026-10-23 for the values sheet's error messages (copy 3.7), not yet signed off by the founder"
+      }
+    }
+  }
 }

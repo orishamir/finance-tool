@@ -1,0 +1,11 @@
+{
+  "id": "REG-18",
+  "title": "Provident, study, investment-provident and pension assets: held in trust, separate, not attachable",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "regulators-and-protection.md",
+  "checked": "2026-10-22"
+}
