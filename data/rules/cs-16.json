@@ -1,0 +1,15 @@
+{
+  "id": "CS-16",
+  "title": "If the money is not withdrawn",
+  "title_he": "מה קורה לכסף שלא נמשך",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "transfer-switch-process",
+    "fee-exit"
+  ],
+  "likely_to_change": "no",
+  "text_he": "כסף שלא נמשך בגיל הפדיון ממשיך להתנהל בקופה או בבנק. אחרי 18 הילד יכול לעבור בין קופות או מסלולים, או בין מסלולי חיסכון בבנק; כסף חדש אי אפשר להוסיף. בבנק החשבון מתחדש לתקופות נוספות, ושבירה של תקופה כזו עלולה לגרוע ריבית והצמדה. האם אפשר להעביר לקופת גמל רגילה לא נמצא (שאלה פתוחה 13).",
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,28 @@
+{
+  "id": "krn-lhshkavt-bmkrkayn",
+  "he": "קרן להשקעות במקרקעין",
+  "en": null,
+  "meaning": "חברה הנסחרת בבורסה, שמחזיקה בעיקר נדל\"ן מניב, וחייבת לחלק את רוב הכנסתה לבעלי המניות.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [
+    "קרן ריט",
+    "ריט",
+    "קרן REIT"
+  ],
+  "rule_ids": [
+    "RG-01",
+    "RG-02",
+    "RG-03",
+    "RG-07",
+    "RG-11",
+    "TX2-09"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+    "title": "פקודת מס הכנסה (Wikisource consolidated text)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

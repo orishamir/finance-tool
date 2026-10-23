@@ -1,0 +1,61 @@
+{
+  "id": "KH-12",
+  "title": "Retirement age for the 3-year route",
+  "title_he": "גיל הפרישה למסלול המשיכה המקוצר",
+  "text_he": "התקנונים משתמשים ב'גיל פרישה' כהגדרתו בהסדר התחיקתי, ופקודת מס הכנסה מפנה לחוק גיל פרישה. החוק קובע את גיל הפרישה לגברים ואת גיל הפרישה לנשים, עם לוח של גילים נמוכים יותר לנשים לפי שנת לידה. הקריאה הזו מצביעה על הגיל שהחוק עצמו מכנה 'גיל הפרישה', ולא על גיל הפרישה המוקדמת; זו הסקה מהמונח המוגדר, וחוזר של רשות המסים יאשר אותה. נוסח החוק נקרא באתר שמעתיק אותו.",
+  "figure_names_he": {
+    "retirement_age_men": "גיל הפרישה לגברים",
+    "retirement_age_women": "גיל הפרישה לנשים"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "age-or-use-exemption",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "retirement_age_men": {
+      "value": 67,
+      "unit": "years",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
+        "title": "Retirement Age Law 2004, s.3: \"גיל 67 לגבר וגיל 65 לאישה (בחוק זה – גיל הפרישה)\" (Wikisource, page edited 13.5.2025)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "KH-12"
+      ],
+      "state": "sourced",
+      "notes": "The age the law itself labels \"the retirement age\" (s.3), read as the age that shortens the study-fund period to 3 years. Inference from the Ordinance's defined term (tax-hishtalmut.md open question 5; keren-hishtalmut.md open question 8)."
+    },
+    "retirement_age_women": {
+      "value": 65,
+      "unit": "years",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
+        "title": "Retirement Age Law 2004, s.3 and schedule (Wikisource, page edited 13.5.2025)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "KH-12"
+      ],
+      "state": "sourced",
+      "notes": "65 for women, with a schedule of lower ages (62 to 64 years and 9 months) for women born up to 1969. Same inference as retirement_age_men."
+    }
+  },
+  "il_finance_file": "keren-hishtalmut.md",
+  "checked": "2026-10-22"
+}

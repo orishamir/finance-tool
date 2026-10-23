@@ -1,0 +1,16 @@
+{
+  "id": "CAT-36",
+  "title": "The fee value is the average for the latest completed calendar year; dataset rows of year Y carry year Y−1",
+  "title_he": "ערך העמלה הוא ממוצע השנה הקלנדרית האחרונה שהסתיימה",
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-deposit",
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "text_he": "הממוצע הוא של השנה הקלנדרית האחרונה שהסתיימה, ושורות של שנת הדיווח הנוכחית מחזיקות את הממוצע של השנה הקודמת. הערך משתנה פעם בשנה, בשורת ינואר. מסלול מקבל ערך ראשון רק אחרי שנה קלנדרית מלאה. עבור שנים קודמות זו הסקה מהנתונים ולא הגדרה רשמית.",
+  "il_finance_file": "tracks-catalogue-and-decoder.md",
+  "checked": "2026-10-23"
+}

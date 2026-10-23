@@ -13,7 +13,7 @@
   },
   "tariff": {
     "url": "https://www.meitav.co.il/provident_pension/provident_invest/",
-    "title": "מיטב, עמוד המוצר קופת גמל להשקעה (דמי ניהול, תקרת הפקדה, זמן משיכה)",
+    "title": "מיטב, עמודי המוצר: קופת גמל להשקעה (דמי ניהול, תקרת הפקדה, זמן משיכה); קרן השתלמות לשכירים ולעצמאים (אין שיעור דמי ניהול בעמוד); קרן פנסיה מקיפה נבחרת (דמי ניהול מהפקדה ומהצבירה), נקראו 2026-10-23",
     "published": null,
     "format": "html"
   },
@@ -97,6 +97,128 @@
       "statement_code": null,
       "names": {
         "tariff": []
+      }
+    },
+    {
+      "id": "meitav-kh-deposit-list",
+      "base": "deposit",
+      "applies_to": [
+        "keren-hishtalmut"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0,
+        "unit": "pct_of_deposit",
+        "source": {
+          "url": "https://www.meitav.co.il/provident_pension/hishtalmut/",
+          "title": "Meitav, קרן השתלמות לשכירים product page: no management-fee rate is named at all; the only fee sentence is \"החברה רשאית להעלות את דמי ניהול בכפוף להוראות הדין\"",
+          "publisher": "Meitav Gemel and Pension",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "KH-22",
+          "PF-06"
+        ],
+        "state": "sourced",
+        "notes": "Recorded as 0 because the page names no fee on deposits and the Management Fees Regulations authorise a study fund to charge only from the balance (reg. 4; KH-22, PF-06), so no deposit fee can be charged. The page (and the self-employed study-fund page, https://www.meitav.co.il/provident_pension/study_fund_for_self_employed/) names NO balance-fee rate either, so there is no balance line for keren-hishtalmut and the guide timeline cannot run on Meitav's list fee; the balance fee must come from the joining agreement or another page."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": []
+      }
+    },
+    {
+      "id": "meitav-pension-comprehensive-deposit-list",
+      "base": "deposit",
+      "applies_to": [
+        "pension-comprehensive"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 1,
+        "unit": "pct_of_deposit",
+        "source": {
+          "url": "https://www.meitav.co.il/provident_pension/pension/",
+          "title": "Meitav, קרן פנסיה product page: \"דמי הניהול בקרן הפנסיה המקיפה של מיטב: 1% מן ההפקדה ו-0.22% מן הצבירה\"",
+          "publisher": "Meitav Gemel and Pension",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-04",
+          "PEN-21",
+          "PEN-23"
+        ],
+        "state": "sourced",
+        "notes": "List fee of Meitav's selected (default) comprehensive pension fund: 1% of each deposit, the rate set by the CMA selection process (PEN-23), guaranteed for at least 10 years from joining (\"דמי הניהול יחולו על המצטרפים החדשים למשך 10 שנים מיום ההצטרפות\"); the page says the fund stays a selected fund to 31 October 2028. Alternative mixes (1.2%/0.20%, 1.7%/0.15%, 2.0%/0.12%) are offered only to active members joined by the employer; if deposits stop for over six months the fund may revert to 1% and 0.22%. The tender terms do not cover the general fund. No timeline runs on this line in R1 (F-31, F-49 pending)."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "1% מן ההפקדה",
+          "דמי ניהול מהפקדה"
+        ]
+      }
+    },
+    {
+      "id": "meitav-pension-comprehensive-balance-list",
+      "base": "balance",
+      "applies_to": [
+        "pension-comprehensive"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.22,
+        "unit": "pct_per_year",
+        "source": {
+          "url": "https://www.meitav.co.il/provident_pension/pension/",
+          "title": "Meitav, קרן פנסיה product page: \"דמי הניהול בקרן הפנסיה המקיפה של מיטב: 1% מן ההפקדה ו-0.22% מן הצבירה\"",
+          "publisher": "Meitav Gemel and Pension",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "PF-04",
+          "PEN-21",
+          "PEN-23"
+        ],
+        "state": "sourced",
+        "notes": "List fee of Meitav's selected comprehensive pension fund: 0.22% a year of the balance, the CMA selection-process rate (PEN-23), guaranteed for at least 10 years from joining. The regulated cap is 0.5% of balance and 6% of deposits (PF-04); the page's own example of a member paying the maximum uses those caps. The company may raise fees subject to law (\"החברה רשאית להעלות את דמי ניהול בכפוף להוראות הדין\")."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "0.22% מן הצבירה",
+          "דמי ניהול מהצבירה"
+        ]
       }
     }
   ],

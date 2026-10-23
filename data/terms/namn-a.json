@@ -1,0 +1,25 @@
+{
+  "id": "namn-a",
+  "he": "נאמן",
+  "en": null,
+  "meaning": "גוף נפרד ממנהל הקרן שמחזיק את נכסי הקרן בשביל המשקיעים ומפקח על מנהל הקרן",
+  "where": [
+    "prospectus"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "MF-01",
+    "MF-02",
+    "MF-03"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
+    "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

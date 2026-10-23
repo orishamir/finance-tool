@@ -1,0 +1,24 @@
+{
+  "id": "hytr-lpy-sayp-49a",
+  "he": "היתר לפי סעיף 49א",
+  "en": null,
+  "meaning": "אישור מיו\"ר רשות ניירות ערך להציע בישראל מסחר בבורסות בחו\"ל; הפעילות הזאת לא בפיקוח הרשות.",
+  "where": [
+    "ad"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "BRK-01",
+    "BRK-06"
+  ],
+  "source": {
+    "url": "https://www.nevo.co.il/law_html/law00/70349.htm",
+    "title": "חוק ניירות ערך, תשכ\"ח-1968 (Nevo mirror)",
+    "publisher": "Nevo legal database",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

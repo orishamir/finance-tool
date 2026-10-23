@@ -1,0 +1,26 @@
+{
+  "id": "avkb-mddy-agch",
+  "he": "עוקב מדדי אג\"ח",
+  "en": null,
+  "meaning": "מסלול שמשקיע באמצעות מוצרים שעוקבים אחרי מדדי איגרות חוב",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [],
+  "variants": [
+    "עוקב מדדי אג\"ח עם מניות (עד 25% מניות)",
+    "עוקב מדדים - אג\"ח עם מניות (עד 25%)"
+  ],
+  "rule_ids": [
+    "CAT-10",
+    "CAT-17",
+    "CAT-25"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+    "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

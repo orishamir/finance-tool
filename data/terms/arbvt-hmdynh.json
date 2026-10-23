@@ -1,0 +1,37 @@
+{
+  "id": "arbvt-hmdynh",
+  "he": "ערבות המדינה",
+  "en": null,
+  "meaning": "ערבות של המדינה לחיסכון בבנקים קטנים, שהוצעה בהצעת חוק פרטית; היא עדיין לא חוק",
+  "where": [],
+  "wrapper_ids": [
+    "bank-deposit",
+    "brokerage-account",
+    "child-savings-bank",
+    "child-savings-provident",
+    "current-account",
+    "government-bond",
+    "ira-hishtalmut",
+    "ira-provident",
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa",
+    "makam",
+    "money-market-fund-daily",
+    "money-market-fund-renewable",
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity",
+    "savings-plan"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "REG-05"
+  ],
+  "source": {
+    "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf",
+    "title": "הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ\"ו–2026, P/6522/25 (Knesset)",
+    "publisher": "Knesset",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

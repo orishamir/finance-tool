@@ -5,6 +5,7 @@ const he = "he-IL";
 const currency = new Intl.NumberFormat(he, { style: "currency", currency: "ILS", minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const currencyWhole = new Intl.NumberFormat(he, { style: "currency", currency: "ILS", maximumFractionDigits: 0 });
 const percent = new Intl.NumberFormat(he, { style: "percent", maximumFractionDigits: 2 });
+const percent3 = new Intl.NumberFormat(he, { style: "percent", maximumFractionDigits: 3 });
 const plain = new Intl.NumberFormat(he, { maximumFractionDigits: 2 });
 const compactNumber = new Intl.NumberFormat(he, { maximumFractionDigits: 1 });
 const date = new Intl.DateTimeFormat(he, { day: "2-digit", month: "2-digit", year: "numeric" });
@@ -16,7 +17,11 @@ export const fmt = {
   nis: (v: number) => currency.format(v),
   nisWhole: (v: number) => currencyWhole.format(v),
   /** Data stores percent numbers (`1.05` is 1.05%). */
-  pct: (v: number) => percent.format(v / 100),
+  pct: (v: number) => {
+    // a figure that really has a third decimal (a 0.015% trustee fee, a 1.115% sum) keeps it; everything else rounds to two
+    const thousandths = v * 1000;
+    return Math.abs(thousandths - Math.round(thousandths)) < 1e-6 && Math.abs(v * 100 - Math.round(v * 100)) > 1e-6 ? percent3.format(v / 100) : percent.format(v / 100);
+  },
   number: (v: number) => plain.format(v),
   /** `22.10.2026` from `2026-10-22`. */
   date: (iso: string) => date.format(new Date(iso + "T00:00:00")),

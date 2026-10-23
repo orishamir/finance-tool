@@ -1,0 +1,13 @@
+{
+  "id": "BRK-29",
+  "title": "TASE trades Monday to Friday since 5 January 2026",
+  "title_he": "הבורסה סוחרת מיום שני עד יום שישי",
+  "text_he": "הבורסה בתל אביב עברה לשבוע מסחר מיום שני עד יום שישי. המעבר נכנס לתוקף בתחילת ינואר, לפי הדוח התקופתי של הבורסה; סוגי הפקודות ושלבי המסחר לא נקראו.",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-22"
+}

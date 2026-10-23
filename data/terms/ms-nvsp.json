@@ -1,0 +1,41 @@
+{
+  "id": "ms-nvsp",
+  "he": "מס נוסף",
+  "en": null,
+  "meaning": "תוספת מס על החלק של ההכנסה השנתית שמעל סף גבוה בחוק, ועוד תוספת כשהכנסה מהון לבדה עוברת אותו",
+  "where": [],
+  "wrapper_ids": [
+    "bank-deposit",
+    "brokerage-account",
+    "child-savings-bank",
+    "child-savings-provident",
+    "current-account",
+    "government-bond",
+    "ira-hishtalmut",
+    "ira-provident",
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa",
+    "makam",
+    "money-market-fund-daily",
+    "money-market-fund-renewable",
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity",
+    "savings-plan"
+  ],
+  "variants": [
+    "מס יסף"
+  ],
+  "rule_ids": [
+    "TXG-09",
+    "TXG-10",
+    "TXG-11"
+  ],
+  "source": {
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf",
+    "title": "Sefer HaChukim 3342, 26.12.2024: Economic Efficiency Law (Freeze of Tax Updates and Surtax) 2024",
+    "publisher": "Knesset",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

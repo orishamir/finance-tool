@@ -1,7 +1,7 @@
 # Roadmap
 
 Written 2026-10-22 from `docs/product.md` (confirmed the same day, decisions D1 to D13, open to revision). Updated 2026-10-23 for D17, "no blind spots" (product.md appendix E).
-Status: **approved by the founder on 2026-10-22.** Nothing is built. R1 starts only when the founder says so.
+Status: **approved by the founder on 2026-10-22.** Updated 2026-10-23: release 1 is built with its data; release 2's engine, design and series adapters are done and its screens are being built. The dated "Status" paragraphs under each release say what exists and what is open.
 
 How to read it:
 
@@ -76,6 +76,19 @@ Capability map (product.md number, short name, release):
 
 **Done when** the catalogue part of product.md criterion 5 holds for the Meitav app (all 16 tracks of its kupat gemel lehashkaa in the catalogue, each explained; the comparisons that consider them arrive in R2 and R3), and a friend can read the money-market fund page and say what it is, how to buy it, what it costs, how it is taxed and when a deposit beats it (3.1 "works when").
 
+**Status 2026-10-23: built, with data.** Every release 1 screen is built from `docs/design-spec.md` (guide list, 17 guide pages, 7 exposure pages, the not-covered page, companies, company and track pages, rules, parameters, search). The data behind them is written: all 17 wrapper records and 7 exposure records in `data/instruments/`; 430 rules in `data/rules/`, each with its rule in plain Hebrew (`text_he`); 449 terms in `data/terms/` and 26 dimensions in `data/dimensions/`, generated from the glossary; `data/catalog/` seeded with 38 Meitav entries; the CMA snapshots of 2026-09 with their fee fields as value objects; the list-fee snapshots of Meitav and Leumi (`data/fees/`), three fund records (`data/funds/`) and Leumi's three deposit terms (`data/terms/deposits/`), which the illustrative scenario names as the representative instrument of each wrapper (P-05 `instruments`, method §2.4). The refresh workflow (`.github/workflows/refresh.yml`, daily, with `refresh-watchdog.yml`) fetches the CMA datasets and commits them, then dispatches the CI workflow. **The CMA fee fields are confirmed** (discovery O11, CAT-35 to CAT-41): percent, the average actually charged over the previous calendar year; how the average is weighted is still open (CAT OQ2), so the site says "ממוצע" and the year, not "משוקלל". The fee column and the per-track fee line are shown, with the year in the heading.
+
+*The acceptance test.* All 16 tracks of Meitav's kupat gemel lehashkaa (fund 7857) are in the catalogue with Meitav's own names, old names and same-name resolutions, the default track marked (`default_at_joining`); the company page lists them with the regulator's fee for each. The money-market fund page exists with its timeline (the daily fund bought through a bank, Altshuler Shaham 5138763 at Leumi's tariff).
+
+*Still open.*
+
+- **The study fund's list fee.** No managing company publishes one (Phoenix's snapshot in `data/fees/` records the search), so the study-fund timeline runs on the regulator's average actually charged for the named track (Meitav 880), labelled as such (method §2.4).
+- **The renewable money-market fund** with monthly deposits stops on gap G-30 (which series a later deposit buys); its timeline runs only for the amount now.
+- **The IRA study fund** has no manager fee collected, so its page shows no timeline.
+- **Pension and child-savings pages show no timeline by design:** the pension exit is blocked (G-03, G-06) and child savings runs on the National Insurance amounts, not on P-05 (method §2.4).
+- **The Bank of Israel series** are not shown: see the release 2 status and product D20.
+- **Two founder settings for the refresh workflow**, both in the repository on GitHub: Settings > Actions > General > "Allow GitHub Actions to create and approve pull requests" (needed only when a refresh fails its sanity check and opens a pull request), and nothing else: the dispatch of the CI workflow after a refresh commit runs with the default token, so no personal token is needed.
+
 ---
 
 ## Release 2: decide for a goal
@@ -107,6 +120,15 @@ Capability map (product.md number, short name, release):
 - The founder's salary and contribution inputs touch ceilings tied to the average wage, which change yearly (tax report 10); the rule base must carry the tax year on each figure.
 
 **Done when** product.md criterion 1 (the founder moves the idle cash using the site) and criterion 2 (he names a dimension he had not thought of) can be attempted, and the test cases pass.
+
+**Status 2026-10-23: engine and design done, screens being built.**
+
+- **Engine.** Done: the deposit-side formulas F-30 to F-32, the blocked-wrapper exit F-45, F-48 and F-49, the study fund's early withdrawal F-47, the employer line F-52, the insurance cost F-53, the idle-cash preset F-60, the ranking F-80, the sensitivity panel F-81 and the candidate set F-83 (`packages/engine/src/registry.ts`). Golden scenarios S23 to S30 (study fund, pension, provident for annuity), S39 to S41 (the founder's ETF-vs-provident case, his apartment case, the idle-cash preset) and S50 (tie) pass. Goal presets are P-07 (`data/parameters/goal-presets.json`, product D21).
+- **Design.** The release 2 flows, screens and components are specified: `docs/flows.md` §7 to §9, `docs/design-spec.md` §6 to §10, `docs/design-system.md` §6, `docs/copy.md` §6, `docs/glossary.md` §7.
+- **Screens.** Built: the goal form (`/goal`) and the comparison result (`/goal/compare`). In progress: the idle-cash screen, the catalogue fit mark and the saved-goal strip.
+- **Series.** CBS CPI (`data/series/cbs-cpi.json`, open licence v2.1 confirmed, with the prescribed attribution line) and the Ministry of Finance child-savings rates (`data/series/mof-child-savings-rates.json`, data.gov.il licence confirmed) are collected, with adapters in `packages/pipeline/src/adapters/` and in the daily refresh workflow.
+- **The gate that changed.** **The Bank of Israel's terms of use do not permit republication** without the Bank's prior written consent, and the data.gov.il copies the product named as the first fallback (dependency 7) do not exist for any of the three series (policy rate, per-bank deposit averages, makam yields; checked 2026-10-23, discovery O14). So the product's second fallback applies, "link out and show no number" (product D20): the policy rate, the per-bank deposit averages and the makam yields are links to the Bank's pages, the idle-cash preset runs on the rates the person enters (A-26, and A-20 and A-22 as "entered by you"), and the refresh workflow does not fetch EDGE. Writing to the Bank for consent is the founder's call; the "§ 6 Data refresh, Bank of Israel series" row of the capability map waits on it.
+- **Still open from "Depends on":** TASE DataHub terms (O13) are not needed by R2 and stay open; the A-21 series dictionary (which EDGE code labels which bank and term) is confirmed only by inference and matters only if consent is given.
 
 ---
 

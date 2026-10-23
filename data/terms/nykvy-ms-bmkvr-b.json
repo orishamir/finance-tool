@@ -1,0 +1,30 @@
+{
+  "id": "nykvy-ms-bmkvr-b",
+  "he": "ניכוי מס במקור",
+  "en": null,
+  "meaning": "מס שהבנק או בית ההשקעות מורידים מראש מהרווח או מההכנסה ומעבירים ישירות לרשות המסים.",
+  "where": [
+    "statement"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [
+    "ניכוי במקור"
+  ],
+  "rule_ids": [
+    "BRK-27",
+    "TXF-05",
+    "TXF-10",
+    "TXS-05",
+    "TXS-09",
+    "TXS-10"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

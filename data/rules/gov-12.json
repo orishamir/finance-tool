@@ -1,0 +1,39 @@
+{
+  "id": "GOV-12",
+  "title": "CPI-linked bond in deflation: no floor in the regulation text",
+  "title_he": "אג״ח ממשלתית צמודה בירידת מדד: אין רצפה בתקנות",
+  "text_he": "סעיף ההצמדה בתקנות פועל לשני הכיוונים: הקרן והריבית \"מוגדלות או מוקטנות\" לפי שינוי המדד החדש מול מדד הבסיס. בנוסח התקנות שנקרא אין סעיף ששומר על הקרן בגובה השווי הנקוב כשהמדד יורד מתחת למדד הבסיס, ולכן בירידת מחירים גם הקרן וגם הקופון מוקטנים. נקראו רק התקנות הכלליות, בעותק באתר נבו, ולא תנאים של סדרה מסוימת; אם קיימת רצפה לסדרה מסוימת לא אומת.",
+  "figure_names_he": {
+    "linkage_floor": "רצפה להצמדה"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "real-vs-nominal",
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "linkage_floor": {
+      "value": false,
+      "unit": "boolean",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/999_564.htm",
+        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), תשס\"ו-2006 (Nevo mirror)",
+        "publisher": "Minister of Finance (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "GOV-12"
+      ],
+      "state": "sourced",
+      "notes": "The linkage clause reads in both directions (\"כשהן מוגדלות או מוקטנות\", s.8); no clause keeps principal at or above face value if the new index is below the base index. Only the general regulations were read; whether a series-specific floor exists is unverified (GOV open question 6)."
+    }
+  },
+  "il_finance_file": "government-bonds-and-makam.md",
+  "checked": "2026-10-22"
+}

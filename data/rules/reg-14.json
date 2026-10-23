@@ -1,0 +1,39 @@
+{
+  "id": "REG-14",
+  "title": "TASE members: 25 members, and the clearing-house members by name (January 2026)",
+  "title_he": "חברי הבורסה וחברי המסלקה בשמם",
+  "text_he": "הבורסה מציינת את מספר חבריה: בנקים, חברים שאינם בנקים וחברים רחוקים. הרשימה המלאה לא נקראה; מדריך החברות של הבורסה מונה את חברי מסלקת הבורסה ומסלקת מעו״ף, ובהם הבנקים הגדולים, יהב, ירושלים, מרכנתיל, וואן זירו ושני בנקים זרים, ובין הלא-בנקים אלטשולר שחם טרייד, אקסלנס, מיטב טרייד, פסגות, אי.בי.אי ופייר (חבר משמורן בלבד). חבר שאינו חבר מסלקה סולק דרך חבר מסלקה כללי, ולפי הבורסה זה יכול להיעשות בלי הפרדה בין ניירות הערך של הלקוחות לאלה של החבר, אלא אם משתמשים בחשבון משנה נפרד. בנק מסד, שמופיע ברשימת בנק ישראל, אינו ברשימת חברי המסלקה.",
+  "figure_names_he": {
+    "member_count": "מספר חברי הבורסה"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "regulator"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "member_count": {
+      "value": 25,
+      "unit": "count",
+      "source": {
+        "url": "https://content.tase.co.il/media/3fdpe5za/1150_nbcm_399328_eng.pdf",
+        "title": "TASE, How to become a non-banking corporation member, January 2026",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "REG-14"
+      ],
+      "state": "sourced",
+      "notes": "14 banks, 8 non-bank members and 3 remote members (TASE membership guides, January 2026)."
+    }
+  },
+  "il_finance_file": "regulators-and-protection.md",
+  "checked": "2026-10-22"
+}

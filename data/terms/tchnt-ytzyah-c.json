@@ -1,0 +1,27 @@
+{
+  "id": "tchnt-ytzyah-c",
+  "he": "תחנת יציאה",
+  "en": null,
+  "meaning": "מועד קבוע, פעם בכמה שנים, שבו אפשר לשנות את מסלול החיסכון לכל ילד בבנק",
+  "where": [
+    "provider-site"
+  ],
+  "wrapper_ids": [
+    "child-savings-bank",
+    "child-savings-provident"
+  ],
+  "variants": [
+    "תחנות יציאה"
+  ],
+  "rule_ids": [
+    "CS-10",
+    "CS-12"
+  ],
+  "source": {
+    "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/default.aspx",
+    "title": "National Insurance, שאלות ותשובות – חיסכון לכל ילד",
+    "publisher": "National Insurance Institute",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

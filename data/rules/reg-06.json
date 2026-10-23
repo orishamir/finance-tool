@@ -1,0 +1,39 @@
+{
+  "id": "REG-06",
+  "title": "If a bank fails: discretionary guarantee, authorised manager, transfer",
+  "title_he": "אם בנק קורס: ערבות לפי שיקול דעת, מנהל מורשה",
+  "text_he": "אם הנגיד, אחרי התייעצות עם המפקח, מוצא שבנק אינו יכול לעמוד בהתחייבויותיו או שיש חשש ממשי לכך, הוא רשאי למנות מנהל מורשה, מפקח מיוחד או ועדת ניהול. המנהל המורשה רשאי, באישור הנגיד, להעביר את נכסי הבנק והתחייבויותיו, כולם או חלקם, לרבות במכירת אמצעי השליטה. הנגיד, באישור הממשלה, רשאי (לא חייב) להכריז שבנק ישראל או בנק אחר שמסכים ערב לפיקדונות בבנק שניתן לגביו צו כזה, על כל הפיקדונות או עד סכום לפי סוג פיקדון, כשהאינטרס הציבורי מחייב זאת; ערבות כזו ניתנת לביטול בהודעה מראש של תקופת ההודעה לפחות. לא נמצא בפקודה כלל של עדיפות למפקידים, הפחתת חוב או בנק גישור.",
+  "figure_names_he": {
+    "guarantee_cancel_notice_days": "ימי הודעה מראש לביטול ערבות"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-15",
+  "figures": {
+    "guarantee_cancel_notice_days": {
+      "value": 90,
+      "unit": "days",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות",
+        "title": "פקודת הבנקאות, ss.8ד, 8ו, 8יא, 8יב (Wikisource mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "REG-06"
+      ],
+      "state": "sourced",
+      "notes": "A guarantee announced under s.8יא can be cancelled with at least 90 days' notice (s.8יא(ה)). The guarantee itself is discretionary (\"רשאי\"), with Government approval; no deposit-priority or bail-in rule was found."
+    }
+  },
+  "il_finance_file": "regulators-and-protection.md",
+  "checked": "2026-10-22"
+}

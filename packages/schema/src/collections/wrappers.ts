@@ -18,8 +18,15 @@ export const wrapperRecord = z.strictObject({
   deposit_side_tax: taxStep,
   tax_during: taxStep,
   tax_at_exit: taxStep.extend({ blocked_by: z.array(z.string()), labels: z.array(z.string()) }),
-  // Only the "any_time" shape is in the doc so far; other kinds add their fields when their records are written.
-  lawful_exit: z.strictObject({ kind: z.string().min(1), payout_business_days: valueObject.optional() }),
+  // `kind` vocabulary (data-schema §3.3): any_time | at_maturity | after_years | at_age | at_child_age | trading_day.
+  lawful_exit: z.strictObject({
+    kind: z.string().min(1),
+    payout_business_days: valueObject.optional(),
+    years: valueObject.optional(),
+    age: valueObject.optional(),
+    term_months: valueObject.optional(),
+    text: z.string().min(1).optional(),
+  }),
   switch_is_tax_event: valueObject,
   transfer_routes: z.array(z.strictObject({ to: wrapperId, condition: z.string().min(1).optional(), rule_ids: ruleIds })),
   eligibility: z.strictObject({ rule_ids: ruleIds, text: z.string().min(1) }),

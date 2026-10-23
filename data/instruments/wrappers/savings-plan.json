@@ -1,0 +1,151 @@
+{
+  "id": "savings-plan",
+  "names": {
+    "he": [
+      "תכנית חיסכון",
+      "תוכנית חיסכון",
+      "חיסכון"
+    ],
+    "statement": [],
+    "app": [
+      "חיסכון",
+      "פיקדון בהוראת קבע",
+      "הוראות קבע",
+      "הו\"ק"
+    ]
+  },
+  "regulator": {
+    "value": "BoI",
+    "unit": "text",
+    "source": {
+      "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות",
+      "title": "Banking Ordinance 1941, consolidated text (Hebrew Wikisource mirror), s.5(א)",
+      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "strength": "primary-mirror"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "REG-01",
+      "REG-03"
+    ],
+    "state": "sourced",
+    "notes": "Banks are supervised by the Supervisor of Banks at the Bank of Israel, who holds \"הפיקוח הכללי והבקורת על כל תאגיד בנקאי\" (Banking Ordinance s.5(א)); the banking corporations themselves are the 17 entries (11 ordinary banks) in the BoI's list on data.gov.il (REG-03, 2026-10-22)."
+  },
+  "fee_bases_allowed": [
+    "exit"
+  ],
+  "fee_caps": {},
+  "ceiling": null,
+  "deposit_side_tax": {
+    "formula": "F-33",
+    "rule_ids": []
+  },
+  "tax_during": {
+    "formula": "F-22",
+    "rule_ids": [
+      "TXI-07",
+      "BANK-28",
+      "TXI-08",
+      "TXI-03",
+      "TXI-04",
+      "TXI-02",
+      "TXI-05",
+      "TXI-25",
+      "TXI-20",
+      "BANK-13",
+      "BANK-25",
+      "BANK-26"
+    ]
+  },
+  "tax_at_exit": {
+    "formula": "F-41",
+    "rule_ids": [
+      "TXI-07",
+      "TXI-08"
+    ],
+    "blocked_by": [],
+    "labels": []
+  },
+  "lawful_exit": {
+    "kind": "at_maturity",
+    "text": "at the end of the plan's term, or at an exit point the plan sets; in the plans read at contract level (one bank, institution source) the exit points count from the plan's start and only the whole balance can be withdrawn at one; earlier only by breaking on the bank's terms; whether each monthly instalment has its own lock-up, and how a break is priced, is open (BANK OQ12) (BANK-02, BANK-06, BANK-28, BPN-10)"
+  },
+  "switch_is_tax_event": {
+    "value": true,
+    "unit": "boolean",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Tax Authority, דע זכויותיך וחובותיך 2025, printed p.40 (\"סעיפים 21–23 – ריבית ורווחים מפיקדונות ותוכניות חיסכון\"): profits accumulated in deposits and savings plans are taxed at withdrawal (\"מחויבים במס בעת המשיכה\")",
+      "publisher": "Israel Tax Authority",
+      "strength": "primary"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-07",
+      "TXI-08",
+      "BANK-06",
+      "SW-29",
+      "SW-32"
+    ],
+    "state": "sourced",
+    "notes": "Moving a savings plan to another bank means withdrawing it: no law lets a running deposit move on its terms (SW-32); under the account-switching service it stays at the old bank until maturity (SW-29). At maturity or an exit point the interest is paid and the bank withholds 15% or 25% as usual (TXI-07, TXI-08), so the move adds no tax beyond the ordinary maturity. Breaking before maturity needs the bank's consent where it was not agreed in advance and can cost the interest and part of the principal (BANK-06); how the tax treats a broken deposit is open (TXI OQ14). Whether the closed-system route covers savings plans is not stated (BANK-21 speaks of a shekel deposit)."
+  },
+  "transfer_routes": [],
+  "eligibility": {
+    "rule_ids": [
+      "BANK-01",
+      "BANK-28",
+      "BPN-10"
+    ],
+    "text": "any individual with an account at the bank to fund the deposits (usually a monthly standing order); the deposit schedule and the limits on amounts and dates are set in the agreement; minimums are product terms (for example from NIS 200 a month at one bank, institution source)"
+  },
+  "protection": {
+    "rule_ids": [
+      "REG-04",
+      "REG-05",
+      "REG-06",
+      "BANK-23",
+      "BANK-26"
+    ],
+    "text": "no deposit insurance exists in law; if a bank cannot meet its obligations the Governor may appoint an authorised manager and transfer its assets and liabilities, and may, with Government approval, announce that the Bank of Israel guarantees its deposits, a discretionary power and not an entitlement; a 2026 law orders an examination of deposit insurance within a year; a private bill would guarantee NIS 250,000 per customer at small banks, but it is only a bill; whether a fall in the CPI can reduce the principal of a linked plan is a product term (\"הבטחת קרן\"), not a rule"
+  },
+  "dimensions": {
+    "age-or-use-exemption": "covered",
+    "currency": "covered",
+    "deposit-ceiling": "covered",
+    "eligibility": "covered",
+    "fee-change-over-time": "covered",
+    "fee-exit": "covered",
+    "fee-fx": "covered",
+    "liquidity-lockup": "blocked:BANK-OQ12",
+    "loss-offset": "blocked:TXI-OQ7",
+    "minimum": "covered",
+    "protection": "covered",
+    "real-vs-nominal": "covered",
+    "regulator": "covered",
+    "reporting-obligation": "covered",
+    "switching-tax-event": "covered",
+    "tax-at-exit": "covered",
+    "tax-during": "covered",
+    "transfer-switch-process": "covered"
+  },
+  "tier": 1,
+  "open_questions": [
+    "BANK-OQ12",
+    "TXI-OQ14",
+    "TXI-OQ2",
+    "TXI-OQ9",
+    "TXI-OQ7",
+    "BANK-OQ8",
+    "BANK-OQ17"
+  ],
+  "checked": "2026-10-23"
+}

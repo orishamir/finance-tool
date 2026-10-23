@@ -1,0 +1,103 @@
+{
+  "id": "CS-14",
+  "title": "Withdrawal at 18 and at 21; parental consent",
+  "title_he": "משיכה מחיסכון לכל ילד: גיל ואישור הורה",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "minimum",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "withdrawal_age": {
+      "value": 18,
+      "unit": "years",
+      "source": {
+        "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
+        "title": "National Insurance Institute, child savings: withdrawal page; law 74ג(ב) (Wikisource mirror)",
+        "publisher": "National Insurance Institute (BTL)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "CS-14"
+      ],
+      "state": "sourced",
+      "notes": "Redemption age: the money can be withdrawn only from 18 (NII: from the end of the month of the 18th birthday), whole or in part."
+    },
+    "parent_signature_until_age": {
+      "value": 21,
+      "unit": "years",
+      "source": {
+        "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
+        "title": "National Insurance Institute, child savings: withdrawal page (\"מגיל 21 ... ללא אישור ההורה\"); law 74ג(ב): \"ובלבד שאחד מהוריו אישר בחתימתו את עצם המשיכה\"",
+        "publisher": "National Insurance Institute (BTL)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "CS-14"
+      ],
+      "state": "sourced",
+      "notes": "Up to 21 a parent must sign the withdrawal; Harel's bylaw s.10.2 limits the consent requirement to ages 18 to 21 minus one day. From 21 the child withdraws alone."
+    },
+    "provident_payout_business_days": {
+      "value": 4,
+      "unit": "business_days",
+      "source": {
+        "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
+        "title": "Harel child-savings standard bylaw, April 2026, s.10.4: payment within 4 business days of a complete request",
+        "publisher": "Harel Pension and Gemel",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "CS-14"
+      ],
+      "state": "sourced",
+      "notes": "Harel only; other managers' timing was not read. Harel sends a confirmation within 10 business days (s.11)."
+    },
+    "bank_payout_business_days": {
+      "value": 3,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.leumi.co.il/Saving-Kids",
+        "title": "Bank Leumi, child-savings withdrawal page: the digital request withdraws the whole balance, closes the account and is processed within 3 business days",
+        "publisher": "Bank Leumi",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "CS-14"
+      ],
+      "state": "sourced",
+      "notes": "Leumi only. Leumi pays only into a current account held solely in the child's name. Yahav allows a partial withdrawal only if at least NIS 100 stays in the account (s.6.6, as of 1.5.2017)."
+    }
+  },
+  "text_he": "מושכים רק מגיל 18 (מסוף חודש יום ההולדת), את כל הכסף או חלק ממנו. עד גיל 21 נדרשת חתימת הורה; מגיל 21 הילד מושך לבד. הבקשה מוגשת לקופה או לבנק, לא לביטוח הלאומי. אין משיכה בשל מצוקה כלכלית.",
+  "figure_names_he": {
+    "withdrawal_age": "גיל הפדיון",
+    "parent_signature_until_age": "גיל שעד אליו נדרשת חתימת הורה",
+    "provident_payout_business_days": "ימי עסקים לתשלום מקופה (הראל)",
+    "bank_payout_business_days": "ימי עסקים לתשלום מבנק (לאומי)"
+  },
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,83 @@
+{
+  "id": "TXP-04",
+  "title": "Beneficiary member: s.45A(e) credit ceiling",
+  "title_he": "תקרת הזיכוי לעמית מוטב",
+  "text_he": "לעמית מוטב הסכום המזוכה הוא הגבוה מבין רצפת ההפקדה לבין הנמוך מבין הסכום ששולם ובין: בלי הכנסה מבוטחת, השיעור הנמוך מההכנסה החייבת עד תקרת ההכנסה; עם הכנסה מבוטחת, השיעור הגבוה מההכנסה המזכה שהיא הכנסה מבוטחת ועוד השיעור הנמוך מההכנסה החייבת שאינה מבוטחת, עד תקרת ההכנסה בניכוי ההכנסה המבוטחת (או מחצית התקרה, הנמוך מביניהם). תתי התקרות לביטוח שאירים וחיים חלות כמו אצל יחיד רגיל, ועמית מוטב רשאי לקבל זיכוי גם על תשלומים עבור ילד בוגר. הכנסה מבוטחת היא הכנסת עבודה שהמעסיק הפקיד עליה לקופת גמל לקצבה, או שיש עליה זכות לפנסיה לפי חוק או הסכם. התקרה קפואה לשנים הקרובות; הפקודה נקראה בעותק בוויקיטקסט.",
+  "figure_names_he": {
+    "insured_pct": "שיעור מההכנסה המבוטחת",
+    "no_insured_pct": "שיעור מההכנסה שאינה מבוטחת",
+    "income_cap": "תקרת ההכנסה לעמית מוטב (שנתי)"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "tax-at-deposit",
+    "deposit-ceiling",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "tax-pension-gemel-lekitzba.md",
+  "checked": "2026-10-22",
+  "figures": {
+    "insured_pct": {
+      "value": 7,
+      "unit": "pct",
+      "source": {
+        "title": "Income Tax Ordinance s.45A(e), s.47(a) (Wikisource mirror); deductions booklet 2026 p.12 (45א(ה)(2))",
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXP-04"
+      ],
+      "state": "sourced",
+      "notes": "7% of eligible income that is insured income (s.45A(e)(1)(b)); the 1.5% and 5% sub-limits of TXP-02 also apply."
+    },
+    "no_insured_pct": {
+      "value": 5,
+      "unit": "pct",
+      "source": {
+        "title": "Income Tax Ordinance s.45A(e), s.47(a) (Wikisource mirror); deductions booklet 2026 p.12 (45א(ה)(2))",
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXP-04"
+      ],
+      "state": "sourced",
+      "notes": "5% of taxable income that is not insured income, or of all taxable income when there is no insured income, up to income_cap less the lower of the s.47(a)(1) amount and the insured income."
+    },
+    "income_cap": {
+      "value": 232800,
+      "unit": "nis",
+      "source": {
+        "title": "Income Tax Ordinance s.45A(e), s.47(a) (Wikisource mirror); deductions booklet 2026 p.12 (45א(ה)(2))",
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "frozen 2025-2027",
+      "rule_ids": [
+        "TXP-04"
+      ],
+      "state": "sourced",
+      "notes": "Twice the s.47(a)(1) amount: booklet 2026 p.12 row \"45א(ה)(2)\" 19,400 a month, times 12. Frozen 2025 to 2027 (TXP-27)."
+    }
+  }
+}

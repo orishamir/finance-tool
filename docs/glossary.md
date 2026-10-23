@@ -1,5 +1,7 @@
 # Glossary
 
+> Release 2 section added 2026-10-23: section 7, terms the release 2 screens introduce (hand-written, not generated).
+
 Written 2026-10-23 by the UX writer with six research passes over the il-finance rule base (`.claude/skills/il-finance/references/`). Status: **in force** (2026-10-23; the founder asked Claude to settle it). UI text is in `docs/copy.md`.
 
 Every explanation below comes from the rule base, never from memory. Each row gives the official Hebrew term (the spelling of the most official source in the rule base), a plain one-line explanation, other spellings people meet in apps, ads and statements, and the source: the rule IDs, the document, the date it was checked and how strong it is. Explanations hold no figures; figures change and the site shows them as sourced numbers.
@@ -545,15 +547,24 @@ The site must not explain these until the rule base does (CLAUDE.md: never fill 
 
 | Term | What is missing |
 |---|---|
-| **S&P 500** | the files say only that Israeli S&P 500 funds define the tracking asset as 'S&P 500 100%, דולר ארה"ב 100%' computed as net total return (SPTR500N, ETF-10), and list funds on it (ETF-09, ETF-28, ETF-30, ETF-32). Nothing says which companies the index holds or w |
 | **איגרות חוב מובנות** | what a structured bond is was not researched (corporate-bonds.md 'Left out'); TASE only counts them as a separate category (NIS 27,029 m raised in 2025, CORP-17). Not on the D2 tier-2 list; whether to add it is founder decision F6. TX2 OQ16 also names 'תעודות  |
 | **אלפא שנתית** | the CMA text says it is computed from the last 60 monthly yields, but the benchmark and meaning are not given (CAT-07, CAT OQ3). Product.md section 4 does not rank by past return |
-| **מדד** | market-index sense. The rule base uses 'מדד' for what a tracking fund follows (ETF-01, 'נכס מעקב' ETF-10) but never says what a market index is or how one is built. The tax sense of 'מדד' is a separate entry. term_source is null because no source defines this  |
+| **מדד** | market-index sense. The rule base uses 'מדד' for what a tracking fund follows (ETF-01, 'נכס מעקב' ETF-10). Since 2026-10-23 it describes two indices in full, the S&P 500 (ETF-37 to ETF-40) and TA-125 (ETF-41, ETF-42), but still no rule says what a market index is in general or how one is built (a weighted list of securities, a divisor, a committee). The two index pages can explain their own index; a general 'מדד' explanation on the guide list ('מניות דרך מדד') still cannot be written. The tax sense of 'מדד' is a separate entry. term_source is null because no source defines this sense (updated 2026-10-23) |
 | **סטית תקן – 5 שנים עוקבות** | the CMA dictionary names the field and its 5-year window, but the rule base does not explain the measure or whether it is annualised (CAT-07, CAT OQ3). Spelling 'סטית' is as recorded from the CMA dictionary |
-| **עוקב מדד S&P 500** | these five files do not describe the index, and the regulatory policy for this track name was not obtained (CAT-23). The index name also cannot be written without Latin letters or digits. Spellings: CMA SUB_SPECIALIZATION 'עוקב מדד s&p 500', Meitav 'עוקב מדד S |
+| **עוקב מדד S&P 500** | the index itself is now described (ETF-37 to ETF-40, closed 2026-10-23), so the track page can point at the S&P 500 exposure page. Still missing: the regulatory policy for this track name (the CMA's specialisation rule that fixes what an 'עוקב מדד S&P 500' track may hold, CAT-23), so the site cannot say what the track promises beyond the index name. The index name also cannot be written without Latin letters or digits. Spellings: CMA SUB_SPECIALIZATION 'עוקב מדד s&p 500', Meitav 'עוקב מדד S&P 500' (updated 2026-10-23) |
+| **מדד אג״ח · סחורות** | two exposure-kind names the exposure page can show (`exposurePage.kinds` in `site/app/copy.ts`, kinds `bond_index` and `commodity`), added 2026-10-23 with the release 1 exposure pages. No exposure record uses them yet and no rule says what a bond index is or how a commodity is held through a fund (gold via funds is tier 2, D2). If a record is written with either kind, the term needs a research pass first (added 2026-10-23) |
 | **ריבית רעיונית** | the term does not appear in any reference file. The rule base's wording for how withdrawn gains are classified is 'הכנסה מריבית' (TXK-05) |
 | **שארפ ריבית חסרת סיכון** | the CMA text calls it an annual measure of returns against a risk-free interest index over 60 months, but the index and the measure are not explained (CAT-07, CAT OQ3) |
-| **ת"א 125** | appears only as a classification label and example fund name ('מניות בארץ / מדד מניות / ת"א 125', 'קרנית (4B) ת"א 125', MF-43 and MF-45, mutual-funds file). No rule says which companies the index holds, who computes it, or how. Spelling as in that ISA example; |
+
+**Closed 2026-10-23.** Two rows left the table when the rule base gained the index providers' own descriptions (research pass in the founder's Chrome, former open questions 19 and 20 of the ETF file):
+
+| Term | Closed by |
+|---|---|
+| **S&P 500** | ETF-37 (what S&P Dow Jones Indices says it is: 500 leading U.S. companies, about 80% of U.S. market capitalisation, float-adjusted market-cap weights, in dollars), ETF-38 (eligibility and selection by a committee to a fixed count of 500), ETF-39 (weighting and maintenance), ETF-40 (price, gross and net total return versions; the Israeli funds track the net total return). The glossary row for the term is generated from `research/glossary/terms/` and should now cite these rules. |
+| **ת"א 125** | ETF-41 (TASE's own rules: the TA-35 and TA-90 shares, a 5% weight cap set by the index committee within the rules' 10%, entry and exit by market-value rank) and ETF-42 (a gross total return index in shekels, computed every 15 seconds, launched 2 January 1992 at 100, 125 shares since 9 February 2017). Same note on the generated row. |
+
+**Glossary rows still missing for terms the 2026-10-23 screens use, though a rule defines them** (not a rule-base gap; the generated section 1 lacks the row): קרן כספית יומית (MF-34), מבחן 90% בקרן זרה (TXF-04), ניכוי בפדיון (MF-22), דמי חשבון קבועים · טיפול בריבית ובדיבידנד · מרווח קנייה ומכירה (BRK-24), עמלת יצירה ופדיון (ETF-05), העברה החוצה (BRK-18). Until the rows exist, the fee table names them without a tap-through explanation. The release 2 screens' own words (the idle-cash rate as a site parameter under D20, 'ריבית על הכסף הנזיל') are site definitions for section 7.1, not rule-base gaps.
+
 
 ---
 
@@ -679,3 +690,52 @@ Rows proposed in the rule base's topic files ("Proposed dimensions"). They join 
 | `payout-classification` | **סיווג התשואה למס** | האם התשואה נחשבת ריבית, הצמדה, דיבידנד או רווח הון לפי התנאים המשפטיים, לא לפי הפרסום |
 | `default-track` | **מסלול ברירת מחדל** | באיזה מסלול נמצאים אם לא בוחרים, והאם המסלול הנוכחי נבחר או נקבע אוטומטית |
 | `track-mandate` | **שם המסלול מול תוכנו** | הפער בין שם המסלול, מדיניות ההשקעה שלו והרכב ההשקעות בפועל היום |
+
+
+---
+
+## 7. Terms the release 2 screens introduce
+
+Added 2026-10-23 by hand for the briefs in `docs/flows.md` section 9. These rows are not generated by `gen_glossary.py`: they define words the site itself coins (method formulas and product decisions), not financial terms from the rule base. When the glossary is regenerated, keep this section, or move the rows into `research/glossary/terms/` with the same sources. Where a row rests on a financial rule, the rule ID is given; where the rule base does not define a financial term the screens need, the term is in section 7.2 and the site must not explain it until the rule base does.
+
+### 7.1 Site definitions (method and product)
+
+| מונח | הסבר | נקרא גם | מקור |
+|---|---|---|---|
+| **נשאר לכם במועד המטרה, בכסף של היום** | הערך של כל הכסף אם מושכים אותו במועד המטרה, אחרי דמי ניהול ומס, מתורגם למחירים של היום לפי מדד המחירים לצרכן | ערך ריאלי באופק · שווי מימוש ריאלי | `docs/method.md` B1, F-40, §3 (the deflator; CPI from CBS, F-03) · 2026-10-23 · הגדרה של האתר, לא כלל |
+| **שקולות** | שתי אפשרויות שההפרש ביניהן קטן מסף התיקו של האתר, ולכן האתר לא קובע ביניהן; הסף מוצג כפרמטר של האתר | תיקו · כמעט שוות | `docs/product.md` D5; `docs/method.md` F-80, P-01 (`data/parameters/tie-threshold.json`) · 2026-10-23 · הגדרה של האתר, לא כלל |
+| **מכריע** | הנוסחה שיוצרת את ההפרש הגדול ביותר בין שתי האפשרויות הראשונות: הטבת מס בהפקדה, דמי ניהול, מס ביציאה או נעילה | מה מכריע · הגורם המכריע | `docs/method.md` F-80 (the F-61-style decomposition) · 2026-10-23 · הגדרה של האתר, לא כלל |
+| **מה היה משנה את התשובה** | בדיקה שמזיזה כל הנחה בתוך טווח שהאתר קבע, עד שהאפשרות הראשונה מתחלפת, ומדווחת את השינוי הקטן ביותר שעושה זאת | רגישות · ניתוח רגישות | `docs/method.md` F-81, P-02 (`data/parameters/sensitivity-bounds.json`); `docs/product.md` 3.2 · 2026-10-23 · הגדרה של האתר, לא כלל |
+| **נבדקו `{מספר}` אפשרויות** | שורת הכיסוי: כל מוצר שהאתר מכיר מופיע פעם אחת בדיוק, עם אחת מחמש תוצאות והסיבה לה, כך שאפשר לראות גם מה לא דורג ולמה | כיסוי · שורת הכיסוי | `docs/product.md` D17; `docs/method.md` F-83 · 2026-10-23 · הגדרה של האתר, לא כלל |
+| **דורגה** | האפשרות קיבלה מקום ברשימה לפי מה שנשאר במועד המטרה | — | `docs/method.md` F-83 outcome 5, F-80 · 2026-10-23 · הגדרה של האתר |
+| **מוצגת, לא מדורגת** | האפשרות מוצגת עם הערך שלה, אבל לא במקום ברשימה: הכסף בה נעול אחרי מועד המטרה, כלל שהיא צריכה עדיין פתוח, התקרה לוקחת רק חלק מהכסף, או שלשכירים היא נפתחת רק דרך המעסיק | — | `docs/method.md` B3, F-83 outcome 4, F-05; `docs/product.md` D15, D16 · 2026-10-23 · הגדרה של האתר |
+| **נפסלה לפי האילוץ שלכם** | האפשרות הוצאה מההשוואה בגלל תנאי שהזנתם, למשל שהכסף חייב להיות ניתן למשיכה בכל רגע | — | `docs/method.md` §8 constraint filters, F-83 outcome 2; `docs/product.md` D13 · 2026-10-23 · הגדרה של האתר |
+| **לא מתאימה לכם** | כלל מונע מכם, או מהכסף הזה, להיכנס לאפשרות הזו, למשל חיסכון לכל ילד שמקבל רק את כספי ביטוח לאומי | לא זכאים | `docs/method.md` §8, F-83 outcome 1 (CS-02, CS-04, CS-16 for child savings; CAT-10 for sector tracks) · 2026-10-23 · הגדרה של האתר על בסיס הכללים |
+| **עוד לא נבדקה** | לאתר חסר נתון, מונח או שיטת חישוב לאפשרות הזו, ולכן היא לא הושוותה; הסיבה מופיעה לידה ולא נעלמת | — | `docs/method.md` F-83 outcome 3, G-24, G-28, G-30; `docs/product.md` D17 · 2026-10-23 · הגדרה של האתר |
+| **נעול עד `{תאריך}`** | המועד הראשון שבו מותר למשוך את הכסף מהמוצר לפי הכללים שלו; כשהוא אחרי מועד המטרה, ההפקדות נעצרות במועד המטרה והכסף ממשיך לצמוח עד השחרור | מועד השחרור · נזילות | `docs/method.md` B3, §8 (TXH-09, TXH-10, KH-10 for the study fund; PEN-26 for a pension; KGL-08 for a kupat gemel lehashkaa); `docs/product.md` D16 · 2026-10-23 · הגדרה של האתר על בסיס הכללים |
+| **כמה עולה להשאיר את הכסף בעו״ש** | ההפרש החודשי, אחרי מס, בין מה שהכסף היה מרוויח באפשרות נזילה לבין מה שהוא מרוויח בעו״ש | העלות החודשית של כסף שיושב | `docs/method.md` F-60 (A-20, A-21, A-22, A-25, A-26); `docs/product.md` 3.2 idle-cash preset · 2026-10-23 · הגדרה של האתר |
+| **הממוצע ששולם בבנק הזה בחודש שעבר** | הריבית הממוצעת שבנק ישראל מדווח שהבנק שילם על פיקדון מהסוג הזה בחודש הקודם; לא הצעה אישית | ממוצע בנק ישראל | `docs/method.md` A-21 (BANK-22, Bank of Israel INTEREST_DASH); `docs/product.md` D4 · 2026-10-23 · ממקור (סדרה) |
+| **הצעה שהזנתם** | הריבית לפיקדון כפי שהיא מופיעה אצלכם באפליקציה של הבנק; האתר לא מכיר הצעות אישיות ולכן מסמן אותה כשלכם | הוזן על ידך | `docs/method.md` A-26; `docs/product.md` D4, D7 · 2026-10-23 · הגדרה של האתר |
+| **תשואה שהזנתם** | התשואה השנתית שאתם מניחים על החלק המושקע; האתר לא מנחש תשואה למניות ולאג״ח, ולכן כל מספר שנשען עליה מסומן בכחול ובקו מקווקו | הנחת תשואה | `docs/product.md` D9; `docs/method.md` A-01 · 2026-10-23 · הגדרה של האתר |
+| **מתאים למטרה שלכם?** | סימון בעמוד של מסלול: הסיווג של המסלול לפי הרשות נבדק מול האופק של המטרה ששמרתם, לפי טבלת התאמה שהאתר קבע; בגרסה הזו לפי האופק בלבד | סימון התאמה | `docs/method.md` F-70, P-04 (`data/parameters/classification-fit.json`); `docs/product.md` 3.10, D11 · 2026-10-23 · הגדרה של האתר |
+| **נקודת התחלה** | אחת מחמש דוגמאות למטרה שממלאות את השדות כדי להתחיל; כל שדה אפשר לשנות | פריסט · סוג מטרה | `docs/product.md` D13, 3.2 · 2026-10-23 · הגדרה של האתר |
+| **עתודה נזילה** | נקודת התחלה: כסף שצריך להיות זמין בכל רגע, למקרה שצריך אותו | קרן חירום · כסף לשעת צורך | `docs/product.md` D13 (liquid reserve), 3.2 idle-cash preset · 2026-10-23 · הגדרה של האתר; the attribute values come from the preset parameter record, not from here |
+| **קנייה במועד ידוע** | נקודת התחלה: סכום שצריך בתאריך שאתם יודעים, למשל לדירה | חיסכון למטרה · חיסכון לדירה | `docs/product.md` D13 (purchase at a known date); S40 · 2026-10-23 · הגדרה של האתר |
+| **הון לטווח ארוך** | נקודת התחלה: כסף שלא צריך בשנים הקרובות, מעבר לפנסיה החובה | חיסכון לטווח ארוך | `docs/product.md` D13 (long-term wealth); S39 · 2026-10-23 · הגדרה של האתר |
+| **סכום חד־פעמי** | נקודת התחלה: סכום שהגיע בבת אחת, בלי הפקדות חודשיות | כסף שהתקבל · ירושה · מענק | `docs/product.md` D13 (a lump sum) · 2026-10-23 · הגדרה של האתר |
+| **חיסכון לילד** | נקודת התחלה: כסף שלכם שנשמר לילד עד גיל שנקבע; שונה מחיסכון לכל ילד של ביטוח לאומי, שמקבל רק את הכספים שלו | חיסכון לילדים | `docs/product.md` D13 (a child); `docs/method.md` §8 (CS-02, CS-04, CS-16: the NII plan takes no own money) · 2026-10-23 · הגדרה של האתר |
+| **המטרה השמורה** | המטרה האחרונה שהגדרתם, שנשמרת בדפדפן של המכשיר הזה בלבד, בלי חשבון ובלי שרת; עמודי המסלולים משתמשים בה לסימון ההתאמה | מטרה שמורה | `docs/product.md` 3.9, D1; `docs/roadmap.md` R2 · 2026-10-23 · הגדרה של האתר |
+| **החלק שנשאר זמין** | הסכום שהגדרתם כחייב להישאר זמין מיד; הוא נשאר בעו״ש או בקרן כספית יומית ולא נכנס לדירוג | זמין מיד | `docs/method.md` §8 constraint filters, F-60; `docs/product.md` D13 · 2026-10-23 · הגדרה של האתר |
+| **טווח שנבדק** | הגבולות שבתוכם בדיקת הרגישות מזיזה כל הנחה; פרמטר של האתר, מוצג ולא ניתן לשינוי מהעמוד | גבולות הרגישות | `docs/method.md` P-02; `docs/product.md` §2 "interactive by default" · 2026-10-23 · פרמטר של האתר |
+| **הפרשות לפנסיה, מעסיק ועובד** | האחוז מהשכר שהמעסיק מפקיד לפנסיה והאחוז שיורד מהשכר שלכם; האתר שואל אותם כי תקרות ההפקדה והטבות המס תלויות בהם | שיעורי הפרשה | PEN-03, PEN-04, TXP-10 (via `docs/method.md` F-52, A-12) · 2026-10-23 · החוזק כפי שרשום במאגר הכללים |
+| **הפרשות לקרן השתלמות, מעסיק ועובד** | האחוז מהשכר שהמעסיק מפקיד לקרן ההשתלמות והאחוז שיורד מהשכר שלכם; לשכירים היא נפתחת רק דרך המעסיק | שיעורי הפרשה לקרן השתלמות | KH-02, KH-04, TXH-01, TXH-08 (via `docs/method.md` F-52, §8; `docs/product.md` D15) · 2026-10-23 · החוזק כפי שרשום במאגר הכללים |
+
+### 7.2 Missing from the rule base, release 2
+
+Added to the list in section 4. The screens need these words; the site must not explain them until the rule base does.
+
+| Term | What is missing |
+|---|---|
+| **שמות השדות בתלוש השכר** | no official source for the labels a payslip uses for the salary and the contribution lines (G-19: KH OQ5, PEN OQ11, TXP OQ16). The goal form shows the law's required content (PEN-36) and says the labels vary; it names no label. |
+| **ריבית בנק ישראל כקירוב לתשואת קרן כספית** | the rule base sources the policy rate (BANK-22) and the fund's expected-yield field (MF-37), but no rule says the policy rate approximates a daily fund's return; the idle-cash screen labels it a proxy (S41 note) and the dimension stays open until a sourced relation exists. |
+| **דוח שנתי למס, מתי חובה** | whether an investment forces a person to file (TXG OQ4, G-22); the constraint is shown blocked. |

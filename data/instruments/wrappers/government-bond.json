@@ -1,0 +1,168 @@
+{
+  "id": "government-bond",
+  "names": {
+    "he": [
+      "איגרות חוב ממשלתיות",
+      "אג\"ח ממשלתית",
+      "אג\"ח ממשלתית צמודה",
+      "ממשלתית",
+      "ממשלתית בריבית משתנה",
+      "אג\"ח ממשלתית קצרה"
+    ],
+    "statement": [],
+    "app": []
+  },
+  "regulator": {
+    "value": "ISA",
+    "unit": "text",
+    "source": {
+      "url": "https://he.wikisource.org/wiki/חוק_ניירות_ערך",
+      "title": "חוק ניירות ערך, ss.45, 45א, 46, 48, 51 (Wikisource mirror)",
+      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "strength": "primary-mirror"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "GOV-10",
+      "REG-13",
+      "BRK-04"
+    ],
+    "state": "sourced",
+    "notes": "The issuer is the State of Israel through the Accountant General's Government Debt Management Unit; sales to the public go through banks and TASE members (GOV-10). Trading on TASE is under the ISA's supervision of the exchange (Securities Law ss.45, 51; REG-13). The account that holds the bonds is supervised separately: a bank by the Supervisor of Banks, a non-bank member by TASE (BRK-04). The site's copy has no name for the Finance Ministry as an issuer, so the regulator shown is the one over the market."
+  },
+  "fee_bases_allowed": [
+    "trade",
+    "custody"
+  ],
+  "fee_caps": {},
+  "ceiling": null,
+  "deposit_side_tax": {
+    "formula": "F-33",
+    "rule_ids": []
+  },
+  "tax_during": {
+    "formula": "F-25",
+    "rule_ids": [
+      "TXI-14",
+      "TXI-15",
+      "TXI-03",
+      "TXI-05",
+      "TXI-09",
+      "TXI-25",
+      "TXI-19",
+      "TXG-15",
+      "TXG-27",
+      "GOV-11",
+      "GOV-12",
+      "GOV-13",
+      "GOV-14",
+      "GOV-15"
+    ]
+  },
+  "tax_at_exit": {
+    "formula": "F-40",
+    "rule_ids": [
+      "TXI-12",
+      "TXI-14",
+      "TXS-03",
+      "TXS-05",
+      "TXI-13",
+      "TXI-17",
+      "TXS-23",
+      "TXG-28"
+    ],
+    "blocked_by": [],
+    "labels": [
+      "accrued interest paid when buying between coupon dates is not modelled (TXI OQ5, G-10)"
+    ]
+  },
+  "lawful_exit": {
+    "kind": "trading_day",
+    "text": "Any trading day: a tradable series can be sold on TASE at the market price of the day (GOV-17). Held to maturity, the state redeems the face value in one payment, indexed for a CPI-linked series (GOV-11, GOV-15). An early redemption by the state is its option, by buyback at market price (GOV-16). The settlement cycle for a secondary sale was not readable (GOV open question 7), so no payout-days figure is recorded."
+  },
+  "switch_is_tax_event": {
+    "value": true,
+    "unit": "boolean",
+    "source": {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Income Tax Ordinance (Hebrew Wikisource mirror)",
+      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXS-21",
+      "TXI-12",
+      "TXI-14"
+    ],
+    "state": "sourced",
+    "notes": "Selling one series to buy another is a sale (s.88 \"מכירה\"): an unlinked series pays up to 15% on the whole gain (TXI-12), a CPI-linked series up to 25% on the real gain (TXI-14), withheld by the bank or member (TXS-05)."
+  },
+  "transfer_routes": [],
+  "eligibility": {
+    "rule_ids": [
+      "GOV-10",
+      "GOV-09",
+      "GOV-17",
+      "GOV-18",
+      "GOV-08",
+      "BRK-32",
+      "BRK-16"
+    ],
+    "text": "any individual with a securities account at a bank or at a non-bank TASE member (BRK-32), buying a tradable series on TASE on any trading day (GOV-17); the bank's fee types for the trade follow its tariff (BRK-16). Sales to the public in the weekly auctions go by law through banks, TASE members and other approved bodies (GOV-10), but how a retail order reaches an auction, with what minimum and fee, was not found (GOV open question 8). The issue unit is NIS 1,000 face value (GOV-11, GOV-15); the TASE trading unit was not readable (GOV open question 7). Designated series (ערד, ח\"ץ) are issued only to pension funds and insurers (GOV-18)"
+  },
+  "protection": {
+    "rule_ids": [
+      "GOV-02",
+      "GOV-12",
+      "GOV-16",
+      "BRK-07",
+      "BRK-10",
+      "REG-16",
+      "REG-06"
+    ],
+    "text": "principal and coupons are paid from the state's general revenues, an obligation of the state and not of the bank or broker (GOV-02). A CPI-linked series has no floor in the regulation text: if the index falls below the base index, principal and coupon are reduced (GOV-12; per-series floors unverified, GOV open question 6). A state buyback before maturity is at market price and the state's option (GOV-16). The paper sits in a securities account: at a non-bank TASE member client securities are held apart, in trust at the clearing house (BRK-07; REG open question 9); at a bank they are pooled through the nominee company and separated in its books (BRK-10, one bank's terms). What happens to client securities if a bank fails was not found (REG open question 10); a guarantee of a failing bank's deposits is discretionary (REG-06)"
+  },
+  "dimensions": {
+    "age-or-use-exemption": "covered",
+    "currency": "covered",
+    "distribution-policy": "covered",
+    "eligibility": "covered",
+    "fee-custody": "covered",
+    "fee-exit": "covered",
+    "fee-fx": "covered",
+    "fee-trade": "covered",
+    "liquidity-lockup": "covered",
+    "loss-offset": "covered",
+    "minimum": "blocked:GOV-OQ7",
+    "protection": "covered",
+    "real-vs-nominal": "covered",
+    "regulator": "covered",
+    "reporting-obligation": "covered",
+    "switching-tax-event": "covered",
+    "tax-at-exit": "covered",
+    "tax-during": "covered",
+    "transfer-switch-process": "covered"
+  },
+  "tier": 1,
+  "open_questions": [
+    "GOV-OQ4",
+    "GOV-OQ5",
+    "GOV-OQ6",
+    "GOV-OQ7",
+    "GOV-OQ8",
+    "TXI-OQ5",
+    "TXI-OQ8",
+    "TXI-OQ9",
+    "REG-OQ10"
+  ],
+  "checked": "2026-10-23"
+}

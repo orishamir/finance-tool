@@ -1,0 +1,20 @@
+{
+  "id": "agrt-bvnds",
+  "he": "אגרת בונדס",
+  "en": null,
+  "meaning": "אגרת חוב דולרית של מדינת ישראל שמוצעת בארצות הברית; ההעברה מוגבלת, ופדיון מוקדם רק במקרים מוגדרים.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "FXD-15",
+    "FXD-16"
+  ],
+  "source": {
+    "url": "https://israelbonds.com/wp-content/uploads/2025/10/2025-Jubilee-Savings.pdf",
+    "title": "State of Israel Savings Bonds (Tenth Series) / Jubilee (Thirteenth Series), prospectus supplement 1 Aug 2025",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

@@ -50,6 +50,7 @@
     "notes": "share of total fee drag; method F-62 does not use it yet"
   },
   "rationale": "A fee is worth a phone call when it costs 1,000 NIS or more in today's money over the horizon and a cheaper reference exists, and worth avoiding when it costs 2,500 NIS or more and another option removes it. Below about 1,000 NIS over several years, the call is not worth the time.",
+  "rationale_he": "עמלה שווה שיחת טלפון כשהיא עולה 1,000 ₪ או יותר במחירי היום לאורך האופק ויש חלופה זולה יותר להשוואה, ושווה הימנעות כשהיא עולה 2,500 ₪ או יותר ואפשרות אחרת מבטלת אותה. מתחת לכ-1,000 ₪ לאורך כמה שנים, השיחה לא שווה את הזמן.",
   "chosen_by": "Claude, at the founder's request (2026-10-23: \"do whatever you think fits\")",
   "signed_off_by": "founder",
   "signed_off_on": "2026-10-23",

@@ -1,0 +1,31 @@
+{
+  "id": "phoenix",
+  "provider": {
+    "name_he": "הפניקס פנסיה וגמל בע\"מ",
+    "class": "provident-manager",
+    "regulator": "CMA",
+    "tase_member": false,
+    "protection_rule_ids": [
+      "PF-29",
+      "REG-18",
+      "REG-19"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.fnx.co.il/ishtalmutfund/",
+    "title": "הפניקס, עמודי קרן השתלמות: עמוד המוצר (\"דמי ניהול שקופים וקבועים מהצבירה בלבד\", ללא שיעור), קרן השתלמות לשכירים, קרן השתלמות לעצמאים, שאלות נפוצות, מסלולי קרנות ההשתלמות ועמוד מסלול 686 (\"שיעור דמי ניהול ממוצע לשנת 2025\" בלבד), נקראו 2026-10-23",
+    "published": null,
+    "format": "html"
+  },
+  "snapshot": "2026-10-23",
+  "missing": true,
+  "missing_reason": "No list management fee for a keren hishtalmut is printed on any Phoenix study-fund page read on 2026-10-23 (https://www.fnx.co.il/ishtalmutfund/, /ishtalmutfund/employee/, /ishtalmutfund/self-employee/, /ishtalmutfund/faq/, /ishtalmutfund/tzishtalmut/ and the track page /ishtalmutfund/tzishtalmut/686/). The product page's only fee sentence is \"דמי ניהול שקופים וקבועים מהצבירה בלבד\" (balance only, consistent with KH-22 and PF-06, but no rate); the track pages print only \"שיעור דמי ניהול ממוצע לשנת 2025\", an average actually charged, which is neither a list price nor a regulator average under data-schema 3.6, so no line is recorded. The list fee for new joiners must come from the digital joining flow or the joining agreement (a person in a browser). Of the other candidates read the same day, none prints a study-fund list fee either: Altshuler Shaham (2025 averages 0.00% of deposits and 0.73% of balance only), Analyst (bylaws maximum 2.00% of balance and 0% of deposits, and 0.62% actually charged in 2025), Harel and Clal (product content client-rendered, no fee text), Migdal and More (no fee on the study-fund pages; the online join flows are script-only), Meitav (data/fees/meitav@2026-10-23.json); Yelin Lapidot (Imperva) and Menora (Radware) block scripts.",
+  "lines": [],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "notice_rule_ids": [
+    "PF-16"
+  ]
+}

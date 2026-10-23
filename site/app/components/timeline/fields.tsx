@@ -6,6 +6,12 @@ import { IconReset } from "../icons";
 import { StateTag } from "../provenance";
 import { Button, cx } from "../ui";
 
+/** Commits typed values that are still waiting out the 150 ms typing pause (F13). */
+const pendingCommits = new Set<() => void>();
+export function flushPendingFields(): void {
+  for (const run of [...pendingCommits]) run();
+}
+
 export interface FieldProps {
   label: ReactNode;
   unit: string;
@@ -26,36 +32,68 @@ export interface FieldProps {
   optional?: boolean;
   inputMode?: "decimal" | "numeric";
   autoFocus?: boolean;
+  /** An error that comes from another field's value (for example "kept available" above "amount now"); shown when the field has no error of its own. */
+  externalError?: string | null;
 }
 
 export function NumberField(props: FieldProps) {
-  const { label, unit, value, isEntered, validate, onCommit, onReset, hint, note, placeholder, disabled, compact, optional, inputMode = "decimal", autoFocus } = props;
+  const { label, unit, value, isEntered, validate, onCommit, onReset, hint, note, placeholder, disabled, compact, optional, inputMode = "decimal", autoFocus, externalError = null } = props;
+
   const ids = useId();
   const [text, setText] = useState(value === null ? "" : formatTyped(value));
   const [error, setError] = useState<string | null>(null);
   const [focused, setFocused] = useState(false);
   const timer = useRef<number | null>(null);
+  const pending = useRef<(() => void) | null>(null);
+  const drop = () => {
+    if (timer.current) window.clearTimeout(timer.current);
+    timer.current = null;
+    if (pending.current) pendingCommits.delete(pending.current);
+    pending.current = null;
+  };
+  /** Runs `fn` after the typing pause, or at once when something flushes first (blur, a preset, navigation, unmount). */
+  const later = (fn: () => void) => {
+    drop();
+    const run = () => {
+      drop();
+      fn();
+    };
+    pending.current = run;
+    pendingCommits.add(run);
+    timer.current = window.setTimeout(run, 150);
+  };
+  const flush = () => pending.current?.();
+  const flushRef = useRef(flush);
+  flushRef.current = flush;
+  useEffect(() => () => flushRef.current(), []);
+  const lastValue = useRef(value);
   useEffect(() => {
-    if (!focused) {
+    const changed = lastValue.current !== value;
+    lastValue.current = value;
+    if (focused) return;
+    // a typed value that failed its check stays on screen with its message after the field loses focus (F7); a new value from outside replaces it
+    if (changed || !error) {
       setText(value === null ? "" : formatTyped(value));
       setError(null);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, focused]);
+  const shownError = error ?? externalError;
   const change = (t: string) => {
     setText(t);
-    if (timer.current) window.clearTimeout(timer.current);
+    drop();
     if (t.trim() === "" && optional) {
       setError(null);
-      timer.current = window.setTimeout(() => onReset(), 150);
+      later(() => onReset());
       return;
     }
     const n = parseTyped(t);
     const err = Number.isNaN(n) ? copy.errors.nan : validate(n);
     setError(err);
-    if (!err) timer.current = window.setTimeout(() => onCommit(n), 150);
+    if (!err) later(() => onCommit(n));
   };
   const box = (
-    <div className={cx("field-box", compact && "field-box-compact", isEntered && "field-box-entered", error && "field-box-error", disabled && "opacity-60")}>
+    <div className={cx("field-box", compact && "field-box-compact", isEntered && "field-box-entered", shownError && "field-box-error", disabled && "opacity-60")}>
       <input
         id={ids}
         type="text"
@@ -64,11 +102,12 @@ export function NumberField(props: FieldProps) {
         value={text}
         placeholder={disabled ? copy.loading : placeholder}
         disabled={disabled}
-        aria-invalid={error ? true : undefined}
-        aria-describedby={[hint ? `${ids}-hint` : null, error ? `${ids}-err` : null].filter(Boolean).join(" ") || undefined}
+        aria-invalid={shownError ? true : undefined}
+        aria-describedby={[hint ? `${ids}-hint` : null, shownError ? `${ids}-err` : null].filter(Boolean).join(" ") || undefined}
         onChange={(e) => change(e.target.value)}
         onFocus={() => setFocused(true)}
         onBlur={() => {
+          flush();
           setFocused(false);
           if (!error && value !== null && text.trim() !== "") setText(formatTyped(value));
         }}
@@ -85,9 +124,9 @@ export function NumberField(props: FieldProps) {
           {label}
         </label>
         {box}
-        {error && (
+        {shownError && (
           <span id={`${ids}-err`} className="text-xs text-destructive">
-            {error}
+            {shownError}
           </span>
         )}
       </div>
@@ -99,9 +138,9 @@ export function NumberField(props: FieldProps) {
         {label}
       </label>
       {box}
-      {error ? (
+      {shownError ? (
         <span id={`${ids}-err`} className="text-xs text-destructive">
-          {error}
+          {shownError}
         </span>
       ) : hint ? (
         <span id={`${ids}-hint`} className="text-xs text-muted-foreground">

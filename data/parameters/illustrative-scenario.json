@@ -97,6 +97,22 @@
       "effective_to": null,
       "update_rule": "founder",
       "notes": "yearly rate for cash-like products (deposit, money-market fund, makam, government bond, current account); stands in for the sourced series A-20 to A-25 until they arrive in release 2"
+    },
+    "annual_income": {
+      "value": 144000,
+      "unit": "nis",
+      "state": "sourced",
+      "source": {
+        "url": "docs/parameters-rationale.md#illustrative-scenario",
+        "title": "Founder's choice, made by Claude at his request: illustrative scenario",
+        "publisher": "founder",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": "2026-10-23",
+      "effective_to": null,
+      "update_rule": "founder",
+      "notes": "read only by runs that need an income (the self-employed study-fund deduction, TXH-05); the person's entered income replaces it"
     }
   },
   "sliders": {
@@ -202,10 +218,51 @@
     }
   },
   "rationale": "The graph opens on 10,000 NIS today, 500 NIS a month, for 10 years, with 5% a year for market products, 3.5% for cash-like products and 2% inflation. These are round, middle-of-the-road starting values for someone starting to save, not a forecast; change any of them on the page. They are the values the test scenarios use, so every guide graph is checked. The sliders run from 0 to 10,000 NIS a month and from 1 to 40 years; larger values can be typed.",
+  "rationale_he": "הגרף נפתח על 10,000 ₪ היום, 500 ₪ בחודש, ל-10 שנים, עם 5% בשנה למוצרי שוק, 3.5% למוצרים דמויי מזומן ו-2% אינפלציה. אלה ערכי התחלה עגולים ואמצעיים למי שמתחיל לחסוך, לא תחזית; אפשר לשנות כל אחד מהם בעמוד. אלה הערכים שתרחישי הבדיקה משתמשים בהם, כך שכל גרף במדריך נבדק. המחוונים נעים מ-0 עד 10,000 ₪ בחודש ומשנה אחת עד 40 שנים; ערכים גדולים יותר אפשר להקליד.",
   "chosen_by": "Claude, at the founder's request (2026-10-23: \"do whatever you think fits\")",
   "signed_off_by": "founder",
   "signed_off_on": "2026-10-23",
   "shown_as": "site parameter",
+  "instruments": {
+    "bank-deposit": {
+      "deposit_terms": "leumi-pakam-kavua-365"
+    },
+    "savings-plan": {
+      "deposit_terms": "leumi-tashlumim-shekeli-3y"
+    },
+    "current-account": {
+      "deposit_terms": "leumi-current-account"
+    },
+    "money-market-fund-daily": {
+      "fund": "5138763",
+      "tariff": "leumi"
+    },
+    "money-market-fund-renewable": {
+      "fund": "1223866",
+      "tariff": "leumi"
+    },
+    "brokerage-account": {
+      "fund": "1148162",
+      "tariff": "leumi"
+    },
+    "makam": {
+      "tariff": "leumi"
+    },
+    "government-bond": {
+      "tariff": "leumi",
+      "series_rule": "GOV-11"
+    },
+    "keren-hishtalmut": {
+      "track": 880,
+      "employment": "self-employed"
+    },
+    "pension-general": {
+      "track": 2158
+    },
+    "provident-for-annuity": {
+      "track": 923
+    }
+  },
   "ranges": {
     "age": {
       "min": {

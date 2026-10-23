@@ -1,0 +1,102 @@
+{
+  "id": "TXG-35",
+  "title": "National Insurance and health contributions on an employee's salary (2026)",
+  "title_he": "דמי ביטוח לאומי ובריאות על שכר של עובד שכיר",
+  "text_he": "עובד שכיר מגיל שמונה-עשרה עד גיל הפרישה משלם שיעור מופחת, שמורכב מדמי ביטוח לאומי ודמי ביטוח בריאות, על חלק השכר החודשי עד הסף המופחת, ואת השיעור המלא על החלק שמהסף עד ההכנסה המרבית. המעסיק משלם שיעורים משלו על אותם חלקים, ושכר מעל ההכנסה המרבית לא מחויב. הספים מתעדכנים בכל ינואר. האם הפקדת מעסיק לקרן השתלמות מעל התקרה, שממוסה כשכר, נכללת בבסיס הזה לא נאמר בדף; זהו היסק.",
+  "figure_names_he": {
+    "reduced_threshold": "סף השכר החודשי לשיעור המופחת",
+    "max_income": "ההכנסה החודשית המרבית לדמי ביטוח",
+    "reduced_rate": "שיעור העובד המופחת (ביטוח לאומי ובריאות)",
+    "full_rate": "שיעור העובד המלא (ביטוח לאומי ובריאות)"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-deposit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-05",
+  "figures": {
+    "reduced_threshold": {
+      "value": 7703,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.btl.gov.il/Insurance/Rates/Pages/%D7%9C%D7%A2%D7%95%D7%91%D7%93%D7%99%D7%9D%20%D7%A9%D7%9B%D7%99%D7%A8%D7%99%D7%9D.aspx",
+        "title": "NII, \"לעובדים שכירים - שיעורי וסכומי דמי ביטוח\"",
+        "publisher": "National Insurance Institute",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "average-wage-linked",
+      "rule_ids": [
+        "TXG-35"
+      ],
+      "state": "sourced",
+      "notes": "Monthly salary up to this amount pays the reduced rate (from 1.1.2026). Updated each January."
+    },
+    "max_income": {
+      "value": 51910,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.btl.gov.il/Insurance/Rates/Pages/%D7%9C%D7%A2%D7%95%D7%91%D7%93%D7%99%D7%9D%20%D7%A9%D7%9B%D7%99%D7%A8%D7%99%D7%9D.aspx",
+        "title": "NII, \"לעובדים שכירים - שיעורי וסכומי דמי ביטוח\"",
+        "publisher": "National Insurance Institute",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "average-wage-linked",
+      "rule_ids": [
+        "TXG-35"
+      ],
+      "state": "sourced",
+      "notes": "Maximum insurable monthly income (from 1.1.2026); salary above it is not charged."
+    },
+    "reduced_rate": {
+      "value": 4.27,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.btl.gov.il/Insurance/Rates/Pages/%D7%9C%D7%A2%D7%95%D7%91%D7%93%D7%99%D7%9D%20%D7%A9%D7%9B%D7%99%D7%A8%D7%99%D7%9D.aspx",
+        "title": "NII, \"לעובדים שכירים - שיעורי וסכומי דמי ביטוח\"",
+        "publisher": "National Insurance Institute",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXG-35"
+      ],
+      "state": "sourced",
+      "notes": "Employee rate up to the threshold: 1.04% National Insurance + 3.23% health (NII page, rates from 1.1.2025 and 1.2.2025)."
+    },
+    "full_rate": {
+      "value": 12.17,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.btl.gov.il/Insurance/Rates/Pages/%D7%9C%D7%A2%D7%95%D7%91%D7%93%D7%99%D7%9D%20%D7%A9%D7%9B%D7%99%D7%A8%D7%99%D7%9D.aspx",
+        "title": "NII, \"לעובדים שכירים - שיעורי וסכומי דמי ביטוח\"",
+        "publisher": "National Insurance Institute",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXG-35"
+      ],
+      "state": "sourced",
+      "notes": "Employee rate from the threshold up to the maximum income: 7% National Insurance + 5.17% health. Whether an employer's study-fund deposit above the s.3(e) ceiling is in this base is not stated on the page; the Chief Economist paper implies it is (an inference, TXH-01, TXH-03): the engine labels it a reading."
+    }
+  },
+  "il_finance_file": "tax-general.md",
+  "checked": "2026-10-22"
+}

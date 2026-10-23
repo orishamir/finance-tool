@@ -1,0 +1,32 @@
+{
+  "id": "amlt-knyyh-vmkyrh",
+  "he": "עמלת קנייה ומכירה",
+  "en": null,
+  "meaning": "עמלה על כל קנייה או מכירה של ניירות ערך; בבנקים היא אחוז מהסכום, עם מינימום ומקסימום.",
+  "where": [
+    "ad",
+    "statement",
+    "tariff"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [
+    "קניה, מכירה ופדיון של ניירות ערך",
+    "עמלות מסחר",
+    "עמלות קניה ומכירה"
+  ],
+  "rule_ids": [
+    "BRK-16",
+    "BRK-19",
+    "BRK-33",
+    "MF-27"
+  ],
+  "source": {
+    "url": "https://boi.org.il/media/w2lgmymp/159a.pdf",
+    "title": "בנק ישראל, כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

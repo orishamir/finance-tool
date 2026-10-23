@@ -1,6 +1,11 @@
 {
   "id": "TXF-27",
   "title": "US estate tax exposure of a non-US person holding US-situs assets",
+  "title_he": "מס ירושה אמריקני למי שאינו אמריקני ומחזיק נכסים אמריקניים",
+  "text_he": "מנהל עיזבון של מי שאינו תושב ואינו אזרח ארצות הברית חייב להגיש דוח מס ירושה אמריקני כששווי השוק של הנכסים הממוקמים בארצות הברית במות המנוח עולה על סף הדיווח, הנקוב בדולרים. מניות של חברות שהתאגדו לפי דין ארצות הברית הן נכס אמריקני, בלי קשר למקום התעודות, וכל מניה אחרת היא נכס מחוץ לה; חשבונות בנק שאינם קשורים לעסק אמריקני, ניירות שמניבים ריבית תיק וחלק מתגמולי ביטוח חיים אינם נכס אמריקני. אמנות מס ירושה יכולות לשנות זאת, אבל ישראל אינה ברשימת האמנות של רשות המס האמריקנית, ולכן תושב ישראל שמחזיק קרנות סל אמריקניות חשוף, ואילו מניות של קרן אירית הן מניות של תאגיד לא אמריקני. אם קרן אמריקנית המאוגדת כנאמנות נחשבת מניה של תאגיד אמריקני, וטבלת השיעורים, לא נקראו.",
+  "figure_names_he": {
+    "estate_threshold": "סף שווי הנכסים האמריקניים (בדולרים) לדיווח מס ירושה"
+  },
   "strength": "primary",
   "dimensions": [
     "foreign-withholding-domicile",
@@ -11,7 +16,7 @@
   "figures": {
     "estate_threshold": {
       "value": 60000,
-      "unit": "nis",
+      "unit": "usd",
       "source": {
         "url": "https://www.irs.gov/individuals/international-taxpayers/some-nonresidents-with-us-assets-must-file-estate-tax-returns",
         "title": "IRS, Some nonresidents with U.S. assets must file estate tax returns (last reviewed 27-Jun-2026); Instructions for Form 706-NA (09/2025)",
@@ -28,7 +33,7 @@
       ],
       "state": "sourced",
       "currency": "USD",
-      "notes": "AMOUNT IS IN US DOLLARS, NOT NIS: USD 60,000. The schema unit list has no currency-neutral money unit, so unit is 'nis' only because no better unit exists; read the 'currency' field. This is the filing threshold: the executor of a nonresident non-citizen files Form 706-NA when the fair market value at death of US-situated assets exceeds USD 60,000. Not stated to be indexed. Israel has no estate-tax treaty with the US."
+      "notes": "AMOUNT IS IN US DOLLARS, NOT NIS: USD 60,000. This is the filing threshold: the executor of a nonresident non-citizen files Form 706-NA when the fair market value at death of US-situated assets exceeds USD 60,000. Not stated to be indexed. Israel has no estate-tax treaty with the US. Unit corrected 2026-10-23: the threshold is in US dollars."
     }
   },
   "il_finance_file": "tax-securities-foreign.md",

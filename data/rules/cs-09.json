@@ -1,0 +1,61 @@
+{
+  "id": "CS-09",
+  "title": "What the default (increased-risk) track holds",
+  "title_he": "מה מחזיק מסלול ברירת המחדל בסיכון מוגבר",
+  "strength": "institution",
+  "dimensions": [
+    "currency",
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "equity_exposure_min": {
+      "value": 75,
+      "unit": "pct",
+      "source": {
+        "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
+        "title": "Harel child-savings standard bylaw, edition 3, April 2026, Annex A (increased-risk track, fund 11377): equity exposure \"לא פחות מ-75% ולא יותר מ-120%\"",
+        "publisher": "Harel Pension and Gemel",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "CS-09"
+      ],
+      "state": "sourced",
+      "notes": "Lower bound of the equity exposure of Harel's increased-risk (default) track. Harel's bylaw only; other managers' track policies were not read (CS OQ7)."
+    },
+    "equity_exposure_max": {
+      "value": 120,
+      "unit": "pct",
+      "source": {
+        "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
+        "title": "Harel child-savings standard bylaw, edition 3, April 2026, Annex A (increased-risk track, fund 11377)",
+        "publisher": "Harel Pension and Gemel",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "CS-09"
+      ],
+      "state": "sourced",
+      "notes": "Upper bound of the equity exposure of Harel's increased-risk (default) track; above 100% through derivatives. Harel's bylaw only (CS OQ7)."
+    }
+  },
+  "text_he": "בהראל, מסלול הסיכון המוגבר (ברירת המחדל) מחזיק חשיפה למניות בארץ ובחו\"ל של 75% עד 120% מנכסי המסלול, ועשוי להיות חשוף למטבע חוץ. מסלולי המועט והבינוני מתוארים רק כ'לפי שיקול דעת ועדת ההשקעות'. נקרא תקנון הראל בלבד (שאלה פתוחה 7).",
+  "figure_names_he": {
+    "equity_exposure_min": "חשיפה מינימלית למניות במסלול ברירת המחדל (הראל)",
+    "equity_exposure_max": "חשיפה מקסימלית למניות במסלול ברירת המחדל (הראל)"
+  },
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-22"
+}

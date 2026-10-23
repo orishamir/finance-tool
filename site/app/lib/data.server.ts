@@ -4,9 +4,12 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import {
   cmaPeriodFile,
+  dimensionId,
+  dimensionRecord,
   feesSnapshot,
   parameterRecord,
   ruleRecord,
+  termRecord,
   wrapperRecord,
   type CmaPeriodFile,
   type FeesSnapshot,
@@ -116,13 +119,25 @@ export interface CmaData {
 
 const collator = new Intl.Collator("he");
 
-export function loadCma(): CmaData {
+function latestCmaFiles(): Map<string, CmaPeriodFile> {
   const files = readDir("data/cma", cmaPeriodFile);
   const latest = new Map<string, CmaPeriodFile>();
   for (const f of files) {
     const prev = latest.get(f.dataset);
     if (!prev || prev.report_period < f.report_period) latest.set(f.dataset, f);
   }
+  return latest;
+}
+
+/** The regulator's two fee averages of every track in the latest period, as the file holds them (value objects). */
+export function loadCmaFees(): Map<number, { balance: ValueObject; deposit: ValueObject }> {
+  const out = new Map<number, { balance: ValueObject; deposit: ValueObject }>();
+  for (const f of latestCmaFiles().values()) for (const fund of f.funds) out.set(fund.fund_id, { balance: fund.fees.avg_annual_management_fee, deposit: fund.fees.avg_deposit_fee });
+  return out;
+}
+
+export function loadCma(): CmaData {
+  const latest = latestCmaFiles();
   const tracks: Track[] = [];
   const byCompany = new Map<string, Company>();
   for (const f of latest.values()) {
@@ -180,11 +195,12 @@ export interface ChecklistRow {
   explanation: string;
 }
 
-/** docs/glossary.md section 2: the 26 checklist rows, in order. */
+/** data/dimensions/: the 26 checklist rows, in the order of the schema's `dimensionId` enum (docs/glossary.md section 2). */
 export function loadChecklistRows(): ChecklistRow[] {
-  const doc = readFileSync(join(root, "docs/glossary.md"), "utf8");
-  const section = doc.slice(doc.indexOf("## 2. The checklist"), doc.indexOf("## 3. Not covered yet"));
-  return [...section.matchAll(/^\| `([a-z-]+)` \| \*\*(.+?)\*\* \| (.+?) \|$/gm)].map((m) => ({ id: m[1]!, name: m[2]!, explanation: m[3]!.trim() }));
+  const order: string[] = [...dimensionId.options];
+  return readDir("data/dimensions", dimensionRecord)
+    .sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id))
+    .map((d) => ({ id: d.id, name: d.he, explanation: d.one_line }));
 }
 
 export interface TermSource {
@@ -196,59 +212,36 @@ export interface TermSource {
 
 export interface TermRow {
   he: string;
-  /** The research topic file the row came from (a-cash-bonds, c-gemel-hishtalmut, …). */
-  topic: string;
   explanation: string;
   variants: string[];
   ruleIds: string[];
   source: TermSource | null;
+  /** The places a reader meets the term (data-schema 3.11 `where`). */
   where: string[];
+  /** The guide pages (wrapper ids) the term belongs to. */
+  wrapperIds: string[];
+  /** The exposure records the term belongs to. */
+  exposureIds: string[];
 }
-
-interface ResearchTerm {
-  topic: string;
-  kind?: string;
-  term_he: string;
-  variants_he?: string[];
-  explain_he?: string | null;
-  rule_ids?: string[];
-  source?: { title?: string; url?: string; checked?: string; strength?: string } | null;
-  where?: string[];
-}
-
-const rank: Record<string, number> = { primary: 0, "primary-mirror": 1, institution: 2, secondary: 3 };
 
 /**
- * The glossary rows (docs/glossary.md section 1, generated from research/glossary/terms/*.json). Read from
- * the research files, merged as gen_glossary.py merges them: one row per spelling, strongest source kept.
- * They move to data/terms/ (data-schema §3.11) once that collection has its schema.
+ * The glossary rows (docs/glossary.md section 1), read from data/terms/ (generated from research/glossary
+ * by packages/pipeline/scripts/gen-terms.ts, which keeps the strongest source per spelling). Sorted with the
+ * Hebrew collator.
  */
 export function loadTerms(): TermRow[] {
-  const dir = join(root, "research/glossary/terms");
-  const rows = readdirSync(dir)
-    .filter((f) => f.endsWith(".json"))
-    .sort()
-    .flatMap((f) => (JSON.parse(readFileSync(join(dir, f), "utf8")) as ResearchTerm[]).map((r) => ({ ...r, topic: f.replace(/\.json$/, "") })));
-  const out = new Map<string, TermRow>();
-  for (const r of rows) {
-    if (r.kind === "dimension" || !r.explain_he) continue;
-    const he = r.term_he.trim();
-    const key = `${r.topic}|${he}`;
-    const src = r.source?.url && r.source.title && r.source.checked ? { title: r.source.title, url: r.source.url, checked: r.source.checked, strength: (r.source.strength ?? "secondary") as TermSource["strength"] } : null;
-    const row: TermRow = { he, topic: r.topic, explanation: r.explain_he.trim(), variants: (r.variants_he ?? []).filter((v) => v && v !== he), ruleIds: r.rule_ids ?? [], source: src, where: r.where ?? [] };
-    const prev = out.get(key);
-    if (!prev) {
-      out.set(key, row);
-      continue;
-    }
-    const keep = (rank[prev.source?.strength ?? "secondary"] ?? 4) <= (rank[row.source?.strength ?? "secondary"] ?? 4) ? prev : row;
-    const other = keep === prev ? row : prev;
-    keep.variants = [...new Set([...keep.variants, ...other.variants])];
-    keep.ruleIds = [...new Set([...keep.ruleIds, ...other.ruleIds])];
-    keep.where = [...new Set([...keep.where, ...other.where])];
-    out.set(key, keep);
-  }
-  return [...out.values()].sort((a, b) => collator.compare(a.he, b.he));
+  return readDir("data/terms", termRecord)
+    .map((t) => ({
+      he: t.he,
+      explanation: t.meaning,
+      variants: t.variants,
+      ruleIds: t.rule_ids,
+      source: { title: t.source.title, url: t.source.url, checked: t.source.checked, strength: t.source.strength },
+      where: t.where,
+      wrapperIds: t.wrapper_ids,
+      exposureIds: t.exposure_ids ?? [],
+    }))
+    .sort((a, b) => collator.compare(a.he, b.he));
 }
 
 export interface NotCoveredRow {

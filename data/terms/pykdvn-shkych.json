@@ -1,0 +1,24 @@
+{
+  "id": "pykdvn-shkych",
+  "he": "פיקדון שכיח",
+  "en": null,
+  "meaning": "פיקדון מהסוג הנפוץ בפועל; הבנק מציג את הריבית שלו כשהריבית המינימלית חלה רק על מעט פיקדונות",
+  "where": [
+    "provider-site"
+  ],
+  "wrapper_ids": [],
+  "variants": [
+    "שיעור הריבית לפיקדון שכיח"
+  ],
+  "rule_ids": [
+    "BANK-10",
+    "BANK-14"
+  ],
+  "source": {
+    "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
+    "title": "Banking Rules (Customer Service) (Fair Disclosure and Delivery of Documents) 1992, consolidated to 30.12.2014, BoI copy",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "amyt-mvtb",
+  "he": "עמית מוטב",
+  "en": null,
+  "meaning": "מעמד במס כשהפקדות הפנסיה בשנה, כולל של המעסיק, מגיעות לרף שנקבע לפי השכר הממוצע; משנה את תקרות ההטבה",
+  "where": [],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXP-03",
+    "TXP-04",
+    "TXP-06"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

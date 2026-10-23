@@ -3,15 +3,19 @@ import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/guide-index";
 import { guideIndex as copy, site } from "../copy";
 import { IconDrillIn } from "../components/icons";
+import { SavedGoalStrip } from "../components/compare/strip";
 import { PageShell } from "../components/shell";
+import { GoalsProvider, type Presets } from "../lib/goal";
 import { Card } from "../components/ui";
 
 export async function loader() {
   const { loadTerms, loadWrappers, today } = await import("../lib/data.server");
+  const { loadExposures } = await import("../lib/instruments.server");
   const terms = loadTerms();
   const line = (name: string) => terms.find((t) => t.he === name)?.explanation ?? null;
   const wrappers = loadWrappers().map((w) => ({ id: w.id, name: w.names.he[0]!, line: line(w.names.he[0]!) }));
-  return { wrappers, exposures: [] as { id: string; name: string; line: string | null }[], today: today() };
+  const { goalContext } = await import("../lib/compare.server");
+  return { wrappers, exposures: loadExposures().map((e) => ({ id: e.id, name: e.names.he[0] ?? e.id, line: e.one_line_he ?? line(e.names.he[0] ?? "") })), today: today(), goal: goalContext() };
 }
 
 export function meta() {
@@ -37,11 +41,13 @@ function InstrumentCard({ href, name, line, quiet }: { href: string; name: strin
 export default function GuideIndex() {
   const data = useLoaderData<typeof loader>();
   return (
+    <GoalsProvider presets={data.goal.presets as Presets}>
     <PageShell current="guide" data={{ rules: {}, terms: {}, dimensions: {}, today: data.today }}>
       <div className="flex flex-col gap-section pt-6 lg:pt-10">
         <header className="flex flex-col gap-2">
           <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
           <p className="text-lg text-muted-foreground max-w-measure">{copy.lede}</p>
+          <SavedGoalStrip variant="compact" presets={data.goal.presets as Presets} meta={data.goal.meta} today={data.today} />
         </header>
         <section aria-labelledby="g1" className="flex flex-col gap-4">
           <div>
@@ -66,7 +72,7 @@ export default function GuideIndex() {
             </div>
             <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {data.exposures.map((e) => (
-                <InstrumentCard key={e.id} href={`/guide/${e.id}`} name={e.name} line={e.line} />
+                <InstrumentCard key={e.id} href={`/exposure/${e.id}`} name={e.name} line={e.line} />
               ))}
             </ul>
           </section>
@@ -76,5 +82,6 @@ export default function GuideIndex() {
         </ul>
       </div>
     </PageShell>
+    </GoalsProvider>
   );
 }

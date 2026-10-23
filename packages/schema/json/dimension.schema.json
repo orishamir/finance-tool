@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "enum": [
+        "tax-at-deposit",
+        "tax-during",
+        "tax-at-exit",
+        "real-vs-nominal",
+        "age-or-use-exemption",
+        "switching-tax-event",
+        "loss-offset",
+        "foreign-withholding-domicile",
+        "distribution-policy",
+        "fee-management-balance",
+        "fee-deposit",
+        "fee-trade",
+        "fee-custody",
+        "fee-fx",
+        "fee-exit",
+        "fee-change-over-time",
+        "liquidity-lockup",
+        "deposit-ceiling",
+        "protection",
+        "currency",
+        "minimum",
+        "regulator",
+        "reporting-obligation",
+        "eligibility",
+        "transfer-switch-process",
+        "insurance-cover"
+      ]
+    },
+    "he": {
+      "type": "string",
+      "minLength": 1
+    },
+    "one_line": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "publisher": {
+          "type": "string",
+          "minLength": 1
+        },
+        "strength": {
+          "type": "string",
+          "enum": [
+            "primary",
+            "primary-mirror",
+            "institution",
+            "secondary",
+            "open",
+            "entered"
+          ]
+        },
+        "checked": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        }
+      },
+      "required": [
+        "url",
+        "title",
+        "publisher",
+        "strength",
+        "checked"
+      ],
+      "additionalProperties": false
+    },
+    "rule_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "id",
+    "he",
+    "one_line",
+    "source",
+    "rule_ids"
+  ],
+  "additionalProperties": false
+}

@@ -64,7 +64,7 @@ Field rules:
 
 ## 2. Units and enumerations
 
-Units: `nis`, `pct` (a share), `pct_per_year`, `pct_of_deposit`, `pct_of_trade`, `pct_of_balance_per_period`, `nis_per_month`, `nis_per_trade`, `nis_per_transfer`, `months`, `years`, `days`, `business_days`, `index_points`, `count`, `boolean`, `text`.
+Units: `nis`, `usd`, `eur`, `pct` (a share), `pct_per_year`, `pct_of_deposit`, `pct_of_trade`, `pct_of_balance_per_period`, `nis_per_month`, `nis_per_trade`, `nis_per_transfer`, `months`, `years`, `days`, `business_days`, `index_points`, `count`, `boolean`, `text`.
 
 Fee bases (`fee.base`): `deposit`, `balance`, `trade`, `custody`, `fx`, `exit`, `fixed_period`, `distribution_handling`, `spread`, `creation_redemption`, `transfer_out`, `load`, `redemption_deduction`, `variable_management`, `trustee`, `direct_expenses`, `insurance_premium`.
 
@@ -104,7 +104,9 @@ The rules themselves stay in `il-finance` (markdown). This collection holds only
 ```
 
 - `figures` keys are the names used in `docs/method.md` formulas. A figure that differs by tax year is stored once per year in `figures.<name>.by_tax_year`, a map from year to value object.
+- Optional `text_he` (2 to 4 sentences of plain Hebrew, shown on the rule card) and `figure_names_he` (a map from figure key to its Hebrew name). The English `title` stays the key the rules page falls back to when `text_he` is absent. Added 2026-10-23.
 - `strength: open` records exist (for the rules page and the blocked marks) but carry no `figures`.
+- `title_he` (optional, added 2026-10-23): the Hebrew title shown in lists and on cards; the English `title` stays the key and the fallback. `text_he` and `figure_names_he` are the plain-Hebrew text and figure names.
 - `recheck_date` is required for every rule on the "likely to change" list (product.md 3.8).
 - Bracket tables (TXG-02, TXG-04) store `figures.brackets` as an ordered array of `{ "up_to": value object, "rate": value object }`.
 - Conflicts (coverage.md §9) are recorded in `notes` on the figure and the engine uses the value the rule base says computes (for example TXI-11's 15%).
@@ -123,7 +125,9 @@ The rules themselves stay in `il-finance` (markdown). This collection holds only
 }
 ```
 
-`sensitivity-bounds` (P-02) holds one entry per assumption ID (`A-01` ...) with `lo` and `hi` value objects. `fee-verdict-thresholds` (P-03) holds `negotiate_nis`, `avoid_nis`, `negotiate_share`. `classification-fit` (P-04) holds an array of `{ "classification": "<CMA value, exact spelling>", "horizon_min_years", "horizon_max_years", "max_fall_pct" }`. `illustrative-scenario` (P-05) holds `inputs` (`amount_now`, `monthly_deposit`, `horizon_years`, `A-01`, `A-02`, `cash_rate`) and `sliders` (`min`, `max`, `step` for the monthly deposit and the years). `golden-tolerance` (P-06) holds `abs_nis` and `rel_pct`. The values are the founder's (`docs/parameters-rationale.md`).
+An optional `rationale_he` (string) holds the Hebrew version of `rationale` for the page (added 2026-10-23).
+
+`sensitivity-bounds` (P-02) holds one entry per assumption ID (`A-01` ...) with `lo` and `hi` value objects. `fee-verdict-thresholds` (P-03) holds `negotiate_nis`, `avoid_nis`, `negotiate_share`. `classification-fit` (P-04) holds an array of `{ "classification": "<CMA value, exact spelling>", "horizon_min_years", "horizon_max_years", "max_fall_pct" }`. `illustrative-scenario` (P-05) holds `inputs` (`amount_now`, `monthly_deposit`, `horizon_years`, `A-01`, `A-02`, `cash_rate`, and the optional `annual_income`, `nis`, read only by runs that need an income) and `sliders` (`min`, `max`, `step` for the monthly deposit and the years). It also holds `instruments` (added 2026-10-23, typed in `parameterRecord`): a map from wrapper id to the data records of the representative instrument the guide page's illustrative run takes its terms from, each key naming a record by id: `deposit_terms` (a `data/terms/deposits/` id; deposit family), `fund` (a `data/funds/` id) and `tariff` (a `data/fees/` provider id whose `list` lines are the tariff) for the securities family, `ira_fees` (a fees provider id; only `ira-hishtalmut`), `tariff` alone for `makam`, and `tariff` with `series_rule` (a `data/rules/` GOV rule id) for `government-bond`. `track` (a CMA `fund_id`; added 2026-10-23) is for a provident-family wrapper that no managing company publishes a list fee for (today `keren-hishtalmut`, track `880`): the run takes the track's `avg_annual_management_fee` and `avg_deposit_fee` (§3.13) as its balance and deposit fees, labelled as an average actually charged, not a list price. `current-account` names a `deposit_terms` record whose `term_months` may be null (no term; the run uses the ledger's month-to-month balance). The two money-market wrappers read no tariff line (`tariff` stays, unread): their trade and custody lines are 0 under MF-26 and BANK-18. A wrapper with no entry has no timeline on its guide page, and the build logs which input is missing. The validator checks that every id the map names exists, and that a `track` is a `fund_id` of the latest period in `data/cma/` (§4). The mapping is in `docs/method.md` §2.4 "Instrument terms". `golden-tolerance` (P-06) holds `abs_nis` and `rel_pct`. The values are the founder's (`docs/parameters-rationale.md`).
 
 ### 3.3 `data/instruments/wrappers/` — one record per wrapper (D6)
 
@@ -155,6 +159,7 @@ The rules themselves stay in `il-finance` (markdown). This collection holds only
 
 - `tax_*.formula` points to `docs/method.md`; `blocked_by` lists open-question IDs; when non-empty the engine applies B3.
 - `dimensions` is computed from `rule_ids` at build time (product.md 3.3) and stored for display; a hand edit is not allowed.
+- `lawful_exit.kind` is a string with this vocabulary: `any_time`, `at_maturity`, `after_years`, `at_age`, `at_child_age`, `trading_day`. Besides `payout_business_days`, a record may carry `years`, `age`, `term_months` (each a value object) and `text` (the condition in plain words). The object stays strict (added 2026-10-23).
 - A closed wrapper (for example after a future merger of wrappers, D6) keeps its record with `effective_to` set.
 - The schema is `wrapperRecord` in `packages/schema` (added 2026-10-23). It is strict: a field not named above is an error. Which fields become a run's inputs is in `docs/method.md` §2.4.
 
@@ -169,9 +174,14 @@ The rules themselves stay in `il-finance` (markdown). This collection holds only
   "cash_like": false,
   "return_source": { "mode": "entered", "series": null },
   "variants": ["fund:1159250", "fund:ie00b5bmr087", "fund:us4642872000", "fund:11xxxxx-ibi-sp500"],
+  "wrapper_ids": ["brokerage-account"],
   "checked": "2026-10-22"
 }
 ```
+
+The schema is `exposureRecord` in `packages/schema` (strict). `id` is lowercase kebab. `kind` is one of `equity_index`, `bond_index`, `cash_like`, `mixed`, `commodity`, `other`. `currency` is an ISO 4217 code. Optional `wrapper_ids` lists the wrappers that can hold the exposure (the link had no home before 2026-10-23); optional `rule_ids` and `open_questions` list rule and open-question IDs. A `variants` entry `fund:<id>` must be the `id` of a record under `data/funds/` once that folder has files (validator).
+
+`one_line_he` (optional, added 2026-10-23) is the one Hebrew line on what the money is invested in, shown under the page's h1 and on the guide list.
 
 For cash-like exposures `return_source.mode` is `series` and `series` names the `data/series/` ID (A-20 to A-24).
 
@@ -183,7 +193,7 @@ One record per fund whose details have been collected. The set of Israeli funds 
 
 ```json
 {
-  "id": "fund:ie00b5bmr087",
+  "id": "ie00b5bmr087",
   "names": { "en": ["iShares Core S&P 500 UCITS ETF USD (Acc)"], "he": [], "tase": ["01159250"] },
   "identifiers": { "isin": "IE00B5BMR087", "tase_number": "1159250", "cusip": null, "ticker": { "LSE": "CSPX", "TASE": "..." } },
   "manager": "BlackRock", "domicile": "IE", "legal_form": "UCITS",
@@ -204,7 +214,9 @@ One record per fund whose details have been collected. The set of Israeli funds 
 }
 ```
 
-Israeli funds (Maya export, CAT-34, TXS-24) add `il_fund_tax_track` (`exempt` or `taxable`, MF/TXS), the exposure code (MF-54), `distribution_fee_type` (MF-24) and `creation_redemption_fee_category` (ETF-05).
+The schema is `fundRecord` (strict). `id` is lowercase ASCII, digits and hyphens, without a prefix; an exposure's `variants` names the record as `fund:<id>`, and the file is `funds/<id>@<snapshot>.json`. Each entry of `fees` is a value object or `null`. `distribution_policy` is `accumulating`, `distributing` or `null`; `tax_status.il_fund_tax_track` is `exempt`, `taxable` or `null`; `tax_status.tase_foreign_fund_90pct_test` is a value object or `null`. `dimensions` marks use the wrapper format (`covered`, `blocked:<OQ>`).
+
+Israeli funds (Maya export, CAT-34, TXS-24) add `il_fund_tax_track` (`exempt` or `taxable`, MF/TXS), the exposure code (MF-54, field `exposure_code`), `distribution_fee_type` (MF-24) and `creation_redemption_fee_category` (ETF-05); the last three are optional strings.
 
 ### 3.6 `data/fees/` — provider tariffs, dated snapshots (dependency 5)
 
@@ -287,6 +299,8 @@ One file per bank per product per snapshot.
 }
 ```
 
+The schema is `depositTerms` (strict). Enums: `rate_type` is `fixed` or `variable`; `linkage` is `none`, `cpi` or `fx`; `break.penalty` is `none`, `with_penalty` or `not_allowed`. `anchor` and `spread` are `null` or absent for a fixed rate. `exit_points.every_months` and `auto_renew.max_renewals` are numbers or `null`. The folder `terms/deposits/` is matched before `terms/`.
+
 ### 3.8 `data/series/` — sourced time series (dependency 7)
 
 One file per series, appended on each refresh. Observations are value objects with `date`.
@@ -305,7 +319,9 @@ One file per series, appended on each refresh. Observations are value objects wi
 }
 ```
 
-Required series for the method: `boi-policy-rate` (A-20); `bank-deposit-rate-avg-<bank>-<term>` from INTEREST_DASH (A-21); `makam-yield-<months>` (A-22); `gov-bond-yield-<type>-<years>` and auction coupons (A-23); `cpi` (F-03 history); `fx-usd-nis` and others (A-03 start value); `cpi-expectations` (A-02, **not yet sourced**, G-01); `mof-child-savings-rates` (CS-23, stale, kept for the record); `average-wage` (TXP-03, PEN-04; NII publication not reached, PEN OQ5).
+The schema is `seriesRecord` (strict; `packages/schema/src/collections/series.ts`). `terms_of_use.status` is `confirmed`, `unconfirmed` or `not-permitted`; the validator fails any series file whose status is not `confirmed` ("terms gate: not shipped", architecture 3.3), so a series the publisher's terms do not allow is never committed. `terms_of_use` has `fallback` (required) and optional `terms_url`, `read_on` and `attribution` (the attribution line the licence prescribes, shown next to the numbers). `cadence` is `daily`, `monthly` or `on change`; `stale_after_days` is an integer; `unit` comes from §2 (`index_points` for an index, `pct_per_year` for rates). Optional `notes` says what the base period or a value means and how the file is thinned; optional `raw` (`archive_key`, `sha256`) is the evidence of the latest download that changed the file. Each observation is a value object with `date` (a full ISO date; a monthly index uses the first day of its month, with `effective_to` the last day) and, for a series that holds several (a multi-key series such as bank rates by plan), an optional `key` string, unique per `date`. The validator checks that observations are sorted by `date` then `key`, with no two the same, and that every `rule_ids` entry is in the rule base. Written by the pipeline (`npm run refresh -- cbs-cpi mof-child-savings`): `cbs-cpi` (id `cbs-cpi`, the general CPI, base 2024 average = 100 from 2025-01) and `mof-child-savings-rates` (key `<bank>|<plan>|<age>|<saving period>|<metric>`, thinned to first, changes and latest per key, latest 14 months). No adapter exists for the Bank of Israel series: their terms do not permit republication (status `not-permitted`).
+
+Required series for the method: `boi-policy-rate` (A-20); `bank-deposit-rate-avg-<bank>-<term>` from INTEREST_DASH (A-21); `makam-yield-<months>` (A-22); `gov-bond-yield-<type>-<years>` and auction coupons (A-23); `cpi` (F-03 history); `fx-usd-nis` and others (A-03 start value); `cpi-expectations` (A-02, **not yet sourced**, G-01); `mof-child-savings-rates` (CS-10, CS-22, CS-23; current, corrected 2026-10-23); `average-wage` (TXP-03, PEN-04; NII publication not reached, PEN OQ5).
 
 ### 3.9 `data/averages/` — regulator averages not tied to one provider
 
@@ -329,14 +345,32 @@ Names the CMA data and the Maya export do not hold: an institution's own name fo
 }
 ```
 
+- The schema is `catalogEntry` (strict, optional `notes`). `status` is `catalogued` or `not-catalogued-yet`. `near_duplicates` is an array of `{ name, track_ids, resolution }`. Optional `default_at_joining` (boolean) is the institution's own statement that this is the track a joiner gets without choosing; the track page shows the "ברירת המחדל" tag from it. `cma_fund_id` is the fund (קופה) number as the institution's documents and the CMA transfer directory give it (CAT-09); the monthly datasets list tracks, not funds, so the validator checks only that every `track_ids` entry is a `fund_id` in the latest file of a `data/cma/` dataset (§4 item 10).
 - `cma_fund_id` and `track_ids` are empty for a bank product; `maps_to` then names the wrapper and, once collected, the `data/terms/deposits/` record.
 - `near_duplicates` records names that one institution uses for more than one product or track, with the resolution from the data, or "unresolved".
 
 ### 3.11 `data/terms/` — term matching (3.1) and `data/dimensions/` (3.3)
 
-`terms/<id>.json`: `{ "he": "...", "en": "...", "meaning": "...", "where": ["statement", "payslip", "app", "law"], "wrapper_ids": [...], "source": value object }`. Payslip labels carry `strength: institution` and `seen_by` (G-19).
+`terms/<id>.json` (schema `termRecord`, strict; `id` matches `^[a-z0-9-]+$`):
 
-`dimensions/<id>.json`: `{ "id": "tax-at-exit", "he": "...", "one_line": "...", "source": value object, "rule_ids": [...] }`. The list is hand-maintained; the marks are computed.
+```json
+{
+  "id": "kupat-gemel",
+  "he": "קופת גמל",
+  "en": null,
+  "meaning": "one-line Hebrew explanation",
+  "where": ["statement", "payslip", "app", "law"],
+  "wrapper_ids": ["kupat-gemel-lehashkaa"],
+  "variants": ["other spellings"],
+  "rule_ids": ["KGL-01"],
+  "source": { "url": "...", "title": "...", "publisher": "...", "strength": "institution", "checked": "2026-10-23" },
+  "seen_by": "optional, for payslip labels (G-19)"
+}
+```
+
+`where` entries come from `statement`, `bank-statement`, `payslip`, `app`, `ad`, `law`, `form`, `bylaws`, `gemel-net`, `prospectus`, `tariff`, `fund-name`, `tax-form`, `pensia-net`, `provider-site`; the last six were added 2026-10-23 (a fund prospectus, a provider tariff, a fund's name, a tax form such as form 106 or 867, the pension-net site, a provider's site or rate table). Optional `exposure_ids` lists the exposure records the term belongs to (ids as in §3.4), next to `wrapper_ids` for guide pages. `en` may be `null`. Payslip labels carry `strength: institution` and `seen_by` (G-19). `source` here is the `source` block of a value object plus `checked`, not a full value object.
+
+`dimensions/<id>.json` (schema `dimensionRecord`, strict): `{ "id": "tax-at-exit", "he": "...", "one_line": "...", "source": { ...as above }, "rule_ids": [...] }`. `id` is one of the 26 rows of `docs/glossary.md` section 2 (an enum in the schema). The list is hand-maintained; the marks are computed.
 
 ### 3.12 `data/changelog.jsonl` — one line per change (3.8, 3.9)
 
@@ -369,7 +403,10 @@ Added 2026-10-22 (approved by the founder, `docs/architecture.md` gap 8.1). One 
       "sub_specialization": "<SUB_SPECIALIZATION>",
       "inception_date": "YYYY-MM-DD",
       "raw_fields": { "AVG_ANNUAL_MANAGEMENT_FEE": "<as received>", "AVG_DEPOSIT_FEE": "<as received>" },
-      "fees": null
+      "fees": {
+        "avg_annual_management_fee": { "value": 0.61, "unit": "pct_per_year", "...": "value object, below" },
+        "avg_deposit_fee": { "value": 0, "unit": "pct_of_deposit", "...": "value object, below" }
+      }
     }
   ]
 }
@@ -377,7 +414,7 @@ Added 2026-10-22 (approved by the founder, `docs/architecture.md` gap 8.1). One 
 
 - Text fields are stored exactly as the source spells them (§1, Hebrew), after decoding the CSV from Windows-1255.
 - Only the fields a formula or capability uses are kept: identity, names, manager and classification for the catalogue (3.10) and the fit mark (F-70), and the two fee fields for the track workbench (F-64). Other CMA fields are added when a capability needs them.
-- **Fee fields stay raw until their definitions are confirmed** (product.md dependency 4, discovery O11). Until then `raw_fields` holds them as received and `fees` is `null`, and the site shows names and classification only. Once confirmed, `fees` holds `avg_annual_management_fee` and `avg_deposit_fee` as value objects with their unit, and validation requires them.
+- **Fee fields (definitions confirmed 2026-10-23, CAT-35 to CAT-39, CAT-06).** `raw_fields` keeps the two fields as received; `fees` is required and holds `avg_annual_management_fee` (unit `pct_per_year`, from `AVG_ANNUAL_MANAGEMENT_FEE`) and `avg_deposit_fee` (unit `pct_of_deposit`, from `AVG_DEPOSIT_FEE`) as value objects. Both are percent (0.61 is 0.61%). Each is the average fee actually charged from all members, after discounts, over the last completed calendar year, so a row of report year Y holds the Y−1 average (CAT-36, CAT-37): `effective_from`/`effective_to` are 1 January and 31 December of Y−1, `tax_year` is `null`, `update_rule` is `market`, `state` is `sourced`, `checked` is the file's `checked`, and `source` is the dataset source with the field name in the title. `rule_ids` are `CAT-35`, `CAT-36`, `CAT-37`, `CAT-06` (pensia-net adds `CAT-39`: the pair is per fund, every track of a fund carries the fund's values). An empty raw field gives `value: null` with `notes` starting "לא דווח" and the reason (no full calendar year yet, or unknown, CAT OQ22); empty is not zero, and zero is a reported 0.00%. A negative value is kept as reported, with a note (it can be a refund, CAT-40). The weighting of the average (by assets or by members) is not published and stays open (CAT OQ2, OQ23): the site says "ממוצע" and the year, never "משוקלל". The site marks the figure stale when the previous calendar year is older than the fee's year (`staleCmaFee`), not by the monthly rule.
 - Change-log lines for fee fields carry `affects_rankings: true`; names and classification changes carry `false` (§3.12).
 
 ---
@@ -430,5 +467,5 @@ Together they are the set of funds the workbench chooses from (method F-65, F-83
 7. Every series file's last observation is within `stale_after_days`, else the page shows the stale flag (D3).
 8. Every `data/funds/` record names its `exposure_id` and its `exposure_id` lists it under `variants`.
 9. Dimension marks in wrappers and funds are regenerated from `rule_ids`, never edited by hand.
-10. Every `cma_fund_id` and `track_ids` entry in `data/catalog/` exists in the latest `data/cma/` period of its dataset; one that has disappeared is reported, not silently dropped.
+10. Every `track_ids` entry in `data/catalog/` exists in the latest `data/cma/` period of its dataset; one that has disappeared is reported, not silently dropped. `cma_fund_id` is the fund number (CAT-09), which the track datasets do not list, so it is not checked against them.
 11. Every Israeli fund and every foreign fund traded on TASE in `data/funds/` has its fund number in the latest matching list in `data/fund-lists/`; one that has disappeared is reported, not silently dropped.

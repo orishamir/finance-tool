@@ -6,7 +6,7 @@ user-invocable: false
 
 # il-finance
 
-The project's rule base (`docs/product.md` 3.8). 807 rules in 31 topic files under `references/`, researched 2026-10-22 from official sources first. CLAUDE.md forbids stating a financial or tax rule from memory, so look the rule up here instead.
+The project's rule base (`docs/product.md` 3.8). 824 rules in 31 topic files under `references/`, researched 2026-10-22 from official sources first (four TA-125 index rules, seven CMA fee-field rules, CAT-35 to CAT-41, and six index rules from the providers' own documents, ETF-37 to ETF-42, added 2026-10-23). CLAUDE.md forbids stating a financial or tax rule from memory, so look the rule up here instead.
 
 ## How to use it
 

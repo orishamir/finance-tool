@@ -1,0 +1,20 @@
+{
+  "id": "tshlvmym-ptvrym-f",
+  "he": "תשלומים פטורים",
+  "en": null,
+  "meaning": "כסף שהופקד לקופת גמל בלי זיכוי או ניכוי ממס, או שכבר שולם עליו מס.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "TXA-17",
+    "TXA-23"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+    "title": "פקודת מס הכנסה (Wikisource consolidated text)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

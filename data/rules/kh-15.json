@@ -1,0 +1,13 @@
+{
+  "id": "KH-15",
+  "title": "Depositing again after a withdrawal opens a new account",
+  "title_he": "הפקדה אחרי משיכה פותחת חשבון חדש",
+  "text_he": "עמית שמפקיד לחשבון שממנו משך, ההפקדות שאחרי המשיכה נחשבות הפקדות בחשבון חדש, אלא אם המשיכה הייתה להשתלמות בארץ בגבולות התקנון. כלומר משיכה חלקית מקרן נזילה עם המשך הפקדות פותחת ספירה חדשה להפקדות החדשות. הבסיס במס הוא תנאי סגירת החשבון בפקודה. זה הנוסח של אלטשולר שחם; תקנונים של חברות אחרות לא נבדקו.",
+  "strength": "institution",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "keren-hishtalmut.md",
+  "checked": "2026-10-22"
+}

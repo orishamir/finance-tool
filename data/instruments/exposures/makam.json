@@ -1,0 +1,67 @@
+{
+  "id": "makam",
+  "names": {
+    "he": [
+      "מק\"מ",
+      "מילווה קצר מועד",
+      "מק\"ם"
+    ],
+    "en": [
+      "Makam",
+      "Short-term state loan (treasury bill)"
+    ]
+  },
+  "one_line_he": "הלוואה למדינה לתקופה של עד שנה: בנק ישראל מוכר את המק״מ במכרז חודשי במחיר נמוך מהשווי הנקוב, בלי ריבית ובלי הצמדה, והמדינה משלמת את השווי הנקוב בפדיון.",
+  "kind": "cash_like",
+  "currency": "ILS",
+  "cash_like": true,
+  "return_source": {
+    "mode": "series",
+    "series": "makam-yield-12"
+  },
+  "variants": [],
+  "wrapper_ids": [
+    "makam",
+    "brokerage-account",
+    "ira-hishtalmut",
+    "ira-provident",
+    "money-market-fund-daily",
+    "money-market-fund-renewable"
+  ],
+  "rule_ids": [
+    "GOV-01",
+    "GOV-02",
+    "GOV-03",
+    "GOV-04",
+    "GOV-05",
+    "GOV-06",
+    "GOV-07",
+    "GOV-17",
+    "GOV-19",
+    "GOV-20",
+    "GOV-21",
+    "GOV-22",
+    "GOV-23",
+    "BANK-15",
+    "BANK-18",
+    "BRK-17",
+    "TXI-01",
+    "TXI-09",
+    "TXI-11",
+    "TXI-12",
+    "TXI-13",
+    "TXI-17",
+    "MF-29",
+    "IRA-11"
+  ],
+  "open_questions": [
+    "GOV-OQ2",
+    "GOV-OQ3",
+    "GOV-OQ7",
+    "GOV-OQ8",
+    "TXI-OQ3",
+    "TXI-OQ5",
+    "BRK-OQ11"
+  ],
+  "checked": "2026-10-23"
+}

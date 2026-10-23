@@ -1,0 +1,29 @@
+{
+  "id": "kvpt-gml-lhshkah-chskvn-lyld",
+  "he": "קופת גמל להשקעה - חסכון לילד",
+  "en": null,
+  "meaning": "הסיווג הרשמי של קופות הגמל שמנהלות את כספי החיסכון לכל ילד",
+  "where": [
+    "bylaws",
+    "gemel-net"
+  ],
+  "wrapper_ids": [
+    "child-savings-bank",
+    "child-savings-provident"
+  ],
+  "variants": [
+    "קופת גמל להשקעה לחיסכון ארוך טווח לילד"
+  ],
+  "rule_ids": [
+    "CS-08",
+    "KGL-21",
+    "TXK-22"
+  ],
+  "source": {
+    "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb",
+    "title": "CMA Gemel-Net dataset, resource 2024-today, report period 202609",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

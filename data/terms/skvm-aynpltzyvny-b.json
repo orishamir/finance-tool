@@ -1,0 +1,27 @@
+{
+  "id": "skvm-aynpltzyvny-b",
+  "he": "סכום אינפלציוני",
+  "en": null,
+  "meaning": "החלק ברווח שרק מפצה על עליית המחירים במשק מאז הקנייה; בדרך כלל לא משלמים עליו מס.",
+  "where": [
+    "statement",
+    "tax-form"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXF-03",
+    "TXG-12",
+    "TXG-13",
+    "TXS-02"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

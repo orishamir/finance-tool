@@ -1,0 +1,34 @@
+{
+  "id": "meitav-chisachon-lekol-yeled",
+  "institution": "meitav",
+  "where_seen": "Meitav, חיסכון לכל ילד – מידע להורים, https://www.meitav.co.il/provident_pension/saving_for_every_kid/; Meitav, רשימת מסלולי ההשקעה בתוכנית חסכון לכל ילד של מיטב (דוחות תשואה חסכון לכל ילד), https://www.meitav.co.il/provident_pension/kids_reports/",
+  "seen_on": "2026-10-23",
+  "seen_by": "this collection",
+  "names": {
+    "he": [
+      "חיסכון לכל ילד",
+      "חסכון לכל ילד",
+      "קופת גמל לילדים",
+      "מיטב חסכון לכל ילד"
+    ]
+  },
+  "maps_to": {
+    "wrapper_id": "child-savings-provident",
+    "cma_fund_id": null,
+    "track_ids": [
+      11385,
+      11386,
+      11387,
+      11388
+    ]
+  },
+  "near_duplicates": [
+    {
+      "name": "מיטב קידס",
+      "track_ids": [],
+      "resolution": "a different product: \"מיטב קידס\" is Meitav's own children's plan run through the ordinary investment provident fund (deposits by the parents, annual ceiling), while \"חיסכון לכל ילד\" is the National Insurance programme (deposits by the state and the parents' child allowance, locked to age 18); see entry meitav-kids"
+    }
+  ],
+  "status": "catalogued",
+  "notes": "The programme as a whole at Meitav: the kid page spells it \"חיסכון לכל ילד\", the reports page \"חסכון לכל ילד\", and the reports page's link text \"קופת גמל לילדים\". Four tracks in the regulator's 2026-09 list are the track_ids. The kid page says the default where the parents did not choose is the higher-risk track, and that fees are paid by the National Insurance until age 21 (rules live in il-finance, not here)."
+}

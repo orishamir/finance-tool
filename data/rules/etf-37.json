@@ -1,0 +1,102 @@
+{
+  "id": "ETF-37",
+  "title": "S&P 500: the provider's own description: the gauge of large-cap U.S. equities, 500 leading companies, about 80% of available market capitalisation, float-adjusted market-cap weighted, in U.S. dollars, launched 4 March 1957",
+  "title_he": "המדד האמריקני בתיאור עורך המדד: חמש מאות חברות מובילות",
+  "strength": "primary",
+  "dimensions": [
+    "currency"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-10-23",
+  "figures": {
+    "constituent_companies": {
+      "value": 500,
+      "unit": "count",
+      "source": {
+        "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
+        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome's PDF viewer)",
+        "publisher": "S&P Dow Jones Indices",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "ETF-37"
+      ],
+      "state": "sourced",
+      "notes": "\"the index is composed of 500 constituent companies\" (methodology p.4). The constituent count on the index page is higher because a company with several listed share classes has one line per class."
+    },
+    "constituents": {
+      "value": 503,
+      "unit": "count",
+      "source": {
+        "url": "https://www.spglobal.com/spdji/en/indices/equity/sp-500/",
+        "title": "S&P Dow Jones Indices, S&P 500® index page (read in Chrome 2026-10-23; curl returns 403)",
+        "publisher": "S&P Dow Jones Indices",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "ETF-37"
+      ],
+      "state": "sourced",
+      "notes": "Index page, \"Number of Constituents\", as of 30 September 2026."
+    },
+    "market_cap_coverage": {
+      "value": 80,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.spglobal.com/spdji/en/indices/equity/sp-500/",
+        "title": "S&P Dow Jones Indices, S&P 500® index page (read in Chrome 2026-10-23; curl returns 403)",
+        "publisher": "S&P Dow Jones Indices",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "ETF-37"
+      ],
+      "state": "sourced",
+      "notes": "\"covers approximately 80% of available market capitalization\" (index page description, read 2026-10-23)."
+    },
+    "launch_date": {
+      "value": "1957-03-04",
+      "unit": "text",
+      "source": {
+        "url": "https://www.spglobal.com/spdji/en/indices/equity/sp-500/",
+        "title": "S&P Dow Jones Indices, S&P 500® index page (read in Chrome 2026-10-23; curl returns 403)",
+        "publisher": "S&P Dow Jones Indices",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-37"
+      ],
+      "state": "sourced",
+      "notes": "\"The index Launch Date is Mar 04, 1957\" (index page). History before it is back-tested."
+    }
+  },
+  "text_he": "המדד הוא, לדברי עורך המדד S&P Dow Jones Indices, המדד היחיד הטוב ביותר למניות הגדולות בארצות הברית. הוא כולל חמש מאות חברות מובילות ומכסה בערך ארבע חמישיות משווי השוק הזמין להשקעה. משקל כל חברה נקבע לפי שווי השוק של המניות שבידי הציבור, והמדד מחושב בדולרים.",
+  "figure_names_he": {
+    "constituent_companies": "מספר החברות במדד",
+    "constituents": "מספר ניירות הערך במדד",
+    "market_cap_coverage": "חלק משווי השוק שהמדד מכסה",
+    "launch_date": "מועד השקת המדד"
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-23"
+}

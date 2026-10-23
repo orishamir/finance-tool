@@ -3,13 +3,14 @@
 Personal, non-commercial website that helps me and a few friends and family
 make saving and investing decisions in Israel.
 
-## Status: release 1 screens built, data partly filled
+## Status: release 1 complete, release 2 under way
 
-The release 1 screens were built on 2026-10-23 from `docs/design-spec.md` (see
-`docs/data-inventory.md` for what data each one reads and what is still
-missing). One guide page has data (kupat gemel lehashkaa); the other wrapper
-records, the exposure records, `data/terms/`, `data/dimensions/` and
-`data/catalog/` are not written yet.
+Release 1 (2026-10-23) is complete with its data: every screen in
+`docs/design-spec.md`, all 17 wrapper and 7 exposure records, rules, terms,
+dimensions and the Meitav catalogue (see `docs/data-inventory.md`). Release 2's
+engine and design are done and its screens are being built; the Bank of Israel
+series are links, not numbers (product D20). The dated "Status" paragraphs in
+`docs/roadmap.md` say what exists and what is still open per release.
 
 `docs/product.md` defines the site: who it is for, the capabilities, the
 decisions D1 to D13 (confirmed 2026-10-22, open to revision as I learn more),

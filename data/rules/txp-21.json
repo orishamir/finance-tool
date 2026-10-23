@@ -1,0 +1,40 @@
+{
+  "id": "TXP-21",
+  "title": "Leaving severance in the fund for an annuity (s.9(7a)(g), (g1); booklet: \"רצף קצבה\")",
+  "title_he": "השארת הפיצויים בקופה לקצבה: רצף קצבה",
+  "text_he": "כספי פיצויים שנשארים בקופת גמל לקצבה לא נחשבים מענק שהתקבל אם העובד הודיע למנהל בעזיבה שהוא רוצה לשמור אותם לקצבה. עובד שיתרות הפיצויים שלו בכל קופות הקצבה עבור אותו מעסיק לא עולות על סכום הרצף הקבוע, או על תקרת הפיצויים לכל שנת עבודה, הגבוה מביניהם, נחשב כמי שהודיע כך אלא אם הודיע אחרת. העובד רשאי לבטל בהודעה, ואז כל הסכום עם תשואותיו הוא מענק פרישה עם התקרה שבמועד הביטול, מוקטנת אם התקבל מענק בעזיבה; היוון של כספי פיצויים נחשב ביטול, וסכומים שחולקו לבן זוג לשעבר לפי חוק חלוקת חיסכון פנסיוני מחוץ לכלל. הסכום הקבוע צמוד למדד וקפוא לשנים הקרובות; הפקודה נקראה בעותק בוויקיטקסט ואומתה מול חוברת רשות המסים.",
+  "figure_names_he": {
+    "deemed_continuity_amount": "סכום הפיצויים שנחשב אוטומטית לרצף קצבה"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "tax-at-exit",
+    "age-or-use-exemption"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "deemed_continuity_amount": {
+      "value": 405900,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+        "title": "Tax Authority deductions booklet 2026, p.13, row \"רצף קצבה 9(7א)(ז1) 405,900 לתקופת הצבירה\"; Ordinance s.9(7a)(g1)",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2024-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "frozen 2025-2027",
+      "rule_ids": [
+        "TXP-21"
+      ],
+      "state": "sourced",
+      "notes": "An employee whose severance-component balances for the employer do not exceed this amount (or the severance ceiling per year of work, whichever is higher) is deemed to have chosen to keep the money for an annuity unless they notify otherwise. 392,270 (2023); 360,000 at the 2017 base. CPI-linked, frozen 2025 to 2027."
+    }
+  },
+  "il_finance_file": "tax-pension-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

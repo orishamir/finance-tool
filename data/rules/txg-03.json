@@ -1,0 +1,166 @@
+{
+  "id": "TXG-03",
+  "title": "Income that is not from personal effort starts at 31%",
+  "title_he": "הכנסה שאינה מיגיעה אישית מתחילה במדרגה הגבוהה",
+  "text_he": "הכנסה חייבת שאינה מיגיעה אישית ממוסה מהשקל הראשון בשיעור ההתחלתי הגבוה, ובשיעורים גבוהים יותר מעל הספים. לכן הכנסה פסיבית רגילה של מי שעוד לא הגיע לגיל המדרגות המופחתות מתחילה בשיעור הזה. יחיד שהגיע לגיל הזה בשנת המס מקבל את מדרגות היגיעה האישית על כל הכנסתו. ריבית, דיבידנד ורווח הון ממוסים בשיעורים מוגבלים או קבועים משלהם; הסולם הזה הוא ברירת המחדל שמולו הם נמדדים.",
+  "figure_names_he": {
+    "first_rate": "השיעור ההתחלתי על הכנסה שאינה מיגיעה אישית",
+    "brackets": "מדרגות המס על הכנסה שאינה מיגיעה אישית"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "tax-during"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "first_rate": {
+      "value": 31,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+        "title": "Tax Authority deductions booklet 2026 (April update), p.10, \"שיעורי המס החלים על הכנסה שאינה מיגיעה אישית\"",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "frozen 2025-2027",
+      "rule_ids": [
+        "TXG-03"
+      ],
+      "state": "sourced",
+      "notes": "Taxable income that is not personal-effort income is taxed from the first shekel at 31% up to 301,200 NIS a year, 35% up to 560,280 and 47% above (2026, frozen to 2027). Study-fund gains withdrawn early (TXH-13) are measured against this schedule for a person under 60."
+    },
+    "brackets": [
+      {
+        "up_to": {
+          "value": 301200,
+          "unit": "nis",
+          "source": {
+            "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+            "title": "Tax Authority deductions booklet 2026 (April update), p.10, \"שיעורי המס החלים על הכנסה שאינה מיגיעה אישית\"",
+            "publisher": "Israel Tax Authority",
+            "strength": "primary"
+          },
+          "checked": "2026-10-22",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "tax_year": 2026,
+          "update_rule": "frozen 2025-2027",
+          "rule_ids": [
+            "TXG-03"
+          ],
+          "state": "sourced",
+          "notes": "NIS per year of taxable income; upper edge of the 31% band (25,100 a month)."
+        },
+        "rate": {
+          "value": 31,
+          "unit": "pct",
+          "source": {
+            "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+            "title": "Tax Authority deductions booklet 2026 (April update), p.10, \"שיעורי המס החלים על הכנסה שאינה מיגיעה אישית\"",
+            "publisher": "Israel Tax Authority",
+            "strength": "primary"
+          },
+          "checked": "2026-10-22",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "tax_year": 2026,
+          "update_rule": "frozen 2025-2027",
+          "rule_ids": [
+            "TXG-03"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "up_to": {
+          "value": 560280,
+          "unit": "nis",
+          "source": {
+            "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+            "title": "Tax Authority deductions booklet 2026 (April update), p.10, \"שיעורי המס החלים על הכנסה שאינה מיגיעה אישית\"",
+            "publisher": "Israel Tax Authority",
+            "strength": "primary"
+          },
+          "checked": "2026-10-22",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "tax_year": 2026,
+          "update_rule": "frozen 2025-2027",
+          "rule_ids": [
+            "TXG-03"
+          ],
+          "state": "sourced",
+          "notes": "NIS per year; upper edge of the 35% band (46,690 a month)."
+        },
+        "rate": {
+          "value": 35,
+          "unit": "pct",
+          "source": {
+            "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+            "title": "Tax Authority deductions booklet 2026 (April update), p.10, \"שיעורי המס החלים על הכנסה שאינה מיגיעה אישית\"",
+            "publisher": "Israel Tax Authority",
+            "strength": "primary"
+          },
+          "checked": "2026-10-22",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "tax_year": 2026,
+          "update_rule": "frozen 2025-2027",
+          "rule_ids": [
+            "TXG-03"
+          ],
+          "state": "sourced"
+        }
+      },
+      {
+        "up_to": {
+          "value": null,
+          "unit": "nis",
+          "source": {
+            "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+            "title": "Tax Authority deductions booklet 2026 (April update), p.10, \"שיעורי המס החלים על הכנסה שאינה מיגיעה אישית\"",
+            "publisher": "Israel Tax Authority",
+            "strength": "primary"
+          },
+          "checked": "2026-10-22",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "tax_year": 2026,
+          "update_rule": "frozen 2025-2027",
+          "rule_ids": [
+            "TXG-03"
+          ],
+          "state": "sourced",
+          "notes": "no upper limit"
+        },
+        "rate": {
+          "value": 47,
+          "unit": "pct",
+          "source": {
+            "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+            "title": "Tax Authority deductions booklet 2026 (April update), p.10, \"שיעורי המס החלים על הכנסה שאינה מיגיעה אישית\"",
+            "publisher": "Israel Tax Authority",
+            "strength": "primary"
+          },
+          "checked": "2026-10-22",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "tax_year": 2026,
+          "update_rule": "frozen 2025-2027",
+          "rule_ids": [
+            "TXG-03"
+          ],
+          "state": "sourced"
+        }
+      }
+    ]
+  },
+  "il_finance_file": "tax-general.md",
+  "checked": "2026-10-22"
+}

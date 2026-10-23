@@ -1,0 +1,40 @@
+{
+  "id": "GOV-10",
+  "title": "Sale channels and primary market makers",
+  "title_he": "ערוצי המכירה ועושי השוק הראשיים",
+  "text_he": "איגרות חוב ממשלתיות סחירות נמכרות לעושי שוק ראשיים ולציבור במכרז או בהליך תחרותי ושוויוני אחר; המכירה לציבור עוברת דרך תאגידים בנקאיים, חברי בורסה וגופים אחרים שהחשב הכללי מאשר. הממשלה רשאית למנות עושי שוק ראשיים, שבתמורה לחובות בשוק הראשוני והמשני מקבלים הטבות כמו השתתפות מובטחת במכרזים והקצאות נוספות. איך הזמנה של אדם פרטי מגיעה למכרז השבועי, ובאיזה מינימום ועמלה, לא נמצא. החוק והתקנות נקראו בעותק באתר נבו; רשימת עושי השוק היא לשנה אחת מהדוח השנתי של יחידת ניהול החוב.",
+  "figure_names_he": {
+    "primary_market_makers": "מספר עושי השוק הראשיים"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "eligibility",
+    "regulator"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-30",
+  "figures": {
+    "primary_market_makers": {
+      "value": 12,
+      "unit": "count",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2025/he/annual-debt-report_annual-debt-report-2025-accessible-version-he.pdf",
+        "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2025 (file dated April 2026)",
+        "publisher": "Ministry of Finance, Accountant General",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2025-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "GOV-10"
+      ],
+      "state": "sourced",
+      "notes": "12 primary market makers in 2025, 7 of them international banks (p. 26). Sales to the public go through banking corporations, TASE members and other bodies the Accountant General approves (State Loan Law ss.4(3), 6א; linked regs s.4). How a retail order reaches a weekly auction, and any minimum or fee, is GOV open question 8."
+    }
+  },
+  "il_finance_file": "government-bonds-and-makam.md",
+  "checked": "2026-10-22"
+}

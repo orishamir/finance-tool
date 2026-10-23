@@ -21,6 +21,9 @@ export interface Bracket {
   rate: number;
 }
 
+/** A record, a parameter or an input does not make a run; the message names the field (" is missing" marks a missing input, F-83). */
+export class RecordInputError extends Error {}
+
 /** A rule the engine needs is open: the dimension is blocked and the wrapper is listed, not ranked (B3). */
 export class BlockedError extends Error {
   constructor(readonly ruleId: string) {

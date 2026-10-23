@@ -2,18 +2,27 @@
 // runs, grouped by the regulator's product type, same-name tracks grouped, the fee-pending note, the paste card.
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/company";
-import { companies as companiesCopy, company as copy, site } from "../copy";
+import { catalogue, companies as companiesCopy, company as copy, site } from "../copy";
+import { feeLabel } from "../components/decoder/fees";
 import { groupTracks, PasteCard, TrackList } from "../components/decoder/tracks";
 import { IconDrillIn } from "../components/icons";
 import { Num } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
+import { FitProvider } from "../components/compare/fit";
+import { SavedGoalStrip } from "../components/compare/strip";
 import { Callout, Card, Disclosure } from "../components/ui";
+import { GoalsProvider, type Presets } from "../lib/goal";
+import { fit as fitCopy } from "../copy";
+import type { SiteValue } from "../lib/value";
 import { fmt } from "../lib/format";
+import { cmaFeeValue, compactFee, expandFee, feeYear, type CompactFee } from "../lib/value";
 
 const classificationOrder = ["קופת גמל להשקעה", "קרנות השתלמות", "תגמולים ואישית לפיצויים", "קופת גמל להשקעה - חסכון לילד", "קרנות חדשות", "קרנות כלליות", "מרכזית לפיצויים", "מטרה אחרת"];
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const { loadCma, loadTerms, loadWrappers, today } = await import("../lib/data.server");
+  const { loadCma, loadCmaFees, loadTerms, loadWrappers, today } = await import("../lib/data.server");
+  const { fitTable, goalContext } = await import("../lib/compare.server");
+  const { institutionCompanies, loadCatalog, resolutionOf, seenValue, seenWhere } = await import("../lib/instruments.server");
   const cma = loadCma();
   const company = cma.companies.find((c) => c.id === params.id);
   if (!company) throw new Response("Not found", { status: 404 });
@@ -21,22 +30,43 @@ export async function loader({ params }: Route.LoaderArgs) {
   const terms = loadTerms();
   const collator = new Intl.Collator("he");
   const tracks = cma.tracks.filter((t) => t.companyId === company.id).sort((a, b) => collator.compare(a.name, b.name));
+  const feesOf = loadCmaFees();
+  const t = today();
   const groups = [...new Set(tracks.map((t) => t.classification))]
     .sort((a, b) => (classificationOrder.indexOf(a) + 1 || 99) - (classificationOrder.indexOf(b) + 1 || 99))
     .map((classification) => {
       const list = tracks.filter((t) => t.classification === classification);
       const wrapper = wrappers.find((w) => w.id === list[0]!.wrapperId);
+      // one value object per group (source, year, rules), then the number and its own note per track
+      const balances = list.map((x) => feesOf.get(x.fundId)!.balance);
+      const template = cmaFeeValue(balances.find((b) => b.value !== null) ?? balances[0]!, t);
+      const fees: Record<number, CompactFee> = Object.fromEntries(list.map((x, i) => [x.fundId, compactFee(balances[i]!, template)]));
       return {
         classification,
         tracks: list,
+        fees,
+        feeTemplate: template,
         wrapper: wrapper ? { id: wrapper.id, name: wrapper.names.he[0]!, line: terms.find((t) => t.he === wrapper.names.he[0])?.explanation ?? null } : null,
       };
     });
-  return { company, groups, period: cma.periodValue, today: today() };
+  // the catalogue: this company's entries (data/catalog/), found through the tracks they name
+  const catalog = loadCatalog();
+  const owner = institutionCompanies(catalog, cma.tracks);
+  const mine = catalog.filter((c) => owner.get(c.institution) === company.id);
+  const defaultIds = mine.filter((c) => c.default_at_joining).flatMap((c) => c.maps_to.track_ids);
+  const known = mine.flatMap((c) => c.near_duplicates.map((d) => ({ name: d.name, trackIds: d.track_ids, resolution: resolutionOf(d.resolution) }))).filter((k): k is { name: string; trackIds: number[]; resolution: "distinct" | "twice" | "unresolved" } => k.resolution !== null);
+  const unassigned = mine
+    .filter((c) => c.status === "not-catalogued-yet")
+    .map((c) => ({ id: c.id, names: c.names.he, where: seenWhere(c), seen: seenValue(c) }));
+  return { company, groups, period: cma.periodValue, defaultIds, known, unassigned, today: t, goal: goalContext(), fit: fitTable() };
 }
 
 export function meta({ loaderData: data }: Route.MetaArgs) {
   return [{ title: `${data?.company.name ?? companiesCopy.title} · ${site.name}` }];
+}
+
+function feeHeadOf(v: SiteValue) {
+  return feeLabel(copy.feeColumn, feeYear(v));
 }
 
 function countLine(n: number) {
@@ -50,6 +80,8 @@ export default function Company() {
   const first = data.groups[0];
   const side = first?.wrapper;
   return (
+    <GoalsProvider presets={data.goal.presets as Presets}>
+    <FitProvider table={data.fit} stale={data.period.stale ?? null}>
     <PageShell current="decoder" data={{ rules: {}, terms: {}, dimensions: {}, today: data.today }}>
       <div className="lg:flex lg:gap-12 lg:items-start pt-2 lg:pt-8">
         <div className="flex-1 min-w-0 flex flex-col gap-6 lg:gap-8">
@@ -76,7 +108,8 @@ export default function Company() {
               </h2>
               <span className="hidden lg:inline text-sm text-muted-foreground">{"בחרו מסלול כדי לראות את כל הפרטים ומה לבדוק"}</span>
             </div>
-            <Callout tone="caution">{copy.feesPending}</Callout>
+            <Callout tone="info">{copy.feesLine}</Callout>
+            <SavedGoalStrip variant="compact" label={fitCopy.companyLine} presets={data.goal.presets as Presets} meta={data.goal.meta} today={data.today} />
 
             {data.groups.map((g, i) => (
               <Disclosure
@@ -99,10 +132,42 @@ export default function Company() {
                     <IconDrillIn size={16} />
                   </Link>
                 )}
-                <TrackList groups={groupTracks(g.tracks.map((t) => ({ track: t, href: `/companies/${data.company.id}/${t.fundId}` })))} />
+                <TrackList
+                  feeHead={feeHeadOf(g.feeTemplate) + (g.tracks[0]?.dataset === "pensia-net" ? ` ${copy.feeRowWhole}` : "")}
+                  groups={groupTracks(
+                    g.tracks.map((t) => ({ track: t, href: `/companies/${data.company.id}/${t.fundId}`, isDefault: data.defaultIds.includes(t.fundId), fee: expandFee(g.fees[t.fundId]!, g.feeTemplate) })),
+                    data.known,
+                  )}
+                />
               </Disclosure>
             ))}
           </section>
+          {data.unassigned.length > 0 && (
+            <section aria-labelledby="un-h" className="flex flex-col gap-3">
+              <div>
+                <h2 id="un-h" className="text-xl lg:text-2xl font-semibold">
+                  {catalogue.unassigned.title}
+                </h2>
+                <p className="text-sm text-muted-foreground max-w-measure">{catalogue.unassigned.line}</p>
+              </div>
+              <Card as="div" className="p-0 md:p-0">
+                <ul className="flex flex-col divide-y divide-border">
+                  {data.unassigned.map((u) => (
+                    <li key={u.id} className="flex flex-col gap-1 p-4">
+                      <span className="font-medium flex flex-col gap-0.5">
+                        {u.names.map((n) => (
+                          <bdi key={n}>{n}</bdi>
+                        ))}
+                      </span>
+                      <span className="text-sm text-muted-foreground">
+                        {catalogue.seenAt} <bdi dir="ltr">{u.where}</bdi> {catalogue.seenOn} <Num value={u.seen as SiteValue} />
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            </section>
+          )}
           <PasteCard className="lg:hidden" />
         </div>
 
@@ -124,5 +189,7 @@ export default function Company() {
         </aside>
       </div>
     </PageShell>
+    </FitProvider>
+    </GoalsProvider>
   );
 }

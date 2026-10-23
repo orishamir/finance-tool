@@ -1,0 +1,60 @@
+{
+  "id": "PF-05",
+  "title": "Cap for a new general pension fund: 1.05% a year of balance and 4% of deposits",
+  "title_he": "תקרת דמי הניהול לקרן פנסיה חדשה כללית",
+  "text_he": "חברה מנהלת של קרן פנסיה חדשה כללית רשאית לגבות עד תקרת דמי הניהול השנתיים מהיתרה ועד תקרת דמי הניהול מההפקדה. למקבלי קצבה תקרות נמוכות יותר, שתלויות במועד תחילת הקצבה, ולמקבלי קצבת זקנה חדשים התקרה הנמוכה ביותר. נוסח התקנות נקרא באתרים שמעתיקים אותו.",
+  "figure_names_he": {
+    "balance_cap": "תקרת דמי הניהול השנתיים מהיתרה",
+    "deposit_cap": "תקרת דמי הניהול מההפקדה"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-deposit"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "balance_cap": {
+      "value": 1.05,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 3(ב) (Hebrew Wikisource; Nevo mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-05"
+      ],
+      "state": "sourced",
+      "notes": "Maximum fee of a new general pension fund (קרן חדשה כללית) per year of balance. Annuitants: 0.6% (annuity from 1 Jan 2013), 2% (earlier), 0.3% for old-age annuities from 1 Feb 2022."
+    },
+    "deposit_cap": {
+      "value": 4,
+      "unit": "pct_of_deposit",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 3(ב) (Hebrew Wikisource; Nevo mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-05"
+      ],
+      "state": "sourced",
+      "notes": "Maximum fee on payments to a new general pension fund."
+    }
+  },
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-22"
+}

@@ -3,7 +3,17 @@
 import { describe, expect, it } from "vitest";
 import type { RuleRecord } from "@finance-tool/schema";
 import {
+  beneficiaryRelief,
+  deductionValue,
   exitTax,
+  rankCandidates,
+  runPension,
+  runPlanned,
+  withoutFees,
+  type Candidate,
+  type PensionInput,
+  type PensionRelief,
+  type ProvidentInput,
   ruleBook,
   runBond,
   runDeposit,
@@ -72,11 +82,11 @@ it("applies the self-employed benefited amount per year, not per month (TXH-08, 
   const r = runProvident(
     {
       wrapper: "keren-hishtalmut",
-      goal: { amountNow: 20_000, monthly: 0, months: 84 },
+      goal: { amountNow: 15_000, monthly: 0, months: 84 },
       market: { grossReturn: 0.06, inflation: 0.025 },
       fees: { deposit: 0, balance: 0.006, direct: 0.0011 },
       hishtalmut: { employment: "self-employed", clockStartMonth: 0 },
-      profile: {},
+      profile: { annualIncome: 200_000 },
     },
     ctx,
   );
@@ -254,4 +264,167 @@ it("charges no custody on money-market fund units (BRK-17, BANK-18)", () => {
 
 it("keeps the run date's tax year", () => {
   expect(ruleBook({ rules, runDate }).taxYear).toBe(2026);
+});
+
+// ---------------------------------------------------------------------------------------------------------
+// Independent finance review, 2026-10-23, second batch.
+
+describe("M1: a self-employed person below the beneficiary threshold gets TXP-05 limb (1), not limb (2)", () => {
+  // Brackets: a flat 30% so the deduction's value is easy to check by hand. Business income of 100,000, no
+  // employer deposits, deposits under the TXP-03 threshold (26,436). Eligible income E = min(100,000, 164,400)
+  // = 100,000 (TXP-05, eligible_income_cap_non_work); 7% x E = 7,000; 12% x E = 12,000; the credit cap is 5% x E
+  // = 5,000 (TXP-02 no-work-income limb), floor 2,268.
+  const book = ruleBook(ctx);
+  const flat = [{ upTo: null, rate: 0.3 }];
+  const business: PensionRelief = { taxableIncome: 100_000, insuredIncome: 0, existingOwn: 0, employer: 0, businessIncome: true };
+  const relief = (p: PensionRelief, gross: number) => beneficiaryRelief(book, p, gross, flat, false);
+
+  it("under the 12% line: 7% of the income is deducted, the rest earns the 35% credit", () => {
+    // Deposit 10,000: deduction min(10,000, 7,000) + min(4,000, max(0, 10,000 - 12,000)) = 7,000 (value 30% = 2,100).
+    // Left 3,000: credited min(3,000, max(2,268, 5,000)) = 3,000; credit 35% = 1,050. Relief 3,150.
+    const r = relief(business, 10_000);
+    expect(r.beneficiary).toBe(false);
+    expect(r.tier1).toBeCloseTo(7_000, 9);
+    expect(r.deductionValue).toBeCloseTo(2_100, 9);
+    expect(r.credited).toBeCloseTo(3_000, 9);
+    expect(r.credit).toBeCloseTo(1_050, 9);
+    expect(r.relief).toBeCloseTo(3_150, 9);
+  });
+
+  it("over the 12% line: 4% more is deducted on the part above it, and the credit stops at 5%", () => {
+    // Deposit 14,000: deduction 7,000 + min(4,000, 14,000 - 12,000 = 2,000) = 9,000 (value 2,700).
+    // Left 5,000: credited min(5,000, 5,000) = 5,000; credit 1,750. Relief 4,450.
+    const r = relief(business, 14_000);
+    expect(r.deduction).toBeCloseTo(9_000, 9);
+    expect(r.deductionValue).toBeCloseTo(2_700, 9);
+    expect(r.credited).toBeCloseTo(5_000, 9);
+    expect(r.relief).toBeCloseTo(4_450, 9);
+    // Deposit 20,000: deduction 7,000 + min(4,000, 8,000) = 11,000; left 9,000, credited at the 5,000 cap.
+    const big = relief(business, 20_000);
+    expect(big.deduction).toBeCloseTo(11_000, 9);
+    expect(big.credited).toBeCloseTo(5_000, 9);
+    expect(big.relief).toBeCloseTo(0.3 * 11_000 + 0.35 * 5_000, 9);
+  });
+
+  it("caps the eligible income at 164,400 (TXP-05)", () => {
+    // Income 300,000: E = 164,400; 7% x E = 11,508; deposit 11,508 is deducted whole.
+    const r = relief({ ...business, taxableIncome: 300_000 }, 11_508);
+    expect(r.deduction).toBeCloseTo(11_508, 9);
+    expect(r.relief).toBeCloseTo(0.3 * 11_508, 9);
+  });
+
+  it("leaves the work-income path unchanged: limb (2) 5% of non-insured work income, credit 7%", () => {
+    // Deposit 10,000: deduction 5% x 100,000 = 5,000 (value 1,500); left 5,000, cap 7% x 100,000 = 7,000, credit
+    // 35% x 5,000 = 1,750; relief 3,250 (the business path above gives 3,150).
+    const work = relief({ ...business, businessIncome: false }, 10_000);
+    expect(work.tier1).toBeCloseTo(5_000, 9);
+    expect(work.relief).toBeCloseTo(3_250, 9);
+  });
+
+  it("the pension run marks a self-employed person's income as business income", () => {
+    // One tax year of 12 deposits; the deposit of 10,000 earns the relief of the first case at the real brackets.
+    const brackets = book.brackets("TXG-02", "brackets");
+    const reliefOf10k = deductionValue(brackets, 100_000, 7_000) + 0.35 * 3_000;
+    const input: PensionInput = {
+      wrapper: "pension-comprehensive",
+      goal: { amountNow: 0, monthly: (10_000 - reliefOf10k) / 12, months: 12, contributions: "nominal" },
+      market: { grossReturn: 0.05, inflation: 0.02 },
+      fees: { deposit: 0, balance: 0, direct: 0 },
+      insurance: { rate: 0 },
+      pension: { employment: "self-employed", annualIncome: 100_000 },
+      profile: { ageAtStart: 30 },
+    };
+    const r = runPension(input, ctx);
+    expect(r.years[0]!.gross).toBeCloseTo(10_000, 4);
+    expect(r.years[0]!.beneficiary).toBe(false);
+    expect(r.years[0]!.deduction).toBeCloseTo(7_000, 4);
+    expect(r.detail.reliefTotal).toBeCloseTo(reliefOf10k, 4);
+  });
+});
+
+describe("M2, R1: the deciding formula reads the run's relief; fee drag keeps the pension insurance", () => {
+  const studyFund = (annualIncome: number): ProvidentInput => ({
+    wrapper: "keren-hishtalmut",
+    goal: { amountNow: 0, monthly: 1_000, months: 60 },
+    market: { grossReturn: 0.05, inflation: 0.025 },
+    fees: { deposit: 0, balance: 0.006, direct: 0.0011 },
+    hishtalmut: { employment: "self-employed", clockStartMonth: -72 },
+    profile: { annualIncome },
+  });
+  const candidate = (id: string, input: ProvidentInput): Candidate => {
+    const plan = { run: "runProvident" as const, input };
+    return { id, tier: 1, kind: "ranked", reasons: [], plan, run: runPlanned(plan, ctx) };
+  };
+
+  it("names deposit-side relief when a self-employed study fund's deduction decides", () => {
+    // Same fund, same fees, same net outlay; one person has income 200,000 (TXH-05 deduction, F-30), the other
+    // income 0 (no deduction). The relief is the first candidate's reliefTotal, which is several thousand NIS;
+    // the fee drag differs by a few hundred, and tax at exit is 0 for both (benefited money, TXH-09).
+    const withRelief = candidate("with deduction", studyFund(200_000));
+    const without = candidate("no deduction", studyFund(0));
+    expect(withRelief.run!.detail.reliefTotal).toBeGreaterThan(5_000);
+    expect(without.run!.detail.reliefTotal ?? 0).toBe(0);
+    const ranking = rankCandidates([without, withRelief], { theta: 0.005, ctx });
+    expect(ranking.top).toBe("with deduction");
+    const d = ranking.topTwo!.deciding;
+    const index = withRelief.run!.nominal / withRelief.run!.real;
+    expect(d.top.depositSideRelief).toBeCloseTo(-withRelief.run!.detail.reliefTotal! / index, 6);
+    expect(d.gaps["deposit-side-relief"]).toBeCloseTo(withRelief.run!.detail.reliefTotal! / index, 6);
+    expect(d.formula).toBe("deposit-side-relief");
+  });
+
+  it("does not zero the pension insurance rate (A-17 is not a fee, F-61) when computing fee drag", () => {
+    const input: PensionInput = {
+      wrapper: "pension-comprehensive",
+      goal: { amountNow: 0, monthly: 500, months: 120 },
+      market: { grossReturn: 0.05, inflation: 0.02 },
+      fees: { deposit: 0.01, balance: 0.0022, direct: 0.001 },
+      insurance: { rate: 0.015 },
+      pension: { employment: "employee", monthlySalary: 10_000 },
+      profile: { ageAtStart: 30 },
+    };
+    const bare = withoutFees({ run: "runPension", input });
+    expect(bare.run === "runPension" && bare.input.insurance).toEqual({ rate: 0.015 });
+    expect(bare.run === "runPension" && bare.input.fees).toEqual({ deposit: 0, balance: 0, direct: 0 });
+  });
+});
+
+describe("M3: a study fund's lock is 3 years from the first payment at retirement age (TXH-10, KH-12)", () => {
+  const fundAt = (ageAtStart: number, months: number) =>
+    runProvident(
+      {
+        wrapper: "keren-hishtalmut",
+        goal: { amountNow: 10_000, monthly: 0, months },
+        market: { grossReturn: 0.05, inflation: 0.025 },
+        fees: { deposit: 0, balance: 0.006, direct: 0.0011 },
+        hishtalmut: { employment: "employee", monthlySalary: 12_000, clockStartMonth: 0 },
+        profile: { ageAtStart },
+      },
+      ctx,
+    );
+
+  it("from age 62 the first lawful exit is month 60, when the person reaches 67 (PEN-26), not month 72", () => {
+    // The profile has no sex, so the higher retirement age, 67 (PEN-26; also the mandatory age), is used: the
+    // person reaches it at 12 x (67 - 62) = 60 months, after the 36 months of TXH-10. Exit = max(36, 60) = 60 < 72.
+    const r = fundAt(62, 48);
+    expect(r.exitMonth).toBe(60);
+    expect(r.outcome).toMatchObject({ code: "listed-not-ranked", reason: "B3", untilMonth: 60 });
+    expect(ids(r)).toEqual(expect.arrayContaining(["TXH-10", "PEN-26"]));
+    expect(r.labels).toContainEqual(expect.objectContaining({ code: "reading", ruleId: "KH-12" }));
+  });
+
+  it("from age 65 the exit is 3 years from the first payment: max(36, 12 x (67 - 65) = 24) = 36", () => {
+    const r = fundAt(65, 24);
+    expect(r.exitMonth).toBe(36);
+    expect(r.outcome).toMatchObject({ code: "listed-not-ranked", reason: "B3", untilMonth: 36 });
+    // A horizon past month 36 is lawful at the horizon and ranks.
+    expect(fundAt(65, 40).outcome).toEqual({ code: "eligible" });
+  });
+
+  it("a person who is young keeps the 6-year lock and no KH-12 reading label", () => {
+    const r = fundAt(22, 48);
+    expect(r.exitMonth).toBe(72);
+    expect(r.labels.some((l) => l.ruleId === "KH-12")).toBe(false);
+    expect(fundAt(62, 72).outcome).toEqual({ code: "eligible" });
+  });
 });

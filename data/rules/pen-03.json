@@ -1,0 +1,83 @@
+{
+  "id": "PEN-03",
+  "title": "Minimum contribution rates",
+  "title_he": "שיעורי ההפקדה המזעריים לפנסיה חובה",
+  "text_he": "שיעורי ההפקדה המזעריים הם שיעור העובד, שיעור המעסיק לתגמולים ושיעור המעסיק לפיצויים, מהשכר שעליו חלה החובה; אלה מינימום, והסכם עבודה יכול לקבוע יותר. בביטוח מנהלים או בקופת גמל שאינה קרן פנסיה, תשלום המעסיק לתגמולים יכול לכלול את עלות ביטוח אובדן כושר עבודה, בתנאי שחלק המעסיק לתגמולים לבדו לא יורד מתחת לרף ושהסך לא עולה על התקרה שבהסכם. מעסיק עם הסדר של סעיף ארבע עשרה בשיעור המלא ממשיך אותו כשהעובד עובר לקרן פנסיה. השיעורים נקבעו בהסכם קיבוצי שהורחב בצו, ונקראו בסריקה של ההסכם באתר צד שלישי ובמכתב של חברת ביטוח; שינוי מאוחר יותר לא נמצא.",
+  "figure_names_he": {
+    "employee_pct": "שיעור הפקדת העובד",
+    "employer_pct": "שיעור הפקדת המעסיק לתגמולים",
+    "severance_pct": "שיעור הפקדת המעסיק לפיצויים"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "deposit-ceiling",
+    "eligibility",
+    "minimum"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "employee_pct": {
+      "value": 6,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/kibuzi03042016.pdf",
+        "title": "General collective agreement (framework) to increase pension contributions, signed 3.4.2016, registered 7008/2016, section 3, pp. 1-2: 6% employee from 1.1.2017",
+        "publisher": "Histadrut and Presidium of Business Organisations (scan hosted by prisha.co.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2017-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "PEN-03"
+      ],
+      "state": "sourced",
+      "notes": "Minimum employee contribution (תגמולי עובד) from 1 January 2017, of the wage on which the obligation applies (PEN-04). An employment agreement may set more. History: 5.5% from 1.1.2014, 5.75% from 1.7.2016."
+    },
+    "employer_pct": {
+      "value": 6.5,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/kibuzi03042016.pdf",
+        "title": "General collective agreement 2016, section 3: 6.5% employer tagmulim from 1.1.2017",
+        "publisher": "Histadrut and Presidium of Business Organisations (scan hosted by prisha.co.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2017-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "PEN-03"
+      ],
+      "state": "sourced",
+      "notes": "Minimum employer contribution (תגמולי מעסיק) from 1 January 2017. In an insurance fund the employer's part may include loss-of-work-capacity cover, with tagmulim alone not below 5% and the total not above 7.5%."
+    },
+    "severance_pct": {
+      "value": 6,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/kibuzi03042016.pdf",
+        "title": "General collective agreement 2016, section 3: 6% severance from 1.1.2017 (unchanged since 1.1.2014)",
+        "publisher": "Histadrut and Presidium of Business Organisations (scan hosted by prisha.co.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2017-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "PEN-03"
+      ],
+      "state": "sourced",
+      "notes": "Minimum employer severance contribution (פיצויים). An employer may top up to 8.33% (PEN-05)."
+    }
+  },
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

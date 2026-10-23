@@ -1,0 +1,42 @@
+{
+  "id": "ETF-30",
+  "title": "US-domiciled ETF example: iShares Core S&P 500 ETF (IVV), distributing quarterly, expense ratio 0.03%, identified by CUSIP",
+  "title_he": "דוגמה לקרן סל אמריקנית על המדד האמריקני, מחלקת רבעונית",
+  "text_he": "קרן הסל האמריקנית של iShares על המדד האמריקני (IVV) נסחרת בבורסת NYSE Arca, מחלקת דיבידנד כל רבעון, מזוהה במספר CUSIP ומוגדרת לפי חוק חברות ההשקעה האמריקני. קרן לפי אותו חוק היא אחת משתי הצורות המשפטיות שמותרות לקרן חוץ רשומה בישראל, אבל אם הקרן הזו עצמה רשומה בישראל לא נבדק. השפעות המס של מקום ההתאגדות האמריקני, ובהן ניכוי במקור ומס ירושה, הן בכללי המס על ניירות ערך זרים, ואם אפשר לקנות אותה אצל ברוקר מסוים, בכללי חשבון ניירות הערך. המקור הוא דף המנפיק.",
+  "figure_names_he": {
+    "ivv_expense_ratio": "יחס ההוצאות של הקרן האמריקנית IVV"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "distribution-policy",
+    "fee-management-balance",
+    "foreign-withholding-domicile",
+    "currency"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "ivv_expense_ratio": {
+      "value": 0.03,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.ishares.com/us/products/239726/ishares-core-sp-500-etf",
+        "title": "iShares Core S&P 500 ETF (IVV) product page, data as of 21 Oct 2026",
+        "publisher": "BlackRock iShares",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-30"
+      ],
+      "state": "sourced",
+      "notes": "Data as of 21 Oct 2026. A US 1940 Act fund; whether IVV itself is registered in Israel was not checked (ETF OQ4)."
+    }
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-22"
+}

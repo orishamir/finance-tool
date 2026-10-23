@@ -1,0 +1,19 @@
+{
+  "id": "aysvr-htayh-bshm",
+  "he": "איסור הטעיה בשם",
+  "en": null,
+  "meaning": "כלל שאוסר לתת לקופה או למסלול שם מטעה, למשל שם שרומז על ביטחון או על רווח",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "CAT-16"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+    "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

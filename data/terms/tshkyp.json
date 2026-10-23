@@ -1,0 +1,27 @@
+{
+  "id": "tshkyp",
+  "he": "תשקיף",
+  "en": null,
+  "meaning": "המסמך הרשמי של הקרן, שהרשות לניירות ערך התירה לפרסם, ובו מדיניות ההשקעה, דמי הניהול ושאר התנאים",
+  "where": [
+    "prospectus"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [
+    "תשקיף עיקרי"
+  ],
+  "rule_ids": [
+    "MF-04",
+    "MF-16",
+    "MF-50"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
+    "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

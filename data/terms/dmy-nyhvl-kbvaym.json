@@ -1,0 +1,30 @@
+{
+  "id": "dmy-nyhvl-kbvaym",
+  "he": "דמי ניהול קבועים",
+  "en": null,
+  "meaning": "אחוז שנתי קבוע משווי נכסי הקרן שמנהל הקרן לוקח כשכר; יורד מהתשואה של המשקיעים.",
+  "where": [
+    "app",
+    "prospectus"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500",
+    "index-ta125"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "ETF-13",
+    "ETF-15",
+    "ETF-17"
+  ],
+  "source": {
+    "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
+    "title": "IBI, דוח שנתי \"אי.בי.אי. סל (4D) S&P 500\" (1148162), 31.12.2025",
+    "publisher": "Tel Aviv Stock Exchange",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

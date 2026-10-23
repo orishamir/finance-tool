@@ -2006,5 +2006,72 @@
       "form"
     ],
     "notes": "Withholding is not always the final tax; a return can recover the difference (TXH-15). The withholding regulation for gemel lehashkaa withdrawals was not found (TXK open question 3)."
+  },
+  {
+    "term_he": "חיסכון לכל ילד בבנק",
+    "term_source": {
+      "title": "National Insurance, שאלות ותשובות – חיסכון לכל ילד",
+      "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/default.aspx"
+    },
+    "variants_he": [
+      "מסלול הבנק בחיסכון לכל ילד",
+      "חיסכון לכל ילד במסלול בנק"
+    ],
+    "explain_he": "חיסכון לכל ילד שההורה בחר לנהל בבנק: הריבית נקבעת ביום הפתיחה לכל התקופה, היתרה לא יורדת מהסכומים שהביטוח הלאומי הפקיד, ומסלול משתנה רק בתחנת יציאה",
+    "rule_ids": [
+      "CS-05",
+      "CS-10",
+      "CS-12",
+      "CS-22",
+      "CS-25"
+    ],
+    "source": {
+      "title": "National Insurance, שאלות ותשובות – חיסכון לכל ילד",
+      "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/default.aspx",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:child-savings-bank",
+      "app",
+      "nii-site",
+      "law"
+    ],
+    "notes": "The site's name for the bank route of חיסכון לכל ילד (wrapper child-savings-bank); NII and the law speak of saving 'בבנק' versus 'בקופת גמל להשקעה' (law 74ב). Three tracks per bank, fixed unlinked, prime-variable and CPI-linked, each with or without an exit station every five years; the rate is set on the opening day for 18 minus the child's age (CS-10, Yahav agreement). Nine banks, the 2016 tender winners (CS-22). Bank money cannot move to another bank; since January 2025 a parent may once redirect future deposits to a provident fund while the balance stays in the bank (CS-12). NII pays the bank's operating costs until 21 (CS-25). Tax on the gains is an open question (TXK-20). Added 2026-10-23 for the guide card lede."
+  },
+  {
+    "term_he": "קרן השתלמות בניהול אישי",
+    "term_source": {
+      "title": "CMA Gemel-Net dataset, resource 2024-today, report period 202609 (self-directed funds classified 'קרנות השתלמות')",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb"
+    },
+    "variants_he": [
+      "השתלמות בניהול אישי",
+      "השתלמות IRA"
+    ],
+    "explain_he": "קרן השתלמות שבה אתם, או מנהל תיקים שבחרתם, בוחרים את הניירות והפיקדונות שהכסף מושקע בהם; כללי ההפקדה, המשיכה והמס הם של קרן השתלמות רגילה",
+    "rule_ids": [
+      "IRA-01",
+      "IRA-03",
+      "IRA-05",
+      "IRA-07",
+      "IRA-11",
+      "IRA-16",
+      "IRA-25",
+      "TXK-17"
+    ],
+    "source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Nevo mirror)",
+      "url": "https://www.nevo.co.il/law_html/law00/70391.htm",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:ira-hishtalmut",
+      "app",
+      "gemel-net",
+      "law"
+    ],
+    "notes": "The site's name for the study-fund kind of קופת גמל בניהול אישי (wrapper ira-hishtalmut); in law it is a study fund approved for one member who gives the investment instructions (IRA-01, s.1 definition and s.57). Study-fund money enters from the first shekel up to four times 'הסכום הקובע' across all study-fund accounts (IRA-07). Only tradable securities, deposits, structured products, foreign currency and fund units, in Israel or an approved foreign country, with issuer and derivative limits and no borrowing (IRA-11 to IRA-13). The managing company's fee is per the written agreement; brokerage, custody and fund costs come on top from a closed list (IRA-16, IRA-17). Withdrawal and tax follow the study fund's rules (IRA-25, TXK-17); the investment risk is the member's (IRA-26). Gemel-Net 202609 lists it under 'קרנות השתלמות'; Meitav's joining annex is titled 'קרן השתלמות בניהול אישי'. Added 2026-10-23 for the guide card lede."
   }
 ]

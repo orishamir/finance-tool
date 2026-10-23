@@ -24,7 +24,17 @@ import { runChildSavings } from "./ledgers/child-savings.ts";
 import { runDeposit } from "./ledgers/deposit.ts";
 import { runMakam } from "./ledgers/makam.ts";
 import { runProvident } from "./ledgers/provident.ts";
+import { runPension } from "./ledgers/pension.ts";
+import { employerLine } from "./ledgers/employer-line.ts";
+import { beneficiaryRelief, employeeCredit, equalNetOutlay } from "./formulas/deposit-side.ts";
+import { studyFundEarlyWithdrawal } from "./formulas/early-withdrawal.ts";
+import { blockedWrapperExit } from "./formulas/blocked-exit.ts";
+import { insuranceCost } from "./formulas/insurance.ts";
 import { runSecurities } from "./ledgers/securities.ts";
+import { buildCandidateSet } from "./compare/candidates.ts";
+import { idleCash } from "./compare/idle-cash.ts";
+import { rankCandidates } from "./compare/ranking.ts";
+import { sensitivity } from "./compare/sensitivity.ts";
 import { timeline } from "./timeline.ts";
 
 export const formulas = {
@@ -54,35 +64,38 @@ export const formulas = {
   "F-26": currentAccountInterest,
   "F-27": runProvident,
   "F-28": socialContributions,
+  "F-30": equalNetOutlay,
+  "F-31": employeeCredit,
+  "F-32": beneficiaryRelief,
   "F-33": runProvident,
   "F-40": capitalGainsTax,
   "F-41": runDeposit,
   "F-42": bracketTaxOnTopSlice,
   "F-43": surtax,
   "F-44": kglExitTax,
+  "F-45": blockedWrapperExit,
   "F-46": hishtalmutExitTax,
+  "F-47": studyFundEarlyWithdrawal,
+  "F-48": blockedWrapperExit,
+  "F-49": blockedWrapperExit,
   "F-50": childSavingsExitTax,
   "F-51": runSecurities,
+  "F-52": employerLine,
+  "F-53": insuranceCost,
   "F-54": runChildSavings,
+  "F-60": idleCash,
   "F-67": timeline,
+  "F-80": rankCandidates,
+  "F-81": sensitivity,
+  "F-83": buildCandidateSet,
 } as const;
 
 /** Ledger runs, by the instrument family they model. */
-export const runs = { runBond, runChildSavings, runDeposit, runMakam, runProvident, runSecurities } as const;
+export const runs = { runBond, runChildSavings, runDeposit, runMakam, runPension, runProvident, runSecurities } as const;
 
 /** Formulas in docs/method.md not implemented yet, with the release that brings them (architecture §7). */
 export const pending: Record<string, string> = {
   "F-18": "R4: interest and dividend handling fee, with full tariff detail",
-  "F-30": "R2: equal net outlay",
-  "F-31": "R2: pension credit for an employee",
-  "F-32": "R2: beneficiary member and self-employed",
-  "F-45": "R2: annuity route from 60 is blocked (G-03); shown as guide text",
-  "F-47": "R2: study-fund early withdrawal",
-  "F-48": "R2: pension early withdrawal, blocked (G-06)",
-  "F-49": "R2: pension at retirement, blocked (G-03)",
-  "F-52": "R2: employer line",
-  "F-53": "R2: pension insurance cost",
-  "F-60": "R2: idle-cash preset",
   "F-61": "R3: fee materiality",
   "F-62": "R3: fee verdict",
   "F-63": "R4: provider workbench",
@@ -92,10 +105,7 @@ export const pending: Record<string, string> = {
   "F-70": "R3: classification fit",
   "F-71": "R5: loss filter",
   "F-72": "R3: consolidation",
-  "F-80": "R2: ranking and ties",
-  "F-81": "R2: sensitivity panel",
   "F-82": "R5: revisit",
-  "F-83": "R2: candidate set and coverage line",
 };
 
 export type FormulaId = keyof typeof formulas;

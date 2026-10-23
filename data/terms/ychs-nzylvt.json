@@ -1,0 +1,20 @@
+{
+  "id": "ychs-nzylvt",
+  "he": "יחס נזילות",
+  "en": null,
+  "meaning": "אחוז הנכסים הנזילים מתוך נכסי המסלול; הוא לא קובע מתי מותר לכם למשוך כסף",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "CAT-03",
+    "CAT-07"
+  ],
+  "source": {
+    "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+    "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

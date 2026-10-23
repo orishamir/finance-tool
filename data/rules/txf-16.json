@@ -1,6 +1,11 @@
 {
   "id": "TXF-16",
   "title": "Tax suffered inside a foreign fund is a fund-level cost, not creditable in Israel",
+  "title_he": "מס בתוך קרן זרה הוא עלות הקרן, לא זיכוי",
+  "text_he": "הפקודה מגדירה מסי חוץ הניתנים לזיכוי כמסים שתושב ישראל משלם לרשויות המס של מדינה אחרת על הכנסה שהופקה בה; מס שנוכה מקרן זרה על ההחזקות שלה משולם על ידי הקרן, לא על ידי תושב ישראל, ולכן הוא עלות ברמת הקרן ואינו מזוכה בישראל. לפי טבלת רשות המס האמריקנית, קרן שמקום התאגדותה אירלנד נושאת ניכוי אמריקני נמוך על דיבידנדים מחברות אמריקניות מזה שתושב ישראל נושא כשהוא מחזיק את המניות ישירות. לקרנות חוץ הרשומות בבורסה רשות המסים אומרת זאת במפורש, ולקרן זרה שנקנתה בחו\"ל זו קריאת החוקר בהגדרה שבפקודה. אם קרן אירית מסוימת מקבלת בפועל את השיעור המופחת, ואם אירלנד מנכה על חלוקות הקרן לתושב ישראל, לא נמצא.",
+  "figure_names_he": {
+    "irish_fund_us_dividend_treaty_rate": "שיעור אמנת המס על דיבידנד מארה\"ב לקרן אירית"
+  },
   "strength": "primary",
   "dimensions": [
     "foreign-withholding-domicile",
@@ -8,5 +13,27 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "tax-securities-foreign.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "figures": {
+    "irish_fund_us_dividend_treaty_rate": {
+      "value": 15,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.irs.gov/pub/irs-lbi/tax-treaty-table-1.pdf",
+        "title": "IRS, Tax Treaty Table 1 (rev. May 2023), Ireland row, general column, footnote mm: US dividends paid to an Irish resident",
+        "publisher": "US Internal Revenue Service",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-16"
+      ],
+      "state": "sourced",
+      "notes": "US treaty withholding rate on dividends from US corporations paid to an Irish resident (general column), against 25% for an Israeli resident holding the US shares directly (TXF-12). Whether a given Irish fund in fact obtains this rate was not sourced (TXF-16 open questions Q6, Q7). Method A-11 cites it. Added 2026-10-23."
+    }
+  }
 }

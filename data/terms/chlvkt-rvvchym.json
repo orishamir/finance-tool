@@ -1,0 +1,35 @@
+{
+  "id": "chlvkt-rvvchym",
+  "he": "חלוקת רווחים",
+  "en": null,
+  "meaning": "כסף שקרן משלמת למחזיקי היחידות שלה; המס עליו תלוי בסוג הקרן ובמדינה שבה נרשמה.",
+  "where": [
+    "statement",
+    "tax-form"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500"
+  ],
+  "variants": [
+    "רווחים שחילק מנהל קרן",
+    "חלוקה"
+  ],
+  "rule_ids": [
+    "MF-49",
+    "TXF-05",
+    "TXF-06",
+    "TXF-07",
+    "TXS-10",
+    "TXS-11"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+    "title": "פקודת מס הכנסה (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

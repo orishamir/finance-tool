@@ -1,0 +1,13 @@
+{
+  "id": "MF-52",
+  "title": "Funds can be merged or liquidated",
+  "title_he": "קרנות יכולות להתמזג או להתחסל",
+  "text_he": "קרנות נפתחות, מתמזגות ומתחסלות בכל שנה, ולכן קרן שאתם מחזיקים יכולה להיעלם או להתמזג לתוך קרן אחרת. דוחות הרשות מונים כל שנה כמה קרנות חדשות נפתחו וכמה מוזגו או חוסלו. ההליך המשפטי וההשלכה במס של מיזוג לא נחקרו.",
+  "strength": "primary",
+  "dimensions": [
+    "switching-tax-event"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-22"
+}

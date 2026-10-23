@@ -1,0 +1,13 @@
+{
+  "id": "MF-15",
+  "title": "Minimum investment: generally none",
+  "title_he": "סכום מינימלי להשקעה: בדרך כלל אין",
+  "text_he": "ברוב קרנות הנאמנות אין סכום מינימלי להשקעה; כך אומרים גם מדריך הרשות וגם האתר של מיטב. עמלת המינימום של המפיץ עצמו יכולה לייקר הוראות קטנות מאוד. אם מפיץ כלשהו קובע סכום מינימלי להוראה לא נבדק.",
+  "strength": "primary",
+  "dimensions": [
+    "minimum"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,33 @@
+{
+  "id": "chshbvn-nyyrvt-ark",
+  "he": "חשבון ניירות ערך",
+  "en": null,
+  "meaning": "חשבון בבנק, בבית השקעות או אצל ברוקר בחו\"ל, שבו קונים, מוכרים ומחזיקים מניות, קרנות ואגרות חוב.",
+  "where": [
+    "ad",
+    "app",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [
+    "תיק ניירות ערך",
+    "פיקדון ניירות ערך",
+    "פקדון ני\"ע"
+  ],
+  "rule_ids": [
+    "BRK-01",
+    "BRK-06",
+    "BRK-10",
+    "BRK-15",
+    "BRK-28"
+  ],
+  "source": {
+    "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a",
+    "title": "TASE, דוח תקופתי לשנת 2025",
+    "publisher": "Tel Aviv Stock Exchange",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

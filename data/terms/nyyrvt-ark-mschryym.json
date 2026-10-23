@@ -1,0 +1,23 @@
+{
+  "id": "nyyrvt-ark-mschryym",
+  "he": "ניירות ערך מסחריים",
+  "en": null,
+  "meaning": "התחייבות של חברה לשלם סכום כסף תוך שנה לכל היותר, שאי אפשר להמיר בניירות ערך אחרים.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [
+    "נע\"מ"
+  ],
+  "rule_ids": [
+    "CORP-02",
+    "TX2-06",
+    "TX2-07"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/חוק_ניירות_ערך",
+    "title": "חוק ניירות ערך, התשכ\"ח-1968 (Wikisource)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

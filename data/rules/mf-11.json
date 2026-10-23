@@ -1,0 +1,14 @@
+{
+  "id": "MF-11",
+  "title": "Orders go through a distributor (bank or TASE member), in cash, through the clearing house",
+  "title_he": "הוראות עוברות דרך מפיץ, במזומן, דרך המסלקה",
+  "text_he": "הוראות קנייה ופדיון מוגשות למפיץ, שהוא חבר בורסה, ועוברות ממנו למנהל הקרן דרך מסלקת הבורסה. מנהל הקרן מקבל תשלום על יחידות במזומן בלבד; בפדיון הקרן משלמת דרך המפיץ, והמפיץ מעביר את הסכום לבעל היחידה בו ביום. מפיץ לא רשאי לסרב להפיץ יחידות של קרן שהרשות התירה את התשקיף שלה. לפי מדריך הרשות אפשר לתת הוראה בסניף, בטלפון, באתר המפיץ או דרך יועץ השקעות, קונים בסכום כסף ומקבלים יחידות; תוך כמה ימי עסקים כסף הפדיון זמין לשימוש לא נמצא.",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "transfer-switch-process",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-22"
+}

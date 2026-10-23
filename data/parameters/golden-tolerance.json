@@ -34,6 +34,7 @@
     "notes": ""
   },
   "rationale": "The engine and the independent check use the same conventions, so they should agree to the shekel: a test passes within 1 NIS or 0.01%, whichever is larger.",
+  "rationale_he": "המנוע והבדיקה העצמאית משתמשים באותן מוסכמות, ולכן הם צריכים להסכים עד השקל: בדיקה עוברת בטווח של 1 ₪ או 0.01%, הגבוה מביניהם.",
   "chosen_by": "Claude, at the founder's request (2026-10-23: \"do whatever you think fits\")",
   "signed_off_by": "founder",
   "signed_off_on": "2026-10-23",

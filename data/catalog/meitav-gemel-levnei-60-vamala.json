@@ -1,0 +1,23 @@
+{
+  "id": "meitav-gemel-levnei-60-vamala",
+  "institution": "meitav",
+  "where_seen": "Meitav operations flyer (פלייר תפעולי), p.1 \"קופת גמל - מ.ה קופה 874\", https://www.meitav.co.il/media/0lhfrzgy/פלייר-תפעולי-מונגש.pdf",
+  "seen_on": "2026-10-23",
+  "seen_by": "this collection; il-finance CAT-26",
+  "names": {
+    "he": [
+      "מיטב גמל לבני 60 ומעלה",
+      "מיטב גמל אג\"ח עד 25% במניות"
+    ]
+  },
+  "maps_to": {
+    "wrapper_id": "provident-for-annuity",
+    "cma_fund_id": 874,
+    "track_ids": [
+      551
+    ]
+  },
+  "near_duplicates": [],
+  "status": "catalogued",
+  "notes": "Track of Meitav's fund number 874 (flyer). Also absorbed on 1.7.2024: מיטב גמל אג\"ח עד 25% במניות (was track 874, no longer in the regulator's list). The name itself did not change; the entry exists for the absorbed track's name."
+}

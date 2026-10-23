@@ -4,7 +4,8 @@
 import { createContext, useCallback, useContext, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
-import { buttons, flags as flagCopy, formulaNames, numbers, provenance as copy, rule as ruleCopy, strength as strengthCopy } from "../copy";
+import { buttons, flags as flagCopy, formulaNames, numbers, provenance as copy, rule as ruleCopy, strength as strengthCopy, topicName } from "../copy";
+import { ruleTitle } from "../lib/rule-title";
 import { fmt, formatValue } from "../lib/format";
 import { useInputs } from "../lib/inputs";
 import { isParameter, isProvisional, strengthOf, type SiteValue, type Strength } from "../lib/value";
@@ -248,10 +249,10 @@ function Row({ label, children }: { label: ReactNode; children: ReactNode }) {
 
 function SourceLink({ url, title }: { url: string; title: string }) {
   const external = /^https?:/.test(url);
-  if (!external) return <span>{title}</span>;
+  if (!external) return <span className="[overflow-wrap:anywhere]">{title}</span>;
   return (
-    <a href={url} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-start gap-1 hover:underline">
-      <span>{title}</span>
+    <a href={url} target="_blank" rel="noopener noreferrer" className="text-link inline-flex max-w-full items-start gap-1 hover:underline">
+      <span className="min-w-0 [overflow-wrap:anywhere]">{title}</span>
       <IconExternal size={16} className="shrink-0 mt-1" />
     </a>
   );
@@ -291,7 +292,7 @@ function ValueSheet({ value, data, headId, descId }: { value: SiteValue; data: P
       {value.state === "sourced" && param && (
         <dl className="sheet-dl">
           <Row label={copy.parameter.why}>
-            <span className="text-sm">{value.parameter?.rationale ?? value.notes}</span>
+            <span className="text-sm">{value.parameter?.rationaleHe ?? value.parameter?.rationale ?? value.notes}</span>
           </Row>
           <Row label={copy.parameter.approved}>{provisional ? <span className="text-sm">{numbers.provisional}</span> : value.parameter?.signedOffOn ? <bdi dir="ltr">{fmt.date(value.parameter.signedOffOn)}</bdi> : <span className="text-sm">{numbers.provisional}</span>}</Row>
           {provisional && value.notes && <Row label={copy.sourced.rule}><span className="text-sm text-muted-foreground">{value.notes}</span></Row>}
@@ -427,6 +428,11 @@ function ValueSheet({ value, data, headId, descId }: { value: SiteValue; data: P
 
 // ---------------------------------------------------------------- rule card
 
+function ShownRuleTitle({ rule }: { rule: RuleRecord }) {
+  const t = ruleTitle(rule);
+  return t.english ? <bdi dir="ltr">{t.text}</bdi> : <>{t.text}</>;
+}
+
 export function RuleCard({ id, data, headId, inline }: { id: string; data: ProvenanceData; headId?: string; inline?: boolean }) {
   const rule = data.rules[id];
   if (!rule) {
@@ -442,6 +448,8 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
   }
   const open = rule.strength === "open";
   const figures = Object.entries(rule.figures ?? {});
+  // the figure's Hebrew name when the record has one; else its key as written
+  const figureLabel = (name: string) => (rule.figure_names_he?.[name] ? <span className="text-xs">{rule.figure_names_he[name]}</span> : <bdi dir="ltr" className="text-xs">{name}</bdi>);
   const firstSource = figures.map(([, f]) => (Array.isArray(f) ? f[0]?.rate : "by_tax_year" in f ? Object.values(f.by_tax_year)[0] : f)).find(Boolean);
   return (
     <div className={cx("flex flex-col gap-3", open && "rule-open")}>
@@ -449,17 +457,19 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
         <h2 id={headId} className="text-lg font-semibold leading-snug">
           {open ? ruleCopy.open.title : `${ruleCopy.title}`} <bdi dir="ltr" className="slashed-zero">{id}</bdi>
           {!open && ": "}
-          {!open && <bdi dir="ltr">{rule.title}</bdi>}
+          {!open && <ShownRuleTitle rule={rule} />}
         </h2>
         <StrengthLabel strength={rule.strength} />
       </header>
       {open ? (
         <Callout tone="blocked">
           <span className="block">
-            <bdi dir="ltr">{rule.title}</bdi>
+            <ShownRuleTitle rule={rule} />
           </span>
           <span className="block">{ruleCopy.open.last}</span>
         </Callout>
+      ) : rule.text_he ? (
+        <p className="text-sm">{rule.text_he}</p>
       ) : (
         <p className="text-sm text-muted-foreground">{ruleCopy.noText}</p>
       )}
@@ -472,7 +482,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
                 return f.map((b, i) => (
                   <div key={`${name}-${i}`} className="readout-row">
                     <dt>
-                      <bdi dir="ltr" className="text-xs">{name}</bdi> {b.up_to.value === null ? "" : "≤"} {b.up_to.value !== null && <Num value={{ ...b.up_to, rule_ids: b.up_to.rule_ids ?? [id] }} />}
+                      {figureLabel(name)} {b.up_to.value === null ? "" : "≤"} {b.up_to.value !== null && <Num value={{ ...b.up_to, rule_ids: b.up_to.rule_ids ?? [id] }} />}
                     </dt>
                     <dd>
                       <Num value={{ ...b.rate, rule_ids: b.rate.rule_ids ?? [id] }} />
@@ -483,7 +493,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
               return byYear.map(([year, v]) => (
                 <div key={`${name}-${year ?? ""}`} className="readout-row">
                   <dt>
-                    <bdi dir="ltr" className="text-xs">{name}</bdi>
+                    {figureLabel(name)}
                     {year && (
                       <>
                         {" "}
@@ -501,7 +511,12 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
         </div>
       )}
       <dl className="sheet-dl">
-        <Row label={ruleCopy.source}>{firstSource ? <SourceLink url={firstSource.source.url} title={firstSource.source.title} /> : <bdi dir="ltr">{rule.il_finance_file}</bdi>}</Row>
+        {firstSource && (
+          <Row label={ruleCopy.source}>
+            <SourceLink url={firstSource.source.url} title={firstSource.source.title} />
+          </Row>
+        )}
+        <Row label={ruleCopy.topic}>{topicName(rule.il_finance_file)}</Row>
         <Row label={ruleCopy.checked}>
           <bdi dir="ltr">{fmt.date(rule.checked)}</bdi>
         </Row>

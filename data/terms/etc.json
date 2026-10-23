@@ -1,0 +1,21 @@
+{
+  "id": "etc",
+  "he": "ETC",
+  "en": null,
+  "meaning": "נייר ערך שמגובה במתכת, כמו זהב, שמוחזקת עבורו; אם הגיבוי לא מספיק, יתרת התביעות לא משולמת.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "RG-20",
+    "RG-22",
+    "TX2-14"
+  ],
+  "source": {
+    "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/sgln-ishares-physical-gold-etc-fund-fact-sheet-en-gb.pdf",
+    "title": "iShares Physical Gold ETC factsheet, September 2026",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "TXI-17",
+  "title": "Securities losses can offset interest on securities in the same year",
+  "title_he": "הפסד מניירות ערך מקזז ריבית על ניירות באותה שנה",
+  "text_he": "הפסד הון ממכירת ניירות ערך בשנת מס ניתן לקיזוז גם כנגד ריבית או דיבידנד ששולמו על אותו נייר, וכנגד ריבית או דיבידנד על ניירות ערך אחרים, בתנאי ששיעור המס על אותה ריבית אינו עולה על שיעור התקרה. אג״ח ממשלתיות ומק״ם הם ניירות ערך, ולכן הקופונים והניכיון שלהם נכללים. הקיזוז רק באותה שנת מס; הפסד שמועבר לשנים הבאות מקוזז רק כנגד רווחי הון. ריבית על פיקדון בנקאי אינה ריבית על נייר ערך, והנוסח לא מכסה אותה; קיזוז בין מוסדות דורש דוח שנתי, ובפועל בנק מקזז בתוך החשבון ומאפס הפסדים לא מנוצלים בסוף השנה.",
+  "figure_names_he": {
+    "max_interest_rate_for_offset": "שיעור המס המרבי על ריבית שאפשר לקזז כנגדה"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "loss-offset"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "max_interest_rate_for_offset": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance (Hebrew Wikisource mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXI-17"
+      ],
+      "state": "sourced",
+      "notes": "s.92(a)(4): a same-year capital loss on securities may be offset against interest or dividends on securities, provided the rate on that interest does not exceed the s.125C(b) rate (25%). Government bonds and makam are securities (TXI-12). Bank-deposit interest is not covered by the wording (TXI open question 7)."
+    }
+  },
+  "il_finance_file": "tax-interest-deposits-bonds.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,103 @@
+{
+  "id": "GOV-11",
+  "title": "CPI-linked bond (אג\"ח ממשלתית צמודה): coupon, linkage, redemption",
+  "title_he": "אג\"ח ממשלתית צמודה: קופון, הצמדה ופדיון",
+  "text_he": "כל סדרה נקראת \"אג\"ח ממשלתית – צמודה\" ואחריה שנת וחודש הפדיון, ומונפקת בשווי נקוב של יחידת ההנפקה או בכפולות שלה. הקופון הוא ריבית שנתית קבועה שנקבעת לכל סדרה כך שהמחיר בהנפקה הראשונה קרוב למאה, ומשולם פעם בתקופה ביום העסקים הבנקאי האחרון של החודש שבו היא מסתיימת. הקרן והריבית צמודות למדד המחירים לצרכן מול מדד הבסיס, והאיגרת נפדית בתשלום אחד במועד הפדיון, אחרי התקופה המזערית לפחות; התשלום עובר למי שרשום כמחזיק במועד הקובע, בזיכוי לחשבון בנק; מי שקונה אחרי המועד הקובע לא מקבל את הריבית של אותה תקופה. התקנות נקראו בעותק באתר נבו.",
+  "figure_names_he": {
+    "linkage": "הצמדה",
+    "coupon_every_months": "תדירות תשלום הקופון (חודשים)",
+    "face_value": "שווי נקוב ליחידת הנפקה",
+    "term_min_months": "תקופה מזערית לפדיון"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "real-vs-nominal",
+    "distribution-policy",
+    "minimum"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "linkage": {
+      "value": "cpi",
+      "unit": "text",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/999_564.htm",
+        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), תשס\"ו-2006 (Nevo mirror)",
+        "publisher": "Minister of Finance (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "GOV-11"
+      ],
+      "state": "sourced",
+      "notes": "Principal and interest are linked to the CPI against the base index (ss.1, 8). Value in the engine's vocabulary for the bond run (method F-25)."
+    },
+    "coupon_every_months": {
+      "value": 12,
+      "unit": "months",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/999_564.htm",
+        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), תשס\"ו-2006 (Nevo mirror)",
+        "publisher": "Minister of Finance (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "GOV-11"
+      ],
+      "state": "sourced",
+      "notes": "Interest is paid once a year, on the last bank business day of the month in which a twelve-month interest period ends (s.5). Method F-25 uses this for CPI-linked series."
+    },
+    "face_value": {
+      "value": 1000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/999_564.htm",
+        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), תשס\"ו-2006 (Nevo mirror)",
+        "publisher": "Minister of Finance (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "GOV-11"
+      ],
+      "state": "sourced",
+      "notes": "Bonds are issued in face value of NIS 1,000 or multiples (s.3). Issue unit, not the TASE trading unit (GOV open question 7)."
+    },
+    "term_min_months": {
+      "value": 12,
+      "unit": "months",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/999_564.htm",
+        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), תשס\"ו-2006 (Nevo mirror)",
+        "publisher": "Minister of Finance (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "GOV-11"
+      ],
+      "state": "sourced",
+      "notes": "The term is at least one year; redeemed in one payment at maturity (s.6)."
+    }
+  },
+  "il_finance_file": "government-bonds-and-makam.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,39 @@
+{
+  "id": "TXS-16",
+  "title": "Dividends from Israeli companies: 25% (30% for a substantial shareholder), withheld by the payer",
+  "title_he": "דיבידנד מחברה ישראלית: שיעור המס והניכוי במקור",
+  "text_he": "דיבידנד שיחיד מקבל מחברה ישראלית ממוסה בשיעור המס על דיבידנד, והמשלם מנכה אותו במקור. בעל מניות מהותי, בזמן הקבלה או בשנה שלפניה, משלם שיעור גבוה יותר. מדריך רשות המסים מונה גם שיעורים נמוכים יותר לדיבידנד ממפעל מאושר, מוטב או מועדף, לפי מעמד החברה המשלמת; רואים אותם באישור השנתי של המשלם ולא מראש. ביטוח לאומי ומס בריאות על דיבידנד וקיזוז מול הפסדים הם כללים נפרדים.",
+  "figure_names_he": {
+    "rate": "שיעור המס על דיבידנד"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "distribution-policy",
+    "tax-during"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "rate": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance (Hebrew Wikisource mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXS-16"
+      ],
+      "state": "sourced",
+      "notes": "s.125B(1); withheld at 25% under the 2005 withholding regulations reg.2(a)(1). 30% for a substantial shareholder (not stored). Enterprise dividends at 15% or 20% depend on the paying company's status."
+    }
+  },
+  "il_finance_file": "tax-securities-israeli.md",
+  "checked": "2026-10-22"
+}

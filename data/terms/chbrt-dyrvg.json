@@ -1,0 +1,22 @@
+{
+  "id": "chbrt-dyrvg",
+  "he": "חברת דירוג",
+  "en": null,
+  "meaning": "חברה רשומה שנותנת ציון ליכולת של מנפיק להחזיר את החוב, ביחס למנפיקים אחרים בישראל.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [
+    "חברת דירוג אשראי"
+  ],
+  "rule_ids": [
+    "CORP-13",
+    "CORP-14"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%9C%D7%94%D7%A1%D7%93%D7%A8%D7%AA_%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA_%D7%97%D7%91%D7%A8%D7%95%D7%AA_%D7%93%D7%99%D7%A8%D7%95%D7%92_%D7%94%D7%90%D7%A9%D7%A8%D7%90%D7%99",
+    "title": "חוק להסדרת פעילות חברות דירוג האשראי, התשע\"ד-2014 (Wikisource)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

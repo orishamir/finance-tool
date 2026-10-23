@@ -9,7 +9,7 @@ import { ProvenanceProvider, type ProvenanceData } from "./provenance";
 import { Sheet } from "./Sheet";
 import { Button, cx } from "./ui";
 
-export type Current = "guide" | "decoder" | "rules" | "parameters" | "home" | "other";
+export type Current = "guide" | "decoder" | "rules" | "parameters" | "home" | "goal" | "other";
 
 export function PageShell({ current, data, children, wide }: { current: Current; data: ProvenanceData; children: ReactNode; wide?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);

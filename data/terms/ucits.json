@@ -1,0 +1,27 @@
+{
+  "id": "ucits",
+  "he": "UCITS",
+  "en": null,
+  "meaning": "מסגרת חוק אירופית לקרנות השקעה; קרן זרה נרשמת בישראל רק אם היא לפיה או לפי חוק הקרנות האמריקאי.",
+  "where": [
+    "fund-name"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "ETF-23",
+    "ETF-28"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf",
+    "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2024",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

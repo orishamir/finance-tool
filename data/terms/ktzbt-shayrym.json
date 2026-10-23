@@ -1,0 +1,31 @@
+{
+  "id": "ktzbt-shayrym",
+  "he": "קצבת שאירים",
+  "en": null,
+  "meaning": "תשלום חודשי מקרן הפנסיה לבן או בת הזוג ולילדים, אחרי מוות של בעל או בעלת החשבון",
+  "where": [
+    "statement",
+    "tax-form"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [
+    "קצבת שארים",
+    "קיצבת שאירים"
+  ],
+  "rule_ids": [
+    "PEN-13",
+    "PEN-32",
+    "TXP-23"
+  ],
+  "source": {
+    "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+    "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "id": "kvpt-gml-lhshkah",
+  "he": "קופת גמל להשקעה",
+  "en": null,
+  "meaning": "קופת חיסכון שמפקידים אליה בעצמכם עד תקרה שנתית; אפשר למשוך בכל עת, ובמשיכה משלמים מס על הרווח",
+  "where": [
+    "ad",
+    "app",
+    "gemel-net",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "kupat-gemel-lehashkaa"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "KGL-01",
+    "KGL-02",
+    "KGL-08",
+    "TXK-01",
+    "TXK-05"
+  ],
+  "source": {
+    "url": "https://fs.knesset.gov.il//20/law/20_lsr_343169.pdf",
+    "title": "ספר החוקים 2554 (7.6.2016): חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
+    "publisher": "Knesset",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

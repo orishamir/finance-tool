@@ -1,0 +1,15 @@
+{
+  "id": "BRK-23",
+  "title": "Banks: foreign-currency conversion when paying for or selling foreign securities (Leumi terms)",
+  "title_he": "בנקים: המרת מטבע חוץ בקנייה ומכירה של ניירות זרים",
+  "text_he": "לפי התנאים הכלליים של בנק לאומי, תשלומים בעד ניירות ערך זרים נעשים מהחשבון באותו מטבע; אם אין בו די, הבנק רשאי לקנות את המטבע כנגד שקלים לפי שערו בתוספת העמלות על קניית מטבע חוץ. תמורה במטבע חוץ שהלקוח מבקש להמיר נמכרת לפי שער הבנק. אלה תנאי בנק אחד; בנקים אחרים לא נקראו.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-fx",
+    "currency"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-22"
+}

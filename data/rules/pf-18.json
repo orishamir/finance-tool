@@ -1,0 +1,14 @@
+{
+  "id": "PF-18",
+  "title": "Keren hishtalmut: no partial transfer; consolidation only once liquid",
+  "title_he": "קרן השתלמות: אין העברה חלקית, ואיחוד רק כשנזיל",
+  "text_he": "אי אפשר להעביר חלק מהכסף שנצבר לעמית מקרן השתלמות, בין לחשבון אחר באותה קרן ובין לקרן השתלמות אחרת, וגם אם חשבון היעד כבר היה קיים. איחוד חשבונות השתלמות של עמית נעשה רק אם במועד האיחוד העמית יכול למשוך את הכסף מכל חשבון בפטור ממס. בסוגי קופות אחרים העברה חלקית מותרת.",
+  "strength": "primary",
+  "dimensions": [
+    "transfer-switch-process",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-22"
+}

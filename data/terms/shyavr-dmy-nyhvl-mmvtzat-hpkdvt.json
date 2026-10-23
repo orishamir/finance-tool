@@ -1,0 +1,26 @@
+{
+  "id": "shyavr-dmy-nyhvl-mmvtzat-hpkdvt",
+  "he": "שיעור דמי ניהול ממוצעת- הפקדות",
+  "en": null,
+  "meaning": "ממוצע דמי הניהול מההפקדות שנגבו בפועל מהחוסכים במסלול; זה לא המחיר שכל חשבון משלם",
+  "where": [
+    "gemel-net",
+    "pensia-net"
+  ],
+  "wrapper_ids": [],
+  "variants": [
+    "דמי ניהול ממוצעים מהפקדה משנה קודמת"
+  ],
+  "rule_ids": [
+    "CAT-03",
+    "CAT-06",
+    "PEN-24"
+  ],
+  "source": {
+    "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+    "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

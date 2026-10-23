@@ -1,0 +1,317 @@
+{
+  "id": "pension-comprehensive",
+  "names": {
+    "he": [
+      "קרן חדשה מקיפה",
+      "קרן פנסיה מקיפה חדשה",
+      "קרן פנסיה חדשה מקיפה",
+      "קרנות חדשות"
+    ],
+    "statement": [
+      "קרן פנסיה מקיפה חדשה"
+    ],
+    "app": [
+      "קרן פנסיה נבחרת",
+      "קרן פנסיה לשכירים",
+      "קרן פנסיה לעצמאים"
+    ]
+  },
+  "regulator": {
+    "value": "CMA",
+    "unit": "text",
+    "source": {
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ss.1, 13, 39 (Wikisource mirror)",
+      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "strength": "primary-mirror"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "REG-17"
+    ],
+    "state": "sourced",
+    "notes": "A new comprehensive pension fund (קרן חדשה מקיפה) is a provident fund for annuity (s.1); managing companies are under the Commissioner's supervision (s.39(א)). The CMA also selects the default (\"selected\") funds (PEN-06, PEN-23)."
+  },
+  "fee_bases_allowed": [
+    "deposit",
+    "balance",
+    "direct_expenses",
+    "insurance_premium"
+  ],
+  "fee_caps": {
+    "deposit": {
+      "value": 6,
+      "unit": "pct_of_deposit",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 3(א) (Hebrew Wikisource; Nevo mirror): \"מתוך התשלומים המועברים לקרן בשל כל עמית – בשיעור שלא יעלה על 6%\"",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-04",
+        "PEN-21"
+      ],
+      "state": "sourced",
+      "notes": "Maximum fee on payments transferred to a new comprehensive pension fund. Selected funds charge 1% for new members, fixed for at least 10 years (PEN-23); the 2024 average charged was 1.57% (PEN-24)."
+    },
+    "balance": {
+      "value": 0.5,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 3(א) (Hebrew Wikisource; Nevo mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-04",
+        "PEN-21"
+      ],
+      "state": "sourced",
+      "notes": "Maximum fee per year of each member's balance in a new comprehensive pension fund; 0.3% for old-age pensioners whose pension started on or after 1 February 2022. Selected funds charge 0.22% for new members (PEN-23); the 2024 average charged was 0.15% (PEN-24)."
+    }
+  },
+  "ceiling": {
+    "per": "person_per_month",
+    "amount": {
+      "value": 5645.29,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf",
+        "title": "Harel, \"תקרות וסכומים לשנת 2026\" (March 2026), p. 1: comprehensive-fund monthly deposit ceiling, 20.5% of twice the average wage; Mor general fund bylaws 01.04.2026, s.1 (NIS 5,645)",
+        "publisher": "Harel Insurance and Finance",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "average-wage-linked",
+      "rule_ids": [
+        "PEN-08",
+        "PEN-10",
+        "PEN-04"
+      ],
+      "state": "sourced",
+      "notes": "NIS per month, 2026. Monthly deposits above the lower of this ceiling and 22.83% of the reported salary components are moved automatically to the same manager's general pension fund (PEN-10). Institution sources only: the Income Tax regulation defining the ceiling was not opened (PEN OQ6); the NII's own 2026 average wage was not reached (PEN OQ5). Updated with the average wage every year."
+    }
+  },
+  "deposit_side_tax": {
+    "formula": "F-31",
+    "rule_ids": [
+      "TXP-01",
+      "TXP-02",
+      "TXP-03",
+      "TXP-04",
+      "TXP-05",
+      "TXP-06",
+      "TXP-10",
+      "TXP-11",
+      "TXP-27"
+    ]
+  },
+  "tax_during": {
+    "formula": "F-27",
+    "rule_ids": [
+      "TXP-13"
+    ]
+  },
+  "tax_at_exit": {
+    "formula": "F-49",
+    "rule_ids": [
+      "TXP-14",
+      "TXP-15",
+      "TXP-17",
+      "TXP-18",
+      "TXP-19",
+      "TXP-21",
+      "TXP-12",
+      "TXP-24",
+      "PEN-27",
+      "PEN-28"
+    ],
+    "blocked_by": [
+      "PEN-OQ7",
+      "TXP-OQ3"
+    ],
+    "labels": [
+      "blocked: annuity conversion factors not collected (PEN OQ7); the page shows the gross balance and the exemption rule (G-03)",
+      "blocked: early withdrawal's taxable base open (TXP OQ3; G-06)",
+      "the exempt share of the qualifying-annuity ceiling steps up by law in 2027 and 2028 (TXP-14)"
+    ]
+  },
+  "lawful_exit": {
+    "kind": "at_age",
+    "age": {
+      "value": 60,
+      "unit": "years",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
+        "title": "Retirement Age Law 2004, s.5 (early retirement age, 60 for men and women) (Wikisource mirror); Mor comprehensive pension fund bylaws 01.06.2025, s.1 \"גיל זכאות מינימלי לקצבת זקנה\" and s.41",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "PEN-26",
+        "PEN-27",
+        "PEN-30"
+      ],
+      "state": "sourced",
+      "notes": "Minimum old-age eligibility age in the pension fund: the early retirement age, 60 for men and women. The pension is the balance divided by the conversion factor in force (PEN-27); the tax exemption starts at retirement age, 67 for men and 65 for women (TXP-14, PEN-26)."
+    },
+    "payout_business_days": {
+      "value": 4,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+        "title": "Mor comprehensive pension fund bylaws, version 01.06.2025, s.108 and annex א",
+        "publisher": "Mor Gemel and Pension",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "PEN-33"
+      ],
+      "state": "sourced",
+      "notes": "An approved lump-sum withdrawal (severance component, small balances) is paid within 4 business days; the first pension payment is by the third of the month after eligibility. Bylaws-level (Mor)."
+    },
+    "text": "the lawful exit is an old-age pension from the minimum eligibility age, 60 (early retirement age); before that only the severance component on leaving a job and the narrow cases in the law (small balances past mandatory retirement age, pre-2000 money, health and income conditions) can be taken as a lump sum; any other withdrawal is a non-compliant withdrawal taxed at the higher of 35% and the marginal rate, whose taxable base is open (TXP OQ3), so early withdrawal is a blocked route (method F-48, G-06); the annuity itself needs conversion factors that are not collected (PEN OQ7), so the exit value is blocked too (F-49, G-03) and the page shows the gross balance with the exemption rule as text"
+  },
+  "switch_is_tax_event": {
+    "value": false,
+    "unit": "boolean",
+    "source": {
+      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לאישור_ולניהול_קופות_גמל)",
+      "title": "Income Tax Regulations (Rules for Approval and Management of Provident Funds) 1964, reg. 33ב (Wikisource mirror); Mor comprehensive bylaws 01.06.2025, ss.19-22; Income Tax Ordinance s.9(2) (fund income exempt)",
+      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "strength": "primary-mirror"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "PF-23",
+      "PEN-17",
+      "TXP-13"
+    ],
+    "state": "sourced",
+    "notes": "A move between investment tracks inside the fund is completed within 3 business days and is not a withdrawal; the fund's income is exempt and the member is taxed only at exit (TXP-13). Whether a transfer between pension funds is tax-neutral is not stated in the tax rule base (SW OQ8), so the checklist row is blocked on that question."
+  },
+  "transfer_routes": [
+    {
+      "to": "pension-comprehensive",
+      "condition": "insurance continuity and qualifying period rules apply at the receiving fund",
+      "rule_ids": [
+        "PF-17",
+        "PF-19",
+        "PF-20",
+        "SW-22",
+        "PF-28"
+      ]
+    },
+    {
+      "to": "pension-general",
+      "condition": "deposits above the comprehensive monthly ceiling move automatically; a member transfer between annuity funds is also allowed",
+      "rule_ids": [
+        "PEN-10",
+        "PF-17",
+        "PF-19"
+      ]
+    },
+    {
+      "to": "provident-for-annuity",
+      "condition": "between annuity funds; the pooled insurance cover does not move",
+      "rule_ids": [
+        "PF-17",
+        "SW-23",
+        "PEN-35"
+      ]
+    }
+  ],
+  "eligibility": {
+    "rule_ids": [
+      "PEN-01",
+      "PEN-02",
+      "PEN-03",
+      "PEN-04",
+      "PEN-05",
+      "PEN-06",
+      "PEN-07",
+      "PEN-08",
+      "PEN-23"
+    ],
+    "text": "every employee from age 21 (men) or 20 (women) must be insured by the employer after a 6-month waiting period, at least 6% employee, 6.5% employer and 6% severance of the wage up to the average wage; an employee who does not choose is placed in one of the four selected funds; the self-employed must deposit into a provident fund for annuity; monthly deposits above the comprehensive ceiling go to the general fund"
+  },
+  "protection": {
+    "rule_ids": [
+      "PF-29",
+      "REG-18",
+      "REG-19",
+      "REG-21",
+      "PEN-18",
+      "PEN-19"
+    ],
+    "text": "assets are held in trust, separately from the managing company's property, and cannot be attached; if the company fails, management moves to another company; the state does not guarantee the fund's value; 30% of the assets are in a state guaranteed-return track with a 5.15% a year target checked every 60 months; members' balances are also adjusted every year by the fund's actuarial surplus or deficit from demographic factors"
+  },
+  "tier": 1,
+  "open_questions": [
+    "PEN-OQ5",
+    "PEN-OQ6",
+    "PEN-OQ7",
+    "PEN-OQ8",
+    "PEN-OQ10",
+    "PEN-OQ13",
+    "PEN-OQ21",
+    "TXP-OQ3",
+    "TXP-OQ6",
+    "SW-OQ8"
+  ],
+  "checked": "2026-10-23",
+  "dimensions": {
+    "age-or-use-exemption": "covered",
+    "deposit-ceiling": "covered",
+    "eligibility": "covered",
+    "fee-change-over-time": "covered",
+    "fee-deposit": "covered",
+    "fee-exit": "covered",
+    "fee-management-balance": "covered",
+    "insurance-cover": "covered",
+    "liquidity-lockup": "covered",
+    "minimum": "covered",
+    "protection": "covered",
+    "real-vs-nominal": "blocked:PEN-OQ8",
+    "regulator": "covered",
+    "reporting-obligation": "covered",
+    "switching-tax-event": "blocked:SW-OQ8",
+    "tax-at-deposit": "covered",
+    "tax-at-exit": "blocked:PEN-OQ7",
+    "tax-during": "covered",
+    "transfer-switch-process": "covered"
+  }
+}

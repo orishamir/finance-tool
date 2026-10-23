@@ -24,6 +24,7 @@ export const p05Units: Record<P05Input, ValueObject["unit"]> = {
   "A-01": "pct_per_year",
   "A-02": "pct_per_year",
   cash_rate: "pct_per_year",
+  annual_income: "nis",
 };
 
 export interface Bundle {
@@ -78,7 +79,7 @@ export function runTimeline(bundle: Bundle, inputs: TimelineInputs): Timeline {
       if (value !== undefined && Number.isFinite(value)) entered[key] = enteredValue(value, p05Units[key], bundle.runDate);
     }
     const profile = inputs.age === null ? {} : { ageAtStart: inputs.age };
-    const plan = runInputs(bundle.record, [bundle.p05], bundle.terms, { entered, profile });
+    const plan = runInputs(bundle.record, [bundle.p05], bundle.terms, { entered, profile, scenarioIncome: true });
     const ctx = { rules: bundle.rules, runDate: bundle.runDate };
     const horizon = plan.input.goal.months / 12;
     const years: YearPoint[] = [];
@@ -117,7 +118,7 @@ export function p05Value(p05: ParameterRecord, key: P05Input): SiteValue {
   const inputs = (p05 as unknown as { inputs: Record<P05Input, ValueObject> }).inputs;
   return {
     ...inputs[key],
-    parameter: { rationale: p05.rationale, signedOffOn: p05.signed_off_on, provisional: false },
+    parameter: { rationale: p05.rationale, rationaleHe: p05.rationale_he ?? null, signedOffOn: p05.signed_off_on, provisional: false },
   };
 }
 
@@ -130,6 +131,6 @@ export function p05Range(p05: ParameterRecord, group: "sliders" | "ranges", key:
   const g = (p05 as unknown as Record<string, Record<string, Record<string, ValueObject>>>)[group]?.[key];
   if (!g) return null;
   const values: Record<string, SiteValue> = {};
-  for (const [k, v] of Object.entries(g)) values[k] = { ...v, parameter: { rationale: p05.rationale, signedOffOn: p05.signed_off_on, provisional: (v.notes ?? "").startsWith("provisional") } };
+  for (const [k, v] of Object.entries(g)) values[k] = { ...v, parameter: { rationale: p05.rationale, rationaleHe: p05.rationale_he ?? null, signedOffOn: p05.signed_off_on, provisional: (v.notes ?? "").startsWith("provisional") } };
   return { min: g.min!.value as number, max: g.max!.value as number, step: g.step ? (g.step.value as number) : undefined, values };
 }

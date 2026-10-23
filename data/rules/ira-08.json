@@ -1,0 +1,83 @@
+{
+  "id": "IRA-08",
+  "title": "\"הסכום הקובע\" and the 2026 cap",
+  "title_he": "הסכום הקובע ותקרת הכניסה לשנה הנוכחית",
+  "strength": "primary",
+  "dimensions": [
+    "deposit-ceiling",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "cap": {
+      "value": 6303528,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.meitav.co.il/provident_pension/ira/",
+        "title": "Meitav, IRA product page: \"קיימת מגבלת הפקדה בסך של 6,303,528 ₪ נכון לשנת 2026\" (read again 2026-10-23); formula in Reshumot 2017 amendment reg. 2(ב)-(ג)",
+        "publisher": "Meitav Gemel and Pension",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "cpi-linked 1 jan",
+      "rule_ids": [
+        "IRA-07",
+        "IRA-08"
+      ],
+      "state": "sourced",
+      "notes": "2026 cap on money in an IRA fund: 4 × הסכום הקובע, per product, across all the member's IRA accounts (reg. 2(ב)). 4 × 1,575,882 = 6,303,528 (computed in the rule base, matches Meitav). Institution source only; the official 2026 inputs were not found (IRA OQ8). The minimum-pension input is CPI-linked each 1 January (PEN-28); the conversion multiplier is set under s.9א of the Ordinance."
+    },
+    "determining_amount": {
+      "value": 1575882,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.meitav.co.il/provident_pension/ira/",
+        "title": "Meitav, IRA product page: pension test \"צבירה למטרות קצבה בסכום שלא יפחת מ-1,575,882 ₪\"",
+        "publisher": "Meitav Gemel and Pension",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "cpi-linked 1 jan",
+      "rule_ids": [
+        "IRA-08"
+      ],
+      "state": "sourced",
+      "notes": "הסכום הקובע for 2026 = minimum pension amount × capital conversion multiplier × 1.65 (reg. 2(ג)). Institution source only (IRA OQ8)."
+    },
+    "minimum_pension": {
+      "value": 5306,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.moreinvest.co.il/media/ob5nzn0o/תקרות-וסכומים-2026.pdf",
+        "title": "Mor, \"תקרות וסכומים לשנת 2026\", p.2 (\"סכום קצבה מזערית ... 5,306 ₪\"); Meitav IRA page (\"5,306 ₪ ברוטו נכון לשנת 2026\")",
+        "publisher": "Mor Gemel and Pension",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "cpi-linked 1 jan",
+      "rule_ids": [
+        "IRA-08"
+      ],
+      "state": "sourced",
+      "notes": "Minimum pension amount 2026, an input to הסכום הקובע and the pension test of reg. 2(א)(5). Two institution sources; the law sets it in Provident Funds Law s.23(ה), CPI-linked each 1 January (PEN-28)."
+    }
+  },
+  "text_he": "'הסכום הקובע' הוא מכפלה של סכום הקצבה המזערי, מכפיל ההמרה להון ו-1.65. ל-2026 מיטב נוקבת בתקרה של 6,303,528 ₪ לכל מוצר, ובסכום קובע של 1,575,882 ₪; הקצבה המזערית 5,306 ₪ לחודש (מיטב ומור). מקור רשמי ל-2026 לא נמצא (שאלה פתוחה 8).",
+  "figure_names_he": {
+    "cap": "תקרת הכספים בקופה בניהול אישי",
+    "determining_amount": "הסכום הקובע",
+    "minimum_pension": "סכום הקצבה המזערי"
+  },
+  "il_finance_file": "ira-self-directed.md",
+  "checked": "2026-10-22"
+}

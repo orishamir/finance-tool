@@ -1,0 +1,81 @@
+{
+  "id": "TXK-18",
+  "title": "IRA and other provident funds: foreign dividends and withholding inside the account",
+  "title_he": "דיבידנדים וניכוי מס זר בתוך קופת גמל",
+  "strength": "primary",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "tax-during"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "us_dividend_withholding_general": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.irs.gov/pub/irs-lbi/tax-treaty-table-1.pdf",
+        "title": "IRS Tax Treaty Table 1 (rev. May 2023), p.2, row \"Israel\"",
+        "publisher": "Internal Revenue Service (US)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXK-18"
+      ],
+      "state": "sourced",
+      "notes": "US withholding on dividends paid by US corporations to an Israeli resident under the treaty, general rate. The table has no separate entry for dividends paid to an Israeli pension or provident fund; whether a treaty exempts or reduces withholding for an Israeli provident fund or IRA is open (TXK OQ7)."
+    },
+    "us_dividend_withholding_direct": {
+      "value": 12.5,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.irs.gov/pub/irs-lbi/tax-treaty-table-1.pdf",
+        "title": "IRS Tax Treaty Table 1 (rev. May 2023), p.2, row \"Israel\"",
+        "publisher": "Internal Revenue Service (US)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXK-18"
+      ],
+      "state": "sourced",
+      "notes": "US treaty rate for dividends qualifying for the direct dividend rate (Israel). Same caveat as the general rate."
+    },
+    "us_interest_withholding": {
+      "value": 17.5,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.irs.gov/pub/irs-lbi/tax-treaty-table-1.pdf",
+        "title": "IRS Tax Treaty Table 1 (rev. May 2023), p.2, row \"Israel\"",
+        "publisher": "Internal Revenue Service (US)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXK-18"
+      ],
+      "state": "sourced",
+      "notes": "US treaty rate for interest paid to an Israeli resident. Same caveat."
+    }
+  },
+  "text_he": "דיבידנדים וריבית שקופת גמל מקבלת פטורים ממס בישראל כל עוד הכסף בקופה, ואין ניכוי במקור ישראלי לעמית. מס זר שנוכה במקור הוא עלות בתוך הקופה; לא נמצא מקור ישראלי שאומר אם אפשר להקטין או להשיב אותו. בטבלת האמנות של ה-IRS אין שורה נפרדת לקופת גמל ישראלית.",
+  "figure_names_he": {
+    "us_dividend_withholding_general": "ניכוי מס אמריקאי על דיבידנד, שיעור כללי",
+    "us_dividend_withholding_direct": "ניכוי מס אמריקאי על דיבידנד ישיר",
+    "us_interest_withholding": "ניכוי מס אמריקאי על ריבית"
+  },
+  "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
+  "checked": "2026-10-22"
+}

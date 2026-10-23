@@ -1,0 +1,24 @@
+{
+  "id": "rvvch-nvmynly",
+  "he": "רווח נומינלי",
+  "en": null,
+  "meaning": "כל הרווח בשקלים, בלי להוריד ממנו את החלק שמפצה על עליית המחירים במשק.",
+  "where": [
+    "ad"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXS-03",
+    "TXS-12"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+    "title": "פקודת מס הכנסה (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

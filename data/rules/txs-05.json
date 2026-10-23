@@ -1,0 +1,60 @@
+{
+  "id": "TXS-05",
+  "title": "Withholding by banks and TASE members on securities sales",
+  "title_he": "ניכוי במקור בבנק ובחבר בורסה במכירת ניירות ערך",
+  "text_he": "בנק או חבר בורסה שמשלם ליחיד תמורה ממכירת נייר ערך מנכה במקור את הניכוי מרווח ריאלי, ובנייר ערך לא צמוד את הניכוי מרווח על נייר לא צמוד, מהרווח הנומינלי. התקנות לא קובעות שיעור נמוך יותר לפי גיל או הכנסה נמוכה. במכירת ניירות ערך סחירים אין צורך בדיווח נפרד אם המס נוכה כחוק; אם לא נוכה, למשל אצל ברוקר שלא מנכה, חייבים להגיש דוח שנתי ולדווח פעמיים בשנה עם תשלום מקדמה. הנוסח שנקרא באתר שמעתיק את התקנות מציג תיקונים עד לפני כמה שנים, ואם תוקנו מאז זו שאלה פתוחה.",
+  "figure_names_he": {
+    "withholding_rate_real_gain": "ניכוי במקור מהרווח הריאלי",
+    "withholding_rate_unlinked": "ניכוי במקור מהרווח על נייר לא צמוד"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "withholding_rate_real_gain": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מתמורה,_מתשלום_או_מרווח_הון_במכירת_נייר_ערך,_במכירת_יחידה_בקרן_נאמנות_או_בעסקה_עתידית)",
+        "title": "Income Tax (Withholding from Consideration, Payment or Capital Gain on Sale of a Security, Mutual-Fund Unit or Futures) Regulations 2002 (Wikisource mirror, page edited 19.2.2026)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXS-05"
+      ],
+      "state": "sourced",
+      "notes": "A \"financial institution\" (a bank or TASE member) paying sale proceeds to an individual withholds 25% of the real capital gain (reg. 2(a)). No 30-day report is needed on a sale of traded securities if the tax was withheld in full."
+    },
+    "withholding_rate_unlinked": {
+      "value": 15,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מתמורה,_מתשלום_או_מרווח_הון_במכירת_נייר_ערך,_במכירת_יחידה_בקרן_נאמנות_או_בעסקה_עתידית)",
+        "title": "Income Tax (Withholding from Consideration, Payment or Capital Gain on Sale of a Security, Mutual-Fund Unit or Futures) Regulations 2002 (Wikisource mirror, page edited 19.2.2026)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXS-05"
+      ],
+      "state": "sourced",
+      "notes": "For a security not linked to the index it withholds 15% of the (nominal) capital gain (reg. 2(b)): unlinked government bonds and makam sold before redemption."
+    }
+  },
+  "il_finance_file": "tax-securities-israeli.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "tshvah-chvdshyt",
+  "he": "תשואה חודשית",
+  "en": null,
+  "meaning": "התשואה של המסלול באותו חודש, באחוזים, לפני ניכוי דמי ניהול ולפני מס",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "CAT-04",
+    "CAT-05",
+    "CAT-32"
+  ],
+  "source": {
+    "url": "https://gemelnet.cma.gov.il/views/dafMakdim_Link3.aspx",
+    "title": "Gemel-Net, מקורות המידע והנחות מערכת (CMA)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

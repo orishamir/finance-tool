@@ -1,0 +1,23 @@
+{
+  "id": "meitav-hishtalmut-klali",
+  "institution": "meitav",
+  "where_seen": "Meitav operations flyer (פלייר תפעולי), p.2 \"קרן השתלמות - מ.ה קופה 880\", https://www.meitav.co.il/media/0lhfrzgy/פלייר-תפעולי-מונגש.pdf",
+  "seen_on": "2026-10-23",
+  "seen_by": "this collection; il-finance CAT-26",
+  "names": {
+    "he": [
+      "מיטב השתלמות כללי",
+      "מיטב השתלמות עד 6 שנות וותק"
+    ]
+  },
+  "maps_to": {
+    "wrapper_id": "keren-hishtalmut",
+    "cma_fund_id": 880,
+    "track_ids": [
+      880
+    ]
+  },
+  "near_duplicates": [],
+  "status": "catalogued",
+  "notes": "Track of Meitav's fund number 880 (flyer). Also absorbed on 1.7.2024: מיטב השתלמות עד 6 שנות וותק (was track 554, no longer in the regulator's list). The name itself did not change; the entry exists for the absorbed track's name. Same standard name as the investment provident fund's general track 7978 (CAT-12 a)."
+}

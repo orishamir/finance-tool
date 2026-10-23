@@ -1,0 +1,35 @@
+{
+  "id": "tkrt-hpkdh",
+  "he": "תקרת הפקדה",
+  "en": null,
+  "meaning": "גבול להפקדות: בגמל להשקעה זה סכום שנתי שאסור לעבור, ובקרן השתלמות מעליו אין הטבת מס",
+  "where": [
+    "ad",
+    "app",
+    "provider-site"
+  ],
+  "wrapper_ids": [
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa"
+  ],
+  "variants": [
+    "תקרת הפקדה שנתית",
+    "תקרת ההפקדה",
+    "תקרת הפקדה מוטבת"
+  ],
+  "rule_ids": [
+    "KGL-02",
+    "KGL-03",
+    "KGL-24",
+    "KH-07",
+    "TXH-01",
+    "TXH-03"
+  ],
+  "source": {
+    "url": "https://fs.knesset.gov.il//20/law/20_lsr_343169.pdf",
+    "title": "ספר החוקים 2554 (7.6.2016): חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
+    "publisher": "Knesset",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "meitav-chisachon-lekol-yeled-sikun-mugbar",
+  "institution": "meitav",
+  "where_seen": "Meitav, רשימת מסלולי ההשקעה בתוכנית חסכון לכל ילד של מיטב (דוחות תשואה חסכון לכל ילד), https://www.meitav.co.il/provident_pension/kids_reports/; Meitav, חיסכון לכל ילד – מידע להורים, https://www.meitav.co.il/provident_pension/saving_for_every_kid/",
+  "seen_on": "2026-10-23",
+  "seen_by": "this collection",
+  "names": {
+    "he": [
+      "מיטב חסכון לכל ילד - סיכון מוגבר",
+      "מסלול חוסכים בסיכון גבוה - מסלול ברירת המחדל עבור מי שלא בחר מסלול השקעה"
+    ]
+  },
+  "maps_to": {
+    "wrapper_id": "child-savings-provident",
+    "cma_fund_id": null,
+    "track_ids": [
+      11387
+    ]
+  },
+  "near_duplicates": [],
+  "status": "catalogued",
+  "notes": "Track of Meitav's child-savings investment provident fund (regulator classification \"קופת גמל להשקעה - חסכון לילד\"), the kupat gemel lehashkaa side of the National Insurance \"חיסכון לכל ילד\" programme. cma_fund_id is null: no Meitav document read gives the parent fund number. The reports page and the regulator's name write \"סיכון מוגבר\"; the kid page writes \"סיכון גבוה\" and marks it the default for a parent who did not choose a track; the regulator's sub-specialization is \"סיכון גבוה\".",
+  "default_at_joining": true
+}

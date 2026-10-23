@@ -1,0 +1,14 @@
+{
+  "id": "PF-24",
+  "title": "A member who does not choose a track is placed in the default track (bylaw text)",
+  "title_he": "מי שלא בחר מסלול מצורף לברירת המחדל",
+  "text_he": "לפי תקנון אלטשולר שחם לקופת גמל להשקעה, עמית שלא בחר מסלול השקעה בתהליך ההצטרפות מצורף למסלול השקעה ברירת מחדל. המסלול הזה מוגדר כמסלול שמנהל את כספי העמית כל עוד לא בחר מסלול אחר. זהו מקור מוסדי בלבד; איזה מסלול הוא ברירת המחדל בכל מוצר ובכל חברה מופיע בקטלוג המסלולים.",
+  "strength": "institution",
+  "dimensions": [
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-22"
+}

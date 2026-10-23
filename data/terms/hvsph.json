@@ -1,0 +1,23 @@
+{
+  "id": "hvsph",
+  "he": "הוספה",
+  "en": null,
+  "meaning": "תוספת חד־פעמית למחיר הקנייה של יחידה בקרן, שהולכת למנהל הקרן ולא לקרן",
+  "where": [
+    "prospectus"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "MF-21"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
+    "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

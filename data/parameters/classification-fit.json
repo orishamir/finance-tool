@@ -106,6 +106,7 @@
     }
   ],
   "rationale": "An equity track (מניות) fits a horizon of 10 years or more, for someone who accepts a fall of 30% on the way; a general track (כללי) fits 5 years or more and a fall of 20%. The other regulator classifications hold very different mixes under one name (for example index trackers of shares and of bonds), so they show \"no rule\" until the table uses the sub-classification.",
+  "rationale_he": "מסלול מניות (מניות) מתאים לאופק של 10 שנים ומעלה, למי שמקבל ירידה של 30% בדרך; מסלול כללי (כללי) מתאים ל-5 שנים ומעלה ולירידה של 20%. שאר הסיווגים של הרגולטור מכילים תמהילים שונים מאוד תחת שם אחד (למשל מחקי מדד של מניות ושל אג״ח), ולכן הם מציגים \"אין כלל\" עד שהטבלה תשתמש בתת-הסיווג.",
   "chosen_by": "Claude, at the founder's request (2026-10-23: \"do whatever you think fits\")",
   "signed_off_by": "founder",
   "signed_off_on": "2026-10-23",

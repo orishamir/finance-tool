@@ -1,0 +1,14 @@
+{
+  "id": "TXH-03",
+  "title": "Employer deposit above the limits is taxed as salary when paid",
+  "title_he": "הפקדת מעסיק מעל הגבולות ממוסה כשכר",
+  "text_he": "סכומים שהמעסיק מפקיד מעל הגבולות הם הכנסת עבודה של העובד כבר כשהם משולמים לקרן, וממוסים עם משכורת אותו חודש ולא במשיכה. הפקדה כזו אינה 'הפקדה מוטבת', ולכן הרווחים עליה חייבים במס ביציאה. נייר הכלכלן הראשי אומר את אותו הדבר: מותר להפקיד מעבר לתקרה, אבל ההפקדה ממוסה.",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "tax-at-deposit",
+    "deposit-ceiling"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-hishtalmut.md",
+  "checked": "2026-10-22"
+}
