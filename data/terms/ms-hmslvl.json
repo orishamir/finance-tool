@@ -1,0 +1,27 @@
+{
+  "id": "ms-hmslvl",
+  "he": "מס' המסלול",
+  "en": null,
+  "meaning": "המספר שמזהה מסלול השקעה אחד; לפיו מזהים את המסלול גם כשהשם שלו השתנה",
+  "where": [
+    "pensia-net",
+    "statement"
+  ],
+  "wrapper_ids": [],
+  "variants": [
+    "מספר מסלול",
+    "מספר מסלול השקעה"
+  ],
+  "rule_ids": [
+    "CAT-09",
+    "CAT-11",
+    "CAT-13"
+  ],
+  "source": {
+    "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=b58b5a80-84b7-490d-ab02-bff12f1941b2&limit=100",
+    "title": "Pension-Net field dictionary \"פירוט שינויים פורמט חדש פנסיה\" (CMA via data.gov.il)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "hrvvch-hryaly",
+  "he": "הרווח הריאלי",
+  "en": null,
+  "meaning": "הרווח אחרי שמורידים ממנו את עליית המחירים; עליו הקופות מנכות את המס במשיכה",
+  "where": [
+    "ad"
+  ],
+  "wrapper_ids": [
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXK-07"
+  ],
+  "source": {
+    "url": "https://www.harel-group.co.il/long-term-savings/funding-saving/join/doclib/%d7%92%d7%9e%d7%9c%20%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94.pdf",
+    "title": "Harel, קופת גמל להשקעה flyer (2023)",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

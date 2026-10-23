@@ -1,0 +1,29 @@
+{
+  "id": "rybyt",
+  "he": "ריבית",
+  "en": null,
+  "meaning": "תשלום שהבנק או המדינה משלמים לכם על כסף שהפקדתם או הלוויתם; במס, גם הרווח ממק\"מ נחשב ריבית",
+  "where": [
+    "statement",
+    "tax-form"
+  ],
+  "wrapper_ids": [
+    "bank-deposit",
+    "current-account",
+    "government-bond",
+    "makam"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "BANK-02",
+    "BANK-04",
+    "TXI-01"
+  ],
+  "source": {
+    "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
+    "title": "Income Tax (Withholding from Interest, Dividend and Certain Profits) Regulations 2005, consolidated to 27.12.2017 (copy on btl.gov.il)",
+    "publisher": "National Insurance Institute",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

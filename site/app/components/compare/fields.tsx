@@ -1,0 +1,226 @@
+// The goal form's inputs (design-spec 6.3): number and slider fields that know whether their value is the
+// person's or a preset's, month field, switch row, percent pair, age stepper and the preset chips. They reuse
+// the release 1 field anatomy (timeline/fields.tsx) and add the "ערך התחלתי" / "הוזן על ידך" state line.
+import { useId, type ReactNode } from "react";
+import { buttons, r2, values as valuesCopy } from "../../copy";
+import type { FieldSource, PresetId } from "../../lib/goal";
+import { IconReset } from "../icons";
+import { StateTag } from "../provenance";
+import { NumberField } from "../timeline/fields";
+import { Button, cx } from "../ui";
+import { IconDown, IconUp } from "./icons";
+
+/** The state line under a field: "הוזן על ידך" with a reset, or the site parameter a preset filled in. */
+export function StateLine({ source, canReset, onReset }: { source: FieldSource; canReset: boolean; onReset: () => void }) {
+  if (source === "entered")
+    return (
+      <span className="flex items-center gap-2 flex-wrap">
+        <StateTag state="entered" />
+        {canReset && (
+          <Button variant="quiet" className="text-sm -ms-2 min-h-target" onClick={onReset}>
+            <IconReset size={16} /> {buttons.resetOne}
+          </Button>
+        )}
+      </span>
+    );
+  if (source === "preset") return <span className="text-xs text-muted-foreground">{valuesCopy.stateStart}</span>;
+  return null;
+}
+
+export interface GoalNumberProps {
+  label: ReactNode;
+  unit: string;
+  value: number | null;
+  source: FieldSource;
+  /** The number a preset holds for this field, when it has one (the reset goes back to it). */
+  presetValue?: number | null;
+  /** `null` clears the field back to the preset (or to empty). */
+  onChange: (n: number | null) => void;
+  validate?: (n: number) => string | null;
+  hint?: ReactNode;
+  note?: ReactNode;
+  placeholder?: string;
+  inputMode?: "decimal" | "numeric";
+  compact?: boolean;
+  /** No state line (sub-fields of a pair). */
+  bare?: boolean;
+  /** An error that comes from another field (see NumberField). */
+  externalError?: string | null;
+}
+
+export function GoalNumber({ label, unit, value, source, presetValue, onChange, validate, hint, note, placeholder, inputMode, compact, bare, externalError }: GoalNumberProps) {
+  return (
+    <NumberField
+      label={label}
+      unit={unit}
+      value={value}
+      isEntered={source === "entered"}
+      validate={validate ?? (() => null)}
+      onCommit={(n) => onChange(n)}
+      onReset={() => onChange(null)}
+      hint={hint}
+      note={
+        <>
+          {note}
+          {!bare && !compact && <StateLine source={source} canReset={presetValue !== undefined && presetValue !== null} onReset={() => onChange(null)} />}
+        </>
+      }
+      placeholder={placeholder}
+      inputMode={inputMode}
+      compact={compact}
+      externalError={externalError}
+      optional
+    />
+  );
+}
+
+export function GoalSlider({
+  label,
+  unit,
+  value,
+  source,
+  presetValue,
+  onChange,
+  validate,
+  min,
+  max,
+  step,
+  inputMode,
+}: {
+  label: ReactNode;
+  unit: string;
+  value: number | null;
+  source: FieldSource;
+  presetValue?: number | null;
+  onChange: (n: number | null) => void;
+  validate?: (n: number) => string | null;
+  min: number;
+  max: number;
+  step: number;
+  inputMode?: "decimal" | "numeric";
+}) {
+  const id = useId();
+  const current = value ?? min;
+  const clamped = Math.max(min, Math.min(max, current));
+  const fill = ((clamped - min) / (max - min)) * 100;
+  return (
+    <div className="field">
+      <div className="flex items-center justify-between gap-3">
+        <span className="field-label" id={`${id}-l`}>
+          {label}
+        </span>
+        <NumberField label={label} unit={unit} value={value} isEntered={source === "entered"} validate={validate ?? (() => null)} onCommit={(n) => onChange(n)} onReset={() => onChange(null)} compact optional inputMode={inputMode} />
+      </div>
+      <input
+        type="range"
+        className="slider"
+        aria-labelledby={`${id}-l`}
+        min={min}
+        max={max}
+        step={step}
+        value={clamped}
+        style={{ "--fill": `${fill}%` } as React.CSSProperties}
+        onChange={(e) => onChange(Number(e.target.value))}
+      />
+      <StateLine source={source} canReset={presetValue !== undefined && presetValue !== null} onReset={() => onChange(null)} />
+    </div>
+  );
+}
+
+/** A text field for the goal's name: free text, direction by its content. */
+export function NameField({ label, value, onChange }: { label: ReactNode; value: string; onChange: (v: string) => void }) {
+  const id = useId();
+  return (
+    <div className="field">
+      <label htmlFor={id} className="field-label">
+        {label}
+      </label>
+      <div className="field-box">
+        <input id={id} type="text" dir="auto" value={value} onChange={(e) => onChange(e.target.value)} className="field-input !text-start" autoComplete="off" />
+      </div>
+    </div>
+  );
+}
+
+/** A native month picker in the same box as a field; the default is this month. */
+export function MonthField({ label, value, min, onChange }: { label: ReactNode; value: string | null; min: string; onChange: (v: string | null) => void }) {
+  const id = useId();
+  return (
+    <div className="field">
+      <label htmlFor={id} className="field-label">
+        {label}
+      </label>
+      <div className="field-box">
+        <input id={id} type="month" dir="ltr" min={min} value={value ?? min} onChange={(e) => onChange(e.target.value || null)} className="field-input !text-start" />
+      </div>
+    </div>
+  );
+}
+
+/** A switch row: the label at the start, the switch at the end, 44px tall. */
+export function SwitchRow({ label, checked, onChange, source, onReset }: { label: ReactNode; checked: boolean; onChange: (v: boolean) => void; source: FieldSource; onReset: () => void }) {
+  const id = useId();
+  return (
+    <div className="flex flex-col gap-1">
+      <div className="flex items-center justify-between gap-4 min-h-target">
+        <span id={id} className="text-base">
+          {label}
+        </span>
+        <button
+          type="button"
+          role="switch"
+          aria-checked={checked}
+          aria-labelledby={id}
+          onClick={() => onChange(!checked)}
+          className={cx("relative h-7 w-12 shrink-0 rounded-full border transition-colors duration-[var(--duration-fast)]", checked ? "bg-primary border-primary" : "bg-muted border-input")}
+        >
+          <span className={cx("absolute top-0.5 size-5 rounded-full transition-all duration-[var(--duration-fast)]", checked ? "bg-background start-6" : "bg-muted-foreground start-0.5")} />
+        </button>
+      </div>
+      <StateLine source={source} canReset={false} onReset={onReset} />
+    </div>
+  );
+}
+
+/** Two percent fields side by side under one label, "מעסיק" and "עובד". */
+export function PercentPair({ label, employer, employee, onEmployer, onEmployee, validate }: { label: ReactNode; employer: number | null; employee: number | null; onEmployer: (n: number | null) => void; onEmployee: (n: number | null) => void; validate: (n: number) => string | null }) {
+  return (
+    <fieldset className="field border-0 p-0 m-0 min-w-0">
+      <legend className="field-label mb-1.5">{label}</legend>
+      <div className="grid grid-cols-2 gap-3">
+        <GoalNumber label={<span className="text-xs text-muted-foreground font-normal">{r2.form.employer}</span>} unit="pct" value={employer} source={employer === null ? "empty" : "entered"} onChange={onEmployer} validate={validate} bare />
+        <GoalNumber label={<span className="text-xs text-muted-foreground font-normal">{r2.form.employee}</span>} unit="pct" value={employee} source={employee === null ? "empty" : "entered"} onChange={onEmployee} validate={validate} bare />
+      </div>
+    </fieldset>
+  );
+}
+
+/** Age with a stepper at each side of the box. */
+export function AgeStepper({ label, value, onChange, validate, hint }: { label: ReactNode; value: number | null; onChange: (n: number | null) => void; validate: (n: number) => string | null; hint?: ReactNode }) {
+  return (
+    <div className="flex items-end gap-2">
+      <div className="flex-1 min-w-0">
+        <GoalNumber label={label} unit="years" value={value} source={value === null ? "empty" : "entered"} onChange={onChange} validate={validate} hint={hint} bare inputMode="numeric" placeholder={valuesCopy.agePlaceholder} />
+      </div>
+      <Button variant="icon" className="border border-input h-field w-11 shrink-0" aria-label={r2.form.ageDown} disabled={value === null || value <= 0} onClick={() => value !== null && onChange(value - 1)}>
+        <IconDown size={18} />
+      </Button>
+      <Button variant="icon" className="border border-input h-field w-11 shrink-0" aria-label={r2.form.ageUp} disabled={value === null} onClick={() => value !== null && onChange(value + 1)}>
+        <IconUp size={18} />
+      </Button>
+    </div>
+  );
+}
+
+/** One chip is chosen at a time; the row scrolls sideways on a phone and wraps from md. A chip never submits. */
+export function PresetChips({ value, onChange, ids }: { value: PresetId; onChange: (p: PresetId) => void; ids: PresetId[] }) {
+  return (
+    <div role="radiogroup" aria-label={r2.form.presetLabel} className="-mx-gutter px-gutter md:mx-0 md:px-0 flex gap-2 overflow-x-auto md:flex-wrap md:overflow-visible pb-1 scrollbar-none">
+      {ids.map((id) => (
+        <button key={id} type="button" role="radio" aria-checked={value === id} onClick={() => onChange(id)} className={cx("sec-chip border border-border shrink-0 transition-colors duration-[var(--duration-fast)]", value === id ? "sec-chip-on" : "bg-card hover:bg-accent")}>
+          {r2.presets[id]}
+        </button>
+      ))}
+    </div>
+  );
+}

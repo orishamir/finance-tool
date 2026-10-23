@@ -1,0 +1,60 @@
+{
+  "id": "ETF-33",
+  "title": "TA-125: TASE's own description: its most important benchmark, the 125 companies with the highest value on the exchange, containing the TA-35 and TA-90 shares",
+  "title_he": "ת״א 125 בתיאור הבורסה: מדד הייחוס החשוב",
+  "text_he": "חוברת המדדים המובילים של הבורסה מתארת את מדד ת\"א־125 כמדד הייחוס החשוב ביותר, המשקף את הכלכלה הישראלית וכולל את החברות בעלות השווי הגבוה ביותר בבורסה, ואומרת שהוא כולל את המניות שבמדדי ת\"א־35 ות\"א־90; המוצרים העוקבים אחריו הם הגדולים מכל מדד של הבורסה. נוסח הכללים של המדד עצמו, שקובע את מספר המניות, את תקרת המשקל ואת דרגות הכניסה והיציאה, לא נקרא, וזו שאלה פתוחה; תקרת המשקל מופיעה בתוצאות חיפוש בלבד ולא נרשמה. הנתון על שווי המוצרים העוקבים ישן יחסית לתאריך החוברת, וההרכב משתנה בכל עדכון.",
+  "figure_names_he": {
+    "constituents": "מספר החברות במדד",
+    "tracking_products_value": "שווי המוצרים העוקבים אחר המדד"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "currency"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-15",
+  "figures": {
+    "constituents": {
+      "value": 125,
+      "unit": "count",
+      "source": {
+        "url": "https://content.tase.co.il/media/rhzcuxda/file_0623_leading_indices_2025.pdf",
+        "title": "TASE, מדדי הבורסה המובילים (brochure, PDF dated 12.5.2025), p.2",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "ETF-33"
+      ],
+      "state": "sourced",
+      "notes": "\"כולל את 125 החברות בעלות השווי הגבוה ביותר בבורסה\" (brochure p.2). The index's own rule text (weight cap, entry and exit ranks) was not read: ETF OQ20."
+    },
+    "tracking_products_value": {
+      "value": 19000000000,
+      "unit": "nis",
+      "source": {
+        "url": "https://content.tase.co.il/media/rhzcuxda/file_0623_leading_indices_2025.pdf",
+        "title": "TASE, מדדי הבורסה המובילים (brochure, PDF dated 12.5.2025), p.2",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "ETF-33"
+      ],
+      "state": "sourced",
+      "notes": "About NIS 19 billion in products tracking the index, as of 04/04/2024, the largest of any TASE index."
+    }
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-23"
+}

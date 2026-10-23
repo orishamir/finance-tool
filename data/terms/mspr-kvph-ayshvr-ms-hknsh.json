@@ -1,0 +1,21 @@
+{
+  "id": "mspr-kvph-ayshvr-ms-hknsh",
+  "he": "מספר קופה -אישור מס הכנסה",
+  "en": null,
+  "meaning": "המספר של הקופה כולה, שכמה מסלולים שייכים אליה; מופיע ברשימת הקופות להעברות ולא במאגר החודשי",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "CAT-09",
+    "CAT-11",
+    "CAT-30"
+  ],
+  "source": {
+    "url": "https://data.gov.il/api/3/action/package_show?id=transfer_bank",
+    "title": "פרטי קופות לצורך העברה בנקאית כספים בין גופים מוסדיים (transfer_bank, CMA via data.gov.il)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

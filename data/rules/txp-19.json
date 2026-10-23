@@ -1,0 +1,41 @@
+{
+  "id": "TXP-19",
+  "title": "Severance grant on leaving a job: exemption per year of work",
+  "title_he": "מענק פרישה בעזיבת עבודה: פטור לכל שנת עבודה",
+  "text_he": "מענק הון שהתקבל עקב פרישה פטור ממס עד משכורת חודשית אחרונה לכל שנת עבודה, ולא יותר מתקרת המענק הפטור לשנת עבודה (באופן יחסי לחלק שנה). כספי פיצויים בקופת גמל לקצבה נחשבים מענק שהתקבל גם אם נשארו בקופה, אלא אם נבחר רצף. המנהל רשאי לפטור יותר במקרים מסוימים, שכר שהועלה בלי סבירות סמוך לפרישה עשוי להיות מנוטרל, ולמשרה חלקית משתמשים בשכר המלא האחרון; החלק החייב הוא הכנסה מיגיעה אישית שאפשר לפרוס על שנות העבודה, לאחור או לפנים, ולקיחת המענק בפטור מקטינה את הפטור על הקצבה אחר כך. התקרה צמודה למדד וקפואה לשנים הקרובות; הפקודה נקראה בעותק בוויקיטקסט ואומתה מול חוברת רשות המסים.",
+  "figure_names_he": {
+    "exempt_grant_per_year_of_work": "תקרת המענק הפטור לשנת עבודה"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "tax-at-exit",
+    "age-or-use-exemption",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "exempt_grant_per_year_of_work": {
+      "value": 13750,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+        "title": "Tax Authority deductions booklet 2026, p.13, row \"תקרת הפטור למענק הון עקב פרישה 9(7א)(א) 13,750 לכל שנת עבודה\"; Ordinance s.9(7a)(a)",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2024-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "frozen 2025-2027",
+      "rule_ids": [
+        "TXP-19"
+      ],
+      "state": "sourced",
+      "notes": "A retirement grant is exempt up to one month's last salary per year of work, never above this amount per year of work (13,310 in 2023; 3,900 at the 1990 base). CPI-linked under s.120B and frozen 2025 to 2027. Taking it exempt reduces the later annuity exemption (TXP-15)."
+    }
+  },
+  "il_finance_file": "tax-pension-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

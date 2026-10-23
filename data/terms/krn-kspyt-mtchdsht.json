@@ -1,0 +1,34 @@
+{
+  "id": "krn-kspyt-mtchdsht",
+  "he": "קרן כספית מתחדשת",
+  "en": null,
+  "meaning": "קרן כספית שבוחרים בה תקופה, ואפשר למשוך רק במועד קבוע; בסוף התקופה הכסף ממשיך אוטומטית לתקופה הבאה",
+  "where": [
+    "ad",
+    "app",
+    "fund-name"
+  ],
+  "wrapper_ids": [
+    "money-market-fund-daily",
+    "money-market-fund-renewable"
+  ],
+  "variants": [
+    "קרנות כספיות מתחדשות",
+    "קרנות כספיות מועדים קבועים",
+    "קרן כספית מועדים קבועים",
+    "קרן מועדים קבועים"
+  ],
+  "rule_ids": [
+    "MF-08",
+    "MF-35",
+    "MF-36",
+    "MF-38"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/MoneyMarketFund_Prospectus25.pdf",
+    "title": "ISA staff position, עמדת סגל בדבר הגשת תשקיף של קרן כספית מתחדשת (2025)",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

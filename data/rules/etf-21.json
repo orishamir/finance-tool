@@ -1,0 +1,58 @@
+{
+  "id": "ETF-21",
+  "title": "ETF closure: at least 30 days' notice of liquidation; daily reports when dormant units fall below NIS 10 million",
+  "title_he": "סגירת קרן סל: הודעה מוקדמת ודיווח על יחידות רדומות",
+  "text_he": "מנהל קרן סל חייב להודיע על פירוק הקרן מראש, לפי ימי ההודעה המוקדמת, חוץ מקרנות בחסר; עם ההודעה הבורסה מוחקת את היחידות מהמסחר וההצעה נפסקת. אם שווי היחידות הרדומות של קרן סל יורד מתחת לרצפה שנקבעה, המנהל חייב להגיש דיווח מיידי ולהמשיך לדווח יום־יום עד שהשווי עולה שוב. פירוק בשל שווי נכסים נמוך נעשה לפי החוק, שחל גם על קרנות מחקות. נוסח התקנות נקרא באתר שמעתיק אותו.",
+  "figure_names_he": {
+    "liquidation_notice_days": "ימי ההודעה המוקדמת על פירוק",
+    "dormant_units_report_floor": "שווי היחידות הרדומות שמתחתיו מדווחים יום־יום"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "liquidation_notice_days": {
+      "value": 30,
+      "unit": "days",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(קרנות_מחקות)",
+        "title": "Joint Investment Trust (Tracking Funds) Regulations 2018 (Hebrew Wikisource mirror)",
+        "publisher": "Legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-21"
+      ],
+      "state": "sourced"
+    },
+    "dormant_units_report_floor": {
+      "value": 10000000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf",
+        "title": "ISA directive to fund managers on managing a tracking fund, update 3 (15.10.2024)",
+        "publisher": "Israel Securities Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-21"
+      ],
+      "state": "sourced",
+      "notes": "ISA tracking-fund directive s.8: immediate report and daily reports while the value of dormant units is below NIS 10 million."
+    }
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-22"
+}

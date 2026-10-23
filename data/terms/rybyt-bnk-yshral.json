@@ -1,0 +1,29 @@
+{
+  "id": "rybyt-bnk-yshral",
+  "he": "ריבית בנק ישראל",
+  "en": null,
+  "meaning": "הריבית שבנק ישראל קובע; לפיה זזות ריבית הפריים והתשואה בקרנות הכספיות היומיות",
+  "where": [
+    "provider-site"
+  ],
+  "wrapper_ids": [
+    "bank-deposit",
+    "money-market-fund-daily",
+    "money-market-fund-renewable"
+  ],
+  "variants": [
+    "ריבית ב\"י"
+  ],
+  "rule_ids": [
+    "BANK-25",
+    "MF-34",
+    "MF-41"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf",
+    "title": "ISA, פעילות קרנות נאמנות בישראל 2024",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

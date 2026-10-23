@@ -1,0 +1,29 @@
+{
+  "id": "hnchh-bdmy-nyhvl",
+  "he": "הנחה בדמי ניהול",
+  "en": null,
+  "meaning": "דמי ניהול נמוכים מהתקרה שבחוק, שהחברה המנהלת מתחייבת להם לתקופה מינימלית ויכולה לבטל רק במקרים מסוימים",
+  "where": [
+    "app",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "PEN-25",
+    "PF-13",
+    "PF-14",
+    "PF-16"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
+    "title": "CMA circular 2017-9-15 \"דמי ניהול במכשירי החיסכון הפנסיוני – תיקון\" (gov.il copy)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

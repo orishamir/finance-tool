@@ -1,0 +1,24 @@
+{
+  "id": "mshvlb-schyr",
+  "he": "משולב סחיר",
+  "en": null,
+  "meaning": "מסלול שמשקיע ישירות בנכסים שנסחרים בבורסה; התמהיל בפועל יכול להיות שונה מאוד בין חברות",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "CAT-10",
+    "CAT-17",
+    "CAT-18",
+    "CAT-24"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+    "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

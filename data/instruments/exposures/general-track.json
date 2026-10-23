@@ -1,0 +1,48 @@
+{
+  "id": "general-track",
+  "names": {
+    "he": [
+      "מסלול כללי",
+      "כללי"
+    ],
+    "en": [
+      "General track"
+    ]
+  },
+  "one_line_he": "תמהיל של מניות, איגרות חוב, פיקדונות ונכסים לא סחירים, בארץ ובחו״ל, לפי שיקול דעת ועדת ההשקעות של החברה המנהלת; מסלול שאינו מתמחה ואינו מתחייב לטווח מניות.",
+  "kind": "mixed",
+  "currency": "ILS",
+  "cash_like": false,
+  "return_source": {
+    "mode": "entered",
+    "series": null
+  },
+  "variants": [],
+  "wrapper_ids": [
+    "kupat-gemel-lehashkaa",
+    "keren-hishtalmut"
+  ],
+  "rule_ids": [
+    "CAT-10",
+    "CAT-15",
+    "CAT-16",
+    "CAT-17",
+    "CAT-18",
+    "CAT-19",
+    "CAT-23",
+    "CAT-24",
+    "PF-23",
+    "PF-24",
+    "PF-10",
+    "TXK-03",
+    "TXK-04",
+    "REG-18",
+    "PF-29"
+  ],
+  "open_questions": [
+    "CAT-OQ9",
+    "CAT-OQ3",
+    "CAT-OQ18"
+  ],
+  "checked": "2026-10-23"
+}

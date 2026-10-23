@@ -1,0 +1,35 @@
+{
+  "id": "distribution-policy",
+  "he": "חלוקה או צבירה",
+  "one_line": "האם הרווחים מחולקים לכם במזומן מדי פעם, או נשארים בפנים ומושקעים מחדש",
+  "source": {
+    "url": "docs/product.md#33-dimension-checklist-or-what-you-are-not-considering",
+    "title": "product.md 3.3 and glossary.md section 2",
+    "publisher": "project",
+    "strength": "primary",
+    "checked": "2026-10-23"
+  },
+  "rule_ids": [
+    "ETF-19",
+    "ETF-27",
+    "ETF-28",
+    "ETF-30",
+    "ETF-40",
+    "ETF-42",
+    "GOV-03",
+    "GOV-11",
+    "GOV-13",
+    "GOV-14",
+    "MF-49",
+    "TXF-05",
+    "TXF-08",
+    "TXF-11",
+    "TXF-12",
+    "TXF-16",
+    "TXK-03",
+    "TXS-10",
+    "TXS-13",
+    "TXS-16",
+    "TXS-24"
+  ]
+}

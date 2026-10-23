@@ -1,0 +1,32 @@
+{
+  "id": "ychydh-b",
+  "he": "יחידה",
+  "en": null,
+  "meaning": "חלק בקרן נאמנות, כמו קרן סל; מחיר היחידה משקף את שווי הנכסים שבקרן.",
+  "where": [
+    "app",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500",
+    "index-ta125"
+  ],
+  "variants": [
+    "יחידות השתתפות"
+  ],
+  "rule_ids": [
+    "ETF-06",
+    "ETF-20",
+    "TXS-07"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+    "title": "פקודת מס הכנסה (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

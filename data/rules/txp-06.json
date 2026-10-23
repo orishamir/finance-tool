@@ -1,0 +1,146 @@
+{
+  "id": "TXP-06",
+  "title": "s.47(b1) deduction for a beneficiary member (the self-employed case)",
+  "title_he": "הניכוי לעמית מוטב, בעיקר לעצמאים",
+  "text_he": "עמית מוטב רשאי לנכות תשלומים לקופת גמל לקצבה בשני רבדים: ברובד הראשון, שיעור הרובד הראשון מ\"הכנסה לעמית עצמאי\", שהיא ההכנסה החייבת עד תקרת ההכנסה לעמית עצמאי בניכוי ההכנסה המבוטחת; ברובד השני, לסכומים שלא נוכו ברובד הראשון, שיעור הרובד השני מ\"הכנסה נוספת\" ועוד התוספת על החלק שמעל הסף ממנה. הכנסה נוספת היא הנמוך מבין ההכנסה החייבת שאינה מבוטחת עד תקרת ההכנסה לעמית עצמאי, ובין ההכנסה החייבת עד תקרת ההכנסה הנוספת בניכוי הגבוה מבין ההכנסה המבוטחת ואותה תקרה. ברובד השני ההפקדות שהפכו את האדם לעמית מוטב לא מנוכות שוב, ואי אפשר לנכות אותו סכום בשני מסלולי הניכוי; אפשר לנכות גם עבור ילד בוגר, ואי אפשר להעביר הפקדות בין בני זוג. התקרות קפואות לשנים הקרובות; הפקודה נקראה בעותק בוויקיטקסט ואומתה מול המדריך של רשות המסים.",
+  "figure_names_he": {
+    "first_tier_pct": "שיעור הרובד הראשון",
+    "second_tier_pct": "שיעור הרובד השני",
+    "second_tier_extra_pct": "התוספת ברובד השני",
+    "second_tier_extra_above_pct": "סף התוספת ברובד השני (מההכנסה הנוספת)",
+    "self_employed_income_cap": "תקרת ההכנסה לעמית עצמאי (שנתי)",
+    "additional_income_cap": "תקרת ההכנסה הנוספת (שנתי)"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "tax-at-deposit",
+    "deposit-ceiling",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "first_tier_pct": {
+      "value": 11,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance s.47(b1) (Wikisource mirror); guide 2025 pp.60-62 (\"רובד ראשון\")",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXP-06"
+      ],
+      "state": "sourced",
+      "notes": "First tier: 11% of \"income for a self-employed member\" (taxable income up to the s.47(a)(1) amount, 116,400 in 2026, less insured income). Second tier: 7% of \"additional income\" plus up to 4% more above 12% of it, excluding the deposits that made the person a beneficiary member."
+    },
+    "second_tier_pct": {
+      "value": 7,
+      "unit": "pct",
+      "source": {
+        "title": "Income Tax Ordinance s.47(a), (b1) (Wikisource mirror); guide 2025 pp.60-62; deductions booklet 2026 p.12",
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXP-06"
+      ],
+      "state": "sourced",
+      "notes": "Second tier: 7% of \"additional income\" (הכנסה נוספת), on the deposits above the beneficiary-member threshold (TXP-03)."
+    },
+    "second_tier_extra_pct": {
+      "value": 4,
+      "unit": "pct",
+      "source": {
+        "title": "Income Tax Ordinance s.47(a), (b1) (Wikisource mirror); guide 2025 pp.60-62; deductions booklet 2026 p.12",
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXP-06"
+      ],
+      "state": "sourced",
+      "notes": "Up to 4% of additional income more, for the part of the base above second_tier_extra_above_pct of it."
+    },
+    "second_tier_extra_above_pct": {
+      "value": 12,
+      "unit": "pct",
+      "source": {
+        "title": "Income Tax Ordinance s.47(a), (b1) (Wikisource mirror); guide 2025 pp.60-62; deductions booklet 2026 p.12",
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXP-06"
+      ],
+      "state": "sourced",
+      "notes": "The extra 4% applies to the base above 12% of additional income."
+    },
+    "self_employed_income_cap": {
+      "value": 116400,
+      "unit": "nis",
+      "source": {
+        "title": "Income Tax Ordinance s.47(a), (b1) (Wikisource mirror); guide 2025 pp.60-62; deductions booklet 2026 p.12",
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "frozen 2025-2027",
+      "rule_ids": [
+        "TXP-06"
+      ],
+      "state": "sourced",
+      "notes": "The s.47(a)(1) amount: booklet 2026 p.12 \"תקרת הכנסה לעמית עצמאי 47(א)\" 9,700 a month, times 12. Frozen 2025 to 2027 (TXP-27)."
+    },
+    "additional_income_cap": {
+      "value": 291000,
+      "unit": "nis",
+      "source": {
+        "title": "Income Tax Ordinance s.47(a), (b1) (Wikisource mirror); guide 2025 pp.60-62; deductions booklet 2026 p.12",
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "frozen 2025-2027",
+      "rule_ids": [
+        "TXP-06"
+      ],
+      "state": "sourced",
+      "notes": "2.5 times the s.47(a)(1) amount: booklet 2026 p.12 \"תקרת הכנסה נוספת 47(א)(5)\" 24,250 a month, times 12. Frozen 2025 to 2027 (TXP-27)."
+    }
+  },
+  "il_finance_file": "tax-pension-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

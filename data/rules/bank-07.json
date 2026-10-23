@@ -1,0 +1,60 @@
+{
+  "id": "BANK-07",
+  "title": "Notice before a deposit of one year or more matures",
+  "title_he": "הודעה לפני פירעון פיקדון לשנה או יותר",
+  "text_he": "לפני שפיקדון לתקופה קצובה של שנה או יותר נפרע, אם הוא לא מתחדש, הבנק חייב להודיע על הסכום שעומד לזכות המפקיד, על מועד הזיכוי של החשבון ועל התוצאות של אי-משיכה בזמן. ההודעה נשלחת בחלון ימים לפני הפירעון, בין המקסימום למינימום. הכלל לא חל על פיקדון שנפרע בתשלומים במרווח של עד שלושה חודשים, והתוספת לכללים פוטרת מהודעה סכומים קטנים עד סכום פטור שלא נרשם כאן.",
+  "figure_names_he": {
+    "maturity_notice_min_days": "מינימום ימים לפני הפירעון לשליחת ההודעה",
+    "maturity_notice_max_days": "מקסימום ימים לפני הפירעון לשליחת ההודעה"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "maturity_notice_min_days": {
+      "value": 21,
+      "unit": "days",
+      "source": {
+        "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
+        "title": "Banking Rules (Customer Service) (Fair Disclosure and Delivery of Documents) 1992, consolidated to 30.12.2014, BoI copy, s.11",
+        "publisher": "Bank of Israel (Banking Supervision)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BANK-07"
+      ],
+      "state": "sourced",
+      "notes": "Before a non-renewing fixed-term deposit of one year or more is repaid, the bank notifies the amount, the crediting date and the consequences of not withdrawing, no later than 21 days before (s.11). The Schedule E exempt sum is not recorded here (BANK OQ3)."
+    },
+    "maturity_notice_max_days": {
+      "value": 45,
+      "unit": "days",
+      "source": {
+        "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
+        "title": "Banking Rules (Customer Service) (Fair Disclosure and Delivery of Documents) 1992, consolidated to 30.12.2014, BoI copy, s.11",
+        "publisher": "Bank of Israel (Banking Supervision)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BANK-07"
+      ],
+      "state": "sourced",
+      "notes": "The same notice is sent no earlier than 45 days before repayment (s.11)."
+    }
+  },
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-22"
+}

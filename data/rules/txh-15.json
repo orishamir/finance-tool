@@ -1,0 +1,61 @@
+{
+  "id": "TXH-15",
+  "title": "Withholding by the fund",
+  "title_he": "ניכוי המס במקור על ידי הקרן",
+  "text_he": "קרן שמשלמת 'סכומים מקרן השתלמות', כלומר הסכומים הלא פטורים במשיכה מוקדמת, מנכה במקור לפי שיעור הניכוי במקור במשיכה מוקדמת, שהוא המדרגה הגבוהה ביותר בפקודה. קרן שמשלמת 'סכומי ריבית חייבת', ריבית ורווחים אחרי התקופה שאינם מהפקדה מוטבת, מנכה לפי שיעור הניכוי במקור על ריבית חייבת. הניכוי אינו המס הסופי: מי ששיעור המס השולי שלו נמוך יותר מקבל את ההפרש בדוח שנתי.",
+  "figure_names_he": {
+    "withholding_early": "שיעור הניכוי במקור במשיכה מוקדמת",
+    "withholding_taxable_interest": "שיעור הניכוי במקור על ריבית חייבת"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "tax-at-exit",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "withholding_early": {
+      "value": 47,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+        "title": "Tax Authority deductions booklet 2026, p.19 (part ז), row \"משיכות מקרן השתלמות\" 47%; withholding regulations 1997 reg. 2(a) (maximum rate of s.121)",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXH-15"
+      ],
+      "state": "sourced",
+      "notes": "Withholding on \"amounts from a study fund\" paid before the period (the non-exempt early amounts of the 1997 Order): the maximum rate of s.121, 47% in 2026. Not the final tax: a lower marginal rate is recovered through a return."
+    },
+    "withholding_taxable_interest": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מסכומים_ששולמו_מקרן_השתלמות)",
+        "title": "Income Tax Regulations (withholding from amounts paid from a study fund) 1997, reg. 2(b): 25% on \"סכומי ריבית חייבת\"",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXH-15"
+      ],
+      "state": "sourced",
+      "notes": "Withholding on gains paid after the period that do not come from a benefited deposit (TXH-11)."
+    }
+  },
+  "il_finance_file": "tax-hishtalmut.md",
+  "checked": "2026-10-22"
+}

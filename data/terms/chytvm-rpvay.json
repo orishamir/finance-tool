@@ -1,0 +1,24 @@
+{
+  "id": "chytvm-rpvay",
+  "he": "חיתום רפואי",
+  "en": null,
+  "meaning": "בדיקה של מצב הבריאות שקרן הפנסיה רשאית לדרוש רק במקרים מסוימים, כמו הצטרפות או הגדלת ביטוח",
+  "where": [],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "PEN-14",
+    "PEN-16"
+  ],
+  "source": {
+    "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+    "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

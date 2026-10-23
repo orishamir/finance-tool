@@ -1,0 +1,45 @@
+# Dead-man check for refresh.yml (docs/architecture.md sections 3.3 and 6).
+#
+# GitHub disables scheduled workflows on a public repository after a stretch with no repository
+# activity. If that happens to refresh.yml (or the refresh fails for days), no workflow reports it,
+# so this one runs weekly and opens an issue when no refresh run succeeded in the last 3 days.
+# It can be disabled for the same reason; the fallback is then the home machine (gap H3):
+# run `npm run refresh -- cma` there and look at the repository's Actions tab now and then.
+name: refresh-watchdog
+
+on:
+  schedule:
+    - cron: "15 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  actions: read
+
+jobs:
+  watchdog:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - run: |
+          since=$(date -u -d '3 days ago' +%Y-%m-%dT%H:%M:%SZ)
+          recent=$(gh run list --workflow refresh.yml --status success --created ">=${since}" --json databaseId --jq 'length')
+          last=$(gh run list --workflow refresh.yml --status success --limit 1 --json createdAt --jq '.[0].createdAt[:10] // "never"')
+          open=$(gh issue list --state open --search 'in:title "Refresh has not succeeded since"' --json number --jq '.[0].number // empty')
+          title="Refresh has not succeeded since ${last}"
+          if [ "$recent" -gt 0 ]; then
+            echo "A refresh succeeded in the last 3 days (last success ${last})."
+            if [ -n "$open" ]; then
+              gh issue close "$open" --comment "A refresh run succeeded again (${last}); closing."
+            fi
+            exit 0
+          fi
+          body="No successful run of refresh.yml since ${last} (checked $(date -u +%F)). Check the Actions tab; GitHub disables scheduled workflows on inactive public repositories, so re-enable refresh.yml or run \`npm run refresh -- cma\` on the home machine."
+          if [ -n "$open" ]; then
+            gh issue edit "$open" --title "$title" --body "$body"
+            gh issue comment "$open" --body "Still no successful refresh (checked $(date -u +%F))."
+          else
+            gh issue create --title "$title" --body "$body"
+          fi

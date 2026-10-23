@@ -1,0 +1,27 @@
+{
+  "id": "hgvp-hchvsk",
+  "he": "הגוף החוסך",
+  "en": null,
+  "meaning": "הקופה או הבנק שמנהלים את כספי החיסכון לכל ילד",
+  "where": [
+    "provider-site"
+  ],
+  "wrapper_ids": [
+    "child-savings-bank",
+    "child-savings-provident"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "CS-06",
+    "CS-11",
+    "CS-12",
+    "CS-25"
+  ],
+  "source": {
+    "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/mavar.aspx",
+    "title": "National Insurance, שינוי הגוף החוסך או המסלול",
+    "publisher": "National Insurance Institute",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

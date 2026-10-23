@@ -1,0 +1,25 @@
+{
+  "id": "mslvl-bsysy",
+  "he": "מסלול בסיסי",
+  "en": null,
+  "meaning": "חבילת עמלות בעו\"ש עם מעט פעולות בחודש במחיר מפוקח; כל בנק חייב להציע אותה",
+  "where": [
+    "app",
+    "tariff"
+  ],
+  "wrapper_ids": [
+    "current-account"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "BANK-16",
+    "BANK-17"
+  ],
+  "source": {
+    "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
+    "title": "Banking Rules (Customer Service) (Fees) 2008, consolidated to 9.4.2025, BoI copy",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "id": "prvpyl-chshyph-b",
+  "he": "פרופיל חשיפה",
+  "en": null,
+  "meaning": "קוד בשם של קרן ישראלית, ספרה ואות, שמראה עד כמה היא יכולה להיות חשופה למניות ולמטבע חוץ.",
+  "where": [
+    "app",
+    "fund-name"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500",
+    "index-ta125"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "ETF-12",
+    "MF-43",
+    "MF-54"
+  ],
+  "source": {
+    "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+    "title": "Maya (TASE), רשימת קרנות, הורדת נתונים",
+    "publisher": "Tel Aviv Stock Exchange",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

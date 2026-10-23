@@ -1,0 +1,24 @@
+{
+  "id": "namn-lmchzykym",
+  "he": "נאמן למחזיקים",
+  "en": null,
+  "meaning": "חברה שהמנפיק חייב למנות, שמשגיחה עליו ופועלת לטובת כלל המחזיקים באג\"ח, למשל כשאינו משלם.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [
+    "נאמן"
+  ],
+  "rule_ids": [
+    "CORP-04",
+    "CORP-05",
+    "CORP-06",
+    "CORP-08"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/חוק_ניירות_ערך",
+    "title": "חוק ניירות ערך, התשכ\"ח-1968 (Wikisource)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "id": "ETF-42",
+  "title": "TA-125 is a gross total return index in shekels (dividends counted before any tax), computed every 15 seconds, launched 2 January 1992 at base 100 and expanded from 100 to 125 shares on 9 February 2017",
+  "title_he": "ת״א 125: תשואה כוללת ברוטו, בשקלים",
+  "strength": "primary",
+  "dimensions": [
+    "distribution-policy",
+    "currency"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "calculation_interval_seconds": {
+      "value": 15,
+      "unit": "count",
+      "source": {
+        "url": "https://market.tase.co.il/he/market_data/index/137/about",
+        "title": "TASE, ת\"א-125 אודות המדד (index 137; read in Chrome 2026-10-23)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-42"
+      ],
+      "state": "sourced",
+      "notes": "\"תדירות פרסום המדד: רציף, כל 15 שניות במהלך יום המסחר\" (index page)."
+    },
+    "launch_date": {
+      "value": "1992-01-02",
+      "unit": "text",
+      "source": {
+        "url": "https://market.tase.co.il/he/market_data/index/137/about",
+        "title": "TASE, ת\"א-125 אודות המדד (index 137; read in Chrome 2026-10-23)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-42"
+      ],
+      "state": "sourced",
+      "notes": "\"מועד השקת מדד 02/01/1992\", base 100 (index page; annex 3 section 7)."
+    },
+    "expanded_to_125_on": {
+      "value": "2017-02-09",
+      "unit": "text",
+      "source": {
+        "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
+        "title": "TASE, מדריך מעו\"ף - הנחיות על פי החלק השביעי לתקנון, update 173 to 25.12.2025 (annex 3 page stamped 2.11.2023)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-42"
+      ],
+      "state": "sourced",
+      "notes": "Annex 3 section 8: expanded from 100 to 125 shares at the close of 9.2.2017; the TA-125 base on 12.2.2017 equals the TA-100 close of 9.2.2017."
+    },
+    "publication_before_update_trading_days": {
+      "value": 5,
+      "unit": "days",
+      "source": {
+        "url": "https://market.tase.co.il/he/market_data/index/137/about",
+        "title": "TASE, ת\"א-125 אודות המדד (index 137; read in Chrome 2026-10-23)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-42"
+      ],
+      "state": "sourced",
+      "notes": "\"מועד פרסום עדכון הרכב המדד: לפחות חמישה ימי מסחר לפני מועד העדכון\" (index page). The knowledge-centre page behind ETF-35 says two weeks; not reconciled."
+    }
+  },
+  "text_he": "הבורסה מחשבת את המדד כמדד תשואה כוללת ברוטו: ביום האקס של דיבידנד, הדיבידנד ברוטו נספר במדד כאילו הושקע בו מחדש, בלי להוריד מס. לכן קרן שעוקבת אחרי המדד נמדדת מול מדד שלפני מס. המדד מחושב בשקלים ומתפרסם ברציפות במהלך יום המסחר, והוא הושק בתחילת שנות התשעים כמדד של מאה מניות והורחב למאה עשרים וחמש מניות בתחילת שנת אלפיים ושבע עשרה.",
+  "figure_names_he": {
+    "calculation_interval_seconds": "מרווח החישוב, בשניות",
+    "launch_date": "מועד השקת המדד",
+    "expanded_to_125_on": "מועד ההרחבה למאה עשרים וחמש מניות",
+    "publication_before_update_trading_days": "פרסום העדכון מראש, בימי מסחר"
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-23"
+}

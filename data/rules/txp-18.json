@@ -1,0 +1,40 @@
+{
+  "id": "TXP-18",
+  "title": "Early or non-compliant withdrawal (`משיכה שלא כדין`)",
+  "title_he": "משיכה שלא כדין: מוקדמת או בלי עמידה בתנאים",
+  "text_he": "משיכה מקופת גמל לקצבה, או משיכה מקופת גמל לפני זמנה, היא משיכה שלא כדין וממוסה בגבוה מבין שיעור המס המזערי והשיעור השולי; הקופה מנכה במקור את השיעור המזערי. בחישוב לפי השיעור המזערי ניתנות רק נקודות הזיכוי הבסיסיות, ובחישוב השולי ניתנים זיכויים, ניכויים וקיזוזים כמו בהכנסה מיגיעה אישית. לא ממוסה כך: משיכה בשל הכנסה נמוכה של בני הזוג, עד הפער משכר המינימום (כפול אם יש ילד קטין), בטופס לקופה; הוצאות רפואיות (לא שיניים) מעל מחצית ההכנסה השנתית; נכות קבועה בדרגה גבוהה של העמית או של קרוב שנקבעה אחרי תחילת ההפקדות; ומשיכת יורשים במות העמית. על איזה סכום בדיוק חל המס, כל המשיכה או רק ההפקדות המוטבות והרווחים, לא נאמר במקורות שנקראו.",
+  "figure_names_he": {
+    "minimum_rate": "שיעור המס המזערי על משיכה שלא כדין"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "liquidity-lockup",
+    "eligibility"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "minimum_rate": {
+      "value": 35,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+        "title": "Tax Authority deductions booklet 2026, p.12 and p.19: \"תשלום שלא כדין מקופת גמל לקצבה – הגבוה מבין 35% ושיעור המס\"; guide 2025 p.43 section 29; Ordinance s.87",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXP-18"
+      ],
+      "state": "sourced",
+      "notes": "A withdrawal the law does not allow is taxed at the higher of 35% and the marginal rate, and the fund withholds 35%. Exceptions: low household income (form 159א), medical expenses above half the annual income, permanent disability of 75% or more (form 159), and heirs on death. Which amount is the taxable base is open question 3, so the method does not compute it (G-06)."
+    }
+  },
+  "il_finance_file": "tax-pension-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,39 @@
+{
+  "id": "CS-02",
+  "title": "Who is eligible, and when deposits start and stop",
+  "title_he": "מי זכאי, ומתי ההפקדות מתחילות ונפסקות",
+  "text_he": "הביטוח הלאומי מפקיד כל חודש בעד כל ילד שמשולמת בעדו קצבת ילדים, עד שהילד מגיע לגיל שבו ההפקדות נפסקות. הזכאות לקצבת ילדים דורשת שההורה תושב ישראל (או לא תושב שעומד בתנאים), ושהילד קטין, גר בישראל ולא נשוי; ילד בחו״ל מקבל הפקדות רק בחודשים שבהם הקצבה עדיין משולמת. אם הקצבה מקוזזת בגלל חוב של ההורה, ההפקדה הבסיסית לא נפגעת, אבל אי אפשר להוסיף את התוספת ההורית עד שהחוב מסולק.",
+  "figure_names_he": {
+    "deposits_until_age": "הגיל שבו ההפקדות נפסקות"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "eligibility",
+    "deposit-ceiling"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "deposits_until_age": {
+      "value": 18,
+      "unit": "years",
+      "source": {
+        "url": "https://www.btl.gov.il/benefits/children/Pages/תנאי%20זכאות.aspx",
+        "title": "National Insurance Law 74ב(ג) (Wikisource mirror): sums saved 'בעד כל חודש לטובת הילד ועד הגיעו לגיל 18'; NII child allowance eligibility page",
+        "publisher": "National Insurance Institute (BTL); Knesset legislation (Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "CS-02"
+      ],
+      "state": "sourced",
+      "notes": "NII deposits are made each month until the child turns 18; at 18 they stop."
+    }
+  },
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-22"
+}

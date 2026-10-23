@@ -1,0 +1,39 @@
+{
+  "id": "PEN-16",
+  "title": "What happens when deposits stop: insurance extension and insurance arrangement",
+  "title_he": "כשההפקדות נפסקות: ארכת ביטוח והסדר ביטוח",
+  "text_he": "כשעמית מפסיק להיות פעיל (בלי הפקדות), הביטוח נמשך אוטומטית לתקופת ארכת הביטוח, והעלות יורדת מהיתרה. לפני תום הארכה העמית רשאי לבקש הסדר ביטוח: שמירת הכיסוי בתשלום מהיתרה או בהפקדה, לתקופה מוגבלת מסיום הפעילות כולל הארכה, או קצרה יותר אם היה פעיל פחות זמן. שניהם מסתיימים כשההפקדות מתחדשות, כשכספי התגמולים עוברים לקרן אחרת, לבקשת העמית, כשהיתרה לא מספיקה, במוות, בגיל תום הביטוח או עם תחילת קצבה; אחרי זה העמית לא מבוטח, וחידוש אחרי הפסקה ארוכה דורש הצטרפות מחדש, אולי עם חיתום רפואי, ותקופת אכשרה חדשה. הכלל לקוח מתקנון של חברה מנהלת אחת.",
+  "figure_names_he": {
+    "insurance_extension_months": "ארכת ביטוח אחרי הפסקת ההפקדות (חודשים)"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "insurance-cover",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "insurance_extension_months": {
+      "value": 5,
+      "unit": "months",
+      "source": {
+        "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+        "title": "Mor comprehensive pension fund bylaws, version 01.06.2025, s.36 (\"ארכת ביטוח\")",
+        "publisher": "Mor Gemel and Pension",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "PEN-16"
+      ],
+      "state": "sourced",
+      "notes": "After deposits stop, insurance continues automatically for five full consecutive months with the cost deducted from the balance; an insurance arrangement may then keep cover for up to 24 months from the end of activity. Bylaws-level (Mor); other funds not read (open question 13)."
+    }
+  },
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

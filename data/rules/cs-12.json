@@ -1,0 +1,40 @@
+{
+  "id": "CS-12",
+  "title": "Switching from a bank",
+  "title_he": "מעבר מהבנק: פעם אחת, להפקדות העתידיות בלבד",
+  "strength": "primary",
+  "dimensions": [
+    "transfer-switch-process",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "bank_to_provident_moves": {
+      "value": 1,
+      "unit": "count",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/חוק_הביטוח_הלאומי",
+        "title": "National Insurance Law s.74ב(א)(2א) (Wikisource mirror): \"בחירה כאמור תיעשה פעם אחת בלבד; סכום שנצבר ערב בחירתו ... ימשיך להיות מנוהל בבנק\"; NII change page; NII 2025 report pp.1-2",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2025-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "CS-12"
+      ],
+      "state": "sourced",
+      "notes": "How many times a parent may redirect future deposits from a bank to a provident fund: once. In force from January 2025 per the NII 2025 report and Altshuler; the amendment number and exact effective date were not read (CS OQ14). NII's hly.gov.il page still says bank money cannot move to a provident fund (CS-25, conflict noted)."
+    }
+  },
+  "text_he": "חיסכון בבנק אי אפשר להעביר לבנק אחר, ומסלול בבנק אפשר לשנות רק בתחנת יציאה. מינואר 2025 הורה יכול, פעם אחת בלבד, להפנות את ההפקדות העתידיות מהבנק לקופת גמל; הסכום שנצבר נשאר בבנק, ולילד יש שני חשבונות.",
+  "figure_names_he": {
+    "bank_to_provident_moves": "מספר הפעמים שאפשר להפנות הפקדות מבנק לקופה"
+  },
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-22"
+}

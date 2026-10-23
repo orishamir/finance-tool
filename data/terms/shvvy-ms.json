@@ -1,0 +1,25 @@
+{
+  "id": "shvvy-ms",
+  "he": "שווי מס",
+  "en": null,
+  "meaning": "הפקדת מעסיק לקרן השתלמות מעל התקרה, שנחשבת להכנסה שלכם וממוסה עם המשכורת",
+  "where": [
+    "payslip",
+    "provider-site"
+  ],
+  "wrapper_ids": [
+    "keren-hishtalmut"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "KH-07",
+    "TXH-03"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf",
+    "title": "Ministry of Finance, Chief Economist, על הטבת המס בקרן השתלמות – ניתוח מדיניות (October 2025)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

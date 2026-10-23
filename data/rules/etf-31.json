@@ -1,0 +1,13 @@
+{
+  "id": "ETF-31",
+  "title": "A foreign fund offered in Israel must not specialise in Israeli investments; Israeli indices are reached through Israeli ETFs and tracking funds",
+  "title_he": "קרן חוץ לא מתמחה בישראל; למדדים ישראליים קרנות ישראליות",
+  "text_he": "קרן חוץ מוצעת לציבור בישראל רק אם היא אינה מתמחה בהשקעות בישראל. לכן בדרך של קרן חוץ רשומה החוסך הישראלי מקבל חשיפות לא ישראליות בלבד, ואל מדדים ישראליים מגיעים דרך קרנות סל וקרנות מחקות ישראליות. נוסח התקנות נקרא באתר שמעתיק אותו.",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "eligibility"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,3 @@
+# Test fixtures are recorded source bytes (Windows-1255 CSVs with CRLF): never normalise them.
+packages/pipeline/test/fixtures/** -text
+*.cp1255.csv -text

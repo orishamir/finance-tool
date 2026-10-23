@@ -1,0 +1,20 @@
+{
+  "id": "rshymt-mslvly-hshkah",
+  "he": "רשימת מסלולי השקעה",
+  "en": null,
+  "meaning": "רשימה שרשות שוק ההון מפרסמת ובה השמות המותרים למסלולים ומדיניות ההשקעה שכל שם מחייב",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "CAT-15",
+    "CAT-22"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+    "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

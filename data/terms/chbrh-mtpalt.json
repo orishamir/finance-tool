@@ -1,0 +1,20 @@
+{
+  "id": "chbrh-mtpalt",
+  "he": "חברה מתפעלת",
+  "en": null,
+  "meaning": "גוף שמבצע עבור החברה המנהלת את העבודה התפעולית של הקופה מאחורי הקלעים",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "CAT-25",
+    "CAT-30"
+  ],
+  "source": {
+    "url": "https://data.gov.il/api/3/action/package_show?id=transfer_bank",
+    "title": "פרטי קופות לצורך העברה בנקאית כספים בין גופים מוסדיים (transfer_bank, CMA via data.gov.il)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

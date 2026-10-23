@@ -1,0 +1,14 @@
+{
+  "id": "MF-03",
+  "title": "The trustee supervises the manager",
+  "title_he": "הנאמן מפקח על מנהל הקרן",
+  "text_he": "הנאמן מפקח על כך שמנהל הקרן מקיים את החוק, את הסכם הקרן ואת התשקיף, ובודק את הבקרה הפנימית. הוא רשאי להורות למנהל לתקן ליקויים בתוך זמן קצוב, ומדווח לרשות ניירות ערך ולבורסה כל רבעון. לפי מדריך הרשות, הנאמן מדווח לרשות גם על ליקויים מהותיים ועל ליקויים שלא תוקנו.",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "protection",
+    "regulator"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-22"
+}

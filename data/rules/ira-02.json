@@ -1,0 +1,15 @@
+{
+  "id": "IRA-02",
+  "title": "Pension funds cannot be self-directed",
+  "title_he": "קרן פנסיה אי אפשר לנהל בניהול אישי",
+  "strength": "primary",
+  "dimensions": [
+    "eligibility",
+    "insurance-cover",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "no",
+  "text_he": "תקנות הניהול האישי מגדירות קופה בניהול אישי 'למעט קרן פנסיה'. כספי פנסיה חייבים קודם לעבור לקופת גמל בניהול אישי, ומיטב מונה את ההשלכות על הכיסוי הביטוחי (גיל כניסה, שאירים, תקופת אכשרה חדשה).",
+  "il_finance_file": "ira-self-directed.md",
+  "checked": "2026-10-22"
+}

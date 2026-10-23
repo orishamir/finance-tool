@@ -1,0 +1,238 @@
+{
+  "id": "kupat-gemel-lehashkaa",
+  "names": {
+    "he": [
+      "קופת גמל להשקעה",
+      "גמל להשקעה"
+    ],
+    "statement": [],
+    "app": [
+      "חיסכון פלוס"
+    ]
+  },
+  "regulator": {
+    "value": "CMA",
+    "unit": "text",
+    "source": {
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ss.1, 13, 39 (Wikisource mirror)",
+      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "strength": "primary-mirror"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "REG-17"
+    ],
+    "state": "sourced",
+    "notes": "Managing companies are under the Commissioner's supervision (s.39(א)); a kupat gemel lehashkaa is a provident fund (s.1, s.13(א))."
+  },
+  "fee_bases_allowed": [
+    "deposit",
+    "balance",
+    "direct_expenses"
+  ],
+  "fee_caps": {
+    "deposit": {
+      "value": 4,
+      "unit": "pct_of_deposit",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 2(א)(2) (Hebrew Wikisource; cross-read on Nevo)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2014-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-02",
+        "PF-03",
+        "KGL-14"
+      ],
+      "state": "sourced",
+      "notes": "Maximum fee of a kupat gemel (as defined for reg. 2) on the payments transferred for each member, as a share of each deposit."
+    },
+    "balance": {
+      "value": 1.05,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 2(א)(1) (Hebrew Wikisource; cross-read on Nevo)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2014-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-02",
+        "PF-03",
+        "KGL-14"
+      ],
+      "state": "sourced",
+      "notes": "Maximum management fee of a \"קופת גמל\" (kupat gemel lehashkaa among them), per year, of each member's accumulated balance. In force since 2014 (a transitional 1.1% applied to 31 Dec 2013, reg. 7). Excludes fund types with their own caps (hishtalmut, IRA, pension). Legacy accounts (pre-2008 contributions, non-insurance fund) may be charged up to NIS 6 a month instead (reg. 2(א)(2א)); that amount was not read."
+    }
+  },
+  "ceiling": {
+    "per": "person_per_calendar_year",
+    "amount": {
+      "value": 83641,
+      "unit": "nis",
+      "source": {
+        "url": "https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf",
+        "title": "Harel, \"תקרות וסכומים לשנת 2026\" (PDF created 2026-03-08), p.1, \"תקרת הפקדה שנתית לגמל להשקעה ... 83,641 ₪\"",
+        "publisher": "Harel Insurance and Finance",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "cpi-linked 1 jan",
+      "rule_ids": [
+        "KGL-02",
+        "KGL-03",
+        "KGL-24"
+      ],
+      "state": "sourced",
+      "notes": "NIS per person per calendar year, 2026, across all kupat gemel lehashkaa accounts. Institution sources only: Harel, Phoenix, Meitav and the Hebrew University fund give 83,641; Altshuler gives 83,641.09. The official update notice was not reached (open question 1), and the CPI rise (83,641.09 / 70,000 = 1.1949) could not be checked against CBS data. Updated every 1 January."
+    }
+  },
+  "deposit_side_tax": {
+    "formula": "F-33",
+    "rule_ids": [
+      "TXK-01"
+    ]
+  },
+  "tax_during": {
+    "formula": "F-27",
+    "rule_ids": [
+      "TXK-03"
+    ]
+  },
+  "tax_at_exit": {
+    "formula": "F-44",
+    "rule_ids": [
+      "TXK-05",
+      "TXK-06",
+      "TXK-07"
+    ],
+    "blocked_by": [],
+    "labels": [
+      "institution source: base (TXK-07)"
+    ]
+  },
+  "lawful_exit": {
+    "kind": "any_time",
+    "payout_business_days": {
+      "value": 4,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
+        "title": "Altshuler Shaham \"חיסכון פלוס\" gemel lehashkaa bylaws, March 2025, clauses 11–15",
+        "publisher": "Altshuler Shaham Gemel and Pension",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "KGL-08"
+      ],
+      "state": "sourced",
+      "notes": "Identical in the Infinity and Yachad Rofim bylaws; Meitav's product page says the same. Tax is withheld at payment (clause 15)."
+    }
+  },
+  "switch_is_tax_event": {
+    "value": false,
+    "unit": "boolean",
+    "source": {
+      "url": "https://he.wikisource.org/api/rest_v1/page/pdf/פקודת_מס_הכנסה",
+      "title": "Income Tax Ordinance, s.3(ה4)(3) (Wikisource PDF p.8): the charge applies to sums an individual \"משך\"",
+      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXK-04"
+    ],
+    "state": "sourced",
+    "notes": "A track switch or a transfer to another kupat gemel lehashkaa is not a withdrawal; a transfer out to a different wrapper is."
+  },
+  "transfer_routes": [
+    {
+      "to": "kupat-gemel-lehashkaa",
+      "rule_ids": [
+        "PF-17",
+        "KGL-10",
+        "PF-19"
+      ]
+    },
+    {
+      "to": "provident-for-annuity",
+      "condition": "age >= 60",
+      "rule_ids": [
+        "KGL-09",
+        "TXK-10",
+        "PF-17"
+      ]
+    }
+  ],
+  "eligibility": {
+    "rule_ids": [
+      "KGL-01",
+      "KGL-06"
+    ],
+    "text": "anyone, at any age, paying for themselves; an account may be opened in another person's name, which is an irrevocable gift"
+  },
+  "protection": {
+    "rule_ids": [
+      "PF-29",
+      "REG-18",
+      "REG-19"
+    ],
+    "text": "assets are held in trust, separately from the managing company's property, and cannot be attached; if the company fails, management moves to another company; the state does not guarantee the fund's value"
+  },
+  "dimensions": {
+    "age-or-use-exemption": "blocked:TXK-OQ12",
+    "deposit-ceiling": "covered",
+    "distribution-policy": "covered",
+    "eligibility": "covered",
+    "fee-deposit": "covered",
+    "fee-exit": "covered",
+    "fee-management-balance": "covered",
+    "liquidity-lockup": "covered",
+    "protection": "covered",
+    "real-vs-nominal": "covered",
+    "regulator": "covered",
+    "reporting-obligation": "covered",
+    "switching-tax-event": "covered",
+    "tax-at-deposit": "covered",
+    "tax-at-exit": "covered",
+    "tax-during": "covered",
+    "transfer-switch-process": "covered",
+    "loss-offset": "blocked:TXK-OQ10"
+  },
+  "tier": 1,
+  "open_questions": [
+    "TXK-OQ2",
+    "TXK-OQ3",
+    "TXK-OQ10",
+    "TXK-OQ12"
+  ],
+  "checked": "2026-10-23"
+}

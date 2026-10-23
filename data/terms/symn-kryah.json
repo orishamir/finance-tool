@@ -1,0 +1,26 @@
+{
+  "id": "symn-kryah",
+  "he": "סימן קריאה",
+  "en": null,
+  "meaning": "סימן בשם הקרן שמזהיר שהיא עלולה להיות חשופה יותר לסיכון שמי שחייב לה כסף לא יחזיר",
+  "where": [
+    "fund-name"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [
+    "(!)"
+  ],
+  "rule_ids": [
+    "MF-44",
+    "MF-54"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
+    "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

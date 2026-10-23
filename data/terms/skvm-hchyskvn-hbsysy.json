@@ -1,0 +1,28 @@
+{
+  "id": "skvm-hchyskvn-hbsysy",
+  "he": "סכום החיסכון הבסיסי",
+  "en": null,
+  "meaning": "הסכום שהביטוח הלאומי מפקיד כל חודש לחיסכון של כל ילד; מתעדכן לפי עליית המחירים",
+  "where": [
+    "provider-site",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "child-savings-bank",
+    "child-savings-provident"
+  ],
+  "variants": [
+    "הפקדת בסיס"
+  ],
+  "rule_ids": [
+    "CS-03",
+    "TXK-19"
+  ],
+  "source": {
+    "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/sum.aspx",
+    "title": "National Insurance, סכום החיסכון",
+    "publisher": "National Insurance Institute",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "mrvvch",
+  "he": "מרווח",
+  "en": null,
+  "meaning": "התוספת או ההפחתה הקבועה מריבית העוגן בפיקדון בריבית משתנה, למשל פריים פחות מרווח",
+  "where": [
+    "provider-site"
+  ],
+  "wrapper_ids": [
+    "bank-deposit"
+  ],
+  "variants": [
+    "מרווח מ\"פריים\""
+  ],
+  "rule_ids": [
+    "BANK-13",
+    "BANK-25"
+  ],
+  "source": {
+    "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
+    "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24)",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

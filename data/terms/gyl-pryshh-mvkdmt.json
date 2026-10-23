@@ -1,0 +1,28 @@
+{
+  "id": "gyl-pryshh-mvkdmt",
+  "he": "גיל פרישה מוקדמת",
+  "en": null,
+  "meaning": "הגיל המוקדם ביותר שבו אפשר להתחיל לקבל קצבת זקנה מקרן הפנסיה; זהה לגברים ולנשים",
+  "where": [],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [
+    "גיל הפרישה המוקדמת"
+  ],
+  "rule_ids": [
+    "PEN-07",
+    "PEN-26",
+    "PEN-27",
+    "PF-17"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
+    "title": "חוק גיל פרישה, התשס\"ד-2004 (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

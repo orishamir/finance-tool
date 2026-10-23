@@ -1,0 +1,14 @@
+{
+  "id": "KH-05",
+  "title": "Employee share of at least one third of the employer's (institution sources only)",
+  "title_he": "הפקדת העובד לפחות שליש מהפקדת המעסיק",
+  "text_he": "לפי אלטשולר שחם, הפקדות העובד לא יפחתו משליש מהפקדות המעסיק; לפי מיטב, על כל שקל שהעובד מפקיד המעסיק מפקיד שלושה. מקור חוקי למינימום כזה לא נמצא. ה'שליש' היחיד שנמצא בחוק הוא גבול עליון במס: הפקדת העובד נחשבת מוטבת עד שליש מהפקדת המעסיק. לכן הכלל מחושב כמקור מוסדי בלבד.",
+  "strength": "institution",
+  "dimensions": [
+    "deposit-ceiling",
+    "eligibility"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "keren-hishtalmut.md",
+  "checked": "2026-10-22"
+}

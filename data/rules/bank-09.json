@@ -1,0 +1,16 @@
+{
+  "id": "BANK-09",
+  "title": "Current-account credit interest: what must be displayed",
+  "title_he": "ריבית על יתרת זכות בעובר ושב: מה מוצג",
+  "text_he": "בנק שמשלם ריבית על יתרת זכות בעובר ושב חייב להציג בסניפים ובאתר: אם ההצטרפות אוטומטית או דורשת חתימה נפרדת, סכום מינימום ומקסימום שעליו משולמת ריבית אם יש, את שיעור הריבית ואת מועדי הזיכוי. לפי בקשה הוא חייב למסור ללקוח את השיעור, התקופה והסכום שזוכה. בלוח הריביות המרוכז שורת העובר ושב מציגה את סוג הריבית, איך מצטרפים ובאילו תנאים, ואת הריבית המוצעת; בנק שלא משלם ריבית כותב זאת במפורש.",
+  "strength": "primary",
+  "dimensions": [
+    "eligibility",
+    "reporting-obligation",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-22"
+}

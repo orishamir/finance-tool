@@ -1,0 +1,14 @@
+{
+  "id": "CAT-39",
+  "title": "Pension-Net fee fields are per fund, not per track",
+  "title_he": "בפנסיה נט דמי הניהול הם לקרן, לא למסלול",
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-deposit"
+  ],
+  "likely_to_change": "no",
+  "text_he": "בפנסיה נט דמי הניהול מוצגים לקרן כולה ולא לכל מסלול. במאגר כל המסלולים של אותה קרן נושאים את אותו זוג ערכים. לכן אי אפשר להשוות בין מסלולים של קרן אחת לפי דמי ניהול, ויש להציג שורת עמלה אחת לקרן.",
+  "il_finance_file": "tracks-catalogue-and-decoder.md",
+  "checked": "2026-10-23"
+}

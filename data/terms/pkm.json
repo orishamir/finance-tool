@@ -1,0 +1,27 @@
+{
+  "id": "pkm",
+  "he": "פק\"מ",
+  "en": null,
+  "meaning": "קיצור של פיקדון קצר מועד: פיקדון בנקאי לתקופה קבועה, בריבית קבועה או משתנה, שלא נסחר בבורסה",
+  "where": [
+    "app",
+    "provider-site"
+  ],
+  "wrapper_ids": [
+    "bank-deposit"
+  ],
+  "variants": [
+    "פיקדון קצר מועד"
+  ],
+  "rule_ids": [
+    "BANK-30",
+    "BANK-31"
+  ],
+  "source": {
+    "url": "https://www.bankjerusalem.co.il/deposits-savings/deposit-types-and-differences/",
+    "title": "Bank of Jerusalem, פק\"מ או פיקדון מובנה",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

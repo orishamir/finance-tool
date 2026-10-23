@@ -1,0 +1,23 @@
+{
+  "id": "ktzbh-mvkrt-d",
+  "he": "קצבה מוכרת",
+  "en": null,
+  "meaning": "קצבה מכספים שכבר שולם עליהם מס או שלא קיבלו הטבת מס; היא פטורה ממס מגיל מסוים",
+  "where": [],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXP-12"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf",
+    "title": "Tax Authority, Income Tax circular 2/2013 (27.5.2013)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

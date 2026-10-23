@@ -1,0 +1,82 @@
+{
+  "id": "IRA-18",
+  "title": "Brokerage chosen by competitive process; related-party broker limits",
+  "title_he": "בחירת ברוקרים בהליך תחרותי ומגבלות על צד קשור",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "fee-trade",
+    "regulator"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "process_max_years": {
+      "value": 3,
+      "unit": "years",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
+        "title": "IRA regulations, reg. 12 (Nevo mirror, summarising fetch)",
+        "publisher": "Minister of Finance regulations (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "IRA-18"
+      ],
+      "state": "sourced",
+      "notes": "The competitive process for brokerage is held at least once every three years."
+    },
+    "min_participants": {
+      "value": 4,
+      "unit": "count",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
+        "title": "IRA regulations, reg. 12 (Nevo mirror, summarising fetch)",
+        "publisher": "Minister of Finance regulations (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "IRA-18"
+      ],
+      "state": "sourced",
+      "notes": "At least four participants in the competitive process."
+    },
+    "related_party_commission_cap": {
+      "value": 20,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
+        "title": "IRA regulations, reg. 12 (Nevo mirror, summarising fetch)",
+        "publisher": "Minister of Finance regulations (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "IRA-18"
+      ],
+      "state": "sourced",
+      "notes": "A related-party broker's commissions may be at most 20% of all commissions the company paid that year, and no higher than the unrelated winner's for the same or a similar trade."
+    }
+  },
+  "text_he": "החברה המנהלת קונה ומוכרת דרך ברוקרים שנבחרו בהליך תחרותי, לפחות אחת לשלוש שנים ובין ארבעה משתתפים לפחות. מסחר דרך צד קשור מותר רק אם עמלותיו עד 20% מכלל העמלות באותה שנה ולא גבוהות מהזוכה הלא-קשור.",
+  "figure_names_he": {
+    "process_max_years": "שנים לכל היותר בין הליכים תחרותיים",
+    "min_participants": "מספר משתתפים מינימלי בהליך",
+    "related_party_commission_cap": "תקרת עמלות לצד קשור"
+  },
+  "il_finance_file": "ira-self-directed.md",
+  "checked": "2026-10-22"
+}

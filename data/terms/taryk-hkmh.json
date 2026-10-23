@@ -1,0 +1,21 @@
+{
+  "id": "taryk-hkmh",
+  "he": "תאריך הקמה",
+  "en": null,
+  "meaning": "התאריך שבו המסלול הוקם לפי נתוני רשות שוק ההון; לפעמים הוא שונה מהתאריך שהחברה מפרסמת",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [
+    "תאריך הקמת הקופה/מסלול"
+  ],
+  "rule_ids": [
+    "CAT-25"
+  ],
+  "source": {
+    "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב",
+    "title": "Gemel-Net query, Meitav investment-provident tracks, period 202609 (CMA via data.gov.il)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "id": "REG-04",
+  "title": "No deposit insurance; a 2026 law orders an examination",
+  "title_he": "אין ביטוח פיקדונות; החוק מחייב בחינה",
+  "text_he": "אף חוק לא מקים ביטוח פיקדונות. החוק לקידום התחרות בשוק הבנקאות מחייב את שר האוצר ואת הנגיד לבחון אם מתקיימות נסיבות או תנאים שמקימים צורך בביטוח פיקדונות הציבור בתאגידים בנקאיים או בסוג מסוים מהם, ואם כן, איך ההסדר צריך לעבוד. הבחינה חייבת להסתיים בתוך תקופת הבחינה מיום התחילה, עם דוח התקדמות לוועדות הכנסת באמצע התקופה והמלצה בסופה. מועד התחילה עצמו לא נמצא בנוסח שנקרא, ומאגר הכנסת מסמן את החוק כתקף מיום פרסומו; לפי מקור משני, צוות הבחינה טרם הוקם במועד מכתב שנשלח כמה חודשים אחרי הפרסום.",
+  "figure_names_he": {
+    "examination_deadline_months": "חודשים מיום התחילה להשלמת הבחינה",
+    "progress_report_months": "חודשים מיום התחילה לדוח ההתקדמות"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "protection",
+    "regulator"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-03-31",
+  "figures": {
+    "examination_deadline_months": {
+      "value": 12,
+      "unit": "months",
+      "source": {
+        "url": "https://boi.org.il/media/5folwk5o/119.pdf",
+        "title": "Law for Promoting Competition in the Banking Market (Legislative Amendments) 2026, ss.15, 16 (BoI-hosted text, version 1.7.2026)",
+        "publisher": "Knesset legislation (BoI-hosted copy)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-03-31",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "REG-04"
+      ],
+      "state": "sourced",
+      "notes": "The Finance Minister and the Governor must complete an examination of whether deposit insurance is needed within one year of the law's commencement day (s.16(b)); a recommendation to the Knesset committees is due at one year (s.16(c)). The commencement day itself was not found (REG OQ12); the Knesset marks the law in force from 31.3.2026."
+    },
+    "progress_report_months": {
+      "value": 6,
+      "unit": "months",
+      "source": {
+        "url": "https://boi.org.il/media/5folwk5o/119.pdf",
+        "title": "Law for Promoting Competition in the Banking Market (Legislative Amendments) 2026, ss.15, 16 (BoI-hosted text, version 1.7.2026)",
+        "publisher": "Knesset legislation (BoI-hosted copy)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-03-31",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "REG-04"
+      ],
+      "state": "sourced",
+      "notes": "A progress report to the Knesset Finance and Economics committees is due six months after commencement (s.16(c))."
+    }
+  },
+  "il_finance_file": "regulators-and-protection.md",
+  "checked": "2026-10-22"
+}

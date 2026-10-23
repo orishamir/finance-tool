@@ -1,0 +1,24 @@
+{
+  "id": "tshvah-brvtv",
+  "he": "תשואה ברוטו",
+  "en": null,
+  "meaning": "תשואה לפני שמורידים ממנה עמלות קנייה ומכירה ומס",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [
+    "makam"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "BANK-15",
+    "GOV-20"
+  ],
+  "source": {
+    "url": "https://boi.org.il/media/gcmk52bw/447a.pdf",
+    "title": "BoI directive 447A \"פרסום מידע מרוכז על קרנות כספיות ומק\"מ\" (04/25)",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

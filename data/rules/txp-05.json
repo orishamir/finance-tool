@@ -1,0 +1,103 @@
+{
+  "id": "TXP-05",
+  "title": "s.47 deduction for someone who is not a beneficiary member",
+  "title_he": "הניכוי למי שאינו עמית מוטב",
+  "text_he": "יחיד שאינו עמית מוטב, ששילם (הוא או בן זוגו) לקופת גמל לקצבה, רשאי לנכות את התשלומים עד: שיעור הניכוי מההכנסה המזכה שאינה מעבודה, ועוד תוספת על החלק ששולם מעל סף מסוים מאותה הכנסה; וכן הנמוך מבין השיעור להכנסת עבודה שאינה מבוטחת מההכנסה המזכה, ואותו שיעור מהכנסת העבודה החייבת עד התקרה בניכוי ההכנסה המבוטחת. הניכוי חל רק על תשלומים לקופת גמל לקצבה או לשמירת זכויות פנסיה, והסכום שנוכה לא מזכה גם בזיכוי. ההכנסה המזכה בלי הכנסת עבודה מוגבלת בתקרה נפרדת, ומגיל חמישים המדריך מוסיף שיעורים מוגדלים. התקרות קפואות לשנים הקרובות; הפקודה נקראה בעותק בוויקיטקסט.",
+  "figure_names_he": {
+    "deduction_pct_non_work": "שיעור הניכוי מהכנסה שאינה מעבודה",
+    "eligible_income_cap_non_work": "תקרת ההכנסה המזכה שאינה מעבודה (שנתי)",
+    "non_insured_work_pct": "שיעור הניכוי מהכנסת עבודה לא מבוטחת",
+    "taxable_work_income_cap": "תקרת הכנסת העבודה החייבת (שנתי)"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "tax-at-deposit",
+    "deposit-ceiling"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "deduction_pct_non_work": {
+      "value": 7,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance s.47(a), (b) (Wikisource mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXP-05"
+      ],
+      "state": "sourced",
+      "notes": "Deduction of up to 7% of eligible income that is not work income, plus up to 4% more on the part paid above 12% of that income; 5% of eligible work income that is not insured income. Only for payments to a provident fund for annuity."
+    },
+    "eligible_income_cap_non_work": {
+      "value": 164400,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+        "title": "Tax Authority deductions booklet 2026, p.12, row \"47(א)(1)(2) - לא מהכנסת עבודה\" (13,700 a month)",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2024-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "frozen 2025-2027",
+      "rule_ids": [
+        "TXP-05"
+      ],
+      "state": "sourced",
+      "notes": "NIS per year. Eligible income without work income is capped at this amount; base 118,800 (2004), frozen 2025 to 2027."
+    },
+    "non_insured_work_pct": {
+      "value": 5,
+      "unit": "pct",
+      "source": {
+        "title": "Income Tax Ordinance s.47(a), (b) (Wikisource mirror); deductions booklet 2026 p.12",
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXP-05"
+      ],
+      "state": "sourced",
+      "notes": "Limb (2): the lower of 5% of eligible work income that is not insured income, and 5% of taxable work income up to taxable_work_income_cap less insured income. The enlarged 7.5% from age 50 (TXP-08) is not modelled (G-13)."
+    },
+    "taxable_work_income_cap": {
+      "value": 291000,
+      "unit": "nis",
+      "source": {
+        "title": "Income Tax Ordinance s.47(a), (b) (Wikisource mirror); deductions booklet 2026 p.12",
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "frozen 2025-2027",
+      "rule_ids": [
+        "TXP-05"
+      ],
+      "state": "sourced",
+      "notes": "2.5 times the s.47(a)(1) amount: 2.5 x 116,400 (TXP-02). The booklet 2026 p.12 row for the additional-income ceiling, 47(א)(5), gives 24,250 a month, times 12. Frozen 2025 to 2027 (TXP-27)."
+    }
+  },
+  "il_finance_file": "tax-pension-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

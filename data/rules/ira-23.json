@@ -1,0 +1,15 @@
+{
+  "id": "IRA-23",
+  "title": "Transfers into and out of an IRA fund",
+  "title_he": "העברות אל קופה בניהול אישי וממנה",
+  "strength": "primary",
+  "dimensions": [
+    "transfer-switch-process",
+    "liquidity-lockup",
+    "switching-tax-event"
+  ],
+  "likely_to_change": "no",
+  "text_he": "מקופה רגילה לקופה אישית הכסף עובר במזומן בלבד; בין קופות אישיות העמית בוחר מזומן או ניירות; מקופה אישית לקופה רגילה בוחרת הקופה הקולטת. בהעברה במזומן תקופת ההעברה מתחילה רק ביום שבו כל הנכסים הומרו למזומן. הוותק נשמר ומרכיבי הקופה לא משתנים (מיטב).",
+  "il_finance_file": "ira-self-directed.md",
+  "checked": "2026-10-22"
+}

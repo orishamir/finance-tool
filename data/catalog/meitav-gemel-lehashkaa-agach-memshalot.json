@@ -1,0 +1,22 @@
+{
+  "id": "meitav-gemel-lehashkaa-agach-memshalot",
+  "institution": "meitav",
+  "where_seen": "Meitav, רשימת מסלולי ההשקעה בקופת הגמל להשקעה של מיטב (דוחות תשואה גמל להשקעה), https://www.meitav.co.il/provident_pension/kupa_gemel_invest_reports/",
+  "seen_on": "2026-10-23",
+  "seen_by": "this collection; il-finance CAT-25",
+  "names": {
+    "he": [
+      "מיטב גמל להשקעה אג\"ח ממשלות"
+    ]
+  },
+  "maps_to": {
+    "wrapper_id": "kupat-gemel-lehashkaa",
+    "cma_fund_id": 7857,
+    "track_ids": [
+      15472
+    ]
+  },
+  "near_duplicates": [],
+  "status": "catalogued",
+  "notes": "Track of Meitav's investment provident fund \"מיטב גמל להשקעה\", fund (קופה) number 7857 (flyer p.3; merger notice). Only on the tracks page (under \"מסלולים ללא מניות\"); not in the 2024 flyer or the May 2024 merger notice, which predate it. The page gives \"מועד הקמת הקופה 01/07/2026\" while the regulator's inception date is 2024-12-17 (il-finance open question 17); the mapping rests on the fund number 15472 printed on the page."
+}

@@ -1,0 +1,31 @@
+{
+  "id": "dmy-nyhvl-mshtnym",
+  "he": "דמי ניהול משתנים",
+  "en": null,
+  "meaning": "חלק משכר מנהל קרן מחקה שתלוי בהפרש בין הקרן למדד; כשהקרן מפגרת אחרי המדד, המנהל משלם לה.",
+  "where": [
+    "app",
+    "prospectus"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500",
+    "index-ta125"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "ETF-07",
+    "ETF-13",
+    "ETF-14",
+    "ETF-27"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(קרנות_מחקות)",
+    "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018 (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

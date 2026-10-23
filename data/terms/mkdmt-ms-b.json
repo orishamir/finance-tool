@@ -1,0 +1,30 @@
+{
+  "id": "mkdmt-ms-b",
+  "he": "מקדמת מס",
+  "en": null,
+  "meaning": "תשלום מס מראש לרשות המסים, למשל על רווח במכירה או על דיבידנד אצל ברוקר זר שלא ניכה מס.",
+  "where": [
+    "tax-form"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500"
+  ],
+  "variants": [
+    "מקדמה"
+  ],
+  "rule_ids": [
+    "TXF-21",
+    "TXF-22",
+    "TXS-05"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

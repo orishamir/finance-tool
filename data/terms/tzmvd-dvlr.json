@@ -1,0 +1,24 @@
+{
+  "id": "tzmvd-dvlr",
+  "he": "צמוד דולר",
+  "en": null,
+  "meaning": "פיקדון בשקלים שערכו עוקב אחרי שער הדולר; בחלק מהמוצרים הקרן אינה מובטחת.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [
+    "צמודי מט\"ח"
+  ],
+  "rule_ids": [
+    "FXD-02",
+    "FXD-09",
+    "FXD-10",
+    "TX2-01"
+  ],
+  "source": {
+    "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+    "title": "Bank Yahav, rate board 13_26, effective 06/10/2026",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

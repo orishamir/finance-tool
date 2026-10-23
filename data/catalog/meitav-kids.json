@@ -1,0 +1,29 @@
+{
+  "id": "meitav-kids",
+  "institution": "meitav",
+  "where_seen": "Meitav, חיסכון מיטב קידס, https://www.meitav.co.il/provident_pension/saving_kids/",
+  "seen_on": "2026-10-23",
+  "seen_by": "this collection; il-finance CAT-11, CAT-12, CAT-27",
+  "names": {
+    "he": [
+      "מיטב קידס",
+      "חיסכון מיטב קידס"
+    ]
+  },
+  "maps_to": {
+    "wrapper_id": "kupat-gemel-lehashkaa",
+    "cma_fund_id": null,
+    "track_ids": []
+  },
+  "near_duplicates": [
+    {
+      "name": "מסלול השקעה כללי",
+      "track_ids": [
+        7978
+      ],
+      "resolution": "unresolved: the Kids page says a digital joiner is placed in \"מסלול השקעה כללי\" as the default; whether Kids accounts sit in fund 7857 (whose general track is 7978) or in a separate fund is not stated (CAT-12 d, il-finance open question 13)"
+    }
+  ],
+  "status": "not-catalogued-yet",
+  "notes": "A product name, not a track: \"תוכנית חיסכון לילדים המבוצעת באמצעות קופת גמל להשקעה\" (Kids page). Same deposit ceiling and same online join URL as the investment provident fund (CAT-27). Missing: a Meitav document that names the fund number behind Kids; until then it maps to the wrapper only."
+}

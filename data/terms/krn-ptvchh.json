@@ -1,0 +1,24 @@
+{
+  "id": "krn-ptvchh",
+  "he": "קרן פתוחה",
+  "en": null,
+  "meaning": "קרן נאמנות שקונים ממנה ומוכרים לה יחידות במחיר שנקבע בסוף היום, בלי מסחר בבורסה",
+  "where": [
+    "prospectus"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "MF-05",
+    "MF-09"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
+    "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

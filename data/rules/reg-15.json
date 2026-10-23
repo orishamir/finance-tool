@@ -1,0 +1,13 @@
+{
+  "id": "REG-15",
+  "title": "Clearing house: settlement finality and collateral are protected by law; this protects the settlement system, not the client's account balance",
+  "title_he": "המסלקה: סופיות הסליקה והביטחונות מוגנים בחוק, לא יתרת הלקוח",
+  "text_he": "הוראת סליקה שנרשמה אינה ניתנת לביטול אלא לפי כללי הסליקה, והוראות שהתקבלו לפני המועד הקובע נשארות בתוקף גם בחדלות פירעון של חבר. ביטחונות ששועבדו למסלקה גוברים על נושים אחרים של החבר, ובתי משפט ובעלי תפקיד אינם רשאים להפעיל סמכויות שיסכלו זאת; רשות ניירות ערך מפקחת על המסלקות. הכללים האלה מגנים על מערכת הסליקה, לא על יתרת החשבון של הלקוח הבודד. חברי המסלקה משתתפים בקרן סיכונים, והאם היא מכסה הפסדי לקוחות לא נאמר (שאלה פתוחה).",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "regulators-and-protection.md",
+  "checked": "2026-10-22"
+}

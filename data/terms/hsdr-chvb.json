@@ -1,0 +1,24 @@
+{
+  "id": "hsdr-chvb",
+  "he": "הסדר חוב",
+  "en": null,
+  "meaning": "שינוי בתנאי אגרות החוב כשהמנפיק בקשיים, כך שמשולם פחות ממה שהובטח במקור.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [
+    "הסדר חוב מהותי"
+  ],
+  "rule_ids": [
+    "CORP-09",
+    "CORP-10",
+    "CORP-15",
+    "TX2-08"
+  ],
+  "source": {
+    "url": "https://midroogcoil.blob.core.windows.net/midroog-public-website-media/1566e0dd-2015-48f2-aa4c-560446ecabc2_סולמות%20והגדרות%20הדירוג%20של%20מידרוג%20060826%20נקי.pdf",
+    "title": "Midroog, סולמות והגדרות הדירוג של מידרוג, August 2026, p. 13",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

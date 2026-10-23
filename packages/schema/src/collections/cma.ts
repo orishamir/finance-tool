@@ -12,11 +12,9 @@ const cmaFund = z.object({
   specialization: z.string(),
   sub_specialization: z.string(),
   inception_date: isoDate.nullable(),
-  // Kept as received until the field definitions are confirmed (product.md dependency 4, O11).
+  // As received, kept beside the confirmed `fees` (CAT-35 to CAT-39, discovery O11).
   raw_fields: z.record(z.string(), z.string()),
-  fees: z
-    .object({ avg_annual_management_fee: valueObject, avg_deposit_fee: valueObject })
-    .nullable(),
+  fees: z.object({ avg_annual_management_fee: valueObject, avg_deposit_fee: valueObject }),
 });
 
 export const cmaPeriodFile = z.object({

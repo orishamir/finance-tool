@@ -1,0 +1,40 @@
+{
+  "id": "SW-33",
+  "title": "Banks: a supervised price to move securities to your own account elsewhere, and at most NIS 10 on closing the account",
+  "title_he": "העברת ניירות ערך מבנק: מחיר בפיקוח ותקרה בסגירה",
+  "text_he": "בתעריפון המלא לסעיף 'העברת ניירות ערך' שני מחירים: סכום בשקלים להעברה, בפיקוח, לחשבון של אותו לקוח בגוף פיננסי אחר, ואחוז עם מינימום ומקסימום לתיק לחשבון של לקוח אחר. חשבון של אותו לקוח כולל חשבון משותף עם בן או בת הזוג, והעברה לחשבון של אותו לקוח בעת סגירת החשבון לא תעלה על התקרה, כולל הוצאות צד שלישי; אותה תקרה חלה על העברת מטבע חוץ בסגירה. תעריפון דיסקונט מתמחר את ההעברה בפיקוח בסכום קבוע להעברה, אבל שלושה מקורות חולקים על היחידה (להעברה או לנייר), והצו שקובע את המחיר המפוקח לא נמצא; השתמשו בשורת התעריפון של הבנק שלכם.",
+  "figure_names_he": {
+    "closing_transfer_cap": "תקרת העמלה להעברה בעת סגירת החשבון"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "fee-exit",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "closing_transfer_cap": {
+      "value": 10,
+      "unit": "nis_per_transfer",
+      "source": {
+        "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
+        "title": "Banking (Service to Customer) (Fees) Rules 2008, consolidated to 9.4.2025, first schedule part 4(א)(6) notes, part 5 item 10",
+        "publisher": "Bank of Israel",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "SW-33"
+      ],
+      "state": "sourced",
+      "notes": "Transfer of securities (and of foreign currency) to the same client's account on closing the account: not more than NIS 10 for the portfolio transfer and third-party costs. Discount's tariff prices the supervised per-transfer line at NIS 5 (institution); the three sources read disagree on whether that price is per transfer or per security (SW OQ10)."
+    }
+  },
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-22"
+}

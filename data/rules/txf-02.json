@@ -1,0 +1,39 @@
+{
+  "id": "TXF-02",
+  "title": "Rate on the real capital gain",
+  "title_he": "שיעור המס על רווח הון ריאלי",
+  "text_he": "יחיד משלם על רווח הון ריאלי מס בשיעור שלא יעלה על שיעור המס על רווח הון ריאלי, ורווח ההון נחשב לשלב הגבוה ביותר בסולם ההכנסה החייבת. הפקודה אינה קובעת שיעור נפרד לנכסים בחו\"ל. לבעל מניות מהותי, למי שהגיע לגיל שנקבע, לנכסים שנקנו לפני תחילת השיעור הנוכחי, לחוב לא צמוד ולמס היסף יש כללים אחרים, בכללי המס הכלליים ועל ניירות ערך ישראליים. השיעור קבוע בפקודה אבל הוא יעד להצעות תקציב, ונבדק מחדש בכל חוק תקציב.",
+  "figure_names_he": {
+    "rate": "שיעור המס על רווח הון ריאלי"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "rate": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94",
+        "title": "Income Tax Ordinance, s.91(b)(1)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-02"
+      ],
+      "state": "sourced",
+      "notes": "Real capital gain: maximum rate \"שלא יעלה על 25%\", top slice of income. No separate rate for foreign assets. Guide 2025 pp.47, 116 agree. The rate has been a target of budget proposals; re-check with each budget law."
+    }
+  },
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-10-22"
+}

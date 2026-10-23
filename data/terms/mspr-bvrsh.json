@@ -1,0 +1,31 @@
+{
+  "id": "mspr-bvrsh",
+  "he": "מספר בורסה",
+  "en": null,
+  "meaning": "המספר שמזהה קרן או נייר ערך בבורסה בתל אביב; לפיו מחפשים אותם באפליקציה וקונים.",
+  "where": [
+    "app",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500",
+    "index-ta125"
+  ],
+  "variants": [
+    "מספר קרן"
+  ],
+  "rule_ids": [
+    "ETF-20",
+    "MF-50"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
+    "title": "רשות ניירות ערך, ISA investor guide on mutual funds (2017)",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

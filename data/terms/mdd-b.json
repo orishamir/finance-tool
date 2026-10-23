@@ -1,0 +1,27 @@
+{
+  "id": "mdd-b",
+  "he": "מדד",
+  "en": null,
+  "meaning": "בחישוב מס על רווח: מדד המחירים לצרכן, שמודד את עליית המחירים, ובנייר ערך במטבע חוץ – שער המטבע.",
+  "where": [
+    "law",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXF-03",
+    "TXG-12",
+    "TXS-02",
+    "TXS-04"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+    "title": "פקודת מס הכנסה (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

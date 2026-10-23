@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "institution": {
+      "type": "string",
+      "minLength": 1
+    },
+    "where_seen": {
+      "type": "string",
+      "minLength": 1
+    },
+    "seen_on": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "seen_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "names": {
+      "type": "object",
+      "properties": {
+        "he": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "he"
+      ],
+      "additionalProperties": false
+    },
+    "maps_to": {
+      "type": "object",
+      "properties": {
+        "wrapper_id": {
+          "type": "string",
+          "enum": [
+            "current-account",
+            "bank-deposit",
+            "savings-plan",
+            "money-market-fund-daily",
+            "money-market-fund-renewable",
+            "makam",
+            "government-bond",
+            "brokerage-account",
+            "kupat-gemel-lehashkaa",
+            "keren-hishtalmut",
+            "pension-comprehensive",
+            "pension-general",
+            "provident-for-annuity",
+            "child-savings-provident",
+            "child-savings-bank",
+            "ira-hishtalmut",
+            "ira-provident"
+          ]
+        },
+        "cma_fund_id": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "track_ids": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        }
+      },
+      "required": [
+        "wrapper_id",
+        "cma_fund_id",
+        "track_ids"
+      ],
+      "additionalProperties": false
+    },
+    "near_duplicates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "track_ids": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            }
+          },
+          "resolution": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "name",
+          "track_ids",
+          "resolution"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "catalogued",
+        "not-catalogued-yet"
+      ]
+    },
+    "notes": {
+      "type": "string"
+    },
+    "default_at_joining": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "id",
+    "institution",
+    "where_seen",
+    "seen_on",
+    "seen_by",
+    "names",
+    "maps_to",
+    "near_duplicates",
+    "status"
+  ],
+  "additionalProperties": false
+}

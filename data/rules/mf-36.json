@@ -1,0 +1,39 @@
+{
+  "id": "MF-36",
+  "title": "Expected yield (תשואה צפויה): when and how a renewable fund may publish it",
+  "title_he": "תשואה צפויה: מתי ואיך קרן מתחדשת רשאית לפרסם אותה",
+  "text_he": "מנהל קרן רשאי להציג תשואה צפויה בקרן כספית במועדים קבועים רק אם הנכסים שנפרעים אחרי המועד הקבוע הבא אינם עולים על החלק המרבי שההוראה קובעת. משבחר להציג, הוא חייב להמשיך להציג לכל מועד קבוע עתידי. התשואה מוצגת במונחים שנתיים בטופס דיווח ייעודי, מחושבת מחדש כל יום עד השעה היעודה של המועד הקבוע, ושינוי מהותי בה מדווח מיד לרשות ולבורסה; אחרי כל מועד קבוע המנהל מדווח על התשואה בפועל מול הצפויה. הצגת תשואה צפויה היא רשות, וקרן שלא מציגה אותה לא חייבת לעמוד בתנאי.",
+  "figure_names_he": {
+    "max_share_maturing_after_next_fixed_date": "חלק מרבי של נכסים שנפרעים אחרי המועד הקבוע הבא"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-10-01",
+  "figures": {
+    "max_share_maturing_after_next_fixed_date": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/MoneyMarketFundReg24.pdf",
+        "title": "ISA money-market directive (2024), section 3.1 (p. 31), notes pp. 9-11",
+        "publisher": "Israel Securities Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2024-10-03",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "MF-36"
+      ],
+      "state": "sourced",
+      "notes": "A manager may show an expected yield only if assets whose remaining term goes beyond the next fixed date are at most 25% of net assets (at least 75% mature before it). Once shown it must be shown for every future fixed date; recomputed daily; a change of at least 0.1 percentage point is reported immediately."
+    }
+  },
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-22"
+}

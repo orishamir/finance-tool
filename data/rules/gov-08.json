@@ -1,0 +1,40 @@
+{
+  "id": "GOV-08",
+  "title": "Tradable government bond types issued in the domestic market",
+  "title_he": "סוגי אג״ח ממשלתיות סחירות שמונפקות בשוק המקומי",
+  "text_he": "הגיוס הסחיר של המדינה בשוק המקומי נשען על שלושה ערוצים: שקלי (ריבית קבועה ואיגרות קצרות), צמוד מדד וריבית משתנה. איגרות הייחוס מונפקות לכמה תקופות קבועות, ובכל שנה נפתחות סדרות חדשות ואחרות נפרעות. חלקי הערוצים ומספר הסדרות הסחירות הם נתונים לסוף שנה אחת מהדוח השנתי של יחידת ניהול החוב הממשלתי, ומשתנים כל שנה.",
+  "figure_names_he": {
+    "tradable_series_count": "מספר הסדרות הסחירות בסוף השנה"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal",
+    "currency"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-30",
+  "figures": {
+    "tradable_series_count": {
+      "value": 31,
+      "unit": "count",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2025/he/annual-debt-report_annual-debt-report-2025-accessible-version-he.pdf",
+        "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2025 (file dated April 2026)",
+        "publisher": "Ministry of Finance, Accountant General",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2025-12-31",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "GOV-08"
+      ],
+      "state": "sourced",
+      "notes": "Tradable series at end-2025 (pp. 16 to 18, 37). Three channels: fixed-rate shekel (incl. short bonds), CPI-linked, floating-rate; 2025 shares about 62/30/8%. Series open and mature every year."
+    }
+  },
+  "il_finance_file": "government-bonds-and-makam.md",
+  "checked": "2026-10-22"
+}

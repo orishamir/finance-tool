@@ -1,0 +1,24 @@
+{
+  "id": "chshbvn-rdvm",
+  "he": "חשבון רדום",
+  "en": null,
+  "meaning": "חשבון בקופה שלא ניתנה לגביו שום הוראה במשך שנים רבות",
+  "where": [],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "PF-08",
+    "PF-27"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(איתור_עמיתים_ומוטבים)",
+    "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (איתור עמיתים ומוטבים), התשע\"ב-2012 (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

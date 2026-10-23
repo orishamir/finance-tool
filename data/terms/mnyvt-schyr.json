@@ -1,0 +1,23 @@
+{
+  "id": "mnyvt-schyr",
+  "he": "מניות סחיר",
+  "en": null,
+  "meaning": "מסלול שמשקיע ישירות במניות שנסחרות בבורסה, לפי הסיווג של רשות שוק ההון",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "CAT-10",
+    "CAT-17",
+    "CAT-23"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+    "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

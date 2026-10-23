@@ -1,0 +1,26 @@
+{
+  "id": "pykdvn-lzmn-ktzvb",
+  "he": "פיקדון לזמן קצוב",
+  "en": null,
+  "meaning": "פיקדון לתקופה שנקבעה מראש, שבסופה הכסף והריבית חוזרים אליכם או מתחדשים",
+  "where": [
+    "law",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "bank-deposit"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "BANK-02",
+    "BANK-05",
+    "BANK-07"
+  ],
+  "source": {
+    "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
+    "title": "Banking Rules (Customer Service) (Fair Disclosure and Delivery of Documents) 1992, consolidated to 30.12.2014, BoI copy",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

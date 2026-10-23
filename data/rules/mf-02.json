@@ -1,0 +1,14 @@
+{
+  "id": "MF-02",
+  "title": "Fund assets belong to the trustee for the unit holders, are separate, and cannot be attached",
+  "title_he": "נכסי הקרן מוקנים לנאמן, נפרדים ולא ניתנים לעיקול",
+  "text_he": "נכסי הקרן מוקנים לנאמן לטובת בעלי היחידות, והם רכוש נפרד משאר הרכוש של הנאמן ושל מנהל הקרן. אי אפשר לעקל אותם, ומנהל הקרן לא רשאי לשעבד אותם אלא לביצוע עסקה בשביל הקרן. הנאמן נותן למנהל ייפוי כוח לנהל את הנכסים, ולפי מדריך הרשות הוא מחזיק אותם בחשבון בנק בנאמנות ומפקח על המנהל. מה קורה לבעלי היחידות אם מנהל הקרן או הנאמן קורסים לא כתוב בסעיפים שנקראו, וזו שאלה פתוחה.",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "protection",
+    "regulator"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-22"
+}

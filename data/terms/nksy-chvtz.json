@@ -1,0 +1,23 @@
+{
+  "id": "nksy-chvtz",
+  "he": "נכסי חוץ",
+  "en": null,
+  "meaning": "נכסים וחשבונות בנק מחוץ לישראל; מעל שווי מסוים הם מחייבים הגשת דוח שנתי",
+  "where": [],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [
+    "חשבונות בתאגידי חוץ בנקאיים"
+  ],
+  "rule_ids": [
+    "TXG-18"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

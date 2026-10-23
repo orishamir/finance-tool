@@ -1,0 +1,13 @@
+{
+  "id": "IRA-26",
+  "title": "Investment risk is the member's",
+  "title_he": "סיכון ההשקעה הוא של העמית",
+  "strength": "primary",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "text_he": "רשות שוק ההון כותבת בטיוטת 2025 שהגמישות של הקופה האישית 'עלולה לחשוף אותו לסיכוני השקעה גדולים יותר'. אין ועדת השקעות; העמית או מנהל התיקים שלו מחליטים.",
+  "il_finance_file": "ira-self-directed.md",
+  "checked": "2026-10-22"
+}

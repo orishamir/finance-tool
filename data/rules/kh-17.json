@@ -1,0 +1,14 @@
+{
+  "id": "KH-17",
+  "title": "Transfers out of a study fund: whole balance only, to another study fund, within 10 business days",
+  "title_he": "העברה מקרן השתלמות: כל היתרה, לקרן השתלמות אחרת",
+  "text_he": "עמית רשאי להעביר כסף בין קופות גמל ובין מסלולים. מקרן השתלמות מעבירים לקרן השתלמות אחרת, ולקופת גמל לקצבה רק אם העמית יכול היה למשוך את הכסף בפטור ממס; מסלול לקופת גמל להשקעה לא נמצא בתקנות, חוץ מאישור מיוחד של הממונה. העברה חלקית מקרן השתלמות אסורה, בין לחשבון אחר באותה קרן ובין לקרן אחרת. הקרן המעבירה מעבירה בתוך ימי העסקים להעברה שבכלל המשותף לקופות הגמל, מבקשה מלאה וחתומה, והממונה רשאי להאריך במקרים מיוחדים.",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "transfer-switch-process",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "keren-hishtalmut.md",
+  "checked": "2026-10-22"
+}

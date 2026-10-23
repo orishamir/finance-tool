@@ -1,0 +1,1525 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "names": {
+      "type": "object",
+      "properties": {
+        "en": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "he": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tase": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "en",
+        "he",
+        "tase"
+      ],
+      "additionalProperties": false
+    },
+    "identifiers": {
+      "type": "object",
+      "properties": {
+        "isin": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tase_number": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "cusip": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ticker": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "isin",
+        "tase_number",
+        "cusip",
+        "ticker"
+      ],
+      "additionalProperties": false
+    },
+    "manager": {
+      "type": "string",
+      "minLength": 1
+    },
+    "domicile": {
+      "type": "string",
+      "minLength": 1
+    },
+    "legal_form": {
+      "type": "string",
+      "minLength": 1
+    },
+    "exposure_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "currency": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trading_currency_on_tase": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "distribution_policy": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "accumulating",
+            "distributing"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "tax_status": {
+      "type": "object",
+      "properties": {
+        "il_fund_tax_track": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "exempt",
+                "taxable"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tase_foreign_fund_90pct_test": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "string",
+                    "boolean",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "nis",
+                    "usd",
+                    "eur",
+                    "pct",
+                    "pct_per_year",
+                    "pct_of_deposit",
+                    "pct_of_trade",
+                    "pct_of_balance_per_period",
+                    "nis_per_month",
+                    "nis_per_trade",
+                    "nis_per_transfer",
+                    "months",
+                    "years",
+                    "days",
+                    "business_days",
+                    "index_points",
+                    "count",
+                    "boolean",
+                    "text"
+                  ]
+                },
+                "source": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "title": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "publisher": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "strength": {
+                      "type": "string",
+                      "enum": [
+                        "primary",
+                        "primary-mirror",
+                        "institution",
+                        "secondary",
+                        "open",
+                        "entered"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "url",
+                    "title",
+                    "publisher",
+                    "strength"
+                  ],
+                  "additionalProperties": false
+                },
+                "checked": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                "effective_from": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "effective_to": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "tax_year": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "update_rule": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "fixed in law",
+                        "fixed in regulation",
+                        "cpi-linked 1 jan",
+                        "average-wage-linked",
+                        "provider-set",
+                        "market",
+                        "founder"
+                      ]
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^frozen \\d{4}-\\d{4}$"
+                    }
+                  ]
+                },
+                "rule_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "sourced",
+                    "computed",
+                    "entered"
+                  ]
+                },
+                "computed_from": {
+                  "type": "object",
+                  "properties": {
+                    "formula": {
+                      "type": "string",
+                      "pattern": "^[FA]-\\d{2}$"
+                    },
+                    "inputs": {
+                      "type": "object",
+                      "propertyNames": {
+                        "type": "string"
+                      },
+                      "additionalProperties": {}
+                    }
+                  },
+                  "required": [
+                    "formula",
+                    "inputs"
+                  ],
+                  "additionalProperties": false
+                },
+                "notes": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "value",
+                "unit",
+                "source",
+                "checked",
+                "effective_from",
+                "effective_to",
+                "update_rule",
+                "state"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "il_fund_tax_track",
+        "tase_foreign_fund_90pct_test"
+      ],
+      "additionalProperties": false
+    },
+    "fees": {
+      "type": "object",
+      "properties": {
+        "fixed_management": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "string",
+                    "boolean",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "nis",
+                    "usd",
+                    "eur",
+                    "pct",
+                    "pct_per_year",
+                    "pct_of_deposit",
+                    "pct_of_trade",
+                    "pct_of_balance_per_period",
+                    "nis_per_month",
+                    "nis_per_trade",
+                    "nis_per_transfer",
+                    "months",
+                    "years",
+                    "days",
+                    "business_days",
+                    "index_points",
+                    "count",
+                    "boolean",
+                    "text"
+                  ]
+                },
+                "source": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "title": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "publisher": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "strength": {
+                      "type": "string",
+                      "enum": [
+                        "primary",
+                        "primary-mirror",
+                        "institution",
+                        "secondary",
+                        "open",
+                        "entered"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "url",
+                    "title",
+                    "publisher",
+                    "strength"
+                  ],
+                  "additionalProperties": false
+                },
+                "checked": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                "effective_from": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "effective_to": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "tax_year": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "update_rule": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "fixed in law",
+                        "fixed in regulation",
+                        "cpi-linked 1 jan",
+                        "average-wage-linked",
+                        "provider-set",
+                        "market",
+                        "founder"
+                      ]
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^frozen \\d{4}-\\d{4}$"
+                    }
+                  ]
+                },
+                "rule_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "sourced",
+                    "computed",
+                    "entered"
+                  ]
+                },
+                "computed_from": {
+                  "type": "object",
+                  "properties": {
+                    "formula": {
+                      "type": "string",
+                      "pattern": "^[FA]-\\d{2}$"
+                    },
+                    "inputs": {
+                      "type": "object",
+                      "propertyNames": {
+                        "type": "string"
+                      },
+                      "additionalProperties": {}
+                    }
+                  },
+                  "required": [
+                    "formula",
+                    "inputs"
+                  ],
+                  "additionalProperties": false
+                },
+                "notes": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "value",
+                "unit",
+                "source",
+                "checked",
+                "effective_from",
+                "effective_to",
+                "update_rule",
+                "state"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "trustee": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "string",
+                    "boolean",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "nis",
+                    "usd",
+                    "eur",
+                    "pct",
+                    "pct_per_year",
+                    "pct_of_deposit",
+                    "pct_of_trade",
+                    "pct_of_balance_per_period",
+                    "nis_per_month",
+                    "nis_per_trade",
+                    "nis_per_transfer",
+                    "months",
+                    "years",
+                    "days",
+                    "business_days",
+                    "index_points",
+                    "count",
+                    "boolean",
+                    "text"
+                  ]
+                },
+                "source": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "title": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "publisher": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "strength": {
+                      "type": "string",
+                      "enum": [
+                        "primary",
+                        "primary-mirror",
+                        "institution",
+                        "secondary",
+                        "open",
+                        "entered"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "url",
+                    "title",
+                    "publisher",
+                    "strength"
+                  ],
+                  "additionalProperties": false
+                },
+                "checked": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                "effective_from": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "effective_to": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "tax_year": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "update_rule": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "fixed in law",
+                        "fixed in regulation",
+                        "cpi-linked 1 jan",
+                        "average-wage-linked",
+                        "provider-set",
+                        "market",
+                        "founder"
+                      ]
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^frozen \\d{4}-\\d{4}$"
+                    }
+                  ]
+                },
+                "rule_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "sourced",
+                    "computed",
+                    "entered"
+                  ]
+                },
+                "computed_from": {
+                  "type": "object",
+                  "properties": {
+                    "formula": {
+                      "type": "string",
+                      "pattern": "^[FA]-\\d{2}$"
+                    },
+                    "inputs": {
+                      "type": "object",
+                      "propertyNames": {
+                        "type": "string"
+                      },
+                      "additionalProperties": {}
+                    }
+                  },
+                  "required": [
+                    "formula",
+                    "inputs"
+                  ],
+                  "additionalProperties": false
+                },
+                "notes": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "value",
+                "unit",
+                "source",
+                "checked",
+                "effective_from",
+                "effective_to",
+                "update_rule",
+                "state"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "variable_management": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "string",
+                    "boolean",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "nis",
+                    "usd",
+                    "eur",
+                    "pct",
+                    "pct_per_year",
+                    "pct_of_deposit",
+                    "pct_of_trade",
+                    "pct_of_balance_per_period",
+                    "nis_per_month",
+                    "nis_per_trade",
+                    "nis_per_transfer",
+                    "months",
+                    "years",
+                    "days",
+                    "business_days",
+                    "index_points",
+                    "count",
+                    "boolean",
+                    "text"
+                  ]
+                },
+                "source": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "title": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "publisher": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "strength": {
+                      "type": "string",
+                      "enum": [
+                        "primary",
+                        "primary-mirror",
+                        "institution",
+                        "secondary",
+                        "open",
+                        "entered"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "url",
+                    "title",
+                    "publisher",
+                    "strength"
+                  ],
+                  "additionalProperties": false
+                },
+                "checked": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                "effective_from": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "effective_to": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "tax_year": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "update_rule": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "fixed in law",
+                        "fixed in regulation",
+                        "cpi-linked 1 jan",
+                        "average-wage-linked",
+                        "provider-set",
+                        "market",
+                        "founder"
+                      ]
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^frozen \\d{4}-\\d{4}$"
+                    }
+                  ]
+                },
+                "rule_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "sourced",
+                    "computed",
+                    "entered"
+                  ]
+                },
+                "computed_from": {
+                  "type": "object",
+                  "properties": {
+                    "formula": {
+                      "type": "string",
+                      "pattern": "^[FA]-\\d{2}$"
+                    },
+                    "inputs": {
+                      "type": "object",
+                      "propertyNames": {
+                        "type": "string"
+                      },
+                      "additionalProperties": {}
+                    }
+                  },
+                  "required": [
+                    "formula",
+                    "inputs"
+                  ],
+                  "additionalProperties": false
+                },
+                "notes": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "value",
+                "unit",
+                "source",
+                "checked",
+                "effective_from",
+                "effective_to",
+                "update_rule",
+                "state"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tracking_difference_12m": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "string",
+                    "boolean",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "nis",
+                    "usd",
+                    "eur",
+                    "pct",
+                    "pct_per_year",
+                    "pct_of_deposit",
+                    "pct_of_trade",
+                    "pct_of_balance_per_period",
+                    "nis_per_month",
+                    "nis_per_trade",
+                    "nis_per_transfer",
+                    "months",
+                    "years",
+                    "days",
+                    "business_days",
+                    "index_points",
+                    "count",
+                    "boolean",
+                    "text"
+                  ]
+                },
+                "source": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "title": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "publisher": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "strength": {
+                      "type": "string",
+                      "enum": [
+                        "primary",
+                        "primary-mirror",
+                        "institution",
+                        "secondary",
+                        "open",
+                        "entered"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "url",
+                    "title",
+                    "publisher",
+                    "strength"
+                  ],
+                  "additionalProperties": false
+                },
+                "checked": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                "effective_from": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "effective_to": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "tax_year": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "update_rule": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "fixed in law",
+                        "fixed in regulation",
+                        "cpi-linked 1 jan",
+                        "average-wage-linked",
+                        "provider-set",
+                        "market",
+                        "founder"
+                      ]
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^frozen \\d{4}-\\d{4}$"
+                    }
+                  ]
+                },
+                "rule_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "sourced",
+                    "computed",
+                    "entered"
+                  ]
+                },
+                "computed_from": {
+                  "type": "object",
+                  "properties": {
+                    "formula": {
+                      "type": "string",
+                      "pattern": "^[FA]-\\d{2}$"
+                    },
+                    "inputs": {
+                      "type": "object",
+                      "propertyNames": {
+                        "type": "string"
+                      },
+                      "additionalProperties": {}
+                    }
+                  },
+                  "required": [
+                    "formula",
+                    "inputs"
+                  ],
+                  "additionalProperties": false
+                },
+                "notes": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "value",
+                "unit",
+                "source",
+                "checked",
+                "effective_from",
+                "effective_to",
+                "update_rule",
+                "state"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "median_spread": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "string",
+                    "boolean",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "nis",
+                    "usd",
+                    "eur",
+                    "pct",
+                    "pct_per_year",
+                    "pct_of_deposit",
+                    "pct_of_trade",
+                    "pct_of_balance_per_period",
+                    "nis_per_month",
+                    "nis_per_trade",
+                    "nis_per_transfer",
+                    "months",
+                    "years",
+                    "days",
+                    "business_days",
+                    "index_points",
+                    "count",
+                    "boolean",
+                    "text"
+                  ]
+                },
+                "source": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "title": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "publisher": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "strength": {
+                      "type": "string",
+                      "enum": [
+                        "primary",
+                        "primary-mirror",
+                        "institution",
+                        "secondary",
+                        "open",
+                        "entered"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "url",
+                    "title",
+                    "publisher",
+                    "strength"
+                  ],
+                  "additionalProperties": false
+                },
+                "checked": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                "effective_from": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "effective_to": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "tax_year": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "update_rule": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "fixed in law",
+                        "fixed in regulation",
+                        "cpi-linked 1 jan",
+                        "average-wage-linked",
+                        "provider-set",
+                        "market",
+                        "founder"
+                      ]
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^frozen \\d{4}-\\d{4}$"
+                    }
+                  ]
+                },
+                "rule_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "sourced",
+                    "computed",
+                    "entered"
+                  ]
+                },
+                "computed_from": {
+                  "type": "object",
+                  "properties": {
+                    "formula": {
+                      "type": "string",
+                      "pattern": "^[FA]-\\d{2}$"
+                    },
+                    "inputs": {
+                      "type": "object",
+                      "propertyNames": {
+                        "type": "string"
+                      },
+                      "additionalProperties": {}
+                    }
+                  },
+                  "required": [
+                    "formula",
+                    "inputs"
+                  ],
+                  "additionalProperties": false
+                },
+                "notes": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "value",
+                "unit",
+                "source",
+                "checked",
+                "effective_from",
+                "effective_to",
+                "update_rule",
+                "state"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "fund_level_withholding_drag": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "string",
+                    "boolean",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "nis",
+                    "usd",
+                    "eur",
+                    "pct",
+                    "pct_per_year",
+                    "pct_of_deposit",
+                    "pct_of_trade",
+                    "pct_of_balance_per_period",
+                    "nis_per_month",
+                    "nis_per_trade",
+                    "nis_per_transfer",
+                    "months",
+                    "years",
+                    "days",
+                    "business_days",
+                    "index_points",
+                    "count",
+                    "boolean",
+                    "text"
+                  ]
+                },
+                "source": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "title": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "publisher": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "strength": {
+                      "type": "string",
+                      "enum": [
+                        "primary",
+                        "primary-mirror",
+                        "institution",
+                        "secondary",
+                        "open",
+                        "entered"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "url",
+                    "title",
+                    "publisher",
+                    "strength"
+                  ],
+                  "additionalProperties": false
+                },
+                "checked": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                "effective_from": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "effective_to": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "tax_year": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "update_rule": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "fixed in law",
+                        "fixed in regulation",
+                        "cpi-linked 1 jan",
+                        "average-wage-linked",
+                        "provider-set",
+                        "market",
+                        "founder"
+                      ]
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^frozen \\d{4}-\\d{4}$"
+                    }
+                  ]
+                },
+                "rule_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "sourced",
+                    "computed",
+                    "entered"
+                  ]
+                },
+                "computed_from": {
+                  "type": "object",
+                  "properties": {
+                    "formula": {
+                      "type": "string",
+                      "pattern": "^[FA]-\\d{2}$"
+                    },
+                    "inputs": {
+                      "type": "object",
+                      "propertyNames": {
+                        "type": "string"
+                      },
+                      "additionalProperties": {}
+                    }
+                  },
+                  "required": [
+                    "formula",
+                    "inputs"
+                  ],
+                  "additionalProperties": false
+                },
+                "notes": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "value",
+                "unit",
+                "source",
+                "checked",
+                "effective_from",
+                "effective_to",
+                "update_rule",
+                "state"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "dimensions": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^(covered|blocked)(:[A-Z0-9-]+)?$"
+      }
+    },
+    "prospectus": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "date": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "url",
+        "date"
+      ],
+      "additionalProperties": false
+    },
+    "exposure_code": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "distribution_fee_type": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "creation_redemption_fee_category": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "snapshot": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    }
+  },
+  "required": [
+    "id",
+    "names",
+    "identifiers",
+    "manager",
+    "domicile",
+    "legal_form",
+    "exposure_id",
+    "currency",
+    "trading_currency_on_tase",
+    "distribution_policy",
+    "tax_status",
+    "fees",
+    "dimensions",
+    "prospectus",
+    "snapshot"
+  ],
+  "additionalProperties": false
+}

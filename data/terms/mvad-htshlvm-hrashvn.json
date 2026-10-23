@@ -1,0 +1,25 @@
+{
+  "id": "mvad-htshlvm-hrashvn",
+  "he": "מועד התשלום הראשון",
+  "en": null,
+  "meaning": "התאריך שממנו סופרים את הוותק של קרן השתלמות; נקבע לפי סוף החודש של ההפקדה הראשונה",
+  "where": [
+    "bylaws",
+    "form"
+  ],
+  "wrapper_ids": [
+    "keren-hishtalmut"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "KH-11",
+    "TXH-09"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+    "title": "פקודת מס הכנסה, consolidated text (Wikisource)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

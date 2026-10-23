@@ -1,0 +1,62 @@
+{
+  "id": "GOV-04",
+  "title": "Makam auction: method, units, settlement, listing",
+  "title_he": "מכרז המק\"ם: שיטה, יחידות, סליקה ורישום למסחר",
+  "text_he": "מכרז המק\"ם מדורג לפי תשואה: כל הזמנה נוקבת תשואה שנתית אפקטיבית לפדיון וכמות בשווי נקוב, בכפולות של יחידת ההזמנה, וההזמנות מתמלאות מהתשואה הנמוכה ומעלה עד שהכמות המוצעת נגמרת. כל הזמנה זוכה משלמת את המחיר שנגזר מהתשואה שלה; הזמנות בתשואת המכרז מתמלאות באופן יחסי, והזמנות מעל התשואה המרבית שפורסמה לא מתמלאות. חלק מהכמות עשוי להישמר להזמנות לא תחרותיות שמתמלאות בתשואה הממוצעת, עד התקרה לכל מציע אלא אם החוזר קובע אחרת. הסליקה ביום העסקים הראשון אחרי המכרז דרך מסלקת הבורסה, והסדרה נרשמת למסחר בבורסה; בנק ישראל רשאי לקבוע סוג מכרז אחר בחוזר, ולבטל או לדחות מכרז מסיבות טכניות.",
+  "figure_names_he": {
+    "auction_order_unit": "יחידת ההזמנה במכרז (שווי נקוב)",
+    "non_competitive_cap": "תקרה להזמנות לא תחרותיות למציע"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "minimum",
+    "liquidity-lockup",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-15",
+  "figures": {
+    "auction_order_unit": {
+      "value": 100,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.boi.org.il/media/ytal5ozx/makam.pdf",
+        "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\" (undated)",
+        "publisher": "Bank of Israel, Markets Division",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "GOV-04"
+      ],
+      "state": "sourced",
+      "notes": "Face value per order unit in the auction: quantities in multiples of NIS 100 face value (s.3.1.2.3). This is the auction's unit for clearing-house members; the trading unit and minimum trade for an individual on TASE were not readable (GOV open question 7)."
+    },
+    "non_competitive_cap": {
+      "value": 10000000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.boi.org.il/media/ytal5ozx/makam.pdf",
+        "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\" (undated)",
+        "publisher": "Bank of Israel, Markets Division",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "GOV-04"
+      ],
+      "state": "sourced",
+      "notes": "Non-competitive orders (תמ\"ם) up to NIS 10 million face value per bidder, unless the circular sets another amount (s.3.1.2.7)."
+    }
+  },
+  "il_finance_file": "government-bonds-and-makam.md",
+  "checked": "2026-10-22"
+}

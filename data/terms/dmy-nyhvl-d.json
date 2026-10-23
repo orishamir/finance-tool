@@ -1,0 +1,32 @@
+{
+  "id": "dmy-nyhvl-d",
+  "he": "דמי ניהול",
+  "en": null,
+  "meaning": "התשלום שהחברה המנהלת גובה על ניהול הכסף, כאחוז מההפקדות או מהחיסכון; החוק קובע לו תקרה",
+  "where": [
+    "app",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "PEN-21",
+    "PEN-22",
+    "PF-01",
+    "PF-02",
+    "PF-04",
+    "PF-05",
+    "PF-06"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+    "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

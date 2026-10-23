@@ -1,0 +1,61 @@
+{
+  "id": "MF-29",
+  "title": "Money-market fund: permitted assets",
+  "title_he": "קרן כספית: הנכסים המותרים",
+  "text_he": "קרן כספית רשאית להחזיק רק נכסים מהרשימה שבהוראת הרשות: אג״ח רשומות למסחר, לא צמודות אלא לשער מטבע, שנפרעות עד הטווח המרבי לפדיון של אג״ח ומדורגות לפי הנספח אם לא הנפיקה אותן המדינה; אג״ח כאלה בריבית משתנה שמתעדכנת לפחות פעמיים בשנה; מק״מ של המדינה עד הטווח המרבי לפדיון של מק״מ; תעודות חוב מדורגות; אג״ח ארוכות יותר שניתנות לפדיון לפחות פעמיים בשנה; פיקדונות לזמן קצוב בקרן יומית, או פיקדון עד המועד הקבוע הבא בקרן מועדים קבועים; ומזומן. הדירוג הנדרש גבוה, לטווח ארוך ולטווח קצר. נוסח ההוראה בקובץ שנקרא נושא כותרת של טיוטה אף שהקובץ הוא ההוראה שפורסמה, ואם זה הנוסח הסופי זו שאלה פתוחה. הרשות עשויה לשנות את הכללים.",
+  "figure_names_he": {
+    "max_bond_term_months": "טווח מרבי לפדיון של אג״ח",
+    "max_makam_term_months": "טווח מרבי לפדיון של מק״מ"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "protection",
+    "currency"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-10-01",
+  "figures": {
+    "max_bond_term_months": {
+      "value": 12,
+      "unit": "months",
+      "source": {
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/MoneyMarketFundReg24.pdf",
+        "title": "ISA, הוראה למנהלי קרנות ונאמנים בדבר תנאים שיחולו לגבי קרן כספית (2024), section 1.1.1(א) (p. 27)",
+        "publisher": "Israel Securities Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2024-10-03",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "MF-29"
+      ],
+      "state": "sourced",
+      "notes": "Listed bonds held by a money-market fund may have at most one year to maturity (floating-rate and redeemable bonds have their own conditions). Directive in force from 3.10.2024; its final text is MF open question 1."
+    },
+    "max_makam_term_months": {
+      "value": 13,
+      "unit": "months",
+      "source": {
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/MoneyMarketFundReg24.pdf",
+        "title": "ISA money-market directive (2024), section 1.1.1(ג) (p. 27)",
+        "publisher": "Israel Securities Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2024-10-03",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "MF-29"
+      ],
+      "state": "sourced",
+      "notes": "State-issued makam listed on TASE with at most 13 months to maturity."
+    }
+  },
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-22"
+}

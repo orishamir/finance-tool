@@ -25,6 +25,8 @@
           "type": "string",
           "enum": [
             "nis",
+            "usd",
+            "eur",
             "pct",
             "pct_per_year",
             "pct_of_deposit",
@@ -191,6 +193,10 @@
       "type": "string",
       "minLength": 1
     },
+    "rationale_he": {
+      "type": "string",
+      "minLength": 1
+    },
     "signed_off_by": {
       "type": "string",
       "const": "founder"
@@ -202,6 +208,51 @@
     "shown_as": {
       "type": "string",
       "const": "site parameter"
+    },
+    "instruments": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "deposit_terms": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fund": {
+            "type": "string",
+            "minLength": 1
+          },
+          "tariff": {
+            "type": "string",
+            "minLength": 1
+          },
+          "ira_fees": {
+            "type": "string",
+            "minLength": 1
+          },
+          "series_rule": {
+            "type": "string",
+            "minLength": 1
+          },
+          "track": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "employment": {
+            "type": "string",
+            "enum": [
+              "self-employed",
+              "employee"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
     }
   },
   "required": [

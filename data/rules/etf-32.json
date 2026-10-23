@@ -1,0 +1,40 @@
+{
+  "id": "ETF-32",
+  "title": "The 40 foreign funds traded on TASE: 23 iShares and 17 Invesco, quoted in agorot",
+  "title_he": "קרנות החוץ שנסחרות בבורסה: iShares ו-Invesco, במחירים באגורות",
+  "text_he": "עמוד קרנות החוץ הנסחרות באתר הבורסה מונה את הקרנות הזרות שנסחרות בה, במחירים באגורות, כלומר הן נסחרות בשקלים. רובן קרנות iShares של בלאקרוק, למשל על המדד האמריקני הרחב, על נאסד\"ק, על מדדי מניות עולמיים ומתעוררים ועל איגרות חוב של ממשלת ארצות הברית, והשאר קרנות Invesco, למשל על מדדי מניות עולמיים, אירופיים וסקטוריאליים. העמוד מאפשר סינון לפי שוק מניות או אג\"ח ומציג לכל קרן את הסיווג ואת מדד הייחוס. הרשימה משתנה.",
+  "figure_names_he": {
+    "foreign_funds_traded_on_tase": "מספר קרנות החוץ הנסחרות בבורסה"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "currency"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "foreign_funds_traded_on_tase": {
+      "value": 40,
+      "unit": "count",
+      "source": {
+        "url": "https://market.tase.co.il/he/market_data/f-etfs",
+        "title": "TASE, קרנות חוץ נסחרות, data as of 22/10/2026",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "ETF-32"
+      ],
+      "state": "sourced",
+      "notes": "23 iShares (BlackRock) and 17 Invesco funds, data as of 22/10/2026; prices in agorot, so they trade in shekels on TASE."
+    }
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-22"
+}

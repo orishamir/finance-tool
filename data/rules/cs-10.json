@@ -1,0 +1,40 @@
+{
+  "id": "CS-10",
+  "title": "Bank option: tracks, exit stations, how interest is set",
+  "title_he": "מסלול הבנק: מסלולים, תחנות יציאה וקביעת הריבית",
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal",
+    "liquidity-lockup",
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "exit_station_years": {
+      "value": 5,
+      "unit": "years",
+      "source": {
+        "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/default.aspx",
+        "title": "National Insurance Institute, child-savings FAQ: three tracks per bank, \"either with no exit points or with an exit point every 5 years\"; NII circular 1356 p.5",
+        "publisher": "National Insurance Institute (BTL)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "CS-10"
+      ],
+      "state": "sourced",
+      "notes": "Interval between exit stations in a bank plan of the exit-station type; the other type has no exit station until 18."
+    }
+  },
+  "text_he": "כל בנק מציע שלושה מסלולים: ריבית קבועה לא צמודה, ריבית משתנה (פריים), וריבית קבועה צמודה למדד; כל אחד בלי תחנות יציאה עד גיל 18 או עם תחנת יציאה כל חמש שנים. הריבית נקבעת ביום פתיחת החשבון לתקופה של 18 פחות גיל הילד (הסכם יהב). היתרה לא יורדת מהסכומים שהביטוח הלאומי הפקיד.",
+  "figure_names_he": {
+    "exit_station_years": "שנים בין תחנות יציאה"
+  },
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-22"
+}

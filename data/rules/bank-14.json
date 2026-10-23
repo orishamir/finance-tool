@@ -1,0 +1,42 @@
+{
+  "id": "BANK-14",
+  "title": "Directive 447 Annex A: the standard deposit taxonomy",
+  "title_he": "סוגי הפיקדונות השקליים המקובלים בפרסום המרוכז",
+  "text_he": "נספח להוראת הפרסום קובע רשימה של סוגי פיקדונות שקליים מקובלים לפי תקופה: יומי, שבועי, חודשי, לשלושה חודשים, לשישה חודשים, לשנה, לשנתיים ולשלוש שנים. לכל סוג הבנק מציג סוג ריבית (קבועה או משתנה), טווח סכום להפקדה, אפשרויות שבירה, הריבית המוצעת שהיא המינימום שהבנק משלם, ואת הריבית בפיקדון הנפוץ כשהמינימום חל רק על מעטים. בסוגים עד שישה חודשים מוצגים גם תנאי חידוש אוטומטי; בסוגים משנה ומעלה גם הצמדה ותחנות יציאה. המפקח רשאי לעדכן את הרשימה.",
+  "figure_names_he": {
+    "standard_deposit_types": "מספר סוגי הפיקדונות המקובלים"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "real-vs-nominal",
+    "minimum",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "standard_deposit_types": {
+      "value": 8,
+      "unit": "count",
+      "source": {
+        "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
+        "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24), Annex A",
+        "publisher": "Bank of Israel (Banking Supervision)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2025-04-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BANK-14"
+      ],
+      "state": "sourced",
+      "notes": "Eight standard shekel deposit types by period: daily, weekly, monthly, 3 months, 6 months, 1 year, 2 years, 3 years (Annex A). The supervisor may update the list."
+    }
+  },
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-22"
+}

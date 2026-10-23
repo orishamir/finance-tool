@@ -1,0 +1,39 @@
+{
+  "id": "CS-06",
+  "title": "Where the money goes: the parent's choice and its deadline",
+  "title_he": "בחירת ההורה בין קופה לבנק ומועד הבחירה",
+  "strength": "primary",
+  "dimensions": [
+    "eligibility",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "choice_months": {
+      "value": 6,
+      "unit": "months",
+      "source": {
+        "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/nolad.aspx",
+        "title": "National Insurance Institute, child savings: newborn page (\"בתוך 6 חודשים מיום הלידה\"); law 74ב(ד)(1א)",
+        "publisher": "National Insurance Institute (BTL)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "CS-06"
+      ],
+      "state": "sourced",
+      "notes": "The parent's choice period: six months from birth, fixed in law 74ב(ד)(1א). Deposits for the months of the choice period are paid into the chosen body with the first deposit (regulation 3(ד))."
+    }
+  },
+  "text_he": "ההורה בוחר קופת גמל או בנק מהרשימה שמשרד האוצר אישר, יחד עם מסלול, בתוך שישה חודשים מהלידה. הבחירה הראשונה נעשית רק דרך הביטוח הלאומי.",
+  "figure_names_he": {
+    "choice_months": "חודשים לבחירה מהלידה"
+  },
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-22"
+}

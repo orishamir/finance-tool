@@ -1,7 +1,7 @@
 # Self-directed provident and study funds (קופת גמל בניהול אישי, IRA)
 
 Checked: 2026-10-22 · Owner: domain-specialist
-Serves: product.md 3.1 (instrument guide, IRA is a tier-1 wrapper under D2), 3.3 (dimension checklist), 3.10 (decoder: IRA funds in the CMA data and Meitav's IRA menu) in R1; 3.5 and 3.6 (fees, holdings) in R3; 3.4 (providers: brokerage tariffs inside the IRA) and 3.7 (transfers) in R4.
+Serves: product.md 3.1 (instrument guide, IRA is a tier-1 wrapper under D2), 3.3 (dimension checklist), 3.10 (catalogue: IRA funds in the CMA data and Meitav's IRA menu) in R1; 3.5 and 3.6 (fees, holdings) in R3; 3.4 (providers: brokerage tariffs inside the IRA) and 3.7 (transfers) in R4.
 Scope: what an IRA fund is in Israeli law; which product types may be self-directed; who may deposit which money and up to what amount; what may be held and the investment limits; who gives instructions, portfolio managers, brokers and custody; the closed list of charges and the brokerage competitive process; transfers in and out; the 2025 draft amendment and the CMA 2026 plan; failures (Slice, Globalnet); the IRA funds in Gemel-Net and Meitav's published terms.
 Out: all tax (`tax-gemel-lehashkaa-ira-child.md`, and for annuity money `tax-pension-gemel-lekitzba.md`); the rules of the underlying products, including withdrawal and liquidity (`keren-hishtalmut.md`, `pension-and-gemel-lekitzba.md`, `kupat-gemel-lehashkaa.md`); fee caps and transfer rules common to all CMA products (`provident-family-common.md`); amendment 190 deposits (`pension-and-gemel-lekitzba.md`); brokerage accounts outside a provident fund (`brokerage-account.md`).
 
@@ -37,7 +37,7 @@ An IRA is a provident fund (tagmulim or annuity) or a study fund opened for one 
 
 ### IRA-04 A separate fund, not a track
 - Rule: Each IRA product is reported in Gemel-Net as its own fund (its own FUND_ID, SPECIALIZATION "כללי"), separate from the manager's regular tracks. Regulation 10 applies the IRA rules to an investment track in a multi-track fund ("מסלול השקעה אישי"). The CMA's 2025 draft says "לא קיים מסלול קופת גמל בניהול אישי בקופת גמל מסלולית" and proposes deleting regulation 10.
-- Conditions / exceptions: Meitav's joining form calls its IRA study fund both "קופת גמל" and "מסלול" (fund code 1487 under "שם מסלול השקעה"). For the decoder (3.10), the CMA fund record is the unit.
+- Conditions / exceptions: Meitav's joining form calls its IRA study fund both "קופת גמל" and "מסלול" (fund code 1487 under "שם מסלול השקעה"). For the catalogue (3.10), the CMA fund record is the unit.
 - Figures: none
 - Source: Gemel-Net as in IRA-03; [Nevo, IRA regulations, reg. 10](https://www.nevo.co.il/law_html/law01/500_217.htm) · checked 2026-10-22 · primary (mirror); [CMA draft amendment 2025, explanatory notes "ביטול תקנה 10"](https://www.gov.il/BlobFolder/legalinfo/regulation_0059/he/regulation_ira_pdf.pdf) · checked 2026-10-22 · primary (draft)
 - Dimensions: `transfer-switch-process`

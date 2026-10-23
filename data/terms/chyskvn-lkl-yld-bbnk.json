@@ -1,0 +1,32 @@
+{
+  "id": "chyskvn-lkl-yld-bbnk",
+  "he": "חיסכון לכל ילד בבנק",
+  "en": null,
+  "meaning": "חיסכון לכל ילד שההורה בחר לנהל בבנק: הריבית נקבעת ביום הפתיחה לכל התקופה, היתרה לא יורדת מהסכומים שהביטוח הלאומי הפקיד, ומסלול משתנה רק בתחנת יציאה",
+  "where": [
+    "app",
+    "law",
+    "provider-site"
+  ],
+  "wrapper_ids": [
+    "child-savings-bank"
+  ],
+  "variants": [
+    "מסלול הבנק בחיסכון לכל ילד",
+    "חיסכון לכל ילד במסלול בנק"
+  ],
+  "rule_ids": [
+    "CS-05",
+    "CS-10",
+    "CS-12",
+    "CS-22",
+    "CS-25"
+  ],
+  "source": {
+    "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/default.aspx",
+    "title": "National Insurance, שאלות ותשובות – חיסכון לכל ילד",
+    "publisher": "National Insurance Institute",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

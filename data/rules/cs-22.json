@@ -1,0 +1,39 @@
+{
+  "id": "CS-22",
+  "title": "Participating banks",
+  "title_he": "הבנקים שמנהלים חיסכון לכל ילד",
+  "strength": "primary",
+  "dimensions": [
+    "regulator"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "bank_count": {
+      "value": 9,
+      "unit": "count",
+      "source": {
+        "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
+        "title": "NII Research, \"חיסכון ארוך-טווח לכל ילד וילדה – דוח הביטוח הלאומי לשנת 2025\" (28 Jul 2026), pp.1, 3; NII circular 1356 p.4 (2016 list); MoF dataset savingsplaninterest",
+        "publisher": "National Insurance Institute, Research and Planning",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2017-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "CS-22"
+      ],
+      "state": "sourced",
+      "notes": "Number of banks managing child-savings plans: the nine 2016 tender winners. Changes only at a new tender."
+    }
+  },
+  "text_he": "תשעה בנקים מנהלים חיסכון לכל ילד: אוצר החייל, דיסקונט, הבינלאומי, הפועלים, יהב, לאומי, מזרחי-טפחות, מסד ומרכנתיל. אלה הזוכים במכרז של 2016.",
+  "figure_names_he": {
+    "bank_count": "מספר הבנקים המשתתפים"
+  },
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-22"
+}

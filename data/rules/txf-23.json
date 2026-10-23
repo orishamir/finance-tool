@@ -1,0 +1,13 @@
+{
+  "id": "TXF-23",
+  "title": "Losses on foreign securities: offset first against foreign gains, then as other capital losses; carried forward only against capital gains and only if a return was filed",
+  "title_he": "הפסדים על ניירות ערך זרים: קודם מול רווחים מחו\"ל",
+  "text_he": "הפסד הון ממכירת נכס מחוץ לישראל, שאילו היה רווח היה חייב במס בישראל, מקוזז תחילה כנגד רווח הון מחוץ לישראל ואחר כך כשאר הפסדי ההון; גם הפסד מועבר מחו\"ל מקוזז תחילה כנגד רווחי הון מחו\"ל. הפסד על נייר ערך באותה שנת מס יכול לקזז גם ריבית או דיבידנד שנתקבלו על אותו נייר, ועל ניירות אחרים אם שיעור המס עליהם אינו עולה על שיעור המס על דיבידנד או ריבית ליחיד. הפסד שלא נוצל מועבר בלי מגבלת זמן, רק כנגד רווחי הון ורק אם הוגש דוח לשנת ההפסד; הפסד על נכס שהרווח עליו היה פטור אינו מותר בקיזוז, וקיזוז בין גופים דורש דוח שנתי.",
+  "strength": "primary",
+  "dimensions": [
+    "loss-offset"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-10-22"
+}

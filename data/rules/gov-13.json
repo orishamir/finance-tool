@@ -1,0 +1,39 @@
+{
+  "id": "GOV-13",
+  "title": "Fixed-rate shekel bond (ממשלתית / ממשלתית שקלית, formerly \"שחר\")",
+  "title_he": "אג״ח ממשלתית שקלית בריבית קבועה (לשעבר שחר)",
+  "text_he": "איגרת ממשלתית בריבית קבועה היא איגרת שתשלומי הקרן והריבית שלה לא צמודים למדד, למטבע או לנכס אחר, לפי מילון המונחים של יחידת ניהול החוב. בנתוני המכרזים של משרד האוצר הסדרות האלה מופיעות כ\"ממשלתית\" עם קופון קבוע לכל סדרה. התקנות של סוג זה לא נמצאו, ולכן השווי הנקוב, תדירות הקופון והמועדים הקובעים לא מתועדים כאן; השם הישן \"שחר\" לקוח ממקור משני בלבד.",
+  "figure_names_he": {
+    "linkage": "הצמדה"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal",
+    "distribution-policy"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "linkage": {
+      "value": "unlinked",
+      "unit": "text",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf",
+        "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2024, מילון מונחים",
+        "publisher": "Ministry of Finance, Accountant General",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "GOV-13"
+      ],
+      "state": "sourced",
+      "notes": "Per the Debt Unit glossary (p. 41, \"אג\"ח בריבית קבועה\"): payments of principal and interest are not linked to an index, a currency or any other asset. The series regulations were not found, so face value, coupon frequency and record dates are not sourced (GOV open question 4): method F-25 takes the coupon frequency of a fixed-rate series from the series data."
+    }
+  },
+  "il_finance_file": "government-bonds-and-makam.md",
+  "checked": "2026-10-22"
+}

@@ -1,7 +1,7 @@
 # Knowledge base
 
 Research input for the `il-finance` rule base (`docs/product.md` 3.8) and for the
-instrument guide, dimension checklist and product decoder. One file per topic.
+instrument guide, dimension checklist and catalogue of every option. One file per topic.
 Started 2026-10-22. Written by the domain-specialist and tax-specialist agents;
 `coverage.md` lists what in `docs/product.md` this knowledge base does not cover yet.
 
@@ -83,7 +83,7 @@ new ones under a "Proposed dimensions" heading in the file.
 
 ## Files
 
-Release 1 (tier-1 wrappers and exposures, the decoder, cross-cutting rules):
+Release 1 (tier-1 wrappers and exposures, the catalogue, cross-cutting rules):
 
 | File | Prefix | Owner | Topic |
 |---|---|---|---|

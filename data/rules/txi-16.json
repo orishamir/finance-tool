@@ -1,0 +1,14 @@
+{
+  "id": "TXI-16",
+  "title": "Accrued interest bought with a bond between coupon dates (s.3(h)): income without exemptions or offsets; not modelled until TXI OQ5 closes",
+  "title_he": "ריבית צבורה שנקנתה עם אג״ח בין מועדי קופון",
+  "text_he": "ריבית צבורה היא סכום שאדם מקבל כריבית על אג״ח, כולל הפרשי הצמדה, בעד תקופה שבה האג״ח הייתה בבעלות של אחר. כשאינה הכנסה עסקית של המקבל, רואים אותה כהכנסה בלי זכות לפטור, לזיכוי, לניכוי או לקיזוז, מלבד פטור שניתן על הריבית עצמה. בהכנסה עסקית יש מבחני תקופת החזקה, ובהתקיימם החלק ממחיר הרכישה ששווה לריבית הצבורה נטו יוצא מחישוב הרווח. השר רשאי להחריג סוגי השקעות; אם קיים צו כזה לאג״ח ממשלתיות סחירות, ואיך בנקים מיישמים זאת לקונה פרטי בין מועדי קופון, לא ידוע, ולכן האתר לא מחשב את ההשפעה.",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "tax-during",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-interest-deposits-bonds.md",
+  "checked": "2026-10-22"
+}

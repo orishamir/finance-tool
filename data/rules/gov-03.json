@@ -1,0 +1,103 @@
+{
+  "id": "GOV-03",
+  "title": "Makam structure: discount, no interest, no linkage",
+  "title_he": "מבנה המק\"ם: ניכיון, בלי ריבית, בלי הצמדה",
+  "text_he": "מק\"ם לא נושא ריבית ולא צמוד למדד: במועד הפדיון, שנקבע בהנפקת הסדרה, המחזיק מקבל את השווי הנקוב בלי ריבית ובלי הצמדה, והתשואה היא ההפרש בין מחיר הקנייה לשווי הנקוב. אם יום הפדיון אינו יום עסקים בבנקים, התשלום נדחה ליום העסקים הבא. התקופה המזערית והמרבית לפדיון לקוחות מהתנאים הכלליים של בנק ישראל, מסמך ללא תאריך; טיוטת הוראה אחרת של בנק ישראל מתארת מק\"ם כנייר לתקופה של עד שנה, וההבדל הוא שאלה פתוחה.",
+  "figure_names_he": {
+    "linkage": "הצמדה",
+    "pays_interest": "משלם ריבית",
+    "term_min_days": "תקופה מזערית לפדיון",
+    "term_max_months": "תקופה מרבית לפדיון"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal",
+    "liquidity-lockup",
+    "distribution-policy"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "linkage": {
+      "value": "unlinked",
+      "unit": "text",
+      "source": {
+        "url": "https://www.boi.org.il/media/ytal5ozx/makam.pdf",
+        "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\" (undated)",
+        "publisher": "Bank of Israel, Markets Division",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "GOV-03"
+      ],
+      "state": "sourced",
+      "notes": "Makam bear no interest and are not CPI-linked (title and s.1.1); at redemption the holder is paid the face value with no interest or linkage (s.6.2.1). Value in the engine's vocabulary for the bond and makam runs."
+    },
+    "pays_interest": {
+      "value": false,
+      "unit": "boolean",
+      "source": {
+        "url": "https://www.boi.org.il/media/ytal5ozx/makam.pdf",
+        "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\" (undated)",
+        "publisher": "Bank of Israel, Markets Division",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "GOV-03"
+      ],
+      "state": "sourced",
+      "notes": "No coupon: the return is the difference between the purchase price and the face value (s.6.2.1)."
+    },
+    "term_min_days": {
+      "value": 14,
+      "unit": "days",
+      "source": {
+        "url": "https://www.boi.org.il/media/ytal5ozx/makam.pdf",
+        "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\" (undated)",
+        "publisher": "Bank of Israel, Markets Division",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "GOV-03"
+      ],
+      "state": "sourced",
+      "notes": "Redemption date no less than 14 days after issue (s.6.1.2). The document is undated (PDF metadata 2014); currency to be confirmed, GOV open question 3."
+    },
+    "term_max_months": {
+      "value": 13,
+      "unit": "months",
+      "source": {
+        "url": "https://www.boi.org.il/media/ytal5ozx/makam.pdf",
+        "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\" (undated)",
+        "publisher": "Bank of Israel, Markets Division",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "GOV-03"
+      ],
+      "state": "sourced",
+      "notes": "Redemption date no more than 13 months after issue (s.6.1.2). Conflict: the draft directive 447A annex describes makam as maturing \"עד שנה\" (up to one year), GOV open question 3; current issues run about one year (GOV-23)."
+    }
+  },
+  "il_finance_file": "government-bonds-and-makam.md",
+  "checked": "2026-10-22"
+}

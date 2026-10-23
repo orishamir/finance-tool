@@ -1,0 +1,25 @@
+{
+  "id": "tykvn-190",
+  "he": "תיקון 190",
+  "en": null,
+  "meaning": "כסף שמופקד לקופת גמל לקצבה בלי הטבת מס, וקצבה ממנו פטורה ממס מגיל שישים.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [
+    "תיקון 190 לפקודה"
+  ],
+  "rule_ids": [
+    "TXA-17",
+    "TXA-18",
+    "TXA-19",
+    "TXA-20",
+    "TXA-25"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf",
+    "title": "Israel Tax Authority, Income Tax circular 2/2013, \"תיקון 190 לפקודה\" (27.5.2013)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

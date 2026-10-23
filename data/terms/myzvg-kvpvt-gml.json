@@ -1,0 +1,40 @@
+{
+  "id": "myzvg-kvpvt-gml",
+  "he": "מיזוג קופות גמל",
+  "en": null,
+  "meaning": "איחוד של קופות או מסלולים לאחד באישור מראש של רשות שוק ההון; חשבונות החוסכים לא מתמזגים",
+  "where": [],
+  "wrapper_ids": [
+    "bank-deposit",
+    "brokerage-account",
+    "child-savings-bank",
+    "child-savings-provident",
+    "current-account",
+    "government-bond",
+    "ira-hishtalmut",
+    "ira-provident",
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa",
+    "makam",
+    "money-market-fund-daily",
+    "money-market-fund-renewable",
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity",
+    "savings-plan"
+  ],
+  "variants": [
+    "מיזוג מסלולי השקעה"
+  ],
+  "rule_ids": [
+    "CAT-13",
+    "PF-30"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+    "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "id": "REG-27",
+  "title": "SIPC covers the custody function of a failed US broker-dealer up to a limit, not a fall in value; no US residence needed",
+  "title_he": "SIPC מגן על המשמורת אצל ברוקר אמריקני, עד תקרה",
+  "text_he": "להגנת SIPC יש תקרה כוללת ובתוכה תקרה נמוכה יותר למזומן. SIPC מגן רק על פונקציית המשמורת של הברוקר-דילר, ולא מפני ירידת ערך של ניירות הערך. אין דרישה שהלקוח יתגורר בארה״ב או יהיה אזרח שלה. חל רק על חשבונות אצל ברוקר-דילר חבר SIPC, ולא על ישויות לא אמריקאיות של אותה קבוצה.",
+  "strength": "primary",
+  "dimensions": [
+    "protection",
+    "currency"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "regulators-and-protection.md",
+  "checked": "2026-10-22"
+}

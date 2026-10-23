@@ -1,0 +1,25 @@
+{
+  "id": "amlvt-brvkraz",
+  "he": "עמלות ברוקראז'",
+  "en": null,
+  "meaning": "עמלות על קנייה ומכירה של ניירות ערך בקופה בניהול אישי, שנגבות בנוסף לדמי הניהול",
+  "where": [
+    "provider-site"
+  ],
+  "wrapper_ids": [
+    "ira-hishtalmut",
+    "ira-provident"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "IRA-16",
+    "IRA-21"
+  ],
+  "source": {
+    "url": "https://www.meitav.co.il/media/0qulk3pk/תקנות-ira-חדשות-יוני-2017.pdf",
+    "title": "קובץ התקנות 7819 (29.5.2017), IRA regulations amendment התשע\"ז-2017 (Reshumot copy hosted by Meitav)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

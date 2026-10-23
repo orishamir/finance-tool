@@ -1,0 +1,33 @@
+{
+  "id": "hlkh",
+  "he": "הלכה",
+  "en": null,
+  "meaning": "מסלול שמנהל את ההשקעות לפי כללי דת, יהודית או מוסלמית, לפי סוג המסלול",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [
+    "הלכתי",
+    "הלכה יהודית",
+    "הלכה איסלאמית",
+    "מסלול הלכה"
+  ],
+  "rule_ids": [
+    "CAT-10",
+    "CAT-17",
+    "CAT-18",
+    "PEN-17"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+    "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

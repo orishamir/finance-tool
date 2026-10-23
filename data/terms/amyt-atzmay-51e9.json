@@ -1,0 +1,32 @@
+{
+  "id": "amyt-atzmay-51e9",
+  "he": "עמית-עצמאי",
+  "en": null,
+  "meaning": "מעמד בקופה שבו מפקידים בעצמכם ולא דרך מעסיק; בקרן השתלמות זה המעמד של עצמאים",
+  "where": [
+    "bylaws",
+    "form"
+  ],
+  "wrapper_ids": [
+    "ira-hishtalmut",
+    "ira-provident",
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa"
+  ],
+  "variants": [
+    "עמית עצמאי",
+    "מעמד עצמאי"
+  ],
+  "rule_ids": [
+    "KGL-01",
+    "KH-02",
+    "KH-08"
+  ],
+  "source": {
+    "url": "https://www.nevo.co.il/law_html/law00/70391.htm",
+    "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Nevo mirror)",
+    "publisher": "Nevo legal database",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

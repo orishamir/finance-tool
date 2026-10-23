@@ -1,0 +1,33 @@
+{
+  "id": "habrt-kspym-byn-mslvly-hshkah-c",
+  "he": "העברת כספים בין מסלולי השקעה",
+  "en": null,
+  "meaning": "הזזת הכסף, כולו או חלקו, ממסלול השקעה אחד לאחר באותה קופה, בלי לשלם מס",
+  "where": [
+    "app",
+    "form"
+  ],
+  "wrapper_ids": [
+    "child-savings-bank",
+    "child-savings-provident",
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa"
+  ],
+  "variants": [
+    "מעבר בין מסלולים"
+  ],
+  "rule_ids": [
+    "CS-11",
+    "KGL-13",
+    "KH-18",
+    "TXH-17",
+    "TXK-04"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf",
+    "title": "Ministry of Finance, Chief Economist, על הטבת המס בקרן השתלמות – ניתוח מדיניות (October 2025)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

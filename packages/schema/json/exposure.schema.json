@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "names": {
+      "type": "object",
+      "properties": {
+        "he": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "en": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "he",
+        "en"
+      ],
+      "additionalProperties": false
+    },
+    "one_line_he": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "equity_index",
+        "bond_index",
+        "cash_like",
+        "mixed",
+        "commodity",
+        "other"
+      ]
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    },
+    "cash_like": {
+      "type": "boolean"
+    },
+    "return_source": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "entered",
+            "series"
+          ]
+        },
+        "series": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "mode",
+        "series"
+      ],
+      "additionalProperties": false
+    },
+    "variants": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "wrapper_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "current-account",
+          "bank-deposit",
+          "savings-plan",
+          "money-market-fund-daily",
+          "money-market-fund-renewable",
+          "makam",
+          "government-bond",
+          "brokerage-account",
+          "kupat-gemel-lehashkaa",
+          "keren-hishtalmut",
+          "pension-comprehensive",
+          "pension-general",
+          "provident-for-annuity",
+          "child-savings-provident",
+          "child-savings-bank",
+          "ira-hishtalmut",
+          "ira-provident"
+        ]
+      }
+    },
+    "rule_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "checked": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    }
+  },
+  "required": [
+    "id",
+    "names",
+    "kind",
+    "currency",
+    "cash_like",
+    "return_source",
+    "variants",
+    "checked"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,351 @@
+{
+  "id": "goal-presets",
+  "method_id": "P-07",
+  "presets": {
+    "liquid-reserve": {
+      "name_he": "עתודה נזילה",
+      "horizon_years": {
+        "value": 1,
+        "unit": "years",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#goal-presets",
+          "title": "Founder's choice, made by Claude at his request: goal presets",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "a reserve is judged a year ahead; the idle-cash preset (F-60) uses the same set"
+      },
+      "monthly_deposit": {
+        "value": 0,
+        "unit": "nis_per_month",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#goal-presets",
+          "title": "Founder's choice, made by Claude at his request: goal presets",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      },
+      "must_stay_available_share": {
+        "value": 100,
+        "unit": "pct",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#goal-presets",
+          "title": "Founder's choice, made by Claude at his request: goal presets",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "the whole amount stays available at once (product 3.2 idle-cash preset)"
+      },
+      "withdrawable_any_time": {
+        "value": true,
+        "unit": "boolean",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#goal-presets",
+          "title": "Founder's choice, made by Claude at his request: goal presets",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      }
+    },
+    "known-date": {
+      "name_he": "קנייה במועד ידוע",
+      "horizon_years": {
+        "value": 4,
+        "unit": "years",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#goal-presets",
+          "title": "Founder's choice, made by Claude at his request: goal presets",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "the founder's apartment case, golden S40"
+      },
+      "must_stay_available_share": {
+        "value": 0,
+        "unit": "pct",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#goal-presets",
+          "title": "Founder's choice, made by Claude at his request: goal presets",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      },
+      "withdrawable_any_time": {
+        "value": false,
+        "unit": "boolean",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#goal-presets",
+          "title": "Founder's choice, made by Claude at his request: goal presets",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      }
+    },
+    "long-term": {
+      "name_he": "הון לטווח ארוך",
+      "horizon_years": {
+        "value": 20,
+        "unit": "years",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#goal-presets",
+          "title": "Founder's choice, made by Claude at his request: goal presets",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "the founder's ETF-vs-provident case, golden S39"
+      },
+      "must_stay_available_share": {
+        "value": 0,
+        "unit": "pct",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#goal-presets",
+          "title": "Founder's choice, made by Claude at his request: goal presets",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      },
+      "withdrawable_any_time": {
+        "value": false,
+        "unit": "boolean",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#goal-presets",
+          "title": "Founder's choice, made by Claude at his request: goal presets",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      }
+    },
+    "lump-sum": {
+      "name_he": "סכום חד־פעמי",
+      "horizon_years": {
+        "value": 10,
+        "unit": "years",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#goal-presets",
+          "title": "Founder's choice, made by Claude at his request: goal presets",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "the illustrative scenario's horizon (P-05)"
+      },
+      "monthly_deposit": {
+        "value": 0,
+        "unit": "nis_per_month",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#goal-presets",
+          "title": "Founder's choice, made by Claude at his request: goal presets",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "a lump sum has no monthly deposits"
+      },
+      "must_stay_available_share": {
+        "value": 0,
+        "unit": "pct",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#goal-presets",
+          "title": "Founder's choice, made by Claude at his request: goal presets",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      },
+      "withdrawable_any_time": {
+        "value": false,
+        "unit": "boolean",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#goal-presets",
+          "title": "Founder's choice, made by Claude at his request: goal presets",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      }
+    },
+    "child": {
+      "name_he": "חיסכון לילד",
+      "horizon_years": {
+        "value": 18,
+        "unit": "years",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#goal-presets",
+          "title": "Founder's choice, made by Claude at his request: goal presets",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "until the child's withdrawal age (CS-14); the person shortens it by the child's age"
+      },
+      "must_stay_available_share": {
+        "value": 0,
+        "unit": "pct",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#goal-presets",
+          "title": "Founder's choice, made by Claude at his request: goal presets",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      },
+      "withdrawable_any_time": {
+        "value": false,
+        "unit": "boolean",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#goal-presets",
+          "title": "Founder's choice, made by Claude at his request: goal presets",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      }
+    }
+  },
+  "ranges": {
+    "horizon_years": {
+      "min": {
+        "value": 1,
+        "unit": "years",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#goal-presets",
+          "title": "Founder's choice, made by Claude at his request: goal presets",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      },
+      "max": {
+        "value": 40,
+        "unit": "years",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#goal-presets",
+          "title": "Founder's choice, made by Claude at his request: goal presets",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      },
+      "step": {
+        "value": 1,
+        "unit": "years",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#goal-presets",
+          "title": "Founder's choice, made by Claude at his request: goal presets",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-23",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": ""
+      }
+    }
+  },
+  "rationale": "Starting values a preset fills into the goal form (product D13); every one can be edited and is then the person's own. Amounts (now, monthly) are never preset. Horizons come from the founder's own cases in the golden scenarios and from the illustrative scenario, so the examples on the site and in the tests agree.",
+  "rationale_he": "ערכי התחלה שנקודת התחלה ממלאת בטופס המטרה; כל ערך ניתן לשינוי ואז הוא שלכם. סכומים (היום, חודשי) לא ממולאים מראש. האופקים לקוחים מהמקרים של מייסד האתר בתרחישי הבדיקה ומהתרחיש להמחשה, כדי שהדוגמאות באתר ובבדיקות יתאימו.",
+  "chosen_by": "Claude, at the founder's request (2026-10-23); revisable",
+  "signed_off_by": "founder",
+  "signed_off_on": "2026-10-23",
+  "shown_as": "site parameter"
+}

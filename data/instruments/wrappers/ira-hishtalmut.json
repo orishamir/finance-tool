@@ -1,0 +1,332 @@
+{
+  "id": "ira-hishtalmut",
+  "names": {
+    "he": [
+      "קרן השתלמות בניהול אישי",
+      "קופת גמל בניהול אישי",
+      "השתלמות IRA",
+      "IRA"
+    ],
+    "statement": [
+      "קרן השתלמות בניהול אישי"
+    ],
+    "app": [
+      "השתלמות בניהול אישי",
+      "IRA"
+    ]
+  },
+  "regulator": {
+    "value": "CMA",
+    "unit": "text",
+    "source": {
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ss.1 (\"קופת גמל בניהול אישי\"), 13, 39, 57 (Wikisource mirror)",
+      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "strength": "primary-mirror"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "REG-17",
+      "IRA-01",
+      "TXK-16"
+    ],
+    "state": "sourced",
+    "notes": "A self-directed study fund is a study fund approved under s.13(א) of the Provident Funds Law for one member who directs its investments (s.1 'קופת גמל בניהול אישי'); its managing company is under the CMA Commissioner's supervision (s.39(א)). The broker inside the account is a TASE member or bank under its own regulator."
+  },
+  "fee_bases_allowed": [
+    "balance",
+    "trade",
+    "custody",
+    "fx",
+    "direct_expenses"
+  ],
+  "fee_caps": {
+    "balance": {
+      "value": 2,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 4 (Hebrew Wikisource; cross-read on Nevo)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2013-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-06",
+        "IRA-17",
+        "IRA-16"
+      ],
+      "state": "sourced",
+      "notes": "Management Fees Regulations 2012, reg. 4: a managing company of a keren hishtalmut or an IRA (קופת גמל בניהול אישי) may charge 'בשיעור שלא יעלה על 2% לשנה' of the balance. Which cap applies to IRA funds after the 2017 amendment deleted the reference to income-tax regulation 41ח(ב)(1) is IRA OQ3; PF reads reg. 4 at 2%. The member's own agreement sets the rate (IRA-17); Gemel-Net 202609 averages for IRA funds run 0.15% to 0.36%."
+    },
+    "deposit": {
+      "value": 0,
+      "unit": "pct_of_deposit",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 4 (Hebrew Wikisource; cross-read on Nevo)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2013-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-06",
+        "IRA-17"
+      ],
+      "state": "sourced",
+      "notes": "Reading, not a quoted figure: regulation 4 authorises a fee from the balance only and has no fee-from-deposits item, and law s.32(א) forbids any charge not allowed (PF-06). No IRA fund reports a deposit fee in Gemel-Net 202609 (IRA-17)."
+    },
+    "trade": {
+      "value": null,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
+        "title": "IRA regulations, regs. 7 (closed list of charges), 12 (competitive process) (Nevo mirror, summarising fetch)",
+        "publisher": "Minister of Finance regulations (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "IRA-16",
+        "IRA-18",
+        "IRA-21"
+      ],
+      "state": "sourced",
+      "notes": "No cap. Buy and sell commissions are charged to the fund on top of the management fee, at the tariff of the broker the member picks from the winners of the managing company's competitive process (at least every 3 years, at least 4 participants). Meitav's 2026 tariffs per broker are in IRA-21 and belong in data/fees/ (R4)."
+    },
+    "custody": {
+      "value": null,
+      "unit": "pct_of_balance_per_period",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
+        "title": "IRA regulations, regs. 7 (closed list of charges), 12 (competitive process) (Nevo mirror, summarising fetch)",
+        "publisher": "Minister of Finance regulations (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "IRA-16",
+        "IRA-22"
+      ],
+      "state": "sourced",
+      "notes": "No cap beyond: custody fees may not exceed what the same managing company's non-IRA funds pay (reg. 7(א)(2), 2017). Meitav Trade exempts custody inside an IRA; bank brokers charge per their tariff (IRA OQ6)."
+    }
+  },
+  "ceiling": {
+    "per": "person_total_across_all_study_fund_accounts",
+    "amount": {
+      "value": 6303528,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.meitav.co.il/provident_pension/ira/",
+        "title": "Meitav, IRA product page: \"קיימת מגבלת הפקדה בסך של 6,303,528 ₪ נכון לשנת 2026\" (read 2026-10-23)",
+        "publisher": "Meitav Gemel and Pension",
+        "strength": "institution"
+      },
+      "checked": "2026-10-23",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "cpi-linked 1 jan",
+      "rule_ids": [
+        "IRA-07",
+        "IRA-08"
+      ],
+      "state": "sourced",
+      "notes": "NOT A YEARLY DEPOSIT CEILING: the total study-fund money that may sit in IRA funds, four times 'הסכום הקובע' counted across all the member's study-fund accounts (reg. 2(א)(1)); within it, study-fund money enters 'from the first shekel'. 2026 figure from Meitav's page only (institution; IRA OQ8); הסכום הקובע = minimum pension amount × capital conversion multiplier × 1.65, so it moves each 1 January with the CPI-linked minimum pension (PEN-28) and the multiplier. The employer and self-employed tax ceilings of a regular study fund still apply to deposits (TXH-08)."
+    }
+  },
+  "deposit_side_tax": {
+    "formula": "F-33",
+    "rule_ids": [
+      "TXH-04",
+      "TXK-17"
+    ]
+  },
+  "tax_during": {
+    "formula": "F-27",
+    "rule_ids": [
+      "TXH-18",
+      "TXK-17",
+      "TXH-17",
+      "TXK-18"
+    ]
+  },
+  "tax_at_exit": {
+    "formula": "F-51",
+    "rule_ids": [
+      "TXK-17",
+      "TXH-09",
+      "TXH-10",
+      "TXH-11",
+      "KH-10"
+    ],
+    "blocked_by": [],
+    "labels": [
+      "F-51 applies the study-fund rules: F-46 at the lawful exit; F-47 (early withdrawal, opt-in) is pending R2",
+      "institution source: real base of the 25% on gains from deposits above the benefited amount (TXH-11)",
+      "foreign tax withheld inside the account is a cost; treaty relief for an Israeli provident fund is open (TXK-18, TXK OQ7)"
+    ]
+  },
+  "lawful_exit": {
+    "kind": "after_years",
+    "years": {
+      "value": 6,
+      "unit": "years",
+      "source": {
+        "url": "https://he.wikisource.org/api/rest_v1/page/pdf/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance (Wikisource PDF), s.9(2)(a) (fund income exempt), s.9(16A) (study-fund exemption after 6 years); no provision uses \"בניהול אישי\"",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXH-09",
+        "IRA-25",
+        "KH-10"
+      ],
+      "state": "sourced",
+      "notes": "As for any study fund: amounts withdrawn are exempt once 6 years have passed since the first payment date of the account (3 at retirement age or for study, TXH-10). Transferring an existing fund into the IRA keeps its seniority (IRA-23, Meitav)."
+    },
+    "text": "the money becomes free 6 years after the first payment date (3 years at retirement age or for the member's study), as in any study fund; an earlier withdrawal is allowed but taxed (KH-10); a withdrawal or a cash transfer out waits until the holdings the member chose are sold, and what can be sold and when depends on those holdings (IRA-23, IRA-25); deposits and withdrawals stay allowed even while the account is blocked for a breach of the investment limits (IRA-14)"
+  },
+  "switch_is_tax_event": {
+    "value": false,
+    "unit": "boolean",
+    "source": {
+      "url": "https://he.wikisource.org/api/rest_v1/page/pdf/פקודת_מס_הכנסה",
+      "title": "Income Tax Ordinance (Wikisource PDF), s.9(2)(a) (fund income exempt), s.9(16A) (study-fund exemption after 6 years); no provision uses \"בניהול אישי\"",
+      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "strength": "primary-mirror"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXK-17",
+      "TXH-17",
+      "IRA-23"
+    ],
+    "state": "sourced",
+    "notes": "Trading inside the account is the fund's own activity: the fund-level exemption of s.9(2)(a) covers any קופת גמל, so sales, dividends and interest inside an IRA are not taxed while the money stays inside (TXK-17). A transfer to another study fund, or between IRA funds (in cash or in kind), is not a withdrawal (IRA-23, TXH-19)."
+  },
+  "transfer_routes": [
+    {
+      "to": "keren-hishtalmut",
+      "condition": "whole balance only; the receiving company chooses cash or in kind",
+      "rule_ids": [
+        "IRA-23",
+        "KH-17",
+        "PF-17"
+      ]
+    },
+    {
+      "to": "ira-hishtalmut",
+      "condition": "whole balance only; the member chooses cash or in kind",
+      "rule_ids": [
+        "IRA-23",
+        "KH-17"
+      ]
+    },
+    {
+      "to": "provident-for-annuity",
+      "condition": "only money the member could withdraw tax-exempt",
+      "rule_ids": [
+        "KH-17",
+        "PF-17"
+      ]
+    }
+  ],
+  "eligibility": {
+    "rule_ids": [
+      "IRA-01",
+      "IRA-03",
+      "IRA-05",
+      "IRA-07",
+      "IRA-10",
+      "KH-02",
+      "IRA-15",
+      "IRA-27"
+    ],
+    "text": "any study-fund member: study-fund money enters from the first shekel, up to four times 'הסכום הקובע' across all the member's study-fund accounts; an employee's fund enters by transferring an existing study fund (the employer keeps paying into a fund the employee chooses), a self-employed member may also deposit directly; the member, or a licensed portfolio manager the member picks, gives the investment instructions; no regulatory minimum was found, and Meitav suggests the product from about NIS 200,000; the member may cancel the agreement at any time without charge"
+  },
+  "protection": {
+    "rule_ids": [
+      "REG-18",
+      "REG-19",
+      "IRA-26",
+      "IRA-12",
+      "IRA-13",
+      "IRA-14",
+      "IRA-28",
+      "IRA-11"
+    ],
+    "text": "the fund's assets are held in trust, separately from the managing company's property, and if the company fails management moves to another company; the investment risk is the member's own, with no investment committee; the regulations limit concentration (10% per issuer, 5% options, 10% collateral) and forbid borrowing, and only tradable securities, deposits, structured products, foreign currency and fund units in Israel or an approved foreign country may be held; what protects the securities if the managing company or the broker fails was not found (IRA OQ11), and two IRA managers have had failures since 2023 (press)"
+  },
+  "tier": 1,
+  "open_questions": [
+    "IRA-OQ1",
+    "IRA-OQ2",
+    "IRA-OQ3",
+    "IRA-OQ6",
+    "IRA-OQ7",
+    "IRA-OQ8",
+    "IRA-OQ11",
+    "TXK-OQ7",
+    "TXK-OQ8",
+    "TXH-OQ1"
+  ],
+  "checked": "2026-10-23",
+  "dimensions": {
+    "age-or-use-exemption": "covered",
+    "currency": "covered",
+    "deposit-ceiling": "covered",
+    "eligibility": "covered",
+    "fee-change-over-time": "covered",
+    "fee-custody": "covered",
+    "fee-deposit": "covered",
+    "fee-exit": "covered",
+    "fee-fx": "covered",
+    "fee-management-balance": "covered",
+    "fee-trade": "covered",
+    "foreign-withholding-domicile": "covered",
+    "liquidity-lockup": "covered",
+    "loss-offset": "blocked:TXK-OQ10",
+    "minimum": "covered",
+    "protection": "covered",
+    "real-vs-nominal": "covered",
+    "regulator": "covered",
+    "reporting-obligation": "covered",
+    "switching-tax-event": "covered",
+    "tax-at-deposit": "covered",
+    "tax-at-exit": "covered",
+    "tax-during": "covered",
+    "transfer-switch-process": "covered"
+  }
+}

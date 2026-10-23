@@ -1,0 +1,26 @@
+{
+  "id": "kvpt-gml-lyldym",
+  "he": "קופת גמל לילדים",
+  "en": null,
+  "meaning": "שם שמיטב נותנת לקופת גמל להשקעה רגילה שנפתחת על שם ילד; זו לא תכנית הביטוח הלאומי",
+  "where": [
+    "ad",
+    "app"
+  ],
+  "wrapper_ids": [
+    "kupat-gemel-lehashkaa"
+  ],
+  "variants": [
+    "מיטב קידס"
+  ],
+  "rule_ids": [
+    "KGL-21"
+  ],
+  "source": {
+    "url": "https://www.meitav.co.il/provident_pension/saving_kids/",
+    "title": "Meitav, מיטב קידס / קופת גמל לילדים product page",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,7 +1,7 @@
 # Brokerage account (תיק ניירות ערך)
 
 Checked: 2026-10-22 · Owner: domain-specialist
-Serves: product.md 3.1 instrument guide (R1), 3.3 dimension checklist (R1), 3.10 decoder for bank products (R4), 3.2 wrapper mode (R2), 3.5 fee materiality (R3), 3.4 workbench providers (R4); D4 (fee reference levels) and D6 (the brokerage account as a wrapper).
+Serves: product.md 3.1 instrument guide (R1), 3.3 dimension checklist (R1), 3.10 catalogue for bank products (R4), 3.2 wrapper mode (R2), 3.5 fee materiality (R3), 3.4 workbench providers (R4); D4 (fee reference levels) and D6 (the brokerage account as a wrapper).
 Scope: in: the brokerage wrapper itself: provider classes, licences and supervisors, client-asset protection, the fee types that can apply and where they are regulated, where each provider publishes its tariff, account opening, what the provider withholds, and trading facts that change cost or access. Out: tariff figures per provider (data-researcher; this file names where each tariff lives, not its numbers), what to buy (`etfs-and-index-funds.md`, `government-bonds-and-makam.md`, `mutual-funds-and-money-market-funds.md`), tax rules (`tax-general.md`, `tax-securities-israeli.md`, `tax-securities-foreign.md`), moving a portfolio between providers (`switching-and-transfers.md`), managed portfolios (`managed-and-robo-portfolios.md`), deposit insurance and the general protection picture (`regulators-and-protection.md`).
 
 ## Summary

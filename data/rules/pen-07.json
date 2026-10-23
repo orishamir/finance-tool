@@ -1,0 +1,63 @@
+{
+  "id": "PEN-07",
+  "title": "Mandatory pension deposits for the self-employed",
+  "title_he": "חובת הפקדה לפנסיה לעצמאים",
+  "text_he": "עצמאי חייב להפקיד לקופת גמל לקצבה, עד סוף שנת המס, את השיעור הנמוך מחלק ההכנסה החייבת בהפקדה שעד מחצית השכר הממוצע, ואת השיעור הגבוה מהחלק שמעל המחצית ועד השכר הממוצע; הפקדות שנעשו עבורו כשכיר על הכנסה מבוטחת מופחתות מהסכום. החובה לא חלה על מי שמתחת לגיל המינימום, מי שהגיע לגיל פרישה מוקדמת, מי שנרשם כעוסק לפני פחות מחצי שנה, ומי שהיה מבוגר ביום תחילת החוק. חלק מההפקדות של כל שנה מיועד לרכיב חיסכון למצב אבטלה. מי שחייב ולא הפקיד מקבל התראה ממרכז הגבייה, ואי תשלום הוא עבירה עם קנס; החוק נקרא בעותק בוויקיטקסט, והסכומים מטבלה של חברת ביטוח.",
+  "figure_names_he": {
+    "rate_up_to_half_average_wage": "שיעור ההפקדה עד מחצית השכר הממוצע",
+    "rate_half_to_full_average_wage": "שיעור ההפקדה ממחצית השכר הממוצע ועד השכר הממוצע"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "eligibility",
+    "minimum",
+    "deposit-ceiling",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "rate_up_to_half_average_wage": {
+      "value": 4.45,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%94%D7%94%D7%AA%D7%99%D7%99%D7%A2%D7%9C%D7%95%D7%AA_%D7%94%D7%9B%D7%9C%D7%9B%D7%9C%D7%99%D7%AA_(%D7%AA%D7%99%D7%A7%D7%95%D7%A0%D7%99_%D7%97%D7%A7%D7%99%D7%A7%D7%94_%D7%9C%D7%94%D7%A9%D7%92%D7%AA_%D7%99%D7%A2%D7%93%D7%99_%D7%94%D7%AA%D7%A7%D7%A6%D7%99%D7%91_%D7%9C%D7%A9%D7%A0%D7%95%D7%AA_%D7%94%D7%AA%D7%A7%D7%A6%D7%99%D7%91_2017_%D7%95-2018)",
+        "title": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2017 ו-2018), chapter ב', section 3 (Wikisource mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "PEN-07"
+      ],
+      "state": "sourced",
+      "notes": "Share of the part of \"income liable for deposit\" up to half the average wage that a self-employed person must deposit into a provident fund for annuity by the end of the tax year."
+    },
+    "rate_half_to_full_average_wage": {
+      "value": 12.55,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%94%D7%94%D7%AA%D7%99%D7%99%D7%A2%D7%9C%D7%95%D7%AA_%D7%94%D7%9B%D7%9C%D7%9B%D7%9C%D7%99%D7%AA_(%D7%AA%D7%99%D7%A7%D7%95%D7%A0%D7%99_%D7%97%D7%A7%D7%99%D7%A7%D7%94_%D7%9C%D7%94%D7%A9%D7%92%D7%AA_%D7%99%D7%A2%D7%93%D7%99_%D7%94%D7%AA%D7%A7%D7%A6%D7%99%D7%91_%D7%9C%D7%A9%D7%A0%D7%95%D7%AA_%D7%94%D7%AA%D7%A7%D7%A6%D7%99%D7%91_2017_%D7%95-2018)",
+        "title": "חוק ההתייעלות הכלכלית 2017-2018, chapter ב', section 3 (Wikisource mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "PEN-07"
+      ],
+      "state": "sourced",
+      "notes": "Share of the part of income above half and up to the full average wage. 2026 maximum required: NIS 1,170.24 a month (Harel, institution). Deposits as an employee on insured income are deducted. Not liable: under 21, past early retirement age, under six months since VAT registration, or 55 or more on the law's effective date."
+    }
+  },
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

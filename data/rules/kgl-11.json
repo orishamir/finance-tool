@@ -1,0 +1,15 @@
+{
+  "id": "KGL-11",
+  "title": "Default track when none is chosen",
+  "title_he": "מסלול ברירת המחדל כשלא בוחרים",
+  "text_he": "מי שלא בחר מסלול בהצטרפות מצורף למסלול ברירת המחדל שבנספח לתקנון. בכל תקנון של קופת גמל להשקעה שנקרא, ברירת המחדל היא המסלול הכללי של החברה. מודל ברירת המחדל לפי גיל של רשות שוק ההון לא חל על קופת גמל להשקעה. התקנון של מיטב לא נמצא, וברירת המחדל שלה מוסקת רק מעמוד המוצר.",
+  "strength": "primary",
+  "dimensions": [
+    "transfer-switch-process",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "kupat-gemel-lehashkaa.md",
+  "checked": "2026-10-22"
+}

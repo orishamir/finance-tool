@@ -1,0 +1,26 @@
+{
+  "id": "tvps-867-b",
+  "he": "טופס 867",
+  "en": null,
+  "meaning": "אישור שנתי מהבנק או מבית ההשקעות שמפרט את ההכנסות מניירות ערך ואת המס שנוכה מהן.",
+  "where": [
+    "statement",
+    "tax-form"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXF-24",
+    "TXS-16",
+    "TXS-19"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

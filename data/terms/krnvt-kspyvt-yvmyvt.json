@@ -1,0 +1,26 @@
+{
+  "id": "krnvt-kspyvt-yvmyvt",
+  "he": "קרנות כספיות יומיות",
+  "en": null,
+  "meaning": "קרן כספית שאפשר לקנות ולמכור בכל יום מסחר; התשואה שלה לא ידועה מראש ונעה עם ריבית בנק ישראל",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [
+    "money-market-fund-daily",
+    "money-market-fund-renewable"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "BANK-15",
+    "MF-34",
+    "MF-41"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf",
+    "title": "ISA, פעילות קרנות נאמנות בישראל 2024",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

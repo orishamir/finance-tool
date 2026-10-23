@@ -1,0 +1,36 @@
+{
+  "id": "krn-shaynh-mchlkt",
+  "he": "קרן שאינה מחלקת",
+  "en": null,
+  "meaning": "קרן שלא משלמת כסף למחזיקים, אלא משקיעה מחדש בתוכה את הדיבידנדים והריבית שהיא מקבלת.",
+  "where": [
+    "app",
+    "fund-name"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500"
+  ],
+  "variants": [
+    "קרן צבירה",
+    "קרן צוברת",
+    "צוברות דיבידנד",
+    "צבירה"
+  ],
+  "rule_ids": [
+    "ETF-19",
+    "ETF-27",
+    "ETF-28",
+    "MF-49",
+    "TXF-11"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
+    "title": "רשות ניירות ערך, ISA investor guide on mutual funds (2017)",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

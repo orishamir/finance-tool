@@ -1,0 +1,103 @@
+{
+  "id": "GOV-15",
+  "title": "Short government bond (אג\"ח ממשלתית קצרה)",
+  "title_he": "אג\"ח ממשלתית קצרה בניכיון",
+  "text_he": "המדינה מנפיקה גם איגרות קצרות בניכיון: כל סדרה נקראת \"אג\"ח ממשלתית קצרה\" ואחריה שנת וחודש הפדיון, מונפקת בשווי נקוב של יחידת ההנפקה או בכפולות שלה, ונמכרת מתחת לסכום הפדיון בלי ריבית. התקופה לא עולה על התקופה המרבית, עם פדיון מלא בסופה, והמכירה לעושי שוק ראשיים ולציבור עוברת דרך בנקים, חברי בורסה וגופים מאושרים. זהו מכשיר נפרד ממק\"ם: חוק אחר, משרד האוצר כמוכר במקום בנק ישראל ויחידת מינימום אחרת; אם מסכי הבנקים מפרידים ביניהם לא ידוע. התקנות נקראו בעותק באתר נבו.",
+  "figure_names_he": {
+    "linkage": "הצמדה",
+    "pays_interest": "משלם ריבית",
+    "face_value": "שווי נקוב ליחידת הנפקה",
+    "term_max_months": "תקופה מרבית לפדיון"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "real-vs-nominal",
+    "minimum",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "linkage": {
+      "value": "unlinked",
+      "unit": "text",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/999_782.htm",
+        "title": "תקנות מילווה המדינה (אגרות חוב מסוג \"אג\"ח ממשלתית קצרה\"), תשס\"ז-2007 (Nevo mirror)",
+        "publisher": "Minister of Finance (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "GOV-15"
+      ],
+      "state": "sourced",
+      "notes": "Sold below the redemption amount, with no interest and no linkage (ss.1 to 8). A separate instrument from makam: issued by the Ministry of Finance, not the Bank of Israel."
+    },
+    "pays_interest": {
+      "value": false,
+      "unit": "boolean",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/999_782.htm",
+        "title": "תקנות מילווה המדינה (אגרות חוב מסוג \"אג\"ח ממשלתית קצרה\"), תשס\"ז-2007 (Nevo mirror)",
+        "publisher": "Minister of Finance (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "GOV-15"
+      ],
+      "state": "sourced",
+      "notes": "Discount bond: no coupon; full redemption at the end of the term."
+    },
+    "face_value": {
+      "value": 1000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/999_782.htm",
+        "title": "תקנות מילווה המדינה (אגרות חוב מסוג \"אג\"ח ממשלתית קצרה\"), תשס\"ז-2007 (Nevo mirror)",
+        "publisher": "Minister of Finance (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "GOV-15"
+      ],
+      "state": "sourced",
+      "notes": "Issued in face value of NIS 1,000 or multiples (s.3). Issue unit, not the TASE trading unit (GOV open question 7)."
+    },
+    "term_max_months": {
+      "value": 12,
+      "unit": "months",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/999_782.htm",
+        "title": "תקנות מילווה המדינה (אגרות חוב מסוג \"אג\"ח ממשלתית קצרה\"), תשס\"ז-2007 (Nevo mirror)",
+        "publisher": "Minister of Finance (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "GOV-15"
+      ],
+      "state": "sourced",
+      "notes": "The term is no more than one year (s.2). 2025 series: 1125, 0226, 0526."
+    }
+  },
+  "il_finance_file": "government-bonds-and-makam.md",
+  "checked": "2026-10-22"
+}

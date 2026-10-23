@@ -1,0 +1,30 @@
+{
+  "id": "dmy-nyhvl-pykdvn-nyyrvt-ark-a",
+  "he": "דמי ניהול פיקדון ניירות ערך",
+  "en": null,
+  "meaning": "עמלה שהבנק גובה על החזקת ניירות ערך בחשבון; אסור לגבות אותה על מק\"מ ועל קרן כספית",
+  "where": [
+    "statement",
+    "tariff"
+  ],
+  "wrapper_ids": [
+    "brokerage-account",
+    "makam",
+    "money-market-fund-daily",
+    "money-market-fund-renewable"
+  ],
+  "variants": [
+    "דמי משמרת"
+  ],
+  "rule_ids": [
+    "BANK-18",
+    "MF-27"
+  ],
+  "source": {
+    "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
+    "title": "Banking Rules (Customer Service) (Fees) 2008, consolidated to 9.4.2025, BoI copy",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

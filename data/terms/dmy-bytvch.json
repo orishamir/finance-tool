@@ -1,0 +1,25 @@
+{
+  "id": "dmy-bytvch",
+  "he": "דמי ביטוח",
+  "en": null,
+  "meaning": "הסכום שנגבה כל חודש מהחיסכון בקרן הפנסיה כדי לממן את הביטוח לנכות ולמקרה מוות",
+  "where": [
+    "statement"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "PEN-15"
+  ],
+  "source": {
+    "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+    "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

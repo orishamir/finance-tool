@@ -1,0 +1,26 @@
+{
+  "id": "svgy-hpykdvnvt-hshklyym-hmkvblym",
+  "he": "סוגי הפיקדונות השקליים המקובלים",
+  "en": null,
+  "meaning": "רשימה אחידה של סוגי פיקדונות בשקלים, מפיקדון ליום ועד פיקדון לכמה שנים, שבנקים מציגים באותה צורה",
+  "where": [
+    "provider-site"
+  ],
+  "wrapper_ids": [
+    "bank-deposit"
+  ],
+  "variants": [
+    "פיקדונות שקליים מקובלים"
+  ],
+  "rule_ids": [
+    "BANK-13",
+    "BANK-14"
+  ],
+  "source": {
+    "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
+    "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24)",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

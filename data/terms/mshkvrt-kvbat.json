@@ -1,0 +1,26 @@
+{
+  "id": "mshkvrt-kvbat",
+  "he": "משכורת קובעת",
+  "en": null,
+  "meaning": "השכר שלפיו מחשבים כמה מהפקדת המעסיק פטורה ממס; בלי שעות נוספות והחזרי הוצאות, ועד תקרה",
+  "where": [
+    "payslip"
+  ],
+  "wrapper_ids": [
+    "keren-hishtalmut"
+  ],
+  "variants": [
+    "שכר קובע"
+  ],
+  "rule_ids": [
+    "TXH-01",
+    "TXH-02"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+    "title": "פקודת מס הכנסה, consolidated text (Wikisource)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "id": "TXP-15",
+  "title": "Offset formula (`נוסחת הקיזוז`): exempt severance reduces the annuity exemption",
+  "title_he": "נוסחת הקיזוז: פיצויים פטורים מקטינים את הפטור על הקצבה",
+  "text_he": "למי שפרש מאז תחילת הנוסחה, מענקי פרישה פטורים שהתקבלו עבור שנות העבודה שלפני גיל הזכאות, עד מספר השנים שבחוק, צמודים למדד ומוכפלים במקדם, מופחתים מההון הפטור. ההון הפטור הוא השיעור הפטור כפול תקרת הקצבה המזכה כפול מכפיל ההמרה להון; היתרה, חלקי המכפיל, היא הקצבה החודשית הפטורה, והסכום הזה, צמוד למדד, נשאר עם האדם כל שנות הקצבה. המקדם נגזר מהמכפיל, מהתקרה ומתקרת המענק הפטור, ולפי החוזר הוא לא צפוי להשתנות משנה לשנה; מענקים עבור שנים אחרי גיל הזכאות לא מקטינים את הפטור, ומי שצפוי לקבל מענקים אחרי גיל הזכאות יכול לבקש הפחתה מראש. הפקודה נקראה בעותק בוויקיטקסט ואומתה מול חוזר מס הכנסה.",
+  "figure_names_he": {
+    "capital_multiplier": "מכפיל ההמרה להון"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "tax-at-exit",
+    "age-or-use-exemption"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "capital_multiplier": {
+      "value": 180,
+      "unit": "count",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance s.9A(a) \"מכפיל ההמרה להון\", s.9A(c) (Wikisource mirror); circular 2/2013 ss.4.1-4.3",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXP-15"
+      ],
+      "state": "sourced",
+      "notes": "Exempt capital = exempt share x qualifying-annuity ceiling x 180. Exempt retirement grants for up to 32 years of work before entitlement age, CPI-indexed and multiplied by a factor of about 1.35, are subtracted; what is left, divided by 180, is the monthly exempt annuity. The multiplier is fixed in law, changeable by the Minister with Knesset approval."
+    }
+  },
+  "il_finance_file": "tax-pension-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,33 @@
+{
+  "id": "dmy-nyhvl-pykdvn-nyyrvt-ark-b",
+  "he": "דמי ניהול פיקדון ניירות ערך",
+  "en": null,
+  "meaning": "עמלה שהבנק או בית ההשקעות גובים מדי תקופה על החזקת ניירות ערך בחשבון; לא דמי הניהול של הקרן.",
+  "where": [
+    "statement",
+    "tariff"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [
+    "דמי משמורת",
+    "דמי משמרת",
+    "דמי ניהול/טיפול פקדון ני\"ע",
+    "דמי ניהול פקדון ני\"ע"
+  ],
+  "rule_ids": [
+    "BRK-16",
+    "BRK-17",
+    "BRK-24",
+    "BRK-33",
+    "TXS-06"
+  ],
+  "source": {
+    "url": "https://boi.org.il/media/w2lgmymp/159a.pdf",
+    "title": "בנק ישראל, כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

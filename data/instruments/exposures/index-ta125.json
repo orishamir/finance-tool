@@ -1,0 +1,62 @@
+{
+  "id": "index-ta125",
+  "names": {
+    "he": [
+      "מדד ת\"א-125",
+      "ת\"א 125",
+      "ת\"א-125"
+    ],
+    "en": [
+      "TA-125"
+    ]
+  },
+  "one_line_he": "מדד של מאה עשרים וחמש החברות בעלות השווי הגבוה ביותר בבורסה בתל אביב, במשקל לפי שווי החזקות הציבור ועם תקרה למניה אחת; הכסף מושקע בשקלים דרך קרן שעוקבת אחריו.",
+  "kind": "equity_index",
+  "currency": "ILS",
+  "cash_like": false,
+  "return_source": {
+    "mode": "entered",
+    "series": null
+  },
+  "variants": [],
+  "wrapper_ids": [
+    "brokerage-account",
+    "ira-hishtalmut",
+    "ira-provident"
+  ],
+  "rule_ids": [
+    "ETF-33",
+    "ETF-34",
+    "ETF-35",
+    "ETF-36",
+    "ETF-01",
+    "ETF-04",
+    "ETF-05",
+    "ETF-06",
+    "ETF-11",
+    "ETF-13",
+    "ETF-14",
+    "ETF-17",
+    "ETF-20",
+    "ETF-21",
+    "ETF-31",
+    "ETF-41",
+    "ETF-42",
+    "MF-45",
+    "TXS-01",
+    "TXS-02",
+    "TXS-09",
+    "TXS-13",
+    "TXS-21",
+    "TXS-16",
+    "BRK-16",
+    "IRA-11",
+    "CAT-10"
+  ],
+  "open_questions": [
+    "ETF-OQ2",
+    "ETF-OQ12",
+    "CAT-OQ9"
+  ],
+  "checked": "2026-10-23"
+}

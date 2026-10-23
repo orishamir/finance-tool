@@ -1,7 +1,7 @@
 # Government bonds and makam
 
 Checked: 2026-10-22 · Owner: domain-specialist
-Serves: product.md 3.1 (instrument guide), 3.2 (goal comparison and the idle-cash preset), 3.3 (dimension checklist), 3.10 (decoder: names on bank and broker screens); roadmap R1 (guide, decoder, rule base) and R2 (idle-cash comparison).
+Serves: product.md 3.1 (instrument guide), 3.2 (goal comparison and the idle-cash preset), 3.3 (dimension checklist), 3.10 (catalogue: names on bank and broker screens); roadmap R1 (guide, catalogue, rule base) and R2 (idle-cash comparison).
 Scope: makam (מק"ם) and every type of Israeli government shekel bond a resident can hold: tradable fixed-rate, CPI-linked and floating-rate series, and the short government bond. Designated non-tradable series (ערד, ח"ץ, מירון) only to record that they are not for individuals. Where official yields are published. What a holder gets at maturity and what an early exit is. Out: tax (`tax-interest-deposits-bonds.md`), corporate bonds (`corporate-bonds.md`), bond funds and ETFs (`etfs-and-index-funds.md`, `mutual-funds-and-money-market-funds.md`), brokerage fees and custody protection (`brokerage-account.md`, `regulators-and-protection.md`), government foreign-currency debt (left out, see the end of this file).
 
 ## Summary
@@ -259,7 +259,7 @@ Scope: makam (מק"ם) and every type of Israeli government shekel bond a reside
 9. **Official investor-facing risk statements** (price change before maturity, reinvestment, liquidity of short-dated linked bonds) from the ISA, TASE or BoI consumer pages. All were blocked or JS-only. Until then the site can show the mechanics (GOV-03, GOV-11, GOV-17) but no sourced "risk" text. **[2026-10-22 browser pass: Closed for BoI by GOV-22.]**
 10. **Final text and effective date of directive 447A.** Only a draft was read. The discovery report cites a BoI press release of 30 Dec 2024 and publication on 9 Apr 2025 (extracts only).
 11. **State retail savings instrument for residents (domain question 19).** None was found in shekels. The State of Israel Savings Bonds and Jubilee bonds sold by Development Corporation for Israel (US prospectus supplement, 1 Aug 2025) are US-dollar bonds with limited transferability. The pages read do not say whether Israeli residents may buy them. https://www.israelbondsintl.com/corporate-faq/ does not cover eligibility.
-12. **Official source for the renaming** (שחר → ממשלתית שקלית, גליל → ממשלתית צמודה, גילון → ממשלתית משתנה) and its date. The mapping comes only from Hebrew Wikipedia. Needed by the decoder (3.10), because apps and ads may still use the old names.
+12. **Official source for the renaming** (שחר → ממשלתית שקלית, גליל → ממשלתית צמודה, גילון → ממשלתית משתנה) and its date. The mapping comes only from Hebrew Wikipedia. Needed by the catalogue (3.10), because apps and ads may still use the old names.
 13. **Status of "מירון"** designated bonds. Only a chart legend in the 2025 report and Wikipedia mention it.
 14. **Tuesday entries in the MoF auction data** (GOV-09): what they are (for example a follow-on round for primary market makers) was not found.
 

@@ -1,0 +1,24 @@
+{
+  "id": "rtzp-pytzvyym",
+  "he": "רצף פיצויים",
+  "en": null,
+  "meaning": "בחירה לדחות את המס על כספי הפיצויים עד הפרישה מהעבודה הבאה, כשמתחילים לעבוד אצל מעסיק חדש",
+  "where": [],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXP-20",
+    "TXP-30"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/service/notice-of-retirement/he/161-2023.%20docx.docx",
+    "title": "Tax Authority, form 161 (accessible .docx), part B",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

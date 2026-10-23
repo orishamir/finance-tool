@@ -1,0 +1,2874 @@
+[
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "שנת המס",
+    "term_source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.6 s.1",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+    },
+    "variants_he": [
+      "שנת מס"
+    ],
+    "explain_he": "השנה שלפיה מחשבים ומדווחים את המס: מתחילת ינואר עד סוף דצמבר",
+    "rule_ids": [
+      "TXG-01"
+    ],
+    "source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax",
+      "tax-return",
+      "form-867"
+    ],
+    "notes": "Variant 'שנת מס' appears in Ordinance text quoted in TXS and TXF (for example 'באותה שנת מס')."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "תושב ישראל",
+    "term_source": {
+      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.1, definition 'תושב ישראל' ('מרכז חייו')",
+      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw"
+    },
+    "variants_he": [],
+    "explain_he": "מעמד במס שנקבע לפי מרכז החיים; כשהוא בישראל, חלים כללי המס הישראליים",
+    "rule_ids": [
+      "TXG-01"
+    ],
+    "source": {
+      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror)",
+      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:*:tax"
+    ],
+    "notes": "Residence is decided by the centre-of-life test, with rebuttable presumptions based on days in Israel (TXG-01). Non-residents, olim and returning residents are not covered by the rule base. TXG-01 says the mirror was paraphrased by the fetch tool, so the exact wording must be re-read before encoding."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "הכנסה חייבת",
+    "term_source": {
+      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.1 (per the TXG Terms table)",
+      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw"
+    },
+    "variants_he": [],
+    "explain_he": "ההכנסה שעליה מחשבים את המס, אחרי שמורידים ממנה ניכויים, קיזוזים ופטורים",
+    "rule_ids": [
+      "TXG-02",
+      "TXG-09"
+    ],
+    "source": {
+      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror)",
+      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:*:tax",
+      "tax-return"
+    ],
+    "notes": "The meaning comes from the TXG Terms table (Ordinance s.1); no rule states the definition itself. For the surtax, taxable income excludes the inflationary amount and includes betterment (TXG-09)."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "הכנסה מיגיעה אישית",
+    "term_source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.46 s.2 ('לשיעורי המס שנקבעו להכנסה מיגיעה אישית')",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "הכנסה מעבודה או מעסק, כולל פנסיה ממעסיק לשעבר; מדרגות המס שלה מתחילות בשיעור הנמוך ביותר",
+    "rule_ids": [
+      "TXG-02",
+      "TXG-03",
+      "TXG-04"
+    ],
+    "source": {
+      "title": "רשות המסים, לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026 (deductions booklet)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax"
+    ],
+    "notes": "The meaning (work and business income, including a pension from a former employer) is from the TXG Terms table, citing Ordinance s.1 and booklet p.10."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "הכנסה שאינה מיגיעה אישית",
+    "term_source": {
+      "title": "רשות המסים, לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026 (deductions booklet), p.10 ('שיעורי המס החלים על הכנסה שאינה מיגיעה אישית')",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf"
+    },
+    "variants_he": [
+      "הכנסות שאינן מיגיעה אישית",
+      "הכנסה פסיבית"
+    ],
+    "explain_he": "הכנסה שלא מעבודה או מעסק, כמו ריבית או דיבידנד; מדרגות המס שלה מתחילות בשיעור גבוה",
+    "rule_ids": [
+      "TXG-03",
+      "TXG-04",
+      "TXH-13"
+    ],
+    "source": {
+      "title": "רשות המסים, לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026 (deductions booklet)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax"
+    ],
+    "notes": "'הכנסות שאינן מיגיעה אישית' is the guide's wording (p.8 s.9b). 'הכנסה פסיבית' comes from the founder's starting list and is the rule base's English gloss ('passive income'); no Hebrew source in the rule base uses it. Interest as an example rests on TXH-13 (study-fund gains are interest, not personal-effort income); dividends are implied by TXG-03, which says interest, dividends and capital gains have their own special rates and this schedule is the fall-back. From age 60 the lower brackets apply to all taxable income (TXG-04)."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "מדרגות מס",
+    "term_source": {
+      "title": "רשות המסים, לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026 (deductions booklet), p.4 and p.10 (per the TXG Terms table)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf"
+    },
+    "variants_he": [
+      "מדרגות מס הכנסה"
+    ],
+    "explain_he": "שיטה שבה כל חלק של ההכנסה השנתית ממוסה בשיעור של המדרגה שבה הוא נמצא",
+    "rule_ids": [
+      "TXG-02",
+      "TXG-03"
+    ],
+    "source": {
+      "title": "רשות המסים, לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026 (deductions booklet)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax",
+      "comparison"
+    ],
+    "notes": "Variant 'מדרגות מס הכנסה' is from the title of Part C of SH 3511 ('ריווח מדרגות מס הכנסה'). The 2026 bands were widened retroactively by that law (TXG-02) and are frozen through 2027 (TXG-06)."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "שיעור המס השולי",
+    "term_source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.60, as quoted in TXP-01 ('לפי שיעור המס השולי של הכנסתך')",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "שיעור המס של המדרגה הגבוהה ביותר שההכנסה מגיעה אליה; בו ממוסה כל שקל נוסף",
+    "rule_ids": [
+      "TXP-01",
+      "TXH-13",
+      "TXG-02"
+    ],
+    "source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax",
+      "guide:pension-and-gemel-lekitzba:tax",
+      "guide:keren-hishtalmut:tax",
+      "comparison"
+    ],
+    "notes": "No rule defines the term in one sentence. The meaning is combined from TXP-01 (a deduction is worth the marginal rate), TXH-13 ('ordinary marginal rates (s.121)', that is, the brackets) and TXG-02 (each band's rate applies to the income inside that band). Whether a capital-income type reaches the marginal rate at all depends on TXG-07."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "שיעור מס מרבי",
+    "term_source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.38",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+    },
+    "variants_he": [
+      "בשיעור שלא יעלה על"
+    ],
+    "explain_he": "שיעור מס שהוא רק תקרה: אם מדרגות המס שלכם נמוכות ממנו, משלמים לפי המדרגות",
+    "rule_ids": [
+      "TXG-07",
+      "TXG-08"
+    ],
+    "source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax"
+    ],
+    "notes": "Variant is the Ordinance's wording (s.91(b)(1), s.125C(b)). It applies to real capital gains and CPI-linked interest (TXG-07). Under 60 there is no benefit in practice, because brackets for passive income start above the ceiling (TXG-08)."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "שיעור מס קבוע",
+    "term_source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.38",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "שיעור מס שחל בדיוק כפי שהוא, גם כשמדרגות המס שלכם היו נותנות שיעור נמוך יותר",
+    "rule_ids": [
+      "TXG-07",
+      "TXG-08"
+    ],
+    "source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax"
+    ],
+    "notes": "The rule base's example is interest on unlinked deposits (TXG-07, TXI-03). Whether the dividend rate is fixed or a maximum is open (TXG open question 10)."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "כשלב הגבוה ביותר בסולם הכנסתו החייבת",
+    "term_source": {
+      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.91(b)(1), s.125C(b)",
+      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw"
+    },
+    "variants_he": [],
+    "explain_he": "רווח הון וריבית נספרים מעל שאר ההכנסה, ולכן ממוסים במדרגות שמעליה",
+    "rule_ids": [
+      "TXG-07",
+      "TXG-04"
+    ],
+    "source": {
+      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror)",
+      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:*:tax"
+    ],
+    "notes": "Law wording, met mainly on the age-60 explanation: the lower bands reach capital income only as far as other income has not used them (TXG-04). Source is the statute because the guide quote in TXG-07 does not carry this phrase."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "נקודת זיכוי",
+    "term_source": {
+      "title": "רשות המסים, לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026 (deductions booklet), p.12 ('נקודת זיכוי 33א')",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf"
+    },
+    "variants_he": [
+      "נקודות זיכוי"
+    ],
+    "explain_he": "יחידה של הנחה במס: כל נקודה מורידה סכום קבוע מהמס שחושב על ההכנסה",
+    "rule_ids": [
+      "TXG-05"
+    ],
+    "source": {
+      "title": "רשות המסים, לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026 (deductions booklet)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax",
+      "payslip"
+    ],
+    "notes": "Who gets how many points is outside the rule base (TXG-05). Whether credit points can reduce tax on interest, dividends or gains taxed at special rates is open (TXG open question 6). The value is frozen through 2027 (TXG-06)."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "יחיד שמלאו לו 60 שנים",
+    "term_source": {
+      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.121(b)(1) ('הכנסה חייבת בשנת המס של יחיד שמלאו לו 60 שנים')",
+      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw"
+    },
+    "variants_he": [
+      "בן 60 ומעלה",
+      "מי שמלאו לו שישים שנה בשנת המס"
+    ],
+    "explain_he": "משנת המס שבה מגיעים לגיל הזה, מדרגות המס הנמוכות חלות על כל ההכנסה, כולל חלק מהכנסות ההשקעה",
+    "rule_ids": [
+      "TXG-04",
+      "TXG-07",
+      "TXG-08",
+      "TXS-23"
+    ],
+    "source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax",
+      "comparison"
+    ],
+    "notes": "Starting term 'הקלות לבני שישים ומעלה' is not an official name: no source in the rule base names the relief; the law describes the person (s.121(b)(1)) and the guide says 'אם הינך בן 60 ומעלה' (p.46). The law writes the age in digits, TXG-04 quotes 'שישים' in words (source not stated). Kol Zchut's page 'הטבת מס מגיל 60' returned 403 and is not a source. 'Part of investment income': the relief reaches real capital gains and CPI-linked interest (maximum rates) but not unlinked interest at the fixed rate (TXG-07, TXG-08), and only as far as other income has not used the lower bands. Banks withhold at the standard rate; the difference comes back through a return or form 0135 (TXG-25); how banks treat 60+ at source is open (TXG open question 7). Dividends and unlinked-bond gains for 60+ are open (TXG open question 10)."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "מס נוסף",
+    "term_source": {
+      "title": "Sefer HaChukim 3342, 26.12.2024: Economic Efficiency Law (Freeze of Tax Updates and Surtax) 2024, p.150 s.1(2)(c), s.121B(a1) ('יהיה חייב במס נוסף')",
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf"
+    },
+    "variants_he": [
+      "מס יסף"
+    ],
+    "explain_he": "תוספת מס על החלק של ההכנסה השנתית שמעל סף גבוה בחוק, ועוד תוספת כשהכנסה מהון לבדה עוברת אותו",
+    "rule_ids": [
+      "TXG-09",
+      "TXG-10",
+      "TXG-11"
+    ],
+    "source": {
+      "title": "Sefer HaChukim 3342, 26.12.2024: Economic Efficiency Law (Freeze of Tax Updates and Surtax) 2024",
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax",
+      "comparison"
+    ],
+    "notes": "Official sources in the rule base disagree on where 'מס יסף' is used. The law says 'מס נוסף' (SH 3342, Ordinance s.121B) and TXG-09 quotes the booklet's p.11 heading as 'מס נוסף על הכנסות גבוהות'. The TXG Terms table says the booklet and the press use 'מס יסף', but no quote of it is recorded. The Hebrew title of SH 3342 (English: 'Freeze of Tax Updates and Surtax') was not recorded. Settled through the annual return, and anyone liable must file (TXG-11). Whether banks withhold it at source is open (TXG open question 12)."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "הכנסה חייבת ממקור הוני",
+    "term_source": {
+      "title": "Sefer HaChukim 3342, 26.12.2024: Economic Efficiency Law (Freeze of Tax Updates and Surtax) 2024, p.150 s.1(2)(e)(3), definition",
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf"
+    },
+    "variants_he": [
+      "הכנסה חייבת ממקורות הוניים"
+    ],
+    "explain_he": "לעניין המס הנוסף: כל הכנסה חייבת שאינה משכר, מעסק או מעבודה אישית, כמו ריבית, דיבידנד ורווח הון",
+    "rule_ids": [
+      "TXG-10"
+    ],
+    "source": {
+      "title": "Sefer HaChukim 3342, 26.12.2024: Economic Efficiency Law (Freeze of Tax Updates and Surtax) 2024",
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax"
+    ],
+    "notes": "Starting term 'הכנסה ממקור הוני' maps here. Variant is the wording of s.121B(a1) in the same law. Rent is also inside the definition, and any of these is outside it when it is business income (TXG-10). The term is used only for the extra surtax on capital income."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "רווח הון",
+    "term_source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.46 s.2",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+    },
+    "variants_he": [
+      "ריווח הון"
+    ],
+    "explain_he": "ההפרש בין מה שקיבלתם במכירת נכס לבין מה שעלה לכם לקנות אותו",
+    "rule_ids": [
+      "TXG-12"
+    ],
+    "source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax",
+      "statement",
+      "form-867"
+    ],
+    "notes": "Variant 'ריווח הון' is the spelling of the s.88 definition heading. The law measures cost as remaining original cost (after depreciation). Securities rules are in TXS and TXF."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "רווח הון ריאלי",
+    "term_source": {
+      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.91(b)(1) ('יחיד יהיה חייב במס על רווח הון ריאלי')",
+      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw"
+    },
+    "variants_he": [
+      "ריווח הון ריאלי",
+      "רווח ההון הריאלי",
+      "הרווח הריאלי"
+    ],
+    "explain_he": "רווח ההון אחרי שמורידים ממנו את החלק שרק משלים את עליית המדד",
+    "rule_ids": [
+      "TXG-12",
+      "TXG-13",
+      "TXS-03"
+    ],
+    "source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax",
+      "statement",
+      "form-867",
+      "ad"
+    ],
+    "notes": "The Ordinance spells it two ways: 'ריווח הון ריאלי' in the s.88 definition and 'רווח הון ריאלי' in s.91(b)(1). 'רווח ההון הריאלי' is the guide's wording (p.46); 'הרווח הריאלי' is managers' ad wording (TXK Terms, Harel flyer). For unlinked bonds and loans the whole gain counts as real (TXS-03). For a foreign-currency security the exchange rate is the index (TXG-12)."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "הפסד הון",
+    "term_source": {
+      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.88",
+      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw"
+    },
+    "variants_he": [],
+    "explain_he": "הפסד במכירת נכס: כשמה שקיבלתם במכירה נמוך ממה שעלה לכם לקנות אותו",
+    "rule_ids": [
+      "TXG-12"
+    ],
+    "source": {
+      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror)",
+      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:*:tax",
+      "statement",
+      "form-867"
+    ],
+    "notes": "Offsetting losses is in TXS and TXF. How a nominal gain smaller than the inflationary amount (a real loss) is treated is open (TXG open question 13)."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "סכום אינפלציוני",
+    "term_source": {
+      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.88",
+      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw"
+    },
+    "variants_he": [],
+    "explain_he": "החלק מהרווח שרק משלים את עליית המדד מיום הקנייה; על נכס שנקנה היום הוא פטור ממס",
+    "rule_ids": [
+      "TXG-12",
+      "TXG-13"
+    ],
+    "source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax",
+      "statement"
+    ],
+    "notes": "Only the part built up before 1994 is taxed (TXG-13), which matters only for old assets. For a foreign-currency security the exchange rate is the index (TXG-12)."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "מדד",
+    "term_source": {
+      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.88 and s.125C(a), definition 'מדד'",
+      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw"
+    },
+    "variants_he": [],
+    "explain_he": "המדד שלפיו מתאימים את העלות לאינפלציה: מדד המחירים לצרכן, ובנייר ערך במטבע חוץ שער המטבע",
+    "rule_ids": [
+      "TXG-12",
+      "TXG-14"
+    ],
+    "source": {
+      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror)",
+      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:*:tax",
+      "statement"
+    ],
+    "notes": "The value that counts is the one last published before the day in question (TXG-12, TXG-14). The exchange-rate rule is for a security held by an individual that is denominated in or linked to a foreign currency (s.88); for interest the same applies to FX-linked assets (TX2, TXI)."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "מדד המחירים לצרכן",
+    "term_source": {
+      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.88 ('מדד המחירים לצרכן כפי שפורסם לאחרונה לפני היום שבו מדובר')",
+      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw"
+    },
+    "variants_he": [],
+    "explain_he": "מדד רשמי שמפרסמת הלשכה המרכזית לסטטיסטיקה; לפיו מחשבים הצמדה ואת החלק האינפלציוני ברווח",
+    "rule_ids": [
+      "TXG-14",
+      "TXG-12",
+      "BANK-26"
+    ],
+    "source": {
+      "title": "Bank of Israel, Directive 447 (concentrated publication of deposit rates), Annex A",
+      "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax",
+      "guide:bank-current-account-deposits",
+      "statement",
+      "app"
+    ],
+    "notes": "The rule base says who publishes it (TXG-14, Ordinance mirror) and what it is used for (linkage, BANK-26; inflationary amount, TXG-12), but not what the index measures, so the explanation stops there. Source is BoI Directive 447 as the strongest source among the rules; the publisher fact rests on TXG-14 (primary-mirror). The same spelling is used in the law and in BoI Directive 447 ('צמוד למדד המחירים לצרכן')."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "ריאלי",
+    "term_source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.46 ('רווח ההון הריאלי')",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "אחרי שמורידים את החלק שנבע מעליית מדד המחירים לצרכן, כלומר מהאינפלציה",
+    "rule_ids": [
+      "TXG-12",
+      "TXG-13",
+      "BANK-26"
+    ],
+    "source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax",
+      "comparison",
+      "guide:bank-current-account-deposits"
+    ],
+    "notes": "The rule base defines 'real' only through 'real capital gain' (gain minus inflationary amount, TXG-12) and uses 'real rate' for CPI-linked deposits (BANK-26); the standalone adjective has no definition. For a foreign-currency security the index is the exchange rate (TXG-12), so there 'real' means after the currency change, not after inflation."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "נומינלי",
+    "term_source": {
+      "title": "Bank of Israel, Directive 447 (concentrated publication of deposit rates), Annex A, Annex A ('שיעור הריבית המוצעת (נומינלי שנתי)')",
+      "url": "https://www.boi.org.il/media/orgfwntb/447.pdf"
+    },
+    "variants_he": [
+      "נומינלית",
+      "נומינליות"
+    ],
+    "explain_he": "הסכום כפי שהוא בשקלים, בלי להוריד את החלק שנבע מעליית המדד",
+    "rule_ids": [
+      "TXI-03",
+      "TXS-03",
+      "CAT-04"
+    ],
+    "source": {
+      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror)",
+      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:*:tax",
+      "comparison",
+      "guide:bank-current-account-deposits",
+      "statement"
+    ],
+    "notes": "No rule defines the word; the meaning rests on TXI-03 (15% on 'the whole nominal interest; there is no inflation deduction') and TXS-03 ('the whole nominal gain is taxed and there is no inflation relief'), both from the Ordinance via Wikisource. Variants: 'נומינליות' in the CMA dictionaries ('תשואות נומינליות ברוטו', CAT-04) and 'נומינלית' in a bank product page ('קרן מובטחת (נומינלית)', TX2 Terms). CAT-04: CMA yields are nominal and before management fees."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "הפרשי הצמדה",
+    "term_source": {
+      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.1 and s.2(4)",
+      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw"
+    },
+    "variants_he": [],
+    "explain_he": "סכום שנוסף לחוב או לפיקדון בגלל הצמדה למדד או לשער מטבע",
+    "rule_ids": [
+      "TXI-05",
+      "TXG-28"
+    ],
+    "source": {
+      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror)",
+      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:*:tax",
+      "statement",
+      "form-867"
+    ],
+    "notes": "On a fully linked asset an individual's linkage differentials are exempt, so only real interest is taxed; partial linkage is not exempt (TXI-05). Detail belongs to TXI."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "דמי ניכיון",
+    "term_source": {
+      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.125C(a), as written in TXG-14",
+      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw"
+    },
+    "variants_he": [
+      "דמי נכיון"
+    ],
+    "explain_he": "ההפרש בין מחיר הקנייה לבין הסכום שמקבלים בפדיון, כמו במק\"מ; לעניין מס נחשב ריבית",
+    "rule_ids": [
+      "TXG-14",
+      "TXI-01"
+    ],
+    "source": {
+      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror)",
+      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:*:tax",
+      "guide:government-bonds-and-makam:tax",
+      "statement"
+    ],
+    "notes": "The rule base quotes the Ordinance with two spellings: 'דמי ניכיון' (TXG-14, s.125C(a)) and 'דמי נכיון' (TXG-28, s.2(4)). The mirror was paraphrased by the fetch tool, so the exact spelling should be re-read. Detail belongs to TXI."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "ניכוי מס במקור",
+    "term_source": {
+      "title": "רשות המסים, הנחיות למתן פטור מניכוי מס במקור במשיכת סכומים מקרן השתלמות – הוראת שעה, 05.08.2020, title",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/employers-050820/he/IncomeTax_IncomeTaxEmployersInfo_employer_info_050820-1.pdf"
+    },
+    "variants_he": [
+      "ניכוי במקור"
+    ],
+    "explain_he": "מס שהבנק או הגוף המשלם מנכה מהריבית, מהדיבידנד או מהרווח עוד לפני שהכסף מגיע אליכם",
+    "rule_ids": [
+      "TXG-15"
+    ],
+    "source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax",
+      "statement",
+      "form-867"
+    ],
+    "notes": "Tax Authority documents in the rule base use 'ניכוי מס במקור' (TXH and TXF source titles), as do bank statements (BRK Terms). The TXG Terms table gives 'ניכוי במקור' citing guide p.38, and Bank Hapoalim's deposit terms head a section 'ניכוי במקור' (TX2). Withholding is not always the final tax: a person may owe more or get money back (TXG-08, TXG-25). Capital-gains withholding on securities is in TXS and TXF."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "טופס 867",
+    "term_source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.40 ('לפי הסכומים המופיעים בטופסי 867')",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+    },
+    "variants_he": [
+      "אישור שנתי",
+      "טופס 0867"
+    ],
+    "explain_he": "אישור שנתי מהבנק או מהגוף המשלם: כמה ריבית, דיבידנד או רווח שולמו לכם וכמה מס נוכה",
+    "rule_ids": [
+      "TXG-15"
+    ],
+    "source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax",
+      "form-867",
+      "statement",
+      "tax-return"
+    ],
+    "notes": "'אישור שנתי' is the guide's description (p.38); 'טופס 0867' is the TXI Terms spelling. Per the regulations as read (fetch-tool paraphrase, re-read before encoding), it is given on request, no later than 20 March for the previous tax year."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "דוח שנתי",
+    "term_source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), pp.3-8",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+    },
+    "variants_he": [
+      "דין וחשבון",
+      "דו\"ח",
+      "טופס 1301"
+    ],
+    "explain_he": "טופס שבו מדווחים למס הכנסה על כל הכנסות השנה; חלק מהאנשים פטורים מהגשתו",
+    "rule_ids": [
+      "TXG-16",
+      "TXG-17",
+      "TXG-18",
+      "TXG-24"
+    ],
+    "source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax",
+      "comparison",
+      "tax-return"
+    ],
+    "notes": "Official wording differs: the Tax Authority guide says 'דוח שנתי'; the Exemption Regulations (title) and the booklet's p.15 row ('פטור מהגשה דין וחשבון 134א') say 'דין וחשבון'; the booklet also writes 'דו\"ח'. Starting term 'חובת דיווח' is not an official term in the rule base; the guide says 'חייב בהגשת דוח שנתי' (TXG-20), and the checklist row for reporting-obligation covers it. Whether a saver whose only non-withheld income is foreign-broker gains must file is open (TXG open question 4)."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "פטור מהגשת דוח",
+    "term_source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.4 ('המקנים פטור מהגשת דוח')",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+    },
+    "variants_he": [
+      "פטור מהגשת דין וחשבון",
+      "פטור מהגשה דין וחשבון"
+    ],
+    "explain_he": "כשכל ההכנסות מסוגים מסוימים, מתחת לתקרות ונוכה מהן מס במלואו, לא חייבים להגיש דוח שנתי",
+    "rule_ids": [
+      "TXG-17",
+      "TXG-18"
+    ],
+    "source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax",
+      "comparison"
+    ],
+    "notes": "Variants: Exemption Regulations title ('פטור מהגשת דין וחשבון') and booklet p.15 row ('פטור מהגשה דין וחשבון'). Overriding triggers (surtax, foreign assets above the threshold, transfers abroad) are in TXG-18. The 2026 ceilings are not yet published; the 2025 figures are expected to hold because of the freeze (TXG open question 5)."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "החזר מס",
+    "term_source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.5",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+    },
+    "variants_he": [
+      "בקשה להחזר מס"
+    ],
+    "explain_he": "מס שנוכה מכם ביותר ומוחזר לכם, בדרך כלל אחרי בקשה או דוח שנתי",
+    "rule_ids": [
+      "TXG-25",
+      "TXI-23"
+    ],
+    "source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax",
+      "tax-return"
+    ],
+    "notes": "A request can be filed up to six years after the end of the tax year (TXG-25). For deposit and savings-plan interest there is also an automatic refund route without a request (TXI-23), hence 'usually'. Examples in the rule base: a 60+ saver taxed at the full rate at source; losses at one bank and gains at another."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "טופס 0135",
+    "term_source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.7 s.4 ('טופס מקוצר - בקשה להחזר מס')",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+    },
+    "variants_he": [
+      "טופס מקוצר - בקשה להחזר מס"
+    ],
+    "explain_he": "טופס מקוצר לבקשת החזר מס, למי שלא חייב להגיש דוח שנתי",
+    "rule_ids": [
+      "TXG-25"
+    ],
+    "source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax",
+      "tax-return"
+    ],
+    "notes": "Not usable by people with business income, foreign income, controlling shareholders, capital gains other than from traded securities, and others listed on guide p.7 (TXG-25). Foreign income is excluded, so a saver at a foreign broker cannot use it."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "מקדמת מס",
+    "term_source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.3 ('מקדמת מס')",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+    },
+    "variants_he": [
+      "מקדמה",
+      "מקדמות"
+    ],
+    "explain_he": "תשלום מס על החשבון כשהמס לא נוכה במקור, למשל על רווחים בחשבון השקעות בחו\"ל",
+    "rule_ids": [
+      "TXG-19",
+      "TXG-20",
+      "TXG-22"
+    ],
+    "source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax",
+      "guide:brokerage-account:tax"
+    ],
+    "notes": "Gains on traded securities not fully withheld: report and advance twice a year (TXG-20). Special-rate income: advance by 30 April of the following year (TXG-22). Late payment: TXG-23."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "מסלול הדיווח המקוצר",
+    "term_source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.3 (מסלול \"הדיווח המקוצר\")",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+    },
+    "variants_he": [
+      "הדיווח המקוצר",
+      "דיווח מקוצר"
+    ],
+    "explain_he": "דרך לדווח ולשלם מקדמה על ריבית, דיבידנד או רווח מחו\"ל, שיכולה לפטור מהגשת דוח שנתי",
+    "rule_ids": [
+      "TXG-19"
+    ],
+    "source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:brokerage-account:tax",
+      "guide:etfs-and-index-funds:tax"
+    ],
+    "notes": "Read from a rendered page image; form numbers were not legible. All other filing conditions must still hold (TXG-18). How it fits with the guide's statement that untaxed securities gains require a return (TXG-20) is open (TXG open question 4)."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "נכסי חוץ",
+    "term_source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.4 (per the TXG Terms table)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+    },
+    "variants_he": [
+      "חשבונות בתאגידי חוץ בנקאיים"
+    ],
+    "explain_he": "נכסים וחשבונות בנק מחוץ לישראל; מעל שווי מסוים הם מחייבים הגשת דוח שנתי",
+    "rule_ids": [
+      "TXG-18"
+    ],
+    "source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:brokerage-account:tax",
+      "guide:etfs-and-index-funds:tax"
+    ],
+    "notes": "The Hebrew is given only in the TXG Terms table, without a quote. Counted together with spouse and children under 18, tested on any day of the year; does not apply to those entitled to the s.14 exemption (TXG-18). A separate trigger is transferring a large sum abroad within twelve months (TXG-18)."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "קנס פיגור",
+    "term_source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.119 ('קנס פיגור')",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "קנס על מס שלא שולם בזמן, לפי מספר שבועות האיחור, נוסף על הצמדה וריבית",
+    "rule_ids": [
+      "TXG-23"
+    ],
+    "source": {
+      "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:brokerage-account:tax"
+    ],
+    "notes": "The assessing officer may reduce or cancel fines and interest on request in some cases (guide p.119, not detailed in the rule base)."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "הכנסה שאינה מעבודה",
+    "term_source": {
+      "title": "המוסד לביטוח לאומי, מי שיש לו הכנסה שאינה מעבודה: חובת תשלום ושיעורי דמי ביטוח, ('מי שיש לו הכנסה שאינה מעבודה')",
+      "url": "https://www.btl.gov.il/Insurance/National%20Insurance/type_list/income_not_from_work/Pages/HovtTaslom.aspx"
+    },
+    "variants_he": [
+      "הכנסה שלא מעבודה"
+    ],
+    "explain_he": "בביטוח לאומי: הכנסה שלא באה משכר או מעסק, כמו ריבית, דיבידנד או שכר דירה",
+    "rule_ids": [
+      "TXG-26",
+      "TXG-28"
+    ],
+    "source": {
+      "title": "המוסד לביטוח לאומי, מי שיש לו הכנסה שאינה מעבודה: חובת תשלום ושיעורי דמי ביטוח",
+      "url": "https://www.btl.gov.il/Insurance/National%20Insurance/type_list/income_not_from_work/Pages/HovtTaslom.aspx",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax"
+    ],
+    "notes": "NII itself uses both forms: 'הכנסה שאינה מעבודה' (duty page) and 'הכנסה שלא מעבודה' (rates page title). Examples are s.2 Ordinance sources named in TXG-28. Being in this category does not mean contributions are due: special-rate interest and dividends, and s.122 rent, are exempt (TXG-27), and capital gains are outside the base (TXG-28)."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "דמי ביטוח לאומי",
+    "term_source": {
+      "title": "המוסד לביטוח לאומי, מי שיש לו הכנסה שאינה מעבודה: חובת תשלום ושיעורי דמי ביטוח, ('חייב לשלם דמי ביטוח לאומי ודמי ביטוח בריאות עבור עצמו')",
+      "url": "https://www.btl.gov.il/Insurance/National%20Insurance/type_list/income_not_from_work/Pages/HovtTaslom.aspx"
+    },
+    "variants_he": [
+      "ביטוח לאומי"
+    ],
+    "explain_he": "תשלום חובה למוסד לביטוח לאומי לפי ההכנסה; על ריבית, דיבידנד ורווח הון מחיסכון בדרך כלל לא משלמים",
+    "rule_ids": [
+      "TXG-26",
+      "TXG-27",
+      "TXG-28",
+      "TXG-29",
+      "TXG-35"
+    ],
+    "source": {
+      "title": "המוסד לביטוח לאומי, למי שאינם עובדים ולבעלי הכנסה שלא מעבודה - שיעורי וסכומי דמי ביטוח",
+      "url": "https://www.btl.gov.il/Insurance/Rates/Pages/%D7%9E%D7%99%20%D7%A9%D7%90%D7%99%D7%A0%D7%9D%20%D7%A2%D7%95%D7%91%D7%93%D7%99%D7%9D%20%D7%95%D7%91%D7%A2%D7%9C%D7%99%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%D7%A9%D7%9C%D7%90%20%D7%9E%D7%A2%D7%91%D7%95%D7%93%D7%94.aspx",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax",
+      "payslip",
+      "comparison"
+    ],
+    "notes": "Starting term 'ביטוח לאומי על הכנסות מהון' is not an official term; NII's category is 'הכנסה שאינה מעבודה'. Interest and dividends taxed at the special rates are exempt by statute (TXG-27, NI Law s.350(a)(6), mirror). Capital gains are outside the base by inference from two statutes, with no NII statement (TXG-28). Interest taxed at marginal rates, such as study-fund gains withdrawn early, may be charged (TXG-27, TXG-34), hence 'usually'. Whether an employee with passive income gets the small-income disregard is open (TXG open question 2)."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "דמי ביטוח בריאות",
+    "term_source": {
+      "title": "המוסד לביטוח לאומי, מי שיש לו הכנסה שאינה מעבודה: חובת תשלום ושיעורי דמי ביטוח, ('דמי ביטוח לאומי ודמי ביטוח בריאות')",
+      "url": "https://www.btl.gov.il/Insurance/National%20Insurance/type_list/income_not_from_work/Pages/HovtTaslom.aspx"
+    },
+    "variants_he": [
+      "מס בריאות"
+    ],
+    "explain_he": "תשלום חובה למימון ביטוח הבריאות הממלכתי, שנגבה כמו ביטוח לאומי ועל אותה הכנסה",
+    "rule_ids": [
+      "TXG-26",
+      "TXG-34"
+    ],
+    "source": {
+      "title": "המוסד לביטוח לאומי, מי שיש לו הכנסה שאינה מעבודה: חובת תשלום ושיעורי דמי ביטוח",
+      "url": "https://www.btl.gov.il/Insurance/National%20Insurance/type_list/income_not_from_work/Pages/HovtTaslom.aspx",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "payslip"
+    ],
+    "notes": "FLAG, docs/product.md D14: the site does not compute, show or note health tax for any instrument. This entry records what the rule base says, for matching payslip or statement wording only; whether it appears in the published glossary at all is a founder call under D14. Official wording differs: NII and the National Health Insurance Law say 'דמי ביטוח בריאות'; the Ministry of Finance Chief Economist paper (TXH-01) says 'מס בריאות'. The health base is the NI base (TXG-34), so special-rate interest, dividends and capital gains are outside it; marginal-rate interest may be inside."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "שכר ממוצע במשק",
+    "term_source": {
+      "title": "רשות המסים, לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026 (deductions booklet), p.12 ('שכר ממוצע במשק')",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "השכר הממוצע במשק לאותה שנה; לפיו מתעדכנים ספים בביטוח לאומי וחלק מהתקרות בחיסכון הפנסיוני",
+    "rule_ids": [
+      "TXG-29",
+      "TXG-06"
+    ],
+    "source": {
+      "title": "רשות המסים, לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026 (deductions booklet)",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:tax",
+      "guide:pension-and-gemel-lekitzba",
+      "guide:keren-hishtalmut"
+    ],
+    "notes": "Only part of the pension ceilings follow the average wage: the employee's s.45A/47 ceilings are CPI-linked and frozen (coverage.md F3; TXP). Who computes and publishes the average wage is not in the rule base."
+  },
+  {
+    "kind": "term",
+    "id": "",
+    "term_he": "בעל מניות מהותי",
+    "term_source": {
+      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.88 (per the TXG Terms table)",
+      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw"
+    },
+    "variants_he": [],
+    "explain_he": "מי שמחזיק חלק גדול מאמצעי השליטה בחברה; חלים עליו שיעורי מס אחרים",
+    "rule_ids": [
+      "TXG-15",
+      "TXG-07"
+    ],
+    "source": {
+      "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror)",
+      "url": "https://he.wikisource.org/w/index.php?title=%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94&action=raw",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:*:tax"
+    ],
+    "notes": "Outside the site's scope: the rule base covers individuals who are not substantial shareholders (TXG scope). Met only in exceptions, for example a higher withholding rate on dividends (TXG-15)."
+  },
+  {
+    "kind": "dimension",
+    "id": "tax-at-deposit",
+    "term_he": "מס בהפקדה",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "האם ההפקדה מזכה בהטבת מס, או שמשלמים מס על הכסף כבר כשמפקידים אותו",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": ""
+  },
+  {
+    "kind": "dimension",
+    "id": "tax-during",
+    "term_he": "מס בזמן ההחזקה",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "האם משלמים מס על הרווחים כל שנה בזמן שהכסף מושקע, או רק ביציאה",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": ""
+  },
+  {
+    "kind": "dimension",
+    "id": "tax-at-exit",
+    "term_he": "מס ביציאה",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "כמה מס משלמים כשמוכרים, פודים או מושכים את הכסף, ועל איזה חלק מהרווח",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": ""
+  },
+  {
+    "kind": "dimension",
+    "id": "real-vs-nominal",
+    "term_he": "ריאלי או נומינלי",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "האם המס מחושב רק על הרווח שמעבר לעליית המדד, או על כל הרווח בשקלים",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": ""
+  },
+  {
+    "kind": "dimension",
+    "id": "age-or-use-exemption",
+    "term_he": "פטורים לפי גיל ושימוש",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "האם יש פטור או הקלה במס מגיל מסוים, או כשמשתמשים בכסף למטרה מסוימת",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": ""
+  },
+  {
+    "kind": "dimension",
+    "id": "switching-tax-event",
+    "term_he": "מס במעבר בין השקעות",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "האם העברה בין מסלולים, קרנות או גופים נחשבת מכירה שחייבת במס, או עוברת בלי מס",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "product.md 3.3 wording: 'tax events on switching'."
+  },
+  {
+    "kind": "dimension",
+    "id": "loss-offset",
+    "term_he": "קיזוז הפסדים",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "האם אפשר להוריד הפסד מהשקעה אחת מהרווח בהשקעה אחרת, וכך לשלם פחות מס",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": ""
+  },
+  {
+    "kind": "dimension",
+    "id": "foreign-withholding-domicile",
+    "term_he": "מס זר ומדינת הקרן",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "באיזו מדינה רשומה הקרן, וכמה מס זר מנוכה מהדיבידנדים לפני המס בישראל",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Income-tax side only; a foreign estate tax is the proposed estate-situs (TXF)."
+  },
+  {
+    "kind": "dimension",
+    "id": "distribution-policy",
+    "term_he": "חלוקה או צבירה",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "האם הרווחים מחולקים לכם במזומן מדי פעם, או נשארים בפנים ומושקעים מחדש",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": ""
+  },
+  {
+    "kind": "dimension",
+    "id": "fee-management-balance",
+    "term_he": "דמי ניהול מצבירה",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "אחוז שנגבה מדי שנה מכל הכסף שנצבר בחשבון",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "One of the fee-<type> examples in the README vocabulary. Name follows 'מצבירה' as in IRA and PF ('מחיסכון' or 'מצבירה')."
+  },
+  {
+    "kind": "dimension",
+    "id": "fee-deposit",
+    "term_he": "דמי ניהול מהפקדה",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "אחוז שנגבה מכל סכום שמפקידים, עוד לפני שהכסף מושקע",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "One of the fee-<type> examples in the README vocabulary. Name follows 'מהפקדה' (PF)."
+  },
+  {
+    "kind": "dimension",
+    "id": "fee-trade",
+    "term_he": "עמלת קנייה ומכירה",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "עמלה שנגבית בכל קנייה או מכירה של נייר ערך או של יחידות בקרן",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "One of the fee-<type> examples in the README vocabulary."
+  },
+  {
+    "kind": "dimension",
+    "id": "fee-custody",
+    "term_he": "דמי משמרת",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "עמלה קבועה על החזקת ניירות הערך בחשבון, גם כשלא מבצעים בו פעולות",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "One of the fee-<type> examples in the README vocabulary. Domain files write 'דמי משמרת' (BRK, IRA, MF); tax files quoting the law write 'דמי משמורת' (TXS, TX2)."
+  },
+  {
+    "kind": "dimension",
+    "id": "fee-fx",
+    "term_he": "עמלת המרת מטבע",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "עמלה על המרת שקלים למטבע חוץ ובחזרה, כשההשקעה נעשית במטבע אחר",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "One of the fee-<type> examples in the README vocabulary. The gap from the representative rate is the proposed fx-spread (FXD)."
+  },
+  {
+    "kind": "dimension",
+    "id": "fee-exit",
+    "term_he": "עמלת יציאה",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "עמלה או קנס שנגבים כשמושכים, פודים או עוזבים, בעיקר לפני הזמן",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "One of the fee-<type> examples in the README vocabulary."
+  },
+  {
+    "kind": "dimension",
+    "id": "fee-change-over-time",
+    "term_he": "שינוי עמלות לאורך זמן",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "האם העמלה יכולה לעלות בהמשך, למשל כשהנחה נגמרת, ואיך מודיעים על כך",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": ""
+  },
+  {
+    "kind": "dimension",
+    "id": "liquidity-lockup",
+    "term_he": "נזילות ונעילה",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "מתי אפשר למשוך את הכסף, תוך כמה זמן הוא מגיע, ומה המחיר של משיכה מוקדמת",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": ""
+  },
+  {
+    "kind": "dimension",
+    "id": "deposit-ceiling",
+    "term_he": "תקרת הפקדה",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "האם יש סכום מרבי להפקדה, או סכום שמעליו ההטבה במס כבר לא חלה",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": ""
+  },
+  {
+    "kind": "dimension",
+    "id": "protection",
+    "term_he": "הגנה על הכסף",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "מה קורה לכסף אם הגוף שמחזיק אותו קורס, ומה לא מבוטח",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "product.md 3.3 wording: 'protection and what is not insured'."
+  },
+  {
+    "kind": "dimension",
+    "id": "currency",
+    "term_he": "חשיפה למטבע",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "האם ערך ההשקעה תלוי בשער של מטבע חוץ, כך ששינוי בשער משנה את התוצאה בשקלים",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": ""
+  },
+  {
+    "kind": "dimension",
+    "id": "minimum",
+    "term_he": "סכום מינימלי",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "מה הסכום הקטן ביותר שאפשר להפקיד או להשקיע, בפעם אחת או בכל חודש",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": ""
+  },
+  {
+    "kind": "dimension",
+    "id": "regulator",
+    "term_he": "גוף מפקח",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "איזו רשות ממשלתית מפקחת על המוצר ועל הגוף שמציע אותו",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": ""
+  },
+  {
+    "kind": "dimension",
+    "id": "reporting-obligation",
+    "term_he": "חובת דיווח למס",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "האם ההשקעה מחייבת אתכם להגיש דוח שנתי, או לדווח ולשלם מקדמות בעצמכם",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Covers the starting term 'חובת דיווח'. Read as the saver's own duty; what the institution must tell the saver is the proposed statement-disclosure (PF)."
+  },
+  {
+    "kind": "dimension",
+    "id": "eligibility",
+    "term_he": "מי יכול להצטרף",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "מי רשאי לפתוח או להפקיד: לפי גיל, מעמד בעבודה, תושבות או תנאים אחרים",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": ""
+  },
+  {
+    "kind": "dimension",
+    "id": "transfer-switch-process",
+    "term_he": "תהליך העברה",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "איך מעבירים את הכסף לגוף או למסלול אחר, כמה זמן זה לוקח ומה צריך לעשות",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": ""
+  },
+  {
+    "kind": "dimension",
+    "id": "insurance-cover",
+    "term_he": "כיסוי ביטוחי",
+    "term_source": "docs/product.md 3.3",
+    "variants_he": [],
+    "explain_he": "האם חלק מהכסף משמש לביטוח, כמו נכות או שאירים, ומה הכיסוי נותן",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
+      "url": "docs/product.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "The cost of the cover is the proposed fee-insurance-premium (INS)."
+  },
+  {
+    "kind": "dimension",
+    "id": "rate-type-anchor",
+    "term_he": "ריבית קבועה או משתנה",
+    "term_source": "docs/product.md 3.3; proposed in references/bank-current-account-deposits.md",
+    "variants_he": [],
+    "explain_he": "האם הריבית קבועה או משתנה, ולפי מה היא זזה, למשל ריבית הפריים",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/bank-current-account-deposits.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/bank-current-account-deposits.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: BANK-25."
+  },
+  {
+    "kind": "dimension",
+    "id": "auto-renewal",
+    "term_he": "חידוש אוטומטי",
+    "term_source": "docs/product.md 3.3; proposed in references/bank-current-account-deposits.md",
+    "variants_he": [],
+    "explain_he": "מה קורה לכסף בסוף התקופה אם לא עושים כלום: מתחדש, חוזר לחשבון העו\"ש או למקום אחר",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/bank-current-account-deposits.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/bank-current-account-deposits.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: BANK-05, BANK-21."
+  },
+  {
+    "kind": "dimension",
+    "id": "benefit-expiry",
+    "term_he": "סיום הטבה",
+    "term_source": "docs/product.md 3.3; proposed in references/bank-current-account-deposits.md",
+    "variants_he": [],
+    "explain_he": "האם ריבית או הנחה מבצעית נגמרות בתאריך מסוים, ומה המחיר אחריו",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/bank-current-account-deposits.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/bank-current-account-deposits.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: BANK-19, BANK-09."
+  },
+  {
+    "kind": "dimension",
+    "id": "channel-restriction",
+    "term_he": "זמין רק בערוץ מסוים",
+    "term_source": "docs/product.md 3.3; proposed in references/bank-product-names.md",
+    "variants_he": [],
+    "explain_he": "האם המוצר או הריבית זמינים רק באפליקציה, באתר או דרך בנקאי",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/bank-product-names.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/bank-product-names.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: BPN-07."
+  },
+  {
+    "kind": "dimension",
+    "id": "choice-of-best",
+    "term_he": "הטוב מבין חלופות",
+    "term_source": "docs/product.md 3.3; proposed in references/bank-product-names.md",
+    "variants_he": [],
+    "explain_he": "האם התשלום הוא הגבוה מבין כמה חלופות, ומה כללי היציאה המוקדמת המיוחדים לו",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/bank-product-names.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/bank-product-names.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: BPN-09."
+  },
+  {
+    "kind": "dimension",
+    "id": "fee-account",
+    "term_he": "דמי טיפול בחשבון",
+    "term_source": "docs/product.md 3.3; proposed in references/brokerage-account.md",
+    "variants_he": [],
+    "explain_he": "עמלה חודשית קבועה על עצם החזקת החשבון, בלי קשר לפעולות או לסכום",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/brokerage-account.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/brokerage-account.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: BRK rules tagged fee-account. Institutions call it 'דמי טיפול', 'דמי שימוש' or 'דמי ניהול תקופתיים' (BRK)."
+  },
+  {
+    "kind": "dimension",
+    "id": "fee-data",
+    "term_he": "תשלום על נתוני מסחר",
+    "term_source": "docs/product.md 3.3; proposed in references/brokerage-account.md",
+    "variants_he": [],
+    "explain_he": "תשלום על שערים בזמן אמת או על מערכות מסחר מתקדמות",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/brokerage-account.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/brokerage-account.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: BRK rules tagged fee-data."
+  },
+  {
+    "kind": "dimension",
+    "id": "fee-income-collection",
+    "term_he": "עמלה על תקבולים",
+    "term_source": "docs/product.md 3.3; proposed in references/brokerage-account.md",
+    "variants_he": [],
+    "explain_he": "עמלה שנגבית כשמתקבלים דיבידנד, ריבית מאגרת חוב או כסף מפדיון",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/brokerage-account.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/brokerage-account.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: BRK rules tagged fee-income-collection."
+  },
+  {
+    "kind": "dimension",
+    "id": "fee-third-party",
+    "term_he": "עמלות צד שלישי",
+    "term_source": "docs/product.md 3.3; proposed in references/brokerage-account.md",
+    "variants_he": [],
+    "explain_he": "חיובים של בורסות, רשויות וגופים אחרים שבית ההשקעות בחו\"ל מגלגל אליכם",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/brokerage-account.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/brokerage-account.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: BRK rules tagged fee-third-party."
+  },
+  {
+    "kind": "dimension",
+    "id": "fee-interest-on-cash",
+    "term_he": "ריבית על מזומן בחשבון",
+    "term_source": "docs/product.md 3.3; proposed in references/brokerage-account.md",
+    "variants_he": [],
+    "explain_he": "האם משלמים לכם ריבית על כסף שיושב בחשבון ההשקעות בלי להיות מושקע",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/brokerage-account.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/brokerage-account.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: BRK rules tagged fee-interest-on-cash. A cost by omission rather than a charge (BRK)."
+  },
+  {
+    "kind": "dimension",
+    "id": "state-contribution",
+    "term_he": "הפקדות המדינה",
+    "term_source": "docs/product.md 3.3; proposed in references/child-savings.md",
+    "variants_he": [],
+    "explain_he": "כסף שהמדינה מוסיפה בלי שאתם משלמים, ומה גורם לאבד אותו",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/child-savings.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/child-savings.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: CS-03, CS-13."
+  },
+  {
+    "kind": "dimension",
+    "id": "default-allocation",
+    "term_he": "הקצאת ברירת מחדל",
+    "term_source": "docs/product.md 3.3; proposed in references/child-savings.md",
+    "variants_he": [],
+    "explain_he": "לאן הולך הכסף אם לא בוחרים, והאם המסלול הנוכחי נבחר או נקבע אוטומטית",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/child-savings.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/child-savings.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: CS-07, CS-20. Overlaps default-assignment (PEN) and default-track (CAT); coverage.md F5 names this overlap. Consider one row."
+  },
+  {
+    "kind": "dimension",
+    "id": "signatory-control",
+    "term_he": "מי רשאי לפעול בחשבון",
+    "term_source": "docs/product.md 3.3; proposed in references/child-savings.md",
+    "variants_he": [],
+    "explain_he": "מי רשאי למשוך או לשנות את החשבון בכל גיל, למשל חתימת הורה בגילים מסוימים",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/child-savings.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/child-savings.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: CS-14, CS-21."
+  },
+  {
+    "kind": "dimension",
+    "id": "credit-risk",
+    "term_he": "סיכון אשראי",
+    "term_source": "docs/product.md 3.3; proposed in references/corporate-bonds.md",
+    "variants_he": [],
+    "explain_he": "המנפיק הוא חברה ולא המדינה, ולכן ייתכן שלא ישלם בזמן או ישלם פחות",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/corporate-bonds.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/corporate-bonds.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: CORP-01, CORP-07, CORP-08, CORP-24."
+  },
+  {
+    "kind": "dimension",
+    "id": "issuer-call",
+    "term_he": "פדיון מוקדם ביוזמת המנפיק",
+    "term_source": "docs/product.md 3.3; proposed in references/corporate-bonds.md",
+    "variants_he": [],
+    "explain_he": "האם המנפיק רשאי לפדות את האג\"ח לפני הזמן, ולפי איזו נוסחה",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/corporate-bonds.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/corporate-bonds.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: CORP-12."
+  },
+  {
+    "kind": "dimension",
+    "id": "rating-step-up",
+    "term_he": "ריבית לפי דירוג",
+    "term_source": "docs/product.md 3.3; proposed in references/corporate-bonds.md",
+    "variants_he": [],
+    "explain_he": "האם הריבית משתנה כשהדירוג של החברה יורד או כשהיא מפרה התחייבויות",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/corporate-bonds.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/corporate-bonds.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: CORP-11."
+  },
+  {
+    "kind": "dimension",
+    "id": "fx-spread",
+    "term_he": "מרווח המרה",
+    "term_source": "docs/product.md 3.3; proposed in references/fx-and-structured-deposits.md",
+    "variants_he": [],
+    "explain_he": "הפער בין השער שבו ממירים לכם לבין השער היציג, מעבר לעמלת ההמרה",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/fx-and-structured-deposits.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/fx-and-structured-deposits.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: FXD-05, FXD-06, FXD-09, FXD-13, FXD-14. Related to fee-fx; kept separate because the spread is not a stated fee."
+  },
+  {
+    "kind": "dimension",
+    "id": "conditional-return",
+    "term_he": "תשואה מותנית",
+    "term_source": "docs/product.md 3.3; proposed in references/fx-and-structured-deposits.md",
+    "variants_he": [],
+    "explain_he": "האם חלק מהתשואה תלוי במצב השוק בתאריך מסוים, כך שאין לה מספר ידוע מראש",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/fx-and-structured-deposits.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/fx-and-structured-deposits.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: FXD-11, FXD-12; bears on D9."
+  },
+  {
+    "kind": "dimension",
+    "id": "issuer-conflict",
+    "term_he": "המנפיק הוא גם הממליץ",
+    "term_source": "docs/product.md 3.3; proposed in references/fx-and-structured-deposits.md",
+    "variants_he": [],
+    "explain_he": "האם המוצר הונפק על ידי אותו בנק שממליץ לכם עליו",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/fx-and-structured-deposits.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/fx-and-structured-deposits.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: FXD-10, FXD-12. Related to conflict-of-interest (MGD) and agent-involvement (SW)."
+  },
+  {
+    "kind": "dimension",
+    "id": "value-date",
+    "term_he": "יום ערך",
+    "term_source": "docs/product.md 3.3; proposed in references/fx-and-structured-deposits.md",
+    "variants_he": [],
+    "explain_he": "כמה ימים עוברים מההוראה עד שהכסף מתחיל לעבוד או מגיע ליעדו",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/fx-and-structured-deposits.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/fx-and-structured-deposits.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: FXD-05, FXD-06."
+  },
+  {
+    "kind": "dimension",
+    "id": "market-price-exit",
+    "term_he": "יציאה במחיר השוק",
+    "term_source": "docs/product.md 3.3; proposed in references/government-bonds-and-makam.md",
+    "variants_he": [],
+    "explain_he": "האם לפני הפדיון אפשר לצאת רק במכירה בבורסה, במחיר של אותו יום",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/government-bonds-and-makam.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/government-bonds-and-makam.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: GOV-17; also used in CORP. Related to liquidity-lockup."
+  },
+  {
+    "kind": "dimension",
+    "id": "rate-reset",
+    "term_he": "ריבית מתעדכנת",
+    "term_source": "docs/product.md 3.3; proposed in references/government-bonds-and-makam.md",
+    "variants_he": [],
+    "explain_he": "האם הריבית מתעדכנת במהלך ההחזקה לפי ריבית שוק מסוימת",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/government-bonds-and-makam.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/government-bonds-and-makam.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: GOV-14; also used in CORP."
+  },
+  {
+    "kind": "dimension",
+    "id": "investment-restrictions",
+    "term_he": "מגבלות השקעה",
+    "term_source": "docs/product.md 3.3; proposed in references/ira-self-directed.md",
+    "variants_he": [],
+    "explain_he": "מה מותר להחזיק בתוך המוצר ובאיזה שיעור, ולכן האם ההשקעה הרצויה אפשרית בו",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/ira-self-directed.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/ira-self-directed.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: IRA-11, IRA-12, IRA-13."
+  },
+  {
+    "kind": "dimension",
+    "id": "self-directed-risk",
+    "term_he": "ניהול עצמי",
+    "term_source": "docs/product.md 3.3; proposed in references/ira-self-directed.md",
+    "variants_he": [],
+    "explain_he": "האם ההחלטות והסיכון שלהן אצלכם, ולא אצל ועדת השקעות של גוף מנהל",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/ira-self-directed.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/ira-self-directed.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: IRA-26, IRA-28."
+  },
+  {
+    "kind": "dimension",
+    "id": "employer-contribution",
+    "term_he": "הפקדת מעסיק",
+    "term_source": "docs/product.md 3.3; proposed in references/keren-hishtalmut.md",
+    "variants_he": [],
+    "explain_he": "האם המעסיק מוסיף כסף משלו למוצר, הפקדה שאין במוצרים אחרים",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/keren-hishtalmut.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/keren-hishtalmut.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: KH-04. Related to employer-dependence (PEN) and employment-status (TXP)."
+  },
+  {
+    "kind": "dimension",
+    "id": "account-continuity",
+    "term_he": "רצף ותק בחשבון",
+    "term_source": "docs/product.md 3.3; proposed in references/keren-hishtalmut.md",
+    "variants_he": [],
+    "explain_he": "האם פעולה מסוימת מתחילה מחדש את ספירת הזמן או פותחת חשבון חדש",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/keren-hishtalmut.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/keren-hishtalmut.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: KH-09, KH-14, KH-15."
+  },
+  {
+    "kind": "dimension",
+    "id": "ownership-gift",
+    "term_he": "בעלות על הכסף",
+    "term_source": "docs/product.md 3.3; proposed in references/kupat-gemel-lehashkaa.md",
+    "variants_he": [],
+    "explain_he": "כסף שמפקידים בחשבון על שם אדם אחר הופך לשלו, כמו מתנה שאי אפשר לבטל",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/kupat-gemel-lehashkaa.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/kupat-gemel-lehashkaa.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: KGL-06. Proposed inline in KGL-06, not under a 'Proposed dimensions' heading."
+  },
+  {
+    "kind": "dimension",
+    "id": "beneficiaries-on-death",
+    "term_he": "מוטבים בפטירה",
+    "term_source": "docs/product.md 3.3; proposed in references/kupat-gemel-lehashkaa.md",
+    "variants_he": [],
+    "explain_he": "מי מקבל את הכסף במקרה של פטירה, ואיך קובעים זאת מראש",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/kupat-gemel-lehashkaa.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/kupat-gemel-lehashkaa.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: KGL-17. Proposed inline in KGL-17. Overlaps death-and-beneficiaries (TXK, TXA) and death-and-survivors (TXP); consider one row."
+  },
+  {
+    "kind": "dimension",
+    "id": "conflict-of-interest",
+    "term_he": "ניגוד עניינים",
+    "term_source": "docs/product.md 3.3; proposed in references/managed-and-robo-portfolios.md",
+    "variants_he": [],
+    "explain_he": "האם מי שמנהל לכם את הכסף מקבל תשלום מהמוצרים שהוא בוחר, או שייך לאותה קבוצה",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/managed-and-robo-portfolios.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/managed-and-robo-portfolios.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: MGD-12, MGD-13. Related to issuer-conflict (FXD) and agent-involvement (SW)."
+  },
+  {
+    "kind": "dimension",
+    "id": "fee-fund-underlying",
+    "term_he": "דמי ניהול בקרנות שבפנים",
+    "term_source": "docs/product.md 3.3; proposed in references/managed-and-robo-portfolios.md",
+    "variants_he": [],
+    "explain_he": "דמי ניהול של קרנות שמוחזקות בתוך המוצר, מעבר לדמי הניהול של המוצר עצמו",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/managed-and-robo-portfolios.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/managed-and-robo-portfolios.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: MGD-10, MGD-17. Different from fee-direct-expenses (PF), which is charged to a provident fund on top of its fee."
+  },
+  {
+    "kind": "dimension",
+    "id": "order-timing",
+    "term_he": "מועד ביצוע הוראה",
+    "term_source": "docs/product.md 3.3; proposed in references/mutual-funds-and-money-market-funds.md",
+    "variants_he": [],
+    "explain_he": "מתי ההוראה מתבצעת ובאיזה מחיר, וכמה זמן עובר עד שהכסף זמין",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/mutual-funds-and-money-market-funds.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/mutual-funds-and-money-market-funds.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: MF-10, MF-14, MF-35."
+  },
+  {
+    "kind": "dimension",
+    "id": "product-marking",
+    "term_he": "סימונים בשם המוצר",
+    "term_source": "docs/product.md 3.3; proposed in references/mutual-funds-and-money-market-funds.md",
+    "variants_he": [],
+    "explain_he": "קודים וסימנים בשם הקרן שקובעים מגבלות מחייבות, כמו פרופיל החשיפה שלה",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/mutual-funds-and-money-market-funds.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/mutual-funds-and-money-market-funds.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: MF-43 to MF-48; also used in RG. Feeds the product decoder (3.10)."
+  },
+  {
+    "kind": "dimension",
+    "id": "fee-performance",
+    "term_he": "דמי ניהול לפי תשואה",
+    "term_source": "docs/product.md 3.3; proposed in references/mutual-funds-and-money-market-funds.md",
+    "variants_he": [],
+    "explain_he": "דמי ניהול שתלויים בתשואה, כמו דמי הצלחה או עמלה שמשתנה לפי הביצועים",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/mutual-funds-and-money-market-funds.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/mutual-funds-and-money-market-funds.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: MF-28."
+  },
+  {
+    "kind": "dimension",
+    "id": "fund-closure-merger",
+    "term_he": "מיזוג או סגירת קרן",
+    "term_source": "docs/product.md 3.3; proposed in references/mutual-funds-and-money-market-funds.md",
+    "variants_he": [],
+    "explain_he": "האם הקרן עלולה להתמזג, להתפרק או להיסגר לכסף חדש, ומה קורה אז לכסף",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/mutual-funds-and-money-market-funds.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/mutual-funds-and-money-market-funds.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: MF-12, MF-52. Overlaps fund-closure (ETF); consider one row."
+  },
+  {
+    "kind": "dimension",
+    "id": "tracking-difference",
+    "term_he": "פער מעקב",
+    "term_source": "docs/product.md 3.3; proposed in references/etfs-and-index-funds.md",
+    "variants_he": [],
+    "explain_he": "הפער בין תשואת הקרן לתשואת המדד שהיא עוקבת אחריו, אחרי כל העלויות בקרן",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/etfs-and-index-funds.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/etfs-and-index-funds.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: ETF-07 to ETF-09."
+  },
+  {
+    "kind": "dimension",
+    "id": "spread-and-premium",
+    "term_he": "מרווח ופער מחיר",
+    "term_source": "docs/product.md 3.3; proposed in references/etfs-and-index-funds.md",
+    "variants_he": [],
+    "explain_he": "העלות של הפער בין מחיר הקנייה למחיר המכירה, והפער בין מחיר הקרן בבורסה לשווי נכסיה",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/etfs-and-index-funds.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/etfs-and-index-funds.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: ETF-06, ETF-07, ETF-29."
+  },
+  {
+    "kind": "dimension",
+    "id": "trading-mechanics",
+    "term_he": "אופן המסחר",
+    "term_source": "docs/product.md 3.3; proposed in references/etfs-and-index-funds.md",
+    "variants_he": [],
+    "explain_he": "האם קונים ומוכרים בבורסה במהלך היום, או ישירות מהמנהל לפי מחיר יומי",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/etfs-and-index-funds.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/etfs-and-index-funds.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: ETF-04, ETF-26."
+  },
+  {
+    "kind": "dimension",
+    "id": "replication-counterparty",
+    "term_he": "שיטת מעקב וצד נגדי",
+    "term_source": "docs/product.md 3.3; proposed in references/etfs-and-index-funds.md",
+    "variants_he": [],
+    "explain_he": "האם הקרן מחזיקה את הנכסים עצמם או חוזה מול גוף אחר, והסיכון שבכך",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/etfs-and-index-funds.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/etfs-and-index-funds.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: ETF-11; also named in RG."
+  },
+  {
+    "kind": "dimension",
+    "id": "fund-closure",
+    "term_he": "פירוק או מחיקת קרן",
+    "term_source": "docs/product.md 3.3; proposed in references/etfs-and-index-funds.md",
+    "variants_he": [],
+    "explain_he": "הסיכון שהקרן תפורק או תימחק מהמסחר, וכמה זמן מראש מודיעים על כך",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/etfs-and-index-funds.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/etfs-and-index-funds.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: ETF-21, ETF-22. Overlaps fund-closure-merger (MF); consider one row."
+  },
+  {
+    "kind": "dimension",
+    "id": "actuarial-adjustment",
+    "term_he": "איזון אקטוארי",
+    "term_source": "docs/product.md 3.3; proposed in references/pension-and-gemel-lekitzba.md",
+    "variants_he": [],
+    "explain_he": "האם החיסכון או הקצבה יכולים להשתנות בגלל עודף או גירעון בקרן, בלי קשר להשקעות שלכם",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/pension-and-gemel-lekitzba.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/pension-and-gemel-lekitzba.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: PEN-19. Pension funds only."
+  },
+  {
+    "kind": "dimension",
+    "id": "default-assignment",
+    "term_he": "שיוך ברירת מחדל",
+    "term_source": "docs/product.md 3.3; proposed in references/pension-and-gemel-lekitzba.md",
+    "variants_he": [],
+    "explain_he": "מה מקבלים אם לא בוחרים: קרן, מסלול השקעה ומסלול ביטוח, ולכמה זמן דמי הניהול מובטחים",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/pension-and-gemel-lekitzba.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/pension-and-gemel-lekitzba.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: PEN-06, PEN-11, PEN-17, PEN-23. Overlaps default-allocation (CS) and default-track (CAT); consider one row."
+  },
+  {
+    "kind": "dimension",
+    "id": "employer-dependence",
+    "term_he": "תלות במעסיק",
+    "term_source": "docs/product.md 3.3; proposed in references/pension-and-gemel-lekitzba.md",
+    "variants_he": [],
+    "explain_he": "זכויות או דמי ניהול שתלויים במעסיק הנוכחי, כמו הנחה דרך מקום העבודה",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/pension-and-gemel-lekitzba.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/pension-and-gemel-lekitzba.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: PEN-05, PEN-25, PEN-31."
+  },
+  {
+    "kind": "dimension",
+    "id": "fee-direct-expenses",
+    "term_he": "הוצאות השקעה ישירות",
+    "term_source": "docs/product.md 3.3; proposed in references/provident-family-common.md",
+    "variants_he": [],
+    "explain_he": "הוצאות על ניהול ההשקעות שנגבות מהקופה בנוסף לדמי הניהול",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/provident-family-common.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/provident-family-common.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: PF-10, PF-11. Listed separately so fee materiality (3.5) treats it as its own line."
+  },
+  {
+    "kind": "dimension",
+    "id": "statement-disclosure",
+    "term_he": "מה הגוף חייב למסור",
+    "term_source": "docs/product.md 3.3; proposed in references/provident-family-common.md",
+    "variants_he": [],
+    "explain_he": "מה הגוף המנהל חייב למסור לכם, איפה ומתי: דוחות, הודעות על שינוי עמלות ועלות צפויה",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/provident-family-common.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/provident-family-common.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: PF rules tagged statement-disclosure; also used in SW. The existing reporting-obligation reads as the saver's own duty, so this covers the institution's duty."
+  },
+  {
+    "kind": "dimension",
+    "id": "dispute-channel",
+    "term_he": "לאן פונים בתלונה",
+    "term_source": "docs/product.md 3.3; proposed in references/regulators-and-protection.md",
+    "variants_he": [],
+    "explain_he": "לאן אפשר להתלונן על הגוף הזה, ומה הפנייה יכולה ולא יכולה לעשות",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/regulators-and-protection.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/regulators-and-protection.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: REG-02."
+  },
+  {
+    "kind": "dimension",
+    "id": "leverage-limit",
+    "term_he": "מגבלת מינוף",
+    "term_source": "docs/product.md 3.3; proposed in references/reits-and-gold-funds.md",
+    "variants_he": [],
+    "explain_he": "האם יש בחוק תקרה להלוואות שהגוף עצמו לוקח",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/reits-and-gold-funds.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/reits-and-gold-funds.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: RG-05."
+  },
+  {
+    "kind": "dimension",
+    "id": "legal-form",
+    "term_he": "מה בעצם מחזיקים",
+    "term_source": "docs/product.md 3.3; proposed in references/reits-and-gold-funds.md",
+    "variants_he": [],
+    "explain_he": "מה מחזיקים בפועל: יחידה בקרן, מניה, אגרת חוב או נאמנות; זה משנה הגנה, פיקוח ומס",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/reits-and-gold-funds.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/reits-and-gold-funds.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: RG-20 to RG-23."
+  },
+  {
+    "kind": "dimension",
+    "id": "issue-cohort",
+    "term_he": "מועד הנפקת הפוליסה",
+    "term_source": "docs/product.md 3.3; proposed in references/savings-policies-and-executive-insurance.md",
+    "variants_he": [],
+    "explain_he": "זכויות ודמי ניהול שתלויים במועד שבו הפוליסה הונפקה; עזיבת פוליסה ישנה עלולה לאבד אותם",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/savings-policies-and-executive-insurance.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/savings-policies-and-executive-insurance.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: INS-15, INS-16, INS-17. Overlaps cohort-start-date (TXA); consider one row."
+  },
+  {
+    "kind": "dimension",
+    "id": "annuity-factor-guarantee",
+    "term_he": "מקדם קצבה מובטח",
+    "term_source": "docs/product.md 3.3; proposed in references/savings-policies-and-executive-insurance.md",
+    "variants_he": [],
+    "explain_he": "האם המקדם שהופך את החיסכון לקצבה חודשית קבוע בחוזה, או נקבע רק בזמן הפרישה",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/savings-policies-and-executive-insurance.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/savings-policies-and-executive-insurance.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: INS-11, INS-17."
+  },
+  {
+    "kind": "dimension",
+    "id": "fee-insurance-premium",
+    "term_he": "עלות הכיסוי הביטוחי",
+    "term_source": "docs/product.md 3.3; proposed in references/savings-policies-and-executive-insurance.md",
+    "variants_he": [],
+    "explain_he": "הכסף שיורד מההפקדות כדי לממן ביטוח, ולכן לא נחסך",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/savings-policies-and-executive-insurance.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/savings-policies-and-executive-insurance.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: INS-19. Listed separately so fee materiality (3.5) treats it as its own line; the cover itself is insurance-cover."
+  },
+  {
+    "kind": "dimension",
+    "id": "agent-involvement",
+    "term_he": "סוכן או יועץ",
+    "term_source": "docs/product.md 3.3; proposed in references/switching-and-transfers.md",
+    "variants_he": [],
+    "explain_he": "האם יש סוכן או יועץ באמצע, איך משלמים לו, והאם אפשר לפעול ישירות",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/switching-and-transfers.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/switching-and-transfers.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: SW-17."
+  },
+  {
+    "kind": "dimension",
+    "id": "data-consent",
+    "term_he": "הרשאה לנתונים",
+    "term_source": "docs/product.md 3.3; proposed in references/switching-and-transfers.md",
+    "variants_he": [],
+    "explain_he": "מי רשאי למשוך את כל נתוני החיסכון שלכם, ובבקשה של מי",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/switching-and-transfers.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/switching-and-transfers.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: SW-18."
+  },
+  {
+    "kind": "dimension",
+    "id": "offer-validity",
+    "term_he": "תוקף הצעה והנחה",
+    "term_source": "docs/product.md 3.3; proposed in references/switching-and-transfers.md",
+    "variants_he": [],
+    "explain_he": "האם הצעת דמי ניהול מחייבת, לכמה זמן ההנחה תקפה ומה מסיים אותה מוקדם",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/switching-and-transfers.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/switching-and-transfers.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: SW-19, PF-13, PF-14."
+  },
+  {
+    "kind": "dimension",
+    "id": "rerouting-continuity",
+    "term_he": "הפקדות אחרי מעבר",
+    "term_source": "docs/product.md 3.3; proposed in references/switching-and-transfers.md",
+    "variants_he": [],
+    "explain_he": "לכמה זמן הפקדות שנשלחות לחשבון הישן ממשיכות להגיע לחשבון החדש אחרי מעבר",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/switching-and-transfers.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/switching-and-transfers.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: SW-30."
+  },
+  {
+    "kind": "dimension",
+    "id": "death-and-beneficiaries",
+    "term_he": "מס ותהליך בפטירה",
+    "term_source": "docs/product.md 3.3; proposed in references/tax-gemel-lehashkaa-ira-child.md",
+    "variants_he": [],
+    "explain_he": "מה המס ומה התהליך במקרה של פטירה, ומה מקבלים היורשים",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/tax-gemel-lehashkaa-ira-child.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/tax-gemel-lehashkaa-ira-child.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: TXK-14, TXK-24; also used in TXA. Overlaps death-and-survivors (TXP) and beneficiaries-on-death (KGL); consider one row."
+  },
+  {
+    "kind": "dimension",
+    "id": "annuity-vs-lump-sum",
+    "term_he": "קצבה או סכום חד-פעמי",
+    "term_source": "docs/product.md 3.3; proposed in references/tax-gemel-lehashkaa-ira-child.md",
+    "variants_he": [],
+    "explain_he": "האם הפטור ממס מחייב לקבל את הכסף כקצבה חודשית ולא כסכום אחד",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/tax-gemel-lehashkaa-ira-child.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/tax-gemel-lehashkaa-ira-child.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: TXK-09 to TXK-12; also used in TXA."
+  },
+  {
+    "kind": "dimension",
+    "id": "surtax",
+    "term_he": "מס נוסף להכנסה גבוהה",
+    "term_source": "docs/product.md 3.3; proposed in references/tax-general.md",
+    "variants_he": [],
+    "explain_he": "האם הכנסה גבוהה במיוחד, גם מההשקעה, מוסיפה מס נוסף מעל סף שבחוק",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/tax-general.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/tax-general.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: TXG-09 to TXG-11. Changes the ranking only for large balances."
+  },
+  {
+    "kind": "dimension",
+    "id": "social-contributions",
+    "term_he": "ביטוח לאומי על ההכנסה",
+    "term_source": "docs/product.md 3.3; proposed in references/tax-general.md",
+    "variants_he": [],
+    "explain_he": "האם ההכנסה מהמוצר מחייבת בדמי ביטוח לאומי, או שהיא מחוץ לבסיס החיוב",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/tax-general.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/tax-general.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: TXG-26 to TXG-30. TXG proposes it for National Insurance and health contributions together. Under docs/product.md D14 the site does not compute, show or note health tax, so the row name and explanation cover National Insurance only."
+  },
+  {
+    "kind": "dimension",
+    "id": "threshold-drift",
+    "term_he": "סכומים קפואים לאורך זמן",
+    "term_source": "docs/product.md 3.3; proposed in references/tax-general.md",
+    "variants_he": [],
+    "explain_he": "סכומי מס שקפואים או מתעדכנים אחרת מהמדד, ולכן ערכם האמיתי משתנה בטווח ארוך",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/tax-general.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/tax-general.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: TXG-06, TXG-33."
+  },
+  {
+    "kind": "dimension",
+    "id": "benefited-vs-non-benefited-split",
+    "term_he": "חלק מוטב ולא מוטב",
+    "term_source": "docs/product.md 3.3; proposed in references/tax-hishtalmut.md",
+    "variants_he": [],
+    "explain_he": "האם חלק מהיתרה הופקד מעל התקרה ולכן אינו מוטב, מה שמשנה את המס במשיכה",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/tax-hishtalmut.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/tax-hishtalmut.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: TXH proposed dimensions (salary and deposits above the ceilings)."
+  },
+  {
+    "kind": "dimension",
+    "id": "cohort-start-date",
+    "term_he": "מועד התחלה קובע",
+    "term_source": "docs/product.md 3.3; proposed in references/tax-insurance-and-amendment-190.md",
+    "variants_he": [],
+    "explain_he": "האם התוצאה תלויה במועד שבו הפוליסה הונפקה או שהכסף הופקד",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/tax-insurance-and-amendment-190.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/tax-insurance-and-amendment-190.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: TXA-06, TXA-15, TXA-17. Overlaps issue-cohort (INS); consider one row."
+  },
+  {
+    "kind": "dimension",
+    "id": "employment-status",
+    "term_he": "שכיר או עצמאי",
+    "term_source": "docs/product.md 3.3; proposed in references/tax-pension-gemel-lekitzba.md",
+    "variants_he": [],
+    "explain_he": "האם אתם שכירים, עצמאים או שניהם, כי זה משנה איזו הטבת מס חלה בהפקדה",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/tax-pension-gemel-lekitzba.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/tax-pension-gemel-lekitzba.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: TXP-02 to TXP-09."
+  },
+  {
+    "kind": "dimension",
+    "id": "death-and-survivors",
+    "term_he": "שאירים ויורשים",
+    "term_source": "docs/product.md 3.3; proposed in references/tax-pension-gemel-lekitzba.md",
+    "variants_he": [],
+    "explain_he": "מה מקבלים בני המשפחה והיורשים במקרה של פטירה, ואיך זה ממוסה",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/tax-pension-gemel-lekitzba.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/tax-pension-gemel-lekitzba.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: TXP-22, TXP-23. Overlaps death-and-beneficiaries (TXK) and beneficiaries-on-death (KGL); consider one row."
+  },
+  {
+    "kind": "dimension",
+    "id": "estate-situs",
+    "term_he": "מס עיזבון זר",
+    "term_source": "docs/product.md 3.3; proposed in references/tax-securities-foreign.md",
+    "variants_he": [],
+    "explain_he": "האם החזקת הקרן חושפת את העיזבון למס ירושה של מדינה זרה",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/tax-securities-foreign.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/tax-securities-foreign.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: TXF-27. Decides between two funds on the same index domiciled in different countries; not covered by foreign-withholding-domicile, which is about income tax."
+  },
+  {
+    "kind": "dimension",
+    "id": "fund-tax-track",
+    "term_he": "קרן פטורה או חייבת",
+    "term_source": "docs/product.md 3.3; proposed in references/tax-securities-israeli.md",
+    "variants_he": [],
+    "explain_he": "האם הקרן פטורה או חייבת במס, מה שקובע מתי משלמים מס ואם אפשר לקזז הפסדים",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/tax-securities-israeli.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/tax-securities-israeli.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: TXS-07; per-fund status published on Maya (TXS-24)."
+  },
+  {
+    "kind": "dimension",
+    "id": "payout-classification",
+    "term_he": "סיווג התשואה למס",
+    "term_source": "docs/product.md 3.3; proposed in references/tax-tier2-other.md",
+    "variants_he": [],
+    "explain_he": "האם התשואה נחשבת ריבית, הצמדה, דיבידנד או רווח הון לפי התנאים המשפטיים, לא לפי הפרסום",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/tax-tier2-other.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/tax-tier2-other.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: TX2-05, TX2-09, TX2-14."
+  },
+  {
+    "kind": "dimension",
+    "id": "default-track",
+    "term_he": "מסלול ברירת מחדל",
+    "term_source": "docs/product.md 3.3; proposed in references/tracks-catalogue-and-decoder.md",
+    "variants_he": [],
+    "explain_he": "באיזה מסלול נמצאים אם לא בוחרים, והאם המסלול הנוכחי נבחר או נקבע אוטומטית",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/tracks-catalogue-and-decoder.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/tracks-catalogue-and-decoder.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: CAT-18, CAT-19, CAT-25. Overlaps default-allocation (CS) and default-assignment (PEN); consider one row."
+  },
+  {
+    "kind": "dimension",
+    "id": "track-mandate",
+    "term_he": "שם המסלול מול תוכנו",
+    "term_source": "docs/product.md 3.3; proposed in references/tracks-catalogue-and-decoder.md",
+    "variants_he": [],
+    "explain_he": "הפער בין שם המסלול, מדיניות ההשקעה שלו והרכב ההשקעות בפועל היום",
+    "rule_ids": [],
+    "source": {
+      "title": "docs/product.md 3.3 (form); proposed in il-finance references/tracks-catalogue-and-decoder.md, Proposed dimensions",
+      "url": ".claude/skills/il-finance/references/tracks-catalogue-and-decoder.md",
+      "checked": "2026-10-23",
+      "strength": "primary"
+    },
+    "where": [
+      "checklist"
+    ],
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: CAT-15, CAT-23, CAT-24."
+  }
+]

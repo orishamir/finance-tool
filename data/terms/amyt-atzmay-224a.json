@@ -1,0 +1,29 @@
+{
+  "id": "amyt-atzmay-224a",
+  "he": "עמית עצמאי",
+  "en": null,
+  "meaning": "הפקדה לקופה בתור עצמאים, ישירות ולא דרך מעסיק; ההבחנה משפיעה על הטבות המס ועל חישוב הביטוח",
+  "where": [
+    "statement",
+    "tax-form"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "PEN-09",
+    "TXP-06",
+    "TXP-07",
+    "TXP-26"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

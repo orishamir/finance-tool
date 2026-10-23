@@ -1,0 +1,17 @@
+{
+  "id": "IRA-21",
+  "title": "Meitav: brokerage tariffs inside the IRA, effective 01.05.2026",
+  "title_he": "מיטב: עמלות הברוקרים בתוך הקופה האישית",
+  "strength": "institution",
+  "dimensions": [
+    "fee-trade",
+    "fee-custody",
+    "fee-fx",
+    "minimum"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "text_he": "העמלות בתוך קופה אישית של מיטב תלויות בברוקר שנבחר (מיטב טרייד, לאומי, מזרחי, הבינלאומי, הפועלים), לפי תוצאות ההליך התחרותי מ-1.5.2026. עמלות שלא ברשימה נגבות לפי תעריפון הבנק, חלים מינימומים, ועלויות צד שלישי ומסים נוספים. הפועלים גובה אחוז רבעוני משווי התיק במקום עמלה לעסקה. הנתונים עצמם הם תעריפים לאיסוף ב-data/fees (שלב 4).",
+  "il_finance_file": "ira-self-directed.md",
+  "checked": "2026-10-22"
+}

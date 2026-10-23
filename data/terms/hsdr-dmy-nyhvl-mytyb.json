@@ -1,0 +1,23 @@
+{
+  "id": "hsdr-dmy-nyhvl-mytyb",
+  "he": "הסדר דמי ניהול מיטיב",
+  "en": null,
+  "meaning": "כשעוברים בין מקומות עבודה שלשניהם הסדר דמי ניהול עם אותה חברה מנהלת, חל ההסדר הזול יותר",
+  "where": [],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "PF-15"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
+    "title": "CMA circular 2017-9-15 \"דמי ניהול במכשירי החיסכון הפנסיוני – תיקון\" (gov.il copy)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

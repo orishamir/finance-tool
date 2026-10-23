@@ -1,0 +1,29 @@
+{
+  "id": "amlt-chlypyn-b",
+  "he": "עמלת חליפין",
+  "en": null,
+  "meaning": "עמלה על המרת שקלים למטבע חוץ או להפך, למשל כדי לקנות נייר ערך בדולרים.",
+  "where": [
+    "statement",
+    "tariff"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "BRK-16",
+    "BRK-23",
+    "BRK-24"
+  ],
+  "source": {
+    "url": "https://boi.org.il/media/w2lgmymp/159a.pdf",
+    "title": "בנק ישראל, כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

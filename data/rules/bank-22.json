@@ -1,0 +1,13 @@
+{
+  "id": "BANK-22",
+  "title": "The Bank of Israel publishes, monthly, the interest banks actually paid on unlinked shekel deposits (EDGE INTEREST_DASH) and makam yields",
+  "title_he": "בנק ישראל מפרסם את הריבית ששולמה בפועל ותשואות מק״ם",
+  "text_he": "הוראת הפרסום מחייבת כל בנק לקשר מהפרסום שלו למידע ההשוואתי של בנק ישראל. בנק ישראל מפרסם מדי חודש מידע השוואתי על הריבית שהבנקים שילמו בפועל על פיקדונות שקליים לא צמודים, וגם תשואות מק״ם; הנתונים זמינים גם במאגר הנתונים שלו. אלה ממוצעים ששולמו, לא הצעות עכשוויות. התיקון לחוק מוסיף לפרסום את מספר הפיקדונות שנפתחו בכל בנק דרך חשבון במערכת סגורה.",
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-22"
+}

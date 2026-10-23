@@ -1,0 +1,30 @@
+{
+  "id": "ms-al-hknsh-mrybyt",
+  "he": "מס על הכנסה מריבית",
+  "en": null,
+  "meaning": "מס הכנסה על ריבית מפיקדון, חיסכון, עו\"ש, מק\"מ או איגרת חוב; השיעור תלוי בשאלה אם הנכס צמוד למדד",
+  "where": [
+    "statement"
+  ],
+  "wrapper_ids": [
+    "bank-deposit",
+    "current-account",
+    "government-bond",
+    "makam",
+    "savings-plan"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXI-02",
+    "TXI-03",
+    "TXI-04",
+    "TXI-05"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "Israel Tax Authority, דע זכויותיך וחובותיך 2025",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

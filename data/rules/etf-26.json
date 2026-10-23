@@ -1,0 +1,60 @@
+{
+  "id": "ETF-26",
+  "title": "Foreign funds on TASE, end-2025: 46 funds, 40 of them ETFs; the public can only buy and sell them on the exchange",
+  "title_he": "קרנות חוץ בבורסה: הציבור רק קונה ומוכר בבורסה",
+  "text_he": "לסוף השנה שנדווחה רשות ניירות ערך מונה את קרנות החוץ של מנהלים זרים שהותר להן להציע יחידות לציבור בישראל, את החלק שהוא קרנות סל נסחרות ואת הקרנות הפתוחות שביניהן; כמעט כל השווי נמצא בקרנות הסל. הרשות אומרת שבקרנות חוץ לציבור יש אפשרות אחת בלבד, לקנות ולמכור יחידות בבורסה; הציבור אינו יכול ליצור או לפדות יחידות מול המנהל, ועושה השוק מספק נזילות לאורך יום המסחר כמו בקרנות סל ישראליות. איך הציבור קונה את קרנות החוץ הפתוחות לא נמצא. המספרים מתעדכנים פעם בשנה.",
+  "figure_names_he": {
+    "foreign_funds_permitted": "מספר קרנות החוץ שהותר להציע בישראל",
+    "foreign_etfs_on_tase": "מספר קרנות החוץ שנסחרות בבורסה"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "regulator"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "foreign_funds_permitted": {
+      "value": 46,
+      "unit": "count",
+      "source": {
+        "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf",
+        "title": "ISA, פעילות קרנות נאמנות בישראל 2025 (Funder-hosted copy)",
+        "publisher": "Israel Securities Authority (third-party host)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "ETF-26"
+      ],
+      "state": "sourced",
+      "notes": "End-2025: 46 foreign funds permitted to offer units in Israel, NIS 19.9 bn; 40 ETFs traded on TASE and 6 open funds."
+    },
+    "foreign_etfs_on_tase": {
+      "value": 40,
+      "unit": "count",
+      "source": {
+        "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf",
+        "title": "ISA, פעילות קרנות נאמנות בישראל 2025 (Funder-hosted copy)",
+        "publisher": "Israel Securities Authority (third-party host)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "ETF-26"
+      ],
+      "state": "sourced"
+    }
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-22"
+}

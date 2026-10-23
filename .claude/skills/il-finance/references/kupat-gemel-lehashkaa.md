@@ -1,7 +1,7 @@
 # Kupat gemel lehashkaa (investment provident fund)
 
 Checked: 2026-10-22 · Owner: domain-specialist
-Serves: `docs/product.md` 3.1 (instrument guide page), 3.2 (wrapper record: ceiling, liquidity, fee bases), 3.3 (dimension checklist), 3.4 (tracks and providers), 3.10 (decoder: the founder's Meitav "open a new saving" button opens this wrapper). Release 1 (README file list).
+Serves: `docs/product.md` 3.1 (instrument guide page), 3.2 (wrapper record: ceiling, liquidity, fee bases), 3.3 (dimension checklist), 3.4 (tracks and providers), 3.10 (catalogue: the founder's Meitav "open a new saving" button opens this wrapper). Release 1 (README file list).
 Scope: what the product is, legal basis, who may open one, deposits and the ceiling, withdrawals, transfers in and out, tracks as categories, the default track, fee bases and the regulated maximum, fee discounts, beneficiaries, sector funds, and the managing companies that offer it.
 Out of scope: tax at deposit, during and at exit, including the annuity exemption at 60 (`tax-gemel-lehashkaa-ira-child.md`); the self-directed variant (`ira-self-directed.md`); fee caps and transfer regulations shared by all CMA products (`provident-family-common.md`); the per-manager track list and the Meitav app case in detail (`tracks-catalogue-and-decoder.md`); the government child-savings programme (`child-savings.md`).
 
@@ -160,7 +160,7 @@ Out of scope: tax at deposit, during and at exit, including the annuity exemptio
   - a balance-linked fee mechanism set out in the agreement, or another variable the Commissioner approved, other than one based on membership length.
 
   For a fee rise, the member and the licensee who serves them get separate notice. The rise takes effect two months after the notice, or at the date the notice states if later, and no more than four months after it was sent.
-- Conditions / exceptions: The regulatory source of the two-year minimum was not found; only the bylaws were read (open question 8).
+- Conditions / exceptions: The regulatory source of the two-year minimum was not found; only the bylaws were read (open question 8). **[2026-10-22 browser pass 3: the regulatory source is CMA circular 2017-9-15 (PF-13); its minimum is 5 years and it covers kupat gemel lehashkaa. The bylaws' 2 years reflects the replaced 2012 circular.]**
 - Figures: discount valid at least 2 years; at least 3 months' notice of the early-raise conditions; a rise takes effect 2 to 4 months after notice.
 - Source: [Altshuler bylaws March 2025](https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf), clauses 36–37 (same in [Infinity 1.7.2024](https://infinity.co.il/wp-content/uploads/2025/07/תקנון-גמל-להשקעה-בתוקף-מיום-1.7.2024.pdf)) · checked 2026-10-22 · institution.
 - Dimensions: `fee-change-over-time`, `fee-management-balance`, `fee-deposit`

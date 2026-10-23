@@ -1,0 +1,27 @@
+{
+  "id": "hprshvt-havbd",
+  "he": "הפרשות העובד",
+  "en": null,
+  "meaning": "החלק שלכם בהפקדה לקרן ההשתלמות, שהמעסיק מנכה מהשכר; משולם מהשכר נטו, אחרי מס",
+  "where": [
+    "payslip",
+    "statement"
+  ],
+  "wrapper_ids": [
+    "keren-hishtalmut"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "KH-04",
+    "KH-05",
+    "TXH-04",
+    "TXH-08"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf",
+    "title": "Ministry of Finance, Chief Economist, על הטבת המס בקרן השתלמות – ניתוח מדיניות (October 2025)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

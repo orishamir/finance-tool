@@ -1,0 +1,30 @@
+{
+  "id": "mslvl-klly-c",
+  "he": "מסלול כללי",
+  "en": null,
+  "meaning": "מסלול שמשקיע במגוון סוגי נכסים יחד; בגמל להשקעה ובקרן השתלמות הוא לרוב ברירת המחדל",
+  "where": [
+    "app",
+    "gemel-net"
+  ],
+  "wrapper_ids": [
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa"
+  ],
+  "variants": [
+    "כללי"
+  ],
+  "rule_ids": [
+    "KGL-11",
+    "KGL-12",
+    "KH-19",
+    "KH-20"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/investmentsoptions16112020/he/2020-9-18.pdf",
+    "title": "CMA circular 2020-9-18 \"מסלולי השקעה בקופות גמל - תיקון\" (16 Nov 2020)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

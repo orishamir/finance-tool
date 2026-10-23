@@ -1,0 +1,25 @@
+{
+  "id": "svg-htmchvt-rashyt",
+  "he": "סוג התמחות ראשית",
+  "en": null,
+  "meaning": "התחום שבו מסלול ההשקעה מתמחה לפי סיווג רשות שוק ההון, למשל כללי, מניות או עוקבי מדדים",
+  "where": [
+    "gemel-net"
+  ],
+  "wrapper_ids": [],
+  "variants": [
+    "סוג התמחות משנית",
+    "התמחות ראשית של מסלול",
+    "התמחות משנית של מסלול"
+  ],
+  "rule_ids": [
+    "CAT-10"
+  ],
+  "source": {
+    "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22SPECIALIZATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22",
+    "title": "Gemel-Net 2024+ data, distinct SPECIALIZATION values (CMA via data.gov.il)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

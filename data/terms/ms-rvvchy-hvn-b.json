@@ -1,0 +1,33 @@
+{
+  "id": "ms-rvvchy-hvn-b",
+  "he": "מס רווחי הון",
+  "en": null,
+  "meaning": "המס על הרווח ממכירת מניות, קרנות וניירות ערך אחרים; בבנק או בבית השקעות בישראל הוא מנוכה במכירה.",
+  "where": [
+    "ad",
+    "app"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500",
+    "index-ta125"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXF-01",
+    "TXF-02",
+    "TXF-22",
+    "TXH-17",
+    "TXS-01",
+    "TXS-05"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+    "title": "רשות המסים, דע זכויותיך וחובותיך 2025",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

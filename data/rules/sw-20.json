@@ -1,0 +1,15 @@
+{
+  "id": "SW-20",
+  "title": "Keren hishtalmut: whole balance, history kept, both funds told for one-account seniority",
+  "title_he": "ניוד קרן השתלמות: בשלמותה, עם ההיסטוריה והוותק",
+  "text_he": "קרן השתלמות עוברת רק בשלמותה, ורק לקרן השתלמות אחרת או, אם הכסף כבר ניתן למשיכה בלי מס, לקופת גמל לקצבה. קובץ הנתונים של הקרן נושא את ההיסטוריה שלה. שני חשבונות נחשבים לאחד לעניין תקופת הוותק רק אם העובד והמעסיק הודיעו לשתי הקרנות ומתקיימים התנאים. יש קרנות שלא מקבלות הפקדות אחרי שהמעסיק מפסיק לשלם.",
+  "strength": "primary",
+  "dimensions": [
+    "transfer-switch-process",
+    "liquidity-lockup",
+    "switching-tax-event"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-22"
+}

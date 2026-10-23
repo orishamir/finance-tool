@@ -1,0 +1,122 @@
+{
+  "id": "ETF-34",
+  "title": "TA-125 is drawn from the Rimon universe (about 250 shares from the Tamar universe meeting stricter criteria); the universe thresholds",
+  "title_he": "ת״א 125 נבנה ממאגר רימון; ספי המאגרים",
+  "text_he": "רק מניות שבמאגרי המניות של הבורסה יכולות להיכלל במדדיה: מאגר תמר הוא הרשימה הרחבה של כל מניה שעומדת בספים בסיסיים, ומאגר רימון הוא רשימה צרה יותר הנבנית מתמר לפי קריטריונים מחמירים ומשמשת בסיס למדדי הדגל, ובהם ת\"א־125. קריטריוני רימון: זיקה לישראל, דירוג שווי שוק בין המניות הגדולות ביותר לפי הדרגה שנקבעה, ונזילות באחת משתי רשימות, של מחזור יומי חציוני או של מהירות מחזור חציונית. ספי תמר כוללים שיעור החזקות ציבור מינימלי, שווי החזקות ציבור מינימלי ומחיר מניה מינימלי, וספי הכניסה גבוהים מספי ההישארות. מניה חדשה יכולה להיכנס במסלול מהיר הנבחן בחודשים קבועים, אם היא עומדת בספי רימון ונמנית עם המניות הגדולות במאגר, ולא בעדכונים החצי־שנתיים.",
+  "figure_names_he": {
+    "rimon_market_cap_rank": "דרגת שווי השוק לכניסה למאגר רימון",
+    "tamar_public_holdings_min_stay": "שיעור החזקות ציבור מינימלי להישאר במאגר תמר",
+    "tamar_public_holdings_min_join": "שיעור החזקות ציבור מינימלי להצטרף למאגר תמר",
+    "tamar_public_holdings_value_min_stay": "שווי החזקות ציבור מינימלי להישאר במאגר תמר",
+    "tamar_public_holdings_value_min_join": "שווי החזקות ציבור מינימלי להצטרף למאגר תמר"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-15",
+  "figures": {
+    "rimon_market_cap_rank": {
+      "value": 300,
+      "unit": "count",
+      "source": {
+        "url": "https://www.tase.co.il/he/content/knowledge_center/index_universe/",
+        "title": "TASE, מאגרי המניות למדדים - תמר ורימון (read through TASE's content API, route /content/knowledge_center/index_universe)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-34"
+      ],
+      "state": "sourced",
+      "notes": "Rimon: ranked among the 300 shares with the highest average market value, and among the 300 with the highest median daily turnover or median turnover velocity; a link to Israel."
+    },
+    "tamar_public_holdings_min_stay": {
+      "value": 10,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.tase.co.il/he/content/knowledge_center/index_universe/",
+        "title": "TASE, מאגרי המניות למדדים - תמר ורימון (read through TASE's content API, route /content/knowledge_center/index_universe)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-34"
+      ],
+      "state": "sourced",
+      "notes": "Minimum public-holdings rate to stay in Tamar; 15% to join."
+    },
+    "tamar_public_holdings_min_join": {
+      "value": 15,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.tase.co.il/he/content/knowledge_center/index_universe/",
+        "title": "TASE, מאגרי המניות למדדים - תמר ורימון (read through TASE's content API, route /content/knowledge_center/index_universe)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-34"
+      ],
+      "state": "sourced"
+    },
+    "tamar_public_holdings_value_min_stay": {
+      "value": 20000000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.tase.co.il/he/content/knowledge_center/index_universe/",
+        "title": "TASE, מאגרי המניות למדדים - תמר ורימון (read through TASE's content API, route /content/knowledge_center/index_universe)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-34"
+      ],
+      "state": "sourced",
+      "notes": "Minimum average value of public holdings: NIS 20 million to stay, NIS 40 million to join."
+    },
+    "tamar_public_holdings_value_min_join": {
+      "value": 40000000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.tase.co.il/he/content/knowledge_center/index_universe/",
+        "title": "TASE, מאגרי המניות למדדים - תמר ורימון (read through TASE's content API, route /content/knowledge_center/index_universe)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-34"
+      ],
+      "state": "sourced"
+    }
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-23"
+}

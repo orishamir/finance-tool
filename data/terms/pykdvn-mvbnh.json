@@ -1,0 +1,25 @@
+{
+  "id": "pykdvn-mvbnh",
+  "he": "פיקדון מובנה",
+  "en": null,
+  "meaning": "פיקדון בבנק שהרווח בו תלוי בתנועה של מדד, מניה או שער מטבע; הקרן בדרך כלל מובטחת.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [
+    "פיקדונות מובנים"
+  ],
+  "rule_ids": [
+    "FXD-10",
+    "FXD-11",
+    "FXD-12",
+    "FXD-16",
+    "TX2-05"
+  ],
+  "source": {
+    "url": "https://www.fibi.co.il/private/depositsandsavings/structured/",
+    "title": "FIBI, פיקדונות מובנים page",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

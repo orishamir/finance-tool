@@ -1,0 +1,61 @@
+{
+  "id": "TXP-10",
+  "title": "Employer pension deposit (employer-contribution component): not taxed at deposit up to the ceiling",
+  "title_he": "הפקדת המעסיק לתגמולים: לא ממוסה עד התקרה",
+  "text_he": "הפקדות המעסיק למרכיב תגמולי המעביד בקופות גמל לקצבה, מכל המעסיקים יחד, נחשבות הכנסת עבודה של העובד כבר במועד ההפקדה רק בחלק שמעל השיעור להפקדה כפול השכר או כפול תקרת השכר, הנמוך מביניהם; עד הרמה הזו הן הכנסה רק כשהעובד מקבל אותן. השיעור להפקדה הוא הנמוך מבין השיעור שבתקנות למרכיב המעסיק והשיעור שהמעסיק הפקיד בפועל, ותקרת השכר היא כפולה של השכר הממוצע החודשי שמתעדכנת איתו כל שנה. עובד עם כמה מעסיקים שהפקדותיהם עברו את התקרות מצרף חישוב לדוח השנתי, והסכום שמוסה מופיע בטופס השנתי מהמעסיק. הפקודה והתקנות נקראו בעותק בוויקיטקסט; אם גרסת התקנות עדכנית לא אומת.",
+  "figure_names_he": {
+    "employer_exempt_pct": "שיעור הפקדת המעסיק שלא ממוסה בהפקדה",
+    "employer_ceiling": "תקרת השכר להפקדת המעסיק (חודשי)"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "tax-at-deposit",
+    "deposit-ceiling"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "employer_exempt_pct": {
+      "value": 7.5,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance s.3(e3)(1), (2) (Wikisource mirror); Income Tax (Rules for Approval and Management of Provident Funds) Regulations 1964, reg. 19(a)(1)(c)(1): \"שיעור שלא יעלה על 7.5% מן המשכורת\"",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXP-10"
+      ],
+      "state": "sourced",
+      "notes": "Employer deposits to the employer-contribution component up to 7.5% of the salary (capped at employer_ceiling) are work income only when the employee receives them; the part above is salary when paid to the fund (Form 106: \"סה\"כ ההפרשה שהעובד חוייב במס בגינה\"). The regulations' version currency is unconfirmed (open question 12)."
+    },
+    "employer_ceiling": {
+      "value": 34423,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+        "title": "Tax Authority deductions booklet 2026, p.12, row \"תקרה להפרשות המעביד לקופת גמל לקצבה 3(ה3)\"",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "average-wage-linked",
+      "rule_ids": [
+        "TXP-10"
+      ],
+      "state": "sourced",
+      "notes": "NIS per month, 2026: 2.5 times the monthly average wage. 33,290 (2025), 31,340 (2024), 29,675 (2023). Updated every year with the average wage; not frozen."
+    }
+  },
+  "il_finance_file": "tax-pension-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

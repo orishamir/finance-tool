@@ -1,0 +1,20 @@
+{
+  "id": "mslvl-hshkah-mtmchh",
+  "he": "מסלול השקעה מתמחה",
+  "en": null,
+  "meaning": "מסלול שמשקיע לפי התמחות מוגדרת מתוך רשימת המסלולים של רשות שוק ההון, למשל מניות או מדדים",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "CAT-15",
+    "CAT-17"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+    "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

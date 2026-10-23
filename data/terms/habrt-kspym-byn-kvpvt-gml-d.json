@@ -1,0 +1,31 @@
+{
+  "id": "habrt-kspym-byn-kvpvt-gml-d",
+  "he": "העברת כספים בין קופות גמל",
+  "en": null,
+  "meaning": "העברה של הכסף שצברתם מקופה אחת לאחרת, ישירות בין החברות המנהלות ובלי שהכסף עובר דרככם",
+  "where": [
+    "ad",
+    "app"
+  ],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [
+    "ניוד"
+  ],
+  "rule_ids": [
+    "PF-17",
+    "PF-18",
+    "PF-19",
+    "PF-20"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)",
+    "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

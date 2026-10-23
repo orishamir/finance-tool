@@ -1,0 +1,60 @@
+{
+  "id": "GOV-22",
+  "title": "Bank of Israel's consumer page on makam",
+  "title_he": "עמוד הצרכן של בנק ישראל על מק\"ם",
+  "text_he": "בנק ישראל מתאר מק\"ם בעמוד הצרכן שלו כנייר ערך שהוא מנפיק בניכיון לתקופה של עד שנה, \"נחשב להשקעה חסרת סיכון עם תשואה ידועה מראש\", ונסחר בבורסה בכל יום מסחר. אדם פרטי משקיע דרך חשבון ניירות ערך בבנק או בבית השקעות: בהזמנה למכרז ההנפקה והחזקה עד הפדיון, או בקנייה בבורסה. בכל רגע קיים מספר קבוע של סדרות, ובכל חודש אחת נפרעת ואחת חדשה מונפקת. העמוד גם אומר באיזה שיעור ממוסה רווח ההון על מק\"ם, אבל זו אמירה של בנק ישראל ולא מקור של רשות המסים; מינימום ועמלות להזמנה במכרז לא מצוינים.",
+  "figure_names_he": {
+    "series_outstanding": "מספר הסדרות הקיימות בכל רגע",
+    "issues_per_month": "הנפקות בחודש"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "series_outstanding": {
+      "value": 12,
+      "unit": "count",
+      "source": {
+        "url": "https://www.boi.org.il/information/bank-paymnts/savingsandinvestmentproducts/makam/",
+        "title": "בנק ישראל, מק\"ם (consumer page, updated 25/02/2025)",
+        "publisher": "Bank of Israel",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "GOV-22"
+      ],
+      "state": "sourced",
+      "notes": "Twelve series exist at any time; each month one matures and a new one is issued. The page also says capital gains on makam are taxed at 15%: BoI's statement, not a Tax Authority source (TXI open question 3). The proposed dimension market-price-exit is not adopted for release 1 and is left off this record."
+    },
+    "issues_per_month": {
+      "value": 1,
+      "unit": "count",
+      "source": {
+        "url": "https://www.boi.org.il/information/bank-paymnts/savingsandinvestmentproducts/makam/",
+        "title": "בנק ישראל, מק\"ם (consumer page, updated 25/02/2025)",
+        "publisher": "Bank of Israel",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "GOV-22"
+      ],
+      "state": "sourced",
+      "notes": "The issue auction is held \"usually once a month\"; the series runs about a year (GOV-23). Method F-24 rolls the net redemption proceeds into the next series."
+    }
+  },
+  "il_finance_file": "government-bonds-and-makam.md",
+  "checked": "2026-10-22"
+}

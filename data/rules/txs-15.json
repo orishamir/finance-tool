@@ -1,0 +1,14 @@
+{
+  "id": "TXS-15",
+  "title": "Foreign tax paid inside an Israeli exempt fund on foreign holdings is a cost inside the fund; the saver still pays Israeli tax on the full real gain",
+  "title_he": "מס זר בתוך קרן פטורה ישראלית הוא עלות הקרן",
+  "text_he": "קרן פטורה ישראלית עשויה לשלם מס בחו״ל על הכנסות ורווחים מניירות ערך שנסחרים בחו״ל, מניירות ערך דואליים ומניירות ערך של מנפיקים זרים שנסחרים רק בישראל. המס הזר הוא עלות בתוך הקרן, והחוסך עדיין משלם מס ישראלי על מלוא הרווח הריאלי בפדיון. זה כתוב בתשקיפים של מנהלי קרנות, לא בחוק. אם בעל היחידה יכול לקבל זיכוי על המס הזר לא נמצא במקור ראשי.",
+  "strength": "institution",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "tax-during"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-securities-israeli.md",
+  "checked": "2026-10-22"
+}

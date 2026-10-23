@@ -1,0 +1,28 @@
+{
+  "id": "nykvy-ms-bmkvr-a",
+  "he": "ניכוי מס במקור",
+  "en": null,
+  "meaning": "מס שהבנק או מי שמשלם לכם את הריבית מוריד מראש, כך שהריבית מגיעה אליכם אחרי מס",
+  "where": [
+    "statement",
+    "tax-form"
+  ],
+  "wrapper_ids": [
+    "bank-deposit",
+    "current-account",
+    "government-bond",
+    "makam"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXI-08",
+    "TXI-09"
+  ],
+  "source": {
+    "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
+    "title": "Income Tax (Withholding from Interest, Dividend and Certain Profits) Regulations 2005, consolidated to 27.12.2017 (copy on btl.gov.il)",
+    "publisher": "National Insurance Institute",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

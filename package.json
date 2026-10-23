@@ -13,9 +13,11 @@
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "vitest run",
     "validate": "npm run validate -w @finance-tool/pipeline",
+    "refresh": "npm run refresh -w @finance-tool/pipeline --",
     "build": "npm run build -w site",
     "dev": "npm run dev -w site",
-    "check": "npm run typecheck && npm test && npm run validate && npm run build"
+    "check": "npm run typecheck && npm test && npm run validate && npm run build",
+    "gen:terms": "tsx packages/pipeline/scripts/gen-terms.ts"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",

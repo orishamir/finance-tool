@@ -1,0 +1,25 @@
+{
+  "id": "loss-offset",
+  "he": "קיזוז הפסדים",
+  "one_line": "האם אפשר להוריד הפסד מהשקעה אחת מהרווח בהשקעה אחרת, וכך לשלם פחות מס",
+  "source": {
+    "url": "docs/product.md#33-dimension-checklist-or-what-you-are-not-considering",
+    "title": "product.md 3.3 and glossary.md section 2",
+    "publisher": "project",
+    "strength": "primary",
+    "checked": "2026-10-23"
+  },
+  "rule_ids": [
+    "SW-36",
+    "TXF-23",
+    "TXI-13",
+    "TXI-17",
+    "TXI-25",
+    "TXS-11",
+    "TXS-12",
+    "TXS-17",
+    "TXS-18",
+    "TXS-19",
+    "TXS-22"
+  ]
+}

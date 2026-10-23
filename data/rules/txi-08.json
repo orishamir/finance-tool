@@ -1,0 +1,60 @@
+{
+  "id": "TXI-08",
+  "title": "Bank withholding on deposit, savings-plan and current-account interest",
+  "title_he": "ניכוי מס במקור בבנק על ריבית ששולמה ליחיד",
+  "text_he": "בנק שמשלם ריבית ליחיד מנכה מס במקור בשיעור הניכוי הרגיל, ואם הריבית היא על נכס שאינו צמוד למדד, בשיעור הניכוי לנכס לא צמוד. הכלל חל על כל ריבית שבנק משלם ליחיד, ולכן גם על ריבית על יתרת זכות בעובר ושב. בחשבון משותף הריבית נחשבת כמשולמת לשותפים בחלקים שווים אלא אם הוכח אחרת. לפי בקשה הבנק נותן אישור שנתי על הריבית והמס שנוכה, וזיכוי על המס שנוכה ניתן רק כנגד אישור כזה.",
+  "figure_names_he": {
+    "withholding_rate_linked": "שיעור הניכוי במקור על ריבית צמודה",
+    "withholding_rate_unlinked": "שיעור הניכוי במקור על ריבית לא צמודה"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "tax-during",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "withholding_rate_linked": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
+        "title": "Income Tax (Withholding from Interest, Dividend and Certain Profits) Regulations 2005, consolidated to 27.12.2017, reg. 4",
+        "publisher": "Finance Ministry (copy on the National Insurance site)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2006-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXI-08"
+      ],
+      "state": "sourced",
+      "notes": "A banking corporation that pays interest to an individual withholds 25% (reg. 4). Covers any interest a bank pays to an individual, so it reaches current-account credit interest as well as deposits and plans. Regulations in force from 1.1.2006; later amendments after 27.12.2017 not checked (TXI OQ18)."
+    },
+    "withholding_rate_unlinked": {
+      "value": 15,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
+        "title": "Income Tax (Withholding from Interest, Dividend and Certain Profits) Regulations 2005, consolidated to 27.12.2017, reg. 4",
+        "publisher": "Finance Ministry (copy on the National Insurance site)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2006-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXI-08"
+      ],
+      "state": "sourced",
+      "notes": "If the interest is on an asset not linked to the index, the bank withholds 15% (reg. 4). The rate itself is TXI-03; a partly linked deposit counts as unlinked (TXI-04). Annual certificate on form 0867 by 20 March (reg. 16)."
+    }
+  },
+  "il_finance_file": "tax-interest-deposits-bonds.md",
+  "checked": "2026-10-22"
+}

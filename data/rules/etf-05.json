@@ -1,0 +1,82 @@
+{
+  "id": "ETF-05",
+  "title": "Creation and redemption fees on direct orders, by fund category: 0.1%, 0.2% or 0.3%",
+  "title_he": "עמלות יצירה ופדיון בפקודות ישירות, לפי קטגוריית הקרן",
+  "text_he": "עמלת פדיון מנוכה ממחיר הפדיון, ועמלת יצירה באותו שיעור נוספת למחיר היחידה. השיעור נקבע לפי קטגוריית הקרן: שיעור אחד לקרנות שרוב חשיפתן לאיגרות חוב ישראליות או למניות ישראליות עם עלויות יצירה נמוכות, שיעור גבוה יותר לקרנות שרוב חשיפתן למדדים שנסחרים בחו\"ל או לקרנות בלי דמי ניהול משתנים, ושיעור ביניים לכל השאר. העמלות חלות על יצירה ופדיון ישירים ולא על קנייה ומכירה בבורסה; הן אינן חלות על יצירה או פדיון בתמהיל נכסים של עושה השוק, ולא בפירוק, אחרי תקופת ההצעה או ביום שההצעה נפסקת. נוסח התקנות נקרא באתר שמעתיק אותו.",
+  "figure_names_he": {
+    "fee_israeli_bonds_or_equities": "שיעור העמלה לקרנות על אג\"ח או מניות ישראליות",
+    "fee_foreign_indices": "שיעור העמלה לקרנות על מדדים זרים או בלי דמי ניהול משתנים",
+    "fee_other": "שיעור העמלה לשאר הקרנות"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "fee-trade",
+    "fee-exit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "fee_israeli_bonds_or_equities": {
+      "value": 0.1,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(קרנות_מחקות)",
+        "title": "Joint Investment Trust (Tracking Funds) Regulations 2018 (Hebrew Wikisource mirror)",
+        "publisher": "Legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-05"
+      ],
+      "state": "sourced",
+      "notes": "Funds with over 50% exposure to Israeli bonds or Israeli equities with low creation costs (regs. 6-8, 2018 text)."
+    },
+    "fee_foreign_indices": {
+      "value": 0.3,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(קרנות_מחקות)",
+        "title": "Joint Investment Trust (Tracking Funds) Regulations 2018 (Hebrew Wikisource mirror)",
+        "publisher": "Legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-05"
+      ],
+      "state": "sourced",
+      "notes": "Funds with over 50% exposure to foreign-traded indices, or without a variable fee. Example: the IBI S&P 500 ETF charges 0.30% on creation and on redemption (31.12.2025)."
+    },
+    "fee_other": {
+      "value": 0.2,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(קרנות_מחקות)",
+        "title": "Joint Investment Trust (Tracking Funds) Regulations 2018 (Hebrew Wikisource mirror)",
+        "publisher": "Legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-05"
+      ],
+      "state": "sourced",
+      "notes": "All other funds. These fees apply to direct creation and redemption, not to buying or selling on the exchange."
+    }
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-22"
+}

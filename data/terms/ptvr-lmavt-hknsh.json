@@ -1,0 +1,25 @@
+{
+  "id": "ptvr-lmavt-hknsh",
+  "he": "פטור למעוט הכנסה",
+  "en": null,
+  "meaning": "סכום מהריבית על פיקדון או תוכנית חיסכון שלא משלמים עליו מס, כשההכנסה שלכם ושל בני הזוג נמוכה",
+  "where": [
+    "tax-form"
+  ],
+  "wrapper_ids": [
+    "bank-deposit",
+    "savings-plan"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXI-20",
+    "TXI-23"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+    "title": "Israel Tax Authority, deductions booklet for January 2026 onward, updated April 2026",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

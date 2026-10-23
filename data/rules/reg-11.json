@@ -1,0 +1,38 @@
+{
+  "id": "REG-11",
+  "title": "If a fund manager or trustee fails",
+  "title_he": "אם מנהל קרן או נאמן קורסים",
+  "text_he": "נאמן: כהונתו מסתיימת אם מונה לו כונס נכסים זמני או מפרק והצו לא בוטל בזמן; המנהל חייב אז להחתים נאמן מאושר אחר על הסכם הקרן, ואם אף נאמן לא מתחיל בתוך תקופת ההחלפה, הרשות רשאית להורות להעביר את הקרן למנהל אחר. מנהל: אישורו פוקע עם צו כינוס זמני או פירוק, ובביטול האישור ניהול הקרנות עובר למנהל אחר בתוך תקופה שיושב ראש הרשות קובע; אם לא, בית המשפט רשאי למנות כונס שיעביר אותן. הרשות רשאית לבקש לפרק קרן, ובית המשפט רשאי להורות במקום זאת על העברה למנהל אחר.",
+  "figure_names_he": {
+    "trustee_replacement_days": "ימים להחלפת נאמן לפני שהרשות רשאית להעביר את הקרן"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "trustee_replacement_days": {
+      "value": 90,
+      "unit": "days",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
+        "title": "חוק השקעות משותפות בנאמנות, section 12(ג) (Wikisource mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "REG-11"
+      ],
+      "state": "sourced",
+      "notes": "If no new approved trustee starts within 90 days of the old one's office ending, the ISA may order the fund transferred to another manager."
+    }
+  },
+  "il_finance_file": "regulators-and-protection.md",
+  "checked": "2026-10-22"
+}

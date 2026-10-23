@@ -1,0 +1,31 @@
+{
+  "id": "tax-at-deposit",
+  "he": "מס בהפקדה",
+  "one_line": "האם ההפקדה מזכה בהטבת מס, או שמשלמים מס על הכסף כבר כשמפקידים אותו",
+  "source": {
+    "url": "docs/product.md#33-dimension-checklist-or-what-you-are-not-considering",
+    "title": "product.md 3.3 and glossary.md section 2",
+    "publisher": "project",
+    "strength": "primary",
+    "checked": "2026-10-23"
+  },
+  "rule_ids": [
+    "TXG-35",
+    "TXH-01",
+    "TXH-03",
+    "TXH-04",
+    "TXH-05",
+    "TXH-22",
+    "TXK-01",
+    "TXK-19",
+    "TXP-01",
+    "TXP-02",
+    "TXP-03",
+    "TXP-04",
+    "TXP-05",
+    "TXP-06",
+    "TXP-10",
+    "TXP-11",
+    "TXP-12"
+  ]
+}

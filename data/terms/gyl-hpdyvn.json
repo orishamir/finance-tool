@@ -1,0 +1,25 @@
+{
+  "id": "gyl-hpdyvn",
+  "he": "גיל הפדיון",
+  "en": null,
+  "meaning": "הגיל שממנו אפשר למשוך את כספי החיסכון לכל ילד; בשנים הראשונות אחריו נדרשת גם חתימת הורה",
+  "where": [
+    "bylaws"
+  ],
+  "wrapper_ids": [
+    "child-savings-bank",
+    "child-savings-provident"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "CS-14",
+    "CS-15"
+  ],
+  "source": {
+    "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
+    "title": "National Insurance, משיכת החיסכון",
+    "publisher": "National Insurance Institute",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "id": "BRK-19",
+  "title": "Banks: a fee for a service through a direct channel must be lower than the clerk fee for the same service",
+  "title_he": "בנקים: עמלה בערוץ ישיר נמוכה מהעמלה דרך פקיד",
+  "text_he": "עמלה על שירות מהתעריפון המלא שניתן בערוץ ישיר חייבת להיות נמוכה מהעמלה שהבנק קבע לאותו שירות דרך פקיד, אלא אם השירות דרך פקיד ניתן בחינם. הכלל חל על כל שירות בתעריפון, ולכן גם על פעולות בניירות ערך.",
+  "strength": "primary",
+  "dimensions": [
+    "fee-trade"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,16 @@
+{
+  "id": "CAT-06",
+  "title": "Fee fields: average rates, apparently for the previous year",
+  "title_he": "שדות העמלה: ממוצעים, כנראה לשנה הקודמת",
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-deposit",
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "text_he": "שני שדות העמלה ברשות שוק ההון הם ממוצעים על פני עמיתי המסלול, לא מחירון ולא מה שכל חוסך משלם. אחד מהם הוא שיעור דמי הניהול מהצבירה, והשני שיעור דמי הניהול מההפקדות. הערך מתחלף בכל ינואר, והבהרות על התקופה והמשקל מפורטות בכללים הסמוכים.",
+  "il_finance_file": "tracks-catalogue-and-decoder.md",
+  "checked": "2026-10-23"
+}

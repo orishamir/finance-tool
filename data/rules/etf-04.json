@@ -1,0 +1,15 @@
+{
+  "id": "ETF-04",
+  "title": "Two ways in and out of an Israeli ETF: trading on TASE, or creation and redemption through a TASE member; an open tracking fund does not trade on the exchange",
+  "title_he": "שתי דרכים לקרן סל: מסחר בבורסה או יצירה ופדיון",
+  "text_he": "קרן סל ישראלית מוצעת לציבור בשתי דרכים: מסחר רציף בבורסה, או פקודות יצירה ופדיון דרך חברי הבורסה בימי המסחר של הקרן. יחידות שנפדו אינן מבוטלות אלא נשמרות כיחידות רדומות (המחסנית) ומונפקות מחדש ביצירה. יצירה ופדיון עוברים דרך מפיץ, שאינו רשאי לסרב ליחידות המוצעות לפי תשקיף מאושר, ומנהל הקרן רשאי להודיע על מגבלות על גודל הפקודה; קרן הסל של אי.בי.אי מדווחת שאין לה מינימום לפקודה ואין מקסימום ליצירה. קרן מחקה פתוחה, לעומת זאת, אינה נסחרת בבורסה, וקונים ופודים אותה כקרן נאמנות.",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "minimum",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-22"
+}

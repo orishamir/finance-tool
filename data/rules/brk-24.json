@@ -1,0 +1,17 @@
+{
+  "id": "BRK-24",
+  "title": "Non-bank member tariffs: the bank part structure plus extra fee lines (monthly account fee, custody, conversion spread, data, income handling, transfers, third-party charges)",
+  "title_he": "תעריפוני בתי ההשקעות: מבנה הבנקים ושורות עמלה נוספות",
+  "text_he": "תעריפוני בתי ההשקעות שנקראו בנויים לפי החלקים של תעריפון הבנקים ומוסיפים שורות שמשנות את העלות: דמי טיפול חודשיים לחשבון, דמי משמרת או דמי ניהול פיקדון ניירות ערך, מרווח המרה לצד עמלת החליפין או במקומה, תשלום חודשי על מערכות מתקדמות או ציטוטים בזמן אמת, עמלה על תשלומי ריבית ודיבידנד, עמלות העברת ניירות, והערה שעסקאות בארצות הברית עשויות לשאת חיובים נוספים של הרגולטור והבורסות מעבר לעמלה. אקסלנס מציינת שחבר הבורסה רשאי לגבות פחות מהתעריפון, כך שהתעריפון הוא תקרה ויש מחירים מוסכמים. אלה תעריפוני הגופים עצמם, והם משתנים כמה פעמים בשנה.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-custody",
+    "fee-trade",
+    "fee-fx",
+    "fee-exit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-22"
+}

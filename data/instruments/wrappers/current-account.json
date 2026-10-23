@@ -1,0 +1,146 @@
+{
+  "id": "current-account",
+  "names": {
+    "he": [
+      "חשבון עובר ושב",
+      "עו\"ש",
+      "יתרת זכות בחשבון"
+    ],
+    "statement": [
+      "עו\"ש",
+      "יתרת זכות"
+    ],
+    "app": [
+      "עו\"ש"
+    ]
+  },
+  "regulator": {
+    "value": "BoI",
+    "unit": "text",
+    "source": {
+      "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות",
+      "title": "Banking Ordinance 1941, consolidated text (Hebrew Wikisource mirror), s.5(א)",
+      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "strength": "primary-mirror"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "REG-01",
+      "REG-03"
+    ],
+    "state": "sourced",
+    "notes": "Banks are supervised by the Supervisor of Banks at the Bank of Israel, who holds \"הפיקוח הכללי והבקורת על כל תאגיד בנקאי\" (Banking Ordinance s.5(א)); the banking corporations themselves are the 17 entries (11 ordinary banks) in the BoI's list on data.gov.il (REG-03, 2026-10-22)."
+  },
+  "fee_bases_allowed": [
+    "fixed_period"
+  ],
+  "fee_caps": {},
+  "ceiling": null,
+  "deposit_side_tax": {
+    "formula": "F-33",
+    "rule_ids": []
+  },
+  "tax_during": {
+    "formula": "F-26",
+    "rule_ids": [
+      "TXI-08",
+      "TXI-03",
+      "TXI-04",
+      "BANK-09"
+    ]
+  },
+  "tax_at_exit": {
+    "formula": "F-41",
+    "rule_ids": [
+      "TXI-07",
+      "TXI-08"
+    ],
+    "blocked_by": [],
+    "labels": []
+  },
+  "lawful_exit": {
+    "kind": "any_time",
+    "text": "the credit balance is available at any time; a bank may not unreasonably refuse to run the account while it is in credit and the account agreement is kept (BANK-01)"
+  },
+  "switch_is_tax_event": {
+    "value": false,
+    "unit": "boolean",
+    "source": {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
+      "title": "Income Tax (Withholding from Interest, Dividend and Certain Profits) Regulations 2005, consolidated to 27.12.2017, reg. 4 (the bank withholds when it pays the interest); directive 448 v2 s.29",
+      "publisher": "Finance Ministry (copy on the National Insurance site)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-08",
+      "SW-26",
+      "SW-29"
+    ],
+    "state": "sourced",
+    "notes": "Derived from the cited rules, not stated in words by any of them: interest on the credit balance is taxed when the bank credits it (TXI-08, F-26), so moving the balance to another bank through the online account-switching service (SW-26) moves money that is already after tax. Deposits and securities left behind stay at the old bank on their terms until maturity, and the BoI Q&A to directive 448 says the move may cause a tax event for those (SW-29)."
+  },
+  "transfer_routes": [
+    {
+      "to": "current-account",
+      "condition": "through the receiving bank's online account-switching service, at no cost; deposits, savings plans and untransferable securities stay at the old bank",
+      "rule_ids": [
+        "SW-26",
+        "SW-27",
+        "SW-29"
+      ]
+    }
+  ],
+  "eligibility": {
+    "rule_ids": [
+      "BANK-01",
+      "BANK-09",
+      "BANK-17"
+    ],
+    "text": "any individual; a bank may not unreasonably refuse to open and run a current account that stays in credit (anti-money-laundering identification still applies); credit interest, where a bank pays any, may need a separate signature and carry conditions the bank must display; every bank must let any customer join the basic or the extended fee track"
+  },
+  "protection": {
+    "rule_ids": [
+      "REG-04",
+      "REG-05",
+      "REG-06",
+      "BANK-23"
+    ],
+    "text": "no deposit insurance exists in law; if a bank cannot meet its obligations the Governor may appoint an authorised manager and transfer its assets and liabilities, and may, with Government approval, announce that the Bank of Israel guarantees its deposits, a discretionary power and not an entitlement; a 2026 law orders an examination of deposit insurance within a year; a private bill would guarantee NIS 250,000 per customer at small banks, but it is only a bill, and it would not cover current-account balances"
+  },
+  "dimensions": {
+    "age-or-use-exemption": "blocked:TXI-OQ11",
+    "currency": "covered",
+    "eligibility": "covered",
+    "fee-deposit": "blocked:BANK-OQ9",
+    "fee-exit": "covered",
+    "fee-fx": "covered",
+    "liquidity-lockup": "covered",
+    "loss-offset": "blocked:TXI-OQ7",
+    "protection": "covered",
+    "real-vs-nominal": "covered",
+    "regulator": "covered",
+    "reporting-obligation": "covered",
+    "switching-tax-event": "covered",
+    "tax-at-exit": "covered",
+    "tax-during": "covered",
+    "transfer-switch-process": "covered"
+  },
+  "tier": 1,
+  "open_questions": [
+    "BANK-OQ8",
+    "BANK-OQ9",
+    "TXI-OQ7",
+    "TXI-OQ11",
+    "REG-OQ13"
+  ],
+  "checked": "2026-10-23"
+}

@@ -1,0 +1,129 @@
+{
+  "id": "PEN-21",
+  "title": "Regulated fee caps for pension funds and pensioners",
+  "title_he": "תקרות דמי הניהול לקרנות פנסיה ולפנסיונרים",
+  "text_he": "דמי הניהול המרביים לפי תקנות דמי הניהול: בקרן חדשה מקיפה עד התקרה מהצבירה ועד התקרה מההפקדות; מפנסיונרים עד שיעור מהנכסים שעומדים כנגד התחייבויות הקצבה, ונמוך יותר למקבלי קצבת זקנה שהחלה אחרי המועד שבתקנות; לקצבה שמתחת לקצבת המינימום, עד שיעור מההפרש בין קצבת המינימום לקצבה המשולמת. בקרן חדשה כללית התקרה מהצבירה גבוהה יותר והתקרה מההפקדות נמוכה יותר. בקרן רב מסלולית התקרות חלות לכל מסלול, דמי הניהול מיתרת עמית נכה לא יעלו על מה שנגבה לפני הנכות, ולחשבונות של עמיתים שנותק עמם הקשר או שנפטרו יש תקרה נמוכה בתנאים. התקנות נקראו בעותק בוויקיטקסט.",
+  "figure_names_he": {
+    "comprehensive_balance_cap": "תקרת דמי ניהול מהצבירה, קרן מקיפה",
+    "comprehensive_deposit_cap": "תקרת דמי ניהול מההפקדות, קרן מקיפה",
+    "general_balance_cap": "תקרת דמי ניהול מהצבירה, קרן כללית",
+    "general_deposit_cap": "תקרת דמי ניהול מההפקדות, קרן כללית",
+    "annuitant_balance_cap_from_2022": "תקרת דמי ניהול ממקבלי קצבת זקנה חדשים"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-deposit",
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "comprehensive_balance_cap": {
+      "value": 0.5,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+        "title": "Management Fees Regulations 2012, regulation 3 (Wikisource mirror); Mor comprehensive bylaws 01.06.2025, s.8",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PEN-21",
+        "PF-04"
+      ],
+      "state": "sourced",
+      "notes": "New comprehensive fund: up to 0.5% a year of the balance (monthly equivalent 0.04157% in the bylaws). Caps are set by regulation with Finance Committee approval (law s.32(ב))."
+    },
+    "comprehensive_deposit_cap": {
+      "value": 6,
+      "unit": "pct_of_deposit",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+        "title": "Management Fees Regulations 2012, regulation 3 (Wikisource mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PEN-21",
+        "PF-04"
+      ],
+      "state": "sourced",
+      "notes": "New comprehensive fund: up to 6% of deposits."
+    },
+    "general_balance_cap": {
+      "value": 1.05,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+        "title": "Management Fees Regulations 2012, regulation 3 (Wikisource mirror); Mor general bylaws 01.04.2026, s.8",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PEN-21",
+        "PF-05"
+      ],
+      "state": "sourced",
+      "notes": "New general fund: up to 1.05% a year of the balance (monthly 0.08708%)."
+    },
+    "general_deposit_cap": {
+      "value": 4,
+      "unit": "pct_of_deposit",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+        "title": "Management Fees Regulations 2012, regulation 3 (Wikisource mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PEN-21",
+        "PF-05"
+      ],
+      "state": "sourced",
+      "notes": "New general fund: up to 4% of deposits."
+    },
+    "annuitant_balance_cap_from_2022": {
+      "value": 0.3,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+        "title": "Management Fees Regulations 2012, regulation 3 (Wikisource mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2022-02-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PEN-21"
+      ],
+      "state": "sourced",
+      "notes": "Old-age pensioners whose pension started on or after 1 February 2022: up to 0.3% a year of the assets backing the pension obligations (0.5% for earlier pensions in a comprehensive fund; 0.6% from 2013 in a general fund)."
+    }
+  },
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

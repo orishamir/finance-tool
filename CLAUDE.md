@@ -3,7 +3,14 @@
 Personal, non-commercial website that helps me and a few friends and family
 make saving and investing decisions in Israel.
 
-## Status: defined, not built
+## Status: release 1 complete, release 2 under way
+
+Release 1 (2026-10-23) is complete with its data: every screen in
+`docs/design-spec.md`, all 17 wrapper and 7 exposure records, rules, terms,
+dimensions and the Meitav catalogue (see `docs/data-inventory.md`). Release 2's
+engine and design are done and its screens are being built; the Bank of Israel
+series are links, not numbers (product D20). The dated "Status" paragraphs in
+`docs/roadmap.md` say what exists and what is still open per release.
 
 `docs/product.md` defines the site: who it is for, the capabilities, the
 decisions D1 to D13 (confirmed 2026-10-22, open to revision as I learn more),
@@ -48,8 +55,45 @@ re-check the capabilities that depend on it.
 - `packages/schema/` — data schemas (Zod) for `docs/data-schema.md`; `json/` holds the exported JSON Schema
 - `packages/engine/` — calculation engine, one function per `docs/method.md` formula; no I/O
 - `packages/pipeline/` — validator (and, later, refresh adapters)
-- `site/` — React Router app, pre-rendered, Hebrew right to left
+- `site/` — React Router app, pre-rendered, Hebrew right to left; `site/app/copy.ts` holds the UI strings, `site/app/content/guide/` the prose of each guide page
 - `docs/architecture.md` — stack and design (React chosen 2026-10-22)
+- `docs/design-system.md` — tokens, conventions and the release 1 components
+- `docs/flows.md` — user flows for release 1 (approved 2026-10-23), the screens they need and a design brief per screen
+- `docs/copy.md`, `docs/glossary.md` — all Hebrew UI text, and a sourced one-line explanation for every financial term
+- `docs/design-spec.md` — developer handoff for the approved release 1 screens
+
+## Design system
+
+Look approved by the founder (2026-10-23). Tokens live in `site/app/theme.css`;
+`docs/design-system.md` explains each one and specifies every R1 component.
+
+- **Dark only** (founder, 2026-10-22). No light theme, no theme switch.
+- **Tiers.** `--palette-*` oklch ramps → semantic roles → Tailwind utilities
+  (`bg-card`, `text-entered`). Tailwind's default colours are removed.
+  Components use roles only, never a palette step or a literal colour.
+- **Colour.** Warm dark-grey surfaces that get lighter as they rise
+  (`background`, `card`, `popover`), teal for actions and links. Surface and
+  text roles use shadcn/ui names (`background`, `foreground`, `card`,
+  `muted-foreground`, `primary`, `border`, `input`, `ring`).
+- **Number states (D7).** Sourced: solid grey underline. Computed: dotted
+  violet underline. Entered by you: blue ink on a blue highlight. Flags:
+  `caution` amber (stale, secondary source), `blocked` red with a lock (open
+  rule), `positive` green (dimension considered). Colour never works alone:
+  each state also has a pattern, icon or word. Every number goes through the
+  provenance component.
+- **Charts.** Own SVG components. Teal value, orange fees, rose tax, neutral
+  contributions, dashed blue for a series that rests on an entered return,
+  red hatch for blocked parts. Time runs left to right; value labels sit
+  at the right. Blue and violet are never series colours.
+- **Type.** Inter (Latin, digits) then Heebo (Hebrew), self-hosted variable
+  fonts (approved 2026-10-22). Scale 13/14/16/18/20/24/30 px plus a 32 px figure size; body 16 px
+  at line height 1.7. No letter-spacing on Hebrew. Numbers use tabular
+  figures; identifiers also use a slashed zero.
+- **Spacing.** 4 px base; `px-gutter` 16 to 32 px, `gap-section` 40 to 64 px,
+  44 px touch targets, 48 px fields, prose at `max-w-measure` (38rem).
+- **RTL and formats.** Logical properties only. Isolate every number, date
+  and identifier inside Hebrew text. `Intl` with `he-IL`: `1,234.50 ₪`,
+  `22.10.2026`. Plural imperative in copy.
 
 ## Commands
 

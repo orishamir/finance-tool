@@ -1,0 +1,60 @@
+{
+  "id": "REG-05",
+  "title": "Private deposit-insurance bill P/6522/25: content and status",
+  "title_he": "הצעת חוק פרטית לביטוח פיקדונות: תוכן ומעמד",
+  "text_he": "הצעת חוק פרטית לביטוח פיקדונות בתאגיד בנקאי הייתה נותנת ללקוח שהפקיד 'חיסכון' בבנק או באגודת חיסכון ואשראי ערבות מדינה עד סכום הערבות המוצע; זו הצעת חוק בלבד, לא חוק. כפי שנוסחה: 'חיסכון' הוא כל הפקדה מראש ליותר משבעה ימים שלא מיועדת לחשבון עובר ושב; הכיסוי רק בבנקים שנתח השוק שלהם לא עולה על הנתח המרבי; התשלום בתוך שלושה חודשים מהתביעה, בתנאי שמונה מנהל מורשה; תאגידים בנקאיים ומנהלי תיקים לא יכולים לתבוע. במאגר הכנסת ההצעה הונחה על שולחן הכנסת לדיון מוקדם, בלי ועדה. האתר מציג אותה כהצעה, לעולם לא כהגנה.",
+  "figure_names_he": {
+    "proposed_guarantee": "סכום הערבות המוצע ללקוח (הצעת חוק בלבד)",
+    "small_bank_market_share_max": "נתח השוק המרבי של בנק מכוסה (הצעת חוק בלבד)"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-02-02",
+  "figures": {
+    "proposed_guarantee": {
+      "value": 250000,
+      "unit": "nis",
+      "source": {
+        "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf",
+        "title": "Bill \"הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ\"ו–2026\" (P/6522/25), tabled 02.02.2026, ss.1 to 4",
+        "publisher": "Knesset",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "REG-05"
+      ],
+      "state": "sourced",
+      "notes": "BILL ONLY, NOT LAW. The bill would give a client who deposited \"savings\" (an advance deposit for more than seven days, not intended for a current account) at a bank whose market share is not above 5%, or at a savings-and-credit cooperative, a state guarantee of NIS 250,000. Knesset status on 2026-10-22: \"הונחה על שולחן הכנסת לדיון מוקדם\", unchanged since 2.2.2026. The site must show it as a bill, never as protection."
+    },
+    "small_bank_market_share_max": {
+      "value": 5,
+      "unit": "pct",
+      "source": {
+        "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf",
+        "title": "Bill \"הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ\"ו–2026\" (P/6522/25), tabled 02.02.2026, ss.1 to 4",
+        "publisher": "Knesset",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "REG-05"
+      ],
+      "state": "sourced",
+      "notes": "BILL ONLY. The proposed guarantee covers only banks whose market share does not exceed 5%."
+    }
+  },
+  "il_finance_file": "regulators-and-protection.md",
+  "checked": "2026-10-22"
+}

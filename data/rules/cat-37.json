@@ -1,0 +1,14 @@
+{
+  "id": "CAT-37",
+  "title": "\"Average\" is the rate actually charged from all members, after discounts (CMA definition of the same figure in member reports; identity with the field inferred)",
+  "title_he": "'ממוצע' הוא השיעור שנגבה בפועל מכלל העמיתים, אחרי הנחות",
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-deposit"
+  ],
+  "likely_to_change": "no",
+  "text_he": "הרשות מגדירה את הממוצע בדוח לעמיתים כשיעור דמי הניהול שנגבו בפועל מכלל העמיתים, כלומר אחרי הנחות. לכן זה אינו מחיר מחירון. ההגדרה רשמית, אך הזהות בינה לבין השדה במאגר היא הסקה. שיטת השקלול לא פורסמה, ולכן אין לכתוב ממוצע משוקלל.",
+  "il_finance_file": "tracks-catalogue-and-decoder.md",
+  "checked": "2026-10-23"
+}

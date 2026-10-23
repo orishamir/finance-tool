@@ -1,0 +1,39 @@
+{
+  "id": "TXF-10",
+  "title": "An Israeli intermediary that receives a foreign dividend for an Israeli resident withholds 25%",
+  "title_he": "מתווך ישראלי שמקבל דיבידנד זר לתושב ישראל מנכה מס",
+  "text_he": "מי שמקבל מתושב חוץ דיבידנד על מניות בשל תושב ישראל או לזכותו מנכה ממנו מס: ליחיד לפי שיעור הניכוי במקור, ולחבר בני אדם בשיעור המס המרבי. התקנה אינה מזכירה מס זר שכבר נוכה בחו\"ל, ואם הבנק הישראלי מנכה את מלוא השיעור או רק את ההפרש אחרי הניכוי הזר לא נמצא, וזו שאלה פתוחה. אצל ברוקר זר אין מתווך ישראלי ושום דבר אינו מנוכה בישראל.",
+  "figure_names_he": {
+    "rate": "שיעור הניכוי במקור על דיבידנד זר ליחיד"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "tax-during"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "rate": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מריבית,_מדיבידנד_ומרווחים_מסוימים)",
+        "title": "Income Tax Regulations (withholding from interest, dividends and certain gains) 2005",
+        "publisher": "Legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXF-10"
+      ],
+      "state": "sourced",
+      "notes": "Reg.2(d) of the 2005 withholding regulations. Whether the bank withholds the full 25% or only the difference after foreign withholding is not sourced (TXF OQ3)."
+    }
+  },
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-10-22"
+}

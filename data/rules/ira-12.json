@@ -1,0 +1,101 @@
+{
+  "id": "IRA-12",
+  "title": "Concentration and derivative limits",
+  "title_he": "מגבלות ריכוז בנייר אחד ומגבלות נגזרים",
+  "strength": "primary",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "single_issuer_cap": {
+      "value": 10,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.meitav.co.il/media/0qulk3pk/תקנות-ira-חדשות-יוני-2017.pdf",
+        "title": "IRA regulations, reg. 5(א) as amended 2017 (Reshumot ק\"ת 7819, reg. 4(א)(3)); Meitav brokerage letter 2.606.1.4.26L",
+        "publisher": "Reshumot ק\"ת 7819, 29.5.2017 (copy hosted by Meitav)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "IRA-12"
+      ],
+      "state": "sourced",
+      "notes": "Tradable securities of any one corporation may not exceed 10% of the fund's revalued assets; ETNs, foreign funds and government bonds of Israel or an approved country are excluded."
+    },
+    "bought_options_cap": {
+      "value": 5,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.meitav.co.il/media/0qulk3pk/תקנות-ira-חדשות-יוני-2017.pdf",
+        "title": "IRA regulations, reg. 5(א) as amended 2017 (Reshumot ק\"ת 7819)",
+        "publisher": "Reshumot ק\"ת 7819, 29.5.2017 (copy hosted by Meitav)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "IRA-12"
+      ],
+      "state": "sourced",
+      "notes": "Bought options other than \"אופציית רכש 001\" may not exceed 5% of fund assets."
+    },
+    "collateral_cap": {
+      "value": 10,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.meitav.co.il/media/0qulk3pk/תקנות-ira-חדשות-יוני-2017.pdf",
+        "title": "IRA regulations, reg. 5(א) as amended 2017 (Reshumot ק\"ת 7819)",
+        "publisher": "Reshumot ק\"ת 7819, 29.5.2017 (copy hosted by Meitav)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "IRA-12"
+      ],
+      "state": "sourced",
+      "notes": "Collateral for options, futures and short sales may not exceed 10% of fund assets at any time."
+    },
+    "foreign_fund_control_cap": {
+      "value": 5,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.meitav.co.il/media/0qulk3pk/תקנות-ira-חדשות-יוני-2017.pdf",
+        "title": "IRA regulations, reg. 5(א) as amended 2017 (Reshumot ק\"ת 7819)",
+        "publisher": "Reshumot ק\"ת 7819, 29.5.2017 (copy hosted by Meitav)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "IRA-12"
+      ],
+      "state": "sourced",
+      "notes": "Across all the member's IRA funds, holdings of any class of control means in a corporation held through foreign funds may not exceed 5%."
+    }
+  },
+  "text_he": "ניירות ערך של תאגיד אחד לא יעלו על 10% מנכסי הקופה (לא כולל תעודות סל, קרנות חוץ ואג\"ח ממשלתיות). אופציות שנקנו, למעט אופציית רכש 001, עד 5%; בטוחות לנגזרים ולמכירה בחסר עד 10%; החזקה באמצעי שליטה דרך קרנות חוץ עד 5%. מיטב אינה מאפשרת כתיבת אופציות.",
+  "figure_names_he": {
+    "single_issuer_cap": "מגבלת החזקה בתאגיד אחד",
+    "bought_options_cap": "מגבלת אופציות שנקנו",
+    "collateral_cap": "מגבלת בטוחות לנגזרים",
+    "foreign_fund_control_cap": "מגבלת אמצעי שליטה דרך קרנות חוץ"
+  },
+  "il_finance_file": "ira-self-directed.md",
+  "checked": "2026-10-22"
+}

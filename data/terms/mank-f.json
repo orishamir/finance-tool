@@ -1,0 +1,23 @@
+{
+  "id": "mank-f",
+  "he": "מענק",
+  "en": null,
+  "meaning": "תוספת תשואה בפיקדון מובנה שמשולמת רק אם תנאי שוק שנקבע מראש מתקיים.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [
+    "מענק מותנה"
+  ],
+  "rule_ids": [
+    "FXD-11",
+    "FXD-12",
+    "TX2-05"
+  ],
+  "source": {
+    "url": "https://www.fibi.co.il/private/depositsandsavings/structured/",
+    "title": "FIBI, פיקדונות מובנים page",
+    "publisher": "see title",
+    "strength": "institution",
+    "checked": "2026-10-22"
+  }
+}

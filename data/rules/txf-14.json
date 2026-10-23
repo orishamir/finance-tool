@@ -1,0 +1,39 @@
+{
+  "id": "TXF-14",
+  "title": "The US does not tax an Israeli resident's capital gains on US securities if present in the US fewer than 183 days in the year",
+  "title_he": "רווחי הון מניירות אמריקניים: פטורים בארצות הברית לתושב ישראל",
+  "text_he": "תושב חוץ של ארצות הברית ששהה בה פחות מימי השהות שנקבעו בשנת המס אינו ממוסה שם, ככלל, על רווחי הון ממקור אמריקני שאינם קשורים לעסק אמריקני; מי ששהה ימי השהות או יותר ממוסה על הרווח נטו בשיעור קבוע או בשיעור אמנה נמוך יותר. אמנת ישראל־ארצות הברית פוטרת תושב מדינה אחת ממס במדינה האחרת על רווחים מנכסי הון, אלא אם, בין השאר, הוא שהה בה ימי השהות או יותר בשנת המס. מקרקעין מוחרגים, ואזרחים אמריקנים ובעלי גרין קארד הם אנשים אמריקנים ומחוץ לכלל.",
+  "figure_names_he": {
+    "presence_days": "ימי השהות בארצות הברית שמהם חל מס"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "presence_days": {
+      "value": 183,
+      "unit": "days",
+      "source": {
+        "url": "https://www.irs.gov/publications/p519",
+        "title": "IRS Publication 519 (2025), chapter 4, 183-day rule; US-Israel treaty Art. 15(1)(d)",
+        "publisher": "IRS",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-14"
+      ],
+      "state": "sourced",
+      "notes": "IRS Publication 519 (2025) ch.4 and US-Israel treaty Art.15(1)(d). US citizens and green-card holders are outside this rule."
+    }
+  },
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-10-22"
+}

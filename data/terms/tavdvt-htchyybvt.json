@@ -1,0 +1,22 @@
+{
+  "id": "tavdvt-htchyybvt",
+  "he": "תעודות התחייבות",
+  "en": null,
+  "meaning": "השם בחוק לאגרות חוב שחברה מנפיקה בסדרה, ומקנות זכות לתבוע ממנה כסף במועד שנקבע.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [
+    "תעודות התחייבות ניתנות להמרה"
+  ],
+  "rule_ids": [
+    "CORP-01",
+    "CORP-04"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/חוק_ניירות_ערך",
+    "title": "חוק ניירות ערך, התשכ\"ח-1968 (Wikisource)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "id": "mchm",
+  "he": "מח\"מ",
+  "en": null,
+  "meaning": "משך הזמן הממוצע עד שמתקבלים התשלומים של איגרת חוב, משוקלל לפי הסכומים",
+  "where": [
+    "fund-name"
+  ],
+  "wrapper_ids": [
+    "brokerage-account",
+    "government-bond"
+  ],
+  "variants": [],
+  "rule_ids": [],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
+    "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

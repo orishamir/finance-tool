@@ -1,0 +1,60 @@
+{
+  "id": "MF-08",
+  "title": "Fixed-date funds (קרן מועדים קבועים): the legal basis for renewable money-market funds",
+  "title_he": "קרן מועדים קבועים: הבסיס בחוק לקרנות כספיות מתחדשות",
+  "text_he": "מנהל של קרן פתוחה רשאי לקבוע בהסכם הקרן מועדים קבועים להצעה ולפדיון של יחידות; זה הבסיס בחוק לקרנות הכספיות המתחדשות. המרווח בין שני מועדים סמוכים לא יעלה על המרווח המרבי בין מועדים קבועים, או על תקופה ארוכה יותר שהרשות קובעת לפי סוג הקרן, ובכל מקרה לא על המרווח המרבי המוחלט. המנהל רשאי להתנות את הפדיון בהודעה מוקדמת מבעלי היחידות, בתנאים שהרשות קובעת. מועדי ההצעה והפדיון חייבים לחול בימים שבהם מחשבים מחירים.",
+  "figure_names_he": {
+    "max_interval_months": "המרווח המרבי בין מועדים קבועים (ברירת מחדל)",
+    "absolute_max_interval_months": "המרווח המרבי המוחלט בין מועדים קבועים"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-02-02",
+  "figures": {
+    "max_interval_months": {
+      "value": 12,
+      "unit": "months",
+      "source": {
+        "url": "https://www.capitax.co.il/Attachments/03072024.pdf",
+        "title": "חוק השקעות משותפות בנאמנות (תיקון מס' 31), התשפ\"ד-2024, ספר החוקים 3232, section 7 (new section 47(א))",
+        "publisher": "Knesset / Reshumot (official gazette scan hosted by CapiTax)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2024-10-03",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "MF-08"
+      ],
+      "state": "sourced",
+      "notes": "Default maximum interval between adjacent fixed dates of a fixed-date fund. The ISA may set a longer period by fund type, never above 36 months. In force since 3 October 2024. Section 47(א)(3) changes on 2.2.2027 per the Wikisource mirror; new text not verified (MF open question 17)."
+    },
+    "absolute_max_interval_months": {
+      "value": 36,
+      "unit": "months",
+      "source": {
+        "url": "https://www.capitax.co.il/Attachments/03072024.pdf",
+        "title": "Amendment 31, section 7 (new section 47(א))",
+        "publisher": "Knesset / Reshumot (official gazette scan hosted by CapiTax)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2024-10-03",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "MF-08"
+      ],
+      "state": "sourced",
+      "notes": "Absolute maximum interval between fixed dates, even with ISA leave."
+    }
+  },
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-22"
+}

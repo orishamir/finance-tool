@@ -1,7 +1,7 @@
-# Bank product names (decoder catalogue, bank side)
+# Bank product names (catalogue of every option, bank side)
 
 Checked: 2026-10-22 · Owner: domain-specialist
-Serves: product.md 3.10 (product decoder, bank products), D2 (every product name a bank shows must be decodable), section 2 success criterion 5, section 5 item 6a (`data/catalog/` seeded with each bank's deposit and savings-plan names), N6 (machine-readability of the directive-447 publication); roadmap release R4 (3.10 bank products; tariff and catalogue snapshots).
+Serves: product.md 3.10 (catalogue of every option, bank products), D2 (every product name a bank shows must be in the catalogue), section 2 success criterion 5, section 5 item 6a (`data/catalog/` seeded with each bank's deposit and savings-plan names), N6 (machine-readability of the directive-447 publication); roadmap release R4 (3.10 bank products; tariff and catalogue snapshots).
 Scope: in: the names each bank in the BoI register that serves individuals uses on its site, in its directive-447 publication, in its standard contracts and (where public) its app, for shekel deposits, savings plans, current-account credit interest, fee tracks, child-savings products, and the names of FX and structured deposits (name only); per name, what it is in the wrapper model; names that look alike but differ; names that cannot be decoded from public sources; whether each bank's 447 publication is machine-readable. Out: the rules behind deposits, 447 and fee tracks (`bank-current-account-deposits.md` BANK-01 to BANK-29, not repeated here); FX and structured deposit terms (`fx-and-structured-deposits.md`); child-savings rules (`child-savings.md`); tax (`tax-interest-deposits-bonds.md`); rates and prices (data track, `data/`).
 
 ## Summary
@@ -46,7 +46,7 @@ The same name means different products at different banks (אדיר, לביא/ל
 - Likely to change: yes
 
 ### BPN-05 A shared name does not mean a shared product
-- Rule: Several names are used by more than one bank for products with different terms, and a few names are used twice inside one bank. The decoder must key on bank plus name (plus code where shown), never on name alone. The cases found are in "Look-alike names" below.
+- Rule: Several names are used by more than one bank for products with different terms, and a few names are used twice inside one bank. The catalogue must key on bank plus name (plus code where shown), never on name alone. The cases found are in "Look-alike names" below.
 - Conditions / exceptions: FIBI and Massad (same group) use the same names with the same one-line descriptions on some products; whether they are one product sold under two bank licences is not stated (open question 15).
 - Figures: none.
 - Source: each name's page URL is in its Catalogue row (see the "Look-alike names" table below) · checked 2026-10-22 · institution
@@ -111,7 +111,7 @@ The same name means different products at different banks (אדיר, לביא/ל
 
 ### BPN-13 Mercantile: names in its 447 tables
 - Rule: Mercantile's table (5 tables, 140 rows by amount tier from NIS 50 to 500,000) uses generic names with mixed spelling (פקדון/פיקדון לשבוע, פק"מ לחודש, פיקדון ל-3/6 חודשים, פיקדון לשנה, פקצ"מ לשנה, פיקדון לשנתיים, לשלוש שנים) and named products: פיקדון 14-29 יום; חיסכון ליעד קצר; פיקדון צמוד מט"ח; חודשי יומי; פר"ן עדיף; פיקדון הכנסה שוטפת; פק"מ תחנות; פח"ק פיקדון יומי; פקדון הכנסה חודשית; תשע גמיש; פק"מ לשנה תחנות רבעוניות / חודשיות; חיסכון ליעד; יומי שנתי; שנתי יומי בריבית משתנה; חיסכון ל-10 שנים; פק"מ מתעצם לשנתיים; חיסכון ליעד ארוך; פר"ן מתעצם לשנתיים; הו"ק ל-3 שנים; מתעצם לשלוש שנים; הו"ק נזיל חודשי / חצי שנתי / שנתי; נזיל חודשי / חצי שנתי / שנתי; פק"מ משנה ומעלה; חיסכון ל-18 שנה; FX: מט"ח 7-29 / 7-30 יום, מט"ח 1-12 and others.
-- Conditions / exceptions: The same product type appears under two spellings ("פקדון"/"פיקדון"), so the decoder must normalise them. פקצ"מ and פר"ן are not expanded.
+- Conditions / exceptions: The same product type appears under two spellings ("פקדון"/"פיקדון"), so the catalogue must normalise them. פקצ"מ and פר"ן are not expanded.
 - Figures: names only.
 - Source: [Mercantile, שיעורי ריבית על פיקדונות ויתרות זכות](https://www.mercantile.co.il/private/investments-savings/deposit-savings/classic/interest-tables-new/) · checked 2026-10-22 · institution
 - Dimensions: `rate-type-anchor`, `liquidity-lockup`
@@ -483,7 +483,7 @@ Source: Yahav board "לוח מספר 13_26", "בתוקף מיום 06/10/2026", "
 | One Zero | 403 | https://www.onezerobank.com/ | Not reachable |
 | BoI (all banks) | EDGE SDMX, CSV | BPN-03 | Yes, but per bank and monthly, not per product; series meaning not decoded |
 
-Conclusion for N6: the uniform format is uniform on screen only. Directive 447 does not require a machine-readable output (BPN-01). For the decoder, bank names must be collected by hand from PDFs and pages, keyed on the bank's code where one exists, dated with the source date, and topped up with what the founder and friends paste in.
+Conclusion for N6: the uniform format is uniform on screen only. Directive 447 does not require a machine-readable output (BPN-01). For the catalogue, bank names must be collected by hand from PDFs and pages, keyed on the bank's code where one exists, dated with the source date, and topped up with what the founder and friends paste in.
 
 ## Terms
 

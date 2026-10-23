@@ -1,0 +1,29 @@
+{
+  "id": "htarypvn-hmla",
+  "he": "התעריפון המלא",
+  "en": null,
+  "meaning": "רשימת כל העמלות של הבנק, שהוא חייב לפרסם בסניפים ובאתר האינטרנט שלו.",
+  "where": [
+    "tariff"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [
+    "תעריפון",
+    "תעריפון מלא"
+  ],
+  "rule_ids": [
+    "BRK-16",
+    "BRK-20",
+    "BRK-24",
+    "BRK-30"
+  ],
+  "source": {
+    "url": "https://boi.org.il/media/w2lgmymp/159a.pdf",
+    "title": "בנק ישראל, כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

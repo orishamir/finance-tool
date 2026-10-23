@@ -1,0 +1,22 @@
+{
+  "id": "amvnh-vkyymvt",
+  "he": "אמונה וקיימות",
+  "en": null,
+  "meaning": "קבוצת מסלולים שמנהלים את ההשקעות לפי כללי דת או לפי שיקולי קיימות וסביבה",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [
+    "אשכול 5 – מסלולי אמונה וקיימות"
+  ],
+  "rule_ids": [
+    "CAT-17",
+    "CAT-18"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+    "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "id": "TXS-03",
+  "title": "Unlinked bonds and other unlinked debt: 15% of the whole gain",
+  "title_he": "אג״ח וחוב לא צמודים: מס על כל הרווח",
+  "text_he": "רווח הון ממכירת אג״ח, נייר ערך מסחרי, הלוואה או מילווה שאינם צמודים למדד ממוסה בשיעור המס על רווח הון לא צמוד, ובעל מניות מהותי בשיעור גבוה יותר. במקרה הזה כל הרווח נחשב לרווח ריאלי: משלמים על הרווח הנומינלי כולו ואין הקלה על האינפלציה. לא צמוד כולל גם צמוד בחלקו. שר האוצר רשאי לשנות את השיעור בצו לפי השינוי במדד, ואם צו כזה ניתן אי פעם לא נבדק; ריבית ודיסקונט על אג״ח ומק״מ הם כלל נפרד.",
+  "figure_names_he": {
+    "rate": "שיעור המס על רווח הון לא צמוד"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "rate": {
+      "value": 15,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance, s.91(b)(3)(a)-(c)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXS-03"
+      ],
+      "state": "sourced",
+      "notes": "Capital gain on selling an unlinked bond, commercial paper, loan or \"מילווה\": no more than 15% (20% for a substantial shareholder), the whole nominal gain taxed (no inflation relief). The Minister may change the rate by order (s.91(b)(3)(b)); whether an order was ever made was not checked."
+    }
+  },
+  "il_finance_file": "tax-securities-israeli.md",
+  "checked": "2026-10-22"
+}

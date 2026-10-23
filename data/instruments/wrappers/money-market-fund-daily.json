@@ -1,0 +1,309 @@
+{
+  "id": "money-market-fund-daily",
+  "names": {
+    "he": [
+      "קרן כספית",
+      "קרן כספית יומית",
+      "קרנות כספיות יומיות"
+    ],
+    "statement": [],
+    "app": [
+      "קרנות כספיות יומיות"
+    ]
+  },
+  "regulator": {
+    "value": "ISA",
+    "unit": "text",
+    "source": {
+      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, ss.4, 9, 13, 25(א), 129ג (Wikisource mirror); חוק ניירות ערך, התשכ\"ח-1968, s.2 (Wikisource mirror)",
+      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "strength": "primary-mirror"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "REG-07",
+      "REG-10",
+      "MF-01",
+      "MF-04",
+      "MF-07"
+    ],
+    "state": "sourced",
+    "notes": "The Israel Securities Authority (רשות ניירות ערך) approves fund managers (s.13) and trustees (s.9), permits every prospectus (s.25(א)) and may set rules for money-market funds (s.129ג, added by Amendment 31 in force 3.10.2024). Fund law read on a mirror; re-read on the official text before relying on wording (coverage §0)."
+  },
+  "fee_bases_allowed": [
+    "balance",
+    "trustee",
+    "load",
+    "redemption_deduction",
+    "trade",
+    "custody"
+  ],
+  "fee_caps": {
+    "balance": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
+        "title": "חוק השקעות משותפות בנאמנות, ss.5(א)(12), 80(א)(1) (Wikisource mirror); ISA investor guide (2017) pp. 7, 22-24",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "MF-16",
+        "MF-20",
+        "MF-18",
+        "MF-17",
+        "MF-24"
+      ],
+      "state": "sourced",
+      "notes": "No regulated cap on the management fee (שכר מנהל הקרן) or the trustee fee (שכר נאמן): both are set in the fund agreement and prospectus, computed daily as an annual % of assets and deducted inside the unit price (MF-16, MF-20). The ISA's end-2025 average for money-market funds is in MF-18. Increases only on 1 January (MF-17). The distribution fee the manager pays the bank is capped at 0.1% a year for money-market funds and comes out of the manager's fee (MF-24)."
+    },
+    "trustee": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
+        "title": "ISA, מדריך למשקיע: קרנות נאמנות (January 2017), p. 24",
+        "publisher": "Israel Securities Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "MF-20"
+      ],
+      "state": "sourced",
+      "notes": "No cap found. The 2017 guide gives 0% to 0.25% a year, average about 0.05% (dated; MF open question 6). The rate is in each fund's prospectus."
+    },
+    "load": {
+      "value": null,
+      "unit": "pct_of_deposit",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
+        "title": "Law, ss.5(א)(7), 42(ג), 82(א)(1) (Wikisource mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "MF-21"
+      ],
+      "state": "sourced",
+      "notes": "No regulated cap: the maximum load (הוספה) must be stated in the fund agreement, and its rate in the prospectus; the 2017 ISA guide says the vast majority of funds charge none (current share is MF open question 7)."
+    },
+    "redemption_deduction": {
+      "value": null,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
+        "title": "Law, ss.5(א)(7), 46(ב) (Wikisource mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "MF-22"
+      ],
+      "state": "sourced",
+      "notes": "No regulated cap: a deduction from the redemption price is allowed only if the fund agreement provides for it, with its maximum stated there (current share of funds charging one is MF open question 7)."
+    },
+    "trade": {
+      "value": null,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(עמלת_הפצה)",
+        "title": "Distribution fee regulations 2006, reg. 2(ב)-(ד) (Wikisource mirror); BoI fees rules 2008, First Schedule part 4(א)(1)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "MF-26",
+        "MF-27",
+        "BRK-16",
+        "BANK-18"
+      ],
+      "state": "sourced",
+      "notes": "Under a distribution agreement a distributor may not charge the holder of money-market (type 4) units any fee for buying, holding or redeeming (reg. 2(ד)); without an agreement it may charge up to the distribution fee it could have charged the manager (reg. 2(ב)). A bank's part-4 buy/sell commission excludes mutual funds other than tracking and listed funds (BRK-16, MF-27 Leumi). A non-bank member's commission is per its tariff (MF-27: IBI up to 0.08%, minimum NIS 5, 1.7.2026)."
+    },
+    "custody": {
+      "value": 0,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://boi.org.il/media/w2lgmymp/159a.pdf",
+        "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, consolidated to 5.11.2024, First Schedule part 4(א)(5) note (2)",
+        "publisher": "Bank of Israel, Banking Supervision",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "BANK-18",
+        "BRK-17",
+        "BRK-16",
+        "MF-26",
+        "MF-27"
+      ],
+      "state": "sourced",
+      "notes": "At a bank: no securities custody fee (דמי ניהול פיקדון ניירות ערך) may be charged on a money-market fund as defined in the Joint Investment Trust regulations. Under a distribution agreement a distributor may charge the holder nothing for buying, holding or redeeming money-market units (MF-26, reg. 2(ד)). Whether a non-bank TASE member may charge custody on money-market units is open (BRK open question 11): there the tariff applies as published (MF-27 examples)."
+    }
+  },
+  "ceiling": null,
+  "deposit_side_tax": {
+    "formula": "F-33",
+    "rule_ids": [
+      "TXS-12"
+    ]
+  },
+  "tax_during": {
+    "formula": "F-23",
+    "rule_ids": [
+      "TXS-12",
+      "TXS-08",
+      "TXS-07",
+      "TXS-10",
+      "TXS-24"
+    ]
+  },
+  "tax_at_exit": {
+    "formula": "F-40",
+    "rule_ids": [
+      "TXS-09",
+      "TXS-12",
+      "TXS-02",
+      "TXS-05",
+      "TXS-24",
+      "TXS-22",
+      "TXS-11",
+      "TXS-17",
+      "TXS-18",
+      "TXS-19",
+      "TXS-23",
+      "TXG-07",
+      "TXG-09",
+      "TXG-10"
+    ],
+    "blocked_by": [],
+    "labels": [
+      "per-fund tax track: 2 of 73 money-market funds are taxable (TXS-24); taxable fund computed as 15% of nominal interest at fund level, derived (TXS-11, TXS OQ11)"
+    ]
+  },
+  "lawful_exit": {
+    "kind": "trading_day",
+    "text": "any trading day: an order that reaches the clearing house before the fund's designated hour is executed at that day's price, a later one at the next pricing day's price (MF-10); the distributor passes the redemption money on the day the fund pays it (MF-11), but how many business days after the order the cash is usable was not found (MF OQ4); current designated hours, and whether units can be bought or redeemed on Fridays since TASE moved to Monday to Friday on 5.1.2026, are open (MF OQ3, BRK-29)"
+  },
+  "switch_is_tax_event": {
+    "value": true,
+    "unit": "boolean",
+    "source": {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Income Tax Ordinance, s.88 definition \"מכירה\" (includes פדיון and חליפין) (Wikisource mirror)",
+      "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-22",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXS-21"
+    ],
+    "state": "sourced",
+    "notes": "Redeeming one fund to buy another, or selling units to move money, is a sale: the real gain is taxed (withheld) even if the money never leaves the account. No order under s.101A(a)(12) deeming exempt-fund units sold and repurchased was found (TXS open question 9)."
+  },
+  "transfer_routes": [],
+  "eligibility": {
+    "rule_ids": [
+      "MF-15",
+      "MF-11",
+      "BRK-28"
+    ],
+    "text": "anyone with a securities account at a bank or at a TASE member (the distributor); most funds have no minimum investment, though a distributor may set its own account minimum or minimum commission"
+  },
+  "protection": {
+    "rule_ids": [
+      "MF-02",
+      "MF-03",
+      "REG-10",
+      "REG-11",
+      "MF-13",
+      "MF-41",
+      "MF-29",
+      "MF-30",
+      "MF-31",
+      "MF-40",
+      "BRK-07",
+      "BANK-23"
+    ],
+    "text": "fund assets belong to the trustee for the unit holders, separate from the manager's and the trustee's own property, and cannot be attached; the trustee supervises the manager; if the manager or trustee fails, the fund moves to another manager; the ISA directive limits the fund to short, highly rated shekel or FX assets with an average life of at most 90 days; market losses are not protected, there is no state guarantee, and redemptions can be suspended for a few trading days"
+  },
+  "dimensions": {
+    "age-or-use-exemption": "covered",
+    "currency": "covered",
+    "distribution-policy": "covered",
+    "eligibility": "covered",
+    "fee-account": "covered",
+    "fee-change-over-time": "covered",
+    "fee-custody": "covered",
+    "fee-deposit": "covered",
+    "fee-exit": "covered",
+    "fee-fx": "covered",
+    "fee-management-balance": "covered",
+    "fee-trade": "covered",
+    "fund-tax-track": "covered",
+    "liquidity-lockup": "blocked:MF-OQ4",
+    "loss-offset": "covered",
+    "minimum": "covered",
+    "protection": "covered",
+    "real-vs-nominal": "covered",
+    "regulator": "covered",
+    "reporting-obligation": "covered",
+    "surtax": "covered",
+    "switching-tax-event": "covered",
+    "tax-at-exit": "covered",
+    "tax-during": "covered",
+    "transfer-switch-process": "covered"
+  },
+  "tier": 1,
+  "open_questions": [
+    "MF-OQ1",
+    "MF-OQ2",
+    "MF-OQ3",
+    "MF-OQ4",
+    "MF-OQ5",
+    "MF-OQ12",
+    "TXS-OQ6",
+    "TXS-OQ15",
+    "BRK-OQ11"
+  ],
+  "checked": "2026-10-23"
+}

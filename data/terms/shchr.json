@@ -1,0 +1,23 @@
+{
+  "id": "shchr",
+  "he": "שחר",
+  "en": null,
+  "meaning": "שם ותיק לאיגרות חוב ממשלתיות בשקלים בריבית קבועה, שאינן צמודות למדד",
+  "where": [
+    "ad"
+  ],
+  "wrapper_ids": [
+    "government-bond"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "GOV-13"
+  ],
+  "source": {
+    "url": "https://he.wikipedia.org/wiki/איגרות_חוב_ממשלתיות_בישראל",
+    "title": "Wikipedia, איגרות חוב ממשלתיות בישראל (last edited 21 Jul 2026)",
+    "publisher": "see title",
+    "strength": "secondary",
+    "checked": "2026-10-22"
+  }
+}

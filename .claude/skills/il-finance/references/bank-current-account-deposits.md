@@ -1,7 +1,7 @@
 # Bank current account, shekel deposits and savings plans
 
 Checked: 2026-10-22 · Owner: domain-specialist
-Serves: product.md 3.1 (instrument guide: current account, bank deposits and savings plans), 3.2 (idle-cash preset, cash-like exposures), 3.3 (dimension checklist), 3.10 (product decoder: deposit and savings-plan names); roadmap release R1 (tier-1 wrapper), with the per-bank catalogue in R4.
+Serves: product.md 3.1 (instrument guide: current account, bank deposits and savings plans), 3.2 (idle-cash preset, cash-like exposures), 3.3 (dimension checklist), 3.10 (catalogue of every option: deposit and savings-plan names); roadmap release R1 (tier-1 wrapper), with the per-bank catalogue in R4.
 Scope: in: current account (עו"ש) credit-balance interest and the notices around it; every kind of shekel deposit a bank offers an individual (fixed, variable/prime, CPI-linked, unlinked, short-term, daily, with or without exit points, auto-renewing, digital, deposit without a current account); savings plans; what Bank of Israel (BoI) directives 447 and 447A, the disclosure rules, the fee rules and the Banking (Customer Service) Law require; protection (no deposit insurance); which banks take deposits; Hebrew terms. Out: foreign-currency and structured deposits (`fx-and-structured-deposits.md`), tax on interest (`tax-interest-deposits-bonds.md`), per-bank product catalogue (`bank-product-names.md`), switching banks and moving deposits as a process (`switching-and-transfers.md`), child savings at banks (`child-savings.md`), money-market funds as such (`mutual-funds-and-money-market-funds.md`), makam as such (`government-bonds-and-makam.md`), tariff and rate figures (data track, `data/`).
 
 ## Summary

@@ -1,0 +1,42 @@
+{
+  "id": "age-or-use-exemption",
+  "he": "פטורים לפי גיל ושימוש",
+  "one_line": "האם יש פטור או הקלה במס מגיל מסוים, או כשמשתמשים בכסף למטרה מסוימת",
+  "source": {
+    "url": "docs/product.md#33-dimension-checklist-or-what-you-are-not-considering",
+    "title": "product.md 3.3 and glossary.md section 2",
+    "publisher": "project",
+    "strength": "primary",
+    "checked": "2026-10-23"
+  },
+  "rule_ids": [
+    "BANK-17",
+    "CAT-19",
+    "CS-13",
+    "CS-15",
+    "KGL-09",
+    "KH-10",
+    "KH-12",
+    "KH-13",
+    "PEN-26",
+    "PEN-28",
+    "PEN-34",
+    "TXG-04",
+    "TXG-07",
+    "TXH-09",
+    "TXH-10",
+    "TXH-22",
+    "TXI-19",
+    "TXI-20",
+    "TXK-09",
+    "TXK-10",
+    "TXK-25",
+    "TXP-12",
+    "TXP-14",
+    "TXP-15",
+    "TXP-17",
+    "TXP-19",
+    "TXP-21",
+    "TXS-23"
+  ]
+}

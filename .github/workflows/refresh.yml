@@ -1,0 +1,120 @@
+# Scheduled refresh of the CMA monthly datasets and the series (CBS consumer price index, Ministry of Finance
+# child-savings rates) (docs/architecture.md sections 3.3 and 6). The Bank of Israel series are not fetched: their
+# terms of use do not permit republication (the terms gate).
+#
+# The new month appears on an unknown day, so this runs daily; the adapter is idempotent (it writes
+# only when the normalised data differs from the stored files, so most runs change nothing).
+#
+# GitHub disables scheduled workflows on a public repository after a stretch with no repository
+# activity (architecture section 6). The refresh commits keep it active; refresh-watchdog.yml reports
+# when no run succeeded. The fallback is the home machine (gap H3): `npm run refresh -- cma cbs-cpi mof-child-savings` there.
+#
+# A push made with the default GITHUB_TOKEN does not start other workflows, but a workflow_dispatch
+# sent with it does (GitHub's documented exception). So after the commit this job dispatches ci.yml on
+# main, which runs the checks and the Pages deploy. No personal token is needed.
+#
+# Pull requests need Settings > Actions > General > "Allow GitHub Actions to create and approve pull requests".
+name: refresh
+
+on:
+  schedule:
+    - cron: "30 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ github.token }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      # The three sources run in sequence in one CLI call (cma, cbs-cpi, mof-child-savings) and are committed together.
+      # Exit codes of the CLI: 0 written or nothing changed, 3 sanity failed in at least one source (that source
+      # writes nothing), other = error. On a sanity failure the data is written once more with --force, only to
+      # give the pull request a diff to review; the schema must still pass or the job fails. Sources already
+      # written in the first pass are unchanged in the second.
+      - id: refresh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set +e
+          npm run refresh -- cma cbs-cpi mof-child-savings
+          code=$?
+          set -e
+          if [ "$code" -eq 3 ]; then
+            echo "sanity=failed" >> "$GITHUB_OUTPUT"
+            npm run refresh -- cma cbs-cpi mof-child-savings --force
+          elif [ "$code" -ne 0 ]; then
+            exit "$code"
+          fi
+
+      - id: changes
+        run: |
+          if [ -n "$(git status --porcelain -- data)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - if: steps.changes.outputs.changed == 'true'
+        run: npm run validate
+
+      # Normal case: commit straight to main (a bot commit; no Co-Authored-By).
+      - if: steps.changes.outputs.changed == 'true' && steps.refresh.outputs.sanity != 'failed'
+        env:
+          PERIOD: ${{ steps.refresh.outputs.period }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          git commit -m "Refresh data: ${PERIOD}"
+          git pull --rebase origin main
+          git push origin HEAD:main
+      # Start the checks and the deploy for the commit just pushed (see the header note).
+      - if: steps.changes.outputs.changed == 'true' && steps.refresh.outputs.sanity != 'failed'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run ci.yml --ref main
+
+      # Sanity failed: nothing goes to main. Open a pull request with the diff and the reasons.
+      - if: steps.refresh.outputs.sanity == 'failed' && steps.changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh label create data-refresh --color 0e8a16 --description "Automated data refresh" 2>/dev/null || true
+      - if: steps.refresh.outputs.sanity == 'failed' && steps.changes.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ github.token }}
+          branch: refresh/sanity-failed
+          add-paths: data
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          commit-message: "Refresh data: ${{ steps.refresh.outputs.period }} (sanity failed, needs review)"
+          title: "Data refresh failed its sanity check (${{ steps.refresh.outputs.period }})"
+          labels: data-refresh
+          body: |
+            The scheduled data refresh (CMA, CBS CPI, MoF child-savings rates) failed its sanity checks, so nothing was written to main.
+            The diff below is what the adapter would have written; review it before merging.
+
+            Reasons:
+
+            ```
+            ${{ steps.refresh.outputs.reasons }}
+            ```
+
+            Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

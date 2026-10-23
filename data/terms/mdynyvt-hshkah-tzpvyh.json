@@ -1,0 +1,21 @@
+{
+  "id": "mdynyvt-hshkah-tzpvyh",
+  "he": "מדיניות השקעה צפויה",
+  "en": null,
+  "meaning": "התמהיל שהחברה המנהלת מצהירה שהיא מתכננת בפועל; הוא יכול להשתנות בלי ששם המסלול משתנה",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [
+    "מדיניות השקעה מוצהרת"
+  ],
+  "rule_ids": [
+    "CAT-24"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+    "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

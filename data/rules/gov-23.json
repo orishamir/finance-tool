@@ -1,0 +1,60 @@
+{
+  "id": "GOV-23",
+  "title": "Makam issue schedule",
+  "title_he": "לוח ההנפקות של המק\"ם",
+  "text_he": "לוח ההנפקות של בנק ישראל מראה סדרת מק\"ם חדשה אחת בחודש, כל אחת לתקופה של כשנה, בין הטווח הקצר לארוך שבלוח. בנק ישראל מציין שהמועדים עשויים להשתנות בהודעה מראש. התקופות האלה נמצאות בתוך הטווח שבתנאים הכלליים של המכרז; תוצאות המכרזים מתפרסמות בדף הסטטיסטיקה של בנק ישראל.",
+  "figure_names_he": {
+    "term_days_min": "ימים לפדיון, הקצר ביותר בלוח",
+    "term_days_max": "ימים לפדיון, הארוך ביותר בלוח"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2026-11-15",
+  "figures": {
+    "term_days_min": {
+      "value": 364,
+      "unit": "days",
+      "source": {
+        "url": "https://www.boi.org.il/boi_files/hanpaka.pdf",
+        "title": "בנק ישראל, מק\"מ - מועדי הנפקות עתידיים",
+        "publisher": "Bank of Israel",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2025-12-02",
+      "effective_to": "2027-02-02",
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "GOV-23"
+      ],
+      "state": "sourced",
+      "notes": "BoI's schedule shows one new series a month, from 02/12/2025 (series 1216) to 02/02/2027 (series 218), each running 364 to 371 days to redemption; dates may change with advance notice."
+    },
+    "term_days_max": {
+      "value": 371,
+      "unit": "days",
+      "source": {
+        "url": "https://www.boi.org.il/boi_files/hanpaka.pdf",
+        "title": "בנק ישראל, מק\"מ - מועדי הנפקות עתידיים",
+        "publisher": "Bank of Israel",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2025-12-02",
+      "effective_to": "2027-02-02",
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "GOV-23"
+      ],
+      "state": "sourced",
+      "notes": "See term_days_min. Inside the general conditions' 14-day to 13-month range (GOV-03, GOV open question 3)."
+    }
+  },
+  "il_finance_file": "government-bonds-and-makam.md",
+  "checked": "2026-10-22"
+}

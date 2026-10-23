@@ -1,0 +1,38 @@
+{
+  "id": "BRK-12",
+  "title": "The TASE clearing house: central counterparty with a risk fund; not a compensation scheme for a client whose member fails",
+  "title_he": "מסלקת הבורסה: צד נגדי מרכזי, לא תוכנית פיצוי ללקוח",
+  "text_he": "מסלקת הבורסה משמשת צד נגדי מרכזי לעסקאות בבורסה: היא ערבה לסליקה אם צד אחד נכשל, ומנהלת קרן סיכונים שחברי המסלקה מפקידים בה ביטחונות. בין חבריה בנק ישראל וחברים משמורנים, שאינם משתתפים בקרן הסיכונים ורשאים רק להחזיק ניירות ערך ולטפל בהם. חוק ניירות ערך נותן תוקף לכללי המסלקה על כשל של חבר, סיום מוקדם של עסקאות וקיזוז. ההגנה היא על סליקת העסקאות בין החברים; זו אינה תוכנית פיצוי ללקוח שחבר הבורסה שלו קרס.",
+  "figure_names_he": {
+    "clearing_members": "מספר חברי המסלקה"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "clearing_members": {
+      "value": 21,
+      "unit": "count",
+      "source": {
+        "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a",
+        "title": "TASE periodic report 2025",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "BRK-12"
+      ],
+      "state": "sourced",
+      "notes": "21 clearing members per the 2025 periodic report, 1.7.3.1; includes 4 custodial members. Changes as members join or leave."
+    }
+  },
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-22"
+}

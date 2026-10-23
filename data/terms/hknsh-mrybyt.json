@@ -1,0 +1,27 @@
+{
+  "id": "hknsh-mrybyt",
+  "he": "הכנסה מריבית",
+  "en": null,
+  "meaning": "הגדרת החוק לרווח שמושכים מגמל להשקעה, או מהפקדות מעל התקרה בקרן השתלמות; ממוסה כמו ריבית",
+  "where": [
+    "law",
+    "tax-form"
+  ],
+  "wrapper_ids": [
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXH-11",
+    "TXK-05",
+    "TXK-06"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/api/rest_v1/page/pdf/פקודת_מס_הכנסה",
+    "title": "פקודת מס הכנסה, consolidated text (Wikisource rendered PDF)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

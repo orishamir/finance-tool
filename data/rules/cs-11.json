@@ -1,0 +1,38 @@
+{
+  "id": "CS-11",
+  "title": "Switching within the provident option (tracks and managers)",
+  "title_he": "מעבר בין מסלולים ובין קופות במסלול הקופה",
+  "strength": "primary",
+  "dimensions": [
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "track_switch_business_days": {
+      "value": 3,
+      "unit": "business_days",
+      "source": {
+        "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
+        "title": "Harel child-savings standard bylaw, April 2026, s.16.2: a track switch is executed within 3 business days of a complete request",
+        "publisher": "Harel Pension and Gemel",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "CS-11"
+      ],
+      "state": "sourced",
+      "notes": "Harel's bylaw. A fund-to-fund transfer follows regulation 7: the receiving manager notifies NII within 7 business days, NII deposits from the following month, the transfer request goes within 2 business days of that deposit and the balance moves within 5 business days."
+    }
+  },
+  "text_he": "את המסלול אפשר לשנות בכל עת דרך הקופה, ואת החיסכון אפשר להעביר לקופה אחרת מהרשימה דרך הקופה הקולטת; היתרה והרווחים עוברים והביטוח הלאומי מפנה את ההפקדות הבאות. אי אפשר לעבור לבנק. לפני גיל 18 פועל ההורה, אחרי 18 רק הילד.",
+  "figure_names_he": {
+    "track_switch_business_days": "ימי עסקים לשינוי מסלול (הראל)"
+  },
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-22"
+}

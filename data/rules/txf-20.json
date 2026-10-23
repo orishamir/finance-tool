@@ -1,0 +1,14 @@
+{
+  "id": "TXF-20",
+  "title": "Foreign tax is credited in the annual return (appendix D, form 1324), not against current advances",
+  "title_he": "מס זר מזוכה בדוח השנתי, לא כנגד מקדמות שוטפות",
+  "text_he": "מסים ששולמו מחוץ לישראל על הכנסה שהופקה בחו\"ל אינם מופחתים ממקדמות שוטפות; המס הזר ניתן כזיכוי לפי כללי המקור בדוח השנתי. כדי לקבלו ממלאים את נספח ד' לדוח השנתי (טופס 1324) ומצרפים מסמך שמראה את המס ששולם בחו\"ל; מסים אלה אינם נרשמים בחלק הניכויים של הדוח. משפט המדריך על המקדמות מופיע תחת מקדמות של עסק, והחלתו על המקדמה החצי־שנתית על ניירות ערך היא קריאת החוקר.",
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation",
+    "foreign-withholding-domicile"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,39 @@
+{
+  "id": "namn-d",
+  "he": "נאמן",
+  "en": null,
+  "meaning": "גוף שמחזיק את נכסי קרן הנאמנות לטובת המשקיעים, בנפרד מהרכוש שלו, ומפקח על מנהל הקרן",
+  "where": [],
+  "wrapper_ids": [
+    "bank-deposit",
+    "brokerage-account",
+    "child-savings-bank",
+    "child-savings-provident",
+    "current-account",
+    "government-bond",
+    "ira-hishtalmut",
+    "ira-provident",
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa",
+    "makam",
+    "money-market-fund-daily",
+    "money-market-fund-renewable",
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity",
+    "savings-plan"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "REG-10",
+    "REG-11",
+    "REG-12"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
+    "title": "חוק השקעות משותפות בנאמנות (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

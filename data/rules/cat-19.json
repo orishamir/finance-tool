@@ -1,0 +1,60 @@
+{
+  "id": "CAT-19",
+  "title": "In provident funds that are not study funds or investment provident funds, the default is an age-dependent track and the general track is closed to new members",
+  "title_he": "בקופות גמל אחרות ברירת המחדל היא מסלול תלוי גיל",
+  "text_he": "בקופות גמל שאינן קרן השתלמות ואינן קופת גמל להשקעה, עמית חדש שלא בחר מסלול מצטרף למסלול ברירת המחדל שמתאים לגילו. המודל הוא שלושה מסלולים, עד גיל המדרגה הראשונה, בין המדרגה הראשונה לשנייה, ומגיל המדרגה השנייה ומעלה, או מסלולים לפי שנתוני לידה שכל אחד מכסה טווח של כמה שנים לפי החוזר. בקופות האלה המסלול הכללי סגור למי שלא היה בו ביום התחילה. זה מסביר שמות כמו לבני חמישים ומטה או לבני שישים ומעלה; טיוטת תקנות על העברת עמיתים למסלולים לפי גיל נראתה רק ככותרת בחיפוש.",
+  "figure_names_he": {
+    "age_band_1": "גיל המדרגה הראשונה",
+    "age_band_2": "גיל המדרגה השנייה"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "age-or-use-exemption",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "age_band_1": {
+      "value": 50,
+      "unit": "years",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+        "title": "CMA circular 2022-9-30, ניהול מסלולי השקעה בקופות גמל, appendix",
+        "publisher": "Capital Market, Insurance and Savings Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "CAT-19"
+      ],
+      "state": "sourced",
+      "notes": "Three-track model: up to 50; 50 to 60; 60 and over (appendix s.4(א)(1)); or birth-cohort tracks spanning 5 to 10 years."
+    },
+    "age_band_2": {
+      "value": 60,
+      "unit": "years",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+        "title": "CMA circular 2022-9-30, ניהול מסלולי השקעה בקופות גמל, appendix",
+        "publisher": "Capital Market, Insurance and Savings Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "CAT-19"
+      ],
+      "state": "sourced"
+    }
+  },
+  "il_finance_file": "tracks-catalogue-and-decoder.md",
+  "checked": "2026-10-22"
+}

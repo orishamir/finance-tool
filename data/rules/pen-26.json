@@ -1,0 +1,82 @@
+{
+  "id": "PEN-26",
+  "title": "Retirement ages",
+  "title_he": "גילי הפרישה בחוק",
+  "text_he": "חוק גיל פרישה קובע גיל פרישה לגברים וגיל פרישה לנשים, גיל פרישה מוקדמת משותף לשניהם, וגיל פרישת חובה משותף ששווה לגיל הפרישה לגברים. לנשים שנולדו עד סוף שנות השישים חל גיל פרישה מדורג לפי שנת הלידה; הגיל לנשים שמוצג כאן הוא הכלל למי שנולדו אחרי כן, לפי קריאת החוקר את הסעיף ואת השורה האחרונה בטבלה. בקרן הפנסיה גיל הזכאות המזערי לקצבת זקנה הוא גיל הפרישה המוקדמת. החוק נקרא בעותק בוויקיטקסט.",
+  "figure_names_he": {
+    "early_retirement_age": "גיל פרישה מוקדמת",
+    "retirement_age_men": "גיל פרישה לגברים",
+    "retirement_age_women": "גיל פרישה לנשים"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "age-or-use-exemption",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "early_retirement_age": {
+      "value": 60,
+      "unit": "years",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
+        "title": "Retirement Age Law 2004, sections 3-6, 9 and schedule (Wikisource mirror); Mor comprehensive bylaws 01.06.2025, s.1 \"גיל זכאות מינימלי לקצבת זקנה\"",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "PEN-26"
+      ],
+      "state": "sourced",
+      "notes": "Early retirement age (גיל פרישה מוקדמת), 60 for men and women: the minimum age at which a member may start an old-age pension from the fund (PEN-27)."
+    },
+    "retirement_age_men": {
+      "value": 67,
+      "unit": "years",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
+        "title": "Retirement Age Law 2004, section 3 (Wikisource mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "PEN-26"
+      ],
+      "state": "sourced",
+      "notes": "Retirement age (גיל פרישה) for men; also the mandatory retirement age for both sexes."
+    },
+    "retirement_age_women": {
+      "value": 65,
+      "unit": "years",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
+        "title": "Retirement Age Law 2004, section 3 and schedule (Wikisource mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "PEN-26"
+      ],
+      "state": "sourced",
+      "notes": "Retirement age for women born from 1970 (inference from section 3 and the schedule's last row, open question 20); women born up to December 1969 have a transitional age from 62 to 64 years and 9 months."
+    }
+  },
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

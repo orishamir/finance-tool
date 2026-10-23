@@ -1,0 +1,22 @@
+{
+  "id": "mvad-kvba-lzkavt",
+  "he": "מועד קובע לזכאות",
+  "en": null,
+  "meaning": "התאריך שבו נקבע למי משולמת הריבית הקרובה: למחזיקים הרשומים באיגרת החוב באותו יום",
+  "where": [],
+  "wrapper_ids": [
+    "government-bond"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "GOV-11",
+    "GOV-21"
+  ],
+  "source": {
+    "url": "https://www.nevo.co.il/law_html/law01/999_564.htm",
+    "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), תשס\"ו-2006 (Nevo mirror)",
+    "publisher": "Nevo legal database",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

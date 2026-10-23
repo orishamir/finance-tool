@@ -1,0 +1,62 @@
+{
+  "id": "TXP-03",
+  "title": "Beneficiary member (`עמית מוטב`): definition and test",
+  "title_he": "עמית מוטב: הגדרה ומבחן",
+  "text_he": "עמית מוטב הוא יחיד שבשל הכנסתו שולמו עבורו לקופת גמל לקצבה בשנת המס סכומים בגובה שיעור הסף מהשכר הממוצע במשק לפחות. אצל שכיר גם הפקדות המעסיק נספרות לבדיקה, והן מדווחות בדוח השנתי לצורך זה. מי שהוא עמית מוטב עובר לתקרת זיכוי אחרת ולניכוי של עמית מוטב, אבל לפי המדריך של רשות המסים ייתכן שעדיף לו חישוב כיחיד רגיל, והמערכת המקוונת מחשבת את שניהם. הסף מתעדכן כל שנה עם השכר הממוצע ואינו קפוא; הפקודה נקראה בעותק בוויקיטקסט.",
+  "figure_names_he": {
+    "threshold_pct_of_average_wage": "שיעור הסף מהשכר הממוצע",
+    "threshold": "סף עמית מוטב (שנתי)"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "eligibility",
+    "deposit-ceiling",
+    "tax-at-deposit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "threshold_pct_of_average_wage": {
+      "value": 16,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance s.47(a), definition \"עמית מוטב\" (Wikisource mirror)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXP-03"
+      ],
+      "state": "sourced",
+      "notes": "A beneficiary member is an individual for whom at least 16% of the average wage was paid to a provident fund for annuity in the tax year; for an employee the employer's deposits count."
+    },
+    "threshold": {
+      "value": 26436,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+        "title": "Tax Authority deductions booklet 2026, p.12, rows \"שכר ממוצע במשק 13,769\" and \"עמית מוטב 47(א)(7) 26,436 לשנה\"",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "average-wage-linked",
+      "rule_ids": [
+        "TXP-03"
+      ],
+      "state": "sourced",
+      "notes": "NIS per year for 2026 (16% x 12 x 13,769). Updated yearly with the NII average wage; not frozen."
+    }
+  },
+  "il_finance_file": "tax-pension-gemel-lekitzba.md",
+  "checked": "2026-10-22"
+}

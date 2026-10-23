@@ -1,0 +1,32 @@
+{
+  "id": "krn-namnvt-chyybt",
+  "he": "קרן נאמנות חייבת",
+  "en": null,
+  "meaning": "קרן נאמנות ישראלית שמשלמת בעצמה מס על רווחיה; המשקיעים לא משלמים מס במכירה, והפסד ממנה לא מקטין מס.",
+  "where": [
+    "app",
+    "fund-name",
+    "prospectus"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [
+    "קרן חייבת",
+    "חייבת",
+    "חיבת"
+  ],
+  "rule_ids": [
+    "TXS-07",
+    "TXS-11",
+    "TXS-22",
+    "TXS-24"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+    "title": "פקודת מס הכנסה (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

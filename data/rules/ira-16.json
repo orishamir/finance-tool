@@ -1,0 +1,16 @@
+{
+  "id": "IRA-16",
+  "title": "Closed list of what may be charged to the fund",
+  "title_he": "רשימה סגורה של חיובים מהקופה",
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-trade",
+    "fee-custody",
+    "fee-fx"
+  ],
+  "likely_to_change": "no",
+  "text_he": "מהקופה מותר לגבות רק: עמלות קנייה ומכירה; דמי משמרת ועמלת משמורת (לא יותר מבקופות הרגילות של אותה חברה); דמי ניהול ושכר נאמן של קרנות שמחזיקים; מסים; דמי ניהול לחברה המנהלת לפי ההסכם (מתוכם משולם מנהל התיקים); והוצאות השקעה בתעודת סל. שום דבר מעבר לרשימה.",
+  "il_finance_file": "ira-self-directed.md",
+  "checked": "2026-10-22"
+}

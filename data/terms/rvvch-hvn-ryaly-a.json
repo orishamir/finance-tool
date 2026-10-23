@@ -1,0 +1,25 @@
+{
+  "id": "rvvch-hvn-ryaly-a",
+  "he": "רווח הון ריאלי",
+  "en": null,
+  "meaning": "רווח ממכירה, אחרי הורדת החלק שנבע רק מעליית המדד; באיגרת חוב לא צמודה כל הרווח נחשב כזה",
+  "where": [
+    "statement"
+  ],
+  "wrapper_ids": [
+    "government-bond",
+    "makam"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXI-12",
+    "TXI-14"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+    "title": "Income Tax Ordinance (consolidated), Hebrew Wikisource",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

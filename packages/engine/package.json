@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "exports": { ".": "./src/index.ts" },
+  "dependencies": { "@finance-tool/schema": "*" },
   "scripts": {
     "typecheck": "tsc -p ."
   }

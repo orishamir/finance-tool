@@ -1,0 +1,38 @@
+{
+  "id": "GOV-06",
+  "title": "Makam yield and price convention",
+  "title_he": "מוסכמת התשואה והמחיר של המק״ם",
+  "text_he": "בנק ישראל ממיר בין מחיר לתשואה לפי תשואה שנתית מצטברת (ריבית דריבית) על בסיס ימים קבוע בשנה: המחיר למאה שווי נקוב נגזר מהתשואה וממספר הימים מיום התשלום עד הפדיון, ולהפך. זו המוסכמה של המכרז; אם מסכי הבורסה והבנקים משתמשים באותה נוסחה לתשואה בשוק המשני לא נבדק.",
+  "figure_names_he": {
+    "day_count_basis": "בסיס הימים בשנה לחישוב התשואה"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "day_count_basis": {
+      "value": 365,
+      "unit": "days",
+      "source": {
+        "url": "https://www.boi.org.il/media/ytal5ozx/makam.pdf",
+        "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\" (undated)",
+        "publisher": "Bank of Israel, Markets Division",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "GOV-06"
+      ],
+      "state": "sourced",
+      "notes": "Compound annual yield on a 365-day year: P = 100 / (1 + I/100)^(N/365), N = days from payment day to redemption (s.3.2.2, Annex ג). Used by method F-24. Whether TASE and bank screens use the same formula for secondary-market yields was not verified (GOV open question 7)."
+    }
+  },
+  "il_finance_file": "government-bonds-and-makam.md",
+  "checked": "2026-10-22"
+}

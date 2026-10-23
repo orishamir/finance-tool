@@ -1,0 +1,23 @@
+{
+  "id": "mkyrh",
+  "he": "מכירה",
+  "en": null,
+  "meaning": "לעניין מס: כל יציאה של נכס מהבעלות, כולל פדיון והחלפה לקרן אחרת; הרווח בה חייב במס.",
+  "where": [
+    "law"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "TXS-21"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+    "title": "פקודת מס הכנסה (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

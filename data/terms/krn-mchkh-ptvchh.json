@@ -1,0 +1,32 @@
+{
+  "id": "krn-mchkh-ptvchh",
+  "he": "קרן מחקה פתוחה",
+  "en": null,
+  "meaning": "קרן מחקה שיחידותיה לא נסחרות בבורסה במהלך היום, בשונה מקרן סל.",
+  "where": [
+    "app",
+    "fund-name"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500",
+    "index-ta125"
+  ],
+  "variants": [
+    "מחקה"
+  ],
+  "rule_ids": [
+    "ETF-01",
+    "ETF-04",
+    "ETF-18"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf",
+    "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2024",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

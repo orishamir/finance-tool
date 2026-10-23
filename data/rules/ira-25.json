@@ -1,0 +1,13 @@
+{
+  "id": "IRA-25",
+  "title": "Liquidity and withdrawal follow the underlying product",
+  "title_he": "נזילות ומשיכה לפי המוצר שבבסיס",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "text_he": "קופה אישית היא קרן השתלמות או קופה לתגמולים/לקצבה, ולכן כללי המשיכה הם של אותו מוצר. בנוסף: הפקדות ומשיכות מותרות גם כשהחשבון חסום בגלל חריגה; העברה במזומן מחכה למכירת כל ההחזקות; ומה אפשר למכור ומתי תלוי בניירות שבחרתם.",
+  "il_finance_file": "ira-self-directed.md",
+  "checked": "2026-10-22"
+}

@@ -1,0 +1,26 @@
+{
+  "id": "markt-slykh-pnsyvnyt-mrkzyt",
+  "he": "מערכת סליקה פנסיונית מרכזית",
+  "en": null,
+  "meaning": "מערכת מרכזית שמעבירה מידע וכסף בין הגופים הפנסיוניים, וממנה אפשר לבקש מידע על כל המוצרים הפנסיוניים שלכם",
+  "where": [],
+  "wrapper_ids": [
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [
+    "המסלקה הפנסיונית"
+  ],
+  "rule_ids": [
+    "PF-22",
+    "PF-28"
+  ],
+  "source": {
+    "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(ייעוץ,_שיווק_ומערכת_סליקה_פנסיוניים)",
+    "title": "חוק הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים), התשס\"ה-2005 (Wikisource mirror)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}

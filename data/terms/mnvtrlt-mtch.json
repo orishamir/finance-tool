@@ -1,0 +1,20 @@
+{
+  "id": "mnvtrlt-mtch",
+  "he": "מנוטרלת מט\"ח",
+  "en": null,
+  "meaning": "בשם של קרן: הקרן מנטרלת את החשיפה למטבע זר, כך ששער הדולר כמעט אינו משפיע עליה.",
+  "where": [],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "MF-43",
+    "RG-19"
+  ],
+  "source": {
+    "url": "https://funder.co.il/fund/5142096",
+    "title": "Funder, fund page 5142096 (קסם KTF LBMA GOLD PRICE PM USD מנוטרלת מט\"ח)",
+    "publisher": "see title",
+    "strength": "secondary",
+    "checked": "2026-10-22"
+  }
+}

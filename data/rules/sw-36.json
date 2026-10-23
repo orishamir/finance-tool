@@ -1,0 +1,16 @@
+{
+  "id": "SW-36",
+  "title": "Tax on moving securities between accounts: same owner described as not a tax event, different owner taxed with a zero cost basis (institution sources only)",
+  "title_he": "מס על העברת ניירות ערך בין חשבונות",
+  "text_he": "אלטשולר שחם טרייד מציינת שהעברה בין חשבונות באותה בעלות אינה אירוע מס; בבעלות שונה היא עשויה להיות אירוע מס והניירות נרשמים בשער עלות אפס. לאומי מציין שהעברה לגורם אחר, או לקרוב בלי הצהרה חתומה, היא מכירה שחייבת בניכוי מס במקור לפי שער הסגירה, ועלות הנייר אצל המקבל אפס. מאמר של מיטב טרייד אומר שהמעבר אינו אירוע מס, שרצף המס נשמר ושהפסדים לצורכי מס לא נמחקים, אבל ייתכן שיידרשו אישורים מהבנק. לא נקרא מקור של רשות המסים; אלה הצהרות מוסדיות בלבד.",
+  "strength": "institution",
+  "dimensions": [
+    "switching-tax-event",
+    "loss-offset",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-22"
+}

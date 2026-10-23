@@ -1,0 +1,3922 @@
+[
+  {
+    "term_he": "קרן חדשה מקיפה",
+    "term_source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+    },
+    "variants_he": [
+      "קרן פנסיה מקיפה חדשה",
+      "קרן פנסיה חדשה מקיפה",
+      "קרנות חדשות"
+    ],
+    "explain_he": "קרן פנסיה שחוסכת לקצבה חודשית בפרישה, וכוללת גם ביטוח למקרה נכות ולמשפחה במקרה מוות",
+    "rule_ids": [
+      "PEN-08",
+      "PEN-12",
+      "PEN-13",
+      "PEN-27",
+      "PF-04",
+      "REG-17",
+      "REG-21"
+    ],
+    "source": {
+      "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "decoder:company",
+      "decoder:track",
+      "statement",
+      "app",
+      "ad",
+      "pension-net"
+    ],
+    "notes": "Provident Funds Law s.1 and the Management Fees Regulations write 'קרן חדשה מקיפה' (REG-21 quotes 'קרן ותיקה או קרן חדשה מקיפה'; read via Wikisource mirror). The 2011 extension order (gov.il scan, primary) writes 'קרן פנסיה מקיפה חדשה' (PEN-08); PEN summary and Terms table also give 'קרן פנסיה חדשה מקיפה' as used in ads and statements. Pension-Net classifies these funds as 'קרנות חדשות'. The starting-list order 'קרן פנסיה מקיפה (חדשה)' is not used by any source. Disability and survivors detail rests on Mor's bylaws only (institution; PEN OQ13)."
+  },
+  {
+    "term_he": "קרן חדשה כללית",
+    "term_source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+    },
+    "variants_he": [
+      "קרן פנסיה כללית",
+      "קרנות כלליות"
+    ],
+    "explain_he": "קרן פנסיה שמקבלת את ההפקדות שמעל הסכום המרבי שמותר להפקיד בכל חודש לקרן הפנסיה המקיפה",
+    "rule_ids": [
+      "PEN-10",
+      "PEN-08",
+      "PF-05",
+      "REG-17",
+      "REG-21"
+    ],
+    "source": {
+      "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "decoder:company",
+      "decoder:track",
+      "statement",
+      "pension-net"
+    ],
+    "notes": "Law and Fees Regulations write 'קרן חדשה כללית'; the extension order writes 'קרן פנסיה כללית' and defines it only as a new pension fund not entitled to designated bonds. That excess deposits above the comprehensive ceiling move to the same manager's general fund comes from Mor's bylaws (institution). Not an eligible fund for the state return top-up (PEN-10, REG-21). Pension-Net label: 'קרנות כלליות'."
+  },
+  {
+    "term_he": "קרן ותיקה",
+    "term_source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+    },
+    "variants_he": [
+      "קרן פנסיה ותיקה"
+    ],
+    "explain_he": "קרן פנסיה מהסוג הישן, שאושרה לפני הקרנות החדשות ופועלת לפי כללים אחרים",
+    "rule_ids": [
+      "REG-17",
+      "REG-21",
+      "TXP-12",
+      "TXP-24"
+    ],
+    "source": {
+      "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "guide:*:protection"
+    ],
+    "notes": "Meaning (approved before 1.1.1995) is from the PEN Terms table citing extension order s.2(ה), not from a numbered rule. PEN 'Left out' says old funds are closed to new members, but that line carries no source. Differences found: no commutation (TXP-24), no recognized annuity (TXP-12); covered by the return top-up (REG-21)."
+  },
+  {
+    "term_he": "קופת גמל לקצבה",
+    "term_source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+    },
+    "variants_he": [
+      "קופת גמל לקיצבה",
+      "קופ\"ג לקצבה",
+      "קופ\"ג לקיצבה"
+    ],
+    "explain_he": "השם בחוק לכל קופה שמיועדת לשלם קצבה חודשית בפרישה, כולל קרנות הפנסיה",
+    "rule_ids": [
+      "REG-17",
+      "TXP-24",
+      "TXP-01",
+      "PEN-34"
+    ],
+    "source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "guide:pension-and-gemel-lekitzba:tax",
+      "form-106",
+      "statement",
+      "law"
+    ],
+    "notes": "Official spellings disagree: Provident Funds Law 'לקצבה'; Income Tax Ordinance s.45A 'לקיצבה' (TXP-01); Form 106 uses both ('לקופ\"ג לקצבה' and 'לקופ\"ג לקיצבה', TXP-26). In law the term includes pension funds (REG-17, TXP-24); the non-insurance product that apps call a retirement 'קופת גמל' is the separate entry 'תגמולים ואישית לפיצויים'."
+  },
+  {
+    "term_he": "תגמולים ואישית לפיצויים",
+    "term_source": {
+      "title": "Gemel-Net query, period 202609, classification and target population (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&filters=%7B%22REPORT_PERIOD%22%3A202609%7D&fields=FUND_CLASSIFICATION,TARGET_POPULATION&distinct=true&limit=200"
+    },
+    "variants_he": [
+      "קופת גמל לתגמולים",
+      "קופת גמל אישית לפיצויים",
+      "קופת גמל לחיסכון"
+    ],
+    "explain_he": "קופת גמל לחיסכון לפרישה בלי ביטוח; כדי לקבל ממנה קצבה, מעבירים את הכסף לקרן פנסיה או לחברת ביטוח",
+    "rule_ids": [
+      "PEN-34",
+      "PEN-35",
+      "CAT-10"
+    ],
+    "source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "decoder:company",
+      "decoder:track",
+      "statement",
+      "app",
+      "gemel-net"
+    ],
+    "notes": "Label is the Gemel-Net FUND_CLASSIFICATION value (primary). The law text read (s.13(א)(4)) covers only that tagmulim and personal-severance approvals apply to pre-2008 money; 'no pooled insurance' and 'pays an annuity only by transfer' rest on Mor's standard bylaws and product page (institution). Current bylaws title: 'קופת גמל לחיסכון, קופת גמל לתגמולים וקופת גמל אישית לפיצויים'. The default track of this product was not read (PEN OQ18)."
+  },
+  {
+    "term_he": "קרן נבחרת",
+    "term_source": {
+      "title": "CMA circular 2024-9-6 \"הוראות לעניין בחירת קופת גמל - עדכון\", 25.8.2024",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf"
+    },
+    "variants_he": [
+      "קרן פנסיה נבחרת"
+    ],
+    "explain_he": "קרן פנסיה שרשות שוק ההון בחרה בהליך תחרותי כברירת מחדל כשלא בוחרים קרן, בדמי ניהול מובטחים לשנים",
+    "rule_ids": [
+      "PEN-23",
+      "PEN-06"
+    ],
+    "source": {
+      "title": "CMA circular 2024-9-6 \"הוראות לעניין בחירת קופת גמל - עדכון\", 25.8.2024",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "ad",
+      "app"
+    ],
+    "notes": "Which funds are selected, and their fee, change with each four-year process (PEN-23; current period from 1.11.2024). The official CMA notice naming the 2024 funds and the end date was not reached (PEN OQ14)."
+  },
+  {
+    "term_he": "קופת ברירת מחדל",
+    "term_source": {
+      "title": "CMA circular 2024-9-6 \"הוראות לעניין בחירת קופת גמל - עדכון\", 25.8.2024",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf"
+    },
+    "variants_he": [],
+    "explain_he": "הקופה שאליה המעסיק מפקיד את כספי הפנסיה כשלא בוחרים קופה בעצמכם",
+    "rule_ids": [
+      "PEN-06",
+      "PEN-23"
+    ],
+    "source": {
+      "title": "CMA circular 2024-9-6 \"הוראות לעניין בחירת קופת גמל - עדכון\", 25.8.2024",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "payslip"
+    ],
+    "notes": "From 1 June 2025 employers place non-choosing employees in a selected fund by an automatic distribution mechanism; employers with fewer than 50 employees choose among the selected funds (PEN-06). An employer may instead run its own competitive process. Term from PEN Terms table (circular; Provident Funds Law s.20)."
+  },
+  {
+    "term_he": "צו הרחבה [נוסח משולב] לפנסיה חובה",
+    "term_source": {
+      "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf"
+    },
+    "variants_he": [
+      "צו הרחבה (נוסח משולב) לפנסיה חובה"
+    ],
+    "explain_he": "צו שמחייב לבטח בפנסיה כמעט את כל השכירים בישראל, עם הפרשות מינימליות של העובדים ושל המעסיק",
+    "rule_ids": [
+      "PEN-01",
+      "PEN-02",
+      "PEN-03",
+      "PEN-05"
+    ],
+    "source": {
+      "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "payslip",
+      "law"
+    ],
+    "notes": "The rule base writes the title both with square brackets (rule text, Terms, Sources table) and with parentheses (PEN-01 link title). Current minimum rates come from the 2016 collective agreement and its 2016 extension order, whose text was not opened (PEN OQ1, OQ2)."
+  },
+  {
+    "term_he": "פנסיית חובה לעצמאים",
+    "term_source": {
+      "title": "תקרות וסכומים לשנת 2026 (Harel)",
+      "url": "https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "חובה בחוק על עצמאים להפקיד כל שנה אחוז מההכנסה לקופה לקצבה, עד גובה השכר הממוצע",
+    "rule_ids": [
+      "PEN-07",
+      "TXP-09"
+    ],
+    "source": {
+      "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "guide:pension-and-gemel-lekitzba:tax"
+    ],
+    "notes": "The Hebrew label is from Harel's 2026 table (institution); the law's own wording (Economic Efficiency Law 2017-2018, ch. ב') was read via Wikisource and its heading was not recorded. Exemptions: under 21, first six months after VAT registration, early retirement age, aged 55+ on the effective date (PEN-07). Start year of the duty not confirmed in the law text (PEN OQ4); the 2025 Tax Authority guide says January 2017."
+  },
+  {
+    "term_he": "תקופת המתנה",
+    "term_source": {
+      "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "התקופה מתחילת עבודה חדשה ועד שהמעסיק חייב להתחיל להפריש לפנסיה, אם לא הייתה לכם פנסיה קודם",
+    "rule_ids": [
+      "PEN-02"
+    ],
+    "source": {
+      "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "payslip"
+    ],
+    "notes": "Someone already insured in any pension product when starting work is entitled from day one, paid retroactively (PEN-02)."
+  },
+  {
+    "term_he": "תגמולי עובד",
+    "term_source": {
+      "title": "הגדלת שיעורי הפקדה למוצר פנסיוני בהתאם לצו ההרחבה, June 2016 (Harel)",
+      "url": "https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "הסכום שמנוכה מהשכר שלכם ומופקד לחיסכון בפנסיה, כחלק שלכם בהפקדה",
+    "rule_ids": [
+      "PEN-03",
+      "PEN-36"
+    ],
+    "source": {
+      "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "payslip",
+      "statement"
+    ],
+    "notes": "Hebrew label from the PEN Terms table (Harel 2016 letter, institution); PEN-03 uses it next to the 2016 collective agreement. Exact payslip line labels were not sourced (PEN OQ11)."
+  },
+  {
+    "term_he": "תגמולי מעסיק",
+    "term_source": {
+      "title": "הגדלת שיעורי הפקדה למוצר פנסיוני בהתאם לצו ההרחבה, June 2016 (Harel)",
+      "url": "https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf"
+    },
+    "variants_he": [
+      "מרכיב תגמולי המעביד"
+    ],
+    "explain_he": "הסכום שהמעסיק מוסיף מכיסו לחיסכון בפנסיה שלכם, מעבר לשכר, כחלק שלו בהפקדה",
+    "rule_ids": [
+      "PEN-03",
+      "TXP-10",
+      "PEN-36"
+    ],
+    "source": {
+      "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "guide:pension-and-gemel-lekitzba:tax",
+      "payslip",
+      "statement",
+      "form-106"
+    ],
+    "notes": "Official sources disagree on the word for employer: the Income Tax Ordinance s.3(ה3) writes 'מרכיב תגמולי המעביד' (TXP-10), while the Wage Protection Law addendum writes 'הפרשות המעסיק' (PEN-36). In insurance funds part of it may pay for loss-of-work-capacity cover (PEN-03)."
+  },
+  {
+    "term_he": "מרכיב הפיצויים",
+    "term_source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+    },
+    "variants_he": [
+      "פיצויים"
+    ],
+    "explain_he": "החלק בחשבון הפנסיה שבו נצברות הפקדות המעסיק לפיצויי פיטורים",
+    "rule_ids": [
+      "PEN-03",
+      "PEN-05",
+      "PEN-30",
+      "PEN-31",
+      "TXP-11"
+    ],
+    "source": {
+      "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "guide:pension-and-gemel-lekitzba:tax",
+      "statement",
+      "payslip"
+    ],
+    "notes": "Unlike the benefits component, it can be withdrawn on leaving a job, subject to the law and the employer relationship (PEN-30, PEN-31). Tax on it: TXP-11, TXP-19 to TXP-21."
+  },
+  {
+    "term_he": "מרכיב התגמולים",
+    "term_source": {
+      "title": "Tax Authority, monthly deductions booklet from January 2026, updated April 2026",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "החלק בחשבון הפנסיה שבו נצברות ההפקדות שלכם ושל המעסיק לחיסכון, בלי הפיצויים",
+    "rule_ids": [
+      "PEN-03",
+      "PEN-30",
+      "TXP-17"
+    ],
+    "source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "institution"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "statement"
+    ],
+    "notes": "The Tax Authority booklet uses the term (row 'מרכיב התגמולים - סכום קצבה מזערי', TXP-17); the definition as an account part is from Mor's bylaws s.1 (institution). Withdrawal from it before retirement is only in narrow cases (PEN-30)."
+  },
+  {
+    "term_he": "השכר הממוצע במשק",
+    "term_source": {
+      "title": "פקודת מס הכנסה (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+    },
+    "variants_he": [
+      "שכר ממוצע במשק"
+    ],
+    "explain_he": "נתון שהביטוח הלאומי מפרסם ומעדכן, ולפיו נקבעות תקרות רבות של הפקדות והטבות מס בפנסיה",
+    "rule_ids": [
+      "PEN-04",
+      "TXP-03",
+      "TXP-10",
+      "TXP-27"
+    ],
+    "source": {
+      "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "guide:pension-and-gemel-lekitzba:tax"
+    ],
+    "notes": "Ordinance s.3(ה3)(2) writes 'השכר הממוצע במשק'; the Tax Authority booklet and Harel write 'שכר ממוצע במשק'. NII's own publication of the yearly figure was not reached (PEN OQ5); TXP OQ4 notes two different 2025 values in Tax Authority sources."
+  },
+  {
+    "term_he": "תקרת הפקדה חודשית",
+    "term_source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+    },
+    "variants_he": [
+      "תקרת הפקדה חודשית לקרן פנסיה מקיפה"
+    ],
+    "explain_he": "הסכום המרבי שמותר להפקיד בכל חודש לקרן פנסיה מקיפה; מה שמעליו עובר לקרן הכללית",
+    "rule_ids": [
+      "PEN-08",
+      "PEN-10"
+    ],
+    "source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "institution"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "statement"
+    ],
+    "notes": "Institution source only. The Income Tax regulation behind the ceiling was not opened (PEN OQ6); the formula is stated only by Harel (institution)."
+  },
+  {
+    "term_he": "שכר מבוטח",
+    "term_source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "השכר שקרן הפנסיה מסיקה מגובה ההפקדות החודשיות, ושממנו נגזר הביטוח לנכות ולמוות",
+    "rule_ids": [
+      "PEN-09",
+      "PEN-36"
+    ],
+    "source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "institution"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "statement"
+    ],
+    "notes": "Only Mor's bylaws read (PEN OQ13). Not the same as the tax term 'הכנסה מבוטחת' (TXP-04). The Wage Protection Law does not use 'insured salary' (TXP-25)."
+  },
+  {
+    "term_he": "שכר קובע",
+    "term_source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "השכר שלפיו קרן הפנסיה מחשבת קצבת נכות או קצבה למשפחה, לפי ממוצעים של השכר המבוטח",
+    "rule_ids": [
+      "PEN-09",
+      "PEN-12",
+      "PEN-13"
+    ],
+    "source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "institution"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "statement"
+    ],
+    "notes": "Same words, different meaning elsewhere: the 2016 collective agreement uses 'השכר הקובע' for the wage base of contributions (PEN-04). Sibling glossaries also have 'משכורת קובעת' for keren hishtalmut."
+  },
+  {
+    "term_he": "מסלול ביטוח",
+    "term_source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+    },
+    "variants_he": [
+      "מסלולי ביטוח"
+    ],
+    "explain_he": "השילוב שבוחרים בקרן הפנסיה בין גובה הכיסוי לנכות לבין גובה הכיסוי למשפחה במקרה מוות",
+    "rule_ids": [
+      "PEN-11"
+    ],
+    "source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "institution"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "statement",
+      "app"
+    ],
+    "notes": "The default insurance track is called 'מסלול ברירת המחדל' in the bylaws, the same words as the default investment track; they are different things. Only Mor's bylaws read (PEN OQ13)."
+  },
+  {
+    "term_he": "דמי ביטוח",
+    "term_source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "הסכום שנגבה כל חודש מהחיסכון בקרן הפנסיה כדי לממן את הביטוח לנכות ולמקרה מוות",
+    "rule_ids": [
+      "PEN-15"
+    ],
+    "source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "institution"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "statement"
+    ],
+    "notes": "Charged only while the member is insured. Rate tables were not read (PEN OQ7)."
+  },
+  {
+    "term_he": "ארכת ביטוח",
+    "term_source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "תקופה קצרה שבה הביטוח בקרן הפנסיה נמשך אוטומטית אחרי שההפקדות נפסקות, על חשבון החיסכון",
+    "rule_ids": [
+      "PEN-16"
+    ],
+    "source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "institution"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "statement"
+    ],
+    "notes": "Mor bylaws: five months. Institution source only."
+  },
+  {
+    "term_he": "הסדר ביטוח",
+    "term_source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "בקשה להמשיך את הביטוח בקרן הפנסיה לתקופה מוגבלת אחרי שההפקדות נפסקו, בתשלום מהחיסכון או בהפקדה",
+    "rule_ids": [
+      "PEN-16"
+    ],
+    "source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "institution"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba"
+    ],
+    "notes": "Must be requested before the insurance extension ends (Mor bylaws). 'ריסק זמני' was not found in the bylaws read (PEN OQ12)."
+  },
+  {
+    "term_he": "תקופת אכשרה",
+    "term_source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "תקופה מההצטרפות לקרן שבה אין כיסוי לנכות או למוות שנגרמו ממצב רפואי שהיה קיים לפני ההצטרפות",
+    "rule_ids": [
+      "PEN-14"
+    ],
+    "source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "institution"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba"
+    ],
+    "notes": "Withdrawing or transferring benefits money starts a new qualifying period for the cover it financed (PEN-14, PEN-30). Also applies to self-inflicted injury (shorter period)."
+  },
+  {
+    "term_he": "חיתום רפואי",
+    "term_source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "בדיקה של מצב הבריאות שקרן הפנסיה רשאית לדרוש רק במקרים מסוימים, כמו הצטרפות או הגדלת ביטוח",
+    "rule_ids": [
+      "PEN-14",
+      "PEN-16"
+    ],
+    "source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "institution"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba"
+    ],
+    "notes": "Cases in Mor's bylaws: joining, renewal, a real salary rise above a threshold, or more cover."
+  },
+  {
+    "term_he": "עמית",
+    "term_source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+    },
+    "variants_he": [],
+    "explain_he": "השם הרשמי לחוסכים שיש להם חשבון בקופת גמל, בקרן פנסיה או בקרן השתלמות",
+    "rule_ids": [
+      "REG-17",
+      "PF-02"
+    ],
+    "source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "statement",
+      "law"
+    ],
+    "notes": ""
+  },
+  {
+    "term_he": "עמית פעיל",
+    "term_source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "מעמד בקרן כשמגיעות לחשבון הפקדות שוטפות; כשהן נפסקות, המעמד הוא עמית לא פעיל",
+    "rule_ids": [
+      "PEN-16",
+      "PF-28"
+    ],
+    "source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "institution"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "statement"
+    ],
+    "notes": "Opposite: 'עמית לא פעיל' (PEN Terms). The law uses a related term 'עמית לא מפקיד' for pension consolidation: no payment in the two months before the inquiry (PF-28)."
+  },
+  {
+    "term_he": "עמית לא מבוטח",
+    "term_source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "מעמד בקרן הפנסיה כשהחיסכון נשאר אבל אין ביטוח לנכות ולמוות, למשל אחרי הפסקת הפקדות ממושכת",
+    "rule_ids": [
+      "PEN-16",
+      "PEN-11"
+    ],
+    "source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "institution"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "statement"
+    ],
+    "notes": "Also after the chosen insurance end age (PEN-11). Renewal after a long gap may need medical underwriting and a new qualifying period (PEN-16)."
+  },
+  {
+    "term_he": "עמית שכיר",
+    "term_source": {
+      "title": "Tax Authority, Form 106 (accessible version, updated 1.2026)",
+      "url": "https://www.gov.il/BlobFolder/service/itc-106/en/Service_Pages_Income_tax_itc106-acc.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "הפקדה לקופה בתור שכירים, דרך המעסיק; ההבחנה משפיעה על הטבות המס ועל חישוב הביטוח",
+    "rule_ids": [
+      "PEN-09",
+      "TXP-02",
+      "TXP-26"
+    ],
+    "source": {
+      "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "guide:pension-and-gemel-lekitzba:tax",
+      "form-106",
+      "statement"
+    ],
+    "notes": "Form 106 writes it in quotes: 'כ'עמית שכיר''. Sibling glossary c writes 'עמית-שכיר' with a hyphen."
+  },
+  {
+    "term_he": "עמית עצמאי",
+    "term_source": {
+      "title": "Tax Authority, Form 106 (accessible version, updated 1.2026)",
+      "url": "https://www.gov.il/BlobFolder/service/itc-106/en/Service_Pages_Income_tax_itc106-acc.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "הפקדה לקופה בתור עצמאים, ישירות ולא דרך מעסיק; ההבחנה משפיעה על הטבות המס ועל חישוב הביטוח",
+    "rule_ids": [
+      "PEN-09",
+      "TXP-06",
+      "TXP-07",
+      "TXP-26"
+    ],
+    "source": {
+      "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "guide:pension-and-gemel-lekitzba:tax",
+      "form-106",
+      "statement"
+    ],
+    "notes": "Form 106 writes 'כ'עמית עצמאי''. The fund infers insured salary differently for self-employed members (PEN-09)."
+  },
+  {
+    "term_he": "קצבת זקנה",
+    "term_source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "התשלום החודשי שקרן הפנסיה משלמת מהכסף שנצבר בחשבון, מהגיל שבו מותר להתחיל לקבל אותו",
+    "rule_ids": [
+      "PEN-27",
+      "PEN-26"
+    ],
+    "source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "institution"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "statement"
+    ],
+    "notes": "Only an institution source (Mor bylaws) defines it in il-finance. The same words name the National Insurance old-age benefit, which il-finance leaves out (PEN 'Left out')."
+  },
+  {
+    "term_he": "גיל פרישה",
+    "term_source": {
+      "title": "חוק גיל פרישה, התשס\"ד-2004 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה"
+    },
+    "variants_he": [],
+    "explain_he": "הגיל הרגיל לפרישה מעבודה לפי החוק, שונה לגברים ולנשים; ממנו חלה למשל הקלה במס על הקצבה",
+    "rule_ids": [
+      "PEN-26",
+      "TXP-14"
+    ],
+    "source": {
+      "title": "Tax Authority, monthly deductions booklet from January 2026, updated April 2026",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "guide:pension-and-gemel-lekitzba:tax"
+    ],
+    "notes": "Retirement Age Law read via Wikisource (PEN-26). The Tax Authority booklet gives the women's table by birth date (TXP-14), which matches PEN's inference for women born from 1970 (PEN OQ20). Sibling glossary c writes the definite form 'גיל הפרישה'."
+  },
+  {
+    "term_he": "גיל פרישה מוקדמת",
+    "term_source": {
+      "title": "חוק גיל פרישה, התשס\"ד-2004 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה"
+    },
+    "variants_he": [
+      "גיל הפרישה המוקדמת"
+    ],
+    "explain_he": "הגיל המוקדם ביותר שבו אפשר להתחיל לקבל קצבת זקנה מקרן הפנסיה; זהה לגברים ולנשים",
+    "rule_ids": [
+      "PEN-26",
+      "PEN-27",
+      "PF-17",
+      "PEN-07"
+    ],
+    "source": {
+      "title": "חוק גיל פרישה, התשס\"ד-2004 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "guide:pension-and-gemel-lekitzba:tax"
+    ],
+    "notes": "Retirement Age Law writes 'גיל פרישה מוקדמת' (PEN-26); the Transfer Regulations write 'גיל הפרישה המוקדמת' (PF-17, the age from which investment-provident money may move to an annuity fund). In Mor's bylaws it equals the minimum old-age eligibility age."
+  },
+  {
+    "term_he": "קצבת נכות",
+    "term_source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "תשלום חודשי מקרן הפנסיה כשמאבדים לתקופה ממושכת חלק משמעותי מהיכולת לעבוד",
+    "rule_ids": [
+      "PEN-12"
+    ],
+    "source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "institution"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba"
+    ],
+    "notes": "While disabled, the fund keeps crediting deposits so old-age savings continue (PEN-12). Only Mor's bylaws read; day-61 start is from a page image (PEN OQ16)."
+  },
+  {
+    "term_he": "קצבת שאירים",
+    "term_source": {
+      "title": "פקודת מס הכנסה (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+    },
+    "variants_he": [
+      "קצבת שארים",
+      "קיצבת שאירים"
+    ],
+    "explain_he": "תשלום חודשי מקרן הפנסיה לבן או בת הזוג ולילדים, אחרי מוות של בעל או בעלת החשבון",
+    "rule_ids": [
+      "PEN-13",
+      "PEN-32",
+      "TXP-23"
+    ],
+    "source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "institution"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "guide:pension-and-gemel-lekitzba:tax",
+      "form-106",
+      "statement"
+    ],
+    "notes": "Spelling differs: Income Tax Ordinance s.9(6ו) 'קצבת שאירים' (TXP-23); Form 106 'קיצבת שאירים'; PEN Terms (Mor bylaws) 'קצבת שארים'. Dependent parents may also receive part (PEN-13)."
+  },
+  {
+    "term_he": "מוטב",
+    "term_source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "האדם שקבעתם בכתב שיקבל את הכסף בקופה אחרי מותכם, אם אין בני משפחה שזכאים לקצבה",
+    "rule_ids": [
+      "PEN-32"
+    ],
+    "source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "institution"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "statement",
+      "app"
+    ],
+    "notes": "Written instruction: 'הוראת מוטבים' (PEN Terms). Not the same as the tax status 'עמית מוטב'. If there are no beneficiaries, heirs receive the money (PEN-32)."
+  },
+  {
+    "term_he": "מקדם המרה",
+    "term_source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "המספר שבו מחלקים את החיסכון בפרישה כדי לקבל את גובה הקצבה החודשית",
+    "rule_ids": [
+      "PEN-27",
+      "PEN-20"
+    ],
+    "source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "institution"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "statement"
+    ],
+    "notes": "Depends on age, spouse, children and choices; assumptions set by the Commissioner (PEN-20). Factor tables not read (PEN OQ7)."
+  },
+  {
+    "term_he": "תקופת תשלומים מובטחים",
+    "term_source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "תקופה שבוחרים בפרישה, שבה הקצבה מובטחת גם אם נפטרים לפני שהיא מסתיימת",
+    "rule_ids": [
+      "PEN-27",
+      "PEN-32"
+    ],
+    "source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "institution"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba"
+    ],
+    "notes": "If the pensioner dies within it with no survivors, beneficiaries receive the commuted value of the remaining payments (PEN-32)."
+  },
+  {
+    "term_he": "היוון קצבה",
+    "term_source": {
+      "title": "Tax Authority, בקשה לקיבוע זכויות - פטור ממס על הקצבה המזכה או היוון קצבה מזכה (טופס 161ד), service page",
+      "url": "https://www.gov.il/he/service/itc-request-for-fixed-rights-at-retirement-age"
+    },
+    "variants_he": [
+      "היוון",
+      "קצבה מהוונת"
+    ],
+    "explain_he": "המרה של חלק מהקצבה החודשית לסכום חד פעמי, כך שהקצבה שנשארת קטנה יותר",
+    "rule_ids": [
+      "PEN-28",
+      "TXP-17"
+    ],
+    "source": {
+      "title": "Tax Authority, Income Tax circular 2/2013 (27.5.2013)",
+      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "guide:pension-and-gemel-lekitzba:tax",
+      "form-106"
+    ],
+    "notes": "Product limits: the minimum annuity amount, or up to a quarter of the pension for up to five years (PEN-28). Not possible in an old fund (TXP-24)."
+  },
+  {
+    "term_he": "סכום קצבה מזערי",
+    "term_source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+    },
+    "variants_he": [],
+    "explain_he": "הקצבה החודשית המינימלית שצריכה להישאר אחרי היוון; בדרך כלל רק מה שמעליה אפשר להמיר לסכום חד פעמי",
+    "rule_ids": [
+      "PEN-28",
+      "TXP-17"
+    ],
+    "source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "guide:pension-and-gemel-lekitzba:tax"
+    ],
+    "notes": "Exception: up to a quarter of the pension for up to five years (PEN-28). Not the same as 'קצבת מינימום' (a pension below 5% of the average wage, PEN-29). CPI-linked yearly."
+  },
+  {
+    "term_he": "איגרות חוב מיועדות",
+    "term_source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+    },
+    "variants_he": [
+      "ערד",
+      "מירון"
+    ],
+    "explain_he": "איגרות חוב של המדינה שלא נסחרות בבורסה, שהונפקו במיוחד לקרנות הפנסיה",
+    "rule_ids": [
+      "PEN-18",
+      "REG-21"
+    ],
+    "source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "guide:*:protection"
+    ],
+    "notes": "Replaced from 1.10.2022 by the return top-up; bonds already issued remain until redeemed (PEN-18). Whether new 'ערד' bonds are still issued is open (PEN OQ9)."
+  },
+  {
+    "term_he": "השלמת תשואה",
+    "term_source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+    },
+    "variants_he": [
+      "הבטחת תשואה",
+      "אפיק השקעה מובטח תשואה"
+    ],
+    "explain_he": "התחייבות של המדינה להשלים לקרן הפנסיה המקיפה תשואה עד יעד שנקבע בחוק, על חלק מהנכסים",
+    "rule_ids": [
+      "PEN-18",
+      "REG-21"
+    ],
+    "source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "guide:*:protection"
+    ],
+    "notes": "Covers comprehensive and old funds only, not general funds or provident funds. A return above the target goes to a dedicated fund. Conflict between files: REG-21 states the 5.15% target is 'plus the CPI change' (real), while PEN-18 says CPI-linkage is not stated in the text read (PEN OQ8). Determining date: law text says 1 July 2022, annotated as postponed to 1.10.2022 (REG OQ18)."
+  },
+  {
+    "term_he": "איזון אקטוארי",
+    "term_source": {
+      "title": "Pension-Net field dictionary \"פירוט שינויים פורמט חדש פנסיה\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=b58b5a80-84b7-490d-ab02-bff12f1941b2&limit=100"
+    },
+    "variants_he": [
+      "איזון אקטוארי (דווח פעם ברבעון)",
+      "עודף או גירעון אקטוארי",
+      "מאזן אקטוארי"
+    ],
+    "explain_he": "עדכון של יתרות החוסכים בקרן פנסיה, למעלה או למטה, כשנתוני התמותה והנכות בקרן שונים מההנחות",
+    "rule_ids": [
+      "PEN-19",
+      "CAT-02"
+    ],
+    "source": {
+      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "institution"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "decoder:company",
+      "decoder:track",
+      "statement",
+      "pension-net"
+    ],
+    "notes": "CMA Pension-Net display name 'איזון אקטוארי (דווח פעם ברבעון)' (CAT Terms); Mor's bylaws write 'עודף או גירעון אקטוארי'. Meaning rests on Mor's bylaws (institution); the CMA 2024 report gives per-fund figures. Surplus from returns affects only pensioners (PEN-19)."
+  },
+  {
+    "term_he": "דמי ניהול",
+    "term_source": {
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)"
+    },
+    "variants_he": [],
+    "explain_he": "התשלום שהחברה המנהלת גובה על ניהול הכסף, כאחוז מההפקדות או מהחיסכון; החוק קובע לו תקרה",
+    "rule_ids": [
+      "PF-01",
+      "PF-02",
+      "PF-04",
+      "PF-05",
+      "PF-06",
+      "PEN-21",
+      "PEN-22"
+    ],
+    "source": {
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "decoder:company",
+      "decoder:track",
+      "statement",
+      "app"
+    ],
+    "notes": "Caps per track (PF-07). Direct investment expenses are charged on top (PF-10)."
+  },
+  {
+    "term_he": "דמי ניהול מהפקדה",
+    "term_source": {
+      "title": "CMA circular 2017-9-15, full text with appendix A notice template (copy hosted by Prisha)",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2017915.pdf"
+    },
+    "variants_he": [
+      "דמי ניהול מתוך התשלומים"
+    ],
+    "explain_he": "אחוז מכל הפקדה שנכנסת לחשבון, שהחברה המנהלת גובה כתשלום על ניהול הכסף; החוק מגביל אותו",
+    "rule_ids": [
+      "PF-02",
+      "PF-04",
+      "PF-05",
+      "PF-06",
+      "PF-16",
+      "PEN-21"
+    ],
+    "source": {
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "decoder:track",
+      "statement",
+      "app"
+    ],
+    "notes": "Label 'מהפקדה' is the CMA fee-notice template wording (PF-16, PF-26); the regulation says 'מתוך התשלומים המועברים'. Keren hishtalmut and IRA have no deposit-fee item (PF-06). The CMA data field with average deposit fees is a separate entry."
+  },
+  {
+    "term_he": "דמי ניהול מחיסכון",
+    "term_source": {
+      "title": "CMA circular 2017-9-15, full text with appendix A notice template (copy hosted by Prisha)",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2017915.pdf"
+    },
+    "variants_he": [
+      "דמי ניהול מצבירה",
+      "דמי ניהול מהצבירה",
+      "דמי ניהול מן היתרה הצבורה"
+    ],
+    "explain_he": "אחוז שנתי מכל הכסף שנצבר בחשבון, שהחברה המנהלת גובה כתשלום על ניהולו; החוק מגביל אותו",
+    "rule_ids": [
+      "PF-02",
+      "PF-04",
+      "PF-05",
+      "PF-06",
+      "PF-09",
+      "PF-16",
+      "PEN-21"
+    ],
+    "source": {
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "decoder:track",
+      "statement",
+      "app"
+    ],
+    "notes": "CMA notice template writes 'מחיסכון'; institutions and apps write 'מצבירה' / 'מהצבירה' (PF-26, Phoenix, Meitav); the regulation says 'מן היתרה הצבורה'. Sibling glossary e uses 'דמי ניהול מצבירה' as headword. Collected monthly or daily and prorated (PF-09)."
+  },
+  {
+    "term_he": "הוצאות ישירות בשל ביצוע עסקאות",
+    "term_source": {
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(הוצאות_ישירות_בשל_ביצוע_עסקאות)"
+    },
+    "variants_he": [
+      "הוצאות ניהול השקעות",
+      "הוצאות לניהול השקעות"
+    ],
+    "explain_he": "עלויות כמו עמלות קנייה ומכירה ותשלום למנהלים חיצוניים, שמשולמות מכספי הקופה בנוסף לדמי הניהול ומקטינות את התשואה",
+    "rule_ids": [
+      "PF-01",
+      "PF-10",
+      "PF-11",
+      "PF-12"
+    ],
+    "source": {
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(הוצאות_ישירות_בשל_ביצוע_עסקאות)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "decoder:track",
+      "statement"
+    ],
+    "notes": "The starting term 'הוצאות ניהול השקעות ישירות' does not appear in il-finance. The legal name is the regulation's; managers write 'הוצאות ניהול השקעות' / 'הוצאות לניהול השקעות'. Closed list; no overall percentage cap found (PF-10). Not a line deducted from the member's account (Phoenix, institution). Sibling glossary c uses 'הוצאות ישירות'."
+  },
+  {
+    "term_he": "עמלת ניהול חיצוני",
+    "term_source": {
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(הוצאות_ישירות_בשל_ביצוע_עסקאות)"
+    },
+    "variants_he": [],
+    "explain_he": "סוג של הוצאה ישירה: תשלום מכספי הקופה למנהלים או לקרנות חיצוניים שמשקיעים חלק מהכסף",
+    "rule_ids": [
+      "PF-10",
+      "PF-11"
+    ],
+    "source": {
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(הוצאות_ישירות_בשל_ביצוע_עסקאות)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "decoder:track",
+      "statement"
+    ],
+    "notes": "Each manager sets and publishes a yearly cap per track, 'מגבלת עמלת ניהול חיצוני' (PF-11); per-manager figures not collected (PF OQ3)."
+  },
+  {
+    "term_he": "עלות שנתית צפויה",
+    "term_source": {
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(הוצאות_ישירות_בשל_ביצוע_עסקאות)"
+    },
+    "variants_he": [],
+    "explain_he": "הערכה של העלות השנתית הכוללת, דמי ניהול והוצאות יחד, שהקופה חייבת להציג לצד דמי הניהול",
+    "rule_ids": [
+      "PF-12",
+      "PF-31"
+    ],
+    "source": {
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(הוצאות_ישירות_בשל_ביצוע_עסקאות)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "statement"
+    ],
+    "notes": "Regulation 3ב read in summary only. How it is presented is due to change under a 2026 CMA plan item (PF-31)."
+  },
+  {
+    "term_he": "הנחה בדמי ניהול",
+    "term_source": {
+      "title": "CMA circular 2017-9-15 \"דמי ניהול במכשירי החיסכון הפנסיוני – תיקון\" (gov.il copy)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "דמי ניהול נמוכים מהתקרה שבחוק, שהחברה המנהלת מתחייבת להם לתקופה מינימלית ויכולה לבטל רק במקרים מסוימים",
+    "rule_ids": [
+      "PF-13",
+      "PF-14",
+      "PF-16",
+      "PEN-25"
+    ],
+    "source": {
+      "title": "CMA circular 2017-9-15 \"דמי ניהול במכשירי החיסכון הפנסיוני – תיקון\" (gov.il copy)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "statement",
+      "app"
+    ],
+    "notes": "The minimum discount period ('תקופת ההנחה') conflicts: CMA circular 2017-9-15 says five years; Altshuler gemel-lehashkaa bylaws and Mor gemel bylaws (PEN-25) say two years. PF-13 browser pass resolved it to five years (primary) for computation. Cases for raising early: six months after deposits stop, withdrawal or transfer, graded mechanisms (PF-14)."
+  },
+  {
+    "term_he": "הסדר דמי ניהול מיטיב",
+    "term_source": {
+      "title": "CMA circular 2017-9-15 \"דמי ניהול במכשירי החיסכון הפנסיוני – תיקון\" (gov.il copy)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "כשעוברים בין מקומות עבודה שלשניהם הסדר דמי ניהול עם אותה חברה מנהלת, חל ההסדר הזול יותר",
+    "rule_ids": [
+      "PF-15"
+    ],
+    "source": {
+      "title": "CMA circular 2017-9-15 \"דמי ניהול במכשירי החיסכון הפנסיוני – תיקון\" (gov.il copy)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba"
+    ],
+    "notes": "Not the same as 'הרכב דמי ניהול מיטיב' (selected pension funds, PEN-23). Leaving an employer with no new arrangement falls under PF-14."
+  },
+  {
+    "term_he": "הרכב דמי ניהול מיטיב",
+    "term_source": {
+      "title": "CMA circular 2024-9-6 \"הוראות לעניין בחירת קופת גמל - עדכון\", 25.8.2024",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf"
+    },
+    "variants_he": [],
+    "explain_he": "אפשרות בקרן פנסיה נבחרת להחליף חלק מדמי הניהול מהחיסכון בדמי ניהול גבוהים יותר מההפקדה, לפי נוסחה",
+    "rule_ids": [
+      "PEN-23"
+    ],
+    "source": {
+      "title": "CMA circular 2024-9-6 \"הוראות לעניין בחירת קופת גמל - עדכון\", 25.8.2024",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "ad"
+    ],
+    "notes": "Only Mor's alternative mixes were read (PEN OQ15). Not the same as 'הסדר דמי ניהול מיטיב' (PF-15)."
+  },
+  {
+    "term_he": "יתרה צבורה",
+    "term_source": {
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)"
+    },
+    "variants_he": [
+      "היתרה הצבורה",
+      "יתרת הכספים הצבורה"
+    ],
+    "explain_he": "הסכום שנצבר לזכותכם בחשבון בקופה עד היום",
+    "rule_ids": [
+      "PF-02",
+      "PF-06"
+    ],
+    "source": {
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "statement",
+      "app"
+    ],
+    "notes": "Variants are the regulation's wording (reg. 2 and reg. 4). Not the same as the CMA data field 'צבירה נטו', which is a monthly net flow of a whole track."
+  },
+  {
+    "term_he": "חברה מנהלת",
+    "term_source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+    },
+    "variants_he": [
+      "שם חברה מנהלת"
+    ],
+    "explain_he": "החברה שקיבלה רישיון לנהל קופות גמל וקרנות פנסיה, ומחזיקה את הכסף כנאמן לטובת החוסכים",
+    "rule_ids": [
+      "REG-17",
+      "REG-18",
+      "PF-29",
+      "CAT-09",
+      "CAT-11"
+    ],
+    "source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "guide:*:regulator",
+      "decoder:company",
+      "statement"
+    ],
+    "notes": "'שם חברה מנהלת' is the CMA data display name (CAT Terms). One brand can have several legal entities, for example Meitav (REG-28)."
+  },
+  {
+    "term_he": "גוף מוסדי",
+    "term_source": {
+      "title": "CMA circular 2017-9-15 \"דמי ניהול במכשירי החיסכון הפנסיוני – תיקון\" (gov.il copy)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "שם כללי לחברה מנהלת של קופות גמל או לחברת ביטוח",
+    "rule_ids": [
+      "PF-13",
+      "PF-21"
+    ],
+    "source": {
+      "title": "CMA circular 2017-9-15 \"דמי ניהול במכשירי החיסכון הפנסיוני – תיקון\" (gov.il copy)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:regulator",
+      "law"
+    ],
+    "notes": ""
+  },
+  {
+    "term_he": "העברת כספים בין קופות גמל",
+    "term_source": {
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)"
+    },
+    "variants_he": [
+      "ניוד"
+    ],
+    "explain_he": "העברה של הכסף שצברתם מקופה אחת לאחרת, ישירות בין החברות המנהלות ובלי שהכסף עובר דרככם",
+    "rule_ids": [
+      "PF-17",
+      "PF-18",
+      "PF-19",
+      "PF-20"
+    ],
+    "source": {
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "app",
+      "ad"
+    ],
+    "notes": "Only listed routes are allowed (PF-17). No transfer fee is a permitted charge (PF-01, PF-19), but a transfer can end a fee discount (PF-14). 'ניוד' is colloquial (Phoenix, institution)."
+  },
+  {
+    "term_he": "העברת כספים בין מסלולי השקעה",
+    "term_source": {
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לאישור_ולניהול_קופות_גמל)"
+    },
+    "variants_he": [
+      "שינוי מסלולי השקעה"
+    ],
+    "explain_he": "העברה של הכסף ממסלול השקעה אחד לאחר באותה קופה, בלי לעבור לחברה אחרת",
+    "rule_ids": [
+      "PF-23",
+      "PEN-17",
+      "PF-14"
+    ],
+    "source": {
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לאישור_ולניהול_קופות_גמל)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "decoder:track",
+      "app"
+    ],
+    "notes": "'שינוי מסלולי השקעה' is Meitav's app wording (CAT-27, institution). Within three business days; no fee or frequency limit in the regulation; may allow the manager to end a discount (PF-14). Severance money may need employer consent in pension (PEN-17)."
+  },
+  {
+    "term_he": "איחוד חשבונות",
+    "term_source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+    },
+    "variants_he": [],
+    "explain_he": "העברה של כסף מחשבונות ישנים ולא פעילים לחשבון אחד, למשל כשמצטרפים לקרן פנסיה חדשה",
+    "rule_ids": [
+      "PF-28",
+      "PF-18"
+    ],
+    "source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba"
+    ],
+    "notes": "In pension, the joining fund may move inactive accounts unless the member objects within 45 days (PF-28). No automatic equivalent was found for provident, study or investment-provident funds (PF OQ8)."
+  },
+  {
+    "term_he": "חשבון רדום",
+    "term_source": {
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (איתור עמיתים ומוטבים), התשע\"ב-2012 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(איתור_עמיתים_ומוטבים)"
+    },
+    "variants_he": [],
+    "explain_he": "חשבון בקופה שלא ניתנה לגביו שום הוראה במשך שנים רבות",
+    "rule_ids": [
+      "PF-27",
+      "PF-08"
+    ],
+    "source": {
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (איתור עמיתים ומוטבים), התשע\"ב-2012 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(איתור_עמיתים_ומוטבים)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba"
+    ],
+    "notes": "Lost-contact and dormant accounts get a lower fee cap if the manager did not complete its search duties (PF-08)."
+  },
+  {
+    "term_he": "קבלת מידע על חסכונות פנסיוניים",
+    "term_source": {
+      "title": "CMA, קבלת מידע על חסכונות פנסיוניים (service page)",
+      "url": "https://www.gov.il/he/service/pension_savings_search"
+    },
+    "variants_he": [
+      "הר הכסף"
+    ],
+    "explain_he": "שירות חינמי של רשות שוק ההון לאיתור חשבונות פנסיה, גמל, השתלמות וביטוח לא פעילים על שמכם",
+    "rule_ids": [
+      "PF-32"
+    ],
+    "source": {
+      "title": "CMA, קבלת מידע על חסכונות פנסיוניים (service page)",
+      "url": "https://www.gov.il/he/service/pension_savings_search",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba"
+    ],
+    "notes": "PF-32 links this service to the name 'הר הכסף' in its heading; the gov.il page was read through a browser machine translation. It shows that an account may exist; balances are with the institutions."
+  },
+  {
+    "term_he": "מערכת סליקה פנסיונית מרכזית",
+    "term_source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(ייעוץ,_שיווק_ומערכת_סליקה_פנסיוניים)"
+    },
+    "variants_he": [
+      "המסלקה הפנסיונית"
+    ],
+    "explain_he": "מערכת מרכזית שמעבירה מידע וכסף בין הגופים הפנסיוניים, וממנה אפשר לבקש מידע על כל המוצרים הפנסיוניים שלכם",
+    "rule_ids": [
+      "PF-22",
+      "PF-28"
+    ],
+    "source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(ייעוץ,_שיווק_ומערכת_סליקה_פנסיוניים)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba"
+    ],
+    "notes": "Whether the information service is free in practice and how a saver reaches it were not found (PF OQ6)."
+  },
+  {
+    "term_he": "דין וחשבון שנתי לעמית",
+    "term_source": {
+      "title": "תקנון תקני לקופת גמל להשקעה אלטשולר שחם חיסכון פלוס, March 2025 (Altshuler Shaham)",
+      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "דוח שהחברה המנהלת שולחת פעם בשנה על החשבון, ובו בין השאר התשואה, שיעור ההוצאות והעלות הצפויה",
+    "rule_ids": [
+      "PF-26",
+      "PF-12"
+    ],
+    "source": {
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(הוצאות_ישירות_בשל_ביצוע_עסקאות)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "statement"
+    ],
+    "notes": "Starting term 'דוח שנתי' is not used in these five files (it appears in other files for the tax return). The name is from Altshuler bylaws (institution); the law (s.35) delegates content to the Commissioner and the uniform statement format was not reached (PF OQ5). Contents listed here are from the direct-expenses regulation (PF-12)."
+  },
+  {
+    "term_he": "דין וחשבון רבעוני לעמית",
+    "term_source": {
+      "title": "תקנון תקני לקופת גמל להשקעה אלטשולר שחם חיסכון פלוס, March 2025 (Altshuler Shaham)",
+      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "דוח על החשבון שמוצג באזור האישי באתר בכל רבעון, חוץ מהרבעון האחרון של השנה",
+    "rule_ids": [
+      "PF-26"
+    ],
+    "source": {
+      "title": "תקנון תקני לקופת גמל להשקעה אלטשולר שחם חיסכון פלוס, March 2025 (Altshuler Shaham)",
+      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "institution"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "statement",
+      "app"
+    ],
+    "notes": "Institution source. Not required for a quarter with no deposit or transfer and a small balance (PF-26)."
+  },
+  {
+    "term_he": "מיזוג קופות גמל",
+    "term_source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+    },
+    "variants_he": [
+      "מיזוג מסלולי השקעה"
+    ],
+    "explain_he": "איחוד של קופות או מסלולים לאחד באישור מראש של רשות שוק ההון; חשבונות החוסכים לא מתמזגים",
+    "rule_ids": [
+      "PF-30",
+      "CAT-13"
+    ],
+    "source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:*:protection",
+      "decoder:company",
+      "decoder:track"
+    ],
+    "notes": "Law s.37 covers fund mergers; track mergers are from the CMA tracks circular s.14 and Meitav notices ('מסלול המתמזג' / 'מסלול הקולט'). In the CMA data a merged track's assets drop to zero and it disappears with no successor field (CAT-13)."
+  },
+  {
+    "term_he": "העברת ניהול",
+    "term_source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+    },
+    "variants_he": [],
+    "explain_he": "מעבר של קופה שלמה לניהול של חברה מנהלת אחרת, למשל כשהחברה הקודמת נקלעת לקשיים",
+    "rule_ids": [
+      "PF-30",
+      "REG-19"
+    ],
+    "source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:*:protection"
+    ],
+    "notes": "A voluntary transfer also needs the Commissioner's prior approval (PF-30, REG-19)."
+  },
+  {
+    "term_he": "זיכוי ממס",
+    "term_source": {
+      "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "סכום שיורד ישירות מהמס שלכם, בגובה אחוז קבוע מההפקדה לפנסיה, בלי קשר לשיעור המס שלכם",
+    "rule_ids": [
+      "TXP-01",
+      "TXP-02",
+      "TXP-04"
+    ],
+    "source": {
+      "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba:tax",
+      "form-106"
+    ],
+    "notes": "Starting term 'זיכוי ממס על הפקדה לפנסיה' is descriptive; the Tax Authority term is 'זיכוי ממס' (s.45A). Up to a ceiling of eligible income (TXP-02). Whether payroll grants it monthly is open (TXP OQ6)."
+  },
+  {
+    "term_he": "ניכוי",
+    "term_source": {
+      "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "סכום שמפחיתים מההכנסה שחייבת במס, ולכן החיסכון במס תלוי בשיעור המס שלכם",
+    "rule_ids": [
+      "TXP-01",
+      "TXP-05",
+      "TXP-06"
+    ],
+    "source": {
+      "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba:tax"
+    ],
+    "notes": "Tax meaning (s.47). On a payslip 'ניכוי' also means an amount deducted from salary, see 'ניכוי לקופת גמל'. An amount deducted under s.47 does not also earn the credit (TXP-01)."
+  },
+  {
+    "term_he": "הכנסה מזכה",
+    "term_source": {
+      "title": "פקודת מס הכנסה (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+    },
+    "variants_he": [],
+    "explain_he": "ההכנסה שלפיה מחשבים את הטבת המס על הפקדה לפנסיה, עד תקרה שנקבעה בחוק",
+    "rule_ids": [
+      "TXP-02",
+      "TXP-05"
+    ],
+    "source": {
+      "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba:tax"
+    ],
+    "notes": "Cap frozen at the 2024 value for 2025 to 2027 (TXP-27)."
+  },
+  {
+    "term_he": "הכנסה מבוטחת",
+    "term_source": {
+      "title": "פקודת מס הכנסה (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+    },
+    "variants_he": [],
+    "explain_he": "הכנסה מעבודה שהמעסיק הפקיד בשבילה לקופה לקצבה; היא משפיעה על חישוב הטבות המס",
+    "rule_ids": [
+      "TXP-04",
+      "TXP-26"
+    ],
+    "source": {
+      "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba:tax",
+      "form-106"
+    ],
+    "notes": "Form 106 field 244/245. Not the same as the pension fund's 'שכר מבוטח' (PEN-09)."
+  },
+  {
+    "term_he": "עמית מוטב",
+    "term_source": {
+      "title": "פקודת מס הכנסה (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+    },
+    "variants_he": [],
+    "explain_he": "מעמד במס כשהפקדות הפנסיה בשנה, כולל של המעסיק, מגיעות לרף שנקבע לפי השכר הממוצע; משנה את תקרות ההטבה",
+    "rule_ids": [
+      "TXP-03",
+      "TXP-04",
+      "TXP-06"
+    ],
+    "source": {
+      "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba:tax"
+    ],
+    "notes": "Not the same as 'מוטב' (beneficiary). The guide says a beneficiary member may still be better off computed as an ordinary individual (TXP-03)."
+  },
+  {
+    "term_he": "ניכוי לקופת גמל",
+    "term_source": {
+      "title": "חוק הגנת השכר, התשי\"ח-1958, s.24 and תוספת (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הגנת_השכר"
+    },
+    "variants_he": [],
+    "explain_he": "שורה בתלוש השכר שמראה כמה נוכה מהשכר שלכם והופקד לכל קופה",
+    "rule_ids": [
+      "PEN-36",
+      "TXP-25"
+    ],
+    "source": {
+      "title": "חוק הגנת השכר, התשי\"ח-1958, s.24 and תוספת (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הגנת_השכר",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "payslip",
+      "guide:pension-and-gemel-lekitzba"
+    ],
+    "notes": "The law fixes the content, not the label; payroll software labels were not sourced (PEN OQ11, TXP OQ16)."
+  },
+  {
+    "term_he": "הפרשות המעסיק לקופת גמל",
+    "term_source": {
+      "title": "חוק הגנת השכר, התשי\"ח-1958, s.24 and תוספת (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הגנת_השכר"
+    },
+    "variants_he": [],
+    "explain_he": "ההפקדות שהמעסיק מעביר לקופה בשבילכם מעבר לשכר, כולל לפיצויים; התלוש חייב להציג אותן",
+    "rule_ids": [
+      "PEN-36",
+      "TXP-25"
+    ],
+    "source": {
+      "title": "חוק הגנת השכר, התשי\"ח-1958, s.24 and תוספת (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הגנת_השכר",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "payslip",
+      "guide:pension-and-gemel-lekitzba"
+    ],
+    "notes": "The law does not require the payslip to show rates or to separate severance (PEN-36). Sibling glossary c has 'הפקדות המעסיק'."
+  },
+  {
+    "term_he": "קצבה מזכה",
+    "term_source": {
+      "title": "פקודת מס הכנסה (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+    },
+    "variants_he": [
+      "קיצבה מזכה"
+    ],
+    "explain_he": "קצבה חודשית מקופה לקצבה או ממעסיק, שעליה ניתן מגיל הפרישה פטור חלקי ממס",
+    "rule_ids": [
+      "TXP-14"
+    ],
+    "source": {
+      "title": "Tax Authority, Income Tax circular 2/2013 (27.5.2013)",
+      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba:tax",
+      "form-106"
+    ],
+    "notes": "The booklet writes 'קיצבה מזכה'; the form 161ד service title writes 'הקצבה המזכה'. Excludes the recognized annuity and survivors' annuities (TXP-14, TXP-23)."
+  },
+  {
+    "term_he": "פטור ממס על הקצבה המזכה",
+    "term_source": {
+      "title": "Tax Authority, בקשה לקיבוע זכויות - פטור ממס על הקצבה המזכה או היוון קצבה מזכה (טופס 161ד), service page",
+      "url": "https://www.gov.il/he/service/itc-request-for-fixed-rights-at-retirement-age"
+    },
+    "variants_he": [
+      "קיצבה - שיעור הפטור"
+    ],
+    "explain_he": "החלק מהקצבה בפרישה שלא משלמים עליו מס, עד תקרה; מבקשים אותו מרשות המסים",
+    "rule_ids": [
+      "TXP-14",
+      "TXP-15",
+      "TXP-16",
+      "TXP-28"
+    ],
+    "source": {
+      "title": "Tax Authority, monthly deductions booklet from January 2026, updated April 2026",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba:tax",
+      "form-106"
+    ],
+    "notes": "Starting term 'קצבה פטורה' is not in il-finance; this is the Tax Authority wording (form 161ד). The exempt share rises by law in 2027 and 2028 (TXP-14). Exempt severance grants reduce it (offset formula, TXP-15). 'קיצבה - שיעור הפטור' is the Form 106 line."
+  },
+  {
+    "term_he": "קיבוע זכויות",
+    "term_source": {
+      "title": "Tax Authority, בקשה לקיבוע זכויות - פטור ממס על הקצבה המזכה או היוון קצבה מזכה (טופס 161ד), service page",
+      "url": "https://www.gov.il/he/service/itc-request-for-fixed-rights-at-retirement-age"
+    },
+    "variants_he": [
+      "טופס 161ד"
+    ],
+    "explain_he": "בקשה לרשות המסים בגיל הפרישה, שבה קובעים כמה מהקצבה תהיה פטורה ממס וכמה אפשר להוון בפטור",
+    "rule_ids": [
+      "TXP-28",
+      "TXP-16"
+    ],
+    "source": {
+      "title": "Tax Authority, בקשה לקיבוע זכויות - פטור ממס על הקצבה המזכה או היוון קצבה מזכה (טופס 161ד), service page",
+      "url": "https://www.gov.il/he/service/itc-request-for-fixed-rights-at-retirement-age",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba:tax"
+    ],
+    "notes": "Filed through the Tax Authority personal area, free (TXP-28)."
+  },
+  {
+    "term_he": "קצבה מוכרת",
+    "term_source": {
+      "title": "פקודת מס הכנסה (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+    },
+    "variants_he": [],
+    "explain_he": "קצבה מכספים שכבר שולם עליהם מס או שלא קיבלו הטבת מס; היא פטורה ממס מגיל מסוים",
+    "rule_ids": [
+      "TXP-12"
+    ],
+    "source": {
+      "title": "Tax Authority, Income Tax circular 2/2013 (27.5.2013)",
+      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba:tax"
+    ],
+    "notes": "Not in an old fund (TXP-12). Fuller treatment is in tax-insurance-and-amendment-190.md; sibling glossaries c and f also define it."
+  },
+  {
+    "term_he": "נוסחת הקיזוז",
+    "term_source": {
+      "title": "Tax Authority, Income Tax circular 2/2013 (27.5.2013)",
+      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "החישוב שבו מענקי פרישה שקיבלתם בעבר בלי מס מקטינים את הפטור ממס על הקצבה",
+    "rule_ids": [
+      "TXP-15"
+    ],
+    "source": {
+      "title": "Tax Authority, Income Tax circular 2/2013 (27.5.2013)",
+      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba:tax"
+    ],
+    "notes": "Applies to retirees from 1.1.2012; grants for years after entitlement age do not reduce the exemption (TXP-15)."
+  },
+  {
+    "term_he": "מענק הון עקב פרישה",
+    "term_source": {
+      "title": "פקודת מס הכנסה (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה"
+    },
+    "variants_he": [
+      "מענקי פרישה"
+    ],
+    "explain_he": "סכום חד פעמי שמקבלים בעזיבת עבודה, בדרך כלל מכספי הפיצויים; חלק ממנו פטור ממס",
+    "rule_ids": [
+      "TXP-19",
+      "TXP-15"
+    ],
+    "source": {
+      "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba:tax",
+      "form-106"
+    ],
+    "notes": "Severance money left in an annuity fund counts as received unless continuity is chosen (TXP-19). Taking it tax-free reduces the later annuity exemption (TXP-15). 'מענקי פרישה' is the guide's wording (TXP-15)."
+  },
+  {
+    "term_he": "רצף קצבה",
+    "term_source": {
+      "title": "Tax Authority, form 161 (accessible .docx), part B",
+      "url": "https://www.gov.il/BlobFolder/service/notice-of-retirement/he/161-2023.%20docx.docx"
+    },
+    "variants_he": [],
+    "explain_he": "בחירה בעזיבת עבודה להשאיר את כספי הפיצויים בקופה לקצבה, במקום למשוך אותם",
+    "rule_ids": [
+      "TXP-21",
+      "TXP-30"
+    ],
+    "source": {
+      "title": "Tax Authority, form 161 (accessible .docx), part B",
+      "url": "https://www.gov.il/BlobFolder/service/notice-of-retirement/he/161-2023.%20docx.docx",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba:tax"
+    ],
+    "notes": "Default when part B of form 161 is left blank, under conditions (TXP-30). Can be reversed later on form 161ג."
+  },
+  {
+    "term_he": "רצף פיצויים",
+    "term_source": {
+      "title": "Tax Authority, form 161 (accessible .docx), part B",
+      "url": "https://www.gov.il/BlobFolder/service/notice-of-retirement/he/161-2023.%20docx.docx"
+    },
+    "variants_he": [],
+    "explain_he": "בחירה לדחות את המס על כספי הפיצויים עד הפרישה מהעבודה הבאה, כשמתחילים לעבוד אצל מעסיק חדש",
+    "rule_ids": [
+      "TXP-20",
+      "TXP-30"
+    ],
+    "source": {
+      "title": "Tax Authority, form 161 (accessible .docx), part B",
+      "url": "https://www.gov.il/BlobFolder/service/notice-of-retirement/he/161-2023.%20docx.docx",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba:tax"
+    ],
+    "notes": "Requires a new employer depositing to a severance component within one year; can be reversed within two years (TXP-20, TXP-30)."
+  },
+  {
+    "term_he": "טופס 161",
+    "term_source": {
+      "title": "Tax Authority, הודעה על פרישה מעבודה (טופס 161 חדש), service page",
+      "url": "https://www.gov.il/he/service/notice-of-retirement"
+    },
+    "variants_he": [
+      "הודעה על פרישה מעבודה"
+    ],
+    "explain_he": "טופס שהמעסיק ממלא כשעוזבים עבודה, ובו בוחרים מה יקרה לכספי הפיצויים מבחינת מס",
+    "rule_ids": [
+      "TXP-29",
+      "TXP-30"
+    ],
+    "source": {
+      "title": "Tax Authority, הודעה על פרישה מעבודה (טופס 161 חדש), service page",
+      "url": "https://www.gov.il/he/service/notice-of-retirement",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba:tax"
+    ],
+    "notes": "New form from 1 January 2024; part B holds the employee's choices (TXP-29, TXP-30)."
+  },
+  {
+    "term_he": "משיכה שלא כדין",
+    "term_source": {
+      "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+    },
+    "variants_he": [
+      "תשלום שלא כדין מקופת גמל לקצבה"
+    ],
+    "explain_he": "משיכת כסף מקופה לקצבה שלא בדרך שהחוק מתיר; היא ממוסה בשיעור גבוה, עם חריגים מעטים",
+    "rule_ids": [
+      "TXP-18"
+    ],
+    "source": {
+      "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\"",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba:tax"
+    ],
+    "notes": "Exceptions: low household income, large medical expenses, severe disability, death (TXP-18). Taxable base not settled (TXP OQ3). Sibling glossary c has 'משיכת כספים שלא כדין'."
+  },
+  {
+    "term_he": "מסלול השקעה",
+    "term_source": {
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לאישור_ולניהול_קופות_גמל)"
+    },
+    "variants_he": [
+      "מסלולי השקעה"
+    ],
+    "explain_he": "אפשרות השקעה בתוך קופה, עם מדיניות השקעה משלה; בקופה אחת יש בדרך כלל כמה מסלולים",
+    "rule_ids": [
+      "PF-07",
+      "PF-23",
+      "CAT-09",
+      "CAT-15"
+    ],
+    "source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "decoder:track",
+      "statement",
+      "app"
+    ],
+    "notes": "Each track has its own income-tax number (CAT-09); fee caps apply per track (PF-07)."
+  },
+  {
+    "term_he": "מסלול השקעה ברירת מחדל",
+    "term_source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf"
+    },
+    "variants_he": [
+      "מסלול ברירת מחדל",
+      "מסלול ברירת המחדל בעת ההצטרפות לקופת הגמל"
+    ],
+    "explain_he": "המסלול שאליו נכנס הכסף כשלא בוחרים מסלול השקעה בעת ההצטרפות",
+    "rule_ids": [
+      "CAT-18",
+      "CAT-19",
+      "PF-24",
+      "PEN-17"
+    ],
+    "source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "decoder:track",
+      "app"
+    ],
+    "notes": "In pension and tagmulim funds the default is the age-dependent track (CAT-19, PEN-17); in kupat gemel lehashkaa it is set in the bylaws; in keren hishtalmut it must be general or flexible index-tracking (CAT-18). Meitav's label for track 7978 is the second variant. Not the same as the default insurance track in a pension fund (PEN-11)."
+  },
+  {
+    "term_he": "מסלול כללי",
+    "term_source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf"
+    },
+    "variants_he": [
+      "כללי"
+    ],
+    "explain_he": "מסלול שאינו מתמחה בסוג השקעה מסוים; החברה המנהלת קובעת את התמהיל בתוך מה שהחוק מתיר",
+    "rule_ids": [
+      "CAT-17",
+      "CAT-18",
+      "CAT-19",
+      "CAT-23"
+    ],
+    "source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "decoder:track",
+      "app"
+    ],
+    "notes": "Circular definition: not specialized, not a default track, not an annuitants' track (CAT-17). 'No stated mix, investment committee discretion' is from Meitav's study-fund bylaw text (CAT-23, institution). In tagmulim-type funds a general track is closed to new members (CAT-19)."
+  },
+  {
+    "term_he": "מסלול השקעה מתמחה",
+    "term_source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "מסלול שמשקיע לפי התמחות מוגדרת מתוך רשימת המסלולים של רשות שוק ההון, למשל מניות או מדדים",
+    "rule_ids": [
+      "CAT-17",
+      "CAT-15"
+    ],
+    "source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "Five clusters (CAT-17)."
+  },
+  {
+    "term_he": "רשימת מסלולי השקעה",
+    "term_source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "רשימה שרשות שוק ההון מפרסמת ובה השמות המותרים למסלולים ומדיניות ההשקעה שכל שם מחייב",
+    "rule_ids": [
+      "CAT-15",
+      "CAT-22"
+    ],
+    "source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "The list itself was not obtained (CAT OQ9), so per-name policies in il-finance come from institution bylaw text."
+  },
+  {
+    "term_he": "מדיניות השקעה תקנונית",
+    "term_source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "הכללים המחייבים בתקנון הקופה לגבי מה מותר למסלול להחזיק; שם המסלול קשור אליהם",
+    "rule_ids": [
+      "CAT-24",
+      "CAT-15"
+    ],
+    "source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": ""
+  },
+  {
+    "term_he": "מדיניות השקעה צפויה",
+    "term_source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf"
+    },
+    "variants_he": [
+      "מדיניות השקעה מוצהרת"
+    ],
+    "explain_he": "התמהיל שהחברה המנהלת מצהירה שהיא מתכננת בפועל; הוא יכול להשתנות בלי ששם המסלול משתנה",
+    "rule_ids": [
+      "CAT-24"
+    ],
+    "source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "Example: Meitav's flexible index-tracking tracks change their mix from 1.7.2026 without a rename (CAT-24)."
+  },
+  {
+    "term_he": "מודל השקעות תלוי גיל",
+    "term_source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf"
+    },
+    "variants_he": [
+      "מסלול השקעות תלוי גיל",
+      "מדרגות",
+      "לבני 50 ומטה",
+      "לבני 50 עד 60",
+      "לבני 60 ומעלה"
+    ],
+    "explain_he": "שיטה שבה החיסכון עובר אוטומטית למסלול שמתאים לגיל; כשלא בוחרים מסלול, מצטרפים אליה",
+    "rule_ids": [
+      "CAT-17",
+      "CAT-18",
+      "CAT-19",
+      "PEN-17"
+    ],
+    "source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "decoder:track",
+      "app",
+      "statement"
+    ],
+    "notes": "'מדרגות' is the CMA data SPECIALIZATION value; 'מסלול השקעות תלוי גיל' is Mor's bylaws; age-band names are Meitav's. Applies to provident funds other than study and investment-provident funds (CAT-18). A member may choose to stay in a track that does not match their age (PEN-17)."
+  },
+  {
+    "term_he": "מתמחים בניהול אקטיבי",
+    "term_source": {
+      "title": "Gemel-Net 2024+ data, distinct SPECIALIZATION values (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22SPECIALIZATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22"
+    },
+    "variants_he": [
+      "אשכול 1 – מסלולי השקעה בניהול אקטיבי"
+    ],
+    "explain_he": "קבוצת מסלולים מתמחים שבהם החברה המנהלת בוחרת השקעות בעצמה, לצד נכסים שעוקבים אחרי מדדים",
+    "rule_ids": [
+      "CAT-17",
+      "CAT-10"
+    ],
+    "source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track",
+      "gemel-net"
+    ],
+    "notes": "Category value in Gemel-Net SPECIALIZATION from 2024 (CAT-10)."
+  },
+  {
+    "term_he": "מתמחים באפיקי השקעה סחירים",
+    "term_source": {
+      "title": "Gemel-Net 2024+ data, distinct SPECIALIZATION values (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22SPECIALIZATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22"
+    },
+    "variants_he": [
+      "אשכול 3 – השקעות ישירות בנכסים סחירים"
+    ],
+    "explain_he": "קבוצת מסלולים מתמחים שמשקיעים ישירות בנכסים שנסחרים בבורסה",
+    "rule_ids": [
+      "CAT-17",
+      "CAT-10"
+    ],
+    "source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track",
+      "gemel-net"
+    ],
+    "notes": "Tracks in this cluster set up after 1.1.2023 may charge only a limited set of direct expenses (PF-10)."
+  },
+  {
+    "term_he": "מסלול השקעה עוקב מדדים",
+    "term_source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf"
+    },
+    "variants_he": [
+      "עוקבי מדדים",
+      "אשכול 4 – מסלולי השקעה עוקבי מדדים"
+    ],
+    "explain_he": "מסלול שמשקיע בעיקר באמצעות מוצרים שעוקבים אחרי מדדים, כמו מדדי מניות או מדדי איגרות חוב",
+    "rule_ids": [
+      "CAT-17",
+      "CAT-10",
+      "CAT-23"
+    ],
+    "source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "decoder:track",
+      "gemel-net"
+    ],
+    "notes": "The circular's formal definition points to a consolidated-circular section not read (CAT-17). Pre-2024 names used 'פאסיבי' or 'מחקה מדד' (CAT-26)."
+  },
+  {
+    "term_he": "אמונה וקיימות",
+    "term_source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf"
+    },
+    "variants_he": [
+      "אשכול 5 – מסלולי אמונה וקיימות"
+    ],
+    "explain_he": "קבוצת מסלולים שמנהלים את ההשקעות לפי כללי דת או לפי שיקולי קיימות וסביבה",
+    "rule_ids": [
+      "CAT-17",
+      "CAT-18"
+    ],
+    "source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "A manager may run only one track of each type in this cluster (CAT-18)."
+  },
+  {
+    "term_he": "הלכה",
+    "term_source": {
+      "title": "Gemel-Net query, Meitav investment-provident tracks, period 202609 (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב"
+    },
+    "variants_he": [
+      "הלכתי",
+      "הלכה יהודית",
+      "הלכה איסלאמית",
+      "מסלול הלכה"
+    ],
+    "explain_he": "מסלול שמנהל את ההשקעות לפי כללי דת, יהודית או מוסלמית, לפי סוג המסלול",
+    "rule_ids": [
+      "CAT-17",
+      "CAT-10",
+      "CAT-18",
+      "PEN-17"
+    ],
+    "source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "decoder:track",
+      "app"
+    ],
+    "notes": "Data: SPECIALIZATION 'הלכתי', SUB_SPECIALIZATION 'הלכה יהודית' / 'הלכה איסלאמית'; track names use 'הלכה'. The regulatory policy text for this name was not obtained (CAT-23). Mor added a halacha track to its pension fund from 01.04.2026 (PEN-17)."
+  },
+  {
+    "term_he": "קיימות",
+    "term_source": {
+      "title": "Gemel-Net 2024+ data, distinct SPECIALIZATION values (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22SPECIALIZATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22"
+    },
+    "variants_he": [],
+    "explain_he": "מסלול שמנהל את ההשקעות לפי שיקולי קיימות ושמירה על הסביבה",
+    "rule_ids": [
+      "CAT-17",
+      "CAT-10"
+    ],
+    "source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "Regulatory policy text for this name not obtained (CAT-23)."
+  },
+  {
+    "term_he": "מניות",
+    "term_source": {
+      "title": "Gemel-Net 2024+ data, distinct SPECIALIZATION values (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22SPECIALIZATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22"
+    },
+    "variants_he": [
+      "מסלול מניות"
+    ],
+    "explain_he": "מסלול השקעה שמתמחה במניות ומנוהל באופן פעיל, לפי הסיווג של רשות שוק ההון",
+    "rule_ids": [
+      "CAT-10",
+      "CAT-17",
+      "CAT-15",
+      "CAT-23"
+    ],
+    "source": {
+      "title": "Gemel-Net 2024+ data, distinct SPECIALIZATION values (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22SPECIALIZATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:pension-and-gemel-lekitzba",
+      "decoder:track",
+      "app"
+    ],
+    "notes": "Meaning rests on the CMA classification only (category active management, specialization equities). The CMA list's regulatory policy for this name (for example how much must be in equities) was not obtained (CAT-23, CAT OQ9). 'מסלול מניות' is a pre-2024 Meitav name."
+  },
+  {
+    "term_he": "כספי (שקלי)",
+    "term_source": {
+      "title": "Gemel-Net query, Meitav investment-provident tracks, period 202609 (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב"
+    },
+    "variants_he": [
+      "כספי (שיקלי)",
+      "מסלול השקעה כספי",
+      "שקלי טווח קצר"
+    ],
+    "explain_he": "מסלול שמשקיע בעיקר בנכסים בשקלים שלא צמודים למדד, כמו פיקדונות ואיגרות חוב בשקלים",
+    "rule_ids": [
+      "CAT-23",
+      "CAT-20",
+      "CAT-11"
+    ],
+    "source": {
+      "title": "שינוי שם ומדיניות השקעה תקנונית, track 7861 (Meitav)",
+      "url": "https://www.meitav.co.il/media/sisdprky/שינוי-התמחות-גמל-להשקעה-7861.pdf",
+      "checked": "2026-10-22",
+      "strength": "institution"
+    },
+    "where": [
+      "decoder:track",
+      "app"
+    ],
+    "notes": "Policy text from one Meitav notice (institution). Spelling differs: CMA data 'כספי (שקלי)', Meitav flyer 'כספי (שיקלי)'. 'שקלי טווח קצר' is the pre-2024 name of the same Meitav track. In some funds choosing a money-market track requires choosing a holding period; whether this applies to investment-provident funds is open (CAT-20, CAT OQ11)."
+  },
+  {
+    "term_he": "אשראי ואג\"ח",
+    "term_source": {
+      "title": "Gemel-Net query, Meitav investment-provident tracks, period 202609 (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב"
+    },
+    "variants_he": [],
+    "explain_he": "מסלול שמשקיע בעיקר באיגרות חוב, בהלוואות ובפיקדונות, בישראל ובחוץ לארץ",
+    "rule_ids": [
+      "CAT-23"
+    ],
+    "source": {
+      "title": "ריכוז מיזוגים, Meitav merger and policy summary (Meitav)",
+      "url": "https://www.meitav.co.il/media/r0wh30iv/%D7%A8%D7%99%D7%9B%D7%95%D7%96-%D7%9E%D7%99%D7%96%D7%95%D7%92%D7%99%D7%9D-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf",
+      "checked": "2026-10-22",
+      "strength": "institution"
+    },
+    "where": [
+      "decoder:track",
+      "app"
+    ],
+    "notes": "Policy text from Meitav's bylaw notices (institution); no equity allowance stated. Another manager's track of this name should follow the same CMA list policy, not verified (CAT-23)."
+  },
+  {
+    "term_he": "אשראי ואג\"ח עם מניות (עד 25% במניות)",
+    "term_source": {
+      "title": "Gemel-Net query, Meitav investment-provident tracks, period 202609 (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב"
+    },
+    "variants_he": [
+      "אשראי ואג\"ח עם מניות (עד 25% מניות)"
+    ],
+    "explain_he": "מסלול שמשקיע בעיקר באיגרות חוב ובהלוואות, ועוד חלק קטן ומוגבל במניות",
+    "rule_ids": [
+      "CAT-23",
+      "CAT-17",
+      "CAT-25"
+    ],
+    "source": {
+      "title": "שינוי שם ומדיניות השקעה תקנונית, track 7980 (Meitav)",
+      "url": "https://www.meitav.co.il/media/53vlo3zc/שינוי-התמחות-גמל-להשקעה-7980.pdf",
+      "checked": "2026-10-22",
+      "strength": "institution"
+    },
+    "where": [
+      "decoder:track",
+      "app"
+    ],
+    "notes": "Headword is the standard-name part of the Gemel-Net track name (Meitav 7980, CAT-25); the CAT-17 list (Harel reform page, institution) and CAT Terms write '(עד 25% מניות)'. Policy text from Meitav notice 7980 (institution); CMA list policy not obtained (CAT OQ9)."
+  },
+  {
+    "term_he": "אג\"ח ממשלות",
+    "term_source": {
+      "title": "Gemel-Net query, Meitav investment-provident tracks, period 202609 (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב"
+    },
+    "variants_he": [],
+    "explain_he": "מסלול בניהול פעיל שמתמחה באיגרות חוב של ממשלות, לפי הסיווג של רשות שוק ההון",
+    "rule_ids": [
+      "CAT-10",
+      "CAT-17"
+    ],
+    "source": {
+      "title": "Gemel-Net 2024+ data, distinct SPECIALIZATION values (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22SPECIALIZATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "Meaning from the CMA classification only; regulatory policy not obtained (CAT-23). Missing from Harel's grouping (CAT-17)."
+  },
+  {
+    "term_he": "מניות סחיר",
+    "term_source": {
+      "title": "Gemel-Net query, Meitav investment-provident tracks, period 202609 (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב"
+    },
+    "variants_he": [],
+    "explain_he": "מסלול שמשקיע ישירות במניות שנסחרות בבורסה, לפי הסיווג של רשות שוק ההון",
+    "rule_ids": [
+      "CAT-10",
+      "CAT-17",
+      "CAT-23"
+    ],
+    "source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track",
+      "app"
+    ],
+    "notes": "Meaning from the cluster definition and data classification; regulatory policy not obtained (CAT-23)."
+  },
+  {
+    "term_he": "אג\"ח סחיר",
+    "term_source": {
+      "title": "Gemel-Net query, Meitav investment-provident tracks, period 202609 (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב"
+    },
+    "variants_he": [],
+    "explain_he": "מסלול שמשקיע ישירות באיגרות חוב שנסחרות בבורסה, לפי הסיווג של רשות שוק ההון",
+    "rule_ids": [
+      "CAT-10",
+      "CAT-17"
+    ],
+    "source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track",
+      "app"
+    ],
+    "notes": "Regulatory policy not obtained (CAT-23). A related standard name 'סחיר - אג\"ח עם מניות (עד 25% מניות)' shares this sub-specialization in the data (CAT-25) and has no entry here."
+  },
+  {
+    "term_he": "משולב סחיר",
+    "term_source": {
+      "title": "Gemel-Net query, Meitav investment-provident tracks, period 202609 (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב"
+    },
+    "variants_he": [],
+    "explain_he": "מסלול שמשקיע ישירות בנכסים שנסחרים בבורסה; התמהיל בפועל יכול להיות שונה מאוד בין חברות",
+    "rule_ids": [
+      "CAT-10",
+      "CAT-17",
+      "CAT-18",
+      "CAT-24"
+    ],
+    "source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track",
+      "app"
+    ],
+    "notes": "Regulatory policy not obtained (CAT-23). Same name, very different content: Meitav's track was about 99% equities and 1% abroad in 202609 (computed), Harel describes its own as about 100% abroad (CAT-24). Provident funds other than study and investment-provident must offer it (CAT-18)."
+  },
+  {
+    "term_he": "עוקב מדדי מניות",
+    "term_source": {
+      "title": "Gemel-Net query, Meitav investment-provident tracks, period 202609 (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב"
+    },
+    "variants_he": [
+      "פאסיבי - מדדי מניות"
+    ],
+    "explain_he": "מסלול שמשקיע באמצעות מוצרים שעוקבים אחרי מדדי מניות",
+    "rule_ids": [
+      "CAT-10",
+      "CAT-17",
+      "CAT-26"
+    ],
+    "source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track",
+      "app"
+    ],
+    "notes": "Regulatory policy not obtained (CAT-23). 'פאסיבי - מדדי מניות' is a pre-2024 Meitav name."
+  },
+  {
+    "term_he": "עוקב מדדי אג\"ח",
+    "term_source": {
+      "title": "Gemel-Net 2024+ data, distinct SPECIALIZATION values (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22SPECIALIZATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22"
+    },
+    "variants_he": [
+      "עוקב מדדי אג\"ח עם מניות (עד 25% מניות)",
+      "עוקב מדדים - אג\"ח עם מניות (עד 25%)"
+    ],
+    "explain_he": "מסלול שמשקיע באמצעות מוצרים שעוקבים אחרי מדדי איגרות חוב",
+    "rule_ids": [
+      "CAT-10",
+      "CAT-17",
+      "CAT-25"
+    ],
+    "source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track",
+      "app"
+    ],
+    "notes": "Regulatory policy not obtained (CAT-23). Variant names are Meitav's track name (CAT-25) and Harel's grouping (CAT-17); they include an equity share, so the plain name may hide some equities."
+  },
+  {
+    "term_he": "עוקב מדד S&P 500",
+    "term_source": {
+      "title": "Gemel-Net query, Meitav investment-provident tracks, period 202609 (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב"
+    },
+    "variants_he": [
+      "עוקב מדד s&p 500",
+      "עוקב מדד S&P500",
+      "עוקב מדד s&p500",
+      "מחקה מדד S&P500"
+    ],
+    "explain_he": null,
+    "rule_ids": [
+      "CAT-10",
+      "CAT-23",
+      "CAT-26"
+    ],
+    "source": {
+      "title": "Gemel-Net 2024+ data, distinct SPECIALIZATION values (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22SPECIALIZATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track",
+      "app"
+    ],
+    "notes": "missing in il-finance: these five files do not describe the index, and the regulatory policy for this track name was not obtained (CAT-23). The index name also cannot be written without Latin letters or digits. Spellings: CMA SUB_SPECIALIZATION 'עוקב מדד s&p 500', Meitav 'עוקב מדד S&P 500' / 'S&P500', Harel 's&p500'; old Meitav name 'מחקה מדד S&P500'."
+  },
+  {
+    "term_he": "עוקב מדדים גמיש",
+    "term_source": {
+      "title": "Gemel-Net query, Meitav investment-provident tracks, period 202609 (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב"
+    },
+    "variants_he": [
+      "עוקב מדדים - גמיש",
+      "פאסיבי - כללי"
+    ],
+    "explain_he": "מסלול שמשקיע באמצעות מוצרים שעוקבים אחרי כמה מדדים שונים של מניות ואיגרות חוב, בתמהיל שהחברה קובעת",
+    "rule_ids": [
+      "CAT-23",
+      "CAT-24",
+      "CAT-18",
+      "CAT-26"
+    ],
+    "source": {
+      "title": "ריכוז מיזוגים, Meitav merger and policy summary (Meitav)",
+      "url": "https://www.meitav.co.il/media/r0wh30iv/%D7%A8%D7%99%D7%9B%D7%95%D7%96-%D7%9E%D7%99%D7%96%D7%95%D7%92%D7%99%D7%9D-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf",
+      "checked": "2026-10-22",
+      "strength": "institution"
+    },
+    "where": [
+      "decoder:track",
+      "app"
+    ],
+    "notes": "Policy text from Meitav (institution). Meitav moves these tracks to an actively managed, more balanced mix from 1.7.2026 (CAT-24). Old name 'פאסיבי - כללי' looks like a general track but is this one (CAT-26). Mandatory offering in provident funds other than study and investment-provident funds; allowed default for study funds (CAT-18)."
+  },
+  {
+    "term_he": "מסלול אירוח",
+    "term_source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "מסלול שבו מנהל השקעות חיצוני מנהל את הכסף של החוסכים, בתוך קופה של חברה מנהלת",
+    "rule_ids": [
+      "CAT-17"
+    ],
+    "source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": ""
+  },
+  {
+    "term_he": "שינוי התמחות",
+    "term_source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "שינוי של ההתמחות של מסלול מתמחה, שמחייב הודעה מראש לחוסכים עם השוואה בין המדיניות הישנה לחדשה",
+    "rule_ids": [
+      "CAT-21"
+    ],
+    "source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track",
+      "statement"
+    ],
+    "notes": "Notice 45 days to 3 months ahead, with the right to move tracks or funds (CAT-21)."
+  },
+  {
+    "term_he": "איסור הטעיה בשם",
+    "term_source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "כלל שאוסר לתת לקופה או למסלול שם מטעה, למשל שם שרומז על ביטחון או על רווח",
+    "rule_ids": [
+      "CAT-16"
+    ],
+    "source": {
+      "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "The headword is the CAT Terms table label; the circular's own heading was not recorded. Banned examples in the circular: 'בטוחה, רווחית, סולידית, יציבה, איתנה, אגרסיבית' (CAT-16)."
+  },
+  {
+    "term_he": "גמל נט",
+    "term_source": {
+      "title": "not in il-finance: the rule base writes this dataset's name only in Latin letters; spelling taken from the task's starting list, unverified",
+      "url": null
+    },
+    "variants_he": [],
+    "explain_he": "מאגר נתונים חודשי של רשות שוק ההון על כל מסלולי קופות הגמל, קרנות ההשתלמות וקופות הגמל להשקעה",
+    "rule_ids": [
+      "CAT-01",
+      "CAT-29",
+      "CAT-32"
+    ],
+    "source": {
+      "title": "Gemel-Net dataset metadata (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/package_show?id=gemelnet",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:company",
+      "decoder:track"
+    ],
+    "notes": "Hebrew spelling missing in il-finance: CAT writes 'Gemel-Net' (dataset id 'gemelnet'). Also covers child-savings, central-severance and other-purpose funds (CAT-01). Yields are nominal and gross of fees (CAT-32)."
+  },
+  {
+    "term_he": "פנסיה נט",
+    "term_source": {
+      "title": "not in il-finance: the rule base writes this dataset's name only in Latin letters; spelling taken from the task's starting list, unverified",
+      "url": null
+    },
+    "variants_he": [],
+    "explain_he": "מאגר נתונים חודשי של רשות שוק ההון על כל מסלולי קרנות הפנסיה החדשות והכלליות",
+    "rule_ids": [
+      "CAT-01",
+      "CAT-29"
+    ],
+    "source": {
+      "title": "Pensia-Net dataset metadata (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/package_show?id=pensia-net",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:company",
+      "decoder:track"
+    ],
+    "notes": "Hebrew spelling missing in il-finance: files write 'Pension-Net', 'Pensia-Net' (dataset id 'pensia-net') and the portal 'pensyanet'."
+  },
+  {
+    "term_he": "סוג קופה",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [
+      "סוג קרן"
+    ],
+    "explain_he": "סוג המוצר לפי רשות שוק ההון, למשל קרן פנסיה חדשה, קרן השתלמות או קופת גמל להשקעה",
+    "rule_ids": [
+      "CAT-10",
+      "CAT-11"
+    ],
+    "source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:company",
+      "decoder:track",
+      "gemel-net",
+      "pension-net"
+    ],
+    "notes": "Starting term 'סיווג' is not a Hebrew label in il-finance; the CMA field FUND_CLASSIFICATION is displayed as 'סוג קופה' (gemel) / 'סוג קרן' (pension). In Bituach-Net the same field holds the policy issue period (CAT-10). Value spellings to confirm from the raw file (CAT OQ20, OQ21)."
+  },
+  {
+    "term_he": "אוכלוסיית יעד",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [],
+    "explain_he": "למי המסלול פתוח: לכל הציבור, או רק לעובדים של מקום עבודה או ענף מסוים",
+    "rule_ids": [
+      "CAT-10"
+    ],
+    "source": {
+      "title": "Gemel-Net 2024+ data, distinct TARGET_POPULATION values (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22TARGET_POPULATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:company",
+      "decoder:track",
+      "gemel-net"
+    ],
+    "notes": "Values: 'כלל האוכלוסיה', 'עובדי מפעל/גוף מסוים', 'עובדי סקטור מסוים' (CAT-10). PEN's Institutions note spells them 'מסויים'; exact spelling unconfirmed (CAT OQ20). Not in Pension-Net."
+  },
+  {
+    "term_he": "סוג התמחות ראשית",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [
+      "סוג התמחות משנית",
+      "התמחות ראשית של מסלול",
+      "התמחות משנית של מסלול"
+    ],
+    "explain_he": "התחום שבו מסלול ההשקעה מתמחה לפי סיווג רשות שוק ההון, למשל כללי, מניות או עוקבי מדדים",
+    "rule_ids": [
+      "CAT-10"
+    ],
+    "source": {
+      "title": "Gemel-Net 2024+ data, distinct SPECIALIZATION values (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22SPECIALIZATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track",
+      "gemel-net"
+    ],
+    "notes": "Starting term 'התמחות'. Gemel-Net only; Pension-Net has no specialization field. Many tracks show null in 2023; the 2018 dictionary list is out of date (CAT-10). Transfer_bank uses the 'התמחות ... של מסלול' wording (CAT-30)."
+  },
+  {
+    "term_he": "מס' הקופה",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [],
+    "explain_he": "במאגר של רשות שוק ההון זה מספר המסלול, ולא מספר הקופה שהמסלול שייך אליה",
+    "rule_ids": [
+      "CAT-09"
+    ],
+    "source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track",
+      "gemel-net"
+    ],
+    "notes": "Gemel-Net FUND_ID: the dictionary calls it the fund's income-tax number, but in practice it is the track's number (CAT-09). The umbrella fund number is only in transfer_bank."
+  },
+  {
+    "term_he": "מספר קופה -אישור מס הכנסה",
+    "term_source": {
+      "title": "פרטי קופות לצורך העברה בנקאית כספים בין גופים מוסדיים (transfer_bank, CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/package_show?id=transfer_bank"
+    },
+    "variants_he": [],
+    "explain_he": "המספר של הקופה כולה, שכמה מסלולים שייכים אליה; מופיע ברשימת הקופות להעברות ולא במאגר החודשי",
+    "rule_ids": [
+      "CAT-30",
+      "CAT-09",
+      "CAT-11"
+    ],
+    "source": {
+      "title": "פרטי קופות לצורך העברה בנקאית כספים בין גופים מוסדיים (transfer_bank, CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/package_show?id=transfer_bank",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:company",
+      "decoder:track"
+    ],
+    "notes": "Spelling with the space before the hyphen is as the transfer_bank field name is recorded (CAT-30)."
+  },
+  {
+    "term_he": "מס' המסלול",
+    "term_source": {
+      "title": "Pension-Net field dictionary \"פירוט שינויים פורמט חדש פנסיה\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=b58b5a80-84b7-490d-ab02-bff12f1941b2&limit=100"
+    },
+    "variants_he": [
+      "מספר מסלול",
+      "מספר מסלול השקעה"
+    ],
+    "explain_he": "המספר שמזהה מסלול השקעה אחד; לפיו מזהים את המסלול גם כשהשם שלו השתנה",
+    "rule_ids": [
+      "CAT-09",
+      "CAT-11",
+      "CAT-13"
+    ],
+    "source": {
+      "title": "Pension-Net field dictionary \"פירוט שינויים פורמט חדש פנסיה\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=b58b5a80-84b7-490d-ab02-bff12f1941b2&limit=100",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track",
+      "pension-net",
+      "statement"
+    ],
+    "notes": "Pension-Net FUND_ID display name; 'מספר מסלול השקעה' is transfer_bank's. A renamed track keeps its number (CAT-13); match on number, not name (CAT-11)."
+  },
+  {
+    "term_he": "מספר קרן",
+    "term_source": {
+      "title": "Pension-Net field dictionary \"פירוט שינויים פורמט חדש פנסיה\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=b58b5a80-84b7-490d-ab02-bff12f1941b2&limit=100"
+    },
+    "variants_he": [],
+    "explain_he": "במאגר קרנות הפנסיה, המספר של הקרן כולה שכל המסלולים שלה שייכים אליה",
+    "rule_ids": [
+      "CAT-09"
+    ],
+    "source": {
+      "title": "Pension-Net field dictionary \"פירוט שינויים פורמט חדש פנסיה\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=b58b5a80-84b7-490d-ab02-bff12f1941b2&limit=100",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:company",
+      "pension-net"
+    ],
+    "notes": "Pension-Net PARENT_COMPANY_ID. In Bituach-Net the same field is the insurer's licence number (CAT-09)."
+  },
+  {
+    "term_he": "שם תאגיד שולט",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [],
+    "explain_he": "החברה ששולטת בחברה המנהלת; למשל קבוצה שמחזיקה כמה חברות תחת אותו מותג",
+    "rule_ids": [
+      "CAT-11",
+      "REG-28"
+    ],
+    "source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:company"
+    ],
+    "notes": "CMA data and the company's site can name it differently (Meitav: 'מיטב דש השקעות בע\"מ' vs 'מיטב בית השקעות בע\"מ', REG OQ15)."
+  },
+  {
+    "term_he": "חברה מתפעלת",
+    "term_source": {
+      "title": "פרטי קופות לצורך העברה בנקאית כספים בין גופים מוסדיים (transfer_bank, CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/package_show?id=transfer_bank"
+    },
+    "variants_he": [],
+    "explain_he": "גוף שמבצע עבור החברה המנהלת את העבודה התפעולית של הקופה מאחורי הקלעים",
+    "rule_ids": [
+      "CAT-30",
+      "CAT-25"
+    ],
+    "source": {
+      "title": "פרטי קופות לצורך העברה בנקאית כספים בין גופים מוסדיים (transfer_bank, CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/package_show?id=transfer_bank",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:company"
+    ],
+    "notes": "Example: Meitav's operator is Bank Mizrahi Tefahot (CAT-25)."
+  },
+  {
+    "term_he": "תאריך הקמה",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [
+      "תאריך הקמת הקופה/מסלול"
+    ],
+    "explain_he": "התאריך שבו המסלול הוקם לפי נתוני רשות שוק ההון; לפעמים הוא שונה מהתאריך שהחברה מפרסמת",
+    "rule_ids": [
+      "CAT-25"
+    ],
+    "source": {
+      "title": "Gemel-Net query, Meitav investment-provident tracks, period 202609 (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "Which date the CMA field means is unknown; 1970-01-01 appears as a value (CAT OQ6)."
+  },
+  {
+    "term_he": "תקופת הדיווח",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [],
+    "explain_he": "החודש שאליו מתייחסים הנתונים של המסלול במאגר החודשי",
+    "rule_ids": [
+      "CAT-05",
+      "CAT-29"
+    ],
+    "source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "Stored as yyyymm (CAT-05). Whether past periods are revised is unknown (CAT OQ7)."
+  },
+  {
+    "term_he": "הפקדות ללא העברות",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [],
+    "explain_he": "סך הכסף שהופקד למסלול בחודש, בלי כסף שהועבר מקופות אחרות",
+    "rule_ids": [
+      "CAT-08",
+      "CAT-03"
+    ],
+    "source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "Unit: NIS millions (CAT-03)."
+  },
+  {
+    "term_he": "משיכות ללא העברות",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [],
+    "explain_he": "סך הכסף ששולם לחוסכים מהמסלול בחודש, בלי כסף שהועבר לקופות אחרות",
+    "rule_ids": [
+      "CAT-08",
+      "CAT-03"
+    ],
+    "source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "Unit: NIS millions (CAT-03)."
+  },
+  {
+    "term_he": "העברות בין הקופות",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [
+      "העברות בין המסלולים"
+    ],
+    "explain_he": "ההפרש בין הכסף שהועבר למסלול מקופות אחרות לבין הכסף שהועבר ממנו החוצה",
+    "rule_ids": [
+      "CAT-08"
+    ],
+    "source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "Pension-Net's description reads 'העברות בין המסלולים'. A track merger was not recorded here in the one case checked (CAT-08)."
+  },
+  {
+    "term_he": "צבירה נטו",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [],
+    "explain_he": "התנועה הכוללת של כסף במסלול בחודש: הפקדות פחות משיכות, ועוד ההעברות נטו",
+    "rule_ids": [
+      "CAT-08"
+    ],
+    "source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "Conflict: the Pension-Net dictionary describes it as transfers + withdrawals - deposits, which contradicts the data; use deposits - withdrawals + transfers (CAT-08). Not the same as 'יתרה צבורה' (a member's balance)."
+  },
+  {
+    "term_he": "יתרת נכסים לסוף תקופה",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [],
+    "explain_he": "סך הכסף שמנוהל במסלול בסוף החודש, של כל החוסכים יחד",
+    "rule_ids": [
+      "CAT-03"
+    ],
+    "source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "Unit: NIS millions (CAT-03)."
+  },
+  {
+    "term_he": "שיעור דמי ניהול ממוצעת שנתי – נכסים",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [
+      "דמי ניהול ממוצעים מצבירה בשנה קודמת"
+    ],
+    "explain_he": "ממוצע דמי הניהול מהחיסכון שנגבו בפועל מהחוסכים במסלול; זה לא המחיר שכל חשבון משלם",
+    "rule_ids": [
+      "CAT-06",
+      "CAT-03",
+      "PEN-24"
+    ],
+    "source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track",
+      "gemel-net",
+      "pension-net"
+    ],
+    "notes": "Averaging method and period not defined by the CMA; Meitav labels it the previous-year average and the value changes each January (CAT-06, CAT OQ2). Null for tracks with no prior year. Pension fees appear to be reported at fund level (CAT OQ15). Percent values."
+  },
+  {
+    "term_he": "שיעור דמי ניהול ממוצעת- הפקדות",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [
+      "דמי ניהול ממוצעים מהפקדה משנה קודמת"
+    ],
+    "explain_he": "ממוצע דמי הניהול מההפקדות שנגבו בפועל מהחוסכים במסלול; זה לא המחיר שכל חשבון משלם",
+    "rule_ids": [
+      "CAT-06",
+      "CAT-03",
+      "PEN-24"
+    ],
+    "source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track",
+      "gemel-net",
+      "pension-net"
+    ],
+    "notes": "Same caveats as the balance-fee average (CAT-06). Field AVG_DEPOSIT_FEE (gemel) / AVG_FEE_ON_DEPOSITS (pension)."
+  },
+  {
+    "term_he": "תשואה חודשית",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [],
+    "explain_he": "התשואה של המסלול באותו חודש, באחוזים, לפני ניכוי דמי ניהול ולפני מס",
+    "rule_ids": [
+      "CAT-04",
+      "CAT-05",
+      "CAT-32"
+    ],
+    "source": {
+      "title": "Gemel-Net, מקורות המידע והנחות מערכת (CMA)",
+      "url": "https://gemelnet.cma.gov.il/views/dafMakdim_Link3.aspx",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "Nominal and gross (CAT-04, CAT-32). Whether direct expenses are deducted is not stated (CAT OQ2)."
+  },
+  {
+    "term_he": "תשואה מצטברת מתחילת השנה",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [],
+    "explain_he": "התשואה של המסלול מתחילת השנה ועד חודש הדיווח, לפני ניכוי דמי ניהול",
+    "rule_ids": [
+      "CAT-05",
+      "CAT-04"
+    ],
+    "source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track",
+      "statement"
+    ],
+    "notes": "Before the 2018 format change this field was a 12-month figure (CAT-05)."
+  },
+  {
+    "term_he": "תשואה מצטברת ל-3 / ל-5 שנים עוקבות",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [],
+    "explain_he": "התשואה הכוללת של המסלול בשלוש או בחמש השנים האחרונות, לפני ניכוי דמי ניהול",
+    "rule_ids": [
+      "CAT-05",
+      "CAT-04"
+    ],
+    "source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "The CAT Terms table writes the two fields (3 and 5 years) as one entry; confirm each field's exact display name in the CMA dictionary. Null when the track is younger than the window (CAT-05)."
+  },
+  {
+    "term_he": "תשואה שנתית ממוצעת ל-3 / ל-5 שנים עוקבות",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [],
+    "explain_he": "התשואה הממוצעת לשנה של המסלול בשלוש או בחמש השנים האחרונות, לפני ניכוי דמי ניהול",
+    "rule_ids": [
+      "CAT-05",
+      "CAT-04"
+    ],
+    "source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "Two fields written as one entry in CAT Terms. Annualisation appears to be geometric (inferred from data, not stated by the CMA, CAT-05)."
+  },
+  {
+    "term_he": "תשואות נומינליות ברוטו",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [
+      "תשואה נומינלית ברוטו",
+      "התשואה הינה לפני ניכוי דמי ניהול"
+    ],
+    "explain_he": "תשואות לפני ניכוי דמי ניהול ולפני מס, ובלי התאמה לעליית המחירים במשק",
+    "rule_ids": [
+      "CAT-04",
+      "CAT-32"
+    ],
+    "source": {
+      "title": "Gemel-Net, מקורות המידע והנחות מערכת (CMA)",
+      "url": "https://gemelnet.cma.gov.il/views/dafMakdim_Link3.aspx",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "'Without adjustment for price rises' rests on the rule base's real-vs-nominal usage (for example REG-21 'real' = target plus CPI); the CMA text says only 'nominal gross, without deducting management fees'. Yields are not net of tax (CAT-04)."
+  },
+  {
+    "term_he": "סטית תקן – 5 שנים עוקבות",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [],
+    "explain_he": null,
+    "rule_ids": [
+      "CAT-07"
+    ],
+    "source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "missing in il-finance: the CMA dictionary names the field and its 5-year window, but the rule base does not explain the measure or whether it is annualised (CAT-07, CAT OQ3). Spelling 'סטית' is as recorded from the CMA dictionary."
+  },
+  {
+    "term_he": "אלפא שנתית",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [],
+    "explain_he": null,
+    "rule_ids": [
+      "CAT-07"
+    ],
+    "source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "missing in il-finance: the CMA text says it is computed from the last 60 monthly yields, but the benchmark and meaning are not given (CAT-07, CAT OQ3). Product.md section 4 does not rank by past return."
+  },
+  {
+    "term_he": "שארפ ריבית חסרת סיכון",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [],
+    "explain_he": null,
+    "rule_ids": [
+      "CAT-07"
+    ],
+    "source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "missing in il-finance: the CMA text calls it an annual measure of returns against a risk-free interest index over 60 months, but the index and the measure are not explained (CAT-07, CAT OQ3)."
+  },
+  {
+    "term_he": "יחס נזילות",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [],
+    "explain_he": "אחוז הנכסים הנזילים מתוך נכסי המסלול; הוא לא קובע מתי מותר לכם למשוך כסף",
+    "rule_ids": [
+      "CAT-07",
+      "CAT-03"
+    ],
+    "source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "CMA description 'אחוז הנזילות של נכסי הקופה'. What counts as liquid is not defined (CAT OQ3)."
+  },
+  {
+    "term_he": "חשיפה למניות",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [],
+    "explain_he": "הסכום מתוך נכסי המסלול שמושקע במניות, לפי הדיווח החודשי לרשות שוק ההון",
+    "rule_ids": [
+      "CAT-03",
+      "CAT-24"
+    ],
+    "source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "Unit inferred as NIS millions, not percent; the share of assets is a computation (exposure ÷ total assets) (CAT-03). Whether derivatives or look-through count is unknown (CAT OQ4). CAT Terms writes the three exposure fields as one entry 'חשיפה למניות / לחו\"ל / למט\"ח'."
+  },
+  {
+    "term_he": "חשיפה לחו\"ל",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [],
+    "explain_he": "הסכום מתוך נכסי המסלול שמושקע מחוץ לישראל, לפי הדיווח החודשי לרשות שוק ההון",
+    "rule_ids": [
+      "CAT-03",
+      "CAT-24"
+    ],
+    "source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "Same unit and basis caveats as equity exposure (CAT-03, CAT OQ4)."
+  },
+  {
+    "term_he": "חשיפה למט\"ח",
+    "term_source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
+    },
+    "variants_he": [],
+    "explain_he": "הסכום מתוך נכסי המסלול שמושקע בנכסים במטבע זר, לפי הדיווח החודשי לרשות שוק ההון",
+    "rule_ids": [
+      "CAT-03"
+    ],
+    "source": {
+      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "Same caveats; how currency hedging counts is unknown (CAT OQ4)."
+  },
+  {
+    "term_he": "רשות שוק ההון ביטוח וחיסכון",
+    "term_source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (ביטוח) (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(ביטוח)"
+    },
+    "variants_he": [
+      "רשות שוק ההון, ביטוח וחיסכון",
+      "הממונה"
+    ],
+    "explain_he": "הרשות שמפקחת על קרנות הפנסיה, קופות הגמל, קרנות ההשתלמות וחברות הביטוח, ועל החברות שמנהלות אותן",
+    "rule_ids": [
+      "REG-17",
+      "REG-20",
+      "REG-19"
+    ],
+    "source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (ביטוח) (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(ביטוח)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:*:regulator",
+      "decoder:company"
+    ],
+    "notes": "REG-17 rule text writes it without a comma; the REG Terms table and regulator summary write 'רשות שוק ההון, ביטוח וחיסכון'. The exact statutory text was read via mirror only. 'הממונה' is the Commissioner who heads it."
+  },
+  {
+    "term_he": "רשות ניירות ערך",
+    "term_source": {
+      "title": "חוק ניירות ערך (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_ניירות_ערך"
+    },
+    "variants_he": [],
+    "explain_he": "הרשות שמפקחת על קרנות נאמנות וקרנות סל, מנהלי תיקים, יועצי השקעות והבורסה, כדי לשמור על ענייני המשקיעים",
+    "rule_ids": [
+      "REG-07",
+      "REG-08",
+      "REG-10",
+      "REG-13"
+    ],
+    "source": {
+      "title": "חוק ניירות ערך (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_ניירות_ערך",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:*:regulator"
+    ],
+    "notes": ""
+  },
+  {
+    "term_he": "המפקח על הבנקים",
+    "term_source": {
+      "title": "פקודת הבנקאות, 1941 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות"
+    },
+    "variants_he": [
+      "הפיקוח על הבנקים"
+    ],
+    "explain_he": "התפקיד בבנק ישראל שמפקח על הבנקים ומברר תלונות של הציבור עליהם",
+    "rule_ids": [
+      "REG-01",
+      "REG-02"
+    ],
+    "source": {
+      "title": "פקודת הבנקאות, 1941 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:*:regulator"
+    ],
+    "notes": "Starting term 'בנק ישראל / הפיקוח על הבנקים': the rule base does not define the Bank of Israel itself; it appears only through the Supervisor and the Governor's powers (REG-01, REG-06)."
+  },
+  {
+    "term_he": "תאגיד בנקאי",
+    "term_source": {
+      "title": "פקודת הבנקאות, 1941 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות"
+    },
+    "variants_he": [],
+    "explain_he": "השם בחוק לבנק או לגוף בנקאי אחר שקיבל רישיון ונמצא בפיקוח המפקח על הבנקים",
+    "rule_ids": [
+      "REG-01",
+      "REG-03"
+    ],
+    "source": {
+      "title": "פקודת הבנקאות, 1941 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:*:regulator",
+      "guide:*:protection"
+    ],
+    "notes": "The BoI list on data.gov.il had 17 entries on 2026-10-22; whether it equals the full licensing register is not stated (REG-03)."
+  },
+  {
+    "term_he": "נאמנות והפרדת נכסים",
+    "term_source": {
+      "title": "not an official term: descriptive label for Provident Funds Law ss.3(א), 27(א), 30(א) (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)"
+    },
+    "variants_he": [],
+    "explain_he": "הכסף בקופה מוחזק לטובת החוסכים: החברה מנהלת אותו כנאמן, בנפרד מהרכוש שלה, ואי אפשר לעקל אותו",
+    "rule_ids": [
+      "REG-18",
+      "PF-29",
+      "REG-19"
+    ],
+    "source": {
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:*:protection"
+    ],
+    "notes": "Law wording: 'חברה מנהלת תשמש נאמן על נכסי קופות הגמל', 'בנפרד מרכושה', 'נכסי קופת גמל אינם ניתנים לעיקול'. Market losses are not protected and there is no state guarantee of value, except the pension return top-up (PF-29, REG-21). Mutual funds have a parallel rule with a separate trustee (see 'נאמן')."
+  },
+  {
+    "term_he": "נאמן",
+    "term_source": {
+      "title": "חוק השקעות משותפות בנאמנות (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות"
+    },
+    "variants_he": [],
+    "explain_he": "גוף שמחזיק את נכסי קרן הנאמנות לטובת המשקיעים, בנפרד מהרכוש שלו, ומפקח על מנהל הקרן",
+    "rule_ids": [
+      "REG-10",
+      "REG-11",
+      "REG-12"
+    ],
+    "source": {
+      "title": "חוק השקעות משותפות בנאמנות (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:*:protection"
+    ],
+    "notes": "In a provident fund the managing company itself is the trustee (REG-18); in a mutual fund it is a separate trust company (REG-10). Fund assets cannot be attached in either case."
+  },
+  {
+    "term_he": "ביטוח פיקדונות",
+    "term_source": {
+      "title": "חוק לקידום התחרות בשוק הבנקאות (תיקוני חקיקה), התשפ\"ו-2026 (BoI-hosted PDF)",
+      "url": "https://boi.org.il/media/5folwk5o/119.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "הגנה בחוק על כספים בבנק אם הבנק נכשל; בישראל אין כזו כיום, והנושא בבדיקה",
+    "rule_ids": [
+      "REG-04",
+      "REG-05"
+    ],
+    "source": {
+      "title": "חוק לקידום התחרות בשוק הבנקאות (תיקוני חקיקה), התשפ\"ו-2026 (BoI-hosted PDF)",
+      "url": "https://boi.org.il/media/5folwk5o/119.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:protection"
+    ],
+    "notes": "A 2026 law orders the Finance Minister and the Governor to examine within a year whether it is needed (REG-04); a private bill is only tabled (REG-05). Re-check item."
+  },
+  {
+    "term_he": "סמכות לערוב",
+    "term_source": {
+      "title": "פקודת הבנקאות, 1941 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות"
+    },
+    "variants_he": [],
+    "explain_he": "סמכות של נגיד בנק ישראל, באישור הממשלה, להבטיח פיקדונות בבנק שנקלע לקשיים; זו אינה זכות מובטחת",
+    "rule_ids": [
+      "REG-06"
+    ],
+    "source": {
+      "title": "פקודת הבנקאות, 1941 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:*:protection"
+    ],
+    "notes": "Headword is the s.8יא heading as recorded in REG Terms. Sections amended in תשפ\"ו (REG-06)."
+  },
+  {
+    "term_he": "ערבות המדינה",
+    "term_source": {
+      "title": "הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ\"ו–2026, P/6522/25 (Knesset)",
+      "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf"
+    },
+    "variants_he": [],
+    "explain_he": "ערבות של המדינה לחיסכון בבנקים קטנים, שהוצעה בהצעת חוק פרטית; היא עדיין לא חוק",
+    "rule_ids": [
+      "REG-05"
+    ],
+    "source": {
+      "title": "הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ\"ו–2026, P/6522/25 (Knesset)",
+      "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:protection"
+    ],
+    "notes": "Bill P/6522/25 only, tabled 2.2.2026; the site must never show it as protection (REG-05)."
+  },
+  {
+    "term_he": "מנהל מורשה",
+    "term_source": {
+      "title": "פקודת הבנקאות, 1941 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות"
+    },
+    "variants_he": [],
+    "explain_he": "מי שמתמנה לנהל בנק, חברת ביטוח או חברה מנהלת שלא עומדים בהתחייבויות שלהם",
+    "rule_ids": [
+      "REG-06",
+      "REG-19",
+      "REG-22"
+    ],
+    "source": {
+      "title": "פקודת הבנקאות, 1941 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:*:protection"
+    ],
+    "notes": ""
+  },
+  {
+    "term_he": "פניות הציבור",
+    "term_source": {
+      "title": "חוק הבנקאות (שירות ללקוח) (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הבנקאות_(שירות_ללקוח)"
+    },
+    "variants_he": [],
+    "explain_he": "היחידה אצל גוף מפקח שמבררת תלונות של הציבור על הגופים שבפיקוחו; היא לא תמיד יכולה לחייב פיצוי",
+    "rule_ids": [
+      "REG-02",
+      "REG-20"
+    ],
+    "source": {
+      "title": "חוק הבנקאות (שירות ללקוח) (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הבנקאות_(שירות_ללקוח)",
+      "checked": "2026-10-22",
+      "strength": "primary-mirror"
+    },
+    "where": [
+      "guide:*:regulator"
+    ],
+    "notes": "Neither the Supervisor of Banks (REG-02) nor the CMA Commissioner (REG-20) was found to have a power to order compensation; a bank complaint does not extend a statutory deadline. The ISA channel was not read (REG OQ5)."
+  },
+  {
+    "term_he": "נציבות תלונות הציבור",
+    "term_source": {
+      "title": "State Comptroller and Ombudsman, home page and complaint form",
+      "url": "https://www.mevaker.gov.il/"
+    },
+    "variants_he": [],
+    "explain_he": "הגוף אצל מבקר המדינה שמקבל תלונות על משרדי ממשלה וגופים ציבוריים אחרים",
+    "rule_ids": [
+      "REG-25"
+    ],
+    "source": {
+      "title": "State Comptroller and Ombudsman, home page and complaint form",
+      "url": "https://www.mevaker.gov.il/",
+      "checked": "2026-10-22",
+      "strength": "primary"
+    },
+    "where": [
+      "guide:*:regulator"
+    ],
+    "notes": "Which regulators it covers (BoI, ISA, CMA, NII, Tax Authority) was not verified (REG OQ17)."
+  }
+]

@@ -1,0 +1,29 @@
+{
+  "id": "hprsh-akybh",
+  "he": "הפרש עקיבה",
+  "en": null,
+  "meaning": "ההפרש בין התשואה של קרן מחקה לתשואה של המדד שהיא עוקבת אחריו, בתקופה מסוימת.",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500",
+    "index-ta125"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf",
+    "title": "רשות ניירות ערך, הוראה למנהלי קרנות נאמנות בדבר ניהול ההשקעות בקרן מחקה (עדכון 3, 15.10.2024)",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-22"
+  }
+}

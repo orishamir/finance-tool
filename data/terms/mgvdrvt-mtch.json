@@ -1,0 +1,31 @@
+{
+  "id": "mgvdrvt-mtch",
+  "he": "מגודרות מט\"ח",
+  "en": null,
+  "meaning": "קרן על נכסים בחו\"ל שמנטרלת, באופן מלא או חלקי, את השפעת שינויי שער המטבע על התשואה.",
+  "where": [
+    "app",
+    "fund-name"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500"
+  ],
+  "variants": [
+    "מנוטרלת מט\"ח",
+    "Currency-Hedged"
+  ],
+  "rule_ids": [
+    "ETF-10",
+    "ETF-12"
+  ],
+  "source": {
+    "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf",
+    "title": "רשות ניירות ערך, פעילות קרנות נאמנות בישראל 2025 (hosted by Funder)",
+    "publisher": "see title",
+    "strength": "primary-mirror",
+    "checked": "2026-10-22"
+  }
+}
