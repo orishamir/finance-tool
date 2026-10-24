@@ -2,19 +2,21 @@
 // control, card. Styled with role tokens only.
 import { useId, useRef, type ButtonHTMLAttributes, type KeyboardEvent, type ReactNode } from "react";
 import { Link } from "react-router";
-import { IconAlert, IconChevronDown, IconInfo, IconLock } from "./icons";
+import { IconAlert, IconCheck, IconChevronDown, IconInfo, IconLock } from "./icons";
 
 export function cx(...parts: (string | false | null | undefined)[]): string {
   return parts.filter(Boolean).join(" ");
 }
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "secondary" | "quiet" | "icon"; children: ReactNode };
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "secondary" | "quiet" | "destructive" | "icon"; children: ReactNode };
 
 export function Button({ variant = "secondary", className, children, type = "button", ...rest }: ButtonProps) {
   const styles = {
     primary: "bg-primary text-primary-foreground font-medium h-field px-5 rounded-md hover:brightness-110",
     secondary: "bg-secondary text-secondary-foreground font-medium h-field lg:h-10 px-5 rounded-md hover:bg-accent",
     quiet: "text-link min-h-target px-2 rounded-md hover:underline",
+    // A quiet button that deletes. Its own variant: `text-destructive` added to `quiet` lost to `text-link` in the stylesheet (2026-10-24).
+    destructive: "text-destructive min-h-target px-2 rounded-md hover:underline",
     icon: "size-target inline-flex items-center justify-center rounded-md text-foreground hover:bg-accent",
   }[variant];
   return (
@@ -44,7 +46,7 @@ export function Tag({ tone = "neutral", icon, children, className }: { tone?: "n
     positive: "bg-positive-subtle text-positive-foreground",
   }[tone];
   return (
-    <span className={cx("inline-flex items-center gap-1 text-xs font-medium rounded-sm px-1.5 py-px whitespace-nowrap align-middle", styles, className)}>
+    <span className={cx("inline-flex w-fit items-center gap-1 text-xs font-medium rounded-sm px-1.5 py-px whitespace-nowrap align-middle", styles, className)}>
       {icon}
       {children}
     </span>
@@ -69,11 +71,11 @@ export function Callout({ tone, title, children, className }: { tone: "caution" 
   );
 }
 
-/** Native details/summary (works before scripts), 44px summary, chevron rotating on open. */
-export function Disclosure({ label, openLabel, children, className, defaultOpen, summaryClassName }: { label: ReactNode; openLabel?: ReactNode; children: ReactNode; className?: string; defaultOpen?: boolean; summaryClassName?: string }) {
+/** Native details/summary (works before scripts), 44px summary, chevron beside the label (or `spread` to the far end), rotating on open. */
+export function Disclosure({ label, openLabel, children, className, defaultOpen, summaryClassName, spread }: { label: ReactNode; openLabel?: ReactNode; children: ReactNode; className?: string; defaultOpen?: boolean; summaryClassName?: string; /** Chevron at the far end of the row (a list-group header); the default keeps it beside the label. */ spread?: boolean }) {
   return (
     <details className={cx("group", className)} open={defaultOpen}>
-      <summary className={cx("flex items-center justify-between gap-3 min-h-target cursor-pointer list-none select-none rounded-md [&::-webkit-details-marker]:hidden", summaryClassName)}>
+      <summary className={cx("flex items-center gap-2", spread && "justify-between gap-3", "min-h-target cursor-pointer list-none select-none rounded-md [&::-webkit-details-marker]:hidden", summaryClassName)}>
         <span className="group-open:hidden">{label}</span>
         <span className="hidden group-open:inline">{openLabel ?? label}</span>
         <IconChevronDown className="text-muted-foreground shrink-0 transition-transform duration-[var(--duration-fast)] group-open:rotate-180" />
@@ -111,10 +113,11 @@ export function SegmentedControl<T extends string>({ label, options, value, onCh
           disabled={o.disabled}
           onClick={() => onChange(o.value)}
           className={cx(
-            "flex-1 min-h-target lg:min-h-10 px-3 rounded-[5px] text-sm transition-colors duration-[var(--duration-fast)] disabled:text-muted-foreground disabled:cursor-not-allowed",
-            value === o.value ? "bg-secondary font-medium text-foreground shadow-sm" : "text-foreground hover:bg-accent/60",
+            "flex-1 inline-flex items-center justify-center gap-1.5 min-h-target lg:min-h-10 px-3 rounded-[5px] text-sm transition-colors duration-[var(--duration-fast)] disabled:text-muted-foreground disabled:cursor-not-allowed",
+            value === o.value ? "bg-primary font-medium text-primary-foreground shadow-sm" : "text-foreground hover:bg-accent/60", // audit 2026-10-24 (A41): a clear pressed state
           )}
         >
+          {value === o.value && <IconCheck size={16} />}
           {o.label}
         </button>
       ))}

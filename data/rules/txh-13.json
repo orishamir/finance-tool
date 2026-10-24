@@ -10,5 +10,35 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "tax-hishtalmut.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/צו_מס_הכנסה_(קביעת_סכומים_ששולמו_מקרן_השתלמות_כהכנסה)",
+      "title": "Order on amounts paid from a study fund as income, 1997, s.1",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s.1",
+      "locator_he": "סעיף 1",
+      "anchor": "סעיף_1",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.capitax.co.il/Attachments/07072024.pdf",
+      "title": "Ministry of Finance memorandum, Income Tax Ordinance amendment 2024 (mirror)",
+      "title_he": "פקודת מס הכנסה",
+      "publisher": "Capitax",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "checked": "2026-10-22",
+      "qualifier": "(draft, mirror)"
+    }
+  ]
 }

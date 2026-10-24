@@ -1,0 +1,51 @@
+{
+  "id": "PF-34",
+  "title": "The shortened annual report for a provident, study-fund or gemel lehashkaa account: sections and field labels",
+  "title_he": "הדוח השנתי המקוצר לעמית בקופת גמל, בקרן השתלמות ובקופת גמל להשקעה: הסעיפים והשדות",
+  "text_he": "הדוח המקוצר נשלח לכל חשבון בנפרד ובנוי מטבלאות קבועות. טבלה א מציגה את התשלומים הצפויים, ובהם יתרת הכספים המיועדים למשיכה חד פעמית, ובקרן השתלמות גם את מועד הזכאות הראשון למשיכה. טבלה ב מציגה את התנועות בשנה: יתרה בתחילת השנה, כספים שהופקדו, רווחים או הפסדים בניכוי הוצאות ניהול השקעות, העברות לחשבון וממנו, משיכות, דמי ניהול שנגבו בשנה זו בשקלים, ויתרה בסוף השנה. טבלה ג מציגה את אחוז דמי הניהול מהפקדה ומחיסכון ואת הוצאות ניהול ההשקעות, לצד ממוצע דמי הניהול בקופה. טבלה ד מציגה כל מסלול בשמו עם התשואה שלו, וטבלה ה מפרטת את ההפקדות לפי חודש משכורת: תגמולי עובד, תגמולי מעסיק ופיצויים. מספר הקופה ומספר המסלול מופיעים רק בדוח המפורט.",
+  "strength": "primary",
+  "dimensions": [
+    "statement-disclosure",
+    "fee-management-balance",
+    "fee-deposit",
+    "fee-direct-expenses"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-03-31",
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-23",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice_2025_51/he/Annual_and_quarterly%20report_to_Members_and_Policyholders_of_an_Institutional_Entity%20%E2%80%93%20correction_draft_PDF%20(1).pdf",
+      "title": "CMA draft circular 2025-26 \"דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי - תיקון\", 6.11.2025, 161 pp., gov.il BlobFolder (the full consolidated text with the proposed edits)",
+      "title_he": "טיוטת חוזר 2025-26: דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "pp. 33 to 42)",
+      "locator_he": "עמודים 33 עד 42)",
+      "page": 33,
+      "checked": "2026-10-23",
+      "qualifier": "(draft)"
+    },
+    {
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2020922.pdf",
+      "title": "CMA institutional-bodies circular 2020-9-22 \"דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי - תיקון\", 14.12.2020, 152 pp. (consolidated text; official circular on the Prisha host)",
+      "title_he": "חוזר גופים מוסדיים 2020-9-22: דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
+      "publisher": "Prisha.co.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "pp. 32 to 42",
+      "locator_he": "עמודים 32 עד 42",
+      "page": 32,
+      "checked": "2026-10-23",
+      "qualifier": "(third-party host)"
+    }
+  ],
+  "derived_from": [
+    "PF-35"
+  ]
+}

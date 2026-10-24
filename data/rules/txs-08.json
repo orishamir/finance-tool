@@ -3,11 +3,38 @@
   "title": "Exempt fund: what the fund itself pays",
   "title_he": "קרן פטורה: מה הקרן עצמה משלמת",
   "text_he": "הכנסותיה ורווחיה של קרן נאמנות פטורה פטורים ממס: ריבית, דיבידנד ורווחים בתוך הקרן לא ממוסים בישראל כל עוד הם נשארים בה. הקרן לא רשאית לנכות הוצאות ריבית והצמדה. מס שנוכה מהכנסה של קרן ריט שעברה לקרן פטורה הוא סופי, והקרן לא מקבלת עליו פטור, החזר, זיכוי או קיזוז. מס זר יכול להיגבות בתוך הקרן על החזקות בחו״ל.",
-  "strength": "primary",
+  "strength": "primary-mirror",
   "dimensions": [
     "tax-during"
   ],
   "likely_to_change": "no",
   "il_finance_file": "tax-securities-israeli.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Income Tax Ordinance",
+      "title_he": "פקודת מס הכנסה",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s.129C(a)(1), (a)(4)",
+      "locator_he": "סעיף 129ג(א)(1), (א)(4)",
+      "anchor": "סעיף_129ג",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf",
+      "title": "Migdal main prospectus 30.1.2025",
+      "title_he": "תשקיף ראשי של מגדל קרנות נאמנות (30.1.2025)",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מגדל קרנות נאמנות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "ch.25.2.2.1-25.2.2.3",
+      "checked": "2026-10-22"
+    }
+  ]
 }

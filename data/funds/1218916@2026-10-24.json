@@ -1,0 +1,177 @@
+{
+  "id": "1218916",
+  "names": {
+    "en": [],
+    "he": [
+      "ATF סל (4D) S&P 500",
+      "ATF סל (4D) S&P 500 - קרן נאמנות"
+    ],
+    "tase": [
+      "1218916"
+    ]
+  },
+  "identifiers": {
+    "isin": "IL0012189168",
+    "tase_number": "1218916",
+    "cusip": null,
+    "ticker": {
+      "TASE_he": "אנלט.ס1"
+    }
+  },
+  "manager": "אנליסט אי.אמ.אס. ניהול קרנות בנאמנות (1986) בע\"מ",
+  "domicile": "IL",
+  "legal_form": "קרן סגורה, קרן סל (Israeli ETF under the Joint Investment Trust Law 1994); קרן בלתי מוגבלת בניירות ערך חוץ; קרן להשקעות חוץ (מטבע עיקרי) שהמטבע העיקרי שלה דולר ארה\"ב; units of 1 ₪ par value; 'ATF' = Analyst Tracking Fund (report footnote 3); units first offered to the public on 08.04.2025 (this is the fund's first annual report); kosher approval in force from 29.03.2026 (footnote 6). Trustee: מזרחי טפחות חברה לנאמנות בע\"מ.",
+  "exposure_id": "index-sp500",
+  "currency": "NIS",
+  "trading_currency_on_tase": "NIS",
+  "distribution_policy": "accumulating",
+  "tax_status": {
+    "il_fund_tax_track": "exempt",
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732353-00.pdf",
+        "title": "דוח שנתי 'ATF סל (4D) S&P 500' (מספר בורסה 1218916), תאריך הדוח 31 בדצמבר 2025, אנליסט אי.אמ.אס. ניהול קרנות בנאמנות (1986) בע\"מ (Maya filing 1732353, PDF), עמ' 1 'שכר מנהל הקרן' ופרק ההוצאות שנפרעו מנכסי הקרן",
+        "publisher": "אנליסט אי.אמ.אס. ניהול קרנות בנאמנות (1986) בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13",
+        "MF-16",
+        "MF-17"
+      ],
+      "state": "sourced",
+      "notes": "Fixed management fee (דמי ניהול קבועים): p. 1 'שכר מנהל הקרן: 0% מהשווי הנקי השנתי הממוצע של נכסי הקרן' (footnote 9: the manager committed to the ISA outline not to raise its pay during a calendar year; it may raise it only on 01.01.2027). Expense table (08.04.2025 to 31.12.2025): fixed management fee 0.00%. Main prospectus published on Magna on 22.07.2025, reference 2025-03-054399 (Magna returns 403 to scripts; the prospectus itself was not opened). ISIN IL0012189168 and the TASE symbol 'אנלט.ס1' were read on TASE's security page (https://market.tase.co.il/he/market_data/security/1218916/major_data, fields 'ISIN' and 'סימול', read in Chrome on 2026-10-24); the annual report prints neither. The Maya fund page shows no data for ETFs."
+    },
+    "trustee": {
+      "value": 0.008,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732353-00.pdf",
+        "title": "דוח שנתי 'ATF סל (4D) S&P 500' (מספר בורסה 1218916), תאריך הדוח 31 בדצמבר 2025, אנליסט אי.אמ.אס. ניהול קרנות בנאמנות (1986) בע\"מ (Maya filing 1732353, PDF), עמ' 1 'שכר הנאמן' ופרק ההוצאות שנפרעו מנכסי הקרן",
+        "publisher": "אנליסט אי.אמ.אס. ניהול קרנות בנאמנות (1986) בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13",
+        "MF-20"
+      ],
+      "state": "sourced",
+      "notes": "Trustee fee (שכר נאמן): p. 1 '0.008% מהשווי הנקי השנתי הממוצע של נכסי הקרן'; the expense table shows 0.006% for the partial period 08.04.2025 to 31.12.2025 and the annualised figure 0.008%."
+    },
+    "variable_management": {
+      "value": 0.2,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732353-00.pdf",
+        "title": "דוח שנתי 'ATF סל (4D) S&P 500' (מספר בורסה 1218916), תאריך הדוח 31 בדצמבר 2025, אנליסט אי.אמ.אס. ניהול קרנות בנאמנות (1986) בע\"מ (Maya filing 1732353, PDF), עמ' 1 'דמי ניהול משתנים' ופרק ההוצאות שנפרעו מנכסי הקרן",
+        "publisher": "אנליסט אי.אמ.אס. ניהול קרנות בנאמנות (1986) בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-14",
+        "ETF-13"
+      ],
+      "state": "sourced",
+      "notes": "Variable management fee rate (שיעור דמי ניהול משתנים): p. 1 '0.2%' (footnote 10: the manager may change the rate on 01.01.2027). The mechanism works in both directions (ETF-14); the expense table shows the variable fee for 08.04.2025 to 31.12.2025 as -0.20% of average net assets, a payment from the manager to the fund, not a charge to it. The rate is below the 0.30% creation/redemption category cap (ETF-14); copied as printed."
+    },
+    "tracking_difference_12m": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732353-00.pdf",
+        "title": "דוח שנתי 'ATF סל (4D) S&P 500' (מספר בורסה 1218916), תאריך הדוח 31 בדצמבר 2025, אנליסט אי.אמ.אס. ניהול קרנות בנאמנות (1986) בע\"מ (Maya filing 1732353, PDF), פרק 'תשואות, סטיות תקן ונתוני השוואה', 2025",
+        "publisher": "אנליסט אי.אמ.אס. ניהול קרנות בנאמנות (1986) בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-08",
+        "ETF-09",
+        "ETF-10"
+      ],
+      "state": "sourced",
+      "notes": "Not printed as one number. For 08.04.2025 to 31.12.2025 the report prints the fund's price return 16.97% (standard deviation 19.22) against the tracking asset (S&P 500 100%, דולר ארה\"ב 100%) 17.43% (standard deviation 20.15). The difference is not computed here (data-update rule)."
+    },
+    "median_spread": {
+      "value": null,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732353-00.pdf",
+        "title": "דוח שנתי 'ATF סל (4D) S&P 500' (מספר בורסה 1218916), תאריך הדוח 31 בדצמבר 2025, אנליסט אי.אמ.אס. ניהול קרנות בנאמנות (1986) בע\"מ (Maya filing 1732353, PDF), עמ' 1 'הפרשים שבין שווי היחידה למחירה בבורסה'",
+        "publisher": "אנליסט אי.אמ.אס. ניהול קרנות בנאמנות (1986) בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-06",
+        "ETF-07"
+      ],
+      "state": "sourced",
+      "notes": "No median bid-ask spread is printed. The report prints the differences between unit value and exchange price for 08.04.2025 to 31.12.2025: range -190.17 to 589.01 agorot, average 1.85 agorot (a premium/discount measure, ETF-06). Spread data is published by the manager elsewhere (ETF-07; the report points to fundscenter.co.il, a third-party page, not read). Creation fee 0.30% and redemption fee 0.30% on direct orders through a TASE member (p. 1)."
+    },
+    "fund_level_withholding_drag": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732353-00.pdf",
+        "title": "דוח שנתי 'ATF סל (4D) S&P 500' (מספר בורסה 1218916), תאריך הדוח 31 בדצמבר 2025, אנליסט אי.אמ.אס. ניהול קרנות בנאמנות (1986) בע\"מ (Maya filing 1732353, PDF), פרק מדיניות ההשקעות (חשיפה דרך נגזרים)",
+        "publisher": "אנליסט אי.אמ.אס. ניהול קרנות בנאמנות (1986) בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-11"
+      ],
+      "state": "sourced",
+      "notes": "Not collected: no computation is made here and the report prints no withholding figure. The fund may take its exposure through derivatives and index products (investment policy, p. 2); any dividend-withholding drag sits inside instrument pricing and is not published as a rate."
+    }
+  },
+  "dimensions": {
+    "fund-tax-track": "covered:TXS-24",
+    "fee-management-balance": "covered:ETF-13",
+    "distribution-policy": "covered:MF-49",
+    "currency": "covered:ETF-10",
+    "fee-trade": "covered:ETF-05",
+    "protection": "covered:MF-02"
+  },
+  "prospectus": {
+    "url": "https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732353-00.pdf",
+    "date": "2025-07-22"
+  },
+  "exposure_code": "4D",
+  "distribution_fee_type": "3",
+  "creation_redemption_fee_category": "0.30%",
+  "snapshot": "2026-10-24"
+}

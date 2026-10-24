@@ -1,7 +1,7 @@
 // The inputs behind the graph (design-spec 4, design-system 3.3): number field, slider field, field state.
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { buttons, values as copy } from "../../copy";
-import { formatTyped, parseTyped, unitWord } from "../../lib/format";
+import { formatTyped, parseNumber, unitWord } from "../../lib/format";
 import { IconReset } from "../icons";
 import { StateTag } from "../provenance";
 import { Button, cx } from "../ui";
@@ -19,7 +19,7 @@ export interface FieldProps {
   value: number | null;
   isEntered: boolean;
   /** Returns an error message for a parsed number, or null. */
-  validate: (n: number) => string | null;
+  validate: (n: number) => ReactNode | null;
   onCommit: (n: number) => void;
   onReset: () => void;
   hint?: ReactNode;
@@ -33,7 +33,7 @@ export interface FieldProps {
   inputMode?: "decimal" | "numeric";
   autoFocus?: boolean;
   /** An error that comes from another field's value (for example "kept available" above "amount now"); shown when the field has no error of its own. */
-  externalError?: string | null;
+  externalError?: ReactNode | null;
 }
 
 export function NumberField(props: FieldProps) {
@@ -41,7 +41,7 @@ export function NumberField(props: FieldProps) {
 
   const ids = useId();
   const [text, setText] = useState(value === null ? "" : formatTyped(value));
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ReactNode | null>(null);
   const [focused, setFocused] = useState(false);
   const timer = useRef<number | null>(null);
   const pending = useRef<(() => void) | null>(null);
@@ -66,6 +66,17 @@ export function NumberField(props: FieldProps) {
   const flushRef = useRef(flush);
   flushRef.current = flush;
   useEffect(() => () => flushRef.current(), []);
+  // audit A19: text typed before the script arrived sits in the pre-rendered input; take it in at the first commit instead of
+  // letting the first re-render with the field's own (empty) state wipe it
+  const inputRef = useRef<HTMLInputElement>(null);
+  const adopted = useRef(false);
+  useEffect(() => {
+    if (adopted.current) return;
+    adopted.current = true;
+    const typed = inputRef.current?.value ?? "";
+    if (typed !== "" && text === "" && value === null) change(typed);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const lastValue = useRef(value);
   useEffect(() => {
     const changed = lastValue.current !== value;
@@ -87,14 +98,15 @@ export function NumberField(props: FieldProps) {
       later(() => onReset());
       return;
     }
-    const n = parseTyped(t);
+    const n = parseNumber(t);
     const err = Number.isNaN(n) ? copy.errors.nan : validate(n);
     setError(err);
     if (!err) later(() => onCommit(n));
   };
   const box = (
-    <div className={cx("field-box", compact && "field-box-compact", isEntered && "field-box-entered", shownError && "field-box-error", disabled && "opacity-60")}>
+    <div className={cx("field-box", compact && "field-box-compact", isEntered && "field-box-entered", shownError ? "field-box-error" : false, disabled && "opacity-60")}>
       <input
+        ref={inputRef}
         id={ids}
         type="text"
         inputMode={inputMode}
@@ -132,30 +144,33 @@ export function NumberField(props: FieldProps) {
       </div>
     );
   }
+  // the label, then one body with the box and what follows it: a field in a `.field-row` is a two-row subgrid (app.css)
   return (
     <div className="field">
       <label htmlFor={ids} className="field-label">
         {label}
       </label>
-      {box}
-      {shownError ? (
-        <span id={`${ids}-err`} className="text-xs text-destructive">
-          {shownError}
-        </span>
-      ) : hint ? (
-        <span id={`${ids}-hint`} className="text-xs text-muted-foreground">
-          {hint}
-        </span>
-      ) : null}
-      {note}
-      {!optional && <FieldState entered={isEntered} onReset={onReset} disabled={disabled} />}
+      <div className="field-body">
+        {box}
+        {shownError ? (
+          <span id={`${ids}-err`} className="text-xs text-destructive">
+            {shownError}
+          </span>
+        ) : hint ? (
+          <span id={`${ids}-hint`} className="text-xs text-muted-foreground">
+            {hint}
+          </span>
+        ) : null}
+        {note}
+        {!optional && <FieldState entered={isEntered} onReset={onReset} disabled={disabled} />}
+      </div>
     </div>
   );
 }
 
 export function FieldState({ entered, onReset, disabled }: { entered: boolean; onReset: () => void; disabled?: boolean }) {
   if (disabled) return <span className="text-xs text-muted-foreground">{copy.loading}</span>;
-  if (!entered) return <span className="text-xs text-muted-foreground">{copy.stateStart}</span>;
+  if (!entered) return null;
   return (
     <span className="flex items-center gap-2 flex-wrap">
       <StateTag state="entered" />
@@ -201,4 +216,9 @@ export function SliderField(props: SliderFieldProps) {
       <FieldState entered={isEntered} onReset={onReset} disabled={disabled} />
     </div>
   );
+}
+
+/** The one line above a panel of fields: what an untouched field is (UX fix 17). */
+export function ParameterLine({ className }: { className?: string }) {
+  return <p className={cx("text-xs text-muted-foreground", className)}>{copy.stateStart}</p>;
 }

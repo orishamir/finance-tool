@@ -6,7 +6,7 @@
   "figure_names_he": {
     "rate": "שיעור הניכוי במקור על דיבידנד זר ליחיד"
   },
-  "strength": "primary",
+  "strength": "primary-mirror",
   "dimensions": [
     "foreign-withholding-domicile",
     "tax-during"
@@ -35,5 +35,21 @@
     }
   },
   "il_finance_file": "tax-securities-foreign.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/%D7%AA%D7%A7%D7%A0%D7%95%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94_(%D7%A0%D7%99%D7%9B%D7%95%D7%99_%D7%9E%D7%A8%D7%99%D7%91%D7%99%D7%AA,_%D7%9E%D7%93%D7%99%D7%91%D7%99%D7%93%D7%A0%D7%93_%D7%95%D7%9E%D7%A8%D7%95%D7%95%D7%97%D7%99%D7%9D_%D7%9E%D7%A1%D7%95%D7%99%D7%9E%D7%99%D7%9D)",
+      "title": "Income Tax Regulations (deduction from interest, dividend and certain profits), 2005, Hebrew Wikisource",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg. 2(d)",
+      "locator_he": "תקנה 2(ד)",
+      "anchor": "סעיף_2",
+      "checked": "2026-10-22"
+    }
+  ]
 }

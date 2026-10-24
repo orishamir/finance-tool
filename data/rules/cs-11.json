@@ -34,5 +34,17 @@
     "track_switch_business_days": "ימי עסקים לשינוי מסלול (הראל)"
   },
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/mavar.aspx",
+      "title": "NII change page",
+      "title_he": "חיסכון לכל ילד: עמודי המידע של הביטוח הלאומי",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

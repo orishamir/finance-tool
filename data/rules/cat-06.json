@@ -12,5 +12,35 @@
   "recheck_date": "2027-04-01",
   "text_he": "שני שדות העמלה ברשות שוק ההון הם ממוצעים על פני עמיתי המסלול, לא מחירון ולא מה שכל חוסך משלם. אחד מהם הוא שיעור דמי הניהול מהצבירה, והשני שיעור דמי הניהול מההפקדות. הערך מתחלף בכל ינואר, והבהרות על התקופה והמשקל מפורטות בכללים הסמוכים.",
   "il_finance_file": "tracks-catalogue-and-decoder.md",
-  "checked": "2026-10-23"
+  "checked": "2026-10-23",
+  "sources": [
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"FUND_ID\":7978}&sort=REPORT_PERIOD",
+      "title": "7978 series",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"FUND_ID\":7860}&sort=REPORT_PERIOD",
+      "title": "7860 series",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.meitav.co.il/provident_pension/kupa_gemel_invest_reports/",
+      "title": "Meitav tracks page",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "primary",
+      "checked": "2026-10-22",
+      "qualifier": "(field name)"
+    }
+  ]
 }

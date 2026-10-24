@@ -1,0 +1,48 @@
+{
+  "id": "SW-25",
+  "title": "Child savings: through the receiving fund and National Insurance; bank money cannot move to another bank",
+  "title_he": "חיסכון לכל ילד: דרך הקופה המקבלת והביטוח הלאומי",
+  "text_he": "הורה שמקבל את קצבת הילדים מעביר את התוכנית בפנייה לקופת הגמל המקבלת; היתרה והרווחים עוברים, והביטוח הלאומי מפנה את ההפקדות הבאות לקופה החדשה לפי לוחות הזמנים שבתקנות הביטוח הלאומי. תוכנית בבנק אי אפשר להעביר לבנק אחר; מינואר אלפיים עשרים וחמש הורה יכול, פעם אחת, להפנות הפקדות עתידיות מהבנק לקופת גמל, אבל היתרה בבנק נשארת בבנק. לפני גיל בגרות ההורה פועל, ומגיל בגרות רק הילד. זהו כלל מצביע; מקורותיו הם עמודי הביטוח הלאומי שבכללים שהוא מפנה אליהם.",
+  "strength": "primary",
+  "dimensions": [
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/mavar.aspx",
+      "title": "1",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/default.aspx",
+      "title": "2",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.btl.gov.il/benefits/HozrimGimlaot/Hozrim/11.16%d7%97%d7%95%d7%96%d7%a8%20%d7%aa%d7%95%d7%9b%d7%a0%d7%99%d7%aa%20%d7%97%d7%99%d7%a1%d7%9b%d7%95%d7%9f%20%d7%9c%d7%9b%d7%9c%20%d7%99%d7%9c%d7%93_.pdf",
+      "title": "3",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ],
+  "derived_from": [
+    "CS-11",
+    "CS-12",
+    "CS-21"
+  ]
+}

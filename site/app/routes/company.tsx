@@ -1,12 +1,14 @@
 // Screen 4: the company page (design-spec 5 as redrawn 2026-10-23; flows 6.11): every track the company
 // runs, grouped by the regulator's product type, same-name tracks grouped, the fee-pending note, the paste card.
+import { useId } from "react";
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/company";
-import { catalogue, companies as companiesCopy, company as copy, site } from "../copy";
+import { catalogue, companies as companiesCopy, company as copy, r3workbench, site } from "../copy";
 import { feeLabel } from "../components/decoder/fees";
 import { groupTracks, PasteCard, TrackList } from "../components/decoder/tracks";
+import { InstitutionPage } from "../components/decoder/institutions/page";
 import { IconDrillIn } from "../components/icons";
-import { Num } from "../components/provenance";
+import { NumAfter, NumberLegend } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { FitProvider } from "../components/compare/fit";
 import { SavedGoalStrip } from "../components/compare/strip";
@@ -25,7 +27,13 @@ export async function loader({ params }: Route.LoaderArgs) {
   const { institutionCompanies, loadCatalog, resolutionOf, seenValue, seenWhere } = await import("../lib/instruments.server");
   const cma = loadCma();
   const company = cma.companies.find((c) => c.id === params.id);
-  if (!company) throw new Response("Not found", { status: 404 });
+  if (!company) {
+    // the id is not a managing company: a bank or broker of the fee snapshots or deposit records (flows 15.4); a fund manager once a fund list exists
+    const { buildInstitution } = await import("../lib/institutions.server");
+    const institution = buildInstitution(params.id);
+    if (!institution) throw new Response("Not found", { status: 404 });
+    return { kind: "institution" as const, institution };
+  }
   const wrappers = loadWrappers();
   const terms = loadTerms();
   const collator = new Intl.Collator("he");
@@ -43,6 +51,7 @@ export async function loader({ params }: Route.LoaderArgs) {
       const fees: Record<number, CompactFee> = Object.fromEntries(list.map((x, i) => [x.fundId, compactFee(balances[i]!, template)]));
       return {
         classification,
+        workbenchId: list[0]!.wrapperId,
         tracks: list,
         fees,
         feeTemplate: template,
@@ -58,11 +67,12 @@ export async function loader({ params }: Route.LoaderArgs) {
   const unassigned = mine
     .filter((c) => c.status === "not-catalogued-yet")
     .map((c) => ({ id: c.id, names: c.names.he, where: seenWhere(c), seen: seenValue(c) }));
-  return { company, groups, period: cma.periodValue, defaultIds, known, unassigned, today: t, goal: goalContext(), fit: fitTable() };
+  return { kind: "company" as const, company, groups, period: cma.periodValue, defaultIds, known, unassigned, today: t, goal: goalContext(), fit: fitTable() };
 }
 
 export function meta({ loaderData: data }: Route.MetaArgs) {
-  return [{ title: `${data?.company.name ?? companiesCopy.title} · ${site.name}` }];
+  const name = data?.kind === "institution" ? data.institution.name : data?.company.name;
+  return [{ title: `${name ?? companiesCopy.title} · ${site.name}` }];
 }
 
 function feeHeadOf(v: SiteValue) {
@@ -77,13 +87,18 @@ function countLine(n: number) {
 
 export default function Company() {
   const data = useLoaderData<typeof loader>();
+  if (data.kind === "institution") return <InstitutionPage data={data.institution} />;
+  return <ManagerCompany data={data} />;
+}
+
+function ManagerCompany({ data }: { data: Extract<ReturnType<typeof useLoaderData<typeof loader>>, { kind: "company" }> }) {
   const first = data.groups[0];
   const side = first?.wrapper;
   return (
     <GoalsProvider presets={data.goal.presets as Presets}>
     <FitProvider table={data.fit} stale={data.period.stale ?? null}>
     <PageShell current="decoder" data={{ rules: {}, terms: {}, dimensions: {}, today: data.today }}>
-      <div className="lg:flex lg:gap-12 lg:items-start pt-2 lg:pt-8">
+      <div className="pt-2 lg:pt-8">
         <div className="flex-1 min-w-0 flex flex-col gap-6 lg:gap-8">
           <header className="flex flex-col gap-3">
             <Breadcrumb parent={{ href: "/companies", label: companiesCopy.back }} current={data.company.name} />
@@ -91,15 +106,20 @@ export default function Company() {
               <bdi>{data.company.name}</bdi>
             </h1>
             <p className="text-sm lg:text-base text-muted-foreground max-w-measure">
-              {copy.lineBefore}
-              <Num value={data.period} />.
+              <NumAfter lead={copy.lineBefore} value={data.period} />.
             </p>
+            <NumberLegend />
             {data.period.stale && (
               <Callout tone="caution">
                 {copy.oldData} <bdi dir="ltr">{fmt.period(String(data.period.value))}</bdi>.
               </Callout>
             )}
           </header>
+
+          <div className="hidden lg:grid grid-cols-2 gap-4 items-start">
+            {side && <WrapperCard side={side} />}
+            <PasteCard />
+          </div>
 
           <section aria-labelledby="tr-h" className="flex flex-col gap-3.5">
             <div className="flex flex-wrap items-end justify-between gap-4">
@@ -132,6 +152,14 @@ export default function Company() {
                     <IconDrillIn size={16} />
                   </Link>
                 )}
+                {g.workbenchId && (
+                  <Link to={`/workbench/tracks/${g.workbenchId}`} className="inline-flex items-center gap-0.5 min-h-target text-sm text-link hover:underline self-start px-1">
+                    {r3workbench.links.group.before}
+                    {g.wrapper?.name ?? g.classification}
+                    {r3workbench.links.group.after}
+                    <IconDrillIn size={16} />
+                  </Link>
+                )}
                 <TrackList
                   feeHead={feeHeadOf(g.feeTemplate) + (g.tracks[0]?.dataset === "pensia-net" ? ` ${copy.feeRowWhole}` : "")}
                   groups={groupTracks(
@@ -160,7 +188,7 @@ export default function Company() {
                         ))}
                       </span>
                       <span className="text-sm text-muted-foreground">
-                        {catalogue.seenAt} <bdi dir="ltr">{u.where}</bdi> {catalogue.seenOn} <Num value={u.seen as SiteValue} />
+                        {catalogue.seenAt} <bdi dir="ltr">{u.where}</bdi> <NumAfter lead={catalogue.seenOn} value={u.seen as SiteValue} />
                       </span>
                     </li>
                   ))}
@@ -171,25 +199,26 @@ export default function Company() {
           <PasteCard className="lg:hidden" />
         </div>
 
-        <aside className="hidden lg:flex w-[320px] shrink-0 flex-col gap-4 pt-[150px]" aria-label="עוד">
-          {side && (
-            <Card as="section" className="flex flex-col gap-2.5 lg:p-5" aria-labelledby="w-h">
-              <span className="text-sm text-muted-foreground">{copy.productType}</span>
-              <h2 id="w-h" className="text-lg font-semibold">
-                {side.name}
-              </h2>
-              {side.line && <p className="text-sm">{side.line}</p>}
-              <Link to={`/guide/${side.id}`} className="inline-flex items-center gap-0.5 min-h-target text-sm text-link hover:underline">
-                {copy.toGuide} {side.name}
-                <IconDrillIn size={16} />
-              </Link>
-            </Card>
-          )}
-          <PasteCard />
-        </aside>
       </div>
     </PageShell>
     </FitProvider>
     </GoalsProvider>
+  );
+}
+
+function WrapperCard({ side }: { side: { id: string; name: string; line: string | null } }) {
+  const hid = useId();
+  return (
+    <Card as="section" className="flex flex-col gap-2.5 lg:p-5" aria-labelledby={hid}>
+      <span className="text-sm text-muted-foreground">{copy.productType}</span>
+      <h2 id={hid} className="text-lg font-semibold">
+        {side.name}
+      </h2>
+      {side.line && <p className="text-sm">{side.line}</p>}
+      <Link to={`/guide/${side.id}`} className="inline-flex items-center gap-0.5 min-h-target text-sm text-link hover:underline">
+        {copy.toGuide} {side.name}
+        <IconDrillIn size={16} />
+      </Link>
+    </Card>
   );
 }

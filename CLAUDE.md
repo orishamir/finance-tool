@@ -3,14 +3,39 @@
 Personal, non-commercial website that helps me and a few friends and family
 make saving and investing decisions in Israel.
 
-## Status: release 1 complete, release 2 under way
+## Status: releases 1 to 5 built, data filled as far as sources allow
 
-Release 1 (2026-10-23) is complete with its data: every screen in
-`docs/design-spec.md`, all 17 wrapper and 7 exposure records, rules, terms,
-dimensions and the Meitav catalogue (see `docs/data-inventory.md`). Release 2's
-engine and design are done and its screens are being built; the Bank of Israel
-series are links, not numbers (product D20). The dated "Status" paragraphs in
-`docs/roadmap.md` say what exists and what is still open per release.
+On 2026-10-24 (night) sixteen independent user-perspective auditors reviewed
+the live site; `research/audit/2026-10-24-user-audit.md` holds the method,
+the findings, what was fixed the same night (85 of 112 deduplicated findings,
+plus 34 screen quirks), the 16 decisions waiting for me, and what was not
+done. The design docs carry dated amendments from that night; the Hebrew
+copy has a style guide in `docs/copy.md` section 10.
+
+Later that day a scenario audit (`research/audit/2026-10-24-scenario-audit.md`)
+walked eight real dilemmas through the site and found none reliably
+answered; the same day brought the question card on the home page, the
+comparison's honesty layer, the broker choice, a liquid-study-fund block on
+holdings, idle-cash verdicts, eight low-fee S&P 500 fund records and the
+published past record MKT-01. Its "Decisions for the founder" and "Still
+open" sections are the hand-offs. That evening a reader's goal (67,000 NIS for
+eight years) showed the comparison crowning a kupat gemel lehashkaa over a
+securities account priced at one bank's list tariff; since then the account is
+priced on the collected tariff that leaves the goal the most, named as the
+site's pick (method F-80, "Doron's case" in the scenario audit).
+
+On 2026-10-24 (night) the knowledge layer (D25) followed: every rule record carries its sources, the rule card shows them first, the rules page ("חוקים וכללים": the set has that name, a single record no noun) is one page of filters over every rule (by the reader's question, product, id prefix and about-to-change), the twelve questions (P-09) have their own page with a one-line sourced answer each and a block on the home page (the five shelf pages of the first build were merged the same evening at my request, and the questions left the rules page later that night), and there are a documents page, search over rules, parameters and documents, and a "שווה לדעת" block on each wrapper guide. Its build spec is `research/knowledge/2026-10-24-synthesis.md`, and the decisions waiting for me are in its section 5.
+
+All five releases of `docs/roadmap.md` are built (release 1 on 2026-10-23,
+releases 2 to 5 on 2026-10-23 and 2026-10-24); the dated "Status" paragraphs
+under each release say what exists and what is open, and its closing section
+"After release 5" lists the work that continues (tier-2 graduation, data
+growth, quarterly tariff refresh, my approvals). Data: about 500 rules, 20
+tariff snapshots for 17 providers (Meitav Trade still missing), 12 fund records,
+Leumi's 3 deposit terms, 2 series; no fund list, because TASE's terms forbid
+republishing it (see `docs/data-inventory.md`). The saved state is version 3
+under `mekor.v2.state`; the entered offers, variant assumptions and playbook
+ticks are three side stores on the device pending a merge into it.
 
 `docs/product.md` defines the site: who it is for, the capabilities, the
 decisions D1 to D13 (confirmed 2026-10-22, open to revision as I learn more),
@@ -77,14 +102,15 @@ Look approved by the founder (2026-10-23). Tokens live in `site/app/theme.css`;
   `muted-foreground`, `primary`, `border`, `input`, `ring`).
 - **Number states (D7).** Sourced: solid grey underline. Computed: dotted
   violet underline. Entered by you: blue ink on a blue highlight. Flags:
-  `caution` amber (stale, secondary source), `blocked` red with a lock (open
-  rule), `positive` green (dimension considered). Colour never works alone:
+  `caution` amber (stale, secondary source, a figure from the institution's own
+  document, labelled "לפי החברה"), `blocked` red with a lock (open rule),
+  `positive` green (dimension considered). Colour never works alone:
   each state also has a pattern, icon or word. Every number goes through the
   provenance component.
 - **Charts.** Own SVG components. Teal value, orange fees, rose tax, neutral
   contributions, dashed blue for a series that rests on an entered return,
-  red hatch for blocked parts. Time runs left to right; value labels sit
-  at the right. Blue and violet are never series colours.
+  red hatch for blocked parts. Time runs left to right; the value axis sits at the plot's left edge and
+  direct labels at the right (2026-10-24). Blue and violet are never series colours.
 - **Type.** Inter (Latin, digits) then Heebo (Hebrew), self-hosted variable
   fonts (approved 2026-10-22). Scale 13/14/16/18/20/24/30 px plus a 32 px figure size; body 16 px
   at line height 1.7. No letter-spacing on Hebrew. Numbers use tabular

@@ -117,7 +117,7 @@ const termKeys: Record<Family, { required: (keyof InstrumentTerms)[]; optional: 
 /** Fields of each nested term; any other field (a rate, a yield) would override P-05, so it is an error. */
 const nestedKeys: Partial<Record<keyof InstrumentTerms, string[]>> = {
   fees: ["deposit", "balance", "direct", "discount"],
-  hishtalmut: ["employment", "monthlySalary", "clockStartMonth", "earlyWithdrawal", "employerRate"],
+  hishtalmut: ["employment", "monthlySalary", "clockStartMonth", "earlyWithdrawal", "employerRate", "employerMonthly"],
   pension: ["employment", "monthlySalary", "annualIncome", "existingEmployeeRate", "employer"],
   insurance: ["rate"],
   deposit: ["termMonths", "linkage"],

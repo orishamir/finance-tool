@@ -11,5 +11,21 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "regulators-and-protection.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "title": "Provident Funds Law, Wikisource",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "ss.34ב, 34ג, 34ד, 34ה",
+      "locator_he": "סעיפים 34ב, 34ג, 34ד, 34ה",
+      "anchor": "סעיף_34ב",
+      "checked": "2026-10-22"
+    }
+  ]
 }

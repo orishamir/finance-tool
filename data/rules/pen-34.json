@@ -3,7 +3,7 @@
   "title": "What a provident fund for annuity is since 2008",
   "title_he": "מהי קופת גמל לקצבה כיום",
   "text_he": "אישור קופה כקופת גמל לתגמולים או כקופת גמל אישית לפיצויים חל רק על כסף שהופקד לשנות המס שלפני שנת אלפיים ושמונה. המוצר הנוכחי פועל לפי תקנון תקני כ\"קופת גמל לחיסכון, קופת גמל לתגמולים וקופת גמל אישית לפיצויים\": כסף חדש הוא חיסכון פנסיוני לפרישה, וגמל נט מסווג אותו כ\"תגמולים ואישית לפיצויים\". הקופה לא משלמת קצבה בעצמה: משיכת תגמולים כקצבה נעשית בהעברת הכסף לקרן פנסיה או לקופת ביטוח, ומשיכה שלא כקצבה אפשרית רק בגיל פרישת חובה עם יתרות עד סכום הצבירה המזערי ובלי קצבה מעל המזערי, מחשבון חדש, או בתנאי בריאות וכלכלה. כסף ישן מתקופות קודמות ניתן למשיכה בתנאים הישנים של גיל, עזיבת עבודה או ותק; החוק נקרא בעותק בוויקיטקסט והתקנון של חברה מנהלת.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "liquidity-lockup",
     "age-or-use-exemption",
@@ -11,5 +11,40 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "pension-and-gemel-lekitzba.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&filters=%7B%22REPORT_PERIOD%22%3A202609%7D&fields=FUND_CLASSIFICATION,TARGET_POPULATION&distinct=true&limit=200",
+      "title": "Gemel-Net query, period 202609",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "title": "Provident Funds Law, section 13(א)(4) (Wikisource mirror)",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "section 13(א)(4)",
+      "locator_he": "סעיף 13(א)(4)",
+      "anchor": "סעיף_13.א",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf",
+      "title": "Mor gemel standard bylaws 18.02.2026",
+      "title_he": "תקנון תקני לקופת גמל לחיסכון של מור (18.2.2026)",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור גמל ופנסיה",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
 }

@@ -11,5 +11,61 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
   "il_finance_file": "tracks-catalogue-and-decoder.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22FUND_CLASSIFICATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22",
+      "title": "distinct FUND_CLASSIFICATION, Gemel-Net",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22SPECIALIZATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22",
+      "title": "distinct SPECIALIZATION",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22TARGET_POPULATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22",
+      "title": "distinct TARGET_POPULATION",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22FUND_CLASSIFICATION%22%20FROM%20%226d47d6b5-cb08-488b-b333-f1e717b1e1bd%22",
+      "title": "Pension-Net distinct",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22FUND_CLASSIFICATION%22%20FROM%20%22c6c62cc7-fe02-4b18-8f3e-813abfbb4647%22",
+      "title": "Bituach-Net distinct",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=2016d770-f094-4a2e-983e-797c26479720&limit=100&filters={\"REPORT_PERIOD\":[202301,202312],\"FUND_CLASSIFICATION\":\"קופת",
+      "title": "2023 Meitav rows",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

@@ -1,0 +1,143 @@
+{
+  "id": "PF-33",
+  "title": "The uniform statement circular: shortened and detailed annual reports and the quarterly report, who gets what and when",
+  "title_he": "חוזר הדוח השנתי: דוח מקוצר, דוח מפורט ודוח רבעוני, למי ומתי",
+  "text_he": "רשות שוק ההון קבעה בחוזר מתכונת אחידה לדיווח לעמיתים. כל גוף מוסדי שולח לכל עמית, תוך שלושה חודשים מתום השנה, דוח שנתי מקוצר של עמוד אחד, בדוא\"ל או במסרון עם קישור אם העמית בחר בכך או אם יש בידי הגוף אמצעי דיגיטלי, ואחרת בדואר. באותו מועד מוצגים בחשבון האישי המקוון הדוח המקוצר ודוח שנתי מפורט, ונשמרים שם עשר שנים לפחות. דוח רבעוני מוצג בחשבון המקוון תוך שישים יום מתום כל רבעון חוץ מהאחרון, אלא אם לא הופקדו כספים ברבעון והיתרה נמוכה מחמישים אלף שקלים. טיוטת תיקון מנובמבר אלפיים עשרים וחמש מוסיפה את העלות השנתית הצפויה; לא נמצא שאומצה. החוזר הרשמי נקרא באתר צד שלישי (פריסה); עותק מאתר gov.il לא אותר (שאלה פתוחה PF OQ16).",
+  "figure_names_he": {
+    "annual_report_deadline_months": "חודשים מתום השנה למשלוח הדוח השנתי",
+    "quarterly_report_deadline_days": "ימים מתום הרבעון להצגת הדוח הרבעוני",
+    "quarterly_report_exemption_balance_nis": "יתרה שמתחתיה אין חובת דוח רבעוני ברבעון ללא הפקדות",
+    "annual_reports_kept_online_years": "שנים שהדוחות השנתיים נשמרים בחשבון המקוון"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "statement-disclosure",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-03-31",
+  "figures": {
+    "annual_report_deadline_months": {
+      "value": 3,
+      "unit": "months",
+      "source": {
+        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2020922.pdf",
+        "title": "CMA circular 2020-9-22, s. 3(א)",
+        "publisher": "Capital Market, Insurance and Savings Authority (Prisha copy)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-33"
+      ],
+      "state": "sourced",
+      "notes": "The shortened annual report is sent, and the shortened and detailed reports are shown online, within three months of year end (s. 3(א), 3(ה)). Official circular read on a third-party host (Prisha); gov.il copy not located (PF OQ16)."
+    },
+    "quarterly_report_deadline_days": {
+      "value": 60,
+      "unit": "days",
+      "source": {
+        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2020922.pdf",
+        "title": "CMA circular 2020-9-22, s. 4(א)",
+        "publisher": "Capital Market, Insurance and Savings Authority (Prisha copy)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-33"
+      ],
+      "state": "sourced",
+      "notes": "The quarterly report is shown in the online account within 60 days of quarter end, except the fourth quarter (s. 4(א)). Official circular read on a third-party host (Prisha); gov.il copy not located (PF OQ16)."
+    },
+    "quarterly_report_exemption_balance_nis": {
+      "value": 50000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2020922.pdf",
+        "title": "CMA circular 2020-9-22, s. 4(ה)",
+        "publisher": "Capital Market, Insurance and Savings Authority (Prisha copy)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-33"
+      ],
+      "state": "sourced",
+      "notes": "No quarterly report is due for a product with no deposits (including transfers in) in the quarter whose accumulated balance is below NIS 50,000 (s. 4(ה)). Not stated as indexed. Official circular read on a third-party host (Prisha); gov.il copy not located (PF OQ16)."
+    },
+    "annual_reports_kept_online_years": {
+      "value": 10,
+      "unit": "years",
+      "source": {
+        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2020922.pdf",
+        "title": "CMA circular 2020-9-22, s. 3(ו)",
+        "publisher": "Capital Market, Insurance and Savings Authority (Prisha copy)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-33"
+      ],
+      "state": "sourced",
+      "notes": "The shortened and detailed annual reports stay in the personal online account for at least 10 years (s. 3(ו)); quarterly reports for at least a year (s. 4(ג)). Official circular read on a third-party host (Prisha); gov.il copy not located (PF OQ16)."
+    }
+  },
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-23",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice_2025_51/he/Annual_and_quarterly%20report_to_Members_and_Policyholders_of_an_Institutional_Entity%20%E2%80%93%20correction_draft_PDF%20(1).pdf",
+      "title": "CMA draft circular 2025-26 \"דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי - תיקון\", 6.11.2025, 161 pp., gov.il BlobFolder (the full consolidated text with the proposed edits)",
+      "title_he": "טיוטת חוזר 2025-26: דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "pp. 1 to 5",
+      "locator_he": "עמודים 1 עד 5",
+      "page": 1,
+      "checked": "2026-10-23",
+      "qualifier": "(draft)"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/reports/tender-0102/he/Commissioner%20Report%202025%20chapter%202_Digital%20-%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9%20%D7%A1%D7%95%D7%A4%D7%99.pdf",
+      "title": "CMA, דוח הממונה לשנת 2025, chapter 2, \"קידום השקיפות לחוסכים – פרסום טיוטת תיקון לחוזר דוח שנתי\"",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "checked": "2026-10-23"
+    },
+    {
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2020922.pdf",
+      "title": "CMA institutional-bodies circular 2020-9-22 \"דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי - תיקון\", 14.12.2020, 152 pp. (consolidated text; official circular on the Prisha host)",
+      "title_he": "חוזר גופים מוסדיים 2020-9-22: דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
+      "publisher": "Prisha.co.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "pp. 2 to 5 (s. 1 to 10), p. 35",
+      "locator_he": "עמודים 2 עד 5 (סעיף 1 עד 10), עמוד 35",
+      "page": 2,
+      "checked": "2026-10-23",
+      "qualifier": "(official circular, third-party host; the gov.il copy of the 2020 text was not located, see open question 16)"
+    }
+  ]
+}

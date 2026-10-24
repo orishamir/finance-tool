@@ -9,9 +9,9 @@ import { NumberLegend, RuleRef } from "../components/provenance";
 import { SavedGoalStrip } from "../components/compare/strip";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { GoalsProvider, type Presets } from "../lib/goal";
-import { Card, Tag } from "../components/ui";
+import { Card, Disclosure, Tag } from "../components/ui";
 import { exposureContent } from "../content/exposure";
-import { fmt } from "../lib/format";
+import { splitTerms } from "../lib/guide-nav";
 import type { SiteValue } from "../lib/value";
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -54,29 +54,33 @@ export default function ExposurePage() {
   });
   const provenance = { rules, terms: data.termsById, dimensions: data.dimensionNames, today };
   const kind = copy.kinds[record.kind] ?? record.kind;
+  // audit A83: no terms table under three rows; the page's own terms first, the rest behind a toggle
+  const terms = splitTerms(data.terms, content?.termIds ?? []);
   return (
     <GoalsProvider presets={data.goal.presets as Presets}>
     <PageShell current="guide" data={provenance}>
       <div className="lg:flex lg:gap-12 pt-2 lg:pt-8">
-        <SectionIndex sections={copy.sections} current={current} />
+        <SectionIndex sections={copy.sections.filter((x) => x.id !== "terms" || !terms.hide)} current={current} />
         <div className="flex-1 min-w-0 flex flex-col gap-section">
           <header className="flex flex-col gap-3">
             <Breadcrumb parent={{ href: "/guide", label: guideIndex.title }} current={data.name} />
             <h1 className="text-2xl lg:text-3xl font-semibold">{data.name}</h1>
             {data.lede && <p className="text-lg text-muted-foreground max-w-measure">{data.lede}</p>}
             <p className="flex flex-wrap gap-2 text-sm text-muted-foreground">
+              {record.kind !== "other" && (
+                <Tag tone="neutral">
+                  {copy.kindLabel}: {kind}
+                </Tag>
+              )}
               <Tag tone="neutral">
-                {copy.kindLabel}: {kind}
-              </Tag>
-              <Tag tone="neutral">
-                {copy.currencyLabel}: <bdi dir="ltr">{record.currency}</bdi>
+                {copy.currencyLabel}: <bdi dir="ltr">{copy.currencies[record.currency] ?? record.currency}</bdi>
               </Tag>
             </p>
             <SavedGoalStrip variant="compact" presets={data.goal.presets as Presets} meta={data.goal.meta} today={today} />
-            <NumberLegend />
+            <NumberLegend term />
           </header>
 
-          <GuideSection id="what" title={copy.sections[0].title}>
+          <GuideSection id="what" title={copy.sections[0].title} rulesToggle>
             {content ? content.what(cp) : <p className="text-muted-foreground max-w-measure">{copy.noProse}</p>}
           </GuideSection>
 
@@ -94,11 +98,22 @@ export default function ExposurePage() {
                         <span className="text-lg font-semibold">{h.name}</span>
                         <IconDrillIn className="text-muted-foreground shrink-0" />
                       </Link>
-                      {h.openQuestions.length > 0 && (
+                      {/* audit A85: red only when the product's own exit tax is blocked; the shared open questions get a neutral tag */}
+                      {h.blockedBy.length > 0 && (
                         <span className="flex flex-col gap-1.5">
                           <Tag tone="blocked" icon={<IconLock size={14} />}>
                             {copy.openTax}
                           </Tag>
+                          <span className="flex flex-wrap gap-2">
+                            {h.blockedBy.map((q) => (
+                              <RuleRef key={q} id={q} />
+                            ))}
+                          </span>
+                        </span>
+                      )}
+                      {h.openQuestions.length > 0 && (
+                        <span className="flex flex-col gap-1.5">
+                          <Tag tone="neutral">{copy.openDetails}</Tag>
                           <span className="flex flex-wrap gap-2">
                             {h.openQuestions.map((q) => (
                               <RuleRef key={q} id={q} />
@@ -113,7 +128,7 @@ export default function ExposurePage() {
             )}
           </GuideSection>
 
-          <GuideSection id="risk" title={copy.sections[2].title}>
+          <GuideSection id="risk" title={copy.sections[2].title} rulesToggle>
             {content ? content.risks(cp) : <p className="text-muted-foreground max-w-measure">{copy.noProse}</p>}
           </GuideSection>
 
@@ -121,10 +136,17 @@ export default function ExposurePage() {
             <DimensionChecklist rows={checklist} />
           </GuideSection>
 
-          <GuideSection id="terms" title={copy.sections[4].title}>
-            <p className="text-sm text-muted-foreground">{guide.termsLine}</p>
-            <TermTable terms={data.terms} />
-          </GuideSection>
+          {!terms.hide && (
+            <GuideSection id="terms" title={copy.sections[4].title}>
+              <p className="text-sm text-muted-foreground">{guide.termsLine}</p>
+              {terms.main.length > 0 && <TermTable terms={terms.main} />}
+              {terms.rest.length > 0 && (
+                <Disclosure label={<span className="text-link">{guide.termsShowAll}</span>} openLabel={<span className="text-link">{guide.termsHideAll}</span>} className="flex flex-col gap-2" summaryClassName="justify-start">
+                  <TermTable terms={terms.rest} />
+                </Disclosure>
+              )}
+            </GuideSection>
+          )}
         </div>
       </div>
     </PageShell>

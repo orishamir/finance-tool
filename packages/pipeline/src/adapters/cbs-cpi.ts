@@ -1,7 +1,7 @@
 // CBS adapter: the general consumer price index (code 120010) from the CBS price-index API.
 // Terms: CBS open licence v2.1, status confirmed (data/series/cbs-cpi.json carries the attribution line).
-// Pure functions (normalise, mergeObservations, sanityCheck, diffSeries, changelogLines) do no I/O.
-import { seriesRecord, type ChangelogLine, type SeriesObservation, type SeriesRecord } from "@finance-tool/schema";
+// Pure functions (normalise, mergeObservations, sanityCheck, diffSeries) do no I/O.
+import { seriesRecord, type SeriesObservation, type SeriesRecord } from "@finance-tool/schema";
 import { USER_AGENT, type Downloaded } from "./cma.ts";
 import { lastDate, refreshSeries, type SeriesDiff, type SeriesRefreshOptions, type SeriesSpec, type SourceReport } from "./series-common.ts";
 
@@ -204,28 +204,6 @@ export function diffSeries(previous: SeriesRecord | null, next: SeriesRecord): S
   };
 }
 
-/** Change-log lines (data-schema 3.12): one per new month and one per changed month. */
-export function changelogLines(previous: SeriesRecord | null, next: SeriesRecord, runDate: string): ChangelogLine[] {
-  const d = diffObservations(previous, next);
-  const values = new Map(next.observations.map((o) => [o.date, o.value]));
-  const line = (date: string, old: unknown, nw: unknown, reason: string): ChangelogLine => ({
-    date: runDate,
-    collection: "series",
-    id: CPI_ID,
-    field: `observations.${monthKey(date)}`,
-    old,
-    new: nw,
-    reason,
-    affects_rankings: true,
-  });
-  return [
-    ...d.added.map((date) =>
-      line(date, null, values.get(date), previous ? `new monthly index, CBS price-index API code ${CPI_CODE}` : `first snapshot, CBS price-index API code ${CPI_CODE}, base ${EXPECTED_BASE}`),
-    ),
-    ...d.changed.map((c) => line(c.date, c.old, c.new, `value changed upstream, CBS price-index API code ${CPI_CODE}`)),
-  ];
-}
-
 export async function fetchRaw(): Promise<Downloaded> {
   const res = await fetch(API_URL, { headers: { "User-Agent": USER_AGENT, Accept: "application/json" }, redirect: "follow" });
   if (!res.ok) throw new Error(`cbs-cpi: download failed, HTTP ${res.status}`);
@@ -241,7 +219,6 @@ export const cpiSpec: SeriesSpec = {
   build: (dl, previous, ctx) => normalise(dl, previous, ctx),
   sanity: sanityCheck,
   diff: diffSeries,
-  changelog: changelogLines,
   archive: {
     tag: (runDate) => `raw-cbs-cpi-${runDate.slice(0, 7)}`,
     title: "Raw CBS CPI downloads",

@@ -11,5 +11,34 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "kupat-gemel-lehashkaa.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://api.cbs.gov.il/index/data/calculator/120010?value=70000&date=07-01-2016&toDate=01-01-2026&format=json&download=false",
+      "title": "CBS linkage calculator API, general CPI (series 120010)",
+      "publisher": "Central Bureau of Statistics",
+      "publisher_he": "הלשכה המרכזית לסטטיסטיקה",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://api.cbs.gov.il/index/data/price?id=120010&format=json&download=false&startPeriod=05-2016&endPeriod=05-2016",
+      "title": "CBS CPI May 2016",
+      "publisher": "Central Bureau of Statistics",
+      "publisher_he": "הלשכה המרכזית לסטטיסטיקה",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://api.cbs.gov.il/index/data/price?id=120010&format=json&download=false&startPeriod=11-2025&endPeriod=11-2025",
+      "title": "CBS CPI November 2025",
+      "publisher": "Central Bureau of Statistics",
+      "publisher_he": "הלשכה המרכזית לסטטיסטיקה",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

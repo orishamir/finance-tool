@@ -12,5 +12,40 @@
   "likely_to_change": "no",
   "text_he": "מהקופה מותר לגבות רק: עמלות קנייה ומכירה; דמי משמרת ועמלת משמורת (לא יותר מבקופות הרגילות של אותה חברה); דמי ניהול ושכר נאמן של קרנות שמחזיקים; מסים; דמי ניהול לחברה המנהלת לפי ההסכם (מתוכם משולם מנהל התיקים); והוצאות השקעה בתעודת סל. שום דבר מעבר לרשימה.",
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
+      "title": "Nevo, reg. 7",
+      "publisher": "Nevo",
+      "publisher_he": "נבו",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "nevo",
+      "locator": "reg. 7",
+      "locator_he": "תקנה 7",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.meitav.co.il/media/0qulk3pk/תקנות-ira-חדשות-יוני-2017.pdf",
+      "title": "Reshumot 2017 amendment, reg. 5",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי)",
+      "publisher": "Meitav",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "reg. 5",
+      "locator_he": "תקנה 5",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.meitav.co.il/media/kiildnyn/נספח-להסכם-הצטרפות-לקרן-השתלמות-בניהול-אישי-115181124.pdf",
+      "title": "Meitav joining-form annex",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
 }

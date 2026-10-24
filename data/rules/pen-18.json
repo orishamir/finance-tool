@@ -58,5 +58,34 @@
     }
   },
   "il_finance_file": "pension-and-gemel-lekitzba.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "title": "Provident Funds Law, chapter ג' סימן ה'1, sections 34א-34ז (Wikisource mirror)",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "sections 34א-34ז",
+      "locator_he": "סעיפים 34א-34ז",
+      "anchor": "סעיף_34א",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "title": "Mor comprehensive bylaws 01.06.2025",
+      "title_he": "תקנון קרן הפנסיה המקיפה של מור (מהדורת 1.6.2025)",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור גמל ופנסיה",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "section 19",
+      "locator_he": "סעיף 19",
+      "quote": "אפיק השקעה מובטח תשואה",
+      "checked": "2026-10-22"
+    }
+  ]
 }

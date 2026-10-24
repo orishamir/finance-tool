@@ -11,5 +11,37 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
   "il_finance_file": "tracks-catalogue-and-decoder.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "title": "CMA circular 2022-9-30",
+      "title_he": "חוזר גופים מוסדיים 2022-9-30: ניהול מסלולי השקעה בקופות גמל",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "appendix s.2",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.harel-group.co.il/long-term-savings/information/reform",
+      "title": "Harel reform page",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "primary",
+      "locator": "Gemel-Net 202609",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.meitav.co.il/provident_pension/flexible_index_tracker_actively_managed_indices/",
+      "title": "Meitav flexible-index notice",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

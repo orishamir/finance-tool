@@ -1,0 +1,34 @@
+{
+  "id": "meitav-trade",
+  "provider": {
+    "name_he": "מיטב טרייד בע\"מ",
+    "class": "broker",
+    "regulator": "ISA",
+    "tase_member": true,
+    "protection_rule_ids": [
+      "BRK-07",
+      "BRK-08",
+      "BRK-09",
+      "BRK-12",
+      "BRK-13",
+      "REG-16"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.meitav.co.il/trade",
+    "title": "תעריפון מיטב טרייד (לא נמצא; עמוד מיטב טרייד ועמוד התנאים נבדקו)",
+    "published": null,
+    "format": "html"
+  },
+  "snapshot": "2026-10-23",
+  "missing": true,
+  "missing_reason": "Tariff not located (2026-10-23, curl with a browser User-Agent, no browser available): https://www.meitav.co.il/trade (200) links only order forms (transfer request, Ordernet, order-value increase, rights waiver, heirs) and https://www.meitav.co.il/trade/customer-service/meitav_terms/ (200) links only promotion rules PDFs; neither page links a fee tariff. data-landscape 2.2 and il-finance BRK-30 also record 'tariff not found' for Meitav Trade. The trading platform (trade.meitav.co.il) requires login. TASE's member fee page (BRK-33, market.tase.co.il/he/market_data/trading_fees) shows Meitav Trade's fees but is script-rendered and blocks plain fetches. Needs a person in a browser, or a tariff URL from Meitav.",
+  "lines": [],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "notice_rule_ids": [
+    "BRK-15"
+  ]
+}

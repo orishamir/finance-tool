@@ -24,7 +24,7 @@ export const content: GuideContent = {
           בגילים קבועים הביטוח הלאומי מוסיף <Term id="מענק">מענקים</Term>: לילדים שנולדו מאז תחילת התכנית {grantYoung ? <Num value={grantYoung} /> : null} בגיל {ageFirst ? <Num value={ageFirst} /> : null} ושוב בגיל בר או בת מצווה, ולילדים שנולדו לפני כן מענק אחד בגיל הפדיון. לכולם {grantLast ? <Num value={grantLast} /> : null} בגיל {ageLast ? <Num value={ageLast} /> : null}, רק אם לא משכו קודם.
         </p>
         <p className="max-w-measure">
-          במסלול הזה הכסף מנוהל בקופת גמל ייעודית, ב<Term id="מסלול השקעה">מסלול השקעה</Term> שבוחרים מתוך הרשימה של הקופה. אם לא בוחרים בתוך {months ? <Num value={months} /> : null} חודשים מהלידה, הכסף נכנס לקופת גמל ב<Term id="מסלול ברירת מחדל">מסלול ברירת המחדל</Term>: <Term id="חוסכים המעדיפים סיכון מוגבר">חוסכים המעדיפים סיכון מוגבר</Term>, או הקופה והמסלול של אח גדול.
+          במסלול הזה הכסף מנוהל בקופת גמל ייעודית, <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> שבוחרים מתוך הרשימה של הקופה. אם לא בוחרים בתוך {months ? <Num value={months} /> : null} חודשים מהלידה, הכסף נכנס לקופת גמל <Term prefix="ב" id="מסלול ברירת מחדל">מסלול ברירת המחדל</Term>: <Term id="חוסכים המעדיפים סיכון מוגבר">חוסכים המעדיפים סיכון מוגבר</Term>, או הקופה והמסלול של אח גדול.
         </p>
         <RulesLine ids={["CS-02", "CS-03", "CS-04", "CS-13", "CS-06", "CS-07", "CS-08"]} />
       </>
@@ -44,7 +44,7 @@ export const content: GuideContent = {
   afterTax: () => (
     <>
       <Callout tone="caution" className="max-w-measure">
-        <span className="font-medium">שיעור המס ב<Term id="משיכה">משיכה</Term> מגיע ממקור משני.</span> הביטוח הלאומי אומר רק שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>, בלי שיעור; החוק מתייחס לקופת גמל להשקעה בלי לנקוב בחיסכון לכל ילד. שאלה פתוחה: <bdi dir="ltr" className="whitespace-nowrap">TXK OQ1</bdi>.
+        <span className="font-medium">שיעור המס <Term prefix="ב" id="משיכה">משיכה</Term> מגיע ממקור משני.</span> הביטוח הלאומי אומר רק שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>, בלי שיעור; החוק מתייחס לקופת גמל להשקעה בלי לנקוב בחיסכון לכל ילד. שאלה פתוחה: <bdi dir="ltr" className="whitespace-nowrap">TXK OQ1</bdi>.
       </Callout>
       <Callout tone="blocked" className="max-w-measure">
         <span className="font-medium">הביטוח הלאומי מתאר גם מסלול <Term id="קצבה">קצבה</Term>:</span> להשאיר את הכסף בקופה עד הפרישה ולקבל אותו כקצבה בלי מס. הבסיס לכך בחוק לא נמצא, והאתר לא מחשב אותו.

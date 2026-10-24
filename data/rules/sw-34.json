@@ -11,5 +11,35 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+      "title": "IBI tariff, part 4 item 9",
+      "title_he": "תעריפון עמלות אי.בי.אי (1.7.2026)",
+      "publisher": "IBI",
+      "publisher_he": "אי.בי.אי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.as-invest.co.il/trade/faq_transfer/",
+      "title": "Altshuler Shaham Trade, transfer FAQ",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.calcalist.co.il/article/hj55ri2pgx",
+      "title": "Calcalist, 27.08.2026",
+      "publisher": "Calcalist",
+      "publisher_he": "כלכליסט",
+      "kind": "article",
+      "strength": "secondary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

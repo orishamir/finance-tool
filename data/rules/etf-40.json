@@ -36,5 +36,24 @@
     "return_versions": "מספר גרסאות התשואה של המדד"
   },
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-23"
+  "checked": "2026-10-23",
+  "sources": [
+    {
+      "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
+      "title": "S&P Dow Jones Indices, \"S&P U.S. Indices Methodology\", July 2026, p. 21 \"Calculation Return Types\"",
+      "title_he": "S&P U.S. Indices Methodology (יולי 2026)",
+      "publisher": "S&P Dow Jones Indices",
+      "publisher_he": "S&P Dow Jones Indices",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "p. 21",
+      "locator_he": "עמוד 21",
+      "page": 21,
+      "checked": "2026-10-23",
+      "qualifier": "(index provider)"
+    }
+  ],
+  "derived_from": [
+    "ETF-10"
+  ]
 }

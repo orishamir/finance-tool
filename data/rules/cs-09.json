@@ -57,5 +57,16 @@
     "equity_exposure_max": "חשיפה מקסימלית למניות במסלול ברירת המחדל (הראל)"
   },
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
+      "title": "Harel bylaw",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
 }

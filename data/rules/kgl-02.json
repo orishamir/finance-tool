@@ -36,5 +36,43 @@
     }
   },
   "il_finance_file": "kupat-gemel-lehashkaa.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://fs.knesset.gov.il//20/law/20_lsr_343169.pdf",
+      "title": "Sefer HaChukim 2554, p. 885",
+      "title_he": "ספר החוקים 2554 (7.6.2016): חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס׳ 15), התשע״ו-2016",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "Amendment 15 section 3",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "title": "Wikisource",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "section 22(א)",
+      "locator_he": "סעיף 22(א)",
+      "anchor": "סעיף_22.א",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
+      "title": "Altshuler Shaham \"חיסכון פלוס\" bylaws, March 2025",
+      "title_he": "תקנון קופת הגמל להשקעה ״חיסכון פלוס״ של אלטשולר שחם (מרץ 2025)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "clause 8.1",
+      "locator_he": "סעיף 8.1",
+      "checked": "2026-10-22"
+    }
+  ]
 }

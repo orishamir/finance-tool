@@ -34,5 +34,21 @@
     }
   },
   "il_finance_file": "regulators-and-protection.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
+      "title": "חוק השקעות משותפות בנאמנות, Wikisource",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "ss.11, 12, 14, 15, 104",
+      "locator_he": "סעיפים 11, 12, 14, 15, 104",
+      "anchor": "סעיף_11",
+      "checked": "2026-10-22"
+    }
+  ]
 }

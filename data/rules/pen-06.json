@@ -12,5 +12,48 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "pension-and-gemel-lekitzba.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf",
+      "title": "CMA circular 2024-9-6 \"הוראות לעניין בחירת קופת גמל - עדכון\", 25.8.2024",
+      "title_he": "חוזר גופים מוסדיים 2024-9-6: הוראות לעניין בחירת קופת גמל – עדכון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "annex sections 3, 7, 11-12",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "title": "Provident Funds Law, section 20 (Wikisource mirror)",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "section 20",
+      "locator_he": "סעיף 20",
+      "anchor": "סעיף_20",
+      "checked": "2026-10-22",
+      "qualifier": "(mirror of the law; latest amendment shown ס\"ח תשפ\"ו 912)"
+    },
+    {
+      "url": "https://adif-web-bucket.s3-eu-west-1.amazonaws.com/%D7%93%D7%95%D7%97%20%D7%94%D7%9E%D7%9E%D7%95%D7%A0%D7%94%20%D7%A2%D7%9C%20%D7%A9%D7%95%D7%A7%20%D7%94%D7%94%D7%95%D7%9F%20%D7%9C%D7%A9%D7%A0%D7%AA%202024.pdf",
+      "title": "CMA, דוח הממונה על שוק ההון לשנת 2024",
+      "title_he": "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2024",
+      "publisher": "Adif (copy)",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "official_pdf",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "p. 10",
+      "locator_he": "עמוד 10",
+      "page": 10,
+      "checked": "2026-10-22",
+      "qualifier": "(official report, third-party host)"
+    }
+  ]
 }

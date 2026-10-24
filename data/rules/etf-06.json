@@ -10,5 +10,20 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
+      "title": "IBI ETF annual report 31.12.2025, p.1, p.4, p.10",
+      "title_he": "דוח שנתי ליום 31.12.2025 של אי.בי.אי. סל (4D) S&P 500",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "אי.בי.אי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1, p.4, p.10",
+      "locator_he": "עמוד 1, עמוד 4, עמוד 10",
+      "page": 1,
+      "checked": "2026-10-22"
+    }
+  ]
 }

@@ -11,5 +11,45 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "pension-and-gemel-lekitzba.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "title": "Provident Funds Law, section 23(א)(2א), 23(א)(3) (Wikisource mirror)",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "section 23(א)(2א), 23(א)(3)",
+      "locator_he": "סעיף 23(א)(2א), 23(א)(3)",
+      "anchor": "סעיף_23.א",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "title": "Mor comprehensive bylaws 01.06.2025",
+      "title_he": "תקנון קרן הפנסיה המקיפה של מור (מהדורת 1.6.2025)",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור גמל ופנסיה",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "sections 103(א)(2), 103(ב), 104",
+      "locator_he": "סעיפים 103(א)(2), 103(ב), 104",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf",
+      "title": "Mor gemel standard bylaws 18.02.2026",
+      "title_he": "תקנון תקני לקופת גמל לחיסכון של מור (18.2.2026)",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור גמל ופנסיה",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "sections 12, 17",
+      "locator_he": "סעיפים 12, 17",
+      "checked": "2026-10-22"
+    }
+  ]
 }

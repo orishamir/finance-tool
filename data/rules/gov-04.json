@@ -58,5 +58,19 @@
     }
   },
   "il_finance_file": "government-bonds-and-makam.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.boi.org.il/media/ytal5ozx/makam.pdf",
+      "title": "BoI makam auction general conditions",
+      "title_he": "מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל, חטיבת השווקים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "ss. 2.1 to 2.6, 3.1.2, 3.2, 3.3, 3.4, 4.1.3, 5.1, 5.2, Annex ב, pp. 1 to 6, 9, 14",
+      "page": 1,
+      "checked": "2026-10-22"
+    }
+  ]
 }

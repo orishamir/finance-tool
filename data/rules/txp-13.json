@@ -3,11 +3,38 @@
   "title": "Growth inside the fund: the fund's income is exempt; exceptions",
   "title_he": "הרווחים בתוך הקופה פטורים, עם חריגים",
   "text_he": "הכנסתה של קופת גמל פטורה ממס, ובמקורות שנקראו לא נמצא מס שנתי על העמית על רווחי הקופה: העמית ממוסה רק ביציאה. לא פטורה הכנסה מעסק שהקופה עצמה מנהלת, והכנסה מחברה בעסק שהקופה שולטת בו או מחזיקה בו החזקה מהותית; אלה חריגים ברמת הקופה, והאם הם מקטינים את תשואת העמית לא כומת. סעיף נפרד פוטר ריבית, הצמדה ורווחים שיחיד מקבל \"מקופת גמל לתגמולים\" מהפקדותיו או מהפקדות מעסיקו, והוא נוקב בסוג התגמולים ולא בסוג הקצבה, שאלה פתוחה. הפקודה נקראה בעותק בוויקיטקסט.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "tax-during"
   ],
   "likely_to_change": "no",
   "il_finance_file": "tax-pension-gemel-lekitzba.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "printed p.87 (s.9(18) row)",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Ordinance",
+      "title_he": "פקודת מס הכנסה",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s.9(2), s.9(18)",
+      "locator_he": "סעיף 9(2), סעיף 9(18)",
+      "anchor": "סעיף_9",
+      "checked": "2026-10-22"
+    }
+  ]
 }

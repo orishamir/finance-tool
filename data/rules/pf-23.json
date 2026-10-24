@@ -6,7 +6,7 @@
   "figure_names_he": {
     "switch_business_days": "ימי עסקים למעבר מסלול"
   },
-  "strength": "primary",
+  "strength": "primary-mirror",
   "dimensions": [
     "transfer-switch-process",
     "switching-tax-event"
@@ -36,5 +36,42 @@
     }
   },
   "il_finance_file": "provident-family-common.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לאישור_ולניהול_קופות_גמל)",
+      "title": "Income Tax Regulations (Rules for Approval and Management of Provident Funds) 1964, reg. 1, 33ב (Wikisource)",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg. 1, 33ב",
+      "locator_he": "תקנה 1, 33ב",
+      "anchor": "סעיף_1",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
+      "title": "Altshuler bylaws s. 10, 20",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "s. 10, 20",
+      "locator_he": "סעיף 10, 20",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.fnx.co.il/gemel/gemelhashkaa/faq/",
+      "title": "Phoenix FAQ",
+      "title_he": "שאלות ותשובות על קופת הגמל להשקעה של הפניקס",
+      "publisher": "The Phoenix",
+      "publisher_he": "הפניקס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
 }

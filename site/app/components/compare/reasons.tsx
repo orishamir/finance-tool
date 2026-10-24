@@ -1,9 +1,10 @@
 // F-83 reasons in words (copy 6.2): the engine returns a code with rule and gap IDs; the words come first
 // and the code after. A reason the person can fix links to the field; a reason the site must fix names what is open.
 import { Link } from "react-router";
-import { r2 } from "../../copy";
+import { ownTermsCopy, r2, scnCompare } from "../../copy";
 import type { CoverageRow, ListedOption, ReasonView } from "../../lib/compare";
-import { addMonths } from "../../lib/compare";
+import { addMonths, equityFit, fitDropOf, openConstraintCode } from "../../lib/compare";
+import { Tpl } from "../exposure-mode/tpl";
 import type { FieldKey } from "../../lib/goal";
 import { Num, RuleRef } from "../provenance";
 import type { ResultCtx } from "./ctx";
@@ -93,13 +94,25 @@ export function ReasonText({ r, id, ctx, routed }: { r: ReasonView; id: string; 
           <Rules ids={r.ruleIds} />
         </>
       );
-    case "rule-open":
+    case "rule-open": {
+      if (fitDropOf(r) !== null) {
+        const cap = equityFit(ctx.bundle)?.maxFall;
+        return <Tpl t={scnCompare.fitDrop} vars={{ drop: cap ? <Num value={cap} /> : `${fitDropOf(r)}%` }} />;
+      }
+      const code = openConstraintCode(r);
+      if (code)
+        return (
+          <>
+            {ownTermsCopy.openMinimum} <bdi dir="ltr" className="text-xs slashed-zero">{code}</bdi>
+          </>
+        );
       return (
         <>
           {c.ruleOpen}
           <Rules ids={r.ruleIds} />
         </>
       );
+    }
     case "figure-not-updated":
       return (
         <>
@@ -110,14 +123,18 @@ export function ReasonText({ r, id, ctx, routed }: { r: ReasonView; id: string; 
     case "idle-cash-not-run":
       return <>{c.noRun}</>;
     case "employee-study-fund":
-      return <>{r2.result.listedEmployee} <bdi dir="ltr" className="text-xs">D15</bdi></>;
-    case "ceiling-partial":
+      // a product-decision id (D15) is not shown after the words (hebrew-editor request, 2026-10-24)
+      return <>{r2.result.listedEmployee}</>;
+    case "ceiling-partial": {
+      // A11: what the ceiling is and what stays outside it, in words that say what happened to this goal's money
+      const ceiling = ctx.bundle.wrappers.find((w) => w.id === id)?.record.ceiling?.amount;
       return (
         <>
-          {r2.result.listedCeilingBefore} {routed !== undefined ? <Num value={ctx.mk.nis(routed, "F-05", r2.result.listedCeilingBefore)} /> : null} {r2.result.listedCeilingAfter}
+          {r2.result.listedCeilingBefore} {ceiling ? <Num value={ceiling as never} /> : null} {r2.result.listedCeilingMid} {routed !== undefined ? <Num value={ctx.mk.nis(routed, "F-05", r2.result.listedCeilingBefore)} /> : null} {r2.result.listedCeilingAfter}
           <Rules ids={r.ruleIds} />
         </>
       );
+    }
     case "locked-until":
     case "locked-to-age": {
       const date = r.untilMonth !== undefined ? addMonths(ctx.bundle.runDate, r.untilMonth) : null;

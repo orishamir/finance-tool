@@ -217,6 +217,7 @@ Out, and where it lives:
   - [Altshuler](https://www.as-invest.co.il/interstedin/ניהול-תיקי-השקעות/) · checked 2026-10-22 · institution
 - Dimensions: `fee-management-balance`, `fee-trade`, `fee-custody`, `fee-fx`, `fee-fund-underlying` (proposed)
 - Likely to change: yes (provider terms)
+- *2026-10-24 R5 pass:* layer (a) carries 18% VAT when the manager is a dealer and not a financial institution (a bank, insurer, or a TASE member with 75% of its turnover from that activity); layers (b) from a bank or TASE member carry none (TX2-17, primary mirror). A tariff must say whether its rate is before or after VAT; Fjord's "0.5% בתוספת מע"מ" (MGD-20) is an example of the first.
 
 ### MGD-11 ISA-reported fee averages by portfolio size (D4 reference level)
 - Rule: The ISA publishes, per year, the income from direct management fees as a share of assets for non-institutional clients, by portfolio size ("שיעור ההכנסות מדמי ניהול מלקוחות שאינם מוסדיים"). It also publishes a weighted average direct management fee ("ממוצע משוקלל של דמי הניהול").
@@ -552,7 +553,7 @@ Digital offerings confirmed on own pages: Meitav Manager, Phoenix digital portfo
 12. **ISA complaints channel for portfolio-management clients.** Same as REG open question 5.
 13. **Termination fees.** Whether a manager may charge for ending the agreement, or for transferring securities out. The law read only says the client may cancel at any time. Custodian transfer fees are in BRK-18.
 14. **"Special risk" trades (s.18).** Which trades count. Section 18 was read only in summary.
-15. **VAT on portfolio-management fees.** Fjord states "בתוספת מע"מ"; the others do not say. This is a tax question for `tax-tier2-other.md`.
+15. **VAT on portfolio-management fees.** Fjord states "בתוספת מע"מ"; the others do not say. This is a tax question for `tax-tier2-other.md`. **[2026-10-24 R5 pass: closed at the law level by TX2-17 (18% on a dealer's fee; none from a financial institution). Each manager's status is a fact to read from its tariff.]**
 16. **Investor compensation beyond the manager's security.** Whether any scheme covers a client loss from the manager's misconduct beyond reg. 3 security. None found.
 17. **Psagot's managed-portfolio offering and minimums.** The own site shows only a client login.
 
@@ -582,11 +583,11 @@ Digital offerings confirmed on own pages: Meitav Manager, Phoenix digital portfo
   - custody and protection, which follow the custodian (MGD-14, MGD-15, REG-09);
   - one digital product with full public terms, Meitav Manager (MGD-19).
 - **Open, and blocking tier 1:**
-  - (a) tax treatment in `tax-tier2-other.md`, including VAT on fees;
+  - (a) ~~tax treatment in `tax-tier2-other.md`, including VAT on fees~~ closed 2026-10-24: the portfolio is taxed as the securities it holds (TX2-15) and VAT on the fee is sourced (TX2-17); only TX2 open question 11 (fees in a year with no gains) and TXS open question 12 remain, neither a block;
   - (b) no enumerable provider list (ISA register);
   - (c) no published per-firm tariffs for traditional portfolios, so the workbench (3.4) could show only the ISA average and "entered by you";
   - (d) the ISA suitability and technology directives have not been read in the original.
-- **Recommendation:** stays tier 2. The "not covered yet" page can state the duties, the custody model, the ISA averages by size, the fund-fee layer, the affiliation rules, and Meitav Manager's terms, with the open items above.
+- **Recommendation:** stays tier 2. The "not covered yet" page can state the duties, the custody model, the ISA averages by size, the fund-fee layer, the affiliation rules, and Meitav Manager's terms, with the open items above. *2026-10-24:* closest of the nine tier-2 instruments to graduation (ranking in `scratchpad/reports/r5-tier2.md`): the tax side computes, the provider list exists (MGD-23), and the record can be drafted as a brokerage account plus a direct fee layer (`scratchpad/reports/tier2-drafts/managed-portfolio.json`). Remaining: (b) which of the 129 licensees take retail clients and at what minimum (browser pass over their sites), (c) fees entered by the person or the ISA average (MGD-11) under D4, (d) the ISA directives in the original, and two method formulas (the direct fee with VAT; the fee-as-loss case) that `docs/method.md` does not have yet.
 - **Fit with D11:** robo products set a risk level by questionnaire. The site does not adopt such a score; per D11 the person sets their own loss filter. The UX report (`research/discovery/ux-landscape.md`, rows "Robo-advisor questionnaires" and "Questionnaire / robo") records why.
 
 ## Sources

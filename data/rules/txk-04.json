@@ -3,7 +3,7 @@
   "title": "Track switches and transfers between kupot gemel lehashkaa are not taxed",
   "title_he": "מעבר מסלול והעברה בין קופות גמל להשקעה אינם ממוסים",
   "text_he": "המס על קופת גמל להשקעה חל על סכומים שיחיד 'משך' ממנה. מעבר בין מסלולים בתוך הקופה, או העברת היתרה לקופת גמל להשקעה אחרת, אינם משיכה, ובהעברה מועדי ההפקדה לקופה המעבירה נחשבים מועדי הפקדה לקופה המקבלת. בחוק אין משפט מפורש שאומר 'אין אירוע מס'; המסקנה נשענת על נוסח המשיכה ועל הפטור ברמת הקופה, וחברה מנהלת אומרת זאת במפורש. העברה למוצר אחר, למשל לחשבון השקעות, היא משיכה.",
-  "strength": "primary",
+  "strength": "primary-mirror",
   "dimensions": [
     "switching-tax-event",
     "transfer-switch-process"
@@ -11,5 +11,44 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)",
+      "title": "Transfer regulations 2008, Wikisource",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg. 3(א)(11א), 3(ב)(1)",
+      "locator_he": "תקנה 3(א)(11א), 3(ב)(1)",
+      "anchor": "סעיף_3.א",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Ordinance PDF",
+      "title_he": "פקודת מס הכנסה",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "p.8, s.3(ה4)(3)",
+      "locator_he": "עמוד 8, סעיף 3(ה4)(3)",
+      "anchor": "סעיף_3.ה4",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.harel-group.co.il/long-term-savings/funding-saving/join/doclib/%d7%92%d7%9e%d7%9c%20%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94.pdf",
+      "title": "Harel, \"קופת גמל להשקעה\" flyer (2023)",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
 }

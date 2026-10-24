@@ -9,5 +9,33 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "government-bonds-and-makam.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.nevo.co.il/law_html/law00/72417.htm",
+      "title": "חוק מילווה קצר מועד, תשמ\"ד-1984",
+      "title_he": "חוק מילווה קצר מועד, התשמ״ד-1984",
+      "publisher": "Nevo",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "nevo",
+      "locator": "s. 3",
+      "locator_he": "סעיף 3",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.nevo.co.il/law_html/law01/221_001.htm",
+      "title": "חוק מילווה המדינה, תשל\"ט-1979",
+      "title_he": "חוק מילווה המדינה, תשל\"ט-1979",
+      "publisher": "Nevo",
+      "publisher_he": "נבו",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "nevo",
+      "locator": "s. 2",
+      "locator_he": "סעיף 2",
+      "checked": "2026-10-22"
+    }
+  ]
 }

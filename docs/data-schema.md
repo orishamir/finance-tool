@@ -10,7 +10,7 @@ Status: **in force.** On 2026-10-23 the founder asked Claude to settle every ope
 
 **Format.** One JSON file per record, UTF-8, under the collection's folder. JSON was chosen because the site is static and the engine runs in the browser (D1); the files are also readable by hand and diffable. YAML would be friendlier to write but needs a parser in the browser; CSV cannot carry the nested `source` and `fees` blocks.
 
-**File name.** `<collection>/<id>.json`, where `id` is the record's `id` field: lowercase ASCII, digits and hyphens. Dated snapshots (tariffs, series, funds) add the snapshot date: `<id>@<YYYY-MM-DD>.json`. The latest snapshot is the one the engine reads; older ones stay for the change log and for revisit (F-82).
+**File name.** `<collection>/<id>.json`, where `id` is the record's `id` field: lowercase ASCII, digits and hyphens. Dated snapshots (tariffs, series, funds) add the snapshot date: `<id>@<YYYY-MM-DD>.json`. The latest snapshot is the one the engine reads; older ones stay for revisit (F-82) and as history (change log removed 2026-10-24, D24).
 
 **Every value is wrapped.** A number never appears bare. It appears as a *value object*:
 
@@ -68,7 +68,7 @@ Units: `nis`, `usd`, `eur`, `pct` (a share), `pct_per_year`, `pct_of_deposit`, `
 
 Fee bases (`fee.base`): `deposit`, `balance`, `trade`, `custody`, `fx`, `exit`, `fixed_period`, `distribution_handling`, `spread`, `creation_redemption`, `transfer_out`, `load`, `redemption_deduction`, `variable_management`, `trustee`, `direct_expenses`, `insurance_premium`.
 
-Security types for tariff lines (`fee.applies_to`): `tase_shares_bonds`, `makam`, `foreign_securities`, `mutual_fund_units`, `money_market_units`, `etf_units`, `tase_foreign_fund_units`, `all`.
+Security types for tariff lines (`fee.applies_to`): `tase_shares_bonds`, `tase_bonds` (a bonds-only line, for a tariff that prices bonds apart from shares and ETFs; added 2026-10-24), `makam`, `foreign_securities`, `mutual_fund_units`, `money_market_units`, `etf_units`, `tase_foreign_fund_units`, `all`.
 
 Provider classes (`provider.class`): `bank`, `tase_member_nonbank`, `foreign_broker`, `fund_manager`, `provident_manager`, `pension_manager`, `insurer`.
 
@@ -110,6 +110,9 @@ The rules themselves stay in `il-finance` (markdown). This collection holds only
 - `recheck_date` is required for every rule on the "likely to change" list (product.md 3.8).
 - Bracket tables (TXG-02, TXG-04) store `figures.brackets` as an ordered array of `{ "up_to": value object, "rate": value object }`.
 - Conflicts (coverage.md §9) are recorded in `notes` on the figure and the engine uses the value the rule base says computes (for example TXI-11's 15%).
+- `sources` (added 2026-10-24, extracted from the `- Source:` line under each rule's heading in `il-finance`; all 500 records carry it): an array of entries sorted by preference (regulator or ministry document, Knesset gazette, Wikisource, Nevo, institution, article; then locator present; then newer `checked`). Each entry: `url` (a raw Wikisource `index.php?title=T&action=raw` link is stored as `https://he.wikisource.org/wiki/T`), `title` (as the markdown wrote it, often an English working title), optional `title_he`, `publisher` (English, from `data/sources/publishers.json` by host, else the host) and optional `publisher_he`, `kind` (`law`, `regulation`, `circular`, `regulator_page`, `official_pdf`, `exchange_rules`, `institution_doc`, `article`, `dataset`, `form`, `other`), `strength` (`primary`, `primary-mirror`, `institution`, `secondary`; a copy on Wikisource, Nevo or any third-party host is `primary-mirror`, never `primary`), `mirror_host` (`wikisource`, `nevo`, or `other` for a copy of an official text on another host; set exactly when `strength` is `primary-mirror`), `locator` (raw: "s. 3(ה4)(3)", "pp. 27–30") with `locator_he` (only when the locator translates fully), `page` (first page for `#page=`, only on a PDF URL and never a printed page), `anchor` (Wikisource section id without `#`: `סעיף_3`, `סעיף_3.ה4`, `סעיף_125ג`; only on an HTML URL), `quote` (the document's own words, verbatim from a quoted Hebrew span in the markdown, 8 to 240 characters, never composed), `checked`, `qualifier` (the markdown's parenthetical after the strength word) and `note` (English, never shown). A figure's own `source` object stays as it is.
+- `sources_missing_reason` replaces `sources` when the Source line names no link (the raw text). `derived_from` lists the rule ids a Source line points to ("as in FXD-07", "pointers to X, Y"), for the chips on the card.
+- `packages/pipeline/scripts/extract-sources.ts` (`npm run extract:sources -w @finance-tool/pipeline`, `--dry` to only print the report) writes the three keys in place and nothing else, never edits the markdown, and saves `research/knowledge/2026-10-24-extraction-report.md`. It is re-runnable: it replaces its own keys and reads `data/sources/publishers.json` and `data/sources/documents.json` when present.
 
 ### 3.2 `data/parameters/` — site parameters (N1)
 
@@ -220,7 +223,7 @@ Israeli funds (Maya export, CAT-34, TXS-24) add `il_fund_tax_track` (`exempt` or
 
 ### 3.6 `data/fees/` — provider tariffs, dated snapshots (dependency 5)
 
-One file per provider per snapshot: `fees/<provider-id>@<date>.json`.
+One file per provider per snapshot: `fees/<provider-id>@<date>.json`. A line's `band` is the tariff's own text for a plan or sub-class; `band: null` is the standard line, which F-63 prefers, and a plan line is read only when the person names the plan. A bonds-only line uses `applies_to: ["tase_bonds"]`.
 
 ```json
 {
@@ -372,13 +375,9 @@ Names the CMA data and the Maya export do not hold: an institution's own name fo
 
 `dimensions/<id>.json` (schema `dimensionRecord`, strict): `{ "id": "tax-at-exit", "he": "...", "one_line": "...", "source": { ...as above }, "rule_ids": [...] }`. `id` is one of the 26 rows of `docs/glossary.md` section 2 (an enum in the schema). The list is hand-maintained; the marks are computed.
 
-### 3.12 `data/changelog.jsonl` — one line per change (3.8, 3.9)
+### 3.12 (removed)
 
-```json
-{ "date": "2026-10-22", "collection": "rules", "id": "TXS-09", "field": "figures.rate_on_real_gain", "old": null, "new": 25, "reason": "seeded from il-finance", "affects_rankings": true }
-```
-
-`affects_rankings` is `true` for rules, parameters, fee lines and series the engine reads, `false` for names and catalogue entries, so the revisit view (F-82) can tell a change that matters from one that does not.
+§3.12 removed 2026-10-24, D24.
 
 ### 3.13 `data/cma/` — CMA fund and track records (3.10, F-64, F-70, 3.6)
 
@@ -415,7 +414,6 @@ Added 2026-10-22 (approved by the founder, `docs/architecture.md` gap 8.1). One 
 - Text fields are stored exactly as the source spells them (§1, Hebrew), after decoding the CSV from Windows-1255.
 - Only the fields a formula or capability uses are kept: identity, names, manager and classification for the catalogue (3.10) and the fit mark (F-70), and the two fee fields for the track workbench (F-64). Other CMA fields are added when a capability needs them.
 - **Fee fields (definitions confirmed 2026-10-23, CAT-35 to CAT-39, CAT-06).** `raw_fields` keeps the two fields as received; `fees` is required and holds `avg_annual_management_fee` (unit `pct_per_year`, from `AVG_ANNUAL_MANAGEMENT_FEE`) and `avg_deposit_fee` (unit `pct_of_deposit`, from `AVG_DEPOSIT_FEE`) as value objects. Both are percent (0.61 is 0.61%). Each is the average fee actually charged from all members, after discounts, over the last completed calendar year, so a row of report year Y holds the Y−1 average (CAT-36, CAT-37): `effective_from`/`effective_to` are 1 January and 31 December of Y−1, `tax_year` is `null`, `update_rule` is `market`, `state` is `sourced`, `checked` is the file's `checked`, and `source` is the dataset source with the field name in the title. `rule_ids` are `CAT-35`, `CAT-36`, `CAT-37`, `CAT-06` (pensia-net adds `CAT-39`: the pair is per fund, every track of a fund carries the fund's values). An empty raw field gives `value: null` with `notes` starting "לא דווח" and the reason (no full calendar year yet, or unknown, CAT OQ22); empty is not zero, and zero is a reported 0.00%. A negative value is kept as reported, with a note (it can be a refund, CAT-40). The weighting of the average (by assets or by members) is not published and stays open (CAT OQ2, OQ23): the site says "ממוצע" and the year, never "משוקלל". The site marks the figure stale when the previous calendar year is older than the fee's year (`staleCmaFee`), not by the monthly rule.
-- Change-log lines for fee fields carry `affects_rankings: true`; names and classification changes carry `false` (§3.12).
 
 ---
 
@@ -454,6 +452,7 @@ Together they are the set of funds the workbench chooses from (method F-65, F-83
 ```
 
 - Only the fields the catalogue, the candidate set (F-65 matches on classification and reference asset) and the fee comparison use are kept; prices and returns are not, since the site does not rank by past return (product.md section 4).
+- **Schema shape (2026-10-23).** The checked schema is `fundListFile` (`packages/schema/src/collections/fund-lists.ts`), strict: `list` (`maya-mutual-funds` or `tase-foreign-funds`), `snapshot` (the save date, equal to the `@<date>` in the file name; replaces `export`/`exported_on`), `source` (as §2), `checked`, `terms_of_use` (as the series schema, §3.8), `raw {archive_key, sha256}` and `funds[]` with the row fields above, plus `isin` (null where the list prints none); `exposure_code` and `tax_status` are null where the list prints none. The validator fails a file whose `terms_of_use.status` is not `confirmed` ("terms gate: not shipped"), whose name differs from `<list>@<snapshot>.json`, or that repeats a `fund_number`. An exposure's `fund:<id>` variants resolve against `data/funds/` only, never against these lists.
 - Republishing terms are not confirmed (product.md dependency 7). Until they are, the lists are used to build the candidate set and counts, and the pages link to the source for the list itself.
 
 ## 4. Validation (run before every build)
@@ -469,3 +468,4 @@ Together they are the set of funds the workbench chooses from (method F-65, F-83
 9. Dimension marks in wrappers and funds are regenerated from `rule_ids`, never edited by hand.
 10. Every `track_ids` entry in `data/catalog/` exists in the latest `data/cma/` period of its dataset; one that has disappeared is reported, not silently dropped. `cma_fund_id` is the fund number (CAT-09), which the track datasets do not list, so it is not checked against them.
 11. Every Israeli fund and every foreign fund traded on TASE in `data/funds/` has its fund number in the latest matching list in `data/fund-lists/`; one that has disappeared is reported, not silently dropped.
+12. Rule sources (added 2026-10-24). Fails: a rule has neither `sources` nor `sources_missing_reason` (a warning only while no record carries either); a `he.wikisource.org` or `nevo.co.il` source is `primary`; `mirror_host` is set exactly when `strength` is `primary-mirror`; `page` on a URL that is not a PDF (path ends `.pdf` or contains `BlobFolder`); `anchor` on a PDF; a `sources[].url` is not in the rule's markdown block verbatim (or as the rewrite of a raw Wikisource URL that is); a `derived_from` id has no record; a `data/parameters/pinned-rules.json` id has no record, or a row's first rule has no `primary` or `primary-mirror` source; a row's `answer_he` (the questions page, 2026-10-24 late evening) carries a digit outside a `{ID:figure}` slot, or a slot names a rule outside the row or a figure that rule does not have. Warns (printed, not failing): the rule's `strength` differs from its strongest source (`open` excepted); a source `checked` later than the rule's; the first source lacks `publisher_he` or `title_he`; `recheck_date` has passed; a rule's latest `tax_year` is behind the current year.

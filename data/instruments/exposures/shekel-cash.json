@@ -19,7 +19,10 @@
     "mode": "series",
     "series": "boi-policy-rate"
   },
-  "variants": [],
+  "variants": [
+    "fund:5138763",
+    "fund:1223866"
+  ],
   "wrapper_ids": [
     "current-account",
     "bank-deposit",

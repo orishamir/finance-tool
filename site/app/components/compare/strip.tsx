@@ -1,13 +1,17 @@
 // The saved-goal strip (design-spec 6.3, 10; flows 17): the goal on this device, with its actions, wherever it
 // matters. The full form is mounted on the comparison; the compact form is for company and track pages.
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router";
-import { r2 } from "../../copy";
+import { Link, useNavigate } from "react-router";
+import { r2, r3workbench } from "../../copy";
 import { deleteDoc, isBlank, resolveGoal, useGoals, type Goal, type Presets } from "../../lib/goal";
 import { stripValues, type PresetMeta } from "../../lib/goal-values";
 import { fmt } from "../../lib/format";
 import { Num } from "../provenance";
 import { Button, cx } from "../ui";
+import { RevisitLine, CompactRevisit, UnreadableSavedForm, WhatChangedSheet } from "../revisit/revisit";
+import { useRevisit } from "../revisit/use-revisit";
+import { deleteSavedComparison, isoToday, type CompareMode } from "../../lib/state";
+import { computed } from "../../lib/value";
 import { goalTitle } from "./goal-form";
 import { IconMore, IconTarget } from "./icons";
 
@@ -26,13 +30,20 @@ export interface StripProps {
   label?: string;
   /** With no saved goal: the quiet line with the link to the form (the first page), instead of nothing. */
   emptyLine?: boolean;
+  /** The mode of the page the strip is on (the comparison result): its saved comparison is the one the revisit line speaks of; elsewhere the most recently saved one. */
+  revisitMode?: CompareMode;
+  /** On the comparison: saves it from the menu, without the scroll to the bottom button (audit 2026-10-24, A71). `again` when one is saved already. */
+  saveAction?: { run: () => void; again: boolean } | null;
 }
 
-export function SavedGoalStrip({ variant = "full", presets, meta, today, showResultLink = true, editHref = "/goal", resultHref = "/goal/compare", note, label, emptyLine }: StripProps) {
+export function SavedGoalStrip({ variant = "full", presets, meta, today, showResultLink = true, editHref = "/goal", resultHref = "/goal/compare", note, label, emptyLine, revisitMode, saveAction }: StripProps) {
   const { status, goals, current, resolved, select, add, remove, restart } = useGoals();
+  const navigate = useNavigate();
   const [menu, setMenu] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const { saved, view: revisit } = useRevisit(revisitMode);
+  const [sheet, setSheet] = useState<HTMLElement | null | false>(false);
   useEffect(() => {
     if (!menu) return;
     const close = (e: MouseEvent) => {
@@ -54,7 +65,7 @@ export function SavedGoalStrip({ variant = "full", presets, meta, today, showRes
           <Button variant="quiet" onClick={restart}>
             {r2.form.oldVersionActions.restart}
           </Button>
-          <Button variant="quiet" onClick={() => deleteDoc()} className="text-destructive">
+          <Button variant="destructive" onClick={() => deleteDoc()}>
             {r2.form.oldVersionActions.delete}
           </Button>
         </span>
@@ -66,9 +77,9 @@ export function SavedGoalStrip({ variant = "full", presets, meta, today, showRes
   if (!current || !resolved || isBlank(current)) {
     if (!emptyLine || variant === "compact") return null;
     return (
-      <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2">
-        {r2.strip.none}
-        <Link to={editHref} className="text-link min-h-target inline-flex items-center hover:underline">
+      <p className="text-sm text-muted-foreground">
+        {r2.strip.none}{" "}
+        <Link to={editHref} className="text-link inline-flex items-center min-h-target hover:underline align-middle">
           {r2.strip.noneLink}
         </Link>
       </p>
@@ -78,9 +89,10 @@ export function SavedGoalStrip({ variant = "full", presets, meta, today, showRes
 
   if (variant === "compact") {
     return (
-      <p className="text-sm flex flex-wrap items-center gap-x-2">
+      <p className="text-sm flex flex-wrap items-center gap-x-1.5">
         <span className="text-muted-foreground">{label ?? r2.strip.compact}</span>
         <bdi className="font-medium">{goalTitle(current)}</bdi>
+        {saved && <CompactRevisit view={revisit} />}
         {v.years && (
           <>
             <span aria-hidden="true">·</span>
@@ -105,10 +117,13 @@ export function SavedGoalStrip({ variant = "full", presets, meta, today, showRes
             <span className="text-sm flex items-center gap-1.5">
               {v.years && <Num value={v.years} display={fmt.years(v.years.value as number)} />}
               {v.years && v.amount && <span aria-hidden="true">·</span>}
-              {v.amount && <Num value={v.amount} />}
+              {v.amount && <Num value={v.amount} display={Number.isInteger(v.amount.value) ? fmt.nisWhole(v.amount.value as number) : undefined} />}
             </span>
           </span>
           <span className="text-xs text-muted-foreground">{note ? `${r2.strip.saved} · ${note}` : r2.strip.saved}</span>
+          {saved && revisit?.status !== "unreadable" && (
+            <RevisitLine view={revisit} savedOn={saved.savedOn} choice={saved.choice} computing={revisit === null} onOpen={() => setSheet(document.activeElement as HTMLElement | null)} />
+          )}
         </div>
         <div className="flex items-center shrink-0 -me-2">
           {showResultLink && (
@@ -124,14 +139,13 @@ export function SavedGoalStrip({ variant = "full", presets, meta, today, showRes
           </Button>
         </div>
         {menu && (
-          <div role="menu" className="absolute top-full end-0 mt-1 z-[var(--z-sticky)] min-w-56 rounded-lg border border-border bg-popover p-1 shadow-md" onKeyDown={(e) => e.key === "Escape" && setMenu(false)}>
+          <div role="menu" className="absolute top-full end-0 mt-1 z-[var(--z-popover)] min-w-56 rounded-lg border border-border bg-popover p-1 shadow-md" onKeyDown={(e) => e.key === "Escape" && setMenu(false)}>
             {confirm ? (
               <div className="p-3 flex flex-col gap-2">
                 <span className="text-sm">{r2.strip.confirm}</span>
                 <span className="flex items-center gap-2">
                   <Button
-                    variant="quiet"
-                    className="text-destructive"
+                    variant="destructive"
                     onClick={() => {
                       remove(current.id);
                       setMenu(false);
@@ -147,15 +161,42 @@ export function SavedGoalStrip({ variant = "full", presets, meta, today, showRes
               </div>
             ) : (
               <>
+                {saveAction && (
+                  <button
+                    type="button"
+                    role="menuitem"
+                    className="w-full text-start min-h-target px-3 rounded-md hover:bg-accent"
+                    onClick={() => {
+                      saveAction.run();
+                      setMenu(false);
+                    }}
+                  >
+                    {saveAction.again ? r2.result.saveMenuAgain : r2.result.saveMenu}
+                  </button>
+                )}
                 <MenuLink to={editHref} onClick={() => add()} label={r2.strip.add} />
                 <button type="button" role="menuitem" className="w-full text-start min-h-target px-3 rounded-md hover:bg-accent" onClick={() => setConfirm(true)}>
                   {r2.strip.delete}
                 </button>
+                <MenuLink to={r3workbench.entry.transfer.href} onClick={() => setMenu(false)} label={r3workbench.entry.transfer.label} />
               </>
             )}
           </div>
         )}
       </div>
+      {saved && revisit?.status === "unreadable" && (
+        <UnreadableSavedForm view={revisit} onRedo={() => navigate(`/goal/compare${saved.mode === "exposure" ? "?mode=exposure" : ""}`)} onDelete={() => deleteSavedComparison(saved.goalId, saved.mode)} />
+      )}
+      {saved && revisit && revisit.status !== "unreadable" && (
+        <WhatChangedSheet
+          view={revisit}
+          open={sheet !== false}
+          onClose={() => setSheet(false)}
+          anchor={sheet || null}
+          today={today}
+          nis={(v, about) => <Num value={computed(v, "nis", "F-06", {}, { today: isoToday(), about })} />}
+        />
+      )}
       {others.length > 0 && (
         <ul className="flex flex-wrap gap-2">
           {others.map((g) => (

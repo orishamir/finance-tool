@@ -7,7 +7,7 @@
     "rate": "שיעור המס המרבי על הריבית",
     "nominal_rate": "שיעור המס על נכס לא צמוד (רווח נומינלי)"
   },
-  "strength": "primary",
+  "strength": "primary-mirror",
   "dimensions": [
     "tax-at-exit",
     "real-vs-nominal"
@@ -57,5 +57,20 @@
     }
   },
   "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Ordinance PDF",
+      "title_he": "פקודת מס הכנסה",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "PDF p.131, s.125C(a)-(e)",
+      "anchor": "סעיף_125ג",
+      "checked": "2026-10-22"
+    }
+  ]
 }

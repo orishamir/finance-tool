@@ -97,5 +97,28 @@
     "foreign_fund_control_cap": "מגבלת אמצעי שליטה דרך קרנות חוץ"
   },
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.meitav.co.il/media/0qulk3pk/תקנות-ira-חדשות-יוני-2017.pdf",
+      "title": "Reshumot 2017 amendment, reg. 4(א)(3)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי)",
+      "publisher": "Meitav",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "reg. 4(א)(3)",
+      "locator_he": "תקנה 4(א)(3)",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.meitav.co.il/media/r2djwzpw/26061426l-תוצאות-מכרז-לניהול-אישי-2026-לאומי.pdf",
+      "title": "Meitav brokerage letter 2.606.1.4.26L",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
 }

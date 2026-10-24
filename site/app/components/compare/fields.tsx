@@ -1,14 +1,14 @@
 // The goal form's inputs (design-spec 6.3): number and slider fields that know whether their value is the
 // person's or a preset's, month field, switch row, percent pair, age stepper and the preset chips. They reuse
 // the release 1 field anatomy (timeline/fields.tsx) and add the "ערך התחלתי" / "הוזן על ידך" state line.
-import { useId, type ReactNode } from "react";
+import { useId, useState, type ReactNode } from "react";
 import { buttons, r2, values as valuesCopy } from "../../copy";
 import type { FieldSource, PresetId } from "../../lib/goal";
 import { IconReset } from "../icons";
 import { StateTag } from "../provenance";
 import { NumberField } from "../timeline/fields";
 import { Button, cx } from "../ui";
-import { IconDown, IconUp } from "./icons";
+import { IconDash, IconPlus } from "./icons";
 
 /** The state line under a field: "הוזן על ידך" with a reset, or the site parameter a preset filled in. */
 export function StateLine({ source, canReset, onReset }: { source: FieldSource; canReset: boolean; onReset: () => void }) {
@@ -23,7 +23,6 @@ export function StateLine({ source, canReset, onReset }: { source: FieldSource; 
         )}
       </span>
     );
-  if (source === "preset") return <span className="text-xs text-muted-foreground">{valuesCopy.stateStart}</span>;
   return null;
 }
 
@@ -135,23 +134,54 @@ export function NameField({ label, value, onChange }: { label: ReactNode; value:
       <label htmlFor={id} className="field-label">
         {label}
       </label>
-      <div className="field-box">
-        <input id={id} type="text" dir="auto" value={value} onChange={(e) => onChange(e.target.value)} className="field-input !text-start" autoComplete="off" />
+      <div className="field-body">
+        <div className="field-box">
+          <input id={id} type="text" dir="auto" value={value} onChange={(e) => onChange(e.target.value)} className="field-input !text-start" autoComplete="off" />
+        </div>
       </div>
     </div>
   );
 }
 
-/** A native month picker in the same box as a field; the default is this month. */
-export function MonthField({ label, value, min, onChange }: { label: ReactNode; value: string | null; min: string; onChange: (v: string | null) => void }) {
+/** `2026-10` as `10.2026`: the same text form on every device, beside the native picker (UX fix 18). */
+export const monthText = (v: string): string => (/^\d{4}-\d{2}$/.test(v) ? `${v.slice(5)}.${v.slice(0, 4)}` : "");
+
+/** A native month picker in the same box as a field; the default is this month. A month outside `min`..`max` is not saved and says so (audit 2026-10-24, A61). */
+export function MonthField({ label, value, min, max, onChange }: { label: ReactNode; value: string | null; min: string; max?: string; onChange: (v: string | null) => void }) {
   const id = useId();
+  const [error, setError] = useState<string | null>(null);
+  const shown = value ?? min;
   return (
     <div className="field">
       <label htmlFor={id} className="field-label">
         {label}
       </label>
-      <div className="field-box">
-        <input id={id} type="month" dir="ltr" min={min} value={value ?? min} onChange={(e) => onChange(e.target.value || null)} className="field-input !text-start" />
+      <div className="field-body">
+        <div className={cx("field-box", error && "field-box-error")}>
+          <input
+            id={id}
+            type="month"
+            dir="ltr"
+            min={min}
+            max={max}
+            value={shown}
+            aria-invalid={error ? true : undefined}
+            onChange={(e) => {
+              const v = e.target.value;
+              if (v && (v < min || (max && v > max))) {
+                setError(`${r2.form.errMonth[0]}\u2066${monthText(min)}\u2069${r2.form.errMonth[1]}\u2066${monthText(max ?? min)}\u2069.`);
+                return;
+              }
+              setError(null);
+              onChange(v || null);
+            }}
+            className="field-input !text-end"
+          />
+          <bdi dir="ltr" className="field-unit">
+            {monthText(shown)}
+          </bdi>
+        </div>
+        {error && <span className="text-xs text-destructive">{error}</span>}
       </div>
     </div>
   );
@@ -182,14 +212,14 @@ export function SwitchRow({ label, checked, onChange, source, onReset }: { label
   );
 }
 
-/** Two percent fields side by side under one label, "מעסיק" and "עובד". */
-export function PercentPair({ label, employer, employee, onEmployer, onEmployee, validate }: { label: ReactNode; employer: number | null; employee: number | null; onEmployer: (n: number | null) => void; onEmployee: (n: number | null) => void; validate: (n: number) => string | null }) {
+/** Two percent fields side by side under one label, "מעסיק" and "עובד"; for the self-employed only the person's own share (audit 2026-10-24, A39). */
+export function PercentPair({ label, employer, employee, onEmployer, onEmployee, validate, self }: { label: ReactNode; employer: number | null; employee: number | null; onEmployer: (n: number | null) => void; onEmployee: (n: number | null) => void; validate: (n: number) => string | null; self?: boolean }) {
   return (
     <fieldset className="field border-0 p-0 m-0 min-w-0">
       <legend className="field-label mb-1.5">{label}</legend>
-      <div className="grid grid-cols-2 gap-3">
-        <GoalNumber label={<span className="text-xs text-muted-foreground font-normal">{r2.form.employer}</span>} unit="pct" value={employer} source={employer === null ? "empty" : "entered"} onChange={onEmployer} validate={validate} bare />
-        <GoalNumber label={<span className="text-xs text-muted-foreground font-normal">{r2.form.employee}</span>} unit="pct" value={employee} source={employee === null ? "empty" : "entered"} onChange={onEmployee} validate={validate} bare />
+      <div className={cx("field-row grid gap-3", !self && "grid-cols-2")}>
+        {!self && <GoalNumber label={<span className="text-xs text-muted-foreground font-normal">{r2.form.employer}</span>} unit="pct" value={employer} source={employer === null ? "empty" : "entered"} onChange={onEmployer} validate={validate} bare />}
+        <GoalNumber label={<span className="text-xs text-muted-foreground font-normal">{self ? r2.form.employeeSelf : r2.form.employee}</span>} unit="pct" value={employee} source={employee === null ? "empty" : "entered"} onChange={onEmployee} validate={validate} bare />
       </div>
     </fieldset>
   );
@@ -203,24 +233,29 @@ export function AgeStepper({ label, value, onChange, validate, hint }: { label: 
         <GoalNumber label={label} unit="years" value={value} source={value === null ? "empty" : "entered"} onChange={onChange} validate={validate} hint={hint} bare inputMode="numeric" placeholder={valuesCopy.agePlaceholder} />
       </div>
       <Button variant="icon" className="border border-input h-field w-11 shrink-0" aria-label={r2.form.ageDown} disabled={value === null || value <= 0} onClick={() => value !== null && onChange(value - 1)}>
-        <IconDown size={18} />
+        <IconDash size={18} />
       </Button>
       <Button variant="icon" className="border border-input h-field w-11 shrink-0" aria-label={r2.form.ageUp} disabled={value === null} onClick={() => value !== null && onChange(value + 1)}>
-        <IconUp size={18} />
+        <IconPlus size={18} />
       </Button>
     </div>
   );
 }
 
-/** One chip is chosen at a time; the row scrolls sideways on a phone and wraps from md. A chip never submits. */
-export function PresetChips({ value, onChange, ids }: { value: PresetId; onChange: (p: PresetId) => void; ids: PresetId[] }) {
+/** One chip is chosen at a time; the row scrolls sideways on a phone and wraps from md. A chip never submits. `value` may be null (nothing chosen). */
+export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ariaLabel, bleed = "-mx-gutter px-gutter", wrap }: { ids: readonly T[]; labels: Record<string, string>; value: T | null; onChange: (id: T) => void; ariaLabel: string; /** Wrap into rows on a phone too, instead of scrolling sideways (the goal form's preset row, scenario fix 2026-10-24). */ wrap?: boolean; /** The phone bleed to the edge of whatever holds the row (a card pads 16px, the page pads its gutter). */ bleed?: string }) {
   return (
-    <div role="radiogroup" aria-label={r2.form.presetLabel} className="-mx-gutter px-gutter md:mx-0 md:px-0 flex gap-2 overflow-x-auto md:flex-wrap md:overflow-visible pb-1 scrollbar-none">
+    <div role="radiogroup" aria-label={ariaLabel} className={wrap ? "flex flex-wrap gap-2" : cx(bleed, "md:mx-0 md:px-0 flex gap-2 overflow-x-auto md:flex-wrap md:overflow-visible pb-1 scrollbar-none")}>
       {ids.map((id) => (
         <button key={id} type="button" role="radio" aria-checked={value === id} onClick={() => onChange(id)} className={cx("sec-chip border border-border shrink-0 transition-colors duration-[var(--duration-fast)]", value === id ? "sec-chip-on" : "bg-card hover:bg-accent")}>
-          {r2.presets[id]}
+          {labels[id]}
         </button>
       ))}
     </div>
   );
+}
+
+/** The goal form's preset chips: the general chips with the preset names (the home page's question card uses the same row for its purposes). */
+export function PresetChips({ value, onChange, ids }: { value: PresetId; onChange: (p: PresetId) => void; ids: PresetId[] }) {
+  return <ChoiceChips ids={ids} labels={r2.presets} value={value} onChange={onChange} ariaLabel={r2.form.presetLabel} wrap />;
 }
