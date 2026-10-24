@@ -2687,17 +2687,9 @@ export const rulesFront = {
   title: "כללים",
   lede: "כל כלל שהאתר נשען עליו, עם המקור שלו. מתחילים מהשאלות שכולם שואלים, וממשיכים לפי מה שמעניין אתכם.",
   pinned: { title: "השאלות שכולם שואלים" }, // the tag and the provisional note were removed 2026-10-24 at the founder's request
-  shelvesTitle: "לפי השאלה שלכם",
-  teaser: "בין השאר:",
   ruleCount: { one: "כלל אחד", many: "{n} כללים" },
-  changing: { title: "מה עומד להשתנות", line: "כללים שיש להם תאריך בדיקה חוזרת, לפי חודש.", month: "ב{month}", more: "עוד {n} כללים" },
-  byNumber: { title: "לפי מספר", line: "הקידומות של מספרי הכללים, למי שהגיע מכרטיס עם מספר." },
+  changing: { title: "מה עומד להשתנות", line: "כללים שיש להם תאריך בדיקה חוזרת, לפי חודש.", month: "ב{month}" },
   filter: "חיפוש כלל לפי מספר, כותרת או מילה",
-  filterNone: "אין כלל שמתאים לחיפוש.",
-  filterMatching: "תואמים",
-  filterOne: "כלל אחד תואם",
-  toShelf: "לכל הכללים בנושא הזה",
-  back: "לכל הכללים",
   shelves: {
     state: { name: "מה המדינה לוקחת", line: "מס בהפקדה, בדרך ובמשיכה; פטורים; מה חייב בדיווח" },
     costs: { name: "מה הבנק או בית ההשקעות לוקחים", line: "דמי ניהול ותקרות, עמלות, הנחות שנגמרות, מינימום" },
@@ -2718,6 +2710,20 @@ export const rulesFront = {
     "tax-tier2-other.md": "מט״ח, אג״ח קונצרניות, ריט, זהב ותיקים מנוהלים (עוד לא באתר)",
   } as Record<string, string>,
   products: { all: "כל המוצרים", common: "משותף לכל הקופות", tier2: "עוד לא באתר" },
+  // one page with filters (founder, 2026-10-24 evening): the shelves, the products, the prefixes and "what will change" are filters on /rules
+  filters: {
+    all: "הכול",
+    shelfLabel: "לפי השאלה",
+    productLabel: "לפי מוצר",
+    changing: "עומד להשתנות",
+    prefixLabel: "לפי מספר",
+    clear: "ניקוי הסינון",
+    showing: "מוצגים {n} כללים",
+    showingOne: "מוצג כלל אחד",
+    none: "אין כלל שמתאים לסינון הזה.",
+    preset: "הכללים שעונים על השאלה",
+    presetAll: "לכל הכללים",
+  },
   experience: { title: "ניסיון של אחרים", line: "עדויות של אנשים מהפורום, לא כללים; מסומנות כך גם בעמוד ״איך עוברים״." },
 } as const;
 

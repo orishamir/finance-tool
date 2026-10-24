@@ -1,18 +1,21 @@
-// The rules front (synthesis §3.4, flows 6.14): the questions people ask with the rules that answer them, five shelves by the
-// reader's question, what is about to change, the numbering as an index, and a filter over every rule. Light on purpose: the
-// full cards live on the shelf pages. Everything but the filter paints without JavaScript.
-import { useEffect, useMemo, useState } from "react";
-import { Link, useLoaderData, useNavigate } from "react-router";
+// The rules page (founder, 2026-10-24 evening): every rule under /rules, one list, with filters; the common questions are
+// presets of the filters. All filter state lives in the address (?shelf=&product=&prefix=&changing=1&ids=&q=), so a link can
+// preset it. Light on purpose: the page ships a light list of all rules; the full records and their uses come per shelf from
+// /rules-data/<shelf>.json, fetched when a group opens, a filter shows cards, or the address names a rule.
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useLoaderData, useLocation } from "react-router";
 import type { Route } from "./+types/rules";
-import { provenance as provCopy, rulesFront as copy, site, sourceBlock, topicName } from "../copy";
-import { IconSearch } from "../components/icons";
-import { Num, NumberLegend, RuleRef, StrengthLabel } from "../components/provenance";
+import { provenance as provCopy, rulesFront as copy, site, sourceBlock, system, topicName, ruleCardMore } from "../copy";
+import { IconChevronDown, IconDrillIn, IconSearch } from "../components/icons";
+import { Num, NumberLegend, RuleCard, RuleRef, StrengthLabel, type RuleUses } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { Card, Disclosure } from "../components/ui";
+import { Card, cx, Disclosure, Tag } from "../components/ui";
 import { fmt } from "../lib/format";
+import { buildSections, emptyFilters, filtersToSearch, fullHaystack, isFiltering, lightHaystack, matchRules, norm, parseFilters, type Filters, type Group, type LightRule } from "../lib/rules-filter";
+import { shelfIds, type ShelfId } from "../lib/rule-shelves";
 import { ruleTitle } from "../lib/rule-title";
-import { shelfIds, shelfOf, isExperience, type ShelfId } from "../lib/rule-shelves";
 import { ruleFigure, type SiteValue } from "../lib/value";
+import type { RuleRecord } from "@finance-tool/schema";
 
 /** A rule's title for a list: the record's Hebrew title or text; never the English working title (the topic's Hebrew name stands in). */
 function listTitle(r: Parameters<typeof ruleTitle>[0] & { il_finance_file: string }): string {
@@ -21,12 +24,14 @@ function listTitle(r: Parameters<typeof ruleTitle>[0] & { il_finance_file: strin
 }
 
 export async function loader() {
-  const { loadChecklistRows, loadPinnedRules, loadRules, today } = await import("../lib/data.server");
-  const { loadRuleUses, ruleScores } = await import("../lib/rule-uses.server");
+  const { loadChecklistRows, loadPinnedRules, loadRules, loadWrappers, today } = await import("../lib/data.server");
+  const { loadRuleUses, ruleProducts, ruleScores } = await import("../lib/rule-uses.server");
+  const { shelfOf } = await import("../lib/rule-shelves");
   const rules = loadRules();
   const all = Object.values(rules);
   const now = today();
   const scores = ruleScores();
+  const products = ruleProducts();
   const pinned = loadPinnedRules();
 
   const firstFigure = (id: string): SiteValue | null => {
@@ -40,57 +45,44 @@ export async function loader() {
   };
   const rows = pinned.rows.map((row) => ({
     question: row.question_he,
+    ids: row.ids.filter((id) => rules[id]),
     rules: row.ids
       .filter((id) => rules[id])
       .map((id) => ({ id, title: listTitle(rules[id]!), strength: rules[id]!.strength, figure: firstFigure(id) })),
   }));
   const pinnedRules = Object.fromEntries(pinned.rows.flatMap((r) => r.ids).filter((id) => rules[id]).map((id) => [id, rules[id]!]));
 
-  const byScore = (a: { id: string }, b: { id: string }) => (scores[b.id] ?? 0) - (scores[a.id] ?? 0) || a.id.localeCompare(b.id);
-  const shelves = shelfIds.map((shelf) => {
-    const mine = all.filter((r) => shelfOf(r) === shelf);
-    const teasers = mine
-      .filter((r) => r.strength !== "open" && !isExperience(r.id) && (r.title_he || r.text_he))
-      .sort(byScore)
-      .slice(0, 3)
-      .map((r) => ({ id: r.id, title: listTitle(r) }));
-    return { id: shelf, count: mine.length, teasers };
-  });
+  const light: LightRule[] = all
+    .map((r) => ({
+      id: r.id,
+      title: listTitle(r),
+      shelf: shelfOf(r),
+      file: r.il_finance_file,
+      strength: r.strength,
+      likely_to_change: r.likely_to_change,
+      recheck_date: r.recheck_date,
+      score: scores[r.id] ?? 0,
+      prefix: r.id.split("-")[0]!,
+      products: products[r.id] ?? [],
+    }))
+    .sort((a, b) => a.id.localeCompare(b.id, "en", { numeric: true }));
 
-  const byMonth = new Map<string, { id: string; title: string; date: string; shelf: ShelfId }[]>();
-  for (const r of all.slice().sort(byScore)) {
-    if (!r.recheck_date) continue;
-    const key = r.recheck_date.slice(0, 7);
-    const list = byMonth.get(key) ?? [];
-    list.push({ id: r.id, title: listTitle(r), date: r.recheck_date, shelf: shelfOf(r) });
-    byMonth.set(key, list);
-  }
-  const changing = [...byMonth.entries()].sort((a, b) => a[0].localeCompare(b[0])).map(([month, items]) => ({ month, items }));
-
-  const prefixes = new Map<string, Map<ShelfId, number>>();
-  for (const r of all) {
-    const p = r.id.split("-")[0]!;
-    const m = prefixes.get(p) ?? new Map<ShelfId, number>();
-    const s = shelfOf(r);
-    m.set(s, (m.get(s) ?? 0) + 1);
-    prefixes.set(p, m);
-  }
-  const byNumber = [...prefixes.entries()]
-    .map(([prefix, m]) => {
-      const total = [...m.values()].reduce((a, b) => a + b, 0);
-      const shelf = shelfIds.slice().sort((a, b) => (m.get(b) ?? 0) - (m.get(a) ?? 0))[0]!;
-      return { prefix, count: total, shelf };
-    })
-    .sort((a, b) => b.count - a.count || a.prefix.localeCompare(b.prefix));
-
-  const light = all.map((r) => ({ id: r.id, title: listTitle(r), shelf: shelfOf(r), strength: r.strength })).sort((a, b) => a.id.localeCompare(b.id, "en", { numeric: true }));
+  const productCounts = new Map<string, number>();
+  for (const r of light) for (const p of r.products) productCounts.set(p, (productCounts.get(p) ?? 0) + 1);
+  // the wrappers by how many rules they carry, the most first (on a phone the row scrolls sideways, so the first chips matter); the two catch-alls last
+  const productChips = [
+    ...loadWrappers()
+      .filter((w) => productCounts.has(w.id))
+      .map((w) => ({ id: w.id, name: w.names.he[0] ?? w.id, n: productCounts.get(w.id)! }))
+      .sort((a, b) => b.n - a.n || a.name.localeCompare(b.name, "he")),
+    ...(productCounts.has("common") ? [{ id: "common", name: copy.products.common, n: productCounts.get("common")! }] : []),
+    ...(productCounts.has("tier2") ? [{ id: "tier2", name: copy.products.tier2, n: productCounts.get("tier2")! }] : []),
+  ];
 
   return {
     pinned: { rows },
-    shelves,
-    changing,
-    byNumber,
     light,
+    productChips,
     rules: pinnedRules,
     ruleUses: loadRuleUses(Object.keys(pinnedRules)),
     dimensions: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])),
@@ -102,12 +94,33 @@ export function meta() {
   return [{ title: `${copy.title} · ${site.name}` }];
 }
 
-const norm = (s: string) => s.toLocaleLowerCase("he").replace(/\s+/g, " ").trim();
+// ---------------------------------------------------------------- shelf files (module-level cache)
 
-/** "{n} כללים" with the number isolated. */
-function Count({ n }: { n: number }) {
-  if (n === 1) return <>{copy.ruleCount.one}</>;
-  const [a, b] = copy.ruleCount.many.split("{n}");
+interface ShelfBundle {
+  rules: Record<string, RuleRecord>;
+  ruleUses: Record<string, RuleUses>;
+}
+
+const shelfPromises = new Map<ShelfId, Promise<ShelfBundle>>();
+
+function fetchShelf(shelf: ShelfId): Promise<ShelfBundle> {
+  let p = shelfPromises.get(shelf);
+  if (!p) {
+    p = fetch(`${import.meta.env.BASE_URL}rules-data/${shelf}.json`).then((r) => {
+      if (!r.ok) throw new Error(String(r.status));
+      return r.json() as Promise<ShelfBundle>;
+    });
+    p.catch(() => shelfPromises.delete(shelf));
+    shelfPromises.set(shelf, p);
+  }
+  return p;
+}
+
+// ---------------------------------------------------------------- small parts
+
+/** A text with one "{n}" slot: the number isolated. */
+function WithNumber({ text, n }: { text: string; n: number }) {
+  const [a, b] = text.split("{n}");
   return (
     <>
       {a}
@@ -117,40 +130,170 @@ function Count({ n }: { n: number }) {
   );
 }
 
+function Count({ n }: { n: number }) {
+  return n === 1 ? <>{copy.ruleCount.one}</> : <WithNumber text={copy.ruleCount.many} n={n} />;
+}
+
+function Chip({ on, onClick, children }: { on: boolean; onClick: () => void; children: React.ReactNode }) {
+  return (
+    <button
+      type="button"
+      aria-pressed={on}
+      onClick={onClick}
+      className={cx("min-h-target inline-flex items-center gap-1.5 px-3 rounded-md text-sm whitespace-nowrap", on ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-accent")}
+    >
+      {children}
+    </button>
+  );
+}
+
+const Num2 = ({ n }: { n: number }) => <bdi dir="ltr" className="tabular-nums opacity-80">{fmt.number(n)}</bdi>;
+
 const monthName = (key: string) => {
   const [y, m] = key.split("-").map(Number) as [number, number];
   return new Intl.DateTimeFormat("he-IL", { month: "long", timeZone: "UTC" }).format(new Date(Date.UTC(y, m - 1, 1)));
 };
 
-const rowLimit = 8;
+/** A filter that shows more than this many rules does not open every group by itself (it would paint hundreds of cards). */
+const autoOpenLimit = 120;
+const scrollMargin = "scroll-mt-[112px] lg:scroll-mt-[88px]";
+const chipRow = "flex gap-2 overflow-x-auto scrollbar-none -mx-gutter px-gutter lg:mx-0 lg:px-0 lg:flex-wrap";
+
+// ---------------------------------------------------------------- page
 
 export default function Rules() {
   const data = useLoaderData<typeof loader>();
-  const navigate = useNavigate();
-  const pd = { rules: data.rules, terms: {}, dimensions: data.dimensions, today: data.today, ruleUses: data.ruleUses };
-  const [filter, setFilter] = useState("");
-  const shelfById = useMemo(() => new Map(data.light.map((r) => [r.id, r.shelf])), [data.light]);
-  const haystack = useMemo(() => data.light.map((r) => ({ r, h: norm(`${r.id} ${r.title}`) })), [data.light]);
-  const q = norm(filter);
-  const hits = q ? haystack.filter((x) => x.h.includes(q)).map((x) => x.r) : [];
+  const loc = useLocation();
+  const [filters, setFiltersState] = useState<Filters>(emptyFilters);
+  const [opened, setOpened] = useState<Set<string>>(() => new Set());
+  const [loaded, setLoaded] = useState<Partial<Record<ShelfId, ShelfBundle>>>({});
+  const [failed, setFailed] = useState<Set<ShelfId>>(() => new Set());
+  const [target, setTarget] = useState("");
+  const requested = useRef(new Set<ShelfId>());
+  const scrolledTo = useRef("");
+  const landing = useRef<{ id: string; until: number } | null>(null);
 
-  // `?q=` seeds the filter (not in the pre-rendered page, so it is read after the first paint)
+  // the address is the state: read it after the first paint (the pre-rendered page has none), and again when a link moves here
   useEffect(() => {
-    const seed = new URLSearchParams(window.location.search).get("q");
-    if (seed) setFilter(seed);
-  }, []);
-
-  // an old address `/rules#TXS-01` moves to the shelf that holds the rule, once
+    setFiltersState(parseFilters(window.location.search));
+  }, [loc.search]);
   useEffect(() => {
     const land = () => {
-      const id = decodeURIComponent(window.location.hash.slice(1));
-      const shelf = id ? shelfById.get(id) : undefined;
-      if (shelf) void navigate(`/rules/${shelf}#${id}`, { replace: true });
+      scrolledTo.current = "";
+      landing.current = null;
+      setTarget(decodeURIComponent(window.location.hash.slice(1)));
     };
     land();
     window.addEventListener("hashchange", land);
     return () => window.removeEventListener("hashchange", land);
-  }, [shelfById, navigate]);
+  }, [loc.hash]);
+
+  const setFilters = useCallback((patch: Partial<Filters>) => {
+    setFiltersState((cur) => {
+      const next = { ...cur, ...patch };
+      // not a navigation: a router navigation here would reload the page's data on every keystroke
+      window.history.replaceState(window.history.state, "", `${window.location.pathname}${filtersToSearch(next)}${window.location.hash}`);
+      return next;
+    });
+  }, []);
+
+  const lightById = useMemo(() => new Map(data.light.map((r) => [r.id, r])), [data.light]);
+  const lightHay = useMemo(() => new Map(data.light.map((r) => [r.id, lightHaystack(r)])), [data.light]);
+  const rules = useMemo(() => Object.assign({}, data.rules, ...Object.values(loaded).map((b) => b!.rules)) as Record<string, RuleRecord>, [data.rules, loaded]);
+  const ruleUses = useMemo(() => Object.assign({}, data.ruleUses, ...Object.values(loaded).map((b) => b!.ruleUses)) as Record<string, RuleUses>, [data.ruleUses, loaded]);
+  const fullHay = useMemo(() => {
+    const m = new Map<string, string>();
+    for (const b of Object.values(loaded)) for (const r of Object.values(b!.rules)) if (lightById.has(r.id)) m.set(r.id, fullHaystack(r as Parameters<typeof fullHaystack>[0]));
+    return m;
+  }, [loaded, lightById]);
+
+  const matches = useMemo(() => matchRules(data.light, filters, { light: lightHay, full: fullHay }), [data.light, filters, lightHay, fullHay]);
+  const sections = useMemo(() => buildSections(matches, filters.changing), [matches, filters.changing]);
+  const filtering = isFiltering(filters);
+  const q = norm(filters.q);
+
+  // a hash that names a rule the filters hide (an old link carrying another shelf's filter): on landing, the rule wins and the filters go
+  const landed = useRef("");
+  useEffect(() => {
+    if (!target || landed.current === target) return;
+    landed.current = target;
+    if (lightById.has(target) && filtering && !matches.some((r) => r.id === target)) {
+      setFilters(emptyFilters);
+      setOpened(new Set());
+    }
+  }, [target, lightById, filtering, matches, setFilters]);
+  const autoOpen = filtering && matches.length <= autoOpenLimit;
+  const isOpen = (g: Group) => autoOpen || opened.has(g.id) || (!!target && (g.id === target || g.ids.includes(target)));
+
+  // which shelf files the page needs now: the shelves of the cards that show, the shelf of the rule the address names, all five for a text search
+  const wanted = useMemo(() => {
+    const s = new Set<ShelfId>();
+    for (const sec of sections) for (const g of sec.groups) if (autoOpen || opened.has(g.id) || (!!target && (g.id === target || g.ids.includes(target)))) for (const id of g.ids) s.add(lightById.get(id)!.shelf);
+    const t = lightById.get(target);
+    if (t) s.add(t.shelf);
+    if (q.length >= 2) for (const sh of shelfIds) s.add(sh);
+    return shelfIds.filter((sh) => s.has(sh));
+  }, [sections, autoOpen, opened, target, q, lightById]);
+  const wantedKey = wanted.join(",");
+  useEffect(() => {
+    for (const shelf of wantedKey ? (wantedKey.split(",") as ShelfId[]) : []) {
+      if (requested.current.has(shelf)) continue;
+      requested.current.add(shelf);
+      fetchShelf(shelf).then(
+        (b) => setLoaded((l) => ({ ...l, [shelf]: b })),
+        () => {
+          requested.current.delete(shelf);
+          setFailed((f) => new Set(f).add(shelf));
+        },
+      );
+    }
+  }, [wantedKey]);
+
+  // an anchor to a group or a rule: scroll to it once its group is open and, for a card, its record has landed. Records that land
+  // later in groups above it move it down, so the scroll repeats on every change for three seconds, until the reader scrolls or taps.
+  useEffect(() => {
+    if (!target || scrolledTo.current === target) return;
+    const el = document.getElementById(target);
+    if (!el) return;
+    if (!landing.current) landing.current = { id: target, until: Date.now() + 3000 };
+    if (landing.current.id !== target || Date.now() > landing.current.until) {
+      scrolledTo.current = target;
+      return;
+    }
+    requestAnimationFrame(() => el.scrollIntoView({ block: "start" }));
+  }, [target, loaded, sections, opened]);
+  useEffect(() => {
+    const stop = () => {
+      if (!landing.current) return;
+      scrolledTo.current = landing.current.id;
+      landing.current = null;
+    };
+    const events = ["wheel", "touchmove", "keydown", "pointerdown"];
+    for (const ev of events) window.addEventListener(ev, stop, { passive: true });
+    return () => {
+      for (const ev of events) window.removeEventListener(ev, stop);
+    };
+  }, []);
+
+  const pd = { rules, terms: {}, dimensions: data.dimensions, today: data.today, ruleUses };
+  const presetRow = filters.ids.length > 0 ? data.pinned.rows.find((r) => r.ids.join(",") === filters.ids.join(",")) : undefined;
+
+  const applyPreset = (ids: string[]) => {
+    setFilters({ ...emptyFilters, ids });
+    requestAnimationFrame(() => document.getElementById("rules-list")?.scrollIntoView({ block: "start", behavior: "smooth" }));
+  };
+
+  const prefixes = useMemo(() => {
+    const m = new Map<string, number>();
+    for (const r of data.light) m.set(r.prefix, (m.get(r.prefix) ?? 0) + 1);
+    return [...m.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+  }, [data.light]);
+  const shelfCounts = useMemo(() => {
+    const m = new Map<ShelfId, number>();
+    for (const r of data.light) m.set(r.shelf, (m.get(r.shelf) ?? 0) + 1);
+    return m;
+  }, [data.light]);
+  const changingCount = useMemo(() => data.light.filter((r) => r.recheck_date).length, [data.light]);
 
   return (
     <PageShell current="rules" data={pd}>
@@ -160,166 +303,218 @@ export default function Rules() {
           <p className="text-lg text-muted-foreground max-w-measure">{copy.lede}</p>
           <NumberLegend />
           <p className="text-sm text-muted-foreground max-w-measure">{sourceBlock.legendLine}</p>
-          <div className="flex flex-col gap-2 pt-2">
-            <div className="field-box text-muted-foreground lg:max-w-md">
-              <IconSearch size={18} />
-              <label htmlFor="rules-front-filter" className="sr-only">
-                {copy.filter}
-              </label>
-              <input id="rules-front-filter" dir="auto" value={filter} onChange={(e) => setFilter(e.target.value)} placeholder={copy.filter} className="field-input !text-start" autoComplete="off" />
-            </div>
-            {q && (
-              <div role="status" className="flex flex-col gap-1 lg:max-w-md">
-                {hits.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">{copy.filterNone}</p>
-                ) : (
-                  <>
-                    <p className="text-sm text-muted-foreground">
-                      {hits.length === 1 ? copy.filterOne : <><bdi dir="ltr" className="tabular-nums">{fmt.number(hits.length)}</bdi> {copy.filterMatching}</>}
-                    </p>
-                    <ul className="flex flex-col">
-                      {hits.slice(0, 40).map((r) => (
-                        <li key={r.id}>
-                          <Link to={`/rules/${r.shelf}#${r.id}`} className="min-h-target flex flex-wrap items-center gap-x-2 py-1.5 border-b border-border hover:bg-accent">
-                            <span className="text-sm">{r.title}</span>
-                            <bdi dir="ltr" className="text-xs text-muted-foreground slashed-zero">{r.id}</bdi>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </>
-                )}
-              </div>
-            )}
+          <div className="field-box text-muted-foreground lg:max-w-md mt-2">
+            <IconSearch size={18} />
+            <label htmlFor="rules-filter" className="sr-only">
+              {copy.filter}
+            </label>
+            <input id="rules-filter" dir="auto" value={filters.q} onChange={(e) => setFilters({ q: e.target.value })} placeholder={copy.filter} className="field-input !text-start" autoComplete="off" />
           </div>
         </header>
 
         <section aria-labelledby="pinned-h" className="flex flex-col gap-3">
-          {/* no tag beside the heading: the founder kept the list and asked for the parameter tag to go (2026-10-24); the parameters page carries P-09's rationale */}
+          {/* no tag beside the heading: the founder kept the list and asked for the parameter tag to go (2026-10-24) */}
           <h2 id="pinned-h" className="text-xl lg:text-2xl font-semibold">
             {copy.pinned.title}
           </h2>
           <ol className="flex flex-col lg:max-w-3xl">
-            {data.pinned.rows.map((row) => (
-              <li key={row.question} className="flex flex-col gap-1 py-3 border-b border-border">
-                <h3 className="font-semibold">{row.question}</h3>
-                <ul className="flex flex-col gap-1">
-                  {row.rules.map((r) => (
-                    <li key={r.id} className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-sm">
-                      <span className="min-w-0">{r.title}</span>
-                      <RuleRef id={r.id} />
-                      {r.figure && (
-                        <span className="whitespace-nowrap">
-                          <Num value={r.figure} />
-                          {typeof r.figure.value === "number" && (provCopy.unit as Record<string, string>)[r.figure.unit] && ["months", "years", "days", "business_days", "usd", "eur"].includes(r.figure.unit) && <span className="text-muted-foreground"> {(provCopy.unit as Record<string, string>)[r.figure.unit]}</span>}
-                        </span>
-                      )}
-                      {(r.strength === "institution" || r.strength === "secondary") && <StrengthLabel strength={r.strength} />}
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            ))}
+            {data.pinned.rows.map((row) => {
+              const on = filters.ids.join(",") === row.ids.join(",");
+              return (
+                <li key={row.question} className="flex flex-col gap-1 py-3 border-b border-border">
+                  <h3 className="font-semibold">
+                    <button type="button" aria-pressed={on} onClick={() => applyPreset(row.ids)} className={cx("text-start min-h-target inline-flex items-center gap-1 hover:underline", on && "text-link")}>
+                      {row.question}
+                      <IconDrillIn size={16} className="text-muted-foreground shrink-0" />
+                    </button>
+                  </h3>
+                  <ul className="flex flex-col gap-1">
+                    {row.rules.map((r) => (
+                      <li key={r.id} className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-sm">
+                        <span className="min-w-0">{r.title}</span>
+                        <RuleRef id={r.id} />
+                        {r.figure && (
+                          <span className="whitespace-nowrap">
+                            <Num value={r.figure} />
+                            {typeof r.figure.value === "number" && (provCopy.unit as Record<string, string>)[r.figure.unit] && ["months", "years", "days", "business_days", "usd", "eur"].includes(r.figure.unit) && <span className="text-muted-foreground"> {(provCopy.unit as Record<string, string>)[r.figure.unit]}</span>}
+                          </span>
+                        )}
+                        {(r.strength === "institution" || r.strength === "secondary") && <StrengthLabel strength={r.strength} />}
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              );
+            })}
           </ol>
         </section>
 
-        <section aria-labelledby="shelves-h" className="flex flex-col gap-3">
-          <h2 id="shelves-h" className="text-xl lg:text-2xl font-semibold">
-            {copy.shelvesTitle}
-          </h2>
-          <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {data.shelves.map((s) => {
-              const name = copy.shelves[s.id]!;
+        <section aria-label={copy.title} className="flex flex-col gap-section">
+          <div id="rules-list" className={cx("flex flex-col gap-3", scrollMargin)}>
+            <div className="flex flex-col gap-1">
+              <p className="text-sm text-muted-foreground">{copy.filters.shelfLabel}</p>
+              <ul className={chipRow}>
+                <li className="shrink-0">
+                  <Chip on={!filters.shelf} onClick={() => setFilters({ shelf: null })}>
+                    {copy.filters.all} <Num2 n={data.light.length} />
+                  </Chip>
+                </li>
+                {shelfIds.map((s) => (
+                  <li key={s} className="shrink-0">
+                    <Chip on={filters.shelf === s} onClick={() => setFilters({ shelf: filters.shelf === s ? null : s })}>
+                      {copy.shelves[s]!.name} <Num2 n={shelfCounts.get(s) ?? 0} />
+                    </Chip>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="flex flex-col gap-1">
+              <p className="text-sm text-muted-foreground">{copy.filters.productLabel}</p>
+              <ul className={chipRow}>
+                {[{ id: "", name: copy.products.all, n: 0 }, ...data.productChips].map((c) => (
+                  <li key={c.id || "all"} className="shrink-0">
+                    <Chip on={(filters.product ?? "") === c.id} onClick={() => setFilters({ product: c.id || null })}>
+                      {c.name}
+                      {c.n > 0 && <Num2 n={c.n} />}
+                    </Chip>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <ul className="flex flex-wrap gap-2">
+              <li>
+                <Chip on={filters.changing} onClick={() => setFilters({ changing: !filters.changing })}>
+                  {copy.filters.changing} <Num2 n={changingCount} />
+                </Chip>
+              </li>
+            </ul>
+            <Disclosure
+              key={filters.prefix ? "p" : "n"}
+              defaultOpen={!!filters.prefix}
+              className="text-sm"
+              label={
+                <span>
+                  {copy.filters.prefixLabel}
+                  {filters.prefix && (
+                    <>
+                      {": "}
+                      <bdi dir="ltr" className="slashed-zero">{filters.prefix}</bdi>
+                    </>
+                  )}
+                </span>
+              }
+            >
+              <ul className="flex flex-wrap gap-2 pt-1 pb-2">
+                {prefixes.map(([p, n]) => (
+                  <li key={p}>
+                    <Chip on={filters.prefix === p} onClick={() => setFilters({ prefix: filters.prefix === p ? null : p })}>
+                      <bdi dir="ltr" className="font-medium slashed-zero">{p}</bdi>
+                      <Num2 n={n} />
+                    </Chip>
+                  </li>
+                ))}
+              </ul>
+            </Disclosure>
+            {filters.ids.length > 0 && (
+              <p className="text-sm flex flex-wrap items-center gap-x-2">
+                <span className="text-muted-foreground">{copy.filters.preset}</span>
+                {presetRow && <span className="font-medium">{presetRow.question}</span>}
+                <button type="button" onClick={() => setFilters({ ids: [] })} className="text-link min-h-target inline-flex items-center hover:underline">
+                  {copy.filters.presetAll}
+                </button>
+              </p>
+            )}
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+              <p className="text-sm text-muted-foreground" role="status">
+                {matches.length === 0 ? copy.filters.none : matches.length === 1 ? copy.filters.showingOne : <WithNumber text={copy.filters.showing} n={matches.length} />}
+              </p>
+              {filtering && (
+                <Chip on={false} onClick={() => setFilters(emptyFilters)}>
+                  {copy.filters.clear}
+                </Chip>
+              )}
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-8">
+            {sections.map((sec) => {
+              const name = sec.shelf ? copy.shelves[sec.shelf]! : null;
               return (
-                <Card as="li" key={s.id} className="p-0 md:p-0 min-w-0">
-                  <Link to={`/rules/${s.id}`} className="flex flex-col gap-2 p-4 md:p-5 h-full min-h-target">
-                    <span className="text-lg font-semibold">{name.name}</span>
-                    <span className="text-sm text-muted-foreground">{name.line}</span>
-                    <span className="text-sm">
-                      <Count n={s.count} />
-                    </span>
-                    {s.teasers.length > 0 && (
-                      <span className="flex flex-col gap-0.5 text-sm text-muted-foreground">
-                        <span>{copy.teaser}</span>
-                        {s.teasers.map((t) => (
-                          <span key={t.id}>{t.title}</span>
-                        ))}
+                <section key={sec.shelf ?? "changing"} aria-labelledby={`shelf-${sec.shelf ?? "changing"}`} className="flex flex-col gap-3">
+                  <div className="flex flex-col gap-1">
+                    <h2 id={`shelf-${sec.shelf ?? "changing"}`} className="text-xl lg:text-2xl font-semibold flex flex-wrap items-baseline gap-x-2">
+                      {name ? name.name : copy.changing.title}
+                      <span className="text-sm font-normal text-muted-foreground">
+                        · <Count n={sec.count} />
                       </span>
-                    )}
-                    <span className="text-sm text-link mt-auto pt-1">{copy.toShelf}</span>
-                  </Link>
-                </Card>
+                    </h2>
+                    <p className="text-sm text-muted-foreground max-w-measure">{name ? name.line : copy.changing.line}</p>
+                  </div>
+                  <div className="flex flex-col gap-3">
+                    {sec.groups.map((g) => (
+                      <GroupBlock
+                        key={g.id}
+                        g={g}
+                        open={isOpen(g)}
+                        onToggle={(now) => setOpened((o) => { if (now === o.has(g.id)) return o; const n = new Set(o); if (now) n.add(g.id); else n.delete(g.id); return n; })}
+                        pd={pd}
+                        failed={failed}
+                        lightById={lightById}
+                      />
+                    ))}
+                  </div>
+                </section>
               );
             })}
-          </ul>
-        </section>
-
-        <section aria-labelledby="changing-h" className="flex flex-col gap-3">
-          <div className="flex flex-col gap-1">
-            <h2 id="changing-h" className="text-xl lg:text-2xl font-semibold">
-              {copy.changing.title}
-            </h2>
-            <p className="text-sm text-muted-foreground max-w-measure">{copy.changing.line}</p>
           </div>
-          <div className="flex flex-col lg:max-w-3xl">
-            {data.changing.map((g, i) => (
-              <details key={g.month} open={i < 2} className="group border-b border-border">
-                <summary className="min-h-12 flex items-center justify-between gap-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
-                  <h3 className="font-semibold">
-                    {copy.changing.month.replace("{month}", monthName(g.month))} <bdi dir="ltr" className="tabular-nums">{g.month.slice(0, 4)}</bdi>
-                    <span className="text-sm font-normal text-muted-foreground"> · <Count n={g.items.length} /></span>
-                  </h3>
-                </summary>
-                <ul className="flex flex-col pb-2">
-                  {g.items.slice(0, rowLimit).map((r) => (
-                    <ChangingRow key={r.id} r={r} />
-                  ))}
-                </ul>
-                {g.items.length > rowLimit && (
-                  <Disclosure label={copy.changing.more.replace("{n}", fmt.number(g.items.length - rowLimit))} className="pb-2">
-                    <ul className="flex flex-col">
-                      {g.items.slice(rowLimit).map((r) => (
-                        <ChangingRow key={r.id} r={r} />
-                      ))}
-                    </ul>
-                  </Disclosure>
-                )}
-              </details>
-            ))}
-          </div>
-        </section>
-
-        <section aria-labelledby="bynumber-h" className="flex flex-col gap-3">
-          <div className="flex flex-col gap-1">
-            <h2 id="bynumber-h" className="text-xl lg:text-2xl font-semibold">
-              {copy.byNumber.title}
-            </h2>
-            <p className="text-sm text-muted-foreground max-w-measure">{copy.byNumber.line}</p>
-          </div>
-          <ul className="flex flex-wrap gap-2">
-            {data.byNumber.map((p) => (
-              <li key={p.prefix}>
-                <Link to={`/rules/${p.shelf}?prefix=${p.prefix}`} className="min-h-target inline-flex items-center gap-1.5 px-3 rounded-md bg-secondary text-secondary-foreground hover:bg-accent text-sm">
-                  <bdi dir="ltr" className="font-medium slashed-zero">{p.prefix}</bdi>
-                  <bdi dir="ltr" className="tabular-nums text-muted-foreground">{fmt.number(p.count)}</bdi>
-                </Link>
-              </li>
-            ))}
-          </ul>
         </section>
       </div>
     </PageShell>
   );
 }
 
-function ChangingRow({ r }: { r: { id: string; title: string; date: string; shelf: string } }) {
+function GroupBlock({ g, open, onToggle, pd, failed, lightById }: { g: Group; open: boolean; onToggle: (open: boolean) => void; pd: Parameters<typeof RuleCard>[0]["data"]; failed: Set<ShelfId>; lightById: Map<string, LightRule> }) {
+  const title = g.kind === "experience" ? copy.experience.title : g.kind === "month" ? `${copy.changing.month.replace("{month}", monthName(g.month!))} ${g.month!.slice(0, 4)}` : (copy.subgroups[g.file!] ?? topicName(g.file!));
+  const missing = open && g.ids.some((id) => !pd.rules[id]);
+  const broken = missing && g.ids.some((id) => !pd.rules[id] && failed.has(lightById.get(id)!.shelf));
   return (
-    <li>
-      <Link to={`/rules/${r.shelf}#${r.id}`} className="min-h-target flex flex-wrap items-center gap-x-2 py-1.5 hover:bg-accent text-sm">
-        <span className="min-w-0">{r.title}</span>
-        <bdi dir="ltr" className="text-xs text-muted-foreground slashed-zero">{r.id}</bdi>
-        <bdi dir="ltr" className="text-xs text-muted-foreground tabular-nums">{fmt.date(r.date)}</bdi>
-      </Link>
-    </li>
+    <details
+      id={g.id}
+      open={open}
+      onToggle={(e) => onToggle(e.currentTarget.open)}
+      className={cx("group flex flex-col", scrollMargin)}
+    >
+      <summary className="min-h-12 flex items-center justify-between gap-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden rounded-md">
+        <h3 className="text-lg font-semibold flex flex-wrap items-baseline gap-x-2">
+          {title}
+          <span className="text-sm font-normal text-muted-foreground">
+            · <Count n={g.ids.length} />
+          </span>
+        </h3>
+        <IconChevronDown className="text-muted-foreground shrink-0 transition-transform duration-[var(--duration-fast)] group-open:rotate-180" />
+      </summary>
+      {open && (
+        <>
+          {g.kind === "experience" && (
+            <p className="text-sm text-muted-foreground max-w-measure flex flex-wrap items-center gap-2 pb-1">
+              <Tag tone="neutral">{ruleCardMore.experienceTag}</Tag>
+              {copy.experience.line}
+            </p>
+          )}
+          <ul className="grid gap-4 lg:grid-cols-2 pt-2">
+            {g.ids.filter((id) => pd.rules[id]).map((id) => (
+              <Card as="li" key={id} id={id} className={cx("min-w-0 [overflow-wrap:anywhere]", scrollMargin)}>
+                <RuleCard id={id} data={pd} inline />
+              </Card>
+            ))}
+          </ul>
+          {missing && (
+            <p className="text-sm text-muted-foreground py-2" role="status">
+              {broken ? system.wentWrong.title : system.loading}
+            </p>
+          )}
+        </>
+      )}
+    </details>
   );
 }

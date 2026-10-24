@@ -57,7 +57,6 @@ export async function loader() {
     for (const name of [term.he, ...term.variants]) entries.push({ kind: "term", name, line: `${search.termLine} ${page}`, href, norm: normalize(name), key: `term:${term.he}` });
   }
   // knowledge layer (synthesis 3.6): rules by title, id and figures; parameters by name and id; documents by title
-  const { shelfOf } = await import("../lib/rule-shelves");
   const { ruleTitle } = await import("../lib/rule-title");
   const strengthRank: Record<string, number> = { primary: 0, "primary-mirror": 1, entered: 1, institution: 2, secondary: 3, open: 4 };
   for (const rule of Object.values(loadRules())) {
@@ -72,7 +71,7 @@ export async function loader() {
       kind: "rule",
       name: title,
       line: [topic, weak, rule.id].filter(Boolean).join(" · "),
-      href: `/rules/${shelfOf(rule)}#${rule.id}`,
+      href: `/rules#${rule.id}`,
       norm: normalize(title),
       key: rule.id,
       st: strengthRank[rule.strength] ?? 3,
