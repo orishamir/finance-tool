@@ -1,6 +1,6 @@
 // The broker the person chooses for the brokerage account (2026-10-24): its tariff replaces the representative's in the run.
 import { describe, expect, it } from "vitest";
-import { applyOwnProviders, evaluate, providerOutcomes, type RunGoal } from "./compare";
+import { applyOwnProviders, applyProviders, buildView, evaluate, feeShieldPair, providerOutcomes, type RunGoal } from "./compare";
 import { compareBundle } from "./compare.server";
 import { parseOwnRates, splitOwnTerms, termsOfGoal } from "./own-rate";
 import { readSideFile } from "./side-stores";
@@ -102,5 +102,58 @@ describe("the choice in the own-terms store", () => {
     expect(problems).toEqual([]);
     expect(side!.ownRates.g1![BRK]).toEqual({ provider: "psagot" });
     expect(readSideFile({ offers: [], variantAssumptions: {}, playbookTicks: {} }).side!.ownRates).toEqual({});
+  });
+});
+
+describe("the site's pick of the brokerage tariff (F-80, 2026-10-24, Doron's case)", () => {
+  // 67,000 for eight years at 7 %, nothing monthly, no profile: the reader's goal on which the comparison crowned the gemel over an account priced at Leumi's list tariff
+  const doron: RunGoal = { horizonYears: 8, amountNow: 67_000, monthly: 0, available: 0, anytime: false, returnPct: 7, inflationPct: null, age: null, employment: null, salary: null, pensionEmployee: null, pensionEmployer: null, insurancePct: null, preset: "none", fromPreset: { horizon: false, monthly: false, available: false } };
+  it("prices the account on the collected tariff that leaves the goal the most, named as the site's pick", () => {
+    const b = applyProviders(bundle, doron);
+    const w = b.wrappers.find((x) => x.id === BRK)!;
+    expect(w.representative).toMatchObject({ providerId: "one-zero", pickedBy: "site", compared: Object.keys(wrapper.providers!).length });
+    expect(w.representative!.chosen).toBeUndefined();
+    expect(w.terms!.tariff!.custody!.rate).toBe(0);
+    expect(w.feeValues.custodyRate).toMatchObject({ value: 0, state: "sourced" });
+    expect(real(b, BRK, doron)).toBeGreaterThan(real(bundle, BRK, doron) + 4_000);
+  });
+  it("puts the securities account first for that goal, where Leumi's list tariff gave a tie with the gemel", () => {
+    const before = buildView(bundle, doron);
+    const after = buildView(applyProviders(bundle, doron), doron);
+    if (before.kind !== "ok" || after.kind !== "ok") throw new Error("not ok");
+    expect(before.headline).toBe("tie");
+    expect(after.headline).toBe("winner");
+    expect(after.ranked[0]!.id).toBe(BRK);
+    expect(after.ranked[1]!.id).toBe("kupat-gemel-lehashkaa");
+    expect(after.ranked[0]!.real - after.ranked[1]!.real).toBeGreaterThan(3_000);
+  });
+  it("picks per goal: with a monthly deposit the 2 NIS minimum beats the 30 NIS one", () => {
+    const b = applyProviders(bundle, { ...doron, monthly: 1_200 });
+    expect(b.wrappers.find((x) => x.id === BRK)!.representative!.providerId).toBe("psagot");
+  });
+  it("keeps the person's own choice, and P-05's tariff when the run cannot be made", () => {
+    const own = applyProviders(bundle, { ...doron, ownProviders: { [BRK]: "leumi" } });
+    const w = own.wrappers.find((x) => x.id === BRK)!;
+    expect(w.representative).toMatchObject({ providerId: "leumi", chosen: true });
+    expect(w.representative!.pickedBy).toBeUndefined();
+    expect(applyProviders(bundle, { ...doron, returnPct: null })).toBe(bundle);
+  });
+  it("marks the pick in the picker instead of adding the site's row", () => {
+    const b = applyProviders(bundle, doron);
+    const out = providerOutcomes(b, doron, BRK);
+    expect(out.site).toBeNull();
+    expect(out.providers.find((p) => p.current)?.id).toBe("one-zero");
+    expect(out.providers[0]!.id).toBe("one-zero");
+  });
+  it("names the pair behind a tax gap that is a fee effect, and not a pair without custody fees", () => {
+    const v = buildView(bundle, doron);
+    if (v.kind !== "ok") throw new Error("not ok");
+    const gemel = v.ranked.find((o) => o.id === "kupat-gemel-lehashkaa")!;
+    const brk = v.ranked.find((o) => o.id === BRK)!;
+    expect(feeShieldPair(bundle, gemel, brk)).toEqual({ provident: gemel.name, securities: brk.name });
+    expect(feeShieldPair(bundle, brk, gemel)).toEqual({ provident: gemel.name, securities: brk.name });
+    const mmf = v.ranked.find((o) => o.id === "money-market-fund-daily")!;
+    expect(feeShieldPair(bundle, gemel, mmf)).toBeNull(); // bought through a bank with a distribution agreement: no custody fee (MF-26, BANK-18)
+    expect(feeShieldPair(bundle, brk, mmf)).toBeNull();
   });
 });

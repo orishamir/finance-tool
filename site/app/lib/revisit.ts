@@ -23,7 +23,7 @@ import {
 } from "@finance-tool/engine";
 import type { ValueObject } from "@finance-tool/schema";
 import { parametersPage, r2, r5 } from "../copy";
-import { comparisonGoal, evaluate, type CompareBundle, type RunGoal } from "./compare";
+import { applyProviders, comparisonGoal, evaluate, type CompareBundle, type RunGoal } from "./compare";
 import { computeExposureMode, type ExposureResultView } from "./exposure-mode";
 import type { Goal } from "./goal";
 import { isReadableSaved, type CompareMode, type SavedComparisonRecord } from "./state";
@@ -339,7 +339,7 @@ export function revisitSaved(bundleOrNull: CompareBundle | null, rec: unknown, t
     const ctx = { rules: bundle.rules, runDate: bundle.runDate };
     const rules = rec.versions.rules.map((r) => ruleFigureVersion(ctx, r.ruleId, r.figure));
     if (rec.mode === "wrapper") {
-      const ev = evaluate(bundle, rec.run);
+      const ev = evaluate(applyProviders(bundle, rec.run), rec.run); // the same tariff pick as the page (2026-10-24)
       after = resultOf(ev.ranking);
       now = { rules, parameters: parameterVersions(parametersFor(bundle, "wrapper")), data: dataFor(bundle, "wrapper", []), assumptions: assumptionVersions(ev.goal, ev.inputs.wrappers) };
       if (rec.choice) {

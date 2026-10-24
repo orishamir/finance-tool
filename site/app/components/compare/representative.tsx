@@ -57,7 +57,7 @@ export function Representative({ w, g, today, onFee, onRate, onProvider, outcome
           <span>
             <Tpl t={t.named} vars={{ name: <bdi>{r.name}</bdi> }} />
             {fee && <Tpl t={t.fee} vars={{ fee: <Num value={fee} size="cell" /> }} />}
-            {r.provider && <Tpl t={t.tariff} vars={{ provider: <bdi>{r.provider}</bdi> }} />}
+            {r.provider && <Tpl t={r.pickedBy === "site" ? t.tariffCheapest : t.tariff} vars={{ provider: <bdi>{r.provider}</bdi> }} />}
             {t.end}
           </span>
         )}
@@ -141,11 +141,13 @@ function ProviderPicker({ w, chosen, outcomes, figureOf, onPick }: { w: WrapperE
           </li>
         )}
         {rows.map((x) => (
-          <li key={x.id} data-provider={x.id} data-chosen={x.id === mine ? "" : undefined} className={cx("px-3 py-1 flex items-center gap-x-3 gap-y-0.5 flex-wrap", x.id === mine && "bg-accent")}>
+          <li key={x.id} data-provider={x.id} data-chosen={x.id === mine ? "" : undefined} data-site={x.current ? "" : undefined} className={cx("px-3 py-1 flex items-center gap-x-3 gap-y-0.5 flex-wrap", (x.id === mine || x.current) && "bg-accent")}>
             {label(x)}
             {x.real !== undefined && figureOf && <Num value={figureOf(x as ProviderOutcome)} size="cell" />}
             {x.id === mine ? (
               <span className="text-xs text-muted-foreground min-w-14 text-center">{tp.chosen}</span>
+            ) : x.current ? (
+              <span className="text-xs text-muted-foreground min-w-14 text-center">{tp.siteChoice}</span>
             ) : (
               <Button variant="quiet" className="text-sm min-h-target min-w-14" onClick={() => onPick(x.id)}>
                 {tp.pick}
