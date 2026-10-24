@@ -8,13 +8,15 @@ export function cx(...parts: (string | false | null | undefined)[]): string {
   return parts.filter(Boolean).join(" ");
 }
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "secondary" | "quiet" | "icon"; children: ReactNode };
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "secondary" | "quiet" | "destructive" | "icon"; children: ReactNode };
 
 export function Button({ variant = "secondary", className, children, type = "button", ...rest }: ButtonProps) {
   const styles = {
     primary: "bg-primary text-primary-foreground font-medium h-field px-5 rounded-md hover:brightness-110",
     secondary: "bg-secondary text-secondary-foreground font-medium h-field lg:h-10 px-5 rounded-md hover:bg-accent",
     quiet: "text-link min-h-target px-2 rounded-md hover:underline",
+    // A quiet button that deletes. Its own variant: `text-destructive` added to `quiet` lost to `text-link` in the stylesheet (2026-10-24).
+    destructive: "text-destructive min-h-target px-2 rounded-md hover:underline",
     icon: "size-target inline-flex items-center justify-center rounded-md text-foreground hover:bg-accent",
   }[variant];
   return (

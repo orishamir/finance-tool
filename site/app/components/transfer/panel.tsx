@@ -419,8 +419,7 @@ function ImportHalf() {
             <>
               <span className="text-sm">{copy.deleteImportedConfirm.text}</span>
               <Button
-                variant="quiet"
-                className="text-destructive"
+                variant="destructive"
                 onClick={() => {
                   deleteImported();
                   setConfirmDelete(false);
@@ -503,7 +502,7 @@ function Preview({ p, mode, onMode, confirm, onConfirm, onLoad }: { p: ImportPre
       {mode === "replace" && confirm ? (
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
           <span className="text-sm">{copy.replaceConfirm.text}</span>
-          <Button variant="quiet" className="text-destructive" onClick={onLoad}>
+          <Button variant="destructive" onClick={onLoad}>
             {copy.replaceConfirm.yes}
           </Button>
           <Button variant="quiet" onClick={() => onConfirm(false)}>

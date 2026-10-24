@@ -65,7 +65,7 @@ export function SavedGoalStrip({ variant = "full", presets, meta, today, showRes
           <Button variant="quiet" onClick={restart}>
             {r2.form.oldVersionActions.restart}
           </Button>
-          <Button variant="quiet" onClick={() => deleteDoc()} className="text-destructive">
+          <Button variant="destructive" onClick={() => deleteDoc()}>
             {r2.form.oldVersionActions.delete}
           </Button>
         </span>
@@ -145,8 +145,7 @@ export function SavedGoalStrip({ variant = "full", presets, meta, today, showRes
                 <span className="text-sm">{r2.strip.confirm}</span>
                 <span className="flex items-center gap-2">
                   <Button
-                    variant="quiet"
-                    className="text-destructive"
+                    variant="destructive"
                     onClick={() => {
                       remove(current.id);
                       setMenu(false);
