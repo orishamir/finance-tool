@@ -3,7 +3,7 @@
 import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router";
 import { ownTermsCopy, r2, r3fees, scnCompare, values as valuesCopy } from "../../copy";
-import { addMonths, decidingFormulaOf, depositRangeFlag, providerOutcomes, workbenchHref, type CoverageRow, type ListedOption, type ProviderOutcome, type RankedOption } from "../../lib/compare";
+import { addMonths, decidingFormulaOf, depositRangeFlag, feeShieldPair, providerOutcomes, workbenchHref, type CoverageRow, type ListedOption, type ProviderOutcome, type RankedOption } from "../../lib/compare";
 import { fmt } from "../../lib/format";
 import { playbookWrappers } from "../../lib/playbook";
 import { NumberField } from "../timeline/fields";
@@ -15,6 +15,7 @@ import type { ResultCtx } from "./ctx";
 import { IconBan, IconDash, IconDashed, IconEdit, IconEqual, IconOk } from "./icons";
 import { ReasonLines } from "./reasons";
 import { Representative } from "./representative";
+import { FeeShieldNote } from "./why";
 
 // ---------------------------------------------------------------- outcome tag
 
@@ -110,6 +111,10 @@ export function RankedRow({ o, above, ctx, onDetail, extra, choose, chosen }: { 
       {deciding && (
         <p className="text-sm text-muted-foreground">
           {r2.result.decidingLine} {r2.deciding[deciding.formula]}, <Num value={mk.nis(deciding.mine, decidingFormulaOf(deciding.formula), r2.deciding[deciding.formula]!, o)} /> {r2.result.reasonFeeVs} <Num value={mk.nis(deciding.above, decidingFormulaOf(deciding.formula), r2.deciding[deciding.formula]!, above!)} />
+          {deciding.formula === "tax-at-exit" && (() => {
+            const shield = feeShieldPair(ctx.bundle, o, above!);
+            return shield ? <>.<FeeShieldNote shield={shield} /></> : null;
+          })()}
         </p>
       )}
       {stale && (

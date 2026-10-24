@@ -18,7 +18,11 @@ answered; the same day brought the question card on the home page, the
 comparison's honesty layer, the broker choice, a liquid-study-fund block on
 holdings, idle-cash verdicts, eight low-fee S&P 500 fund records and the
 published past record MKT-01. Its "Decisions for the founder" and "Still
-open" sections are the hand-offs.
+open" sections are the hand-offs. That evening a reader's goal (67,000 NIS for
+eight years) showed the comparison crowning a kupat gemel lehashkaa over a
+securities account priced at one bank's list tariff; since then the account is
+priced on the collected tariff that leaves the goal the most, named as the
+site's pick (method F-80, "Doron's case" in the scenario audit).
 
 On 2026-10-24 (night) the knowledge layer (D25) followed: every rule record carries its sources, the rule card shows them first, the rules page ("חוקים וכללים": the set has that name, a single record no noun) is one page of filters over every rule (by the reader's question, product, id prefix and about-to-change), the twelve questions (P-09) have their own page with a one-line sourced answer each and a block on the home page (the five shelf pages of the first build were merged the same evening at my request, and the questions left the rules page later that night), and there are a documents page, search over rules, parameters and documents, and a "שווה לדעת" block on each wrapper guide. Its build spec is `research/knowledge/2026-10-24-synthesis.md`, and the decisions waiting for me are in its section 5.
 

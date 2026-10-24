@@ -89,3 +89,19 @@ already inside a product) it either refuses to answer or answers the wrong quest
 - Jordà–Schularick–Taylor Macrohistory Database (CC BY-NC-SA 4.0): broad US equity total returns since 1870; not the S&P 500 by name; Israel not covered.
 - CMA circular 2015-9-29 (age-based default tracks, in force 1 Jan 2016): the regulator's own horizon-to-risk answer, without equity percentages; usable as a sourced sentence.
 - Dimson–Marsh–Staunton/UBS Yearbook 2026 and the MSCI World factsheet: figures exist but their terms forbid reproduction; link only. S&P DJI's factsheet and terms could not be read by script.
+
+## Doron's case (2026-10-24, evening): the tariff decided more than the product
+
+A reader's saved goal (67,000 NIS for eight years at 7 %, nothing monthly, no profile) showed the comparison with a kupat gemel lehashkaa first: a tie at 0.42 % with the securities account, the card blaming "מס (בהחזקה וביציאה)" and the flip line naming the gemel. Traced with the engine (scripts in the session's scratchpad, `doron/probe*.ts`):
+
+| Securities account priced at | Value at 8 years, today's NIS | Against the gemel's 85,870 |
+|---|---|---|
+| One Zero, published tariff: 0 % custody, 0.3 % a trade (min 30) | 89,759 | fund first by 3,889 |
+| Psagot Trade, published tariff: 0.12 % a year custody, 0.07 % a trade (min 2) | 89,357 | fund first by 3,488 |
+| Leumi list price (the page's default): 0.15 % custody a quarter, 0.4 % a trade (min 26) | 85,507 | tie |
+| IBI (50 NIS a month), Altshuler Trade (80 a month plus a custody minimum), Excellence (99 a month) | 82,527 / 71,125 / 65,703 | gemel first |
+
+Both options pay 25 % on the real gain; the tax gap on the page (6,290 against 7,243) was the gemel's fee lowering its taxable gain while Leumi's custody fee, paid by selling units, does not except in the exit year (TXS-06). The gemel's 0.8 % is Meitav's list price; the regulator reports 0.39 % to 0.71 % on S&P 500 gemel tracks (2026-09), and even at 0.4 % the account at One Zero or Psagot stays ahead. A foreign broker (Interactive Israel) is not priced: its commission page was unreadable; on the method's own numbers an Irish S&P ETF abroad at zero commissions lands between the gemel and the Israeli fund at a cheap Israeli broker, because the tax index becomes the dollar rate (TXF-03).
+
+**Fixed the same evening (method F-80, docs/parameters-rationale.md):** the comparison prices the securities account on the collected list tariff that leaves the goal the most and names it as the site's pick; the headline carries the tariff's name; a tax gap that is a fee effect says so with the TXS-06 chip; a tie-breaking move reads "התיקו נשבר אם … ראשונה לבדה" and a fee row names the option. **Still open:** a second list price for the gemel lehashkaa (only Meitav's is collected); Interactive Israel's tariff; exposure mode and holdings still run the brokerage on P-05's tariff.
+

@@ -2,7 +2,7 @@
 // diff row with the ranking verdict; exposure mode saves and re-checks the same way.
 import { beforeAll, describe, expect, it } from "vitest";
 import { buildCompareBundle } from "./compare.server";
-import { evaluate, runGoalOf, type CompareBundle } from "./compare";
+import { applyProviders, evaluate, runGoalOf, type CompareBundle } from "./compare";
 import { computeExposureMode } from "./exposure-mode";
 import { emptyGoal, resolveGoal, type Goal } from "./goal";
 import { goalChanges, revisitSaved, snapshotExposure, snapshotWrapper } from "./revisit";
@@ -36,8 +36,10 @@ const runOf = (g: Goal) => runGoalOf(g, resolveGoal(g, {}))!;
 describe("wrapper mode", () => {
   it("reads unchanged right after saving", () => {
     const g = goal();
-    const ev = evaluate(bundle, runOf(g));
-    const rec = snapshotWrapper({ bundle, g: runOf(g), goal: g, site, today: day, ev });
+    // as the page saves: on the bundle with the brokerage tariff picked for the goal (F-80, 2026-10-24), which the re-run picks again
+    const b = applyProviders(bundle, runOf(g));
+    const ev = evaluate(b, runOf(g));
+    const rec = snapshotWrapper({ bundle: b, g: runOf(g), goal: g, site, today: day, ev });
     const r = revisitSaved(bundle, rec, day);
     expect(r.status).toBe("unchanged");
     expect(r.diff).toEqual([]);

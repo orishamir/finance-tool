@@ -50,21 +50,24 @@ export function FlipSentence({ row, ctx }: { row: SensitivityRowView; ctx: Resul
   const names = ids.map((id) => ctx.view.names[id] ?? id);
   const then = (
     <>
-      {r2.result.sensThen} <bdi>{names.join(", ")}</bdi> {alongside ? scnCompare.flipAlongside : r2.result.sensFirst}
+      {r2.result.sensThen} <bdi>{names.join(", ")}</bdi> {flip.breaksTie ? r2.result.sensFirstAlone : alongside ? scnCompare.flipAlongside : r2.result.sensFirst}
     </>
   );
+  // 2026-10-24 (Doron's case): a move that only breaks a tie says so ("התיקו נשבר אם … ראשונה לבדה"), and a fee row names the option and its fee
+  const lead = flip.breaksTie ? r2.result.sensBreaks : r2.result.sensFlip;
   if (row.fee && typeof row.fee.flipAtPct === "number") {
     const x = <Num value={ctx.mk.plain(row.fee.flipAtPct, "pct_per_year", "F-81", row.label)} />;
+    const name = <bdi>{ctx.view.names[row.fee.wrapperId] ?? row.fee.wrapperId}</bdi>;
     return (
       <>
-        <Tpl t={flip.side === "lo" ? ownTermsCopy.flipBelow : ownTermsCopy.flipAbove} vars={{ x }} />
+        {lead} <Tpl t={ownTermsCopy.feeFlip[row.fee.kind][flip.side === "lo" ? "below" : "above"]} vars={{ name, x }} />
         {then}
       </>
     );
   }
   return (
     <>
-      {flip.breaksTie ? r2.result.sensBreaks : r2.result.sensFlip} {row.label} {r2.result.sensCross}
+      {lead} {row.label} {r2.result.sensCross}
       {show(ctx, row, flip.from, row.label)}
       {r2.result.sensTo}
       {show(ctx, row, flip.to, row.label)}

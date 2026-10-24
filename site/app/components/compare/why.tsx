@@ -9,14 +9,14 @@ import { showsHorizonHonestLine } from "../../lib/quick-goal";
 import { buildIdle } from "../../lib/idle";
 import { shortfall } from "../../lib/goal";
 import { rankCandidates } from "@finance-tool/engine";
-import { enteredLead, goalValueObjects, asParameter, countPhrase, decidingFormulaOf, equityFit, grossReturnRow, headlineState, limitationFirst, parameterOf, parameterRateLead, realOfIdle, type Breakdown, type HeadlineState, type ListedOption, type RankedOption, type SensitivityView } from "../../lib/compare";
+import { enteredLead, feeShieldPair, goalValueObjects, asParameter, countPhrase, decidingFormulaOf, equityFit, grossReturnRow, headlineState, limitationFirst, parameterOf, parameterRateLead, providerOf, realOfIdle, type Breakdown, type HeadlineState, type ListedOption, type RankedOption, type SensitivityView } from "../../lib/compare";
 import type { FieldKey } from "../../lib/goal";
 import { Tpl } from "../exposure-mode/tpl";
 import { FlipSentence } from "./sensitivity";
 import { NumberField } from "../timeline/fields";
 import { relativeGap } from "@finance-tool/engine";
 import { IconAlert, IconCheck, IconExternal } from "../icons";
-import { Num, RulesLine, StrengthLabel } from "../provenance";
+import { Num, RuleRef, RulesLine, StrengthLabel } from "../provenance";
 import { strengthOf } from "../../lib/value";
 import { Button, Callout, Tag, cx } from "../ui";
 import type { ResultCtx } from "./ctx";
@@ -26,6 +26,22 @@ const NameLink = ({ id, name }: { id: string; name: string }) => (
     {name}
   </Link>
 );
+
+/** An option's name in the headline, with the tariff its run is priced on when the site picked or the person chose one (2026-10-24, Doron's case). */
+function OptionName({ ctx, id, name }: { ctx: ResultCtx; id: string; name: string }) {
+  const p = providerOf(ctx.bundle, id);
+  return (
+    <>
+      <NameLink id={id} name={name} />
+      {p && (
+        <>
+          {" "}
+          {r2.result.atProvider} <bdi>{p.name}</bdi>
+        </>
+      )}
+    </>
+  );
+}
 
 /** A list of names as Hebrew reads it: "א, ב ו־ג". */
 function joinNames(items: ReactNode[]): ReactNode {
@@ -54,7 +70,7 @@ export function decidingFigure(f: string, d: DecidingGaps["top"]): number {
  * A7: "ההבדל הגדול ביותר בין שתי הראשונות": the formula whose gap is the largest (F-80), with both options' figures; when that
  * gap is in the lower option's favour it says so, instead of claiming it as the reason the leader leads.
  */
-export function BiggestDifference({ deciding, mk, top, second }: { deciding: DecidingGaps; mk: ResultCtx["mk"]; top: { name: string; run: RunRef }; second: { name: string; run: RunRef } }) {
+export function BiggestDifference({ deciding, mk, top, second, shield }: { deciding: DecidingGaps; mk: ResultCtx["mk"]; top: { name: string; run: RunRef }; second: { name: string; run: RunRef }; /** The pair behind a tax gap that is a fee effect (`feeShieldPair`, 2026-10-24): the sentence then says so. */ shield?: { provident: string; securities: string } | null }) {
   const f = deciding.formula;
   if (!f) return null;
   const label = r2.deciding[f]!;
@@ -70,6 +86,17 @@ export function BiggestDifference({ deciding, mk, top, second }: { deciding: Dec
         </>
       )}
       .
+      {f === "tax-at-exit" && shield && <FeeShieldNote shield={shield} />}
+    </>
+  );
+}
+
+/** Why a tax gap between a provident-family option and a securities account is the fee's doing, not a lower rate (2026-10-24, Doron's case; F-08 step 5, TXS-06). */
+export function FeeShieldNote({ shield }: { shield: { provident: string; securities: string } }) {
+  return (
+    <>
+      {" "}
+      <Tpl t={r2.result.feeShield} vars={{ provident: <bdi>{shield.provident}</bdi>, securities: <bdi>{shield.securities}</bdi> }} /> <RuleRef id="TXS-06" />
     </>
   );
 }
@@ -290,7 +317,7 @@ export function WhyHeadline({ ctx, onWhy, sens, onField }: { ctx: ResultCtx; onW
       const gap = relativeGap(tied[0]!.real, tied[tied.length - 1]!.real) * 100;
       body = (
         <>
-          {joinNames(tied.map((o) => <NameLink key={o.id} id={o.id} name={o.name} />))} {r2.result.tieMid} <Num value={mk.pct(gap, "F-80", r2.result.tieMid, {})} />
+          {joinNames(tied.map((o) => <OptionName key={o.id} ctx={ctx} id={o.id} name={o.name} />))} {r2.result.tieMid} <Num value={mk.pct(gap, "F-80", r2.result.tieMid, {})} />
           {r2.result.tieThen} <Num value={theta} />.
         </>
       );
@@ -298,13 +325,13 @@ export function WhyHeadline({ ctx, onWhy, sens, onField }: { ctx: ResultCtx; onW
     }
     case "winner": {
       body = limitation ? (
-        <Tpl t={scnCompare.cashVerdict} vars={{ name: <NameLink id={top!.id} name={top!.name} /> }} />
+        <Tpl t={scnCompare.cashVerdict} vars={{ name: <OptionName ctx={ctx} id={top!.id} name={top!.name} /> }} />
       ) : (
-        <Tpl t={ranked.length === 2 ? r2.result.headlineLeadTwo : r2.result.headlineLead} vars={{ n: <Num value={mk.count(ranked.length, r2.result.headlineLead)} />, name: <NameLink id={top!.id} name={top!.name} /> }} />
+        <Tpl t={ranked.length === 2 ? r2.result.headlineLeadTwo : r2.result.headlineLead} vars={{ n: <Num value={mk.count(ranked.length, r2.result.headlineLead)} />, name: <OptionName ctx={ctx} id={top!.id} name={top!.name} /> }} />
       );
       const deciding = view.topTwo?.deciding;
       if (deciding?.formula && second) {
-        reason = <BiggestDifference deciding={deciding as unknown as DecidingGaps} mk={mk} top={{ name: top!.name, run: top }} second={{ name: second.name, run: second }} />;
+        reason = <BiggestDifference deciding={deciding as unknown as DecidingGaps} mk={mk} top={{ name: top!.name, run: top }} second={{ name: second.name, run: second }} shield={feeShieldPair(bundle, top!, second)} />;
       }
       break;
     }
