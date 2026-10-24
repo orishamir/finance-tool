@@ -8,7 +8,7 @@ import { buttons, computedInputs, flags as flagCopy, formulaNames, numbers, prov
 import { ruleTitle } from "../lib/rule-title";
 import { fmt, formatValue } from "../lib/format";
 import { hasHebrew, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/source-label";
-import { isExperience, shelfOf } from "../lib/rule-shelves";
+import { isExperience } from "../lib/rule-shelves";
 import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, sourceHref, sourceLabel2, shownTitle, type RuleSource, type SourcedRule } from "../lib/sources";
 import { useInputs } from "../lib/inputs";
 import { isParameter, isProvisional, strengthOf, type SiteValue, type Strength } from "../lib/value";
@@ -930,7 +930,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
       {rule.likely_to_change === "no" && !rule.recheck_date && <p className="text-xs text-muted-foreground">{ruleCardMore.stable}</p>}
       {uses && uses.pages.length === 0 && !uses.engine && <p className="text-xs text-muted-foreground">{ruleCardMore.usesNone}</p>}
       <div className="flex flex-wrap items-center gap-x-3">
-        {!inline && <LinkButton to={`/rules/${shelfOf(rule)}#${id}`}>{ruleCopy.all}</LinkButton>}
+        {!inline && <LinkButton to={`/rules#${id}`}>{ruleCopy.all}</LinkButton>}
         {sources.length > 0 && (
           <Button variant="quiet" className="text-sm" onClick={() => void copyCitation()}>
             {copied ? sourceCopy.citation.copied : ruleCardMore.copyCitation}

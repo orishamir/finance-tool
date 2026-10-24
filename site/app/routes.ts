@@ -10,6 +10,7 @@ export default [
   route("companies/:id/:fund", "routes/track.tsx"),
   route("rules", "routes/rules.tsx"),
   route("rules/:shelf", "routes/rules-shelf.tsx"),
+  route("rules-data/:shelf.json", "routes/rules-data.ts"),
   route("documents", "routes/documents.tsx"),
   route("parameters", "routes/parameters.tsx"),
   route("not-covered", "routes/not-covered.tsx"),

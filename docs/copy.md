@@ -2671,13 +2671,13 @@ Strings in the blocks `sourceBlock`, `updateRules`, `ruleCardMore`, `rulesFront`
 | `rulesFront.pinned.title` | השאלות שכולם שואלים | |
 | ~~`rulesFront.pinned.tag`~~ | ~~בחירה של האתר~~ | removed 2026-10-24 (founder: "remove it"); the heading stands alone |
 | ~~`rulesFront.pinned.provisional`~~ | ~~רשימה זמנית, עד שבעל האתר יאשר אותה~~ | removed 2026-10-24: the founder kept the list as drafted |
-| `rulesFront.shelvesTitle` / `.teaser` | לפי השאלה שלכם · בין השאר: | |
+| ~~`rulesFront.shelvesTitle` / `.teaser`~~ | ~~לפי השאלה שלכם · בין השאר:~~ | removed 2026-10-24 (evening): the shelves became filter chips |
 | `rulesFront.ruleCount` | כלל אחד · `{n}` כללים | |
 | `rulesFront.changing.*` | מה עומד להשתנות · כללים שיש להם תאריך בדיקה חוזרת, לפי חודש. · ב`{month}` | month is a Hebrew word: no maqaf |
-| `rulesFront.byNumber.*` | לפי מספר · הקידומות של מספרי הכללים, למי שהגיע מכרטיס עם מספר. | |
-| `rulesFront.filter` / `.filterNone` / `.filterMatching` | חיפוש כלל לפי מספר, כותרת או מילה · אין כלל שמתאים לחיפוש. · תואמים | |
-| `rulesFront.toShelf` | לכל הכללים בנושא הזה | changed (was "במדף"): "מדף" is the synthesis's word, not the reader's |
-| `rulesFront.back` | לכל הכללים | |
+| ~~`rulesFront.byNumber.*`~~ | ~~לפי מספר · הקידומות של מספרי הכללים, למי שהגיע מכרטיס עם מספר.~~ | removed 2026-10-24 (evening): the prefixes are a filter row under `rulesFront.filters.prefixLabel` |
+| `rulesFront.filter` | חיפוש כלל לפי מספר, כותרת או מילה | `.filterNone`, `.filterMatching` and `.filterOne` removed 2026-10-24 (evening): the count line of `rulesFront.filters` replaces them |
+| ~~`rulesFront.toShelf`~~ | ~~לכל הכללים בנושא הזה~~ | removed 2026-10-24 (evening): one page, no shelf pages |
+| ~~`rulesFront.back`~~ | ~~לכל הכללים~~ | removed 2026-10-24 (evening): `rulesFront.filters.presetAll` carries the words |
 | `rulesFront.shelves.state` | מה המדינה לוקחת · מס בהפקדה, בדרך ובמשיכה; פטורים; מה חייב בדיווח | |
 | `rulesFront.shelves.costs` | מה הבנק או בית ההשקעות לוקחים · דמי ניהול ותקרות, עמלות, הנחות שנגמרות, מינימום | |
 | `rulesFront.shelves.access` | מה אפשר לעשות עם הכסף · מתי אפשר למשוך, איך עוברים, מי רשאי להצטרף, תקרות הפקדה | |
@@ -2686,6 +2686,7 @@ Strings in the blocks `sourceBlock`, `updateRules`, `ruleCardMore`, `rulesFront`
 | `rulesFront.subgroups.*` | מניות, קרנות ואג״ח בבורסה בישראל · קרנות וניירות ערך מחו״ל · ריבית: פיקדונות, מק״מ ואג״ח ממשלתיות · קרן השתלמות · פנסיה וקופת גמל לקצבה · קופת גמל להשקעה, ניהול אישי וחיסכון לכל ילד · מדרגות המס, מס יסף וביטוח לאומי · פוליסות חיסכון ותיקון 190 (עוד לא באתר) · מט״ח, אג״ח קונצרניות, ריט, זהב ותיקים מנוהלים (עוד לא באתר) | the reader's names of the rule-base files, no "מס:" prefix |
 | `rulesFront.products.*` | כל המוצרים · משותף לכל הקופות · עוד לא באתר | |
 | `rulesFront.experience.title` / `.line` | ניסיון של אחרים · עדויות של אנשים מהפורום, לא כללים; מסומנות כך גם בעמוד ״איך עוברים״. | changed (was "סיפורים … בעמוד המעבר"): "עדויות" is the honest word for forum reports; the page is named by its title |
+| `rulesFront.filters.*` | הכול · לפי השאלה · לפי מוצר · עומד להשתנות · לפי מספר · ניקוי הסינון · מוצגים `{n}` כללים · מוצג כלל אחד · אין כלל שמתאים לסינון הזה. · הכללים שעונים על השאלה · לכל הכללים | added 2026-10-24 (evening, the founder's correction: one page with filters); "הכול" is the unfiltered chip, "לפי השאלה" heads the five shelf chips, "לכל הכללים" clears a preset |
 
 ### documents
 

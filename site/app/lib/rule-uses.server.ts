@@ -8,6 +8,7 @@ import type { RuleRecord } from "@finance-tool/schema";
 import { guideIndex, idle, r2, r3fees, r3holdings, r3transfer, r3workbench, r4playbook, r4workbench, companies as companiesCopy } from "../copy";
 import { loadExposures } from "./instruments.server";
 import { loadRules, loadWrappers, root } from "./data.server";
+import { fileProducts, commonRulesFile, shelfOf, tier2RuleFiles, type ShelfId } from "./rule-shelves";
 import { playbookWrapperIds } from "./playbook.server";
 import { providerWrapperIds } from "./providers.server";
 import { workbenchWrapperIds } from "./workbench.server";
@@ -273,4 +274,40 @@ export function loadRuleUses(ids?: Iterable<string>): RuleUsesSlim {
 /** The score of every rule (orders rules inside a group and picks teasers; never the pinned list). */
 export function ruleScores(): Record<string, number> {
   return Object.fromEntries(Object.entries(scan().uses).map(([id, u]) => [id, u.score]));
+}
+
+// ---- the rules page (one page with filters): which products a rule belongs under, and the per-shelf data files
+
+let productsCache: Record<string, string[]> | null = null;
+
+/** Rule id → product ids: the wrappers whose record cites the rule, the wrapper behind the rule's file, "common" and "tier2". */
+export function ruleProducts(): Record<string, string[]> {
+  if (productsCache) return productsCache;
+  const all = loadRules();
+  const known = new Set(Object.keys(all));
+  const out: Record<string, string[]> = {};
+  const add = (id: string, p: string) => {
+    const list = (out[id] ??= []);
+    if (!list.includes(p)) list.push(p);
+  };
+  for (const w of loadWrappers()) {
+    const text = readFileSync(join(root, "data/instruments/wrappers", `${w.id}.json`), "utf8");
+    for (const m of text.matchAll(/"([A-Z][A-Z0-9]*-[A-Z0-9]+)"/g)) if (known.has(m[1]!)) add(m[1]!, w.id);
+  }
+  for (const r of Object.values(all)) {
+    for (const w of fileProducts[r.il_finance_file] ?? []) add(r.id, w);
+    if (r.il_finance_file === commonRulesFile) add(r.id, "common");
+    if (tier2RuleFiles.has(r.il_finance_file)) add(r.id, "tier2");
+  }
+  return (productsCache = out);
+}
+
+/** One shelf's data file (`/rules-data/<shelf>.json`): the full records of its rules, plus the records they derive from, and where each is used. */
+export function shelfBundle(shelf: ShelfId) {
+  const all = loadRules();
+  const mine = Object.values(all).filter((r) => shelfOf(r) === shelf);
+  const rules: Record<string, RuleRecord> = Object.fromEntries(mine.map((r) => [r.id, r]));
+  // a rule a card points at (derived_from) may live on another shelf: its record travels too, so the chip opens it
+  for (const r of mine) for (const d of (r as { derived_from?: string[] }).derived_from ?? []) if (all[d] && !rules[d]) rules[d] = all[d]!;
+  return { rules, ruleUses: loadRuleUses(Object.keys(rules)) };
 }

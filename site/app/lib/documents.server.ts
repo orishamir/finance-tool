@@ -5,7 +5,6 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
-import { shelfOf } from "./rule-shelves";
 import { wikisourcePageTitle } from "./sources";
 import { documents as documentsCopy } from "../copy";
 import { mostlyHebrew } from "./source-label";
@@ -194,7 +193,7 @@ export function groupDocuments(rules: Record<string, RuleRecord>, table: TableDo
     const strength = entries.map((e) => e.strength ?? "secondary").sort((a, b) => (strengthOrder[a] ?? 9) - (strengthOrder[b] ?? 9))[0]! as Strength;
     const checked = entries.map((e) => e.checked ?? "").sort().at(-1) ?? "";
     const ids = [...new Set(entries.map((e) => e.ruleId))].sort();
-    const cardRules = ids.map((id) => ({ id, title: ruleTitle(rules[id]!).text, href: `/rules/${shelfOf(rules[id]!)}#${id}` }));
+    const cardRules = ids.map((id) => ({ id, title: ruleTitle(rules[id]!).text, href: `/rules#${id}` }));
     // a card for a document the table names or that several rules rest on; the long tail of single-rule pages and articles is a row (lead, 2026-10-24)
     const featured = !!doc || ids.length >= 3;
     const section = sectionOf(kind, strength, hostOf(url), mirror, doc ? undefined : pub(entries[0]!)?.kind);

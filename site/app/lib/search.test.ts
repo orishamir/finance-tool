@@ -156,24 +156,24 @@ describe("figures of a rule", () => {
 
 describe("the nineteen queries (top href)", () => {
   const cases: [string, string][] = [
-    ["TXG-02", "/rules/state#TXG-02"],
-    ["txg 2", "/rules/state#TXG-02"],
+    ["TXG-02", "/rules#TXG-02"],
+    ["txg 2", "/rules#TXG-02"],
     ["P-03", "/parameters#P-03"],
     ["סף תיקו", "/parameters#P-01"],
-    ["מעבר מסלול", "/rules/state#TXH-17"],
-    ["האם אפשר להחליף מסלול בלי מס", "/rules/state#TXH-17"],
-    ["כמה מס על פיקדון", "/rules/state#TXI-03"],
-    ["תקרת הפקדה קופת גמל להשקעה", "/rules/access#KGL-02"],
+    ["מעבר מסלול", "/rules#TXH-17"],
+    ["האם אפשר להחליף מסלול בלי מס", "/rules#TXH-17"],
+    ["כמה מס על פיקדון", "/rules#TXI-03"],
+    ["תקרת הפקדה קופת גמל להשקעה", "/rules#KGL-02"],
     ["מס רווחי הון", "/guide/brokerage-account#terms"],
     ["קרן כספית", "/guide/money-market-fund-daily"],
     ["פק״מ", "/guide/bank-deposit"],
     ["פקמ", "/guide/bank-deposit"],
     ["גמל להשקעה", "/guide/kupat-gemel-lehashkaa"],
-    ["25%", "/rules/state#TXF-02"],
-    ["83,641", "/rules/access#KGL-03"],
-    ["83641", "/rules/access#KGL-03"],
-    ["15%", "/rules/state#TXI-03"],
-    ["תשואה היסטורית", "/rules/structure#MKT-01"],
+    ["25%", "/rules#TXF-02"],
+    ["83,641", "/rules#KGL-03"],
+    ["83641", "/rules#KGL-03"],
+    ["15%", "/rules#TXI-03"],
+    ["תשואה היסטורית", "/rules#MKT-01"],
   ];
   it.each(cases.map((c, i) => [i + 1, ...c] as const))("%i: %s", (_i, query, href) => {
     expect(top(query)[0]?.entry.href).toBe(href);
@@ -189,7 +189,7 @@ describe("rules in groups and the negatives", () => {
   });
   it("lists the other rules a name query finds in the rules group", () => {
     const h = hrefs("מעבר מסלול");
-    expect(h.indexOf("/rules/state#TXH-17")).toBeLessThan(h.indexOf("/rules/state#TXK-04") === -1 ? 999 : h.indexOf("/rules/state#TXK-04"));
+    expect(h.indexOf("/rules#TXH-17")).toBeLessThan(h.indexOf("/rules#TXK-04") === -1 ? 999 : h.indexOf("/rules#TXK-04"));
     expect(h.some((x) => x.includes("#PF-23"))).toBe(true);
   });
   it("puts the guide first and the rule after it for a product name", () => {
@@ -229,7 +229,7 @@ describe("rules in groups and the negatives", () => {
     const h = top("25%")[0]!;
     expect(h.fig).toMatchObject({ n: 25 });
     expect(h.fig!.u.startsWith("pct")).toBe(true);
-    expect(top("83641 ₪")[0]!.entry.href).toBe("/rules/access#KGL-03");
+    expect(top("83641 ₪")[0]!.entry.href).toBe("/rules#KGL-03");
   });
   it("never reads a question as a name that is not on the site yet", () => {
     for (const q of ["האם אפשר להחליף מסלול בלי מס", "כמה זה עולה לנייד קופה?", "מה קורה עם הכסף שלי"]) {

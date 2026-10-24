@@ -145,3 +145,22 @@ export const fileRank = (file: string): number => {
   const i = fileOrder.indexOf(file);
   return i < 0 ? fileOrder.length : i;
 };
+
+/** Files that are one product's page of rules: the wrappers whose product chip they belong under (the rules page's product filter). */
+export const fileProducts: Record<string, string[]> = {
+  "bank-current-account-deposits.md": ["current-account", "bank-deposit", "savings-plan"],
+  "mutual-funds-and-money-market-funds.md": ["money-market-fund-daily", "money-market-fund-renewable"],
+  "kupat-gemel-lehashkaa.md": ["kupat-gemel-lehashkaa"],
+  "keren-hishtalmut.md": ["keren-hishtalmut"],
+  "pension-and-gemel-lekitzba.md": ["pension-comprehensive", "pension-general", "provident-for-annuity"],
+  "brokerage-account.md": ["brokerage-account"],
+  "government-bonds-and-makam.md": ["government-bond", "makam"],
+  "child-savings.md": ["child-savings-provident", "child-savings-bank"],
+  "ira-self-directed.md": ["ira-hishtalmut", "ira-provident"],
+};
+
+/** The file whose rules apply to every provident product ("common" product chip). */
+export const commonRulesFile = "provident-family-common.md";
+
+/** Files of the products the site does not cover yet ("tier2" product chip). */
+export const tier2RuleFiles: ReadonlySet<string> = new Set(["tax-insurance-and-amendment-190.md", "tax-tier2-other.md", "savings-policies-and-executive-insurance.md", "corporate-bonds.md", "fx-and-structured-deposits.md", "managed-and-robo-portfolios.md", "reits-and-gold-funds.md"]);
