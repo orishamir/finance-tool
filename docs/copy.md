@@ -2669,8 +2669,8 @@ Strings in the blocks `sourceBlock`, `updateRules`, `ruleCardMore`, `rulesFront`
 |---|---|---|
 | `rulesFront.title` / `.lede` | כללים · כל כלל שהאתר נשען עליו, עם המקור שלו. מתחילים מהשאלות שכולם שואלים, וממשיכים לפי מה שמעניין אתכם. | |
 | `rulesFront.pinned.title` | השאלות שכולם שואלים | |
-| `rulesFront.pinned.tag` | בחירה של האתר | changed (was "סדר של האתר"): the list is a choice (P-09), not an ordering |
-| `rulesFront.pinned.provisional` | רשימה זמנית, עד שבעל האתר יאשר אותה | |
+| ~~`rulesFront.pinned.tag`~~ | ~~בחירה של האתר~~ | removed 2026-10-24 (founder: "remove it"); the heading stands alone |
+| ~~`rulesFront.pinned.provisional`~~ | ~~רשימה זמנית, עד שבעל האתר יאשר אותה~~ | removed 2026-10-24: the founder kept the list as drafted |
 | `rulesFront.shelvesTitle` / `.teaser` | לפי השאלה שלכם · בין השאר: | |
 | `rulesFront.ruleCount` | כלל אחד · `{n}` כללים | |
 | `rulesFront.changing.*` | מה עומד להשתנות · כללים שיש להם תאריך בדיקה חוזרת, לפי חודש. · ב`{month}` | month is a Hebrew word: no maqaf |

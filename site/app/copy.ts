@@ -2686,7 +2686,7 @@ export const ruleCardMore = {
 export const rulesFront = {
   title: "כללים",
   lede: "כל כלל שהאתר נשען עליו, עם המקור שלו. מתחילים מהשאלות שכולם שואלים, וממשיכים לפי מה שמעניין אתכם.",
-  pinned: { title: "השאלות שכולם שואלים", tag: "בחירה של האתר", provisional: "רשימה זמנית, עד שבעל האתר יאשר אותה" },
+  pinned: { title: "השאלות שכולם שואלים" }, // the tag and the provisional note were removed 2026-10-24 at the founder's request
   shelvesTitle: "לפי השאלה שלכם",
   teaser: "בין השאר:",
   ruleCount: { one: "כלל אחד", many: "{n} כללים" },

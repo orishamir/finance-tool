@@ -119,7 +119,7 @@ W-Docs: flows 6.9 (card order), 6.14 (front and shelves), new 6.16 documents pag
 
 ## 5. Decisions only the founder can take (one list, plain words)
 
-1. **The pinned twelve** (the questions at the top of the rules page) and the two or three facts per guide page: sign off the list as it stands, or change it. Until then it shows "ערך זמני".
+1. ~~**The pinned twelve** (the questions at the top of the rules page) and the two or three facts per guide page: sign off the list as it stands, or change it.~~ *Answered 2026-10-24 (evening): the founder kept the list ("if I want to change which rules are pinned I would have told you") and asked for the "בחירה של האתר" tag beside the heading to go; P-09 is signed off and the tag and the provisional note were removed.*
 2. **Home page:** a quiet line with a link under the doors (built), or a fifth door for the rules and documents?
 3. **Conditions on every rule** ("מתי זה לא חל", from the research's conditions lines): a Hebrew-writing day for the 214 figure rules first. Go?
 4. **Official publications beside the mirrors:** for the ~15 laws and regulations behind 144 mirror rules, record the Knesset or gazette PDF next to the Wikisource copy. Research hours. Go?
