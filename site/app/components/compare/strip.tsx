@@ -179,7 +179,6 @@ export function SavedGoalStrip({ variant = "full", presets, meta, today, showRes
           open={sheet !== false}
           onClose={() => setSheet(false)}
           anchor={sheet || null}
-          changesHref="/changes"
           today={today}
           nis={(v, about) => <Num value={computed(v, "nis", "F-06", {}, { today: isoToday(), about })} />}
         />

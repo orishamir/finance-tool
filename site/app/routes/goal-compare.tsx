@@ -378,7 +378,7 @@ function Body({ bundle, data, frame, exposureId }: { bundle: CompareBundle; data
       <SaveComparisonButton {...(readableSaved ? { savedOn: readableSaved.savedOn } : {})} onSave={() => doSave(readableSaved?.choice)} failed={saveFailed} />
       <RulesLine ids={view.rulesUsed} />
       {readableSaved && revisit && revisit.status !== "unreadable" && (
-        <WhatChangedSheet view={revisit} open={changes !== false} onClose={() => setChanges(false)} anchor={changes || null} changesHref="/changes" today={bundle.runDate} nis={(v, about) => <Num value={computed(v, "nis", "F-06", {}, { today: isoToday(), about })} />} />
+        <WhatChangedSheet view={revisit} open={changes !== false} onClose={() => setChanges(false)} anchor={changes || null} today={bundle.runDate} nis={(v, about) => <Num value={computed(v, "nis", "F-06", {}, { today: isoToday(), about })} />} />
       )}
 
       <Sheet open={popup !== null} onClose={() => setPopup(null)} anchor={anchor} pc="popover" height={78} labelledBy={headId}>

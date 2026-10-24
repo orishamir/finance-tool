@@ -1,10 +1,10 @@
 // CMA adapter: gemelnet and pensia-net monthly datasets (data.gov.il).
 // docs/architecture.md section 3.3: fetch -> archive -> normalise -> validate -> diff -> write.
-// The pure functions (parseCsv, decodeWindows1255, normalise, sanityCheck, diffFiles, changelogLines)
+// The pure functions (parseCsv, decodeWindows1255, normalise, sanityCheck, diffFiles)
 // do no I/O; fetch, archive and write are at the bottom.
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync, appendFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { gzipSync } from "node:zlib";
@@ -343,44 +343,26 @@ export function sanityCheck(next: CmaPeriodFile, previous: CmaPeriodFile | null)
   return reasons;
 }
 
-// ---------- pure: diff and change log ----------
+// ---------- pure: diff ----------
 
-export interface ChangelogEntry {
-  date: string;
-  collection: "cma";
-  id: string;
-  field: string;
-  old: unknown;
-  new: unknown;
-  reason: string;
-  affects_rankings: boolean;
-}
-
-const identityOf = (f: CmaFund) => ({
-  names: f.names.cma,
-  fund_classification: f.fund_classification,
-  managing_corporation: f.managing_corporation.name,
-});
-
-/** Fields compared for a fund that exists in both files: [path, getter, affects_rankings]. */
-const FIELDS: [string, (f: CmaFund) => unknown, boolean][] = [
-  ["names.cma", (f) => f.names.cma, false],
-  ["managing_corporation.name", (f) => f.managing_corporation.name, false],
-  ["managing_corporation.legal_id", (f) => f.managing_corporation.legal_id, false],
-  ["controlling_corporation", (f) => f.controlling_corporation, false],
-  ["fund_classification", (f) => f.fund_classification, false],
-  ["target_population", (f) => f.target_population, false],
-  ["specialization", (f) => f.specialization, false],
-  ["sub_specialization", (f) => f.sub_specialization, false],
-  ["inception_date", (f) => f.inception_date, false],
+/** Fields compared for a fund that exists in both files: [path, getter]. */
+const FIELDS: [string, (f: CmaFund) => unknown][] = [
+  ["names.cma", (f) => f.names.cma],
+  ["managing_corporation.name", (f) => f.managing_corporation.name],
+  ["managing_corporation.legal_id", (f) => f.managing_corporation.legal_id],
+  ["controlling_corporation", (f) => f.controlling_corporation],
+  ["fund_classification", (f) => f.fund_classification],
+  ["target_population", (f) => f.target_population],
+  ["specialization", (f) => f.specialization],
+  ["sub_specialization", (f) => f.sub_specialization],
+  ["inception_date", (f) => f.inception_date],
   ...["AVG_ANNUAL_MANAGEMENT_FEE", "AVG_DEPOSIT_FEE"].map(
-    (k): [string, (f: CmaFund) => unknown, boolean] => [`raw_fields.${k}`, (f) => f.raw_fields[k] ?? null, true],
+    (k): [string, (f: CmaFund) => unknown] => [`raw_fields.${k}`, (f) => f.raw_fields[k] ?? null],
   ),
   ...["avg_annual_management_fee", "avg_deposit_fee"].map(
-    (k): [string, (f: CmaFund) => unknown, boolean] => [
+    (k): [string, (f: CmaFund) => unknown] => [
       `fees.${k}`,
       (f) => f.fees[k as "avg_deposit_fee"].value,
-      true,
     ],
   ),
 ];
@@ -416,71 +398,6 @@ export function diffFiles(previous: CmaPeriodFile | null, next: CmaPeriodFile): 
     periodChanged,
     isEmpty: !periodChanged && added.length === 0 && removed.length === 0 && changed.length === 0,
   };
-}
-
-/**
- * Change-log lines (data-schema 3.12). With no previous file every fund is new and gets the three
- * lines the hand collection wrote (identity, then the two raw fee fields). Against a previous file only
- * differences are logged: new funds like that, removed funds, and field changes (fee fields
- * affect rankings; names and classification do not).
- */
-export function changelogLines(previous: CmaPeriodFile | null, next: CmaPeriodFile): ChangelogEntry[] {
-  const id = `${next.dataset}@${next.report_period}`;
-  const date = next.checked;
-  const lines: ChangelogEntry[] = [];
-  const push = (field: string, old: unknown, nw: unknown, reason: string, affects: boolean) =>
-    lines.push({ date, collection: "cma", id, field, old, new: nw, reason, affects_rankings: affects });
-
-  const newReason = previous
-    ? previous.report_period === next.report_period
-      ? `new fund in CMA ${next.dataset} report period ${next.report_period} (data changed upstream)`
-      : `new fund in CMA ${next.dataset} report period ${next.report_period}`
-    : `new snapshot, CMA ${next.dataset} report period ${next.report_period}`;
-  const feeReasonSuffix = " (raw)";
-  const newFeeReason = `${newReason}${feeReasonSuffix}`;
-
-  if (previous && previous.report_period !== next.report_period) {
-    push("report_period", previous.report_period, next.report_period, `new report period for CMA ${next.dataset}`, false);
-  }
-  const prevById = new Map((previous?.funds ?? []).map((f) => [f.fund_id, f]));
-  const nextIds = new Set(next.funds.map((f) => f.fund_id));
-  const sameReason = previous?.report_period === next.report_period;
-
-  for (const f of next.funds) {
-    const p = prevById.get(f.fund_id);
-    if (!p) {
-      push(`funds.${f.fund_id}.identity`, null, identityOf(f), newReason, false);
-      for (const k of ["AVG_ANNUAL_MANAGEMENT_FEE", "AVG_DEPOSIT_FEE"]) {
-        push(`funds.${f.fund_id}.raw_fields.${k}`, null, f.raw_fields[k] ?? null, newFeeReason, true);
-      }
-      for (const k of ["avg_annual_management_fee", "avg_deposit_fee"] as const) {
-        push(`funds.${f.fund_id}.fees.${k}`, null, f.fees[k].value, newReason, true);
-      }
-      continue;
-    }
-    for (const [path, get, affects] of FIELDS) {
-      const o = get(p);
-      const n = get(f);
-      if (same(o, n)) continue;
-      const reason = sameReason
-        ? `value changed upstream within report period ${next.report_period}`
-        : `changed between report periods ${previous!.report_period} and ${next.report_period}`;
-      push(`funds.${f.fund_id}.${path}`, o, n, reason + (path.startsWith("raw_fields") ? feeReasonSuffix : ""), affects);
-    }
-  }
-  for (const p of previous?.funds ?? []) {
-    if (nextIds.has(p.fund_id)) continue;
-    push(
-      `funds.${p.fund_id}.identity`,
-      identityOf(p),
-      null,
-      sameReason
-        ? `fund no longer in CMA ${next.dataset} report period ${next.report_period}`
-        : `fund not in CMA ${next.dataset} report period ${next.report_period} (was in ${previous!.report_period})`,
-      false,
-    );
-  }
-  return lines;
 }
 
 // ---------- store: read the current files ----------
@@ -601,7 +518,6 @@ export interface DatasetReport {
   reasons: string[];
   diff: CmaDiff | null;
   written: boolean;
-  changelogLines: number;
   note?: string;
 }
 
@@ -617,7 +533,6 @@ export async function refreshCma(opts: RefreshOptions): Promise<DatasetReport[]>
       reasons: [],
       diff: null,
       written: false,
-      changelogLines: 0,
     };
     reports.push(report);
     try {
@@ -648,11 +563,9 @@ export async function refreshCma(opts: RefreshOptions): Promise<DatasetReport[]>
         continue;
       }
       report.status = diff.periodChanged ? "new-period" : "updated";
-      const lines = changelogLines(previous, res.file);
-      report.changelogLines = lines.length;
       log(
         `${config.dataset}: ${diff.periodChanged ? "NEW period " + res.file.report_period : "values changed within period " + res.file.report_period}: ` +
-          `${diff.added.length} fund(s) added, ${diff.removed.length} removed, ${diff.changed.length} changed; ${lines.length} change-log line(s)`,
+          `${diff.added.length} fund(s) added, ${diff.removed.length} removed, ${diff.changed.length} changed`,
       );
       for (const c of diff.changed.slice(0, 10)) log(`  fund ${c.fund_id}: ${c.fields.join(", ")}`);
       if (diff.changed.length > 10) log(`  ... and ${diff.changed.length - 10} more changed fund(s)`);
@@ -670,9 +583,6 @@ export async function refreshCma(opts: RefreshOptions): Promise<DatasetReport[]>
       log(`  ${report.note}`);
       mkdirSync(cmaDir, { recursive: true });
       writeFileSync(join(cmaDir, `${config.dataset}@${res.file.report_period}.json`), serialise(res.file));
-      if (lines.length > 0) {
-        appendFileSync(join(opts.dataDir, "changelog.jsonl"), lines.map((l) => JSON.stringify(l)).join("\n") + "\n");
-      }
       report.written = true;
       log(`  wrote data/cma/${config.dataset}@${res.file.report_period}.json`);
     } catch (e) {

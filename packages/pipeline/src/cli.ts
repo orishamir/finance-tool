@@ -40,7 +40,7 @@ async function refresh(args: string[]): Promise<number> {
   for (const source of sources) {
     if (source === "cma") {
       for (const r of await refreshCma(opts)) {
-        reports.push({ source: r.dataset, status: r.status, period: r.period, reasons: r.reasons, written: r.written, changelogLines: r.changelogLines, ...(r.note ? { note: r.note } : {}) });
+        reports.push({ source: r.dataset, status: r.status, period: r.period, reasons: r.reasons, written: r.written, ...(r.note ? { note: r.note } : {}) });
       }
     } else if (source === "cbs-cpi") reports.push(await refreshCbsCpi(opts));
     else reports.push(await refreshMofChildSavings(opts));

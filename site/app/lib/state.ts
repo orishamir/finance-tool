@@ -1,6 +1,6 @@
 // The saved state, version 3 (design-spec 11.5 and 21.5, flows 17, 26 and 35): one document `mekor.v2.state` on the device that
 // holds the guide inputs, the goals, the holdings and the names not catalogued yet, plus the record of imports, and
-// since release 5 the saved comparisons and the visit dates. The storage key is unchanged (the document's own `version`
+// since release 5 the saved comparisons. The storage key is unchanged (the document's own `version`
 // says what it is; an older site that finds version 3 there refuses it and leaves it alone); version 2 migrates on load.
 // It replaces the release 2 keys `mekor.v1.inputs`, `mekor.v1.goals` and `mekor.v1.uncatalogued`: the first load
 // after the release migrates them once and removes them after a successful write. Browser only; nothing is
@@ -115,17 +115,10 @@ export interface SavedComparisonRecord {
   exposure?: { lossFilter: { worstFall: Record<string, ValueObject>; acceptedFall?: ValueObject; acceptedFallById?: Record<string, ValueObject> }; returns: Record<string, ValueObject>; holding: Record<string, string> };
 }
 
-/** The visit dates (design-spec 21.5): `last` is today's visit, `previous` the one before it (the change-log picker's default). */
-export interface Visits {
-  previous?: string;
-  last?: string;
-}
-
 export interface StateV3 extends Omit<StateV2, "version"> {
   version: 3;
   /** One per goal and mode. A record this release cannot read is kept as it is (see `isReadableSaved`). */
   savedComparisons: SavedComparisonRecord[];
-  visits: Visits;
 }
 
 export interface StateFile {
@@ -137,7 +130,7 @@ export interface StateFile {
 }
 
 export function emptyState(): StateV3 {
-  return { version: 3, goals: [], inputs: {}, holdings: [], uncatalogued: [], imports: [], savedComparisons: [], visits: {} };
+  return { version: 3, goals: [], inputs: {}, holdings: [], uncatalogued: [], imports: [], savedComparisons: [] };
 }
 
 /** The device's calendar date (local, not UTC): see `today.ts`. */
@@ -276,12 +269,11 @@ export function checkState(s: unknown): string | null {
   if (s.version === 3) {
     if (!Array.isArray(s.savedComparisons)) return "savedComparisons";
     for (const [i, c] of s.savedComparisons.entries()) if (!isObj(c)) return `savedComparisons.${i}`;
-    if (s.visits !== undefined && !isObj(s.visits)) return "visits";
   }
   return null;
 }
 
-/** A version 2 or 3 document as the version 3 shape: each goal gains an empty `exposures` map, the document an empty list of saved comparisons and no visits (the migration chain, design-spec 21.5). */
+/** A version 2 or 3 document as the version 3 shape: each goal gains an empty `exposures` map, the document an empty list of saved comparisons; a `visits` field of an earlier file is ignored (the migration chain, design-spec 21.5). */
 function normalizeState(s: Record<string, unknown>): StateV3 {
   const base = emptyState();
   const goals = (s.goals as Goal[]).map((g) => (g.exposures ? g : { ...g, exposures: {} }));
@@ -289,7 +281,6 @@ function normalizeState(s: Record<string, unknown>): StateV3 {
     version: 3,
     goals,
     savedComparisons: Array.isArray(s.savedComparisons) ? (s.savedComparisons as SavedComparisonRecord[]) : base.savedComparisons,
-    visits: isObj(s.visits) ? ((({ previous, last }) => ({ ...(typeof previous === "string" ? { previous } : {}), ...(typeof last === "string" ? { last } : {}) }))(s.visits as Visits)) : base.visits,
     ...(typeof s.currentId === "string" ? { currentId: s.currentId } : {}),
     ...(typeof s.bank === "string" ? { bank: s.bank } : {}),
     inputs: s.inputs as Record<string, ValueObject>,
@@ -478,9 +469,8 @@ export function ensureLoaded(): Snapshot {
       if (isObj(v) && (v.version === 2 || v.version === 3) && checkState(v) === null) {
         // a version 2 document is migrated here and written as version 3 with the next edit; a version 3 one is read as it is
         const norm = normalizeState(v);
-        const next = startVisit(norm);
-        set({ ready: true, status: "ok", state: next });
-        if (v.version === 2 || next !== norm) schedule();
+        set({ ready: true, status: "ok", state: norm });
+        if (v.version === 2) schedule();
       } else {
         // a newer or unreadable document is left exactly as it is
         readOnly = true;
@@ -502,17 +492,16 @@ export function ensureLoaded(): Snapshot {
     }
     if (migrated) {
       try {
-        const started = startVisit(migrated);
-        s.setItem(STATE_KEY, JSON.stringify(started));
+        s.setItem(STATE_KEY, JSON.stringify(migrated));
         for (const k of [V1_INPUTS, V1_GOALS, V1_UNCAT]) s.removeItem(k);
-        set({ ready: true, status: "ok", state: started });
+        set({ ready: true, status: "ok", state: migrated });
       } catch {
         set({ ready: true, status: "unavailable", saved: false, state: migrated });
         memory = migrated;
       }
       return snap;
     }
-    set({ ready: true, status: "ok", state: startVisit(emptyState()) });
+    set({ ready: true, status: "ok", state: emptyState() });
     schedule();
   } catch {
     set({ ready: true, status: "unavailable", saved: false, state: memory ?? emptyState() });
@@ -543,14 +532,6 @@ export function flush(force = false): boolean {
     set({ saved: false });
     return false;
   }
-}
-
-/** The start of a visit (design-spec 21.5): a day later than the last visit makes that visit the previous one; today is the last. */
-export function startVisit(s: StateV3, today = isoToday()): StateV3 {
-  const last = s.visits.last;
-  if (last === today) return s;
-  const previous = last && last < today ? last : s.visits.previous;
-  return { ...s, visits: { ...(previous ? { previous } : {}), last: today } };
 }
 
 function schedule() {
@@ -603,7 +584,7 @@ export function clearGoals(): void {
   takeOver();
   if (wasOld && snap.state.goals.length === 0 && Object.keys(snap.state.inputs).length === 0 && snap.state.holdings.length === 0) {
     // nothing else of the person's is in the document: write the empty one (removes any v1 goals key)
-    set({ state: { ...emptyState(), visits: snap.state.visits }, external: snap.external + 1 });
+    set({ state: emptyState(), external: snap.external + 1 });
     flush(true);
     return;
   }
@@ -656,7 +637,7 @@ export function useHoldings() {
   return { ready: snapshot.ready, status: snapshot.status, saved: snapshot.saved, holdings: sortedHoldings(snapshot.state.holdings), save: saveHolding, remove: removeHolding, move: moveHolding };
 }
 
-// ---------------------------------------------------------------- saved comparisons and visits
+// ---------------------------------------------------------------- saved comparisons
 
 const sameSlot = (c: unknown, goalId: string, mode: CompareMode) => isObj(c) && c.goalId === goalId && c.mode === mode;
 
@@ -676,9 +657,9 @@ export function deleteSavedComparison(goalId: string, mode: CompareMode): void {
   flush(true);
 }
 
-export function useSavedComparisons(): { ready: boolean; saved: boolean; status: StoreStatus; list: SavedComparisonRecord[]; visits: Visits } {
+export function useSavedComparisons(): { ready: boolean; saved: boolean; status: StoreStatus; list: SavedComparisonRecord[] } {
   const snapshot = useStateStore();
-  return { ready: snapshot.ready, saved: snapshot.saved, status: snapshot.status, list: snapshot.state.savedComparisons, visits: snapshot.state.visits };
+  return { ready: snapshot.ready, saved: snapshot.saved, status: snapshot.status, list: snapshot.state.savedComparisons };
 }
 
 // ---------------------------------------------------------------- imported items
@@ -881,7 +862,6 @@ export function applyImport(current: StateV3, incoming: StateV3, mode: "add" | "
     goals,
     inputs,
     savedComparisons,
-    visits: current.visits.last || current.visits.previous ? current.visits : incoming.visits,
     holdings,
     uncatalogued: names,
     ...(current.bank ? { bank: current.bank } : incoming.bank ? { bank: incoming.bank } : {}),

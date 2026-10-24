@@ -75,9 +75,6 @@ describe("validateData", () => {
     expect(run({ "misc/x.json": {} })[0]?.message).toMatch(/no schema/);
   });
 
-  it("rejects a bad change-log line", () => {
-    expect(run({ "changelog.jsonl": '{"date":"2026-10-22"}\n' })[0]?.message).toMatch(/line 1/);
-  });
 });
 
 const src = { url: "https://example.org", title: "t", publisher: "p", strength: "institution" };

@@ -42,6 +42,7 @@ These were open questions in `docs/discovery.md`, or were raised by the review. 
 | D21 (2026-10-23) | **The goal presets and the representative instruments are site parameters.** The five presets of D13 (liquid reserve, purchase at a known date, long-term wealth, a lump sum, a child) are P-07, `data/parameters/goal-presets.json`: each fills horizon, monthly deposit, how much must stay available and whether it must be withdrawable at any time, never an amount (the loss filter waits for release 5, D11). The illustrative scenario P-05 names, per wrapper, the collected record the guide-page timeline takes its terms from (`instruments`: Leumi's deposit terms and tariff, two Altshuler Shaham money-market funds and IBI's S&P 500 ETF, Meitav's study-fund track 880 run as self-employed, the GOV-11 bond series) and an annual income for the runs that need one; a wrapper without an entry shows no timeline. | Chosen by Claude at the founder's request (2026-10-23), revisable; values and reasons in `docs/parameters-rationale.md`. The representative instrument is the first collected record of each kind, not a recommendation: the page names it and every term shown carries that record's source. |
 | D22 (2026-10-24) | **A single published figure may be quoted with attribution; a series or a list needs confirmed terms.** An annual average, a cap or a rate printed once in a regulator's or an institution's document is shown on the site with its source and date (fair quotation, as gov.il's terms allow and as the rule base already does). A time series, a dataset or a fund list is republished only when its terms are confirmed (the terms gate, architecture 3.3; D20 for the Bank of Israel). Where a publisher's terms forbid copying its content (the ISA's and TASE's sites, read 2026-10-23), the site shows the figure's existence and a link, not the number, until the publisher consents. | Chosen by Claude at the founder's request (2026-10-24), revisable; it settles how MF-55 (the ISA's fee report), BRK-37 (TASE's fee calculator) and PF-39 (the CMA's report on gov.il) are used in release 3. |
 | D23 (2026-10-24) | **Institution-strength rules compute, labelled.** D10 named primary, secondary and open sources only. A rule whose only source is an institution's own binding document (a fund's bylaws, a prospectus, a tariff, an insurer's policy terms) computes like a secondary rule and every number that rests on it carries the label "institution source" (D7's caution state); it never counts as closing a tax question for tier-2 graduation (D2), which still needs a primary or secondary source. | Chosen by Claude at the founder's request (2026-10-24), revisable. It writes down what the engine's figure resolver has done since release 1 (coverage.md F1): the kupat gemel lehashkaa exit base (TXK-07), the ceilings taken from managers' pages, Reit 1's withholding practice (TX2-20) and Phoenix's policy figures (TXA-28) are the cases it covers. |
+| D24 (2026-10-24) | **No change log.** The site keeps no change log and shows no "what changed" page: git history, each data file's `checked` date and the raw-download archive are the record, and a saved comparison's revisit (3.9) compares the versions it stored with the current ones. A "news" section for events such as a law passing is a parked idea (section 8, N7), not a capability. | Founder, 2026-10-24. |
 
 ---
 
@@ -176,7 +177,7 @@ Ten capabilities. Each: the problem, who supports it, what the user puts in, wha
 
 **Works when.** A person switching a hishtalmut can follow the steps without visiting the forum. Every step that states a rule links to its rule-base entry.
 
-### 3.8 Rule base, parameters, method and change log [R as constraint, P as a user-facing capability]
+### 3.8 Rule base, parameters and method (change log removed 2026-10-24, D24) [R as constraint, P as a user-facing capability]
 
 **Problem.** Ten rules are likely to change or be misremembered in the next two years (tax report 10). The founder's own tax claim did not match the report. The `il-finance` rule base named in `CLAUDE.md` does not exist. The site must never state a rule it cannot cite, and must not pass off product judgements as rules.
 
@@ -186,7 +187,7 @@ Ten capabilities. Each: the problem, who supports it, what the user puts in, wha
 - **Parameters** (`data/parameters/`): site judgements such as the tie threshold, fee-verdict thresholds and sensitivity bounds, each with value, rationale and founder sign-off date, shown on the page as "site parameter".
 - **Method** (`docs/method.md`): every calculation defined (real vs nominal, the deflator, compounding, fee bases, tax at exit, equal-gross-return comparison), so the finance-reviewer can check the engine against it. `tests/cases/` holds hand-worked expected outputs for every "Works when" above.
 
-**Out, for the reader.** Next to every rule-dependent number, a link that opens the rule, its source, its strength and its date. A rules page listing every rule the site uses, grouped by wrapper, with open questions marked. A parameters page. One dated **change log** of rule, parameter and data changes, which also powers saved-state re-checks (3.9).
+**Out, for the reader.** Next to every rule-dependent number, a link that opens the rule, its source, its strength and its date. A rules page listing every rule the site uses, grouped by wrapper, with open questions marked. A parameters page (change log removed 2026-10-24, D24).
 
 **Works when.** A reviewer can take any number on any page back to a rule, a parameter, a data file or "entered by you", each with a date. No calculation uses a rule marked open. Each of the ten "likely to change" rules has a re-check date.
 
@@ -196,9 +197,9 @@ Ten capabilities. Each: the problem, who supports it, what the user puts in, wha
 
 **In.** The person's inputs across 3.2, 3.4, 3.5 and 3.6, and the choice they made at the end of a comparison.
 
-**Out.** One local state per browser, saved automatically, exportable and importable as a file so the founder can help a friend without any data on a server. A saved comparison records inputs, assumptions, the rule, parameter and data versions used, the result and the choice. On a later visit, re-running it against the change log (3.8) reports which rules, parameters or data points changed since and whether the ranking still holds.
+**Out.** One local state per browser, saved automatically, exportable and importable as a file so the founder can help a friend without any data on a server. A saved comparison records inputs, assumptions, the rule, parameter and data versions used, the result and the choice. On a later visit, re-running it against the versions it stored (change log removed 2026-10-24, D24) reports which rules, parameters or data points changed since and whether the ranking still holds.
 
-**Data and rules.** The versioned stores and change log in 3.8. The export format is versioned so an old file still imports (N3).
+**Data and rules.** The versioned stores in 3.8. The export format is versioned so an old file still imports (N3).
 
 **Works when.** A decision recorded before a rule change shows "re-check: rule X changed on date Y" after it, and shows as unchanged otherwise. An exported file from one phone imports on another and reproduces the same results.
 
@@ -261,7 +262,7 @@ Because D3 and 3.9 depend on history that no public source keeps:
 | `data/funds/` | Manual, on prospectus change | Every version dated | Same |
 | `data/catalog/` (3.10) | Manual, whenever an app, ad or statement shows a name the site does not know; the CMA side refreshes monthly with the fund datasets | Every entry with institution, where seen, date seen | A track in the CMA data with no catalogue entry is still in the catalogue from the data; an institution name with no CMA match shows "not catalogued yet" |
 
-Every refresh appends to the change log (3.8). A number whose source is older than its cadence is shown with a stale flag; it is never hidden and never silently replaced.
+A number whose source is older than its cadence is shown with a stale flag; it is never hidden and never silently replaced.
 
 ---
 
@@ -286,6 +287,7 @@ From `docs/discovery.md`, still open after this document: O9 (building the rule 
 - **N4.** Which exposures get full `data/funds/` records first. Proposed: the ones the founder and friends name in their first three comparisons. Until a fund has a record, the comparison still lists it, as not evaluated (D17). **Status 2026-10-24:** records exist for the S&P 500 (IBI 1148162), the TA-125 (Meitav 1143718) and shekel cash through two Altshuler Shaham money-market funds (5138763, 1223866); the other exposure records run without a fund (the government bonds through their series, the general track through a kupat gemel lehashkaa) or wait for an entered rate (makam).
 - **N5.** Whether a sourced equity and bond return scenario file ever exists, and from where. Until then, D9 applies. **Status 2026-10-24:** unchanged; exposure mode runs on returns the person enters.
 - **N6.** Bank-side product names (deposits, savings plans) have no regulator catalogue equivalent to the CMA fund data. How complete the catalogue (3.10) can be for banks depends on tariff snapshots and product pages, and on what the founder and friends paste in. The Bank of Israel's uniform deposit-disclosure format since April 2025 (domain 4.1) may help; its machine-readability is unverified. **Status 2026-10-24:** the bank catalogue holds Leumi's three products (a current account, a fixed-rate deposit, a three-year savings plan) from `data/terms/deposits/`; more banks join as their terms are collected, by hand.
+- **N7.** A news section, for example when a law passes, is a parked idea of the founder (2026-10-24); not scheduled.
 
 ---
 

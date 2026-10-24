@@ -124,7 +124,7 @@ describe("migration from the release 2 keys", () => {
 
 describe("the export file", () => {
   it("carries format, version, time, site ids and the state; blank goals are left out", () => {
-    const state: StateV3 = { version: 3, savedComparisons: [], visits: {}, goals: [goalWithContent(), emptyGoal(1)], inputs: {}, holdings: [holding("a")], uncatalogued: [], imports: [] };
+    const state: StateV3 = { version: 3, savedComparisons: [], goals: [goalWithContent(), emptyGoal(1)], inputs: {}, holdings: [holding("a")], uncatalogued: [], imports: [] };
     const f = buildStateFile(state, site, new Date("2026-10-24T08:00:00Z"));
     expect(f).toMatchObject({ format: "mekor-state", version: 3, exported: "2026-10-24T08:00:00.000Z", site });
     expect(f.state.goals).toHaveLength(1);
@@ -140,7 +140,7 @@ describe("the export file", () => {
 
 describe("import", () => {
   const file = (state: unknown, version = 3) => JSON.stringify({ format: "mekor-state", version, exported: "2026-10-24T08:00:00Z", site, state });
-  const base = (): StateV3 => ({ version: 3, savedComparisons: [], visits: {}, goals: [goalWithContent()], inputs: {}, holdings: [holding("a")], uncatalogued: [{ name: "קרן Y", seen: day }], imports: [] });
+  const base = (): StateV3 => ({ version: 3, savedComparisons: [], goals: [goalWithContent()], inputs: {}, holdings: [holding("a")], uncatalogued: [{ name: "קרן Y", seen: day }], imports: [] });
 
   it("reads a file it wrote, with the counts, and changes nothing on the device", () => {
     const r = readImport(file(base()));
@@ -158,14 +158,14 @@ describe("import", () => {
     expect(readImport(file(base(), 4))).toEqual({ ok: false, refusal: { kind: "newer" } });
   });
 
-  it("migrates a version 2 file: goals gain exposures, the document no saved comparisons and no visits", () => {
-    const { savedComparisons: _s, visits: _v, ...v2 } = base();
-    const r = readImport(file({ ...v2, version: 2 }, 2));
+  it("migrates a version 2 file: goals gain exposures, the document no saved comparisons, and a leftover visits field is ignored", () => {
+    const { savedComparisons: _s, ...v2 } = base();
+    const r = readImport(file({ ...v2, visits: { last: "2026-10-23" }, version: 2 }, 2));
     expect(r.ok && r.preview.migrated).toBe(true);
     expect(r.ok && r.preview.state.version).toBe(3);
     expect(r.ok && r.preview.state.goals[0]!.exposures).toEqual({});
     expect(r.ok && r.preview.state.savedComparisons).toEqual([]);
-    expect(r.ok && r.preview.state.visits).toEqual({});
+    expect(r.ok && "visits" in r.preview.state).toBe(false);
   });
 
   it("keeps an unreadable saved comparison as it is, and refuses a bare number in an exposure input", () => {
@@ -201,7 +201,7 @@ describe("import", () => {
   });
 
   it("add: appends with the imported tag and an order after the existing ones, skipping identical items", () => {
-    const mine: StateV3 = { version: 3, savedComparisons: [], visits: {}, goals: [goalWithContent()], inputs: {}, holdings: [holding("a"), holding("m", { order: 1, company: { name: "חברה ב" } })], uncatalogued: [], imports: [] };
+    const mine: StateV3 = { version: 3, savedComparisons: [], goals: [goalWithContent()], inputs: {}, holdings: [holding("a"), holding("m", { order: 1, company: { name: "חברה ב" } })], uncatalogued: [], imports: [] };
     mine.goals[0]!.id = "mine";
     const incoming = base();
     incoming.goals[0]!.id = "theirs";
@@ -216,7 +216,7 @@ describe("import", () => {
   });
 
   it("add: a holding with the same id and other content is kept as a new item", () => {
-    const mine: StateV3 = { version: 3, savedComparisons: [], visits: {}, goals: [], inputs: {}, holdings: [holding("a")], uncatalogued: [], imports: [] };
+    const mine: StateV3 = { version: 3, savedComparisons: [], goals: [], inputs: {}, holdings: [holding("a")], uncatalogued: [], imports: [] };
     const theirs = { ...base(), goals: [], holdings: [holding("a", { balance: entered(1, "nis", day) })] };
     const r = applyImport(mine, theirs, "add", day);
     expect(r.state.holdings).toHaveLength(2);
@@ -226,14 +226,14 @@ describe("import", () => {
   });
 
   it("replace: the file's state as it is", () => {
-    const mine: StateV3 = { version: 3, savedComparisons: [], visits: {}, goals: [], inputs: {}, holdings: [holding("z")], uncatalogued: [], imports: [] };
+    const mine: StateV3 = { version: 3, savedComparisons: [], goals: [], inputs: {}, holdings: [holding("z")], uncatalogued: [], imports: [] };
     const r = applyImport(mine, base(), "replace", day);
     expect(r.state.holdings.map((h) => h.id)).toEqual(["a"]);
     expect(r.state.holdings[0]!.importedAt).toBeUndefined();
   });
 
   it("delete what was imported removes only the tagged items", () => {
-    const mine: StateV3 = { version: 3, savedComparisons: [], visits: {}, goals: [], inputs: {}, holdings: [holding("z")], uncatalogued: [], imports: [] };
+    const mine: StateV3 = { version: 3, savedComparisons: [], goals: [], inputs: {}, holdings: [holding("z")], uncatalogued: [], imports: [] };
     const r = applyImport(mine, base(), "add", day);
     const cleaned = withoutImported(r.state);
     expect(cleaned.holdings.map((h) => h.id)).toEqual(["z"]);

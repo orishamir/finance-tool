@@ -4,7 +4,6 @@ import { loadExposures } from "./instruments.server";
 import { workbenchWrapperIds } from "./workbench.server";
 import { institutionIds } from "./institutions.server";
 import { providerWrapperIds } from "./providers.server";
-import { changelogYears } from "./changes.server";
 import { playbookWrapperIds } from "./playbook.server";
 
 export function prerenderPaths(): string[] {
@@ -25,8 +24,5 @@ export function prerenderPaths(): string[] {
   paths.push("/workbench-bundle.json");
   // the switching playbook (release 4): one page per wrapper that has a step list
   for (const w of playbookWrapperIds()) paths.push(`/switch/${w}`);
-  // release 5: the change-log page and one data file per year of data/changelog.jsonl
-  paths.push("/changes");
-  for (const y of changelogYears()) paths.push(`/changes-data/${y}`);
   return paths;
 }
