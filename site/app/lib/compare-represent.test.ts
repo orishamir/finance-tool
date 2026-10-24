@@ -47,7 +47,7 @@ describe("entered fee for the representative instrument", () => {
     expect(row.fee!.currentPct).toBeCloseTo(0.02, 6);
     // the lowest cost among the fund records collected for the exposure (more records are collected over time)
     expect(row.fee!.classMinPct).toBeCloseTo(0.02, 6);
-  });
+  }, 30_000); // the flip search runs many evaluations over the whole bundle; a CI runner overran the 5 s default on 2026-10-24
 });
 
 describe("own terms store shape", () => {
