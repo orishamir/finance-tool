@@ -15,21 +15,23 @@ export function DateField({ label, value, onChange, max, hint, error }: { label:
       <label htmlFor={id} className="field-label">
         {label}
       </label>
-      <div className={cx("field-box", error ? "field-box-error" : false)}>
-        <input id={id} type="date" dir="ltr" max={max} value={value} aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-err` : undefined} onChange={(e) => onChange(e.target.value)} className="field-input !text-end" />
-        {/^\d{4}-\d{2}-\d{2}$/.test(value) && (
-          <bdi dir="ltr" className="field-unit">
-            {fmt.date(value)}
-          </bdi>
-        )}
+      <div className="field-body">
+        <div className={cx("field-box", error ? "field-box-error" : false)}>
+          <input id={id} type="date" dir="ltr" max={max} value={value} aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-err` : undefined} onChange={(e) => onChange(e.target.value)} className="field-input !text-end" />
+          {/^\d{4}-\d{2}-\d{2}$/.test(value) && (
+            <bdi dir="ltr" className="field-unit">
+              {fmt.date(value)}
+            </bdi>
+          )}
+        </div>
+        {error ? (
+          <span id={`${id}-err`} className="text-xs text-destructive">
+            {error}
+          </span>
+        ) : hint ? (
+          <span className="text-xs text-muted-foreground">{hint}</span>
+        ) : null}
       </div>
-      {error ? (
-        <span id={`${id}-err`} className="text-xs text-destructive">
-          {error}
-        </span>
-      ) : hint ? (
-        <span className="text-xs text-muted-foreground">{hint}</span>
-      ) : null}
     </div>
   );
 }
@@ -53,19 +55,21 @@ export function SelectField<T extends string>({ label, value, onChange, options,
       <label htmlFor={id} className="field-label">
         {label}
       </label>
-      <div className={cx("field-box", error ? "field-box-error" : false)}>
-        <select id={id} value={value ?? ""} aria-invalid={error ? true : undefined} onChange={(e) => e.target.value && onChange(e.target.value as T)} className="field-input !text-start">
-          <option value="" disabled>
-            {placeholder}
-          </option>
-          {options.map((o) => (
-            <option key={o.value} value={o.value}>
-              {o.label}
+      <div className="field-body">
+        <div className={cx("field-box", error ? "field-box-error" : false)}>
+          <select id={id} value={value ?? ""} aria-invalid={error ? true : undefined} onChange={(e) => e.target.value && onChange(e.target.value as T)} className="field-input !text-start">
+            <option value="" disabled>
+              {placeholder}
             </option>
-          ))}
-        </select>
+            {options.map((o) => (
+              <option key={o.value} value={o.value}>
+                {o.label}
+              </option>
+            ))}
+          </select>
+        </div>
+        {error && <span className="text-xs text-destructive">{error}</span>}
       </div>
-      {error && <span className="text-xs text-destructive">{error}</span>}
     </div>
   );
 }
@@ -78,11 +82,13 @@ export function TextField({ label, value, onChange, placeholder, dir = "auto", i
       <label htmlFor={id} className="field-label">
         {label}
       </label>
-      <div className={cx("field-box", error ? "field-box-error" : false)}>
-        {icon}
-        <input id={id} type="text" dir={dir} value={value} placeholder={placeholder} aria-invalid={error ? true : undefined} aria-describedby={describedBy} onKeyDown={onKeyDown} onChange={(e) => onChange(e.target.value)} className="field-input !text-start" />
+      <div className="field-body">
+        <div className={cx("field-box", error ? "field-box-error" : false)}>
+          {icon}
+          <input id={id} type="text" dir={dir} value={value} placeholder={placeholder} aria-invalid={error ? true : undefined} aria-describedby={describedBy} onKeyDown={onKeyDown} onChange={(e) => onChange(e.target.value)} className="field-input !text-start" />
+        </div>
+        {error && <span className="text-xs text-destructive">{error}</span>}
       </div>
-      {error && <span className="text-xs text-destructive">{error}</span>}
     </div>
   );
 }

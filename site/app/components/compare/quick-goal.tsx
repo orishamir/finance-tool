@@ -94,23 +94,24 @@ export function QuickGoalCard({ bounds, mode, className }: QuickGoalCardProps) {
     <Card className={cx("flex flex-col gap-4 md:gap-5", loading && "opacity-40 cursor-wait", className)}>
       <h2 className="text-xl font-semibold">{copy.quick.heading}</h2>
       <form ref={form} noValidate onSubmit={onSubmit} className="flex flex-col gap-4 md:gap-5">
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
-          <div data-quick="amount" className="min-w-0">
+        {/* a field row (app.css): the three boxes line up even where the years label wraps (2026-10-24 night, the founder's screenshot);
+            the wrappers are `contents` so each field is the row's own item, and the years slot is a cell with the chip beside the box on a
+            phone and under it from `md` */}
+        <div className="field-row grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
+          <div data-quick="amount" className="contents">
             <RawWatch onRaw={(t) => setText((x) => ({ ...x, amountNow: t }))}>
               <NumberField label={copy.quick.amountNow} unit="nis" value={committed.amountNow} isEntered={committed.amountNow !== null} validate={nonNegative} onCommit={(n) => setCommitted((c) => ({ ...c, amountNow: n }))} onReset={() => setCommitted((c) => ({ ...c, amountNow: null }))} optional inputMode="decimal" />
             </RawWatch>
           </div>
-          <div data-quick="monthly" className={cx("min-w-0", cushion && "hidden")}>
+          <div data-quick="monthly" className="contents" hidden={cushion}>
             <RawWatch onRaw={(t) => setText((x) => ({ ...x, monthly: t }))}>
               <NumberField label={copy.quick.monthly} unit="nis_per_month" value={committed.monthly} isEntered={committed.monthly !== null} validate={nonNegative} onCommit={(n) => setCommitted((c) => ({ ...c, monthly: n }))} onReset={() => setCommitted((c) => ({ ...c, monthly: null }))} optional inputMode="decimal" />
             </RawWatch>
           </div>
-          <div className={cx("col-span-2 md:col-span-1 flex items-end gap-3 min-w-0 md:flex-col md:items-start md:gap-2", cushion && "hidden")} data-quick="years">
-            <div className={cx("flex-1 md:flex-none md:w-full min-w-0 transition-opacity", unknownYears && "opacity-40")}>
-              <RawWatch onRaw={chooseYears}>
-                <NumberField key={yearsKey} label={copy.quick.years} unit="years" value={committed.years} isEntered={committed.years !== null} validate={yearsCheck} onCommit={(n) => setCommitted((c) => ({ ...c, years: n }))} onReset={() => setCommitted((c) => ({ ...c, years: null }))} optional inputMode="numeric" />
-              </RawWatch>
-            </div>
+          <div className={cx("field-cell col-span-2 md:col-span-1 md:row-span-3 gap-x-3 [&_.field]:transition-opacity", unknownYears && "[&_.field]:opacity-40")} data-quick="years" hidden={cushion}>
+            <RawWatch onRaw={chooseYears}>
+              <NumberField key={yearsKey} label={copy.quick.years} unit="years" value={committed.years} isEntered={committed.years !== null} validate={yearsCheck} onCommit={(n) => setCommitted((c) => ({ ...c, years: n }))} onReset={() => setCommitted((c) => ({ ...c, years: null }))} optional inputMode="numeric" />
+            </RawWatch>
             <button
               type="button"
               aria-pressed={unknownYears}
@@ -123,7 +124,7 @@ export function QuickGoalCard({ bounds, mode, className }: QuickGoalCardProps) {
                   setYearsKey((k) => k + 1);
                 }
               }}
-              className={cx("sec-chip border border-border shrink-0 transition-colors duration-[var(--duration-fast)]", unknownYears ? "sec-chip-on" : "bg-card hover:bg-accent")}
+              className={cx("sec-chip border border-border self-end md:row-start-3 md:col-start-1 md:self-start md:justify-self-start md:mt-0.5 transition-colors duration-[var(--duration-fast)]", unknownYears ? "sec-chip-on" : "bg-card hover:bg-accent")}
             >
               {copy.quick.unknownYears}
             </button>

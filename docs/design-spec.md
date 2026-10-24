@@ -151,6 +151,8 @@ Added 2026-10-24 (dilemma-first home), after the founder asked that the part of 
 
 **Files.** `site/app/lib/quick-goal.ts` (the pure mapper; tests in `quick-goal.test.ts`), `site/app/components/compare/quick-goal.tsx` (`QuickGoalCard`), `site/app/routes/home.tsx` (`QuestionBlock`, the layout), `site/app/components/compare/fields.tsx` (`ChoiceChips`).
 
+**Amended 2026-10-24 (night, the founder's screenshot).** The three fields are a `.field-row` (two columns on a phone, three from `md`), so their boxes line up where the years label wraps; the years slot is a `.field-cell` with the "לא יודעים" chip beside the box on a phone and under it from `md` (design-system 3.3).
+
 **Layout.** *Phone (390):* one column at `max-w-measure`; the hero's top padding is 24 px (80 px from `lg`); the card (about 520 px with its heading, two amount fields, the years row, the purpose row, the button, the link and the one line), then the search, then the four doors, which start on the second screen. *From `lg`:* the card and the doors are 8rem wider than the hero, as the doors were. *From `xl` (80rem):* a 12-column grid inside `max-w-page` (72rem), 48 px column gap: the start column (7) holds the name, the two lines and the card (the three fields in one row: the sum now, the monthly sum, the years with the chip under it); the end column (5) holds the search label and field, the four doors in one column and the small link.
 
 **`QuickGoalCard` props.**
@@ -321,7 +323,7 @@ Where the reader changes the values behind the graph (flow 3). A bottom sheet on
 
 | Component | Props | Notes |
 |---|---|---|
-| `NumberField` | `id; label; unit; value: ValueObject; onChange; hint?; error?; placeholder?` | Label above (`text-sm`, weight 500). Box: `h-field`, 1px `border-input`, `rounded-md`, `bg-card`, padding 12px. Input: `type="text"`, `inputmode="decimal"`, `dir="ltr"`, text aligned right; unit as a fixed suffix at the inline end. The box shows the `ring` outline while its input has focus. Entered: box border `#4a6cb3`, text `entered`. Error: border and message in `destructive`, `aria-invalid`. |
+| `NumberField` | `id; label; unit; value: ValueObject; onChange; hint?; error?; placeholder?` | Label above (`text-sm`, weight 500). Box: `h-field`, 1px `border-input`, `rounded-md`, `bg-card`, padding 12px. Input: `type="text"`, `inputmode="decimal"`, `dir="ltr"`, text aligned right; unit as a fixed suffix at the inline end. The box shows the `ring` outline while its input has focus. Entered: box border `#4a6cb3`, text `entered`. Error: border and message in `destructive`, `aria-invalid`. Two children, the label and `.field-body`; in a `.field-row` the field is a two-row subgrid (design-system 3.3, 2026-10-24 night). |
 | `SliderField` | `NumberField` props plus `min; max; step` | The label row holds the label and a compact number box (120–128px) at the end. Slider: 44px tall hit area; track 4px `#4a4742`; fill `bg-primary` from the start (right); thumb 24px, `bg-foreground` with a 3px `primary` ring. Use a native `<input type="range">` styled to this, so arrow keys, Page Up/Down and Home/End work. |
 | `FieldState` | `state: 'start' \| 'entered'` | Start: ~~"ערך התחלתי, פרמטר של האתר" in `text-xs muted`~~ nothing per field; one `ParameterLine` above the fields says "שדה שלא הזנתם הוא ערך התחלתי, פרמטר של האתר." (2026-10-24, UX audit). Entered: `StateTag entered` plus the reset button (44px tall, `text-link`). |
 | `SegmentedControl` | 1.3 | Employment, nothing selected by default. |
