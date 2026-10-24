@@ -68,8 +68,12 @@ already inside a product) it either refuses to answer or answers the wrong quest
 3. **A manual split by horizon.** A lump sum with no goal should be splittable into a short-horizon part and a long-horizon part as two goals (D12 allows several goals). Recommended as a "split" affordance on the result; no allocation engine.
 4. **Where is my child's account.** A sourced line pointing to the official lookup; small, needs the source recorded.
 5. **A fit-table row for general pension funds.** Track 2158's regulator record has no classification, so the fit table (P-04) has no row for it and the general pension is never demoted whatever fall the person accepts; a "קרנות כלליות" row (or a mapping) is your parameter to set.
-6. **Altshuler Trade's custody line** reads 0.15 % with a 75 ₪ monthly minimum; the tariff does not say whether the 0.15 % is per month or per year (the record is marked unconfirmed and runs as per month, 1.8 % a year, which puts that broker last). Only the broker can confirm; until then the picker shows it with the caution.
+6. **Altshuler Trade's custody line** reads 0.15 % with a 75 ₪ monthly minimum; the tariff does not say whether the 0.15 % is per month or per year (the record is marked unconfirmed and runs as per month, 1.8 % a year, which puts that broker last). *Founder, 2026-10-24: keep the caution for now; do not ask the broker.* The same answer covers asking the regulator's data site about past-return columns: not for now.
 7. The 16 decisions of the overnight audit still stand; decisions 5 (entered fund fee in the ranking), 16 (prefill exposure returns) and the representative-fund change (D21, provisional) were taken by the lead because the scenarios showed them to be blockers. D9 carries a provisional amendment for the past-record line (decision 1 above), recorded in docs/product.md for your confirmation.
+
+## Founder's answers (2026-10-24, afternoon)
+- No name on the site ("it doesn't matter"); the footer's "אתר אישי, לא מסחרי" line stays as is.
+- Keep the caution on the unconfirmed custody line; do not ask the companies for now.
 
 ## Still open after this round
 - The offer's term on idle cash is page state and is not carried into the comparison's deposit line (the own rate is).
