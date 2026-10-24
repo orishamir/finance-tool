@@ -4,8 +4,8 @@ import { useState, type ReactNode } from "react";
 import { MessageSquare } from "lucide-react";
 import { r4playbook as c } from "../../copy";
 import { fmt } from "../../lib/format";
+import { hebrewCount } from "../../lib/hebrew";
 import type { ExperienceEntry, PlaybookStep as StepData, Strength, StepFigure } from "../../lib/playbook";
-import { OpenQuestion } from "../holdings/shared";
 import { IconAlert, IconCopy, IconLock } from "../icons";
 import { Num, RuleRef } from "../provenance";
 import { Card, Disclosure, Tag, cx } from "../ui";
@@ -50,6 +50,20 @@ export function StrengthChip({ strength, host, checked }: { strength: Strength; 
   return <Tag tone="neutral">{word}</Tag>;
 }
 
+/** "שאלה פתוחה" as the lock tag, the code after the sentence in its own chip: the code is never inside the label (audit 2026-10-24, A56). */
+export function OpenQuestionChip({ code }: { code: string }) {
+  return (
+    <>
+      <Tag tone="blocked" icon={<IconLock size={14} />}>
+        {c.openQuestion}
+      </Tag>
+      <span className="rule-chip">
+        <bdi dir="ltr">{code}</bdi>
+      </span>
+    </>
+  );
+}
+
 export function ExperienceCard({ e }: { e: ExperienceEntry }) {
   const src = e.source;
   return (
@@ -84,6 +98,18 @@ function Figure({ f }: { f: StepFigure }) {
   const unit = f.value.unit;
   if (f.form === "within" && (unit === "business_days" || unit === "days" || unit === "months")) {
     const make = unit === "business_days" ? c.figure.businessDays : unit === "days" ? c.figure.days : c.figure.months;
+    const forms = unit === "business_days" ? c.figure.forms.businessDays : unit === "days" ? c.figure.forms.days : c.figure.forms.months;
+    const n = typeof f.value.value === "number" ? f.value.value : NaN;
+    // one and two are words ("יומיים"), the number inside them: the figure's own button carries them (audit 2026-10-24)
+    const count = Number.isFinite(n) ? hebrewCount(n, { one: forms.one, two: forms.two, other: () => "" }) : null;
+    if (count?.numberInside) {
+      return (
+        <li className="text-sm">
+          {forms.lead}
+          <Num value={f.value} display={count.text} /> <RuleRef id={f.ruleId} />
+        </li>
+      );
+    }
     const [a = "", b = ""] = make("\u0000").split("\u0000");
     return (
       <li className="text-sm">
@@ -115,7 +141,7 @@ function Labelled({ label, items }: { label: string; items: { ruleId: string; te
   );
 }
 
-export function PlaybookStep({ step, offer, children }: { step: StepData; offer?: ReactNode; children?: ReactNode }) {
+export function PlaybookStep({ step, offer, skip, children }: { step: StepData; offer?: ReactNode; skip?: string; children?: ReactNode }) {
   const title = step.institutionOnly ? c.institutionPrefix + step.title : step.title;
   const first = step.text[0];
   return (
@@ -129,6 +155,7 @@ export function PlaybookStep({ step, offer, children }: { step: StepData; offer?
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 min-w-0">
             <h3 className="text-lg font-medium">{title}</h3>
             <StrengthChip strength={step.strength} host={first?.host} checked={first?.checked} />
+            {skip && <Tag tone="neutral">{skip}</Tag>}
           </div>
         </div>
 
@@ -180,8 +207,8 @@ export function PlaybookStep({ step, offer, children }: { step: StepData; offer?
         )}
         {step.openQuestions.map((code) => (
           <p key={code} className="text-sm flex flex-wrap items-center gap-x-2 gap-y-1">
-            <OpenQuestion code={code} />
             <span>{c.oq[code]}</span>
+            <OpenQuestionChip code={code} />
           </p>
         ))}
 

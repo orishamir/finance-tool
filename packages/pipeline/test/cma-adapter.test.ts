@@ -8,7 +8,6 @@ import { describe, expect, it } from "vitest";
 import {
   DATASETS,
   assetName,
-  changelogLines,
   decodeWindows1255,
   diffFiles,
   gzipRaw,
@@ -256,73 +255,6 @@ describe("diff", () => {
   });
 });
 
-describe("change-log lines", () => {
-  it("with no previous file: three lines per fund as the hand collection wrote them", () => {
-    const lines = changelogLines(null, good());
-    expect(lines).toHaveLength(25);
-    expect(lines.slice(0, 3)).toEqual([
-      {
-        date: "2026-10-23",
-        collection: "cma",
-        id: "gemelnet@2026-09",
-        field: "funds.103.identity",
-        old: null,
-        new: { names: ["מיטב גמל לבני 50 עד 60"], fund_classification: "תגמולים ואישית לפיצויים", managing_corporation: 'מיטב גמל ופנסיה בע"מ' },
-        reason: "new snapshot, CMA gemelnet report period 2026-09",
-        affects_rankings: false,
-      },
-      {
-        date: "2026-10-23",
-        collection: "cma",
-        id: "gemelnet@2026-09",
-        field: "funds.103.raw_fields.AVG_ANNUAL_MANAGEMENT_FEE",
-        old: null,
-        new: "0.53",
-        reason: "new snapshot, CMA gemelnet report period 2026-09 (raw)",
-        affects_rankings: true,
-      },
-      expect.objectContaining({ field: "funds.103.raw_fields.AVG_DEPOSIT_FEE", new: "0.05", affects_rankings: true }),
-    ]);
-    expect(lines.slice(3, 5)).toEqual([
-      expect.objectContaining({ field: "funds.103.fees.avg_annual_management_fee", old: null, new: 0.53, affects_rankings: true }),
-      expect.objectContaining({ field: "funds.103.fees.avg_deposit_fee", old: null, new: 0.05, affects_rankings: true }),
-    ]);
-  });
-
-  it("a fee change affects rankings, a name or classification change does not", () => {
-    const next = clone(good());
-    next.checked = "2026-11-02";
-    next.funds[0]!.raw_fields.AVG_DEPOSIT_FEE = "0.07";
-    next.funds[0]!.names.cma = ["שם חדש"];
-    next.funds[1]!.fund_classification = "אחר";
-    const lines = changelogLines(good(), next);
-    const by = Object.fromEntries(lines.map((l) => [l.field, l]));
-    expect(lines).toHaveLength(3);
-    expect(by["funds.103.raw_fields.AVG_DEPOSIT_FEE"]).toMatchObject({ old: "0.05", new: "0.07", affects_rankings: true, date: "2026-11-02", id: "gemelnet@2026-09" });
-    expect(by["funds.103.names.cma"]!.affects_rankings).toBe(false);
-    expect(by["funds.117.fund_classification"]!.affects_rankings).toBe(false);
-  });
-
-  it("a new period logs the period change, new funds, removed funds and only the differences", () => {
-    const next = clone(good());
-    next.report_period = "2026-10";
-    next.funds = next.funds.filter((f) => f.fund_id !== 117);
-    next.funds.push({ ...clone(good()).funds[0]!, fund_id: 20000 });
-    const lines = changelogLines(good(), next);
-    expect(lines.map((l) => l.field)).toEqual([
-      "report_period",
-      "funds.20000.identity",
-      "funds.20000.raw_fields.AVG_ANNUAL_MANAGEMENT_FEE",
-      "funds.20000.raw_fields.AVG_DEPOSIT_FEE",
-      "funds.20000.fees.avg_annual_management_fee",
-      "funds.20000.fees.avg_deposit_fee",
-      "funds.117.identity",
-    ]);
-    expect(lines[0]).toMatchObject({ old: "2026-09", new: "2026-10", id: "gemelnet@2026-10" });
-    expect(lines[6]).toMatchObject({ new: null, affects_rankings: false });
-  });
-});
-
 describe("archive naming", () => {
   it("asset name replaces slashes, tag is by report period", () => {
     expect(assetName("cma/gemelnet/2026-10-23.csv.gz")).toBe("cma--gemelnet--2026-10-23.csv.gz");
@@ -339,7 +271,6 @@ describe("refreshCma end to end with an injected download", () => {
   function setup(csvFor: (c: typeof gemel) => Uint8Array) {
     const dataDir = mkdtempSync(join(tmpdir(), "cma-refresh-"));
     mkdirSync(join(dataDir, "cma"));
-    writeFileSync(join(dataDir, "changelog.jsonl"), "");
     const uploads: { tag: string; assetName: string }[] = [];
     const run = (over: Partial<Parameters<typeof refreshCma>[0]> = {}) =>
       refreshCma({
@@ -357,26 +288,23 @@ describe("refreshCma end to end with an injected download", () => {
     return { dataDir, run, uploads };
   }
 
-  it("dry run writes nothing; the real run writes the file, the change log and archives; a repeat changes nothing", async () => {
+  it("dry run writes nothing; the real run writes the file and archives; a repeat changes nothing", async () => {
     const { dataDir, run, uploads } = setup(() => fixture);
     const dry = await run({ dryRun: true });
     expect(dry[0]!.status).toBe("new-period");
     expect(readdirSync(join(dataDir, "cma"))).toEqual([]);
-    expect(readFileSync(join(dataDir, "changelog.jsonl"), "utf8")).toBe("");
 
     const first = await run();
-    expect(first[0]).toMatchObject({ status: "new-period", written: true, changelogLines: 25 });
+    expect(first[0]).toMatchObject({ status: "new-period", written: true });
     expect(readdirSync(join(dataDir, "cma"))).toEqual(["gemelnet@2026-09.json"]);
     const written = JSON.parse(readFileSync(join(dataDir, "cma", "gemelnet@2026-09.json"), "utf8"));
     expect(cmaPeriodFile.safeParse(written).success).toBe(true);
     expect(written.raw.sha256).toBe(sha256Hex(fixture));
     expect(uploads).toEqual([{ tag: "raw-cma-2026-09", assetName: "cma--gemelnet--2026-10-23.csv.gz" }]);
-    expect(readFileSync(join(dataDir, "changelog.jsonl"), "utf8").trim().split("\n")).toHaveLength(25);
 
     const again = await run({ runDate: "2026-10-24" });
     expect(again[0]).toMatchObject({ status: "unchanged", written: false });
     expect(uploads).toHaveLength(1);
-    expect(readFileSync(join(dataDir, "changelog.jsonl"), "utf8").trim().split("\n")).toHaveLength(25);
   });
 
   it("--no-archive skips the upload but records the key and hash", async () => {
@@ -387,7 +315,7 @@ describe("refreshCma end to end with an injected download", () => {
     expect(written.raw.archive_key).toBe("cma/gemelnet/2026-10-23.csv.gz");
   });
 
-  it("same period with a changed fee rewrites the file and logs the field", async () => {
+  it("same period with a changed fee rewrites the file", async () => {
     let bytes: Uint8Array = fixture;
     const { dataDir, run } = setup(() => bytes);
     await run();
@@ -398,15 +326,7 @@ describe("refreshCma end to end with an injected download", () => {
     patched.write('"0.54","0.05"', at, "latin1");
     bytes = patched;
     const r = await run({ runDate: "2026-10-25" });
-    expect(r[0]).toMatchObject({ status: "updated", written: true, changelogLines: 2 });
-    const lines = readFileSync(join(dataDir, "changelog.jsonl"), "utf8").trim().split("\n");
-    expect(JSON.parse(lines.findLast((l) => l.includes("raw_fields.AVG_ANNUAL"))!)).toMatchObject({
-      field: "funds.103.raw_fields.AVG_ANNUAL_MANAGEMENT_FEE",
-      old: "0.53",
-      new: "0.54",
-      affects_rankings: true,
-      date: "2026-10-25",
-    });
+    expect(r[0]).toMatchObject({ status: "updated", written: true });
     expect(JSON.parse(readFileSync(join(dataDir, "cma", "gemelnet@2026-09.json"), "utf8")).checked).toBe("2026-10-25");
   });
 
@@ -415,7 +335,6 @@ describe("refreshCma end to end with an injected download", () => {
     const { dataDir, run } = setup(() => bytes);
     await run();
     const before = readFileSync(join(dataDir, "cma", "gemelnet@2026-09.json"), "utf8");
-    const logBefore = readFileSync(join(dataDir, "changelog.jsonl"), "utf8");
     // a download with only two of the five funds of the period: 3 ids gone (60%)
     const lines = decodeWindows1255(fixture).split("\r\n");
     const header = lines[0]!;
@@ -425,7 +344,6 @@ describe("refreshCma end to end with an injected download", () => {
     expect(r[0]!.status).toBe("sanity-failed");
     expect(r[0]!.reasons.join()).toMatch(/row count|disappeared/);
     expect(readFileSync(join(dataDir, "cma", "gemelnet@2026-09.json"), "utf8")).toBe(before);
-    expect(readFileSync(join(dataDir, "changelog.jsonl"), "utf8")).toBe(logBefore);
     expect(existsSync(join(dataDir, "cma", "gemelnet@2026-10.json"))).toBe(false);
 
     const forced = await run({ runDate: "2026-10-26", force: true });

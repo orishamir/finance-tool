@@ -15,7 +15,7 @@
     "effective_from": "2026-10-23",
     "effective_to": null,
     "update_rule": "founder",
-    "notes": "real cost over the horizon"
+    "notes": "real cost over the horizon; since 2026-10-24 the idle-cash page also reads it over one year (the offer-versus-fund gap and the small-sum line), see docs/parameters-rationale.md#fee-verdict-thresholds"
   },
   "avoid_nis": {
     "value": 2500,

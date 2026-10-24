@@ -2,6 +2,7 @@
 // optional fields over the companies the site knows; a brokerage page adds the two fund fields.
 import { useId } from "react";
 import { r4playbook as c } from "../../copy";
+import { hebrewPrefix } from "../../lib/hebrew";
 import type { Side } from "../../lib/playbook";
 import { cx } from "../ui";
 
@@ -60,14 +61,11 @@ export function PlaybookSubjectStrip({
       <p className={cx("text-base", !from && !to && "text-muted-foreground")}>
         {from && to ? (
           <>
-            {c.strip.from}
-            <bdi>{from.name}</bdi> {c.strip.to}
-            <bdi>{to.name}</bdi>
+            <bdi>{hebrewPrefix(c.strip.from, from.name)}</bdi> <bdi>{hebrewPrefix(c.strip.to, to.name)}</bdi>
           </>
         ) : from ? (
           <>
-            {c.strip.fromOnly}
-            <bdi>{from.name}</bdi>
+            <bdi>{hebrewPrefix(c.strip.fromOnly, from.name)}</bdi>
           </>
         ) : (
           c.strip.pickPair

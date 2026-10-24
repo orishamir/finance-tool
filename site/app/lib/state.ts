@@ -1,6 +1,6 @@
 // The saved state, version 3 (design-spec 11.5 and 21.5, flows 17, 26 and 35): one document `mekor.v2.state` on the device that
 // holds the guide inputs, the goals, the holdings and the names not catalogued yet, plus the record of imports, and
-// since release 5 the saved comparisons and the visit dates. The storage key is unchanged (the document's own `version`
+// since release 5 the saved comparisons. The storage key is unchanged (the document's own `version`
 // says what it is; an older site that finds version 3 there refuses it and leaves it alone); version 2 migrates on load.
 // It replaces the release 2 keys `mekor.v1.inputs`, `mekor.v1.goals` and `mekor.v1.uncatalogued`: the first load
 // after the release migrates them once and removes them after a successful write. Browser only; nothing is
@@ -14,6 +14,8 @@ import type { RunGoal } from "./compare";
 import type { Goal } from "./goal";
 import { todayLocal } from "./today";
 import { entered as enteredValue } from "./value";
+import { sanitizeRawState, type Rejected } from "./import-check";
+import { IMPORTED_SIDE_KEY, mergeSide, noSideCounts, readImportedSide, readSideFile, readSideStores, removeImportedSide, sideCounts, sideTotal, sideIsEmpty, writeSideStores, type SideCounts, type SideMerge, type SideProblem, type SideStores } from "./side-stores";
 
 export const STATE_KEY = "mekor.v2.state";
 export const STATE_VERSION = 3;
@@ -50,6 +52,8 @@ export interface Holding {
   bars?: Partial<Record<TransferBar, boolean>>;
   /** `YYYY-MM-DD`, a study fund's first deposit (TXH-09). */
   firstDeposit?: ValueObject;
+  /** A study fund: the first deposit was more than six years ago, so the fund is liquid (TXH-09); entered boolean true, in place of an exact date (scenario fix 2026-10-24). */
+  firstDepositOverSix?: ValueObject;
   /** `YYYY-MM-DD`, the date the statement is correct to. */
   statementDate: ValueObject;
   child?: { route: "provident" | "bank" };
@@ -115,17 +119,10 @@ export interface SavedComparisonRecord {
   exposure?: { lossFilter: { worstFall: Record<string, ValueObject>; acceptedFall?: ValueObject; acceptedFallById?: Record<string, ValueObject> }; returns: Record<string, ValueObject>; holding: Record<string, string> };
 }
 
-/** The visit dates (design-spec 21.5): `last` is today's visit, `previous` the one before it (the change-log picker's default). */
-export interface Visits {
-  previous?: string;
-  last?: string;
-}
-
 export interface StateV3 extends Omit<StateV2, "version"> {
   version: 3;
   /** One per goal and mode. A record this release cannot read is kept as it is (see `isReadableSaved`). */
   savedComparisons: SavedComparisonRecord[];
-  visits: Visits;
 }
 
 export interface StateFile {
@@ -134,10 +131,15 @@ export interface StateFile {
   exported: string;
   site: { version: string; data: string };
   state: StateV3;
+  /**
+   * The entered offers, the variant assumptions and the playbook ticks, which live in their own device keys until the
+   * founder approves their merge into the document (audit 2026-10-24, A32). Absent in a file from before; the version stays 3.
+   */
+  sideStores?: SideStores;
 }
 
 export function emptyState(): StateV3 {
-  return { version: 3, goals: [], inputs: {}, holdings: [], uncatalogued: [], imports: [], savedComparisons: [], visits: {} };
+  return { version: 3, goals: [], inputs: {}, holdings: [], uncatalogued: [], imports: [], savedComparisons: [] };
 }
 
 /** The device's calendar date (local, not UTC): see `today.ts`. */
@@ -206,7 +208,7 @@ const wrapperIds = new Set<string>([
   "child-savings-bank",
 ]);
 
-const holdingValueFields = ["balance", "embeddedGain", "feeBalance", "feeDeposit", "directExpenses", "monthlyOwn", "monthlyEmployer", "firstDeposit", "statementDate"] as const;
+const holdingValueFields = ["balance", "embeddedGain", "feeBalance", "feeDeposit", "directExpenses", "monthlyOwn", "monthlyEmployer", "firstDeposit", "firstDepositOverSix", "statementDate"] as const;
 
 function voAt(v: unknown, path: string): string | null {
   const r = valueObject.safeParse(v);
@@ -276,12 +278,11 @@ export function checkState(s: unknown): string | null {
   if (s.version === 3) {
     if (!Array.isArray(s.savedComparisons)) return "savedComparisons";
     for (const [i, c] of s.savedComparisons.entries()) if (!isObj(c)) return `savedComparisons.${i}`;
-    if (s.visits !== undefined && !isObj(s.visits)) return "visits";
   }
   return null;
 }
 
-/** A version 2 or 3 document as the version 3 shape: each goal gains an empty `exposures` map, the document an empty list of saved comparisons and no visits (the migration chain, design-spec 21.5). */
+/** A version 2 or 3 document as the version 3 shape: each goal gains an empty `exposures` map, the document an empty list of saved comparisons; a `visits` field of an earlier file is ignored (the migration chain, design-spec 21.5). */
 function normalizeState(s: Record<string, unknown>): StateV3 {
   const base = emptyState();
   const goals = (s.goals as Goal[]).map((g) => (g.exposures ? g : { ...g, exposures: {} }));
@@ -289,7 +290,6 @@ function normalizeState(s: Record<string, unknown>): StateV3 {
     version: 3,
     goals,
     savedComparisons: Array.isArray(s.savedComparisons) ? (s.savedComparisons as SavedComparisonRecord[]) : base.savedComparisons,
-    visits: isObj(s.visits) ? ((({ previous, last }) => ({ ...(typeof previous === "string" ? { previous } : {}), ...(typeof last === "string" ? { last } : {}) }))(s.visits as Visits)) : base.visits,
     ...(typeof s.currentId === "string" ? { currentId: s.currentId } : {}),
     ...(typeof s.bank === "string" ? { bank: s.bank } : {}),
     inputs: s.inputs as Record<string, ValueObject>,
@@ -478,9 +478,8 @@ export function ensureLoaded(): Snapshot {
       if (isObj(v) && (v.version === 2 || v.version === 3) && checkState(v) === null) {
         // a version 2 document is migrated here and written as version 3 with the next edit; a version 3 one is read as it is
         const norm = normalizeState(v);
-        const next = startVisit(norm);
-        set({ ready: true, status: "ok", state: next });
-        if (v.version === 2 || next !== norm) schedule();
+        set({ ready: true, status: "ok", state: norm });
+        if (v.version === 2) schedule();
       } else {
         // a newer or unreadable document is left exactly as it is
         readOnly = true;
@@ -502,17 +501,16 @@ export function ensureLoaded(): Snapshot {
     }
     if (migrated) {
       try {
-        const started = startVisit(migrated);
-        s.setItem(STATE_KEY, JSON.stringify(started));
+        s.setItem(STATE_KEY, JSON.stringify(migrated));
         for (const k of [V1_INPUTS, V1_GOALS, V1_UNCAT]) s.removeItem(k);
-        set({ ready: true, status: "ok", state: started });
+        set({ ready: true, status: "ok", state: migrated });
       } catch {
         set({ ready: true, status: "unavailable", saved: false, state: migrated });
         memory = migrated;
       }
       return snap;
     }
-    set({ ready: true, status: "ok", state: startVisit(emptyState()) });
+    set({ ready: true, status: "ok", state: emptyState() });
     schedule();
   } catch {
     set({ ready: true, status: "unavailable", saved: false, state: memory ?? emptyState() });
@@ -543,14 +541,6 @@ export function flush(force = false): boolean {
     set({ saved: false });
     return false;
   }
-}
-
-/** The start of a visit (design-spec 21.5): a day later than the last visit makes that visit the previous one; today is the last. */
-export function startVisit(s: StateV3, today = isoToday()): StateV3 {
-  const last = s.visits.last;
-  if (last === today) return s;
-  const previous = last && last < today ? last : s.visits.previous;
-  return { ...s, visits: { ...(previous ? { previous } : {}), last: today } };
 }
 
 function schedule() {
@@ -603,7 +593,7 @@ export function clearGoals(): void {
   takeOver();
   if (wasOld && snap.state.goals.length === 0 && Object.keys(snap.state.inputs).length === 0 && snap.state.holdings.length === 0) {
     // nothing else of the person's is in the document: write the empty one (removes any v1 goals key)
-    set({ state: { ...emptyState(), visits: snap.state.visits }, external: snap.external + 1 });
+    set({ state: emptyState(), external: snap.external + 1 });
     flush(true);
     return;
   }
@@ -656,7 +646,7 @@ export function useHoldings() {
   return { ready: snapshot.ready, status: snapshot.status, saved: snapshot.saved, holdings: sortedHoldings(snapshot.state.holdings), save: saveHolding, remove: removeHolding, move: moveHolding };
 }
 
-// ---------------------------------------------------------------- saved comparisons and visits
+// ---------------------------------------------------------------- saved comparisons
 
 const sameSlot = (c: unknown, goalId: string, mode: CompareMode) => isObj(c) && c.goalId === goalId && c.mode === mode;
 
@@ -676,9 +666,9 @@ export function deleteSavedComparison(goalId: string, mode: CompareMode): void {
   flush(true);
 }
 
-export function useSavedComparisons(): { ready: boolean; saved: boolean; status: StoreStatus; list: SavedComparisonRecord[]; visits: Visits } {
+export function useSavedComparisons(): { ready: boolean; saved: boolean; status: StoreStatus; list: SavedComparisonRecord[] } {
   const snapshot = useStateStore();
-  return { ready: snapshot.ready, saved: snapshot.saved, status: snapshot.status, list: snapshot.state.savedComparisons, visits: snapshot.state.visits };
+  return { ready: snapshot.ready, saved: snapshot.saved, status: snapshot.status, list: snapshot.state.savedComparisons };
 }
 
 // ---------------------------------------------------------------- imported items
@@ -699,6 +689,12 @@ export function withoutImported(s: StateV3): StateV3 {
 
 export function deleteImported(): void {
   replaceState(withoutImported(snap.state));
+  removeImportedSide(theStorage());
+}
+
+/** How many side-store items an "add" import brought that are still recorded as imported (offers, assumptions, ticks, own rates). */
+export function importedSideCount(): number {
+  return sideTotal(readImportedSide(theStorage()));
 }
 
 export function useImportedCount(): number {
@@ -711,28 +707,38 @@ export function isBlankGoal(g: Goal): boolean {
   return g.preset === "none" && !g.name && !g.horizonYears.entered && !g.amountNow.entered && !g.monthly.entered && !g.available.entered && !g.anytime.entered && g.profile.salary === null && g.assumptions.return === null && g.assumptions.acceptedFall == null && Object.keys(g.exposures ?? {}).length === 0;
 }
 
-export function exportCounts(s: StateV3) {
+export function exportCounts(s: StateV3, side?: SideStores) {
+  const sc = side ? sideCounts(side) : noSideCounts();
   return {
     goals: s.goals.filter((g) => !isBlankGoal(g)).length,
     holdings: s.holdings.length,
     names: s.uncatalogued.length,
     inputs: Object.keys(s.inputs).length > 0,
     comparisons: s.savedComparisons.length,
+    offers: sc.offers,
+    variants: sc.variants,
+    ticks: sc.ticks,
+    ownRates: sc.ownRates,
   };
 }
 
-/** Nothing worth a file: no goal with content, no holding, no name, no guide input. */
-export function isEmptyState(s: StateV3): boolean {
-  const c = exportCounts(s);
-  return c.goals === 0 && c.holdings === 0 && c.names === 0 && !c.inputs && c.comparisons === 0;
+/** The three side stores as this device holds them now (browser only; empty on the server). */
+export function currentSideStores(): SideStores {
+  return readSideStores(theStorage());
 }
 
-export function buildStateFile(s: StateV3, site: { version: string; data: string }, now = new Date()): StateFile {
+/** Nothing worth a file: no goal with content, no holding, no name, no guide input, no saved comparison, no side store. */
+export function isEmptyState(s: StateV3, side?: SideStores): boolean {
+  const c = exportCounts(s, side);
+  return c.goals === 0 && c.holdings === 0 && c.names === 0 && !c.inputs && c.comparisons === 0 && c.offers + c.variants + c.ticks + c.ownRates === 0;
+}
+
+export function buildStateFile(s: StateV3, site: { version: string; data: string }, now = new Date(), side?: SideStores): StateFile {
   const goals = s.goals.filter((g) => !isBlankGoal(g));
   const currentId = s.currentId && goals.some((g) => g.id === s.currentId) ? s.currentId : undefined;
   const state: StateV3 = { ...s, goals, currentId, savedComparisons: s.savedComparisons.filter((c) => !isObj(c) || goals.some((g) => g.id === c.goalId)) };
   if (currentId === undefined) delete state.currentId;
-  return { format: "mekor-state", version: STATE_VERSION, exported: now.toISOString(), site, state };
+  return { format: "mekor-state", version: STATE_VERSION, exported: now.toISOString(), site, state, ...(side && !sideIsEmpty(side) ? { sideStores: side } : {}) };
 }
 
 export function stateFileText(f: StateFile): string {
@@ -768,10 +774,15 @@ export function peekExportName(date = isoToday()): string {
 
 export interface ImportPreviewData {
   file: StateFile;
-  /** The file's state as this release reads it (an older version already migrated). */
+  /** The file's state as this release reads it (an older version already migrated), without the items that failed their check. */
   state: StateV3;
   migrated: boolean;
-  counts: { goals: number; holdings: number; names: number; comparisons: number };
+  counts: { goals: number; holdings: number; names: number; comparisons: number; offers: number; variants: number; ticks: number; ownRates: number };
+  /** The file's side stores that passed their check, or null when the file has none. */
+  side: SideStores | null;
+  /** Goals, holdings, saved comparisons and inputs left out for a field that failed (A33), and side-store items likewise. */
+  rejected: Rejected[];
+  sideProblems: SideProblem[];
 }
 
 export type ImportRead = { ok: true; preview: ImportPreviewData } | { ok: false; refusal: Refusal };
@@ -789,28 +800,46 @@ export function readImport(text: string): ImportRead {
   if (typeof json.version !== "number") return { ok: false, refusal: { kind: "invalid", field: "version" } };
   if (typeof json.exported !== "string") return { ok: false, refusal: { kind: "invalid", field: "exported" } };
   if (!isObj(json.site) || typeof json.site.version !== "string" || typeof json.site.data !== "string") return { ok: false, refusal: { kind: "invalid", field: "site" } };
-  const r = readState(json.state, json.version);
+  const { state: cleaned, rejected } = sanitizeRawState(json.state);
+  const r = readState(cleaned, json.version);
   if (!r.ok) return r;
+  const { side, problems } = readSideFile(json.sideStores);
   const goals = r.state.goals.filter((g) => !isBlankGoal(g)).length;
+  const sc = side ? sideCounts(side) : noSideCounts();
   return {
     ok: true,
-    preview: { file: json as unknown as StateFile, state: r.state, migrated: r.migrated, counts: { goals, holdings: r.state.holdings.length, names: r.state.uncatalogued.length, comparisons: r.state.savedComparisons.length } },
+    preview: {
+      file: json as unknown as StateFile,
+      state: r.state,
+      migrated: r.migrated,
+      counts: { goals, holdings: r.state.holdings.length, names: r.state.uncatalogued.length, comparisons: r.state.savedComparisons.length, ...sc },
+      side,
+      rejected,
+      sideProblems: problems,
+    },
   };
 }
 
-const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
+/** What makes an item the same item on another device: everything but its id, its place in the list and the import tag. */
+const fingerprint = (x: object): string => {
+  const { id: _id, order: _order, importedAt: _imported, ...rest } = x as { id?: string; order?: number; importedAt?: string };
+  return JSON.stringify(rest);
+};
 
 export interface ImportResult {
   state: StateV3;
   added: { goals: number; holdings: number; names: number; comparisons: number };
   skipped: number;
+  /** "Add": the first goal this import added, so the page can offer to switch to it (A69). */
+  firstAddedGoalId?: string;
 }
 
 /**
- * "Add": goals, holdings and names are merged by id (names by text); an identical item is skipped and counted, an
- * item with the same id and other content is added under a new id; appended items carry `importedAt` and an `order`
- * after the existing ones; the device's own current goal stays. The guide inputs are kept as they are on the
- * device, and a value only the file has is filled in.
+ * "Add": goals, holdings and names are merged; an item that is already on the device is skipped and counted, whatever
+ * its place in the list or import tag, and a copy an earlier import added under a new id (so the same file twice adds nothing the second time, A33); an item with the same id and
+ * other content is added under a new id; appended items carry `importedAt` and an `order` after the existing ones; the
+ * device's own current goal stays. The guide inputs are kept as they are on the device, and a value only the file has
+ * is filled in. A saved comparison follows its goal, also to the goal that was already there.
  * "Replace": the file's state as it is (its items carry no imported tag: they are what the device now holds).
  */
 export function applyImport(current: StateV3, incoming: StateV3, mode: "add" | "replace", today = isoToday()): ImportResult {
@@ -825,7 +854,7 @@ export function applyImport(current: StateV3, incoming: StateV3, mode: "add" | "
   }
   let skipped = 0;
   const added = { goals: 0, holdings: 0, names: 0, comparisons: 0 };
-  /** Goals added under a new id (same id, other content): their saved comparisons follow them. */
+  /** The file's goal id → the id it has on this device (the twin already there, or the new id it was added under): its saved comparisons follow. */
   const goalIds = new Map<string, string>();
   const strip = <T extends { importedAt?: string }>(x: T): T => {
     const { importedAt: _drop, ...rest } = x;
@@ -834,26 +863,33 @@ export function applyImport(current: StateV3, incoming: StateV3, mode: "add" | "
   const merge = <T extends { id: string; importedAt?: string }>(have: T[], incomingItems: T[], reid: (x: T, id: string) => T, count: "goals" | "holdings"): T[] => {
     const out = [...have];
     for (const item of incomingItems) {
-      const twin = out.find((x) => x.id === item.id);
-      if (twin && same(strip(twin), strip(item))) {
+      // the same id and content, or a copy this device took in by an earlier import under a new id (not two accounts of the person's own that happen to read alike)
+      const fp = fingerprint(item);
+      const twin = out.find((x) => x.id === item.id && fingerprint(x) === fp) ?? have.find((x) => x.importedAt && fingerprint(x) === fp);
+      if (twin) {
         skipped += 1;
+        if (count === "goals") goalIds.set(item.id, twin.id);
         continue;
       }
-      const id = twin ? `${item.id}-i${Date.now().toString(36)}${out.length}` : item.id;
-      if (count === "goals" && twin) goalIds.set(item.id, id);
-      out.push({ ...reid(item, id), importedAt: today });
+      const clash = out.some((x) => x.id === item.id);
+      const id = clash ? `${item.id}-i${Date.now().toString(36)}${out.length}` : item.id;
+      if (count === "goals") goalIds.set(item.id, id);
+      out.push({ ...reid(strip(item), id), importedAt: today });
       added[count] += 1;
     }
     return out;
   };
   const incomingGoals = incoming.goals.filter((g) => !isBlankGoal(g));
+  const haveGoalIds = new Set(current.goals.map((g) => g.id));
   let goals = merge(current.goals, incomingGoals, (g, id) => ({ ...g, id }), "goals");
   const top = current.goals.length === 0 ? -1 : Math.max(...current.goals.map((g) => g.order));
   let k = 0;
-  goals = goals.map((g) => (g.importedAt === today && !current.goals.some((c) => c.id === g.id) ? { ...g, order: top + 1 + k++ } : g));
+  goals = goals.map((g) => (g.importedAt === today && !haveGoalIds.has(g.id) ? { ...g, order: top + 1 + k++ } : g));
+  const firstAddedGoalId = goals.find((g) => g.importedAt === today && !haveGoalIds.has(g.id))?.id;
+  const haveHoldingIds = new Set(current.holdings.map((h) => h.id));
   const topH = current.holdings.length === 0 ? -1 : Math.max(...current.holdings.map((h) => h.order));
   let kh = 0;
-  const holdings = merge(current.holdings, incoming.holdings, (h, id) => ({ ...h, id }), "holdings").map((h) => (h.importedAt === today && !current.holdings.some((c) => c.id === h.id) ? { ...h, order: topH + 1 + kh++ } : h));
+  const holdings = merge(current.holdings, incoming.holdings, (h, id) => ({ ...h, id }), "holdings").map((h) => (h.importedAt === today && !haveHoldingIds.has(h.id) ? { ...h, order: topH + 1 + kh++ } : h));
   const names = [...current.uncatalogued];
   for (const u of incoming.uncatalogued) {
     if (names.some((x) => x.name === u.name)) skipped += 1;
@@ -881,11 +917,39 @@ export function applyImport(current: StateV3, incoming: StateV3, mode: "add" | "
     goals,
     inputs,
     savedComparisons,
-    visits: current.visits.last || current.visits.previous ? current.visits : incoming.visits,
     holdings,
     uncatalogued: names,
     ...(current.bank ? { bank: current.bank } : incoming.bank ? { bank: incoming.bank } : {}),
     imports: [...current.imports, { at: today, mode, goals: added.goals, holdings: added.holdings, names: added.names, skipped }],
   };
-  return { state, added, skipped };
+  return { state, added, skipped, ...(firstAddedGoalId ? { firstAddedGoalId } : {}) };
 }
+
+/** The current goal becomes this one (A69, "לעבור למטרה שיובאה"). */
+export function switchToGoal(id: string): void {
+  updateState((s) => (s.goals.some((g) => g.id === id) ? { ...s, currentId: id } : s));
+  flush(true);
+}
+
+/** Merges a file's side stores into the device's and writes them. Returns what was added and skipped. */
+export function applySideImport(file: SideStores | null, mode: "add" | "replace"): SideMerge & { written: boolean } {
+  const r = mergeSide(currentSideStores(), file, mode);
+  const st = theStorage();
+  const written = file ? writeSideStores(st, r.merged) : true;
+  if (file && st) {
+    // "add" records what it added (on top of earlier imports); "replace" makes the file's items the device's own, untagged like holdings
+    try {
+      if (mode === "replace") st.removeItem(IMPORTED_SIDE_KEY);
+      else if (sideTotal(r.addedItems) > 0) {
+        const prev = readImportedSide(st);
+        const all = mergeSide(prev, r.addedItems, "add").merged;
+        st.setItem(IMPORTED_SIDE_KEY, JSON.stringify(all));
+      }
+    } catch {
+      /* the record is a convenience: without it the undo leaves the side items */
+    }
+  }
+  return { ...r, written };
+}
+
+export type { SideCounts, SideStores };

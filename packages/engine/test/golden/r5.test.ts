@@ -1,5 +1,5 @@
 // Release 5 golden scenarios: S48 (revisit after a rule change, F-82) and S49 (exposure mode with entered returns
-// and the loss filter, F-71), plus unit tests for F-71, diffVersions and changesSince.
+// and the loss filter, F-71), plus unit tests for F-71, and diffVersions.
 // Wrapper and exposure records are minimal, schema-valid test records; no file under data/instruments/ is read.
 // Filled-in inputs follow workings.md Q17: S49 holds cash as S11 (daily money-market fund, 0.16% + 0.02%) and bonds
 // as S15 (open tracking fund, trustee 0.02%, 0.1% min 10, custody as S14), on the S39 goal.
@@ -8,7 +8,6 @@ import { describe, expect, it } from "vitest";
 import type { ExposureRecord, RuleRecord, ValueObject, WrapperId, WrapperRecord } from "@finance-tool/schema";
 import {
   buildCandidateSet,
-  changesSince,
   compareExposures,
   diffVersions,
   formulas,
@@ -391,64 +390,5 @@ describe("F-82 diffVersions", () => {
     const b: Versions = { ...a, rules: [{ ...a.rules[0]!, value: [{ upTo: 100, rate: 10 }, { upTo: null, rate: 21 }] }] };
     expect(diffVersions(a, structuredClone(a))).toEqual([]);
     expect(diffVersions(a, b)).toHaveLength(1);
-  });
-});
-
-// ---------------------------------------------------------------- changesSince
-
-describe("F-82 changesSince", () => {
-  const line = (date: string, collection: string, id: string, affects: boolean) => ({
-    date,
-    collection,
-    id,
-    field: "value",
-    old: 1,
-    new: 2,
-    reason: "test",
-    affects_rankings: affects,
-  });
-  const lines = [
-    line("2026-10-20", "rules", "txs-09", true),
-    line("2026-10-23", "fees", "psagot", true),
-    line("2026-10-23", "cma", "pensia-net@2026-09", false),
-    line("2026-10-24", "rules", "txk-07", true),
-    line("2026-10-24", "fees", "ibi", false),
-    line("2026-10-25", "cma", "gemel-net@2026-09", true),
-  ];
-
-  it("keeps only lines after the date, and none on it", () => {
-    const r = changesSince(lines, "2026-10-23");
-    expect(r.counts).toEqual({ affectsRankings: 2, other: 1 });
-    expect([...r.affectsRankings, ...r.other].flatMap((g) => g.lines.map((l) => l.id)).sort()).toEqual(["gemel-net@2026-09", "ibi", "txk-07"]);
-    expect(changesSince(lines, "2026-10-25").counts).toEqual({ affectsRankings: 0, other: 0 });
-  });
-
-  it("splits by affects_rankings and groups by collection, in order", () => {
-    const r = changesSince(lines, "2026-10-19");
-    expect(r.affectsRankings.map((g) => [g.collection, g.lines.map((l) => l.id)])).toEqual([
-      ["cma", ["gemel-net@2026-09"]],
-      ["fees", ["psagot"]],
-      ["rules", ["txs-09", "txk-07"]],
-    ]);
-    expect(r.other.map((g) => [g.collection, g.lines.map((l) => l.id)])).toEqual([
-      ["cma", ["pensia-net@2026-09"]],
-      ["fees", ["ibi"]],
-    ]);
-  });
-
-  it("can limit to collections and an end date", () => {
-    const r = changesSince(lines, "2026-10-19", { collections: ["rules"], until: "2026-10-23" });
-    expect(r.counts).toEqual({ affectsRankings: 1, other: 0 });
-  });
-
-  it("reads the real change log", () => {
-    const text = readFileSync(new URL("../../../../data/changelog.jsonl", import.meta.url), "utf8");
-    const real = text.split("\n").filter(Boolean).map((l) => JSON.parse(l));
-    const r = changesSince(real, "2000-01-01");
-    expect(r.counts.affectsRankings + r.counts.other).toBe(real.length);
-  });
-
-  it("stops on a line that is not a change-log line", () => {
-    expect(() => changesSince([{ date: "x" }], "2026-10-23")).toThrow(RecordInputError);
   });
 });

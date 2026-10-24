@@ -279,7 +279,7 @@ export function VariantCoverage({ view, today }: { view: FundVariantsView; today
       <div className="mt-4 border-t border-border pt-3 flex flex-col gap-1">
         {groups.map((g) => (
           <details key={g.key} className="group/g" open={g.key !== "ranked"}>
-            <summary className="flex items-center justify-between min-h-target cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+            <summary className="flex items-center gap-2 min-h-target cursor-pointer list-none [&::-webkit-details-marker]:hidden">
               <h3 className="font-medium">
                 {g.label} <span className="text-muted-foreground font-normal">(<bdi dir="ltr">{g.rows.length}</bdi>)</span>
               </h3>

@@ -8,7 +8,7 @@ import { fmt } from "../../lib/format";
 import type { ConsolidationGroup, Fit, HoldingView } from "../../lib/holdings";
 import { IconBan, IconDash, IconDashed, IconHelp, IconOk } from "../compare/icons";
 import { IconLock } from "../icons";
-import { Num, RuleRef } from "../provenance";
+import { LeadTail, Num, RuleRef } from "../provenance";
 import { Callout, Card, Disclosure, Tag, cx } from "../ui";
 import { OpenQuestion, RuleBullet, RuleText, YearsNum, type RuleMap } from "./shared";
 import { fit as fitCopy } from "../../copy";
@@ -137,8 +137,9 @@ export function ConsolidationCard({ group, views, rules }: { group: Consolidatio
         <div className="flex flex-col gap-1.5 border-t border-border pt-3">
           <p>
             {c.worth.before}
-            <bdi>{target.holding.track?.name ?? target.companyName}</bdi> {c.worth.after} <Num value={group.worth} size="figure" className="!text-2xl" /> {c.worth.mid}
-            <YearsNum value={group.worth.computed_from!.inputs["שנים"] as never} />
+            <bdi>{target.holding.track?.name ?? target.companyName}</bdi> {c.worth.after} <Num value={group.worth} size="figure" className="!text-2xl" /> <LeadTail lead={c.worth.mid}>
+              <YearsNum value={group.worth.computed_from!.inputs["שנים"] as never} />
+            </LeadTail>
             {c.worth.end}
           </p>
           {group.target && <TargetMark fit={group.target.fit} />}

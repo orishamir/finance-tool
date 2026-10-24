@@ -1,7 +1,8 @@
 // The timeline graph (design-spec 1.4, design-system 3.4): our own SVG on D3 scales and shapes. Time runs
-// left to right; value labels sit in a strip at the right, outside the plot; bands bottom-up are what is
-// left, tax and fees, with a neutral contributions line over them.
-import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+// left to right; the value axis labels sit at the plot's left edge above their gridlines (one rule shared by
+// the three SVG charts, see AxisLabels); bands bottom-up are what is left, tax and fees, with a neutral
+// contributions line over them.
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { area, line } from "d3-shape";
 import { scaleLinear } from "d3-scale";
 import { guide as copy } from "../../copy";
@@ -34,9 +35,42 @@ export interface TimelineChartProps {
   dimmed?: boolean;
 }
 
-const STRIP = 78;
-const TOP = 10;
+/** Right padding after the horizon; the value axis sits at the plot's start edge (see AxisLabels), not in a strip. */
+const STRIP = 12;
+const TOP = 20; // room for the top axis label above its gridline (audit 2026-10-24 (sweep))
 const BOTTOM = 26;
+
+/**
+ * Year ticks on a whole-year grid: steps of 1, 2, 5 or 10 years (d3's nice steps for about four intervals), always
+ * including 0 ("today"). Any horizon from 1 to 40 gives 3 to 8 ticks, never a 2.5-year step.
+ */
+export function niceYearTicks(horizon: number): number[] {
+  const h = Math.max(1, Math.round(horizon));
+  const t = scaleLinear().domain([0, h]).ticks(4).filter((v) => Number.isInteger(v));
+  return t.length ? t : [0, h];
+}
+
+/** The shared value-axis rule: labels at the plot's start edge, just above their gridline, with a card-colour halo. */
+export function AxisLabels({ ticks, y }: { ticks: number[]; y: (v: number) => number }) {
+  return (
+    <>
+      {ticks.map(
+        (t) =>
+          t > 0 && (
+            <text key={t} x={2} y={y(t) - 4} textAnchor="start" direction="ltr" className="text-xs fill-chart-text stroke-card [paint-order:stroke]" strokeWidth="3" data-scale>
+              {fmt.compactNisAxis(t)}
+            </text>
+          ),
+      )}
+    </>
+  );
+}
+
+/** A sideways-scrolling table wrapper's cue without script: a card-colour fade at each end that is still hidden content, and a soft edge shadow. */
+export const scrollCueStyle: CSSProperties = {
+  background:
+    "linear-gradient(to right, var(--card) 30%, transparent) left center / 32px 100% no-repeat local, linear-gradient(to left, var(--card) 30%, transparent) right center / 32px 100% no-repeat local, radial-gradient(farthest-side at 0 50%, rgb(255 255 255 / 0.22), transparent) left center / 14px 100% no-repeat scroll, radial-gradient(farthest-side at 100% 50%, rgb(255 255 255 / 0.22), transparent) right center / 14px 100% no-repeat scroll",
+};
 
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
@@ -69,7 +103,7 @@ export function TimelineChart({ points, hover, onHover, markers = [], blocked, e
   const topLine = line<ChartPoint>().x((d) => x(d.year)).y((d) => y(d.net + d.tax + d.fees));
   const contribLine = line<ChartPoint>().x((d) => x(d.year)).y((d) => y(d.contributions));
 
-  const yearTicks = [0, ...[1, 2, 3, 4].map((k) => Math.round((horizon * k) / 4))].filter((v, i, a) => a.indexOf(v) === i);
+  const yearTicks = niceYearTicks(horizon);
   const hovered = hover === null ? null : shown.find((p) => p.year === hover) ?? null;
 
   const svgRef = useRef<SVGSVGElement>(null);
@@ -104,18 +138,14 @@ export function TimelineChart({ points, hover, onHover, markers = [], blocked, e
           </pattern>
         </defs>
         {ticks.map((t) => (
-          <g key={t}>
-            <line x1={0} x2={plotW} y1={y(t)} y2={y(t)} className={t === 0 ? "stroke-chart-axis" : "stroke-chart-grid"} strokeWidth="1" />
-            <text x={width} y={y(t)} dy="0.32em" textAnchor="start" direction="rtl" className="text-xs fill-chart-text" data-scale>
-              {fmt.compactNis(t)}
-            </text>
-          </g>
+          <line key={t} x1={0} x2={plotW} y1={y(t)} y2={y(t)} className={t === 0 ? "stroke-chart-axis" : "stroke-chart-grid"} strokeWidth="1" />
         ))}
         <g className="stroke-card" strokeWidth="1.5" strokeLinejoin="round">
           <path d={bandNet(shown) ?? ""} className="fill-chart-value" />
           <path d={bandTax(shown) ?? ""} className="fill-chart-tax" />
           <path d={bandFees(shown) ?? ""} className="fill-chart-fee" />
         </g>
+        <AxisLabels ticks={ticks} y={y} />
         {enteredReturn && <path d={topLine(shown) ?? ""} fill="none" className="stroke-chart-entered" strokeWidth="2" strokeDasharray="6 4" />}
         <path d={contribLine(shown) ?? ""} fill="none" className="stroke-chart-contributions" strokeWidth="1.5" />
         <path d={netLine(shown) ?? ""} fill="none" className={enteredReturn ? "stroke-chart-entered" : "stroke-chart-net"} strokeWidth="2" strokeDasharray={enteredReturn ? "6 4" : undefined} />

@@ -6,7 +6,7 @@ import { useId } from "react";
 import { r4catalogue as copy, guideBlocks } from "../../../copy";
 import { fmt } from "../../../lib/format";
 import { IconAlert, IconExternal } from "../../icons";
-import { Num, RuleRef, RulesLine } from "../../provenance";
+import { LeadTail, Num, NumAfter, RuleRef, RulesLine } from "../../provenance";
 import { Card, Disclosure, LinkButton, Tag } from "../../ui";
 import type { InstitutionKind, TariffCardData, TariffLineRow } from "./types";
 
@@ -92,34 +92,32 @@ export function BrokerageGroupCard({ id, tariff, kind, className }: { id: string
         <p className="text-sm max-w-measure">
           <bdi>{tariff.title}</bdi>
         </p>
-        <p className="text-sm flex flex-wrap items-center gap-x-1">
+        <p className="text-sm">
           {tariff.published ? (
             <>
-              {copy.card.tariffFrom}
-              <Num value={tariff.published} />
+              <NumAfter lead={copy.card.tariffFrom} value={tariff.published} />
             </>
           ) : (
             <span className="text-caution-foreground">{copy.card.noPublishedDate}</span>
           )}
-          {copy.card.collectedAt}
-          <Num value={tariff.snapshot} />
+          <NumAfter lead={copy.card.collectedAt} value={tariff.snapshot} />
         </p>
         {tariff.stale && (
           <p className="flex items-start gap-1.5 text-sm text-caution-foreground">
             <IconAlert size={18} className="text-caution shrink-0 mt-0.5" />
             <span>
-              {copy.card.stale.before}
-              <bdi dir="ltr">{fmt.date(String(tariff.snapshot.value))}</bdi>
+              <LeadTail lead={copy.card.stale.before}>
+                <bdi dir="ltr">{fmt.date(String(tariff.snapshot.value))}</bdi>
+              </LeadTail>
               {copy.card.stale.after}
             </span>
           </p>
         )}
-        <p className="text-sm flex flex-wrap items-center gap-x-3 gap-y-1">
-          <bdi dir="ltr" className="uppercase text-muted-foreground">
-            {tariff.format}
-          </bdi>
+        <p className="text-sm">
           <a href={tariff.url} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-center gap-1 hover:underline min-h-target">
-            {copy.card.link}
+            <span>
+              {copy.card.link} <bdi dir="ltr" className="uppercase">({tariff.format})</bdi>
+            </span>
             <IconExternal size={16} />
           </a>
         </p>

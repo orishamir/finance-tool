@@ -13,13 +13,14 @@ import { RecordOfferCard } from "../components/playbook/offer-card";
 import { PlaybookStep } from "../components/playbook/step";
 import { PlaybookSubjectStrip } from "../components/playbook/strip";
 import { sameCompany, useCostView } from "../components/playbook/use-cost";
-import { RulesLine } from "../components/provenance";
+import { RuleRef, RulesLine } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { Callout, SegmentedControl } from "../components/ui";
 import { GoalsProvider, type Presets } from "../lib/goal";
-import { checklistFor, parsePlaybookQuery, playbookQueryString, type PlaybookQuery, type PlaybookStep as StepData, type Side, type Strength } from "../lib/playbook";
+import { checklistFor, parsePlaybookQuery, playbookQueryString, type PlaybookQuery, type PlaybookStep as StepData, type SummaryItem, type Side, type Strength } from "../lib/playbook";
 import { BROKERAGE } from "../lib/providers";
 import { useHoldings } from "../lib/state";
+import { useInputs } from "../lib/inputs";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { playbookPage } = await import("../lib/playbook.server");
@@ -92,6 +93,9 @@ function Body() {
   const hasOffer = steps.some((s) => s.offerBefore);
   const anyOpen = steps.some((s) => s.open);
   const hishtalmut = data.wrapperId === "keren-hishtalmut";
+  const summary = data.summary as unknown as SummaryItem[];
+  // the saved profile says self-employed: there is no employer to notify (A56); nothing is shown while the field is empty
+  const selfEmployed = useInputs().state.employment === "self-employed";
   const [fundOptions, setFundOptions] = useState<{ id: string; name: string }[] | null>(null);
   const fundsNeeded = brokerage && mounted;
   useEffect(() => {
@@ -124,7 +128,7 @@ function Body() {
           {c.checklist.heading}
         </h2>
         <div className="bg-card border border-border rounded-lg p-4 md:p-6">
-          <PostSwitchChecklist wrapperId={data.wrapperId} from={query.from} to={query.to} strengths={strengths} />
+          <PostSwitchChecklist wrapperId={data.wrapperId} strengths={strengths} />
         </div>
       </section>
     ) : null;
@@ -158,6 +162,22 @@ function Body() {
           <div className="flex flex-col gap-5 lg:gap-6 min-w-0">
             {costCard && <div className="lg:hidden">{costCard}</div>}
             {oneStep && <Callout tone="info">{oneStep}</Callout>}
+            {summary.length > 0 && (
+              <section className="flex flex-col gap-3 rounded-lg bg-card border border-border p-4 md:p-6" aria-labelledby="summary-h">
+                <h2 id="summary-h" className="text-xl font-semibold">
+                  {c.summary.heading}
+                </h2>
+                <p className="text-sm text-muted-foreground">{c.summary.lede}</p>
+                <ul className="flex flex-col gap-2.5 max-w-measure">
+                  {summary.map((it) => (
+                    <li key={`${it.topic}-${it.ruleId}`} className="text-sm">
+                      <span className="font-medium">{c.summary.topics[it.topic] ?? it.topic}: </span>
+                      {it.text} <RuleRef id={it.ruleId} />
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
             <section className="flex flex-col gap-4" aria-labelledby="steps-h">
               <h2 id="steps-h" className="text-xl lg:text-2xl font-semibold">
                 {c.stepsHeading}
@@ -167,6 +187,7 @@ function Body() {
                   <PlaybookStep
                     key={st.n}
                     step={st}
+                    skip={selfEmployed && st.ruleIds[0] === "SW-10" ? c.skipEmployer : undefined}
                     offer={
                       st.offerBefore ? (
                         <li className="lg:hidden list-none">

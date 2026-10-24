@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { loadRules } from "./data.server";
-import { CHECKLIST, STEP_LISTS, buildSteps, experienceSource, parsePlaybookQuery, playbookQueryString, playbookRuleIds, providentCost, sentences, tickKey } from "./playbook";
+import { CHECKLIST, STEP_LISTS, buildSteps, experienceSource, parsePlaybookQuery, playbookQueryString, playbookRuleIds, providentCost, sentences, tickKey, migrateTickKeys, hasOldTickKeys, buildSummary, SUMMARY_SPECS } from "./playbook";
 
 const rules = loadRules();
 const today = "2026-10-24";
@@ -69,8 +69,17 @@ describe("the address and the ticks", () => {
     expect(parsePlaybookQuery("?share=100").share).toBeNull();
     expect(playbookQueryString(parsePlaybookQuery(""))).toBe("");
   });
-  it("keys ticks by wrapper and pair", () => {
-    expect(tickKey("keren-hishtalmut", "a", null)).toBe("keren-hishtalmut|a|");
+  it("keys ticks by the wrapper alone, so a pair picked or cleared never loses them (A32)", () => {
+    expect(tickKey("keren-hishtalmut", "a", null)).toBe("keren-hishtalmut");
+    expect(tickKey("keren-hishtalmut")).toBe(tickKey("keren-hishtalmut", "a", "b"));
+  });
+  it("migrates keys of the old shape into the wrapper's key as a union", () => {
+    const old = { "keren-hishtalmut|a|b": ["fee", "track"], "keren-hishtalmut||": ["track", "employer"], "current-account|x|": ["orders"] };
+    expect(hasOldTickKeys(old)).toBe(true);
+    const next = migrateTickKeys(old);
+    expect(next).toEqual({ "keren-hishtalmut": ["fee", "track", "employer"], "current-account": ["orders"] });
+    expect(hasOldTickKeys(next)).toBe(false);
+    expect(migrateTickKeys(next)).toEqual(next);
   });
   it("reads the forum and thread out of an experience title", () => {
     expect(experienceSource(rules["SW-X01"]!.title, "2026-10-22")).toEqual({ forum: "Hasolidit", thread: ".36841", threadDate: "15/7/26", read: "2026-10-22" });
@@ -101,5 +110,21 @@ describe("a sentence about the study fund alone (B14)", () => {
   it("is on the study fund's page and not on the kupat gemel lehashkaa's", () => {
     expect(all("keren-hishtalmut")).toContain("בקרן השתלמות אין העברה חלקית");
     expect(all("kupat-gemel-lehashkaa")).not.toContain("בקרן השתלמות אין העברה חלקית");
+  });
+});
+
+describe("the summary box (A56)", () => {
+  it("quotes whole sentences of rules the wrapper's own steps render, and finds every one", () => {
+    for (const [wrapper, specs] of Object.entries(SUMMARY_SPECS)) {
+      const items = buildSummary(rules, wrapper);
+      expect(items.length, wrapper).toBe(specs.length);
+      expect(items.length).toBeGreaterThanOrEqual(6);
+      expect(items.length).toBeLessThanOrEqual(8);
+      const onPage = new Set(STEP_LISTS[wrapper]!.flatMap((st) => [...st.ruleIds, ...(st.noRule?.known ?? [])]));
+      for (const it of items) {
+        expect(rules[it.ruleId]!.text_he, `${wrapper} ${it.ruleId}`).toContain(it.text);
+        expect(onPage.has(it.ruleId), `${wrapper} ${it.ruleId} is a step rule`).toBe(true);
+      }
+    }
   });
 });

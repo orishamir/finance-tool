@@ -7,7 +7,6 @@ import { describe, expect, it } from "vitest";
 import {
   API_URL,
   EXPECTED_BASE,
-  changelogLines,
   diffSeries,
   mergeObservations,
   normalise,
@@ -138,28 +137,19 @@ describe("sanityCheck", () => {
   });
 });
 
-describe("diff and change log", () => {
-  it("a first snapshot is all new, one change-log line per month", () => {
-    const f = good();
-    expect(diffSeries(null, f)).toMatchObject({ isEmpty: false, newPeriod: true });
-    const lines = changelogLines(null, f, "2026-10-23");
-    expect(lines).toHaveLength(3);
-    expect(lines[2]).toEqual({
-      date: "2026-10-23", collection: "series", id: "cbs-cpi", field: "observations.2026-09", old: null, new: 105.3,
-      reason: expect.stringContaining("first snapshot"), affects_rankings: true,
-    });
+describe("diff", () => {
+  it("a first snapshot is all new", () => {
+    expect(diffSeries(null, good())).toMatchObject({ isEmpty: false, newPeriod: true });
   });
-  it("the same data is an empty diff, a new month is one line, a changed value is a line with old and new", () => {
+  it("the same data is an empty diff, a new month is a new period, a changed value is not", () => {
     const prev = good();
     expect(diffSeries(prev, clone(prev)).isEmpty).toBe(true);
-    expect(changelogLines(prev, clone(prev), "2026-11-16")).toEqual([]);
     const next = clone(prev);
     next.observations.push({ ...next.observations[2]!, date: "2026-10-01", value: 105.9 });
     expect(diffSeries(prev, next)).toMatchObject({ isEmpty: false, newPeriod: true });
-    expect(changelogLines(prev, next, "2026-11-16")).toMatchObject([{ field: "observations.2026-10", old: null, new: 105.9, reason: expect.stringContaining("new monthly index") }]);
     const revised = clone(prev);
     revised.observations[0]!.value = 105.2;
-    expect(changelogLines(prev, revised, "2026-11-16")).toMatchObject([{ field: "observations.2026-07", old: 105.1, new: 105.2 }]);
+    expect(diffSeries(prev, revised)).toMatchObject({ isEmpty: false, newPeriod: false });
   });
   it("mergeObservations keeps the stored object while the value is unchanged", () => {
     const prev = good().observations;
@@ -174,12 +164,11 @@ describe("refreshCbsCpi", () => {
     const report = await refreshCbsCpi({ dataDir: dir, runDate: "2026-10-23", dryRun: false, archive: false, force: false, fetchRaw: async () => dl(text), log: (l) => lines.push(l), ...extra });
     return { report, lines };
   };
-  it("writes the file and the change log, then a second run changes nothing", async () => {
+  it("writes the file, then a second run changes nothing", async () => {
     const dir = mkdtempSync(join(tmpdir(), "cpi-"));
     const first = await run(dir, fixtureText);
-    expect(first.report).toMatchObject({ status: "new-period", written: true, changelogLines: 3, period: "2026-09-01" });
+    expect(first.report).toMatchObject({ status: "new-period", written: true, period: "2026-09-01" });
     expect(readSeries(dir, "cbs-cpi")?.observations).toHaveLength(3);
-    expect(readFileSync(join(dir, "changelog.jsonl"), "utf8").trim().split("\n")).toHaveLength(3);
     const second = await run(dir, fixtureText);
     expect(second.report).toMatchObject({ status: "unchanged", written: false });
   });

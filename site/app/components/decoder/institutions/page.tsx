@@ -5,7 +5,7 @@ import { Link } from "react-router";
 import { buttons, catalogue, companies as companiesCopy, r4catalogue as copy } from "../../../copy";
 import { fmt } from "../../../lib/format";
 import { IconAlert, IconDrillIn, IconExternal } from "../../icons";
-import { Num } from "../../provenance";
+import { LeadTail, NumAfter, NumberLegend } from "../../provenance";
 import { Breadcrumb, PageShell } from "../../shell";
 import { Button, Callout, Card, Disclosure } from "../../ui";
 import { PasteCard } from "../tracks";
@@ -64,15 +64,13 @@ export function InstitutionPage({ data }: { data: InstitutionPageData }) {
                 {(data.depositsAsOf || (tariff && !tariff.missing)) && " "}
                 {data.depositsAsOf && (
                   <>
-                    {copy.ledeDeposits}
-                    <Num value={data.depositsAsOf} />
+                    <NumAfter lead={copy.ledeDeposits} value={data.depositsAsOf} />
                     {tariff && !tariff.missing && "; "}
                   </>
                 )}
                 {tariff && !tariff.missing && (
                   <>
-                    {copy.ledeTariff}
-                    <Num value={tariff.snapshot} />
+                    <NumAfter lead={copy.ledeTariff} value={tariff.snapshot} />
                   </>
                 )}
                 {(data.depositsAsOf || (tariff && !tariff.missing)) && "."}
@@ -80,10 +78,12 @@ export function InstitutionPage({ data }: { data: InstitutionPageData }) {
             ) : (
               <p className="text-sm lg:text-base text-muted-foreground max-w-measure">{copy.brokerClassLine}</p>
             )}
+            <NumberLegend />
             {tariff && !tariff.missing && tariff.stale && (
               <Callout tone="caution">
-                {copy.card.stale.before}
-                <bdi dir="ltr">{fmt.date(String(tariff.snapshot.value))}</bdi>
+                <LeadTail lead={copy.card.stale.before}>
+                  <bdi dir="ltr">{fmt.date(String(tariff.snapshot.value))}</bdi>
+                </LeadTail>
                 {copy.card.stale.after}
               </Callout>
             )}
@@ -134,6 +134,15 @@ export function InstitutionPage({ data }: { data: InstitutionPageData }) {
                     {copy.groupLink} {g.wrapperName}
                     <IconDrillIn size={16} />
                   </Link>
+                  {g.wrapperId === "bank-deposit" && g.products.length === 1 && (
+                    <p className="text-sm text-muted-foreground max-w-measure px-1">
+                      {copy.oneTariff.before}
+                      <Link to="/idle-cash" className="text-link hover:underline">
+                        {copy.oneTariff.link}
+                      </Link>
+                      {copy.oneTariff.after}
+                    </p>
+                  )}
                   <div className="flex flex-col gap-3">
                     {g.products.map((p) => (
                       <BankProductRow key={p.id} p={p} known={known} wrapperName={wrapperName(p.wrapperId)} />
@@ -169,7 +178,7 @@ export function InstitutionPage({ data }: { data: InstitutionPageData }) {
                         ))}
                       </span>
                       <span className="text-sm text-muted-foreground">
-                        {catalogue.seenAt} <bdi dir="ltr">{u.where}</bdi> {catalogue.seenOn} <Num value={u.seen} />
+                        {catalogue.seenAt} <bdi dir="ltr">{u.where}</bdi> <NumAfter lead={catalogue.seenOn} value={u.seen} />
                       </span>
                     </li>
                   ))}

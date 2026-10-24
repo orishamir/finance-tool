@@ -1,6 +1,6 @@
 // The fund-variant view on the collected data (flows 30, 33): the records, no fund list, the outcomes with their reasons.
 import { describe, expect, it } from "vitest";
-import { buildFundVariants, matchesVariant, parseVariantQuery, sortVariants, variantQueryString } from "./variants";
+import { buildFundVariants, withExposureReturn, matchesVariant, parseVariantQuery, sortVariants, variantQueryString } from "./variants";
 import { buildWorkbenchBundle } from "./providers.server";
 import type { FundAssumptions, WorkbenchInputs } from "./providers";
 import { entered } from "./value";
@@ -35,12 +35,12 @@ describe("fund-variant view", () => {
     expect(r.view.coverage.invariantOk).toBe(true);
   });
 
-  it("ranks the IBI S&P 500 ETF (an Israeli exempt fund, shekels) with a computed figure and the security number", () => {
+  it("ranks the IBI S&P 500 ETF (8 of 9 by fee; an Israeli exempt fund, shekels) with a computed figure and the security number", () => {
     const r = build("index-sp500");
     if (r.kind !== "ok") throw new Error("not ok");
     const ibi = r.view.rows.find((x) => x.recordId === "1148162")!;
     expect(ibi.kind).toBe("ranked");
-    expect(ibi.rank).toBe(1);
+    expect(ibi.rank).toBe(8); // 8 of 9 by fee since the eight records of 2026-10-24
     expect(ibi.number).toBe("1148162");
     expect(ibi.value?.state).toBe("computed");
     expect(ibi.tags).toEqual({ domicile: "IL", policy: "accumulating" });
@@ -48,7 +48,7 @@ describe("fund-variant view", () => {
     expect(ibi.fees?.fixed_management?.value).toBe(0.8);
     expect(ibi.fees?.tracking_difference_12m).toBeNull();
     expect(ibi.takenAsZero).toContain("tracking_difference_12m");
-    expect(r.view.held.value).toBe(0);
+    expect(r.view.held.value).toBe(1); // the iShares CSPX record trades abroad
   });
 
   it("waits for the person's return (D9): no figure and no rank until one is entered", () => {
@@ -96,5 +96,20 @@ describe("fund-variant view", () => {
 
   it("round-trips the address", () => {
     expect(parseVariantQuery(variantQueryString({ provider: "leumi", orders: 3 }))).toEqual({ provider: "leumi", orders: 3 });
+  });
+});
+
+describe("the exposure's own entered return (A73)", () => {
+  it("replaces the goal's return in the page inputs, as an entered value", () => {
+    const own = entered(8, "pct_per_year", t);
+    const x = withExposureReturn(inputs(true), own);
+    expect(x.grossReturn).toBeCloseTo(0.08);
+    expect(x.values.returnV.value).toBe(8);
+    expect(x.values.returnV.state).toBe("entered");
+    expect(x.returnFromParameter).toBe(false);
+  });
+  it("leaves the inputs alone without one", () => {
+    const base = inputs(false);
+    expect(withExposureReturn(base, undefined)).toBe(base);
   });
 });

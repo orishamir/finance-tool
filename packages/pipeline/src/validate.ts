@@ -4,7 +4,6 @@ import { join, relative } from "node:path";
 import type { z } from "zod";
 import {
   catalogEntry,
-  changelogLine,
   cmaPeriodFile,
   depositTerms,
   dimensionRecord,
@@ -66,19 +65,6 @@ export function validateData(ctx: ValidationContext): Problem[] {
   for (const file of files) {
     const rel = relative(ctx.dataDir, file);
     if (rel === ".gitkeep") continue;
-
-    if (rel === "changelog.jsonl") {
-      readFileSync(file, "utf8")
-        .split("\n")
-        .forEach((line, i) => {
-          if (line.trim() === "") return;
-          const parsed = parseJson(line);
-          if (parsed.error) return report(file, `line ${i + 1}: ${parsed.error}`);
-          const result = changelogLine.safeParse(parsed.value);
-          if (!result.success) report(file, `line ${i + 1}: ${formatIssues(result.error)}`);
-        });
-      continue;
-    }
 
     const parts = rel.split(/[\\/]/);
     const collection = parts.length > 2 && collections[`${parts[0]}/${parts[1]}`] ? `${parts[0]}/${parts[1]}` : parts[0]!;

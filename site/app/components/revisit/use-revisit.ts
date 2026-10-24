@@ -1,10 +1,10 @@
 // The revisit of the current goal's saved comparison (design-spec 21.5): runs when a page with the strip mounts and a
 // saved comparison exists, once the comparison bundle is read, and is cached for the visit by the record's id and the
 // data snapshot the bundle carries, so the strip does not recompute on every route.
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { loadBundle } from "../../lib/bundle";
 import { useGoals } from "../../lib/goal";
-import { revisitSaved, type RevisitView } from "../../lib/revisit";
+import { goalChanges, revisitSaved, type RevisitView } from "../../lib/revisit";
 import { isoToday, isReadableSaved, useSavedComparisons, type CompareMode, type SavedComparisonRecord } from "../../lib/state";
 
 const cache = new Map<string, RevisitView>();
@@ -49,7 +49,10 @@ export function useRevisit(mode?: CompareMode): RevisitState {
       cancelled = true;
     };
   }, [key]); // eslint-disable-line react-hooks/exhaustive-deps
-  return { saved, view };
+  // the saved goal against the device's current one (audit 2026-10-24, A30): not part of the cached re-run, which is about the saved inputs
+  const changes = useMemo(() => (saved && current && isReadableSaved(saved) ? goalChanges(saved.goal, current) : []), [saved, current]);
+  const shown = useMemo(() => (view && changes.length > 0 ? { ...view, goalChanges: changes } : view), [view, changes]);
+  return { saved, view: shown };
 }
 
 /** A saved comparison was replaced: drop what was cached for the goal. */

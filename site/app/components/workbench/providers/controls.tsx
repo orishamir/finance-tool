@@ -6,7 +6,7 @@ import { ORDERS_MAX, ORDERS_MIN, type Channel, type ProviderWorkbenchView, type 
 import { IconDown, IconUp } from "../../compare/icons";
 import { IconExternal, IconReset } from "../../icons";
 import { Num } from "../../provenance";
-import { NumberField } from "../../timeline/fields";
+import { NumberField, ParameterLine } from "../../timeline/fields";
 import { Button, Card, SegmentedControl, cx } from "../../ui";
 
 // ---------------------------------------------------------------- subject strip
@@ -73,6 +73,7 @@ export function BehaviourCard({ view, inputs, onOrders, onChannel, onOpenAssumpt
         {t.title}
       </h2>
       <AmountChips inputs={inputs} onOpen={onOpenAssumptions} />
+      <ParameterLine />
       <div className="grid gap-4 grid-cols-[minmax(0,1fr)] sm:grid-cols-2">
         <div className="flex flex-col gap-1.5">
           <div className="flex items-end gap-2">

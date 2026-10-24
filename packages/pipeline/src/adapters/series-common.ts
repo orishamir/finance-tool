@@ -2,10 +2,10 @@
 // fetch -> archive -> normalise -> sanity -> diff -> write. The adapters supply the pure steps; this runs them.
 // The CMA adapter (cma.ts) keeps its own runner; the decode, hash and gzip helpers are shared from there.
 import { execFileSync } from "node:child_process";
-import { appendFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { seriesRecord, type ChangelogLine, type SeriesRecord } from "@finance-tool/schema";
+import { seriesRecord, type SeriesRecord } from "@finance-tool/schema";
 import { gzipRaw, sha256Hex, type Downloaded } from "./cma.ts";
 
 export type SourceStatus = "new-period" | "updated" | "unchanged" | "sanity-failed" | "error";
@@ -17,7 +17,6 @@ export interface SourceReport {
   period: string | null;
   reasons: string[];
   written: boolean;
-  changelogLines: number;
   note?: string;
 }
 
@@ -51,7 +50,6 @@ export interface SeriesSpec {
   build: (dl: Downloaded, previous: SeriesRecord | null, ctx: { runDate: string; sha256: string }) => { file: SeriesRecord | null; problems: string[] };
   sanity: (next: SeriesRecord, previous: SeriesRecord | null) => string[];
   diff: (previous: SeriesRecord | null, next: SeriesRecord) => SeriesDiff;
-  changelog: (previous: SeriesRecord | null, next: SeriesRecord, runDate: string) => ChangelogLine[];
   archive: { tag: (runDate: string) => string; title: string; notes: string };
 }
 
@@ -102,7 +100,7 @@ export const ghArchive: Archive = ({ tag, assetName, gz, title, notes }) => {
 
 export async function refreshSeries(spec: SeriesSpec, opts: SeriesRefreshOptions): Promise<SourceReport> {
   const log = opts.log ?? ((l: string) => console.log(l));
-  const report: SourceReport = { source: spec.source, status: "error", period: null, reasons: [], written: false, changelogLines: 0 };
+  const report: SourceReport = { source: spec.source, status: "error", period: null, reasons: [], written: false };
   try {
     const previous = readSeries(opts.dataDir, spec.id);
     const dl = await (opts.fetchRaw ?? spec.fetchRaw)();
@@ -127,9 +125,7 @@ export async function refreshSeries(spec: SeriesSpec, opts: SeriesRefreshOptions
       return report;
     }
     report.status = diff.newPeriod ? "new-period" : "updated";
-    const lines = spec.changelog(previous, file, opts.runDate);
-    report.changelogLines = lines.length;
-    log(`${spec.source}: ${diff.summary}; ${lines.length} change-log line(s)`);
+    log(`${spec.source}: ${diff.summary}`);
     if (opts.dryRun) {
       log("  dry run: nothing written, nothing archived");
       return report;
@@ -147,7 +143,6 @@ export async function refreshSeries(spec: SeriesSpec, opts: SeriesRefreshOptions
     log(`  ${report.note}`);
     mkdirSync(join(opts.dataDir, "series"), { recursive: true });
     writeFileSync(seriesPath(opts.dataDir, spec.id), serialiseSeries(file));
-    if (lines.length > 0) appendFileSync(join(opts.dataDir, "changelog.jsonl"), lines.map((l) => JSON.stringify(l)).join("\n") + "\n");
     report.written = true;
     log(`  wrote data/series/${spec.id}.json`);
   } catch (e) {

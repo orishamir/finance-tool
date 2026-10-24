@@ -26,7 +26,11 @@ import { feeInputs } from "../lib/fees";
 import { GoalsProvider, hasMeaning, useGoals, type Presets } from "../lib/goal";
 import { useInputs } from "../lib/inputs";
 import { BROKERAGE, loadWorkbenchBundle, type WorkbenchBundle, type WorkbenchInputs } from "../lib/providers";
-import { buildFundVariants, matchesVariant, parseVariantQuery, sortVariants, useFundAssumptions, variantQueryString, type FundVariantRowView, type SortKey, type VariantQuery } from "../lib/variants";
+import { buildFundVariants, withExposureReturn, matchesVariant, parseVariantQuery, sortVariants, useFundAssumptions, variantQueryString, type FundVariantRowView, type SortKey, type VariantQuery } from "../lib/variants";
+import { bundleLinks } from "../lib/bundle";
+
+/** The data files this page fetches after it starts, requested with the HTML (audit 2026-10-24, A52). */
+export const links = () => bundleLinks("workbench-bundle.json", "compare-bundle.json");
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { loadExposures } = await import("../lib/instruments.server");
@@ -110,8 +114,9 @@ function Body({ wb, compare, data, presets, search }: { wb: WorkbenchBundle; com
   const setQuery = (patch: Partial<VariantQuery>) => navigate({ search: variantQueryString({ ...query, ...patch }) }, { replace: true, preventScrollReset: true });
   const goalG = current && resolved && hasMeaning(resolved) ? runGoalOf(current, resolved) : null;
   const fi = useMemo(() => feeInputs(compare, goalG, released.state), [compare, JSON.stringify(goalG), released.state]); // eslint-disable-line react-hooks/exhaustive-deps
+  const ownReturn = current?.exposures?.[data.exposureId]?.return;
   const inputs: WorkbenchInputs = useMemo(
-    () => ({
+    () => withExposureReturn({
       amountNow: Math.max(0, fi.g.amountNow - fi.g.available),
       monthly: fi.g.monthly,
       years: fi.g.horizonYears,
@@ -122,8 +127,8 @@ function Body({ wb, compare, data, presets, search }: { wb: WorkbenchBundle; com
       values: fi.values,
       fromGoal: fi.fromGoal,
       returnFromParameter: fi.returnFromParameter,
-    }),
-    [fi],
+    }, ownReturn),
+    [fi, ownReturn],
   );
   const assumptions = useFundAssumptions(data.exposureId);
   const result = useMemo(() => buildFundVariants({ bundle: wb, exposureId: data.exposureId, query, inputs, assumptions: assumptions.value }), [wb, data.exposureId, query, inputs, assumptions.value]);

@@ -5,6 +5,8 @@
 // published bank rate from the bundle, or is the run's computed value.
 import {
   compareExposures,
+  coverageLine,
+  outcomeOrder,
   rankCandidates,
   type ExposureCandidate,
   type ExposureComparison,
@@ -16,7 +18,7 @@ import {
   type RunResult,
 } from "@finance-tool/engine";
 import type { ParameterRecord, ValueObject, WrapperId } from "@finance-tool/schema";
-import { comparisonGoal, parameterOf, termsFor, yearSeries, type CompareBundle, type ExposureEntry, type RunGoal, type WrapperEntry } from "./compare";
+import { comparisonGoal, equityFit, parameterOf, termsFor, yearSeries, type CompareBundle, type ExposureEntry, type RunGoal, type WrapperEntry } from "./compare";
 import type { ExposureInputs, FieldKey, Goal } from "./goal";
 import { entered as enteredValue, type SiteValue } from "./value";
 
@@ -67,6 +69,8 @@ export interface ExposureRowView {
   grossReturn?: ValueObject;
   /** The person's own return (or overriding cash rate), as typed. */
   enteredReturn?: ValueObject;
+  /** The return taken from the product comparison (decision 16) while the person has typed none here. */
+  returnFromProduct?: ValueObject;
   published?: { rate: SiteValue; effectiveFrom: string | null; stale: boolean; wrapperName: string };
   noSeries: boolean;
   worstFall?: ValueObject;
@@ -105,6 +109,33 @@ export interface ExposureResultView {
 
 const pct = (v: number, today: string) => enteredValue(v, "pct", today);
 
+// ---------------------------------------------------------------- re-rank on commit (A34)
+
+/** The exposure inputs as the goal holds them (per exposure id). */
+export type ExposureInputsMap = NonNullable<Goal["exposures"]>;
+
+/**
+ * While a field of the list has focus, the ranking keeps the inputs it had when the field was entered: the list does not
+ * re-sort (and the field does not lose focus) on the first keystroke. The edit is committed on blur or Enter.
+ */
+export interface RankStage {
+  frozen: ExposureInputsMap | null;
+}
+export const stageEmpty: RankStage = { frozen: null };
+
+/** A field of the list gets focus: freeze the inputs the ranking runs on (once; moving between fields keeps the first freeze). */
+export function beginEdit(stage: RankStage, live: ExposureInputsMap): RankStage {
+  return stage.frozen ? stage : { frozen: live };
+}
+/** Blur or Enter: the edit is committed; the ranking follows the live inputs again. */
+export function commitEdit(): RankStage {
+  return stageEmpty;
+}
+/** The inputs the ranking runs on. */
+export function rankingInputs(stage: RankStage, live: ExposureInputsMap): ExposureInputsMap {
+  return stage.frozen ?? live;
+}
+
 /** The person's loss filter as the engine takes it: every number an `entered` value object in `pct`. */
 export function lossFilterOf(goal: Goal, today: string): LossFilterEntered {
   const worstFall: Record<string, ValueObject> = {};
@@ -121,7 +152,7 @@ function wrapperName(bundle: CompareBundle, id: string): string {
   return bundle.wrappers.find((w) => w.id === id)?.name ?? id;
 }
 
-type Plan = { entry: ExposureEntry; wrapperId: WrapperId | null; fromParameter: boolean; blocked: RowReason | null; wrapper?: WrapperEntry; terms?: ExposureHolding["terms"]; gross?: ValueObject; published?: ExposureRowView["published"] };
+type Plan = { entry: ExposureEntry; wrapperId: WrapperId | null; fromParameter: boolean; blocked: RowReason | null; wrapper?: WrapperEntry; terms?: ExposureHolding["terms"]; gross?: ValueObject; published?: ExposureRowView["published"]; fromProduct?: ValueObject };
 
 /** Runs exposure mode (F-71, F-83, F-80) for the saved goal at the bundle's data. Throws the engine's data errors. */
 export function computeExposureMode({ bundle, g, goal }: ExposureModeInput): ExposureResultView {
@@ -154,12 +185,18 @@ export function computeExposureMode({ bundle, g, goal }: ExposureModeInput): Exp
     }
     // the return: the person's, else a bank's published rate for a deposit-family holding wrapper (D20)
     let gross: ValueObject | undefined = mine.return;
+    // decision 16 (2026-10-24): an equity exposure takes the return entered in the product comparison until the person types its own
+    let fromProduct: ValueObject | undefined;
+    if (!gross && g.returnPct !== null && entry.record.kind === "equity_index") {
+      fromProduct = enteredValue(g.returnPct, "pct_per_year", today);
+      gross = fromProduct;
+    }
     let published: Plan["published"];
     if (wrapper.cashRate) {
       published = { rate: wrapper.cashRate, effectiveFrom: wrapper.cashRate.effective_from ?? null, stale: !!wrapper.cashRate.stale, wrapperName: wrapper.name };
       gross ??= wrapper.cashRate;
     }
-    return { ...base, blocked: null, wrapper, terms, ...(gross ? { gross } : {}), ...(published ? { published } : {}) };
+    return { ...base, blocked: null, wrapper, terms, ...(gross ? { gross } : {}), ...(published ? { published } : {}), ...(fromProduct ? { fromProduct } : {}) };
   });
 
   const holdings: ExposureHolding[] = plans.map((p) => ({
@@ -167,8 +204,29 @@ export function computeExposureMode({ bundle, g, goal }: ExposureModeInput): Exp
     ...(p.blocked ? {} : { wrapper: p.wrapper!.record, ...(p.terms ? { terms: p.terms } : {}), ...(p.gross ? { grossReturn: p.gross } : {}) }),
   }));
   const lf = lossFilterOf(goal, today);
-  const comparison = compareExposures({ exposures: holdings, parameters: bundle.parameters, goal: comparisonGoal(g), lossFilter: lf }, ctx);
+  const raw = compareExposures({ exposures: holdings, parameters: bundle.parameters, goal: comparisonGoal(g), lossFilter: lf }, ctx);
   const theta = ((parameterOf(bundle, "P-01") as unknown as { value: ValueObject }).value.value as number) / 100;
+  // F-83 (2026-10-24): an equity exposure is listed, not ranked, when the fall the person accepts is below P-04's equity fall,
+  // unless they entered a forecast fall for it that passes F-71 (it is then already ranked or excluded by the filter).
+  const cap = equityFit(bundle)?.maxFall;
+  const demoted = new Set<string>();
+  if (cap) {
+    for (const c of raw.candidates) {
+      const p = plans.find((x) => x.entry.record.id === c.id);
+      if (c.kind !== "ranked" || !p || p.entry.record.kind !== "equity_index") continue;
+      const mine = inputsOf(c.id);
+      const accepted = (mine.acceptedFall ?? (lf.acceptedFall as ValueObject | undefined))?.value;
+      if (typeof accepted !== "number" || accepted >= (cap.value as number)) continue;
+      const worst = mine.worstFall?.value;
+      if (typeof worst === "number" && worst <= accepted) continue;
+      demoted.add(c.id);
+    }
+  }
+  let comparison = raw;
+  if (demoted.size > 0) {
+    const candidates = raw.candidates.map((c) => (demoted.has(c.id) ? { ...c, kind: "listed-not-ranked" as const, reasons: [...c.reasons, { code: "rule-open" as const, ruleIds: [], gapIds: [], detail: `fit-drop:${cap!.value}` }] } : c));
+    comparison = { ...raw, candidates, ranking: rankCandidates(candidates, { theta, ctx }), coverage: coverageLine(candidates, outcomeOrder, ["ranked"]) };
+  }
 
   const cand = new Map(comparison.candidates.map((c) => [c.id, c]));
   const ranking = comparison.ranking.entries;
@@ -206,6 +264,7 @@ export function computeExposureMode({ bundle, g, goal }: ExposureModeInput): Exp
       ...(c.run ? { run: c.run, real: c.run.real, nominal: c.run.nominal } : {}),
       ...(c.returnLabel ? { grossReturn: c.returnLabel.rate } : p.gross ? { grossReturn: p.gross } : {}),
       ...(mine.return ? { enteredReturn: mine.return } : {}),
+      ...(p.fromProduct ? { returnFromProduct: p.fromProduct } : {}),
       ...(p.published ? { published: p.published } : {}),
       noSeries,
       ...(mine.worstFall ? { worstFall: mine.worstFall } : {}),

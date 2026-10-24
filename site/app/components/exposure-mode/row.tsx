@@ -3,7 +3,8 @@
 // return it ran at.
 import { useLayoutEffect, useRef, type ReactNode } from "react";
 import { Link } from "react-router";
-import { r2, r5 } from "../../copy";
+import { r2, r5, scnCompare } from "../../copy";
+import { decidingFormulaOf } from "../../lib/compare";
 import type { ExposureRowView } from "../../lib/exposure-mode";
 import { IconDrillIn, IconLock } from "../icons";
 import { IconDash, IconDashed, IconEdit, IconEqual } from "../compare/icons";
@@ -54,11 +55,11 @@ function Mark({ row }: { row: ExposureRowView }) {
 export function InputsStrip({ row, ctx }: { row: ExposureRowView; ctx: ExpCtx }) {
   const id = row.id;
   return (
-    <div className="bg-secondary rounded-md p-3 grid gap-4 md:grid-cols-2 xl:grid-cols-4 items-start">
+    <div className="bg-secondary rounded-md p-3 grid gap-4 sm:grid-cols-2 items-start">
       {row.entry.record.cash_like ? (
-        <CashRateLine row={row} cashLink={ctx.bundle.cashLink} onChange={(v) => ctx.setInput(id, { return: v })} />
+        <CashRateLine row={row} cashLink={ctx.bundle.cashLink} range={ctx.range} onChange={(v) => ctx.setInput(id, { return: v })} />
       ) : (
-        <EnteredReturnField entry={row.entry} value={row.enteredReturn} onChange={(v) => ctx.setInput(id, { return: v })} />
+        <EnteredReturnField entry={row.entry} value={row.enteredReturn} range={ctx.range} {...(row.returnFromProduct ? { fromProduct: row.returnFromProduct } : {})} onChange={(v) => ctx.setInput(id, { return: v })} />
       )}
       <WorstFallField entry={row.entry} value={row.worstFall} onChange={(v) => ctx.setInput(id, { worstFall: v })} />
       <AcceptedFallChip row={row} onChange={(v) => ctx.setInput(id, { acceptedFall: v })} />
@@ -71,6 +72,8 @@ export function ExposureRow({ row, ctx, above, onDetail, choose }: { row: Exposu
   const { mk, mode, names } = ctx;
   const ranked = row.kind === "ranked";
   const hasValue = row.real !== undefined;
+  // a listed row shows no headline figure, only "לא מדורג" and its reason (scenario fix 2026-10-24)
+  const showFigure = hasValue && ranked;
   const value = hasValue ? mk.nis(mode === "real" ? row.real! : row.nominal!, mode === "real" ? "F-06" : "F-09", mode === "real" ? r2.realLabel : r2.nominalLabel, row.run ? { usedRules: row.run.rules, flags: row.run.flags } : undefined) : null;
   const tied = row.tiedWith.length > 0;
   const f = row.deciding;
@@ -104,7 +107,7 @@ export function ExposureRow({ row, ctx, above, onDetail, choose }: { row: Exposu
 
       <InputsStrip row={row} ctx={ctx} />
 
-      {hasValue && value && (
+      {showFigure && value && (
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-3 flex-wrap">
             <span className="figure">
@@ -118,6 +121,7 @@ export function ExposureRow({ row, ctx, above, onDetail, choose }: { row: Exposu
 
       {(ranked || row.kind === "listed-not-ranked") && (
         <div className="flex flex-wrap items-center gap-2">
+          {row.kind === "listed-not-ranked" && <Tag tone="neutral" icon={<IconDash size={14} />}>{scnCompare.notRanked}</Tag>}
           <ReturnLabel row={row} />
           {tied && (
             <Tag tone="parameter" icon={<IconEqual size={14} className="shrink-0" />} className="!whitespace-normal max-w-full min-w-0 items-start [overflow-wrap:anywhere] [&>svg]:mt-0.5">
@@ -131,7 +135,7 @@ export function ExposureRow({ row, ctx, above, onDetail, choose }: { row: Exposu
 
       {ranked && f && above && !tied && (
         <p className="text-sm text-muted-foreground">
-          {r2.result.decidingLine} {r2.deciding[f.formula]}, <Num value={mk.nis(f.mine, "F-61", r2.deciding[f.formula]!, row.run ? { usedRules: row.run.rules } : undefined)} /> {r2.result.reasonFeeVs} <Num value={mk.nis(f.above, "F-61", r2.deciding[f.formula]!, above.run ? { usedRules: above.run.rules } : undefined)} />
+          {r2.result.decidingLine} {r2.deciding[f.formula]}, <Num value={mk.nis(f.mine, decidingFormulaOf(f.formula), r2.deciding[f.formula]!, row.run ? { usedRules: row.run.rules } : undefined)} /> {r2.result.reasonFeeVs} <Num value={mk.nis(f.above, decidingFormulaOf(f.formula), r2.deciding[f.formula]!, above.run ? { usedRules: above.run.rules } : undefined)} />
         </p>
       )}
 

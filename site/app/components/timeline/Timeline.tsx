@@ -6,13 +6,14 @@ import { buttons, computedInputs as ci, guide as copy, guideBlocks, provenance a
 import { p05Number, p05Range, p05Value, p05Units, runTimeline, type Bundle, type Timeline as TimelineData, type TimelineResult, type YearPoint } from "../../lib/engine";
 import { fmt } from "../../lib/format";
 import { useInputs, type Employment } from "../../lib/inputs";
+import { useValueMode, type ValueMode as Mode } from "../../lib/mode-store";
 import { computed, entered as enteredValue, feeLabel, feeYear, ruleFigure, weaker, type SiteValue, type Strength } from "../../lib/value";
-import { TimelineChart, type ChartPoint, type Marker } from "../chart/TimelineChart";
+import { scrollCueStyle, TimelineChart, type ChartPoint, type Marker } from "../chart/TimelineChart";
 import { IconPencil, IconReset } from "../icons";
 import { Num, RuleRef, RulesLine, StateTag } from "../provenance";
 import { Sheet } from "../Sheet";
 import { Button, Callout, cx, Disclosure, SegmentedControl } from "../ui";
-import { NumberField, SliderField } from "./fields";
+import { NumberField, ParameterLine, SliderField } from "./fields";
 
 export interface TimelineProps {
   bundle: Bundle;
@@ -25,12 +26,11 @@ export interface TimelineProps {
   lock?: { years: SiteValue | null; age: SiteValue | null } | null;
 }
 
-type Mode = "real" | "nominal";
 const inputKeys: P05Input[] = ["amount_now", "monthly_deposit", "horizon_years", "A-01", "A-02"];
 
 export function Timeline({ bundle, initial, wrapperName, ageMarker, lock }: TimelineProps) {
   const { state, ready, setEntered, setAge, setEmployment, resetAll } = useInputs();
-  const [mode, setMode] = useState<Mode>("real");
+  const [mode, setMode] = useValueMode();
   const [hover, setHover] = useState<number | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [focusField, setFocusField] = useState<P05Input | "all">("all");
@@ -125,7 +125,43 @@ export function Timeline({ bundle, initial, wrapperName, ageMarker, lock }: Time
   const horizonValue = inputValue("horizon_years");
   const panel = <ValuesPanel bundle={bundle} focusField={focusField} />;
 
+  const tableCard =
+    timeline.kind === "ok" && values ? (
+      <div className="bg-card border border-border rounded-lg px-4 py-2 md:px-6">
+      <Disclosure label={buttons.showTable} openLabel={buttons.hideTable} summaryClassName="text-sm">
+        <div className="overflow-x-auto mt-2" style={scrollCueStyle} tabIndex={0} role="region" aria-label={copy.graphTitle}>
+          <table className="tbl text-sm [&_td]:px-2 [&_th]:px-2 [&_td]:whitespace-nowrap [&_th]:whitespace-nowrap">
+            <thead>
+              <tr>
+                <th scope="col">{copy.table.year}</th>
+                <th scope="col">{copy.table.contributions}</th>
+                <th scope="col">{copy.table.fees}</th>
+                <th scope="col">{copy.table.tax}</th>
+                <th scope="col">{copy.table.net}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {timeline.years.map((p) => {
+                const v = values!.yearValues(p, mode);
+                return (
+                  <tr key={p.year}>
+                    <th scope="row"><bdi dir="ltr">{p.year}</bdi></th>
+                    <td><Num value={v.contributions} size="cell" /></td>
+                    <td><Num value={v.fees} size="cell" /></td>
+                    <td><Num value={v.tax} size="cell" /></td>
+                    <td><Num value={v.net} size="cell" /></td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </Disclosure>
+      </div>
+    ) : null;
+
   return (
+    <div className="flex flex-col gap-6">
     <div className="flex flex-col lg:flex-row-reverse lg:items-start gap-6">
       <div className="flex-1 min-w-0 bg-card border border-border rounded-lg p-4 md:p-6 flex flex-col gap-4" aria-labelledby={titleId}>
         <div className="flex flex-col gap-3 lg:flex-row lg:flex-wrap lg:items-start lg:justify-between">
@@ -134,16 +170,25 @@ export function Timeline({ bundle, initial, wrapperName, ageMarker, lock }: Time
               {copy.graphTitle}
             </h3>
             <span className="text-sm text-muted-foreground">
-              {copy.headline.before} <Num value={horizonValue} display={fmt.years(horizonYears)} />, {mode === "real" ? copy.headline.after : copy.headline.afterNominal}
+              {/* audit A45: it says it is an example and names the inputs, so it does not read as a promise */}
+              {values ? (
+                <>
+                  {copy.headlineExample.lead} <Num value={values.inputs[ci.amountNow]!} /> {copy.headlineExample.plus} <Num value={values.inputs[ci.monthly]!} /> {copy.headlineExample.perMonth} <Num value={values.inputs[ci.grossReturn]!} /> {copy.headlineExample.perYear} <Num value={horizonValue} display={fmt.years(horizonYears)} />, {mode === "real" ? copy.headline.after : copy.headline.afterNominal}
+                </>
+              ) : (
+                <>
+                  {copy.headline.before} <Num value={horizonValue} display={fmt.years(horizonYears)} />, {mode === "real" ? copy.headline.after : copy.headline.afterNominal}
+                </>
+              )}
             </span>
             <div className="flex items-center gap-3 flex-wrap">
               {headline ? (
                 <span className="figure" ref={headlineRef} style={{ scrollMarginTop: "124px" }}>
                   <Num value={headline} size="figure" animate />
                 </span>
-              ) : (
+              ) : timeline.kind === "ok" ? (
                 <span className="figure text-muted-foreground">{system.loading}</span>
-              )}
+              ) : null}
               {headline && <StateTag state="computed" />}
             </div>
           </div>
@@ -172,7 +217,8 @@ export function Timeline({ bundle, initial, wrapperName, ageMarker, lock }: Time
 
             <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label="מקרא">
               <li className="flex items-center gap-1.5"><span className="size-2.5 rounded-sm bg-chart-value" /> {copy.legend.net}</li>
-              <li className="flex items-center gap-1.5"><span className="size-2.5 rounded-sm bg-chart-tax" /> {copy.legend.tax}</li>
+              {/* audit A79: no swatch for an area that is not drawn (no tax in this run) */}
+              {points.some((p) => p.tax > 0) && <li className="flex items-center gap-1.5"><span className="size-2.5 rounded-sm bg-chart-tax" /> {copy.legend.tax}</li>}
               <li className="flex items-center gap-1.5"><span className="size-2.5 rounded-sm bg-chart-fee" /> {copy.legend.fees}</li>
               <li className="flex items-center gap-1.5"><span className="w-3.5 h-[3px] rounded-sm bg-chart-contributions" /> {copy.legend.contributions}</li>
             </ul>
@@ -193,36 +239,6 @@ export function Timeline({ bundle, initial, wrapperName, ageMarker, lock }: Time
               </dl>
             )}
 
-            <hr className="border-border" />
-            <Disclosure label={buttons.showTable} openLabel={buttons.hideTable} summaryClassName="text-sm">
-              <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 mt-2">
-                <table className="tbl text-sm">
-                  <thead>
-                    <tr>
-                      <th scope="col">{copy.table.year}</th>
-                      <th scope="col">{copy.table.contributions}</th>
-                      <th scope="col">{copy.table.fees}</th>
-                      <th scope="col">{copy.table.tax}</th>
-                      <th scope="col">{copy.table.net}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {timeline.years.map((p) => {
-                      const v = values!.yearValues(p, mode);
-                      return (
-                        <tr key={p.year}>
-                          <th scope="row"><bdi dir="ltr">{p.year}</bdi></th>
-                          <td><Num value={v.contributions} size="cell" /></td>
-                          <td><Num value={v.fees} size="cell" /></td>
-                          <td><Num value={v.tax} size="cell" /></td>
-                          <td><Num value={v.net} size="cell" /></td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </Disclosure>
             <RulesLine ids={timeline.rules.map((r) => r.id)} />
           </>
         ) : timeline.kind === "blocked" ? (
@@ -234,7 +250,12 @@ export function Timeline({ bundle, initial, wrapperName, ageMarker, lock }: Time
             {copy.figureNotUpdated.before} <RuleRef id={timeline.ruleId} /> ({timeline.figure}). {copy.figureNotUpdated.after}
           </Callout>
         ) : (
-          <Callout tone="caution">{system.calcFailed}</Callout>
+          <div className="flex flex-col gap-1">
+            <Callout tone="caution">{(timeline as { messageHe?: string }).messageHe || system.calcFailed}</Callout>
+            <Button variant="quiet" className="self-start -ms-2 text-sm" onClick={resetAll}>
+              <IconReset size={16} /> {buttons.resetEntered}
+            </Button>
+          </div>
         )}
       </div>
 
@@ -253,6 +274,8 @@ export function Timeline({ bundle, initial, wrapperName, ageMarker, lock }: Time
         {sheetOpen && <TermsList bundle={bundle} />}
         {anyEntered && <ResetAll onReset={resetAll} />}
       </Sheet>
+    </div>
+    {tableCard}
     </div>
   );
 }
@@ -335,6 +358,7 @@ function ValuesPanel({ bundle, focusField }: { bundle: Bundle; focusField: P05In
   );
   return (
     <div className="flex flex-col gap-4 lg:gap-[18px]">
+      <ParameterLine />
       <NumberField label={valuesCopy.fields.amount_now} unit="nis" value={current("amount_now")} isEntered={isEntered("amount_now")} validate={nonNegative} onCommit={commit("amount_now")} onReset={() => setEntered("amount_now", null)} disabled={!ready} autoFocus={focusField === "amount_now"} />
       <SliderField label={valuesCopy.fields.monthly_deposit} unit="nis_per_month" value={current("monthly_deposit")} isEntered={isEntered("monthly_deposit")} validate={nonNegative} onCommit={commit("monthly_deposit")} onReset={() => setEntered("monthly_deposit", null)} min={monthly?.min ?? 0} max={monthly?.max ?? 10000} step={monthly?.step ?? 100} disabled={!ready} autoFocus={focusField === "monthly_deposit"} />
       <SliderField label={valuesCopy.fields.horizon_years} unit="years" value={current("horizon_years")} isEntered={isEntered("horizon_years")} validate={between(years, valuesCopy.errors.years, true)} onCommit={commit("horizon_years")} onReset={() => setEntered("horizon_years", null)} min={years?.min ?? 1} max={years?.max ?? 40} step={years?.step ?? 1} inputMode="numeric" disabled={!ready} autoFocus={focusField === "horizon_years"} />

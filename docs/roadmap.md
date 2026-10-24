@@ -18,7 +18,7 @@ Capability map (product.md number, short name, release):
 | 3.8 | Site parameters (`data/parameters/`) | R1 (first values), signed off per release as they are used |
 | 3.8 | Method (`docs/method.md`) and test cases (`tests/golden/`) | R1 (for what R1 computes), extended every release |
 | 3.8 | Reader-facing rule link, rules page, parameters page | R1 |
-| 3.8 | Change log | R1 (written), R5 (read by saved-state revisit) |
+| ~~3.8~~ | ~~Change log~~ | removed 2026-10-24, D24 |
 | 3.1 | Instrument guide, tier-1 wrappers and exposures | R1 |
 | 3.1 | Tier-2 "not covered yet" page | R1 |
 | 3.1 | Term matching (`data/terms/`) | R1 |
@@ -36,7 +36,7 @@ Capability map (product.md number, short name, release):
 | 3.2 | Exposure mode | R5 |
 | 3.9 | Saved state, local, automatic | R2 |
 | 3.9 | Export and import as a file | R3 |
-| 3.9 | Revisit against the change log | R5 |
+| 3.9 | Revisit against the stored versions (change log removed 2026-10-24, D24) | R5 |
 | 3.5 | Fee materiality | R3 |
 | 3.6 | Holdings review | R3 |
 | 3.4 | Workbench, tracks | R3 |
@@ -53,7 +53,7 @@ Capability map (product.md number, short name, release):
 
 **In it**
 
-- **3.8 Rule base, parameters, method, change log.** The `il-finance` rule base seeded from the tax report (sections 1 to 9) and the domain report (ceilings, liquidity, caps), each rule with source, strength and date, and the 22 tax and 23 domain open questions marked open. First site parameters with founder sign-off. `docs/method.md` covering only what R1 computes (the illustrative timeline on guide pages: compounding, fee bases, tax at exit, the deflator). `tests/cases/` for those. The reader-facing rule link next to every rule-dependent number, the rules page, the parameters page. The change log is written from the first data refresh, though nothing reads it yet.
+- **3.8 Rule base, parameters, method (change log removed 2026-10-24, D24).** The `il-finance` rule base seeded from the tax report (sections 1 to 9) and the domain report (ceilings, liquidity, caps), each rule with source, strength and date, and the 22 tax and 23 domain open questions marked open. First site parameters with founder sign-off. `docs/method.md` covering only what R1 computes (the illustrative timeline on guide pages: compounding, fee bases, tax at exit, the deflator). `tests/cases/` for those. The reader-facing rule link next to every rule-dependent number, the rules page, the parameters page.
 - **3.1 Instrument guide**, one page per tier-1 wrapper and exposure type in the fixed structure, with the illustrative timeline visual, and the tier-2 "not covered yet" page naming the open question per instrument. Term matching from `data/terms/`.
 - **3.3 Dimension checklist**, hand-maintained in `data/dimensions/`, shown on every guide page with each dimension marked covered, not applicable or blocked by an open rule.
 - **3.10 Catalogue of every option** for every managing company in the CMA datasets: the complete list of funds and tracks per manager with classification and fee, plus `data/catalog/` for the names the CMA data does not hold (an institution's own name for a track), starting with Meitav's. Output: wrapper, fund record, exposure in plain Hebrew, why a person might pick it, dimension checklist, near-duplicates resolved from the data. The fit mark against a saved goal waits for R2.
@@ -222,32 +222,32 @@ Capability map (product.md number, short name, release):
 **In it**
 
 - **3.2 Exposure mode**: which exposure type suits the horizon and the loss filter, with the coverage line over every exposure record (D17); cash-like exposures from sourced series, equity and bond returns entered by the person and labelled so (D9). A sourced scenario file is added only if one with a defensible source exists (N5).
-- **3.9 Revisit against the change log**: a saved comparison re-run after rule, parameter or data changes, reporting what changed and whether the ranking holds; the reader-facing "what changed since" view of the change log.
+- **3.9 Revisit**: a saved comparison re-run after rule, parameter or data changes, reporting what changed and whether the ranking holds, from the versions it stored (the reader-facing change log was removed 2026-10-24, D24).
 - **D2 Tier-2 graduation**: for each tier-2 instrument whose record is sourced and whose tax questions are closed, promotion to tier 1 across 3.1, 3.2, 3.3, 3.4 and 3.10. Ongoing after R5.
 
-**Why last.** Exposure mode is the only capability that cannot be honest with today's sources; it waits until the equal-gross-return comparison has done its work and the person is choosing between asset classes. Revisit needs a change log with enough history to be worth reading. Tier-2 graduation is gated by tax open questions that close on their own schedule.
+**Why last.** Exposure mode is the only capability that cannot be honest with today's sources; it waits until the equal-gross-return comparison has done its work and the person is choosing between asset classes. Tier-2 graduation is gated by tax open questions that close on their own schedule.
 
 **Depends on**
 
 - R1 to R4.
 - Rules: the loss filter as a user-set constraint (D11) needs no rule; tier-2 graduation needs the open tax questions for each instrument closed (tax report Q5, Q6, Q9, Q13 and others).
-- Data: change log history from R1 onward; export format stability (N3).
+- Data: export format stability (N3).
 
 **Risks**
 
 - Exposure mode with an entered return can be misread as the site's view. The "entered by you" state (D7) must be unmistakable on the chart.
 - Tier-2 graduation may never happen for some instruments if the regulator never publishes the rule; the "not covered yet" page stays honest.
-- Revisit can produce noise if every data refresh triggers "something changed"; the change log must distinguish changes that affect a saved ranking from those that do not.
+- Revisit can produce noise if every data refresh triggers "something changed"; the revisit must distinguish changes that affect a saved ranking from those that do not.
 
 **Done when** product.md criterion 4 (a friend goes from a goal to a concrete choice alone) holds including an exposure choice, and a decision recorded before a rule change shows the re-check notice after it.
 
 **Status 2026-10-24: built; no tier-2 instrument has graduated.**
 
-- **Engine.** The loss filter F-71 and exposure mode (`packages/engine/src/compare/loss-filter.ts`, `exposures.ts`), revisit F-82 and `changesSince` over the change log (`revisit.ts`). Golden scenarios S48 (revisit after a rule change, over S39) and S49 (exposure mode with entered returns and the loss filter) pass in `packages/engine/test/golden/r5.test.ts`, with `lossFilter`, `diffVersions` and `changesSince` tested on their own. The one `it.todo` left in `golden.test.ts` ("S47 pension series: F-30, F-31, F-53") is a leftover: those formulas exist since release 2 and S27 to S30 cover them.
-- **Screens.** Exposure mode on `/goal/compare?mode=exposure` with the goal form's return and fall fields (screen 17; each exposure runs through the holding wrapper named by P-08, `data/parameters/exposure-holding-wrapper.json`, signed off 2026-10-24, and the person may change it), the revisit notice and sheet (screen 18, wrapper and exposure mode), `/changes` (what changed since, screen 19, one change-log file per year) and the status card on the not-covered page (screen 20). Saved comparisons and visit dates live in the state document, version 3 under the key `mekor.v2.state` (the key did not change; the document's own `version` says what it is). Design: `docs/flows.md` §16 to §18, `docs/design-spec.md` §21 to §25, `docs/design-system.md` §9, `docs/copy.md` §9, `docs/glossary.md` §10.
+- **Engine.** The loss filter F-71 and exposure mode (`packages/engine/src/compare/loss-filter.ts`, `exposures.ts`), revisit F-82 (`revisit.ts`). Golden scenarios S48 (revisit after a rule change, over S39) and S49 (exposure mode with entered returns and the loss filter) pass in `packages/engine/test/golden/r5.test.ts`, with `lossFilter` and `diffVersions` tested on their own. The one `it.todo` left in `golden.test.ts` ("S47 pension series: F-30, F-31, F-53") is a leftover: those formulas exist since release 2 and S27 to S30 cover them.
+- **Screens.** Exposure mode on `/goal/compare?mode=exposure` with the goal form's return and fall fields (screen 17; each exposure runs through the holding wrapper named by P-08, `data/parameters/exposure-holding-wrapper.json`, signed off 2026-10-24, and the person may change it), the revisit notice and sheet (screen 18, wrapper and exposure mode), the status card on the not-covered page (screen 20). Saved comparisons live in the state document, version 3 under the key `mekor.v2.state` (the key did not change; the document's own `version` says what it is). Design: `docs/flows.md` §16 to §18, `docs/design-spec.md` §21 to §25, `docs/design-system.md` §9, `docs/copy.md` §9, `docs/glossary.md` §10.
 - **Data.** Exposure records with collected terms to run: shekel cash through Leumi's published deposit terms, the S&P 500 through IBI 1148162, the TA-125 through Meitav 1143718, the CPI-linked government bond through the GOV-11 series, the general track through a kupat gemel lehashkaa at list fees. Makam and the unlinked government bond are "not evaluated" until a rate is entered (the Bank of Israel series are links, D20; GOV OQ4). Equity and bond returns are entered by the person and drawn as such (D9); no sourced scenario file exists (N5). `data/series/` holds the two confirmed series (CBS CPI, Ministry of Finance child-savings rates).
 - **What the research closed.** The tier-2 pass (`r5-tier2`, 2026-10-24) ranked the nine instruments of D2 by distance from graduation: managed and robo portfolios first (the tax side computes, TX2-15 and the VAT rule TX2-17; what remains is a retail-offer pass, an entered or ISA-average fee under D4 and two method formulas), then FX deposits, corporate bonds held to maturity, REITs, gold through funds, savings policies, Amendment 190, structured deposits, and executive insurance last. Eight rules were added (INS-25, INS-26, TXA-27, TXA-28, TX2-17 to TX2-20); product D23 settled how institution-strength rules compute. Two draft wrapper records (managed portfolio, FX deposit) sit in the scratch report, outside `data/`, because their ids are not in the schema and their formulas are not in the method.
-- **Still open.** No tier-2 instrument graduated; managed portfolios are nearest. The sensitivity panel is shown in wrapper mode only; exposure mode has none yet. The first page's quiet line "since your last visit {n} things changed" (flow 36) is not built; the what-changed page is reached from the menu, the rules and parameters pages and the revisit sheet. The merge of the three release 4 side stores into the state document (release 4 status).
+- **Still open.** No tier-2 instrument graduated; managed portfolios are nearest. The sensitivity panel is shown in wrapper mode only; exposure mode has none yet. The "what changed" page and the first page's "since your last visit" line were dropped (D24, 2026-10-24); the revisit sheet is the whole "what changed" view. The merge of the three release 4 side stores into the state document (release 4 status).
 - **For the founder.** The release 5 strings in `docs/copy.md` §9 are drafts (chosen 2026-10-24, revisable).
 
 ---
@@ -280,7 +280,7 @@ Approval of this document fixes the release contents and order. It did not start
 
 *Written 2026-10-24.*
 
-Every capability of `docs/product.md` section 3 is now placed in a release above and built, to the extent the data allows: the guide, checklist and catalogue (R1), goal comparison in both modes with the idle-cash preset and the sensitivity panel in wrapper mode (R2, R5), saved state with export, import and revisit (R2, R3, R5), fee materiality and the holdings review (R3), the workbench for tracks, providers and fund variants (R3, R4), the switching playbook (R4) and the rule base, parameters, method and change log under all of them. Where a number cannot be shown, the page says why: a publisher's terms (the Bank of Israel series, the ISA averages, the TASE fund lists), a missing record (Meitav Trade's tariff, a fund without details) or an open rule. No new capability is proposed here; the roadmap's job is done.
+Every capability of `docs/product.md` section 3 is now placed in a release above and built, to the extent the data allows: the guide, checklist and catalogue (R1), goal comparison in both modes with the idle-cash preset and the sensitivity panel in wrapper mode (R2, R5), saved state with export, import and revisit (R2, R3, R5), fee materiality and the holdings review (R3), the workbench for tracks, providers and fund variants (R3, R4), the switching playbook (R4) and the rule base, parameters and method under all of them. Where a number cannot be shown, the page says why: a publisher's terms (the Bank of Israel series, the ISA averages, the TASE fund lists), a missing record (Meitav Trade's tariff, a fund without details) or an open rule. No new capability is proposed here; the roadmap's job is done.
 
 What continues, none of it a release:
 
@@ -288,4 +288,4 @@ What continues, none of it a release:
 - **Data growth.** Fund records in `data/funds/` for the funds people actually ask about (N4), one by one from the prospectus; deposit terms of more banks in `data/terms/deposits/` so the bank catalogue (3.10, N6) grows beyond Leumi; the Maya and TASE fund lists only if TASE consents in writing (CAT-43), and the Bank of Israel series only if the Bank does (D20); Meitav Trade's tariff when it is published; the CMA snapshots keep refreshing daily.
 - **Refresh of tariffs** at least quarterly and whenever a change notice is seen (product.md section 6), each as a new dated snapshot in `data/fees/`, so the stale flag means what it says.
 - **The founder's approvals**: the UI strings of `docs/copy.md` §7 to §9, the two unapproved doors on the first page, the playbook ticks as saved state, a second look at the parameters he signed off on trust (P-02 to P-08, "do whatever you think fits") once he has used the pages they drive, and the consent letters (Bank of Israel, TASE, ISA) if he chooses to send them.
-- **The debts named in the status paragraphs**: F-18, the merge of the three side stores into the state document, the sensitivity panel in exposure mode, the first page's "since your last visit" line, and the stale `it.todo`.
+- **The debts named in the status paragraphs**: F-18, the merge of the three side stores into the state document, the sensitivity panel in exposure mode, and the stale `it.todo`. (The first page's "since your last visit" line and the change-log page were dropped by D24 on 2026-10-24.)

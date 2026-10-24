@@ -22,6 +22,7 @@ import { goalValueObjects, runGoalOf, type CompareBundle, type RunGoal } from ".
 import { p05Units } from "./engine";
 import { referenceOfClass, tracksBehind } from "./class-reference";
 import { fitOf, type FitTableData } from "./fit";
+import { failureHe } from "./failure-he";
 import { fmt } from "./format";
 import type { Goal, ResolvedGoal } from "./goal";
 import { normalize } from "./search";
@@ -130,21 +131,71 @@ export function tracksFor(hb: HoldingsBundle, wrapperId: WrapperId, companyId: s
   return hb.tracks.filter((t) => t.w === wrapperId && hb.companies[t.c]!.id === companyId).sort((a, b) => a.n.localeCompare(b.n, "he"));
 }
 
-/** A name pasted from a statement against the tracks of a wrapper: the exact name first, else names that contain it (flow 6). */
-export function matchTracks(hb: HoldingsBundle, wrapperId: WrapperId, text: string, companyId?: string): HTrack[] {
+/** How a pasted text matched the tracks: by fund number, by the exact name, by part of a name, by all its words, or not at all. */
+export type TrackMatchKind = "number" | "exact" | "part" | "words" | "none";
+
+const tokensOf = (q: string): string[] => q.split(/[\s,;:()\-]+/).filter((w) => w.length >= 2);
+
+/**
+ * A name pasted from a statement against the tracks of a wrapper (flow 6): a fund number ("1377" or "קופה 1377"), else the
+ * exact name, else names that contain it, else names (with their company's name) that contain every word of it.
+ */
+export function matchTracksKind(hb: HoldingsBundle, wrapperId: WrapperId, text: string, companyId?: string): { kind: TrackMatchKind; tracks: HTrack[] } {
   const q = normalize(text);
-  if (q.length < 2) return [];
+  const none = { kind: "none" as const, tracks: [] as HTrack[] };
+  if (q.length < 2) return none;
   const pool = hb.tracks.filter((t) => t.w === wrapperId);
+  const num = /^(?:קופה\s*)?#?(\d{2,7})$/.exec(q);
+  if (num) {
+    const byId = pool.filter((t) => t.id === Number(num[1]));
+    return byId.length > 0 ? { kind: "number", tracks: byId } : none;
+  }
   const inCompany = companyId ? pool.filter((t) => hb.companies[t.c]!.id === companyId) : [];
   for (const set of [inCompany, pool]) {
     const exact = set.filter((t) => normalize(t.n) === q);
-    if (exact.length > 0) return exact;
+    if (exact.length > 0) return { kind: "exact", tracks: exact };
   }
   for (const set of [inCompany, pool]) {
     const part = set.filter((t) => normalize(t.n).includes(q));
-    if (part.length > 0) return part.slice(0, 8);
+    if (part.length > 0) return { kind: "part", tracks: part.slice(0, 8) };
   }
-  return [];
+  const words = tokensOf(q);
+  if (words.length >= 2) {
+    for (const set of [inCompany, pool]) {
+      const all = set.filter((t) => {
+        const hay = normalize(`${hb.companies[t.c]!.name} ${t.n}`);
+        return words.every((w) => hay.includes(w));
+      });
+      if (all.length > 0) return { kind: "words", tracks: all.slice(0, 8) };
+    }
+  }
+  return none;
+}
+
+export const matchTracks = (hb: HoldingsBundle, wrapperId: WrapperId, text: string, companyId?: string): HTrack[] => matchTracksKind(hb, wrapperId, text, companyId).tracks;
+
+/**
+ * The companies a typed filter points at. A filter that is part of one name is that name; a filter with extra words
+ * ("הפניקס פנסיה מקיפה מסלול כללי") points at the companies whose names hold its rarest words, so the list stays and
+ * the person picks. `partial` is true when only some of the words were found.
+ */
+export function matchCompanies<C extends { name: string }>(companies: C[], filter: string): { list: C[]; partial: boolean } {
+  const q = normalize(filter);
+  if (q === "") return { list: companies, partial: false };
+  const direct = companies.filter((c) => normalize(c.name).includes(q));
+  if (direct.length > 0) return { list: direct, partial: false };
+  const words = tokensOf(q);
+  if (words.length === 0) return { list: [], partial: false };
+  const names = companies.map((c) => normalize(c.name));
+  const weight = (w: string) => {
+    const df = names.filter((n) => n.includes(w)).length;
+    return df === 0 ? 0 : 1 / df;
+  };
+  const weights = words.map(weight);
+  const scored = companies.map((c, i) => ({ c, score: words.reduce((sum, w, k) => (names[i]!.includes(w) ? sum + weights[k]! : sum), 0) })).filter((x) => x.score > 0);
+  if (scored.length === 0) return { list: [], partial: false };
+  const best = Math.max(...scored.map((x) => x.score));
+  return { list: scored.filter((x) => x.score >= best * 0.5).sort((a, b) => b.score - a.score).slice(0, 6).map((x) => x.c), partial: true };
 }
 
 // ---------------------------------------------------------------- the context a page builds once
@@ -189,6 +240,8 @@ export interface ClassReference {
 
 export interface FeeCost {
   total: SiteValue;
+  /** F-61's value of the balance fee falling to the class mean (the fee page's what-if, same function); absent when the fee is not above it. */
+  atAverage?: SiteValue;
   horizonYears: SiteValue;
   /** Exit tax is blocked (G-03): the figure is before it. */
   preTax?: { blockedBy: string };
@@ -198,7 +251,14 @@ export interface FeeCost {
   returnFromParameter: boolean;
 }
 
-export type FeeCostResult = { kind: "ok"; cost: FeeCost } | { kind: "no-goal" } | { kind: "unsupported" } | { kind: "needs-pf36" } | { kind: "needs-first-deposit" } | { kind: "failed"; message: string };
+export type FeeCostResult = { kind: "ok"; cost: FeeCost } | { kind: "no-goal" } | { kind: "unsupported" } | { kind: "needs-pf36" } | { kind: "needs-first-deposit" } | { kind: "failed"; message: string; messageHe: string; /** The rule or gap id the engine message names, for the chip after the plain words. */ code?: string };
+
+/** The rule or gap id an engine message names, if any (never the English message itself). */
+export const failureCode = (message: string | undefined): string | undefined => (message ? /\b(?:G|PF|OQ|TXH|TXK|KH|KGL|SW|PEN)-\d+\b/.exec(message)?.[0] : undefined);
+const failed = (message: string): FeeCostResult => {
+  const code = failureCode(message);
+  return { kind: "failed", message, messageHe: failureHe(message), ...(code ? { code } : {}) };
+};
 
 export interface CapWarning {
   feeType: "balance" | "deposit";
@@ -322,8 +382,10 @@ export function holdingPlan(h: Holding, cb: CompareBundle | null, goal: Holdings
     if (h.wrapperId === "keren-hishtalmut") {
       // the 6-year clock starts at the first deposit: months from the start of the run (negative when it began before)
       const first = h.firstDeposit?.value;
-      if (typeof first !== "string") return { ok: false, reason: "needs-first-deposit" };
-      terms.hishtalmut = { employment, clockStartMonth: -monthsBetweenIso(first, today), ...(employment === "employee" && hasSalary ? { monthlySalary: salary! } : {}), ...(employment === "employee" && deposits && monthlyEmployer > 0 ? { employerMonthly: monthlyEmployer } : {}) };
+      // scenario fix 2026-10-24: "more than six years" starts the run with the wait already over
+      const lock = lockYearsOf(rules, today);
+      if (typeof first !== "string" && !(overSixOf(h) && lock)) return { ok: false, reason: "needs-first-deposit" };
+      terms.hishtalmut = { employment, clockStartMonth: typeof first === "string" ? -monthsBetweenIso(first, today) : overSixClockStart(lock!), ...(employment === "employee" && hasSalary ? { monthlySalary: salary! } : {}), ...(employment === "employee" && deposits && monthlyEmployer > 0 ? { employerMonthly: monthlyEmployer } : {}) };
     }
     const profile = { ...(g.age === null ? {} : { ageAtStart: g.age }), ...(employment === "self-employed" && hasSalary ? { annualIncome: 12 * salary! } : {}) };
     const plan = runInputs(entry.record, [p05], terms, { entered: enteredP05 as never, profile });
@@ -345,9 +407,9 @@ export function holdingPlan(h: Holding, cb: CompareBundle | null, goal: Holdings
   }
 }
 
-function feeCostOf(h: Holding, ctx: HoldingsCtx): FeeCostResult {
+function feeCostOf(h: Holding, ctx: HoldingsCtx, meanBalance: SiteValue | null): FeeCostResult {
   const p = holdingPlan(h, ctx.cb, ctx.goal, ctx.rules);
-  if (!p.ok) return p.reason === "failed" ? { kind: "failed", message: p.message ?? "" } : { kind: p.reason };
+  if (!p.ok) return p.reason === "failed" ? failed(p.message ?? "") : { kind: p.reason };
   try {
     const fm = feeMateriality(p.plan, p.ctx);
     const gv = goalValueObjects(ctx.cb!, ctx.goal!.run);
@@ -360,18 +422,29 @@ function feeCostOf(h: Holding, ctx: HoldingsCtx): FeeCostResult {
       today: p.ctx.runDate,
       rules: usedRules,
       flags: fm.run.flags.map((f) => f.code),
+      labels: fm.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })),
       about: "מה דמי הניהול לוקחים מהחשבון הזה עד סוף התקופה, בכסף של היום: השווי בלי דמי ניהול פחות השווי איתם",
     });
     const blocked = fm.run.outcome.code === "listed-not-ranked" && (fm.run.outcome as { reason?: string }).reason === "G-03" ? "G-03" : fm.run.flags.some((f) => f.code === "PF-36") ? "PF-36" : undefined;
+    // the fee page's what-if (F-61 value of a stated reduction) with the class mean as the stated rate; nothing new is computed
+    let atAverage: SiteValue | undefined;
+    const feeNow = typeof h.feeBalance?.value === "number" ? h.feeBalance.value : null;
+    const meanNow = meanBalance && typeof meanBalance.value === "number" ? fmt.pctShown(meanBalance.value) : null;
+    if (feeNow !== null && meanNow !== null && meanNow < feeNow) {
+      const r = valueOfReduction(p.plan, "balance", meanNow / 100, p.ctx);
+      if ((r.value.value as number) > 0) {
+        atAverage = computed(r.value.value as number, "nis", "F-61", { "דמי ניהול מחיסכון": h.feeBalance as SiteValue, "ממוצע הסיווג": meanBalance as SiteValue, "שנים": gv.horizon }, { today: p.ctx.runDate, rules: usedRules, about: "מה שווה להוריד את דמי הניהול מחיסכון לממוצע של הסיווג, בכסף של היום: השווי עם הדמי ניהול החדשים פחות השווי עכשיו" });
+      }
+    }
     return {
       kind: "ok",
-      cost: { total, horizonYears: gv.horizon, ...(blocked ? { preTax: { blockedBy: blocked } } : {}), ...(p.depositsLeftOut ? { depositsLeftOut: true } : {}), returnFromParameter: p.returnFromParameter },
+      cost: { total, ...(atAverage ? { atAverage } : {}), horizonYears: gv.horizon, ...(blocked ? { preTax: { blockedBy: blocked } } : {}), ...(p.depositsLeftOut ? { depositsLeftOut: true } : {}), returnFromParameter: p.returnFromParameter },
     };
   } catch (e) {
     const message = e instanceof Error ? e.message : String(e);
     // a study fund still inside its lock: the engine asks for the tax-layer split of the detailed statement (PF-36)
     if (/PF-36/.test(message) && h.wrapperId === "keren-hishtalmut") return { kind: "needs-pf36" };
-    return { kind: "failed", message };
+    return failed(message);
   }
 }
 
@@ -416,7 +489,7 @@ export function viewOf(h: Holding, ctx: HoldingsCtx): HoldingView {
     view.fit = fitFor(track, ctx, view);
     view.reference = referenceFor(hb, track, ctx.today);
   }
-  view.fees = feeCostOf(h, ctx);
+  view.fees = feeCostOf(h, ctx, view.reference && (view.reference.count.value as number) > 0 ? view.reference.meanBalance : null);
   view.capWarnings = capWarnings(h, ctx);
   return view;
 }
@@ -477,6 +550,12 @@ const addMonthsIso = (iso: string, months: number) => {
   return new Date(Date.UTC(y, m - 1 + months, d)).toISOString().slice(0, 10);
 };
 
+/** TXH-09: the clock runs from the first payment date, the end of the month of the first payment (or the month it was for); the wait ends `months` later, at a month end (review fix 2026-10-24). */
+const monthEndAfter = (iso: string, months: number) => {
+  const [y, m] = iso.split("-").map(Number) as [number, number, number];
+  return new Date(Date.UTC(y, m - 1 + months + 1, 0)).toISOString().slice(0, 10);
+};
+
 const feeOf = (h: Holding) => (typeof h.feeBalance?.value === "number" ? h.feeBalance.value : null);
 
 const costRulesFor = (wrapperId: WrapperId): string[] => (wrapperId === "keren-hishtalmut" ? ["PF-19", "TXH-19", "PF-14", "SW-15"] : wrapperId === "kupat-gemel-lehashkaa" ? ["PF-19", "TXK-04", "PF-14", "SW-15"] : ["PF-19", "PF-14", "SW-15"]);
@@ -509,7 +588,7 @@ export function consolidationGroups(views: HoldingView[], ctx: HoldingsCtx): Con
       id: v.holding.id,
       wrapper: wrapperId,
       manager: manager(v),
-      ...(typeof v.holding.firstDeposit?.value === "string" ? { firstDepositDate: v.holding.firstDeposit.value } : {}),
+      ...(typeof v.holding.firstDeposit?.value === "string" ? { firstDepositDate: v.holding.firstDeposit.value } : overSixOf(v.holding) && lockYearsOf(ctx.rules, ctx.today) ? { firstDepositDate: addMonthsIso(ctx.today, -12 * (lockYearsOf(ctx.rules, ctx.today)!.value as number)) } : {}),
       ...(atRetirementAge ? { atRetirementAge: true } : {}),
       ...Object.fromEntries(Object.entries(v.holding.bars ?? {}).filter(([, on]) => on)),
     }));
@@ -543,7 +622,7 @@ export function consolidationGroups(views: HoldingView[], ctx: HoldingsCtx): Con
         const v = list.find((x) => x.holding.id === n.holding);
         const first = v?.holding.firstDeposit;
         if (!v || !first || typeof first.value !== "string") continue;
-        const from = addMonthsIso(first.value, n.monthsNeeded);
+        const from = monthEndAfter(first.value, n.monthsNeeded);
         if (!latest || from > latest.from) latest = { holdingId: v.holding.id, from, first, months: n.monthsNeeded, rule: n.lockRule };
       }
       if (latest) {
@@ -624,6 +703,72 @@ export function useHolding(id: string | null): { ready: boolean; holding: Holdin
   return { ready: snap.ready, holding: id ? (sortedHoldings(snap.state.holdings).find((h) => h.id === id) ?? null) : null };
 }
 
+// ---------------------------------------------------------------- scenario fix 2026-10-24: liquidity of a study fund, fee prefill
+
+/**
+ * "The first deposit was more than six years ago", stored beside `firstDeposit` as an entered true. It lives here until
+ * `Holding` in state.ts declares it (requests.md, sc-holdings); the state check keeps keys it does not know.
+ */
+export interface OverSix {
+  firstDepositOverSix?: ValueObject;
+}
+export const overSixOf = (h: Holding): boolean => (h as Holding & OverSix).firstDepositOverSix?.value === true;
+
+const addMonths = (iso: string, months: number): string => new Date(Date.UTC(Number(iso.slice(0, 4)), Number(iso.slice(5, 7)) - 1 + months, Number(iso.slice(8, 10)))).toISOString().slice(0, 10);
+
+/** The wait for a tax-free study-fund withdrawal, TXH-09's `lock_years`; null when the rule or its figure is not in the rule base. */
+export function lockYearsOf(rules: Record<string, RuleRecord>, today: string): SiteValue | null {
+  const r = rules["TXH-09"];
+  const f = r ? ruleFigure(r, "lock_years", today) : null;
+  return f && typeof f.value === "number" ? f : null;
+}
+
+export type Liquidity =
+  /** `from` is the date it became liquid (first deposit plus the wait); null when only the checkbox says so. */
+  | { kind: "liquid"; from: SiteValue | null; lock: SiteValue }
+  | { kind: "not-yet"; from: SiteValue; lock: SiteValue }
+  /** A study fund with neither a first-deposit date nor the checkbox. */
+  | { kind: "unknown" }
+  /** TXH-09's figure is not in the rule base: nothing is derived. */
+  | { kind: "no-rule" };
+
+/**
+ * Whether a study fund can be withdrawn tax-free: six years (TXH-09) after the first deposit, the same test and the same
+ * month arithmetic as the consolidation card's `notYet`. The checkbox says "more than six years" and stands for the date.
+ * Other products have no such wait: null.
+ */
+export function liquidityOf(h: Holding, rules: Record<string, RuleRecord>, today: string): Liquidity | null {
+  if (h.wrapperId !== "keren-hishtalmut") return null;
+  const first = h.firstDeposit?.value;
+  const hasDate = typeof first === "string" && /^\d{4}-\d{2}-\d{2}$/.test(first);
+  if (!hasDate && !overSixOf(h)) return { kind: "unknown" };
+  const lock = lockYearsOf(rules, today);
+  if (!lock) return { kind: "no-rule" };
+  if (!hasDate) return { kind: "liquid", from: null, lock };
+  const months = (lock.value as number) * 12;
+  const from = monthEndAfter(first as string, months);
+  const years = computed(lock.value as number, "years", "F-72", {}, { today, about: "שנים עד שהכסף בקרן נזיל ופטור ממס", rules: [{ id: "TXH-09", strength: "primary" }] });
+  const date: SiteValue = {
+    ...computed(null, "text", "F-72", { "תאריך ההפקדה הראשונה": h.firstDeposit as SiteValue, "שנים עד שהכסף נזיל": years }, { today, about: "מתי הקרן נזילה: ההפקדה הראשונה ועוד התקופה שהחוק קובע", rules: [{ id: "TXH-09", strength: "primary" }] }),
+    value: from,
+  };
+  return from <= today ? { kind: "liquid", from: date, lock } : { kind: "not-yet", from: date, lock };
+}
+
+/** The months of an account's age the run starts from: the checkbox stands for exactly the wait (the run only needs "already liquid"). */
+export const overSixClockStart = (lock: SiteValue): number => -Math.round((lock.value as number) * 12);
+
+/** The track's two published fee averages, as sourced values, when the regulator has a number for them. */
+export function prefillFees(hb: HoldingsBundle, d: Pick<Draft, "fundId" | "wrapperId">): { balance: SiteValue | null; deposit: SiteValue | null } {
+  const none = { balance: null, deposit: null };
+  if (d.fundId === null || d.wrapperId === null || isChild(d.wrapperId)) return none;
+  const t = trackOf(hb, d.fundId);
+  if (!t) return none;
+  const f = trackFees(hb, t);
+  const ok = (v: SiteValue) => (typeof v.value === "number" ? v : null);
+  return { balance: ok(f.balance), deposit: ok(f.deposit) };
+}
+
 // ---------------------------------------------------------------- the add sheet
 
 export interface Draft {
@@ -643,13 +788,17 @@ export interface Draft {
   embeddedGain: number | null;
   bars: Partial<Record<TransferBar, boolean>>;
   firstDeposit: string;
+  /** scenario fix 2026-10-24: "the first deposit was more than six years ago" in place of the exact date (a study fund). */
+  firstDepositOver: boolean;
   statementDate: string;
 }
 
-export const emptyDraft = (): Draft => ({ wrapperId: null, childRoute: null, companyId: null, companyName: "", fundId: null, typedName: "", balance: null, feeBalance: null, feeDeposit: null, directExpenses: null, monthlyOwn: null, monthlyEmployer: null, embeddedGain: null, bars: {}, firstDeposit: "", statementDate: "" });
+export const emptyDraft = (): Draft => ({ wrapperId: null, childRoute: null, companyId: null, companyName: "", fundId: null, typedName: "", balance: null, feeBalance: null, feeDeposit: null, directExpenses: null, monthlyOwn: null, monthlyEmployer: null, embeddedGain: null, bars: {}, firstDeposit: "", firstDepositOver: false, statementDate: "" });
 
-export function draftOf(h: Holding): Draft {
+export function draftOf(h: Holding, hb?: HoldingsBundle): Draft {
   const n = (v?: ValueObject) => (typeof v?.value === "number" ? v.value : null);
+  // scenario fix 2026-10-24: a fee saved as the regulator's average (sourced) is a prefill again when the holding is edited, not an entered number
+  const own = (v?: ValueObject) => (v?.state === "sourced" && hb && h.track && trackOf(hb, h.track.fundId) ? null : n(v));
   const s = (v?: ValueObject) => (typeof v?.value === "string" ? v.value : "");
   return {
     wrapperId: h.wrapperId,
@@ -659,30 +808,42 @@ export function draftOf(h: Holding): Draft {
     fundId: h.track?.fundId ?? null,
     typedName: h.typedName ?? "",
     balance: n(h.balance),
-    feeBalance: n(h.feeBalance),
-    feeDeposit: n(h.feeDeposit),
+    feeBalance: own(h.feeBalance),
+    feeDeposit: own(h.feeDeposit),
     directExpenses: n(h.directExpenses),
     monthlyOwn: n(h.monthlyOwn),
     monthlyEmployer: n(h.monthlyEmployer),
     embeddedGain: n(h.embeddedGain),
     bars: { ...(h.bars ?? {}) },
     firstDeposit: s(h.firstDeposit),
+    firstDepositOver: overSixOf(h),
     statementDate: s(h.statementDate),
   };
 }
 
-export type DraftError = { field: keyof Draft | "track"; code: "balance-negative" | "percent-over" | "date-future" | "first-after-statement" | "no-track" | "required" | "gain-over-balance" };
+export type DraftError = {
+  field: keyof Draft | "track";
+  code: "balance-negative" | "percent-over" | "statement-future" | "first-future" | "first-after-statement" | "no-track" | "required" | "gain-over-balance" | "invalid";
+};
 
-/** The checks of the sheet's "שמירה" (design-spec 13): balance at least zero, percents 0 to 100, no date in the future. */
-export function checkDraft(d: Draft, today: string): DraftError[] {
+/**
+ * The checks of the sheet's "שמירה" (design-spec 13): balance at least zero, percents 0 to 100, no date in the future.
+ * "מהפקדה" is optional (a fund with no deposits prints no such line; empty is saved as 0). Each failure has its own code,
+ * so the sheet says what is wrong with the field and not only that it is.
+ */
+export function checkDraft(d: Draft, today: string, hb?: HoldingsBundle): DraftError[] {
   const errors: DraftError[] = [];
+  if (d.wrapperId === null) errors.push({ field: "wrapperId", code: "required" });
   if (d.balance === null) errors.push({ field: "balance", code: "required" });
   else if (d.balance < 0) errors.push({ field: "balance", code: "balance-negative" });
   const child = d.wrapperId === "child-savings-provident" || d.wrapperId === "child-savings-bank";
   if (!child) {
     for (const f of ["feeBalance", "feeDeposit", "directExpenses"] as const) {
       const v = d[f];
-      if (f !== "directExpenses" && v === null) errors.push({ field: f, code: "required" });
+      // scenario fix 2026-10-24: the field is required only when the regulator's average for the picked track could not fill it
+      if (f === "feeBalance" && v === null) {
+        if (!(hb && prefillFees(hb, d).balance)) errors.push({ field: f, code: "required" });
+      }
       else if (v !== null && (v < 0 || v > 100)) errors.push({ field: f, code: "percent-over" });
     }
   }
@@ -690,22 +851,38 @@ export function checkDraft(d: Draft, today: string): DraftError[] {
   else if (d.embeddedGain !== null && d.balance !== null && d.embeddedGain > d.balance) errors.push({ field: "embeddedGain", code: "gain-over-balance" });
   for (const f of ["monthlyOwn", "monthlyEmployer"] as const) if (d[f] !== null && d[f]! < 0) errors.push({ field: f, code: "balance-negative" });
   if (!d.statementDate) errors.push({ field: "statementDate", code: "required" });
-  else if (d.statementDate > today) errors.push({ field: "statementDate", code: "date-future" });
-  if (d.firstDeposit && d.statementDate && d.firstDeposit > d.statementDate) errors.push({ field: "firstDeposit", code: "first-after-statement" });
-  if (d.firstDeposit && d.firstDeposit > today) errors.push({ field: "firstDeposit", code: "date-future" });
-  if (!d.companyName.trim() && !d.companyId) errors.push({ field: "track", code: "no-track" });
-  else if (d.fundId === null && !d.typedName.trim() && !child) errors.push({ field: "track", code: "no-track" });
+  else if (d.statementDate > today) errors.push({ field: "statementDate", code: "statement-future" });
+  if (d.firstDeposit && d.firstDeposit > today) errors.push({ field: "firstDeposit", code: "first-future" });
+  else if (d.firstDeposit && d.statementDate && d.firstDeposit > d.statementDate) errors.push({ field: "firstDeposit", code: "first-after-statement" });
+  if (d.wrapperId !== null) {
+    if (!d.companyName.trim() && !d.companyId) errors.push({ field: "track", code: "no-track" });
+    else if (d.fundId === null && !d.typedName.trim() && !child) errors.push({ field: "track", code: "no-track" });
+  }
   return errors;
 }
 
+/** A track typed or pasted as exactly one track's name or fund number is that track: the draft links to it on save (audit A17). */
+export function autoLink(hb: HoldingsBundle, d: Draft): Draft {
+  if (d.fundId !== null || d.wrapperId === null || !d.typedName.trim()) return d;
+  const wrapper: WrapperId = d.wrapperId === "child-savings-provident" || d.wrapperId === "child-savings-bank" ? (d.childRoute === "bank" ? "child-savings-bank" : "child-savings-provident") : d.wrapperId;
+  if (wrapper === "child-savings-bank") return d;
+  const m = matchTracksKind(hb, wrapper, d.typedName, d.companyId ?? undefined);
+  if ((m.kind !== "exact" && m.kind !== "number") || m.tracks.length !== 1) return d;
+  const t = m.tracks[0]!;
+  const co = hb.companies[t.c]!;
+  return { ...d, fundId: t.id, typedName: "", companyId: co.id, companyName: co.name };
+}
+
 /** The draft as a holding: every figure an `entered` value object, dated today. */
-export function holdingOf(d: Draft, hb: HoldingsBundle, today: string, existing?: Holding, id?: string): Holding {
+export function holdingOf(d: Draft, hb: HoldingsBundle, today: string, existing?: Holding, id?: string): Holding & OverSix {
   const track = d.fundId !== null ? trackOf(hb, d.fundId) : undefined;
   const wrapperId: WrapperId = d.wrapperId === "child-savings-provident" || d.wrapperId === "child-savings-bank" ? (d.childRoute === "bank" ? "child-savings-bank" : "child-savings-provident") : d.wrapperId!;
   const child = isChild(wrapperId);
   const company = track ? { name: hb.companies[track.c]!.name, legalId: hb.companies[track.c]!.id } : { name: d.companyName.trim(), ...(d.companyId ? { legalId: d.companyId } : {}) };
   const e = (v: number, unit: ValueObject["unit"]) => enteredValue(v, unit, today) as ValueObject;
   const text = (v: string) => ({ ...enteredValue(0, "text", today), value: v }) as ValueObject;
+  // scenario fix 2026-10-24: an empty fee takes the regulator's average for the track, kept as the sourced value with its source
+  const pre = prefillFees(hb, d);
   return {
     id: existing?.id ?? id ?? `h${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`,
     wrapperId,
@@ -713,14 +890,15 @@ export function holdingOf(d: Draft, hb: HoldingsBundle, today: string, existing?
     ...(track ? { track: { fundId: track.id, name: track.n } } : {}),
     ...(!track && d.typedName.trim() ? { typedName: d.typedName.trim() } : {}),
     balance: e(d.balance ?? 0, "nis"),
-    ...(!child && d.feeBalance !== null ? { feeBalance: e(d.feeBalance, "pct_per_year") } : {}),
-    ...(!child && d.feeDeposit !== null ? { feeDeposit: e(d.feeDeposit, "pct_of_deposit") } : {}),
+    ...(!child && d.feeBalance !== null ? { feeBalance: e(d.feeBalance, "pct_per_year") } : !child && pre.balance ? { feeBalance: pre.balance } : {}),
+    ...(!child ? { feeDeposit: d.feeDeposit !== null ? e(d.feeDeposit, "pct_of_deposit") : (pre.deposit ?? e(0, "pct_of_deposit")) } : {}),
     ...(!child && d.directExpenses !== null ? { directExpenses: e(d.directExpenses, "pct_per_year") } : {}),
     ...(!child && d.monthlyOwn !== null ? { monthlyOwn: e(d.monthlyOwn, "nis_per_month") } : {}),
     ...(!child && d.monthlyEmployer !== null ? { monthlyEmployer: e(d.monthlyEmployer, "nis_per_month") } : {}),
     ...(wrapperId === "kupat-gemel-lehashkaa" && d.embeddedGain !== null ? { embeddedGain: e(d.embeddedGain, "nis") } : {}),
     ...(Object.values(d.bars).some(Boolean) && !child ? { bars: Object.fromEntries(Object.entries(d.bars).filter(([, on]) => on)) as Holding["bars"] } : {}),
-    ...(wrapperId === "keren-hishtalmut" && d.firstDeposit ? { firstDeposit: text(d.firstDeposit) } : {}),
+    ...(wrapperId === "keren-hishtalmut" && d.firstDeposit && !d.firstDepositOver ? { firstDeposit: text(d.firstDeposit) } : {}),
+    ...(wrapperId === "keren-hishtalmut" && d.firstDepositOver ? { firstDepositOverSix: { ...enteredValue(0, "boolean", today), value: true } as ValueObject } : {}),
     statementDate: text(d.statementDate),
     ...(child ? { child: { route: wrapperId === "child-savings-bank" ? ("bank" as const) : ("provident" as const) } } : {}),
     ...(existing?.importedAt ? { importedAt: existing.importedAt } : {}),
