@@ -8,6 +8,7 @@ const percent = new Intl.NumberFormat(he, { style: "percent", maximumFractionDig
 const percent3 = new Intl.NumberFormat(he, { style: "percent", maximumFractionDigits: 3 });
 const plain = new Intl.NumberFormat(he, { maximumFractionDigits: 2 });
 const compactNumber = new Intl.NumberFormat(he, { maximumFractionDigits: 1 });
+const compactFormat = (v: number) => withMinus(compactNumber.format(v));
 const date = new Intl.DateTimeFormat(he, { day: "2-digit", month: "2-digit", year: "numeric" });
 const period = new Intl.DateTimeFormat(he, { month: "long", year: "numeric" });
 const plural = new Intl.PluralRules("he");
@@ -19,29 +20,36 @@ const plural = new Intl.PluralRules("he");
  */
 const plainMarks = (text: string) => text.replace(/\u200f/g, "").replace(/[\u00a0\u202f]/g, " ");
 
+/**
+ * Intl writes a negative with an ASCII hyphen after a left-to-right mark. A hyphen is weak in the bidi algorithm and can
+ * land on the wrong side of the digits in Hebrew text ("2%-"); the true minus sign U+2212 keeps the left-to-right mark in
+ * front of it and, with the `<bdi dir="ltr">` that `Num` and every call site put around a figure, reads "−2%".
+ */
+export const withMinus = (text: string) => text.replace(/\u200e?-/g, "\u200e\u2212");
+
 function compactNisParts(v: number): { num: string; word: string | null } {
   const a = Math.abs(v);
-  if (a >= 1e6) return { num: compactNumber.format(v / 1e6), word: "מיליון" };
-  if (a >= 1e3) return { num: compactNumber.format(v / 1e3), word: "אלף" };
-  return { num: compactNumber.format(v), word: null };
+  if (a >= 1e6) return { num: compactFormat(v / 1e6), word: "מיליון" };
+  if (a >= 1e3) return { num: compactFormat(v / 1e3), word: "אלף" };
+  return { num: compactFormat(v), word: null };
 }
 
 export const fmt = {
   /** `1,234.50 ₪` (two decimals, method §13). */
-  nis: (v: number) => plainMarks(currency.format(v)),
-  nisWhole: (v: number) => plainMarks(currencyWhole.format(v)),
+  nis: (v: number) => withMinus(plainMarks(currency.format(v))),
+  nisWhole: (v: number) => withMinus(plainMarks(currencyWhole.format(v))),
   /** Data stores percent numbers (`1.05` is 1.05%). */
   pct: (v: number) => {
     // a figure that really has a third decimal (a 0.015% trustee fee, a 1.115% sum) keeps it; everything else rounds to two
     const thousandths = v * 1000;
-    return Math.abs(thousandths - Math.round(thousandths)) < 1e-6 && Math.abs(v * 100 - Math.round(v * 100)) > 1e-6 ? percent3.format(v / 100) : percent.format(v / 100);
+    return Math.abs(thousandths - Math.round(thousandths)) < 1e-6 && Math.abs(v * 100 - Math.round(v * 100)) > 1e-6 ? withMinus(percent3.format(v / 100)) : withMinus(percent.format(v / 100));
   },
   /** The number `pct` shows, as a number: what a field prefilled from a displayed percentage holds (0.4293 reads 0.43). */
   pctShown: (v: number) => {
     const thousandths = v * 1000;
     return Math.abs(thousandths - Math.round(thousandths)) < 1e-6 && Math.abs(v * 100 - Math.round(v * 100)) > 1e-6 ? Math.round(thousandths) / 1000 : Math.round(v * 100) / 100;
   },
-  number: (v: number) => plain.format(v),
+  number: (v: number) => withMinus(plain.format(v)),
   /** `22.10.2026` from `2026-10-22`. */
   date: (iso: string) => date.format(new Date(iso + "T00:00:00")),
   /** `ספטמבר 2026` from `2026-09`. */

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { fmt, formatValue, nisShown, parseNumber } from "./format";
+import { fmt, formatValue, nisShown, parseNumber, withMinus } from "./format";
 import { hasHebrew, isHebrewTitle, sourceLabel } from "./source-label";
 
 describe("parseNumber (audit A6)", () => {
@@ -93,5 +93,24 @@ describe("nearThreshold (F-62, 2026-10-24)", () => {
     expect(nearThreshold(2499.5, [2500])).toBe(true);
     expect(nearThreshold(2499.49, [2500])).toBe(false);
     expect(nearThreshold(1800, [1000, 2500])).toBe(false);
+  });
+});
+
+describe("negative figures (polish 2026-10-24)", () => {
+  it("uses the true minus sign, after a left-to-right mark, never an ASCII hyphen", () => {
+    expect(fmt.pct(-2)).toBe("\u200e\u22122%");
+    expect(fmt.pct(-1.115)).toBe("\u200e\u22121.115%");
+    expect(fmt.nisWhole(-1234)).toBe("\u200e\u22121,234 ₪");
+    expect(fmt.nis(-5.5)).toBe("\u200e\u22125.50 ₪");
+    expect(fmt.number(-2.5)).toBe("\u200e\u22122.5");
+    expect(formatValue(-29, "pct")).toBe("\u200e\u221229%");
+    for (const t of [fmt.pct(-2), fmt.nis(-5), fmt.number(-3), fmt.compactNis(-2500)]) expect(t).not.toContain("-");
+  });
+  it("leaves positive figures and an existing minus alone", () => {
+    expect(fmt.pct(29)).toBe("29%");
+    expect(withMinus("\u200e\u22122%")).toBe("\u200e\u22122%");
+  });
+  it("parses the printed negative back", () => {
+    expect(parseNumber(fmt.pct(-2))).toBe(-2);
   });
 });

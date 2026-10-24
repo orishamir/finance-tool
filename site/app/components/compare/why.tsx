@@ -16,7 +16,8 @@ import { FlipSentence } from "./sensitivity";
 import { NumberField } from "../timeline/fields";
 import { relativeGap } from "@finance-tool/engine";
 import { IconAlert, IconCheck, IconExternal } from "../icons";
-import { Num, RulesLine } from "../provenance";
+import { Num, RulesLine, StrengthLabel } from "../provenance";
+import { strengthOf } from "../../lib/value";
 import { Button, Callout, Tag, cx } from "../ui";
 import type { ResultCtx } from "./ctx";
 
@@ -591,10 +592,14 @@ export function PastRecordLine({ ctx, fit }: { ctx: ResultCtx; fit: FitTableData
   const honest = min !== null && showsHorizonHonestLine(ctx.g.horizonYears, min);
   const noReturn = headlineState(ctx.view).fields.includes("return");
   if (!honest && !noReturn) return null;
-  const n = (k: (typeof keys)[number]) => <Num value={f[k]!} />;
+  // one strength mark for the whole sentence (below), so the six figures carry none of their own
+  const n = (k: (typeof keys)[number]) => <Num value={f[k]!} mark={false} />;
+  const strength = strengthOf(f.rolling_5y_min!);
+  const weak = strength === "secondary" || strength === "institution";
   return (
     <p className="text-sm max-w-measure text-muted-foreground" data-past-record>
-      <Tpl t={scnCompare.pastRecord.text} vars={{ min5: n("rolling_5y_min"), max5: n("rolling_5y_max"), min10: n("rolling_10y_min"), max10: n("rolling_10y_max"), min20: n("rolling_20y_min"), max20: n("rolling_20y_max") }} />{" "}
+      <Tpl t={scnCompare.pastRecord.text} vars={{ src: <bdi dir="ltr">J.P. Morgan Asset Management, 1950–2025</bdi>, min5: n("rolling_5y_min"), max5: n("rolling_5y_max"), min10: n("rolling_10y_min"), max10: n("rolling_10y_max"), min20: n("rolling_20y_min"), max20: n("rolling_20y_max") }} />{" "}
+      {weak && <StrengthLabel strength={strength} />}{" "}
       <a href={rec.source.url} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-center gap-1 hover:underline">
         {scnCompare.pastRecord.link}
         <IconExternal size={14} />

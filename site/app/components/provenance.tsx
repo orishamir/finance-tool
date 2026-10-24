@@ -98,6 +98,8 @@ export interface NumProps {
   className?: string;
   /** Text that must stay on the line with the number ("ב־", "נכון ל־"): both sit in one non-breaking span. */
   prefix?: ReactNode;
+  /** `false` leaves out the inline caution icon of a weak source (secondary, institution) and of a date ahead; the caller then shows the strength mark once for the group of figures (the past-record line). The aria-label and the sheet still say it. */
+  mark?: boolean;
 }
 
 const stateWord = { sourced: numbers.legend.sourced, computed: numbers.legend.computed, entered: numbers.legend.entered };
@@ -112,7 +114,7 @@ export function startsAfter(value: SiteValue, today: string): string | null {
 }
 
 /** The provenance number: a button holding the formatted value in an isolating span, then its flags. Marks sit before the digits, never between a number and the unit word that follows it. */
-export function Num({ value, size = "inline", display, animate, className, prefix, exact }: NumProps) {
+export function Num({ value, size = "inline", display, animate, className, prefix, exact, mark: showMark = true }: NumProps) {
   const open = useOpen();
   const today = useContext(TodayCtx);
   const param = isParameter(value);
@@ -130,7 +132,7 @@ export function Num({ value, size = "inline", display, animate, className, prefi
   // carries the weak-source icon only at figure size, since its sheet names the weak input. The words stay out of the line: a
   // word between a number and its unit ("4 לפי החברה ימי עסקים") broke the sentence (audit A23). At figure size a date ahead
   // is also said in words, before the digits.
-  const markWeak = weak && (value.state !== "computed" || size === "figure");
+  const markWeak = showMark && weak && (value.state !== "computed" || size === "figure");
   const mark = "inline-block align-[-2px] select-none";
   const button = (
     <button
@@ -140,7 +142,7 @@ export function Num({ value, size = "inline", display, animate, className, prefi
       onClick={(e) => open({ kind: "value", value, ...(keepDecimals ? { exact: true } : {}) }, e.currentTarget)}
     >
       {value.stale && <IconClock size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
-      {(fromDate || markWeak) && <IconAlert size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
+      {((showMark && fromDate) || markWeak) && <IconAlert size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
       {fromDate && size === "figure" && <span className="text-xs text-caution-foreground font-normal me-1 no-underline select-none">{numbers.startsOn}<bdi dir="ltr">{fmt.date(fromDate)}</bdi></span>}
       <bdi dir="ltr" className="whitespace-nowrap">{text}</bdi>
     </button>
