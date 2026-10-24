@@ -9,5 +9,53 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "bank-current-account-deposits.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
+      "title": "Directive 447",
+      "title_he": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "s.5(d)",
+      "locator_he": "סעיף 5(ד)",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://boi.org.il/media/1gmhymzy/202511.pdf",
+      "title": "Regulatory impact report for 447A",
+      "title_he": "הוראת ניהול בנקאי תקין 447א: פרסום מידע מרוכז על קרנות כספיות ומק״מ",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://edge.boi.org.il/FusionEdgeServer/sdmx/v2/structure/dataflow/BOI.BankingSupervision/INTEREST_DASH",
+      "title": "EDGE dataflow INTEREST_DASH",
+      "publisher": "Bank of Israel (data)",
+      "publisher_he": "בנק ישראל (מאגר הנתונים)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_6803031.pdf",
+      "title": "Amendment 38",
+      "title_he": "ספר החוקים 3413 (14.5.2025): חוק הבנקאות (שירות ללקוח) (תיקון מס׳ 38)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.4",
+      "locator_he": "סעיף 4",
+      "checked": "2026-10-22"
+    }
+  ]
 }

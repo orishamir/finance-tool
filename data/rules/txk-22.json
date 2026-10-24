@@ -11,5 +11,35 @@
   "likely_to_change": "no",
   "text_he": "חוק הביטוח הלאומי קובע שהחיסכון מנוהל 'בקופת גמל להשקעה', וגם ברירת המחדל כשלא בוחרים היא קופת גמל להשקעה. לפני 18 ההורה יכול להעביר לקופה אחרת מהרשימה; אחרי 18 הילד. האם מעבר כזה פטור ממס לא נאמר בטקסטים; בהיקש מקופת גמל להשקעה הוא אינו משיכה, אבל זה לא אושר לחיסכון לכל ילד (שאלה פתוחה 1).",
   "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/חוק_הביטוח_הלאומי",
+      "title": "NII Law PDF",
+      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ״ה-1995",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "pp.20-21, s.74B(a)(2a), (d)(1a)",
+      "locator_he": "עמודים 20 עד 21, סעיף 74ב(א)(2א), (ד)(1א)",
+      "anchor": "סעיף_74ב",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_הביטוח_הלאומי_(חיסכון_ארוך_טווח_לילד)",
+      "title": "child-savings regulations",
+      "title_he": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד)",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "משרד האוצר והמוסד לביטוח לאומי",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg. 7, 11",
+      "locator_he": "תקנה 7, 11",
+      "anchor": "סעיף_7",
+      "checked": "2026-10-22"
+    }
+  ]
 }

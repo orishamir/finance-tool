@@ -11,5 +11,17 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-15",
   "il_finance_file": "brokerage-account.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://mayafiles.tase.co.il/reports/1149001-1150000/E1149190.pdf",
+      "title": "TASE, ISA approval of amendment to TASE rules and guidelines, \"החזקת נכסים פיננסיים של לקוחות חש\"ב\", 4 March 2018, ref. 318425",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "primary",
+      "checked": "2026-10-22",
+      "qualifier": "(exchange rules, ISA-approved)"
+    }
+  ]
 }

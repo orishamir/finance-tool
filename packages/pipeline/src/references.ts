@@ -3,8 +3,18 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
+/** One `### <ID>` block of a rule base file, plus the file's `[ref]: url` definitions (data-schema §3.1 `sources`). */
+export interface RuleBlock {
+  file: string;
+  body: string;
+  /** Reference-style link definitions of the file, lower-cased name to URL. */
+  defs: Record<string, string>;
+}
+
 export interface RuleBaseIds {
   rules: Set<string>;
+  /** The markdown block of every rule, for the `sources` checks of the validator; absent in hand-built contexts. */
+  blocks?: Map<string, RuleBlock>;
   /** Open questions as `<PREFIX>-OQ<n>`, e.g. `TXK-OQ2` (data-schema §3.3). */
   openQuestions: Set<string>;
 }
@@ -12,8 +22,13 @@ export interface RuleBaseIds {
 export function readRuleBaseIds(referencesDir: string): RuleBaseIds {
   const rules = new Set<string>();
   const openQuestions = new Set<string>();
+  const blocks = new Map<string, RuleBlock>();
   for (const file of readdirSync(referencesDir).filter((f) => f.endsWith(".md"))) {
     const text = readFileSync(join(referencesDir, file), "utf8");
+    const defs = readLinkDefinitions(text);
+    for (const m of text.matchAll(/^### ([A-Z0-9]+(?:-[A-Z0-9]+)+)\b[^\n]*\n([\s\S]*?)(?=^### |^## |(?![\s\S]))/gm)) {
+      blocks.set(m[1]!, { file, body: m[2]!, defs });
+    }
     const ids = [...text.matchAll(/^### ([A-Z0-9]+(?:-[A-Z0-9]+)+)\b/gm)].map((m) => m[1]!);
     ids.forEach((id) => rules.add(id));
     const prefixes = new Set(ids.map((id) => id.split("-")[0]!));
@@ -24,10 +39,44 @@ export function readRuleBaseIds(referencesDir: string): RuleBaseIds {
       prefixes.forEach((p) => openQuestions.add(`${p}-OQ${m[1]}`));
     }
   }
-  return { rules, openQuestions };
+  return { rules, openQuestions, blocks };
 }
 
 export function readFormulaIds(methodPath: string): Set<string> {
   const text = readFileSync(methodPath, "utf8");
   return new Set([...text.matchAll(/\*\*(F-\d{2})\b/g)].map((m) => m[1]!));
+}
+
+/** `[ref]: url` lines of a markdown file (the switching file uses them), keyed by lower-cased name. */
+export function readLinkDefinitions(text: string): Record<string, string> {
+  const defs: Record<string, string> = {};
+  for (const m of text.matchAll(/^\[([A-Za-z0-9_-]+)\]:\s*<?(\S+?)>?\s*$/gm)) defs[m[1]!.toLowerCase()] = m[2]!;
+  return defs;
+}
+
+/**
+ * The readable form of a Hebrew Wikisource raw-wikitext URL: `.../w/index.php?title=T&action=raw` becomes
+ * `https://he.wikisource.org/wiki/T` (T kept as encoded). Any other URL is returned unchanged.
+ */
+export function rewriteRawWikisource(url: string): string {
+  const m = /^https:\/\/he\.wikisource\.org\/w\/index\.php\?title=([^&#]+)&action=raw$/.exec(url);
+  if (m) return `https://he.wikisource.org/wiki/${m[1]}`;
+  // the PDF rendering of a page (`/api/rest_v1/page/pdf/T`) is the same page; the readable form is the page itself (lead, 2026-10-24)
+  const pdf = /^https:\/\/he\.wikisource\.org\/api\/rest_v1\/page\/pdf\/([^?#]+)$/.exec(url);
+  return pdf ? `https://he.wikisource.org/wiki/${pdf[1]}` : url;
+}
+
+/** The text a rule's `sources[].url` must come from: its block and the definitions of the file. */
+export function blockUrlText(block: RuleBlock): string {
+  return `${block.body}\n${Object.values(block.defs).join("\n")}`;
+}
+
+/** Is `url` in the block verbatim, or the rewrite of a raw Wikisource URL that is? */
+export function urlInBlock(url: string, block: RuleBlock): boolean {
+  const text = blockUrlText(block);
+  if (text.includes(url)) return true;
+  for (const m of text.matchAll(/https:\/\/he\.wikisource\.org\/(?:w\/index\.php\?title=[^&#\s)>]+&action=raw|api\/rest_v1\/page\/pdf\/[^\s)>?#]+)/g)) {
+    if (rewriteRawWikisource(m[0]) === url) return true;
+  }
+  return false;
 }

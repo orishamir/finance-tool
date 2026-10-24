@@ -35,5 +35,27 @@
     }
   },
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.btl.gov.il/benefits/children/Pages/תנאי%20זכאות.aspx",
+      "title": "NII, child allowance eligibility",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/default.aspx",
+      "title": "NII child-savings FAQ",
+      "title_he": "חיסכון לכל ילד: עמודי המידע של הביטוח הלאומי",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "quote": "למי נפתחת תכנית חיסכון?",
+      "checked": "2026-10-22"
+    }
+  ]
 }

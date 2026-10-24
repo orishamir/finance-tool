@@ -3,11 +3,53 @@
   "title": "Clearing house: settlement finality and collateral are protected by law; this protects the settlement system, not the client's account balance",
   "title_he": "המסלקה: סופיות הסליקה והביטחונות מוגנים בחוק, לא יתרת הלקוח",
   "text_he": "הוראת סליקה שנרשמה אינה ניתנת לביטול אלא לפי כללי הסליקה, והוראות שהתקבלו לפני המועד הקובע נשארות בתוקף גם בחדלות פירעון של חבר. ביטחונות ששועבדו למסלקה גוברים על נושים אחרים של החבר, ובתי משפט ובעלי תפקיד אינם רשאים להפעיל סמכויות שיסכלו זאת; רשות ניירות ערך מפקחת על המסלקות. הכללים האלה מגנים על מערכת הסליקה, לא על יתרת החשבון של הלקוח הבודד. חברי המסלקה משתתפים בקרן סיכונים, והאם היא מכסה הפסדי לקוחות לא נאמר (שאלה פתוחה).",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "protection"
   ],
   "likely_to_change": "no",
   "il_finance_file": "regulators-and-protection.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/חוק_ניירות_ערך",
+      "title": "חוק ניירות ערך, Wikisource",
+      "title_he": "חוק ניירות ערך, התשכ״ח-1968",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "ss.44לא, 50א, 50א3, 50א4, 50ג",
+      "locator_he": "סעיפים 44לא, 50א, 50א3, 50א4, 50ג",
+      "anchor": "סעיף_44לא",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://content.tase.co.il/media/3fdpe5za/1150_nbcm_399328_eng.pdf",
+      "title": "TASE NBCM guide",
+      "title_he": "How to become a non-banking corporation member (ינואר 2026)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.10",
+      "locator_he": "עמוד 10",
+      "page": 10,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://content.tase.co.il/media/xrwbgkhk/1150_remote_member_372145_eng.pdf",
+      "title": "TASE remote-member guide",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.4",
+      "locator_he": "עמוד 4",
+      "page": 4,
+      "checked": "2026-10-22",
+      "qualifier": "(TASE publication)"
+    }
+  ]
 }

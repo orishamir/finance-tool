@@ -10,5 +10,21 @@
   "likely_to_change": "no",
   "text_he": "חוק קופות הגמל מגדיר 'קופת גמל בניהול אישי': קופה שאושרה לעמית אחד, שרשאי לתת הוראות על השקעת הכספים. לכן קופה בניהול אישי היא קופת גמל מהסוג שבו אושרה: קרן השתלמות, קופה לקצבה וכדומה.",
   "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "title": "Provident Funds Law, Wikisource",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s.1, s.13(c)(2), s.57",
+      "locator_he": "סעיף 1, סעיף 13(ג)(2), סעיף 57",
+      "anchor": "סעיף_1",
+      "checked": "2026-10-22"
+    }
+  ]
 }

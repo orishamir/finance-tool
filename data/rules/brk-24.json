@@ -13,5 +13,46 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
   "il_finance_file": "brokerage-account.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+      "title": "IBI tariff, \"נכון לתאריך: 1.7.2026\"",
+      "title_he": "תעריפון עמלות אי.בי.אי (1.7.2026)",
+      "publisher": "IBI",
+      "publisher_he": "אי.בי.אי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+      "title": "Excellence Trade full tariff (no date on document)",
+      "title_he": "תעריפון אקסלנס טרייד",
+      "publisher": "Excellence",
+      "publisher_he": "אקסלנס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
+      "title": "Altshuler Shaham Trade tariff (no date on document)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+      "title": "Psagot Trade tariff page",
+      "title_he": "תעריפון פסגות טרייד",
+      "publisher": "Psagot",
+      "publisher_he": "פסגות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
 }

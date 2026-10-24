@@ -11,5 +11,45 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-15",
   "il_finance_file": "brokerage-account.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a",
+      "title": "TASE periodic report 2025, 1.7.2, 1.7.2.3, 1.31.6, 1.31.9",
+      "title_he": "דוח תקופתי לשנת 2025 של הבורסה לניירות ערך בתל אביב בע״מ",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "institution_doc",
+      "strength": "primary",
+      "locator": "pp.17 to 18, 75 to 76",
+      "locator_he": "עמודים 17 עד 18, 75 עד 76",
+      "page": 17,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://content.tase.co.il/media/3fdpe5za/1150_nbcm_399328_eng.pdf",
+      "title": "TASE NBCM guide, January 2026",
+      "title_he": "How to become a non-banking corporation member (ינואר 2026)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "pp.7 to 8",
+      "locator_he": "עמודים 7 עד 8",
+      "page": 7,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://content.tase.co.il/media/uqtbtwm3/1150_foreign_bank_372262_eng.pdf",
+      "title": "TASE foreign-bank member guide, January 2026, \"Investor Protection\"",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.4",
+      "locator_he": "עמוד 4",
+      "page": 4,
+      "checked": "2026-10-22"
+    }
+  ]
 }

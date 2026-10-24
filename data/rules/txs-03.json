@@ -6,7 +6,7 @@
   "figure_names_he": {
     "rate": "שיעור המס על רווח הון לא צמוד"
   },
-  "strength": "primary",
+  "strength": "primary-mirror",
   "dimensions": [
     "real-vs-nominal",
     "tax-at-exit"
@@ -36,5 +36,21 @@
     }
   },
   "il_finance_file": "tax-securities-israeli.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Income Tax Ordinance",
+      "title_he": "פקודת מס הכנסה",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s.91(b)(3)(a)-(c)",
+      "locator_he": "סעיף 91(ב)(3)(א)-(ג)",
+      "anchor": "סעיף_91",
+      "checked": "2026-10-22"
+    }
+  ]
 }

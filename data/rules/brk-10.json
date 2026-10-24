@@ -10,5 +10,19 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-15",
   "il_finance_file": "brokerage-account.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.leumi.co.il/leumi-hebrew/s3fs-public/newsite/generalpages/general%20terms/General_Terms_and_Conditions_acc.pdf",
+      "title": "Leumi, \"חוברת תנאים כלליים לניהול חשבון\", 310-93, 08.25",
+      "title_he": "חוברת תנאים כלליים לניהול חשבון (בנק לאומי, מהדורת 8/2025)",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "s.3.2.1 to 3.2.3, 3.4.3",
+      "locator_he": "סעיף 3.2.1 עד 3.2.3, 3.4.3",
+      "checked": "2026-10-22"
+    }
+  ]
 }

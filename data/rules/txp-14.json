@@ -7,7 +7,7 @@
     "exempt_share": "השיעור הפטור מתקרת הקצבה המזכה",
     "annuity_ceiling": "תקרת הקצבה המזכה (חודשי)"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "tax-at-exit",
     "age-or-use-exemption"
@@ -101,5 +101,67 @@
     }
   },
   "il_finance_file": "tax-pension-gemel-lekitzba.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+      "title": "Booklet 2026",
+      "title_he": "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.6, p.7, p.12",
+      "locator_he": "עמוד 6, עמוד 7, עמוד 12",
+      "page": 6,
+      "quote": "תקרת 'קיצבה מזכה' 9א(א)",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "printed pp.30-31, p.89",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf",
+      "title": "Circular 2/2013",
+      "title_he": "חוזר מס הכנסה 2/2013: תיקון 190 לפקודה",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "ss.3.1-3.4",
+      "locator_he": "סעיפים 3.1-3.4",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/service/itc-106/en/Service_Pages_Income_tax_itc106-acc.pdf",
+      "title": "Form 106",
+      "title_he": "טופס 106",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "form",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Ordinance",
+      "title_he": "פקודת מס הכנסה",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s.9A(a), (b), (g)",
+      "anchor": "סעיף_9א",
+      "checked": "2026-10-22"
+    }
+  ]
 }

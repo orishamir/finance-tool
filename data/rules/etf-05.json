@@ -78,5 +78,34 @@
     }
   },
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(קרנות_מחקות)",
+      "title": "Tracking-fund regulations, regs. 6–8",
+      "title_he": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע״ח-2018",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "regs. 6–8",
+      "locator_he": "תקנות 6–8",
+      "anchor": "סעיף_6",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
+      "title": "IBI ETF annual report 31.12.2025, p.1",
+      "title_he": "דוח שנתי ליום 31.12.2025 של אי.בי.אי. סל (4D) S&P 500",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "אי.בי.אי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-10-22"
+    }
+  ]
 }

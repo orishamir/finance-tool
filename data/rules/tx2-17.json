@@ -58,5 +58,46 @@
     }
   },
   "il_finance_file": "tax-tier2-other.md",
-  "checked": "2026-10-24"
+  "checked": "2026-10-24",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/חוק_מס_ערך_מוסף",
+      "title": "חוק מס ערך מוסף, התשל\"ו-1975, ss.1 (\"עוסק\", \"מוסד כספי\", \"חייב במס\"), 2, 4(ב) (Wikisource)",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "ss.1, 2, 4(ב)",
+      "locator_he": "סעיפים 1, 2, 4(ב)",
+      "anchor": "סעיף_1",
+      "checked": "2026-10-24"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/צו_מס_ערך_מוסף_(שיעור_המס_על_עסקה_ועל_יבוא_טובין)",
+      "title": "צו מס ערך מוסף (שיעור המס על עסקה ועל יבוא טובין), התשס\"ה-2005, s.1 (Wikisource)",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s.1",
+      "locator_he": "סעיף 1",
+      "anchor": "סעיף_1",
+      "checked": "2026-10-24"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/צו_מס_ערך_מוסף_(קביעת_מוסד_כספי)",
+      "title": "צו מס ערך מוסף (קביעת מוסד כספי), תשל\"ז-1977, s.1 (Wikisource)",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s.1",
+      "locator_he": "סעיף 1",
+      "anchor": "סעיף_1",
+      "checked": "2026-10-24"
+    }
+  ]
 }

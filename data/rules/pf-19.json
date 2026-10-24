@@ -35,5 +35,41 @@
     }
   },
   "il_finance_file": "provident-family-common.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)",
+      "title": "Transfer Regulations, reg. 5, 6, 7 (Wikisource)",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg. 5, 6, 7",
+      "locator_he": "תקנה 5, 6, 7",
+      "anchor": "סעיף_5",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.nevo.co.il/law_html/law01/999_929.htm",
+      "title": "Nevo mirror reg. 5(א)",
+      "publisher": "Nevo",
+      "publisher_he": "נבו",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "nevo",
+      "locator": "reg. 5(א)",
+      "locator_he": "תקנה 5(א)",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.fnx.co.il/gemel/gemelhashkaa/faq/",
+      "title": "FAQ",
+      "publisher": "The Phoenix",
+      "publisher_he": "הפניקס",
+      "kind": "institution_doc",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

@@ -78,5 +78,32 @@
     }
   },
   "il_finance_file": "pension-and-gemel-lekitzba.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
+      "title": "חוק גיל פרישה, התשס\"ד-2004, sections 3-6, 9 and schedule (Wikisource mirror)",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "sections 3-6, 9",
+      "locator_he": "סעיפים 3-6, 9",
+      "anchor": "סעיף_3",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "title": "Mor comprehensive bylaws 01.06.2025",
+      "title_he": "תקנון קרן הפנסיה המקיפה של מור (מהדורת 1.6.2025)",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור גמל ופנסיה",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "section 1",
+      "locator_he": "סעיף 1",
+      "checked": "2026-10-22"
+    }
+  ]
 }

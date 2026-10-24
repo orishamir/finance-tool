@@ -11,5 +11,34 @@
   "recheck_date": "2027-01-01",
   "text_he": "לא כללים אלא אירועים מדווחים: סלייס גמל נמצאת בניהול מורשה שמינתה רשות שוק ההון ב-2024, אחרי שכספי חוסכים הושקעו בהשקעות אלטרנטיביות וכספם הוקפא; נגד גלובלנט הוגשה בקשה לתובענה ייצוגית על הפניה לקרנות זרות לא נזילות (טענות בלבד). מקורות עיתונאיים; פרסום אכיפה רשמי לא הושג.",
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.bizportal.co.il/general/news/article/20032690",
+      "title": "Bizportal, 25.05.2026",
+      "publisher": "Bizportal",
+      "publisher_he": "ביזפורטל",
+      "kind": "article",
+      "strength": "secondary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.bizportal.co.il/takdin/news/article/20034029",
+      "title": "Bizportal, 16.06.2026",
+      "publisher": "Bizportal",
+      "publisher_he": "ביזפורטל",
+      "kind": "article",
+      "strength": "secondary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.calcalist.co.il/market/article/bjnkrerfa",
+      "title": "Calcalist, 06.05.2024",
+      "publisher": "Calcalist",
+      "publisher_he": "כלכליסט",
+      "kind": "article",
+      "strength": "secondary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

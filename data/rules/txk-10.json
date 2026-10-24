@@ -6,7 +6,7 @@
   "figure_names_he": {
     "early_retirement_age": "גיל הפרישה המוקדמת"
   },
-  "strength": "primary",
+  "strength": "primary-mirror",
   "dimensions": [
     "age-or-use-exemption",
     "transfer-switch-process",
@@ -38,5 +38,35 @@
     }
   },
   "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)",
+      "title": "Transfer regulations 2008",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg. 2(א)(7), 2(ב)(2)",
+      "locator_he": "תקנה 2(א)(7), 2(ב)(2)",
+      "anchor": "סעיף_2.א",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
+      "title": "Retirement Age Law, Wikisource",
+      "title_he": "חוק גיל פרישה, התשס״ד-2004",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s.5",
+      "locator_he": "סעיף 5",
+      "anchor": "סעיף_5",
+      "checked": "2026-10-22"
+    }
+  ]
 }

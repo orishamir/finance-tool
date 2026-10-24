@@ -56,5 +56,37 @@
     }
   },
   "il_finance_file": "regulators-and-protection.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf",
+      "title": "Bill PDF",
+      "title_he": "הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ״ו-2026 (פ/6522/25)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "ss.1 to 4",
+      "locator_he": "סעיפים 1 עד 4",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill()?$filter=KnessetNum%20eq%2025%20and%20PrivateNumber%20eq%206522&$format=json",
+      "title": "Knesset OData KNS_Bill, PrivateNumber 6522",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Status(104)?$format=json",
+      "title": "KNS_Status 104",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

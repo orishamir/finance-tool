@@ -12,5 +12,33 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
   "il_finance_file": "government-bonds-and-makam.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://boi.org.il/media/npifkjqk/הוראה-a447.pdf",
+      "title": "BoI, ניהול בנקאי תקין 447A \"פרסום מידע מרוכז על קרנות כספיות ומק\"מ\" (draft)",
+      "title_he": "הוראת ניהול בנקאי תקין 447א: פרסום מידע מרוכז על קרנות כספיות ומק״מ",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "ss. 1 to 8, 15 to 19 and Annex ב, pp. 1 to 3 and 6",
+      "page": 1,
+      "checked": "2026-10-22",
+      "qualifier": "(draft)"
+    },
+    {
+      "url": "https://boi.org.il/media/gcmk52bw/447a.pdf",
+      "title": "447A (04/25)",
+      "title_he": "הוראת ניהול בנקאי תקין 447א: פרסום מידע מרוכז על קרנות כספיות ומק״מ",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ],
+  "derived_from": [
+    "BANK-15"
+  ]
 }

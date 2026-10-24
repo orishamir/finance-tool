@@ -3,12 +3,40 @@
   "title": "Two tax tracks for an Israeli mutual fund, fixed in its prospectus",
   "title_he": "שני מסלולי מס לקרן נאמנות ישראלית, לפי התשקיף",
   "text_he": "לפקודה יש שני סוגים של קרן נאמנות. קרן חייבת היא קרן שהסכם הקרן או התשקיף שלה קובעים שהיא חייבת במס; קרן פטורה היא קרן שההסכם או התשקיף קובעים כך באופן שאינו ניתן לשינוי, או קרן חייבת שמנהלה הודיע לרשות המסים לפני תחילת שנת מס שהיא הופכת לפטורה מתחילת אותה שנה. במעבר כזה רואים את כל נכסי הקרן כנמכרים בסוף שנת ההודעה והקרן משלמת את המס, ולבעלי יחידות שהרווח שלהם פטור, אותו יום הופך לתאריך הקנייה. אין מסלול מקרן פטורה לקרן חייבת, והתשקיף מציג את המסלול בשדה מסלול המס.",
-  "strength": "primary",
+  "strength": "primary-mirror",
   "dimensions": [
     "tax-during",
     "tax-at-exit"
   ],
   "likely_to_change": "no",
   "il_finance_file": "tax-securities-israeli.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Income Tax Ordinance",
+      "title_he": "פקודת מס הכנסה",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s.88",
+      "locator_he": "סעיף 88",
+      "anchor": "סעיף_88",
+      "quote": "קרן נאמנות",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf",
+      "title": "Migdal Mutual Funds, main prospectus 30.1.2025",
+      "title_he": "תשקיף ראשי של מגדל קרנות נאמנות (30.1.2025)",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מגדל קרנות נאמנות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "ch.25.2.3",
+      "checked": "2026-10-22"
+    }
+  ]
 }

@@ -35,5 +35,31 @@
       "state": "sourced",
       "notes": "US treaty withholding rate on dividends from US corporations paid to an Irish resident (general column), against 25% for an Israeli resident holding the US shares directly (TXF-12). Whether a given Irish fund in fact obtains this rate was not sourced (TXF-16 open questions Q6, Q7). Method A-11 cites it. Added 2026-10-23."
     }
-  }
+  },
+  "sources": [
+    {
+      "url": "https://www.irs.gov/pub/irs-lbi/tax-treaty-table-1.pdf",
+      "title": "IRS Table 1",
+      "title_he": "Tax Treaty Table 1 (מאי 2023)",
+      "publisher": "IRS",
+      "publisher_he": "רשות המס האמריקאית (IRS)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94",
+      "title": "Income Tax Ordinance",
+      "title_he": "פקודת מס הכנסה",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s.199",
+      "locator_he": "סעיף 199",
+      "anchor": "סעיף_199",
+      "checked": "2026-10-22"
+    }
+  ]
 }

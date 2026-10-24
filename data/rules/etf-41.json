@@ -225,5 +225,29 @@
     "max_foreign_shares_per_country": "מספר מרבי של מניות חו\"ל מאותה מדינה"
   },
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-23"
+  "checked": "2026-10-23",
+  "sources": [
+    {
+      "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
+      "title": "TASE, \"הנחיות על פי החלק השביעי לתקנון\" (מדריך מעו\"ף), update 173 to 25.12.2025, annexes 1, 3, 4, pp. ב-29 to ב-34",
+      "title_he": "הנחיות על פי החלק השביעי לתקנון הבורסה (״מדריך מעו״ף״)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "pp. ב-29 to ב-34",
+      "checked": "2026-10-23"
+    },
+    {
+      "url": "https://market.tase.co.il/he/market_data/index/137/about",
+      "title": "TASE, \"ת\"א-125 אודות המדד\" (index 137)",
+      "title_he": "ת״א-125: אודות המדד",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-23",
+      "qualifier": "(index provider)"
+    }
+  ]
 }

@@ -59,5 +59,43 @@
     }
   },
   "il_finance_file": "tax-securities-foreign.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/%D7%AA%D7%A7%D7%A0%D7%95%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94_(%D7%A0%D7%99%D7%9B%D7%95%D7%99_%D7%9E%D7%AA%D7%9E%D7%95%D7%A8%D7%94,_%D7%9E%D7%AA%D7%A9%D7%9C%D7%95%D7%9D_%D7%90%D7%95_%D7%9E%D7%A8%D7%95%D7%95%D7%97_%D7%94%D7%95%D7%9F_%D7%91%D7%9E%D7%9B%D7%99%D7%A8%D7%AA_%D7%A0%D7%99%D7%99%D7%A8_%D7%A2%D7%A8%D7%9A,_%D7%91%D7%9E%D7%9B%D7%99%D7%A8%D7%AA_%D7%99%D7%97%D7%99%D7%93%D7%94_%D7%91%D7%A7%D7%A8%D7%9F_%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA_%D7%90%D7%95_%D7%91%D7%A2%D7%A1%D7%A7%D7%94_%D7%A2%D7%AA%D7%99%D7%93%D7%99%D7%AA)",
+      "title": "Income Tax Regulations (withholding ... sale of a security ...), 2002, Hebrew Wikisource",
+      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס״ג-2002",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg. 1(a), 2(a), 9(a)",
+      "locator_he": "תקנה 1(א), 2(א), 9(א)",
+      "anchor": "סעיף_1",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "http://www.capitax.co.il/Attachments/04072019.pdf",
+      "title": "Tax Authority letter 4.7.2019",
+      "title_he": "ניכוי מס במקור – קרנות חוץ (מכתב מחלקת מיסוי שוק ההון, 4.7.2019)",
+      "publisher": "Capitax",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "sections 4, 4.1.1, 4.1.2",
+      "locator_he": "סעיפים 4, 4.1.1, 4.1.2",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.leumi.co.il/he/ETF",
+      "title": "Bank Leumi, \"קרן חוץ (ETF)\" on its ETF page",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22",
+      "qualifier": "(corroborating)"
+    }
+  ]
 }

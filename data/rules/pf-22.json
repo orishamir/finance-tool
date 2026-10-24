@@ -11,5 +11,21 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "provident-family-common.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(ייעוץ,_שיווק_ומערכת_סליקה_פנסיוניים)",
+      "title": "Pension Advice, Marketing and Clearing System Law, s. 1, 31ט, 31יא, 31יד (Wikisource)",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים), התשס״ה-2005",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s. 1, 31ט, 31יא, 31יד",
+      "locator_he": "סעיף 1, 31ט, 31יא, 31יד",
+      "anchor": "סעיף_1",
+      "checked": "2026-10-22"
+    }
+  ]
 }

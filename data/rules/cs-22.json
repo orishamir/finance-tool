@@ -35,5 +35,29 @@
     "bank_count": "מספר הבנקים המשתתפים"
   },
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
+      "title": "NII 2025 report",
+      "title_he": "חיסכון ארוך-טווח לכל ילד וילדה – דוח הביטוח הלאומי לשנת 2025",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "pp.1, 3",
+      "locator_he": "עמודים 1, 3",
+      "page": 1,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://data.gov.il/dataset/savingsplaninterest",
+      "title": "MoF dataset savingsplaninterest",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

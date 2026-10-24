@@ -9,5 +9,20 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "tax-hishtalmut.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Tax Authority, \"דע זכויותיך וחובותיך 2025\", pp.86-95",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "pp.86-95",
+      "locator_he": "עמודים 86 עד 95",
+      "page": 86,
+      "checked": "2026-10-22"
+    }
+  ]
 }

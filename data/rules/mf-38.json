@@ -35,5 +35,20 @@
     }
   },
   "il_finance_file": "mutual-funds-and-money-market-funds.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/MoneyMarketFundReg24.pdf",
+      "title": "ISA money-market directive",
+      "title_he": "הוראה למנהלי קרנות ונאמנים בדבר תנאים שיחולו לגבי קרן כספית (2024)",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "sections 6, 7.4 (pp. 33-34)",
+      "locator_he": "סעיפים 6, 7.4 (עמודים 33 עד 34)",
+      "page": 33,
+      "checked": "2026-10-22"
+    }
+  ]
 }

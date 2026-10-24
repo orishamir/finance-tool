@@ -3,7 +3,7 @@
   "title": "Lump-sum withdrawal: gains are treated as interest income",
   "title_he": "משיכה חד פעמית: הרווחים נחשבים הכנסה מריבית",
   "text_he": "ריבית ורווחים אחרים שיחיד מושך מקופת גמל להשקעה נחשבים הכנסה מריבית, והחלק שמקביל להפרשי הצמדה נחשב הכנסה מהפרשי הצמדה. בסעיף אין תנאי של גיל, של תקופת החזקה או של מטרה: משיכה בגיל צעיר ומשיכה בגיל מבוגר מסווגות אותו דבר. רק הקרן שהופקדה יוצאת בלי מס. משיכה חלקית נחשבת כאילו יצאה באופן יחסי מהקרן, מהריבית ומההצמדה.",
-  "strength": "primary",
+  "strength": "primary-mirror",
   "dimensions": [
     "tax-at-exit",
     "liquidity-lockup"
@@ -11,5 +11,32 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Ordinance PDF",
+      "title_he": "פקודת מס הכנסה",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "PDF p.8, s.3(ה4)(3)",
+      "anchor": "סעיף_3.ה4",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.nevo.co.il/law_html/law01/255_001.htm",
+      "title": "Nevo",
+      "publisher": "Nevo",
+      "publisher_he": "נבו",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "nevo",
+      "locator": "s.3(ה4)(3)",
+      "locator_he": "סעיף 3(ה4)(3)",
+      "checked": "2026-10-22"
+    }
+  ]
 }
