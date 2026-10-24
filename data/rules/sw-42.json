@@ -1,0 +1,54 @@
+{
+  "id": "SW-42",
+  "title": "Transfer information passes through the pension clearing house (ממשק ניוד) since 23.2.2020; the regulator may defer the ten-business-day transfer deadline by up to twenty more business days",
+  "title_he": "המידע על ניוד עובר במסלקה הפנסיונית; הממונה רשאי לדחות את מועד ההעברה",
+  "strength": "primary",
+  "dimensions": [
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "transfer_deadline": {
+      "value": 10,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/pension-clearing/he/2020-9260.pdf",
+        "title": "רשות שוק ההון, שה. 2020-9260, 15.11.2020, המובאה מתקנה 5(א) לתקנות העברת כספים",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2008-10-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "state": "sourced",
+      "notes": "'בתוך עשרה ימי עסקים מהיום שבו הועברה לו בקשת העברה מפורטת, חתומה ומלאה'."
+    },
+    "max_deferral": {
+      "value": 20,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/generalpage/pension-clearing/he/2020-9260.pdf",
+        "title": "רשות שוק ההון, שה. 2020-9260, 15.11.2020, המובאה מתקנה 5(א)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2008-10-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "state": "sourced",
+      "notes": "'לתקופה שלא תעלה על עשרים ימי עסקים נוספים', by the Commissioner's approval in special cases."
+    }
+  },
+  "figure_names_he": {
+    "transfer_deadline": "מועד העברת הכספים",
+    "max_deferral": "דחייה מרבית באישור הממונה"
+  },
+  "text_he": "מאז פברואר אלפיים ועשרים כל העברת מידע בין שני גופים מוסדיים בקשר לניוד כספים נעשית דרך המסלקה הפנסיונית בלבד, בממשק אחיד שנקרא ממשק ניוד, מהגשת הבקשה ועד העברת הכספים; הכלל אינו חל על ניוד מקופה בניהול אישי. הקופה המעבירה חייבת להעביר את הכספים תוך עשרה ימי עסקים מקבלת בקשה מלאה, והממונה רשאי במקרים מיוחדים לאשר דחייה של עד עשרים ימי עסקים נוספים, למשל כשהמסלקה מושבתת לעדכון. החוסך עדיין חותם בקופה המקבלת; הכלל נוגע לדרך שבה הקופות מדברות ביניהן.",
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-24"
+}

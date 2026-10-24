@@ -1,7 +1,7 @@
 // The first page (flows 6.1): the site name, one line, the search field, two doors and a small link.
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/home";
-import { home as copy, site } from "../copy";
+import { home as copy, r3workbench, site } from "../copy";
 import { IconDrillIn, IconSearch } from "../components/icons";
 import { PageShell, useOpenSearch } from "../components/shell";
 import { SavedGoalStrip } from "../components/compare/strip";
@@ -47,9 +47,10 @@ function HomeBody({ presets, meta, today }: { presets: Presets; meta: { rational
       </div>
       <SavedGoalStrip presets={presets} meta={meta} today={today} emptyLine />
       <div className="grid gap-4 md:grid-cols-2">
-        {/* NEW: the third door (design-system 6.9) was added after the founder approved the first page with two doors */}
-        {[copy.door1, copy.door2, copy.door3].map((door, i) => (
-          <Link key={door.href} to={door.href} className={i === 2 ? "block group md:col-span-2" : "block group"}>
+        {/* NEW: the third door (design-system 6.9) was added after the founder approved the first page with two doors;
+            the fourth (design-system 7.9, flows 12.5, "chosen 2026-10-23, revisable") is for his review the same way */}
+        {[copy.door1, copy.door2, copy.door3, r3workbench.entry.holdings].map((door) => (
+          <Link key={door.href} to={door.href} className="block group">
             <Card className="h-full flex items-center justify-between gap-4 hover:bg-accent/40 transition-colors duration-[var(--duration-fast)]">
               <span className="flex flex-col gap-1">
                 <span className="text-lg font-semibold">{door.title}</span>

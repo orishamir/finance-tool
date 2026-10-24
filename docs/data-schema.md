@@ -68,7 +68,7 @@ Units: `nis`, `usd`, `eur`, `pct` (a share), `pct_per_year`, `pct_of_deposit`, `
 
 Fee bases (`fee.base`): `deposit`, `balance`, `trade`, `custody`, `fx`, `exit`, `fixed_period`, `distribution_handling`, `spread`, `creation_redemption`, `transfer_out`, `load`, `redemption_deduction`, `variable_management`, `trustee`, `direct_expenses`, `insurance_premium`.
 
-Security types for tariff lines (`fee.applies_to`): `tase_shares_bonds`, `makam`, `foreign_securities`, `mutual_fund_units`, `money_market_units`, `etf_units`, `tase_foreign_fund_units`, `all`.
+Security types for tariff lines (`fee.applies_to`): `tase_shares_bonds`, `tase_bonds` (a bonds-only line, for a tariff that prices bonds apart from shares and ETFs; added 2026-10-24), `makam`, `foreign_securities`, `mutual_fund_units`, `money_market_units`, `etf_units`, `tase_foreign_fund_units`, `all`.
 
 Provider classes (`provider.class`): `bank`, `tase_member_nonbank`, `foreign_broker`, `fund_manager`, `provident_manager`, `pension_manager`, `insurer`.
 
@@ -220,7 +220,7 @@ Israeli funds (Maya export, CAT-34, TXS-24) add `il_fund_tax_track` (`exempt` or
 
 ### 3.6 `data/fees/` — provider tariffs, dated snapshots (dependency 5)
 
-One file per provider per snapshot: `fees/<provider-id>@<date>.json`.
+One file per provider per snapshot: `fees/<provider-id>@<date>.json`. A line's `band` is the tariff's own text for a plan or sub-class; `band: null` is the standard line, which F-63 prefers, and a plan line is read only when the person names the plan. A bonds-only line uses `applies_to: ["tase_bonds"]`.
 
 ```json
 {
@@ -454,6 +454,7 @@ Together they are the set of funds the workbench chooses from (method F-65, F-83
 ```
 
 - Only the fields the catalogue, the candidate set (F-65 matches on classification and reference asset) and the fee comparison use are kept; prices and returns are not, since the site does not rank by past return (product.md section 4).
+- **Schema shape (2026-10-23).** The checked schema is `fundListFile` (`packages/schema/src/collections/fund-lists.ts`), strict: `list` (`maya-mutual-funds` or `tase-foreign-funds`), `snapshot` (the save date, equal to the `@<date>` in the file name; replaces `export`/`exported_on`), `source` (as §2), `checked`, `terms_of_use` (as the series schema, §3.8), `raw {archive_key, sha256}` and `funds[]` with the row fields above, plus `isin` (null where the list prints none); `exposure_code` and `tax_status` are null where the list prints none. The validator fails a file whose `terms_of_use.status` is not `confirmed` ("terms gate: not shipped"), whose name differs from `<list>@<snapshot>.json`, or that repeats a `fund_number`. An exposure's `fund:<id>` variants resolve against `data/funds/` only, never against these lists.
 - Republishing terms are not confirmed (product.md dependency 7). Until they are, the lists are used to build the candidate set and counts, and the pages link to the source for the list itself.
 
 ## 4. Validation (run before every build)

@@ -1,0 +1,81 @@
+{
+  "id": "PF-26",
+  "title": "Statements: annual report within three months, quarterly report within 60 days",
+  "title_he": "דוחות לעמית: שנתי ורבעוני, לפי התקנון",
+  "text_he": "החוק מחייב את החברה המנהלת לשלוח לעמיתים דוחות תקופתיים ונוספים, והממונה קובע את התוכן, המתכונת והעיתוי. לפי תקנון קופת גמל להשקעה של אלטשולר שחם, דוח שנתי לעמית נשלח אחת לשנה, לא יאוחר ממספר חודשים אחרי תום השנה, במתכונת שהממונה קובע, בדואר אלא אם העמית ביקש דוא״ל, ודוח מפורט מוצג באזור האישי המקוון; דוח רבעוני מוצג באזור האישי בתוך מספר ימים מתום כל רבעון חוץ מהרביעי. אין חובה להציג או לשלוח דוח רבעוני לעמית שלא הפקיד ולא העביר כסף לקופה באותו רבעון ושיתרתו מתחת לסכום שהתקנון קובע. נוסח הרגולטור עם אותם מועדים נמצא בכלל נפרד על חוזר הדוח האחיד; החוק נקרא באתר שמעתיק אותו והתקנון הוא מסמך של המוסד.",
+  "figure_names_he": {
+    "annual_report_deadline_months": "חודשים אחרי תום השנה לשליחת הדוח השנתי",
+    "quarterly_report_deadline_days": "ימים מתום הרבעון להצגת הדוח הרבעוני",
+    "quarterly_report_exemption_balance_nis": "יתרה שמתחתיה אין חובת דוח רבעוני"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "statement-disclosure"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-03-31",
+  "figures": {
+    "annual_report_deadline_months": {
+      "value": 3,
+      "unit": "months",
+      "source": {
+        "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
+        "title": "Altshuler Shaham gemel lehashkaa bylaws (\"חיסכון פלוס\"), March 2025, s. 31",
+        "publisher": "Altshuler Shaham Gemel ve-Pensia",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "PF-26"
+      ],
+      "state": "sourced",
+      "notes": "Annual report to the member once a year, no later than three months after year end (bylaws s. 31). The regulator's text with the same deadline is PF-33."
+    },
+    "quarterly_report_deadline_days": {
+      "value": 60,
+      "unit": "days",
+      "source": {
+        "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
+        "title": "Altshuler Shaham gemel lehashkaa bylaws (\"חיסכון פלוס\"), March 2025, s. 32.1",
+        "publisher": "Altshuler Shaham Gemel ve-Pensia",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "PF-26"
+      ],
+      "state": "sourced",
+      "notes": "Quarterly report shown in the personal online account within 60 days of the end of each quarter except the fourth (bylaws s. 32.1). Same figure in PF-33."
+    },
+    "quarterly_report_exemption_balance_nis": {
+      "value": 50000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
+        "title": "Altshuler Shaham gemel lehashkaa bylaws (\"חיסכון פלוס\"), March 2025, s. 32.2",
+        "publisher": "Altshuler Shaham Gemel ve-Pensia",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "PF-26"
+      ],
+      "state": "sourced",
+      "notes": "No quarterly report need be shown or sent to a member with no deposit or transfer into the fund that quarter and a balance under NIS 50,000 (bylaws s. 32.2). Bylaws figure, not stated as indexed. Same figure in PF-33."
+    }
+  },
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-22"
+}

@@ -3,14 +3,18 @@
 Personal, non-commercial website that helps me and a few friends and family
 make saving and investing decisions in Israel.
 
-## Status: release 1 complete, release 2 under way
+## Status: releases 1 to 5 built, data filled as far as sources allow
 
-Release 1 (2026-10-23) is complete with its data: every screen in
-`docs/design-spec.md`, all 17 wrapper and 7 exposure records, rules, terms,
-dimensions and the Meitav catalogue (see `docs/data-inventory.md`). Release 2's
-engine and design are done and its screens are being built; the Bank of Israel
-series are links, not numbers (product D20). The dated "Status" paragraphs in
-`docs/roadmap.md` say what exists and what is still open per release.
+All five releases of `docs/roadmap.md` are built (release 1 on 2026-10-23,
+releases 2 to 5 on 2026-10-23 and 2026-10-24); the dated "Status" paragraphs
+under each release say what exists and what is open, and its closing section
+"After release 5" lists the work that continues (tier-2 graduation, data
+growth, quarterly tariff refresh, my approvals). Data: about 500 rules, 20
+tariff snapshots for 17 providers (Meitav Trade still missing), 4 fund records,
+Leumi's 3 deposit terms, 2 series; no fund list, because TASE's terms forbid
+republishing it (see `docs/data-inventory.md`). The saved state is version 3
+under `mekor.v2.state`; the entered offers, variant assumptions and playbook
+ticks are three side stores on the device pending a merge into it.
 
 `docs/product.md` defines the site: who it is for, the capabilities, the
 decisions D1 to D13 (confirmed 2026-10-22, open to revision as I learn more),

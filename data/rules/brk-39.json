@@ -1,0 +1,90 @@
+{
+  "id": "BRK-39",
+  "title": "TASE Data Hub and Data Store: paid, licensed data products priced for internal use or distribution; the mutual-fund products and their list prices; the site terms govern",
+  "title_he": "שירותי המידע של הבורסה: מוצרים ברישוי ובתשלום, במחיר שונה לשימוש פנימי ולהפצה",
+  "strength": "primary",
+  "dimensions": [
+    "regulator"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "mf_holdings_internal": {
+      "value": 1008,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.tase.co.il/he/content/products_lobby/datastore_pricelist/",
+        "title": "מחירון מוצרי המידע של הבורסה, קרנות נאמנות, אחזקות קרנות נאמנות, מחיר בש\"ח לשימוש פנימי",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "As printed; the page prints no period for the price."
+    },
+    "mf_holdings_distribution": {
+      "value": 2016,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.tase.co.il/he/content/products_lobby/datastore_pricelist/",
+        "title": "מחירון מוצרי המידע של הבורסה, קרנות נאמנות, אחזקות קרנות נאמנות, מחיר בש\"ח להפצה",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "As printed; no period printed."
+    },
+    "mf_prices_internal": {
+      "value": 797.5,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.tase.co.il/he/content/products_lobby/datastore_pricelist/",
+        "title": "מחירון מוצרי המידע של הבורסה, קרנות נאמנות, שערי קרנות נאמנות, מחיר בש\"ח לשימוש פנימי",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "As printed; no period printed."
+    },
+    "mf_prices_distribution": {
+      "value": 797.5,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.tase.co.il/he/content/products_lobby/datastore_pricelist/",
+        "title": "מחירון מוצרי המידע של הבורסה, קרנות נאמנות, שערי קרנות נאמנות, מחיר בש\"ח להפצה",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "As printed; no period printed."
+    }
+  },
+  "figure_names_he": {
+    "mf_holdings_internal": "אחזקות קרנות נאמנות - שימוש פנימי",
+    "mf_holdings_distribution": "אחזקות קרנות נאמנות - הפצה",
+    "mf_prices_internal": "שערי קרנות נאמנות - שימוש פנימי",
+    "mf_prices_distribution": "שערי קרנות נאמנות - הפצה"
+  },
+  "text_he": "הבורסה מוכרת נתונים בממשק תכנות ובקבצים, ברישוי לפי סוג השימוש: פנימי או הפצה. יש מוצרים חינמיים, אבל תנאיהם מוצגים רק בדף המוצר ובקופה. במחירון מופיעים גם מוצרי קרנות נאמנות, אחזקות ושערים, במחיר להפצה גבוה ממחיר השימוש הפנימי; המחירון אינו מציין לאיזו תקופה המחיר. תנאי השימוש של האתר חלים על כל הפלטפורמות, ולכן גם דרך שירותי המידע אין דרך להציג את רשימת הקרנות בלי רישיון הפצה או אישור בכתב.",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-24"
+}

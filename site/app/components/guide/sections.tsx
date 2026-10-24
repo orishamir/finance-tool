@@ -1,8 +1,8 @@
 // Guide page components (design-spec 2): section index, sections, key-value list, fee table, tax steps,
 // dimension checklist, related products, term table, institution chips.
 import { useEffect, useState, type ReactNode } from "react";
-import { Link } from "react-router";
-import { guide as copy } from "../../copy";
+import { Link, useParams } from "react-router";
+import { guide as copy, r3fees } from "../../copy";
 import type { TermRow } from "../../lib/data.server";
 import type { Strength } from "../../lib/value";
 import { IconCheck, IconDrillIn, IconLock, IconMinus } from "../icons";
@@ -129,6 +129,7 @@ export interface FeeRow {
 }
 
 export function FeeTable({ fees, note }: { fees: FeeRow[]; note: string }) {
+  const { id } = useParams();
   return (
     <div className="flex flex-col gap-3">
       <Card className="md:hidden flex flex-col divide-y divide-border p-0 md:p-0">
@@ -178,6 +179,11 @@ export function FeeTable({ fees, note }: { fees: FeeRow[]; note: string }) {
         </table>
       </Card>
       <p className="text-sm text-muted-foreground max-w-measure">{note}</p>
+      {id && (
+        <Link to={`/fees?wrapper=${id}`} className="text-link hover:underline self-start min-h-target inline-flex items-center">
+          {r3fees.links.fromGuide}
+        </Link>
+      )}
     </div>
   );
 }

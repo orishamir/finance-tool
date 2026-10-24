@@ -1,0 +1,103 @@
+{
+  "id": "PF-16",
+  "title": "Notice before a fee increase, and notice of a discount",
+  "title_he": "הודעה לפני העלאת דמי ניהול והודעה על הנחה",
+  "text_he": "גוף שרוצה להעלות דמי ניהול שולח לעמית, ולכל בעל רישיון שנותן לו ייעוץ או שיווק מתמשך, הודעה במסמך נפרד; ההעלאה נכנסת לתוקף בתום חודשיים משליחתה או במועד מאוחר שנקוב בה, ואסור לשלוח אותה יותר מכמה חודשים לפני ההעלאה. ההודעה בנויה לפי תבנית: טבלה של השיעורים הנוכחיים והחדשים מהפקדה ומחיסכון, הסכום בשקלים שנגבה בשנה האחרונה מול מה שהשיעור החדש היה גובה, והפניה למחשבון דמי הניהול של הרשות; כשהדוא״ל ידוע ההודעה נשלחת בדוא״ל בכותרת קבועה, ושבועות אחדים לפני ההעלאה נשלח מסרון. כשניתנת הנחה, הגוף מציג אותה באזור האישי המקוון בהקדם, עם השיעור החדש, תחילת וסיום תקופת ההנחה והמקרים שבהם אפשר להעלות את דמי הניהול, ושולח עותק בדוא״ל בתוך ימי עסקים ספורים כשהדוא״ל ידוע. חוזר הרשות נקרא מעותק המתארח באתר של צד שלישי.",
+  "figure_names_he": {
+    "increase_notice_months": "חודשים מההודעה עד כניסת ההעלאה לתוקף",
+    "increase_notice_max_lead_months": "חודשים מרביים לשליחת ההודעה לפני ההעלאה",
+    "increase_sms_days_before": "ימים לפני ההעלאה לשליחת מסרון",
+    "discount_email_business_days": "ימי עסקים לשליחת ההנחה בדוא״ל"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "fee-change-over-time",
+    "statement-disclosure"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "increase_notice_months": {
+      "value": 2,
+      "unit": "months",
+      "source": {
+        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2017915.pdf",
+        "title": "CMA circular 2017-9-15 (fee-change notice and discount display), s. 4(א)",
+        "publisher": "Capital Market, Insurance and Savings Authority (copy hosted by Prisha)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-16"
+      ],
+      "state": "sourced",
+      "notes": "A fee increase takes effect at the end of two months from sending the separate-document notice, or at a later date stated in it (s. 4(א))."
+    },
+    "increase_notice_max_lead_months": {
+      "value": 4,
+      "unit": "months",
+      "source": {
+        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2017915.pdf",
+        "title": "CMA circular 2017-9-15 (fee-change notice and discount display), s. 4(א)",
+        "publisher": "Capital Market, Insurance and Savings Authority (copy hosted by Prisha)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-16"
+      ],
+      "state": "sourced",
+      "notes": "The increase notice may not be sent more than four months before the increase (s. 4(א))."
+    },
+    "increase_sms_days_before": {
+      "value": 30,
+      "unit": "days",
+      "source": {
+        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2017915.pdf",
+        "title": "CMA circular 2017-9-15 (fee-change notice and discount display), s. 4(ג), (ד), appendix B",
+        "publisher": "Capital Market, Insurance and Savings Authority (copy hosted by Prisha)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-16"
+      ],
+      "state": "sourced",
+      "notes": "An SMS goes to the member's mobile 30 days before the increase (appendix B)."
+    },
+    "discount_email_business_days": {
+      "value": 10,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2017915.pdf",
+        "title": "CMA circular 2017-9-15 (fee-change notice and discount display), s. 3א",
+        "publisher": "Capital Market, Insurance and Savings Authority (copy hosted by Prisha)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-16"
+      ],
+      "state": "sourced",
+      "notes": "When a discount is given it is shown in the personal online account as soon as possible, and, if the email is known, a copy is emailed within 10 business days (s. 3א)."
+    }
+  },
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-22"
+}

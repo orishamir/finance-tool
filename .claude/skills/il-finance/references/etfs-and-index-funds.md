@@ -314,6 +314,7 @@ Out (and where): the general mutual-fund framework (trustee, open-fund pricing a
 - Source: [TASE, קרנות חוץ נסחרות](https://market.tase.co.il/he/market_data/f-etfs) · checked 2026-10-22 · primary
 - Dimensions: `foreign-withholding-domicile`, `currency`
 - Likely to change: yes.
+**[2026-10-24 R4 research pass]** Still 40 funds on 23/10/2026; split 29 equity / 11 bond and the republishing position in ETF-43.
 
 ## Indices
 
@@ -398,6 +399,14 @@ Added 2026-10-23 (release 1 exposure pages, product.md D18). Each rule records w
 - Source: [TASE, "ת"א-125 אודות המדד" (index 137)](https://market.tase.co.il/he/market_data/index/137/about) · [TASE, "הנחיות על פי החלק השביעי לתקנון", chapter א section 7 (formulas, pp. ב-15 to ב-16) and annex 3 (p. ב-32)](https://content.tase.co.il/media/iftghzjt/274765-1.pdf) · checked 2026-10-23 · primary (index provider)
 - Dimensions: distribution-policy, currency
 - Likely to change: no.
+
+### ETF-43 TASE's foreign-funds list on 23/10/2026: 40 funds, 29 in the equity market and 11 in the bond market; read on the page, not republished
+- Rule: The page "קרנות חוץ נסחרות" showed "סה"כ 40 רשומות", "נכון ל- 23/10/2026", in two pages of 30 and 10 rows with columns name, security number, last price in agorot, change, turnover, time of last trade, fund classification, reference asset, base and opening price. Its category filter ("קטגוריה") splits the list into "קרנות חוץ נסחרות בשוק המניות" and "קרנות חוץ נסחרות בשוק האג"ח"; the bond filter returns 11 records (ten iShares bond funds: JPM EM Bond 01158989, Corp Bond USD 01159185, Float Rate Bond 01159086, Global Agg Bond 01159102, HY Corp Bond 01159078, Short Dur Bond 01159151, US TIPS 01159060, Treasury 1-3Y 01159177, 3-7Y 01159276, 7-10Y 01159268, and Invesco iBoxx AT1 USD 01185206), so 29 are in the equity market. Managers as in ETF-32: 23 iShares, 17 Invesco. No export button was seen on the page; the list is read on the page (filter URL `?dType=1&oId=18` for the bond market).
+- Conditions / exceptions: TASE's terms (CAT-43) forbid republishing the list; the site shows the counts with a link to the page and lists only the funds that have a `data/funds/` record. The page's classification strings ("מניות בחו"ל-מניות גיאוגרפי - חשופת מט"ח-אמריקה- שווקים מפותחים" and the like) follow the Israeli fund-classification tree, which lets the candidate set match them to an exposure once a record exists.
+- Figures: 40 funds; 29 equity, 11 bond; data as of 23/10/2026.
+- Source: [TASE, קרנות חוץ נסחרות](https://market.tase.co.il/he/market_data/f-etfs) and its bond-market filter, read in the founder's Chrome 2026-10-24 · primary; terms as CAT-43
+- Dimensions: `foreign-withholding-domicile`, `currency`
+- Likely to change: yes, as funds list or delist.
 
 ## Comparing variants of the same index (feeds the dimension checklist)
 
@@ -565,5 +574,6 @@ What a saver must check to compare, for example, an S&P 500 Israeli ETF, an S&P 
 | Not readable (403): IBKR PRIIPs glossary | Interactive Brokers | — | https://www.interactivebrokers.com/campus/glossary-terms/priips/ | 2026-10-22 |
 | S&P 500® index page (overview, characteristics, documents) | S&P Dow Jones Indices | primary | https://www.spglobal.com/spdji/en/indices/equity/sp-500/ | 2026-10-23 |
 | S&P U.S. Indices Methodology, July 2026 (pp. 1–21 read in Chrome's viewer) | S&P Dow Jones Indices | primary | https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf | 2026-10-23 |
+| TASE, קרנות חוץ נסחרות (list and bond-market filter) | TASE | primary | https://market.tase.co.il/he/market_data/f-etfs | 2026-10-24 |
 | ת"א-125 אודות המדד (index 137) | TASE | primary | https://market.tase.co.il/he/market_data/index/137/about | 2026-10-23 |
 | מדריך מעו"ף - הנחיות על פי החלק השביעי לתקנון, update 173 to 25.12.2025 (chapter א and annexes 1, 3, 4) | TASE | primary | https://content.tase.co.il/media/iftghzjt/274765-1.pdf | 2026-10-23 |

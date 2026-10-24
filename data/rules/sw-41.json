@@ -1,0 +1,162 @@
+{
+  "id": "SW-41",
+  "title": "The transfer circular 2017-9-17 on gov.il: the official text is the one read, with the same deadlines; its dates and what it cancels",
+  "title_he": "חוזר העברת הכספים בין קופות גמל באתר הממשלה: הנוסח הרשמי ולוחות הזמנים שבו",
+  "strength": "primary",
+  "dimensions": [
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "forward_request": {
+      "value": 2,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+        "title": "חוזר גופים מוסדיים 2017-9-17, העברת כספים בין קופות גמל, סעיף 3(ו)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2017-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "state": "sourced",
+      "notes": "'בתוך שני ימי עסקים מהמועד הקובע'."
+    },
+    "rejection_notice": {
+      "value": 3,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+        "title": "חוזר גופים מוסדיים 2017-9-17, העברת כספים בין קופות גמל, סעיף 3(ז)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2017-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "state": "sourced",
+      "notes": "'בתוך שלושה ימי עסקים ממועד העברת הבקשה'."
+    },
+    "lapse_active": {
+      "value": 120,
+      "unit": "days",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+        "title": "חוזר גופים מוסדיים 2017-9-17, העברת כספים בין קופות גמל, סעיף 3(יב)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2017-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "state": "sourced",
+      "notes": "Active member, from signing the request."
+    },
+    "lapse_inactive": {
+      "value": 60,
+      "unit": "days",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+        "title": "חוזר גופים מוסדיים 2017-9-17, העברת כספים בין קופות גמל, סעיף 3(יג)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2017-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "state": "sourced",
+      "notes": "Inactive member, or an active member who notified that no deposits will come."
+    },
+    "return_after_cancellation": {
+      "value": 10,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+        "title": "חוזר גופים מוסדיים 2017-9-17, העברת כספים בין קופות גמל, סעיף 3(י)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2017-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "state": "sourced",
+      "notes": "Money returned with the receiving fund's yield."
+    },
+    "late_transfer_data": {
+      "value": 5,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+        "title": "חוזר גופים מוסדיים 2017-9-17, העברת כספים בין קופות גמל, סעיף 5(ה)-(ו)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2017-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "state": "sourced",
+      "notes": "Balance and daily-yield data after a late transfer."
+    },
+    "employer_notice": {
+      "value": 15,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+        "title": "חוזר גופים מוסדיים 2017-9-17, העברת כספים בין קופות גמל, סעיף 5א",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2017-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "state": "sourced",
+      "notes": "Notice to the employer when severance money moved."
+    },
+    "member_confirmations": {
+      "value": 15,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+        "title": "חוזר גופים מוסדיים 2017-9-17, העברת כספים בין קופות גמל, סעיף 6",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2017-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "state": "sourced",
+      "notes": "From each fund, from the transfer or receipt of the money."
+    }
+  },
+  "figure_names_he": {
+    "forward_request": "העברת הבקשה לקופה המעבירה",
+    "rejection_notice": "הודעת דחייה או עיכוב",
+    "lapse_active": "פקיעת בקשה של עמית פעיל",
+    "lapse_inactive": "פקיעת בקשה של עמית לא פעיל",
+    "return_after_cancellation": "החזרת כספים אחרי ביטול",
+    "late_transfer_data": "נתונים אחרי העברה באיחור",
+    "employer_notice": "הודעה למעסיק",
+    "member_confirmations": "אישורים לעמית"
+  },
+  "text_he": "העותק הרשמי של חוזר העברת הכספים בין קופות גמל נמצא באתר הממשלה והוא זהה לעותק שנקרא קודם: סעיף שבוטל, הוראות לקופה מרכזית לפיצויים והודעה למעסיק הם חלק מהנוסח המקורי, והחוזר מבטל את קודמו. לוחות הזמנים נקראו כלשונם: העברת הבקשה לקופה המעבירה תוך יומיים עסקים, הודעת דחייה או עיכוב תוך שלושה ימי עסקים, פקיעת בקשה אחרי מאה ועשרים או שישים יום, החזרת כספים אחרי ביטול תוך עשרה ימי עסקים, והודעה למעסיק ואישורים לעמית תוך חמישה עשר ימי עסקים. חוזרים מאוחרים של הרשות מפנים למספר חוזר קודם, ולכן המספור שבתוקף טרם הוכרע.",
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-24"
+}

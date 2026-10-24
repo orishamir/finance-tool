@@ -1,0 +1,504 @@
+{
+  "id": "CAT-42",
+  "title": "Maya's fund list on 2026-10-24: 2,009 funds, their counts by top classification and tax status, and how a person downloads the export",
+  "title_he": "רשימת הקרנות במאיה: כמה קרנות יש, לפי סיווג על ולפי מעמד מס, ואיך מורידים את הקובץ",
+  "strength": "primary",
+  "dimensions": [
+    "product-marking"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2026-11-30",
+  "figures": {
+    "funds_total": {
+      "value": 2009,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, סה''כ רשומות, נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "tax_exempt": {
+      "value": 1986,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, מעמד מס פטורה, נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "tax_liable": {
+      "value": 21,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, מעמד מס חייבת, נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "tax_liable_foreign_residents": {
+      "value": 2,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, מעמד מס חייבת לתושבי חוץ, נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "active_tree_total": {
+      "value": 1163,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, סיווגי העל של הקרנות המנוהלות (מפתחות 1 עד 121), סכום, נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "tracking_tree_total": {
+      "value": 846,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, סיווגי העל של הקרנות המחקות וקרנות הסל (מפתחות 147 עד 478), סכום, נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "money_market": {
+      "value": 73,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, סיווג על קרן כספית, נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "flexible": {
+      "value": 44,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, סיווג על גמישות, נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "il_equity_active": {
+      "value": 141,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, סיווג על מניות בארץ (מנוהלות), נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "il_equity_tracking": {
+      "value": 152,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, סיווג על מניות בארץ (מחקות וסל), נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "foreign_equity_active": {
+      "value": 121,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, סיווג על מניות בחו\"ל (מנוהלות), נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "foreign_equity_tracking": {
+      "value": 319,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, סיווג על מניות בחו\"ל (מחקות וסל), נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "il_gov_bonds_active": {
+      "value": 103,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, סיווג על אג\"ח בארץ - מדינה (מנוהלות), נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "il_gov_bonds_tracking": {
+      "value": 56,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, סיווג על אג\"ח בארץ - מדינה (מחקות וסל), נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "il_corp_bonds_active": {
+      "value": 141,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, סיווג על אג\"ח בארץ - חברות והמרה (מנוהלות), נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "il_corp_bonds_tracking": {
+      "value": 238,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, סיווג על אג\"ח בארץ - חברות והמרה (מחקות וסל), נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "il_general_bonds_active": {
+      "value": 405,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, סיווג על אג\"ח בארץ - כללי (מנוהלות), נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "il_general_bonds_tracking": {
+      "value": 5,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, סיווג על אג\"ח בארץ - כללי (מחקות וסל), נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "foreign_bonds_active": {
+      "value": 68,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, סיווג על אג\"ח בחו\"ל (מנוהלות), נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "foreign_bonds_tracking": {
+      "value": 36,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, סיווג על אג\"ח בחו\"ל (מחקות וסל), נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "leveraged_strategies": {
+      "value": 38,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, סיווג על ממונפות ואסטרטגיות, נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "fund_of_funds": {
+      "value": 27,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, סיווג על אגד קרנות, נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "il_mixed_bonds_tracking": {
+      "value": 24,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, סיווג על אג\"ח בארץ משולבת, נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "commodities_tracking": {
+      "value": 3,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, סיווג על סחורות, נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "digital_assets_tracking": {
+      "value": 11,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, סיווג על נכסים דיגיטליים (שני מפתחות, אחד ועשר), נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "foreign_residents_only": {
+      "value": 2,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, סיווג על לתושבי חוץ בלבד, נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    },
+    "other_tracking": {
+      "value": 2,
+      "unit": "count",
+      "source": {
+        "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+        "title": "מאיה, רשימת קרנות, סיווג על אחר, נקרא בכרום 2026-10-24",
+        "publisher": "Tel Aviv Stock Exchange (Maya)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-24",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Count the list's own filter returns for this heading on 2026-10-24."
+    }
+  },
+  "figure_names_he": {
+    "funds_total": "סך הקרנות ברשימה",
+    "tax_exempt": "קרנות פטורות ממס",
+    "tax_liable": "קרנות חייבות במס",
+    "tax_liable_foreign_residents": "קרנות חייבות לתושבי חוץ",
+    "active_tree_total": "סך הקרנות המנוהלות",
+    "tracking_tree_total": "סך הקרנות המחקות וקרנות הסל",
+    "money_market": "קרן כספית",
+    "flexible": "גמישות",
+    "il_equity_active": "מניות בארץ - מנוהלות",
+    "il_equity_tracking": "מניות בארץ - מחקות וסל",
+    "foreign_equity_active": "מניות בחו\"ל - מנוהלות",
+    "foreign_equity_tracking": "מניות בחו\"ל - מחקות וסל",
+    "il_gov_bonds_active": "אג\"ח בארץ - מדינה - מנוהלות",
+    "il_gov_bonds_tracking": "אג\"ח בארץ - מדינה - מחקות וסל",
+    "il_corp_bonds_active": "אג\"ח בארץ - חברות והמרה - מנוהלות",
+    "il_corp_bonds_tracking": "אג\"ח בארץ - חברות והמרה - מחקות וסל",
+    "il_general_bonds_active": "אג\"ח בארץ - כללי - מנוהלות",
+    "il_general_bonds_tracking": "אג\"ח בארץ - כללי - מחקות וסל",
+    "foreign_bonds_active": "אג\"ח בחו\"ל - מנוהלות",
+    "foreign_bonds_tracking": "אג\"ח בחו\"ל - מחקות וסל",
+    "leveraged_strategies": "ממונפות ואסטרטגיות",
+    "fund_of_funds": "אגד קרנות",
+    "il_mixed_bonds_tracking": "אג\"ח בארץ משולבת",
+    "commodities_tracking": "סחורות",
+    "digital_assets_tracking": "נכסים דיגיטליים",
+    "foreign_residents_only": "לתושבי חוץ בלבד",
+    "other_tracking": "אחר"
+  },
+  "text_he": "רשימת הקרנות הפתוחות במאיה מונה כאלפיים קרנות, ורובן המכריע פטורות ממס. המסננים בעמוד מחלקים אותן לשתי קבוצות של סיווגי על: קרנות מנוהלות וקרנות מחקות וקרנות סל, וכל קרן נספרת פעם אחת. כדי להוריד את הרשימה פותחים במאיה את נתוני הקרנות, בוחרים רשימת קרנות, מסננים לפי הצורך ולוחצים על הורדת נתונים. האתר מציג רק את המספרים ומקשר למאיה, כי תנאי השימוש של הבורסה אינם מתירים לפרסם את הרשימה.",
+  "il_finance_file": "tracks-catalogue-and-decoder.md",
+  "checked": "2026-10-24"
+}

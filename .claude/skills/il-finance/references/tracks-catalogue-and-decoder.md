@@ -364,6 +364,7 @@ Scope: in: the three CMA monthly datasets on data.gov.il (Gemel-Net, Pension-Net
 - Source: [Maya, רשימת קרנות](https://maya.tase.co.il/he/funds/mutual-funds) · checked 2026-10-22 · primary
 - Dimensions: `product-marking`
 - Likely to change: yes.
+**[2026-10-24 R4 research pass]** Count on 2026-10-24: 2,009 again; per-classification counts and the by-hand download path in CAT-42; republishing terms in CAT-43.
 
 ### CAT-34 Maya's fund export: the fields available per mutual fund
 - Rule: The Maya fund list's export ("הורדת נתונים", a CSV) has one row per open-end fund (2,009 on 2026-10-22) with: fund name, fund number, equity and FX exposure codes, three classification levels, characteristics, manager, trustee, tax status, management fee, trustee fee, assets, data date, buy and redemption prices, daily change, returns (month, year to date, 12 months), standard deviation, reference asset, and distribution-fee class.
@@ -372,6 +373,7 @@ Scope: in: the three CMA monthly datasets on data.gov.il (Gemel-Net, Pension-Net
 - Source: [Maya, רשימת קרנות](https://maya.tase.co.il/he/funds/mutual-funds) · checked 2026-10-22 · primary
 - Dimensions: `product-marking`, `fee-management-balance`
 - Likely to change: yes.
+**[2026-10-24 R4 research pass]** Terms of use now checked (CAT-43): the export may be downloaded for personal use but not republished; the site keeps counts and a link (data-schema 3.14 stays unconfirmed).
 
 ### CAT-35 Fee fields are percent values, as both CMA portals print them
 - Rule: `AVG_ANNUAL_MANAGEMENT_FEE` is an annual rate in percent of assets and `AVG_DEPOSIT_FEE` is a rate in percent of the deposits (0.61 means 0.61%). Gemel-Net's yields report heads the pair "שיעור דמי ניהול ממוצע לשנת 2025" with sub-columns "נכסים" and "הפקדות" and prints 0.61% and 0.00% for track 7978, where the dataset's 202609 row holds 0.61 and 0. Its advanced search filters on "שיעור דמי ניהול ממוצע שנתי - נכסים %" with the bands "נמוך - עד 0.5", "בינוני - מעל 0.5 עד 1", "גבוה - מעל 1 עד 1.5", "גבוה מאד - מעל 1.5". Pensia-Net heads the same pair "שיעור דמי ניהול ממוצעים בשנת 2025" / "נכסים" / "הפקדות" and prints 0.16% and 1.47% for Harel's comprehensive pension fund 214, whose every track holds 0.16 and 1.47 in 202609.
@@ -428,6 +430,22 @@ Scope: in: the three CMA monthly datasets on data.gov.il (Gemel-Net, Pension-Net
 - Source: Gemel-Net report as in CAT-35; [7978 at 202609](https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&filters={"FUND_ID":7978,"REPORT_PERIOD":202609}); circular 2018-9-26 (table ד note) · checked 2026-10-23 · primary
 - Dimensions: real-vs-nominal, fee-management-balance
 - Likely to change: no
+
+### CAT-42 Maya's fund list on 2026-10-24: 2,009 funds, their counts by top classification and tax status, and how a person downloads the export
+- Rule: On 24.10.2026 Maya's "רשימת קרנות" showed "סה''כ רשומות : 2,009" open-end funds. The page's own filters (read in Chrome through the list page's filter requests, one filter at a time, which return the record count the page prints) give: by tax status "פטורה" 1,986, "חייבת" 21, "חייבת לתושבי חוץ" 2; by top classification ("סיווג על"), where the filter list holds two sets of headings, one for the active funds (keys 1 to 121: גמישות 44, מניות בארץ 141, מניות בחו"ל 121, ממונפות ואסטרטגיות 38, קרן כספית 73, אג"ח בארץ - מדינה 103, אג"ח בחו"ל 68, לתושבי חוץ בלבד 2, חו"ל כללי 0, אג"ח בארץ - חברות והמרה 141, אג"ח בארץ - כללי 405, אגד קרנות 27; together 1,163) and one for the tracking funds and ETFs (keys 147 to 478: קרן סגורה 0, מניות בארץ 152, מניות בחו"ל 319, ממונפות 0, אג"ח בארץ - מדינה 56, אג"ח בארץ - חברות והמרה 238, אג"ח בארץ משולבת 24, אג"ח בחו"ל 36, סחורות 3, אחר 2, קרן גידור בנאמנות 0, נכסים דיגיטליים 1 and 10, אג"ח בארץ - כללי 5; together 846). The two sets sum to 2,009, so every fund carries exactly one top classification. The filter lists hold 18 managers, 14 trustees, 7 fund types (קרן פתוחה, קרן סגורה, קרן הייטק, קרן מחקה, קרן סל, קרן גידור בנאמנות, קרן חוץ נסחרת), 106 main and 215 secondary classifications, 1,150 reference assets, 10 features and 4 payment policies (לא מתחייבת לחלק תשלומים, מתחייבת לתשלום חודשי, מתחייבת לתשלום רבעוני, הינה קרן צבירה-מתחייבת לא לחלק תשלומים). To download the list by hand: open Maya, "נתוני קרנות" → "רשימת קרנות" (https://maya.tase.co.il/he/funds/mutual-funds), set any filters, press "הורדת נתונים"; the CSV has the fields in CAT-34.
+- Conditions / exceptions: That the second heading set is the tracking-fund tree is an inference from its headings and from CAT-34 (845 funds with no distribution fee on 2026-10-22); Maya labels neither set. The counts change daily as funds open, merge and close. The list is not republished by the site (CAT-43): the site shows counts and links to Maya.
+- Figures: 2,009 funds; 1,986 / 21 / 2 by tax status; per top classification as above; read 2026-10-24.
+- Source: [Maya, רשימת קרנות](https://maya.tase.co.il/he/funds/mutual-funds), read in the founder's Chrome 2026-10-24 (the page, its filter panel and the counts its filters return) · primary
+- Dimensions: `product-marking`
+- Likely to change: yes, daily; recheck with each monthly save.
+
+### CAT-43 TASE's terms of use (edition August 2026) forbid republishing the Maya export; limited quotation with a link is allowed, databases are not
+- Rule: TASE's site terms, "מהדורת אוגוסט 2026", apply "על השימוש בכל פלטפורמה דיגיטלית באמצעותה מסופקים השירותים" (so to Maya and market.tase.co.il as well as www.tase.co.il). Use is "אך ורק למטרות שאינן מסחריות"; "אין לפרסם ברבים את המידע ו/או כל חלק ממנו ואין לפרסם כל מוצר שמקורו במידע … מבלי שניתן לכך אישור הבורסה מראש ובכתב"; "אין להעתיק ו/או לשכפל ו/או להדפיס את המידע או כל חלק ממנו לצורך הפצה או פרסום בדרך כלשהי" without that consent. The automated-means section forbids any automated activity, bots and AI tools without written approval, with an exception for "איתור, שליפה נקודתית, סיכום, ציטוט מוגבל או הצגה באמצעות אמצעים אוטומטיים של תכנים ציבוריים המוצגים בדומיין www.tase.co.il, ובלבד שכל הצגה של תוכן כאמור תכלול קישור ישיר לעמוד המקור"; "החרגה זו אינה מתירה אימון מודלים, שליפה רחבת היקף או הקמת מאגרים"; "scraping, mining, harvesting, שליפה רחבת היקף" are forbidden unless TASE permits them expressly, and permissions may be published in dedicated files per domain (robots.txt or llms.txt do not count by themselves). Intellectual property in "לקטים" (compilations) is TASE's. The terms carry no edition number beyond the month and may change at any time.
+- Conditions / exceptions: For the site this means: no `data/fund-lists/` file is shipped (the republishing status stays unconfirmed, data-schema 3.14); the site may quote counts (CAT-42, ETF-43) with a direct link to the source page, and tells a person how to download the export themselves. Written consent from TASE (spokesperson@tasemail.co.il or the contact form) would lift this; asking is the founder's call, as for the Bank of Israel series (product D20) and the TASE fee calculator (BRK-37).
+- Figures: none (terms).
+- Source: [TASE, תנאי שימוש, מהדורת אוגוסט 2026](https://www.tase.co.il/he/content/about/terms_of_service), read in the founder's Chrome 2026-10-24 · primary
+- Dimensions: `regulator`
+- Likely to change: yes; the terms carry an edition month.
 
 ## Proposed dimensions
 
@@ -635,4 +653,6 @@ The full list of managing companies per product is in research/discovery/domain-
 | חוזר גמל 2003/13, עדכון דוח תשואות (דוח 3) וביטול דוח הכנסות (דוח 4) | CMA (MoF) | https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-2030/he/regulation_2003-13.pdf | primary (later status unknown) | 2026-10-23 |
 | חוזר גופים מוסדיים 2017-9-15, דמי ניהול במכשירי החיסכון הפנסיוני - תיקון (discount periods; member-report averages referenced) | CMA | https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf | primary | 2026-10-23 |
 | Draft 2014-21, דיווח לממונה על שיעורי דמי ניהול (fee calculator reporting, list rates for new members, not averages) | CMA | https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-3076/he/regulation_th_2014-21.pdf | primary (draft) | 2026-10-23 |
+| Maya, רשימת קרנות (list page, filter panel and the counts its filters return) | TASE | primary | https://maya.tase.co.il/he/funds/mutual-funds | 2026-10-24 |
+| TASE, תנאי שימוש, מהדורת אוגוסט 2026 | TASE | primary | https://www.tase.co.il/he/content/about/terms_of_service | 2026-10-24 |
 | Funder news items reproducing the 2014 and 2015 monthly-report circulars and the 2015 fee-reporting circular (used only to locate the gov.il originals) | Funder | https://www.funder.co.il/article/40455, /46598, /47853 | secondary | 2026-10-23 |

@@ -89,3 +89,110 @@ export const r2Expected = {
   },
   s50: { bankA2: 132_426.4, bankA: 132_353.91, gapPct: 0.05 },
 };
+
+// Release 3 scenarios (S42, S43, S46), copied from the "Independent check" lines in scenarios.md.
+// r3.test.ts checks each against its scenario text.
+export const r3Expected = {
+  s42: {
+    realWithFees: 300_266.26,
+    totalDrag: 20_664.79,
+    balanceFee: 17_901.59,
+    directExpenses: 2_587.05,
+    interaction: 176.15,
+    /** Cutting the balance fee from 0.74% to 0.34%. */
+    reduction: 9_530.01,
+  },
+  s43: {
+    custody: 5_032.56,
+    trade: 3_068.41,
+    fx: 1_213.4,
+    fund: 207.68,
+    spread: 75.28,
+    interaction: 106.09,
+    totalDrag: 9_703.42,
+    realWithFees: 236_360.08,
+  },
+  s46: {
+    /** Fee cost over 15 years, real: 0.9% on 80,000; 0.6% on 40,000; moving the 80,000 into the 0.6% fund. */
+    cost80: 16_723.25,
+    cost40: 5_698.23,
+    moveValue: 5_326.8,
+  },
+};
+
+// Release 4 scenarios: S38 (switching cost, F-66) and S44, S45 (provider workbench, F-63), copied from the
+// "Independent check" lines in scenarios.md and the tables in workings.md. r4.test.ts checks each against its scenario text.
+/** One provider row of S44: horizon cost (real), year-1 cost (nominal, liquidation value at 12), year-1 fees paid, and the cost by type (real, horizon). */
+interface S44Row {
+  cost: number;
+  year1: number;
+  fees1: number;
+  trade: number;
+  custody: number;
+  fixed: number;
+}
+export const r4Expected = {
+  s38: {
+    realNoSwitch: 106_368.36,
+    realWithSwitch: 105_721.95,
+    cost: 646.4,
+    taxAtSwitch: 1_649.27,
+    /** (b): a track switch costs nothing (TXK-04). */
+    providentCost: 0,
+  },
+  s44: {
+    oneOrder: {
+      cAverage: { cost: 1_023.22, year1: 187.19, fees1: 228.65, trade: 191.6, custody: 0, fixed: 830.99 },
+      cList: { cost: 1_422.01, year1: 272.38, fees1: 312.09, trade: 590.39, custody: 0, fixed: 830.9 },
+      bAverage: { cost: 2_199.41, year1: 227.65, fees1: 255.77, trade: 514.4, custody: 1_678.27, fixed: 0 },
+      aAverage: { cost: 2_667.9, year1: 264.44, fees1: 299.66, trade: 566.55, custody: 2_092.02, fixed: 0 },
+      /** S45: bank A with an entered 0.1% min 10. */
+      aEntered: { cost: 2_828.84, year1: 284.65, fees1: 318.78, trade: 727.49, custody: 2_090.08, fixed: 0 },
+      bList: { cost: 3_803.34, year1: 579.41, fees1: 600.06, trade: 2_118.34, custody: 1_659.04, fixed: 0 },
+      aList: { cost: 3_990.32, year1: 558.28, fees1: 587.49, trade: 1_888.97, custody: 2_071.91, fixed: 0 },
+    } satisfies Record<string, S44Row>,
+    tenOrders: {
+      cAverage: { cost: 1_023.22, year1: 187.19, fees1: 228.65, trade: 191.6, custody: 0, fixed: 830.99 },
+      bAverage: { cost: 2_199.41, year1: 227.65, fees1: 255.77, trade: 514.4, custody: 1_678.27, fixed: 0 },
+      aAverage: { cost: 2_667.9, year1: 264.44, fees1: 299.66, trade: 566.55, custody: 2_092.02, fixed: 0 },
+      cList: { cost: 5_666.73, year1: 1_154.33, fees1: 1_175.38, trade: 4_835.12, custody: 0, fixed: 830.9 },
+      aEntered: { cost: 8_056.19, year1: 1_383.75, fees1: 1_393.56, trade: 5_954.84, custody: 2_012.6, fixed: 0 },
+      aList: { cost: 17_032.17, year1: 3_300.51, fees1: 3_268.92, trade: 14_930.82, custody: 1_878.62, fixed: 0 },
+      bList: { cost: 19_508.61, year1: 3_874.36, fees1: 3_822.86, trade: 17_823.61, custody: 1_474.06, fixed: 0 },
+    } satisfies Record<string, S44Row>,
+    /** The two cheapest at each level, the gap between their costs, the deciding fee type's gap by type (second minus top), and the tie measure in percent. */
+    deciding: {
+      oneOrderList: { costGap: 2_381.34, trade: 1_527.95, custody: 1_659.04, fixed: -830.9, tiePct: 1.76 },
+      oneOrderAverage: { costGap: 1_176.19, trade: 322.8, custody: 1_678.27, fixed: -830.99, tiePct: 0.87 },
+      tenOrdersList: { costGap: 11_365.43, trade: 10_095.7, custody: 1_878.62, fixed: -830.9, tiePct: 8.7 },
+      tenOrdersAverage: { costGap: 1_176.19, trade: 322.8, custody: 1_678.27, fixed: -830.99, tiePct: 0.87 },
+    },
+  },
+};
+
+// Release 5 scenarios (S48, S49), copied from the "Independent check" lines in scenarios.md.
+// r5.test.ts checks each against its scenario text.
+export const r5Expected = {
+  s48: {
+    /** TXS-09 rate, percent: saved and test copy. */
+    rateBefore: 25,
+    rateAfter: 30,
+    brokerageRealBefore: 572_640.51,
+    brokerageRealAfter: 566_430.72,
+    brokerageNominalBefore: 938_338.16,
+    brokerageNominalAfter: 928_162.69,
+    /** Kupat gemel lehashkaa, unchanged: its exit tax comes from TXK-07. */
+    kglReal: 630_640.9,
+    /** Gap between the top two after the change, in percent, printed "10.18%". */
+    gapPct: 10.18,
+  },
+  s49: {
+    cashReal: 534_012.31,
+    bondsReal: 495_867.6,
+    /** Relative gap between cash and bonds, in percent, printed "7.14%". */
+    gapPct: 7.14,
+    /** Worst falls and the largest fall accepted, percent. */
+    worstFall: { bonds: 10, equity: 40 },
+    accepted: 30,
+  },
+};

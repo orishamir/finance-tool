@@ -19,7 +19,7 @@ export interface FieldProps {
   value: number | null;
   isEntered: boolean;
   /** Returns an error message for a parsed number, or null. */
-  validate: (n: number) => string | null;
+  validate: (n: number) => ReactNode | null;
   onCommit: (n: number) => void;
   onReset: () => void;
   hint?: ReactNode;
@@ -33,7 +33,7 @@ export interface FieldProps {
   inputMode?: "decimal" | "numeric";
   autoFocus?: boolean;
   /** An error that comes from another field's value (for example "kept available" above "amount now"); shown when the field has no error of its own. */
-  externalError?: string | null;
+  externalError?: ReactNode | null;
 }
 
 export function NumberField(props: FieldProps) {
@@ -41,7 +41,7 @@ export function NumberField(props: FieldProps) {
 
   const ids = useId();
   const [text, setText] = useState(value === null ? "" : formatTyped(value));
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ReactNode | null>(null);
   const [focused, setFocused] = useState(false);
   const timer = useRef<number | null>(null);
   const pending = useRef<(() => void) | null>(null);
@@ -93,7 +93,7 @@ export function NumberField(props: FieldProps) {
     if (!err) later(() => onCommit(n));
   };
   const box = (
-    <div className={cx("field-box", compact && "field-box-compact", isEntered && "field-box-entered", shownError && "field-box-error", disabled && "opacity-60")}>
+    <div className={cx("field-box", compact && "field-box-compact", isEntered && "field-box-entered", shownError ? "field-box-error" : false, disabled && "opacity-60")}>
       <input
         id={ids}
         type="text"

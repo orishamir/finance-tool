@@ -1,0 +1,39 @@
+{
+  "id": "SW-28",
+  "title": "Retention by the old bank, and benefits kept during the switch",
+  "title_he": "מעבר בנק: שימור על ידי הבנק המקורי ושמירת הטבות",
+  "text_he": "פנייה של הבנק המקורי ללקוח שביקש לעבור, כדי לנסות לשמר אותו, תיעשה בלי להפעיל על הלקוח לחצים לקבלת החלטה, והבנק חייב להבהיר כבר בתחילת הפנייה שמטרתה היא לנסות לשמרו כלקוח. הבנק המקורי אינו רשאי לבטל מוקדם הטבות והנחות של הלקוח רק משום שביקש לעבור; בלי מועד סיום מוסכם, הוא שומר אותן לתקופת מינימום של חודשים מהגשת הבקשה או עד ההעברה בפועל, המוקדם מביניהם. בנפרד, הטבה בנקאית אינה מסתיימת בלי הודעה מוקדמת של כמה שבועות.",
+  "figure_names_he": {
+    "benefits_kept_min_months": "חודשי מינימום לשמירת הטבות אחרי בקשת מעבר"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "transfer-switch-process",
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "benefits_kept_min_months": {
+      "value": 3,
+      "unit": "months",
+      "source": {
+        "url": "https://boi.org.il/media/ahflwvpw/448_2.pdf",
+        "title": "BoI directive 448 \"העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון\", version 2 (8/21), ss.7, 9",
+        "publisher": "Bank of Israel (Banking Supervision)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "SW-28"
+      ],
+      "state": "sourced",
+      "notes": "Without an agreed end date, the originating bank keeps the customer's benefits and discounts for at least 3 months from the request, or until the activity actually moves, whichever is earlier (directive 448 s.7)."
+    }
+  },
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-22"
+}

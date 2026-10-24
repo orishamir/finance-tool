@@ -1,0 +1,40 @@
+{
+  "id": "CS-26",
+  "title": "The default when no choice is made, as National Insurance states it today",
+  "title_he": "ברירת המחדל כשלא נבחר דבר, כפי שהביטוח הלאומי מציג אותה היום",
+  "text_he": "לפי דפי הביטוח הלאומי, הורים יכולים לבחור היכן ינוהל החיסכון בתוך שישה חודשים מהלידה. אם לא בחרו, החיסכון מנוהל בקופת הגמל שנבחרה לילד שנולד לפני כן, ואם לילד הקודם נבחר בנק, בקופת גמל במסלול בסיכון מוגבר. אם לא בוצעה בחירה לילד הקודם או שמדובר בילד הראשון, הכסף מופקד בקופת גמל להשקעה במסלול סיכון מוגבר. בתוך קופה שההורה בחר בלי לבחור מסלול, חוזר רשות שוק ההון קובע שמסלול הסיכון המועט הוא ברירת המחדל. הדפים אינם אומרים איזה מנהל מקבל את כספי ברירת המחדל של ילד ראשון, ולא נבדק אם שירות המידע האישי מציג להורה אם המסלול נבחר או הוקצה.",
+  "strength": "primary",
+  "dimensions": [
+    "default-allocation",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-31",
+  "figure_names_he": {
+    "choice_window_months": "חודשים מהלידה שבהם בוחרים היכן ינוהל החיסכון"
+  },
+  "figures": {
+    "choice_window_months": {
+      "value": 6,
+      "unit": "months",
+      "source": {
+        "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/nolad.aspx",
+        "title": "NII, פתיחת תכנית חיסכון לילד שנולד",
+        "publisher": "National Insurance Institute (gov)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "CS-26"
+      ],
+      "state": "sourced",
+      "notes": "The parents can choose where the savings are managed within 6 months of the birth; without a choice the default allocation applies."
+    }
+  },
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-23"
+}

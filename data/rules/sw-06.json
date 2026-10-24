@@ -1,0 +1,81 @@
+{
+  "id": "SW-06",
+  "title": "Step 3: the money moves within 10 business days, directly, in cash, with no transfer fee",
+  "title_he": "שלב שלישי: הכסף עובר במזומן, ישירות, בלי עמלה",
+  "text_he": "הקופה המעבירה מעבירה את הכסף בתוך מספר ימי העסקים שהתקנות קובעות מבקשה שלמה וחתומה, אלא אם הבקשה בוטלה, והממונה רשאי להתיר הארכה במקרים מיוחדים. הכסף עובר ישירות בין הגופים המנהלים ולא דרך העמית, ובמזומן, אלא אם הגופים הסכימו אחרת; קופה שמאחרת מפצה את העמית מדמי הניהול שלה, ושולחת לקופה המקבלת את היתרה והתשואות היומיות כדי שאפשר יהיה לתבוע את הפרש התשואה. אין עמלת העברה; מה שכן יכול לעלות הוא סיום מוקדם של הנחה, ובקופה בניהול אישי ההעברה יכולה להיות בעין. הפניקס מציינת שניוד בין גופים מתבצע באותו פרק זמן מהמועד הקובע; התקנות נקראו באתר שמעתיק אותן והחוזר מעותק אצל צד שלישי.",
+  "figure_names_he": {
+    "transfer_business_days": "ימי עסקים להעברת הכסף",
+    "commissioner_extension_business_days": "ימי עסקים נוספים שהממונה רשאי להתיר",
+    "late_transfer_data_business_days": "ימי עסקים למסירת נתוני התשואה בהעברה מאוחרת"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "transfer-switch-process",
+    "fee-exit"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "transfer_business_days": {
+      "value": 10,
+      "unit": "business_days",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008, reg. 5(א)",
+        "publisher": "Minister of Finance (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "SW-06"
+      ],
+      "state": "sourced",
+      "notes": "The transferring fund transfers within ten business days of a complete, signed request unless cancelled (reg. 5(א)). Phoenix states the same count from the determining date (institution)."
+    },
+    "commissioner_extension_business_days": {
+      "value": 20,
+      "unit": "business_days",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008, reg. 5(א)",
+        "publisher": "Minister of Finance (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "SW-06"
+      ],
+      "state": "sourced",
+      "notes": "The Commissioner may allow up to twenty more business days in special cases (reg. 5(א))."
+    },
+    "late_transfer_data_business_days": {
+      "value": 5,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.analyst.co.il/media/dtnkdiyk/%D7%97%D7%95%D7%96%D7%A8-%D7%92%D7%95%D7%A4%D7%99%D7%9D-%D7%9E%D7%95%D7%A1%D7%93%D7%99%D7%99%D7%9D-2017-9-17-%D7%94%D7%A2%D7%91%D7%A8%D7%AA-%D7%9B%D7%A1%D7%A4%D7%99%D7%9D-%D7%91%D7%99%D7%9F-%D7%A7%D7%95%D7%A4%D7%95%D7%AA-%D7%92%D7%9E%D7%9C.pdf",
+        "title": "CMA circular 2017-9-17 \"העברת כספים בין קופות גמל\", 2.10.2017, consolidated copy, s.5(ה), (ו)",
+        "publisher": "Capital Market, Insurance and Savings Authority (copy hosted by Analyst)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "SW-06"
+      ],
+      "state": "sourced",
+      "notes": "On a late transfer the transferring fund sends the receiving fund the balance and daily returns within five business days so the return difference can be claimed (circular s.5(ה), (ו)); compensation comes out of its management fees (reg. 6)."
+    }
+  },
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-22"
+}

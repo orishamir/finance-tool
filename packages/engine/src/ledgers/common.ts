@@ -127,7 +127,8 @@ export class Tally {
 
   point(month: number, index: number, balance: number) {
     const fees = Object.values(this.fees).reduce((a, b) => a + b, 0);
-    this.series.push({ month, index, paidIn: this.paidIn, balance, fees, taxDuring: this.taxDuring });
+    const providerFees = this.fees.trade + this.fees.custody + this.fees.fx + this.fees.fixed;
+    this.series.push({ month, index, paidIn: this.paidIn, balance, fees, providerFees, taxDuring: this.taxDuring });
   }
 
   result(

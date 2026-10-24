@@ -18,7 +18,9 @@
     "mode": "entered",
     "series": null
   },
-  "variants": [],
+  "variants": [
+    "fund:1148162"
+  ],
   "wrapper_ids": [
     "brokerage-account",
     "ira-hishtalmut",

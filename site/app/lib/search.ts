@@ -16,7 +16,7 @@ export function normalize(text: string): string {
 }
 
 export interface SearchEntry {
-  kind: "product" | "track" | "term" | "guide";
+  kind: "product" | "track" | "term" | "guide" | "bank";
   name: string;
   line: string;
   href: string;

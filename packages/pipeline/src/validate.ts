@@ -10,7 +10,9 @@ import {
   dimensionRecord,
   exposureRecord,
   feesSnapshot,
+  fundListFile,
   fundRecord,
+  type FundListFile,
   parameterRecord,
   ruleRecord,
   seriesRecord,
@@ -33,6 +35,7 @@ const collections: Record<string, z.ZodType> = {
   "instruments/exposures": exposureRecord,
   fees: feesSnapshot,
   funds: fundRecord,
+  "fund-lists": fundListFile,
   "terms/deposits": depositTerms,
   terms: termRecord,
   dimensions: dimensionRecord,
@@ -110,6 +113,9 @@ export function validateData(ctx: ValidationContext): Problem[] {
     if (collection === "series" && result.success) {
       for (const message of checkSeries(parsed.value as SeriesRecord)) report(file, message);
     }
+    if (collection === "fund-lists" && result.success) {
+      for (const message of checkFundList(parsed.value as FundListFile, parts[parts.length - 1]!)) report(file, message);
+    }
     if (collection === "catalog" && result.success && cmaFundIds) {
       const maps = (parsed.value as { maps_to: { cma_fund_id: number | null; track_ids: number[] } }).maps_to;
       // `cma_fund_id` is the fund (קופה) number from the institution's documents and transfer_bank (CAT-09); the
@@ -130,6 +136,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
     }
   }
   checkInstrumentsMap(files, ctx.dataDir, ruleDimensions, report);
+  checkHoldingParameter(files, ctx.dataDir, report);
   return problems;
 }
 
@@ -149,6 +156,25 @@ export function checkSeries(record: SeriesRecord): string[] {
     const [a, b] = [order(prev), order(o)];
     if (a === b) out.push(`observations[${i}]: duplicate of the previous one (date ${o.date}${o.key ? `, key ${o.key}` : ""})`);
     else if (a > b) out.push(`observations[${i}]: not sorted by date (${o.date} after ${prev.date})`);
+  });
+  return out;
+}
+
+/**
+ * data-schema §3.14 and docs/architecture.md 3.3: the terms gate (a list whose terms are not `confirmed` is not
+ * shipped), the file name `<list>@<snapshot>.json` matches the content, and a fund number appears once.
+ * Fund lists are not fund records: exposure `variants` resolve against data/funds/ only (readFundIds).
+ */
+export function checkFundList(file: FundListFile, fileName: string): string[] {
+  const out: string[] = [];
+  if (file.terms_of_use.status !== "confirmed") {
+    out.push(`terms gate: not shipped (terms_of_use.status is "${file.terms_of_use.status}", it must be "confirmed"; architecture 3.3)`);
+  }
+  if (fileName !== `${file.list}@${file.snapshot}.json`) out.push(`file name must be ${file.list}@${file.snapshot}.json (list and snapshot)`);
+  const seen = new Set<string>();
+  file.funds.forEach((f, i) => {
+    if (seen.has(f.fund_number)) out.push(`funds[${i}]: fund_number ${f.fund_number} appears twice`);
+    seen.add(f.fund_number);
   });
   return out;
 }
@@ -193,6 +219,30 @@ function checkInstrumentsMap(files: string[], dataDir: string, ruleIds: Map<stri
       check("series_rule", ruleIds.has(spec?.series_rule as string), "has no rule record under data/rules/");
       const track = spec?.track;
       if (track !== undefined && !(typeof track === "number" && cmaFundIds?.has(track))) report(file, `${at}.track: ${String(track)} is not a fund_id in the latest data/cma/ period`);
+    }
+  }
+}
+
+/**
+ * P-08 (exposure holding wrapper, release 5): each `holding.<exposure id>` must name an exposure record under
+ * data/instruments/exposures/, and its `wrapper_id` must be one of that record's `wrapper_ids` (the engine refuses
+ * any other, "wrapper-cannot-hold", so the default may never be one).
+ */
+function checkHoldingParameter(files: string[], dataDir: string, report: (file: string, message: string) => void) {
+  const exposures = new Map<string, string[]>();
+  for (const file of files) {
+    if (!relative(dataDir, file).split(/[\\/]/).join("/").startsWith("instruments/exposures/") || !file.endsWith(".json")) continue;
+    const v = parseJson(readFileSync(file, "utf8")).value as { id?: unknown; wrapper_ids?: unknown } | undefined;
+    if (typeof v?.id === "string") exposures.set(v.id, Array.isArray(v.wrapper_ids) ? v.wrapper_ids.filter((w): w is string => typeof w === "string") : []);
+  }
+  for (const file of files) {
+    if (!/^parameters[\\/]/.test(relative(dataDir, file)) || !file.endsWith(".json")) continue;
+    const rec = parseJson(readFileSync(file, "utf8")).value as { method_id?: unknown; holding?: unknown } | undefined;
+    if (rec?.method_id !== "P-08" || typeof rec.holding !== "object" || rec.holding === null) continue;
+    for (const [id, row] of Object.entries(rec.holding as Record<string, { wrapper_id?: { value?: unknown } }>)) {
+      const wrapper = row?.wrapper_id?.value;
+      if (!exposures.has(id)) report(file, `holding.${id}: no exposure record "${id}" under data/instruments/exposures/`);
+      else if (typeof wrapper !== "string" || !exposures.get(id)!.includes(wrapper)) report(file, `holding.${id}.wrapper_id: "${String(wrapper)}" is not one of the exposure record's wrapper_ids`);
     }
   }
 }

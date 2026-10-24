@@ -1,0 +1,32 @@
+{
+  "id": "yahav",
+  "provider": {
+    "name_he": "בנק יהב לעובדי המדינה בע\"מ",
+    "class": "bank",
+    "regulator": "BoI",
+    "tase_member": true,
+    "protection_rule_ids": [
+      "BRK-10",
+      "BRK-12",
+      "BRK-13"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.bank-yahav.co.il/footer/footer-menu/bank-tariff/",
+    "title": "תעריפון הבנק - בנק יהב (עמוד התעריפון; לא נמצא קובץ חלק 4 - ניירות ערך)",
+    "published": null,
+    "format": "html"
+  },
+  "snapshot": "2026-10-23",
+  "missing": true,
+  "missing_reason": "Tariff not obtained (2026-10-23, curl with a browser User-Agent, no browser available): https://www.bank-yahav.co.il/footer/footer-menu/bank-tariff/ returns 200 but the page body is a Vue application shell whose only content is the site navigation; no tariff text, table or PDF link is in the HTML. The site's sitemap.xml lists no tariff file, the fees page /account-management/fees-explained/ covers only current-account fee tracks, and the page's PDF links (interest boards, service charter, FX board) are not the tariff. Needs a person in a browser to open the tariff page and save part 4 (ניירות ערך) and part 5 (מטבע חוץ).",
+  "lines": [],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "notice_rule_ids": [
+    "BRK-21",
+    "BRK-20"
+  ]
+}

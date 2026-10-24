@@ -1,0 +1,32 @@
+{
+  "id": "jerusalem",
+  "provider": {
+    "name_he": "בנק ירושלים בע\"מ",
+    "class": "bank",
+    "regulator": "BoI",
+    "tase_member": true,
+    "protection_rule_ids": [
+      "BRK-10",
+      "BRK-12",
+      "BRK-13"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.bankjerusalem.co.il/others/commissions-full",
+    "title": "תעריפון עמלות מלא ליחידים - בנק ירושלים (עמוד התעריפון המלא; חסום לסקריפטים)",
+    "published": null,
+    "format": "html"
+  },
+  "snapshot": "2026-10-23",
+  "missing": true,
+  "missing_reason": "Tariff not obtained (2026-10-23, curl with a browser User-Agent, no browser available): the tariff index https://www.bankjerusalem.co.il/others/commissions-rates loads and links to /others/commissions-full and /others/commission-yechidim, but both tariff pages return a Radware Bot Manager CAPTCHA page ('רק צעד קטן לוודא שאינך רובוט') instead of the tariff. Not circumvented. Needs a person in a browser (data-landscape 5.1 lists the host as Radware-protected).",
+  "lines": [],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "notice_rule_ids": [
+    "BRK-21",
+    "BRK-20"
+  ]
+}

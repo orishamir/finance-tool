@@ -20,7 +20,7 @@ These apply to the whole knowledge base, not to one topic.
    (Reshumot on fs.knesset.gov.il, which opens, or the full Nevo text). Several files say a mirror may
    be out of date: the IRA regulations, the 1964 provident rules, the withholding regulations, and the
    mutual-fund regulations.
-2. **Some sources can't be opened by a script.** A browser pass through your Chrome on 2026-10-22 got past most of these (§12): TASE, the ISA register, hly.gov.il, gov.il service pages, Bank of Israel pages, Bank of Jerusalem and One Zero all opened. Still not done from this list: Kol Zchut (opens, not yet used), S&P Maalot, the CMA fslproviders register, circular 7/2003, Accountant General bond terms, and Mercantile's rate table. Discount's rate table opened but was machine-translated. *Status 2026-10-23:* the Gemel-Net and Pensia-Net portals were read in browser pass 4 (CAT-35 to CAT-41, the fee fields confirmed for display); the Bank of Israel's terms of use were read in archived copies (republication not permitted, discovery O14); S&P Dow Jones Indices' pages and TASE's TA-125 page were read in Chrome (ETF-33 to ETF-42). Still not done: Kol Zchut, S&P Maalot, the CMA fslproviders register, circular 7/2003, Accountant General bond terms, Mercantile's rate table. The original list:
+2. **Some sources can't be opened by a script.** A browser pass through your Chrome on 2026-10-22 got past most of these (§12): TASE, the ISA register, hly.gov.il, gov.il service pages, Bank of Israel pages, Bank of Jerusalem and One Zero all opened. Still not done from this list: Kol Zchut (opens, not yet used), S&P Maalot, the CMA fslproviders register, circular 7/2003, Accountant General bond terms, and Mercantile's rate table. Discount's rate table opened but was machine-translated. *Status 2026-10-23:* the Gemel-Net and Pensia-Net portals were read in browser pass 4 (CAT-35 to CAT-41, the fee fields confirmed for display); the Bank of Israel's terms of use were read in archived copies (republication not permitted, discovery O14); S&P Dow Jones Indices' pages and TASE's TA-125 page were read in Chrome (ETF-33 to ETF-42). Still not done: Kol Zchut, S&P Maalot, the CMA fslproviders register, circular 7/2003, Accountant General bond terms, Mercantile's rate table. *Status 2026-10-24 (browser pass 5, release 4):* Bank Yahav's, Bank of Jerusalem's and One Zero's tariffs were read in Chrome (snapshots in `data/fees/*@2026-10-24.json`, BRK-30, BRK-38); Meitav Trade still publishes none (BRK OQ18); Maya's fund list and TASE's foreign-funds list were read and counted but not republished because TASE's August 2026 terms forbid it (CAT-42, CAT-43, ETF-43); TASE's Data Hub and Data Store terms and prices were read (BRK-39, discovery O13); the CMA transfer circular, the clearing-house letters and circulars and directive 448 version 4 were read on gov.il and boi.org.il (SW-41 to SW-44). The original list:
    - **gov.il landing pages (403):** Har HaKesef, CMA public enquiries, Tax Authority forms 161/161d,
      Accountant General bond terms, Tax Authority circular 7/2003. Note that gov.il *BlobFolder* PDFs
      do open.
@@ -40,7 +40,7 @@ These apply to the whole knowledge base, not to one topic.
      since 2026-10-23, because the site lists every track from the data (product.md D17);
    - a payslip from you and from a friend (no official source gives the line labels; KH OQ5, PEN OQ11,
      TXP OQ16);
-   - the annual statements of your own funds (PF OQ5, CS OQ11);
+   - ~~the annual statements of your own funds~~ (PF OQ5, CS OQ11): the uniform formats were read on 2026-10-23 (PF-33 to PF-38, CS-27), so your own statement is now only a check of what a fund prints, not the source of the field names;
    - product names that banking apps show only after login (BPN OQ20).
 
 ---
@@ -51,7 +51,7 @@ The research raised these. None was decided here; product.md was not edited.
 
 | # | Issue | Where it came from | What it changes |
 |---|---|---|---|
-| F1 | **D10 has no policy for institution-strength rules** (a fund's bylaw, prospectus or form). D10 covers primary, secondary and open sources only. | TXA (Amendment 190 conditions TXA-22 to TXA-24); also TXS-12/13 (a money-market fund's tax track comes from its prospectus), KGL lump-sum withholding at 25%, many KH and PEN rules | Whether these rules compute, compute with a label, or block. Narrowed in browser pass 2: TASE's Maya publishes each fund's tax status (TXS-24), so the money-market case no longer rests on prospectuses alone. The rest of F1 stands. |
+| F1 | **Answered 2026-10-24 by D23: institution-strength rules compute, labelled "institution source", and never close a tax question for graduation.** (Original finding:) D10 has no policy for institution-strength rules (a fund's bylaw, prospectus or form). D10 covers primary, secondary and open sources only. | TXA (Amendment 190 conditions TXA-22 to TXA-24); also TXS-12/13 (a money-market fund's tax track comes from its prospectus), KGL lump-sum withholding at 25%, many KH and PEN rules | Whether these rules compute, compute with a label, or block. Narrowed in browser pass 2: TASE's Maya publishes each fund's tax status (TXS-24), so the money-market case no longer rests on prospectuses alone. The rest of F1 stands. |
 | F2 | **D4 is wrong for non-bank brokers** (confirmed in the browser pass, §12). TASE's s.45טז calculator shows average fees actually charged by every member, banks and non-bank brokers alike, by portfolio-size band and security type. | BRK-33 | D4's "no average exists for non-bank brokers" should be corrected, and 3.4's provider table can show this reference for them. |
 | F3 | **The roadmap R2 risk is partly wrong.** The employee's s.45A/47 ceilings are CPI-linked and frozen for 2025–2027; they are not tied to the average wage. The employer, severance, 16% beneficiary-member and self-employed ceilings *are* tied to the average wage. | TXP (see its summary) | The wording of the roadmap R2 risk and of tax-landscape §3.1 and §10 item 4. |
 | F4 | **Accumulating foreign funds (tax Q1).** No rule taxes a minority holder on a foreign fund's undistributed income: none in the Ordinance (checked section by section), not CFC s.75B, and nothing like the US PFIC rule (Q19). But no Tax Authority statement confirms tax is due only on sale either. | TXF OQ1, OQ2 | Under D10 this variant stays blocked in 3.4 unless you accept the reading or a source appears. |
@@ -81,21 +81,21 @@ The guide page has a fixed structure. These are the parts not yet sourced for ea
 | **Child savings** | <ul><li>Tax rate, base and withholding on gains at withdrawal (TXK OQ1, Q4 partly closed)</li><li>The legal basis of the age-18 grant: the NII site says it exists, but s.74ג(א) is marked repealed (CS OQ5)</li><li>How today's default fund is picked (CS OQ4)</li><li>The fields of the annual statement (CS OQ11)</li><li>Clal's 4 tracks, which do not appear in NII's list (CS OQ2)</li><li>~~Current bank rates for the bank route~~ closed 2026-10-23: the Ministry of Finance file is current and daily (CS-23 corrected; `data/series/mof-child-savings-rates.json`)</li></ul> | CS, TXK |
 | **IRA** | <ul><li>The official consolidated regulations, and the status of the 2025 draft amendment (IRA OQ1, OQ2)</li><li>The fee cap after the 2017 amendment (IRA OQ3; PF reads reg. 4 at 2%)</li><li>Protection if the manager or broker fails (IRA OQ11)</li><li>Whether active trading inside an IRA can become business income (TXK OQ8)</li></ul> | IRA, TXK |
 | **Who offers it** (all pages) | The ISA register and the full TASE member list were read in the browser pass (§12); the CMA licensee register is still unread (REG OQ3). The bank list is read: data.gov.il dataset 375, 17 entries. | REG |
-| **Terms matched to statements** (`data/terms/`) | <ul><li>Payslip line labels have no official source</li><li>The uniform annual and quarterly statement format was not reached (PF OQ5)</li></ul> | PF, KH, PEN, TXP |
+| **Terms matched to statements** (`data/terms/`) | <ul><li>Payslip line labels have no official source</li><li>~~The uniform annual and quarterly statement format was not reached (PF OQ5)~~ closed 2026-10-23: circular 2020-9-22 and the gov.il draft 2025-26 read in full; field labels in PF-34 to PF-38, the child-savings statement in CS-27, the bank annual report (directive 425) in BANK-32</li></ul> | PF, KH, PEN, TXP, BANK, CS |
 | **Illustrative timeline visual** | Out of scope for the knowledge base: needs `docs/method.md` and `tests/cases/`. | — |
 
-**Tier-2 "not covered yet" page.** Each tier-2 file ends with a graduation status:
+**Tier-2 "not covered yet" page.** Each tier-2 file ends with a graduation status. *2026-10-24 (release-5 tier-2 pass):* ranking, blockers, browser to-dos and two draft records in `scratchpad/reports/r5-tier2.md`; eight rules added (INS-25, INS-26, TXA-27, TXA-28, TX2-17 to TX2-20).
 
 | Instrument | Blocked by |
 |---|---|
-| Savings policies | Policy gains taxed at 25% real or 15% nominal (TXA OQ1); whether moving to another insurer is a tax event (TXA OQ3); no regulatory fee cap found (INS OQ2) |
-| Executive insurance | How growth inside the policy is taxed (TXA OQ6); the meaning of the issue-period cohorts; guaranteed annuity factors (INS OQ9, OQ10) |
-| Amendment 190 | Legal source of the age ceilings (TXA OQ9); the commutation conditions (TXA OQ10, OQ11); F1 |
-| FX and structured deposits | Classifying a structured payout for tax (TX2 OQ5); the legal basis of 25% withholding on FX deposits (TX2 OQ2); who supervises non-bank FX providers (FXD OQ8) |
-| Corporate bonds | The ISA registers of rating agencies and trustees (CORP OQ1, OQ2); default-loss timing (TX2 OQ6) |
-| Managed and robo portfolios | Named licensees (MGD OQ1); the ISA directives seen only in secondary sources (MGD OQ2) |
-| REITs | The current REIT list, which is secondary only (RG OQ4) |
-| Gold via funds | Gold fund names and fees, secondary only (RG-16, RG OQ8); tax on foreign gold ETCs and US trusts (TX2 OQ10) |
+| Savings policies | Policy gains taxed at 25% real or 15% nominal (TXA OQ1; *2026-10-24:* narrowed, two insurers state 25% real, TXA-28, institution, so it waits on F1 or a Tax Authority text); whether moving to another insurer is a tax event (TXA OQ3); ~~no regulatory fee cap found (INS OQ2)~~ closed 2026-10-24: 1% a year, 2% with approval (INS-25); deposit fees' basis open (INS OQ16); the legal definition of a profit-sharing policy (INS OQ1, *2026-10-24:* narrowed: the chain ends in the 1998 report regulations, marked repealed, so the current home of the definition is a browser to-do) |
+| Executive insurance | How growth inside the policy is taxed (TXA OQ6); the meaning of the issue-period cohorts; guaranteed annuity factors (INS OQ9, OQ10). *2026-10-24:* unchanged; last in the graduation ranking |
+| Amendment 190 | Legal source of the age ceilings (TXA OQ9; a secondary source names a Tax Authority ruling, browser to-do); the commutation conditions (TXA OQ10 narrowed 2026-10-24: payslips are the circular's own instruction, TXA-27; OQ11); F1 |
+| FX and structured deposits | Classifying a structured payout for tax (TX2 OQ5; *2026-10-24:* derived per payout type from the partial-linkage regulations, TX2-18); the legal basis of 25% withholding on FX deposits (TX2 OQ2, wording confirmed, still open); a falling currency (TX2 OQ1); who supervises non-bank FX providers (FXD OQ8). The olim orders are read (TX2-19; TX2 OQ3 closed 2026-10-24 except a check of the 2026 wording). FX deposits rank second for graduation; draft record in the scratch report |
+| Corporate bonds | The ISA registers of rating agencies and trustees (CORP OQ1, OQ2; ISA site is JavaScript, browser to-do); default-loss timing (TX2 OQ6). *2026-10-24:* acceleration quorum read verbatim (CORP-07); third in the graduation ranking, the normal held-to-maturity case computes as a government bond |
+| Managed and robo portfolios | ~~Named licensees (MGD OQ1)~~ closed by MGD-23; the ISA directives seen only in secondary sources (MGD OQ2); ~~VAT on fees (MGD OQ15)~~ closed 2026-10-24 (TX2-17; the same question as TX2 OQ12, closed with it). *2026-10-24:* closest to graduation; the tax side computes (TX2-15, TX2-17); what remains is a retail-offer pass over the licensees, an entered or ISA-average fee (D4) and two method formulas; draft record in the scratch report |
+| REITs | The current REIT list, which is secondary only (RG OQ4); the per-distribution source split (RG OQ5); NII on pass-through income (TX2 OQ8). *2026-10-24:* withholding practice recorded from Reit 1 (TX2-20, institution), which narrows TX2 OQ7 (the ministerial rate) but does not close it; fourth in the ranking |
+| Gold via funds | Gold fund names and fees, secondary only (RG-16, RG OQ8; the managers' lists load by script, browser to-do on Maya); tax on foreign gold ETCs and US trusts (TX2 OQ10). *2026-10-24:* fifth in the ranking; an exposure plus fund records, not a wrapper |
 
 ---
 
@@ -123,11 +123,13 @@ The guide page has a fixed structure. These are the parts not yet sourced for ea
   - ~~which periods the fee fields average, and their units~~ closed 2026-10-23 (CAT-35, CAT-36, CAT-37: percent, latest completed calendar year, actually charged after discounts; discovery O11 confirmed for display). Still open: the weighting of the average (CAT OQ2, OQ23);
   - the meaning of the risk fields (CAT OQ3);
   - the CMA's official list of standard tracks (CAT OQ9).
-- **Provider tariffs.** BRK lists where each provider publishes its tariff, except Meitav Trade, One Zero and Interactive Israel (BRK OQ18, OQ19). The tariff figures themselves are data-researcher work.
+- **Provider tariffs.** BRK lists where each provider publishes its tariff, except Meitav Trade, One Zero and Interactive Israel (BRK OQ18, OQ19). The tariff figures themselves are data-researcher work. *2026-10-24:* One Zero's full tariff is now located and read (BRK-38); Yahav's and Bank of Jerusalem's securities parts too (BRK-30); Meitav Trade still has no published tariff (OQ18 open). Fund variants: the Maya list and TASE's foreign-funds list hold 2,009 and 40 funds (CAT-42, ETF-43) and are not republished (CAT-43); the site shows counts and links.
 - **Regulator averages.** These exist for:
   - banks (EDGE FEES_DASH);
   - portfolio managers (ISA report, MGD);
-  - provident tracks (CMA).
+  - provident tracks (CMA);
+  - *2026-10-23:* per product class, the CMA annual report for 2025 on gov.il (PF-39: provident 0.53% of assets / 0.08% of deposits, new comprehensive pension 0.15% / 1.54%, life insurance 0.79% / 1.74%; no separate study-fund or gemel lehashkaa class); the ISA's 2025 mutual-fund report on the ISA's own site (MF-55, same figures as MF-18, MF-19); TASE's per-member averages (BRK-33, BRK-37).
+  - *Terms, 2026-10-23:* the ISA site and TASE's terms do not permit republishing their figures without written consent (MF-55, BRK-37), the same position as the Bank of Israel series (product D20); gov.il's terms allow a reasonable quotation with attribution as fair use (PF-39). Which of these to ask for, or to hold as links, is the founder's call.
   
   For non-bank brokers, see F2.
 - **Fund variants.** Tax by domicile is sourced except for accumulating funds (F4). The US estate-tax exposure of US-domiciled funds is sourced (TXF). `data/funds/` itself is data work.
@@ -149,11 +151,11 @@ The guide page has a fixed structure. These are the parts not yet sourced for ea
 
 ## 7. Sections 3.6 holdings review and 3.7 switching playbook (R3, R4)
 
-- **Holdings review.** Track classification (CAT) and transfer rules (PF, SW) are covered. One gap blocks the child-savings check in 3.6: no source shows a parent whether their child's track was chosen by them or assigned by default (CS OQ10).
-- **Switching playbook.** SW has 38 rules and an ordered step list for all 9 wrappers. The CMA transfer circular was read in full, from a third-party host. Still open:
+- **Holdings review.** Track classification (CAT) and transfer rules (PF, SW) are covered. One gap blocks the child-savings check in 3.6: no source shows a parent whether their child's track was chosen by them or assigned by default (CS OQ10; narrowed 2026-10-23: the statement template has no such field, CS-27; NII's personal-information service was not checked, CS-26). *2026-10-23:* "where to find it on the statement" is sourced for provident, study-fund, gemel lehashkaa and pension accounts (PF-34 to PF-38), child savings (CS-27) and bank deposits and securities (BANK-32); consolidation seniority is settled (SW-39: transferred money keeps its payment dates; two study funds merge into one account only when both are withdrawable), pension-to-pension carry-over is sourced and its tax neutrality narrowed but still not stated by an official text (SW-40, SW OQ8).
+- **Switching playbook.** SW has 44 rules and an ordered step list for all 9 wrappers. The CMA transfer circular was read in full, from a third-party host; *2026-10-24:* the CMA's own copy on gov.il is identical (SW-41), the clearing-house channel and the regulator's deferral power are sourced (SW-42), directive 448 version 4 changes disclosure only (SW-43, SW OQ15 closed), and the clearing house's price cap for a saver is sourced (SW-44, SW OQ5 price side closed, PF OQ6 narrowed). Still open:
   - whether any retention rule exists for provident products (SW OQ3);
   - whether a quoted fee binds the institution (SW OQ4);
-  - the clearing house's price for a direct request (SW OQ5);
+  - ~~the clearing house's price for a direct request (SW OQ5)~~ closed 2026-10-24 (SW-44);
   - who must notify the employer after a transfer (SW OQ6);
   - whether the transfer circular governs kupat gemel lehashkaa (SW OQ2);
   - moving securities to or from a foreign broker (SW OQ12);
@@ -283,3 +285,22 @@ topic files with links and dates, and the open questions they answer are marked 
 **Not settled:** how the published average is weighted and which report feeds it (CAT OQ2, OQ23); 13 tracks opened in 2024 without a value (OQ22); whether portal yields are after direct expenses (CAT-41). Gemel-Net's "הסברים" pages are images of an academic paper on risk measures, not read in full (OQ3).
 
 The Maya export file was downloaded once through the browser, into your Downloads folder (`mutual-funds.csv`). Later files were fetched in WSL instead.
+
+### Browser pass 5 (release 4 research), 2026-10-24
+
+| Found | Rule | Closes |
+|---|---|---|
+| Bank Yahav's full tariff 2.2026 (PDF and XLSX, 'נכון ליום: 01/10/2026') and its 16/09/2026 change notice; snapshot `yahav@2026-10-24` (14 lines) | BRK-30 | data gap O12 (Yahav) |
+| Bank of Jerusalem's individuals tariff (PDF and XLSX per part; part 4 printed 'בתוקף מתאריך : 06/02/20217', part 5 20/06/2021); snapshot `jerusalem@2026-10-24` (13 lines) | BRK-30 | O12 (Jerusalem) |
+| One Zero's full tariff (26.7.2026): TA-125 shares, Israeli funds and US securities only; zero custody; one rate for clerk and internet; plan ONE 49 NIS a month with a 66% trade benefit; snapshot `one-zero@2026-10-24` (11 lines) | BRK-38 | O12 (One Zero), BRK OQ19 (figures) |
+| Meitav Trade: still no tariff; the four-tracks page gives words only | BRK-30, OQ18 | — |
+| Maya list: 2,009 funds; counts by top classification (two heading trees, 1,163 active and 846 tracking/ETF) and tax status (1,986 / 21 / 2); the by-hand export path | CAT-42 | CAT-33, CAT-34 refresh |
+| TASE terms (August 2026): no republishing without written consent; limited quotation with a link only on www.tase.co.il; no databases | CAT-43 | product dependency 7 (fund lists: not shipped) |
+| TASE foreign-funds list: 40 funds, 29 equity, 11 bond, as of 23/10/2026 | ETF-43 | ETF-32 refresh |
+| TASE Data Hub / Data Store: licence by use (internal or distribution), mutual-fund products priced 797.5 to 2,016 NIS, free products only at checkout, site terms apply | BRK-39 | discovery O13 |
+| The CMA's own copy of circular 2017-9-17 (gov.il) is the text read; deadlines verbatim; later CMA circulars cite 2016-9-11 | SW-41 | SW OQ1 (narrowed) |
+| Transfer information passes through the clearing house since 23.2.2020 (ממשק ניוד); the Commissioner may defer the ten-day deadline by up to twenty business days | SW-42 | PF OQ6 (channel) |
+| Directive 448 version 4 (11/25, circular 2833): disclosure sections 16א and 19א only; start by 1.3.2026 | SW-43 | SW OQ15 |
+| Clearing-house payment circular 2026-10-6: a saver's one-time all-institutions request capped at NIS 11 from 1.1.2027 | SW-44 | SW OQ5 (price), PF OQ6 (narrowed) |
+
+**Not done:** the ISA and CMA licensee registers (REG OQ3, task item 4); the clearing house's current (2022) price list and the operator's own price page (rendered no text); the CMA's regulation collector for amendments to the transfer circular (OQ1); the 2026-9-3 circular's deferred dates. One Zero's PDF was fetched inside the Chrome tab (the host returns 403 to curl) and its one-glyph-per-letter text layer re-joined by hand; the Maya counts came from the list page's own filter requests, one heading at a time.

@@ -39,6 +39,7 @@ Executive insurance is a life-insurance plan approved as a provident fund (קו�
 - Source: [Management Fees Regulations 2012, reg. 2(ב), 8 (Wikisource)](https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)) · checked 2026-10-22 · primary (mirror); [Clal 1418](https://www.clalbit.co.il/media/yy5djhg3/%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%A4%D7%99%D7%A0%D7%A0%D7%A1%D7%99-%D7%9C%D7%A2%D7%AA%D7%99%D7%93-1418.pdf), s. 4 · checked 2026-10-22 · institution; [Phoenix, נספח 5552 תנאים כלליים לביטוח חיים – תכנית פרט-מסלול לחיים, November 2024](https://digital-content.fnx.co.il/sites/docs/polarchive/LifeInsurance/nispach5552_1124.pdf), s. 9 · checked 2026-10-22 · institution; [Phoenix Invest FAQ](https://www.fnx.co.il/savings/savings-routes/faq/) · checked 2026-10-22 · institution
 - Dimensions: `fee-management-balance`, `fee-deposit`, `fee-change-over-time`
 - Likely to change: yes. Plan editions change, and a regulatory cap could be introduced.
+- *2026-10-24 R5 pass:* a regulatory cap does exist, in the Insurance Contract Terms Regulations rather than the 2012 provident fee regulations: reg. 6א caps the balance fee of a profit-sharing policy that is not an insurance fund at 1/12% a month (1% a year) of the revalued portfolio, 2% a year with the Commissioner's approval, and above that only with approval and only as a percentage of value (INS-25). Clal's 1.5% and Phoenix's 1.7% therefore rest on an (א1) approval. Deposit fees are not addressed by reg. 6א(א) and (א1) (open question 16). Open question 2 is closed at primary (mirror) strength.
 
 ### INS-04 The lost-contact fee cap of 0.3% applies to profit-sharing life policies
 - Rule: Regulation 8 caps the fee on the balance of a lost-contact or deceased member, where the institution did not complete the required search steps, at 0.3% a year or the rate last charged, whichever is lower (PF-08). For regulation 8 only, "קופת גמל" is defined "לרבות ביטוח חיים משתתף ברווחים", "עמית" "לרבות מבוטח", and "ביטוח חיים משתתף ברווחים" is "כהגדרתו בתקנות חוזי ביטוח, למעט קופת ביטוח" (reg. 8(ו)).
@@ -254,6 +255,22 @@ Executive insurance is a life-insurance plan approved as a provident fund (קו�
 - Dimensions: `regulator`, `fee-change-over-time`, `liquidity-lockup`
 - Likely to change: yes, by definition. Re-check at the next plan (around December 2026).
 
+### INS-25 Regulatory cap on savings-policy management fees: 1% a year of the portfolio, 2% with the Commissioner's approval (reg. 6א)
+- Rule: Regulation 6א(א) of the Insurance Contract Terms Regulations: "מבטח המנפיק פוליסות ביטוח חיים משתתף ברווחים שאינה קופת ביטוח (בתקנה זו – פוליסה שאינה קופת ביטוח), רשאי לגבות דמי ניהול בעד ניהול תיק ההשקעות, באחת הדרכים האלה: (1) דמי ניהול קבועים בשיעור שלא יעלה על 1/12% לחודש מהשווי המשוערך של תיק ההשקעות; (2) דמי ניהול קבועים בשיעור שלא יעלה על 1/365% ליום מהשווי המשוערך של תיק ההשקעות". Reg. 6א(א1): "המפקח רשאי לאשר דמי ניהול בשיעור העולה על הקבוע בתקנת משנה (א), ובלבד שלא יעלה על שיעור של 2/12% לחודש או 2/365% ליום". Reg. 6א(א2): with the Commissioner's approval a higher rate may be charged, "ובלבד שלא יגבה דמי ניהול מכל סוג שהוא אלא כשיעור מהשווי המשוערך של תיק ההשקעות". Reg. 6א(ב): "שיעור דמי הניהול בפוליסת ביטוח חיים משתתף ברווחים ייקבע מראש בתנאי הפוליסה". Reg. 6א(ג): the net return that sets the holder's rights is the portfolio return less the management fee.
+- Conditions / exceptions: Applies to a profit-sharing life policy that is not an insurance fund, which is the savings policy of INS-01; insurance funds (executive insurance) are under the 2012 provident fee regulations (INS-15). The cap is on the balance fee. Deposit fees (Clal 6% of regular deposits, INS-03) are not mentioned in (א) or (א1); under (א2) no fee of any other type may be charged. On which provision the insurers' deposit fees rest is open question 16. The regulation defines "ביטוח חיים משתתף ברווחים" by reference (reg. 1 to the insurer investment regulations, which in turn refer to the 1998 report regulations): "ביטוח חיים שבו זכויות המוטב והמבוטח תלויות בתשואה של השקעות מסוימות שהמבטח עושה באופן מיוחד לענין תכנית שאושרה כביטוח כזה בידי המפקח, או ברווחים אחרים הקשורים לאותה תכנית". The 1998 report regulations are marked repealed (ק"ת תשפ"ג 1990) on the mirror, so the current home of that definition was not read (open question 1, narrowed). The mirror shows amendments to תשע"ב (2012); re-read the official text before encoding (coverage.md §0).
+- Figures: 1/12% a month (1% a year); 1/365% a day; 2/12% a month (2% a year) with approval. Fixed in regulation.
+- Source: [תקנות הפיקוח על שירותים פיננסיים (ביטוח) (תנאים בחוזי ביטוח), התשמ"ב-1981, reg. 1, 6א (Wikisource)](https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(ביטוח)_(תנאים_בחוזי_ביטוח)) · checked 2026-10-24 · primary (mirror); [תקנות הפיקוח על שירותים פיננסיים (ביטוח) (דרכי השקעת ההון והקרנות של מבטח וניהול התחייבויותיו), התשס"א-2001, reg. 1 (Wikisource)](https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(ביטוח)_(דרכי_השקעת_ההון_והקרנות_של_מבטח_וניהול_התחייבויותיו)) · checked 2026-10-24 · primary (mirror); [תקנות הפיקוח על עסקי ביטוח (פרטי דין וחשבון), התשנ"ח-1998, reg. 1 (Wikisource; marked repealed תשפ"ג)](https://he.wikisource.org/wiki/תקנות_הפיקוח_על_עסקי_ביטוח_(פרטי_דין_וחשבון)) · checked 2026-10-24 · primary (mirror)
+- Dimensions: `fee-management-balance`, `fee-deposit`, `regulator`
+- Likely to change: no, unless the regulations are amended
+
+### INS-26 Annual report to savings-policy holders: within three months of the insurer's year end, with set fields (reg. 6ב)
+- Rule: A life-insurance contract must provide that the insurer "ישלח למבוטחים, מדי שנה, בתוך שלושה חודשים מתום שנת המאזן שלו, דין וחשבון לגבי השנה שנסתיימה" (reg. 6ב(א)), for every plan in the policy in force at year end. It must include (reg. 6ב(ב)): (1) identifying details including "מספר הפוליסה, סכום ביטוח למקרה הביטוח, סוג ההצמדה, ערך פדיון וערך פדיון מיוחד, ערך מסולק וערך מסולק מיוחד, יתרת חסכון, היחס בין מרכיב החסכון בפרמיה לסך כל הפרמיה וסך תשלומי הפרמיה בשנת הדיווח"; (2) the return the insurer earned on the participating portfolio in the year, "תוך ציון נפרד של התשואה הריאלית, התשואה הריאלית בניכוי דמי ניהול" and the four-year average real return before and after fees; (3) the portfolio composition by asset class (government bonds, other bonds, shares and other securities, loans, bank deposits, real estate, other).
+- Conditions / exceptions: The insurer may change the layout of the schedule's table as long as every item is reported (reg. 6ב(ג)). This is the statement a savings-policy holder can be told to look at for the balance ("יתרת חסכון"), the surrender value ("ערך פדיון") and the real return net of fees (3.6 holdings review, `data/terms/`). Whether the CMA's uniform statement circular 2020-9-22 (PF-33 to PF-38) also reaches savings policies was not checked (open question 3).
+- Figures: three months after the insurer's balance-sheet year end; four-year average return.
+- Source: [Insurance Contract Terms Regulations, reg. 6ב and the schedule (Wikisource)](https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(ביטוח)_(תנאים_בחוזי_ביטוח)) · checked 2026-10-24 · primary (mirror)
+- Dimensions: `reporting-obligation`, `fee-management-balance`, `real-vs-nominal`
+- Likely to change: no
+
 ## Tax
 
 All tax treatment of savings policies, executive insurance and Amendment 190 belongs to `tax-insurance-and-amendment-190.md` (TXA). Tax claims seen in institution sources for this file are listed under "Found for other files" and were not used as rules.
@@ -324,8 +341,8 @@ Market size (CMA report 2024, table ד-2, ד-5): the profit-sharing life portfol
 
 ## Open questions
 
-1. **Legal definition of "ביטוח חיים משתתף ברווחים" in the Insurance Contract Regulations, and the legal status of a pure savings policy ("חוזה השקעה").** Tried: fee regulations (refer to it), Clal terms. Likely in תקנות הפיקוח על עסקי ביטוח (תנאים בחוזי ביטוח) on Nevo or Wikisource.
-2. **Is there any regulatory cap on savings-policy management fees?** Searched (3 queries) and found none. Clal's 6%/1.5% and Phoenix's 4%/1.7% suggest none. Likely answer: the CMA codex chapter on life insurance (שער 6) or a circular on profit-sharing policies; needs a manual gov.il pass.
+1. **Legal definition of "ביטוח חיים משתתף ברווחים" in the Insurance Contract Regulations, and the legal status of a pure savings policy ("חוזה השקעה").** Tried: fee regulations (refer to it), Clal terms. Likely in תקנות הפיקוח על עסקי ביטוח (תנאים בחוזי ביטוח) on Nevo or Wikisource. **[2026-10-24 R5 pass: narrowed. The contract-terms regulations define the term by reference to the insurer investment regulations, which refer to the 1998 report regulations: "ביטוח חיים שבו זכויות המוטב והמבוטח תלויות בתשואה של השקעות מסוימות שהמבטח עושה באופן מיוחד לענין תכנית שאושרה כביטוח כזה בידי המפקח" (INS-25). The 1998 regulations are marked repealed (תשפ"ג); where the definition lives now, and the "חוזה השקעה" status, still need a browser pass through the CMA codex on gov.il.]**
+2. **Is there any regulatory cap on savings-policy management fees?** Searched (3 queries) and found none. Clal's 6%/1.5% and Phoenix's 4%/1.7% suggest none. Likely answer: the CMA codex chapter on life insurance (שער 6) or a circular on profit-sharing policies; needs a manual gov.il pass. **[2026-10-24 R5 pass: closed at primary (mirror) strength. Reg. 6א of the Insurance Contract Terms Regulations caps the balance fee at 1% a year, 2% with the Commissioner's approval (INS-25). Deposit fees are not covered by that text: open question 16.]**
 3. **Does CMA circular 2017-9-15 (fee discount duration and increase notices) apply to savings policies?** It applies to "institutional bodies" for "מכשירי החיסכון הפנסיוני". Whether a savings policy is one was not established.
 4. **Period and definition of the Comptroller's 0.94% savings-policy average fee.** Only the summary (pp. 336 to 337) was read; the detailed chapter was not located in the 7.4 MB file.
 5. **Minimum deposits at Clal, Harel, Migdal, Menora, Ayalon, Hachshara and IDI.** Only Phoenix's are sourced. Each insurer's product page or offer form ("הצעה לביטוח"); Migdal's page needs a browser.
@@ -339,6 +356,7 @@ Market size (CMA report 2024, table ד-2, ד-5): the profit-sharing life portfol
 13. **Phoenix track 2081 "מסלול השקעה בניהול אישי" in Bituach-Net** (NIS 14.5 bn, fee field 3.72): a self-directed policy product? Not checked.
 14. **Partial-withdrawal floors and payout times at the other insurers**, and whether the regulations under s. 23 set a payout deadline for insurance funds (Harel 1286 s. 13.9 refers to them).
 15. **CMA "חוזי השקעה" anti-money-laundering letter (about 2019)** seen only in a search extract; not opened.
+16. **On which provision do savings-policy deposit fees rest?** Reg. 6א(א) and (א1) cap only a fee as a percentage of the portfolio value; (א2) forbids any other kind of fee when a higher rate is approved. Clal charges up to 6% of regular deposits (INS-03). Likely in the Commissioner's approval of each plan or a CMA circular on profit-sharing policies (gov.il, browser). Added 2026-10-24.
 
 ## Left out and why
 
@@ -369,7 +387,7 @@ D2: a tier-2 instrument moves to tier 1 when it has a sourced record and its tax
   - protection (INS-21), the data source (INS-23), planned changes (INS-24).
 - Still blocking:
   1. Tax: the whole of TXA (capital gains basis, real gain, notional redemption, switch and inter-insurer transfer treatment). Under D10 nothing computes until these are at least secondary.
-  2. Whether any regulatory fee cap exists (open question 2). Without it, fee comparisons can use only each insurer's contractual maximum and the CMA average.
+  2. ~~Whether any regulatory fee cap exists (open question 2).~~ Closed 2026-10-24: the balance fee is capped at 1% a year, 2% with approval (INS-25). Still open: the basis of deposit fees (open question 16). Fee comparisons can show the cap beside each insurer's contractual maximum and the CMA average.
   3. Minimums, payout times and partial-withdrawal rules for the remaining six insurers (open questions 5, 14), needed for the workbench (3.4).
   4. No way to tell savings-policy tracks from executive tracks in Bituach-Net (INS-23). The catalogue (3.10) needs a hand-kept `data/catalog/` mapping from insurer product names to tracks.
   5. The inter-insurer transfer route (open question 7).
@@ -392,6 +410,8 @@ D2: a tier-2 instrument moves to tier 1 when it has a sourced record and its tax
   5. Current executive-policy terms from more than one insurer (only a 2009 Harel plan and a 2016 Harel letter were read).
 
 For the founder (22, salaried, no executive policy) neither product is likely to change a first decision. The tier-2 page can state this file's sourced facts and these blockers.
+
+*2026-10-24 R5 pass (graduation ranking in `scratchpad/reports/r5-tier2.md`):* the savings policy's product record is now mostly sourced (regulator, fee cap INS-25, no ceiling INS-02, exit INS-07, switch INS-08, protection INS-21, statement INS-26); what blocks it is tax: TXA open question 1 rests on insurer statements and one secondary source (TXA-05, TXA-28), so under D10 and coverage.md F1 it needs a founder decision before anything computes. Executive insurance stays blocked by TXA open questions 6 and 7 and by open questions 8 to 11 here.
 
 ## Found for other files
 

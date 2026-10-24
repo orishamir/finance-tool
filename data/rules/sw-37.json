@@ -1,0 +1,16 @@
+{
+  "id": "SW-37",
+  "title": "Foreign brokers: no regulator process found",
+  "title_he": "ברוקר זר: לא נמצא תהליך",
+  "text_he": "לא נמצא כלל ישראלי על העברת ניירות ערך מבנק או מברוקר ישראלי לברוקר זר, או בחזרה. ברוקר זר שפועל בישראל לפי היתר של רשות ניירות ערך אינו מפוקח על ידה, וניכוי המס במקור אצלו שונה. יש רק ניסיון מהפורומים, וזו שאלה פתוחה.",
+  "strength": "open",
+  "dimensions": [
+    "transfer-switch-process",
+    "foreign-withholding-domicile",
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-22"
+}

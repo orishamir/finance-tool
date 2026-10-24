@@ -2,7 +2,7 @@
 // the part kept available, outcome tags, and the row animation when the order changes.
 import { useLayoutEffect, useRef, type ReactNode } from "react";
 import { Link } from "react-router";
-import { r2 } from "../../copy";
+import { r2, r3fees } from "../../copy";
 import { addMonths, type CoverageRow, type ListedOption, type RankedOption } from "../../lib/compare";
 import { fmt } from "../../lib/format";
 import { IconAlert, IconDrillIn, IconLock } from "../icons";
@@ -56,7 +56,7 @@ export function useFlip(order: string) {
 
 // ---------------------------------------------------------------- ranked row
 
-export function RankedRow({ o, above, ctx, onDetail }: { o: RankedOption; above?: RankedOption; ctx: ResultCtx; onDetail: (el: HTMLElement) => void }) {
+export function RankedRow({ o, above, ctx, onDetail, extra, choose }: { o: RankedOption; above?: RankedOption; ctx: ResultCtx; onDetail: (el: HTMLElement) => void; /** A tag after the row's own (release 5: "לא מחזיק {חשיפה}"). */ extra?: ReactNode; /** The "בחרתי בזה" button (release 5). */ choose?: ReactNode }) {
   const { mk, view, mode } = ctx;
   const value = mode === "real" ? o.real : o.nominal;
   const figure = mk.nis(value, mode === "real" ? "F-06" : "F-09", mode === "real" ? r2.realLabel : r2.nominalLabel, o);
@@ -115,7 +115,14 @@ export function RankedRow({ o, above, ctx, onDetail }: { o: RankedOption; above?
           </span>
         </p>
       )}
+      {extra && <div className="flex flex-wrap gap-2">{extra}</div>}
       <AssumptionRow o={o} ctx={ctx} />
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+        <Link to={`/fees?wrapper=${o.id}&from=compare`} className="text-sm text-link hover:underline self-start min-h-target inline-flex items-center">
+          {r3fees.links.fromResult}
+        </Link>
+        {choose}
+      </div>
     </li>
   );
 }
@@ -179,6 +186,11 @@ export function ListedRow({ o, ctx, onDetail }: { o: ListedOption; ctx: ResultCt
         <ReasonLines row={o} ctx={ctx} />
       </p>
       {value}
+      {o.value && (
+        <Link to={`/fees?wrapper=${o.id}&from=compare`} className="text-sm text-link hover:underline self-start min-h-target inline-flex items-center">
+          {r3fees.links.fromResult}
+        </Link>
+      )}
     </li>
   );
 }

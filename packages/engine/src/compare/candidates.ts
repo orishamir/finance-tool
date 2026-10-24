@@ -122,7 +122,7 @@ export function executeCandidate(
   }
 }
 
-function reasonFromError(e: unknown): Reason | undefined {
+export function reasonFromError(e: unknown): Reason | undefined {
   if (e instanceof NotEvaluatedError) return { code: "gap", ruleIds: [], gapIds: [e.gap] };
   if (e instanceof MissingRuleError) return { code: "rule-missing", ruleIds: [e.ruleId], gapIds: [], ...(e.figure ? { detail: e.figure } : {}) };
   if (e instanceof FigureNotUpdatedError) return { code: "figure-not-updated", ruleIds: [e.ruleId], gapIds: [], detail: e.figure };
@@ -198,7 +198,7 @@ export function buildCandidateSet(input: CandidateSetInput, ctx: RunContext): Ca
   return set;
 }
 
-function evaluate(
+export function evaluate(
   c: CandidateInput,
   w: WrapperRecord,
   parameters: readonly unknown[],

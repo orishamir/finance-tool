@@ -772,11 +772,5 @@ describe("Part D: capability outputs (release 1 part)", () => {
 
 // Scenarios that need formulas from later releases (docs/architecture.md §7). Each becomes a test with its release.
 describe("later releases", () => {
-  it.todo("S38 switching cost: F-66 (R4)");
-  it.todo("S42, S43 fee materiality: F-61, F-62 (R3)");
-  it.todo("S44, S45 provider workbench: F-63 (R4)");
-  it.todo("S46 holdings review: F-70, F-72 (R3)");
   it.todo("S47 pension series: F-30, F-31, F-53 (R2)");
-  it.todo("S48 revisit: F-82 (R5)");
-  it.todo("S49 exposure mode and the loss filter: F-71 (R5)");
 });
