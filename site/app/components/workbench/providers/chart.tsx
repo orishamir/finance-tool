@@ -1,5 +1,6 @@
 // The cumulative-cost chart (design-system 8.3, design-spec 16.4): the provider fees paid up to each month, real, one
-// step line per provider for ranks 1 to 3 and the compared one; fee hues, darker is dearer; direct labels at the end.
+// step line per provider for ranks 1 to 3 and the compared one; one fee hue per line (2026-10-24 evening: the orange steps
+// looked alike in the legend); direct labels at the end.
 // Our own SVG on D3 scales, sharing the fee-drag chart's grid, axis, crosshair, readout and table view.
 import { AxisLabels, niceYearTicks } from "../../chart/TimelineChart";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -20,9 +21,9 @@ const LABEL_H = 38;
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 const style: Record<NonNullable<ChartLine["role"]>, { stroke: string; bg: string; width: number }> = {
-  "rank-1": { stroke: "stroke-chart-fee-3", bg: "bg-chart-fee-3", width: 2.5 },
+  "rank-1": { stroke: "stroke-chart-fee-1", bg: "bg-chart-fee-1", width: 2.5 },
   "rank-2": { stroke: "stroke-chart-fee-2", bg: "bg-chart-fee-2", width: 2 },
-  "rank-3": { stroke: "stroke-chart-fee-1", bg: "bg-chart-fee-1", width: 1.5 },
+  "rank-3": { stroke: "stroke-chart-fee-3", bg: "bg-chart-fee-3", width: 1.5 },
   vs: { stroke: "stroke-chart-fee-4", bg: "bg-chart-fee-4", width: 1.5 },
 };
 

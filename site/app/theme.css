@@ -125,6 +125,12 @@
   --palette-orange-900: oklch(0.31 0.086 48);
   --palette-orange-950: oklch(0.24 0.067 48);
 
+  /* Fee kinds, in charts only (2026-10-24 evening, the founder: "why use similar colors"): with orange-500 and teal-300,
+     four clearly different hues for the fee kinds, because four steps of one orange ramp looked alike in a legend of
+     four dots. Validated with the dataviz validator on the card, all pairs: ΔE 16.1 colour-blind, 20.6 normal; ≥ 3:1. */
+  --palette-gold-200: oklch(0.84 0.17 85);
+  --palette-magenta-400: oklch(0.66 0.17 335);
+
   /* Rose: tax, in charts only */
   --palette-rose-50: oklch(0.975 0.013 358);
   --palette-rose-100: oklch(0.945 0.029 358);
@@ -196,10 +202,14 @@
   --chart-value: var(--palette-teal-500); /* growth, net of fees and tax */
   --chart-net: var(--palette-teal-200); /* the headline line: net value at each month */
   --chart-fee: var(--palette-orange-500);
-  --chart-fee-1: var(--palette-orange-700);
-  --chart-fee-2: var(--palette-orange-600);
-  --chart-fee-3: var(--palette-orange-500);
-  --chart-fee-4: var(--palette-orange-400);
+  /* Fee kinds (fee-drag bands, cost-by-type bars, cumulative-cost lines): four clearly different hues in a fixed order,
+     orange first; blue and violet stay out because they are the entered and computed number inks beside every chart
+     (2026-10-24 evening; were orange-700 → 400). */
+  --chart-fee-1: var(--palette-orange-500);
+  --chart-fee-2: var(--palette-gold-200);
+  --chart-fee-3: var(--palette-teal-300);
+  --chart-fee-4: var(--palette-magenta-400);
+  --chart-fee-total: var(--palette-neutral-200); /* the fee-drag chart's total line over the bands: a reference line, not a fee kind (2026-10-24 evening) */
   --chart-tax: var(--palette-rose-600);
   --chart-tax-1: var(--palette-rose-600); /* tax during */
   --chart-tax-2: var(--palette-rose-400); /* tax at exit */
@@ -347,6 +357,7 @@
   --color-chart-fee-2: var(--chart-fee-2);
   --color-chart-fee-3: var(--chart-fee-3);
   --color-chart-fee-4: var(--chart-fee-4);
+  --color-chart-fee-total: var(--chart-fee-total);
   --color-chart-tax: var(--chart-tax);
   --color-chart-tax-1: var(--chart-tax-1);
   --color-chart-tax-2: var(--chart-tax-2);

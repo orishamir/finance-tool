@@ -1129,7 +1129,7 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 12 and the handoff in
 | Thresholds line | הספים: שווה להתמקח מ־`{סכום}`; שווה להימנע מ־`{סכום}`. פרמטר של האתר. |
 | Its link | לכל הפרמטרים |
 | Chart title | העמלות לאורך הזמן |
-| Chart, direct labels (short) | ניהול מחיסכון · ניהול מהפקדה | `r3fees.chart.short`; added 2026-10-24 (UX fix 30): the full names were cut in the 94 px label strip; the legend and readout keep the full names |
+| Chart, direct labels (short) | ניהול מחיסכון · ניהול מהפקדה · הוצאות ישירות · קנייה ומכירה · ניהול פיקדון · המרת מטבע · דמי חשבון · מרווח · בתוך הקרן · ניהול החברה | `r3fees.chart.short`; added 2026-10-24 (UX fix 30): the full names were cut in the 94 px label strip; the legend and readout keep the full names. Changed 2026-10-24 (evening, the founder's screenshot): every fee kind has a short name, so each label is one line and no label overlaps the next |
 | Chart, total line | סך העמלות |
 | Chart, rest band | שאר העמלות |
 | Chart, remainder legend | השפעה משולבת: הפער עד הקו · changed 2026-10-24 (Hebrew editor); was ״השפעה משולבת: הרווח עד הקו״ |

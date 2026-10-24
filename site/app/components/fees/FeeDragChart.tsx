@@ -1,5 +1,6 @@
 // The fee-drag chart (design-spec 11.4, design-system 7.3): each fee's cost over time as stacked bands, the total
-// drag as a line on top, real values, time left to right, direct labels in a strip at the right. Our own SVG on D3
+// drag as a neutral line on top (2026-10-24 evening: in orange it matched the largest band's legend swatch), real values,
+// time left to right, direct labels in a strip at the right. Our own SVG on D3
 // scales, sharing the comparison chart's grid, axis, crosshair, readout and table view.
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { scaleLinear } from "d3-scale";
@@ -15,7 +16,7 @@ import { Disclosure, cx } from "../ui";
 const STRIP = 104;
 const TOP = 20; // room for the top axis label above its gridline (audit 2026-10-24 (sweep))
 const BOTTOM = 26;
-const LABEL_H = 46;
+const LABEL_H = 38; // one short name over its figure (2026-10-24 evening: two-line names overlapped the next label)
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 interface Band {
@@ -26,6 +27,7 @@ interface Band {
   lines: FeeLine[];
 }
 
+// One fee hue per band in stack order (design-system 2.3, 2026-10-24 evening): orange, gold, teal, magenta.
 const hues = [
   { fill: "fill-chart-fee-1", bg: "bg-chart-fee-1" },
   { fill: "fill-chart-fee-2", bg: "bg-chart-fee-2" },
@@ -33,9 +35,11 @@ const hues = [
   { fill: "fill-chart-fee-4", bg: "bg-chart-fee-4" },
 ];
 
-/** The three largest fees as bands, every further one in a single "rest" band (design-spec 11.4). */
+/** The three largest fees as bands, every further one in a single "rest" band (design-spec 11.4). A fee that costs nothing over
+ *  the horizon (an FX line with no foreign trade, a fee reduced to zero) has no band, so no legend item, label or row either
+ *  (design-system 3.4: a legend item only for an area that is drawn; 2026-10-24 evening). */
 export function bandsOf(an: Analysis): Band[] {
-  const order = [...an.lines].sort((a, b) => b.costNis - a.costNis).map((l) => l.line);
+  const order = [...an.lines].filter((l) => l.costNis >= 0.005).sort((a, b) => b.costNis - a.costNis).map((l) => l.line);
   if (order.length <= 4) return order.map((l, i) => ({ id: l, name: r3fees.names[l]!, ...hues[i]!, lines: [l] }));
   const head = order.slice(0, 3).map((l, i) => ({ id: l, name: r3fees.names[l]!, ...hues[i]!, lines: [l] }));
   return [...head, { id: "rest", name: r3fees.chart.rest, ...hues[3]!, lines: order.slice(3) }];
@@ -147,7 +151,7 @@ export function FeeDragChart({ an, horizonYears, hover, onHover, hasGoal, dimmed
           ))}
         </g>
         <AxisLabels ticks={ticks} y={y} />
-        <path d={totalLine(pts) ?? ""} fill="none" className="stroke-chart-fee" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
+        <path d={totalLine(pts) ?? ""} fill="none" className="stroke-chart-fee-total" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
         <line x1={x(years)} x2={x(years)} y1={TOP} y2={height - BOTTOM} className="stroke-chart-marker" strokeWidth="1" />
         {yearTicks.map((yr) => (
           <text key={yr} x={x(yr)} y={height - 8} textAnchor={yr === 0 ? "start" : yr === Math.round(years) ? "end" : "middle"} direction="ltr" className="text-xs fill-chart-text" data-scale>
@@ -157,7 +161,7 @@ export function FeeDragChart({ an, horizonYears, hover, onHover, hasGoal, dimmed
         {hovered && (
           <g>
             <line x1={x(hovered.year)} x2={x(hovered.year)} y1={TOP} y2={height - BOTTOM} className="stroke-chart-crosshair" strokeWidth="1" />
-            <circle cx={x(hovered.year)} cy={y(hovered.total)} r="4" className="stroke-card fill-chart-fee" strokeWidth="2" />
+            <circle cx={x(hovered.year)} cy={y(hovered.total)} r="4" className="stroke-card fill-chart-fee-total" strokeWidth="2" />
           </g>
         )}
       </svg>
@@ -166,7 +170,7 @@ export function FeeDragChart({ an, horizonYears, hover, onHover, hasGoal, dimmed
       </span>
       {placed.map((p) => (
         <div key={p.id} className="absolute text-xs leading-tight" style={{ left: `${plotW + 8}px`, top: `${p.y - LABEL_H / 2}px`, width: `${STRIP - 10}px`, height: `${LABEL_H}px` }}>
-          <span className="line-clamp-2 font-medium">{p.name}</span>
+          <span className="line-clamp-1 font-medium">{p.name}</span>
           <Num value={an.mk.nis(p.value, "F-61", p.name, run)} size="cell" />
         </div>
       ))}
@@ -185,7 +189,7 @@ export function ChartLegend({ an }: { an: Analysis }) {
         </li>
       ))}
       <li className="flex items-center gap-1.5">
-        <span className="w-3.5 h-[3px] rounded-sm bg-chart-fee" />
+        <span className="w-3.5 h-[3px] rounded-sm bg-chart-fee-total" />
         {r3fees.chart.total}
       </li>
       <li>{r3fees.chart.remainderLegend}</li>
@@ -217,7 +221,7 @@ export function ChartReadout({ an, year }: { an: Analysis; year: number }) {
       ))}
       <div className="readout-row">
         <dt className="flex items-center gap-2">
-          <span className="w-3.5 h-[3px] rounded-sm bg-chart-fee" />
+          <span className="w-3.5 h-[3px] rounded-sm bg-chart-fee-total" />
           {r3fees.chart.total}
         </dt>
         <dd>
