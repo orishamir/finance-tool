@@ -20,6 +20,14 @@ export interface SheetProps {
   className?: string;
 }
 
+let locks = 0;
+function lockScroll() {
+  if (locks++ === 0) document.documentElement.style.overflow = "hidden";
+}
+function unlockScroll() {
+  if (--locks === 0) document.documentElement.style.overflow = "";
+}
+
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labelledBy, describedBy, onBack, children, className }: SheetProps) {
@@ -54,6 +62,13 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, [open, anchor, pc]);
+
+  // The page behind an open sheet does not scroll (audit 2026-10-24, A99); a count, since sheets can stack.
+  useEffect(() => {
+    if (!open) return;
+    lockScroll();
+    return unlockScroll;
+  }, [open]);
 
   // Swipe down on the handle closes the sheet.
   const startY = useRef<number | null>(null);
@@ -103,19 +118,27 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
   );
 }
 
-/** On PC, puts a popover card beside its anchor (below it, right edges aligned), clamped to the window. */
+/** On PC, puts a popover card beside its anchor (right edges aligned), on the side with more room: below it, unless
+ * it does not fit there and the room above is larger. The card's max-height is capped to that room. */
 function place(dialog: HTMLDialogElement, anchor: HTMLElement | null, pc: "popover" | "center") {
   const isPc = window.matchMedia("(min-width: 64rem)").matches;
   dialog.style.top = "";
   dialog.style.left = "";
+  dialog.style.maxHeight = "";
   if (!isPc || pc !== "popover" || !anchor) return;
   const r = anchor.getBoundingClientRect();
   const w = dialog.offsetWidth;
-  const h = dialog.offsetHeight;
+  const natural = dialog.offsetHeight;
+  const gap = 8;
+  const roomBelow = window.innerHeight - r.bottom - gap * 2;
+  const roomAbove = r.top - gap * 2;
+  const below = natural <= roomBelow || roomBelow >= roomAbove;
+  const room = Math.max(120, below ? roomBelow : roomAbove);
+  const h = Math.min(natural, room);
+  dialog.style.maxHeight = `${Math.min(room, window.innerHeight * 0.6)}px`;
   let left = r.right - w;
-  left = Math.max(8, Math.min(left, window.innerWidth - w - 8));
-  let top = r.bottom + 8;
-  if (top + h > window.innerHeight - 8) top = Math.max(8, r.top - h - 8);
-  dialog.style.top = `${top}px`;
+  left = Math.max(gap, Math.min(left, window.innerWidth - w - gap));
+  const top = below ? r.bottom + gap : r.top - gap - Math.min(h, window.innerHeight * 0.6);
+  dialog.style.top = `${Math.max(gap, top)}px`;
   dialog.style.left = `${left}px`;
 }

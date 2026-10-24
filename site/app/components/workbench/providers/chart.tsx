@@ -1,6 +1,7 @@
 // The cumulative-cost chart (design-system 8.3, design-spec 16.4): the provider fees paid up to each month, real, one
 // step line per provider for ranks 1 to 3 and the compared one; fee hues, darker is dearer; direct labels at the end.
 // Our own SVG on D3 scales, sharing the fee-drag chart's grid, axis, crosshair, readout and table view.
+import { AxisLabels, niceYearTicks } from "../../chart/TimelineChart";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { scaleLinear } from "d3-scale";
 import { curveStepAfter, line as d3line } from "d3-shape";
@@ -13,7 +14,7 @@ import { Num } from "../../provenance";
 import { Disclosure, cx } from "../../ui";
 
 const STRIP = 112;
-const TOP = 14;
+const TOP = 20; // room for the top axis label above its gridline (audit 2026-10-24 (sweep))
 const BOTTOM = 26;
 const LABEL_H = 38;
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
@@ -49,7 +50,7 @@ export function CumulativeCostChart({ lines, years, today, hover, onHover, dimme
   const maxV = Math.max(1, ...shown.map((l) => l.real[l.real.length - 1] ?? 0));
   const y = scaleLinear().domain([0, maxV]).nice(4).range([height - BOTTOM, TOP]);
   const ticks = y.ticks(4);
-  const yearTicks = [0, ...[1, 2, 3, 4].map((k) => Math.round((horizonYears * k) / 4))].filter((v, i, a) => a.indexOf(v) === i);
+  const yearTicks = niceYearTicks(horizonYears);
   const path = d3line<number>().x((_, m) => x(m / 12)).y((v) => y(v)).curve(curveStepAfter);
 
   // direct labels: each line's short name over its horizon cost, pushed apart (collision rule of the comparison chart)
@@ -84,15 +85,9 @@ export function CumulativeCostChart({ lines, years, today, hover, onHover, dimme
         onPointerCancel={() => onHover(null)}
       >
         {ticks.map((tk) => (
-          <g key={tk}>
-            <line x1={0} x2={plotW} y1={y(tk)} y2={y(tk)} className={tk === 0 ? "stroke-chart-axis" : "stroke-chart-grid"} strokeWidth="1" />
-            {tk > 0 && (
-              <text x={2} y={y(tk) - 4} textAnchor="end" direction="rtl" className="text-xs fill-chart-text" data-scale>
-                {fmt.compactNis(tk)}
-              </text>
-            )}
-          </g>
+          <line key={tk} x1={0} x2={plotW} y1={y(tk)} y2={y(tk)} className={tk === 0 ? "stroke-chart-axis" : "stroke-chart-grid"} strokeWidth="1" />
         ))}
+        <AxisLabels ticks={ticks} y={y} />
         <line x1={x(horizonYears)} x2={x(horizonYears)} y1={TOP} y2={height - BOTTOM} className="stroke-chart-marker" strokeWidth="1" />
         {yearOneX !== null && <line x1={yearOneX} x2={yearOneX} y1={TOP} y2={height - BOTTOM} className="stroke-chart-marker" strokeWidth="1" strokeDasharray="2 4" />}
         {[...shown].reverse().map((l) => (

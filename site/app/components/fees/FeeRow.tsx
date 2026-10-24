@@ -5,14 +5,14 @@ import { Link } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import { r3fees } from "../../copy";
 import { reducible, reductionWorth, type Analysis, type LineView, type SubjectView } from "../../lib/fees";
-import { formatValue, fmt } from "../../lib/format";
+import { formatValue, fmt, nearThreshold } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { entered as enteredValue } from "../../lib/value";
 import { IconCopy } from "../icons";
-import { Num, RuleRef, StateTag } from "../provenance";
+import { LeadTail, Num, RuleRef, StateTag } from "../provenance";
 import { NumberField } from "../timeline/fields";
 import { Button, Callout, Disclosure, Tag, cx } from "../ui";
-import { CapLine, ReferenceLine, VerdictTag } from "./parts";
+import { CapLine, ReadingMark, ReferenceLine, VerdictTag } from "./parts";
 
 function periodWord(months: number): string {
   return months === 1 ? r3fees.periods.month : months === 3 ? r3fees.periods.quarter : months === 12 ? r3fees.periods.year : fmt.months(months);
@@ -36,10 +36,15 @@ function ReductionField({ line, an, years, value, onChange }: { line: LineView; 
   const worth = useMemo(() => (shown === null ? null : reductionWorth(an, line.line, shown)), [an, line.line, shown]);
   const rate = line.rateFraction !== undefined ? line.rateFraction * 100 : null;
   const notReduction = shown !== null && rate !== null && shown >= rate - 1e-9;
+  // while the typed value fails its check the result under the field is greyed and says so, not the last valid one (A61)
+  const [invalid, setInvalid] = useState(false);
   return (
     <div className="flex flex-col gap-1.5">
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-        <span className="text-sm font-medium">{r3fees.reduction.label}</span>
+        {/* the visible label; the field's own is for screen readers, so it is said once (A63) */}
+        <span className="text-sm font-medium" aria-hidden="true">
+          {r3fees.reduction.label}
+        </span>
         <div className="w-36 shrink-0">
           <NumberField
             compact
@@ -47,9 +52,19 @@ function ReductionField({ line, an, years, value, onChange }: { line: LineView; 
             unit="pct"
             value={shown}
             isEntered={isEntered}
-            validate={(n) => (n < 0 ? "המספר צריך להיות אפס או יותר." : null)}
-            onCommit={(n) => onChange(n)}
-            onReset={() => onChange(null)}
+            validate={(n) => {
+              const err = n < 0 ? r3fees.reduction.belowZero : n > 100 ? r3fees.reduction.aboveHundred : null;
+              setInvalid(err !== null);
+              return err;
+            }}
+            onCommit={(n) => {
+              setInvalid(false);
+              onChange(n);
+            }}
+            onReset={() => {
+              setInvalid(false);
+              onChange(null);
+            }}
           />
         </div>
         {!isEntered && line.suggestion !== null && <Tag tone="parameter">{r3fees.reduction.suggestion}</Tag>}
@@ -60,18 +75,19 @@ function ReductionField({ line, an, years, value, onChange }: { line: LineView; 
         )}
       </div>
       {shown !== null && (
-        <p className="text-base font-medium">
+        <p className={cx("text-base font-medium flex flex-col gap-0.5", invalid && "opacity-40")} aria-live="polite">
           {notReduction || !worth ? (
             <span className="text-muted-foreground font-normal">{r3fees.reduction.notReduction}</span>
           ) : (
             <>
               {r3fees.reduction.worthBefore}
               <Num value={worth} animate />
-              {" ב־"}
-              {fmt.years(years)}
+              {" "}
+              <LeadTail lead="ב־">{fmt.years(years)}</LeadTail>
               {r3fees.reduction.worthAfter}
             </>
           )}
+          {!notReduction && worth && <span className="text-sm font-normal text-muted-foreground">{r3fees.reduction.noRanking}</span>}
         </p>
       )}
     </div>
@@ -90,6 +106,8 @@ const Segs = ({ segs }: { segs: Seg[] }) => (
 );
 
 function NegotiationCard({ line, an, subject, toPct, rules }: { line: LineView; an: Analysis; subject: SubjectView; toPct: number | null; rules: Map<string, RuleRecord> }) {
+  // a holding is an account of the person's; a wrapper or a track page is not, so the script asks for an offer (A94)
+  const hasAccount = subject.kind === "holding";
   const [copied, setCopied] = useState(false);
   const [fallback, setFallback] = useState(false);
   const cma = line.reference.cma!;
@@ -99,7 +117,7 @@ function NegotiationCard({ line, an, subject, toPct, rules }: { line: LineView; 
   const cls = cma.specialization ? `${cma.classification} · ${cma.specialization}` : cma.classification;
   const dataset = n.datasets[cma.dataset] ?? cma.dataset;
   const segs: Seg[] = [
-    { t: `${n.p1[0]}${n.from[line.line] ?? n.from.balance}${n.p1[1]}${subject.productName}${n.p1[2]}` },
+    { t: `${n.p1[0]}${n.from[line.line] ?? n.from.balance}${(hasAccount ? n.p1 : n.p1Offer)[1]}${subject.productName}${n.p1[2]}` },
     ...(line.rate ? ([{ n: line.rate }] as Seg[]) : []),
     { t: `${n.p1[3]}${dataset} של ${n.authority}${n.p2[0]}${cma.year?.value ?? ""}${n.p2[1]}${cls}${n.p2[2]}` },
     { n: cma.mean },
@@ -107,9 +125,9 @@ function NegotiationCard({ line, an, subject, toPct, rules }: { line: LineView; 
     { n: cma.median },
     { t: n.p2[4] },
     { n: cma.count },
-    { t: n.p2[5] },
+    { t: hasAccount ? n.p2[5] : n.p2Offer },
     { n: toV },
-    { t: n.p2[6] },
+    { t: hasAccount ? n.p2[6] : n.offerEnd },
   ];
   const own: Seg[] | null = line.reference.ownAverage ? [{ t: n.own[0] }, { n: line.reference.ownAverage }, { t: n.own[1] }] : null;
   const source = `${n.source[0]}${dataset}${n.source[1]}${n.authority}${n.source[2]}${fmt.period(cma.period)}${n.source[3]}`;
@@ -161,7 +179,7 @@ function NegotiationCard({ line, an, subject, toPct, rules }: { line: LineView; 
 
 // ---------------------------------------------------------------- the row
 
-export function FeeRow({ line, an, subject, years, thresholds, reduction, onReduce, rules, notReported }: { line: LineView; an: Analysis; subject: SubjectView; years: number; thresholds: Analysis["thresholds"]; reduction: number | null; onReduce: (n: number | null) => void; rules: Map<string, RuleRecord>; notReported?: boolean }) {
+export function FeeRow({ line, an, subject, years, thresholds, reduction, onReduce, rules, notReported, soften, compareHref }: { line: LineView; an: Analysis; subject: SubjectView; years: number; thresholds: Analysis["thresholds"]; reduction: number | null; onReduce: (n: number | null) => void; rules: Map<string, RuleRecord>; notReported?: boolean; soften?: boolean; compareHref?: string }) {
   void notReported;
   const toPct = reduction ?? line.suggestion;
   return (
@@ -176,15 +194,15 @@ export function FeeRow({ line, an, subject, years, thresholds, reduction, onRedu
         </div>
         <div className="flex flex-col items-end shrink-0">
           <span className="text-xl font-semibold">
-            <Num value={line.cost} animate />
+            <Num value={line.cost} animate exact={typeof line.cost.value === "number" && nearThreshold(line.cost.value, [thresholds.negotiate, thresholds.avoid].map((t) => Number(t.value)))} />
           </span>
+          <ReadingMark value={line.cost} />
           <span className="text-xs text-muted-foreground">
-            {r3fees.costIn}
-            {fmt.years(years)}
+            <LeadTail lead={r3fees.costIn}>{fmt.years(years)}</LeadTail>
           </span>
         </div>
       </div>
-      <VerdictTag line={line} thresholds={thresholds} />
+      <VerdictTag line={line} thresholds={thresholds} soften={soften} compareHref={compareHref} />
       <div className="flex flex-col gap-2">
         <ReferenceLine reference={line.reference} />
         <CapLine cap={line.cap} />

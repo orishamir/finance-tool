@@ -7,7 +7,7 @@ import type { FundAssumptions, WorkbenchInputs } from "../../../lib/providers";
 import { DISTRIBUTION_PAYMENTS, type FundVariantsView, type SortKey } from "../../../lib/variants";
 import { IconReset, IconSearch } from "../../icons";
 import { RuleRef } from "../../provenance";
-import { NumberField } from "../../timeline/fields";
+import { NumberField, ParameterLine } from "../../timeline/fields";
 import { Button, SegmentedControl, cx } from "../../ui";
 
 export function VariantControls({ filter, sort, onFilter, onSort, enteredReturn }: { filter: string; sort: SortKey; onFilter: (v: string) => void; onSort: (s: SortKey) => void; enteredReturn: boolean }) {
@@ -119,6 +119,7 @@ export function VariantFields({
           </Link>
         </span>
       </div>
+      <ParameterLine />
       <NumberField
         label={c.providers.behaviour.orders}
         unit="count"

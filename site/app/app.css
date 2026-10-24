@@ -1,5 +1,31 @@
-@import "@fontsource-variable/inter";
-@import "@fontsource-variable/heebo";
+/* Fonts (audit 2026-10-24, A49): only the two subsets the site uses (Inter latin for digits and Latin, Heebo hebrew),
+   preloaded from root.tsx. The fontsource entry files also declare latin-ext, cyrillic, greek, vietnamese and Heebo's
+   math and symbols; none is needed. "Inter Fallback" is Arial scaled to Inter's metrics, so the late swap barely moves text. */
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2) format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Heebo Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(../../node_modules/@fontsource-variable/heebo/files/heebo-hebrew-wght-normal.woff2) format("woff2-variations");
+  unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F;
+}
+@font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial");
+  size-adjust: 107.4%;
+  ascent-override: 90.2%;
+  descent-override: 22.5%;
+  line-gap-override: 0%;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2212;
+}
 @import "tailwindcss";
 @import "./theme.css";
 
@@ -19,6 +45,7 @@
     color: var(--foreground);
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
+    scrollbar-gutter: stable; /* an open sheet locks the page's scroll (Sheet.tsx) without moving it sideways */
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -27,8 +54,21 @@
     }
   }
 
+  /* Large screens (2026-10-24): the layout is in rem, so measure, gutters and type grow together. */
+  @media (min-width: 1600px) {
+    html {
+      font-size: 17px;
+    }
+  }
+  @media (min-width: 2200px) {
+    html {
+      font-size: 18px;
+    }
+  }
+
   body {
     font-size: var(--text-base);
+    font-weight: 450; /* was 400 until 2026-10-24: Windows DirectWrite renders the variable fonts thin */
     line-height: var(--text-base--line-height);
     word-spacing: var(--word-spacing-hebrew);
     text-rendering: optimizeLegibility;
@@ -56,6 +96,13 @@
   bdi,
   [dir="ltr"] {
     unicode-bidi: isolate;
+  }
+
+  /* audit 2026-10-24 (A99): every enabled button shows the hand */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  summary {
+    cursor: pointer;
   }
 }
 
@@ -161,6 +208,8 @@
   .rule-chip-static::after {
     content: none;
   }
+  /* A glossary term: a dashed teal underline, a third pattern next to the solid grey (sourced) and dotted violet
+     (computed) of numbers (audit 2026-10-24, A78). */
   .term {
     font: inherit;
     color: inherit;
@@ -168,10 +217,16 @@
     border: 0;
     padding: 0;
     cursor: pointer;
+    position: relative;
     text-decoration: underline dashed;
-    text-decoration-color: var(--muted-foreground);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.2em;
+    text-decoration-color: var(--primary);
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 0.25em;
+  }
+  .term::after {
+    content: "";
+    position: absolute;
+    inset: -11px -4px;
   }
 
   /* ---- chips */
@@ -194,7 +249,7 @@
   }
   .a-chip-entered {
     background: var(--entered-subtle);
-    border-color: color-mix(in oklch, var(--entered) 45%, var(--border));
+    border-color: color-mix(in oklab, var(--entered) 45%, var(--border));
   }
   .sec-chip {
     display: inline-flex;
@@ -425,7 +480,7 @@
     padding: 0 10px;
   }
   .field-box-entered {
-    border-color: color-mix(in oklch, var(--entered) 55%, var(--input));
+    border-color: color-mix(in oklab, var(--entered) 55%, var(--input));
   }
   .field-box-error {
     border-color: var(--destructive);
@@ -566,7 +621,31 @@
   .scrollbar-none {
     scrollbar-width: none;
   }
+  /* A strip that scrolls sideways (section tabs, chips) fades at its trailing edge and snaps, so a cut-off chip reads as
+     "more here" (audit 2026-10-24, A81). Below md, where those strips scroll instead of wrapping. */
+  @media (max-width: 47.99rem) {
+    .scrollbar-none.overflow-x-auto {
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 1.75rem);
+      mask-image: linear-gradient(to right, transparent 0, #000 1.75rem);
+      scroll-snap-type: x proximity;
+    }
+    .scrollbar-none.overflow-x-auto > * {
+      scroll-snap-align: start;
+    }
+    .scrollbar-none.overflow-x-auto::after {
+      content: "";
+      flex: 0 0 1.5rem;
+    }
+  }
   .scrollbar-none::-webkit-scrollbar {
     display: none;
+  }
+}
+
+/* Short screens (a phone on its side): the sticky chip bars, table heads and bottom bars would take most of it, so they
+   scroll with the page (audit 2026-10-24, A50). The header stays. */
+@media (max-height: 500px) {
+  main .sticky {
+    position: static;
   }
 }

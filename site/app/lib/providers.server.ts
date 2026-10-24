@@ -3,7 +3,7 @@
 // exposure records, the saved fund lists (none yet), the rule records a securities run may read, P-01 and P-05, and the
 // link-outs. Server-only.
 import type { ParameterRecord, RuleRecord } from "@finance-tool/schema";
-import { loadFees, loadParameters, loadRules, today } from "./data.server";
+import { loadCma, loadFees, loadParameters, loadRules, today } from "./data.server";
 import { loadExposures, loadFunds } from "./instruments.server";
 import { BROKERAGE, PROVIDENT_WRAPPERS, type WorkbenchBundle } from "./providers";
 import { loadFundLists, workbenchLinks } from "./variants.server";
@@ -33,6 +33,20 @@ function latestSnapshots() {
   return [...best.values()];
 }
 
+/** A provider's company id by the exact name the regulator's data gives (no guessing: a name that matches nothing has no link); and the count of companies per wrapper. */
+export function companyLinks(snapshots: ReturnType<typeof latestSnapshots>): { providerCompany: Record<string, string>; wrapperCompanies: Record<string, number> } {
+  const cma = loadCma();
+  const byName = new Map(cma.companies.map((c) => [c.name.trim(), c.id]));
+  const providerCompany: Record<string, string> = {};
+  for (const s of snapshots) {
+    const id = byName.get(s.provider.name_he.trim());
+    if (id) providerCompany[s.id] = id;
+  }
+  const sets = new Map<string, Set<string>>();
+  for (const t of cma.tracks) if (t.wrapperId) sets.set(t.wrapperId, (sets.get(t.wrapperId) ?? new Set()).add(t.companyId));
+  return { providerCompany, wrapperCompanies: Object.fromEntries([...sets].map(([k, v]) => [k, v.size])) };
+}
+
 export function buildWorkbenchBundle(): WorkbenchBundle {
   const t = today();
   const parameters = loadParameters();
@@ -48,7 +62,8 @@ export function buildWorkbenchBundle(): WorkbenchBundle {
   const allRules = loadRules();
   const needed = collectRuleIds({ snapshots, funds, exposures });
   const rules: RuleRecord[] = Object.values(allRules).filter((r) => needed.has(r.id) || families.some((f) => r.id.startsWith(f)));
-  const bundle: WorkbenchBundle = { today: t, snapshots, funds, exposures, fundLists, rules, p01: find("P-01"), p05: find("P-05"), links: workbenchLinks() };
+  const { providerCompany, wrapperCompanies } = companyLinks(snapshots);
+  const bundle: WorkbenchBundle = { today: t, snapshots, funds, exposures, fundLists, rules, p01: find("P-01"), p05: find("P-05"), links: workbenchLinks(), providerCompany, wrapperCompanies };
   console.log(`[workbench] bundle: ${snapshots.length} snapshots, ${funds.length} funds, ${exposures.length} exposures, ${fundLists.length} fund lists, ${rules.length} rules, ${(JSON.stringify(bundle).length / 1024).toFixed(0)} KB`);
   return bundle;
 }

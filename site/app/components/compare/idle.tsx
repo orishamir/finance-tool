@@ -15,6 +15,14 @@ import type { CompareBundle } from "../../lib/compare";
 import { makeValues } from "../../lib/compare";
 import type { RunGoal } from "../../lib/compare";
 
+/** Each row's name leads to its guide page (audit A20). */
+const guideOf: Record<IdleRowView["id"], string> = {
+  "bank-deposit:average": "/guide/bank-deposit",
+  "bank-deposit:own-offer": "/guide/bank-deposit",
+  "money-market-fund-daily": "/guide/money-market-fund-daily",
+  makam: "/guide/makam",
+};
+
 function RateTag({ row }: { row: IdleRowView }) {
   if (row.label === "published") return <Tag icon={<IconFile size={14} />}>{copy.labels.published}{fmt.date(row.rate.effective_from ?? row.rate.checked)}</Tag>;
   if (row.label === "entered") return <Tag tone="entered" icon={<IconEdit size={14} />}>{copy.labels.entered}</Tag>;
@@ -29,7 +37,11 @@ export function CostRow({ row, empty }: { row: IdleRowView | null; empty?: boole
   return (
     <li className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2 py-3">
       <div className="flex flex-col gap-1.5 min-w-0">
-        <span className="font-medium">{name}</span>
+        <span className="font-medium">
+          <Link to={guideOf[row.id]} className="text-link hover:underline">
+            {name}
+          </Link>
+        </span>
         <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
           <span className="text-muted-foreground">{copy.rateOf}</span>
           <Num value={row.rate} />
@@ -37,6 +49,7 @@ export function CostRow({ row, empty }: { row: IdleRowView | null; empty?: boole
           {row.rate.stale && <IconClock size={14} className="text-caution" />}
         </span>
         {note && <span className="text-xs text-muted-foreground max-w-measure">{note}</span>}
+        {row.id === "bank-deposit:own-offer" && row.monthlyCost < 0 && <span className="text-xs text-caution-foreground max-w-measure">{copy.offerBelow}</span>}
       </div>
       <div className="flex flex-col items-end">
         {empty ? <span className="text-xl text-muted-foreground">—</span> : <Num value={row.cost} className="text-xl font-medium" animate />}
@@ -51,7 +64,11 @@ export function FailedRow({ id, reason }: { id: string; reason: ReactNodeLike })
   const name = id === "bank-deposit" ? copy.rowNames["bank-deposit:average"] : copy.rowNames[id];
   return (
     <li className="flex flex-col gap-1 py-3">
-      <span className="font-medium">{name}</span>
+      <span className="font-medium">
+        <Link to={`/guide/${id}`} className="text-link hover:underline">
+          {name}
+        </Link>
+      </span>
       <span className="text-sm text-muted-foreground flex items-center gap-2">
         <IconDashed size={16} />
         {reason}

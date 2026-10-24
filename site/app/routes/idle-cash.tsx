@@ -1,18 +1,24 @@
 // Screen 7: the idle-cash screen (design-spec 9, flow 11): two numbers, and what leaving the money in the current
 // account costs a month against each liquid option (method F-60, S41). The engine runs here, on the bundle fetched once.
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Link, useLoaderData, useNavigate } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import { idle as copy, r2, site } from "../copy";
 import { BoiLine, CostRows, IdleCoverage, idleCtx } from "../components/compare/idle";
-import { Num } from "../components/provenance";
+import { LeadTail, Num, NumberLegend } from "../components/provenance";
+import { RawWatch } from "../components/holdings/fields";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { NumberField } from "../components/timeline/fields";
-import { Button, Callout, Card, Disclosure } from "../components/ui";
+import { Button, Callout, Card, cx, Disclosure } from "../components/ui";
 import { loadBundle } from "../lib/bundle";
+import { fmt, parseNumber } from "../lib/format";
 import type { CompareBundle } from "../lib/compare";
 import { GoalsProvider, isBlank, useGoals, type Presets } from "../lib/goal";
 import { buildIdle } from "../lib/idle";
+import { bundleLinks } from "../lib/bundle";
+
+/** The data files this page fetches after it starts, requested with the HTML (audit 2026-10-24, A52). */
+export const links = () => bundleLinks("compare-bundle.json");
 
 export async function loader() {
   const { goalFormData } = await import("../lib/compare.server");
@@ -46,6 +52,15 @@ export default function IdleCashPage() {
 
 const positive = (n: number) => (n <= 0 ? copy.errBalance : null);
 const nonNegative = (n: number) => (n < 0 ? "הסכום לא יכול להיות שלילי." : null);
+/** The offer is a percent a year: a value under 0.1 is most likely a fraction ("0.04" for 4%), so it asks instead of reading it as 0.04%. */
+const validateOffer = (n: number): ReactNode | null =>
+  n < 0 ? nonNegative(n) : n > 100 ? "הזינו אחוז עד 100." : n > 0 && n < 0.1 ? (
+    <>
+      {copy.offerUnit.before}
+      <bdi dir="ltr">{fmt.number(Number((n * 100).toFixed(4)))}</bdi>
+      {copy.offerUnit.after}
+    </>
+  ) : null;
 
 function Screen({ bundle, failed }: { bundle: CompareBundle | null; failed: boolean }) {
   const [balance, setBalance] = useState<number | null>(null);
@@ -53,8 +68,20 @@ function Screen({ bundle, failed }: { bundle: CompareBundle | null; failed: bool
   const [offer, setOffer] = useState<number | null>(null);
   const navigate = useNavigate();
   const { status, current, update, add } = useGoals();
+  // audit A61: what is typed in a field that refused it ("abc", "0.04" for a percent) is not in the state, so the page
+  // watches the typed text and hides the result while any field is invalid
+  const [bad, setBad] = useState<Record<string, boolean>>({});
+  const watch = (key: string, validate: (n: number) => ReactNode | null) => (t: string) =>
+    setBad((b) => {
+      const v = t.trim() !== "" && (Number.isNaN(parseNumber(t)) || validate(parseNumber(t)) !== null);
+      return !!b[key] === v ? b : { ...b, [key]: v };
+    });
+  const anyBad = Object.values(bad).some(Boolean);
+  const validateKeep = (n: number) => (n < 0 ? nonNegative(n) : balance !== null && n > balance ? copy.errKeep : null);
   const outcome = useMemo(() => (bundle ? buildIdle(bundle, balance, keep, offer) : null), [bundle, balance, keep, offer]);
   const ctx = useMemo(() => (bundle && outcome?.kind === "ok" ? idleCtx(bundle, outcome) : null), [bundle, outcome]);
+  // Until a result exists the page is one centred column; the two columns start with the result.
+  const resultShown = !failed && !!outcome && (outcome.kind === "ok" || outcome.kind === "all-kept" || outcome.kind === "no-baseline");
   const over = balance !== null && keep !== null && keep > balance;
 
   // The full comparison starts from the liquid-reserve preset with the two amounts (flow 11, step 4). A goal already on the
@@ -72,31 +99,29 @@ function Screen({ bundle, failed }: { bundle: CompareBundle | null; failed: bool
   };
 
   return (
-    <div className="flex flex-col gap-6 pt-2 lg:pt-8 max-w-page">
+    <div className={cx("flex flex-col gap-6 pt-2 lg:pt-8 mx-auto w-full", resultShown ? "max-w-page" : "max-w-3xl")}>
       <Breadcrumb parent={{ href: "/", label: site.name }} current={copy.title} />
       <header className="flex flex-col gap-2">
         <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
         <p className="text-lg text-muted-foreground max-w-measure">{copy.lede}</p>
+        <NumberLegend />
       </header>
-      <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[360px_1fr] lg:gap-x-12 lg:items-start">
+      <div className={cx("flex flex-col gap-6", resultShown && "lg:grid lg:grid-cols-[360px_1fr] lg:gap-x-12 lg:items-start")}>
         <div className="flex flex-col gap-6">
           <Card className="flex flex-col gap-5">
-            <NumberField label={copy.fields.balance} unit="nis" value={balance} isEntered={balance !== null} validate={positive} onCommit={setBalance} onReset={() => setBalance(null)} optional inputMode="decimal" />
-            <NumberField
-              label={copy.fields.keep}
-              unit="nis"
-              value={keep}
-              isEntered={keep !== null}
-              validate={(n) => (n < 0 ? nonNegative(n) : balance !== null && n > balance ? copy.errKeep : null)}
-              onCommit={setKeep}
-              onReset={() => setKeep(null)}
-              optional
-              inputMode="decimal"
-            />
+            <RawWatch onRaw={watch("balance", positive)}>
+              <NumberField label={copy.fields.balance} unit="nis" value={balance} isEntered={balance !== null} validate={positive} onCommit={setBalance} onReset={() => setBalance(null)} optional inputMode="decimal" />
+            </RawWatch>
+            <RawWatch onRaw={watch("keep", validateKeep)}>
+              <NumberField label={copy.fields.keep} unit="nis" value={keep} isEntered={keep !== null} validate={validateKeep} onCommit={setKeep} onReset={() => setKeep(null)} optional inputMode="decimal" />
+            </RawWatch>
           </Card>
           <Disclosure label={<span className="font-medium">{copy.optional}</span>} defaultOpen className="bg-card border border-border rounded-lg px-4 md:px-6 py-1">
-            <div className="pb-4">
-              <NumberField label={copy.offer} unit="pct_per_year" value={offer} isEntered={offer !== null} validate={(n) => (n < 0 ? nonNegative(n) : n > 100 ? "הזינו אחוז עד 100." : null)} onCommit={setOffer} onReset={() => setOffer(null)} hint={copy.offerHint} optional inputMode="decimal" />
+            <div className="pb-4 flex flex-col gap-3">
+              <RawWatch onRaw={watch("offer", validateOffer)}>
+                <NumberField label={copy.offer} unit="pct_per_year" value={offer} isEntered={offer !== null} validate={validateOffer} onCommit={setOffer} onReset={() => setOffer(null)} hint={copy.offerHint} placeholder="3.2" optional inputMode="decimal" />
+              </RawWatch>
+              <p className="text-sm text-muted-foreground max-w-measure">{copy.haveDeposit}</p>
             </div>
           </Disclosure>
         </div>
@@ -105,6 +130,8 @@ function Screen({ bundle, failed }: { bundle: CompareBundle | null; failed: bool
             <Callout tone="caution">{copy.failed}</Callout>
           ) : !bundle || !outcome ? (
             <p className="text-muted-foreground">{copy.loading}</p>
+          ) : anyBad ? (
+            <Callout tone="caution">{copy.invalid}</Callout>
           ) : (
             <Result outcome={outcome} bundle={bundle} ctx={ctx} over={over} onFull={toFull} />
           )}
@@ -130,13 +157,21 @@ function Result({ outcome, bundle, ctx, over, onFull }: { outcome: ReturnType<ty
       <Card className="flex flex-col gap-4">
         {view.headline ? (
           <div className="flex flex-col gap-1">
-            <p className="text-lg flex flex-wrap items-baseline gap-x-2">
-              <span>
-                {copy.headlineBefore} <Num value={view.amount} /> {copy.headlineMid}
-              </span>
-              <Num value={view.headline} size="figure" animate />
-              <span>{copy.headlineAfter}</span>
+            <p className="text-lg">
+              {copy.headlineBefore} <Num value={view.amount} />{" "}
+              <LeadTail lead={copy.headlineMid}>
+                {" "}
+                <Num value={view.headline} size="figure" animate /> {copy.headlineAfter}
+              </LeadTail>
             </p>
+            {view.yearly && (
+              <p className="text-lg">
+                <LeadTail lead={copy.soWhat.before}>
+                  <Num value={view.yearly} />
+                </LeadTail>
+                {copy.soWhat.after}
+              </p>
+            )}
             <p className="text-sm text-muted-foreground">{copy.headlineLabel}</p>
           </div>
         ) : (

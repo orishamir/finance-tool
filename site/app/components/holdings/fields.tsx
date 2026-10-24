@@ -2,6 +2,7 @@
 // and a native select in the same box. Both left to right inside, as every field.
 import { useId, type ReactNode } from "react";
 import { r3holdings as copy } from "../../copy";
+import { fmt } from "../../lib/format";
 import { transferBars, type TransferBar } from "../../lib/state";
 import { RuleRef } from "../provenance";
 import { Disclosure, cx } from "../ui";
@@ -15,7 +16,12 @@ export function DateField({ label, value, onChange, max, hint, error }: { label:
         {label}
       </label>
       <div className={cx("field-box", error ? "field-box-error" : false)}>
-        <input id={id} type="date" dir="ltr" max={max} value={value} aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-err` : undefined} onChange={(e) => onChange(e.target.value)} className="field-input !text-start" />
+        <input id={id} type="date" dir="ltr" max={max} value={value} aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-err` : undefined} onChange={(e) => onChange(e.target.value)} className="field-input !text-end" />
+        {/^\d{4}-\d{2}-\d{2}$/.test(value) && (
+          <bdi dir="ltr" className="field-unit">
+            {fmt.date(value)}
+          </bdi>
+        )}
       </div>
       {error ? (
         <span id={`${id}-err`} className="text-xs text-destructive">
@@ -28,6 +34,18 @@ export function DateField({ label, value, onChange, max, hint, error }: { label:
   );
 }
 
+/**
+ * Reports what is typed in the number fields inside it, as typed (a field commits only valid values, after a pause, so the
+ * form itself cannot see "abc" or "150%" that the field refuses). `display: contents` keeps the layout of the children.
+ */
+export function RawWatch({ onRaw, children }: { onRaw: (text: string) => void; children: ReactNode }) {
+  return (
+    <div className="contents" onInput={(e) => onRaw((e.target as HTMLInputElement).value ?? "")}>
+      {children}
+    </div>
+  );
+}
+
 export function SelectField<T extends string>({ label, value, onChange, options, placeholder, error }: { label: ReactNode; value: T | null; onChange: (v: T) => void; options: { value: T; label: string }[]; placeholder: string; error?: ReactNode | null }) {
   const id = useId();
   return (
@@ -36,7 +54,7 @@ export function SelectField<T extends string>({ label, value, onChange, options,
         {label}
       </label>
       <div className={cx("field-box", error ? "field-box-error" : false)}>
-        <select id={id} value={value ?? ""} onChange={(e) => e.target.value && onChange(e.target.value as T)} className="field-input !text-start">
+        <select id={id} value={value ?? ""} aria-invalid={error ? true : undefined} onChange={(e) => e.target.value && onChange(e.target.value as T)} className="field-input !text-start">
           <option value="" disabled>
             {placeholder}
           </option>
@@ -53,7 +71,7 @@ export function SelectField<T extends string>({ label, value, onChange, options,
 }
 
 /** A text field in the same box (the company filter, the typed name). */
-export function TextField({ label, value, onChange, placeholder, dir = "auto", icon, error }: { label: ReactNode; value: string; onChange: (v: string) => void; placeholder?: string; dir?: "auto" | "ltr" | "rtl"; icon?: ReactNode; error?: ReactNode | null }) {
+export function TextField({ label, value, onChange, placeholder, dir = "auto", icon, error, onKeyDown, describedBy }: { label: ReactNode; value: string; onChange: (v: string) => void; placeholder?: string; dir?: "auto" | "ltr" | "rtl"; icon?: ReactNode; error?: ReactNode | null; onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void; describedBy?: string }) {
   const id = useId();
   return (
     <div className="field">
@@ -62,7 +80,7 @@ export function TextField({ label, value, onChange, placeholder, dir = "auto", i
       </label>
       <div className={cx("field-box", error ? "field-box-error" : false)}>
         {icon}
-        <input id={id} type="text" dir={dir} value={value} placeholder={placeholder} onChange={(e) => onChange(e.target.value)} className="field-input !text-start" />
+        <input id={id} type="text" dir={dir} value={value} placeholder={placeholder} aria-invalid={error ? true : undefined} aria-describedby={describedBy} onKeyDown={onKeyDown} onChange={(e) => onChange(e.target.value)} className="field-input !text-start" />
       </div>
       {error && <span className="text-xs text-destructive">{error}</span>}
     </div>

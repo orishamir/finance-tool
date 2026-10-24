@@ -21,8 +21,8 @@ export const content: GuideContent = {
           אם <Term id="יתרת זכות בחשבון">יתרת הזכות</Term> נשארת {threshold ? <>מעל <Num value={threshold} /> </> : "מעל הסף שקבוע בחוק "}רבעון שלם, הבנק חייב לשלוח לכם הודעה שמפנה לחלופות שעשויות להניב יותר.
         </p>
         <p className="max-w-measure">
-          העלות היא מסלול העמלות: ה<Term id="מסלול בסיסי">מסלול הבסיסי</Term> כולל {basicTeller ? <>עד <Num value={basicTeller} /> פעולה בפקיד ו</> : null}
-          {basicDirect ? <>עד <Num value={basicDirect} /> פעולות בערוץ ישיר בחודש</> : "מעט פעולות בחודש"}, ה<Term id="מסלול מורחב">מורחב</Term>{" "}
+          העלות היא מסלול העמלות: <Term prefix="ה" id="מסלול בסיסי">מסלול הבסיסי</Term> כולל {basicTeller ? <>עד <Num value={basicTeller} /> פעולה בפקיד ו</> : null}
+          {basicDirect ? <>עד <Num value={basicDirect} /> פעולות בערוץ ישיר בחודש</> : "מעט פעולות בחודש"}, <Term prefix="ה" id="מסלול מורחב">מורחב</Term>{" "}
           {extendedTeller && extendedDirect ? <>עד <Num value={extendedTeller} /> ו־<Num value={extendedDirect} /></> : "יותר"}. כל בנק חייב להציע את שניהם ולתת לכל לקוח להצטרף.
         </p>
         <RulesLine ids={["BANK-01", "BANK-09", "BANK-20", "BANK-17", "TXI-08"]} />

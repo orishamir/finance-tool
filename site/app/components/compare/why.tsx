@@ -3,8 +3,10 @@
 import { Fragment, type ReactNode } from "react";
 import { Link } from "react-router";
 import { r2 } from "../../copy";
-import { asParameter, parameterOf, type Breakdown, type ListedOption, type RankedOption } from "../../lib/compare";
-import { fmt } from "../../lib/format";
+import { asParameter, countPhrase, decidingFormulaOf, grossReturnRow, headlineState, parameterOf, type Breakdown, type HeadlineState, type ListedOption, type RankedOption, type SensitivityView } from "../../lib/compare";
+import type { FieldKey } from "../../lib/goal";
+import { Tpl } from "../exposure-mode/tpl";
+import { FlipSentence } from "./sensitivity";
 import { relativeGap } from "@finance-tool/engine";
 import { IconAlert, IconCheck } from "../icons";
 import { Num, RulesLine } from "../provenance";
@@ -32,15 +34,77 @@ export function thetaValue(ctx: ResultCtx) {
   return asParameter(p, (p as unknown as { value: import("@finance-tool/schema").ValueObject }).value);
 }
 
-/** The sentence under the h1, by what the ranking found. */
-export function WhyHeadline({ ctx, onWhy }: { ctx: ResultCtx; onWhy: (el: HTMLElement) => void }) {
+type DecidingGaps = { formula: string | null; gaps: Record<string, number>; top: { feeDrag: number; taxAtExit: number; depositSideRelief: number; lockUp: number }; second: { feeDrag: number; taxAtExit: number; depositSideRelief: number; lockUp: number } };
+type RunRef = { usedRules: readonly import("@finance-tool/engine").UsedRule[]; flags?: { code: string }[] } | undefined;
+
+/** The figure of one option under the deciding formula (real NIS; the relief is shown as a gain, so its sign is flipped). */
+export function decidingFigure(f: string, d: DecidingGaps["top"]): number {
+  return f === "deposit-side-relief" ? -d.depositSideRelief : f === "fee-drag" ? d.feeDrag : f === "tax-at-exit" ? d.taxAtExit : d.lockUp;
+}
+
+/**
+ * A7: "ההבדל הגדול ביותר בין שתי הראשונות": the formula whose gap is the largest (F-80), with both options' figures; when that
+ * gap is in the lower option's favour it says so, instead of claiming it as the reason the leader leads.
+ */
+export function BiggestDifference({ deciding, mk, top, second }: { deciding: DecidingGaps; mk: ResultCtx["mk"]; top: { name: string; run: RunRef }; second: { name: string; run: RunRef } }) {
+  const f = deciding.formula;
+  if (!f) return null;
+  const label = r2.deciding[f]!;
+  const formula = decidingFormulaOf(f);
+  const against = deciding.gaps[f]! < 0;
+  return (
+    <>
+      {r2.result.biggestLead} {label}, <Num value={mk.nis(decidingFigure(f, deciding.top), formula, label, top.run)} /> {r2.result.biggestAt} <bdi>{top.name}</bdi> {r2.result.reasonFeeVs} <Num value={mk.nis(decidingFigure(f, deciding.second), formula, label, second.run)} /> {r2.result.biggestAt} <bdi>{second.name}</bdi>
+      {against && (
+        <>
+          {" "}
+          ({r2.result.biggestAgainst} <bdi>{top.name}</bdi>)
+        </>
+      )}
+      .
+    </>
+  );
+}
+
+/** The third line of the headline: how many options could not be checked, and what to enter for them (A3). */
+export function UnevaluatedLine({ state, onField }: { state: HeadlineState; onField: (field: FieldKey) => void }) {
+  if (state.unevaluated === 0 || state.fields.length === 0) return null;
+  const profile: FieldKey[] = ["age", "salary", "employment"];
+  return (
+    <p className="text-sm text-muted-foreground">
+      {countPhrase(state.unevaluated, r2.result.headlineUnevaluated)} {r2.result.headlineEnter}{" "}
+      {state.fields.map((f, i) => (
+        <Fragment key={f}>
+          {i > 0 && " / "}
+          {profile.includes(f) ? (
+            <Link to="/goal" className="text-link hover:underline">
+              {r2.result.headlineFields[f]}
+            </Link>
+          ) : (
+            <button type="button" className="text-link hover:underline" onClick={() => onField(f)}>
+              {r2.result.headlineFields[f]}
+            </button>
+          )}
+        </Fragment>
+      ))}
+    </p>
+  );
+}
+
+/**
+ * The headline (A3): three lines. The leader and how many were ranked; the first move that would change the answer (when the
+ * sensitivity has run); how many were not checked and what to enter for them. A cash-only ranking says so first.
+ */
+export function WhyHeadline({ ctx, onWhy, sens, onField }: { ctx: ResultCtx; onWhy: (el: HTMLElement) => void; sens: SensitivityView | null; onField: (field: FieldKey) => void }) {
   const { view, mk, g } = ctx;
   const { ranked, headline } = view;
   const top = ranked[0];
   const second = ranked[1];
   const theta = thetaValue(ctx);
+  const state = headlineState(view);
   let body: ReactNode = null;
   let showWhy = true;
+  let reason: ReactNode = null;
   switch (headline) {
     case "excludes-all":
     case "nothing-ranked":
@@ -63,7 +127,7 @@ export function WhyHeadline({ ctx, onWhy }: { ctx: ResultCtx; onWhy: (el: HTMLEl
     case "single":
       body = (
         <>
-          <NameLink id={top!.id} name={top!.name} /> {r2.result.headlineSingle}
+          {r2.result.headlineSingle} <NameLink id={top!.id} name={top!.name} />.
         </>
       );
       showWhy = false;
@@ -90,49 +154,19 @@ export function WhyHeadline({ ctx, onWhy }: { ctx: ResultCtx; onWhy: (el: HTMLEl
       break;
     }
     case "winner": {
+      body = <Tpl t={ranked.length === 2 ? r2.result.headlineLeadTwo : r2.result.headlineLead} vars={{ n: <Num value={mk.count(ranked.length, r2.result.headlineLead)} />, name: <NameLink id={top!.id} name={top!.name} /> }} />;
       const deciding = view.topTwo?.deciding;
-      const f = deciding?.formula ?? null;
-      const favours = f !== null && deciding!.gaps[f] > 0;
-      let reason: ReactNode = null;
-      if (f && favours && second) {
-        const d = deciding!;
-        const years = mk.goal.horizon;
-        if (f === "fee-drag") {
-          reason = (
-            <>
-              {r2.result.reasonFee} <Num value={mk.nis(d.top.feeDrag, "F-61", r2.deciding["fee-drag"]!, top!)} /> {r2.result.reasonFeeVs} <Num value={mk.nis(d.second.feeDrag, "F-61", r2.deciding["fee-drag"]!, second)} /> {r2.result.reasonFeeIn}
-              <Num value={years} display={fmt.years(g.horizonYears)} />
-            </>
-          );
-        } else if (f === "tax-at-exit") {
-          reason = (
-            <>
-              {r2.result.reasonTax} <Num value={mk.nis(d.top.taxAtExit, "F-40", r2.deciding["tax-at-exit"]!, top!)} /> {r2.result.reasonFeeVs} <Num value={mk.nis(d.second.taxAtExit, "F-40", r2.deciding["tax-at-exit"]!, second)} />
-            </>
-          );
-        } else if (f === "deposit-side-relief") {
-          reason = (
-            <>
-              {r2.result.reasonRelief} <Num value={mk.nis(-d.top.depositSideRelief, "F-30", r2.deciding["deposit-side-relief"]!, top!)} /> {r2.result.reasonFeeVs} <Num value={mk.nis(-d.second.depositSideRelief, "F-30", r2.deciding["deposit-side-relief"]!, second)} />
-            </>
-          );
-        }
+      if (deciding?.formula && second) {
+        reason = <BiggestDifference deciding={deciding as unknown as DecidingGaps} mk={mk} top={{ name: top!.name, run: top }} second={{ name: second.name, run: second }} />;
       }
-      body = reason ? (
-        <>
-          <NameLink id={top!.id} name={top!.name} /> {r2.result.headlineAfter} {reason}.
-        </>
-      ) : (
-        <>
-          <NameLink id={top!.id} name={top!.name} /> {r2.result.headlineBare}
-        </>
-      );
       break;
     }
   }
   const secondary = headline === "winner" && top!.secondaryRules.length > 0;
+  const flip = sens?.rows.find((r) => r.flip);
   return (
     <div className="flex flex-col gap-2 max-w-measure" key={headline + (top?.id ?? "")}>
+      {state.lead === "cash-only" && headline !== "only-baseline" && <p className="text-lg font-medium">{r2.result.headlineCashOnly}</p>}
       <p className="text-lg">
         {body}
         {secondary && (
@@ -144,6 +178,13 @@ export function WhyHeadline({ ctx, onWhy }: { ctx: ResultCtx; onWhy: (el: HTMLEl
           </>
         )}
       </p>
+      {reason && <p className="text-sm text-muted-foreground">{reason}</p>}
+      {flip && (
+        <p className="text-sm">
+          <FlipSentence row={flip} ctx={ctx} />
+        </p>
+      )}
+      <UnevaluatedLine state={state} onField={onField} />
       {showWhy && ranked.length > 1 && (
         <button type="button" onClick={(e) => onWhy(e.currentTarget)} className="text-link min-h-target self-start px-2 -ms-2 rounded-md hover:underline">
           {r2.result.why}
@@ -187,6 +228,7 @@ export function WhySheetBody({ ctx, headId }: { ctx: ResultCtx; headId: string }
   const rowsA = rowsFor(ctx, deciding, a);
   const rowsB = rowsFor(ctx, deciding, b);
   const diff = differing(ctx, a, b);
+  const gross = grossReturnRow(a, b);
   const rules = [...new Set([...a.usedRules, ...b.usedRules].map((u) => u.id))];
   return (
     <div className="flex flex-col gap-4">
@@ -201,7 +243,7 @@ export function WhySheetBody({ ctx, headId }: { ctx: ResultCtx; headId: string }
           <Fragment key={r.key}>
             <span className={cx("py-2 border-b border-border flex items-center gap-2", r.deciding && "bg-computed-subtle -mx-2 px-2 rounded-s-md")}>
               {r.label}
-              {r.deciding && <Tag tone="computed">{r2.result.whyDeciding}</Tag>}
+              {r.deciding && !rowsA[i - 1]?.deciding && <Tag tone="computed">{r2.result.whyDeciding}</Tag>}
             </span>
             <span className={cx("py-2 border-b border-border text-end", r.deciding && "bg-computed-subtle")}>
               <Num value={mk.nis(a.breakdown[r.key], r.formula, r.label, a)} />
@@ -212,6 +254,16 @@ export function WhySheetBody({ ctx, headId }: { ctx: ResultCtx; headId: string }
           </Fragment>
         ))}
       </div>
+      {gross && (
+        <div className="grid grid-cols-[1fr_auto_auto] gap-x-4 text-sm items-baseline">
+          <span className="flex flex-col">
+            <span>{r2.result.whyGross}</span>
+            <span className="text-xs text-muted-foreground">{r2.result.whyGrossNote}</span>
+          </span>
+          <span className="text-end">{gross.a ? <Num value={gross.a} /> : "—"}</span>
+          <span className="text-end">{gross.b ? <Num value={gross.b} /> : "—"}</span>
+        </div>
+      )}
       <div className="flex flex-col gap-1.5">
         <h3 className="text-sm font-medium">{r2.result.whyDiffers}</h3>
         {diff.length === 0 ? (

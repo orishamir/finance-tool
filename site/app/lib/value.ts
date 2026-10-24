@@ -19,6 +19,8 @@ export interface SiteValue extends ValueObject {
   parameter?: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null; provisional: boolean };
   /** Rules a computed value read, with the strength the run recorded. */
   rulesUsed?: { id: string; strength: Strength }[];
+  /** Engine labels on the run ("secondary-source", "reading": a rule applied as an inference, e.g. TXG-35 in F-52). */
+  labels?: { code: string; ruleId: string }[];
   /** Engine flags (G-IDs, open questions) that qualify the value. */
   flags?: string[];
   /** What the value is, in one line, for the sheet header. */
@@ -70,7 +72,7 @@ export function computed(
   unit: ValueObject["unit"],
   formula: string,
   inputs: Record<string, SiteValue>,
-  options: { today: string; rules?: { id: string; strength: Strength }[]; flags?: string[]; about?: string; notes?: string } ,
+  options: { today: string; rules?: { id: string; strength: Strength }[]; flags?: string[]; labels?: { code: string; ruleId: string }[]; about?: string; notes?: string } ,
 ): SiteValue {
   let weakest: Strength | undefined;
   for (const input of Object.values(inputs)) weakest = weaker(weakest, input.state === "entered" ? "primary" : strengthOf(input));
@@ -88,6 +90,7 @@ export function computed(
     weakest: weakest ?? "primary",
     rulesUsed: options.rules,
     flags: options.flags,
+    labels: options.labels,
     about: options.about,
     notes: options.notes,
   };

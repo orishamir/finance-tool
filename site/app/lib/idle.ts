@@ -43,6 +43,8 @@ export interface IdleView {
   failed: IdleFailedRow[];
   baseline: { rate: SiteValue } | null;
   headline: SiteValue | null;
+  /** The headline's monthly cost over twelve months (audit A20): the same figure, per year. */
+  yearly: SiteValue | null;
   coverage: IdleCash["coverage"];
   coverageRows: IdleCoverageRow[];
   names: Record<string, string>;
@@ -96,11 +98,12 @@ export function buildIdle(bundle: CompareBundle, balance: number | null, keep: n
     const failed: IdleFailedRow[] = main.candidates.filter((c) => c.tier === 1 && cashOptions.has(c.id) && c.kind === "not-evaluated").map((c) => ({ id: c.id, reasons: c.reasons }));
     const top = rows.length > 0 ? rows.reduce((a, b) => (b.monthlyCost > a.monthlyCost ? b : a)) : null;
     const headline = top && top.monthlyCost > 0 ? top.cost : null;
+    const yearly = headline ? computed(top!.monthlyCost * 12, "nis", "F-60", { "העלות החודשית": headline }, { today, about: "בקירוב: העלות החודשית כפול שנים עשר, בלי ריבית על ריבית ובלי תמחור מחדש של הפיקדון לחודש אחד" }) : null;
     const names: Record<string, string> = {};
     for (const w of bundle.wrappers) names[w.id] = w.name;
     for (const t of bundle.tier2) names[t.id] = t.name;
     const coverageRows: IdleCoverageRow[] = main.candidates.map((c) => ({ id: c.id, name: names[c.id] ?? c.name ?? c.id, tier: c.tier, kind: c.kind, reasons: c.reasons, ...(c.tier === 1 ? { href: `/guide/${c.id}` } : {}) }));
-    return { kind: "ok", amount, rows, failed, baseline: { rate: main.baseline.rate as SiteValue }, headline, coverage: main.coverage, coverageRows, names };
+    return { kind: "ok", amount, rows, failed, baseline: { rate: main.baseline.rate as SiteValue }, headline, yearly, coverage: main.coverage, coverageRows, names };
   } catch (e) {
     return { kind: "error", message: e instanceof Error ? e.message : String(e) };
   }

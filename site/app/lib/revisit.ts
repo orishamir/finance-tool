@@ -166,7 +166,49 @@ export interface ValueChange {
   after: { real: number; nominal: number } | null;
 }
 
+/** One input of the goal that differs from the goal the comparison was saved for (audit 2026-10-24, A30). */
+export interface GoalChange {
+  field: "preset" | "horizonYears" | "amountNow" | "monthly" | "available" | "anytime" | "return" | "inflation" | "insurance" | "acceptedFall" | "age" | "employment" | "salary" | "pension" | "hishtalmut" | "exposures";
+  /** The numbers, when the field is one number on each side; otherwise only the field is named. */
+  values?: { before: number; after: number; unit: "years" | "nis" | "nis_per_month" | "pct" };
+}
+
+const exposureValues = (g: Goal) => Object.fromEntries(Object.entries(g.exposures ?? {}).map(([id, i]) => [id, { return: i.return?.value ?? null, worstFall: i.worstFall?.value ?? null, acceptedFall: i.acceptedFall?.value ?? null }]));
+
+/**
+ * What the person changed in the goal since the comparison was saved: the saved record keeps the goal by value, the
+ * current goal is the device's. Names, order and the import tag are not inputs. Empty when the inputs are the same.
+ */
+export function goalChanges(saved: Goal, now: Goal): GoalChange[] {
+  const out: GoalChange[] = [];
+  const num = (field: GoalChange["field"], a: number | null | undefined, b: number | null | undefined, unit: NonNullable<GoalChange["values"]>["unit"]) => {
+    const x = a ?? null;
+    const y = b ?? null;
+    if (x === y) return;
+    out.push({ field, ...(x !== null && y !== null ? { values: { before: x, after: y, unit } } : {}) });
+  };
+  if (saved.preset !== now.preset) out.push({ field: "preset" });
+  num("horizonYears", saved.horizonYears?.value, now.horizonYears?.value, "years");
+  num("amountNow", saved.amountNow?.value, now.amountNow?.value, "nis");
+  num("monthly", saved.monthly?.value, now.monthly?.value, "nis_per_month");
+  num("available", saved.available?.value, now.available?.value, "nis");
+  if ((saved.anytime?.value ?? false) !== (now.anytime?.value ?? false)) out.push({ field: "anytime" });
+  num("return", saved.assumptions?.return, now.assumptions?.return, "pct");
+  num("inflation", saved.assumptions?.inflation, now.assumptions?.inflation, "pct");
+  num("insurance", saved.assumptions?.insurance, now.assumptions?.insurance, "pct");
+  num("acceptedFall", saved.assumptions?.acceptedFall, now.assumptions?.acceptedFall, "pct");
+  num("age", saved.profile?.age, now.profile?.age, "years");
+  if ((saved.profile?.employment ?? null) !== (now.profile?.employment ?? null)) out.push({ field: "employment" });
+  num("salary", saved.profile?.salary, now.profile?.salary, "nis");
+  if (!isSame(saved.profile?.pension, now.profile?.pension)) out.push({ field: "pension" });
+  if (!isSame(saved.profile?.hishtalmut, now.profile?.hishtalmut)) out.push({ field: "hishtalmut" });
+  if (!isSame(exposureValues(saved), exposureValues(now))) out.push({ field: "exposures" });
+  return out;
+}
+
 export interface RevisitView {
+  /** Set by the hook when the current goal's inputs differ from the saved goal's: the saved comparison is then not about this goal. */
+  goalChanges?: GoalChange[];
   status: RevisitStatus;
   savedOn: string;
   mode: CompareMode;

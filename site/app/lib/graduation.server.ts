@@ -7,6 +7,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { loadRules, root } from "./data.server";
 import { tier2Table } from "./compare.server";
+import { parseMdLink } from "./md-link";
 
 export interface GraduationOpen {
   code: string;
@@ -126,4 +127,19 @@ export function graduationStatuses(): GraduationStatusView[] {
 /** Every rule id the status cards cite, so the page can open their rule cards. */
 export function graduationRuleIds(list: GraduationStatusView[]): string[] {
   return [...new Set(list.flatMap((s) => [...s.closed.flatMap((c) => c.ruleIds), ...s.open.flatMap((o) => [o.narrowedBy, o.institutionAnswer?.ruleId].filter((x): x is string => !!x))]))];
+}
+
+/**
+ * The source link of each row of docs/glossary.md section 3, by the row's Hebrew name, read with balanced
+ * parentheses (audit A28). `loadNotCovered` (data.server.ts) still cuts a url at its first ")"; the page prefers this.
+ */
+export function notCoveredSources(): Map<string, { title: string; url: string }> {
+  const doc = readFileSync(join(root, "docs/glossary.md"), "utf8");
+  const section = doc.slice(doc.indexOf("## 3. Not covered yet"), doc.indexOf("## 4. Missing from the rule base"));
+  const out = new Map<string, { title: string; url: string }>();
+  for (const m of section.matchAll(/^\| \*\*(.+?)\*\* \| (.*?) \| (.*?) \| (.*) \|$/gm)) {
+    const link = parseMdLink(m[4]!);
+    if (link) out.set(m[1]!, { title: link.text, url: link.url });
+  }
+  return out;
 }

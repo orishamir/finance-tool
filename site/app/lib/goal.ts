@@ -46,6 +46,8 @@ export interface Goal {
   profile: {
     age: number | null;
     employment: Employment | null;
+    /** True when `employment` was filled in by the form (a yes to a pension or study fund through work), not chosen: the form shows it as a chip the person can flip. audit 2026-10-24 (A3) */
+    employmentDefault?: boolean;
     salary: number | null;
     pension: { employer: number | null; employee: number | null };
     hishtalmut: { employer: number | null; employee: number | null; yearly: number | null };
@@ -409,7 +411,7 @@ export function GoalsProvider({ presets, children }: { presets: Presets; childre
   );
   const setEmployment = useCallback(
     (v: Employment | null) => {
-      update((g) => ({ ...g, profile: { ...g.profile, employment: v } }));
+      update((g) => ({ ...g, profile: { ...g.profile, employment: v, employmentDefault: false } }));
       inputs.setEmployment(v);
     },
     [update, inputs],
@@ -433,3 +435,76 @@ export function isBlank(g: Goal): boolean {
   return g.preset === "none" && !g.name && !g.horizonYears.entered && !g.amountNow.entered && !g.monthly.entered && !g.available.entered && !g.anytime.entered && g.profile.salary === null && g.assumptions.return === null && g.assumptions.acceptedFall == null && Object.keys(g.exposures ?? {}).length === 0;
 }
 
+
+// ---------------------------------------------------------------- employment default and the submit check (audit 2026-10-24: A3, A38, A61)
+
+type Profile = Goal["profile"];
+
+/**
+ * A yes to "pension or study fund through work" means the person is an employee: when no type was chosen it is filled in
+ * as `employee` with `employmentDefault: true` (the form shows a chip to flip it). When both answers stop being yes, a
+ * defaulted type goes back to empty; a type the person chose is never touched.
+ */
+export function reconcileEmployment(p: Profile): Profile {
+  const viaWork = p.hasPension === true || p.hasHishtalmut === true;
+  if (p.employment === null && viaWork) return { ...p, employment: "employee", employmentDefault: true };
+  if (p.employmentDefault && !viaWork) return { ...p, employment: null, employmentDefault: false };
+  return p;
+}
+
+/** The field bounds the check uses (the form's parameters, P-05 and P-07). */
+export interface CheckBounds {
+  horizon: { min: number; max: number };
+  pct: { min: number; max: number };
+  age: { min: number; max: number };
+}
+
+/** One bounds table for the percent fields of the goal form: the return and inflation follow P-05's range, the insurance share cannot be negative. */
+export const pctBoundsFor = (kind: "return" | "inflation" | "insurance" | "share", pct: { min: number; max: number }) => (kind === "insurance" || kind === "share" ? { min: 0, max: pct.max } : pct);
+
+export type MissingField = "years" | "amount";
+export interface GoalProblem {
+  field: string;
+  message: string;
+}
+export interface GoalCheck {
+  /** What is still needed before the comparison can run. */
+  missing: MissingField[];
+  /** Stored values that fail their field's rule (a hand-edited file, an old goal). */
+  problems: GoalProblem[];
+  ready: boolean;
+}
+
+export interface CheckMessages {
+  years: string;
+  yearsWhole: string;
+  yearsRange: string;
+  negative: string;
+  available: string;
+  age: string;
+  pct: (b: { min: number; max: number }) => string;
+}
+
+/** What blocks the comparison for this goal: the two required fields (years, and an amount now or a monthly one) and any stored value outside its bounds. Pure. */
+export function checkGoal(goal: Goal, r: ResolvedGoal, b: CheckBounds, m: CheckMessages): GoalCheck {
+  const missing: MissingField[] = [];
+  const problems: GoalProblem[] = [];
+  const years = r.horizonYears;
+  if (years === null) missing.push("years");
+  else if (years < 1) problems.push({ field: "years", message: m.years });
+  else if (!Number.isInteger(years)) problems.push({ field: "years", message: m.yearsWhole });
+  else if (years > b.horizon.max) problems.push({ field: "years", message: m.yearsRange });
+  if ((r.amountNow ?? 0) <= 0 && (r.monthly ?? 0) <= 0) missing.push("amount");
+  for (const [field, v] of [["amount", r.amountNow], ["monthly", r.monthly], ["available", r.available]] as const) if (v !== null && v < 0) problems.push({ field, message: m.negative });
+  if (r.amountNow !== null && r.available !== null && r.available > r.amountNow) problems.push({ field: "available", message: m.available });
+  const age = goal.profile.age;
+  if (age !== null && (age < b.age.min || age > b.age.max)) problems.push({ field: "age", message: m.age });
+  const a = goal.assumptions;
+  for (const [field, v, bd] of [
+    ["return", a.return, pctBoundsFor("return", b.pct)],
+    ["inflation", a.inflation, pctBoundsFor("inflation", b.pct)],
+    ["insurance", a.insurance ?? null, pctBoundsFor("insurance", b.pct)],
+  ] as const)
+    if (v !== null && (v < bd.min || v > bd.max)) problems.push({ field, message: m.pct(bd) });
+  return { missing, problems, ready: missing.length === 0 && problems.length === 0 };
+}

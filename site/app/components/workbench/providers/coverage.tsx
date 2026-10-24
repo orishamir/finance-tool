@@ -2,12 +2,23 @@
 // the not-comparable group open, with the invariant (counts equal rows) checked in development.
 import { Link } from "react-router";
 import { r2, r4workbench as c } from "../../../copy";
+import { countForm } from "../../../lib/compare";
 import type { CoverageView } from "../../../lib/providers";
 import { computed } from "../../../lib/value";
 import { IconChevronDown } from "../../icons";
 import { Num } from "../../provenance";
 import { reasonSentence } from "./row";
 import { cx } from "../../ui";
+
+/** A count with its own form (the numeral in words for one and two, the digit otherwise) and the word that agrees with it. */
+function CountWord({ n, forms, value, numerals }: { n: number; forms: { one: string; other: string }; value: ReturnType<typeof computed>; numerals: { one: string; two: string } }) {
+  const f = countForm(n, forms, numerals);
+  return (
+    <>
+      <Num value={value} {...(f.numeral ? { display: f.numeral } : {})} /> {f.word}
+    </>
+  );
+}
 
 export function ProviderCoverage({ coverage, today, instrumentClass, channelWord }: { coverage: CoverageView; today: string; instrumentClass: string; channelWord: string }) {
   const t = c.providers.coverage;
@@ -34,13 +45,20 @@ export function ProviderCoverage({ coverage, today, instrumentClass, channelWord
               </>
             ) : (
               <>
-                {t.sentence.before}
-                <Num value={count(coverage.considered, "ספקים")} />
-                {t.sentence.mid}
-                <Num value={count(ranked, t.groups.ranked)} />
-                {t.sentence.mid2}
-                <Num value={count(not, t.groups.notComparable)} />
-                {t.sentence.after}
+                {coverage.considered === 1 ? t.sentence.verbOne : t.sentence.verbMany}
+                {coverage.considered === 1 || coverage.considered === 2 ? (
+                  <Num value={count(coverage.considered, "ספקים")} display={coverage.considered === 1 ? t.sentence.one : t.sentence.two} />
+                ) : (
+                  <>
+                    <Num value={count(coverage.considered, "ספקים")} />
+                    {t.sentence.after}
+                  </>
+                )}
+                {t.sentence.colon}
+                <CountWord n={ranked} forms={t.sentence.ranked} value={count(ranked, t.groups.ranked)} numerals={t.sentence.numerals} />
+                {t.sentence.sep}
+                <CountWord n={not} forms={{ one: t.sentence.not, other: t.sentence.not }} value={count(not, t.groups.notComparable)} numerals={t.sentence.numerals} />
+                {t.sentence.end}
               </>
             )}
           </span>
@@ -54,7 +72,7 @@ export function ProviderCoverage({ coverage, today, instrumentClass, channelWord
       <div className="mt-4 border-t border-border pt-3 flex flex-col gap-1">
         {groups.map((g) => (
           <details key={g.key} className="group/g" open={g.open}>
-            <summary className="flex items-center justify-between min-h-target cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+            <summary className="flex items-center gap-2 min-h-target cursor-pointer list-none [&::-webkit-details-marker]:hidden">
               <h3 className="font-medium">
                 {g.label} <span className="text-muted-foreground font-normal">(<bdi dir="ltr">{g.rows.length}</bdi>)</span>
               </h3>

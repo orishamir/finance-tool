@@ -87,6 +87,7 @@ export function outcomeOf(r: WbRow, years: number | null, table: FitTableData, c
 }
 
 export type SortKey = "company" | "fee-balance" | "fee-deposit" | "name";
+export type SortDir = "asc" | "desc";
 
 const collator = new Intl.Collator("he");
 
@@ -94,8 +95,9 @@ const collator = new Intl.Collator("he");
  * Order the rows of one group. A near-duplicate group stays together (its place is its first member's), and a fee
  * that was not reported sorts last in its own block. Ascending: a sort is the person's action on a sourced column.
  */
-export function sortRows(rows: WorkbenchRow[], sort: SortKey): WorkbenchRow[] {
+export function sortRows(rows: WorkbenchRow[], sort: SortKey, dir: SortDir = "asc"): WorkbenchRow[] {
   const fee = (w: WorkbenchRow) => (sort === "fee-deposit" ? w.row.d.value : w.row.b.value);
+  const sign = dir === "desc" ? -1 : 1;
   const cmp = (a: WorkbenchRow, b: WorkbenchRow): number => {
     if (sort === "fee-balance" || sort === "fee-deposit") {
       const x = fee(a);
@@ -103,10 +105,10 @@ export function sortRows(rows: WorkbenchRow[], sort: SortKey): WorkbenchRow[] {
       if (x === null && y === null) return collator.compare(a.company.name, b.company.name) || collator.compare(a.row.n, b.row.n);
       if (x === null) return 1;
       if (y === null) return -1;
-      return x - y || collator.compare(a.company.name, b.company.name) || collator.compare(a.row.n, b.row.n);
+      return sign * (x - y || collator.compare(a.company.name, b.company.name) || collator.compare(a.row.n, b.row.n));
     }
-    if (sort === "name") return collator.compare(a.row.n, b.row.n) || collator.compare(a.company.name, b.company.name);
-    return collator.compare(a.company.name, b.company.name) || collator.compare(a.row.n, b.row.n) || a.row.f - b.row.f;
+    if (sort === "name") return sign * (collator.compare(a.row.n, b.row.n) || collator.compare(a.company.name, b.company.name));
+    return sign * (collator.compare(a.company.name, b.company.name) || collator.compare(a.row.n, b.row.n) || a.row.f - b.row.f);
   };
   // units: a duplicate group is one unit
   const units: WorkbenchRow[][] = [];
@@ -128,6 +130,54 @@ export function sortRows(rows: WorkbenchRow[], sort: SortKey): WorkbenchRow[] {
   for (const u of units) u.sort(cmp);
   units.sort((a, b) => cmp(a[0]!, b[0]!));
   return units.flat();
+}
+
+/** Rows the person can open: a sector or employer track (CAT-10) is not, whatever the goal. With `openToAll` off, every row stays. */
+export function eligibleOnly(rows: WorkbenchRow[], openToAll: boolean): WorkbenchRow[] {
+  return openToAll ? rows.filter((w) => w.outcome !== "ineligible") : rows;
+}
+
+/** Everything the controls hold, and what the address carries so a reload or the back button keeps it. */
+export interface WbQuery {
+  q: string;
+  sort: SortKey;
+  dir: SortDir;
+  /** One exposure group (its `SPECIALIZATION`, `""` for the no-class group), `"all"` for every group, or null for the default groups. */
+  chip: string | null;
+  /** Only tracks open to everyone (the default); false shows the sector and employer tracks too. */
+  openToAll: boolean;
+}
+
+export const defaultWbQuery: WbQuery = { q: "", sort: "company", dir: "asc", chip: null, openToAll: true };
+const SORTS: SortKey[] = ["company", "fee-balance", "fee-deposit", "name"];
+
+export function parseWbQuery(search: string): WbQuery {
+  const p = new URLSearchParams(search);
+  const sort = p.get("sort");
+  const chip = p.get("chip");
+  return {
+    q: p.get("q") ?? "",
+    sort: SORTS.includes(sort as SortKey) ? (sort as SortKey) : "company",
+    dir: p.get("dir") === "desc" ? "desc" : "asc",
+    chip: chip === null ? null : chip === "none" ? NO_CLASS : chip,
+    openToAll: p.get("all") !== "1",
+  };
+}
+
+export function wbQueryString(q: WbQuery): string {
+  const p = new URLSearchParams();
+  if (q.q) p.set("q", q.q);
+  if (q.sort !== "company") p.set("sort", q.sort);
+  if (q.dir === "desc") p.set("dir", "desc");
+  if (q.chip !== null) p.set("chip", q.chip === NO_CLASS ? "none" : q.chip);
+  if (!q.openToAll) p.set("all", "1");
+  const s = p.toString();
+  return s ? `?${s}` : "";
+}
+
+/** A press on a sort: another key starts ascending; the same key again reverses it. */
+export function pressSort(q: Pick<WbQuery, "sort" | "dir">, key: SortKey): Pick<WbQuery, "sort" | "dir"> {
+  return q.sort === key ? { sort: key, dir: q.dir === "asc" ? "desc" : "asc" } : { sort: key, dir: "asc" };
 }
 
 export function matches(w: WorkbenchRow, q: string): boolean {

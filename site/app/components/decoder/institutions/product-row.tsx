@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import { r4catalogue as copy } from "../../../copy";
 import { fmt } from "../../../lib/format";
 import { IconAlert, IconDrillIn } from "../../icons";
-import { Num, RuleRef, RulesLine } from "../../provenance";
+import { LeadTail, Num, RuleRef, RulesLine } from "../../provenance";
 import { Card, Disclosure, Tag } from "../../ui";
 import type { ProductRowData } from "./types";
 
@@ -56,8 +56,9 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
         <p className="flex items-start gap-1.5 text-sm text-caution-foreground">
           <IconAlert size={18} className="text-caution shrink-0 mt-0.5" />
           <span>
-            {copy.card.stale.before}
-            <bdi dir="ltr">{fmt.date(p.snapshot)}</bdi>
+            <LeadTail lead={copy.card.stale.before}>
+              <bdi dir="ltr">{fmt.date(p.snapshot)}</bdi>
+            </LeadTail>
             {copy.card.stale.after}
           </span>
         </p>

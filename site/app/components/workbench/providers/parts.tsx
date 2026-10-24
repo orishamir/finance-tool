@@ -6,7 +6,7 @@ import { ruleTitle } from "../../../lib/rule-title";
 import type { FeeType, ProviderRowView, RowProtection, RowTariff } from "../../../lib/providers";
 import type { RuleRecord } from "@finance-tool/schema";
 import { IconAlert, IconClock, IconExternal } from "../../icons";
-import { Num, RuleRef } from "../../provenance";
+import { LeadTail, Num, NumAfter, RuleRef } from "../../provenance";
 import { Disclosure, Tag, cx } from "../../ui";
 
 /** One fixed colour per fee type, the same on every row (design-system 8.3). */
@@ -60,22 +60,20 @@ export function TariffLine({ tariff, noPublished = true }: { tariff: RowTariff; 
   const t = c.providers;
   return (
     <p className="text-sm flex flex-col gap-0.5">
-      <span className="flex flex-wrap items-center gap-x-1.5">
+      <span>
         {tariff.published ? (
           <>
-            {t.tariffLine.before}
-            <Num value={tariff.published} />
-            {t.tariffLine.mid}
+            <NumAfter lead={t.tariffLine.before} value={tariff.published} />
+            <NumAfter lead={t.tariffLine.mid} value={tariff.snapshot} />
           </>
         ) : (
           <>
             <span className="text-caution-foreground">{noPublished ? c.noPublishedDate : ""}</span>
             {" · "}
-            {t.tariffLine.collected}
+            <NumAfter lead={t.tariffLine.collected} value={tariff.snapshot} />
           </>
-        )}
-        <Num value={tariff.snapshot} />
-        <a href={tariff.href} target="_blank" rel="noopener noreferrer" className="text-link hover:underline inline-flex items-center gap-1 min-h-9">
+        )}{" "}
+        <a href={tariff.href} target="_blank" rel="noopener noreferrer" className="text-link hover:underline inline-flex items-center gap-1 min-h-9 align-middle">
           {t.tariffLink} <span className="text-xs text-muted-foreground">({t.formats[tariff.format]})</span>
           <IconExternal size={14} />
         </a>
@@ -84,8 +82,9 @@ export function TariffLine({ tariff, noPublished = true }: { tariff: RowTariff; 
         <span className="text-caution-foreground flex items-start gap-1.5">
           <IconClock size={14} className="text-caution mt-1 shrink-0" />
           <span>
-            {c.staleTariff.before}
-            <bdi dir="ltr">{fmt.date(tariff.snapshot.value as string)}</bdi>
+            <LeadTail lead={c.staleTariff.before}>
+              <bdi dir="ltr">{fmt.date(tariff.snapshot.value as string)}</bdi>
+            </LeadTail>
             {c.staleTariff.after}
           </span>
         </span>

@@ -2,7 +2,7 @@
 // the rule records, the rules the page quotes (for the cards and the engine's rule book), and the companies the pair fields
 // offer. One page per wrapper that has a step list. Server-only.
 import { loadCma, loadFees, loadRules, loadWrappers, today } from "./data.server";
-import { buildSteps, isProvident, playbookRuleIds, playbookWrappers, STEP_LISTS } from "./playbook";
+import { buildSteps, buildSummary, isProvident, playbookRuleIds, playbookWrappers, STEP_LISTS } from "./playbook";
 import { providerWrapperIds } from "./providers.server";
 
 export function playbookWrapperIds(): string[] {
@@ -28,9 +28,17 @@ function companies(wrapperId: string): PlaybookCompany[] {
   };
   const managers = isProvident(wrapperId) || wrapperId === "child-savings-provident" || wrapperId.startsWith("ira-");
   const banks = !isProvident(wrapperId) && wrapperId !== "child-savings-provident";
-  if (managers) for (const c of loadCma().companies) add(c.id, c.name);
-  // an individually managed account (IRA) is run by a managing company or by a bank or broker: both
-  if (banks) for (const s of loadFees()) if (s.provider.class === "bank" || s.provider.class === "broker") add(s.id, s.provider.name_he);
+  if (managers) {
+    // only the companies that run a track of this wrapper in the regulator's data (audit 2026-10-24, A56); a wrapper the
+    // data does not classify (an IRA) keeps the whole list
+    const cma = loadCma();
+    const offering = new Set(cma.tracks.filter((t) => t.wrapperId === wrapperId).map((t) => t.companyId));
+    for (const c of cma.companies) if (offering.size === 0 || offering.has(c.id)) add(c.id, c.name);
+  }
+  // an individually managed account (IRA) is run by a managing company or by a bank or broker: both; a current account,
+  // a deposit and a child's bank plan are a bank's alone
+  const bankOnly = wrapperId === "current-account" || wrapperId === "bank-deposit" || wrapperId === "child-savings-bank";
+  if (banks) for (const s of loadFees()) if (s.provider.class === "bank" || (s.provider.class === "broker" && !bankOnly)) add(s.id, s.provider.name_he);
   return [...byName.values()].sort((a, b) => a.name.localeCompare(b.name, "he"));
 }
 
@@ -47,6 +55,7 @@ export function playbookPage(wrapperId: string) {
     today: date,
     rules,
     steps: buildSteps(all, wrapperId, date),
+    summary: buildSummary(all, wrapperId),
     companies: companies(wrapperId),
     hasProviders: providerWrapperIds().includes(wrapperId),
   };

@@ -19,9 +19,9 @@ export default function TransferPage() {
   const data = useLoaderData<typeof loader>();
   return (
     <PageShell current="other" data={{ rules: {}, terms: {}, dimensions: {}, today: data.today }}>
-      <div className="flex flex-col gap-6 pt-2 lg:pt-8 max-w-measure">
+      <div className="flex flex-col gap-6 pt-2 lg:pt-8 mx-auto w-full max-w-measure">
         <Breadcrumb parent={{ href: "/", label: site.name }} current={copy.title} />
-        <TransferPanel site={data.site} />
+        <TransferPanel site={data.site} page />
       </div>
     </PageShell>
   );

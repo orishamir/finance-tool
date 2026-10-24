@@ -18,7 +18,7 @@ export default function NotFound() {
 function Body() {
   const open = useOpenSearch();
   return (
-    <div className="mx-auto max-w-measure flex flex-col gap-4 pt-10">
+    <div className="mx-auto w-full max-w-measure flex flex-col gap-4 pt-10">
       <h1 className="text-2xl font-semibold">{system.notFound.title}</h1>
       <div className="flex flex-wrap gap-x-6">
         <Link to="/" className="text-link min-h-target inline-flex items-center hover:underline">

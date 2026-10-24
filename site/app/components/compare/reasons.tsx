@@ -110,14 +110,18 @@ export function ReasonText({ r, id, ctx, routed }: { r: ReasonView; id: string; 
     case "idle-cash-not-run":
       return <>{c.noRun}</>;
     case "employee-study-fund":
-      return <>{r2.result.listedEmployee} <bdi dir="ltr" className="text-xs">D15</bdi></>;
-    case "ceiling-partial":
+      // a product-decision id (D15) is not shown after the words (hebrew-editor request, 2026-10-24)
+      return <>{r2.result.listedEmployee}</>;
+    case "ceiling-partial": {
+      // A11: what the ceiling is and what stays outside it, in words that say what happened to this goal's money
+      const ceiling = ctx.bundle.wrappers.find((w) => w.id === id)?.record.ceiling?.amount;
       return (
         <>
-          {r2.result.listedCeilingBefore} {routed !== undefined ? <Num value={ctx.mk.nis(routed, "F-05", r2.result.listedCeilingBefore)} /> : null} {r2.result.listedCeilingAfter}
+          {r2.result.listedCeilingBefore} {ceiling ? <Num value={ceiling as never} /> : null} {r2.result.listedCeilingMid} {routed !== undefined ? <Num value={ctx.mk.nis(routed, "F-05", r2.result.listedCeilingBefore)} /> : null} {r2.result.listedCeilingAfter}
           <Rules ids={r.ruleIds} />
         </>
       );
+    }
     case "locked-until":
     case "locked-to-age": {
       const date = r.untilMonth !== undefined ? addMonths(ctx.bundle.runDate, r.untilMonth) : null;

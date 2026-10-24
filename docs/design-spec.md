@@ -1,5 +1,7 @@
 # Design spec, release 1 screens
 
+Amended 2026-10-24 after the overnight user audit; see research/audit/2026-10-24-user-audit.md. Each amendment is dated; a replaced sentence is struck through or kept as "until 2026-10-24".
+
 > Release 2 sections added 2026-10-23: sections 6 (shared) to 10 (screens 5 to 8).
 > Release 3 sections added 2026-10-23: sections 11 (shared) to 15 (screens 9 to 12).
 > Release 4 sections added 2026-10-24: sections 16 (shared) to 20 (screens 13 to 16).
@@ -68,7 +70,7 @@ Only the roles below appear in these screens. Hex values are for checking agains
 | `decoration-sourced` | #7d7a74 | solid 1px underline under a sourced number |
 | `decoration-computed`, `bg-computed-subtle` | #bc8bfe, #281042 | dotted 2px underline; the "מחושב" tag |
 | `text-entered`, `bg-entered-subtle` | #a5c5fe, #051b49 | an entered number; the "הוזן על ידך" tag; an entered chip |
-| `text-caution` / `-foreground` / `-subtle` | #e29522 / #fdd5a7 / #2f1a00 | stale clock, "מוסדי"/"משני" tags, fees-pending note, same-name banner |
+| `text-caution` / `-foreground` / `-subtle` | #e29522 / #fdd5a7 / #2f1a00 | stale clock, the "לפי החברה" ("מוסדי" until 2026-10-24) and "משני" marks, fees-pending note, same-name banner |
 | `text-blocked` / `-foreground` / `-subtle` | #ff796d / #fed0c9 / #400405 | lock icon, blocked rows, blocked callout |
 | `text-positive` / `-foreground` | #62bf79 / #bdeac5 | check icon, "נלקח בחשבון" |
 | `bg-overlay` | black 60% | behind a sheet |
@@ -84,12 +86,12 @@ Props are in TypeScript terms. `ValueObject` is the schema's value object (`pack
 
 | Component | Props | Notes |
 |---|---|---|
-| `Header` | `current: 'guide' \| 'decoder' \| 'rules' \| 'parameters'` | Phone: site name, search and menu icon buttons (44px). PC: name, four links, search field 340px wide. Sticky. The site name is in `text-foreground`, not link colour. |
+| `Header` | `current: 'guide' \| 'decoder' \| 'rules' \| 'parameters'` | Phone: site name, search and menu icon buttons (44px). ~~PC: name, four links, search field 340px wide.~~ PC from `xl` (80rem): name, the five doors as no-wrap links, search field 224px (256px from `xl`); at `lg` the destinations are behind the menu button and the field stays inline; the header is a 64px bar (until 2026-10-24 the links showed from `lg` and wrapped at every width from 1024 to 1600px) (2026-10-24, UX audit). On a PC the field is the input itself and its results open under it (a combobox, no dialog; Escape, the X and a click elsewhere close it); on the first page the header field is hidden; a "חזרה למעלה" button shows after 1.2 screens. Sticky. The site name is in `text-foreground`, not link colour. |
 | `Footer` | none | Three links (copy 2). Each link is at least 44px tall. |
-| `Num` | `value: ValueObject; size?: 'inline' \| 'cell' \| 'figure'; label?: string` | Renders a `<button>`. Style by `value.state`: sourced, solid underline; computed, dotted; entered, `text-entered` on `bg-entered-subtle`, `rounded-sm`, 0.15em inline padding. Adds the stale clock or the "משני"/"מוסדי" tag from `value.source.strength` and its dates. A `::after` with `inset: -11px -4px` makes a 44px tap area. Formats with `Intl` `he-IL` (`design-system.md` 2.7). For `size="figure"`, wrap it in a `.figure` span so the button inherits 32px. `value.value === null` renders "לא ידוע". Tap opens `ProvenanceSheet`. |
+| `Num` | `value: ValueObject; size?: 'inline' \| 'cell' \| 'figure'; label?: string` | Renders a `<button>`. Style by `value.state`: sourced, solid underline; computed, dotted; entered, `text-entered` on `bg-entered-subtle`, `rounded-sm`, 0.15em inline padding. Adds the stale clock and, for `value.source.strength` institution or secondary, a 14px caution icon before the digits (never between the number and its unit; the word "לפי החברה" or "משני" is in the accessible name and the popover, not in the line; "מוסדי" until 2026-10-24), and its dates; a sourced figure whose `effective_from` is after the page date carries the same icon and, at `figure` size, "נכנס לתוקף ב־{date}"; a computed figure carries the icon only at `figure` size (2026-10-24, UX audit). Amounts of 1,000 ₪ or more show whole shekels except at `size="cell"` and for tariffs (design-system 2.7). A `prefix` prop keeps a prefix letter and the button in one no-wrap span. A `::after` with `inset: -11px -4px` makes a 44px tap area. Formats with `Intl` `he-IL` (`design-system.md` 2.7). For `size="figure"`, wrap it in a `.figure` span so the button inherits 32px. `value.value === null` renders "לא ידוע". Tap opens `ProvenanceSheet`. |
 | `ProvenanceSheet` | `value: ValueObject` | Screen 2. |
 | `StateTag` | `state: 'sourced' \| 'computed' \| 'entered' \| 'parameter'` | Icon plus word, `text-xs`, weight 500, `rounded-sm`, padding 1×6px. |
-| `StrengthLabel` | `strength` | Tag in neutral (primary), or caution colours with `CircleAlert` (institution, secondary). |
+| `StrengthLabel` | `strength` | Tag in neutral (primary), or caution colours with `CircleAlert` (institution, secondary). The institution label reads "לפי החברה" (it read "מקור מוסדי" until 2026-10-24); an institution's own document is still the source (D23). |
 | `RuleRef` | `id: string` | A link chip: `text-xs`, weight 500, `rounded-full`, 1px `border`, `bg-card`, padding 1×8px, LTR, slashed zero, 44px tap area. Opens the rule card (sheet on a phone, card on PC). |
 | `RulesLine` | `ids: string[]; lead?: ReactNode` | "כללים:" then the chips, `text-xs muted-foreground`, gap 8px, wrapping. Always the last line of the paragraph or block it belongs to; never inside a sentence. |
 | `Term` | `id: string` | The first use of a glossary term on a page: a button styled as text with a 1px dashed underline in `muted-foreground`. Opens a small card with the official term, the one-line explanation and the source from the glossary. Later uses on the same page are plain text. |
@@ -108,7 +110,7 @@ Props are in TypeScript terms. `ValueObject` is the schema's value object (`pack
 | Bands, bottom up | what is left (`chart-value`), tax (`chart-tax`), fees (`chart-fee`); top edge = value without fees and tax. A 1.5px `card`-coloured stroke separates bands |
 | Lines | what is left, 2px `chart-net`, on top; deposits, 1.5px `chart-contributions` |
 | Grid | three to five lines at nice steps (1, 2, 2.5, 5 × 10ⁿ) in `chart-grid`; baseline in `chart-axis` |
-| Value labels | in the right strip, `text-xs chart-text`, level with their grid line, `direction: rtl`, anchored at the strip's right edge; compact form ("200 אלף ₪", "1.5 מיליון ₪") |
+| Value labels | ~~in the right strip, `text-xs chart-text`, level with their grid line, `direction: rtl`, anchored at the strip's right edge~~ at the plot's left edge, just above their grid line, inside the plot with a card-colour halo, `direction: ltr`, `text-anchor: start`, spelled in visual order ("₪ אלף 200") so WebKit and Chromium agree; compact form ("200 אלף ₪", "1.5 מיליון ₪") (2026-10-24, UX audit) |
 | Year labels | under the plot: "היום", then four evenly spaced years, the last at the horizon; `direction: ltr` |
 | Crosshair | 1px `chart-crosshair` at the hovered month, with a 4px dot (2px `card` stroke) on the "what is left" line |
 | Markers | 1px `chart-marker` vertical line with a `text-xs` label at the top (copy 3.5) |
@@ -119,7 +121,7 @@ Props are in TypeScript terms. `ValueObject` is the schema's value object (`pack
 | Table | a `Disclosure` with copy "הצגה כטבלה"; one row per year, every cell a `Num` |
 | Pre-render | drawn at build time on the illustrative scenario P-05, so it shows before any script runs |
 
-Value labels sit outside the plot because the bands fill its right side as money grows, and labels inside would sit on colour (design review C1).
+~~Value labels sit outside the plot because the bands fill its right side as money grows, and labels inside would sit on colour (design review C1).~~ Since 2026-10-24 (UX audit) they sit at the left edge, where the bands are still thin, and the right of the plot is free for the direct labels and the horizon; the right gutter (78px) is 12px. One rule for the timeline, comparison, fee and cumulative-cost charts. Year ticks come from `niceYearTicks(horizon)`: whole steps of 1, 2, 5 or 10 years from today, about four, and the horizon end is not always a tick.
 
 ### 1.5 Number formats
 
@@ -158,14 +160,14 @@ One page per product type (wrapper); the mockup shows kupat gemel lehashkaa. The
 | Component | Variant | Props | Notes |
 |---|---|---|---|
 | `SectionIndex` | chips (phone) / list (PC) | `sections: {id, label}[]; current` | The current section follows the scroll (IntersectionObserver). Phone chips 44px tall; the current one `bg-foreground text-background`. PC list items 10×14px padding with a 2px `border-s` (teal when current). |
-| `NumberLegend` | | none | Three sample numbers and the hint (copy 2). Not interactive. |
+| `NumberLegend` | `institution?; term?` | none | Three sample numbers, a fourth for the institution mark ("לפי החברה: המספר מבוסס על מסמך של החברה"), optionally a fifth for a glossary term, and the hint (copy 2). Not interactive. Shown under the h1 of every page that shows numbers (2026-10-24, UX audit). |
 | `GuideSection` | | `id; title; children` | Anchor target; scroll margin = header height + 8px. |
 | `AssumptionChips` | phone only | `inputs: Input[]; onOpen(field?)` | Buttons, 44px, `rounded-full`, 1px `border`; an entered input uses `bg-entered-subtle`, an `#2a3f6b` border, a pencil icon and an `entered` value. The last chip, "כל ההנחות", opens the sheet at the top. The row scrolls sideways and bleeds to the screen edge. |
 | `ValuesPanel` | PC only | as screen 3 | |
 | `TimelineChart` | | 1.4 | |
 | `KeyValueList` | phone list / PC 2×2 cards | `items: {label, value: ReactNode, rules: string[], tag?}[]` | Label `text-sm muted-foreground`, value `text-base` (PC cards: 20px, weight 600). A `RulesLine` closes each item. |
 | `FeeTable` | phone rows / PC table | `fees: {name, base, cap: ValueObject \| string, rules, tag?}[]` | Phone: name as h3 (16px, 600), base as `text-sm muted`, cap, `RulesLine`. PC: columns סוג · על מה נגבה · תקרה · כללים, with the row header as `<th scope="row">`. The note under it comes from copy 3.5. |
-| `TaxSteps` | phone vertical / PC row | `steps: {when, headline, text, rules, tag?, alt?}[]` | Phone: 28px circle with an arrow icon, a 2px line joining the circles at the start side. PC: three cards, the last 1.3× wider, joined by 24px arrows pointing left. |
+| `TaxSteps` | phone vertical / PC row | `steps: {when, headline, text, rules, tag?, alt?}[]` | Phone: 28px circle holding a down chevron (2026-10-24, UX audit; the line joining the circles at the start side was already vertical). PC: three cards, the last 1.3× wider, joined by 24px arrows pointing left. |
 | `Callout` | blocked | | For a product route the site cannot compute (here: age 60 to an annuity, open question PEN OQ7). |
 | `DimensionChecklist` | | `rows: {id, mark, questionId?, tag?}[]` | Names and explanations from the glossary's checklist rows. Summary line of blocked names above, in `blocked-foreground`. Rows: 24px icon, name weight 500, mark word `text-xs` in the mark's colour, explanation `text-sm muted`. |
 | `RelatedProducts` | | `ids: string[]` | "גם כדאי להכיר:" then chips linking to guide pages. |
@@ -208,6 +210,8 @@ One page per product type (wrapper); the mockup shows kupat gemel lehashkaa. The
 - **Slow connection:** the page and its first graph are pre-rendered; the engine worker loads after. Until it loads, inputs are disabled with the field state "טוען…" and the graph shows the example scenario.
 - **Calculation failure:** the graph area shows copy 4 "The calculation failed".
 
+**Amended 2026-10-24 (UX audit).** Section order is what, use directly after it, who and so on; the rule chips sit behind a per-section "הצגת הכללים" toggle and the companies behind "הצגת החברות"; the check section is "מה האתר לקח בחשבון" (it was "מה לבדוק"): an intro, the blocked rows each on its own line, and the full list behind "הצגת כל הבדיקות". The chart table is its own full-width card under the chart-and-inputs row (it was inside the chart card), with an edge fade as a scroll cue. The institution chips are a plain link list, two columns from `md`. The expander shows the Hebrew `text_he` of the rules the exit sentence cites (English only when none, labelled). The terms table is hidden under three rows, capped to the page's own terms with the rest behind "הצגת המונחים הכלליים". The example headline reads "דוגמה: X ועוד Y בחודש, בתשואה של Z בשנה, משאירים לכם אחרי N…"; stubs are one quiet sentence with no codes. The study-fund deposit row follows the saved employment (both lines when unset). The tax-at-exit badge is red only when the wrapper itself has a blocking open question; shared open questions get the neutral tag "יש שאלות פתוחות". Companies are split into "פתוחות לכלל הציבור" and "לעובדי מגזר או מפעל מסוים". Pages with a playbook link to it ("איך עוברים, שלב אחרי שלב"). The `/guide` list is grouped, with "מאיפה להתחיל" (three links) and a "במה אפשר להשקיע בתוכו" chip row per guide.
+
 ---
 
 ## 3. Screen 2: where a number comes from
@@ -226,10 +230,10 @@ Opens from any `Num`. It says what kind of number this is and lets the reader fo
 
 | Kind | Rows (copy 3.8) |
 |---|---|
-| Sourced | מקור (link, mirrored external-link icon), פורסם על ידי, נבדק ב־, בתוקף מ־ / עד, כלל (`RulesLine`) |
+| Sourced | מקור (link, mirrored external-link icon), פורסם על ידי, נבדק, בתוקף מתאריך / עד, כלל (`RulesLine`); noun labels since 2026-10-24 so a label never ends in a maqaf in one cell with its date in the next ("נבדק ב־" and "בתוקף מ־" until then); a value valid for exactly one calendar year reads "תקף לשנת {year}"; the source title is shown when Hebrew, else the host with the English title behind "שם המקור באנגלית"; English notes are never shown (2026-10-24, UX audit) |
 | Computed | נוסחה (name plus F-ID chip); "ערכים שנכנסו לחישוב" as a readout-style list of `Num`s, each tappable; "כללים שנכנסו לחישוב" as rule chips with their `StrengthLabel` |
 | Entered | "הזנתם את הערך הזה.", במקום: the example value as a `Num`, and the reset button |
-| Site parameter | the value with "פרמטר של האתר", למה הערך הזה, אושר ב־ (or "ערך זמני שהאתר קבע") |
+| Site parameter | the value with "פרמטר של האתר", למה הערך הזה, תאריך אישור ("אושר ב־" until 2026-10-24; "עוד לא אושר" and a "ערך זמני" tag in the header for a provisional value) |
 | Unknown | the reason from the value object's `notes` |
 | Caution line | for institution or secondary sources (copy 2 "Source strength"), or the stale line |
 
@@ -269,7 +273,7 @@ Where the reader changes the values behind the graph (flow 3). A bottom sheet on
 |---|---|---|
 | `NumberField` | `id; label; unit; value: ValueObject; onChange; hint?; error?; placeholder?` | Label above (`text-sm`, weight 500). Box: `h-field`, 1px `border-input`, `rounded-md`, `bg-card`, padding 12px. Input: `type="text"`, `inputmode="decimal"`, `dir="ltr"`, text aligned right; unit as a fixed suffix at the inline end. The box shows the `ring` outline while its input has focus. Entered: box border `#4a6cb3`, text `entered`. Error: border and message in `destructive`, `aria-invalid`. |
 | `SliderField` | `NumberField` props plus `min; max; step` | The label row holds the label and a compact number box (120–128px) at the end. Slider: 44px tall hit area; track 4px `#4a4742`; fill `bg-primary` from the start (right); thumb 24px, `bg-foreground` with a 3px `primary` ring. Use a native `<input type="range">` styled to this, so arrow keys, Page Up/Down and Home/End work. |
-| `FieldState` | `state: 'start' \| 'entered'` | Start: "ערך התחלתי, פרמטר של האתר" in `text-xs muted`. Entered: `StateTag entered` plus the reset button (44px tall, `text-link`). |
+| `FieldState` | `state: 'start' \| 'entered'` | Start: ~~"ערך התחלתי, פרמטר של האתר" in `text-xs muted`~~ nothing per field; one `ParameterLine` above the fields says "שדה שלא הזנתם הוא ערך התחלתי, פרמטר של האתר." (2026-10-24, UX audit). Entered: `StateTag entered` plus the reset button (44px tall, `text-link`). |
 | `SegmentedControl` | 1.3 | Employment, nothing selected by default. |
 
 ### States and interactions
@@ -278,7 +282,7 @@ Where the reader changes the values behind the graph (flow 3). A bottom sheet on
 |---|---|---|
 | Any field | typing | The graph and every number recompute on each change (debounced 150ms for typed text, live for the slider). Thousands separators are added on blur. |
 | Any field | value differs from the start value | Becomes entered: blue text, `FieldState entered`; the value follows the reader to every guide page and is saved on the device |
-| Reset | tap | Restores the start value; the state returns to "ערך התחלתי" |
+| Reset | tap | Restores the start value; the state returns to the start value and the field shows no tag |
 | "חזרה לכל הערכים ההתחלתיים" | shown when anything is entered | Restores all |
 | Return field | entered | The graph switches to the entered-return style (1.4); the note under the field already says so |
 | Invalid input | | Error under the field (copy 3.7); the graph keeps the last valid value |
@@ -336,6 +340,8 @@ What a managing company offers, decoded (flow 5). The default view shows what th
 - **Track names with Latin or numbers** ("S&P 500", "עד 25% מניות"): shown exactly as the source writes them, Latin and digits isolated so they stay in order; these digits are part of a name, not figures.
 - **Same-name groups of three or more:** one banner over all of them.
 - **A catalogue entry whose fund number has left the regulator's data:** the row shows the name with "לא נמצא בנתוני הרשות" in `muted-foreground` and no link (data-schema §4 item 10 reports it to the founder).
+
+**Amended 2026-10-24 (UX audit).** ~~Side cards beside the list on PC~~: the product-type and paste cards are a two-column row above the track list from `lg`, and the right-hand aside is gone at every width; classification and holdings are one cell (holdings as a muted second line), so the table has five columns. A side card's tariff link reads "לתעריפון (PDF)" with the format isolated at the end; "נכון ל־{date}" keeps its maqaf.
 
 
 ---
@@ -425,9 +431,9 @@ Every `ValueObject` carries its state, so each field's styling follows `state` a
 | `SwitchRow` | `label; checked; onChange; hint?` | Radix Switch; 44px row; label at the start, switch at the end; on: `bg-primary`; thumb `bg-background`. |
 | `ProfileFields` | `profile; employment; onChange(patch)` | Stepper age; `SegmentedControl` employment and the two yes/no; `NumberField` salary; `PercentPair` ×2 (or one yearly `NumberField` for self-employed hishtalmut); `PayslipDisclosure` under salary and each pair. |
 | `PercentPair` | `label; employer: ValueObject; employee: ValueObject; onChange` | Two `NumberField`s with "%" under one `text-sm` weight-500 label, equal width, 12px gap, sub-labels "מעסיק" / "עובד" as `text-xs muted` above each box. |
-| `PayslipDisclosure` | `ruleId: 'PEN-36'` | `Disclosure` "איפה זה בתלוש"; body: the rule's text from the data bundle, its `RuleRef`, then copy 6.1 "payslip labels not sourced" (G-19). Never a literal payslip label. |
+| `PayslipDisclosure` | `ruleId: 'PEN-36'` | One sentence and one `Disclosure` "הנוסח המלא" shown once (until 2026-10-24 three disclosures "איפה זה בתלוש", 2026-10-24 UX audit); body: the rule's text from the data bundle, its `RuleRef`, then copy 6.1 "payslip labels not sourced" (G-19). Never a literal payslip label. |
 | `GoalsList` | `goals: Goal[]; currentId; onReorder; onSelect; onAdd` | Chips in order with 44px up/down icon buttons; "מטרה נוספת" quiet button; one explanatory line (D12). Hidden with one goal. |
-| `FormFooter` | `onSubmit; saved: boolean` | Sticky bottom bar under 768px; primary button "להשוואה"; the save line. |
+| `FormFooter` | `onSubmit; saved: boolean` | Sticky bottom bar under 768px, a direct child of the form; primary button "להשוואה"; the save line, followed by the one-device and erased-data lines and a link to the transfer page. Amended 2026-10-24 (UX audit): the button is a submit button of a real form (until then a link that only opened the comparison); it stays on the form, says under itself what is missing or wrong, moves focus to the first bad field, and Enter in a field submits the same way. |
 | `SavedGoalStrip` | `goal: Goal; others: Goal[]; variant: 'full' \| 'compact'; onSelect; onDelete; onAdd; showResultLink` | 6.7 of the design system. `compact` is one `text-sm` line with "שינוי". Delete confirms inline. |
 | `WhyHeadline` | `top: RankedOption; second?: RankedOption; tie: boolean; theta: ValueObject; onWhy` | Builds the sentence from copy 6.2 patterns by `top.deciding.formula`; figures as `Num`s; winner as a link; caution tag after the sentence when `top.flags.secondaryRules` is non-empty; "למה" quiet button. Tie: the tie pattern with `theta` as a parameter `Num`. |
 | `WhySheet` | `a: RankedOption; b: RankedOption; breakdown: {label, a: ValueObject, b: ValueObject, deciding: boolean}[]; ruleIds; marks` | Two columns from `md`, stacked under it; the deciding row washed `bg-computed-subtle` with "מכריע"; `RulesLine`; the differing checklist rows. |
@@ -497,7 +503,7 @@ Where a person states a goal, their profile and the assumptions, from a preset o
 
 **Phone**, top to bottom: header; back link "מקור"; `GoalsList` (only with several goals); h1 "מה המטרה שלכם?"; lede; `PresetChips` (bleeding row) and the filled-fields line; card "המטרה" (`GoalFields`); card "קצת עליכם" with its "why we ask" line (`ProfileFields`); card "ההנחות" (return, inflation); `FormFooter` sticky. Gap 24px between cards, 16px inside.
 
-**PC:** the same at `max-w-page`; the preset row full width; "המטרה" and "קצת עליכם" side by side (1 : 1, 24px gap); "ההנחות" under "המטרה"; the footer not sticky, the button at the end of "ההנחות" column.
+**PC:** the same at `max-w-page`; the preset row full width; "המטרה" and "קצת עליכם" side by side (1 : 1, 24px gap); ~~"ההנחות" under "המטרה"~~ "ההנחות" across both columns below them (2026-10-24, UX audit); the footer not sticky, under the cards.
 
 ### Components
 
@@ -538,6 +544,8 @@ Errors as 3's table, plus copy 6.1: horizon under one year; "available" above "a
 - **Very long goal name:** wraps on the strip; no ellipsis.
 - **Many goals** (five or more): the chips wrap; no limit, but the line reminds that goals run in order.
 - **Storage unavailable:** the form works; the save line becomes "לא הצלחנו לשמור במכשיר הזה. ההשוואה תעבוד, אבל המטרה לא תישמר."
+
+**Amended 2026-10-24 (UX audit).** Self-employed ("עצמאים") see "הכנסה חודשית ממוצעת" with the hint "הזינו ממוצע שנתי חלקי 12", no employer column and "מפקידים לפנסיה / לקרן השתלמות בעצמכם?"; optional fields carry "לא חובה. משמש ל…"; a yes to pension or study fund through work with no type chosen sets employment to "employee" with a defaulted flag, the form says why and offers "לא נכון? שינוי לעצמאים". Errors name their bound with unit ("הזינו מספר בין ‎-50 ל־50 אחוז."), with return and inflation bounded by P-05's range; an out-of-range month is not saved. A preset names only the fields it set and the person has not typed over.
 
 ---
 
@@ -607,6 +615,8 @@ As 6.3: `SavedGoalStrip`, `WhyHeadline`, `WhySheet`, `RankedRow`, `ListedRow`, `
 - **Many assumption chips:** the strip scrolls; no limit.
 - **Shared link to `/goal/compare`:** opens the goal form (the goal is on the sender's device only).
 
+**Amended 2026-10-24 (UX audit).** The headline is three lines: ~~"X היא הטובה ביותר למטרה הזו, כי {סיבה}"~~ the leader "מבין N האפשרויות שדורגו…", the first flipping sensitivity, and "K אפשרויות לא נבדקו…" with field links; "מכריע" is "ההבדל הגדול ביותר"; tax is "מס (בהחזקה וביציאה)"; a gross-return row is in the why sheet. With a pension or study fund through work and no type entered the comparison runs as "employee" and says so under the headline with "לשנות". The chart has one direct label (the leader) and, in product mode, a shaded band and one line that echo the risk drop in shekels. A bank deposit above the available amount raises an `amount_range` flag; a ceiling sentence names the ceiling value and what stays outside it. Each card whose wrapper has an instrument links to the track, provider or fund workbench; the chosen card links to the workbench, the switch playbook and the fee page. The mode tabs are `max-w-sm` with a sticky bar on a phone; a mode change pushes a history entry; the legend sits under the h1; the "⋯" menu opens above the sticky mode bar. The real/nominal choice is remembered on the guide timeline only.
+
 ---
 
 ## 9. Screen 7: idle-cash screen
@@ -654,6 +664,8 @@ Two inputs and the person's own offer; the monthly cost of leaving the money in 
 - **Makam without a commission line** (S41): the row says "בלי עמלת קנייה" in `muted`; when a tariff exists (R4) the commission enters.
 - **No network after load:** the series ship with the site; the screen works offline on the shipped values with their dates.
 
+**Amended 2026-10-24 (UX audit).** The result is hidden while a field is invalid; a yearly line "זה כ־X ₪ בשנה" (monthly × 12, F-60) follows the monthly headline "עד X בחודש" in one no-wrap span; an offer typed as 0.04 asks "התכוונתם ל־4%?", above 100 is refused, and an offer below the current account says so; option names link to their guides; the page is one centred `max-w-3xl` column until a result exists, then two columns; the legend sits under the h1; a line asks "יש לכם כבר פיקדון?" with the holdings link.
+
 ---
 
 ## 10. Screen 8: saved-goal strip and fit mark
@@ -664,7 +676,7 @@ The strip shows the goal saved on this device wherever it matters (flow 17); the
 
 ### Layout
 
-- **Strip, full:** on the first page above the door cards; on the result under the header; on the goal form as `GoalsList` (several goals). A 56px `card` row: `Target` icon, name (weight 500), "{שנים} · {סכום}" `Num`s, "נשמר במכשיר הזה" (`text-xs muted`), actions at the end ("לתוצאה", "עריכה", `MoreHorizontal` menu). Chips for the other goals under it.
+- **Strip, full:** on the first page (since 2026-10-24 as the goal card spanning both columns above the doors; a saved amount shows whole); on the result under the header; on the goal form as `GoalsList` (several goals). A 56px `card` row: `Target` icon, name (weight 500), "{שנים} · {סכום}" `Num`s, "נשמר במכשיר הזה" (`text-xs muted`), actions at the end ("לתוצאה", "עריכה", `MoreHorizontal` menu). Chips for the other goals under it.
 - **Strip, compact:** one `text-sm` line on company and track pages under the h1: "המטרה השמורה: {שם} · {שנים}" with "שינוי".
 - **Fit mark card (track page):** in the slot reserved in 5 / flows 6.12 under the h1: heading "מתאים למטרה שלכם?"; 24px icon and `text-lg` word; the goal line with "לפי האופק בלבד"; the rule line (P-04 parameter chip, the classification used as a term); "להשוואה למטרה הזו" (primary link) and "שינוי המטרה" (quiet). PC: at the top of the key-value column.
 - **Fit mark, row (company page):** at the end of each `TrackList` row before the chevron: the icon; from `md` the word in `text-xs`. One line above the list: the compact strip.
@@ -677,7 +689,7 @@ The strip shows the goal saved on this device wherever it matters (flow 17); the
 
 | Element | State | Behaviour |
 |---|---|---|
-| Strip | no goal | Absent, except on the first page: the quiet line "עוד אין מטרה שמורה" with the link to `/goal` |
+| Strip | no goal | Absent, except on the first page: the quiet line "עוד אין מטרה שמורה." and the link to `/goal` in one inline sentence with a single space (2026-10-24, UX audit; it was a flex row that doubled the gap) |
 | Strip | storage unavailable | Absent |
 | Strip | old or unreadable version | "המטרה שנשמרה היא מגרסה ישנה של האתר", "להתחיל מחדש", "מחיקה מהמכשיר" |
 | Strip | several goals | Chips in order; tapping one makes it current and re-runs the result and the fit marks |
@@ -837,10 +849,11 @@ interface Workbench {
 
 interface StateFile {                        // the export (11.5)
   format: 'mekor-state';
-  version: number;                           // state format version; 2 in release 3
+  version: number;                           // state format version; 2 in release 3 (3 since release 4; the document's version stays 3 in the 2026-10-24 export)
   exported: string;                          // ISO date-time
   site: { version: string; data: string };   // site build and data snapshot ids
   state: StateV2;
+  sideStores?: { offers: EnteredOffer[]; variantAssumptions: Record<string, FundAssumptions>; playbookTicks: Record<string, string[]>; ownRates?: Record<string /*goalId*/, Record<string /*wrapperId*/, number /*% a year*/>> };   // 2026-10-24, UX audit: the four side stores (offers, variants, ticks, own rates); absent in a file from before; own rates outside 0 to 50 are named as problems
 }
 interface StateV2 {
   version: 2;
@@ -881,7 +894,7 @@ Every `ValueObject` carries its state, so styling follows `state` as in 1.3: sta
 | `WorkbenchCoverage` | `coverage; rows` | `CoverageLine` with the workbench sentence (copy 7.3) and a `CoverageList` grouped by `WorkbenchOutcome` (+ fits / no-fit), the "shown with a mark" group collapsed. |
 | `ProviderTabPlaceholder` | none | The disabled "לפי ספק" tab with its line. |
 | `TransferSheet` | `state: StateV2 \| null; onExport(kind: 'share' \| 'download' \| 'copy'); onImport(file \| text, mode: 'add' \| 'replace')` | 7.8: export half, import half, `ImportPreview`. Page form at `/transfer`. |
-| `ImportPreview` | `file: StateFile; migrated: boolean; duplicates: number; mode; onMode; onConfirm` | The counts as `Num`s (computed), the created date, the site version (identifier style); the mode `SegmentedControl`; replace confirms inline; "לטעון" primary. |
+| `ImportPreview` | `file: StateFile; migrated: boolean; duplicates: number; mode; onMode; onConfirm` | The counts in Hebrew forms (one, two, many) with the digit as a `Num` only for a count above two, zero counts not shown, and items left out for a failing field listed below by field (2026-10-24, UX audit; until then all counts as `Num`s (computed)), the created date, the site version (identifier style); the mode `SegmentedControl`; replace confirms inline; "לטעון" primary. |
 | `ImportedTag` | `date: string` | `Tag` in `muted` with `Download` icon: "יובא ב־{date}". On holding cards, goal chips and uncatalogued names. |
 | `DateField` | `label; value: ValueObject; onChange; max?` | Native `<input type="date">` in the field box, `dir="ltr"`; shown as `22.10.2026` in text (1.5). |
 
@@ -907,10 +920,12 @@ Every `ValueObject` carries its state, so styling follows `state` as in 1.3: sta
 ### 11.5 Saved state v2 and the export file
 
 - **One document.** The release 2 keys `mekor.v1.goals` and `mekor.v1.inputs` (6.5) become one document `mekor.v2.state` (`StateV2`, 11.2) on first load after the release: the migration reads both v1 keys, writes v2, and leaves the v1 keys in place for one release (so a rollback keeps working; removed in R4). Written on every change (debounced 300ms), read once after hydration. If `docs/architecture.md` 3.6 moves the store to IndexedDB, the shape stays.
-- **Export.** `StateFile` (11.2): `format: 'mekor-state'`, `version: 2`, `exported`, `site` (the build's version string and the data snapshot id the bundle carries), and `state`. Serialised as pretty JSON, UTF-8. File name `mekor-state-YYYY-MM-DD.json`; a second export the same day `-2`, `-3`. "שיתוף" uses `navigator.share({ files })` when `navigator.canShare({ files })` is true; "הורדה" an `<a download>` on a Blob; "העתקה" `navigator.clipboard.writeText` with the selectable-box fallback.
+- **Export.** `StateFile` (11.2): `format: 'mekor-state'`, `version: 2`, `exported`, `site` (the build's version string and the data snapshot id the bundle carries), and `state` (2026-10-24, UX audit: `version: 3`, and optionally `sideStores`: `{ offers: EnteredOffer[]; variantAssumptions: Record<exposureId, FundAssumptions>; playbookTicks: Record<key, string[]>; ownRates: { [goalId]: { [wrapperId]: pctPerYear } } }`, read from `mekor.v2.offers`, `mekor.v2.variants`, `mekor.v2.playbook-ticks` and `mekor.v2.own-rates` (a raw map, no version wrapper), four stores where an earlier amendment of the same day said three; absent in a file from before; the document's version stays 3 and merging the stores into it awaits the founder's approval; a download or a share takes the next file name, a copy does not). Serialised as pretty JSON, UTF-8. File name `mekor-state-YYYY-MM-DD.json`; a second export the same day `-2`, `-3`. "שיתוף" uses `navigator.share({ files })` when `navigator.canShare({ files })` is true; "הורדה" an `<a download>` on a Blob; "העתקה" `navigator.clipboard.writeText` with the selectable-box fallback.
 - **Import.** Accepts a file (`.json`, any size the browser handles) or pasted text. Steps: parse; check `format`; validate `state` against the schema package's `stateV{n}` schema for the file's `version`; `version < 2`: run the migration chain (the same functions the load uses) and set `migrated`; `version > 2`: refuse (copy 7.4); invalid: refuse with the first error path in plain words. Only after the preview's "לטעון": `add` merges (goals, holdings and names by `id`, identical items skipped and counted; appended items get `importedAt` and `order` after the existing ones; `currentId` unchanged) or `replace` writes the file's state as is (with the inline confirm). The existing document is untouched until that write.
 - **"מחיקת מה שיובא"** removes every item with `importedAt` set, after the inline confirm; shown in the strip's menu only when such items exist.
 - **Storage unavailable:** import works for the visit (in memory) with the release 2 note; export is still possible from the in-memory state.
+
+**Amended 2026-10-24 (UX audit).** Import dedupe ignores id, order and import tag, and also matches a copy an earlier import added under a new id, so adding the same file twice adds nothing and says so ("בקובץ אין שום דבר חדש"); every goal, holding, saved-comparison goal copy and guide input is validated with the form's own rules, and a failing item is left out and listed by field ("מטרה 2, שנות החיסכון: לא מספר."); after an add that brought a goal the result offers "לעבור למטרה שיובאה". An add records the side items it brought in `mekor.v2.imported-side`, so "מחיקת מה שיובא" removes exactly those (offers by provider if unchanged, variants, tick ids, own rates); a replace clears the record; the transfer counts list own rates too. The `/transfer` page has an h1, disabled buttons at 40% opacity, 16px text areas and a rejection note with the plain alert icon.
 
 ### 11.6 Motion additions
 
@@ -987,6 +1002,8 @@ Worked examples: S42 (hishtalmut: total 20,664.79 real over 10 years; without fe
 - **Very long negotiation text:** wraps at `max-w-measure`; no truncation.
 - **Address shared:** opens the page with the subject but without the sender's goal; the inputs sheet opens as in the no-inputs state.
 
+**Amended 2026-10-24 (UX audit).** Order under the h1: the number legend, one plain sentence (the value of bringing the largest fee to the authority average over the horizon, the F-61 what-if, shown only when a fee has an average), the ranked sentence, then the headline. The subject strip shows the provider's Hebrew name (the English record id is the title); a link goes to the tracks workbench (providers for a brokerage) and an "איך עוברים" link to the playbook where one exists. ~~The state tag follows the sentence~~ the headline's state tag sits under the sentence below `md` and after it from `md`. The verdict badge "שווה להימנע" reads "יקר יחסית לחלופות בלי עמלה" with a link when the saved goal ranks the product first (P-03 unchanged; parameters-rationale). A blocked or failed run shows its plain reason, then the rule code as a chip. The thresholds line is plain inline flow; a reading-labelled value carries a secondary mark.
+
 ---
 
 ## 13. Screen 10: holdings page
@@ -1051,6 +1068,8 @@ What the person already holds, entered from the annual statement, with the fit m
 - **Imported holdings:** `ImportedTag`; the strip's "מחיקת מה שיובא" removes them together.
 - **Dozens of holdings:** the list scrolls; consolidation cards one per type; the fit marks computed per classification, not per card.
 
+**Amended 2026-10-24 (UX audit).** ~~"מהפקדה" is required~~ the deposit fee is optional and empty is saved as an entered 0, with a hint. ~~The card prints "נכון לחודש {period}"~~ two rows: "נתוני הרשות {period}" and "הדוח שלכם {typed date}". Save errors: ~~under the fields~~ appear after the first save and then follow the fields, the first error scrolls into view and takes focus, a "N שדות לתיקון" line sits by the save button over an opaque footer, the form is `noValidate`, a wrapper is required, and invalid typed text in a number field blocks the save; a future statement or first-deposit date has its own code. Closing a dirty form (Escape, backdrop, X, "ביטול") asks "לסגור בלי לשמור?". The company filter matches by words (rarest first, partial hint, full list on a miss, arrow keys and Enter); a typed name that is exactly one track, or a fund number, links on save. A card says "לפי הממוצע הייתם חוסכים כ־X ₪ ב־N שנים" (F-61, to the class mean), links to the fee page and "איך עוברים", and shows the reason and rule code when its run fails. With at most one holding the page is one centred `max-w-3xl` column; a line asks about an existing deposit and links to idle cash; the one-device and erased-data lines sit under the save line. The statement help shows the statement's own words first and the regulator text behind "עוד".
+
 ---
 
 ## 14. Screen 11: track workbench page
@@ -1107,6 +1126,8 @@ Every track of every managing company for one wrapper in the latest CMA period, 
 - **A company that reports fees for some tracks only:** the missing ones "טרם דווח"; no company-level average is computed here (F-68 is per classification across companies).
 - **A default track that does not fit the goal:** shown plainly with the default tag and the "לא מתאים" mark; no warning tone.
 - **Sorting by fee with "לא דווח" rows:** they sort last, in their own quiet block.
+
+**Amended 2026-10-24 (UX audit).** ~~The chips are accordions that toggle groups~~ the exposure chips filter the table to one group (a second press returns to the default, "הכול" shows all); the search opens only groups with matches; "פתוח לכולם" (on by default) hides sector and employer tracks and says how many; filter, sort, direction and chip live in the address; a second press on the active sort reverses it, unreported fees last. The table has no group-bar column: the near-duplicate bar is a start border on the first cell; the headers are "ניהול מחיסכון, {שנה}" and "ניהול מהפקדה"; the phone label reads "במה הכסף מושקע:"; a one-line key sits under a table with an unreported fee. Phone and tablet (below `lg`) use cards and the table starts at `lg` (it started at `md`); the thead is `bg-card` with a bottom rule and no longer slides under the filter bar; on a phone the filter block shrinks to the search row after 160px of scroll. The funds page's return chip shows the exposure's own entered return when there is one, else the goal's.
 
 ---
 
@@ -1302,7 +1323,7 @@ interface StateV3 extends Omit<StateV2, 'version'> {        // 16.5
 }
 ```
 
-Every `ValueObject` carries its state, so styling follows `state` as in 1.3: tariff lines and deposit terms `sourced` (institution strength, so the "מוסדי" flag shows on each); F-63, F-65, F-66 outputs `computed`; A-28's defaults and θ `sourced` with the parameter source ("פרמטר של האתר"); an offer `entered`. **Data note:** the rules bundle has no "experience" kind; the playbook's SW-X entries need either a `kind: 'experience'` on a rule record (strength `secondary`, never cited by the engine) or a content file under `site/app/content/playbook/` with the source line; the first is preferred so the rules page lists them under "ניסיון" (chosen 2026-10-24, revisable).
+Every `ValueObject` carries its state, so styling follows `state` as in 1.3: tariff lines and deposit terms `sourced` (institution strength, so the institution mark shows on each; "מוסדי" flag until 2026-10-24, now the caution icon and "לפי החברה" in the sheet); F-63, F-65, F-66 outputs `computed`; A-28's defaults and θ `sourced` with the parameter source ("פרמטר של האתר"); an offer `entered`. **Data note:** the rules bundle has no "experience" kind; the playbook's SW-X entries need either a `kind: 'experience'` on a rule record (strength `secondary`, never cited by the engine) or a content file under `site/app/content/playbook/` with the source line; the first is preferred so the rules page lists them under "ניסיון" (chosen 2026-10-24, revisable).
 
 ### 16.3 New components
 
@@ -1360,9 +1381,9 @@ Every `ValueObject` carries its state, so styling follows `state` as in 1.3: tar
 ### 16.5 Saved state v3 and the export file
 
 - **One document.** `mekor.v2.state` migrates to `mekor.v3.state` (`StateV3`, 16.2) on first load after the release: the migration adds empty `offers`, `behaviour`, `variantAssumptions` and `playbook`, and the v1 keys of 6.5 are removed now (one release later, as 11.5 said). Written on every change (debounced 300ms), read once after hydration.
-- **Offers.** `EnteredOffer` per provider id; the address carries `level=entered` and the table reads the offers from the state. Clearing deletes the entry. Offers travel in the export file (`version: 3`); the contents line counts them.
+- **Offers.** `EnteredOffer` per provider id; the address carries `level=entered` and the table reads the offers from the state. Clearing deletes the entry. Offers travel in the export file (`version: 3`; since 2026-10-24 in its `sideStores` field, 11.5); the contents line counts them.
 - **Behaviour and variant assumptions** are keyed by wrapper and exposure so the three workbench tabs agree; the goal's amounts and horizon stay in `goals`.
-- **Playbook ticks** are keyed by `${wrapper}|${from ?? ''}|${to ?? ''}`; "איפוס" removes the key. Product note for the founder: 3.9 lists 3.2, 3.4, 3.5 and 3.6 as saved inputs; the ticks are an addition (flow 31 step 6).
+- **Playbook ticks** are keyed by the wrapper alone (2026-10-24, UX audit; until then by `${wrapper}|${from ?? ''}|${to ?? ''}`; `migrateTickKeys` rewrites old keys once, also in an imported file); "איפוס" removes the key. Product note for the founder: 3.9 lists 3.2, 3.4, 3.5 and 3.6 as saved inputs; the ticks are an addition (flow 31 step 6).
 - **Import.** A `version: 2` file migrates with the same chain; a `version: 3` file loads; `version > 3` is refused (copy 7.4). "Add" merges offers by provider id (the file's offer wins only when the device has none for that provider; chosen 2026-10-24, revisable) and unions ticks.
 - **Storage unavailable:** offers, behaviour and ticks work for the visit, with the release 2 note.
 
@@ -1449,6 +1470,8 @@ Worked examples: S44 (four invented providers; list level, one order a month: C 
 - **An offer for a provider whose snapshot later gains lines:** the offer still replaces its lines; the rest now come from the list, and the row's detail says which.
 - **Address shared with `level=entered`:** the receiving device has no offers; the table opens at the list with the "עוד לא הזנתם הצעה" line.
 - **Provident wrapper by address:** the page shows the sourced listing of managers' list fees (flows 15.5) and the line that the ranking for provident wrappers is by track, with the link; no F-63 run.
+
+**Amended 2026-10-24 (UX audit).** A provident wrapper's page is titled "איזו חברה: {מוצר}" with one card per company (all its lines), the company linked by its regulator id, one fee line per card (`md:grid-cols-2`), and the coverage sentence "נאסף תעריפון של N חברות מתוך M; הדירוג הוא לפי מסלול." with a link to the track ranking; the tariff line is plain inline flow with its date in the same no-wrap span.
 
 ---
 
@@ -1548,7 +1571,7 @@ Worked example (S38): a brokerage fund switch at month 36 of six years: real val
 | `PlaybookStep` | figure file absent | "בתוך התקופה שהחוזר קובע" with the chip, no number |
 | `PlaybookStep` | open question | `Lock` line "שאלה פתוחה {קוד}: {מה לא נמצא}" |
 | `PlaybookStep` | `noRule` (SW-19) | Caution head "לא נמצא כלל על שיחת שימור במוצרי גמל"; sourced lines (SW-07, PF-13, PF-14); `ExperienceCard`s in an open disclosure |
-| `PlaybookStep` | `institutionOnly` | Title prefix "לפי הוראות המוסדות"; chip "מוסדי" |
+| `PlaybookStep` | `institutionOnly` | Title prefix "לפי הוראות המוסדות"; chip "לפי החברה" ("מוסדי" until 2026-10-24) |
 | `SwitchingCostLine` | brokerage fund pair | F-66 sentence with cost, tax at the switch, net proceeds (detail) as computed `Num`s; `listed-not-ranked` outcome → the secondary label |
 | `SwitchingCostLine` | provider pair, same fund | The SW-36 sentence; `Lock` SW OQ11; transfer fee `Num` or "לא נאסף" |
 | `SwitchingCostLine` | provident same kind | "המעבר לא עולה כלום לפי הכללים" + chips; the two cost lines (PF-14 with SW-15; an institution's joining fee where printed) |
@@ -1571,10 +1594,12 @@ Worked example (S38): a brokerage fund switch at month 36 of six years: real val
 
 - **Pension pair while active in a non-comprehensive fund:** the SW-13 reg. 4(8) block in caution inside the blocks step.
 - **Bank account retention:** SW-28 renders as a rule step (directive 448 s.9), no experience cards.
-- **Brokerage order of steps:** institution sources only (SW-35); the whole page carries the "מוסדי" chips and the lede says so.
+- **Brokerage order of steps:** institution sources only (SW-35); the whole page carries the "לפי החברה" chips ("מוסדי" until 2026-10-24) and the lede says so.
 - **A SW-X entry the bundle cannot carry:** the retention step shows the sourced lines only and the line "ניסיון מהפורומים לא נכלל בגרסה הזו" (roadmap R4 risk).
 - **A step's rule marked `open` in the bundle:** the step renders with the lock and no process claim; the page's rules line says the playbook is incomplete for that step.
 - **Address shared with a pair the receiving device does not know (a holding id):** the strip falls back to "מ{ספק}" by provider or to no pair.
+
+**Amended 2026-10-24 (UX audit).** A summary box of seven or eight verbatim rule sentences (each with its code after) precedes the steps; the provider dropdowns list only the providers of the wrapper; the employer step is tagged "דלגו" for a saved self-employed person; a wrapper or track script asks for an offer; open-question codes are chips after the sentence; day and month counts take their dual forms. Checklist ticks are keyed by wrapper alone.
 
 ---
 
@@ -1635,6 +1660,8 @@ The catalogue grows to banks and brokers (from the tariff snapshots), to each ba
 - **A deposit record for a bank with no snapshot:** the bank still gets a page (deposits only) and a companies row with "התעריפון לא נאסף".
 - **A catalogue entry for a bank product (`data/catalog/` with `cma_fund_id` empty):** the "נקרא גם" line with where seen and when, linked to the product row when `maps_to` names its record.
 - **Very long 447 names:** wrap at `max-w-measure`; no truncation.
+
+**Amended 2026-10-24 (UX audit).** A deposits group holding exactly one product carries the sentence about personal offers and a link to the idle-cash page; the page carries the number legend; a tariff line reads "תעריפון מ־{date}" with the date inline; "נכון ל־{date}" keeps its maqaf.
 
 ---
 
@@ -1765,7 +1792,7 @@ interface StateV4 extends Omit<StateV3, 'version' | 'goals'> {   // 21.5
 }
 ```
 
-Every `ValueObject` carries its state, so styling follows `state` as in 1.3: every return, fall and overridden rate `entered` (blue, the pencil); a published bank rate `sourced` with the "מוסדי" flag; P-08's holding wrapper `sourced` with the parameter source until changed; the run's values `computed`; a rule figure in a diff row `sourced`, a parameter in the parameter state, an assumption `entered`. **Data note:** `data/parameters/exposure-holding-wrapper.json` (P-08) does not exist; the type above assumes one record per exposure id with a `wrapper_id` value object and a rationale (flow 34). **Data note:** the tier-2 status files do not exist; until they do `GraduationStatusView.closed` is empty and `rank` absent (flow 37).
+Every `ValueObject` carries its state, so styling follows `state` as in 1.3: every return, fall and overridden rate `entered` (blue, the pencil); a published bank rate `sourced` with the institution mark ("לפי החברה"; "מוסדי" until 2026-10-24); P-08's holding wrapper `sourced` with the parameter source until changed; the run's values `computed`; a rule figure in a diff row `sourced`, a parameter in the parameter state, an assumption `entered`. **Data note:** `data/parameters/exposure-holding-wrapper.json` (P-08) does not exist; the type above assumes one record per exposure id with a `wrapper_id` value object and a rationale (flow 34). **Data note:** the tier-2 status files do not exist; until they do `GraduationStatusView.closed` is empty and `rank` absent (flow 37).
 
 ### 21.3 New components
 
@@ -1775,7 +1802,7 @@ Every `ValueObject` carries its state, so styling follows `state` as in 1.3: eve
 | `AcceptedFallField` | `value?: ValueObject; onChange; scope: 'goal' \| 'exposure'` | 9.1. Percent `NumberField` 48px, 0 to 100, empty by default, `entered` once typed; hint (copy 9.1); the use line in `text-xs muted` on the goal form only. Never pre-filled. |
 | `ExposureRow` | `view: ExposureRowView; theta; onInputs; onChoose; onDetail` | 9.2. Ranked, listed, excluded or not-evaluated form by `candidate.kind`: rank circle / `Minus` or `Lock` / `Pencil` (excluded) / `CircleDashed`; name (h3, link) + `oneLine`; the **inputs strip** (`bg-secondary`, `rounded-md`, padding 12px; four cells at `md`): `EnteredReturnField` or `CashRateLine`, `WorstFallField`, `AcceptedFallChip`, `HoldingWrapperChips`; value `Num` figure size with its label; `ReturnLabel`; tie `Tag`; `DecidingLine`; assumption chips; wrapper tags; links; `ChooseButton`; `IconDrillIn`. Excluded: `ExclusionTag` first, no value, the inputs strip live, the one line under it. |
 | `EnteredReturnField` | `exposure; value?: ValueObject; onChange` | 9.1. Percent `NumberField` 48px, label "תשואה שנתית ב{מטבע}", empty with the D9 empty line; `entered` + `Pencil` once typed. No placeholder number, ever. |
-| `CashRateLine` | `published?; value?; noSeries?; onOverride; onReset` | 9.1. Published: the rate as a sourced `Num` with "ריבית הבנק, בתוקף מ־{תאריך}", the "מוסדי" flag, `Clock` when stale, the BANK-13 note in a popover, "להזין ריבית אחרת" (turns the line into an `EnteredReturnField` with "לחזור לריבית שפורסמה"). No series: the D20 sentence with `ExternalLink` and an empty field. |
+| `CashRateLine` | `published?; value?; noSeries?; onOverride; onReset` | 9.1. Published: the rate as a sourced `Num` with "ריבית הבנק, בתוקף מ־{תאריך}", the institution mark ("מוסדי" flag until 2026-10-24), `Clock` when stale, the BANK-13 note in a popover, "להזין ריבית אחרת" (turns the line into an `EnteredReturnField` with "לחזור לריבית שפורסמה"). No series: the D20 sentence with `ExternalLink` and an empty field. |
 | `WorstFallField` | `exposure; value?: ValueObject; onChange` | 9.1. Percent `NumberField` 48px, label "הירידה החמורה ביותר שאתם צופים", the hint behind an info popover with the link to the exposure guide's risks block; `entered` + `Pencil` once typed. |
 | `AcceptedFallChip` | `value?: ValueObject; perExposure: boolean; onOverride; onReset` | 9.1. `Tag` in `entered` style "מסכימים לספוג עד {אחוז}" (or `caution` "לא הוזן כמה תסכימו לספוג" linking to the goal form's field); "לחשיפה הזו בנפרד" opens an `AcceptedFallField` in place; "לפי המספר המשותף" resets. |
 | `HoldingWrapperChips` | `holding: ExposureRowView['holding']; onChange` | 9.1. One line "מוחזקת ב{מוצר}" with the P-08 chip (parameter state) or `entered` after a change; "החליפו מוצר" expands a single-choice chip row over `options`. |
@@ -1834,6 +1861,8 @@ Every `ValueObject` carries its state, so styling follows `state` as in 1.3: eve
 - **An unreadable saved comparison** (its `versions` or `result` fail the schema's `savedComparison` check, or its `mode` or ids are unknown): kept as is, shown through `UnreadableSavedForm` (the readable `savedOn` and `choice` as text), replaced on "להשוות מחדש ולשמור", removed on "מחיקה מהמכשיר". Never migrated by guesswork.
 - **Storage unavailable:** returns, falls and the choice work for the visit; the save buttons carry the release 2 note; no revisit.
 
+**Amended 2026-10-24 (UX audit).** The revisit strip, banner and compact marker compare the saved goal's inputs (horizon, amounts, availability, assumptions, profile, exposure inputs) with the current goal's first: when they differ the line reads "המטרה השתנתה מאז השמירה (…)", the saved comparison is marked not valid for the goal, no verdict is shown, and the banner offers "לשמור את ההשוואה של היום".
+
 ### 21.6 Motion additions
 
 | Element | Trigger | Animation | Duration |
@@ -1880,7 +1909,7 @@ Worked example: S49 (three of the seven; goal as S39; cash at a sourced 3.25%, b
 | Page | every entered exposure excluded | Headline replaced by the all-excluded sentence with the field link; the excluded group first and open; the cash row ranked if it runs |
 | Page | worker computing > 150ms | Chart dims to 60%; rows keep their last values |
 | `EnteredReturnField` | typed | Row runs (F-80 re-ranks, FLIP); `ReturnLabel` entered; the chart line dashed; the sensitivity row for it appears |
-| `CashRateLine` | published rate | Sourced `Num`, "מוסדי", the BANK-13 note; `Clock` + caution when stale |
+| `CashRateLine` | published rate | Sourced `Num` with the institution mark ("מוסדי" until 2026-10-24), the BANK-13 note; `Clock` + caution when stale |
 | `CashRateLine` | "להזין ריבית אחרת" | Becomes an entered field; the label turns "לפי ריבית שהזנתם"; "לחזור לריבית שפורסמה" resets |
 | `CashRateLine` | no series (makam) | The D20 sentence with the link; the row not evaluated until typed |
 | `WorstFallField` | typed, below or equal the accepted fall | Kept; the detail says "עבר את מסנן הירידה: {אחוז} ≤ {אחוז}" |
@@ -1920,6 +1949,8 @@ Worked example: S49 (three of the seven; goal as S39; cash at a sourced 3.25%, b
 - **An eighth exposure record (a graduated instrument):** one more row, the coverage counts eight, the saved comparison's next re-check lists it as "חדשה בהשוואה".
 - **Address shared with `mode=exposure`:** the receiving device has no returns; the no-return state.
 - **The wrapper-mode link from an exposure whose return is empty:** disabled with "הזינו תשואה קודם".
+
+**Amended 2026-10-24 (UX audit).** Exposure mode: the inputs strip is two columns; committing a return re-ranks the rows (on Enter or blur); equity-index returns are prefilled from A-01 with a note "מההשוואה לפי מוצר" (D16); the mode tabs are wrapped like the product mode's; a mode change pushes a history entry; with no entered return the headline is "עדיין אין מה להשוות…" (as in product mode); a coverage line closes the page. The sentence "ב־{exposure}" keeps its prefix in one span.
 
 ---
 

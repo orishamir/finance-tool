@@ -1,11 +1,12 @@
 // The parameters page (flows 6.15): the site's own judgement calls, each value a Num with its rationale.
 import { useLoaderData } from "react-router";
 import type { Route } from "./+types/parameters";
-import { parametersPage as copy, site } from "../copy";
+import { parametersPage as copy, provenance as provCopy, site } from "../copy";
 import { Num } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { Card, Tag } from "../components/ui";
 import { fmt } from "../lib/format";
+import { mostlyHebrew } from "../lib/source-label";
 import { fieldLabel, unitText } from "../lib/parameter-labels";
 import type { SiteValue } from "../lib/value";
 
@@ -83,12 +84,10 @@ export default function Parameters() {
               <dl className="sheet-dl">
                 <dt className="text-sm text-muted-foreground">{copy.rows.why}</dt>
                 <dd className="text-sm">
-                  {p.rationaleHe ? p.rationaleHe : <bdi dir="ltr">{p.rationale}</bdi>}
+                  {p.rationaleHe ?? (mostlyHebrew(p.rationale) ? p.rationale : provCopy.parameter.noRationale)}
                 </dd>
                 <dt className="text-sm text-muted-foreground">{copy.rows.approved}</dt>
-                <dd>
-                  <bdi dir="ltr">{fmt.date(p.signedOffOn)}</bdi>
-                </dd>
+                <dd>{p.signedOffOn ? <bdi dir="ltr">{fmt.date(p.signedOffOn)}</bdi> : provCopy.parameter.notApproved}</dd>
                 {p.usedIn.length > 0 && (
                   <>
                     <dt className="text-sm text-muted-foreground">{copy.rows.usedIn}</dt>

@@ -10,27 +10,45 @@ import { r3fees, r3holdings, site } from "../copy";
 import { AssumptionsPanel, type Suggestion } from "../components/compare/assumptions";
 import type { FormData } from "../components/compare/goal-form";
 import { goalTitle } from "../components/compare/goal-form";
+import { EmploymentInferredNote, employmentMatters } from "../components/compare/inferred";
 import { SavedGoalStrip } from "../components/compare/strip";
 import { FeeChips } from "../components/fees/chips";
 import { ChartLegend, ChartReadout, ChartTable, FeeDragChart } from "../components/fees/FeeDragChart";
 import { FeeRow, NotReportedRow } from "../components/fees/FeeRow";
-import { FeeHeadline, RemainderLine, SubjectStrip, ThresholdsLine } from "../components/fees/parts";
+import { FeeHeadline, ReasonWithCode, RemainderLine, SubjectStrip, ThresholdsLine } from "../components/fees/parts";
 import { FeeSensitivityPanel } from "../components/fees/sensitivity";
 import { IconLock } from "../components/icons";
-import { Num, RuleRef, RulesLine } from "../components/provenance";
+import { Num, NumberLegend, RuleRef, RulesLine } from "../components/provenance";
 import { Sheet } from "../components/Sheet";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { Callout, Card } from "../components/ui";
 import { loadBundle } from "../lib/bundle";
 import { runGoalOf, type CompareBundle } from "../lib/compare";
-import { buildFees, buildHoldingFees, feeInputs, type FeeInputs, feeSensitivity, loadFeesData, parseSubject, ruleMap, type FeeSensitivity, type FeesData, type FeesResult, type PlanError, type SubjectSpec } from "../lib/fees";
+import { buildFees, buildHoldingFees, feeInputs, type FeeInputs, feeSensitivity, headlineGap, loadFeesData, parseSubject, rankedFor, ruleMap, softensAvoid, type FeeSensitivity, type FeesData, type FeesResult, type PlanError, type SubjectSpec } from "../lib/fees";
 import { GoalsProvider, hasMeaning, useGoals, type FieldKey, type Presets } from "../lib/goal";
 import { useInputs } from "../lib/inputs";
 import { holdingName, useHolding } from "../lib/holdings";
+import { bundleLinks } from "../lib/bundle";
+import { playbookWrappers } from "../lib/playbook";
+
+/** The data files this page fetches after it starts, requested with the HTML (audit 2026-10-24, A52). */
+export const links = () => bundleLinks("fees-data.json", "compare-bundle.json");
 
 export async function loader() {
   const { goalFormData } = await import("../lib/compare.server");
-  return goalFormData();
+  const { latestSnapshots } = await import("../lib/institutions.server");
+  // The English publisher a fee line records, to the provider's Hebrew name, so the subject strip names it in Hebrew.
+  const publisherNames: Record<string, string> = {};
+  const walk = (node: unknown, he: string) => {
+    if (Array.isArray(node)) node.forEach((n) => walk(n, he));
+    else if (node && typeof node === "object") {
+      const o = node as Record<string, unknown>;
+      if (typeof o.publisher === "string" && !/[\u0590-\u05ff]/.test(o.publisher)) publisherNames[o.publisher] ??= he;
+      for (const v of Object.values(o)) walk(v, he);
+    }
+  };
+  for (const snap of latestSnapshots()) walk(snap, snap.provider.name_he);
+  return { ...goalFormData(), publisherNames };
 }
 
 export function meta() {
@@ -58,13 +76,13 @@ export default function FeesPage() {
   return (
     <GoalsProvider presets={presets}>
       <PageShell current="other" data={provenance}>
-        <Page bundle={bundle} fees={fees} failed={failed} form={data.form as FormData} presets={presets} meta={data.meta} today={data.today} />
+        <Page bundle={bundle} fees={fees} failed={failed} form={data.form as FormData} presets={presets} meta={data.meta} today={data.today} publisherNames={data.publisherNames} />
       </PageShell>
     </GoalsProvider>
   );
 }
 
-function Page({ bundle, fees, failed, form, presets, meta, today }: { bundle: CompareBundle | null; fees: FeesData | null; failed: boolean; form: FormData; presets: Presets; meta: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null }; today: string }) {
+function Page({ bundle, fees, failed, form, presets, meta, today, publisherNames }: { bundle: CompareBundle | null; fees: FeesData | null; failed: boolean; form: FormData; presets: Presets; meta: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null }; today: string; publisherNames: Record<string, string> }) {
   const { status, current } = useGoals();
   const { search } = useLocation();
   const subject = useMemo(() => parseSubject(search), [search]);
@@ -95,7 +113,7 @@ function Page({ bundle, fees, failed, form, presets, meta, today }: { bundle: Co
   if (failed) return frame(<Callout tone="caution">{r3fees.failed}</Callout>);
   if (!bundle || !fees || status === "loading" || !current) return frame(<p className="text-muted-foreground">{r3fees.loading}</p>);
   if (status === "old-version") return null;
-  return <Body bundle={bundle} fees={fees} form={form} subject={subject} frame={frame} />;
+  return <Body bundle={bundle} fees={fees} form={form} publisherNames={publisherNames} subject={subject} frame={frame} />;
 }
 
 function errorText(e: PlanError, wrapperId: string): React.ReactNode {
@@ -145,15 +163,8 @@ function errorText(e: PlanError, wrapperId: string): React.ReactNode {
     case "needs-first-deposit":
       return r3holdings.feeNeedsFirstDeposit;
     default:
-      // an engine message never reaches the page: a rule or gap id when one is named, else a plain line
-      return /^[A-Z]{1,4}-\d+$/.test(e.code ?? "") ? (
-        <>
-          {r3fees.review.blockedRun}
-          <bdi dir="ltr">{e.code}</bdi>
-        </>
-      ) : (
-        r3fees.review.genericFail
-      );
+      // an engine message never reaches the page: the plain Hebrew reason first, the rule or gap id after it in a chip (A2)
+      return <ReasonWithCode message={("messageHe" in e && e.messageHe) || r3fees.review.genericFail} code={e.code} />;
   }
 }
 
@@ -184,7 +195,7 @@ function ScenarioDefaults({ inputs }: { inputs: FeeInputs }) {
   );
 }
 
-function Body({ bundle, fees, form, subject, frame }: { bundle: CompareBundle; fees: FeesData; form: FormData; subject: SubjectSpec; frame: (b: React.ReactNode, back?: { href: string; label: string }) => React.ReactNode }) {
+function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: CompareBundle; fees: FeesData; form: FormData; publisherNames: Record<string, string>; subject: SubjectSpec; frame: (b: React.ReactNode, back?: { href: string; label: string }) => React.ReactNode }) {
   const { current, resolved } = useGoals();
   const released = useInputs();
   const holding = useHolding(subject.kind === "holding" ? subject.holdingId : null);
@@ -239,8 +250,7 @@ function Body({ bundle, fees, form, subject, frame }: { bundle: CompareBundle; f
   if (result.kind === "blocked")
     return frame(
       <Callout tone="blocked">
-        {r3fees.review.blockedRun}
-        <bdi dir="ltr">{result.ruleId}</bdi>
+        <ReasonWithCode message={result.messageHe} code={result.ruleId} />
       </Callout>,
     );
   if (result.kind === "error") {
@@ -250,6 +260,7 @@ function Body({ bundle, fees, form, subject, frame }: { bundle: CompareBundle; f
       <>
         <header className="flex flex-col gap-3">
           <h1 className="text-2xl lg:text-3xl font-semibold">{r3fees.title}</h1>
+          <NumberLegend />
           {own && holding.holding && (
             <p className="text-lg">
               {r3fees.strip.holding}
@@ -277,9 +288,16 @@ function Body({ bundle, fees, form, subject, frame }: { bundle: CompareBundle; f
   const workbench = fees.wrapperTrack[sv.wrapperId] !== undefined || ["kupat-gemel-lehashkaa", "keren-hishtalmut", "pension-comprehensive", "pension-general", "provident-for-annuity"].includes(sv.wrapperId);
   const grossNote = hasChart && Math.abs((an.series!.points.at(-1)?.total ?? 0) - (an.fm.total.value as number)) > 1;
   void staleLine;
+  // A9, A18: the plain sentence above the chart, the subject's place in the saved goal's comparison, the softened badge
+  const gap = headlineGap(an);
+  const place = rankedFor(result.comparison, sv.wrapperId);
+  const compareHref = "/goal/compare";
+  const switchable = playbookWrappers.includes(sv.wrapperId);
+  const providersLink = sv.wrapperId === "brokerage-account";
+  const otherRecords = workbench ? { href: `/workbench/tracks/${sv.wrapperId}`, label: r3fees.linksWorkbench } : providersLink ? { href: `/workbench/providers/${sv.wrapperId}`, label: r3fees.linkProviders } : null;
 
   const rows = an.lines.map((l) => (
-    <FeeRow key={l.line} line={l} an={an} subject={sv} years={years} thresholds={an.thresholds} reduction={reductions[l.line] ?? null} onReduce={(n) => setReductions((r) => ({ ...r, [l.line]: n }))} rules={rules} />
+    <FeeRow key={l.line} line={l} an={an} subject={sv} years={years} thresholds={an.thresholds} reduction={reductions[l.line] ?? null} onReduce={(n) => setReductions((r) => ({ ...r, [l.line]: n }))} rules={rules} soften={softensAvoid(l.verdict, place)} compareHref={compareHref} />
   ));
   const chartCard = hasChart && (
     <section className="flex flex-col gap-3" aria-labelledby={`${headId}-chart`}>
@@ -305,12 +323,13 @@ function Body({ bundle, fees, form, subject, frame }: { bundle: CompareBundle; f
 
   return frame(
     <>
-      <SubjectStrip subject={sv} goalName={goalName} />
-      <FeeHeadline product={sv.productName} total={an.total} withFees={an.withFees} withoutFees={an.withoutFees} years={years} preTax={preTax} omitted={omitted} />
+      <SubjectStrip subject={sv} goalName={goalName} publisherNames={publisherNames} otherRecords={otherRecords} />
+      <FeeHeadline product={sv.productName} total={an.total} withFees={an.withFees} withoutFees={an.withoutFees} years={years} preTax={preTax} omitted={omitted} gap={gap} place={place} compareHref={compareHref} />
+      <EmploymentInferredNote show={!!goalG?.employmentInferred && employmentMatters(sv.wrapperId)} />
       {inputs.returnFromParameter && <Callout tone="info">{r3fees.review.parameterReturn}</Callout>}
       {!inputs.fromGoal && (
         <Callout tone="info">
-          {r3fees.review.noGoal}{" "}
+          {current ? r3fees.review.goalIncomplete : r3fees.review.noGoal}{" "}
           <Link to="/goal" className="text-link hover:underline">
             {r3fees.setGoal}
           </Link>
@@ -358,6 +377,11 @@ function Body({ bundle, fees, form, subject, frame }: { bundle: CompareBundle; f
         <Link to={sv.kind === "track" ? `/guide/${sv.wrapperId}` : `/guide/${sv.wrapperId}`} className="text-link hover:underline min-h-target inline-flex items-center">
           {r3fees.linkGuide}
         </Link>
+        {switchable && (
+          <Link to={`/switch/${sv.wrapperId}`} className="text-link hover:underline min-h-target inline-flex items-center">
+            {r3fees.linkSwitch}
+          </Link>
+        )}
         {sv.kind === "holding" && (
           <Link to="/holdings" className="text-link hover:underline min-h-target inline-flex items-center">
             {r3fees.strip.backHolding}

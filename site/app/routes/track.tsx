@@ -5,7 +5,7 @@ import { catalogue, companies as companiesCopy, company as companyCopy, r3workbe
 import { FeeNum, feeLabel } from "../components/decoder/fees";
 import { DimensionChecklist, type ChecklistRowView } from "../components/guide/sections";
 import { IconDrillIn } from "../components/icons";
-import { Num } from "../components/provenance";
+import { Num, NumAfter } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { FitMarkCard } from "../components/compare/fit";
 import { SavedGoalStrip } from "../components/compare/strip";
@@ -170,7 +170,7 @@ export default function TrackPage() {
                       ))}
                     </span>
                     <span className="text-sm text-muted-foreground">
-                      {catalogue.seenAt} <bdi dir="ltr">{n.where}</bdi> {catalogue.seenOn} <Num value={n.seen as SiteValue} />
+                      {catalogue.seenAt} <bdi dir="ltr">{n.where}</bdi> <NumAfter lead={catalogue.seenOn} value={n.seen as SiteValue} />
                     </span>
                   </li>
                 ))}

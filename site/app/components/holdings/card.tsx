@@ -8,9 +8,10 @@ import { fit as fitCopy, r3holdings as copy } from "../../copy";
 import { feeYear, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { isChild, type HoldingView, type HoldingsCtx } from "../../lib/holdings";
+import { playbookQueryString, playbookWrappers } from "../../lib/playbook";
 import { IconAlert, IconClock, IconLock } from "../icons";
 import { IconDash, IconHelp, IconOk } from "../compare/icons";
-import { Num, RuleRef } from "../provenance";
+import { LeadTail, Num, RuleRef } from "../provenance";
 import { Button, Card, Disclosure, Tag, cx } from "../ui";
 import { ImportedTag } from "../transfer/imported-tag";
 import { IconDown, IconUp } from "../compare/icons";
@@ -53,16 +54,32 @@ export function HoldingCard({ view, ctx, index, count, onEdit, onDelete, onMove 
       <Disclosure label={<span className="font-medium">{copy.detailsOpen}</span>} defaultOpen className="md:[&>summary]:hidden" summaryClassName="md:hidden">
         <div className="grid gap-5 md:grid-cols-2 md:gap-8 pt-1">
           <div className="flex flex-col gap-3 min-w-0">
-            {view.cma && (
-              <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
-                <dt className="text-muted-foreground">{record.classification}</dt>
-                <dd>{view.cma.classification ? <Num value={sourcedText(view.cma.classification, view.cma.period, record.classification)} /> : <span className="text-muted-foreground">{copy.noClassification.split(",")[0]}</span>}</dd>
-                <dt className="text-muted-foreground">{record.period}</dt>
-                <dd>
-                  <Num value={about(view.cma.period, record.period)} />
-                </dd>
-              </dl>
-            )}
+            <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
+              {view.cma?.classification && (
+                <>
+                  <dt className="text-muted-foreground">{record.classification}</dt>
+                  <dd>
+                    <Num value={sourcedText(view.cma.classification, view.cma.period, record.classification)} />
+                  </dd>
+                </>
+              )}
+              {view.cma && (
+                <>
+                  <dt className="text-muted-foreground">{copy.cardDates.authority}</dt>
+                  <dd>
+                    <Num value={about(view.cma.period, copy.cardDates.authority)} />
+                  </dd>
+                </>
+              )}
+              {typeof h.statementDate?.value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(h.statementDate.value) && (
+                <>
+                  <dt className="text-muted-foreground">{copy.cardDates.statement}</dt>
+                  <dd>
+                    <Num value={about(h.statementDate as SiteValue, copy.cardDates.statement)} display={fmt.date(h.statementDate.value)} />
+                  </dd>
+                </>
+              )}
+            </dl>
             <dl className="flex flex-col gap-3">
               <Fact label={record.balance} value={about(h.balance as SiteValue, record.balance)} />
               {!child && h.feeBalance && (
@@ -86,7 +103,7 @@ export function HoldingCard({ view, ctx, index, count, onEdit, onDelete, onMove 
 
           <div className="flex flex-col gap-3 min-w-0">
             {!child && <FitLine view={view} ctx={ctx} />}
-            {child ? <ChildLines view={view} /> : <FeeLine view={view} />}
+            {child ? <ChildLines view={view} /> : <FeeLine view={view} ctx={ctx} />}
           </div>
         </div>
       </Disclosure>
@@ -148,20 +165,28 @@ function FeeRefs({ view, kind }: { view: HoldingView; kind: "balance" | "deposit
   const r = copy.classRef;
   return (
     <div className="flex flex-col gap-0.5 text-sm text-muted-foreground">
-      <p>
-        {copy.trackAvg} <FeeNum value={avg} />
-        {year && (
-          <>
-            {" "}
-            {copy.trackAvgYear} <bdi dir="ltr">{year}</bdi>
-          </>
-        )}{" "}
-        {cma.perFund && <Tag tone="neutral">{copy.perFund}</Tag>}
-      </p>
+      {avg.value === null ? (
+        <p>
+          {copy.trackAvgNone} <bdi dir="ltr">{year ?? fmt.period(String(cma.period.value))}</bdi>.
+        </p>
+      ) : (
+        <p>
+          {copy.trackAvg} <FeeNum value={avg} />
+          {year && (
+            <>
+              {" "}
+              {copy.trackAvgYear} <bdi dir="ltr">{year}</bdi>
+            </>
+          )}{" "}
+          {cma.perFund && <Tag tone="neutral">{copy.perFund}</Tag>}
+        </p>
+      )}
       {ref && (kind === "balance" ? ref.count : ref.countDeposit).value !== 0 ? (
         <p>
-          {r.before} <bdi>{ref.classification}</bdi>: <Num value={kind === "balance" ? ref.meanBalance : ref.meanDeposit} /> {r.mid}{" "}
-          <Num value={kind === "balance" ? ref.medianBalance : ref.medianDeposit} />
+          {r.before} <bdi>{ref.classification}</bdi>: <Num value={kind === "balance" ? ref.meanBalance : ref.meanDeposit} />{" "}
+          <span className="whitespace-nowrap">
+            {r.mid} <Num value={kind === "balance" ? ref.medianBalance : ref.medianDeposit} />
+          </span>
           {(kind === "balance" ? ref.count : ref.countDeposit).value === 1 ? (
             r.afterOne
           ) : (
@@ -196,15 +221,11 @@ function FitLine({ view, ctx }: { view: HoldingView; ctx: HoldingsCtx }) {
   const m = view.fit;
   if (m === "no-goal") {
     return (
-      <div className="flex flex-col gap-1">
-        <p className="flex items-center gap-2 text-muted-foreground">
-          <IconHelp size={20} />
-          <span className="font-medium">{copy.fitNoGoal}</span>
-        </p>
-        <Link to="/goal" className="text-link min-h-target inline-flex items-center self-start hover:underline">
-          {copy.fitNoGoalLink}
-        </Link>
-      </div>
+      // the page says it once, with the link (audit A66)
+      <p className="flex items-center gap-2 text-muted-foreground">
+        <IconHelp size={20} />
+        <span className="font-medium">{copy.fitNoGoal}</span>
+      </p>
     );
   }
   if (m === "no-track") {
@@ -221,7 +242,7 @@ function FitLine({ view, ctx }: { view: HoldingView; ctx: HoldingsCtx }) {
     <div className="flex flex-col gap-1.5">
       <p className={cx("flex items-center gap-2", m === "fits" ? "text-positive" : "text-muted-foreground")}>
         <Icon size={20} />
-        <span className="text-lg font-medium">{fitCopy.marks[m]}</span>
+        <span className={m === "no-rule" ? "font-medium" : "text-lg font-medium"}>{m === "no-rule" ? copy.fitNoRule : fitCopy.marks[m]}</span>
         {view.cma?.stale && <IconClock size={16} className="text-caution" />}
       </p>
       {ctx.goal && (
@@ -249,18 +270,29 @@ function FitLine({ view, ctx }: { view: HoldingView; ctx: HoldingsCtx }) {
 }
 
 /** "העמלות יעלו {סכום} ב־{שנים}, בכסף של היום." with the pre-tax tag, and the link to the fee page. */
-function FeeLine({ view }: { view: HoldingView }) {
+function FeeLine({ view, ctx }: { view: HoldingView; ctx: HoldingsCtx }) {
   const f = view.fees;
   const id = view.holding.id;
+  const wrapperId = view.holding.wrapperId;
   return (
     <div className="flex flex-col gap-1.5">
       {f.kind === "ok" ? (
         <>
           <p>
-            {copy.feeLine.before} <Num value={f.cost.total} size="figure" className="!text-2xl" /> {copy.feeLine.mid}
-            <YearsNum value={f.cost.horizonYears} />
+            {copy.feeLine.before} <Num value={f.cost.total} size="figure" className="!text-2xl" /> <LeadTail lead={copy.feeLine.mid}>
+              <YearsNum value={f.cost.horizonYears} />
+            </LeadTail>
             {copy.feeLine.after}
           </p>
+          {f.cost.atAverage && (
+            <p>
+              {copy.avgSaving.before} <Num value={f.cost.atAverage} prefix={copy.avgSaving.approx} />{" "}
+              <LeadTail lead={copy.avgSaving.mid}>
+                <YearsNum value={f.cost.horizonYears} />
+              </LeadTail>
+              {copy.avgSaving.after}
+            </p>
+          )}
           {f.cost.preTax && (
             <p className="flex flex-wrap items-center gap-x-2">
               <span className="text-sm text-muted-foreground">{copy.preTax.split(":")[0]}:</span>
@@ -271,12 +303,7 @@ function FeeLine({ view }: { view: HoldingView }) {
           {f.cost.returnFromParameter && <p className="text-sm text-muted-foreground">{copy.returnFromParameter}</p>}
         </>
       ) : f.kind === "no-goal" ? (
-        <>
-          <p>{copy.feeLineNoGoal}</p>
-          <Link to="/goal" className="text-link min-h-target inline-flex items-center self-start hover:underline">
-            {copy.fitNoGoalLink}
-          </Link>
-        </>
+        <p>{copy.feeLineNoGoal}</p>
       ) : f.kind === "needs-pf36" ? (
         <p className="text-sm flex flex-wrap items-center gap-x-1.5">
           <IconLock size={16} className="text-blocked shrink-0" />
@@ -288,11 +315,19 @@ function FeeLine({ view }: { view: HoldingView }) {
       ) : f.kind === "unsupported" ? (
         <p className="text-sm text-muted-foreground">{copy.feeNotComputed}</p>
       ) : (
-        <p className="text-sm text-muted-foreground">{copy.feeFailed}</p>
+        <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
+          <span>{f.messageHe}</span>
+          {f.code && (ctx.rules[f.code] ? <RuleRef id={f.code} /> : <Tag tone="neutral"><bdi dir="ltr">{f.code}</bdi></Tag>)}
+        </p>
       )}
       <Link to={`/fees?holding=${encodeURIComponent(id)}`} className="text-link min-h-target inline-flex items-center self-start hover:underline">
         {copy.feeLinkLabel}
       </Link>
+      {playbookWrappers.includes(wrapperId) && (
+        <Link to={`/switch/${wrapperId}${playbookQueryString({ from: id, to: null, fundFrom: null, fundTo: null, share: null })}`} className="text-link min-h-target inline-flex items-center self-start hover:underline">
+          {copy.switchLink}
+        </Link>
+      )}
     </div>
   );
 }

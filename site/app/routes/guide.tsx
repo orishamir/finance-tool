@@ -2,15 +2,17 @@
 import type { ReactNode } from "react";
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/guide";
-import { guideBlocks as blocks, guide as copy, guideIndex, site } from "../copy";
-import { DimensionChecklist, FeeTable, GuideSection, InstitutionChips, KeyValueList, RelatedProducts, SectionIndex, TaxSteps, TermTable, useCurrentSection, type ChecklistRowView, type FeeRow, type KeyValueItem, type TaxStep } from "../components/guide/sections";
+import { formulaNames, guideBlocks as blocks, guide as copy, guideIndex, site } from "../copy";
+import { DimensionChecklist, ExposureLinks, FeeTable, GuideSection, InstitutionChips, KeyValueList, RelatedProducts, SectionIndex, TaxSteps, TermTable, useCurrentSection, type ChecklistRowView, type FeeRow, type KeyValueItem, type TaxStep } from "../components/guide/sections";
 import { Num, NumberLegend, RuleRef, RulesLine, StrengthLabel } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { Timeline } from "../components/timeline/Timeline";
 import { SavedGoalStrip } from "../components/compare/strip";
-import { Callout, Disclosure, Tag } from "../components/ui";
+import { Disclosure, Tag } from "../components/ui";
 import { GoalsProvider, type Presets } from "../lib/goal";
 import { fmt } from "../lib/format";
+import { rulesAnchor, splitTerms } from "../lib/guide-nav";
+import { useInputs } from "../lib/inputs";
 import { guideContent } from "../content/guide";
 import type { SiteValue } from "../lib/value";
 
@@ -68,6 +70,8 @@ export default function GuidePage() {
   const { record, rules, today } = data;
   const content = guideContent[record.id];
   const current = useCurrentSection(copy.sections.map((s) => s.id));
+  const { state: inputsState } = useInputs();
+  const title = (id: string) => copy.sections.find((x) => x.id === id)!.title;
   const figure = (ruleId: string, name: string): SiteValue | null => {
     const r = rules[ruleId];
     if (!r) return null;
@@ -111,6 +115,7 @@ export default function GuidePage() {
         return { value: exitCopy.otherKind as string, rules: [] };
     }
   };
+  const hebrewExit = data.exitTextRules.map((id) => ({ id, text: rules[id]?.text_he ?? "" })).filter((h) => h.text !== "");
   const exitItem = (): KeyValueItem => {
     const v = exitValue();
     return {
@@ -118,13 +123,25 @@ export default function GuidePage() {
       label: lockUp ? blocks.exit.labelFree : blocks.exit.labelWithdraw,
       value: v.value,
       rules: v.rules,
-      // the record's own wording, in the language it is written in; a kind the page already says in words needs no more
+      // the Hebrew text of the rules the record's sentence cites; the English sentence only when there is none, said to be English (audit A22)
       line: exit.text && exit.kind !== "any_time" ? (
-        <Disclosure label={<span className="text-sm text-link">{exitCopy.textNote as string}</span>} summaryClassName="min-h-9 justify-start gap-1 [&>svg]:size-4">
-          <bdi dir="ltr" className="text-sm block pb-2">
-            {exit.text}
-          </bdi>
-        </Disclosure>
+        hebrewExit.length > 0 ? (
+          <Disclosure label={<span className="text-sm text-link">{exitCopy.textNoteHe as string}</span>} summaryClassName="min-h-9 justify-start gap-1 [&>svg]:size-4">
+            <span className="flex flex-col gap-2 pb-2">
+              {hebrewExit.map((h) => (
+                <span key={h.id} className="block text-sm">
+                  <RuleRef id={h.id} /> {h.text}
+                </span>
+              ))}
+            </span>
+          </Disclosure>
+        ) : (
+          <Disclosure label={<span className="text-sm text-link">{exitCopy.textNoteEn as string}</span>} summaryClassName="min-h-9 justify-start gap-1 [&>svg]:size-4">
+            <bdi dir="ltr" className="text-sm block pb-2">
+              {exit.text}
+            </bdi>
+          </Disclosure>
+        )
       ) : undefined,
     };
   };
@@ -143,7 +160,7 @@ export default function GuidePage() {
       rules: amount.rule_ids ?? [],
       lead: amount.tax_year ? (
         <span>
-          {blocks.ceiling.taxYear} <bdi dir="ltr">{amount.tax_year}</bdi> ·
+          {blocks.ceiling.taxYear} <bdi dir="ltr">{amount.tax_year}</bdi>
         </span>
       ) : undefined,
     });
@@ -163,7 +180,7 @@ export default function GuidePage() {
     });
   }
   if (content && record.switch_is_tax_event.value === false) {
-    inout.push({ id: "switch", label: blocks.exit.labelSwitch, value: content.switchLine, rules: [...(record.switch_is_tax_event.rule_ids ?? []), ...content.switchRules.filter((r) => !(record.switch_is_tax_event.rule_ids ?? []).includes(r))] });
+    inout.push({ id: "switch", label: blocks.exit.labelSwitch, value: content.switchLine, line: data.hasPlaybook ? <Link to={`/switch/${record.id}`} className="text-link hover:underline">{blocks.exit.switchHow}</Link> : undefined, rules: [...(record.switch_is_tax_event.rule_ids ?? []), ...content.switchRules.filter((r) => !(record.switch_is_tax_event.rule_ids ?? []).includes(r))] });
   }
 
   // ---- fees: every base the record allows, in a fixed order; the cap is the record's figure, else the provider's own tariff
@@ -211,10 +228,16 @@ export default function GuidePage() {
         )}
       </>
     ) : null;
+  // a formula with no sentence of its own shows its Hebrew name, the code after it (audit A42)
+  const formulaHeadline = (formula: string): ReactNode => (
+    <>
+      {formulaNames[formula] ?? formulaNames._other} <bdi dir="ltr" className="text-xs text-muted-foreground">{formula}</bdi>
+    </>
+  );
   const plainStep = (id: string, when: string, step: { formula: string; rule_ids: string[] }): TaxStep => ({
     id,
     when,
-    headline: stepCopy(step.formula)?.headline ?? step.formula,
+    headline: stepCopy(step.formula)?.headline ?? formulaHeadline(step.formula),
     text: pendingLine(step.formula) ?? stepCopy(step.formula)?.text ?? "",
     rules: step.rule_ids,
   });
@@ -229,8 +252,37 @@ export default function GuidePage() {
   const exitRate = exitFormula === "F-44" ? figure("TXK-06", "rate") : null;
   const altRate = exitFormula === "F-44" ? figure("TXK-06", "nominal_rate") : null;
   const exitWeak = strengthOfRules(record.tax_at_exit.rule_ids);
+  // audit A46: the study fund's deposit row depends on employment: an employee's own deposit has no deduction (TXH-04) and the
+  // employer's within the limits is not income at deposit (TXH-01, TXH-03); the self-employed deduct up to a ceiling (TXH-05)
+  const hd = copy.hishtalmutDeposit;
+  const deductionPct = figure("TXH-05", "deduction_pct");
+  const selfText = (
+    <>
+      {hd.selfEmployed.before} {deductionPct ? <Num value={deductionPct} /> : null} {hd.selfEmployed.middle}
+    </>
+  );
+  const hishtalmutDeposit = (employment: "employee" | "self-employed" | null): TaxStep => {
+    const own = { id: "deposit", when: copy.taxSteps.deposit };
+    if (employment === "employee") return { ...own, headline: hd.employee.headline, text: hd.employee.text, rules: ["TXH-04", "TXH-01", "TXH-03"] };
+    if (employment === "self-employed") return { ...own, headline: hd.selfEmployed.headline, text: selfText, rules: ["TXH-05"] };
+    return {
+      ...own,
+      headline: hd.unknown.headline,
+      text: (
+        <span className="flex flex-col gap-1">
+          <span>
+            {hd.unknown.employee} {hd.employeeShort}
+          </span>
+          <span>
+            {hd.unknown.selfEmployed} {selfText}
+          </span>
+        </span>
+      ),
+      rules: ["TXH-04", "TXH-01", "TXH-03", "TXH-05"],
+    };
+  };
   const steps: TaxStep[] = [
-    plainStep("deposit", copy.taxSteps.deposit, record.deposit_side_tax),
+    record.id === "keren-hishtalmut" && record.deposit_side_tax.formula === "F-33" && ["TXH-04", "TXH-01", "TXH-03", "TXH-05"].every((r) => rules[r]) ? hishtalmutDeposit(inputsState.employment) : plainStep("deposit", copy.taxSteps.deposit, record.deposit_side_tax),
     plainStep("during", copy.taxSteps.during, record.tax_during),
     {
       id: "exit",
@@ -241,7 +293,7 @@ export default function GuidePage() {
             {exitStepCopy.before} <Num value={exitRate} /> {exitStepCopy.after}
           </>
         ) : (
-          exitStepCopy?.headline ?? exitFormula
+          exitStepCopy?.headline ?? formulaHeadline(exitFormula)
         ),
       text: pendingLine(exitFormula) ?? exitStepCopy?.text ?? "",
       tag: exitWeak ? (exitStepCopy?.baseTag ? <Tag tone="caution">{exitStepCopy.baseTag}</Tag> : <StrengthLabel strength={exitWeak} />) : undefined,
@@ -283,33 +335,46 @@ export default function GuidePage() {
   });
 
   const regulatorName = blocks.regulatorNames[String(record.regulator.value)] ?? String(record.regulator.value);
-  const provenance = { rules, terms: data.termsById, dimensions: data.dimensionNames, today, rulesOf: { name: data.name, href: `/rules#${Object.values(rules)[0]?.il_finance_file.replace(/\.md$/, "") ?? ""}` } };
+  const provenance = { rules, terms: data.termsById, dimensions: data.dimensionNames, today, rulesOf: { name: data.name, href: `/rules#${rulesAnchor(Object.values(rules))}` } }; // audit A27: the product's own topic, not the first rule's file
   const cp = { figure };
+  // audit A83: the terms table the page's own text opens, the rest and the shared terms behind toggles; nothing under three rows
+  const generalTerms = data.terms.filter((x) => x.wrapperIds.length >= data.wrapperCount);
+  const mainTerms = splitTerms(
+    data.terms.filter((x) => x.wrapperIds.length < data.wrapperCount),
+    content?.termIds ?? [],
+  );
 
   return (
     <GoalsProvider presets={data.goal.presets as Presets}>
     <PageShell current="guide" data={provenance}>
       <div className="lg:flex lg:gap-12 pt-2 lg:pt-8">
-        <SectionIndex sections={copy.sections} current={current} />
+        <SectionIndex sections={copy.sections.filter((x) => x.id !== "terms" || !mainTerms.hide || generalTerms.length > 0)} current={current} />
         <div className="flex-1 min-w-0 flex flex-col gap-section">
           <header className="flex flex-col gap-3">
             <Breadcrumb parent={{ href: "/guide", label: guideIndex.title }} current={data.name} />
             <h1 className="text-2xl lg:text-3xl font-semibold">{data.name}</h1>
             {data.lede && <p className="text-lg text-muted-foreground max-w-measure">{data.lede}</p>}
             <SavedGoalStrip variant="compact" presets={data.goal.presets as Presets} meta={data.goal.meta} today={today} />
-            <NumberLegend />
+            <NumberLegend term />
           </header>
 
-          <GuideSection id="what" title={copy.sections[0].title}>
+          <GuideSection id="what" title={title("what")} rulesToggle>
             {content?.what(cp)}
             {data.bundle && data.initial ? (
               <Timeline bundle={data.bundle} initial={data.initial} wrapperName={data.name} ageMarker={{ ruleId: "TXG-04", figure: "age" }} lock={{ years: (record.lawful_exit.years as SiteValue | undefined) ?? null, age: record.lawful_exit.kind === "at_age" ? ((record.lawful_exit.age as SiteValue | undefined) ?? null) : null }} />
             ) : (
-              <NoGraphCallout data={data} />
+              <NoGraphLine data={data} />
             )}
           </GuideSection>
 
-          <GuideSection id="who" title={copy.sections[1].title}>
+          {/* audit A42: who it is for sits directly under what it is */}
+          <GuideSection id="use" title={title("use")} rulesToggle>
+            {content?.use(cp)}
+            <RelatedProducts items={data.related} />
+            <ExposureLinks items={data.exposures} />
+          </GuideSection>
+
+          <GuideSection id="who" title={title("who")} rulesToggle>
             {content?.who(cp) ?? (
               <p className="max-w-measure">
                 {regulatorName}. {copy.whoLine}
@@ -318,50 +383,51 @@ export default function GuidePage() {
             <InstitutionChips companies={data.companies} allHref="/companies" />
           </GuideSection>
 
-          <GuideSection id="inout" title={copy.sections[2].title}>
+          <GuideSection id="inout" title={title("inout")} rulesToggle>
             <KeyValueList items={inout} />
           </GuideSection>
 
-          <GuideSection id="cost" title={copy.sections[3].title}>
+          <GuideSection id="cost" title={title("cost")} rulesToggle>
             <FeeTable fees={fees} note={provident ? copy.feeNote : copy.feeNoteOther} />
           </GuideSection>
 
-          <GuideSection id="tax" title={copy.sections[4].title}>
+          <GuideSection id="tax" title={title("tax")} rulesToggle>
             <TaxSteps steps={steps} />
             {content?.afterTax?.(cp)}
           </GuideSection>
 
-          <div className="lg:grid lg:grid-cols-2 lg:gap-12 flex flex-col gap-section">
-            <GuideSection id="risk" title={copy.sections[5].title}>
-              {content?.risks(cp) ?? (
-                <>
-                  <p className="max-w-measure">
-                    <bdi dir="ltr">{record.protection.text}</bdi>
-                  </p>
-                  <RulesLine ids={record.protection.rule_ids} />
-                </>
-              )}
-            </GuideSection>
-            <GuideSection id="use" title={copy.sections[6].title}>
-              {content?.use(cp)}
-              <RelatedProducts items={data.related} />
-            </GuideSection>
-          </div>
+          <GuideSection id="risk" title={title("risk")} rulesToggle>
+            {content?.risks(cp) ?? (
+              <>
+                <p className="max-w-measure">
+                  <bdi dir="ltr">{record.protection.text}</bdi>
+                </p>
+                <RulesLine ids={record.protection.rule_ids} />
+              </>
+            )}
+          </GuideSection>
 
-          <GuideSection id="check" title={copy.sections[7].title}>
+          <GuideSection id="check" title={title("check")}>
             <DimensionChecklist rows={checklist} />
           </GuideSection>
 
-          <GuideSection id="terms" title={copy.sections[8].title}>
-            <p className="text-sm text-muted-foreground">{copy.termsLine}</p>
-            <TermTable terms={data.terms.filter((x) => x.wrapperIds.length < data.wrapperCount)} />
-            {data.terms.some((x) => x.wrapperIds.length >= data.wrapperCount) && (
-              <Disclosure label={<span className="font-medium">{copy.generalTermsLabel}</span>} className="flex flex-col gap-2" summaryClassName="min-h-12">
-                <p className="text-sm text-muted-foreground">{copy.generalTermsLine}</p>
-                <TermTable terms={data.terms.filter((x) => x.wrapperIds.length >= data.wrapperCount)} />
-              </Disclosure>
-            )}
-          </GuideSection>
+          {(mainTerms.hide ? 0 : 1) + (generalTerms.length > 0 ? 1 : 0) > 0 && (
+            <GuideSection id="terms" title={title("terms")}>
+              <p className="text-sm text-muted-foreground">{copy.termsLine}</p>
+              {mainTerms.main.length > 0 && <TermTable terms={mainTerms.main} />}
+              {mainTerms.rest.length > 0 && (
+                <Disclosure label={<span className="text-link">{copy.termsShowAll}</span>} openLabel={<span className="text-link">{copy.termsHideAll}</span>} className="flex flex-col gap-2" summaryClassName="justify-start">
+                  <TermTable terms={mainTerms.rest} />
+                </Disclosure>
+              )}
+              {generalTerms.length > 0 && (
+                <Disclosure label={<span className="text-link">{copy.generalTermsShow}</span>} openLabel={<span className="text-link">{copy.termsHideAll}</span>} className="flex flex-col gap-2" summaryClassName="justify-start">
+                  <p className="text-sm text-muted-foreground">{copy.generalTermsLine}</p>
+                  <TermTable terms={generalTerms} />
+                </Disclosure>
+              )}
+            </GuideSection>
+          )}
         </div>
       </div>
     </PageShell>
@@ -371,46 +437,42 @@ export default function GuidePage() {
 
 export { Link };
 
-/** In place of the graph card when the run cannot happen: a pending formula with its release, or the data not yet collected. */
-function NoGraphCallout({ data }: { data: ReturnType<typeof useLoaderData<typeof loader>> }) {
+/**
+ * In place of the graph card when the run cannot happen: one quiet line with the reason in words (audit A45), never a code.
+ * The parts of a missing-data line join as "{before}{parts}, {after}" (the editor's request): a comma, no space before it.
+ */
+function NoGraphLine({ data }: { data: ReturnType<typeof useLoaderData<typeof loader>> }) {
   const n = data.noGraph;
   const c = blocks.noGraph;
   if (!n) return null;
+  const line = "text-sm text-muted-foreground max-w-measure";
   if (n.kind === "pending") {
     return (
-      <Callout tone="caution" className="max-w-measure">
-        {n.formulas.map((f) => (
-          <span key={f} className="block">
-            {blocks.taxSteps[f]?.headline ?? f}: {blocks.notComputed.text}
+      <p className={line}>
+        {n.formulas.map((f, i) => (
+          <span key={f}>
+            {i > 0 && " "}
+            {blocks.taxSteps[f]?.headline ?? formulaNames[f] ?? formulaNames._other}: {blocks.notComputed.text}
             {data.pendingFormulas[f] && (
               <>
                 {" · "}
                 {blocks.notComputed.releaseBefore} <bdi dir="ltr">{data.pendingFormulas[f]}</bdi>
               </>
             )}
+            .
           </span>
         ))}
-      </Callout>
+      </p>
     );
   }
   if (n.kind === "missing") {
     const parts = n.parts.map((p) => (c.parts as Record<string, string>)[p] ?? c.parts.other);
     return (
-      <Callout tone="caution" className="max-w-measure">
+      <p className={line}>
         {c.missingBefore}
-        {[...new Set(parts)].join(" ול")} {c.missingAfter}
-      </Callout>
+        {[...new Set(parts)].join(" ול")}, {c.missingAfter}
+      </p>
     );
   }
-  return (
-    <Callout tone="caution" className="max-w-measure">
-      {c.unknownCause}
-      {n.kind === "stops" && n.code && (
-        <>
-          {" "}
-          <bdi dir="ltr">{n.code}</bdi>
-        </>
-      )}
-    </Callout>
-  );
+  return <p className={line}>{c.unknownCause}</p>;
 }

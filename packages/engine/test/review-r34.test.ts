@@ -215,10 +215,46 @@ describe("F-61 existing balance in a study fund (review S42)", () => {
       expect(() => runProvident({ ...kgl, embeddedGain: 200_000 }, ctx)).toThrow(RangeError);
     });
   });
-  it("an employer part above TXH-01's limit stops: it is salary when paid (F-52)", () => {
-    // 7.5% × 15,712 = 1,178.40 < 1,200.
-    const over = { ...base, goal: { ...base.goal, monthly: 1500 }, hishtalmut: { ...base.hishtalmut!, employerMonthly: 1200 } };
-    expect(() => runProvident(over, ctx)).toThrow(/TXH-01/);
+  describe("employer part against TXH-01's limit (F-52, 2026-10-24)", () => {
+    // 7.5% × 15,712 = 1,178.40 a month; the own part 300 is under TXH-08's 2.5% × 15,712 = 392.80.
+    const limit = 0.075 * 15_712;
+    const withEmployer = (employerMonthly: number) => ({
+      ...base,
+      goal: { ...base.goal, monthly: 300 + employerMonthly },
+      hishtalmut: { ...base.hishtalmut!, employerMonthly },
+    });
+    const g = 1.06 ** (1 / 12) - 1;
+    const growth = Array.from({ length: 120 }, (_, k) => (1 + g) ** (k + 1)).reduce((a, b) => a + b, 0);
+
+    it("exactly at the limit: all benefited, no salary tax, nothing taxed at exit", () => {
+      const r = runProvident(withEmployer(limit), ctx);
+      expect(r.detail.employerDepositTax).toBeUndefined();
+      expect(r.taxAtExit).toBe(0);
+    });
+    it("above the limit it no longer stops: the part above is salary when paid and runs separately", () => {
+      const at = runProvident(withEmployer(limit), ctx);
+      const r = runProvident(withEmployer(1500), ctx);
+      const over = 1500 - limit;
+      // The extra money (321.60 a month) lands in the excess pot and grows like any deposit.
+      expect(r.detail.grossBalance! - at.detail.grossBalance!).toBeCloseTo(over * growth, 4);
+      // Salary 20,000: the 321.60 above is 3,859.20 a year on top of 240,000, in the 31% band (TXG-02): 1,196.352 a year, 11,963.52 over 10.
+      expect(r.detail.employerDepositTax!).toBeCloseTo(11_963.52, 2);
+      // National Insurance and health at the full rate 12.17% (TXG-35, a reading): 0.1217 × 321.60 × 120 = 4,696.6464.
+      expect(r.detail.employerSocial!).toBeCloseTo(4_696.6464, 3);
+      // The split of the monthly money: own 300 and employer 1,178.40 benefited, 321.60 above.
+      expect(r.detail.benefitedMonthly).toBeCloseTo(1_478.4, 9);
+      expect(r.detail.excessMonthly).toBeCloseTo(321.6, 9);
+      expect(r.labels).toContainEqual({ code: "reading", ruleId: "TXG-35" });
+      // Its gains are taxed at exit (TXH-11); the benefited part is not.
+      expect(r.taxAtExit).toBeGreaterThan(0);
+      expect(r.formulas).toContain("F-52");
+      expect(r.nominal).toBeLessThan(r.detail.grossBalance! - r.taxAtExit);
+    });
+    it("the self-employed path has no employer limit and is unchanged", () => {
+      const se: ProvidentInput = { ...base, hishtalmut: { employment: "self-employed", clockStartMonth: -72 }, profile: { annualIncome: 200_000 } };
+      const r = runProvident(se, ctx);
+      expect(r.detail.employerDepositTax).toBeUndefined();
+    });
   });
 });
 

@@ -4,6 +4,7 @@
 import { useLayoutEffect, useRef, type ReactNode } from "react";
 import { Link } from "react-router";
 import { r2, r5 } from "../../copy";
+import { decidingFormulaOf } from "../../lib/compare";
 import type { ExposureRowView } from "../../lib/exposure-mode";
 import { IconDrillIn, IconLock } from "../icons";
 import { IconDash, IconDashed, IconEdit, IconEqual } from "../compare/icons";
@@ -54,11 +55,11 @@ function Mark({ row }: { row: ExposureRowView }) {
 export function InputsStrip({ row, ctx }: { row: ExposureRowView; ctx: ExpCtx }) {
   const id = row.id;
   return (
-    <div className="bg-secondary rounded-md p-3 grid gap-4 md:grid-cols-2 xl:grid-cols-4 items-start">
+    <div className="bg-secondary rounded-md p-3 grid gap-4 sm:grid-cols-2 items-start">
       {row.entry.record.cash_like ? (
-        <CashRateLine row={row} cashLink={ctx.bundle.cashLink} onChange={(v) => ctx.setInput(id, { return: v })} />
+        <CashRateLine row={row} cashLink={ctx.bundle.cashLink} range={ctx.range} onChange={(v) => ctx.setInput(id, { return: v })} />
       ) : (
-        <EnteredReturnField entry={row.entry} value={row.enteredReturn} onChange={(v) => ctx.setInput(id, { return: v })} />
+        <EnteredReturnField entry={row.entry} value={row.enteredReturn} range={ctx.range} {...(row.returnFromProduct ? { fromProduct: row.returnFromProduct } : {})} onChange={(v) => ctx.setInput(id, { return: v })} />
       )}
       <WorstFallField entry={row.entry} value={row.worstFall} onChange={(v) => ctx.setInput(id, { worstFall: v })} />
       <AcceptedFallChip row={row} onChange={(v) => ctx.setInput(id, { acceptedFall: v })} />
@@ -131,7 +132,7 @@ export function ExposureRow({ row, ctx, above, onDetail, choose }: { row: Exposu
 
       {ranked && f && above && !tied && (
         <p className="text-sm text-muted-foreground">
-          {r2.result.decidingLine} {r2.deciding[f.formula]}, <Num value={mk.nis(f.mine, "F-61", r2.deciding[f.formula]!, row.run ? { usedRules: row.run.rules } : undefined)} /> {r2.result.reasonFeeVs} <Num value={mk.nis(f.above, "F-61", r2.deciding[f.formula]!, above.run ? { usedRules: above.run.rules } : undefined)} />
+          {r2.result.decidingLine} {r2.deciding[f.formula]}, <Num value={mk.nis(f.mine, decidingFormulaOf(f.formula), r2.deciding[f.formula]!, row.run ? { usedRules: row.run.rules } : undefined)} /> {r2.result.reasonFeeVs} <Num value={mk.nis(f.above, decidingFormulaOf(f.formula), r2.deciding[f.formula]!, above.run ? { usedRules: above.run.rules } : undefined)} />
         </p>
       )}
 

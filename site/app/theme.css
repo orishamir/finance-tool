@@ -152,7 +152,7 @@
   --popover: var(--palette-neutral-900); /* popovers and sheets */
   --popover-foreground: var(--foreground);
   --muted: var(--palette-neutral-900);
-  --muted-foreground: var(--palette-neutral-400);
+  --muted-foreground: var(--palette-neutral-300); /* was neutral-400 until 2026-10-24: one step lighter for large Windows screens */
   --secondary: var(--palette-neutral-850);
   --secondary-foreground: var(--foreground);
   --accent: var(--palette-neutral-850); /* hover and pressed wash on rows and menu items */
@@ -237,6 +237,7 @@
 
   /* Stacking (popovers and sheets use the top layer and need none) */
   --z-sticky: 20;
+  --z-popover: 30; /* the search results under the page field (audit 2026-10-24, A5) */
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -254,7 +255,7 @@
 
   /* Latin face first: Inter has no Hebrew, so Hebrew falls through to Heebo glyph by glyph.
      Arial (has Hebrew) holds the layout while the web fonts load. ₪ comes from Heebo. */
-  --font-sans: "Inter Variable", "Heebo Variable", Arial, sans-serif;
+  --font-sans: "Inter Variable", "Inter Fallback", "Heebo Variable", Arial, sans-serif;
 
   /* Type scale for Hebrew: body never below 16px, taller line heights than Latin */
   --text-xs: 0.8125rem; /* 13px: captions, axis ticks, source dates */

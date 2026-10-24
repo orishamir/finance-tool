@@ -24,22 +24,29 @@ function show(ctx: ResultCtx, row: SensitivityRowView, v: number, about: string)
   return <Num value={mk.plain(v, "count", "F-81", about)} display={`${r2.result.times} ${Number(v.toFixed(2))}`} />;
 }
 
+/** The sentence of a row that flips: "מתהפך אם … תעבור מ־… ל־…: אז … ראשונה." (also the headline's second line, A3). */
+export function FlipSentence({ row, ctx }: { row: SensitivityRowView; ctx: ResultCtx }) {
+  const flip = row.flip;
+  if (!flip) return null;
+  const top = flip.topAfter.split("|")[0] ?? "";
+  return (
+    <>
+      {flip.breaksTie ? r2.result.sensBreaks : r2.result.sensFlip} {row.label} {r2.result.sensCross}
+      {show(ctx, row, flip.from, row.label)}
+      {r2.result.sensTo}
+      {show(ctx, row, flip.to, row.label)}
+      {r2.result.sensThen} <bdi>{ctx.view.names[top] ?? top}</bdi> {r2.result.sensFirst}
+    </>
+  );
+}
+
 function SensitivityRowItem({ row, ctx, onOpen }: { row: SensitivityRowView; ctx: ResultCtx; onOpen: (field: FieldKey, suggested: number) => void }) {
   const { view, mk } = ctx;
   const b = bounds(ctx, row.key);
   const flip = row.flip;
   let text: ReactNode;
   if (flip) {
-    const top = flip.topAfter.split("|")[0] ?? "";
-    text = (
-      <>
-        {flip.breaksTie ? r2.result.sensBreaks : r2.result.sensFlip} {row.label} {r2.result.sensCross}
-        {show(ctx, row, flip.from, row.label)}
-        {r2.result.sensTo}
-        {show(ctx, row, flip.to, row.label)}
-        {r2.result.sensThen} <bdi>{view.names[top] ?? top}</bdi> {r2.result.sensFirst}
-      </>
-    );
+    text = <FlipSentence row={row} ctx={ctx} />;
   } else {
     const lo = row.unit === "years" || !b ? row.lo : row.lo;
     const hi = row.hi;
@@ -69,9 +76,24 @@ function SensitivityRowItem({ row, ctx, onOpen }: { row: SensitivityRowView; ctx
     const suggested = row.field === "horizonYears" ? (flip.side === "hi" ? Math.ceil(flip.to) : Math.floor(flip.to)) : flip.to * 100;
     return (
       <li className={cls}>
-        <button type="button" className="w-full text-start" onClick={() => onOpen(row.field!, suggested)}>
+        {/* a div, not a button: the row holds number buttons (provenance), and a button inside a button is invalid HTML (audit 2026-10-24 (sweep)) */}
+        <div
+          role="button"
+          tabIndex={0}
+          className="w-full text-start cursor-pointer"
+          onClick={(e) => {
+            if ((e.target as HTMLElement).closest("button, a")) return;
+            onOpen(row.field!, suggested);
+          }}
+          onKeyDown={(e) => {
+            if ((e.key === "Enter" || e.key === " ") && e.target === e.currentTarget) {
+              e.preventDefault();
+              onOpen(row.field!, suggested);
+            }
+          }}
+        >
           {inner}
-        </button>
+        </div>
       </li>
     );
   }

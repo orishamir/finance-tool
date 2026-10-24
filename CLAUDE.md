@@ -5,6 +5,13 @@ make saving and investing decisions in Israel.
 
 ## Status: releases 1 to 5 built, data filled as far as sources allow
 
+On 2026-10-24 (night) sixteen independent user-perspective auditors reviewed
+the live site; `research/audit/2026-10-24-user-audit.md` holds the method,
+the findings, what was fixed the same night (85 of 112 deduplicated findings,
+plus 34 screen quirks), the 16 decisions waiting for me, and what was not
+done. The design docs carry dated amendments from that night; the Hebrew
+copy has a style guide in `docs/copy.md` section 10.
+
 All five releases of `docs/roadmap.md` are built (release 1 on 2026-10-23,
 releases 2 to 5 on 2026-10-23 and 2026-10-24); the dated "Status" paragraphs
 under each release say what exists and what is open, and its closing section
@@ -81,14 +88,15 @@ Look approved by the founder (2026-10-23). Tokens live in `site/app/theme.css`;
   `muted-foreground`, `primary`, `border`, `input`, `ring`).
 - **Number states (D7).** Sourced: solid grey underline. Computed: dotted
   violet underline. Entered by you: blue ink on a blue highlight. Flags:
-  `caution` amber (stale, secondary source), `blocked` red with a lock (open
-  rule), `positive` green (dimension considered). Colour never works alone:
+  `caution` amber (stale, secondary source, a figure from the institution's own
+  document, labelled "לפי החברה"), `blocked` red with a lock (open rule),
+  `positive` green (dimension considered). Colour never works alone:
   each state also has a pattern, icon or word. Every number goes through the
   provenance component.
 - **Charts.** Own SVG components. Teal value, orange fees, rose tax, neutral
   contributions, dashed blue for a series that rests on an entered return,
-  red hatch for blocked parts. Time runs left to right; value labels sit
-  at the right. Blue and violet are never series colours.
+  red hatch for blocked parts. Time runs left to right; the value axis sits at the plot's left edge and
+  direct labels at the right (2026-10-24). Blue and violet are never series colours.
 - **Type.** Inter (Latin, digits) then Heebo (Hebrew), self-hosted variable
   fonts (approved 2026-10-22). Scale 13/14/16/18/20/24/30 px plus a 32 px figure size; body 16 px
   at line height 1.7. No letter-spacing on Hebrew. Numbers use tabular

@@ -13,4 +13,8 @@ export interface ResultCtx {
   mode: Mode;
   /** Opens the assumptions (a sheet on a phone, the panel on PC) at a field, with a suggestion to adopt when there is one. */
   openField: (field: FieldKey, suggested?: number) => void;
+  /** The largest fall the person accepts, % of value (A-29), for the shekel echo and the chart's band (A12); null when not entered. */
+  fall?: number | null;
+  /** The person's own rate for a deposit-family wrapper (A8): sets it (% a year) or clears it. */
+  setOwnRate?: (wrapperId: string, pct: number | undefined) => void;
 }

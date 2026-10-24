@@ -34,8 +34,8 @@ export interface ProvidentInput {
     /**
      * Of `goal.monthly`, the part the employer pays (an employee's own money and the employer's together, as a
      * payslip shows them, S42). The own part is benefited up to TXH-08's share of the determining salary, the
-     * employer's up to TXH-01's; an employer part above that limit is salary when paid (F-52) and needs its own
-     * run (`money: "employer"`), so it stops the run with the field named.
+     * employer's up to TXH-01's; an employer part above that limit is salary when paid (F-52, TXH-03) and runs
+     * separately inside the same run (its salary tax is subtracted from the value, its gains are taxed at exit).
      */
     employerMonthly?: number;
   };
@@ -150,8 +150,11 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
         if (h.money === "employer") throw new RecordInputError("hishtalmut.employerMonthly splits goal.monthly into own and employer money; money: \"employer\" runs the employer's alone");
         if (h.employerMonthly < 0 || h.employerMonthly > goal.monthly) throw new RangeError(`employerMonthly ${h.employerMonthly} must be between 0 and goal.monthly`);
         employerLimit = book.rate("TXH-01", "employer_exempt_pct") * determining;
+        // F-52: the part of the employer's deposit above this limit is salary when paid (TXH-03) and runs
+        // separately below; the part up to the limit stays benefited (TXH-01).
         if (h.employerMonthly > employerLimit) {
-          throw new RecordInputError(`hishtalmut.employerMonthly ${h.employerMonthly} is above TXH-01's limit ${employerLimit.toFixed(2)}: the part above is salary when paid (F-52); run the employer's money with money "employer"`);
+          book.cite("TXH-03");
+          book.label("reading", "TXG-35");
         }
       }
     } else {
@@ -210,7 +213,8 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
   const employerExcessByYear = new Map<number, number>();
   let employerSocial = 0;
   const salary = hish?.monthlySalary ?? 0;
-  const social = employerMoney
+  const employerOverActive = !kgl && hish?.employerMonthly !== undefined && hish.employerMonthly > employerLimit;
+  const social = employerMoney || employerOverActive
     ? {
         reducedUpTo: book.amount("TXG-35", "reduced_threshold"),
         maxIncome: book.amount("TXG-35", "max_income"),
@@ -233,12 +237,16 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     const fee = depositFee(fees.deposit, depositCap, accepted);
     tally.fee("deposit", fee);
     const net = accepted - fee;
-    // S42: an employer part of the monthly deposit sits under TXH-01's limit (checked above) and is all benefited.
-    const employerPart = hish?.employerMonthly !== undefined && eventMonth > 0 && goal.monthly > 0 ? (net * hish.employerMonthly) / goal.monthly : 0;
-    const inBenefit = employerPart + Math.min(net - employerPart, benefitedMonthly, benefitedLeft);
+    // S42: the employer part of the monthly deposit up to TXH-01's limit is all benefited; the part above the
+    // limit is salary when paid (F-52, TXH-03) and goes with the excess.
+    const empWithinFrac = hish?.employerMonthly !== undefined && eventMonth > 0 && goal.monthly > 0 ? Math.min(hish.employerMonthly, employerLimit) / goal.monthly : 0;
+    const empOverFrac = hish?.employerMonthly !== undefined && eventMonth > 0 && goal.monthly > 0 ? Math.max(0, hish.employerMonthly - employerLimit) / goal.monthly : 0;
+    const employerPart = net * empWithinFrac;
+    const employerOver = net * empOverFrac;
+    const inBenefit = employerPart + Math.min(net - employerPart - employerOver, benefitedMonthly, benefitedLeft);
     benefitedLeft -= inBenefit - employerPart;
-    if (employerMoney && social && net - inBenefit > 0) {
-      const over = net - inBenefit;
+    const over = employerMoney ? net - inBenefit : employerOver;
+    if (social && over > 0) {
       const y = taxYearOf(eventMonth, first);
       employerExcessByYear.set(y, (employerExcessByYear.get(y) ?? 0) + over);
       const band = (lo: number, hi: number) => Math.max(0, Math.min(salary + over, hi) - Math.max(salary, lo));
@@ -348,14 +356,18 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
       } else outcome = { code: "listed-not-ranked", reason: step.blocked };
     }
     detail.excessRealGain = excessReal;
-    detail.benefitedMonthly = Math.min(benefitedMonthly, goal.monthly);
-    detail.excessMonthly = Math.max(0, goal.monthly - benefitedMonthly);
+    // With an employer split (S42) the own part is benefited up to TXH-08's share and the employer's up to TXH-01's limit.
+    const split = hish?.employerMonthly;
+    const benefitedPerMonth =
+      split !== undefined && !employerMoney ? Math.min(benefitedMonthly, goal.monthly - split) + Math.min(split, employerLimit) : Math.min(benefitedMonthly, goal.monthly);
+    detail.benefitedMonthly = benefitedPerMonth;
+    detail.excessMonthly = Math.max(0, goal.monthly - benefitedPerMonth);
   }
 
   // F-30 (deduction) and F-52 (employer money above the limit): what the person got back, and what the
   // employer's excess cost at deposit, both at face value (the method subtracts them at the amounts paid).
   let employerDepositTax = 0;
-  if (employerMoney) {
+  if (employerMoney || employerOverActive) {
     const brackets = book.brackets("TXG-02", "brackets");
     for (const x of employerExcessByYear.values()) employerDepositTax += deductionValue(brackets, 12 * salary + x, x);
     book.cite("TXH-03");

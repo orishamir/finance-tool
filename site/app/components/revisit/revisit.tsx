@@ -4,7 +4,9 @@ import { Fragment, useId, useState, type ReactNode } from "react";
 import { Link } from "react-router";
 import { r2, r5 } from "../../copy";
 import { fmt } from "../../lib/format";
-import type { DiffRowView, RevisitView, Rendered, ValueChange } from "../../lib/revisit";
+import type { DiffRowView, GoalChange, RevisitView, Rendered, ValueChange } from "../../lib/revisit";
+import { entered } from "../../lib/value";
+import { todayLocal } from "../../lib/today";
 import { Sheet } from "../Sheet";
 import { IconAlert, IconCheck, IconLock } from "../icons";
 import { Num } from "../provenance";
@@ -102,9 +104,33 @@ function whatText(v: RevisitView): { text: string; plural: boolean } {
   return { text: joinHe(parts), plural: true };
 }
 
+/** "שנות החיסכון: מ־15 ל־20 שנים", and "ועוד שינוי אחד" or "ועוד 3 שינויים" for the rest (audit 2026-10-24, A30). */
+function goalChangeNode(changes: GoalChange[]): ReactNode {
+  const r = r5.revisit;
+  const f = changes[0]!;
+  const label = r.goalFields[f.field];
+  const today = todayLocal();
+  const first = f.values ? (
+    <Tpl
+      t={r.goalChange}
+      vars={{
+        label,
+        before: <Num value={entered(f.values.before, f.values.unit, today)} display={f.values.unit === "years" ? fmt.number(f.values.before) : undefined} />,
+        after: <Num value={entered(f.values.after, f.values.unit, today)} display={f.values.unit === "years" ? fmt.years(f.values.after) : undefined} />,
+      }}
+    />
+  ) : (
+    label
+  );
+  if (changes.length === 1) return first;
+  const n = changes.length - 1;
+  return <Tpl t={r.goalChangeMore} vars={{ first, more: n === 1 ? r.goalChangeMoreOne : <Tpl t={r.goalChangeMoreMany} vars={{ n: <Num value={entered(n, "count", today)} /> }} /> }} />;
+}
+
 /** The strip's line text, as a string with the date in its own isolate. */
 export function noticeNode(v: RevisitView): ReactNode {
   const r = r5.revisit;
+  if (v.goalChanges?.length) return <Tpl t={r.goalChanged} vars={{ what: <bdi>{goalChangeNode(v.goalChanges)}</bdi> }} />;
   if (v.status === "unchanged") return <Tpl t={r.unchanged} vars={{ date: date(v.savedOn) }} />;
   if (v.status === "unreadable") return r.unreadable;
   if (v.status === "cannot-run") return <Tpl t={r.verdict.cannotRun} vars={{ reason: <bdi dir="ltr" className="text-xs">{v.cannotRun}</bdi> }} />;
@@ -118,7 +144,7 @@ export function noticeNode(v: RevisitView): ReactNode {
 /** The strip's second line (design-spec 21.3 `RevisitLine`): saved date and choice, then the notice and "מה השתנה". */
 export function RevisitLine({ view, savedOn, choice, computing, onOpen }: { view: RevisitView | null; savedOn: string; choice?: { name: string }; computing: boolean; onOpen: () => void }) {
   const r = r5.revisit;
-  const changed = view && (view.status === "changed" || view.status === "cannot-run");
+  const changed = view && (view.status === "changed" || view.status === "cannot-run" || !!view.goalChanges?.length);
   return (
     <span className="text-xs flex flex-wrap items-center gap-x-3 gap-y-0.5 text-muted-foreground">
       <span className="inline-flex items-center gap-1">
@@ -136,7 +162,7 @@ export function RevisitLine({ view, savedOn, choice, computing, onOpen }: { view
         <span className={cx("inline-flex items-center gap-1", changed ? "text-caution-foreground" : "text-muted-foreground")}>
           {changed && <IconAlert size={14} className="text-caution shrink-0" />}
           {noticeNode(view)}
-          {view.status !== "unchanged" && view.diff.length > 0 && (
+          {view.status !== "unchanged" && view.diff.length > 0 && !view.goalChanges?.length && (
             <button type="button" className="text-link hover:underline ms-1" onClick={onOpen}>
               {r.banner.sheet}
             </button>
@@ -155,7 +181,7 @@ export function RevisitLine({ view, savedOn, choice, computing, onOpen }: { view
 /** The compact strip's icon and two words (company and track pages). */
 export function CompactRevisit({ view }: { view: RevisitView | null }) {
   if (!view || view.status === "unreadable") return null;
-  const changed = view.status !== "unchanged";
+  const changed = view.status !== "unchanged" || !!view.goalChanges?.length;
   return (
     <span className={cx("inline-flex items-center gap-1 text-sm", changed ? "text-caution-foreground" : "text-muted-foreground")}>
       {changed && <IconAlert size={14} className="text-caution" />}
@@ -218,6 +244,17 @@ export function RevisitBanner({ view, onOpen, onSaveAgain }: { view: RevisitView
       )}
     </div>
   );
+  if (view.goalChanges?.length) {
+    // the saved comparison is about the goal as it was: no verdict, only what changed and the way to save again
+    return (
+      <Callout tone="caution">
+        <div className="flex flex-col gap-1.5">
+          <p className="font-medium">{noticeNode(view)}</p>
+          {save}
+        </div>
+      </Callout>
+    );
+  }
   if (view.status === "unchanged") {
     return (
       <div className="rounded-lg border border-border bg-card px-4 py-3 flex flex-col gap-1 text-sm">

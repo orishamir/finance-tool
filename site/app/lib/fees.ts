@@ -28,9 +28,10 @@ import {
 } from "@finance-tool/engine";
 import type { ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
 import { computedInputs as ci, formulaNames, r3fees } from "../copy";
-import { asParameter, evaluate, goalValueObjects, nothingToCompare, parameterOf, type CompareBundle, type FeeKind, type RunGoal, type WrapperEntry } from "./compare";
+import { asParameter, evaluate, goalValueObjects, nothingToCompare, parameterOf, placeGroups, type CompareBundle, type FeeKind, type RunGoal, type WrapperEntry } from "./compare";
 import { fmt } from "./format";
 import { holdingName, holdingPlan } from "./holdings";
+import { blockedHe, failureHe } from "./failure-he";
 import type { Holding } from "./state";
 import type { InputsState } from "./inputs";
 import { computed, entered as enteredValue, expandFee, staleCmaFee, weaker, type CompactFee, type SiteValue, type Strength } from "./value";
@@ -165,8 +166,8 @@ export function factory(bundle: CompareBundle, inputs: FeeInputs) {
   const today = bundle.runDate;
   const base = makeInputsMap(inputs);
   return {
-    nis(value: number, formula: string, about: string, run?: { rules: readonly UsedRule[]; flags?: { code: string }[] }, extra?: Record<string, SiteValue>): SiteValue {
-      return computed(value, "nis", formula, { ...base, ...(extra ?? {}) }, { today, about, rules: run ? rulesOf(run.rules) : [], flags: run?.flags?.map((f) => f.code) });
+    nis(value: number, formula: string, about: string, run?: { rules: readonly UsedRule[]; flags?: { code: string }[]; labels?: { code: string; ruleId: string }[] }, extra?: Record<string, SiteValue>): SiteValue {
+      return computed(value, "nis", formula, { ...base, ...(extra ?? {}) }, { today, about, rules: run ? rulesOf(run.rules) : [], flags: run?.flags?.map((f) => f.code), labels: run?.labels?.map((l) => ({ code: l.code, ruleId: l.ruleId })) });
     },
     count(value: number, about: string): SiteValue {
       return computed(value, "count", "F-83", {}, { today, about });
@@ -196,7 +197,7 @@ export type PlanError =
   | { kind: "no-wrapper" }
   | { kind: "no-terms" }
   | { kind: "need-input"; detail: string }
-  | { kind: "no-run"; code: string }
+  | { kind: "no-run"; code: string; messageHe?: string }
   | { kind: "needs-pf36" }
   | { kind: "needs-first-deposit" }
   | { kind: "no-fee"; detail: string };
@@ -469,16 +470,54 @@ export interface Analysis {
 export interface ComparisonSet {
   goalName: string;
   candidates: Candidate[];
+  /** The place of each ranked option in the saved goal's comparison, ties sharing the place (as the result page numbers them). */
+  ranks: Record<string, { rank: number; tied: boolean }>;
+}
+
+/** Places for ranked entries in order: the engine's tie set shares first place (F-80, pairwise with the top, not a chain); the rest follow the engine's order (lib/compare.ts `placeGroups`). */
+export function ranksOf(entries: { id: string }[], tieSet: readonly string[]): ComparisonSet["ranks"] {
+  const group = placeGroups(entries, tieSet);
+  return Object.fromEntries(entries.map((e, i) => [e.id, { rank: group[i]! + 1, tied: group.filter((g) => g === group[i]).length > 1 }]));
+}
+
+/**
+ * Presentation rule over P-03 (A9, lead decision 4c): P-03 judges the fee's cost, the ranking judges the net result, and both
+ * are right. When the saved goal ranks the product first, the "avoid" badge is worded as a relative statement; the verdict
+ * itself, its threshold and its reason are unchanged.
+ */
+export const softensAvoid = (verdict: LineView["verdict"], place: { rank: number } | null) => verdict === "avoid" && place?.rank === 1;
+
+/** What the fee page says about the subject's place in the saved goal's comparison (A9): null when it is not ranked there. */
+export function rankedFor(set: ComparisonSet | null, wrapperId: string): { rank: number; tied: boolean } | null {
+  return set?.ranks[wrapperId] ?? null;
 }
 
 export function comparisonFor(bundle: CompareBundle, goalG: RunGoal | null, goalName: string): ComparisonSet | null {
   if (!goalG || nothingToCompare(goalG)) return null;
   try {
     const ev = evaluate(bundle, goalG);
-    return { goalName, candidates: ev.candidates };
+    return { goalName, candidates: ev.candidates, ranks: ranksOf(ev.ranking.entries, ev.ranking.tieSet) };
   } catch {
     return null;
   }
+}
+
+/**
+ * The sentence above the chart (A18): the fee that is worth the most to bring down to the authority's average, and what
+ * that is worth over the horizon (F-61's valueOfReduction, the same figure as the "אם יורידו ל־" field); or, when no fee is
+ * above its average, the plain statement that none is. null when no fee has an average to compare with.
+ */
+export function headlineGap(an: Analysis): { kind: "more"; line: FeeLine; worth: SiteValue } | { kind: "less" } | null {
+  let best: { line: FeeLine; worth: SiteValue; nis: number } | null = null;
+  let anyReference = false;
+  for (const l of an.lines) {
+    if (l.suggestion === null || l.rateFraction === undefined) continue;
+    anyReference = true;
+    const worth = reductionWorth(an, l.line, l.suggestion);
+    if (worth && typeof worth.value === "number" && (!best || worth.value > best.nis)) best = { line: l.line, worth, nis: worth.value };
+  }
+  if (best) return { kind: "more", line: best.line, worth: best.worth };
+  return anyReference ? { kind: "less" } : null;
 }
 
 /** Whether another option in the comparison charges no fee of this type (F-62's "removes it"): ranked or listed with a run, not the subject itself. */
@@ -541,7 +580,7 @@ export function analyse(a: AnalyseArgs): Analysis {
   const thresholds = feeThresholds(a.data.p03);
   const total = fm.total.value as number;
   const today = a.runBundle.runDate;
-  const run = { rules: fm.run.rules, flags: fm.run.flags };
+  const run = { rules: fm.run.rules, flags: fm.run.flags, labels: fm.run.labels };
   const refCtx: RefContext = { data: a.data, wrapperId: a.wrapper.id, track: a.track, today, rules, mk };
   const lines: LineView[] = fm.lines.map((l): LineView => {
     const rate = a.rates?.[l.line] ?? rateValue(a.runBundle.wrappers.find((w) => w.id === a.wrapper.id) ?? a.wrapper, l.line, today);
@@ -609,7 +648,7 @@ export function reductionWorth(an: Analysis, line: FeeLine, toPct: number): Site
   if (!l || l.rateFraction === undefined || !(toPct >= 0) || toPct / 100 >= l.rateFraction) return null;
   const r = valueOfReduction(an.plan, line, toPct / 100, an.ctx);
   const to = enteredValue(toPct, "pct", an.ctx.runDate, "העמלה שביקשתם");
-  return an.mk.nis(r.value.value as number, "F-61", `${r3fees.names[line]}: ${r3fees.reduction.label}`, { rules: an.fm.run.rules, flags: an.fm.run.flags }, { [r3fees.reduction.label.trim()]: to, ...(l.rate ? { [r3fees.names[line]!]: l.rate } : {}) });
+  return an.mk.nis(r.value.value as number, "F-61", `${r3fees.names[line]}: ${r3fees.reduction.label}`, { rules: an.fm.run.rules, flags: an.fm.run.flags, labels: an.fm.run.labels }, { [r3fees.reduction.label.trim()]: to, ...(l.rate ? { [r3fees.names[line]!]: l.rate } : {}) });
 }
 
 // ---------------------------------------------------------------- sensitivity (F-81 on the fee page)
@@ -731,7 +770,7 @@ export function feeSensitivity(a: AnalyseArgs, base: Analysis, runBundle: Compar
 export type FeesResult =
   | { kind: "ok"; subject: SubjectView; analysis: Analysis; args: AnalyseArgs; inputs: FeeInputs; comparison: ComparisonSet | null; preTax: string[]; omitted: string[]; blocked?: undefined }
   | { kind: "error"; error: PlanError }
-  | { kind: "blocked"; ruleId: string };
+  | { kind: "blocked"; ruleId: string; messageHe: string };
 
 export interface SubjectView {
   kind: "wrapper" | "track" | "holding";
@@ -779,7 +818,7 @@ export function buildHoldingFees(bundle: CompareBundle, data: FeesData, h: Holdi
   if (!hp.ok)
     return {
       kind: "error",
-      error: hp.reason === "unsupported" ? { kind: "no-terms" } : hp.reason === "needs-pf36" ? { kind: "needs-pf36" } : hp.reason === "needs-first-deposit" ? { kind: "needs-first-deposit" } : { kind: "no-run", code: codeOfMessage(hp.message) },
+      error: hp.reason === "unsupported" ? { kind: "no-terms" } : hp.reason === "needs-pf36" ? { kind: "needs-pf36" } : hp.reason === "needs-first-deposit" ? { kind: "needs-first-deposit" } : { kind: "no-run", code: codeOfMessage(hp.message), messageHe: failureHe(hp.message) },
     };
   const { subject, track } = holdingSubject(h, wrapper, data);
   const names: Record<string, string> = Object.fromEntries(bundle.wrappers.map((w) => [w.id, w.name]));
@@ -810,11 +849,11 @@ export function buildHoldingFees(bundle: CompareBundle, data: FeesData, h: Holdi
     const o = analysis.fm.run.outcome;
     return { kind: "ok", subject, analysis, args, inputs, comparison, preTax: o.code === "listed-not-ranked" && o.reason ? [o.reason] : [], omitted: [] };
   } catch (e) {
-    if (e instanceof BlockedError) return { kind: "blocked", ruleId: e.ruleId };
+    if (e instanceof BlockedError) return { kind: "blocked", ruleId: e.ruleId, messageHe: blockedHe };
     // a study fund still inside its lock: the run asks for the detailed statement's tax layers (PF-36), as the holdings card says (B2)
     const message = e instanceof Error ? e.message : String(e);
     if (/PF-36/.test(message) && h.wrapperId === "keren-hishtalmut") return { kind: "error", error: { kind: "needs-pf36" } };
-    if (e instanceof RecordInputError || e instanceof MissingRuleError) return { kind: "error", error: { kind: "no-run", code: codeOfMessage(message) } };
+    if (e instanceof RecordInputError || e instanceof MissingRuleError) return { kind: "error", error: { kind: "no-run", code: codeOfMessage(message), messageHe: failureHe(message) } };
     throw e;
   }
 }
@@ -846,7 +885,7 @@ export function buildFees(bundle: CompareBundle, data: FeesData, subject: Subjec
     try {
       return subjectRun(runBundle, wrapperId, inputs.g);
     } catch (e) {
-      if (e instanceof BlockedError) return { kind: "no-run", code: e.ruleId } as PlanError;
+      if (e instanceof BlockedError) return { kind: "no-run", code: e.ruleId, messageHe: blockedHe } as PlanError;
       throw e;
     }
   })();
@@ -868,7 +907,7 @@ export function buildFees(bundle: CompareBundle, data: FeesData, subject: Subjec
     const analysis = analyse(args);
     return { kind: "ok", subject: sv, analysis, args, inputs, comparison, preTax: run.preTax, omitted };
   } catch (e) {
-    if (e instanceof BlockedError) return { kind: "blocked", ruleId: e.ruleId };
+    if (e instanceof BlockedError) return { kind: "blocked", ruleId: e.ruleId, messageHe: blockedHe };
     throw e;
   }
 }

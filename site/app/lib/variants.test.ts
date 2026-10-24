@@ -1,6 +1,6 @@
 // The fund-variant view on the collected data (flows 30, 33): the records, no fund list, the outcomes with their reasons.
 import { describe, expect, it } from "vitest";
-import { buildFundVariants, matchesVariant, parseVariantQuery, sortVariants, variantQueryString } from "./variants";
+import { buildFundVariants, withExposureReturn, matchesVariant, parseVariantQuery, sortVariants, variantQueryString } from "./variants";
 import { buildWorkbenchBundle } from "./providers.server";
 import type { FundAssumptions, WorkbenchInputs } from "./providers";
 import { entered } from "./value";
@@ -96,5 +96,20 @@ describe("fund-variant view", () => {
 
   it("round-trips the address", () => {
     expect(parseVariantQuery(variantQueryString({ provider: "leumi", orders: 3 }))).toEqual({ provider: "leumi", orders: 3 });
+  });
+});
+
+describe("the exposure's own entered return (A73)", () => {
+  it("replaces the goal's return in the page inputs, as an entered value", () => {
+    const own = entered(8, "pct_per_year", t);
+    const x = withExposureReturn(inputs(true), own);
+    expect(x.grossReturn).toBeCloseTo(0.08);
+    expect(x.values.returnV.value).toBe(8);
+    expect(x.values.returnV.state).toBe("entered");
+    expect(x.returnFromParameter).toBe(false);
+  });
+  it("leaves the inputs alone without one", () => {
+    const base = inputs(false);
+    expect(withExposureReturn(base, undefined)).toBe(base);
   });
 });

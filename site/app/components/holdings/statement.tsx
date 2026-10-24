@@ -47,14 +47,10 @@ export function StatementDisclosure({ field, wrapperId, rules, spellings }: { fi
   // a rule with no record in the base is left out of the body (its chip would open an empty card), except the one the copy names
   const ids = rulesFor(field, wrapperId).filter((id) => rules[id]);
   const words = spellingsOf(field, spellings);
-  return (
-    <Disclosure label={<span className="text-sm text-link">{d.label}</span>} className="-mt-1" summaryClassName="min-h-9">
-      <div className="flex flex-col gap-2.5 pb-2 ps-0.5">
-        {child && <p className="text-sm text-muted-foreground">{d.childPlan}</p>}
-        {!child && ids.length > 0 && <p className="text-sm text-muted-foreground">{d.lead}</p>}
-        {ids.map((id) => (
-          <RuleText key={id} id={id} rules={rules} />
-        ))}
+  // audit A64: what the statement calls the field comes first; the regulator's text and the open lines wait behind "עוד"
+  const first =
+    field === "fundNumber" || words.length > 0 ? (
+      <>
         {field === "fundNumber" && (
           <p className="text-sm">
             {d.fundNumber} <RuleRef id="CAT-09" />
@@ -70,11 +66,33 @@ export function StatementDisclosure({ field, wrapperId, rules, spellings }: { fi
             ))}
           </p>
         )}
-        <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
-          <span>{d.openLine}</span>
-          <OpenQuestion code={d.openCode} />
-        </p>
-        <p className="text-xs text-muted-foreground">{d.neverPosition}</p>
+      </>
+    ) : null;
+  const rest = (
+    <div className="flex flex-col gap-2.5 pb-2 ps-0.5">
+      {child && <p className="text-sm text-muted-foreground">{d.childPlan}</p>}
+      {!child && ids.length > 0 && <p className="text-sm text-muted-foreground">{d.lead}</p>}
+      {ids.map((id) => (
+        <RuleText key={id} id={id} rules={rules} />
+      ))}
+      <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
+        <span>{d.openLine}</span>
+        <OpenQuestion code={d.openCode} />
+      </p>
+      <p className="text-xs text-muted-foreground">{d.neverPosition}</p>
+    </div>
+  );
+  return (
+    <Disclosure label={<span className="text-sm text-link">{d.label}</span>} className="-mt-1" summaryClassName="min-h-9">
+      <div className="flex flex-col gap-2.5 pb-2 ps-0.5">
+        {first}
+        {first ? (
+          <Disclosure label={<span className="text-sm text-link">{d.more}</span>} summaryClassName="min-h-9">
+            {rest}
+          </Disclosure>
+        ) : (
+          rest
+        )}
       </div>
     </Disclosure>
   );
