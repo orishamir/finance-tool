@@ -1502,7 +1502,8 @@ export const r3fees = {
   thresholds: { before: "הספים: שווה להתמקח מ־", mid: "; שווה להימנע מ־", after: ". פרמטר של האתר.", link: "לכל הפרמטרים" },
   chart: {
     title: "העמלות לאורך הזמן",
-    short: { balance: "ניהול מחיסכון", deposit: "ניהול מהפקדה" } as Record<string, string>,
+    // 2026-10-24 (evening, the founder's screenshot): one short name per fee kind, so each direct label is one line in the 94 px strip
+    short: { balance: "ניהול מחיסכון", deposit: "ניהול מהפקדה", direct: "הוצאות ישירות", trade: "קנייה ומכירה", custody: "ניהול פיקדון", fx: "המרת מטבע", fixed: "דמי חשבון", spread: "מרווח", fund: "בתוך הקרן", manager: "ניהול החברה" } as Record<string, string>,
     total: "סך העמלות",
     rest: "שאר העמלות",
     remainderLegend: "השפעה משולבת: הפער עד הקו",
