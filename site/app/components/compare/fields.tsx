@@ -134,8 +134,10 @@ export function NameField({ label, value, onChange }: { label: ReactNode; value:
       <label htmlFor={id} className="field-label">
         {label}
       </label>
-      <div className="field-box">
-        <input id={id} type="text" dir="auto" value={value} onChange={(e) => onChange(e.target.value)} className="field-input !text-start" autoComplete="off" />
+      <div className="field-body">
+        <div className="field-box">
+          <input id={id} type="text" dir="auto" value={value} onChange={(e) => onChange(e.target.value)} className="field-input !text-start" autoComplete="off" />
+        </div>
       </div>
     </div>
   );
@@ -154,31 +156,33 @@ export function MonthField({ label, value, min, max, onChange }: { label: ReactN
       <label htmlFor={id} className="field-label">
         {label}
       </label>
-      <div className={cx("field-box", error && "field-box-error")}>
-        <input
-          id={id}
-          type="month"
-          dir="ltr"
-          min={min}
-          max={max}
-          value={shown}
-          aria-invalid={error ? true : undefined}
-          onChange={(e) => {
-            const v = e.target.value;
-            if (v && (v < min || (max && v > max))) {
-              setError(`${r2.form.errMonth[0]}\u2066${monthText(min)}\u2069${r2.form.errMonth[1]}\u2066${monthText(max ?? min)}\u2069.`);
-              return;
-            }
-            setError(null);
-            onChange(v || null);
-          }}
-          className="field-input !text-end"
-        />
-        <bdi dir="ltr" className="field-unit">
-          {monthText(shown)}
-        </bdi>
+      <div className="field-body">
+        <div className={cx("field-box", error && "field-box-error")}>
+          <input
+            id={id}
+            type="month"
+            dir="ltr"
+            min={min}
+            max={max}
+            value={shown}
+            aria-invalid={error ? true : undefined}
+            onChange={(e) => {
+              const v = e.target.value;
+              if (v && (v < min || (max && v > max))) {
+                setError(`${r2.form.errMonth[0]}\u2066${monthText(min)}\u2069${r2.form.errMonth[1]}\u2066${monthText(max ?? min)}\u2069.`);
+                return;
+              }
+              setError(null);
+              onChange(v || null);
+            }}
+            className="field-input !text-end"
+          />
+          <bdi dir="ltr" className="field-unit">
+            {monthText(shown)}
+          </bdi>
+        </div>
+        {error && <span className="text-xs text-destructive">{error}</span>}
       </div>
-      {error && <span className="text-xs text-destructive">{error}</span>}
     </div>
   );
 }
@@ -213,7 +217,7 @@ export function PercentPair({ label, employer, employee, onEmployer, onEmployee,
   return (
     <fieldset className="field border-0 p-0 m-0 min-w-0">
       <legend className="field-label mb-1.5">{label}</legend>
-      <div className={cx("grid gap-3", !self && "grid-cols-2")}>
+      <div className={cx("field-row grid gap-3", !self && "grid-cols-2")}>
         {!self && <GoalNumber label={<span className="text-xs text-muted-foreground font-normal">{r2.form.employer}</span>} unit="pct" value={employer} source={employer === null ? "empty" : "entered"} onChange={onEmployer} validate={validate} bare />}
         <GoalNumber label={<span className="text-xs text-muted-foreground font-normal">{self ? r2.form.employeeSelf : r2.form.employee}</span>} unit="pct" value={employee} source={employee === null ? "empty" : "entered"} onChange={onEmployee} validate={validate} bare />
       </div>

@@ -78,6 +78,9 @@ export interface WrapperEntry {
     channel?: string;
     /** True when the provider is the person's choice and not the one P-05 names (`applyOwnProviders`). */
     chosen?: boolean;
+    /** The site picked this provider for the goal (F-80, 2026-10-24, Doron's case): of the collected list tariffs, the one that leaves this goal the most; `compared` is how many were run (`applyProviders`). */
+    pickedBy?: "site";
+    compared?: number;
     /** The in-fund cost (brokerage and the like) or the track's balance fee the run takes, as a value object (sourced, or computed when it is a sum of the fund's lines), % a year; 2026-10-24. */
     fee?: SiteValue;
     /** The lowest in-fund cost among the fund records collected for the same exposure (same measure as `fee`), % a year. */
@@ -368,6 +371,69 @@ export function applyOwnProviders(bundle: CompareBundle, g: Pick<RunGoal, "ownPr
   return changed ? { ...bundle, wrappers } : bundle;
 }
 
+/**
+ * The bundle with each provider-carrying wrapper (the brokerage account) priced on the collected list tariff that leaves this goal the
+ * most (F-80, 2026-10-24, Doron's case): the person's chosen provider first (`applyOwnProviders`); then, for a wrapper with no choice,
+ * every tariff in `providers` is run once and the best becomes the representative, marked `pickedBy: "site"` with the number compared.
+ * The pick is made once per goal, so F-81's moves, the picker and a saved comparison's re-run all rest on it. A wrapper whose run cannot
+ * be made yet (no return entered) keeps P-05's tariff. Returns `bundle` itself when nothing changes.
+ */
+export function applyProviders(bundle: CompareBundle, g: RunGoal): CompareBundle {
+  const withOwn = applyOwnProviders(bundle, g);
+  let out = withOwn;
+  for (const w of withOwn.wrappers) {
+    if (!w.providers || !w.terms || g.ownProviders?.[w.id] !== undefined) continue;
+    const ids = Object.keys(w.providers);
+    if (ids.length === 0) continue;
+    let best: { id: string; real: number } | null = null;
+    for (const id of ids) {
+      const run = evaluate(applyOwnProviders(withOwn, { ownProviders: { [w.id]: id } }), g, { only: new Set([w.id]) }).candidates.find((c) => c.id === w.id)?.run;
+      if (!run) {
+        best = null;
+        break;
+      }
+      if (!best || run.real > best.real) best = { id, real: run.real };
+    }
+    if (!best) continue;
+    const picked = applyOwnProviders(out, { ownProviders: { [w.id]: best.id } });
+    out = {
+      ...picked,
+      wrappers: picked.wrappers.map((x) => {
+        if (x.id !== w.id || !x.representative) return x;
+        const { chosen: _chosen, ...rep } = x.representative;
+        return { ...x, representative: { ...rep, pickedBy: "site" as const, compared: ids.length } };
+      }),
+    };
+  }
+  return out;
+}
+
+/** The provider a wrapper's run is priced on, for the headline (2026-10-24): the brokerage account's picked or chosen tariff. Null for a wrapper that carries no providers. */
+export function providerOf(bundle: Pick<CompareBundle, "wrappers">, id: string): { name: string; pickedBy?: "site"; chosen?: boolean } | null {
+  const w = bundle.wrappers.find((x) => x.id === id);
+  const r = w?.representative;
+  if (!w?.providers || !r?.provider || !r.providerId) return null;
+  return { name: r.provider, ...(r.pickedBy ? { pickedBy: r.pickedBy } : {}), ...(r.chosen ? { chosen: true } : {}) };
+}
+
+/**
+ * A tax gap that is a fee effect (2026-10-24, Doron's case): between an option whose fee comes out of the balance (provident family,
+ * pension: the fee lowers the taxable gain) and a securities option that paid custody or account fees by selling units, which do not
+ * lower the gain except in the exit year (F-08 step 5, F-09, TXS-06). Returns the two names, or null when the pair is not of that kind.
+ */
+export function feeShieldPair(bundle: Pick<CompareBundle, "wrappers">, a: Pick<RankedOption, "id" | "run">, b: Pick<RankedOption, "id" | "run">): { provident: string; securities: string } | null {
+  const entry = (o: Pick<RankedOption, "id">) => bundle.wrappers.find((w) => w.id === o.id);
+  const paidCustody = (o: Pick<RankedOption, "run">) => {
+    const f = o.run.fees as Partial<Record<string, number>>;
+    return (f.custody ?? 0) + (f.fixed ?? 0) > 0;
+  };
+  for (const [p, s] of [[a, b], [b, a]] as const) {
+    const ep = entry(p), es = entry(s);
+    if (ep && es && (ep.family === "provident" || ep.family === "pension") && es.family === "securities" && paidCustody(s)) return { provident: ep.name, securities: es.name };
+  }
+  return null;
+}
+
 /** One provider's run of a wrapper for the goal: what the brokerage option would end at on that provider's tariff. */
 export interface ProviderOutcome {
   id: string;
@@ -408,6 +474,12 @@ export function providerOutcomes(bundle: CompareBundle, g: RunGoal, wrapperId: s
   }
   providers.sort((x, y) => y.real - x.real);
   const r = w.representative;
+  if (r?.pickedBy === "site") {
+    // the site's pick is one of the rows: mark it instead of adding a row (2026-10-24)
+    const row = providers.find((p) => p.id === r.providerId);
+    if (row) row.current = true;
+    return { site: null, providers };
+  }
   const own = r && !r.chosen ? ran(bundle) : undefined;
   return { site: own && r ? outcome(r.providerId ?? "", r.provider ?? w.name, r.channel ?? "", own, true) : null, providers };
 }

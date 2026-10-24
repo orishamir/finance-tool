@@ -3,12 +3,41 @@
   "title": "Employer deposit above the limits is taxed as salary when paid",
   "title_he": "הפקדת מעסיק מעל הגבולות ממוסה כשכר",
   "text_he": "סכומים שהמעסיק מפקיד מעל הגבולות הם הכנסת עבודה של העובד כבר כשהם משולמים לקרן, וממוסים עם משכורת אותו חודש ולא במשיכה. הפקדה כזו אינה 'הפקדה מוטבת', ולכן הרווחים עליה חייבים במס ביציאה. נייר הכלכלן הראשי אומר את אותו הדבר: מותר להפקיד מעבר לתקרה, אבל ההפקדה ממוסה.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "tax-at-deposit",
     "deposit-ceiling"
   ],
   "likely_to_change": "no",
   "il_finance_file": "tax-hishtalmut.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf",
+      "title": "Chief Economist paper Oct 2025",
+      "title_he": "על הטבת המס בקרן השתלמות – ניתוח מדיניות (אגף הכלכלן הראשי, אוקטובר 2025)",
+      "publisher": "gov.il",
+      "publisher_he": "משרד האוצר",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.5",
+      "locator_he": "עמוד 5",
+      "page": 5,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Ordinance",
+      "title_he": "פקודת מס הכנסה",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s.3(e)",
+      "locator_he": "סעיף 3(ה)",
+      "anchor": "סעיף_3",
+      "checked": "2026-10-22"
+    }
+  ]
 }

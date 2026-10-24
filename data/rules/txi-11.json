@@ -34,5 +34,33 @@
     }
   },
   "il_finance_file": "tax-interest-deposits-bonds.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
+      "title": "Withholding Regulations 2005, regs. 1, 5",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "regs. 1, 5",
+      "locator_he": "תקנות 1, 5",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Income Tax Ordinance, s.125C(a),(c)",
+      "title_he": "פקודת מס הכנסה",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s.125C(a),(c)",
+      "locator_he": "סעיף 125ג(א),(ג)",
+      "anchor": "סעיף_125ג",
+      "checked": "2026-10-22"
+    }
+  ]
 }

@@ -10,5 +10,44 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "mutual-funds-and-money-market-funds.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://boi.org.il/media/npifkjqk/הוראה-a447.pdf",
+      "title": "BoI A447 (draft text)",
+      "title_he": "הוראת ניהול בנקאי תקין 447א: פרסום מידע מרוכז על קרנות כספיות ומק״מ",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "checked": "2026-10-22",
+      "qualifier": "(draft)"
+    },
+    {
+      "url": "https://boi.org.il/media/gcmk52bw/447a.pdf",
+      "title": "447A (04/25)",
+      "title_he": "הוראת ניהול בנקאי תקין 447א: פרסום מידע מרוכז על קרנות כספיות ומק״מ",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf",
+      "title": "ISA 2025 report",
+      "title_he": "פעילות קרנות נאמנות בישראל 2025",
+      "publisher": "Funder (copy)",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p. 19",
+      "locator_he": "עמוד 19",
+      "page": 19,
+      "checked": "2026-10-22"
+    }
+  ],
+  "derived_from": [
+    "BANK-15"
+  ]
 }

@@ -36,5 +36,19 @@
     }
   },
   "il_finance_file": "bank-current-account-deposits.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_6913397.pdf",
+      "title": "Banking (Customer Service) Law, Amendment 39, Sefer HaHukim 3417, 21.5.2025, p.648",
+      "title_he": "חוק הבנקאות (שירות ללקוח), התשמ״א-1981",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.1, s.4",
+      "locator_he": "סעיף 1, סעיף 4",
+      "checked": "2026-10-22"
+    }
+  ]
 }

@@ -59,5 +59,17 @@
     }
   },
   "il_finance_file": "tax-securities-israeli.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://maya.tase.co.il/he/funds/mutual-funds",
+      "title": "Maya, רשימת קרנות — \"הורדת נתונים\" export",
+      "title_he": "רשימת קרנות הנאמנות במאיה",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

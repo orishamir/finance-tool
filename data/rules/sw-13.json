@@ -10,5 +10,20 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)",
+      "title": "Transfer Regulations, regs. 4, 5(ב)",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "regs. 4, 5(ב)",
+      "locator_he": "תקנות 4, 5(ב)",
+      "anchor": "סעיף_4",
+      "checked": "2026-10-22"
+    }
+  ]
 }

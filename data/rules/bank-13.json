@@ -36,5 +36,40 @@
     }
   },
   "il_finance_file": "bank-current-account-deposits.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
+      "title": "Directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24)",
+      "title_he": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "s.1-8",
+      "locator_he": "סעיף 1-8",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://boi.org.il/media/nxzbaarp/h2781.pdf",
+      "title": "Circular 2781-06, 20 May 2024",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "s.7-11",
+      "locator_he": "סעיף 7-11",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.boi.org.il/media/pcuny0hd/עמדת-בנק-ישראל-בנוגע-להכרזת-הממונה-על-התחרות-על-חמש-הקבוצות-הבנקאיות-כקבוצת-ריכוז-ומתן-הוראות-בתחום-הפיקדונות.pdf",
+      "title": "BoI press statement, 6 May 2026",
+      "title_he": "עמדת בנק ישראל בנוגע להכרזת הממונה על התחרות על חמש הקבוצות הבנקאיות כקבוצת ריכוז (6.5.2026)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

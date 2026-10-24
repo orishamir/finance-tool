@@ -56,5 +56,41 @@
     }
   },
   "il_finance_file": "bank-current-account-deposits.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
+      "title": "Disclosure rules 1992 (BoI copy)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ״ב-1992",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "s.9",
+      "locator_he": "סעיף 9",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+      "title": "Yahav rate board 13_26",
+      "title_he": "לוח הריביות על פיקדונות של בנק יהב",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.6",
+      "locator_he": "עמוד 6",
+      "page": 6,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/deposits-without-account/",
+      "title": "Mercantile, deposits without account",
+      "publisher": "Mercantile Discount Bank",
+      "publisher_he": "בנק מרכנתיל דיסקונט",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
 }

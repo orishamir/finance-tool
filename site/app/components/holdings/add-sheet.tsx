@@ -393,7 +393,7 @@ function Body({ titleId, onClose, requestClose, asking, onKeep, dirtyRef, hb, ru
           <>
             <fieldset className="flex flex-col gap-1.5 min-w-0">
               <legend className="field-label mb-1.5">{copy.fees}</legend>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="field-row grid grid-cols-2 gap-3">
                 <RawWatch onRaw={watch("feeBalance", pctValidate)}><NumberField label={copy.feeBalance} unit="pct_per_year" value={d.feeBalance ?? preBalance} isEntered={d.feeBalance !== null} validate={pctValidate} onCommit={(n) => set({ feeBalance: n })} onReset={() => set({ feeBalance: null })} optional externalError={err("feeBalance")} /></RawWatch>
                 <RawWatch onRaw={watch("feeDeposit", pctValidate)}><NumberField label={copy.feeDeposit} unit="pct_of_deposit" value={d.feeDeposit ?? preDeposit} isEntered={d.feeDeposit !== null} validate={pctValidate} onCommit={(n) => set({ feeDeposit: n })} onReset={() => set({ feeDeposit: null })} optional externalError={err("feeDeposit")} hint={preDeposit !== null ? copy.feePrefill.depositHint : copy.feeDepositHint} /></RawWatch>
               </div>

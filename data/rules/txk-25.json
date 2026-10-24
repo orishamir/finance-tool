@@ -11,5 +11,30 @@
   "recheck_date": "2027-01-01",
   "text_he": "הביטוח הלאומי אומר שאם החיסכון נשאר בקופת הגמל עד הפרישה, הילד יוכל לקבל אותו כקצבה בלי מס רווחי הון. הפטור על 'קצבה מוכרת' נשען על 'תשלומים פטורים' ששילם יחיד בעד עצמו; הפקדות הביטוח הלאומי וההורים אינן כאלה, ולכן הבסיס בחוק לא ברור (שאלה פתוחה 1).",
   "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/pension.aspx",
+      "title": "BTL FAQ, \"האם אפשר להמשיך את תכנית החיסכון של הילד עד לפנסיה?\"",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-22",
+      "qualifier": "(regulator statement)"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Ordinance PDF",
+      "title_he": "פקודת מס הכנסה",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "p.25",
+      "locator_he": "עמוד 25",
+      "checked": "2026-10-22"
+    }
+  ]
 }

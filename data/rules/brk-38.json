@@ -11,5 +11,26 @@
   "recheck_date": "2027-04-01",
   "text_he": "הבנק הדיגיטלי מאפשר בשלב זה מסחר במניות ישראליות הנכללות במדד הדגל, בקרנות נאמנות ישראליות ובניירות ערך זרים הנסחרים בארצות הברית בלבד. בתעריפון אין שורת מק\"מ, אופציות, או עמלת הפצה, ודמי ניהול פיקדון ניירות ערך ועמלת קסטודיאן נקובים באפס אחוז, בתוספת הוצאות צד שלישי. עמלת הקנייה והמכירה זהה בפקיד ובאינטרנט. חברי המסלולים בתשלום חודשי מקבלים הנחה ניכרת בעמלת המסחר ופטור מעמלת חליפין. המספרים עצמם שמורים בקובץ העמלות.",
   "il_finance_file": "brokerage-account.md",
-  "checked": "2026-10-24"
+  "checked": "2026-10-24",
+  "sources": [
+    {
+      "url": "https://www.onezerobank.com/company/information/2250",
+      "title": "One Zero, תעריפון הבנק",
+      "publisher": "One Zero Bank",
+      "publisher_he": "וואן זירו",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-24"
+    },
+    {
+      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
+      "title": "תעריפון העמלות המלא, מהדורה מיום 26.7.26",
+      "title_he": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (בנק לאומי, 1.10.2026)",
+      "publisher": "One Zero Bank",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-24"
+    }
+  ]
 }

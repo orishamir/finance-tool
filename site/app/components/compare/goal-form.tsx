@@ -1,5 +1,5 @@
 // The goal form's cards (design-spec 6.3, 7): the goal, the person and the assumptions, the payslip
-// disclosure, the goals list and the footer. Everything typed goes straight into the saved goal.
+// disclosure and the footer (the goals list is in goals-board.tsx). Everything typed goes straight into the saved goal.
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router";
 import { r2, r3holdings, r3transfer, values as valuesCopy } from "../../copy";
@@ -11,7 +11,6 @@ import { flushPendingFields } from "../timeline/fields";
 import { RuleRef } from "../provenance";
 import { Button, Callout, Card, Disclosure, SegmentedControl, cx } from "../ui";
 import { AgeStepper, GoalNumber, GoalSlider, MonthField, NameField, PercentPair, PresetChips, SwitchRow } from "./fields";
-import { IconDown, IconPlus, IconUp } from "./icons";
 import { presetIds } from "../../lib/goal";
 import { AcceptedFallField } from "../exposure-mode/fields";
 import { r5 } from "../../copy";
@@ -98,39 +97,6 @@ export function PresetRow({ data, presets }: { data: FormData; presets: Presets 
   );
 }
 
-export function GoalsList() {
-  const { goals, current, select, move, add } = useGoals();
-  if (goals.length < 2) return null;
-  return (
-    <section aria-labelledby="goals-h" className="flex flex-col gap-3">
-      <h2 id="goals-h" className="text-lg font-semibold">
-        {r2.form.goalsHeading}
-      </h2>
-      <ul className="flex flex-wrap gap-2">
-        {goals.map((g, i) => (
-          <li key={g.id} className="inline-flex items-center rounded-full border border-border bg-card">
-            <Button variant="icon" className="size-9" aria-label={r2.form.moveUp} disabled={i === 0} onClick={() => move(g.id, -1)}>
-              <IconUp size={16} />
-            </Button>
-            <button type="button" aria-current={g.id === current?.id} onClick={() => select(g.id)} className={cx("sec-chip", g.id === current?.id && "sec-chip-on")}>
-              <bdi>{goalTitle(g)}</bdi>
-            </button>
-            <Button variant="icon" className="size-9" aria-label={r2.form.moveDown} disabled={i === goals.length - 1} onClick={() => move(g.id, 1)}>
-              <IconDown size={16} />
-            </Button>
-          </li>
-        ))}
-        <li>
-          <Button variant="quiet" onClick={add}>
-            <IconPlus size={16} /> {r2.form.addGoal}
-          </Button>
-        </li>
-      </ul>
-      <p className="text-sm text-muted-foreground">{r2.form.goalsLine}</p>
-    </section>
-  );
-}
-
 export function goalTitle(g: Goal): string {
   return g.name.trim() || (g.preset !== "none" ? r2.presets[g.preset]! : r2.form.unnamed);
 }
@@ -184,11 +150,9 @@ export function GoalFields({ data }: { data: FormData }) {
         />
       )}
       <p className="text-sm text-muted-foreground max-w-measure">{r2.form.couple}</p>
-      <div className="flex flex-col gap-4 md:grid md:grid-cols-[1fr_11rem] md:gap-3 md:items-start">
+      <div className="field-row flex flex-col gap-4 md:grid md:grid-cols-[1fr_11rem] md:gap-3 md:items-start">
         <GoalNumber label={r2.form.available} unit="nis" value={resolved.available} source={src.available} presetValue={resolved.available} onChange={set("available")} validate={availableCheck} externalError={availableTooBig(resolved)} hint={r2.form.availableHint} />
-        <div>
-          <MonthField label={r2.form.availableFrom} value={current.availableFrom} min={data.minMonth} max={`${Number(data.minMonth.slice(0, 4)) + data.horizon.max}-12`} onChange={(v) => update((g) => ({ ...g, availableFrom: v }))} />
-        </div>
+        <MonthField label={r2.form.availableFrom} value={current.availableFrom} min={data.minMonth} max={`${Number(data.minMonth.slice(0, 4)) + data.horizon.max}-12`} onChange={(v) => update((g) => ({ ...g, availableFrom: v }))} />
       </div>
       <div className="flex flex-col gap-1">
         <h3 className="field-label">{r2.form.constraints}</h3>

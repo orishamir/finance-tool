@@ -23,7 +23,7 @@ import { Num, NumberLegend, RulesLine } from "../components/provenance";
 import { Sheet } from "../components/Sheet";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { Callout, Card, Disclosure, SegmentedControl } from "../components/ui";
-import { applyOwnProviders, buildView, computeSensitivity, makeValues, runGoalOf, nothingToCompare, cashRateOf, type CompareBundle, type CompareView, type FeeKind, type RankedOption, type SensitivityView } from "../lib/compare";
+import { applyProviders, buildView, computeSensitivity, makeValues, runGoalOf, nothingToCompare, cashRateOf, type CompareBundle, type CompareView, type FeeKind, type RankedOption, type SensitivityView } from "../lib/compare";
 import { loadBundle } from "../lib/bundle";
 import { fmt } from "../lib/format";
 import { GoalsProvider, hasMeaning, isBlank, useGoals, type FieldKey, type Presets } from "../lib/goal";
@@ -123,13 +123,13 @@ function Body({ bundle: bundle0, data, fit, frame, exposureId, registerSave }: {
   const setOwnFee = (w: string, p: number | undefined) => setTerm(w, "fee", p);
   const base0 = runGoalOf(current!, resolved!)!;
   const base = { ...base0, ...(Object.keys(ownRates).length > 0 ? { ownRates } : {}), ...(Object.keys(ownFees).length > 0 ? { ownFees } : {}), ...(Object.keys(ownProviders).length > 0 ? { ownProviders } : {}) };
-  // the broker the person chose for the brokerage account: its tariff replaces the representative's everywhere below (2026-10-24)
-  const bundle = useMemo(() => applyOwnProviders(bundle0, { ownProviders }), [bundle0, JSON.stringify(ownProviders)]); // eslint-disable-line react-hooks/exhaustive-deps
   // opened from an exposure row ("באיזה מוצר להחזיק את זה"): A-01 is that exposure's entered return for this view, not saved into the goal
-  const subject = exposureId ? bundle.exposures?.find((e) => e.record.id === exposureId) : undefined;
+  const subject = exposureId ? bundle0.exposures?.find((e) => e.record.id === exposureId) : undefined;
   const subjectReturn = subject ? current!.exposures?.[subject.record.id]?.return : undefined;
   const g = subjectReturn && typeof subjectReturn.value === "number" ? { ...base, returnPct: subjectReturn.value } : base;
   const key = JSON.stringify(g);
+  // the broker the person chose for the brokerage account, else the collected tariff that leaves this goal the most (F-80, 2026-10-24, Doron's case): its tariff is the account's everywhere below
+  const bundle = useMemo(() => applyProviders(bundle0, g), [bundle0, key]); // eslint-disable-line react-hooks/exhaustive-deps
   const outcome = useMemo(() => buildView(bundle, g), [bundle, key]); // eslint-disable-line react-hooks/exhaustive-deps
   const [mode, setMode] = useValueMode();
   const [hover, setHover] = useState<number | null>(null);

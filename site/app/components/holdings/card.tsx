@@ -118,7 +118,7 @@ export function HoldingCard({ view, ctx, index, count, onEdit, onDelete, onMove 
         {confirm ? (
           <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
             <span className="text-sm">{copy.deleteConfirm}</span>
-            <Button variant="quiet" className="text-destructive" onClick={onDelete}>
+            <Button variant="destructive" onClick={onDelete}>
               {copy.deleteYes}
             </Button>
             <Button variant="quiet" onClick={() => setConfirm(false)}>

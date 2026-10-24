@@ -12,5 +12,16 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
   "il_finance_file": "brokerage-account.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.inter-il.com/regulation-and-security/",
+      "title": "Interactive Israel, רגולציה וביטחון",
+      "publisher": "Interactive Israel",
+      "publisher_he": "אינטראקטיב ישראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
 }

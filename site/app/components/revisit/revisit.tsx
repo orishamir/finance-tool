@@ -484,7 +484,7 @@ export function UnreadableSavedForm({ view, onRedo, onDelete }: { view: RevisitV
       {confirm ? (
         <span className="flex items-center gap-2 flex-wrap">
           {r.deleteConfirm}
-          <Button variant="quiet" className="text-destructive" onClick={onDelete}>
+          <Button variant="destructive" onClick={onDelete}>
             {r.deleteYes}
           </Button>
           <Button variant="quiet" onClick={() => setConfirm(false)}>
@@ -496,7 +496,7 @@ export function UnreadableSavedForm({ view, onRedo, onDelete }: { view: RevisitV
           <Button variant="quiet" onClick={onRedo}>
             {r.unreadableActions.redo}
           </Button>
-          <Button variant="quiet" className="text-destructive" onClick={() => setConfirm(true)}>
+          <Button variant="destructive" onClick={() => setConfirm(true)}>
             {r.unreadableActions.del}
           </Button>
         </span>

@@ -11,5 +11,38 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-06-30",
   "il_finance_file": "mutual-funds-and-money-market-funds.md",
-  "checked": "2026-10-23"
+  "checked": "2026-10-23",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf",
+      "title": "ISA, פעילות קרנות נאמנות בישראל 2025 (PDF on new.isa.gov.il), pp. 2, 13, 14",
+      "title_he": "פעילות קרנות נאמנות בישראל 2025",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "pp. 2, 13, 14",
+      "locator_he": "עמודים 2, 13, 14",
+      "page": 2,
+      "checked": "2026-10-23"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/nav-index/supervised-mutualfunds/mutualfundsActivities",
+      "title": "ISA, פעילות קרנות נאמנות בישראל (list page with publication dates)",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-23"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/nav-index/supervised-general/takanon2",
+      "title": "ISA, תנאי השימוש באתר רשות ניירות ערך",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-23"
+    }
+  ]
 }

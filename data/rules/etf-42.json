@@ -98,5 +98,29 @@
     "publication_before_update_trading_days": "פרסום העדכון מראש, בימי מסחר"
   },
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-23"
+  "checked": "2026-10-23",
+  "sources": [
+    {
+      "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
+      "title": "TASE, \"הנחיות על פי החלק השביעי לתקנון\", chapter א section 7 (formulas, pp. ב-15 to ב-16) and annex 3 (p. ב-32)",
+      "title_he": "הנחיות על פי החלק השביעי לתקנון הבורסה (״מדריך מעו״ף״)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "section 7 and annex 3 (p. ב-32)",
+      "checked": "2026-10-23",
+      "qualifier": "(index provider)"
+    },
+    {
+      "url": "https://market.tase.co.il/he/market_data/index/137/about",
+      "title": "TASE, \"ת\"א-125 אודות המדד\" (index 137)",
+      "title_he": "ת״א-125: אודות המדד",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-23"
+    }
+  ]
 }

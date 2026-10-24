@@ -65,14 +65,14 @@ export function EnteredOfferCard({ view, offer, today, writable, showFx, onSave,
         <p className="text-sm text-muted-foreground">{t.hint}</p>
       </div>
       <Group title={t.fields.trade} note={aboveNote(above(draft.tradeRate, list.trade?.rate))}>
-        <div className="grid gap-3 grid-cols-[minmax(0,1fr)] sm:grid-cols-3">
+        <div className="field-row grid gap-3 grid-cols-[minmax(0,1fr)] sm:grid-cols-3">
           {field(t.sub.pct, "pct_of_trade", draft.tradeRate, (n) => set("tradeRate", n), pctPh(list.trade?.rate), pctCheck, err("tradeRate"))}
           {field(t.sub.min, "nis_per_trade", draft.tradeMin, (n) => set("tradeMin", n), nisPh(list.trade?.min), nisCheck, err("tradeBounds"))}
           {field(t.sub.max, "nis_per_trade", draft.tradeMax, (n) => set("tradeMax", n), nisPh(list.trade?.max), nisCheck)}
         </div>
       </Group>
       <Group title={t.fields.custody} note={aboveNote(above(draft.custodyRate, list.custody?.rate))}>
-        <div className="grid gap-3 grid-cols-[minmax(0,1fr)] sm:grid-cols-3">
+        <div className="field-row grid gap-3 grid-cols-[minmax(0,1fr)] sm:grid-cols-3">
           {field(t.sub.pctPeriod(periodWord), "pct_of_balance_per_period", draft.custodyRate, (n) => set("custodyRate", n), pctPh(list.custody?.rate), pctCheck, err("custodyRate"))}
           {field(t.sub.min, "nis", draft.custodyMin, (n) => set("custodyMin", n), nisPh(list.custody?.min), nisCheck, err("custodyBounds"))}
           {field(t.sub.max, "nis", draft.custodyMax, (n) => set("custodyMax", n), nisPh(list.custody?.max), nisCheck)}

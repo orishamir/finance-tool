@@ -11,5 +11,52 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "kupat-gemel-lehashkaa.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
+      "title": "Altshuler bylaws March 2025",
+      "title_he": "תקנון קופת הגמל להשקעה ״חיסכון פלוס״ של אלטשולר שחם (מרץ 2025)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "clause 8.2",
+      "locator_he": "סעיף 8.2",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://infinity.co.il/wp-content/uploads/2025/07/תקנון-גמל-להשקעה-בתוקף-מיום-1.7.2024.pdf",
+      "title": "Infinity bylaws 1.7.2024",
+      "title_he": "תקנון קופת הגמל להשקעה של אינפיניטי (בתוקף מ־1.7.2024)",
+      "publisher": "Infinity",
+      "publisher_he": "אינפיניטי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "8.2",
+      "locator_he": "8.2",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "http://www.krn-rofim.co.il/wp-content/uploads/2024/10/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f_%d7%a7%d7%95%d7%a4%d7%aa_%d7%92%d7%9e%d7%9c_%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94__25.7.2024-1.pdf",
+      "title": "Yachad Rofim bylaws 25.7.2024",
+      "title_he": "תקנון קופת הגמל להשקעה של יחד רופאים (25.7.2024)",
+      "publisher": "Yachad Rofim",
+      "publisher_he": "יחד רופאים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "8.2",
+      "locator_he": "8.2",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.as-invest.co.il/interstedin/saving_plus_deposit/",
+      "title": "Altshuler deposit page",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
 }

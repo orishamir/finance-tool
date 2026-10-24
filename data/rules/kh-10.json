@@ -12,5 +12,19 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "keren-hishtalmut.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.as-invest.co.il/media/10040/בקשה-למשיכת-כספים-מקרן-השתלמות.pdf",
+      "title": "Altshuler, \"בקשה למשיכת כספים מקרן השתלמות\", form MH4015_210519",
+      "title_he": "בקשה למשיכת כספים מקרן השתלמות (טופס אלטשולר שחם)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "form",
+      "strength": "institution",
+      "locator": "section 2",
+      "locator_he": "סעיף 2",
+      "checked": "2026-10-22"
+    }
+  ]
 }

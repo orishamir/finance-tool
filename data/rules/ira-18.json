@@ -78,5 +78,28 @@
     "related_party_commission_cap": "תקרת עמלות לצד קשור"
   },
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
+      "title": "Nevo, reg. 12",
+      "publisher": "Nevo",
+      "publisher_he": "נבו",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "nevo",
+      "locator": "reg. 12",
+      "locator_he": "תקנה 12",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.meitav.co.il/provident_pension/ira/brokerage_commission_breakdown/",
+      "title": "Meitav brokerage letters",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
 }

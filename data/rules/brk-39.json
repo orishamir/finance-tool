@@ -86,5 +86,44 @@
   },
   "text_he": "הבורסה מוכרת נתונים בממשק תכנות ובקבצים, ברישוי לפי סוג השימוש: פנימי או הפצה. יש מוצרים חינמיים, אבל תנאיהם מוצגים רק בדף המוצר ובקופה. במחירון מופיעים גם מוצרי קרנות נאמנות, אחזקות ושערים, במחיר להפצה גבוה ממחיר השימוש הפנימי; המחירון אינו מציין לאיזו תקופה המחיר. תנאי השימוש של האתר חלים על כל הפלטפורמות, ולכן גם דרך שירותי המידע אין דרך להציג את רשימת הקרנות בלי רישיון הפצה או אישור בכתב.",
   "il_finance_file": "brokerage-account.md",
-  "checked": "2026-10-24"
+  "checked": "2026-10-24",
+  "sources": [
+    {
+      "url": "https://www.tase.co.il/he/content/products_lobby/data_services",
+      "title": "TASE Data Services",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "checked": "2026-10-24"
+    },
+    {
+      "url": "https://www.tase.co.il/he/content/products_lobby/data_services_hub/",
+      "title": "Data Hub: רכישת מנוי וגישה",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "checked": "2026-10-24"
+    },
+    {
+      "url": "https://www.tase.co.il/he/content/products_lobby/datastore_pricelist/",
+      "title": "מחירון מוצרי המידע של הבורסה",
+      "title_he": "מחירון מוצרי המידע של הבורסה",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "other",
+      "strength": "primary",
+      "checked": "2026-10-24"
+    },
+    {
+      "url": "https://store.tase.co.il/he/products/9",
+      "title": "Data Hub store, נתוני שוק ונתונים כלליים",
+      "publisher": "TASE Data Hub",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב (Data Hub)",
+      "kind": "other",
+      "strength": "primary",
+      "checked": "2026-10-24"
+    }
+  ]
 }

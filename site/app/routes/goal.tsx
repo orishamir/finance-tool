@@ -2,7 +2,8 @@
 // Everything typed is saved on the device as it is typed; the button only opens the comparison.
 import { useLoaderData } from "react-router";
 import { r2, site } from "../copy";
-import { GoalFormBody, GoalsList, PresetRow, type FormData } from "../components/compare/goal-form";
+import { GoalFormBody, PresetRow, type FormData } from "../components/compare/goal-form";
+import { GoalsList } from "../components/compare/goals-board";
 import { SavedGoalStrip } from "../components/compare/strip";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { GoalsProvider, useGoals, type Presets } from "../lib/goal";

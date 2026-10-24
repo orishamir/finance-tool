@@ -30,6 +30,8 @@ P-05, `data/parameters/illustrative-scenario.json`, with the slider ranges (desi
 
 **Default channel of the fees provider, changed 2026-10-24 (review fix):** the site's default tariff for every wrapper that reads Leumi's list lines (brokerage account, makam, government bond) took the first list trade line of the snapshot, the branch line (0.65 % a trade), while the providers workbench and the broker picker rank the direct channel (0.4 % a trade, minimum 26 NIS, maximum 6,300 NIS). The site now reads the direct-channel line first (a line with no channel counts as direct; a snapshot with branch lines only still uses its first), so the default and "Leumi" in the picker agree. Effect on the scenario audit's 20-year case (40,000 now, 3,000 a month, 7 %): the brokerage account ends at about 1,030,053 NIS in today's money (was about 1,029,068), 2,169 NIS under the kupat gemel lehashkaa (was 3,154). Chosen by Claude, revisable.
 
+**Representative tariff in the comparison, changed 2026-10-24 (Doron's case):** P-05's `tariff` entry for the brokerage account (Leumi) no longer prices the account in the comparison. A reader's goal (67,000 NIS for eight years at 7 %, nothing monthly) ended at 85,507 NIS in today's money on Leumi's list tariff against 85,870 in a kupat gemel lehashkaa at Meitav's 0.8 % list fee, a tie the page showed with the gemel first and explained by "tax"; the same account on One Zero's published tariff ended at 89,759 and on Psagot Trade's at 89,357. The page had put the choice worth 0.4 % in the headline and the one worth 4 % behind "להחליף". The comparison now runs the account once on every collected list tariff and keeps the one that leaves the goal the most, naming it as the site's pick (method F-80); the fund inside the account already followed that rule. P-05's entry still serves the guide page's illustrative run and the fee page. Chosen by Claude, revisable. The gemel keeps Meitav's list fee, the only one collected; the regulator's data shows S&P 500 tracks in a gemel lehashkaa charging 0.39 % to 0.71 % in 2026-09, so collecting more list prices is the open hand-off.
+
 **Study fund run:** the `keren-hishtalmut` entry sets `employment` to `self-employed`, because an employee's run needs a salary, which comes from the person's entered profile and not from a site parameter; the self-employed run needs none (A-12, TXH-08).
 
 **Income (`annual_income`):** 144,000 NIS a year, the income of the founder's own case (12,000 a month), read only by runs that need an income (the self-employed study-fund deduction, TXH-05); the person's entered income replaces it. **Why:** chosen by Claude at the founder's request, 2026-10-23, the founder's own case; revisable.
@@ -90,3 +92,48 @@ Added 2026-10-23 for release 2 (P-07, `data/parameters/goal-presets.json`), chos
 ## Exposure holding wrapper
 
 Added 2026-10-24 for release 5 (P-08, `data/parameters/exposure-holding-wrapper.json`), chosen by Claude at the founder's request; revisable. Exposure mode runs each exposure through one wrapper (method F-71: the caller names it; the engine never picks one), so the site needs a default per exposure record. **Values:** shekel cash in a bank deposit (at the published rate of the P-05 deposit-terms record, Leumi's 365-day deposit; D20); makam in the makam product (no sourced yield exists, so the person enters one); the CPI-linked government bond in the government-bond product (series GOV-11, the series P-05's government-bond entry names); the unlinked government bond in the same product but **not evaluated** until the coupon frequency of a fixed-rate series is in the rule base (GOV OQ4); the S&P 500 in a brokerage account through fund 1148162 (the fund P-05's brokerage entry names); the TA-125 in a brokerage account through collected fund 1143718 (Tachlit Sal TA 125, Leumi tariff); the general track in a kupat gemel lehashkaa at the manager's list fees (Meitav), with the return entered (D9). **Why:** each default is the plain way to hold the exposure that the site already has collected terms for, taken from the wrapper the exposure record lists first among those it can run; the alternative, ranking every wrapper for every exposure, is wrapper mode's job and is offered by the link "באיזה מוצר להחזיק את זה". A row that cannot run says why instead of borrowing another instrument's terms. The person can change the wrapper on any row (the choice is then theirs, entered), among the wrappers the exposure record allows.
+
+## Pinned rules
+
+Added 2026-10-24 for the knowledge layer (P-09, `data/parameters/pinned-rules.json`), chosen by the lead (Claude) at the founder's request on 2026-10-24 and **kept by the founder the same evening** ("if I want to change which rules are pinned I would have told you"); no tag marks the list on the page (the founder asked for the "בחירה של האתר" tag to go). Importance is a judgement, so it is a parameter: the data-driven score (engine use, site use, references, figure, tier, strength) orders rules inside groups and picks the teasers, and never this list. **Selection rule:** the rule decides an outcome on the site or is documented as a common misconception or recurring question (`research/knowledge/2026-10-24-user-lens.md` section 2, the BGU 2019 study, the forum catalogue), and it has a primary or primary-mirror source with a link after the extraction of 2026-10-24. Row 1 is the capital-gains rule because it is the most known and the founder's own example, not because a formula ranks it (it ranks 13th). No formula reads P-09.
+
+**Answers (2026-10-24, late evening).** The questions moved from the top of the rules page to their own page, and each row carries `answer_he`: one sentence written only from the row's rules, every figure a `{ID:figure}` slot that the page renders as a sourced number, so the validator can reject a typed digit. An answer is prose, so it is the site's reading of the records; the lead reviews each against its records' `text_he`, and a row whose rules do not support a one-line answer says only what they say.
+
+**The twelve rows** (the question is the record's `question_he`, polished by the Hebrew editor):
+
+| # | Rules | Question (topic) |
+|---|---|---|
+| 1 | TXS-01, TXS-02 | tax on a gain in the market |
+| 2 | TXI-03, TXI-02 | tax on deposit interest |
+| 3 | TXH-17, TXK-04, PF-23 | switching track inside the fund: tax, fee |
+| 4 | KGL-02, KGL-03 | how much may go into a provident fund for investment a year |
+| 5 | TXH-09, KH-15 | when a study fund is liquid without tax |
+| 6 | BANK-23, REG-04, REG-06 | is money in a deposit insured |
+| 7 | PF-06, PF-02 | the management-fee cap |
+| 8 | PF-19, SW-06 | transfer between funds: how long, what it costs |
+| 9 | PF-13, PF-14, SW-15 | a fee discount: for how long is it guaranteed |
+| 10 | TXS-24, MF-37 | whether all money-market funds are the same |
+| 11 | BANK-20 | money sitting in a current account: what the bank must say |
+| 12 | REG-18, REG-19 | what happens to a pension if the managing company fails |
+
+**Per-guide lists** (`guide_blocks`, two or three rules each, shown as "שווה לדעת"):
+
+- current-account: BANK-20, BANK-23, BANK-15
+- bank-deposit: TXI-03, BANK-06, BANK-23
+- savings-plan: TXI-03, BANK-26, BANK-23
+- money-market-fund-daily: TXS-24, MF-37, BANK-18
+- money-market-fund-renewable: MF-37, MF-35, TXS-24
+- makam: TXI-01, BANK-18, TXI-12
+- government-bond: TXI-14, GOV-17, TXI-12
+- brokerage-account: TXS-21, TXS-02, TXS-19
+- kupat-gemel-lehashkaa: TXK-04, KGL-02, TXK-05
+- keren-hishtalmut: TXH-09, KH-15, PF-18
+- pension-comprehensive: PEN-23, PEN-15, REG-18
+- pension-general: REG-18, PEN-15, TXP-15
+- provident-for-annuity: TXP-15, REG-18, PF-19
+- child-savings-provident: CS-18, CS-20, CS-12
+- child-savings-bank: CS-05, CS-12, CS-18
+- ira-hishtalmut: TXH-09, IRA-16, IRA-18
+- ira-provident: IRA-16, IRA-17, IRA-18
+
+**Why:** a friend arriving at the rules page asks a question, not a topic; the twelve rows are the questions the research found people actually ask or get wrong, each answered by the rules that settle it, so a reader reaches a source in one tap. **Revisable:** the founder may change any row or list; a changed row is re-checked against the selection rule, and the validator fails if a first id has no primary or mirror source.

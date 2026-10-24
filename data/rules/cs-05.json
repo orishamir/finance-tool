@@ -10,5 +10,18 @@
   "likely_to_change": "no",
   "text_he": "הכסף שייך לילד ומוחזק בנאמנות של ההורה שמקבל את הקצבה. אי אפשר להעביר, לשעבד או לעקל אותו. בבנק ההסכם מבטיח שהיתרה לא תרד מהסכומים שהביטוח הלאומי הפקיד, במונחים נומינליים; בקופת גמל לא נמצאה הבטחה כזו.",
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://bank-yahav.co.il/media/qxed4yhi/השקעות-מונגש-חסכון-לכל-ילד-צפייה-בהסכם-חיסכון-לכל-ילד.pdf",
+      "title": "Bank Yahav, child-savings agreement",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "s.1.5, 3.8, 7.1",
+      "locator_he": "סעיף 1.5, 3.8, 7.1",
+      "checked": "2026-10-22"
+    }
+  ]
 }

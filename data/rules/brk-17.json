@@ -9,5 +9,31 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "brokerage-account.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://boi.org.il/media/w2lgmymp/159a.pdf",
+      "title": "BoI fees rules 2008, consolidated, first schedule part 4(א)(5), notes (1) and (2)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "pp.16 to 17",
+      "locator_he": "עמודים 16 עד 17",
+      "page": 16,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://boi.org.il/media/rd0lltqk/%D7%9B%D7%9C%D7%9C%D7%99-%D7%94%D7%91%D7%A0%D7%A7%D7%90%D7%95%D7%AA-%D7%A9%D7%99%D7%A8%D7%95%D7%AA-%D7%9C%D7%9C%D7%A7%D7%95%D7%97-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA.pdf",
+      "title": "BoI amendment 2012 adding note (2)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "s.3(5)(ג)",
+      "locator_he": "סעיף 3(5)(ג)",
+      "checked": "2026-10-22"
+    }
+  ]
 }

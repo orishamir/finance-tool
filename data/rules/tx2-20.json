@@ -81,5 +81,16 @@
     }
   },
   "il_finance_file": "tax-tier2-other.md",
-  "checked": "2026-10-24"
+  "checked": "2026-10-24",
+  "sources": [
+    {
+      "url": "https://reit1.co.il/investor-relations/",
+      "title": "Reit 1, investor relations page, \"שאלות ותשובות\", \"מהו שיעור המס שחל על דיבידנד?\"",
+      "publisher": "Reit 1",
+      "publisher_he": "ריט 1",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-24"
+    }
+  ]
 }

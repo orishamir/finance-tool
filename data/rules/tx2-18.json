@@ -60,5 +60,35 @@
     }
   },
   "il_finance_file": "tax-tier2-other.md",
-  "checked": "2026-10-24"
+  "checked": "2026-10-24",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Ordinance, s.3(ה6), s.9(13)(1), s.125C(c)(1) (Wikisource raw text)",
+      "title_he": "פקודת מס הכנסה",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s.3(ה6), s.9(13)(1), s.125C(c)(1)",
+      "locator_he": "סעיף 3(ה6), סעיף 9(13)(1), סעיף 125ג(ג)(1)",
+      "anchor": "סעיף_3.ה6",
+      "checked": "2026-10-24"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(קביעת_הפרשי_הצמדה_חלקיים)",
+      "title": "תקנות מס הכנסה (קביעת הפרשי הצמדה חלקיים), התשס\"ג-2003, reg. 1 (Wikisource; amendments to תשס\"ה)",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg. 1",
+      "locator_he": "תקנה 1",
+      "anchor": "סעיף_1",
+      "checked": "2026-10-24",
+      "qualifier": "(mirror; application derived)"
+    }
+  ]
 }

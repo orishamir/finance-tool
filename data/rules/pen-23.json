@@ -80,5 +80,44 @@
     }
   },
   "il_finance_file": "pension-and-gemel-lekitzba.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf",
+      "title": "CMA circular 2024-9-6, 25.8.2024",
+      "title_he": "חוזר גופים מוסדיים 2024-9-6: הוראות לעניין בחירת קופת גמל – עדכון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "annex sections 2, 4, 5 and annex ג'",
+      "quote": "המועד הקובע",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://adif-web-bucket.s3-eu-west-1.amazonaws.com/%D7%93%D7%95%D7%97%20%D7%94%D7%9E%D7%9E%D7%95%D7%A0%D7%94%20%D7%A2%D7%9C%20%D7%A9%D7%95%D7%A7%20%D7%94%D7%94%D7%95%D7%9F%20%D7%9C%D7%A9%D7%A0%D7%AA%202024.pdf",
+      "title": "CMA report 2024",
+      "title_he": "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2024",
+      "publisher": "Adif (copy)",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "official_pdf",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "p. 10",
+      "locator_he": "עמוד 10",
+      "page": 10,
+      "quote": "ההליך הרביעי לקביעת קרנות פנסיה נבחרות",
+      "checked": "2026-10-22",
+      "qualifier": "(third-party host)"
+    },
+    {
+      "url": "https://www.moreinvest.co.il/%D7%9E%D7%95%D7%A6%D7%A8%D7%99%D7%9D/%D7%92%D7%9E%D7%9C-%D7%95%D7%A4%D7%A0%D7%A1%D7%99%D7%94/%D7%A7%D7%A8%D7%9F-%D7%A4%D7%A0%D7%A1%D7%99%D7%94/",
+      "title": "Mor selected pension fund page",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור בית השקעות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
 }

@@ -56,5 +56,31 @@
     }
   },
   "il_finance_file": "tax-interest-deposits-bonds.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
+      "title": "Withholding Regulations 2005, regs. 4, 8, 9, 16, 17",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "regs. 4, 8, 9, 16, 17",
+      "locator_he": "תקנות 4, 8, 9, 16, 17",
+      "checked": "2026-10-22",
+      "qualifier": "(text on a government site, consolidated to 2017; later amendments not checked, open question 18)"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "printed pp.3-4, 40",
+      "checked": "2026-10-22"
+    }
+  ]
 }
