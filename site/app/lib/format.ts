@@ -22,6 +22,11 @@ export const fmt = {
     const thousandths = v * 1000;
     return Math.abs(thousandths - Math.round(thousandths)) < 1e-6 && Math.abs(v * 100 - Math.round(v * 100)) > 1e-6 ? percent3.format(v / 100) : percent.format(v / 100);
   },
+  /** The number `pct` shows, as a number: what a field prefilled from a displayed percentage holds (0.4293 reads 0.43). */
+  pctShown: (v: number) => {
+    const thousandths = v * 1000;
+    return Math.abs(thousandths - Math.round(thousandths)) < 1e-6 && Math.abs(v * 100 - Math.round(v * 100)) > 1e-6 ? Math.round(thousandths) / 1000 : Math.round(v * 100) / 100;
+  },
   number: (v: number) => plain.format(v),
   /** `22.10.2026` from `2026-10-22`. */
   date: (iso: string) => date.format(new Date(iso + "T00:00:00")),

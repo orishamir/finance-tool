@@ -31,7 +31,30 @@ export interface ProvidentInput {
     earlyWithdrawal?: boolean;
     employerRate?: number;
     money?: "own" | "employer";
+    /**
+     * Of `goal.monthly`, the part the employer pays (an employee's own money and the employer's together, as a
+     * payslip shows them, S42). The own part is benefited up to TXH-08's share of the determining salary, the
+     * employer's up to TXH-01's; an employer part above that limit is salary when paid (F-52) and needs its own
+     * run (`money: "employer"`), so it stops the run with the field named.
+     */
+    employerMonthly?: number;
   };
+  /**
+   * A balance already in the fund (a holding under review, F-61), as `runPension` has it: it starts the ledger as
+   * it is, with no deposit fee, no deposit-side relief and nothing added to `paidIn`; `goal` then holds only new
+   * money. In a study fund it is benefited money once TXH-09's lock has passed at the start; inside the lock it
+   * needs the split into tax layers from the detailed statement (PF-36) and the run stops with a missing input.
+   * A kupat gemel lehashkaa balance runs with the balance as its opening cost basis for fees and growth; its exit
+   * tax needs `embeddedGain`.
+   */
+  existingBalance?: number;
+  /**
+   * Kupat gemel lehashkaa with `existingBalance`: the gain already inside the balance at the start, from the detailed
+   * annual statement (PF-36), in nominal NIS. The rest of the balance is the cost basis, at the index of month 0. Absent:
+   * the exit tax is not computed (`taxAtExit` 0, flag `PF-36`) and F-61's fee costs are still produced. Ignored in a
+   * study fund, where the balance is benefited and exempt.
+   */
+  embeddedGain?: number;
   /**
    * Deposits every `months` months from `firstMonth` instead of every month: `goal.monthly` is then the
    * amount of each deposit (a self-employed person's yearly December deposit, S26).
@@ -81,6 +104,13 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
   // self-employed person's is a yearly amount.
   let benefitedMonthly = Infinity;
   let benefitedYearly = Infinity;
+  let employerLimit = Infinity;
+  const existing = input.existingBalance ?? 0;
+  if (!Number.isFinite(existing) || existing < 0) throw new RangeError(`existingBalance ${existing} must be a number of zero or more`);
+  const embedded = input.embeddedGain;
+  if (embedded !== undefined && (!Number.isFinite(embedded) || embedded < 0 || embedded > existing)) {
+    throw new RangeError(`embeddedGain ${embedded} must be between 0 and existingBalance ${existing}`);
+  }
   if (!kgl) {
     const h = input.hishtalmut!;
     let lockMonth = h.clockStartMonth + 12 * book.amount("TXH-09", "lock_years");
@@ -97,6 +127,11 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
         book.label("reading", "KH-12");
       }
     }
+    if (existing > 0 && lockMonth > 0) {
+      throw new RecordInputError(
+        "existingBalance in a study fund still inside its lock needs the split into tax layers from the detailed annual statement (PF-36): not given, so the run cannot price its exit tax",
+      );
+    }
     if (lockMonth > goal.months) {
       // B3: still locked at the horizon. Unless the person opts into early withdrawal (F-47), the value is
       // shown at the first lawful exit; with it, the run exits at the horizon and F-47 taxes it.
@@ -111,6 +146,14 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
       // TXH-08: own deposit benefited up to 2.5% of the determining salary; TXH-01: the employer's up to 7.5%.
       benefitedMonthly =
         h.money === "employer" ? book.rate("TXH-01", "employer_exempt_pct") * determining : book.rate("TXH-08", "own_benefited_pct") * determining;
+      if (h.employerMonthly !== undefined) {
+        if (h.money === "employer") throw new RecordInputError("hishtalmut.employerMonthly splits goal.monthly into own and employer money; money: \"employer\" runs the employer's alone");
+        if (h.employerMonthly < 0 || h.employerMonthly > goal.monthly) throw new RangeError(`employerMonthly ${h.employerMonthly} must be between 0 and goal.monthly`);
+        employerLimit = book.rate("TXH-01", "employer_exempt_pct") * determining;
+        if (h.employerMonthly > employerLimit) {
+          throw new RecordInputError(`hishtalmut.employerMonthly ${h.employerMonthly} is above TXH-01's limit ${employerLimit.toFixed(2)}: the part above is salary when paid (F-52); run the employer's money with money "employer"`);
+        }
+      }
     } else {
       benefitedYearly = book.amount("TXH-08", "self_employed_benefited");
     }
@@ -127,13 +170,15 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
   const I = cpiPath(input.market.inflation, T);
   const C = contributions(goal, I);
   const g = annualToMonthly(input.market.grossReturn);
-  const benefited: Pot = { balance: 0, deposits: [] };
+  // Gemel lehashkaa: the part of the balance that is not embedded gain is cost basis, at the index of month 0.
+  const benefited: Pot = { balance: existing, deposits: kgl && existing > 0 && embedded !== undefined && existing > embedded ? [{ amount: existing - embedded, index: 1 }] : [] };
+  const exitTaxUnknown = kgl && existing > 0 && embedded === undefined;
   const excess: Pot = { balance: 0, deposits: [] };
   const routed: { month: number; amount: number }[] = [];
   let yearTotal = 0;
   let benefitedLeft = benefitedYearly;
   let discountExtended = false;
-  tally.point(0, 1, 0);
+  tally.point(0, 1, existing);
 
   const hish = input.hishtalmut;
   const employerMoney = !kgl && hish?.money === "employer";
@@ -188,8 +233,10 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     const fee = depositFee(fees.deposit, depositCap, accepted);
     tally.fee("deposit", fee);
     const net = accepted - fee;
-    const inBenefit = Math.min(net, benefitedMonthly, benefitedLeft);
-    benefitedLeft -= inBenefit;
+    // S42: an employer part of the monthly deposit sits under TXH-01's limit (checked above) and is all benefited.
+    const employerPart = hish?.employerMonthly !== undefined && eventMonth > 0 && goal.monthly > 0 ? (net * hish.employerMonthly) / goal.monthly : 0;
+    const inBenefit = employerPart + Math.min(net - employerPart, benefitedMonthly, benefitedLeft);
+    benefitedLeft -= inBenefit - employerPart;
     if (employerMoney && social && net - inBenefit > 0) {
       const over = net - inBenefit;
       const y = taxYearOf(eventMonth, first);
@@ -239,6 +286,7 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
   if (kgl) {
     // F-44: 25% of the real gain (TXK-07, institution), with the 15%-of-nominal line (TXK-06) beside it.
     book.cite("TXK-05");
+    if (exitTaxUnknown) tally.flag("PF-36");
     const realRate = book.rate("TXK-07", "rate");
     const nominalRate = book.rate("TXK-06", "nominal_rate");
     const real = realGain(benefited);
@@ -246,13 +294,14 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     // The age-60 reduction is open for this deemed interest (TXK OQ12): not applied, and flagged.
     if (reachesAgeInYear(profile, T, book.amount("TXG-04", "age"), first)) tally.flag("TXK-OQ12");
     const s = surtaxOn(book, profile, real);
-    taxAtExit = t.tax + s.general + s.onCapital;
+    taxAtExit = exitTaxUnknown ? 0 : t.tax + s.general + s.onCapital;
     detail.realGain = real;
     detail.altTaxAtExit = t.alternative;
     detail.altNominal = gross - t.alternative;
     detail.altReal = (gross - t.alternative) / I[T]!;
     tally.flag("G-11");
     tally.flag("G-02");
+    if (exitTaxUnknown) for (const k of ["realGain", "altTaxAtExit", "altNominal", "altReal"]) delete detail[k];
   } else {
     // F-46: benefited money is exempt (TXH-09); gains on the excess are taxed at 25% of their real gain
     // (TXH-11; the real base rests on two managers' statements, institution).

@@ -1,0 +1,39 @@
+{
+  "id": "SW-04",
+  "title": "The determining date, and when the request is forwarded",
+  "title_he": "המועד הקובע ומתי הבקשה מועברת",
+  "text_he": "הקופה המקבלת שולחת את הבקשה לקופה המעבירה באופן אלקטרוני בתוך מספר ימי עסקים מהמועד הקובע, עם צילום תעודת זהות או פרוטוקול חתימה אלקטרונית והצהרת העובד המטפל (נספח ד׳) שבה נקוב המועד הקובע. לעמית פעיל המועד הקובע הוא היום שבו הופקד לראשונה כסף בשלו בקופה המקבלת, ולא לפני קבלת הבקשה; לעמית לא פעיל זהו יום קבלת הבקשה. לכן כשהמעסיק עדיין מפקיד, דבר לא מועבר עד שההפקדה הראשונה מגיעה לקופה החדשה, והמעבר מחכה להפניית ההפקדות. המועד הקובע הוא גם היום שבו האחריות הביטוחית עוברת לקופה המקבלת; החוזר נקרא מעותק אצל צד שלישי והתקנות באתר שמעתיק אותן.",
+  "figure_names_he": {
+    "forward_request_business_days": "ימי עסקים להעברת הבקשה לקופה המעבירה"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "transfer-switch-process",
+    "insurance-cover"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "forward_request_business_days": {
+      "value": 2,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.analyst.co.il/media/dtnkdiyk/%D7%97%D7%95%D7%96%D7%A8-%D7%92%D7%95%D7%A4%D7%99%D7%9D-%D7%9E%D7%95%D7%A1%D7%93%D7%99%D7%99%D7%9D-2017-9-17-%D7%94%D7%A2%D7%91%D7%A8%D7%AA-%D7%9B%D7%A1%D7%A4%D7%99%D7%9D-%D7%91%D7%99%D7%9F-%D7%A7%D7%95%D7%A4%D7%95%D7%AA-%D7%92%D7%9E%D7%9C.pdf",
+        "title": "CMA circular 2017-9-17 \"העברת כספים בין קופות גמל\", 2.10.2017, consolidated copy, s.3(ו), Annex D",
+        "publisher": "Capital Market, Insurance and Savings Authority (copy hosted by Analyst)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "SW-04"
+      ],
+      "state": "sourced",
+      "notes": "The receiving fund sends the request electronically to the transferring fund within two business days of the determining date (circular s.3(ו)). Effective date of the consolidated circular not stated in the rule base."
+    }
+  },
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-22"
+}

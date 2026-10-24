@@ -1,0 +1,61 @@
+{
+  "id": "CS-27",
+  "title": "The child-savings annual statement: one shortened report a year until 21, by 1 March, with NII and parent deposits shown separately",
+  "title_he": "הדוח השנתי בחיסכון לכל ילד: דוח מקוצר אחד בשנה עד גיל עשרים ואחת, עד תחילת מרץ, עם הפקדות הביטוח הלאומי וההורה בנפרד",
+  "text_he": "עד השנה שבה הילד מגיע לגיל עשרים ואחת, הדוח השנתי נשלח במתכונת ייעודית של חוזר חיסכון לכל ילד, לפי כללי הדוח המקוצר, לא יאוחר מתחילת מרץ. אין חובה לדוח מפורט או לדוח רבעוני, גם אחרי גיל עשרים ואחת. הדוח מציג את שם הילד וההורה, את התנועות בחשבון כולל דמי ניהול שנגבו מהעמית בפועל והחזר כספים לביטוח הלאומי, את שיעורי דמי הניהול עם הערה שעד גיל עשרים ואחת הם משולמים על ידי הביטוח הלאומי, את מסלול ההשקעה ותשואתו, ואת ההפקדות לפי תאריך בפיצול בין תשלום הביטוח הלאומי לתשלום הנוסף של ההורה מקצבת הילדים. בדוח אין שדה שאומר אם המסלול נבחר או הוקצה כברירת מחדל.",
+  "figure_names_he": {
+    "child_statement_deadline": "מועד אחרון למשלוח הדוח השנתי בחיסכון לכל ילד",
+    "child_statement_until_age": "גיל עד השנה שבה חל הדוח הייעודי לחיסכון לכל ילד"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "statement-disclosure",
+    "fee-management-balance"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-03-31",
+  "figures": {
+    "child_statement_deadline": {
+      "value": "1 March",
+      "unit": "text",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-740/he/regulation_h_2018-9-25.pdf",
+        "title": "CMA circular 2018-9-25, s. 5(ב)(1)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "CS-27"
+      ],
+      "state": "sourced",
+      "notes": "The child-savings annual report is sent no later than 1 March, \"בהתאם להוראות החוק\" (s. 5(ב)(1))."
+    },
+    "child_statement_until_age": {
+      "value": 21,
+      "unit": "years",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-740/he/regulation_h_2018-9-25.pdf",
+        "title": "CMA circular 2018-9-25, s. 5",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "CS-27"
+      ],
+      "state": "sourced",
+      "notes": "Until the year the member turns 21 the annual report follows the child-savings annex; from that year the gemel lehashkaa format applies."
+    }
+  },
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-23"
+}

@@ -1,0 +1,64 @@
+{
+  "id": "TX2-18",
+  "title": "Partial linkage differentials are interest; classification of a structured deposit's payout (derived)",
+  "title_he": "הפרשי הצמדה חלקיים הם ריבית: כך מסווגים תשואה של פיקדון מובנה",
+  "text_he": "הפקודה קובעת שהכנסה מהפרשי הצמדה חלקיים נחשבת להכנסה מריבית, ולעניין זה גם שער מטבע וכל מדד אחר הם מדד. התקנות מגדירות הפרשי הצמדה חלקיים: הצמדה על חלק מהסכום, לפי חלק מעליית המדד, החלק שמעל עליית המדד, או על חלק מהתקופה. ריבית על נכס שאינו צמוד או צמוד בחלקו ממוסה בשיעור הנמוך על הסכום הנומינלי. מכאן, מענק בפיקדון מובנה שתלוי במדד מניות הוא ריבית על פיקדון לא צמוד; תשואה שעוקבת אחרי שער חליפין רק מעל רצפה היא הצמדה חלקית, כלומר ריבית; ופיקדון צמוד במלואו למטבע חוץ נהנה מפטור על ההצמדה ומשלם את השיעור הגבוה על הריבית שמעליה. זו קריאה של הטקסטים, בלי אמירה של רשות המסים על פיקדונות מובנים.",
+  "figure_names_he": {
+    "rate_unlinked_or_partly_linked": "שיעור המס על ריבית מנכס לא צמוד או צמוד בחלקו",
+    "rate_linked_max": "שיעור המס המרבי על ריבית מנכס צמוד"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "tax-at-exit",
+    "real-vs-nominal",
+    "currency",
+    "loss-offset"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "rate_unlinked_or_partly_linked": {
+      "value": 15,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance s.125C(c)(1); s.3(e6); Partial Linkage Differentials Regulations 2003 reg. 1",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TX2-18",
+        "TXI-03"
+      ],
+      "state": "sourced",
+      "notes": "Nominal; the Minister may change it by order (s.125C(c)(2))."
+    },
+    "rate_linked_max": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+        "title": "Income Tax Ordinance s.125C(b)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TX2-18",
+        "TX2-01"
+      ],
+      "state": "sourced",
+      "notes": "Maximum rate on interest above exempt linkage on a fully linked asset."
+    }
+  },
+  "il_finance_file": "tax-tier2-other.md",
+  "checked": "2026-10-24"
+}

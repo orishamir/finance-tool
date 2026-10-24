@@ -1,0 +1,124 @@
+{
+  "id": "SW-30",
+  "title": "Rerouting after the switch: three years, extended to 31.7.2029 for earlier switchers",
+  "title_he": "ניתוב התשלומים אחרי המעבר ומשכו",
+  "text_he": "אחרי יום המעבר, חיובים, זיכויים ושיקים שמוצגים לחשבון הישן מנותבים לחשבון החדש למשך שנים אחדות ממועד העברת הפעילות, אלא אם הלקוח מבקש להפסיק קודם; התקופה המקורית היתה קצרה יותר, הוארכה בתיקון, ותיקון נוסף מאריך אותה למי שעבר באופן מקוון לפני מועד קבוע עד תאריך יעד אחד לכולם. הבנק הקולט חייב להודיע מראש לפני סיום הניתוב, לעדכן את הלקוח אחת לחצי שנה על הפעילות המנותבת כולל שמות הגופים המזכים והמחייבים, ולאפשר ללקוח להפסיק את הניתוב בכל עת בתוך ימי עסקים ספורים, עם אזהרה על ההשלכות. למי שעבר בשבועות שלפני המועד הקובע של התיקון תקופת הניתוב קצרה במעט, והחלטה לגביהם צפויה עד תאריך היעד. בנק ישראל מציין שיותר ממאתיים אלף לקוחות עברו באופן מקוון, ושנפח ניתוב ניכר נותר גם אחרי תום התקופה.",
+  "figure_names_he": {
+    "rerouting_years": "שנות ניתוב אחרי המעבר",
+    "rerouting_extended_until_for_pre_2026_09_21_switchers": "תאריך סיום הניתוב המוארך למי שעבר לפני המועד הקובע",
+    "rerouting_end_notice_days": "ימי הודעה מוקדמת לפני סיום הניתוב",
+    "rerouting_update_interval_months": "חודשים בין עדכונים על הפעילות המנותבת",
+    "stop_rerouting_business_days": "ימי עסקים להפסקת הניתוב לבקשת הלקוח"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "transfer-switch-process",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-07-31",
+  "figures": {
+    "rerouting_years": {
+      "value": 3,
+      "unit": "years",
+      "source": {
+        "url": "https://boi.org.il/media/qempydw4/h2863.pdf",
+        "title": "BoI circular h-06-2863 \"הארכת תקופת הניתוב בעת מעבר בין בנקים – דברי הסבר\", 18.10.2026, explanatory notes on the Governor's rules s.5(א)",
+        "publisher": "Bank of Israel (Banking Supervision)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2023-09-21",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "SW-30"
+      ],
+      "state": "sourced",
+      "notes": "Rerouting of debits, credits and cheques to the new account for three years from the transfer of activity (Governor's rules s.5(א), amended in force 21.9.2023; the original period was two years)."
+    },
+    "rerouting_extended_until_for_pre_2026_09_21_switchers": {
+      "value": "2029-07-31",
+      "unit": "text",
+      "source": {
+        "url": "https://boi.org.il/media/qempydw4/h2863.pdf",
+        "title": "BoI circular h-06-2863 \"הארכת תקופת הניתוב בעת מעבר בין בנקים – דברי הסבר\", 18.10.2026, s.5 and the rules amendment published 17.9.2026",
+        "publisher": "Bank of Israel (Banking Supervision)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-09-17",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "SW-30"
+      ],
+      "state": "sourced",
+      "notes": "Rules amendment published 17.9.2026: for customers who switched online before 21.9.2026 the transitional provision is extended to 31.7.2029 (\"מוארכת הוראת המעבר עד ליום 31.7.2029\"). Customers who switched between 1.8.2026 and 21.9.2026 get a period slightly short of three years, with a decision expected by 31.7.2029."
+    },
+    "rerouting_end_notice_days": {
+      "value": 60,
+      "unit": "days",
+      "source": {
+        "url": "https://boi.org.il/media/ahflwvpw/448_2.pdf",
+        "title": "BoI directive 448 \"העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון\", version 2 (8/21), s.36",
+        "publisher": "Bank of Israel (Banking Supervision)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "SW-30"
+      ],
+      "state": "sourced",
+      "notes": "The receiving bank gives at least 60 days' notice before rerouting ends (directive 448 s.36)."
+    },
+    "rerouting_update_interval_months": {
+      "value": 6,
+      "unit": "months",
+      "source": {
+        "url": "https://boi.org.il/media/ahflwvpw/448_2.pdf",
+        "title": "BoI directive 448 \"העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון\", version 2 (8/21), s.39",
+        "publisher": "Bank of Israel (Banking Supervision)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "SW-30"
+      ],
+      "state": "sourced",
+      "notes": "The receiving bank updates the customer half-yearly on rerouted activity, including the names of the bodies paying in and debiting (s.39)."
+    },
+    "stop_rerouting_business_days": {
+      "value": 5,
+      "unit": "business_days",
+      "source": {
+        "url": "https://boi.org.il/media/ahflwvpw/448_2.pdf",
+        "title": "BoI directive 448 \"העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון\", version 2 (8/21), s.40",
+        "publisher": "Bank of Israel (Banking Supervision)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "SW-30"
+      ],
+      "state": "sourced",
+      "notes": "The customer may stop rerouting at any time, effective within 5 business days, after a warning of the consequences (s.40)."
+    }
+  },
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-22"
+}

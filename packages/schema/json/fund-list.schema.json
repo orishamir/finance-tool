@@ -1,0 +1,619 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "list": {
+      "type": "string",
+      "enum": [
+        "maya-mutual-funds",
+        "tase-foreign-funds"
+      ]
+    },
+    "snapshot": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "publisher": {
+          "type": "string",
+          "minLength": 1
+        },
+        "strength": {
+          "type": "string",
+          "enum": [
+            "primary",
+            "primary-mirror",
+            "institution",
+            "secondary",
+            "open",
+            "entered"
+          ]
+        }
+      },
+      "required": [
+        "url",
+        "title",
+        "publisher",
+        "strength"
+      ],
+      "additionalProperties": false
+    },
+    "checked": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "terms_of_use": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "confirmed",
+            "unconfirmed",
+            "not-permitted"
+          ]
+        },
+        "fallback": {
+          "type": "string",
+          "minLength": 1
+        },
+        "terms_url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "read_on": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "attribution": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "status",
+        "fallback"
+      ],
+      "additionalProperties": false
+    },
+    "raw": {
+      "type": "object",
+      "properties": {
+        "archive_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "archive_key",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "funds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fund_number": {
+            "type": "string",
+            "minLength": 1
+          },
+          "isin": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "names": {
+            "type": "object",
+            "properties": {
+              "he": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "required": [
+              "he"
+            ],
+            "additionalProperties": false
+          },
+          "manager": {
+            "type": "string",
+            "minLength": 1
+          },
+          "trustee": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "classification": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "characteristics": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "exposure_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reference_asset": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tax_status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "distribution_fee_class": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "management_fee": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": [
+                      "number",
+                      "string",
+                      "boolean",
+                      "null"
+                    ]
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "nis",
+                      "usd",
+                      "eur",
+                      "pct",
+                      "pct_per_year",
+                      "pct_of_deposit",
+                      "pct_of_trade",
+                      "pct_of_balance_per_period",
+                      "nis_per_month",
+                      "nis_per_trade",
+                      "nis_per_transfer",
+                      "months",
+                      "years",
+                      "days",
+                      "business_days",
+                      "index_points",
+                      "count",
+                      "boolean",
+                      "text"
+                    ]
+                  },
+                  "source": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "title": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "publisher": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "strength": {
+                        "type": "string",
+                        "enum": [
+                          "primary",
+                          "primary-mirror",
+                          "institution",
+                          "secondary",
+                          "open",
+                          "entered"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "url",
+                      "title",
+                      "publisher",
+                      "strength"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "checked": {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                  },
+                  "effective_from": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "effective_to": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "tax_year": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": -9007199254740991,
+                        "maximum": 9007199254740991
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "update_rule": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "fixed in law",
+                          "fixed in regulation",
+                          "cpi-linked 1 jan",
+                          "average-wage-linked",
+                          "provider-set",
+                          "market",
+                          "founder"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "pattern": "^frozen \\d{4}-\\d{4}$"
+                      }
+                    ]
+                  },
+                  "rule_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "state": {
+                    "type": "string",
+                    "enum": [
+                      "sourced",
+                      "computed",
+                      "entered"
+                    ]
+                  },
+                  "computed_from": {
+                    "type": "object",
+                    "properties": {
+                      "formula": {
+                        "type": "string",
+                        "pattern": "^[FA]-\\d{2}$"
+                      },
+                      "inputs": {
+                        "type": "object",
+                        "propertyNames": {
+                          "type": "string"
+                        },
+                        "additionalProperties": {}
+                      }
+                    },
+                    "required": [
+                      "formula",
+                      "inputs"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "notes": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value",
+                  "unit",
+                  "source",
+                  "checked",
+                  "effective_from",
+                  "effective_to",
+                  "update_rule",
+                  "state"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "trustee_fee": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": [
+                      "number",
+                      "string",
+                      "boolean",
+                      "null"
+                    ]
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "nis",
+                      "usd",
+                      "eur",
+                      "pct",
+                      "pct_per_year",
+                      "pct_of_deposit",
+                      "pct_of_trade",
+                      "pct_of_balance_per_period",
+                      "nis_per_month",
+                      "nis_per_trade",
+                      "nis_per_transfer",
+                      "months",
+                      "years",
+                      "days",
+                      "business_days",
+                      "index_points",
+                      "count",
+                      "boolean",
+                      "text"
+                    ]
+                  },
+                  "source": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "title": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "publisher": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "strength": {
+                        "type": "string",
+                        "enum": [
+                          "primary",
+                          "primary-mirror",
+                          "institution",
+                          "secondary",
+                          "open",
+                          "entered"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "url",
+                      "title",
+                      "publisher",
+                      "strength"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "checked": {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                  },
+                  "effective_from": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "effective_to": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "tax_year": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": -9007199254740991,
+                        "maximum": 9007199254740991
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "update_rule": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "fixed in law",
+                          "fixed in regulation",
+                          "cpi-linked 1 jan",
+                          "average-wage-linked",
+                          "provider-set",
+                          "market",
+                          "founder"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "pattern": "^frozen \\d{4}-\\d{4}$"
+                      }
+                    ]
+                  },
+                  "rule_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "state": {
+                    "type": "string",
+                    "enum": [
+                      "sourced",
+                      "computed",
+                      "entered"
+                    ]
+                  },
+                  "computed_from": {
+                    "type": "object",
+                    "properties": {
+                      "formula": {
+                        "type": "string",
+                        "pattern": "^[FA]-\\d{2}$"
+                      },
+                      "inputs": {
+                        "type": "object",
+                        "propertyNames": {
+                          "type": "string"
+                        },
+                        "additionalProperties": {}
+                      }
+                    },
+                    "required": [
+                      "formula",
+                      "inputs"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "notes": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value",
+                  "unit",
+                  "source",
+                  "checked",
+                  "effective_from",
+                  "effective_to",
+                  "update_rule",
+                  "state"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "data_date": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          }
+        },
+        "required": [
+          "fund_number",
+          "isin",
+          "names",
+          "manager",
+          "classification",
+          "exposure_code",
+          "tax_status",
+          "data_date"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "list",
+    "snapshot",
+    "source",
+    "checked",
+    "terms_of_use",
+    "raw",
+    "funds"
+  ],
+  "additionalProperties": false
+}

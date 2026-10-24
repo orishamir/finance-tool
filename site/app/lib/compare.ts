@@ -17,6 +17,7 @@ import {
   tieThreshold,
   type Candidate,
   type CandidateSet,
+  type CandidateSetInput,
   type ComparisonGoal,
   type CoverageLine,
   type Decomposition,
@@ -31,7 +32,7 @@ import {
   type SensitivityAxis,
   type UsedRule,
 } from "@finance-tool/engine";
-import type { ParameterRecord, RuleRecord, ValueObject, WrapperId, WrapperRecord } from "@finance-tool/schema";
+import type { ExposureRecord, ParameterRecord, RuleRecord, ValueObject, WrapperId, WrapperRecord } from "@finance-tool/schema";
 import { computedInputs as ci, formulaNames, guideBlocks, r2 } from "../copy";
 import { fmt } from "./format";
 import type { Employment } from "./inputs";
@@ -74,6 +75,30 @@ export interface Tier2Row {
   openQuestion: string;
 }
 
+/** One exposure record as exposure mode needs it (release 5): the record, its Hebrew name and where its pages are. */
+export interface ExposureEntry {
+  record: ExposureRecord;
+  name: string;
+  oneLine: string | null;
+  guideHref: string;
+  /** `/workbench/funds/{id}` when a fund record exists for it. */
+  variantsHref: string | null;
+}
+
+/** The terms of a securities-family wrapper holding one exposure through the fund collected for it (`exposure_id`). */
+export interface HoldingTerms {
+  fundId: string;
+  terms: InstrumentTerms;
+  feeValues: Record<string, SiteValue>;
+}
+
+/** A data file a comparison reads, by path and its `checked` date (F-82); `for` names the wrapper or exposure ids it feeds (empty: every comparison). */
+export interface BundleDataFile {
+  path: string;
+  checked: string | null;
+  for: string[];
+}
+
 export interface CompareBundle {
   runDate: string;
   wrappers: WrapperEntry[];
@@ -84,6 +109,14 @@ export interface CompareBundle {
   checklist: { id: string; name: string; explanation: string }[];
   /** The Bank of Israel page a cash-like rate comes from (BANK-22), for the link-out. */
   cashLink: { href: string; title: string; ruleId: string } | null;
+  /** Release 5: every exposure record (F-83's candidate set in exposure mode). Absent in a bundle from before it. */
+  exposures?: ExposureEntry[];
+  /** Release 5: per exposure and securities-family wrapper, the terms through the fund collected for the exposure. */
+  exposureTerms?: Record<string, Record<string, HoldingTerms>>;
+  /** Release 5: the data files the runs read, for the saved comparison's versions (F-82). */
+  dataFiles?: BundleDataFile[];
+  /** Release 5: the build's version and data snapshot, written into a saved comparison (as `StateFile.site`). */
+  site?: { version: string; data: string };
 }
 
 // ---------------------------------------------------------------- the goal as numbers
@@ -224,7 +257,7 @@ function pensionTerms(w: WrapperEntry, t: InstrumentTerms, g: RunGoal, needs: Pa
 }
 
 /** The study fund's terms come from the person: employment, and an employee's salary (A-12). */
-function termsFor(w: WrapperEntry, g: RunGoal, scale: Record<string, number>, needs: Partial<Record<string, FieldKey>>): InstrumentTerms | undefined {
+export function termsFor(w: WrapperEntry, g: RunGoal, scale: Record<string, number>, needs: Partial<Record<string, FieldKey>>): InstrumentTerms | undefined {
   if (!w.terms) return undefined;
   const t = scale ? scaleTerms(w.terms, w.id, scale) : w.terms;
   if (w.family === "pension") return pensionTerms(w, t, g, needs);
@@ -248,6 +281,8 @@ export interface Evaluated {
   ctx: RunContext;
   goal: ComparisonGoal;
   theta: number;
+  /** What went into the candidate set (the saved comparison's record of the run, F-82). */
+  inputs: CandidateSetInput;
 }
 
 interface EvalOptions {
@@ -276,19 +311,17 @@ export function evaluate(bundle: CompareBundle, g: RunGoal, options: EvalOptions
   const scale = options.scale ?? {};
   const entries = bundle.wrappers.filter((w) => !options.only || options.only.has(w.id));
   const goal = comparisonGoal(g);
-  const set = buildCandidateSet(
-    {
-      wrappers: entries.map((w) => {
-        const terms = termsFor(w, g, scale, needs);
-        return { record: w.record, ...(terms ? { terms } : {}), ...(w.cashRate ? { cashRate: w.cashRate } : {}) };
-      }),
-      tier2: options.only ? [] : bundle.tier2,
-      parameters: bundle.parameters,
-      goal,
-      restricted: !!options.only,
-    },
-    ctx,
-  );
+  const inputs: CandidateSetInput = {
+    wrappers: entries.map((w) => {
+      const terms = termsFor(w, g, scale, needs);
+      return { record: w.record, ...(terms ? { terms } : {}), ...(w.cashRate ? { cashRate: w.cashRate } : {}) };
+    }),
+    tier2: options.only ? [] : bundle.tier2,
+    parameters: bundle.parameters,
+    goal,
+    restricted: !!options.only,
+  };
+  const set = buildCandidateSet(inputs, ctx);
 
   // D9: the site holds no return. A candidate whose run rests on one is "not evaluated: enter a return"
   // until the person enters it; the engine would otherwise fall back on P-05's starting value.
@@ -312,7 +345,7 @@ export function evaluate(bundle: CompareBundle, g: RunGoal, options: EvalOptions
   const coverage = coverageLine(candidates, outcomeOrder, ["ranked"]);
   const theta = tieThreshold(bundle.parameters);
   const ranking = rankCandidates(candidates, { theta, ctx });
-  return { set, candidates, coverage, ranking, fields, ctx, goal, theta };
+  return { set, candidates, coverage, ranking, fields, ctx, goal, theta, inputs };
 }
 
 /** The ids tied for first, as one key: F-81 compares this between runs, so a move that breaks a tie shows. */
@@ -464,7 +497,7 @@ function staleOf(rules: readonly UsedRule[], bundle: CompareBundle): { id: strin
 }
 
 /** The years a ranked option's line is drawn at: a run with the horizon set to each year (as the guide's graph does). */
-function yearSeries(c: Candidate, ctx: RunContext, years: number, amountNow: number): SeriesLine["points"] {
+export function yearSeries(c: Candidate, ctx: RunContext, years: number, amountNow: number): SeriesLine["points"] {
   const points = [{ year: 0, real: amountNow, nominal: amountNow }];
   const plan = c.plan!;
   for (let n = 1; n <= years; n++) {

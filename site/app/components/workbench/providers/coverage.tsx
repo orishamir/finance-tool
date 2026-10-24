@@ -1,0 +1,78 @@
+// The provider coverage line (flow 28 step 8, design-spec 16.3): every provider once, the ranked group collapsed and
+// the not-comparable group open, with the invariant (counts equal rows) checked in development.
+import { Link } from "react-router";
+import { r2, r4workbench as c } from "../../../copy";
+import type { CoverageView } from "../../../lib/providers";
+import { computed } from "../../../lib/value";
+import { IconChevronDown } from "../../icons";
+import { Num } from "../../provenance";
+import { reasonSentence } from "./row";
+import { cx } from "../../ui";
+
+export function ProviderCoverage({ coverage, today, instrumentClass, channelWord }: { coverage: CoverageView; today: string; instrumentClass: string; channelWord: string }) {
+  const t = c.providers.coverage;
+  const count = (n: number, about: string) => computed(n, "count", "F-83", {}, { today, about });
+  const ranked = coverage.ranked.length;
+  const not = coverage.notComparable.length;
+  if (import.meta.env.DEV && (ranked + not !== coverage.considered || !coverage.invariantOk)) console.error("provider coverage: counts do not equal rows", coverage);
+  const groups = [
+    { key: "ranked", label: t.groups.ranked, rows: coverage.ranked.map((r) => ({ id: r.id, name: r.name, note: null as string | null })), open: false },
+    { key: "not", label: t.groups.notComparable, rows: coverage.notComparable.map((r) => ({ id: r.id, name: r.name, note: reasonSentence(r.reason, instrumentClass, channelWord) })), open: true },
+  ].filter((g) => g.rows.length > 0);
+  return (
+    <details className="group bg-card border border-border rounded-lg p-4 md:p-5">
+      <summary className="flex items-start justify-between gap-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+        <span className="flex flex-col gap-1">
+          <span>
+            {ranked === 1 && coverage.considered > 1 ? (
+              <>
+                {t.oneRanked.before}
+                <Num value={count(ranked, t.groups.ranked)} />
+                {t.oneRanked.mid}
+                <Num value={count(coverage.considered, "ספקים")} />
+                {t.oneRanked.after}
+              </>
+            ) : (
+              <>
+                {t.sentence.before}
+                <Num value={count(coverage.considered, "ספקים")} />
+                {t.sentence.mid}
+                <Num value={count(ranked, t.groups.ranked)} />
+                {t.sentence.mid2}
+                <Num value={count(not, t.groups.notComparable)} />
+                {t.sentence.after}
+              </>
+            )}
+          </span>
+          <span className="text-sm text-link flex items-center gap-1 min-h-9">
+            <span className="group-open:hidden">{r2.result.coverageOpen}</span>
+            <span className="hidden group-open:inline">{r2.result.coverageClose}</span>
+            <IconChevronDown size={16} className={cx("transition-transform duration-[var(--duration-fast)] group-open:rotate-180")} />
+          </span>
+        </span>
+      </summary>
+      <div className="mt-4 border-t border-border pt-3 flex flex-col gap-1">
+        {groups.map((g) => (
+          <details key={g.key} className="group/g" open={g.open}>
+            <summary className="flex items-center justify-between min-h-target cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+              <h3 className="font-medium">
+                {g.label} <span className="text-muted-foreground font-normal">(<bdi dir="ltr">{g.rows.length}</bdi>)</span>
+              </h3>
+              <IconChevronDown className="text-muted-foreground transition-transform duration-[var(--duration-fast)] group-open/g:rotate-180" />
+            </summary>
+            <ul className="flex flex-col">
+              {g.rows.map((r) => (
+                <li key={r.id} className="flex items-baseline gap-2 flex-wrap py-2 border-b border-border last:border-b-0">
+                  <Link to={`/companies/${r.id}`} className="text-link hover:underline">
+                    {r.name}
+                  </Link>
+                  {r.note && <bdi dir="ltr" className="text-xs text-muted-foreground">{r.note}</bdi>}
+                </li>
+              ))}
+            </ul>
+          </details>
+        ))}
+      </div>
+    </details>
+  );
+}

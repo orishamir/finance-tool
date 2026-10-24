@@ -1,0 +1,146 @@
+{
+  "id": "PF-39",
+  "title": "CMA annual report: average management fees actually charged per product class, 2021 to 2025",
+  "title_he": "דוח הממונה: דמי הניהול הממוצעים שנגבו בפועל לפי סוג מוצר",
+  "text_he": "דוח הממונה על שוק ההון מפרסם מדי שנה, מדיווחי החברות, את שיעור דמי הניהול הממוצע מתוך הנכסים ומתוך ההפקדות בקופות הגמל, בקרנות הפנסיה החדשות המקיפות ובביטוחי החיים. הנתון לקופות הגמל מאחד את כל סוגי הקופות, והממוצע מההפקדות אינו כולל קרנות השתלמות שאין בהן דמי ניהול מהפקדה; לקרנות השתלמות ולקופות גמל להשקעה הייחוס נשאר הממוצע לכל מסלול בגמל נט. הדוח כולל גם טבלה של דמי הניהול הממוצעים בכל קרן פנסיה לכלל העמיתים ולעובדי חמשת המעסיקים הגדולים. אלה ממוצעים שנגבו בפועל, לא מחירים. תנאי השימוש של אתר הממשלה מתירים ציטוט סביר עם ציון המקור.",
+  "figure_names_he": {
+    "avg_fee_from_assets_provident": "דמי ניהול ממוצעים מהנכסים: קופות גמל",
+    "avg_fee_from_assets_pension_comprehensive": "דמי ניהול ממוצעים מהנכסים: קרנות פנסיה חדשות מקיפות",
+    "avg_fee_from_assets_life_insurance": "דמי ניהול ממוצעים מהנכסים: ביטוח חיים",
+    "avg_fee_from_deposits_provident": "דמי ניהול ממוצעים מההפקדות: קופות גמל",
+    "avg_fee_from_deposits_pension_comprehensive": "דמי ניהול ממוצעים מההפקדות: קרנות פנסיה חדשות מקיפות",
+    "avg_fee_from_deposits_life_insurance": "דמי ניהול ממוצעים מההפקדות: ביטוח חיים"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-deposit",
+    "regulator"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-09-30",
+  "figures": {
+    "avg_fee_from_assets_provident": {
+      "value": 0.53,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/reports/tender-0102/he/Commissioner%20Report%202025%20chapter%204_Digital%20-%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9%20%D7%A1%D7%95%D7%A4%D7%99.pdf",
+        "title": "CMA, דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025, chapter 4, chart ד-2 (p. 60)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": "2025-12-31",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "PF-39"
+      ],
+      "state": "sourced",
+      "notes": "Average management fee from assets, provident funds (all kinds together), calendar 2025. Series 2021 to 2025: 0.56, 0.55, 0.53, 0.54, 0.53. Averages actually charged, from the institutions reports to the CMA."
+    },
+    "avg_fee_from_assets_pension_comprehensive": {
+      "value": 0.15,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/reports/tender-0102/he/Commissioner%20Report%202025%20chapter%204_Digital%20-%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9%20%D7%A1%D7%95%D7%A4%D7%99.pdf",
+        "title": "CMA, דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025, chapter 4, chart ד-2 (p. 60)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": "2025-12-31",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "PF-39"
+      ],
+      "state": "sourced",
+      "notes": "Average management fee from assets, new comprehensive pension funds, calendar 2025. Series 2021 to 2025: 0.18, 0.17, 0.16, 0.15, 0.15."
+    },
+    "avg_fee_from_assets_life_insurance": {
+      "value": 0.79,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/reports/tender-0102/he/Commissioner%20Report%202025%20chapter%204_Digital%20-%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9%20%D7%A1%D7%95%D7%A4%D7%99.pdf",
+        "title": "CMA, דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025, chapter 4, chart ד-2 (p. 60)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": "2025-12-31",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "PF-39"
+      ],
+      "state": "sourced",
+      "notes": "Average management fee from assets, life-insurance savings policies issued from 2004, calendar 2025. Series 2021 to 2025: 0.89, 0.83, 0.81, 0.78, 0.79."
+    },
+    "avg_fee_from_deposits_provident": {
+      "value": 0.08,
+      "unit": "pct_of_deposit",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/reports/tender-0102/he/Commissioner%20Report%202025%20chapter%204_Digital%20-%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9%20%D7%A1%D7%95%D7%A4%D7%99.pdf",
+        "title": "CMA, דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025, chapter 4, chart ד-3 (p. 61)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": "2025-12-31",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "PF-39"
+      ],
+      "state": "sourced",
+      "notes": "Average management fee from deposits, provident funds excluding study funds (\"למעט קרנות השתלמות שבהן אין דמי ניהול מהפקדה\"), calendar 2025. Series 2021 to 2025: 0.10, 0.15, 0.16, 0.09, 0.08."
+    },
+    "avg_fee_from_deposits_pension_comprehensive": {
+      "value": 1.54,
+      "unit": "pct_of_deposit",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/reports/tender-0102/he/Commissioner%20Report%202025%20chapter%204_Digital%20-%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9%20%D7%A1%D7%95%D7%A4%D7%99.pdf",
+        "title": "CMA, דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025, chapter 4, chart ד-3 (p. 61)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": "2025-12-31",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "PF-39"
+      ],
+      "state": "sourced",
+      "notes": "Average management fee from deposits, new comprehensive pension funds, calendar 2025. Series 2021 to 2025: 1.82, 1.71, 1.63, 1.57, 1.54."
+    },
+    "avg_fee_from_deposits_life_insurance": {
+      "value": 1.74,
+      "unit": "pct_of_deposit",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/reports/tender-0102/he/Commissioner%20Report%202025%20chapter%204_Digital%20-%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9%20%D7%A1%D7%95%D7%A4%D7%99.pdf",
+        "title": "CMA, דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025, chapter 4, chart ד-3 (p. 61)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": "2025-12-31",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "PF-39"
+      ],
+      "state": "sourced",
+      "notes": "Average management fee from deposits, life-insurance savings policies issued from 2004, calendar 2025. Series 2021 to 2025: 2.30, 2.05, 1.95, 1.86, 1.74."
+    }
+  },
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-23"
+}

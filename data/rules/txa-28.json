@@ -1,0 +1,108 @@
+{
+  "id": "TXA-28",
+  "title": "Insurer statements on savings-policy tax: real gain, 25% implied, notional redemption and form 867",
+  "title_he": "מה המבטחים אומרים על המס בפוליסת חיסכון",
+  "text_he": "כלל כותבת שהמס משולם רק בעת משיכת הכספים ורק על הרווח הריאלי, ושמעבר בין מסלולי השקעה אינו כרוך במס רווחי הון. הפניקס כותבת שפדיון כפוף למס רווחי הון, מתארת פדיון רעיוני בסוף שנת המס לצורך ניצול ההטבה לבני גיל פרישה, ומוסרת אישור ניכוי מס במקור במרץ. הדוגמה של הפניקס לתקרת הרווח ולמס ששולם משקפת שיעור של רבע מהרווח. אלה הצהרות של מבטחים, לא מקור רשמי, ולכן הן אינן מחשבות ללא החלטת המייסד.",
+  "figure_names_he": {
+    "s125d_profit_cap_individual": "תקרת הרווח לניכוי לפי סעיף הפטור לגיל פרישה, יחיד, כפי שהפניקס מפרסמת",
+    "s125d_tax_individual": "המס ששולם בפועל על תקרת הרווח, יחיד, כפי שהפניקס מפרסמת",
+    "s125d_profit_cap_couple": "תקרת הרווח לניכוי, שני בני זוג, כפי שהפניקס מפרסמת",
+    "s125d_tax_couple": "המס ששולם בפועל על תקרת הרווח, שני בני זוג, כפי שהפניקס מפרסמת"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "tax-at-exit",
+    "real-vs-nominal",
+    "switching-tax-event",
+    "age-or-use-exemption",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-03-31",
+  "figures": {
+    "s125d_profit_cap_individual": {
+      "value": 13440,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
+        "title": "Phoenix Invest FAQ, section 125D",
+        "publisher": "Phoenix Insurance",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TXA-28",
+        "TXI-20"
+      ],
+      "state": "sourced",
+      "notes": "As published by Phoenix on 2026-10-24; the statutory s.125D amounts are in TXI-20. 3,360 ÷ 13,440 implies a 25% rate on the gain."
+    },
+    "s125d_tax_individual": {
+      "value": 3360,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
+        "title": "Phoenix Invest FAQ, section 125D",
+        "publisher": "Phoenix Insurance",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TXA-28"
+      ],
+      "state": "sourced",
+      "notes": "Tax actually paid on the individual profit cap, as Phoenix publishes it."
+    },
+    "s125d_profit_cap_couple": {
+      "value": 16560,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
+        "title": "Phoenix Invest FAQ, section 125D",
+        "publisher": "Phoenix Insurance",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TXA-28",
+        "TXI-20"
+      ],
+      "state": "sourced",
+      "notes": "As published by Phoenix on 2026-10-24."
+    },
+    "s125d_tax_couple": {
+      "value": 4140,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
+        "title": "Phoenix Invest FAQ, section 125D",
+        "publisher": "Phoenix Insurance",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TXA-28"
+      ],
+      "state": "sourced",
+      "notes": "Tax actually paid on the couple profit cap, as Phoenix publishes it."
+    }
+  },
+  "il_finance_file": "tax-insurance-and-amendment-190.md",
+  "checked": "2026-10-24"
+}

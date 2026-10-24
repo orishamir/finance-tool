@@ -203,6 +203,27 @@ describe("new collections", () => {
   });
 });
 
+describe("P-08 exposure holding wrapper", () => {
+  const run = (files: Record<string, unknown>) => validateData({ dataDir: dataDir(files), ruleBase, formulas });
+  const p08 = (wrapper: string, id = "index-sp500") => ({
+    id: "exposure-holding-wrapper",
+    method_id: "P-08",
+    rationale: "r",
+    signed_off_by: "founder",
+    signed_off_on: "2026-10-24",
+    shown_as: "site parameter",
+    holding: { [id]: { wrapper_id: { ...vo, value: wrapper, unit: "text", update_rule: "founder" } } },
+  });
+  const files = (extra: Record<string, unknown>) => ({ "instruments/exposures/index-sp500.json": { ...exposure, wrapper_ids: ["brokerage-account"] }, ...extra });
+  it("accepts a holding wrapper the exposure record lists", () => {
+    expect(run(files({ "parameters/p08.json": p08("brokerage-account") }))).toEqual([]);
+  });
+  it("refuses one the record leaves out, and an exposure with no record", () => {
+    expect(run(files({ "parameters/p08.json": p08("makam") }))[0]?.message).toMatch(/not one of the exposure record's wrapper_ids/);
+    expect(run(files({ "parameters/p08.json": p08("brokerage-account", "nothing") }))[0]?.message).toMatch(/no exposure record/);
+  });
+});
+
 describe("P-05 instruments map", () => {
   const run = (files: Record<string, unknown>) => validateData({ dataDir: dataDir(files), ruleBase, formulas });
   const p05 = (instruments: unknown) => ({
@@ -325,5 +346,53 @@ describe("series (data-schema 3.8, terms gate)", () => {
     expect(run({ "series/cbs-cpi.json": series({ rule_ids: ["CS-9999"] }) })[0]?.message).toMatch(/CS-9999/);
     expect(run({ "series/cbs-cpi.json": series({ extra: 1 }) })[0]?.message).toMatch(/extra/);
     expect(run({ "series/cbs-cpi.json": series({ rule_ids: ["CS-10"] }) })).toEqual([]);
+  });
+});
+
+describe("fund lists (data-schema 3.14, terms gate)", () => {
+  const row = (n: string) => ({
+    fund_number: n,
+    isin: null,
+    names: { he: ["קרן לדוגמה"] },
+    manager: "מנהל",
+    classification: ["מניות", "חו\"ל", "כללי"],
+    exposure_code: null,
+    tax_status: null,
+    data_date: "2026-10-22",
+  });
+  const list = (over: Record<string, unknown> = {}) => ({
+    list: "maya-mutual-funds",
+    snapshot: "2026-10-22",
+    source: { url: "https://maya.tase.co.il/he/funds/mutual-funds", title: "Maya mutual funds", publisher: "TASE", strength: "primary" },
+    checked: "2026-10-22",
+    terms_of_use: { status: "confirmed", fallback: "link out and show counts only" },
+    raw: { archive_key: "fund-lists/maya-mutual-funds@2026-10-22.csv", sha256: "a".repeat(64) },
+    funds: [row("5100001"), row("5100002")],
+    ...over,
+  });
+  const file = "fund-lists/maya-mutual-funds@2026-10-22.json";
+  const run = (files: Record<string, unknown>) => validateData({ dataDir: dataDir(files), ruleBase, formulas });
+
+  it("passes a confirmed list", () => {
+    expect(run({ [file]: list() })).toEqual([]);
+  });
+
+  it("terms gate: unconfirmed or not-permitted is an error", () => {
+    for (const status of ["unconfirmed", "not-permitted"]) {
+      const problems = run({ [file]: list({ terms_of_use: { status, fallback: "link out" } }) });
+      expect(problems).toHaveLength(1);
+      expect(problems[0]?.message).toMatch(/terms gate: not shipped/);
+    }
+  });
+
+  it("is strict, and checks file name and duplicate fund numbers", () => {
+    expect(run({ [file]: list({ extra: 1 }) })[0]?.message).toMatch(/extra/);
+    expect(run({ "fund-lists/maya-mutual-funds@2026-09-22.json": list() })[0]?.message).toMatch(/file name must be/);
+    expect(run({ [file]: list({ funds: [row("1"), row("1")] }) })[0]?.message).toMatch(/appears twice/);
+  });
+
+  it("exposure variants resolve against data/funds/ only, not the lists", () => {
+    const problems = run({ [file]: list(), "instruments/exposures/a.json": { ...exposure, variants: ["fund:5100001"] }, "funds/ie00b5bmr087.json": fund });
+    expect(problems.map((p) => p.message).join()).toMatch(/variants: fund:5100001 has no record under data\/funds\//);
   });
 });

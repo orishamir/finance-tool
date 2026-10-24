@@ -2,6 +2,10 @@
 
 > Release 2 section added 2026-10-23: section 6, the strings of the release 2 screens.
 > Folded 2026-10-23 (evening): every string the day's build added to `site/app/copy.ts` is now here, in an "Added 2026-10-23, for the founder's review" table at the end of its section (3.5a and the release 2 tables are the largest), keyed by its `copy.ts` path so the two files can be diffed. Where the build's wording was changed, the note says what it was. Section 6.6 lists the word choices.
+> Release 3 section added 2026-10-23: section 7, the strings of the release 3 screens.
+> Release 4 section added 2026-10-24: section 8, the strings of the release 4 screens.
+> Release 5 section added 2026-10-24: section 9, the strings of the release 5 screens.
+> Folded 2026-10-24 (evening): every string the day's build added to `site/app/copy.ts` for releases 3 to 5 is now here, in an "Added 2026-10-24, for the founder's review" table at the end of its section, keyed by its `copy.ts` path. Where the build's wording was changed, the note says what it was; the rows of sections 7 to 9 that changed the same day say so in their note. Sections 7.6, 8.6 and 9.7 list the word choices.
 
 Written 2026-10-23 as the site's UX writer, from `docs/flows.md` (screens and briefs), `docs/design-system.md`, the design review of the same day, and the design plugin's `ux-copy` skill with the `hebrew-content-writer` skill.
 Status: **in force** (2026-10-23; the founder asked Claude to settle the wording, design-system Q3). Financial terms and their one-line explanations are in `docs/glossary.md`, each with its source in the il-finance rule base.
@@ -999,3 +1003,1111 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 9 and the handoff in 
   - **"אופן הצגת הסכומים"**, not "מטבע ההצגה", for the real / nominal switch: both modes are shekels.
   - **"יתווסף בגרסה `{מספר}`"**, not "מתוכנן לגרסה": the site's register for pending work is "יתווסף"; the release number stays only because the component appends it.
   - **Typed figures** remain in three tax-step headlines, one flag and one sentence (ages 60 and 18, from TXK and CS rules); they are marked in 3.5a and 3.8 and need a number component, which is a code change.
+
+---
+
+## 7. Release 3 screens
+
+Added 2026-10-23 for the briefs in `docs/flows.md` section 12 and the handoff in `docs/design-spec.md` sections 11 to 15. Same voice and conventions as section 1: plural imperative or impersonal, no typed figures (every `{…}` is a value object with its state), names as the source writes them, codes after the words. Fee names are the glossary's terms (section 2's checklist rows and the guide fee table of 3.5a: "דמי ניהול מחיסכון", "דמי ניהול מהפקדה", "הוצאות ישירות", "עמלת קנייה ומכירה", "דמי ניהול פיקדון ניירות ערך", "המרת מטבע", "דמי חשבון קבועים", "מרווח קנייה ומכירה"). Status: **draft** (2026-10-23), to be settled by the founder as sections 3 and 6 were. Every wording choice is "chosen 2026-10-23, revisable"; section 7.6 says why.
+
+### 7.0 Everywhere in release 3
+
+| Element | Hebrew |
+|---|---|
+| Menu row, footer link, fourth door | מה כבר יש לכם |
+| Fourth door, line | הזינו מהדוח השנתי, ותראו אם המסלול מתאים, מה העמלות עולות ואם אפשר לאחד |
+| Footer link, strip menu row, holdings save line | העברה למכשיר אחר |
+| Strip menu row, when imported items exist | מחיקת מה שיובא |
+| Imported tag | יובא ב־`{תאריך}` |
+| Verdict names, three (F-62) | שווה להתמקח · שווה להימנע · לא שווה את הטרחה |
+| Avoid not evaluated | להימנע: לא נבדק. נבדק רק מול השוואה למטרה. |
+| Its link | להגדיר מטרה |
+| No reference | אין ממוצע להשוואה |
+| No reference, reasons | הממוצע של בנק ישראל מוצג רק בקישור: תנאי השימוש של בנק ישראל לא מתירים לפרסם אותו מחדש בלי הסכמה בכתב. · ממוצעי רשות ניירות ערך לקטגוריות של קרנות עוד לא אומתו כנתון להשוואה לקרן מסוימת. · הממוצעים שהבורסה מפרסמת לכל חבר בורסה עוד לא נאספו. · להוצאות ישירות אין ממוצע שנאסף. · המסלול לא נמצא בנתוני הרשות. |
+| No reference, links out | לדשבורד העמלות של בנק ישראל · לדוח השנתי של רשות ניירות ערך · למחשבון העמלות של הבורסה |
+| Regulator reference line (F-68) | ממוצע הרשות למסלולי `{סיווג}`: `{אחוז}` (חציון `{אחוז}`), לשנת `{שנה}`, מ־`{מספר}` מסלולים. |
+| Track's own average | במסלול הזה עצמו שילמו העמיתים בממוצע `{אחוז}`. |
+| Per fund (pension) | לקרן כולה |
+| Fee not reported | עוד לא דווח |
+| Pre-tax tag (blocked exit) | לפני מס ביציאה: שאלה פתוחה `{קוד}` |
+| Fee cost over the horizon | `{סכום}` ב־`{שנים}`, בכסף של היום |
+| Links to the fee page | מה העמלות כאן עולות לכם · כמה העמלות האלה עולות לאורך זמן · מה העמלות האלה יעלו לכם · כל העמלות, ומה שווה לעשות איתן |
+| Links to the workbench | כל המסלולים בכל החברות · לכל המסלולים של `{מוצר}` בכל החברות |
+| Later releases | המדריך למעבר יתווסף בהמשך · הטבלה לפי ספקים תתווסף בהמשך · סינון לפי ירידה שתסכימו לספוג יתווסף בהמשך |
+
+**Added 2026-10-24, for the founder's review.** Key paths are the ones in `site/app/copy.ts`, so the two files can be diffed. Where the build's wording was changed, the note says what it was.
+
+| Key in `copy.ts` | Hebrew | Note |
+|---|---|---|
+| `r3fees.notReported` | עוד לא דווח | the "Fee not reported" row above was "טרם דווח"; changed to the wording settled for release 1 (`track.feeNotReported`, 3.12): one phrase for an empty fee field everywhere |
+| `r3fees.names.fund · base.fund` | העלות בתוך הקרן · כל שנה, בתוך מחיר היחידה | the fund's internal cost as a fee row (A-06's name, 3.8); the base words were already in 7.1 |
+| `r3fees.names.manager · base.manager` | דמי ניהול של החברה המנהלת · כל שנה, מהחיסכון, נוסף על העלות בתוך הקרן | the IRA manager's balance fee (F-51, IRA-17). Was "דמי ניהול של המסגרת": "מסגרת" is not a site word; "החברה המנהלת" is the glossary's |
+| `r3fees.periods` | חודש · רבעון · שנה | the `{תקופה}` of "כל `{תקופה}`, על ניירות הערך שבחשבון" |
+| `r3fees.negotiation.datasets · authority` | גמל נט · פנסיה נט · רשות שוק ההון, ביטוח וחיסכון | the `{מאגר}` and `{רשות}` of the negotiation text. Was "רשות שוק ההון": the regulator's name as 8.0 writes it |
+| `r3fees.linkGuide` | לעמוד המדריך | link back from the fee page |
+| `r3workbench.entry.holdings · entry.transfer` | מה כבר יש לכם · הזינו מהדוח השנתי, … · העברה למכשיר אחר | the fourth door and the footer link, as the table above; held with their routes |
+
+### 7.1 Fee materiality page
+
+| Element | Hebrew |
+|---|---|
+| Title | כמה העמלות עולות לכם |
+| Subject strip, from a comparison | לפי ההשוואה למטרה "`{שם המטרה}`": `{מוצר}`, לפי `{רשומה}` |
+| Subject strip, from a guide page | לפי עמוד המדריך: `{מוצר}`, לפי `{רשומה}` |
+| Subject strip, from a track | לפי המסלול `{מסלול}` (`{חברה}`), ממוצע `{שנה}` |
+| Subject strip, from a holding | לפי הדוח שלכם: `{שם האחזקה}` |
+| Subject strip, link back | לתוצאה · לעמוד המדריך · לעמוד המסלול · לאחזקה |
+| Headline | העמלות ב`{מוצר}` יעלו לכם `{סכום}` ב־`{שנים}`, בכסף של היום |
+| Headline, from a holding | העמלות ב`{שם האחזקה}` יעלו לכם `{סכום}` ב־`{שנים}`, בכסף של היום |
+| Headline, under | בלי עמלות היו נשארים `{סכום}`; עם העמלות, `{סכום}`. |
+| Headline, no horizon yet | הזינו כמה שנים הכסף יישאר, ונחשב. |
+| Fee list heading | לפי הסדר, מהגדולה לקטנה |
+| Fee row, base words | כל שנה, מהחיסכון · מכל הפקדה · כל שנה, מהקופה, נוסף על דמי הניהול · בכל קנייה ומכירה · כל `{תקופה}`, על ניירות הערך שבחשבון · בכל המרה · כל חודש, בלי קשר לסכום · בכל קנייה ומכירה בבורסה, כחלק מהמחיר · כל שנה, בתוך מחיר היחידה |
+| Fee row, cost label | ב־`{שנים}` |
+| Verdict reason, negotiate | העלות `{סכום}` או יותר, ויש ממוצע נמוך מהמחיר שלכם. |
+| Verdict reason, avoid | העלות `{סכום}` או יותר, ואפשרות אחרת בהשוואה לא גובה אותה. |
+| Verdict reason, not worth, below threshold | העלות נמוכה מ־`{סכום}`. |
+| Verdict reason, not worth, no reference | אין ממוצע להשוואה, ולכן לא ניתן לומר שכדאי להתמקח. |
+| Verdict reason, not worth, nothing removes it | כל האפשרויות בהשוואה גובות עמלה כזו. |
+| Removed by | אין עמלה כזו ב`{אפשרות}`. |
+| Removed by, several | אין עמלה כזו ב`{אפשרויות}`. |
+| Cap line | התקרה בחוק: `{אחוז}` בשנה · התקרה בחוק: `{אחוז}` מכל הפקדה · אין תקרה בחוק · התקרה: שאלה פתוחה `{קוד}` |
+| Cap, each manager sets (direct expenses, PF-11) | התקרה: כל חברה קובעת ומפרסמת לכל מסלול; עוד לא נאספה. |
+| Reduction field | אם יורידו ל־ |
+| Reduction, worth | שווה `{סכום}` ב־`{שנים}`. |
+| Reduction, not a reduction | זה לא הורדה. |
+| Reduction, suggestion tag | הצעה: הממוצע |
+| Negotiation disclosure | מה להגיד בשיחה |
+| Negotiation text pattern | דמי הניהול `{מהחיסכון / מהפקדה}` בחשבון שלי ב`{מוצר}` הם `{אחוז}`. לפי נתוני `{מאגר}` של `{רשות}` לשנת `{שנה}`, הממוצע שנגבה בפועל במסלולי `{סיווג}` הוא `{אחוז}` (חציון `{אחוז}`, מ־`{מספר}` מסלולים). אבקש להוריד את דמי הניהול ל־`{אחוז}`. |
+| Negotiation text, track's own average (added sentence) | במסלול הזה עצמו הממוצע שנגבה בפועל היה `{אחוז}`. |
+| Negotiation text, source line | מקור: `{מאגר}`, `{רשות}`, נתוני `{חודש}`. |
+| Negotiation, rule lines | the texts of PF-13 and PF-16 from the rule base, with their chips, then: |
+| Negotiation, last line | הטקסט מצטט מספר ציבורי ואת המקור שלו, ולא מתחייב לכלום. |
+| Copy the text | העתקת הטקסט · הועתק |
+| Interaction remainder | השפעה משולבת של העמלות זו על זו: `{סכום}` |
+| Interaction remainder, line | הסכום של כל השורות והשורה הזו הוא העלות הכוללת. |
+| Thresholds line | הספים: שווה להתמקח מ־`{סכום}`; שווה להימנע מ־`{סכום}`. פרמטר של האתר. |
+| Its link | לכל הפרמטרים |
+| Chart title | העמלות לאורך הזמן |
+| Chart, total line | סך העמלות |
+| Chart, rest band | שאר העמלות |
+| Chart, remainder legend | השפעה משולבת: הרווח עד הקו |
+| Chart, not reported in legend | לא דווח |
+| Chart marker, no goal | סוף התקופה |
+| Chart's screen-reader name | גרף: העלות של `{מספר}` עמלות לאורך `{שנים}`. הנתונים המלאים בטבלה. |
+| Assumption chips | סכום · הפקדה חודשית · שנים · תשואה · אינפלציה · כל ההנחות |
+| Assumptions sheet title | ההנחות של חישוב העמלות |
+| Sensitivity title | מה היה משנה את המסקנה |
+| Sensitivity, flips a verdict | המסקנה על `{עמלה}` מתהפכת אם `{הנחה}` תעבור מ־`{ערך}` ל־`{ערך}`: אז `{פסק הדין}`. |
+| Sensitivity, changes the largest fee | העמלה הגדולה מתחלפת אם `{הנחה}` תעבור מ־`{ערך}` ל־`{ערך}`: אז `{עמלה}`. |
+| Sensitivity, no flip | לא מתהפכת בטווח שנבדק: `{מ}` עד `{עד}`. |
+| Sensitivity, fee assumption name | `{שם העמלה}`, מחצי עד כפול |
+| One fee only / no fees | אין עמלות ברשומה הזו. |
+| Omitted fee (not reported) | `{עמלה}` לא נכללה בחישוב: לא דווחה. |
+| Subject not found | לא מצאנו את המוצר או האחזקה. · למדריך · למה שכבר יש לכם |
+| Loading | טוען… |
+
+**Added 2026-10-24, for the founder's review.** Key paths are the ones in `site/app/copy.ts`, so the two files can be diffed. Where the build's wording was changed, the note says what it was.
+
+| Key in `copy.ts` | Hebrew | Note |
+|---|---|---|
+| `r3fees.failed` | לא הצלחנו לחשב את העמלות. רעננו את העמוד ונסו שוב. | as section 4's "could not compute" line |
+| `r3fees.chart.year` | שנה | the chart's year readout |
+| `r3fees.review.noClass` | למוצר הזה לא נבחר מסלול מייצג, ולכן אין סיווג שממנו מחשבים את ממוצע הרשות. | no-reference reason when P-05 names no track for the wrapper (F-68). Was "לא נבחר מסלול ייצוגי לצורך ממוצע הרשות, ולכן אין סיווג שממנו אפשר לחשב ממוצע למוצר הזה.": "מייצג" as "הרשומה המייצגת" (8.1) |
+| `r3fees.review.emptyClass` | אף מסלול בסיווג הזה לא דיווח על העמלה הזו. | no-reference reason when no track in the class reports the fee |
+| `r3fees.review.refNotBelow` | הממוצע לא נמוך מהמחיר שלכם. | not-worth reason when a reference exists and is not below the person's rate. Was "הממוצע אינו נמוך מהמחיר שלכם." |
+| `r3fees.review.official` | הממוצע שהרשות פרסמה לשנת `{שנה}` לכל הקופות מהסוג הזה: `{אחוז}` | the Authority's official class average from its annual report (PF-39), quoted under D22 as a second line beside the F-68 reference; it does not enter the verdict. Was "הממוצע הרשמי של הרשות לשנת … לכל הקופות מסוג זה: " |
+| `r3fees.review.officialNote` | ממוצע מהדוח השנתי של הממונה על שוק ההון, לכל הקופות מהסוג הזה יחד; לא משמש למסקנה. | Was "ממוצע שפורסם בדוח הממונה, לכל הקופות מהסוג הזה יחד. לא משמש לפסק הדין.": "פסק הדין" is the method's word, the page says "המסקנה" |
+| `r3fees.review.chartGross` | הגרף מראה את ההפרש לפני מס ועלויות היציאה, ולכן בקצהו הוא גבוה ב־`{סכום}` מהסכום שבכותרת: בלי העמלות הרווח גדול יותר, והמס עליו גדול יותר. · מס ועלויות היציאה על ההפרש | under the chart (B6, changed 2026-10-24): the last point is before exit tax and the headline after it; the figure is the exact gap (`feeMaterialitySeries().exitEffect`), a computed value. Was "הגרף מראה את הערך לפני עלויות היציאה והמס, ולכן הסכומים בקצהו שונים מעט מאלה שבטבלה." ("a little" was wrong: a kupat gemel lehashkaa takes a quarter of the real gain). Parts: before · after · the figure's label |
+| `r3fees.review.ruleMissing` | הטקסט של הכלל הזה עוד לא נמצא במאגר הכללים של האתר. | as `r2.form.payslipNoRule` (6.1). Was "הכלל הזה עוד לא נכנס לבסיס הכללים של האתר, ולכן אין כאן את הנוסח שלו.": one sentence for a missing rule text everywhere |
+| `r3fees.review.parameterReturn` | לא הוזנה תשואה. החישוב לפי התשואה של התרחיש לדוגמה, פרמטר של האתר. | callout when the run takes P-05's return. Was "אין תשואה שהוזנה. החישוב משתמש בתשואה של תרחיש ההדגמה, פרמטר של האתר.": P-05 is "התרחיש לדוגמה" on the parameters page (3.15) |
+| `r3fees.review.noGoal` | אין מטרה שמורה: החישוב לפי התרחיש לדוגמה של האתר. | Was "…לפי תרחיש ההדגמה של האתר." |
+| `r3fees.review.returnChipParameter` | התרחיש לדוגמה | the return chip in that state. Was "תרחיש הדגמה" |
+| `r3fees.review.noTerms` | למוצר הזה עוד אין רשומה עם עמלות לחישוב. אפשר להזין את העמלות מהדוח שלכם. | Was "עוד אין תנאי עמלות לחישוב למוצר הזה. אפשר להזין את העמלות מהדוח שלכם." |
+| `r3fees.review.needInput · toForm` | כדי לחשב צריך עוד פרט: `{שדה}` · לטופס המטרה | a missing input and its link |
+| `r3fees.review.blockedRun` | החישוב למוצר הזה חסום: `{סיבה}` | Was "המוצר הזה חסום בחישוב: " |
+| `r3fees.review.sensRunning · sensFooter` | בודק… · הטווחים שנבדקו הם פרמטר של האתר. | the sensitivity panel while it computes, and its last line. Were "בודקים…" (the site speaks in the singular, as "טוען…") and "הטווחים הם פרמטר של האתר." |
+| `r3fees.review.notReportedRow` | העמלה לא דווחה לרשות, ולכן לא נכללה בחישוב. | row detail of an unreported fee |
+| `r3fees.review.staleLine` | נתוני הרשות לא עודכנו מאז `{חודש}` | as 7.3's old-data line |
+| `r3fees.review.detail` | פירוט החישוב | not rendered yet; the heading as 8.2's row detail. Was "פרטי החישוב" |
+| `r3fees.review.holdingSoon · ownerRates · adopted` | — | removed from `copy.ts` 2026-10-24 (not rendered: "עמוד האחזקות עוד לא מחובר לעמוד הזה." is no longer true, "קצב" names nothing and `adopted` was empty). `r3fees.review.detail` is also not rendered yet |
+| `r3fees.review.needGeneric · genericFail` | אחד מהערכים בהנחות · לא הצלחנו להריץ את החישוב עם הערכים האלה. בדקו את ההנחות שהזנתם. | B3, added 2026-10-24 (QA fixes): no engine message reaches the page; the first fills "כדי לחשב צריך עוד פרט: …", the second is the line when no rule or open question is named |
+| `r3fees.referenceLine.tracksOne` | , ממסלול אחד. | the reference line when one track is behind the mean (was "מ־1 מסלולים") |
+| `r3fees.review.defaultsLead · defaultsNote` | עד שתזינו ערך, החישוב לפי התרחיש לדוגמה של האתר: `{שנים}`, `{סכום}`, … · מה שתזינו כאן יישמר כמטרה במכשיר הזה. | B3, added 2026-10-24 (QA fixes): the top of the assumptions sheet when no goal is saved, the scenario's own numbers each opening its source |
+
+### 7.2 Holdings page
+
+| Element | Hebrew |
+|---|---|
+| Title | מה כבר יש לכם |
+| Lede | הזינו מהדוח השנתי, ותראו אם המסלול מתאים למטרה, מה העמלות עולות ואם אפשר לאחד. הכול נשמר במכשיר הזה. |
+| Strip line | ההתאמה והעלות לפי המטרה השמורה: `{שם}` · `{שנים}` |
+| Empty state | מה להכין: הדוח השנתי של כל קופה, או הדוח מהמסלקה הפנסיונית. |
+| Add button | להוסיף אחזקה |
+| List heading | האחזקות שלכם |
+| Sheet title | אחזקה חדשה · עריכת אחזקה |
+| Field groups | מה זה · כמה · מהדוח |
+| Fields, "מה זה" | סוג המוצר · החברה המנהלת · המסלול |
+| Wrapper options | the glossary names of the provident-family wrappers and child savings; then: |
+| Wrappers later | פיקדונות וחשבונות השקעות יתווספו בהמשך, עם התעריפונים. |
+| Track picker, paste | הדביקו את השם כמו שהוא מופיע בדוח |
+| Track picker, several match | יש יותר ממסלול אחד בשם הזה. בחרו: |
+| Track picker, none | לא נמצא בנתוני הרשות. השם נשמר כמו שהקלדתם. |
+| Fields, "כמה" | יתרה · דמי ניהול · הוצאות ישירות (לא חובה) · הפקדה חודשית שלכם (לא חובה) · הפקדה חודשית של המעסיק (לא חובה) |
+| Percent pair sub-labels | מחיסכון · מהפקדה |
+| Fields, "מהדוח" | הדוח נכון ל־ · תאריך ההפקדה הראשונה |
+| First deposit, why | כדי לבדוק אם הכסף נזיל, האתר צריך לדעת מתי התחיל. |
+| Child plan fields | איפה הכסף: קופת גמל / בנק · הקופה או הבנק · יתרה |
+| Statement disclosure | איפה זה בדוח |
+| Statement disclosure, body | the texts of PF-12 and PF-26 from the rule base, with their chips, then: |
+| Statement disclosure, spellings | מילים שתפגשו: `{שמות נוספים מהמילון}` |
+| Statement disclosure, lead and what the regulator fixed | מה הרשות קבעה שהדוח כולל: then the texts of PF-34 to PF-38 from the rule base, with their chips (changed 2026-10-24: PF OQ5 was closed on 2026-10-23 by PF-33 to PF-38) |
+| Statement disclosure, standing line | האתר לא מצייר דוח לדוגמה ולא מציין איפה בדף כל שדה. |
+| Statement disclosure, open line | העותק של חוזר הדוחות באתר gov.il עוד לא נמצא; החוזר נקרא בעותק באתר אחר. שאלה פתוחה PF OQ16 |
+| Statement disclosure, fund number | מספר הקופה מופיע במסמכי החברה ובמדריך ההעברות של הרשות. |
+| Statement disclosure, child plan | מבנה הדוח של חיסכון לכל ילד: then the text of CS-27 from the rule base, with its chip (changed 2026-10-24: CS OQ11 was closed on 2026-10-23 by CS-27) |
+| Clearing-house disclosure | אפשר גם מהדוח של המסלקה הפנסיונית |
+| Clearing-house, last line | איך מקבלים את הדוח וכמה הוא עולה: שאלה פתוחה PF OQ6 |
+| Save / cancel | שמירה · ביטול |
+| Card, fund line | `{חברה}` · קופה `{מספר}` |
+| Card, unmatched tag | לא נמצא בנתוני הרשות |
+| Card, unmatched line | המסלול לא נמצא בנתוני הרשות, ולכן אין סיווג, התאמה או ממוצע להשוואה. |
+| Card, record labels | סיווג · נכון לחודש · יתרה · דמי ניהול מחיסכון · דמי ניהול מהפקדה · הוצאות ישירות |
+| Card, no classification | אין סיווג, ולכן אין ממוצע. |
+| Card, fee above cap | מעל התקרה בחוק: `{אחוז}` |
+| Card, fee line | העמלות יעלו `{סכום}` ב־`{שנים}`, בכסף של היום. |
+| Card, fee line, no goal | כמה שנים הכסף הזה יישאר? הגדירו מטרה. |
+| Card, fit no goal | אין מטרה שמורה. |
+| Card, actions | עריכה · מחיקה |
+| Delete confirm | למחוק את האחזקה מהמכשיר הזה? · מחיקה · ביטול |
+| Consolidation heading | לאחד? |
+| Consolidation, one holding per type | איחוד נבדק כשיש שתי אחזקות מאותו סוג. |
+| Consolidation, different types | העברה מותרת רק במסלולים שהתקנות מונות, לפי סוג המוצר. |
+| Consolidation outcomes | אפשר לאחד · לא ניתן לאחד · כללי ההעברה עוד לא נמצאו · חסום: שאלה פתוחה `{קוד}` |
+| Consolidation, route | `{מוצר}` ל`{מוצר}`: מסלול מותר בתקנות. |
+| Consolidation, conditions heading | בתנאי ש־ |
+| Consolidation, conditions | the rule texts (PF-17 reg. 4 blocks; PF-18; SW-12; SW-24) from the rule base, with chips |
+| Consolidation, not yet (hishtalmut) | לא עדיין: החשבון השני נזיל מ־`{תאריך}`. |
+| Consolidation, worth | איחוד ב`{מסלול}` שווה `{סכום}` ב־`{שנים}`, בכסף של היום. |
+| Consolidation, no saving | האיחוד לא חוסך בעמלות. |
+| Consolidation, target mark | המסלול הזה `{מתאים / לא מתאים}` למטרה. |
+| Consolidation, cost lines | the texts of PF-19, TXK-04 or TXH-19, PF-14 with SW-15, from the rule base, with chips |
+| Consolidation, same manager | שני החשבונות באותה חברה: איחוד חשבונות הוא תהליך של החברה, לא העברה. |
+| Consolidation, bank child plan | לא ניתן להעביר לבנק אחר. |
+| Child-savings heading | חיסכון לכל ילד |
+| Child-savings, blocked | האם המסלול נבחר או ברירת מחדל: לא ניתן לבדוק. שאלה פתוחה CS OQ10 |
+| Child-savings, known | מה כן ידוע |
+| Save line | נשמר אוטומטית במכשיר הזה. בלי חשבון, בלי שרת. |
+
+**Errors:**
+
+| Case | Hebrew |
+|---|---|
+| Balance negative | היתרה לא יכולה להיות שלילית. |
+| Percent above 100 | הזינו אחוז עד `{מקסימום}`. |
+| Statement date in the future | התאריך עוד לא הגיע. |
+| First deposit after the statement date | ההפקדה הראשונה לא יכולה להיות אחרי תאריך הדוח. |
+| No company or track chosen | בחרו חברה ומסלול, או הדביקו את השם מהדוח. |
+
+**Added 2026-10-24, for the founder's review.** Key paths are the ones in `site/app/copy.ts`, so the two files can be diffed. Where the build's wording was changed, the note says what it was.
+
+| Key in `copy.ts` | Hebrew | Note |
+|---|---|---|
+| `r3holdings.loading · loadFailed` | טוען את הנתונים… · לא הצלחנו לטעון את הנתונים. רעננו את העמוד ונסו שוב. | |
+| `r3holdings.wrappersLaterHeading` | פיקדונות וחשבונות השקעות | the group the deferred line is about |
+| `r3holdings.companyFilter · companyNone · companyTyped` | חיפוש חברה · אין חברה כזו בנתוני הרשות לסוג הזה. הקלידו את השם כמו שהוא בדוח. · שם החברה כמו שהוא בדוח | the company picker |
+| `r3holdings.trackPick · trackNoneForCompany · trackSelected · trackChange` | מסלולים של החברה · אין מסלולים של החברה הזו בנתוני הרשות לסוג הזה. · המסלול שנבחר · בחירה אחרת | the track picker |
+| `r3holdings.fundNumber · cardFundLine` | קופה | the word of "קופה `{מספר}`" |
+| `r3holdings.pasteOne · pasteCopy` | נמצא מסלול אחד בשם הזה: · העתקת השם | the paste result with one match; the copy button for a name not in the data (flow 6) |
+| `r3holdings.childFundBank · child.bankRoute` | הבנק · הכסף בבנק | child-savings bank route |
+| `r3holdings.childPlansNote · child.twoPlans` | לכל ילד חיסכון משלו: שני ילדים הם שתי אחזקות, ואין ביניהן איחוד. | CS-21. Were "חיסכון לכל ילד של שני ילדים הם שתי אחזקות, ואף פעם לא איחוד." and "שני חיסכונות של שני ילדים הם שתי אחזקות, ואף פעם לא איחוד.": one sentence for both places |
+| `r3holdings.feeBalanceLabel · feeDepositLabel` | דמי ניהול מחיסכון · דמי ניהול מהפקדה | the glossary terms, for the card |
+| `r3holdings.embeddedGain · embeddedGainWhy` | הרווח שכבר בתוך היתרה, מהדוח המפורט · בלי זה האתר מחשב את העמלות אבל לא את המס ביציאה. | a kupat gemel lehashkaa balance under review (F-61, PF-36). Was "הרווח שכבר בתוך היתרה (מהדוח המפורט)": no brackets in a label |
+| `r3holdings.bars.label · lead` | מצבים שחוסמים העברה · סמנו אם אחד מאלה נכון לחשבון הזה: | PF-17 reg. 4 blocks; each label shows only when the rule's text names the case |
+| `r3holdings.barLabels.*` | יש הלוואה פתוחה על הקופה · יש עיקול או שעבוד על כל היתרה · קצבה כבר התחילה · הקופה המקבלת סגורה · הוגשה או אושרה תביעה לקצבת נכות · העמית נפטר · הוגשה בקשה לקרן פנסיה מקיפה | the cases, in PF-17's order |
+| `r3holdings.statementDisclosure.lead · neverPosition · openLine · openCode` | מה הרשות קבעה שהדוח כולל: · האתר לא מצייר דוח לדוגמה ולא מציין איפה בדף כל שדה. · העותק של חוזר הדוחות באתר gov.il עוד לא נמצא; החוזר נקרא בעותק באתר אחר. · PF OQ16 | the rows above, changed the same day. The open line was "הנוסח של חוזר הדוחות האחידים בעותק של gov.il עוד לא נקרא.", which inverted PF OQ16 (the gov.il copy was not found; the text was read on a third-party host) |
+| `r3holdings.statementDisclosure.childPlan · ruleMissing` | מבנה הדוח של חיסכון לכל ילד: · הטקסט של הכלל הזה עוד לא נמצא במאגר הכללים של האתר. | the lead before CS-27; the missing-rule line as 6.1. Was "הנוסח של הכלל עוד לא במאגר." |
+| `r3holdings.trackAvgYear` | לשנת | the year after the track's own average |
+| `r3holdings.feeNotComputed · feeNeedsPf36 · feeNeedsFirstDeposit · feeFailed` | את העלות של סוג המוצר הזה האתר עוד לא מחשב. · הקרן עוד לא נזילה: כדי לחשב את המס ביציאה צריך את פיצול שכבות המס מהדוח המפורט. · כדי לחשב את העלות בקרן השתלמות, הוסיפו את תאריך ההפקדה הראשונה. · לא הצלחנו לחשב את העלות. בדקו את המטרה ואת הערכים שהזנתם. | the fee line's states. The PF-36 line was "הקרן עוד לא נזילה: צריך את פיצול שכבות המס מהדוח המפורט." |
+| `r3holdings.depositsLeftOut · returnFromParameter` | ההפקדות החודשיות לא נכללו: חסר שכר בטופס המטרה. · החישוב לפי התשואה של התרחיש לדוגמה, פרמטר של האתר, לא לפי תשואה שהזנתם. | Was "החישוב לפי תשואה לדוגמה של האתר, לא תשואה שהזנתם." (P-05 is "התרחיש לדוגמה") |
+| `r3holdings.fitHeading · fitNoTrack · fitNoGoalLink` | מתאים למטרה? · אין התאמה: המסלול לא נמצא בנתוני הרשות. · להגדיר מטרה | the card's fit block |
+| `r3holdings.actions.up · down · detailsOpen` | להזיז למעלה · להזיז למטה · פרטים | Were "הזזה למעלה · הזזה למטה"; 6.1's words |
+| `r3holdings.consolidation.differentTypesLink` | כל המסלולים בכל החברות | |
+| `r3holdings.consolidation.separate · separateLine` | אפשר להעביר כחשבון נפרד · הכסף עובר שלם לחשבון נפרד אצל המנהל השני, והחשבונות מתאחדים רק כששניהם נזילים. | the SW-39 outcome |
+| `r3holdings.consolidation.missingFirstDeposit` | כדי לבדוק אם אפשר לאחד, הוסיפו את תאריך ההפקדה הראשונה בכל קרן השתלמות. | |
+| `r3holdings.consolidation.targetMark.noRule · noGoal · noTrack` | אין כלל לסיווג שלו · אין מטרה לבדוק מולה · לא נמצא בנתוני הרשות | the other states of "המסלול הזה `{…}` למטרה." |
+| `r3holdings.consolidation.worthUnavailable.*` | את שווי האיחוד לסוג המוצר הזה האתר עוד לא מחשב. · כדי לחשב מה שווה האיחוד, הגדירו מטרה עם שנים. · לא הצלחנו לחשב את שווי האיחוד. | |
+| `r3holdings.consolidation.costHeading · ruleText` | מה עוד כדאי לדעת · הנוסח המלא | the heading over the cost lines; the disclosure of a rule's full text |
+| `r3holdings.unsaved` | אי אפשר לשמור במכשיר הזה. מה שהזנתם יישאר רק בזמן הביקור. | storage unavailable |
+| `r3holdings.errors.required · gainOverBalance · amountNegative · percentOver` | השדה הזה חובה. · הרווח לא יכול להיות גדול מהיתרה. · הסכום לא יכול להיות שלילי. · אחוז לא יכול להיות גבוה ממאה. | the percent error was "הזינו אחוז עד 100." with a typed figure; 6.1's form takes the maximum through the number component, which needs a code change here |
+| `r3holdings.classRef.afterOne` | ), ממסלול אחד | the holdings card's reference line for one track (B14, added 2026-10-24 (QA fixes)); the count on the card is the tracks that report that fee, as on the fee page and the workbench (B12) |
+
+### 7.3 Track workbench page
+
+| Element | Hebrew |
+|---|---|
+| Title | כל המסלולים של `{מוצר}` בכל החברות |
+| Line under the title | לפי נתוני רשות שוק ההון, ביטוח וחיסכון, נכון ל`{חודש}`. דמי הניהול הם ממוצע `{שנה}` של כל העמיתים במסלול, אחרי הנחות; לא בהכרח מה שתשלמו אתם. |
+| No goal line | אין מטרה שמורה. הגדירו מטרה כדי לראות התאמה. |
+| Tabs | לפי מסלול · לפי ספק |
+| Provider tab line | הטבלה לפי ספקים, עם התעריפונים, תתווסף בהמשך. |
+| Exposure chips (screen-reader name) | במה הכסף מושקע |
+| Exposure chip | `{סיווג}` · `{מספר}` |
+| Exposure chip, all | הכול |
+| Filter field | חיפוש חברה או מסלול |
+| Sort control (screen-reader name) | סדר ההצגה |
+| Sort options | לפי חברה · דמי ניהול מחיסכון · דמי ניהול מהפקדה · שם |
+| Not an offer line | ממוצע הוא מה שהעמיתים שילמו בפועל, לא הצעה אליכם. |
+| Group heading | `{סיווג}` · `{מספר}` מסלולים |
+| Group heading, filtered | `{מספר}` תואמים |
+| Show more | להציג עוד `{מספר}` |
+| PC columns | חברה · מסלול · קופה · במה הכסף מושקע · דמי ניהול מחיסכון, ממוצע `{שנה}` · דמי ניהול מהפקדה · התאמה · פתיחה |
+| Phone fee line | דמי ניהול מחיסכון `{אחוז}` · מהפקדה `{אחוז}` |
+| Sector track | פתוח רק ל`{קבוצה}` |
+| Coverage sentence | נבדקו `{מספר}` מסלולים ב־`{מספר}` חברות: `{מספר}` מתאימים למטרה, `{מספר}` לא מתאימים, `{מספר}` בלי כלל לסיווג, `{מספר}` פתוחים רק לקבוצה מסוימת, `{מספר}` בלי מטרה לבדוק מולה. |
+| Coverage groups | מתאימים למטרה · לא מתאימים · בלי כלל לסיווג · פתוחים רק לקבוצה מסוימת · בלי מטרה לבדוק מולה · בלי סיווג בנתונים |
+| Coverage outcome words, one row | מתאים · לא מתאים · אין כלל לסיווג הזה · פתוח רק ל`{קבוצה}` · לא נבדק: אין מטרה שמורה · לא נבדק: אין סיווג בנתונים |
+| No tracks for the wrapper | למוצר הזה אין מסלולים בנתוני הרשות. הטבלה לפי ספקים תתווסף בהמשך. |
+| Old data | נתוני הרשות לא עודכנו מאז `{חודש}`. |
+
+**Added 2026-10-24, for the founder's review.** Key paths are the ones in `site/app/copy.ts`, so the two files can be diffed. Where the build's wording was changed, the note says what it was.
+
+| Key in `copy.ts` | Hebrew | Note |
+|---|---|---|
+| `r3workbench.line.noYear` | לפי נתוני רשות שוק ההון, ביטוח וחיסכון, נכון ל`{חודש}`. דמי הניהול הם ממוצע של כל העמיתים במסלול, אחרי הנחות; לא בהכרח מה שתשלמו אתם. | the line under the title when the file names no year |
+| `r3workbench.tabs.aria` | תצוגה | the tabs' screen-reader name |
+| `r3workbench.reference.deposit` | מהפקדה: | the deposit half of the regulator reference line |
+| `r3workbench.back` | חברות ומסלולים | the breadcrumb parent |
+| `r4workbench.group.one · two · matchingOne` | מסלול אחד · שני מסלולים · אחד תואם | a group heading with one or two tracks, instead of "1 מסלולים" (B14, added 2026-10-24 (QA fixes)) |
+| `r4workbench.reference.fromOne` | , ממסלול אחד. | the class-reference line over one track |
+
+### 7.4 Export and import
+
+| Element | Hebrew |
+|---|---|
+| Title | להעביר למכשיר אחר |
+| Lede | קובץ אחד עם כל מה שהזנתם. בלי חשבון, בלי שרת: הקובץ עובר רק איפה שאתם שולחים אותו. |
+| Export heading | לשמור קובץ מהמכשיר הזה |
+| Contents line | `{מספר}` מטרות · `{מספר}` אחזקות · `{מספר}` שמות שלא קוטלגו · הערכים שהזנתם במדריך · גרסת האתר והנתונים |
+| Caution | הקובץ מכיל את הסכומים והשכר שהזנתם. שלחו אותו רק למי שאתם רוצים שיראה אותם. |
+| Buttons | שיתוף · הורדה · העתקה · הועתק |
+| File name line | שם הקובץ: `{שם}` |
+| Nothing to export | עוד אין מה לשמור. |
+| Copy blocked | לא הצלחנו להעתיק. סמנו והעתיקו מכאן. |
+| Import heading | לטעון קובץ ממכשיר אחר |
+| Choose file | בחרו קובץ |
+| Drop zone (PC) | או גררו לכאן |
+| Paste field | או הדביקו כאן |
+| Preview, created | נוצר ב־`{תאריך}` · גרסת אתר `{מזהה}` |
+| Preview, counts | `{מספר}` מטרות · `{מספר}` אחזקות · `{מספר}` שמות שלא קוטלגו |
+| Preview, old version | קובץ מגרסה ישנה; יומר בטעינה. |
+| Mode | להוסיף למה שיש במכשיר · להחליף את מה שיש במכשיר |
+| Replace confirm | להחליף? מה שיש במכשיר הזה יימחק. · להחליף · ביטול |
+| Load | לטעון |
+| After import | נטען: `{מספר}` מטרות, `{מספר}` אחזקות. מסומנים "יובא ב־`{תאריך}`". |
+| After import, links | למה שכבר יש לכם · לתוצאה |
+| Duplicates skipped | `{מספר}` פריטים זהים כבר היו במכשיר ולא נטענו שוב. |
+| Delete imported, confirm | למחוק מהמכשיר הזה את כל מה שיובא? · מחיקה · ביטול |
+
+**Errors:**
+
+| Case | Hebrew |
+|---|---|
+| Newer version | הקובץ נוצר בגרסה חדשה יותר של האתר. רעננו את העמוד ונסו שוב. |
+| Not the site's format | זה לא קובץ של מקור. |
+| Invalid content | הקובץ לא תקין: `{שדה}`. לא שונה כלום במכשיר. |
+| Unreadable file | לא הצלחנו לקרוא את הקובץ. |
+| Share failed | השיתוף לא הושלם. אפשר להוריד או להעתיק. |
+
+**Added 2026-10-24, for the founder's review.** Key paths are the ones in `site/app/copy.ts`, so the two files can be diffed. Where the build's wording was changed, the note says what it was.
+
+| Key in `copy.ts` | Hebrew | Note |
+|---|---|---|
+| `r3transfer.modeLabel` | מה לעשות עם מה שיש במכשיר | the mode choice's screen-reader name |
+| `r3transfer.deleted` | מה שיובא נמחק. | after "מחיקת מה שיובא" |
+| `r3transfer.unavailable` | אי אפשר לשמור במכשיר הזה. מה שנטען יישאר רק בזמן הביקור. | storage unavailable on import |
+| `r3transfer.loading` | טוען… | |
+
+### 7.5 Additions to existing screens
+
+| Where | Hebrew |
+|---|---|
+| Result, row detail (after the fee rows) | מה העמלות כאן עולות לכם · כל המסלולים בכל החברות |
+| Result, "יש לכם כבר כזה?" line | יש לכם כבר כזה? הזינו מהדוח. |
+| Guide page, fees block, last line | כמה העמלות האלה עולות לאורך זמן |
+| Company page, group heading link | לכל המסלולים של `{מוצר}` בכל החברות |
+| Track page, key-value card, last row | מה העמלות האלה יעלו לכם |
+
+### 7.6 Why these words
+
+- **"שווה להתמקח"** rather than "כדאי לנהל משא ומתן": the founder's own words were "which battles to fight" and P-03's rationale says "שווה שיחת טלפון"; "להתמקח" is the everyday verb and fits a tag. Not "שווה שיחה": a call is one way to negotiate; the verdict is about the fee.
+- **"שווה להימנע"** keeps F-62's meaning (avoid by choosing differently); the reason line and the removed-by line say how. Not "להחליף": the site does not tell a person to switch (B3 posture).
+- **"לא שווה את הטרחה"** says the effort is not worth it, not that the fee is fair; the reason line says which threshold was missed, or that no reference exists.
+- **"אין ממוצע להשוואה"** rather than "אין נתון": there is a number somewhere (the Bank's, TASE's, the ISA's); the site may not show it or has not confirmed it, and the reason says which.
+- **"ממוצע הרשות למסלולי {סיווג}"** names what F-68 computes: the regulator's data, averaged by the site across one classification. "חציון" is the everyday statistics word; the glossary explains it.
+- **"השפעה משולבת"** for the interaction remainder: the costs of fees taken one at a time do not add up to the total because they compound on each other; "משולבת" says so without jargon ("שארית אינטראקציה" would be opaque).
+- **"בכסף של היום"** stays from release 1 for real values; the fee page has no nominal view (F-61 is real).
+- **"אבקש להוריד"** in the negotiation text: first person future is gender-neutral and is what the person will say; the site's voice stays out of the text.
+- **"איפה זה בדוח"** mirrors release 2's "איפה זה בתלוש"; the body is honest in the same way (no label the rule base does not hold).
+- **"מה כבר יש לכם"** for holdings: plain words for "what you already hold"; "אחזקות" appears as the list heading because it is the statement's word.
+- **"אפשר לאחד" / "לא ניתן לאחד"**: "לאחד" is the everyday verb; the glossary's "איחוד חשבונות" and "העברת כספים בין קופות גמל" (ניוד) are the formal terms and open from the card.
+- **"כללי ההעברה עוד לא נמצאו"** says the site has not found the rule, never that a transfer is barred.
+- **"להעביר למכשיר אחר"** rather than "ייצוא וייבוא": the person's goal is the other device, not the file; "לשמור קובץ" and "לטעון קובץ" name the two halves in verbs a phone user knows. "יובא ב־{תאריך}" uses the formal verb once, as a tag.
+- **"ממוצע הוא מה שהעמיתים שילמו בפועל, לא הצעה אליכם"** sits under the sort control so that sorting by fee is never read as the site ranking tracks (F-64 ranks nothing; CAT-37).
+- **Added 2026-10-24** (the build's strings, folded the same day): **"עוד לא דווח"** replaces "טרם דווח", the wording release 1 settled for an empty fee field. **"התרחיש לדוגמה"** is P-05's name wherever the fee page or a holding card runs on it (the parameters page's name for P-05), never "תרחיש הדגמה" or "התרחיש המייצג"; "הרשומה המייצגת" stays for the instrument P-05 names, and "מסלול מייצג" for its track. **"הטקסט של הכלל הזה עוד לא נמצא במאגר הכללים של האתר"** is the one sentence for a rule the bundle lacks (6.1's). **"בודק…"** like "טוען…": the site speaks in the singular when it reports its own work. **"מצבים שחוסמים העברה"** for PF-17's reg. 4 blocks: cases the person marks, not questions, so a noun phrase.
+
+## 8. Release 4 screens
+
+Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in `docs/design-spec.md` sections 16 to 20. Same voice and conventions as section 1: plural imperative or impersonal, no typed figures (every `{…}` is a value object with its state), names as the source writes them, codes after the words. Fee names are the glossary's terms (section 7's list; the four provider fee types here are "עמלת קנייה ומכירה", "דמי ניהול פיקדון ניירות ערך", "המרת מטבע", "דמי חשבון קבועים"). Rule texts are never retyped here: a step, a protection line or a condition renders the rule base's text with its chip. Status: **draft** (2026-10-24), to be settled by the founder as sections 3, 6 and 7 were. Every wording choice is "chosen 2026-10-24, revisable"; section 8.6 says why.
+
+### 8.0 Everywhere in release 4
+
+| Element | Hebrew |
+|---|---|
+| Fee levels, three (D4) | תעריפון · ממוצע שפורסם · ההצעה שלכם |
+| Provider class words | בנק · בית השקעות · חברה מנהלת · מנהל קרנות |
+| Regulator names | בנק ישראל · רשות ניירות ערך · רשות שוק ההון, ביטוח וחיסכון |
+| Provider fee types, four (F-63) | עמלת קנייה ומכירה · דמי ניהול פיקדון ניירות ערך · המרת מטבע · דמי חשבון קבועים |
+| Not comparable, heading and tag | לא ניתן להשוות |
+| Not comparable, reasons (F-63 codes) | התעריפון לא נאסף. · בתעריפון אין שורה ל`{סוג הנייר}`. · בתעריפון אין שורה ל`{סוג הנייר}` ב`{ערוץ}`. · לא נאסף ממוצע לשורות שחלות על `{סוג הנייר}`. · בשורה "`{שם השורה}`" חסר ערך בתעריפון. |
+| Recorded reason disclosure | הסיבה כפי שנרשמה בקובץ הנתונים |
+| No average collected | אין ממוצע שנאסף |
+| No average, reason | ממוצעי בנק ישראל ומחשבון העמלות של הבורסה מוצגים רק בקישור: הפרסום מחדש דורש הסכמה בכתב. |
+| No average, links out | לדשבורד העמלות של בנק ישראל · למחשבון העמלות של הבורסה |
+| Not collected (a fee, a list, a record) | לא נאסף · לא נאספה · עוד לא נאספו |
+| Not printed (a list field) | לא מודפס |
+| Stale tariff line | התעריפון נאסף ב־`{תאריך}`; מאז ייתכן שהשתנה. |
+| No published date | ללא תאריך פרסום |
+| Entered tag (provider row) | לפי ההצעה שלכם |
+| Strength chip words (D10) | ראשי · ראשי, בעותק · מוסדי · משני · ניסיון · שאלה פתוחה |
+| Strength chip, copy popover | המקור הרשמי נקרא בעותק שמתארח ב`{אתר}`, נבדק ב־`{תאריך}`. |
+| Experience label | ניסיון של אדם אחד, לא כלל. |
+| Instrument class words | קרן סל · מניות ואגרות חוב · יחידות של קרן נאמנות · ניירות ערך זרים · קרן חוץ הנסחרת בבורסה · מק״מ · קרן כספית |
+| Domicile words | ישראל · אירלנד · ארה״ב · `{קוד}` |
+| Distribution policy words | לא מחלקת · מחלקת · לא נאסף |
+| Links to the provider workbench | איזה בנק או בית השקעות · השוואת ספקים לקרן הזו · להשוואת הספקים |
+| Links to the fund-variant page | איזו קרן לקנות · כל הקרנות על `{חשיפה}` · החליפו קרן |
+| Links to the playbook | איך עוברים · המדריך למעבר · איך עוברים לחברה אחרת · ואם תחליטו לעבור: המדריך למעבר |
+| Workbench tabs | לפי ספק · לפי מסלול · לפי קרן |
+| Later releases | ~~סינון לפי ירידה שתסכימו לספוג יתווסף בהמשך~~ (retired by 9.0; `r4workbench.later` is not rendered) |
+
+**Added 2026-10-24, for the founder's review.** Key paths are the ones in `site/app/copy.ts`, so the two files can be diffed. Where the build's wording was changed, the note says what it was.
+
+| Key in `copy.ts` | Hebrew | Note |
+|---|---|---|
+| `r4playbook.chip` | ראשי · ראשי, בעותק · מוסדי · משני · ניסיון · שאלה פתוחה | the row above was "ראשוני · ראשוני, בעותק · … · פתוח" (changed 2026-10-24): the site's strength labels since release 1 are "מקור ראשי" and "שאלה פתוחה" (section 2), and one strength has one word. `docs/design-system.md` 8.5, `docs/flows.md` 15.3 and `docs/design-spec.md` 19 still write "ראשוני" |
+| `r4playbook.hosts` | אנליסט · ויקיטקסט · נבו · מיטב | the `{אתר}` of the copy popover, as the rule base's sources name them |
+| `r4workbench.notComparable.ambiguous` | בתעריפון יש כמה שורות שחלות על `{סוג הנייר}`, ולאתר אין עדיין דרך לבחור ביניהן בלי לנחש: | the sixth F-63 reason (`ambiguous-lines`): a plan or a sub-class the engine will not choose between; the lines follow |
+| `r4workbench.notComparable.codes` | — | removed 2026-10-24 (B7): the file's code words ("data-missing" …) are no longer shown beside the reason or in the coverage list; both show the reason sentence of the 8.0 table. `r4workbench.later` is also removed |
+| `r4workbench.instrumentClasses[tase_foreign_fund_units]` | קרן חוץ הנסחרת בבורסה | added to the class words above |
+| `r4workbench.tabs.aria` | תצוגות של ההשוואה | the tabs' screen-reader name |
+| `r4workbench.enteredTag · noPublishedDate` | לפי ההצעה שלכם · ללא תאריך פרסום | as the rows above |
+
+### 8.1 Provider workbench page
+
+| Element | Hebrew |
+|---|---|
+| Title | איזה בנק או בית השקעות: `{מוצר}` |
+| Subject strip | לפי `{שם הקרן}` · `{מספר נייר}` · `{סוג הנייר}` |
+| Subject strip, from P-05 | לפי הרשומה המייצגת: `{שם הקרן}` · `{מספר נייר}` |
+| Subject strip, link | החליפו קרן |
+| No fund | בחרו קרן כדי להשוות ספקים. |
+| Tracks tab, brokerage | למוצר הזה אין מסלולים בנתוני הרשות. |
+| Behaviour card title | ההתנהגות שלכם |
+| Trades a month | פעולות בחודש |
+| Trades a month, hint | כל הפקדה חודשית מתחלקת ל־`{מספר}` פקודות, ולכל פקודה עמלה משלה. · פקודה אחת · לשתי פקודות (changed 2026-10-24) |
+| Channel | ערוץ |
+| Channel options | ערוצים ישירים · סניף |
+| Channel, brokers | לא רלוונטי לבתי השקעות |
+| FX fact, foreign currency | הקרן נקובה ב`{מטבע}`: כל הפקדה מומרת. |
+| FX fact, shekels | הקרן נקובה בשקלים: אין המרה. |
+| Deposits fact | הפקדה אחת בכל חודש של השנה. |
+| Fee-level switch (screen-reader name) | רמת העמלה |
+| Level line, list | לפי התעריפון המלא של כל ספק, במחיר המחירון, בלי הנחות. |
+| Level line, average, none collected | אין ממוצע שנאסף: ממוצעי בנק ישראל ומחשבון העמלות של הבורסה מוצגים רק בקישור. |
+| Level line, average, collected | ממוצע העמלות שנגבו בפועל, כפי שפורסם ב`{מקור}`. ספק בלי ממוצע מופיע כלא ניתן להשוות. |
+| Level line, entered | ההצעה שלכם מושווית לתעריפון של האחרים. |
+| Entered, none yet | עוד לא הזנתם הצעה. |
+| Entered, link | הזינו הצעה |
+| Entered, count in the segment | ההצעה שלכם · `{מספר}` |
+| Table heading | לפי העלות, מהזולה לגבוהה |
+| Horizon cost | `{סכום}` ב־`{שנים}`, בכסף של היום |
+| Year-one cost | `{סכום}` בשנה הראשונה |
+| Year-one tag | בשקלים של השנה הראשונה |
+| Bar legend (screen-reader name) | לפי סוג עמלה |
+| Deciding line | מכריע מול `{ספק}`: `{סוג העמלה}` |
+| Deciding, detail | הפער לפי סוג: `{סוג}` `{סכום}` … |
+| Tie | שקולה ל־`{ספק}` · שקולות: `{ספקים}` |
+| Tie, threshold line | ההפרש קטן מסף התיקו של האתר: `{אחוז}`. פרמטר של האתר. |
+| Tariff line | תעריפון מ־`{תאריך}`, נאסף ב־`{תאריך}` |
+| Tariff link | לתעריפון |
+| Minimums | מינימום לפתיחת חשבון: `{סכום}` · לא נמצא בתעריפון |
+| Per-trade bounds | מינימום לפעולה `{סכום}` · מקסימום `{סכום}` |
+| Protection | מפוקח: `{רגולטור}` |
+| TASE member tag | חבר בורסה |
+| Not ISA supervised (BRK-06) | לא מפוקח על ידי רשות ניירות ערך |
+| Protection disclosure | מה מגן על הכסף |
+| Not modelled | לא נכלל בחישוב: `{שם השורה}`. הנוסחה לעמלה הזו עוד לא נכתבה. `{קוד}` |
+| No line | אין בתעריפון שורה ל`{בסיס}`; לא נגבה בחישוב. |
+| Fixed fee spread | `{שם השורה}` נפרסו לחודשים. |
+| Row links | קיבלתם הצעה? הזינו אותה · איך עוברים · מה העמלות האלה יעלו לכם · לעמוד `{ספק}` |
+| Row detail heading | השורות שנקראו מהתעריפון |
+| Row detail, entered lines | הוחלפו בהצעה שלכם: `{שורות}` |
+| Row detail, type costs | העלות לפי סוג עמלה |
+| Not comparable heading | לא ניתן להשוות |
+| Not comparable, offer link | יש לכם הצעה מ`{ספק}`? הזינו אותה |
+| Coverage sentence | נבדקו `{מספר}` ספקים: `{מספר}` דורגו, `{מספר}` לא ניתן להשוות. |
+| Coverage, one ranked | דורג `{מספר}` מתוך `{מספר}` ספקים. |
+| Coverage groups | דורגו · לא ניתן להשוות |
+| All missing | אין עדיין תעריפון שנאסף למוצר הזה. |
+| Provident wrapper | למוצר הזה הדירוג הוא לפי מסלול. כאן מופיעים דמי הניהול לפי המחירון של כל חברה, בלי דירוג. |
+| Provident listing label | דמי ניהול לפי המחירון של החברה, לא מדורג |
+| Chart title | העלות המצטברת לאורך הזמן |
+| Chart marker | שנה ראשונה · מועד המטרה · סוף התקופה |
+| Chart, dashed caption | הקו המקווקו מבוסס על הצעה שהזנתם. |
+| Chart's screen-reader name | גרף: העמלות המצטברות של `{מספר}` ספקים לאורך `{שנים}`. הנתונים המלאים בטבלה. |
+| Offer card title | ההצעה שלכם מ`{ספק}` |
+| Offer card, hint | מלאו רק את השורות שהוצעו לכם; השאר נשאר לפי התעריפון. |
+| Offer fields | עמלת קנייה ומכירה · דמי ניהול פיקדון ניירות ערך · המרת מטבע · דמי חשבון קבועים |
+| Offer sub-fields | אחוז · מינימום · מקסימום · אחוז ל`{תקופה}` · ₪ לחודש |
+| Period words | לחודש · לרבעון · לשנה |
+| Placeholder | תעריפון: `{ערך}` |
+| Above the list | גבוה מהתעריפון |
+| Who and when | מי הציע ומתי · מי הציע (לא חובה) · תאריך ההצעה |
+| Offer, binding line | להצעה שלא בכתב לא נמצא כלל שמחייב אותה. שאלה פתוחה SW OQ4 |
+| Offer buttons | שמירה · ניקוי ההצעה · ביטול |
+| Links | כל הקרנות על `{חשיפה}` · לעמוד המדריך |
+| Loading | טוען… |
+
+**Errors:**
+
+| Case | Hebrew |
+|---|---|
+| Percent above 100 | הזינו אחוז עד `{מקסימום}`. |
+| Negative amount | הסכום לא יכול להיות שלילי. |
+| Offer date in the future | תאריך ההצעה עוד לא הגיע. |
+| Minimum above maximum | המינימום לא יכול להיות גבוה מהמקסימום. |
+| Trades a month out of range | הזינו בין `{מינימום}` ל־`{מקסימום}` פעולות בחודש. |
+
+**Added 2026-10-24, for the founder's review.** Key paths are the ones in `site/app/copy.ts`, so the two files can be diffed. Where the build's wording was changed, the note says what it was.
+
+| Key in `copy.ts` | Hebrew | Note |
+|---|---|---|
+| `r4workbench.providers.behaviour.deposits` | הפקדה אחת בכל חודש של השנה. | the row above was "12 הפקדות בשנה, אחת לכל הפקדה חודשית." (changed 2026-10-24): no typed figure, even for A-28's twelve |
+| `r4workbench.providers.back` | המדריך למוצר | the breadcrumb parent |
+| `r4workbench.providers.noGoal` | אין מטרה שמורה: ההשוואה לפי התרחיש לדוגמה של האתר. | Was "…ההשוואה רצה על התרחיש המייצג של האתר.": P-05 is "התרחיש לדוגמה" (3.15) |
+| `r4workbench.providers.behaviour.ordersUp · ordersDown` | עוד פעולה בחודש · פחות פעולות בחודש | the stepper's screen-reader names |
+| `r4workbench.providers.behaviour.chips` | סכום · הפקדה חודשית · שנים · כל ההנחות | the amounts chips |
+| `r4workbench.providers.columns` | דירוג · ספק · עלות · בשנה הראשונה · לפי סוג עמלה · תעריפון מ־ · מינימום · פיקוח · פתיחה | PC column heads |
+| `r4workbench.providers.tariffLine.collected` | נאסף ב־`{תאריך}` | the tariff line when no published date exists |
+| `r4workbench.providers.formats` | PDF · דף אינטרנט · גיליון | the tariff link's file format |
+| `r4workbench.providers.notModelledF18 · notModelledOther` | הנוסחה לעמלה הזו עוד לא נכתבה. · עמלה שאינה חלק מעלות ההחזקה השוטפת. | the two reasons a tariff line is left out: the method has no formula (G-18), or the line is not a holding cost (a transfer out) |
+| `r4workbench.providers.noLineBases` | קנייה ומכירה · דמי ניהול פיקדון ניירות ערך · המרת מטבע | the `{בסיס}` of "אין בתעריפון שורה ל`{בסיס}`" |
+| `r4workbench.providers.rowLinks.edit` | עריכת ההצעה שלכם | when an offer exists. Was "הצעה שלכם: עריכה" |
+| `r4workbench.providers.vsTag · vsSet · vsClear` | מושווה · להשוות אליו · ביטול ההשוואה | choosing which row "מכריע מול" is measured against. Were "השוו אליו · בטלו השוואה": buttons are nouns or infinitives (section 2) |
+| `r4workbench.providers.detail.remainder · rate · min · max · period · channel · level · fromAverage · rules · bases` | השפעה משולבת של העמלות · שיעור · מינימום · מקסימום · תקופה · ערוץ · רמה · ממוצע · הכללים שהחישוב נשען עליהם · קנייה ומכירה · דמי ניהול פיקדון · המרת מטבע · דמי חשבון קבועים | the row detail's labels. The rules heading was "הכללים שהחישוב קרא"; 6.2's is "הכללים שההשוואה נשענת עליהם" |
+| `r4workbench.providers.notComparableLinks.tariff` | לעמוד התעריפון של `{ספק}` | |
+| `r4workbench.providers.provident.toTracks · balance · deposit · noFee · tariff` | לדירוג לפי מסלול · מחיסכון · מהפקדה · לא נמצא בתעריפון · תעריפון | the provident listing's link, column words and empty cell. Were "מהצבירה · מההפקדה": the glossary's words are "מחיסכון" and "מהפקדה" (7.2's sub-labels) |
+| `r4workbench.providers.chart.year · today · yearOneMarker · legendVs · realNote` | שנה · היום · שנה ראשונה · מושווה · העמלות ששולמו עד החודש הזה, בכסף של היום. הנקודה האחרונה כוללת את עמלת המכירה. | the chart's readout, marker and reading. The reading was "העמלות ששולמו עד החודש, בכסף של היום. הסוף כולל את עמלת המכירה." |
+| `r4workbench.providers.offer.belowTable · noStorage · empty · noList` | ההצעה שלכם מושווית לתעריפון של האחרים. · אי אפשר לשמור במכשיר הזה. ההצעה תישאר רק בזמן הביקור. · מלאו לפחות שורה אחת. · אין שורה כזו בתעריפון | the storage note was "אי אפשר לשמור במכשיר הזה: ההצעה תישאר רק בביקור הזה." (7.2's pattern) |
+| `r4workbench.providers.offer.errors.needRate` | הזינו קודם את השיעור של השורה. | a bound without a rate |
+| `r4workbench.providers.failed` | לא הצלחנו לטעון את נתוני הספקים. נסו לרענן. | |
+| `r4workbench.providers.cannotRun.*` | אין עדיין השוואת ספקים לקרן מהסוג הזה. · הזינו את שער ה`{מטבע}` בעמוד הקרנות כדי להשוות ספקים. · הקרן מחלקת: הזינו את תשואת החלוקה בעמוד הקרנות כדי להשוות ספקים. · החישוב נעצר על נתון בתעריפון: `{פרט}` · אין השוואת ספקים למוצר הזה. · אין קרן מייצגת למוצר הזה. | the cases the page cannot run |
+| `r4workbench.providers.pendingLine · incompleteRules` | התוצאה חלקית: העמלה `{מזהה}` עוד לא מחושבת. · הנוסחה לעמלות על חלוקת רווחים עוד לא נכתבה, ולכן הדירוג חלקי. | partial results |
+| `r4workbench.providers.behaviour.ordersHint` | כל הפקדה חודשית מתחלקת ל־`{מספר}` פקודות, ולכל פקודה עמלה משלה. · כל הפקדה חודשית היא פקודה אחת, ולכל פקודה עמלה משלה. · כל הפקדה חודשית מתחלקת לשתי פקודות, ולכל פקודה עמלה משלה. | B14, added 2026-10-24 (QA fixes): the number is a Num inside the sentence for three and more; one and two are words. Was a function that typed the digit |
+
+### 8.2 Fund-variant page
+
+| Element | Hebrew |
+|---|---|
+| Title | כל הקרנות שעוקבות אחרי `{חשיפה}` |
+| List line, both collected | לפי רשימת הקרנות של מאיה מ־`{תאריך}` ורשימת קרנות החוץ של הבורסה מ־`{תאריך}`, ולפי הרשומות שנאספו. |
+| List line, Israeli list not collected | רשימת הקרנות הישראליות עוד לא נאספה; מוצגות הקרנות שיש להן רשומה. הרשימה המלאה במאיה. |
+| List line, TASE list not collected | רשימת קרנות החוץ של הבורסה עוד לא נאספה. הרשימה המלאה באתר הבורסה. |
+| List links | לרשימת הקרנות במאיה · לרשימת קרנות החוץ באתר הבורסה |
+| Old list | הרשימה לא עודכנה מאז `{תאריך}`. |
+| Assumption chips | סכום · הפקדה חודשית · שנים · תשואה ב`{מטבע}` · אינפלציה · שינוי שער `{מטבע}` · שער `{מטבע}` היום · W-8BEN · התעריפון של `{ספק}` · פעולות בחודש · כל ההנחות |
+| Assumptions sheet title | ההנחות של השוואת הקרנות |
+| W-8BEN field | יש לכם טופס W-8BEN אצל הברוקר? · כן · לא |
+| W-8BEN, line | עובדה שלכם, לא כלל. |
+| FX fields, D20 line | שערי בנק ישראל מוצגים רק בקישור; הזינו את השער. |
+| FX link | לשערי בנק ישראל |
+| Distribution yield field | תשואת החלוקה של `{קרן}` (אחוז בשנה) · תשלומים בשנה |
+| Distribution yield, line | הרשומה של הקרן לא כוללת תשואת חלוקה; הזינו מהמסמכים של הקרן. |
+| Provider chip, from P-05 | התעריפון של `{ספק}` (הרשומה המייצגת) |
+| Filter field | חיפוש קרן, מנהל או מספר |
+| Sort options | לפי הדירוג · דמי ניהול · שם |
+| Sort line | הדירוג נשען על התשואה שהזנתם ועל הפרטים שנאספו לכל קרן. |
+| List heading | לפי מה שנשאר לכם, מהגבוה לנמוך |
+| Group headings | דורגו · מוצגות, לא מדורגות · עוד לא נבדקו |
+| Security number | מספר נייר · העתקה · הועתק |
+| Source tags | ברשימת מאיה · ברשימת קרנות החוץ של הבורסה · רשומה שנאספה · לא ברשימה האחרונה |
+| Domicile tag (screen-reader prefix) | מדינת המוצא: `{מדינה}` |
+| Policy tags | לא מחלקת · מחלקת · לא נאסף |
+| Trading line | נסחרת בשקלים בבורסה · נקנית ב`{מטבע}` בחו״ל · נקובה ב`{מטבע}` |
+| Fee labels | דמי ניהול קבועים · דמי נאמן · דמי ניהול משתנים · הפרש עקיבה, שנה אחרונה · מרווח ציטוט חציוני |
+| Fee not collected | לא נאסף · נלקח כאפס בחישוב |
+| Value label | נשאר לכם במועד המטרה, בכסף של היום |
+| Reason, no record | הפרטים עוד לא נאספו. |
+| Reason, field missing | הפרטים עוד לא נאספו: `{שדה}`. |
+| Field names | דמי ניהול קבועים · מדיניות חלוקה · מעמד מס |
+| Reason, accumulating foreign fund (G-18) | מקור משני: רשות המסים לא אישרה שקרן זרה שאינה מחלקת ממוסה רק במכירה. שאלה פתוחה TXF OQ1 |
+| Reason, taxable Israeli fund | לקרן נאמנות חייבת אין עדיין חישוב. |
+| Reason, yield missing | הזינו את תשואת החלוקה. |
+| Reason, start rate missing | הזינו את שער ה`{מטבע}`. |
+| Reason, withholding not set | ניכוי במקור ב`{מדינה}`: לא נקבע. |
+| Reason, money-market | סוג הקרן הכספית אינו ברשומה. |
+| Reason, other currency | אין חישוב לקרן ב`{מטבע}` על חשיפה ב`{מטבע}`. |
+| Reason, exit blocked | המס ביציאה חסום: שאלה פתוחה `{קוד}` |
+| Row links | השוואת ספקים לקרן הזו · מה לבדוק |
+| Group line (G-29) | קרנות זרות הנסחרות בחו״ל: `{מספר}` מוחזקות אחת־אחת והושוו; לרשימה המלאה אין מקור. ETF OQ4 |
+| Coverage sentence | נבדקו `{מספר}` קרנות: `{מספר}` דורגו, `{מספר}` מוצגות בלי דירוג, `{מספר}` עוד לא נבדקו, וקבוצה אחת. |
+| No funds at all | האתר עוד לא מכיר קרן על `{חשיפה}`. |
+| Cash-like exposure | לקרן כספית אין כאן השוואה: סוג הקרן אינו ברשומה. |
+| Its link | למדריך על קרן כספית |
+| No return | לא הוזן: האתר לא מנחש תשואה. |
+| Duplicate records | שתי רשומות לאותו נייר · לא הוכרע |
+
+**Added 2026-10-24, for the founder's review.** Key paths are the ones in `site/app/copy.ts`, so the two files can be diffed. Where the build's wording was changed, the note says what it was.
+
+| Key in `copy.ts` | Hebrew | Note |
+|---|---|---|
+| `r4workbench.funds.fees[tracking_difference_12m]` | הפרש עקיבה, שנה אחרונה | the fee-labels row above was "הפרש עקיבה, 12 חודשים" (changed 2026-10-24): no typed figure |
+| `r4workbench.funds.back` | המדריך לחשיפה | the breadcrumb parent |
+| `r4workbench.funds.listLine.onlyIsraeli · onlyTase` | לפי רשימת הקרנות של מאיה מ־`{תאריך}`, ולפי הרשומות שנאספו. · לפי רשימת קרנות החוץ של הבורסה מ־`{תאריך}`, ולפי הרשומות שנאספו. | one list collected, the other not |
+| `r4workbench.funds.sheet.fxChangeLabel · fxStartLabel` | שינוי שער `{מטבע}` בשנה (אחוז) · שער `{מטבע}` היום (₪) | the A-03 field and the start rate (D20: entered) |
+| `r4workbench.funds.sheet.providerLabel · providerChange · goalLead · reset` | הספק שהתעריפון שלו נכנס לחישוב · החליפו ספק · הסכום, ההפקדה והשנים הם של המטרה השמורה: · איפוס | the provider chooser and the goal line. The label was "הספק שהתעריפון שלו מחושב" |
+| `r4workbench.funds.sort.aria · name` | סדר ההצגה · שם | Were "מיון · לפי שם": 7.3's words |
+| `r4workbench.funds.columns` | דירוג · קרן · מספר נייר · מקור · מדינת המוצא · חלוקה · דמי ניהול · נשאר לכם · תוצאה · פתיחה | PC column heads |
+| `r4workbench.funds.feesHeading` | דמי הקרן | the fee block's heading in the row |
+| `r4workbench.funds.outcomes` | דורגה · מוצגת, לא מדורגת · עוד לא נבדקה | the one-row outcome words, as 6.0 |
+| `r4workbench.funds.reasons.other` | אין חישוב לקרן הזו: `{פרט}` | an engine reason the table has no sentence for, with its detail as data |
+| `r4workbench.funds.secondaryTag` | מקור משני | the tag on the G-18 reason |
+| `r4workbench.funds.detail.*` | פירוט החישוב · הסכומים ששולמו לאורך הדרך, בשקלים של אז; השורה האחרונה בכסף של היום. · עלויות הקרן · מרווח הקנייה והמכירה · עמלות הספק · מס במהלך התקופה · מס ביציאה · נשאר לכם · הכללים שהחישוב נשען עליהם | the row detail. The rules heading was "הכללים שהחישוב קרא" |
+| `r4workbench.funds.noFundsCopy` | העתקת השם | the copy button under "האתר עוד לא מכיר קרן על `{חשיפה}`", as 7.2's. Was "העתקת השם לבקשה" |
+| `r4workbench.funds.more · noMatch` | עוד `{מספר}` קרנות · אין קרן שמתאימה לחיפוש. | paging and an empty search |
+| `r4workbench.funds.providerNote.*` | החישוב לפי התעריפון של `{ספק}`. · החישוב לפי התעריפון של `{ספק}` (הרשומה המייצגת). · התעריפון של `{ספק}` לא נאסף; החישוב לפי הרשומה המייצגת. | which tariff the run used |
+| `r4workbench.funds.loading · failed · noExposure` | טוען… · לא הצלחנו לטעון את נתוני הקרנות. נסו לרענן. · אין חשיפה כזו באתר. | |
+| `r4workbench.funds.needsReturn · needsReturnLink` | הזינו תשואה במטרה השמורה כדי לדרג את הקרנות. · למטרה | |
+| `r4workbench.funds.coverage` | נבדקו `{מספר}` קרנות: `{מספר}` דורגו, … · נבדקה קרן אחת: … · אחת דורגה · אחת מוצגת בלי דירוג · אחת עוד לא נבדקה · וקבוצה אחת. | B14, added 2026-10-24 (QA fixes): singular forms when a count is one ("אחת" in the number component with the singular verb). The sentence's parts are `before · oneFund · midOne · one · many · end` |
+| `r4workbench.funds.more · groupsOne` | עוד קרן אחת (for one) · דורגה · מוצגת, לא מדורגת · עוד לא נבדקה | the paging button and a group heading with one row (the outcome words of 5.0 in the singular) |
+| `r4workbench.funds.chips.return` | תשואה ב־`{מטבע}` | the maqaf before the currency code (was "תשואה ב`{מטבע}`") |
+| `r4workbench.funds.groups.waits · groupsOne.waits · coverage.many.waits · coverage.one.waits` | ממתינות לתשואה · ממתינה לתשואה · ממתינות לתשואה · אחת ממתינה לתשואה | B14, added 2026-10-24 (QA fixes): with no return entered nothing is ranked, so the group that would be "דורגו" is named for what it waits for (the sentence and the heading) |
+
+### 8.3 Switching playbook page
+
+| Element | Hebrew |
+|---|---|
+| Title | איך עוברים: `{מוצר}` |
+| Lede | השלבים כפי שהכללים קובעים אותם: מה חותמים, מה לצפות, ומה חוזק המקור של כל שלב. לא המלצה לעבור. |
+| Subject strip | מ`{ספק}` ל`{ספק}` · מ`{ספק}` |
+| Pair fields | מאיפה · לאן · בחרו מאיפה ולאן (לא חובה) |
+| Same company | אותה חברה: החלפת מסלול בתוך הקופה. |
+| Steps heading | השלבים, לפי הכללים |
+| Step number | שלב `{מספר}` |
+| Labelled lines | מה חותמים: · מה לצפות: |
+| Figure present | בתוך `{מספר}` ימי עסקים · בתוך `{מספר}` ימים · `{מספר}` חודשים |
+| Figure file missing | בתוך התקופה שהחוזר קובע |
+| Open question line | שאלה פתוחה `{קוד}`: `{מה לא נמצא}` |
+| Institution-only prefix | לפי הוראות המוסדות: |
+| No rule found (SW-19) | שיחת שימור: לא נמצא כלל |
+| No rule, head | לא נמצא כלל על שיחת שימור במוצרי גמל. |
+| No rule, known | מה כן ידוע |
+| Experience disclosure | מה אנשים מספרים |
+| Experience, source line | מקור: `{פורום}`, `{שרשור}`, נקרא ב־`{תאריך}` |
+| Experience not shipped | ניסיון מהפורומים לא נכלל בגרסה הזו. |
+| Record-offer card title | רשמו כל הצעה |
+| Record-offer, lede | הצעות נמשכות. רשמו כל הצעה עם התאריך שלה. |
+| Record-offer, items | מאיזה ספק · כל שורת עמלה והמינימום שלה · מי אמר · באיזה תאריך · בכתב או בטלפון |
+| Record-offer, copy | העתקת תבנית לרישום · הועתק |
+| Record-offer, template | הצעה מ___, בתאריך ___: עמלת קנייה ומכירה ___ (מינימום ___); דמי ניהול פיקדון ניירות ערך ___; המרת מטבע ___; דמי חשבון ___. מי הציע: ___. בכתב: כן / לא. |
+| Record-offer, link | ההצעות שהזנתם בהשוואת הספקים |
+| Cost, brokerage (F-66) | המעבר מ`{קרן}` ל`{קרן}` עכשיו יעלה `{סכום}` בכסף של היום, מזה מס במכירה `{סכום}`. |
+| Cost, brokerage detail | בלי מעבר היו נשארים `{סכום}`; עם המעבר, `{סכום}`. התמורה אחרי המס פותחת את הקרן החדשה: `{סכום}`. |
+| Cost, provident | המעבר לא עולה כלום לפי הכללים. |
+| Cost, provident lines | הנחה בדמי ניהול יכולה להסתיים מוקדם במעבר. · דמי הצטרפות, אם החברה גובה: לפי המחירון של החברה. |
+| Cost, in kind (SW-36) | לפי הצהרות של מוסדות בלבד: העברה לחשבון של אותו בעלים אינה אירוע מס. שאלה פתוחה SW OQ11 |
+| Cost, transfer fee | עמלת העברת ניירות ערך: `{סכום}` · לא נאסף |
+| Cost, hishtalmut partial | לא ניתן: קרן השתלמות עוברת רק בשלמותה. |
+| Cost, different kinds | לא נבדק: אין כלל שאומר שהעברה בין שני סוגים חופשית ממס. |
+| Cost, rule open | חסום: שאלה פתוחה `{קוד}` |
+| Checklist heading | מה לבדוק אחרי המעבר |
+| Checklist reset | איפוס · לאפס את הסימונים? · איפוס · ביטול |
+| Links | מה כבר יש לכם · השוואת הספקים · לעמוד המדריך · כל הכללים על מעבר |
+| One-step wrapper, child savings | תוכנית בבנק לא עוברת לבנק אחר; תוכנית בקופת גמל עוברת דרך הקופה המקבלת וביטוח לאומי. |
+| One-step wrapper, deposit | פיקדון לא עובר לבנק אחר לפני הפדיון. כסף חדש אפשר להפקיד בבנק אחר בחשבון במערכת סגורה. |
+
+**Step titles, one per rule** (the step renders the rule's text under it; the title never changes with the pair):
+
+| Rule | Title |
+|---|---|
+| KH-10, KH-14 | בדקו את השעון: מתי הכסף נזיל |
+| SW-18 | קבלו את הנתונים שלכם מהמסלקה הפנסיונית |
+| SW-16 | בחרו את הקופה המקבלת ואת המסלול |
+| SW-17 | הצטרפו ישירות, או דרך סוכן אם תרצו |
+| SW-02, SW-03, SW-20 | חתמו על בקשת ההעברה בקופה המקבלת |
+| SW-21 | לאן אפשר להעביר קופת גמל להשקעה |
+| SW-01, SW-23 | לאן אפשר להעביר, ואילו כספים |
+| SW-24 | במזומן או בעין |
+| SW-10 | הודיעו למעסיק לאן להפקיד |
+| SW-04 | המועד הקובע: ההפקדה הראשונה בקופה החדשה |
+| SW-05 | צפו להודעת דחייה או עיכוב |
+| SW-12 | ביטוח בפנסיה: הטופס, הכיסוי וחודשי האכשרה |
+| SW-13 | מה חוסם העברה |
+| SW-14 | העברה חלקית |
+| SW-22 | חשבונות לא פעילים מתאחדים אוטומטית |
+| SW-19 | שיחת שימור: לא נמצא כלל |
+| SW-07 | אפשר לבטל עד שהכסף עובר |
+| SW-06 | הכסף עובר |
+| SW-09 | שתי הקופות מאשרות בכתב |
+| SW-25 | העברת חיסכון לכל ילד |
+| SW-26 | בקשו את המעבר בבנק הקולט |
+| SW-31 | קראו את דף המידע |
+| SW-27 | בחרו יום מעבר; אפשר לבטל |
+| SW-28 | צפו לפנייה לשימור מהבנק המקורי |
+| SW-29 | מה עובר ומה נשאר |
+| SW-30 | ניתוב התשלומים אחרי המעבר |
+| SW-32 | פיקדון לא עובר לפני הפדיון |
+| SW-35 | פתחו חשבון אצל המקבל ובקשו העברה מהמוסד הנוכחי |
+| SW-33, SW-34 | מה עולה להעביר ניירות ערך |
+| SW-36 | מס במעבר ניירות ערך |
+| SW-37 | ברוקר זר: לא נמצא תהליך |
+| SW-38 | בדקו אחרי המעבר |
+
+"מה חותמים" and "מה לצפות" lines name the forms and notices as the rule base spells them (נספח א׳, נספח ב׳, נספח ה׳ ו־ה׳1, נספח ו׳, אישור לעמית עובר), rendered from the rule's text, never typed here.
+
+**Added 2026-10-24, for the founder's review.** Key paths are the ones in `site/app/copy.ts`, so the two files can be diffed. Where the build's wording was changed, the note says what it was.
+
+| Key in `copy.ts` | Hebrew | Note |
+|---|---|---|
+| `r4playbook.strip.none · fundFrom · fundTo` | לא נבחר · מקרן · לקרן | the pair strip before a choice; the two fund fields of a brokerage switch |
+| `r4playbook.experience.label` | ניסיון של אדם אחד, לא כלל. | the experience card's last line, as 8.0 |
+| `r4playbook.chipCopy` | המקור הרשמי נקרא בעותק שמתארח ב`{אתר}`, נבדק ב־`{תאריך}`. | as 8.0; the hosts are in 8.0's table |
+| `r4playbook.cost.heading` | כמה עולה המעבר | the cost block's heading. Was "מה עולה המעבר" |
+| `r4playbook.cost.brokerageSaves` | המעבר מ`{קרן}` ל`{קרן}` עכשיו יחסוך `{סכום}` בכסף של היום; המס במכירה `{סכום}`. | F-66 when the cheaper fund outweighs the sale |
+| `r4playbook.cost.notEvaluated · reasons.*` | לא נבדק: `{סיבה}` · לא נמצאה אחת הקרנות באתר. · הזינו את שער המטבע בעמוד הקרן. · הזינו את תשואת החלוקה בעמוד הקרן. · אין עדיין חישוב לסוג הקרן הזה. · אין חישוב לקרן שמטבעה שונה מהחשיפה. · תעריפון הספק לא נאסף. · החישוב לא הצליח. | when the cost sentence cannot be built |
+| `r4playbook.cost.shareLabel · shareAll · sharePart · secondary · loading` | כמה מהיתרה עוברת · כל היתרה · חלק מהיתרה · מקור משני · טוען… | the share control of a study fund (SW-14 context), the tag on the in-kind line |
+| `r4playbook.links.playbook` | המדריך למעבר | as 8.5 |
+| `r4playbook.brokerageNote` | סדר השלבים בחשבון השקעות הוא לפי הוראות של בנקים ובתי השקעות, לא לפי תקנה. | design-spec 19 edge case. Was "סדר השלבים בחשבון ניירות ערך לפי הוראות של בנקים ובתי השקעות, לא לפי תקנה.": the site's word is "חשבון השקעות", and the sentence needed a verb |
+| `r4playbook.oq[SW OQ2]` | האם חוזר ההעברה חל על קופת גמל להשקעה. | the `{מה לא נמצא}` of the open-question line, one per question of `switching-and-transfers.md` |
+| `r4playbook.oq[SW OQ3]` | כלל על פניות שימור במוצרי גמל. | |
+| `r4playbook.oq[SW OQ4]` | האם הצעה שניתנה לפני ההצטרפות מחייבת. | |
+| `r4playbook.oq[SW OQ5]` | איך נבדקת הסכמת הלקוח להוצאת דוח מהמסלקה. | the price side closed 2026-10-24 (SW-44) |
+| `r4playbook.oq[SW OQ6]` | מי מודיע למעסיק להפנות את ההפקדות הבאות, ובתוך כמה זמן. | |
+| `r4playbook.oq[SW OQ9]` | אילו סוגי חשבונות ופעילות נכללים בכללי המעבר בין בנקים. | Was "אילו סוגי חשבונות ופעילות כללי המעבר בין בנקים כוללים." |
+| `r4playbook.oq[SW OQ10]` | המחיר המפוקח להעברת ניירות ערך. | |
+| `r4playbook.oq[SW OQ11]` | המס על העברת ניירות ערך בין חשבונות של אותו בעלים. | |
+| `r4playbook.oq[SW OQ12]` | העברה בין מוסד ישראלי לברוקר זר. | |
+| `r4playbook.oq[SW OQ16]` | הסרת סוכן שכבר מחובר לחשבון. | |
+| `r4playbook.loading · noWrapper · incomplete` | טוען… · אין מדריך מעבר למוצר הזה. · המדריך חלקי בשלב הזה: כלל פתוח מסומן בנעילה. | |
+| `r4playbook.offer.itemsByFamily · templates` | provident: מאיזה ספק · דמי הניהול מהחיסכון ומההפקדה, ועד מתי ההנחה · מי אמר · באיזה תאריך · בכתב או בטלפון / הצעה מ___, בתאריך ___: דמי ניהול מחיסכון ___; דמי ניהול מהפקדה ___; ההנחה בתוקף עד ___. מי הציע: ___. בכתב: כן / לא. · bank: מאיזה בנק · הריבית על ההפקדה ולכמה זמן · … / הצעה מ___, בתאריך ___: ריבית על ההפקדה ___, לתקופה של ___. מי הציע: ___. בכתב: כן / לא. | B10, added 2026-10-24 (QA fixes): the list and the copied template follow the wrapper's family (provident, bank, brokerage); the brokerage ones are `offer.items` and `offer.template` as before |
+
+### 8.4 Companies list, bank page and fund manager page
+
+| Element | Hebrew |
+|---|---|
+| Companies list headings | חברות מנהלות · בנקים ובתי השקעות · מנהלי קרנות |
+| Bank or broker row line | `{סוג}` · תעריפון מ־`{תאריך}` · `{סוג}` · התעריפון לא נאסף |
+| Fund manager row line | `{מספר}` קרנות |
+| Bank page lede | כל מה שהבנק מציע, עם הסבר לכל מוצר. הפיקדונות לפי פרסום הבנק, נכון ל`{תאריך}`; התעריפון נאסף ב־`{תאריך}`. |
+| Groups | פיקדונות · תוכניות חיסכון · עו״ש · חשבון השקעות |
+| Group link | מה זה `{סוג}` |
+| Group count | מוצר אחד · שני מוצרים · `{מספר}` מוצרים |
+| Deposits not collected | עוד לא נאספו פיקדונות ותוכניות חיסכון של `{בנק}`. |
+| Its link | לטבלת הריביות של הבנק |
+| Model line | דגם: `{דגם}` |
+| Also called | נקרא גם |
+| Record labels | סוג לפי הוראה 447 · תקופה · סוג הריבית · שיעור הריבית המוצעת (נומינלי שנתי), לפני מס · נכון ליום · הצמדה · מס על הריבית · סכום · שבירה · תחנות יציאה · חידוש אוטומטי |
+| Term | `{מספר}` חודשים · ללא תקופה |
+| Rate type | ריבית קבועה · ריבית משתנה: `{עוגן}` `{מרווח}` |
+| Linkage | לא צמוד · צמוד למדד · צמוד לשער |
+| Tax on the interest | ריבית לא צמודה; השיעור בעמוד המדריך. · ריבית צמודה; השיעור בעמוד המדריך. |
+| Amount | מ־`{סכום}` עד `{סכום}` · מ־`{סכום}` · עד `{סכום}` · ללא מינימום |
+| Break | אין אפשרות שבירה · שבירה בקנס · שבירה ללא קנס |
+| Break disclosure | הבנק כותב: |
+| Exit points | כל `{מספר}` חודשים · אין |
+| Auto renew | כן · לא · עד `{מספר}` פעמים |
+| Current-account conditions | תנאי הריבית, כפי שהבנק כותב |
+| Not an offer line (BANK-13) | הריבית המוצעת היא המינימום שהבנק מפרסם לסוג הפיקדון, לא הצעה אליכם. התנאים המחייבים הם בהסכם הפיקדון. |
+| Row links | מה זה `{סוג}` · מה לבדוק |
+| Brokerage card title | התעריפון |
+| Lines collected | `{מספר}` שורות עמלה נאספו: `{בסיסים}` |
+| Notice line | הודעה על שינוי בעמלות |
+| Comparison link | להשוואת הספקים |
+| Missing tariff | התעריפון לא נאסף. |
+| Missing tariff, links | לעמוד התעריפון של `{ספק}` · להשוואת הספקים (הבנק מופיע שם כלא ניתן להשוות) |
+| Broker class line | בית השקעות, חבר בורסה שאינו בנק |
+| Fund manager group | קרנות הנאמנות של `{מנהל}` |
+| Fund manager, no list | רשימת הקרנות של `{מנהל}` עוד לא נאספה. הרשימה המלאה במאיה. |
+| Fund columns | שם · מספר · סיווג · קוד חשיפה · נכס מעקב · מעמד מס · דמי ניהול · דמי נאמן · רשומה |
+| Has record tag | יש רשומה |
+| Exposure code popover | קוד החשיפה: הספרה היא החשיפה המרבית למניות, והאות למטבע חוץ, כחלק משווי הנכסים. |
+| Provident manager listing (track workbench tab) | דמי ניהול לפי המחירון של החברה, לא מדורג |
+
+**Added 2026-10-24, for the founder's review.** Key paths are the ones in `site/app/copy.ts`, so the two files can be diffed. Where the build's wording was changed, the note says what it was.
+
+| Key in `copy.ts` | Hebrew | Note |
+|---|---|---|
+| `r4catalogue.rowLine.noDate · card.noPublishedDate` | ללא תאריך פרסום | as 8.0 |
+| `r4catalogue.asOfAfterRead` | התאריך מאוחר מיום הקריאה | the bank's "נכון ליום" is later than the day the record was read (flow 33, point 11). Was "אחרי יום הקריאה" |
+| `r4catalogue.card.period` | לחודש · לרבעון · לשנה | how often a custody percentage is charged, as the tariff states it |
+| `r4catalogue.card.channel` | ערוצים ישירים · סניף | as 8.1 |
+| `r4catalogue.missingLinks.compareBroker` | להשוואת הספקים (בית ההשקעות מופיע שם כלא ניתן להשוות) | the broker's form of the parenthesis |
+| `r4catalogue.instrumentClasses · regulators` | as 8.0 | the class and regulator words, held again for the bank page |
+
+### 8.5 Additions to existing screens
+
+| Where | Hebrew |
+|---|---|
+| Result, brokerage row detail | איזה בנק או בית השקעות · איזו קרן לקנות |
+| Result, coverage last line | הספקים, המסלולים והקרנות בתוך כל מוצר מושווים בשולחן העבודה. |
+| Exposure guide page, block | איזו קרן לקנות · `{מספר}` קרנות עם רשומה · `{מספר}` קרנות ברשימה |
+| Brokerage guide page, who offers it | תעריפון מ־`{תאריך}` · לא נאסף · איזה בנק או בית השקעות |
+| Guide page, in-and-out block | איך עוברים לחברה אחרת |
+| Holdings, consolidation card last line | המדריך למעבר |
+| Holding card | איך עוברים |
+| Fee page, negotiate row | ואם תחליטו לעבור: המדריך למעבר |
+| Track workbench, provider tab (provident) | למוצר הזה הדירוג הוא לפי מסלול. כאן מופיעים דמי הניהול לפי המחירון של כל חברה, בלי דירוג. |
+| Export contents line, added | `{מספר}` הצעות שהזנתם |
+| Search group heading | בנקים ומוצרי בנק · קרנות |
+
+### 8.6 Why these words
+
+- **"תעריפון · ממוצע שפורסם · ההצעה שלכם"** for D4's three levels: "תעריפון" is the glossary's headword for the published price list and the word on every bank's site; "ממוצע שפורסם" covers both the Bank of Israel's and TASE's averages without naming a regulator that TASE is not; "ההצעה שלכם" matches release 2's "הצעה שהזנתם" and says whose number it is. Not "מחירון": the glossary chose "תעריפון".
+- **"לא ניתן להשוות"** rather than "חסר": the provider exists and is listed; what is missing is the comparison. The reason sentence says what was not collected or what did not apply, so a missing tariff is never read as a missing provider.
+- **"מכריע מול {ספק}"** keeps release 2's "מכריע" and adds the pair, because the deciding type is a property of two rows, not of one.
+- **"בשנה הראשונה"** with the tag "בשקלים של השנה הראשונה": F-63's year-one cost is nominal at month 12 and the horizon cost is real; the two cannot share "בכסף של היום".
+- **"אין ממוצע שנאסף"** rather than release 3's "אין ממוצע להשוואה": here the averages exist, are free to read on the publishers' pages, and the site may not copy them (D20, D22); the word "נאסף" and the links say exactly that.
+- **"ראשי, בעותק"** for a primary source read on a mirror or a third-party host: the person following a process should know the circular was read in a copy; "עותק" is the plain word and the popover names the host. Not "מירור". Was "ראשוני, בעותק" until 2026-10-24: the site's label for the strength since release 1 is "מקור ראשי" (section 2), and the chip must not name the same strength with a different word; "שאלה פתוחה" for the open chip for the same reason (was "פתוח").
+- **"ניסיון"** for a forum account: the rule base's own label ("experience"); the card's last line, "ניסיון של אדם אחד, לא כלל", keeps it from reading as advice.
+- **"לא נמצא כלל"** on the retention step, in the step's title: the research says this is where people get hurt, and the honest heading is the content.
+- **"רשמו כל הצעה"** in the imperative: it is the one place the playbook tells the person to do something the rules do not require, and it says why in the lede ("הצעות נמשכות").
+- **"המעבר לא עולה כלום לפי הכללים"** rather than "המעבר חינם": the rules say no transfer fee and no tax; a discount may still end and a joining fee may exist, and the two lines under it say so.
+- **"לפי הצהרות של מוסדות בלבד"** inside the in-kind sentence: D10 asks that a secondary basis be visible wherever it affects what is shown; a chip alone would be too quiet for a yes a person acts on.
+- **"לא מחלקת" / "מחלקת"** as tags: the glossary's headwords are "קרן שאינה מחלקת" and "קרן מחלקת"; the tag drops "קרן" because the row is already a fund. "צוברת" stays as "נקרא גם".
+- **"מדינת המוצא"** for domicile: the glossary's term, from the law's wording for a foreign fund ("מדינת המוצא של קרן החוץ").
+- **"מספר נייר"** for the security number: the bank's order screen says "מספר נייר" and the product's "works when" asks for it; "ISIN" appears in the row detail as the record holds it.
+- **"הפרטים עוד לא נאספו"** for F-65's "not evaluated: details not collected": the same posture as release 2's "עוד לא נבדקה", with the reason in the words the product uses.
+- **"רשומה שנאספה"** for a `data/funds/` record: the site's word for a hand-collected file, as the data schema calls it.
+- **"בנקים ובתי השקעות"** as one heading: both are TASE members and both appear in the provider table; the class word on each row tells them apart.
+- **"שיעור הריבית המוצעת (נומינלי שנתי), לפני מס"** is directive 447's own label (BANK-13), kept verbatim so the row matches the bank's table a friend is looking at.
+- **"מה חותמים / מה לצפות"** as the two labelled lines of a step: product 3.7 Out names exactly these two things for every step; the labels make them scannable.
+- **Added 2026-10-24** (the build's strings, folded the same day): **"כמה עולה המעבר"** for the cost block, the question a person asks (not "מה עולה"). **"הפקדה אחת בכל חודש של השנה"** says A-28's twelve deposits without a digit. **"להשוות אליו · ביטול ההשוואה"** as infinitive and noun, like every other button. **"הכללים שהחישוב נשען עליהם"** mirrors 6.2's "הכללים שההשוואה נשענת עליהם". **"מחיסכון · מהפקדה"** in the provident listing, the glossary's words, never "מצבירה".
+
+## 9. Release 5 screens
+
+Added 2026-10-24 for the briefs in `docs/flows.md` section 18 and the handoff in `docs/design-spec.md` sections 21 to 25. Same voice and conventions as section 1: plural imperative or impersonal, no typed figures (every `{…}` is a value object with its state), names as the source writes them, codes after the words. Exposure names are the records' `names.he[0]` (מזומן שקלי · מק"מ · אג"ח ממשלתית לא צמודה · אג"ח ממשלתית צמודה · מדד S&P 500 · מדד ת"א-125 · מסלול כללי) and their one-line explanations are the records' `one_line_he`, never retyped here. Rule texts render from the rule base with their chips. Status: **draft** (2026-10-24), to be settled by the founder as sections 3, 6, 7 and 8 were. Every wording choice is "chosen 2026-10-24, revisable"; section 9.7 says why.
+
+### 9.0 Everywhere in release 5
+
+| Element | Hebrew |
+|---|---|
+| Mode names, two (3.2, D9) | לפי מוצר · לפי חשיפה |
+| Mode lede, wrapper | אותה השקעה בכל מוצר שיכול להחזיק אותה, באותה תשואה. |
+| Mode lede, exposure | אותו כסף, באותו אופק, בכל חשיפה שהאתר מכיר, בתשואה שאתם מזינים לכל אחת; מסנן הירידה שלכם מוציא את מה שלא תסכימו לספוג. |
+| The word for an exposure | חשיפה · חשיפות |
+| The loss filter (D11) | מסנן הירידה |
+| Worst fall (A-29) | הירידה החמורה ביותר שאתם צופים |
+| Largest fall accepted (A-29) | הירידה הגדולה ביותר שתסכימו לספוג |
+| Return labels (D7, D9) | לפי תשואה שהזנתם: `{אחוז}` · לפי ריבית הבנק שפורסמה: `{אחוז}` · לפי ריבית שהזנתם: `{אחוז}` |
+| Excluded outcome, exposure mode | נפסלה לפי מסנן הירידה · נפסלו לפי מסנן הירידה |
+| Saved comparison | ההשוואה השמורה · נשמרה ב־`{תאריך}` |
+| Revisit | בדיקה מחדש · לבדיקה מחדש |
+| Affects rankings, two groups | משפיע על דירוגים · לא משפיע על דירוגים |
+| Menu row and footer link | מה השתנה |
+| Graduation | עבר לכיסוי מלא · עברו לכיסוי מלא |
+| Retired (8.0 "later releases") | ~~סינון לפי ירידה שתסכימו לספוג יתווסף בהמשך~~ |
+| Retired (6.1 loss filter, later) | ~~כמה ירידה תסכימו לספוג: יתווסף בהמשך.~~ |
+| Retired (3.6 exposure guide page) | ~~המוצרים שבהם אפשר להחזיק את זה. השוואה ביניהם למטרה שלכם תתווסף בהמשך.~~ → המוצרים שבהם אפשר להחזיק את זה. |
+
+### 9.1 Goal form additions
+
+| Element | Hebrew |
+|---|---|
+| Accepted-fall field, label | הירידה הגדולה ביותר שתסכימו לספוג בדרך למטרה |
+| Unit | אחוז מהשווי |
+| Hint | ההחלטה שלכם, לא ציון ולא שאלון. האתר לא ממליץ על מספר. |
+| Use line | משמש את ההשוואה לפי חשיפה ואת סימון ההתאמה של מסלולים. |
+| Empty | לא הוזן: ההשוואה לפי חשיפה תרוץ בלי מסנן, ותגיד זאת. |
+| Second door (quiet button) | איזו חשיפה מתאימה למטרה |
+| Errors | as 6.1 ("הזינו אחוז עד `{מקסימום}`.") |
+
+### 9.2 Exposure result page
+
+| Element | Hebrew |
+|---|---|
+| Title | `{שם המטרה}`: איזו חשיפה מתאימה |
+| Tabs | לפי מוצר · לפי חשיפה |
+| Headline pattern | `{חשיפה}` מתאימה למטרה הזו לפי התשואות שהזנתם, כי `{סיבה}`. |
+| Headline, sourced cash winner | `{חשיפה}` מתאימה למטרה הזו לפי התשואות שהזנתם ולפי ריבית הבנק שפורסמה, כי `{סיבה}`. |
+| Headline, bare | `{חשיפה}` מתאימה למטרה הזו לפי התשואות שהזנתם. |
+| Headline, single | `{חשיפה}` היא החשיפה היחידה שדורגה למטרה הזו. |
+| Headline, tie | `{חשיפה}` ו`{חשיפה}` שקולות למטרה הזו לפי התשואות שהזנתם: ההפרש ביניהן `{אחוז}`, פחות מסף התיקו של האתר, `{אחוז}`. |
+| Headline, all tied | כל החשיפות שדורגו שקולות למטרה הזו לפי התשואות שהזנתם. |
+| Reasons (deciding formula) | as 6.2 ("דמי הניהול בה נמוכים יותר…" and the rest), with the holding wrapper's figures |
+| No return at all (callout) | הזינו תשואה לחשיפה אחת לפחות כדי להשוות. |
+| All entered exposures excluded | מסנן הירידה שלכם פוסל את כל החשיפות שהזנתם: מסכימים לספוג עד `{אחוז}`. |
+| Its link | לשינוי המספר |
+| Why button, why sheet | as 6.2 |
+| Ranked heading | לפי הסדר, לפי התשואות שהזנתם |
+| Listed heading | מוצגות בלי דירוג |
+| Excluded heading | נפסלו לפי מסנן הירידה |
+| Not evaluated heading | עוד לא נבדקו |
+| Entered-return field | תשואה שנתית ב`{מטבע}` |
+| Return, empty | לא הוזן: האתר לא מנחש תשואה. |
+| Return, hint | הזינו את התשואה שאתם מניחים לחשיפה הזו. היא תסומן בכחול בכל מקום שבו היא משפיעה. |
+| Cash-rate line, published | ריבית הבנק, בתוקף מ־`{תאריך}` |
+| Cash-rate note (BANK-13) | המינימום שהבנק מפרסם לסוג הפיקדון, לא הצעה אליכם. התנאים המחייבים בהסכם הפיקדון. |
+| Cash-rate actions | להזין ריבית אחרת · לחזור לריבית שפורסמה |
+| No sourced series (D20) | אין סדרה ממקור: שערי בנק ישראל מוצגים רק בקישור. הזינו תשואה. |
+| Its link | לנתוני בנק ישראל |
+| Worst-fall field | הירידה החמורה ביותר שאתם צופים ב`{חשיפה}`, בדרך למטרה |
+| Unit | אחוז מהשווי |
+| Worst-fall hint (popover) | אין לאתר מקור להערכה כזו, ולכן הוא לא מציע מספר. מה ידוע על הסיכונים, בעמוד המדריך. |
+| Its link | לסיכונים של `{חשיפה}` |
+| Accepted-fall chip | מסכימים לספוג עד `{אחוז}` |
+| Accepted-fall chip, not set | לא הוזן כמה תסכימו לספוג |
+| Per-exposure override | לחשיפה הזו בנפרד · לפי המספר המשותף |
+| Holding wrapper line | מוחזקת ב`{מוצר}` |
+| Holding wrapper, change | החליפו מוצר |
+| Holding wrapper, parameter popover | המוצר שהאתר בחר כברירת מחדל לחשיפה הזו, פרמטר של האתר. אפשר לבחור כל מוצר שיכול להחזיק אותה. |
+| Loss note, worst fall missing | מסנן הירידה לא הופעל: הזינו את הירידה שאתם צופים. |
+| Loss note, accepted fall missing | מסנן הירידה לא הופעל: הזינו את הירידה שתסכימו לספוג. |
+| Exclusion tag | נפסלה: צופים ירידה של `{אחוז}`, מסכימים לספוג עד `{אחוז}` |
+| Exclusion line | שנו אחד מהמספרים כדי להחזיר אותה להשוואה. |
+| Filter passed (row detail) | עברה את מסנן הירידה: `{אחוז}` עד `{אחוז}`. |
+| Value label | נשאר לכם במועד המטרה, בכסף של היום |
+| Listed reason through the wrapper | ב`{מוצר}`: `{סיבה}` |
+| Coverage reason, excluded | נפסלה לפי מסנן הירידה: צופים ירידה של `{אחוז}`, מסכימים לספוג עד `{אחוז}`. D11 |
+| Coverage reasons, not evaluated | הזינו תשואה · אין סדרה ממקור: שערי בנק ישראל מוצגים רק בקישור. D20 · לא נבחר מוצר שמחזיק את החשיפה |
+| Row links | באיזה מוצר להחזיק את זה · איזו קרן לקנות |
+| Wrapper-mode link, no return yet | הזינו תשואה קודם |
+| Choose button | בחרתי בזה |
+| Chosen | הבחירה שלכם, מ־`{תאריך}` |
+| Unchoose | לבטל את הבחירה |
+| Save button | לשמור את ההשוואה |
+| Saved | נשמרה ב־`{תאריך}` · לשמור שוב |
+| Replace confirm | להחליף את ההשוואה שנשמרה ב־`{תאריך}`? · להחליף · ביטול |
+| Chart title | הכסף לאורך הזמן, בחשיפות המובילות |
+| Series chips (screen-reader name) | אילו חשיפות להציג |
+| Series chips, limit line | עד ארבע בבת אחת; השאר בטבלה. |
+| Series chips, more | עוד `{מספר}` בטבלה |
+| Reference line label | מזומן, להשוואה |
+| Chart caption (always) | הקווים המקווקווים מבוססים על תשואות שהזנתם, לא על הערכה של האתר. |
+| Chart, nothing to draw | אין חשיפות מדורגות להצגה. |
+| Assumption chips | שנים · סכום היום · הפקדה חודשית · זמין מיד · אינפלציה · מסכימים לספוג עד · כל ההנחות |
+| Assumptions sheet title | ההנחות של ההשוואה לפי חשיפה |
+| Assumptions sheet, per-exposure group | `{חשיפה}`: תשואה · ירידה צפויה · מסכימים לספוג · מוחזקת ב |
+| Coverage sentence | נבדקו `{מספר}` חשיפות: `{מספר}` דורגו, `{מספר}` מוצגות בלי דירוג, `{מספר}` נפסלו לפי מסנן הירידה, `{מספר}` עוד לא נבדקו. |
+| Coverage, not eligible (only when non-zero) | , `{מספר}` לא מתאימות לכם |
+| Coverage groups | as 6.2, with "נפסלו לפי מסנן הירידה" for the excluded group |
+| Coverage, last line | הקרנות והמסלולים שנותנים כל חשיפה מושווים בשולחן העבודה. |
+| Sensitivity row, an exposure's return | התשואה של `{חשיפה}` |
+| Wrapper mode, subject line | לפי `{חשיפה}` בתשואה שהזנתם, `{אחוז}` |
+| Wrapper mode, cannot-hold tag | לא מחזיק `{חשיפה}` |
+| Rules line heading | as 6.2 |
+
+**Added 2026-10-24, for the founder's review.** Key paths are the ones in `site/app/copy.ts`, so the two files can be diffed. Where the build's wording was changed, the note says what it was.
+
+| Key in `copy.ts` | Hebrew | Note |
+|---|---|---|
+| `r5.mode.aria` | מצב ההשוואה | the mode tabs' screen-reader name |
+| `r5.exposure.pageTitle` | איזו חשיפה מתאימה | the title when no goal is named |
+| `r5.exposure.headline.bareSourced` | `{חשיפה}` מתאימה למטרה הזו לפי התשואות שהזנתם ולפי ריבית הבנק שפורסמה. | the bare form with the sourced-cash qualifier |
+| `r5.exposure.headline.tieMany` | `{שמות}` שקולות למטרה הזו לפי התשואות שהזנתם: ההפרש ביניהן `{אחוז}`, פחות מסף התיקו של האתר, `{אחוז}`. | three or more tied |
+| `r5.exposure.fields.currency` | שקלים · דולרים · יורו | the `{מטבע}` of "תשואה שנתית ב`{מטבע}`" |
+| `r5.exposure.fields.cashLabel · institution` | ריבית שנתית · מוסדי | the overriding rate field; the tag on a published bank rate (D23) |
+| `r5.exposure.fields.noSeriesLink` | לנתוני בנק ישראל | as the table above. Was "לנתונים של בנק ישראל" |
+| `r5.exposure.fields.worstInfo · holdingAria · holdingDone` | על ההערכה · באיזה מוצר להחזיק · סגירה | screen-reader names of the worst-fall info button and the holding-wrapper chooser, and its close |
+| `r5.exposure.notes.passedEqual` | עברה את מסנן הירידה: `{אחוז}`, בדיוק המספר שתסכימו לספוג. ירידה שווה למספר שלכם נשארת בהשוואה. | F-71 keeps an equal fall; said on the row. Was "…, בדיוק כמו המספר שתסכימו לספוג (שווה נשאר)." |
+| `r5.exposure.coverageReasons.cannotHold · noFund · noTerms` | `{מוצר}` לא מחזיק את החשיפה הזו · לא נבדקה: פרטי הקרן עוד לא נאספו. · עוד אין לאתר את תנאי המוצר | engine reason `wrapper-cannot-hold`; a P-08 row waiting for a fund record; a wrapper without terms |
+| `r5.exposure.p08.gov` | לא נבדקה: תדירות הקופון של סדרה לא צמודה עוד לא במאגר הכללים. שאלה פתוחה GOV OQ4 | the unlinked government bond row of P-08. Was "…במאגר הכללים (GOV OQ4).": a code is never in brackets at the end of a sentence (section 1) |
+| `r5.exposure.chart.loading · aria` | טוען… · גרף: הכסף בחשיפות לאורך `{שנים}` | the skeleton line and the chart's screen-reader name |
+| `r5.exposure.assumptions.ret · worst · accepted · holding · empty` | תשואה · ירידה צפויה · מסכימים לספוג · מוחזקת ב · לא הוזן | the per-exposure group's labels, and an empty value |
+| `r5.exposure.rank · detail · detailTitle · checklist · failed` | מקום · פירוט · פירוט · מה לבדוק · לא הצלחנו לחשב את ההשוואה. רעננו את העמוד ונסו שוב. | as 6.2 |
+| `r5.exposure.valueLabelNominal` | נשאר לכם במועד המטרה, בשקלים של העתיד | as 6.0 |
+| `r5.exposure.save.failed` | לא הצלחנו לשמור במכשיר הזה. ההשוואה תעבוד, אבל לא תישמר. | as 6.0 |
+
+### 9.3 Revisit notice and sheet
+
+| Element | Hebrew |
+|---|---|
+| Strip, saved | נשמרה ב־`{תאריך}` |
+| Strip, saved with a choice | נשמרה ב־`{תאריך}` · הבחירה: `{אפשרות}` |
+| Notice, changed | לבדיקה מחדש: `{מה}` השתנה ב־`{תאריך}` |
+| Notice, changed, no entry date | לבדיקה מחדש: `{מה}` השתנה מאז `{תאריך}` |
+| Notice, unchanged | ללא שינוי מאז `{תאריך}` |
+| `{מה}`, one entry | הכלל `{קוד}` · הפרמטר `{שם}` · הנתון `{שם הקובץ}` · ההנחה `{שם}` |
+| `{מה}`, counts | `{מספר}` כללים · `{מספר}` פרמטרים · `{מספר}` קובצי נתונים · `{מספר}` הנחות (joined with ", " and "ו"; the verb becomes "השתנו") |
+| Many, with the comparison's share | `{מספר}` שינויים מאז `{תאריך}`, `{מספר}` מהם נגעו להשוואה הזו. |
+| Computing | בודק מה השתנה… |
+| Result, unchanged (quiet line) | נבדק מחדש היום: ללא שינוי מאז `{תאריך}`. |
+| Verdict, holds | הדירוג נשמר: `{אפשרות}` עדיין ראשונה. |
+| Verdict, top changed | הדירוג השתנה: `{אפשרות}` במקום `{אפשרות}`. |
+| Verdict, tie set changed | קבוצת השקולות השתנתה: `{שמות}`. |
+| Verdict, cannot run | לא ניתן לבדוק: `{סיבה}` |
+| Cannot run, reason forms | הכלל `{קוד}` לא עודכן · חסר קלט: `{שדה}` · הרשומה `{שם}` לא קיימת עוד |
+| Choice line, still ranked | בחרתם ב`{אפשרות}`; היא עדיין במקום `{מספר}`. |
+| Choice line, not ranked today | בחרתם ב`{אפשרות}`; היום היא `{תוצאה}`: `{סיבה}`. |
+| Banner buttons | מה השתנה · לשמור את ההשוואה של היום |
+| Sheet title | מה השתנה מאז `{תאריך}` |
+| Kind headings | כללים · פרמטרים · נתונים · הנחות |
+| Diff row, values | היה `{ערך}` · עכשיו `{ערך}` |
+| Diff row, dates | נבדק ב־`{תאריך}` |
+| Diff row, removed | הוסר מהמאגר · הקובץ לא קיים עוד |
+| Diff row, added | קובץ חדש · לא היה |
+| Diff row, state change | היה פרמטר · עכשיו הוזן על ידך |
+| Diff row, re-checked data | הקובץ נבדק מחדש; הערכים לא השתנו. |
+| More rows | עוד `{מספר}` |
+| Value changes heading | מה זז בהשוואה |
+| Value change row | `{אפשרות}`: `{סכום}` → `{סכום}`, בכסף של היום |
+| Value change tags | חדשה בהשוואה · לא מדורגת עוד |
+| Before/after heading | לפני ואחרי |
+| Before/after columns | בשמירה, `{תאריך}` · היום |
+| Before/after rows | ראשונה: `{אפשרות}` · שקולות: `{שמות}` · אין שקולות · אף אפשרות לא דורגה |
+| Empty sheet | אף כלל, פרמטר, נתון או הנחה שההשוואה נשענה עליהם לא השתנו. |
+| Footer links | לרשימת כל השינויים באתר מאז `{תאריך}` · לשמור את ההשוואה של היום |
+| Unreadable record | ההשוואה שנשמרה היא מגרסה ישנה של האתר ואי אפשר לבדוק אותה מחדש. |
+| Unreadable record, actions | להשוות מחדש ולשמור · מחיקה מהמכשיר |
+| Delete confirm | למחוק את ההשוואה השמורה מהמכשיר הזה? · מחיקה · ביטול |
+| Could not save | as 6.0 |
+
+**Added 2026-10-24, for the founder's review.** Key paths are the ones in `site/app/copy.ts`, so the two files can be diffed. Where the build's wording was changed, the note says what it was.
+
+| Key in `copy.ts` | Hebrew | Note |
+|---|---|---|
+| `r5.revisit.changedMany · changedSinceMany` | לבדיקה מחדש: `{מה}` השתנו ב־`{תאריך}` · לבדיקה מחדש: `{מה}` השתנו מאז `{תאריך}` | the plural verb for counts (the note above) |
+| `r5.revisit.changedRanking` | לבדיקה מחדש: הדירוג השתנה מאז `{תאריך}` | nothing the run read differs by entry, but the ranking moved |
+| `r5.revisit.verdict.none` | הדירוג נשמר: אף אפשרות לא דורגה, גם בשמירה. | both sides empty |
+| `r5.revisit.outcomes` | מוצגת בלי דירוג · נפסלה · עוד לא נבדקה · לא מתאימה לכם | the `{תוצאה}` of "בחרתם ב`{אפשרות}`; היום היא `{תוצאה}`" |
+| `r5.revisit.choiceGone` | לא קיימת עוד | the chosen option is no longer in the comparison |
+| `r5.revisit.sheet.close` | סגירה | |
+| `r5.revisit.modeNames` | לפי מוצר · לפי חשיפה | as 9.0 |
+
+### 9.4 What changed since page
+
+| Element | Hebrew |
+|---|---|
+| Title | מה השתנה באתר |
+| Lede | כל שינוי בכללים, בפרמטרים ובנתונים של האתר, מהיומן שלו. בחרו מאיזה תאריך. |
+| Picker label | מאז |
+| Until (disclosure) | עד תאריך |
+| Quick chips | הביקור הקודם · שבוע · חודש · מאז שנשמרה ההשוואה |
+| Default line, previous visit | הביקור הקודם שלכם: `{תאריך}` |
+| Default line, saved comparison | מאז שנשמרה ההשוואה: `{תאריך}` |
+| Default line, thirty days | ברירת המחדל: החודש האחרון. |
+| Counts line | `{מספר}` שינויים מאז `{תאריך}`, `{מספר}` מהם משפיעים על דירוגים. |
+| Counts line, with until | `{מספר}` שינויים בין `{תאריך}` ל`{תאריך}`, `{מספר}` מהם משפיעים על דירוגים. |
+| Counts line, whole log | מאז תחילת היומן, `{תאריך}` |
+| Precise-test line | האם שינוי נגע להשוואה ששמרתם, בודקים בעמוד ההשוואה. |
+| Group headings | משפיע על דירוגים · לא משפיע על דירוגים |
+| Collection names (by file key) | rules: כללים · parameters: פרמטרים · fees: תעריפונים · terms/deposits: תנאי פיקדונות · terms: מונחים · dimensions: מימדים לבדיקה · catalog: קטלוג · funds: רשומות קרנות · series: סדרות · instruments/wrappers: רשומות מוצרים · instruments/exposures: רשומות חשיפות · cma: נתוני רשות שוק ההון · site/content: תוכן האתר · site/content/guide: עמודי המדריך · il-finance: מאגר הכללים |
+| Columns | תאריך · מה · שדה · היה · עכשיו · למה |
+| Values | לא היה · הוסר · פירוט |
+| Reason label (screen-reader name) | הסיבה כפי שנרשמה ביומן |
+| Snapshot row | `{מזהה}`: `{מספר}` שדות השתנו |
+| Snapshot detail | פירוט · `{מספר}` מתוך `{מספר}` · להציג עוד |
+| Filters | אוספים · חיפוש לפי מזהה או שדה |
+| Loading older years | טוען שינויים ישנים יותר… |
+| Empty | לא השתנה כלום מאז `{תאריך}`. |
+| Error, date after today | התאריך אחרי היום. |
+| Error, unreadable log (dev) | יומן השינויים לא נקרא: שורה `{מספר}`. |
+| Stale banner | היומן עודכן לאחרונה ב־`{תאריך}`. |
+| First page line | מאז הביקור הקודם שלכם השתנו `{מספר}` דברים באתר. |
+| Rules and parameters pages, link | מה השתנה |
+
+**Added 2026-10-24, for the founder's review.** Key paths are the ones in `site/app/copy.ts`, so the two files can be diffed. Where the build's wording was changed, the note says what it was.
+
+| Key in `copy.ts` | Hebrew | Note |
+|---|---|---|
+| `r5.changes.defaults.thirty` | ברירת המחדל: החודש האחרון. | the row above was "ברירת המחדל: 30 הימים האחרונים." (changed 2026-10-24): no typed figure; the quick chip says "חודש" |
+| `r5.changes.snapshotMore` | להציג עוד | the row above was "עוד 50" (changed 2026-10-24): no typed figure; 7.3's paging word |
+| `r5.changes.chipsAria` | בחירה מהירה של תאריך | the quick chips' screen-reader name. Was "תאריכים מהירים" |
+| `r5.changes.explicit` | התאריך שבחרתם: `{תאריך}` | a date given in the address |
+| `r5.changes.back · loading · countLabel · showAll · unknownCollection · objectLabel` | חזרה · טוען את היומן… · שורות · עוד `{מספר}` · אוסף · ערך מורכב | the back arrow, the loading line, the count beside a collection, paging, a collection the dictionary lacks, the disclosure of a value that is an object |
+| `r5.changes.noHits` | אין שינוי שמתאים לחיפוש או לבחירה. | B11, added 2026-10-24 (QA fixes): the line under the filters when the search or the chosen collections match nothing |
+
+### 9.5 Not covered yet: the status card
+
+| Element | Hebrew |
+|---|---|
+| Block heading | מצב הכיסוי |
+| Status, blocked | חסום: `{מספר}` שאלות פתוחות |
+| Status, blocked, one | חסום: שאלה פתוחה אחת |
+| Status, remaining | השאלות נסגרו; נותר: `{רשימה}` |
+| Remaining items | רשומה עם מקור · שיטת חישוב |
+| Status, graduated (end list) | עבר לכיסוי מלא ב־`{תאריך}` |
+| Blockers heading | מה חוסם |
+| Blocker (as 6.13) | שאלה פתוחה `{קוד}`: `{מה לא ידוע}` |
+| Narrowed | צומצם ב־`{תאריך}`: `{כלל}` |
+| Institution answer (D23, answered F1 on 2026-10-24) | יש תשובה של מוסד; האתר מחשב לפיה ומסמן ״מקור מוסדי״, אבל היא לא סוגרת שאלת מס לצורך מעבר לכיסוי מלא. |
+| Reopened | נפתח מחדש ב־`{תאריך}` |
+| Closures heading | מה נסגר |
+| Closure | נסגר ב־`{תאריך}`: `{כלל}` |
+| No closures recorded | עוד לא נרשמו סגירות. |
+| Closure without a date | נסגר: `{כלל}` (התאריך לא נרשם) |
+| Path line | כשייסגר: יופיע במדריך, בהשוואה למטרה, בשולחן העבודה ובקטלוג, ויימנה בשורת הכיסוי של כל השוואה. |
+| Nearest | הקרוב ביותר לכיסוי מלא |
+| Graduated list heading | עברו לכיסוי מלא |
+| Graduated item | `{שם}`, מ־`{תאריך}` |
+| Its link | לעמוד המדריך |
+| Holdings row link | מה חוסם את הכיסוי |
+
+**Added 2026-10-24, for the founder's review.** Key paths are the ones in `site/app/copy.ts`, so the two files can be diffed. Where the build's wording was changed, the note says what it was.
+
+| Key in `copy.ts` | Hebrew | Note |
+|---|---|---|
+| `r5.graduation.institution` | יש תשובה של מוסד; האתר מחשב לפיה ומסמן ״מקור מוסדי״, אבל היא לא סוגרת שאלת מס לצורך מעבר לכיסוי מלא. | the row above was "יש תשובה של מוסד; האתר מחשב לפיה רק אם ההחלטה F1 תתקבל." (changed 2026-10-24): D23 answered F1 the same day, so the line states the decision and names no decision code |
+| `r5.graduation.sourceNote` | המצב נקרא מקטעי ״מצב מעבר״ בקובצי מאגר הכללים של כל מוצר ומרשימת הפערים הפתוחים של שיטת החישוב. | where the card's status comes from. Was "…ומשאלות G-24 של השיטה.": a method gap's code is not for the page |
+
+### 9.6 Additions to existing screens
+
+| Where | Hebrew |
+|---|---|
+| Menu and footer | מה השתנה |
+| First page, under the strip | מאז הביקור הקודם שלכם השתנו `{מספר}` דברים באתר. |
+| Rules page, parameters page, lede link | מה השתנה |
+| Comparison result, tabs | לפי מוצר · לפי חשיפה |
+| Comparison result, rows | בחרתי בזה · לשמור את ההשוואה |
+| Saved-goal strip, second line | נשמרה ב־`{תאריך}` · הבחירה: `{אפשרות}` · לבדיקה מחדש: … · ללא שינוי מאז `{תאריך}` · מה השתנה |
+| Compact strip | לבדיקה מחדש · ללא שינוי |
+| Exposure guide page, "how to hold it" links | איזה מוצר יחזיק את זה למטרה שלכם · איזו חשיפה מתאימה למטרה |
+| Fit mark, line with the loss filter (F-70) | לפי האופק ולפי הירידה שתסכימו לספוג (`{אחוז}`) |
+| Fit mark, track's side (P-04) | המסלול מתאים לירידה של עד `{אחוז}`, פרמטר של האתר |
+| Holdings, tier-2 row | מה חוסם את הכיסוי |
+| Export contents line, added | `{מספר}` השוואות שמורות |
+| Import, newer version | as 7.4 |
+
+**Added 2026-10-24, for the founder's review.** Key paths are the ones in `site/app/copy.ts`, so the two files can be diffed. Where the build's wording was changed, the note says what it was.
+
+| Key in `copy.ts` | Hebrew | Note |
+|---|---|---|
+| `r5.additions.fitNotMet` | המסלול מתאים לירידה של עד `{אחוז}`, ואתם מסכימים לספוג עד `{אחוז}` | the fit mark's line when the track's fall exceeds the person's |
+| `search.groups.bank` | בנקים ומוצרי בנק | as 8.5 |
+| `fit.horizonOnly` | לפי השנים עד המטרה בלבד. | the release 2 line without its retired half (9.0) |
+
+### 9.7 Why these words
+
+- **"לפי מוצר · לפי חשיפה"** for the two modes: parallel to release 4's workbench tabs ("לפי ספק · לפי מסלול · לפי קרן"), and "חשיפה" is already the site's word for what the money is invested in (the exposure guide pages, "כל הקרנות על {חשיפה}"). Not "סוג נכס": the records are called exposures and the glossary explains the word once.
+- **"מסנן הירידה"** for D11's loss filter: it is a filter the person sets, so "מסנן" and not "פרופיל סיכון" or "רמת סיכון", which would read as a score; "ירידה" rather than "הפסד" because the number is a fall in value on the way, not a realised loss.
+- **"הירידה החמורה ביותר שאתם צופים" / "הירידה הגדולה ביותר שתסכימו לספוג"**: two long labels on purpose; each says whose number it is (you expect; you accept) and what it measures (a fall, on the way to the goal). "לספוג" is the everyday word for taking a fall without acting; "לסבול" would be about pain, "לקבל" ambiguous.
+- **"צופים … מסכימים לספוג עד …"** in the exclusion tag: the two numbers side by side are the whole reason, and the person can see which to change.
+- **"לפי תשואה שהזנתם: {אחוז}"** as a tag on every ranked row, beside the field: roadmap R5's risk is that an entered return is read as the site's view; the tag keeps the basis next to the figure when the field has scrolled away, and the headline's "לפי התשואות שהזנתם" repeats it where a screenshot would start.
+- **"מתאימה למטרה הזו"** rather than release 2's "היא הטובה ביותר למטרה הזו": in exposure mode the ranking rests on numbers the person typed, so the site says the exposure fits, on their numbers, and never that it is best.
+- **"ריבית הבנק שפורסמה"** for the cash rate: release 2's "ריבית הבנק, בתוקף מ־{תאריך}" named the figure; the label on the row needs to say it is a published one, against "ריבית שהזנתם".
+- **"אין סדרה ממקור"**: the engine's "no sourced series" in the data words the site already uses ("ממקור"); the sentence then says why (D20) and what to do.
+- **"מוחזקת ב{מוצר}" / "החליפו מוצר"**: the exposure does not float; it is held in a product, and the person can change which. "מוצר" is the site's word for a wrapper throughout.
+- **"בחרתי בזה"** in the first person singular: it is the one place the person speaks, not the site; the imperative plural would be the site telling them to choose. The confirmation "הבחירה שלכם" returns to the site's voice.
+- **"לבדיקה מחדש: {מה} השתנה ב־{תאריך}"**: product 3.9's "re-check: rule X changed on date Y" word for word, with the entry named ("הכלל TXS-09") when there is one, so the notice is specific; "ללא שינוי מאז {תאריך}" is its mirror, and the date tells the person how long the decision has held.
+- **"הדירוג נשמר / השתנה"** as fixed sentences: the verdict is two booleans from the engine (`topUnchanged`, `tieSetUnchanged`); a fixed sentence per case keeps it a fact, not an opinion.
+- **"מה זז בהשוואה"** for the value changes: lighter than "שינויים בערכים"; it says that numbers moved without saying that anything is wrong.
+- **"משפיע על דירוגים / לא משפיע על דירוגים"** as the two group names: the schema's own flag (`affects_rankings`) in plain words, in the present tense because the flag is about what the engine reads, not about any one comparison; the quiet line under the counts says where the precise test lives.
+- **"{מזהה}: {מספר} שדות השתנו"** for a folded snapshot: it says what the row is (one record, many fields) and keeps the count visible, so folding hides nothing.
+- **"הביקור הקודם"** for the picker's default: "האחרון" would mean today's visit; the question is what changed since the one before.
+- **"מצב הכיסוי"** for the status block: the page is about coverage ("מה האתר עוד לא מכסה"), and the block answers how far each product is from it.
+- **"חסום: {מספר} שאלות פתוחות"**: the lock is the site's sign for an open rule everywhere; the count tells the person whether it is one question or six.
+- **"השאלות נסגרו; נותר: …"**: a semicolon and a list, so the good news and the remaining work are one line; "נותר" rather than "חסר" because nothing is missing from the person's side.
+- **"עבר לכיסוי מלא"** rather than "שודרג" or "עלה לרמה 1": tiers are a product-doc word; a friend reads "covered in full".
+- **"עוד לא נרשמו סגירות."** rather than "לא נסגר כלום": the data file may simply not exist yet; the sentence says only what the site knows.
+- **"כשייסגר: יופיע ב…"** as one fixed sentence: the graduation path is the same for every instrument and short enough to say in full; writing it once per card keeps the promise identical everywhere.
+- **Added 2026-10-24** (the build's strings, folded the same day): **"ברירת המחדל: החודש האחרון"** rather than a count of days, so no figure is typed and the default reads like the quick chip "חודש". **"להציג עוד"** for paging, 7.3's word, never with a page size in it. **"ירידה שווה למספר שלכם נשארת בהשוואה"** says F-71's equal-is-kept rule in the person's terms. **"יש תשובה של מוסד; … לא סוגרת שאלת מס לצורך מעבר לכיסוי מלא"** states D23 without naming it: an institution's answer computes, labelled, and graduation still waits for a primary or secondary source.

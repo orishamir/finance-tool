@@ -1,10 +1,12 @@
 // The saved goal (design-spec 6.5, flows 12 and 17): types, the preset step, the versioned document on the
 // device and the React provider the goal form and the comparison share. Browser only; nothing is sent anywhere.
+// The goals live in the v2 state document (lib/state.ts); this file keeps the release 2 API on top of it.
 // A field the person typed is `entered`; a field a preset filled keeps no number of its own: it is read from the
 // preset record each time (so a changed parameter never leaves a stale copy), and shows as a site parameter.
 import { createContext, createElement, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import type { ValueObject } from "@finance-tool/schema";
+import type { ValueObject, WrapperId } from "@finance-tool/schema";
 import { useInputs, type Employment } from "./inputs";
+import { clearGoals, ensureLoaded, getSnapshot, STATE_KEY, takeOver, updateState, useStateStore } from "./state";
 
 export type PresetId = "liquid-reserve" | "known-date" | "long-term" | "lump-sum" | "child" | "none";
 export const presetIds: PresetId[] = ["liquid-reserve", "known-date", "long-term", "lump-sum", "child", "none"];
@@ -13,6 +15,20 @@ export const presetIds: PresetId[] = ["liquid-reserve", "known-date", "long-term
 export interface NumField {
   value: number | null;
   entered: boolean;
+}
+
+/**
+ * What the person entered for one exposure in exposure mode (design-spec 21.2); every figure an `entered` value object (D7, D9).
+ * `wrapperId` is the holding wrapper when the person changed it; otherwise P-08's applies.
+ */
+export interface ExposureInputs {
+  /** The exposure's gross annual return (A-01), or the person's own cash rate for a cash-like one, `pct_per_year`. */
+  return?: ValueObject;
+  /** The worst fall expected on the way (A-29), `pct`. */
+  worstFall?: ValueObject;
+  /** The largest fall accepted for this exposure alone, wins over the goal's common one (A-29), `pct`. */
+  acceptedFall?: ValueObject;
+  wrapperId?: WrapperId;
 }
 
 export interface Goal {
@@ -43,8 +59,14 @@ export interface Goal {
     inflation: number | null;
     /** A-17, entered: the insurance cost inside a pension fund, % of deposits. Absent in goals saved before it existed. */
     insurance?: number | null;
+    /** A-29, entered: the largest fall the person accepts on the way to the goal, in percent of value. Never filled by a preset (D21). Absent before release 5. */
+    acceptedFall?: number | null;
   };
+  /** Exposure mode's inputs per exposure id (release 5). Absent in goals saved before it existed; the state migration adds `{}`. */
+  exposures?: Record<string, ExposureInputs>;
   order: number;
+  /** Set by an import "add": the day it was imported (design-spec 11.5). */
+  importedAt?: string;
 }
 
 export interface GoalsDoc {
@@ -54,7 +76,8 @@ export interface GoalsDoc {
   bank?: string;
 }
 
-export const GOALS_KEY = "mekor.v1.goals";
+/** The key the goals are saved under: since release 3 the one state document. */
+export const GOALS_KEY = STATE_KEY;
 
 export type StorageStatus = "loading" | "ok" | "old-version" | "unavailable";
 
@@ -83,7 +106,7 @@ export function presetNumbers(preset: PresetRecord | undefined) {
   };
 }
 
-export type FieldKey = "horizonYears" | "amountNow" | "monthly" | "available" | "anytime" | "return" | "inflation" | "age" | "employment" | "salary" | "insurance";
+export type FieldKey = "horizonYears" | "amountNow" | "monthly" | "available" | "anytime" | "return" | "inflation" | "age" | "employment" | "salary" | "insurance" | "acceptedFall";
 
 export type FieldSource = "entered" | "preset" | "empty";
 
@@ -160,7 +183,8 @@ export function emptyGoal(order: number, seed?: { age: number | null; employment
       hasPension: null,
       hasHishtalmut: null,
     },
-    assumptions: { return: seed?.return ?? null, inflation: seed?.inflation ?? null, insurance: null },
+    assumptions: { return: seed?.return ?? null, inflation: seed?.inflation ?? null, insurance: null, acceptedFall: null },
+    exposures: {},
     order,
   };
 }
@@ -175,40 +199,24 @@ function isGoal(x: unknown): x is Goal {
 export type ReadResult = { status: "ok"; doc: GoalsDoc | null } | { status: "old-version" } | { status: "unavailable" };
 
 export function readDoc(): ReadResult {
-  let raw: string | null;
-  try {
-    raw = localStorage.getItem(GOALS_KEY);
-  } catch {
-    return { status: "unavailable" };
-  }
-  if (raw === null) return { status: "ok", doc: null };
-  try {
-    const parsed = JSON.parse(raw) as Partial<GoalsDoc>;
-    if (parsed.version !== 1 || !Array.isArray(parsed.goals) || !parsed.goals.every(isGoal)) return { status: "old-version" };
-    return { status: "ok", doc: { version: 1, goals: parsed.goals, currentId: parsed.currentId ?? null, ...(parsed.bank ? { bank: parsed.bank } : {}) } };
-  } catch {
-    return { status: "old-version" };
-  }
+  const snap = ensureLoaded();
+  if (snap.status === "unavailable") return { status: "unavailable" };
+  if (snap.status === "old-version") return { status: "old-version" };
+  const st = snap.state;
+  if (st.goals.length === 0) return { status: "ok", doc: null };
+  return { status: "ok", doc: { version: 1, goals: st.goals, currentId: st.currentId ?? null, ...(st.bank ? { bank: st.bank } : {}) } };
 }
 
-/** With storage unavailable the goal still crosses from the form to the result within the visit. */
+/** With storage unavailable the goal still crosses from the form to the result within the visit (the store keeps it). */
 let memory: GoalsDoc | null = null;
 
 function writeDoc(doc: GoalsDoc): boolean {
-  try {
-    localStorage.setItem(GOALS_KEY, JSON.stringify(doc));
-    return true;
-  } catch {
-    return false;
-  }
+  updateState((s) => ({ ...s, goals: doc.goals, currentId: doc.currentId ?? undefined, ...(doc.bank ? { bank: doc.bank } : {}) }));
+  return getSnapshot().saved;
 }
 
 export function deleteDoc() {
-  try {
-    localStorage.removeItem(GOALS_KEY);
-  } catch {
-    /* nothing to remove */
-  }
+  clearGoals();
 }
 
 // ---------------------------------------------------------------- provider
@@ -233,6 +241,10 @@ interface GoalsApi {
   restart: () => void;
   setPreset: (preset: PresetId) => { kept: boolean };
   setEnteredReturn: (v: number | null) => void;
+  /** A-29, the goal's common largest accepted fall (percent); null clears it. */
+  setAcceptedFall: (v: number | null) => void;
+  /** Changes one exposure's inputs; a field set to `undefined` is cleared, and an exposure with nothing left is dropped. */
+  setExposureInput: (id: string, patch: Partial<ExposureInputs>) => void;
   setInflation: (v: number | null) => void;
   setAge: (v: number | null) => void;
   setEmployment: (v: Employment | null) => void;
@@ -252,6 +264,8 @@ export function GoalsProvider({ presets, children }: { presets: Presets; childre
   const [saved, setSaved] = useState(true);
   const [doc, setDoc] = useState<GoalsDoc>({ version: 1, goals: [], currentId: null });
   const loaded = useRef(false);
+  const external = useStateStore().external;
+  const seenExternal = useRef(external);
 
   // Read once after hydration, and only when the release 1 inputs have been read too (they seed a new goal).
   useEffect(() => {
@@ -272,6 +286,19 @@ export function GoalsProvider({ presets, children }: { presets: Presets; childre
     }
     setStatus(r.status);
   }, [inputs.ready, inputs.state]);
+
+  // An import, "delete what was imported" or another tab changed the document: read the goals again.
+  useEffect(() => {
+    if (!loaded.current || seenExternal.current === external) return;
+    seenExternal.current = external;
+    const r = readDoc();
+    if (r.status === "ok" && r.doc && r.doc.goals.length > 0) setDoc(r.doc);
+    else if (r.status === "ok") {
+      const g = emptyGoal(0, { age: inputs.state.age, employment: inputs.state.employment, return: inputs.state.entered["A-01"] ?? null, inflation: inputs.state.entered["A-02"] ?? null });
+      setDoc({ version: 1, goals: [g], currentId: g.id });
+    }
+    setStatus(r.status);
+  }, [external, inputs.state]);
 
   // Saved on every change; a goal that holds nothing yet is not written (an empty form leaves no trace).
   const first = useRef(true);
@@ -330,6 +357,7 @@ export function GoalsProvider({ presets, children }: { presets: Presets; childre
     });
   }, []);
   const restart = useCallback(() => {
+    takeOver();
     const g = emptyGoal(0);
     setDoc({ version: 1, goals: [g], currentId: g.id });
     setStatus("ok");
@@ -351,6 +379,19 @@ export function GoalsProvider({ presets, children }: { presets: Presets; childre
       inputs.setEntered("A-01", v);
     },
     [update, inputs],
+  );
+  const setAcceptedFall = useCallback((v: number | null) => update((g) => ({ ...g, assumptions: { ...g.assumptions, acceptedFall: v } })), [update]);
+  const setExposureInput = useCallback(
+    (id: string, patch: Partial<ExposureInputs>) =>
+      update((g) => {
+        const merged: ExposureInputs = { ...(g.exposures?.[id] ?? {}), ...patch };
+        for (const k of Object.keys(merged) as (keyof ExposureInputs)[]) if (merged[k] === undefined) delete merged[k];
+        const exposures = { ...(g.exposures ?? {}) };
+        if (Object.keys(merged).length === 0) delete exposures[id];
+        else exposures[id] = merged;
+        return { ...g, exposures };
+      }),
+    [update],
   );
   const setInflation = useCallback(
     (v: number | null) => {
@@ -376,8 +417,8 @@ export function GoalsProvider({ presets, children }: { presets: Presets; childre
 
   const goals = useMemo(() => orderOf(doc.goals), [doc.goals]);
   const api = useMemo<GoalsApi>(
-    () => ({ status, saved, goals, current, presets, resolved, update, select, add, remove, move, restart, setPreset, setEnteredReturn, setInflation, setAge, setEmployment }),
-    [status, saved, goals, current, presets, resolved, update, select, add, remove, move, restart, setPreset, setEnteredReturn, setInflation, setAge, setEmployment],
+    () => ({ status, saved, goals, current, presets, resolved, update, select, add, remove, move, restart, setPreset, setEnteredReturn, setAcceptedFall, setExposureInput, setInflation, setAge, setEmployment }),
+    [status, saved, goals, current, presets, resolved, update, select, add, remove, move, restart, setPreset, setEnteredReturn, setAcceptedFall, setExposureInput, setInflation, setAge, setEmployment],
   );
   return createElement(Ctx.Provider, { value: api }, children);
 }
@@ -389,6 +430,6 @@ export function hasMeaning(g: ResolvedGoal | null): boolean {
 
 /** A goal worth keeping on the device: the person typed something or chose a preset. */
 export function isBlank(g: Goal): boolean {
-  return g.preset === "none" && !g.name && !g.horizonYears.entered && !g.amountNow.entered && !g.monthly.entered && !g.available.entered && !g.anytime.entered && g.profile.salary === null && g.assumptions.return === null;
+  return g.preset === "none" && !g.name && !g.horizonYears.entered && !g.amountNow.entered && !g.monthly.entered && !g.available.entered && !g.anytime.entered && g.profile.salary === null && g.assumptions.return === null && g.assumptions.acceptedFall == null && Object.keys(g.exposures ?? {}).length === 0;
 }
 

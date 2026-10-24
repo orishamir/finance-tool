@@ -1,0 +1,13 @@
+{
+  "id": "SW-14",
+  "title": "Partial transfers: allowed except from a keren hishtalmut; which money leaves first in a pension fund",
+  "title_he": "העברה חלקית: מותרת חוץ מקרן השתלמות",
+  "text_he": "קופה מעבירה מעבירה את היתרה או חלק ממנה, אבל מקרן השתלמות אי אפשר להעביר חלק. כשחלק מחשבון בקרן פנסיה חדשה מקיפה או כללית מועבר, הכסף נלקח מכל מרכיב לפי סדר ההפקדה, מהמועד המאוחר ביותר אל המוקדם ביותר. ברירת המחדל בטופס היא העברה מלאה; העברה חלקית משאירה כיסוי מוות יחסי בקופה המעבירה ויכולה להתיר למנהל לסיים הנחה מוקדם. נוסח התקנות נקרא באתר שמעתיק אותו.",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-22"
+}

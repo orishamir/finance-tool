@@ -1,7 +1,7 @@
 // Screen 6: the comparison result (design-spec 8, flows 13 to 16 and 19). The goal lives on the device, so the
 // page is a shell until it is read; then the engine runs here, on the bundle fetched once. No saved goal opens the form.
 import { useEffect, useId, useMemo, useRef, useState } from "react";
-import { Link, useLoaderData, useNavigate } from "react-router";
+import { Link, useLoaderData, useNavigate, useSearchParams } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import { r2, site, system } from "../copy";
 import { AssumptionChips, AssumptionsPanel, type Suggestion } from "../components/compare/assumptions";
@@ -25,6 +25,15 @@ import { loadBundle } from "../lib/bundle";
 import { fmt } from "../lib/format";
 import { GoalsProvider, hasMeaning, isBlank, useGoals, type FieldKey, type Presets } from "../lib/goal";
 import { goalTitle } from "../components/compare/goal-form";
+import { ExposureBody, ModeTabs } from "../components/exposure-mode/result";
+import { ChooseButton, RevisitBanner, SaveComparisonButton, UnreadableSavedForm, WhatChangedSheet } from "../components/revisit/revisit";
+import { forgetRevisit, useRevisit } from "../components/revisit/use-revisit";
+import { Tag } from "../components/ui";
+import { Tpl } from "../components/exposure-mode/tpl";
+import { snapshotWrapper } from "../lib/revisit";
+import { deleteSavedComparison, isoToday, saveComparisonRecord, type CompareMode } from "../lib/state";
+import { computed } from "../lib/value";
+import { r5 } from "../copy";
 
 export async function loader() {
   const { goalFormData } = await import("../lib/compare.server");
@@ -59,13 +68,15 @@ export default function GoalComparePage() {
 function Result({ bundle, failed, data, presets, meta, today }: { bundle: CompareBundle | null; failed: boolean; data: FormData; presets: Presets; meta: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null }; today: string }) {
   const { status, current, resolved } = useGoals();
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const mode: CompareMode = params.get("mode") === "exposure" ? "exposure" : "wrapper";
   const ready = status !== "loading";
   // No saved goal: the form (design-spec 8: a shared link or a first visit lands here).
   useEffect(() => {
     if (ready && status !== "old-version" && current && isBlank(current)) navigate("/goal", { replace: true });
   }, [ready, status, current, navigate]);
 
-  const strip = <SavedGoalStrip presets={presets} meta={meta} today={today} showResultLink={false} note={r2.strip.recomputed} />;
+  const strip = <SavedGoalStrip presets={presets} meta={meta} today={today} showResultLink={false} note={r2.strip.recomputed} revisitMode={mode} />;
   const frame = (body: React.ReactNode) => (
     <div className="flex flex-col gap-6 pt-2 lg:pt-8">
       <Breadcrumb parent={{ href: "/goal", label: r2.form.title }} current={r2.result.title} />
@@ -98,18 +109,26 @@ function Result({ bundle, failed, data, presets, meta, today }: { bundle: Compar
       </Callout>,
     );
   }
-  return <Body bundle={bundle} data={data} frame={frame} />;
+  if (mode === "exposure") return <ExposureBody bundle={bundle} data={data} frame={frame} />;
+  return <Body bundle={bundle} data={data} frame={frame} exposureId={params.get("exposure")} />;
 }
 
-function Body({ bundle, data, frame }: { bundle: CompareBundle; data: FormData; frame: (b: React.ReactNode) => React.ReactNode }) {
+function Body({ bundle, data, frame, exposureId }: { bundle: CompareBundle; data: FormData; frame: (b: React.ReactNode) => React.ReactNode; exposureId: string | null }) {
   const { current, resolved } = useGoals();
-  const g = runGoalOf(current!, resolved!)!;
+  const base = runGoalOf(current!, resolved!)!;
+  // opened from an exposure row ("באיזה מוצר להחזיק את זה"): A-01 is that exposure's entered return for this view, not saved into the goal
+  const subject = exposureId ? bundle.exposures?.find((e) => e.record.id === exposureId) : undefined;
+  const subjectReturn = subject ? current!.exposures?.[subject.record.id]?.return : undefined;
+  const g = subjectReturn && typeof subjectReturn.value === "number" ? { ...base, returnPct: subjectReturn.value } : base;
   const key = JSON.stringify(g);
   const outcome = useMemo(() => buildView(bundle, g), [bundle, key]); // eslint-disable-line react-hooks/exhaustive-deps
   const [mode, setMode] = useState<Mode>("real");
   const [hover, setHover] = useState<number | null>(null);
   const [sens, setSens] = useState<SensitivityView | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
+  const { saved, view: revisit } = useRevisit("wrapper");
+  const [changes, setChanges] = useState<HTMLElement | null | false>(false);
+  const [saveFailed, setSaveFailed] = useState(false);
   const [suggestion, setSuggestion] = useState<Suggestion | null>(null);
   const [popup, setPopup] = useState<{ kind: "why" } | { kind: "detail"; id: string } | null>(null);
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
@@ -147,6 +166,19 @@ function Body({ bundle, data, frame }: { bundle: CompareBundle; data: FormData; 
   if (outcome.kind !== "ok") return frame(<Callout tone="caution">{r2.result.failed}</Callout>);
   const view: CompareView = outcome;
   const mk = makeValues(bundle, g);
+  const readableSaved = saved && revisit && revisit.status !== "unreadable" ? saved : undefined;
+  const doSave = (choice?: { id: string; name: string }) => {
+    const rec = snapshotWrapper({ bundle, g, goal: current!, site: bundle.site ?? { version: "r5", data: bundle.runDate }, today: isoToday(), ev: view.evaluated, ...(choice ? { choice } : {}) });
+    setSaveFailed(!saveComparisonRecord(rec));
+    forgetRevisit();
+  };
+  const unchoose = () => {
+    if (!saved || !readableSaved) return;
+    const { choice: _drop, ...rest } = saved;
+    setSaveFailed(!saveComparisonRecord(rest));
+    forgetRevisit();
+  };
+  const holdsExposure = (id: string) => !subject || (subject.record.wrapper_ids ?? []).includes(id as never);
   const ctx: ResultCtx = { bundle, view, g, mk, mode, openField };
   const hideAll = view.headline === "excludes-all" || view.headline === "nothing-ranked";
   const title = goalTitle(current!);
@@ -178,10 +210,21 @@ function Body({ bundle, data, frame }: { bundle: CompareBundle; data: FormData; 
 
   return frame(
     <>
+      <ModeTabs mode="wrapper" />
+      {saved && revisit?.status === "unreadable" ? (
+        <UnreadableSavedForm view={revisit} onRedo={() => doSave()} onDelete={() => deleteSavedComparison(saved.goalId, "wrapper")} />
+      ) : (
+        readableSaved && revisit && <RevisitBanner view={revisit} onOpen={() => setChanges(document.activeElement as HTMLElement | null)} onSaveAgain={() => doSave()} />
+      )}
       <header className="flex flex-col gap-3">
         <h1 className="text-2xl lg:text-3xl font-semibold">
           <bdi>{title}</bdi>: {r2.result.title}
         </h1>
+        {subject && subjectReturn && (
+          <p className="text-sm flex flex-wrap items-center gap-2">
+            <Tpl t={r5.exposure.wrapperSubject} vars={{ exposure: <bdi className="font-medium">{subject.name}</bdi>, rate: <Num value={subjectReturn as never} /> }} />
+          </p>
+        )}
         {view.headline === "excludes-all" ? (
           <Callout tone="blocked">
             {r2.result.excludesAll} <span className="text-entered">{r2.result.constraintAnytime}</span>.{" "}
@@ -232,7 +275,13 @@ function Body({ bundle, data, frame }: { bundle: CompareBundle; data: FormData; 
               <h2 id={`${headId}-list`} className="text-xl lg:text-2xl font-semibold">
                 {r2.result.listHeading}
               </h2>
-              <RankedList ctx={ctx} above={above} onDetail={(id, el) => (setAnchor(el), setPopup({ kind: "detail", id }))} />
+              <RankedList
+                ctx={ctx}
+                above={above}
+                onDetail={(id, el) => (setAnchor(el), setPopup({ kind: "detail", id }))}
+                extra={(id) => (holdsExposure(id) ? undefined : <Tag tone="neutral">{r5.exposure.cannotHoldTag.replace("{exposure}", subject!.name)}</Tag>)}
+                choose={(o) => <ChooseButton {...(saved?.choice?.id === o.id && readableSaved ? { chosenOn: saved.savedOn } : {})} onChoose={() => doSave({ id: o.id, name: o.name })} onUnchoose={unchoose} />}
+              />
             </section>
           )}
           <AvailableCard ctx={ctx} />
@@ -326,7 +375,11 @@ function Body({ bundle, data, frame }: { bundle: CompareBundle; data: FormData; 
           <DimensionChecklist rows={checklistRows} />
         </section>
       )}
+      <SaveComparisonButton {...(readableSaved ? { savedOn: readableSaved.savedOn } : {})} onSave={() => doSave(readableSaved?.choice)} failed={saveFailed} />
       <RulesLine ids={view.rulesUsed} />
+      {readableSaved && revisit && revisit.status !== "unreadable" && (
+        <WhatChangedSheet view={revisit} open={changes !== false} onClose={() => setChanges(false)} anchor={changes || null} changesHref="/changes" today={bundle.runDate} nis={(v, about) => <Num value={computed(v, "nis", "F-06", {}, { today: isoToday(), about })} />} />
+      )}
 
       <Sheet open={popup !== null} onClose={() => setPopup(null)} anchor={anchor} pc="popover" height={78} labelledBy={headId}>
         {popup?.kind === "why" && view.ranked.length > 1 && <WhySheetBody ctx={ctx} headId={headId} />}
@@ -342,13 +395,13 @@ function Body({ bundle, data, frame }: { bundle: CompareBundle; data: FormData; 
   );
 }
 
-function RankedList({ ctx, above, onDetail }: { ctx: ResultCtx; above: (o: RankedOption) => RankedOption | undefined; onDetail: (id: string, el: HTMLElement) => void }) {
+function RankedList({ ctx, above, onDetail, extra, choose }: { ctx: ResultCtx; above: (o: RankedOption) => RankedOption | undefined; onDetail: (id: string, el: HTMLElement) => void; extra?: (id: string) => React.ReactNode; choose?: (o: RankedOption) => React.ReactNode }) {
   const order = ctx.view.ranked.map((o) => o.id).join(",");
   const ref = useFlip(order);
   return (
     <ol ref={ref} className="flex flex-col gap-3">
       {ctx.view.ranked.map((o) => (
-        <RankedRow key={o.id} o={o} above={above(o)} ctx={ctx} onDetail={(el) => onDetail(o.id, el)} />
+        <RankedRow key={o.id} o={o} above={above(o)} ctx={ctx} onDetail={(el) => onDetail(o.id, el)} extra={extra?.(o.id)} choose={choose?.(o)} />
       ))}
     </ol>
   );

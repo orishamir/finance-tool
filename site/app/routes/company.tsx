@@ -2,9 +2,10 @@
 // runs, grouped by the regulator's product type, same-name tracks grouped, the fee-pending note, the paste card.
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/company";
-import { catalogue, companies as companiesCopy, company as copy, site } from "../copy";
+import { catalogue, companies as companiesCopy, company as copy, r3workbench, site } from "../copy";
 import { feeLabel } from "../components/decoder/fees";
 import { groupTracks, PasteCard, TrackList } from "../components/decoder/tracks";
+import { InstitutionPage } from "../components/decoder/institutions/page";
 import { IconDrillIn } from "../components/icons";
 import { Num } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
@@ -25,7 +26,13 @@ export async function loader({ params }: Route.LoaderArgs) {
   const { institutionCompanies, loadCatalog, resolutionOf, seenValue, seenWhere } = await import("../lib/instruments.server");
   const cma = loadCma();
   const company = cma.companies.find((c) => c.id === params.id);
-  if (!company) throw new Response("Not found", { status: 404 });
+  if (!company) {
+    // the id is not a managing company: a bank or broker of the fee snapshots or deposit records (flows 15.4); a fund manager once a fund list exists
+    const { buildInstitution } = await import("../lib/institutions.server");
+    const institution = buildInstitution(params.id);
+    if (!institution) throw new Response("Not found", { status: 404 });
+    return { kind: "institution" as const, institution };
+  }
   const wrappers = loadWrappers();
   const terms = loadTerms();
   const collator = new Intl.Collator("he");
@@ -43,6 +50,7 @@ export async function loader({ params }: Route.LoaderArgs) {
       const fees: Record<number, CompactFee> = Object.fromEntries(list.map((x, i) => [x.fundId, compactFee(balances[i]!, template)]));
       return {
         classification,
+        workbenchId: list[0]!.wrapperId,
         tracks: list,
         fees,
         feeTemplate: template,
@@ -58,11 +66,12 @@ export async function loader({ params }: Route.LoaderArgs) {
   const unassigned = mine
     .filter((c) => c.status === "not-catalogued-yet")
     .map((c) => ({ id: c.id, names: c.names.he, where: seenWhere(c), seen: seenValue(c) }));
-  return { company, groups, period: cma.periodValue, defaultIds, known, unassigned, today: t, goal: goalContext(), fit: fitTable() };
+  return { kind: "company" as const, company, groups, period: cma.periodValue, defaultIds, known, unassigned, today: t, goal: goalContext(), fit: fitTable() };
 }
 
 export function meta({ loaderData: data }: Route.MetaArgs) {
-  return [{ title: `${data?.company.name ?? companiesCopy.title} · ${site.name}` }];
+  const name = data?.kind === "institution" ? data.institution.name : data?.company.name;
+  return [{ title: `${name ?? companiesCopy.title} · ${site.name}` }];
 }
 
 function feeHeadOf(v: SiteValue) {
@@ -77,6 +86,11 @@ function countLine(n: number) {
 
 export default function Company() {
   const data = useLoaderData<typeof loader>();
+  if (data.kind === "institution") return <InstitutionPage data={data.institution} />;
+  return <ManagerCompany data={data} />;
+}
+
+function ManagerCompany({ data }: { data: Extract<ReturnType<typeof useLoaderData<typeof loader>>, { kind: "company" }> }) {
   const first = data.groups[0];
   const side = first?.wrapper;
   return (
@@ -129,6 +143,14 @@ export default function Company() {
                 {g.wrapper && (
                   <Link to={`/guide/${g.wrapper.id}`} className="inline-flex items-center gap-0.5 min-h-target text-sm text-link hover:underline self-start px-1">
                     {copy.whatIs} {g.wrapper.name}
+                    <IconDrillIn size={16} />
+                  </Link>
+                )}
+                {g.workbenchId && (
+                  <Link to={`/workbench/tracks/${g.workbenchId}`} className="inline-flex items-center gap-0.5 min-h-target text-sm text-link hover:underline self-start px-1">
+                    {r3workbench.links.group.before}
+                    {g.wrapper?.name ?? g.classification}
+                    {r3workbench.links.group.after}
                     <IconDrillIn size={16} />
                   </Link>
                 )}

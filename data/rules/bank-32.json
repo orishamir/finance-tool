@@ -1,0 +1,84 @@
+{
+  "id": "BANK-32",
+  "title": "The bank annual reports to the customer (directive 425): what the deposit, securities and fee tables show",
+  "title_he": "הדוחות השנתיים של הבנק ללקוח: מה מציגות טבלאות הפיקדונות, ניירות הערך והעמלות",
+  "text_he": "הוראת ניהול בנקאי תקין בנושא דוחות שנתיים ללקוחות מחייבת כל בנק להציג בחשבון המקוון, עד סוף פברואר, דוח מקוצר ודוח מפורט על השנה הקודמת, ולשמור לפחות את שלושת הדוחות האחרונים. לכל פיקדון מוצגים מספר הפיקדון, סכום הקרן, מועד ההפקדה הראשונה, תחנת היציאה הקרובה, מועד הפירעון, המטבע, ההצמדה, סוג הריבית, אופן חישובה, הריבית הנומינלית והמתואמת ושווי הפיקדון. לתיק ניירות הערך מוצגים היתרה החודשית הממוצעת, שיעור תשואה שנתי, וכל נייר עם כמות, שער קנייה ממוצע ושווי. בפרק העמלות מפורטות כל עמלות הקנייה, המכירה והפדיון עם שיעור העמלה בפועל, ודמי הניהול של כל נייר עם ימי ההחזקה ושיעור שנתי בפועל.",
+  "figure_names_he": {
+    "annual_report_deadline": "מועד הצגת הדוחות השנתיים בחשבון המקוון",
+    "reports_kept_online_years": "שנים של דוחות שנשמרות בחשבון המקוון",
+    "detailed_report_on_request_business_days": "ימי עסקים למסירת הדוח המפורט ללקוח ללא חשבון מקוון, מבקשתו"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation",
+    "fee-trade",
+    "fee-custody",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-06-30",
+  "figures": {
+    "annual_report_deadline": {
+      "value": "28 February",
+      "unit": "text",
+      "source": {
+        "url": "https://www.boi.org.il/media/lnyjs3mp/425_6.pdf",
+        "title": "BoI directive 425 v6, s. 3",
+        "publisher": "Bank of Israel (Banking Supervision)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BANK-32"
+      ],
+      "state": "sourced",
+      "notes": "The shortened and detailed annual reports are posted in the online account by 28 February for the previous calendar year (s. 3)."
+    },
+    "reports_kept_online_years": {
+      "value": 3,
+      "unit": "years",
+      "source": {
+        "url": "https://www.boi.org.il/media/lnyjs3mp/425_6.pdf",
+        "title": "BoI directive 425 v6, s. 7",
+        "publisher": "Bank of Israel (Banking Supervision)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BANK-32"
+      ],
+      "state": "sourced",
+      "notes": "At least the last three annual reports stay accessible in the online account (s. 7)."
+    },
+    "detailed_report_on_request_business_days": {
+      "value": 7,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.boi.org.il/media/lnyjs3mp/425_6.pdf",
+        "title": "BoI directive 425 v6, s. 5",
+        "publisher": "Bank of Israel (Banking Supervision)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BANK-32"
+      ],
+      "state": "sourced",
+      "notes": "A customer without an online account gets the shortened report by 28 February and the detailed one within 7 business days of a request (s. 5)."
+    }
+  },
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-23"
+}

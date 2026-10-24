@@ -11,3 +11,4 @@ export * from "./collections/deposit-terms.ts";
 export * from "./collections/catalog.ts";
 export * from "./collections/terms.ts";
 export * from "./collections/series.ts";
+export * from "./collections/fund-lists.ts";

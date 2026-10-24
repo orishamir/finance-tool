@@ -3,7 +3,8 @@
 // with the fit table. "Does not fit" and "no rule" are answers, not warnings: muted, never red.
 import { createContext, useContext, type ReactNode } from "react";
 import { Link } from "react-router";
-import { fit as copy } from "../../copy";
+import { fit as copy, r5 } from "../../copy";
+import { Tpl } from "../exposure-mode/tpl";
 import { fmt } from "../../lib/format";
 import { fitOf, type FitResult, type FitTableData } from "../../lib/fit";
 import { useGoals } from "../../lib/goal";
@@ -29,12 +30,12 @@ export function FitProvider({ table, stale, children }: { table: FitTableData; s
 type TrackClass = { specialization: string; subSpecialization: string; classification: string };
 
 /** The saved goal's horizon in years, or null when there is no saved goal (or it has no horizon yet). */
-export function useGoalHorizon(): { years: number; name: string } | null {
+export function useGoalHorizon(): { years: number; name: string; acceptedFall: number | null } | null {
   const { status, current, resolved } = useGoals();
   if (status === "loading" || status === "old-version" || !current || !resolved) return null;
   const years = resolved.horizonYears;
   if (years === null || years < 1) return null;
-  return { years, name: goalTitle(current) };
+  return { years, name: goalTitle(current), acceptedFall: current.assumptions.acceptedFall ?? null };
 }
 
 function Mark({ result, size = 24, word = true, className }: { result: FitResult; size?: 14 | 16 | 24; word?: boolean; className?: string }) {
@@ -63,7 +64,7 @@ export function FitMarkCard({ table, track, stale, period }: { table: FitTableDa
       </Card>
     );
   }
-  const result = fitOf(table, track, goal.years);
+  const result = fitOf(table, track, goal.years, goal.acceptedFall);
   return (
     <Card className="flex flex-col gap-3">
       <h2 className="text-lg font-semibold">{copy.heading}</h2>
@@ -75,8 +76,15 @@ export function FitMarkCard({ table, track, stale, period }: { table: FitTableDa
         {copy.goalLine}
         <bdi>{goal.name}</bdi>
         {copy.goalLineMid}
-        {fmt.years(goal.years)}. {copy.horizonOnly}
+        {fmt.years(goal.years)}.{" "}
+        {goal.acceptedFall !== null && result.kind !== "no-rule" && result.fall ? <Tpl t={r5.additions.fitLossLine} vars={{ accepted: <span className="text-entered"><bdi dir="ltr">{fmt.pct(goal.acceptedFall)}</bdi></span> }} /> : copy.horizonOnly}
       </p>
+      {result.kind !== "no-rule" && result.fall && (
+        <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5 gap-y-1 max-w-measure">
+          <Tpl t={result.fall.met ? r5.additions.fitTrackSide : r5.additions.fitNotMet} vars={{ max: <Num value={result.fall.max} display={fmt.pct(result.fall.max.value as number)} />, accepted: <bdi dir="ltr">{fmt.pct(result.fall.accepted)}</bdi> }} />
+          <StateTag state="parameter" />
+        </p>
+      )}
       <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5 gap-y-1 max-w-measure">
         <span>
           {copy.ruleBefore}
@@ -114,7 +122,7 @@ export function RowFit({ track }: { track: TrackClass }) {
   const ctx = useContext(FitContext);
   const goal = useGoalHorizon();
   if (!ctx || !goal) return null;
-  const result = fitOf(ctx.table, track, goal.years);
+  const result = fitOf(ctx.table, track, goal.years, goal.acceptedFall);
   return (
     <span className="inline-flex items-center gap-1" role="img" aria-label={`${copy.rowAria} ${copy.marks[result.kind]}`}>
       <Mark result={result} size={16} word={false} />

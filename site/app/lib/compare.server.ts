@@ -1,13 +1,13 @@
 // The data the browser needs for every comparison (flows 12 to 16), built once at build time and served as
 // /compare-bundle.json: the wrapper records, their instrument terms (the same ones the guide pages use), the
 // parameters, the rule records any run may read, the tier-2 list and the checklist rows. Server-only.
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { DepositTerms, FeesSnapshot, ParameterRecord, RuleRecord, ValueObject, WrapperId, WrapperRecord } from "@finance-tool/schema";
 import type { InstrumentTerms } from "@finance-tool/engine";
 import { loadChecklistRows, loadCmaFees, loadFees, loadNotCovered, loadParameters, loadRules, loadWrappers, root, today } from "./data.server";
-import { buildInstrumentTerms, loadDepositTerms, loadFunds, regulatorAverageFees } from "./instruments.server";
-import { evaluate, type CompareBundle, type Family, type RunGoal, type Tier2Row, type WrapperEntry } from "./compare";
+import { buildInstrumentTerms, loadDepositTerms, loadExposures, loadFunds, regulatorAverageFees } from "./instruments.server";
+import { evaluate, type BundleDataFile, type CompareBundle, type ExposureEntry, type Family, type HoldingTerms, type RunGoal, type Tier2Row, type WrapperEntry } from "./compare";
 import type { FitTableData } from "./fit";
 import type { SiteValue } from "./value";
 
@@ -29,7 +29,7 @@ const familyById: Partial<Record<WrapperId, Family>> = {
 };
 
 /** The nine tier-2 instruments (product D2) with the glossary row that names each; the open questions are method G-24's. */
-const tier2Table: { id: string; he: string; questions: string[]; display: string }[] = [
+export const tier2Table: { id: string; he: string; questions: string[]; display: string }[] = [
   { id: "savings-policies", he: "פוליסת חיסכון", questions: ["TXA OQ1", "TXA OQ3"], display: "TXA OQ1, TXA OQ3" },
   { id: "executive-insurance", he: "ביטוח מנהלים", questions: ["TXA OQ6"], display: "TXA OQ6" },
   { id: "structured-deposits", he: "פיקדון מובנה", questions: ["TX2 OQ5"], display: "TX2 OQ5" },
@@ -140,13 +140,80 @@ function depositRate(wrapperId: string, family: string, spec: { deposit_terms?: 
   return { ...rate };
 }
 
+/** Wrappers whose fund (and so whose terms) depend on the exposure they hold: the fund collected for the exposure (`exposure_id`) gives the terms. */
+const fundHoldingWrappers: WrapperId[] = ["brokerage-account", "money-market-fund-daily", "money-market-fund-renewable"];
+
+/**
+ * Release 5, exposure mode: every exposure record, and for each exposure the terms of a securities wrapper that holds
+ * it through the fund collected for it (P-05's tariff for that wrapper, the fund's own costs). An exposure with no
+ * fund record has no entry: the row reads "not evaluated: details not collected", never another instrument's terms.
+ */
+function exposureData(wrappers: WrapperEntry[], p05: ParameterRecord, sources: Parameters<typeof buildInstrumentTerms>[3]): { exposures: ExposureEntry[]; exposureTerms: Record<string, Record<string, HoldingTerms>> } {
+  const records = loadExposures();
+  const funds = loadFunds();
+  const exposureTerms: Record<string, Record<string, HoldingTerms>> = {};
+  const exposures = records.map((record): ExposureEntry => {
+    const forExposure = funds.filter((f) => (f as { exposure_id?: string }).exposure_id === record.id);
+    for (const wid of fundHoldingWrappers) {
+      if (!record.wrapper_ids?.includes(wid)) continue;
+      const own = p05.instruments?.[wid];
+      const fund = forExposure.find((f) => f.id === own?.fund) ?? forExposure[0];
+      if (!fund) continue;
+      const built = buildInstrumentTerms(wid, "securities", { ...(own ?? {}), fund: fund.id }, sources);
+      if ("missing" in built) {
+        console.log(`[compare] ${record.id} in ${wid} via fund ${fund.id}: no terms: ${built.missing.join("; ")}`);
+        continue;
+      }
+      (exposureTerms[record.id] ??= {})[wid] = { fundId: fund.id, terms: built.terms, feeValues: built.feeValues };
+    }
+    return { record, name: record.names.he[0] ?? record.id, oneLine: record.one_line_he ?? null, guideHref: `/exposure/${record.id}`, variantsHref: forExposure.length > 0 ? `/workbench/funds/${record.id}` : null };
+  });
+  void wrappers;
+  return { exposures, exposureTerms };
+}
+
+/** The latest `checked` date anywhere in a record: what a refresh of the file changes (F-82 compares it). */
+function latestChecked(node: unknown, best: string | null = null): string | null {
+  if (Array.isArray(node)) return node.reduce<string | null>((b, n) => latestChecked(n, b), best);
+  if (node && typeof node === "object") {
+    let b = best;
+    for (const [k, v] of Object.entries(node)) {
+      if (k === "checked" && typeof v === "string" && (!b || v > b)) b = v;
+      else b = latestChecked(v, b);
+    }
+    return b;
+  }
+  return best;
+}
+
+/** The records a comparison reads, with the date each was last checked, for the saved comparison's versions. */
+function dataFileVersions(): BundleDataFile[] {
+  const out: BundleDataFile[] = [];
+  const dirs: { dir: string; feeds: (rec: Record<string, unknown>) => string[] }[] = [
+    { dir: "data/instruments/wrappers", feeds: (r) => [String(r.id)] },
+    { dir: "data/instruments/exposures", feeds: (r) => [String(r.id)] },
+    { dir: "data/terms/deposits", feeds: (r) => (typeof r.wrapper_id === "string" ? [r.wrapper_id] : []) },
+    { dir: "data/funds", feeds: (r) => [String(r.exposure_id ?? ""), ...fundHoldingWrappers].filter(Boolean) },
+    { dir: "data/fees", feeds: () => [] },
+  ];
+  for (const { dir, feeds } of dirs) {
+    const abs = join(root, dir);
+    if (!existsSync(abs)) continue;
+    for (const f of readdirSync(abs).filter((n) => n.endsWith(".json")).sort()) {
+      const rec = JSON.parse(readFileSync(join(abs, f), "utf8")) as Record<string, unknown>;
+      out.push({ path: `${dir}/${f}`, checked: latestChecked(rec) ?? (typeof rec.snapshot === "string" ? rec.snapshot : null), for: feeds(rec) });
+    }
+  }
+  return out;
+}
+
 export function buildCompareBundle(): CompareBundle {
   const t = today();
   const allRules = loadRules();
-  const parameters = loadParameters().filter((p) => ["P-01", "P-02", "P-05", "P-07"].includes((p as { method_id?: string }).method_id ?? "")) as ParameterRecord[];
+  const parameters = loadParameters().filter((p) => ["P-01", "P-02", "P-05", "P-07", "P-08"].includes((p as { method_id?: string }).method_id ?? "")) as ParameterRecord[];
   const p05 = parameters.find((p) => p.method_id === "P-05");
   if (!p05) throw new Error("data/parameters/ holds no P-05 record");
-  for (const m of ["P-01", "P-02", "P-07"]) if (!parameters.some((p) => p.method_id === m)) throw new Error(`data/parameters/ holds no ${m} record`);
+  for (const m of ["P-01", "P-02", "P-07", "P-08"]) if (!parameters.some((p) => p.method_id === m)) throw new Error(`data/parameters/ holds no ${m} record`);
 
   const fees = loadFees();
   const sources = { fees, funds: loadFunds(), deposits: loadDepositTerms(), rules: allRules, today: t };
@@ -167,13 +234,17 @@ export function buildCompareBundle(): CompareBundle {
 
   const tier2 = tier2List();
   const checklist = loadChecklistRows();
+  const { exposures, exposureTerms } = exposureData(wrappers, p05, sources);
+  const dataFiles = dataFileVersions();
 
   // ---- the rules a run may read: found by running the comparison over the profiles above with every rule at hand,
   // plus every rule the wrapper records cite (reasons and chips link to them) and the two the screens quote.
-  const draft: CompareBundle = { runDate: t, wrappers, parameters, tier2, rules: Object.values(allRules), checklist, cashLink: cashLink() };
+  const draft: CompareBundle = { runDate: t, wrappers, parameters, tier2, rules: Object.values(allRules), checklist, cashLink: cashLink(), exposures, exposureTerms, dataFiles, site: { version: `r5-${t}`, data: `bundle-${t}` } };
   const needed = new Set<string>(["PEN-36", "BANK-22"]);
   for (const w of wrappers) collectRuleIds(w.record).forEach((id) => needed.add(id));
   for (const w of wrappers) for (const f of Object.values(w.feeValues)) (f.rule_ids ?? []).forEach((id) => needed.add(id));
+  for (const e of exposures) (e.record.rule_ids ?? []).forEach((id) => needed.add(id));
+  for (const byWrapper of Object.values(exposureTerms)) for (const h of Object.values(byWrapper)) for (const f of Object.values(h.feeValues)) (f.rule_ids ?? []).forEach((id) => needed.add(id));
   let runs = 0;
   for (const g of probeGoals()) {
     try {
@@ -251,12 +322,12 @@ export function goalContext() {
 
 /**
  * P-04, the classification-to-horizon fit table (`data/parameters/classification-fit.json`): the horizon half only.
- * The loss-filter column (`max_fall_pct`) waits for release 5 (D11) and is not shipped. Each bound is the record's
+ * The loss-filter column (`max_fall_pct`) ships from release 5 (D11) and is applied on the site (lib/fit.ts). Each bound is the record's
  * value object with the site-parameter marker, so the mark's rule line can show it through the provenance component.
  */
 export function fitTable(): FitTableData {
   const rec = loadParameters().find((p) => (p as { method_id?: string }).method_id === "P-04") as unknown as
-    | { table: { classification: string; horizon_min_years: ValueObject; horizon_max_years: ValueObject }[]; rationale: string; rationale_he?: string; signed_off_on: string | null }
+    | { table: { classification: string; horizon_min_years: ValueObject; horizon_max_years: ValueObject; max_fall_pct?: ValueObject }[]; rationale: string; rationale_he?: string; signed_off_on: string | null }
     | undefined;
   if (!rec) throw new Error("data/parameters/ holds no P-04 record");
   const param = (v: ValueObject): SiteValue => ({ ...v, parameter: { rationale: rec.rationale, rationaleHe: rec.rationale_he ?? null, signedOffOn: rec.signed_off_on ?? null, provisional: (v.notes ?? "").startsWith("provisional") } });
@@ -265,6 +336,7 @@ export function fitTable(): FitTableData {
       classification: r.classification,
       minYears: param(r.horizon_min_years),
       maxYears: typeof r.horizon_max_years.value === "number" ? param(r.horizon_max_years) : null,
+      maxFallPct: r.max_fall_pct && typeof r.max_fall_pct.value === "number" ? param(r.max_fall_pct) : null,
     })),
   };
 }

@@ -38,6 +38,11 @@ export interface PensionInput {
   pension: PensionProfile;
   /** The person opts into early withdrawal (F-48). It stays blocked (G-06). */
   earlyWithdrawal?: boolean;
+  /**
+   * A balance already in the fund (a holding under review, F-61): it starts the ledger as it is, with no deposit
+   * fee, no deposit-side relief (F-30 to F-32) and nothing added to `paidIn`. `goal` then holds only new money.
+   */
+  existingBalance?: number;
   profile: Profile;
 }
 
@@ -86,10 +91,12 @@ const employerMonthly = (p: PensionProfile) =>
 /** Checks the person's A-12 inputs once, with the field named. */
 function check(i: PensionInput) {
   const p = i.pension;
-  if (p.employment === "employee" && !(p.monthlySalary !== undefined && p.monthlySalary > 0)) throw new RangeError("pension.monthlySalary is required for an employee (A-12)");
-  if (p.employment === "self-employed" && !(p.annualIncome !== undefined && p.annualIncome > 0)) throw new RangeError("pension.annualIncome is required for a self-employed person (A-12)");
   if (p.employment === "self-employed" && p.employer) throw new RangeError("a self-employed person has no employer deposits (pension.employer)");
   if (i.wrapper === "provident-for-annuity" && i.insurance.rate > 0) throw new RangeError("a provident fund for annuity has no pooled insurance (PEN-35): insurance.rate must be 0");
+  // Without new money there is nothing to relieve, so no income is needed (a holding's existing balance only).
+  if (i.goal.amountNow === 0 && i.goal.monthly === 0) return;
+  if (p.employment === "employee" && !(p.monthlySalary !== undefined && p.monthlySalary > 0)) throw new RangeError("pension.monthlySalary is required for an employee (A-12)");
+  if (p.employment === "self-employed" && !(p.annualIncome !== undefined && p.annualIncome > 0)) throw new RangeError("pension.annualIncome is required for a self-employed person (A-12)");
 }
 
 interface LedgerOut {
@@ -112,11 +119,11 @@ function ledger(book: RuleBook, tally: Tally, input: PensionInput, gross: readon
   const depositCap = book.rate(caps, "deposit_cap");
   const minDiscountMonths = 12 * book.amount("PF-13", "min_discount_years");
   const g = annualToMonthly(input.market.grossReturn);
-  let balance = 0;
+  let balance = input.existingBalance ?? 0;
   let insurance = 0;
   const series: number[] = [];
   let discountExtended = false;
-  tally.point(0, 1, 0);
+  tally.point(0, 1, balance);
   const deposit = (amount: number, paid: number) => {
     if (amount <= 0) return;
     tally.paidIn += paid;

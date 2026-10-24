@@ -57,8 +57,12 @@ export interface SecuritiesInput {
     custody?: Custody;
     /** F-17 monthly account fee in NIS. */
     monthlyFee?: number;
-    /** F-13 FX conversion rate on each contribution and at exit. */
-    fx?: number;
+    /**
+     * F-13 FX conversion on each order and at exit: a bare number is the percentage with no bounds (kept for
+     * callers that pass one); the `Commission` shape adds the tariff's minimum and maximum, in the instrument's
+     * currency (`in: "instrument"`), converted at the rate of the trade.
+     */
+    fx?: number | Commission;
     /** The instrument's currency, for tariff lines set in it: code and NIS per unit at the start. */
     currency?: { code: string; startRate: number };
   };
@@ -66,6 +70,24 @@ export interface SecuritiesInput {
   broker?: "israeli" | "foreign";
   /** F-51: the account is held inside an IRA hishtalmut, with the manager's balance fee. */
   wrapper?: { kind: "ira-hishtalmut"; managerFee: number; clockStartMonth: number };
+  /**
+   * A-28 behaviour: orders a month. Each month's contribution is split into this many equal orders, each charged
+   * its own commission, so a minimum bites per order (F-12, F-63). Default 1, as A-28 sets. The amount now is one order.
+   */
+  ordersPerMonth?: number;
+  /**
+   * Months of the calendar grid that passed before this run's month 0 (F-66: the second leg of a switch starts
+   * at month s of the first). Only the periodic fee phase (F-14) and the tax-year calendar read it; the CPI and
+   * exchange-rate paths still start at 1, so the caller converts the real value (F-06) with the absolute index.
+   */
+  gridOffset?: number;
+  /**
+   * F-66: a real capital loss realised earlier in the same account (the sale at the switch), in nominal NIS. At exit
+   * it offsets this run's real gain before tax, never more than the gain: in the same tax year under TXS-17 (the
+   * institution nets inside itself, TXS-19), in a later year as a carried loss under TXS-18, which needs a return
+   * filed for the year of the loss (flagged). The unused part is reported in `detail.lossUnused`.
+   */
+  carriedLoss?: { amount: number; ruleIds: readonly string[]; carriedForward: boolean };
   profile: Profile;
 }
 
@@ -120,7 +142,11 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   }
 
   const T = exitMonth;
-  const first = goal.firstMonth ?? 1;
+  const offset = input.gridOffset ?? 0;
+  const first = ((goal.firstMonth ?? 1) - 1 + offset) % 12 + 1;
+  const orders = input.ordersPerMonth ?? 1;
+  if (!Number.isInteger(orders) || orders < 1) throw new RangeError(`ordersPerMonth ${orders} must be a whole number of 1 or more (A-28)`);
+  if (!Number.isInteger(offset) || offset < 0) throw new RangeError(`gridOffset ${offset} must be a whole number of months, 0 or more`);
   const I = cpiPath(market.inflation, T);
   const X = fxPath(market.fxChange ?? 0, T);
   const C = contributions(goal, I);
@@ -154,7 +180,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
 
   /** One order: FX fee on a contribution, then trade value and commission, bought at the ask. */
   const buy = (cash: number, month: number, eventMonth: number, convert: boolean) => {
-    const fx = convert && tariff.currency ? fxFee(tariff.fx, cash) : 0;
+    const fx = convert && tariff.currency ? fxFee(tariff.fx, cash, { fxRate: fxRate(eventMonth) }) : 0;
     tally.fee("fx", fx);
     const { trade, commission } = buyWithCash(cash - fx, tariff.buy, { fxRate: fxRate(eventMonth), sharePrice: sharePrice(month) });
     tally.fee("trade", commission);
@@ -208,7 +234,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   for (let m = 1; m <= T; m++) {
     // 1-2. Contributions at the start of the month, each its own order (A-28).
     if (m === 1 && C[0]! > 0) buy(C[0]!, m, 0, true);
-    if (m <= goal.months && C[m]! > 0) buy(C[m]!, m, m, true);
+    if (m <= goal.months && C[m]! > 0) for (let k = 0; k < orders; k++) buy(C[m]! / orders, m, m, true);
     tally.paidIn += (m === 1 ? C[0]! : 0) + (m <= goal.months ? C[m]! : 0);
 
     // 3. Growth less drag (F-10).
@@ -232,7 +258,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
 
     // 5. Holding costs, paid by removing units oldest first (F-14, F-17, F-15 for the IRA manager).
     const manager = (wrapperFee / 12) * totalUnits(lots) * nav;
-    const custody = custodyFee(custodyLine, m, totalUnits(lots) * nav - manager);
+    const custody = custodyFee(custodyLine, m + offset, totalUnits(lots) * nav - manager);
     const fixed = fixedFee(tariff.monthlyFee, totalUnits(lots) * nav - manager - custody);
     if (custody + fixed + manager > 0) lots = removeFifo(lots, (custody + fixed + manager) / nav);
     tally.fee("custody", custody);
@@ -256,7 +282,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   tally.fee("spread", value - gross);
   const commission = tradeCommission(tariff.sell, gross, { fxRate: fxRate(T), sharePrice: sharePrice(T) });
   tally.fee("trade", commission);
-  const fx = tariff.currency ? fxFee(tariff.fx, gross - commission) : 0;
+  const fx = tariff.currency ? fxFee(tariff.fx, gross - commission, { fxRate: fxRate(T) }) : 0;
   tally.fee("fx", fx);
   const proceeds = gross - commission - fx;
 
@@ -268,6 +294,8 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   book.cite("TXS-02");
 
   let outcome: Outcome = { code: "eligible" };
+  let lossOffset = 0;
+  let lossUnused = 0;
   let exit = { tax: 0, withheld: 0, refund: 0, capitalGainsTax: 0, surtax: 0, capitalSurtax: 0 };
   if (input.wrapper) {
     // F-51: an IRA hishtalmut follows the study fund's exit (TXK-17); after the lock everything from
@@ -278,9 +306,18 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   } else if (fund.kind === "money-market-taxable") {
     // The holder pays nothing at sale (TXS-11); the fund's tax is inside the price.
   } else {
+    // F-66: a loss carried from an earlier leg offsets the real gain first (TXS-17, TXS-18); a loss is not a negative tax.
+    const carried = input.carriedLoss;
+    const offset = carried ? Math.min(Math.max(0, carried.amount), Math.max(0, realGain)) : 0;
+    if (carried && carried.amount > 0) {
+      carried.ruleIds.forEach((id) => book.cite(id));
+      if (carried.carriedForward) tally.flag("TXS-18");
+    }
+    lossOffset = offset;
+    lossUnused = carried ? Math.max(0, carried.amount) - offset : 0;
     const step = unlessBlocked(() => {
       const rate = isForeign ? book.rate("TXF-02", "rate") : isMmf ? book.rate("TXS-12", "rate") : book.rate("TXS-09", "rate");
-      return exitTax(book, profile, T, realGain, rate, false, exitYearDist, first);
+      return exitTax(book, profile, T, realGain - offset, rate, false, exitYearDist, first);
     });
     if (step.value) {
       exit = step.value;
@@ -301,6 +338,8 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
     detail: {
       realGain,
       nominalGain,
+      lossOffset,
+      lossUnused,
       exitYearFees,
       withheld: exit.withheld,
       refund: exit.refund,
