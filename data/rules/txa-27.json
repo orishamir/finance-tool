@@ -12,5 +12,21 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-06-30",
   "il_finance_file": "tax-insurance-and-amendment-190.md",
-  "checked": "2026-10-24"
+  "checked": "2026-10-24",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf",
+      "title": "Income Tax circular 2/2013, \"תיקון 190 לפקודה\" (27.5.2013)",
+      "title_he": "חוזר מס הכנסה 2/2013: תיקון 190 לפקודה",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.24",
+      "locator_he": "עמוד 24",
+      "page": 24,
+      "quote": "סכום קצבה מזערי",
+      "checked": "2026-10-24"
+    }
+  ]
 }

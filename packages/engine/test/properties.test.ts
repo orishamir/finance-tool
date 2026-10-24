@@ -120,9 +120,12 @@ describe("figure resolver (D10, method §13)", () => {
     book.rate("TXK-23", "provident_rate");
     book.rate("TXS-09", "rate");
     expect(book.used().map((u) => u.id)).toEqual(["TXK-07", "TXK-23", "TXS-09"]);
+    // TXS-09 is read on the Wikisource copy of the ordinance: its record became primary-mirror when the sources were extracted
+    // from the rule base (2026-10-24), so its figure carries the mirror label like any other copy
     expect(book.labels()).toEqual([
       { code: "institution-source", ruleId: "TXK-07" },
       { code: "secondary-source", ruleId: "TXK-23" },
+      { code: "mirror-source", ruleId: "TXS-09" },
     ]);
   });
 

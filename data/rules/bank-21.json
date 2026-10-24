@@ -38,5 +38,85 @@
     }
   },
   "il_finance_file": "bank-current-account-deposits.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://boi.org.il/media/d10jeelv/h2782.pdf",
+      "title": "Directive 417 \"פעילות תאגיד בנקאי במערכת סגורה\" v4 and circular 2782-06",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "s.3-5",
+      "locator_he": "סעיף 3-5",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.boi.org.il/media/pcuny0hd/עמדת-בנק-ישראל-בנוגע-להכרזת-הממונה-על-התחרות-על-חמש-הקבוצות-הבנקאיות-כקבוצת-ריכוז-ומתן-הוראות-בתחום-הפיקדונות.pdf",
+      "title": "BoI press statement, 6 May 2026",
+      "title_he": "עמדת בנק ישראל בנוגע להכרזת הממונה על התחרות על חמש הקבוצות הבנקאיות כקבוצת ריכוז (6.5.2026)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_6803031.pdf",
+      "title": "Banking (Customer Service) Law, Amendment 38, Sefer HaHukim 3413, 14.5.2025, p.638",
+      "title_he": "חוק הבנקאות (שירות ללקוח), התשמ״א-1981",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "new s.5B2 and s.5",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_ls1_5748073.pdf",
+      "title": "Amendment 38 bill with explanatory notes, Hatzaot Hok 1099, 24.2.2025",
+      "title_he": "ספר החוקים 3413 (14.5.2025): חוק הבנקאות (שירות ללקוח) (תיקון מס׳ 38)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.leumi.co.il/he/accountless-deposit",
+      "title": "Leumi",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/deposits-without-account/",
+      "title": "Mercantile",
+      "publisher": "Mercantile Discount Bank",
+      "publisher_he": "בנק מרכנתיל דיסקונט",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.bankmassad.co.il/private/depositsandsavings/openingthedepositaccount/",
+      "title": "Massad",
+      "publisher": "Bank Massad",
+      "publisher_he": "בנק מסד",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.ice.co.il/finance/news/article/1114246",
+      "title": "ice.co.il on Bank of Jerusalem Q1 2026",
+      "publisher": "ice",
+      "publisher_he": "ice",
+      "kind": "article",
+      "strength": "secondary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

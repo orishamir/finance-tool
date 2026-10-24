@@ -37,5 +37,21 @@
     }
   },
   "il_finance_file": "tax-securities-israeli.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf",
+      "title": "Migdal main prospectus 30.1.2025",
+      "title_he": "תשקיף ראשי של מגדל קרנות נאמנות (30.1.2025)",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מגדל קרנות נאמנות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.8",
+      "locator_he": "עמוד 8",
+      "page": 8,
+      "quote": "לעניין מסלול המס ומאפייני מס מיוחדים של הקרנות המחקות, לרבות קרנות הסל",
+      "checked": "2026-10-22"
+    }
+  ]
 }

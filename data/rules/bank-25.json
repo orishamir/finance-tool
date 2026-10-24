@@ -11,5 +11,48 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "bank-current-account-deposits.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+      "title": "Yahav rate board 13_26",
+      "title_he": "לוח הריביות על פיקדונות של בנק יהב",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.1-2",
+      "locator_he": "עמודים 1 עד 2",
+      "page": 1,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.leumi.co.il/he/savings/interest-rate-table",
+      "title": "Leumi interest-rate table, definitions",
+      "title_he": "טבלת הריביות של בנק לאומי",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.bankhapoalim.co.il/interest-update",
+      "title": "Hapoalim, \"שינויים בריבית בנק ישראל וריבית הפריים\"",
+      "publisher": "Bank Hapoalim",
+      "publisher_he": "בנק הפועלים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.leumi.co.il/he/savings",
+      "title": "Leumi savings page FAQ",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
 }

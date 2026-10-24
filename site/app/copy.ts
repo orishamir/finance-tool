@@ -171,6 +171,7 @@ export const guide = {
   sections: [
     { id: "what", title: "מה זה" },
     { id: "use", title: "למה משתמשים בזה" }, // audit 2026-10-24 (A42): directly under "מה זה"
+    { id: "worth", title: "שווה לדעת" }, // knowledge layer 2026-10-24 (W6): shown only on wrappers with a P-09 block; guide.tsx filters it
     { id: "who", title: "מי מציע ומי מפקח" },
     { id: "inout", title: "כסף נכנס ויוצא" },
     { id: "cost", title: "כמה זה עולה" },
@@ -2627,3 +2628,160 @@ Object.assign(parametersPage.names, { "P-08": "המוצר שמחזיק כל חש
 for (const [id, he] of Object.entries({ "shekel-cash": "מזומן שקלי", makam: "מק״מ", "government-bond-cpi": "אג״ח ממשלתית צמודה", "government-bond-unlinked": "אג״ח ממשלתית לא צמודה", "index-sp500": "מדד S&P 500", "index-ta125": "מדד ת״א-125", "general-track": "מסלול כללי" })) {
   (parametersPage.fields as Record<string, string>)[`P-08.holding.${id}.wrapper_id`] = `${he}: המוצר שמחזיק אותה`;
 }
+
+// ---------------------------------------------------------------------------------------------------------------
+// Knowledge layer, 2026-10-24 (research/knowledge/2026-10-24-synthesis.md). Keys are fixed; the Hebrew editor
+// polishes the values. docs/copy.md gets a section listing these strings.
+// ---------------------------------------------------------------------------------------------------------------
+
+/** The source block under a rule's text and in the number sheet (synthesis §3.3). */
+export const sourceBlock = {
+  /** The document kind on a mirror link: "{title} · נוסח החוק (עותק), {host}" */
+  mirrorKind: "נוסח החוק (עותק)",
+  /** A copy of a document that is not a law or regulation (a circular or a report re-hosted elsewhere). */
+  copyKind: "עותק",
+  hosts: { wikisource: "ויקיטקסט", nevo: "אתר נבו" } as Record<string, string>,
+  /** The second block when an official document is first and a mirror second. */
+  readable: "לקריאה נוחה: הנוסח המשולב (עותק)",
+  checked: "נבדק",
+  mayHaveChanged: "מאז ייתכן שהנוסח השתנה.",
+  pdfTag: "PDF",
+  more: { one: "עוד מקור אחד", two: "עוד שני מקורות", many: "עוד {n} מקורות" },
+  /** The word after "נבדק {date} ·" when the source is weaker than the law. */
+  weak: { "primary-mirror": "עותק", institution: "לפי החברה", secondary: "מקור משני" } as Record<string, string>,
+  /** The one-line citation the copy button writes: "{claim} — {publisher}, {document}, {locator}. {url} (נבדק {date})" */
+  citation: { checked: "נבדק", copied: "ההפניה הועתקה." },
+  /** The rules page only, under a mirror rule's source: the official publication is not attached yet. */
+  officialMissing: "הפרסום הרשמי ברשומות עוד לא צורף; הנוסח נקרא מתוך עותק.",
+  /** The lede sentence of the rules pages' legend: what a copy is and what a date is. */
+  legendLine: "כל כלל נכתב מנוסח החוק או ממסמך של הרשות כשאפשר; כשהוא נלקח ממסמך של חברה, זה מסומן לידו. התאריך הוא היום שבו האתר קרא את המקור.",
+} as const;
+
+/** Hebrew for the `update_rule` words the rule records carry (shown beside a figure with its tax year). */
+export const updateRules = {
+  "fixed in law": "קבוע בחוק",
+  "cpi-linked 1 jan": "מתעדכן ב־1 בינואר לפי המדד",
+  "average-wage-linked": "מתעדכן לפי השכר הממוצע",
+  "provider-set": "החברה קובעת",
+  "fixed in regulation": "קבוע בתקנות",
+  market: "לפי השוק",
+  founder: "פרמטר של האתר",
+  frozen: "מוקפא בשנים {years}",
+} as const;
+
+/** Additions to the rule card (synthesis §3.3). */
+export const ruleCardMore = {
+  forTaxYear: "לשנת המס",
+  derivedFrom: "נגזר מ־",
+  derivedLine: "זו מסקנה משילוב של כמה כללים, לא משפט אחד שנמצא במקור.",
+  stable: "לא משתנה מעצמו",
+  usesLead: "משפיע על",
+  usesEngine: "החישובים באתר",
+  usesNone: "כלל רקע: לא נכנס לחישוב ולא מוצג בעמוד אחר.",
+  copyCitation: "העתקת ההפניה",
+  experienceTag: "ניסיון של אדם אחד",
+} as const;
+
+/** The rules front page and the five shelves (synthesis §3.4). */
+export const rulesFront = {
+  title: "כללים",
+  lede: "כל כלל שהאתר נשען עליו, עם המקור שלו. מתחילים מהשאלות שכולם שואלים, וממשיכים לפי מה שמעניין אתכם.",
+  pinned: { title: "השאלות שכולם שואלים", tag: "בחירה של האתר", provisional: "רשימה זמנית, עד שבעל האתר יאשר אותה" },
+  shelvesTitle: "לפי השאלה שלכם",
+  teaser: "בין השאר:",
+  ruleCount: { one: "כלל אחד", many: "{n} כללים" },
+  changing: { title: "מה עומד להשתנות", line: "כללים שיש להם תאריך בדיקה חוזרת, לפי חודש.", month: "ב{month}", more: "עוד {n} כללים" },
+  byNumber: { title: "לפי מספר", line: "הקידומות של מספרי הכללים, למי שהגיע מכרטיס עם מספר." },
+  filter: "חיפוש כלל לפי מספר, כותרת או מילה",
+  filterNone: "אין כלל שמתאים לחיפוש.",
+  filterMatching: "תואמים",
+  filterOne: "כלל אחד תואם",
+  toShelf: "לכל הכללים בנושא הזה",
+  back: "לכל הכללים",
+  shelves: {
+    state: { name: "מה המדינה לוקחת", line: "מס בהפקדה, בדרך ובמשיכה; פטורים; מה חייב בדיווח" },
+    costs: { name: "מה הבנק או בית ההשקעות לוקחים", line: "דמי ניהול ותקרות, עמלות, הנחות שנגמרות, מינימום" },
+    access: { name: "מה אפשר לעשות עם הכסף", line: "מתי אפשר למשוך, איך עוברים, מי רשאי להצטרף, תקרות הפקדה" },
+    protection: { name: "מי מפקח ומה מוגן", line: "מי מפקח, מה קורה אם החברה קורסת, מה מבוטח" },
+    structure: { name: "איך המוצר בנוי", line: "מטבע, חלוקה, מדדים, מה כתוב בדוח ואיך קוראים לדברים" },
+  } as Record<string, { name: string; line: string }>,
+  /** Sub-group names per rule-base file, the reader's words (no "מס:" prefix); a file not listed keeps rulesPage.groups. */
+  subgroups: {
+    "tax-securities-israeli.md": "מניות, קרנות ואג״ח בבורסה בישראל",
+    "tax-securities-foreign.md": "קרנות וניירות ערך מחו״ל",
+    "tax-interest-deposits-bonds.md": "ריבית: פיקדונות, מק״מ ואג״ח ממשלתיות",
+    "tax-hishtalmut.md": "המס על קרן השתלמות",
+    "tax-pension-gemel-lekitzba.md": "המס על פנסיה וקופת גמל לקצבה",
+    "tax-gemel-lehashkaa-ira-child.md": "המס על קופת גמל להשקעה, ניהול אישי וחיסכון לכל ילד",
+    "tax-general.md": "מדרגות המס, מס יסף וביטוח לאומי",
+    "tax-insurance-and-amendment-190.md": "פוליסות חיסכון ותיקון 190 (עוד לא באתר)",
+    "tax-tier2-other.md": "מט״ח, אג״ח קונצרניות, ריט, זהב ותיקים מנוהלים (עוד לא באתר)",
+  } as Record<string, string>,
+  products: { all: "כל המוצרים", common: "משותף לכל הקופות", tier2: "עוד לא באתר" },
+  experience: { title: "ניסיון של אחרים", line: "עדויות של אנשים מהפורום, לא כללים; מסומנות כך גם בעמוד ״איך עוברים״." },
+} as const;
+
+/** The documents page (synthesis §3.5). */
+export const documents = {
+  title: "מסמכים",
+  lede: "המסמכים שהכללים באתר נקראו מהם: חוקים, תקנות, חוזרים ומדריכים של הרשויות, ומסמכים של בנקים וחברות. לכל מסמך, הכללים שנשענים עליו.",
+  sections: { laws: "חוקים ותקנות", regulators: "רשויות ומפקחים", exchange: "הבורסה", institutions: "מסמכים של בנקים וחברות", secondary: "כתבות ומקורות משניים" },
+  kinds: { law: "חוק", regulation: "תקנות", circular: "חוזר", regulator_page: "עמוד באתר הרשות", official_pdf: "מסמך רשמי", exchange_rules: "הנחיות הבורסה", institution_doc: "מסמך של החברה", article: "כתבה", dataset: "מאגר נתונים", form: "טופס", other: "מסמך" } as Record<string, string>,
+  rulesLead: "כללים שנשענים על המסמך:",
+  more: { one: "עוד מסמך אחד", many: "עוד {n} מסמכים", line: "מסמכים שכלל אחד או שניים נשענים עליהם: עמודים של חברות, כתבות ומקורות נוספים." },
+  rulesMore: "עוד {n}",
+  checked: "נבדק לאחרונה",
+  open: "למסמך",
+  data: {
+    title: "נתונים שהאתר קרא",
+    lede: "תעריפונים, תנאי פיקדונות, דוחות של קרנות וסדרות נתונים, כל אחד עם התאריך שבו נקרא ועם העמוד באתר שמשתמש בו.",
+    tariffs: "תעריפונים",
+    tariffLine: "תעריפון {provider}",
+    noPrintedDate: "ללא תאריך מודפס",
+    linesAfter: " שורות בתעריפון",
+    missing: "לא נמצא תעריפון שפורסם",
+    funds: "קרנות שהאתר קרא",
+    fundsLine: "קרנות שהאתר קרא אחת־אחת מהדוח של מנהל הקרן; לא רשימה של כל הקרנות בבורסה.",
+    deposits: "תנאי פיקדונות",
+    series: "סדרות נתונים",
+    latest: "הערך האחרון",
+    datasets: "נתוני הרשות",
+    datasetsLine: "המסלולים והקופות שהרשות מפרסמת, בעמוד ״חברות ומסלולים״.",
+    toPage: "לעמוד שמשתמש בזה",
+  },
+} as const;
+
+/** The "worth knowing" block on each wrapper guide page (synthesis §3.7). */
+export const guideWorth = {
+  title: "שווה לדעת",
+  line: "עובדות על המוצר הזה שרוב האנשים לא יודעים, כל אחת עם הכלל והמקור שלה.",
+} as const;
+
+/** Search additions (synthesis §3.6): the three new groups, their row lines and the empty states by query type. */
+export const searchMore = {
+  groups: { rule: "כללים", parameter: "פרמטרים", document: "מסמכים" },
+  ruleWord: "כלל",
+  parameterLine: "פרמטר של האתר",
+  documentLine: "מסמך",
+  figureLine: "מספר מתוך כלל",
+  maybe: "אולי התכוונתם:",
+  empty: {
+    questionTitle: "אין כלל שעונה על זה בניסוח הזה",
+    questionBody: "האתר מחפש בכותרות ובטקסט של הכללים. נסו מילה או שתיים מהשאלה, או עברו על הכללים לפי נושא.",
+    questionLink: "לכל הכללים",
+    questionCopy: "העתקת השאלה",
+    questionUnder: "אפשר לשלוח אותה למי ששלח לכם את האתר.",
+    numberTitle: "אין מספר כזה בכללים, במסלולים ובקרנות",
+    numberNear: "קרוב לזה:",
+    mainWords: "לחפש רק את המילים העיקריות",
+  },
+} as const;
+
+/** The home page line under the doors, and the menu and footer entry for the documents page. */
+export const knowledgeEntry = {
+  homeLine: "כל מספר באתר נפתח למקור שלו.",
+  homeLink: "על מה האתר נשען: הכללים והמסמכים",
+  menuDocuments: "מסמכים",
+} as const;
+
+Object.assign(parametersPage.names, { "P-09": "הכללים שבראש עמוד הכללים: השאלות שכולם שואלים, ומה שווה לדעת בכל מדריך" });

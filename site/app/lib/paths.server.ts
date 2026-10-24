@@ -7,7 +7,7 @@ import { providerWrapperIds } from "./providers.server";
 import { playbookWrapperIds } from "./playbook.server";
 
 export function prerenderPaths(): string[] {
-  const paths = ["/", "/guide", "/companies", "/rules", "/parameters", "/not-covered", "/search-index.json", "/goal", "/goal/compare", "/idle-cash", "/compare-bundle.json"];
+  const paths = ["/", "/guide", "/companies", "/rules", "/rules/state", "/rules/costs", "/rules/access", "/rules/protection", "/rules/structure", "/documents", "/parameters", "/not-covered", "/search-index.json", "/search-texts.json", "/goal", "/goal/compare", "/idle-cash", "/compare-bundle.json"];
   for (const w of loadWrappers()) paths.push(`/guide/${w.id}`);
   for (const e of loadExposures()) paths.push(`/exposure/${e.id}`);
   const cma = loadCma();

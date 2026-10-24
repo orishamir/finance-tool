@@ -11,5 +11,22 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-02-02",
   "il_finance_file": "mutual-funds-and-money-market-funds.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994 (Wikisource mirror, revision of 30 Sep 2026)",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "sections 3, 4, 5(א), 8",
+      "locator_he": "סעיפים 3, 4, 5(א), 8",
+      "anchor": "סעיף_3",
+      "checked": "2026-10-22",
+      "qualifier": "(mirror of the law, not the official consolidation)"
+    }
+  ]
 }

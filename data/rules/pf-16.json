@@ -99,5 +99,21 @@
     }
   },
   "il_finance_file": "provident-family-common.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2017915.pdf",
+      "title": "CMA circular 2017-9-15, s. 3א, 4, appendices A and B (Prisha copy, pp. 2 to 7)",
+      "title_he": "חוזר גופים מוסדיים 2017-9-15: דמי ניהול במכשירי החיסכון הפנסיוני – תיקון",
+      "publisher": "Prisha.co.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "s. 3א, 4",
+      "locator_he": "סעיף 3א, 4",
+      "checked": "2026-10-22",
+      "qualifier": "(official circular on a third-party host; pp. 1 to 2 match the gov.il copy)"
+    }
+  ]
 }

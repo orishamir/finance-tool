@@ -10,5 +10,16 @@
   "likely_to_change": "no",
   "text_he": "התכנית נפתחת 'בקופת גמל או בבנק לפי בחירתכם'. בקופת גמל הנכסים מוחזקים בנאמנות ובנפרד מרכוש החברה המנהלת, ואם היא קורסת הניהול עובר לחברה אחרת. בבנק הכסף הוא פיקדון בנקאי בלי ביטוח פיקדונות.",
   "il_finance_file": "regulators-and-protection.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/default.aspx",
+      "title": "NII, תכנית חיסכון לכל ילד",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

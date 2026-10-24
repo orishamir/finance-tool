@@ -77,5 +77,32 @@
     }
   },
   "il_finance_file": "provident-family-common.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "title": "Provident Funds Law s. 35 (Wikisource)",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s. 35",
+      "locator_he": "סעיף 35",
+      "anchor": "סעיף_35",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
+      "title": "Altshuler bylaws s. 29 to 32",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "s. 29 to 32",
+      "locator_he": "סעיף 29 עד 32",
+      "checked": "2026-10-22"
+    }
+  ]
 }

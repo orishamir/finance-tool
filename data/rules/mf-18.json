@@ -3,12 +3,29 @@
   "title": "ISA average management fee by fund type, end-2025",
   "title_he": "דמי הניהול הממוצעים לפי סוג קרן בדוח הרשות",
   "text_he": "רשות ניירות ערך מפרסמת בדוח השנתי שלה על קרנות הנאמנות את דמי הניהול הממוצעים לפי סוג קרן. כאן מופיעים הממוצעים לקרנות כספיות, לקרנות אקטיביות ולקרנות מחקות פתוחות, נכון לסוף השנה שהדוח מכסה. הדוח לא מציין אם המספרים בתיבות הכותרת הם ממוצע פשוט או משוקלל; לפי קריאת החוקר הם ממוצע פשוט, וזו שאלה פתוחה. הנתון מתעדכן פעם בשנה. המספר עצמו מוצג רק בקישור למקור, לפי תנאי השימוש של הרשות (D22).",
-  "strength": "primary",
+  "strength": "primary-mirror",
   "dimensions": [
     "fee-management-balance"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-06-30",
   "il_finance_file": "mutual-funds-and-money-market-funds.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf",
+      "title": "ISA, פעילות קרנות נאמנות בישראל 2025",
+      "title_he": "פעילות קרנות נאמנות בישראל 2025",
+      "publisher": "Funder (copy)",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "official_pdf",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "p. 13",
+      "locator_he": "עמוד 13",
+      "page": 13,
+      "checked": "2026-10-22",
+      "qualifier": "(regulator report, third-party host; the copy on isa.gov.il was not located)"
+    }
+  ]
 }

@@ -3,10 +3,10 @@
 import type { SearchEntry } from "../lib/search";
 
 export async function loader() {
-  const { loadCma, loadTerms, loadWrappers } = await import("../lib/data.server");
+  const { loadCma, loadTerms, loadWrappers, loadRules, loadParameters } = await import("../lib/data.server");
   const { loadCatalog, loadExposures } = await import("../lib/instruments.server");
-  const { normalize, pageAliases } = await import("../lib/search");
-  const { search } = await import("../copy");
+  const { normalize, pageAliases, ruleFigs } = await import("../lib/search");
+  const { search, searchMore, sourceBlock, parametersPage, topicName } = await import("../copy");
   const entries: SearchEntry[] = [];
   const wrappers = loadWrappers();
   for (const w of wrappers) {
@@ -54,8 +54,42 @@ export async function loader() {
     if (!guide && !exposure) continue;
     const page = guide ? wrappers.find((w) => w.id === guide)!.names.he[0]! : exposures.find((e) => e.id === exposure)!.names.he[0]!;
     const href = guide ? `/guide/${guide}#terms` : `/exposure/${exposure}#terms`;
-    for (const name of [term.he, ...term.variants]) entries.push({ kind: "term", name, line: `${search.termLine} ${page}`, href, norm: normalize(name) });
+    for (const name of [term.he, ...term.variants]) entries.push({ kind: "term", name, line: `${search.termLine} ${page}`, href, norm: normalize(name), key: `term:${term.he}` });
   }
+  // knowledge layer (synthesis 3.6): rules by title, id and figures; parameters by name and id; documents by title
+  const { shelfOf } = await import("../lib/rule-shelves");
+  const { ruleTitle } = await import("../lib/rule-title");
+  const strengthRank: Record<string, number> = { primary: 0, "primary-mirror": 1, entered: 1, institution: 2, secondary: 3, open: 4 };
+  for (const rule of Object.values(loadRules())) {
+    const title = ruleTitle(rule).text;
+    const topic = topicName(rule.il_finance_file);
+    const weak = sourceBlock.weak[rule.strength];
+    // W1 adds sources[]; the first source's Hebrew title is one more word the rule can be found by
+    const firstSource = (rule as { sources?: { title_he?: string }[] }).sources?.[0]?.title_he;
+    const alt = normalize([...Object.values(rule.figure_names_he ?? {}), topic, firstSource ?? ""].join(" "));
+    const figs = ruleFigs(rule.figures, rule.figure_names_he);
+    entries.push({
+      kind: "rule",
+      name: title,
+      line: [topic, weak, rule.id].filter(Boolean).join(" · "),
+      href: `/rules/${shelfOf(rule)}#${rule.id}`,
+      norm: normalize(title),
+      key: rule.id,
+      st: strengthRank[rule.strength] ?? 3,
+      ...(alt ? { alt } : {}),
+      ...(figs.length > 0 ? { figs } : {}),
+    });
+  }
+  for (const p of loadParameters()) {
+    const name = parametersPage.names[p.method_id];
+    if (!name) continue;
+    const labels = Object.entries(parametersPage.fields as Record<string, string>)
+      .filter(([k]) => k.startsWith(`${p.method_id}.`))
+      .map(([, v]) => v.replace(/\{[^}]*\}:?\s*/g, ""));
+    entries.push({ kind: "parameter", name, line: `${searchMore.parameterLine} · ${p.method_id}`, href: `/parameters#${p.method_id}`, norm: normalize(name), key: p.method_id, ...(labels.length > 0 ? { alt: normalize(labels.join(" ")) } : {}) });
+  }
+  const { loadDocuments } = await import("../lib/documents.server");
+  for (const d of loadDocuments().filter((x) => x.featured)) entries.push({ kind: "document", name: d.title, line: [searchMore.documentLine, d.publisher].filter(Boolean).join(" · "), href: `/documents#${d.key}`, norm: normalize(d.title) });
   // release 4: bank and broker names and every name a deposit record carries (447, app, ad, abbreviation)
   const { institutionSearchEntries } = await import("../lib/institutions.server");
   const { r4catalogue } = await import("../copy");

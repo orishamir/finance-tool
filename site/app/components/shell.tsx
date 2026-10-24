@@ -1,7 +1,7 @@
 // The app shell: header, menu sheet, search, footer and the page frame (design-spec 1.3, flows 6.2, 6.3).
 import { createContext, useContext, useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { Link, useLocation } from "react-router";
-import { companies as companiesCopy, home as homeCopy, r3workbench, site } from "../copy";
+import { companies as companiesCopy, home as homeCopy, knowledgeEntry, r3workbench, site } from "../copy";
 import { fmt } from "../lib/format";
 import { IconBack, IconMenu, IconSearch } from "./icons";
 import { ProvenanceProvider, type ProvenanceData } from "./provenance";
@@ -9,7 +9,7 @@ import { SearchCombo, SearchSheet } from "./search";
 import { Sheet } from "./Sheet";
 import { Button, cx } from "./ui";
 
-export type Current = "guide" | "decoder" | "rules" | "parameters" | "home" | "goal" | "holdings" | "other";
+export type Current = "guide" | "decoder" | "rules" | "documents" | "parameters" | "home" | "goal" | "holdings" | "other";
 
 /** The newest `checked` date across data/, fixed at build (vite.config.ts `define`, from `dataAsOf()` in lib/data.server.ts). */
 declare const __DATA_AS_OF__: string;
@@ -27,12 +27,13 @@ const doorItems: NavItem[] = [
   { href: homeCopy.door3.href, label: homeCopy.door3.title },
 ];
 /** "Behind the scenes": the rule base, the parameters, what is not covered, the tool for moving to another device. */
-const behindItems: NavItem[] = [byHref("/rules"), byHref("/parameters"), { href: site.notCovered.href, label: site.notCovered.label }, { href: r3workbench.entry.transfer.href, label: r3workbench.entry.transfer.label }];
+const documentsItem: NavItem = { href: "/documents", label: knowledgeEntry.menuDocuments, current: "documents" };
+const behindItems: NavItem[] = [byHref("/rules"), documentsItem, byHref("/parameters"), { href: site.notCovered.href, label: site.notCovered.label }, { href: r3workbench.entry.transfer.href, label: r3workbench.entry.transfer.label }];
 
 /** The footer links: the same pages, destinations first, then the reference pages, then the tool. */
 const footerLinks = (() => {
   const by = (href: string) => site.footer.find((f) => f.href === href)!;
-  return [by("/goal"), { href: r3workbench.entry.holdings.href, label: r3workbench.entry.holdings.title }, by("/rules"), by("/parameters"), by("/not-covered"), { href: r3workbench.entry.transfer.href, label: r3workbench.entry.transfer.label }];
+  return [by("/goal"), { href: r3workbench.entry.holdings.href, label: r3workbench.entry.holdings.title }, by("/rules"), { href: documentsItem.href, label: documentsItem.label }, by("/parameters"), by("/not-covered"), { href: r3workbench.entry.transfer.href, label: r3workbench.entry.transfer.label }];
 })();
 
 /** A page is the current one when the address is under the item's, or the page says it belongs to the item. */

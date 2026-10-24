@@ -181,5 +181,27 @@
     "rolling_20y_max": "תשואה שנתית (לפי השקף), החלון הטוב ביותר של 20 שנים"
   },
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-24"
+  "checked": "2026-10-24",
+  "sources": [
+    {
+      "url": "https://am.jpmorgan.com/content/dam/jpm-am-aem/global/en/insights/market-insights/guide-to-the-markets/mi-guide-to-the-markets-us.pdf",
+      "title": "J.P. Morgan Asset Management, Guide to the Markets – U.S., 4Q 2026, slide 60",
+      "title_he": "Guide to the Markets – U.S., רבעון 4 2026",
+      "publisher": "J.P. Morgan Asset Management",
+      "publisher_he": "J.P. Morgan Asset Management",
+      "kind": "other",
+      "strength": "secondary",
+      "checked": "2026-10-24"
+    },
+    {
+      "url": "https://am.jpmorgan.com/us/en/asset-management/adv/insights/market-insights/guide-to-the-markets/",
+      "title": "guide's FAQ page",
+      "publisher": "J.P. Morgan Asset Management",
+      "publisher_he": "J.P. Morgan Asset Management",
+      "kind": "other",
+      "strength": "secondary",
+      "checked": "2026-10-24",
+      "qualifier": "(asset manager republishing S&P data)"
+    }
+  ]
 }

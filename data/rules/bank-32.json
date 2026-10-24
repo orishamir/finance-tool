@@ -80,5 +80,29 @@
     }
   },
   "il_finance_file": "bank-current-account-deposits.md",
-  "checked": "2026-10-23"
+  "checked": "2026-10-23",
+  "sources": [
+    {
+      "url": "https://www.boi.org.il/media/lnyjs3mp/425_6.pdf",
+      "title": "Bank of Israel, Proper Conduct of Banking Business directive 425, version 6 (6/26), pp. 1 to 24",
+      "title_he": "הוראת ניהול בנקאי תקין 425",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "pp. 1 to 24",
+      "locator_he": "עמודים 1 עד 24",
+      "page": 1,
+      "checked": "2026-10-23"
+    },
+    {
+      "url": "https://www.boi.org.il/roles/supervisionregulation/nbt/nbt425/",
+      "title": "directive page (published 21/06/2026, circular 2851)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "circular",
+      "strength": "primary",
+      "checked": "2026-10-23"
+    }
+  ]
 }

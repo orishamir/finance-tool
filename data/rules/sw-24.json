@@ -79,5 +79,26 @@
     }
   },
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.meitav.co.il/media/0qulk3pk/תקנות-ira-חדשות-יוני-2017.pdf",
+      "title": "IRA Regulations amendment 2017, Reshumot ק\"ת 7819, 29.5.2017, reg. 7 (new reg. 11(ב)), p.1141 (copy hosted by Meitav)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי)",
+      "publisher": "Meitav",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "reg. 7 (new reg. 11(ב)), p.1141",
+      "page": 1141,
+      "checked": "2026-10-22",
+      "qualifier": "(official gazette on a third-party host)"
+    }
+  ],
+  "derived_from": [
+    "IRA-15",
+    "IRA-21",
+    "IRA-23"
+  ]
 }

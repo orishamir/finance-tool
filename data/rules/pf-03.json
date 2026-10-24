@@ -3,12 +3,49 @@
   "title": "Kupat gemel lehashkaa falls under the regulation-2 cap (4% of deposits, 1.05% of balance)",
   "title_he": "קופת גמל להשקעה תחת התקרה הכללית לקופות גמל",
   "text_he": "קופת גמל להשקעה לא מופיעה ברשימת הקופות שהוצאו מהתקרה הכללית, ולכן התקרה הכללית לקופות גמל חלה עליה. התקנה לא נוקבת בשם המוצר; זו הקריאה שלנו של רשימת ההחרגות, וחברה מנהלת מאשרת אותה. תקנון אלטשולר שחם לא נוקב בסכום ומפנה לשיעור המרבי שבהסדר התחיקתי; הפניקס נוקבת בשתי התקרות במפורש. התקרה עצמה במקור ראשי; השיוך של המוצר לתקנה נשען על רשימת ההחרגות ועל אישור מוסדי אחד.",
-  "strength": "primary",
+  "strength": "primary-mirror",
   "dimensions": [
     "fee-management-balance",
     "fee-deposit"
   ],
   "likely_to_change": "no",
   "il_finance_file": "provident-family-common.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+      "title": "Management Fees Regulations, reg. 2(ב) (Wikisource)",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg. 2(ב)",
+      "locator_he": "תקנה 2(ב)",
+      "anchor": "סעיף_2.ב",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
+      "title": "Altshuler Shaham \"חיסכון פלוס\" gemel lehashkaa bylaws, March 2025 edition, s. 35",
+      "title_he": "תקנון קופת הגמל להשקעה ״חיסכון פלוס״ של אלטשולר שחם (מרץ 2025)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "s. 35",
+      "locator_he": "סעיף 35",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.fnx.co.il/gemel/gemelhashkaa/faq/",
+      "title": "Phoenix gemel lehashkaa FAQ",
+      "title_he": "שאלות ותשובות על קופת הגמל להשקעה של הפניקס",
+      "publisher": "The Phoenix",
+      "publisher_he": "הפניקס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
 }

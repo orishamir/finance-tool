@@ -10,6 +10,46 @@ const figure = z.union([
   z.array(bracket),
 ]);
 
+/** The strength vocabulary of a source entry (value.ts without `open` and `entered`). */
+const sourceStrength = z.enum(["primary", "primary-mirror", "institution", "secondary"]);
+
+/**
+ * One source of a rule, read from the `- Source:` line of the rule base by `packages/pipeline/scripts/extract-sources.ts`
+ * (docs/data-schema.md §3.1). Entries are sorted by preference: regulator or ministry document, Knesset gazette,
+ * Wikisource, Nevo, institution, article.
+ */
+export const ruleSource = z.object({
+  url: z.string().url(),
+  /** As the markdown wrote it (an English working title is allowed). */
+  title: z.string().min(1),
+  /** The document's Hebrew name (documents.json, or a Hebrew markdown title). */
+  title_he: z.string().min(1).optional(),
+  /** English, from data/sources/publishers.json by host (fallback: the host). */
+  publisher: z.string().min(1),
+  publisher_he: z.string().min(1).optional(),
+  kind: z.enum(["law", "regulation", "circular", "regulator_page", "official_pdf", "exchange_rules", "institution_doc", "article", "dataset", "form", "other"]),
+  strength: sourceStrength,
+  /** Set iff `strength` is primary-mirror; `other` is a copy of an official text on a host that is neither Wikisource nor Nevo. */
+  mirror_host: z.enum(["wikisource", "nevo", "other"]).optional(),
+  /** Raw, as written: "s. 3(ה4)(3)", "reg. 2(א)(7)", "pp. 27–30". */
+  locator: z.string().optional(),
+  /** "סעיף 3(ה4)(3)", "תקנה 2(א)(7)", "עמודים 27 עד 30". */
+  locator_he: z.string().optional(),
+  /** First page, for "#page=" on a PDF link. */
+  page: z.number().int().positive().optional(),
+  /** Wikisource section id without "#", e.g. "סעיף_3.ה4". */
+  anchor: z.string().optional(),
+  /** The document's own words, verbatim, Hebrew, at most 240 characters; only when the markdown holds them inside quotes. */
+  quote: z.string().optional(),
+  checked: isoDate,
+  /** "(historical)", "(unofficial consolidation)" ... */
+  qualifier: z.string().optional(),
+  /** English working note; never shown. */
+  note: z.string().optional(),
+});
+
+export type RuleSource = z.infer<typeof ruleSource>;
+
 export const ruleRecord = z
   .object({
     id: z.string().regex(/^[A-Z0-9]+-[A-Z0-9]+$/),
@@ -25,6 +65,12 @@ export const ruleRecord = z
     text_he: z.string().min(1).optional(),
     /** Figure key to Hebrew name, for the rule card. */
     figure_names_he: z.record(z.string(), z.string().min(1)).optional(),
+    /** Where the rule comes from, extracted from the rule base (data-schema §3.1). */
+    sources: z.array(ruleSource).min(1).optional(),
+    /** Why `sources` is absent: the raw Source line when it names no link. */
+    sources_missing_reason: z.string().optional(),
+    /** Rules this one is derived from or points to (chips on the card). */
+    derived_from: z.array(z.string().regex(/^[A-Z0-9]+-[A-Z0-9]+$/)).optional(),
     il_finance_file: z.string().regex(/\.md$/),
     checked: isoDate,
   })

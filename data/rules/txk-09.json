@@ -6,7 +6,7 @@
   "figure_names_he": {
     "age": "גיל הפטור על קצבה מוכרת"
   },
-  "strength": "primary",
+  "strength": "primary-mirror",
   "dimensions": [
     "age-or-use-exemption",
     "tax-at-exit"
@@ -36,5 +36,31 @@
     }
   },
   "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Ordinance PDF",
+      "title_he": "פקודת מס הכנסה",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "PDF p.25, s.9A(b1)",
+      "anchor": "סעיף_9א",
+      "quote": "גיל פרישה",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.nevo.co.il/law_html/law01/255_001.htm",
+      "title": "Nevo",
+      "publisher": "Nevo",
+      "publisher_he": "נבו",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "nevo",
+      "checked": "2026-10-22"
+    }
+  ]
 }

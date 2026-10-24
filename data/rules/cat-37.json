@@ -10,5 +10,17 @@
   "likely_to_change": "no",
   "text_he": "הרשות מגדירה את הממוצע בדוח לעמיתים כשיעור דמי הניהול שנגבו בפועל מכלל העמיתים, כלומר אחרי הנחות. לכן זה אינו מחיר מחירון. ההגדרה רשמית, אך הזהות בינה לבין השדה במאגר היא הסקה. שיטת השקלול לא פורסמה, ולכן אין לכתוב ממוצע משוקלל.",
   "il_finance_file": "tracks-catalogue-and-decoder.md",
-  "checked": "2026-10-23"
+  "checked": "2026-10-23",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-710/he/regulation_h_2018-9-26.pdf",
+      "title": "חוזר גופים מוסדיים 2018-9-26, דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי - תיקון (consolidated text of 2017-9-22)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "checked": "2026-10-23",
+      "qualifier": "(definition)"
+    }
+  ]
 }

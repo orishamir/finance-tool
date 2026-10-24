@@ -3,7 +3,7 @@
   "title": "Withholding at source by Israeli payers, and Form 867",
   "title_he": "ניכוי במקור על ידי משלמים ישראליים והאישור השנתי",
   "text_he": "משלם ריבית או דיבידנד, כולל מוסד פיננסי שדרכו הם משולמים, חייב לנכות מס במקור. ליחיד: ריבית מבנק בשיעור הרגיל, או בשיעור הנמוך יותר על נכס לא צמוד; דיבידנד מחברה ישראלית בשיעור הרגיל (גבוה יותר לבעל מניות מהותי); חלוקה מקרן נאמנות פטורה ודיבידנד ממשלם זר בשיעור הרגיל. המשלם מנפיק אישור שנתי שמפרט את הסכומים ששולמו והמס שנוכה, והאדם משתמש בו בדוח או בבקשה להחזר. לפי התקנות כפי שנקראו, האישור ניתן לפי בקשה עד מועד בחודש מרץ של השנה שאחרי; הניכוי על רווחי הון מניירות ערך הוא בתקנות נפרדות.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "tax-during",
     "tax-at-exit",
@@ -11,5 +11,33 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "tax-general.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.38 המפרט את סוג ההכנסה ... וניכוי המס ממנה",
+      "locator_he": "עמוד 38 המפרט את סוג ההכנסה ... וניכוי המס ממנה",
+      "page": 38,
+      "quote": "לפי הסכומים המופיעים בטופסי 867",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.nevo.co.il/law_html/law01/999_549.htm",
+      "title": "Income Tax (Withholding from Interest, Dividends and Certain Profits) Regulations 2005 (Nevo mirror)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Nevo",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "nevo",
+      "checked": "2026-10-22",
+      "qualifier": "(mirror; last amendment shown 27.12.2017)"
+    }
+  ]
 }

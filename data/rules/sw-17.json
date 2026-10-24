@@ -11,5 +11,40 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(ייעוץ,_שיווק_ומערכת_סליקה_פנסיוניים)",
+      "title": "Pension Advice, Marketing and Clearing System Law 2005, ss.13, 19(א)(1), 27(ב)(7), 28(ב), Hebrew Wikisource (amended to ס\"ח תשפ\"ו 912)",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים), התשס״ה-2005",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "ss.13, 19(א)(1), 27(ב)(7), 28(ב)",
+      "locator_he": "סעיפים 13, 19(א)(1), 27(ב)(7), 28(ב)",
+      "anchor": "סעיף_13",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.mizrahi-tefahot.co.il/brokerage/pension/pension-consulting/",
+      "title": "Mizrahi-Tefahot, pension consulting page",
+      "publisher": "Mizrahi Tefahot Bank",
+      "publisher_he": "בנק מזרחי טפחות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.fnx.co.il/ishtalmutfund/faq/",
+      "title": "Phoenix study-fund FAQ",
+      "title_he": "שאלות ותשובות על קרן ההשתלמות של הפניקס",
+      "publisher": "The Phoenix",
+      "publisher_he": "הפניקס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
 }

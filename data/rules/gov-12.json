@@ -35,5 +35,20 @@
     }
   },
   "il_finance_file": "government-bonds-and-makam.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.nevo.co.il/law_html/law01/999_564.htm",
+      "title": "תקנות ... \"אג\"ח ממשלתית צמודה\", תשס\"ו-2006",
+      "title_he": "תקנות מילווה המדינה (איגרות חוב מסוג ״אג״ח ממשלתית צמודה״), התשס״ו-2006",
+      "publisher": "Nevo",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "nevo",
+      "locator": "s. 8",
+      "locator_he": "סעיף 8",
+      "checked": "2026-10-22"
+    }
+  ]
 }

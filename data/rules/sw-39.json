@@ -11,5 +11,31 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-23"
+  "checked": "2026-10-23",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)",
+      "title": "Wikisource copy, same wording",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "checked": "2026-10-23"
+    },
+    {
+      "url": "https://www.nevo.co.il/law_html/law01/999_929.htm",
+      "title": "Transfer Regulations 2008, reg. 3(ב)(1), 9(א) to 9(ג), with the pre-2014 text of reg. 9 (Nevo consolidated HTML, read verbatim; last amendment ק\"ת 10716, 12.7.2023)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
+      "publisher": "Nevo",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "nevo",
+      "locator": "reg. 3(ב)(1), 9(א) to 9(ג)",
+      "locator_he": "תקנה 3(ב)(1), 9(א) עד 9(ג)",
+      "checked": "2026-10-23",
+      "qualifier": "(mirror of ק\"ת; Reshumot not opened)"
+    }
+  ]
 }

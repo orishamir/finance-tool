@@ -36,5 +36,28 @@
     }
   },
   "il_finance_file": "tax-securities-foreign.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.irs.gov/pub/irs-trty/israel.pdf",
+      "title": "US-Israel Income Tax Convention, IRS consolidated text",
+      "title_he": "אמנת המס בין ישראל לארצות הברית (נוסח ה-IRS)",
+      "publisher": "IRS",
+      "publisher_he": "רשות המס האמריקאית (IRS)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "Art. 12(1)-(2)",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.irs.gov/pub/irs-lbi/tax-treaty-table-1.pdf",
+      "title": "IRS Tax Treaty Table 1 (rev. May 2023)",
+      "title_he": "Tax Treaty Table 1 (מאי 2023)",
+      "publisher": "IRS",
+      "publisher_he": "רשות המס האמריקאית (IRS)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

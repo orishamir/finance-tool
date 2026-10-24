@@ -36,5 +36,48 @@
     }
   },
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
+      "title": "Banking Rules (Customer Service) (Fees) 2008, consolidated to 9.4.2025, first schedule part 4(א)(6) and notes, part 5 item 10, pp.17 to 19",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "pp.17 to 19",
+      "locator_he": "עמודים 17 עד 19",
+      "page": 17,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.discountbank.co.il/media/bjudw31y/part4_securities07022025.pdf",
+      "title": "Discount tariff part 4, items 4.6.1 to 4.6.2",
+      "publisher": "Discount Bank",
+      "publisher_he": "בנק דיסקונט",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.meitav.co.il/trade/financial_info/self_trading_portfolio_transfer/",
+      "title": "Meitav Trade, portfolio-transfer article, 03/08/2026",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22",
+      "qualifier": "(marketing article)"
+    },
+    {
+      "url": "https://www.calcalist.co.il/article/hj55ri2pgx",
+      "title": "Calcalist, 27.08.2026",
+      "publisher": "Calcalist",
+      "publisher_he": "כלכליסט",
+      "kind": "article",
+      "strength": "secondary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

@@ -125,5 +125,28 @@
     }
   },
   "il_finance_file": "tax-tier2-other.md",
-  "checked": "2026-10-24"
+  "checked": "2026-10-24",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/צו_מס_הכנסה_(פטור_ממס_על_הכנסה_מריבית_על_פיקדון_במטבע_חוץ)",
+      "title": "צו מס הכנסה (פטור ממס על הכנסה מריבית על פיקדון במטבע חוץ), התשס\"ג-2002 (Wikisource; ק\"ת תשס\"ג 293)",
+      "title_he": "צו מס הכנסה (פטור ממס על הכנסה מריבית על פיקדון במטבע חוץ), התשס״ג-2002",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "checked": "2026-10-24"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/צו_מס_הכנסה_(פטור_ממס_לתושב_חוזר_על_הכנסה_מריבית_על_פיקדון_במטבע_חוץ)",
+      "title": "צו מס הכנסה (פטור ממס לתושב חוזר על הכנסה מריבית על פיקדון במטבע חוץ), התשס\"ד-2003 (Wikisource; ק\"ת תשס\"ד 19)",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "checked": "2026-10-24"
+    }
+  ]
 }

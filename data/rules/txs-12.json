@@ -7,7 +7,7 @@
     "rate": "שיעור המס על הרווח הריאלי בפדיון",
     "taxable_fund_rate": "שיעור המס ברמת הקרן בקרן חייבת"
   },
-  "strength": "primary",
+  "strength": "primary-mirror",
   "dimensions": [
     "tax-at-exit",
     "tax-during",
@@ -60,5 +60,68 @@
     }
   },
   "il_finance_file": "tax-securities-israeli.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Income Tax Ordinance",
+      "title_he": "פקודת מס הכנסה",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s.88, s.91(b)(1), s.125B1, s.129C",
+      "locator_he": "סעיף 88, סעיף 91(ב)(1), סעיף 125ב1, סעיף 129ג",
+      "anchor": "סעיף_88",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מתמורה,_מתשלום_או_מרווח_הון_במכירת_נייר_ערך,_במכירת_יחידה_בקרן_נאמנות_או_בעסקה_עתידית)",
+      "title": "Withholding regulations 5763-2002",
+      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס״ג-2002",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg.2(b), reg.3A",
+      "locator_he": "תקנה 2(ב), תקנה 3א",
+      "anchor": "סעיף_2",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629214-00.pdf",
+      "title": "Yelin Lapidot (00) כספית ניהול נזילות, new-fund prospectus 26.11.2024",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1 and footnote 3, p.2 item 12",
+      "page": 1,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/878001-879000/p878453-00.pdf",
+      "title": "Migdal (00) כספית שקלית, prospectus Part A 17.2.2014",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.bizportal.co.il/guides/news/article/20038659",
+      "title": "bizportal, \"מיסוי קרנות נאמנות: 25% ריאלי, 15% נומינלי\", 12.8.2026",
+      "title_he": "מיסוי קרנות נאמנות: 25% ריאלי, 15% נומינלי (ביזפורטל, 12.8.2026)",
+      "publisher": "Bizportal",
+      "publisher_he": "ביזפורטל",
+      "kind": "article",
+      "strength": "secondary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

@@ -59,5 +59,34 @@
     }
   },
   "il_finance_file": "tax-general.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+      "title": "Deductions booklet 2026",
+      "title_he": "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.11",
+      "locator_he": "עמוד 11",
+      "page": 11,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf",
+      "title": "SH 3342",
+      "title_he": "ספר החוקים 3342 (26.12.2024): חוק ההתייעלות הכלכלית (הקפאת עדכוני מס ומס יסף), התשפ״ה-2024",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.150 s.1(2)(c)",
+      "locator_he": "עמוד 150 סעיף 1(2)(ג)",
+      "page": 150,
+      "quote": "יחיד אשר הכנסתו החייבת ממקורות הוניים בשנת המס עלתה על הסכום הקבוע באותו סעיף קטן, יהיה חייב במס נוסף על חלק הכנסתו החייבת ממקורות הוניים העולה על הסכום האמור, בשיעור של 2%",
+      "checked": "2026-10-22"
+    }
+  ]
 }

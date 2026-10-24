@@ -56,5 +56,37 @@
     }
   },
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-23"
+  "checked": "2026-10-23",
+  "sources": [
+    {
+      "url": "https://www.tase.co.il/he/content/knowledge_center/index_universe/",
+      "title": "TASE, \"מאגרי המניות למדדים - תמר ורימון\"",
+      "title_he": "מאגרי המניות למדדים – תמר ורימון",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "checked": "2026-10-23"
+    },
+    {
+      "url": "https://www.tase.co.il/he/content/knowledge_center/calculating_shares_weight/",
+      "title": "TASE, \"קביעת משקל המניה במדד\"",
+      "title_he": "קביעת משקל המניה במדד",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "checked": "2026-10-23"
+    },
+    {
+      "url": "https://www.tase.co.il/he/content/knowledge_center/indices_overview/",
+      "title": "TASE, \"מדדי הבורסה\"",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "checked": "2026-10-23",
+      "qualifier": "(index provider)"
+    }
+  ]
 }

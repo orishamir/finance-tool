@@ -11,5 +11,63 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-02-02",
   "il_finance_file": "bank-current-account-deposits.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.boi.org.il/media/pcuny0hd/עמדת-בנק-ישראל-בנוגע-להכרזת-הממונה-על-התחרות-על-חמש-הקבוצות-הבנקאיות-כקבוצת-ריכוז-ומתן-הוראות-בתחום-הפיקדונות.pdf",
+      "title": "BoI press statement, 6 May 2026",
+      "title_he": "עמדת בנק ישראל בנוגע להכרזת הממונה על התחרות על חמש הקבוצות הבנקאיות כקבוצת ריכוז (6.5.2026)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf",
+      "title": "Bill P/6522/25 text, tabled 02.02.2026",
+      "title_he": "הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ״ו-2026 (פ/6522/25)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill?$filter=PrivateNumber%20eq%206522%20and%20KnessetNum%20eq%2025&$format=json",
+      "title": "Knesset OData KNS_Bill record",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Status?$filter=StatusID%20eq%20104&$format=json",
+      "title": "status 104",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill?$filter=substringof('ביטוח%20פיקדונות',Name)&$format=json",
+      "title": "Knesset OData search of bill names containing \"ביטוח פיקדונות\"/\"פקדונות\"",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.funder.co.il/article/203575",
+      "title": "Funder, 15 Jun 2026",
+      "publisher": "Funder",
+      "publisher_he": "פאנדר",
+      "kind": "article",
+      "strength": "secondary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

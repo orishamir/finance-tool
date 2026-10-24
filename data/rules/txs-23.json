@@ -11,5 +11,34 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-15",
   "il_finance_file": "tax-securities-israeli.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Tax Authority guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.46",
+      "locator_he": "עמוד 46",
+      "page": 46,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Income Tax Ordinance",
+      "title_he": "פקודת מס הכנסה",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s.121(b)(1)",
+      "locator_he": "סעיף 121(ב)(1)",
+      "anchor": "סעיף_121",
+      "checked": "2026-10-22"
+    }
+  ]
 }

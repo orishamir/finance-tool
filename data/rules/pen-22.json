@@ -59,5 +59,30 @@
     }
   },
   "il_finance_file": "pension-and-gemel-lekitzba.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
+      "title": "Management Fees Regulations 2012, regulations 2, 4 (Wikisource mirror)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע״ב-2012",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf",
+      "title": "Mor gemel standard bylaws 18.02.2026",
+      "title_he": "תקנון תקני לקופת גמל לחיסכון של מור (18.2.2026)",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור גמל ופנסיה",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "section 44",
+      "locator_he": "סעיף 44",
+      "checked": "2026-10-22"
+    }
+  ]
 }

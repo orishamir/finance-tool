@@ -2616,3 +2616,129 @@ Strings are `scnCompare.*` and `ownTermsCopy.*` in copy.ts, each marked `// scen
 | `ownTermsCopy.provider.*` | בחרתם · ספק שהתעריפון שלו ישמש בחישוב · הספקים שנאספו בעמוד הספקים, לפי מה שהאפשרות הזו משאירה בסוף. התעריפון הוא של הספק; הבחירה שלכם. · לבחור · ערוץ ישיר / סניף · לחזור לספק שהאתר בחר · בחירת האתר | Picker beside the brokerage card's fee field (sc-broker) |
 | `r4workbench.providers.useInCompare.*` | לחשב את ההשוואה לפי הספק הזה · ההשוואה שלכם רצה על הספק הזה · לחזור לספק שהאתר בחר · לתוצאות ההשוואה · אין מטרה שמורה, ולכן אין השוואה שאפשר להריץ על הספק הזה. · להגדיר מטרה | Provider row on the providers page (brokerage) |
 | `ownTermsCopy.*` | feeAbout, feeChip, fundCostLabel, feeLabel, flipBelow (מתהפך אם דמי הניהול בקרן יורדים מתחת ל־{x}), flipAbove, openMinimum (סכום המינימום: שאלה פתוחה), line.* (לפי {שם} בדמי ניהול {עלות} ותעריפון {ספק} · להחליף · לבחירת מוצר אחר · דמי ניהול שנתיים בקרן, באחוזים · לחזור לדמי הניהול של הרשומה · הנמוכים ביותר שנאספו באותה חשיפה: {עלות} · ריבית שנתית שהבנק הציע לכם · לחזור לריבית שפורסמה) | Folded in from lib/own-terms-copy.ts (sc-represent), marked scenario fix 2026-10-24 |
+
+## Added 2026-10-24 (knowledge layer)
+
+Strings in the blocks `sourceBlock`, `updateRules`, `ruleCardMore`, `rulesFront`, `documents`, `guideWorth`, `searchMore` and `knowledgeEntry` at the end of `site/app/copy.ts`, plus the P-09 name in `parametersPage.names` (lead's first write, Hebrew editor's review the same night; synthesis in `research/knowledge/2026-10-24-synthesis.md`). Rows marked "changed" are the editor's; the rest kept the lead's text. The two hand tables `data/sources/publishers.json` (99 hosts) and `data/sources/documents.json` (135 documents) carry the Hebrew names of publishers and documents; the twelve `question_he` of P-09 are at the end.
+
+### sourceBlock
+
+| Key | Text | Note |
+|---|---|---|
+| `sourceBlock.mirrorKind` | נוסח החוק (עותק) | the document kind on a mirror link; "עותק" is the strength word already in use |
+| `sourceBlock.hosts.wikisource` / `.nevo` | ויקיטקסט · אתר נבו | |
+| `sourceBlock.readable` | לקריאה נוחה: הנוסח המשולב (עותק) | changed (was "המאוחד"): the legal term for a text with its amendments folded in is נוסח משולב, as in "חוק הביטוח הלאומי [נוסח משולב]" |
+| `sourceBlock.checked` | נבדק | followed by the date, no colon: a sentence fragment |
+| `sourceBlock.mayHaveChanged` | מאז ייתכן שהנוסח השתנה. | |
+| `sourceBlock.pdfTag` | PDF | Latin as the source writes it |
+| `sourceBlock.more` | עוד מקור אחד · עוד שני מקורות · עוד `{n}` מקורות | dual form for 2 |
+| `sourceBlock.weak` | עותק · לפי החברה · מקור משני | the strength word after "נבדק {date} ·", only when weaker than the law |
+| `sourceBlock.citation.checked` / `.copied` | נבדק · ההפניה הועתקה. | toast after the copy button |
+| `sourceBlock.officialMissing` | הפרסום הרשמי ברשומות עוד לא צורף; הנוסח נקרא מתוך עותק. | changed (was "נקרא בעותק"); rules page only, under a mirror rule |
+| `sourceBlock.legendLine` | כל כלל נכתב מנוסח החוק או ממסמך של הרשות כשאפשר; כשהוא נלקח ממסמך של חברה, זה מסומן לידו. התאריך הוא היום שבו האתר קרא את המקור. | changed ("כלל נכתב" → "כל כלל נכתב", "כתוב לידו" → "מסומן לידו": the mark is a tag, not a sentence) |
+
+### updateRules
+
+| Key | Text | Note |
+|---|---|---|
+| `updateRules["fixed in law"]` | קבוע בחוק | |
+| `updateRules["cpi-linked 1 jan"]` | מתעדכן ב־1 בינואר לפי המדד | maqaf before the number |
+| `updateRules["average-wage-linked"]` | מתעדכן לפי השכר הממוצע | |
+| `updateRules["provider-set"]` | החברה קובעת | changed (was "נקבע על ידי החברה"): active, and not confusable with the strength tag "לפי החברה" |
+| `updateRules.market` | לפי השוק | |
+| `updateRules.founder` | פרמטר של האתר | changed (was "ערך של האתר"): the canonical term of the terminology table |
+| `updateRules.frozen` | מוקפא בשנים `{years}` | "בשנים" takes the range without a maqaf |
+
+### ruleCardMore
+
+| Key | Text | Note |
+|---|---|---|
+| `ruleCardMore.forTaxYear` | לשנת המס | the year follows |
+| `ruleCardMore.derivedFrom` | נגזר מ־ | rule codes follow (Latin), hence the maqaf |
+| `ruleCardMore.derivedLine` | זו מסקנה משילוב של כמה כללים, לא משפט אחד שנמצא במקור. | |
+| `ruleCardMore.stable` | לא משתנה מעצמו | |
+| `ruleCardMore.usesLead` | משפיע על | |
+| `ruleCardMore.usesEngine` | החישובים באתר | changed (was "מנוע החישוב"): a document word; the reader knows "חישובים" |
+| `ruleCardMore.usesNone` | כלל רקע: לא נכנס לחישוב ולא מוצג בעמוד אחר. | |
+| `ruleCardMore.copyCitation` | העתקת ההפניה | noun form, one-action button |
+| `ruleCardMore.experienceTag` | ניסיון של אדם אחד | the four forum entries |
+
+### rulesFront
+
+| Key | Text | Note |
+|---|---|---|
+| `rulesFront.title` / `.lede` | כללים · כל כלל שהאתר נשען עליו, עם המקור שלו. מתחילים מהשאלות שכולם שואלים, וממשיכים לפי מה שמעניין אתכם. | |
+| `rulesFront.pinned.title` | השאלות שכולם שואלים | |
+| `rulesFront.pinned.tag` | בחירה של האתר | changed (was "סדר של האתר"): the list is a choice (P-09), not an ordering |
+| `rulesFront.pinned.provisional` | רשימה זמנית, עד שבעל האתר יאשר אותה | |
+| `rulesFront.shelvesTitle` / `.teaser` | לפי השאלה שלכם · בין השאר: | |
+| `rulesFront.ruleCount` | כלל אחד · `{n}` כללים | |
+| `rulesFront.changing.*` | מה עומד להשתנות · כללים שיש להם תאריך בדיקה חוזרת, לפי חודש. · ב`{month}` | month is a Hebrew word: no maqaf |
+| `rulesFront.byNumber.*` | לפי מספר · הקידומות של מספרי הכללים, למי שהגיע מכרטיס עם מספר. | |
+| `rulesFront.filter` / `.filterNone` / `.filterMatching` | חיפוש כלל לפי מספר, כותרת או מילה · אין כלל שמתאים לחיפוש. · תואמים | |
+| `rulesFront.toShelf` | לכל הכללים בנושא הזה | changed (was "במדף"): "מדף" is the synthesis's word, not the reader's |
+| `rulesFront.back` | לכל הכללים | |
+| `rulesFront.shelves.state` | מה המדינה לוקחת · מס בהפקדה, בדרך ובמשיכה; פטורים; מה חייב בדיווח | |
+| `rulesFront.shelves.costs` | מה הבנק או בית ההשקעות לוקחים · דמי ניהול ותקרות, עמלות, הנחות שנגמרות, מינימום | |
+| `rulesFront.shelves.access` | מה אפשר לעשות עם הכסף · מתי אפשר למשוך, איך עוברים, מי רשאי להצטרף, תקרות הפקדה | |
+| `rulesFront.shelves.protection` | מי מפקח ומה מוגן · מי מפקח, מה קורה אם החברה קורסת, מה מבוטח | changed (was "מי הרגולטור, מה קורה אם גוף קורס, ביטוח"): "גוף" and "רגולטור" are regulator words; a list of three parallel questions |
+| `rulesFront.shelves.structure` | איך המוצר בנוי · מטבע, חלוקה, מדדים, מה כתוב בדוח ואיך קוראים לדברים | |
+| `rulesFront.subgroups.*` | מניות, קרנות ואג״ח בבורסה בישראל · קרנות וניירות ערך מחו״ל · ריבית: פיקדונות, מק״מ ואג״ח ממשלתיות · קרן השתלמות · פנסיה וקופת גמל לקצבה · קופת גמל להשקעה, ניהול אישי וחיסכון לכל ילד · מדרגות המס, מס יסף וביטוח לאומי · פוליסות חיסכון ותיקון 190 (עוד לא באתר) · מט״ח, אג״ח קונצרניות, ריט, זהב ותיקים מנוהלים (עוד לא באתר) | the reader's names of the rule-base files, no "מס:" prefix |
+| `rulesFront.products.*` | כל המוצרים · משותף לכל הקופות · עוד לא באתר | |
+| `rulesFront.experience.title` / `.line` | ניסיון של אחרים · עדויות של אנשים מהפורום, לא כללים; מסומנות כך גם בעמוד ״איך עוברים״. | changed (was "סיפורים … בעמוד המעבר"): "עדויות" is the honest word for forum reports; the page is named by its title |
+
+### documents
+
+| Key | Text | Note |
+|---|---|---|
+| `documents.title` / `.lede` | מסמכים · המסמכים שהכללים באתר נקראו מהם: חוקים, תקנות, חוזרים ומדריכים של הרשויות, ומסמכים של בנקים וחברות. לכל מסמך, הכללים שנשענים עליו. | |
+| `documents.sections.*` | חוקים ותקנות · רשויות ומפקחים · הבורסה · מסמכים של בנקים וחברות · כתבות ומקורות משניים | |
+| `documents.kinds.*` | חוק · תקנות · חוזר · עמוד באתר הרשות · מסמך רשמי · הנחיות הבורסה · מסמך של החברה · כתבה · מאגר נתונים · טופס · מסמך | `regulator_page` changed (was "עמוד של הרשות") |
+| `documents.rulesLead` / `.rulesMore` | כללים שנשענים על המסמך: · עוד `{n}` | |
+| `documents.checked` / `.open` | נבדק לאחרונה · למסמך | |
+| `documents.data.title` / `.lede` | נתונים שהאתר קרא · תעריפונים, תנאי פיקדונות, דוחות של קרנות וסדרות נתונים, כל אחד עם התאריך שבו נקרא ועם העמוד באתר שמשתמש בו. | |
+| `documents.data.tariffs` / `.tariffLine` / `.noPrintedDate` / `.missing` | תעריפונים · תעריפון `{provider}` · ללא תאריך מודפס · לא נמצא תעריפון שפורסם | |
+| `documents.data.funds` / `.fundsLine` | קרנות שהאתר קרא · קרנות שהאתר קרא אחת־אחת מהדוח של מנהל הקרן; לא רשימה של כל הקרנות בבורסה. | the TASE terms (data-inventory) |
+| `documents.data.deposits` / `.series` / `.latest` | תנאי פיקדונות · סדרות נתונים · הערך האחרון | |
+| `documents.data.datasets` / `.datasetsLine` | נתוני הרשות · המסלולים והקופות שהרשות מפרסמת, בעמוד ״חברות ומסלולים״. | changed (was "בעמוד החברות"): the page is quoted by its title |
+| `documents.data.toPage` | לעמוד שמשתמש בזה | |
+
+### guideWorth, searchMore, knowledgeEntry, P-09
+
+| Key | Text | Note |
+|---|---|---|
+| `guideWorth.title` / `.line` | שווה לדעת · עובדות על המוצר הזה שרוב האנשים לא יודעים, כל אחת עם הכלל והמקור שלה. | changed (was "שתיים או שלוש עובדות שרוב האנשים לא יודעים על המוצר הזה"): the count is not promised, and the object follows the verb |
+| `searchMore.groups.*` | כללים · פרמטרים · מסמכים | |
+| `searchMore.ruleWord` / `.parameterLine` / `.documentLine` | כלל · פרמטר של האתר · מסמך | |
+| `searchMore.figureLine` | מספר מתוך כלל | changed (was "מספר בכלל", which reads as "a number at all") |
+| `searchMore.maybe` | אולי התכוונתם: | |
+| `searchMore.empty.questionTitle` / `.questionBody` | אין כלל שעונה על זה בניסוח הזה · האתר מחפש בכותרות ובטקסט של הכללים. נסו מילה או שתיים מהשאלה, או עברו על הכללים לפי נושא. | |
+| `searchMore.empty.questionLink` / `.questionCopy` / `.questionUnder` | לכל הכללים · העתקת השאלה · אפשר לשלוח אותה למי ששלח לכם את האתר. | |
+| `searchMore.empty.numberTitle` | אין מספר כזה בכללים, במסלולים ובקרנות | changed (was "בכללים ובקטלוג"): "קטלוג" is a document word; the three things a number can be |
+| `searchMore.empty.numberNear` / `.mainWords` | קרוב לזה: · לחפש רק את המילים העיקריות | |
+| `knowledgeEntry.homeLine` / `.homeLink` / `.menuDocuments` | כל מספר באתר נפתח למקור שלו. · על מה האתר נשען: הכללים והמסמכים · מסמכים | |
+| `parametersPage.names["P-09"]` | הכללים שבראש עמוד הכללים: השאלות שכולם שואלים, ומה שווה לדעת בכל מדריך | changed (was "הכללים המוצמדים: …"): "מוצמדים" (pinned) is the developer's word |
+
+### P-09 questions (`data/parameters/pinned-rules.json`, `question_he`)
+
+Spoken questions, no number inside them, no "ידעתם?". Rows 1, 2, 4 and 10 kept the lead's text.
+
+| Rules | Question |
+|---|---|
+| TXS-01, TXS-02 | כמה מס משלמים על רווח בבורסה? |
+| TXI-03, TXI-02 | כמה מס משלמים על ריבית מפיקדון? |
+| TXH-17, TXK-04, PF-23 | עוברים מסלול בתוך הקופה: משלמים מס או עמלה? · changed (was "מעבר מסלול בתוך הקופה: יש מס? יש עמלה?") |
+| KGL-02, KGL-03 | כמה אפשר להפקיד בקופת גמל להשקעה בשנה? |
+| TXH-09, KH-15 | מתי אפשר למשוך קרן השתלמות בלי מס? · changed (was "מתי קרן השתלמות נזילה בלי מס?"): TXH-09's own title |
+| BANK-23, REG-04, REG-06 | הכסף בפיקדון בבנק מבוטח? · changed: says which deposit |
+| PF-06, PF-02 | כמה דמי ניהול מותר לחברה לגבות? · changed: names who charges |
+| PF-19, SW-06 | מעבירים את הכסף לקופה אחרת: כמה זמן זה לוקח ומה זה עולה? · changed (was "העברה בין קופות: …") |
+| PF-13, PF-14, SW-15 | קיבלתם הנחה בדמי ניהול: לכמה זמן היא מובטחת? · changed: the question-link form of 10.5 |
+| TXS-24, MF-37 | כל הקרנות הכספיות אותו דבר? |
+| BANK-20 | כסף שיושב בעו״ש: הבנק חייב להודיע על זה? · changed (was "להגיד משהו"): BANK-20 is a duty to notify |
+| REG-18, REG-19 | מה קורה לפנסיה אם החברה שמנהלת אותה קורסת? · changed (was "החברה המנהלת"): spoken form |
+
+### Hand tables (`data/sources/`)
+
+- `publishers.json`: 99 hosts (the lead's count of 78 was the markdown alone; the rule records' figure sources add 21). Regulators and ministries by their official names (רשות המסים, רשות שוק ההון, ביטוח וחיסכון, רשות ניירות ערך, בנק ישראל, המוסד לביטוח לאומי, הכנסת, הלשכה המרכזית לסטטיסטיקה, הבורסה לניירות ערך בתל אביב, מאיה (מערכת ההודעות של הבורסה)); `gov.il` is "אתר הממשלה (gov.il)" because its sub-paths cannot be told apart by host, and `documents.json` names the issuing authority; `hly.gov.il` is the official "חיסכון לכל ילד" site; mirrors are ויקיטקסט and נבו; banks and managers by their Hebrew trading names as the site writes them (בנק לאומי, מיטב, אלטשולר שחם, מור בית השקעות, הראל, הפניקס, יחד רופאים); copies of official documents on private hosts carry "(עותק)" (פאנדר, עדיף); Latin brand names stay Latin (S&P Dow Jones Indices, iShares, J.P. Morgan Asset Management, SIPC, LBMA). One host, `behar-law.co.il` (a law firm mirroring regulations once), keeps its host as its name: the firm's Hebrew name is not certain.
+- `documents.json`: 135 recurring documents. Laws by their official short names with the Hebrew year where it is certain (פקודת מס הכנסה; חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005; חוק השקעות משותפות בנאמנות, התשנ״ד-1994; חוק הביטוח הלאומי [נוסח משולב], התשנ״ה-1995; חוק מילווה קצר מועד, התשמ״ד-1984 …); regulations in full with the Reshumot year (תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008; … (דמי ניהול), התשע״ב-2012; כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008). Two regulations are named without a year because the year was not certain: the IRA regulations (קופת גמל בניהול אישי) and the child-savings regulations (חיסכון ארוך טווח לילד). The deductions booklet is "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026"; the Tax Authority guide "דע זכויותיך וחובותיך 2025"; CMA circulars as "חוזר גופים מוסדיים {code}: {name}"; Bank of Israel directives as "הוראת ניהול בנקאי תקין {n}: {name}" (425 has no name: the title was not in the sources); Sefer HaChukim issues as "ספר החוקים {n} ({date}): {the amending law}".

@@ -104,5 +104,27 @@
     }
   },
   "il_finance_file": "tax-insurance-and-amendment-190.md",
-  "checked": "2026-10-24"
+  "checked": "2026-10-24",
+  "sources": [
+    {
+      "url": "https://www.clalbit.co.il/savingandmanagementins/financialsaving/",
+      "title": "Clal, חיסכון פיננסי לעתיד product page",
+      "title_he": "תנאים כלליים לביטוח חיים – חיסכון פיננסי לעתיד (1418), מהדורת 8/2024",
+      "publisher": "Clal Insurance",
+      "publisher_he": "כלל ביטוח",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-24"
+    },
+    {
+      "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
+      "title": "Phoenix Invest FAQ",
+      "title_he": "שאלות ותשובות על קופת הגמל להשקעה של הפניקס",
+      "publisher": "The Phoenix",
+      "publisher_he": "הפניקס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-24"
+    }
+  ]
 }

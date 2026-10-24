@@ -20,6 +20,8 @@ holdings, idle-cash verdicts, eight low-fee S&P 500 fund records and the
 published past record MKT-01. Its "Decisions for the founder" and "Still
 open" sections are the hand-offs.
 
+On 2026-10-24 (night) the knowledge layer (D25) followed: every rule record carries its sources, the rule card shows them first, the rules page is a front of pinned questions (P-09) and five shelf pages, and there are a documents page, search over rules, parameters and documents, and a "שווה לדעת" block on each wrapper guide. Its build spec is `research/knowledge/2026-10-24-synthesis.md`, and the decisions waiting for me are in its section 5.
+
 All five releases of `docs/roadmap.md` are built (release 1 on 2026-10-23,
 releases 2 to 5 on 2026-10-23 and 2026-10-24); the dated "Status" paragraphs
 under each release say what exists and what is open, and its closing section

@@ -36,5 +36,39 @@
     }
   },
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(ייעוץ,_שיווק_ומערכת_סליקה_פנסיוניים)",
+      "title": "Pension Advice, Marketing and Clearing System Law, ss.31ט(א)(1), 31ט(ג), 31טז(ד)(1), 32(ח)(1)",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים), התשס״ה-2005",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "ss.31ט(א)(1), 31ט(ג), 31טז(ד)(1), 32(ח)(1)",
+      "locator_he": "סעיפים 31ט(א)(1), 31ט(ג), 31טז(ד)(1), 32(ח)(1)",
+      "anchor": "סעיף_31ט",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.leumi.co.il/Lobby/pension_information/36830",
+      "title": "Leumi, \"עושים סדר בפנסיה\"",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.mizrahi-tefahot.co.il/brokerage/pension/pension-consulting/",
+      "title": "Mizrahi-Tefahot pension consulting",
+      "publisher": "Mizrahi Tefahot Bank",
+      "publisher_he": "בנק מזרחי טפחות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
 }

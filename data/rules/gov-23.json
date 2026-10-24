@@ -56,5 +56,25 @@
     }
   },
   "il_finance_file": "government-bonds-and-makam.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.boi.org.il/boi_files/hanpaka.pdf",
+      "title": "BoI, מק\"מ - מועדי הנפקות עתידיים",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.boi.org.il/roles/statistics/makamandbonds/actions-and-balances/",
+      "title": "BoI, מק\"מ - מכרזים ויתרות",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

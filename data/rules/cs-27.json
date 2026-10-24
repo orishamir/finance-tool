@@ -57,5 +57,19 @@
     }
   },
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-23"
+  "checked": "2026-10-23",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-740/he/regulation_h_2018-9-25.pdf",
+      "title": "CMA institutional-bodies circular 2018-9-25 \"חוזר קופת גמל להשקעה לחיסכון ארוך טווח לילד – תיקון\", 9.7.2018, s. 3(ד), 5, annex ב'ג' (p. 8) and the explanatory notes (p. 16)",
+      "title_he": "חוזר גופים מוסדיים 2018-9-25: קופת גמל להשקעה לחיסכון ארוך טווח לילד – תיקון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "s. 3(ד), 5, annex ב'ג' (p. 8)",
+      "page": 8,
+      "checked": "2026-10-23"
+    }
+  ]
 }
