@@ -750,7 +750,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
     return (
       <div className="flex flex-col gap-2">
         <h2 id={headId} className="text-lg font-semibold">
-          {ruleCopy.title} <bdi dir="ltr" className="slashed-zero">{id}</bdi>
+          <bdi dir="ltr" className="slashed-zero">{id}</bdi>
         </h2>
         <p className="text-sm text-muted-foreground">{ruleCopy.noText}</p>
         <LinkButton to="/rules">{ruleCopy.all}</LinkButton>
@@ -814,8 +814,9 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
     <div className={cx("flex flex-col gap-3", open && "rule-open")}>
       <header className="flex flex-col gap-1.5">
         <h2 id={headId} className="text-lg font-semibold leading-snug">
-          {open ? ruleCopy.open.title : `${ruleCopy.title}`} <bdi dir="ltr" className="slashed-zero">{id}</bdi>
-          {!open && ": "}
+          {open && <>{ruleCopy.open.title} </>}
+          <bdi dir="ltr" className="slashed-zero">{id}</bdi>
+          {!open && " · "}
           {!open && <ShownRuleTitle rule={rule} />}
         </h2>
         {isExperience(id) ? (

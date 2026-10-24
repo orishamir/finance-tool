@@ -95,6 +95,8 @@ Added 2026-10-24 for release 5 (P-08, `data/parameters/exposure-holding-wrapper.
 
 Added 2026-10-24 for the knowledge layer (P-09, `data/parameters/pinned-rules.json`), chosen by the lead (Claude) at the founder's request on 2026-10-24 and **kept by the founder the same evening** ("if I want to change which rules are pinned I would have told you"); no tag marks the list on the page (the founder asked for the "בחירה של האתר" tag to go). Importance is a judgement, so it is a parameter: the data-driven score (engine use, site use, references, figure, tier, strength) orders rules inside groups and picks the teasers, and never this list. **Selection rule:** the rule decides an outcome on the site or is documented as a common misconception or recurring question (`research/knowledge/2026-10-24-user-lens.md` section 2, the BGU 2019 study, the forum catalogue), and it has a primary or primary-mirror source with a link after the extraction of 2026-10-24. Row 1 is the capital-gains rule because it is the most known and the founder's own example, not because a formula ranks it (it ranks 13th). No formula reads P-09.
 
+**Answers (2026-10-24, late evening).** The questions moved from the top of the rules page to their own page, and each row carries `answer_he`: one sentence written only from the row's rules, every figure a `{ID:figure}` slot that the page renders as a sourced number, so the validator can reject a typed digit. An answer is prose, so it is the site's reading of the records; the lead reviews each against its records' `text_he`, and a row whose rules do not support a one-line answer says only what they say.
+
 **The twelve rows** (the question is the record's `question_he`, polished by the Hebrew editor):
 
 | # | Rules | Question (topic) |

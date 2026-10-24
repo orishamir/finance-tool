@@ -13,8 +13,9 @@ export const site = {
   currentPage: "העמוד הנוכחי",
   menuItems: [
     { href: "/guide", label: "מדריך", current: "guide" },
+    { href: "/questions", label: "שאלות שכולם שואלים", current: "questions" }, // the questions page (founder, 2026-10-24 evening)
     { href: "/companies", label: "חברות ומסלולים", current: "decoder" },
-    { href: "/rules", label: "כללים", current: "rules" },
+    { href: "/rules", label: "חוקים וכללים", current: "rules" },
     { href: "/parameters", label: "פרמטרים", current: "parameters" },
     { href: "/goal", label: "השוואה למטרה", current: "goal" },
   ] as const,
@@ -26,7 +27,8 @@ export const site = {
   footerAsOf: "נתונים נכון ל־",
   toTop: "חזרה למעלה",
   footer: [
-    { href: "/rules", label: "כללים" },
+    { href: "/questions", label: "שאלות שכולם שואלים" },
+    { href: "/rules", label: "חוקים וכללים" },
     { href: "/parameters", label: "פרמטרים" },
     { href: "/goal", label: "השוואה למטרה" },
     { href: "/not-covered", label: "מה האתר עוד לא מכסה" },
@@ -79,7 +81,7 @@ export const buttons = {
   showTable: "הצגה כטבלה",
   hideTable: "הסתרת הטבלה",
   openSource: "פתיחת המקור",
-  allRules: "לכל הכללים",
+  allRules: "לכל החוקים והכללים",
   copy: "העתקה",
   copied: "הועתק",
 } as const;
@@ -181,7 +183,7 @@ export const guide = {
     { id: "terms", title: "מונחים" },
   ] as const,
   // audit 2026-10-24 (A42, A43, A86)
-  rulesToggle: { show: "הצגת הכללים", hide: "הסתרת הכללים" },
+  rulesToggle: { show: "הצגת החוקים והכללים", hide: "הסתרת החוקים והכללים" },
   exposuresRow: "במה אפשר להשקיע בתוכו:",
   companiesShow: "הצגת החברות",
   companiesHide: "הסתרת החברות",
@@ -202,17 +204,17 @@ export const guide = {
   readout: { today: "היום", year: "שנה" },
   table: { year: "שנה", contributions: "ההפקדות שלכם", fees: "דמי ניהול", tax: "מס", net: "נשאר לכם" },
   graphAria: { before: "גרף: הכסף לאורך", after: "הנתונים המלאים בטבלה." },
-  rulesLine: "כללים:",
+  rulesLine: "חוקים וכללים:",
   markers: { free: "אפשר למשוך מכאן", age: "גיל" },
   enteredReturnCaption: "הקו המקווקו מבוסס על תשואה שהזנתם, לא על הערכה של האתר.",
   blockedBand: "לא מחושב: שאלה פתוחה",
-  figureNotUpdated: { before: "הנתון לא עודכן:", middle: "היה בתוקף עד", after: "עד שהוא יעודכן, האתר לא מחשב את הגרף.", link: "לכלל" },
+  figureNotUpdated: { before: "הנתון לא עודכן:", middle: "היה בתוקף עד", after: "עד שהוא יעודכן, האתר לא מחשב את הגרף.", link: "לפרטים" },
   appliesToYou: "לפי מה שהזנתם",
   employeesOnly: "לשכירים בלבד",
   selfEmployedOnly: "לעצמאים בלבד",
   whoLine: "לכל חברה יש עמוד עם כל המסלולים שלה.",
   allCompanies: "כל החברות",
-  feeTable: { type: "סוג", base: "על מה נגבה", cap: "תקרה", rules: "כללים" },
+  feeTable: { type: "סוג", base: "על מה נגבה", cap: "תקרה", rules: "חוקים וכללים" },
   feeNote: "אלה התקרות שבחוק. כמה כל חברה גובה בפועל, בכל מסלול, מופיע בעמוד של החברה.",
   feeNoteOther: "הסכומים בפועל נקבעים אצל הגורם המציע. כאן מופיעים סוגי העלויות, ותקרה כשיש תקרה בחוק.",
   taxSteps: { deposit: "בהפקדה", during: "כל עוד הכסף בפנים", exit: "כשמושכים" },
@@ -242,7 +244,7 @@ export const values = {
   units: { nis: "₪", pct: "%", years: "שנים" },
   stateStart: "שדה שלא הזנתם הוא ערך התחלתי, פרמטר של האתר.", // one line above the fields (UX fix 17); a field shows its own state only once entered
   stateEntered: "הזנתם",
-  hints: { return: "התשואה ההתחלתית היא דוגמה, לא תחזית.", inflation: "בכמה המחירים עולים בשנה, בממוצע.", age: "מסמן בגרף גילים שבהם הכללים משתנים.", employment: "מסמן בעמוד את החלקים שנוגעים לכם." },
+  hints: { return: "התשואה ההתחלתית היא דוגמה, לא תחזית.", inflation: "בכמה המחירים עולים בשנה, בממוצע.", age: "מסמן בגרף גילים שבהם החוקים והכללים משתנים.", employment: "מסמן בעמוד את החלקים שנוגעים לכם." },
   returnNote: "תשואה שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם ולא של האתר.",
   agePlaceholder: "למשל 30", // from the approved mockup
   errors: { nan: "הזינו מספר.", negative: "הסכום לא יכול להיות שלילי.", years: ["הזינו מספר שנים בין", "ל־"], age: ["הזינו גיל בין", "ל־"], pct: ["הזינו אחוז בין", "ל־"] },
@@ -256,7 +258,7 @@ export const provenance = {
     checked: "נבדק",
     from: "בתוקף מתאריך",
     to: "בתוקף עד",
-    rule: "כלל",
+    rule: "חוק או כלל",
     // audit 2026-10-24 (A21, A25)
     forYear: "תקף לשנת",
     englishTitle: "שם המקור באנגלית",
@@ -265,13 +267,13 @@ export const provenance = {
     noValue: "הנתון הזה לא נמצא במקור, ולכן האתר לא מציג מספר.",
     notYetInForce: "עד אז הנתון הזה עוד לא חל; האתר מציג אותו כפי שפורסם.",
   },
-  computed: { formula: "נוסחה", inputs: "ערכים שנכנסו לחישוב", rules: "כללים שנכנסו לחישוב", weakInputs: "בין הערכים שנכנסו לחישוב, אלה לפי מסמך של החברה:" },
+  computed: { formula: "נוסחה", inputs: "ערכים שנכנסו לחישוב", rules: "חוקים וכללים שנכנסו לחישוב", weakInputs: "בין הערכים שנכנסו לחישוב, אלה לפי מסמך של החברה:" },
   // audit 2026-10-24 (A21): a flag with no sentence of its own
   flagOther: "הערה על החישוב:",
   entered: { line: "הזנתם את הערך הזה.", instead: "במקום:" },
-  parameter: { why: "למה הערך הזה", approved: "תאריך אישור", notApproved: "עוד לא אושר", noRationale: "ערך שהאתר קבע בעצמו; הוא לא כלל מהחוק." },
+  parameter: { why: "למה הערך הזה", approved: "תאריך אישור", notApproved: "עוד לא אושר", noRationale: "ערך שהאתר קבע בעצמו; הוא לא בא מהחוק." },
   stale: { before: "לא עודכן מאז", middle: "בדרך כלל מתעדכן", cadence: { daily: "כל יום", monthly: "כל חודש", quarterly: "כל רבעון", yearly: "כל שנה" } },
-  allRulesOf: "לכל הכללים של",
+  allRulesOf: "לכל החוקים והכללים של",
   unit: {
     nis_per_month: "בחודש",
     pct_per_year: "בשנה",
@@ -286,29 +288,28 @@ export const provenance = {
 } as const;
 
 export const rule = {
-  title: "כלל",
+  title: "חוק או כלל",
   conditions: "תנאים וחריגים",
   figures: "סכומים לפי שנת מס",
   source: "מקור",
   topic: "נושא",
   checked: "נבדק",
   recheck: "ייבדק שוב",
-  all: "לכל הכללים",
+  all: "לכל החוקים והכללים",
   open: { title: "שאלה פתוחה:", unknown: "מה עוד לא ידוע", waiting: "מה מחכה לתשובה", last: "בינתיים האתר לא מחשב את זה." },
   dimensions: "נוגע ל",
-  noText: "נוסח הכלל במילים פשוטות עוד לא נכתב; הכותרת מופיעה כפי שהיא במאגר הכללים.",
+  noText: "הנוסח במילים פשוטות עוד לא נכתב; הכותרת מופיעה כפי שהיא במאגר החוקים והכללים.",
   // audit 2026-10-24 (A26): the "מקור" row of a rule with no link yet
-  sourceMissing: "הקישור למקור עוד לא צורף לכלל הזה.",
+  sourceMissing: "הקישור למקור עוד לא צורף.",
 } as const;
 
 export const rulesPage = {
-  title: "כללים",
-  lede: "כל כלל שהאתר משתמש בו, עם המקור שלו. כלל שהמקור שלו חלש יותר מסומן, ושאלה פתוחה מסומנת במנעול.",
+  title: "חוקים וכללים",
+  lede: "כל חוק וכל כלל שהאתר משתמש בו, עם המקור שלו. מה שהמקור שלו חלש יותר מסומן, ושאלה פתוחה מסומנת במנעול.",
   openQuestions: "שאלות פתוחות בנושא הזה",
-  filter: "חיפוש כלל לפי מספר, כותרת או טקסט",
-  filterNone: "אין כלל שמתאים לחיפוש.",
+  filter: "חיפוש לפי מספר, כותרת או טקסט",
+  filterNone: "שום דבר לא מתאים לחיפוש.",
   filterMatching: "תואמים",
-  ruleCount: { one: "כלל אחד", many: "כללים" },
   // Hebrew names of the rule-base topics, from the il-finance index; copy.md 3.14
   groups: {
     "tax-general.md": "מס: כללי",
@@ -328,7 +329,7 @@ export const rulesPage = {
     "pension-and-gemel-lekitzba.md": "פנסיה וקופת גמל לקצבה",
     "child-savings.md": "חיסכון לכל ילד",
     "ira-self-directed.md": "ניהול אישי",
-    "provident-family-common.md": "כללים משותפים לקופות הגמל",
+    "provident-family-common.md": "חוקים וכללים משותפים לכל קופות הגמל",
     "regulators-and-protection.md": "מי מפקח ומה מוגן",
     "tracks-catalogue-and-decoder.md": "מסלולים והקטלוג",
     "bank-product-names.md": "שמות מוצרים בכל בנק",
@@ -342,7 +343,7 @@ export const rulesPage = {
     "tax-tier2-other.md": "מס: מט״ח, אג״ח קונצרניות, ריט, זהב ותיקים מנוהלים",
   } as Record<string, string>,
   /** Topic name when a file is not in the map above: never a file name. */
-  topicOther: "נושא נוסף במאגר הכללים",
+  topicOther: "נושא נוסף במאגר החוקים והכללים",
 } as const;
 
 /** The Hebrew topic name of a rule-base file (never the file name). */
@@ -352,7 +353,7 @@ export function topicName(file: string): string {
 
 export const parametersPage = {
   title: "פרמטרים של האתר",
-  lede: "החלטות שהאתר מקבל בעצמו, כמו מתי שתי אפשרויות נחשבות שקולות. הן לא כללים מהחוק, ואי אפשר לשנות אותן מהעמוד.",
+  lede: "החלטות שהאתר מקבל בעצמו, כמו מתי שתי אפשרויות נחשבות שקולות. הן לא באות מהחוק, ואי אפשר לשנות אותן מהעמוד.",
   rows: { why: "למה", approved: "תאריך אישור", usedIn: "משמש ב:" },
   provisional: "ערך זמני שהאתר קבע",
   notSet: "עוד לא נקבע",
@@ -473,8 +474,8 @@ export const notCovered = {
   lede: "מוצרים שהאתר מכיר אבל עוד לא יכול להסביר עד הסוף, ולמה.",
   rows: { known: "מה ידוע", open: "מה עוד פתוח", why: "למה זה חשוב" },
   empty: "כרגע האתר מכסה את כל המוצרים שהוא מכיר.",
-  openLine: "הכללים לזה עוד בבדיקה. עד שייסגרו, האתר לא מחשב אותו.",
-  notice: "הכללים לכל המוצרים כאן עוד בבדיקה. עד שייסגרו, האתר לא מחשב אותם.",
+  openLine: "החוקים והכללים לזה עוד בבדיקה. עד שייסגרו, האתר לא מחשב אותו.",
+  notice: "החוקים והכללים לכל המוצרים כאן עוד בבדיקה. עד שייסגרו, האתר לא מחשב אותם.",
   blockedTag: "לא מחושב",
   alsoCalled: "נקרא גם",
   // audit 2026-10-24 (A58): what the site does not compare or do, from product.md section 4; this is by design, not a gap to fill
@@ -497,7 +498,7 @@ export const notCovered = {
 /** Plain-Hebrew reasons a run can fail with, carried as `messageHe` on a failure result (copy.md 7.1, added 2026-10-24, txh-limit). No engine message reaches the page. */
 export const runFailure = {
   employerAboveTotal: "הפקדת המעסיק שהוזנה גבוהה מסך ההפקדה החודשית. בדקו שסכום ההפקדה כולל את חלק העובד וחלק המעסיק.",
-  blocked: "הכללים לחישוב הזה עוד בבדיקה, ולכן האתר לא מחשב אותו.",
+  blocked: "החוקים והכללים לחישוב הזה עוד בבדיקה, ולכן האתר לא מחשב אותו.",
   figureNotUpdated: "אחד הנתונים בחישוב לא עודכן, ולכן האתר לא מחשב אותו.",
   generic: "האתר לא הצליח להריץ את החישוב עם הערכים האלה. בדקו את ההנחות שהזנתם.",
 } as const;
@@ -608,7 +609,7 @@ export const computedInputs = {
     wrapper: "המוצר",
     share: "החלק שעובר",
     move: "הסכום שעובר",
-    rule_ids: "הכללים",
+    rule_ids: "החוקים והכללים",
   } as Record<string, string>,
   /** Values the engine writes in English (the `statistic` input, a fee level): shown in Hebrew. */
   valueWords: { mean: "ממוצע", median: "חציון", list: "תעריפון", average: "ממוצע הרשות", entered: "שהזנתם" } as Record<string, string>,
@@ -675,7 +676,7 @@ export const guideBlocks = {
     otherKind: "לפי התנאים שבנוסח שלמטה",
     textNote: "הנוסח המלא, כפי שהוא במקור:",
     // audit 2026-10-24 (A22): the Hebrew text of the rules the sentence cites, else the English wording, said to be English
-    textNoteHe: "הפירוט המלא, לפי הכללים:",
+    textNoteHe: "הפירוט המלא, לפי החוקים והכללים:",
     textNoteEn: "הנוסח באנגלית:",
     // audit 2026-10-24 (A14): the exit row of the money-in-and-out list points at the switching steps
     switchHow: "איך עוברים, שלב אחרי שלב",
@@ -711,7 +712,7 @@ export const guideBlocks = {
     "F-44": { before: "עד", after: "מהרווח הריאלי", text: "כלומר מהרווח שמעבר לעליית המחירים.", baseTag: "בסיס המס: לפי החברה", altBefore: "האתר מציג גם חלופה:", altAfter: "מהרווח הנומינלי." },
     // every other formula a wrapper record may name (method.md 5 to 9); one headline and one sentence each; copy.md 3.5a
     "F-21": { headline: "מס על הריבית בסוף כל פיקדון", text: "הבנק מנכה את המס מהריבית בסוף התקופה, והסכום נטו נפתח מחדש כפיקדון." },
-    "F-22": { headline: "מס על הריבית בסוף כל תקופה", text: "אין כלל מס שמבדיל תוכנית חיסכון מפיקדון: הריבית ממוסה בסוף כל תקופה." },
+    "F-22": { headline: "מס על הריבית בסוף כל תקופה", text: "המס לא מבדיל בין תוכנית חיסכון לפיקדון: הריבית ממוסה בסוף כל תקופה." },
     "F-23": { headline: "בקרן כספית פטורה אין מס בזמן ההחזקה", text: "חלוקות, אם יש, ממוסות כשהן משולמות. בקרן שהיא עצמה חייבת במס, הקרן משלמת את המס ולא אתם." },
     "F-24": { headline: "ההפרש בין מחיר הקנייה לפדיון נחשב ריבית", text: "המס על ההפרש מנוכה בפדיון, וסדרה חדשה נקנית מהסכום נטו." },
     "F-25": { headline: "מס על כל תשלום ריבית", text: "המס מנוכה בכל תשלום, והקופון נטו נקנה מחדש." },
@@ -887,7 +888,7 @@ export const r2 = {
     yes: "כן",
     no: "לא",
     payslip: "איפה זה בתלוש",
-    payslipNoRule: "הטקסט של הכלל הזה עוד לא נמצא במאגר הכללים של האתר.",
+    payslipNoRule: "הנוסח עוד לא נמצא במאגר החוקים והכללים של האתר.",
     payslipLast: "השמות המדויקים בתלוש משתנים בין מעסיקים. האתר עוד לא מצא להם מקור רשמי.",
     card3: "ההנחות",
     return: "תשואה שנתית על החלק המושקע",
@@ -976,7 +977,7 @@ export const r2 = {
     whyRows: { relief: "הטבת מס בהפקדה", fees: "דמי ניהול", taxDuring: "מס בזמן ההחזקה", taxExit: "מס ביציאה", lockUp: "נעילה", result: "נשאר לכם" },
     whyDeciding: "ההבדל הגדול ביותר", // audit 2026-10-24 (A7): was "מכריע"; F-80 names the largest gap, which need not favour the winner
     whyDiffers: "מה הבדיל ביניהן",
-    whyNone: "אין הבדל בין הכללים ששתי האפשרויות נשענות עליהם.",
+    whyNone: "אין הבדל בין החוקים והכללים ששתי האפשרויות נשענות עליהם.",
     rank: "מקום",
     decidingLine: "ההבדל הגדול ביותר מול האפשרות שמעליה:", // audit 2026-10-24 (A7): was "מכריע לעומת האפשרות שמעליה:"
     assumptionsOf: "ההנחות של השורה",
@@ -1032,7 +1033,7 @@ export const r2 = {
       noTerms: "עוד אין לאתר את תנאי המוצר",
       noRun: "עוד אין לאתר שיטת חישוב לזה",
       gap: "שיטת החישוב עוד לא מוגדרת",
-      ruleMissing: "חסר כלל במאגר הכללים",
+      ruleMissing: "חסר במאגר החוקים והכללים",
       ruleOpen: "שאלה פתוחה",
       employeeNoSalary: "הזינו שכר", // keeps the key for the study fund of an employee
     },
@@ -1068,7 +1069,7 @@ export const r2 = {
     bankPublished: "ריבית הבנק, בתוקף מ־",
     staleRow: "מבוסס על נתון שלא עודכן מאז",
     cashChip: "ריבית על הכסף הנזיל",
-    rulesUsed: "הכללים שההשוואה נשענת עליהם",
+    rulesUsed: "החוקים והכללים שההשוואה נשענת עליהם",
     realNominal: "אופן הצגת הסכומים",
     tableYear: "שנה",
     modes: { real: "בכסף של היום", nominal: "בשקלים של העתיד" },
@@ -1535,7 +1536,7 @@ export const r3fees = {
       after: " מהסכום שבכותרת: בלי העמלות הרווח גדול יותר, והמס עליו גדול יותר.",
       label: "מס ועלויות היציאה על ההפרש",
     },
-    ruleMissing: "הטקסט של הכלל הזה עוד לא נמצא במאגר הכללים של האתר.",
+    ruleMissing: "הנוסח עוד לא נמצא במאגר החוקים והכללים של האתר.",
     parameterReturn: "לא הוזנה תשואה. החישוב לפי התשואה של התרחיש לדוגמה, פרמטר של האתר.",
     noGoal: "אין מטרה שמורה: החישוב לפי התרחיש לדוגמה של האתר.",
     noTerms: "למוצר הזה עוד אין רשומה עם עמלות לחישוב. אפשר להזין את העמלות מהדוח שלכם.",
@@ -1631,7 +1632,7 @@ export const r3holdings = {
     openCode: "PF OQ16",
     childPlan: "מבנה הדוח של חיסכון לכל ילד:", // copy.md 7.2 lead before CS-27's text
     neverPosition: "האתר לא מצייר דוח לדוגמה ולא מציין איפה בדף כל שדה.", // copy.md 7.2
-    ruleMissing: "הטקסט של הכלל הזה עוד לא נמצא במאגר הכללים של האתר.", // copy.md 7.2
+    ruleMissing: "הנוסח עוד לא נמצא במאגר החוקים והכללים של האתר.", // copy.md 7.2
   },
   clearingHouse: { label: "אפשר גם מהדוח של המסלקה הפנסיונית", last: "איך מקבלים את הדוח וכמה הוא עולה:", openCode: "PF OQ6" },
   save: "שמירה",
@@ -1676,7 +1677,7 @@ export const r3holdings = {
     oneHolding: "איחוד נבדק כשיש שתי החזקות מאותו סוג.",
     differentTypes: "העברה מותרת רק במסלולים שהתקנות מונות, לפי סוג המוצר.",
     differentTypesLink: "כל המסלולים בכל החברות", // copy.md 7.2, to the workbench (design-spec 13 edge case)
-    outcomes: { allowed: "אפשר לאחד", notAllowed: "אי אפשר לאחד", notSourced: "כללי ההעברה עוד לא נמצאו", blocked: "חסום: שאלה פתוחה" },
+    outcomes: { allowed: "אפשר לאחד", notAllowed: "אי אפשר לאחד", notSourced: "החוקים והכללים להעברה עוד לא נמצאו", blocked: "חסום: שאלה פתוחה" },
     separate: "אפשר להעביר כחשבון נפרד", // copy.md 7.2: the SW-39 outcome (code allowed-separate-account)
     separateLine: "הכסף עובר שלם לחשבון נפרד אצל המנהל השני, והחשבונות מתאחדים רק כששניהם נזילים.", // copy.md 7.2, a plain statement of SW-39
     route: { mid: "ל", after: ": מסלול מותר בתקנות." },
@@ -1746,7 +1747,7 @@ export const r3holdings = {
     stay: { label: "להשאיר", text: "אין מס שנתי על הרווחים כל עוד הכסף בקרן; המס חל רק במשיכה." }, // scenario fix 2026-10-24, TXH-18
     switchTrack: { label: "להחליף מסלול באותה קופה", text: "מעבר מסלול בתוך הקרן אינו אירוע מס ואין עליו עמלה בתקנות; חברה רשאית להעלות דמי ניהול מוזלים אחרי מעבר." }, // scenario fix 2026-10-24, TXH-17, PF-23, SW-15
     move: { label: "להעביר לחברה אחרת", text: "עוברת כל היתרה בלבד, והוותק של הכסף נשמר.", link: "איך עוברים" }, // scenario fix 2026-10-24, PF-18, SW-39
-    withdraw: { label: "למשוך", text: "משיכה אחרי תקופת ההמתנה פטורה ממס על הרווחים מהפקדה מוטבת, ורווחים מהפקדה מעל התקרה ממוסים; לפי הכלל לעובד: אחרי משיכה החשבון נסגר להפקדות נוספות (משיכת שליש ללימודים לא סוגרת, TXH-10)." }, // scenario fix 2026-10-24, TXH-09, TXH-11; review fix 2026-10-24: the closure is the rule for an employee's fund and has the one-third study exception, TXH-10
+    withdraw: { label: "למשוך", text: "משיכה אחרי תקופת ההמתנה פטורה ממס על הרווחים מהפקדה מוטבת, ורווחים מהפקדה מעל התקרה ממוסים; ולעובד: אחרי משיכה החשבון נסגר להפקדות נוספות (משיכת שליש ללימודים לא סוגרת, TXH-10)." }, // scenario fix 2026-10-24, TXH-09, TXH-11; review fix 2026-10-24: the closure is the rule for an employee's fund and has the one-third study exception, TXH-10
     fee: "דמי הניהול בקרן הזו, מול הממוצע:", // scenario fix 2026-10-24
     exposureLink: "להשוות לפי חשיפה", // scenario fix 2026-10-24
   },
@@ -2024,7 +2025,7 @@ export const r4workbench = {
       averageSome: (source: string) => `ממוצע העמלות שנגבו בפועל, כפי שפורסם ב${source}. ספק בלי ממוצע מופיע כ״אי אפשר להשוות״.`,
       entered: "ההצעה שלכם מושווית לתעריפון של האחרים.",
     },
-    entered: { none: "עוד לא הזנתם הצעה.", link: "להזין הצעה", count: (n: number) => `ההצעה שלכם · ${n}`, binding: "להצעה שלא בכתב לא נמצא כלל שמחייב אותה. שאלה פתוחה SW OQ4" },
+    entered: { none: "עוד לא הזנתם הצעה.", link: "להזין הצעה", count: (n: number) => `ההצעה שלכם · ${n}`, binding: "להצעה שלא בכתב לא נמצא מקור שמחייב אותה. שאלה פתוחה SW OQ4" },
     tableHeading: "לפי העלות, מהזולה ליקרה",
     columns: ["דירוג", "ספק", "עלות", "בשנה הראשונה", "לפי סוג עמלה", "תעריפון מ־", "מינימום", "פיקוח", "פתיחה"],
     horizon: { after: ", בכסף של היום" },
@@ -2082,7 +2083,7 @@ export const r4workbench = {
       channel: "ערוץ",
       level: "רמה",
       fromAverage: "ממוצע",
-      rules: "הכללים שהחישוב נשען עליהם",
+      rules: "החוקים והכללים שהחישוב נשען עליהם",
       /** copy.md 8.1: what each line charges on, by the snapshot's base */
       bases: { trade: "קנייה ומכירה", custody: "דמי ניהול פיקדון ני״ע", fx: "המרת מטבע", fixed_period: "דמי חשבון קבועים" } as Record<string, string>,
     },
@@ -2131,7 +2132,7 @@ export const r4workbench = {
       who: "מי הציע ומתי",
       whoText: "מי הציע (לא חובה)",
       when: "תאריך ההצעה",
-      binding: "להצעה שלא בכתב לא נמצא כלל שמחייב אותה. שאלה פתוחה SW OQ4",
+      binding: "להצעה שלא בכתב לא נמצא מקור שמחייב אותה. שאלה פתוחה SW OQ4",
       buttons: { save: "שמירה", clear: "ניקוי ההצעה", cancel: "ביטול" },
       /** copy.md 8.1: the line under the entered level's table, and the storage note */
       belowTable: "ההצעה שלכם מושווית לתעריפון של האחרים.",
@@ -2181,7 +2182,7 @@ export const r4workbench = {
     chips: { amount: "סכום", monthly: "הפקדה חודשית", years: "שנים", return: (ccy: string) => `תשואה ב־${ccy}`, inflation: "אינפלציה", fxChange: (ccy: string) => `שינוי שער ${ccy}`, fxStart: (ccy: string) => `שער ${ccy} היום`, w8ben: "W-8BEN", provider: (name: string) => `התעריפון של ${name}`, orders: "פעולות בחודש", all: "כל ההנחות" },
     sheet: {
       title: "ההנחות של השוואת הקרנות",
-      w8ben: { label: "יש לכם טופס W-8BEN אצל הברוקר?", yes: "כן", no: "לא", line: "עובדה שלכם, לא כלל." },
+      w8ben: { label: "יש לכם טופס W-8BEN אצל הברוקר?", yes: "כן", no: "לא", line: "עובדה שלכם, לא חוק או כלל." },
       fxD20: "שערי בנק ישראל מוצגים רק בקישור; הזינו את השער.",
       fxLink: "לשערי בנק ישראל",
       yieldLabel: (fund: string) => `תשואת החלוקה של ${fund} (אחוז בשנה)`,
@@ -2230,7 +2231,7 @@ export const r4workbench = {
     },
     secondaryTag: "מקור משני",
     rowLinks: { providers: "השוואת ספקים לקרן הזו", check: "מה לבדוק" },
-    detail: { heading: "פירוט החישוב", /* copy.md 8.2 */ nominalNote: "הסכומים ששולמו לאורך הדרך, בשקלים של אז; השורה האחרונה בכסף של היום.", fund: "עלויות הקרן", spread: "מרווח הקנייה והמכירה", provider: "עמלות הספק", taxDuring: "מס במהלך התקופה", taxExit: "מס ביציאה", result: "נשאר לכם", rules: "הכללים שהחישוב נשען עליהם" },
+    detail: { heading: "פירוט החישוב", /* copy.md 8.2 */ nominalNote: "הסכומים ששולמו לאורך הדרך, בשקלים של אז; השורה האחרונה בכסף של היום.", fund: "עלויות הקרן", spread: "מרווח הקנייה והמכירה", provider: "עמלות הספק", taxDuring: "מס במהלך התקופה", taxExit: "מס ביציאה", result: "נשאר לכם", rules: "החוקים והכללים שהחישוב נשען עליהם" },
     groupLine: { before: "קרנות זרות הנסחרות בחו״ל: ", after: " מוחזקות אחת־אחת והושוו; לרשימה המלאה אין מקור. ETF OQ4" },
     coverage: {
       before: "נבדקו ",
@@ -2267,7 +2268,7 @@ export const r4workbench = {
 /** Strings of docs/copy.md 8.3 verbatim; the keys the build added are in copy.md 8.3's "Added 2026-10-24" table, keyed by path. */
 export const r4playbook = {
   title: { before: "איך עוברים: ", after: "" },
-  lede: "השלבים כפי שהכללים קובעים אותם: מה חותמים, מה לצפות, ומה חוזק המקור של כל שלב. לא המלצה לעבור.",
+  lede: "השלבים כפי שהחוקים והכללים קובעים אותם: מה חותמים, מה לצפות, ומה חוזק המקור של כל שלב. לא המלצה לעבור.",
   back: "מה כבר יש לכם",
   strip: {
     from: "מ",
@@ -2282,7 +2283,7 @@ export const r4playbook = {
     fundFrom: "מקרן",
     fundTo: "לקרן",
   },
-  stepsHeading: "השלבים, לפי הכללים",
+  stepsHeading: "השלבים, לפי החוקים והכללים",
   stepNumber: "שלב",
   sign: "מה חותמים:",
   expect: "מה לצפות:",
@@ -2300,10 +2301,10 @@ export const r4playbook = {
   },
   openQuestion: "שאלה פתוחה",
   institutionPrefix: "לפי הוראות המוסדות: ",
-  noRule: { title: "שיחת שימור: לא נמצא כלל", head: "לא נמצא כלל על שיחת שימור במוצרי גמל.", known: "מה כן ידוע" },
+  noRule: { title: "שיחת שימור: לא נמצא במקורות", head: "על שיחת שימור במוצרי גמל לא נמצא שום דבר במקורות.", known: "מה כן ידוע" },
   experience: {
     disclosure: "מה אנשים מספרים",
-    label: "ניסיון של אדם אחד, לא כלל.",
+    label: "ניסיון של אדם אחד, לא חוק ולא כלל.",
     source: { before: "מקור: ", mid: ", שרשור ", read: ", נקרא ב־" },
     notShipped: "ניסיון מהפורומים לא נכלל בגרסה הזו.",
   },
@@ -2335,12 +2336,12 @@ export const r4playbook = {
     /** copy.md 8.3: the same sentence when the engine finds the switch gains (a cheaper fund outweighs the sale) */
     brokerageSaves: { after: " עכשיו יחסוך ", tax: " בכסף של היום; המס במכירה ", end: "." },
     brokerageDetail: { before: "בלי מעבר היו נשארים ", mid: "; עם המעבר, ", after: ". התמורה אחרי המס פותחת את הקרן החדשה: ", end: "." },
-    provident: "המעבר לא עולה כלום לפי הכללים.",
+    provident: "המעבר לא עולה כלום לפי החוקים והכללים.",
     providentLines: ["הנחה בדמי ניהול יכולה להסתיים מוקדם במעבר.", "דמי הצטרפות, אם החברה גובה: לפי התעריפון של החברה."],
     inKind: "לפי הצהרות של מוסדות בלבד: העברה לחשבון של אותו בעלים אינה אירוע מס.",
     transferFee: { amount: "עמלת העברת ניירות ערך: ", none: "לא נאסף" },
     hishtalmutPartial: "אי אפשר: קרן השתלמות עוברת רק בשלמותה.",
-    differentKinds: "לא נבדק: אין כלל שאומר שהעברה בין שני סוגים פטורה ממס.",
+    differentKinds: "לא נבדק: לא נמצא מקור שאומר שהעברה בין שני סוגים פטורה ממס.",
     open: "חסום: שאלה פתוחה",
     /** copy.md 8.3: the line when the sentence above cannot be built (the funds or the goal are not enough) and the share control of a hishtalmut */
     notEvaluated: "לא נבדק:",
@@ -2367,18 +2368,18 @@ export const r4playbook = {
     confirmYes: "איפוס",
     confirmNo: "ביטול",
   },
-  links: { holdings: "מה כבר יש לכם", providers: "השוואת הספקים", guide: "לעמוד המדריך", rules: "כל הכללים על מעבר", playbook: "המדריך למעבר" },
+  links: { holdings: "מה כבר יש לכם", providers: "השוואת הספקים", guide: "לעמוד המדריך", rules: "כל החוקים והכללים על מעבר", playbook: "המדריך למעבר" },
   oneStep: { "child-savings-provident": "תוכנית בבנק לא עוברת לבנק אחר; תוכנית בקופת גמל עוברת דרך הקופה המקבלת וביטוח לאומי.", "child-savings-bank": "תוכנית בבנק לא עוברת לבנק אחר; תוכנית בקופת גמל עוברת דרך הקופה המקבלת וביטוח לאומי.", "bank-deposit": "פיקדון לא עובר לבנק אחר לפני הפדיון. כסף חדש אפשר להפקיד בבנק אחר בחשבון במערכת סגורה." } as Record<string, string>,
   /** copy.md 8.3: the brokerage order of steps is an institution's, said in the lede (design-spec 19 edge cases) */
   brokerageNote: "סדר השלבים בחשבון השקעות הוא לפי הוראות של בנקים ובתי השקעות, לא לפי תקנה.",
   /** copy.md 8.3: what each open question did not find (the rule base's open-question list, switching-and-transfers.md) */
   oq: {
     "SW OQ2": "האם חוזר ההעברה חל על קופת גמל להשקעה.",
-    "SW OQ3": "כלל על פניות שימור במוצרי גמל.",
+    "SW OQ3": "מה קובעים לגבי פניות שימור במוצרי גמל.",
     "SW OQ4": "האם הצעה שניתנה לפני ההצטרפות מחייבת.",
     "SW OQ5": "איך נבדקת הסכמת הלקוח להוצאת דוח מהמסלקה.",
     "SW OQ6": "מי מודיע למעסיק להפנות את ההפקדות הבאות, ובתוך כמה זמן.",
-    "SW OQ9": "אילו סוגי חשבונות ופעילות נכללים בכללי המעבר בין בנקים.",
+    "SW OQ9": "אילו סוגי חשבונות ופעילות המעבר בין בנקים כולל.",
     "SW OQ10": "המחיר המפוקח להעברת ניירות ערך.",
     "SW OQ11": "המס על העברת ניירות ערך בין חשבונות של אותו בעלים.",
     "SW OQ12": "העברה בין מוסד ישראלי לברוקר זר.",
@@ -2386,11 +2387,11 @@ export const r4playbook = {
   } as Record<string, string>,
   loading: "טוען…",
   noWrapper: "אין מדריך מעבר למוצר הזה.",
-  incomplete: "המדריך חלקי בשלב הזה: כלל פתוח מסומן במנעול.",
+  incomplete: "המדריך חלקי בשלב הזה: שאלה פתוחה מסומנת במנעול.",
   // audit 2026-10-24 (A56): the summary box, each sentence a rule's own with its code after it
   summary: {
     heading: "בקצרה",
-    lede: "משפטים מהשלבים שלמטה, כלשונם. אחרי כל משפט הכלל שממנו הוא בא.",
+    lede: "משפטים מהשלבים שלמטה, כלשונם. אחרי כל משפט, מאיפה הוא בא.",
     topics: { time: "כמה זמן", cost: "כמה עולה", sign: "איפה חותמים", cancel: "אפשר לבטל", notice: "מתי זה קורה", lose: "מה לבדוק לפני", partial: "העברה חלקית", check: "מה לבדוק אחרי", route: "לאן אפשר", tax: "מס" } as Record<string, string>,
   },
   // audit 2026-10-24 (A56): a self-employed person has no employer to notify
@@ -2523,7 +2524,7 @@ export const r5 = {
     wrapperSubject: "לפי {exposure} בתשואה שהזנתם, {rate}",
     cannotHoldTag: "לא מחזיק {exposure}",
     // copy.md 9.2 to 9.6: P-08 rows that cannot run, in the words of the parameter's own rows
-    p08: { gov: "לא נבדקה: תדירות הקופון של סדרה לא צמודה עוד לא במאגר הכללים. שאלה פתוחה GOV OQ4", fund: "לא נבדקה: פרטי הקרן עוד לא נאספו." },
+    p08: { gov: "לא נבדקה: תדירות הקופון של סדרה לא צמודה עוד לא במאגר החוקים והכללים. שאלה פתוחה GOV OQ4", fund: "לא נבדקה: פרטי הקרן עוד לא נאספו." },
   },
   // 9.3 revisit
   revisit: {
@@ -2542,8 +2543,8 @@ export const r5 = {
     goalChangeMoreOne: "שינוי אחד",
     goalChangeMoreMany: "{n} שינויים",
     goalFields: { horizonYears: "שנות החיסכון", amountNow: "הסכום עכשיו", monthly: "ההפקדה החודשית", available: "הסכום הזמין", anytime: "זמינות בכל עת", return: "התשואה שהזנתם", inflation: "האינפלציה", insurance: "עלות הביטוח", acceptedFall: "הירידה שמסכימים לספוג", age: "הגיל", employment: "סוג ההעסקה", salary: "השכר", pension: "הפקדות לפנסיה", hishtalmut: "הפקדות להשתלמות", exposures: "נתוני החשיפות", preset: "סוג המטרה" },
-    what: { rule: "הכלל {code}", parameter: "הפרמטר {name}", data: "הנתון {name}", assumption: "ההנחה {name}" },
-    counts: { rules: "{n} כללים", parameters: "{n} פרמטרים", data: "{n} קובצי נתונים", assumptions: "{n} הנחות" },
+    what: { rule: "{code}", parameter: "הפרמטר {name}", data: "הנתון {name}", assumption: "ההנחה {name}" },
+    counts: { rules: "{n} חוקים וכללים", parameters: "{n} פרמטרים", data: "{n} קובצי נתונים", assumptions: "{n} הנחות" },
     many: "{n} שינויים מאז {date}, {m} מהם נגעו להשוואה הזו.",
     computing: "בודק מה השתנה…",
     resultUnchanged: "נבדק מחדש היום: ללא שינוי מאז {date}.",
@@ -2554,13 +2555,13 @@ export const r5 = {
       cannotRun: "אי אפשר לבדוק: {reason}",
       none: "הדירוג נשמר: אף אפשרות לא דורגה, גם לא בזמן השמירה.", // copy.md 9.2 to 9.6: both sides empty
     },
-    cannotRunReasons: { rule: "הכלל {code} לא עודכן", input: "חסר נתון: {field}", record: "הרשומה {name} לא קיימת עוד" },
+    cannotRunReasons: { rule: "{code} לא עודכן", input: "חסר נתון: {field}", record: "הרשומה {name} לא קיימת עוד" },
     choiceStill: "בחרתם באפשרות {option}; היא עדיין במקום {n}.",
     choiceNot: "בחרתם באפשרות {option}; היום היא {outcome}: {reason}.",
     banner: { sheet: "מה השתנה", saveToday: "לשמור את ההשוואה של היום" },
     sheet: {
       title: "מה השתנה מאז {date}",
-      kinds: { rule: "כללים", parameter: "פרמטרים", data: "נתונים", assumption: "הנחות" },
+      kinds: { rule: "חוקים וכללים", parameter: "פרמטרים", data: "נתונים", assumption: "הנחות" },
       was: "היה {v}", now: "עכשיו {v}",
       checked: "נבדק ב־{date}",
       removed: "הוסר מהמאגר", fileGone: "הקובץ לא קיים עוד", added: "קובץ חדש", notThere: "לא היה",
@@ -2573,7 +2574,7 @@ export const r5 = {
       beforeAfter: "לפני ואחרי",
       columns: { before: "בשמירה, {date}", now: "היום" },
       rows: { top: "ראשונה: {option}", tie: "שקולות: {names}", noTie: "אין שקולות", none: "אף אפשרות לא דורגה" },
-      empty: "אף כלל, פרמטר, נתון או הנחה שההשוואה נשענה עליהם לא השתנו.",
+      empty: "אף חוק, כלל, פרמטר, נתון או הנחה שההשוואה נשענה עליהם לא השתנו.",
       detail: "פירוט",
       close: "סגירה", // copy.md 9.2 to 9.6
     },
@@ -2612,7 +2613,7 @@ export const r5 = {
     graduatedItem: "{name}, מ־{date}",
     graduatedLink: "לעמוד המדריך",
     holdingsLink: "מה חוסם את הכיסוי",
-    sourceNote: "המצב נקרא מקטעי ״מצב מעבר״ בקובצי מאגר הכללים של כל מוצר ומרשימת הפערים הפתוחים של שיטת החישוב.", // copy.md 9.2 to 9.6
+    sourceNote: "המצב נקרא מקטעי ״מצב מעבר״ בקובצי מאגר החוקים והכללים של כל מוצר ומרשימת הפערים הפתוחים של שיטת החישוב.", // copy.md 9.2 to 9.6
   },
   // 9.6 additions to existing screens
   additions: {
@@ -2654,7 +2655,7 @@ export const sourceBlock = {
   /** The rules page only, under a mirror rule's source: the official publication is not attached yet. */
   officialMissing: "הפרסום הרשמי ברשומות עוד לא צורף; הנוסח נקרא מתוך עותק.",
   /** The lede sentence of the rules pages' legend: what a copy is and what a date is. */
-  legendLine: "כל כלל נכתב מנוסח החוק או ממסמך של הרשות כשאפשר; כשהוא נלקח ממסמך של חברה, זה מסומן לידו. התאריך הוא היום שבו האתר קרא את המקור.",
+  legendLine: "הכול נכתב מנוסח החוק או ממסמך של הרשות כשאפשר; מה שנלקח ממסמך של חברה מסומן לידו. התאריך הוא היום שבו האתר קרא את המקור.",
 } as const;
 
 /** Hebrew for the `update_rule` words the rule records carry (shown beside a figure with its tax year). */
@@ -2673,23 +2674,22 @@ export const updateRules = {
 export const ruleCardMore = {
   forTaxYear: "לשנת המס",
   derivedFrom: "נגזר מ־",
-  derivedLine: "זו מסקנה משילוב של כמה כללים, לא משפט אחד שנמצא במקור.",
+  derivedLine: "זו מסקנה משילוב של כמה חוקים וכללים, לא משפט אחד שנמצא במקור.",
   stable: "לא משתנה מעצמו",
   usesLead: "משפיע על",
   usesEngine: "החישובים באתר",
-  usesNone: "כלל רקע: לא נכנס לחישוב ולא מוצג בעמוד אחר.",
+  usesNone: "רקע בלבד: לא נכנס לחישוב ולא מוצג בעמוד אחר.",
   copyCitation: "העתקת ההפניה",
   experienceTag: "ניסיון של אדם אחד",
 } as const;
 
 /** The rules front page and the five shelves (synthesis §3.4). */
 export const rulesFront = {
-  title: "כללים",
-  lede: "כל כלל שהאתר נשען עליו, עם המקור שלו. מתחילים מהשאלות שכולם שואלים, וממשיכים לפי מה שמעניין אתכם.",
+  title: "חוקים וכללים",
+  lede: "כל חוק וכל כלל שהאתר נשען עליו, עם המקור שלו. מסננים לפי השאלה, המוצר או המספר.",
   pinned: { title: "השאלות שכולם שואלים" }, // the tag and the provisional note were removed 2026-10-24 at the founder's request
-  ruleCount: { one: "כלל אחד", many: "{n} כללים" },
-  changing: { title: "מה עומד להשתנות", line: "כללים שיש להם תאריך בדיקה חוזרת, לפי חודש.", month: "ב{month}" },
-  filter: "חיפוש כלל לפי מספר, כותרת או מילה",
+  changing: { title: "מה עומד להשתנות", line: "מה שיש לו תאריך בדיקה חוזרת, לפי חודש.", month: "ב{month}" },
+  filter: "חיפוש לפי מספר, כותרת או מילה",
   shelves: {
     state: { name: "מה המדינה לוקחת", line: "מס בהפקדה, בדרך ובמשיכה; פטורים; מה חייב בדיווח" },
     costs: { name: "מה הבנק או בית ההשקעות לוקחים", line: "דמי ניהול ותקרות, עמלות, הנחות שנגמרות, מינימום" },
@@ -2718,23 +2718,34 @@ export const rulesFront = {
     changing: "עומד להשתנות",
     prefixLabel: "לפי מספר",
     clear: "ניקוי הסינון",
-    showing: "מוצגים {n} כללים",
-    showingOne: "מוצג כלל אחד",
-    none: "אין כלל שמתאים לסינון הזה.",
-    preset: "הכללים שעונים על השאלה",
-    presetAll: "לכל הכללים",
+    showing: "מוצגים {n} מתוך {total}", // no noun: the set is "חוקים וכללים" and a single record has no noun (founder, 2026-10-24 evening)
+    showingOne: "מוצג אחד מתוך {total}",
+    none: "שום דבר לא מתאים לסינון הזה.",
+    preset: "החוקים והכללים שעונים על השאלה",
+    presetAll: "לכל החוקים והכללים",
   },
-  experience: { title: "ניסיון של אחרים", line: "עדויות של אנשים מהפורום, לא כללים; מסומנות כך גם בעמוד ״איך עוברים״." },
+  experience: { title: "ניסיון של אחרים", line: "עדויות של אנשים מהפורום, לא חוקים ולא כללים; מסומנות כך גם בעמוד ״איך עוברים״." },
+  /** The quiet line under the filter field: the questions left this page for /questions (founder, 2026-10-24 evening). */
+  questionsLine: { before: "יש לכם שאלה?", link: "השאלות שכולם שואלים" },
+} as const;
+
+/** The questions page (/questions): the common questions left the rules page and got a one-line answer each (founder, 2026-10-24 evening). */
+export const questions = {
+  title: "השאלות שכולם שואלים",
+  lede: "תשובה של שורה לכל שאלה, ומתחתיה החוקים והכללים שאפשר לפתוח ולבדוק במקור.",
+  toRules: "לכל החוקים והכללים בנושא",
+  noAnswer: "התשובה עוד לא נכתבה; החוקים והכללים שעונים על השאלה מופיעים מתחת.",
+  home: { title: "שאלות שכולם שואלים", all: "לכל השאלות" },
 } as const;
 
 /** The documents page (synthesis §3.5). */
 export const documents = {
   title: "מסמכים",
-  lede: "המסמכים שהכללים באתר נקראו מהם: חוקים, תקנות, חוזרים ומדריכים של הרשויות, ומסמכים של בנקים וחברות. לכל מסמך, הכללים שנשענים עליו.",
+  lede: "המסמכים שמאגר החוקים והכללים נקרא מהם: חוקים, תקנות, חוזרים ומדריכים של הרשויות, ומסמכים של בנקים וחברות. לכל מסמך, מה שנשען עליו.",
   sections: { laws: "חוקים ותקנות", regulators: "רשויות ומפקחים", exchange: "הבורסה", institutions: "מסמכים של בנקים וחברות", secondary: "כתבות ומקורות משניים" },
   kinds: { law: "חוק", regulation: "תקנות", circular: "חוזר", regulator_page: "עמוד באתר הרשות", official_pdf: "מסמך רשמי", exchange_rules: "הנחיות הבורסה", institution_doc: "מסמך של החברה", article: "כתבה", dataset: "מאגר נתונים", form: "טופס", other: "מסמך" } as Record<string, string>,
-  rulesLead: "כללים שנשענים על המסמך:",
-  more: { one: "עוד מסמך אחד", many: "עוד {n} מסמכים", line: "מסמכים שכלל אחד או שניים נשענים עליהם: עמודים של חברות, כתבות ומקורות נוספים." },
+  rulesLead: "מה שנשען על המסמך:",
+  more: { one: "עוד מסמך אחד", many: "עוד {n} מסמכים", line: "מסמכים עם הפניה אחת או שתיים בלבד: עמודים של חברות, כתבות ומקורות נוספים." },
   rulesMore: "עוד {n}",
   checked: "נבדק לאחרונה",
   open: "למסמך",
@@ -2760,24 +2771,23 @@ export const documents = {
 /** The "worth knowing" block on each wrapper guide page (synthesis §3.7). */
 export const guideWorth = {
   title: "שווה לדעת",
-  line: "עובדות על המוצר הזה שרוב האנשים לא יודעים, כל אחת עם הכלל והמקור שלה.",
+  line: "עובדות על המוצר הזה שרוב האנשים לא יודעים, כל אחת עם המקור שלה.",
 } as const;
 
 /** Search additions (synthesis §3.6): the three new groups, their row lines and the empty states by query type. */
 export const searchMore = {
-  groups: { rule: "כללים", parameter: "פרמטרים", document: "מסמכים" },
-  ruleWord: "כלל",
+  groups: { rule: "חוקים וכללים", parameter: "פרמטרים", document: "מסמכים" },
   parameterLine: "פרמטר של האתר",
   documentLine: "מסמך",
-  figureLine: "מספר מתוך כלל",
+  figureLine: "מספר מתוך המאגר",
   maybe: "אולי התכוונתם:",
   empty: {
-    questionTitle: "אין כלל שעונה על זה בניסוח הזה",
-    questionBody: "האתר מחפש בכותרות ובטקסט של הכללים. נסו מילה או שתיים מהשאלה, או עברו על הכללים לפי נושא.",
-    questionLink: "לכל הכללים",
+    questionTitle: "אין תשובה על זה בניסוח הזה",
+    questionBody: "האתר מחפש בכותרות ובטקסט של החוקים והכללים. נסו מילה או שתיים מהשאלה, או עברו עליהם לפי נושא.",
+    questionLink: "לכל החוקים והכללים",
     questionCopy: "העתקת השאלה",
     questionUnder: "אפשר לשלוח אותה למי ששלח לכם את האתר.",
-    numberTitle: "אין מספר כזה בכללים, במסלולים ובקרנות",
+    numberTitle: "אין מספר כזה בחוקים ובכללים, במסלולים ובקרנות",
     numberNear: "קרוב לזה:",
     mainWords: "לחפש רק את המילים העיקריות",
   },
@@ -2786,8 +2796,8 @@ export const searchMore = {
 /** The home page line under the doors, and the menu and footer entry for the documents page. */
 export const knowledgeEntry = {
   homeLine: "כל מספר באתר נפתח למקור שלו.",
-  homeLink: "על מה האתר נשען: הכללים והמסמכים",
+  homeLink: "על מה האתר נשען: החוקים, הכללים והמסמכים",
   menuDocuments: "מסמכים",
 } as const;
 
-Object.assign(parametersPage.names, { "P-09": "הכללים שבראש עמוד הכללים: השאלות שכולם שואלים, ומה שווה לדעת בכל מדריך" });
+Object.assign(parametersPage.names, { "P-09": "השאלות שכולם שואלים: תשובה של שורה לכל שאלה בעמוד השאלות, והבלוק ״שווה לדעת״ בכל מדריך" });

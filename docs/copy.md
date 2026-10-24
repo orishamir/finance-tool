@@ -2621,6 +2621,28 @@ Strings are `scnCompare.*` and `ownTermsCopy.*` in copy.ts, each marked `// scen
 
 Strings in the blocks `sourceBlock`, `updateRules`, `ruleCardMore`, `rulesFront`, `documents`, `guideWorth`, `searchMore` and `knowledgeEntry` at the end of `site/app/copy.ts`, plus the P-09 name in `parametersPage.names` (lead's first write, Hebrew editor's review the same night; synthesis in `research/knowledge/2026-10-24-synthesis.md`). Rows marked "changed" are the editor's; the rest kept the lead's text. The two hand tables `data/sources/publishers.json` (99 hosts) and `data/sources/documents.json` (135 documents) carry the Hebrew names of publishers and documents; the twelve `question_he` of P-09 are at the end.
 
+**Rename, 2026-10-24 (late evening).** The founder named the set of records **חוקים וכללים** (the state's laws and everyone else's rules) and left a single record with **no noun**: a card is "id · title". Applied by the Hebrew editor across `site/app/copy.ts`, the guide prose (`site/app/content/guide/`) and `docs/glossary.md`. The policy: the set is "חוקים וכללים" ("לכל הכללים" → "לכל החוקים והכללים", "מאגר הכללים" → "מאגר החוקים והכללים", "הכללים ש…" → "החוקים והכללים ש…"); one record has no noun ("הכלל {code}" → "{code}", "לכלל הזה" dropped, "נוסח הכלל" → "הנוסח"); a sentence that needed a noun for one record was rephrased ("אין כלל שעונה על זה" → "אין תשובה על זה", "חסר כלל במאגר" → "חסר במאגר החוקים והכללים", "לא נמצא כלל ש…" → "לא נמצא מקור ש…", "כלל פתוח" → "שאלה פתוחה", "כלל רקע" → "רקע בלבד"); "חוק או כלל" only where nothing else read well (`ruleCard.title`, `sourced.rule`, `searchMore.ruleWord`, the one-record count `ruleCount.one`, "עובדה שלכם, לא חוק או כלל", and the experience label "ניסיון של אדם אחד, לא חוק ולא כלל"). Left alone: "בדרך כלל", "כלל הציבור", "נכלל", "כללי" (general), the site's own fit rule ("אין כלל לסיווג הזה", `fitNoRule`) and "כלל התיישנות". The tables of this document were written before the rename and keep the texts as they were; wherever they say כללים for the set, read חוקים וכללים, and wherever they say כלל for one record, read the text without the noun. The rows below list only the strings whose meaning changed in the round.
+
+Removed with the round, nothing renders them: `rulesPage.ruleCount`, `rulesFront.ruleCount`, `searchMore.ruleWord` (a single record has no noun, so no singular count line exists).
+
+### Questions page and rename (2026-10-24, late evening)
+
+| Key | Text | Note |
+|---|---|---|
+| `site.menuItems` / `site.footer` (`/rules`) | חוקים וכללים | the set's name in the menu and the footer |
+| `rulesFront.title` / `.lede` | חוקים וכללים · כל חוק וכל כלל שהאתר נשען עליו, עם המקור שלו. מסננים לפי השאלה, המוצר או המספר. | the questions left the page, so the lede no longer mentions them |
+| `rulesFront.questionsLine.before` / `.link` | יש לכם שאלה? · השאלות שכולם שואלים | the quiet line under the filter field, the link to `/questions` |
+| `rulesFront.filters.showing` / `.showingOne` | מוצגים `{n}` מתוך `{total}` · מוצג אחד מתוך `{total}` | no noun; both numbers isolated |
+| `rulesFront.filters.preset` / `.presetAll` | החוקים והכללים שעונים על השאלה · לכל החוקים והכללים | |
+| ~~`rulesFront.ruleCount`~~ | ~~כלל אחד · `{n}` כללים~~ | removed 2026-10-24 (late evening): the section and group counts are a bare number |
+| `questions.title` / `.lede` | השאלות שכולם שואלים · תשובה של שורה לכל שאלה, ומתחתיה החוקים והכללים שאפשר לפתוח ולבדוק במקור. | the new page `/questions` |
+| `questions.toRules` / `.noAnswer` | לכל החוקים והכללים בנושא · התשובה עוד לא נכתבה; החוקים והכללים שעונים על השאלה מופיעים מתחת. | |
+| `questions.home.title` / `.all` | שאלות שכולם שואלים · לכל השאלות | the home block, three questions |
+| `ruleCard.title` | חוק או כלל | no longer in the card heading (now "id · title"); kept only in the chip's screen-reader label |
+| `knowledgeEntry.homeLink` | על מה האתר נשען: החוקים, הכללים והמסמכים | |
+| `searchMore.empty.questionTitle` | אין תשובה על זה בניסוח הזה | was "אין כלל שעונה על זה בניסוח הזה" |
+| `parametersPage.names["P-09"]` | השאלות שכולם שואלים: תשובה של שורה לכל שאלה בעמוד השאלות, והבלוק ״שווה לדעת״ בכל מדריך | the parameter now holds the answers too (`answer_he`, every figure a `{ID:figure}` slot) |
+
 ### sourceBlock
 
 | Key | Text | Note |
@@ -2668,11 +2690,11 @@ Strings in the blocks `sourceBlock`, `updateRules`, `ruleCardMore`, `rulesFront`
 | Key | Text | Note |
 |---|---|---|
 | `rulesFront.title` / `.lede` | כללים · כל כלל שהאתר נשען עליו, עם המקור שלו. מתחילים מהשאלות שכולם שואלים, וממשיכים לפי מה שמעניין אתכם. | |
-| `rulesFront.pinned.title` | השאלות שכולם שואלים | |
+| ~~`rulesFront.pinned.title`~~ | ~~השאלות שכולם שואלים~~ | unused since 2026-10-24 (late evening): the pinned section left the rules page; `questions.title` carries the words on `/questions` |
 | ~~`rulesFront.pinned.tag`~~ | ~~בחירה של האתר~~ | removed 2026-10-24 (founder: "remove it"); the heading stands alone |
 | ~~`rulesFront.pinned.provisional`~~ | ~~רשימה זמנית, עד שבעל האתר יאשר אותה~~ | removed 2026-10-24: the founder kept the list as drafted |
 | ~~`rulesFront.shelvesTitle` / `.teaser`~~ | ~~לפי השאלה שלכם · בין השאר:~~ | removed 2026-10-24 (evening): the shelves became filter chips |
-| `rulesFront.ruleCount` | כלל אחד · `{n}` כללים | |
+| ~~`rulesFront.ruleCount`~~ | ~~כלל אחד · `{n}` כללים~~ | removed 2026-10-24 (late evening): the counts are a bare number |
 | `rulesFront.changing.*` | מה עומד להשתנות · כללים שיש להם תאריך בדיקה חוזרת, לפי חודש. · ב`{month}` | month is a Hebrew word: no maqaf |
 | ~~`rulesFront.byNumber.*`~~ | ~~לפי מספר · הקידומות של מספרי הכללים, למי שהגיע מכרטיס עם מספר.~~ | removed 2026-10-24 (evening): the prefixes are a filter row under `rulesFront.filters.prefixLabel` |
 | `rulesFront.filter` | חיפוש כלל לפי מספר, כותרת או מילה | `.filterNone`, `.filterMatching` and `.filterOne` removed 2026-10-24 (evening): the count line of `rulesFront.filters` replaces them |
