@@ -1,8 +1,7 @@
 // F-82 Revisit (product 3.9): a saved comparison keeps the versions it rested on; on revisit the engine re-runs
 // with the current ones, lists what differs, and says whether F-80's top option and tie set are unchanged.
-// Also the reader-facing "what changed since" view over data/changelog.jsonl. No I/O: callers pass the data.
-import { changelogLine, parameterRecord, type ChangelogLine, type ValueObject, type WrapperId } from "@finance-tool/schema";
-import { RecordInputError } from "../inputs.ts";
+// No I/O: callers pass the data.
+import { parameterRecord, type ValueObject, type WrapperId } from "@finance-tool/schema";
 import type { RunContext } from "../result.ts";
 import { buildCandidateSet, type CandidateSet, type CandidateSetInput } from "./candidates.ts";
 import { rankCandidates, tieThreshold, type Ranking } from "./ranking.ts";
@@ -298,51 +297,4 @@ export function revisit(saved: SavedComparison, current: CurrentBundle, ctx: Run
     }
   }
   return { diff: diffVersions(saved, now), before, after, topUnchanged, tieSetUnchanged, unchanged: topUnchanged && tieSetUnchanged, valueChanges, set, ranking };
-}
-
-// ---------------------------------------------------------------- what changed since
-
-export interface ChangesSinceOptions {
-  /** Only these collections (`rules`, `cma`, `fees`, ...); absent: all. */
-  collections?: readonly string[];
-  /** Include lines up to and including this date; absent: no upper bound. */
-  until?: string;
-}
-
-export interface ChangeGroup {
-  collection: string;
-  lines: ChangelogLine[];
-}
-
-export interface ChangesSince {
-  since: string;
-  /** Lines with `affects_rankings` true, grouped by collection (A to Z); lines keep the file's order. */
-  affectsRankings: ChangeGroup[];
-  other: ChangeGroup[];
-  counts: { affectsRankings: number; other: number };
-}
-
-function groupByCollection(lines: ChangelogLine[]): ChangeGroup[] {
-  const m = new Map<string, ChangelogLine[]>();
-  for (const l of lines) m.set(l.collection, [...(m.get(l.collection) ?? []), l]);
-  return [...m.entries()].sort(([x], [y]) => x.localeCompare(y)).map(([collection, ls]) => ({ collection, lines: ls }));
-}
-
-/**
- * The reader-facing "what changed since" view. `changelogLines` are the parsed lines of `data/changelog.jsonl`
- * (each checked against the `changelogLine` schema); lines dated after `date` are kept, split by
- * `affects_rankings` and grouped by collection.
- */
-export function changesSince(changelogLines: readonly unknown[], date: string, options: ChangesSinceOptions = {}): ChangesSince {
-  const lines = changelogLines.map((l, i) => {
-    const r = changelogLine.safeParse(l);
-    if (!r.success) throw new RecordInputError(`changelog line ${i + 1}: ${r.error.issues.map((x) => `${x.path.join(".") || "(top)"}: ${x.message}`).join("; ")}`);
-    return r.data;
-  });
-  const kept = lines.filter(
-    (l) => l.date > date && (options.until === undefined || l.date <= options.until) && (!options.collections || options.collections.includes(l.collection)),
-  );
-  const ranking = kept.filter((l) => l.affects_rankings);
-  const other = kept.filter((l) => !l.affects_rankings);
-  return { since: date, affectsRankings: groupByCollection(ranking), other: groupByCollection(other), counts: { affectsRankings: ranking.length, other: other.length } };
 }

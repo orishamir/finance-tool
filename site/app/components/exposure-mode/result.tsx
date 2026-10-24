@@ -461,7 +461,7 @@ export function ExposureBody({ bundle, data, frame }: { bundle: CompareBundle; d
         {panelOpen && <AssumptionsPanel data={data} suggestion={null} onAdopted={() => {}} exposure />}
       </Sheet>
       {readableSaved && revisit && revisit.status !== "unreadable" && (
-        <WhatChangedSheet view={revisit} open={changes !== false} onClose={() => setChanges(false)} anchor={changes || null} changesHref="/changes" today={bundle.runDate} nis={(v, about) => <Num value={computed(v, "nis", "F-06", {}, { today: isoToday(), about })} />} />
+        <WhatChangedSheet view={revisit} open={changes !== false} onClose={() => setChanges(false)} anchor={changes || null} today={bundle.runDate} nis={(v, about) => <Num value={computed(v, "nis", "F-06", {}, { today: isoToday(), about })} />} />
       )}
     </>,
   );

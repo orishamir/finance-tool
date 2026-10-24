@@ -1986,6 +1986,8 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 18 and the handoff in
 
 ### 9.4 What changed since page
 
+Removed 2026-10-24 (D24): the page and its strings (`r5.changes`) are gone from `site/app/copy.ts`; the text is kept as history.
+
 | Element | Hebrew |
 |---|---|
 | Title | מה השתנה באתר |
@@ -2101,7 +2103,7 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 18 and the handoff in
 - **"לבדיקה מחדש: {מה} השתנה ב־{תאריך}"**: product 3.9's "re-check: rule X changed on date Y" word for word, with the entry named ("הכלל TXS-09") when there is one, so the notice is specific; "ללא שינוי מאז {תאריך}" is its mirror, and the date tells the person how long the decision has held.
 - **"הדירוג נשמר / השתנה"** as fixed sentences: the verdict is two booleans from the engine (`topUnchanged`, `tieSetUnchanged`); a fixed sentence per case keeps it a fact, not an opinion.
 - **"מה זז בהשוואה"** for the value changes: lighter than "שינויים בערכים"; it says that numbers moved without saying that anything is wrong.
-- **"משפיע על דירוגים / לא משפיע על דירוגים"** as the two group names: the schema's own flag (`affects_rankings`) in plain words, in the present tense because the flag is about what the engine reads, not about any one comparison; the quiet line under the counts says where the precise test lives.
+- **"משפיע על דירוגים / לא משפיע על דירוגים"** as the two group names: the schema's own flag (`affects_rankings`) in plain words, in the present tense because the flag is about what the engine reads, not about any one comparison; the quiet line under the counts says where the precise test lives. (Removed 2026-10-24, D24.)
 - **"{מזהה}: {מספר} שדות השתנו"** for a folded snapshot: it says what the row is (one record, many fields) and keeps the count visible, so folding hides nothing.
 - **"הביקור הקודם"** for the picker's default: "האחרון" would mean today's visit; the question is what changed since the one before.
 - **"מצב הכיסוי"** for the status block: the page is about coverage ("מה האתר עוד לא מכסה"), and the block answers how far each product is from it.

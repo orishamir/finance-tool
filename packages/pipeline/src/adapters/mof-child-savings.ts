@@ -2,8 +2,8 @@
 // savingsplaninterest, resource a737b311-.... The datastore API of that resource is stale; the CSV file is current
 // (il-finance CS-23, corrected 2026-10-23), so this reads the file (Windows-1255).
 // Terms: data.gov.il licence, status confirmed (the source must be named; data/series/mof-child-savings-rates.json carries it).
-// Pure functions (normalise, thin, sanityCheck, diffSeries, changelogLines) do no I/O.
-import { seriesRecord, type ChangelogLine, type SeriesObservation, type SeriesRecord } from "@finance-tool/schema";
+// Pure functions (normalise, thin, sanityCheck, diffSeries) do no I/O.
+import { seriesRecord, type SeriesObservation, type SeriesRecord } from "@finance-tool/schema";
 import { USER_AGENT, decodeWindows1255, parseCsv, type Downloaded } from "./cma.ts";
 import { lastDate, refreshSeries, type SeriesDiff, type SeriesRefreshOptions, type SeriesSpec, type SourceReport } from "./series-common.ts";
 
@@ -277,44 +277,6 @@ export function diffSeries(previous: SeriesRecord | null, next: SeriesRecord): S
   };
 }
 
-/**
- * Change-log lines (data-schema 3.12). A first snapshot is one summary line (the file holds about a thousand keys);
- * after that, one line per key whose current value changed, appeared or disappeared. A new latest date with
- * the same values logs nothing.
- */
-export function changelogLines(previous: SeriesRecord | null, next: SeriesRecord, runDate: string): ChangelogLine[] {
-  const line = (field: string, old: unknown, nw: unknown, reason: string): ChangelogLine => ({
-    date: runDate,
-    collection: "series",
-    id: MOF_ID,
-    field,
-    old,
-    new: nw,
-    reason,
-    affects_rankings: true,
-  });
-  const state = currentState(next);
-  if (!previous) {
-    const dates = next.observations.map((o) => o.date);
-    return [
-      line(
-        "observations",
-        null,
-        { keys: state.size, observations: next.observations.length, first_date: dates[0] ?? null, last_date: lastDate(next) },
-        `first snapshot, MoF child-savings rates (data.gov.il savingsplaninterest, latest ${WINDOW_MONTHS} months)`,
-      ),
-    ];
-  }
-  const d = diffRates(previous, next);
-  const prevState = currentState(previous);
-  const date = lastDate(next);
-  return [
-    ...d.changed.map((c) => line(`current.${c.key}`, c.old, c.new, `quoted rate changed, value date ${date}`)),
-    ...d.added.map((k) => line(`current.${k}`, null, state.get(k)!.value, `key new in the source file, value date ${date}`)),
-    ...d.removed.map((k) => line(`current.${k}`, prevState.get(k)!.value, null, `key no longer in the source file, value date ${date}`)),
-  ];
-}
-
 export async function fetchRaw(): Promise<Downloaded> {
   const res = await fetch(DOWNLOAD_URL, { headers: { "User-Agent": USER_AGENT, Accept: "text/csv,*/*" }, redirect: "follow" });
   if (!res.ok) throw new Error(`mof-child-savings: download failed, HTTP ${res.status}`);
@@ -332,7 +294,6 @@ export const mofSpec: SeriesSpec = {
   build: (dl, previous, ctx) => normalise(dl, previous, ctx),
   sanity: sanityCheck,
   diff: diffSeries,
-  changelog: changelogLines,
   archive: {
     tag: (runDate) => `raw-mof-child-savings-${runDate.slice(0, 7)}`,
     title: "Raw MoF child-savings rate downloads",

@@ -10,7 +10,7 @@ Status: **in force.** On 2026-10-23 the founder asked Claude to settle every ope
 
 **Format.** One JSON file per record, UTF-8, under the collection's folder. JSON was chosen because the site is static and the engine runs in the browser (D1); the files are also readable by hand and diffable. YAML would be friendlier to write but needs a parser in the browser; CSV cannot carry the nested `source` and `fees` blocks.
 
-**File name.** `<collection>/<id>.json`, where `id` is the record's `id` field: lowercase ASCII, digits and hyphens. Dated snapshots (tariffs, series, funds) add the snapshot date: `<id>@<YYYY-MM-DD>.json`. The latest snapshot is the one the engine reads; older ones stay for the change log and for revisit (F-82).
+**File name.** `<collection>/<id>.json`, where `id` is the record's `id` field: lowercase ASCII, digits and hyphens. Dated snapshots (tariffs, series, funds) add the snapshot date: `<id>@<YYYY-MM-DD>.json`. The latest snapshot is the one the engine reads; older ones stay for revisit (F-82) and as history (change log removed 2026-10-24, D24).
 
 **Every value is wrapped.** A number never appears bare. It appears as a *value object*:
 
@@ -372,13 +372,9 @@ Names the CMA data and the Maya export do not hold: an institution's own name fo
 
 `dimensions/<id>.json` (schema `dimensionRecord`, strict): `{ "id": "tax-at-exit", "he": "...", "one_line": "...", "source": { ...as above }, "rule_ids": [...] }`. `id` is one of the 26 rows of `docs/glossary.md` section 2 (an enum in the schema). The list is hand-maintained; the marks are computed.
 
-### 3.12 `data/changelog.jsonl` — one line per change (3.8, 3.9)
+### 3.12 (removed)
 
-```json
-{ "date": "2026-10-22", "collection": "rules", "id": "TXS-09", "field": "figures.rate_on_real_gain", "old": null, "new": 25, "reason": "seeded from il-finance", "affects_rankings": true }
-```
-
-`affects_rankings` is `true` for rules, parameters, fee lines and series the engine reads, `false` for names and catalogue entries, so the revisit view (F-82) can tell a change that matters from one that does not.
+§3.12 removed 2026-10-24, D24.
 
 ### 3.13 `data/cma/` — CMA fund and track records (3.10, F-64, F-70, 3.6)
 
@@ -415,7 +411,6 @@ Added 2026-10-22 (approved by the founder, `docs/architecture.md` gap 8.1). One 
 - Text fields are stored exactly as the source spells them (§1, Hebrew), after decoding the CSV from Windows-1255.
 - Only the fields a formula or capability uses are kept: identity, names, manager and classification for the catalogue (3.10) and the fit mark (F-70), and the two fee fields for the track workbench (F-64). Other CMA fields are added when a capability needs them.
 - **Fee fields (definitions confirmed 2026-10-23, CAT-35 to CAT-39, CAT-06).** `raw_fields` keeps the two fields as received; `fees` is required and holds `avg_annual_management_fee` (unit `pct_per_year`, from `AVG_ANNUAL_MANAGEMENT_FEE`) and `avg_deposit_fee` (unit `pct_of_deposit`, from `AVG_DEPOSIT_FEE`) as value objects. Both are percent (0.61 is 0.61%). Each is the average fee actually charged from all members, after discounts, over the last completed calendar year, so a row of report year Y holds the Y−1 average (CAT-36, CAT-37): `effective_from`/`effective_to` are 1 January and 31 December of Y−1, `tax_year` is `null`, `update_rule` is `market`, `state` is `sourced`, `checked` is the file's `checked`, and `source` is the dataset source with the field name in the title. `rule_ids` are `CAT-35`, `CAT-36`, `CAT-37`, `CAT-06` (pensia-net adds `CAT-39`: the pair is per fund, every track of a fund carries the fund's values). An empty raw field gives `value: null` with `notes` starting "לא דווח" and the reason (no full calendar year yet, or unknown, CAT OQ22); empty is not zero, and zero is a reported 0.00%. A negative value is kept as reported, with a note (it can be a refund, CAT-40). The weighting of the average (by assets or by members) is not published and stays open (CAT OQ2, OQ23): the site says "ממוצע" and the year, never "משוקלל". The site marks the figure stale when the previous calendar year is older than the fee's year (`staleCmaFee`), not by the monthly rule.
-- Change-log lines for fee fields carry `affects_rankings: true`; names and classification changes carry `false` (§3.12).
 
 ---
 

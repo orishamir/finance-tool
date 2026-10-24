@@ -19,10 +19,10 @@ How to read it:
 | K3 | **Every displayed number is a value object** (sourced, computed or entered) with source, date and state, and the page shows which. | CLAUDE.md, D3, D7, data-schema §1 |
 | K4 | **Rule gating.** An `open` rule never computes; `secondary` and `institution` rules compute and label; a figure past its `effective_to` stops the run with "figure not updated". | D10, method.md §13 |
 | K5 | **Data validated against the schema before every build**, including the cross-file checks in data-schema §4. | Founder brief; data-schema §4 |
-| K6 | **Scheduled refresh** at the cadences of product.md §6, keeping dated snapshots because no public archive exists, appending to the change log, and never hiding a stale number. | D3, product.md §6, data-schema §3.12 |
+| K6 | **Scheduled refresh** at the cadences of product.md §6, keeping dated snapshots because no public archive exists, and never hiding a stale number. | D3, product.md §6 |
 | K7 | **Hebrew, right to left, phone first**, with numbers, percentages, fund numbers and Latin names embedded in Hebrew text. | CLAUDE.md, product.md §2 |
 | K8 | **Interactive on nearly every page.** People change fields and watch graphs respond. Guide pages take optional inputs and carry a timeline graph (3.1), the catalogue shows a fit mark against the saved goal (3.10), and R2 to R5 are all tools (comparison, workbench, fee materiality, holdings). The person's goal and inputs follow them from page to page. Only the rules, parameters and terms pages are pure reference. | founder, 2026-10-22; product.md 3.1, 3.10; roadmap.md |
-| K9 | **Saved state is local, versioned and portable**: automatic in R2, export and import in R3, revisit against the change log in R5. Old export files must keep importing. | 3.9, N3 |
+| K9 | **Saved state is local, versioned and portable**: automatic in R2, export and import in R3, revisit against the stored versions in R5. Old export files must keep importing. | 3.9, N3 |
 | K10 | **Data sources are awkward**: CMA CSVs are Windows-1255, data.gov.il has a WAF that rejects some queries, CBS requires a User-Agent, gov.il, TASE and ISA block scripts. All research fetches were made from a home machine, so access from cloud IPs is unverified. | data-landscape.md §1 |
 | K11 | **Non-commercial, small audience, one maintainer.** Low running cost and few moving parts beat scale. The founder does DevOps, so self-hosting is available but not required. | CLAUDE.md, founder brief |
 | K12 | **Polished interface and good-looking graphs.** Look and feel is a requirement, not a finishing touch. | founder, 2026-10-22 |
@@ -38,7 +38,7 @@ How to read it:
    pipeline: fetch → raw archive → normalise → validate → diff ─────┤
             │  commit (or PR when a sanity check trips)             │
             ▼                                                       ▼
-   data/  (JSON, git = snapshot history)  +  data/changelog.jsonl  ◄┘
+   data/  (JSON, git = snapshot history)             ◄┘
             │
             ▼
    build: validate (schema + cross-file) → resolve data bundles → engine at build time
@@ -53,7 +53,7 @@ Three properties matter more than any tool choice:
 
 1. **One engine, three runtimes.** The same engine package runs in tests (Node), at build time (to pre-render each page's first view, such as a guide timeline at the default scenario P-05, so a graph appears before any script runs) and in the browser (for the person's own inputs). It has no DOM, network or file access; callers hand it resolved data.
 2. **Time-dependent checks run in the browser, not at build.** Stale flags (D3) and the "figure not updated" stop (method §13) are computed against the reader's current date. If the refresh pipeline breaks and nothing rebuilds, the flags still fire. A flag computed at build would freeze in the "fresh" state exactly when it matters.
-3. **Git is the snapshot store for normalised data.** Every refresh is a commit; `data/changelog.jsonl` is the human-readable index of what changed. Raw downloads (the evidence) go to a separate archive (section 3.3).
+3. **Git is the snapshot store for normalised data.** Every refresh is a commit; git history and each file's `checked` date are the record of what changed (no change log: removed 2026-10-24, D24). Raw downloads (the evidence) go to a separate archive (section 3.3).
 
 ---
 
@@ -77,7 +77,7 @@ Checks, data-schema §4 first:
 2. Every `rule_ids` entry exists as a `### <ID>` heading in `.claude/skills/il-finance/references/`, and every `data/rules/` file's `strength` matches the rule base (§4 item 2). The rule base is markdown; the validator reads only headings and the strength line, it does not interpret rules.
 3. Every `formula` named in a record exists as an `F-nn` in `docs/method.md` (§4 item 6) **and** is either implemented in the engine's formula registry or listed as not yet implemented for the current release (section 3.4).
 4. Exposure and fund cross-links (§4 item 8). Stored dimension marks equal the marks regenerated from `rule_ids` (§4 item 9).
-5. Added here: every changed value under `data/` in a commit has a matching line in `data/changelog.jsonl` (checked against the git diff), so the change log cannot be skipped.
+5. Removed 2026-10-24 (D24): the check that every changed value has a change-log line; there is no change log.
 6. Added here: guide and page content contains no bare digits outside the provenance component (section 3.7), with an explicit allow-list for things that are not figures (rule IDs, form numbers, section numbers of a law).
 
 Staleness (§4 item 7) is **not** a build failure; it is computed in the browser (section 2, property 2). The validator only reports it.
@@ -86,7 +86,7 @@ Staleness (§4 item 7) is **not** a build failure; it is computed in the browser
 
 A command-line program with one adapter per source. The scheduler (section 6) only calls it; the program is the same on a laptop, a CI runner or a home server.
 
-Per adapter: **fetch** (with the User-Agent and download-URL quirks from data-landscape.md §1) → **archive** the raw response, compressed, under `source/date`, recording its hash → **normalise** to the schema (including Windows-1255 to UTF-8 for CMA CSVs) → **validate** → **diff** against the current files → write the new snapshot or appended observations and the change-log lines with `affects_rankings` set per data-schema §3.12.
+Per adapter: **fetch** (with the User-Agent and download-URL quirks from data-landscape.md §1) → **archive** the raw response, compressed, under `source/date`, recording its hash → **normalise** to the schema (including Windows-1255 to UTF-8 for CMA CSVs) → **validate** → **diff** against the current files → write the new snapshot or appended observations; the commit message of the refresh is the record (git history, `checked` dates; no change log, D24).
 
 | Adapter | Release | Cadence (product.md §6) | Writes to |
 |---|---|---|---|
@@ -97,7 +97,7 @@ Per adapter: **fetch** (with the User-Agent and download-URL quirks from data-la
 | Tariffs, `data/funds/`, `data/catalog/`, `data/terms/deposits/` | R1 (catalog), R4 (rest) | manual | by hand or by the data-researcher agent, through a pull request |
 | Maya fund-list export (CAT-33, CAT-34) and TASE's list of foreign funds traded on TASE (ETF-32): the set the fund-variant workbench chooses from (product D17) | R4 | manual, monthly (the pages block scripts) | `data/fund-lists/` (data-schema §3.14), through a pull request |
 
-**CMA adapter as built (2026-10-23).** `packages/pipeline/src/adapters/cma.ts`, run as `npm run refresh -- cma [--dry-run] [--no-archive] [--force]`. It reads the full 2024-today CSV (not the datastore API), keeps the latest `REPORT_PERIOD` and writes text fields exactly as received (untrimmed), like the hand-made snapshots. Sanity checks (pipeline configuration, in the adapter): a required column missing, replacement characters in a text field, row count under 80% of the stored period's, more than 20% of fund ids gone, a period older than the stored one. Exit code 0 = written or unchanged, 3 = sanity failed (nothing written), 1 = error. `--force` writes despite a sanity failure (never past a schema failure) and exists only so `refresh.yml` can open a pull request with the diff. Change-log lines: a new snapshot with no earlier file logs identity plus the two raw fee fields per fund; later periods log only differences against the stored file. Because `CURRENT_DATE` and the file hash change daily, "nothing changed" is decided on the normalised data, never on the hash. Pushes with the default `GITHUB_TOKEN` do not start `ci.yml`; set the secret `REFRESH_PUSH_TOKEN` so the refresh commit triggers CI and the deploy.
+**CMA adapter as built (2026-10-23).** `packages/pipeline/src/adapters/cma.ts`, run as `npm run refresh -- cma [--dry-run] [--no-archive] [--force]`. It reads the full 2024-today CSV (not the datastore API), keeps the latest `REPORT_PERIOD` and writes text fields exactly as received (untrimmed), like the hand-made snapshots. Sanity checks (pipeline configuration, in the adapter): a required column missing, replacement characters in a text field, row count under 80% of the stored period's, more than 20% of fund ids gone, a period older than the stored one. Exit code 0 = written or unchanged, 3 = sanity failed (nothing written), 1 = error. `--force` writes despite a sanity failure (never past a schema failure) and exists only so `refresh.yml` can open a pull request with the diff. Because `CURRENT_DATE` and the file hash change daily, "nothing changed" is decided on the normalised data, never on the hash. Pushes with the default `GITHUB_TOKEN` do not start `ci.yml`; set the secret `REFRESH_PUSH_TOKEN` so the refresh commit triggers CI and the deploy.
 
 **Commit policy.** A refresh that passes validation and the sanity checks is committed directly. A refresh that trips a sanity check (a field disappears, a row count drops sharply, a value outside a plausible range, an encoding change) opens a pull request instead and alerts. Sanity ranges are pipeline configuration, not site parameters: they never reach a displayed number.
 
@@ -152,7 +152,7 @@ A TypeScript package with no dependencies on the UI, the DOM, the network or the
 
 - **Store.** One state document per browser in IndexedDB, written automatically (3.9). It holds the person's goals, entered values (as value objects with `state: entered`, data-schema §1), holdings, saved comparisons and uncatalogued names.
 - **Versioned from the first write** (R2), even though export only arrives in R3 (N3). Every state document carries a format version; a chain of migrations upgrades any older version on load and on import. Import validates with the schema package and rejects a file it cannot read, without touching the existing state.
-- **Saved comparisons carry what they used.** A saved comparison stores its inputs, the `data_version`, and the actual figures, parameters and series values it read (small). Revisit (F-82, R5) compares those stored values with the current bundle and the change log, so the site never needs to ship old snapshots to the browser.
+- **Saved comparisons carry what they used.** A saved comparison stores its inputs, the `data_version`, and the actual figures, parameters and series values it read (small). Revisit (F-82, R5) compares those stored values with the current bundle, so the site never needs to ship old snapshots to the browser.
 - **Phones may clear it.** Safari can delete a site's stored data after a period without a visit unless the site is added to the home screen. The site requests persistent storage where the browser supports it and ships a web-app manifest so it can be installed; this needs checking on a real iPhone in R2. Between R2 and R3 there is no export to fall back on (gap 8.5).
 
 ### 3.7 How "every number traces to a source" is enforced
@@ -209,12 +209,12 @@ Polished interface and good-looking graphs are a requirement (K12), so they get 
 docs/  research/  data/  tests/golden/        as today
 packages/schema/      schemas, types, JSON Schema export, data-schema.md consistency test
 packages/engine/      formulas by method section, registry, figure resolver; no I/O
-packages/pipeline/    adapters, normaliser, validator, change-log writer, CLI helpers
+packages/pipeline/    adapters, normaliser, validator, CLI helpers
 site/                 pages, content, components, tools, worker wrapper around the engine
 infra/                scheduler definitions (CI workflows or systemd units), host config
 ```
 
-A single workspace with one lockfile; versions pinned. The repository is not under git yet; scaffolding starts with `git init`, because the change log, snapshots and CI all rely on it.
+A single workspace with one lockfile; versions pinned. The repository is not under git yet; scaffolding starts with `git init`, because the snapshots and CI all rely on it.
 
 ---
 
@@ -313,8 +313,8 @@ What each release adds to each component. Capabilities and their order are those
 
 | | R1 understand | R2 decide for a goal | R3 fees and holdings | R4 providers, funds, switching | R5 exposures, revisit, growth |
 |---|---|---|---|---|---|
-| **Schema and validator** | all collections R1 uses; cross-file checks; change-log check; content digit check | series, averages | holdings and export format | `data/fees/`, `data/funds/`, `data/fund-lists/`, `data/terms/deposits/` in use | tier-2 records as they graduate |
-| **Pipeline** | CMA adapters, raw archive, change log, dead-man check; runner spike (section 6); catalogue scaffolding helper | BoI, CBS, MoF adapters; terms gate | uncatalogued-names import helper | tariff and fund scaffolding helpers; fund-list import helper | none new |
+| **Schema and validator** | all collections R1 uses; cross-file checks; content digit check | series, averages | holdings and export format | `data/fees/`, `data/funds/`, `data/fund-lists/`, `data/terms/deposits/` in use | tier-2 records as they graduate |
+| **Pipeline** | CMA adapters, raw archive, dead-man check; runner spike (section 6); catalogue scaffolding helper | BoI, CBS, MoF adapters; terms gate | uncatalogued-names import helper | tariff and fund scaffolding helpers; fund-list import helper | none new |
 | **Engine** | resolver and gating; registry; F-01 to F-28, F-33, F-40 to F-46, F-50, F-51, F-54 as needed for the guide timelines (F-67); dimension marks | F-30 to F-32, F-47 to F-49 (blocked where the method says), F-52, F-53, F-60, F-80, F-81, F-83; worker | F-61, F-62, F-64, F-70, F-72 | F-12 to F-14 at full tariff detail, F-63, F-65, F-66 | F-71, F-82 |
 | **Site** | design pass and approved mockups (3.9); design tokens and chart components; app shell and shared input state; guide pages with optional inputs and live timeline graphs; tier-2 page, rules, parameters, terms; per-manager catalogue pages and search; provenance component | comparison tool with presets, ranking, ties, sensitivity, idle-cash preset; coverage line; catalogue fit mark | fee materiality, holdings review, track workbench | provider workbench, fund variants, bank products and Maya funds in the catalogue, playbook rendered from rule entries | exposure mode with entered returns; revisit and "what changed since" |
 | **Local state** | guide inputs and uncatalogued names, versioned | automatic saved state, manifest and persistence request | export and import with migrations | none new | saved comparisons re-run (they already store what they used, from R2) |
@@ -326,7 +326,7 @@ Two R1 items gate everything after them, in this order: the schema and validator
 
 - **R3 as built.** Routes `/fees`, `/holdings`, `/workbench/tracks/:wrapper`, `/transfer`, with the resource routes `fees-data.json` and `holdings-bundle.json`. Engine modules `packages/engine/src/fees/` (`materiality.ts` F-61, `verdict.ts` F-62, `reference.ts` F-68, `computed.ts`) and `holdings/` (`fit.ts` F-70, `consolidation.ts` F-72, `workbench.ts` F-64, `cma.ts`); golden file `test/golden/r3.test.ts` (S42, S43, S46). Local state: the holdings and the import record joined the state document (`site/app/lib/state.ts`, version 2), and the export file `mekor-state` with its import check. Pipeline: no new adapter; the uncatalogued-names import runs through the same file.
 - **R4 as built.** Routes `/workbench/providers/:wrapper`, `/workbench/funds/:exposure`, `/switch/:wrapper`, the companies list with bank and fund-manager pages, and `workbench-bundle.json`. Engine modules `providers/workbench.ts` (F-63), `variants/fund-variants.ts` (F-65), `variants/switching.ts` (F-66); F-18 stays in the registry's `pending`; golden file `r4.test.ts` (S44, S45, S38). Schema: `data/fees/` and `data/funds/` in use by the workbench; `data/fund-lists/` not created (TASE's terms, CAT-43), its import helper not written. Local state: three side stores on their own keys through `site/app/lib/device-store.ts` (offers, variant assumptions, playbook ticks), not yet merged into the state document (design-spec 16.5). Pipeline: tariffs and fund records written by hand from the browser; no adapter.
-- **R5 as built.** Exposure mode on `/goal/compare?mode=exposure`, `/changes` with `changes-data/:year`, the revisit strip and sheet on the pages that carry the saved goal, the status card on `/not-covered`. Engine modules `compare/loss-filter.ts` (F-71), `compare/exposures.ts` (exposure mode over the holding wrapper of P-08), `compare/revisit.ts` (F-82 `revisit`, `diffVersions`, `changesSince`); golden file `r5.test.ts` (S48, S49). Local state: `savedComparisons` and `visits` in the state document, version 3 under the unchanged key `mekor.v2.state`; the site's `lib/revisit.ts` re-runs both modes. The change log is served to the browser one year per file; no tier-2 record graduated, so the schema's wrapper ids are unchanged.
+- **R5 as built.** Exposure mode on `/goal/compare?mode=exposure`, the revisit strip and sheet on the pages that carry the saved goal, the status card on `/not-covered`. Engine modules `compare/loss-filter.ts` (F-71), `compare/exposures.ts` (exposure mode over the holding wrapper of P-08), `compare/revisit.ts` (F-82 `revisit`, `diffVersions`); golden file `r5.test.ts` (S48, S49). Local state: `savedComparisons` in the state document, version 3 under the unchanged key `mekor.v2.state`; the site's `lib/revisit.ts` re-runs both modes. The change-log page was removed on 2026-10-24 (D24); no tier-2 record graduated, so the schema's wrapper ids are unchanged.
 
 ---
 

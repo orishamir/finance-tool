@@ -738,6 +738,8 @@ Called for by 3.9 ("a saved comparison records inputs, assumptions, the rule, pa
 
 ### 9.5 Since picker, affects groups, collection disclosure, change-log row, snapshot row
 
+Removed 2026-10-24 (D24): the components of this section (since picker, affects groups, collection disclosure, change-log row, snapshot row) are not built; the text is kept as history.
+
 Called for by 3.8 Out ("one dated change log of rule, parameter and data changes"), 3.9 Out ("the reader-facing 'what changed since' view"), method F-82 (last sentence), data-schema §3.12 (`affects_rankings`), roadmap R5 (risk: noise).
 
 - **Since picker.** A `DateField` (11.3) labelled "מאז", with quick chips in the preset-chip style ("הביקור הקודם · שבוע · חודש · מאז שנשמרה ההשוואה", the last only when one is saved), and one `text-sm muted` line naming the default in use ("הביקור הקודם שלכם: {תאריך}"). The default is the person's previous visit, kept on the device (design-spec 21.5), because the question the page answers is "what changed since I was last here"; with no visit recorded it falls back to the saved comparison's date, then to thirty days, and the line says which. An "עד תאריך" field sits in a `Disclosure`, because an upper bound is a reviewer's need, not a friend's. Sticky under the header on a phone.
@@ -761,4 +763,4 @@ Called for by D2 ("a tier-2 instrument moves to tier 1 when it has a sourced rec
 
 Called for by flows 34 to 37 and 18.6.
 
-The menu gains one row, "מה השתנה" (after "פרמטרים"), and the footer the same link, because the change log needs no subject and product 3.8 makes it a reader-facing capability. The first page gains the quiet line "מאז הביקור הקודם שלכם השתנו {מספר} דברים באתר" under the strip when the count is above zero. The rules and parameters pages gain "מה השתנה" in their ledes, filtered to their collection. The exposure guide page's "how to hold it" line becomes two links ("איזה מוצר יחזיק את זה למטרה שלכם", "איזו חשיפה מתאימה למטרה"). The fit mark's line names the accepted fall when the goal has one. A tier-2 holding gains "מה חוסם את הכיסוי". The export file's contents line gains the saved comparisons' count.
+Removed 2026-10-24 (D24): the menu and footer row "מה השתנה", the first page's "since your last visit" line and the "מה השתנה" links in the rules and parameters ledes. The menu, footer, first page and the rules and parameters ledes get no such addition. The exposure guide page's "how to hold it" line becomes two links ("איזה מוצר יחזיק את זה למטרה שלכם", "איזו חשיפה מתאימה למטרה"). The fit mark's line names the accepted fall when the goal has one. A tier-2 holding gains "מה חוסם את הכיסוי". The export file's contents line gains the saved comparisons' count.

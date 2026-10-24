@@ -1968,8 +1968,7 @@ export const r5 = {
       columns: { before: "בשמירה, {date}", now: "היום" },
       rows: { top: "ראשונה: {option}", tie: "שקולות: {names}", noTie: "אין שקולות", none: "אף אפשרות לא דורגה" },
       empty: "אף כלל, פרמטר, נתון או הנחה שההשוואה נשענה עליהם לא השתנו.",
-      all: "לרשימת כל השינויים באתר מאז {date}",
-      allLink: "לרשימת כל השינויים באתר מאז {date}",
+      detail: "פירוט",
       close: "סגירה", // copy.md 9.2 to 9.6
     },
     unreadable: "ההשוואה שנשמרה היא מגרסה ישנה של האתר ואי אפשר לבדוק אותה מחדש.",
@@ -1982,48 +1981,6 @@ export const r5 = {
     outcomes: { "listed-not-ranked": "מוצגת בלי דירוג", excluded: "נפסלה", "not-evaluated": "עוד לא נבדקה", "not-eligible": "לא מתאימה לכם" } as Record<string, string>,
     choiceGone: "לא קיימת עוד", // copy.md 9.2 to 9.6
     compact: { changed: "לבדיקה מחדש", unchanged: "ללא שינוי" },
-  },
-  // 9.4 what changed since
-  changes: {
-    title: "מה השתנה באתר",
-    lede: "כל שינוי בכללים, בפרמטרים ובנתונים של האתר, מהיומן שלו. בחרו מאיזה תאריך.",
-    since: "מאז",
-    until: "עד תאריך",
-    chips: { previous: "הביקור הקודם", week: "שבוע", month: "חודש", saved: "מאז שנשמרה ההשוואה" },
-    chipsAria: "בחירה מהירה של תאריך", // copy.md 9.2 to 9.6
-    defaults: { previous: "הביקור הקודם שלכם: {date}", saved: "מאז שנשמרה ההשוואה: {date}", thirty: "ברירת המחדל: החודש האחרון." },
-    explicit: "התאריך שבחרתם: {date}", // copy.md 9.2 to 9.6: an explicit date in the address
-    counts: "{n} שינויים מאז {date}, {m} מהם משפיעים על דירוגים.",
-    countsUntil: "{n} שינויים בין {date} ל{until}, {m} מהם משפיעים על דירוגים.",
-    countsWhole: "מאז תחילת היומן, {date}",
-    precise: "האם שינוי נגע להשוואה ששמרתם, בודקים בעמוד ההשוואה.",
-    groups: { affects: "משפיע על דירוגים", other: "לא משפיע על דירוגים" },
-    collectionNames: {
-      rules: "כללים", parameters: "פרמטרים", fees: "תעריפונים", "terms/deposits": "תנאי פיקדונות", terms: "מונחים", dimensions: "מימדים לבדיקה", catalog: "קטלוג", funds: "רשומות קרנות", series: "סדרות",
-      "instruments/wrappers": "רשומות מוצרים", "instruments/exposures": "רשומות חשיפות", cma: "נתוני רשות שוק ההון", "site/content": "תוכן האתר", "site/content/guide": "עמודי המדריך", "il-finance": "מאגר הכללים",
-    } as Record<string, string>,
-    columns: { date: "תאריך", what: "מה", field: "שדה", old: "היה", now: "עכשיו", why: "למה" },
-    values: { none: "לא היה", removed: "הוסר", detail: "פירוט" },
-    reasonLabel: "הסיבה כפי שנרשמה ביומן",
-    snapshot: "{id}: {n} שדות השתנו",
-    snapshotDetail: "פירוט",
-    snapshotOf: "{n} מתוך {m}",
-    snapshotMore: "להציג עוד",
-    filters: { collections: "אוספים", search: "חיפוש לפי מזהה או שדה" },
-    loadingOlder: "טוען שינויים ישנים יותר…",
-    empty: "לא השתנה כלום מאז {date}.",
-    noHits: "אין שינוי שמתאים לחיפוש או לבחירה.", // copy.md 9.4 (added 2026-10-24, B11)
-    errDate: "התאריך אחרי היום.",
-    errLog: "יומן השינויים לא נקרא: שורה {n}.",
-    stale: "היומן עודכן לאחרונה ב־{date}.",
-    firstPage: "מאז הביקור הקודם שלכם השתנו {n} דברים באתר.",
-    link: "מה השתנה",
-    back: "חזרה", // copy.md 9.2 to 9.6
-    loading: "טוען את היומן…", // copy.md 9.2 to 9.6
-    countLabel: "שורות", // copy.md 9.2 to 9.6: the "{n} rows" count beside a collection
-    showAll: "עוד {n}", // copy.md 9.2 to 9.6: paging a long collection
-    unknownCollection: "אוסף", // copy.md 9.2 to 9.6
-    objectLabel: "ערך מורכב", // copy.md 9.2 to 9.6: the disclosure for a value that is an object
   },
   // 9.5 not covered: the status card
   graduation: {
@@ -2052,7 +2009,6 @@ export const r5 = {
   },
   // 9.6 additions to existing screens
   additions: {
-    menu: "מה השתנה",
     fitLossLine: "לפי האופק ולפי הירידה שתסכימו לספוג ({accepted})",
     fitTrackSide: "המסלול מתאים לירידה של עד {max}, פרמטר של האתר",
     fitNotMet: "המסלול מתאים לירידה של עד {max}, ואתם מסכימים לספוג עד {accepted}", // copy.md 9.2 to 9.6: the line when the track's fall exceeds the person's

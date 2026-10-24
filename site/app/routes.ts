@@ -26,7 +26,5 @@ export default [
   route("workbench/funds/:exposure", "routes/workbench-funds.tsx"),
   route("workbench-bundle.json", "routes/workbench-bundle.ts"),
   route("switch/:wrapper", "routes/switch.tsx"),
-  route("changes", "routes/changes.tsx"),
-  route("changes-data/:year", "routes/changes-data.ts"),
   route("*", "routes/not-found.tsx"),
 ] satisfies RouteConfig;

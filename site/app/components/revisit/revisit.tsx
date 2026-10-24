@@ -264,7 +264,7 @@ function RenderedValue({ v }: { v: Rendered }): ReactNode {
   if (v.kind === "num") return <Num value={v.value} />;
   if (v.kind === "table")
     return (
-      <Disclosure label={<span className="text-xs">{r5.changes.values.detail}</span>} summaryClassName="text-sm">
+      <Disclosure label={<span className="text-xs">{r5.revisit.sheet.detail}</span>} summaryClassName="text-sm">
         <table className="tbl text-xs mt-1">
           <tbody>
             {v.rows.map((b, i) => (
@@ -370,7 +370,7 @@ function BeforeAfter({ view }: { view: RevisitView }) {
   );
 }
 
-export function WhatChangedSheet({ view, open, onClose, anchor, nis, changesHref, today }: { view: RevisitView; open: boolean; onClose: () => void; anchor: HTMLElement | null; nis: (v: number, about: string) => ReactNode; changesHref: string; today: string }) {
+export function WhatChangedSheet({ view, open, onClose, anchor, nis, today }: { view: RevisitView; open: boolean; onClose: () => void; anchor: HTMLElement | null; nis: (v: number, about: string) => ReactNode; today: string }) {
   const s = r5.revisit.sheet;
   const [more, setMore] = useState<Record<string, boolean>>({});
   const titleId = useId();
@@ -420,11 +420,6 @@ export function WhatChangedSheet({ view, open, onClose, anchor, nis, changesHref
           <BeforeAfter view={view} />
         </section>
       )}
-      <p className="flex flex-col gap-1 pt-2 border-t border-border">
-        <Link to={`${changesHref}?since=${view.savedOn}`} className="text-link hover:underline min-h-target inline-flex items-center">
-          <Tpl t={s.all} vars={{ date: date(view.savedOn) }} />
-        </Link>
-      </p>
     </Sheet>
   );
 }

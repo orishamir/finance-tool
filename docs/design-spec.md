@@ -1657,8 +1657,6 @@ Added 2026-10-24 for the release 5 screens in `docs/flows.md` section 18 (goal f
 | `SegmentedControl`, `NumberField`, `DateField` (11.3), `Disclosure`, `Callout`, `Tag`, `Sheet`, `Button`, `LinkButton`, filter field, copy button | throughout |
 | `SubjectStrip` (11.3) | wrapper mode's "לפי {חשיפה} בתשואה שהזנתם" line when opened from an exposure row |
 | Not-covered card, blocked `Callout` (6.13) | the status card extends the card |
-| Stale banner (3.2) | the change-log page when the log's latest line is old |
-| `Header`, `Footer` | one new menu row, "מה השתנה" |
 
 ### 21.2 New types
 
@@ -1764,7 +1762,6 @@ interface StateV4 extends Omit<StateV3, 'version' | 'goals'> {   // 21.5
   version: 4;
   goals: GoalV4[];
   savedComparisons: SavedComparisonRecord[];                 // one per goal and mode
-  visits: { previous?: string; last?: string };              // YYYY-MM-DD; `previous` is the change-log picker's default
 }
 ```
 
@@ -1830,7 +1827,7 @@ Every `ValueObject` carries its state, so styling follows `state` as in 1.3: eve
 ### 21.5 Saved state v4 and the export file
 
 - **One document.** `mekor.v3.state` migrates to `mekor.v4.state` (`StateV4`, 21.2) on first load after the release: each goal gains `exposures: {}` and `assumptions.acceptedFall` absent; `savedComparisons: []`; `visits: {}`. The v2 keys of 11.5 (if any device still has them) go through the same chain. Written on every change (debounced 300ms), read once after hydration.
-- **Visits.** At the end of a visit (`pagehide`, and every 60s while open) the site writes `visits.last = today`; at the start of a visit, if `visits.last` is before today, `visits.previous = visits.last`. The change-log picker's default is `visits.previous` (flow 36 step 1); the first page's "since your last visit" line uses it too.
+- **Visits.** Removed 2026-10-24 (D24): the state document keeps no `visits`; a `visits` field in an older file is ignored on load.
 - **Saved comparisons.** One `SavedComparisonRecord` per `goalId` and `mode`; "בחרתי בזה" and "לשמור את ההשוואה" write it; saving again replaces after the confirm. The record keeps ids, not wrapper records (flow 35 data note), so a typical record is a few kilobytes: the goal, a few hundred rule figures with values and dates, the parameters, the data paths and the result. Deleting a goal deletes its saved comparisons.
 - **The revisit** runs in the comparison worker when a page with the strip mounts and a saved comparison exists for the current goal: `revisit(saved, currentBundle, ctx)` for wrapper mode (the engine as built), the exposure-mode equivalent once it exists (engine note), both producing `RevisitView`. The result is cached for the visit, keyed by the saved record's id and the data snapshot id the bundle carries, so the strip does not recompute on every route.
 - **Import.** A `version: 3` file migrates with the same chain; a `version: 4` file loads; `version > 4` is refused (copy 7.4). "Add" merges saved comparisons by `goalId` + `mode` (the device's wins when both exist; chosen 2026-10-24, revisable) and takes the file's `visits` only when the device has none. The contents line gains "{מספר} השוואות שמורות".
@@ -1930,7 +1927,7 @@ Worked example: S49 (three of the seven; goal as S39; cash at a sourced 3.25%, b
 
 ### Overview
 
-A saved comparison remembers the versions it rested on; on a later visit the strip says whether anything it rested on changed and when, the result page says whether the ranking holds, and a sheet lists every changed entry with its old and new value, what moved in the comparison, and the before and after (flows 35, 38). Where: the saved-goal strip on every page; the result in both modes; the sheet from either. Data: the saved comparison (21.5), the current bundle (wrapper records, tier-2 list, parameters, the data files' `checked` dates), the rules bundle, the change log (for the dates of parameter and assumption changes), and the engine's `revisit` output (`diff`, `before`, `after`, `topUnchanged`, `tieSetUnchanged`, `valueChanges`). Computed in the worker on mount; cached per visit.
+A saved comparison remembers the versions it rested on; on a later visit the strip says whether anything it rested on changed and when, the result page says whether the ranking holds, and a sheet lists every changed entry with its old and new value, what moved in the comparison, and the before and after (flows 35, 38). Where: the saved-goal strip on every page; the result in both modes; the sheet from either. Data: the saved comparison (21.5), the current bundle (wrapper records, tier-2 list, parameters, the data files' `checked` dates), the rules bundle, and the engine's `revisit` output (`diff`, `before`, `after`, `topUnchanged`, `tieSetUnchanged`, `valueChanges`). Computed in the worker on mount; cached per visit.
 
 Worked example: S48 (S39 saved; TXS-09's rate 25 → 30): one diff row ("TXS-09, שיעור המס על רווח ריאלי: היה 25% · עכשיו 30%"); the brokerage account 572,640.51 → 566,430.72 in today's money; the kupat gemel lehashkaa stays first (gap 9.20% → 10.18%); the strip reads "לבדיקה מחדש: הכלל TXS-09 השתנה ב־{תאריך}", the banner "הדירוג נשמר: קופת גמל להשקעה עדיין ראשונה."
 
@@ -1993,9 +1990,11 @@ Worked example: S48 (S39 saved; TXS-09's rate 25 → 30): one diff row ("TXS-09,
 
 ## 24. Screen 19: what changed since page
 
+Removed 2026-10-24 (D24): this screen, its route `/changes`, its data route `changes-data/:year` and the `visits` field of the state document no longer exist. The text is kept as history.
+
 ### Overview
 
-The change log for readers: every line of `data/changelog.jsonl` dated after a day the person picks (default: their previous visit), split into changes that affect rankings and changes that do not, grouped by collection, with a snapshot folded into one row (flows 36, 38). Route `/changes?since=…&until=…&collections=…`. Data: the change log served in yearly files (`changes-{year}.json`, emitted at build from the `.jsonl`, each line checked against `changelogLine`; the current year loaded first, older years on demand when `since` reaches into them), the Hebrew collection names (copy 9.4), the id resolvers (a rule id → the rule card; a parameter id → the parameters page; a snapshot id → the company or bank page; a CMA fund id → the track page), `visits.previous` and the saved comparisons' dates from the device. Pre-rendered for the default window of the build day; recomputed on the device on every picker change (`changesSince` runs in the worker over the loaded lines).
+The change log for readers: every line of `data/changelog.jsonl` (removed, D24) dated after a day the person picks (default: their previous visit), split into changes that affect rankings and changes that do not, grouped by collection, with a snapshot folded into one row (flows 36, 38). Route `/changes?since=…&until=…&collections=…`. Data: the change log served in yearly files (`changes-{year}.json`, emitted at build from the `.jsonl`, each line checked against `changelogLine`; the current year loaded first, older years on demand when `since` reaches into them), the Hebrew collection names (copy 9.4), the id resolvers (a rule id → the rule card; a parameter id → the parameters page; a snapshot id → the company or bank page; a CMA fund id → the track page), `visits.previous` and the saved comparisons' dates from the device. Pre-rendered for the default window of the build day; recomputed on the device on every picker change (`changesSince` runs in the worker over the loaded lines).
 
 ### Layout
 
