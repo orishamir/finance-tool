@@ -9,7 +9,7 @@ export const content: GuideContent = {
   what: () => (
     <>
       <p className="max-w-measure">
-        קופת גמל שכל אדם יכול לפתוח, בכל גיל, ולהפקיד אליה בעצמו. הכסף מושקע ב<Term id="מסלול השקעה">מסלול השקעה</Term> שבוחרים. על הרווחים בתוך הקופה לא משלמים מס, ומשלמים רק כש
+        קופת גמל שכל אדם יכול לפתוח, בכל גיל, ולהפקיד אליה בעצמו. הכסף מושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> שבוחרים. על הרווחים בתוך הקופה לא משלמים מס, ומשלמים רק כש
         <Term id="משיכה">מושכים</Term> את הכסף.
       </p>
       <RulesLine ids={["KGL-01", "KGL-06", "TXK-03", "TXK-05"]} />
@@ -31,7 +31,7 @@ export const content: GuideContent = {
     return (
       <>
         <Callout tone="blocked" className="max-w-measure">
-          <span className="font-medium">מגיל {age ? <Num value={age} /> : null} אפשר להעביר את הכסף ל<Term id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.</span> את ה<Term id="קצבה">קצבה</Term> האתר עוד לא מחשב, כי חסרים מקדמי ההמרה. שאלה פתוחה: <bdi dir="ltr" className="whitespace-nowrap">PEN OQ7</bdi>.
+          <span className="font-medium">מגיל {age ? <Num value={age} /> : null} אפשר להעביר את הכסף <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.</span> את <Term prefix="ה" id="קצבה">קצבה</Term> האתר עוד לא מחשב, כי חסרים מקדמי ההמרה. שאלה פתוחה: <bdi dir="ltr" className="whitespace-nowrap">PEN OQ7</bdi>.
         </Callout>
         <RulesLine ids={["TXK-10", "KGL-09"]} />
       </>

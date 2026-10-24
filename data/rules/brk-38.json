@@ -1,0 +1,15 @@
+{
+  "id": "BRK-38",
+  "title": "One Zero's full tariff (published 24/6/2026, in force 26.7.2026): trading limited to TA-125 shares, Israeli mutual funds and US-traded securities; no custody fee; one buy/sell rate for clerk and internet; plan benefits in annex ו'",
+  "title_he": "תעריפון וואן זירו: מסחר במניות מדד מאה עשרים וחמש, קרנות ישראליות וניירות אמריקאיים בלבד; בלי דמי משמרת",
+  "strength": "institution",
+  "dimensions": [
+    "fee-trade",
+    "fee-custody"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "text_he": "הבנק הדיגיטלי מאפשר בשלב זה מסחר במניות ישראליות הנכללות במדד הדגל, בקרנות נאמנות ישראליות ובניירות ערך זרים הנסחרים בארצות הברית בלבד. בתעריפון אין שורת מק\"מ, אופציות, או עמלת הפצה, ודמי ניהול פיקדון ניירות ערך ועמלת קסטודיאן נקובים באפס אחוז, בתוספת הוצאות צד שלישי. עמלת הקנייה והמכירה זהה בפקיד ובאינטרנט. חברי המסלולים בתשלום חודשי מקבלים הנחה ניכרת בעמלת המסחר ופטור מעמלת חליפין. המספרים עצמם שמורים בקובץ העמלות.",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-24"
+}

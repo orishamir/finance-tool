@@ -1,0 +1,36 @@
+{
+  "id": "SW-43",
+  "title": "Directive 448 version 4 (11/25): disclosure duties added (ss.16א, 19א), the switching mechanics unchanged; start by 1.3.2026",
+  "title_he": "הוראת המעבר בין בנקים בגרסתה החדשה: חובות גילוי נוספות, התהליך לא השתנה",
+  "strength": "primary",
+  "dimensions": [
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "start": {
+      "value": "2026-03-01",
+      "unit": "text",
+      "source": {
+        "url": "https://www.boi.org.il/media/wxoksahf/h2833.pdf",
+        "title": "חוזר ח-06-2833, 26.11.2025, סעיף 9 תחילה",
+        "publisher": "Bank of Israel, Banking Supervision",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2025-11-26",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "state": "sourced",
+      "notes": "'תחילת הוראה זו עד יום 01.03.2026'."
+    }
+  },
+  "figure_names_he": {
+    "start": "מועד תחילה"
+  },
+  "text_he": "בנק ישראל עדכן את הוראת המעבר בין בנקים בסוף אלפיים עשרים וחמש. העדכון מוסיף חובת תיעוד של עדכון הלקוח על אפשרות המעבר המקוון ושל החלטתו, וחובת גילוי מוקדם: הבנק חייב להציג ללקוח שמתעניין במעבר את היתרונות, את הפעילות שתועבר, את לוחות הזמנים, את משמעות הניתוב ואת דרכי הגשת הבקשה, ולהציע סיוע של בנקאי. הבחירה בדרך המעבר נשארת של הלקוח. שלבי התהליך עצמו, יום המעבר, חלון הביטול, השימור והניתוב, לא השתנו.",
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-24"
+}

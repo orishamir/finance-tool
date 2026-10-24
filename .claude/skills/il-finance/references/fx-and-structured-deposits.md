@@ -211,6 +211,7 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
 - Conditions / exceptions: These lines are inputs for the tax file, not rules.
 - Figures: none here.
 - Source: as in FXD-07, FXD-12, FXD-13 · checked 2026-10-22 · institution
+- *2026-10-24 R5 pass:* `tax-tier2-other.md` now exists. FX deposits: TX2-01 to TX2-03 and TX2-19 (the olim and returning-resident orders read in full; the olim order requires a fixed term of at least three months, which explains Leumi's statement). Structured deposits: TX2-05 and TX2-18 classify each payout type from the partial-linkage regulations (derived): Discount's "פיקדון פלוס" (FXD-12) fits the fully-FX-linked case, so its 25% line matches TX2-01; a shekel deposit with a share-index grant is 15% of the nominal grant. The "בעל פטור" lines are the olim and returning-resident customers of TX2-03.
 - Dimensions: tax-during, eligibility
 - Likely to change: n/a
 
@@ -315,9 +316,9 @@ All checked 2026-10-22.
 
 D2: a tier-2 instrument moves to tier 1 when it has a sourced record and its tax questions are closed.
 
-- **FX deposits and FX current accounts at banks**: the record is partly sourced. Who may take them, disclosure, fee types, one tariff and product terms at four banks are covered. Still open: break terms, other banks' tariffs, whether 447 applies, and the spread rule (open questions 1 to 4, 12). Tax is not closed: the withholding rate for residents is unsettled (TXI open question 4). **Not ready.**
+- **FX deposits and FX current accounts at banks**: the record is partly sourced. Who may take them, disclosure, fee types, one tariff and product terms at four banks are covered. Still open: break terms, other banks' tariffs, whether 447 applies, and the spread rule (open questions 1 to 4, 12). Tax is not closed: the withholding rate for residents is unsettled (TXI open question 4). **Not ready.** *2026-10-24:* second-closest tier-2 instrument (ranking in `scratchpad/reports/r5-tier2.md`); the tax side computes for the common case (TX2-01, TX2-02 institution withholding, TX2-19), blocked for a falling currency (TX2 open question 1) and the withholding base (TX2 open question 2). Draft record: `scratchpad/reports/tier2-drafts/fx-deposit.json`. The method has no FX-deposit formula yet (F-21 runs on the CPI index only).
 - **FX-linked shekel deposits**: the product structure is sourced at three banks. The agreements are unread (5) and tax is not closed. **Not ready.**
-- **Structured deposits**: the definition, the law's exclusion, the advice requirement and one worked example are sourced. No BoI rule was read (7), the legal status of the conditional grant is open (6), and tax is not closed. **Not ready.** The return is conditional, so any site projection would need person-entered scenarios under D9.
+- **Structured deposits**: the definition, the law's exclusion, the advice requirement and one worked example are sourced. No BoI rule was read (7), the legal status of the conditional grant is open (6), and tax is not closed. **Not ready.** The return is conditional, so any site projection would need person-entered scenarios under D9. *2026-10-24:* tax classification per payout type is derived from primary texts (TX2-18); the product stays per-issue and conditional, so it ranks near the bottom for graduation.
 - **Non-bank FX (ASFS, LAYA)**: product terms are sourced, but regulator and protection are open (8, 9). **Not ready.**
 - **Israel Bonds for residents**: resident eligibility is open (10). **Not ready**; keep it as a note on the tier-2 page.
 

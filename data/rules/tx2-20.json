@@ -1,0 +1,85 @@
+{
+  "id": "TX2-20",
+  "title": "REIT withholding in practice: profit component at the top marginal rate, depreciation component at 25% (Reit 1 FAQ)",
+  "title_he": "איך קרן ריט מנכה מס מהדיבידנד בפועל, לפי ריט אחת",
+  "text_he": "ריט אחת מסבירה באתרה שכל חלוקה רבעונית ליחיד מסווגת לפי מקורות ההכנסה שלה, בעיקר רווח ותזרים בגובה הוצאות הפחת. מרכיב הרווח מנוכה לפי שיעור המס השולי הגבוה ומרכיב הפחת לפי שיעור המס על רווח הון. התמהיל בכל חלוקה קובע את השיעור המשוקלל שמנוכה במקור, ומי ששיעור המס שלו נמוך יותר מקבל את ההפרש בדוח השנתי עם אישור הניכוי מהבנק. זו הצהרה של חברה אחת, והדוגמה שבה ישנה.",
+  "figure_names_he": {
+    "example_depreciation_component_rate": "שיעור המס על מרכיב הפחת בדוגמה",
+    "example_profit_component_rate": "שיעור המס על מרכיב הרווח בדוגמה",
+    "example_weighted_rate": "השיעור המשוקלל שנוכה בדוגמה"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "tax-during",
+    "distribution-policy",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-03-31",
+  "figures": {
+    "example_depreciation_component_rate": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://reit1.co.il/investor-relations/",
+        "title": "Reit 1 investor relations, FAQ: distribution of 27.9.2012, depreciation component 80.41%",
+        "publisher": "Reit 1 Ltd",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2012,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TX2-20",
+        "TX2-10"
+      ],
+      "state": "sourced",
+      "notes": "Example from 2012; matches s.64A5(a)(1) (s.91 rate)."
+    },
+    "example_profit_component_rate": {
+      "value": 48,
+      "unit": "pct",
+      "source": {
+        "url": "https://reit1.co.il/investor-relations/",
+        "title": "Reit 1 investor relations, FAQ: distribution of 27.9.2012, profit component 19.59%",
+        "publisher": "Reit 1 Ltd",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2012,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TX2-20",
+        "TX2-10"
+      ],
+      "state": "sourced",
+      "notes": "The top s.121 rate in 2012; 47% in 2026 (TXG-02). Matches s.64A5(a)(3) with no reduced ministerial rate."
+    },
+    "example_weighted_rate": {
+      "value": 29.51,
+      "unit": "pct",
+      "source": {
+        "url": "https://reit1.co.il/investor-relations/",
+        "title": "Reit 1 investor relations, FAQ: weighted rate withheld in the 27.9.2012 distribution",
+        "publisher": "Reit 1 Ltd",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2012,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TX2-20"
+      ],
+      "state": "sourced",
+      "notes": "80.41% × 25% + 19.59% × 48%, as the page computes it."
+    }
+  },
+  "il_finance_file": "tax-tier2-other.md",
+  "checked": "2026-10-24"
+}

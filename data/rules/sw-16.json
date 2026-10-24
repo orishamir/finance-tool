@@ -1,0 +1,15 @@
+{
+  "id": "SW-16",
+  "title": "The track and insurance track at the receiving fund",
+  "title_he": "המסלול ומסלול הביטוח בקופה המקבלת",
+  "text_he": "טופס ההעברה מציין את המסלולים שהכסף יוצא מהם, אבל באיזה מסלול הוא נוחת בקופה המקבלת נקבע לפי בחירת העמית בהצטרפות אליה. עמית שלא בחר מסלול מוצב במסלול ברירת המחדל של הקופה המקבלת, ובפנסיה במסלול התלוי בגיל ובמסלול הביטוח ברירת המחדל. בדקו את המסלול בדוח הראשון. זהו כלל מצביע; טבלת הטופס שבחוזר נקראה מעותק אצל צד שלישי.",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "transfer-switch-process",
+    "insurance-cover"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-22"
+}

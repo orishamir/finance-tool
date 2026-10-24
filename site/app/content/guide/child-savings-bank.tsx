@@ -16,7 +16,7 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          אותו <Term id="חיסכון לכל ילד">חיסכון לכל ילד</Term>, כשההורים בחרו בנק במקום קופת גמל: הביטוח הלאומי מפקיד {monthly ? <Num value={monthly} /> : null} בחודש עד גיל {until ? <Num value={until} /> : null} (<Term id="סכום החיסכון הבסיסי">סכום החיסכון הבסיסי</Term>), אתם יכולים להכפיל מתוך קצבת הילדים (<Term id="סכום החיסכון הנוסף">סכום החיסכון הנוסף</Term>), וה<Term id="מענק">מענקים</Term> מתווספים באותם גילים, כולל {grantLast ? <Num value={grantLast} /> : null} בגיל {ageLast ? <Num value={ageLast} /> : null} למי שלא משך קודם.
+          אותו <Term id="חיסכון לכל ילד">חיסכון לכל ילד</Term>, כשההורים בחרו בנק במקום קופת גמל: הביטוח הלאומי מפקיד {monthly ? <Num value={monthly} /> : null} בחודש עד גיל {until ? <Num value={until} /> : null} (<Term id="סכום החיסכון הבסיסי">סכום החיסכון הבסיסי</Term>), אתם יכולים להכפיל מתוך קצבת הילדים (<Term id="סכום החיסכון הנוסף">סכום החיסכון הנוסף</Term>), <Term prefix="וה" id="מענק">מענקים</Term> מתווספים באותם גילים, כולל {grantLast ? <Num value={grantLast} /> : null} בגיל {ageLast ? <Num value={ageLast} /> : null} למי שלא משך קודם.
         </p>
         <p className="max-w-measure">
           בבנק הכסף נכנס לתכנית חיסכון באחד משלושה מסלולים: <Term id="ריבית קבועה לא צמודה">ריבית קבועה לא צמודה</Term>, <Term id="ריבית משתנה (פריים)">ריבית משתנה (פריים)</Term> או <Term id="ריבית קבועה צמודה">ריבית קבועה צמודה</Term> למדד; כל אחד בלי <Term id="תחנת יציאה">תחנות יציאה</Term> עד גיל הפדיון, או עם תחנת יציאה כל {station ? <Num value={station} /> : null} שנים. הריבית נקבעת ביום הפתיחה לכל התקופה. את הבנק צריך לבחור בפועל בתוך {months ? <Num value={months} /> : null} חודשים מהלידה; בלי בחירה הכסף הולך לקופת גמל.
@@ -42,7 +42,7 @@ export const content: GuideContent = {
   afterTax: () => (
     <>
       <Callout tone="caution" className="max-w-measure">
-        <span className="font-medium">שיעור המס ב<Term id="משיכה">משיכה</Term> מגיע ממקור משני.</span> הביטוח הלאומי אומר רק שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>, בלי שיעור ובלי להבחין בין מסלול צמוד למסלול לא צמוד. שאלה פתוחה: <bdi dir="ltr" className="whitespace-nowrap">TXK OQ1</bdi>.
+        <span className="font-medium">שיעור המס <Term prefix="ב" id="משיכה">משיכה</Term> מגיע ממקור משני.</span> הביטוח הלאומי אומר רק שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>, בלי שיעור ובלי להבחין בין מסלול צמוד למסלול לא צמוד. שאלה פתוחה: <bdi dir="ltr" className="whitespace-nowrap">TXK OQ1</bdi>.
       </Callout>
       <RulesLine ids={["TXK-20", "TXK-23"]} />
     </>
@@ -57,7 +57,7 @@ export const content: GuideContent = {
   use: () => (
     <>
       <p className="max-w-measure">
-        למי שמעדיף ריבית ידועה מראש והבטחה שהקרן לא תרד, ומוכן לוותר על הגמישות של קופת גמל. הבחירה בבנק חייבת להיעשות בזמן, כי ברירת המחדל היא קופה. מי שכבר בבנק ורוצה להעביר את ה<Term id="הגוף החוסך">גוף החוסך</Term> יכול להפנות את ההפקדות הבאות לקופת גמל, פעם אחת; מה שנצבר נשאר בבנק.
+        למי שמעדיף ריבית ידועה מראש והבטחה שהקרן לא תרד, ומוכן לוותר על הגמישות של קופת גמל. הבחירה בבנק חייבת להיעשות בזמן, כי ברירת המחדל היא קופה. מי שכבר בבנק ורוצה להעביר את <Term prefix="ה" id="הגוף החוסך">גוף החוסך</Term> יכול להפנות את ההפקדות הבאות לקופת גמל, פעם אחת; מה שנצבר נשאר בבנק.
       </p>
       <RulesLine ids={["CS-25", "CS-07", "CS-12"]} />
     </>

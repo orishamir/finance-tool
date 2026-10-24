@@ -6,7 +6,6 @@ import { seriesRecord, type SeriesRecord } from "@finance-tool/schema";
 import { describe, expect, it } from "vitest";
 import { decodeWindows1255 } from "../src/adapters/cma.ts";
 import {
-  changelogLines,
   currentState,
   diffSeries,
   isoFromDmy,
@@ -146,43 +145,26 @@ describe("sanityCheck", () => {
   });
 });
 
-describe("diff and change log", () => {
-  it("a first snapshot is one summary line", () => {
-    const f = good();
-    expect(diffSeries(null, f)).toMatchObject({ isEmpty: false, newPeriod: true });
-    const lines = changelogLines(null, f, "2026-10-23");
-    expect(lines).toHaveLength(1);
-    expect(lines[0]).toMatchObject({ collection: "series", id: "mof-child-savings-rates", field: "observations", old: null, new: { keys: 12, observations: f.observations.length, first_date: "2025-09-02", last_date: "2026-10-22" }, affects_rankings: true });
+describe("diff", () => {
+  it("a first snapshot is all new", () => {
+    expect(diffSeries(null, good())).toMatchObject({ isEmpty: false, newPeriod: true });
   });
-  it("the same data is empty; a new day with the same values writes but logs nothing; a changed rate logs one line", () => {
+  it("the same data is empty; a new day is a new period", () => {
     const prev = good();
     expect(diffSeries(prev, clone(prev)).isEmpty).toBe(true);
     const newDay = clone(prev);
     for (const o of newDay.observations) if (o.date === "2026-10-22") o.date = "2026-10-24";
     expect(diffSeries(prev, newDay)).toMatchObject({ isEmpty: false, newPeriod: true });
-    expect(changelogLines(prev, newDay, "2026-10-25")).toEqual([]);
-    const changed = clone(newDay);
-    changed.observations.find((o) => o.key === LEUMI && o.date === "2026-10-24")!.value = 3.4;
-    expect(changelogLines(prev, changed, "2026-10-25")).toEqual([
-      { date: "2026-10-25", collection: "series", id: "mof-child-savings-rates", field: `current.${LEUMI}`, old: 3.15, new: 3.4, reason: expect.stringContaining("quoted rate changed"), affects_rankings: true },
-    ]);
-  });
-  it("logs a key that appears or disappears", () => {
-    const prev = good();
-    const next = clone(prev);
-    next.observations = next.observations.filter((o) => o.key !== LEUMI);
-    expect(changelogLines(prev, next, "2026-10-25")).toMatchObject([{ field: `current.${LEUMI}`, old: 3.15, new: null }]);
   });
 });
 
 describe("refreshMofChildSavings", () => {
   const run = async (dir: string, extra: object = {}) =>
     refreshMofChildSavings({ dataDir: dir, runDate: "2026-10-23", dryRun: false, archive: false, force: false, fetchRaw: async () => dl(), log: () => {}, ...extra });
-  it("writes the file and the change log; a second run changes nothing", async () => {
+  it("writes the file; a second run changes nothing", async () => {
     const dir = mkdtempSync(join(tmpdir(), "mof-"));
-    expect(await run(dir)).toMatchObject({ status: "new-period", written: true, changelogLines: 1, period: "2026-10-22" });
+    expect(await run(dir)).toMatchObject({ status: "new-period", written: true, period: "2026-10-22" });
     expect(readSeries(dir, "mof-child-savings-rates")?.observations.length).toBeGreaterThan(12);
-    expect(readFileSync(join(dir, "changelog.jsonl"), "utf8").trim().split("\n")).toHaveLength(1);
     expect(await run(dir)).toMatchObject({ status: "unchanged", written: false });
   });
   it("--dry-run writes nothing; a sanity failure writes nothing", async () => {

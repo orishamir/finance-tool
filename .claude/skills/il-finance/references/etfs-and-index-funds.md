@@ -314,6 +314,7 @@ Out (and where): the general mutual-fund framework (trustee, open-fund pricing a
 - Source: [TASE, קרנות חוץ נסחרות](https://market.tase.co.il/he/market_data/f-etfs) · checked 2026-10-22 · primary
 - Dimensions: `foreign-withholding-domicile`, `currency`
 - Likely to change: yes.
+**[2026-10-24 R4 research pass]** Still 40 funds on 23/10/2026; split 29 equity / 11 bond and the republishing position in ETF-43.
 
 ## Indices
 
@@ -398,6 +399,22 @@ Added 2026-10-23 (release 1 exposure pages, product.md D18). Each rule records w
 - Source: [TASE, "ת"א-125 אודות המדד" (index 137)](https://market.tase.co.il/he/market_data/index/137/about) · [TASE, "הנחיות על פי החלק השביעי לתקנון", chapter א section 7 (formulas, pp. ב-15 to ב-16) and annex 3 (p. ב-32)](https://content.tase.co.il/media/iftghzjt/274765-1.pdf) · checked 2026-10-23 · primary (index provider)
 - Dimensions: distribution-policy, currency
 - Likely to change: no.
+
+### ETF-43 TASE's foreign-funds list on 23/10/2026: 40 funds, 29 in the equity market and 11 in the bond market; read on the page, not republished
+- Rule: The page "קרנות חוץ נסחרות" showed "סה"כ 40 רשומות", "נכון ל- 23/10/2026", in two pages of 30 and 10 rows with columns name, security number, last price in agorot, change, turnover, time of last trade, fund classification, reference asset, base and opening price. Its category filter ("קטגוריה") splits the list into "קרנות חוץ נסחרות בשוק המניות" and "קרנות חוץ נסחרות בשוק האג"ח"; the bond filter returns 11 records (ten iShares bond funds: JPM EM Bond 01158989, Corp Bond USD 01159185, Float Rate Bond 01159086, Global Agg Bond 01159102, HY Corp Bond 01159078, Short Dur Bond 01159151, US TIPS 01159060, Treasury 1-3Y 01159177, 3-7Y 01159276, 7-10Y 01159268, and Invesco iBoxx AT1 USD 01185206), so 29 are in the equity market. Managers as in ETF-32: 23 iShares, 17 Invesco. No export button was seen on the page; the list is read on the page (filter URL `?dType=1&oId=18` for the bond market).
+- Conditions / exceptions: TASE's terms (CAT-43) forbid republishing the list; the site shows the counts with a link to the page and lists only the funds that have a `data/funds/` record. The page's classification strings ("מניות בחו"ל-מניות גיאוגרפי - חשופת מט"ח-אמריקה- שווקים מפותחים" and the like) follow the Israeli fund-classification tree, which lets the candidate set match them to an exposure once a record exists.
+- Figures: 40 funds; 29 equity, 11 bond; data as of 23/10/2026.
+- Source: [TASE, קרנות חוץ נסחרות](https://market.tase.co.il/he/market_data/f-etfs) and its bond-market filter, read in the founder's Chrome 2026-10-24 · primary; terms as CAT-43
+- Dimensions: `foreign-withholding-domicile`, `currency`
+- Likely to change: yes, as funds list or delist.
+
+### MKT-01 S&P 500 published return record by holding length: the lowest and highest annual total return over 1-, 5-, 10- and 20-year windows, calendar years 1950–2025, nominal, USD (one published slide; a past record, never a forecast)
+- Rule: Not a rule but a published record, kept here so the site can quote it with its source (D22). J.P. Morgan Asset Management's *Guide to the Markets – U.S.*, 4Q 2026 (data as of 30 September 2026), slide 60 "Time, diversification and the volatility of returns", chart "Range of stock, bond and blended total returns — Annual total returns, 1950 - 2025", prints for the S&P 500 ("Stocks"): 1-year −37% to +52%; 5-year rolling −2% to +29%; 10-year rolling −1% to +20%; 20-year rolling +6% to +18%. Footer: "Returns shown are based on calendar year returns from 1950 to 2025. Stocks: S&P 500". The slide's source line names Standard & Poor's among the data sources, so the record is secondary (a republication of S&P data).
+- Conditions / exceptions: Nominal (before inflation), in U.S. dollars, total return (dividends included), before fees and tax, calendar-year windows only (no 7-year window, no share of windows that ended lower, no real figures, no drawdown). The slide does not print the word "annualised": the rolling bars are the annual return over each window as the chart's title and axis labels state. The figures are a past record and never a forecast: they do not enter any ranking, sensitivity run or projection (D9) and do not replace the return or the largest fall the person enters (D11). An Israeli saver holds the index through a shekel fund (ETF-10, ETF-40), so the exchange rate and the fund's costs change the record. The PDF URL always serves the current quarterly edition; the next edition (1Q 2027) extends the record to 2026, so re-read it then. The bond and 60/40 bars on the same slide were not recorded.
+- Figures: 1yr −37 / +52; 5yr −2 / +29; 10yr −1 / +20; 20yr +6 / +18 (percent per year; period 1950–2025, as published 30 September 2026).
+- Source: [J.P. Morgan Asset Management, Guide to the Markets – U.S., 4Q 2026, slide 60](https://am.jpmorgan.com/content/dam/jpm-am-aem/global/en/insights/market-insights/guide-to-the-markets/mi-guide-to-the-markets-us.pdf) (PDF fetched with curl, page 60 rendered and read) · terms on the [guide's FAQ page](https://am.jpmorgan.com/us/en/asset-management/adv/insights/market-insights/guide-to-the-markets/): "Slides taken from any of these books may not be changed or altered in any way, the J.P. Morgan Asset Management branding must not be removed, and the firm must receive credit for the information presented. Always work from the most current quarterly edition before sharing."; back page "Copyright 2026 JPMorgan Chase & Co. All rights reserved"; disclosure page 71: "Both past performance and yields are not reliable indicators of current and future results." · checked 2026-10-24 · secondary (asset manager republishing S&P data)
+- Dimensions: none (a record, not a checklist rule)
+- Likely to change: yes, every quarterly edition; the period grows by a year each January.
 
 ## Comparing variants of the same index (feeds the dimension checklist)
 
@@ -565,5 +582,6 @@ What a saver must check to compare, for example, an S&P 500 Israeli ETF, an S&P 
 | Not readable (403): IBKR PRIIPs glossary | Interactive Brokers | — | https://www.interactivebrokers.com/campus/glossary-terms/priips/ | 2026-10-22 |
 | S&P 500® index page (overview, characteristics, documents) | S&P Dow Jones Indices | primary | https://www.spglobal.com/spdji/en/indices/equity/sp-500/ | 2026-10-23 |
 | S&P U.S. Indices Methodology, July 2026 (pp. 1–21 read in Chrome's viewer) | S&P Dow Jones Indices | primary | https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf | 2026-10-23 |
+| TASE, קרנות חוץ נסחרות (list and bond-market filter) | TASE | primary | https://market.tase.co.il/he/market_data/f-etfs | 2026-10-24 |
 | ת"א-125 אודות המדד (index 137) | TASE | primary | https://market.tase.co.il/he/market_data/index/137/about | 2026-10-23 |
 | מדריך מעו"ף - הנחיות על פי החלק השביעי לתקנון, update 173 to 25.12.2025 (chapter א and annexes 1, 3, 4) | TASE | primary | https://content.tase.co.il/media/iftghzjt/274765-1.pdf | 2026-10-23 |

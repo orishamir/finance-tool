@@ -1,0 +1,14 @@
+{
+  "id": "CAT-43",
+  "title": "TASE's terms of use (edition August 2026) forbid republishing the Maya export; limited quotation with a link is allowed, databases are not",
+  "title_he": "תנאי השימוש של הבורסה: אסור לפרסם מחדש את רשימת הקרנות; מותר לצטט בקצרה עם קישור",
+  "strength": "primary",
+  "dimensions": [
+    "regulator"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "text_he": "תנאי השימוש של אתר הבורסה חלים על כל הפלטפורמות שלה, ובהן מאיה. השימוש מותר למטרות לא מסחריות בלבד, ואסור לפרסם את המידע או מוצר שמקורו בו בלי אישור הבורסה מראש ובכתב. מותר לאתר, לשלוף נקודתית, לסכם ולצטט באופן מוגבל תכנים ציבוריים מהדומיין הראשי, ובלבד שמצורף קישור ישיר לעמוד המקור; הקמת מאגרים ושליפה רחבת היקף אינן מותרות. לכן האתר אינו מפרסם את רשימת הקרנות אלא מציג מספרים ומקשר למקור, ומסביר איך להוריד את הקובץ לבד.",
+  "il_finance_file": "tracks-catalogue-and-decoder.md",
+  "checked": "2026-10-24"
+}

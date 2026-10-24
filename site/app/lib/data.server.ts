@@ -20,6 +20,8 @@ import {
   type WrapperRecord,
 } from "@finance-tool/schema";
 import type { z } from "zod";
+import { parseMdLink } from "./md-link";
+import { newestChecked } from "./data-as-of";
 import { staleCma, type SiteValue } from "./value";
 
 function findRoot(): string {
@@ -36,6 +38,11 @@ export const root = findRoot();
 /** The run date (D3, architecture 3.4: the engine never reads a clock; the site passes the date in). */
 export function today(): string {
   return new Date().toISOString().slice(0, 10);
+}
+
+/** The newest `checked` date on any record under data/ (audit 2026-10-24, A29): what "data as of" in the footer says. */
+export function dataAsOf(): string {
+  return newestChecked(join(root, "data"));
 }
 
 function readJson<T extends z.ZodType>(path: string, schema: T): z.infer<T> {
@@ -258,7 +265,7 @@ export function loadNotCovered(): NotCoveredRow[] {
   const section = doc.slice(doc.indexOf("## 3. Not covered yet"), doc.indexOf("## 4. Missing from the rule base"));
   return [...section.matchAll(/^\| \*\*(.+?)\*\* \| (.*?) \| (.*?) \| (.*) \|$/gm)].map((m) => {
     const cell = m[4]!;
-    const link = cell.match(/\[(.+?)\]\((\S+?)\)/);
+    const link = parseMdLink(cell);
     const ids = cell.split(" · ")[0]!.match(/^[A-Z0-9-]+(?:, [A-Z0-9-]+)*$/) ? cell.split(" · ")[0]!.split(", ") : [];
     const checked = cell.match(/\d{4}-\d{2}-\d{2}/)?.[0] ?? "";
     const strengthHe = cell.split(" · ").at(-1) ?? "";
@@ -268,7 +275,7 @@ export function loadNotCovered(): NotCoveredRow[] {
       explanation: m[2]!.trim(),
       variants: m[3]!.trim() ? m[3]!.split(" · ").map((v) => v.trim()) : [],
       ruleIds: ids,
-      source: link ? { title: link[1]!, url: link[2]!, checked, strength } : null,
+      source: link ? { title: link.text, url: link.url, checked, strength } : null,
     };
   });
 }

@@ -1,11 +1,11 @@
 // The track page (flows 6.12): the fund's official record and its date, what to check, and the guide link.
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/track";
-import { catalogue, companies as companiesCopy, company as companyCopy, site, track as copy } from "../copy";
+import { catalogue, companies as companiesCopy, company as companyCopy, r3workbench, site, track as copy } from "../copy";
 import { FeeNum, feeLabel } from "../components/decoder/fees";
 import { DimensionChecklist, type ChecklistRowView } from "../components/guide/sections";
 import { IconDrillIn } from "../components/icons";
-import { Num } from "../components/provenance";
+import { Num, NumAfter } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { FitMarkCard } from "../components/compare/fit";
 import { SavedGoalStrip } from "../components/compare/strip";
@@ -130,6 +130,14 @@ export default function TrackPage() {
                     <IconDrillIn size={16} />
                   </Link>
                 )}
+                {data.wrapper && (
+                  <Link to={`/workbench/tracks/${data.wrapper.id}`} className="inline-flex items-center gap-0.5 text-sm text-link hover:underline">
+                    {r3workbench.links.group.before}
+                    {data.wrapper.name}
+                    {r3workbench.links.group.after}
+                    <IconDrillIn size={16} />
+                  </Link>
+                )}
               </span>,
             )}
             {track.specialization && row(copy.labels.classification, <bdi>{track.specialization}</bdi>)}
@@ -140,6 +148,12 @@ export default function TrackPage() {
             {data.values.inception && row(copy.labels.inception, <Num value={data.values.inception} />)}
             {row(copy.labels.period, <Num value={data.values.period} />)}
           </dl>
+          <div className="pt-1 border-t border-border">
+            <Link to={`/fees?track=${track.fundId}`} className="inline-flex items-center gap-0.5 text-link hover:underline min-h-target">
+              {r3workbench.links.fees}
+              <IconDrillIn size={16} />
+            </Link>
+          </div>
         </Card>
         {data.names.length > 0 && (
           <section aria-labelledby="also-h" className="flex flex-col gap-3">
@@ -156,7 +170,7 @@ export default function TrackPage() {
                       ))}
                     </span>
                     <span className="text-sm text-muted-foreground">
-                      {catalogue.seenAt} <bdi dir="ltr">{n.where}</bdi> {catalogue.seenOn} <Num value={n.seen as SiteValue} />
+                      {catalogue.seenAt} <bdi dir="ltr">{n.where}</bdi> <NumAfter lead={catalogue.seenOn} value={n.seen as SiteValue} />
                     </span>
                   </li>
                 ))}

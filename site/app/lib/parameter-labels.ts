@@ -26,7 +26,8 @@ export function fieldLabel(methodId: string, path: string, record: Record<string
 export function unitText(path: string, v: SiteValue): { display?: string; suffix: string } {
   const n = typeof v.value === "number" ? v.value : null;
   if (v.value === null) return { display: copy.noCeiling, suffix: "" };
-  if (n === null) return { suffix: "" };
+  // audit A77: P-08's wrapper ids are slugs; the page shows their Hebrew names
+  if (n === null) return typeof v.value === "string" && path.endsWith("wrapper_id") ? { display: copy.wrapperNames[v.value] ?? copy.wrapperOther, suffix: "" } : { suffix: "" };
   if (v.unit === "years") {
     if (path.startsWith("bounds.horizon.")) return { display: `${n < 0 ? "−" : "+"}${Math.abs(n)} ${copy.yearsWord}`, suffix: "" };
     return { display: fmt.years(n), suffix: "" };

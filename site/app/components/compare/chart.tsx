@@ -7,13 +7,13 @@ import { line } from "d3-shape";
 import { buttons, guide as guideCopy, r2 } from "../../copy";
 import type { SeriesLine } from "../../lib/compare";
 import { fmt } from "../../lib/format";
-import { IconPencil } from "../icons";
 import { durationChart, Num } from "../provenance";
+import { AxisLabels, niceYearTicks, scrollCueStyle } from "../chart/TimelineChart";
 import { Disclosure, cx } from "../ui";
 import type { Mode, ResultCtx } from "./ctx";
 
-const STRIP = 96;
-const TOP = 12;
+const STRIP = 104;
+const TOP = 20; // room for the top axis label above its gridline (audit 2026-10-24 (sweep))
 const BOTTOM = 26;
 const LABEL_H = 54;
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
@@ -83,27 +83,23 @@ export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dim
   const y = scaleLinear().domain([0, maxV]).nice(4).range([height - BOTTOM, TOP]);
   const ticks = y.ticks(4);
   const path = line<Pt>().x((d) => x(d.year)).y((d) => y(d.v));
-  const yearTicks = [0, ...[1, 2, 3, 4].map((k) => Math.round((horizon * k) / 4))].filter((v, i, a) => a.indexOf(v) === i);
+  const yearTicks = niceYearTicks(horizon);
+  // A12: the fall the person accepts, as a band from today's amount down by that share (D11 unchanged: it filters in exposure mode only)
+  const fallStart = ctx.g.amountNow - ctx.g.available;
+  // the band is a bracket at the start (year 0 to the first tick): the fall is read on today's amount, not applied to every year (F-71, 2026-10-24)
+  const fallW = x(Math.min(Math.max(1, horizon), yearTicks.find((t) => t > 0) ?? 1));
+  const fallDrop = ctx.fall && ctx.fall > 0 && fallStart > 0 ? (fallStart * Math.min(ctx.fall, 100)) / 100 : 0;
 
-  // Direct labels: at each line's end, nudged apart by the label height, keeping the order of the line ends.
-  const ends = lines.map((l) => ({ l, y: y(shown[l.id]?.[shown[l.id]!.length - 1]?.v ?? 0) })).sort((a, b) => a.y - b.y);
-  const placed: { l: SeriesLine; y: number }[] = [];
-  for (const e of ends) placed.push({ l: e.l, y: Math.max(e.y, (placed[placed.length - 1]?.y ?? -Infinity) + LABEL_H) });
-  const over = (placed[placed.length - 1]?.y ?? 0) + LABEL_H / 2 - (height - BOTTOM + 8);
-  if (over > 0) placed.forEach((p) => (p.y -= over));
-  const top0 = placed[0] ? placed[0].y - LABEL_H / 2 : 0;
-  if (top0 < 0) placed.forEach((p) => (p.y -= top0));
+  // One direct label, for the leading option only (the others are in the readout and the table): placed at its line's
+  // end and kept inside the plot's height, so labels can never overprint one another or the goal marker.
+  const lead = ctx.view.ranked[0] ? lines.find((l) => l.id === ctx.view.ranked[0]!.id) ?? lines[0] : lines[0];
+  const leadEnd = lead ? y(shown[lead.id]?.[shown[lead.id]!.length - 1]?.v ?? 0) : 0;
+  const leadY = Math.max(TOP + LABEL_H / 2 + 14, Math.min(height - BOTTOM - LABEL_H / 2, leadEnd));
 
-  // Tied options' labels are joined by a bracket.
-  const brackets: { y1: number; y2: number }[] = [];
-  const done = new Set<string>();
-  for (const p of placed) {
-    if (p.l.tiedWith.length === 0 || done.has(p.l.id)) continue;
-    const grp = placed.filter((q) => q.l.id === p.l.id || p.l.tiedWith.includes(q.l.id));
-    grp.forEach((q) => done.add(q.l.id));
-    if (grp.length > 1) brackets.push({ y1: Math.min(...grp.map((q) => q.y)) - LABEL_H / 2 + 4, y2: Math.max(...grp.map((q) => q.y)) + LABEL_H / 2 - 4 });
-  }
-
+  const leadOpt = lead ? ctx.view.ranked.find((o) => o.id === lead.id) : undefined;
+  const leadLast = lead?.points[lead.points.length - 1];
+  const leadRaw = (mode === "real" ? leadOpt?.real ?? leadLast?.real : leadOpt?.nominal ?? leadLast?.nominal) ?? 0;
+  const leadValue = ctx.mk.nis(leadRaw, mode === "real" ? "F-06" : "F-09", lead?.name ?? "", leadOpt);
   const pick = (clientX: number) => {
     const rect = svgRef.current?.getBoundingClientRect();
     if (!rect) return;
@@ -128,21 +124,18 @@ export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dim
         onPointerCancel={() => onHover(null)}
       >
         {ticks.map((t) => (
-          <g key={t}>
-            <line x1={0} x2={plotW} y1={y(t)} y2={y(t)} className={t === 0 ? "stroke-chart-axis" : "stroke-chart-grid"} strokeWidth="1" />
-            {t > 0 && (
-              <text x={2} y={y(t) - 4} textAnchor="end" direction="rtl" className="text-xs fill-chart-text" data-scale>
-                {fmt.compactNis(t)}
-              </text>
-            )}
-          </g>
+          <line key={t} x1={0} x2={plotW} y1={y(t)} y2={y(t)} className={t === 0 ? "stroke-chart-axis" : "stroke-chart-grid"} strokeWidth="1" />
         ))}
+        {fallDrop > 0 && (
+          <g role="img" aria-label={r2.result.fallBand} data-fall-band>
+            <rect x={0} y={y(fallStart)} width={fallW} height={Math.max(0, y(fallStart - fallDrop) - y(fallStart))} className="fill-foreground" fillOpacity="0.07" />
+            <line x1={0} x2={fallW} y1={y(fallStart - fallDrop)} y2={y(fallStart - fallDrop)} className="stroke-chart-marker" strokeWidth="1" strokeDasharray="2 3" />
+          </g>
+        )}
+        <AxisLabels ticks={ticks} y={y} />
         <line x1={x(horizon)} x2={x(horizon)} y1={TOP} y2={height - BOTTOM} className="stroke-chart-marker" strokeWidth="1" />
         {[...lines].reverse().map((l) => (
           <path key={l.id} d={path(shown[l.id] ?? []) ?? ""} fill="none" className={roleClass[l.role].stroke} strokeWidth={roleClass[l.role].width} strokeDasharray={l.enteredReturn ? "6 4" : undefined} strokeLinejoin="round" strokeLinecap="round" />
-        ))}
-        {brackets.map((b, i) => (
-          <path key={i} d={`M ${plotW + 3} ${b.y1} h -3 V ${b.y2} h 3`} fill="none" className="stroke-chart-marker" strokeWidth="1" />
         ))}
         {yearTicks.map((yr) => (
           <text key={yr} x={x(yr)} y={height - 8} textAnchor={yr === 0 ? "start" : yr === horizon ? "end" : "middle"} direction="ltr" className="text-xs fill-chart-text" data-scale>
@@ -162,24 +155,12 @@ export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dim
       <span className="absolute top-0 text-xs text-chart-text whitespace-nowrap px-1 bg-card/80 rounded-sm" style={{ left: `${x(horizon)}px`, transform: "translateX(-100%)" }} dir="rtl">
         {r2.result.chartHorizon}
       </span>
-      {placed.map((p) => {
-        const end = ctx.mk.nis((mode === "real" ? p.l.points[p.l.points.length - 1]?.real : p.l.points[p.l.points.length - 1]?.nominal) ?? 0, mode === "real" ? "F-06" : "F-09", p.l.name);
-        const opt = ctx.view.ranked.find((o) => o.id === p.l.id);
-        return (
-          <div key={p.l.id} className="absolute text-xs leading-tight" style={{ left: `${plotW + 8}px`, top: `${p.y - LABEL_H / 2}px`, width: `${STRIP - 10}px`, height: `${LABEL_H}px` }}>
-            <span className="flex items-start gap-1">
-              {p.l.enteredReturn && <IconPencil size={14} className="text-entered shrink-0 mt-0.5" />}
-              <span className="line-clamp-2 font-medium">{p.l.name}</span>
-            </span>
-            <Num value={opt ? ctx.mk.nis(mode === "real" ? opt.real : opt.nominal, mode === "real" ? "F-06" : "F-09", p.l.name, opt) : end} size="cell" />
-          </div>
-        );
-      })}
-      {brackets.map((b, i) => (
-        <span key={i} className="absolute text-[11px] text-chart-text" style={{ left: `${plotW + 8}px`, top: `${b.y2 - 2}px` }}>
-          {r2.result.chartTie}
-        </span>
-      ))}
+      {lead && (
+        <div className="absolute text-xs leading-tight" style={{ left: `${plotW + 8}px`, top: `${leadY - LABEL_H / 2}px`, width: `${STRIP - 10}px`, height: `${LABEL_H}px` }}>
+          <span className="line-clamp-2 font-medium">{lead.name}</span>
+          <Num value={leadValue} size="cell" />
+        </div>
+      )}
     </div>
   );
 }
@@ -235,7 +216,7 @@ export function ChartTable({ lines, mode, ctx }: { lines: SeriesLine[]; mode: Mo
   const years = lines[0]?.points.map((p) => p.year) ?? [];
   return (
     <Disclosure label={buttons.showTable} openLabel={buttons.hideTable} summaryClassName="text-sm">
-      <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 mt-2">
+      <div className="overflow-x-auto mt-2" style={scrollCueStyle}>
         <table className="tbl text-sm">
           <thead>
             <tr>

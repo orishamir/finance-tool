@@ -52,6 +52,8 @@ export interface MonthPoint {
   paidIn: number;
   balance: number;
   fees: number;
+  /** Cumulative nominal trade, custody, FX and fixed-fee charges up to the month (the provider's own lines, F-63); absent from runs that do not report it. Additive 2026-10-24. */
+  providerFees?: number;
   taxDuring: number;
 }
 

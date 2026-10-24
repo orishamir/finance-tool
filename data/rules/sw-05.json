@@ -1,0 +1,38 @@
+{
+  "id": "SW-05",
+  "title": "Step 2: the transferring fund may reject or delay, and must say why within 3 business days",
+  "title_he": "שלב שני: דחייה או עיכוב בתוך ימים ספורים",
+  "text_he": "אם הקופה המעבירה אינה יכולה להעביר, היא מודיעה לקופה המקבלת בתוך מספר ימי העסקים שהחוזר קובע מהמועד הקובע, בטופס דחייה (נספח ה׳) או בטופס העיכוב שצמוד לו; דחייה נשלחת באותו פרק זמן גם לכתובת העמית. עילות דחייה: מסלול שאינו מותר, עיקול או שעבוד על כל היתרה, קצבת זקנה שהתחילה, תביעת נכות תלויה או זכאות לנכות, הלוואה שלא נפרעה, פטירה, בקשה לעבור לקרן פנסיה חדשה בעוד העמית פעיל בקופה המעבירה, חשבון סגור או בקשה שפקעה. עילות עיכוב: חסר צילום תעודת זהות או פרוטוקול חתימה, אין חתימה או תאריך חתימה, מספר חשבון או סטטוס עמית שגויים, חסר נספח או מספר אישור מס של הקופה. כשעילת עיכוב מתוקנת בתוך התקופה העמית אינו צריך למלא טפסים מחדש, ואם רק חלק מהכסף יכול לעבור אותו חלק עובר; חוזר הרשות נקרא מעותק אצל צד שלישי.",
+  "figure_names_he": {
+    "rejection_or_delay_notice_business_days": "ימי עסקים להודעת דחייה או עיכוב"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "rejection_or_delay_notice_business_days": {
+      "value": 3,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.analyst.co.il/media/dtnkdiyk/%D7%97%D7%95%D7%96%D7%A8-%D7%92%D7%95%D7%A4%D7%99%D7%9D-%D7%9E%D7%95%D7%A1%D7%93%D7%99%D7%99%D7%9D-2017-9-17-%D7%94%D7%A2%D7%91%D7%A8%D7%AA-%D7%9B%D7%A1%D7%A4%D7%99%D7%9D-%D7%91%D7%99%D7%9F-%D7%A7%D7%95%D7%A4%D7%95%D7%AA-%D7%92%D7%9E%D7%9C.pdf",
+        "title": "CMA circular 2017-9-17 \"העברת כספים בין קופות גמל\", 2.10.2017, consolidated copy, s.3(ז) to (ט), Annexes E and E1, pp.2 to 3, 20 to 21",
+        "publisher": "Capital Market, Insurance and Savings Authority (copy hosted by Analyst)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "SW-05"
+      ],
+      "state": "sourced",
+      "notes": "The transferring fund notifies the receiving fund of a rejection (Annex E) or delay (Annex E1) within three business days of the determining date, and sends a rejection to the member within the same period (s.3(ז))."
+    }
+  },
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-22"
+}

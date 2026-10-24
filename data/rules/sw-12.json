@@ -1,0 +1,60 @@
+{
+  "id": "SW-12",
+  "title": "Pension insurance on a transfer: who is liable when, cover level, qualifying months",
+  "title_he": "ביטוח בפנסיה בניוד: אחריות, כיסוי וחודשי אכשרה",
+  "text_he": "הקופה המעבירה אחראית לתשלום לפי הכיסויים שלה בשל מקרה ביטוח שאירע לפני המועד הקובע, והקופה המקבלת למקרה שאירע במועד הקובע או אחריו; אחרי העברה חלקית הקופה המעבירה נשארת אחראית לכיסוי המוות שנותר אצלה, בהתאם ליתרה שנותרה. בקרן פנסיה חדשה מקבלת, כיסוי הנכות והמוות נקבע כאילו ההפקדות בקופה המעבירה נעשו בה, ומקופה שאינה קרן פנסיה חדשה לפי הפקדות חודשיות רעיוניות, שהן ממוצע ההפקדות בשנה האחרונה ללא פיצויים. חודשי הביטוח הרצופים שנצברו בקופה המעבירה נספרים לאותם סיכונים, אבל לא לחלק של תוספת נכות או שאירים שעולה ביותר מהשיעור שהחוזר קובע מעל הקצבה הרעיונית, ולא לסיכון שהיתה עליו החרגה או תוספת חיתום. הקופה המקבלת מפרטת בכתב בנספח ב׳ כל תנאי או החרגה; התקנות נקראו באתר שמעתיק אותן והחוזר מעותק אצל צד שלישי.",
+  "figure_names_he": {
+    "supplement_increase_no_carry_threshold_pct": "שיעור העלאת כיסוי שמעליו חודשי הביטוח אינם נספרים",
+    "notional_deposit_lookback_months": "חודשים לחישוב ההפקדה החודשית הרעיונית"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "insurance-cover",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "supplement_increase_no_carry_threshold_pct": {
+      "value": 10,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.analyst.co.il/media/dtnkdiyk/%D7%97%D7%95%D7%96%D7%A8-%D7%92%D7%95%D7%A4%D7%99%D7%9D-%D7%9E%D7%95%D7%A1%D7%93%D7%99%D7%99%D7%9D-2017-9-17-%D7%94%D7%A2%D7%91%D7%A8%D7%AA-%D7%9B%D7%A1%D7%A4%D7%99%D7%9D-%D7%91%D7%99%D7%9F-%D7%A7%D7%95%D7%A4%D7%95%D7%AA-%D7%92%D7%9E%D7%9C.pdf",
+        "title": "CMA circular 2017-9-17 \"העברת כספים בין קופות גמל\", 2.10.2017, consolidated copy, s.4(ב)(2), pp.3 to 5",
+        "publisher": "Capital Market, Insurance and Savings Authority (copy hosted by Analyst)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "SW-12"
+      ],
+      "state": "sourced",
+      "notes": "Insurance months carried from the transferring fund do not count for the part of a disability or survivors' supplement that rises by more than 10% over the notional pension (s.4(ב)(2))."
+    },
+    "notional_deposit_lookback_months": {
+      "value": 12,
+      "unit": "months",
+      "source": {
+        "url": "https://www.analyst.co.il/media/dtnkdiyk/%D7%97%D7%95%D7%96%D7%A8-%D7%92%D7%95%D7%A4%D7%99%D7%9D-%D7%9E%D7%95%D7%A1%D7%93%D7%99%D7%99%D7%9D-2017-9-17-%D7%94%D7%A2%D7%91%D7%A8%D7%AA-%D7%9B%D7%A1%D7%A4%D7%99%D7%9D-%D7%91%D7%99%D7%9F-%D7%A7%D7%95%D7%A4%D7%95%D7%AA-%D7%92%D7%9E%D7%9C.pdf",
+        "title": "CMA circular 2017-9-17 \"העברת כספים בין קופות גמל\", 2.10.2017, consolidated copy, s.4(א)",
+        "publisher": "Capital Market, Insurance and Savings Authority (copy hosted by Analyst)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "SW-12"
+      ],
+      "state": "sourced",
+      "notes": "Notional monthly deposit, used to set cover after a transfer from a fund that is not a new pension fund: the average monthly deposits over the last 12 months, excluding severance (s.4(א))."
+    }
+  },
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-22"
+}

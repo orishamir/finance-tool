@@ -1,0 +1,180 @@
+{
+  "id": "SW-44",
+  "title": "What the clearing house may charge a saver: the CMA's payment circular 2026-10-6 caps a one-time all-institutions information request at NIS 11 (from 1.1.2027)",
+  "title_he": "כמה המסלקה הפנסיונית רשאית לגבות מחוסך: תקרה של אחד עשר שקלים לבקשת מידע מכל הגופים",
+  "strength": "primary",
+  "dimensions": [
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "saver_one_time_all_institutions": {
+      "value": 11,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf",
+        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026, נספח ג', פעולה 9100",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2027-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "cpi-linked 1 jan",
+      "state": "sourced",
+      "notes": "Maximum fee, payer 'חוסך / בעל רישיון'; annex tables state sums exclude VAT."
+    },
+    "saver_continuous_all_institutions": {
+      "value": 11,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf",
+        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026, נספח ג', פעולה 9100 (בתדירות מתמשכת)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2027-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "cpi-linked 1 jan",
+      "state": "sourced",
+      "notes": "Plus 1 NIS for each month information is delivered."
+    },
+    "saver_continuous_monthly_addition": {
+      "value": 1,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf",
+        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026, נספח ג', פעולה 9100 (בתדירות מתמשכת), התוספת החודשית",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2027-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "cpi-linked 1 jan",
+      "state": "sourced",
+      "notes": "'ותוספת של 1 עבור כל חודש בו יועבר המידע'."
+    },
+    "saver_one_institution": {
+      "value": 1,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf",
+        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026, נספח ג', פעולה 9101",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2027-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "cpi-linked 1 jan",
+      "state": "sourced",
+      "notes": "One-time request from one institution, payer 'חוסך / בעל רישיון'."
+    },
+    "saver_cancel_continuous": {
+      "value": 0,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf",
+        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026, נספח ג', פעולה 9109",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2027-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "cpi-linked 1 jan",
+      "state": "sourced",
+      "notes": "Saver's cancellation of a continuous request."
+    },
+    "saver_cancel_power_of_attorney": {
+      "value": 1,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf",
+        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026, נספח ג', פעולות 1902-1903",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2027-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "cpi-linked 1 jan",
+      "state": "sourced",
+      "notes": "Saver-initiated cancellation of an agent's power of attorney."
+    },
+    "non_institution_certificate_yearly": {
+      "value": 4000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf",
+        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026, נספח ב', הנפקת סרטיפיקט למשתמש שאינו גוף מוסדי",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2027-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "cpi-linked 1 jan",
+      "state": "sourced",
+      "notes": "Yearly, excluding VAT."
+    },
+    "institution_min_yearly": {
+      "value": 15000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf",
+        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026, נספח א', יתרת נכסים עד 1,000,000 אלפי ש\"ח",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2027-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "cpi-linked 1 jan",
+      "state": "sourced",
+      "notes": "Yearly, excluding VAT; also the flat fee for a body whose products cannot receive or send transfers."
+    },
+    "institution_max_yearly": {
+      "value": 410000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf",
+        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026, נספח א', יתרת נכסים מעל 100,000,000 אלפי ש\"ח",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2027-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "cpi-linked 1 jan",
+      "state": "sourced",
+      "notes": "Yearly, excluding VAT."
+    }
+  },
+  "figure_names_he": {
+    "saver_one_time_all_institutions": "בקשת מידע חד פעמית מכל הגופים",
+    "saver_continuous_all_institutions": "בקשת מידע מתמשכת מכל הגופים",
+    "saver_continuous_monthly_addition": "תוספת חודשית לבקשה מתמשכת",
+    "saver_one_institution": "בקשת מידע מגוף אחד",
+    "saver_cancel_continuous": "ביטול בקשה מתמשכת",
+    "saver_cancel_power_of_attorney": "ביטול ייפוי כוח ביוזמת החוסך",
+    "non_institution_certificate_yearly": "סרטיפיקט למשתמש שאינו גוף מוסדי, לשנה",
+    "institution_min_yearly": "דמי שימוש שנתיים לגוף מוסדי, מדרגה ראשונה",
+    "institution_max_yearly": "דמי שימוש שנתיים לגוף מוסדי, מדרגה עליונה"
+  },
+  "text_he": "חוזר התשלום החדש של רשות שוק ההון קובע מחירון מרבי לפעולות במסלקה הפנסיונית, עם ציון מי משלם. בקשת מידע חד פעמית של חוסך על כל המוצרים שלו מכל הגופים המוסדיים מוגבלת לאחד עשר שקלים, בקשה מתמשכת לאותו סכום בתוספת שקל לכל חודש שבו מועבר מידע, בקשה מגוף אחד לשקל, וביטול בקשה או עדכון פרטים ללא תשלום. גופים מוסדיים משלמים דמי שימוש שנתיים לפי היקף נכסיהם. המחירים צמודים למדד פעם בשנה, המפעיל רשאי לגבות פחות באישור הממונה, והחוזר נכנס לתוקף בתחילת אלפיים עשרים ושבע. המסלולים דרך הבנקים נשארים ללא עלות לחוסך.",
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-24"
+}

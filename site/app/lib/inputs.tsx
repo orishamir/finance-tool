@@ -1,8 +1,9 @@
 // The values the person entered, shared by every guide page and saved on the device (product 3.1, flow 3
-// step 7). R1 keeps them in localStorage under a versioned key; the IndexedDB state document with
-// migrations and export arrives with R2 and R3 (architecture 3.6).
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+// step 7). They live in the v2 state document (lib/state.ts, key `mekor.v2.state`) with the goals and the
+// holdings; the release 1 key `mekor.v1.inputs` is migrated there on first load.
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { P05Input } from "@finance-tool/engine";
+import { ensureLoaded, getSnapshot, inputsFromRecord, inputsToRecord, rememberName, updateState, useStateStore } from "./state";
 
 export type Employment = "employee" | "self-employed";
 
@@ -23,19 +24,12 @@ interface InputsApi {
 }
 
 const empty: InputsState = { entered: {}, age: null, employment: null };
-const KEY = "mekor.v1.inputs";
 
 const Ctx = createContext<InputsApi>({ state: empty, ready: false, setEntered: () => {}, setAge: () => {}, setEmployment: () => {}, resetAll: () => {} });
 
 function load(): InputsState {
-  try {
-    const raw = localStorage.getItem(KEY);
-    if (!raw) return empty;
-    const parsed = JSON.parse(raw) as Partial<InputsState>;
-    return { entered: parsed.entered ?? {}, age: typeof parsed.age === "number" ? parsed.age : null, employment: parsed.employment ?? null };
-  } catch {
-    return empty;
-  }
+  const i = inputsFromRecord(ensureLoaded().state.inputs);
+  return { entered: i.entered as InputsState["entered"], age: i.age, employment: i.employment };
 }
 
 export function InputsProvider({ children }: { children: ReactNode }) {
@@ -47,13 +41,22 @@ export function InputsProvider({ children }: { children: ReactNode }) {
     setReady(true);
   }, []);
 
+  // an import or another tab changed the document: read the inputs again
+  const external = useStateStore().external;
+  const seen = useRef(external);
+  useEffect(() => {
+    if (!ready || seen.current === external) return;
+    seen.current = external;
+    setState(load());
+  }, [external, ready]);
+
+  // saved through the store (private mode or full storage: the page still works for this visit)
   useEffect(() => {
     if (!ready) return;
-    try {
-      localStorage.setItem(KEY, JSON.stringify(state));
-    } catch {
-      /* private mode or full storage: the page still works for this visit */
-    }
+    updateState((s) => {
+      const record = inputsToRecord(state);
+      return sameInputs(inputsFromRecord(s.inputs), state) ? s : { ...s, inputs: keepDates(s.inputs, record) };
+    });
   }, [state, ready]);
 
   const setEntered = useCallback((key: P05Input, value: number | null) => {
@@ -72,18 +75,18 @@ export function InputsProvider({ children }: { children: ReactNode }) {
   return <Ctx.Provider value={api}>{children}</Ctx.Provider>;
 }
 
+const sameInputs = (a: ReturnType<typeof inputsFromRecord>, b: InputsState) => JSON.stringify([a.entered, a.age, a.employment]) === JSON.stringify([b.entered, b.age, b.employment]);
+
+/** A value that did not change keeps its saved object (and its date). */
+function keepDates(old: ReturnType<typeof getSnapshot>["state"]["inputs"], next: ReturnType<typeof getSnapshot>["state"]["inputs"]) {
+  return Object.fromEntries(Object.entries(next).map(([k, v]) => [k, old[k] && old[k]!.value === v.value ? old[k]! : v]));
+}
+
 export function useInputs(): InputsApi {
   return useContext(Ctx);
 }
 
-/** Names a person saved that the site could not match (flow 6, product 3.10). */
+/** Names a person saved that the site could not match (flow 6, product 3.10): kept in the state document. */
 export function rememberUncatalogued(name: string) {
-  try {
-    const key = "mekor.v1.uncatalogued";
-    const list = JSON.parse(localStorage.getItem(key) ?? "[]") as { name: string; date: string }[];
-    if (!list.some((x) => x.name === name)) list.push({ name, date: new Date().toISOString().slice(0, 10) });
-    localStorage.setItem(key, JSON.stringify(list));
-  } catch {
-    /* nothing to do: the copy button still works */
-  }
+  rememberName(name);
 }

@@ -1,0 +1,1040 @@
+{
+  "id": "mizrahi-tefahot",
+  "provider": {
+    "name_he": "בנק מזרחי טפחות בע\"מ",
+    "class": "bank",
+    "regulator": "BoI",
+    "tase_member": true,
+    "protection_rule_ids": [
+      "BRK-10",
+      "BRK-12",
+      "BRK-13"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+    "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות, הקובץ המאוגד (48 עמ'; אין תאריך כולל, כל חלק נושא 'מעודכן לתאריך' משלו, המאוחר שבהם 14/10/2026): חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'; זהה לקובץ חלק 4 הנפרד smallbusiness4.pdf), חלק 5 - מטבע חוץ ('11.7.2025'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'). מקושר מעמוד https://www.mizrahi-tefahot.co.il/interest-list-small-buisness/",
+    "published": null,
+    "format": "pdf"
+  },
+  "snapshot": "2026-10-23",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "mizrahi-buy-sell-tase-branch",
+      "base": "trade",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.64,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.1.1 מניות ואגרות חוב (כולל הנפקה)",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2024-04-02",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "'0.64%'. Footnote 4 to 'למעט קרנות נאמנות': includes a tracking fund (קרן מחקה) and a fund whose units are listed on TASE, so Israeli ETFs and listed fund units pay this line. Note (6): the minimum fee never exceeds 25% of the value. Note (1): a split order pays one minimum per day. Note (2): an unexecuted order pays the minimum only if a clerk acted. Note (7): direct-channel prices in appendix E."
+      },
+      "min": {
+        "value": 50,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.1.1, מיזערי",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2024-04-02",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 50.00'."
+      },
+      "max": {
+        "value": 10750,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.1.1, מירבי",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2024-04-02",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 10,750.00'."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה, ופדיון של ניירות ערך בבורסה בתל אביב (למעט קרנות נאמנות, אופציות מעו\"ף וחוזים עתידיים במעו\"ף) (כולל קניה או מכירה שלא בוצעה)",
+          "מניות ואגרות חוב (כולל הנפקה)"
+        ]
+      }
+    },
+    {
+      "id": "mizrahi-buy-sell-tase-direct",
+      "base": "trade",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.52,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'), קניה/מכירה של ניירות ערך בבורסה בתל אביב - מניות ואגרות חוב, מחיר לפי ערוצים ישירים - שירות האינטרנט",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-08-12",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Appendix E, 'שירות האינטרנט': '0.52%' against the clerk price 0.64%. Same scope as the branch line."
+      },
+      "min": {
+        "value": 45,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'), מניות ואגרות חוב, מזערי, מחיר לפי ערוצים ישירים - שירות האינטרנט",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-08-12",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מזערי ₪ 45.00'."
+      },
+      "max": {
+        "value": 9675,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'), מניות ואגרות חוב, מירבי, מחיר לפי ערוצים ישירים - שירות האינטרנט",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-08-12",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מירבי ₪ 9,675.00'."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה, ופדיון של ניירות ערך בבורסה בתל אביב (למעט קרנות נאמנות, אופציות מעו\"ף וחוזים עתידיים במעו\"ף) (כולל קניה או מכירה שלא בוצעה)",
+          "מניות ואגרות חוב",
+          "שירות האינטרנט"
+        ]
+      }
+    },
+    {
+      "id": "mizrahi-buy-sell-makam-branch",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.11,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.1.2 מילווה קצר מועד (כולל הנפקה)",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2024-04-02",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "'0.11%', separate row for makam."
+      },
+      "min": {
+        "value": 19,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.1.2, מיזערי",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2024-04-02",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 19.00'."
+      },
+      "max": {
+        "value": 7500,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.1.2, מירבי",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2024-04-02",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 7,500.00'."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה, ופדיון של ניירות ערך בבורסה בתל אביב (למעט קרנות נאמנות, אופציות מעו\"ף וחוזים עתידיים במעו\"ף) (כולל קניה או מכירה שלא בוצעה)",
+          "מילווה קצר מועד (כולל הנפקה)"
+        ]
+      }
+    },
+    {
+      "id": "mizrahi-buy-sell-makam-direct",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'), מילווה קצר מועד, מחיר לפי ערוצים ישירים - שירות האינטרנט",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-08-12",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Appendix E, 'שירות האינטרנט': '0.10%' against the clerk price 0.11%."
+      },
+      "min": {
+        "value": 17.1,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'), מילווה קצר מועד, מזערי, מחיר לפי ערוצים ישירים - שירות האינטרנט",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-08-12",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מזערי ₪ 17.10'."
+      },
+      "max": {
+        "value": 6750,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'), מילווה קצר מועד, מירבי, מחיר לפי ערוצים ישירים - שירות האינטרנט",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-08-12",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מירבי ₪ 6,750.00'."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה, ופדיון של ניירות ערך בבורסה בתל אביב (למעט קרנות נאמנות, אופציות מעו\"ף וחוזים עתידיים במעו\"ף) (כולל קניה או מכירה שלא בוצעה)",
+          "מילווה קצר מועד",
+          "שירות האינטרנט"
+        ]
+      }
+    },
+    {
+      "id": "mizrahi-buy-sell-foreign-branch",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.89,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.4.1 מניות, איגרות חוב וקרנות נאמנות",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2024-04-02",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "'0.89%'. Note (6): charged in the security's trading currency on the dollar value. Note (7): broker, custodian and other foreign expenses are charged on top. Note (5): the minimum never exceeds 25% of the value."
+      },
+      "min": {
+        "value": 75,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.4.1, מיזערי",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2024-04-02",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'$75.00' per trade (US dollars)."
+      },
+      "max": {
+        "value": 7500,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.4.1, מירבי",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2024-04-02",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'$7,500.00' per trade (US dollars)."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופידיון של ניירות ערך בחוץ לארץ (כולל קניה או מכירה שלא בוצעה)",
+          "מניות, איגרות חוב וקרנות נאמנות"
+        ]
+      }
+    },
+    {
+      "id": "mizrahi-buy-sell-foreign-direct",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.3,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'), קניה/מכירה ושל ניירות ערך בחוץ לארץ - מניות, אגרות חוב וקרנות נאמנות, מחיר לפי ערוצים ישירים - שירות האינטרנט",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-08-12",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Appendix E, 'שירות האינטרנט': '0.30%' against the clerk price 0.89% (as printed)."
+      },
+      "min": {
+        "value": 25,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'), ניירות ערך בחוץ לארץ, מזערי, מחיר לפי ערוצים ישירים - שירות האינטרנט",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-08-12",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מזערי $ 25.00' per trade (US dollars)."
+      },
+      "max": {
+        "value": 6750,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'), ניירות ערך בחוץ לארץ, מירבי, מחיר לפי ערוצים ישירים - שירות האינטרנט",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-08-12",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מירבי $ 6,750.00' per trade (US dollars)."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופידיון של ניירות ערך בחוץ לארץ (כולל קניה או מכירה שלא בוצעה)",
+          "מניות, אגרות חוב וקרנות נאמנות",
+          "שירות האינטרנט"
+        ]
+      }
+    },
+    {
+      "id": "mizrahi-custody-israel",
+      "base": "custody",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units"
+      ],
+      "excludes": [
+        "makam",
+        "money_market_units"
+      ],
+      "excludes_rule_ids": [
+        "BRK-17",
+        "BANK-18"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.175,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.5.1 הנסחרים בארץ",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2024-04-02",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-17"
+        ],
+        "state": "sourced",
+        "notes": "'0.175% לרבעון'. Note (3): charged on a sale/redemption or at the start of each quarter for the previous quarter (or for the period since purchase); note (4): pro rata to the days held, on the value on the sale day or the last day of the previous quarter. Note (2): may not be charged on makam or on a money-market fund as defined in the 1994 assets regulations (recorded as excludes). Note (1): not chargeable on delisted securities (with an interested-party exception)."
+      },
+      "min": {
+        "value": null,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.5.1, מיזערי",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2024-04-02",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "No minimum is printed for this line."
+      },
+      "max": {
+        "value": 10750,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.5.1, מירבי",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2024-04-02",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 10,750.00' in the 'מירבי' column per quarter; the tariff does not state whether the maximum is per security or per deposit."
+      },
+      "period": "quarter",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+          "הנסחרים בארץ"
+        ]
+      }
+    },
+    {
+      "id": "mizrahi-custody-foreign",
+      "base": "custody",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.195,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.5.2 הנסחרים בחוץ לארץ",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2024-04-02",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'0.195% לרבעון'; same collection mechanics as the Israeli line (notes 3 and 4)."
+      },
+      "min": {
+        "value": null,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.5.2, מיזערי",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2024-04-02",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "No minimum is printed for this line."
+      },
+      "max": {
+        "value": 10750,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.5.2, מירבי",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2024-04-02",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 10,750.00' per quarter; per security or per deposit not stated."
+      },
+      "period": "quarter",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+          "הנסחרים בחוץ לארץ"
+        ]
+      }
+    },
+    {
+      "id": "mizrahi-distribution-fee-type-1",
+      "base": "distribution_handling",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.2,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.9.1 קרן מסוג 1",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2024-04-02",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "Printed '0.20%', collected at month end ('תום חודש'). Note (1): in the cases the 2006 distribution-fee regulations permit (MF-26). Note (2): charged when the bank has no distribution agreement with the fund manager. Note (3): also charged when an advised client buys funds 'אגב ייעוץ' and refuses to sign a consent. Note (4): annual rate; note (5): computed daily on the fund holdings in the month. Fund type per the fund's prospectus (MF-24). Base distribution_handling for want of a closer base."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מסוג 1",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות",
+          "קרן מסוג 1"
+        ]
+      }
+    },
+    {
+      "id": "mizrahi-distribution-fee-type-3",
+      "base": "distribution_handling",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.35,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.9.3 קרן מסוג 3",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2024-04-02",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "Printed '0.35%', collected at month end ('תום חודש'). Note (1): in the cases the 2006 distribution-fee regulations permit (MF-26). Note (2): charged when the bank has no distribution agreement with the fund manager. Note (3): also charged when an advised client buys funds 'אגב ייעוץ' and refuses to sign a consent. Note (4): annual rate; note (5): computed daily on the fund holdings in the month. Fund type per the fund's prospectus (MF-24). Base distribution_handling for want of a closer base."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מסוג 3",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות",
+          "קרן מסוג 3"
+        ]
+      }
+    },
+    {
+      "id": "mizrahi-distribution-fee-type-4",
+      "base": "distribution_handling",
+      "applies_to": [
+        "money_market_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.9.4 קרן מסוג 4",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2024-04-02",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "Printed '0.100%', collected at month end ('תום חודש'). Note (1): in the cases the 2006 distribution-fee regulations permit (MF-26). Note (2): charged when the bank has no distribution agreement with the fund manager. Note (3): also charged when an advised client buys funds 'אגב ייעוץ' and refuses to sign a consent. Note (4): annual rate; note (5): computed daily on the fund holdings in the month. Fund type per the fund's prospectus (MF-24). Base distribution_handling for want of a closer base."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מסוג 4",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות",
+          "קרן מסוג 4"
+        ]
+      }
+    },
+    {
+      "id": "mizrahi-distribution-fee-tracking-fund",
+      "base": "distribution_handling",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.9.5 קרן מחקה",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2024-04-02",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "Printed 'פטור' (exempt): no distribution fee is charged to the holder of an open tracking fund (קרן מחקה). Recorded as 0."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מחקה",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות",
+          "קרן מחקה"
+        ]
+      }
+    },
+    {
+      "id": "mizrahi-fx-conversion-branch",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.19,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 5 - מטבע חוץ ('מעודכן לתאריך: 11.7.2025'), סעיף 5.1.1 עמלת חליפין ממטבע לש\"ח/מש\"ח למטבע (בשער ציטוט/אחיד/ידוע)",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-07-11",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'0.19%'. Note (1): charged on every transaction involving a conversion, in addition to the fee for the specific transaction. Note (6): small amounts: up to $10 exempt, up to $50 a flat $3.00. Note (4): a sale at the 'known' rate uses the last low uniform rate less 2.00%, a purchase the last high uniform rate plus 2.00% (a rate margin printed in the tariff, recorded under spread)."
+      },
+      "min": {
+        "value": 6,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 5 - מטבע חוץ ('מעודכן לתאריך: 11.7.2025'), סעיף 5.1.1 עמלת חליפין ממטבע לש\"ח/מש\"ח למטבע (בשער ציטוט/אחיד/ידוע), מיזערי",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-07-11",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'$6.00' per transaction (US dollars)."
+      },
+      "max": {
+        "value": 2500,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 5 - מטבע חוץ ('מעודכן לתאריך: 11.7.2025'), סעיף 5.1.1 עמלת חליפין ממטבע לש\"ח/מש\"ח למטבע (בשער ציטוט/אחיד/ידוע), מירבי",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-07-11",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'$2,500.00' per transaction (US dollars)."
+      },
+      "spread": {
+        "value": 2.0,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 5 - מטבע חוץ ('מעודכן לתאריך: 11.7.2025'), סעיף 5.1.1 עמלת חליפין ממטבע לש\"ח/מש\"ח למטבע (בשער ציטוט/אחיד/ידוע), הערה (4)",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-07-11",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "Note (4): 'עסקות מכירת מט\"ח בשער ידוע, יבוצעו ע\"פ השער האחיד האחרון הנמוך (שער קניה) בהפחתה של 2.00% משער זה; עסקות רכישת מט\"ח בשער ידוע יבוצעו ע\"פ השער האחיד האחרון הגבוה (שער מכירה) בתוספת 2.00% משער זה'. This 2.00% applies only to transactions at the 'known' rate (שער ידוע); for quoted/uniform-rate transactions the spread between the bank's rates and the representative rate is not published."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת חליפין",
+          "ממטבע לש\"ח/מש\"ח למטבע (בשער ציטוט/אחיד/ידוע)"
+        ]
+      }
+    },
+    {
+      "id": "mizrahi-fx-conversion-direct",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.133,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'), חליפין - ממטבע לש\"ח/מש\"ח למטבע (בשער ציטוט/אחיד/ידוע), מחיר לפי ערוצים ישירים - שירות האינטרנט",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-08-12",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Appendix E, 'שירות האינטרנט': '0.133%' against the clerk price 0.19%; the PC service ('שירות ה-PC') is 0.1425%. Small amounts up to $50 in the internet service: $2.85 (clerk $3.00)."
+      },
+      "min": {
+        "value": 5.4,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'), חליפין, מזערי, מחיר לפי ערוצים ישירים - שירות האינטרנט",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-08-12",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'מזערי $ 5.40' (US dollars)."
+      },
+      "max": {
+        "value": 2250,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'), חליפין, מירבי, מחיר לפי ערוצים ישירים - שירות האינטרנט",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-08-12",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'מירבי $ 2,250.00' (US dollars)."
+      },
+      "spread": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'), חליפין, מחיר לפי ערוצים ישירים - שירות האינטרנט",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-08-12",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "Appendix E prints the fee only; the spread for direct-channel conversions is not published (see the branch line for the 2.00% known-rate margin in part 5)."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "חליפין - ממטבע לש\"ח/מש\"ח למטבע (בשער ציטוט/אחיד/ידוע)",
+          "שירות האינטרנט"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "notice_rule_ids": [
+    "BRK-21",
+    "BRK-20"
+  ]
+}

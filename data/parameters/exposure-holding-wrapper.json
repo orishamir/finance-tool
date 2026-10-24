@@ -1,0 +1,161 @@
+{
+  "id": "exposure-holding-wrapper",
+  "method_id": "P-08",
+  "holding": {
+    "shekel-cash": {
+      "wrapper_id": {
+        "value": "bank-deposit",
+        "unit": "text",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#exposure-holding-wrapper",
+          "title": "Founder's choice, made by Claude at his request: exposure holding wrapper",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-24",
+        "effective_from": "2026-10-24",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "chosen by Claude at the founder's request, 2026-10-24, revisable; the bank deposit's published rate is the P-05 deposit-terms record's rate_offered (Leumi 365 days), D20"
+      },
+      "status": "evaluated",
+      "instrument": "P-05 instruments.bank-deposit.deposit_terms",
+      "reason_he": "הפיקדון הקבוע בבנק, בריבית שהבנק פרסם."
+    },
+    "makam": {
+      "wrapper_id": {
+        "value": "makam",
+        "unit": "text",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#exposure-holding-wrapper",
+          "title": "Founder's choice, made by Claude at his request: exposure holding wrapper",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-24",
+        "effective_from": "2026-10-24",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "chosen by Claude at the founder's request, 2026-10-24, revisable; the exposure is the product; no sourced yield exists (D20), so the person enters one"
+      },
+      "status": "evaluated",
+      "instrument": "P-05 instruments.makam.tariff",
+      "reason_he": "מק״מ מוחזק במוצר מק״מ; התשואה מוזנת על ידכם."
+    },
+    "government-bond-cpi": {
+      "wrapper_id": {
+        "value": "government-bond",
+        "unit": "text",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#exposure-holding-wrapper",
+          "title": "Founder's choice, made by Claude at his request: exposure holding wrapper",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-24",
+        "effective_from": "2026-10-24",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "chosen by Claude at the founder's request, 2026-10-24, revisable; series GOV-11 (CPI-linked), the series P-05's government-bond entry names"
+      },
+      "status": "evaluated",
+      "instrument": "P-05 instruments.government-bond.series_rule (GOV-11)",
+      "reason_he": "אג״ח ממשלתית צמודה מוחזקת במוצר אג״ח ממשלתית, לפי סדרה GOV-11."
+    },
+    "government-bond-unlinked": {
+      "wrapper_id": {
+        "value": "government-bond",
+        "unit": "text",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#exposure-holding-wrapper",
+          "title": "Founder's choice, made by Claude at his request: exposure holding wrapper",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-24",
+        "effective_from": "2026-10-24",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "chosen by Claude at the founder's request, 2026-10-24, revisable; not evaluated until the coupon frequency of a fixed-rate series is in the rule base (GOV OQ4)"
+      },
+      "status": "not-evaluated",
+      "blocked_by": "GOV-OQ4",
+      "reason_he": "לא נבדקה: תדירות הקופון של סדרה לא צמודה עוד לא במאגר הכללים (GOV OQ4)."
+    },
+    "index-sp500": {
+      "wrapper_id": {
+        "value": "brokerage-account",
+        "unit": "text",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#exposure-holding-wrapper",
+          "title": "Founder's choice, made by Claude at his request: exposure holding wrapper",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-24",
+        "effective_from": "2026-10-24",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "chosen by Claude at the founder's request, 2026-10-24, revisable; held through fund 1148162, the fund P-05's brokerage entry names"
+      },
+      "status": "evaluated",
+      "fund": "1148162",
+      "instrument": "P-05 instruments.brokerage-account.fund",
+      "reason_he": "מדד S&P 500 מוחזק בחשבון ניירות ערך, דרך קרן הסל 1148162."
+    },
+    "index-ta125": {
+      "wrapper_id": {
+        "value": "brokerage-account",
+        "unit": "text",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#exposure-holding-wrapper",
+          "title": "Founder's choice, made by Claude at his request: exposure holding wrapper",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-24",
+        "effective_from": "2026-10-24",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "chosen by Claude at the founder's request, 2026-10-24, revisable; held through fund 1143718 (collected 2026-10-24, exposure_id index-ta125) at Leumi's tariff, the tariff P-05's brokerage-account entry names"
+      },
+      "status": "evaluated",
+      "reason_he": "מדד ת״א-125 מוחזק בחשבון ניירות ערך, דרך קרן הסל 1143718, בתעריפון של לאומי.",
+      "fund": "1143718",
+      "instrument": "data/funds/1143718 (exposure_id index-ta125), Leumi tariff as P-05's brokerage-account entry"
+    },
+    "general-track": {
+      "wrapper_id": {
+        "value": "kupat-gemel-lehashkaa",
+        "unit": "text",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#exposure-holding-wrapper",
+          "title": "Founder's choice, made by Claude at his request: exposure holding wrapper",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-24",
+        "effective_from": "2026-10-24",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "chosen by Claude at the founder's request, 2026-10-24, revisable; the manager's list fees (Meitav), the return is entered by the person (D9)"
+      },
+      "status": "evaluated",
+      "instrument": "data/fees list lines for kupat-gemel-lehashkaa",
+      "reason_he": "המסלול הכללי מוחזק בקופת גמל להשקעה, בדמי הניהול שבתעריפון של מיטב."
+    }
+  },
+  "rationale": "Exposure mode runs each exposure through one wrapper the site names (F-71: the engine never picks one). The default is the first wrapper in the exposure record's wrapper_ids that the comparison can run with collected terms and that is the plain way to hold it: cash in a bank deposit at its published rate, makam in the makam product, the CPI-linked government bond in the government-bond product (series GOV-11), the two indices in a brokerage account through a collected fund, the general track in a kupat gemel lehashkaa at the manager's list fees. The unlinked government bond waits for GOV OQ4; the TA-125 runs through collected fund 1143718. The person can change the wrapper on each row; the choice is then theirs (entered).",
+  "rationale_he": "בהשוואה לפי חשיפה כל חשיפה רצה דרך מוצר אחד שהאתר קובע (המנוע לא בוחר בעצמו). ברירת המחדל היא הדרך הפשוטה להחזיק את החשיפה, מבין המוצרים ששם הרשומה שלה מרשה ושיש להם תנאים באתר: מזומן בפיקדון בבנק בריבית שפורסמה, מק״מ במוצר המק״מ, אג״ח ממשלתית צמודה במוצר אג״ח ממשלתית (סדרה GOV-11), שני המדדים בחשבון ניירות ערך דרך קרן שנאספה, והמסלול הכללי בקופת גמל להשקעה בדמי הניהול שבתעריפון. האג״ח הלא צמודה מחכה לשאלה GOV OQ4; מדד ת״א-125 רץ דרך קרן הסל 1143718 שנאספה. אפשר להחליף מוצר בכל שורה, ואז הבחירה שלכם.",
+  "chosen_by": "Claude, at the founder's request, 2026-10-24",
+  "signed_off_by": "founder",
+  "signed_off_on": "2026-10-24",
+  "shown_as": "site parameter"
+}

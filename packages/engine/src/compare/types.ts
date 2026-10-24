@@ -13,9 +13,10 @@ export const outcomeOrder: readonly OutcomeKind[] = ["not-eligible", "excluded",
 /**
  * Why a candidate got its outcome, as a code with the rule and gap IDs behind it.
  * Not eligible: `not-own-money` (section 8).
- * Excluded: `not-withdrawable-any-time` (D13).
+ * Excluded: `not-withdrawable-any-time` (D13), `loss-filter` (F-71, D11).
  * Not evaluated: `missing-input`, `missing-record`, `tier-2` (G-24), `no-run`, `gap` (G-28, G-30, ...), `rule-missing`,
- * `rule-open`, `figure-not-updated`, `idle-cash-not-run` (G-28).
+ * `rule-open`, `figure-not-updated`, `idle-cash-not-run` (G-28); in exposure mode also `no-sourced-series` (D20) and
+ * `wrapper-cannot-hold` (the exposure record's `wrapper_ids` leave the named wrapper out).
  * Listed, not ranked: `employee-study-fund` (D15), `ceiling-partial` (F-05), `locked-until` and `locked-to-age` (B3),
  * `exit-blocked` (B3 with a gap or an open rule), `held-as-underlying` (IRA-25), `gap` (a gap that touches the
  * wrapper's own number, B3: G-10 for a government bond, with the run's value shown).
@@ -23,6 +24,9 @@ export const outcomeOrder: readonly OutcomeKind[] = ["not-eligible", "excluded",
 export type ReasonCode =
   | "not-own-money"
   | "not-withdrawable-any-time"
+  | "loss-filter"
+  | "no-sourced-series"
+  | "wrapper-cannot-hold"
   | "missing-input"
   | "missing-record"
   | "tier-2"

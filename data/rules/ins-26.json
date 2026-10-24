@@ -1,0 +1,40 @@
+{
+  "id": "INS-26",
+  "title": "Annual report to savings-policy holders within three months of the insurer's year end (reg. 6B)",
+  "title_he": "הדוח השנתי למבוטח בפוליסת חיסכון",
+  "text_he": "חוזה ביטוח חיים חייב לקבוע שהמבטח ישלח למבוטחים מדי שנה, בתוך שלושה חודשים מתום שנת המאזן שלו, דין וחשבון על השנה שחלפה. הדוח כולל לכל תכנית את מספר הפוליסה, סכום הביטוח, סוג ההצמדה, ערך הפדיון, הערך המסולק, יתרת החיסכון, היחס בין מרכיב החיסכון בפרמיה לכלל הפרמיה וסך הפרמיות ששולמו. הוא מציג גם את התשואה הריאלית של תיק ההשקעות המשתתף ברווחים, את התשואה הריאלית בניכוי דמי ניהול, את הממוצע לארבע השנים האחרונות ואת הרכב התיק לפי סוגי נכסים.",
+  "figure_names_he": {
+    "report_deadline_months": "מועד שליחת הדוח השנתי, בחודשים מתום שנת המאזן"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "reporting-obligation",
+    "fee-management-balance",
+    "real-vs-nominal"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "report_deadline_months": {
+      "value": 3,
+      "unit": "months",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(ביטוח)_(תנאים_בחוזי_ביטוח)",
+        "title": "Insurance Contract Terms Regulations 1981, reg. 6B(a)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "INS-26"
+      ],
+      "state": "sourced",
+      "notes": "Within three months of the end of the insurer's balance-sheet year, for every plan in force at year end."
+    }
+  },
+  "il_finance_file": "savings-policies-and-executive-insurance.md",
+  "checked": "2026-10-24"
+}

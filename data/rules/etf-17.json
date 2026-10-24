@@ -2,120 +2,13 @@
   "id": "ETF-17",
   "title": "ISA average management fees by fund type, end-2025: one average per category, a reference level, not a price",
   "title_he": "דמי ניהול ממוצעים לפי סוג קרן: ייחוס, לא מחיר",
-  "text_he": "רשות ניירות ערך מפרסמת בדוח השנתי שלה ממוצעים של דמי ניהול לפי סוג קרן וקטגוריית השקעה: ממוצע אחד לקרנות סל, אחד לקרנות מחקות פתוחות, אחד לכל הקרנות, ובנפרד לקטגוריות כמו מניות חו\"ל ומניות ישראליות. אלה ממוצעים פשוטים לסוף שנה, לא מחיר של קרן מסוימת, והאתר משתמש בהם כרמת ייחוס בלבד. הדוח אינו אומר אם דמי הניהול המשתנים כלולים, וזו שאלה פתוחה. המספרים מתעדכנים פעם בשנה.",
-  "figure_names_he": {
-    "average_fee_etf": "ממוצע דמי הניהול בקרנות סל",
-    "average_fee_open_tracking": "ממוצע דמי הניהול בקרנות מחקות פתוחות",
-    "average_fee_all_funds": "ממוצע דמי הניהול בכל הקרנות",
-    "average_fee_etf_foreign_equities": "ממוצע דמי הניהול בקרנות סל על מניות חו\"ל",
-    "average_fee_etf_israeli_equities": "ממוצע דמי הניהול בקרנות סל על מניות ישראליות"
-  },
+  "text_he": "רשות ניירות ערך מפרסמת בדוח השנתי שלה ממוצעים של דמי ניהול לפי סוג קרן וקטגוריית השקעה: ממוצע אחד לקרנות סל, אחד לקרנות מחקות פתוחות, אחד לכל הקרנות, ובנפרד לקטגוריות כמו מניות חו\"ל ומניות ישראליות. אלה ממוצעים פשוטים לסוף שנה, לא מחיר של קרן מסוימת, והאתר משתמש בהם כרמת ייחוס בלבד. הדוח אינו אומר אם דמי הניהול המשתנים כלולים, וזו שאלה פתוחה. המספרים מתעדכנים פעם בשנה. המספר עצמו מוצג רק בקישור למקור, לפי תנאי השימוש של הרשות (D22).",
   "strength": "primary",
   "dimensions": [
     "fee-management-balance"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
-  "figures": {
-    "average_fee_etf": {
-      "value": 0.51,
-      "unit": "pct",
-      "source": {
-        "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf",
-        "title": "ISA, פעילות קרנות נאמנות בישראל 2025 (Funder-hosted copy)",
-        "publisher": "Israel Securities Authority (third-party host)",
-        "strength": "primary"
-      },
-      "checked": "2026-10-22",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "market",
-      "rule_ids": [
-        "ETF-17"
-      ],
-      "state": "sourced",
-      "notes": "Simple average of ETF management fees, end-2025 (ISA 2025 report pp.13-14). Whether variable fees are included is ETF OQ7."
-    },
-    "average_fee_open_tracking": {
-      "value": 0.31,
-      "unit": "pct",
-      "source": {
-        "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf",
-        "title": "ISA, פעילות קרנות נאמנות בישראל 2025 (Funder-hosted copy)",
-        "publisher": "Israel Securities Authority (third-party host)",
-        "strength": "primary"
-      },
-      "checked": "2026-10-22",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "market",
-      "rule_ids": [
-        "ETF-17"
-      ],
-      "state": "sourced"
-    },
-    "average_fee_all_funds": {
-      "value": 0.67,
-      "unit": "pct",
-      "source": {
-        "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf",
-        "title": "ISA, פעילות קרנות נאמנות בישראל 2025 (Funder-hosted copy)",
-        "publisher": "Israel Securities Authority (third-party host)",
-        "strength": "primary"
-      },
-      "checked": "2026-10-22",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "market",
-      "rule_ids": [
-        "ETF-17"
-      ],
-      "state": "sourced"
-    },
-    "average_fee_etf_foreign_equities": {
-      "value": 0.59,
-      "unit": "pct",
-      "source": {
-        "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf",
-        "title": "ISA, פעילות קרנות נאמנות בישראל 2025 (Funder-hosted copy)",
-        "publisher": "Israel Securities Authority (third-party host)",
-        "strength": "primary"
-      },
-      "checked": "2026-10-22",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "market",
-      "rule_ids": [
-        "ETF-17"
-      ],
-      "state": "sourced",
-      "notes": "Category 'foreign equities', 2025: ETF 0.59% simple (0.50% weighted); open tracking fund 0.47% simple (0.24% weighted)."
-    },
-    "average_fee_etf_israeli_equities": {
-      "value": 0.37,
-      "unit": "pct",
-      "source": {
-        "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf",
-        "title": "ISA, פעילות קרנות נאמנות בישראל 2025 (Funder-hosted copy)",
-        "publisher": "Israel Securities Authority (third-party host)",
-        "strength": "primary"
-      },
-      "checked": "2026-10-22",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "market",
-      "rule_ids": [
-        "ETF-17"
-      ],
-      "state": "sourced",
-      "notes": "Category 'Israeli equities', 2025: ETF 0.37% simple (0.40% weighted); open tracking fund 0.29% simple (0.21% weighted)."
-    }
-  },
   "il_finance_file": "etfs-and-index-funds.md",
   "checked": "2026-10-22"
 }
