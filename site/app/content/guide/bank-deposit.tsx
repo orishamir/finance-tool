@@ -3,6 +3,7 @@
 // and register as kupat-gemel-lehashkaa.tsx. NEW copy for the founder to review.
 import type { GuideContent } from "./types";
 import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
+import { Link } from "react-router";
 import { Callout } from "../../components/ui";
 
 export const content: GuideContent = {
@@ -98,6 +99,14 @@ export const content: GuideContent = {
         פיקדון עדיף על קרן כספית יומית כשרוצים ריבית שנקבעת ביום ההפקדה: בקרן היומית התשואה לא ידועה מראש וזזה עם ריבית בנק ישראל, ובפיקדון בריבית קבועה היא ננעלת לכל התקופה.
       </p>
       <RulesLine ids={["BANK-15", "BANK-25", "MF-34", "MF-41"]} />
+      {/* NEW 2026-10-24 (scenario audit 7): the door from the guide to the page that checks a bank's offer */}
+      <p className="max-w-measure">
+        קיבלתם הצעה מהבנק?{" "}
+        <Link to="/idle-cash" className="text-link hover:underline">
+          בדקו אותה בעמוד כסף שיושב בעו״ש
+        </Link>
+        .
+      </p>
     </>
   ),
 };

@@ -1,6 +1,7 @@
 // What the result's components read from the page: the bundle, the view of the result, the goal's numbers, the
 // value factory (every figure as a value object) and the two ways to reach a field.
 import type { CompareBundle, CompareView, RunGoal, makeValues } from "../../lib/compare";
+import type { ValueObject } from "@finance-tool/schema";
 import type { FieldKey } from "../../lib/goal";
 
 export type Mode = "real" | "nominal";
@@ -17,4 +18,12 @@ export interface ResultCtx {
   fall?: number | null;
   /** The person's own rate for a deposit-family wrapper (A8): sets it (% a year) or clears it. */
   setOwnRate?: (wrapperId: string, pct: number | undefined) => void;
+  /** The fee level the person enters for a wrapper's representative instrument (D4, 2026-10-24): sets it (% a year) or clears it. */
+  /** A known-date goal's purchase cost, entered (scenario fix 2026-10-24); the result compares the leader's value with it. */
+  targetCost?: ValueObject | null;
+  /** The currency (other than the shekel) of the exposure this view is about, when it was opened from an exposure row. */
+  subjectCurrency?: string | null;
+  setOwnFee?: (wrapperId: string, pct: number | undefined) => void;
+  /** The provider whose tariff a wrapper's run uses (2026-10-24, brokerage): sets its id or clears it. */
+  setOwnProvider?: (wrapperId: string, id: string | undefined) => void;
 }

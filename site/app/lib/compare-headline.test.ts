@@ -15,9 +15,9 @@ describe("headline state", () => {
   it("leads with the cash-only line when only cash-like options rank and the person can unlock more", () => {
     expect(headlineState({ ranked: [{ cashLike: true }, { cashLike: true }], coverageRows: [ranked, person] }).lead).toBe("cash-only");
   });
-  it("does not count what only the site can fix, and has no third line without fields", () => {
+  it("counts every option not checked (the coverage line's count), and has no third line without fields", () => {
     const s = headlineState({ ranked: [{ cashLike: true }], coverageRows: [site] });
-    expect(s).toMatchObject({ lead: "leader", unevaluated: 0, fields: [] });
+    expect(s).toMatchObject({ lead: "leader", unevaluated: 1, fixable: 0, fields: [] });
   });
 });
 

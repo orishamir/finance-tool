@@ -4,7 +4,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { buildCompareBundle } from "./compare.server";
 import type { CompareBundle, RunGoal } from "./compare";
 import { buildHoldingsBundle } from "./holdings.server";
-import { holdingPlan, mergedRules } from "./holdings";
+import { draftOf, holdingPlan, liquidityOf, mergedRules, prefillFees } from "./holdings";
 import type { Holding } from "./state";
 import { entered } from "./value";
 
@@ -182,5 +182,80 @@ describe("matchTracks and matchCompanies (A17)", () => {
     const m = matchTracksKind(miniBundle, "pension-comprehensive", "הפניקס פנסיה לבני 60");
     expect(m.kind).toBe("words");
     expect(m.tracks.map((t) => t.id)).toEqual([2002]);
+  });
+});
+
+// scenario fix 2026-10-24: a study fund that became liquid (fee prefill, the first-deposit checkbox, the liquidity line)
+describe("fee prefill from the regulator's track average", () => {
+  const hb = buildHoldingsBundle();
+  const track = hb.tracks.find((t) => t.w === "keren-hishtalmut" && typeof trackBalance(t) === "number")!;
+  function trackBalance(t: (typeof hb.tracks)[number]) {
+    return t.fb.value;
+  }
+  const base = (over: Partial<Draft> = {}): Draft => ({
+    ...emptyDraft(),
+    wrapperId: "keren-hishtalmut",
+    companyId: hb.companies[track.c]!.id,
+    companyName: hb.companies[track.c]!.name,
+    fundId: track.id,
+    balance: 150_000,
+    statementDate: "2026-09-30",
+    ...over,
+  });
+  it("a picked track with a published average gives a sourced balance fee", () => {
+    const p = prefillFees(hb, base());
+    expect(p.balance).toMatchObject({ value: track.fb.value, state: "sourced" });
+    expect(p.balance?.source.url).toBeTruthy();
+  });
+  it("no track, or a track with no average, prefills nothing", () => {
+    expect(prefillFees(hb, base({ fundId: null })).balance).toBeNull();
+  });
+  it("the fee is required only when nothing could be prefilled", () => {
+    expect(checkDraft(base(), day, hb)).toEqual([]);
+    expect(checkDraft(base({ fundId: null, typedName: "x" }), day, hb)).toContainEqual({ field: "feeBalance", code: "required" });
+  });
+  it("saved empty it is the sourced average; typed it is entered", () => {
+    const h = holdingOf(base(), hb, day);
+    expect(h.feeBalance).toMatchObject({ value: track.fb.value, state: "sourced" });
+    const typed = holdingOf(base({ feeBalance: 0.5 }), hb, day);
+    expect(typed.feeBalance).toMatchObject({ value: 0.5, state: "entered" });
+  });
+  it("editing a holding that kept the average shows the prefill again, not an entered number", () => {
+    const h = holdingOf(base(), hb, day);
+    expect(draftOf(h, hb).feeBalance).toBeNull();
+    expect(draftOf(h).feeBalance).toBe(track.fb.value);
+  });
+});
+
+describe("liquidity of a study fund (TXH-09)", () => {
+  const rules = mergedRules(buildHoldingsBundle(), bundle);
+  const hb = buildHoldingsBundle();
+  const at = (first: string | null, over = false) => {
+    const d: Draft = { ...emptyDraft(), wrapperId: "keren-hishtalmut", companyName: "חברה", typedName: "מסלול", balance: 1, feeBalance: 1, statementDate: "2026-09-30", firstDeposit: first ?? "", firstDepositOver: over };
+    return holdingOf(d, hb, day);
+  };
+  it("six years or more after the first deposit: liquid from the end of that month (TXH-09)", () => {
+    const l = liquidityOf(at("2020-09-01"), rules, day);
+    expect(l).toMatchObject({ kind: "liquid", from: { value: "2026-09-30" } });
+  });
+  it("less than six years: not yet, with the date", () => {
+    expect(liquidityOf(at("2021-03-15"), rules, day)).toMatchObject({ kind: "not-yet", from: { value: "2027-03-31" } });
+  });
+  it("the checkbox stands for the date: liquid with no date", () => {
+    const h = at(null, true);
+    expect(h.firstDeposit).toBeUndefined();
+    expect(liquidityOf(h, rules, day)).toMatchObject({ kind: "liquid", from: null });
+  });
+  it("neither date nor checkbox: unknown; another product: none; no rule: nothing derived", () => {
+    expect(liquidityOf(at(null), rules, day)).toEqual({ kind: "unknown" });
+    expect(liquidityOf({ ...at("2015-01-01"), wrapperId: "kupat-gemel-lehashkaa" }, rules, day)).toBeNull();
+    expect(liquidityOf(at("2015-01-01"), {}, day)).toEqual({ kind: "no-rule" });
+  });
+  it("the fee run accepts the checkbox in place of the date", () => {
+    const h = at(null, true);
+    const hp = holdingPlan({ ...h, monthlyEmployer: undefined }, bundle, { years: 10, name: "g", run: runGoal }, rules);
+    expect(hp).toMatchObject({ ok: true });
+    const none = holdingPlan({ ...h, firstDepositOverSix: undefined } as never, bundle, { years: 10, name: "g", run: runGoal }, rules);
+    expect(none).toMatchObject({ ok: false, reason: "needs-first-deposit" });
   });
 });

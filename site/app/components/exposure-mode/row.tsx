@@ -3,7 +3,7 @@
 // return it ran at.
 import { useLayoutEffect, useRef, type ReactNode } from "react";
 import { Link } from "react-router";
-import { r2, r5 } from "../../copy";
+import { r2, r5, scnCompare } from "../../copy";
 import { decidingFormulaOf } from "../../lib/compare";
 import type { ExposureRowView } from "../../lib/exposure-mode";
 import { IconDrillIn, IconLock } from "../icons";
@@ -72,6 +72,8 @@ export function ExposureRow({ row, ctx, above, onDetail, choose }: { row: Exposu
   const { mk, mode, names } = ctx;
   const ranked = row.kind === "ranked";
   const hasValue = row.real !== undefined;
+  // a listed row shows no headline figure, only "לא מדורג" and its reason (scenario fix 2026-10-24)
+  const showFigure = hasValue && ranked;
   const value = hasValue ? mk.nis(mode === "real" ? row.real! : row.nominal!, mode === "real" ? "F-06" : "F-09", mode === "real" ? r2.realLabel : r2.nominalLabel, row.run ? { usedRules: row.run.rules, flags: row.run.flags } : undefined) : null;
   const tied = row.tiedWith.length > 0;
   const f = row.deciding;
@@ -105,7 +107,7 @@ export function ExposureRow({ row, ctx, above, onDetail, choose }: { row: Exposu
 
       <InputsStrip row={row} ctx={ctx} />
 
-      {hasValue && value && (
+      {showFigure && value && (
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-3 flex-wrap">
             <span className="figure">
@@ -119,6 +121,7 @@ export function ExposureRow({ row, ctx, above, onDetail, choose }: { row: Exposu
 
       {(ranked || row.kind === "listed-not-ranked") && (
         <div className="flex flex-wrap items-center gap-2">
+          {row.kind === "listed-not-ranked" && <Tag tone="neutral" icon={<IconDash size={14} />}>{scnCompare.notRanked}</Tag>}
           <ReturnLabel row={row} />
           {tied && (
             <Tag tone="parameter" icon={<IconEqual size={14} className="shrink-0" />} className="!whitespace-normal max-w-full min-w-0 items-start [overflow-wrap:anywhere] [&>svg]:mt-0.5">

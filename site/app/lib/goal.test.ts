@@ -1,6 +1,6 @@
 // The goal form's submit check, the bounds table and the employment default (audit 2026-10-24: A3, A38, A61).
 import { describe, expect, it } from "vitest";
-import { checkGoal, emptyGoal, pctBoundsFor, reconcileEmployment, resolveGoal, type CheckMessages, type Goal } from "./goal";
+import { checkGoal, childAgeFrom, childHorizon, emptyGoal, shortfall, pctBoundsFor, reconcileEmployment, resolveGoal, type CheckMessages, type Goal } from "./goal";
 import { parseNumber } from "./format";
 
 const bounds = { horizon: { min: 1, max: 40 }, pct: { min: -50, max: 50 }, age: { min: 16, max: 100 } };
@@ -53,5 +53,44 @@ describe("reconcileEmployment", () => {
   });
   it("no answer, no default", () => {
     expect(reconcileEmployment({ ...p, hasPension: false, hasHishtalmut: null }).employment).toBeNull();
+  });
+});
+
+// scenario fix 2026-10-24
+describe("child preset horizon", () => {
+  const vo = (value: number) => ({ value, unit: "years", state: "sourced" }) as never;
+  const presets = { child: { name_he: "חיסכון לילד", horizon_years: vo(18) } };
+  it("is 18 minus the child's age, and 18 without an age", () => {
+    expect(childHorizon(18, 3)).toBe(15);
+    expect(childHorizon(18, 0)).toBe(18);
+    expect(childHorizon(18, 17)).toBe(1);
+    expect(childHorizon(18, null)).toBe(18);
+    expect(childHorizon(18, undefined)).toBe(18);
+    expect(childHorizon(null, 3)).toBeNull();
+  });
+  it("resolves from the goal's age as a preset-sourced horizon, and a typed horizon wins", () => {
+    const g = { ...emptyGoal(0), preset: "child" as const, childAge: 3 };
+    const r = resolveGoal(g, presets);
+    expect(r.horizonYears).toBe(15);
+    expect(r.source.horizonYears).toBe("preset");
+    expect(resolveGoal({ ...g, horizonYears: { value: 10, entered: true } }, presets).horizonYears).toBe(10);
+    expect(resolveGoal({ ...g, preset: "long-term" as const }, { "long-term": { name_he: "x", horizon_years: vo(18) } }).horizonYears).toBe(18);
+  });
+  it("reads a birth year or an age, and refuses outside 0 to 17", () => {
+    expect(childAgeFrom(3, 2026)).toBe(3);
+    expect(childAgeFrom(2023, 2026)).toBe(3);
+    expect(childAgeFrom(2026, 2026)).toBe(0);
+    expect(childAgeFrom(18, 2026)).toBeNull();
+    expect(childAgeFrom(2000, 2026)).toBeNull();
+    expect(childAgeFrom(2030, 2026)).toBeNull();
+    expect(childAgeFrom(2.5, 2026)).toBeNull();
+  });
+});
+
+describe("shortfall", () => {
+  it("is enough when the value reaches the cost, else the gap", () => {
+    expect(shortfall(150000, 158172)).toEqual({ enough: true, gap: -8172 });
+    expect(shortfall(150000, 150000).enough).toBe(true);
+    expect(shortfall(150000, 120000)).toEqual({ enough: false, gap: 30000 });
   });
 });

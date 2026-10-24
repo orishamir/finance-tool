@@ -52,6 +52,8 @@ export interface Holding {
   bars?: Partial<Record<TransferBar, boolean>>;
   /** `YYYY-MM-DD`, a study fund's first deposit (TXH-09). */
   firstDeposit?: ValueObject;
+  /** A study fund: the first deposit was more than six years ago, so the fund is liquid (TXH-09); entered boolean true, in place of an exact date (scenario fix 2026-10-24). */
+  firstDepositOverSix?: ValueObject;
   /** `YYYY-MM-DD`, the date the statement is correct to. */
   statementDate: ValueObject;
   child?: { route: "provident" | "bank" };
@@ -206,7 +208,7 @@ const wrapperIds = new Set<string>([
   "child-savings-bank",
 ]);
 
-const holdingValueFields = ["balance", "embeddedGain", "feeBalance", "feeDeposit", "directExpenses", "monthlyOwn", "monthlyEmployer", "firstDeposit", "statementDate"] as const;
+const holdingValueFields = ["balance", "embeddedGain", "feeBalance", "feeDeposit", "directExpenses", "monthlyOwn", "monthlyEmployer", "firstDeposit", "firstDepositOverSix", "statementDate"] as const;
 
 function voAt(v: unknown, path: string): string | null {
   const r = valueObject.safeParse(v);

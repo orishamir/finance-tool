@@ -7,7 +7,7 @@ import { Link } from "react-router";
 import { fit as fitCopy, r3holdings as copy } from "../../copy";
 import { feeYear, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
-import { isChild, type HoldingView, type HoldingsCtx } from "../../lib/holdings";
+import { isChild, liquidityOf, type HoldingView, type HoldingsCtx, type Liquidity } from "../../lib/holdings";
 import { playbookQueryString, playbookWrappers } from "../../lib/playbook";
 import { IconAlert, IconClock, IconLock } from "../icons";
 import { IconDash, IconHelp, IconOk } from "../compare/icons";
@@ -27,6 +27,7 @@ export function HoldingCard({ view, ctx, index, count, onEdit, onDelete, onMove 
   const name = h.track?.name ?? h.typedName ?? h.company.name;
   const unmatched = !child && !view.track;
   const record = copy.recordLabels;
+  const liq = liquidityOf(h, ctx.rules, ctx.today);
   return (
     <Card as="article" className="flex flex-col gap-4" aria-labelledby={`hc-${h.id}`}>
       <header className="flex flex-col gap-1.5">
@@ -49,6 +50,7 @@ export function HoldingCard({ view, ctx, index, count, onEdit, onDelete, onMove 
           )}
           {h.child && <> · {copy.childRouteOptions[h.child.route]}</>}
         </p>
+        {liq && <LiquidityLine liq={liq} />}
       </header>
 
       <Disclosure label={<span className="font-medium">{copy.detailsOpen}</span>} defaultOpen className="md:[&>summary]:hidden" summaryClassName="md:hidden">
@@ -85,14 +87,16 @@ export function HoldingCard({ view, ctx, index, count, onEdit, onDelete, onMove 
               {!child && h.feeBalance && (
                 <div className="flex flex-col gap-1">
                   <Fact label={record.feeBalance} value={about(h.feeBalance as SiteValue, record.feeBalance)} />
-                  <FeeRefs view={view} kind="balance" />
+                  {fromAverage(h.feeBalance, view) && <p className="text-sm text-muted-foreground">{copy.feePrefill.cardNote}</p>}
+                  <FeeRefs view={view} kind="balance" skipAverage={fromAverage(h.feeBalance, view)} />
                   <CapLines view={view} kind="balance" />
                 </div>
               )}
               {!child && h.feeDeposit && (
                 <div className="flex flex-col gap-1">
                   <Fact label={record.feeDeposit} value={about(h.feeDeposit as SiteValue, record.feeDeposit)} />
-                  <FeeRefs view={view} kind="deposit" />
+                  {fromAverage(h.feeDeposit, view) && <p className="text-sm text-muted-foreground">{copy.feePrefill.cardNote}</p>}
+                  <FeeRefs view={view} kind="deposit" skipAverage={fromAverage(h.feeDeposit, view)} />
                   <CapLines view={view} kind="deposit" />
                 </div>
               )}
@@ -107,6 +111,8 @@ export function HoldingCard({ view, ctx, index, count, onEdit, onDelete, onMove 
           </div>
         </div>
       </Disclosure>
+
+      {liq?.kind === "liquid" && <DecisionBlock view={view} ctx={ctx} />}
 
       <footer className="flex flex-wrap items-center gap-x-2 gap-y-1 border-t border-border pt-2 -mb-2">
         {confirm ? (
@@ -155,8 +161,13 @@ function Fact({ label, value }: { label: string; value: SiteValue }) {
   );
 }
 
+/** Review fix 2026-10-24: the stored fee is the regulator's average for the track (a prefill, state sourced), not a figure the person gave or read from their statement. */
+function fromAverage(fee: { state?: string } | undefined, view: HoldingView): boolean {
+  return fee?.state === "sourced" && !!view.cma;
+}
+
 /** Under each fee, its two references: the track's own average (sourced) and the class mean and median (computed, F-68). */
-function FeeRefs({ view, kind }: { view: HoldingView; kind: "balance" | "deposit" }) {
+function FeeRefs({ view, kind, skipAverage = false }: { view: HoldingView; kind: "balance" | "deposit"; skipAverage?: boolean }) {
   const cma = view.cma;
   if (!cma) return null;
   const avg = kind === "balance" ? cma.avgBalance : cma.avgDeposit;
@@ -165,7 +176,7 @@ function FeeRefs({ view, kind }: { view: HoldingView; kind: "balance" | "deposit
   const r = copy.classRef;
   return (
     <div className="flex flex-col gap-0.5 text-sm text-muted-foreground">
-      {avg.value === null ? (
+      {skipAverage ? null : avg.value === null ? (
         <p>
           {copy.trackAvgNone} <bdi dir="ltr">{year ?? fmt.period(String(cma.period.value))}</bdi>.
         </p>
@@ -336,3 +347,99 @@ function ChildLines({ view }: { view: HoldingView }) {
   const h = view.holding;
   return h.child?.route === "bank" ? <p className="text-sm text-muted-foreground">{copy.consolidation.bankChild}</p> : null;
 }
+
+// ---------------------------------------------------------------- scenario fix 2026-10-24: a study fund's liquidity
+
+/** "נזיל מ־{date}" or "עוד לא נזיל: נזיל מ־{date}", from the first deposit or the checkbox, with TXH-09's chip. */
+function LiquidityLine({ liq }: { liq: Liquidity }) {
+  const c = copy.liquidity;
+  if (liq.kind === "no-rule") return null;
+  if (liq.kind === "unknown") return <p className="text-sm text-muted-foreground max-w-measure">{c.unknown}</p>;
+  const notYet = liq.kind === "not-yet";
+  return (
+    <p className={cx("text-sm flex flex-wrap items-center gap-x-1.5 gap-y-1", notYet ? "text-caution-foreground" : "text-positive")}>
+      {notYet ? <IconClock size={16} className="shrink-0" /> : <IconOk size={16} className="shrink-0" />}
+      {liq.from ? (
+        <>
+          <span>{notYet ? c.notYet : c.from}</span>
+          <Num value={liq.from} />
+          <span>{c.about}</span>
+        </>
+      ) : (
+        <>
+          <span>{c.overBefore}</span>
+          <YearsNum value={liq.lock} />
+          <span>{c.overAfter}</span>
+        </>
+      )}
+      <RuleRef id="TXH-09" />
+    </p>
+  );
+}
+
+/** One row of the block: its sentence from the rule base with the chips, or the open question when a rule is missing or open. */
+function DecisionRow({ label, text, ids, ctx, children }: { label: string; text: string; ids: string[]; ctx: HoldingsCtx; children?: React.ReactNode }) {
+  const bad = ids.find((id) => !ctx.rules[id] || ctx.rules[id]!.strength === "open");
+  return (
+    <li className="flex flex-col gap-1 border-t border-border pt-2 first:border-t-0 first:pt-0">
+      <span className="font-medium">{label}</span>
+      {bad ? (
+        <p className="text-sm">
+          <OpenQuestion code={bad} />
+        </p>
+      ) : (
+        <p className="text-sm max-w-measure">
+          {text} {ids.map((id) => <RuleRef key={id} id={id} />)}
+        </p>
+      )}
+      {children}
+    </li>
+  );
+}
+
+/**
+ * "הקרן נזילה: מה אפשר לעשות": the four things a person with a liquid study fund can do, one sentence each from the rule
+ * base, then the fee against the average and the two links. Nothing here computes a number.
+ */
+function DecisionBlock({ view, ctx }: { view: HoldingView; ctx: HoldingsCtx }) {
+  const d = copy.decision;
+  const h = view.holding;
+  return (
+    <section aria-labelledby={`dec-${h.id}`} className="flex flex-col gap-3 rounded-md border border-border bg-muted/30 p-3 md:p-4">
+      <h4 id={`dec-${h.id}`} className="text-lg font-semibold">
+        {d.heading}
+      </h4>
+      <ul className="flex flex-col gap-2">
+        <DecisionRow label={d.stay.label} text={d.stay.text} ids={["TXH-18"]} ctx={ctx} />
+        <DecisionRow label={d.switchTrack.label} text={d.switchTrack.text} ids={["TXH-17", "PF-23", "SW-15"]} ctx={ctx} />
+        <DecisionRow label={d.move.label} text={d.move.text} ids={["PF-18", "SW-39"]} ctx={ctx}>
+          <Link to={`/switch/${h.wrapperId}${playbookQueryString({ from: h.id, to: null, fundFrom: null, fundTo: null, share: null })}`} className="text-link min-h-target inline-flex items-center self-start hover:underline">
+            {d.move.link}
+          </Link>
+        </DecisionRow>
+        <DecisionRow label={d.withdraw.label} text={d.withdraw.text} ids={["TXH-09", "TXH-10", "TXH-11"]} ctx={ctx} />
+      </ul>
+      {view.cma && (
+        <div className="flex flex-col gap-1">
+          <p className="text-sm font-medium">{d.fee}</p>
+          {h.feeBalance && (
+            <p className="text-sm">
+              {record.feeBalance} <Num value={about(h.feeBalance as SiteValue, record.feeBalance)} />
+            </p>
+          )}
+          <FeeRefs view={view} kind="balance" />
+        </div>
+      )}
+      <div className="flex flex-wrap gap-x-4">
+        <Link to={`/fees?holding=${encodeURIComponent(h.id)}`} className="text-link min-h-target inline-flex items-center hover:underline">
+          {copy.feeLinkLabel}
+        </Link>
+        <Link to="/goal/compare?mode=exposure" className="text-link min-h-target inline-flex items-center hover:underline">
+          {d.exposureLink}
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+const record = copy.recordLabels;

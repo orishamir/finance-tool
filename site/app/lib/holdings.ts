@@ -382,8 +382,10 @@ export function holdingPlan(h: Holding, cb: CompareBundle | null, goal: Holdings
     if (h.wrapperId === "keren-hishtalmut") {
       // the 6-year clock starts at the first deposit: months from the start of the run (negative when it began before)
       const first = h.firstDeposit?.value;
-      if (typeof first !== "string") return { ok: false, reason: "needs-first-deposit" };
-      terms.hishtalmut = { employment, clockStartMonth: -monthsBetweenIso(first, today), ...(employment === "employee" && hasSalary ? { monthlySalary: salary! } : {}), ...(employment === "employee" && deposits && monthlyEmployer > 0 ? { employerMonthly: monthlyEmployer } : {}) };
+      // scenario fix 2026-10-24: "more than six years" starts the run with the wait already over
+      const lock = lockYearsOf(rules, today);
+      if (typeof first !== "string" && !(overSixOf(h) && lock)) return { ok: false, reason: "needs-first-deposit" };
+      terms.hishtalmut = { employment, clockStartMonth: typeof first === "string" ? -monthsBetweenIso(first, today) : overSixClockStart(lock!), ...(employment === "employee" && hasSalary ? { monthlySalary: salary! } : {}), ...(employment === "employee" && deposits && monthlyEmployer > 0 ? { employerMonthly: monthlyEmployer } : {}) };
     }
     const profile = { ...(g.age === null ? {} : { ageAtStart: g.age }), ...(employment === "self-employed" && hasSalary ? { annualIncome: 12 * salary! } : {}) };
     const plan = runInputs(entry.record, [p05], terms, { entered: enteredP05 as never, profile });
@@ -548,6 +550,12 @@ const addMonthsIso = (iso: string, months: number) => {
   return new Date(Date.UTC(y, m - 1 + months, d)).toISOString().slice(0, 10);
 };
 
+/** TXH-09: the clock runs from the first payment date, the end of the month of the first payment (or the month it was for); the wait ends `months` later, at a month end (review fix 2026-10-24). */
+const monthEndAfter = (iso: string, months: number) => {
+  const [y, m] = iso.split("-").map(Number) as [number, number, number];
+  return new Date(Date.UTC(y, m - 1 + months + 1, 0)).toISOString().slice(0, 10);
+};
+
 const feeOf = (h: Holding) => (typeof h.feeBalance?.value === "number" ? h.feeBalance.value : null);
 
 const costRulesFor = (wrapperId: WrapperId): string[] => (wrapperId === "keren-hishtalmut" ? ["PF-19", "TXH-19", "PF-14", "SW-15"] : wrapperId === "kupat-gemel-lehashkaa" ? ["PF-19", "TXK-04", "PF-14", "SW-15"] : ["PF-19", "PF-14", "SW-15"]);
@@ -580,7 +588,7 @@ export function consolidationGroups(views: HoldingView[], ctx: HoldingsCtx): Con
       id: v.holding.id,
       wrapper: wrapperId,
       manager: manager(v),
-      ...(typeof v.holding.firstDeposit?.value === "string" ? { firstDepositDate: v.holding.firstDeposit.value } : {}),
+      ...(typeof v.holding.firstDeposit?.value === "string" ? { firstDepositDate: v.holding.firstDeposit.value } : overSixOf(v.holding) && lockYearsOf(ctx.rules, ctx.today) ? { firstDepositDate: addMonthsIso(ctx.today, -12 * (lockYearsOf(ctx.rules, ctx.today)!.value as number)) } : {}),
       ...(atRetirementAge ? { atRetirementAge: true } : {}),
       ...Object.fromEntries(Object.entries(v.holding.bars ?? {}).filter(([, on]) => on)),
     }));
@@ -614,7 +622,7 @@ export function consolidationGroups(views: HoldingView[], ctx: HoldingsCtx): Con
         const v = list.find((x) => x.holding.id === n.holding);
         const first = v?.holding.firstDeposit;
         if (!v || !first || typeof first.value !== "string") continue;
-        const from = addMonthsIso(first.value, n.monthsNeeded);
+        const from = monthEndAfter(first.value, n.monthsNeeded);
         if (!latest || from > latest.from) latest = { holdingId: v.holding.id, from, first, months: n.monthsNeeded, rule: n.lockRule };
       }
       if (latest) {
@@ -695,6 +703,72 @@ export function useHolding(id: string | null): { ready: boolean; holding: Holdin
   return { ready: snap.ready, holding: id ? (sortedHoldings(snap.state.holdings).find((h) => h.id === id) ?? null) : null };
 }
 
+// ---------------------------------------------------------------- scenario fix 2026-10-24: liquidity of a study fund, fee prefill
+
+/**
+ * "The first deposit was more than six years ago", stored beside `firstDeposit` as an entered true. It lives here until
+ * `Holding` in state.ts declares it (requests.md, sc-holdings); the state check keeps keys it does not know.
+ */
+export interface OverSix {
+  firstDepositOverSix?: ValueObject;
+}
+export const overSixOf = (h: Holding): boolean => (h as Holding & OverSix).firstDepositOverSix?.value === true;
+
+const addMonths = (iso: string, months: number): string => new Date(Date.UTC(Number(iso.slice(0, 4)), Number(iso.slice(5, 7)) - 1 + months, Number(iso.slice(8, 10)))).toISOString().slice(0, 10);
+
+/** The wait for a tax-free study-fund withdrawal, TXH-09's `lock_years`; null when the rule or its figure is not in the rule base. */
+export function lockYearsOf(rules: Record<string, RuleRecord>, today: string): SiteValue | null {
+  const r = rules["TXH-09"];
+  const f = r ? ruleFigure(r, "lock_years", today) : null;
+  return f && typeof f.value === "number" ? f : null;
+}
+
+export type Liquidity =
+  /** `from` is the date it became liquid (first deposit plus the wait); null when only the checkbox says so. */
+  | { kind: "liquid"; from: SiteValue | null; lock: SiteValue }
+  | { kind: "not-yet"; from: SiteValue; lock: SiteValue }
+  /** A study fund with neither a first-deposit date nor the checkbox. */
+  | { kind: "unknown" }
+  /** TXH-09's figure is not in the rule base: nothing is derived. */
+  | { kind: "no-rule" };
+
+/**
+ * Whether a study fund can be withdrawn tax-free: six years (TXH-09) after the first deposit, the same test and the same
+ * month arithmetic as the consolidation card's `notYet`. The checkbox says "more than six years" and stands for the date.
+ * Other products have no such wait: null.
+ */
+export function liquidityOf(h: Holding, rules: Record<string, RuleRecord>, today: string): Liquidity | null {
+  if (h.wrapperId !== "keren-hishtalmut") return null;
+  const first = h.firstDeposit?.value;
+  const hasDate = typeof first === "string" && /^\d{4}-\d{2}-\d{2}$/.test(first);
+  if (!hasDate && !overSixOf(h)) return { kind: "unknown" };
+  const lock = lockYearsOf(rules, today);
+  if (!lock) return { kind: "no-rule" };
+  if (!hasDate) return { kind: "liquid", from: null, lock };
+  const months = (lock.value as number) * 12;
+  const from = monthEndAfter(first as string, months);
+  const years = computed(lock.value as number, "years", "F-72", {}, { today, about: "שנים עד שהכסף בקרן נזיל ופטור ממס", rules: [{ id: "TXH-09", strength: "primary" }] });
+  const date: SiteValue = {
+    ...computed(null, "text", "F-72", { "תאריך ההפקדה הראשונה": h.firstDeposit as SiteValue, "שנים עד שהכסף נזיל": years }, { today, about: "מתי הקרן נזילה: ההפקדה הראשונה ועוד התקופה שהחוק קובע", rules: [{ id: "TXH-09", strength: "primary" }] }),
+    value: from,
+  };
+  return from <= today ? { kind: "liquid", from: date, lock } : { kind: "not-yet", from: date, lock };
+}
+
+/** The months of an account's age the run starts from: the checkbox stands for exactly the wait (the run only needs "already liquid"). */
+export const overSixClockStart = (lock: SiteValue): number => -Math.round((lock.value as number) * 12);
+
+/** The track's two published fee averages, as sourced values, when the regulator has a number for them. */
+export function prefillFees(hb: HoldingsBundle, d: Pick<Draft, "fundId" | "wrapperId">): { balance: SiteValue | null; deposit: SiteValue | null } {
+  const none = { balance: null, deposit: null };
+  if (d.fundId === null || d.wrapperId === null || isChild(d.wrapperId)) return none;
+  const t = trackOf(hb, d.fundId);
+  if (!t) return none;
+  const f = trackFees(hb, t);
+  const ok = (v: SiteValue) => (typeof v.value === "number" ? v : null);
+  return { balance: ok(f.balance), deposit: ok(f.deposit) };
+}
+
 // ---------------------------------------------------------------- the add sheet
 
 export interface Draft {
@@ -714,13 +788,17 @@ export interface Draft {
   embeddedGain: number | null;
   bars: Partial<Record<TransferBar, boolean>>;
   firstDeposit: string;
+  /** scenario fix 2026-10-24: "the first deposit was more than six years ago" in place of the exact date (a study fund). */
+  firstDepositOver: boolean;
   statementDate: string;
 }
 
-export const emptyDraft = (): Draft => ({ wrapperId: null, childRoute: null, companyId: null, companyName: "", fundId: null, typedName: "", balance: null, feeBalance: null, feeDeposit: null, directExpenses: null, monthlyOwn: null, monthlyEmployer: null, embeddedGain: null, bars: {}, firstDeposit: "", statementDate: "" });
+export const emptyDraft = (): Draft => ({ wrapperId: null, childRoute: null, companyId: null, companyName: "", fundId: null, typedName: "", balance: null, feeBalance: null, feeDeposit: null, directExpenses: null, monthlyOwn: null, monthlyEmployer: null, embeddedGain: null, bars: {}, firstDeposit: "", firstDepositOver: false, statementDate: "" });
 
-export function draftOf(h: Holding): Draft {
+export function draftOf(h: Holding, hb?: HoldingsBundle): Draft {
   const n = (v?: ValueObject) => (typeof v?.value === "number" ? v.value : null);
+  // scenario fix 2026-10-24: a fee saved as the regulator's average (sourced) is a prefill again when the holding is edited, not an entered number
+  const own = (v?: ValueObject) => (v?.state === "sourced" && hb && h.track && trackOf(hb, h.track.fundId) ? null : n(v));
   const s = (v?: ValueObject) => (typeof v?.value === "string" ? v.value : "");
   return {
     wrapperId: h.wrapperId,
@@ -730,14 +808,15 @@ export function draftOf(h: Holding): Draft {
     fundId: h.track?.fundId ?? null,
     typedName: h.typedName ?? "",
     balance: n(h.balance),
-    feeBalance: n(h.feeBalance),
-    feeDeposit: n(h.feeDeposit),
+    feeBalance: own(h.feeBalance),
+    feeDeposit: own(h.feeDeposit),
     directExpenses: n(h.directExpenses),
     monthlyOwn: n(h.monthlyOwn),
     monthlyEmployer: n(h.monthlyEmployer),
     embeddedGain: n(h.embeddedGain),
     bars: { ...(h.bars ?? {}) },
     firstDeposit: s(h.firstDeposit),
+    firstDepositOver: overSixOf(h),
     statementDate: s(h.statementDate),
   };
 }
@@ -752,7 +831,7 @@ export type DraftError = {
  * "מהפקדה" is optional (a fund with no deposits prints no such line; empty is saved as 0). Each failure has its own code,
  * so the sheet says what is wrong with the field and not only that it is.
  */
-export function checkDraft(d: Draft, today: string): DraftError[] {
+export function checkDraft(d: Draft, today: string, hb?: HoldingsBundle): DraftError[] {
   const errors: DraftError[] = [];
   if (d.wrapperId === null) errors.push({ field: "wrapperId", code: "required" });
   if (d.balance === null) errors.push({ field: "balance", code: "required" });
@@ -761,7 +840,10 @@ export function checkDraft(d: Draft, today: string): DraftError[] {
   if (!child) {
     for (const f of ["feeBalance", "feeDeposit", "directExpenses"] as const) {
       const v = d[f];
-      if (f === "feeBalance" && v === null) errors.push({ field: f, code: "required" });
+      // scenario fix 2026-10-24: the field is required only when the regulator's average for the picked track could not fill it
+      if (f === "feeBalance" && v === null) {
+        if (!(hb && prefillFees(hb, d).balance)) errors.push({ field: f, code: "required" });
+      }
       else if (v !== null && (v < 0 || v > 100)) errors.push({ field: f, code: "percent-over" });
     }
   }
@@ -792,13 +874,15 @@ export function autoLink(hb: HoldingsBundle, d: Draft): Draft {
 }
 
 /** The draft as a holding: every figure an `entered` value object, dated today. */
-export function holdingOf(d: Draft, hb: HoldingsBundle, today: string, existing?: Holding, id?: string): Holding {
+export function holdingOf(d: Draft, hb: HoldingsBundle, today: string, existing?: Holding, id?: string): Holding & OverSix {
   const track = d.fundId !== null ? trackOf(hb, d.fundId) : undefined;
   const wrapperId: WrapperId = d.wrapperId === "child-savings-provident" || d.wrapperId === "child-savings-bank" ? (d.childRoute === "bank" ? "child-savings-bank" : "child-savings-provident") : d.wrapperId!;
   const child = isChild(wrapperId);
   const company = track ? { name: hb.companies[track.c]!.name, legalId: hb.companies[track.c]!.id } : { name: d.companyName.trim(), ...(d.companyId ? { legalId: d.companyId } : {}) };
   const e = (v: number, unit: ValueObject["unit"]) => enteredValue(v, unit, today) as ValueObject;
   const text = (v: string) => ({ ...enteredValue(0, "text", today), value: v }) as ValueObject;
+  // scenario fix 2026-10-24: an empty fee takes the regulator's average for the track, kept as the sourced value with its source
+  const pre = prefillFees(hb, d);
   return {
     id: existing?.id ?? id ?? `h${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`,
     wrapperId,
@@ -806,14 +890,15 @@ export function holdingOf(d: Draft, hb: HoldingsBundle, today: string, existing?
     ...(track ? { track: { fundId: track.id, name: track.n } } : {}),
     ...(!track && d.typedName.trim() ? { typedName: d.typedName.trim() } : {}),
     balance: e(d.balance ?? 0, "nis"),
-    ...(!child && d.feeBalance !== null ? { feeBalance: e(d.feeBalance, "pct_per_year") } : {}),
-    ...(!child ? { feeDeposit: e(d.feeDeposit ?? 0, "pct_of_deposit") } : {}),
+    ...(!child && d.feeBalance !== null ? { feeBalance: e(d.feeBalance, "pct_per_year") } : !child && pre.balance ? { feeBalance: pre.balance } : {}),
+    ...(!child ? { feeDeposit: d.feeDeposit !== null ? e(d.feeDeposit, "pct_of_deposit") : (pre.deposit ?? e(0, "pct_of_deposit")) } : {}),
     ...(!child && d.directExpenses !== null ? { directExpenses: e(d.directExpenses, "pct_per_year") } : {}),
     ...(!child && d.monthlyOwn !== null ? { monthlyOwn: e(d.monthlyOwn, "nis_per_month") } : {}),
     ...(!child && d.monthlyEmployer !== null ? { monthlyEmployer: e(d.monthlyEmployer, "nis_per_month") } : {}),
     ...(wrapperId === "kupat-gemel-lehashkaa" && d.embeddedGain !== null ? { embeddedGain: e(d.embeddedGain, "nis") } : {}),
     ...(Object.values(d.bars).some(Boolean) && !child ? { bars: Object.fromEntries(Object.entries(d.bars).filter(([, on]) => on)) as Holding["bars"] } : {}),
-    ...(wrapperId === "keren-hishtalmut" && d.firstDeposit ? { firstDeposit: text(d.firstDeposit) } : {}),
+    ...(wrapperId === "keren-hishtalmut" && d.firstDeposit && !d.firstDepositOver ? { firstDeposit: text(d.firstDeposit) } : {}),
+    ...(wrapperId === "keren-hishtalmut" && d.firstDepositOver ? { firstDepositOverSix: { ...enteredValue(0, "boolean", today), value: true } as ValueObject } : {}),
     statementDate: text(d.statementDate),
     ...(child ? { child: { route: wrapperId === "child-savings-bank" ? ("bank" as const) : ("provident" as const) } } : {}),
     ...(existing?.importedAt ? { importedAt: existing.importedAt } : {}),

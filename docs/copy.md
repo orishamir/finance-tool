@@ -124,6 +124,36 @@ Why A: the reader learns what the site does and the one thing that sets it apart
 | `home.door3.title` | כסף שיושב בעו״ש | the third door (design-system 6.9); the words are in 6.0. The founder approved the first page with two doors, so the door itself is for review, not only the words |
 | `home.door3.line` | שני מספרים, ותראו כמה עולה להשאיר אותו שם | as in 6.0 |
 
+**Added 2026-10-24 (home question card), for the founder's review.** The question card that replaced the goal door (`docs/flows.md` 6.1, `docs/design-spec.md` 1a). Voice as in section 1: plural imperative, everyday words, no finance term on the card and never "מטרה". The goal door's two strings (`home.goalDoor`, "השוואה למטרה" with "הגדירו מטרה (סכום ושנים) וראו איזה מוצר מתאים ומה הוא עולה") are gone from `copy.ts`; "השוואה למטרה" stays as the menu row and footer link. Key paths are the ones in `site/app/copy.ts` (marked `// home question card 2026-10-24`). All wording is "chosen 2026-10-24, revisable".
+
+| Key in `copy.ts` | Hebrew | Note |
+|---|---|---|
+| `home.quick.heading` | מה השאלה שלכם? | h2 of the card |
+| `home.quick.amountNow` | יש לכם היום | field label; ₪ |
+| `home.quick.monthly` | ובכל חודש | field label; ₪ |
+| `home.quick.years` | כמה שנים עד שתצטרכו את הכסף | field label, in place of the goal form's "שנים עד המטרה" |
+| `home.quick.unknownYears` | לא יודעים | chip; the years then come from the preset (a site parameter) |
+| `home.quick.purposeLabel` | בשביל מה | label of the chip row; optional |
+| `home.quick.purposes.apartment` | דירה | chip; known-date preset; also the goal's name |
+| `home.quick.purposes.wedding` | חתונה | chip; known-date preset; also the goal's name |
+| `home.quick.purposes.studies` | לימודים | chip; known-date preset; also the goal's name |
+| `home.quick.purposes.child` | ילד | chip; child preset; also the goal's name |
+| `home.quick.purposes.retirement` | פרישה | chip; long-term preset; also the goal's name |
+| `home.quick.purposes.cushion` | כרית ביטחון | chip; opens idle cash (not a preset of the comparison). "כרית ביטחון" over the preset's own name "עתודה נזילה" on the card; the preset's name stays on the form and the strip |
+| `home.quick.purposes.none` | בלי מטרה מסוימת | chip; lump-sum preset, or long-term when a monthly sum is typed; no name |
+| `home.quick.submit` | מה הכי מתאים | the button; the result page's own title (`r2.result.title`), so one word names the answer |
+| `home.quick.submitCushion` | כמה עולה להשאיר בעו״ש | the button with "כרית ביטחון" chosen |
+| `home.quick.needAmount` | הזינו סכום: היום או בכל חודש. | under the button when no sum above zero is typed |
+| `home.quick.line` | הכול נשמר במכשיר הזה. גיל, שכר ותשואה אפשר להוסיף בתוצאה, אם תרצו. | `text-xs muted` under the button |
+| `home.quick.allFields` | לכל השדות | quiet link to the full goal form |
+| `home.quick.another` | שאלה נוספת | the closed disclosure under the saved-goal strip; adds a second goal (D12) |
+| `r2.result.horizonDefaulted.before / mid / after / change` | לא ידעתם כמה שנים, ולכן ההשוואה רצה על {n} שנים, נקודת ההתחלה של ״{preset}״. לשנות | note under the result's headline when the years came from the preset; {n} a site-parameter `Num`; "לשנות" opens the assumptions at the years. Same pattern as `employmentInferred` |
+| `r2.result.horizonHonest.cannot` | האתר לא קובע אם {years} שנים מספיקות למניות: אין לו תשואה צפויה ואין לו נתון על ירידות. | product mode, when the years are below P-04's equity minimum; the site says what it does not know (D9, D11) |
+| `r2.result.horizonHonest.can` | לפי טבלת ההתאמה של האתר, מסלול מנייתי נחשב מתאים מ־{min} שנים, למי שמסכים לירידה של {drop} בדרך. | {min} and {drop} are P-04's two figures, site parameters |
+| `r2.result.horizonHonest.linkBefore` + `.link` | כדי לבדוק עם המספרים שלכם: הזינו תשואה וירידה שתסכימו לספוג + בהשוואה לפי חשיפה | the second half links to `/goal/compare?mode=exposure` |
+
+The purpose to preset table is in `docs/design-spec.md` 1a.
+
 ### 3.2 Header and menu
 
 As in section 2. The menu sheet's title is "תפריט". The current page's row has the screen-reader state "העמוד הנוכחי".
@@ -747,6 +777,12 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 9 and the handoff in 
 | Preset row label (screen reader) | נקודת התחלה |
 | After a preset is chosen | מילאנו `{רשימת שדות}` כנקודת התחלה. שנו מה שמתאים. |
 | Preset chosen, fields already entered kept | מה שהזנתם נשמר. · changed 2026-10-24 (Hebrew editor); was ״שמרנו על מה שהזנתם.״ |
+| `r2.form.childAge` | בן/בת כמה הילד? (או שנת לידה) | new 2026-10-24 (scenario fix): asked only with the child preset; the horizon is 18 minus the age |
+| `r2.form.childAgeHint` · `childAgeEmpty` | האופק הוא 18 פחות הגיל. · בלי גיל האופק הוא 18 שנים, פרמטר של האתר. | new 2026-10-24 (scenario fix) |
+| `r2.form.errChildAge` | הזינו גיל בין 0 ל־17, או שנת לידה. | new 2026-10-24 (scenario fix), error |
+| `r2.form.targetCost` · `targetCostHint` | כמה זה יעלה, בערך · לא חובה. התוצאה תראה אם הסכום מספיק, בלי להשפיע על הדירוג. | new 2026-10-24 (scenario fix): asked only with the known-date preset |
+| `r2.form.couple` | הטופס לאדם אחד. לזוג: הזינו את הסכומים המשותפים, ואת הפרטים של מי שהחיסכון על שמו. | new 2026-10-24 (scenario fix): one line under the amount fields |
+| `r2.form.worstFallShort` | לטווח של `{n}` שנים האתר לא מדרג מסלולים מנייתיים בלי תשואה שתזינו; השדה הזה משפיע רק עליהם. | new 2026-10-24 (scenario fix): shown under the worst-fall field when the horizon is below P-04's equity minimum |
 | Card 1 title | המטרה |
 | Fields, card 1 | שם המטרה (לא חובה) · כמה שנים עד המטרה · סכום היום · הפקדה חודשית · כמה צריך להישאר זמין מיד · מאיזה תאריך |
 | Hint, must stay available | החלק הזה נשאר בעו״ש או בקרן כספית יומית, ולא נכנס להשוואה. |
@@ -1193,7 +1229,7 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 12 and the handoff in
 | Consolidation, route | `{מוצר}` ל`{מוצר}`: מסלול מותר בתקנות. |
 | Consolidation, conditions heading | בתנאי ש־ |
 | Consolidation, conditions | the rule texts (PF-17 reg. 4 blocks; PF-18; SW-12; SW-24) from the rule base, with chips |
-| Consolidation, not yet (hishtalmut) | עוד לא: החשבון השני נזיל מ־`{תאריך}`. · changed 2026-10-24 (Hebrew editor); was ״עוד לא: החשבון השני נזיל מ־״ |
+| Consolidation, not yet (hishtalmut) | עוד לא: החשבון השני נזיל מ־`{תאריך}` בערך (לפי סוף החודש של ההפקדה הראשונה). · changed 2026-10-24 (review fix, month end, TXH-09) · changed 2026-10-24 (Hebrew editor); was ״עוד לא: החשבון השני נזיל מ־״ |
 | Consolidation, worth | איחוד ב`{מסלול}` שווה `{סכום}` ב־`{שנים}`, בכסף של היום. |
 | Consolidation, no saving | האיחוד לא חוסך בעמלות. |
 | Consolidation, target mark | המסלול הזה `{מתאים / לא מתאים}` למטרה. |
@@ -1252,6 +1288,14 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 12 and the handoff in
 | `r3holdings.errors.statementFuture · firstFuture · invalid · wrapperRequired` | תאריך הדוח לא יכול להיות אחרי היום. · ההפקדה הראשונה לא יכולה להיות אחרי היום. · תקנו את הערך או מחקו אותו. · בחרו סוג מוצר. | added 2026-10-24 (UX fix A15); `dateFuture` is no longer used |
 | `r3holdings.statementDisclosure.more` | עוד | added 2026-10-24 (UX fix A64): the regulator's text sits behind it, the statement's own words come first |
 | `idle.soWhat · offerUnit · offerBelow · haveDeposit · invalid` | זה כ־X ₪ בשנה, אם הכסף נשאר שם כל השנה. · התכוונתם ל־4%? הריבית כאן באחוזים לשנה, למשל 3.2. · ההצעה נמוכה ממה שהעו״ש משלם, ולכן להעביר אליה עולה לכם. · יש לכם כבר פיקדון? האתר עוד לא רושם פיקדונות. השוו את הריבית שלו לשורות כאן. · תקנו את הערך שסומן באדום כדי לראות את התוצאה. | added 2026-10-24 (UX fix A20, A59, A61) |
+| `idle.offerHint · rowNames["bank-deposit:own-offer"]` | כמו שהיא מופיעה אצלכם, באחוזים לשנה. · פיקדון לפי ההצעה שהזנתם, בחישוב לחודש | changed 2026-10-24 (scenario audit 7): the offer is no longer called a one-month deposit |
+| `idle.term` | לכמה זמן ההצעה · חודש · 3 חודשים · שנה · אחר · כמה חודשים · הזינו מספר שלם של חודשים, מ־1 עד 60. · בחרו לכמה זמן ההצעה, וכאן תראו מה היא שווה בשנה מול קרן כספית. | added 2026-10-24: the term chips, the months field, the prompt while the offer has no term |
+| `idle.verdict` | ההצעה של הבנק מול קרן כספית, לשנה · הבנק מציע ריבית של `{x}` לפיקדון של `{חודש/3 חודשים/שנה/n חודשים}`: אחרי מס כ־`{a}` בשנה. · קרן כספית ב־`{x}` (פרמטר של האתר): אחרי מס כ־`{b}` בשנה. · ההפרש: `{g}` בשנה `{לטובת הפיקדון/לטובת הקרן}` — `{מתחת לסף שהאתר קבע (P-03)/שווה לבדוק}` (הסף: `{n}`) · הפיקדון נעול עד סוף התקופה או עד תחנת היציאה; הקרן נזילה בכל יום מסחר. · החישוב מניח שפיקדון קצר מתחדש באותה ריבית עד סוף השנה. · התקופה ארוכה משנה: החישוב לוקח שנה אחת ממנה. | added 2026-10-24. "ריבית של … לפיקדון של …" so a yearly rate is not read as a monthly one |
+| `idle.taxWords` | המס, במילים · בפיקדון משלמים `{15%}` מכל הריבית, והבנק מנכה אותם במקור. · בקרן כספית פטורה משלמים `{25%}` רק מהרווח שמעבר לעליית המדד, ולכן כשהאינפלציה גבוהה חלק גדול מהתשואה פטור. · מסלול המס של כל קרן כתוב בתשקיף שלה. | added 2026-10-24, from the bank-deposit and money-market guides; chips TXI-03, TXI-07, TXS-12, TXS-07 |
+| `idle.materiality` | בסכום כזה ההפרש הוא כ־`{x}` בשנה: `{מתחת לסף שהאתר קבע (P-03)/שווה את הטרחה}` (הסף: `{n}`) | added 2026-10-24 |
+| `idle.smallSum` | בקרן כספית קונים ופודים בדרך כלל בלי סכום מינימלי, ובבנק שיש לו הסכם הפצה עם מנהל הקרן אסור לגבות עמלה על קנייה, החזקה או פדיון. | added 2026-10-24; chips MF-15, MF-26, BANK-18; shown when the yearly cost of the whole sum is under P-03's threshold |
+| `idle.anytime · anytimeHint` | הכסף צריך להיות זמין בכל רגע · אם לא תסמנו, ההשוואה המלאה תכלול גם פיקדון נעול. | added 2026-10-24, the box by the hand-off button |
+| `home.quick.already · alreadyDeposit · alreadyStudyFund · alreadyLarge` | יש לכם כבר… · פיקדון שמסתיים · קרן השתלמות נזילה · סכום גדול בלי מטרה | added 2026-10-24: a second row under the purpose chips; links to /idle-cash and /holdings, the last selects "בלי מטרה מסוימת" |
 
 ### 7.3 Track workbench page
 
@@ -1887,7 +1931,7 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 18 and the handoff in
 | Listed heading | מוצגות בלי דירוג |
 | Excluded heading | נפסלו לפי מסנן הירידה |
 | Not evaluated heading | עוד לא נבדקו |
-| Entered-return field | תשואה שנתית ב`{מטבע}` |
+| Entered-return field | תשואה שנתית במונחי שקל; האתר לא מוסיף שינוי בשער ה`{מטבע}` (שקל: תשואה שנתית במונחי שקל) · changed 2026-10-24 (review fix): the engine takes the entered return as a shekel return (A-03 = 0); was ״תשואה שנתית ב`{מטבע}`״ |
 | Return, empty | לא הוזן: האתר לא מנחש תשואה. |
 | Return, hint | הזינו את התשואה שאתם מניחים לחשיפה הזו. היא תסומן בכחול בכל מקום שבו היא משפיעה. |
 | Cash-rate line, published | ריבית הבנק, בתוקף מ־`{תאריך}` |
@@ -1949,7 +1993,9 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 18 and the handoff in
 | `r5.exposure.pageTitle` | איזו חשיפה מתאימה | the title when no goal is named |
 | `r5.exposure.headline.bareSourced` | `{חשיפה}` מתאימה למטרה הזו לפי התשואות שהזנתם ולפי ריבית הבנק שפורסמה. | the bare form with the sourced-cash qualifier |
 | `r5.exposure.headline.tieMany` | `{שמות}` שקולות למטרה הזו לפי התשואות שהזנתם: ההפרש ביניהן `{אחוז}`, פחות מסף התיקו של האתר, `{אחוז}`. | three or more tied |
-| `r5.exposure.fields.currency` | שקלים · דולרים · יורו | the `{מטבע}` of "תשואה שנתית ב`{מטבע}`" |
+| `r5.exposure.fields.currency` | שקלים · דולרים · יורו | no longer in the return label |
+| `r5.exposure.fields.currencyOne` | דולר · יורו | the `{מטבע}` of "שער ה`{מטבע}`" in the return label (2026-10-24) |
+| `r5.exposure.fields.returnLabelIls` | תשואה שנתית במונחי שקל | the label for a shekel exposure (2026-10-24) |
 | `r5.exposure.fields.cashLabel · institution` | ריבית שנתית · לפי החברה | the overriding rate field; the tag on a published bank rate (D23) · changed 2026-10-24 (Hebrew editor); was ״מוסדי״ |
 | `r5.exposure.fields.noSeriesLink` | לנתוני בנק ישראל | as the table above. Was "לנתונים של בנק ישראל" |
 | `r5.exposure.fields.worstInfo · holdingAria · holdingDone` | על ההערכה · באיזה מוצר להחזיק · סגירה | screen-reader names of the worst-fall info button and the holding-wrapper chooser, and its close |
@@ -2455,6 +2501,7 @@ Every string edit of the day, as applied to `site/app/copy.ts` (the rows above c
 | `r5.revisit.choiceStill/choiceNot` | בחרתם ב{option}; | בחרתם באפשרות {option}; | 2 · not in the tables above |
 | `r5.revisit.verdict.none` | אף אפשרות לא דורגה, גם בשמירה. | אף אפשרות לא דורגה, גם לא בזמן השמירה. | 1 |
 | `אחזקה → החזקה (holdings, fees, transfer)` | אחזק | החזק | 12 |
+| `guideBlocks.terms.valueWords.list` (added today by a fixer) | מחירון | תעריפון | 1 · not in the tables above |
 
 Also fixed outside `copy.ts` the same day, at the lead's request: "הודעו" → "הודיעו" (`site/app/lib/playbook.ts`, the employer step title), "והותק" → "והוותק" (`site/app/content/guide/keren-hishtalmut.tsx`), and מק"מ → מק״מ in the site's own prose under `site/app/content/` (26 places; glossary `Term` ids unchanged).
 
@@ -2516,3 +2563,56 @@ New strings are `r2.result.*` and `r5.exposure.*` in copy.ts, each marked `// au
 | `r5.exposure.headline.noReturn` | עדיין אין מה להשוות: הזינו תשואה לחשיפה אחת לפחות. | changed (A3), shown as the headline |
 | `r5.exposure.fields.returnFromProduct` | מההשוואה לפי מוצר | decision 16 |
 | `r5.exposure.headline.reason` / `sourcedCash` | (removed) | the reason is the "largest difference" sentence now |
+
+### 7.x Study fund that became liquid (scenario fix 2026-10-24, sc-holdings)
+
+Strings in `r3holdings` (`site/app/copy.ts`), each marked `// scenario fix 2026-10-24`. Rule ids in brackets are the chips beside the sentence.
+
+| Key | Hebrew | Note |
+|---|---|---|
+| firstDepositOver | ההפקדה הראשונה לפני יותר משש שנים (הקרן נזילה) | checkbox beside the exact date; the word "שש" is the TXH-09 wait written out |
+| firstDepositOverWhy | במקום תאריך מדויק. אם לא סימנתם, הזינו את התאריך. | shown when ticked |
+| feePrefill.balance / .deposit | ממוצע דמי הניהול מחיסכון של המסלול, כפי שהרשות מפרסמת: {ערך} לשנת {שנה}. / ...מהפקדה של המסלול: | the number is a sourced value through Num |
+| feePrefill.balanceKept / depositKept | ריק: יישמר הממוצע הזה, כנתון ממקור. | |
+| feePrefill.balanceEntered | הערך שהקלדתם יישמר במקום הממוצע. | |
+| feePrefill.cardNote | ממוצע המסלול לפי הרשות, לא בהכרח מה שאתם משלמים | under a fee on the holding card that is the stored regulator average (2026-10-24, review fix); the card's average line is then not repeated |
+| feePrefill.depositHint | אין שורה כזו בדוח? השאירו ריק. | replaces feeDepositHint when the track has a deposit average |
+| liquidity.from | נזיל מ־{תאריך} בערך (לפי סוף החודש של ההפקדה הראשונה) [TXH-09] | changed 2026-10-24 (review fix): TXH-09's first payment date is a month end; `liquidity.about` is the added phrase |
+| liquidity.notYet | עוד לא נזיל: נזיל מ־{תאריך} בערך (לפי סוף החודש של ההפקדה הראשונה) [TXH-09] | the same phrase (2026-10-24) |
+| liquidity.overBefore | נזיל: ההפקדה הראשונה הייתה לפני יותר מ־{6 שנים} [TXH-09] | years from the rule's figure |
+| liquidity.unknown | לא ידוע אם הקרן נזילה: חסר תאריך ההפקדה הראשונה. בעריכה אפשר גם לסמן שהיא הייתה לפני יותר משש שנים. | |
+| decision.heading | הקרן נזילה: מה אפשר לעשות | |
+| decision.stay | להשאיר: אין מס שנתי על הרווחים כל עוד הכסף בקרן; המס חל רק במשיכה. | [TXH-18] |
+| decision.switchTrack | להחליף מסלול באותה קופה: מעבר מסלול בתוך הקרן אינו אירוע מס ואין עליו עמלה בתקנות; חברה רשאית להעלות דמי ניהול מוזלים אחרי מעבר. | [TXH-17, PF-23, SW-15] |
+| decision.move | להעביר לחברה אחרת: עוברת כל היתרה בלבד, והוותק של הכסף נשמר. + קישור "איך עוברים" | [PF-18, SW-39] |
+| decision.withdraw | למשוך: משיכה אחרי תקופת ההמתנה פטורה ממס על הרווחים מהפקדה מוטבת, ורווחים מהפקדה מעל התקרה ממוסים; לפי הכלל לעובד: אחרי משיכה החשבון נסגר להפקדות נוספות (משיכת שליש ללימודים לא סוגרת, TXH-10). | [TXH-09, TXH-10, TXH-11] · changed 2026-10-24 (review fix) |
+| decision.fee | דמי הניהול בקרן הזו, מול הממוצע: | then the existing benchmark lines |
+| decision.exposureLink | להשוות לפי חשיפה | to /goal/compare?mode=exposure |
+
+A row whose rule is missing or open shows "שאלה פתוחה {code}" in place of its sentence.
+
+### 6.8 Scenario fix 2026-10-24 (sc-compare)
+
+Strings are `scnCompare.*` and `ownTermsCopy.*` in copy.ts, each marked `// scenario fix 2026-10-24`.
+
+| Key | Hebrew | Note |
+|---|---|---|
+| `scnCompare.limitation.text` | האתר עוד לא יכול להמליץ ל־{שנים} שנים: דורגו רק האפשרויות הנזילות, כי לא הזנתם תשואה. | First line when years are at or above P-04's equity minimum and no return is entered; links: הזינו תשואה, או שנו את מספר השנים |
+| `scnCompare.cashVerdict` | בין האפשרויות הנזילות, {שם} משאירה הכי הרבה כסף במועד המטרה. | Second line in that case |
+| `scnCompare.parameterRate` | לפי ריבית של {ריבית} שהאתר קבע ל{אפשרות}; הזינו ריבית אחרת | Leader runs on P-05 cash_rate while a rival's rate is published or entered; opens an own-rate field |
+| `scnCompare.enteredReturn` | לפי תשואה של {תשואה} שהזנתם; האתר לא יודע אם היא סבירה. [המדד נקוב בדולרים: החישוב משתמש בתשואה שהזנתם כמות שהיא, ולא מוסיף שינוי בשער הדולר מול השקל.] [מסנן הירידה לא הופעל.] | Entered return leads; the bracketed sentences when the exposure is foreign / the fall filter is unset |
+| `scnCompare.enteredReturn.sameReturn` | כל המדדים רצים על אותה תשואה שהזנתם; ההבדל ביניהם כאן הוא עמלות ומטבע. | Exposure mode, every equity exposure on the copied return |
+| `scnCompare.fitDrop` | לא מתאים לפי טבלת ההתאמה של האתר: מסלול מנייתי נחשב מתאים למי שמסכים לירידה של {ירידה} (פרמטר) | Reason of an equity option listed, not ranked, when the accepted drop is below P-04's |
+| `scnCompare.notRanked` | לא מדורג | Tag on a listed row, which shows no headline figure |
+| `scnCompare.targetCost` | לפי האפשרות המובילה, בכסף של היום: {סכום} מול {מחיר}; מספיק. / ...; חסר {פער}. | Known-date goal with a purchase cost; hidden in nominal mode · changed 2026-10-24 (review fix) |
+| `scnCompare.nextStep` | בינתיים: הכסף לא צריך לשבת בעו״ש; לפי המספרים כאן זה עולה עד {סכום} בחודש. [את ההחלטה על מניות אפשר לקבל בנפרד.] לבדיקה בעמוד המזומן הנזיל | Lump sum; F-60 over the leading cash option; the bracket when the leader is not liquid |
+| `scnCompare.realTerms` | בכסף של היום, אחרי אינפלציה של {אחוז}: {סכום} שלא גדל שווה {סכום} בעוד {n} שנים. | Real-terms line, shown in the today's-money mode |
+| `scnCompare.horizonFigures` | לשנה: {סכום}; ל־{n} שנים: {סכום}. | Appended to the "לא ידעתם כמה שנים" note |
+| `scnCompare.pick` | בחרו שתי אפשרויות להשוואה / האפשרות הראשונה / האפשרות השנייה | Picker in the why sheet |
+| `scnCompare.blockedFor` | חסום ל: {אפשרויות} ({קוד}) | Under a covered checklist row |
+| `scnCompare.headlineSome` | (לחלק מהן) | After the fields of the K-not-checked line when the fields unlock only some |
+| `scnCompare.flipAlongside` | שקולה לראשונה. | Flip that makes a sole leader share first place |
+| `scnCompare.pastRecord` | ברשומה שפורסמה (J.P. Morgan Asset Management, 1950–2025, בדולרים, לפני אינפלציה; חלונות של שנים קלנדריות, לפני עמלות ומס): התשואה השנתית של מדד S&P 500 לפי השקף נעה, בחלונות של 5 שנים, בין … (changed 2026-10-24, review fix: the slide does not say "annualised"; figure names in `mkt-01.json` now read "תשואה שנתית (לפי השקף), החלון הגרוע/הטוב ביותר של N שנים") … עבר, לא תחזית; המספרים האלה לא נכנסים לדירוג. למקור | MKT-01 figures as sourced numbers |
+| `ownTermsCopy.provider.*` | בחרתם · ספק שהתעריפון שלו ישמש בחישוב · הספקים שנאספו בעמוד הספקים, לפי מה שהאפשרות הזו משאירה בסוף. התעריפון הוא של הספק; הבחירה שלכם. · לבחור · ערוץ ישיר / סניף · לחזור לספק שהאתר בחר · בחירת האתר | Picker beside the brokerage card's fee field (sc-broker) |
+| `r4workbench.providers.useInCompare.*` | לחשב את ההשוואה לפי הספק הזה · ההשוואה שלכם רצה על הספק הזה · לחזור לספק שהאתר בחר · לתוצאות ההשוואה · אין מטרה שמורה, ולכן אין השוואה שאפשר להריץ על הספק הזה. · להגדיר מטרה | Provider row on the providers page (brokerage) |
+| `ownTermsCopy.*` | feeAbout, feeChip, fundCostLabel, feeLabel, flipBelow (מתהפך אם דמי הניהול בקרן יורדים מתחת ל־{x}), flipAbove, openMinimum (סכום המינימום: שאלה פתוחה), line.* (לפי {שם} בדמי ניהול {עלות} ותעריפון {ספק} · להחליף · לבחירת מוצר אחר · דמי ניהול שנתיים בקרן, באחוזים · לחזור לדמי הניהול של הרשומה · הנמוכים ביותר שנאספו באותה חשיפה: {עלות} · ריבית שנתית שהבנק הציע לכם · לחזור לריבית שפורסמה) | Folded in from lib/own-terms-copy.ts (sc-represent), marked scenario fix 2026-10-24 |

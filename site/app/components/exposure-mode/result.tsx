@@ -7,6 +7,7 @@ import { decompose, relativeGap } from "@finance-tool/engine";
 import type { RuleRecord } from "@finance-tool/schema";
 import { r2, r5, system } from "../../copy";
 import { AssumptionChips, AssumptionsPanel } from "../compare/assumptions";
+import { EnteredReturnCaveat, HorizonDefaultedNote } from "../compare/why";
 import { BiggestDifference } from "../compare/why";
 import { countForm } from "../../lib/compare";
 import { useValueMode } from "../../lib/mode-store";
@@ -20,7 +21,7 @@ import { ChooseButton, RevisitBanner, SaveComparisonButton, UnreadableSavedForm,
 import { forgetRevisit, useRevisit } from "../revisit/use-revisit";
 import { computed } from "../../lib/value";
 import { makeValues, runGoalOf, type CompareBundle } from "../../lib/compare";
-import { beginEdit, commitEdit, computeExposureMode, rankingInputs, stageEmpty, type ExposureResultView, type ExposureRowView, type RankStage } from "../../lib/exposure-mode";
+import { beginEdit, commitEdit, computeExposureMode, rankingInputs, seriesFor, stageEmpty, type ExposureResultView, type ExposureRowView, type RankStage } from "../../lib/exposure-mode";
 import { fmt } from "../../lib/format";
 import { useGoals, type FieldKey } from "../../lib/goal";
 import { snapshotExposure } from "../../lib/revisit";
@@ -102,10 +103,15 @@ export function ExposureHeadline({ ctx, onWhy }: { ctx: ExpCtx; onWhy: (el: HTML
       break;
     }
   }
+  // an entered return leads (scenario fix 2026-10-24): the site does not know whether it is reasonable; the currency and the fall filter are said here
+  const lead = top && top.grossReturn?.state === "entered" ? top : null;
+  const equity = view.rows.filter((r) => r.entry.record.kind === "equity_index" && r.run);
+  const sameReturn = equity.length >= 2 && equity.every((r) => r.returnFromProduct && !r.enteredReturn);
   return (
     <div className="flex flex-col gap-2 max-w-measure">
       <p className="text-lg">{body}</p>
       {reason && <p className="text-sm text-muted-foreground">{reason}</p>}
+      {lead && <EnteredReturnCaveat returnV={lead.grossReturn as never} currency={lead.entry.record.currency !== "ILS" ? lead.entry.record.currency : null} filterOff={!(lead.worstFall && lead.acceptedFall.value)} sameReturn={sameReturn} />}
       {showWhy && view.ranked.length > 1 && (
         <button type="button" onClick={(e) => onWhy(e.currentTarget)} className="text-link min-h-target self-start px-2 -ms-2 rounded-md hover:underline">
           {r2.result.why}
@@ -300,6 +306,19 @@ function marksOf(bundle: CompareBundle, view: ExposureResultView): ChecklistRowV
   });
 }
 
+/** The headline exposure's value in today's money after one year and after the years used (scenario fix 2026-10-24). */
+function exposureFigures(view: ExposureResultView, g: ReturnType<typeof runGoalOf> & object, mk: ReturnType<typeof makeValues>) {
+  const top = view.ranked[0];
+  if (!top || !top.run || g.horizonYears < 2) return null;
+  const line = seriesFor(view, g, [top.id])[0];
+  const at = (y: number) => line?.points.find((p) => p.year === y)?.real;
+  const a = at(1);
+  const b = at(g.horizonYears);
+  if (a === undefined || b === undefined) return null;
+  const run = { usedRules: top.run.rules };
+  return { a: <Num value={mk.nis(a, "F-06", r2.realLabel, run)} />, b: <Num value={mk.nis(b, "F-06", r2.realLabel, run)} /> };
+}
+
 // ---------------------------------------------------------------- the body
 
 export function ExposureBody({ bundle, data, frame, registerSave }: { bundle: CompareBundle; data: FormData; frame: (b: ReactNode) => ReactNode; registerSave?: (a: { run: () => void; again: boolean } | null) => void }) {
@@ -430,6 +449,7 @@ export function ExposureBody({ bundle, data, frame, registerSave }: { bundle: Co
         ) : (
           <ExposureHeadline ctx={ctx} onWhy={(el) => (setAnchor(el), setPopup({ kind: "why" }))} />
         )}
+        <HorizonDefaultedNote bundle={bundle} g={g} presetName={r2.presets[current!.preset] ?? ""} onChange={() => openField("horizonYears")} figures={exposureFigures(view, g, mk)} />
       </header>
 
       <div className="flex flex-col gap-section lg:grid lg:grid-cols-[3fr_2fr] lg:gap-x-12 lg:items-start">

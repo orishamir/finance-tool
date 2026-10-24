@@ -265,9 +265,14 @@ const securityTypesOf: Record<string, string[]> = {
   "money-market-fund-renewable": ["money_market_units", "mutual_fund_units"],
 };
 
+/**
+ * The list lines of a base that apply to a wrapper. Review fix 2026-10-24: lines of the direct (online) channel, and lines with no channel, come before
+ * branch lines, so the site's default tariff (the first line) is the direct one, as the providers workbench and the provider picker rank it (`channelId` defaults to "direct").
+ */
 function listLines(snap: FeesSnapshot, wrapperId: string, base: FeeLine["base"]): FeeLine[] {
   const types = securityTypesOf[wrapperId] ?? [];
-  return snap.lines.filter((l) => l.level === "list" && l.base === base && (l.applies_to.includes(wrapperId) || l.applies_to.includes("all") || l.applies_to.some((a) => types.includes(a))));
+  const rank = (l: FeeLine) => (l.channel === null || l.channel === "direct" ? 0 : 1);
+  return snap.lines.filter((l) => l.level === "list" && l.base === base && (l.applies_to.includes(wrapperId) || l.applies_to.includes("all") || l.applies_to.some((a) => types.includes(a)))).sort((a, b) => rank(a) - rank(b));
 }
 
 function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSources, missing: string[], feeValues: Record<string, SiteValue>) {

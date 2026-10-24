@@ -1,0 +1,175 @@
+{
+  "id": "5139282",
+  "names": {
+    "en": [],
+    "he": [
+      "ילין לפידות מחקה (4D) S&P 500",
+      "י.ל מחקה S&P 500"
+    ],
+    "tase": [
+      "5139282"
+    ]
+  },
+  "identifiers": {
+    "isin": "IL0051392822",
+    "tase_number": "5139282",
+    "cusip": null,
+    "ticker": {}
+  },
+  "manager": "ילין לפידות - ניהול קרנות נאמנות בע\"מ",
+  "domicile": "IL",
+  "legal_form": "קרן פתוחה, קרן מחקה (open tracking fund under the Joint Investment Trust Law 1994; bought and redeemed at the unit price through a distributor, not traded on the exchange, ETF-04); קרן בלתי מוגבלת בניירות ערך חוץ; units of 1 ₪ par value; units first offered to the public on 12.11.2024. Trustee: יובנק חברה לנאמנות בע\"מ. Short name on Maya: 'י.ל מחקה S&P 500'.",
+  "exposure_id": "index-sp500",
+  "currency": "NIS",
+  "trading_currency_on_tase": null,
+  "distribution_policy": "accumulating",
+  "tax_status": {
+    "il_fund_tax_track": "exempt",
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
+        "title": "דוח שנתי 'ילין לפידות מחקה (4D) S&P 500' (מספר בורסה 5139282), תאריך הדוח 31 דצמבר 2025, ילין לפידות - ניהול קרנות נאמנות בע\"מ (Maya filing 1725200, PDF), עמ' 1 'שכר מנהל הקרן' ופרק ההוצאות שנפרעו מנכסי הקרן",
+        "publisher": "ילין לפידות - ניהול קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13",
+        "MF-16",
+        "MF-17"
+      ],
+      "state": "sourced",
+      "notes": "Fixed management fee: p. 1 'שכר מנהל הקרן: 0% מהשווי הנקי השנתי הממוצע של נכסי הקרן' (footnote 6: the manager committed to the ISA outline not to raise its pay or the load during a calendar year; it may raise them on 01.01.2027). Load (שיעור הוספה): 'ללא תוספת הוספה'. Expense table: manager's fee 0.00% in 2025 and in 12.11.2024 to 31.12.2024; total expenses 0.02% in 2025. Main prospectus published on Magna on 14.12.2025, reference 2025-03-099273 (not opened; Magna returns 403 to scripts). ISIN read on the fund's Maya page (https://maya.tase.co.il/he/funds/mutual-funds/5139282, field 'ISIN', read in Chrome on 2026-10-24); the page states its fund data is collected from the manager's filings and not audited by TASE. The annual report itself prints no ISIN."
+    },
+    "trustee": {
+      "value": 0.02,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
+        "title": "דוח שנתי 'ילין לפידות מחקה (4D) S&P 500' (מספר בורסה 5139282), תאריך הדוח 31 דצמבר 2025, ילין לפידות - ניהול קרנות נאמנות בע\"מ (Maya filing 1725200, PDF), עמ' 1 'שכר הנאמן' ופרק ההוצאות שנפרעו מנכסי הקרן",
+        "publisher": "ילין לפידות - ניהול קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13",
+        "MF-20"
+      ],
+      "state": "sourced",
+      "notes": "Trustee fee (שכר נאמן): p. 1 '0.02% מהשווי הנקי השנתי הממוצע של נכסי הקרן'; expense table 0.02% in 2025 (0.003% for 12.11.2024 to 31.12.2024)."
+    },
+    "variable_management": {
+      "value": 0,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
+        "title": "דוח שנתי 'ילין לפידות מחקה (4D) S&P 500' (מספר בורסה 5139282), תאריך הדוח 31 דצמבר 2025, ילין לפידות - ניהול קרנות נאמנות בע\"מ (Maya filing 1725200, PDF), עמ' 1 'דמי ניהול משתנים' ופרק ההוצאות שנפרעו מנכסי הקרן",
+        "publisher": "ילין לפידות - ניהול קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-14",
+        "ETF-13"
+      ],
+      "state": "sourced",
+      "notes": "Variable management fee rate: p. 1 'שיעור דמי ניהול משתנים: 0% מהשווי הנקי של נכסי הקרן' (footnote 8). With a 0% rate the symmetric mechanism (ETF-14) pays nothing in either direction."
+    },
+    "tracking_difference_12m": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
+        "title": "דוח שנתי 'ילין לפידות מחקה (4D) S&P 500' (מספר בורסה 5139282), תאריך הדוח 31 דצמבר 2025, ילין לפידות - ניהול קרנות נאמנות בע\"מ (Maya filing 1725200, PDF), פרק 'תשואות, סטיות תקן ונתוני השוואה', 2025",
+        "publisher": "ילין לפידות - ניהול קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-08",
+        "ETF-09",
+        "ETF-10"
+      ],
+      "state": "sourced",
+      "notes": "Not printed as one number. For 2025 the report prints the fund's price return 2.98% (standard deviation 18.82) against the tracking asset (S&P 500, דולר ארה\"ב) 2.61% (standard deviation 20.56); for 13.11.2024 to 31.12.2024: -4.34% against -4.32%. The difference is not computed here (data-update rule)."
+    },
+    "median_spread": {
+      "value": null,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
+        "title": "דוח שנתי 'ילין לפידות מחקה (4D) S&P 500' (מספר בורסה 5139282), תאריך הדוח 31 דצמבר 2025, ילין לפידות - ניהול קרנות נאמנות בע\"מ (Maya filing 1725200, PDF), עמ' 1 'שיעור ההוספה'",
+        "publisher": "ילין לפידות - ניהול קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-04",
+        "MF-21"
+      ],
+      "state": "sourced",
+      "notes": "Not applicable: an open tracking fund is bought and redeemed at the unit price computed from net asset value (MF-09), with no exchange spread; the load on purchase is 'ללא תוספת הוספה' (p. 1). The distributor (bank or TASE member) may charge its own buy and sell commission (footnote 4; MF-26)."
+    },
+    "fund_level_withholding_drag": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
+        "title": "דוח שנתי 'ילין לפידות מחקה (4D) S&P 500' (מספר בורסה 5139282), תאריך הדוח 31 דצמבר 2025, ילין לפידות - ניהול קרנות נאמנות בע\"מ (Maya filing 1725200, PDF), פרק מדיניות ההשקעות (חשיפה דרך נגזרים)",
+        "publisher": "ילין לפידות - ניהול קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-11"
+      ],
+      "state": "sourced",
+      "notes": "Not collected: no computation is made here and the report prints no withholding figure; any dividend-withholding drag sits inside the pricing of the instruments the fund uses and is not published as a rate."
+    }
+  },
+  "dimensions": {
+    "fund-tax-track": "covered:TXS-24",
+    "fee-management-balance": "covered:ETF-13",
+    "distribution-policy": "covered:MF-49",
+    "currency": "covered:ETF-10",
+    "fee-trade": "covered:MF-21",
+    "protection": "covered:MF-02"
+  },
+  "prospectus": {
+    "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
+    "date": "2025-12-14"
+  },
+  "exposure_code": "4D",
+  "distribution_fee_type": "3",
+  "creation_redemption_fee_category": null,
+  "snapshot": "2026-10-24"
+}

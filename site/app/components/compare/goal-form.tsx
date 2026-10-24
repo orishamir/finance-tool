@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router";
 import { r2, r3holdings, r3transfer, values as valuesCopy } from "../../copy";
 import { fmt } from "../../lib/format";
-import { checkGoal, filledFields, pctBoundsFor, presetNumbers, reconcileEmployment, type CheckBounds, type CheckMessages, type FieldSource, type Goal, type Presets } from "../../lib/goal";
+import { checkGoal, childAgeFrom, filledFields, pctBoundsFor, presetNumbers, reconcileEmployment, type CheckBounds, type CheckMessages, type FieldSource, type Goal, type Presets } from "../../lib/goal";
 import { useGoals } from "../../lib/goal";
 import { IconCheck } from "../icons";
 import { flushPendingFields } from "../timeline/fields";
@@ -15,6 +15,8 @@ import { IconDown, IconPlus, IconUp } from "./icons";
 import { presetIds } from "../../lib/goal";
 import { AcceptedFallField } from "../exposure-mode/fields";
 import { r5 } from "../../copy";
+import { entered as enteredValue } from "../../lib/value";
+import { isoToday } from "../../lib/state";
 
 export interface Range {
   min: number;
@@ -34,6 +36,8 @@ export interface FormData {
   minMonth: string;
   /** PEN-36's text, when the rule base holds it. */
   payslipText: string | null;
+  /** P-04's equity row minimum, in years (the route adds it): below it the worst-fall field gets its hint. scenario fix 2026-10-24 */
+  equityMinYears?: number | null;
 }
 
 /** The kept-available amount above the amount now: an error on the available field, whichever of the two was edited last. */
@@ -138,12 +142,29 @@ export function GoalFields({ data }: { data: FormData }) {
   if (!current || !resolved) return null;
   const set = (k: "horizonYears" | "amountNow" | "monthly" | "available") => (n: number | null) => update((g) => ({ ...g, [k]: n === null ? { value: null, entered: false } : { value: n, entered: true } }));
   const src = resolved.source;
+  const thisYear = Number(data.minMonth.slice(0, 4));
   const horizonCheck = (n: number) => (n < 1 ? r2.form.errYears : !Number.isInteger(n) ? r2.form.errYearsWhole : n > data.horizon.max ? `${valuesCopy.errors.years[0]} ${fmt.number(data.horizon.min)} ${valuesCopy.errors.years[1]}${fmt.number(data.horizon.max)}.` : null);
   const availableCheck = (n: number) => (n < 0 ? valuesCopy.errors.negative : resolved.amountNow !== null && n > resolved.amountNow ? r2.form.errAvailable : null);
   return (
     <Card className="flex flex-col gap-5">
       <h2 className="text-xl font-semibold">{r2.form.card1}</h2>
       <NameField label={r2.form.name} value={current.name} onChange={(v) => update((g) => ({ ...g, name: v.slice(0, 80) }))} />
+      {current.preset === "child" && (
+        <div data-goal-field="childAge">
+          <GoalNumber
+            label={r2.form.childAge}
+            unit="years"
+            value={current.childAge ?? null}
+            source={current.childAge == null ? "empty" : "entered"}
+            onChange={(n) => update((g) => ({ ...g, childAge: n === null ? null : childAgeFrom(n, thisYear) }))}
+            validate={(n) => (childAgeFrom(n, thisYear) === null ? r2.form.errChildAge : null)}
+            hint={r2.form.childAgeHint}
+            note={current.childAge == null ? <span className="text-xs text-muted-foreground">{r2.form.childAgeEmpty}</span> : undefined}
+            inputMode="numeric"
+            bare={current.childAge == null}
+          />
+        </div>
+      )}
       <div data-goal-field="years">
       <GoalSlider label={r2.form.years} unit="years" value={resolved.horizonYears} source={src.horizonYears} presetValue={resolved.preset.horizon} onChange={set("horizonYears")} validate={horizonCheck} min={data.horizon.min} max={data.horizon.max} step={data.horizon.step} inputMode="numeric" />
       </div>
@@ -151,6 +172,18 @@ export function GoalFields({ data }: { data: FormData }) {
         <GoalNumber label={r2.form.amountNow} unit="nis" value={resolved.amountNow} source={src.amountNow} onChange={set("amountNow")} validate={nonNegative} />
       </div>
       <GoalSlider label={r2.form.monthly} unit="nis_per_month" value={resolved.monthly} source={src.monthly} presetValue={resolved.preset.monthly} onChange={set("monthly")} validate={nonNegative} min={data.monthly.min} max={data.monthly.max} step={data.monthly.step} />
+      {current.preset === "known-date" && (
+        <GoalNumber
+          label={r2.form.targetCost}
+          unit="nis"
+          value={typeof current.targetCost?.value === "number" ? current.targetCost.value : null}
+          source={current.targetCost ? "entered" : "empty"}
+          onChange={(n) => update((g) => ({ ...g, targetCost: n === null ? null : enteredValue(Math.round(n), "nis", isoToday()) }))}
+          validate={nonNegative}
+          hint={r2.form.targetCostHint}
+        />
+      )}
+      <p className="text-sm text-muted-foreground max-w-measure">{r2.form.couple}</p>
       <div className="flex flex-col gap-4 md:grid md:grid-cols-[1fr_11rem] md:gap-3 md:items-start">
         <GoalNumber label={r2.form.available} unit="nis" value={resolved.available} source={src.available} presetValue={resolved.available} onChange={set("available")} validate={availableCheck} externalError={availableTooBig(resolved)} hint={r2.form.availableHint} />
         <div>
@@ -172,6 +205,11 @@ export function GoalFields({ data }: { data: FormData }) {
           </span>
         </Callout>
         <AcceptedFallField />
+        {data.equityMinYears != null && resolved.horizonYears !== null && resolved.horizonYears < data.equityMinYears && (
+          <p className="text-sm text-muted-foreground max-w-measure" data-worst-fall-short>
+            {r2.form.worstFallShort.before} <bdi>{fmt.number(resolved.horizonYears)}</bdi> {r2.form.worstFallShort.after}
+          </p>
+        )}
       </div>
     </Card>
   );

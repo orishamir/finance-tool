@@ -1,0 +1,185 @@
+{
+  "id": "MKT-01",
+  "title": "S&P 500 historical total-return ranges by holding length, calendar years 1950–2025, nominal, in U.S. dollars, as published on one slide (J.P. Morgan Asset Management, Guide to the Markets – U.S., 4Q 2026, slide 60): a past record, not a forecast, never an input to any ranking",
+  "title_he": "טווחי תשואה היסטוריים של מדד S&P 500 לפי אורך ההחזקה (רשומה שפורסמה)",
+  "strength": "secondary",
+  "dimensions": [],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-15",
+  "figures": {
+    "rolling_1y_min": {
+      "value": -37,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://am.jpmorgan.com/content/dam/jpm-am-aem/global/en/insights/market-insights/guide-to-the-markets/mi-guide-to-the-markets-us.pdf",
+        "title": "J.P. Morgan Asset Management, Guide to the Markets – U.S., 4Q 2026 (data as of September 30, 2026), slide 60 \"Time, diversification and the volatility of returns\", chart \"Range of stock, bond and blended total returns\", Stocks bar, 1yr, lowest value",
+        "publisher": "J.P. Morgan Asset Management",
+        "strength": "secondary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "1950-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "MKT-01"
+      ],
+      "state": "sourced",
+      "notes": "Slide 60 prints -37% below the green \"Stocks\" bar of the \"1yr\" group (PDF page 60, rendered and read 2026-10-24; the PDF at this URL serves the current edition, here 4Q 2026, 71 pages, \"As of September 30, 2026\"). Chart title \"Range of stock, bond and blended total returns\", subtitle \"Annual total returns, 1950 - 2025\"; footer: \"Source: Bloomberg, FactSet, Federal Reserve, Standard & Poor's, Strategas/Ibbotson, J.P. Morgan Asset Management. Returns shown are based on calendar year returns from 1950 to 2025. Stocks: S&P 500\". Nominal, in U.S. dollars, total return (dividends included), before fees and tax. The slide does not print the word \"annualised\": the 5-, 10- and 20-year bars are the annual return over each rolling window, as the chart's \"Annual total returns\" title and its \"rolling\" axis labels state. A past record, not a forecast; it never enters a ranking, a sensitivity run or a projection (D9, D11). Terms: the guide's FAQ page (https://am.jpmorgan.com/us/en/asset-management/adv/insights/market-insights/guide-to-the-markets/, read 2026-10-24): \"In addition to the slides used, also include the specific disclosure pages at the back of the book. Slides taken from any of these books may not be changed or altered in any way, the J.P. Morgan Asset Management branding must not be removed, and the firm must receive credit for the information presented. Always work from the most current quarterly edition before sharing.\" Back page of the PDF: \"Copyright 2026 JPMorgan Chase & Co. All rights reserved\". A single published figure quoted with attribution (D22); the chart itself is not redrawn. Period covered: calendar years 1950–2025 (the slide's window); effective_to is null because the figure is a published past record, not a rule with an expiry (lead, 2026-10-24)."
+    },
+    "rolling_1y_max": {
+      "value": 52,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://am.jpmorgan.com/content/dam/jpm-am-aem/global/en/insights/market-insights/guide-to-the-markets/mi-guide-to-the-markets-us.pdf",
+        "title": "J.P. Morgan Asset Management, Guide to the Markets – U.S., 4Q 2026 (data as of September 30, 2026), slide 60 \"Time, diversification and the volatility of returns\", chart \"Range of stock, bond and blended total returns\", Stocks bar, 1yr, highest value",
+        "publisher": "J.P. Morgan Asset Management",
+        "strength": "secondary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "1950-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "MKT-01"
+      ],
+      "state": "sourced",
+      "notes": "Slide 60 prints 52% above the green \"Stocks\" bar of the \"1yr\" group (PDF page 60, read 2026-10-24). Same chart, period, basis and terms as rolling_1y_min. Period covered: calendar years 1950–2025 (the slide's window); effective_to is null because the figure is a published past record, not a rule with an expiry (lead, 2026-10-24)."
+    },
+    "rolling_5y_min": {
+      "value": -2,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://am.jpmorgan.com/content/dam/jpm-am-aem/global/en/insights/market-insights/guide-to-the-markets/mi-guide-to-the-markets-us.pdf",
+        "title": "J.P. Morgan Asset Management, Guide to the Markets – U.S., 4Q 2026 (data as of September 30, 2026), slide 60 \"Time, diversification and the volatility of returns\", chart \"Range of stock, bond and blended total returns\", Stocks bar, 5yr rolling, lowest value",
+        "publisher": "J.P. Morgan Asset Management",
+        "strength": "secondary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "1950-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "MKT-01"
+      ],
+      "state": "sourced",
+      "notes": "Slide 60 prints -2% below the green \"Stocks\" bar of the \"5yr rolling\" group (PDF page 60, read 2026-10-24). Same chart, period, basis and terms as rolling_1y_min. Period covered: calendar years 1950–2025 (the slide's window); effective_to is null because the figure is a published past record, not a rule with an expiry (lead, 2026-10-24)."
+    },
+    "rolling_5y_max": {
+      "value": 29,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://am.jpmorgan.com/content/dam/jpm-am-aem/global/en/insights/market-insights/guide-to-the-markets/mi-guide-to-the-markets-us.pdf",
+        "title": "J.P. Morgan Asset Management, Guide to the Markets – U.S., 4Q 2026 (data as of September 30, 2026), slide 60 \"Time, diversification and the volatility of returns\", chart \"Range of stock, bond and blended total returns\", Stocks bar, 5yr rolling, highest value",
+        "publisher": "J.P. Morgan Asset Management",
+        "strength": "secondary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "1950-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "MKT-01"
+      ],
+      "state": "sourced",
+      "notes": "Slide 60 prints 29% above the green \"Stocks\" bar of the \"5yr rolling\" group (PDF page 60, read 2026-10-24). Same chart, period, basis and terms as rolling_1y_min. Period covered: calendar years 1950–2025 (the slide's window); effective_to is null because the figure is a published past record, not a rule with an expiry (lead, 2026-10-24)."
+    },
+    "rolling_10y_min": {
+      "value": -1,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://am.jpmorgan.com/content/dam/jpm-am-aem/global/en/insights/market-insights/guide-to-the-markets/mi-guide-to-the-markets-us.pdf",
+        "title": "J.P. Morgan Asset Management, Guide to the Markets – U.S., 4Q 2026 (data as of September 30, 2026), slide 60 \"Time, diversification and the volatility of returns\", chart \"Range of stock, bond and blended total returns\", Stocks bar, 10yr rolling, lowest value",
+        "publisher": "J.P. Morgan Asset Management",
+        "strength": "secondary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "1950-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "MKT-01"
+      ],
+      "state": "sourced",
+      "notes": "Slide 60 prints -1% below the green \"Stocks\" bar of the \"10yr rolling\" group (PDF page 60, read 2026-10-24). Same chart, period, basis and terms as rolling_1y_min. Period covered: calendar years 1950–2025 (the slide's window); effective_to is null because the figure is a published past record, not a rule with an expiry (lead, 2026-10-24)."
+    },
+    "rolling_10y_max": {
+      "value": 20,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://am.jpmorgan.com/content/dam/jpm-am-aem/global/en/insights/market-insights/guide-to-the-markets/mi-guide-to-the-markets-us.pdf",
+        "title": "J.P. Morgan Asset Management, Guide to the Markets – U.S., 4Q 2026 (data as of September 30, 2026), slide 60 \"Time, diversification and the volatility of returns\", chart \"Range of stock, bond and blended total returns\", Stocks bar, 10yr rolling, highest value",
+        "publisher": "J.P. Morgan Asset Management",
+        "strength": "secondary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "1950-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "MKT-01"
+      ],
+      "state": "sourced",
+      "notes": "Slide 60 prints 20% above the green \"Stocks\" bar of the \"10yr rolling\" group (PDF page 60, read 2026-10-24). Same chart, period, basis and terms as rolling_1y_min. Period covered: calendar years 1950–2025 (the slide's window); effective_to is null because the figure is a published past record, not a rule with an expiry (lead, 2026-10-24)."
+    },
+    "rolling_20y_min": {
+      "value": 6,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://am.jpmorgan.com/content/dam/jpm-am-aem/global/en/insights/market-insights/guide-to-the-markets/mi-guide-to-the-markets-us.pdf",
+        "title": "J.P. Morgan Asset Management, Guide to the Markets – U.S., 4Q 2026 (data as of September 30, 2026), slide 60 \"Time, diversification and the volatility of returns\", chart \"Range of stock, bond and blended total returns\", Stocks bar, 20yr rolling, lowest value",
+        "publisher": "J.P. Morgan Asset Management",
+        "strength": "secondary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "1950-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "MKT-01"
+      ],
+      "state": "sourced",
+      "notes": "Slide 60 prints 6% below the green \"Stocks\" bar of the \"20yr rolling\" group (PDF page 60, read 2026-10-24). Same chart, period, basis and terms as rolling_1y_min. Period covered: calendar years 1950–2025 (the slide's window); effective_to is null because the figure is a published past record, not a rule with an expiry (lead, 2026-10-24)."
+    },
+    "rolling_20y_max": {
+      "value": 18,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://am.jpmorgan.com/content/dam/jpm-am-aem/global/en/insights/market-insights/guide-to-the-markets/mi-guide-to-the-markets-us.pdf",
+        "title": "J.P. Morgan Asset Management, Guide to the Markets – U.S., 4Q 2026 (data as of September 30, 2026), slide 60 \"Time, diversification and the volatility of returns\", chart \"Range of stock, bond and blended total returns\", Stocks bar, 20yr rolling, highest value",
+        "publisher": "J.P. Morgan Asset Management",
+        "strength": "secondary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "1950-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "MKT-01"
+      ],
+      "state": "sourced",
+      "notes": "Slide 60 prints 18% above the green \"Stocks\" bar of the \"20yr rolling\" group (PDF page 60, read 2026-10-24). Same chart, period, basis and terms as rolling_1y_min. Period covered: calendar years 1950–2025 (the slide's window); effective_to is null because the figure is a published past record, not a rule with an expiry (lead, 2026-10-24)."
+    }
+  },
+  "text": "These eight figures come from one published slide: J.P. Morgan Asset Management, Guide to the Markets – U.S., 4Q 2026 (data as of 30 September 2026), slide 60, \"Time, diversification and the volatility of returns\". They are the lowest and highest annual total return of the S&P 500 over windows of 1, 5, 10 and 20 calendar years, based on calendar-year returns from 1950 to 2025. They are the past record of a U.S. index in U.S. dollars, nominal (before inflation), total return (dividends included), before fees and tax, over calendar-year windows, as the publisher drew them from Standard & Poor's data. They are not a forecast of any return, they do not enter any ranking, sensitivity run or projection on the site (D9), and they do not replace the return and the largest fall the person enters (D9, D11); an Israeli saver holds the index through a shekel fund, so the exchange rate and the fund's costs change the record. The publisher's disclosure page adds that past performance and yields are not reliable indicators of current and future results.",
+  "text_he": "שמונת המספרים ברשומה הזו לקוחים משקף אחד שפרסם J.P. Morgan Asset Management במדריך Guide to the Markets – U.S. לרבעון הרביעי של 2026 (נתונים נכון ל-30 בספטמבר 2026), שקף 60, \"Time, diversification and the volatility of returns\": התשואה השנתית הנמוכה ביותר והגבוהה ביותר של מדד S&P 500 בחלונות של שנה, 5 שנים, 10 שנים ו-20 שנים קלנדריות, על פי תשואות השנים הקלנדריות 1950 עד 2025. זו הרשומה של העבר של מדד אמריקני, בדולרים, במונחים נומינליים (לפני אינפלציה), בתשואה כוללת (כולל דיבידנדים), לפני עמלות ומס, בחלונות של שנים קלנדריות, כפי שהמפרסם חישב אותה מנתוני Standard & Poor's. המספרים אינם תחזית של תשואה, אינם נכנסים לשום דירוג, בדיקת רגישות או תחזית באתר, ואינם מחליפים את התשואה ואת הירידה הגדולה ביותר שאתם מזינים בעצמכם; חוסך ישראלי מחזיק את המדד דרך קרן שקלית, ולכן שער הדולר ועלויות הקרן משנים את הרשומה. עמוד הגילוי של המפרסם מוסיף שביצועי העבר אינם מדד מהימן לתוצאות בהווה ובעתיד.",
+  "figure_names_he": {
+    "rolling_1y_min": "תשואה שנתית (לפי השקף), השנה הקלנדרית הגרועה ביותר",
+    "rolling_1y_max": "תשואה שנתית (לפי השקף), השנה הקלנדרית הטובה ביותר",
+    "rolling_5y_min": "תשואה שנתית (לפי השקף), החלון הגרוע ביותר של 5 שנים",
+    "rolling_5y_max": "תשואה שנתית (לפי השקף), החלון הטוב ביותר של 5 שנים",
+    "rolling_10y_min": "תשואה שנתית (לפי השקף), החלון הגרוע ביותר של 10 שנים",
+    "rolling_10y_max": "תשואה שנתית (לפי השקף), החלון הטוב ביותר של 10 שנים",
+    "rolling_20y_min": "תשואה שנתית (לפי השקף), החלון הגרוע ביותר של 20 שנים",
+    "rolling_20y_max": "תשואה שנתית (לפי השקף), החלון הטוב ביותר של 20 שנים"
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-24"
+}

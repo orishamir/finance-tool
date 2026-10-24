@@ -4,12 +4,14 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { DepositTerms, FeesSnapshot, ParameterRecord, RuleRecord, ValueObject, WrapperId, WrapperRecord } from "@finance-tool/schema";
-import type { InstrumentTerms } from "@finance-tool/engine";
+import { buildTariff as engineTariff, type InstrumentTerms, type WorkbenchInput } from "@finance-tool/engine";
 import { loadChecklistRows, loadCma, loadCmaFees, loadFees, loadNotCovered, loadParameters, loadRules, loadWrappers, root, today } from "./data.server";
 import { buildInstrumentTerms, loadDepositTerms, loadExposures, loadFunds, regulatorAverageFees } from "./instruments.server";
-import { evaluate, type BundleDataFile, type CompareBundle, type ExposureEntry, type Family, type HoldingTerms, type RunGoal, type Tier2Row, type WrapperEntry } from "./compare";
+import { evaluate, representativeFeeValue, type BundleDataFile, type ProviderTariff, type CompareBundle, type ExposureEntry, type Family, type HoldingTerms, type RunGoal, type Tier2Row, type WrapperEntry } from "./compare";
 import type { FitTableData } from "./fit";
-import type { SiteValue } from "./value";
+import { computed, type SiteValue } from "./value";
+import { BROKERAGE, providersOf } from "./providers";
+import { latestSnapshots } from "./providers.server";
 
 const familyById: Partial<Record<WrapperId, Family>> = {
   "kupat-gemel-lehashkaa": "provident",
@@ -164,6 +166,76 @@ function representativeOf(
   return { name, ...(provider ? { provider } : {}) };
 }
 
+
+/**
+ * The brokerage wrapper's choice of provider (2026-10-24): the tariff of every bank and broker snapshot the providers workbench
+ * ranks (the same latest snapshots, the same `providersOf`), read by the engine's own tariff step (F-63's `buildTariff`) for the
+ * fund class the representative is, so a chosen provider's run reads the same lines the workbench ranks. The channel is the
+ * workbench's default, direct, and the branch one only where the snapshot has no direct trade line. FX is left out as it is in the
+ * run (a fund in shekels). A provider whose snapshot is missing, ambiguous or has no trade line is left out. Only the lines the
+ * run reads are kept, each as its record's value object.
+ */
+function providerTariffs(wrapperId: string, instrumentClass: string): Record<string, ProviderTariff> {
+  const out: Record<string, ProviderTariff> = {};
+  for (const snap of providersOf({ snapshots: latestSnapshots() }, wrapperId)) {
+    if (snap.missing) continue;
+    for (const channel of ["direct", "branch"]) {
+      let built: ReturnType<typeof engineTariff>;
+      try {
+        built = engineTariff({ instrumentClass, wrapper: wrapperId, channel } as WorkbenchInput, { snapshot: snap, level: "list" }, snap);
+      } catch {
+        break;
+      }
+      if (built.noLine.includes("trade") || !built.tariff.buy) continue;
+      const feeValues: Record<string, SiteValue> = {};
+      for (const id of built.linesUsed) {
+        const l = snap.lines.find((x) => x.id === id);
+        if (!l) continue;
+        const bound = (v: ValueObject | null | undefined) => (v && typeof v.value === "number" ? { ...v } : undefined);
+        if (l.base === "trade") {
+          feeValues.tradeRate = { ...l.rate };
+          const lo = bound(l.min), hi = bound(l.max);
+          if (lo) feeValues.tradeMin = lo;
+          if (hi) feeValues.tradeMax = hi;
+        } else if (l.base === "custody") {
+          feeValues.custodyRate = { ...l.rate };
+          const lo = bound(l.min), hi = bound(l.max);
+          if (lo) feeValues.custodyMin = lo;
+          if (hi) feeValues.custodyMax = hi;
+        } else if (l.base === "fixed_period" && built.tariff.monthlyFee !== undefined) {
+          feeValues.monthlyFee = l.rate.unit === "nis_per_month" ? { ...l.rate } : { ...l.rate, value: built.tariff.monthlyFee, unit: "nis_per_month", state: "computed" };
+        }
+      }
+      out[snap.id] = { name: snap.provider.name_he, channel, tariff: built.tariff as ProviderTariff["tariff"], feeValues };
+      break;
+    }
+  }
+  return out;
+}
+
+/**
+ * The lowest in-fund cost (fixed and variable management and trustee, the same measure as the run's fee) among the fund records
+ * collected for the exposure the wrapper's fund stands for (2026-10-24); undefined when the wrapper holds no fund or no record states a cost.
+ */
+function classMinFee(spec: { fund?: string | number } | undefined, funds: ReturnType<typeof loadFunds>, today: string): SiteValue | undefined {
+  if (spec?.fund === undefined) return undefined;
+  const rep = funds.find((f) => f.id === String(spec.fund));
+  const exposure = (rep as { exposure_id?: string } | undefined)?.exposure_id;
+  if (!rep || !exposure) return undefined;
+  let best: { total: number; lines: Record<string, SiteValue>; id: string } | null = null;
+  for (const f of funds.filter((x) => (x as { exposure_id?: string }).exposure_id === exposure)) {
+    const lines: Record<string, SiteValue> = {};
+    for (const k of ["fixed_management", "variable_management", "trustee"] as const) {
+      const v = f.fees[k];
+      if (v && typeof v.value === "number") lines[`${f.id} ${k}`] = { ...v };
+    }
+    if (Object.keys(lines).length === 0) continue;
+    const total = Object.values(lines).reduce((sum, v) => sum + (v.value as number), 0);
+    if (!best || total < best.total) best = { total, lines, id: f.id };
+  }
+  return best ? computed(best.total, "pct_per_year", "A-06", best.lines, { today, about: `הנמוכה ביותר שנאספה באותה חשיפה (${best.id})` }) : undefined;
+}
+
 /** Wrappers whose fund (and so whose terms) depend on the exposure they hold: the fund collected for the exposure (`exposure_id`) gives the terms. */
 const fundHoldingWrappers: WrapperId[] = ["brokerage-account", "money-market-fund-daily", "money-market-fund-renewable"];
 
@@ -231,6 +303,15 @@ function dataFileVersions(): BundleDataFile[] {
   return out;
 }
 
+/** MKT-01 (scenario fix 2026-10-24): the published past record of the S&P 500 by holding length; its figures go to the page as they are and feed no run. */
+function pastRecord(allRules: Record<string, RuleRecord>): CompareBundle["pastRecord"] {
+  const r = allRules["MKT-01"];
+  if (!r) return null;
+  const figures = Object.fromEntries(Object.entries(r.figures ?? {}).map(([k, v]) => [k, v as unknown as SiteValue]));
+  const any = Object.values(figures)[0];
+  return { rule: { id: r.id }, figures, source: { url: any?.source.url ?? "", title: any?.source.publisher ?? "" } };
+}
+
 export function buildCompareBundle(): CompareBundle {
   const t = today();
   const allRules = loadRules();
@@ -259,6 +340,34 @@ export function buildCompareBundle(): CompareBundle {
     const rep = repOf(record.id);
     return { ...base, terms: built.terms, feeValues: built.feeValues, ...(rate ? { cashRate: rate } : {}), ...(range ? { cashRange: range } : {}), ...(rep ? { representative: rep } : {}) };
   });
+  // review fix 2026-10-24: what P-04 judges each wrapper's run by (see `WrapperEntry.fitBasis`)
+  for (const w of wrappers) {
+    const spec = p05.instruments?.[w.id] as { track?: string | number; fund?: string | number } | undefined;
+    if (spec?.track !== undefined) {
+      const t = cmaTracks.find((x) => x.fundId === Number(spec.track));
+      if (t) w.fitBasis = { track: { specialization: t.specialization, subSpecialization: t.subSpecialization, classification: t.classification } };
+    } else if (spec?.fund !== undefined) {
+      const f = sources.funds.find((x) => x.id === String(spec.fund)) as { exposure_id?: string } | undefined;
+      const e = loadExposures().find((x) => x.id === f?.exposure_id);
+      if (e?.kind === "equity_index") w.fitBasis = { equity: true };
+    }
+  }
+  for (const w of wrappers) {
+    if (!w.representative) continue;
+    const fee = representativeFeeValue(w, t);
+    const min = classMinFee(p05.instruments?.[w.id] as never, sources.funds, t);
+    const named = p05.instruments?.[w.id]?.tariff;
+    // the channel of the trade line the site's own tariff read: the list trade line whose rate and minimum are the ones the run takes
+    const rate = w.feeValues.tradeRate?.value;
+    const snap = named ? latestSnapshots().find((x) => x.id === named) : undefined;
+    const channel = snap?.lines.find((l) => l.level === "list" && l.base === "trade" && l.rate.value === rate && (w.feeValues.tradeMin === undefined || l.min?.value === w.feeValues.tradeMin.value))?.channel;
+    w.representative = { ...w.representative, ...(fee ? { fee } : {}), ...(min ? { classMinFee: min } : {}), ...(named ? { providerId: named } : {}), ...(channel ? { channel } : {}) };
+  }
+  for (const w of wrappers) {
+    if (w.id !== BROKERAGE || !w.terms) continue;
+    const providers = providerTariffs(w.id, "etf_units");
+    if (Object.keys(providers).length > 0) w.providers = providers;
+  }
   for (const w of wrappers) for (const m of w.missing) console.log(`[compare] ${w.id}: no terms: ${m}`);
 
   const tier2 = tier2List();
@@ -268,8 +377,8 @@ export function buildCompareBundle(): CompareBundle {
 
   // ---- the rules a run may read: found by running the comparison over the profiles above with every rule at hand,
   // plus every rule the wrapper records cite (reasons and chips link to them) and the two the screens quote.
-  const draft: CompareBundle = { runDate: t, wrappers, parameters, tier2, rules: Object.values(allRules), checklist, cashLink: cashLink(), exposures, exposureTerms, dataFiles, site: { version: `r5-${t}`, data: `bundle-${t}` } };
-  const needed = new Set<string>(["PEN-36", "BANK-22"]);
+  const draft: CompareBundle = { runDate: t, wrappers, parameters, tier2, rules: Object.values(allRules), checklist, cashLink: cashLink(), exposures, exposureTerms, dataFiles, site: { version: `r5-${t}`, data: `bundle-${t}` }, fit: fitTable(), pastRecord: pastRecord(allRules) };
+  const needed = new Set<string>(["PEN-36", "BANK-22", "MKT-01"]);
   for (const w of wrappers) collectRuleIds(w.record).forEach((id) => needed.add(id));
   for (const w of wrappers) for (const f of Object.values(w.feeValues)) (f.rule_ids ?? []).forEach((id) => needed.add(id));
   for (const e of exposures) (e.record.rule_ids ?? []).forEach((id) => needed.add(id));

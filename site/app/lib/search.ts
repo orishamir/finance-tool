@@ -15,6 +15,11 @@ export function normalize(text: string): string {
     .toLowerCase();
 }
 
+/** Phrases people type that name a task, not a product, with the page that does the task (scenario audit 2026-10-24, 7): shown as pages. */
+export const pageAliases: { href: string; line: string; names: string[] }[] = [
+  { href: "/idle-cash", line: "כסף שיושב בעו״ש · בדיקת הצעה מהבנק", names: ["לחדש פיקדון", "פיקדון מסתיים", "הצעה מהבנק", "הצעה לחידוש פיקדון", "כסף שיושב בעו״ש"] },
+];
+
 export type SearchKind = "product" | "track" | "term" | "guide" | "bank" | "company" | "notcovered";
 
 export interface SearchEntry {

@@ -30,6 +30,8 @@ const quotedRules = [
   "BANK-32", "BRK-37",
   // a study-fund payslip with an employer part above TXH-01's limit runs F-52 (2026-10-24): the rules that run reads
   "TXH-01", "TXH-02", "TXH-03", "TXH-08", "TXH-11", "TXG-02", "TXG-35",
+  // the decision block of a liquid study fund (scenario fix 2026-10-24)
+  "TXH-17", "TXH-18", "PF-23", "PF-18", "KH-14", "KH-15",
 ];
 
 /** The glossary rows whose other spellings the statement disclosure lists (copy 7.2 "מילים שתפגשו"). */

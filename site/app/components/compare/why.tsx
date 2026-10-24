@@ -1,16 +1,23 @@
 // "X is best because Y" (design-system 6.4, flow 14): the headline built from the deciding formula's pattern,
 // the sheet that sets the top two side by side, and the detail of one option.
-import { Fragment, type ReactNode } from "react";
+import { Fragment, useMemo, useState, type ReactNode } from "react";
 import { Link } from "react-router";
-import { r2 } from "../../copy";
-import { asParameter, countPhrase, decidingFormulaOf, grossReturnRow, headlineState, parameterOf, type Breakdown, type HeadlineState, type ListedOption, type RankedOption, type SensitivityView } from "../../lib/compare";
+import { r2, scnCompare, values as valuesCopy } from "../../copy";
+import { fmt } from "../../lib/format";
+import type { FitTableData } from "../../lib/fit";
+import { showsHorizonHonestLine } from "../../lib/quick-goal";
+import { buildIdle } from "../../lib/idle";
+import { shortfall } from "../../lib/goal";
+import { rankCandidates } from "@finance-tool/engine";
+import { enteredLead, goalValueObjects, asParameter, countPhrase, decidingFormulaOf, equityFit, grossReturnRow, headlineState, limitationFirst, parameterOf, parameterRateLead, realOfIdle, type Breakdown, type HeadlineState, type ListedOption, type RankedOption, type SensitivityView } from "../../lib/compare";
 import type { FieldKey } from "../../lib/goal";
 import { Tpl } from "../exposure-mode/tpl";
 import { FlipSentence } from "./sensitivity";
+import { NumberField } from "../timeline/fields";
 import { relativeGap } from "@finance-tool/engine";
-import { IconAlert, IconCheck } from "../icons";
+import { IconAlert, IconCheck, IconExternal } from "../icons";
 import { Num, RulesLine } from "../provenance";
-import { Callout, Tag, cx } from "../ui";
+import { Button, Callout, Tag, cx } from "../ui";
 import type { ResultCtx } from "./ctx";
 
 const NameLink = ({ id, name }: { id: string; name: string }) => (
@@ -87,21 +94,156 @@ export function UnevaluatedLine({ state, onField }: { state: HeadlineState; onFi
           )}
         </Fragment>
       ))}
+      {state.fixable < state.unevaluated && <> {scnCompare.headlineSome}</>}
+    </p>
+  );
+}
+
+/** The line with its sentence's Hebrew prefix kept apart from a name ("ל" + name): the name is isolated. */
+const pctError = (n: number) => (n < 0 || n > 50 ? `${valuesCopy.errors.pct[0]} 0 ${valuesCopy.errors.pct[1]}50.` : null);
+
+/** The limitation first (scenario fix 2026-10-24): the years are long enough for shares by P-04, no return is entered, so only the liquid options were ranked. */
+function LimitationLine({ ctx, onField }: { ctx: ResultCtx; onField: (f: FieldKey) => void }) {
+  const t = scnCompare.limitation;
+  return (
+    <div className="flex flex-col gap-1" data-limitation-first>
+      <p className="text-lg font-medium">
+        <Tpl t={t.text} vars={{ years: <Num value={goalValueObjects(ctx.bundle, ctx.g).horizon} display={fmt.number(ctx.g.horizonYears)} /> }} />
+      </p>
+      <p className="text-sm flex flex-wrap items-center gap-x-4">
+        <button type="button" className="text-link min-h-9 inline-flex items-center hover:underline" onClick={() => onField("return")}>
+          {t.enterReturn}
+        </button>
+        <button type="button" className="text-link min-h-9 inline-flex items-center hover:underline" onClick={() => onField("horizonYears")}>
+          {t.orYears}
+        </button>
+      </p>
+    </div>
+  );
+}
+
+/** The leader runs on a site parameter rate while a rival's rate is sourced or entered: say so, with the control to enter another rate (scenario fix 2026-10-24). */
+function ParameterRateLine({ ctx }: { ctx: ResultCtx }) {
+  const lead = parameterRateLead(ctx.view, ctx.bundle, ctx.g);
+  const [open, setOpen] = useState(false);
+  if (!lead) return null;
+  const own = ctx.g.ownRates?.[lead.id];
+  const t = scnCompare.parameterRate;
+  return (
+    <div className="flex flex-col gap-1.5 text-sm" data-parameter-rate>
+      <p className="flex flex-wrap items-center gap-x-1.5">
+        <Tpl t={t.text} vars={{ rate: <Num value={lead.rate} />, name: <bdi>{lead.name}</bdi> }} />
+        {!open && (
+          <button type="button" className="text-link min-h-9 inline-flex items-center hover:underline" onClick={() => setOpen(true)}>
+            {t.enter}
+          </button>
+        )}
+      </p>
+      {open && (
+        <div className="max-w-xs">
+          <NumberField label={t.label} unit="pct_per_year" value={own ?? null} isEntered={own !== undefined} validate={pctError} onCommit={(n) => ctx.setOwnRate?.(lead.id, n)} onReset={() => ctx.setOwnRate?.(lead.id, undefined)} optional />
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** The currency caution and the fall filter, as words: used by product mode and exposure mode (scenario fix 2026-10-24). */
+export function EnteredReturnCaveat({ returnV, currency, filterOff, sameReturn }: { returnV: ValueObjectLike; currency: string | null; filterOff: boolean; sameReturn?: boolean }) {
+  const t = scnCompare.enteredReturn;
+  return (
+    <div className="flex flex-col gap-1 text-sm" data-entered-return>
+      <p>
+        <Tpl t={t.text} vars={{ r: <Num value={returnV as never} /> }} />
+        {currency && (
+          <>
+            {" "}
+            <Tpl t={t.currency} vars={{ inCurrency: scnCompare.currencyIn[currency] ?? `ב־${currency}`, rate: scnCompare.currencyRate[currency] ?? `בשער ה־${currency}` }} />
+          </>
+        )}
+        {filterOff && <> {t.filterOff}</>}
+      </p>
+      {sameReturn && <p>{t.sameReturn}</p>}
+    </div>
+  );
+}
+type ValueObjectLike = Parameters<typeof Num>[0]["value"];
+
+/** A known-date goal's purchase cost against the leader's value in today's money (scenario fix 2026-10-24); it enters no ranking. */
+function TargetCostLine({ ctx }: { ctx: ResultCtx }) {
+  const { targetCost, view, mk, mode } = ctx;
+  const top = view.ranked[0];
+  // review fix 2026-10-24: the figure is in today's money (real), so the line is hidden in nominal mode, as RealTermsLine is
+  if (mode !== "real" || !targetCost || typeof targetCost.value !== "number" || !top) return null;
+  const about = r2.realLabel;
+  const sf = shortfall(targetCost.value, top.real);
+  const t = scnCompare.targetCost;
+  const value = <Num value={mk.nis(top.real, "F-06", about, top)} />;
+  const cost = <Num value={targetCost} />;
+  return (
+    <p className="text-sm" data-target-cost>
+      {sf.enough ? <Tpl t={t.enough} vars={{ value, cost }} /> : <Tpl t={t.short} vars={{ value, cost, gap: <Num value={mk.nis(sf.gap, "F-06", about, top, { [about]: mk.nis(top.real, "F-06", about, top), [scnCompare.targetCostLabel]: targetCost })} /> }} />}
+    </p>
+  );
+}
+
+/** What to do in the meantime with a lump sum (scenario fix 2026-10-24): F-60 over the leading cash option's rate and the current account's. */
+function NextStepLine({ ctx }: { ctx: ResultCtx }) {
+  const { g, view, bundle } = ctx;
+  const row = useMemo(() => {
+    if (!(g.amountNow > 0)) return null;
+    // review fix 2026-10-24: the deposit the comparison ranked runs on the rate the person entered for it (A8), as the ranking does
+    const own = g.ownRates?.["bank-deposit"];
+    const ownRate = own !== undefined && Number.isFinite(own) ? own : null;
+    const idle = buildIdle(bundle, g.amountNow, g.available, ownRate);
+    if (idle.kind !== "ok") return null;
+    const rowOf: Record<string, string> = { "bank-deposit": ownRate !== null ? "bank-deposit:own-offer" : "bank-deposit:average", "money-market-fund-daily": "money-market-fund-daily", makam: "makam" };
+    const lead = view.ranked.find((o) => o.cashLike && rowOf[o.id] && idle.rows.some((r) => r.id === rowOf[o.id]));
+    const picked = lead ? idle.rows.find((r) => r.id === rowOf[lead.id]) : idle.rows.length > 0 ? idle.rows.reduce((a, b) => (b.monthlyCost > a.monthlyCost ? b : a)) : null;
+    return picked && picked.monthlyCost > 0 ? picked : null;
+  }, [bundle, g.amountNow, g.available, g.ownRates, view.ranked]);
+  const top = view.ranked[0];
+  if (!row || !top) return null;
+  const t = scnCompare.nextStep;
+  return (
+    <p className="text-sm flex flex-wrap items-center gap-x-1.5" data-next-step>
+      <Tpl t={t.text} vars={{ x: <Num value={row.cost} /> }} />
+      {!top.cashLike && <span>{t.stocks}</span>}
+      <Link to={`/idle-cash?balance=${g.amountNow}&keep=${g.available}`} className="text-link min-h-9 inline-flex items-center hover:underline">
+        {t.link}
+      </Link>
+    </p>
+  );
+}
+
+/** In today's money: what the amount now is worth after the years if it does not grow (F-06; scenario fix 2026-10-24). */
+function RealTermsLine({ ctx }: { ctx: ResultCtx }) {
+  const { g, mk, mode } = ctx;
+  if (mode !== "real" || !(g.amountNow > 0)) return null;
+  const infl = mk.goal.inflation;
+  if (typeof infl.value !== "number") return null;
+  const y = realOfIdle(g.amountNow, infl.value, g.horizonYears);
+  return (
+    <p className="text-sm text-muted-foreground" data-real-terms>
+      <Tpl t={scnCompare.realTerms} vars={{ i: <Num value={infl} />, amount: <Num value={mk.goal.amountNow} />, y: <Num value={mk.nis(y, "F-06", scnCompare.realTermsAbout)} />, n: fmt.number(g.horizonYears) }} />
     </p>
   );
 }
 
 /**
- * The headline (A3): three lines. The leader and how many were ranked; the first move that would change the answer (when the
- * sensitivity has run); how many were not checked and what to enter for them. A cash-only ranking says so first.
+ * The headline (A3): the leader and how many were ranked; the first move that would change the answer (when the sensitivity has run); how many
+ * were not checked and what to enter for them. A cash-only ranking says so first; with years at or above P-04's equity minimum it leads with the
+ * limitation and the cash verdict follows (scenario fix 2026-10-24). Then the caveats: an entered return, a site-parameter rate, the purchase
+ * cost, the next step.
  */
 export function WhyHeadline({ ctx, onWhy, sens, onField }: { ctx: ResultCtx; onWhy: (el: HTMLElement) => void; sens: SensitivityView | null; onField: (field: FieldKey) => void }) {
-  const { view, mk, g } = ctx;
+  const { view, mk, g, bundle } = ctx;
   const { ranked, headline } = view;
   const top = ranked[0];
   const second = ranked[1];
   const theta = thetaValue(ctx);
   const state = headlineState(view);
+  const limitation = headline !== "only-baseline" && limitationFirst(view, g, bundle);
   let body: ReactNode = null;
   let showWhy = true;
   let reason: ReactNode = null;
@@ -154,7 +296,11 @@ export function WhyHeadline({ ctx, onWhy, sens, onField }: { ctx: ResultCtx; onW
       break;
     }
     case "winner": {
-      body = <Tpl t={ranked.length === 2 ? r2.result.headlineLeadTwo : r2.result.headlineLead} vars={{ n: <Num value={mk.count(ranked.length, r2.result.headlineLead)} />, name: <NameLink id={top!.id} name={top!.name} /> }} />;
+      body = limitation ? (
+        <Tpl t={scnCompare.cashVerdict} vars={{ name: <NameLink id={top!.id} name={top!.name} /> }} />
+      ) : (
+        <Tpl t={ranked.length === 2 ? r2.result.headlineLeadTwo : r2.result.headlineLead} vars={{ n: <Num value={mk.count(ranked.length, r2.result.headlineLead)} />, name: <NameLink id={top!.id} name={top!.name} /> }} />
+      );
       const deciding = view.topTwo?.deciding;
       if (deciding?.formula && second) {
         reason = <BiggestDifference deciding={deciding as unknown as DecidingGaps} mk={mk} top={{ name: top!.name, run: top }} second={{ name: second.name, run: second }} />;
@@ -164,9 +310,11 @@ export function WhyHeadline({ ctx, onWhy, sens, onField }: { ctx: ResultCtx; onW
   }
   const secondary = headline === "winner" && top!.secondaryRules.length > 0;
   const flip = sens?.rows.find((r) => r.flip);
+  const lead = headline === "only-baseline" ? null : enteredLead(view, bundle, g, ctx.subjectCurrency);
+  const showCaveats = headline !== "only-baseline";
   return (
     <div className="flex flex-col gap-2 max-w-measure" key={headline + (top?.id ?? "")}>
-      {state.lead === "cash-only" && headline !== "only-baseline" && <p className="text-lg font-medium">{r2.result.headlineCashOnly}</p>}
+      {limitation ? <LimitationLine ctx={ctx} onField={onField} /> : state.lead === "cash-only" && headline !== "only-baseline" && <p className="text-lg font-medium">{r2.result.headlineCashOnly}</p>}
       <p className="text-lg">
         {body}
         {secondary && (
@@ -184,7 +332,12 @@ export function WhyHeadline({ ctx, onWhy, sens, onField }: { ctx: ResultCtx; onW
           <FlipSentence row={flip} ctx={ctx} />
         </p>
       )}
+      {lead && <EnteredReturnCaveat returnV={lead.returnV} currency={lead.currency} filterOff={g.acceptedFall === null || g.acceptedFall === undefined} />}
+      {showCaveats && <ParameterRateLine ctx={ctx} />}
       <UnevaluatedLine state={state} onField={onField} />
+      {showCaveats && <TargetCostLine ctx={ctx} />}
+      {showCaveats && <RealTermsLine ctx={ctx} />}
+      {showCaveats && <NextStepLine ctx={ctx} />}
       {showWhy && ranked.length > 1 && (
         <button type="button" onClick={(e) => onWhy(e.currentTarget)} className="text-link min-h-target self-start px-2 -ms-2 rounded-md hover:underline">
           {r2.result.why}
@@ -221,20 +374,41 @@ function differing(ctx: ResultCtx, a: RankedOption, b: RankedOption): string[] {
 
 export function WhySheetBody({ ctx, headId }: { ctx: ResultCtx; headId: string }) {
   const { view, mk } = ctx;
-  const tied = view.topTie.length > 1;
-  const a = view.ranked[0]!;
-  const b = view.ranked[1]!;
-  const deciding = tied ? null : view.topTwo?.deciding.formula;
+  // any two ranked options can be set side by side (scenario fix 2026-10-24), not only the top two; the default is the top two
+  const [pair, setPair] = useState<[string, string]>([view.ranked[0]!.id, view.ranked[1]!.id]);
+  const order = view.ranked.map((o) => o.id);
+  const [a, b] = [...pair].sort((x, y) => order.indexOf(x) - order.indexOf(y)).map((id) => view.ranked.find((o) => o.id === id) ?? view.ranked[0]!) as [RankedOption, RankedOption];
+  const isTop = a === view.ranked[0] && b === view.ranked[1];
+  const tied = isTop && view.topTie.length > 1;
+  const d = useMemo(() => rankCandidates([a.candidate, b.candidate], { theta: view.evaluated.theta, ctx: view.evaluated.ctx }).topTwo?.deciding.formula, [a, b, view.evaluated]);
+  const deciding = tied ? null : d;
   const rowsA = rowsFor(ctx, deciding, a);
   const rowsB = rowsFor(ctx, deciding, b);
   const diff = differing(ctx, a, b);
   const gross = grossReturnRow(a, b);
   const rules = [...new Set([...a.usedRules, ...b.usedRules].map((u) => u.id))];
+  const choose = (slot: 0 | 1, id: string) => setPair((p) => (slot === 0 ? [id, p[1] === id ? p[0] : p[1]] : [p[0] === id ? p[1] : p[0], id]));
   return (
     <div className="flex flex-col gap-4">
       <h2 id={headId} className="text-lg font-semibold">
         {r2.result.whyTitle} <bdi>{a.name}</bdi> {r2.result.whyBefore} <bdi>{b.name}</bdi>
       </h2>
+      {view.ranked.length > 2 && (
+        <div className="grid grid-cols-2 gap-3" role="group" aria-label={scnCompare.pick.label} data-why-picker>
+          {([0, 1] as const).map((slot) => (
+            <label key={slot} className="flex flex-col gap-1 text-sm text-muted-foreground">
+              {slot === 0 ? scnCompare.pick.first : scnCompare.pick.second}
+              <select className="min-h-11 rounded-md border border-input bg-card text-foreground px-2" value={(slot === 0 ? a : b).id} onChange={(e) => choose(slot, e.target.value)}>
+                {view.ranked.map((o) => (
+                  <option key={o.id} value={o.id}>
+                    {o.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          ))}
+        </div>
+      )}
       <div className="grid grid-cols-[1fr_auto_auto] md:grid-cols-[1fr_auto_auto] gap-x-4 text-sm items-baseline">
         <span />
         <span className="font-medium text-end"><bdi>{a.name}</bdi></span>
@@ -332,5 +506,99 @@ export function DetailSheetBody({ ctx, option, headId }: { ctx: ResultCtx; optio
       <RulesLine ids={rules} />
       {!ranked && (option as ListedOption).blockedBy.length > 0 && <Callout tone="blocked">{r2.result.listedBlockedBefore} {(option as ListedOption).blockedBy.join(", ")}</Callout>}
     </div>
+  );
+}
+
+// ---------------------------------------------------------------- home question card 2026-10-24
+
+/**
+ * "לא ידעתם כמה שנים": the years come from the starting point (a site parameter), with the way to change them. With `figures` the note also gives the
+ * leader's value after one year and after the years used (scenario fix 2026-10-24), so the person sees that the horizon moves the answer.
+ */
+export function HorizonDefaultedNote({ bundle, g, presetName, onChange, figures }: { bundle: ResultCtx["bundle"]; g: ResultCtx["g"]; presetName: string; onChange: () => void; figures?: { a: ReactNode; b: ReactNode } | null }) {
+  if (!g.fromPreset.horizon) return null;
+  const h = r2.result.horizonDefaulted;
+  return (
+    <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5" data-horizon-defaulted>
+      <span>{h.before}</span>
+      <Num value={goalValueObjects(bundle, g).horizon} display={fmt.number(g.horizonYears)} />
+      <span>
+        {h.mid}
+        <bdi>{presetName}</bdi>
+        {h.after}
+      </span>
+      {figures && (
+        <span data-horizon-figures>
+          <Tpl t={scnCompare.horizonFigures.first} vars={{ a: figures.a }} />; <Tpl t={scnCompare.horizonFigures.rest} vars={{ n: fmt.number(g.horizonYears), b: figures.b }} />.
+        </span>
+      )}
+      <button type="button" className="text-link min-h-9 inline-flex items-center hover:underline" onClick={onChange}>
+        {h.change}
+      </button>
+    </p>
+  );
+}
+
+/** The leader's value in today's money after one year and after the years used, from the chart's series (the same runs, one per year). */
+export function horizonFigures(ctx: ResultCtx): { a: ReactNode; b: ReactNode } | null {
+  const { view, g, mk } = ctx;
+  const top = view.ranked[0];
+  const line = view.series.find((l) => l.id === top?.id) ?? view.series[0];
+  if (!line || g.horizonYears < 2) return null;
+  const at = (y: number) => line.points.find((p) => p.year === y)?.real;
+  const a = at(1);
+  const b = at(g.horizonYears);
+  if (a === undefined || b === undefined) return null;
+  const run = view.ranked.find((o) => o.id === line.id);
+  return { a: <Num value={mk.nis(a, "F-06", r2.realLabel, run)} />, b: <Num value={mk.nis(b, "F-06", r2.realLabel, run)} /> };
+}
+
+/**
+ * The site cannot say whether the years are enough for shares (no expected return, no sourced fall: D9, D11); it can quote P-04's
+ * table. Shown in product mode while the horizon is below the equity row's minimum. Both figures are site parameters.
+ */
+export function HorizonHonestLine({ ctx, fit }: { ctx: ResultCtx; fit: FitTableData | undefined }) {
+  const row = fit?.rows.find((r) => r.classification === "מניות");
+  const min = row && typeof row.minYears.value === "number" ? row.minYears : null;
+  if (!row || !min || !showsHorizonHonestLine(ctx.g.horizonYears, min.value as number)) return null;
+  const t = r2.result.horizonHonest;
+  const drop = row.maxFallPct ?? null;
+  return (
+    <p className="text-sm max-w-measure" data-horizon-honest>
+      <Tpl t={t.cannot} vars={{ years: <Num value={goalValueObjects(ctx.bundle, ctx.g).horizon} display={fmt.number(ctx.g.horizonYears)} /> }} />{" "}
+      {drop && <Tpl t={t.can} vars={{ min: <Num value={min} display={fmt.number(min.value as number)} />, drop: <Num value={drop} /> }} />}{" "}
+      {t.linkBefore}{" "}
+      <Link to="/goal/compare?mode=exposure" className="text-link hover:underline">
+        {t.link}
+      </Link>
+      .
+    </p>
+  );
+}
+
+/**
+ * MKT-01 (scenario fix 2026-10-24): the published past record of the S&P 500 by holding length, under the P-04 line and whenever equity options
+ * are unranked for want of a return. A past record, not a forecast; nothing from it feeds a run or fills a field (D9, D11).
+ */
+export function PastRecordLine({ ctx, fit }: { ctx: ResultCtx; fit: FitTableData | undefined }) {
+  const rec = ctx.bundle.pastRecord;
+  if (!rec) return null;
+  const f = rec.figures;
+  const keys = ["rolling_5y_min", "rolling_5y_max", "rolling_10y_min", "rolling_10y_max", "rolling_20y_min", "rolling_20y_max"] as const;
+  if (keys.some((k) => !f[k])) return null;
+  const row = fit?.rows.find((r) => r.classification === "מניות");
+  const min = row && typeof row.minYears.value === "number" ? row.minYears.value : null;
+  const honest = min !== null && showsHorizonHonestLine(ctx.g.horizonYears, min);
+  const noReturn = headlineState(ctx.view).fields.includes("return");
+  if (!honest && !noReturn) return null;
+  const n = (k: (typeof keys)[number]) => <Num value={f[k]!} />;
+  return (
+    <p className="text-sm max-w-measure text-muted-foreground" data-past-record>
+      <Tpl t={scnCompare.pastRecord.text} vars={{ min5: n("rolling_5y_min"), max5: n("rolling_5y_max"), min10: n("rolling_10y_min"), max10: n("rolling_10y_max"), min20: n("rolling_20y_min"), max20: n("rolling_20y_max") }} />{" "}
+      <a href={rec.source.url} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-center gap-1 hover:underline">
+        {scnCompare.pastRecord.link}
+        <IconExternal size={14} />
+      </a>
+    </p>
   );
 }
