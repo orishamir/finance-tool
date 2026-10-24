@@ -10,5 +10,19 @@
   "likely_to_change": "no",
   "text_he": "בגמל-נט לתקופה 202609 כל קופה בניהול אישי מסווגת 'תגמולים ואישית לפיצויים' או 'קרנות השתלמות'; אין 'קופת גמל להשקעה' בניהול אישי, וההגדרה בחוק לא מונה אותה. 15 קופות של 7 חברות.",
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&q=IRA&filters={\"REPORT_PERIOD\":202609}",
+      "title": "CMA Gemel-Net dataset, resource 2024-today, datastore query q=אישי and q=IRA, REPORT_PERIOD 202609",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ],
+  "derived_from": [
+    "IRA-01"
+  ]
 }

@@ -50,5 +50,35 @@
   },
   "text_he": "מאז פברואר אלפיים ועשרים כל העברת מידע בין שני גופים מוסדיים בקשר לניוד כספים נעשית דרך המסלקה הפנסיונית בלבד, בממשק אחיד שנקרא ממשק ניוד, מהגשת הבקשה ועד העברת הכספים; הכלל אינו חל על ניוד מקופה בניהול אישי. הקופה המעבירה חייבת להעביר את הכספים תוך עשרה ימי עסקים מקבלת בקשה מלאה, והממונה רשאי במקרים מיוחדים לאשר דחייה של עד עשרים ימי עסקים נוספים, למשל כשהמסלקה מושבתת לעדכון. החוסך עדיין חותם בקופה המקבלת; הכלל נוגע לדרך שבה הקופות מדברות ביניהן.",
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-24"
+  "checked": "2026-10-24",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-legislation26326/he/uniform_protocol_update_26.3.2026%20%5BPDF%5D.pdf",
+      "title": "חוזר גופים מוסדיים 2026-9-3, מבנה אחיד להעברת מידע ונתונים בשוק החיסכון הפנסיוני - עדכון, 26.3.2026 (gov.il), ss.6(ב), 7(ב)(3)-(4) and the annex ג summary",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "ss.6(ב), 7(ב)(3)-(4) and the annex ג",
+      "checked": "2026-10-24"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/pension-clearing/he/2020-9260.pdf",
+      "title": "CMA, דחיית המועד להעברת כספים בין קופות גמל בעת השבתת מערכת סליקה פנסיונית מרכזית, שה. 2020-9260, 15.11.2020 (gov.il)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "checked": "2026-10-24"
+    },
+    {
+      "url": "https://www.gov.il/he/pages/pension-clearing",
+      "title": "gov.il, המסלקה הפנסיונית (regulation page)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "checked": "2026-10-24"
+    }
+  ]
 }

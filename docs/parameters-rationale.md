@@ -90,3 +90,46 @@ Added 2026-10-23 for release 2 (P-07, `data/parameters/goal-presets.json`), chos
 ## Exposure holding wrapper
 
 Added 2026-10-24 for release 5 (P-08, `data/parameters/exposure-holding-wrapper.json`), chosen by Claude at the founder's request; revisable. Exposure mode runs each exposure through one wrapper (method F-71: the caller names it; the engine never picks one), so the site needs a default per exposure record. **Values:** shekel cash in a bank deposit (at the published rate of the P-05 deposit-terms record, Leumi's 365-day deposit; D20); makam in the makam product (no sourced yield exists, so the person enters one); the CPI-linked government bond in the government-bond product (series GOV-11, the series P-05's government-bond entry names); the unlinked government bond in the same product but **not evaluated** until the coupon frequency of a fixed-rate series is in the rule base (GOV OQ4); the S&P 500 in a brokerage account through fund 1148162 (the fund P-05's brokerage entry names); the TA-125 in a brokerage account through collected fund 1143718 (Tachlit Sal TA 125, Leumi tariff); the general track in a kupat gemel lehashkaa at the manager's list fees (Meitav), with the return entered (D9). **Why:** each default is the plain way to hold the exposure that the site already has collected terms for, taken from the wrapper the exposure record lists first among those it can run; the alternative, ranking every wrapper for every exposure, is wrapper mode's job and is offered by the link "באיזה מוצר להחזיק את זה". A row that cannot run says why instead of borrowing another instrument's terms. The person can change the wrapper on any row (the choice is then theirs, entered), among the wrappers the exposure record allows.
+
+## Pinned rules
+
+Added 2026-10-24 for the knowledge layer (P-09, `data/parameters/pinned-rules.json`), chosen by the lead (Claude) at the founder's request on 2026-10-24; **provisional until the founder signs the list**, and the rules page shows "ערך זמני" until then. Importance is a judgement, so it is a parameter: the data-driven score (engine use, site use, references, figure, tier, strength) orders rules inside groups and picks the teasers, and never this list. **Selection rule:** the rule decides an outcome on the site or is documented as a common misconception or recurring question (`research/knowledge/2026-10-24-user-lens.md` section 2, the BGU 2019 study, the forum catalogue), and it has a primary or primary-mirror source with a link after the extraction of 2026-10-24. Row 1 is the capital-gains rule because it is the most known and the founder's own example, not because a formula ranks it (it ranks 13th). No formula reads P-09.
+
+**The twelve rows** (the question is the record's `question_he`, polished by the Hebrew editor):
+
+| # | Rules | Question (topic) |
+|---|---|---|
+| 1 | TXS-01, TXS-02 | tax on a gain in the market |
+| 2 | TXI-03, TXI-02 | tax on deposit interest |
+| 3 | TXH-17, TXK-04, PF-23 | switching track inside the fund: tax, fee |
+| 4 | KGL-02, KGL-03 | how much may go into a provident fund for investment a year |
+| 5 | TXH-09, KH-15 | when a study fund is liquid without tax |
+| 6 | BANK-23, REG-04, REG-06 | is money in a deposit insured |
+| 7 | PF-06, PF-02 | the management-fee cap |
+| 8 | PF-19, SW-06 | transfer between funds: how long, what it costs |
+| 9 | PF-13, PF-14, SW-15 | a fee discount: for how long is it guaranteed |
+| 10 | TXS-24, MF-37 | whether all money-market funds are the same |
+| 11 | BANK-20 | money sitting in a current account: what the bank must say |
+| 12 | REG-18, REG-19 | what happens to a pension if the managing company fails |
+
+**Per-guide lists** (`guide_blocks`, two or three rules each, shown as "שווה לדעת"):
+
+- current-account: BANK-20, BANK-23, BANK-15
+- bank-deposit: TXI-03, BANK-06, BANK-23
+- savings-plan: TXI-03, BANK-26, BANK-23
+- money-market-fund-daily: TXS-24, MF-37, BANK-18
+- money-market-fund-renewable: MF-37, MF-35, TXS-24
+- makam: TXI-01, BANK-18, TXI-12
+- government-bond: TXI-14, GOV-17, TXI-12
+- brokerage-account: TXS-21, TXS-02, TXS-19
+- kupat-gemel-lehashkaa: TXK-04, KGL-02, TXK-05
+- keren-hishtalmut: TXH-09, KH-15, PF-18
+- pension-comprehensive: PEN-23, PEN-15, REG-18
+- pension-general: REG-18, PEN-15, TXP-15
+- provident-for-annuity: TXP-15, REG-18, PF-19
+- child-savings-provident: CS-18, CS-20, CS-12
+- child-savings-bank: CS-05, CS-12, CS-18
+- ira-hishtalmut: TXH-09, IRA-16, IRA-18
+- ira-provident: IRA-16, IRA-17, IRA-18
+
+**Why:** a friend arriving at the rules page asks a question, not a topic; the twelve rows are the questions the research found people actually ask or get wrong, each answered by the rules that settle it, so a reader reaches a source in one tap. **Revisable:** the founder may change any row or list; a changed row is re-checked against the selection rule, and the validator fails if a first id has no primary or mirror source.

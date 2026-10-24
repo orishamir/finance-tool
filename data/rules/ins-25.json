@@ -57,5 +57,47 @@
     }
   },
   "il_finance_file": "savings-policies-and-executive-insurance.md",
-  "checked": "2026-10-24"
+  "checked": "2026-10-24",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(ביטוח)_(תנאים_בחוזי_ביטוח)",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (ביטוח) (תנאים בחוזי ביטוח), התשמ\"ב-1981, reg. 1, 6א (Wikisource)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (ביטוח) (תנאים בחוזי ביטוח), התשמ״ב-1981",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg. 1, 6א",
+      "locator_he": "תקנה 1, 6א",
+      "anchor": "סעיף_1",
+      "checked": "2026-10-24"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(ביטוח)_(דרכי_השקעת_ההון_והקרנות_של_מבטח_וניהול_התחייבויותיו)",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (ביטוח) (דרכי השקעת ההון והקרנות של מבטח וניהול התחייבויותיו), התשס\"א-2001, reg. 1 (Wikisource)",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg. 1",
+      "locator_he": "תקנה 1",
+      "anchor": "סעיף_1",
+      "checked": "2026-10-24"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_עסקי_ביטוח_(פרטי_דין_וחשבון)",
+      "title": "תקנות הפיקוח על עסקי ביטוח (פרטי דין וחשבון), התשנ\"ח-1998, reg. 1 (Wikisource; marked repealed תשפ\"ג)",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg. 1",
+      "locator_he": "תקנה 1",
+      "anchor": "סעיף_1",
+      "checked": "2026-10-24"
+    }
+  ]
 }

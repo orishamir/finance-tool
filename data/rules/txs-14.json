@@ -7,7 +7,7 @@
     "foreign_investment_fund_threshold": "חלק מזערי של ההשקעות הצמוד למטבע העיקרי",
     "tolerance_days": "ימי חריגה מותרים בשנת מס"
   },
-  "strength": "primary",
+  "strength": "primary-mirror",
   "dimensions": [
     "real-vs-nominal",
     "currency",
@@ -57,5 +57,45 @@
     }
   },
   "il_finance_file": "tax-securities-israeli.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Income Tax Ordinance",
+      "title_he": "פקודת מס הכנסה",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s.88",
+      "locator_he": "סעיף 88",
+      "anchor": "סעיף_88",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(חישוב_סכום_אינפלציוני_במכירת_יחידה_בקרן_נאמנות)",
+      "title": "Income Tax Regulations (computing the inflationary amount on sale of a unit in a mutual fund), 5763-2003",
+      "title_he": "תקנות מס הכנסה (חישוב סכום אינפלציוני במכירת יחידה בקרן נאמנות), התשס״ג-2003",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "definitions and reg.2",
+      "anchor": "סעיף_2",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf",
+      "title": "Migdal main prospectus 30.1.2025",
+      "title_he": "תשקיף ראשי של מגדל קרנות נאמנות (30.1.2025)",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מגדל קרנות נאמנות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "ch.25.3, 25.4",
+      "checked": "2026-10-22"
+    }
+  ]
 }

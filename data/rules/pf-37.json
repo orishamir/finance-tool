@@ -10,5 +10,36 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-03-31",
   "il_finance_file": "provident-family-common.md",
-  "checked": "2026-10-23"
+  "checked": "2026-10-23",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice_2025_51/he/Annual_and_quarterly%20report_to_Members_and_Policyholders_of_an_Institutional_Entity%20%E2%80%93%20correction_draft_PDF%20(1).pdf",
+      "title": "CMA draft circular 2025-26 \"דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי - תיקון\", 6.11.2025, 161 pp., gov.il BlobFolder (the full consolidated text with the proposed edits)",
+      "title_he": "טיוטת חוזר 2025-26: דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "pp. 157 to 159",
+      "locator_he": "עמודים 157 עד 159",
+      "page": 157,
+      "checked": "2026-10-23",
+      "qualifier": "(draft)"
+    },
+    {
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2020922.pdf",
+      "title": "CMA institutional-bodies circular 2020-9-22 \"דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי - תיקון\", 14.12.2020, 152 pp. (consolidated text; official circular on the Prisha host)",
+      "title_he": "חוזר גופים מוסדיים 2020-9-22: דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
+      "publisher": "Prisha.co.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "pp. 149 to 151",
+      "locator_he": "עמודים 149 עד 151",
+      "page": 149,
+      "checked": "2026-10-23",
+      "qualifier": "(third-party host)"
+    }
+  ]
 }

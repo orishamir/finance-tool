@@ -79,5 +79,44 @@
     }
   },
   "il_finance_file": "pension-and-gemel-lekitzba.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
+      "title": "Extension order 2011",
+      "title_he": "צו הרחבה [נוסח משולב] לפנסיה חובה, 2011",
+      "publisher": "gov.il",
+      "publisher_he": "משרד העבודה",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "section 6(ד) table",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/kibuzi03042016.pdf",
+      "title": "General collective agreement (framework) to increase pension contributions, signed 3.4.2016, registered 15.06.2016 no. 7008/2016",
+      "title_he": "הסכם קיבוצי כללי (מסגרת) להגדלת ההפרשות לביטוח פנסיוני במשק, 3.4.2016",
+      "publisher": "Prisha.co.il",
+      "publisher_he": "ההסתדרות ונשיאות הארגונים העסקיים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "section 3, pp. 1-2",
+      "locator_he": "סעיף 3, עמודים 1 עד 2",
+      "page": 1,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf",
+      "title": "Harel letter \"הגדלת שיעורי הפקדה למוצר פנסיוני בהתאם לצו ההרחבה\", June 2016",
+      "title_he": "הגדלת שיעורי הפקדה למוצר פנסיוני בהתאם לצו ההרחבה (מכתב הראל, יוני 2016)",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p. 1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-10-22"
+    }
+  ]
 }

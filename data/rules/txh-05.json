@@ -7,7 +7,7 @@
     "deduction_pct": "שיעור הניכוי מההכנסה הקובעת",
     "income_ceiling": "תקרת ההכנסה הקובעת לשנה"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "tax-at-deposit",
     "deposit-ceiling",
@@ -58,5 +58,46 @@
     }
   },
   "il_finance_file": "tax-hishtalmut.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Tax Authority guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.90 (s.17(5א) row)",
+      "page": 90,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+      "title": "Deductions booklet 2026",
+      "title_he": "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.12",
+      "locator_he": "עמוד 12",
+      "page": 12,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Ordinance",
+      "title_he": "פקודת מס הכנסה",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s.17(5A)",
+      "locator_he": "סעיף 17(5א)",
+      "anchor": "סעיף_17",
+      "checked": "2026-10-22"
+    }
+  ]
 }

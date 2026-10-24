@@ -2,7 +2,7 @@
   "id": "IRA-14",
   "title": "Compliance checks and blocking of the account",
   "title_he": "בדיקת עמידה במגבלות וחסימת החשבון",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "liquidity-lockup",
     "protection"
@@ -78,5 +78,32 @@
     "breach_cure_business_days": "ימי עסקים לתיקון חריגה"
   },
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/regulation_0059/he/regulation_ira_pdf.pdf",
+      "title": "CMA draft 2025, s.5(2)",
+      "title_he": "טיוטת תיקון לתקנות קופת גמל בניהול אישי (2025)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "s.5(2)",
+      "locator_he": "סעיף 5(2)",
+      "checked": "2026-10-22",
+      "qualifier": "(draft)"
+    },
+    {
+      "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
+      "title": "Nevo, reg. 5(ב)-(ג)",
+      "publisher": "Nevo",
+      "publisher_he": "נבו",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "nevo",
+      "locator": "reg. 5(ב)-(ג)",
+      "locator_he": "תקנה 5(ב)-(ג)",
+      "checked": "2026-10-22"
+    }
+  ]
 }

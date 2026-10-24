@@ -3,7 +3,7 @@
   "title": "A foreign fund (קרן חוץ) may be offered to the Israeli public only with ISA permission and home-regulator approval; the definition changes on 2.2.2027",
   "title_he": "קרן חוץ מוצעת לציבור רק בהיתר הרשות והרגולטור הזר",
   "text_he": "יחידות של קרן חוץ אינן מוצעות לציבור בישראל אלא אם מתקיימים תנאים שקבע שר האוצר, רשות ניירות ערך התירה את ההצעה והרגולטור במדינת המוצא אישר אותה. הרשות רשאית לסרב גם כשהתנאים מתקיימים אם ענייני המשקיעים בישראל אינם מוגנים די, להורות על הפסקת ההצעה, ויושב ראש הרשות רשאי להורות לבורסה למחוק את היחידות מהמסחר; לבורסה חייב להיות תקנון שמגן על המשקיעים במחיקה כזו. הגדרת קרן חוץ עומדת להשתנות כך שתכלול קרנות שמשקיעות בניירות ערך או בנכס אחר. נוסח החוק נקרא באתר שמעתיק אותו.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "regulator",
     "protection"
@@ -11,5 +11,33 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-02-02",
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf",
+      "title": "ISA 2024 report, p.20",
+      "title_he": "פעילות קרנות נאמנות בישראל 2024",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.20",
+      "locator_he": "עמוד 20",
+      "page": 20,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
+      "title": "Law, ch. 9.1 (פרק ט'1), s. 113א–113ט",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s. 113א–113ט",
+      "locator_he": "סעיף 113א–113ט",
+      "anchor": "סעיף_113א",
+      "checked": "2026-10-22"
+    }
+  ]
 }

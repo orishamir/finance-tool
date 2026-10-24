@@ -259,6 +259,8 @@ One brief per screen in section 4. They apply `docs/design-system.md`. Mockups f
 **States:** none. The page holds no figures and needs no data.
 **Components:** search field, card (the whole card is the link, with a mirrored chevron at the inline end).
 
+Amended 2026-10-24 (knowledge layer, D25): one quiet line under the doors, `home.knowledge.line`, with a link `home.knowledge.link` to the rules page. It is a link, not a fifth door (the founder decides between the two, `research/knowledge/2026-10-24-synthesis.md` section 5, item 2). No counts and no "N rules" claim in the line.
+
 ### 6.2 Header, menu and footer
 
 **Flows:** 1, all. **Mockup:** header on every board; no menu sheet.
@@ -266,6 +268,7 @@ One brief per screen in section 4. They apply `docs/design-system.md`. Mockups f
 - **Phone:** a 56 px sticky bar: site name at the start (right); search and menu as 44 px icon buttons at the end (left). The menu opens a bottom sheet with 48 px rows: "מדריך", "חברות ומסלולים", "כללים", "פרמטרים", then a divider and "מה האתר עוד לא מכסה". Amended 2026-10-24 (UX audit): the sheet lists the doors (מדריך, חברות ומסלולים, השוואה למטרה, מה כבר יש לכם, כסף שיושב בעו״ש), then under the small heading "מאחורי הקלעים" כללים, פרמטרים, מה האתר עוד לא מכסה and העברה למכשיר אחר; the current page is taken from the address. The current page is in weight 500 with a teal marker at the start of its row.
 - **PC:** a 64 px sticky bar: site name, then the five doors as no-wrap text links (the current one underlined in teal), then the search field (224 px, 256 px from `xl`) at the end; the links show from `xl` (80rem), and at `lg` the menu button replaces them while the field stays (2026-10-24, UX audit; until then four destinations and a 340 px field, which wrapped at every width from 1024 to 1600 px). A "חזרה למעלה" button appears after 1.2 screens of scrolling.
 - **Footer** on every page: "כללים", "פרמטרים", "מה האתר עוד לא מכסה". Amended 2026-10-24 (UX audit): the site name first (its own row on a phone), then the goal, holdings, rules, parameters, not-covered and transfer links; the note "אתר אישי, לא מסחרי, בלי קישורי שיווק; הכול נשמר במכשיר שלכם"; and "נתונים נכון ל־{date}", the newest `checked` date in `data/` at build (`dataAsOf()`).
+- Amended 2026-10-24 (knowledge layer, D25): the menu group "מאחורי הקלעים" lists "כללים", "מסמכים", "פרמטרים" in that order, and the footer gains "מסמכים" right after "כללים". The pages themselves are 6.14 and 6.16.
 
 **States:** the menu sheet closes on X (top left), on a tap outside it, or on choosing a row.
 **Components:** header, sheet, icon button.
@@ -292,6 +295,10 @@ One brief per screen in section 4. They apply `docs/design-system.md`. Mockups f
 **PC:** the header field; results in a popover under it, 480 px wide, up to 70% of the window high. Arrow keys move through results and Enter opens the selected one. Amended 2026-10-24 (UX audit): on a PC the header (or first-page) field is itself the input and the results open under it; Escape, the X and a click elsewhere close it; a phone keeps the sheet. Search matches names and numbers (fund, security, company id, ISIN) from two digits, ranks exact, prefix, word and all-words matches, shows one row per page, and every "not on the site" answer links to the not-covered page. A name is saved on the device only when the person presses "העתקה".
 **States:** after copying, the button shows a check and "הועתק" for two seconds. Search works without a network connection once the page has loaded (the index ships with the site).
 **Components:** search field, sheet, popover, empty state, button.
+
+Amended 2026-10-24 (knowledge layer, D25): three more result groups after the four above: "כללים" (rule records), "פרמטרים" (site parameters) and "מסמכים" (the documents of 6.16). Order of the groups: guide pages, terms, rules, parameters, documents, not-covered, companies, products, banks, tracks. A rule outranks every other group only on an exact id ("TXG-02", "txg 2"), an exact figure with its unit ("25%", "83,641 ₪") or a question-form query ("האם אפשר להחליף מסלול בלי מס"); otherwise "מס" and the like keep the guide page first. A rule row: the title with the match in weight 600, and one quiet line "{נושא} · {מילת חוזק רק כשהמקור חלש} · {מזהה}"; it opens the rule on its shelf page (6.14), a parameter opens `/parameters#{P-xx}`, a document opens `/documents#{key}`. The rule texts, the term meanings and the parameter rationales sit in a second file that loads after the index and only re-ranks or answers a question-form query (architecture 3.5).
+
+Empty states by what was typed (Amended 2026-10-24, knowledge layer): **a name** keeps the "עוד לא קוטלג" state above; **a question** (starts with a question word, or ends in "?") gets the question state ("לא מצאנו כלל שעונה על זה") with up to three "אולי התכוונתם" rows and the link to the rules page; **a number** gets the number state, which says no rule carries that figure and lists "קרוב לזה" rows for figures within ±2 %. A bare year ("2026") never matches a rule. The copy is `copy.search.empty.*`.
 
 ### 6.4 Guide list
 
@@ -321,6 +328,8 @@ The mockups show the layout. Also designed for:
 - **"Typical use":** ends with links to related product pages as chips ("גם כדאי להכיר: פיקדון בבנק").
 
 **Components:** section index, guide sections, key-value list, fee table, money-flow strip, dimension checklist, term table, timeline (6.7), provenance number.
+
+Amended 2026-10-24 (knowledge layer, D25): a **"שווה לדעת" block** follows "למה משתמשים בזה" on each wrapper guide page. Two or three rows from P-09 `guide_blocks` for that wrapper; each row is the rule's own Hebrew title, its first figure as a provenance number when it has one, and the rule chip, which opens the rule card in the sheet (source block first, 6.9). A rule whose source is the institution's own document or a secondary one carries its strength tag. A wrapper with no entry in P-09 shows no block. The block is a list of facts, not a quiz or a "did you know": no myth framing, no counts. The page's rules line is unchanged. Component: worth-knowing block (design-system 3.8).
 
 ### 6.6 Exposure guide page
 
@@ -389,6 +398,23 @@ The mockup shows a calculated number. The other kinds:
 
 **Phone:** a bottom sheet; tapping a rule inside the number sheet replaces its content, with a back arrow (pointing right) at the top. **PC:** a card like 6.8.
 **Components:** rule reference, strength label, disclosure, callout (blocked).
+
+Amended 2026-10-24 (knowledge layer, D25): the card puts the source where the reader looks for it. New order, top to bottom:
+
+1. The rule chip and the short title.
+2. The strength label **only** for an open question, an institution's own document ("לפי החברה") and a secondary source; a primary source and a mirror of the law say nothing in the header (the source block says it).
+3. The rule in plain words ("text").
+4. For a derivation rule, chips with the lead "נגזר מ־" naming the rules it rests on; each opens its card.
+5. The source block, one per source (a second and further behind "עוד מקור אחד" / "עוד {n} מקורות" in the sheet, all shown on the rules pages). Each block: the link "{גוף} · {מסמך}, {מיקום}" (an official document comes before a mirror; a mirror reads "נוסח החוק (עותק)" and opens at the section; a PDF opens at its page and carries a small "PDF" tag), the quoted words in ״…״ where the record holds them, then "נבדק {תאריך}" and a strength word only when the source is weaker than the law. A rule marked likely to change, past its re-check date, or last read more than six months ago says on that line that it may have changed. A rule with no recorded source shows one honest line in the source's place, never an empty block.
+6. "תנאים וחריגים" as a disclosure, as before.
+7. Figures by tax year: each row followed by "לשנת המס {שנה}" and the update rule in Hebrew ("מתעדכן כל שנה", "קבוע בחוק" and the like).
+8. The meta list, shortened to "נבדק" and "ייבדק שוב"; a rule marked not likely to change says "יציב".
+9. "נוגע ל" tags (the dimensions).
+10. "משפיע על": the pages that quote the rule and, when the engine reads it, "מנוע החישוב". Shown on the rules pages only.
+11. "לכל הכללים" opens the rule on its shelf page (6.14), not the old single list.
+12. A quiet button "העתקת ההפניה" copies the rule's title, the publisher, the document, the section, the link and the date read, as one line, so the reader can paste the reference into a message.
+
+An open question keeps the blocked style and shows what is unknown and which numbers wait for it. The sheet's sourced-number view (6.8) shows the same source block directly under the figure's name in place of its three separate rows. Components: rule reference, source block (design-system 3.8), strength label, disclosure, callout (blocked).
 
 ### 6.10 Companies list
 
@@ -472,6 +498,23 @@ The mockup shows a calculated number. The other kinds:
 **Phone:** the section-index chips for the groups at the top; each group a disclosure, closed unless the reader arrived on a rule inside it. **PC:** the group index at the start (right); ~~all groups open~~. Amended 2026-10-24 (UX audit): every group is collapsible and closed on first paint on every width (all cards remain in the pre-rendered HTML), a filter field at the top narrows by id, title and text (groups with no match hidden, matching groups open), and an address with a group or rule id opens its group and scrolls to it.
 **Components:** section index, disclosure, rule card, strength label.
 
+Amended 2026-10-24 (knowledge layer, D25): the rules page becomes a front, and the cards move to five shelf pages. Section 6.14 below describes both.
+
+**The front (`/rules`).** Order:
+
+- h1 "כללים" and the lede (one line, no count).
+- **The pinned questions.** Twelve rows from P-09 (`data/parameters/pinned-rules.json`), each the question as people ask it ("כמה מס משלמים על רווח בבורסה?"), then the one to three rules that answer it as chips with their short titles; a chip opens the rule card in the sheet. Until the founder signs the list, a quiet tag "ערך זמני" stands beside the heading. Twelve rows fit one phone screen's scroll without a disclosure. The order is the founder's example first, then by what people ask; no computed score decides it.
+- **Five shelves**, as cards: "מה המדינה לוקחת", "מה הבנק או בית ההשקעות לוקחים", "מה אפשר לעשות עם הכסף", "מי מפקח ומה מוגן", "איך המוצר בנוי". Each card: the name, one line on what it holds, and three rule titles as teasers (the highest by the data-driven score). The shelf of a rule follows its first dimension, with a default per research file and a short list of explicit moves; no rule carries a new field for it.
+- **"מה עומד להשתנות".** Rules that carry a re-check date, grouped by month, the next two months open; each row the rule title and the date. No "rule of the day".
+- **"לפי מספר".** The id prefixes (TXS, KGL, PF …) as a quiet index, each with its Hebrew name and a link to the shelf page filtered by that prefix.
+- **A filter field** over every rule (id, title, publisher and document name); rows link to the shelf page at the rule.
+- **The legend** of the strength labels and the lock.
+- **Old links.** The front reads its address hash: `/rules#TXK-04` replaces itself with `/rules/access#TXK-04`, so every link that already points at a rule keeps working.
+
+**A shelf page (`/rules/state`, `/costs`, `/access`, `/protection`, `/structure`).** h1 the shelf's name, one line, the legend, the filter field, and product chips (from the wrapper records) that narrow the groups to a product. Inside, the rules are grouped by sub-group, one per research file, each with a name a reader would use (never a "מס:" prefix and never the file's name), the groups and the cards inside ordered by the data-driven score, each card the full rule card of 6.9 (`inline`: all sources shown, the "משפיע על" row, the "לכל הכללים" link pointing back to the front). Every group is collapsible and closed on first paint, as before, and an address with a rule id opens its group and scrolls to it. The four entries from forum experience (SW-X) appear only on the access shelf, last, under the heading "ניסיון של אחרים" (`rulesFront.experience`) with the tag "ניסיון של אדם אחד"; they are never mixed into the main groups. Each group ends with its open questions in the blocked style, as before.
+
+**Phone:** the shelf cards stacked, the sub-group index as chips at the top of a shelf page. **PC:** the shelf cards two or three across. **Why five pages:** the single page weighed 2.5 MB of HTML, the heaviest on the site, for the least-visited reference screen; a shelf is a few hundred kilobytes.
+
 ### 6.15 Parameters page
 
 **Flows:** 8. **Mockup:** none.
@@ -487,6 +530,22 @@ The mockup shows a calculated number. The other kinds:
 
 **Phone:** one column. **PC:** two columns of cards.
 **Components:** card, provenance number, state tag.
+
+### 6.16 Documents page
+
+Added 2026-10-24 (knowledge layer, D25). **Flows:** 8. **Mockup:** none.
+
+What it is for: the honest answer to "where does all this come from". The forty-odd official documents the rules read, and the data records the site read, each with what rests on it. No counts in the lede and no boasts.
+
+- h1 "מסמכים" and a lede of one line: these are the documents the site's rules and numbers were read from.
+- **Part one, the documents.** Sections in this order: "חוקים ותקנות", "רשויות ומפקחים", "הבורסה", "מסמכים של בנקים וחברות", "כתבות ומקורות משניים". Inside a section, the documents with the most rules first. A document is any source of any rule, or of a sourced figure, grouped by the document's key (a known document by its name, otherwise by its address without fragment and query).
+- **The document card.** The document's Hebrew name (the English working title is never shown), the publisher, a small word for its kind (law, regulation, circular, regulator page, exchange rules, institution document, article), the link (the official one first; a law read on a mirror says "נוסח החוק (עותק)"), the rules that rest on it as chips with their titles (the first six, then "עוד {n}"), "נבדק" with the latest date, and a strength word only when the source is weaker than the law. A card is an anchor target (`/documents#{key}`), which the search uses.
+- **Part two, "נתונים שהאתר קרא".** Cards for the data records, each pointing at the page that uses it: **tariffs**, one card per provider with its name, the snapshot date (or "ללא תאריך מודפס"), the number of lines and the link to the provider's page; **funds**, the twelve records, each with its name, manager and the link to its variants page, under a lede that says these are funds read one by one from the manager's report and never "the funds on the exchange"; **deposit terms**, three; **series**, two, the newest observation only, with the CBS attribution line printed exactly as the record carries it; **the two regulator datasets** with a link to the companies page.
+- Not on this page: a table comparing tariff lines across providers (waits for the founder's reading of the quoting rule, D22), a list of the TASE funds (the publisher's terms forbid it), a count of documents.
+
+**Phone:** one column of cards; the five sections as chips at the top. **PC:** two columns.
+**States:** a document with no Hebrew name yet shows the publisher and the host and is listed in the Hebrew editor's open list; it is never shown in English alone.
+**Components:** document card (design-system 3.8), card, tag, disclosure.
 
 
 ---

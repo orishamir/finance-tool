@@ -11,5 +11,84 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)",
+      "title": "3",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.nevo.co.il/law_html/law01/255_226.htm",
+      "title": "5",
+      "publisher": "Nevo",
+      "publisher_he": "נבו",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "nevo",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.analyst.co.il/media/dtnkdiyk/%D7%97%D7%95%D7%96%D7%A8-%D7%92%D7%95%D7%A4%D7%99%D7%9D-%D7%9E%D7%95%D7%A1%D7%93%D7%99%D7%99%D7%9D-2017-9-17-%D7%94%D7%A2%D7%91%D7%A8%D7%AA-%D7%9B%D7%A1%D7%A4%D7%99%D7%9D-%D7%91%D7%99%D7%9F-%D7%A7%D7%95%D7%A4%D7%95%D7%AA-%D7%92%D7%9E%D7%9C.pdf",
+      "title": "1",
+      "publisher": "Analyst",
+      "publisher_he": "אנליסט",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2017915.pdf",
+      "title": "2",
+      "publisher": "Prisha.co.il",
+      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.fnx.co.il/ishtalmutfund/faq/",
+      "title": "4",
+      "publisher": "The Phoenix",
+      "publisher_he": "הפניקס",
+      "kind": "institution_doc",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://boi.org.il/media/qempydw4/h2863.pdf",
+      "title": "6",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "secondary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://boi.org.il/media/ydrnjadk/111609.pdf",
+      "title": "7",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "secondary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://boi.org.il/media/qy0gzddj/111486.pdf",
+      "title": "8",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "secondary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

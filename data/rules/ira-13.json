@@ -2,7 +2,7 @@
   "id": "IRA-13",
   "title": "No borrowing, pledging or loans",
   "title_he": "אין אשראי, שעבוד או הלוואות",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "protection"
   ],
@@ -10,5 +10,32 @@
   "recheck_date": "2027-01-01",
   "text_he": "החברה המנהלת לא תיטול אשראי, לא תשעבד נכסים, לא תערוב ולא תלווה לעמיתים בהשקעות לפי תקנות הניהול האישי (תקנה 8). לכן אין מסחר במינוף מעבר למגבלת הבטוחות.",
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/regulation_0059/he/regulation_ira_pdf.pdf",
+      "title": "CMA draft 2025, s.7",
+      "title_he": "טיוטת תיקון לתקנות קופת גמל בניהול אישי (2025)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "s.7",
+      "locator_he": "סעיף 7",
+      "checked": "2026-10-22",
+      "qualifier": "(draft)"
+    },
+    {
+      "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
+      "title": "Nevo, reg. 8",
+      "publisher": "Nevo",
+      "publisher_he": "נבו",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "nevo",
+      "locator": "reg. 8",
+      "locator_he": "תקנה 8",
+      "checked": "2026-10-22"
+    }
+  ]
 }

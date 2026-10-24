@@ -4,7 +4,7 @@
 import { lazy, Suspense } from "react";
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/home";
-import { home as copy, r3workbench, site } from "../copy";
+import { home as copy, knowledgeEntry, r3workbench, site } from "../copy";
 import { IconDrillIn } from "../components/icons";
 import { PageSearchField, PageShell } from "../components/shell";
 import { QuickGoalCard } from "../components/compare/quick-goal";
@@ -107,6 +107,12 @@ function HomeBody({ presets, meta, today, bounds }: { presets: Presets; meta: { 
         <Link to={site.notCovered.href} className="text-sm text-link min-h-target inline-flex items-center hover:underline self-start">
           {site.notCovered.label}
         </Link>
+        <p className="text-sm text-muted-foreground">
+          {knowledgeEntry.homeLine}{" "}
+          <Link to="/rules" className="text-link min-h-target inline-flex items-center hover:underline">
+            {knowledgeEntry.homeLink}
+          </Link>
+        </p>
       </div>
     </div>
   );

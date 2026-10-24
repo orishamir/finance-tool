@@ -6,6 +6,7 @@ import { formulaNames, guideBlocks as blocks, guide as copy, guideIndex, site } 
 import { DimensionChecklist, ExposureLinks, FeeTable, GuideSection, InstitutionChips, KeyValueList, RelatedProducts, SectionIndex, TaxSteps, TermTable, useCurrentSection, type ChecklistRowView, type FeeRow, type KeyValueItem, type TaxStep } from "../components/guide/sections";
 import { Num, NumberLegend, RuleRef, RulesLine, StrengthLabel } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
+import { WorthKnowing, worthRows } from "../components/guide/worth-knowing";
 import { Timeline } from "../components/timeline/Timeline";
 import { SavedGoalStrip } from "../components/compare/strip";
 import { Disclosure, Tag } from "../components/ui";
@@ -58,7 +59,13 @@ export async function loader({ params }: Route.LoaderArgs) {
   const data = buildGuidePage(params.id, content ? [...content.switchRules] : [], content ? [...content.termIds] : []);
   if (!data) throw new Response("Not found", { status: 404 });
   const { goalContext } = await import("../lib/compare.server");
-  return { ...data, goal: goalContext() };
+  // the pinned facts of this wrapper (P-09 guide_blocks); their rules join the page's provenance data
+  const { loadPinnedRules, loadRules } = await import("../lib/data.server");
+  const worthIds = loadPinnedRules().guide_blocks?.[params.id] ?? [];
+  const allRules = worthIds.some((id) => !data.rules[id]) ? loadRules() : {};
+  const rules = { ...data.rules };
+  for (const id of worthIds) if (!rules[id] && allRules[id]) rules[id] = allRules[id]!;
+  return { ...data, rules, worthIds, goal: goalContext() };
 }
 
 export function meta({ loaderData: data }: Route.MetaArgs) {
@@ -348,7 +355,7 @@ export default function GuidePage() {
     <GoalsProvider presets={data.goal.presets as Presets}>
     <PageShell current="guide" data={provenance}>
       <div className="lg:flex lg:gap-12 pt-2 lg:pt-8">
-        <SectionIndex sections={copy.sections.filter((x) => x.id !== "terms" || !mainTerms.hide || generalTerms.length > 0)} current={current} />
+        <SectionIndex sections={copy.sections.filter((x) => (x.id !== "terms" || !mainTerms.hide || generalTerms.length > 0) && ((x.id as string) !== "worth" || worthRows(data.worthIds, rules, today).length > 0))} current={current} />
         <div className="flex-1 min-w-0 flex flex-col gap-section">
           <header className="flex flex-col gap-3">
             <Breadcrumb parent={{ href: "/guide", label: guideIndex.title }} current={data.name} />
@@ -373,6 +380,8 @@ export default function GuidePage() {
             <RelatedProducts items={data.related} />
             <ExposureLinks items={data.exposures} />
           </GuideSection>
+
+          <WorthKnowing rows={worthRows(data.worthIds, rules, today)} />
 
           <GuideSection id="who" title={title("who")} rulesToggle>
             {content?.who(cp) ?? (

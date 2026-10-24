@@ -3,11 +3,27 @@
   "title": "Pension: inactive accounts are merged into the new fund when a member joins, unless they object",
   "title_he": "פנסיה: חשבונות לא פעילים מאוחדים בהצטרפות אלא אם מתנגדים",
   "text_he": "כשעמית מצטרף לקרן פנסיה, הקרן המקבלת רשאית לבדוק לפי תעודת זהות ותאריך לידה אם רשום על שמו כסף בקרנות פנסיה אחרות. היא מודיעה לעמית, שרשאי להתנגד בתוך פרק זמן קבוע בחוק; מי שלא התנגד נחשב כמי שביקש להעביר את הכסף. זה חל על 'עמית לא מפקיד', בלי תשלום בחודשים האחרונים ובלי קצבה, והקרן המעבירה דוחה את הבקשה אם היה תשלום בחודשים שלפני. רק בקרנות פנסיה; איחוד אוטומטי דומה לקופות גמל, קרנות השתלמות או קופת גמל להשקעה לא נמצא.",
-  "strength": "primary",
+  "strength": "primary-mirror",
   "dimensions": [
     "transfer-switch-process"
   ],
   "likely_to_change": "no",
   "il_finance_file": "provident-family-common.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "title": "Provident Funds Law s. 24א, 24ב (amendment תשע\"ו) (Wikisource)",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s. 24א, 24ב",
+      "locator_he": "סעיף 24א, 24ב",
+      "anchor": "סעיף_24א",
+      "checked": "2026-10-22"
+    }
+  ]
 }

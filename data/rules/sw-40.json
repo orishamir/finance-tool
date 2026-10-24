@@ -10,5 +10,33 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-23"
+  "checked": "2026-10-23",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/כללי_מס_הכנסה_(פטור_ממס_בשל_העברה_ושינוי_יעוד_של_כספים_בקופות_גמל)",
+      "title": "כללי מס הכנסה (פטור ממס בשל העברה ושינוי יעוד של כספים בקופות גמל), התש\"ן-1990, s. 1, 2 (Wikisource)",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s. 1, 2",
+      "locator_he": "סעיף 1, 2",
+      "anchor": "סעיף_1",
+      "checked": "2026-10-23"
+    },
+    {
+      "url": "https://www.nevo.co.il/law_html/law01/999_929.htm",
+      "title": "Transfer Regulations 2008, reg. 2(א)(1), 2(ב), 2(ד) (Nevo consolidated HTML, read verbatim)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
+      "publisher": "Nevo",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "nevo",
+      "locator": "reg. 2(א)(1), 2(ב), 2(ד)",
+      "locator_he": "תקנה 2(א)(1), 2(ב), 2(ד)",
+      "checked": "2026-10-23"
+    }
+  ]
 }

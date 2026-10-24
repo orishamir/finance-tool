@@ -12,5 +12,16 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "keren-hishtalmut.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.as-invest.co.il/interstedin/הנחיות-להפקדה-עבור-עצמאים/",
+      "title": "Altshuler, deposit instructions for the self-employed",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
 }

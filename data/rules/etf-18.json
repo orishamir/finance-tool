@@ -8,7 +8,7 @@
     "open_tracking_fund_count": "מספר הקרנות המחקות הפתוחות",
     "foreign_fund_count": "מספר קרנות החוץ"
   },
-  "strength": "primary",
+  "strength": "primary-mirror",
   "dimensions": [
     "liquidity-lockup"
   ],
@@ -75,5 +75,22 @@
     }
   },
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf",
+      "title": "ISA 2025 report, p.3, p.9",
+      "title_he": "פעילות קרנות נאמנות בישראל 2025",
+      "publisher": "Funder (copy)",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "official_pdf",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "p.3, p.9",
+      "locator_he": "עמוד 3, עמוד 9",
+      "page": 3,
+      "checked": "2026-10-22",
+      "qualifier": "(third-party host)"
+    }
+  ]
 }

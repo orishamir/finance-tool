@@ -35,5 +35,33 @@
     }
   },
   "il_finance_file": "regulators-and-protection.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://content.tase.co.il/media/chilpz2c/1150_nbcm_372306_heb.pdf",
+      "title": "TASE, מדריך לחברות בבורסה - חש\"ב, ינואר 2026",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "pp.3, 12",
+      "locator_he": "עמודים 3, 12",
+      "page": 3,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://content.tase.co.il/media/3fdpe5za/1150_nbcm_399328_eng.pdf",
+      "title": "TASE, How to become an NBCM, January 2026",
+      "title_he": "How to become a non-banking corporation member (ינואר 2026)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "pp.3, 7, 9, 12",
+      "locator_he": "עמודים 3, 7, 9, 12",
+      "page": 3,
+      "checked": "2026-10-22",
+      "qualifier": "(TASE publication)"
+    }
+  ]
 }

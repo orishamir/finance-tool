@@ -6,7 +6,7 @@
   "figure_names_he": {
     "rate": "שיעור המס המרבי על רווח הון מאג״ח לא צמודה"
   },
-  "strength": "primary",
+  "strength": "primary-mirror",
   "dimensions": [
     "tax-at-exit",
     "real-vs-nominal",
@@ -37,5 +37,52 @@
     }
   },
   "il_finance_file": "tax-interest-deposits-bonds.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Income Tax Ordinance, s.88 definition of \"נייר ערך\"",
+      "title_he": "פקודת מס הכנסה",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s.88",
+      "locator_he": "סעיף 88",
+      "anchor": "סעיף_88",
+      "quote": "לרבות איגרת חוב או מילווה של מדינת ישראל או בערבותה",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "s.91(b)(3)",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s.91(b)(3)",
+      "locator_he": "סעיף 91(ב)(3)",
+      "anchor": "סעיף_91",
+      "quote": "רווח הון במכירת איגרת חוב, נייר ערך מסחרי, מילווה או הלוואה, שאינם צמודים למדד",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מתמורה,_מתשלום_או_מרווח_הון_במכירת_נייר_ערך,_במכירת_יחידה_בקרן_נאמנות_או_בעסקה_עתידית)",
+      "title": "Income Tax (Withholding from Consideration, Payment or Capital Gain on Sale of a Security...) Regulations 2002, reg. 2(b)",
+      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס״ג-2002",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg. 2(b)",
+      "locator_he": "תקנה 2(ב)",
+      "anchor": "סעיף_2",
+      "quote": "בנייר ערך שאינו צמוד למדד, ינכה מס בשיעור של 15% מרווח ההון.",
+      "checked": "2026-10-22",
+      "qualifier": "(Wikisource mirror, page edited 19.2.2026)"
+    }
+  ]
 }

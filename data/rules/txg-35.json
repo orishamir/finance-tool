@@ -98,5 +98,18 @@
     }
   },
   "il_finance_file": "tax-general.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.btl.gov.il/Insurance/Rates/Pages/%D7%9C%D7%A2%D7%95%D7%91%D7%93%D7%99%D7%9D%20%D7%A9%D7%9B%D7%99%D7%A8%D7%99%D7%9D.aspx",
+      "title": "NII, \"לעובדים שכירים - שיעורי וסכומי דמי ביטוח\"",
+      "title_he": "לעובדים שכירים – שיעורי וסכומי דמי ביטוח",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-22",
+      "qualifier": "(read in the founder's Chrome, browser pass 3)"
+    }
+  ]
 }

@@ -99,5 +99,26 @@
     "bank_payout_business_days": "ימי עסקים לתשלום מבנק (לאומי)"
   },
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
+      "title": "NII withdrawal page",
+      "title_he": "חיסכון לכל ילד: עמודי המידע של הביטוח הלאומי",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.leumi.co.il/Saving-Kids",
+      "title": "Leumi, child-savings withdrawal",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
 }

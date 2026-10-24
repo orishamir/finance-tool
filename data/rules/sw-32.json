@@ -38,5 +38,77 @@
     }
   },
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://boi.org.il/media/ahflwvpw/448_2.pdf",
+      "title": "Directive 448 version 2, s.29(ב)",
+      "title_he": "הוראת ניהול בנקאי תקין 448: העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "s.29(ב)",
+      "locator_he": "סעיף 29(ב)",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_6803031.pdf",
+      "title": "Banking (Customer Service) Law Amendment 38, ספר החוקים 3413, 14.5.2025, pp.638 to 639",
+      "title_he": "חוק הבנקאות (שירות ללקוח), התשמ״א-1981",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "pp.638 to 639",
+      "locator_he": "עמודים 638 עד 639",
+      "page": 638,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lst_5380049.pdf",
+      "title": "Bill P/5281/25 text",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill?$filter=PrivateNumber%20eq%205281%20and%20KnessetNum%20eq%2025&$format=json",
+      "title": "Knesset OData, bill 2226120",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill?$filter=PrivateNumber%20eq%204960%20and%20KnessetNum%20eq%2025&$format=json",
+      "title": "bill 2222052 (P/4960/25)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Status?$filter=StatusID%20eq%20104&$format=json",
+      "title": "status 104",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Status?$filter=StatusID%20eq%20118&$format=json",
+      "title": "status 118",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

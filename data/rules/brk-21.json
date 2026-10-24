@@ -34,5 +34,18 @@
     }
   },
   "il_finance_file": "brokerage-account.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",
+      "title": "BoI, \"כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992\", consolidated",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "s.5(א)(1), (3), (4), (5)",
+      "locator_he": "סעיף 5(א)(1), (3), (4), (5)",
+      "checked": "2026-10-22"
+    }
+  ]
 }

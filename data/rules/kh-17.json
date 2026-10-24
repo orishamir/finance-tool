@@ -10,5 +10,20 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "keren-hishtalmut.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.nevo.co.il/law_html/law01/999_929.htm",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008, regs. 2(א)(4), 3(א)(4), 3(א)(12), 5(א), 9(ג) (latest amendment shown 2023, in force 1.9.2023), Nevo",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
+      "publisher": "Nevo",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "nevo",
+      "locator": "regs. 2(א)(4), 3(א)(4), 3(א)(12), 5(א), 9(ג)",
+      "locator_he": "תקנות 2(א)(4), 3(א)(4), 3(א)(12), 5(א), 9(ג)",
+      "checked": "2026-10-22"
+    }
+  ]
 }

@@ -12,5 +12,57 @@
   "recheck_date": "2027-04-01",
   "text_he": "קופות וקרנות מדווחות לרשות דמי ניהול מנכסים ומהפקדות מדי רבעון, כשיעור שנגבה בפועל מסך הנכסים או מסך ההפקדות. מבנה כזה הוא ממוצע המשוקלל בנכסים, אך לא נאמר שהנתון המפורסם נגזר ממנו. לכן שיטת השקלול של הנתון באתר נשארת שאלה פתוחה.",
   "il_finance_file": "tracks-catalogue-and-decoder.md",
-  "checked": "2026-10-23"
+  "checked": "2026-10-23",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1446/he/regulation_h_2015-9-9.pdf",
+      "title": "חוזר גופים מוסדיים 2015-9-9",
+      "title_he": "חוזר גופים מוסדיים 2015-9-9",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "§§2ז–ח, 3ה, 4ב, 5ה(2)–(3), 11",
+      "locator_he": "§§2ז–ח, 3ה, 4ב, 5ה(2)–(3), 11",
+      "checked": "2026-10-23"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-3157/he/regulation_t2013-138.pdf",
+      "title": "draft 2013-138",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "checked": "2026-10-23"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-3157/he/regulation_t2013-138a.pdf",
+      "title": "file structure א (gemel)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "checked": "2026-10-23"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-3157/he/regulation_t2013-138b.pdf",
+      "title": "ב (pension)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "checked": "2026-10-23"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1630/he/regulation_2013-2-1.pdf",
+      "title": "חוזר גמל 2013-2-1, דוח חודשי של קופות הגמל - עדכון",
+      "title_he": "חוזר גמל 2013-2-1, דוח חודשי של קופות הגמל - עדכון",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "checked": "2026-10-23",
+      "qualifier": "(reporting codes)"
+    }
+  ]
 }

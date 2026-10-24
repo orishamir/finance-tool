@@ -12,5 +12,51 @@
   "recheck_date": "2027-04-01",
   "text_he": "הממוצע הוא של השנה הקלנדרית האחרונה שהסתיימה, ושורות של שנת הדיווח הנוכחית מחזיקות את הממוצע של השנה הקודמת. הערך משתנה פעם בשנה, בשורת ינואר. מסלול מקבל ערך ראשון רק אחרי שנה קלנדרית מלאה. עבור שנים קודמות זו הסקה מהנתונים ולא הגדרה רשמית.",
   "il_finance_file": "tracks-catalogue-and-decoder.md",
-  "checked": "2026-10-23"
+  "checked": "2026-10-23",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1703/he/regulation_2002-11.pdf",
+      "title": "חוזר גמל 2002/11, דוח תשואות שנתי - הרחבה",
+      "title_he": "חוזר גמל 2002/11, דוח תשואות שנתי - הרחבה",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "§§2, 6",
+      "locator_he": "§§2, 6",
+      "checked": "2026-10-23"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"FUND_ID\":7978}&sort=REPORT_PERIOD",
+      "title": "7978 series 2024+",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-23"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=2016d770-f094-4a2e-983e-797c26479720&limit=100&filters={\"FUND_ID\":7978}&sort=REPORT_PERIOD",
+      "title": "7978 series 2023",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-23"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-2030/he/regulation_2003-13.pdf",
+      "title": "חוזר גמל 2003/13, עדכון דוח תשואות (דוח 3)",
+      "title_he": "חוזר גמל 2003/13, עדכון דוח תשואות (דוח 3)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "checked": "2026-10-23",
+      "qualifier": "(2026 rows, portal label)"
+    }
+  ],
+  "derived_from": [
+    "CAT-35"
+  ]
 }

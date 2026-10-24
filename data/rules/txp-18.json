@@ -36,5 +36,57 @@
     }
   },
   "il_finance_file": "tax-pension-gemel-lekitzba.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "printed p.43 section 29",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+      "title": "Booklet 2026",
+      "title_he": "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.12, p.19",
+      "locator_he": "עמוד 12, עמוד 19",
+      "page": 12,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf",
+      "title": "Circular 2/2013",
+      "title_he": "חוזר מס הכנסה 2/2013: תיקון 190 לפקודה",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "s.5.1",
+      "locator_he": "סעיף 5.1",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
+      "title": "Ordinance",
+      "title_he": "פקודת מס הכנסה",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s.87",
+      "locator_he": "סעיף 87",
+      "anchor": "סעיף_87",
+      "checked": "2026-10-22"
+    }
+  ]
 }

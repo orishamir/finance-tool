@@ -77,5 +77,31 @@
     "iwf_change_threshold": "שינוי מינימלי בשיעור המניות בידי הציבור לעדכון"
   },
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-23"
+  "checked": "2026-10-23",
+  "sources": [
+    {
+      "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
+      "title": "S&P Dow Jones Indices, \"S&P U.S. Indices Methodology\", July 2026, pp. 5, 12, 16–18",
+      "title_he": "S&P U.S. Indices Methodology (יולי 2026)",
+      "publisher": "S&P Dow Jones Indices",
+      "publisher_he": "S&P Dow Jones Indices",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "pp. 5, 12, 16–18",
+      "locator_he": "עמודים 5, 12, 16–18",
+      "page": 5,
+      "checked": "2026-10-23"
+    },
+    {
+      "url": "https://www.spglobal.com/spdji/en/indices/equity/sp-500/",
+      "title": "S&P Dow Jones Indices, \"S&P 500®\" index page, \"Rebalancing Frequency\"",
+      "title_he": "S&P 500: עמוד המדד",
+      "publisher": "S&P Dow Jones Indices",
+      "publisher_he": "S&P Dow Jones Indices",
+      "kind": "other",
+      "strength": "primary",
+      "checked": "2026-10-23",
+      "qualifier": "(index provider)"
+    }
+  ]
 }

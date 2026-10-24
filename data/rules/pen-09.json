@@ -11,5 +11,45 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "pension-and-gemel-lekitzba.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "title": "Mor comprehensive bylaws 01.06.2025",
+      "title_he": "תקנון קרן הפנסיה המקיפה של מור (מהדורת 1.6.2025)",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור גמל ופנסיה",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "section 1",
+      "locator_he": "סעיף 1",
+      "quote": "שכר מבוטח",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.moreinvest.co.il/media/hphjzxvl/תקנון-קרן-פנסיה-כללית.pdf",
+      "title": "Mor general bylaws 01.04.2026",
+      "title_he": "תקנון קרן הפנסיה הכללית של מור (מהדורת 1.4.2026)",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור גמל ופנסיה",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "section 1",
+      "locator_he": "סעיף 1",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf",
+      "title": "Harel 2026 table",
+      "title_he": "תקרות וסכומים לשנת 2026 (הראל)",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p. 1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-10-22"
+    }
+  ]
 }

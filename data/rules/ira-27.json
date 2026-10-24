@@ -12,5 +12,40 @@
   "recheck_date": "2027-01-01",
   "text_he": "טיוטת תקנות מ-2025 תצמצם את הכניסה של כספי גמל (לא השתלמות) למי שמקבל קצבה כפולה מהמזערית או צבר פעמיים את הסכום הקובע, תמחק את מסלולי הכסף ההוני ועוקב המדד, תבטל מוצרים מובנים ותצמצם את הגדרת קרן חוץ. קרנות השתלמות נשארות 'מהשקל הראשון'. האם התקנות נחתמו לא נמצא (שאלה פתוחה 2).",
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/reports/report_0015/he/regulation_plan_26_1.pdf",
+      "title": "CMA, תכנית אסדרה לשנת 2026, p.16 (published 31.12.2025, updated 14.01.2026)",
+      "title_he": "תכנית אסדרה לשנת 2026",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.16",
+      "locator_he": "עמוד 16",
+      "page": 16,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/regulation_0059/he/regulation_ira_pdf.pdf",
+      "title": "CMA draft 2025, gov.il PDF",
+      "title_he": "טיוטת תיקון לתקנות קופת גמל בניהול אישי (2025)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "regulation",
+      "strength": "primary",
+      "checked": "2026-10-22",
+      "qualifier": "(draft)"
+    },
+    {
+      "url": "https://www.shibolet.com/עדכוני-רגולציה-פיננסית-מאי-2025/",
+      "title": "Shibolet, עדכוני רגולציה פיננסית – מאי 2025",
+      "publisher": "Shibolet law firm",
+      "publisher_he": "שבלת עורכי דין",
+      "kind": "article",
+      "strength": "secondary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

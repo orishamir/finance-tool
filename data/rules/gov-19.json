@@ -9,5 +9,34 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "government-bonds-and-makam.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://edge.boi.org.il/FusionEdgeServer/sdmx/v2/data/dataflow/BOI.STATISTICS/SECDWH/1.0/?format=csv&lastNObservations=1&labels=name",
+      "title": "EDGE SECDWH",
+      "publisher": "Bank of Israel (data)",
+      "publisher_he": "בנק ישראל (מאגר הנתונים)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://edge.boi.org.il/FusionEdgeServer/sdmx/v2/structure/dataflow",
+      "title": "EDGE dataflow list",
+      "publisher": "Bank of Israel (data)",
+      "publisher_he": "בנק ישראל (מאגר הנתונים)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/package_show?id=goverment-domesticdebt",
+      "title": "data.gov.il package_show goverment-domesticdebt",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

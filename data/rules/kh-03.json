@@ -3,11 +3,31 @@
   "title": "Employer obligation exists only by law or agreement, and the employee chooses the fund",
   "title_he": "המעסיק מחויב רק לפי הסכם, והעובד בוחר קרן",
   "text_he": "החוק מדבר על עובד שזכאי להצטרף לקופת גמל לפי דין או הסכם, כולל הסכם קיבוצי; עובד כזה בוחר כל קרן מהסוג המתאים, והמעסיק לא יכול להתנות את ההפקדות בקרן מסוימת. אם לא בחר אחרי שניתנה לו הזדמנות, המעסיק רשאי להפקיד לקרן שנקבעה בדין או בהסכם. לא נמצא חוק שמחייב כל מעסיק להפקיד לקרן השתלמות; לפי מקור משני זה נקבע בהסכם אישי או בצו הרחבה. חובות קיימות בענפים מסוימים, למשל לעובדי הוראה, ובצווי הרחבה שלא נקראו.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "eligibility"
   ],
   "likely_to_change": "no",
   "il_finance_file": "keren-hishtalmut.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://meyda.education.gov.il/files/PortalOvdeyHoraa/POH/Salary/study-fund.pdf",
+      "title": "Civil Service Commission form, נספח א'-4 \"קרן השתלמות לעובדי הוראה\", edition 12/2020",
+      "publisher": "Ministry of Education",
+      "publisher_he": "משרד החינוך",
+      "kind": "form",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://pensuni.com/?p=2540",
+      "title": "Pensuni, \"מהם אחוזי הפקדה לקרן השתלמות?\", 16.08.2024",
+      "publisher": "Pensuni",
+      "publisher_he": "פנסיוני (pensuni.com)",
+      "kind": "article",
+      "strength": "secondary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

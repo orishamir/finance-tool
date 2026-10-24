@@ -7,7 +7,7 @@
     "liquidation_notice_days": "ימי ההודעה המוקדמת על פירוק",
     "dormant_units_report_floor": "שווי היחידות הרדומות שמתחתיו מדווחים יום־יום"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "liquidity-lockup"
   ],
@@ -54,5 +54,33 @@
     }
   },
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf",
+      "title": "ISA tracking-fund directive, s. 8",
+      "title_he": "הוראה למנהלי קרנות נאמנות בדבר ניהול ההשקעות בקרן מחקה (עדכון 3, 15.10.2024)",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "s. 8",
+      "locator_he": "סעיף 8",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(קרנות_מחקות)",
+      "title": "Tracking-fund regulations, reg. 15",
+      "title_he": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע״ח-2018",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg. 15",
+      "locator_he": "תקנה 15",
+      "anchor": "סעיף_15",
+      "checked": "2026-10-22"
+    }
+  ]
 }

@@ -4,10 +4,12 @@
 import { createContext, useCallback, useContext, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
-import { buttons, computedInputs, flags as flagCopy, formulaNames, numbers, provenance as copy, rule as ruleCopy, strength as strengthCopy, topicName } from "../copy";
+import { buttons, computedInputs, flags as flagCopy, formulaNames, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
 import { fmt, formatValue } from "../lib/format";
-import { hasHebrew, mostlyHebrew, sourceLabel } from "../lib/source-label";
+import { hasHebrew, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/source-label";
+import { isExperience, shelfOf } from "../lib/rule-shelves";
+import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, sourceHref, sourceLabel2, shownTitle, type RuleSource, type SourcedRule } from "../lib/sources";
 import { useInputs } from "../lib/inputs";
 import { isParameter, isProvisional, strengthOf, type SiteValue, type Strength } from "../lib/value";
 import type { TermRow } from "../lib/data.server";
@@ -37,6 +39,14 @@ export interface ProvenanceData {
   today: string;
   /** "לכל הכללים של {product}" target, on pages about one product. */
   rulesOf?: { name: string; href: string };
+  /** Where each rule is used (the rules pages fill it): pages that show it, and whether the calculation engine reads it. */
+  ruleUses?: Record<string, RuleUses>;
+}
+
+/** What a rule affects: links to pages that use it, and whether the calculation engine reads it. */
+export interface RuleUses {
+  pages: { href: string; label: string }[];
+  engine: boolean;
 }
 
 export function ProvenanceProvider({ data, children }: { data: ProvenanceData; children: ReactNode }) {
@@ -75,7 +85,7 @@ export function ProvenanceProvider({ data, children }: { data: ProvenanceData; c
 
 const PushCtx = createContext<(item: Item) => void>(() => {});
 
-function useOpen() {
+export function useOpen() {
   const api = useContext(Ctx);
   const push = useContext(PushCtx);
   const inside = useContext(InsideSheetCtx);
@@ -316,6 +326,108 @@ export function NumberLegend({ className, institution = true, term = false }: { 
   );
 }
 
+// ---------------------------------------------------------------- source block
+
+const asSourced = (r: RuleRecord): SourcedRule => r as unknown as SourcedRule;
+
+/** Text that may hold Latin letters or digits: isolated so it keeps its order inside Hebrew. */
+function Iso({ children, ltr }: { children: ReactNode; ltr?: boolean }) {
+  return <bdi dir={ltr ? "ltr" : undefined}>{children}</bdi>;
+}
+
+/** One source: the link line, the quoted words, then when it was read (synthesis 3.3). */
+function OneSource({ source, rule, today, lead, english }: { source: RuleSource; rule?: Pick<SourcedRule, "likely_to_change" | "recheck_date">; today: string; lead?: string; english?: boolean }) {
+  const n = sourceLabel2(source);
+  const title = shownTitle(n.title, source.url, source.kind);
+  const pubHebrew = hasHebrew(n.publisher);
+  const weak = source.strength !== "primary" ? sourceCopy.weak[source.strength] : null;
+  const changed = mayHaveChanged(rule ?? { likely_to_change: "no" }, source, today);
+  const titleNode = <Iso ltr={title.host || !isHebrewTitle(n.title)}>{title.text}</Iso>;
+  return (
+    <div className="flex flex-col gap-1">
+      {lead && <span className="text-xs text-muted-foreground">{lead}</span>}
+      <a href={sourceHref(source)} target="_blank" rel="noopener noreferrer" className="text-link inline-flex max-w-full items-start gap-1 hover:underline">
+        <span className="min-w-0 [overflow-wrap:anywhere]">
+          {n.mirror ? (
+            <>
+              {titleNode} · {n.mirrorKind}, {n.mirror}
+            </>
+          ) : (
+            <>
+              <Iso ltr={!pubHebrew}>{n.publisher}</Iso> · {titleNode}
+            </>
+          )}
+          {n.locator && (
+            <>
+              , <Iso>{n.locator}</Iso>
+            </>
+          )}
+        </span>
+        {n.pdf && <span className="shrink-0 mt-1 text-xs leading-none rounded-sm border border-border px-1 py-0.5 text-muted-foreground">{sourceCopy.pdfTag}</span>}
+        <IconExternal size={16} className="shrink-0 mt-1" />
+      </a>
+      {source.quote && <p className="text-sm text-muted-foreground line-clamp-3">״{source.quote}״</p>}
+      <p className={cx("text-xs", changed ? "text-caution-foreground" : "text-muted-foreground")}>
+        {sourceCopy.checked} <Iso ltr>{fmt.date(source.checked)}</Iso>
+        {weak && ` · ${weak}`}
+        {changed && ` · ${sourceCopy.mayHaveChanged}`}
+      </p>
+      {english && !isHebrewTitle(n.title) && (
+        <details className="text-xs text-muted-foreground">
+          <summary className="cursor-pointer">{copy.sourced.englishTitle}</summary>
+          <bdi dir="ltr" className="[overflow-wrap:anywhere]">
+            {source.title}
+          </bdi>
+        </details>
+      )}
+    </div>
+  );
+}
+
+/**
+ * The source block (synthesis 3.3): the first source in full; further ones behind "עוד מקור אחד" in the sheet and all
+ * shown when `inline` (the rules pages). `english` keeps the English title in a collapsed line when the shown name is a host.
+ */
+export function SourceBlock({ source, rule, today, inline, english }: { source: RuleSource | readonly RuleSource[]; rule?: Pick<SourcedRule, "likely_to_change" | "recheck_date">; today: string; inline?: boolean; english?: boolean }) {
+  const list = Array.isArray(source) ? (source as readonly RuleSource[]) : [source as RuleSource];
+  const [first, ...rest] = list;
+  if (!first) return null;
+  const firstIsCopy = first.strength === "primary-mirror";
+  const leadFor = (s: RuleSource) => (!firstIsCopy && s.strength === "primary-mirror" ? sourceCopy.readable : undefined);
+  const more = rest.map((s) => <OneSource key={s.url + (s.locator ?? "")} source={s} rule={rule} today={today} lead={leadFor(s)} english={english} />);
+  return (
+    <div className="flex flex-col gap-3">
+      <OneSource source={first} rule={rule} today={today} english={english} />
+      {rest.length > 0 &&
+        (inline ? (
+          more
+        ) : (
+          <Disclosure label={<span className="text-sm">{moreSourcesLabel(rest.length)}</span>}>
+            <div className="flex flex-col gap-3 pt-1">{more}</div>
+          </Disclosure>
+        ))}
+    </div>
+  );
+}
+
+/** The rule's first source as one line, under a rule chip in a computed figure's sheet. */
+function FirstSourceLine({ rule }: { rule: RuleRecord }) {
+  const s = pickSources(asSourced(rule))[0];
+  if (!s) return null;
+  const n = sourceLabel2(s);
+  const title = shownTitle(n.title, s.url, s.kind);
+  return (
+    <a href={sourceHref(s)} target="_blank" rel="noopener noreferrer" className="text-link text-xs block max-w-full truncate hover:underline">
+      <Iso ltr={!hasHebrew(n.publisher)}>{n.publisher}</Iso> · <Iso ltr={title.host}>{title.text}</Iso>
+      {n.locator && (
+        <>
+          , <Iso>{n.locator}</Iso>
+        </>
+      )}
+    </a>
+  );
+}
+
 // ---------------------------------------------------------------- sheet content
 
 function SheetContent({ item, data, headId, descId }: { item: Item; data: ProvenanceData; headId: string; descId: string }) {
@@ -404,6 +516,30 @@ function unitWordOf(unit: string): string | null {
   return (copy.unit as Record<string, string>)[unit] ?? null;
 }
 
+/** The sourced figure's one source block: the figure's own source and date, with the Hebrew names and the locator of the same link in its rule record when there is one. */
+function FigureSource({ value, data }: { value: SiteValue; data: ProvenanceData }) {
+  if (value.state !== "sourced") return null;
+  const ids = value.rule_ids ?? [];
+  const strengthOk = (st: string): st is RuleSource["strength"] => st === "primary" || st === "primary-mirror" || st === "institution" || st === "secondary";
+  let known: RuleSource | undefined;
+  let owner: SourcedRule | undefined;
+  for (const id of ids) {
+    const r = data.rules[id];
+    if (!r) continue;
+    owner ??= asSourced(r);
+    known ??= pickSources(asSourced(r)).find((x) => x.url === value.source.url);
+  }
+  const source: RuleSource = {
+    ...(known ?? { title: value.source.title, publisher: value.source.publisher }),
+    url: value.source.url,
+    strength: strengthOk(value.source.strength) ? value.source.strength : (known?.strength ?? "secondary"),
+    checked: value.checked,
+  };
+  // a figure's source can be a file of the site, not a web address: the old plain label stays for it
+  if (!/^https?:/.test(source.url)) return <SourceLink url={source.url} title={source.title} />;
+  return <SourceBlock source={source} rule={owner} today={data.today} english />;
+}
+
 function ValueSheet({ value, exact, data, headId, descId }: { value: SiteValue; exact: boolean; data: ProvenanceData; headId: string; descId: string }) {
   const strength = strengthOf(value);
   const param = isParameter(value);
@@ -463,14 +599,9 @@ function ValueSheet({ value, exact, data, headId, descId }: { value: SiteValue; 
       )}
 
       {value.state === "sourced" && !param && value.value !== null && (
+        <>
+        <FigureSource value={value} data={data} />
         <dl className="sheet-dl">
-          <Row label={copy.sourced.source}>
-            <SourceLink url={value.source.url} title={value.source.title} />
-          </Row>
-          <Row label={copy.sourced.publisher}>{hasHebrew(value.source.publisher) ? value.source.publisher : <bdi dir="ltr">{value.source.publisher}</bdi>}</Row>
-          <Row label={copy.sourced.checked}>
-            <bdi dir="ltr">{fmt.date(value.checked)}</bdi>
-          </Row>
           {year ? (
             <Row label={copy.sourced.forYear}>
               <bdi dir="ltr">{year}</bdi>
@@ -500,6 +631,7 @@ function ValueSheet({ value, exact, data, headId, descId }: { value: SiteValue; 
           )}
           {mostlyHebrew(value.notes) && <Row label=""><span className="text-sm text-muted-foreground">{value.notes}</span></Row>}
         </dl>
+        </>
       )}
 
       {value.state === "computed" && value.computed_from && (
@@ -531,12 +663,15 @@ function ValueSheet({ value, exact, data, headId, descId }: { value: SiteValue; 
           {value.rulesUsed && value.rulesUsed.length > 0 && (
             <div className="flex flex-col gap-1.5">
               <span className="text-sm text-muted-foreground">{copy.computed.rules}</span>
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex flex-col gap-2">
                 {value.rulesUsed.map((r) => (
-                  <span key={r.id} className="inline-flex items-center gap-1.5">
-                    <RuleRef id={r.id} />
-                    <StrengthLabel strength={r.strength} />
-                  </span>
+                  <div key={r.id} className="flex flex-col gap-0.5 min-w-0">
+                    <span className="inline-flex items-center gap-1.5">
+                      <RuleRef id={r.id} />
+                      <StrengthLabel strength={r.strength} />
+                    </span>
+                    {data.rules[r.id] && <FirstSourceLine rule={data.rules[r.id]!} />}
+                  </div>
                 ))}
               </div>
             </div>
@@ -624,10 +759,57 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
   }
   const open = rule.strength === "open";
   const figures = Object.entries(rule.figures ?? {});
+  const sourced = asSourced(rule);
+  const sources = pickSources(sourced);
+  const uses = data.ruleUses?.[id];
+  const derived = sourced.derived_from ?? [];
+  const [copied, setCopied] = useState(false);
+  const copyCitation = async () => {
+    const first = sources[0];
+    if (!first) return;
+    try {
+      await navigator.clipboard.writeText(citationText(sourced, first, first.checked));
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // no clipboard permission: nothing is written, nothing is claimed
+    }
+  };
   // the figure's Hebrew name when the record has one; else its key as written
   const figureLabel = (name: string) => (rule.figure_names_he?.[name] ? <span className="text-xs">{rule.figure_names_he[name]}</span> : <bdi dir="ltr" className="text-xs">{name}</bdi>);
   const unitSuffix = (unit: string) => (suffixUnits.has(unit) ? <span className="text-sm text-muted-foreground"> {unitWordOf(unit)}</span> : null);
-  const firstSource = figures.map(([, f]) => (Array.isArray(f) ? f[0]?.rate : "by_tax_year" in f ? Object.values(f.by_tax_year)[0] : f)).find(Boolean);
+  /** "לשנת המס 2026 · קבוע בחוק": the tax year the figure is for (when its label does not say) and how it is updated. */
+  const figureNote = (v: { tax_year?: number | null; update_rule: string }, labelYear: string | null) => {
+    const bits: ReactNode[] = [];
+    if (v.tax_year && String(v.tax_year) !== labelYear)
+      bits.push(
+        <span key="y">
+          {ruleCardMore.forTaxYear} <bdi dir="ltr">{v.tax_year}</bdi>
+        </span>,
+      );
+    const frozen = /^frozen (\d{4})-(\d{4})$/.exec(v.update_rule);
+    const word = frozen ? updateRules.frozen : (updateRules as Record<string, string>)[v.update_rule];
+    if (word) {
+      const [before, after] = word.split("{years}");
+      bits.push(
+        <span key="u">
+          {before}
+          {frozen && (
+            <bdi dir="ltr">
+              {frozen[1]}–{frozen[2]}
+            </bdi>
+          )}
+          {after}
+        </span>,
+      );
+    }
+    if (bits.length === 0) return null;
+    return (
+      <span className="block text-xs text-muted-foreground font-normal">
+        {bits.flatMap((b, i) => (i ? [" · ", b] : [b]))}
+      </span>
+    );
+  };
   return (
     <div className={cx("flex flex-col gap-3", open && "rule-open")}>
       <header className="flex flex-col gap-1.5">
@@ -636,7 +818,11 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
           {!open && ": "}
           {!open && <ShownRuleTitle rule={rule} />}
         </h2>
-        <StrengthLabel strength={rule.strength} />
+        {isExperience(id) ? (
+          <Tag tone="neutral">{ruleCardMore.experienceTag}</Tag>
+        ) : (
+          (rule.strength === "open" || rule.strength === "institution" || rule.strength === "secondary") && <StrengthLabel strength={rule.strength} />
+        )}
       </header>
       {open ? (
         <Callout tone="blocked">
@@ -650,6 +836,23 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
       ) : (
         <p className="text-sm text-muted-foreground">{ruleCopy.noText}</p>
       )}
+      {derived.length > 0 && (
+        <div className="flex flex-col gap-1">
+          <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
+            <span>{ruleCardMore.derivedFrom}</span>
+            {derived.map((d) => (
+              <RuleRef key={d} id={d} />
+            ))}
+          </p>
+          <p className="text-xs text-muted-foreground">{ruleCardMore.derivedLine}</p>
+        </div>
+      )}
+      {sources.length > 0 ? (
+        <SourceBlock source={sources} rule={sourced} today={data.today} inline={inline} />
+      ) : (
+        // audit A26: rule records without a source link are shown as such, not hidden
+        <p className="text-sm text-muted-foreground">{ruleCopy.sourceMissing}</p>
+      )}
       {figures.length > 0 && (
         <div className="flex flex-col gap-1.5">
           <span className="text-sm text-muted-foreground">{ruleCopy.figures}</span>
@@ -660,6 +863,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
                   <div key={`${name}-${i}`} className="readout-row">
                     <dt>
                       {figureLabel(name)} {b.up_to.value === null ? "" : "≤"} {b.up_to.value !== null && <Num value={{ ...b.up_to, rule_ids: b.up_to.rule_ids ?? [id] }} />}
+                      {i === 0 && figureNote(b.rate, null)}
                     </dt>
                     <dd>
                       <Num value={{ ...b.rate, rule_ids: b.rate.rule_ids ?? [id] }} />
@@ -678,6 +882,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
                         <bdi dir="ltr">{year}</bdi>
                       </>
                     )}
+                    {figureNote(v, year)}
                   </dt>
                   <dd>
                     <Num value={{ ...v, rule_ids: v.rule_ids ?? [id] }} />
@@ -690,17 +895,6 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
         </div>
       )}
       <dl className="sheet-dl">
-        {firstSource ? (
-          <Row label={ruleCopy.source}>
-            <SourceLink url={firstSource.source.url} title={firstSource.source.title} />
-          </Row>
-        ) : (
-          // audit A26: 286 rule records carry no source link yet; the gap is shown, not hidden
-          <Row label={ruleCopy.source}>
-            <span className="text-sm text-muted-foreground">{ruleCopy.sourceMissing}</span>
-          </Row>
-        )}
-        <Row label={ruleCopy.topic}>{topicName(rule.il_finance_file)}</Row>
         <Row label={ruleCopy.checked}>
           <bdi dir="ltr">{fmt.date(rule.checked)}</bdi>
         </Row>
@@ -720,8 +914,29 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
             </span>
           </Row>
         )}
+        {uses && (uses.pages.length > 0 || uses.engine) && (
+          <Row label={ruleCardMore.usesLead}>
+            <span className="flex flex-wrap gap-x-3 gap-y-1 text-sm">
+              {uses.pages.map((u) => (
+                <Link key={u.href} to={u.href} className="text-link hover:underline">
+                  {u.label}
+                </Link>
+              ))}
+              {uses.engine && <span>{ruleCardMore.usesEngine}</span>}
+            </span>
+          </Row>
+        )}
       </dl>
-      {!inline && <LinkButton to={`/rules#${id}`}>{ruleCopy.all}</LinkButton>}
+      {rule.likely_to_change === "no" && !rule.recheck_date && <p className="text-xs text-muted-foreground">{ruleCardMore.stable}</p>}
+      {uses && uses.pages.length === 0 && !uses.engine && <p className="text-xs text-muted-foreground">{ruleCardMore.usesNone}</p>}
+      <div className="flex flex-wrap items-center gap-x-3">
+        {!inline && <LinkButton to={`/rules/${shelfOf(rule)}#${id}`}>{ruleCopy.all}</LinkButton>}
+        {sources.length > 0 && (
+          <Button variant="quiet" className="text-sm" onClick={() => void copyCitation()}>
+            {copied ? sourceCopy.citation.copied : ruleCardMore.copyCitation}
+          </Button>
+        )}
+      </div>
     </div>
   );
 }

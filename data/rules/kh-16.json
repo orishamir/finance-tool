@@ -35,5 +35,18 @@
     }
   },
   "il_finance_file": "keren-hishtalmut.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.as-invest.co.il/media/10040/בקשה-למשיכת-כספים-מקרן-השתלמות.pdf",
+      "title": "Altshuler withdrawal form",
+      "title_he": "בקשה למשיכת כספים מקרן השתלמות (טופס אלטשולר שחם)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "form",
+      "strength": "institution",
+      "quote": "לתשומת לבך",
+      "checked": "2026-10-22"
+    }
+  ]
 }

@@ -3,7 +3,7 @@
   "title": "Which lot is sold, and which fees reduce the gain",
   "title_he": "איזה נייר נמכר קודם, ואילו הוצאות מקטינות את הרווח",
   "text_he": "כשמוכרים ניירות ערך זהים שנקנו במועדים שונים, רואים אותם כנמכרים לפי סדר הקנייה, הראשון שנקנה נמכר ראשון, אלא אם המוכר מוכיח לפקיד השומה את תאריך הקנייה והמחיר של נייר מסוים. ניירות ערך זהים כוללים יחידות באותה קרן נאמנות אם מנהל אותן מנהל תיקים אחד. בחישוב רווח ההון מנכים מהתמורה את ההוצאות של אותה שנת מס, כלומר דמי ניהול ודמי משמורת בעד פעולות בניירות ערך. אם הבנקים מנכים את ההוצאות כבר בניכוי במקור או רק דרך דוח שנתי לא נמצא.",
-  "strength": "primary",
+  "strength": "primary-mirror",
   "dimensions": [
     "tax-at-exit",
     "fee-custody",
@@ -11,5 +11,21 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "tax-securities-israeli.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(חישוב_רווח_הון_במכירת_נייר_ערך_הנסחר_בבורסה,_מילווה_המדינה_או_יחידה_בקרן_נאמנות)",
+      "title": "Income Tax Regulations (computing capital gain on sale of a traded security, government loan or unit in a mutual fund), 5763-2002",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg.1",
+      "locator_he": "תקנה 1",
+      "anchor": "סעיף_1",
+      "quote": "ניירות ערך זהים",
+      "checked": "2026-10-22"
+    }
+  ]
 }

@@ -11,5 +11,17 @@
   "likely_to_change": "no",
   "text_he": "כסף שלא נמשך בגיל הפדיון ממשיך להתנהל בקופה או בבנק. אחרי 18 הילד יכול לעבור בין קופות או מסלולים, או בין מסלולי חיסכון בבנק; כסף חדש אי אפשר להוסיף. בבנק החשבון מתחדש לתקופות נוספות, ושבירה של תקופה כזו עלולה לגרוע ריבית והצמדה. האם אפשר להעביר לקופת גמל רגילה לא נמצא (שאלה פתוחה 13).",
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
+      "title": "NII withdrawal page",
+      "title_he": "חיסכון לכל ילד: עמודי המידע של הביטוח הלאומי",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

@@ -2,7 +2,7 @@
   "id": "IRA-15",
   "title": "Written agreement; member may cancel at any time without charge",
   "title_he": "הסכם בכתב, וביטול בכל עת בלי תשלום",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "fee-exit",
     "transfer-switch-process"
@@ -11,5 +11,32 @@
   "recheck_date": "2027-01-01",
   "text_he": "החברה חותמת עם כל עמית הסכם בכתב שמפרט את דמי הניהול וההוצאות, כולל עמלות ודמי משמרת, ואת זכות העמית לבטל את ההסכם בכל עת בלי תשלום. תנאי שמוותר על חובות החברה בטל.",
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/regulation_0059/he/regulation_ira_pdf.pdf",
+      "title": "CMA draft 2025, s.6",
+      "title_he": "טיוטת תיקון לתקנות קופת גמל בניהול אישי (2025)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "s.6",
+      "locator_he": "סעיף 6",
+      "checked": "2026-10-22",
+      "qualifier": "(draft)"
+    },
+    {
+      "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
+      "title": "Nevo, reg. 6",
+      "publisher": "Nevo",
+      "publisher_he": "נבו",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "nevo",
+      "locator": "reg. 6",
+      "locator_he": "תקנה 6",
+      "checked": "2026-10-22"
+    }
+  ]
 }

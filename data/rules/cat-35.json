@@ -10,5 +10,43 @@
   "likely_to_change": "no",
   "text_he": "שני השדות מוצגים באחוזים, כפי ששני אתרי הרשות מציגים אותם. דמי הניהול מהצבירה הם שיעור שנתי מהנכסים, ודמי הניהול מההפקדות הם חלק מההפקדות באותה שנה, לא שיעור שנתי. שדה ריק אינו אפס: הוא אומר שהנתון לא דווח.",
   "il_finance_file": "tracks-catalogue-and-decoder.md",
-  "checked": "2026-10-23"
+  "checked": "2026-10-23",
+  "sources": [
+    {
+      "url": "https://gemelnet.cma.gov.il/views/gemelTsuot.aspx",
+      "title": "Gemel-Net yields report, fund 7978, period 10/2025–09/2026",
+      "publisher": "Gemel-Net (Capital Market Authority)",
+      "publisher_he": "גמל־נט (רשות שוק ההון, ביטוח וחיסכון)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-23"
+    },
+    {
+      "url": "https://pensyanet.cma.gov.il/Parameters",
+      "title": "Pensia-Net report, fund 214, 10/2025–09/2026",
+      "publisher": "Pensia-Net (Capital Market Authority)",
+      "publisher_he": "פנסיה־נט (רשות שוק ההון, ביטוח וחיסכון)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-23"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&filters={\"FUND_ID\":7978,\"REPORT_PERIOD\":202609}",
+      "title": "Gemel-Net 2024+ datastore, 7978",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-23"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=6d47d6b5-cb08-488b-b333-f1e717b1e1bd&limit=1000&filters={\"REPORT_PERIOD\":202609}",
+      "title": "Pension-Net 2024+ datastore, 202609",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-23"
+    }
+  ]
 }

@@ -35,5 +35,27 @@
     }
   },
   "il_finance_file": "tax-securities-foreign.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.irs.gov/pub/irs-trty/israel.pdf",
+      "title": "US-Israel treaty",
+      "title_he": "אמנת המס בין ישראל לארצות הברית (נוסח ה-IRS)",
+      "publisher": "IRS",
+      "publisher_he": "רשות המס האמריקאית (IRS)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "Art. 15(1)(d)",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.irs.gov/publications/p519",
+      "title": "IRS Publication 519 (2025)",
+      "publisher": "IRS",
+      "publisher_he": "רשות המס האמריקאית (IRS)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
 }

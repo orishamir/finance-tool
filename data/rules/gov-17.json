@@ -34,5 +34,33 @@
     }
   },
   "il_finance_file": "government-bonds-and-makam.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf",
+      "title": "2024 glossary, \"אג\"ח סחיר\", \"אג\"ח לא סחיר\", \"מערכת ה-MTS\"",
+      "title_he": "הדוח השנתי 2024 של היחידה לניהול החוב הממשלתי",
+      "publisher": "gov.il",
+      "publisher_he": "החשב הכללי, משרד האוצר",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "pp. 40, 43",
+      "locator_he": "עמודים 40, 43",
+      "page": 40,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2025/he/annual-debt-report_annual-debt-report-2025-accessible-version-he.pdf",
+      "title": "הדו\"ח השנתי 2025",
+      "title_he": "הדוח השנתי 2025 של היחידה לניהול החוב הממשלתי",
+      "publisher": "gov.il",
+      "publisher_he": "החשב הכללי, משרד האוצר",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p. 27",
+      "locator_he": "עמוד 27",
+      "page": 27,
+      "checked": "2026-10-22"
+    }
+  ]
 }

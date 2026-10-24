@@ -56,5 +56,20 @@
     }
   },
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-23"
+  "checked": "2026-10-23",
+  "sources": [
+    {
+      "url": "https://content.tase.co.il/media/rhzcuxda/file_0623_leading_indices_2025.pdf",
+      "title": "TASE, \"מדדי הבורסה המובילים\" (brochure, PDF dated 12.5.2025)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "checked": "2026-10-23",
+      "qualifier": "(index provider)"
+    }
+  ]
 }

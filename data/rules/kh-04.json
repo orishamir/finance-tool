@@ -56,5 +56,29 @@
     }
   },
   "il_finance_file": "keren-hishtalmut.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://as-invest.co.il/media/khpp32k5/אלטשולר-שחם-השתלמות-תקנון-מהדורת-שינויים-דצמבר-2024.pdf",
+      "title": "Altshuler Shaham study-fund bylaws, tracked-changes edition current from 1.12.2024, s.5.1",
+      "title_he": "תקנון קרן ההשתלמות של אלטשולר שחם (מהדורת דצמבר 2024)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "s.5.1",
+      "locator_he": "סעיף 5.1",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://media.harel-group.co.il/media/smegncwi/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf",
+      "title": "Harel, תקרות וסכומים לשנת 2026 (file dated March 2026)",
+      "title_he": "תקרות וסכומים לשנת 2026 (הראל)",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
 }

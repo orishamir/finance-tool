@@ -10,5 +10,34 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
+      "title": "Joint Investment Trust Law 1994 (חוק השקעות משותפות בנאמנות, תשנ\"ד-1994), s. 1 definitions; s. 102(ה)–(ו)",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "s. 1 definitions; s. 102(ה)–(ו)",
+      "anchor": "סעיף_1",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(קרנות_מחקות)",
+      "title": "Tracking-fund regulations 2018, reg. 18(b)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע״ח-2018",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg. 18(b)",
+      "locator_he": "תקנה 18(ב)",
+      "anchor": "סעיף_18",
+      "checked": "2026-10-22"
+    }
+  ]
 }

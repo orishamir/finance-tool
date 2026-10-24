@@ -288,3 +288,19 @@ export function loadParameterUses(): Record<string, string[]> {
   for (const m of section.matchAll(/^\| (P-\d{2}) \| .+? \| (.+?) \|$/gm)) out[m[1]!] = [...m[2]!.matchAll(/F-\d{2}/g)].map((x) => x[0]);
   return out;
 }
+
+// ---------------------------------------------------------------- P-09 pinned rules
+
+export interface PinnedRules {
+  rows: { ids: string[]; question_he: string }[];
+  /** Wrapper id → two or three rule ids for its guide page's "worth knowing" block. */
+  guide_blocks: Record<string, string[]>;
+  rationale_he?: string;
+  provisional?: boolean;
+  signed_off_on: string;
+}
+
+/** data/parameters/pinned-rules.json (P-09): the questions at the top of the rules page and the facts per guide page. A site judgement, not a rule. */
+export function loadPinnedRules(): PinnedRules {
+  return JSON.parse(readFileSync(join(root, "data/parameters/pinned-rules.json"), "utf8")) as PinnedRules;
+}

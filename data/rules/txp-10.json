@@ -7,7 +7,7 @@
     "employer_exempt_pct": "שיעור הפקדת המעסיק שלא ממוסה בהפקדה",
     "employer_ceiling": "תקרת השכר להפקדת המעסיק (חודשי)"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "tax-at-deposit",
     "deposit-ceiling"
@@ -57,5 +57,32 @@
     }
   },
   "il_finance_file": "tax-pension-gemel-lekitzba.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/service/itc-106/en/Service_Pages_Income_tax_itc106-acc.pdf",
+      "title": "Form 106, updated 1.2026",
+      "title_he": "טופס 106",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "form",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לאישור_ולניהול_קופות_גמל)",
+      "title": "Income Tax (Rules for Approval and Management of Provident Funds) Regulations 1964, reg. 19, Wikisource",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg. 19",
+      "locator_he": "תקנה 19",
+      "anchor": "סעיף_19",
+      "checked": "2026-10-22",
+      "qualifier": "(mirror; version currency unconfirmed, open question 12)"
+    }
+  ]
 }

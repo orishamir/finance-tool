@@ -9,5 +9,60 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf",
+      "title": "ISA tracking-fund directive, s. 4",
+      "title_he": "הוראה למנהלי קרנות נאמנות בדבר ניהול ההשקעות בקרן מחקה (עדכון 3, 15.10.2024)",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "s. 4",
+      "locator_he": "סעיף 4",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
+      "title": "IBI ETF annual report 31.12.2025, p.2",
+      "title_he": "דוח שנתי ליום 31.12.2025 של אי.בי.אי. סל (4D) S&P 500",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "אי.בי.אי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
+      "title": "Yalin Lapidot annual report 31.12.2025, p.1–2",
+      "title_he": "דוח שנתי ליום 31.12.2025 של ילין לפידות מחקה (4D) S&P 500",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "ילין לפידות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1–2",
+      "locator_he": "עמוד 1–2",
+      "page": 1,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf",
+      "title": "ISA, פעילות קרנות נאמנות בישראל 2025, p.20 footnote",
+      "title_he": "פעילות קרנות נאמנות בישראל 2025",
+      "publisher": "Funder (copy)",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "official_pdf",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "p.20",
+      "locator_he": "עמוד 20",
+      "page": 20,
+      "checked": "2026-10-22",
+      "qualifier": "(third-party host)"
+    }
+  ]
 }

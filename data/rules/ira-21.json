@@ -13,5 +13,53 @@
   "recheck_date": "2027-01-01",
   "text_he": "העמלות בתוך קופה אישית של מיטב תלויות בברוקר שנבחר (מיטב טרייד, לאומי, מזרחי, הבינלאומי, הפועלים), לפי תוצאות ההליך התחרותי מ-1.5.2026. עמלות שלא ברשימה נגבות לפי תעריפון הבנק, חלים מינימומים, ועלויות צד שלישי ומסים נוספים. הפועלים גובה אחוז רבעוני משווי התיק במקום עמלה לעסקה. הנתונים עצמם הם תעריפים לאיסוף ב-data/fees (שלב 4).",
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.meitav.co.il/media/r2djwzpw/26061426l-תוצאות-מכרז-לניהול-אישי-2026-לאומי.pdf",
+      "title": "Leumi annex 2.606.1.4.26L",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.meitav.co.il/media/zzobaaj4/26061426m-תוצאות-מכרז-לניהול-אישי-2026-מזרחי.pdf",
+      "title": "Mizrahi annex 2.606.1.4.26M",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.meitav.co.il/media/juccvbxk/26061426b-תוצאות-מכרז-לניהול-אישי-2026-בינלאומי.pdf",
+      "title": "Binleumi annex 2.606.1.4.26B",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.meitav.co.il/media/qm2penhs/26061426t-תוצאות-מכרז-לניהול-אישי-2026-טרייד.pdf",
+      "title": "Meitav Trade annex 2.606.1.4.26T",
+      "title_he": "תוצאות מכרז לניהול אישי 2026 (נספח מיטב טרייד 2.606.1.4.26T)",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב טרייד",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.meitav.co.il/media/oftbfadu/26061426p-תוצאות-מכרז-לניהול-אישי-2026-פועלים.pdf",
+      "title": "Hapoalim letter 2.606.1.4.26P",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
 }

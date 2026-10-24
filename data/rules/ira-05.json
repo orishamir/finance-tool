@@ -2,7 +2,7 @@
   "id": "IRA-05",
   "title": "Who gives investment instructions",
   "title_he": "מי נותן את הוראות ההשקעה",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "eligibility"
   ],
@@ -10,5 +10,43 @@
   "recheck_date": "2027-01-01",
   "text_he": "הכסף מושקע רק לפי הוראות העמית, ישירות או דרך מנהל תיקים שיש לו איתו הסכם בכתב. לכל חשבון אדם אחד מוסמך להורות; העמית בוחר אותו ויכול להחליף בכל עת. מיטב מציעה 'ניהול עצמי' או 'ניהול באמצעות מנהל תיק' בייפוי כוח.",
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/regulation_0059/he/regulation_ira_pdf.pdf",
+      "title": "CMA draft 2025, s.4",
+      "title_he": "טיוטת תיקון לתקנות קופת גמל בניהול אישי (2025)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "s.4",
+      "locator_he": "סעיף 4",
+      "checked": "2026-10-22",
+      "qualifier": "(draft)"
+    },
+    {
+      "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
+      "title": "Nevo, IRA regulations, reg. 3",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי)",
+      "publisher": "Nevo",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "nevo",
+      "locator": "reg. 3",
+      "locator_he": "תקנה 3",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.meitav.co.il/provident_pension/ira/",
+      "title": "Meitav IRA page, \"על אופן הניהול\"",
+      "title_he": "קופת גמל בניהול אישי (IRA): עמוד המוצר של מיטב",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
 }

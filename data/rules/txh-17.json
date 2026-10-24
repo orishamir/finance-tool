@@ -10,5 +10,30 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "tax-hishtalmut.md",
-  "checked": "2026-10-22"
+  "checked": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf",
+      "title": "Chief Economist paper Oct 2025",
+      "title_he": "על הטבת המס בקרן השתלמות – ניתוח מדיניות (אגף הכלכלן הראשי, אוקטובר 2025)",
+      "publisher": "gov.il",
+      "publisher_he": "משרד האוצר",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.5 item 2 (`פטור ממס רווחי הון בעת שינוי הרכב הנכסים (דחיית מס)`)",
+      "page": 5,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לאישור_ולניהול_קופות_גמל)",
+      "title": "Income Tax Rules 1964",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "checked": "2026-10-22"
+    }
+  ]
 }

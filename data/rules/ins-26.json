@@ -36,5 +36,21 @@
     }
   },
   "il_finance_file": "savings-policies-and-executive-insurance.md",
-  "checked": "2026-10-24"
+  "checked": "2026-10-24",
+  "sources": [
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(ביטוח)_(תנאים_בחוזי_ביטוח)",
+      "title": "Insurance Contract Terms Regulations, reg. 6ב and the schedule (Wikisource)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (ביטוח) (תנאים בחוזי ביטוח), התשמ״ב-1981",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg. 6ב",
+      "locator_he": "תקנה 6ב",
+      "anchor": "סעיף_6ב",
+      "checked": "2026-10-24"
+    }
+  ]
 }
