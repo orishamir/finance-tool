@@ -14,13 +14,15 @@ import { entered as enteredValue, type SiteValue } from "../../lib/value";
 import type { ValueObject } from "@finance-tool/schema";
 import { GoalNumber } from "../compare/fields";
 import { IconAlert, IconClock, IconExternal, IconFile, IconInfo, IconPencil } from "../icons";
-import { Num, StateTag } from "../provenance";
+import { Num, StateTag, startsAfter, useToday } from "../provenance";
 import { NumberField } from "../timeline/fields";
 import { Button, Tag, cx } from "../ui";
 import { Tpl } from "./tpl";
 
 const pct100 = (n: number) => (n < 0 || n > 100 ? `${r2.form.errPercentBefore}100.` : null);
-const returnCheck = (n: number) => (n < -100 || n > 100 ? `${valuesCopy.errors.pct[0]} −100 ${valuesCopy.errors.pct[1]}100.` : null);
+/** A61: a return is bounded by P-05's percentage range, the same as the goal form's (it was −100 to 100 here and −50 to 50 there). */
+export type PctRange = { min: number; max: number };
+const returnCheck = (range: PctRange) => (n: number) => (n < range.min || n > range.max ? `${valuesCopy.errors.pct[0]} ${fmt.number(range.min)} ${valuesCopy.errors.pct[1]}${fmt.number(range.max)}.` : null);
 
 // ---------------------------------------------------------------- the goal form
 
@@ -61,24 +63,26 @@ function InfoToggle({ label, children }: { label: string; children: ReactNode })
   );
 }
 
-export function EnteredReturnField({ entry, value, onChange, label }: { entry: ExposureEntry; value?: ValueObject; onChange: (v: ValueObject | undefined) => void; label?: ReactNode }) {
+export function EnteredReturnField({ entry, value, onChange, label, fromProduct, range }: { entry: ExposureEntry; value?: ValueObject; onChange: (v: ValueObject | undefined) => void; label?: ReactNode; /** The return taken from the product comparison (decision 16), shown in the field until the person types another. */ fromProduct?: ValueObject; range: PctRange }) {
   const cur = entry.record.currency;
   const word = r5.exposure.fields.currency[cur] ?? cur;
+  const shown = value ?? fromProduct;
   return (
     <NumberField
       label={label ?? <Tpl t={r5.exposure.fields.returnLabel} vars={{ currency: word }} />}
       unit="pct_per_year"
-      value={typeof value?.value === "number" ? value.value : null}
-      isEntered={!!value}
-      validate={returnCheck}
+      value={typeof shown?.value === "number" ? shown.value : null}
+      isEntered={!!shown}
+      validate={returnCheck(range)}
       onCommit={(n) => onChange(ent(n, "pct_per_year"))}
       onReset={() => onChange(undefined)}
-      hint={value ? undefined : r5.exposure.fields.returnHint}
+      hint={shown ? undefined : r5.exposure.fields.returnHint}
       note={
-        value ? (
+        shown ? (
           <span className="flex items-center gap-1.5 text-xs text-entered">
             <IconPencil size={14} />
             <StateTag state="entered" />
+            {!value && fromProduct && <span>{r5.exposure.fields.returnFromProduct}</span>}
           </span>
         ) : (
           <span className="text-xs text-muted-foreground">{r5.exposure.fields.returnEmpty}</span>
@@ -89,9 +93,10 @@ export function EnteredReturnField({ entry, value, onChange, label }: { entry: E
   );
 }
 
-export function CashRateLine({ row, onChange, cashLink }: { row: ExposureRowView; onChange: (v: ValueObject | undefined) => void; cashLink: { href: string } | null }) {
+export function CashRateLine({ row, onChange, cashLink, range }: { row: ExposureRowView; onChange: (v: ValueObject | undefined) => void; cashLink: { href: string } | null; range: PctRange }) {
   const f = r5.exposure.fields;
   const overriding = !!row.enteredReturn;
+  const today = useToday();
   const [open, setOpen] = useState(false);
   const note = (
     <InfoToggle label={f.cashNote.slice(0, 20)}>{f.cashNote}</InfoToggle>
@@ -109,7 +114,7 @@ export function CashRateLine({ row, onChange, cashLink }: { row: ExposureRowView
         </span>
         <span className="text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
           <Tpl t={f.cashPublished} vars={{ date: <bdi dir="ltr">{row.published.effectiveFrom ? fmt.date(row.published.effectiveFrom) : ""}</bdi> }} />
-          {row.published.effectiveFrom && row.published.effectiveFrom > row.published.rate.checked && (
+          {row.published.effectiveFrom && startsAfter(row.published.rate, today) && (
             <Tag tone="caution" icon={<IconAlert size={14} />}>
               {r4catalogue.asOfAfterRead}
             </Tag>
@@ -134,7 +139,7 @@ export function CashRateLine({ row, onChange, cashLink }: { row: ExposureRowView
           )}
         </p>
       )}
-      <EnteredReturnField entry={row.entry} value={row.enteredReturn} onChange={(v) => (setOpen(!!v || (open && !v)), onChange(v))} label={row.published ? f.cashLabel : undefined} />
+      <EnteredReturnField entry={row.entry} value={row.enteredReturn} range={range} onChange={(v) => (setOpen(!!v || (open && !v)), onChange(v))} label={row.published ? f.cashLabel : undefined} />
       {row.published && (
         <Button
           variant="quiet"

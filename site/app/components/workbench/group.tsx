@@ -5,7 +5,7 @@ import { Link } from "react-router";
 import { company as companyCopy, fit as fitCopy, r3workbench as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { expandFee, feeLabel, feeYear, type SiteValue } from "../../lib/value";
-import { referenceValues, sortRows, type SortKey, type WbData, type WorkbenchRow } from "../../lib/workbench";
+import { referenceValues, sortRows, type SortDir, type SortKey, type WbData, type WorkbenchRow } from "../../lib/workbench";
 import { FeeNum } from "../decoder/fees";
 import { IconAlert, IconChevronDown, IconClock, IconDrillIn } from "../icons";
 import { IconDash, IconHelp, IconOk } from "../compare/icons";
@@ -168,6 +168,7 @@ export function WorkbenchGroup({
   rows,
   matching,
   sort,
+  dir,
   showFit,
 }: {
   data: WbData;
@@ -179,10 +180,11 @@ export function WorkbenchGroup({
   /** With a filter typed: how many of this group's rows match. */
   matching: number | null;
   sort: SortKey;
+  dir: SortDir;
   showFit: boolean;
 }) {
   const [pages, setPages] = useState(1);
-  const sorted = useMemo(() => (open ? sortRows(rows, sort) : []), [open, rows, sort]);
+  const sorted = useMemo(() => (open ? sortRows(rows, sort, dir) : []), [open, rows, sort, dir]);
   const shown = sorted.slice(0, pages * PAGE);
   const units = useMemo(() => unitsOf(shown), [shown]);
   const rest = sorted.length - shown.length;
@@ -196,7 +198,7 @@ export function WorkbenchGroup({
         <p className="p-4 text-sm text-muted-foreground">0 {copy.group.matching}</p>
       ) : (
         <>
-          <div className="md:hidden flex flex-col">
+          <div className="lg:hidden flex flex-col">
             {units.map((u) =>
               u.dup !== undefined ? (
                 <div key={u.key} role="group" className="dup">
@@ -213,21 +215,18 @@ export function WorkbenchGroup({
               ),
             )}
           </div>
-          <div className="hidden md:block overflow-x-auto lg:overflow-visible">
+          <div className="hidden lg:block">
             <table className="tbl">
-              <thead className="sticky top-16 bg-card">
+              <thead className="sticky top-16 [@media(max-height:500px)]:static bg-card z-[var(--z-sticky)] shadow-[0_1px_0_var(--border)]">
                 <tr>
-                  <th scope="col" className="w-1 !p-0">
-                    <span className="sr-only">{companyCopy.pcColumns.group}</span>
-                  </th>
                   <th scope="col">{copy.columns.company}</th>
                   <th scope="col">{copy.columns.track}</th>
                   <th scope="col">{copy.columns.fund}</th>
                   <th scope="col">{copy.columns.holds}</th>
-                  <th scope="col" className="!whitespace-normal min-w-28">
+                  <th scope="col">
                     {feeLabel(copy.columns.balance, year)}
                   </th>
-                  <th scope="col" className="!whitespace-normal min-w-24">
+                  <th scope="col">
                     {copy.columns.deposit}
                   </th>
                   {showFit && <th scope="col">{copy.columns.fit}</th>}
@@ -240,8 +239,7 @@ export function WorkbenchGroup({
                   if (u.dup !== undefined)
                     out.push(
                       <tr key={`${u.key}-b`} className="dup-row">
-                        <td className="dup-bar" />
-                        <td colSpan={showFit ? 8 : 7} className="!pb-1 !border-b-0">
+                        <td colSpan={showFit ? 8 : 7} className="!pb-1 !border-b-0 border-s-[3px] border-s-caution">
                           <Banner resolution={data.dups[u.dup]!.resolution} />
                         </td>
                       </tr>,
@@ -251,8 +249,7 @@ export function WorkbenchGroup({
                     const quiet = w.outcome === "ineligible";
                     out.push(
                       <tr key={w.row.f} className={cx(u.dup !== undefined && "dup-row", quiet && "text-muted-foreground")}>
-                        <td className={cx("!p-0", u.dup !== undefined && "dup-bar")} />
-                        <td>
+                        <td className={cx(u.dup !== undefined && "border-s-[3px] border-s-caution")}>
                           <Link to={w.company.href} className="text-link hover:underline">
                             <bdi>{w.company.name}</bdi>
                           </Link>
@@ -299,6 +296,7 @@ export function WorkbenchGroup({
               </tbody>
             </table>
           </div>
+          {sorted.some((w) => w.row.b.value === null || w.row.d.value === null) && <p className="px-4 py-2 text-xs text-muted-foreground border-t border-border">{copy.missingKey}</p>}
           {rest > 0 && (
             <button type="button" onClick={() => setPages((p) => p + 1)} className="w-full min-h-target border-t border-border text-link hover:bg-accent/40">
               {copy.showMore} <bdi dir="ltr">{fmt.number(Math.min(PAGE, rest))}</bdi>

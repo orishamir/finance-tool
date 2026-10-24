@@ -8,6 +8,7 @@ import type { RunGoal } from "../../lib/compare";
 import { Button, cx } from "../ui";
 import { availableTooBig, InsuranceField, type FormData } from "./goal-form";
 import { GoalNumber, GoalSlider, SwitchRow } from "./fields";
+import { ParameterLine } from "../timeline/fields";
 
 export interface Suggestion {
   field: FieldKey;
@@ -82,6 +83,7 @@ export function AssumptionsPanel({ data, suggestion, onAdopted, exposure }: { da
   };
   return (
     <div className="flex flex-col gap-4 lg:gap-[18px]">
+      <ParameterLine />
       <Suggest s={suggestion} field="horizonYears" onAdopt={adopt("horizonYears")}>
         <GoalSlider label={r2.form.years} unit="years" value={resolved.horizonYears} source={src.horizonYears} presetValue={resolved.preset.horizon} onChange={set("horizonYears")} validate={(n) => (n < 1 ? r2.form.errYears : !Number.isInteger(n) ? r2.form.errYearsWhole : null)} min={data.horizon.min} max={data.horizon.max} step={data.horizon.step} inputMode="numeric" />
       </Suggest>

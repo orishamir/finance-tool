@@ -64,6 +64,10 @@ export interface WrapperEntry {
   feeValues: Record<string, SiteValue>;
   /** A deposit-family wrapper's own published rate (A-21, A-25; D20): its deposit-terms record's `rate_offered`, as the record holds it. */
   cashRate?: SiteValue;
+  /** The amounts the published rate applies to (the deposit record's `amount_range`); absent when the bundle does not carry it (audit 2026-10-24, A8). */
+  cashRange?: { min: SiteValue; max: SiteValue | null };
+  /** The instrument the run rests on, named for the card (audit 2026-10-24, A10): the fund or track P-05 names, and the provider whose tariff is used. Absent when the bundle does not carry it. */
+  representative?: { name: string; provider?: string };
   /** Why there are no terms, one line each (log text, not shown). */
   missing: string[];
 }
@@ -140,11 +144,17 @@ export interface RunGoal {
   /** The preset the goal started from, and which of its numbers still come from that preset (shown as a site parameter until the person edits them). */
   preset: PresetId;
   fromPreset: { horizon: boolean; monthly: boolean; available: boolean };
+  /** Employment was not entered; "employee" is taken because the person says they have a pension or study fund through work (audit 2026-10-24, A3). */
+  employmentInferred?: boolean;
+  /** The person's own rate for a deposit-family wrapper whose published rate does not apply to the amount (A8), % a year, by wrapper id. Entered. */
+  ownRates?: Record<string, number>;
 }
 
 /** The numbers a goal runs on, or null when it has no horizon or no money yet. */
 export function runGoalOf(goal: Goal, r: ResolvedGoal): RunGoal | null {
   if (r.horizonYears === null || r.horizonYears < 1 || !Number.isInteger(r.horizonYears)) return null;
+  // A3: "יש פנסיה / קרן השתלמות דרך העבודה" means an employee; the person can flip it on the form.
+  const inferred = goal.profile.employment === null && (goal.profile.hasPension === true || goal.profile.hasHishtalmut === true);
   return {
     horizonYears: r.horizonYears,
     amountNow: r.amountNow ?? 0,
@@ -154,13 +164,14 @@ export function runGoalOf(goal: Goal, r: ResolvedGoal): RunGoal | null {
     returnPct: goal.assumptions.return,
     inflationPct: goal.assumptions.inflation,
     age: goal.profile.age,
-    employment: goal.profile.employment,
+    employment: inferred ? "employee" : goal.profile.employment,
     salary: goal.profile.salary,
     pensionEmployee: goal.profile.pension?.employee ?? null,
     pensionEmployer: goal.profile.pension?.employer ?? null,
     insurancePct: goal.assumptions.insurance ?? null,
     preset: goal.preset,
     fromPreset: { horizon: r.source.horizonYears === "preset", monthly: r.source.monthly === "preset", available: r.source.available === "preset" },
+    ...(inferred ? { employmentInferred: true } : {}),
   };
 }
 
@@ -193,6 +204,42 @@ export function needsReturn(w: WrapperEntry): boolean {
 
 export function isCashLike(w: WrapperEntry): boolean {
   return !needsReturn(w) && (w.family === "deposit" || w.family === "makam" || w.family === "bond" || w.family === "securities");
+}
+
+/** The rate a deposit-family wrapper runs on: the person's own (entered, A8), else the bank's published one. */
+export function cashRateFor(w: WrapperEntry, g: RunGoal, today: string): SiteValue | undefined {
+  const own = g.ownRates?.[w.id];
+  if (own !== undefined && Number.isFinite(own)) return enteredValue(own, "pct_per_year", today, r2.result.ownRate.about);
+  return w.cashRate;
+}
+
+/** A published deposit rate that does not apply to the amount compared (A8): the record's `amount_range` is one tier of the bank's table. */
+export interface DepositRangeFlag {
+  id: string;
+  amount: number;
+  min: SiteValue;
+  max: SiteValue | null;
+  side: "below" | "above";
+}
+
+/**
+ * The flag for a one-off deposit whose amount (what is compared now, less what stays available) falls outside the range the
+ * record's rate was read for. No flag without the range in the bundle, with no amount, or once the person has entered a rate.
+ */
+export function depositRangeFlag(w: Pick<WrapperEntry, "id" | "family" | "cashRange">, g: Pick<RunGoal, "amountNow" | "available" | "ownRates"> & { monthly?: number }): DepositRangeFlag | null {
+  if (w.id !== "bank-deposit" || !w.cashRange) return null;
+  if (g.ownRates?.[w.id] !== undefined) return null;
+  const amount = g.amountNow - g.available;
+  const min = w.cashRange.min.value;
+  const max = w.cashRange.max?.value;
+  if (amount > 0) {
+    if (typeof min === "number" && amount < min) return { id: w.id, amount, min: w.cashRange.min, max: w.cashRange.max, side: "below" };
+    if (typeof max === "number" && amount > max) return { id: w.id, amount, min: w.cashRange.min, max: w.cashRange.max, side: "above" };
+  }
+  // F-21 runs each monthly amount as its own deposit (2026-10-24): a monthly amount below the range's minimum is out of range too
+  const monthly = g.monthly ?? 0;
+  if (monthly > 0 && typeof min === "number" && monthly < min) return { id: w.id, amount: monthly, min: w.cashRange.min, max: w.cashRange.max, side: "below" };
+  return null;
 }
 
 const clone = <T,>(x: T): T => JSON.parse(JSON.stringify(x)) as T;
@@ -314,7 +361,8 @@ export function evaluate(bundle: CompareBundle, g: RunGoal, options: EvalOptions
   const inputs: CandidateSetInput = {
     wrappers: entries.map((w) => {
       const terms = termsFor(w, g, scale, needs);
-      return { record: w.record, ...(terms ? { terms } : {}), ...(w.cashRate ? { cashRate: w.cashRate } : {}) };
+      const rate = cashRateFor(w, g, bundle.runDate);
+      return { record: w.record, ...(terms ? { terms } : {}), ...(rate ? { cashRate: rate } : {}) };
     }),
     tier2: options.only ? [] : bundle.tier2,
     parameters: bundle.parameters,
@@ -550,11 +598,7 @@ function view(bundle: CompareBundle, g: RunGoal, ev: Evaluated): CompareView {
   // ---- ranked options, with their ties and the formula that decides each against the row above
   const rankedCands = ev.ranking.entries.map((e) => cand.get(e.id)!).filter(Boolean);
   const entries = ev.ranking.entries;
-  const groups: number[] = [];
-  entries.forEach((e, i) => {
-    if (i > 0 && (entries[i - 1]!.gapToNext ?? 1) < ev.theta) groups[i] = groups[i - 1]!;
-    else groups[i] = i;
-  });
+  const groups = placeGroups(entries, ev.ranking.tieSet);
   const decomps = rankedCands.map((c) => decompose(c.plan!, c.run!, ctx));
   const cashRate = bundle.parameters.length ? cashRateOf(bundle) : null;
   const goalValues = goalValueObjects(bundle, g);
@@ -697,7 +741,7 @@ function view(bundle: CompareBundle, g: RunGoal, ev: Evaluated): CompareView {
   const staleAll = ranked.flatMap((o) => o.staleRules);
   const stale = staleAll.length > 0 ? { since: staleAll.map((s) => s.since).sort()[0]! } : null;
   // Only what runs on P-05's cash rate needs the site-parameter line; the deposits run on the bank's own published rate.
-  const anyCash = ranked.some((o) => o.cashLike && !byId.get(o.id)?.cashRate) || kept?.where === "money-market-fund-daily";
+  const anyCash = ranked.some((o) => o.cashLike && !cashRateFor(byId.get(o.id)!, g, bundle.runDate)) || kept?.where === "money-market-fund-daily";
 
   return {
     kind: "ok",
@@ -763,8 +807,10 @@ const dragKeys = ["fundManagement", "fundVariable", "fundTrustee", "fundTracking
 
 function chipsFor(w: WrapperEntry, g: RunGoal, v: GoalValues, cash: SiteValue | null, today: string): Chip[] {
   const chips: Chip[] = [];
+  const rate = cashRateFor(w, g, today);
   if (needsReturn(w) && v.returnV) chips.push({ key: "return", label: ci.grossReturn, value: v.returnV, field: "return" });
-  if (w.cashRate) chips.push({ key: "cash", label: `${r2.result.bankPublished}${fmt.date(w.cashRate.effective_from ?? w.cashRate.checked)}`, value: w.cashRate });
+  if (rate && rate.state === "entered") chips.push({ key: "cash", label: r2.result.ownRate.chip, value: rate });
+  else if (rate) chips.push({ key: "cash", label: `${r2.result.bankPublished}${fmt.date(rate.effective_from ?? rate.checked)}`, value: rate });
   else if (isCashLike(w) && cash) chips.push({ key: "cash", label: "ריבית נזילה", value: cash });
   chips.push({ key: "inflation", label: ci.inflation, value: v.inflation, field: "inflation" });
   const feeKey: Record<string, string[]> = { provident: ["balance"], securities: ["fundDrag", "tradeRate", "custodyRate"], makam: ["tradeRate"], bond: ["tradeRate"], deposit: [] };
@@ -820,6 +866,67 @@ export function addMonths(iso: string, months: number): string {
   return t.toISOString().slice(0, 10);
 }
 
+/** The formula whose figure a deciding line shows (F-80's four gaps). */
+const decidingFormulaId: Record<string, string> = { "fee-drag": "F-61", "tax-at-exit": "F-40", "deposit-side-relief": "F-30", "lock-up": "B3" };
+export const decidingFormulaOf = (f: string): string => decidingFormulaId[f] ?? "F-80";
+
+/** Where the person picks the actual product the card's run stands for (A10, A14): the track, provider or fund workbench of the wrapper, when it has one. */
+export function workbenchHref(wrapperId: string): string | null {
+  if (["kupat-gemel-lehashkaa", "keren-hishtalmut", "pension-comprehensive", "pension-general", "provident-for-annuity"].includes(wrapperId)) return `/workbench/tracks/${wrapperId}`;
+  if (wrapperId === "brokerage-account") return "/workbench/providers/brokerage-account";
+  if (wrapperId === "money-market-fund-daily" || wrapperId === "money-market-fund-renewable") return "/workbench/funds/shekel-cash";
+  return null;
+}
+
+// ---------------------------------------------------------------- counts with their verbs (A91)
+
+/** A count's form: the numeral in words for one and two ("אחת", "שתיים"), the number itself otherwise, and the verb that agrees with it. */
+export function countForm(n: number, forms: { one: string; other: string }, numerals: { one: string; two: string }): { numeral: string | null; word: string } {
+  if (n === 1) return { numeral: numerals.one, word: forms.one };
+  if (n === 2) return { numeral: numerals.two, word: forms.other };
+  return { numeral: null, word: forms.other };
+}
+
+/** A whole phrase by count: `one`, `two` or `other` (with `{n}`): "אפשרות אחת לא נבדקה:", "שתי אפשרויות לא נבדקו:", "5 אפשרויות לא נבדקו:". */
+export function countPhrase(n: number, forms: { one: string; two: string; other: string }): string {
+  return n === 1 ? forms.one : n === 2 ? forms.two : forms.other.replace("{n}", String(n));
+}
+
+// ---------------------------------------------------------------- the headline's three lines (A3)
+
+export interface HeadlineState {
+  /** "cash-only": every option that could be ranked is a cash-like one, so the lead says so before it names a leader. */
+  lead: "leader" | "cash-only";
+  /** N: the options ranked. */
+  ranked: number;
+  /** K: the options the person can make rankable by entering something, and the fields that would do it. */
+  unevaluated: number;
+  fields: FieldKey[];
+}
+
+const fieldOrder: FieldKey[] = ["return", "employment", "salary", "age", "insurance"];
+
+/** Which opening the headline takes and what its third line says, from the ranked options and the coverage rows alone. */
+export function headlineState(v: { ranked: readonly { cashLike: boolean }[]; coverageRows: readonly Pick<CoverageRow, "kind" | "reasons">[] }): HeadlineState {
+  const fixable = v.coverageRows.filter((r) => r.kind === "not-evaluated" && r.reasons.some((x) => x.fixableBy === "person" && x.field));
+  const fields = fieldOrder.filter((f) => fixable.some((r) => r.reasons.some((x) => x.field === f)));
+  const cashOnly = v.ranked.length > 0 && v.ranked.every((o) => o.cashLike) && fixable.length > 0;
+  return { lead: cashOnly ? "cash-only" : "leader", ranked: v.ranked.length, unevaluated: fixable.length, fields };
+}
+
+/**
+ * A7: the "why" sheet's informational row: the gross return each of the two options ran on, when they differ (an entered A-01 for a
+ * fund, the bank's published rate or P-05's cash rate for a deposit). Not a formula, so it never carries "decisive".
+ */
+export function grossReturnRow(a: Pick<RankedOption, "chips">, b: Pick<RankedOption, "chips">): { a: SiteValue | null; b: SiteValue | null } | null {
+  const pick = (o: Pick<RankedOption, "chips">) => o.chips.find((c) => c.key === "return" || c.key === "cash")?.value ?? null;
+  const x = pick(a);
+  const y = pick(b);
+  if (!x && !y) return null;
+  if (x && y && x.value === y.value && x.state === y.state) return null;
+  return { a: x, b: y };
+}
+
 // ---------------------------------------------------------------- sensitivity (F-81)
 
 export interface SensitivityRowView {
@@ -839,6 +946,28 @@ export interface SensitivityView {
   noFlip: boolean;
   evaluations: number;
   baseKey: string;
+}
+
+/** Whether the top after a move is the option (or one of the tied options) that is first before it. */
+export function flipNamesCurrentTop(topAfter: string, base: ReadonlySet<string>): boolean {
+  const first = topAfter.split("|")[0] ?? "";
+  return first !== "" && base.has(first);
+}
+
+/**
+ * Place groups for ranked entries in order (F-80, 2026-10-24): the tie set is pairwise with the top (the engine's
+ * `ranking.tieSet`), not transitive. Its members share the first place; every other entry has its own place by the engine's order.
+ */
+export function placeGroups(entries: readonly { id: string }[], tieSet: readonly string[]): number[] {
+  const tied = new Set(tieSet.length > 1 ? tieSet : []);
+  return entries.map((e, i) => (tied.has(e.id) ? 0 : i));
+}
+
+/** F-81: a move is a change when the leading set differs from the base set at all (a sole leader turning into a tie counts), or when the first name is no longer a current leader. */
+export function flipIsChange(topAfter: string, base: ReadonlySet<string>): boolean {
+  const after = new Set(topAfter.split("|").filter(Boolean));
+  const differs = after.size !== base.size || ![...after].every((id) => base.has(id));
+  return differs || !flipNamesCurrentTop(topAfter, base);
 }
 
 export function feeAxisKey(id: string, kind: FeeKind): string {
@@ -882,7 +1011,8 @@ export function computeSensitivity(bundle: CompareBundle, g: RunGoal, ev: Evalua
     if (best) {
       const after = new Set(best.topAfter.split("|").filter(Boolean));
       const breaksTie = baseSet.size > 1 && after.size > 0 && [...after].every((id) => baseSet.has(id)) && after.size < baseSet.size;
-      view.flip = { from: r.current, to: best.to, side: best.side, topAfter: best.topAfter, breaksTie };
+      // A7 and F-81 (2026-10-24): a move whose "then X first" names the option that is already first says nothing ("אז קרן כספית ראשונה" when it is): no flip
+      if (breaksTie || flipIsChange(best.topAfter, baseSet)) view.flip = { from: r.current, to: best.to, side: best.side, topAfter: best.topAfter, breaksTie };
     }
     return view;
   });

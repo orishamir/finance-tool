@@ -5,7 +5,7 @@ import { buildCompareBundle } from "./compare.server";
 import { evaluate, runGoalOf, type CompareBundle } from "./compare";
 import { computeExposureMode } from "./exposure-mode";
 import { emptyGoal, resolveGoal, type Goal } from "./goal";
-import { revisitSaved, snapshotExposure, snapshotWrapper } from "./revisit";
+import { goalChanges, revisitSaved, snapshotExposure, snapshotWrapper } from "./revisit";
 import { entered } from "./value";
 
 let bundle: CompareBundle;
@@ -81,5 +81,48 @@ describe("exposure mode", () => {
     expect(r.status).toBe("changed");
     expect(r.diff.some((d) => d.kind === "assumption" && d.key === "A-01:shekel-cash")).toBe(true);
     expect(r.valueChanges.some((v) => v.id === "shekel-cash")).toBe(true);
+  });
+});
+
+
+// audit 2026-10-24 (A30): the saved comparison is about the goal as it was; the person's own edit since is named
+describe("the goal's inputs against the saved goal", () => {
+  it("is empty for the same goal, and ignores the name, order and the import tag", () => {
+    const g = goal();
+    const now = structuredClone(g);
+    now.name = "שם אחר";
+    now.order = 5;
+    now.importedAt = day;
+    expect(goalChanges(g, now)).toEqual([]);
+  });
+
+  it("names the horizon with both numbers (15 to 20 years)", () => {
+    const g = goal();
+    g.horizonYears = { value: 15, entered: true };
+    const now = structuredClone(g);
+    now.horizonYears = { value: 20, entered: true };
+    expect(goalChanges(g, now)).toEqual([{ field: "horizonYears", values: { before: 15, after: 20, unit: "years" } }]);
+  });
+
+  it("lists each changed input, naming the field alone when a side is empty or the input is a group", () => {
+    const g = goal();
+    const now = structuredClone(g);
+    now.monthly = { value: 3_000, entered: true };
+    now.assumptions.return = null;
+    now.profile.pension = { employer: 7, employee: 6 };
+    now.exposures = { ...now.exposures, "index-sp500": { return: entered(7, "pct_per_year", day), worstFall: entered(40, "pct", day) } };
+    expect(goalChanges(g, now)).toEqual([
+      { field: "monthly", values: { before: g.monthly.value, after: 3_000, unit: "nis_per_month" } },
+      { field: "return" },
+      { field: "pension" },
+      { field: "exposures" },
+    ]);
+  });
+
+  it("a later date on an unchanged exposure input is not a change", () => {
+    const g = goal();
+    const now = structuredClone(g);
+    now.exposures = { "index-sp500": { return: entered(6, "pct_per_year", "2026-11-02"), worstFall: entered(40, "pct", "2026-11-02") }, "government-bond-cpi": { return: entered(3, "pct_per_year", day), worstFall: entered(10, "pct", day) } };
+    expect(goalChanges(g, now)).toEqual([]);
   });
 });

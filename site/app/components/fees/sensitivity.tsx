@@ -82,9 +82,24 @@ function Row({ row, an, onOpen, p02 }: { row: FeeSensRow; an: Analysis; onOpen: 
     const suggested = row.field === "horizonYears" ? (flip.side === "hi" ? Math.ceil(flip.to) : Math.floor(flip.to)) : flip.to * 100;
     return (
       <li className={cls}>
-        <button type="button" className="w-full text-start" onClick={() => onOpen(row.field!, suggested)}>
+        {/* a div, not a button: the row holds number buttons (provenance), and a button inside a button is invalid HTML (audit 2026-10-24 (sweep)) */}
+        <div
+          role="button"
+          tabIndex={0}
+          className="w-full text-start cursor-pointer"
+          onClick={(e) => {
+            if ((e.target as HTMLElement).closest("button, a")) return;
+            onOpen(row.field!, suggested);
+          }}
+          onKeyDown={(e) => {
+            if ((e.key === "Enter" || e.key === " ") && e.target === e.currentTarget) {
+              e.preventDefault();
+              onOpen(row.field!, suggested);
+            }
+          }}
+        >
           {inner}
-        </button>
+        </div>
       </li>
     );
   }

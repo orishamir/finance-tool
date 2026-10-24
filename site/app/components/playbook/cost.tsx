@@ -5,7 +5,8 @@ import { r4playbook as c } from "../../copy";
 import { fmt } from "../../lib/format";
 import type { BrokerageCostResult } from "../../lib/playbook";
 import type { SiteValue } from "../../lib/value";
-import { OpenQuestion } from "../holdings/shared";
+import { hebrewPrefix } from "../../lib/hebrew";
+import { OpenQuestionChip } from "./step";
 import { IconLock } from "../icons";
 import { IconOk } from "../compare/icons";
 import { Num, RuleRef, StrengthLabel } from "../provenance";
@@ -34,7 +35,7 @@ function Locked({ id }: { id: string }) {
   return (
     <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
       <Tag tone="blocked" icon={<IconLock size={14} />}>
-        {C.open} <bdi dir="ltr">{id}</bdi>
+        {C.open}
       </Tag>
       <RuleRef id={id} />
     </p>
@@ -48,10 +49,10 @@ function Brokerage({ r }: { r: Extract<BrokerageCostResult, { kind: "ok" }> }) {
   return (
     <>
       <p className="text-lg font-medium">
-        {C.brokerage.before}
-        <bdi>{r.from.name}</bdi>
-        {C.brokerage.mid}
-        <bdi>{r.to.name}</bdi>
+        {C.brokerage.before.slice(0, -1)}
+        <bdi>{hebrewPrefix(C.brokerage.before.slice(-1), r.from.name)}</bdi>
+        {" "}
+        <bdi>{hebrewPrefix(C.brokerage.mid.trim(), r.to.name)}</bdi>
         {saves ? c.cost.brokerageSaves.after : C.brokerage.after}
         <Num value={r.cost} display={fmt.nis(Math.abs(n))} />
         {saves ? c.cost.brokerageSaves.tax : C.brokerage.tax}
@@ -125,7 +126,7 @@ function InKind({ fee }: { fee: SiteValue | null }) {
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
         <RuleRef id="SW-36" />
         <StrengthLabel strength="institution" />
-        <OpenQuestion code="SW OQ11" />
+        <OpenQuestionChip code="SW OQ11" />
       </div>
       <p className="text-sm">
         {C.transferFee.amount}

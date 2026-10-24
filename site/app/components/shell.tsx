@@ -1,34 +1,69 @@
-// The app shell: header, menu sheet, search sheet, footer and the page frame (design-spec 1.3, flows 6.2, 6.3).
-import { useEffect, useId, useRef, useState, type ReactNode } from "react";
-import { Link, useLocation, useNavigate } from "react-router";
-import { buttons, companies as companiesCopy, r3workbench, search as searchCopy, site } from "../copy";
-import { rememberUncatalogued } from "../lib/inputs";
-import { normalize, type SearchEntry } from "../lib/search";
-import { IconBack, IconClose, IconCopy, IconDrillIn, IconMenu, IconSearch } from "./icons";
+// The app shell: header, menu sheet, search, footer and the page frame (design-spec 1.3, flows 6.2, 6.3).
+import { createContext, useContext, useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { Link, useLocation } from "react-router";
+import { companies as companiesCopy, home as homeCopy, r3workbench, site } from "../copy";
+import { fmt } from "../lib/format";
+import { IconBack, IconMenu, IconSearch } from "./icons";
 import { ProvenanceProvider, type ProvenanceData } from "./provenance";
+import { SearchCombo, SearchSheet } from "./search";
 import { Sheet } from "./Sheet";
 import { Button, cx } from "./ui";
 
 export type Current = "guide" | "decoder" | "rules" | "parameters" | "home" | "goal" | "holdings" | "other";
 
-/** The menu rows and the PC nav: the release 1 and 2 items, then "מה כבר יש לכם" (flows 12.5, design-system 7.9). */
-const baseItems = [...site.menuItems];
-const menuItems = [...baseItems, { href: r3workbench.entry.holdings.href, label: r3workbench.entry.holdings.title, current: r3workbench.entry.holdings.current }] as const;
+/** The newest `checked` date across data/, fixed at build (vite.config.ts `define`, from `dataAsOf()` in lib/data.server.ts). */
+declare const __DATA_AS_OF__: string;
+const dataAsOf: string = typeof __DATA_AS_OF__ === "string" ? __DATA_AS_OF__ : "";
 
-/** The footer links: "מה כבר יש לכם" and "העברה למכשיר אחר" come before the last link. */
-const footerLinks = [...site.footer.slice(0, -1), { href: r3workbench.entry.holdings.href, label: r3workbench.entry.holdings.title }, { href: r3workbench.entry.transfer.href, label: r3workbench.entry.transfer.label }, ...site.footer.slice(-1)] as const;
+const goalItem = site.menuItems.find((m) => m.href === "/goal")!;
+const byHref = (href: string) => site.menuItems.find((m) => m.href === href)!;
+type NavItem = { href: string; label: string; current?: Current };
+/** The doors, in the order the first page gives them (audit 2026-10-24, A54): what the person came to do. */
+const doorItems: NavItem[] = [
+  byHref("/guide"),
+  byHref("/companies"),
+  goalItem,
+  { href: r3workbench.entry.holdings.href, label: r3workbench.entry.holdings.title, current: r3workbench.entry.holdings.current },
+  { href: homeCopy.door3.href, label: homeCopy.door3.title },
+];
+/** "Behind the scenes": the rule base, the parameters, what is not covered, the tool for moving to another device. */
+const behindItems: NavItem[] = [byHref("/rules"), byHref("/parameters"), { href: site.notCovered.href, label: site.notCovered.label }, { href: r3workbench.entry.transfer.href, label: r3workbench.entry.transfer.label }];
+
+/** The footer links: the same pages, destinations first, then the reference pages, then the tool. */
+const footerLinks = (() => {
+  const by = (href: string) => site.footer.find((f) => f.href === href)!;
+  return [by("/goal"), { href: r3workbench.entry.holdings.href, label: r3workbench.entry.holdings.title }, by("/rules"), by("/parameters"), by("/not-covered"), { href: r3workbench.entry.transfer.href, label: r3workbench.entry.transfer.label }];
+})();
+
+/** A page is the current one when the address is under the item's, or the page says it belongs to the item. */
+function isCurrentItem(item: NavItem, current: Current, pathname: string): boolean {
+  if (item.current && current === item.current) return true;
+  return pathname === item.href || pathname.startsWith(`${item.href}/`);
+}
+
+type OpenSearch = (el: HTMLElement | null, text?: string, via?: "focus" | "tap") => void;
+const SearchOpenCtx = createContext<OpenSearch>(() => {});
+export function useOpenSearch() {
+  return useContext(SearchOpenCtx);
+}
 
 export function PageShell({ current, data, children, wide }: { current: Current; data: ProvenanceData; children: ReactNode; wide?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchAnchor, setSearchAnchor] = useState<HTMLElement | null>(null);
   const [seed, setSeed] = useState("");
+  // The menu and the search do nothing before the page is interactive; until then they look disabled (audit A52).
+  const [ready, setReady] = useState(false);
+  const closedAt = useRef(0);
   const location = useLocation();
+  useEffect(() => setReady(true), []);
   useEffect(() => {
     setMenuOpen(false);
     setSearchOpen(false);
   }, [location.pathname]);
-  const openSearch = (el: HTMLElement | null, text = "") => {
+  const openSearch: OpenSearch = (el, text = "", via = "tap") => {
+    // Closing a sheet returns focus to the field it opened from; that must not open it again (audit A5).
+    if (via === "focus" && Date.now() - closedAt.current < 600) return;
     setSeed(text);
     setSearchAnchor(el);
     setSearchOpen(true);
@@ -37,67 +72,67 @@ export function PageShell({ current, data, children, wide }: { current: Current;
     <ProvenanceProvider data={data}>
       <SearchOpenCtx.Provider value={openSearch}>
         <div className="min-h-dvh flex flex-col">
-          <Header current={current} onMenu={() => setMenuOpen(true)} onSearch={openSearch} />
+          <Header current={current} ready={ready} onMenu={() => setMenuOpen(true)} onSearch={openSearch} />
           <main className={cx("flex-1 w-full mx-auto px-gutter pb-10", wide ? "max-w-page" : "max-w-page")}>{children}</main>
           <Footer />
         </div>
+        <ToTop />
         <MenuSheet open={menuOpen} onClose={() => setMenuOpen(false)} current={current} />
-        <SearchSheet open={searchOpen} onClose={() => setSearchOpen(false)} anchor={searchAnchor} seed={seed} />
+        <SearchSheet
+          open={searchOpen}
+          onClose={() => {
+            closedAt.current = Date.now();
+            setSearchOpen(false);
+          }}
+          anchor={searchAnchor}
+          seed={seed}
+        />
       </SearchOpenCtx.Provider>
     </ProvenanceProvider>
   );
 }
 
-import { createContext, useContext } from "react";
-const SearchOpenCtx = createContext<(el: HTMLElement | null, text?: string) => void>(() => {});
-export function useOpenSearch() {
-  return useContext(SearchOpenCtx);
+/** The first-page field and the header field are the same component; this is the page's. */
+export function PageSearchField({ inputId }: { inputId: string }) {
+  const open = useOpenSearch();
+  const [ready, setReady] = useState(false);
+  useEffect(() => setReady(true), []);
+  return <SearchCombo inputId={inputId} variant="home" ready={ready} onSheet={open} />;
 }
 
-function Header({ current, onMenu, onSearch }: { current: Current; onMenu: () => void; onSearch: (el: HTMLElement | null, text?: string) => void }) {
-  const fieldRef = useRef<HTMLInputElement>(null);
+function Header({ current, ready, onMenu, onSearch }: { current: Current; ready: boolean; onMenu: () => void; onSearch: OpenSearch }) {
+  const { pathname } = useLocation();
   return (
     <header className="sticky top-0 z-[var(--z-sticky)] bg-background/90 backdrop-blur border-b border-border">
-      <div className="mx-auto max-w-page h-14 lg:h-16 px-gutter flex items-center justify-between gap-6">
-        <div className="flex items-center gap-10">
-          <Link to="/" className="text-lg font-semibold text-foreground py-2">
+      <div className="mx-auto max-w-page h-14 lg:h-16 px-gutter flex items-center justify-between gap-4">
+        <div className="flex items-center gap-6 xl:gap-8 min-w-0">
+          <Link to="/" className="text-lg font-semibold text-foreground py-2 whitespace-nowrap">
             {site.name}
           </Link>
-          <nav aria-label="ראשי" className="hidden lg:flex items-center gap-6">
-            {menuItems.map((item) => (
-              <Link
-                key={item.href}
-                to={item.href}
-                aria-current={current === item.current ? "page" : undefined}
-                className={cx("py-2 border-b-2 -mb-px", current === item.current ? "font-medium border-primary" : "border-transparent hover:border-border")}
-              >
-                {item.label}
-              </Link>
-            ))}
+          <nav aria-label="ראשי" className="hidden xl:flex items-center gap-5">
+            {doorItems.map((item) => {
+              const on = isCurrentItem(item, current, pathname);
+              return (
+                <Link key={item.href} to={item.href} aria-current={on ? "page" : undefined} className={cx("py-2 border-b-2 -mb-px whitespace-nowrap", on ? "font-medium border-primary" : "border-transparent hover:border-border")}>
+                  {item.label}
+                </Link>
+              );
+            })}
           </nav>
         </div>
-        <div className="flex items-center -me-2.5 lg:me-0">
-          <Button variant="icon" aria-label={site.search} onClick={(e) => onSearch(e.currentTarget)} className="lg:hidden">
+        <div className="flex items-center gap-1 -me-2.5 lg:me-0 shrink-0">
+          <Button variant="icon" aria-label={site.search} disabled={!ready} onClick={(e) => onSearch(e.currentTarget)} className="lg:hidden disabled:opacity-40 disabled:cursor-wait">
             <IconSearch />
           </Button>
-          <Button variant="icon" aria-label={site.menu} onClick={onMenu} className="lg:hidden">
+          <Button variant="icon" aria-label={site.menu} disabled={!ready} onClick={onMenu} className="xl:hidden disabled:opacity-40 disabled:cursor-wait">
             <IconMenu />
           </Button>
-          <div className="hidden lg:flex items-center gap-2 w-[340px] h-10 px-3 rounded-md border border-input bg-card text-muted-foreground">
-            <IconSearch size={18} />
-            <label htmlFor="header-search" className="sr-only">
-              {site.search}
-            </label>
-            <input
-              id="header-search"
-              ref={fieldRef}
-              dir="auto"
-              placeholder={site.searchPlaceholder}
-              className="flex-1 min-w-0 bg-transparent text-sm text-foreground placeholder:text-muted-foreground outline-none"
-              onFocus={(e) => onSearch(e.currentTarget, e.currentTarget.value)}
-              onChange={(e) => onSearch(e.currentTarget, e.currentTarget.value)}
-            />
-          </div>
+          {/* the first page has its own large field; the header's would be a second one on the same screen */}
+          {current !== "home" && (
+            <div className="hidden lg:block">
+              <SearchCombo inputId="header-search" variant="header" ready={ready} onSheet={onSearch} />
+            </div>
+          )}
         </div>
       </div>
     </header>
@@ -107,191 +142,76 @@ function Header({ current, onMenu, onSearch }: { current: Current; onMenu: () =>
 function Footer() {
   return (
     <footer className="border-t border-border mt-section">
-      <div className="mx-auto max-w-page px-gutter py-3 pb-7 flex flex-wrap gap-x-6 text-sm">
+      <div className="mx-auto max-w-page px-gutter py-3 pb-7 flex flex-wrap items-center gap-x-6 gap-y-0 text-sm">
+        <span className="w-full lg:w-auto font-medium text-foreground pt-2 lg:pt-0">{site.name}</span>
         {footerLinks.map((f) => (
           <Link key={f.href} to={f.href} className="min-h-target inline-flex items-center text-link hover:underline">
             {f.label}
           </Link>
         ))}
+        <p className="w-full text-muted-foreground pt-2 flex flex-wrap gap-x-4">
+          <span>{site.footerNote}</span>
+          {dataAsOf && (
+            <span>
+              {site.footerAsOf}
+              <bdi>{fmt.date(dataAsOf)}</bdi>
+            </span>
+          )}
+        </p>
       </div>
     </footer>
   );
 }
 
+/** A small "back to the top" after a screen or so of scrolling (audit 2026-10-24, A96). */
+function ToTop() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const on = () => setShow(window.scrollY > window.innerHeight * 1.2);
+    on();
+    window.addEventListener("scroll", on, { passive: true });
+    return () => window.removeEventListener("scroll", on);
+  }, []);
+  if (!show) return null;
+  return (
+    <button
+      type="button"
+      aria-label={site.toTop}
+      onClick={() => window.scrollTo({ top: 0 })}
+      className="fixed bottom-20 md:bottom-6 start-4 z-[var(--z-sticky)] size-target rounded-full border border-border bg-popover text-foreground shadow-md inline-flex items-center justify-center hover:bg-accent"
+    >
+      <span aria-hidden="true" className="-rotate-90 inline-flex">
+        <IconBack size={20} />
+      </span>
+    </button>
+  );
+}
+
 function MenuSheet({ open, onClose, current }: { open: boolean; onClose: () => void; current: Current }) {
   const id = useId();
-  const rows = [...menuItems.map((m) => ({ ...m })), null, { href: site.notCovered.href, label: site.notCovered.label, current: "other" as const }] as const;
+  const { pathname } = useLocation();
+  const row = (item: NavItem) => {
+    const on = isCurrentItem(item, current, pathname);
+    return (
+      <Link key={item.href} to={item.href} aria-current={on ? "page" : undefined} className={cx("min-h-12 flex items-center gap-3 px-2 -mx-2 rounded-md hover:bg-accent", on && "font-medium")}>
+        <span className={cx("w-0.5 self-stretch rounded-full", on ? "bg-primary" : "bg-transparent")} aria-hidden="true" />
+        {item.label}
+        {on && <span className="sr-only">{site.currentPage}</span>}
+      </Link>
+    );
+  };
   return (
-    <Sheet open={open} onClose={onClose} pc="center" height={70} labelledBy={id}>
+    <Sheet open={open} onClose={onClose} pc="center" height={78} labelledBy={id}>
       <h2 id={id} className="text-lg font-semibold mb-2">
         {site.menu}
       </h2>
       <nav aria-label={site.menu} className="flex flex-col">
-        {rows.map((row, i) =>
-          row === null ? (
-            <hr key={i} className="border-border my-2" />
-          ) : (
-            <Link
-              key={row.href}
-              to={row.href}
-              aria-current={current === row.current ? "page" : undefined}
-              className={cx("min-h-12 flex items-center gap-3 px-2 -mx-2 rounded-md hover:bg-accent", current === row.current && "font-medium")}
-            >
-              <span className={cx("w-0.5 self-stretch rounded-full", current === row.current ? "bg-primary" : "bg-transparent")} aria-hidden="true" />
-              {row.label}
-              {current === row.current && <span className="sr-only">{site.currentPage}</span>}
-            </Link>
-          ),
-        )}
+        {doorItems.map(row)}
+        <hr className="border-border my-2" />
+        <p className="text-xs text-muted-foreground px-0 pt-1 pb-0.5">{site.menuBehind}</p>
+        {behindItems.map(row)}
       </nav>
     </Sheet>
-  );
-}
-
-// ---------------------------------------------------------------- search
-
-let indexPromise: Promise<SearchEntry[]> | null = null;
-function loadIndex(): Promise<SearchEntry[]> {
-  if (!indexPromise) indexPromise = fetch(`${import.meta.env.BASE_URL}search-index.json`).then((r) => r.json() as Promise<SearchEntry[]>);
-  return indexPromise;
-}
-
-const groupOrder: SearchEntry["kind"][] = ["product", "bank", "track", "term", "guide"];
-
-function SearchSheet({ open, onClose, anchor, seed }: { open: boolean; onClose: () => void; anchor: HTMLElement | null; seed: string }) {
-  const id = useId();
-  const [text, setText] = useState(seed);
-  const [index, setIndex] = useState<SearchEntry[] | null>(null);
-  const [expanded, setExpanded] = useState<Set<string>>(new Set());
-  const [copied, setCopied] = useState<"idle" | "done" | "failed">("idle");
-  const inputRef = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate();
-  useEffect(() => setText(seed), [seed, open]);
-  useEffect(() => {
-    if (!open) return;
-    loadIndex().then(setIndex).catch(() => setIndex([]));
-    const t = window.setTimeout(() => inputRef.current?.focus(), 50);
-    return () => window.clearTimeout(t);
-  }, [open]);
-  const q = normalize(text);
-  const results = index && q.length >= 2 ? index.filter((e) => e.norm.includes(q)) : [];
-  const groups = groupOrder.map((kind) => ({ kind, items: results.filter((r) => r.kind === kind) })).filter((g) => g.items.length > 0);
-  const nothing = index && q.length >= 2 && results.length === 0;
-  useEffect(() => {
-    if (nothing && text.trim()) rememberUncatalogued(text.trim());
-  }, [nothing, text]);
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(text.trim());
-      setCopied("done");
-      window.setTimeout(() => setCopied("idle"), 2000);
-    } catch {
-      setCopied("failed");
-    }
-  };
-  return (
-    <Sheet open={open} onClose={onClose} anchor={anchor} pc="popover" height={100} labelledBy={id} className="sheet-search">
-      <form
-        role="search"
-        className="flex flex-col gap-3"
-        onSubmit={(e) => {
-          e.preventDefault();
-          const first = results[0];
-          if (first) navigate(first.href);
-        }}
-      >
-        <label htmlFor={`${id}-q`} className="text-lg font-semibold">
-          {searchCopy.label}
-        </label>
-        <div className="flex items-center gap-2 h-field px-3 rounded-md border border-input bg-card focus-within:outline-2 focus-within:outline-ring focus-within:outline-offset-1">
-          <IconSearch size={18} className="text-muted-foreground" />
-          <input
-            id={`${id}-q`}
-            ref={inputRef}
-            dir="auto"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder={site.searchPlaceholder}
-            className="flex-1 min-w-0 bg-transparent outline-none placeholder:text-muted-foreground"
-            autoComplete="off"
-          />
-          {text && (
-            <button type="button" aria-label={searchCopy.clear} onClick={() => setText("")} className="size-target -me-3 inline-flex items-center justify-center text-muted-foreground">
-              <IconClose size={18} />
-            </button>
-          )}
-        </div>
-        {q.length === 0 && <p className="text-sm text-muted-foreground">{searchCopy.hint}</p>}
-        {q.length === 1 && <p className="text-sm text-muted-foreground">{searchCopy.tooShort}</p>}
-      </form>
-      {groups.length > 0 && (
-        <div className="flex flex-col gap-4 mt-2">
-          {groups.map((g) => {
-            const show = expanded.has(g.kind) ? g.items : g.items.slice(0, 5);
-            return (
-              <section key={g.kind} aria-label={searchCopy.groups[g.kind]} className="flex flex-col gap-1">
-                <h3 className="text-xs text-muted-foreground">{searchCopy.groups[g.kind]}</h3>
-                <ul className="flex flex-col">
-                  {show.map((r) => (
-                    <li key={r.href + r.name}>
-                      <Link to={r.href} className="flex items-center justify-between gap-3 min-h-12 py-1.5 border-b border-border hover:bg-accent/60 -mx-2 px-2 rounded-md">
-                        <span className="flex flex-col min-w-0">
-                          <bdi className="font-medium">{highlight(r.name, text)}</bdi>
-                          <span className="text-sm text-muted-foreground">{r.line}</span>
-                        </span>
-                        <IconDrillIn className="text-muted-foreground shrink-0" />
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-                {g.items.length > show.length && (
-                  <Button variant="quiet" className="self-start -ms-2" onClick={() => setExpanded(new Set([...expanded, g.kind]))}>
-                    {searchCopy.more}
-                  </Button>
-                )}
-              </section>
-            );
-          })}
-        </div>
-      )}
-      {nothing && (
-        <section className="flex flex-col gap-3 mt-2" aria-live="polite">
-          <h3 className="text-lg font-semibold">{searchCopy.empty.title}</h3>
-          <p className="text-sm">
-            {searchCopy.empty.bodyBefore}
-            <bdi dir="auto">{text.trim()}</bdi>
-            {searchCopy.empty.bodyAfter}
-          </p>
-          <Button variant="primary" onClick={copy} className="self-start">
-            <IconCopy size={18} /> {copied === "done" ? buttons.copied : buttons.copy}
-          </Button>
-          <p className="text-sm text-muted-foreground">{copied === "failed" ? searchCopy.empty.copyFailed : searchCopy.empty.underButton}</p>
-          <div className="flex flex-wrap gap-x-4">
-            <Link to="/companies" className="text-link min-h-target inline-flex items-center hover:underline">
-              {searchCopy.empty.links.companies}
-            </Link>
-            <button type="button" className="text-link min-h-target hover:underline" onClick={() => setText(text.trim().split(/\s+/).slice(0, 2).join(" "))}>
-              {searchCopy.empty.links.shorter}
-            </button>
-          </div>
-        </section>
-      )}
-    </Sheet>
-  );
-}
-
-function highlight(name: string, query: string): ReactNode {
-  const q = query.trim();
-  if (!q) return name;
-  const i = normalize(name).indexOf(normalize(q));
-  if (i < 0) return name;
-  // The normalised and raw strings share positions except for stripped niqqud, which these names lack.
-  return (
-    <>
-      {name.slice(0, i)}
-      <span className="font-semibold">{name.slice(i, i + q.length)}</span>
-      {name.slice(i + q.length)}
-    </>
   );
 }
 
@@ -299,6 +219,8 @@ function highlight(name: string, query: string): ReactNode {
 
 /** Phone: the parent as a back link with a chevron pointing right. PC: parent › current (design-system 3.1). */
 export function Breadcrumb({ parent, current }: { parent: { href: string; label: string }; current: string }) {
+  // the first page is "ראשי", not the site's name (audit 2026-10-24, A54)
+  if (parent.href === "/") parent = { href: "/", label: site.homeCrumb };
   return (
     <nav aria-label="מיקום" className="text-sm text-muted-foreground">
       <Link to={parent.href} className="inline-flex items-center gap-0.5 min-h-target lg:min-h-0 lg:py-0 hover:underline">

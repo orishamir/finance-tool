@@ -2,19 +2,25 @@
 // line, remainder line, thresholds line. Every figure goes through the provenance number.
 import { Link } from "react-router";
 import { r3fees } from "../../copy";
-import type { CapView, LineView, NoRefReason, ReferenceView, SubjectView } from "../../lib/fees";
+import { headlineGap, type CapView, type LineView, type NoRefReason, type ReferenceView, type SubjectView } from "../../lib/fees";
 import type { SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconAlert, IconExternal, IconLock } from "../icons";
-import { Num, RuleRef, StateTag } from "../provenance";
+import { LeadTail, Num, NumberLegend, RuleRef, StateTag, StrengthLabel } from "../provenance";
 import { Callout, Card, Tag, cx } from "../ui";
 import { IconNotWorth, IconPhone, IconSwap, IconUnevaluated } from "./icons";
 
 // ---------------------------------------------------------------- subject strip
 
-export function SubjectStrip({ subject, goalName }: { subject: SubjectView; goalName: string }) {
+export function SubjectStrip({ subject, goalName, publisherNames, otherRecords }: { subject: SubjectView; goalName: string; publisherNames: Record<string, string>; otherRecords?: { href: string; label: string } | null }) {
   const s = r3fees.strip;
-  const record = <bdi className="font-medium">{subject.record}</bdi>;
+  // The record is named by its publisher, which the data keeps in English: show the provider's Hebrew name, keep the record for the popover.
+  const recordName = publisherNames[subject.record] ?? subject.record;
+  const record = (
+    <bdi className="font-medium" title={subject.record}>
+      {recordName}
+    </bdi>
+  );
   let body;
   let back: string;
   if (subject.from === "compare") {
@@ -61,40 +67,97 @@ export function SubjectStrip({ subject, goalName }: { subject: SubjectView; goal
   return (
     <Card className="!p-3.5 md:!p-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-sm">
       <p className="min-w-0">{body}</p>
-      <Link to={subject.fromHref} className="text-link hover:underline shrink-0">
-        {back}
-      </Link>
+      <span className="flex flex-wrap items-center gap-x-4 gap-y-1 shrink-0">
+        {otherRecords && (
+          <Link to={otherRecords.href} className="text-link hover:underline">
+            {otherRecords.label}
+          </Link>
+        )}
+        <Link to={subject.fromHref} className="text-link hover:underline">
+          {back}
+        </Link>
+      </span>
     </Card>
   );
 }
 
 // ---------------------------------------------------------------- headline
 
-export function FeeHeadline({ product, total, withFees, withoutFees, years, preTax, omitted }: { product: string; total: SiteValue; withFees: SiteValue; withoutFees: SiteValue; years: number; preTax: string[]; omitted: string[] }) {
+/** A value the engine read a rule into as an inference (the "reading" label, TXG-35): marked as a secondary source is (audit 2026-10-24, A2). */
+export const hasReading = (v: SiteValue) => !!v.labels?.some((l) => l.code === "reading");
+
+export function ReadingMark({ value }: { value: SiteValue }) {
+  return hasReading(value) ? <StrengthLabel strength="secondary" /> : null;
+}
+
+/** A plain-Hebrew reason first, the code after it in a chip (audit 2026-10-24, A2): never the code inside the sentence. */
+export function ReasonWithCode({ message, code }: { message: string; code?: string }) {
+  const isId = !!code && /^[A-Z]{1,4}-\d+$/.test(code);
+  return (
+    <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1">
+      <span>{message}</span>
+      {isId && <RuleRef id={code!} />}
+    </span>
+  );
+}
+
+export function FeeHeadline({ product, total, withFees, withoutFees, years, preTax, omitted, gap, place, compareHref }: { product: string; total: SiteValue; withFees: SiteValue; withoutFees: SiteValue; years: number; preTax: string[]; omitted: string[]; gap: ReturnType<typeof headlineGap>; place: { rank: number; tied: boolean } | null; compareHref: string }) {
   const h = r3fees.headline;
+  const g = r3fees.gap;
+  const rk = r3fees.ranked;
   return (
     <header className="flex flex-col gap-3">
       <h1 className="text-2xl lg:text-3xl font-semibold">{r3fees.title}</h1>
-      <p className="text-lg flex flex-wrap items-baseline gap-x-2 gap-y-1">
-        <span>
-          {h.before}
-          <bdi>{product}</bdi>
-          {h.mid}
-        </span>
+      <NumberLegend />
+      {/* the one plain sentence first (audit 2026-10-24, A18): what bringing the fee to the average is worth, from the figure of the "אם יורידו ל־" field */}
+      {gap && (
+        <p className="text-lg font-medium">
+          {gap.kind === "more" ? (
+            <>
+              {g.more[0]}
+              <Num value={gap.worth} size="figure" />
+              <LeadTail lead={g.more[1]}>{fmt.years(years)}</LeadTail>
+              {g.more[2]}
+            </>
+          ) : (
+            g.less
+          )}
+        </p>
+      )}
+      {place && (
+        <p>
+          {place.rank === 1 ? rk.first : (
+            <>
+              {rk.other[0]}
+              <bdi>{place.rank}</bdi>
+              {rk.other[1]}
+            </>
+          )}
+          {place.tied && rk.tied}{" "}
+          <Link to={compareHref} className="text-link hover:underline">
+            {rk.link}
+          </Link>
+        </p>
+      )}
+      <p className="text-lg">
+        {h.before}
+        <bdi>{product}</bdi>
+        {h.mid}
         <span className="figure">
           <Num value={total} size="figure" animate />
         </span>
-        <span>
-          {h.in}
-          {fmt.years(years)}
-          {h.after}
+        <LeadTail lead={h.in}>{fmt.years(years)}</LeadTail>
+        {h.after}
+        {/* On a phone the state tag sits under the sentence (UX fix 31); from md it follows it inline. */}
+        <span className="mt-2 flex flex-wrap items-center gap-2 md:mt-0 md:ms-2 md:inline-flex">
+          <StateTag state="computed" />
+          <ReadingMark value={total} />
+          {preTax.length > 0 && (
+            <Tag tone="blocked" icon={<IconLock size={14} className="text-blocked" />}>
+              {r3fees.preTax} <bdi dir="ltr">{preTax[0]}</bdi>
+            </Tag>
+          )}
         </span>
-        <StateTag state="computed" />
-        {preTax.length > 0 && (
-          <Tag tone="blocked" icon={<IconLock size={14} className="text-blocked" />}>
-            {r3fees.preTax} <bdi dir="ltr">{preTax[0]}</bdi>
-          </Tag>
-        )}
       </p>
       <p className="text-muted-foreground">
         {h.under}
@@ -118,8 +181,9 @@ export function FeeHeadline({ product, total, withFees, withoutFees, years, preT
 
 // ---------------------------------------------------------------- verdict
 
-export function VerdictTag({ line, thresholds }: { line: LineView; thresholds: { negotiate: SiteValue; avoid: SiteValue } }) {
-  const word = r3fees.verdict[line.verdict]!;
+export function VerdictTag({ line, thresholds, soften, compareHref }: { line: LineView; thresholds: { negotiate: SiteValue; avoid: SiteValue }; soften?: boolean; compareHref?: string }) {
+  // lead decision 4c: the product ranks first for the saved goal, so "avoid" reads as a relative statement, with the way to the comparison
+  const word = soften && line.verdict === "avoid" ? r3fees.verdictSoft : r3fees.verdict[line.verdict]!;
   const tag =
     line.verdict === "negotiate" ? (
       <Tag tone="caution" icon={<IconPhone size={14} />} className="text-sm">
@@ -175,7 +239,14 @@ export function VerdictTag({ line, thresholds }: { line: LineView; thresholds: {
   }
   return (
     <div className="flex flex-col gap-1">
-      <div>{tag}</div>
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+        {tag}
+        {soften && line.verdict === "avoid" && compareHref && (
+          <Link to={compareHref} className="text-link text-sm hover:underline">
+            {r3fees.ranked.link}
+          </Link>
+        )}
+      </div>
       <p className="text-sm text-muted-foreground">{reason}</p>
       {!line.avoidEvaluated && (
         <p className="text-sm text-muted-foreground flex items-start gap-2">
@@ -318,6 +389,8 @@ export function CapLine({ cap }: { cap: CapView }) {
 // ---------------------------------------------------------------- remainder and thresholds
 
 export function RemainderLine({ value }: { value: SiteValue }) {
+  // an engine-speak line with nothing in it is not shown (audit 2026-10-24, A63)
+  if (typeof value.value === "number" && Math.abs(value.value) < 0.5) return null;
   return (
     <div className="flex flex-col gap-1">
       <p className="text-sm">
@@ -331,13 +404,14 @@ export function RemainderLine({ value }: { value: SiteValue }) {
 
 export function ThresholdsLine({ negotiate, avoid }: { negotiate: SiteValue; avoid: SiteValue }) {
   const t = r3fees.thresholds;
+  // Plain inline flow: no flex gap, so no space opens between a figure (or its flag) and the punctuation after it.
   return (
-    <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5 gap-y-1">
-      <span>{t.before}</span>
-      <Num value={negotiate} />
-      <span>{t.mid}</span>
-      <Num value={avoid} />
-      <span>{t.after}</span>
+    <p className="text-sm text-muted-foreground">
+      {t.before}
+      <Num value={negotiate} exact={!Number.isInteger(negotiate.value)} />
+      {t.mid}
+      <Num value={avoid} exact={!Number.isInteger(avoid.value)} />
+      {t.after}{" "}
       <Link to="/parameters" className="text-link hover:underline">
         {t.link}
       </Link>

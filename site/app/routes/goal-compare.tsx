@@ -1,12 +1,14 @@
 // Screen 6: the comparison result (design-spec 8, flows 13 to 16 and 19). The goal lives on the device, so the
 // page is a shell until it is read; then the engine runs here, on the bundle fetched once. No saved goal opens the form.
 import { useEffect, useId, useMemo, useRef, useState } from "react";
-import { Link, useLoaderData, useNavigate, useSearchParams } from "react-router";
+import { Link, Navigate, useLoaderData, useNavigate, useSearchParams } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import { r2, site, system } from "../copy";
+import { useValueMode } from "../lib/mode-store";
+import { useOwnRates } from "../lib/own-rate";
 import { AssumptionChips, AssumptionsPanel, type Suggestion } from "../components/compare/assumptions";
 import { ChartLegend, ChartReadout, ChartTable, ComparisonChart } from "../components/compare/chart";
-import type { Mode, ResultCtx } from "../components/compare/ctx";
+import type { ResultCtx } from "../components/compare/ctx";
 import { CoverageLine } from "../components/compare/coverage";
 import { type FormData } from "../components/compare/goal-form";
 import { AvailableCard, ListedRow, RankedRow, useFlip } from "../components/compare/rows";
@@ -16,7 +18,7 @@ import { SavedGoalStrip } from "../components/compare/strip";
 import { DetailSheetBody, WhyHeadline, WhySheetBody } from "../components/compare/why";
 import { DimensionChecklist, type ChecklistRowView } from "../components/guide/sections";
 import { IconExternal } from "../components/icons";
-import { Num, RulesLine } from "../components/provenance";
+import { Num, NumberLegend, RulesLine } from "../components/provenance";
 import { Sheet } from "../components/Sheet";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { Callout, Card, Disclosure, SegmentedControl } from "../components/ui";
@@ -32,8 +34,12 @@ import { Tag } from "../components/ui";
 import { Tpl } from "../components/exposure-mode/tpl";
 import { snapshotWrapper } from "../lib/revisit";
 import { deleteSavedComparison, isoToday, saveComparisonRecord, type CompareMode } from "../lib/state";
-import { computed } from "../lib/value";
+import { computed, entered } from "../lib/value";
 import { r5 } from "../copy";
+import { bundleLinks } from "../lib/bundle";
+
+/** The data files this page fetches after it starts, requested with the HTML (audit 2026-10-24, A52). */
+export const links = () => bundleLinks("compare-bundle.json");
 
 export async function loader() {
   const { goalFormData } = await import("../lib/compare.server");
@@ -76,7 +82,9 @@ function Result({ bundle, failed, data, presets, meta, today }: { bundle: Compar
     if (ready && status !== "old-version" && current && isBlank(current)) navigate("/goal", { replace: true });
   }, [ready, status, current, navigate]);
 
-  const strip = <SavedGoalStrip presets={presets} meta={meta} today={today} showResultLink={false} note={r2.strip.recomputed} revisitMode={mode} />;
+  // A71: the body registers its save here, so the goal card's menu can save the comparison
+  const [saveAction, setSaveAction] = useState<{ run: () => void; again: boolean } | null>(null);
+  const strip = <SavedGoalStrip presets={presets} meta={meta} today={today} showResultLink={false} note={r2.strip.recomputed} revisitMode={mode} saveAction={saveAction} />;
   const frame = (body: React.ReactNode) => (
     <div className="flex flex-col gap-6 pt-2 lg:pt-8">
       <Breadcrumb parent={{ href: "/goal", label: r2.form.title }} current={r2.result.title} />
@@ -89,16 +97,7 @@ function Result({ bundle, failed, data, presets, meta, today }: { bundle: Compar
   if (failed) return frame(<Callout tone="caution">{r2.result.failed}</Callout>);
   if (!current || !resolved || isBlank(current)) return frame(<p className="text-muted-foreground">{r2.loadingGoal}</p>);
   const g = hasMeaning(resolved) ? runGoalOf(current, resolved) : null;
-  if (!g || !bundle) {
-    return frame(
-      <Callout tone="info">
-        {r2.result.needMore}{" "}
-        <Link to="/goal" className="text-link hover:underline">
-          {r2.result.toForm}
-        </Link>
-      </Callout>,
-    );
-  }
+  if (!g || !bundle) return <Navigate to="/goal?need=1" replace />;
   if (nothingToCompare(g)) {
     return frame(
       <Callout tone="info">
@@ -109,20 +108,22 @@ function Result({ bundle, failed, data, presets, meta, today }: { bundle: Compar
       </Callout>,
     );
   }
-  if (mode === "exposure") return <ExposureBody bundle={bundle} data={data} frame={frame} />;
-  return <Body bundle={bundle} data={data} frame={frame} exposureId={params.get("exposure")} />;
+  if (mode === "exposure") return <ExposureBody bundle={bundle} data={data} frame={frame} registerSave={setSaveAction} />;
+  return <Body bundle={bundle} data={data} frame={frame} exposureId={params.get("exposure")} registerSave={setSaveAction} />;
 }
 
-function Body({ bundle, data, frame, exposureId }: { bundle: CompareBundle; data: FormData; frame: (b: React.ReactNode) => React.ReactNode; exposureId: string | null }) {
+function Body({ bundle, data, frame, exposureId, registerSave }: { bundle: CompareBundle; data: FormData; frame: (b: React.ReactNode) => React.ReactNode; exposureId: string | null; registerSave: (a: { run: () => void; again: boolean } | null) => void }) {
   const { current, resolved } = useGoals();
-  const base = runGoalOf(current!, resolved!)!;
+  const [ownRates, setOwnRate] = useOwnRates(current!.id);
+  const base0 = runGoalOf(current!, resolved!)!;
+  const base = Object.keys(ownRates).length > 0 ? { ...base0, ownRates } : base0;
   // opened from an exposure row ("באיזה מוצר להחזיק את זה"): A-01 is that exposure's entered return for this view, not saved into the goal
   const subject = exposureId ? bundle.exposures?.find((e) => e.record.id === exposureId) : undefined;
   const subjectReturn = subject ? current!.exposures?.[subject.record.id]?.return : undefined;
   const g = subjectReturn && typeof subjectReturn.value === "number" ? { ...base, returnPct: subjectReturn.value } : base;
   const key = JSON.stringify(g);
   const outcome = useMemo(() => buildView(bundle, g), [bundle, key]); // eslint-disable-line react-hooks/exhaustive-deps
-  const [mode, setMode] = useState<Mode>("real");
+  const [mode, setMode] = useValueMode();
   const [hover, setHover] = useState<number | null>(null);
   const [sens, setSens] = useState<SensitivityView | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
@@ -134,6 +135,12 @@ function Body({ bundle, data, frame, exposureId }: { bundle: CompareBundle; data
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
   const panelRef = useRef<HTMLElement>(null);
   const headId = useId();
+  const saveNow = useRef<() => void>(() => {});
+  const hasSaved = !!saved;
+  useEffect(() => {
+    registerSave({ run: () => saveNow.current(), again: hasSaved });
+    return () => registerSave(null);
+  }, [hasSaved]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // F-81 runs after the result is on screen, so typing stays light.
   useEffect(() => {
@@ -178,8 +185,9 @@ function Body({ bundle, data, frame, exposureId }: { bundle: CompareBundle; data
     setSaveFailed(!saveComparisonRecord(rest));
     forgetRevisit();
   };
+  saveNow.current = () => doSave(readableSaved?.choice);
   const holdsExposure = (id: string) => !subject || (subject.record.wrapper_ids ?? []).includes(id as never);
-  const ctx: ResultCtx = { bundle, view, g, mk, mode, openField };
+  const ctx: ResultCtx = { bundle, view, g, mk, mode, openField, fall: current!.assumptions.acceptedFall ?? null, setOwnRate };
   const hideAll = view.headline === "excludes-all" || view.headline === "nothing-ranked";
   const title = goalTitle(current!);
   const sources = {
@@ -196,7 +204,8 @@ function Body({ bundle, data, frame, exposureId }: { bundle: CompareBundle; data
   const checklistRows: ChecklistRowView[] = view.marks.map((m) => ({
     id: m.id,
     name: m.name,
-    explanation: m.explanation,
+    // a blocked row is followed by "עד שהשאלה תיסגר…": the explanation ends with a full stop first (hebrew-editor request)
+    explanation: m.mark === "blocked" ? m.explanation.replace(/[.\s]*$/, ".") : m.explanation,
     mark: m.mark,
     code: m.code,
     rules: m.rules,
@@ -210,7 +219,7 @@ function Body({ bundle, data, frame, exposureId }: { bundle: CompareBundle; data
 
   return frame(
     <>
-      <ModeTabs mode="wrapper" />
+      <div className="contents md:block md:max-w-sm"><ModeTabs mode="wrapper" /></div>
       {saved && revisit?.status === "unreadable" ? (
         <UnreadableSavedForm view={revisit} onRedo={() => doSave()} onDelete={() => deleteSavedComparison(saved.goalId, "wrapper")} />
       ) : (
@@ -220,6 +229,7 @@ function Body({ bundle, data, frame, exposureId }: { bundle: CompareBundle; data
         <h1 className="text-2xl lg:text-3xl font-semibold">
           <bdi>{title}</bdi>: {r2.result.title}
         </h1>
+        <NumberLegend />
         {subject && subjectReturn && (
           <p className="text-sm flex flex-wrap items-center gap-2">
             <Tpl t={r5.exposure.wrapperSubject} vars={{ exposure: <bdi className="font-medium">{subject.name}</bdi>, rate: <Num value={subjectReturn as never} /> }} />
@@ -247,18 +257,28 @@ function Body({ bundle, data, frame, exposureId }: { bundle: CompareBundle; data
         ) : (
           <WhyHeadline
             ctx={ctx}
+            sens={sens}
+            onField={(f) => openField(f)}
             onWhy={(el) => {
               setAnchor(el);
               setPopup({ kind: "why" });
             }}
           />
         )}
+        {g.employmentInferred && (
+          <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2" data-employment-inferred>
+            <span>{r2.result.employmentInferred}</span>
+            <Link to="/goal" className="text-link min-h-9 inline-flex items-center hover:underline">
+              {r2.result.employmentInferredChange}
+            </Link>
+          </p>
+        )}
         {view.stale && (
           <Callout tone="caution">
             {system.staleBanner.before} <bdi dir="ltr">{fmt.date(view.stale.since)}</bdi>. {system.staleBanner.after}
           </Callout>
         )}
-        {needsReturnShown && (
+        {needsReturnShown && hideAll && (
           <Callout tone="info">
             {r2.form.returnEmpty}{" "}
             <button type="button" className="text-link hover:underline" onClick={() => openField("return")}>
@@ -280,6 +300,7 @@ function Body({ bundle, data, frame, exposureId }: { bundle: CompareBundle; data
                 above={above}
                 onDetail={(id, el) => (setAnchor(el), setPopup({ kind: "detail", id }))}
                 extra={(id) => (holdsExposure(id) ? undefined : <Tag tone="neutral">{r5.exposure.cannotHoldTag.replace("{exposure}", subject!.name)}</Tag>)}
+                chosen={(o) => saved?.choice?.id === o.id && !!readableSaved}
                 choose={(o) => <ChooseButton {...(saved?.choice?.id === o.id && readableSaved ? { chosenOn: saved.savedOn } : {})} onChoose={() => doSave({ id: o.id, name: o.name })} onUnchoose={unchoose} />}
               />
             </section>
@@ -312,6 +333,7 @@ function Body({ bundle, data, frame, exposureId }: { bundle: CompareBundle; data
                   <ChartLegend lines={view.series} />
                   <ComparisonChart lines={view.series} mode={mode} horizon={g.horizonYears} ctx={ctx} hover={hover} onHover={setHover} />
                   {view.series.some((l) => l.enteredReturn) && <p className="text-xs text-entered">{r2.result.chartEnteredCaption}</p>}
+                  <FallEcho ctx={ctx} />
                   <ChartReadout lines={view.series} mode={mode} year={hover ?? g.horizonYears} ctx={ctx} />
                   <ChartTable lines={view.series} mode={mode} ctx={ctx} />
                 </>
@@ -395,15 +417,35 @@ function Body({ bundle, data, frame, exposureId }: { bundle: CompareBundle; data
   );
 }
 
-function RankedList({ ctx, above, onDetail, extra, choose }: { ctx: ResultCtx; above: (o: RankedOption) => RankedOption | undefined; onDetail: (id: string, el: HTMLElement) => void; extra?: (id: string) => React.ReactNode; choose?: (o: RankedOption) => React.ReactNode }) {
+function RankedList({ ctx, above, onDetail, extra, choose, chosen }: { ctx: ResultCtx; above: (o: RankedOption) => RankedOption | undefined; onDetail: (id: string, el: HTMLElement) => void; extra?: (id: string) => React.ReactNode; choose?: (o: RankedOption) => React.ReactNode; chosen?: (o: RankedOption) => boolean }) {
   const order = ctx.view.ranked.map((o) => o.id).join(",");
   const ref = useFlip(order);
   return (
     <ol ref={ref} className="flex flex-col gap-3">
       {ctx.view.ranked.map((o) => (
-        <RankedRow key={o.id} o={o} above={above(o)} ctx={ctx} onDetail={(el) => onDetail(o.id, el)} extra={extra?.(o.id)} choose={choose?.(o)} />
+        <RankedRow key={o.id} o={o} above={above(o)} ctx={ctx} onDetail={(el) => onDetail(o.id, el)} extra={extra?.(o.id)} choose={choose?.(o)} chosen={chosen?.(o) ?? false} />
       ))}
     </ol>
+  );
+}
+
+/** A12: the accepted fall in shekels, from the amount compared today: "20% מ־40,000 ₪, כלומר 8,000 ₪ היום". */
+function FallEcho({ ctx }: { ctx: ResultCtx }) {
+  const { fall, g, mk } = ctx;
+  const start = g.amountNow - g.available;
+  if (!fall || fall <= 0 || start <= 0) return null;
+  const drop = (start * Math.min(fall, 100)) / 100;
+  return (
+    <p className="text-xs text-muted-foreground" data-fall-echo>
+      <Tpl
+        t={r2.result.fallEcho}
+        vars={{
+          pct: <Num value={entered(fall, "pct", isoToday(), r2.result.fallBand)} />,
+          amount: <Num value={mk.nis(start, "F-71", r2.result.fallBand)} />,
+          drop: <Num value={mk.nis(drop, "F-71", r2.result.fallBand)} />,
+        }}
+      />
+    </p>
   );
 }
 

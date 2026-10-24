@@ -16,6 +16,20 @@ import { deviceStore } from "./device-store";
 import { BROKERAGE, a28Value, parameterValue, ruleContext, staleTariff, type FundAssumptions, type WorkbenchBundle, type WorkbenchInputs } from "./providers";
 import { computed, weaker, type SiteValue, type Strength } from "./value";
 
+/**
+ * The page's inputs with the exposure's own entered return (D9, `goal.exposures[id].return`) in place of the goal's return,
+ * so the chip, the figures and the ranking all use the number the person typed for this exposure. Without one: unchanged.
+ */
+export function withExposureReturn(inputs: WorkbenchInputs, own: ValueObject | undefined): WorkbenchInputs {
+  if (!own || typeof own.value !== "number") return inputs;
+  return {
+    ...inputs,
+    grossReturn: own.value / 100,
+    values: { ...inputs.values, returnV: own as SiteValue },
+    returnFromParameter: false,
+  };
+}
+
 // ---------------------------------------------------------------- the address
 
 export type SortKey = "rank" | "fee" | "name";

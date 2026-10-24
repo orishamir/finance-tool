@@ -8,16 +8,25 @@ import { IconDashed } from "../components/compare/icons";
 import { Tpl } from "../components/exposure-mode/tpl";
 import { RuleRef, RulesLine, StrengthLabel } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { Callout, Card, Disclosure } from "../components/ui";
+import { Callout, Card, Disclosure, Tag } from "../components/ui";
 import type { GraduationStatusView } from "../lib/graduation.server";
 import { fmt } from "../lib/format";
+import { sourceLabel } from "../lib/source-label";
+import { provenance } from "../copy";
 
 export async function loader() {
   const { loadNotCovered, loadRules, today } = await import("../lib/data.server");
   const rows = loadNotCovered();
   const rules = loadRules();
   const { graduationStatuses, graduationRuleIds } = await import("../lib/graduation.server");
+  const { notCoveredSources } = await import("../lib/graduation.server");
   const statuses = graduationStatuses();
+  // the glossary parser cuts a url at the first ")": take the whole address from the balanced reader
+  const whole = notCoveredSources();
+  for (const r of rows) {
+    const w = whole.get(r.he);
+    if (r.source && w) r.source = { ...r.source, title: w.title, url: w.url };
+  }
   const cited = new Set([...rows.flatMap((r) => r.ruleIds), ...graduationRuleIds(statuses)]);
   return { rows, statuses, rules: Object.fromEntries(Object.values(rules).filter((r) => cited.has(r.id)).map((r) => [r.id, r])), today: today() };
 }
@@ -56,11 +65,10 @@ function GraduationStatus({ s }: { s: GraduationStatusView }) {
           <h5 className="text-sm text-muted-foreground">{g.blockersHeading}</h5>
           {s.open.map((o) => (
             <div key={o.code} className="flex flex-col gap-1">
-              <Callout tone="blocked">
-                <span className="flex flex-wrap items-center gap-x-1.5">
-                  <Tpl t={g.blocker} vars={{ code: <bdi dir="ltr">{o.code}</bdi>, text: copy.openLine }} />
-                </span>
-              </Callout>
+              <span className="flex items-center gap-2 text-sm text-blocked-foreground">
+                <IconLock size={16} className="text-blocked shrink-0" />
+                <Tpl t={g.blockerShort} vars={{ code: <bdi dir="ltr">{o.code}</bdi> }} />
+              </span>
               {o.narrowedOn && o.narrowedBy && (
                 <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-1.5">
                   <Tpl t={g.narrowed} vars={{ date: dateNode(o.narrowedOn), rule: <RuleRef id={o.narrowedBy} /> }} />
@@ -115,15 +123,21 @@ export default function NotCovered() {
           <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
           <p className="text-lg text-muted-foreground max-w-measure">{copy.lede}</p>
         </header>
+        {data.rows.length > 0 && <Callout tone="blocked">{copy.notice}</Callout>}
         {data.rows.length === 0 ? (
           <p>{copy.empty}</p>
         ) : (
           <ul className="grid gap-4 lg:grid-cols-2">
             {data.rows.map((r) => (
               <Card as="li" key={r.he} id={data.statuses.find((s) => s.name === r.he)?.id} className="flex flex-col gap-3 scroll-mt-[112px] lg:scroll-mt-[88px]">
-                <h2 className="text-lg font-semibold">
-                  <bdi>{r.he}</bdi>
-                </h2>
+                <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-1">
+                  <h2 className="text-lg font-semibold">
+                    <bdi>{r.he}</bdi>
+                  </h2>
+                  <Tag tone="blocked" icon={<IconLock size={14} />}>
+                    {copy.blockedTag}
+                  </Tag>
+                </div>
                 {r.variants.length > 0 && (
                   <p className="text-sm text-muted-foreground">
                     {copy.alsoCalled}: {r.variants.join(" · ")}
@@ -135,10 +149,15 @@ export default function NotCovered() {
                     <dd>{r.explanation}</dd>
                     {r.source && (
                       <dd className="text-sm text-muted-foreground flex flex-wrap items-center gap-2">
-                        <a href={r.source.url} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-start gap-1 hover:underline">
-                          <span>{r.source.title}</span>
-                          <IconExternal size={16} className="shrink-0 mt-1" />
-                        </a>
+                        {(() => {
+                          const label = sourceLabel(r.source, provenance.sourced.localFile);
+                          return (
+                            <a href={r.source.url} target="_blank" rel="noopener noreferrer" className="text-link hover:underline" title={label.english ?? undefined}>
+                              {label.host ? <bdi dir="ltr">{label.text}</bdi> : label.text}
+                              <IconExternal size={16} className="inline-block align-text-bottom ms-1" />
+                            </a>
+                          );
+                        })()}
                         <bdi dir="ltr">{fmt.date(r.source.checked)}</bdi>
                         <StrengthLabel strength={r.source.strength} />
                       </dd>
@@ -149,12 +168,6 @@ export default function NotCovered() {
                       </dd>
                     )}
                   </div>
-                  <div className="flex flex-col gap-1">
-                    <dt className="text-sm text-muted-foreground">{copy.rows.open}</dt>
-                    <dd>
-                      <Callout tone="blocked">{copy.openLine}</Callout>
-                    </dd>
-                  </div>
                 </dl>
                 {(() => {
                   const s = data.statuses.find((x) => x.name === r.he);
@@ -164,6 +177,15 @@ export default function NotCovered() {
             ))}
           </ul>
         )}
+        <section id="wont-do" className="flex flex-col gap-3 scroll-mt-[112px] lg:scroll-mt-[88px]">
+          <h2 className="text-xl lg:text-2xl font-semibold">{copy.wontDo.title}</h2>
+          <p className="text-muted-foreground max-w-measure">{copy.wontDo.lede}</p>
+          <ul className="flex flex-col gap-1.5 max-w-measure list-disc ps-5">
+            {copy.wontDo.items.map((x) => (
+              <li key={x}>{x}</li>
+            ))}
+          </ul>
+        </section>
         {data.statuses.some((s) => s.status === "graduated") && (
           <section className="flex flex-col gap-2">
             <h2 className="text-xl lg:text-2xl font-semibold">{r5.graduation.graduatedHeading}</h2>

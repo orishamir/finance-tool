@@ -7,23 +7,26 @@ import { decompose, relativeGap } from "@finance-tool/engine";
 import type { RuleRecord } from "@finance-tool/schema";
 import { r2, r5, system } from "../../copy";
 import { AssumptionChips, AssumptionsPanel } from "../compare/assumptions";
+import { BiggestDifference } from "../compare/why";
+import { countForm } from "../../lib/compare";
+import { useValueMode } from "../../lib/mode-store";
 import type { FormData } from "../compare/goal-form";
 import { goalTitle } from "../compare/goal-form";
 import { DimensionChecklist, type ChecklistRowView } from "../guide/sections";
-import { Num, RulesLine } from "../provenance";
+import { Num, NumberLegend, RulesLine } from "../provenance";
 import { Sheet } from "../Sheet";
 import { Callout, Card, Disclosure, SegmentedControl, Tag } from "../ui";
 import { ChooseButton, RevisitBanner, SaveComparisonButton, UnreadableSavedForm, WhatChangedSheet } from "../revisit/revisit";
 import { forgetRevisit, useRevisit } from "../revisit/use-revisit";
 import { computed } from "../../lib/value";
 import { makeValues, runGoalOf, type CompareBundle } from "../../lib/compare";
-import { computeExposureMode, type ExposureResultView, type ExposureRowView } from "../../lib/exposure-mode";
+import { beginEdit, commitEdit, computeExposureMode, rankingInputs, stageEmpty, type ExposureResultView, type ExposureRowView, type RankStage } from "../../lib/exposure-mode";
 import { fmt } from "../../lib/format";
 import { useGoals, type FieldKey } from "../../lib/goal";
 import { snapshotExposure } from "../../lib/revisit";
 import { deleteSavedComparison, isoToday, saveComparisonRecord, type CompareMode } from "../../lib/state";
 import { ExposureChartCard } from "./chart";
-import type { ExpCtx, Mode } from "./ctx";
+import type { ExpCtx } from "./ctx";
 import { ExposureRow, useFlipList } from "./row";
 import { ExposureReason } from "./reason";
 import { Tpl } from "./tpl";
@@ -36,9 +39,10 @@ import { IconChevronDown } from "../icons";
 export function ModeTabs({ mode, exposureId }: { mode: CompareMode; exposureId?: string | null }) {
   const navigate = useNavigate();
   void exposureId;
+  // A95: a mode change is a history entry (it replaced the page before, so Back left the comparison)
   return (
     <div className="flex flex-col gap-2 sticky top-14 lg:static z-[var(--z-sticky)] -mx-gutter px-gutter py-2 lg:mx-0 lg:px-0 lg:py-0 bg-background/90 backdrop-blur lg:bg-transparent lg:backdrop-blur-none">
-      <SegmentedControl<CompareMode> label={r5.mode.aria} options={[{ value: "wrapper", label: r5.mode.names.wrapper }, { value: "exposure", label: r5.mode.names.exposure }]} value={mode} onChange={(m) => navigate(m === "exposure" ? "/goal/compare?mode=exposure" : "/goal/compare", { replace: true })} />
+      <SegmentedControl<CompareMode> label={r5.mode.aria} options={[{ value: "wrapper", label: r5.mode.names.wrapper }, { value: "exposure", label: r5.mode.names.exposure }]} value={mode} onChange={(m) => navigate(m === "exposure" ? "/goal/compare?mode=exposure" : "/goal/compare")} />
       <p className="text-sm text-muted-foreground">{r5.mode.lede[mode]}</p>
     </div>
   );
@@ -64,6 +68,7 @@ export function ExposureHeadline({ ctx, onWhy }: { ctx: ExpCtx; onWhy: (el: HTML
   const theta = mk.pct(view.theta * 100, "F-80", r2.result.tieMid);
   const hl = r5.exposure.headline;
   let body: ReactNode = null;
+  let reason: ReactNode = null;
   let showWhy = true;
   switch (h.kind) {
     case "no-return":
@@ -91,20 +96,16 @@ export function ExposureHeadline({ ctx, onWhy }: { ctx: ExpCtx; onWhy: (el: HTML
     }
     case "winner": {
       const d = view.comparison.ranking.topTwo?.deciding;
-      const f = d?.formula ?? null;
-      let reason: ReactNode = null;
-      if (d && f && d.gaps[f] > 0 && second) {
-        if (f === "fee-drag") reason = <>{r2.result.reasonFee} <Num value={mk.nis(d.top.feeDrag, "F-61", r2.deciding["fee-drag"]!, top!.run && { usedRules: top!.run.rules })} /> {r2.result.reasonFeeVs} <Num value={mk.nis(d.second.feeDrag, "F-61", r2.deciding["fee-drag"]!, second.run && { usedRules: second.run.rules })} /> {r2.result.reasonFeeIn}<Num value={mk.goal.horizon} display={fmt.years(g.horizonYears)} /></>;
-        else if (f === "tax-at-exit") reason = <>{r2.result.reasonTax} <Num value={mk.nis(d.top.taxAtExit, "F-40", r2.deciding["tax-at-exit"]!, top!.run && { usedRules: top!.run.rules })} /> {r2.result.reasonFeeVs} <Num value={mk.nis(d.second.taxAtExit, "F-40", r2.deciding["tax-at-exit"]!, second.run && { usedRules: second.run.rules })} /></>;
-        else if (f === "deposit-side-relief") reason = <>{r2.result.reasonRelief} <Num value={mk.nis(-d.top.depositSideRelief, "F-30", r2.deciding["deposit-side-relief"]!, top!.run && { usedRules: top!.run.rules })} /> {r2.result.reasonFeeVs} <Num value={mk.nis(-d.second.depositSideRelief, "F-30", r2.deciding["deposit-side-relief"]!, second.run && { usedRules: second.run.rules })} /></>;
-      }
-      body = reason ? <Tpl t={h.sourcedWinner ? hl.sourcedCash : hl.reason} vars={{ exposure: <NameLink row={top!} />, reason }} /> : <Tpl t={h.sourcedWinner ? hl.bareSourced : hl.bare} vars={{ exposure: <NameLink row={top!} /> }} />;
+      body = <Tpl t={h.sourcedWinner ? hl.bareSourced : hl.bare} vars={{ exposure: <NameLink row={top!} /> }} />;
+      // A7: "ההבדל הגדול ביותר", not "כי": the largest gap need not favour the leader
+      if (d?.formula && second) reason = <BiggestDifference deciding={d as never} mk={mk} top={{ name: top!.entry.name, run: top!.run && { usedRules: top!.run.rules } }} second={{ name: second.entry.name, run: second.run && { usedRules: second.run.rules } }} />;
       break;
     }
   }
   return (
     <div className="flex flex-col gap-2 max-w-measure">
       <p className="text-lg">{body}</p>
+      {reason && <p className="text-sm text-muted-foreground">{reason}</p>}
       {showWhy && view.ranked.length > 1 && (
         <button type="button" onClick={(e) => onWhy(e.currentTarget)} className="text-link min-h-target self-start px-2 -ms-2 rounded-md hover:underline">
           {r2.result.why}
@@ -200,18 +201,22 @@ function ExposureCoverage({ ctx, open }: { ctx: ExpCtx; open: boolean }) {
   const { view, mk } = ctx;
   const cov = view.comparison.coverage;
   const c = r5.exposure.coverage;
-  const count = (k: (typeof kinds)[number]) => <Num value={mk.count(cov.counts[k], c.groups[k]!)} animate />;
-  const notEligible = cov.counts["not-eligible"];
+  // A91: each count with its own verb ("אחת דורגה", "שתיים דורגו")
+  const count = (k: (typeof kinds)[number]) => {
+    const f = countForm(cov.counts[k], c.counts[k] as { one: string; other: string }, r2.result.counts.numerals as { one: string; two: string });
+    return (
+      <>
+        <Num value={mk.count(cov.counts[k], c.groups[k]!)} {...(f.numeral ? { display: f.numeral } : { animate: true })} /> {f.word}
+      </>
+    );
+  };
   return (
     <details className="group bg-card border border-border rounded-lg p-4 md:p-6" open={open} key={String(open)}>
-      <summary className="flex items-start justify-between gap-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+      <summary className="flex items-start cursor-pointer list-none [&::-webkit-details-marker]:hidden">
         <span className="flex flex-col gap-1">
           <span>
-            <Tpl
-              t={c.sentence}
-              vars={{ n: <Num value={mk.count(cov.considered, c.sentence)} animate />, ranked: count("ranked"), listed: count("listed-not-ranked"), excluded: count("excluded"), notEvaluated: count("not-evaluated") }}
-            />
-            {notEligible > 0 && <Tpl t={c.notEligible} vars={{ n: count("not-eligible") }} />}
+            <Tpl t={c.sentence} vars={{ n: <Num value={mk.count(cov.considered, c.sentence)} animate /> }} /> {count("ranked")}, {count("listed-not-ranked")}, {count("excluded")}, {count("not-evaluated")}
+            {cov.counts["not-eligible"] > 0 && <>, {count("not-eligible")}</>}.
           </span>
           <span className="text-sm text-link flex items-center gap-1 min-h-9">
             <span className="group-open:hidden">{r2.result.coverageOpen}</span>
@@ -286,7 +291,7 @@ function marksOf(bundle: CompareBundle, view: ExposureResultView): ChecklistRowV
     return {
       id: row.id,
       name: row.name,
-      explanation: row.explanation,
+      explanation: mark === "blocked" ? row.explanation.replace(/[.\s]*$/, ".") : row.explanation,
       mark,
       ...(b && mark === "blocked" ? { code: b.code } : {}),
       rules,
@@ -297,11 +302,16 @@ function marksOf(bundle: CompareBundle, view: ExposureResultView): ChecklistRowV
 
 // ---------------------------------------------------------------- the body
 
-export function ExposureBody({ bundle, data, frame }: { bundle: CompareBundle; data: FormData; frame: (b: ReactNode) => ReactNode }) {
+export function ExposureBody({ bundle, data, frame, registerSave }: { bundle: CompareBundle; data: FormData; frame: (b: ReactNode) => ReactNode; registerSave?: (a: { run: () => void; again: boolean } | null) => void }) {
   const { current, resolved, setExposureInput } = useGoals();
   const g = runGoalOf(current!, resolved!)!;
-  const goal = current!;
-  const key = JSON.stringify([g, goal.exposures ?? {}, goal.assumptions.acceptedFall ?? null]);
+  const liveGoal = current!;
+  // A34: the list re-ranks when an edit is committed (blur or Enter), not on the first keystroke
+  const [stage, setStage] = useState<RankStage>(stageEmpty);
+  const liveInputs = liveGoal.exposures ?? {};
+  const rankInputs = rankingInputs(stage, liveInputs);
+  const goal = rankInputs === liveGoal.exposures || (!liveGoal.exposures && !stage.frozen) ? liveGoal : { ...liveGoal, exposures: rankInputs };
+  const key = JSON.stringify([g, rankInputs, goal.assumptions.acceptedFall ?? null]);
   const outcome = useMemo(() => {
     try {
       return { view: computeExposureMode({ bundle, g, goal }) } as const;
@@ -309,7 +319,7 @@ export function ExposureBody({ bundle, data, frame }: { bundle: CompareBundle; d
       return { error: e instanceof Error ? e.message : String(e) } as const;
     }
   }, [bundle, key]); // eslint-disable-line react-hooks/exhaustive-deps
-  const [mode, setMode] = useState<Mode>("real");
+  const [mode, setMode] = useValueMode();
   const [popup, setPopup] = useState<{ kind: "why" } | { kind: "detail"; id: string } | null>(null);
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
@@ -319,6 +329,12 @@ export function ExposureBody({ bundle, data, frame }: { bundle: CompareBundle; d
   const headId = useId();
   const { saved, view: revisit } = useRevisit("exposure");
   const mk = useMemo(() => makeValues(bundle, g), [bundle, g]);
+  const saveNow = useRef<() => void>(() => {});
+  const hasSaved = !!saved;
+  useEffect(() => {
+    registerSave?.({ run: () => saveNow.current(), again: hasSaved });
+    return () => registerSave?.(null);
+  }, [hasSaved]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // the ranked rows keep a stable order key for the FLIP animation
   const rankedOrder = outcome.view ? outcome.view.rows.map((r) => `${r.id}:${r.kind}`).join(",") : "";
@@ -333,7 +349,7 @@ export function ExposureBody({ bundle, data, frame }: { bundle: CompareBundle; d
   if ("error" in outcome) return frame(<Callout tone="caution">{r5.exposure.failed}</Callout>);
   const view = outcome.view;
   const names = Object.fromEntries(view.rows.map((r) => [r.id, r.entry.name]));
-  const ctx: ExpCtx = { bundle, view, g, mk, mode, names, setInput: setExposureInput, ...(saved?.choice && saved.savedOn ? { chosen: { id: saved.choice.id, on: saved.savedOn } } : {}) };
+  const ctx: ExpCtx = { bundle, view, g, mk, mode, names, range: data.pct, setInput: setExposureInput, ...(saved?.choice && saved.savedOn ? { chosen: { id: saved.choice.id, on: saved.savedOn } } : {}) };
   const readableSaved = saved && revisit && revisit.status !== "unreadable" ? saved : undefined;
 
   const doSave = (choice?: { id: string; name: string }) => {
@@ -342,6 +358,7 @@ export function ExposureBody({ bundle, data, frame }: { bundle: CompareBundle; d
     forgetRevisit();
     setSaveFailed(!ok);
   };
+  saveNow.current = () => doSave(readableSaved?.choice);
   const unchoose = () => {
     if (!saved || !readableSaved) return;
     const { choice: _drop, ...rest } = saved;
@@ -386,7 +403,7 @@ export function ExposureBody({ bundle, data, frame }: { bundle: CompareBundle; d
   const noReturn = !view.rows.some((r) => r.grossReturn?.state === "entered");
   return frame(
     <>
-      <ModeTabs mode="exposure" />
+      <div className="contents md:block md:max-w-sm"><ModeTabs mode="exposure" /></div>
       {saved && revisit?.status === "unreadable" ? (
         <UnreadableSavedForm view={revisit} onRedo={() => doSave()} onDelete={() => deleteSavedComparison(saved.goalId, "exposure")} />
       ) : (
@@ -396,6 +413,7 @@ export function ExposureBody({ bundle, data, frame }: { bundle: CompareBundle; d
         <h1 className="text-2xl lg:text-3xl font-semibold">
           <Tpl t={r5.exposure.title} vars={{ goal: <bdi>{title}</bdi> }} />
         </h1>
+        <NumberLegend />
         {h.kind === "all-excluded" ? (
           <Callout tone="blocked">
             <Tpl t={r5.exposure.headline.allExcluded} vars={{ accepted: <span className="text-entered"><bdi dir="ltr">{goal.assumptions.acceptedFall !== null && goal.assumptions.acceptedFall !== undefined ? fmt.pct(goal.assumptions.acceptedFall) : ""}</bdi></span> }} />{" "}
@@ -403,6 +421,8 @@ export function ExposureBody({ bundle, data, frame }: { bundle: CompareBundle; d
               {r5.exposure.headline.allExcludedLink}
             </Link>
           </Callout>
+        ) : noReturn ? (
+          <p className="text-lg max-w-measure">{r5.exposure.headline.noReturn}</p>
         ) : h.kind === "none" ? (
           <Callout tone="info" title={r2.result.nothingRanked}>
             {r2.result.nothingRankedLine}
@@ -410,11 +430,16 @@ export function ExposureBody({ bundle, data, frame }: { bundle: CompareBundle; d
         ) : (
           <ExposureHeadline ctx={ctx} onWhy={(el) => (setAnchor(el), setPopup({ kind: "why" }))} />
         )}
-        {noReturn && <Callout tone="info">{r5.exposure.headline.noReturn}</Callout>}
       </header>
 
       <div className="flex flex-col gap-section lg:grid lg:grid-cols-[3fr_2fr] lg:gap-x-12 lg:items-start">
-        <div ref={listRef} className="flex flex-col gap-6 min-w-0">
+        <div
+          ref={listRef}
+          className="flex flex-col gap-6 min-w-0"
+          onFocus={(e) => e.target instanceof HTMLInputElement && setStage((s) => beginEdit(s, liveInputs))}
+          onBlur={(e) => e.target instanceof HTMLInputElement && setStage(commitEdit())}
+          onKeyDown={(e) => e.key === "Enter" && e.target instanceof HTMLInputElement && e.target.blur()}
+        >
           {group(view.ranked, r5.exposure.headings.ranked, true)}
           {group(view.listed, r5.exposure.headings.listed)}
           {group(view.excluded, r5.exposure.headings.excluded)}

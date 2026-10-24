@@ -22,6 +22,7 @@ import { goalValueObjects, runGoalOf, type CompareBundle, type RunGoal } from ".
 import { p05Units } from "./engine";
 import { referenceOfClass, tracksBehind } from "./class-reference";
 import { fitOf, type FitTableData } from "./fit";
+import { failureHe } from "./failure-he";
 import { fmt } from "./format";
 import type { Goal, ResolvedGoal } from "./goal";
 import { normalize } from "./search";
@@ -130,21 +131,71 @@ export function tracksFor(hb: HoldingsBundle, wrapperId: WrapperId, companyId: s
   return hb.tracks.filter((t) => t.w === wrapperId && hb.companies[t.c]!.id === companyId).sort((a, b) => a.n.localeCompare(b.n, "he"));
 }
 
-/** A name pasted from a statement against the tracks of a wrapper: the exact name first, else names that contain it (flow 6). */
-export function matchTracks(hb: HoldingsBundle, wrapperId: WrapperId, text: string, companyId?: string): HTrack[] {
+/** How a pasted text matched the tracks: by fund number, by the exact name, by part of a name, by all its words, or not at all. */
+export type TrackMatchKind = "number" | "exact" | "part" | "words" | "none";
+
+const tokensOf = (q: string): string[] => q.split(/[\s,;:()\-]+/).filter((w) => w.length >= 2);
+
+/**
+ * A name pasted from a statement against the tracks of a wrapper (flow 6): a fund number ("1377" or "קופה 1377"), else the
+ * exact name, else names that contain it, else names (with their company's name) that contain every word of it.
+ */
+export function matchTracksKind(hb: HoldingsBundle, wrapperId: WrapperId, text: string, companyId?: string): { kind: TrackMatchKind; tracks: HTrack[] } {
   const q = normalize(text);
-  if (q.length < 2) return [];
+  const none = { kind: "none" as const, tracks: [] as HTrack[] };
+  if (q.length < 2) return none;
   const pool = hb.tracks.filter((t) => t.w === wrapperId);
+  const num = /^(?:קופה\s*)?#?(\d{2,7})$/.exec(q);
+  if (num) {
+    const byId = pool.filter((t) => t.id === Number(num[1]));
+    return byId.length > 0 ? { kind: "number", tracks: byId } : none;
+  }
   const inCompany = companyId ? pool.filter((t) => hb.companies[t.c]!.id === companyId) : [];
   for (const set of [inCompany, pool]) {
     const exact = set.filter((t) => normalize(t.n) === q);
-    if (exact.length > 0) return exact;
+    if (exact.length > 0) return { kind: "exact", tracks: exact };
   }
   for (const set of [inCompany, pool]) {
     const part = set.filter((t) => normalize(t.n).includes(q));
-    if (part.length > 0) return part.slice(0, 8);
+    if (part.length > 0) return { kind: "part", tracks: part.slice(0, 8) };
   }
-  return [];
+  const words = tokensOf(q);
+  if (words.length >= 2) {
+    for (const set of [inCompany, pool]) {
+      const all = set.filter((t) => {
+        const hay = normalize(`${hb.companies[t.c]!.name} ${t.n}`);
+        return words.every((w) => hay.includes(w));
+      });
+      if (all.length > 0) return { kind: "words", tracks: all.slice(0, 8) };
+    }
+  }
+  return none;
+}
+
+export const matchTracks = (hb: HoldingsBundle, wrapperId: WrapperId, text: string, companyId?: string): HTrack[] => matchTracksKind(hb, wrapperId, text, companyId).tracks;
+
+/**
+ * The companies a typed filter points at. A filter that is part of one name is that name; a filter with extra words
+ * ("הפניקס פנסיה מקיפה מסלול כללי") points at the companies whose names hold its rarest words, so the list stays and
+ * the person picks. `partial` is true when only some of the words were found.
+ */
+export function matchCompanies<C extends { name: string }>(companies: C[], filter: string): { list: C[]; partial: boolean } {
+  const q = normalize(filter);
+  if (q === "") return { list: companies, partial: false };
+  const direct = companies.filter((c) => normalize(c.name).includes(q));
+  if (direct.length > 0) return { list: direct, partial: false };
+  const words = tokensOf(q);
+  if (words.length === 0) return { list: [], partial: false };
+  const names = companies.map((c) => normalize(c.name));
+  const weight = (w: string) => {
+    const df = names.filter((n) => n.includes(w)).length;
+    return df === 0 ? 0 : 1 / df;
+  };
+  const weights = words.map(weight);
+  const scored = companies.map((c, i) => ({ c, score: words.reduce((sum, w, k) => (names[i]!.includes(w) ? sum + weights[k]! : sum), 0) })).filter((x) => x.score > 0);
+  if (scored.length === 0) return { list: [], partial: false };
+  const best = Math.max(...scored.map((x) => x.score));
+  return { list: scored.filter((x) => x.score >= best * 0.5).sort((a, b) => b.score - a.score).slice(0, 6).map((x) => x.c), partial: true };
 }
 
 // ---------------------------------------------------------------- the context a page builds once
@@ -189,6 +240,8 @@ export interface ClassReference {
 
 export interface FeeCost {
   total: SiteValue;
+  /** F-61's value of the balance fee falling to the class mean (the fee page's what-if, same function); absent when the fee is not above it. */
+  atAverage?: SiteValue;
   horizonYears: SiteValue;
   /** Exit tax is blocked (G-03): the figure is before it. */
   preTax?: { blockedBy: string };
@@ -198,7 +251,14 @@ export interface FeeCost {
   returnFromParameter: boolean;
 }
 
-export type FeeCostResult = { kind: "ok"; cost: FeeCost } | { kind: "no-goal" } | { kind: "unsupported" } | { kind: "needs-pf36" } | { kind: "needs-first-deposit" } | { kind: "failed"; message: string };
+export type FeeCostResult = { kind: "ok"; cost: FeeCost } | { kind: "no-goal" } | { kind: "unsupported" } | { kind: "needs-pf36" } | { kind: "needs-first-deposit" } | { kind: "failed"; message: string; messageHe: string; /** The rule or gap id the engine message names, for the chip after the plain words. */ code?: string };
+
+/** The rule or gap id an engine message names, if any (never the English message itself). */
+export const failureCode = (message: string | undefined): string | undefined => (message ? /\b(?:G|PF|OQ|TXH|TXK|KH|KGL|SW|PEN)-\d+\b/.exec(message)?.[0] : undefined);
+const failed = (message: string): FeeCostResult => {
+  const code = failureCode(message);
+  return { kind: "failed", message, messageHe: failureHe(message), ...(code ? { code } : {}) };
+};
 
 export interface CapWarning {
   feeType: "balance" | "deposit";
@@ -345,9 +405,9 @@ export function holdingPlan(h: Holding, cb: CompareBundle | null, goal: Holdings
   }
 }
 
-function feeCostOf(h: Holding, ctx: HoldingsCtx): FeeCostResult {
+function feeCostOf(h: Holding, ctx: HoldingsCtx, meanBalance: SiteValue | null): FeeCostResult {
   const p = holdingPlan(h, ctx.cb, ctx.goal, ctx.rules);
-  if (!p.ok) return p.reason === "failed" ? { kind: "failed", message: p.message ?? "" } : { kind: p.reason };
+  if (!p.ok) return p.reason === "failed" ? failed(p.message ?? "") : { kind: p.reason };
   try {
     const fm = feeMateriality(p.plan, p.ctx);
     const gv = goalValueObjects(ctx.cb!, ctx.goal!.run);
@@ -360,18 +420,29 @@ function feeCostOf(h: Holding, ctx: HoldingsCtx): FeeCostResult {
       today: p.ctx.runDate,
       rules: usedRules,
       flags: fm.run.flags.map((f) => f.code),
+      labels: fm.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })),
       about: "מה דמי הניהול לוקחים מהחשבון הזה עד סוף התקופה, בכסף של היום: השווי בלי דמי ניהול פחות השווי איתם",
     });
     const blocked = fm.run.outcome.code === "listed-not-ranked" && (fm.run.outcome as { reason?: string }).reason === "G-03" ? "G-03" : fm.run.flags.some((f) => f.code === "PF-36") ? "PF-36" : undefined;
+    // the fee page's what-if (F-61 value of a stated reduction) with the class mean as the stated rate; nothing new is computed
+    let atAverage: SiteValue | undefined;
+    const feeNow = typeof h.feeBalance?.value === "number" ? h.feeBalance.value : null;
+    const meanNow = meanBalance && typeof meanBalance.value === "number" ? fmt.pctShown(meanBalance.value) : null;
+    if (feeNow !== null && meanNow !== null && meanNow < feeNow) {
+      const r = valueOfReduction(p.plan, "balance", meanNow / 100, p.ctx);
+      if ((r.value.value as number) > 0) {
+        atAverage = computed(r.value.value as number, "nis", "F-61", { "דמי ניהול מחיסכון": h.feeBalance as SiteValue, "ממוצע הסיווג": meanBalance as SiteValue, "שנים": gv.horizon }, { today: p.ctx.runDate, rules: usedRules, about: "מה שווה להוריד את דמי הניהול מחיסכון לממוצע של הסיווג, בכסף של היום: השווי עם הדמי ניהול החדשים פחות השווי עכשיו" });
+      }
+    }
     return {
       kind: "ok",
-      cost: { total, horizonYears: gv.horizon, ...(blocked ? { preTax: { blockedBy: blocked } } : {}), ...(p.depositsLeftOut ? { depositsLeftOut: true } : {}), returnFromParameter: p.returnFromParameter },
+      cost: { total, ...(atAverage ? { atAverage } : {}), horizonYears: gv.horizon, ...(blocked ? { preTax: { blockedBy: blocked } } : {}), ...(p.depositsLeftOut ? { depositsLeftOut: true } : {}), returnFromParameter: p.returnFromParameter },
     };
   } catch (e) {
     const message = e instanceof Error ? e.message : String(e);
     // a study fund still inside its lock: the engine asks for the tax-layer split of the detailed statement (PF-36)
     if (/PF-36/.test(message) && h.wrapperId === "keren-hishtalmut") return { kind: "needs-pf36" };
-    return { kind: "failed", message };
+    return failed(message);
   }
 }
 
@@ -416,7 +487,7 @@ export function viewOf(h: Holding, ctx: HoldingsCtx): HoldingView {
     view.fit = fitFor(track, ctx, view);
     view.reference = referenceFor(hb, track, ctx.today);
   }
-  view.fees = feeCostOf(h, ctx);
+  view.fees = feeCostOf(h, ctx, view.reference && (view.reference.count.value as number) > 0 ? view.reference.meanBalance : null);
   view.capWarnings = capWarnings(h, ctx);
   return view;
 }
@@ -671,18 +742,26 @@ export function draftOf(h: Holding): Draft {
   };
 }
 
-export type DraftError = { field: keyof Draft | "track"; code: "balance-negative" | "percent-over" | "date-future" | "first-after-statement" | "no-track" | "required" | "gain-over-balance" };
+export type DraftError = {
+  field: keyof Draft | "track";
+  code: "balance-negative" | "percent-over" | "statement-future" | "first-future" | "first-after-statement" | "no-track" | "required" | "gain-over-balance" | "invalid";
+};
 
-/** The checks of the sheet's "שמירה" (design-spec 13): balance at least zero, percents 0 to 100, no date in the future. */
+/**
+ * The checks of the sheet's "שמירה" (design-spec 13): balance at least zero, percents 0 to 100, no date in the future.
+ * "מהפקדה" is optional (a fund with no deposits prints no such line; empty is saved as 0). Each failure has its own code,
+ * so the sheet says what is wrong with the field and not only that it is.
+ */
 export function checkDraft(d: Draft, today: string): DraftError[] {
   const errors: DraftError[] = [];
+  if (d.wrapperId === null) errors.push({ field: "wrapperId", code: "required" });
   if (d.balance === null) errors.push({ field: "balance", code: "required" });
   else if (d.balance < 0) errors.push({ field: "balance", code: "balance-negative" });
   const child = d.wrapperId === "child-savings-provident" || d.wrapperId === "child-savings-bank";
   if (!child) {
     for (const f of ["feeBalance", "feeDeposit", "directExpenses"] as const) {
       const v = d[f];
-      if (f !== "directExpenses" && v === null) errors.push({ field: f, code: "required" });
+      if (f === "feeBalance" && v === null) errors.push({ field: f, code: "required" });
       else if (v !== null && (v < 0 || v > 100)) errors.push({ field: f, code: "percent-over" });
     }
   }
@@ -690,12 +769,26 @@ export function checkDraft(d: Draft, today: string): DraftError[] {
   else if (d.embeddedGain !== null && d.balance !== null && d.embeddedGain > d.balance) errors.push({ field: "embeddedGain", code: "gain-over-balance" });
   for (const f of ["monthlyOwn", "monthlyEmployer"] as const) if (d[f] !== null && d[f]! < 0) errors.push({ field: f, code: "balance-negative" });
   if (!d.statementDate) errors.push({ field: "statementDate", code: "required" });
-  else if (d.statementDate > today) errors.push({ field: "statementDate", code: "date-future" });
-  if (d.firstDeposit && d.statementDate && d.firstDeposit > d.statementDate) errors.push({ field: "firstDeposit", code: "first-after-statement" });
-  if (d.firstDeposit && d.firstDeposit > today) errors.push({ field: "firstDeposit", code: "date-future" });
-  if (!d.companyName.trim() && !d.companyId) errors.push({ field: "track", code: "no-track" });
-  else if (d.fundId === null && !d.typedName.trim() && !child) errors.push({ field: "track", code: "no-track" });
+  else if (d.statementDate > today) errors.push({ field: "statementDate", code: "statement-future" });
+  if (d.firstDeposit && d.firstDeposit > today) errors.push({ field: "firstDeposit", code: "first-future" });
+  else if (d.firstDeposit && d.statementDate && d.firstDeposit > d.statementDate) errors.push({ field: "firstDeposit", code: "first-after-statement" });
+  if (d.wrapperId !== null) {
+    if (!d.companyName.trim() && !d.companyId) errors.push({ field: "track", code: "no-track" });
+    else if (d.fundId === null && !d.typedName.trim() && !child) errors.push({ field: "track", code: "no-track" });
+  }
   return errors;
+}
+
+/** A track typed or pasted as exactly one track's name or fund number is that track: the draft links to it on save (audit A17). */
+export function autoLink(hb: HoldingsBundle, d: Draft): Draft {
+  if (d.fundId !== null || d.wrapperId === null || !d.typedName.trim()) return d;
+  const wrapper: WrapperId = d.wrapperId === "child-savings-provident" || d.wrapperId === "child-savings-bank" ? (d.childRoute === "bank" ? "child-savings-bank" : "child-savings-provident") : d.wrapperId;
+  if (wrapper === "child-savings-bank") return d;
+  const m = matchTracksKind(hb, wrapper, d.typedName, d.companyId ?? undefined);
+  if ((m.kind !== "exact" && m.kind !== "number") || m.tracks.length !== 1) return d;
+  const t = m.tracks[0]!;
+  const co = hb.companies[t.c]!;
+  return { ...d, fundId: t.id, typedName: "", companyId: co.id, companyName: co.name };
 }
 
 /** The draft as a holding: every figure an `entered` value object, dated today. */
@@ -714,7 +807,7 @@ export function holdingOf(d: Draft, hb: HoldingsBundle, today: string, existing?
     ...(!track && d.typedName.trim() ? { typedName: d.typedName.trim() } : {}),
     balance: e(d.balance ?? 0, "nis"),
     ...(!child && d.feeBalance !== null ? { feeBalance: e(d.feeBalance, "pct_per_year") } : {}),
-    ...(!child && d.feeDeposit !== null ? { feeDeposit: e(d.feeDeposit, "pct_of_deposit") } : {}),
+    ...(!child ? { feeDeposit: e(d.feeDeposit ?? 0, "pct_of_deposit") } : {}),
     ...(!child && d.directExpenses !== null ? { directExpenses: e(d.directExpenses, "pct_per_year") } : {}),
     ...(!child && d.monthlyOwn !== null ? { monthlyOwn: e(d.monthlyOwn, "nis_per_month") } : {}),
     ...(!child && d.monthlyEmployer !== null ? { monthlyEmployer: e(d.monthlyEmployer, "nis_per_month") } : {}),

@@ -2,7 +2,7 @@
 // near-duplicate groups, paste card.
 import { useId, type ReactNode } from "react";
 import { Link } from "react-router";
-import { company as copy } from "../../copy";
+import { company as copy, r3workbench } from "../../copy";
 import type { Track } from "../../lib/data.server";
 import type { SiteValue } from "../../lib/value";
 import { FeeNum } from "./fees";
@@ -72,7 +72,7 @@ function Holds({ t }: { t: Track }) {
 }
 
 export function TrackList({ groups, feeHead }: { groups: Group[]; feeHead?: string }) {
-  const cols = feeHead ? 6 : 5;
+  const cols = feeHead ? 5 : 4;
   const bannerId = useId();
   return (
     <>
@@ -97,14 +97,10 @@ export function TrackList({ groups, feeHead }: { groups: Group[]; feeHead?: stri
         <table className="tbl">
           <thead>
             <tr>
-              <th scope="col" className="w-1 !p-0">
-                <span className="sr-only">{copy.pcColumns.group}</span>
-              </th>
               <th scope="col">{copy.pcColumns.name}</th>
               <th scope="col">{copy.pcColumns.fund}</th>
-              <th scope="col">{copy.pcColumns.classification}</th>
               <th scope="col">{copy.pcColumns.holds}</th>
-              {feeHead && <th scope="col" className="!whitespace-normal min-w-28">{feeHead}</th>}
+              {feeHead && <th scope="col">{feeHead}</th>}
               <th scope="col" className="w-10 md:w-auto">
                 <span className="sr-only">{copy.pcColumns.open}</span>
               </th>
@@ -116,8 +112,7 @@ export function TrackList({ groups, feeHead }: { groups: Group[]; feeHead?: stri
               if (g.dup)
                 rows.push(
                   <tr key={`${g.key}-banner`} className="dup-row">
-                    <td className="dup-bar" />
-                    <td colSpan={cols} className="!pb-1 !border-b-0">
+                    <td colSpan={cols} className="!pb-1 !border-b-0 border-s-[3px] border-s-caution">
                       <span className="dup-banner !p-0">
                         <IconAlert size={16} className="text-caution shrink-0" />
                         {copy.sameName[g.dup]}
@@ -128,8 +123,7 @@ export function TrackList({ groups, feeHead }: { groups: Group[]; feeHead?: stri
               for (const r of g.tracks)
                 rows.push(
                   <tr key={r.track.fundId + r.track.name} className={cx(g.dup && "dup-row")}>
-                    <td className={cx("!p-0", g.dup && "dup-bar")} />
-                    <td>
+                    <td className={cx(g.dup && "border-s-[3px] border-s-caution")}>
                       <Link to={r.href} className="font-medium hover:underline">
                         <bdi>{r.track.name}</bdi>
                       </Link>{" "}
@@ -138,11 +132,17 @@ export function TrackList({ groups, feeHead }: { groups: Group[]; feeHead?: stri
                     <td>
                       <bdi dir="ltr" className="num-id">{r.track.fundId}</bdi>
                     </td>
-                    <td>{r.track.specialization}</td>
-                    <td className="text-muted-foreground">
-                      <bdi>{r.track.subSpecialization}</bdi>
+                    <td>
+                      <span className="flex flex-col gap-0.5">
+                        <span>{r.track.specialization}</span>
+                        {r.track.subSpecialization && (
+                          <span className="text-sm text-muted-foreground">
+                            <bdi>{r.track.subSpecialization}</bdi>
+                          </span>
+                        )}
+                      </span>
                     </td>
-                    {feeHead && <td>{r.fee && <FeeNum value={r.fee} size="cell" />}</td>}
+                    {feeHead && <td className="whitespace-nowrap">{r.fee && <FeeNum value={r.fee} size="cell" />}</td>}
                     <td>
                       <span className="inline-flex items-center gap-2 whitespace-nowrap">
                         <RowFit track={r.track} />
@@ -157,6 +157,7 @@ export function TrackList({ groups, feeHead }: { groups: Group[]; feeHead?: stri
             })}
           </tbody>
         </table>
+        {groups.some((g) => g.tracks.some((r) => r.fee && r.fee.value === null)) && <p className="px-3 py-2 text-xs text-muted-foreground border-t border-border">{r3workbench.missingKey}</p>}
       </Card>
     </>
   );

@@ -2,7 +2,7 @@
 // Everything typed is saved on the device as it is typed; the button only opens the comparison.
 import { useLoaderData } from "react-router";
 import { r2, site } from "../copy";
-import { AssumptionFields, FormFooter, GoalFields, GoalsList, PresetRow, ProfileFields, type FormData } from "../components/compare/goal-form";
+import { GoalFormBody, GoalsList, PresetRow, type FormData } from "../components/compare/goal-form";
 import { SavedGoalStrip } from "../components/compare/strip";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { GoalsProvider, useGoals, type Presets } from "../lib/goal";
@@ -44,20 +44,7 @@ function Form({ data, presets, meta, today }: { data: FormData; presets: Presets
             <p className="text-lg text-muted-foreground max-w-measure">{r2.form.lede}</p>
           </header>
           <PresetRow data={data} presets={presets} />
-          <div className="flex flex-col gap-6 lg:grid lg:grid-cols-2 lg:gap-x-6 lg:items-start">
-            <div className="lg:col-start-1 lg:row-start-1">
-              <GoalFields data={data} />
-            </div>
-            <div className="lg:col-start-2 lg:row-start-1 lg:row-span-2">
-              <ProfileFields data={data} />
-            </div>
-            <div className="lg:col-start-1 lg:row-start-2">
-              <AssumptionFields data={data} />
-            </div>
-            <div className="lg:col-start-1 lg:row-start-3">
-              <FormFooter to="/goal/compare" />
-            </div>
-          </div>
+          <GoalFormBody data={data} to="/goal/compare" />
         </>
       )}
     </div>

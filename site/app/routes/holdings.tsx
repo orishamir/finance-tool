@@ -4,7 +4,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLoaderData } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
-import { r2, r3holdings as copy, site, system } from "../copy";
+import { r2, r3holdings as copy, r3transfer, site, system } from "../copy";
 import { SavedGoalStrip } from "../components/compare/strip";
 import { goalTitle } from "../components/compare/goal-form";
 import { AddHoldingSheet } from "../components/holdings/add-sheet";
@@ -13,13 +13,18 @@ import { ChildSavingsCard, ConsolidationCard, DifferentTypesLine } from "../comp
 import { Breadcrumb, PageShell } from "../components/shell";
 import { RuleRef, RulesLine } from "../components/provenance";
 import { TransferSheet } from "../components/transfer/sheet";
-import { Button, Callout, Card } from "../components/ui";
+import { Button, Callout, Card, cx } from "../components/ui";
 import { loadBundle } from "../lib/bundle";
 import type { CompareBundle } from "../lib/compare";
 import { fmt } from "../lib/format";
+import { EmploymentInferredNote, employmentMatters } from "../components/compare/inferred";
 import { GoalsProvider, isBlank, useGoals, type Presets } from "../lib/goal";
 import { buildCtx, consolidationGroups, isChild, loadHoldingsBundle, viewOf, type HoldingsBundle } from "../lib/holdings";
 import { useHoldings, type Holding } from "../lib/state";
+import { bundleLinks } from "../lib/bundle";
+
+/** The data files this page fetches after it starts, requested with the HTML (audit 2026-10-24, A52). */
+export const links = () => bundleLinks("holdings-bundle.json", "compare-bundle.json");
 
 export async function loader() {
   const { goalContext } = await import("../lib/compare.server");
@@ -58,9 +63,9 @@ function GoalStrip({ presets, meta, today }: { presets: Presets; meta: { rationa
   if (status === "loading") return null;
   if (!current || isBlank(current)) {
     return (
-      <p className="text-sm flex flex-wrap items-center gap-x-2">
-        <span className="text-muted-foreground">{copy.fitNoGoal}</span>
-        <Link to="/goal" className="text-link min-h-target inline-flex items-center hover:underline">
+      <p className="text-sm">
+        <span className="text-muted-foreground">{copy.fitNoGoal}</span>{" "}
+        <Link to="/goal" className="text-link min-h-target inline-flex items-center align-middle hover:underline">
           {copy.fitNoGoalLink}
         </Link>
       </p>
@@ -88,7 +93,7 @@ function Screen({ hb, cb, failed, presets, meta, today }: { hb: HoldingsBundle |
   const rules = ctx?.rules ?? {};
 
   return (
-    <div className="flex flex-col gap-6 pt-2 lg:pt-8">
+    <div className={cx("flex flex-col gap-6 pt-2 lg:pt-8", holdings.length <= 1 && "mx-auto w-full max-w-3xl")}>
       <Breadcrumb parent={{ href: "/", label: site.name }} current={copy.title} />
       <header className="flex flex-col gap-2">
         <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
@@ -103,11 +108,12 @@ function Screen({ hb, cb, failed, presets, meta, today }: { hb: HoldingsBundle |
       {!failed && !loaded && <p className="text-muted-foreground">{copy.loading}</p>}
 
       {loaded && (
-        <div className="flex flex-col gap-8 lg:grid lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:gap-x-10 lg:items-start">
+        <div className={cx("flex flex-col gap-8", holdings.length > 1 && "lg:grid lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:gap-x-10 lg:items-start")}>
           <div className="flex flex-col gap-6 min-w-0">
-            <div className="lg:hidden">
+            <div className={holdings.length > 1 ? "lg:hidden" : undefined}>
               <GoalStrip presets={presets} meta={meta} today={today} />
             </div>
+            <EmploymentInferredNote show={!!ctx?.goal?.run.employmentInferred && holdings.some((h) => employmentMatters(h.wrapperId))} />
             {holdings.length === 0 ? (
               <Card className="flex flex-col gap-4">
                 <p className="text-lg max-w-measure">{copy.empty}</p>
@@ -141,11 +147,19 @@ function Screen({ hb, cb, failed, presets, meta, today }: { hb: HoldingsBundle |
             <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-1.5">
               <span>{copy.wrappersLater}</span>
               <RuleRef id="BANK-32" />
+              {/* audit A59: a deposit already held has no record here yet; the rate comparison is on the idle-cash page */}
+              <span>
+                {copy.depositsHere.before}
+                <Link to="/idle-cash" className="text-link hover:underline">
+                  {copy.depositsHere.link}
+                </Link>
+                {copy.depositsHere.after}
+              </span>
             </p>
           </div>
 
-          <aside className="flex flex-col gap-6 min-w-0 lg:sticky lg:top-24">
-            <div className="hidden lg:block">
+          <aside className={cx("flex flex-col gap-6 min-w-0", holdings.length > 1 && "lg:sticky lg:top-24")}>
+            <div className={holdings.length > 1 ? "hidden lg:block" : "hidden"}>
               <GoalStrip presets={presets} meta={meta} today={today} />
             </div>
             {nonChild.length > 0 && (
@@ -180,6 +194,10 @@ function Screen({ hb, cb, failed, presets, meta, today }: { hb: HoldingsBundle |
           <Button variant="quiet" onClick={() => setTransfer(true)}>
             {copy.transferLink}
           </Button>
+        </p>
+        {/* audit A70: the device holds one person's data, and a private window or a cleared site loses it */}
+        <p className="text-xs text-muted-foreground max-w-measure">
+          {r3transfer.onePerDevice} {r3transfer.erasedNote}
         </p>
         <RulesLine ids={["PF-17", "PF-18", "PF-33", "PF-34", "PF-35"].filter((id) => !!rules[id])} />
       </div>

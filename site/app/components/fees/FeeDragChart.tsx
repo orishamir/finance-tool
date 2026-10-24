@@ -9,12 +9,13 @@ import { buttons, guide as guideCopy, r3fees } from "../../copy";
 import type { Analysis } from "../../lib/fees";
 import { fmt } from "../../lib/format";
 import { Num } from "../provenance";
+import { AxisLabels, niceYearTicks, scrollCueStyle } from "../chart/TimelineChart";
 import { Disclosure, cx } from "../ui";
 
 const STRIP = 104;
-const TOP = 12;
+const TOP = 20; // room for the top axis label above its gridline (audit 2026-10-24 (sweep))
 const BOTTOM = 26;
-const LABEL_H = 40;
+const LABEL_H = 46;
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 interface Band {
@@ -90,7 +91,7 @@ export function FeeDragChart({ an, horizonYears, hover, onHover, hasGoal, dimmed
   const maxV = Math.max(1, ...pts.map((p) => Math.max(p.total, p.edges[p.edges.length - 1] ?? 0)));
   const y = scaleLinear().domain([0, maxV]).nice(4).range([height - BOTTOM, TOP]);
   const ticks = y.ticks(4);
-  const yearTicks = [0, ...[1, 2, 3, 4].map((k) => Math.round((years * k) / 4))].filter((v, i, a) => a.indexOf(v) === i);
+  const yearTicks = niceYearTicks(years);
   const bandArea = (i: number) =>
     area<Pt>()
       .x((d) => x(d.year))
@@ -102,8 +103,9 @@ export function FeeDragChart({ an, horizonYears, hover, onHover, hasGoal, dimmed
   // Labels at the right end: each band's name over its horizon cost, the total at the top, pushed apart by the label height.
   const labels: { id: string; name: string; value: number; y: number; band?: Band }[] = [];
   if (last) {
-    bands.forEach((b, i) => labels.push({ id: b.id, name: b.name, value: last.parts[i]!, y: y((last.edges[i]! + (last.edges[i - 1] ?? 0)) / 2), band: b }));
-    labels.push({ id: "total", name: r3fees.chart.total, value: last.total, y: y(last.total) });
+    bands.forEach((b, i) => labels.push({ id: b.id, name: r3fees.chart.short[b.id] ?? b.name, value: last.parts[i]!, y: y((last.edges[i]! + (last.edges[i - 1] ?? 0)) / 2), band: b }));
+    // audit A79: when one band is the whole total, the second label would repeat it; the band's own label stays
+    if (!labels.some((l) => Math.abs(l.value - last.total) < 0.005)) labels.push({ id: "total", name: r3fees.chart.total, value: last.total, y: y(last.total) });
   }
   labels.sort((a, b) => a.y - b.y);
   const placed: typeof labels = [];
@@ -137,20 +139,14 @@ export function FeeDragChart({ an, horizonYears, hover, onHover, hasGoal, dimmed
         onPointerCancel={() => onHover(null)}
       >
         {ticks.map((t) => (
-          <g key={t}>
-            <line x1={0} x2={plotW} y1={y(t)} y2={y(t)} className={t === 0 ? "stroke-chart-axis" : "stroke-chart-grid"} strokeWidth="1" />
-            {t > 0 && (
-              <text x={2} y={y(t) - 4} textAnchor="end" direction="rtl" className="text-xs fill-chart-text" data-scale>
-                {fmt.compactNis(t)}
-              </text>
-            )}
-          </g>
+          <line key={t} x1={0} x2={plotW} y1={y(t)} y2={y(t)} className={t === 0 ? "stroke-chart-axis" : "stroke-chart-grid"} strokeWidth="1" />
         ))}
         <g className="stroke-card" strokeWidth="1.5" strokeLinejoin="round">
           {bands.map((b, i) => (
             <path key={b.id} d={bandArea(i)(pts) ?? ""} className={b.fill} />
           ))}
         </g>
+        <AxisLabels ticks={ticks} y={y} />
         <path d={totalLine(pts) ?? ""} fill="none" className="stroke-chart-fee" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
         <line x1={x(years)} x2={x(years)} y1={TOP} y2={height - BOTTOM} className="stroke-chart-marker" strokeWidth="1" />
         {yearTicks.map((yr) => (
@@ -170,7 +166,7 @@ export function FeeDragChart({ an, horizonYears, hover, onHover, hasGoal, dimmed
       </span>
       {placed.map((p) => (
         <div key={p.id} className="absolute text-xs leading-tight" style={{ left: `${plotW + 8}px`, top: `${p.y - LABEL_H / 2}px`, width: `${STRIP - 10}px`, height: `${LABEL_H}px` }}>
-          <span className="line-clamp-1 font-medium">{p.name}</span>
+          <span className="line-clamp-2 font-medium">{p.name}</span>
           <Num value={an.mk.nis(p.value, "F-61", p.name, run)} size="cell" />
         </div>
       ))}
@@ -244,7 +240,7 @@ export function ChartTable({ an }: { an: Analysis }) {
   const run = { rules: an.fm.run.rules, flags: an.fm.run.flags };
   return (
     <Disclosure label={buttons.showTable} openLabel={buttons.hideTable} summaryClassName="text-sm">
-      <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 mt-2">
+      <div className="overflow-x-auto mt-2" style={scrollCueStyle}>
         <table className="tbl text-sm">
           <thead>
             <tr>

@@ -5,7 +5,7 @@ import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/workbench-tracks";
 import { companies as companiesCopy, company as companyCopy, fit as fitCopy, r3workbench as copy, site } from "../copy";
 import { Workbench, WorkbenchTabs } from "../components/workbench/workbench";
-import { Num, RulesLine } from "../components/provenance";
+import { Num, NumAfter, RulesLine } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { SavedGoalStrip } from "../components/compare/strip";
 import { useGoalHorizon } from "../components/compare/fit";
@@ -62,12 +62,10 @@ export default function WorkbenchTracks() {
               {copy.title.after}
             </h1>
             <p className="text-sm lg:text-base text-muted-foreground max-w-measure">
-              {copy.line.before}
-              <Num value={wb.period} />
+              <NumAfter lead={copy.line.before} value={wb.period} />
               {wb.feeYear && year ? (
                 <>
-                  {copy.line.mid}
-                  <Num value={wb.feeYear} />
+                  <NumAfter lead={copy.line.mid} value={wb.feeYear} />
                   {copy.line.after}
                 </>
               ) : (

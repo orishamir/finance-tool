@@ -84,3 +84,30 @@ describe("exposure mode", () => {
     expect(v.rows.filter((r) => r.kind === "ranked" && r.grossReturn?.state === "entered")).toHaveLength(0);
   });
 });
+
+import { beginEdit, commitEdit, rankingInputs, stageEmpty } from "./exposure-mode";
+
+describe("re-rank on commit (A34)", () => {
+  it("keeps the ranking on the inputs of the moment a field was entered, until the edit is committed", () => {
+    const before = goal().exposures!;
+    const typed = { ...before, "index-sp500": { ...before["index-sp500"]!, return: entered(12, "pct_per_year", day) } };
+    const editing = beginEdit(stageEmpty, before);
+    expect(rankingInputs(editing, typed)).toBe(before);
+    // moving to another field keeps the first freeze
+    expect(rankingInputs(beginEdit(editing, typed), typed)).toBe(before);
+    expect(rankingInputs(commitEdit(), typed)).toBe(typed);
+    const g = (x: typeof before) => run({ ...goal(), exposures: x });
+    expect(g(rankingInputs(editing, typed)).rows.find((r) => r.id === "index-sp500")!.enteredReturn?.value).toBe(6);
+    expect(g(rankingInputs(commitEdit(), typed)).rows.find((r) => r.id === "index-sp500")!.enteredReturn?.value).toBe(12);
+  });
+
+  it("prefills an equity exposure with the product-comparison return (decision 16) until its own is typed", () => {
+    const g = goal();
+    g.assumptions.return = 7;
+    g.exposures = { "index-sp500": { worstFall: entered(10, "pct", day) } };
+    const v = run(g);
+    expect(v.rows.find((r) => r.id === "index-sp500")).toMatchObject({ returnFromProduct: { value: 7 }, grossReturn: { value: 7 } });
+    g.exposures = { "index-sp500": { return: entered(4, "pct_per_year", day) } };
+    expect(run(g).rows.find((r) => r.id === "index-sp500")!.returnFromProduct).toBeUndefined();
+  });
+});

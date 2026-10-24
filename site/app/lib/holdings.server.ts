@@ -28,6 +28,8 @@ const quotedRules = [
   "PF-14", "PF-17", "PF-18", "PF-19", "SW-01", "SW-12", "SW-15", "SW-22", "SW-24", "SW-39", "TXK-04", "TXH-09", "TXH-19",
   "PF-02", "PF-04", "PF-05", "PF-06", "PEN-21", "PEN-22", "KH-22",
   "BANK-32", "BRK-37",
+  // a study-fund payslip with an employer part above TXH-01's limit runs F-52 (2026-10-24): the rules that run reads
+  "TXH-01", "TXH-02", "TXH-03", "TXH-08", "TXH-11", "TXG-02", "TXG-35",
 ];
 
 /** The glossary rows whose other spellings the statement disclosure lists (copy 7.2 "מילים שתפגשו"). */

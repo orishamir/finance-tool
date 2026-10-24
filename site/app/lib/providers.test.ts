@@ -138,3 +138,24 @@ describe("provider workbench view", () => {
   });
 });
 void computed;
+
+describe("provident listing: one card per company, linked by the regulator's company id (A35)", () => {
+  it("carries the company id the company page is addressed by, never the snapshot slug", async () => {
+    const { buildProvidentListing, companyHref } = await import("./providers");
+    const { loadCma } = await import("./data.server");
+    const ids = new Set(loadCma().companies.map((c) => c.id));
+    const listing = buildProvidentListing(bundle, "kupat-gemel-lehashkaa");
+    expect(listing.cards.length).toBeGreaterThan(0);
+    expect(new Set(listing.cards.map((c) => c.provider)).size).toBe(listing.cards.length);
+    for (const c of listing.cards) {
+      expect(c.lines.length).toBeGreaterThan(0);
+      if (c.companyId) {
+        expect(ids.has(c.companyId)).toBe(true);
+        expect(companyHref(c)).toBe(`/companies/${c.companyId}`);
+      }
+    }
+    const meitav = listing.cards.find((c) => c.provider === "meitav");
+    expect(meitav?.companyId).toBe("512065202");
+    expect(listing.companies).toBeGreaterThan(listing.cards.length);
+  });
+});

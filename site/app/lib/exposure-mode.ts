@@ -67,6 +67,8 @@ export interface ExposureRowView {
   grossReturn?: ValueObject;
   /** The person's own return (or overriding cash rate), as typed. */
   enteredReturn?: ValueObject;
+  /** The return taken from the product comparison (decision 16) while the person has typed none here. */
+  returnFromProduct?: ValueObject;
   published?: { rate: SiteValue; effectiveFrom: string | null; stale: boolean; wrapperName: string };
   noSeries: boolean;
   worstFall?: ValueObject;
@@ -105,6 +107,33 @@ export interface ExposureResultView {
 
 const pct = (v: number, today: string) => enteredValue(v, "pct", today);
 
+// ---------------------------------------------------------------- re-rank on commit (A34)
+
+/** The exposure inputs as the goal holds them (per exposure id). */
+export type ExposureInputsMap = NonNullable<Goal["exposures"]>;
+
+/**
+ * While a field of the list has focus, the ranking keeps the inputs it had when the field was entered: the list does not
+ * re-sort (and the field does not lose focus) on the first keystroke. The edit is committed on blur or Enter.
+ */
+export interface RankStage {
+  frozen: ExposureInputsMap | null;
+}
+export const stageEmpty: RankStage = { frozen: null };
+
+/** A field of the list gets focus: freeze the inputs the ranking runs on (once; moving between fields keeps the first freeze). */
+export function beginEdit(stage: RankStage, live: ExposureInputsMap): RankStage {
+  return stage.frozen ? stage : { frozen: live };
+}
+/** Blur or Enter: the edit is committed; the ranking follows the live inputs again. */
+export function commitEdit(): RankStage {
+  return stageEmpty;
+}
+/** The inputs the ranking runs on. */
+export function rankingInputs(stage: RankStage, live: ExposureInputsMap): ExposureInputsMap {
+  return stage.frozen ?? live;
+}
+
 /** The person's loss filter as the engine takes it: every number an `entered` value object in `pct`. */
 export function lossFilterOf(goal: Goal, today: string): LossFilterEntered {
   const worstFall: Record<string, ValueObject> = {};
@@ -121,7 +150,7 @@ function wrapperName(bundle: CompareBundle, id: string): string {
   return bundle.wrappers.find((w) => w.id === id)?.name ?? id;
 }
 
-type Plan = { entry: ExposureEntry; wrapperId: WrapperId | null; fromParameter: boolean; blocked: RowReason | null; wrapper?: WrapperEntry; terms?: ExposureHolding["terms"]; gross?: ValueObject; published?: ExposureRowView["published"] };
+type Plan = { entry: ExposureEntry; wrapperId: WrapperId | null; fromParameter: boolean; blocked: RowReason | null; wrapper?: WrapperEntry; terms?: ExposureHolding["terms"]; gross?: ValueObject; published?: ExposureRowView["published"]; fromProduct?: ValueObject };
 
 /** Runs exposure mode (F-71, F-83, F-80) for the saved goal at the bundle's data. Throws the engine's data errors. */
 export function computeExposureMode({ bundle, g, goal }: ExposureModeInput): ExposureResultView {
@@ -154,12 +183,18 @@ export function computeExposureMode({ bundle, g, goal }: ExposureModeInput): Exp
     }
     // the return: the person's, else a bank's published rate for a deposit-family holding wrapper (D20)
     let gross: ValueObject | undefined = mine.return;
+    // decision 16 (2026-10-24): an equity exposure takes the return entered in the product comparison until the person types its own
+    let fromProduct: ValueObject | undefined;
+    if (!gross && g.returnPct !== null && entry.record.kind === "equity_index") {
+      fromProduct = enteredValue(g.returnPct, "pct_per_year", today);
+      gross = fromProduct;
+    }
     let published: Plan["published"];
     if (wrapper.cashRate) {
       published = { rate: wrapper.cashRate, effectiveFrom: wrapper.cashRate.effective_from ?? null, stale: !!wrapper.cashRate.stale, wrapperName: wrapper.name };
       gross ??= wrapper.cashRate;
     }
-    return { ...base, blocked: null, wrapper, terms, ...(gross ? { gross } : {}), ...(published ? { published } : {}) };
+    return { ...base, blocked: null, wrapper, terms, ...(gross ? { gross } : {}), ...(published ? { published } : {}), ...(fromProduct ? { fromProduct } : {}) };
   });
 
   const holdings: ExposureHolding[] = plans.map((p) => ({
@@ -206,6 +241,7 @@ export function computeExposureMode({ bundle, g, goal }: ExposureModeInput): Exp
       ...(c.run ? { run: c.run, real: c.run.real, nominal: c.run.nominal } : {}),
       ...(c.returnLabel ? { grossReturn: c.returnLabel.rate } : p.gross ? { grossReturn: p.gross } : {}),
       ...(mine.return ? { enteredReturn: mine.return } : {}),
+      ...(p.fromProduct ? { returnFromProduct: p.fromProduct } : {}),
       ...(p.published ? { published: p.published } : {}),
       noSeries,
       ...(mine.worstFall ? { worstFall: mine.worstFall } : {}),

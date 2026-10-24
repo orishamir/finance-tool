@@ -12,8 +12,8 @@ export const content: GuideContent = {
   what: ({ figure }) => (
     <>
       <p className="max-w-measure">
-        חיסכון ש<Term id="הפקדות המעסיק">המעסיק</Term> ואתם מפקידים אליו מהשכר, בדרך כלל <N v={figure("KH-04", "employer_pct")} /> מהמעסיק ו־
-        <N v={figure("KH-04", "employee_pct")} /> מכם; <Term id="עמית-עצמאי">עצמאים</Term> מפקידים בעצמם. הכסף מושקע ב<Term id="מסלול השקעה">מסלול השקעה</Term> שבוחרים, ועל הרווחים לא
+        חיסכון <Term prefix="ש" id="הפקדות המעסיק">המעסיק</Term> ואתם מפקידים אליו מהשכר, בדרך כלל <N v={figure("KH-04", "employer_pct")} /> מהמעסיק ו־
+        <N v={figure("KH-04", "employee_pct")} /> מכם; <Term id="עמית-עצמאי">עצמאים</Term> מפקידים בעצמם. הכסף מושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> שבוחרים, ועל הרווחים לא
         משלמים מס כל עוד הוא בפנים. <N v={figure("TXH-09", "lock_years")} /> שנים אחרי <Term id="מועד התשלום הראשון">התשלום הראשון</Term> אפשר <Term id="משיכה">למשוך</Term> הכול בפטור
         ממס; לפני כן משיכה אפשרית, אבל ממוסה.
       </p>
@@ -29,7 +29,7 @@ export const content: GuideContent = {
       <RulesLine ids={["REG-17", "KH-02", "KH-03"]} />
     </>
   ),
-  switchLine: "בלי מס. לקרן השתלמות אחרת עוברת כל היתרה בלבד, והותק נשמר",
+  switchLine: "בלי מס. לקרן השתלמות אחרת עוברת כל היתרה בלבד, והוותק נשמר",
   switchRules: ["TXH-17", "PF-23", "KH-17", "PF-18", "TXH-19"],
   termIds: ["הפקדות המעסיק", "עמית-עצמאי", "עמית-שכיר", "מסלול השקעה", "מועד התשלום הראשון", "משיכה", "חברה מנהלת", "הפקדה מוטבת", "משכורת קובעת", "הרווח הריאלי", "ותק"],
   afterTax: ({ figure }) => (
@@ -37,7 +37,7 @@ export const content: GuideContent = {
       <p className="max-w-measure">
         הפטור חל על <Term id="הפקדה מוטבת">הפקדה מוטבת</Term>: עד <N v={figure("TXH-01", "employer_exempt_pct")} /> מהמעסיק ועד <N v={figure("TXH-08", "own_benefited_pct")} /> מכם, מ
         <Term id="משכורת קובעת">משכורת קובעת</Term> של עד <N v={figure("TXH-02", "determining_salary_cap")} /> בחודש; לעצמאים עד <N v={figure("TXH-08", "self_employed_benefited")} /> בשנה. על
-        הרווחים מהפקדות שמעבר לכך משלמים במשיכה עד <N v={figure("TXH-11", "rate")} /> מ<Term id="הרווח הריאלי">הרווח הריאלי</Term>.
+        הרווחים מהפקדות שמעבר לכך משלמים במשיכה עד <N v={figure("TXH-11", "rate")} /> <Term prefix="מ" id="הרווח הריאלי">הרווח הריאלי</Term>.
       </p>
       <RulesLine ids={["TXH-01", "TXH-08", "TXH-02", "TXH-11", "TXH-03"]} />
       <Callout tone="caution" className="max-w-measure">

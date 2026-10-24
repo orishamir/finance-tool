@@ -3,10 +3,11 @@ import { Fragment, type ReactNode } from "react";
 
 export function Tpl({ t, vars }: { t: string; vars: Record<string, ReactNode> }) {
   const parts = t.split(/\{(\w+)\}/);
+  // One span: a flex parent (a label, a line with a tag) would otherwise turn every text and variable into its own item and open a gap before the comma.
   return (
-    <>
+    <span>
       {parts.map((p, i) => (i % 2 === 1 ? <Fragment key={i}>{vars[p] ?? `{${p}}`}</Fragment> : p === "" ? null : <Fragment key={i}>{p}</Fragment>))}
-    </>
+    </span>
   );
 }
 

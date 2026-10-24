@@ -53,7 +53,7 @@ export function WorkbenchCoverage({ data, views, ready }: { data: WbData; views:
           if (list.length === 0) return null;
           return (
             <details key={k} className="group/g">
-              <summary className="flex items-center justify-between min-h-target cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+              <summary className="flex items-center gap-2 min-h-target cursor-pointer list-none [&::-webkit-details-marker]:hidden">
                 <h3 className="font-medium">
                   {copy.coverage[k]} <span className="text-muted-foreground font-normal">(<bdi dir="ltr">{list.length}</bdi>)</span>
                 </h3>

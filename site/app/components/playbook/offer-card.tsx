@@ -8,7 +8,7 @@ import { isProvident, sentences } from "../../lib/playbook";
 import { IconCopy } from "../icons";
 import { RuleRef } from "../provenance";
 import { Button, Card } from "../ui";
-import { OpenQuestion } from "../holdings/shared";
+import { OpenQuestionChip } from "./step";
 
 export function RecordOfferCard({ brokerage, wrapperId, rules, className }: { brokerage: boolean; wrapperId: string; rules: Record<string, RuleRecord>; className?: string }) {
   const family = brokerage ? "brokerage" : isProvident(wrapperId) ? "provident" : "bank";
@@ -51,8 +51,8 @@ export function RecordOfferCard({ brokerage, wrapperId, rules, className }: { br
         ))}
       </ul>
       <p className="text-sm flex flex-wrap items-center gap-x-2 gap-y-1">
-        <OpenQuestion code="SW OQ4" />
         <span>{c.oq["SW OQ4"]}</span>
+        <OpenQuestionChip code="SW OQ4" />
       </p>
       {family === "provident" && discount && (
         <p className="text-sm">

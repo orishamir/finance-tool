@@ -2,7 +2,7 @@
 // was not ranked with its reason. Counts in the sentence equal the rows in the list (the engine asserts it).
 import { Link } from "react-router";
 import { r2 } from "../../copy";
-import type { CoverageRow } from "../../lib/compare";
+import { countForm, type CoverageRow } from "../../lib/compare";
 import { IconChevronDown } from "../icons";
 import { Num } from "../provenance";
 import { cx } from "../ui";
@@ -47,7 +47,7 @@ export function CoverageList({ rows, ctx }: { rows: CoverageRow[]; ctx: ResultCt
           <section key={kind} className="flex flex-col gap-1">
             {kind === "ranked" ? (
               <details className="group">
-                <summary className="flex items-center justify-between min-h-target cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                <summary className="flex items-center gap-2 min-h-target cursor-pointer list-none [&::-webkit-details-marker]:hidden">
                   <h4 className="font-medium">
                     {r2.result.coverageGroups[kind]} <span className="text-muted-foreground font-normal">({list.length})</span>
                   </h4>
@@ -71,18 +71,27 @@ export function CoverageList({ rows, ctx }: { rows: CoverageRow[]; ctx: ResultCt
   );
 }
 
+/** A count in its own plural form (A91): "אחת דורגה", "שתיים דורגו", "5 דורגו". */
+export function CountPhrase({ n, forms, about, mk }: { n: number; forms: { one: string; other: string }; about: string; mk: ResultCtx["mk"] }) {
+  const f = countForm(n, forms, r2.result.counts.numerals as { one: string; two: string });
+  return (
+    <>
+      <Num value={mk.count(n, about)} {...(f.numeral ? { display: f.numeral } : { animate: true })} /> {f.word}
+    </>
+  );
+}
+
 /** One sentence with the five counts, and the list behind a disclosure; open at once when nothing was ranked. */
 export function CoverageLine({ ctx, open }: { ctx: ResultCtx; open?: boolean }) {
   const { view, mk } = ctx;
   const cov = view.evaluated.coverage;
-  const n = (k: CoverageRow["kind"]) => <Num value={mk.count(cov.counts[k], r2.outcomesPlural[k]!)} animate />;
+  const n = (k: CoverageRow["kind"]) => <CountPhrase n={cov.counts[k]} forms={r2.result.counts[k] as { one: string; other: string }} about={r2.outcomesPlural[k]!} mk={mk} />;
   return (
     <details className="group bg-card border border-border rounded-lg p-4 md:p-6" open={open} key={String(open)}>
-      <summary className="flex items-start justify-between gap-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+      <summary className="flex items-start cursor-pointer list-none [&::-webkit-details-marker]:hidden">
         <span className="flex flex-col gap-1">
           <span>
-            {r2.result.coverageBefore} <Num value={mk.count(cov.considered, r2.result.coverageBefore)} animate /> {r2.result.coverageMid} {n("ranked")} {r2.outcomesPlural.ranked}, {n("listed-not-ranked")} {r2.outcomesPlural["listed-not-ranked"]}, {n("not-eligible")} {r2.outcomesPlural["not-eligible"]}, {n("excluded")}{" "}
-            {r2.outcomesPlural.excluded}, {n("not-evaluated")} {r2.outcomesPlural["not-evaluated"]}.
+            {r2.result.coverageBefore} <Num value={mk.count(cov.considered, r2.result.coverageBefore)} animate /> {r2.result.coverageMid} {n("ranked")}, {n("listed-not-ranked")}, {n("not-eligible")}, {n("excluded")}, {n("not-evaluated")}.
           </span>
           <span className="text-sm text-link flex items-center gap-1 min-h-9">
             <span className="group-open:hidden">{r2.result.coverageOpen}</span>

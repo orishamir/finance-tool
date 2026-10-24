@@ -31,7 +31,7 @@ const T = {
   kglRoutes: "לאן אפשר להעביר קופת גמל להשקעה",
   routes: "לאן אפשר להעביר, ואילו כספים",
   inKind: "במזומן או בעין",
-  employer: "הודעו למעסיק לאן להפקיד",
+  employer: "הודיעו למעסיק לאן להפקיד",
   determining: "המועד הקובע: ההפקדה הראשונה בקופה החדשה",
   rejection: "צפו להודעת דחייה או עיכוב",
   insurance: "ביטוח בפנסיה: הטופס, הכיסוי וחודשי האכשרה",
@@ -341,6 +341,81 @@ export function buildSteps(rules: Record<string, RuleRecord>, wrapperId: string,
   });
 }
 
+// ---------------------------------------------------------------- the summary box (audit 2026-10-24, A56)
+
+export type SummaryTopic = "time" | "cost" | "sign" | "cancel" | "notice" | "lose" | "partial" | "check" | "route" | "tax";
+
+export interface SummaryItem {
+  topic: SummaryTopic;
+  ruleId: string;
+  /** The rule's own sentence, whole and verbatim; nothing is written for the box. */
+  text: string;
+}
+
+/** Which sentence of which rule: `from` is how the sentence starts. Every rule is one the wrapper's steps already render. */
+interface SummarySpec {
+  topic: SummaryTopic;
+  ruleId: string;
+  from: string;
+}
+
+const sp = (topic: SummaryTopic, ruleId: string, from: string): SummarySpec => ({ topic, ruleId, from });
+const commonSummary = {
+  time: sp("time", "SW-42", "הקופה המעבירה חייבת להעביר"),
+  cost: sp("cost", "SW-06", "אין עמלת העברה"),
+  sign: sp("sign", "SW-02", "העמית חותם בעצמו"),
+  cancel: sp("cancel", "SW-03", "הודעה מודגשת"),
+  notice: sp("notice", "SW-04", "לעמית פעיל המועד הקובע"),
+};
+// 2026-10-24 (review): the notice sentence (SW-04) comes before the time sentence (SW-42); the pension check is SW-38's
+// "both confirmations in writing" sentence, the insurance check stays in the checklist (SW-38 items below)
+const pensionSummary: SummarySpec[] = [
+  commonSummary.notice,
+  commonSummary.time,
+  commonSummary.cost,
+  sp("lose", "SW-12", "חודשי הביטוח הרצופים"),
+  sp("partial", "SW-14", "ברירת המחדל בטופס"),
+  commonSummary.sign,
+  commonSummary.cancel,
+  sp("check", "SW-38", "שני האישורים בכתב"),
+];
+
+/** The summary box's sentences per wrapper: the cost, the time, what the person loses, where to sign, what to check after. */
+export const SUMMARY_SPECS: Record<string, SummarySpec[]> = {
+  "pension-comprehensive": pensionSummary,
+  "pension-general": pensionSummary,
+  // no insurance step on this page (SW-23's order), so the summary has no insurance sentence
+  "provident-for-annuity": [commonSummary.notice, commonSummary.time, commonSummary.cost, sp("partial", "SW-14", "ברירת המחדל בטופס"), commonSummary.sign, commonSummary.cancel, sp("check", "SW-38", "שני האישורים בכתב")],
+  "keren-hishtalmut": [
+    commonSummary.notice,
+    commonSummary.time,
+    commonSummary.cost,
+    sp("route", "SW-20", "קרן השתלמות עוברת רק בשלמותה"),
+    commonSummary.sign,
+    commonSummary.cancel,
+    sp("check", "SW-38", "שני האישורים בכתב"),
+  ],
+  "kupat-gemel-lehashkaa": [
+    commonSummary.time,
+    commonSummary.cost,
+    sp("route", "SW-21", "הכסף עובר רק לקופת גמל להשקעה אחרת"),
+    sp("tax", "SW-21", "החלפת מסלול והעברה בין קופות גמל להשקעה"),
+    commonSummary.sign,
+    commonSummary.cancel,
+    sp("check", "SW-38", "שני האישורים בכתב"),
+  ],
+};
+
+/** The sentences of the summary: each is a whole sentence of a rule the wrapper's steps render; one that cannot be found is left out. */
+export function buildSummary(rules: Record<string, RuleRecord>, wrapperId: string): SummaryItem[] {
+  const out: SummaryItem[] = [];
+  for (const spec of SUMMARY_SPECS[wrapperId] ?? []) {
+    const text = sentences(rules[spec.ruleId]?.text_he ?? "").find((x) => x.startsWith(spec.from));
+    if (text) out.push({ topic: spec.topic, ruleId: spec.ruleId, text });
+  }
+  return out;
+}
+
 // ---------------------------------------------------------------- the post-switch checklist (SW-38)
 
 export interface ChecklistItem {
@@ -561,8 +636,25 @@ export function transferFeeOf(wb: WorkbenchBundle, providerId: string | null): V
 
 export const TICKS_KEY = "mekor.v2.playbook-ticks";
 
-/** Ticks are keyed by `${wrapper}|${from}|${to}` (design-spec 16.5) and hold the ids of the ticked items. */
-export const tickKey = (wrapperId: string, from: string | null, to: string | null) => `${wrapperId}|${from ?? ""}|${to ?? ""}`;
+/**
+ * Ticks are keyed by the wrapper alone (audit 2026-10-24, A32): picking or clearing "מאיפה/לאן" never loses them. The ticked
+ * items are about the person's own switch of that wrapper, not about one provider pair. The pair arguments are kept for the
+ * callers that still pass them and are ignored.
+ */
+export const tickKey = (wrapperId: string, _from?: string | null, _to?: string | null) => wrapperId;
+
+/** A key written by the old keying (`wrapper|from|to`) folds into its wrapper's key, as a union of the ids; the old key goes. */
+export function migrateTickKeys(byKey: Record<string, string[]>): Record<string, string[]> {
+  const out: Record<string, string[]> = {};
+  for (const [k, ids] of Object.entries(byKey)) {
+    const wrapper = k.split("|")[0]!;
+    out[wrapper] = [...new Set([...(out[wrapper] ?? []), ...ids])];
+  }
+  return out;
+}
+
+/** The store holds a key of the old shape (so the page rewrites it once). */
+export const hasOldTickKeys = (byKey: Record<string, string[]>) => Object.keys(byKey).some((k) => k.includes("|"));
 
 function parseTicks(raw: unknown): Record<string, string[]> {
   if (typeof raw !== "object" || raw === null || (raw as { version?: unknown }).version !== 1) return {};
@@ -570,7 +662,7 @@ function parseTicks(raw: unknown): Record<string, string[]> {
   if (typeof by !== "object" || by === null) return {};
   const out: Record<string, string[]> = {};
   for (const [k, v] of Object.entries(by)) if (Array.isArray(v) && v.every((x) => typeof x === "string")) out[k] = v as string[];
-  return out;
+  return migrateTickKeys(out);
 }
 
 /**

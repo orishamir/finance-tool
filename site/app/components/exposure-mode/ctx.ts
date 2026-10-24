@@ -13,6 +13,8 @@ export interface ExpCtx {
   mode: Mode;
   names: Record<string, string>;
   setInput: (id: string, patch: Partial<ExposureInputs>) => void;
+  /** The range every rate field takes (P-05 `ranges.pct`, the goal form's too; A61). */
+  range: { min: number; max: number };
   /** The exposure the person chose (saved), if any. */
   chosen?: { id: string; on: string };
 }

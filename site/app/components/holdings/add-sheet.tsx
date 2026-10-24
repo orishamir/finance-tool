@@ -2,7 +2,7 @@
 // deposits) and "מהדוח" (the statement's date, a study fund's first deposit), each statement field with the disclosure
 // "איפה זה בדוח". A bottom sheet on a phone, a centred dialog on PC. The track comes from the company's tracks in the
 // regulator's data, or from a name pasted as the statement writes it; a name that matches nothing is kept as typed.
-import { useId, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import type { WrapperId } from "@finance-tool/schema";
 import { r3holdings as copy } from "../../copy";
 import { IconSearch } from "../icons";
@@ -12,22 +12,24 @@ import { Button, SegmentedControl, cx } from "../ui";
 import { RuleRef } from "../provenance";
 import { IconCopy } from "../icons";
 import {
+  autoLink,
   checkDraft,
   companiesFor,
   draftOf,
   emptyDraft,
   holdingOf,
   isChild,
-  matchTracks,
+  matchCompanies,
+  matchTracksKind,
   tracksFor,
   type Draft,
   type DraftError,
   type HTrack,
   type HoldingsBundle,
 } from "../../lib/holdings";
-import { fmt } from "../../lib/format";
+import { fmt, parseNumber } from "../../lib/format";
 import { isoToday, rememberName, type Holding } from "../../lib/state";
-import { BarsDisclosure, DateField, SelectField, TextField } from "./fields";
+import { BarsDisclosure, DateField, RawWatch, SelectField, TextField } from "./fields";
 import { ClearingHouseDisclosure, StatementDisclosure } from "./statement";
 import type { RuleMap } from "./shared";
 
@@ -39,26 +41,69 @@ export function AddHoldingSheet({ open, onClose, hb, rules, value, onSave }: { o
   // the form starts fresh each time the sheet opens
   const [session, setSession] = useState(0);
   const [wasOpen, setWasOpen] = useState(open);
+  // audit A67: Escape, the backdrop, the X and "ביטול" ask before they throw a filled form away
+  const [asking, setAsking] = useState(false);
+  const dirty = useRef(false);
   if (open !== wasOpen) {
     // adjusted while rendering, so the form that appears is already the fresh one
     setWasOpen(open);
-    if (open) setSession((s) => s + 1);
+    if (open) {
+      setSession((s) => s + 1);
+      setAsking(false);
+      dirty.current = false;
+    }
   }
+  const requestClose = () => {
+    if (dirty.current) setAsking(true);
+    else onClose();
+  };
   const titleId = useId();
   return (
-    <Sheet open={open} onClose={onClose} pc="center" height={100} labelledBy={titleId}>
-      <Body key={session} titleId={titleId} onClose={onClose} hb={hb} rules={rules} value={value} onSave={onSave} />
+    <Sheet open={open} onClose={requestClose} pc="center" height={100} labelledBy={titleId}>
+      <Body key={session} titleId={titleId} onClose={onClose} requestClose={requestClose} asking={asking} onKeep={() => setAsking(false)} dirtyRef={dirty} hb={hb} rules={rules} value={value} onSave={onSave} />
     </Sheet>
   );
 }
 
-function Body({ titleId, onClose, hb, rules, value, onSave }: { titleId: string; onClose: () => void; hb: HoldingsBundle; rules: RuleMap; value: Holding | null; onSave: (h: Holding) => void }) {
+/** "3 מסלולים" with the one and two as words. */
+const trackCountWord = (n: number) => (n === 1 ? copy.trackCount.one : n === 2 ? copy.trackCount.two : null);
+
+function Body({ titleId, onClose, requestClose, asking, onKeep, dirtyRef, hb, rules, value, onSave }: { titleId: string; onClose: () => void; requestClose: () => void; asking: boolean; onKeep: () => void; dirtyRef: { current: boolean }; hb: HoldingsBundle; rules: RuleMap; value: Holding | null; onSave: (h: Holding) => void }) {
   const [d, setD] = useState<Draft>(() => (value ? draftOf(value) : emptyDraft()));
+  const initial = useRef(d);
   const ref = useRef(d);
   ref.current = d;
-  const [errors, setErrors] = useState<DraftError[]>([]);
   const [filter, setFilter] = useState("");
   const [pasted, setPasted] = useState("");
+  const [active, setActive] = useState(-1);
+  // audit A15: the errors appear with the first save and then follow the fields, so a filled field loses its message at once
+  const [attempted, setAttempted] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const saving = useRef(false);
+  const [focusTick, setFocusTick] = useState(0);
+  const formRef = useRef<HTMLFormElement>(null);
+  // what is typed in a number field that refused it ("abc", "150%"): the draft still holds the field's old value
+  const [bad, setBad] = useState<Record<string, boolean>>({});
+  const badRef = useRef(bad);
+  badRef.current = bad;
+  dirtyRef.current = JSON.stringify(d) !== JSON.stringify(initial.current) || filter !== "" || pasted !== "" || Object.values(bad).some(Boolean);
+  const watch = (key: string, validate: (n: number) => ReactNode | null) => (t: string) =>
+    setBad((b) => {
+      const v = t.trim() !== "" && (Number.isNaN(parseNumber(t)) || validate(parseNumber(t)) !== null);
+      return !!b[key] === v ? b : { ...b, [key]: v };
+    });
+  const allErrors = (draft: Draft, b: Record<string, boolean>, todayIso: string): DraftError[] => {
+    const badFields = Object.keys(b).filter((k) => b[k]);
+    return [...checkDraft(draft, todayIso).filter((e) => !badFields.includes(e.field)), ...badFields.map((f) => ({ field: f as keyof Draft, code: "invalid" as const }))];
+  };
+  const errors: DraftError[] = attempted ? allErrors(d, bad, isoToday()) : [];
+  useEffect(() => {
+    if (focusTick === 0) return;
+    const el = formRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]');
+    if (!el) return;
+    el.focus({ preventScroll: true });
+    el.scrollIntoView({ block: "center" });
+  }, [focusTick]);
   const set = (patch: Partial<Draft>) => setD((x) => ({ ...x, ...patch }));
   const choice = choiceOf(d.wrapperId);
   const child = d.wrapperId !== null && isChild(d.wrapperId);
@@ -74,10 +119,20 @@ function Body({ titleId, onClose, hb, rules, value, onSave }: { titleId: string;
     const e = errors.find((x) => x.field === field);
     if (!e) return null;
     const m = copy.errors;
-    return { "balance-negative": m.balanceNegative, "percent-over": percentOver, "date-future": m.dateFuture, "first-after-statement": m.firstAfter, "no-track": m.noTrack, required: m.required, "gain-over-balance": m.gainOverBalance }[e.code];
+    return {
+      "balance-negative": m.balanceNegative,
+      "percent-over": percentOver,
+      "statement-future": m.statementFuture,
+      "first-future": m.firstFuture,
+      "first-after-statement": m.firstAfter,
+      "no-track": m.noTrack,
+      required: field === "wrapperId" ? m.wrapperRequired : m.required,
+      "gain-over-balance": m.gainOverBalance,
+      invalid: m.invalid,
+    }[e.code];
   };
 
-  const options = [...hb.wrappers.filter((w) => !isChild(w.id)).map((w) => ({ value: w.id as WrapperChoice, label: w.name })), { value: "child" as WrapperChoice, label: copy.child.heading }];
+  const options = [...hb.wrappers.filter((w) => !isChild(w.id)).map((w) => ({ value: w.id as WrapperChoice, label: copy.wrapperHints[w.id] ? `${w.name} (${copy.wrapperHints[w.id]})` : w.name })), { value: "child" as WrapperChoice, label: copy.child.heading }];
   const pickWrapper = (v: WrapperChoice) => {
     const wrapperId = v === "child" ? ("child-savings-provident" as WrapperId) : v;
     set({ wrapperId, childRoute: v === "child" ? "provident" : null, companyId: null, companyName: "", fundId: null, typedName: "", ...(wrapperId !== "keren-hishtalmut" ? { firstDeposit: "" } : {}) });
@@ -85,10 +140,14 @@ function Body({ titleId, onClose, hb, rules, value, onSave }: { titleId: string;
     setPasted("");
   };
   const companies = wrapperForTracks ? companiesFor(hb, wrapperForTracks) : [];
-  const shown = companies.filter((c) => c.name.includes(filter.trim()) || filter.trim() === "").slice(0, 40);
+  const cm = useMemo(() => matchCompanies(companies, filter), [companies, filter]);
+  const noMatch = filter.trim() !== "" && cm.list.length === 0;
+  // a filter that matches nothing keeps the whole list below its message (audit A17)
+  const shown = (noMatch ? companies : cm.list).slice(0, 40);
+  const pickCompany = (c: { id: string; name: string }) => set({ companyId: c.id, companyName: c.name, fundId: null });
   const tracks: HTrack[] = wrapperForTracks && d.companyId ? tracksFor(hb, wrapperForTracks, d.companyId) : [];
   const dupNames = new Set(tracks.filter((t, i) => tracks.findIndex((x) => x.n === t.n) !== i).map((t) => t.n));
-  const found = wrapperForTracks && pasted.trim() ? matchTracks(hb, wrapperForTracks, pasted, d.companyId ?? undefined) : [];
+  const found = wrapperForTracks && pasted.trim() ? matchTracksKind(hb, wrapperForTracks, pasted, d.companyId ?? undefined).tracks : [];
   const chosenTrack = d.fundId !== null ? hb.tracks.find((t) => t.id === d.fundId) : undefined;
 
   const pickTrack = (t: HTrack) => {
@@ -97,14 +156,24 @@ function Body({ titleId, onClose, hb, rules, value, onSave }: { titleId: string;
     setPasted("");
   };
   const submit = () => {
+    // audit A15: a second click while the first is being saved stores nothing
+    if (saving.current) return;
+    saving.current = true;
+    setBusy(true);
     flushPendingFields();
     // the fields commit after their typing pause; read the draft once they have
     window.setTimeout(() => {
-      const draft = ref.current;
       const today = isoToday();
-      const errs = checkDraft(draft, today);
-      setErrors(errs);
-      if (errs.length > 0) return;
+      // audit A17: a name or fund number that is exactly one track links to it
+      const draft = autoLink(hb, ref.current);
+      const errs = allErrors(draft, badRef.current, today);
+      setAttempted(true);
+      if (errs.length > 0) {
+        saving.current = false;
+        setBusy(false);
+        setFocusTick((t) => t + 1);
+        return;
+      }
       const h = holdingOf(draft, hb, today, value ?? undefined);
       if (!h.track && h.typedName && !isChild(h.wrapperId)) rememberName(h.typedName, hb.wrappers.find((w) => w.id === h.wrapperId)?.name);
       onSave(h);
@@ -114,9 +183,12 @@ function Body({ titleId, onClose, hb, rules, value, onSave }: { titleId: string;
   const pctValidate = (n: number) => (n < 0 || n > 100 ? percentOver : null);
   const nisValidate = (n: number) => (n < 0 ? copy.errors.amountNegative : null);
   const today = isoToday();
+  const problems = new Set(errors.map((e) => e.field)).size;
 
   return (
     <form
+      ref={formRef}
+      noValidate
       className="flex flex-col gap-6"
       onSubmit={(e) => {
         e.preventDefault();
@@ -129,7 +201,7 @@ function Body({ titleId, onClose, hb, rules, value, onSave }: { titleId: string;
 
       <fieldset className="flex flex-col gap-4 min-w-0">
         <legend className="text-lg font-semibold mb-2">{copy.groups.what}</legend>
-        <SelectField label={copy.fields.wrapper} value={choice} onChange={pickWrapper} options={options} placeholder="—" />
+        <SelectField label={copy.fields.wrapper} value={choice} onChange={pickWrapper} options={options} placeholder="—" error={err("wrapperId")} />
         <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-1.5">
           <span>{copy.wrappersLater}</span>
           <RuleRef id="BANK-32" />
@@ -159,28 +231,45 @@ function Body({ titleId, onClose, hb, rules, value, onSave }: { titleId: string;
               value={d.companyName}
               onChange={(v) => {
                 setFilter(v);
+                setActive(-1);
                 set({ companyName: v, companyId: null, fundId: null });
               }}
               placeholder={copy.companyFilter}
               icon={<IconSearch size={18} className="text-muted-foreground" />}
-              error={err("track")}
+              error={d.companyId === null ? err("track") : null}
+              onKeyDown={(e) => {
+                if (d.companyId !== null || shown.length === 0) return;
+                if (e.key === "ArrowDown") {
+                  e.preventDefault();
+                  setActive((i) => Math.min(i + 1, shown.length - 1));
+                } else if (e.key === "ArrowUp") {
+                  e.preventDefault();
+                  setActive((i) => Math.max(i - 1, -1));
+                } else if (e.key === "Enter") {
+                  const c = active >= 0 ? shown[active] : filter.trim() !== "" && !noMatch && shown.length === 1 ? shown[0] : undefined;
+                  if (c) {
+                    e.preventDefault();
+                    pickCompany(c);
+                  }
+                }
+              }}
             />
             {d.companyId === null && (
               <div className="flex flex-col gap-1">
-                {shown.length > 0 ? (
+                {noMatch && <p className="text-sm text-muted-foreground">{copy.companyNotFound}</p>}
+                {cm.partial && !noMatch && <p className="text-sm text-muted-foreground">{copy.companyPartial}</p>}
+                {shown.length > 0 && (
                   <ul className="flex flex-col max-h-48 overflow-auto rounded-md border border-border">
-                    {shown.map((c) => (
+                    {shown.map((c, i) => (
                       <li key={c.id}>
-                        <button type="button" className="w-full text-start min-h-target px-3 hover:bg-accent flex items-center justify-between gap-2" onClick={() => set({ companyId: c.id, companyName: c.name, fundId: null })}>
+                        <button type="button" className={cx("w-full text-start min-h-target px-3 hover:bg-accent flex items-center justify-between gap-2", i === active && "bg-accent")} onClick={() => pickCompany(c)}>
                           <bdi>{c.name}</bdi>
-                          <span className="text-xs text-muted-foreground">{c.count}</span>
+                          <span className="text-xs text-muted-foreground">{trackCountWord(c.count) ?? `${fmt.number(c.count)} ${copy.trackCount.many}`}</span>
                         </button>
                       </li>
                     ))}
                   </ul>
-                ) : d.companyName.trim() ? (
-                  <p className="text-sm text-muted-foreground">{copy.companyNone}</p>
-                ) : null}
+                )}
               </div>
             )}
           </>
@@ -222,7 +311,7 @@ function Body({ titleId, onClose, hb, rules, value, onSave }: { titleId: string;
 
         {d.wrapperId && !(child && d.childRoute === "bank") && (
           <div className="flex flex-col gap-2">
-            <TextField label={copy.paste} value={pasted} onChange={(v) => { setPasted(v); if (d.fundId === null) set({ typedName: v }); else if (v) set({ fundId: null, typedName: v }); }} icon={<IconSearch size={18} className="text-muted-foreground" />} />
+            <TextField label={copy.paste} value={pasted} onChange={(v) => { setPasted(v); if (d.fundId === null) set({ typedName: v }); else if (v) set({ fundId: null, typedName: v }); }} icon={<IconSearch size={18} className="text-muted-foreground" />} error={d.companyId !== null ? err("track") : null} />
             {pasted.trim() !== "" && found.length === 1 && (
               <p className="text-sm flex flex-wrap items-center gap-x-2">
                 <span>{copy.pasteOne}</span>
@@ -274,7 +363,7 @@ function Body({ titleId, onClose, hb, rules, value, onSave }: { titleId: string;
       <fieldset className="flex flex-col gap-4 min-w-0">
         <legend className="text-lg font-semibold mb-2">{copy.groups.how}</legend>
         <div className="flex flex-col gap-1.5">
-          <NumberField label={copy.balance} unit="nis" value={d.balance} isEntered={d.balance !== null} validate={nisValidate} onCommit={(n) => set({ balance: n })} onReset={() => set({ balance: null })} optional externalError={err("balance")} />
+          <RawWatch onRaw={watch("balance", nisValidate)}><NumberField label={copy.balance} unit="nis" value={d.balance} isEntered={d.balance !== null} validate={nisValidate} onCommit={(n) => set({ balance: n })} onReset={() => set({ balance: null })} optional externalError={err("balance")} /></RawWatch>
           <StatementDisclosure field="balance" wrapperId={d.wrapperId} rules={rules} spellings={hb.spellings} />
         </div>
         {!child && (
@@ -282,24 +371,24 @@ function Body({ titleId, onClose, hb, rules, value, onSave }: { titleId: string;
             <fieldset className="flex flex-col gap-1.5 min-w-0">
               <legend className="field-label mb-1.5">{copy.fees}</legend>
               <div className="grid grid-cols-2 gap-3">
-                <NumberField label={copy.feeBalance} unit="pct_per_year" value={d.feeBalance} isEntered={d.feeBalance !== null} validate={pctValidate} onCommit={(n) => set({ feeBalance: n })} onReset={() => set({ feeBalance: null })} optional externalError={err("feeBalance")} />
-                <NumberField label={copy.feeDeposit} unit="pct_of_deposit" value={d.feeDeposit} isEntered={d.feeDeposit !== null} validate={pctValidate} onCommit={(n) => set({ feeDeposit: n })} onReset={() => set({ feeDeposit: null })} optional externalError={err("feeDeposit")} />
+                <RawWatch onRaw={watch("feeBalance", pctValidate)}><NumberField label={copy.feeBalance} unit="pct_per_year" value={d.feeBalance} isEntered={d.feeBalance !== null} validate={pctValidate} onCommit={(n) => set({ feeBalance: n })} onReset={() => set({ feeBalance: null })} optional externalError={err("feeBalance")} /></RawWatch>
+                <RawWatch onRaw={watch("feeDeposit", pctValidate)}><NumberField label={copy.feeDeposit} unit="pct_of_deposit" value={d.feeDeposit} isEntered={d.feeDeposit !== null} validate={pctValidate} onCommit={(n) => set({ feeDeposit: n })} onReset={() => set({ feeDeposit: null })} optional externalError={err("feeDeposit")} hint={copy.feeDepositHint} /></RawWatch>
               </div>
               <StatementDisclosure field="feeBalance" wrapperId={d.wrapperId} rules={rules} spellings={hb.spellings} />
               <StatementDisclosure field="feeDeposit" wrapperId={d.wrapperId} rules={rules} spellings={hb.spellings} />
             </fieldset>
             <div className="flex flex-col gap-1.5">
-              <NumberField label={copy.directExpenses} unit="pct_per_year" value={d.directExpenses} isEntered={d.directExpenses !== null} validate={pctValidate} onCommit={(n) => set({ directExpenses: n })} onReset={() => set({ directExpenses: null })} optional externalError={err("directExpenses")} />
+              <RawWatch onRaw={watch("directExpenses", pctValidate)}><NumberField label={copy.directExpenses} unit="pct_per_year" value={d.directExpenses} isEntered={d.directExpenses !== null} validate={pctValidate} onCommit={(n) => set({ directExpenses: n })} onReset={() => set({ directExpenses: null })} optional externalError={err("directExpenses")} /></RawWatch>
               <StatementDisclosure field="direct" wrapperId={d.wrapperId} rules={rules} spellings={hb.spellings} />
             </div>
             {d.wrapperId === "kupat-gemel-lehashkaa" && (
               <div className="flex flex-col gap-1.5">
-                <NumberField label={copy.embeddedGain} unit="nis" value={d.embeddedGain} isEntered={d.embeddedGain !== null} validate={nisValidate} onCommit={(n) => set({ embeddedGain: n })} onReset={() => set({ embeddedGain: null })} optional hint={copy.embeddedGainWhy} externalError={err("embeddedGain")} />
+                <RawWatch onRaw={watch("embeddedGain", nisValidate)}><NumberField label={copy.embeddedGain} unit="nis" value={d.embeddedGain} isEntered={d.embeddedGain !== null} validate={nisValidate} onCommit={(n) => set({ embeddedGain: n })} onReset={() => set({ embeddedGain: null })} optional hint={copy.embeddedGainWhy} externalError={err("embeddedGain")} /></RawWatch>
                 <StatementDisclosure field="embeddedGain" wrapperId={d.wrapperId} rules={rules} spellings={hb.spellings} />
               </div>
             )}
-            <NumberField label={copy.monthlyOwn} unit="nis_per_month" value={d.monthlyOwn} isEntered={d.monthlyOwn !== null} validate={nisValidate} onCommit={(n) => set({ monthlyOwn: n })} onReset={() => set({ monthlyOwn: null })} optional externalError={err("monthlyOwn")} />
-            <NumberField label={copy.monthlyEmployer} unit="nis_per_month" value={d.monthlyEmployer} isEntered={d.monthlyEmployer !== null} validate={nisValidate} onCommit={(n) => set({ monthlyEmployer: n })} onReset={() => set({ monthlyEmployer: null })} optional externalError={err("monthlyEmployer")} />
+            <RawWatch onRaw={watch("monthlyOwn", nisValidate)}><NumberField label={copy.monthlyOwn} unit="nis_per_month" value={d.monthlyOwn} isEntered={d.monthlyOwn !== null} validate={nisValidate} onCommit={(n) => set({ monthlyOwn: n })} onReset={() => set({ monthlyOwn: null })} optional externalError={err("monthlyOwn")} /></RawWatch>
+            <RawWatch onRaw={watch("monthlyEmployer", nisValidate)}><NumberField label={copy.monthlyEmployer} unit="nis_per_month" value={d.monthlyEmployer} isEntered={d.monthlyEmployer !== null} validate={nisValidate} onCommit={(n) => set({ monthlyEmployer: n })} onReset={() => set({ monthlyEmployer: null })} optional externalError={err("monthlyEmployer")} /></RawWatch>
           </>
         )}
       </fieldset>
@@ -320,13 +409,38 @@ function Body({ titleId, onClose, hb, rules, value, onSave }: { titleId: string;
         {!child && <BarsDisclosure bars={d.bars} onChange={(bars) => set({ bars })} text={rules["PF-17"]?.text_he ?? ""} />}
       </fieldset>
 
-      <div className="sticky bottom-0 -mx-1 px-1 pt-3 pb-1 bg-popover border-t border-border flex items-center gap-3">
-        <Button variant="primary" type="submit" className="flex-1 md:flex-none">
-          {copy.save}
-        </Button>
-        <Button variant="secondary" onClick={onClose}>
-          {copy.cancel}
-        </Button>
+      <div className="sticky bottom-[calc(-28px-env(safe-area-inset-bottom,0px))] lg:-bottom-5 z-10 -mx-4 lg:-mx-5 px-4 lg:px-5 pt-3 pb-[calc(12px+env(safe-area-inset-bottom,0px))] lg:pb-3 bg-popover border-t border-border flex flex-col gap-2">
+        {asking ? (
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <span className="text-sm font-medium">{copy.closeAsk.text}</span>
+            <Button variant="secondary" onClick={onClose}>
+              {copy.closeAsk.yes}
+            </Button>
+            <Button variant="primary" onClick={onKeep}>
+              {copy.closeAsk.no}
+            </Button>
+          </div>
+        ) : (
+          <>
+            {problems > 0 && (
+              <p role="alert" className="text-sm text-destructive">
+                {problems === 1 ? copy.saveProblems.one : problems === 2 ? copy.saveProblems.two : (
+                  <>
+                    <bdi>{fmt.number(problems)}</bdi> {copy.saveProblems.many}
+                  </>
+                )}
+              </p>
+            )}
+            <div className="flex items-center gap-3">
+              <Button variant="primary" type="submit" className="flex-1 md:flex-none" disabled={busy}>
+                {copy.save}
+              </Button>
+              <Button variant="secondary" onClick={requestClose}>
+                {copy.cancel}
+              </Button>
+            </div>
+          </>
+        )}
       </div>
     </form>
   );

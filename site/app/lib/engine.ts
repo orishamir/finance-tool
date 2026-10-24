@@ -15,6 +15,7 @@ import {
   type UsedRule,
 } from "@finance-tool/engine";
 import type { ParameterRecord, RuleRecord, ValueObject, WrapperRecord } from "@finance-tool/schema";
+import { blockedHe, failureHe, figureNotUpdatedHe } from "./failure-he";
 import { entered as enteredValue, type SiteValue } from "./value";
 
 export const p05Units: Record<P05Input, ValueObject["unit"]> = {
@@ -61,9 +62,9 @@ export interface TimelineResult {
 }
 
 export type TimelineError =
-  | { kind: "blocked"; ruleId: string }
-  | { kind: "figure-not-updated"; ruleId: string; figure: string }
-  | { kind: "failed"; message: string };
+  | { kind: "blocked"; ruleId: string; messageHe: string }
+  | { kind: "figure-not-updated"; ruleId: string; figure: string; messageHe: string }
+  | { kind: "failed"; message: string; messageHe: string };
 
 export type Timeline = TimelineResult | TimelineError;
 
@@ -106,10 +107,10 @@ export function runTimeline(bundle: Bundle, inputs: TimelineInputs): Timeline {
     }
     return { kind: "ok", horizon, years, rules: [...rules.values()], flags: [...flags], enteredReturn: "A-01" in entered };
   } catch (e) {
-    if (e instanceof BlockedError) return { kind: "blocked", ruleId: e.ruleId };
-    if (e instanceof FigureNotUpdatedError) return { kind: "figure-not-updated", ruleId: e.ruleId, figure: e.figure };
-    if (e instanceof NotEvaluatedError || e instanceof RecordInputError || e instanceof MissingRuleError) return { kind: "failed", message: (e as Error).message };
-    return { kind: "failed", message: e instanceof Error ? e.message : String(e) };
+    if (e instanceof BlockedError) return { kind: "blocked", ruleId: e.ruleId, messageHe: blockedHe };
+    if (e instanceof FigureNotUpdatedError) return { kind: "figure-not-updated", ruleId: e.ruleId, figure: e.figure, messageHe: figureNotUpdatedHe };
+    if (e instanceof NotEvaluatedError || e instanceof RecordInputError || e instanceof MissingRuleError) return { kind: "failed", message: (e as Error).message, messageHe: failureHe((e as Error).message) };
+    { const message = e instanceof Error ? e.message : String(e); return { kind: "failed", message, messageHe: failureHe(message) }; }
   }
 }
 

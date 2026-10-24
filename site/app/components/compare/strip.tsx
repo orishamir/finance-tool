@@ -32,9 +32,11 @@ export interface StripProps {
   emptyLine?: boolean;
   /** The mode of the page the strip is on (the comparison result): its saved comparison is the one the revisit line speaks of; elsewhere the most recently saved one. */
   revisitMode?: CompareMode;
+  /** On the comparison: saves it from the menu, without the scroll to the bottom button (audit 2026-10-24, A71). `again` when one is saved already. */
+  saveAction?: { run: () => void; again: boolean } | null;
 }
 
-export function SavedGoalStrip({ variant = "full", presets, meta, today, showResultLink = true, editHref = "/goal", resultHref = "/goal/compare", note, label, emptyLine, revisitMode }: StripProps) {
+export function SavedGoalStrip({ variant = "full", presets, meta, today, showResultLink = true, editHref = "/goal", resultHref = "/goal/compare", note, label, emptyLine, revisitMode, saveAction }: StripProps) {
   const { status, goals, current, resolved, select, add, remove, restart } = useGoals();
   const navigate = useNavigate();
   const [menu, setMenu] = useState(false);
@@ -75,9 +77,9 @@ export function SavedGoalStrip({ variant = "full", presets, meta, today, showRes
   if (!current || !resolved || isBlank(current)) {
     if (!emptyLine || variant === "compact") return null;
     return (
-      <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2">
-        {r2.strip.none}
-        <Link to={editHref} className="text-link min-h-target inline-flex items-center hover:underline">
+      <p className="text-sm text-muted-foreground">
+        {r2.strip.none}{" "}
+        <Link to={editHref} className="text-link inline-flex items-center min-h-target hover:underline align-middle">
           {r2.strip.noneLink}
         </Link>
       </p>
@@ -87,7 +89,7 @@ export function SavedGoalStrip({ variant = "full", presets, meta, today, showRes
 
   if (variant === "compact") {
     return (
-      <p className="text-sm flex flex-wrap items-center gap-x-2">
+      <p className="text-sm flex flex-wrap items-center gap-x-1.5">
         <span className="text-muted-foreground">{label ?? r2.strip.compact}</span>
         <bdi className="font-medium">{goalTitle(current)}</bdi>
         {saved && <CompactRevisit view={revisit} />}
@@ -115,7 +117,7 @@ export function SavedGoalStrip({ variant = "full", presets, meta, today, showRes
             <span className="text-sm flex items-center gap-1.5">
               {v.years && <Num value={v.years} display={fmt.years(v.years.value as number)} />}
               {v.years && v.amount && <span aria-hidden="true">·</span>}
-              {v.amount && <Num value={v.amount} />}
+              {v.amount && <Num value={v.amount} display={Number.isInteger(v.amount.value) ? fmt.nisWhole(v.amount.value as number) : undefined} />}
             </span>
           </span>
           <span className="text-xs text-muted-foreground">{note ? `${r2.strip.saved} · ${note}` : r2.strip.saved}</span>
@@ -137,7 +139,7 @@ export function SavedGoalStrip({ variant = "full", presets, meta, today, showRes
           </Button>
         </div>
         {menu && (
-          <div role="menu" className="absolute top-full end-0 mt-1 z-[var(--z-sticky)] min-w-56 rounded-lg border border-border bg-popover p-1 shadow-md" onKeyDown={(e) => e.key === "Escape" && setMenu(false)}>
+          <div role="menu" className="absolute top-full end-0 mt-1 z-[var(--z-popover)] min-w-56 rounded-lg border border-border bg-popover p-1 shadow-md" onKeyDown={(e) => e.key === "Escape" && setMenu(false)}>
             {confirm ? (
               <div className="p-3 flex flex-col gap-2">
                 <span className="text-sm">{r2.strip.confirm}</span>
@@ -160,6 +162,19 @@ export function SavedGoalStrip({ variant = "full", presets, meta, today, showRes
               </div>
             ) : (
               <>
+                {saveAction && (
+                  <button
+                    type="button"
+                    role="menuitem"
+                    className="w-full text-start min-h-target px-3 rounded-md hover:bg-accent"
+                    onClick={() => {
+                      saveAction.run();
+                      setMenu(false);
+                    }}
+                  >
+                    {saveAction.again ? r2.result.saveMenuAgain : r2.result.saveMenu}
+                  </button>
+                )}
                 <MenuLink to={editHref} onClick={() => add()} label={r2.strip.add} />
                 <button type="button" role="menuitem" className="w-full text-start min-h-target px-3 rounded-md hover:bg-accent" onClick={() => setConfirm(true)}>
                   {r2.strip.delete}

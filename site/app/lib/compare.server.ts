@@ -5,7 +5,7 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { DepositTerms, FeesSnapshot, ParameterRecord, RuleRecord, ValueObject, WrapperId, WrapperRecord } from "@finance-tool/schema";
 import type { InstrumentTerms } from "@finance-tool/engine";
-import { loadChecklistRows, loadCmaFees, loadFees, loadNotCovered, loadParameters, loadRules, loadWrappers, root, today } from "./data.server";
+import { loadChecklistRows, loadCma, loadCmaFees, loadFees, loadNotCovered, loadParameters, loadRules, loadWrappers, root, today } from "./data.server";
 import { buildInstrumentTerms, loadDepositTerms, loadExposures, loadFunds, regulatorAverageFees } from "./instruments.server";
 import { evaluate, type BundleDataFile, type CompareBundle, type ExposureEntry, type Family, type HoldingTerms, type RunGoal, type Tier2Row, type WrapperEntry } from "./compare";
 import type { FitTableData } from "./fit";
@@ -140,6 +140,30 @@ function depositRate(wrapperId: string, family: string, spec: { deposit_terms?: 
   return { ...rate };
 }
 
+/** A deposit wrapper's `amount_range` as its record holds it (audit 2026-10-24 (sweep)): the amounts the published rate applies to. */
+function depositRange(wrapperId: string, family: string, spec: { deposit_terms?: string } | undefined, deposits: DepositTerms[]): WrapperEntry["cashRange"] | null {
+  if (family !== "deposit" || !spec?.deposit_terms) return null;
+  const rec = deposits.find((d) => d.id === spec.deposit_terms && d.wrapper_id === wrapperId);
+  if (!rec?.amount_range) return null;
+  return { min: { ...rec.amount_range.min }, max: rec.amount_range.max ? { ...rec.amount_range.max } : null };
+}
+
+/** The instrument a wrapper's run stands for, named from the data: the fund or track P-05 names and the provider whose tariff it names (audit 2026-10-24 (sweep)). */
+function representativeOf(
+  spec: { fund?: string | number; track?: string | number; tariff?: string } | undefined,
+  funds: { id: string; names: { he: string[] } }[],
+  tracks: { fundId: number; name: string }[],
+  fees: FeesSnapshot[],
+): WrapperEntry["representative"] | null {
+  if (!spec) return null;
+  let name: string | undefined;
+  if (spec.fund !== undefined) name = funds.find((f) => f.id === String(spec.fund))?.names.he[0];
+  else if (spec.track !== undefined) name = tracks.find((t) => t.fundId === Number(spec.track))?.name;
+  if (!name) return null;
+  const provider = spec.tariff ? fees.find((f) => f.id === spec.tariff)?.provider.name_he : undefined;
+  return { name, ...(provider ? { provider } : {}) };
+}
+
 /** Wrappers whose fund (and so whose terms) depend on the exposure they hold: the fund collected for the exposure (`exposure_id`) gives the terms. */
 const fundHoldingWrappers: WrapperId[] = ["brokerage-account", "money-market-fund-daily", "money-market-fund-renewable"];
 
@@ -217,18 +241,23 @@ export function buildCompareBundle(): CompareBundle {
 
   const fees = loadFees();
   const sources = { fees, funds: loadFunds(), deposits: loadDepositTerms(), rules: allRules, today: t };
+  const cmaTracks = loadCma().tracks;
+  const repOf = (id: string) => representativeOf(p05.instruments?.[id] as never, sources.funds as never, cmaTracks, fees);
   const wrappers: WrapperEntry[] = loadWrappers().map((record: WrapperRecord): WrapperEntry => {
     const family = familyById[record.id] ?? null;
     const base = { id: record.id, name: record.names.he[0]!, family, record, feeValues: {} as Record<string, SiteValue>, missing: [] as string[] };
     if (family === "provident" || family === "pension") {
       const r = providentTerms(record.id, fees, p05.instruments?.[record.id], allRules, t);
-      return { ...base, ...(r.terms ? { terms: r.terms } : {}), feeValues: r.feeValues, missing: r.missing };
+      const rep = repOf(record.id);
+      return { ...base, ...(r.terms ? { terms: r.terms } : {}), ...(rep ? { representative: rep } : {}), feeValues: r.feeValues, missing: r.missing };
     }
     if (family === null) return { ...base, missing: [`${record.id}: no instrument terms are built for it`] };
     const built = buildInstrumentTerms(record.id, family, p05.instruments?.[record.id], sources);
     const rate = depositRate(record.id, family, p05.instruments?.[record.id], sources.deposits);
     if ("missing" in built) return { ...base, missing: built.missing };
-    return { ...base, terms: built.terms, feeValues: built.feeValues, ...(rate ? { cashRate: rate } : {}) };
+    const range = depositRange(record.id, family, p05.instruments?.[record.id], sources.deposits);
+    const rep = repOf(record.id);
+    return { ...base, terms: built.terms, feeValues: built.feeValues, ...(rate ? { cashRate: rate } : {}), ...(range ? { cashRange: range } : {}), ...(rep ? { representative: rep } : {}) };
   });
   for (const w of wrappers) for (const m of w.missing) console.log(`[compare] ${w.id}: no terms: ${m}`);
 

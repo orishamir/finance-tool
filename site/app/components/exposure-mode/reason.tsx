@@ -33,13 +33,13 @@ export function ExposureReason({ row, ctx }: { row: ExposureRowView; ctx: ExpCtx
         if (e.code === "loss-filter" && row.exclusion)
           return (
             <span key={i} className="block">
-              <Tpl t={c.excluded.replace(/ D11$/, "")} vars={{ worst: <bdi dir="ltr" className="text-entered">{fmt.pct(row.exclusion.worst)}</bdi>, accepted: <bdi dir="ltr" className="text-entered">{fmt.pct(row.exclusion.accepted)}</bdi> }} /> <bdi dir="ltr" className="text-xs ms-1">D11</bdi>
+              <Tpl t={c.excluded.replace(/ D11$/, "")} vars={{ worst: <bdi dir="ltr" className="text-entered">{fmt.pct(row.exclusion.worst)}</bdi>, accepted: <bdi dir="ltr" className="text-entered">{fmt.pct(row.exclusion.accepted)}</bdi> }} />
             </span>
           );
         if (e.code === "no-sourced-series")
           return (
             <span key={i} className="block">
-              {c.noSeries.replace(/ D20$/, "")} <bdi dir="ltr" className="text-xs ms-1">D20</bdi>
+              {c.noSeries.replace(/ D20$/, "")}
               {ctx.bundle.cashLink && (
                 <>
                   {" "}

@@ -46,6 +46,10 @@ import {
   type WorkbenchInputs,
 } from "../lib/providers";
 import { useFundAssumptions } from "../lib/variants";
+import { bundleLinks } from "../lib/bundle";
+
+/** The data files this page fetches after it starts, requested with the HTML (audit 2026-10-24, A52). */
+export const links = () => bundleLinks("workbench-bundle.json", "compare-bundle.json");
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { providerWrapperIds } = await import("../lib/providers.server");
@@ -57,7 +61,8 @@ export async function loader({ params }: Route.LoaderArgs) {
 }
 
 export function meta({ loaderData: data }: Route.MetaArgs) {
-  return [{ title: `${c.providers.title.before}${data?.wrapperName ?? ""}${c.providers.title.after} · ${site.name}` }];
+  const t = data && (PROVIDENT_WRAPPERS as readonly string[]).includes(data.wrapperId) ? c.providers.provident.title : c.providers.title;
+  return [{ title: `${t.before}${data?.wrapperName ?? ""}${t.after} · ${site.name}` }];
 }
 
 export default function WorkbenchProviders() {
@@ -88,13 +93,15 @@ export default function WorkbenchProviders() {
 }
 
 function Header({ wrapperId, wrapperName, children }: { wrapperId: string; wrapperName: string; children?: React.ReactNode }) {
+  // a provident wrapper is chosen by company, not by bank or broker (A35)
+  const title = (PROVIDENT_WRAPPERS as readonly string[]).includes(wrapperId) ? c.providers.provident.title : c.providers.title;
   return (
     <header className="flex flex-col gap-3">
-      <Breadcrumb parent={{ href: `/guide/${wrapperId}`, label: c.providers.back }} current={`${c.providers.title.before}${wrapperName}${c.providers.title.after}`} />
+      <Breadcrumb parent={{ href: `/guide/${wrapperId}`, label: c.providers.back }} current={`${title.before}${wrapperName}${title.after}`} />
       <h1 className="text-2xl lg:text-3xl font-semibold">
-        {c.providers.title.before}
+        {title.before}
         <bdi>{wrapperName}</bdi>
-        {c.providers.title.after}
+        {title.after}
       </h1>
       {children}
     </header>
@@ -121,7 +128,7 @@ function ProvidentPage({ wb, data }: { wb: WorkbenchBundle; data: Awaited<Return
   return (
     <>
       <WorkbenchTabs current="provider" wrapperId={data.wrapperId} />
-      <ProvidentListing rows={listing.rows} wrapperId={data.wrapperId} />
+      <ProvidentListing listing={listing} wrapperId={data.wrapperId} />
       <nav className="flex flex-wrap gap-x-6 text-sm" aria-label="קישורים">
         <Link to={`/guide/${data.wrapperId}`} className="text-link hover:underline min-h-target inline-flex items-center">
           {c.providers.links.guide}

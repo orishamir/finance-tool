@@ -1,13 +1,16 @@
 // The ranked list and what sits beside it (design-system 6.3, design-spec 6.3): ranked row, listed row,
 // the part kept available, outcome tags, and the row animation when the order changes.
-import { useLayoutEffect, useRef, type ReactNode } from "react";
+import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router";
-import { r2, r3fees } from "../../copy";
-import { addMonths, type CoverageRow, type ListedOption, type RankedOption } from "../../lib/compare";
+import { r2, r3fees, values as valuesCopy } from "../../copy";
+import { addMonths, decidingFormulaOf, depositRangeFlag, parameterOf, workbenchHref, type CoverageRow, type ListedOption, type RankedOption } from "../../lib/compare";
 import { fmt } from "../../lib/format";
+import { playbookWrappers } from "../../lib/playbook";
+import { NumberField } from "../timeline/fields";
+import { Tpl } from "../exposure-mode/tpl";
 import { IconAlert, IconDrillIn, IconLock } from "../icons";
 import { durationChart, Num, StateTag } from "../provenance";
-import { Tag, cx } from "../ui";
+import { Button, Tag, cx } from "../ui";
 import type { ResultCtx } from "./ctx";
 import { IconBan, IconDash, IconDashed, IconEdit, IconEqual, IconOk } from "./icons";
 import { ReasonLines } from "./reasons";
@@ -56,7 +59,7 @@ export function useFlip(order: string) {
 
 // ---------------------------------------------------------------- ranked row
 
-export function RankedRow({ o, above, ctx, onDetail, extra, choose }: { o: RankedOption; above?: RankedOption; ctx: ResultCtx; onDetail: (el: HTMLElement) => void; /** A tag after the row's own (release 5: "לא מחזיק {חשיפה}"). */ extra?: ReactNode; /** The "בחרתי בזה" button (release 5). */ choose?: ReactNode }) {
+export function RankedRow({ o, above, ctx, onDetail, extra, choose, chosen }: { o: RankedOption; above?: RankedOption; ctx: ResultCtx; onDetail: (el: HTMLElement) => void; /** A tag after the row's own (release 5: "לא מחזיק {חשיפה}"). */ extra?: ReactNode; /** The "בחרתי בזה" button (release 5). */ choose?: ReactNode; /** This is the option the person chose: the next steps open under it (A14). */ chosen?: boolean }) {
   const { mk, view, mode } = ctx;
   const value = mode === "real" ? o.real : o.nominal;
   const figure = mk.nis(value, mode === "real" ? "F-06" : "F-09", mode === "real" ? r2.realLabel : r2.nominalLabel, o);
@@ -104,7 +107,7 @@ export function RankedRow({ o, above, ctx, onDetail, extra, choose }: { o: Ranke
       )}
       {deciding && (
         <p className="text-sm text-muted-foreground">
-          {r2.result.decidingLine} {r2.deciding[deciding.formula]}, <Num value={mk.nis(deciding.mine, "F-61", r2.deciding[deciding.formula]!, o)} /> {r2.result.reasonFeeVs} <Num value={mk.nis(deciding.above, "F-61", r2.deciding[deciding.formula]!, above!)} />
+          {r2.result.decidingLine} {r2.deciding[deciding.formula]}, <Num value={mk.nis(deciding.mine, decidingFormulaOf(deciding.formula), r2.deciding[deciding.formula]!, o)} /> {r2.result.reasonFeeVs} <Num value={mk.nis(deciding.above, decidingFormulaOf(deciding.formula), r2.deciding[deciding.formula]!, above!)} />
         </p>
       )}
       {stale && (
@@ -117,13 +120,116 @@ export function RankedRow({ o, above, ctx, onDetail, extra, choose }: { o: Ranke
       )}
       {extra && <div className="flex flex-wrap gap-2">{extra}</div>}
       <AssumptionRow o={o} ctx={ctx} />
+      <RepresentativeLine o={o} ctx={ctx} />
+      <DepositRange o={o} ctx={ctx} />
       <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
         <Link to={`/fees?wrapper=${o.id}&from=compare`} className="text-sm text-link hover:underline self-start min-h-target inline-flex items-center">
           {r3fees.links.fromResult}
         </Link>
         {choose}
       </div>
+      {chosen && <ChosenNext id={o.id} />}
     </li>
+  );
+}
+
+/** A14: what to do after "בחרתי בזה": pick the company and track, how to join or switch, what the fees cost. */
+function ChosenNext({ id }: { id: string }) {
+  const c = r2.result.chosenNext;
+  const pick = workbenchHref(id);
+  const join = playbookWrappers.includes(id) ? `/switch/${id}` : null;
+  const links: { href: string; label: string }[] = [];
+  if (pick) links.push({ href: pick, label: c.pick });
+  if (join) links.push({ href: join, label: c.join });
+  links.push({ href: `/fees?wrapper=${id}&from=compare`, label: c.fees });
+  return (
+    <div className="rounded-md bg-secondary p-3 flex flex-col gap-1" data-chosen-next>
+      <span className="text-sm font-medium">{c.heading}</span>
+      <ol className="flex flex-col gap-0.5 text-sm list-decimal ps-5">
+        {links.map((l) => (
+          <li key={l.href}>
+            <Link to={l.href} className="text-link hover:underline min-h-9 inline-flex items-center">
+              {l.label}
+            </Link>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+/** A10: the card says which instrument its run stands for, and where to swap it. */
+function RepresentativeLine({ o, ctx }: { o: RankedOption; ctx: ResultCtx }) {
+  const w = ctx.bundle.wrappers.find((x) => x.id === o.id);
+  const inst = (parameterOf(ctx.bundle, "P-05") as unknown as { instruments?: Record<string, { fund?: string | number; track?: string | number; tariff?: string }> }).instruments?.[o.id];
+  if (!w?.terms || !inst || !(inst.fund || inst.track || inst.tariff)) return null;
+  const r = w.representative;
+  const href = workbenchHref(o.id);
+  const t = r2.result.representative;
+  return (
+    <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-1.5 gap-y-0.5" data-representative>
+      <span>
+        {r ? (
+          <>
+            <Tpl t={t.named} vars={{ name: <bdi>{r.name}</bdi> }} />
+            {r.provider ? <Tpl t={t.tariff} vars={{ provider: <bdi>{r.provider}</bdi> }} /> : t.end}
+          </>
+        ) : (
+          t.generic
+        )}
+      </span>
+      {href && (
+        <Link to={href} className="text-link hover:underline min-h-9 inline-flex items-center">
+          {t.change}
+        </Link>
+      )}
+    </p>
+  );
+}
+
+/** A8: a deposit's published rate was read for another amount; the person may enter the rate the bank offers them. */
+function DepositRange({ o, ctx }: { o: RankedOption; ctx: ResultCtx }) {
+  const w = ctx.bundle.wrappers.find((x) => x.id === o.id);
+  const own = ctx.g.ownRates?.[o.id];
+  const flag = w ? depositRangeFlag(w, ctx.g) : null;
+  const [open, setOpen] = useState(false);
+  const t = r2.result.depositRange;
+  if (!w || (!flag && own === undefined)) return null;
+  const showField = open || own !== undefined;
+  return (
+    <div className="flex flex-col gap-2 text-sm" data-deposit-range>
+      {flag && (
+        <p className="text-caution-foreground flex items-start gap-2">
+          <IconAlert size={16} className="text-caution shrink-0 mt-1" />
+          <span>
+            {flag.max ? <Tpl t={t.between} vars={{ min: <Num value={flag.min} />, max: <Num value={flag.max} /> }} /> : <Tpl t={t.from} vars={{ min: <Num value={flag.min} /> }} />} {flag.side === "below" ? t.below : t.above}
+          </span>
+        </p>
+      )}
+      {showField ? (
+        <div className="flex flex-col gap-1.5 max-w-xs">
+          <NumberField
+            label={t.ownLabel}
+            unit="pct_per_year"
+            value={own ?? null}
+            isEntered={own !== undefined}
+            validate={(n) => (n < 0 || n > 50 ? `${valuesCopy.errors.pct[0]} 0 ${valuesCopy.errors.pct[1]}50.` : null)}
+            onCommit={(n) => ctx.setOwnRate?.(o.id, n)}
+            onReset={() => ctx.setOwnRate?.(o.id, undefined)}
+            optional
+          />
+          {own !== undefined && (
+            <Button variant="quiet" className="self-start -ms-2 text-sm min-h-9" onClick={() => (ctx.setOwnRate?.(o.id, undefined), setOpen(false))}>
+              {t.reset}
+            </Button>
+          )}
+        </div>
+      ) : (
+        <Button variant="quiet" className="self-start -ms-2 text-sm min-h-9" onClick={() => setOpen(true)}>
+          {t.own}
+        </Button>
+      )}
+    </div>
   );
 }
 

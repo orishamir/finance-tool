@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router";
 import { guide as copy, r3fees } from "../../copy";
 import type { TermRow } from "../../lib/data.server";
 import type { Strength } from "../../lib/value";
-import { IconCheck, IconDrillIn, IconLock, IconMinus } from "../icons";
+import { IconCheck, IconChevronDown, IconDrillIn, IconLock, IconMinus } from "../icons";
 import { Disclosure, RuleRef, RulesLine, StrengthLabel } from "../provenance";
 import { Card, cx, Tag } from "../ui";
 
@@ -64,13 +64,25 @@ export function SectionIndex({ sections, current }: { sections: readonly Section
   );
 }
 
-export function GuideSection({ id, title, children, className }: { id: string; title: string; children: ReactNode; className?: string }) {
+/**
+ * A section of a guide page. With `rulesToggle` the rule chips of its blocks (`.rules-line`) stay hidden until the person
+ * taps "הצגת הכללים" beside the heading (audit A42: the chips are sources, not the reading).
+ */
+export function GuideSection({ id, title, children, className, rulesToggle }: { id: string; title: string; children: ReactNode; className?: string; rulesToggle?: boolean }) {
+  const [rulesOpen, setRulesOpen] = useState(false);
   return (
     <section id={id} aria-labelledby={`${id}-h`} className={cx("flex flex-col gap-4 scroll-mt-[112px] lg:scroll-mt-[88px]", className)}>
-      <h2 id={`${id}-h`} className="text-xl lg:text-2xl font-semibold">
-        {title}
-      </h2>
-      {children}
+      <div className="flex flex-wrap items-baseline justify-between gap-x-4">
+        <h2 id={`${id}-h`} className="text-xl lg:text-2xl font-semibold">
+          {title}
+        </h2>
+        {rulesToggle && (
+          <button type="button" aria-expanded={rulesOpen} onClick={() => setRulesOpen((v) => !v)} className="text-sm text-link hover:underline min-h-target inline-flex items-center">
+            {rulesOpen ? copy.rulesToggle.hide : copy.rulesToggle.show}
+          </button>
+        )}
+      </div>
+      <div className={cx("flex flex-col gap-4", rulesToggle && !rulesOpen && "[&_.rules-line]:hidden")}>{children}</div>
     </section>
   );
 }
@@ -98,7 +110,8 @@ export function KeyValueList({ items }: { items: KeyValueItem[] }) {
               {it.tag}
             </span>
             {it.line && <span className="text-sm">{it.line}</span>}
-            <RulesLine ids={it.rules} lead={it.lead} />
+            {it.lead && <span className="text-xs text-muted-foreground">{it.lead}</span>}
+            <RulesLine ids={it.rules} />
           </div>
         ))}
       </Card>
@@ -111,7 +124,8 @@ export function KeyValueList({ items }: { items: KeyValueItem[] }) {
               {it.tag}
             </span>
             {it.line && <span className="text-sm">{it.line}</span>}
-            <RulesLine ids={it.rules} lead={it.lead} />
+            {it.lead && <span className="text-xs text-muted-foreground">{it.lead}</span>}
+            <RulesLine ids={it.rules} />
           </Card>
         ))}
       </div>
@@ -198,7 +212,7 @@ export interface TaxStep {
   alt?: ReactNode;
 }
 
-/** Phone: vertical with a line joining 28px circles at the start side. PC: three cards joined by arrows pointing left. */
+/** Phone: vertical with a line joining 28px circles at the start side, each holding a down chevron (UX fix 22). PC: three cards joined by arrows pointing left. */
 export function TaxSteps({ steps }: { steps: TaxStep[] }) {
   return (
     <>
@@ -207,7 +221,7 @@ export function TaxSteps({ steps }: { steps: TaxStep[] }) {
           <li key={s.id} className="relative ps-10 pb-6 last:pb-0">
             {i < steps.length - 1 && <span className="absolute inset-s-[13px] top-7 bottom-0 w-0.5 bg-border" aria-hidden="true" />}
             <span className="absolute inset-s-0 top-0 size-7 rounded-full border-2 border-primary bg-card flex items-center justify-center text-primary" aria-hidden="true">
-              <IconDrillIn size={16} />
+              <IconChevronDown size={16} />
             </span>
             <div className="flex flex-col gap-1">
               <span className="text-sm text-muted-foreground">{s.when}</span>
@@ -254,44 +268,67 @@ export interface ChecklistRowView {
   applies?: ReactNode;
 }
 
+function ChecklistRow({ r }: { r: ChecklistRowView }) {
+  const endsSentence = /[.!?:]$/.test(r.explanation.trim());
+  return (
+    <li className="flex gap-3 py-3 border-b border-border">
+      <span className="shrink-0 mt-0.5" aria-hidden="true">
+        {r.mark === "covered" ? <IconCheck size={24} className="text-positive" /> : r.mark === "blocked" ? <IconLock size={24} className="text-blocked" /> : <IconMinus size={24} className="text-muted-foreground" />}
+      </span>
+      <div className="flex flex-col gap-0.5 min-w-0 flex-1">
+        <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+          <span className="font-medium">{r.name}</span>
+          <span className={cx("text-xs", r.mark === "covered" ? "text-positive-foreground" : r.mark === "blocked" ? "text-blocked-foreground" : "text-muted-foreground")}>
+            {r.mark === "covered" ? copy.checklist.considered : r.mark === "na" ? copy.checklist.notRelevant : <>{copy.checklist.blockedMark} <bdi dir="ltr">{r.code?.replace("-OQ", " OQ")}</bdi></>}
+          </span>
+          {r.weak && (r.weak === "institution" || r.weak === "secondary") && <StrengthLabel strength={r.weak} />}
+          {r.applies}
+        </span>
+        <span className="text-sm text-muted-foreground">
+          {r.explanation}
+          {r.mark === "blocked" && !endsSentence && "."}
+        </span>
+        {/* audit A90: the status sentence is its own line, not glued to the question */}
+        {r.mark === "blocked" && <span className="block text-sm text-blocked-foreground">{copy.checklist.blockedLast}</span>}
+        {r.rules.length > 0 && (
+          <Disclosure label={<span className="text-xs text-link">{copy.checklist.expand}</span>} summaryClassName="min-h-9 justify-start gap-1 [&>svg]:size-4">
+            <RulesLine ids={r.rules} className="pb-2" />
+          </Disclosure>
+        )}
+      </div>
+    </li>
+  );
+}
+
+/**
+ * What the site took into account for this product (audit A42): the open questions first, as rows, and the full list
+ * (every question the site asks of every product) one tap away. It is the site's coverage, not a to-do list for the person.
+ */
 export function DimensionChecklist({ rows }: { rows: ChecklistRowView[] }) {
   const blocked = rows.filter((r) => r.mark === "blocked");
   return (
     <div className="flex flex-col gap-3">
+      <p className="text-sm text-muted-foreground max-w-measure">{copy.checklist.intro}</p>
       {blocked.length > 0 && (
-        <p className="text-sm text-blocked-foreground flex items-center gap-2">
-          <IconLock size={16} className="text-blocked" />
-          {copy.checklist.blocked} {blocked.map((r) => r.name).join(", ")}
-        </p>
+        <>
+          <p className="text-sm text-blocked-foreground flex items-center gap-2">
+            <IconLock size={16} className="text-blocked" />
+            {copy.checklist.blocked} {blocked.map((r) => r.name).join(", ")}
+          </p>
+          <ul className="grid lg:grid-cols-2 gap-x-8">
+            {blocked.map((r) => (
+              <ChecklistRow key={r.id} r={r} />
+            ))}
+          </ul>
+        </>
       )}
-      <ul className="grid lg:grid-cols-2 gap-x-8">
-        {rows.map((r) => (
-          <li key={r.id} className="flex gap-3 py-3 border-b border-border">
-            <span className="shrink-0 mt-0.5" aria-hidden="true">
-              {r.mark === "covered" ? <IconCheck size={24} className="text-positive" /> : r.mark === "blocked" ? <IconLock size={24} className="text-blocked" /> : <IconMinus size={24} className="text-muted-foreground" />}
-            </span>
-            <div className="flex flex-col gap-0.5 min-w-0 flex-1">
-              <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                <span className="font-medium">{r.name}</span>
-                <span className={cx("text-xs", r.mark === "covered" ? "text-positive-foreground" : r.mark === "blocked" ? "text-blocked-foreground" : "text-muted-foreground")}>
-                  {r.mark === "covered" ? copy.checklist.considered : r.mark === "na" ? copy.checklist.notRelevant : <>{copy.checklist.blockedMark} <bdi dir="ltr">{r.code?.replace("-OQ", " OQ")}</bdi></>}
-                </span>
-                {r.weak && (r.weak === "institution" || r.weak === "secondary") && <StrengthLabel strength={r.weak} />}
-                {r.applies}
-              </span>
-              <span className="text-sm text-muted-foreground">
-                {r.explanation}
-                {r.mark === "blocked" && <> {copy.checklist.blockedLast}</>}
-              </span>
-              {r.rules.length > 0 && (
-                <Disclosure label={<span className="text-xs text-link">{copy.checklist.expand}</span>} summaryClassName="min-h-9 justify-start gap-1 [&>svg]:size-4">
-                  <RulesLine ids={r.rules} className="pb-2" />
-                </Disclosure>
-              )}
-            </div>
-          </li>
-        ))}
-      </ul>
+      <Disclosure label={<span className="text-link">{copy.checklist.showAll}</span>} openLabel={<span className="text-link">{copy.checklist.hideAll}</span>} summaryClassName="justify-start">
+        <ul className="grid lg:grid-cols-2 gap-x-8">
+          {rows.map((r) => (
+            <ChecklistRow key={r.id} r={r} />
+          ))}
+        </ul>
+      </Disclosure>
     </div>
   );
 }
@@ -310,18 +347,67 @@ export function RelatedProducts({ items }: { items: { href: string; label: strin
   );
 }
 
-export function InstitutionChips({ companies, allHref }: { companies: { id: string; name: string }[]; allHref: string }) {
+/** The links to the exposures a product can hold (audit A43). */
+export function ExposureLinks({ items }: { items: { id: string; name: string }[] }) {
+  if (items.length === 0) return null;
   return (
-    <p className="flex flex-wrap items-center gap-2">
-      {companies.map((c) => (
-        <Link key={c.id} to={`/companies/${c.id}`} className="a-chip max-w-full !whitespace-normal py-1.5 !rounded-xl">
-          <bdi>{c.name}</bdi>
+    <p className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+      <span>{copy.exposuresRow}</span>
+      {items.map((it) => (
+        <Link key={it.id} to={`/exposure/${it.id}`} className="a-chip">
+          {it.name}
         </Link>
       ))}
-      <Link to={allHref} className="a-chip text-link">
+    </p>
+  );
+}
+
+function CompanyLinks({ companies }: { companies: { id: string; name: string }[] }) {
+  return (
+    <ul className="text-sm leading-8 md:columns-2 md:gap-x-10">
+      {companies.map((c) => (
+        <li key={c.id} className="break-inside-avoid">
+          <Link to={`/companies/${c.id}`} className="text-link hover:underline">
+            <bdi>{c.name}</bdi>
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/**
+ * The companies that offer the product, behind one toggle (audit A42), the ones open to everyone first and the ones for a
+ * sector's or a plant's workers under their own line (audit A86); the "all companies" link stays outside.
+ */
+export function InstitutionChips({ companies, allHref }: { companies: { id: string; name: string; closed?: boolean }[]; allHref: string }) {
+  const open = companies.filter((c) => !c.closed);
+  const closed = companies.filter((c) => c.closed);
+  return (
+    <div className="flex flex-col gap-1">
+      {companies.length > 0 && (
+        <Disclosure label={<span className="text-link">{copy.companiesShow}</span>} openLabel={<span className="text-link">{copy.companiesHide}</span>} summaryClassName="justify-start">
+          <div className="flex flex-col gap-3 pb-2">
+            {open.length > 0 && (
+              <div className="flex flex-col gap-1">
+                {closed.length > 0 && <span className="text-sm font-medium">{copy.companiesOpen}</span>}
+                <CompanyLinks companies={open} />
+              </div>
+            )}
+            {closed.length > 0 && (
+              <div className="flex flex-col gap-1">
+                <span className="text-sm font-medium">{copy.companiesClosed}</span>
+                <span className="text-xs text-muted-foreground">{copy.companiesClosedLine}</span>
+                <CompanyLinks companies={closed} />
+              </div>
+            )}
+          </div>
+        </Disclosure>
+      )}
+      <Link to={allHref} className="text-link font-medium hover:underline text-sm min-h-target inline-flex items-center self-start">
         {copy.allCompanies}
       </Link>
-    </p>
+    </div>
   );
 }
 
@@ -338,8 +424,8 @@ export function TermTable({ terms }: { terms: TermRow[] }) {
   return (
     <>
       <dl className="md:hidden flex flex-col divide-y divide-border">
-        {terms.map((t) => (
-          <div key={t.he} className="py-3 flex flex-col gap-1">
+        {terms.map((t, i) => (
+          <div key={`${t.he}-${i}`} className="py-3 flex flex-col gap-1">
             <dt className="font-medium">{t.he}</dt>
             <dd className="text-sm">{t.explanation}</dd>
             <dd className="flex flex-wrap gap-1.5">{whereTags(t.where)}</dd>
@@ -356,8 +442,8 @@ export function TermTable({ terms }: { terms: TermRow[] }) {
             </tr>
           </thead>
           <tbody>
-            {terms.map((t) => (
-              <tr key={t.he}>
+            {terms.map((t, i) => (
+              <tr key={`${t.he}-${i}`}>
                 <th scope="row">{t.he}</th>
                 <td>{t.explanation}</td>
                 <td>

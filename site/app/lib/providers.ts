@@ -50,6 +50,10 @@ export interface WorkbenchBundle {
   p01: ParameterRecord;
   p05: ParameterRecord;
   links: { boi: RefLink | null; tase: RefLink | null; maya: RefLink | null; taseForeign: RefLink | null };
+  /** A provider's snapshot id to the regulator's company id (the legal id the company page is addressed by); absent when the data names no such company. */
+  providerCompany: Record<string, string>;
+  /** Per provident wrapper: how many managing companies the regulator's data holds (the "one of N" line). */
+  wrapperCompanies: Record<string, number>;
 }
 
 export const BROKERAGE = "brokerage-account";
@@ -768,26 +772,47 @@ function above(rate: SiteValue, listRate: number | undefined): boolean {
 
 // ---------------------------------------------------------------- provident wrappers: a sourced listing
 
-export interface ListingRow {
+export interface ListingLine {
   id: string;
-  provider: string;
-  providerName: string;
   line: string;
   base: string;
   rate: SiteValue;
+}
+
+/** One company's card: its lines of the tariff (one fee base each), the company id its page is addressed by. */
+export interface ListingCard {
+  provider: string;
+  providerName: string;
+  /** The regulator's company id, or null when the data holds no company of that name (then the name is not a link). */
+  companyId: string | null;
+  lines: ListingLine[];
   tariff: RowTariff;
 }
 
-/** For a provident wrapper the providers are managers whose list fees the snapshots hold; nothing is ranked (flows 15.5). */
-export function buildProvidentListing(bundle: WorkbenchBundle, wrapperId: string): { rows: ListingRow[]; ruleIds: string[] } {
-  const rows: ListingRow[] = [];
+export interface Listing {
+  cards: ListingCard[];
+  /** Managing companies the regulator's data holds for this wrapper (0 when the bundle does not say). */
+  companies: number;
+  ruleIds: string[];
+}
+
+/** The page address of a provider's company: the regulator's id, never the snapshot slug (that route does not exist). */
+export function companyHref(card: Pick<ListingCard, "companyId">): string | null {
+  return card.companyId ? `/companies/${card.companyId}` : null;
+}
+
+/** For a provident wrapper the providers are managers whose list fees the snapshots hold; nothing is ranked (flows 15.5). One card per company. */
+export function buildProvidentListing(bundle: WorkbenchBundle, wrapperId: string): Listing {
+  const cards: ListingCard[] = [];
   for (const s of bundle.snapshots) {
     if (s.missing || s.provider.class === "bank" || s.provider.class === "broker") continue;
     const { tariff, stale } = snapshotValues(s, bundle.today);
+    const lines: ListingLine[] = [];
     for (const l of s.lines) {
       if (l.level !== "list" || !l.applies_to.includes(wrapperId) || (l.base !== "balance" && l.base !== "deposit" && l.base !== "direct_expenses")) continue;
-      rows.push({ id: l.id, provider: s.id, providerName: s.provider.name_he, line: l.names.tariff[0] ?? (guideBlocks.fees as Record<string, { name: string }>)[l.base]?.name ?? l.base, base: l.base, rate: withStale(l.rate, stale), tariff });
+      lines.push({ id: l.id, base: l.base, rate: withStale(l.rate, stale), line: l.names.tariff[0] ?? (guideBlocks.fees as Record<string, { name: string }>)[l.base]?.name ?? l.base });
     }
+    if (lines.length) cards.push({ provider: s.id, providerName: s.provider.name_he, companyId: bundle.providerCompany?.[s.id] ?? null, lines, tariff });
   }
-  return { rows, ruleIds: [] };
+  return { cards, companies: bundle.wrapperCompanies?.[wrapperId] ?? 0, ruleIds: [] };
 }

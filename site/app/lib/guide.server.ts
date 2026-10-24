@@ -6,7 +6,9 @@ import { join } from "node:path";
 import { wrapperId as wrapperIdEnum, type ExposureRecord, type RuleRecord, type ValueObject, type WrapperId, type WrapperRecord } from "@finance-tool/schema";
 import { buildHishtalmutTerms, buildInstrumentTerms, loadDepositTerms, loadExposures, loadFunds, regulatorAverageFees } from "./instruments.server";
 import { loadChecklistRows, loadCma, loadCmaFees, loadFees, loadParameters, loadRules, loadTerms, loadWrappers, root, today, type ChecklistRow, type TermRow } from "./data.server";
-import { runTimeline, type Bundle, type Timeline } from "./engine";
+import { p05Range, runTimeline, type Bundle, type Timeline } from "./engine";
+import { isClosedAudience } from "./guide-nav";
+import { playbookWrappers } from "./playbook";
 import { ruleFigure, weaker, type SiteValue, type Strength } from "./value";
 
 export interface GuidePageData {
@@ -25,7 +27,14 @@ export interface GuidePageData {
   dimensionNames: Record<string, string>;
   /** Marks from the record (regenerated from its rule_ids) and from the rules the first run read. */
   marks: Record<string, string>;
-  companies: { id: string; name: string }[];
+  /** `closed`: every track the company has under this product is for a sector's or a plant's workers (CMA target population, CAT-10), so it is not open to anyone (audit A86). */
+  companies: { id: string; name: string; closed: boolean }[];
+  /** The exposures whose record lists this wrapper among those that can hold them (audit A43). */
+  exposures: { id: string; name: string }[];
+  /** Whether the switching playbook (/switch/<wrapper>) has steps for this wrapper (audit A14). */
+  hasPlaybook: boolean;
+  /** Rule ids the record's exit sentence cites that have a Hebrew text, in the order the sentence names them (audit A22). */
+  exitTextRules: string[];
   /** Why there is no graph, when there is none (copy: guideBlocks.noGraph). */
   noGraph: NoGraph | null;
   /** The record's formulas the engine does not compute yet, with the release number that brings each. */
@@ -74,9 +83,15 @@ function missingParts(messages: string[]): string[] {
 /** The rules a run may read, found by running the engine over the profiles that change its path. */
 function rulesTouched(bundle: Bundle): Set<string> {
   const ids = new Set<string>();
+  // A large entered deposit takes the paths a small one does not (a study fund's deposit above the benefited
+  // share reads TXH-11; a gemel lehashkaa's above its ceiling reads its routing rules): probe the slider's top too.
+  const top = p05Range(bundle.p05, "sliders", "monthly_deposit")?.max;
+  const deposits: (number | undefined)[] = top === undefined ? [undefined] : [undefined, top];
   for (const age of [null, 65]) {
-    const t = runTimeline(bundle, { entered: {}, age });
-    if (t.kind === "ok") t.rules.forEach((r) => ids.add(r.id));
+    for (const monthly_deposit of deposits) {
+      const t = runTimeline(bundle, { entered: monthly_deposit === undefined ? {} : { monthly_deposit }, age });
+      if (t.kind === "ok") t.rules.forEach((r) => ids.add(r.id));
+    }
   }
   return ids;
 }
@@ -201,6 +216,9 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
 
   // ---- rules the page cites: the record's, the run's, the content's
   const cited = collectRuleIds(record);
+  // the rules the exit sentence names: their Hebrew texts stand in for its English wording (audit A22)
+  const exitTextRules = [...new Set(record.lawful_exit.text?.match(/\b[A-Z0-9]{2,6}-[A-Z0-9]{1,5}\b/g) ?? [])].filter((r) => !!allRules[r]?.text_he);
+  exitTextRules.forEach((r) => cited.add(r));
   extraRuleIds.forEach((r) => cited.add(r));
   // rules the prose module cites (<RulesLine>, <RuleRef>, figure(...)): found in its source so the cards are not empty
   scanRuleIds(`site/app/content/guide/${id}.tsx`, allRules).forEach((r) => cited.add(r));
@@ -224,10 +242,18 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
   for (const key of Object.keys(termsById)) if (!onPage(termsById[key]!) && !extraTermIds.includes(key)) delete termsById[key];
 
   const cma = loadCma();
-  const seen = new Map<string, string>();
-  for (const track of cma.tracks) if (track.wrapperId === id) seen.set(track.companyId, track.companyName);
+  const seen = new Map<string, { name: string; populations: string[] }>();
+  for (const track of cma.tracks) {
+    if (track.wrapperId !== id) continue;
+    const c = seen.get(track.companyId) ?? { name: track.companyName, populations: [] };
+    c.populations.push(track.targetPopulation);
+    seen.set(track.companyId, c);
+  }
   const collator = new Intl.Collator("he");
-  const companies = [...seen.entries()].map(([cid, name]) => ({ id: cid, name })).sort((a, b) => collator.compare(a.name, b.name));
+  const companies = [...seen.entries()].map(([cid, c]) => ({ id: cid, name: c.name, closed: isClosedAudience(c.populations) })).sort((a, b) => collator.compare(a.name, b.name));
+  const exposures = loadExposures()
+    .filter((e) => (e.wrapper_ids ?? []).includes(record.id))
+    .map((e) => ({ id: e.id, name: e.names.he[0] ?? e.id }));
 
   const wrappers = loadWrappers();
   const related = record.transfer_routes
@@ -237,7 +263,7 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
     .filter((w): w is WrapperRecord => !!w)
     .map((w) => ({ href: `/guide/${w.id}`, label: w.names.he[0]! }));
 
-  return { record, name: record.names.he[0]!, lede, bundle, initial, rules, terms, wrapperCount: wrapperIdEnum.options.length, termsById, checklist, dimensionNames, marks, companies, noGraph, pendingFormulas, related, today: t };
+  return { record, name: record.names.he[0]!, lede, bundle, initial, rules, terms, wrapperCount: wrapperIdEnum.options.length, termsById, checklist, dimensionNames, marks, companies, exposures, hasPlaybook: playbookWrappers.includes(record.id), exitTextRules, noGraph, pendingFormulas, related, today: t };
 }
 
 export function familyOf(id: WrapperId): "provident" | "deposit" | "securities" | "makam" | "bond" | null {
@@ -288,8 +314,13 @@ export interface ExposurePageData {
   rules: Record<string, RuleRecord>;
   terms: TermRow[];
   termsById: Record<string, TermRow>;
-  /** Wrappers that can hold this exposure; `openQuestions` are the open tax questions it shares with the exposure (or the wrapper's own exit blockers). */
-  holders: { id: string; name: string; openQuestions: string[] }[];
+  /**
+   * Wrappers that can hold this exposure. `blockedBy` are the wrapper's own exit-tax blockers (its record's
+   * `tax_at_exit.blocked_by`): only these make the card say the tax is unclear (audit A85). `openQuestions` are the open
+   * questions the wrapper and the exposure both carry and the wrapper does not list as exit-tax blockers: some are tax questions that
+   * do not block the run (TXI-OQ2, TXI-OQ14, TXI-OQ3), others are not tax questions (BANK-OQ8, MF-OQ4), so the card shows them in a neutral tag.
+   */
+  holders: { id: string; name: string; blockedBy: string[]; openQuestions: string[] }[];
   checklist: (ChecklistRow & { mark: "covered" | "na"; rules: string[] })[];
   dimensionNames: Record<string, string>;
   today: string;
@@ -308,10 +339,10 @@ export function buildExposurePage(id: string, extraTermIds: string[] = []): Expo
     .map((wid) => wrappers.find((w) => w.id === wid))
     .filter((w): w is WrapperRecord => !!w)
     .map((w) => {
-      const shared = (record.open_questions ?? []).filter((q) => w.open_questions.includes(q));
-      const openQuestions = [...new Set([...shared, ...w.tax_at_exit.blocked_by])];
-      openQuestions.forEach((q) => cited.add(q));
-      return { id: w.id, name: w.names.he[0]!, openQuestions };
+      const blockedBy = [...new Set(w.tax_at_exit.blocked_by)];
+      const openQuestions = (record.open_questions ?? []).filter((q) => w.open_questions.includes(q) && !blockedBy.includes(q));
+      [...blockedBy, ...openQuestions].forEach((q) => cited.add(q));
+      return { id: w.id, name: w.names.he[0]!, blockedBy, openQuestions };
     });
   const rules: Record<string, RuleRecord> = {};
   for (const rid of cited) if (allRules[rid]) rules[rid] = allRules[rid]!;
