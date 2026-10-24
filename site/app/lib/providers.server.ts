@@ -24,7 +24,7 @@ function collectRuleIds(node: unknown, out = new Set<string>()): Set<string> {
 }
 
 /** The latest snapshot of each provider id (`<id>@<date>.json`): files are loaded in name order, the later date wins. */
-function latestSnapshots() {
+export function latestSnapshots() {
   const best = new Map<string, ReturnType<typeof loadFees>[number]>();
   for (const s of loadFees()) {
     const prev = best.get(s.id);

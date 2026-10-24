@@ -4,9 +4,10 @@
 import { Link } from "react-router";
 import { idle as copy, r2 } from "../../copy";
 import { fmt } from "../../lib/format";
-import type { IdleCoverageRow, IdleRowView, IdleView } from "../../lib/idle";
+import type { IdleCoverageRow, IdleMateriality, IdleRowView, IdleVerdict, IdleView } from "../../lib/idle";
 import { IconClock, IconExternal, IconFile } from "../icons";
-import { Num } from "../provenance";
+import { Num, RulesLine } from "../provenance";
+import type { SiteValue } from "../../lib/value";
 import { Tag, cx } from "../ui";
 import { ReasonText } from "./reasons";
 import type { ResultCtx } from "./ctx";
@@ -197,6 +198,102 @@ export function BoiLine({ bundle }: { bundle: CompareBundle }) {
       )}
       <span className="basis-full">{copy.boiParam}</span>
     </p>
+  );
+}
+
+
+/** The threshold half of the judgement lines: "below the site's threshold (P-03)" or the worth-it word, with the threshold beside it. */
+function Judged({ worth, below, yes, threshold, label }: { worth: boolean; below: string; yes: string; threshold: SiteValue; label: string }) {
+  return (
+    <>
+      <span className="font-medium">{worth ? yes : below}</span>
+      {!worth && (
+        <>
+          {" "}
+          (<bdi dir="ltr">P-03</bdi>)
+        </>
+      )}
+      <span className="text-sm text-muted-foreground whitespace-nowrap">
+        {" "}
+        ({label} <Num value={threshold} />)
+      </span>
+    </>
+  );
+}
+
+/** The one-year verdict on the offer (F-60, 2026-10-24): both options after tax a year, the gap, P-03 over it, and the tax in words. */
+export function VerdictBlock({ verdict, depositRate, fundRate }: { verdict: IdleVerdict; depositRate: SiteValue | null; fundRate: SiteValue | null }) {
+  const v = copy.verdict;
+  const termKey = String(verdict.termMonths);
+  const term = v.termOf[termKey] ?? `${v.termMonths.before}${fmt.number(verdict.termMonths)}${v.termMonths.after}`;
+  return (
+    <section className="bg-card border border-border rounded-lg p-4 md:p-6 flex flex-col gap-3">
+      <h2 className="text-lg font-semibold">{v.heading}</h2>
+      <p className="text-lg max-w-measure">
+        {v.bank} <Num value={verdict.offerRate} /> {term}
+        {v.afterTax}
+        <Num value={verdict.offerAfterTax} />
+        {v.perYear}
+      </p>
+      <p className="text-lg max-w-measure">
+        {v.fund}
+        <Num value={verdict.fundRate} /> <span className="text-sm text-muted-foreground">({v.fundState})</span>
+        {v.afterTax}
+        <Num value={verdict.fundAfterTax} />
+        {v.perYear}
+      </p>
+      <p className="text-lg max-w-measure">
+        {v.gap} <Num value={verdict.gap} size="figure" />
+        {v.perYearShort}{verdict.better !== "even" && <span className="text-base"> {v.inFavor[verdict.better]}</span>} —{" "}
+        <Judged worth={verdict.worth} below={v.below} yes={v.worth} threshold={verdict.threshold} label={v.thresholdLabel} />
+      </p>
+      <p className="text-sm text-muted-foreground max-w-measure">{v.liquidity}</p>
+      <RulesLine ids={["MF-34", "BANK-06"]} />
+      {verdict.termMonths < 12 && <p className="text-sm text-muted-foreground max-w-measure">{v.rolled}</p>}
+      {verdict.termMonths > 12 && <p className="text-sm text-muted-foreground max-w-measure">{v.longer}</p>}
+      <TaxWords depositRate={depositRate} fundRate={fundRate} />
+    </section>
+  );
+}
+
+/** The two tax sentences, in the guides' words (bank-deposit and money-market guides), each with its rule chips. */
+export function TaxWords({ depositRate, fundRate }: { depositRate: SiteValue | null; fundRate: SiteValue | null }) {
+  const t = copy.taxWords;
+  return (
+    <div className="border-t border-border pt-3 flex flex-col gap-2">
+      <h3 className="font-medium">{t.heading}</h3>
+      <p className="max-w-measure">
+        {t.deposit} {depositRate ? <Num value={depositRate} /> : null} {t.depositMid}
+      </p>
+      <RulesLine ids={["TXI-03", "TXI-07"]} />
+      <p className="max-w-measure">
+        {t.fund} {fundRate ? <Num value={fundRate} /> : null} {t.fundMid} {t.fundTrack}
+      </p>
+      <RulesLine ids={["TXS-12", "TXS-07"]} />
+    </div>
+  );
+}
+
+/** One judgement line (2026-10-24): the yearly size against P-03's negotiate threshold. */
+export function MaterialityLine({ m }: { m: IdleMateriality }) {
+  const t = copy.materiality;
+  return (
+    <p className="max-w-measure">
+      {t.before}
+      <Num value={m.amount} />
+      {t.perYear}
+      <Judged worth={m.worth} below={t.below} yes={t.worth} threshold={m.threshold} label={t.thresholdLabel} />
+    </p>
+  );
+}
+
+/** Shown when the yearly size is under P-03's threshold: a small sum is no obstacle to a money-market fund (MF-15, MF-26, BANK-18). */
+export function SmallSumLine() {
+  return (
+    <div className="flex flex-col gap-1">
+      <p className="text-sm max-w-measure">{copy.smallSum}</p>
+      <RulesLine ids={["MF-15", "MF-26", "BANK-18"]} />
+    </div>
   );
 }
 

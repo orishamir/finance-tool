@@ -9,7 +9,8 @@ import { IconSearch } from "../icons";
 import { Sheet } from "../Sheet";
 import { NumberField, flushPendingFields } from "../timeline/fields";
 import { Button, SegmentedControl, cx } from "../ui";
-import { RuleRef } from "../provenance";
+import { Num, RuleRef } from "../provenance";
+import { feeYear, type SiteValue } from "../../lib/value";
 import { IconCopy } from "../icons";
 import {
   autoLink,
@@ -21,6 +22,7 @@ import {
   isChild,
   matchCompanies,
   matchTracksKind,
+  prefillFees,
   tracksFor,
   type Draft,
   type DraftError,
@@ -65,11 +67,28 @@ export function AddHoldingSheet({ open, onClose, hb, rules, value, onSave }: { o
   );
 }
 
+/** Under the fee fields: the track's average as the sourced number it is (state, source and date through `Num`), and what a save keeps. */
+function PrefillLine({ lead, value, note }: { lead: string; value: SiteValue; note: string }) {
+  const year = feeYear(value);
+  return (
+    <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5">
+      <span>{lead}</span>
+      <Num value={value} />
+      {year && (
+        <span>
+          {copy.feePrefill.year} <bdi dir="ltr">{year}</bdi>.
+        </span>
+      )}
+      <span>{note}</span>
+    </p>
+  );
+}
+
 /** "3 מסלולים" with the one and two as words. */
 const trackCountWord = (n: number) => (n === 1 ? copy.trackCount.one : n === 2 ? copy.trackCount.two : null);
 
 function Body({ titleId, onClose, requestClose, asking, onKeep, dirtyRef, hb, rules, value, onSave }: { titleId: string; onClose: () => void; requestClose: () => void; asking: boolean; onKeep: () => void; dirtyRef: { current: boolean }; hb: HoldingsBundle; rules: RuleMap; value: Holding | null; onSave: (h: Holding) => void }) {
-  const [d, setD] = useState<Draft>(() => (value ? draftOf(value) : emptyDraft()));
+  const [d, setD] = useState<Draft>(() => (value ? draftOf(value, hb) : emptyDraft()));
   const initial = useRef(d);
   const ref = useRef(d);
   ref.current = d;
@@ -94,7 +113,7 @@ function Body({ titleId, onClose, requestClose, asking, onKeep, dirtyRef, hb, ru
     });
   const allErrors = (draft: Draft, b: Record<string, boolean>, todayIso: string): DraftError[] => {
     const badFields = Object.keys(b).filter((k) => b[k]);
-    return [...checkDraft(draft, todayIso).filter((e) => !badFields.includes(e.field)), ...badFields.map((f) => ({ field: f as keyof Draft, code: "invalid" as const }))];
+    return [...checkDraft(draft, todayIso, hb).filter((e) => !badFields.includes(e.field)), ...badFields.map((f) => ({ field: f as keyof Draft, code: "invalid" as const }))];
   };
   const errors: DraftError[] = attempted ? allErrors(d, bad, isoToday()) : [];
   useEffect(() => {
@@ -135,7 +154,7 @@ function Body({ titleId, onClose, requestClose, asking, onKeep, dirtyRef, hb, ru
   const options = [...hb.wrappers.filter((w) => !isChild(w.id)).map((w) => ({ value: w.id as WrapperChoice, label: copy.wrapperHints[w.id] ? `${w.name} (${copy.wrapperHints[w.id]})` : w.name })), { value: "child" as WrapperChoice, label: copy.child.heading }];
   const pickWrapper = (v: WrapperChoice) => {
     const wrapperId = v === "child" ? ("child-savings-provident" as WrapperId) : v;
-    set({ wrapperId, childRoute: v === "child" ? "provident" : null, companyId: null, companyName: "", fundId: null, typedName: "", ...(wrapperId !== "keren-hishtalmut" ? { firstDeposit: "" } : {}) });
+    set({ wrapperId, childRoute: v === "child" ? "provident" : null, companyId: null, companyName: "", fundId: null, typedName: "", ...(wrapperId !== "keren-hishtalmut" ? { firstDeposit: "", firstDepositOver: false } : {}) });
     setFilter("");
     setPasted("");
   };
@@ -180,6 +199,10 @@ function Body({ titleId, onClose, requestClose, asking, onKeep, dirtyRef, hb, ru
     }, 0);
   };
 
+  // scenario fix 2026-10-24: the regulator's averages for the picked track fill the two fee fields until the person types
+  const pre = prefillFees(hb, d);
+  const preBalance = pre.balance && typeof pre.balance.value === "number" ? pre.balance.value : null;
+  const preDeposit = pre.deposit && typeof pre.deposit.value === "number" ? pre.deposit.value : null;
   const pctValidate = (n: number) => (n < 0 || n > 100 ? percentOver : null);
   const nisValidate = (n: number) => (n < 0 ? copy.errors.amountNegative : null);
   const today = isoToday();
@@ -371,9 +394,13 @@ function Body({ titleId, onClose, requestClose, asking, onKeep, dirtyRef, hb, ru
             <fieldset className="flex flex-col gap-1.5 min-w-0">
               <legend className="field-label mb-1.5">{copy.fees}</legend>
               <div className="grid grid-cols-2 gap-3">
-                <RawWatch onRaw={watch("feeBalance", pctValidate)}><NumberField label={copy.feeBalance} unit="pct_per_year" value={d.feeBalance} isEntered={d.feeBalance !== null} validate={pctValidate} onCommit={(n) => set({ feeBalance: n })} onReset={() => set({ feeBalance: null })} optional externalError={err("feeBalance")} /></RawWatch>
-                <RawWatch onRaw={watch("feeDeposit", pctValidate)}><NumberField label={copy.feeDeposit} unit="pct_of_deposit" value={d.feeDeposit} isEntered={d.feeDeposit !== null} validate={pctValidate} onCommit={(n) => set({ feeDeposit: n })} onReset={() => set({ feeDeposit: null })} optional externalError={err("feeDeposit")} hint={copy.feeDepositHint} /></RawWatch>
+                <RawWatch onRaw={watch("feeBalance", pctValidate)}><NumberField label={copy.feeBalance} unit="pct_per_year" value={d.feeBalance ?? preBalance} isEntered={d.feeBalance !== null} validate={pctValidate} onCommit={(n) => set({ feeBalance: n })} onReset={() => set({ feeBalance: null })} optional externalError={err("feeBalance")} /></RawWatch>
+                <RawWatch onRaw={watch("feeDeposit", pctValidate)}><NumberField label={copy.feeDeposit} unit="pct_of_deposit" value={d.feeDeposit ?? preDeposit} isEntered={d.feeDeposit !== null} validate={pctValidate} onCommit={(n) => set({ feeDeposit: n })} onReset={() => set({ feeDeposit: null })} optional externalError={err("feeDeposit")} hint={preDeposit !== null ? copy.feePrefill.depositHint : copy.feeDepositHint} /></RawWatch>
               </div>
+              {pre.balance && (
+                <PrefillLine lead={copy.feePrefill.balance} value={pre.balance} note={d.feeBalance === null ? copy.feePrefill.balanceKept : copy.feePrefill.balanceEntered} />
+              )}
+              {pre.deposit && d.feeDeposit === null && <PrefillLine lead={copy.feePrefill.deposit} value={pre.deposit} note={copy.feePrefill.depositKept} />}
               <StatementDisclosure field="feeBalance" wrapperId={d.wrapperId} rules={rules} spellings={hb.spellings} />
               <StatementDisclosure field="feeDeposit" wrapperId={d.wrapperId} rules={rules} spellings={hb.spellings} />
             </fieldset>
@@ -401,7 +428,14 @@ function Body({ titleId, onClose, requestClose, asking, onKeep, dirtyRef, hb, ru
         </div>
         {d.wrapperId === "keren-hishtalmut" && (
           <div className="flex flex-col gap-1.5">
-            <DateField label={copy.firstDeposit} value={d.firstDeposit} max={today} onChange={(v) => set({ firstDeposit: v })} hint={copy.firstDepositWhy} error={err("firstDeposit")} />
+            {!d.firstDepositOver && <DateField label={copy.firstDeposit} value={d.firstDeposit} max={today} onChange={(v) => set({ firstDeposit: v })} hint={copy.firstDepositWhy} error={err("firstDeposit")} />}
+            <label className="flex items-start gap-3 min-h-target text-sm cursor-pointer">
+              <input type="checkbox" checked={d.firstDepositOver} onChange={(e) => set({ firstDepositOver: e.target.checked, ...(e.target.checked ? { firstDeposit: "" } : {}) })} className="size-5 mt-2.5 accent-[var(--primary)]" />
+              <span className="flex flex-col py-2.5">
+                <span>{copy.firstDepositOver}</span>
+                {d.firstDepositOver && <span className="text-xs text-muted-foreground">{copy.firstDepositOverWhy}</span>}
+              </span>
+            </label>
             <StatementDisclosure field="firstDeposit" wrapperId={d.wrapperId} rules={rules} spellings={hb.spellings} />
           </div>
         )}

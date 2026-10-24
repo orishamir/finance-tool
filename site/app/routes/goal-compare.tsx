@@ -3,9 +3,9 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { Link, Navigate, useLoaderData, useNavigate, useSearchParams } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
-import { r2, site, system } from "../copy";
+import { r2, scnCompare, site, system } from "../copy";
 import { useValueMode } from "../lib/mode-store";
-import { useOwnRates } from "../lib/own-rate";
+import { splitOwnTerms, useOwnTerms } from "../lib/own-rate";
 import { AssumptionChips, AssumptionsPanel, type Suggestion } from "../components/compare/assumptions";
 import { ChartLegend, ChartReadout, ChartTable, ComparisonChart } from "../components/compare/chart";
 import type { ResultCtx } from "../components/compare/ctx";
@@ -15,14 +15,15 @@ import { AvailableCard, ListedRow, RankedRow, useFlip } from "../components/comp
 import { ReasonLines } from "../components/compare/reasons";
 import { SensitivityPanel } from "../components/compare/sensitivity";
 import { SavedGoalStrip } from "../components/compare/strip";
-import { DetailSheetBody, WhyHeadline, WhySheetBody } from "../components/compare/why";
+import { DetailSheetBody, HorizonDefaultedNote, HorizonHonestLine, PastRecordLine, WhyHeadline, WhySheetBody, horizonFigures } from "../components/compare/why";
+import type { FitTableData } from "../lib/fit";
 import { DimensionChecklist, type ChecklistRowView } from "../components/guide/sections";
 import { IconExternal } from "../components/icons";
 import { Num, NumberLegend, RulesLine } from "../components/provenance";
 import { Sheet } from "../components/Sheet";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { Callout, Card, Disclosure, SegmentedControl } from "../components/ui";
-import { buildView, computeSensitivity, makeValues, runGoalOf, nothingToCompare, cashRateOf, type CompareBundle, type CompareView, type FeeKind, type RankedOption, type SensitivityView } from "../lib/compare";
+import { applyOwnProviders, buildView, computeSensitivity, makeValues, runGoalOf, nothingToCompare, cashRateOf, type CompareBundle, type CompareView, type FeeKind, type RankedOption, type SensitivityView } from "../lib/compare";
 import { loadBundle } from "../lib/bundle";
 import { fmt } from "../lib/format";
 import { GoalsProvider, hasMeaning, isBlank, useGoals, type FieldKey, type Presets } from "../lib/goal";
@@ -42,8 +43,9 @@ import { bundleLinks } from "../lib/bundle";
 export const links = () => bundleLinks("compare-bundle.json");
 
 export async function loader() {
-  const { goalFormData } = await import("../lib/compare.server");
-  return goalFormData();
+  const { goalFormData, fitTable } = await import("../lib/compare.server");
+  // P-04's table: the line under the headline quotes the equity row when the horizon is short (home question card 2026-10-24)
+  return { ...goalFormData(), fit: fitTable() };
 }
 
 export function meta() {
@@ -65,13 +67,13 @@ export default function GoalComparePage() {
   return (
     <GoalsProvider presets={presets}>
       <PageShell current="goal" data={provenance}>
-        <Result bundle={bundle} failed={failed} data={data.form as FormData} presets={presets} meta={data.meta} today={data.today} />
+        <Result bundle={bundle} failed={failed} data={data.form as FormData} fit={data.fit as FitTableData} presets={presets} meta={data.meta} today={data.today} />
       </PageShell>
     </GoalsProvider>
   );
 }
 
-function Result({ bundle, failed, data, presets, meta, today }: { bundle: CompareBundle | null; failed: boolean; data: FormData; presets: Presets; meta: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null }; today: string }) {
+function Result({ bundle, failed, data, fit, presets, meta, today }: { bundle: CompareBundle | null; failed: boolean; data: FormData; fit: FitTableData; presets: Presets; meta: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null }; today: string }) {
   const { status, current, resolved } = useGoals();
   const navigate = useNavigate();
   const [params] = useSearchParams();
@@ -109,14 +111,20 @@ function Result({ bundle, failed, data, presets, meta, today }: { bundle: Compar
     );
   }
   if (mode === "exposure") return <ExposureBody bundle={bundle} data={data} frame={frame} registerSave={setSaveAction} />;
-  return <Body bundle={bundle} data={data} frame={frame} exposureId={params.get("exposure")} registerSave={setSaveAction} />;
+  return <Body bundle={bundle} data={data} fit={fit} frame={frame} exposureId={params.get("exposure")} registerSave={setSaveAction} />;
 }
 
-function Body({ bundle, data, frame, exposureId, registerSave }: { bundle: CompareBundle; data: FormData; frame: (b: React.ReactNode) => React.ReactNode; exposureId: string | null; registerSave: (a: { run: () => void; again: boolean } | null) => void }) {
+function Body({ bundle: bundle0, data, fit, frame, exposureId, registerSave }: { bundle: CompareBundle; data: FormData; fit: FitTableData; frame: (b: React.ReactNode) => React.ReactNode; exposureId: string | null; registerSave: (a: { run: () => void; again: boolean } | null) => void }) {
   const { current, resolved } = useGoals();
-  const [ownRates, setOwnRate] = useOwnRates(current!.id);
+  const [terms, setTerm] = useOwnTerms(current!.id);
+  const { ownRates, ownFees, ownProviders } = splitOwnTerms(terms);
+  const setOwnProvider = (w: string, id: string | undefined) => setTerm(w, "provider", id);
+  const setOwnRate = (w: string, p: number | undefined) => setTerm(w, "rate", p);
+  const setOwnFee = (w: string, p: number | undefined) => setTerm(w, "fee", p);
   const base0 = runGoalOf(current!, resolved!)!;
-  const base = Object.keys(ownRates).length > 0 ? { ...base0, ownRates } : base0;
+  const base = { ...base0, ...(Object.keys(ownRates).length > 0 ? { ownRates } : {}), ...(Object.keys(ownFees).length > 0 ? { ownFees } : {}), ...(Object.keys(ownProviders).length > 0 ? { ownProviders } : {}) };
+  // the broker the person chose for the brokerage account: its tariff replaces the representative's everywhere below (2026-10-24)
+  const bundle = useMemo(() => applyOwnProviders(bundle0, { ownProviders }), [bundle0, JSON.stringify(ownProviders)]); // eslint-disable-line react-hooks/exhaustive-deps
   // opened from an exposure row ("באיזה מוצר להחזיק את זה"): A-01 is that exposure's entered return for this view, not saved into the goal
   const subject = exposureId ? bundle.exposures?.find((e) => e.record.id === exposureId) : undefined;
   const subjectReturn = subject ? current!.exposures?.[subject.record.id]?.return : undefined;
@@ -187,7 +195,7 @@ function Body({ bundle, data, frame, exposureId, registerSave }: { bundle: Compa
   };
   saveNow.current = () => doSave(readableSaved?.choice);
   const holdsExposure = (id: string) => !subject || (subject.record.wrapper_ids ?? []).includes(id as never);
-  const ctx: ResultCtx = { bundle, view, g, mk, mode, openField, fall: current!.assumptions.acceptedFall ?? null, setOwnRate };
+  const ctx: ResultCtx = { bundle, view, g, mk, mode, openField, fall: current!.assumptions.acceptedFall ?? null, setOwnRate, setOwnFee, setOwnProvider, targetCost: current!.targetCost ?? null, subjectCurrency: subject && subject.record.currency !== "ILS" ? subject.record.currency : null };
   const hideAll = view.headline === "excludes-all" || view.headline === "nothing-ranked";
   const title = goalTitle(current!);
   const sources = {
@@ -209,12 +217,21 @@ function Body({ bundle, data, frame, exposureId, registerSave }: { bundle: Compa
     mark: m.mark,
     code: m.code,
     rules: m.rules,
-    applies:
-      m.options.length > 0 ? (
-        <span className="text-xs text-muted-foreground">
-          {m.mark === "blocked" ? r2.result.checklistBlocks : r2.result.checklistAffected} {m.options.map((id) => view.names[id] ?? id).join(", ")}
-        </span>
-      ) : undefined,
+    applies: (
+      <>
+        {m.options.length > 0 && (
+          <span className="text-xs text-muted-foreground">
+            {m.mark === "blocked" ? r2.result.checklistBlocks : r2.result.checklistAffected} {m.options.map((id) => view.names[id] ?? id).join(", ")}
+          </span>
+        )}
+        {/* a covered row still shows the options blocked on it in their own record (scenario fix 2026-10-24: coverage is pooled across options) */}
+        {m.blockedOptions && (
+          <span className="text-xs text-blocked-foreground">
+            {scnCompare.blockedFor} {m.blockedOptions.options.map((id) => view.names[id] ?? id).join(", ")} (<bdi dir="ltr">{m.blockedOptions.code.replace("-OQ", " OQ")}</bdi>)
+          </span>
+        )}
+      </>
+    ),
   }));
 
   return frame(
@@ -273,6 +290,9 @@ function Body({ bundle, data, frame, exposureId, registerSave }: { bundle: Compa
             </Link>
           </p>
         )}
+        <HorizonDefaultedNote bundle={bundle} g={g} presetName={r2.presets[current!.preset] ?? ""} onChange={() => openField("horizonYears")} figures={hideAll ? null : horizonFigures(ctx)} />
+        {!hideAll && <HorizonHonestLine ctx={ctx} fit={fit} />}
+        {!hideAll && <PastRecordLine ctx={ctx} fit={fit} />}
         {view.stale && (
           <Callout tone="caution">
             {system.staleBanner.before} <bdi dir="ltr">{fmt.date(view.stale.since)}</bdi>. {system.staleBanner.after}

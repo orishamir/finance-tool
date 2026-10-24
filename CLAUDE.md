@@ -12,12 +12,20 @@ plus 34 screen quirks), the 16 decisions waiting for me, and what was not
 done. The design docs carry dated amendments from that night; the Hebrew
 copy has a style guide in `docs/copy.md` section 10.
 
+Later that day a scenario audit (`research/audit/2026-10-24-scenario-audit.md`)
+walked eight real dilemmas through the site and found none reliably
+answered; the same day brought the question card on the home page, the
+comparison's honesty layer, the broker choice, a liquid-study-fund block on
+holdings, idle-cash verdicts, eight low-fee S&P 500 fund records and the
+published past record MKT-01. Its "Decisions for the founder" and "Still
+open" sections are the hand-offs.
+
 All five releases of `docs/roadmap.md` are built (release 1 on 2026-10-23,
 releases 2 to 5 on 2026-10-23 and 2026-10-24); the dated "Status" paragraphs
 under each release say what exists and what is open, and its closing section
 "After release 5" lists the work that continues (tier-2 graduation, data
 growth, quarterly tariff refresh, my approvals). Data: about 500 rules, 20
-tariff snapshots for 17 providers (Meitav Trade still missing), 4 fund records,
+tariff snapshots for 17 providers (Meitav Trade still missing), 12 fund records,
 Leumi's 3 deposit terms, 2 series; no fund list, because TASE's terms forbid
 republishing it (see `docs/data-inventory.md`). The saved state is version 3
 under `mekor.v2.state`; the entered offers, variant assumptions and playbook

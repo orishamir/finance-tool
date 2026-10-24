@@ -33,11 +33,13 @@ import {
   type UsedRule,
 } from "@finance-tool/engine";
 import type { ExposureRecord, ParameterRecord, RuleRecord, ValueObject, WrapperId, WrapperRecord } from "@finance-tool/schema";
-import { computedInputs as ci, formulaNames, guideBlocks, r2 } from "../copy";
+import { computedInputs as ci, formulaNames, guideBlocks, ownTermsCopy, r2 } from "../copy";
 import { fmt } from "./format";
 import type { Employment } from "./inputs";
 import type { FieldKey, Goal, PresetId, Presets, ResolvedGoal } from "./goal";
+import { fitOf, type FitTableData } from "./fit";
 import { computed, entered as enteredValue, weaker, type SiteValue, type Strength } from "./value";
+
 
 // Formula names this screen's numbers use that the release 1 table does not hold yet (method.md F-30, F-61, F-80, F-81).
 Object.assign(formulaNames, {
@@ -67,9 +69,41 @@ export interface WrapperEntry {
   /** The amounts the published rate applies to (the deposit record's `amount_range`); absent when the bundle does not carry it (audit 2026-10-24, A8). */
   cashRange?: { min: SiteValue; max: SiteValue | null };
   /** The instrument the run rests on, named for the card (audit 2026-10-24, A10): the fund or track P-05 names, and the provider whose tariff is used. Absent when the bundle does not carry it. */
-  representative?: { name: string; provider?: string };
+  representative?: {
+    name: string;
+    provider?: string;
+    /** The id of that provider's snapshot, when the wrapper carries `providers`. */
+    providerId?: string;
+    /** The channel of the trade line the site's own tariff reads (P-05's provider); the first list line of the snapshot with the direct channel (or none) first, as the guide pages read it (review fix 2026-10-24). Absent when the snapshot's lines carry none. */
+    channel?: string;
+    /** True when the provider is the person's choice and not the one P-05 names (`applyOwnProviders`). */
+    chosen?: boolean;
+    /** The in-fund cost (brokerage and the like) or the track's balance fee the run takes, as a value object (sourced, or computed when it is a sum of the fund's lines), % a year; 2026-10-24. */
+    fee?: SiteValue;
+    /** The lowest in-fund cost among the fund records collected for the same exposure (same measure as `fee`), % a year. */
+    classMinFee?: SiteValue;
+  };
+  /**
+   * The providers whose tariff the person may run the wrapper on (brokerage only, 2026-10-24): every bank and broker snapshot
+   * the providers workbench ranks, by provider id, with the tariff lines the run reads and the value objects behind them.
+   */
+  providers?: Record<string, ProviderTariff>;
+  /**
+   * What P-04 judges the run's instrument by (review fix 2026-10-24): the representative track's regulator classification for a provident or
+   * pension wrapper, or "equity" for a fund-based wrapper whose fund holds an equity-index exposure. Absent: no classification, never demoted.
+   */
+  fitBasis?: { track: { specialization: string; subSpecialization: string; classification: string } } | { equity: true };
   /** Why there are no terms, one line each (log text, not shown). */
   missing: string[];
+}
+
+/** One provider's tariff as a run takes it, with the sourced tariff lines it came from (`feeValues` keys as in `WrapperEntry`). */
+export interface ProviderTariff {
+  name: string;
+  /** The channel whose trade line the tariff reads: the direct one, the branch one where the snapshot has no direct trade line. */
+  channel: string;
+  tariff: NonNullable<InstrumentTerms["tariff"]>;
+  feeValues: Record<string, SiteValue>;
 }
 
 export interface Tier2Row {
@@ -121,6 +155,10 @@ export interface CompareBundle {
   dataFiles?: BundleDataFile[];
   /** Release 5: the build's version and data snapshot, written into a saved comparison (as `StateFile.site`). */
   site?: { version: string; data: string };
+  /** P-04, the site's fit table (scenario fix 2026-10-24): the equity row's minimum horizon and fall, for the limitation-first headline and for listing equity options the person's accepted drop does not fit. */
+  fit?: FitTableData;
+  /** MKT-01 (scenario fix 2026-10-24): the published past record of the S&P 500, as sourced figures; shown, never fed into a run. */
+  pastRecord?: { rule: { id: string }; figures: Record<string, SiteValue>; source: { url: string; title: string } } | null;
 }
 
 // ---------------------------------------------------------------- the goal as numbers
@@ -148,6 +186,14 @@ export interface RunGoal {
   employmentInferred?: boolean;
   /** The person's own rate for a deposit-family wrapper whose published rate does not apply to the amount (A8), % a year, by wrapper id. Entered. */
   ownRates?: Record<string, number>;
+  /** The fee level the person enters for a wrapper's representative instrument (D4, 2026-10-24), % a year, by wrapper id. Entered. It replaces the instrument's fee in F-80 and F-81. */
+  ownFees?: Record<string, number>;
+  /** The provider the person chose for a wrapper (the brokerage account), by wrapper id: its id in `WrapperEntry.providers`. A choice, not a figure; the tariff lines it brings are sourced. */
+  ownProviders?: Record<string, string>;
+  /** The largest fall the person accepts (A-29), % of value; null when not entered. With P-04's equity row it decides whether an equity-exposed option is ranked (F-83, 2026-10-24). */
+  acceptedFall?: number | null;
+  /** A forecast worst fall the person entered for the exposure this view is about (the "באיזה מוצר" view), %; passes the F-71 filter when it does not exceed `acceptedFall`. */
+  forecastFall?: number | null;
 }
 
 /** The numbers a goal runs on, or null when it has no horizon or no money yet. */
@@ -169,6 +215,7 @@ export function runGoalOf(goal: Goal, r: ResolvedGoal): RunGoal | null {
     pensionEmployee: goal.profile.pension?.employee ?? null,
     pensionEmployer: goal.profile.pension?.employer ?? null,
     insurancePct: goal.assumptions.insurance ?? null,
+    acceptedFall: goal.assumptions.acceptedFall ?? null,
     preset: goal.preset,
     fromPreset: { horizon: r.source.horizonYears === "preset", monthly: r.source.monthly === "preset", available: r.source.available === "preset" },
     ...(inferred ? { employmentInferred: true } : {}),
@@ -244,6 +291,127 @@ export function depositRangeFlag(w: Pick<WrapperEntry, "id" | "family" | "cashRa
 
 const clone = <T,>(x: T): T => JSON.parse(JSON.stringify(x)) as T;
 
+// ---------------------------------------------------------------- the representative instrument's fee (D4, 2026-10-24)
+
+/** Which of a wrapper's fees an entered fee level replaces: the track's balance fee (provident, pension) or the fund's own cost (a fund held through securities). */
+export function feeTargetOf(w: Pick<WrapperEntry, "family" | "terms">): "balance" | "fund" | null {
+  if ((w.family === "provident" || w.family === "pension") && w.terms?.fees) return "balance";
+  const d = w.terms?.fund?.drag;
+  if (w.family === "securities" && d && (d.management !== undefined || d.variable !== undefined || d.trustee !== undefined)) return "fund";
+  return null;
+}
+
+const fundCostKeys = ["fundManagement", "fundVariable", "fundTrustee"] as const;
+
+/**
+ * The fee the run takes for the representative instrument, % a year, as a value object: the track's balance fee, or the fund's
+ * management, variable and trustee lines added (the lines F-81 moves together as "the cost inside the fund"). Undefined when it has none.
+ */
+export function representativeFeeValue(w: Pick<WrapperEntry, "family" | "terms" | "feeValues">, today: string): SiteValue | undefined {
+  const target = feeTargetOf(w);
+  if (target === "balance") return w.feeValues.balance;
+  if (target !== "fund") return undefined;
+  const parts = fundCostKeys.filter((k) => typeof w.feeValues[k]?.value === "number");
+  if (parts.length === 0) return undefined;
+  if (parts.length === 1) return w.feeValues[parts[0]!];
+  const total = parts.reduce((sum, k) => sum + (w.feeValues[k]!.value as number), 0);
+  const inputs = Object.fromEntries(parts.map((k) => [guideBlocks.terms.labels[k] ?? k, w.feeValues[k]!]));
+  return computed(total, "pct_per_year", "A-06", inputs, { today, about: ownTermsCopy.fundCostLabel });
+}
+
+/** The fee that applies to the wrapper's run: the person's entered level (D4), else the record's. */
+export function feeFor(w: WrapperEntry, g: Pick<RunGoal, "ownFees">, today: string): SiteValue | undefined {
+  const own = g.ownFees?.[w.id];
+  const base = representativeFeeValue(w, today);
+  if (own !== undefined && Number.isFinite(own) && feeTargetOf(w)) return { ...enteredValue(own, "pct_per_year", today, ownTermsCopy.feeAbout), ...(base ? { replaces: base } : {}) };
+  return base;
+}
+
+/** The terms with the person's entered fee in place of the representative instrument's fee (D4): the balance fee, or the fund's management line with its variable and trustee lines at zero. */
+export function withOwnFee(w: WrapperEntry, terms: InstrumentTerms, g: Pick<RunGoal, "ownFees">): InstrumentTerms {
+  const own = g.ownFees?.[w.id];
+  const target = feeTargetOf({ family: w.family, terms });
+  if (own === undefined || !Number.isFinite(own) || !target) return terms;
+  const t = clone(terms);
+  if (target === "balance") t.fees!.balance = own / 100;
+  else {
+    const d = t.fund!.drag!;
+    d.management = own / 100;
+    if (d.variable !== undefined) d.variable = 0;
+    if (d.trustee !== undefined) d.trustee = 0;
+  }
+  return t;
+}
+
+const tariffValueKeys = ["tradeRate", "tradeMin", "tradeMax", "custodyRate", "custodyMin", "custodyMax", "fxRate", "monthlyFee"] as const;
+
+/**
+ * The bundle with the person's chosen providers in place (2026-10-24, D4 and D21: the representative provider is a parameter the
+ * person may override): for a wrapper in `g.ownProviders` whose entry carries that provider, the wrapper's tariff and the sourced
+ * tariff lines behind it are the provider's, and its representative names the provider and says it was chosen. The fund, its costs
+ * and every other term stay. An id the wrapper does not carry is ignored. Returns `bundle` itself when nothing changes.
+ */
+export function applyOwnProviders(bundle: CompareBundle, g: Pick<RunGoal, "ownProviders">): CompareBundle {
+  const own = g.ownProviders;
+  if (!own || Object.keys(own).length === 0) return bundle;
+  let changed = false;
+  const wrappers = bundle.wrappers.map((w) => {
+    const id = own[w.id];
+    const p = id !== undefined ? w.providers?.[id] : undefined;
+    if (!p || !w.terms) return w;
+    changed = true;
+    const feeValues = { ...w.feeValues };
+    for (const k of tariffValueKeys) delete feeValues[k];
+    Object.assign(feeValues, p.feeValues);
+    return { ...w, terms: { ...w.terms, tariff: clone(p.tariff) }, feeValues, representative: { ...(w.representative ?? { name: w.name }), provider: p.name, providerId: id!, chosen: true } };
+  });
+  return changed ? { ...bundle, wrappers } : bundle;
+}
+
+/** One provider's run of a wrapper for the goal: what the brokerage option would end at on that provider's tariff. */
+export interface ProviderOutcome {
+  id: string;
+  /** True for the row that is the card's own run (the site's choice, or the person's when `chosen`), whose figure is the card's. */
+  current?: boolean;
+  name: string;
+  channel: string;
+  real: number;
+  nominal: number;
+  /** For the figure's provenance (`makeValues().nis`). */
+  run: { usedRules: UsedRule[]; flags: { code: string }[] };
+}
+
+/** The picker's rows: the card's own run when it is the site's choice, and the wrapper run once on each provider it carries. */
+export interface ProviderOutcomes {
+  site: ProviderOutcome | null;
+  providers: ProviderOutcome[];
+}
+
+/**
+ * The wrapper run on each provider it carries (2026-10-24), the person's other terms as they are, best first by the real value:
+ * what the picker beside the card's fee field shows. `site` is the card's own run while the provider is the site's choice (not
+ * the person's); it can differ from the same provider's row because the site's tariff reads the snapshot's first list line
+ * and the rows read the direct channel. Empty when the wrapper carries no providers or the run needs a field the person has
+ * not filled (the picker then lists names only).
+ */
+export function providerOutcomes(bundle: CompareBundle, g: RunGoal, wrapperId: string): ProviderOutcomes {
+  const none: ProviderOutcomes = { site: null, providers: [] };
+  const w = bundle.wrappers.find((x) => x.id === wrapperId);
+  if (!w?.providers) return none;
+  const ran = (b: CompareBundle) => evaluate(b, g, { only: new Set([wrapperId]) }).candidates.find((c) => c.id === wrapperId)?.run;
+  const outcome = (id: string, name: string, channel: string, run: NonNullable<ReturnType<typeof ran>>, current?: boolean): ProviderOutcome => ({ id, name, channel, ...(current ? { current } : {}), real: run.real, nominal: run.nominal, run: { usedRules: run.rules, flags: run.flags } });
+  const providers: ProviderOutcome[] = [];
+  for (const [id, p] of Object.entries(w.providers)) {
+    const run = ran(applyOwnProviders(bundle, { ownProviders: { [wrapperId]: id } }));
+    if (!run) return none;
+    providers.push(outcome(id, p.name, p.channel, run));
+  }
+  providers.sort((x, y) => y.real - x.real);
+  const r = w.representative;
+  const own = r && !r.chosen ? ran(bundle) : undefined;
+  return { site: own && r ? outcome(r.providerId ?? "", r.provider ?? w.name, r.channel ?? "", own, true) : null, providers };
+}
+
 export type FeeKind = "balance" | "deposit" | "direct" | "fund" | "trade" | "custody";
 
 /** The fees of a wrapper's terms, one entry per kind with a non-zero rate (F-81 moves each one at a time). */
@@ -284,7 +452,7 @@ function scaleTerms(terms: InstrumentTerms, id: string, scale: Record<string, nu
 
 /** The pension run's profile (A-12) and insurance (A-17) come from the person; a provident fund for annuity has no insurance (PEN-35). */
 function pensionTerms(w: WrapperEntry, t: InstrumentTerms, g: RunGoal, needs: Partial<Record<string, FieldKey>>): InstrumentTerms {
-  const next = t === w.terms ? clone(t) : t;
+  const next = clone(t);
   const salary = g.salary !== null && g.salary > 0 ? g.salary : null;
   if (g.employment === "self-employed" && salary !== null) next.pension = { employment: "self-employed", annualIncome: 12 * salary };
   else if (g.employment === "employee" && salary !== null) {
@@ -306,10 +474,10 @@ function pensionTerms(w: WrapperEntry, t: InstrumentTerms, g: RunGoal, needs: Pa
 /** The study fund's terms come from the person: employment, and an employee's salary (A-12). */
 export function termsFor(w: WrapperEntry, g: RunGoal, scale: Record<string, number>, needs: Partial<Record<string, FieldKey>>): InstrumentTerms | undefined {
   if (!w.terms) return undefined;
-  const t = scale ? scaleTerms(w.terms, w.id, scale) : w.terms;
+  const t = scaleTerms(withOwnFee(w, w.terms, g), w.id, scale);
   if (w.family === "pension") return pensionTerms(w, t, g, needs);
   if (w.id !== "keren-hishtalmut") return t;
-  const next = t === w.terms ? clone(t) : t;
+  const next = clone(t);
   if (g.employment === "self-employed") next.hishtalmut = { employment: "self-employed", clockStartMonth: 0 };
   else if (g.employment === "employee" && g.salary !== null && g.salary > 0) next.hishtalmut = { employment: "employee", monthlySalary: g.salary, clockStartMonth: 0 };
   else needs[w.id] = g.employment === "employee" ? "salary" : "employment";
@@ -352,6 +520,66 @@ export function comparisonGoal(g: RunGoal): ComparisonGoal {
   return goal;
 }
 
+
+/** Dimensions of a wrapper record that decide whether this person can hold it at all (D17 2026-10-24: an open rule among them keeps it from being ranked). */
+const eligibilityDimensions = ["minimum", "eligibility"] as const;
+
+/**
+ * F-83 (2026-10-24): an option whose minimum-amount (or other eligibility) rule is open is shown, not ranked: its ranked value would
+ * rest on a purchase the site does not know is possible. The reason is `rule-open` with `detail` "minimum:GOV-OQ7" (dimension and open question).
+ */
+export function openConstraintOf(record: Pick<WrapperRecord, "dimensions">): Reason | null {
+  for (const d of eligibilityDimensions) {
+    const m = (record.dimensions as Record<string, string> | undefined)?.[d];
+    if (typeof m === "string" && m.startsWith("blocked:")) return { code: "rule-open", ruleIds: [], gapIds: [], detail: `${d}:${m.slice("blocked:".length)}` };
+  }
+  return null;
+}
+
+/** The open question's code of a `rule-open` reason from `openConstraintOf` as the page writes it ("GOV OQ7"), or null for any other reason. */
+export function openConstraintCode(r: Pick<Reason, "code" | "detail">): string | null {
+  if (r.code !== "rule-open" || !r.detail) return null;
+  const m = /^(?:minimum|eligibility):(.+)$/.exec(r.detail);
+  return m ? m[1]!.replace("-OQ", " OQ") : null;
+}
+
+/** P-04's equity row: the horizon from which the site's table calls an equity track fitting, and the fall it is judged to take. Null when the bundle holds no table. */
+export function equityFit(bundle: Pick<CompareBundle, "fit">): { minYears: SiteValue; maxFall: SiteValue | null } | null {
+  const row = bundle.fit?.rows.find((r) => r.classification === "מניות");
+  if (!row || typeof row.minYears.value !== "number") return null;
+  return { minYears: row.minYears, maxFall: row.maxFallPct && typeof row.maxFallPct.value === "number" ? row.maxFallPct : null };
+}
+
+/**
+ * F-83 (2026-10-24): an equity-exposed option (one whose run rests on the person's entered return, A-01) is listed, not ranked, when the fall
+ * the person accepts (A-29) is below the fall P-04 judges the option's own classification to take (a provident or pension wrapper: its representative track's row, so a general track is judged at the general row; a fund-based wrapper: the equity row when its exposure is an equity index; no classification: never demoted), unless they entered a forecast fall for it that passes the F-71
+ * filter. The reason is `rule-open` with `detail` "fit-drop:<P-04 fall>"; nothing is a financial rule, both numbers are the person's or a site parameter (D11 unchanged).
+ */
+export function fitDropReason(bundle: Pick<CompareBundle, "fit">, w: WrapperEntry, g: Pick<RunGoal, "acceptedFall" | "forecastFall">): Reason | null {
+  if (!needsReturn(w)) return null;
+  const accepted = g.acceptedFall;
+  if (accepted === null || accepted === undefined) return null;
+  const basis = w.fitBasis;
+  if (!basis) return null;
+  let cap: SiteValue | null | undefined;
+  if ("equity" in basis) cap = equityFit(bundle)?.maxFall;
+  else {
+    // the track's own P-04 row ("כללי" 20 %, "מניות" 30 %, ...), looked up as the fit mark does; fitOf is called with the accepted fall of 0 so it reports the row's cap
+    const r = bundle.fit ? fitOf(bundle.fit, basis.track, 0, 0) : null;
+    cap = r && r.kind !== "no-rule" ? r.fall?.max : null;
+  }
+  if (!cap || accepted >= (cap.value as number)) return null;
+  if (typeof g.forecastFall === "number" && g.forecastFall <= accepted) return null;
+  return { code: "rule-open", ruleIds: [], gapIds: [], detail: `fit-drop:${cap.value}` };
+}
+
+/** The P-04 fall of a `fitDropReason`, or null for any other reason. */
+export function fitDropOf(r: Pick<Reason, "code" | "detail">): number | null {
+  if (r.code !== "rule-open" || !r.detail) return null;
+  const m = /^fit-drop:(.+)$/.exec(r.detail);
+  return m ? Number(m[1]) : null;
+}
+
 export function evaluate(bundle: CompareBundle, g: RunGoal, options: EvalOptions = {}): Evaluated {
   const ctx: RunContext = { rules: bundle.rules, runDate: bundle.runDate };
   const needs: Partial<Record<string, FieldKey>> = {};
@@ -376,9 +604,13 @@ export function evaluate(bundle: CompareBundle, g: RunGoal, options: EvalOptions
   const byId = new Map(bundle.wrappers.map((w) => [w.id as string, w]));
   const candidates = set.candidates.map((c): Candidate => {
     const w = byId.get(c.id);
+    const open = (c.kind === "ranked" || c.kind === "listed-not-ranked") && w ? openConstraintOf(w.record) : null;
+    if (open) return { ...c, kind: "listed-not-ranked", reasons: [...c.reasons, open] };
     if (g.returnPct === null && w && c.run && needsReturn(w)) {
       return { id: c.id, tier: 1, kind: "not-evaluated", reasons: [{ code: "missing-input", ruleIds: [], gapIds: [], detail: "A-01" }] };
     }
+    const unfit = (c.kind === "ranked" || c.kind === "listed-not-ranked") && w && c.run ? fitDropReason(bundle, w, g) : null;
+    if (unfit) return { ...c, kind: "listed-not-ranked", reasons: [...c.reasons, unfit] };
     return c;
   });
   const fields: Partial<Record<string, FieldKey>> = {};
@@ -438,6 +670,8 @@ export interface RankedOption {
   /** Against the row above: the formula with the biggest gap, and both options' figures (real NIS). */
   deciding?: { formula: DecidingFormula; mine: number; above: number };
   enteredReturn: boolean;
+  /** The fee level the person entered for this option's representative instrument (D4), as an entered value; the card's figures list it among their inputs. */
+  enteredFee?: SiteValue;
   cashLike: boolean;
   secondaryRules: string[];
   staleRules: { id: string; since: string }[];
@@ -491,6 +725,8 @@ export interface MarkRow {
   rules: string[];
   /** The options the dimension affected (covered) or keeps from being ranked (blocked). */
   options: string[];
+  /** The options shown that are blocked on this dimension in their own record, filled even when another option covers it (scenario fix 2026-10-24: coverage is pooled). */
+  blockedOptions?: { code: string; options: string[] };
 }
 
 export type HeadlineKind = "winner" | "single" | "tie" | "all-tied" | "only-baseline" | "nothing-ranked" | "excludes-all";
@@ -619,6 +855,7 @@ function view(bundle: CompareBundle, g: RunGoal, ev: Evaluated): CompareView {
     const enteredReturn = needsReturn(w) && g.returnPct !== null;
     const secondaryRules = run.labels.filter((l) => l.code === "secondary-source").map((l) => l.ruleId);
     const chips = chipsFor(w, g, goalValues, cashRate, bundle.runDate);
+    const enteredFee = g.ownFees?.[w.id] !== undefined && feeTargetOf(w) ? feeFor(w, g, bundle.runDate) : undefined;
     return {
       id: c.id,
       name: w.name,
@@ -632,6 +869,7 @@ function view(bundle: CompareBundle, g: RunGoal, ev: Evaluated): CompareView {
       decomposition: decomps[i]!,
       ...(deciding ? { deciding } : {}),
       enteredReturn,
+      ...(enteredFee ? { enteredFee } : {}),
       cashLike: isCashLike(w),
       secondaryRules,
       staleRules: staleOf(run.rules, bundle),
@@ -731,7 +969,8 @@ function view(bundle: CompareBundle, g: RunGoal, ev: Evaluated): CompareView {
     const rules = [...(dimRules.get(row.id) ?? [])];
     const covered = rules.length > 0;
     const blocked = blockedDims.get(row.id);
-    if (covered) return { ...row, mark: "covered", rules, options: [...(dimOptions.get(row.id) ?? [])] };
+    const blockedOptions = blocked && covered ? { code: blocked.code, options: [...blocked.options] } : undefined;
+    if (covered) return { ...row, mark: "covered", rules, options: [...(dimOptions.get(row.id) ?? [])], ...(blockedOptions ? { blockedOptions } : {}) };
     if (blocked) return { ...row, mark: "blocked", code: blocked.code, rules: [], options: [...blocked.options] };
     return { ...row, mark: "na", rules: [], options: [] };
   });
@@ -817,6 +1056,14 @@ function chipsFor(w: WrapperEntry, g: RunGoal, v: GoalValues, cash: SiteValue | 
   const labels: Record<string, string> = { balance: "דמי ניהול מחיסכון", fundDrag: "העלות בתוך הקרן", tradeRate: "עמלת קנייה ומכירה", custodyRate: "דמי ניהול פיקדון ניירות ערך" };
   for (const k of feeKey[w.family ?? ""] ?? []) {
     // The run takes the sum of the fund's fee lines, so the chip shows that sum (F10), with each line as an input of the computed value.
+    if (k === "fundDrag" && g.ownFees?.[w.id] !== undefined && feeTargetOf(w) === "fund") {
+      chips.push({ key: k, label: ownTermsCopy.fundCostLabel, value: feeFor(w, g, today)! });
+      continue;
+    }
+    if (k === "balance" && g.ownFees?.[w.id] !== undefined && feeTargetOf(w) === "balance") {
+      chips.push({ key: k, label: ownTermsCopy.feeLabel, value: feeFor(w, g, today)! });
+      continue;
+    }
     if (k === "fundDrag") {
       const parts = dragKeys.filter((d) => typeof w.feeValues[d]?.value === "number");
       const total = parts.reduce((s, d) => s + (w.feeValues[d]!.value as number), 0);
@@ -899,9 +1146,11 @@ export interface HeadlineState {
   lead: "leader" | "cash-only";
   /** N: the options ranked. */
   ranked: number;
-  /** K: the options the person can make rankable by entering something, and the fields that would do it. */
+  /** K: the options not checked (the coverage line's own count, so the two agree) and the fields the person can enter to make some of them rankable. */
   unevaluated: number;
   fields: FieldKey[];
+  /** How many of the K the fields would make rankable. */
+  fixable: number;
 }
 
 const fieldOrder: FieldKey[] = ["return", "employment", "salary", "age", "insurance"];
@@ -911,7 +1160,8 @@ export function headlineState(v: { ranked: readonly { cashLike: boolean }[]; cov
   const fixable = v.coverageRows.filter((r) => r.kind === "not-evaluated" && r.reasons.some((x) => x.fixableBy === "person" && x.field));
   const fields = fieldOrder.filter((f) => fixable.some((r) => r.reasons.some((x) => x.field === f)));
   const cashOnly = v.ranked.length > 0 && v.ranked.every((o) => o.cashLike) && fixable.length > 0;
-  return { lead: cashOnly ? "cash-only" : "leader", ranked: v.ranked.length, unevaluated: fixable.length, fields };
+  const all = v.coverageRows.filter((r) => r.kind === "not-evaluated").length;
+  return { lead: cashOnly ? "cash-only" : "leader", ranked: v.ranked.length, unevaluated: all, fields, fixable: fixable.length };
 }
 
 /**
@@ -927,6 +1177,56 @@ export function grossReturnRow(a: Pick<RankedOption, "chips">, b: Pick<RankedOpt
   return { a: x, b: y };
 }
 
+// ---------------------------------------------------------------- what the headline says beyond the leader (scenario fix 2026-10-24)
+
+/**
+ * The limitation comes first when the horizon is at or above P-04's equity minimum and no return is entered: the years are long enough for
+ * shares by the site's own table, so the cash-only ranking is the limitation, not the answer.
+ */
+export function limitationFirst(v: Pick<CompareView, "ranked" | "coverageRows">, g: Pick<RunGoal, "horizonYears">, bundle: Pick<CompareBundle, "fit">): boolean {
+  const eq = equityFit(bundle);
+  if (!eq) return false;
+  return headlineState(v).lead === "cash-only" && g.horizonYears >= (eq.minYears.value as number);
+}
+
+/** The leader's rate is P-05's site parameter while a ranked rival's rate is a bank's published rate or the person's own (or a return the person entered). */
+export function parameterRateLead(view: Pick<CompareView, "ranked" | "cashRate">, bundle: CompareBundle, g: RunGoal): { id: string; name: string; rate: SiteValue } | null {
+  const top = view.ranked[0];
+  if (!top || !top.cashLike || !view.cashRate) return null;
+  const byId = new Map(bundle.wrappers.map((w) => [w.id as string, w]));
+  const w = byId.get(top.id);
+  if (!w || cashRateFor(w, g, bundle.runDate)) return null;
+  const rivalKnown = view.ranked.slice(1).some((o) => {
+    const rw = byId.get(o.id);
+    if (!rw) return false;
+    if (needsReturn(rw)) return g.returnPct !== null;
+    return !!cashRateFor(rw, g, bundle.runDate);
+  });
+  return rivalKnown ? { id: top.id, name: top.name, rate: view.cashRate } : null;
+}
+
+/** The currency (other than the shekel) of the exposure the wrapper's representative fund tracks, from the exposure records; null when it has none or is in shekels. */
+export function foreignCurrencyOf(bundle: CompareBundle, wrapperId: string): string | null {
+  const inst = (parameterOf(bundle, "P-05") as unknown as { instruments?: Record<string, { fund?: string | number }> }).instruments?.[wrapperId];
+  if (!inst?.fund) return null;
+  const e = bundle.exposures?.find((x) => (x.record.variants ?? []).includes(`fund:${inst.fund}` as never));
+  return e && e.record.currency !== "ILS" ? e.record.currency : null;
+}
+
+/** The leader runs on a return the person entered (the caveat the headline carries): the return as the person typed it, and a foreign currency when the leader's fund is quoted in one. */
+export function enteredLead(view: Pick<CompareView, "ranked">, bundle: CompareBundle, g: RunGoal, subjectCurrency?: string | null): { returnV: SiteValue; currency: string | null } | null {
+  const top = view.ranked[0];
+  if (!top || !top.enteredReturn) return null;
+  const returnV = goalValueObjects(bundle, g).returnV;
+  if (!returnV) return null;
+  return { returnV, currency: subjectCurrency ?? foreignCurrencyOf(bundle, top.id) };
+}
+
+/** The year-by-year picture in today's money: what an amount that does not grow is worth after `years` years of inflation (F-06 with no growth, 2026-10-24). */
+export function realOfIdle(amount: number, inflationPct: number, years: number): number {
+  return amount / Math.pow(1 + inflationPct / 100, years);
+}
+
 // ---------------------------------------------------------------- sensitivity (F-81)
 
 export interface SensitivityRowView {
@@ -939,6 +1239,11 @@ export interface SensitivityRowView {
   lo: number;
   hi: number;
   flip?: { from: number; to: number; side: "lo" | "hi"; topAfter: string; breaksTie: boolean };
+  /**
+   * A fee row of the representative instrument in fee terms (2026-10-24), % a year: what the run takes now, the range tested,
+   * where the answer flips and the lowest in-fund cost among the records collected for the exposure. `kind` is "fund" or "balance".
+   */
+  fee?: { wrapperId: string; kind: "fund" | "balance"; currentPct: number; loPct: number; hiPct: number; flipAtPct?: number; classMinPct?: number; entered: boolean };
 }
 
 export interface SensitivityView {
@@ -990,6 +1295,21 @@ export function computeSensitivity(bundle: CompareBundle, g: RunGoal, ev: Evalua
   const current: Record<string, number> = { "A-02": inflationNow / 100 };
   if (g.returnPct !== null) current["A-01"] = g.returnPct / 100;
   const axes = sensitivityAxes(bundle.parameters, { current, horizonYears: g.horizonYears, fees });
+  // 2026-10-24: the in-fund cost is searched down to P-02's A-06 floor (the cost inside a fund, 0 to 3 % a year), not only to half of the record's:
+  // a cheap tracker costs a tenth of an active fund and half is not far enough. A floor below the lowest cost collected stays visible (`classMinPct`).
+  const feeInfo = new Map<string, NonNullable<SensitivityRowView["fee"]>>();
+  const a06 = (parameterOf(bundle, "P-02") as unknown as { bounds?: Record<string, { lo?: ValueObject }> }).bounds?.["A-06"]?.lo?.value;
+  for (const a of axes) {
+    const m = /^fee:(.+):(fund|balance)$/.exec(a.key);
+    if (!m) continue;
+    const w = byId.get(m[1]!);
+    const now = w ? feeFor(w, g, bundle.runDate)?.value : undefined;
+    if (!w || typeof now !== "number" || !(now > 0)) continue;
+    const kind = m[2] as "fund" | "balance";
+    if (kind === "fund" && typeof a06 === "number" && a06 / now < a.lo) a.lo = Math.max(0, a06 / now);
+    const classMin = w.representative?.classMinFee?.value;
+    feeInfo.set(a.key, { wrapperId: w.id, kind, currentPct: now, loPct: a.lo * now, hiPct: a.hi * now, ...(typeof classMin === "number" ? { classMinPct: classMin } : {}), entered: g.ownFees?.[w.id] !== undefined });
+  }
   for (const a of axes) a.label = a.key === "A-01" ? labels.return : a.key === "A-02" ? labels.inflation : a.key === "horizon" ? labels.horizon : a.label;
   const topOf = (key: string, value: number): string => {
     const goal: RunGoal = { ...g };
@@ -1008,11 +1328,14 @@ export function computeSensitivity(bundle: CompareBundle, g: RunGoal, ev: Evalua
     const best = sides.sort((a, b) => Math.abs(a.to - r.current) - Math.abs(b.to - r.current))[0];
     const field: FieldKey | null = r.key === "A-01" ? "return" : r.key === "A-02" ? "inflation" : r.key === "horizon" ? "horizonYears" : null;
     const view: SensitivityRowView = { key: r.key, label: r.label, field, unit: r.unit, current: r.current, lo: r.lo.bound, hi: r.hi.bound };
+    const fee = feeInfo.get(r.key);
+    if (fee) view.fee = { ...fee };
     if (best) {
       const after = new Set(best.topAfter.split("|").filter(Boolean));
       const breaksTie = baseSet.size > 1 && after.size > 0 && [...after].every((id) => baseSet.has(id)) && after.size < baseSet.size;
       // A7 and F-81 (2026-10-24): a move whose "then X first" names the option that is already first says nothing ("אז קרן כספית ראשונה" when it is): no flip
       if (breaksTie || flipIsChange(best.topAfter, baseSet)) view.flip = { from: r.current, to: best.to, side: best.side, topAfter: best.topAfter, breaksTie };
+      if (view.flip && view.fee) view.fee.flipAtPct = best.to * view.fee.currentPct;
     }
     return view;
   });

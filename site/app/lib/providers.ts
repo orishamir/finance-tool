@@ -466,7 +466,7 @@ function snapshotValues(s: FeesSnapshot, today: string): { tariff: RowTariff; st
 const levelOf = (s: FeesSnapshot, ui: UiLevel, entered: boolean): FeeLevel => (entered ? "entered" : ui === "average" ? (s.provider.class === "bank" ? "regulator_average" : "tase_average") : "list");
 
 /** Providers of the wrapper: every bank and broker snapshot (F-83). */
-export function providersOf(bundle: WorkbenchBundle, wrapperId: string): FeesSnapshot[] {
+export function providersOf(bundle: Pick<WorkbenchBundle, "snapshots">, wrapperId: string): FeesSnapshot[] {
   if (wrapperId !== BROKERAGE) return [];
   return bundle.snapshots.filter((s) => s.provider.class === "bank" || s.provider.class === "broker").sort((a, b) => a.provider.name_he.localeCompare(b.provider.name_he, "he"));
 }

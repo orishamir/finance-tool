@@ -27,6 +27,8 @@ export interface RowCtx {
   onOffer: (id: string, el: HTMLElement) => void;
   onDetail: (id: string, el: HTMLElement) => void;
   onVs: (id: string | null) => void;
+  /** 2026-10-24: run the goal comparison's brokerage option on a provider; absent where the wrapper has no such choice. */
+  compareUse?: { has: (id: string) => boolean; active: string | null; noGoal: boolean; onUse: (id: string) => void; onClear: () => void };
 }
 
 const quietLink = "text-sm text-link hover:underline min-h-target inline-flex items-center";
@@ -37,6 +39,38 @@ function ClassLine({ view }: { view: ProviderRowView }) {
     <span className="text-sm text-muted-foreground">
       {c.classWords[view.providerClass] ?? view.providerClass} · {regulator}
     </span>
+  );
+}
+
+function UseInCompare({ id, use }: { id: string; use: NonNullable<RowCtx["compareUse"]> }) {
+  const t = c.providers.useInCompare;
+  if (use.active === id) {
+    return (
+      <>
+        <Tag tone="entered" className="self-center">{t.active}</Tag>
+        <Link to="/goal/compare" className={quietLink}>
+          {t.toCompare}
+        </Link>
+        <button type="button" className={quietLink} onClick={use.onClear}>
+          {t.clear}
+        </button>
+      </>
+    );
+  }
+  if (use.noGoal) {
+    return (
+      <span className="text-sm text-muted-foreground inline-flex items-center gap-x-1.5 flex-wrap min-h-target" data-no-goal>
+        {t.noGoal}
+        <Link to="/goal" className="text-link hover:underline">
+          {t.toGoal}
+        </Link>
+      </span>
+    );
+  }
+  return (
+    <button type="button" className={quietLink} onClick={() => use.onUse(id)}>
+      {t.use}
+    </button>
   );
 }
 
@@ -59,6 +93,7 @@ function RowLinks({ view, ctx }: { view: ProviderRowView; ctx: RowCtx }) {
           {view.vs ? c.providers.vsClear : c.providers.vsSet}
         </button>
       )}
+      {view.kind === "ranked" && ctx.compareUse?.has(view.id) && <UseInCompare id={view.id} use={ctx.compareUse} />}
     </div>
   );
 }

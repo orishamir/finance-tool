@@ -5,7 +5,7 @@ import type { SearchEntry } from "../lib/search";
 export async function loader() {
   const { loadCma, loadTerms, loadWrappers } = await import("../lib/data.server");
   const { loadCatalog, loadExposures } = await import("../lib/instruments.server");
-  const { normalize } = await import("../lib/search");
+  const { normalize, pageAliases } = await import("../lib/search");
   const { search } = await import("../copy");
   const entries: SearchEntry[] = [];
   const wrappers = loadWrappers();
@@ -18,6 +18,7 @@ export async function loader() {
   for (const t of cma.tracks) entries.push({ kind: "track", name: t.name, line: `${t.companyName} · ${t.classification} · ${idLine(t.fundId)}`, href: `/companies/${t.companyId}/${t.fundId}`, norm: normalize(t.name), ids: [String(t.fundId)] });
   // audit 2026-10-24 (A92): the managing companies are results, by name and by company number
   for (const c of cma.companies) entries.push({ kind: "company", name: c.name, line: search.groups.company, href: `/companies/${c.id}`, norm: normalize(c.name), ids: [c.id] });
+  for (const a of pageAliases) for (const name of a.names) entries.push({ kind: "guide", name, line: a.line, href: a.href, norm: normalize(name) });
   const exposures = loadExposures();
   for (const e of exposures) for (const name of [...e.names.he, ...e.names.en]) entries.push({ kind: "guide", name, line: search.groups.guide, href: `/exposure/${e.id}`, norm: normalize(name) });
   // every name the catalogue records: the track when it names one, else the company page, else the product's guide page

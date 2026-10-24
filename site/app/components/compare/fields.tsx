@@ -238,15 +238,20 @@ export function AgeStepper({ label, value, onChange, validate, hint }: { label: 
   );
 }
 
-/** One chip is chosen at a time; the row scrolls sideways on a phone and wraps from md. A chip never submits. */
-export function PresetChips({ value, onChange, ids }: { value: PresetId; onChange: (p: PresetId) => void; ids: PresetId[] }) {
+/** One chip is chosen at a time; the row scrolls sideways on a phone and wraps from md. A chip never submits. `value` may be null (nothing chosen). */
+export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ariaLabel, bleed = "-mx-gutter px-gutter", wrap }: { ids: readonly T[]; labels: Record<string, string>; value: T | null; onChange: (id: T) => void; ariaLabel: string; /** Wrap into rows on a phone too, instead of scrolling sideways (the goal form's preset row, scenario fix 2026-10-24). */ wrap?: boolean; /** The phone bleed to the edge of whatever holds the row (a card pads 16px, the page pads its gutter). */ bleed?: string }) {
   return (
-    <div role="radiogroup" aria-label={r2.form.presetLabel} className="-mx-gutter px-gutter md:mx-0 md:px-0 flex gap-2 overflow-x-auto md:flex-wrap md:overflow-visible pb-1 scrollbar-none">
+    <div role="radiogroup" aria-label={ariaLabel} className={wrap ? "flex flex-wrap gap-2" : cx(bleed, "md:mx-0 md:px-0 flex gap-2 overflow-x-auto md:flex-wrap md:overflow-visible pb-1 scrollbar-none")}>
       {ids.map((id) => (
         <button key={id} type="button" role="radio" aria-checked={value === id} onClick={() => onChange(id)} className={cx("sec-chip border border-border shrink-0 transition-colors duration-[var(--duration-fast)]", value === id ? "sec-chip-on" : "bg-card hover:bg-accent")}>
-          {r2.presets[id]}
+          {labels[id]}
         </button>
       ))}
     </div>
   );
+}
+
+/** The goal form's preset chips: the general chips with the preset names (the home page's question card uses the same row for its purposes). */
+export function PresetChips({ value, onChange, ids }: { value: PresetId; onChange: (p: PresetId) => void; ids: PresetId[] }) {
+  return <ChoiceChips ids={ids} labels={r2.presets} value={value} onChange={onChange} ariaLabel={r2.form.presetLabel} wrap />;
 }

@@ -1,0 +1,175 @@
+{
+  "id": "5124482",
+  "names": {
+    "en": [],
+    "he": [
+      "קסם S&P 500 (4D) KTF",
+      "קסם SP500 KTF"
+    ],
+    "tase": [
+      "5124482"
+    ]
+  },
+  "identifiers": {
+    "isin": "IL0051244825",
+    "tase_number": "5124482",
+    "cusip": null,
+    "ticker": {}
+  },
+  "manager": "קסם קרנות נאמנות בע\"מ",
+  "domicile": "IL",
+  "legal_form": "קרן פתוחה, קרן מחקה (open tracking fund under the Joint Investment Trust Law 1994; bought and redeemed at the unit price through a distributor, not traded on the exchange, ETF-04); קרן בלתי מוגבלת בניירות ערך חוץ; units of 1 ₪ par value. Trustee: אלמגור - בריטמן נאמנויות בע\"מ. Tracking asset: מדד S&P 500 - Net Total Return Index 100%, מטבע דולר ארה\"ב 100%. Classification changed on 01.07.2023 (from 'ארה\"ב - S&P 500' to 'אמריקה - שווקים מפותחים'). First-offer date not printed in this report.",
+  "exposure_id": "index-sp500",
+  "currency": "NIS",
+  "trading_currency_on_tase": null,
+  "distribution_policy": "accumulating",
+  "tax_status": {
+    "il_fund_tax_track": "exempt",
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1726001-1727000/P1726311-00.pdf",
+        "title": "דוח שנתי 'קסם S&P 500 (4D) KTF' (מספר בורסה 5124482), תאריך הדוח 31 דצמבר 2025, קסם קרנות נאמנות בע\"מ (Maya filing 1726311, PDF), עמ' 1 'שכר מנהל הקרן' ופרק ההוצאות שנפרעו מנכסי הקרן",
+        "publisher": "קסם קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13",
+        "MF-16",
+        "MF-17"
+      ],
+      "state": "sourced",
+      "notes": "Fixed management fee: p. 1 'דמי הניהול הקבועים: 0% מהשווי הנקי השנתי הממוצע של נכסי הקרן' (footnote 5: the manager committed to the ISA outline not to raise its pay, the load or the variable fee during a calendar year, only at its start). Load (שיעור ההוספה): 0% of the unit price. Expense table: fixed management fee 0% in each of 2022 to 2025; total expenses 0.125% in each year. Prospectus published on Magna on 07.08.2025, reference 2025-03-058648 (not opened; Magna returns 403 to scripts). ISIN read on the fund's Maya page (https://maya.tase.co.il/he/funds/mutual-funds/5124482, field 'ISIN', read in Chrome on 2026-10-24); the page states its fund data is collected from the manager's filings and not audited by TASE. The annual report itself prints no ISIN."
+    },
+    "trustee": {
+      "value": 0.025,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1726001-1727000/P1726311-00.pdf",
+        "title": "דוח שנתי 'קסם S&P 500 (4D) KTF' (מספר בורסה 5124482), תאריך הדוח 31 דצמבר 2025, קסם קרנות נאמנות בע\"מ (Maya filing 1726311, PDF), עמ' 1 'שכר הנאמן' ופרק ההוצאות שנפרעו מנכסי הקרן",
+        "publisher": "קסם קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13",
+        "MF-20"
+      ],
+      "state": "sourced",
+      "notes": "Trustee fee (שכר הנאמן): p. 1 '0.025% מהשווי הנקי השנתי הממוצע של נכסי הקרן'; expense table 0.025% in each of 2022 to 2025."
+    },
+    "variable_management": {
+      "value": 0.1,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1726001-1727000/P1726311-00.pdf",
+        "title": "דוח שנתי 'קסם S&P 500 (4D) KTF' (מספר בורסה 5124482), תאריך הדוח 31 דצמבר 2025, קסם קרנות נאמנות בע\"מ (Maya filing 1726311, PDF), עמ' 1 'דמי ניהול משתנים' ופרק ההוצאות שנפרעו מנכסי הקרן",
+        "publisher": "קסם קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-14",
+        "ETF-13"
+      ],
+      "state": "sourced",
+      "notes": "Variable management fee: p. 1 'דמי הניהול המשתנים: 0.1% לשנה, מהשווי הנקי של נכסי הקרן'. Expense table: variable management fee 0.1% in each of 2022 to 2025 (the mechanism works in both directions, ETF-14)."
+    },
+    "tracking_difference_12m": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1726001-1727000/P1726311-00.pdf",
+        "title": "דוח שנתי 'קסם S&P 500 (4D) KTF' (מספר בורסה 5124482), תאריך הדוח 31 דצמבר 2025, קסם קרנות נאמנות בע\"מ (Maya filing 1726311, PDF), פרק 'תשואות, סטיות תקן ונתוני השוואה', 2025",
+        "publisher": "קסם קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-08",
+        "ETF-09",
+        "ETF-10"
+      ],
+      "state": "sourced",
+      "notes": "Not printed as one number. For 2025 the report prints the fund's price return 2.98% (standard deviation 18.79) against the tracking asset (S&P 500 NTR 100%, דולר ארה\"ב 100%) 2.61% (standard deviation 20.56); earlier years: 2024 25.11% against 24.96%; 2023 30.15% against 29.43%; 2022 -7.37% against -7.55%. The difference is not computed here (data-update rule)."
+    },
+    "median_spread": {
+      "value": null,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1726001-1727000/P1726311-00.pdf",
+        "title": "דוח שנתי 'קסם S&P 500 (4D) KTF' (מספר בורסה 5124482), תאריך הדוח 31 דצמבר 2025, קסם קרנות נאמנות בע\"מ (Maya filing 1726311, PDF), עמ' 1 'שיעור ההוספה'",
+        "publisher": "קסם קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-04",
+        "MF-21"
+      ],
+      "state": "sourced",
+      "notes": "Not applicable: an open tracking fund is bought and redeemed at the unit price computed from net asset value (MF-09), with no exchange spread; the load on purchase is 0% (p. 1). The distributor may charge its own buy and sell commission (footnote 4; MF-26)."
+    },
+    "fund_level_withholding_drag": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1726001-1727000/P1726311-00.pdf",
+        "title": "דוח שנתי 'קסם S&P 500 (4D) KTF' (מספר בורסה 5124482), תאריך הדוח 31 דצמבר 2025, קסם קרנות נאמנות בע\"מ (Maya filing 1726311, PDF), פרק מדיניות ההשקעות (חשיפה דרך נגזרים)",
+        "publisher": "קסם קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-11"
+      ],
+      "state": "sourced",
+      "notes": "Not collected: no computation is made here and the report prints no withholding figure. The investment policy says the fund mainly uses futures abroad on the tracking asset, swaps and currency forwards (p. 2), so any dividend-withholding drag sits inside instrument pricing and is not published as a rate."
+    }
+  },
+  "dimensions": {
+    "fund-tax-track": "covered:TXS-24",
+    "fee-management-balance": "covered:ETF-13",
+    "distribution-policy": "covered:MF-49",
+    "currency": "covered:ETF-10",
+    "fee-trade": "covered:MF-21",
+    "protection": "covered:MF-02"
+  },
+  "prospectus": {
+    "url": "https://mayafiles.tase.co.il/rpdf/1726001-1727000/P1726311-00.pdf",
+    "date": "2025-08-07"
+  },
+  "exposure_code": "4D",
+  "distribution_fee_type": "3",
+  "creation_redemption_fee_category": null,
+  "snapshot": "2026-10-24"
+}

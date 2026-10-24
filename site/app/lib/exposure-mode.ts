@@ -5,6 +5,8 @@
 // published bank rate from the bundle, or is the run's computed value.
 import {
   compareExposures,
+  coverageLine,
+  outcomeOrder,
   rankCandidates,
   type ExposureCandidate,
   type ExposureComparison,
@@ -16,7 +18,7 @@ import {
   type RunResult,
 } from "@finance-tool/engine";
 import type { ParameterRecord, ValueObject, WrapperId } from "@finance-tool/schema";
-import { comparisonGoal, parameterOf, termsFor, yearSeries, type CompareBundle, type ExposureEntry, type RunGoal, type WrapperEntry } from "./compare";
+import { comparisonGoal, equityFit, parameterOf, termsFor, yearSeries, type CompareBundle, type ExposureEntry, type RunGoal, type WrapperEntry } from "./compare";
 import type { ExposureInputs, FieldKey, Goal } from "./goal";
 import { entered as enteredValue, type SiteValue } from "./value";
 
@@ -202,8 +204,29 @@ export function computeExposureMode({ bundle, g, goal }: ExposureModeInput): Exp
     ...(p.blocked ? {} : { wrapper: p.wrapper!.record, ...(p.terms ? { terms: p.terms } : {}), ...(p.gross ? { grossReturn: p.gross } : {}) }),
   }));
   const lf = lossFilterOf(goal, today);
-  const comparison = compareExposures({ exposures: holdings, parameters: bundle.parameters, goal: comparisonGoal(g), lossFilter: lf }, ctx);
+  const raw = compareExposures({ exposures: holdings, parameters: bundle.parameters, goal: comparisonGoal(g), lossFilter: lf }, ctx);
   const theta = ((parameterOf(bundle, "P-01") as unknown as { value: ValueObject }).value.value as number) / 100;
+  // F-83 (2026-10-24): an equity exposure is listed, not ranked, when the fall the person accepts is below P-04's equity fall,
+  // unless they entered a forecast fall for it that passes F-71 (it is then already ranked or excluded by the filter).
+  const cap = equityFit(bundle)?.maxFall;
+  const demoted = new Set<string>();
+  if (cap) {
+    for (const c of raw.candidates) {
+      const p = plans.find((x) => x.entry.record.id === c.id);
+      if (c.kind !== "ranked" || !p || p.entry.record.kind !== "equity_index") continue;
+      const mine = inputsOf(c.id);
+      const accepted = (mine.acceptedFall ?? (lf.acceptedFall as ValueObject | undefined))?.value;
+      if (typeof accepted !== "number" || accepted >= (cap.value as number)) continue;
+      const worst = mine.worstFall?.value;
+      if (typeof worst === "number" && worst <= accepted) continue;
+      demoted.add(c.id);
+    }
+  }
+  let comparison = raw;
+  if (demoted.size > 0) {
+    const candidates = raw.candidates.map((c) => (demoted.has(c.id) ? { ...c, kind: "listed-not-ranked" as const, reasons: [...c.reasons, { code: "rule-open" as const, ruleIds: [], gapIds: [], detail: `fit-drop:${cap!.value}` }] } : c));
+    comparison = { ...raw, candidates, ranking: rankCandidates(candidates, { theta, ctx }), coverage: coverageLine(candidates, outcomeOrder, ["ranked"]) };
+  }
 
   const cand = new Map(comparison.candidates.map((c) => [c.id, c]));
   const ranking = comparison.ranking.entries;

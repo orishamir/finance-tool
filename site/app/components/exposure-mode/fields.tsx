@@ -65,11 +65,11 @@ function InfoToggle({ label, children }: { label: string; children: ReactNode })
 
 export function EnteredReturnField({ entry, value, onChange, label, fromProduct, range }: { entry: ExposureEntry; value?: ValueObject; onChange: (v: ValueObject | undefined) => void; label?: ReactNode; /** The return taken from the product comparison (decision 16), shown in the field until the person types another. */ fromProduct?: ValueObject; range: PctRange }) {
   const cur = entry.record.currency;
-  const word = r5.exposure.fields.currency[cur] ?? cur;
+  const word = r5.exposure.fields.currencyOne[cur] ?? cur;
   const shown = value ?? fromProduct;
   return (
     <NumberField
-      label={label ?? <Tpl t={r5.exposure.fields.returnLabel} vars={{ currency: word }} />}
+      label={label ?? (cur === "ILS" ? r5.exposure.fields.returnLabelIls : <Tpl t={r5.exposure.fields.returnLabel} vars={{ currency: word }} />)}
       unit="pct_per_year"
       value={typeof shown?.value === "number" ? shown.value : null}
       isEntered={!!shown}

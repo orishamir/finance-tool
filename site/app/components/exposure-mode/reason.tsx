@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { r2, r5 } from "../../copy";
 import { fmt } from "../../lib/format";
 import type { ExposureRowView, RowReason } from "../../lib/exposure-mode";
-import type { ReasonView } from "../../lib/compare";
+import { fitDropOf, type ReasonView } from "../../lib/compare";
 import { ReasonText } from "../compare/reasons";
 import type { ResultCtx } from "../compare/ctx";
 import { IconExternal } from "../icons";
@@ -55,6 +55,7 @@ export function ExposureReason({ row, ctx }: { row: ExposureRowView; ctx: ExpCtx
         if (e.code === "missing-input" && /grossReturn/.test(e.detail ?? "")) return <span key={i} className="block">{c.noReturn}</span>;
         if (e.code === "missing-input" && e.detail === "wrapper") return <span key={i} className="block">{c.noWrapper}</span>;
         const view: ReasonView = { ...e };
+        if (fitDropOf(e) !== null) return <span key={i} className="block"><ReasonText r={view} id={row.id} ctx={asResultCtx(ctx)} /></span>;
         return (
           <span key={i} className="block">
             {row.kind === "listed-not-ranked" && row.holding.name ? <Tpl t={r5.exposure.listedThrough} vars={{ wrapper: <bdi>{row.holding.name}</bdi>, reason: <ReasonText r={view} id={row.holding.wrapperId ?? row.id} ctx={asResultCtx(ctx)} routed={row.candidate.routed} /> }} /> : <ReasonText r={view} id={row.holding.wrapperId ?? row.id} ctx={asResultCtx(ctx)} routed={row.candidate.routed} />}

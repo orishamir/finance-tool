@@ -43,6 +43,10 @@ export interface Goal {
   /** "YYYY-MM" from which the part must be available; saved, not yet used by the engine. */
   availableFrom: string | null;
   anytime: { value: boolean; entered: boolean };
+  /** The child's age in whole years (0 to 17), asked only with the child preset: the horizon is the preset's 18 minus it. Absent or null: the preset's own 18. scenario fix 2026-10-24 */
+  childAge?: number | null;
+  /** What a known-date purchase costs, an entered value object in shekels; asked only with the known-date preset. Enters no ranking: the result shows the gap to the leading option. scenario fix 2026-10-24 */
+  targetCost?: ValueObject | null;
   profile: {
     age: number | null;
     employment: Employment | null;
@@ -123,13 +127,30 @@ export interface ResolvedGoal {
   preset: ReturnType<typeof presetNumbers>;
 }
 
+/** The child's age from what was typed: a number from 1900 up is a birth year (`year` is this year), anything else is the age. Null outside 0 to 17. scenario fix 2026-10-24 */
+export function childAgeFrom(typed: number, year: number): number | null {
+  const age = typed >= 1900 ? year - typed : typed;
+  return Number.isInteger(age) && age >= 0 && age <= 17 ? age : null;
+}
+
+/** The child preset's horizon: its 18 years less the child's age (never below 1); the preset's own number when no valid age is given. */
+export function childHorizon(presetYears: number | null, age: number | null | undefined): number | null {
+  if (presetYears === null || age === null || age === undefined || !Number.isInteger(age) || age < 0 || age >= presetYears) return presetYears;
+  return presetYears - age;
+}
+
+/** A known-date goal's purchase cost against the leading option's value at the horizon (today's money): `gap = targetCost - valueAtHorizon`, enough when the value reaches the cost. */
+export function shortfall(targetCost: number, valueAtHorizon: number): { enough: boolean; gap: number } {
+  return { enough: valueAtHorizon >= targetCost, gap: targetCost - valueAtHorizon };
+}
+
 /** The numbers a goal runs on: entered values, else the preset's, else nothing. */
 export function resolveGoal(goal: Goal, presets: Presets): ResolvedGoal {
   const preset = goal.preset === "none" ? undefined : presets[goal.preset];
   const p = presetNumbers(preset);
   const pick = (f: NumField, fromPreset: number | null): { value: number | null; source: FieldSource } =>
     f.entered ? { value: f.value, source: "entered" } : fromPreset !== null ? { value: fromPreset, source: "preset" } : { value: null, source: "empty" };
-  const horizon = pick(goal.horizonYears, p.horizon);
+  const horizon = pick(goal.horizonYears, goal.preset === "child" ? childHorizon(p.horizon, goal.childAge) : p.horizon);
   const amount = pick(goal.amountNow, null);
   const monthly = pick(goal.monthly, p.monthly);
   const derived = p.share !== null && amount.value !== null ? Math.round((amount.value * p.share) / 100) : null;

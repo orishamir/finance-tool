@@ -6,7 +6,7 @@
 //
 // File shape (`StateFile.sideStores`, optional: a file from before this carries none):
 //   { offers: EnteredOffer[], variantAssumptions: { [exposureId]: FundAssumptions }, playbookTicks: { [key]: string[] },
-//     ownRates: { [goalId]: { [wrapperId]: pctPerYear } } }   (ownRates added 2026-10-24 (sweep); a file without it reads as none;
+//     ownRates: { [goalId]: { [wrapperId]: pctPerYear | { rate?, fee?, provider? } } } }  (an object form holds an entered fee, 2026-10-24, and the provider id chosen for the brokerage wrapper, 2026-10-24; an unknown provider id is read and ignored)   (ownRates added 2026-10-24 (sweep); a file without it reads as none;
 //   a tick key of the old `wrapper|from|to` shape is folded into the wrapper's key on import)
 // Keys of the stores are kept verbatim (a tick key is whatever lib/playbook.ts writes), so a change of the tick keying
 // there needs nothing here.
@@ -146,7 +146,7 @@ export function readSideFile(raw: unknown): { side: SideStores | null; problems:
       for (const [goal, rates] of Object.entries(raw.ownRates)) {
         const kept = side.ownRates[goal] ?? {};
         if (!isRec(rates)) problems.push({ store: "ownRates", item: goal, reason: "structure" });
-        else for (const [w, v] of Object.entries(rates)) if (!(w in kept)) problems.push({ store: "ownRates", item: `${goal}/${w}`, reason: num(v) ? "not-number" : "structure" });
+        else for (const [w, v] of Object.entries(rates)) if (!(w in kept)) problems.push({ store: "ownRates", item: `${goal}/${w}`, reason: num(v) || isRec(v) ? "not-number" : "structure" });
       }
     }
   }
@@ -220,7 +220,7 @@ export function removeImportedSide(s: Storage | null): boolean {
   }
   const ownRates: OwnRates = {};
   for (const [g, rates] of Object.entries(dev.ownRates)) {
-    const left = Object.fromEntries(Object.entries(rates).filter(([w, v]) => imp.ownRates[g]?.[w] !== v));
+    const left = Object.fromEntries(Object.entries(rates).filter(([w, v]) => JSON.stringify(imp.ownRates[g]?.[w]) !== JSON.stringify(v)));
     if (Object.keys(left).length > 0) ownRates[g] = left;
   }
   const ok = writeSideStores(s, { offers, variantAssumptions, playbookTicks, ownRates });

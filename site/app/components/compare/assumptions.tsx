@@ -1,11 +1,11 @@
 // The comparison's assumptions (design-system 6.2, flow 16): the chips under the chart and the panel of fields
 // (a sheet on a phone, a panel beside the chart on PC). A sensitivity row opens it with a suggestion the person must adopt.
-import { buttons, r2, r5, values as valuesCopy } from "../../copy";
+import { buttons, numbers, r2, r5, values as valuesCopy } from "../../copy";
 import { AcceptedFallField } from "../exposure-mode/fields";
 import { fmt } from "../../lib/format";
 import { useGoals, type FieldKey } from "../../lib/goal";
 import type { RunGoal } from "../../lib/compare";
-import { Button, cx } from "../ui";
+import { Button, Tag, cx } from "../ui";
 import { availableTooBig, InsuranceField, type FormData } from "./goal-form";
 import { GoalNumber, GoalSlider, SwitchRow } from "./fields";
 import { ParameterLine } from "../timeline/fields";
@@ -19,8 +19,9 @@ const between = (r: { min: number; max: number }, msg: readonly [string, string]
 
 /** The chips under the chart: years, amounts, return, inflation; entered ones in blue, an empty return says so. */
 export function AssumptionChips({ g, sources, onOpen, exposure }: { g: RunGoal; sources: { horizon: boolean; amountNow: boolean; monthly: boolean; available: boolean; inflation: boolean }; onOpen: (f: FieldKey | "all") => void; exposure?: { acceptedFall: number | null } }) {
-  const chips: { field: FieldKey; label: string; text: string; entered: boolean }[] = [
-    { field: "horizonYears", label: r2.result.chips.years, text: fmt.years(g.horizonYears), entered: sources.horizon },
+  // a horizon the preset gave ("לא יודעים" on the home page, D7) wears the site-parameter tag
+  const chips: { field: FieldKey; label: string; text: string; entered: boolean; parameter?: boolean }[] = [
+    { field: "horizonYears", label: r2.result.chips.years, text: fmt.years(g.horizonYears), entered: sources.horizon, parameter: g.fromPreset.horizon && !sources.horizon },
     { field: "amountNow", label: r2.result.chips.amountNow, text: fmt.nisWhole(g.amountNow), entered: sources.amountNow },
     { field: "monthly", label: r2.result.chips.monthly, text: fmt.nisWhole(g.monthly), entered: sources.monthly },
     { field: "available", label: r2.result.chips.available, text: fmt.nisWhole(g.available), entered: sources.available },
@@ -40,6 +41,7 @@ export function AssumptionChips({ g, sources, onOpen, exposure }: { g: RunGoal; 
               {c.text}
             </bdi>
           )}
+          {c.parameter && <Tag tone="parameter">{numbers.parameter}</Tag>}
         </button>
       ))}
       <button type="button" onClick={() => onOpen("all")} className="a-chip shrink-0">

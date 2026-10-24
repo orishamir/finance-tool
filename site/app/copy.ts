@@ -89,9 +89,29 @@ export const home = {
   door1: { title: "להבין סוג של חיסכון", line: "מה זה, כמה זה עולה ואיך זה ממוסה", href: "/guide" },
   door2: { title: "מה חברה מציעה לי", line: "כל המוצרים והמסלולים שלה, עם הסבר לכל אחד", href: "/companies" },
   door3: { title: "כסף שיושב בעו״ש", line: "שני מספרים, ותראו כמה עולה להשאיר אותו שם", href: "/idle-cash" },
-  // audit 2026-10-24 (A55): the goal as a card beside the doors; the count on the holdings door
-  goalDoor: { title: "השוואה למטרה", line: "הגדירו מטרה (סכום ושנים) וראו איזה מוצר מתאים ומה הוא עולה", href: "/goal" },
+  // audit 2026-10-24 (A55): the count on the holdings door (the goal door of that audit became the question card below, 2026-10-24)
   holdingsSaved: { one: "החזקה אחת שמורה: {names}", many: "{n} החזקות שמורות: {names}" },
+  // home question card 2026-10-24
+  quick: {
+    heading: "מה השאלה שלכם?",
+    amountNow: "יש לכם היום",
+    monthly: "ובכל חודש",
+    years: "כמה שנים עד שתצטרכו את הכסף",
+    unknownYears: "לא יודעים",
+    purposeLabel: "בשביל מה",
+    purposes: { apartment: "דירה", wedding: "חתונה", studies: "לימודים", child: "ילד", retirement: "פרישה", cushion: "כרית ביטחון", none: "בלי מטרה מסוימת" } as Record<string, string>,
+    submit: "מה הכי מתאים",
+    submitCushion: "כמה עולה להשאיר בעו״ש",
+    needAmount: "הזינו סכום: היום או בכל חודש.",
+    line: "הכול נשמר במכשיר הזה. גיל, שכר ותשואה אפשר להוסיף בתוצאה, אם תרצו.",
+    allFields: "לכל השדות",
+    another: "שאלה נוספת",
+    // NEW 2026-10-24 (scenario audit 7, 8, 4): doors for people who start from what they already hold, not from a purpose
+    already: "יש לכם כבר…",
+    alreadyDeposit: "פיקדון שמסתיים",
+    alreadyStudyFund: "קרן השתלמות נזילה",
+    alreadyLarge: "סכום גדול בלי מטרה",
+  },
 } as const;
 
 export const search = {
@@ -590,7 +610,7 @@ export const computedInputs = {
     rule_ids: "הכללים",
   } as Record<string, string>,
   /** Values the engine writes in English (the `statistic` input, a fee level): shown in Hebrew. */
-  valueWords: { mean: "ממוצע", median: "חציון", list: "מחירון", average: "ממוצע הרשות", entered: "שהזנתם" } as Record<string, string>,
+  valueWords: { mean: "ממוצע", median: "חציון", list: "תעריפון", average: "ממוצע הרשות", entered: "שהזנתם" } as Record<string, string>,
   amountNow: "סכום היום",
   monthly: "הפקדה חודשית",
   years: "שנים",
@@ -823,6 +843,15 @@ export const r2 = {
   menuRow: "השוואה למטרה",
 
   form: {
+    // scenario fix 2026-10-24: child age, purchase cost, couple line, worst-fall hint
+    childAge: "בן/בת כמה הילד? (או שנת לידה)",
+    childAgeHint: "האופק הוא 18 פחות הגיל.",
+    childAgeEmpty: "בלי גיל האופק הוא 18 שנים, פרמטר של האתר.",
+    errChildAge: "הזינו גיל בין 0 ל־17, או שנת לידה.",
+    targetCost: "כמה זה יעלה, בערך",
+    targetCostHint: "לא חובה. התוצאה תראה אם הסכום מספיק, בלי להשפיע על הדירוג.",
+    couple: "הטופס לאדם אחד. לזוג: הזינו את הסכומים המשותפים, ואת הפרטים של מי שהחיסכון על שמו.",
+    worstFallShort: { before: "לטווח של", after: "שנים האתר לא מדרג מסלולים מנייתיים בלי תשואה שתזינו; השדה הזה משפיע רק עליהם." },
     title: "מה המטרה שלכם?",
     lede: "בחרו נקודת התחלה או מלאו בעצמכם. כל ערך אפשר לשנות, והכול נשמר במכשיר הזה.",
     presetLabel: "נקודת התחלה",
@@ -1054,6 +1083,14 @@ export const r2 = {
     headlineFields: { return: "תשואה", employment: "סוג העסקה", salary: "שכר", age: "גיל", insurance: "דמי ביטוח" } as Record<string, string>, // audit 2026-10-24 (A3)
     employmentInferred: "סוג ההעסקה: שכירים, כי יש לכם פנסיה או קרן השתלמות דרך העבודה.", // audit 2026-10-24 (A3)
     employmentInferredChange: "לשנות", // audit 2026-10-24 (A3)
+    // home question card 2026-10-24: "לא יודעים" leaves the years to the preset; the line under the headline below P-04's equity minimum
+    horizonDefaulted: { before: "לא ידעתם כמה שנים, ולכן ההשוואה רצה על", mid: "שנים, נקודת ההתחלה של ״", after: "״.", change: "לשנות" },
+    horizonHonest: {
+      cannot: "האתר לא קובע אם {years} שנים מספיקות למניות: אין לו תשואה צפויה ואין לו נתון על ירידות.",
+      can: "לפי טבלת ההתאמה של האתר, מסלול מנייתי נחשב מתאים מ־{min} שנים, למי שמסכים לירידה של {drop} בדרך.",
+      linkBefore: "כדי לבדוק עם המספרים שלכם: הזינו תשואה וירידה שתסכימו לספוג",
+      link: "בהשוואה לפי חשיפה",
+    },
     // A7: the largest difference, with a gross-return row
     biggestLead: "ההבדל הגדול ביותר בין שתי הראשונות:", // audit 2026-10-24 (A7)
     biggestAt: "אצל", // audit 2026-10-24 (A7): "{סכום} אצל {אפשרות}"
@@ -1101,6 +1138,76 @@ export const r2 = {
   },
 } as const;
 
+// scenario fix 2026-10-24 (sc-represent, folded in by sc-compare): the entered fee level of the representative instrument (D4)
+export const ownTermsCopy = {
+  // scenario fix 2026-10-24 (sc-broker): the broker the brokerage option runs on is the person's choice among the providers the providers page ranks
+  provider: {
+    chosen: "בחרתם", // scenario fix 2026-10-24
+    heading: "ספק שהתעריפון שלו ישמש בחישוב", // scenario fix 2026-10-24
+    hint: "הספקים שנאספו בעמוד הספקים, לפי מה שהאפשרות הזו משאירה בסוף. התעריפון הוא של הספק; הבחירה שלכם.", // scenario fix 2026-10-24
+    pick: "לבחור", // scenario fix 2026-10-24
+    channel: { direct: "ערוץ ישיר", branch: "סניף" } as Record<string, string>, // scenario fix 2026-10-24
+    reset: "לחזור לספק שהאתר בחר", // scenario fix 2026-10-24
+    siteChoice: "בחירת האתר", // scenario fix 2026-10-24
+  },
+  feeAbout: "דמי ניהול שהזנתם", // scenario fix 2026-10-24
+  feeChip: "דמי ניהול שהזנתם", // scenario fix 2026-10-24
+  fundCostLabel: "העלות בתוך הקרן", // scenario fix 2026-10-24
+  feeLabel: "דמי ניהול מחיסכון", // scenario fix 2026-10-24
+  /** The sensitivity line in fee terms; {x} is the percentage. */
+  flipBelow: "מתהפך אם דמי הניהול בקרן יורדים מתחת ל־{x}", // scenario fix 2026-10-24
+  flipAbove: "מתהפך אם דמי הניהול בקרן עולים מעל {x}", // scenario fix 2026-10-24
+  openMinimum: "סכום המינימום: שאלה פתוחה", // scenario fix 2026-10-24
+  line: { named: "לפי {name}", fee: " בדמי ניהול {fee}", tariff: " ותעריפון {provider}", end: ".", change: "להחליף", workbench: "לבחירת מוצר אחר", feeLabel: "דמי ניהול שנתיים בקרן, באחוזים", reset: "לחזור לדמי הניהול של הרשומה", classMin: "הנמוכים ביותר שנאספו באותה חשיפה: {fee}", rateLabel: "ריבית שנתית שהבנק הציע לכם", rateReset: "לחזור לריבית שפורסמה" }, // scenario fix 2026-10-24
+};
+
+// scenario fix 2026-10-24 (sc-compare): what the comparison's headline says beyond the leader. docs/copy.md section 6.8 holds the rows.
+export const scnCompare = {
+  flipAlongside: "שקולה לראשונה.", // scenario fix 2026-10-24: a flip that only makes the leader share first place names the newcomer, never the current leader
+  fitDrop: "לא מתאים לפי טבלת ההתאמה של האתר: מסלול מנייתי נחשב מתאים למי שמסכים לירידה של {drop} (פרמטר)", // scenario fix 2026-10-24
+  notRanked: "לא מדורג", // scenario fix 2026-10-24
+  limitation: {
+    text: "האתר עוד לא יכול להמליץ ל־{years} שנים: דורגו רק האפשרויות הנזילות, כי לא הזנתם תשואה.", // scenario fix 2026-10-24
+    enterReturn: "הזינו תשואה", // scenario fix 2026-10-24
+    orYears: "או שנו את מספר השנים", // scenario fix 2026-10-24
+  },
+  cashVerdict: "בין האפשרויות הנזילות, {name} משאירה הכי הרבה כסף במועד המטרה.", // scenario fix 2026-10-24
+  parameterRate: {
+    text: "לפי ריבית של {rate} שהאתר קבע ל{name};", // scenario fix 2026-10-24
+    enter: "הזינו ריבית אחרת", // scenario fix 2026-10-24
+    label: "ריבית שנתית שקיבלתם", // scenario fix 2026-10-24
+    reset: "לחזור לריבית שהאתר קבע", // scenario fix 2026-10-24
+  },
+  enteredReturn: {
+    text: "לפי תשואה של {r} שהזנתם; האתר לא יודע אם היא סבירה.", // scenario fix 2026-10-24
+    currency: "המדד נקוב {inCurrency}: החישוב משתמש בתשואה שהזנתם כמות שהיא, ולא מוסיף שינוי {rate} מול השקל.", // scenario fix 2026-10-24
+    filterOff: "מסנן הירידה לא הופעל.", // scenario fix 2026-10-24
+    sameReturn: "כל המדדים רצים על אותה תשואה שהזנתם; ההבדל ביניהם כאן הוא עמלות ומטבע.", // scenario fix 2026-10-24
+  },
+  currencyIn: { USD: "בדולרים", EUR: "ביורו" } as Record<string, string>, // scenario fix 2026-10-24
+  currencyRate: { USD: "בשער הדולר", EUR: "בשער היורו" } as Record<string, string>, // scenario fix 2026-10-24
+  targetCost: {
+    enough: "לפי האפשרות המובילה, בכסף של היום: {value} מול {cost}; מספיק.", // scenario fix 2026-10-24
+    short: "לפי האפשרות המובילה, בכסף של היום: {value} מול {cost}; חסר {gap}.", // scenario fix 2026-10-24
+  },
+  nextStep: {
+    text: "בינתיים: הכסף לא צריך לשבת בעו״ש; לפי המספרים כאן זה עולה עד {x} בחודש.", // scenario fix 2026-10-24
+    link: "לבדיקה בעמוד המזומן הנזיל", // scenario fix 2026-10-24
+    stocks: "את ההחלטה על מניות אפשר לקבל בנפרד.", // scenario fix 2026-10-24
+  },
+  realTerms: "בכסף של היום, אחרי אינפלציה של {i}: {amount} שלא גדל שווה {y} בעוד {n} שנים.", // scenario fix 2026-10-24
+  targetCostLabel: "מחיר המטרה שהזנתם", // scenario fix 2026-10-24
+  realTermsAbout: "סכום שלא גדל, בכסף של היום", // scenario fix 2026-10-24
+  horizonFigures: { first: "לשנה: {a}", rest: "ל־{n} שנים: {b}" }, // scenario fix 2026-10-24
+  pick: { label: "בחרו שתי אפשרויות להשוואה", first: "האפשרות הראשונה", second: "האפשרות השנייה" }, // scenario fix 2026-10-24
+  blockedFor: "חסום ל:", // scenario fix 2026-10-24: under a covered checklist row, the options blocked on that dimension
+  headlineSome: "(לחלק מהן)", // scenario fix 2026-10-24
+  pastRecord: {
+    text: "ברשומה שפורסמה (J.P. Morgan Asset Management, 1950–2025, בדולרים, לפני אינפלציה; חלונות של שנים קלנדריות, לפני עמלות ומס): התשואה השנתית של מדד S&P 500 לפי השקף נעה, בחלונות של 5 שנים, בין {min5} ל־{max5}; ב־10 שנים בין {min10} ל־{max10}; ב־20 שנים בין {min20} ל־{max20}. עבר, לא תחזית; המספרים האלה לא נכנסים לדירוג.", // scenario fix 2026-10-24
+    link: "למקור", // scenario fix 2026-10-24
+  },
+};
+
 // ---- release 2, idle cash (copy 6.3) and the fit mark (copy 6.5).
 
 export const idle = {
@@ -1116,7 +1223,7 @@ export const idle = {
   headlineLabel: "העלות החודשית הגבוהה ביותר מבין האפשרויות הנזילות",
   noCost: "לפי הנתונים של האתר אף אפשרות נזילה לא משלמת יותר מהעו״ש, ולכן להשאיר אותו שם לא עולה לכם כלום.",
   allKept: "כל הכסף צריך להישאר זמין, אין מה להשוות.",
-  rowNames: { "bank-deposit:average": "פיקדון", "bank-deposit:own-offer": "פיקדון לחודש, לפי ההצעה שהזנתם", "money-market-fund-daily": "קרן כספית", makam: "מק״מ" } as Record<string, string>,
+  rowNames: { "bank-deposit:average": "פיקדון", "bank-deposit:own-offer": "פיקדון לפי ההצעה שהזנתם, בחישוב לחודש", "money-market-fund-daily": "קרן כספית", makam: "מק״מ" } as Record<string, string>,
   perMonth: "בחודש",
   rateOf: "ריבית",
   labels: { entered: "הזנתם", parameter: "פרמטר של האתר", published: "בתוקף מ־" },
@@ -1131,13 +1238,58 @@ export const idle = {
   rowNotRun: "עוד לא נבדקה", // the row of a cash option the run could not do
   optional: "לדייק (לא חובה)",
   offer: "ההצעה לפיקדון שראיתם באפליקציה של הבנק",
-  offerHint: "כמו שהיא מופיעה אצלכם, לפיקדון לחודש אחד.",
+  offerHint: "כמו שהיא מופיעה אצלכם, באחוזים לשנה.", // changed 2026-10-24 (scenario audit 7): the offer is no longer read as a one-month deposit
   // audit 2026-10-24 (A20, A59, A61): the yearly line, the offer's unit check, the deposit the person already holds
   soWhat: { before: "זה כ־", after: " בשנה, אם הכסף נשאר שם כל השנה." },
   offerUnit: { before: "התכוונתם ל־", after: "%? הריבית כאן באחוזים לשנה, למשל 3.2." },
   offerBelow: "ההצעה נמוכה ממה שהעו״ש משלם, ולכן להעביר אליה עולה לכם.",
   haveDeposit: "יש לכם כבר פיקדון? האתר עוד לא רושם פיקדונות. השוו את הריבית שלו לשורות כאן.",
   invalid: "תקנו את הערך שסומן באדום כדי לראות את התוצאה.",
+  // scenario audit 2026-10-24 (7, 8, 4): the offer's term, the one-year verdict, the tax in words, the judgement on the size, the small-sum line
+  term: {
+    label: "לכמה זמן ההצעה",
+    options: { "1": "חודש", "3": "3 חודשים", "12": "שנה", other: "אחר" } as Record<string, string>,
+    otherLabel: "כמה חודשים",
+    errMonths: "הזינו מספר שלם של חודשים, מ־1 עד 60.",
+    ask: "בחרו לכמה זמן ההצעה, וכאן תראו מה היא שווה בשנה מול קרן כספית.",
+  },
+  verdict: {
+    heading: "ההצעה של הבנק מול קרן כספית, לשנה",
+    bank: "הבנק מציע ריבית של",
+    termOf: { "1": "לפיקדון של חודש", "3": "לפיקדון של 3 חודשים", "12": "לפיקדון של שנה" } as Record<string, string>,
+    termMonths: { before: "לפיקדון של ", after: " חודשים" },
+    afterTax: ": אחרי מס כ־",
+    perYear: " בשנה.",
+    perYearShort: " בשנה",
+    fund: "קרן כספית ב־",
+    fundState: "פרמטר של האתר",
+    gap: "ההפרש:",
+    inFavor: { offer: "לטובת הפיקדון", fund: "לטובת הקרן", even: "אין הפרש" } as Record<string, string>,
+    below: "מתחת לסף שהאתר קבע",
+    worth: "שווה לבדוק",
+    thresholdLabel: "הסף:",
+    rolled: "החישוב מניח שפיקדון קצר מתחדש באותה ריבית עד סוף השנה.",
+    longer: "התקופה ארוכה משנה: החישוב לוקח שנה אחת ממנה.",
+    liquidity: "הפיקדון נעול עד סוף התקופה או עד תחנת היציאה; הקרן נזילה בכל יום מסחר.",
+  },
+  taxWords: {
+    heading: "המס, במילים",
+    deposit: "בפיקדון משלמים",
+    depositMid: "מכל הריבית, והבנק מנכה אותם במקור.",
+    fund: "בקרן כספית פטורה משלמים",
+    fundMid: "רק מהרווח שמעבר לעליית המדד, ולכן כשהאינפלציה גבוהה חלק גדול מהתשואה פטור.",
+    fundTrack: "מסלול המס של כל קרן כתוב בתשקיף שלה.",
+  },
+  materiality: {
+    before: "בסכום כזה ההפרש הוא כ־",
+    perYear: " בשנה: ",
+    below: "מתחת לסף שהאתר קבע",
+    worth: "שווה את הטרחה",
+    thresholdLabel: "הסף:",
+  },
+  smallSum: "בקרן כספית קונים ופודים בדרך כלל בלי סכום מינימלי, ובבנק שיש לו הסכם הפצה עם מנהל הקרן אסור לגבות עמלה על קנייה, החזקה או פדיון.",
+  anytime: "הכסף צריך להיות זמין בכל רגע",
+  anytimeHint: "אם לא תסמנו, ההשוואה המלאה תכלול גם פיקדון נעול.",
   coverageBefore: "נבדקו",
   coverageMid: "אפשרויות:",
   coverageClose: "הסתרת הרשימה",
@@ -1528,7 +1680,7 @@ export const r3holdings = {
     separateLine: "הכסף עובר שלם לחשבון נפרד אצל המנהל השני, והחשבונות מתאחדים רק כששניהם נזילים.", // copy.md 7.2, a plain statement of SW-39
     route: { mid: "ל", after: ": מסלול מותר בתקנות." },
     conditions: "בתנאי ש־",
-    notYet: { before: "עוד לא: החשבון השני נזיל מ־", after: "." },
+    notYet: { before: "עוד לא: החשבון השני נזיל מ־", after: " בערך (לפי סוף החודש של ההפקדה הראשונה)." },
     missingFirstDeposit: "כדי לבדוק אם אפשר לאחד, הוסיפו את תאריך ההפקדה הראשונה בכל קרן השתלמות.", // copy.md 7.2
     worth: { before: "איחוד ב", after: "שווה", mid: "ב־", end: ", בכסף של היום." },
     noSaving: "האיחוד לא חוסך בעמלות.",
@@ -1566,6 +1718,37 @@ export const r3holdings = {
   avgSaving: { before: "לפי הממוצע הייתם חוסכים", approx: "כ־", mid: "ב־", after: "." }, // audit 2026-10-24 (A18): F-61's value of lowering the fee to the class mean
   switchLink: "איך עוברים", // audit 2026-10-24 (A14)
   depositsHere: { before: "פיקדון שיש לכם כבר אפשר להשוות ב", link: "עמוד הכסף שבעו״ש", after: "." }, // audit 2026-10-24 (A59)
+  // scenario fix 2026-10-24 (study fund that became liquid): the first-deposit checkbox, the fee prefill, the card's liquidity line and decision block
+  firstDepositOver: "ההפקדה הראשונה לפני יותר משש שנים (הקרן נזילה)", // scenario fix 2026-10-24
+  firstDepositOverWhy: "במקום תאריך מדויק. אם לא סימנתם, הזינו את התאריך.", // scenario fix 2026-10-24
+  feePrefill: {
+    balance: "ממוצע דמי הניהול מחיסכון של המסלול, כפי שהרשות מפרסמת:", // scenario fix 2026-10-24
+    balanceKept: "ריק: יישמר הממוצע הזה, כנתון ממקור.", // scenario fix 2026-10-24
+    balanceEntered: "הערך שהקלדתם יישמר במקום הממוצע.", // scenario fix 2026-10-24
+    deposit: "ממוצע דמי הניהול מהפקדה של המסלול:", // scenario fix 2026-10-24
+    depositKept: "ריק: יישמר הממוצע הזה, כנתון ממקור.", // scenario fix 2026-10-24
+    depositEntered: "הערך שהקלדתם יישמר במקום הממוצע.", // scenario fix 2026-10-24
+    depositHint: "אין שורה כזו בדוח? השאירו ריק.", // scenario fix 2026-10-24: replaces feeDepositHint when the track has an average
+    year: "לשנת", // scenario fix 2026-10-24
+    cardNote: "ממוצע המסלול לפי הרשות, לא בהכרח מה שאתם משלמים", // review fix 2026-10-24: under a fee the card holds from the prefill
+  },
+  liquidity: {
+    from: "נזיל מ־", // scenario fix 2026-10-24
+    notYet: "עוד לא נזיל: נזיל מ־", // scenario fix 2026-10-24
+    about: " בערך (לפי סוף החודש של ההפקדה הראשונה)", // review fix 2026-10-24: TXH-09's first payment date is a month end
+    overBefore: "נזיל: ההפקדה הראשונה הייתה לפני יותר מ־", // scenario fix 2026-10-24
+    overAfter: "", // scenario fix 2026-10-24
+    unknown: "לא ידוע אם הקרן נזילה: חסר תאריך ההפקדה הראשונה. בעריכה אפשר גם לסמן שהיא הייתה לפני יותר משש שנים.", // scenario fix 2026-10-24
+  },
+  decision: {
+    heading: "הקרן נזילה: מה אפשר לעשות", // scenario fix 2026-10-24
+    stay: { label: "להשאיר", text: "אין מס שנתי על הרווחים כל עוד הכסף בקרן; המס חל רק במשיכה." }, // scenario fix 2026-10-24, TXH-18
+    switchTrack: { label: "להחליף מסלול באותה קופה", text: "מעבר מסלול בתוך הקרן אינו אירוע מס ואין עליו עמלה בתקנות; חברה רשאית להעלות דמי ניהול מוזלים אחרי מעבר." }, // scenario fix 2026-10-24, TXH-17, PF-23, SW-15
+    move: { label: "להעביר לחברה אחרת", text: "עוברת כל היתרה בלבד, והוותק של הכסף נשמר.", link: "איך עוברים" }, // scenario fix 2026-10-24, PF-18, SW-39
+    withdraw: { label: "למשוך", text: "משיכה אחרי תקופת ההמתנה פטורה ממס על הרווחים מהפקדה מוטבת, ורווחים מהפקדה מעל התקרה ממוסים; לפי הכלל לעובד: אחרי משיכה החשבון נסגר להפקדות נוספות (משיכת שליש ללימודים לא סוגרת, TXH-10)." }, // scenario fix 2026-10-24, TXH-09, TXH-11; review fix 2026-10-24: the closure is the rule for an employee's fund and has the one-third study exception, TXH-10
+    fee: "דמי הניהול בקרן הזו, מול הממוצע:", // scenario fix 2026-10-24
+    exposureLink: "להשוות לפי חשיפה", // scenario fix 2026-10-24
+  },
   errors: {
     balanceNegative: "היתרה לא יכולה להיות שלילית.",
     percentOver: { before: "אחוז לא יכול להיות גבוה מ־", after: "." }, // copy.md 7.2: the maximum is a figure in the sentence, isolated (B14, changed 2026-10-24)
@@ -1876,6 +2059,15 @@ export const r4workbench = {
     vsTag: "מושווה",
     vsSet: "להשוות אליו",
     vsClear: "ביטול ההשוואה",
+    // scenario fix 2026-10-24 (sc-broker): the broker the goal comparison runs the brokerage account on is the person's choice, made here or on the card
+    useInCompare: {
+      use: "לחשב את ההשוואה לפי הספק הזה", // scenario fix 2026-10-24
+      active: "ההשוואה שלכם רצה על הספק הזה", // scenario fix 2026-10-24
+      clear: "לחזור לספק שהאתר בחר", // scenario fix 2026-10-24
+      toCompare: "לתוצאות ההשוואה", // scenario fix 2026-10-24
+      noGoal: "אין מטרה שמורה, ולכן אין השוואה שאפשר להריץ על הספק הזה.", // scenario fix 2026-10-24
+      toGoal: "להגדיר מטרה", // scenario fix 2026-10-24
+    },
     detail: {
       heading: "השורות שנקראו מהתעריפון",
       entered: (lines: string) => `הוחלפו בהצעה שלכם: ${lines}`,
@@ -2243,7 +2435,9 @@ export const r5 = {
     },
     headings: { ranked: "לפי הסדר, לפי התשואות שהזנתם", listed: "מוצגות בלי דירוג", excluded: "נפסלו לפי מסנן הירידה", notEvaluated: "עוד לא נבדקו" },
     fields: {
-      returnLabel: "תשואה שנתית ב{currency}",
+      returnLabel: "תשואה שנתית במונחי שקל; האתר לא מוסיף שינוי בשער ה{currency}", // review fix 2026-10-24: the engine takes the entered return as a shekel return (A-03 = 0); was "תשואה שנתית ב{currency}"
+      returnLabelIls: "תשואה שנתית במונחי שקל", // review fix 2026-10-24: a shekel exposure has no exchange rate to name
+      currencyOne: { USD: "דולר", EUR: "יורו" } as Record<string, string>, // review fix 2026-10-24: the currency in the singular for "שער ה…"
       returnEmpty: "לא הוזן: האתר לא מנחש תשואה.",
       returnHint: "הזינו את התשואה שאתם מניחים לחשיפה הזו. היא תסומן בכחול בכל מקום שבו היא משפיעה.",
       returnFromProduct: "מההשוואה לפי מוצר", // audit 2026-10-24 (decision 16): the equity exposure's return is the one entered in the product comparison; typing here replaces it

@@ -8,8 +8,11 @@ import { Breadcrumb, PageShell } from "../components/shell";
 import { GoalsProvider, useGoals, type Presets } from "../lib/goal";
 
 export async function loader() {
-  const { goalFormData } = await import("../lib/compare.server");
-  return goalFormData();
+  const { goalFormData, fitTable } = await import("../lib/compare.server");
+  const d = goalFormData();
+  // scenario fix 2026-10-24: P-04's equity minimum, for the worst-fall field's short-horizon hint
+  const eq = fitTable().rows.find((r) => r.classification === "מניות")?.minYears.value;
+  return { ...d, form: { ...d.form, equityMinYears: typeof eq === "number" ? eq : null } };
 }
 
 export function meta() {
