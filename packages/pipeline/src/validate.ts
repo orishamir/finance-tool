@@ -253,7 +253,7 @@ function checkRuleSources(rule: RuleLike, ctx: ValidationContext, all: Map<strin
 function checkPinnedRules(files: string[], dataDir: string, all: Map<string, RuleLike>, report: (file: string, message: string) => void) {
   const file = files.find((f) => relative(dataDir, f).replace(/\\/g, "/") === "parameters/pinned-rules.json");
   if (!file) return;
-  const rec = parseJson(readFileSync(file, "utf8")).value as { rows?: { ids?: string[] }[]; guide_blocks?: Record<string, string[]> } | undefined;
+  const rec = parseJson(readFileSync(file, "utf8")).value as { rows?: { ids?: string[]; answer_he?: string }[]; guide_blocks?: Record<string, string[]> } | undefined;
   if (!rec) return;
   const ids = [...(rec.rows ?? []).flatMap((r) => r.ids ?? []), ...Object.values(rec.guide_blocks ?? {}).flat()];
   for (const id of new Set(ids)) if (!all.has(id)) report(file, `pinned-rules: ${id} has no record under data/rules/`);
@@ -262,6 +262,17 @@ function checkPinnedRules(files: string[], dataDir: string, all: Map<string, Rul
     const rule = first ? all.get(first) : undefined;
     if (rule?.sources && !rule.sources.some((s) => s.strength === "primary" || s.strength === "primary-mirror"))
       report(file, `pinned-rules: the first rule of a row (${first}) has no primary or primary-mirror source`);
+    // the answer line of the questions page: no digit typed by hand; every figure is a {ID:figure} slot over one of the row's rules
+    if (typeof row.answer_he === "string") {
+      const plain = row.answer_he.replace(/\{[A-Z0-9-]+:[a-z0-9_]+\}/g, "");
+      if (/\d/.test(plain)) report(file, `pinned-rules: the answer to "${row.ids?.join(",")}" carries a typed digit; use a {ID:figure} slot`);
+      for (const m of row.answer_he.matchAll(/\{([A-Z0-9-]+):([a-z0-9_]+)\}/g)) {
+        const [, id, figure] = m as unknown as [string, string, string];
+        if (!row.ids?.includes(id)) report(file, `pinned-rules: the answer slot {${id}:${figure}} names a rule outside the row (${row.ids?.join(",")})`);
+        const figures = (all.get(id) as { figures?: Record<string, unknown> } | undefined)?.figures ?? {};
+        if (!(figure in figures)) report(file, `pinned-rules: the answer slot {${id}:${figure}} names a figure ${id} does not have (${Object.keys(figures).join(",") || "none"})`);
+      }
+    }
   }
 }
 

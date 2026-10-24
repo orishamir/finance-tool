@@ -3,18 +3,17 @@
 // preset it. Light on purpose: the page ships a light list of all rules; the full records and their uses come per shelf from
 // /rules-data/<shelf>.json, fetched when a group opens, a filter shows cards, or the address names a rule.
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useLoaderData, useLocation } from "react-router";
+import { Link, useLoaderData, useLocation } from "react-router";
 import type { Route } from "./+types/rules";
-import { provenance as provCopy, rulesFront as copy, site, sourceBlock, system, topicName, ruleCardMore } from "../copy";
-import { IconChevronDown, IconDrillIn, IconSearch } from "../components/icons";
-import { Num, NumberLegend, RuleCard, RuleRef, StrengthLabel, type RuleUses } from "../components/provenance";
+import { rulesFront as copy, site, sourceBlock, system, topicName, ruleCardMore } from "../copy";
+import { IconChevronDown, IconSearch } from "../components/icons";
+import { NumberLegend, RuleCard, type RuleUses } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { Card, cx, Disclosure, Tag } from "../components/ui";
 import { fmt } from "../lib/format";
 import { buildSections, emptyFilters, filtersToSearch, fullHaystack, isFiltering, lightHaystack, matchRules, norm, parseFilters, type Filters, type Group, type LightRule } from "../lib/rules-filter";
 import { shelfIds, type ShelfId } from "../lib/rule-shelves";
 import { ruleTitle } from "../lib/rule-title";
-import { ruleFigure, type SiteValue } from "../lib/value";
 import type { RuleRecord } from "@finance-tool/schema";
 
 /** A rule's title for a list: the record's Hebrew title or text; never the English working title (the topic's Hebrew name stands in). */
@@ -25,7 +24,7 @@ function listTitle(r: Parameters<typeof ruleTitle>[0] & { il_finance_file: strin
 
 export async function loader() {
   const { loadChecklistRows, loadPinnedRules, loadRules, loadWrappers, today } = await import("../lib/data.server");
-  const { loadRuleUses, ruleProducts, ruleScores } = await import("../lib/rule-uses.server");
+  const { ruleProducts, ruleScores } = await import("../lib/rule-uses.server");
   const { shelfOf } = await import("../lib/rule-shelves");
   const rules = loadRules();
   const all = Object.values(rules);
@@ -34,23 +33,7 @@ export async function loader() {
   const products = ruleProducts();
   const pinned = loadPinnedRules();
 
-  const firstFigure = (id: string): SiteValue | null => {
-    const r = rules[id];
-    if (!r?.figures) return null;
-    for (const name of Object.keys(r.figures)) {
-      const v = ruleFigure(r, name, now);
-      if (v) return { ...v, notes: "" };
-    }
-    return null;
-  };
-  const rows = pinned.rows.map((row) => ({
-    question: row.question_he,
-    ids: row.ids.filter((id) => rules[id]),
-    rules: row.ids
-      .filter((id) => rules[id])
-      .map((id) => ({ id, title: listTitle(rules[id]!), strength: rules[id]!.strength, figure: firstFigure(id) })),
-  }));
-  const pinnedRules = Object.fromEntries(pinned.rows.flatMap((r) => r.ids).filter((id) => rules[id]).map((id) => [id, rules[id]!]));
+  const rows = pinned.rows.map((row) => ({ question: row.question_he, ids: row.ids.filter((id) => rules[id]) }));
 
   const light: LightRule[] = all
     .map((r) => ({
@@ -83,8 +66,6 @@ export async function loader() {
     pinned: { rows },
     light,
     productChips,
-    rules: pinnedRules,
-    ruleUses: loadRuleUses(Object.keys(pinnedRules)),
     dimensions: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])),
     today: now,
   };
@@ -118,20 +99,19 @@ function fetchShelf(shelf: ShelfId): Promise<ShelfBundle> {
 
 // ---------------------------------------------------------------- small parts
 
-/** A text with one "{n}" slot: the number isolated. */
-function WithNumber({ text, n }: { text: string; n: number }) {
-  const [a, b] = text.split("{n}");
+/** A text with "{n}" and "{total}" slots: each number isolated. */
+function WithNumber({ text, n, total }: { text: string; n?: number; total?: number }) {
   return (
     <>
-      {a}
-      <bdi dir="ltr" className="tabular-nums">{fmt.number(n)}</bdi>
-      {b}
+      {text.split(/(\{n\}|\{total\})/).map((part, i) =>
+        part === "{n}" || part === "{total}" ? (
+          <bdi key={i} dir="ltr" className="tabular-nums">{fmt.number((part === "{n}" ? n : total) ?? 0)}</bdi>
+        ) : (
+          part
+        ),
+      )}
     </>
   );
-}
-
-function Count({ n }: { n: number }) {
-  return n === 1 ? <>{copy.ruleCount.one}</> : <WithNumber text={copy.ruleCount.many} n={n} />;
 }
 
 function Chip({ on, onClick, children }: { on: boolean; onClick: () => void; children: React.ReactNode }) {
@@ -199,8 +179,8 @@ export default function Rules() {
 
   const lightById = useMemo(() => new Map(data.light.map((r) => [r.id, r])), [data.light]);
   const lightHay = useMemo(() => new Map(data.light.map((r) => [r.id, lightHaystack(r)])), [data.light]);
-  const rules = useMemo(() => Object.assign({}, data.rules, ...Object.values(loaded).map((b) => b!.rules)) as Record<string, RuleRecord>, [data.rules, loaded]);
-  const ruleUses = useMemo(() => Object.assign({}, data.ruleUses, ...Object.values(loaded).map((b) => b!.ruleUses)) as Record<string, RuleUses>, [data.ruleUses, loaded]);
+  const rules = useMemo(() => Object.assign({}, ...Object.values(loaded).map((b) => b!.rules)) as Record<string, RuleRecord>, [loaded]);
+  const ruleUses = useMemo(() => Object.assign({}, ...Object.values(loaded).map((b) => b!.ruleUses)) as Record<string, RuleUses>, [loaded]);
   const fullHay = useMemo(() => {
     const m = new Map<string, string>();
     for (const b of Object.values(loaded)) for (const r of Object.values(b!.rules)) if (lightById.has(r.id)) m.set(r.id, fullHaystack(r as Parameters<typeof fullHaystack>[0]));
@@ -278,11 +258,6 @@ export default function Rules() {
   const pd = { rules, terms: {}, dimensions: data.dimensions, today: data.today, ruleUses };
   const presetRow = filters.ids.length > 0 ? data.pinned.rows.find((r) => r.ids.join(",") === filters.ids.join(",")) : undefined;
 
-  const applyPreset = (ids: string[]) => {
-    setFilters({ ...emptyFilters, ids });
-    requestAnimationFrame(() => document.getElementById("rules-list")?.scrollIntoView({ block: "start", behavior: "smooth" }));
-  };
-
   const prefixes = useMemo(() => {
     const m = new Map<string, number>();
     for (const r of data.light) m.set(r.prefix, (m.get(r.prefix) ?? 0) + 1);
@@ -310,44 +285,13 @@ export default function Rules() {
             </label>
             <input id="rules-filter" dir="auto" value={filters.q} onChange={(e) => setFilters({ q: e.target.value })} placeholder={copy.filter} className="field-input !text-start" autoComplete="off" />
           </div>
+          <p className="text-sm text-muted-foreground">
+            {copy.questionsLine.before}{" "}
+            <Link to="/questions" className="text-link hover:underline">
+              {copy.questionsLine.link}
+            </Link>
+          </p>
         </header>
-
-        <section aria-labelledby="pinned-h" className="flex flex-col gap-3">
-          {/* no tag beside the heading: the founder kept the list and asked for the parameter tag to go (2026-10-24) */}
-          <h2 id="pinned-h" className="text-xl lg:text-2xl font-semibold">
-            {copy.pinned.title}
-          </h2>
-          <ol className="flex flex-col lg:max-w-3xl">
-            {data.pinned.rows.map((row) => {
-              const on = filters.ids.join(",") === row.ids.join(",");
-              return (
-                <li key={row.question} className="flex flex-col gap-1 py-3 border-b border-border">
-                  <h3 className="font-semibold">
-                    <button type="button" aria-pressed={on} onClick={() => applyPreset(row.ids)} className={cx("text-start min-h-target inline-flex items-center gap-1 hover:underline", on && "text-link")}>
-                      {row.question}
-                      <IconDrillIn size={16} className="text-muted-foreground shrink-0" />
-                    </button>
-                  </h3>
-                  <ul className="flex flex-col gap-1">
-                    {row.rules.map((r) => (
-                      <li key={r.id} className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-sm">
-                        <span className="min-w-0">{r.title}</span>
-                        <RuleRef id={r.id} />
-                        {r.figure && (
-                          <span className="whitespace-nowrap">
-                            <Num value={r.figure} />
-                            {typeof r.figure.value === "number" && (provCopy.unit as Record<string, string>)[r.figure.unit] && ["months", "years", "days", "business_days", "usd", "eur"].includes(r.figure.unit) && <span className="text-muted-foreground"> {(provCopy.unit as Record<string, string>)[r.figure.unit]}</span>}
-                          </span>
-                        )}
-                        {(r.strength === "institution" || r.strength === "secondary") && <StrengthLabel strength={r.strength} />}
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-              );
-            })}
-          </ol>
-        </section>
 
         <section aria-label={copy.title} className="flex flex-col gap-section">
           <div id="rules-list" className={cx("flex flex-col gap-3", scrollMargin)}>
@@ -426,7 +370,7 @@ export default function Rules() {
             )}
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
               <p className="text-sm text-muted-foreground" role="status">
-                {matches.length === 0 ? copy.filters.none : matches.length === 1 ? copy.filters.showingOne : <WithNumber text={copy.filters.showing} n={matches.length} />}
+                {matches.length === 0 ? copy.filters.none : matches.length === 1 ? <WithNumber text={copy.filters.showingOne} total={data.light.length} /> : <WithNumber text={copy.filters.showing} n={matches.length} total={data.light.length} />}
               </p>
               {filtering && (
                 <Chip on={false} onClick={() => setFilters(emptyFilters)}>
@@ -445,7 +389,7 @@ export default function Rules() {
                     <h2 id={`shelf-${sec.shelf ?? "changing"}`} className="text-xl lg:text-2xl font-semibold flex flex-wrap items-baseline gap-x-2">
                       {name ? name.name : copy.changing.title}
                       <span className="text-sm font-normal text-muted-foreground">
-                        · <Count n={sec.count} />
+                        · <Num2 n={sec.count} />
                       </span>
                     </h2>
                     <p className="text-sm text-muted-foreground max-w-measure">{name ? name.line : copy.changing.line}</p>
@@ -488,7 +432,7 @@ function GroupBlock({ g, open, onToggle, pd, failed, lightById }: { g: Group; op
         <h3 className="text-lg font-semibold flex flex-wrap items-baseline gap-x-2">
           {title}
           <span className="text-sm font-normal text-muted-foreground">
-            · <Count n={g.ids.length} />
+            · <Num2 n={g.ids.length} />
           </span>
         </h3>
         <IconChevronDown className="text-muted-foreground shrink-0 transition-transform duration-[var(--duration-fast)] group-open:rotate-180" />

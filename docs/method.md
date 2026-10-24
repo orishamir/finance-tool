@@ -83,7 +83,7 @@ Values are the founder's, with rationale and sign-off date, shown as "site param
 | P-06 | Tolerance for golden tests (absolute NIS and relative) | tests |
 | P-07 | Goal presets (product D13): the starting horizon, kept-available share and any-time constraint each preset fills into the goal form, and the horizon slider range. Added 2026-10-23 for release 2. | goal form (3.2) |
 | P-08 | Exposure holding wrapper (release 5, 2026-10-24): per exposure record, the wrapper that holds it in exposure mode (F-71 takes the wrapper from the caller; the engine never picks one), with the reason, and for a row that cannot run yet the open question or the missing record that stops it (the unlinked government bond: GOV OQ4; the TA-125 ran as "details not collected" until fund 1143718 was collected on 2026-10-24). The person can change the wrapper on a row; the change is entered, not a change of P-08. | exposure mode (3.2), F-71 |
-| P-09 | Pinned rules (knowledge layer, 2026-10-24): the twelve questions at the top of the rules page with the rules that answer them, and two or three rules worth knowing per wrapper guide; a judgement the founder kept as drafted on 2026-10-24; never read by a formula | rules page, guide pages |
+| P-09 | Pinned rules (knowledge layer, 2026-10-24): the twelve questions of the questions page, each with the rules that answer it and a one-line answer (`answer_he`, every figure a slot over those rules; the questions left the rules page on 2026-10-24, late evening), and two or three rules worth knowing per wrapper guide; a judgement the founder kept as drafted on 2026-10-24; never read by a formula | rules page, guide pages |
 
 ### 2.4 From a wrapper record and P-05 to a run's inputs
 

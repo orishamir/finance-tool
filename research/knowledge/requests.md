@@ -61,3 +61,7 @@ Why: gov.il hosts the Tax Authority, the CMA, the Accountant General and the Chi
 
 ## W-He → site/app/copy.ts (lead)  (status: open, informational)
 What: the knowledge-layer values were edited in place (16 values, keys untouched); the list with old and new text is in docs/copy.md "Added 2026-10-24 (knowledge layer)". No cross-file need, except: `ruleCardMore.usesEngine` now reads "החישובים באתר" and `rulesFront.toShelf` "לכל הכללים בנושא הזה"; if W3 hard-coded the old words anywhere outside copy.ts, they should read from copy.ts.
+
+## Round: questions page and rename (2026-10-24, late evening)
+
+Spec: research/knowledge/2026-10-24-questions-spec.md. Append requests below as `## <from> → <file> (status: open)` with What / Why / Exact change.

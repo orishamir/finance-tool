@@ -8,6 +8,7 @@ export default [
   route("companies", "routes/companies.tsx"),
   route("companies/:id", "routes/company.tsx"),
   route("companies/:id/:fund", "routes/track.tsx"),
+  route("questions", "routes/questions.tsx"),
   route("rules", "routes/rules.tsx"),
   route("rules/:shelf", "routes/rules-shelf.tsx"),
   route("rules-data/:shelf.json", "routes/rules-data.ts"),

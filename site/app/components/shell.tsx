@@ -9,7 +9,7 @@ import { SearchCombo, SearchSheet } from "./search";
 import { Sheet } from "./Sheet";
 import { Button, cx } from "./ui";
 
-export type Current = "guide" | "decoder" | "rules" | "documents" | "parameters" | "home" | "goal" | "holdings" | "other";
+export type Current = "guide" | "questions" | "decoder" | "rules" | "documents" | "parameters" | "home" | "goal" | "holdings" | "other";
 
 /** The newest `checked` date across data/, fixed at build (vite.config.ts `define`, from `dataAsOf()` in lib/data.server.ts). */
 declare const __DATA_AS_OF__: string;
@@ -21,6 +21,7 @@ type NavItem = { href: string; label: string; current?: Current };
 /** The doors, in the order the first page gives them (audit 2026-10-24, A54): what the person came to do. */
 const doorItems: NavItem[] = [
   byHref("/guide"),
+  byHref("/questions"),
   byHref("/companies"),
   goalItem,
   { href: r3workbench.entry.holdings.href, label: r3workbench.entry.holdings.title, current: r3workbench.entry.holdings.current },
@@ -33,7 +34,7 @@ const behindItems: NavItem[] = [byHref("/rules"), documentsItem, byHref("/parame
 /** The footer links: the same pages, destinations first, then the reference pages, then the tool. */
 const footerLinks = (() => {
   const by = (href: string) => site.footer.find((f) => f.href === href)!;
-  return [by("/goal"), { href: r3workbench.entry.holdings.href, label: r3workbench.entry.holdings.title }, by("/rules"), { href: documentsItem.href, label: documentsItem.label }, by("/parameters"), by("/not-covered"), { href: r3workbench.entry.transfer.href, label: r3workbench.entry.transfer.label }];
+  return [by("/questions"), by("/goal"), { href: r3workbench.entry.holdings.href, label: r3workbench.entry.holdings.title }, by("/rules"), { href: documentsItem.href, label: documentsItem.label }, by("/parameters"), by("/not-covered"), { href: r3workbench.entry.transfer.href, label: r3workbench.entry.transfer.label }];
 })();
 
 /** A page is the current one when the address is under the item's, or the page says it belongs to the item. */

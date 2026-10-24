@@ -261,6 +261,8 @@ One brief per screen in section 4. They apply `docs/design-system.md`. Mockups f
 
 Amended 2026-10-24 (knowledge layer, D25): one quiet line under the doors, `home.knowledge.line`, with a link `home.knowledge.link` to the rules page. It is a link, not a fifth door (the founder decides between the two, `research/knowledge/2026-10-24-synthesis.md` section 5, item 2). No counts and no "N rules" claim in the line.
 
+Amended 2026-10-24 (late evening, the questions page): a **questions block** under the question card, in the first column: a `Card` headed "שאלות שכולם שואלים" with the first three questions of P-09 as rows that open the questions page (6.17) at that question, and "לכל השאלות" under them. The quiet line under the doors now reads "על מה האתר נשען: החוקים, הכללים והמסמכים".
+
 ### 6.2 Header, menu and footer
 
 **Flows:** 1, all. **Mockup:** header on every board; no menu sheet.
@@ -269,6 +271,8 @@ Amended 2026-10-24 (knowledge layer, D25): one quiet line under the doors, `home
 - **PC:** a 64 px sticky bar: site name, then the five doors as no-wrap text links (the current one underlined in teal), then the search field (224 px, 256 px from `xl`) at the end; the links show from `xl` (80rem), and at `lg` the menu button replaces them while the field stays (2026-10-24, UX audit; until then four destinations and a 340 px field, which wrapped at every width from 1024 to 1600 px). A "חזרה למעלה" button appears after 1.2 screens of scrolling.
 - **Footer** on every page: "כללים", "פרמטרים", "מה האתר עוד לא מכסה". Amended 2026-10-24 (UX audit): the site name first (its own row on a phone), then the goal, holdings, rules, parameters, not-covered and transfer links; the note "אתר אישי, לא מסחרי, בלי קישורי שיווק; הכול נשמר במכשיר שלכם"; and "נתונים נכון ל־{date}", the newest `checked` date in `data/` at build (`dataAsOf()`).
 - Amended 2026-10-24 (knowledge layer, D25): the menu group "מאחורי הקלעים" lists "כללים", "מסמכים", "פרמטרים" in that order, and the footer gains "מסמכים" right after "כללים". The pages themselves are 6.14 and 6.16.
+
+- Amended 2026-10-24 (late evening): the main group gains "שאלות שכולם שואלים" right after "מדריך", the footer gains it before the rules entry, and the rules entry reads "חוקים וכללים" in both.
 
 **States:** the menu sheet closes on X (top left), on a tap outside it, or on choosing a row.
 **Components:** header, sheet, icon button.
@@ -296,7 +300,7 @@ Amended 2026-10-24 (knowledge layer, D25): one quiet line under the doors, `home
 **States:** after copying, the button shows a check and "הועתק" for two seconds. Search works without a network connection once the page has loaded (the index ships with the site).
 **Components:** search field, sheet, popover, empty state, button.
 
-Amended 2026-10-24 (knowledge layer, D25): three more result groups after the four above: "כללים" (rule records), "פרמטרים" (site parameters) and "מסמכים" (the documents of 6.16). Order of the groups: guide pages, terms, rules, parameters, documents, not-covered, companies, products, banks, tracks. A rule outranks every other group only on an exact id ("TXG-02", "txg 2"), an exact figure with its unit ("25%", "83,641 ₪") or a question-form query ("האם אפשר להחליף מסלול בלי מס"); otherwise "מס" and the like keep the guide page first. A rule row: the title with the match in weight 600, and one quiet line "{נושא} · {מילת חוזק רק כשהמקור חלש} · {מזהה}"; it opens the rule on the rules page (6.14: `/rules#{ID}` opens its group and scrolls to the card), a parameter opens `/parameters#{P-xx}`, a document opens `/documents#{key}`. The rule texts, the term meanings and the parameter rationales sit in a second file that loads after the index and only re-ranks or answers a question-form query (architecture 3.5).
+Amended 2026-10-24 (knowledge layer, D25): three more result groups after the four above: "חוקים וכללים" (rule records; "כללים" until the rename of the same night), "פרמטרים" (site parameters) and "מסמכים" (the documents of 6.16). Order of the groups: guide pages, terms, rules, parameters, documents, not-covered, companies, products, banks, tracks. A rule outranks every other group only on an exact id ("TXG-02", "txg 2"), an exact figure with its unit ("25%", "83,641 ₪") or a question-form query ("האם אפשר להחליף מסלול בלי מס"); otherwise "מס" and the like keep the guide page first. A rule row: the title with the match in weight 600, and one quiet line "{נושא} · {מילת חוזק רק כשהמקור חלש} · {מזהה}"; it opens the rule on the rules page (6.14: `/rules#{ID}` opens its group and scrolls to the card), a parameter opens `/parameters#{P-xx}`, a document opens `/documents#{key}`. The rule texts, the term meanings and the parameter rationales sit in a second file that loads after the index and only re-ranks or answers a question-form query (architecture 3.5).
 
 Empty states by what was typed (Amended 2026-10-24, knowledge layer): **a name** keeps the "עוד לא קוטלג" state above; **a question** (starts with a question word, or ends in "?") gets the question state ("לא מצאנו כלל שעונה על זה") with up to three "אולי התכוונתם" rows and the link to the rules page; **a number** gets the number state, which says no rule carries that figure and lists "קרוב לזה" rows for figures within ±2 %. A bare year ("2026") never matches a rule. The copy is `copy.search.empty.*`.
 
@@ -401,7 +405,7 @@ The mockup shows a calculated number. The other kinds:
 
 Amended 2026-10-24 (knowledge layer, D25): the card puts the source where the reader looks for it. New order, top to bottom:
 
-1. The rule chip and the short title.
+1. The rule chip and the short title. Amended 2026-10-24 (late evening): the heading reads "{id} · {title}", no noun before the id (the set is "חוקים וכללים"; a single record has no noun); an open question keeps "שאלה פתוחה {id}".
 2. The strength label **only** for an open question, an institution's own document ("לפי החברה") and a secondary source; a primary source and a mirror of the law say nothing in the header (the source block says it).
 3. The rule in plain words ("text").
 4. For a derivation rule, chips with the lead "נגזר מ־" naming the rules it rests on; each opens its card.
@@ -411,7 +415,7 @@ Amended 2026-10-24 (knowledge layer, D25): the card puts the source where the re
 8. The meta list, shortened to "נבדק" and "ייבדק שוב"; a rule marked not likely to change says "יציב".
 9. "נוגע ל" tags (the dimensions).
 10. "משפיע על": the pages that quote the rule and, when the engine reads it, "מנוע החישוב". Shown on the rules pages only.
-11. "לכל הכללים" opens the rule on the rules page (6.14, `/rules#{ID}`), in its group, with the page's filters at hand.
+11. "לכל החוקים והכללים" opens the rule on the rules page (6.14, `/rules#{ID}`), in its group, with the page's filters at hand.
 12. A quiet button "העתקת ההפניה" copies the rule's title, the publisher, the document, the section, the link and the date read, as one line, so the reader can paste the reference into a message.
 
 An open question keeps the blocked style and shows what is unknown and which numbers wait for it. The sheet's sourced-number view (6.8) shows the same source block directly under the figure's name in place of its three separate rows. Components: rule reference, source block (design-system 3.8), strength label, disclosure, callout (blocked).
@@ -526,6 +530,8 @@ Amended 2026-10-24 (evening, the founder's correction): **one page.** The front 
 
 **Phone:** the chip rows scroll sideways inside their own box, bleeding into the gutter; cards one across. **PC:** the chips wrap; cards two across. **Components:** pinned row, filter chip, filter bar, disclosure, rule card, strength label (design-system 3.8a).
 
+Amended 2026-10-24 (late evening, the founder's second correction): **the questions leave the page, and the set gets its name.** "The FAQ is first in the page and doesn't fit well; the rules page should be the entire ruleset with quality-of-life filters, then an FAQ should come in a different way." The page now opens at the set: h1 "חוקים וכללים", the lede, the legend, the filter field, and under it one quiet line "יש לכם שאלה? השאלות שכולם שואלים" linking to the questions page (6.17); then the filter bar and the list as above, without the pinned section. The count line reads "מוצגים {n} מתוך {total}" ("מוצג אחד מתוך {total}"), section and group headings carry the bare number after "·", and a `?ids=` preset still names its question in the preset line, so the questions page's "לכל החוקים והכללים בנושא" lands here with the question shown. **Name:** the founder chose "חוקים וכללים" for the set (the title, the menu and footer entries, the search group, every "לכל החוקים והכללים") and no noun for a single record, whose card reads "id · title" (6.9); the code keeps `rule`.
+
 ### 6.15 Parameters page
 
 **Flows:** 8. **Mockup:** none.
@@ -560,6 +566,19 @@ What it is for: the honest answer to "where does all this come from". The forty-
 
 
 ---
+
+### 6.17 Questions page
+
+**Flows:** 8 (a reader with a question). **Mockup:** the sketch the founder approved on 2026-10-24 (late evening): three phone frames, the rules page starting at the rules, the questions page with answers, the home block. Added 2026-10-24 (late evening): the common questions left the rules page (6.14) because a list of questions at the top of the reference page "doesn't fit well"; on their own page each gets an answer, not only pointers.
+
+- h1 "השאלות שכולם שואלים" and the lede "תשובה של שורה לכל שאלה, ומתחתיה החוקים והכללים שאפשר לפתוח ולבדוק במקור."
+- One entry per P-09 row, in P-09's order, separated by 1 px `border`, each an anchor target (`#q-1` … `#q-12`): the question as an h2; the **answer line** from the row's `answer_he`, one sentence (two at most) written only from the row's rules, in which every figure is a slot `{ID:figure}` rendered as a provenance number with its unit ("25%", "83,641 ₪", "6 שנים", "3 ימי עסקים"), so no digit is typed by hand and every number keeps its source, date and state; the strength label once after the answer when any rule of the row is the institution's own document or a secondary source; the row's rules as lines "{short title} {chip}", the chip opening the rule card in the sheet (6.9); and the link "לכל החוקים והכללים בנושא", which opens the rules page with `?ids=` set to the row's rules, so the preset line there names the question.
+- A row whose answer is not written yet shows "התשובה עוד לא נכתבה; החוקים והכללים שעונים על השאלה מופיעים מתחת." in place of the answer.
+- Reached from the menu ("שאלות שכולם שואלים", right after "מדריך"), the footer, the home page block (6.1) and the quiet line on the rules page (6.14).
+
+**Phone:** one column; the answer wraps at the measure. **PC:** the same column at `max-w-measure`; nothing side by side.
+**States:** the validator rejects an answer with a typed digit, or a slot naming a rule outside the row or a figure the rule does not have.
+**Components:** question entry (design-system 3.8a), provenance number, strength label, rule reference, sheet.
 
 ## 7. Release 2 flows
 

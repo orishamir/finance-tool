@@ -4,7 +4,7 @@
 import { lazy, Suspense } from "react";
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/home";
-import { home as copy, knowledgeEntry, r3workbench, site } from "../copy";
+import { home as copy, knowledgeEntry, questions as questionsCopy, r3workbench, site } from "../copy";
 import { IconDrillIn } from "../components/icons";
 import { PageSearchField, PageShell } from "../components/shell";
 import { QuickGoalCard } from "../components/compare/quick-goal";
@@ -18,9 +18,10 @@ const SavedGoalStrip = lazy(() => import("../components/compare/strip").then((m)
 
 export async function loader() {
   const { goalContext, goalFormData } = await import("../lib/compare.server");
+  const { loadPinnedRules } = await import("../lib/data.server");
   const { form } = goalFormData();
   // the question card validates with the goal form's ranges (P-07 horizon, P-05 monthly)
-  return { ...goalContext(), form: { horizon: form.horizon, monthly: form.monthly } };
+  return { ...goalContext(), form: { horizon: form.horizon, monthly: form.monthly }, questions: loadPinnedRules().rows.slice(0, 3).map((r) => r.question_he) };
 }
 
 export function meta() {
@@ -28,11 +29,11 @@ export function meta() {
 }
 
 export default function Home() {
-  const { today, presets, meta, form } = useLoaderData<typeof loader>();
+  const { today, presets, meta, form, questions } = useLoaderData<typeof loader>();
   return (
     <GoalsProvider presets={presets as Presets}>
       <PageShell current="home" data={{ rules: {}, terms: {}, dimensions: {}, today }}>
-        <HomeBody presets={presets as Presets} meta={meta} today={today} bounds={form} />
+        <HomeBody presets={presets as Presets} meta={meta} today={today} bounds={form} questions={questions} />
       </PageShell>
     </GoalsProvider>
   );
@@ -74,7 +75,7 @@ function QuestionBlock({ presets, meta, today, bounds }: { presets: Presets; met
   );
 }
 
-function HomeBody({ presets, meta, today, bounds }: { presets: Presets; meta: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null }; today: string; bounds: Bounds }) {
+function HomeBody({ presets, meta, today, bounds, questions }: { questions: string[]; presets: Presets; meta: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null }; today: string; bounds: Bounds }) {
   const { ready, holdings } = useHoldings();
   const names = holdings.map((h) => h.track?.name ?? h.typedName ?? h.company.name);
   const holdingsLine = ready && holdings.length > 0 ? (holdings.length === 1 ? copy.holdingsSaved.one : copy.holdingsSaved.many).replace("{n}", String(holdings.length)).replace("{names}", names.slice(0, 2).join(", ") + (names.length > 2 ? "…" : "")) : null;
@@ -87,6 +88,22 @@ function HomeBody({ presets, meta, today, bounds }: { presets: Presets; meta: { 
           <p className="text-sm text-muted-foreground">{site.footerNote}</p>
         </header>
         <QuestionBlock presets={presets} meta={meta} today={today} bounds={bounds} />
+        <Card className="flex flex-col gap-1">
+          <h2 className="text-lg font-semibold">{questionsCopy.home.title}</h2>
+          <ul className="flex flex-col">
+            {questions.map((q, i) => (
+              <li key={q} className={i > 0 ? "border-t border-border" : undefined}>
+                <Link to={`/questions#q-${i + 1}`} className="min-h-target flex items-center justify-between gap-3 py-2 hover:underline">
+                  <span>{q}</span>
+                  <IconDrillIn size={20} className="text-foreground/70 shrink-0" />
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <Link to="/questions" className="text-link min-h-target inline-flex items-center hover:underline self-start">
+            {questionsCopy.home.all}
+          </Link>
+        </Card>
       </div>
       <div className="flex flex-col gap-8 xl:col-span-5">
         <div className="flex flex-col gap-2">
