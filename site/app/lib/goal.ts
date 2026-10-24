@@ -259,8 +259,11 @@ interface GoalsApi {
   /** Starts the first goal when none exists (the form opens empty and saves from the first keystroke). */
   select: (id: string) => void;
   add: () => void;
+  /** Removing the last goal starts a fresh empty one, so the form always has a goal to type into. */
   remove: (id: string) => void;
-  move: (id: string, delta: -1 | 1) => void;
+  /** Puts the goal at `to` (0-based) in the order; the others keep their relative order. */
+  moveTo: (id: string, to: number) => void;
+  rename: (id: string, name: string) => void;
   restart: () => void;
   setPreset: (preset: PresetId) => { kept: boolean };
   setEnteredReturn: (v: number | null) => void;
@@ -351,34 +354,38 @@ export function GoalsProvider({ presets, children }: { presets: Presets; childre
   }, []);
 
   const select = useCallback((id: string) => setDoc((d) => ({ ...d, currentId: id })), []);
+  const seeded = useCallback(
+    (order: number) => emptyGoal(order, { age: inputs.state.age, employment: inputs.state.employment, return: inputs.state.entered["A-01"] ?? null, inflation: inputs.state.entered["A-02"] ?? null }),
+    [inputs.state],
+  );
   const add = useCallback(() => {
     setDoc((d) => {
-      const g = emptyGoal(d.goals.length === 0 ? 0 : Math.max(...d.goals.map((x) => x.order)) + 1, {
-        age: inputs.state.age,
-        employment: inputs.state.employment,
-        return: inputs.state.entered["A-01"] ?? null,
-        inflation: inputs.state.entered["A-02"] ?? null,
-      });
+      const g = seeded(d.goals.length === 0 ? 0 : Math.max(...d.goals.map((x) => x.order)) + 1);
       return { ...d, goals: [...d.goals, g], currentId: g.id };
     });
-  }, [inputs.state]);
-  const remove = useCallback((id: string) => {
-    setDoc((d) => {
-      const goals = d.goals.filter((g) => g.id !== id);
-      return { ...d, goals, currentId: d.currentId === id ? (orderOf(goals)[0]?.id ?? null) : d.currentId };
-    });
-  }, []);
-  const move = useCallback((id: string, delta: -1 | 1) => {
+  }, [seeded]);
+  const remove = useCallback(
+    (id: string) => {
+      setDoc((d) => {
+        const left = d.goals.filter((g) => g.id !== id);
+        const goals = left.length > 0 ? left : [seeded(0)];
+        return { ...d, goals, currentId: d.currentId === id || left.length === 0 ? (orderOf(goals)[0]?.id ?? null) : d.currentId };
+      });
+    },
+    [seeded],
+  );
+  const moveTo = useCallback((id: string, to: number) => {
     setDoc((d) => {
       const sorted = orderOf(d.goals);
-      const i = sorted.findIndex((g) => g.id === id);
-      const j = i + delta;
-      if (i < 0 || j < 0 || j >= sorted.length) return d;
-      const a = sorted[i]!;
-      const b = sorted[j]!;
-      return { ...d, goals: d.goals.map((g) => (g.id === a.id ? { ...g, order: b.order } : g.id === b.id ? { ...g, order: a.order } : g)) };
+      const from = sorted.findIndex((g) => g.id === id);
+      if (from < 0 || from === to) return d;
+      const [g] = sorted.splice(from, 1);
+      sorted.splice(Math.max(0, Math.min(to, sorted.length)), 0, g!);
+      const order = new Map(sorted.map((x, i) => [x.id, i]));
+      return { ...d, goals: d.goals.map((x) => ({ ...x, order: order.get(x.id)! })) };
     });
   }, []);
+  const rename = useCallback((id: string, name: string) => setDoc((d) => ({ ...d, goals: d.goals.map((g) => (g.id === id ? { ...g, name: name.slice(0, 80) } : g)) })), []);
   const restart = useCallback(() => {
     takeOver();
     const g = emptyGoal(0);
@@ -440,8 +447,8 @@ export function GoalsProvider({ presets, children }: { presets: Presets; childre
 
   const goals = useMemo(() => orderOf(doc.goals), [doc.goals]);
   const api = useMemo<GoalsApi>(
-    () => ({ status, saved, goals, current, presets, resolved, update, select, add, remove, move, restart, setPreset, setEnteredReturn, setAcceptedFall, setExposureInput, setInflation, setAge, setEmployment }),
-    [status, saved, goals, current, presets, resolved, update, select, add, remove, move, restart, setPreset, setEnteredReturn, setAcceptedFall, setExposureInput, setInflation, setAge, setEmployment],
+    () => ({ status, saved, goals, current, presets, resolved, update, select, add, remove, moveTo, rename, restart, setPreset, setEnteredReturn, setAcceptedFall, setExposureInput, setInflation, setAge, setEmployment }),
+    [status, saved, goals, current, presets, resolved, update, select, add, remove, moveTo, rename, restart, setPreset, setEnteredReturn, setAcceptedFall, setExposureInput, setInflation, setAge, setEmployment],
   );
   return createElement(Ctx.Provider, { value: api }, children);
 }

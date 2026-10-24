@@ -807,9 +807,12 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 9 and the handoff in 
 | Inflation, start | ערך התחלתי, פרמטר של האתר | (now the one line above the fields, changed 2026-10-24, UX fix 17)
 | Button | להשוואה |
 | Goals list heading | המטרות שלכם |
-| Goals list, line | המטרות נבדקות אחת אחת, לפי הסדר. הראשונה מקבלת את הכסף קודם. |
+| Goals list, line | המטרות נבדקות אחת אחת, מימין לשמאל: הראשונה מקבלת את הכסף קודם. גררו מטרה כדי לשנות את הסדר. | (was "…לפי הסדר. הראשונה מקבלת את הכסף קודם."; the chips are dragged since 2026-10-24, night)
 | Add a goal | מטרה נוספת |
-| Move up / down (screen-reader names) | להזיז למעלה · להזיז למטה |
+| ~~Move up / down (screen-reader names)~~ | ~~להזיז למעלה · להזיז למטה~~ | removed with the arrows, 2026-10-24 (night)
+| Rename, delete (the current chip's icon buttons, names and tooltips) | שינוי השם · מחיקת המטרה |
+| Rename field (screen-reader name) | שם המטרה |
+| Delete confirmation (reused from the saved-goal strip) | למחוק את המטרה מהמכשיר הזה? · מחיקה · ביטול |
 | Remaining-balance hint on a second goal | נשארו `{סכום}` אחרי המטרות הקודמות. |
 
 **Errors** (in addition to 3.7):
@@ -1129,7 +1132,7 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 12 and the handoff in
 | Thresholds line | הספים: שווה להתמקח מ־`{סכום}`; שווה להימנע מ־`{סכום}`. פרמטר של האתר. |
 | Its link | לכל הפרמטרים |
 | Chart title | העמלות לאורך הזמן |
-| Chart, direct labels (short) | ניהול מחיסכון · ניהול מהפקדה | `r3fees.chart.short`; added 2026-10-24 (UX fix 30): the full names were cut in the 94 px label strip; the legend and readout keep the full names |
+| Chart, direct labels (short) | ניהול מחיסכון · ניהול מהפקדה · הוצאות ישירות · קנייה ומכירה · ניהול פיקדון · המרת מטבע · דמי חשבון · מרווח · בתוך הקרן · ניהול החברה | `r3fees.chart.short`; added 2026-10-24 (UX fix 30): the full names were cut in the 94 px label strip; the legend and readout keep the full names. Changed 2026-10-24 (evening, the founder's screenshot): every fee kind has a short name, so each label is one line and no label overlaps the next |
 | Chart, total line | סך העמלות |
 | Chart, rest band | שאר העמלות |
 | Chart, remainder legend | השפעה משולבת: הפער עד הקו · changed 2026-10-24 (Hebrew editor); was ״השפעה משולבת: הרווח עד הקו״ |
@@ -2615,7 +2618,8 @@ Strings are `scnCompare.*` and `ownTermsCopy.*` in copy.ts, each marked `// scen
 | `scnCompare.pastRecord` | ברשומה שפורסמה (J.P. Morgan Asset Management, 1950–2025, בדולרים, לפני אינפלציה; חלונות של שנים קלנדריות, לפני עמלות ומס): התשואה השנתית של מדד S&P 500 לפי השקף נעה, בחלונות של 5 שנים, בין … (changed 2026-10-24, review fix: the slide does not say "annualised"; figure names in `mkt-01.json` now read "תשואה שנתית (לפי השקף), החלון הגרוע/הטוב ביותר של N שנים") … עבר, לא תחזית; המספרים האלה לא נכנסים לדירוג. למקור | MKT-01 figures as sourced numbers; (2026-10-24, polish) the source run "J.P. Morgan Asset Management, 1950–2025" is a `{src}` slot rendered in an LTR isolate, and the six figures carry one "מקור משני" tag after the sentence instead of one caution icon each |
 | `ownTermsCopy.provider.*` | בחרתם · ספק שהתעריפון שלו ישמש בחישוב · הספקים שנאספו בעמוד הספקים, לפי מה שהאפשרות הזו משאירה בסוף. התעריפון הוא של הספק; הבחירה שלכם. · לבחור · ערוץ ישיר / סניף · לחזור לספק שהאתר בחר · בחירת האתר | Picker beside the brokerage card's fee field (sc-broker) |
 | `r4workbench.providers.useInCompare.*` | לחשב את ההשוואה לפי הספק הזה · ההשוואה שלכם רצה על הספק הזה · לחזור לספק שהאתר בחר · לתוצאות ההשוואה · אין מטרה שמורה, ולכן אין השוואה שאפשר להריץ על הספק הזה. · להגדיר מטרה | Provider row on the providers page (brokerage) |
-| `ownTermsCopy.*` | feeAbout, feeChip, fundCostLabel, feeLabel, flipBelow (מתהפך אם דמי הניהול בקרן יורדים מתחת ל־{x}), flipAbove, openMinimum (סכום המינימום: שאלה פתוחה), line.* (לפי {שם} בדמי ניהול {עלות} ותעריפון {ספק} · להחליף · לבחירת מוצר אחר · דמי ניהול שנתיים בקרן, באחוזים · לחזור לדמי הניהול של הרשומה · הנמוכים ביותר שנאספו באותה חשיפה: {עלות} · ריבית שנתית שהבנק הציע לכם · לחזור לריבית שפורסמה) | Folded in from lib/own-terms-copy.ts (sc-represent), marked scenario fix 2026-10-24 |
+| `ownTermsCopy.*` | feeAbout, feeChip, fundCostLabel, feeLabel, feeFlip.fund / feeFlip.balance (העלות בתוך הקרן ב{שם} נמוכה מ־{x} / גבוהה מ־{x}; דמי הניהול מחיסכון ב{שם} נמוכים מ־{x} / גבוהים מ־{x}; replaced flipBelow and flipAbove, which said "בקרן" for every option, 2026-10-24 Doron's case), openMinimum (סכום המינימום: שאלה פתוחה), line.* (לפי {שם} בדמי ניהול {עלות} ותעריפון {ספק} · ותעריפון {ספק}, הזול ביותר למטרה הזו מבין התעריפונים שנאספו · להחליף · לבחירת מוצר אחר · דמי ניהול שנתיים בקרן, באחוזים · לחזור לדמי הניהול של הרשומה · הנמוכים ביותר שנאספו באותה חשיפה: {עלות} · ריבית שנתית שהבנק הציע לכם · לחזור לריבית שפורסמה) | Folded in from lib/own-terms-copy.ts (sc-represent), marked scenario fix 2026-10-24 |
+| `r2.result.atProvider`, `feeShield`, `sensFirstAlone`, `sensBreaks` | בתעריפון · ההפרש במס נובע מדמי הניהול: ב{קופה} הם יורדים מהצבירה ומקטינים את הרווח החייב במס; ב{חשבון} דמי ניהול פיקדון ניירות הערך אינם מקטינים אותו, חוץ מאלה של שנת המכירה. · ראשונה לבדה. · התיקו נשבר אם (was מפריד בין השקולות אם) | Doron's case, 2026-10-24: the headline names the tariff, a tax gap that is a fee effect says so (TXS-06), a tie-breaking move says so |
 
 ## Added 2026-10-24 (knowledge layer)
 

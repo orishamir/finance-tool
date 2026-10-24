@@ -501,6 +501,47 @@
     font-size: var(--text-sm);
     white-space: nowrap;
   }
+  /* Everything under the label (the box, then its error or hint, note and state), one child of the field so that a field in
+     a row can be a two-row subgrid (2026-10-24 night). */
+  .field-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  /* ---- fields side by side (2026-10-24 night, the founder's screenshot of the question card: a label that wrapped to two
+     lines pushed its box 24 px under its neighbours'). A `.field-row` is a grid of fields; every field in it is a subgrid
+     over two of its rows, the labels in the first and the bodies in the second, so the boxes line up whatever the labels'
+     line count, and a one-line label sits at the bottom of the label row, against its box. Where a row's slot holds a field
+     with buttons beside it (a stepper, "לא יודעים"), the slot is a `.field-cell`: the same two-row subgrid, the field in its
+     first column and each button in the box row of its own column at the end. A field outside a grid keeps the plain stack:
+     `subgrid` on a non-grid-item computes to ordinary rows. */
+  .field-row .field {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: span 2;
+    row-gap: 6px;
+    min-width: 0;
+  }
+  .field-row .field > .field-label {
+    align-self: end;
+  }
+  :where(.field-row) > .field-cell {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: span 2;
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-columns: max-content;
+    grid-auto-flow: column;
+    column-gap: 8px;
+    row-gap: 6px; /* the field's own gap: with the row's wider gap the buttons sat 5 px under the box */
+    min-width: 0;
+  }
+  :where(.field-row > .field-cell) > :where(button, a) {
+    grid-row: 2;
+    align-self: start;
+  }
 
   /* ---- slider: a native range input, 44px hit area, 4px track filled from the start (right) */
   .slider {

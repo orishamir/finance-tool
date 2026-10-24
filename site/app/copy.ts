@@ -901,10 +901,12 @@ export const r2 = {
     insuranceHint: "כיסוי למקרה מוות או נכות שיורד מהחיסכון כל חודש. בלי המספר הזה האתר לא משווה קרן פנסיה, כי הוא לא מנחש אותו. בקופת גמל לקצבה אין ביטוח כזה, ולכן היא לא צריכה אותו.",
     insuranceEmpty: "לא הוזן: קרנות הפנסיה יסומנו ״עוד לא נבדקה״.",
     goalsHeading: "המטרות שלכם",
-    goalsLine: "המטרות נבדקות אחת אחת, לפי הסדר. הראשונה מקבלת את הכסף קודם.",
+    goalsLine: "המטרות נבדקות אחת אחת, מימין לשמאל: הראשונה מקבלת את הכסף קודם. גררו מטרה כדי לשנות את הסדר.",
     addGoal: "מטרה נוספת",
-    moveUp: "להזיז למעלה",
-    moveDown: "להזיז למטה",
+    // 2026-10-24 (founder): the chips are dragged sideways; the current one can be renamed and deleted in place
+    renameGoal: "שינוי השם",
+    renameField: "שם המטרה",
+    deleteGoal: "מחיקת המטרה",
     unnamed: "מטרה ללא שם",
     ageUp: "להגדיל את הגיל בשנה",
     ageDown: "להקטין את הגיל בשנה",
@@ -980,6 +982,8 @@ export const r2 = {
     whyNone: "אין הבדל בין החוקים והכללים ששתי האפשרויות נשענות עליהם.",
     rank: "מקום",
     decidingLine: "ההבדל הגדול ביותר מול האפשרות שמעליה:", // audit 2026-10-24 (A7): was "מכריע לעומת האפשרות שמעליה:"
+    atProvider: "בתעריפון", // 2026-10-24 (Doron's case): the headline names the tariff the securities account is priced on
+    feeShield: "ההפרש במס נובע מדמי הניהול: ב{provident} הם יורדים מהצבירה ומקטינים את הרווח החייב במס; ב{securities} דמי ניהול פיקדון ניירות הערך אינם מקטינים אותו, חוץ מאלה של שנת המכירה.", // 2026-10-24 (Doron's case): a tax gap that is a fee effect (F-08 step 5, TXS-06)
     assumptionsOf: "ההנחות של השורה",
     detail: "פירוט",
     secondaryTag: "המס ביציאה לפי מקור משני",
@@ -1044,7 +1048,8 @@ export const r2 = {
     sensTo: " ל־",
     sensThen: ": אז",
     sensFirst: "ראשונה.",
-    sensBreaks: "מפריד בין השקולות אם",
+    sensFirstAlone: "ראשונה לבדה.", // 2026-10-24 (Doron's case): a move that breaks a tie leaves one option first alone
+    sensBreaks: "התיקו נשבר אם", // 2026-10-24 (Doron's case): was "מפריד בין השקולות אם"
     sensNoFlip: "לא מתהפך בטווח שנבדק:",
     sensUntil: " עד ",
     sensFooter: "הטווחים הם פרמטר של האתר, ואי אפשר לשנות אותם כאן.",
@@ -1156,11 +1161,13 @@ export const ownTermsCopy = {
   feeChip: "דמי ניהול שהזנתם", // scenario fix 2026-10-24
   fundCostLabel: "העלות בתוך הקרן", // scenario fix 2026-10-24
   feeLabel: "דמי ניהול מחיסכון", // scenario fix 2026-10-24
-  /** The sensitivity line in fee terms; {x} is the percentage. */
-  flipBelow: "מתהפך אם דמי הניהול בקרן יורדים מתחת ל־{x}", // scenario fix 2026-10-24
-  flipAbove: "מתהפך אם דמי הניהול בקרן עולים מעל {x}", // scenario fix 2026-10-24
+  /** The sensitivity line in fee terms (2026-10-24, Doron's case: names the option and its fee, never "בקרן"); {name} is the option, {x} the percentage. The lead ("מתהפך אם" or "התיקו נשבר אם") comes before it. */
+  feeFlip: {
+    fund: { below: "העלות בתוך הקרן ב{name} נמוכה מ־{x}", above: "העלות בתוך הקרן ב{name} גבוהה מ־{x}" },
+    balance: { below: "דמי הניהול מחיסכון ב{name} נמוכים מ־{x}", above: "דמי הניהול מחיסכון ב{name} גבוהים מ־{x}" },
+  } as Record<"fund" | "balance", { below: string; above: string }>,
   openMinimum: "סכום המינימום: שאלה פתוחה", // scenario fix 2026-10-24
-  line: { named: "לפי {name}", fee: " בדמי ניהול {fee}", tariff: " ותעריפון {provider}", end: ".", change: "להחליף", workbench: "לבחירת מוצר אחר", feeLabel: "דמי ניהול שנתיים בקרן, באחוזים", reset: "לחזור לדמי הניהול של הרשומה", classMin: "הנמוכים ביותר שנאספו באותה חשיפה: {fee}", rateLabel: "ריבית שנתית שהבנק הציע לכם", rateReset: "לחזור לריבית שפורסמה" }, // scenario fix 2026-10-24
+  line: { named: "לפי {name}", fee: " בדמי ניהול {fee}", tariff: " ותעריפון {provider}", tariffCheapest: " ותעריפון {provider}, הזול ביותר למטרה הזו מבין התעריפונים שנאספו", end: ".", change: "להחליף", workbench: "לבחירת מוצר אחר", feeLabel: "דמי ניהול שנתיים בקרן, באחוזים", reset: "לחזור לדמי הניהול של הרשומה", classMin: "הנמוכים ביותר שנאספו באותה חשיפה: {fee}", rateLabel: "ריבית שנתית שהבנק הציע לכם", rateReset: "לחזור לריבית שפורסמה" }, // scenario fix 2026-10-24
 };
 
 // scenario fix 2026-10-24 (sc-compare): what the comparison's headline says beyond the leader. docs/copy.md section 6.8 holds the rows.
@@ -1497,7 +1504,8 @@ export const r3fees = {
   thresholds: { before: "הספים: שווה להתמקח מ־", mid: "; שווה להימנע מ־", after: ". פרמטר של האתר.", link: "לכל הפרמטרים" },
   chart: {
     title: "העמלות לאורך הזמן",
-    short: { balance: "ניהול מחיסכון", deposit: "ניהול מהפקדה" } as Record<string, string>,
+    // 2026-10-24 (evening, the founder's screenshot): one short name per fee kind, so each direct label is one line in the 94 px strip
+    short: { balance: "ניהול מחיסכון", deposit: "ניהול מהפקדה", direct: "הוצאות ישירות", trade: "קנייה ומכירה", custody: "ניהול פיקדון", fx: "המרת מטבע", fixed: "דמי חשבון", spread: "מרווח", fund: "בתוך הקרן", manager: "ניהול החברה" } as Record<string, string>,
     total: "סך העמלות",
     rest: "שאר העמלות",
     remainderLegend: "השפעה משולבת: הפער עד הקו",
