@@ -32,5 +32,11 @@ export async function loader() {
     const href = guide ? `/guide/${guide}#terms` : `/exposure/${exposure}#terms`;
     for (const name of [term.he, ...term.variants]) entries.push({ kind: "term", name, line: `${search.termLine} ${page}`, href, norm: normalize(name) });
   }
+  // release 4: bank and broker names and every name a deposit record carries (447, app, ad, abbreviation)
+  const { institutionSearchEntries } = await import("../lib/institutions.server");
+  const { r4catalogue } = await import("../copy");
+  for (const e of institutionSearchEntries({ bank: r4catalogue.classWord.bank, broker: r4catalogue.classWord.broker })) {
+    entries.push({ kind: "bank", name: e.name, line: e.line, href: e.href, norm: normalize(e.extra ? `${e.name} ${e.extra}` : e.name) });
+  }
   return Response.json(entries);
 }

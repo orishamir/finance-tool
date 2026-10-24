@@ -156,6 +156,7 @@ An Israeli mutual fund (קרן נאמנות) is a trust: a trustee holds the ass
 - Source: [ISA, פעילות קרנות נאמנות בישראל 2025](https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf), p. 13 · checked 2026-10-22 · primary (regulator report, third-party host; the copy on isa.gov.il was not located)
 - Dimensions: fee-management-balance
 - Likely to change: yes, yearly
+- **[2026-10-23 R3 research pass]** The official copy on the ISA site (published 17 Jun 2026) carries the same figures; the ISA's site terms do not permit republication without written consent (MF-55).
 
 ### MF-19 ISA average management fee by investment category, 2025 (table 2)
 - Rule: Table 2 of the ISA report gives weighted and simple averages per category and fund type.
@@ -169,6 +170,7 @@ An Israeli mutual fund (קרן נאמנות) is a trust: a trustee holds the ass
 - Source: [ISA 2025 report](https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf), p. 14 (לוח 2) · checked 2026-10-22 · primary
 - Dimensions: fee-management-balance
 - Likely to change: yes, yearly
+- **[2026-10-23 R3 research pass]** Table 2 confirmed on the official copy (MF-55).
 
 ### MF-20 Trustee fee (שכר נאמן)
 - Rule: The trustee's pay is a term of the fund agreement (section 5(א)(12)) and is charged like the management fee: a percentage of assets, computed daily and deducted from the fund (ISA guide).
@@ -466,6 +468,14 @@ An Israeli mutual fund (קרן נאמנות) is a trust: a trustee holds the ass
 - Dimensions: `product-marking`, `currency`
 - Likely to change: no.
 
+
+### MF-55 The ISA's 2025 mutual-fund report on the ISA's own site, its publication date, and the site terms on reuse
+- Rule: The report "פעילות קרנות נאמנות בישראל 2025" is published on the ISA site's "פעילות קרנות נאמנות בישראל" page, dated 17 June 2026 (the 2024 report: 16 March 2025), as a PDF under the site's asset library. Its page 13 carries the figures in MF-18 (end-2025 averages: all funds 0.67%, active 1.01%, money-market 0.17%, open tracking 0.31%, ETF 0.51%, alternative 1.17%; the history table gives the weighted and simple whole-industry averages 2019 to 2026, 2025 weighted 0.50% simple 0.67%, 1.1.2026 weighted 0.52%) and page 14 table 2 the per-category weighted and simple averages in MF-19 (money-market: "כספית מט"חית עם קונצרני" 0.17% / 0.23%, "כספית שקלית" 0.16% / 0.14%). The figures match the Funder-hosted copy used on 2026-10-22. ISA site terms of use (9 May 2022, updated 10.07.2022): "אין להעתיק ולהשתמש בתכנים מהאתר, לרבות באתרים וביישומונים אחרים, בפרסומים אלקטרוניים, בפרסומי דפוס וכיו"ב"; copyright in the site's content is the ISA's, and "אין להעתיק, להפיץ, לבצע בפומבי, לשדר, להעמיד לרשות הציבור … כל חלק מאלה … בלא קבלת הסכמה בכתב ומראש מהרשות"; laws, regulations, Knesset records and judgments are excepted under s. 6 of the Copyright Law; automated crawling of the site is barred.
+- Conditions / exceptions: The report is a publication of the ISA, not legislation, so the s. 6 exception does not cover it. For the site this is the same position as the Bank of Israel series (product D20): without the ISA's written consent the category averages are a link, not a number; the founder decides whether to ask. The research question whether the headline boxes are simple averages (MF open question 6) is unchanged: the history table labels its columns "ממוצע משוקלל" and "ממוצע פשוט", and the 0.67% box equals the simple column.
+- Figures: as MF-18 and MF-19, now from the official host; the whole-industry weighted average 0.50% (2025) and 0.52% (1.1.2026).
+- Source: [ISA, פעילות קרנות נאמנות בישראל 2025 (PDF on new.isa.gov.il), pp. 2, 13, 14](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf) · checked 2026-10-23 · primary; [ISA, פעילות קרנות נאמנות בישראל (list page with publication dates)](https://www.new.isa.gov.il/nav-index/supervised-mutualfunds/mutualfundsActivities) · checked 2026-10-23 · primary; [ISA, תנאי השימוש באתר רשות ניירות ערך](https://www.new.isa.gov.il/nav-index/supervised-general/takanon2) · checked 2026-10-23 · primary
+- Dimensions: `fee-management-balance`, `regulator`
+- Likely to change: yes, yearly (next report expected mid-2027).
 ## Proposed dimensions
 
 - `order-timing`: when an order is priced and executed (designated hour, pricing days, fixed dates). Changes the outcome for a saver who needs money on a given day (MF-10, MF-14, MF-35).
@@ -583,7 +593,7 @@ Distributors: banks and TASE members. Tariffs read for Leumi and IBI only (MF-27
 3. Current designated hours (cut-off times) by fund type, and the TASE clearing-house rules that set them; whether mutual-fund creations and redemptions happen on Fridays since TASE moved to Monday to Friday on 5 January 2026 (two secondary sources conflict, MF-14). Tried: Funder articles; the web-search budget for this run ran out before an official source was found. Probably in TASE clearing rules, a current fund prospectus on MAGNA, or an ISA announcement.
 4. When redemption cash is available to the holder in practice (same day as the price, or the next business day). The law says the distributor pays "בו ביום" but the day relative to the order is not stated. Probably in a current prospectus or a bank's terms.
 5. Whether the 1 January fee-increase rule (MF-17) is binding regulation or a voluntary outline, and its current text. Tried: ISA reports. Probably an ISA circular.
-6. Whether the ISA's headline averages per fund type are simple averages (inferred from the report's numbers); current trustee-fee range and average (only the 2017 figure, 0% to 0.25%, average 0.05%).
+6. Whether the ISA's headline averages per fund type are simple averages (inferred from the report's numbers); current trustee-fee range and average (only the 2017 figure, 0% to 0.25%, average 0.05%). **[2026-10-23 R3 research pass: Unchanged; the official copy labels the history columns weighted/simple, the headline box equals the simple column (MF-55).]**
 7. Share of funds charging a load (הוספה) or a redemption deduction today, and their typical rates.
 8. The current ISA list of classification headings (כותרות). ISA site is JavaScript-only.
 9. The current ISA texts on fund naming principles and on the "(!)" mark (only the 2017 guide's description was read; a 2009 TheMarker report on the mark was a search result, not opened). **[2026-10-22 browser pass 2: Exposure codes closed by MF-54; the "(!)" directive text still unread.]**
@@ -612,6 +622,8 @@ Distributors: banks and TASE members. Tariffs read for Leumi and IBI only (MF-27
 
 | Source | Publisher | Strength | Checked |
 |---|---|---|---|
+| פעילות קרנות נאמנות בישראל 2025 (official copy, published 17.6.2026) | Israel Securities Authority | primary | https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf | 2026-10-23 |
+| תנאי השימוש באתר רשות ניירות ערך | Israel Securities Authority | primary | https://www.new.isa.gov.il/nav-index/supervised-general/takanon2 | 2026-10-23 |
 | [פעילות קרנות נאמנות בישראל 2025 (copy hosted by Funder)](https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf), pp. 1-21 read | ISA | primary (third-party host) | 2026-10-22 |
 | [פעילות קרנות נאמנות בישראל 2024](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf), pp. 1-4, 16-21 read | ISA | primary | 2026-10-22 |
 | [חוק השקעות משותפות בנאמנות, התשנ"ד-1994 (Wikisource, revision of 30 Sep 2026)](https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות) | Knesset (via Wikisource mirror) | primary (mirror) | 2026-10-22 |

@@ -33,9 +33,20 @@ import { insuranceCost } from "./formulas/insurance.ts";
 import { runSecurities } from "./ledgers/securities.ts";
 import { buildCandidateSet } from "./compare/candidates.ts";
 import { idleCash } from "./compare/idle-cash.ts";
+import { lossFilter } from "./compare/loss-filter.ts";
 import { rankCandidates } from "./compare/ranking.ts";
+import { revisit } from "./compare/revisit.ts";
 import { sensitivity } from "./compare/sensitivity.ts";
 import { timeline } from "./timeline.ts";
+import { feeMateriality } from "./fees/materiality.ts";
+import { regulatorReference } from "./fees/reference.ts";
+import { feeVerdict } from "./fees/verdict.ts";
+import { consolidation } from "./holdings/consolidation.ts";
+import { classificationFit } from "./holdings/fit.ts";
+import { trackWorkbench } from "./holdings/workbench.ts";
+import { providerWorkbench } from "./providers/workbench.ts";
+import { fundVariants } from "./variants/fund-variants.ts";
+import { switchingCost } from "./variants/switching.ts";
 
 export const formulas = {
   "F-01": taxYearOf,
@@ -84,9 +95,20 @@ export const formulas = {
   "F-53": insuranceCost,
   "F-54": runChildSavings,
   "F-60": idleCash,
+  "F-61": feeMateriality,
+  "F-62": feeVerdict,
+  "F-63": providerWorkbench,
+  "F-64": trackWorkbench,
+  "F-65": fundVariants,
+  "F-66": switchingCost,
   "F-67": timeline,
+  "F-68": regulatorReference,
+  "F-70": classificationFit,
+  "F-71": lossFilter,
+  "F-72": consolidation,
   "F-80": rankCandidates,
   "F-81": sensitivity,
+  "F-82": revisit,
   "F-83": buildCandidateSet,
 } as const;
 
@@ -96,16 +118,6 @@ export const runs = { runBond, runChildSavings, runDeposit, runMakam, runPension
 /** Formulas in docs/method.md not implemented yet, with the release that brings them (architecture §7). */
 export const pending: Record<string, string> = {
   "F-18": "R4: interest and dividend handling fee, with full tariff detail",
-  "F-61": "R3: fee materiality",
-  "F-62": "R3: fee verdict",
-  "F-63": "R4: provider workbench",
-  "F-64": "R3: track workbench (needs CMA field confirmation)",
-  "F-65": "R4: fund variants",
-  "F-66": "R4: switching cost",
-  "F-70": "R3: classification fit",
-  "F-71": "R5: loss filter",
-  "F-72": "R3: consolidation",
-  "F-82": "R5: revisit",
 };
 
 export type FormulaId = keyof typeof formulas;

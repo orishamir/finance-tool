@@ -1,0 +1,62 @@
+{
+  "id": "TX2-17",
+  "title": "VAT on portfolio-management fees: a dealer adds 18%; a bank or TASE member charges none",
+  "title_he": "מע\"מ על דמי ניהול תיק השקעות",
+  "text_he": "מנהל תיקים שאינו מוסד כספי הוא עוסק, ולכן דמי הניהול שלו חייבים במס ערך מוסף בשיעור הקבוע בצו, שמתווסף לשיעור הנקוב. בנק, מבטח, וחבר בורסה שרוב מובהק ממחזורו נובע מפעילותו כחבר בורסה הם מוסד כספי, שמשלם מס שכר וריווח במקום מע\"מ ואינו מוסיף מע\"מ לעמלותיו. האם מנהל מסוים הוא מוסד כספי נקבע לפי מעמדו, וצריך לקרוא זאת מהתעריפון או מהחשבונית שלו.",
+  "figure_names_he": {
+    "vat_rate": "שיעור מס ערך מוסף על עסקה",
+    "financial_institution_turnover_test": "חלק המחזור הנדרש כדי שחבר בורסה או מנהל קרן ייחשב מוסד כספי"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-trade",
+    "fee-custody"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-15",
+  "figures": {
+    "vat_rate": {
+      "value": 18,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/צו_מס_ערך_מוסף_(שיעור_המס_על_עסקה_ועל_יבוא_טובין)",
+        "title": "VAT (Rate of Tax on a Transaction and on Import of Goods) Order 2005, s.1, as amended (ק\"ת תשפ\"ד 1840)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TX2-17"
+      ],
+      "state": "sourced",
+      "notes": "Rate on a transaction in Israel; the Minister changes it by order. The amendment's start date was not read on the mirror."
+    },
+    "financial_institution_turnover_test": {
+      "value": 75,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/צו_מס_ערך_מוסף_(קביעת_מוסד_כספי)",
+        "title": "VAT (Determination of Financial Institution) Order 1977, s.1(a)(1), (2)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TX2-17"
+      ],
+      "state": "sourced",
+      "notes": "A TASE member, or a fund manager or trustee, is a financial institution when 75% or more of its turnover comes from that activity."
+    }
+  },
+  "il_finance_file": "tax-tier2-other.md",
+  "checked": "2026-10-24"
+}

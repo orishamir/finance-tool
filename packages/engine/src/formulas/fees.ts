@@ -60,8 +60,15 @@ export function navBought(trade: number, halfSpread: number): number {
   return trade / (1 + halfSpread);
 }
 
-export function fxFee(rate: number | undefined, amount: number): number {
-  return (rate ?? 0) * amount;
+/**
+ * F-13 FX conversion fee on one conversion of `amount` NIS. A bare number is the percentage with no bounds;
+ * a `Commission` carries the tariff's minimum and maximum too, set in the instrument's currency (`in: "instrument"`),
+ * so they are converted at the rate of the trade: `max(min × X, min(pct × amount, max × X))` (2026-10-24).
+ */
+export function fxFee(line: number | Commission | undefined, amount: number, terms: TradeTerms = { fxRate: 1 }): number {
+  if (line === undefined) return 0;
+  if (typeof line === "number") return line * amount;
+  return tradeCommission(line, amount, terms);
 }
 
 /** A custody fee per period (F-14), on the holdings it applies to. */

@@ -1,0 +1,129 @@
+{
+  "id": "TX2-19",
+  "title": "Olim and returning-resident FX-deposit exemption orders, read in full",
+  "title_he": "הפטור ממס על ריבית בפיקדון מט\"ח לעולה ולתושב חוזר, לפי הצווים עצמם",
+  "text_he": "צו הפטור לעולה חל על פיקדון במטבע חוץ בתאגיד בנקאי לזמן קבוע של שלושה חודשים לפחות, ומעניק פטור על הריבית אם הופקד רק כסף שהיה לעולה בחוץ לארץ לפני שעלה, בתוך תשעים יום מהעברתו לישראל, כל עוד לא חלפו עשרים שנה מהעלייה, בהצהרה לבנק בטופס המתאים בתוך שבועיים מפתיחת הפיקדון, ובלי שהפיקדון שימש בטוחה להלוואה לקרוב. צו הפטור לתושב חוזר דומה, לחמש שנים, ודורש שהכסף נוצר בחוץ לארץ בתקופה שבה לא היה תושב ולא ממכירת נכסים בישראל.",
+  "figure_names_he": {
+    "olim_exemption_years": "תקופת הפטור לעולה, בשנים",
+    "returning_resident_exemption_years": "תקופת הפטור לתושב חוזר, בשנים",
+    "deposit_within_days": "הימים מהעברת הכסף לישראל להפקדתו",
+    "declaration_within_days": "הימים להצהרה לבנק",
+    "olim_minimum_term_months": "התקופה המזערית של פיקדון העולה, בחודשים"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "age-or-use-exemption",
+    "eligibility",
+    "currency",
+    "reporting-obligation",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-15",
+  "figures": {
+    "olim_exemption_years": {
+      "value": 20,
+      "unit": "years",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/צו_מס_הכנסה_(פטור_ממס_על_הכנסה_מריבית_על_פיקדון_במטבע_חוץ)",
+        "title": "Income Tax (Exemption from Tax on Interest Income on a Foreign-Currency Deposit) Order 2002, s.2(3)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TX2-19",
+        "TX2-03"
+      ],
+      "state": "sourced",
+      "notes": "Twenty years from first becoming an Israeli resident."
+    },
+    "returning_resident_exemption_years": {
+      "value": 5,
+      "unit": "years",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/צו_מס_הכנסה_(פטור_ממס_לתושב_חוזר_על_הכנסה_מריבית_על_פיקדון_במטבע_חוץ)",
+        "title": "Income Tax (Exemption for a Returning Resident on Interest Income on a Foreign-Currency Deposit) Order 2003, s.2(3)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TX2-19",
+        "TX2-03"
+      ],
+      "state": "sourced",
+      "notes": "Five years from becoming a returning resident."
+    },
+    "deposit_within_days": {
+      "value": 90,
+      "unit": "days",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/צו_מס_הכנסה_(פטור_ממס_על_הכנסה_מריבית_על_פיקדון_במטבע_חוץ)",
+        "title": "Both orders, s.2(2)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TX2-19"
+      ],
+      "state": "sourced",
+      "notes": "Ninety days from transferring the money to Israel."
+    },
+    "declaration_within_days": {
+      "value": 14,
+      "unit": "days",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/צו_מס_הכנסה_(פטור_ממס_על_הכנסה_מריבית_על_פיקדון_במטבע_חוץ)",
+        "title": "Olim order s.2(4) (form 2402); returning-resident order s.2(4) (form 2409)",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TX2-19"
+      ],
+      "state": "sourced",
+      "notes": "Olim: within 14 days of first opening the deposit; returning resident: within 14 days of depositing."
+    },
+    "olim_minimum_term_months": {
+      "value": 3,
+      "unit": "months",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/צו_מס_הכנסה_(פטור_ממס_על_הכנסה_מריבית_על_פיקדון_במטבע_חוץ)",
+        "title": "Olim order s.1, definition of a foreign-currency deposit",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TX2-19"
+      ],
+      "state": "sourced",
+      "notes": "A fixed-term deposit of not less than three months; the returning-resident order has no minimum term."
+    }
+  },
+  "il_finance_file": "tax-tier2-other.md",
+  "checked": "2026-10-24"
+}

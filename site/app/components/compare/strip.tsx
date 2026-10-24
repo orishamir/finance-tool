@@ -1,13 +1,17 @@
 // The saved-goal strip (design-spec 6.3, 10; flows 17): the goal on this device, with its actions, wherever it
 // matters. The full form is mounted on the comparison; the compact form is for company and track pages.
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router";
-import { r2 } from "../../copy";
+import { Link, useNavigate } from "react-router";
+import { r2, r3workbench } from "../../copy";
 import { deleteDoc, isBlank, resolveGoal, useGoals, type Goal, type Presets } from "../../lib/goal";
 import { stripValues, type PresetMeta } from "../../lib/goal-values";
 import { fmt } from "../../lib/format";
 import { Num } from "../provenance";
 import { Button, cx } from "../ui";
+import { RevisitLine, CompactRevisit, UnreadableSavedForm, WhatChangedSheet } from "../revisit/revisit";
+import { useRevisit } from "../revisit/use-revisit";
+import { deleteSavedComparison, isoToday, type CompareMode } from "../../lib/state";
+import { computed } from "../../lib/value";
 import { goalTitle } from "./goal-form";
 import { IconMore, IconTarget } from "./icons";
 
@@ -26,13 +30,18 @@ export interface StripProps {
   label?: string;
   /** With no saved goal: the quiet line with the link to the form (the first page), instead of nothing. */
   emptyLine?: boolean;
+  /** The mode of the page the strip is on (the comparison result): its saved comparison is the one the revisit line speaks of; elsewhere the most recently saved one. */
+  revisitMode?: CompareMode;
 }
 
-export function SavedGoalStrip({ variant = "full", presets, meta, today, showResultLink = true, editHref = "/goal", resultHref = "/goal/compare", note, label, emptyLine }: StripProps) {
+export function SavedGoalStrip({ variant = "full", presets, meta, today, showResultLink = true, editHref = "/goal", resultHref = "/goal/compare", note, label, emptyLine, revisitMode }: StripProps) {
   const { status, goals, current, resolved, select, add, remove, restart } = useGoals();
+  const navigate = useNavigate();
   const [menu, setMenu] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const { saved, view: revisit } = useRevisit(revisitMode);
+  const [sheet, setSheet] = useState<HTMLElement | null | false>(false);
   useEffect(() => {
     if (!menu) return;
     const close = (e: MouseEvent) => {
@@ -81,6 +90,7 @@ export function SavedGoalStrip({ variant = "full", presets, meta, today, showRes
       <p className="text-sm flex flex-wrap items-center gap-x-2">
         <span className="text-muted-foreground">{label ?? r2.strip.compact}</span>
         <bdi className="font-medium">{goalTitle(current)}</bdi>
+        {saved && <CompactRevisit view={revisit} />}
         {v.years && (
           <>
             <span aria-hidden="true">·</span>
@@ -109,6 +119,9 @@ export function SavedGoalStrip({ variant = "full", presets, meta, today, showRes
             </span>
           </span>
           <span className="text-xs text-muted-foreground">{note ? `${r2.strip.saved} · ${note}` : r2.strip.saved}</span>
+          {saved && revisit?.status !== "unreadable" && (
+            <RevisitLine view={revisit} savedOn={saved.savedOn} choice={saved.choice} computing={revisit === null} onOpen={() => setSheet(document.activeElement as HTMLElement | null)} />
+          )}
         </div>
         <div className="flex items-center shrink-0 -me-2">
           {showResultLink && (
@@ -151,11 +164,26 @@ export function SavedGoalStrip({ variant = "full", presets, meta, today, showRes
                 <button type="button" role="menuitem" className="w-full text-start min-h-target px-3 rounded-md hover:bg-accent" onClick={() => setConfirm(true)}>
                   {r2.strip.delete}
                 </button>
+                <MenuLink to={r3workbench.entry.transfer.href} onClick={() => setMenu(false)} label={r3workbench.entry.transfer.label} />
               </>
             )}
           </div>
         )}
       </div>
+      {saved && revisit?.status === "unreadable" && (
+        <UnreadableSavedForm view={revisit} onRedo={() => navigate(`/goal/compare${saved.mode === "exposure" ? "?mode=exposure" : ""}`)} onDelete={() => deleteSavedComparison(saved.goalId, saved.mode)} />
+      )}
+      {saved && revisit && revisit.status !== "unreadable" && (
+        <WhatChangedSheet
+          view={revisit}
+          open={sheet !== false}
+          onClose={() => setSheet(false)}
+          anchor={sheet || null}
+          changesHref="/changes"
+          today={today}
+          nis={(v, about) => <Num value={computed(v, "nis", "F-06", {}, { today: isoToday(), about })} />}
+        />
+      )}
       {others.length > 0 && (
         <ul className="flex flex-wrap gap-2">
           {others.map((g) => (

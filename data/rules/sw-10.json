@@ -1,0 +1,39 @@
+{
+  "id": "SW-10",
+  "title": "The employer: the old fund notifies it of severance moved; future deposits follow the employee's choice",
+  "title_he": "המעסיק: הודעה על פיצויים שעברו והפניית ההפקדות",
+  "text_he": "קופה מעבירה שמעבירה כסף מחשבון של עמית שכיר שכולל רכיב פיצויים מודיעה למעסיק בתוך מספר ימי העסקים שהחוזר קובע, בהודעה שמציינת את סכום הפיצויים שעבר ולאיזו קופה. העובד בוחר את הקופה, והמעסיק אינו רשאי להתנות את תשלומיו בקופה מסוימת. לא נמצא מקור שקובע מי חייב להודיע למעסיק להפנות את ההפקדות הבאות ומתי, וזו שאלה פתוחה; לעמית פעיל ההעברה מחכה לאותה הפקדה ראשונה. הפניקס מציינת שאחרי פתיחת קופה האישור נשלח למעסיק אוטומטית; החוזר נקרא מעותק אצל צד שלישי.",
+  "figure_names_he": {
+    "employer_notice_business_days": "ימי עסקים להודעה למעסיק על פיצויים שעברו"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "transfer-switch-process",
+    "eligibility"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "employer_notice_business_days": {
+      "value": 15,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.analyst.co.il/media/dtnkdiyk/%D7%97%D7%95%D7%96%D7%A8-%D7%92%D7%95%D7%A4%D7%99%D7%9D-%D7%9E%D7%95%D7%A1%D7%93%D7%99%D7%99%D7%9D-2017-9-17-%D7%94%D7%A2%D7%91%D7%A8%D7%AA-%D7%9B%D7%A1%D7%A4%D7%99%D7%9D-%D7%91%D7%99%D7%9F-%D7%A7%D7%95%D7%A4%D7%95%D7%AA-%D7%92%D7%9E%D7%9C.pdf",
+        "title": "CMA circular 2017-9-17 \"העברת כספים בין קופות גמל\", 2.10.2017, consolidated copy, s.5א, Annex 11, pp.8, 26 to 27",
+        "publisher": "Capital Market, Insurance and Savings Authority (copy hosted by Analyst)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "SW-10"
+      ],
+      "state": "sourced",
+      "notes": "A transferring fund that moves money from a salaried member's account with a severance component notifies the employer within 15 business days on the Annex 11 notice (s.5א)."
+    }
+  },
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-22"
+}

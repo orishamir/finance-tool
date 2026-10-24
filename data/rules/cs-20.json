@@ -1,0 +1,144 @@
+{
+  "id": "CS-20",
+  "title": "Chosen vs default track: what is known",
+  "title_he": "מסלול שנבחר מול ברירת מחדל: מה ידוע",
+  "text_he": "הגופים המנהלים מדווחים לביטוח הלאומי אם המסלול נבחר על ידי ההורים או נקבע על ידי הביטוח הלאומי. בתוכניות שדווחו לשנת אלפיים עשרים וחמש, יותר ממחצית נבחרו על ידי ההורים, כשליש נקבעו על ידי הביטוח הלאומי והשאר לא צוין; מתחילת התוכנית ההורים בחרו עבור כשישים אחוזים ממיליוני הילדים, ובתוכניות שתקופת הבחירה שלהן הסתיימה בשנה שקדמה לדוח השיעור דומה. לא נמצא מקור שמראה להורה, בדוח או בעמוד האישי בביטוח הלאומי, אם המסלול של ילדו היה ברירת מחדל, וזו שאלה פתוחה. המקור הוא הדוח השנתי של הביטוח הלאומי על התוכנית.",
+  "figure_names_he": {
+    "parents_chose_pct_2025": "שיעור התוכניות שבהן ההורים בחרו מסלול (דיווח אחרון)",
+    "nii_default_pct_2025": "שיעור התוכניות שבהן הביטוח הלאומי קבע ברירת מחדל (דיווח אחרון)",
+    "unspecified_pct_2025": "שיעור התוכניות שבהן הבוחר לא צוין (דיווח אחרון)",
+    "parents_chose_since_start_pct": "שיעור הילדים שהוריהם בחרו מסלול מתחילת התוכנית",
+    "children_since_start_count": "מספר הילדים בתוכנית מתחילתה",
+    "parents_chose_choice_period_2024_2025_pct": "שיעור הבחירה בתוכניות שתקופת הבחירה שלהן הסתיימה בשנה שלפני הדוח"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-31",
+  "figures": {
+    "parents_chose_pct_2025": {
+      "value": 53.8,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
+        "title": "National Insurance Institute, \"חיסכון לכל ילד\" 2025 report, pp.3, 6",
+        "publisher": "National Insurance Institute",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "CS-20"
+      ],
+      "state": "sourced",
+      "notes": "Plans reported for 2025: track chosen by the parents, 53.8%. Annual statistic in the NII report, not a rule; end-2025."
+    },
+    "nii_default_pct_2025": {
+      "value": 33.1,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
+        "title": "National Insurance Institute, \"חיסכון לכל ילד\" 2025 report, pp.3, 6",
+        "publisher": "National Insurance Institute",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "CS-20"
+      ],
+      "state": "sourced",
+      "notes": "Plans reported for 2025: track set by NII (default), 33.1%. Annual statistic; end-2025."
+    },
+    "unspecified_pct_2025": {
+      "value": 13.1,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
+        "title": "National Insurance Institute, \"חיסכון לכל ילד\" 2025 report, pp.3, 6",
+        "publisher": "National Insurance Institute",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "CS-20"
+      ],
+      "state": "sourced",
+      "notes": "Plans reported for 2025: chooser unspecified, 13.1%. Annual statistic; end-2025."
+    },
+    "parents_chose_since_start_pct": {
+      "value": 60,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
+        "title": "National Insurance Institute, \"חיסכון לכל ילד\" 2025 report, pp.3, 6",
+        "publisher": "National Insurance Institute",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "CS-20"
+      ],
+      "state": "sourced",
+      "notes": "Since the start of the programme, parents chose the track for 60% of 4.7 million children. Annual statistic; end-2025."
+    },
+    "children_since_start_count": {
+      "value": 4700000,
+      "unit": "count",
+      "source": {
+        "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
+        "title": "National Insurance Institute, \"חיסכון לכל ילד\" 2025 report, pp.3, 6",
+        "publisher": "National Insurance Institute",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "CS-20"
+      ],
+      "state": "sourced",
+      "notes": "Children in the programme since its start: 4.7 million (end-2025)."
+    },
+    "parents_chose_choice_period_2024_2025_pct": {
+      "value": 54,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
+        "title": "National Insurance Institute, \"חיסכון לכל ילד\" 2025 report, pp.3, 6",
+        "publisher": "National Insurance Institute",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "CS-20"
+      ],
+      "state": "sourced",
+      "notes": "Plans whose choice period ended July 2024 to June 2025: parents chose for 54%. Annual statistic; end-2025."
+    }
+  },
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-22"
+}

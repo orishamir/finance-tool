@@ -1,0 +1,32 @@
+{
+  "id": "one-zero",
+  "provider": {
+    "name_he": "וואן זירו הבנק הדיגיטלי בע\"מ",
+    "class": "bank",
+    "regulator": "BoI",
+    "tase_member": true,
+    "protection_rule_ids": [
+      "BRK-10",
+      "BRK-12",
+      "BRK-13"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.onezerobank.com/company/information/2250",
+    "title": "תעריפון - One Zero (עמוד פרטי החברה, BRK-34; חסום לסקריפטים)",
+    "published": null,
+    "format": "html"
+  },
+  "snapshot": "2026-10-23",
+  "missing": true,
+  "missing_reason": "Tariff not obtained (2026-10-23, curl with a browser User-Agent, no browser available): the tariff URL recorded in il-finance BRK-34 (https://www.onezerobank.com/company/information/2250) returns HTTP 403 with a Cloudflare 'Just a moment...' JavaScript challenge page. Not circumvented. Needs a person in a browser; note (BRK-34) that the site advertised a one-year zero-fee promotion for new investment accounts, which is marketing and not the tariff.",
+  "lines": [],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "notice_rule_ids": [
+    "BRK-21",
+    "BRK-20"
+  ]
+}

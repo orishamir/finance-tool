@@ -1,0 +1,103 @@
+{
+  "id": "PF-33",
+  "title": "The uniform statement circular: shortened and detailed annual reports and the quarterly report, who gets what and when",
+  "title_he": "חוזר הדוח השנתי: דוח מקוצר, דוח מפורט ודוח רבעוני, למי ומתי",
+  "text_he": "רשות שוק ההון קבעה בחוזר מתכונת אחידה לדיווח לעמיתים. כל גוף מוסדי שולח לכל עמית, תוך שלושה חודשים מתום השנה, דוח שנתי מקוצר של עמוד אחד, בדוא\"ל או במסרון עם קישור אם העמית בחר בכך או אם יש בידי הגוף אמצעי דיגיטלי, ואחרת בדואר. באותו מועד מוצגים בחשבון האישי המקוון הדוח המקוצר ודוח שנתי מפורט, ונשמרים שם עשר שנים לפחות. דוח רבעוני מוצג בחשבון המקוון תוך שישים יום מתום כל רבעון חוץ מהאחרון, אלא אם לא הופקדו כספים ברבעון והיתרה נמוכה מחמישים אלף שקלים. טיוטת תיקון מנובמבר אלפיים עשרים וחמש מוסיפה את העלות השנתית הצפויה; לא נמצא שאומצה. החוזר הרשמי נקרא באתר צד שלישי (פריסה); עותק מאתר gov.il לא אותר (שאלה פתוחה PF OQ16).",
+  "figure_names_he": {
+    "annual_report_deadline_months": "חודשים מתום השנה למשלוח הדוח השנתי",
+    "quarterly_report_deadline_days": "ימים מתום הרבעון להצגת הדוח הרבעוני",
+    "quarterly_report_exemption_balance_nis": "יתרה שמתחתיה אין חובת דוח רבעוני ברבעון ללא הפקדות",
+    "annual_reports_kept_online_years": "שנים שהדוחות השנתיים נשמרים בחשבון המקוון"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "statement-disclosure",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-03-31",
+  "figures": {
+    "annual_report_deadline_months": {
+      "value": 3,
+      "unit": "months",
+      "source": {
+        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2020922.pdf",
+        "title": "CMA circular 2020-9-22, s. 3(א)",
+        "publisher": "Capital Market, Insurance and Savings Authority (Prisha copy)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-33"
+      ],
+      "state": "sourced",
+      "notes": "The shortened annual report is sent, and the shortened and detailed reports are shown online, within three months of year end (s. 3(א), 3(ה)). Official circular read on a third-party host (Prisha); gov.il copy not located (PF OQ16)."
+    },
+    "quarterly_report_deadline_days": {
+      "value": 60,
+      "unit": "days",
+      "source": {
+        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2020922.pdf",
+        "title": "CMA circular 2020-9-22, s. 4(א)",
+        "publisher": "Capital Market, Insurance and Savings Authority (Prisha copy)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-33"
+      ],
+      "state": "sourced",
+      "notes": "The quarterly report is shown in the online account within 60 days of quarter end, except the fourth quarter (s. 4(א)). Official circular read on a third-party host (Prisha); gov.il copy not located (PF OQ16)."
+    },
+    "quarterly_report_exemption_balance_nis": {
+      "value": 50000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2020922.pdf",
+        "title": "CMA circular 2020-9-22, s. 4(ה)",
+        "publisher": "Capital Market, Insurance and Savings Authority (Prisha copy)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-33"
+      ],
+      "state": "sourced",
+      "notes": "No quarterly report is due for a product with no deposits (including transfers in) in the quarter whose accumulated balance is below NIS 50,000 (s. 4(ה)). Not stated as indexed. Official circular read on a third-party host (Prisha); gov.il copy not located (PF OQ16)."
+    },
+    "annual_reports_kept_online_years": {
+      "value": 10,
+      "unit": "years",
+      "source": {
+        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2020922.pdf",
+        "title": "CMA circular 2020-9-22, s. 3(ו)",
+        "publisher": "Capital Market, Insurance and Savings Authority (Prisha copy)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-33"
+      ],
+      "state": "sourced",
+      "notes": "The shortened and detailed annual reports stay in the personal online account for at least 10 years (s. 3(ו)); quarterly reports for at least a year (s. 4(ג)). Official circular read on a third-party host (Prisha); gov.il copy not located (PF OQ16)."
+    }
+  },
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-23"
+}

@@ -1,7 +1,7 @@
 // The app shell: header, menu sheet, search sheet, footer and the page frame (design-spec 1.3, flows 6.2, 6.3).
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
-import { buttons, companies as companiesCopy, search as searchCopy, site } from "../copy";
+import { buttons, companies as companiesCopy, r3workbench, r5, search as searchCopy, site } from "../copy";
 import { rememberUncatalogued } from "../lib/inputs";
 import { normalize, type SearchEntry } from "../lib/search";
 import { IconBack, IconClose, IconCopy, IconDrillIn, IconMenu, IconSearch } from "./icons";
@@ -9,7 +9,16 @@ import { ProvenanceProvider, type ProvenanceData } from "./provenance";
 import { Sheet } from "./Sheet";
 import { Button, cx } from "./ui";
 
-export type Current = "guide" | "decoder" | "rules" | "parameters" | "home" | "goal" | "other";
+export type Current = "guide" | "decoder" | "rules" | "parameters" | "changes" | "home" | "goal" | "holdings" | "other";
+
+/** The menu rows and the PC nav: the release 1 and 2 items, then "מה כבר יש לכם" (flows 12.5, design-system 7.9). */
+/** Release 5: "מה השתנה" sits after "פרמטרים" (design-system 9.7). */
+const changesRow = { href: "/changes", label: r5.additions.menu, current: "changes" } as const;
+const baseItems = [...site.menuItems.slice(0, 4), changesRow, ...site.menuItems.slice(4)];
+const menuItems = [...baseItems, { href: r3workbench.entry.holdings.href, label: r3workbench.entry.holdings.title, current: r3workbench.entry.holdings.current }] as const;
+
+/** The footer links: "מה כבר יש לכם" and "העברה למכשיר אחר" come before the last link. */
+const footerLinks = [...site.footer.slice(0, 2), { href: "/changes", label: r5.additions.menu }, ...site.footer.slice(2, -1), { href: r3workbench.entry.holdings.href, label: r3workbench.entry.holdings.title }, { href: r3workbench.entry.transfer.href, label: r3workbench.entry.transfer.label }, ...site.footer.slice(-1)] as const;
 
 export function PageShell({ current, data, children, wide }: { current: Current; data: ProvenanceData; children: ReactNode; wide?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -57,7 +66,7 @@ function Header({ current, onMenu, onSearch }: { current: Current; onMenu: () =>
             {site.name}
           </Link>
           <nav aria-label="ראשי" className="hidden lg:flex items-center gap-6">
-            {site.menuItems.map((item) => (
+            {menuItems.map((item) => (
               <Link
                 key={item.href}
                 to={item.href}
@@ -101,7 +110,7 @@ function Footer() {
   return (
     <footer className="border-t border-border mt-section">
       <div className="mx-auto max-w-page px-gutter py-3 pb-7 flex flex-wrap gap-x-6 text-sm">
-        {site.footer.map((f) => (
+        {footerLinks.map((f) => (
           <Link key={f.href} to={f.href} className="min-h-target inline-flex items-center text-link hover:underline">
             {f.label}
           </Link>
@@ -113,7 +122,7 @@ function Footer() {
 
 function MenuSheet({ open, onClose, current }: { open: boolean; onClose: () => void; current: Current }) {
   const id = useId();
-  const rows = [...site.menuItems.map((m) => ({ ...m })), null, { href: site.notCovered.href, label: site.notCovered.label, current: "other" as const }] as const;
+  const rows = [...menuItems.map((m) => ({ ...m })), null, { href: site.notCovered.href, label: site.notCovered.label, current: "other" as const }] as const;
   return (
     <Sheet open={open} onClose={onClose} pc="center" height={70} labelledBy={id}>
       <h2 id={id} className="text-lg font-semibold mb-2">
@@ -149,7 +158,7 @@ function loadIndex(): Promise<SearchEntry[]> {
   return indexPromise;
 }
 
-const groupOrder: SearchEntry["kind"][] = ["product", "track", "term", "guide"];
+const groupOrder: SearchEntry["kind"][] = ["product", "bank", "track", "term", "guide"];
 
 function SearchSheet({ open, onClose, anchor, seed }: { open: boolean; onClose: () => void; anchor: HTMLElement | null; seed: string }) {
   const id = useId();

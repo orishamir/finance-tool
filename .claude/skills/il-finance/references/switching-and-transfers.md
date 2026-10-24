@@ -34,6 +34,7 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 - Source: [CMA circular 2017-9-17 "העברת כספים בין קופות גמל", 2 Oct 2017, s.3(א) to (ג) and Annex A, pp.2, 11 to 17 of 28][c17] · checked 2026-10-22 · primary (official circular on a third-party host); [Phoenix study-fund FAQ][fnxkh] · checked 2026-10-22 · institution
 - Dimensions: `transfer-switch-process`
 - Likely to change: yes. The CMA 2026 plan amends the transfer circular to allow identification other than an Israeli ID for residents abroad (PF-31).
+**[2026-10-24 R4 research pass]** Confirmed verbatim in the CMA's own copy on gov.il (SW-41).
 
 ### SW-03 What the transfer form says, and its defaults
 - Rule: In the Annex A form the member fills a table: "אני מבקש להעביר את" (the whole balance, or a percentage or amount), "שנצברו לזכותי" (all account components, or a named one), and "במסלול ההשקעה" (all tracks, or a named one). If the member leaves these blank, the default is full: "ברירת המחדל להעברת הכספים ... היא העברת מלוא הכספים שנצברו בחשבונך בקופה המעבירה, בכל מרכיבי החשבון ובכל מסלולי ההשקעה". The member declares that, from the determining date, "תהיו פטורים מלשלם לי כל תשלום שהוא, לרבות בשל חבות ביטוחית, הנובע מהכספים שהועברו". The member also declares that none of the blocks in SW-13 applies. If one arises between signing and the transfer date, the request is cancelled. A boxed notice says the request "ניתנת לביטול ובלבד שהכספים טרם הועברו" (SW-07).
@@ -60,6 +61,7 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 - Source: [Circular 2017-9-17, s.3(ז) to (ט), Annexes E and E1][c17], pp.2 to 3, 20 to 21 · checked 2026-10-22 · primary (third-party host)
 - Dimensions: `transfer-switch-process`
 - Likely to change: no.
+**[2026-10-24 R4 research pass]** Three business days confirmed in the gov.il copy (SW-41).
 
 ### SW-06 Step 3: the money moves within 10 business days, directly, in cash, with no transfer fee
 - Rule: The transferring fund transfers within ten business days of a complete, signed request, unless the request was cancelled. The Commissioner may allow up to 20 more business days in special cases (reg. 5(א)). The money moves "ישירות בין הגופים המנהלים של הקופות ולא באמצעות העמית" and "העברת היתרה הצבורה תיעשה במזומנים" unless the managing bodies agree otherwise (reg. 7). If the transferring fund is late, it compensates the member out of its own management fees (reg. 6). It also sends the receiving fund the balance and daily returns within five business days so the return difference can be claimed (circular s.5(ה), (ו)).
@@ -68,6 +70,7 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 - Source: [Transfer Regulations, regs. 5(א), 6, 7][tr] · primary (mirror); [Circular 2017-9-17, s.5(ה), (ו)][c17] · primary (third-party host); [Phoenix study-fund FAQ][fnxkh] · institution · checked 2026-10-22
 - Dimensions: `transfer-switch-process`, `fee-exit`
 - Likely to change: no.
+**[2026-10-24 R4 research pass]** Ten business days, and the Commissioner's power to defer by up to twenty more, confirmed from gov.il (SW-41, SW-42); the funds' information passes through the clearing house (SW-42).
 
 ### SW-07 Cancelling a transfer: until the money moves, by a signed notice to the transferring fund
 - Rule: The member cancels by signing a cancellation notice on the Annex F form ("הודעת עמית על ביטול בקשת העברה") before the transfer date under reg. 5(א). The form's boxed text says cancellation is "על-ידי חתימה על טופס הודעת ביטול והעברתו לקופה המעבירה", by fax, post or email among other ways. The transferring fund passes the notice to the receiving fund within that period. The request is cancelled when the notice reaches the transferring fund. Exception: if an insured event occurred after the determining date and before the notice was delivered, the request is not cancelled (s.3(ט)). After a cancellation, the receiving fund returns any money already deposited with it to the member's account in the transferring fund. It does so within 10 business days, with the receiving fund's return and with no deduction other than management fees (s.3(י)).
@@ -76,6 +79,7 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 - Source: [Circular 2017-9-17, s.3(ט) to (יא), Annex F, Annex A boxed notice][c17], pp.2 to 3, 12, 22 · checked 2026-10-22 · primary (third-party host); [Phoenix study-fund FAQ][fnxkh] · checked 2026-10-22 · institution
 - Dimensions: `transfer-switch-process`
 - Likely to change: no.
+**[2026-10-24 R4 research pass]** Confirmed in the gov.il copy (SW-41).
 
 ### SW-08 A request lapses: 120 days for an active member without a deposit, 60 days otherwise
 - Rule: An active member's request lapses if it is not forwarded to the transferring fund within 120 days of signing. Unless the member stated they will not deposit, it is forwarded only after a deposit arrives (SW-04). If the member told the receiving fund within those 120 days that no deposits will be made, the request lapses if not forwarded within 60 days of that notice (s.3(יב)). An inactive member's request lapses if not forwarded within 60 days of signing (s.3(יג)).
@@ -84,6 +88,7 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 - Source: [Circular 2017-9-17, s.3(יב), (יג), Annex A item 6][c17] · checked 2026-10-22 · primary (third-party host); [Phoenix study-fund FAQ][fnxkh] · institution
 - Dimensions: `transfer-switch-process`
 - Likely to change: no.
+**[2026-10-24 R4 research pass]** 120 and 60 days confirmed in the gov.il copy (SW-41).
 
 ### SW-09 Step 4: both funds confirm in writing within 15 business days
 - Rule: The transferring fund sends the member a confirmation within 15 business days of the transfer. It shows at least: fund name and tax-approval number and the member's account number (policy number for an insurer); the manager's name and contact details; the transfer date; the determining date, with an explanation that the transferring fund's insurance liability ended from it; the amount moved, split for a salaried member into employee tagmulim, employer tagmulim and severance; and, after a partial transfer, the balance left and the reason the account was split (s.6(א)). The receiving fund sends a confirmation within 15 business days of receiving the money. It shows the same items, including that its insurance liability started on the determining date (s.6(ב)). Either fund may send these by email only if the member agreed (s.6(ג)).
@@ -92,6 +97,7 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 - Source: [Circular 2017-9-17, s.6][c17], pp.8 to 9 · checked 2026-10-22 · primary (third-party host)
 - Dimensions: `transfer-switch-process`, `statement-disclosure` (proposed in PF)
 - Likely to change: no.
+**[2026-10-24 R4 research pass]** Fifteen business days confirmed in the gov.il copy (SW-41).
 
 ### SW-10 The employer: the old fund notifies it of severance moved; future deposits follow the employee's choice
 - Rule: A transferring fund that moves money from a salaried member's account that includes a severance component notifies the member's employer within 15 business days. It uses the Annex 11 notice, which states the severance amount moved and to which fund (s.5א). Phoenix states that after a fund is opened "האישור נשלח למעסיק באופן אוטומטי" (institution).
@@ -100,6 +106,7 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 - Source: [Circular 2017-9-17, s.5א, Annex 11][c17], pp.8, 26 to 27 · checked 2026-10-22 · primary (third-party host); [Phoenix study-fund FAQ][fnxkh] · checked 2026-10-22 · institution
 - Dimensions: `transfer-switch-process`, `eligibility`
 - Likely to change: no.
+**[2026-10-24 R4 research pass]** The 15-business-day employer notice under s.5א confirmed in the gov.il copy (SW-41); who tells the employer to redirect future deposits is still not in the circular (open question 6).
 
 ### SW-11 History travels with the money
 - Rule: On the transfer date the transferring fund sends the receiving fund a data file with: the member's identity; the fund details; for a new pension fund, the insurance cover the member had; the balance moved; "פירוט מלא של כל התנועות הכספיות" up to the determining date, including movements in earlier transferring funds, with each deposit split into its components; and the current and past employers (s.5(א)). For a new pension fund it also sends any exclusions or underwriting supplements in force (s.5(ב)). For a keren hishtalmut it also sends an Annex H data file (s.5(ג)).
@@ -108,6 +115,7 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 - Source: [Circular 2017-9-17, s.5][c17], pp.7 to 8 · checked 2026-10-22 · primary (third-party host)
 - Dimensions: `transfer-switch-process`, `age-or-use-exemption`
 - Likely to change: no.
+**[2026-10-24 R4 research pass]** Confirmed in the gov.il copy; the data now travel in annex ג 'ממשק ניוד' of the uniform-structure circular (SW-42).
 
 ### SW-12 Pension insurance on a transfer: who is liable when, cover level, qualifying months
 - Rule: The transferring fund "יהיה אחראי לתשלום כספים לפי הכיסויים בקופה המעבירה בשל מקרה ביטוח שאירע לפני המועד הקובע". The receiving fund is liable for an insured event "שאירע במועד הקובע או לאחריו" (reg. 8(א), (ב)). After a partial transfer, the transferring fund stays liable for the death cover left with it, reduced in proportion to the balance left (reg. 8(ג)). In a receiving new pension fund:
@@ -178,6 +186,7 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 - Conditions / exceptions: Free routes found, both institution pages:
   - Leumi: "שירות ללא עלות" for private customers of any bank aged 18 or over, once per customer. Registration finishes on the clearing-house site, where a credit card is entered for identity, "לא לצורך חיוב". The report shows balances, managers, the fees paid and projected pensions, and "המידע יהיה זמין לצפייה במשך שלושה חודשים בלבד".
   - Mizrahi-Tefahot: the request is free and "הבנק מממן את מלוא עלות הפנייה למסלקה", but the bank earns distribution fees on the advice (SW-17).
+**[2026-10-24 R4 research pass]** The price cap for a saver's own request is now sourced (SW-44); the channel for fund-to-fund information is the clearing house (SW-42).
 
   The clearing house's own price list for a direct request was not read (open question 5). A forum account alleges an agent read a report the saver had not authorised (experience SW-X01).
 - Figures: none.
@@ -205,6 +214,7 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 - Source: pointers PF-18, KH-09, KH-14, KH-17, TXH-19; [Phoenix study-fund FAQ][fnxkh] · checked 2026-10-22 · institution
 - Dimensions: `transfer-switch-process`, `liquidity-lockup`, `switching-tax-event`
 - Likely to change: no.
+- **[2026-10-23 R3 research pass]** Seniority on the move and the consolidation condition, from the regulations verbatim: SW-39.
 
 ### SW-21 Kupat gemel lehashkaa: only to another gemel lehashkaa, or to an annuity fund from 60; partial allowed
 - Rule: Money moves only to another kupat gemel lehashkaa, or to an annuity fund at early retirement age for an annuity only (SW-01; KGL-09, KGL-10). A partial transfer is allowed (KGL-10). Withdrawing and re-depositing elsewhere instead of transferring is a withdrawal: it is taxed at exit (`tax-gemel-lehashkaa-ira-child.md`), and the new deposit counts against the annual ceiling (KGL-02), so it is not equivalent to a transfer.
@@ -213,6 +223,7 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 - Source: pointers KGL-02, KGL-09, KGL-10, TXK-04 · checked 2026-10-22 · links from the cited rules: [1](<https://fs.knesset.gov.il//20/law/20_lsr_343169.pdf>), [2](<https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)>), [3](<https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf>), [4](<https://www.ice.co.il/consumerism/news/article/1005636>), [5](<https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)>), [6](<https://he.wikisource.org/wiki/חוק_גיל_פרישה>), [7](<https://he.wikisource.org/api/rest_v1/page/pdf/פקודת_מס_הכנסה>), [8](<https://www.harel-group.co.il/long-term-savings/funding-saving/join/doclib/%d7%92%d7%9e%d7%9c%20%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94.pdf>)
 - Dimensions: `transfer-switch-process`, `deposit-ceiling`, `switching-tax-event`
 - Likely to change: no.
+- **[2026-10-23 R3 research pass]** Route 3(א)(11א) and the reg. 3(ב)(1) carry-over of payment dates confirmed verbatim on Nevo (SW-39, SW-40).
 
 ### SW-22 Pension fund: insurance first, then route; automatic consolidation of inactive accounts
 - Rule: A pension transfer follows SW-02 to SW-13, using form part 1 and the Annex B insurance form. Insurance continuity is in SW-12. When a member joins a pension fund, inactive accounts in other pension funds are found and moved unless the member objects within 45 days (PF-28). Pension money cannot go into an IRA (IRA-02). A member still active in a non-comprehensive fund cannot move to a comprehensive fund (SW-13, reg. 4(8)).
@@ -259,6 +270,7 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 - Source: [BoI directive 448 "העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון", version 1 (12/19), intro and ss.3, 14, 15, 17, 19][d448v1] · primary; [directive 448 version 2 (8/21), ss.3, 11, 14 to 19][d448v2] · primary; [BoI circular h-2670, 17.8.2021, s.4][h2670] · primary · checked 2026-10-22
 - Dimensions: `transfer-switch-process`, `fee-exit`, `regulator`
 - Likely to change: yes. The rerouting period was extended twice (SW-30).
+**[2026-10-24 R4 research pass]** Directive 448 version 4 (11/25) adds disclosure duties only (SW-43); this rule stands.
 
 ### SW-27 Timeline, transfer day and cancelling
 - Rule: The customer may choose a later transfer day than the rules set, provided the process completes "בתוך 30 ימי עסקים מהיום בו הוגשה בקשה תקינה" (s.5(א)). In that case the process timeline counts from the seventh business day before the chosen day (s.5(ב)). The receiving bank checks whether the customer has active payment means (debit cards, cheques) there and, if not, offers to set the transfer day for when they will hold them (s.5(ג)). The receiving bank checks the request by the next business day and forwards it within one business day of finding it complete (s.24). The originating bank confirms completeness by the next business day and then restricts the old account: no change of owners, no new debit-type activity, no debit-card use (s.26). Cancelling: "בנק יאפשר ללקוח לבטל את בקשתו להעברת פעילות בכל שלב בתהליך הניוד ועד לסוף יום העסקים השישי של תהליך הניוד". At least the website, the phone centre, the branch and the channel the request came through must accept the cancellation, and any account owner may cancel (s.6).
@@ -267,6 +279,7 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 - Source: [Directive 448 version 2 (8/21), ss.5, 6, 24, 26, 34][d448v2] · checked 2026-10-22 · primary
 - Dimensions: `transfer-switch-process`, `liquidity-lockup`
 - Likely to change: no.
+**[2026-10-24 R4 research pass]** Unchanged in version 4 of the directive (SW-43).
 
 ### SW-28 Retention by the old bank, and benefits kept during the switch
 - Rule: Retention contact (s.9, "ניסיון לשימור הלקוח על ידי הבנק המקורי"): the originating bank's approach to a customer who asked to switch, to try to keep them, "תעשה מבלי שיופעלו על הלקוח לחצים לקבלת החלטה כאמור". The bank must make clear "כבר בתחילת הפנייה כי מטרת הפנייה היא לנסות לשמרו כלקוח הבנק המקורי". Benefits (s.7): the originating bank may not cancel the customer's benefits and discounts early only because a switch was requested. Without an agreed end date, it keeps them "למשך תקופה של 3 חודשים לפחות ממועד הגשת הבקשה, או עד למועד העברת הפעילות בפועל, המוקדם מבין השניים".
@@ -275,6 +288,7 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 - Source: [Directive 448 version 2 (8/21), ss.7, 9][d448v2] · checked 2026-10-22 · primary
 - Dimensions: `transfer-switch-process`, `fee-change-over-time`
 - Likely to change: no.
+**[2026-10-24 R4 research pass]** Unchanged in version 4 of the directive (SW-43).
 
 ### SW-29 What moves and what stays: deposits wait for maturity, untransferable securities stay, foreign currency may be converted
 - Rule: The receiving bank must explain which activity cannot move automatically and the options, naming "הלוואות, פיקדונות, ניירות ערך שאינם ניתנים להעברה, תנועות עתידיות במטבע חוץ וערבויות" (s.23(ג)). For each type of activity:
@@ -305,6 +319,7 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
   - foreign-currency conversion (s.23(ד));
   - the process: choosing the transfer day, cancelling, the old account's status, the restrictions and when they start, how to check status, and the reasons a switch can stop (s.23(ה));
   - that rerouted activity follows its usual timeline, preserving value dates and finality (s.23(ו)).
+**[2026-10-24 R4 research pass]** Version 4 adds s.19א early disclosure before the request stage (SW-43).
 
   The receiving bank updates the customer on the last business day before the transfer day (s.30).
 - Conditions / exceptions: The page must stay available to the customer at all times in a format that can be saved and printed (s.21).
@@ -421,6 +436,54 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 - Dimensions: `transfer-switch-process`, `statement-disclosure` (proposed in PF)
 - Likely to change: with the rules named.
 
+
+### SW-39 Seniority on a transfer: the money keeps its own payment dates; two study funds merge into one account only when both are already withdrawable
+- Rule: For a transfer between non-annuity funds on the routes in reg. 3(א)(1) to (7) and (11א) (tagmulim to tagmulim, study fund to study fund, gemel lehashkaa to gemel lehashkaa, and the rest) the money goes "לחשבון על שם העמית העובר בקופה המקבלת, ויראו לעניין דיני המס, את כל מועדי התשלום לקופה המעבירה כמועדי התשלום לקופה המקבלת" (reg. 3(ב)(1)): the transferred money carries its own deposit dates, so its seniority is unchanged by the move. Merging it into an account the member already holds at the receiving fund is a separate act, "איחוד חשבונות", allowed for a study fund "רק אם במועד האיחוד העמית היה זכאי למשוך את הכספים שמקורם היה בהפקדה המוטבת … בפטור ממס, בכל אחד מן החשבונות שאוחדו" (reg. 9(ב)), and for a tagmulim fund, as to self-employed payments made before 1.1.2006, on the same condition (reg. 9(א)). A study fund cannot move in part (reg. 9(ג), PF-18).
+- Conditions / exceptions: So a younger study fund and an older one of the same person can be brought under one manager by a whole transfer, but they stay two accounts with two seniorities until both are withdrawable tax-free; only then may they be consolidated into one account, and at that point the seniority question no longer matters. The receiving fund does not "adopt" the older account's seniority for the younger money: the 2008 version of reg. 9(א), which let a consolidation go ahead "רק אם מועד התשלום הראשון בחשבון … שאליו מועברים הכספים אינו מוקדם ממועד התשלום הראשון בחשבון … שממנו מועברים הכספים" and then disapplied reg. 3(ב) for the first payment date, was replaced on 10.9.2014 (ק"ת תשע"ד 7407) and is not in force. The circular's data file carries every payment date (SW-11). Whether the two accounts count as one for the six-year clock while still separate is the 1993 regulations' question (KH-14), not the transfer regulations'. For annuity funds the same carry-over is in reg. 2(ב) (SW-40).
+- Figures: none.
+- Source: [Transfer Regulations 2008, reg. 3(ב)(1), 9(א) to 9(ג), with the pre-2014 text of reg. 9 (Nevo consolidated HTML, read verbatim; last amendment ק"ת 10716, 12.7.2023)](https://www.nevo.co.il/law_html/law01/999_929.htm) · checked 2026-10-23 · primary (mirror of ק"ת; Reshumot not opened); [Wikisource copy, same wording](https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)) · checked 2026-10-23 · primary (mirror)
+- Dimensions: `transfer-switch-process`, `liquidity-lockup`, `age-or-use-exemption`
+- Likely to change: no.
+
+### SW-40 Pension-fund to pension-fund and gemel lehashkaa to gemel lehashkaa: payment dates carry over; the explicit tax exemption covers the employer's transfers
+- Rule: Money may move into an annuity fund from another annuity fund (reg. 2(א)(1)); the transfer "תיעשה לחשבון בקופה המקבלת על שם העמית העובר, לפי מרכיבי חשבון קופת הגמל בקופה המעבירה … ולגבי העברה כאמור בפסקה (1) שבה, יראו את כל מועדי התשלום לקופה המעבירה כמועדי התשלום לקופה המקבלת, ואולם אם הקופה המקבלת היא קופת ביטוח, יראו את מועדי התשלום … רק לעניין דיני המס" (reg. 2(ב)). Since 2023 a receiving fund may not accept money that the regulations do not allow to move, including, into a comprehensive fund, more than the monthly deposit ceiling times the months since the first payment to the transferring fund (reg. 2(ד)(1)), and, from a non-insurance annuity fund into an insurance fund, money that would leave less than that product behind (reg. 2(ד)(1א)). The Income Tax Rules (Exemption on Transfer and Change of Designation of Money in Provident Funds) 1990, s. 2(א), exempt from tax "סכומים שהועברו על ידי מעביד מקופת גמל אחת לקופת גמל אחרת, בהתאם לתקנות" in listed cases, among them "(1) העברה מקופת גמל לקיצבה שאינה קופת ביטוח לקופת גמל אחרת לקיצבה שאינה קופת ביטוח", "(3) העברה מקופת גמל לתגמולים לקופת גמל אחרת לתגמולים" and "(7) העברה אחרת, לרבות העברה מקרן השתלמות אחת לקרן השתלמות אחרת … ובלבד שאושרו מראש בידי הנציב", provided the transferor claimed no deduction for the transfer (s. 2(ב)). Gemel lehashkaa to gemel lehashkaa is route 3(א)(11א) with the reg. 3(ב)(1) carry-over (SW-39).
+- Conditions / exceptions: The 1990 rules were made under Ordinance s. 3(ד)(2), which taxes money an employer gets back from a fund; they say nothing in terms about the member. No Tax Authority or CMA text was found that says a member's pension-to-pension transfer is "not a tax event"; the law's structure (the member withdraws nothing, the payment dates carry over, and the 2021 CMA advisory report describes gemel lehashkaa as moving "בין קופות ללא אירוע מס") points that way, so SW open question 8 is narrowed, not closed. The Wikisource copy of the 1990 rules shows one amendment (תשנ"ד); a later amendment may exist.
+- Figures: none.
+- Source: [Transfer Regulations 2008, reg. 2(א)(1), 2(ב), 2(ד) (Nevo consolidated HTML, read verbatim)](https://www.nevo.co.il/law_html/law01/999_929.htm) · checked 2026-10-23 · primary (mirror); [כללי מס הכנסה (פטור ממס בשל העברה ושינוי יעוד של כספים בקופות גמל), התש"ן-1990, s. 1, 2 (Wikisource)](https://he.wikisource.org/wiki/כללי_מס_הכנסה_(פטור_ממס_בשל_העברה_ושינוי_יעוד_של_כספים_בקופות_גמל)) · checked 2026-10-23 · primary (mirror)
+- Dimensions: `transfer-switch-process`, `switching-tax-event`
+- Likely to change: no.
+### SW-41 The transfer circular 2017-9-17 on gov.il: the official text is the one read, with the same deadlines; its dates and what it cancels
+- Rule: The CMA's own copy of חוזר גופים מוסדיים 2017-9-17 "העברת כספים בין קופות גמל" (dated י"ב בתשרי התשע"ח, 2 October 2017; "סיווג: כללי"; 28 pages; PDF created 2.10.2017) is on gov.il under the regulation collector. It is the same text as the third-party copy the SW rules were read from: s.3(ד) reads "בוטל" in the official file itself (so that is not a later amendment), s.4א (central severance funds) and s.5א (notice to the employer) are part of the text, s.9 cancels circular 2015-9-1, s.10 applies it to all institutional bodies, and s.11 "תחילה" reads, as printed, "ביום 1 בינואר 2017", with s.7 (uniform-structure data transfer) starting when the uniform-structure circular says. The deadlines read verbatim: the receiving fund forwards an approved request "בתוך שני ימי עסקים מהמועד הקובע" (s.3(ו)); a rejection or delay notice goes "בתוך שלושה ימי עסקים ממועד העברת הבקשה" with a copy to the member (s.3(ז)); a request of an active member lapses after 120 days from signature, or 60 days from a notice that no deposits will come, and of an inactive member after 60 days (s.3(יב), (יג)); money returned after a cancellation goes back "בתוך עשרה ימי עסקים" with the receiving fund's yield (s.3(י)); late-transfer data pass "בתוך חמישה ימי עסקים" (s.5(ה), (ו)); the employer notice (s.5א) and both confirmations to the member (s.6) go "בתוך חמישה עשר ימי עסקים". This confirms SW-02 to SW-11 from the official host.
+- Conditions / exceptions: The CMA's later circulars cite "חוזר גופים מוסדיים 2016-9-11 'העברת כספים בין קופות גמל' (19.7.2016)" as "חוזר העברת כספים" or "חוזר הניוד" (the 2018-9-25 and 2019-9-17 child-savings circulars, the 2019-9-11 and 2026-9-3 uniform-structure circulars), and a 2016 CMA letter of 24.9.2016 cites 2016-9-11 too; 2017-9-17 names only 2015-9-1 as cancelled. Which number the CMA treats as the circular in force, and whether 2017-9-17 has been amended since, was not settled (open question 1, narrowed): the 2016-9-11 text was not opened. The ten-business-day transfer deadline itself is in reg. 5(א) of the transfer regulations, which the circular implements (SW-06, SW-42).
+- Figures: 2, 3, 5, 10 and 15 business days; 120 and 60 days; as above.
+- Source: [חוזר גופים מוסדיים 2017-9-17, העברת כספים בין קופות גמל (gov.il)](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf), fetched 2026-10-24 after locating it in the founder's Chrome · primary
+- Dimensions: `transfer-switch-process`
+- Likely to change: yes (CMA 2026 plan amends the transfer circular, PF-31).
+
+### SW-42 Transfer information passes through the pension clearing house ("ממשק ניוד") since 23.2.2020; the regulator may defer the ten-business-day transfer deadline by up to twenty more business days
+- Rule: A CMA letter of 15.11.2020 (שה. 2020-9260) restates the chain: under reg. 5(א) of the transfer regulations the transferring fund moves the member's balance "בתוך עשרה ימי עסקים מהיום שבו הועברה לו בקשת העברה מפורטת, חתומה ומלאה", and "הממונה רשאי, במקרים מיוחדים, לאשר דחיה של המועד האמור לתקופה שלא תעלה על עשרים ימי עסקים נוספים"; under s.5(א) of the transfer circular the transferring fund hands the receiving fund the accompanying data at the time of the transfer; "נספח ג – ממשק ניוד" of the uniform-structure circular took effect on 23 February 2020 and applies to transfer requests submitted from that day; and under s.7(ב) of circular 2019-9-2 "חובת שימוש במערכת סליקה פנסיונית מרכזית – עדכון" (21.11.19), from 23 February 2020 "העברת מידע בין שני גופים מוסדיים בקשר לניוד כספים, לרבות מידע לגבי ניוד כספים שלא בוצע באמצעות מערכת סליקה פנסיונית מרכזית, צריכה להתבצע באמצעות מערכת סליקה פנסיונית מרכזית בלבד", at the time the money moves. The letter used the deferral power to move a deadline falling on a clearing-house maintenance day (19.11.2020) by one business day. The current uniform-structure circular 2026-9-3 (26.3.2026) keeps annex ג: "ממשק הניוד קובע מבנה אחיד להעברת מידע אגב בקשת עמית לביצוע העברת כספים בין קופות גמל, החל מהגשת הבקשה לביצוע העברת הכספים לקופה המקבלת, דרך העברת הבקשה מהקופה המקבלת לקופה המעבירה, ועד העברת הכספים"; it applies to transfer requests except those from an IRA ("קופת גמל בניהול אישי") to another fund (s.6(ב)); the balance-and-yield data of annex י' of the transfer circular pass in it since 22.5.2022 (s.7(ב)(4)(ב)).
+- Conditions / exceptions: These texts settle the channel (the funds talk through the clearing house; the saver still signs at the receiving fund, SW-02) and the regulator's deferral power; they do not set a price for the saver (SW-44) or a consent rule beyond the law (SW-18). The 2026-9-3 circular opens by deferring some start dates because of the war that began on 28.2.2026; which dates were not read in full.
+- Figures: 10 business days; up to 20 more by the Commissioner's approval; 23.2.2020; 22.5.2022.
+- Source: [CMA, דחיית המועד להעברת כספים בין קופות גמל בעת השבתת מערכת סליקה פנסיונית מרכזית, שה. 2020-9260, 15.11.2020 (gov.il)](https://www.gov.il/BlobFolder/generalpage/pension-clearing/he/2020-9260.pdf); [חוזר גופים מוסדיים 2026-9-3, מבנה אחיד להעברת מידע ונתונים בשוק החיסכון הפנסיוני - עדכון, 26.3.2026 (gov.il), ss.6(ב), 7(ב)(3)-(4) and the annex ג summary](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-legislation26326/he/uniform_protocol_update_26.3.2026%20%5BPDF%5D.pdf); [gov.il, המסלקה הפנסיונית (regulation page)](https://www.gov.il/he/pages/pension-clearing) · fetched 2026-10-24 · primary
+- Dimensions: `transfer-switch-process`, `data-consent` (proposed)
+- Likely to change: yes (CMA 2026 plan updates the mandatory-use circular, PF-31).
+
+### SW-43 Directive 448 version 4 (11/25): disclosure duties added (ss.16א, 19א), the switching mechanics unchanged; start by 1.3.2026
+- Rule: The Bank of Israel's directive page lists the current version of נב"ת 448 as published 26/11/2025 with circular 2833 (page updated 18/02/2026) and earlier versions 2 (circular 2670) and 1 (circular 2597). Circular ח-06-2833 of 26.11.2025 explains that the update widens disclosure: s.16א now requires a bank, as receiving or originating bank, to update customers about the online switching option during account opening and in the information on closing an account, and "בנק יתעד את פעולות העדכון וכן את החלטת הלקוח לגבי אופן העברת הפעילות הפיננסית"; new s.19א requires banks to present, in their publications and whenever a customer asks about moving activity, the information needed for an informed decision, "לרבות היתרונות הגלומים באפשרות זו, הפעילות הפיננסית שתועבר, לוחות הזמנים להשלמת המעבר, משמעות הניתוב ומגוון הדרכים האפשריות להגשת בקשה", and the receiving bank must offer a banker's help with the request. The circular stresses the choice of route stays the customer's. "תחילת הוראה זו עד יום 01.03.2026". The update replaces pages 448-1-14 of version [3] (9/21) with version [4] (11/25); the process sections read in version 2 (transfer day, 30 business days, the seventh business day before the transfer day, retention contact s.9, rerouting, deposits left behind) are unchanged in version 4 (14 pages, read 2026-10-24).
+- Conditions / exceptions: Closes open question 15 (a later version exists; it changes disclosure, not the process). The rerouting-period extension of 18.10.2026 (SW-30, circular h-2863) amends the Governor's rules, not the directive.
+- Figures: start by 1.3.2026.
+- Source: [BoI, הוראת ניהול בנקאי תקין 448 (directive page with versions)](https://www.boi.org.il/roles/supervisionregulation/nbt/nbt448/); [חוזר ח-06-2833, 26.11.2025](https://www.boi.org.il/media/wxoksahf/h2833.pdf); [נב"ת 448 version 4 (11/25)](https://www.boi.org.il/media/irmdw0r2/448_4-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf) · read in the founder's Chrome and fetched 2026-10-24 · primary
+- Dimensions: `transfer-switch-process`
+- Likely to change: yes.
+
+### SW-44 What the clearing house may charge a saver: the CMA's payment circular 2026-10-6 caps a one-time all-institutions information request at NIS 11 (from 1.1.2027)
+- Rule: חוזר סוכנים ויועצים 2026-10-6 "חוזר תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון" (21.10.2026), issued under s.31יד(א)(1) of the Advice, Marketing and Clearing Law, replaces circular 2022-10-5 (11.5.2022) from 1 January 2027 (its price list, s.4, from the day the operator chosen in the new tender takes over). Annex ג is a list of maximum fees per action with the payer named: "בקשה לקבלת מידע באופן חד פעמי עבור לקוח מכלל הגופים המוסדיים על קיומו של מוצר פנסיוני ומידע מפורט אודותיו (ממשק טרום ייעוץ)" 11 NIS, payer "חוסך / בעל רישיון"; the saver's continuous request from all institutions 11 NIS plus 1 NIS for each month information is delivered; a one-time request from one institution 1 NIS; a saver's cancellation of a continuous request 0; a saver's cancellation of an agent's power of attorney 1 NIS; updates of personal details 0. Fixed fees: an institutional body pays a yearly fee by assets (15,000 NIS up to 1 billion NIS of assets, rising to 410,000 NIS above 100 billion; 15,000 NIS only for a body none of whose products can receive or send transfers); a non-institutional user connecting with a certificate 4,000 NIS a year; a vault 3,000 NIS per two years; tokens 350 NIS (physical) or 250 NIS (app). Prices are CPI-linked once a year from March 2027 against the January 2027 index; the operator may charge less with the Commissioner's prior written approval (s.7(ב)); a failed action caused by the user is charged, a repeat at half price; the annex tables state the sums exclude VAT.
+- Conditions / exceptions: These are caps on what the operator charges the user who submits the request; the saver's actual route is the operator's site (swiftness.co.il, "הפקת דו"ח מידע פנסיוני על המוצרים שלי"), whose own price page did not render as text on 2026-10-24, and the bank routes in SW-18 remain free to the saver. Until 1.1.2027 the 2022 circular's prices apply (not read). Closes open question 5 for the price side; consent checking stays with the law and the power-of-attorney circular (SW-18, PF-31).
+- Figures: 11 NIS; 11 NIS + 1 NIS a month; 1 NIS; 0; 4,000 NIS a year; 15,000 to 410,000 NIS a year; 350 / 250 NIS; start 1.1.2027.
+- Source: [חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון (gov.il)](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf), fetched 2026-10-24 · primary; [המסלקה הפנסיונית, מחירון שירותים לחוסכים](https://www.swiftness.co.il/savers/about/%D7%9E%D7%97%D7%99%D7%A8%D7%95%D7%9F-%D7%A9%D7%99%D7%A8%D7%95%D7%AA%D7%99%D7%9D/) (opened, no text rendered) · institution
+- Dimensions: `transfer-switch-process`, `data-consent` (proposed), `agent-involvement` (proposed)
+- Likely to change: yes, CPI-linked yearly and tied to the operator tender; recheck 2027-04-01.
+
 ## Experience (labelled; not rules, never computed)
 
 Per `docs/product.md` 3.7, forum and press accounts are shown as experience with their source. They are one person's account, not verified.
@@ -447,7 +510,7 @@ This is a composed index for 3.7; each step renders from the rule named.
 
 - **Keren hishtalmut:**
   1. Check the clock (KH-10, KH-14).
-  2. Get your own data (SW-18).
+  2. Get your own data (SW-18; the clearing house's own price cap, SW-44).
   3. Choose the receiving fund and track (SW-16).
   4. Join directly or through an agent (SW-17).
   5. Sign the whole-balance request at the receiving fund (SW-02, SW-03, SW-20).
@@ -456,7 +519,7 @@ This is a composed index for 3.7; each step renders from the rule named.
   8. Expect rejection or delay notices within 3 business days (SW-05).
   9. Expect a retention contact (SW-19, SW-X01).
   10. The cancellation right lasts until the money moves (SW-07).
-  11. The money moves within 10 business days (SW-06).
+  11. The money moves within 10 business days (SW-06; the funds' data pass through the clearing house, SW-42).
   12. Confirmations come within 15 business days (SW-09).
   13. Verify (SW-38).
 - **Pension fund:** the same order, adding the insurance form and continuity (SW-12), blocks (SW-13), partial transfers (SW-14) and inactive-account consolidation (SW-22).
@@ -465,7 +528,7 @@ This is a composed index for 3.7; each step renders from the rule named.
 - **IRA:** routes and money types (SW-01, SW-23), cash or in kind (SW-24), then SW-02 to SW-09.
 - **Child savings:** SW-25.
 - **Bank current account:**
-  1. Request at the receiving bank (SW-26).
+  1. Request at the receiving bank (SW-26; early disclosure under version 4, SW-43).
   2. Read the information page (SW-31).
   3. Choose the transfer day; the cancellation window applies (SW-27).
   4. Expect a retention approach under the bank rules (SW-28).
@@ -533,21 +596,21 @@ This file does not enumerate providers. Who offers each wrapper, and from which 
 
 ## Open questions
 
-1. **Current version of circular 2017-9-17.** The copy read (Analyst host) is a consolidated, amended text: s.3(ד) reads "בוטל" and sections 4א and 5א were added. It does not say which amending circulars it includes or their dates. Likely answer: the CMA circulars archive or codex on gov.il, opened by hand (PF open question 9).
-2. **Does circular 2017-9-17 govern gemel lehashkaa?** Annex A's fund-type list has no "קופת גמל להשקעה", which postdates the 2017 text. The gemel lehashkaa bylaws apply the transfer regulations and "the Commissioner's instructions" (KGL-10). Likely answer: a later amendment of the circular or the codex.
+1. **Current version of circular 2017-9-17.** The copy read (Analyst host) is a consolidated, amended text: s.3(ד) reads "בוטל" and sections 4א and 5א were added. It does not say which amending circulars it includes or their dates. Likely answer: the CMA circulars archive or codex on gov.il, opened by hand (PF open question 9). **[2026-10-24 R4 research pass: Narrowed by SW-41. The gov.il copy (2.10.2017, 28 pages) is identical, with 'בוטל' and ss.4א, 5א in the original; no amending circular was found by search, but the CMA's later circulars cite 2016-9-11 (19.7.2016) as the transfer circular, so the numbering in force is still to be settled on the CMA regulation collector.]**
+2. **Does circular 2017-9-17 govern gemel lehashkaa?** Annex A's fund-type list has no "קופת גמל להשקעה", which postdates the 2017 text. The gemel lehashkaa bylaws apply the transfer regulations and "the Commissioner's instructions" (KGL-10). Likely answer: a later amendment of the circular or the codex. **[2026-10-23 R3 research pass: The regulations side is settled (reg. 3(א)(11א), added 2.9.2020, SW-39); the circular's Annex A list is still the open part.]**
 3. **CMA rule on retention contacts and retention offers in provident products.** Not in the Advice, Marketing and Clearing Law or the transfer circular. Two searches found none. Likely answer: the CMA customer-service or marketing circulars ("חוזר שירות", codex part on fair dealing), opened by hand.
 4. **Does a fee quoted before joining bind the institution?** The CMA discount circular (PF-13) runs from when the fee is first charged. Likely answer: the joining circular ("חוזר צירוף", in the CMA 2026 plan for review) or the advice-document circular.
-5. **Clearing house: the price of a direct request, and how consent is checked.** Only bank routes, which are free, were read. Kol Zchut is blocked. Likely answer: the regulations under s.31יד and s.31טז, and the operator's site.
-6. **Who must tell the employer to redirect future deposits after an active member's transfer, and the employer's deadline.** Not found. Likely answer: the payments regulations 2014 (KH-06 source) or the joining circular.
+5. **Clearing house: the price of a direct request, and how consent is checked.** Only bank routes, which are free, were read. Kol Zchut is blocked. Likely answer: the regulations under s.31יד and s.31טז, and the operator's site. **[2026-10-24 R4 research pass: Price closed by SW-44 (caps per action from 1.1.2027; the 2022 circular's prices until then, not read). How consent is checked is still the law plus the power-of-attorney circular (SW-18).]**
+6. **Who must tell the employer to redirect future deposits after an active member's transfer, and the employer's deadline.** Not found. Likely answer: the payments regulations 2014 (KH-06 source) or the joining circular. **[2026-10-24 R4 research pass: Not in the official circular either (SW-41); still open.]**
 7. **How PEN-14 combines with circular s.4(ב).** PEN-14 gives a new 60-month qualifying period when tagmulim money is moved out (bylaw). Circular s.4(ב) credits insurance months on a fund-to-fund move. Which governs a full pension-to-pension transfer? For `pension-and-gemel-lekitzba.md`: read a fund's bylaw section on incoming transfers.
-8. **Is a transfer between pension funds or provident funds for annuity tax-neutral?** The TXP file states nothing either way. For `tax-pension-gemel-lekitzba.md`.
+8. **Is a transfer between pension funds or provident funds for annuity tax-neutral?** The TXP file states nothing either way. For `tax-pension-gemel-lekitzba.md`. **[2026-10-23 R3 research pass: Narrowed, not closed. Reg. 2(ב) carries the payment dates over; the 1990 exemption rules cover sums "שהועברו על ידי מעביד"; no text found for the member's side (SW-40).]**
 9. **The Governor's rules 2019 on bank switching**: the account types and activity types covered, whether securities move under the service, which banks are exempt, and the exact meaning of "sixth business day" in directive 448 s.6. Only the directive and circulars were read. Likely answer: BoI media PDF of the consolidated rules, and Reshumot ק"ת התש"ף p.183, התשפ"א p.3574, and קובץ תקנות 12530 (17.9.2026).
 10. **The supervised price for moving securities**: the order that sets it, and whether it is per transfer (Discount "5 ₪ להעברה") or per security (Meitav "5 שקל לנייר ערך ישראל"). Also the source of the NIS 5 bank-to-non-bank cap Calcalist reports. One search found no order. Likely answer: the BoI price-supervision order under s.7 of the Banking (Customer Service) Law. This also closes BRK open question 12.
 11. **Tax on moving securities between your own accounts**: cost basis carried over, losses carried forward, and whether a declaration is needed. Only institution statements were read. For `tax-securities-israeli.md` and `tax-securities-foreign.md`. Likely answer: the Income Tax withholding regulations on securities transfers, or a Tax Authority circular.
 12. **Moving securities between an Israeli institution and a foreign broker**: feasibility for TASE lines, cost, and the withholding consequences. Only forum experience was found.
 13. **Competition Authority deposit-portability directive**: text, effective date and tribunal status (BANK open question 6).
 14. **"המנהל" in Transfer Regulations reg. 3(א)(12)**: confirm it is the Tax Authority director, as PF-17 reads it.
-15. **Directive 448 after version 2 (8/21)**: whether a later version exists. Circular h-2863 refers to s.37 of the directive but amends only the rules.
+15. **Directive 448 after version 2 (8/21)**: whether a later version exists. Circular h-2863 refers to s.37 of the directive but amends only the rules. **[2026-10-24 R4 research pass: Closed by SW-43: version 4 (11/25), circular 2833, disclosure sections only.]**
 16. **Removing an agent already attached to a provident account**, and whether an agent is re-attached on a direct transfer. CMA 2026 power-of-attorney circular (PF-31).
 
 ## Left out and why
@@ -569,7 +632,15 @@ This file does not enumerate providers. Who offers each wrapper, and from which 
 
 | Title | Publisher | Strength | URL | Checked |
 |---|---|---|---|---|
+| תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), תשס"ח-2008, consolidated with amendment history (Nevo HTML, read verbatim) | Nevo | primary (mirror) | https://www.nevo.co.il/law_html/law01/999_929.htm | 2026-10-23 |
+| כללי מס הכנסה (פטור ממס בשל העברה ושינוי יעוד של כספים בקופות גמל), התש"ן-1990 | Wikisource | primary (mirror) | https://he.wikisource.org/wiki/כללי_מס_הכנסה_(פטור_ממס_בשל_העברה_ושינוי_יעוד_של_כספים_בקופות_גמל) | 2026-10-23 |
 | חוזר גופים מוסדיים 2017-9-17 "העברת כספים בין קופות גמל", 2.10.2017, consolidated copy, all 28 pages | CMA, hosted by Analyst | primary (third-party host) | [c17] | 2026-10-22 |
+| חוזר גופים מוסדיים 2017-9-17, the CMA's own copy (same 28 pages) | CMA (gov.il) | primary | https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf | 2026-10-24 |
+| CMA letter שה. 2020-9260, דחיית המועד להעברת כספים בין קופות גמל בעת השבתת מערכת סליקה פנסיונית מרכזית, 15.11.2020 | CMA (gov.il) | primary | https://www.gov.il/BlobFolder/generalpage/pension-clearing/he/2020-9260.pdf | 2026-10-24 |
+| חוזר גופים מוסדיים 2026-9-3, מבנה אחיד להעברת מידע ונתונים בשוק החיסכון הפנסיוני - עדכון, 26.3.2026 (ss.1, 4-8 read) | CMA (gov.il) | primary | https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-legislation26326/he/uniform_protocol_update_26.3.2026%20%5BPDF%5D.pdf | 2026-10-24 |
+| חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026 | CMA (gov.il) | primary | https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf | 2026-10-24 |
+| BoI directive page נב"ת 448 (versions), חוזר ח-06-2833 (26.11.2025) and נב"ת 448 version 4 (11/25) | BoI Banking Supervision | primary | https://www.boi.org.il/roles/supervisionregulation/nbt/nbt448/ ; https://www.boi.org.il/media/wxoksahf/h2833.pdf ; https://www.boi.org.il/media/irmdw0r2/448_4-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf | 2026-10-24 |
+| gov.il, המסלקה הפנסיונית (regulation page, links to the operator swiftness.co.il) | CMA (gov.il) | primary | https://www.gov.il/he/pages/pension-clearing | 2026-10-24 |
 | תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס"ח-2008, regs. 1 to 9 | Minister of Finance; Wikisource mirror (amendments to תשפ"ג) | primary (mirror) | [tr] | 2026-10-22 |
 | חוק הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים), התשס"ה-2005, full text in two reads | Knesset; Wikisource mirror (to ס"ח תשפ"ו 912) | primary (mirror) | [lawadv] | 2026-10-22 |
 | תקנות ... (קופת גמל בניהול אישי) (תיקון), התשע"ז-2017, ק"ת 7819 | Reshumot, hosted by Meitav | primary (third-party host) | [ira17] | 2026-10-22 |

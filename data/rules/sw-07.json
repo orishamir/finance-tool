@@ -1,0 +1,59 @@
+{
+  "id": "SW-07",
+  "title": "Cancelling a transfer: until the money moves, by a signed notice to the transferring fund",
+  "title_he": "ביטול העברה: עד שהכסף עובר, בהודעה חתומה",
+  "text_he": "העמית מבטל בחתימה על הודעת ביטול (נספח ו׳) ובהעברתה לקופה המעבירה, בפקס, בדואר או בדוא״ל בין השאר, לפני מועד ההעברה; הבקשה מתבטלת כשההודעה מגיעה לקופה המעבירה, שמעבירה אותה לקופה המקבלת. אם אירע מקרה ביטוח אחרי המועד הקובע ולפני מסירת ההודעה, הבקשה אינה מתבטלת. אחרי ביטול, הקופה המקבלת מחזירה כסף שכבר הופקד אצלה לחשבון העמית בקופה המעבירה בתוך מספר ימי עסקים, עם התשואה שלה ובלי ניכוי מלבד דמי ניהול. הפניקס מציינת שחרטה מניוד אפשרית בתוך מספר ימי עסקים מקבלת הבקשה או עד שהכסף עובר, ומציינת תיבת דואר ששמה מרמז על שימור; החוזר נקרא מעותק אצל צד שלישי.",
+  "figure_names_he": {
+    "deposits_returned_after_cancel_business_days": "ימי עסקים להחזרת הפקדות אחרי ביטול",
+    "phoenix_cancel_window_business_days": "ימי עסקים לחרטה מניוד (הפניקס)"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "deposits_returned_after_cancel_business_days": {
+      "value": 10,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.analyst.co.il/media/dtnkdiyk/%D7%97%D7%95%D7%96%D7%A8-%D7%92%D7%95%D7%A4%D7%99%D7%9D-%D7%9E%D7%95%D7%A1%D7%93%D7%99%D7%99%D7%9D-2017-9-17-%D7%94%D7%A2%D7%91%D7%A8%D7%AA-%D7%9B%D7%A1%D7%A4%D7%99%D7%9D-%D7%91%D7%99%D7%9F-%D7%A7%D7%95%D7%A4%D7%95%D7%AA-%D7%92%D7%9E%D7%9C.pdf",
+        "title": "CMA circular 2017-9-17 \"העברת כספים בין קופות גמל\", 2.10.2017, consolidated copy, s.3(ט) to (יא), Annex F, pp.2 to 3, 12, 22",
+        "publisher": "Capital Market, Insurance and Savings Authority (copy hosted by Analyst)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "SW-07"
+      ],
+      "state": "sourced",
+      "notes": "After a cancellation the receiving fund returns money already deposited with it to the member's account in the transferring fund within ten business days, with its return and no deduction other than management fees (s.3(י))."
+    },
+    "phoenix_cancel_window_business_days": {
+      "value": 10,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.fnx.co.il/ishtalmutfund/faq/",
+        "title": "Phoenix study-fund FAQ (\"שאלות ותשובות\" on transfers)",
+        "publisher": "The Phoenix",
+        "strength": "institution"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "SW-07"
+      ],
+      "state": "sourced",
+      "notes": "Phoenix: cancellation (\"חרטה מניוד\") is possible within ten business days of receiving the transfer request, or until the money moves if earlier. Institution statement; it agrees in practice with reg. 5(א)."
+    }
+  },
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-22"
+}

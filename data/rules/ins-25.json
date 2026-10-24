@@ -1,0 +1,61 @@
+{
+  "id": "INS-25",
+  "title": "Savings-policy management fee cap: 1% a year of the portfolio, 2% with the Commissioner's approval (reg. 6A)",
+  "title_he": "תקרת דמי הניהול בפוליסת חיסכון",
+  "text_he": "תקנות תנאים בחוזי ביטוח קובעות תקרה לדמי הניהול בפוליסת ביטוח חיים משתתפת ברווחים שאינה קופת ביטוח, כלומר בפוליסת חיסכון. המבטח רשאי לגבות דמי ניהול קבועים כשיעור מהשווי המשוערך של תיק ההשקעות, עד אחוז אחד בשנה. המפקח רשאי לאשר שיעור גבוה יותר, עד שני אחוזים בשנה, ומעבר לכך רק באישור ובתנאי שלא ייגבו דמי ניהול מסוג אחר. שיעור דמי הניהול נקבע מראש בתנאי הפוליסה, והתשואה נטו למבוטח היא תשואת התיק בניכוי דמי הניהול.",
+  "figure_names_he": {
+    "balance_fee_cap": "תקרת דמי הניהול מהחיסכון ללא אישור מיוחד",
+    "balance_fee_cap_with_approval": "תקרת דמי הניהול מהחיסכון באישור המפקח"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-deposit",
+    "regulator"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "balance_fee_cap": {
+      "value": 1,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(ביטוח)_(תנאים_בחוזי_ביטוח)",
+        "title": "Insurance Contract Terms Regulations 1981, reg. 6A(a): 1/12% a month or 1/365% a day of the revalued portfolio",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "INS-25"
+      ],
+      "state": "sourced",
+      "notes": "Stated in the regulation as 1/12% a month (1/365% a day) of the revalued investment portfolio, 1% a year; applies to a profit-sharing life policy that is not an insurance fund. Deposit fees are not addressed by reg. 6A(a); INS OQ16."
+    },
+    "balance_fee_cap_with_approval": {
+      "value": 2,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(ביטוח)_(תנאים_בחוזי_ביטוח)",
+        "title": "Insurance Contract Terms Regulations 1981, reg. 6A(a1): up to 2/12% a month or 2/365% a day with the Commissioner's approval",
+        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "INS-25"
+      ],
+      "state": "sourced",
+      "notes": "With the Commissioner's approval; above this only under reg. 6A(a2), with approval and only as a percentage of the portfolio value. Clal 1.5% and Phoenix 1.7% (INS-03) fall in this band."
+    }
+  },
+  "il_finance_file": "savings-policies-and-executive-insurance.md",
+  "checked": "2026-10-24"
+}

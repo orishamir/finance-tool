@@ -12,6 +12,8 @@ import { Button, Callout, Card, Disclosure, LinkButton, SegmentedControl, cx } f
 import { AgeStepper, GoalNumber, GoalSlider, MonthField, NameField, PercentPair, PresetChips, SwitchRow } from "./fields";
 import { IconDown, IconPlus, IconUp } from "./icons";
 import { presetIds } from "../../lib/goal";
+import { AcceptedFallField } from "../exposure-mode/fields";
+import { r5 } from "../../copy";
 
 export interface Range {
   min: number;
@@ -144,7 +146,7 @@ export function GoalFields({ data }: { data: FormData }) {
             {r2.form.noReturnBefore} <bdi dir="ltr">{r2.form.noReturnCode}</bdi>
           </span>
         </Callout>
-        <p className="text-sm text-muted-foreground pt-1">{r2.form.lossFilter}</p>
+        <AcceptedFallField />
       </div>
     </Card>
   );
@@ -292,9 +294,15 @@ export function FormFooter({ to }: { to: string }) {
   return (
     <div className="sticky bottom-0 z-[var(--z-sticky)] -mx-gutter px-gutter pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] bg-background/90 backdrop-blur border-t border-border md:static md:mx-0 md:px-0 md:border-0 md:bg-transparent md:backdrop-blur-none md:pt-0">
       <div className="flex flex-col gap-2 md:items-start">
-        <LinkButton to={to} variant="primary" className="w-full md:w-auto md:min-w-48" onClick={flushPendingFields}>
-          {r2.compare}
-        </LinkButton>
+        <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-3 w-full md:w-auto">
+          <LinkButton to={to} variant="primary" className="w-full md:w-auto md:min-w-48" onClick={flushPendingFields}>
+            {r2.compare}
+          </LinkButton>
+          {/* the quiet second door (release 5): the same goal, by exposure */}
+          <LinkButton to={`${to}?mode=exposure`} variant="secondary" className="w-full md:w-auto" onClick={flushPendingFields}>
+            {r5.form.secondDoor}
+          </LinkButton>
+        </div>
         <p className={cx("text-xs flex items-center gap-1.5", failed ? "text-caution-foreground" : "text-muted-foreground")}>
           {!failed && <IconCheck size={14} className="text-positive" />}
           {failed ? r2.couldNotSave : r2.savedAuto}

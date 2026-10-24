@@ -1,0 +1,15 @@
+{
+  "id": "SW-21",
+  "title": "Kupat gemel lehashkaa: only to another gemel lehashkaa, or to an annuity fund from 60; partial allowed",
+  "title_he": "קופת גמל להשקעה: לאן אפשר להעביר",
+  "text_he": "הכסף עובר רק לקופת גמל להשקעה אחרת, או לקופת גמל לקצבה מגיל הפרישה המוקדמת לקבלת קצבה בלבד; העברה חלקית מותרת. משיכה והפקדה מחדש במקום אחר אינן העברה: המשיכה ממוסה ביציאה, וההפקדה החדשה נספרת כנגד תקרת ההפקדה השנתית. החלפת מסלול והעברה בין קופות גמל להשקעה אינן אירוע מס. טופס ההעברה שבחוזר אינו מונה קופת גמל להשקעה ברשימת הסוגים, וזו שאלה פתוחה; זהו כלל מצביע, ומקורותיו, ובהם תקנות וחוק שנקראו באתר שמעתיק אותם, נמצאים בכללים שהוא מפנה אליהם.",
+  "strength": "primary-mirror",
+  "dimensions": [
+    "transfer-switch-process",
+    "deposit-ceiling",
+    "switching-tax-event"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-22"
+}

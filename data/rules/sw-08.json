@@ -1,0 +1,80 @@
+{
+  "id": "SW-08",
+  "title": "A request lapses: 120 days for an active member without a deposit, 60 days otherwise",
+  "title_he": "פקיעת בקשה: עמית פעיל ללא הפקדה, ועמית לא פעיל",
+  "text_he": "בקשה של עמית פעיל פוקעת אם לא הועברה לקופה המעבירה בתוך התקופה הארוכה שהחוזר קובע מיום החתימה; אלא אם העמית הצהיר שלא יפקיד, היא מועברת רק אחרי שהפקדה מגיעה. אם העמית הודיע לקופה המקבלת בתוך אותה תקופה שלא יבוצעו הפקדות, הבקשה פוקעת אם לא הועברה בתוך התקופה הקצרה מההודעה. בקשה של עמית לא פעיל פוקעת אם לא הועברה בתוך התקופה הקצרה מיום החתימה; בטופס אפשר לסמן מראש שלא יבוצעו הפקדות, ואז העמית נחשב לא פעיל לעניין המועד הקובע. הפניקס מציינת שאם לא בוצעה הפקדה עד תום התקופה הארוכה הניוד יבוטל; החוזר נקרא מעותק אצל צד שלישי.",
+  "figure_names_he": {
+    "active_member_lapse_days": "ימים לפקיעת בקשה של עמית פעיל ללא הפקדה",
+    "after_no_deposit_notice_lapse_days": "ימים לפקיעה אחרי הודעה שלא יבוצעו הפקדות",
+    "inactive_member_lapse_days": "ימים לפקיעת בקשה של עמית לא פעיל"
+  },
+  "strength": "primary-mirror",
+  "dimensions": [
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "active_member_lapse_days": {
+      "value": 120,
+      "unit": "days",
+      "source": {
+        "url": "https://www.analyst.co.il/media/dtnkdiyk/%D7%97%D7%95%D7%96%D7%A8-%D7%92%D7%95%D7%A4%D7%99%D7%9D-%D7%9E%D7%95%D7%A1%D7%93%D7%99%D7%99%D7%9D-2017-9-17-%D7%94%D7%A2%D7%91%D7%A8%D7%AA-%D7%9B%D7%A1%D7%A4%D7%99%D7%9D-%D7%91%D7%99%D7%9F-%D7%A7%D7%95%D7%A4%D7%95%D7%AA-%D7%92%D7%9E%D7%9C.pdf",
+        "title": "CMA circular 2017-9-17 \"העברת כספים בין קופות גמל\", 2.10.2017, consolidated copy, s.3(יב), Annex A item 6",
+        "publisher": "Capital Market, Insurance and Savings Authority (copy hosted by Analyst)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "SW-08"
+      ],
+      "state": "sourced",
+      "notes": "An active member's request lapses if not forwarded to the transferring fund within 120 days of signing (s.3(יב)); it is forwarded only once a deposit arrives. Phoenix states the same (institution)."
+    },
+    "after_no_deposit_notice_lapse_days": {
+      "value": 60,
+      "unit": "days",
+      "source": {
+        "url": "https://www.analyst.co.il/media/dtnkdiyk/%D7%97%D7%95%D7%96%D7%A8-%D7%92%D7%95%D7%A4%D7%99%D7%9D-%D7%9E%D7%95%D7%A1%D7%93%D7%99%D7%99%D7%9D-2017-9-17-%D7%94%D7%A2%D7%91%D7%A8%D7%AA-%D7%9B%D7%A1%D7%A4%D7%99%D7%9D-%D7%91%D7%99%D7%9F-%D7%A7%D7%95%D7%A4%D7%95%D7%AA-%D7%92%D7%9E%D7%9C.pdf",
+        "title": "CMA circular 2017-9-17 \"העברת כספים בין קופות גמל\", 2.10.2017, consolidated copy, s.3(יב)",
+        "publisher": "Capital Market, Insurance and Savings Authority (copy hosted by Analyst)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "SW-08"
+      ],
+      "state": "sourced",
+      "notes": "If the active member tells the receiving fund within the 120 days that no deposits will be made, the request lapses if not forwarded within 60 days of that notice (s.3(יב))."
+    },
+    "inactive_member_lapse_days": {
+      "value": 60,
+      "unit": "days",
+      "source": {
+        "url": "https://www.analyst.co.il/media/dtnkdiyk/%D7%97%D7%95%D7%96%D7%A8-%D7%92%D7%95%D7%A4%D7%99%D7%9D-%D7%9E%D7%95%D7%A1%D7%93%D7%99%D7%99%D7%9D-2017-9-17-%D7%94%D7%A2%D7%91%D7%A8%D7%AA-%D7%9B%D7%A1%D7%A4%D7%99%D7%9D-%D7%91%D7%99%D7%9F-%D7%A7%D7%95%D7%A4%D7%95%D7%AA-%D7%92%D7%9E%D7%9C.pdf",
+        "title": "CMA circular 2017-9-17 \"העברת כספים בין קופות גמל\", 2.10.2017, consolidated copy, s.3(יג)",
+        "publisher": "Capital Market, Insurance and Savings Authority (copy hosted by Analyst)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "SW-08"
+      ],
+      "state": "sourced",
+      "notes": "An inactive member's request lapses if not forwarded within 60 days of signing (s.3(יג))."
+    }
+  },
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-22"
+}

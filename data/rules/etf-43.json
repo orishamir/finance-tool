@@ -1,0 +1,73 @@
+{
+  "id": "ETF-43",
+  "title": "TASE's foreign-funds list on 23/10/2026: 40 funds, 29 in the equity market and 11 in the bond market; read on the page, not republished",
+  "title_he": "רשימת קרנות החוץ הנסחרות בבורסה: ארבעים קרנות, רובן מניות",
+  "strength": "primary",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "currency"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2026-11-30",
+  "figures": {
+    "funds_total": {
+      "value": 40,
+      "unit": "count",
+      "source": {
+        "url": "https://market.tase.co.il/he/market_data/f-etfs",
+        "title": "הבורסה, קרנות חוץ נסחרות, 'סה\"כ 40 רשומות', נכון ל-23/10/2026",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-23",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Read in Chrome 2026-10-24."
+    },
+    "equity_market": {
+      "value": 29,
+      "unit": "count",
+      "source": {
+        "url": "https://market.tase.co.il/he/market_data/f-etfs",
+        "title": "הבורסה, קרנות חוץ נסחרות, קטגוריה 'קרנות חוץ נסחרות בשוק המניות' (ההפרש בין הסך לסינון האג\"ח)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-23",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "40 minus the 11 the bond-market filter returns; the equity filter itself was not run."
+    },
+    "bond_market": {
+      "value": 11,
+      "unit": "count",
+      "source": {
+        "url": "https://market.tase.co.il/he/market_data/f-etfs?dType=1&oId=18",
+        "title": "הבורסה, קרנות חוץ נסחרות, קטגוריה 'קרנות חוץ נסחרות בשוק האג\"ח', 'סה\"כ 11 רשומות'",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2026-10-23",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Read in Chrome 2026-10-24."
+    }
+  },
+  "figure_names_he": {
+    "funds_total": "סך קרנות החוץ הנסחרות",
+    "equity_market": "בשוק המניות",
+    "bond_market": "בשוק האיגרות חוב"
+  },
+  "text_he": "עמוד קרנות החוץ הנסחרות באתר הבורסה מונה ארבעים קרנות, מהן עשרים ותשע בשוק המניות ואחת עשרה בשוק האיגרות חוב, של שני מנהלים זרים. העמוד מציג שם, מספר נייר, שער באגורות, סיווג ונכס ייחוס, ומסנן לפי שוק. הרשימה נקראת בעמוד עצמו ואינה מפורסמת מחדש באתר, בהתאם לתנאי השימוש של הבורסה; האתר מציג את המספרים ומקשר לעמוד.",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-24"
+}

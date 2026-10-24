@@ -1,0 +1,427 @@
+{
+  "id": "ibi",
+  "provider": {
+    "name_he": "שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ",
+    "class": "broker",
+    "regulator": "ISA",
+    "tase_member": true,
+    "protection_rule_ids": [
+      "BRK-07",
+      "BRK-08",
+      "BRK-09",
+      "BRK-12",
+      "BRK-13",
+      "REG-16"
+    ]
+  },
+  "tariff": {
+    "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+    "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ (8 עמ', 'נכון לתאריך: 1.7.2026'); חלק 4 - ניירות ערך (עמ' 2-5), חלק 5 - מטבע חוץ (עמ' 6), חלק 6 - שירותים ועמלות נוספות (עמ' 6-7)",
+    "published": "2026-07-01",
+    "format": "pdf"
+  },
+  "snapshot": "2026-10-23",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "ibi-buy-sell-tase",
+      "base": "trade",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.15,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+          "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ ('נכון לתאריך: 1.7.2026'), חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף 1, '1. מניות, אגרות חוב וקרנות סל' (עמ' 2)",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-07-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Printed 'עד 0.15% משווי העסקה, מינימום ₪ 3.5 לעסקה': a ceiling ('עד'), the client's actual rate is set in the account agreement (BRK-24). Charged on execution. Row 3: an off-exchange trade pays up to 0.2%, min NIS 50; row 5: CALL1 options 3%. No channel split: IBI prices one channel."
+      },
+      "min": {
+        "value": 3.5,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+          "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ ('נכון לתאריך: 1.7.2026'), חלק 4, (4א) סעיף 1, מניות, אגרות חוב וקרנות סל, מינימום (עמ' 2)",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-07-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום ₪ 3.5 לעסקה'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה בת\"א (כולל אופציה CALL1 ורכישה בהנפקה)",
+          "מניות, אגרות חוב וקרנות סל"
+        ]
+      }
+    },
+    {
+      "id": "ibi-buy-sell-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+          "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ ('נכון לתאריך: 1.7.2026'), חלק 4, (4א) סעיף 1, '2. מילווה קצר מועד' (עמ' 2)",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-07-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Printed 'עד 0.1% משווי העסקה, מינימום ₪ 3.5 לעסקה' (ceiling)."
+      },
+      "min": {
+        "value": 3.5,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+          "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ ('נכון לתאריך: 1.7.2026'), חלק 4, (4א) סעיף 1, מילווה קצר מועד, מינימום (עמ' 2)",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-07-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום ₪ 3.5 לעסקה'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה בת\"א (כולל אופציה CALL1 ורכישה בהנפקה)",
+          "מילווה קצר מועד"
+        ]
+      }
+    },
+    {
+      "id": "ibi-buy-sell-mutual-fund",
+      "base": "trade",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.08,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+          "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ ('נכון לתאריך: 1.7.2026'), חלק 4, (4א) סעיף 2, קניה, מכירה ופדיון של קרנות נאמנות הנסחרות בבורסה בת\"א (עמ' 2)",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-07-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Printed 'עד 0.08% משווי העסקה, מינימום ₪ 5 לעסקה' (ceiling). Hedge funds in trust ('קרנות גידור בנאמנות'): 0.15%, min NIS 50."
+      },
+      "min": {
+        "value": 5,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+          "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ ('נכון לתאריך: 1.7.2026'), חלק 4, (4א) סעיף 2, מינימום (עמ' 2)",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-07-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום ₪ 5 לעסקה'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של קרנות נאמנות הנסחרות בבורסה בת\"א"
+        ]
+      }
+    },
+    {
+      "id": "ibi-buy-sell-foreign-us-pct-track",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.15,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+          "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ ('נכון לתאריך: 1.7.2026'), חלק 4, (4א) סעיף 5, קניה, מכירה ופדיון של ניירות ערך בחו\"ל, מניות/תעודת סל בארה\"ב, מסלול 3 (עמ' 2-3)",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-07-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "US shares and ETFs are priced as a menu the client chooses from: (1) USD 0.01 per share, min USD 10 per trade; (2) a fixed USD 14 per trade; (3) '0.15% משווי העסקה, מינימום 10 דולר ארה\"ב לעסקה' (recorded here); (4) 0.15% + USD 0.01 per share, min USD 6; (5) OTC/pink sheets 5 cents per share, min USD 14 or 2%. Third-party charges (SEC, TAF, ECN, ORF, tax) are added. Other markets: Canada CAD 0.01 per share min CAD 55; Asia and Europe 0.3% min 30 in the trade currency; foreign bonds 0.225% min 20 in the trade currency; foreign funds 0.275% + broker cost."
+      },
+      "min": {
+        "value": 10,
+        "unit": "usd",
+        "source": {
+          "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+          "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ ('נכון לתאריך: 1.7.2026'), חלק 4, (4א) סעיף 5, מסלול 3, מינימום (עמ' 3)",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-07-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 10 דולר ארה\"ב לעסקה'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "מסלול 3: 0.15% משווי העסקה",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ניירות ערך בחו\"ל",
+          "מניות/תעודת סל בארה\"ב",
+          "0.15% משווי העסקה, מינימום 10 דולר ארה\"ב לעסקה"
+        ]
+      }
+    },
+    {
+      "id": "ibi-custody",
+      "base": "custody",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units",
+        "makam",
+        "money_market_units",
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+          "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ ('נכון לתאריך: 1.7.2026'), חלק 4, (4א) סעיף 8, דמי משמרת (עמ' 4)",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-07-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'0.1% משווי החשבון לרבעון', charged once a quarter ('אחת לרבעון'); 'השיעור נקבע משווי נכסי החשבון על בסיס רבעוני'. A foreign security whose trading stopped or is 'worthless' per the broker: USD 11 per security; ADR holdings: a monthly foreign-bank custody charge passed on. The tariff prints no exemption of makam or money-market funds from custody; the bank ban (BRK-17) does not apply to a non-bank member (BRK OQ11), so no excludes are recorded."
+      },
+      "min": null,
+      "max": null,
+      "period": "quarter",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי משמרת"
+        ]
+      }
+    },
+    {
+      "id": "ibi-fx-spread",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+          "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ ('נכון לתאריך: 1.7.2026'), חלק 5 - מטבע חוץ, סעיף 1, מרווח המרה (עמ' 6)",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-07-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15",
+          "BRK-25"
+        ],
+        "state": "sourced",
+        "notes": "No conversion fee is printed: the notes say 'מרווח המרה בלבד ממחיר הביצוע בשוק וללא עמלה' (spread only, no fee). The spread is recorded under spread."
+      },
+      "min": null,
+      "max": null,
+      "spread": {
+        "value": 0.7,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+          "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ ('נכון לתאריך: 1.7.2026'), חלק 5 - מטבע חוץ, סעיף 1, מרווח המרה (עמ' 6)",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-07-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Printed 'עד 0.7%' (a ceiling) on the market execution price, charged on execution."
+      },
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "מרווח המרה"
+        ]
+      }
+    },
+    {
+      "id": "ibi-account-fee",
+      "base": "fixed_period",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 50,
+        "unit": "nis_per_month",
+        "source": {
+          "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+          "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ ('נכון לתאריך: 1.7.2026'), חלק 6 - שירותים ועמלות נוספות, סעיף 1, דמי שימוש / דמי טיפול (עמ' 6)",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-07-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Printed 'עד ₪ 50', charged once a month ('אחת לחודש'); a ceiling. A second account for the same client: up to NIS 100 a month. Advanced systems / real-time quotes: up to NIS 3,000 a month (section 3)."
+      },
+      "min": null,
+      "max": null,
+      "period": "month",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי שימוש / דמי טיפול"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "notice_rule_ids": [
+    "BRK-15"
+  ]
+}
