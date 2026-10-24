@@ -184,11 +184,9 @@ export function GoalFields({ data }: { data: FormData }) {
         />
       )}
       <p className="text-sm text-muted-foreground max-w-measure">{r2.form.couple}</p>
-      <div className="flex flex-col gap-4 md:grid md:grid-cols-[1fr_11rem] md:gap-3 md:items-start">
+      <div className="field-row flex flex-col gap-4 md:grid md:grid-cols-[1fr_11rem] md:gap-3 md:items-start">
         <GoalNumber label={r2.form.available} unit="nis" value={resolved.available} source={src.available} presetValue={resolved.available} onChange={set("available")} validate={availableCheck} externalError={availableTooBig(resolved)} hint={r2.form.availableHint} />
-        <div>
-          <MonthField label={r2.form.availableFrom} value={current.availableFrom} min={data.minMonth} max={`${Number(data.minMonth.slice(0, 4)) + data.horizon.max}-12`} onChange={(v) => update((g) => ({ ...g, availableFrom: v }))} />
-        </div>
+        <MonthField label={r2.form.availableFrom} value={current.availableFrom} min={data.minMonth} max={`${Number(data.minMonth.slice(0, 4)) + data.horizon.max}-12`} onChange={(v) => update((g) => ({ ...g, availableFrom: v }))} />
       </div>
       <div className="flex flex-col gap-1">
         <h3 className="field-label">{r2.form.constraints}</h3>

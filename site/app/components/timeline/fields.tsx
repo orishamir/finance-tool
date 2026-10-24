@@ -144,23 +144,26 @@ export function NumberField(props: FieldProps) {
       </div>
     );
   }
+  // the label, then one body with the box and what follows it: a field in a `.field-row` is a two-row subgrid (app.css)
   return (
     <div className="field">
       <label htmlFor={ids} className="field-label">
         {label}
       </label>
-      {box}
-      {shownError ? (
-        <span id={`${ids}-err`} className="text-xs text-destructive">
-          {shownError}
-        </span>
-      ) : hint ? (
-        <span id={`${ids}-hint`} className="text-xs text-muted-foreground">
-          {hint}
-        </span>
-      ) : null}
-      {note}
-      {!optional && <FieldState entered={isEntered} onReset={onReset} disabled={disabled} />}
+      <div className="field-body">
+        {box}
+        {shownError ? (
+          <span id={`${ids}-err`} className="text-xs text-destructive">
+            {shownError}
+          </span>
+        ) : hint ? (
+          <span id={`${ids}-hint`} className="text-xs text-muted-foreground">
+            {hint}
+          </span>
+        ) : null}
+        {note}
+        {!optional && <FieldState entered={isEntered} onReset={onReset} disabled={disabled} />}
+      </div>
     </div>
   );
 }

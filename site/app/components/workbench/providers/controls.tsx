@@ -74,62 +74,64 @@ export function BehaviourCard({ view, inputs, onOrders, onChannel, onOpenAssumpt
       </h2>
       <AmountChips inputs={inputs} onOpen={onOpenAssumptions} />
       <ParameterLine />
-      <div className="grid gap-4 grid-cols-[minmax(0,1fr)] sm:grid-cols-2">
-        <div className="flex flex-col gap-1.5">
-          <div className="flex items-end gap-2">
-            <div className="flex-1 min-w-0">
-              <NumberField
-                label={t.orders}
-                unit="count"
-                value={b.ordersN}
-                isEntered={enteredOrders}
-                validate={(n) => (!Number.isInteger(n) || n < ORDERS_MIN || n > ORDERS_MAX ? c.providers.offer.errors.orders(ORDERS_MIN, ORDERS_MAX) : null)}
-                onCommit={(n) => onOrders(n)}
-                onReset={() => onOrders(null)}
-                inputMode="numeric"
-                optional
-                hint={undefined}
-              />
-            </div>
-            <Button variant="icon" className="border border-input h-field w-11 shrink-0" aria-label={t.ordersDown} disabled={b.ordersN <= ORDERS_MIN} onClick={() => onOrders(b.ordersN - 1)}>
-              <IconDown size={18} />
-            </Button>
-            <Button variant="icon" className="border border-input h-field w-11 shrink-0" aria-label={t.ordersUp} disabled={b.ordersN >= ORDERS_MAX} onClick={() => onOrders(b.ordersN + 1)}>
-              <IconUp size={18} />
-            </Button>
-          </div>
-          <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2">
-            {b.ordersN === 1 ? (
-              <span>{t.ordersHint.one}</span>
-            ) : b.ordersN === 2 ? (
-              <span>{t.ordersHint.two}</span>
-            ) : (
-              <span>
-                {t.ordersHint.before}
-                <Num value={b.orders} size="cell" display={fmt.number(b.ordersN)} />
-                {t.ordersHint.many}
-              </span>
-            )}
-            {enteredOrders && (
-              <Button variant="quiet" className="text-xs -ms-2 min-h-9" onClick={() => onOrders(null)}>
-                <IconReset size={14} /> {buttons.resetOne}
-              </Button>
-            )}
-          </p>
+      {/* a field row (app.css, 2026-10-24 night): the orders box and the channel control start at the same height; the stepper's
+          buttons sit in the box row of the cell, and the hint under the orders box is the field's note */}
+      <div className="field-row grid gap-4 grid-cols-[minmax(0,1fr)] sm:grid-cols-2">
+        <div className="field-cell">
+          <NumberField
+            label={t.orders}
+            unit="count"
+            value={b.ordersN}
+            isEntered={enteredOrders}
+            validate={(n) => (!Number.isInteger(n) || n < ORDERS_MIN || n > ORDERS_MAX ? c.providers.offer.errors.orders(ORDERS_MIN, ORDERS_MAX) : null)}
+            onCommit={(n) => onOrders(n)}
+            onReset={() => onOrders(null)}
+            inputMode="numeric"
+            optional
+            hint={undefined}
+            note={
+              <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2">
+                {b.ordersN === 1 ? (
+                  <span>{t.ordersHint.one}</span>
+                ) : b.ordersN === 2 ? (
+                  <span>{t.ordersHint.two}</span>
+                ) : (
+                  <span>
+                    {t.ordersHint.before}
+                    <Num value={b.orders} size="cell" display={fmt.number(b.ordersN)} />
+                    {t.ordersHint.many}
+                  </span>
+                )}
+                {enteredOrders && (
+                  <Button variant="quiet" className="text-xs -ms-2 min-h-9" onClick={() => onOrders(null)}>
+                    <IconReset size={14} /> {buttons.resetOne}
+                  </Button>
+                )}
+              </p>
+            }
+          />
+          <Button variant="icon" className="border border-input h-field w-11 shrink-0" aria-label={t.ordersDown} disabled={b.ordersN <= ORDERS_MIN} onClick={() => onOrders(b.ordersN - 1)}>
+            <IconDown size={18} />
+          </Button>
+          <Button variant="icon" className="border border-input h-field w-11 shrink-0" aria-label={t.ordersUp} disabled={b.ordersN >= ORDERS_MAX} onClick={() => onOrders(b.ordersN + 1)}>
+            <IconUp size={18} />
+          </Button>
         </div>
-        <div className="flex flex-col gap-1.5">
+        <div className="field">
           <span className="field-label" id="beh-channel">
             {t.channel}
           </span>
-          <SegmentedControl<Channel> labelledBy="beh-channel" value={b.channelId} onChange={onChannel} options={(["direct", "branch"] as const).map((v) => ({ value: v, label: t.channelOptions[v] }))} />
-          <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2">
-            {b.anyBroker && <span>{t.channelBrokers}</span>}
-            {enteredChannel && (
-              <Button variant="quiet" className="text-xs -ms-2 min-h-9" onClick={() => onChannel(null)}>
-                <IconReset size={14} /> {buttons.resetOne}
-              </Button>
-            )}
-          </p>
+          <div className="field-body">
+            <SegmentedControl<Channel> labelledBy="beh-channel" value={b.channelId} onChange={onChannel} options={(["direct", "branch"] as const).map((v) => ({ value: v, label: t.channelOptions[v] }))} />
+            <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2">
+              {b.anyBroker && <span>{t.channelBrokers}</span>}
+              {enteredChannel && (
+                <Button variant="quiet" className="text-xs -ms-2 min-h-9" onClick={() => onChannel(null)}>
+                  <IconReset size={14} /> {buttons.resetOne}
+                </Button>
+              )}
+            </p>
+          </div>
         </div>
       </div>
       <div className="flex flex-col gap-1 text-sm text-muted-foreground">
