@@ -8,7 +8,7 @@ import { provenance as provCopy, rulesFront as copy, site, sourceBlock, topicNam
 import { IconSearch } from "../components/icons";
 import { Num, NumberLegend, RuleRef, StrengthLabel } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { Card, Disclosure, Tag } from "../components/ui";
+import { Card, Disclosure } from "../components/ui";
 import { fmt } from "../lib/format";
 import { ruleTitle } from "../lib/rule-title";
 import { shelfIds, shelfOf, isExperience, type ShelfId } from "../lib/rule-shelves";
@@ -86,7 +86,7 @@ export async function loader() {
   const light = all.map((r) => ({ id: r.id, title: listTitle(r), shelf: shelfOf(r), strength: r.strength })).sort((a, b) => a.id.localeCompare(b.id, "en", { numeric: true }));
 
   return {
-    pinned: { rows, provisional: !!pinned.provisional, rationale: pinned.rationale_he ?? null },
+    pinned: { rows },
     shelves,
     changing,
     byNumber,
@@ -195,17 +195,10 @@ export default function Rules() {
         </header>
 
         <section aria-labelledby="pinned-h" className="flex flex-col gap-3">
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-            <h2 id="pinned-h" className="text-xl lg:text-2xl font-semibold">
-              {copy.pinned.title}
-            </h2>
-            <Tag tone="parameter">{copy.pinned.tag}</Tag>
-          </div>
-          {data.pinned.provisional && (
-            <Disclosure label={copy.pinned.provisional} className="text-sm text-muted-foreground max-w-measure">
-              {data.pinned.rationale && <p className="text-sm max-w-measure">{data.pinned.rationale}</p>}
-            </Disclosure>
-          )}
+          {/* no tag beside the heading: the founder kept the list and asked for the parameter tag to go (2026-10-24); the parameters page carries P-09's rationale */}
+          <h2 id="pinned-h" className="text-xl lg:text-2xl font-semibold">
+            {copy.pinned.title}
+          </h2>
           <ol className="flex flex-col lg:max-w-3xl">
             {data.pinned.rows.map((row) => (
               <li key={row.question} className="flex flex-col gap-1 py-3 border-b border-border">
