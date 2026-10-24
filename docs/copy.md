@@ -807,9 +807,12 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 9 and the handoff in 
 | Inflation, start | ערך התחלתי, פרמטר של האתר | (now the one line above the fields, changed 2026-10-24, UX fix 17)
 | Button | להשוואה |
 | Goals list heading | המטרות שלכם |
-| Goals list, line | המטרות נבדקות אחת אחת, לפי הסדר. הראשונה מקבלת את הכסף קודם. |
+| Goals list, line | המטרות נבדקות אחת אחת, מימין לשמאל: הראשונה מקבלת את הכסף קודם. גררו מטרה כדי לשנות את הסדר. | (was "…לפי הסדר. הראשונה מקבלת את הכסף קודם."; the chips are dragged since 2026-10-24, night)
 | Add a goal | מטרה נוספת |
-| Move up / down (screen-reader names) | להזיז למעלה · להזיז למטה |
+| ~~Move up / down (screen-reader names)~~ | ~~להזיז למעלה · להזיז למטה~~ | removed with the arrows, 2026-10-24 (night)
+| Rename, delete (the current chip's icon buttons, names and tooltips) | שינוי השם · מחיקת המטרה |
+| Rename field (screen-reader name) | שם המטרה |
+| Delete confirmation (reused from the saved-goal strip) | למחוק את המטרה מהמכשיר הזה? · מחיקה · ביטול |
 | Remaining-balance hint on a second goal | נשארו `{סכום}` אחרי המטרות הקודמות. |
 
 **Errors** (in addition to 3.7):
