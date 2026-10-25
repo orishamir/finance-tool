@@ -225,6 +225,16 @@ describe("rules in groups and the negatives", () => {
     expect(ids.every((id) => id.startsWith("TXG-"))).toBe(true);
     expect(ids).toEqual([...ids].sort((a, b) => a.localeCompare(b, "en", { numeric: true })));
   });
+  it("lists the family with a trailing hyphen, and by the start of the number", () => {
+    const fam = (q: string) => top(q).filter((h) => h.entry.kind === "rule").map((h) => h.entry.key!);
+    const bank = fam("BANK-");
+    expect(bank.length).toBeGreaterThan(3);
+    expect(bank.every((id) => id.startsWith("BANK-"))).toBe(true);
+    expect(fam("bank-")).toEqual(fam("bank").filter((id) => id.startsWith("BANK-")));
+    const ones = fam("bank-1");
+    expect(ones.length).toBeGreaterThan(1);
+    expect(ones.every((id) => /^BANK-0?1/.test(id))).toBe(true);
+  });
   it("shows the figure that matched on the row of a number query", () => {
     const h = top("25%")[0]!;
     expect(h.fig).toMatchObject({ n: 25 });
