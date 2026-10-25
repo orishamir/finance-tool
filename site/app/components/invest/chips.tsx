@@ -8,11 +8,14 @@ import type { WorkbenchBundle } from "../../lib/providers";
 import { Num } from "../provenance";
 import { Button, Card, ChipList, PlanChips, SegmentedControl, Sentence, Tag, type ChipItem, type PlanChipItem } from "../kit";
 
+/** The index name as a pill: the pills sit under the heading "המדד", so a leading "מדד" is dropped. */
+export const pillName = (name: string): string => name.replace(/^מדד\s+/, "");
+
 export function IndexChips({ known, customs, selectedId, bundle, onRemove, onRename, onSave, onGo }: { known: IndexRef[]; customs: CustomIndex[]; selectedId: string | null; bundle: Pick<WorkbenchBundle, "exposures"> | null; onRemove: (id: string) => void; onRename: (id: string, name: string) => void; onSave: (c: CustomIndex) => void; onGo: (path: string) => void }) {
   const [adding, setAdding] = useState(false);
   const items: ChipItem[] = [
-    ...known.map((i) => ({ id: i.id, label: i.name, href: `/invest/${i.id}` })),
-    ...customs.map((i) => ({ id: i.id, label: i.name, href: `/invest?custom=${encodeURIComponent(i.id)}`, editable: true })),
+    ...known.map((i) => ({ id: i.id, label: pillName(i.name), href: `/invest/${i.id}` })),
+    ...customs.map((i) => ({ id: i.id, label: pillName(i.name), href: `/invest?custom=${encodeURIComponent(i.id)}`, editable: true })),
   ];
   return (
     <div className="flex flex-col gap-3">
@@ -39,11 +42,11 @@ function CustomPanel({ bundle, customs, onCancel, onSave, onKnown }: { bundle: P
   const [currency, setCurrency] = useState("");
   const [region, setRegion] = useState("");
   const [note, setNote] = useState<string | null>(null);
-  const names = useMemo(() => [...new Set(indexSuggestions(bundle).map((x) => x.name))], [bundle]);
+  const names = useMemo(() => [...new Set(indexSuggestions(bundle).map((x) => pillName(x.name)))], [bundle]);
   const go = () => {
     const typed = name.trim();
     if (!typed) return;
-    const known = matchKnownIndex(bundle, typed);
+    const known = matchKnownIndex(bundle, typed) ?? matchKnownIndex(bundle, `מדד ${typed}`);
     if (known) {
       onKnown(known.id);
       return;
@@ -109,7 +112,6 @@ function CustomPanel({ bundle, customs, onCancel, onSave, onKnown }: { bundle: P
 // ---------------------------------------------------------------- the plan
 
 export function PlanBlock({ items, onOpen, fx, today, brokers, yourBroker, onBroker, hasGoal }: { items: PlanChipItem[]; onOpen: (f: FieldKey | "all") => void; fx: FxSnapshot | undefined; today: string; brokers: { id: string; name: string }[]; yourBroker: string | null; onBroker: (id: string | null) => void; hasGoal: boolean }) {
-  const id = useId();
   const usd = fx ? nisPer(fx, "USD", today) : null;
   return (
     <section className="flex flex-col gap-3" aria-label={c.plan.heading}>
@@ -126,20 +128,28 @@ export function PlanBlock({ items, onOpen, fx, today, brokers, yourBroker, onBro
           <Tag tone="caution">{c.plan.dollarMissing}</Tag>
         )}
       </Sentence>
-      <div className="flex flex-col gap-1 max-w-measure">
-        <label htmlFor={`${id}-b`} className="text-sm font-medium">
-          {c.plan.yourAccount}
-        </label>
-        <select id={`${id}-b`} value={yourBroker ?? ""} onChange={(e) => onBroker(e.target.value || null)} className="h-field rounded-md bg-card border border-input px-3 max-w-72">
-          <option value="">{c.plan.yourAccountNone}</option>
-          {brokers.map((b) => (
-            <option key={b.id} value={b.id}>
-              {b.name}
-            </option>
-          ))}
-        </select>
-        <span className="text-sm text-muted-foreground">{c.plan.yourAccountHelp}</span>
-      </div>
+      <HouseSelect label={c.plan.yourAccount} none={c.plan.yourAccountNone} value={yourBroker} options={brokers} onChange={onBroker} help={c.plan.yourAccountHelp} />
     </section>
+  );
+}
+
+/** A house chosen from a list (the plan's account, the funds section's house): a plain select until the kit has one (kit round 2). */
+export function HouseSelect({ label, none, value, options, onChange, help }: { label: string; none?: string; value: string | null; options: { id: string; name: string }[]; onChange: (id: string | null) => void; help?: string }) {
+  const id = useId();
+  return (
+    <div className="flex flex-col gap-1 max-w-measure">
+      <label htmlFor={id} className="text-sm font-medium">
+        {label}
+      </label>
+      <select id={id} value={value ?? ""} onChange={(e) => onChange(e.target.value || null)} className="h-field rounded-md bg-card border border-input px-3 max-w-72">
+        {none !== undefined && <option value="">{none}</option>}
+        {options.map((b) => (
+          <option key={b.id} value={b.id}>
+            {b.name}
+          </option>
+        ))}
+      </select>
+      {help && <span className="text-sm text-muted-foreground">{help}</span>}
+    </div>
   );
 }

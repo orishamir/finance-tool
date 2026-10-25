@@ -1,12 +1,13 @@
-// The index page's top sections: the index header, the headline card, "מה כל בחירה שווה" and the option cards (א).
+// The index page's top sections: the index header, the headline card, the two lines on what matters, and the folds' bodies (what each choice is worth, ETF against tracking fund).
 import { Link } from "react-router";
 import { invest as c } from "../../copy";
 import type { Bar, InvestView, OptionView, ProviderInfo } from "../../lib/invest";
 import { optionLabels } from "../../lib/labels";
+import type { SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Callout, Card, cx, Tag } from "../kit";
-import { LabelRow } from "./parts";
+import { Callout, Card, cx, KeyValue, Sentence, Tag, Tpl } from "../kit";
+import { LabelRow, OptionTag } from "./parts";
 
 export const providerName = (view: InvestView, id: string): ProviderInfo | undefined => view.providers.find((p) => p.id === id);
 
@@ -76,9 +77,8 @@ export function Headline({ view }: { view: InvestView }) {
           </div>
           <p className="text-lg">
             {c.headline.at}
-            <ProviderLink p={sp} className="font-medium" /> {c.headline.withFund} <bdi className="font-medium">{shown.fund.name}</bdi>
+            <ProviderLink p={sp} className="font-medium" /> {c.headline.withFund} <bdi className="font-medium">{shown.fund.name}</bdi> <OptionTag option={shown.option} />
           </p>
-          <LabelRow labels={optionLabels(shown.option)} />
           {shown.open && (
             <Callout tone="blocked" className="max-w-measure">
               <span className="inline-flex items-start gap-1.5">
@@ -131,9 +131,34 @@ function AtYours({ view }: { view: InvestView }) {
   );
 }
 
-// ---------------------------------------------------------------- 6. what each choice is worth
+// ---------------------------------------------------------------- 6. the two lines on what matters
 
-export function Worth({ view }: { view: InvestView }) {
+/** F-63 "The worth lines": two slices through the headline's cell, one thing changed at a time; the larger gap first. */
+export function Matters({ view, years }: { view: InvestView; years: SiteValue }) {
+  const w = view.worth;
+  if (!w || !view.headline) return null;
+  const line = (id: "house" | "fund", gap: SiteValue | null, count: number) => ({ id, gap, count, v: typeof gap?.value === "number" ? gap.value : -1 });
+  const lines = [line("house", w.house, w.houseCount), line("fund", w.fund, w.fundCount)].sort((a, b) => b.v - a.v);
+  return (
+    <Card as="section" pad="snug" className="flex flex-col gap-2">
+      <ul className="flex flex-col gap-1.5">
+        {lines.map((l) => (
+          <li key={l.id}>
+            <Sentence>
+              <strong className="font-semibold">{c.matters[l.id].lead}</strong>{" "}
+              {l.gap ? <Tpl t={c.matters[l.id].body} vars={{ gap: <Num value={l.gap} /> }} /> : c.matters[l.id].one}
+            </Sentence>
+          </li>
+        ))}
+      </ul>
+      <Sentence size="sm" tone="muted" t={c.matters.under} vars={{ years: <Num value={years} /> }} />
+    </Card>
+  );
+}
+
+// ---------------------------------------------------------------- 7. the fold: what each choice is worth
+
+export function WorthBars({ view }: { view: InvestView }) {
   const max = Math.max(1, ...view.bars.map((b) => (b.spread && typeof b.spread.value === "number" ? b.spread.value : 0)));
   const note = (b: Bar): string => {
     if (b.id === "broker") return c.worth.barNote.broker(c.optionIn[b.option ?? "il-etf"] ?? "");
@@ -141,10 +166,7 @@ export function Worth({ view }: { view: InvestView }) {
     return c.worth.barNote[b.id];
   };
   return (
-    <section className="flex flex-col gap-3" aria-labelledby="invest-worth">
-      <h2 id="invest-worth" className="text-lg font-semibold">
-        {c.worth.heading}
-      </h2>
+    <div className="flex flex-col gap-3 pt-2">
       <p className="text-sm text-muted-foreground">{c.worth.sub}</p>
       <ul className="flex flex-col gap-3 max-w-2xl">
         {view.bars.map((b) => (
@@ -169,91 +191,73 @@ export function Worth({ view }: { view: InvestView }) {
           </li>
         ))}
       </ul>
-    </section>
+    </div>
   );
 }
 
-// ---------------------------------------------------------------- 7. (א) the options
+// ---------------------------------------------------------------- 8. the fold: ETF against tracking fund
 
-export function Options({ view, selected, onSelect }: { view: InvestView; selected: string | null; onSelect: (id: OptionView["id"]) => void }) {
+export function OptionsCompare({ view }: { view: InvestView }) {
   return (
-    <section className="flex flex-col gap-3" aria-labelledby="invest-options">
-      <h2 id="invest-options" className="text-lg font-semibold">
-        {c.options.heading}
-      </h2>
-      <p className="text-sm text-muted-foreground">{c.options.sub}</p>
+    <div className="flex flex-col gap-3 pt-2">
+      <p className="text-sm text-muted-foreground max-w-measure">{c.options.foldSub}</p>
       <ul className="grid gap-3 sm:grid-cols-2">
         {view.options.filter((o) => o.exists).map((o) => (
           <li key={o.id}>
-            <OptionCard view={view} option={o} selected={selected === o.id} onSelect={() => onSelect(o.id)} />
+            <OptionCard view={view} option={o} />
           </li>
         ))}
       </ul>
-    </section>
+    </div>
   );
 }
 
-function OptionCard({ view, option: o, selected, onSelect }: { view: InvestView; option: OptionView; selected: boolean; onSelect: () => void }) {
+function OptionCard({ view, option: o }: { view: InvestView; option: OptionView }) {
   const best = o.bestCell ? providerName(view, o.bestCell.providerId) : undefined;
   const way = o.bestWay;
   const wp = way ? providerName(view, way.providerId) : undefined;
   const venue = o.bestCell?.venue ? c.options.exchange[o.bestCell.venue] : null;
   return (
-    <div className={cx("h-full bg-card border rounded-lg p-4 flex flex-col gap-2", selected ? "border-primary border-2" : "border-border")}>
-      <button type="button" aria-pressed={selected} onClick={onSelect} className="text-start flex items-center justify-between gap-2 min-h-target">
-        <span className="text-lg font-semibold">{c.options.titles[o.id]}</span>
-        {selected && <Tag tone="positive">{c.options.selected}</Tag>}
-      </button>
+    <Card pad="tight" className="h-full flex flex-col gap-2">
+      <h3 className="text-lg font-semibold">{c.options.titles[o.id]}</h3>
       <LabelRow labels={optionLabels(o.id)} />
       <p className="text-sm text-muted-foreground">{c.options.funds(o.funds.length)}</p>
       {o.notRunnable ? (
-        <p className="text-sm">
+        <Sentence size="sm">
           <Tag tone="caution">{c.options.notYet}</Tag> {c.options.noRate}
-        </p>
+        </Sentence>
       ) : (
-        <dl className="text-sm flex flex-col gap-1">
+        <dl className="flex flex-col gap-1">
           {(wp || best) && (
-            <div className="flex flex-wrap gap-x-2">
-              <dt className="text-muted-foreground">{c.options.bestBroker}:</dt>
-              <dd>
-                {(wp ?? best) && <ProviderLink p={(wp ?? best)!} className="font-medium" />}
-                {venue && <span className="text-muted-foreground"> · {c.options.on(venue)}</span>}
-              </dd>
-            </div>
+            <KeyValue label={c.options.bestBroker}>
+              <ProviderLink p={(wp ?? best)!} className="font-medium" />
+              {venue && <span className="text-muted-foreground"> · {c.options.on(venue)}</span>}
+            </KeyValue>
           )}
           {way ? (
             <>
-              <div className="flex flex-wrap gap-x-2">
-                <dt className="text-muted-foreground">{c.options.bestFund}:</dt>
-                <dd>
-                  <bdi>{way.fund.name}</bdi>
-                </dd>
-              </div>
-              <div className="flex flex-wrap items-center gap-x-2">
-                <dt className="text-muted-foreground">{c.options.left}:</dt>
-                <dd>
-                  <Num value={way.value} />
-                </dd>
+              <KeyValue label={c.options.bestFund}>
+                <bdi>{way.fund.name}</bdi>
+              </KeyValue>
+              <KeyValue label={c.options.left}>
+                <Num value={way.value} />
                 {way.open && (
-                  <Tag tone="blocked" icon={<IconLock size={14} />}>
+                  <Tag tone="blocked" icon={<IconLock size={14} />} className="ms-2">
                     {c.options.open}
                   </Tag>
                 )}
-              </div>
+              </KeyValue>
             </>
           ) : o.bestCell?.cost ? (
-            <div className="flex flex-wrap items-center gap-x-2">
-              <dt className="text-muted-foreground">{c.options.brokerCost}:</dt>
-              <dd>
-                <Num value={o.bestCell.cost} />
-              </dd>
-            </div>
+            <KeyValue label={c.options.brokerCost}>
+              <Num value={o.bestCell.cost} />
+            </KeyValue>
           ) : (
-            <p className="text-muted-foreground">{c.options.noBroker}</p>
+            <p className="text-sm text-muted-foreground">{c.options.noBroker}</p>
           )}
-          {!way && o.funds.length === 0 && view.index.exposure === null && <p className="text-muted-foreground">{c.options.noFundsFor}</p>}
+          {!way && o.funds.length === 0 && view.index.exposure === null && <p className="text-sm text-muted-foreground">{c.options.noFundsFor}</p>}
         </dl>
       )}
-    </div>
+    </Card>
   );
 }

@@ -1,16 +1,16 @@
-// (ג) The funds of the chosen option: rank, name, the fund's fees, labels, and the value left at the option's cheapest broker.
+// Section 2 of the index page: the funds on the index at the chosen house: rank, name, type tag, the fund's fees under full names, labels, and the value left at that house.
 // Filters on currency hedging, "what do the labels mean", the tracking-difference note, and the empty state for an index with no
 // fund records (a request text for the founder, as flow 10).
 import { useState } from "react";
 import { invest as c } from "../../copy";
 import type { FundRecord } from "@finance-tool/schema";
-import type { FundWay, InvestView, OptionView } from "../../lib/invest";
+import type { HouseEntry, HouseRow, InvestView } from "../../lib/invest";
 import { fundLabels, matchesHedge, type HedgeFilter } from "../../lib/labels";
 import { IconCopy, IconExternal, IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, Card, RankBadge, SegmentedControl, Sentence, Tag } from "../kit";
-import { LabelRow, LabelsLegend, reasonText } from "./parts";
-import { providerName } from "./sections";
+import { Button, Card, KeyValue, RankBadge, SegmentedControl, Tag } from "../kit";
+import { HouseSelect } from "./chips";
+import { LabelRow, LabelsLegend, OptionTag, reasonText } from "./parts";
 import type { SiteValue } from "../../lib/value";
 
 const feeOf = (rec: FundRecord, key: "fixed_management" | "variable_management" | "trustee"): SiteValue | null => {
@@ -18,34 +18,28 @@ const feeOf = (rec: FundRecord, key: "fixed_management" | "variable_management" 
   return v && v.value !== null ? (v as SiteValue) : null;
 };
 
-function Fee({ label, value }: { label: string; value: SiteValue | null }) {
-  return (
-    <span className="inline-flex items-baseline gap-1">
-      <span className="text-muted-foreground">{label}</span>
-      {value ? <Num value={value} /> : <span className="text-muted-foreground">{c.funds.notCollected}</span>}
-    </span>
-  );
+function FeeValue({ value }: { value: SiteValue | null }) {
+  return value ? <Num value={value} /> : <span className="text-muted-foreground">{c.funds.notCollected}</span>;
 }
 
-export function FundsSection({ view, optionId, mayaHref }: { view: InvestView; optionId: OptionView["id"] | null; mayaHref: string | null }) {
+export function FundsSection({ view, houseId, onHouse, mayaHref }: { view: InvestView; houseId: string | null; onHouse: (id: string) => void; mayaHref: string | null }) {
   const [hedge, setHedge] = useState<HedgeFilter>("all");
-  const option = view.options.find((o) => o.id === optionId && o.exists) ?? null;
+  const house = view.houses.find((h) => h.provider.id === houseId) ?? null;
   const noRecords = view.index.exposure === null || view.fundCount === 0;
+  const pickable = view.houses.filter((h) => h.best || h.generic).map((h) => ({ id: h.provider.id, name: h.provider.short }));
   return (
-    <section className="flex flex-col gap-3" aria-labelledby="invest-funds">
+    <section id="invest-funds-section" className="flex flex-col gap-3 scroll-mt-[112px] lg:scroll-mt-[88px]" aria-labelledby="invest-funds">
       <h2 id="invest-funds" className="text-lg font-semibold">
-        {c.funds.heading}
-        {option && <span className="font-normal text-muted-foreground"> · {c.options.titles[option.id]}</span>}
+        {house ? c.funds.heading(house.provider.short) : c.funds.pick}
       </h2>
-      {!option ? (
-        <p className="text-muted-foreground">{c.funds.pick}</p>
-      ) : noRecords ? (
+      {pickable.length > 1 && <HouseSelect label={c.funds.house} value={houseId} options={pickable} onChange={(id) => id && onHouse(id)} />}
+      {!house ? null : noRecords ? (
         <EmptyFunds view={view} mayaHref={mayaHref} />
       ) : (
         <>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
             <SegmentedControl<HedgeFilter>
-              label={c.funds.heading}
+              label={c.funds.filterLabel}
               value={hedge}
               onChange={setHedge}
               className="max-w-lg"
@@ -57,7 +51,7 @@ export function FundsSection({ view, optionId, mayaHref }: { view: InvestView; o
             />
           </div>
           <LabelsLegend />
-          <FundList view={view} option={option} hedge={hedge} />
+          <FundList view={view} house={house} hedge={hedge} />
           <p className="text-sm text-muted-foreground">{c.funds.trackingNote}</p>
         </>
       )}
@@ -65,71 +59,86 @@ export function FundsSection({ view, optionId, mayaHref }: { view: InvestView; o
   );
 }
 
-function FundList({ view, option, hedge }: { view: InvestView; option: OptionView; hedge: HedgeFilter }) {
-  const filtered = option.funds.filter((f) => matchesHedge(f.rec, hedge));
-  if (option.funds.length === 0) return <p className="text-muted-foreground">{c.funds.noOption}</p>;
+function FundList({ view, house, hedge }: { view: InvestView; house: HouseRow; hedge: HedgeFilter }) {
+  const filtered = house.entries.filter((e) => matchesHedge(e.fund.rec, hedge));
+  if (house.entries.length === 0) return <p className="text-muted-foreground">{c.funds.noOption}</p>;
   if (filtered.length === 0) return <p className="text-muted-foreground">{c.funds.noMatch}</p>;
   let rank = 0;
   return (
     <ol className="flex flex-col gap-3">
-      {filtered.map((f) => {
-        const ranked = !!f.best && !f.best.open;
+      {filtered.map((e) => {
+        const ranked = !!e.price && !e.price.open;
         if (ranked) rank += 1;
-        return <FundRow key={f.rec.id} view={view} fund={f} rank={ranked ? rank : null} />;
+        return <FundRow key={e.fund.rec.id} view={view} house={house} entry={e} rank={ranked ? rank : null} />;
       })}
     </ol>
   );
 }
 
-function FundRow({ view, fund: f, rank }: { view: InvestView; fund: FundWay; rank: number | null }) {
-  const bp = f.best ? providerName(view, f.best.providerId) : undefined;
-  const yp = view.yourBroker ? providerName(view, view.yourBroker) : undefined;
-  const mine = f.atYours && "value" in f.atYours && f.atYours.providerId !== f.best?.providerId ? f.atYours : null;
+function FundRow({ view, house, entry: e, rank }: { view: InvestView; house: HouseRow; entry: HouseEntry; rank: number | null }) {
+  const f = e.fund;
   const labels = fundLabels(f.rec, view.index, f.option);
+  // Maya's page of the fund exists for an Israeli ETF and an Israeli tracking fund (the address pattern of the fund records' sources)
+  const kind = f.option === "il-etf" ? "etfs" : f.option === "il-tracking" ? "mutual-funds" : null;
+  const mayaHref = kind && f.rec.identifiers.tase_number ? `https://maya.tase.co.il/he/funds/${kind}/${f.rec.identifiers.tase_number}` : null;
   return (
     <Card as="li" pad="tight" className="flex flex-col gap-2.5">
       <div className="flex items-start gap-3">
         <RankBadge rank={rank} label={rank ? `${c.funds.rank} ${rank}` : undefined} />
-        <div className="flex-1 min-w-0 flex flex-col">
+        <div className="flex-1 min-w-0 flex flex-col gap-1">
           <h3 className="font-semibold leading-snug">
             <bdi>{f.name}</bdi>
           </h3>
           <span className="text-sm text-muted-foreground">
-            {c.funds.number} <bdi dir="ltr" className="font-mono">{f.number}</bdi>
+            {c.funds.manager}: <bdi>{f.rec.manager}</bdi>
+          </span>
+          <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-0.5">
+            <span>
+              {c.funds.number} <bdi dir="ltr" className="font-mono">{f.number}</bdi>
+            </span>
+            {mayaHref && (
+              <a href={mayaHref} target="_blank" rel="noopener noreferrer" className="text-link hover:underline inline-flex items-center gap-1">
+                {c.funds.mayaPage} <IconExternal size={14} />
+              </a>
+            )}
+          </span>
+          <span>
+            <OptionTag option={f.option} />
           </span>
         </div>
         <div className="flex flex-col items-end text-end shrink-0">
-          {f.best ? (
+          {e.price ? (
             <>
               <span className="text-lg font-semibold">
-                <Num value={f.best.value} />
+                <Num value={e.price.value} />
               </span>
-              {bp && <span className="text-xs text-muted-foreground">{c.funds.value(bp.short)}</span>}
+              <span className="text-xs text-muted-foreground">{c.funds.value(house.provider.short)}</span>
             </>
           ) : (
-            <span className="text-sm text-muted-foreground max-w-48 text-end">{f.reason ? reasonText(f.reason, "") : c.funds.cannot}</span>
+            <span className="text-sm text-muted-foreground max-w-48 text-end">{e.reason ? reasonText(e.reason, "") : c.funds.cannot}</span>
           )}
         </div>
       </div>
-      <p className="text-sm flex flex-wrap gap-x-4 gap-y-1">
-        <Fee label={c.funds.fixed} value={feeOf(f.rec, "fixed_management")} />
-        <Fee label={c.funds.variable} value={feeOf(f.rec, "variable_management")} />
-        <Fee label={c.funds.trustee} value={feeOf(f.rec, "trustee")} />
-      </p>
+      <dl className="flex flex-col gap-0.5 max-w-sm">
+        <KeyValue label={c.funds.fixed}>
+          <FeeValue value={feeOf(f.rec, "fixed_management")} />
+        </KeyValue>
+        <KeyValue label={c.funds.variable}>
+          <FeeValue value={feeOf(f.rec, "variable_management")} />
+        </KeyValue>
+        <KeyValue label={c.funds.trustee}>
+          <FeeValue value={feeOf(f.rec, "trustee")} />
+        </KeyValue>
+      </dl>
       <div className="flex flex-wrap items-center gap-1.5">
         <LabelRow labels={labels} />
         {f.currencyMismatch && <Tag tone="caution">{c.funds.mismatchTag}</Tag>}
-        {f.best?.open && (
+        {e.price?.open && (
           <Tag tone="blocked" icon={<IconLock size={14} />}>
             {c.options.open}
           </Tag>
         )}
       </div>
-      {mine && yp && (
-        <Sentence size="sm" tone="muted">
-          {c.funds.yours(yp.short)}: <Num value={(mine as { value: SiteValue }).value} />
-        </Sentence>
-      )}
     </Card>
   );
 }

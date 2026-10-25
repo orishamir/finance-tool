@@ -151,6 +151,8 @@ export interface FundWay {
   best?: WayPrice;
   /** At the person's broker, when known. */
   atYours?: WayPrice | { reason: Reason; providerId: string };
+  /** The fund's run at every house of the option (a price, or why it has none); `best` is the highest of the ranked ones. */
+  byHouse: Record<string, WayPrice | { reason: Reason; providerId: string }>;
   reason?: Reason;
   currencyMismatch: boolean;
 }
@@ -190,6 +192,42 @@ export interface ProviderInfo {
   hasPage: boolean;
 }
 
+/** The options a house sells on this page: Israeli houses the three Israeli types, foreign brokers the funds abroad. */
+export const GROUP_OPTIONS = { il: ["il-etf", "il-tracking", "tase-foreign"], foreign: ["abroad"] } as const satisfies Record<string, readonly OptionId[]>;
+export type HouseGroup = keyof typeof GROUP_OPTIONS;
+
+export interface HouseEntry {
+  fund: FundWay;
+  /** The run at this house; null when it has none (see `reason`). */
+  price: WayPrice | null;
+  reason: Reason | null;
+}
+
+export interface HouseRow {
+  provider: ProviderInfo;
+  group: HouseGroup;
+  /** Every fund of the group on the index at this house: ranked ones by value left, then ones on an open rule, then the ones with no price. */
+  entries: HouseEntry[];
+  /** The house's cheapest way: the best ranked entry. */
+  best: HouseEntry | null;
+  /** The headline's value less this house's: a computed gap, null for the headline's own house and for houses with no ranked way. */
+  gap: SiteValue | null;
+  /** Why the house has no way: not sold there (sourced), or the reason it cannot be priced. */
+  unavailable: Availability | null;
+  reason: Reason | null;
+  /** An index with no fund record: the house's cheapest broker cost over the group's options. */
+  generic: BrokerCell | null;
+}
+
+export interface WorthLines {
+  /** Same fund, other houses: the headline's value less the lowest value among the other houses of its group; null when the fund prices at no other house. */
+  house: SiteValue | null;
+  houseCount: number;
+  /** Same house, other funds. */
+  fund: SiteValue | null;
+  fundCount: number;
+}
+
 export type BarId = "broker" | "fund" | "etf-tracking" | "abroad";
 export interface Bar {
   id: BarId;
@@ -224,6 +262,10 @@ export interface InvestView {
   /** The person's broker priced for the headline's fund. */
   atYours: { providerId: string; price: WayPrice | null; reason: Reason | null; less: SiteValue | null } | null;
   bars: Bar[];
+  /** Every house with the funds of its group priced at it, the cheapest way first (the index page's section 1). */
+  houses: HouseRow[];
+  /** The two slices through the headline's cell (F-63, "The worth lines"). */
+  worth: WorthLines | null;
   /** Only when the return is the site's illustration. */
   order: OrderCheck | null;
   returnPct: number;
@@ -469,30 +511,30 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId, yourBroker: 
   const recs = ctx.bundle.funds.filter((f) => f.exposure_id === index.exposure?.id && optionOfFund(f, index.exposure ?? undefined) === option);
   const yours = yourBroker ? ctx.snaps.find((s) => s.id === yourBroker) : undefined;
   const funds: FundWay[] = recs.map((rec) => {
-    const base = { rec, name: nameOf(rec), number: numberOf(rec), option, currencyMismatch: false };
+    const base = { rec, name: nameOf(rec), number: numberOf(rec), option, currencyMismatch: false, byHouse: {} as FundWay["byHouse"] };
     const fs = fundSpec(ctx, rec);
     if ("reason" in fs) return { ...base, reason: fs.reason };
     const venue = option === "abroad" ? venueOfFund(rec) : null;
-    // an il option or a TASE foreign fund: the option's cheapest broker; a fund abroad: the cheapest for its own exchange
-    const pool = option === "abroad" ? priceable : bestCell ? priceable.filter((s) => s.id === bestCell.providerId) : [];
-    const got = pool.length ? priceMany(ctx, fs.spec, option, pool, venue) : new Map<string, Priced>();
+    // the fund at every house that sells the option, the exchange it trades on for a fund abroad
+    const got = priceable.length ? priceMany(ctx, fs.spec, option, priceable, venue) : new Map<string, Priced>();
     let best: WayPrice | undefined;
     let failure: Reason | undefined;
-    for (const s of pool) {
+    for (const s of ctx.snaps) {
+      if (unavailable(s, option)) {
+        base.byHouse[s.id] = { providerId: s.id, reason: { code: "no-applicable-line", detail: "unavailable" } };
+        continue;
+      }
       const p = got.get(s.id)!;
       if (p.kind === "ok") {
         const w = wayPrice(ctx, p, s.id, nameOf(rec));
+        base.byHouse[s.id] = w;
         if (!best || w.valueN > best.valueN) best = w;
-      } else failure ??= p.reason;
-    }
-    let atYours: FundWay["atYours"];
-    if (yours) {
-      if (unavailable(yours, option)) atYours = { providerId: yours.id, reason: { code: "no-applicable-line", detail: "unavailable" } };
-      else {
-        const y = best && best.providerId === yours.id ? undefined : priceMany(ctx, fs.spec, option, [yours], venue).get(yours.id);
-        atYours = best && best.providerId === yours.id ? best : y?.kind === "ok" ? wayPrice(ctx, y, yours.id, nameOf(rec)) : { providerId: yours.id, reason: y?.kind === "fail" ? y.reason : { code: "data-missing", recorded: null } };
+      } else {
+        base.byHouse[s.id] = { providerId: s.id, reason: p.reason };
+        failure ??= p.reason;
       }
     }
+    const atYours = yours ? base.byHouse[yours.id] : undefined;
     return { ...base, currencyMismatch: fs.mismatch, ...(best ? { best } : failure ? { reason: failure } : { reason: { code: "no-applicable-line", detail: "no broker" } }), ...(atYours ? { atYours } : {}) };
   });
   funds.sort((a, b) => (b.best?.valueN ?? -Infinity) - (a.best?.valueN ?? -Infinity));
@@ -575,6 +617,58 @@ function barsOf(ctx: Ctx, options: OptionView[], headline: Way | null): Bar[] {
   return out;
 }
 
+/** Fund first by value left: ranked ones, then ones on an open rule, then the ones with no price. */
+const entryOrder = (a: HouseEntry, b: HouseEntry) => {
+  const rank = (e: HouseEntry) => (e.price && !e.price.open ? 0 : e.price ? 1 : 2);
+  return rank(a) - rank(b) || (b.price?.valueN ?? 0) - (a.price?.valueN ?? 0);
+};
+
+function housesOf(ctx: Ctx, options: OptionView[], headline: Way | null, providers: ProviderInfo[]): HouseRow[] {
+  const rows = providers.map((provider): HouseRow => {
+    const group: HouseGroup = provider.foreign ? "foreign" : "il";
+    const opts = options.filter((o) => o.exists && (GROUP_OPTIONS[group] as readonly OptionId[]).includes(o.id));
+    const entries = opts.flatMap((o) => o.funds).map((fund): HouseEntry => {
+      const at = fund.byHouse[provider.id];
+      return at && "value" in at ? { fund, price: at, reason: null } : { fund, price: null, reason: at?.reason ?? fund.reason ?? { code: "data-missing", recorded: null } };
+    }).sort(entryOrder);
+    const best = entries.find((e) => e.price && !e.price.open) ?? null;
+    // no fund record at all: the broker cost of the group's options, the cheapest
+    const cells = opts.flatMap((o) => o.cells.filter((c) => c.providerId === provider.id));
+    const generic = cells.filter((c) => c.kind === "cost").sort((a, b) => a.costN! - b.costN!)[0] ?? null;
+    const na = cells.find((c) => c.kind === "unavailable");
+    const gap = best && headline && headline.providerId !== provider.id && headline.valueN - best.price!.valueN > 0 ? spreadValue(ctx, headline.valueN - best.price!.valueN, `פער מהדרך הזולה, ${provider.name}`) : null;
+    const reason = best || generic ? null : (entries.find((e) => e.reason)?.reason ?? cells.find((c) => c.reason)?.reason ?? null);
+    return { provider, group, entries, best, gap, unavailable: !best && !generic ? (na?.availability ?? null) : null, reason, generic };
+  });
+  const priced = (r: HouseRow) => r.best ?? r.generic;
+  const cost = (r: HouseRow) => (r.best ? -r.best.price!.valueN : r.generic ? r.generic.costN! : Infinity);
+  return rows.sort((a, b) => Number(!priced(a)) - Number(!priced(b)) || a.group.localeCompare(b.group) * -1 || cost(a) - cost(b) || a.provider.name.localeCompare(b.provider.name, "he"));
+}
+
+function worthOf(ctx: Ctx, options: OptionView[], headline: Way | null, providers: ProviderInfo[]): WorthLines | null {
+  if (!headline) return null;
+  const foreign = providers.find((p) => p.id === headline.providerId)?.foreign ?? false;
+  const group = foreign ? GROUP_OPTIONS.foreign : GROUP_OPTIONS.il;
+  const fStar = headline.fund;
+  const others: number[] = [];
+  for (const p of providers) {
+    if (p.foreign !== foreign || p.id === headline.providerId) continue;
+    const at = fStar.byHouse[p.id];
+    if (at && "value" in at && !at.open) others.push(at.valueN);
+  }
+  const sameHouse: number[] = [];
+  for (const o of options) {
+    if (!o.exists || !(group as readonly OptionId[]).includes(o.id)) continue;
+    for (const f of o.funds) {
+      if (f.rec.id === fStar.rec.id) continue;
+      const at = f.byHouse[headline.providerId];
+      if (at && "value" in at && !at.open) sameHouse.push(at.valueN);
+    }
+  }
+  const gap = (xs: number[], about: string) => (xs.length ? spreadValue(ctx, headline.valueN - Math.min(...xs), about) : null);
+  return { house: gap(others, "אותה קרן, בית השקעות אחר"), houseCount: others.length, fund: gap(sameHouse, "אותו בית השקעות, קרן אחרת"), fundCount: sameHouse.length };
+}
+
 export interface InvestArgs {
   bundle: WorkbenchBundle;
   index: IndexRef;
@@ -597,15 +691,18 @@ export function buildInvest(a: InvestArgs): InvestView {
     atYours = { providerId: yourBroker, price, reason: y && "reason" in y ? y.reason : null, less: price ? spreadValue(ctx, headline.valueN - price.valueN, "less") : null };
   }
   const illustrative = a.plan.returnFromParameter;
+  const providers = ctx.snaps.map(providerInfo);
   return {
     index: a.index,
     options,
-    providers: ctx.snaps.map(providerInfo),
+    providers,
     headline,
     genericHeadline,
     yourBroker,
     atYours,
     bars: barsOf(ctx, options, headline),
+    houses: housesOf(ctx, options, headline, providers),
+    worth: worthOf(ctx, options, headline, providers),
     order: illustrative && a.plan.grossReturn !== 0 && a.plan.grossReturn !== 0.1 ? orderCheck(ctx, a.index, yourBroker, options) : null,
     returnPct: a.plan.grossReturn * 100,
     returnIllustrative: illustrative,

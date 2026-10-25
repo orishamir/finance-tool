@@ -3,7 +3,8 @@
 import { createContext, useContext, useId, useState, type ReactNode } from "react";
 import type { RuleRecord } from "@finance-tool/schema";
 import { invest as c, r4workbench } from "../../copy";
-import { allLabels, type Label } from "../../lib/labels";
+import { allLabels, label, optionLabels, type Label } from "../../lib/labels";
+import type { OptionId } from "../../lib/invest";
 import type { Reason } from "../../lib/invest";
 import { reasonSentence } from "../workbench/providers/row";
 import { RuleRef } from "../provenance";
@@ -69,6 +70,17 @@ export function LabelRow({ labels, className }: { labels: Label[]; className?: s
       ))}
     </span>
   );
+}
+
+/**
+ * The type tag of a fund (the founder, 2026-10-26: the type is a byproduct of the cheapest way, not a choice): one short tag from the
+ * option, opening what the option's two labels say (where it is held, how it trades) with their rules.
+ */
+export function OptionTag({ option }: { option: OptionId }) {
+  const parts = optionLabels(option);
+  const first = parts[0]!;
+  const rules = [...new Set(parts.flatMap((l) => l.rules))];
+  return <LabelChip label={{ ...first, text: c.typeTags[option]!, explain: parts.map((l) => l.explain).join(" "), rules }} />;
 }
 
 /** "מה אומרות התוויות?": every label of the page, by family. */
