@@ -10,7 +10,8 @@ For every source of every rule in data/rules/:
 
     python3 research/audit/tools/source-check.py OUT.json [CACHE_DIR]
 
-Needs curl and pdftotext. Nothing in data/ is changed.
+Needs curl and pdftotext. Nothing in data/ is changed. curl runs with -g: the data.gov.il API links carry JSON filters whose braces
+curl would otherwise read as its own address patterns (until 2026-10-25 they were reported as failures).
 """
 import glob
 import hashlib
@@ -38,14 +39,14 @@ def is_pdf(url):
 
 
 def fetch_status(url):
-    r = subprocess.run(["curl", "-sS", "-L", "-o", "/dev/null", "-A", UA, "--max-time", "40", "-w", "%{http_code} %{content_type}", url], capture_output=True, text=True)
+    r = subprocess.run(["curl", "-g", "-sS", "-L", "-o", "/dev/null", "-A", UA, "--max-time", "40", "-w", "%{http_code} %{content_type}", url], capture_output=True, text=True)
     return r.stdout.strip() or ("error " + r.stderr.strip()[:80])
 
 
 def download(url):
     path = os.path.join(cache, hashlib.sha1(url.encode()).hexdigest() + ".pdf")
     if not os.path.exists(path) or os.path.getsize(path) == 0:
-        subprocess.run(["curl", "-sS", "-L", "-A", UA, "--max-time", "120", "-o", path, url], capture_output=True)
+        subprocess.run(["curl", "-g", "-sS", "-L", "-A", UA, "--max-time", "120", "-o", path, url], capture_output=True)
     ok = os.path.exists(path) and open(path, "rb").read(5) == b"%PDF-"
     return path if ok else None
 
