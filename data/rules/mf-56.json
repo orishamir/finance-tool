@@ -1,0 +1,50 @@
+{
+  "id": "MF-56",
+  "title": "Bank Leumi, IBI and Meitav: their commissions and custody on fund units",
+  "title_he": "לאומי, אי.בי.אי ומיטב: העמלות ודמי המשמרת שלהם על יחידות קרן",
+  "text_he": "בבנק לאומי קרן מחקה שנקנית בהוראת קבע מחויבת בשיעור מופחת עם מינימום ומקסימום, ודמי ניהול פיקדון ניירות ערך חלים גם על יחידות בקרנות, לא על מק״מ ולא על קרן כספית; לאומי גם מציין עמלת הפצה במקרים המותרים. באי.בי.אי קנייה, מכירה ופדיון של קרנות שנסחרות בבורסה עולים אחוז מהעסקה עם מינימום לעסקה. מיטב כותבת שקניית יחידות אצלה לא כרוכה בעמלות קנייה ומכירה. בנקים וברוקרים אחרים לא נבדקו, והתעריפונים משתנים כמה פעמים בשנה.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-trade",
+    "fee-custody"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+      "title": "תעריפון העמלות המלא, בנק לאומי, מעודכן ל-01/10/2026",
+      "title_he": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (בנק לאומי, 1.10.2026)",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+      "title": "תעריפון עמלות אי.בי.אי, נכון ל-1.7.2026",
+      "title_he": "תעריפון עמלות אי.בי.אי, נכון ל-1.7.2026",
+      "publisher": "IBI",
+      "publisher_he": "אי.בי.אי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.meitav.co.il/mutual_funds/",
+      "title": "מיטב, קרנות נאמנות",
+      "title_he": "מיטב, קרנות נאמנות",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "MF-27"
+  ]
+}

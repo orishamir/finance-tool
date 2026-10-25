@@ -186,17 +186,14 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 - Dimensions: `protection`
 - Likely to change: no
 
-### REG-16 Brokerage client assets at a non-bank TASE member: what is stated
-- Rule (institution statement only): Meitav Trade states:
-  - that it is a TASE member ("מיטב טרייד הינה חבר הבורסה מבית ההשקעות מיטב");
-  - that client money and securities are deposited at the TASE Clearing House ("הכספים וניירות הערך של הלקוחות מופקדים במסלקת הבורסה");
-  - that securities are registered in clients' names in the company's books;
-  - that liquid funds are held "בחשבון נאמנות בבנק".
-- Conditions / exceptions: **No statute segregating a TASE member's client assets was found in this pass.** The Securities Law sections read cover clearing (REG-15), not client segregation. The governing text is probably in the TASE rules (תקנון הבורסה) and clearing-house bylaws, which were not read (open questions 9, 10). Client cash in a bank trust account is exposed to that bank, which has no deposit insurance (REG-04). Whether this is so was not verified (open question 21).
+### REG-16 Brokerage client assets at a non-bank TASE member: held apart, in trust, by TASE rule
+- Rule: The TASE rules bind every non-bank member: it holds its clients' financial assets apart from its own ("חש"ב יחזיק את הנכסים הפיננסים של לקוחותיו בנפרד מהנכסים הפיננסים שלו", guidelines s.26ג(1)); securities traded on TASE are held "בחשבון במסלקת הבורסה, על שם החש"ב, בנאמנות עבור לקוחותיו" (s.26ד(1)); it keeps a separate account for each client (rules s.25ו); client cash is held "בחשבונות על שם החש"ב בנאמנות עבור לקוחותיו, ככל שמופקדים בתאגיד בנקאי", apart from the member's own money and free of any third-party lien (s.26ה(1)(ב)-(ה)). The detail is BRK-07 (securities) and BRK-08 (cash).
+- Conditions / exceptions: Corrected 2026-10-25 (scope pass): the record said no statute or TASE rule on segregation had been read and that the governing text was probably in the TASE rules; those rules were read (BRK-07, BRK-08), so open question 9 is answered for segregation. Still open: what happens to client assets if a non-bank member fails, and whether client cash in a bank trust account is exposed to that bank's failure, which has no deposit insurance (REG-04; open question 21). A member's own "about" page that restated this was dropped as a source.
 - Figures: none.
-- Source: [מיטב טרייד: אודות](https://www.meitav.co.il/trade/about/) · checked 2026-10-25 · institution.
+- Source: [מדריך לחברי הבורסה: החלק הראשון לתקנון (מעודכן עד 1.1.2026)](https://content.tase.co.il/media/q2mhob4u/274690.pdf), pp.34 to 35, ss.25 to 26 · checked 2026-10-25 · primary (exchange rules, ISA-approved); [מדריך לחברי הבורסה: הנחיות על פי החלק הראשון לתקנון (מעודכן עד 1.1.2026)](https://content.tase.co.il/media/g2ekpw4d/274691.pdf), pp.95 to 102, s.26 · checked 2026-10-25 · primary (exchange rules, ISA-approved). Detail: BRK-07, BRK-08.
+- Scope: general
 - Dimensions: `protection`
-- Likely to change: no
+- Likely to change: possible; TASE rules are amended with ISA approval.
 
 ### REG-17 Capital Market, Insurance and Savings Authority (CMA): legal basis and role
 - Rule:
@@ -286,15 +283,16 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 - Dimensions: `regulator`
 - Likely to change: no
 
-### REG-26 Foreign broker via an Israeli introducer: not ISA-supervised
-- Rule (institution statement):
+### REG-26 Interactive Israel: a foreign broker reached through an Israeli introducer, not ISA-supervised, as it states
+- Rule (Interactive Israel's own statement):
   - "Israel Interactive Trading is a brand of Mexem LTD", "regulated by the Cyprus Securities and Exchange Commission – CySEC (Licence number: 325/17)".
   - "החברה פועלת בישראל תחת היתר לפי סעיף 49א לחוק ניירות ערך" and "אינה מפוקחת על-ידי רשות ניירות ערך בישראל".
   - It acts as an introducing broker to Interactive Brokers LLC. Client accounts are opened at Interactive Brokers LLC (supervised by FINRA, SEC, CFTC) or at Interactive Brokers Ireland (Central Bank of Ireland).
-- Protection as stated by the introducer: US accounts "מוגנים ע"י ביטוח של 500,000 דולר ארה"ב עבור כל חשבון". Irish accounts "מוגנים ע"י הקרן לפיצוי משקיעים עד 20,000 יורו".
-- Conditions / exceptions: IBKR's own protection pages returned 403. The amounts are as the introducer states them (open question 14).
-- Figures: USD 500,000 (US); EUR 20,000 (Ireland). Both set by foreign schemes.
-- Source: [Interactive Israel, about](https://lp3.inter-il.com/about-3) · checked 2026-10-25 · institution.
+- Protection as Interactive Israel states it: US accounts "מוגנים ע"י ביטוח של 500,000 דולר ארה"ב עבור כל חשבון". Irish accounts "מוגנים ע"י הקרן לפיצוי משקיעים עד 20,000 יורו".
+- Conditions / exceptions: IBKR's own protection pages returned 403 at the time; the amounts are as the introducer states them (open question 14). General counterpart: section 49A and the ISA's alternative-B disclosure ("Said entity's activity is not subject to the supervision of the Israel Securities Authority", BRK-06); SIPC's own terms (REG-27). The CySEC licence was not checked on CySEC's register.
+- Figures: USD 500,000 (US); EUR 20,000 (Ireland), as the introducer states them. Both set by foreign schemes.
+- Source: [Interactive Israel, about](https://lp3.inter-il.com/about-3) · checked 2026-10-25 · institution. General counterpart: BRK-06, REG-27.
+- Scope: institution: Interactive Israel
 - Dimensions: `protection`, `regulator`, `currency`
 - Likely to change: yes (foreign scheme limits)
 
@@ -429,7 +427,7 @@ Registers used and what each listed on 2026-10-22:
 6. **BoI public-enquiries page** (how to file, response time): https://www.boi.org.il/roles/supervisionregulation/bank-sup/public-inquiries/ is behind Radware.
 7. **CMA public-enquiries page and process** (gov.il returned 403). The legal basis is in REG-20.
 8. **Tax Authority ombudsman (נציבות קבילות הציבור)**: gov.il returned 403. Web search budget for this session was exhausted before an alternative could be found.
-9. **Statutory or TASE-rule segregation of client assets at a TASE member, and what happens to client securities and cash if a non-bank member fails.** The Securities Law sections read do not contain it. The likely source is the TASE rules (תקנון הבורסה, the part on members) and the clearing-house bylaws on content.tase.co.il.
+9. **Statutory or TASE-rule segregation of client assets at a TASE member, and what happens to client securities and cash if a non-bank member fails.** The Securities Law sections read do not contain it. The likely source is the TASE rules (תקנון הבורסה, the part on members) and the clearing-house bylaws on content.tase.co.il. **[2026-10-25 scope pass]** Answered for segregation: the TASE rules and guidelines (rules s.25ו; guidelines ss.26ג-26ה) hold every non-bank member's client assets apart and in trust (REG-16, BRK-07, BRK-08). Still open: what happens to client securities and cash if a non-bank member fails.
 10. **Client securities held at a bank that fails.** Are they outside the bank's estate? No source found. Likely in the Banking Ordinance or the TASE clearing-house bylaws.
 11. **TASE Clearing House Risk Fund**: does it cover anything for end clients? Only "participate in the Risk Fund" was found (TASE NBCM guide p.10).
 12. **Commencement date of the 2026 competition law (יום התחילה)** and whether the six-month deposit-insurance progress report (s.16(ג)) was delivered. Probable sources: Knesset Finance Committee protocols; BoI and MoF sites (blocked).

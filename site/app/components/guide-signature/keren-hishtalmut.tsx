@@ -14,11 +14,10 @@ import { p05Number, p05Value, type Bundle } from "../../lib/engine";
 import { useGoals } from "../../lib/goal";
 import { useInputs } from "../../lib/inputs";
 import { entered as enteredValue, type SiteValue } from "../../lib/value";
-import { NumberField } from "../timeline/fields";
+import { Callout, GainBars, Marker, MarkerMark, NumberField, SegmentedControl, Sentence, useWidth } from "../kit";
 import { Num, RulesLine, Term } from "../provenance";
-import { Callout, SegmentedControl } from "../ui";
 import { G2Gap, HoldRow, PlanInputs, text } from "./g2-parts";
-import { GainBars, Marker, MarkerMark, figure, inputSite, rulesOfBundle, useSigInputs, useWidth, type VisualProps } from "./kit";
+import { figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
 
 const HEIGHT = 92;
 const LANE_Y = 26;
@@ -120,9 +119,9 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   return (
     <div className="flex flex-col gap-5">
       {lockYears && (
-        <p className="max-w-measure">
+        <Sentence measure>
           {copy.hishtalmut.lead.before} <Num value={lockYears} display={fmt.years(Number(lockYears.value))} /> {copy.hishtalmut.lead.after}
-        </p>
+        </Sentence>
       )}
       {indexName && trackName && fundName ? (
         <div className="flex flex-col gap-2 text-sm">
@@ -266,9 +265,9 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
           </>
         ) : null}
         {model.early && !gapText && firstBracket && (
-          <p className="text-sm max-w-measure">
+          <Sentence size="sm" measure>
             {copy.hishtalmut.earlyLine.before} <Num value={firstBracket} /> {copy.hishtalmut.earlyLine.after}
-          </p>
+          </Sentence>
         )}
       </div>
 

@@ -7,10 +7,9 @@ import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { breakKindOf, depositModel, fact, factNumber } from "../../lib/guide-signature";
 import { fmt } from "../../lib/format";
 import { entered as enteredValue, type SiteValue } from "../../lib/value";
-import { NumberField } from "../timeline/fields";
+import { Callout, GainBars, Marker, MarkerMark, NumberField, Sentence, Stat, StatRow, useWidth } from "../kit";
 import { Num, RulesLine } from "../provenance";
-import { Callout } from "../ui";
-import { FigureRow, Gap, GainBars, Marker, MarkerMark, SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, useWidth, type VisualProps } from "./kit";
+import { Gap, SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
 
 const HEIGHT = 150;
 const LANE_H = 28;
@@ -138,8 +137,8 @@ export function BankDepositVisual({ data, today }: VisualProps) {
         <p className="text-sm font-medium">
           {copy.deposit.atMarker.lead} <bdi dir="ltr">{m}</bdi> {copy.deposit.atMarker.month}:
         </p>
-        <dl className="grid gap-4 sm:grid-cols-2">
-          <FigureRow label={copy.deposit.atMarker.deposit} tone="value">
+        <StatRow cols={2}>
+          <Stat label={copy.deposit.atMarker.deposit} tone="value">
             {kind !== "not-allowed" ? (
               <span className="text-base font-normal text-muted-foreground">{copy.deposit.breakOther}</span>
             ) : locked ? (
@@ -147,16 +146,16 @@ export function BankDepositVisual({ data, today }: VisualProps) {
             ) : v ? (
               <Num value={v.depositEnd} />
             ) : null}
-          </FigureRow>
-          <FigureRow label={copy.deposit.atMarker.fund} tone="alt">
+          </Stat>
+          <Stat label={copy.deposit.atMarker.fund} tone="alt">
             {v?.fundNow ? <Num value={v.fundNow} /> : null}
-          </FigureRow>
-        </dl>
+          </Stat>
+        </StatRow>
         {kind !== "not-allowed" && <Gap id="depositBreak" />}
         {brk && (
-          <p className="text-sm text-muted-foreground max-w-measure">
+          <Sentence size="sm" tone="muted" measure>
             {copy.deposit.bankWords} {kind === "not-allowed" ? <Num value={brk} display={copy.deposit.noBreak} /> : <bdi dir="ltr">{brk.notes}</bdi>}
-          </p>
+          </Sentence>
         )}
       </div>
 
@@ -182,9 +181,9 @@ export function BankDepositVisual({ data, today }: VisualProps) {
           {copy.deposit.rateLine.before} <Num value={rate} /> {copy.deposit.rateLine.middle} <Num value={termFact} display={fmt.months(term)} />.
         </p>
         <p className="text-muted-foreground">{copy.common.onlyLeumi}</p>
-        <p className="text-muted-foreground">
+        <Sentence tone="muted">
           {copy.common.fundAssumption.before} <Num value={cash} /> {copy.common.fundAssumption.after}
-        </p>
+        </Sentence>
       </div>
       <RulesLine ids={data.ruleIds} />
     </div>

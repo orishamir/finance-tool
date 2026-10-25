@@ -2,28 +2,60 @@
   "id": "ETF-06",
   "title": "ETF price on the exchange is not the NAV",
   "title_he": "מחיר קרן סל בבורסה אינו השווי הנקי",
-  "text_he": "מחיר היחידה של קרן סל לכל יום מסחר נקבע לפי שווי נכסיה הנקי, אבל במהלך המסחר המחיר נקבע בעסקאות בבורסה ולא לפי השווי הנקי, והפער יכול להיות חיובי או שלילי אף שפועל עושה שוק. הדוח השנתי מגלה את טווח הפערים ואת ממוצעם לאורך השנה. בקרן סל שאינה מוגבלת בניירות ערך זרים, הקרן מתחשבנת עם עושה השוק כל יום סמוך לסוף המסחר לפי השווי הנקי האחרון הידוע. המקור הוא דוח שנתי של קרן אחת.",
-  "strength": "institution",
+  "text_he": "כל קרן סל היא קרן סגורה שיחידותיה נסחרות בבורסה, ולכן המחיר בבורסה יכול להיות שונה משווי היחידה, השווי הנקי. התקנות מחייבות כל קרן סגורה לפרסם בדוח השנתי את טווח ההפרשים בין שווי היחידה למחירה בבורסה בשנה האחרונה ואת ההפרש הממוצע, וגם את ההסדרים שלה עם עושה השוק. מנהל של קרן סל חייב להתקשר עם עושה שוק שעושה שוק בכל יום תמחור, ויחידות אפשר ליצור ולפדות דרך מפיץ בכל יום תמחור. הפער יכול להיות חיובי או שלילי גם כשפועל עושה שוק.",
+  "strength": "primary",
   "dimensions": [
     "fee-trade",
     "liquidity-lockup"
   ],
   "likely_to_change": "no",
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
-      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
-      "title": "IBI ETF annual report 31.12.2025",
-      "title_he": "דוח שנתי ליום 31.12.2025 של אי.בי.אי. סל (4D) S&P 500",
-      "publisher": "Maya (TASE filings)",
-      "publisher_he": "אי.בי.אי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "pp.1, 4, 10",
-      "locator_he": "עמודים 1, 4, 10",
-      "page": 1,
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=4",
+      "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018 (קובץ התקנות 8038)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018 (קובץ התקנות 8038)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.4, regs. 3, 5; p.5, reg. 8(א)",
+      "locator_he": "עמוד 4, תקנות 3, 5; עמוד 5, תקנה 8(א)",
+      "page": 4,
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(דוח_שנתי_של_קרן)",
+      "title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן) (Wikisource mirror)",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg. 22",
+      "locator_he": "תקנה 22",
+      "anchor": "סעיף_22",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://olaw.org.il/takanot/takanot-7646.pdf",
+      "title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016 (קובץ התקנות 7646, צילום הרשומות)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016 (קובץ התקנות 7646, צילום הרשומות)",
+      "publisher": "Open Law (copy of Reshumot)",
+      "publisher_he": "החוק הפתוח (צילום רשומות)",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "p.6, reg. 7(14)",
+      "locator_he": "עמוד 6, תקנה 7(14)",
+      "page": 6,
+      "checked": "2026-10-25",
+      "qualifier": "(mirror of Reshumot)"
     }
+  ],
+  "derived_from": [
+    "ETF-01",
+    "ETF-04"
   ]
 }

@@ -10,7 +10,7 @@ import { OpenQuestionChip } from "./step";
 import { IconLock } from "../icons";
 import { IconOk } from "../compare/icons";
 import { Num, RuleRef, StrengthLabel } from "../provenance";
-import { Callout, Card, Tag } from "../ui";
+import { Callout, Card, Sentence, Tag } from "../kit";
 
 export type CostView =
   | { kind: "loading" }
@@ -59,7 +59,7 @@ function Brokerage({ r }: { r: Extract<BrokerageCostResult, { kind: "ok" }> }) {
         <Num value={r.taxAtSwitch} />
         {cost.end}
       </p>
-      <p className="text-sm text-muted-foreground">
+      <Sentence size="sm" tone="muted">
         {C.brokerageDetail.before}
         <Num value={r.realNoSwitch} />
         {C.brokerageDetail.mid}
@@ -67,7 +67,7 @@ function Brokerage({ r }: { r: Extract<BrokerageCostResult, { kind: "ok" }> }) {
         {C.brokerageDetail.after}
         <Num value={r.netProceeds} />
         {C.brokerageDetail.end}
-      </p>
+      </Sentence>
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
         {r.secondary && <Tag tone="caution">{C.secondary}</Tag>}
         <Rules ids={r.cost.rule_ids ?? []} />
@@ -128,10 +128,10 @@ function InKind({ fee }: { fee: SiteValue | null }) {
         <StrengthLabel strength="institution" />
         <OpenQuestionChip code="SW OQ11" />
       </div>
-      <p className="text-sm">
+      <Sentence size="sm">
         {C.transferFee.amount}
         {fee ? <Num value={fee} /> : C.transferFee.none} <RuleRef id="SW-33" /> <RuleRef id="SW-34" />
-      </p>
+      </Sentence>
     </>
   );
 }

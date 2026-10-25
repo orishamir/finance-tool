@@ -1,7 +1,7 @@
 {
   "id": "REG-26",
-  "title": "A foreign broker reached through an Israeli introducer: CySEC-licensed introducer, accounts at IBKR LLC or IBKR Ireland, not ISA-supervised",
-  "title_he": "ברוקר זר דרך ברוקר מציג ישראלי: לא בפיקוח הרשות",
+  "title": "Interactive Israel: a foreign broker reached through an Israeli introducer, not ISA-supervised, as it states",
+  "title_he": "אינטראקטיב ישראל: ברוקר זר דרך ברוקר מציג ישראלי, כפי שהיא מציגה",
   "text_he": "אינטראקטיב ישראל היא מותג של חברה שמפוקחת על ידי רשות ניירות הערך של קפריסין, פועלת בישראל לפי היתר בחוק ניירות ערך ואינה מפוקחת על ידי רשות ניירות ערך בישראל. היא משמשת ברוקר מציג לאינטראקטיב ברוקרס: חשבונות הלקוחות נפתחים בחברה האמריקאית, שמפוקחת על ידי הרגולטורים בארה״ב, או בחברה האירית, שמפוקחת על ידי הבנק המרכזי של אירלנד. לפי המציג, חשבונות אמריקאיים מוגנים בביטוח עד סכום בדולרים לחשבון, וחשבונות איריים בקרן פיצוי משקיעים עד סכום ביורו. דפי ההגנה של אינטראקטיב ברוקרס עצמה לא נפתחו; הסכומים הם כפי שהמציג מציין אותם.",
   "strength": "institution",
   "dimensions": [
@@ -12,7 +12,7 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
   "il_finance_file": "regulators-and-protection.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://lp3.inter-il.com/about-3",
@@ -24,5 +24,9 @@
       "strength": "institution",
       "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "BRK-06",
+    "REG-27"
   ]
 }

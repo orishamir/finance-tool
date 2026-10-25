@@ -8,7 +8,7 @@ import type { Reason } from "../../lib/invest";
 import { reasonSentence } from "../workbench/providers/row";
 import { RuleRef } from "../provenance";
 import { Sheet } from "../Sheet";
-import { Disclosure, cx } from "../ui";
+import { cx, Disclosure } from "../kit";
 import { LabelIcon } from "./icons";
 
 // ---------------------------------------------------------------- labels

@@ -1,0 +1,32 @@
+{
+  "id": "PEN-42",
+  "title": "Mor: alternative fee mixes in its selected pension fund",
+  "title_he": "מור: תמהילי דמי ניהול חלופיים בקרן הנבחרת",
+  "text_he": "בקרן הנבחרת של מור, דמי הניהול לפי ברירת המחדל הם דמי ההפקדה ודמי הצבירה של הקרן הנבחרת, ומור מציעה חמישה תמהילים חלופיים שבהם דמי ההפקדה גבוהים יותר ודמי הצבירה נמוכים יותר. אצל מור בחירה בתמהיל לא משנה את תקופת ההבטחה; אם ההפקדות נפסקות לתקופה ארוכה מור רשאית להחזיר את העמית לברירת המחדל; ורק מי שהצטרף מאז שהקרן נבחרה רשאי לבקש תמהיל חלופי. התמהילים של הקרנות הנבחרות האחרות לא נבדקו.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-deposit",
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.moreinvest.co.il/%D7%9E%D7%95%D7%A6%D7%A8%D7%99%D7%9D/%D7%92%D7%9E%D7%9C-%D7%95%D7%A4%D7%A0%D7%A1%D7%99%D7%94/%D7%A7%D7%A8%D7%9F-%D7%A4%D7%A0%D7%A1%D7%99%D7%94/",
+      "title": "מור – קרן פנסיה נבחרת",
+      "title_he": "מור – קרן פנסיה נבחרת",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור בית השקעות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "דמי ניהול של 1% מההפקדות ו-0.22% מהחיסכון הצבור בקרן",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "PEN-23"
+  ]
+}

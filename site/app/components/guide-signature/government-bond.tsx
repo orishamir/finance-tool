@@ -7,9 +7,9 @@ import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { bondModel, fact } from "../../lib/guide-signature";
 import { entered as enteredValue } from "../../lib/value";
-import { NumberField } from "../timeline/fields";
+import { GainBars, NumberField, Sentence, Stat, StatRow } from "../kit";
 import { Num, RulesLine } from "../provenance";
-import { FigureRow, GainBars, SourceLine, figure, inputSite, useSigInputs, type VisualProps } from "./kit";
+import { SourceLine, figure, inputSite, useSigInputs, type VisualProps } from "./kit";
 
 const SHIFT_MIN = -3;
 const SHIFT_MAX = 3;
@@ -92,17 +92,17 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
 
       {model && v && (
         <>
-          <dl className="grid gap-4 sm:grid-cols-3">
-            <FigureRow label={copy.bond.figures.price} tone="value">
+          <StatRow cols={3}>
+            <Stat label={copy.bond.figures.price} tone="value">
               <Num value={v.price} />
-            </FigureRow>
-            <FigureRow label={copy.bond.figures.change}>
+            </Stat>
+            <Stat label={copy.bond.figures.change}>
               <Num value={v.change} display={signed(Math.round(model.changePct * 10) / 10) + "%"} />
-            </FigureRow>
-            <FigureRow label={copy.bond.figures.makam} tone="alt">
+            </Stat>
+            <Stat label={copy.bond.figures.makam} tone="alt">
               <Num value={v.makam} display={signed(Math.round(model.makamChangePct * 10) / 10) + "%"} />
-            </FigureRow>
-          </dl>
+            </Stat>
+          </StatRow>
           <GainBars
             bars={[
               { key: "sale", label: copy.bond.bars.sell, value: v.sale, tone: "value" },
@@ -111,9 +111,9 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
             diff={v.diff}
             diffLabel={model.saleValue < model.redemption ? copy.bond.diffLoss : copy.bond.diffGain}
           />
-          <p className="text-sm max-w-measure">
+          <Sentence size="sm" measure>
             {copy.bond.holdLine.before} <Num value={v.redeem} /> {copy.bond.holdLine.middle} <Num value={v.coupons} /> {copy.bond.holdLine.after}
-          </p>
+          </Sentence>
         </>
       )}
 

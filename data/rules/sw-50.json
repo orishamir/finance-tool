@@ -1,0 +1,68 @@
+{
+  "id": "SW-50",
+  "title": "Bank Leumi and Mizrahi Tefahot: a free clearing-house report through the bank",
+  "title_he": "לאומי ומזרחי טפחות: דוח מסלקה בלי עלות",
+  "text_he": "בנק לאומי מציע את דוח המסלקה ללא עלות ללקוחות פרטיים של כל בנק מגיל בגרות, פעם אחת ללקוח; ההרשמה מסתיימת באתר המסלקה, שם מוזן כרטיס אשראי לזיהוי בלבד, והמידע זמין לצפייה חודשים ספורים בלבד. מזרחי טפחות מממן את מלוא עלות הפנייה למסלקה, אבל מרוויח עמלות הפצה על הייעוץ. בנקים אחרים לא נבדקו.",
+  "figure_names_he": {
+    "leumi_report_available_months": "חודשים שבהם דוח המסלקה זמין לצפייה (לאומי)"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "transfer-switch-process",
+    "statement-disclosure"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "leumi_report_available_months": {
+      "value": 3,
+      "unit": "months",
+      "source": {
+        "url": "https://www.leumi.co.il/he/pension-advising/pension-information/pension-advising/pension-information",
+        "title": "Bank Leumi, \"עושים סדר בפנסיה\" (clearing-house report service)",
+        "publisher": "Bank Leumi",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "SW-50"
+      ],
+      "state": "sourced",
+      "notes": "Leumi's free clearing-house report: \"המידע יהיה זמין לצפייה במשך שלושה חודשים בלבד\". Institution page; the clearing house's own price list was not read (SW OQ5)."
+    }
+  },
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.leumi.co.il/he/pension-advising/pension-information/pension-advising/pension-information",
+      "title": "בנק לאומי – עושים סדר בפנסיה",
+      "title_he": "בנק לאומי – עושים סדר בפנסיה",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "המידע יהיה זמין לצפייה במשך שלושה חודשים בלבד",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.mizrahi-tefahot.co.il/brokerage/pension/pension-consulting/",
+      "title": "מזרחי טפחות – ייעוץ פנסיוני",
+      "title_he": "מזרחי טפחות – ייעוץ פנסיוני",
+      "publisher": "Mizrahi Tefahot Bank",
+      "publisher_he": "בנק מזרחי טפחות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "הבנק מממן את מלוא עלות הפנייה למסלקה",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "SW-18",
+    "SW-44"
+  ]
+}

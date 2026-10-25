@@ -2,8 +2,8 @@
   "id": "PEN-19",
   "title": "Actuarial balancing",
   "title_he": "האיזון האקטוארי: עודף וגירעון",
-  "text_he": "כל שנה (וכל רבעון) האקטואר של הקרן עורך מאזן אקטוארי מלא, וזכויות העמיתים והפנסיונרים מעודכנות לפי העודף או הגירעון האקטוארי. עודף או גירעון מגורמים דמוגרפיים (תמותה, נכות, שאירים) חל על כל העמיתים בעדכון היתרות ועל הפנסיונרים בעדכון הקצבאות. עודף או גירעון מתשואות ומריבית ההיוון חל רק על הפנסיונרים, דרך עתודה למקבלי קצבה, ותשואות על יתרות העמיתים לא יוצרות עודף או גירעון לעמיתים. הכלל לקוח מתקנון של חברה מנהלת; הרשות מפרסמת כל שנה את העודף או הגירעון של כל קרן.",
-  "strength": "institution",
+  "text_he": "זכויות העמיתים והפנסיונרים מתעדכנות לפי העודף או הגירעון האקטוארי. עודף או גירעון מגורמים דמוגרפיים (תמותה, נכות, שאירים) נזקף כל רבעון: לכל העמיתים בעדכון היתרות ולפנסיונרים בעדכון הקצבאות. עודף או גירעון מתשואות ומשיעורי ההיוון חל רק על מקבלי הקצבה, דרך עתודה למקבלי קצבה שיש לה תקרה, ועתודה נפרדת לכל מסלול קצבה; תשואות על יתרות העמיתים לא יוצרות עודף או גירעון. כך קובעים התקנון האחיד של רשות שוק ההון והקודקס שלה, והרשות מפרסמת כל שנה את העודף או הגירעון של כל קרן.",
+  "strength": "primary",
   "dimensions": [
     "insurance-cover",
     "fee-change-over-time",
@@ -14,6 +14,20 @@
   "il_finance_file": "pension-and-gemel-lekitzba.md",
   "checked": "2026-10-25",
   "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/guide/information-entities-codex/he/codex6.6_clean_new.pdf",
+      "title": "קודקס הרגולציה, חלק 6 – הוראות ספציפיות לקרן פנסיה",
+      "title_he": "קודקס הרגולציה, חלק 6 – הוראות ספציפיות לקרן פנסיה",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.25, s.4.3.3",
+      "locator_he": "עמוד 25, סעיף 4.3.3",
+      "page": 25,
+      "quote": "חלוקת עודף או גירעון אקטוארי",
+      "checked": "2026-10-25"
+    },
     {
       "url": "https://www.gov.il/BlobFolder/reports/tender-0102/he/Commissioner%20Report%202025%20chapter%204_Digital%20-%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9%20%D7%A1%D7%95%D7%A4%D7%99.pdf",
       "title": "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025 – פרק 4: נתונים כמותיים – החיסכון הפנסיוני",
@@ -38,17 +52,18 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "title": "Mor comprehensive bylaws 01.06.2025",
-      "title_he": "תקנון קרן הפנסיה המקיפה של מור (מהדורת 1.6.2025)",
-      "publisher": "Mor Investment House",
-      "publisher_he": "מור גמל ופנסיה",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "section 109, p.73",
-      "locator_he": "סעיף 109, עמוד 73",
-      "page": 73,
-      "checked": "2026-10-25"
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)",
+      "publisher": "Prisha.co.il",
+      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "p.65, s.109",
+      "locator_he": "עמוד 65, סעיף 109",
+      "page": 65,
+      "checked": "2026-10-25",
+      "qualifier": "(third-party host)"
     }
   ]
 }

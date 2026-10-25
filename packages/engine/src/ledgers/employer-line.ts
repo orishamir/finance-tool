@@ -13,10 +13,10 @@ export type EmployerLine = (Omit<ProvidentResult, "routed"> & { line: "only-avai
 
 /**
  * F-52 Employer line. For a keren hishtalmut, the employer deposits `employer rate × salary` a month as on the
- * payslip (A-12, KH-04 gives the common 7.5%), constant in nominal terms like the salary; up to 7.5% of the
+ * payslip (A-12; KH-04 gives the tax-benefited maximum, 7.5%), constant in nominal terms like the salary; up to 7.5% of the
  * determining salary (TXH-01) is not taxed when paid, and the rest is salary when paid (TXH-03): its income
  * tax (TXG-02) and National Insurance and health (TXG-35, a reading) are subtracted at face value, and its gains are
- * taxed at 25% of the real gain at withdrawal (TXH-11, institution). The line runs through F-08 with the
+ * taxed at 25% of the real gain at withdrawal (TXH-11). The line runs through F-08 with the
  * wrapper's fees and its exit (F-46, or F-47 on the person's opt-in), and is returned with its value, never
  * ranked. For a pension, the employer's pension and severance deposits (PEN-03, TXP-10, TXP-11) run through
  * the pension ledger with the wrapper's fees and insurance; the exit is blocked (F-49).

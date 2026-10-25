@@ -9,7 +9,7 @@ import { guide as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
 import { durationChart } from "../provenance";
-import { cx } from "../ui";
+import { cx } from "../kit";
 
 export interface ChartPoint {
   year: number;

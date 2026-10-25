@@ -2,7 +2,7 @@
   "id": "PEN-08",
   "title": "New comprehensive pension fund and its monthly deposit ceiling",
   "title_he": "קרן פנסיה חדשה מקיפה ותקרת ההפקדה החודשית",
-  "text_he": "קרן פנסיה חדשה מקיפה היא קרן פנסיה שאישרו הממונה ורשות המסים כקופת גמל לקצבה, אחרי המועד שבצו, ושתקנונה נותן לעמית זכויות לקצבת זקנה, קצבת שאירים וקצבת נכות. ההפקדה החודשית אליה לא יכולה לעלות על תקרת ההפקדה החודשית: הנמוך מבין התקרה שבתקנות מס הכנסה, שנגזרת מהשכר הממוצע, ושיעור קבוע מכל רכיבי השכר שהמעסיק מדווח. הפקדות מעל התקרה עוברות לחשבון העמית בקרן הפנסיה הכללית של אותה חברה. התקרה נלקחה מטבלה של חברת ביטוח ומתקנון של חברה מנהלת.",
+  "text_he": "קרן פנסיה חדשה מקיפה היא קרן פנסיה שאישרו הממונה ורשות המסים כקופת גמל לקצבה, אחרי המועד שבצו, ושתקנונה נותן לעמית זכויות לקצבת זקנה, קצבת שאירים וקצבת נכות. ההפקדות של המעסיק והעובד אליה לא יכולות לעלות על תקרת ההפקדה החודשית שבתקנות מס הכנסה: שיעור קבוע מתקרת השכר המבוטח, שהיא פעמיים השכר הממוצע במשק לפי הביטוח הלאומי. התקנון האחיד של רשות שוק ההון מוסיף שהתקרה לא עולה על שיעור קבוע מכל רכיבי השכר שהמעסיק מדווח. הפקדות מעל התקרה עוברות לחשבון העמית בקרן הפנסיה הכללית של אותה חברה, ותקרה שלא נוצלה בחודש אחד עוברת לחודשים הבאים באותה שנה.",
   "figure_names_he": {
     "monthly_deposit_ceiling": "תקרת ההפקדה החודשית לקרן מקיפה"
   },
@@ -18,10 +18,10 @@
       "value": 5645.29,
       "unit": "nis_per_month",
       "source": {
-        "url": "https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf",
-        "title": "Harel, \"תקרות וסכומים לשנת 2026\" (March 2026), p.1: comprehensive-fund monthly ceiling 20.5% of twice the average wage, 5,645.29 ₪; Mor general fund bylaws 01.04.2026, p.12, s.1 \"תקרת הפקדה חודשית לקרן פנסיה מקיפה\" (NIS 5,645)",
-        "publisher": "Harel Insurance and Finance",
-        "strength": "institution"
+        "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+        "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964, p.4, reg. 1 (\"תקרת הפקדה חודשית\": 20.5% of the monthly insured-salary ceiling, which is twice the NII average wage) and p.8, reg. 19(ב1)(1): 2 × NII average wage 13,769 (from 1.1.2026) × 20.5% = 5,645.29",
+        "publisher": "National Insurance Institute (btl.gov.il), consolidated text",
+        "strength": "primary"
       },
       "checked": "2026-10-25",
       "effective_from": "2026-01-01",
@@ -32,11 +32,11 @@
         "PEN-08"
       ],
       "state": "sourced",
-      "notes": "NIS per month. Monthly deposits to a new comprehensive pension fund may not exceed the lower of this ceiling and 22.83% of the reported salary components; the excess goes to the same manager's general pension fund (PEN-10). Institution sources only: the Income Tax regulation defining the ceiling was not opened (pension-and-gemel-lekitzba.md open question 6). Updated with the average wage."
+      "notes": "NIS per month, 2026. Computed under the regulation's formula from primary inputs: 2 × 13,769 (NII average wage from 1.1.2026, s.2; the same figure in the Tax Authority's 2026 deductions booklet, p.12) × 20.5%; the seventh-schedule formula lets unused ceiling roll forward within the year, so this is the single-month amount with no carry. It matches the figure Harel and Mor print. Monthly deposits may not exceed the lower of this ceiling and 22.83% of the reported salary components (CMA standard pension bylaw, s.1); the excess goes to the same manager's general pension fund (PEN-10). Updated with the average wage."
     }
   },
   "il_finance_file": "pension-and-gemel-lekitzba.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
@@ -52,44 +52,83 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "title": "Mor comprehensive bylaws 01.06.2025",
-      "title_he": "תקנון קרן הפנסיה המקיפה של מור (מהדורת 1.6.2025)",
-      "publisher": "Mor Investment House",
-      "publisher_he": "מור גמל ופנסיה",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "section 1 definitions, p.12",
-      "page": 12,
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.4, reg. 1",
+      "locator_he": "עמוד 4, תקנה 1",
+      "page": 4,
       "quote": "תקרת הפקדה חודשית",
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.moreinvest.co.il/media/hphjzxvl/תקנון-קרן-פנסיה-כללית.pdf",
-      "title": "Mor general bylaws 01.04.2026",
-      "title_he": "תקנון קרן הפנסיה הכללית של מור (מהדורת 1.4.2026)",
-      "publisher": "Mor Investment House",
-      "publisher_he": "מור גמל ופנסיה",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "section 1, p.12",
-      "locator_he": "סעיף 1, עמוד 12",
-      "page": 12,
-      "quote": "תקרת הפקדה חודשית לקרן פנסיה מקיפה",
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.8, reg. 19(ב1)(1)",
+      "locator_he": "עמוד 8, תקנה 19(ב1)(1)",
+      "page": 8,
+      "quote": "הפקדות המעביד והעובד בקרן חדשה מקיפה לא יעלו על תקרת ההפקדה החודשית",
       "checked": "2026-10-25"
     },
     {
-      "url": "https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf",
-      "title": "Harel 2026 table",
-      "title_he": "תקרות וסכומים לשנת 2026 (הראל)",
-      "publisher": "Harel",
-      "publisher_he": "הראל",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.1",
-      "locator_he": "עמוד 1",
-      "page": 1,
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+      "title": "חוברת ניכויים חודשית 2026",
+      "title_he": "חוברת ניכויים חודשית 2026",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.12, row",
+      "page": 12,
+      "quote": "שכר ממוצע במשק",
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Mediniyut/GeneralData/Pages/%D7%A9%D7%9B%D7%A8%20%D7%9E%D7%9E%D7%95%D7%A6%D7%A2.aspx",
+      "title": "ביטוח לאומי: שכר ממוצע לפי סעיפים 1 ו-2 לחוק הביטוח הלאומי",
+      "title_he": "ביטוח לאומי: שכר ממוצע לפי סעיפים 1 ו-2 לחוק הביטוח הלאומי",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לאישור_ולניהול_קופות_גמל)",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), Wikisource mirror",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "תוספת שביעית",
+      "locator_he": "תוספת שביעית",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)",
+      "publisher": "Prisha.co.il",
+      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "p.10, s.1",
+      "locator_he": "עמוד 10, סעיף 1",
+      "page": 10,
+      "quote": "תקרת הפקדה חודשית",
+      "checked": "2026-10-25",
+      "qualifier": "(third-party host)"
     }
   ]
 }

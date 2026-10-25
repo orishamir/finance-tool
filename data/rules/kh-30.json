@@ -1,0 +1,31 @@
+{
+  "id": "KH-30",
+  "title": "Harel: retroactive joining, not before the start of the payment's tax year",
+  "title_he": "הראל: הצטרפות רטרואקטיבית לקרן ההשתלמות",
+  "text_he": "הראל מאפשרת הצטרפות רטרואקטיבית לקרן ההשתלמות אם העמית והמעסיק שילמו את ההפרשים לתקופה שעברה, אבל לא לפני תחילת שנת המס שבה נעשה התשלום. מועד התשלום הראשון עצמו מוגדר בפקודה. תקנונים של חברות אחרות לא נקראו בעניין הזה.",
+  "strength": "institution",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "keren-hishtalmut.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://harel-group.co.il/long-term-savings/study-funds/plans/harel-funds/doclib/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%95%d7%a4%d7%94/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a8%d7%90%d7%9c%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa-%20%d7%9c%d7%90%d7%97%d7%a8%20%d7%94%d7%9e%d7%99%d7%96%d7%95%d7%92/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa%20%2007.2024.pdf",
+      "title": "Harel bylaws 07/2024",
+      "title_he": "תקנון קרן ההשתלמות של הראל (מהדורת 7/2024)",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "s.3.1",
+      "locator_he": "סעיף 3.1",
+      "quote": "אולם לא תאושר הצטרפות מוקדמת יותר מתחילת שנת המס בה נעשה התשלום",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "KH-11"
+  ]
+}

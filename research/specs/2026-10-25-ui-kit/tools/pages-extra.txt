@@ -1,0 +1,9 @@
+/holdings
+/
+/transfer
+/goal/compare
+/fees
+/idle-cash?balance=50000&keep=10000
+/idle-cash?balance=300000
+/invest/index-sp500
+/exposure/index-sp500

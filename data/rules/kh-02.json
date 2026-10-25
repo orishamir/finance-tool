@@ -2,15 +2,43 @@
   "id": "KH-02",
   "title": "Who can be a member: salaried member and self-employed member",
   "title_he": "מי יכול להיות עמית: שכיר ועצמאי",
-  "text_he": "החוק מבחין בין עמית שכיר, שהמעסיק שלו מפקיד בעדו, לבין עמית עצמאי, שמפקיד בעד עצמו. החברות המנהלות משווקות קרנות השתלמות לשני הסוגים. לפי מיטב, שכירים יכולים לפתוח קרן השתלמות רק כהטבה מהמעסיק, ועצמאים יכולים לפתוח בעצמם בכל עת. בסיס חוקי לכך ששכיר לא יכול להפקיד בלי מעסיק לא נמצא בנוסח שנקרא.",
+  "text_he": "החוק מבחין בין עמית שכיר, שהמעסיק שלו מפקיד בעדו, לבין עמית עצמאי, שמפקיד בעד עצמו. לפי כללי מס הכנסה לקופות גמל, הפקדה של עמית עצמאי לקרן השתלמות מוכרת רק למי שיש לו הכנסה מעסק או ממשלח יד. לכן שכיר בלי הכנסה כזו לא יכול לפתוח קרן השתלמות בעצמו: הקרן שלו באה דרך הפקדות המעסיק. עצמאי שיש לו הכנסה כזו יכול לפתוח קרן בעצמו.",
   "strength": "primary",
   "dimensions": [
     "eligibility"
   ],
   "likely_to_change": "no",
   "il_finance_file": "keren-hishtalmut.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.8, reg. 19א(א)",
+      "locator_he": "עמוד 8, תקנה 19א(א)",
+      "page": 8,
+      "quote": "אלא אם כן הוא יחיד שיש לו הכנסות מעסק או ממשלח יד",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.3, reg. 1",
+      "locator_he": "עמוד 3, תקנה 1",
+      "page": 3,
+      "quote": "עמית-עצמאי",
+      "checked": "2026-10-25"
+    },
     {
       "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
       "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
@@ -23,28 +51,6 @@
       "locator_he": "עמוד 2, סעיף 1",
       "page": 2,
       "quote": "עמית-שכיר",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.meitav.co.il/provident_pension/hishtalmut/",
-      "title": "מיטב – קרנות השתלמות: כל המידע אודות קרן השתלמות",
-      "title_he": "מיטב – קרנות השתלמות: כל המידע אודות קרן השתלמות",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "עובדים שכירים יכולים לפתוח קרן השתלמות רק כהטבה מטעם המעסיק",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.as-invest.co.il/interstedin/קרנות-השתלמות/",
-      "title": "אלטשולר שחם – קרן השתלמות",
-      "title_he": "אלטשולר שחם – קרן השתלמות",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "עבור כל חוסך – שכיר או עצמאי",
       "checked": "2026-10-25"
     }
   ]

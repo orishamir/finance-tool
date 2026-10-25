@@ -1,77 +1,32 @@
 {
   "id": "ETF-28",
-  "title": "A foreign-domiciled ETF comes in share classes (accumulating or distributing, currency) and listings, each with its own ISIN or ticker",
-  "title_he": "קרן סל זרה: סדרות ורישומים, לכל אחת מספר משלה",
-  "text_he": "לקרן סל אירופית (UCITS) יכולות להיות כמה סדרות על אותו מדד, שנבדלות בשימוש בהכנסה, צוברת או מחלקת, ובמטבע, ולכל אחת מספר ISIN משלה; לדוגמה, לקרן של iShares על המדד האמריקני יש סדרה צוברת בדולרים וסדרה מחלקת. סדרה אחת יכולה להיות רשומה בכמה בורסות במטבעות שונים, כמו הסדרה הצוברת שנסחרת בלונדון בדולרים ובלירות ובאמסטרדם באירו. דמי הניהול הכוללים והשימוש בהכנסה הם לפי סדרה, ובודקים אותם במסמך המידע או בדף הקרן; דמי הסדרה המחלקת ותדירות החלוקה לא הוצגו בעמוד שנקרא. המקור הוא דפי המנפיק.",
-  "figure_names_he": {
-    "cspx_ter": "דמי הניהול הכוללים של הסדרה הצוברת בדולרים (CSPX)"
-  },
-  "strength": "institution",
+  "title": "A foreign-domiciled UCITS fund can come in several share classes: one pool of assets, classes that differ in use of income, currency and fees",
+  "title_he": "קרן סל זרה: סדרות של אותה קרן",
+  "text_he": "לפי הרגולטור האירופי, סדרות של קרן UCITS אינן קרנות נפרדות אלא סוגים שונים של יחידות באותה קרן: כל המשקיעים בכל הסדרות שותפים באותו מאגר נכסים. סדרות יכולות להיבדל בשימוש בהכנסה, צוברת או מחלקת, בטיפול המס, בסכום ההשקעה המינימלי, בדמי הניהול ובמטבע, וכל סדרה נושאת את העלויות שלה. לכן את דמי הניהול ואת השימוש בהכנסה בודקים לכל סדרה בנפרד, במסמך המידע או בדף הקרן.",
+  "strength": "primary-mirror",
   "dimensions": [
     "distribution-policy",
     "currency",
     "fee-management-balance",
     "foreign-withholding-domicile"
   ],
-  "likely_to_change": "yes",
-  "recheck_date": "2027-04-01",
-  "figures": {
-    "cspx_ter": {
-      "value": 0.07,
-      "unit": "pct",
-      "source": {
-        "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/cspx-ishares-core-s-p-500-ucits-etf-fund-fact-sheet-en-gb.pdf",
-        "title": "iShares Core S&P 500 UCITS ETF USD (Acc) factsheet, September 2026, p.1",
-        "publisher": "iShares",
-        "strength": "institution"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "ETF-28"
-      ],
-      "state": "sourced",
-      "notes": "iShares Core S&P 500 UCITS ETF USD (Accumulating), ISIN IE00B5BMR087, domicile Ireland, TER 0.07% (factsheet as of 05.10.2026), physical replication."
-    }
-  },
+  "likely_to_change": "no",
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
-      "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/cspx-ishares-core-s-p-500-ucits-etf-fund-fact-sheet-en-gb.pdf",
-      "title": "iShares CSPX factsheet, September 2026",
-      "title_he": "iShares Core S&P 500 UCITS ETF: דף מידע (ספטמבר 2026)",
-      "publisher": "iShares",
-      "publisher_he": "iShares",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.1",
-      "locator_he": "עמוד 1",
+      "url": "https://www.amf-france.org/sites/institutionnel/files/resource/ESMA%20Opinion%2034-43-296%20.pdf",
+      "title": "ESMA, Opinion: Share classes of UCITS, ESMA34-43-296 (30.1.2017), hosted by the AMF",
+      "publisher": "AMF (French markets authority), hosting an ESMA document",
+      "publisher_he": "רשות השווקים הפיננסיים של צרפת (AMF), עותק של מסמך ESMA",
+      "kind": "regulator_page",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "pp.1-2",
+      "locator_he": "עמודים 1 עד 2",
       "page": 1,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.ishares.com/uk/individual/en/products/253743/ishares-sp-500-b-ucits-etf-acc-fund",
-      "title": "iShares CSPX product page",
-      "title_he": "iShares Core S&P 500 UCITS ETF (CSPX): עמוד הקרן",
-      "publisher": "iShares",
-      "publisher_he": "iShares",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.ishares.com/uk/individual/en/products/251900/ishares-sp-500-ucits-etf-inc-fund",
-      "title": "iShares IUSA product page",
-      "title_he": "iShares S&P 500 UCITS ETF (IUSA, מחלקת): עמוד הקרן",
-      "publisher": "iShares",
-      "publisher_he": "iShares",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "qualifier": "(foreign regulator; mirror on another regulator's site)"
     }
   ]
 }

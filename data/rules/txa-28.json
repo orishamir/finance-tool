@@ -1,15 +1,9 @@
 {
   "id": "TXA-28",
-  "title": "Insurer statements on savings-policy tax: real gain, 25% implied, notional redemption and form 867",
-  "title_he": "מה המבטחים אומרים על המס בפוליסת חיסכון",
-  "text_he": "כלל כותבת שהמס משולם רק בעת משיכת הכספים ורק על הרווח הריאלי, ושמעבר בין מסלולי השקעה אינו כרוך במס רווחי הון. הפניקס כותבת שפדיון כפוף למס רווחי הון, מתארת פדיון רעיוני בסוף שנת המס לצורך ניצול ההטבה לבני גיל פרישה, ומוסרת אישור ניכוי מס במקור במרץ. הדוגמה של הפניקס לתקרת הרווח ולמס ששולם משקפת שיעור של רבע מהרווח. אלה הצהרות של מבטחים, לא מקור רשמי, ולכן הן אינן מחשבות ללא החלטת המייסד.",
-  "figure_names_he": {
-    "s125d_profit_cap_individual": "תקרת הרווח לניכוי לפי סעיף הפטור לגיל פרישה, יחיד, כפי שהפניקס מפרסמת",
-    "s125d_tax_individual": "המס ששולם בפועל על תקרת הרווח, יחיד, כפי שהפניקס מפרסמת",
-    "s125d_profit_cap_couple": "תקרת הרווח לניכוי, שני בני זוג, כפי שהפניקס מפרסמת",
-    "s125d_tax_couple": "המס ששולם בפועל על תקרת הרווח, שני בני זוג, כפי שהפניקס מפרסמת"
-  },
-  "strength": "institution",
+  "title": "Savings-policy gains: taxed when received, on the real gain; a track switch inside the insurer is not taxed, moving insurer is a taxable withdrawal",
+  "title_he": "המס בפוליסת חיסכון: רק כשמושכים, ורק על הרווח הריאלי",
+  "text_he": "רווח מתוכנית חיסכון בפוליסת ביטוח חיים נחשב הכנסה מריבית כשהיחיד מקבל אותו, והחלק בגובה הפרשי ההצמדה על התשלומים לתוכנית נחשב הכנסה מהפרשי הצמדה ופטור ממס. לכן המס משולם רק במשיכה, ורק על הרווח שמעבר להצמדה, עד שיעור המס המרבי על ריבית. לפי הצוות של משרד האוצר לחיסכון לטווח קצר ובינוני, שחברים בו גם ראש רשות המסים, מעבר בין מסלולי השקעה בתוך חברת הביטוח אינו אירוע מס, ומעבר לחברת ביטוח אחרת אפשרי רק במשיכה והנזלה של הכסף, ולכן הוא אירוע חייב במס. זה תיאור רשמי של החוק הקיים, לא החוק עצמו. אם שיעור נמוך יותר יכול לחול על פוליסה שאינה משתתפת ברווחים לא הוכרע.",
+  "strength": "primary",
   "dimensions": [
     "tax-at-exit",
     "real-vs-nominal",
@@ -19,114 +13,82 @@
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-03-31",
-  "figures": {
-    "s125d_profit_cap_individual": {
-      "value": 13440,
-      "unit": "nis",
-      "source": {
-        "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
-        "title": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות, section 125ד",
-        "publisher": "Phoenix Insurance",
-        "strength": "institution"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": 2026,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "TXA-28",
-        "TXI-20"
-      ],
-      "state": "sourced",
-      "notes": "As published by Phoenix on 2026-10-24; the statutory s.125D amounts are in TXI-20. 3,360 ÷ 13,440 implies a 25% rate on the gain."
-    },
-    "s125d_tax_individual": {
-      "value": 3360,
-      "unit": "nis",
-      "source": {
-        "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
-        "title": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות, section 125ד",
-        "publisher": "Phoenix Insurance",
-        "strength": "institution"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": 2026,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "TXA-28"
-      ],
-      "state": "sourced",
-      "notes": "Tax actually paid on the individual profit cap, as Phoenix publishes it."
-    },
-    "s125d_profit_cap_couple": {
-      "value": 16560,
-      "unit": "nis",
-      "source": {
-        "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
-        "title": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות, section 125ד",
-        "publisher": "Phoenix Insurance",
-        "strength": "institution"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": 2026,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "TXA-28",
-        "TXI-20"
-      ],
-      "state": "sourced",
-      "notes": "As published by Phoenix on 2026-10-24."
-    },
-    "s125d_tax_couple": {
-      "value": 4140,
-      "unit": "nis",
-      "source": {
-        "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
-        "title": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות, section 125ד",
-        "publisher": "Phoenix Insurance",
-        "strength": "institution"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": 2026,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "TXA-28"
-      ],
-      "state": "sourced",
-      "notes": "Tax actually paid on the couple profit cap, as Phoenix publishes it."
-    }
-  },
   "il_finance_file": "tax-insurance-and-amendment-190.md",
-  "checked": "2026-10-24",
+  "checked": "2026-10-25",
   "sources": [
     {
-      "url": "https://www.clalbit.co.il/savingandmanagementins/financialsaving/",
-      "title": "עמוד המוצר של כלל: פוליסת חיסכון פיננסי לעתיד",
-      "title_he": "עמוד המוצר של כלל: פוליסת חיסכון פיננסי לעתיד",
-      "publisher": "Clal Insurance",
-      "publisher_he": "כלל ביטוח ופיננסים",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "תשלום המס יבוצע רק בעת משיכת הכספים ורק על הרווח הריאלי",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.21, s.3(ה5)",
+      "locator_he": "עמוד 21, סעיף 3(ה5)",
+      "page": 21,
+      "quote": "ואולם רווחים שקיבל כאמור בסכום הפרשי הצמדה שחושבו על תשלומים ששולמו לתכנית החיסכון, יראו אותם כהכנסה מהפרשי הצמדה",
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
-      "title": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות",
-      "title_he": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות",
-      "publisher": "The Phoenix",
-      "publisher_he": "הפניקס",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "פדיון כפוף למס רווחי הון בהתאם לחוק ולמצב הלקוח",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.41, s.9(13)",
+      "locator_he": "עמוד 41, סעיף 9(13)",
+      "page": 41,
+      "quote": "הפרשי הצמדה שקיבל יחיד בשל נכס, ובלבד שהתקיימו כל אלה",
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/news/press_13022025/he/press_13022025_file.pdf",
+      "title": "הצוות לצמצום הפערים במכשירי השקעה בחיסכון לטווח קצר ובינוני – דו\"ח ביניים להערות הציבור (משרד האוצר, פברואר 2025)",
+      "title_he": "הצוות לצמצום הפערים במכשירי השקעה בחיסכון לטווח קצר ובינוני – דו\"ח ביניים להערות הציבור (משרד האוצר, פברואר 2025)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.16",
+      "locator_he": "עמוד 16",
+      "page": 16,
+      "quote": "מעבר בין מסלולי השקעה שונים בתוך חברת הביטוח לא נחשבת",
+      "checked": "2026-10-25",
+      "note": "(official report of a Ministry of Finance team whose members include the Tax Authority director; describes current law, is not law)"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299994.pdf",
+      "title": "חוק לתיקון פקודת מס הכנסה (מס' 147), התשס\"ה-2005, ספר החוקים 2023",
+      "title_he": "חוק לתיקון פקודת מס הכנסה (מס' 147), התשס\"ה-2005, ספר החוקים 2023",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.767, s.2(4)",
+      "locator_he": "עמוד 767, סעיף 2(4)",
+      "page": 767,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_ls1_831122.pdf",
+      "title": "הצעת חוק לתיקון פקודת מס הכנסה (מס' 147), התשס\"ה-2005, הצעות חוק הממשלה 186, דברי הסבר",
+      "title_he": "הצעת חוק לתיקון פקודת מס הכנסה (מס' 147), התשס\"ה-2005, הצעות חוק הממשלה 186, דברי הסבר",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.915",
+      "locator_he": "עמוד 915",
+      "page": 915,
+      "quote": "מרכיב הפרשי ההצמדה ברווחים אלה זכאי לפטור ממס בידי יחיד, לפי סעיף 9(13) לפקודה, אם אינם הכנסה מעסק בידיו",
+      "checked": "2026-10-25",
+      "qualifier": "(explanatory notes)"
     }
+  ],
+  "derived_from": [
+    "TXI-08"
   ]
 }

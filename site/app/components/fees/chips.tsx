@@ -4,7 +4,7 @@ import { r3fees } from "../../copy";
 import type { FeeInputs } from "../../lib/fees";
 import { fmt } from "../../lib/format";
 import type { FieldKey } from "../../lib/goal";
-import { cx } from "../ui";
+import { cx } from "../kit";
 
 export function FeeChips({ inputs, onOpen }: { inputs: FeeInputs; onOpen: (f: FieldKey | "all") => void }) {
   const v = inputs.values;

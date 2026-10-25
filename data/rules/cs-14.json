@@ -1,7 +1,7 @@
 {
   "id": "CS-14",
-  "title": "Withdrawal at 18 and at 21; parental consent",
-  "title_he": "משיכה מחיסכון לכל ילד: גיל ואישור הורה",
+  "title": "Withdrawal at 18 and at 21; parental consent; payment time",
+  "title_he": "משיכה מחיסכון לכל ילד: גיל, אישור הורה ומועד התשלום",
   "strength": "primary",
   "dimensions": [
     "liquidity-lockup",
@@ -54,52 +54,31 @@
       "value": 4,
       "unit": "business_days",
       "source": {
-        "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
-        "title": "Harel child-savings standard bylaw, April 2026, p.5, s.10.4: payment within 4 business days of a complete request",
-        "publisher": "Harel Pension and Gemel",
-        "strength": "institution"
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1056/he/regulation_h2016-9-20a.pdf",
+        "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד (נספח לחוזר גופים מוסדיים 2016-9-20), p.5, s.10.4",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
       },
       "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "provider-set",
+      "update_rule": "fixed in regulation",
       "rule_ids": [
         "CS-14"
       ],
       "state": "sourced",
-      "notes": "Harel only; other managers' timing was not read. Harel sends a confirmation within 10 business days (s.11)."
-    },
-    "bank_payout_business_days": {
-      "value": 3,
-      "unit": "business_days",
-      "source": {
-        "url": "https://www.leumi.co.il/he/Withdrawing-savings-for-your-kids",
-        "title": "Bank Leumi, child-savings withdrawal page: the digital request withdraws the whole balance, closes the account and is processed within 3 business days",
-        "publisher": "Bank Leumi",
-        "strength": "institution"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "CS-14"
-      ],
-      "state": "sourced",
-      "notes": "Leumi only. Leumi pays only into a current account held solely in the child's name. Yahav allows a partial withdrawal only if at least NIS 100 stays in the account (s.6.6, as of 1.5.2017)."
+      "notes": "CMA standard child bylaw s.10.4-10.5: within four business days of the request reaching the manager, to the member's bank account only; deferral to the 4th business day if the date falls in the month's first three business days; report within 10 business days (s.11). Reg. 41יא of the 1964 rules gives the same 4 business days, since the fund is a kupat gemel lehashkaa (circular 2022-9-29 s.1)."
     }
   },
-  "text_he": "מושכים רק מגיל 18 (מסוף חודש יום ההולדת), את כל הכסף או חלק ממנו. עד גיל 21 נדרשת חתימת הורה; מגיל 21 הילד מושך לבד. הבקשה מוגשת לקופה או לבנק, לא לביטוח הלאומי. אין משיכה בשל מצוקה כלכלית.",
+  "text_he": "מושכים רק מגיל הפדיון (מסוף חודש יום ההולדת), את כל הכסף או חלק ממנו. עד הגיל שבו נדרשת חתימת הורה ההורה חותם על המשיכה; אחריו הילד מושך לבד. הבקשה מוגשת לקופה או לבנק, לא לביטוח הלאומי. בקופת גמל הכסף משולם לחשבון הבנק של העמית בלבד, בתוך ימי העסקים לתשלום מקופה מהיום שהבקשה הגיעה לחברה; אם המועד חל באחד משלושת ימי העסקים הראשונים של החודש, התשלום יכול לעבור ליום העסקים הרביעי. אין משיכה בשל מצוקה כלכלית, ומועד כללי לתשלום מבנק לא נמצא.",
   "figure_names_he": {
     "withdrawal_age": "גיל הפדיון",
     "parent_signature_until_age": "גיל שעד אליו נדרשת חתימת הורה",
-    "provident_payout_business_days": "ימי עסקים לתשלום מקופה (הראל)",
-    "bank_payout_business_days": "ימי עסקים לתשלום מבנק (לאומי)"
+    "provident_payout_business_days": "ימי עסקים לתשלום מקופה"
   },
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
@@ -112,6 +91,34 @@
       "locator": "p.51, s.74ג(ב)",
       "locator_he": "עמוד 51, סעיף 74ג(ב)",
       "page": 51,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1056/he/regulation_h2016-9-20a.pdf",
+      "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד (נספח לחוזר גופים מוסדיים 2016-9-20)",
+      "title_he": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד (נספח לחוזר גופים מוסדיים 2016-9-20)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.5, ss.10.2, 10.4-10.5; p.6, s.11",
+      "locator_he": "עמוד 5, סעיפים 10.2, 10.4-10.5; עמוד 6, סעיף 11",
+      "page": 5,
+      "quote": "בתוך ארבעה ימי עסקים ממועד קבלת הבקשה בחברה המנהלת, לחשבון הבנק של העמית בלבד",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.16, reg. 41יא(א)",
+      "locator_he": "עמוד 16, תקנה 41יא(א)",
+      "page": 16,
+      "quote": "יקבל את הכספים כאמור בתוך 4 ימי עסקים מהיום שהגיעה בקשתו לקופה",
       "checked": "2026-10-25"
     },
     {
@@ -133,42 +140,6 @@
       "kind": "regulator_page",
       "strength": "primary",
       "quote": "את כספי החיסכון הילד יוכל למשוך מגיל 18 באישור ההורה",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
-      "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד: הראל חיסכון לכל ילד, מהדורה 3, 04/2026",
-      "title_he": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד: הראל חיסכון לכל ילד, מהדורה 3, 04/2026",
-      "publisher": "Harel",
-      "publisher_he": "הראל",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "pp.5-6, s.10-12",
-      "locator_he": "עמודים 5 עד 6, סעיף 10-12",
-      "page": 5,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://bank-yahav.co.il/media/qxed4yhi/השקעות-מונגש-חסכון-לכל-ילד-צפייה-בהסכם-חיסכון-לכל-ילד.pdf",
-      "title": "בנק יהב: הסכם חיסכון ארוך טווח לילד (חיסכון לכל ילד)",
-      "title_he": "בנק יהב: הסכם חיסכון ארוך טווח לילד (חיסכון לכל ילד)",
-      "publisher": "Bank Yahav",
-      "publisher_he": "בנק יהב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "pp.5-6, s.6",
-      "locator_he": "עמודים 5 עד 6, סעיף 6",
-      "page": 5,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.leumi.co.il/he/Withdrawing-savings-for-your-kids",
-      "title": "בנק לאומי: משיכת כספי חיסכון לכל ילד",
-      "title_he": "בנק לאומי: משיכת כספי חיסכון לכל ילד",
-      "publisher": "Bank Leumi",
-      "publisher_he": "בנק לאומי",
-      "kind": "institution_doc",
-      "strength": "institution",
       "checked": "2026-10-25"
     }
   ]

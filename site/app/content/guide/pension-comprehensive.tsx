@@ -5,7 +5,7 @@
 import type { GuideContent } from "./types";
 import type { SiteValue } from "../../lib/value";
 import { Num, RuleRef, RulesLine } from "../../components/provenance";
-import { Callout } from "../../components/ui";
+import { Callout } from "../../components/kit";
 
 const N = ({ v }: { v: SiteValue | null }) => (v ? <Num value={v} /> : null);
 
@@ -52,7 +52,7 @@ export const content: GuideContent = {
     <>
       <p className="max-w-measure">הנכסים מוחזקים בנאמנות, בנפרד מהרכוש של החברה המנהלת, ואי אפשר לעקל אותם. אם החברה המנהלת קורסת, הניהול עובר לחברה אחרת.</p>
       <p className="max-w-measure">
-        היתרה שלכם משתנה גם בלי קשר להשקעות: פעם בשנה הקרן מעדכנת את כל החשבונות לפי העודף או הגירעון האקטוארי. דמי הביטוח יורדים מהחיסכון כל חודש. על <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים
+        היתרה שלכם משתנה גם בלי קשר להשקעות: כל רבעון הקרן מעדכנת את כל החשבונות לפי העודף או הגירעון האקטוארי שנובע מגורמים דמוגרפיים, כמו תמותה ונכות; עודף או גירעון מתשואות חל רק על מקבלי הקצבה. דמי הביטוח יורדים מהחיסכון כל חודש. על <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים
         המדינה משלימה תשואה ליעד של <N v={figure("PEN-18", "target_return")} /> בשנה, נבדק כל חמש שנים; אם היעד צמוד למדד: שאלה פתוחה <bdi dir="ltr" className="whitespace-nowrap">PEN OQ8</bdi>. השאר עולה ויורד עם המסלול.
       </p>
       <RulesLine ids={["PF-29", "REG-18", "REG-19", "REG-21", "PEN-18", "PEN-19", "PEN-15"]} />

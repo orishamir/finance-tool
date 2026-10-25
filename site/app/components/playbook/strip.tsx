@@ -4,7 +4,7 @@ import { useId } from "react";
 import { r4playbook as c } from "../../copy";
 import { hebrewPrefix } from "../../lib/hebrew";
 import type { Side } from "../../lib/playbook";
-import { cx } from "../ui";
+import { cx } from "../kit";
 
 export interface PairOption {
   id: string;

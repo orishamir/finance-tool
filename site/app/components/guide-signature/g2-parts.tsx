@@ -5,8 +5,7 @@ import { fact } from "../../lib/guide-signature";
 import type { SignatureData } from "../../lib/guide-signature";
 import type { Bundle } from "../../lib/engine";
 import { Num } from "../provenance";
-import { NumberField } from "../timeline/fields";
-import { Disclosure, cx } from "../ui";
+import { Disclosure, GapNote, NumberField, Sentence } from "../kit";
 import { SourceLine, inputSite, type SigInputs } from "./kit";
 
 /** The amount now and the monthly deposit: a sentence with both as numbers, and the fields behind a fold (they write the guide's own fields, the ones the timeline reads). */
@@ -15,9 +14,9 @@ export function PlanInputs({ bundle, inputs, today }: { bundle: Bundle; inputs: 
   const monthly = inputSite(bundle, "monthly_deposit", inputs.monthly, inputs.source.monthly, today, copy.common.inputNames.monthly);
   return (
     <div className="flex flex-col gap-1">
-      <p className="text-sm">
+      <Sentence size="sm">
         {copy.g2.plan.before} <Num value={amount} /> {copy.g2.plan.middle} <Num value={monthly} /> {copy.g2.plan.after}
-      </p>
+      </Sentence>
       <SourceLine sources={[inputs.source.amount, inputs.source.monthly]} />
       <Disclosure label={<span className="text-sm text-link">{copy.g2.plan.change}</span>} openLabel={<span className="text-sm text-link">{copy.g2.plan.hide}</span>}>
         <div className="grid gap-4 sm:grid-cols-2 pt-2 pb-3">
@@ -68,9 +67,5 @@ export function HoldRow({ tone, name, children }: { tone: "value" | "alt"; name:
 /** "עוד לא חושב" with its reason, from this wave's own reasons (copy `g2.gaps`). */
 export function G2Gap({ id, className }: { id: string; className?: string }) {
   const reason = (copy.g2.gaps as Record<string, string>)[id.split(":")[0]!] ?? copy.common.gapFallback;
-  return (
-    <p className={cx("text-sm text-muted-foreground max-w-measure", className)}>
-      <span className="font-medium text-foreground">{copy.common.notComputed}:</span> {reason}
-    </p>
-  );
+  return <GapNote reason={reason} className={className} />;
 }

@@ -1,10 +1,12 @@
 {
   "id": "CS-18",
-  "title": "Management fees: who pays and until when",
-  "title_he": "דמי הניהול: מי משלם ועד מתי",
-  "text_he": "לפי החוק הביטוח הלאומי נושא בעלויות ניהול החשבונות, ולפי הביטוח הלאומי זה עד שהילד מגיע לגיל המענק האחרון; אחרי כן דמי הניהול יורדים מהחיסכון. הביטוח הלאומי משלם לקופות הגמל שיעור שנתי מהנכסים הצבורים, ולבנקים עמלת תפעול לפי שורת דיווח. לפי תקנון הראל ותשובה של אלטשולר שחם, אחרי הגיל הזה נגבים דמי הניהול השנתיים מהיתרה בלבד, בלי דמי ניהול מהפקדה; אם זה כך בכל החברות לא נבדק. לעמית בוגר החברה רשאית להעלות את דמי הניהול בהודעה נפרדת, ורשאית להציע הנחה לתקופת מינימום.",
+  "title": "Management fees: who pays, until when, and the legal cap after 21",
+  "title_he": "דמי הניהול: מי משלם, עד מתי, ומה התקרה אחר כך",
+  "text_he": "לפי החוק הביטוח הלאומי נושא בעלויות ניהול החשבונות, ולפי הביטוח הלאומי זה עד גיל המענק האחרון; אחרי כן דמי הניהול יורדים מהחיסכון. עד אז הביטוח הלאומי משלם לקופות הגמל שיעור שנתי מהנכסים הצבורים, ולבנקים עמלת תפעול לפי שורת דיווח. אחרי הגיל הזה חלה התקרה הכללית של קופות הגמל, כי קופת החיסכון לילד היא קופת גמל להשקעה: יש תקרה לדמי ניהול מהיתרה ותקרה לדמי ניהול מהפקדה, וכל חברה קובעת את השיעור שלה בתוכן. לעמית בוגר החברה רשאית להעלות את דמי הניהול רק בהודעה נפרדת ובמועד שהחוזר קובע, והנחה נשארת לפחות לתקופת המינימום.",
   "figure_names_he": {
-    "fee_after_21": "דמי ניהול שנתיים מהיתרה אחרי גיל המענק האחרון"
+    "nii_fee_to_funds": "דמי הניהול שהביטוח הלאומי משלם לקופות",
+    "balance_cap_after_21": "תקרת דמי הניהול מהיתרה אחרי גיל המענק האחרון",
+    "deposit_cap_after_21": "תקרת דמי הניהול מהפקדה אחרי גיל המענק האחרון"
   },
   "strength": "primary",
   "dimensions": [
@@ -15,14 +17,14 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "figures": {
-    "fee_after_21": {
+    "nii_fee_to_funds": {
       "value": 0.23,
       "unit": "pct_per_year",
       "source": {
-        "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
-        "title": "Harel child-savings standard bylaw, April 2026, pp.9-10, ss.31-33 (0.23% of balance, 0% of deposits); Altshuler Q&A states the same after 21",
-        "publisher": "Harel Insurance and Finance",
-        "strength": "institution"
+        "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
+        "title": "חיסכון ארוך-טווח לכל ילד וילדה – דוח הביטוח הלאומי לשנת 2025, p.1: \"ולקופות הגמל דמי ניהול בשיעור של 0.23% לשנה מהכספים הצבורים בקופות\"",
+        "publisher": "National Insurance Institute (BTL)",
+        "strength": "primary"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -33,11 +35,53 @@
         "CS-18"
       ],
       "state": "sourced",
-      "notes": "Yearly fee on the balance once the child is 21 (until 21 the National Insurance Institute pays the cost, at 0.23% a year to provident funds per the NII 2025 report, p.1, primary). Institution strength for the after-21 rate: Harel's bylaw and an Altshuler Q&A; whether 0.23% holds at all nine or ten managers was not checked (open question 8). A manager may raise it after 21 by notice (Harel s.33). The rule-level strength 'primary' is the law s.74ב(ה) (NII bears the cost); this figure is institution."
+      "notes": "What NII pays provident funds a year, as a share of the accumulated assets, until the child is 21 (law 74ב(ה): NII bears the cost). Set by NII under the programme's tender, not by a manager, and not charged to the member."
+    },
+    "balance_cap_after_21": {
+      "value": 1.05,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131), p.4, reg. 2(א)(1)",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "CS-18",
+        "PF-02"
+      ],
+      "state": "sourced",
+      "notes": "The cap on the yearly fee from the balance once NII stops paying (age 21): the child-savings fund is a kupat gemel lehashkaa to which every kupat gemel lehashkaa provision applies (circular 2022-9-29 s.1), reg. 2(ב)'s exclusion list does not name it (Nevo consolidated text), and the CMA standard child bylaw caps the rate at the legislative maximum (s.31.1)."
+    },
+    "deposit_cap_after_21": {
+      "value": 4,
+      "unit": "pct_of_deposit",
+      "source": {
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131), p.4, reg. 2(א)(2)",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "CS-18",
+        "PF-02"
+      ],
+      "state": "sourced",
+      "notes": "The cap on the fee from each deposit after 21, on the same reasoning as balance_cap_after_21."
     }
   },
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
@@ -80,6 +124,47 @@
       "checked": "2026-10-25"
     },
     {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-304/he/Provident%20fund%20for%20long-term%20child%20savings.pdf",
+      "title": "חוזר גופים מוסדיים 2022-9-29 – קופת גמל להשקעה לחיסכון ארוך טווח לילד – תיקון, 28.9.2022",
+      "title_he": "חוזר גופים מוסדיים 2022-9-29 – קופת גמל להשקעה לחיסכון ארוך טווח לילד – תיקון, 28.9.2022",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.3, annex s.1",
+      "page": 3,
+      "quote": "ויחולו עליה כל ההוראות החלות על קופת גמל להשקעה בהתאם להוראות הדין ובכלל כך הוראות הממונה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.4, reg. 2(א)(1)-(2); 2(ב)",
+      "locator_he": "עמוד 4, תקנה 2(א)(1)-(2); 2(ב)",
+      "page": 4,
+      "quote": "מן היתרה הצבורה בחשבונו של כל עמית בשיעור שלא יעלה על 1.05% לשנה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1056/he/regulation_h2016-9-20a.pdf",
+      "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד (נספח לחוזר גופים מוסדיים 2016-9-20)",
+      "title_he": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד (נספח לחוזר גופים מוסדיים 2016-9-20)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.9, s.31.1",
+      "locator_he": "עמוד 9, סעיף 31.1",
+      "page": 9,
+      "quote": "בשיעור ____ שאינו עולה על שיעור או סכום דמי הניהול השנתי המרבי הקבוע בהסדר התחיקתי",
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/sum.aspx",
       "title": "ביטוח לאומי: סכום החיסכון - תכנית חיסכון לכל ילד",
       "title_he": "ביטוח לאומי: סכום החיסכון - תכנית חיסכון לכל ילד",
@@ -100,27 +185,15 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
-      "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד: הראל חיסכון לכל ילד, מהדורה 3, 04/2026",
-      "title_he": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד: הראל חיסכון לכל ילד, מהדורה 3, 04/2026",
-      "publisher": "Harel",
-      "publisher_he": "הראל",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "pp.9-10, s.31-33",
-      "locator_he": "עמודים 9 עד 10, סעיף 31-33",
-      "page": 9,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.as-invest.co.il/interstedin/%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%95%D7%94%D7%A9%D7%A7%D7%A2%D7%94/%D7%A9%D7%90%D7%9C%D7%95%D7%AA-%D7%95%D7%AA%D7%A9%D7%95%D7%91%D7%95%D7%AA-%D7%91%D7%A0%D7%95%D7%A9%D7%90-%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%9C%D7%9B%D7%9C-%D7%99%D7%9C%D7%93/",
-      "title": "אלטשולר שחם: שאלות ותשובות בנושא חיסכון לכל ילד",
-      "title_he": "אלטשולר שחם: שאלות ותשובות בנושא חיסכון לכל ילד",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "יגבו דמי ניהול בגובה 0.23% מהיתרה בחשבונו בלבד",
+      "url": "https://www.nevo.co.il/law_html/law01/500_714.htm",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), נוסח משולב (Nevo mirror, to ק\"ת 9942)",
+      "publisher": "Nevo",
+      "publisher_he": "נבו",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "nevo",
+      "locator": "reg. 2(ב)",
+      "locator_he": "תקנה 2(ב)",
       "checked": "2026-10-25"
     }
   ]

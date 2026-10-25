@@ -139,12 +139,12 @@
       "value": 6303528,
       "unit": "nis",
       "source": {
-        "url": "https://www.meitav.co.il/provident_pension/ira/",
-        "title": "Meitav, IRA product page: \"קיימת מגבלת הפקדה בסך של 6,303,528 ₪ נכון לשנת 2026\" (read 2026-10-23)",
-        "publisher": "Meitav Gemel and Pension",
-        "strength": "institution"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=3",
+        "title": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819), p.3, reg. 2(ב): 4 × הסכום הקובע 1,575,882 = 6,303,528",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+        "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": "2026-01-01",
       "effective_to": null,
       "tax_year": 2026,
@@ -155,7 +155,7 @@
         "IRA-27"
       ],
       "state": "sourced",
-      "notes": "NOT A YEARLY DEPOSIT CEILING: the total that may sit in the member's IRA funds under reg. 2(א)(4) to (6) (index-tracking money, members who meet the pension or savings test, new accounts), four times 'הסכום הקובע' across all the member's IRA accounts, less capital money under (2) and (3). 2026 figure from Meitav's page only (institution; IRA OQ8). The 2025 draft would delete the capital and index routes and double the pension and savings tests (IRA-27). The pension-side deposit ceilings and credits of a provident fund for annuity apply to deposits (TXP-02)."
+      "notes": "NOT A YEARLY DEPOSIT CEILING: the total that may sit in the member's IRA funds under reg. 2(א)(4) to (6) (index-tracking money, members who meet the pension or savings test, new accounts), four times 'הסכום הקובע' across all the member's IRA accounts, less capital money under (2) and (3). 2026 figure computed under the regulation from primary inputs (the Tax Authority's minimum pension amount and the Ordinance's multiplier 180; IRA-08). The 2025 draft would delete the capital and index routes and double the pension and savings tests (IRA-27). The pension-side deposit ceilings and credits of a provident fund for annuity apply to deposits (TXP-02)."
     }
   },
   "deposit_side_tax": {

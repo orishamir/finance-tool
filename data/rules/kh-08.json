@@ -1,54 +1,35 @@
 {
   "id": "KH-08",
-  "title": "Self-employed deposits",
+  "title": "Self-employed deposits: only from business or profession income",
   "title_he": "הפקדות של עמית עצמאי",
-  "text_he": "עמית עצמאי מפקיד סכומים חודשיים או תקופתיים מהכנסתו החייבת מעסק או ממשלח יד, ורק אם הייתה לו הכנסה כזו. ההפקדה מתקבלת בכסף בלבד, בהעברה בנקאית לחשבון הקרן או דרך האזור האישי. כל חברה קובעת מועד אחרון בסוף השנה, ואחריו ההפקדה נספרת בשנה הבאה; נקרא רק המועד של אלטשולר שחם. השיעורים והתקרות לעצמאים מופיעים בכללי המס.",
-  "strength": "institution",
+  "text_he": "הפקדה של עמית עצמאי לקרן השתלמות מוכרת רק למי שיש לו הכנסה מעסק או ממשלח יד. ההפקדה מזכה בניכוי ממס עד שיעור מההכנסה, וההפקדה המוטבת מוגבלת בתקרה; השיעורים והתקרות מופיעים בכללי המס. כל חברה קובעת בעצמה את דרכי ההפקדה ואת המועד האחרון בסוף השנה.",
+  "strength": "primary",
   "dimensions": [
     "eligibility",
     "deposit-ceiling",
     "minimum"
   ],
-  "likely_to_change": "yes",
-  "recheck_date": "2027-01-01",
+  "likely_to_change": "no",
   "il_finance_file": "keren-hishtalmut.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
-      "url": "https://as-invest.co.il/media/khpp32k5/אלטשולר-שחם-השתלמות-תקנון-מהדורת-שינויים-דצמבר-2024.pdf",
-      "title": "Altshuler bylaws 1.12.2024",
-      "title_he": "תקנון קרן ההשתלמות של אלטשולר שחם (מהדורת דצמבר 2024)",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "s.6",
-      "locator_he": "סעיף 6",
-      "quote": "במזומנים בלבד",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://media.harel-group.co.il/media/smegncwi/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf",
-      "title": "Harel 2026 table",
-      "title_he": "תקרות וסכומים לשנת 2026 (הראל)",
-      "publisher": "Harel",
-      "publisher_he": "הראל",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.1",
-      "locator_he": "עמוד 1",
-      "page": 1,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.as-invest.co.il/interstedin/הנחיות-להפקדה-עבור-עצמאים/",
-      "title": "אלטשולר שחם – הנחיות להפקדה עבור עצמאים",
-      "title_he": "אלטשולר שחם – הנחיות להפקדה עבור עצמאים",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.8, reg. 19א(א)",
+      "locator_he": "עמוד 8, תקנה 19א(א)",
+      "page": 8,
+      "quote": "אלא אם כן הוא יחיד שיש לו הכנסות מעסק או ממשלח יד",
       "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "TXH-05",
+    "TXH-08"
   ]
 }

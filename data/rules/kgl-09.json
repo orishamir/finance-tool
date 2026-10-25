@@ -2,7 +2,7 @@
   "id": "KGL-09",
   "title": "Taking the money as an annuity: transfer to an annuity provident fund from early retirement age",
   "title_he": "קבלת הכסף כקצבה מגיל הפרישה המוקדמת",
-  "text_he": "מגיל הפרישה המוקדמת אפשר להעביר את הכסף מקופת גמל להשקעה לקופת גמל לקצבה. הכסף נכנס למסלול למקבלי קצבה בקופה המקבלת, לקבלת קצבה בלבד. גיל הפרישה המוקדמת קבוע בחוק גיל פרישה, זהה לגברים ולנשים, ומופיע בכלל המס על המסלול לפטור. נוסח התקנות והחוק נקרא באתר שמעתיק אותם; הטענה של מיטב על פטור מלא ממס לא אומתה כאן.",
+  "text_he": "מגיל הפרישה המוקדמת אפשר להעביר את הכסף מקופת גמל להשקעה לקופת גמל לקצבה. הכסף נכנס למסלול למקבלי קצבה בקופה המקבלת, לקבלת קצבה בלבד. גיל הפרישה המוקדמת קבוע בחוק גיל פרישה, זהה לגברים ולנשים. המס על הקצבה, כולל הפטור על קצבה מוכרת, נמצא בכלל המס הנפרד.",
   "strength": "primary",
   "dimensions": [
     "liquidity-lockup",
@@ -12,7 +12,7 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "kupat-gemel-lehashkaa.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/tZDvucD9RCpb4OFgftW2Mghx2FA7HU11Svr+ngxOA9o=#page=2",
@@ -55,5 +55,8 @@
       "quote": "גיל 60 לגבר ולאישה",
       "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "TXK-09"
   ]
 }

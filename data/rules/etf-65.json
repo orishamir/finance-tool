@@ -1,0 +1,93 @@
+{
+  "id": "ETF-65",
+  "title": "IBI, Kesem, MTF and Mor: what their swap funds' reports show about benchmarks, swap costs and tax expenses",
+  "title_he": "אי.בי.אי, קסם, MTF ומור: מה מראים הדוחות של קרנות ההחלף",
+  "text_he": "באי.בי.אי, בקסם, ב־MTF ובמור, קרנות ההחלף שנבדקו עוקבות אחרי גרסת הנטו של המדד. אי.בי.אי כותבת שעסקאות ההחלף כרוכות בעלויות, ומנגד הקרן מחזיקה מזומן, פיקדונות, אג״ח ומק״מ בגובה העסקה, והפער בין העלויות לריבית יכול להיות חיובי או שלילי; קסם מונה בין סיבות הפער מהמדד עלויות מרווח וריבית של עסקאות ההחלף. שורת הוצאות המס בדוחות של הקרנות האלה כמעט אפסית, ואף דוח לא מפרסם את עלות העסקה כמספר. זו תצפית על הדוחות של כמה קרנות, לא סקר.",
+  "strength": "institution",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "fee-management-balance"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-30",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
+      "title": "IBI ETF annual report 31.12.2025",
+      "title_he": "דוח שנתי ליום 31.12.2025 של אי.בי.אי. סל (4D) S&P 500",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "אי.בי.אי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.2-3, 9",
+      "locator_he": "עמודים 2 עד 3, 9",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727505-00.pdf",
+      "title": "קסם, דוח שנתי \"קסם MSCI AC World (4A) ETF מנוטרלת דולר\" (1147362), 31.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.11",
+      "locator_he": "עמוד 11",
+      "page": 11,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1729001-1730000/P1729627-00.pdf",
+      "title": "MTF, דוח שנתי \"MTF מחקה (MSCI World (4D\" (5122569), 31.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.9",
+      "locator_he": "עמוד 9",
+      "page": 9,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1730001-1731000/P1730711-00.pdf",
+      "title": "MTF, דוח שנתי \"MTF מחקה (Nasdaq 100 (4D\" (5134531), 31.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.9",
+      "locator_he": "עמוד 9",
+      "page": 9,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1729001-1730000/P1729977-00.pdf",
+      "title": "מור, דוח שנתי \"מור מחקה (4D)י NASDAQ 100\" (5117585), 31.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.8",
+      "locator_he": "עמוד 8",
+      "page": 8,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732496-00.pdf",
+      "title": "אי.בי.אי., דוח שנתי \"אי.בי.אי. מחקה (4D)י MSCI AC World\" (5139605), 31.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.3, 8",
+      "locator_he": "עמודים 3, 8",
+      "page": 3,
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "ETF-53"
+  ]
+}

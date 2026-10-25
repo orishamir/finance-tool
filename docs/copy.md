@@ -280,6 +280,7 @@ Added 2026-10-23 (added 2026-10-23, for the founder's review). The lines of the 
 | `guideBlocks.exit.otherKind` | לפי התנאים שבנוסח שלמטה | a kind without its figure |
 | `guideBlocks.exit.textNote` | הנוסח המלא, כפי שהוא במקור: | disclosure over the record's own text. Was "ברשומה" (a data word) |
 | `guideBlocks.exit.labelDays · upTo · businessDays` | תוך כמה זמן הכסף אצלכם · עד · ימי עסקים | the payout row: "עד `{ימים}` ימי עסקים" |
+| `guideBlocks.exit.onlyAt` (before · after) | כך אצל `{שם}`; אצל האחרים לא נבדק | 2026-10-25 (D30): the line under a payout time that is one company's own term (child savings in a bank: Bank Leumi's), naming the company |
 | `guideBlocks.exit.labelSwitch` | מעבר בין מסלולים | row label |
 | `guideBlocks.exit.labelCeiling` | תקרת הפקדה | row label, yearly or monthly cap |
 | `guideBlocks.fees.balance` | דמי ניהול מחיסכון · כל שנה, מכל הכסף שנצבר · בשנה | name · what it is charged on · word after the cap |
@@ -451,7 +452,7 @@ Why "בשקלים של העתיד" rather than "נומינלי": the reader sees
 | `formulaNames.F-43` | מס נוסף על הכנסה גבוהה |  |
 | `formulaNames.F-44` | מס במשיכה מקופת גמל להשקעה |  |
 | `formulaNames.F-67` | הגרף בעמודי המדריך |  |
-| `flags.G-02` | בסיס המס במשיכה: החוק לא אומר במפורש אם המס הוא על הרווח הריאלי. האתר מחשב לפי מה שהחברות המנהלות מנכות, ומציג גם את החלופה. | flags, one line each |
+| `flags.G-02` | בסיס המס במשיכה: לפי החוק המס הוא על הרווח הריאלי, כי חלק ההצמדה פטור. האתר מציג גם את החלופה של שיעור נמוך יותר על הרווח הנומינלי, שלפי דברי ההסבר לחוק לא חלה כאן. | flags, one line each |
 | `flags.G-11` | דמי ביטוח לאומי על הרווח במשיכה: עוד לא ברור אם חלים. האתר לא מחשב אותם. |  |
 | `flags.G-14` | הוצאות ישירות של המסלול לא נאספו עדיין, ולכן לא נכללו בחישוב. |  |
 | `flags.G-21` | חלק מהמס מוסדר דרך דוח שנתי, לא בניכוי במקור. |  |

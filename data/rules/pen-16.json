@@ -2,11 +2,11 @@
   "id": "PEN-16",
   "title": "What happens when deposits stop: insurance extension and insurance arrangement",
   "title_he": "כשההפקדות נפסקות: ארכת ביטוח והסדר ביטוח",
-  "text_he": "כשעמית מפסיק להיות פעיל (בלי הפקדות), הביטוח נמשך אוטומטית לתקופת ארכת הביטוח, והעלות יורדת מהיתרה. לפני תום הארכה העמית רשאי לבקש הסדר ביטוח: שמירת הכיסוי בתשלום מהיתרה או בהפקדה, לתקופה מוגבלת מסיום הפעילות כולל הארכה, או קצרה יותר אם היה פעיל פחות זמן. שניהם מסתיימים כשההפקדות מתחדשות, כשכספי התגמולים עוברים לקרן אחרת, לבקשת העמית, כשהיתרה לא מספיקה, במוות, בגיל תום הביטוח או עם תחילת קצבה; אחרי זה העמית לא מבוטח, וחידוש אחרי הפסקה ארוכה דורש הצטרפות מחדש, אולי עם חיתום רפואי, ותקופת אכשרה חדשה. הכלל לקוח מתקנון של חברה מנהלת אחת.",
+  "text_he": "כשעמית מפסיק להיות פעיל (בלי הפקדות), הכיסוי הביטוחי נשמר אוטומטית לתקופת ארכת הביטוח, והעלות יורדת מהיתרה או משולמת. לפני תום הארכה העמית רשאי לבקש הסדר ביטוח: שמירת הכיסוי בתשלום מהיתרה או בהפקדה, לתקופה מוגבלת מסיום הפעילות, או קצרה יותר אם רצף ההפקדות האחרון היה קצר יותר. שניהם מסתיימים כשההפקדות מתחדשות, כשכספי התגמולים עוברים לקרן אחרת, לבקשת העמית, כשהיתרה לא מספיקה, במוות, בגיל תום הביטוח או עם תחילת קצבה; אחרי זה העמית לא מבוטח, וחידוש אחרי הפסקה ארוכה נכנס למסלול ברירת המחדל, עם גיל התחלת כיסוי חדש ותקופת אכשרה חדשה. כך קובע התקנון האחיד של רשות שוק ההון.",
   "figure_names_he": {
     "insurance_extension_months": "ארכת ביטוח אחרי הפסקת ההפקדות (חודשים)"
   },
-  "strength": "institution",
+  "strength": "primary",
   "dimensions": [
     "insurance-cover",
     "liquidity-lockup"
@@ -17,38 +17,54 @@
       "value": 5,
       "unit": "months",
       "source": {
-        "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-        "title": "Mor comprehensive pension fund bylaws, version 01.06.2025, p.37, s.36 (\"ארכת ביטוח\")",
-        "publisher": "Mor Gemel and Pension",
-        "strength": "institution"
+        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+        "title": "חוזר פנסיה 2016-3-4, נספח ב' (CMA standard pension bylaw, January 2018 edition, copy on prisha.co.il), p.28, s.36(א): \"כיסוי ביטוחי לעמית שחדל להיות עמית פעיל בקרן יישמר לתקופה של חמישה חדשים מלאים ורצופים\"",
+        "publisher": "Prisha.co.il (copy of CMA pension circular 2016-3-4, annex ב)",
+        "strength": "primary-mirror"
       },
       "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "provider-set",
+      "update_rule": "fixed in regulation",
       "rule_ids": [
         "PEN-16"
       ],
       "state": "sourced",
-      "notes": "After deposits stop, insurance continues automatically for five full consecutive months with the cost deducted from the balance; an insurance arrangement may then keep cover for up to 24 months from the end of activity. Bylaws-level (Mor); other funds not read (open question 13)."
+      "notes": "After deposits stop, insurance continues automatically for five full consecutive months, with the cost from the tagmulim balance or a payment (s.36(ב)); an insurance arrangement may then keep cover for up to 24 consecutive months, or the length of the last run of deposits (s.37). Every comprehensive fund writes its bylaws on this text (circular 2016-3-4, s.2(א))."
     }
   },
   "il_finance_file": "pension-and-gemel-lekitzba.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "title": "Mor comprehensive bylaws 01.06.2025",
-      "title_he": "תקנון קרן הפנסיה המקיפה של מור (מהדורת 1.6.2025)",
-      "publisher": "Mor Investment House",
-      "publisher_he": "מור גמל ופנסיה",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "sections 13(א), 28, 36, 37, pp.18, 30, 37-38",
-      "locator_he": "סעיפים 13(א), 28, 36, 37, עמודים 18, 30, 37-38",
-      "page": 18,
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4.pdf",
+      "title": "חוזר פנסיה 2016-3-4 – הוראות לעניין זכויות וחובות עמיתים בתקנון קרן פנסיה חדשה מקיפה, 29.9.2016",
+      "title_he": "חוזר פנסיה 2016-3-4 – הוראות לעניין זכויות וחובות עמיתים בתקנון קרן פנסיה חדשה מקיפה, 29.9.2016",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.1, s.2(א)",
+      "locator_he": "עמוד 1, סעיף 2(א)",
+      "page": 1,
+      "quote": "חברה מנהלת תקבע את נוסח תקנון קרן הפנסיה המקיפה שבניהולה בהתאם לנוסח התקנון המצורף",
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)",
+      "publisher": "Prisha.co.il",
+      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "pp.28-29, ss.36-37",
+      "locator_he": "עמודים 28 עד 29, סעיפים 36-37",
+      "page": 28,
+      "quote": "כיסוי ביטוחי לעמית שחדל להיות עמית פעיל בקרן יישמר לתקופה של חמישה חדשים מלאים ורצופים",
+      "checked": "2026-10-25",
+      "qualifier": "(third-party host)"
     }
   ]
 }

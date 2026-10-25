@@ -68,7 +68,8 @@ describe("F-52 employer line, keren hishtalmut (S23, S25)", () => {
     g.value("employer line nominal", line.nominal, 139_405.39);
     g.done();
     expect(labelOf(line, "TXG-35")).toBe("reading");
-    expect(labelOf(line, "TXH-11")).toBe("institution-source");
+    // 2026-10-25 scope pass: TXH-11's real base now rests on the Chief Economist paper (primary), so no institution label.
+    expect(labelOf(line, "TXH-11")).toBeUndefined();
     expect(line.ranked).toBe(false);
   });
 
@@ -218,7 +219,8 @@ describe("F-31, F-32, F-53, F-49 pension (S27, S28, S29)", () => {
     expect(r.exit.ruleIds).toEqual(expect.arrayContaining(["TXP-14", "TXP-15", "PEN-27"]));
     expect(r.taxAtExit).toBe(0);
     expect(flagCodes(r)).toEqual(expect.arrayContaining(["G-03", "G-12"]));
-    expect(labelOf(r, "PEN-15")).toBe("institution-source");
+    // 2026-10-25 scope pass: PEN-15 now rests on the CMA standard pension bylaw and the Codex, not on one fund's bylaws, so no institution label.
+    expect(labelOf(r, "PEN-15")).toBeUndefined();
     // Year 1 is an employee below the 16% test (F-31); year 5 crosses it (F-32) with no effect on the relief,
     // as the independent check finds: all salary is insured income, so the s.45A(e) cap is the same.
     expect(r.years[0]!.formula).toBe("F-31");
