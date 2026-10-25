@@ -166,3 +166,15 @@ All ways hold the same index, so the return mostly cancels. What differs is fees
 2. For the index step: explain only, or also a site default that is marked as the site's judgement (a parameter, like P-05)?
 3. Where the first person's door lives: the first page, the index pages, or both.
 4. Whether "where is your account today" becomes a standing question that turns every way answer into stay-or-move.
+
+### 9.6 The founder's direction (2026-10-25, later)
+- **Exchange rates are the site's (D26).** They come from the ECB's daily reference rates, with the dollar computed as a cross rate. The person never types a rate.
+- **No index is ever recommended (D27).** The index chips start with none chosen. The comparison's securities-account card stops pricing silently on the S&P 500: it asks for the index, or shows the result per index.
+- **The way screen is a new top-level page,** next to מדריך, שאלות שכולם שואלים, חברות ומסלולים, השוואה למטרה and מה כבר יש לכם. It is a long-term comparison like lazyinvestor.co.il's trading-fees calculator, which compares two providers on fees the person types in. Here every provider's tariff and every fund's report is already in the data.
+  - The person who knows the index goes to this page.
+  - The person who came from a goal sees a one-line summary on the comparison card, the cheapest way for the index they chose, and a link to the page with the plan already filled in.
+  - Both are one calculation, so the numbers agree.
+- Still to settle:
+  - the page's name (proposed: "השקעה במדד");
+  - whether index tracks inside savings products (kupat gemel lehashkaa, study fund, IRA) appear as rows beside the securities-account ways;
+  - 9.5 question 1 (ranking without an entered return).
