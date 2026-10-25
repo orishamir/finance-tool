@@ -2,7 +2,7 @@
   "id": "agrt-bvnds",
   "he": "אגרת בונדס",
   "en": null,
-  "meaning": "אגרת חוב דולרית של מדינת ישראל שמוצעת בארצות הברית; ההעברה מוגבלת, ופדיון מוקדם רק במקרים מוגדרים.",
+  "meaning": "איגרת חוב של מדינת ישראל במטבע חוץ שלא נסחרת, ונמכרת דרך ארגון הבונדס, בעיקר ללקוחות פרטיים.",
   "where": [],
   "wrapper_ids": [],
   "variants": [],
@@ -11,10 +11,10 @@
     "FXD-16"
   ],
   "source": {
-    "url": "https://israelbonds.com/wp-content/uploads/2025/10/2025-Jubilee-Savings.pdf",
-    "title": "State of Israel Savings Bonds (Tenth Series) / Jubilee (Thirteenth Series), prospectus supplement 1 Aug 2025",
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf",
+    "title": "החשב הכללי, היחידה לניהול החוב הממשלתי, הדו\"ח השנתי 2024, \"הנפקות באמצעות ארגון הבונדס\", עמ' 42",
     "publisher": "see title",
-    "strength": "institution",
-    "checked": "2026-10-22"
+    "strength": "primary",
+    "checked": "2026-10-26"
   }
 }

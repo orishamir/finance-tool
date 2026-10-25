@@ -2,7 +2,7 @@
   "id": "ktzbt-zknh",
   "he": "קצבת זקנה",
   "en": null,
-  "meaning": "התשלום החודשי שקרן הפנסיה משלמת מהכסף שנצבר בחשבון, מהגיל שבו מותר להתחיל לקבל אותו",
+  "meaning": "התשלום החודשי שקרן הפנסיה משלמת מהכסף שנצבר בחשבון, מהגיל שבו מותר להתחיל לקבל אותו או מאוחר יותר, לפי בחירתכם",
   "where": [
     "statement"
   ],
@@ -17,10 +17,10 @@
     "PEN-27"
   ],
   "source": {
-    "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-    "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+    "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+    "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 32 עד 33, ס' 42, 45 ו-46",
     "publisher": "see title",
-    "strength": "institution",
-    "checked": "2026-10-22"
+    "strength": "primary-mirror",
+    "checked": "2026-10-26"
   }
 }

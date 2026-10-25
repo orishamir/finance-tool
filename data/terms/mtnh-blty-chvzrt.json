@@ -2,7 +2,7 @@
   "id": "mtnh-blty-chvzrt",
   "he": "מתנה בלתי חוזרת",
   "en": null,
-  "meaning": "הנוסח של מיטב לפתיחת קופה על שם מישהו אחר, למשל ילד: לפי מיטב, הכסף כבר לא שלכם ואי אפשר לקחת אותו בחזרה",
+  "meaning": "הנוסח של מיטב לפתיחת קופת גמל להשקעה על שם אדם אחר: לפי מיטב זו מתנה שאי אפשר לחזור ממנה, ורק אותו אדם מנהל ומושך את הכסף, אלא אם הוא קטין",
   "where": [
     "ad"
   ],
@@ -11,14 +11,14 @@
   ],
   "variants": [],
   "rule_ids": [
-    "KGL-26",
-    "KGL-21"
+    "KGL-21",
+    "KGL-26"
   ],
   "source": {
     "url": "https://www.meitav.co.il/provident_pension/provident_invest/",
-    "title": "Meitav, קופת גמל להשקעה product page",
+    "title": "מיטב: קופת גמל להשקעה",
     "publisher": "see title",
     "strength": "institution",
-    "checked": "2026-10-22"
+    "checked": "2026-10-26"
   }
 }

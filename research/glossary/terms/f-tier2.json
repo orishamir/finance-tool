@@ -424,13 +424,13 @@
   {
     "term_he": "צמוד דולר",
     "term_source": {
-      "title": "Bank Yahav, rate board 13_26, effective 06/10/2026",
-      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf"
+      "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל), ס' 1, 2(ד) ו-7(א)(5)",
+      "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf"
     },
     "variants_he": [
       "צמודי מט\"ח"
     ],
-    "explain_he": "פיקדון בשקלים שערכו עוקב אחרי שער הדולר; בחלק מהמוצרים הקרן אינה מובטחת.",
+    "explain_he": "פיקדון בשקלים שצמוד לשער הדולר; הבנק צריך לגלות אם ההצמדה חלה רק כשהשער עולה או גם כשהוא יורד.",
     "blocking_questions": [
       "FXD OQ5: deposit agreements unread (linkage when the dollar falls, whether principal can fall)",
       "TX2 OQ1: tax when the currency weakens",
@@ -443,10 +443,10 @@
       "TX2-01"
     ],
     "source": {
-      "title": "Bank Yahav, rate board 13_26, effective 06/10/2026",
-      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל), ס' 1, 2(ד) ו-7(א)(5)",
+      "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary"
     },
     "where": [
       "tier2-page"
@@ -456,13 +456,13 @@
   {
     "term_he": "פיקדון מובנה",
     "term_source": {
-      "title": "FIBI, פיקדונות מובנים page",
-      "url": "https://www.fibi.co.il/private/depositsandsavings/structured/"
+      "title": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ\"ה-1995, ס' 1, \"מוצר מובנה\" (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות"
     },
     "variants_he": [
       "פיקדונות מובנים"
     ],
-    "explain_he": "פיקדון בבנק שהרווח בו תלוי בתנועה של מדד, מניה או שער מטבע; הקרן בדרך כלל מובטחת.",
+    "explain_he": "פיקדון שהתשואה עליו או הסיכון בו נקבעים לפי נוסחה שתלויה במדד, במחיר של ניירות ערך או סחורות, בריבית או בשערי מטבע; בחוק זה ״מוצר מובנה״.",
     "blocking_questions": [
       "TX2 OQ5: tax classification and rate of the structured payout (named in method G-24)",
       "FXD OQ6: whether a guaranteed-principal deposit with a conditional grant is a 'מוצר מובנה' in law",
@@ -476,10 +476,10 @@
       "TX2-05"
     ],
     "source": {
-      "title": "FIBI, פיקדונות מובנים page",
-      "url": "https://www.fibi.co.il/private/depositsandsavings/structured/",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ\"ה-1995, ס' 1, \"מוצר מובנה\" (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "tier2-page"
@@ -514,13 +514,13 @@
   {
     "term_he": "מענק",
     "term_source": {
-      "title": "FIBI, פיקדונות מובנים page",
+      "title": "הבינלאומי: פיקדונות מובנים",
       "url": "https://www.fibi.co.il/private/depositsandsavings/structured/"
     },
     "variants_he": [
       "מענק מותנה"
     ],
-    "explain_he": "תוספת תשואה בפיקדון מובנה שמשולמת רק אם תנאי שוק שנקבע מראש מתקיים.",
+    "explain_he": "בפיקדון מובנה: תוספת שמשולמת רק אם מתקיים תנאי שוק שנקבע בתנאי המוצר; כך קורא לה הבינלאומי.",
     "blocking_questions": [
       "TX2 OQ5: how the grant is classified and taxed",
       "FXD OQ6: legal status of a conditional grant on guaranteed principal"
@@ -531,9 +531,9 @@
       "TX2-05"
     ],
     "source": {
-      "title": "FIBI, פיקדונות מובנים page",
+      "title": "הבינלאומי: פיקדונות מובנים",
       "url": "https://www.fibi.co.il/private/depositsandsavings/structured/",
-      "checked": "2026-10-22",
+      "checked": "2026-10-26",
       "strength": "institution"
     },
     "where": [
@@ -548,7 +548,7 @@
       "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf"
     },
     "variants_he": [],
-    "explain_he": "אגרת חוב דולרית של מדינת ישראל שמוצעת בארצות הברית; ההעברה מוגבלת, ופדיון מוקדם רק במקרים מוגדרים.",
+    "explain_he": "איגרת חוב של מדינת ישראל במטבע חוץ שלא נסחרת, ונמכרת דרך ארגון הבונדס, בעיקר ללקוחות פרטיים.",
     "blocking_questions": [
       "FXD OQ10: whether Israeli residents may buy them, and through whom",
       "GOV OQ11: same question in government-bonds-and-makam.md",
@@ -559,10 +559,10 @@
       "FXD-16"
     ],
     "source": {
-      "title": "State of Israel Savings Bonds (Tenth Series) / Jubilee (Thirteenth Series), prospectus supplement 1 Aug 2025",
-      "url": "https://israelbonds.com/wp-content/uploads/2025/10/2025-Jubilee-Savings.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "החשב הכללי, היחידה לניהול החוב הממשלתי, הדו\"ח השנתי 2024, \"הנפקות באמצעות ארגון הבונדס\", עמ' 42",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary"
     },
     "where": [
       "tier2-page"
@@ -576,7 +576,7 @@
       "url": "https://www.as-invest.co.il/"
     },
     "variants_he": [],
-    "explain_he": "ארנק תשלומים דיגיטלי שמחזיק יתרות במטבעות זרים; התנאים שלו אינם מגדירים את היתרה כפיקדון.",
+    "explain_he": "כך קוראת לאיה (LAYA) לחשבון התשלום הדיגיטלי שלה, שמחזיק יתרות בכמה מטבעות; בתנאי השימוש שלה היתרה לא נקראת פיקדון.",
     "blocking_questions": [
       "coverage.md F7: whether payment-wallet balances are in scope at all",
       "FXD OQ9: safeguarding of wallet balances and the ISA licence list"
@@ -588,7 +588,7 @@
     "source": {
       "title": "LAYA, תנאי השימוש בשירות, effective March 2026",
       "url": "https://laya.as-invest.co.il/Pages/additional-info/terms-of-use-service",
-      "checked": "2026-10-22",
+      "checked": "2026-10-26",
       "strength": "institution"
     },
     "where": [
@@ -763,13 +763,13 @@
   {
     "term_he": "הסדר חוב",
     "term_source": {
-      "title": "Midroog, סולמות והגדרות הדירוג של מידרוג, August 2026, p. 13",
-      "url": "https://midroogcoil.blob.core.windows.net/midroog-public-website-media/1566e0dd-2015-48f2-aa4c-560446ecabc2_סולמות%20והגדרות%20הדירוג%20של%20מידרוג%20060826%20נקי.pdf"
+      "title": "חוק חדלות פירעון ושיקום כלכלי, התשע\"ח-2018, ס' 318 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_חדלות_פירעון_ושיקום_כלכלי"
     },
     "variants_he": [
       "הסדר חוב מהותי"
     ],
-    "explain_he": "שינוי בתנאי אגרות החוב כשהמנפיק בקשיים, כך שמשולם פחות ממה שהובטח במקור.",
+    "explain_he": "הסדר בין חייב, למשל חברה שהנפיקה איגרות חוב, לבין הנושים שלו, שמשנה את תנאי הפירעון של החוב.",
     "blocking_questions": [
       "TX2 OQ6: loss timing, unpaid accrued interest, withholding in a settlement",
       "CORP OQ10: no official default history",
@@ -782,10 +782,10 @@
       "TX2-08"
     ],
     "source": {
-      "title": "Midroog, סולמות והגדרות הדירוג של מידרוג, August 2026, p. 13",
-      "url": "https://midroogcoil.blob.core.windows.net/midroog-public-website-media/1566e0dd-2015-48f2-aa4c-560446ecabc2_סולמות%20והגדרות%20הדירוג%20של%20מידרוג%20060826%20נקי.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "חוק חדלות פירעון ושיקום כלכלי, התשע\"ח-2018, ס' 318 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_חדלות_פירעון_ושיקום_כלכלי",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "tier2-page"
@@ -858,13 +858,13 @@
   {
     "term_he": "תיק השקעות דיגיטלי",
     "term_source": {
-      "title": "Meitav, מיטב מנג'ר product page",
-      "url": "https://www.meitav.co.il/portfolio_management/manager/"
+      "title": "רשות ניירות ערך, הוראה לבעלי רישיון בקשר למתן שירותים תוך שימוש באמצעים טכנולוגיים, ס' 11 עד 18",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/horaa7822.pdf"
     },
     "variants_he": [
       "ניהול תיק השקעות דיגיטלי"
     ],
-    "explain_he": "תיק השקעות מנוהל שמצטרפים אליו באינטרנט; שאלון קובע את רמת הסיכון ומדיניות ההשקעה.",
+    "explain_he": "ניהול תיק השקעות שניתן באופן מקוון: את בירור הצרכים ואת ההסכם עושים באינטרנט, ואלגוריתם יכול לקבוע את רמת הסיכון ומדיניות ההשקעה.",
     "blocking_questions": [
       "MGD OQ1: which licensees offer digital or low-minimum portfolios",
       "MGD OQ2: ISA technology directive text not read",
@@ -879,10 +879,10 @@
       "MGD-21"
     ],
     "source": {
-      "title": "Meitav, מיטב מנג'ר product page",
-      "url": "https://www.meitav.co.il/portfolio_management/manager/",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "רשות ניירות ערך, הוראה לבעלי רישיון בקשר למתן שירותים תוך שימוש באמצעים טכנולוגיים, ס' 11 עד 18",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/horaa7822.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary"
     },
     "where": [
       "tier2-page"
@@ -957,13 +957,13 @@
   {
     "term_he": "השקעה בזהב דרך קרנות סל",
     "term_source": {
-      "title": "Meitav, תנודתיות בשווקים? אפשרות להשקעה בזהב דרך קרנות סל, 29.9.2025",
-      "url": "https://www.meitav.co.il/portfolio_management/study/investing_in_gold_through_etfs/"
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, ס' 1, \"קרן מחקה\" ו\"קרן סל\" (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות"
     },
     "variants_he": [
       "השקעה בזהב דרך שוק ההון"
     ],
-    "explain_he": "קרן נאמנות או קרן סל שעוקבת אחרי מחיר הזהב, במקום החזקה ישירה של זהב פיזי.",
+    "explain_he": "השקעה בקרן מחקה או בקרן סל שמטרתה תוצאות לפי השינוי במחיר הזהב, במקום להחזיק זהב בעצמכם.",
     "blocking_questions": [
       "RG OQ8: how each Israeli gold fund holds its exposure, and a complete list",
       "RG OQ9: unexplained variable-fee field on one ETF",
@@ -982,10 +982,10 @@
       "TX2-14"
     ],
     "source": {
-      "title": "Meitav, תנודתיות בשווקים? אפשרות להשקעה בזהב דרך קרנות סל, 29.9.2025",
-      "url": "https://www.meitav.co.il/portfolio_management/study/investing_in_gold_through_etfs/",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, ס' 1, \"קרן מחקה\" ו\"קרן סל\" (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "tier2-page"
@@ -1021,22 +1021,22 @@
   {
     "term_he": "LBMA Gold Price AM / PM",
     "term_source": {
-      "title": "ICE Benchmark Administration, LBMA Gold Price and LBMA Silver Price Methodology",
+      "title": "ICE Benchmark Administration, LBMA Gold Price and LBMA Silver Price Methodology, paras 1, 3, 4",
       "url": "https://www.ice.com/publicdocs/LBMA_Gold_Price_and_LBMA_Silver_Price_Calculation_Methodology.pdf"
     },
     "variants_he": [
       "LBMA Gold Price AM",
       "LBMA Gold Price PM"
     ],
-    "explain_he": "מחיר הזהב בדולרים שנקבע פעמיים ביום במכרז בלונדון, בבוקר ואחר הצהריים.",
+    "explain_he": "מחיר הייחוס העולמי לזהב, שנקבע בדולרים במכרז אלקטרוני בלונדון פעמיים ביום, בבוקר (AM) ואחר הצהריים (PM); מנהלת אותו ICE Benchmark Administration.",
     "blocking_questions": [],
     "rule_ids": [
       "RG-18"
     ],
     "source": {
-      "title": "ICE Benchmark Administration, LBMA Gold Price and LBMA Silver Price Methodology",
+      "title": "ICE Benchmark Administration, LBMA Gold Price and LBMA Silver Price Methodology, paras 1, 3, 4",
       "url": "https://www.ice.com/publicdocs/LBMA_Gold_Price_and_LBMA_Silver_Price_Calculation_Methodology.pdf",
-      "checked": "2026-10-22",
+      "checked": "2026-10-26",
       "strength": "institution"
     },
     "where": [
@@ -1047,11 +1047,11 @@
   {
     "term_he": "ETC",
     "term_source": {
-      "title": "iShares Physical Gold ETC factsheet, September 2026",
-      "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/sgln-ishares-physical-gold-etc-fund-fact-sheet-en-gb.pdf"
+      "title": "ESMA, Q&A 1275 (MiFID II, position limits): securitised derivatives and ETCs, 23.9.2022",
+      "url": "https://www.esma.europa.eu/publications-data/questions-answers/1275"
     },
     "variants_he": [],
-    "explain_he": "נייר ערך שמגובה במתכת, כמו זהב, שמוחזקת עבורו; אם הגיבוי לא מספיק, יתרת התביעות לא משולמת.",
+    "explain_he": "איגרת חוב שהמנפיק מגבה בהשקעה ישירה בסחורות או בחוזים עליהן, ומחירה קשור לביצועי הסחורה.",
     "blocking_questions": [
       "RG OQ11: custodian, vault and what happens if the issuer fails",
       "RG OQ13: whether any physically backed gold ETC is listed on TASE",
@@ -1063,10 +1063,10 @@
       "TX2-14"
     ],
     "source": {
-      "title": "iShares Physical Gold ETC factsheet, September 2026",
-      "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/sgln-ishares-physical-gold-etc-fund-fact-sheet-en-gb.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "ESMA, Q&A 1275 (MiFID II, position limits): securitised derivatives and ETCs, 23.9.2022",
+      "url": "https://www.esma.europa.eu/publications-data/questions-answers/1275",
+      "checked": "2026-10-26",
+      "strength": "primary"
     },
     "where": [
       "tier2-page"

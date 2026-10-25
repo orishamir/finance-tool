@@ -2,7 +2,7 @@
   "id": "bytvch-chyym-kbvtzty",
   "he": "ביטוח חיים קבוצתי",
   "en": null,
-  "meaning": "ביטוח למקרה פטירה שחלק מקרנות ההשתלמות מציעות; התשלום עליו יורד מהכסף שבקרן",
+  "meaning": "ביטוח למקרה פטירה שקופה יכולה לקבוע לעמיתים בתקנון שלה; דמי הביטוח נגבים מהכסף שבקופה או מההפקדות אליה",
   "where": [
     "bylaws",
     "statement"
@@ -15,10 +15,10 @@
     "KH-25"
   ],
   "source": {
-    "url": "https://harel-group.co.il/long-term-savings/study-funds/plans/harel-funds/doclib/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%95%d7%a4%d7%94/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a8%d7%90%d7%9c%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa-%20%d7%9c%d7%90%d7%97%d7%a8%20%d7%94%d7%9e%d7%99%d7%96%d7%95%d7%92/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa%20%2007.2024.pdf",
-    "title": "Harel, תקנון קרן השתלמות, fund 154, edition 07/2024",
+    "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+    "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ס' 16(ד)(6) ו-32(א)(3) (Wikisource mirror)",
     "publisher": "see title",
-    "strength": "institution",
-    "checked": "2026-10-22"
+    "strength": "primary-mirror",
+    "checked": "2026-10-26"
   }
 }

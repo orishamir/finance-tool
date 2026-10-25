@@ -9,3 +9,4 @@ coverage/
 # Personal Claude Code permissions (2026-10-25)
 .claude/settings.local.json
 .claude/worktrees/
+research/knowledge/2026-10-25-scope/tools/work/
