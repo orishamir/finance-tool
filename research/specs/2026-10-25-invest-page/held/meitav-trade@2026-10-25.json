@@ -1,0 +1,526 @@
+{
+  "id": "meitav-trade",
+  "provider": {
+    "name_he": "מיטב טרייד בע\"מ",
+    "class": "broker",
+    "regulator": "ISA",
+    "tase_member": true,
+    "protection_rule_ids": [
+      "BRK-07",
+      "BRK-08",
+      "BRK-09",
+      "BRK-12",
+      "BRK-13",
+      "REG-16"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.meitav.co.il/media/zitlfr4f/%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-42026.pdf",
+    "title": "התעריפון המלא של מיטב טרייד, 'גרסת 04/2026' (קובץ 'עמלות-תעריפון-42026.pdf', 5 עמ', מקושר כ'תעריפון' מעמוד 'אודות מיטב טרייד'); חלק 4 – ניירות ערך, חלק 5 – מטבע חוץ, חלק 9 – שירותים ועמלות נוספים",
+    "published": null,
+    "format": "pdf"
+  },
+  "snapshot": "2026-10-25",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "meitav-trade-buy-sell-tase",
+      "base": "trade",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.3,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-42026.pdf",
+          "title": "התעריפון המלא של מיטב טרייד, 'גרסת 04/2026' (קובץ 'עמלות-תעריפון-42026.pdf', 5 עמ', מקושר כ'תעריפון' מעמוד 'אודות מיטב טרייד'), חלק 4 – ניירות ערך, (4א) שירותים נפוצים, סעיף (1), 'קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט אופציות מעו\"ף וחוזים עתידיים במעו\"ף)'",
+          "publisher": "Meitav Trade Ltd. (מיטב טרייד בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Printed '0.3%, מינימום 10 ₪ לעסקה', charged 'ביום העסקה'; notes: no fee for an unexecuted or cancelled trade; off-exchange trades 0.3%, minimum 50 NIS. One rate for shares, bonds and ETFs (no separate bond line). The tariff prints no separate line for open mutual-fund units and does not say whether this line covers them, so mutual_fund_units is not listed here; Meitav Trade's independent-trading tracks page says its funds-only track has 'אין עמלות קניה מכירה על קרנות מנוהלות אקטיבית' but gives no figures. Meitav Trade's about page says 'עמלות מסחר נמוכות משמעותית מהבנקים'; the tariff is a list price and lower negotiated or promotional prices exist (BRK-24). The document prints only 'גרסת 04/2026' (no day), so effective_from is left null; the PDF was created 2026-04-23 (metadata, not printed). The document names no company in its text; it is attributed to Meitav Trade because Meitav Trade's about page links it as its 'תעריפון'."
+      },
+      "min": {
+        "value": 10,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-42026.pdf",
+          "title": "התעריפון המלא של מיטב טרייד, 'גרסת 04/2026' (קובץ 'עמלות-תעריפון-42026.pdf', 5 עמ', מקושר כ'תעריפון' מעמוד 'אודות מיטב טרייד'), חלק 4 – ניירות ערך, (4א) שירותים נפוצים, סעיף (1), 'קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט אופציות מעו\"ף וחוזים עתידיים במעו\"ף)', מינימום",
+          "publisher": "Meitav Trade Ltd. (מיטב טרייד בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 10 ₪ לעסקה'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט אופציות מעו\"ף וחוזים עתידיים במעו\"ף)"
+        ]
+      }
+    },
+    {
+      "id": "meitav-trade-buy-sell-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-42026.pdf",
+          "title": "התעריפון המלא של מיטב טרייד, 'גרסת 04/2026' (קובץ 'עמלות-תעריפון-42026.pdf', 5 עמ', מקושר כ'תעריפון' מעמוד 'אודות מיטב טרייד'), חלק 4, (4א) סעיף (2), 'קניה, מכירה ופדיון מק\"מ'",
+          "publisher": "Meitav Trade Ltd. (מיטב טרייד בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Printed '0.1%, מינימום 10 ₪ לעסקה', charged 'ביום העסקה'. The document prints only 'גרסת 04/2026' (no day), so effective_from is left null; the PDF was created 2026-04-23 (metadata, not printed). The document names no company in its text; it is attributed to Meitav Trade because Meitav Trade's about page links it as its 'תעריפון'."
+      },
+      "min": {
+        "value": 10,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-42026.pdf",
+          "title": "התעריפון המלא של מיטב טרייד, 'גרסת 04/2026' (קובץ 'עמלות-תעריפון-42026.pdf', 5 עמ', מקושר כ'תעריפון' מעמוד 'אודות מיטב טרייד'), חלק 4, (4א) סעיף (2), 'קניה, מכירה ופדיון מק\"מ', מינימום",
+          "publisher": "Meitav Trade Ltd. (מיטב טרייד בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 10 ₪ לעסקה'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון מק\"מ"
+        ]
+      }
+    },
+    {
+      "id": "meitav-trade-buy-sell-foreign-us-per-share",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.01,
+        "unit": "usd_per_share",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-42026.pdf",
+          "title": "התעריפון המלא של מיטב טרייד, 'גרסת 04/2026' (קובץ 'עמלות-תעריפון-42026.pdf', 5 עמ', מקושר כ'תעריפון' מעמוד 'אודות מיטב טרייד'), חלק 4, (4א) סעיף (5), 'קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ', הערות, 'מסחר בבורסות ארה\"ב: מסלול א''",
+          "publisher": "Meitav Trade Ltd. (מיטב טרייד בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Printed 'מסלול א': 1 סנט למניה, מינימום $ 12 לעסקה' (1 cent = 0.01 USD a share). Notes on the same row: trades outside trading hours or through an ECN/market maker not in the arrangement pay an additional broker fee; no fee for an unexecuted trade; US options 5 USD, minimum 25 USD. Canada: '3 סנט קנדי למניה, מינימום 50 דולר קנדי לעסקה' (not recorded: no CAD unit). Foreign open funds (item 7): '0.2%, מינימום 20$', excluding clearing and correspondent fees (not recorded as a line: it is for foreign open-end funds, not ETFs). The document prints only 'גרסת 04/2026' (no day), so effective_from is left null; the PDF was created 2026-04-23 (metadata, not printed). The document names no company in its text; it is attributed to Meitav Trade because Meitav Trade's about page links it as its 'תעריפון'."
+      },
+      "min": {
+        "value": 12,
+        "unit": "usd_per_trade",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-42026.pdf",
+          "title": "התעריפון המלא של מיטב טרייד, 'גרסת 04/2026' (קובץ 'עמלות-תעריפון-42026.pdf', 5 עמ', מקושר כ'תעריפון' מעמוד 'אודות מיטב טרייד'), חלק 4, (4א) סעיף (5), 'קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ', הערות, מסלול א', מינימום",
+          "publisher": "Meitav Trade Ltd. (מיטב טרייד בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום $ 12 לעסקה'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "מסלול א': 1 סנט למניה",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ",
+          "מסחר בבורסות ארה\"ב: מסלול א'"
+        ]
+      }
+    },
+    {
+      "id": "meitav-trade-buy-sell-foreign-us-pct",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.7,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-42026.pdf",
+          "title": "התעריפון המלא של מיטב טרייד, 'גרסת 04/2026' (קובץ 'עמלות-תעריפון-42026.pdf', 5 עמ', מקושר כ'תעריפון' מעמוד 'אודות מיטב טרייד'), חלק 4, (4א) סעיף (5), 'קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ', הערות, 'מסחר בבורסות ארה\"ב: מסלול ב''",
+          "publisher": "Meitav Trade Ltd. (מיטב טרייד בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Printed 'מסלול ב': 0.7% משווי העסקה, מינימום $ 12 לעסקה'. The client trades on one of the two US tracks ('מניות על פי אחד המסלולים כמפורט בהערות'). The document prints only 'גרסת 04/2026' (no day), so effective_from is left null; the PDF was created 2026-04-23 (metadata, not printed). The document names no company in its text; it is attributed to Meitav Trade because Meitav Trade's about page links it as its 'תעריפון'."
+      },
+      "min": {
+        "value": 12,
+        "unit": "usd_per_trade",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-42026.pdf",
+          "title": "התעריפון המלא של מיטב טרייד, 'גרסת 04/2026' (קובץ 'עמלות-תעריפון-42026.pdf', 5 עמ', מקושר כ'תעריפון' מעמוד 'אודות מיטב טרייד'), חלק 4, (4א) סעיף (5), 'קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ', הערות, מסלול ב', מינימום",
+          "publisher": "Meitav Trade Ltd. (מיטב טרייד בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום $ 12 לעסקה'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "מסלול ב': 0.7% משווי העסקה",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ",
+          "מסחר בבורסות ארה\"ב: מסלול ב'"
+        ]
+      }
+    },
+    {
+      "id": "meitav-trade-buy-sell-foreign-other",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.25,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-42026.pdf",
+          "title": "התעריפון המלא של מיטב טרייד, 'גרסת 04/2026' (קובץ 'עמלות-תעריפון-42026.pdf', 5 עמ', מקושר כ'תעריפון' מעמוד 'אודות מיטב טרייד'), חלק 4, (4א) סעיף (5), 'קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ', הערות, 'מסחר בשאר בורסות העולם'",
+          "publisher": "Meitav Trade Ltd. (מיטב טרייד בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Printed '0.25%, מינימום 25 במטבע העסקה, יתכן חיוב בעמלות ברוקר/עמלות צד ג' נוספות.' Applies to exchanges other than the US and Canada (London included). The document prints only 'גרסת 04/2026' (no day), so effective_from is left null; the PDF was created 2026-04-23 (metadata, not printed). The document names no company in its text; it is attributed to Meitav Trade because Meitav Trade's about page links it as its 'תעריפון'."
+      },
+      "min": {
+        "value": null,
+        "unit": "gbp_per_trade",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-42026.pdf",
+          "title": "התעריפון המלא של מיטב טרייד, 'גרסת 04/2026' (קובץ 'עמלות-תעריפון-42026.pdf', 5 עמ', מקושר כ'תעריפון' מעמוד 'אודות מיטב טרייד'), חלק 4, (4א) סעיף (5), 'קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ', הערות, 'מסחר בשאר בורסות העולם', מינימום",
+          "publisher": "Meitav Trade Ltd. (מיטב טרייד בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Printed 'מינימום 25 במטבע העסקה': 25 units of whatever currency the trade is in, so no single unit fits (25 GBP on a pound-denominated London line, 25 EUR or 25 USD elsewhere). Left null rather than fixing one currency; the unit field is a placeholder."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "שאר בורסות העולם",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ",
+          "מסחר בשאר בורסות העולם"
+        ]
+      }
+    },
+    {
+      "id": "meitav-trade-custody",
+      "base": "custody",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units",
+        "makam",
+        "money_market_units",
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.15,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-42026.pdf",
+          "title": "התעריפון המלא של מיטב טרייד, 'גרסת 04/2026' (קובץ 'עמלות-תעריפון-42026.pdf', 5 עמ', מקושר כ'תעריפון' מעמוד 'אודות מיטב טרייד'), חלק 4, (4א) סעיף (8), 'דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)'",
+          "publisher": "Meitav Trade Ltd. (מיטב טרייד בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Printed '0.15%, מינימום 270 ₪ לרבעון' in the price column, with collection time 'ביום העסקה'; read as 0.15% a quarter with a 270 NIS quarterly minimum ('לרבעון' closes the cell; the cell does not say 'לשנה'). The line names securities 'לרבות יחידות השתתפות בקרנות נאמנות' and prints no exemption for makam or money-market funds (the bank ban, BRK-17, does not bind a non-bank member, BRK OQ11). Conflict: Meitav Trade's about page says 'ללא דמי משמרת ועמלות נסתרות', and its tracks page says the funds-only track has 'אין דמי משמרת'; the tariff is stored as the authoritative list price and those statements are marketing or plan terms. Custodian fee (4ב)(4): 0.1%, 30 NIS (not recorded). The document prints only 'גרסת 04/2026' (no day), so effective_from is left null; the PDF was created 2026-04-23 (metadata, not printed). The document names no company in its text; it is attributed to Meitav Trade because Meitav Trade's about page links it as its 'תעריפון'."
+      },
+      "min": {
+        "value": 270,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-42026.pdf",
+          "title": "התעריפון המלא של מיטב טרייד, 'גרסת 04/2026' (קובץ 'עמלות-תעריפון-42026.pdf', 5 עמ', מקושר כ'תעריפון' מעמוד 'אודות מיטב טרייד'), חלק 4, (4א) סעיף (8), 'דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)', מינימום",
+          "publisher": "Meitav Trade Ltd. (מיטב טרייד בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 270 ₪ לרבעון': a minimum per quarter."
+      },
+      "max": null,
+      "period": "quarter",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)"
+        ]
+      }
+    },
+    {
+      "id": "meitav-trade-fx-conversion",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.13,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-42026.pdf",
+          "title": "התעריפון המלא של מיטב טרייד, 'גרסת 04/2026' (קובץ 'עמלות-תעריפון-42026.pdf', 5 עמ', מקושר כ'תעריפון' מעמוד 'אודות מיטב טרייד'), חלק 5 – מטבע חוץ, סעיף (1) 'עמלת חליפין' וסעיף (2) 'מרווח המרה'",
+          "publisher": "Meitav Trade Ltd. (מיטב טרייד בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Printed 'עמלת חליפין 0.13%', charged 'ביום העסקה'. The 01/2025 version of the same tariff printed the same 0.13% with a spread 'עד 0.7%'. Meitav Trade's about page says its FX desk works 'ללא עמלת חליפי[ן]'; the tariff is stored as the list price. The document prints only 'גרסת 04/2026' (no day), so effective_from is left null; the PDF was created 2026-04-23 (metadata, not printed). The document names no company in its text; it is attributed to Meitav Trade because Meitav Trade's about page links it as its 'תעריפון'."
+      },
+      "min": null,
+      "max": null,
+      "spread": {
+        "value": 0.8,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-42026.pdf",
+          "title": "התעריפון המלא של מיטב טרייד, 'גרסת 04/2026' (קובץ 'עמלות-תעריפון-42026.pdf', 5 עמ', מקושר כ'תעריפון' מעמוד 'אודות מיטב טרייד'), חלק 5 – מטבע חוץ, סעיף (1) 'עמלת חליפין' וסעיף (2) 'מרווח המרה'",
+          "publisher": "Meitav Trade Ltd. (מיטב טרייד בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Printed 'מרווח המרה: עד 0.8%' 'משער ההמרה', charged 'בעת ביצוע העסקה': a ceiling, not a fixed spread. FX transfers abroad or in Israel: 35 in the transaction currency plus a Transfer Agent fee (not recorded)."
+      },
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת חליפין",
+          "מרווח המרה"
+        ]
+      }
+    },
+    {
+      "id": "meitav-trade-account-fee",
+      "base": "fixed_period",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 90,
+        "unit": "nis_per_month",
+        "source": {
+          "url": "https://www.meitav.co.il/media/zitlfr4f/%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-42026.pdf",
+          "title": "התעריפון המלא של מיטב טרייד, 'גרסת 04/2026' (קובץ 'עמלות-תעריפון-42026.pdf', 5 עמ', מקושר כ'תעריפון' מעמוד 'אודות מיטב טרייד'), חלק 9 – שירותים ועמלות נוספים, סעיף (1), 'דמי שימוש/ טיפול'",
+          "publisher": "Meitav Trade Ltd. (מיטב טרייד בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Printed 'עד ₪ 90' 'אחת לחודש': a ceiling ('עד'), the tariff does not say which accounts pay it or how much below the ceiling. Advanced trading systems or quotes: 'עד ₪ 3,000' a month (not recorded). Not recorded either: transfer of Israeli securities out 20 NIS a security, maximum 99 NIS a transfer; foreign securities 10 USD a security (item 9); handling interest or dividend payments 0.3% (item 11). The document prints only 'גרסת 04/2026' (no day), so effective_from is left null; the PDF was created 2026-04-23 (metadata, not printed). The document names no company in its text; it is attributed to Meitav Trade because Meitav Trade's about page links it as its 'תעריפון'."
+      },
+      "min": null,
+      "max": null,
+      "period": "month",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי שימוש/ טיפול"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": {
+      "value": 10000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.meitav.co.il/trade/about/",
+        "title": "מיטב טרייד, עמוד 'אודות מיטב טרייד', הערת שוליים '*סכום מינימלי לפתיחת חשבון במיטב טרייד: 10,000 ₪'",
+        "publisher": "Meitav Trade Ltd. (מיטב טרייד בע\"מ)",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BRK-24",
+        "BRK-15"
+      ],
+      "state": "sourced",
+      "notes": "Printed on the about page: '*סכום מינימלי לפתיחת חשבון במיטב טרייד: 10,000 ₪.' The tariff itself prints no opening minimum."
+    }
+  },
+  "notice_rule_ids": [
+    "BRK-15"
+  ]
+}
