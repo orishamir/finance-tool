@@ -10,7 +10,7 @@ for (const [w, t] of [[390, "m"], [1280, "d"]]) {
   const sec = p.locator("#invest-funds-section");
   await sec.locator("ol > li").nth(0).screenshot({ path: `${out}fundcard-${t}.png` });
   await sec.locator("ol > li").nth(8).screenshot({ path: `${out}fundcard-open-${t}.png` }).catch(() => {});
-  await p.locator('section[aria-labelledby="invest-houses"] li', { hasText: "Interactive Brokers" }).first().click({ position: { x: 20, y: 10 } });
+  await p.locator('section[aria-labelledby="invest-houses-h"] li', { hasText: "Interactive Brokers" }).first().click({ position: { x: 20, y: 10 } });
   await p.waitForTimeout(1500);
   await p.screenshot({ path: `${out}foreign-${t}.png` });
   await sec.screenshot({ path: `${out}foreign-funds-${t}.png` });

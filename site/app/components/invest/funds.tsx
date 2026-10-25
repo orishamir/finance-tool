@@ -8,8 +8,7 @@ import type { HouseEntry, HouseRow, InvestView } from "../../lib/invest";
 import { fundLabels, matchesHedge, type HedgeFilter } from "../../lib/labels";
 import { IconCopy, IconExternal, IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, Card, KeyValue, RankBadge, SegmentedControl, Tag } from "../kit";
-import { HouseSelect } from "./chips";
+import { Button, Card, KeyValue, RankBadge, Section, SegmentedControl, SelectField, Tag } from "../kit";
 import { LabelRow, LabelsLegend, OptionTag, reasonText } from "./parts";
 import type { SiteValue } from "../../lib/value";
 
@@ -28,11 +27,8 @@ export function FundsSection({ view, houseId, onHouse, mayaHref }: { view: Inves
   const noRecords = view.index.exposure === null || view.fundCount === 0;
   const pickable = view.houses.filter((h) => h.best || h.generic).map((h) => ({ id: h.provider.id, name: h.provider.short }));
   return (
-    <section id="invest-funds-section" className="flex flex-col gap-3 scroll-mt-[112px] lg:scroll-mt-[88px]" aria-labelledby="invest-funds">
-      <h2 id="invest-funds" className="text-lg font-semibold">
-        {house ? c.funds.heading(house.provider.short) : c.funds.pick}
-      </h2>
-      {pickable.length > 1 && <HouseSelect label={c.funds.house} value={houseId} options={pickable} onChange={(id) => id && onHouse(id)} />}
+    <Section id="invest-funds-section" level="card" title={house ? c.funds.heading(house.provider.short) : c.funds.pick}>
+      {pickable.length > 1 && <SelectField label={c.funds.house} value={houseId} options={pickable} onChange={(id) => id && onHouse(id)} />}
       {!house ? null : noRecords ? (
         <EmptyFunds view={view} mayaHref={mayaHref} />
       ) : (
@@ -55,7 +51,7 @@ export function FundsSection({ view, houseId, onHouse, mayaHref }: { view: Inves
           <p className="text-sm text-muted-foreground">{c.funds.trackingNote}</p>
         </>
       )}
-    </section>
+    </Section>
   );
 }
 

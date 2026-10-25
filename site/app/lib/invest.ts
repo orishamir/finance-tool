@@ -5,6 +5,7 @@
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
 import { providerWorkbench, relativeGap, type ComparedProvider, type NotComparableProvider, type ProviderRow } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
+import { invest as copy } from "../copy";
 import { aliasRows } from "./search-aliases";
 import { fxRunInput } from "./fx";
 import { instrumentClassOf, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type WorkbenchBundle, type WorkbenchInputs } from "./providers";
@@ -636,7 +637,7 @@ function housesOf(ctx: Ctx, options: OptionView[], headline: Way | null, provide
     const cells = opts.flatMap((o) => o.cells.filter((c) => c.providerId === provider.id));
     const generic = cells.filter((c) => c.kind === "cost").sort((a, b) => a.costN! - b.costN!)[0] ?? null;
     const na = cells.find((c) => c.kind === "unavailable");
-    const gap = best && headline && headline.providerId !== provider.id && headline.valueN - best.price!.valueN > 0 ? spreadValue(ctx, headline.valueN - best.price!.valueN, `פער מהדרך הזולה, ${provider.name}`) : null;
+    const gap = best && headline && headline.providerId !== provider.id && headline.valueN - best.price!.valueN > 0 ? spreadValue(ctx, headline.valueN - best.price!.valueN, copy.houses.gapAbout(provider.name)) : null;
     const reason = best || generic ? null : (entries.find((e) => e.reason)?.reason ?? cells.find((c) => c.reason)?.reason ?? null);
     return { provider, group, entries, best, gap, unavailable: !best && !generic ? (na?.availability ?? null) : null, reason, generic };
   });
@@ -666,7 +667,7 @@ function worthOf(ctx: Ctx, options: OptionView[], headline: Way | null, provider
     }
   }
   const gap = (xs: number[], about: string) => (xs.length ? spreadValue(ctx, headline.valueN - Math.min(...xs), about) : null);
-  return { house: gap(others, "אותה קרן, בית השקעות אחר"), houseCount: others.length, fund: gap(sameHouse, "אותו בית השקעות, קרן אחרת"), fundCount: sameHouse.length };
+  return { house: gap(others, copy.worth.lines.house), houseCount: others.length, fund: gap(sameHouse, copy.worth.lines.fund), fundCount: sameHouse.length };
 }
 
 export interface InvestArgs {

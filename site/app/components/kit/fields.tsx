@@ -238,3 +238,24 @@ export function PercentField({ unit = "pct_per_year", range, validate, ...rest }
 export function ParameterLine({ className }: { className?: string }) {
   return <p className={cx("text-xs text-muted-foreground", className)}>{copy.stateStart}</p>;
 }
+
+/** A choice from a list of names in a native select: a label above, an optional "none" first option, an optional help line under. The default for picking one item out of many (an account, a provider). */
+export function SelectField({ label, options, value, onChange, none, help, className }: { label: ReactNode; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void; /** The first option, chosen when `value` is null ("not chosen"); without it the list has no empty choice. */ none?: string; help?: ReactNode; className?: string }) {
+  const id = useId();
+  return (
+    <div className={cx("flex flex-col gap-1 max-w-measure", className)}>
+      <label htmlFor={id} className="text-sm font-medium">
+        {label}
+      </label>
+      <select id={id} value={value ?? ""} onChange={(e) => onChange(e.target.value || null)} className="h-field rounded-md bg-card border border-input px-3 max-w-72">
+        {none !== undefined && <option value="">{none}</option>}
+        {options.map((o) => (
+          <option key={o.id} value={o.id}>
+            {o.name}
+          </option>
+        ))}
+      </select>
+      {help && <span className="text-sm text-muted-foreground">{help}</span>}
+    </div>
+  );
+}

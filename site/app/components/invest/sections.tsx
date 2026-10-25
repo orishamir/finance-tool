@@ -11,13 +11,15 @@ import { LabelRow, OptionTag } from "./parts";
 
 export const providerName = (view: InvestView, id: string): ProviderInfo | undefined => view.providers.find((p) => p.id === id);
 
-export function ProviderLink({ p, className }: { p: ProviderInfo; className?: string }) {
+/** The house's name as a link to its page; `short` writes the short name (the rows of a list), the full name otherwise. */
+export function ProviderLink({ p, className, short }: { p: ProviderInfo; className?: string; short?: boolean }) {
+  const name = short ? p.short : p.name;
   return p.hasPage ? (
     <Link to={`/companies/${p.id}`} className={cx("text-link hover:underline", className)}>
-      {p.name}
+      {name}
     </Link>
   ) : (
-    <span className={className}>{p.name}</span>
+    <span className={className}>{name}</span>
   );
 }
 

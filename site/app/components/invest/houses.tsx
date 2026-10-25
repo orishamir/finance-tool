@@ -7,7 +7,7 @@ import type { HouseRow, InvestView } from "../../lib/invest";
 import { brokerLabels } from "../../lib/labels";
 import { IconExternal } from "../icons";
 import { Num } from "../provenance";
-import { Button, Card, cx, Disclosure, RankBadge, Sentence, Tag } from "../kit";
+import { Button, Card, cx, Disclosure, RankBadge, Section, Sentence, Tag } from "../kit";
 import { LabelRow, OptionTag, reasonText } from "./parts";
 import { ProviderLink } from "./sections";
 
@@ -23,11 +23,7 @@ export function HousesSection({ view, chosen, onPick }: { view: InvestView; chos
   const folded = il.filter((r) => !shown.includes(r));
   const rowOf = (r: HouseRow, rank: number | null) => <HouseItem key={r.provider.id} view={view} row={r} rank={rank} chosen={chosen === r.provider.id} onPick={onPick} />;
   return (
-    <section className="flex flex-col gap-3" aria-labelledby="invest-houses">
-      <h2 id="invest-houses" className="text-lg font-semibold">
-        {c.houses.heading}
-      </h2>
-      <p className="max-w-measure">{c.houses.sub}</p>
+    <Section id="invest-houses" level="card" title={c.houses.heading} lead={c.houses.sub}>
       <p className="text-sm text-muted-foreground max-w-measure">{c.houses.tap}</p>
       <ol className="flex flex-col gap-2" aria-label={c.houses.listLabel}>
         {shown.map((r) => rowOf(r, il.indexOf(r) + 1))}
@@ -55,14 +51,14 @@ export function HousesSection({ view, chosen, onPick }: { view: InvestView; chos
           <ul className="flex flex-col gap-1.5">
             {rest.map((r) => (
               <li key={r.provider.id} className="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-sm">
-                <ProviderLink p={r.provider} className="font-medium" />
+                <ProviderLink p={r.provider} short className="font-medium" />
                 <NoWay row={r} />
               </li>
             ))}
           </ul>
         </div>
       )}
-    </section>
+    </Section>
   );
 }
 
@@ -98,7 +94,7 @@ function HouseItem({ view, row: r, rank, chosen, onPick }: { view: InvestView; r
       <div className="flex items-start gap-3 min-w-0">
         <RankBadge rank={best ? rank : null} />
         <div className="flex flex-col gap-1 min-w-0">
-          <ProviderLink p={r.provider} className="font-semibold" />
+          <ProviderLink p={r.provider} short className="font-semibold" />
           <span className="flex flex-wrap gap-1">
             {yours && <Tag tone="entered">{c.houses.yours}</Tag>}
             {r.provider.foreign && <LabelRow labels={brokerLabels(r.provider, false)} />}
@@ -108,7 +104,9 @@ function HouseItem({ view, row: r, rank, chosen, onPick }: { view: InvestView; r
       <div className="flex flex-col gap-1 min-w-0">
         {best ? (
           <>
-            <bdi className="font-medium">{best.fund.name}</bdi>
+            <span>
+              <bdi className="font-medium">{best.fund.name}</bdi>
+            </span>
             <span>
               <OptionTag option={best.fund.option} />
             </span>

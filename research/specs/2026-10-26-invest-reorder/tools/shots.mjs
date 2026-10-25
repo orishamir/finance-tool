@@ -30,16 +30,16 @@ for (const [w, tag] of [[1280, "d"], [390, "m"]]) {
   await open(page, "/invest/index-sp500");
   await page.selectOption("select >> nth=0", "mizrahi-tefahot");
   await page.waitForTimeout(1500);
-  await page.locator(`section[aria-labelledby="invest-houses"]`).screenshot({ path: `${out}bank-houses-${tag}.png` });
+  await page.locator(`section[aria-labelledby="invest-houses-h"]`).screenshot({ path: `${out}bank-houses-${tag}.png` });
   await page.locator("#invest-funds-section").screenshot({ path: `${out}bank-funds-${tag}.png` });
   // a click on a house row
   await page.selectOption("select >> nth=0", "");
   await page.waitForTimeout(500);
-  await page.locator(`section[aria-labelledby="invest-houses"] li`, { hasText: "לאומי" }).first().click({ position: { x: 20, y: 10 } });
+  await page.locator(`section[aria-labelledby="invest-houses-h"] li`, { hasText: "לאומי" }).first().click({ position: { x: 20, y: 10 } });
   await page.waitForTimeout(1200);
   await page.screenshot({ path: `${out}click-leumi-${tag}.png` });
   // a foreign house
-  const f = page.locator(`section[aria-labelledby="invest-houses"] li`, { hasText: "Interactive Brokers" }).first();
+  const f = page.locator(`section[aria-labelledby="invest-houses-h"] li`, { hasText: "Interactive Brokers" }).first();
   if (await f.count()) {
     await f.click({ position: { x: 20, y: 10 } });
     await page.waitForTimeout(1200);

@@ -47,7 +47,7 @@ const INPUT: Record<string, number> = {
     "components/compare/why.tsx": 1,
     "components/decoder/tracks.tsx": 1,
     "components/holdings/fields.tsx": 3,
-    "components/invest/chips.tsx": 4,
+    "components/invest/chips.tsx": 3,
     "components/playbook/strip.tsx": 1,
     "components/search.tsx": 2,
     "components/transfer/panel.tsx": 1,
@@ -56,6 +56,12 @@ const INPUT: Record<string, number> = {
     "components/workbench/providers/offer-card.tsx": 2,
     "routes/companies.tsx": 1,
     "routes/rules.tsx": 1,
+  };
+const SELECT: Record<string, number> = {
+    "components/compare/why.tsx": 1,
+    "components/holdings/fields.tsx": 1,
+    "components/playbook/strip.tsx": 1,
+    "components/workbench/funds/controls.tsx": 1,
   };
 const STATGRID: Record<string, number> = {
     "components/holdings/card.tsx": 1,
@@ -84,6 +90,11 @@ const patterns: Record<string, { kit: string; count: (s: string) => number; allo
     kit: "NumberField, RangeField or PercentField (a raw <input> or <select>; text and select fields come in kit round 2)",
     count: (s) => [...s.matchAll(/<input\b[^>]*>/g)].filter((m) => !/type="(checkbox|radio|range|hidden)"/.test(m[0])).length + (s.match(/<select\b/g) ?? []).length,
     allowed: INPUT,
+  },
+  select: {
+    kit: "SelectField (a raw <select>)",
+    count: (s) => (s.match(/<select\b/g) ?? []).length,
+    allowed: SELECT,
   },
   statGrid: {
     kit: "StatRow or KeyValueList (a <dl> laid out as a grid)",

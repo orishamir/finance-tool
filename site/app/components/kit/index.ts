@@ -13,6 +13,6 @@ export { Sentence, Tpl, fill } from "./sentence";
 export { HeadlineFigure, KeyValue, KeyValueList, Stat, StatRow, type KeyValueItem } from "./stat";
 export { GapNote, SourceLine } from "./notes";
 export { RankBadge } from "./rank";
-export { FieldState, NumberField, ParameterLine, PercentField, RangeField, flushPendingFields, percentCheck, type FieldProps, type RangeFieldProps } from "./fields";
+export { FieldState, NumberField, ParameterLine, PercentField, RangeField, SelectField, flushPendingFields, percentCheck, type FieldProps, type RangeFieldProps } from "./fields";
 export { GainBars, Marker, MarkerMark, useWidth, type GainBar, type MarkerProps } from "./marker";
 export { ChartLegend, ChartReadout, ChartTable, Swatch, scrollCueStyle, type LegendItem, type ReadoutRow, type SwatchShape, type TableColumn, type TableRowData } from "./chart-parts";

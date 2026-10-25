@@ -6,7 +6,7 @@ import { customIdOf, indexSuggestions, matchKnownIndex, type CustomIndex, type I
 import { fxLabel, nisPer, type FxSnapshot } from "../../lib/fx";
 import type { WorkbenchBundle } from "../../lib/providers";
 import { Num } from "../provenance";
-import { Button, Card, ChipList, PlanChips, SegmentedControl, Sentence, Tag, type ChipItem, type PlanChipItem } from "../kit";
+import { Button, Card, ChipList, PlanChips, SegmentedControl, SelectField, Sentence, Tag, type ChipItem, type PlanChipItem } from "../kit";
 
 /** The index name as a pill: the pills sit under the heading "המדד", so a leading "מדד" is dropped. */
 export const pillName = (name: string): string => name.replace(/^מדד\s+/, "");
@@ -128,28 +128,7 @@ export function PlanBlock({ items, onOpen, fx, today, brokers, yourBroker, onBro
           <Tag tone="caution">{c.plan.dollarMissing}</Tag>
         )}
       </Sentence>
-      <HouseSelect label={c.plan.yourAccount} none={c.plan.yourAccountNone} value={yourBroker} options={brokers} onChange={onBroker} help={c.plan.yourAccountHelp} />
+      <SelectField label={c.plan.yourAccount} none={c.plan.yourAccountNone} value={yourBroker} options={brokers} onChange={onBroker} help={c.plan.yourAccountHelp} />
     </section>
-  );
-}
-
-/** A house chosen from a list (the plan's account, the funds section's house): a plain select until the kit has one (kit round 2). */
-export function HouseSelect({ label, none, value, options, onChange, help }: { label: string; none?: string; value: string | null; options: { id: string; name: string }[]; onChange: (id: string | null) => void; help?: string }) {
-  const id = useId();
-  return (
-    <div className="flex flex-col gap-1 max-w-measure">
-      <label htmlFor={id} className="text-sm font-medium">
-        {label}
-      </label>
-      <select id={id} value={value ?? ""} onChange={(e) => onChange(e.target.value || null)} className="h-field rounded-md bg-card border border-input px-3 max-w-72">
-        {none !== undefined && <option value="">{none}</option>}
-        {options.map((b) => (
-          <option key={b.id} value={b.id}>
-            {b.name}
-          </option>
-        ))}
-      </select>
-      {help && <span className="text-sm text-muted-foreground">{help}</span>}
-    </div>
   );
 }
