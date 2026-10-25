@@ -18,7 +18,7 @@
         "publisher": "Tel Aviv Stock Exchange",
         "strength": "primary"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": "2026-10-24",
       "effective_to": null,
       "tax_year": null,
@@ -35,7 +35,7 @@
         "publisher": "Tel Aviv Stock Exchange",
         "strength": "primary"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": "2026-10-24",
       "effective_to": null,
       "tax_year": null,
@@ -52,7 +52,7 @@
         "publisher": "Tel Aviv Stock Exchange",
         "strength": "primary"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": "2026-10-24",
       "effective_to": null,
       "tax_year": null,
@@ -69,7 +69,7 @@
         "publisher": "Tel Aviv Stock Exchange",
         "strength": "primary"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": "2026-10-24",
       "effective_to": null,
       "tax_year": null,
@@ -90,21 +90,23 @@
   "sources": [
     {
       "url": "https://www.tase.co.il/he/content/products_lobby/data_services",
-      "title": "TASE Data Services",
+      "title": "הבורסה לניירות ערך: שירותי המידע של הבורסה",
+      "title_he": "הבורסה לניירות ערך: שירותי המידע של הבורסה",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
       "strength": "primary",
-      "checked": "2026-10-24"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.tase.co.il/he/content/products_lobby/data_services_hub/",
-      "title": "Data Hub: רכישת מנוי וגישה",
+      "title": "הבורסה לניירות ערך: רכישת מנוי וגישה ל-דאטה האב",
+      "title_he": "הבורסה לניירות ערך: רכישת מנוי וגישה ל-דאטה האב",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
       "strength": "primary",
-      "checked": "2026-10-24"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.tase.co.il/he/content/products_lobby/datastore_pricelist/",
@@ -114,16 +116,17 @@
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "other",
       "strength": "primary",
-      "checked": "2026-10-24"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://store.tase.co.il/he/products/9",
-      "title": "Data Hub store, נתוני שוק ונתונים כלליים",
+      "title": "חנות המידע של הבורסה: נתוני שוק ונתונים כלליים",
+      "title_he": "חנות המידע של הבורסה: נתוני שוק ונתונים כלליים",
       "publisher": "TASE Data Hub",
       "publisher_he": "הבורסה לניירות ערך בתל אביב (Data Hub)",
       "kind": "other",
       "strength": "primary",
-      "checked": "2026-10-24"
+      "checked": "2026-10-25"
     }
   ]
 }

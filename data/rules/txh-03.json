@@ -13,6 +13,20 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.19, s.3(ה)",
+      "locator_he": "עמוד 19, סעיף 3(ה)",
+      "page": 19,
+      "quote": "בעת ששולמו לקרן",
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf",
       "title": "Chief Economist paper Oct 2025",
       "title_he": "על הטבת המס בקרן השתלמות – ניתוח מדיניות (אגף הכלכלן הראשי, אוקטובר 2025)",
@@ -23,21 +37,8 @@
       "locator": "p.5",
       "locator_he": "עמוד 5",
       "page": 5,
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Ordinance",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.3(e)",
-      "locator_he": "סעיף 3(ה)",
-      "anchor": "סעיף_3",
-      "checked": "2026-10-22"
+      "quote": "ניתן להפקיד לקרן ההשתלמות סכום העולה על גובה התקרה הנ״ל אולם כלל ההפקדות מעבר לתקרה יחויבו במס",
+      "checked": "2026-10-25"
     }
   ]
 }

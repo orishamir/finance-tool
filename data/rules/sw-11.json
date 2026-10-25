@@ -3,7 +3,7 @@
   "title": "History travels with the money",
   "title_he": "ההיסטוריה עוברת עם הכסף",
   "text_he": "במועד ההעברה הקופה המעבירה שולחת לקופה המקבלת קובץ נתונים ובו זהות העמית, פרטי הקופה, לקרן פנסיה חדשה גם הכיסוי הביטוחי שהיה לעמית, היתרה שהועברה, פירוט מלא של כל התנועות הכספיות עד המועד הקובע כולל תנועות בקופות מעבירות קודמות, כשכל הפקדה מפוצלת למרכיביה, והמעסיקים הנוכחיים והקודמים. לקרן פנסיה חדשה נשלחים גם החרגות או תוספות חיתום בתוקף, ולקרן השתלמות קובץ נתונים ייעודי שנושא את מועד התשלום הראשון והוותק. נתונים מתקופות ישנות שאינם במחשב הקופה מותר להשמיט. החוזר נקרא מעותק אצל צד שלישי.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
     "age-or-use-exemption"
@@ -13,19 +13,18 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.analyst.co.il/media/dtnkdiyk/%D7%97%D7%95%D7%96%D7%A8-%D7%92%D7%95%D7%A4%D7%99%D7%9D-%D7%9E%D7%95%D7%A1%D7%93%D7%99%D7%99%D7%9D-2017-9-17-%D7%94%D7%A2%D7%91%D7%A8%D7%AA-%D7%9B%D7%A1%D7%A4%D7%99%D7%9D-%D7%91%D7%99%D7%9F-%D7%A7%D7%95%D7%A4%D7%95%D7%AA-%D7%92%D7%9E%D7%9C.pdf",
-      "title": "Circular 2017-9-17, s.5",
-      "title_he": "חוזר גופים מוסדיים 2017-9-17: העברת כספים בין קופות גמל",
-      "publisher": "Analyst",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+      "title": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+      "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+      "publisher": "gov.il",
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "locator": "pp.7 to 8",
-      "locator_he": "עמודים 7 עד 8",
+      "strength": "primary",
+      "locator": "pp.7-8, s.5(א)-(ד)",
+      "locator_he": "עמודים 7 עד 8, סעיף 5(א)-(ד)",
       "page": 7,
-      "checked": "2026-10-22",
-      "qualifier": "(third-party host)"
+      "quote": "פירוט מלא של כל התנועות הכספיות",
+      "checked": "2026-10-25"
     }
   ]
 }

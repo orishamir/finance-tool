@@ -202,7 +202,7 @@ function Body({ wb, compare, data, presets, search }: { wb: WorkbenchBundle; com
           </Link>
         </Callout>
       )}
-      <div className="flex flex-col gap-section lg:grid lg:grid-cols-[1fr_300px] lg:gap-x-10 lg:items-start">
+      <div className="flex flex-col gap-section lg:grid lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-x-10 lg:items-start">
         <div className="flex flex-col gap-4 min-w-0">
           <VariantControls filter={filter} sort={effectiveSort} onFilter={setFilter} onSort={setSort} enteredReturn={!v.waitsForReturn} />
           <h2 className="text-xl lg:text-2xl font-semibold">{c.funds.listHeading}</h2>

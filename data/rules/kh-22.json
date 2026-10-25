@@ -6,7 +6,7 @@
   "figure_names_he": {
     "balance_cap": "תקרת דמי הניהול השנתיים מהיתרה"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "fee-management-balance",
     "fee-deposit",
@@ -19,12 +19,12 @@
       "value": 2,
       "unit": "pct_per_year",
       "source": {
-        "url": "https://www.nevo.co.il/law_html/law01/500_714.htm",
-        "title": "Provident Funds (Management Fees) Regulations 2012, regs. 2(ב), 4, 6, 8, 10, 12 (ק\"ת 7131, 21.6.2012), Nevo",
-        "publisher": "Knesset legislation (Nevo mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131), p.6, reg. 4: \"בשיעור שלא יעלה על 2% לשנה\"",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2013-01-01",
       "effective_to": null,
       "tax_year": null,
@@ -41,26 +41,71 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.nevo.co.il/law_html/law01/500_714.htm",
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012, regs. 2(ב), 4, 6, 8, 10, 12 (ק\"ת 7131, 21.6.2012), Nevo",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012",
       "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע״ב-2012",
-      "publisher": "Nevo",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "משרד האוצר",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "regs. 2(ב), 4, 6, 8, 10, 12 (ק\"ת 7131, 21.6.2012)",
-      "locator_he": "תקנות 2(ב), 4, 6, 8, 10, 12 (ק\"ת 7131, 21.6.2012)",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.6, regs. 4, 6, 8",
+      "locator_he": "עמוד 6, תקנות 4, 6, 8",
+      "page": 6,
+      "quote": "רשאית לגבות דמי ניהול מיתרת הכספים הצבורה בחשבונו של כל עמית",
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://behar-law.co.il/law/%D7%AA%D7%A7%D7%A0%D7%95%D7%AA-%D7%94%D7%A4%D7%99%D7%A7%D7%95%D7%97-%D7%A2%D7%9C-%D7%A9%D7%99%D7%A8%D7%95%D7%AA%D7%99%D7%9D-%D7%A4%D7%99%D7%A0%D7%A0%D7%A1%D7%99%D7%99%D7%9D-%D7%A7%D7%95%D7%A4%D7%95-9/",
-      "title": "Same regulations, Behar law-firm mirror",
-      "publisher": "behar-law.co.il",
-      "publisher_he": "behar-law.co.il",
-      "kind": "other",
-      "strength": "secondary",
-      "checked": "2026-10-22"
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=5",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע״ב-2012",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.5, reg. 2(ב)",
+      "locator_he": "עמוד 5, תקנה 2(ב)",
+      "page": 5,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=8",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע״ב-2012",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.8, regs. 10, 12",
+      "locator_he": "עמוד 8, תקנות 10, 12",
+      "page": 8,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.13, s.32(א)",
+      "locator_he": "עמוד 13, סעיף 32(א)",
+      "page": 13,
+      "quote": "חברה מנהלת לא תגבה מנכסי קופת גמל שבניהולה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_366997.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 20), התשע\"ז-2017",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 20), התשע\"ז-2017",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, s.1",
+      "locator_he": "עמוד 2, סעיף 1",
+      "page": 2,
+      "checked": "2026-10-25"
     }
   ]
 }

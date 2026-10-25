@@ -13,28 +13,29 @@
   "sources": [
     {
       "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
-      "title": "Directive 447",
-      "title_he": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון",
+      "title": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון (5/24)",
+      "title_he": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון (5/24)",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
-      "kind": "regulation",
+      "kind": "regulator_page",
       "strength": "primary",
-      "locator": "s.5(d)",
-      "locator_he": "סעיף 5(ד)",
-      "checked": "2026-10-22"
+      "locator": "p.2, s.5(ד)",
+      "locator_he": "עמוד 2, סעיף 5(ד)",
+      "page": 2,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://boi.org.il/media/1gmhymzy/202511.pdf",
-      "title": "Regulatory impact report for 447A",
-      "title_he": "הוראת ניהול בנקאי תקין 447א: פרסום מידע מרוכז על קרנות כספיות ומק״מ",
+      "title": "דוח קביעת אסדרה: פרסום מידע מרוכז על קרנות כספיות ומק\"מ (7.4.2025)",
+      "title_he": "דוח קביעת אסדרה: פרסום מידע מרוכז על קרנות כספיות ומק\"מ (7.4.2025)",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
-      "kind": "regulation",
+      "kind": "regulator_page",
       "strength": "primary",
       "locator": "p.2",
       "locator_he": "עמוד 2",
       "page": 2,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://edge.boi.org.il/FusionEdgeServer/sdmx/v2/structure/dataflow/BOI.BankingSupervision/INTEREST_DASH",
@@ -43,19 +44,20 @@
       "publisher_he": "בנק ישראל (מאגר הנתונים)",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://fs.knesset.gov.il/25/law/25_lsr_6803031.pdf",
-      "title": "Amendment 38",
-      "title_he": "ספר החוקים 3413 (14.5.2025): חוק הבנקאות (שירות ללקוח) (תיקון מס׳ 38)",
+      "title": "חוק הבנקאות (שירות ללקוח) (תיקון מס' 38), התשפ\"ה-2025",
+      "title_he": "חוק הבנקאות (שירות ללקוח) (תיקון מס' 38), התשפ\"ה-2025",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "s.4",
-      "locator_he": "סעיף 4",
-      "checked": "2026-10-22"
+      "locator": "p.3, s.4",
+      "locator_he": "עמוד 3, סעיף 4",
+      "page": 3,
+      "checked": "2026-10-25"
     }
   ]
 }

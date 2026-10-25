@@ -102,6 +102,11 @@ export const home = {
     unknownYears: "לא יודעים",
     purposeLabel: "בשביל מה",
     purposes: { apartment: "דירה", wedding: "חתונה", studies: "לימודים", child: "ילד", retirement: "פרישה", cushion: "כרית ביטחון", none: "בלי מטרה מסוימת" } as Record<string, string>,
+    // NEW 2026-10-25 (the founder: only "כרית ביטחון" changed the card): what each purpose asks and assumes
+    costLabel: { apartment: "כמה הדירה תעלה, בערך", wedding: "כמה החתונה תעלה, בערך", studies: "כמה הלימודים יעלו, בערך" } as Record<string, string>,
+    costHint: "לא חובה. התוצאה תראה אם הסכום מספיק.",
+    childNote: "החיסכון נבדק עד גיל {n}, המספר שהאתר קבע ל״{preset}״.",
+    unknownNote: "בלי מספר שנים, ההשוואה תרוץ על {n} שנים, המספר שהאתר קבע ל״{preset}״.",
     submit: "מה הכי מתאים",
     submitCushion: "כמה עולה להשאיר בעו״ש",
     needAmount: "הזינו סכום: היום או בכל חודש.",
@@ -112,7 +117,6 @@ export const home = {
     already: "יש לכם כבר…",
     alreadyDeposit: "פיקדון שמסתיים",
     alreadyStudyFund: "קרן השתלמות נזילה",
-    alreadyLarge: "סכום גדול בלי מטרה",
   },
 } as const;
 
@@ -841,7 +845,6 @@ export const r2 = {
   savedAuto: "נשמר אוטומטית במכשיר הזה. בלי חשבון, בלי שרת.",
   couldNotSave: "האתר לא הצליח לשמור במכשיר הזה. ההשוואה תעבוד, אבל המטרה לא תישמר.",
   loadingGoal: "טוען את המטרה השמורה…",
-  compare: "להשוואה",
   menuRow: "השוואה למטרה",
 
   form: {
@@ -946,6 +949,10 @@ export const r2 = {
 
   strip: {
     saved: "נשמר במכשיר הזה",
+    // NEW 2026-10-25 (the first page lists every goal as a row, the founder): a goal that holds nothing yet
+    blank: "עוד לא מולאה",
+    fill: "למילוי",
+    savedAll: "נשמרו במכשיר הזה",
     toResult: "לתוצאה",
     edit: "עריכה",
     menu: "עוד פעולות",
@@ -2427,6 +2434,9 @@ export const r5 = {
     use: "משמש את ההשוואה לפי חשיפה ואת סימון ההתאמה של מסלולים.",
     empty: "לא הוזן: ההשוואה לפי חשיפה תרוץ בלי מסנן, ותציין את זה.",
     secondDoor: "השוואה לפי חשיפה (במה הכסף מושקע)", // audit 2026-10-24 (sweep): was "איזו חשיפה מתאימה למטרה"
+    // 2026-10-25 (the founder: what is the difference between the two buttons?): the first said only "להשוואה"
+    firstDoor: "השוואה לפי מוצר",
+    doorsLine: "מוצר: איפה הכסף מוחזק, כמו קרן השתלמות, קופת גמל להשקעה, חשבון השקעות או פיקדון. חשיפה: במה הוא מושקע בתוך המוצר, כמו מדד מניות, אג״ח או מזומן.",
   },
   // 9.2 exposure result
   exposure: {
@@ -2651,7 +2661,6 @@ export const sourceBlock = {
   copyKind: "עותק",
   hosts: { wikisource: "ויקיטקסט", nevo: "אתר נבו" } as Record<string, string>,
   /** The second block when an official document is first and a mirror second. */
-  readable: "לקריאה נוחה: הנוסח המשולב (עותק)",
   checked: "נבדק",
   mayHaveChanged: "מאז ייתכן שהנוסח השתנה.",
   pdfTag: "PDF",
@@ -2659,7 +2668,7 @@ export const sourceBlock = {
   /** The word after "נבדק {date} ·" when the source is weaker than the law. */
   weak: { "primary-mirror": "עותק", institution: "לפי החברה", secondary: "מקור משני" } as Record<string, string>,
   /** The one-line citation the copy button writes: "{claim} — {publisher}, {document}, {locator}. {url} (נבדק {date})" */
-  citation: { checked: "נבדק", copied: "ההפניה הועתקה." },
+  citation: { checked: "נבדק", copied: "הועתק" }, // 2026-10-25: was "ההפניה הועתקה."; the box's own label turns into it
   /** The rules page only, under a mirror rule's source: the official publication is not attached yet. */
   officialMissing: "הפרסום הרשמי ברשומות עוד לא צורף; הנוסח נקרא מתוך עותק.",
   /** The lede sentence of the rules pages' legend: what a copy is and what a date is. */
@@ -2687,7 +2696,9 @@ export const ruleCardMore = {
   usesLead: "משפיע על",
   usesEngine: "החישובים באתר",
   usesNone: "רקע בלבד: לא נכנס לחישוב ולא מוצג בעמוד אחר.",
-  copyCitation: "העתקת ההפניה",
+  // 2026-10-25 (the founder: "הפניה" for a citation; a better Hebrew word): "מראה מקום", on a box that shows the citation
+  copyCitation: "העתקת מראה המקום",
+  citationLabel: "מראה מקום",
   experienceTag: "ניסיון של אדם אחד",
 } as const;
 

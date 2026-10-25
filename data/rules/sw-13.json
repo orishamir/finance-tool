@@ -3,7 +3,7 @@
   "title": "When a transfer is blocked",
   "title_he": "מתי העברה חסומה",
   "text_he": "התקנות חוסמות העברה כשיש עיקול או שעבוד כדין על כל היתרה, הלוואה שלא נפרעה, קצבת זקנה שמשולמת מאותו כסף או תביעת נכות תלויה או מאושרת, פטירת העמית לפני המועד הקובע, קופה מקבלת סגורה, או בקשה לעבור לקרן פנסיה חדשה מקיפה מקופה שאינה כזו בעוד העמית ממשיך להיות פעיל בקופה המעבירה. יתרה שעוקלה בחלקה עוברת, חוץ מהחלק שאי אפשר להעביר בשל העיקול או השעבוד. העמית מצהיר בטופס שאף אחת מהחסימות אינה חלה עליו. נוסח התקנות נקרא באתר שמעתיק אותו.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
     "liquidity-lockup"
@@ -13,17 +13,44 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)",
-      "title": "Transfer Regulations, regs. 4, 5(ב)",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "regs. 4, 5(ב)",
-      "locator_he": "תקנות 4, 5(ב)",
-      "anchor": "סעיף_4",
-      "checked": "2026-10-22"
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=6",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.6, reg. 4 and reg. 5(ב)",
+      "page": 6,
+      "quote": "שלא ניתן להעבירו בשל עיקול או שיעבוד כדין",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZbYNmyK9Qa3gH~lF+jEWmc=#page=3",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014 (קובץ התקנות 7407)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014 (קובץ התקנות 7407)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.3, s.3",
+      "locator_he": "עמוד 3, סעיף 3",
+      "page": 3,
+      "quote": "והוא ממשיך להיות עמית פעיל בקופת הגמל המעבירה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/qa0DjAH11hv4cTvqv8pm34W06X1DvaxhWwgq239BXaQ=#page=7",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשפ\"ב-2022 (קובץ התקנות 10170)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשפ\"ב-2022 (קובץ התקנות 10170)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.7, s.2",
+      "locator_he": "עמוד 7, סעיף 2",
+      "page": 7,
+      "checked": "2026-10-25"
     }
   ]
 }

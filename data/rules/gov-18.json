@@ -13,41 +13,42 @@
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/policy/regulation-02/en/files_regulations_nohalagach_notrad.pdf",
-      "title": "נוהל הנפקת איגרות חוב ממשלתיות לא סחירות מסוג \"ערד\"",
-      "title_he": "נוהל הנפקת איגרות חוב ממשלתיות לא סחירות מסוג \"ערד\"",
+      "title": "משרד האוצר, היחידה לניהול החוב הממשלתי: נוהל הנפקת איגרות חוב ממשלתיות לא סחירות מסוג \"ערד\"",
+      "title_he": "משרד האוצר, היחידה לניהול החוב הממשלתי: נוהל הנפקת איגרות חוב ממשלתיות לא סחירות מסוג \"ערד\"",
       "publisher": "gov.il",
       "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "ss. 1.2 to 1.6, 2.1, 2.4",
-      "locator_he": "סעיפים 1.2 עד 1.6, 2.1, 2.4",
-      "checked": "2026-10-22"
+      "locator": "pp.1-2, ss.1.2 to 1.6, 2.1, 2.4",
+      "locator_he": "עמודים 1 עד 2, סעיפים 1.2 עד 1.6, 2.1, 2.4",
+      "page": 1,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2025/he/annual-debt-report_annual-debt-report-2025-accessible-version-he.pdf",
-      "title": "הדו\"ח השנתי 2025",
+      "title": "החשב הכללי, היחידה לניהול החוב הממשלתי: הדו\"ח השנתי 2025",
       "title_he": "הדוח השנתי 2025 של היחידה לניהול החוב הממשלתי",
       "publisher": "gov.il",
       "publisher_he": "החשב הכללי, משרד האוצר",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "pp. 16, 40, 41",
+      "locator": "pp.16, 40, 41",
       "locator_he": "עמודים 16, 40, 41",
       "page": 16,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf",
-      "title": "2024 glossary, \"מנגנון מובטח תשואה\"",
+      "title": "החשב הכללי, היחידה לניהול החוב הממשלתי: הדו\"ח השנתי 2024, מילון מונחים",
       "title_he": "הדוח השנתי 2024 של היחידה לניהול החוב הממשלתי",
       "publisher": "gov.il",
       "publisher_he": "החשב הכללי, משרד האוצר",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p. 45",
+      "locator": "p.45",
       "locator_he": "עמוד 45",
       "page": 45,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

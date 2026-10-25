@@ -181,7 +181,8 @@ function hostOf(url: string): string {
 function isPdfUrl(url: string): boolean {
   try {
     const u = new URL(url);
-    return /\.pdf$/i.test(u.pathname) || u.pathname.includes("BlobFolder");
+    // the Reshumot gazette service serves PDFs at a document key with no `.pdf` (2026-10-25)
+    return /\.pdf$/i.test(u.pathname) || u.pathname.includes("BlobFolder") || (u.host === "free-justice.openapi.gov.il" && u.pathname.includes("/Documents/"));
   } catch {
     return false;
   }

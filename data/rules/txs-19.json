@@ -13,6 +13,20 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100228.pdf",
+      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס\"ג-2002",
+      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס״ג-2002",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.2, reg. 9(א), (ב), (ד), reg. 10",
+      "locator_he": "עמוד 2, תקנה 9(א), (ב), (ד), תקנה 10",
+      "page": 2,
+      "quote": "הרווח נוצר באותה שנת מס שבה נוצר ההפסד",
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
       "title": "Tax Authority guide 2025",
       "title_he": "דע זכויותיך וחובותיך 2025",
@@ -20,35 +34,22 @@
       "publisher_he": "רשות המסים",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.39, p.40, p.45",
-      "locator_he": "עמוד 39, עמוד 40, עמוד 45",
-      "page": 39,
-      "checked": "2026-10-22"
+      "locator": "p.41, p.42, p.47",
+      "locator_he": "עמוד 41, עמוד 42, עמוד 47",
+      "page": 41,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מתמורה,_מתשלום_או_מרווח_הון_במכירת_נייר_ערך,_במכירת_יחידה_בקרן_נאמנות_או_בעסקה_עתידית)",
-      "title": "Withholding regulations 5763-2002",
-      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס״ג-2002",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg.9(a), (b), (d), reg.10",
-      "locator_he": "תקנה 9(א), (ב), (ד), תקנה 10",
-      "anchor": "סעיף_9",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf",
-      "title": "Migdal main prospectus 30.1.2025",
-      "title_he": "תשקיף ראשי של מגדל קרנות נאמנות (30.1.2025)",
+      "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf",
+      "title": "מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026",
+      "title_he": "מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026",
       "publisher": "Maya (TASE filings)",
-      "publisher_he": "מגדל קרנות נאמנות",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "ch.25.2.2.5",
-      "checked": "2026-10-22"
+      "locator": "p.73, ch.25.2.2.5",
+      "page": 73,
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -3,7 +3,7 @@
   "title": "No deduction or credit on deposits to a kupat gemel lehashkaa",
   "title_he": "אין ניכוי או זיכוי על הפקדה לקופת גמל להשקעה",
   "text_he": "על הפקדה לקופת גמל להשקעה אין זיכוי ואין ניכוי במס. הזיכוי והניכוי לפנסיה חלים רק על תשלומים לקופת גמל לקצבה, ופקודת מס הכנסה מונה הפקדה לקופת גמל להשקעה בין 'התשלומים הפטורים' בלי תנאי של הטבה. ההפקדה נעשית מכסף שכבר שולם עליו מס. דברי ההסבר להצעת חוק מתארים את המוצר כחיסכון בלא הטבות מס בהפקדה; זה לא חוק, אבל מתיישב עם הקריאה.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "tax-at-deposit"
   ],
@@ -12,8 +12,49 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.81, s.45א(ב)",
+      "locator_he": "עמוד 81, סעיף 45א(ב)",
+      "page": 81,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.85, s.47(ב)",
+      "locator_he": "עמוד 85, סעיף 47(ב)",
+      "page": 85,
+      "quote": "לקופת גמל לקצבה בלבד",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.49, s.9א(א)",
+      "locator_he": "עמוד 49, סעיף 9א(א)",
+      "page": 49,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://fs.knesset.gov.il/25/law/25_lst_2708087.pdf",
-      "title": "Private bill פ/3539/25, explanatory notes, p.3",
+      "title": "הצעת חוק לתיקון פקודת מס הכנסה (חשבון השקעה), התשפ\"ג-2023 (פ/3539/25), דברי הסבר",
+      "title_he": "הצעת חוק לתיקון פקודת מס הכנסה (חשבון השקעה), התשפ\"ג-2023 (פ/3539/25), דברי הסבר",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "official_pdf",
@@ -21,34 +62,9 @@
       "locator": "p.3",
       "locator_he": "עמוד 3",
       "page": 3,
-      "checked": "2026-10-22",
+      "quote": "בלא הטבות מס בהפקדה",
+      "checked": "2026-10-25",
       "qualifier": "(bill, not law)"
-    },
-    {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Income Tax Ordinance, Wikisource consolidated text, rendered PDF",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "PDF pp.47 (s.45A(b)), 49 (s.47(b)), 25",
-      "anchor": "סעיף_45א",
-      "quote": "תשלומים פטורים",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://www.nevo.co.il/law_html/law01/255_001.htm",
-      "title": "Nevo mirror",
-      "publisher": "Nevo",
-      "publisher_he": "נבו",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "s.9A(a)(4)",
-      "locator_he": "סעיף 9א(א)(4)",
-      "checked": "2026-10-22"
     }
   ]
 }

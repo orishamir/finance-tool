@@ -20,12 +20,12 @@
       "value": 4.5,
       "unit": "pct",
       "source": {
-        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-        "title": "Income Tax Ordinance, s.17(5A): deduction of amounts paid to a self-employed study fund up to 4.5% of the determining income (\"הכנסה קובעת\")",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+        "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, p.62, s.17(5א): amounts paid to a self-employed study fund deductible up to 4.5% of the determining income (\"הכנסה קובעת\")",
+        "publisher": "רשות המסים",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -41,11 +41,11 @@
       "unit": "nis",
       "source": {
         "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-        "title": "Tax Authority deductions booklet from January 2026 (updated April 2026), p.12, row \"תקרת הכנסה קובעת בקרן השתלמות לעצמאיים 17(5א)\"; Ordinance s.17(5A) lists 293,397 for 2024 to 2027",
-        "publisher": "Israel Tax Authority",
+        "title": "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026, p.12, row \"תקרת הכנסה קובעת בקרן השתלמות לעצמאיים 17(5א)\"; also Tax Authority guide 2025, p.92 (293,397)",
+        "publisher": "רשות המסים",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2024-01-01",
       "effective_to": null,
       "tax_year": 2026,
@@ -61,6 +61,20 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.62, s.17(5א)",
+      "locator_he": "עמוד 62, סעיף 17(5א)",
+      "page": 62,
+      "quote": "סכומים ששילם יחיד לקרן השתלמות לעצמאים לא יעלו על 4.5%",
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
       "title": "Tax Authority guide 2025",
       "title_he": "דע זכויותיך וחובותיך 2025",
@@ -68,9 +82,9 @@
       "publisher_he": "רשות המסים",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.90 (s.17(5א) row)",
-      "page": 90,
-      "checked": "2026-10-22"
+      "locator": "p.92, row 17(5א)",
+      "page": 92,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
@@ -83,21 +97,8 @@
       "locator": "p.12",
       "locator_he": "עמוד 12",
       "page": 12,
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Ordinance",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.17(5A)",
-      "locator_he": "סעיף 17(5א)",
-      "anchor": "סעיף_17",
-      "checked": "2026-10-22"
+      "quote": "תקרת הכנסה קובעת בקרן השתלמות לעצמאיים",
+      "checked": "2026-10-25"
     }
   ]
 }

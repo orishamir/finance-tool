@@ -22,11 +22,11 @@
       "unit": "pct",
       "source": {
         "url": "https://www.tase.co.il/he/content/knowledge_center/calculating_shares_weight/",
-        "title": "TASE, קביעת משקל המניה במדד (read through TASE's content API, route /content/knowledge_center/calculating_shares_weight)",
+        "title": "הבורסה, \"קביעת משקל המניה במדד\" (נקרא בכרום 2026-10-25)",
         "publisher": "Tel Aviv Stock Exchange",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -42,11 +42,11 @@
       "unit": "count",
       "source": {
         "url": "https://www.tase.co.il/he/content/knowledge_center/calculating_shares_weight/",
-        "title": "TASE, קביעת משקל המניה במדד (read through TASE's content API, route /content/knowledge_center/calculating_shares_weight)",
+        "title": "הבורסה, \"קביעת משקל המניה במדד\" (נקרא בכרום 2026-10-25)",
         "publisher": "Tel Aviv Stock Exchange",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -62,11 +62,11 @@
       "unit": "months",
       "source": {
         "url": "https://www.tase.co.il/he/content/knowledge_center/calculating_shares_weight/",
-        "title": "TASE, קביעת משקל המניה במדד (read through TASE's content API, route /content/knowledge_center/calculating_shares_weight)",
+        "title": "הבורסה, \"קביעת משקל המניה במדד\" (נקרא בכרום 2026-10-25)",
         "publisher": "Tel Aviv Stock Exchange",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -81,11 +81,11 @@
       "unit": "text",
       "source": {
         "url": "https://www.tase.co.il/he/content/knowledge_center/indices_overview/",
-        "title": "TASE, מדדי הבורסה (read through TASE's content API, route /content/knowledge_center/indices_overview)",
+        "title": "הבורסה, \"מדדי הבורסה\" (נקרא בכרום 2026-10-25)",
         "publisher": "Tel Aviv Stock Exchange",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -102,23 +102,25 @@
   "sources": [
     {
       "url": "https://www.tase.co.il/he/content/knowledge_center/calculating_shares_weight/",
-      "title": "TASE, \"קביעת משקל המניה במדד\"",
+      "title": "הבורסה, \"קביעת משקל המניה במדד\"",
       "title_he": "קביעת משקל המניה במדד",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
       "strength": "primary",
-      "checked": "2026-10-23"
+      "checked": "2026-10-25",
+      "qualifier": "(index provider; read in Chrome)"
     },
     {
       "url": "https://www.tase.co.il/he/content/knowledge_center/indices_overview/",
-      "title": "TASE, \"מדדי הבורסה\"",
+      "title": "הבורסה, \"מדדי הבורסה\"",
+      "title_he": "הבורסה, \"מדדי הבורסה\"",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
       "strength": "primary",
-      "checked": "2026-10-23",
-      "qualifier": "(index provider)"
+      "checked": "2026-10-25",
+      "qualifier": "(index provider; read in Chrome)"
     }
   ]
 }

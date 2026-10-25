@@ -206,7 +206,7 @@ export function PasteCard({ className }: { className?: string }) {
       </label>
       <div className="field-box text-muted-foreground">
         <IconSearch size={18} />
-        <input id={id} dir="auto" placeholder={copy.paste.placeholder} className="field-input !text-start" onChange={(e) => e.target.value && open(e.currentTarget, e.target.value)} onFocus={(e) => e.target.value && open(e.currentTarget, e.target.value)} />
+        <input id={id} dir="rtl" placeholder={copy.paste.placeholder} className="field-input !text-start text-mixed" onChange={(e) => e.target.value && open(e.currentTarget, e.target.value)} onFocus={(e) => e.target.value && open(e.currentTarget, e.target.value)} />
       </div>
     </Card>
   );

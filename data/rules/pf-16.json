@@ -9,7 +9,7 @@
     "increase_sms_days_before": "ימים לפני ההעלאה לשליחת מסרון",
     "discount_email_business_days": "ימי עסקים לשליחת ההנחה בדוא״ל"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "fee-change-over-time",
     "statement-disclosure"
@@ -21,12 +21,12 @@
       "value": 2,
       "unit": "months",
       "source": {
-        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2017915.pdf",
-        "title": "CMA circular 2017-9-15 (fee-change notice and discount display), s. 4(א)",
-        "publisher": "Capital Market, Insurance and Savings Authority (copy hosted by Prisha)",
-        "strength": "primary-mirror"
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
+        "title": "חוזר גופים מוסדיים 2017-9-15 – דמי ניהול במכשירי החיסכון הפנסיוני – תיקון, p.3, s.4(א)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -41,12 +41,12 @@
       "value": 4,
       "unit": "months",
       "source": {
-        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2017915.pdf",
-        "title": "CMA circular 2017-9-15 (fee-change notice and discount display), s. 4(א)",
-        "publisher": "Capital Market, Insurance and Savings Authority (copy hosted by Prisha)",
-        "strength": "primary-mirror"
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
+        "title": "חוזר גופים מוסדיים 2017-9-15 – דמי ניהול במכשירי החיסכון הפנסיוני – תיקון, p.3, s.4(א)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -61,12 +61,12 @@
       "value": 30,
       "unit": "days",
       "source": {
-        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2017915.pdf",
-        "title": "CMA circular 2017-9-15 (fee-change notice and discount display), s. 4(ג), (ד), appendix B",
-        "publisher": "Capital Market, Insurance and Savings Authority (copy hosted by Prisha)",
-        "strength": "primary-mirror"
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
+        "title": "חוזר גופים מוסדיים 2017-9-15 – דמי ניהול במכשירי החיסכון הפנסיוני – תיקון, p.3, s.4(ג)-(ד); appendix B on p.7",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -81,12 +81,12 @@
       "value": 10,
       "unit": "business_days",
       "source": {
-        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2017915.pdf",
-        "title": "CMA circular 2017-9-15 (fee-change notice and discount display), s. 3א",
-        "publisher": "Capital Market, Insurance and Savings Authority (copy hosted by Prisha)",
-        "strength": "primary-mirror"
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
+        "title": "חוזר גופים מוסדיים 2017-9-15 – דמי ניהול במכשירי החיסכון הפנסיוני – תיקון, p.2, s.3א",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -102,18 +102,31 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2017915.pdf",
-      "title": "CMA circular 2017-9-15, s. 3א, 4, appendices A and B (Prisha copy, pp. 2 to 7)",
-      "title_he": "חוזר גופים מוסדיים 2017-9-15: דמי ניהול במכשירי החיסכון הפנסיוני – תיקון",
-      "publisher": "Prisha.co.il",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
+      "title": "חוזר גופים מוסדיים 2017-9-15 – דמי ניהול במכשירי החיסכון הפנסיוני – תיקון",
+      "title_he": "חוזר גופים מוסדיים 2017-9-15 – דמי ניהול במכשירי החיסכון הפנסיוני – תיקון",
+      "publisher": "gov.il",
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "locator": "s. 3א, 4",
-      "locator_he": "סעיף 3א, 4",
-      "checked": "2026-10-22",
-      "qualifier": "(official circular on a third-party host; pp. 1 to 2 match the gov.il copy)"
+      "strength": "primary",
+      "locator": "p.2, s.3א",
+      "locator_he": "עמוד 2, סעיף 3א",
+      "page": 2,
+      "quote": "יציג הגוף המוסדי, בהקדם האפשרי, הודעה על מתן ההנחה, בחשבון האישי המקוון של העמית",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
+      "title": "חוזר גופים מוסדיים 2017-9-15 – דמי ניהול במכשירי החיסכון הפנסיוני – תיקון",
+      "title_he": "חוזר גופים מוסדיים 2017-9-15 – דמי ניהול במכשירי החיסכון הפנסיוני – תיקון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.3, s.4(א)-(ד); appendix A and B on pp.5-7",
+      "page": 3,
+      "quote": "הודעה כאמור לא תישלח מוקדם יותר מארבעה חודשים לפני מועד ההעלאה הצפוי",
+      "checked": "2026-10-25"
     }
   ]
 }

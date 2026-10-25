@@ -6,7 +6,7 @@
   "figure_names_he": {
     "rate": "שיעור המס על הרווח הריאלי"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "tax-at-exit",
     "real-vs-nominal"
@@ -17,12 +17,12 @@
       "value": 25,
       "unit": "pct",
       "source": {
-        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-        "title": "Income Tax Ordinance, s.91(b)(1); Withholding Regulations 2002, reg. 3A",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+        "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, p.151, s.91(ב)(1)",
+        "publisher": "רשות המסים",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -38,44 +38,57 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Income Tax Ordinance",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.91(b)(1)",
-      "locator_he": "סעיף 91(ב)(1)",
-      "anchor": "סעיף_91",
-      "quote": "מכירת יחידה בקרן נאמנות פטורה",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.151, s.91(ב)(1)",
+      "locator_he": "עמוד 151, סעיף 91(ב)(1)",
+      "page": 151,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מתמורה,_מתשלום_או_מרווח_הון_במכירת_נייר_ערך,_במכירת_יחידה_בקרן_נאמנות_או_בעסקה_עתידית)",
-      "title": "Withholding regulations 5763-2002",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.152, s.91(ב1)",
+      "locator_he": "עמוד 152, סעיף 91(ב1)",
+      "page": 152,
+      "quote": "במכירת יחידה בקרן נאמנות פטורה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100228.pdf",
+      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס\"ג-2002",
       "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס״ג-2002",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "משרד האוצר",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg.3A",
-      "locator_he": "תקנה 3א",
-      "anchor": "סעיף_3א",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.1, reg. 3א",
+      "locator_he": "עמוד 1, תקנה 3א",
+      "page": 1,
+      "quote": "בעל יחידה בקרן נאמנות פטורה, רווח הון ריאלי בשל מכירה או פדיון של יחידה, ינכה ממנו מס בשיעור של 25%",
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf",
-      "title": "Migdal main prospectus 30.1.2025",
-      "title_he": "תשקיף ראשי של מגדל קרנות נאמנות (30.1.2025)",
+      "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf",
+      "title": "מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026",
+      "title_he": "מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026",
       "publisher": "Maya (TASE filings)",
-      "publisher_he": "מגדל קרנות נאמנות",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "ch.25.2, 25.2.2.4",
-      "checked": "2026-10-22"
+      "locator": "p.72, ch.25.2, 25.2.2.4",
+      "page": 72,
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -18,11 +18,11 @@
       "unit": "nis",
       "source": {
         "url": "https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf",
-        "title": "Harel, \"תקרות וסכומים לשנת 2026\" (PDF created 2026-03-08), p.1, \"תקרת הפקדה שנתית לגמל להשקעה ... 83,641 ₪\"",
+        "title": "Harel, \"תקרות וסכומים לשנת 2026\" (PDF created 2026-03-08), p.1, row \"תקרת הפקדה שנתית לגמל להשקעה\": 83,641 ₪",
         "publisher": "Harel Insurance and Finance",
         "strength": "institution"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2026-01-01",
       "effective_to": null,
       "tax_year": 2026,
@@ -46,10 +46,11 @@
       "publisher_he": "הראל",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "p. 1",
+      "locator": "p.1",
       "locator_he": "עמוד 1",
       "page": 1,
-      "checked": "2026-10-22"
+      "quote": "תקרת הפקדה שנתית לגמל להשקעה",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://gemel.huji.ac.il/wp-content/uploads/2026/05/‏‏‏‏‏‏הצטרפות-קופת-גמל-להשקעה-מאי-2026.pdf",
@@ -59,30 +60,33 @@
       "publisher_he": "קופת הגמל של עובדי האוניברסיטה העברית",
       "kind": "form",
       "strength": "institution",
-      "locator": "p. 1",
+      "locator": "p.1",
       "locator_he": "עמוד 1",
       "page": 1,
-      "checked": "2026-10-22"
+      "quote": "לאדם במהלך שנה קלנדרית בכל החברות המנהלות",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.as-invest.co.il/interstedin/saving_plus_deposit/",
-      "title": "Altshuler deposit page",
+      "title": "אלטשולר שחם – הפקדות סוף שנה, קופת גמל להשקעה",
+      "title_he": "אלטשולר שחם – הפקדות סוף שנה, קופת גמל להשקעה",
       "publisher": "Altshuler Shaham",
       "publisher_he": "אלטשולר שחם",
       "kind": "institution_doc",
       "strength": "institution",
       "quote": "עד 83,641.09 ₪ בשנה",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.fnx.co.il/gemel/gemelhashkaa/tikrot-hafkada-hatvot-mas-gemelashkaa/",
-      "title": "Phoenix ceilings page",
+      "title": "הפניקס – תקרות הפקדה והטבות מס בקופת גמל להשקעה",
+      "title_he": "הפניקס – תקרות הפקדה והטבות מס בקופת גמל להשקעה",
       "publisher": "The Phoenix",
       "publisher_he": "הפניקס",
       "kind": "institution_doc",
       "strength": "institution",
-      "quote": "נכון לשנת 2026",
-      "checked": "2026-10-22"
+      "quote": "תקרת הפקדה שנתית - נכון לשנת 2026",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.meitav.co.il/provident_pension/provident_invest/",
@@ -92,8 +96,8 @@
       "publisher_he": "מיטב",
       "kind": "institution_doc",
       "strength": "institution",
-      "quote": "עד 83,641 ₪ (נכון לשנת 2026) בשנה קלנדרית, עבור כל חוסך",
-      "checked": "2026-10-22"
+      "quote": "עד 83,641 ₪ (נכון לשנת 2026) בשנה קלנדרית",
+      "checked": "2026-10-25"
     }
   ]
 }

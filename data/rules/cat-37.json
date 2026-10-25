@@ -13,13 +13,17 @@
   "checked": "2026-10-23",
   "sources": [
     {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-710/he/regulation_h_2018-9-26.pdf",
-      "title": "חוזר גופים מוסדיים 2018-9-26, דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי - תיקון (consolidated text of 2017-9-22)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
+      "title": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
+      "title_he": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
       "publisher": "gov.il",
-      "publisher_he": "אתר הממשלה (gov.il)",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
-      "checked": "2026-10-23",
+      "locator": "pp.39, 108, 128, 132, 149 to 151",
+      "locator_he": "עמודים 39, 108, 128, 132, 149 עד 151",
+      "page": 39,
+      "checked": "2026-10-25",
       "qualifier": "(definition)"
     }
   ]

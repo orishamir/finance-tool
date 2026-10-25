@@ -6,7 +6,7 @@
   "figure_names_he": {
     "early_retirement_age": "גיל הפרישה המוקדמת"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "age-or-use-exemption",
     "transfer-switch-process",
@@ -19,12 +19,12 @@
       "value": 60,
       "unit": "years",
       "source": {
-        "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
-        "title": "Retirement Age Law, s.5: \"גיל 60 לגבר ולאישה\"",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",
+        "title": "חוק גיל פרישה, התשס\"ד-2004, ספר החוקים, p.1, s.5: \"גיל 60 לגבר ולאישה\"",
+        "publisher": "הכנסת",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -41,32 +41,32 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)",
-      "title": "Transfer regulations 2008",
-      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg. 2(א)(7), 2(ב)(2)",
-      "locator_he": "תקנה 2(א)(7), 2(ב)(2)",
-      "anchor": "סעיף_2.א",
-      "checked": "2026-10-22"
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/tZDvucD9RCpb4OFgftW2Mghx2FA7HU11Svr+ngxOA9o=#page=2",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התש\"ף-2020, קובץ התקנות 8735",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התש\"ף-2020, קובץ התקנות 8735",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, s.2",
+      "locator_he": "עמוד 2, סעיף 2",
+      "page": 2,
+      "quote": "קופת גמל להשקעה, ובלבד שהעמית הגיע לגיל הפרישה המוקדמת",
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
-      "title": "Retirement Age Law, Wikisource",
-      "title_he": "חוק גיל פרישה, התשס״ד-2004",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",
+      "title": "חוק גיל פרישה, התשס\"ד-2004",
+      "title_he": "חוק גיל פרישה, התשס\"ד-2004",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.5",
-      "locator_he": "סעיף 5",
-      "anchor": "סעיף_5",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.1, s.5",
+      "locator_he": "עמוד 1, סעיף 5",
+      "page": 1,
+      "quote": "גיל 60 לגבר ולאישה",
+      "checked": "2026-10-25"
     }
   ]
 }

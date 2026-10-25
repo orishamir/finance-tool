@@ -3,7 +3,7 @@
   "title": "Kupat gemel lehashkaa: only to another gemel lehashkaa, or to an annuity fund from 60; partial allowed",
   "title_he": "קופת גמל להשקעה: לאן אפשר להעביר",
   "text_he": "הכסף עובר רק לקופת גמל להשקעה אחרת, או לקופת גמל לקצבה מגיל הפרישה המוקדמת לקבלת קצבה בלבד; העברה חלקית מותרת. משיכה והפקדה מחדש במקום אחר אינן העברה: המשיכה ממוסה ביציאה, וההפקדה החדשה נספרת כנגד תקרת ההפקדה השנתית. החלפת מסלול והעברה בין קופות גמל להשקעה אינן אירוע מס. טופס ההעברה שבחוזר אינו מונה קופת גמל להשקעה ברשימת הסוגים, וזו שאלה פתוחה; זהו כלל מצביע, ומקורותיו, ובהם תקנות וחוק שנקראו באתר שמעתיק אותם, נמצאים בכללים שהוא מפנה אליהם.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
     "deposit-ceiling",
@@ -14,83 +14,91 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://fs.knesset.gov.il//20/law/20_lsr_343169.pdf",
-      "title": "1",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/tZDvucD9RCpb4OFgftW2Mghx2FA7HU11Svr+ngxOA9o=#page=2",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התש\"ף-2020 (קובץ התקנות 8735)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התש\"ף-2020 (קובץ התקנות 8735)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, s.2 and s.3: reg. 2(א)(7) and reg. 3(א)(11א)",
+      "page": 2,
+      "quote": "ובלבד שהעמית הגיע לגיל הפרישה המוקדמת",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.21, s.3(ה4)(3)",
+      "locator_he": "עמוד 21, סעיף 3(ה4)(3)",
+      "page": 21,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "secondary",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.2, s.3",
+      "locator_he": "עמוד 2, סעיף 3",
+      "page": 2,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "title": "2",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",
+      "title": "חוק גיל פרישה, התשס\"ד-2004",
+      "title_he": "חוק גיל פרישה, התשס\"ד-2004",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)",
-      "title": "5",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
-      "title": "6",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "7",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.1, s.5",
+      "locator_he": "עמוד 1, סעיף 5",
+      "page": 1,
+      "quote": "גיל 60 לגבר ולאישה",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-      "title": "3",
+      "title": "אלטשולר שחם חיסכון פלוס – תקנון תקני לקופת גמל להשקעה, מרץ 2025",
+      "title_he": "אלטשולר שחם חיסכון פלוס – תקנון תקני לקופת גמל להשקעה, מרץ 2025",
       "publisher": "Altshuler Shaham",
       "publisher_he": "אלטשולר שחם",
       "kind": "institution_doc",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "checked": "2026-10-22"
+      "strength": "institution",
+      "locator": "p.6, clauses 16-19",
+      "locator_he": "עמוד 6, סעיפים 16-19",
+      "page": 6,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.harel-group.co.il/long-term-savings/funding-saving/join/doclib/%d7%92%d7%9e%d7%9c%20%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94.pdf",
-      "title": "8",
+      "title": "הראל – קופת גמל להשקעה, עיקרי התוכנית",
+      "title_he": "הראל – קופת גמל להשקעה, עיקרי התוכנית",
       "publisher": "Harel",
       "publisher_he": "הראל",
       "kind": "institution_doc",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "checked": "2026-10-22"
+      "strength": "institution",
+      "quote": "ללא אירוע מס",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.ice.co.il/consumerism/news/article/1005636",
-      "title": "4",
+      "title": "אייס – \"קופות הגמל חוגגות: לקראת שינוי משמעותי בסכומי ההפקדה?\"",
+      "title_he": "אייס – \"קופות הגמל חוגגות: לקראת שינוי משמעותי בסכומי ההפקדה?\"",
       "publisher": "ice",
       "publisher_he": "ice",
       "kind": "article",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "checked": "2026-10-22"
+      "strength": "secondary",
+      "checked": "2026-10-25"
     }
   ],
   "derived_from": [

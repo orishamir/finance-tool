@@ -3,7 +3,7 @@
   "title": "Makam: who borrows, who sells, who administers",
   "title_he": "מק\"ם: מי לווה, מי מוכר ומי מנהל",
   "text_he": "לפי חוק מילווה קצר מועד הממשלה לווה בשם המדינה ומוכרת את המק\"ם רק לבנק ישראל. בנק ישראל רשאי למכור אותו לציבור ולקנות אותו בחזרה כשהנגיד רואה בכך צורך למטרותיו המוניטריות, והוא גם מנהל את המילווה. התקופה של כל סדרה, דרך הפדיון ומחיר המכירה נקבעים בתקנות או על ידי השר. נוסח החוק נקרא בעותק באתר נבו, לא בפרסום הרשמי.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "regulator",
     "protection"
@@ -13,17 +13,43 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.nevo.co.il/law_html/law00/72417.htm",
-      "title": "חוק מילווה קצר מועד, תשמ\"ד-1984 (Nevo mirror)",
-      "title_he": "חוק מילווה קצר מועד, התשמ״ד-1984",
-      "publisher": "Nevo",
+      "url": "https://fs.knesset.gov.il/10/law/10_lsr_210160.PDF",
+      "title": "חוק מילווה קצר מועד, התשמ\"ד-1984 (ספר החוקים 1107)",
+      "title_he": "חוק מילווה קצר מועד, התשמ\"ד-1984 (ספר החוקים 1107)",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "ss. 1(א), 4, 5, 6, 10; page",
-      "checked": "2026-10-22",
-      "qualifier": "(law, read on Nevo as a mirror)"
+      "strength": "primary",
+      "locator": "pp.1-2, ss.1(א), 4, 6, 10",
+      "locator_he": "עמודים 1 עד 2, סעיפים 1(א), 4, 6, 10",
+      "page": 1,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/14/law/14_lsr_211355.PDF",
+      "title": "חוק מילווה קצר מועד (תיקון מס' 7 והוראת שעה), התשנ\"ו-1996 (ספר החוקים 1598)",
+      "title_he": "חוק מילווה קצר מועד (תיקון מס' 7 והוראת שעה), התשנ\"ו-1996 (ספר החוקים 1598)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.1, s.2",
+      "locator_he": "עמוד 1, סעיף 2",
+      "page": 1,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/18/law/18_lsr_301176.pdf",
+      "title": "חוק בנק ישראל, התש\"ע-2010 (ספר החוקים 2237)",
+      "title_he": "חוק בנק ישראל, התש\"ע-2010 (ספר החוקים 2237)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.23, s.92",
+      "locator_he": "עמוד 23, סעיף 92",
+      "page": 23,
+      "checked": "2026-10-25"
     }
   ]
 }

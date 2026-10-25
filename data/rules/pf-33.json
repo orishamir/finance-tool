@@ -21,12 +21,12 @@
       "value": 3,
       "unit": "months",
       "source": {
-        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2020922.pdf",
-        "title": "CMA circular 2020-9-22, s. 3(א)",
-        "publisher": "Capital Market, Insurance and Savings Authority (Prisha copy)",
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
+        "title": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון, p.2, s.3(א)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -41,12 +41,12 @@
       "value": 60,
       "unit": "days",
       "source": {
-        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2020922.pdf",
-        "title": "CMA circular 2020-9-22, s. 4(א)",
-        "publisher": "Capital Market, Insurance and Savings Authority (Prisha copy)",
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
+        "title": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון, p.3, s.4(א)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -61,12 +61,12 @@
       "value": 50000,
       "unit": "nis",
       "source": {
-        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2020922.pdf",
-        "title": "CMA circular 2020-9-22, s. 4(ה)",
-        "publisher": "Capital Market, Insurance and Savings Authority (Prisha copy)",
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
+        "title": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון, p.3, s.4(ה)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -81,12 +81,12 @@
       "value": 10,
       "unit": "years",
       "source": {
-        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2020922.pdf",
-        "title": "CMA circular 2020-9-22, s. 3(ו)",
-        "publisher": "Capital Market, Insurance and Savings Authority (Prisha copy)",
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
+        "title": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון, p.3, s.3(ו)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -102,6 +102,20 @@
   "checked": "2026-10-23",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
+      "title": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
+      "title_he": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "pp.2-5, ss.1-10; p.35",
+      "locator_he": "עמודים 2 עד 5, סעיפים 1-10; עמוד 35",
+      "page": 2,
+      "quote": "מדי שנה, תוך שלושה חודשים מתום השנה, דוח שנתי מקוצר בגין השנה שהסתיימה",
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice_2025_51/he/Annual_and_quarterly%20report_to_Members_and_Policyholders_of_an_Institutional_Entity%20%E2%80%93%20correction_draft_PDF%20(1).pdf",
       "title": "CMA draft circular 2025-26 \"דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי - תיקון\", 6.11.2025, 161 pp., gov.il BlobFolder (the full consolidated text with the proposed edits)",
       "title_he": "טיוטת חוזר 2025-26: דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
@@ -109,35 +123,25 @@
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
-      "locator": "pp. 1 to 5",
+      "locator": "pp.1-5",
       "locator_he": "עמודים 1 עד 5",
       "page": 1,
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "qualifier": "(draft)"
     },
     {
       "url": "https://www.gov.il/BlobFolder/reports/tender-0102/he/Commissioner%20Report%202025%20chapter%202_Digital%20-%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9%20%D7%A1%D7%95%D7%A4%D7%99.pdf",
-      "title": "CMA, דוח הממונה לשנת 2025, chapter 2, \"קידום השקיפות לחוסכים – פרסום טיוטת תיקון לחוזר דוח שנתי\"",
+      "title": "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025 – פרק 2: סקירת פעילות הרשות",
+      "title_he": "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025 – פרק 2: סקירת פעילות הרשות",
       "publisher": "gov.il",
-      "publisher_he": "אתר הממשלה (gov.il)",
-      "kind": "circular",
-      "strength": "primary",
-      "checked": "2026-10-23"
-    },
-    {
-      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2020922.pdf",
-      "title": "CMA institutional-bodies circular 2020-9-22 \"דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי - תיקון\", 14.12.2020, 152 pp. (consolidated text; official circular on the Prisha host)",
-      "title_he": "חוזר גופים מוסדיים 2020-9-22: דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
-      "publisher": "Prisha.co.il",
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
-      "kind": "circular",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "locator": "pp. 2 to 5 (s. 1 to 10), p. 35",
-      "locator_he": "עמודים 2 עד 5 (סעיף 1 עד 10), עמוד 35",
-      "page": 2,
-      "checked": "2026-10-23",
-      "qualifier": "(official circular, third-party host; the gov.il copy of the 2020 text was not located, see open question 16)"
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.5",
+      "locator_he": "עמוד 5",
+      "page": 5,
+      "quote": "קידום השקיפות לחוסכים",
+      "checked": "2026-10-25"
     }
   ]
 }

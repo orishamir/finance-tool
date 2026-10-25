@@ -2,7 +2,7 @@
   "id": "IRA-25",
   "title": "Liquidity and withdrawal follow the underlying product",
   "title_he": "נזילות ומשיכה לפי המוצר שבבסיס",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "liquidity-lockup"
   ],
@@ -12,17 +12,42 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.4, reg. 5(ג)(3)",
+      "locator_he": "עמוד 4, תקנה 5(ג)(3)",
+      "page": 4,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=5",
+      "title": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.5, s.7 (reg. 11(ב))",
+      "locator_he": "עמוד 5, סעיף 7 (תקנה 11(ב))",
+      "page": 5,
+      "quote": "נכסי הקופה למזומנים",
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.calcalist.co.il/market/article/bjnkrerfa",
-      "title": "Calcalist, 06.05.2024",
+      "title": "\"מה שקרה לסלייס לא יקרה לנו. הם הכניסו מוצרים רעילים שפגעו בעמיתים\", כלכליסט, 06.05.2024",
+      "title_he": "\"מה שקרה לסלייס לא יקרה לנו. הם הכניסו מוצרים רעילים שפגעו בעמיתים\", כלכליסט, 06.05.2024",
       "publisher": "Calcalist",
       "publisher_he": "כלכליסט",
       "kind": "article",
       "strength": "secondary",
-      "checked": "2026-10-22"
+      "quote": "הקפיאו את האפשרות למשוך מהן כספים לפחות עד 2026",
+      "checked": "2026-10-25"
     }
-  ],
-  "derived_from": [
-    "IRA-14",
-    "IRA-23"
   ]
 }

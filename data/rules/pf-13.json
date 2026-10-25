@@ -18,11 +18,11 @@
       "unit": "years",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
-        "title": "CMA institutional-bodies circular 2017-9-15 \"דמי ניהול במכשירי החיסכון הפנסיוני – תיקון\", 11 Sep 2017, ss.3(א), 3(ה), 5, 6",
-        "publisher": "Capital Market, Insurance and Savings Authority (Israel)",
+        "title": "חוזר גופים מוסדיים 2017-9-15 – דמי ניהול במכשירי החיסכון הפנסיוני – תיקון, p.1, s.3(א)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2018-04-01",
       "effective_to": null,
       "tax_year": null,
@@ -39,35 +39,29 @@
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
-      "title": "CMA institutional-bodies circular 2017-9-15 \"דמי ניהול במכשירי החיסכון הפנסיוני – תיקון\", 11 Sep 2017, s. 3(א), 3(ה), 5, 6 (gov.il copy, pp. 1 to 2 read)",
-      "title_he": "חוזר גופים מוסדיים 2017-9-15: דמי ניהול במכשירי החיסכון הפנסיוני – תיקון",
+      "title": "חוזר גופים מוסדיים 2017-9-15 – דמי ניהול במכשירי החיסכון הפנסיוני – תיקון",
+      "title_he": "חוזר גופים מוסדיים 2017-9-15 – דמי ניהול במכשירי החיסכון הפנסיוני – תיקון",
       "publisher": "gov.il",
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
-      "locator": "s. 3(א), 3(ה), 5, 6",
-      "locator_he": "סעיף 3(א), 3(ה), 5, 6",
-      "checked": "2026-10-22"
+      "locator": "pp.1-4, s.3(א) on p.1, s.3(ה) on p.2, s.5 on p.3, s.6 on p.4",
+      "page": 1,
+      "quote": "ובלבד שההצעה האמורה תהיה תקפה במהלך תקופה של חמש שנים או יותר",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-      "title": "Altshuler gemel lehashkaa bylaws s. 36.1",
+      "title": "אלטשולר שחם גמל להשקעה \"חיסכון פלוס\" – תקנון, מרץ 2025",
+      "title_he": "אלטשולר שחם גמל להשקעה \"חיסכון פלוס\" – תקנון, מרץ 2025",
       "publisher": "Altshuler Shaham",
       "publisher_he": "אלטשולר שחם",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "s. 36.1",
-      "locator_he": "סעיף 36.1",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2017915.pdf",
-      "title": "Prisha copy",
-      "publisher": "Prisha.co.il",
-      "publisher_he": "אתר פרישה (prisha.co.il)",
-      "kind": "circular",
-      "strength": "primary",
-      "checked": "2026-10-22"
+      "locator": "p.10, s.36.1",
+      "locator_he": "עמוד 10, סעיף 36.1",
+      "page": 10,
+      "checked": "2026-10-25"
     }
   ]
 }

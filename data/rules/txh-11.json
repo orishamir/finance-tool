@@ -7,7 +7,7 @@
     "rate": "שיעור המס המרבי על רווחים מהפקדה לא מוטבת",
     "real_base": "הבסיס הוא הרווח הריאלי"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "tax-at-exit",
     "real-vs-nominal",
@@ -22,11 +22,11 @@
       "unit": "pct",
       "source": {
         "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
-        "title": "Tax Authority guide 2025, p.40, section \"ד. ריבית ורווחים מקרן השתלמות (סעיף 15)\"; p.87 (row 9(13)); Ordinance ss.3(e4)(1), 125C(b)",
-        "publisher": "Israel Tax Authority",
+        "title": "דע זכויותיך וחובותיך 2025, p.42, section \"ד. ריבית ורווחים מקרן השתלמות (סעיף 15)\"; p.89 (row 9(13)); פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, p.21, s.3(ה4)(1) and p.204, s.125ג(ב)",
+        "publisher": "רשות המסים",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -46,7 +46,7 @@
         "publisher": "Mor Investment House; Clal Insurance",
         "strength": "institution"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -62,17 +62,70 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מסכומים_ששולמו_מקרן_השתלמות)",
-      "title": "Withholding regulations 1997, reg. 2(b)",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Tax Authority guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.42, section ד",
+      "locator_he": "עמוד 42, סעיף ד",
+      "page": 42,
+      "quote": "חייבים במס בשיעור שלא יעלה על 25%",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Tax Authority guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.89, row 9(13)",
+      "page": 89,
+      "quote": "הוראות אלה לא יחולו על חשבון בקופת גמל",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.21, s.3(ה4)(1)",
+      "locator_he": "עמוד 21, סעיף 3(ה4)(1)",
+      "page": 21,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.204, s.125ג(ב)",
+      "locator_he": "עמוד 204, סעיף 125ג(ב)",
+      "page": 204,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100097.pdf",
+      "title": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות), התשנ\"ח-1997",
+      "title_he": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות), התשנ״ח-1997",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg. 2(b)",
-      "locator_he": "תקנה 2(ב)",
-      "anchor": "סעיף_2",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.1, reg. 2(ב)",
+      "locator_he": "עמוד 1, תקנה 2(ב)",
+      "page": 1,
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -17,11 +17,11 @@
       "unit": "days",
       "source": {
         "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",
-        "title": "Banking (Service to Customer) (Proper Disclosure) Rules 1992, consolidated, s.5(א)",
-        "publisher": "Bank of Israel",
+        "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל), p.3, s.5(א)(1)",
+        "publisher": "בנק ישראל",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -38,14 +38,16 @@
   "sources": [
     {
       "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",
-      "title": "BoI, \"כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992\", consolidated",
+      "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל)",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
       "kind": "regulator_page",
       "strength": "primary",
-      "locator": "s.5(א)(1), (3), (4), (5)",
-      "locator_he": "סעיף 5(א)(1), (3), (4), (5)",
-      "checked": "2026-10-22"
+      "locator": "pp.3 to 4, s.5(א)(1), (3), (4), (5)",
+      "locator_he": "עמודים 3 עד 4, סעיף 5(א)(1), (3), (4), (5)",
+      "page": 3,
+      "checked": "2026-10-25"
     }
   ]
 }

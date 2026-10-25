@@ -13,28 +13,30 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://boi.org.il/media/y3akar3j/חוק-הבנקאות-שירות-ללקוח-התשמא-1981.pdf",
-      "title": "Banking (Customer Service) Law 1981, consolidated text on BoI site (version 10/11, marked unofficial)",
-      "title_he": "חוק הבנקאות (שירות ללקוח), התשמ״א-1981",
-      "publisher": "Bank of Israel",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary",
-      "locator": "s.2(a)(1)-(2), 2(b)",
-      "locator_he": "סעיף 2(א)(1)-(2), 2(ב)",
-      "checked": "2026-10-22",
-      "qualifier": "(unofficial consolidation)"
-    },
-    {
-      "url": "https://boi.org.il/media/d10jeelv/h2782.pdf",
-      "title": "BoI directive 417, version 4 (5/24)",
+      "url": "https://www.boi.org.il/media/nvadftgk/150.pdf",
+      "title": "חוק הבנקאות (שירות ללקוח), התשמ\"א-1981, נוסח משולב (בנק ישראל)",
+      "title_he": "חוק הבנקאות (שירות ללקוח), התשמ\"א-1981, נוסח משולב (בנק ישראל)",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
       "kind": "regulator_page",
       "strength": "primary",
-      "locator": "s.1(a)",
-      "locator_he": "סעיף 1(א)",
-      "checked": "2026-10-22"
+      "locator": "p.4, s.2(א)(1)-(2), 2(ב)",
+      "locator_he": "עמוד 4, סעיף 2(א)(1)-(2), 2(ב)",
+      "page": 4,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.boi.org.il/media/3bacxlsl/417.pdf",
+      "title": "הוראת ניהול בנקאי תקין 417: פעילות תאגיד בנקאי במערכת סגורה (5/24)",
+      "title_he": "הוראת ניהול בנקאי תקין 417: פעילות תאגיד בנקאי במערכת סגורה (5/24)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.1, s.1(א)",
+      "locator_he": "עמוד 1, סעיף 1(א)",
+      "page": 1,
+      "checked": "2026-10-25"
     }
   ]
 }

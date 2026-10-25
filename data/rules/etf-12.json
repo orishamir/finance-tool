@@ -13,36 +13,38 @@
   "sources": [
     {
       "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
-      "title": "Yalin Lapidot annual report, p.1 footnote 3",
+      "title": "Yalin Lapidot annual report 31.12.2025",
       "title_he": "דוח שנתי ליום 31.12.2025 של ילין לפידות מחקה (4D) S&P 500",
       "publisher": "Maya (TASE filings)",
       "publisher_he": "ילין לפידות",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "p.1 footnote 3",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
       "page": 1,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
-      "title": "IBI ETF annual report, p.1 footnote 4",
+      "title": "IBI ETF annual report 31.12.2025",
       "title_he": "דוח שנתי ליום 31.12.2025 של אי.בי.אי. סל (4D) S&P 500",
       "publisher": "Maya (TASE filings)",
       "publisher_he": "אי.בי.אי",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "p.1 footnote 4",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
       "page": 1,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://mayafiles.tase.co.il/rhtm/1767001-1768000/H1767979.htm",
-      "title": "IBI filing, fund 5143359 \"(4A) S&P U.S. Power Infrastructure\", 01.09.2026 (text partly garbled)",
+      "title": "אי.בי.אי, דיווח על קרן 5143359 \"אי.בי.אי. מחקה (4A) S&P U.S. Power Infrastructure מנוטרלת מט\"ח\", 01.09.2026",
       "publisher": "Maya (TASE filings)",
       "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -3,7 +3,7 @@
 // data snapshot the bundle carries, so the strip does not recompute on every route.
 import { useEffect, useMemo, useState } from "react";
 import { loadBundle } from "../../lib/bundle";
-import { useGoals } from "../../lib/goal";
+import { useGoals, type Goal } from "../../lib/goal";
 import { goalChanges, revisitSaved, type RevisitView } from "../../lib/revisit";
 import { isoToday, isReadableSaved, useSavedComparisons, type CompareMode, type SavedComparisonRecord } from "../../lib/state";
 
@@ -15,8 +15,10 @@ export interface RevisitState {
   view: RevisitView | null;
 }
 
-export function useRevisit(mode?: CompareMode): RevisitState {
-  const { current } = useGoals();
+/** `goal` is the current one unless given (the first page's rows, one per goal, 2026-10-25). */
+export function useRevisit(mode?: CompareMode, goal?: Goal | null): RevisitState {
+  const { current: active } = useGoals();
+  const current = goal ?? active;
   const { list, ready } = useSavedComparisons();
   const mine = ready && current ? list.filter((c) => (c as { goalId?: string }).goalId === current.id) : [];
   const saved = (mode ? mine.find((c) => c.mode === mode) : [...mine].sort((a, b) => String(b.savedOn).localeCompare(String(a.savedOn)))[0]) as SavedComparisonRecord | undefined;

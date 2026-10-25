@@ -283,7 +283,7 @@ export default function Rules() {
             <label htmlFor="rules-filter" className="sr-only">
               {copy.filter}
             </label>
-            <input id="rules-filter" dir="auto" value={filters.q} onChange={(e) => setFilters({ q: e.target.value })} placeholder={copy.filter} className="field-input !text-start" autoComplete="off" />
+            <input id="rules-filter" dir="rtl" value={filters.q} onChange={(e) => setFilters({ q: e.target.value })} placeholder={copy.filter} className="field-input !text-start text-mixed" autoComplete="off" />
           </div>
           <p className="text-sm text-muted-foreground">
             {copy.questionsLine.before}{" "}
@@ -447,7 +447,7 @@ function GroupBlock({ g, open, onToggle, pd, failed, lightById }: { g: Group; op
           )}
           <ul className="grid gap-4 lg:grid-cols-2 pt-2">
             {g.ids.filter((id) => pd.rules[id]).map((id) => (
-              <Card as="li" key={id} id={id} className={cx("min-w-0 [overflow-wrap:anywhere]", scrollMargin)}>
+              <Card as="li" key={id} id={id} className={cx("min-w-0 [overflow-wrap:anywhere] flex flex-col", scrollMargin)}>
                 <RuleCard id={id} data={pd} inline />
               </Card>
             ))}

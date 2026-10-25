@@ -19,11 +19,11 @@
       "unit": "nis",
       "source": {
         "url": "https://fs.knesset.gov.il/25/law/25_lsr_6913397.pdf",
-        "title": "Banking (Customer Service) Law, Amendment 39, Sefer HaHukim 3417, 21.5.2025, p.648, s.1 (new s.5A4), s.4",
-        "publisher": "Knesset (Sefer HaHukim)",
+        "title": "חוק הבנקאות (שירות ללקוח) (תיקון מס' 39), התשפ\"ה-2025, ספר החוקים 3417, p.2, s.1 (סעיף 5א4(א))",
+        "publisher": "הכנסת",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2025-11-21",
       "effective_to": null,
       "tax_year": null,
@@ -40,15 +40,16 @@
   "sources": [
     {
       "url": "https://fs.knesset.gov.il/25/law/25_lsr_6913397.pdf",
-      "title": "Banking (Customer Service) Law, Amendment 39, Sefer HaHukim 3417, 21.5.2025, p.648",
-      "title_he": "חוק הבנקאות (שירות ללקוח), התשמ״א-1981",
+      "title": "חוק הבנקאות (שירות ללקוח) (תיקון מס' 39), התשפ\"ה-2025",
+      "title_he": "חוק הבנקאות (שירות ללקוח) (תיקון מס' 39), התשפ\"ה-2025",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "s.1, s.4",
-      "locator_he": "סעיף 1, סעיף 4",
-      "checked": "2026-10-22"
+      "locator": "p.2, s.1, s.4",
+      "locator_he": "עמוד 2, סעיף 1, סעיף 4",
+      "page": 2,
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -17,11 +17,11 @@
       "unit": "count",
       "source": {
         "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a",
-        "title": "TASE periodic report 2025",
-        "publisher": "Tel Aviv Stock Exchange",
+        "title": "דוח תקופתי לשנת 2025 של הבורסה לניירות ערך בתל אביב, p.22, סעיף 1.7.3.1",
+        "publisher": "הבורסה לניירות ערך בתל אביב",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -44,10 +44,10 @@
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "institution_doc",
       "strength": "primary",
-      "locator": "pp.19 to 21, 73",
-      "locator_he": "עמודים 19 עד 21, 73",
-      "page": 19,
-      "checked": "2026-10-22"
+      "locator": "pp.22 to 24, 76",
+      "locator_he": "עמודים 22 עד 24, 76",
+      "page": 22,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://content.tase.co.il/media/uqtbtwm3/1150_foreign_bank_372262_eng.pdf",
@@ -59,7 +59,7 @@
       "locator": "p.4",
       "locator_he": "עמוד 4",
       "page": 4,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

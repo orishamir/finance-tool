@@ -342,9 +342,9 @@ function Body({ wb, compare, data, presets, rules, search }: { wb: WorkbenchBund
         />
       </div>
       {v.pending.length > 0 && <Callout tone="caution">{c.providers.incompleteRules}</Callout>}
-      <div className="flex flex-col gap-section lg:grid lg:grid-cols-[62fr_38fr] lg:gap-x-12 lg:items-start">
+      <div className="flex flex-col gap-section lg:grid lg:grid-cols-[minmax(0,62fr)_minmax(0,38fr)] lg:gap-x-12 lg:items-start">
         {table}
-        <div className="lg:sticky lg:top-24 flex flex-col gap-6">{chartCard}</div>
+        <div className="lg:sticky lg:top-24 flex flex-col gap-6 min-w-0">{chartCard}</div>
       </div>
       <nav className="flex flex-wrap gap-x-6 gap-y-1 text-sm" aria-label="קישורים">
         {exposure && (

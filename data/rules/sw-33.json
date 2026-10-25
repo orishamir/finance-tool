@@ -18,12 +18,12 @@
       "value": 10,
       "unit": "nis_per_transfer",
       "source": {
-        "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
-        "title": "Banking (Service to Customer) (Fees) Rules 2008, consolidated to 9.4.2025, first schedule part 4(א)(6) notes, part 5 item 10",
+        "url": "https://www.boi.org.il/media/mi2driua/159a.pdf",
+        "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב (בנק ישראל), p.17, first schedule part 4(א)(6) note 2; p.19, part 5 item 10",
         "publisher": "Bank of Israel",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -39,45 +39,52 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
-      "title": "Banking Rules (Customer Service) (Fees) 2008, consolidated to 9.4.2025, first schedule part 4(א)(6) and notes, part 5 item 10, pp.17 to 19",
+      "url": "https://www.boi.org.il/media/mi2driua/159a.pdf",
+      "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב (בנק ישראל)",
       "title_he": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "pp.17 to 19",
+      "locator": "pp.17-19",
       "locator_he": "עמודים 17 עד 19",
       "page": 17,
-      "checked": "2026-10-22"
+      "quote": "בעת סגירת חשבון לא תעלה על 10",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.discountbank.co.il/media/bjudw31y/part4_securities07022025.pdf",
-      "title": "Discount tariff part 4, items 4.6.1 to 4.6.2",
+      "title": "דיסקונט – תעריפון, חלק 4 ניירות ערך (07/02/2025)",
+      "title_he": "דיסקונט – תעריפון, חלק 4 ניירות ערך (07/02/2025)",
       "publisher": "Discount Bank",
       "publisher_he": "בנק דיסקונט",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "locator": "p.5, items 4.6.1-4.6.2",
+      "page": 5,
+      "quote": "5 ₪ להעברה (פיקוח)",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.meitav.co.il/trade/financial_info/self_trading_portfolio_transfer/",
-      "title": "Meitav Trade, portfolio-transfer article, 03/08/2026",
+      "title": "מיטב – המדריך למעבר חלק: איך לנייד את תיק ההשקעות מהבנק למסחר עצמאי (03/08/2026)",
+      "title_he": "מיטב – המדריך למעבר חלק: איך לנייד את תיק ההשקעות מהבנק למסחר עצמאי (03/08/2026)",
       "publisher": "Meitav",
       "publisher_he": "מיטב",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22",
-      "qualifier": "(marketing article)"
+      "quote": "5 שקל לנייר ערך ישראל",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.calcalist.co.il/article/hj55ri2pgx",
-      "title": "Calcalist, 27.08.2026",
+      "title": "כלכליסט – המעבר מבנק לבית השקעות הוא זול, אך לצאת משם מאוד יקר (27.08.26)",
+      "title_he": "כלכליסט – המעבר מבנק לבית השקעות הוא זול, אך לצאת משם מאוד יקר (27.08.26)",
       "publisher": "Calcalist",
       "publisher_he": "כלכליסט",
       "kind": "article",
       "strength": "secondary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

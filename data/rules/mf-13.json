@@ -8,7 +8,7 @@
     "isa_suspension_days": "ימי מסחר להשעיה בידי יו״ר הרשות",
     "max_suspension_days": "ימים רצופים מרביים בסך הכול"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "liquidity-lockup",
     "protection"
@@ -19,12 +19,12 @@
       "value": 3,
       "unit": "days",
       "source": {
-        "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
-        "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, section 48 (Wikisource mirror)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+        "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח רשות ניירות ערך, p.39, s.48",
+        "publisher": "רשות ניירות ערך",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -39,12 +39,12 @@
       "value": 7,
       "unit": "days",
       "source": {
-        "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
-        "title": "Law, section 48 (Wikisource mirror)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+        "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח רשות ניירות ערך, p.39, s.48",
+        "publisher": "רשות ניירות ערך",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -59,12 +59,12 @@
       "value": 60,
       "unit": "days",
       "source": {
-        "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
-        "title": "Law, section 48 (Wikisource mirror)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+        "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח רשות ניירות ערך, p.39, s.48",
+        "publisher": "רשות ניירות ערך",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -80,18 +80,17 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
-      "title": "Law (Wikisource mirror)",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
       "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
-      "publisher": "Hebrew Wikisource",
+      "publisher": "Israel Securities Authority",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "section 48",
-      "locator_he": "סעיף 48",
-      "anchor": "סעיף_48",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.39, s.48",
+      "locator_he": "עמוד 39, סעיף 48",
+      "page": 39,
+      "checked": "2026-10-25"
     }
   ]
 }

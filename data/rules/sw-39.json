@@ -3,7 +3,7 @@
   "title": "Seniority on a transfer: the money keeps its own payment dates; two study funds merge into one account only when both are already withdrawable",
   "title_he": "ותק בניוד: הכסף שומר על מועדי התשלום שלו; שתי קרנות השתלמות מאוחדות לחשבון אחד רק כששתיהן נזילות",
   "text_he": "בהעברה בין קופות שאינן לקצבה, ובהן מקרן השתלמות לקרן השתלמות ומקופת גמל להשקעה לקופת גמל להשקעה, הכסף עובר לחשבון על שם העמית בקופה המקבלת, ולעניין דיני המס רואים את כל מועדי התשלום לקופה המעבירה כמועדי התשלום לקופה המקבלת. כלומר הוותק של הכסף אינו משתנה בניוד. איחוד של חשבון שהועבר עם חשבון קיים של העמית באותה קרן השתלמות מותר רק אם במועד האיחוד העמית היה זכאי למשוך בפטור ממס בכל אחד מהחשבונות. לכן קרן צעירה וקרן ותיקה של אותו אדם יכולות לעבור לאותו מנהל כשתי חשבונות נפרדים, ומתאחדות לחשבון אחד רק כששתיהן נזילות. הכלל הישן שקשר איחוד למועד התשלום הראשון הוחלף ואינו בתוקף.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
     "liquidity-lockup",
@@ -14,28 +14,43 @@
   "checked": "2026-10-23",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)",
-      "title": "Wikisource copy, same wording",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=6",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "checked": "2026-10-23"
+      "strength": "primary",
+      "locator": "p.6, reg. 3(ב)(1)",
+      "locator_he": "עמוד 6, תקנה 3(ב)(1)",
+      "page": 6,
+      "quote": "כמועדי התשלום לקופה המקבלת",
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.nevo.co.il/law_html/law01/999_929.htm",
-      "title": "Transfer Regulations 2008, reg. 3(ב)(1), 9(א) to 9(ג), with the pre-2014 text of reg. 9 (Nevo consolidated HTML, read verbatim; last amendment ק\"ת 10716, 12.7.2023)",
-      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
-      "publisher": "Nevo",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "reg. 3(ב)(1), 9(א) to 9(ג)",
-      "locator_he": "תקנה 3(ב)(1), 9(א) עד 9(ג)",
-      "checked": "2026-10-23",
-      "qualifier": "(mirror of ק\"ת; Reshumot not opened)"
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZbYNmyK9Qa3gH~lF+jEWmc=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014 (קובץ התקנות 7407)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014 (קובץ התקנות 7407)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.4, s.5, reg. 9(א)-(ג) to p.5",
+      "page": 4,
+      "quote": "בכל אחד מן החשבונות שאוחדו",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=8",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.8, reg. 9 as",
+      "page": 8,
+      "checked": "2026-10-25"
     }
   ]
 }

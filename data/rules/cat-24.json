@@ -15,33 +15,46 @@
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-      "title": "CMA circular 2022-9-30",
-      "title_he": "חוזר גופים מוסדיים 2022-9-30: ניהול מסלולי השקעה בקופות גמל",
+      "title": "חוזר גופים מוסדיים 2022-9-30 מסלולי השקעה בקופות גמל - תיקון",
+      "title_he": "חוזר גופים מוסדיים 2022-9-30: מסלולי השקעה בקופות גמל – תיקון",
       "publisher": "gov.il",
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
-      "locator": "appendix s.2",
-      "checked": "2026-10-22"
+      "locator": "pp.2 to 3, s.2",
+      "locator_he": "עמודים 2 עד 3, סעיף 2",
+      "page": 2,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.harel-group.co.il/long-term-savings/information/reform",
-      "title": "Harel reform page",
-      "publisher": "Harel",
-      "publisher_he": "הראל",
-      "kind": "institution_doc",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&filters={\"FUND_ID\":15349,\"REPORT_PERIOD\":202609}",
+      "title": "גמל-נט: מסלול 15349, תקופה 202609",
+      "title_he": "גמל-נט: מסלול 15349, תקופה 202609",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
       "strength": "primary",
-      "locator": "Gemel-Net 202609",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.meitav.co.il/provident_pension/flexible_index_tracker_actively_managed_indices/",
-      "title": "Meitav flexible-index notice",
+      "title": "מיטב: שינוי מדיניות השקעה תקנונית של מסלול השקעה עוקב מדדים גמיש",
+      "title_he": "מיטב: שינוי מדיניות השקעה תקנונית של מסלול השקעה עוקב מדדים גמיש",
       "publisher": "Meitav",
       "publisher_he": "מיטב",
       "kind": "institution_doc",
-      "strength": "primary",
-      "checked": "2026-10-22"
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.harel-group.co.il/long-term-savings/information/reform",
+      "title": "הראל: רפורמה במסלולי השקעה",
+      "title_he": "הראל: רפורמה במסלולי השקעה",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
     }
   ]
 }

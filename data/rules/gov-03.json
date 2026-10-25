@@ -22,11 +22,11 @@
       "unit": "text",
       "source": {
         "url": "https://www.boi.org.il/media/ytal5ozx/makam.pdf",
-        "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\" (undated)",
+        "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\" (undated), p.9, s.6.2.1",
         "publisher": "Bank of Israel, Markets Division",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -42,11 +42,11 @@
       "unit": "boolean",
       "source": {
         "url": "https://www.boi.org.il/media/ytal5ozx/makam.pdf",
-        "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\" (undated)",
+        "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\" (undated), p.9, s.6.2.1",
         "publisher": "Bank of Israel, Markets Division",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -62,11 +62,11 @@
       "unit": "days",
       "source": {
         "url": "https://www.boi.org.il/media/ytal5ozx/makam.pdf",
-        "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\" (undated)",
+        "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\" (undated), p.9, s.6.1.2",
         "publisher": "Bank of Israel, Markets Division",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -82,11 +82,11 @@
       "unit": "months",
       "source": {
         "url": "https://www.boi.org.il/media/ytal5ozx/makam.pdf",
-        "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\" (undated)",
+        "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\" (undated), p.9, s.6.1.2",
         "publisher": "Bank of Israel, Markets Division",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -103,44 +103,29 @@
   "sources": [
     {
       "url": "https://www.boi.org.il/media/ytal5ozx/makam.pdf",
-      "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\"",
+      "title": "בנק ישראל, חטיבת השווקים: מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים",
       "title_he": "מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל, חטיבת השווקים",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "ss. 1.1, 6.1.1, 6.1.2, 6.2.1, 6.2.2, pp. 1, 9",
-      "locator_he": "סעיפים 1.1, 6.1.1, 6.1.2, 6.2.1, 6.2.2, עמודים 1, 9",
+      "locator": "pp.1, 9, ss.1.1, 6.1.1, 6.1.2, 6.2.1, 6.2.2",
+      "locator_he": "עמודים 1, 9, סעיפים 1.1, 6.1.1, 6.1.2, 6.2.1, 6.2.2",
       "page": 1,
-      "checked": "2026-10-22",
-      "qualifier": "(BoI document; currency to be confirmed, open question 3)"
-    },
-    {
-      "url": "https://boi.org.il/media/npifkjqk/הוראה-a447.pdf",
-      "title": "BoI draft directive 447A, annex ב",
-      "title_he": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון",
-      "publisher": "Bank of Israel",
-      "publisher_he": "בנק ישראל",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "p. 6",
-      "locator_he": "עמוד 6",
-      "page": 6,
-      "checked": "2026-10-22",
-      "qualifier": "(draft)"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://boi.org.il/media/gcmk52bw/447a.pdf",
-      "title": "447A (04/25)",
+      "title": "בנק ישראל, הפיקוח על הבנקים: ניהול בנקאי תקין 447A, פרסום מידע מרוכז על קרנות כספיות ומק\"מ (04/25)",
       "title_he": "הוראת ניהול בנקאי תקין 447א: פרסום מידע מרוכז על קרנות כספיות ומק״מ",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
       "kind": "regulation",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "locator": "p.3, s.17",
+      "locator_he": "עמוד 3, סעיף 17",
+      "page": 3,
+      "checked": "2026-10-25"
     }
-  ],
-  "derived_from": [
-    "BANK-15"
   ]
 }

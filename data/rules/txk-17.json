@@ -3,7 +3,7 @@
   "title": "IRA: no IRA-specific tax rule; the wrapper's rules apply (Q13)",
   "title_he": "אין כלל מס מיוחד לניהול אישי; חלים כללי המוצר",
   "text_he": "בפקודת מס הכנסה לא נמצאה הוראה שמשתמשת במילים 'בניהול אישי'. הפקודה ממסה לפי סוג הקופה, ולכן קופת גמל להשקעה בניהול אישי ממוסה כמו כל קופת גמל להשקעה, וקרן השתלמות בניהול אישי כמו כל קרן השתלמות. הפטור ברמת הקופה חל על כל קופת גמל שאינה קופת ביטוח, ולכן רווחי מסחר, דיבידנדים וריבית בתוך החשבון לא ממוסים בישראל כל עוד הם בפנים. ה'לא נמצא' נשען על חיפוש טקסט באתר שמעתיק את הפקודה; חוזר של רשות המסים או של רשות שוק ההון על מיסוי ניהול אישי לא נמצא.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "tax-during",
     "tax-at-exit",
@@ -14,31 +14,30 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Ordinance PDF",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "pp.14-15, s.9(2)",
-      "locator_he": "עמודים 14 עד 15, סעיף 9(2)",
-      "anchor": "סעיף_9",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "pp.1-312",
+      "locator_he": "עמודים 1 עד 312",
+      "page": 1,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.nevo.co.il/law_html/law01/255_001.htm",
-      "title": "Nevo, Ordinance",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Nevo",
-      "publisher_he": "הכנסת",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "quote": "בניהול אישי",
-      "checked": "2026-10-22",
-      "qualifier": "(mirror; method limitation stated)"
+      "strength": "primary",
+      "locator": "p.32, s.9(2)(א)",
+      "locator_he": "עמוד 32, סעיף 9(2)(א)",
+      "page": 32,
+      "checked": "2026-10-25"
     }
   ]
 }

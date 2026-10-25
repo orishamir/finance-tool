@@ -3,7 +3,7 @@
   "title": "Transfers out of a study fund: whole balance only, to another study fund, within 10 business days",
   "title_he": "העברה מקרן השתלמות: כל היתרה, לקרן השתלמות אחרת",
   "text_he": "עמית רשאי להעביר כסף בין קופות גמל ובין מסלולים. מקרן השתלמות מעבירים לקרן השתלמות אחרת, ולקופת גמל לקצבה רק אם העמית יכול היה למשוך את הכסף בפטור ממס; מסלול לקופת גמל להשקעה לא נמצא בתקנות, חוץ מאישור מיוחד של הממונה. העברה חלקית מקרן השתלמות אסורה, בין לחשבון אחר באותה קרן ובין לקרן אחרת. הקרן המעבירה מעבירה בתוך ימי העסקים להעברה שבכלל המשותף לקופות הגמל, מבקשה מלאה וחתומה, והממונה רשאי להאריך במקרים מיוחדים.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
     "liquidity-lockup"
@@ -13,17 +13,84 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.nevo.co.il/law_html/law01/999_929.htm",
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008, regs. 2(א)(4), 3(א)(4), 3(א)(12), 5(א), 9(ג) (latest amendment shown 2023, in force 1.9.2023), Nevo",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008",
       "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
-      "publisher": "Nevo",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "משרד האוצר",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "regs. 2(א)(4), 3(א)(4), 3(א)(12), 5(א), 9(ג)",
-      "locator_he": "תקנות 2(א)(4), 3(א)(4), 3(א)(12), 5(א), 9(ג)",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.4, reg. 2(א)(4)",
+      "locator_he": "עמוד 4, תקנה 2(א)(4)",
+      "page": 4,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=5",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.5, regs. 3(א)(4), 3(א)(12)",
+      "locator_he": "עמוד 5, תקנות 3(א)(4), 3(א)(12)",
+      "page": 5,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=6",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.6, reg. 5(א)",
+      "locator_he": "עמוד 6, תקנה 5(א)",
+      "page": 6,
+      "quote": "בתוך עשרה ימי עסקים",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZbYNmyK9Qa3gH~lF+jEWmc=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014 (קובץ התקנות 7407)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014 (קובץ התקנות 7407)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.4, s.5, reg. 9(ג)",
+      "locator_he": "עמוד 4, סעיף 5, תקנה 9(ג)",
+      "page": 4,
+      "quote": "לא ניתן להעביר חלק מן הכספים שנצברו לזכותו של עמית מקופה מעבירה שהיא קרן השתלמות",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.11, s.23(ב)(2)",
+      "locator_he": "עמוד 11, סעיף 23(ב)(2)",
+      "page": 11,
+      "quote": "רשאים עמיתים להעביר כספים מקופת גמל אחת לקופת גמל אחרת",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://as-invest.co.il/media/khpp32k5/אלטשולר-שחם-השתלמות-תקנון-מהדורת-שינויים-דצמבר-2024.pdf",
+      "title": "Altshuler bylaws 1.12.2024",
+      "title_he": "תקנון קרן ההשתלמות של אלטשולר שחם (מהדורת דצמבר 2024)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "s.10",
+      "locator_he": "סעיף 10",
+      "checked": "2026-10-25"
     }
   ]
 }

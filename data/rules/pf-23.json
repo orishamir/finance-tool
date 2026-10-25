@@ -6,7 +6,7 @@
   "figure_names_he": {
     "switch_business_days": "ימי עסקים למעבר מסלול"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
     "switching-tax-event"
@@ -18,12 +18,12 @@
       "value": 3,
       "unit": "business_days",
       "source": {
-        "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לאישור_ולניהול_קופות_גמל)",
-        "title": "Income Tax Regulations (Rules for Approval and Management of Provident Funds) 1964, reg. 33ב(ב) (Wikisource)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+        "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964, p.9, reg. 33ב(ב)",
+        "publisher": "National Insurance Institute (btl.gov.il), consolidated text",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -39,39 +39,55 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לאישור_ולניהול_קופות_גמל)",
-      "title": "Income Tax Regulations (Rules for Approval and Management of Provident Funds) 1964, reg. 1, 33ב (Wikisource)",
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
       "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "משרד האוצר",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg. 1, 33ב",
-      "locator_he": "תקנה 1, 33ב",
-      "anchor": "סעיף_1",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.9, reg. 33ב(א)-(ב)",
+      "locator_he": "עמוד 9, תקנה 33ב(א)-(ב)",
+      "page": 9,
+      "quote": "בתוך שלושה ימי עסקים, אלא אם כן נקבעה בתקנון הקופה תקופה קצרה יותר",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.3, reg. 1 (מסלול השקעה)",
+      "locator_he": "עמוד 3, תקנה 1 (מסלול השקעה)",
+      "page": 3,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-      "title": "Altshuler bylaws s. 10, 20",
+      "title": "אלטשולר שחם גמל להשקעה \"חיסכון פלוס\" – תקנון, מרץ 2025",
+      "title_he": "אלטשולר שחם גמל להשקעה \"חיסכון פלוס\" – תקנון, מרץ 2025",
       "publisher": "Altshuler Shaham",
       "publisher_he": "אלטשולר שחם",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "s. 10, 20",
-      "locator_he": "סעיף 10, 20",
-      "checked": "2026-10-22"
+      "locator": "p.6, ss.20.1-20.4; s.10 on p.5",
+      "page": 6,
+      "quote": "העברת כספים בין מסלולי השקעה תתבצע בתוך שלושה ימי עסקים",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.fnx.co.il/gemel/gemelhashkaa/faq/",
-      "title": "Phoenix FAQ",
-      "title_he": "שאלות ותשובות על קופת הגמל להשקעה של הפניקס",
+      "title": "הפניקס – קופת גמל להשקעה: שאלות ותשובות",
+      "title_he": "הפניקס – קופת גמל להשקעה: שאלות ותשובות",
       "publisher": "The Phoenix",
       "publisher_he": "הפניקס",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "quote": "השינוי יבוצע לפי מדד השקעות אחרון הידוע ליום השינוי",
+      "checked": "2026-10-25"
     }
   ]
 }

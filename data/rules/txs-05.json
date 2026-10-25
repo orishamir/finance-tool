@@ -18,12 +18,12 @@
       "value": 25,
       "unit": "pct",
       "source": {
-        "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מתמורה,_מתשלום_או_מרווח_הון_במכירת_נייר_ערך,_במכירת_יחידה_בקרן_נאמנות_או_בעסקה_עתידית)",
-        "title": "Income Tax (Withholding from Consideration, Payment or Capital Gain on Sale of a Security, Mutual-Fund Unit or Futures) Regulations 2002 (Wikisource mirror, page edited 19.2.2026)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "url": "https://www.btl.gov.il/Laws1/02_0103_100228.pdf",
+        "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס\"ג-2002, נוסח משולב, p.1, reg. 2(א)",
+        "publisher": "המוסד לביטוח לאומי",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -38,12 +38,12 @@
       "value": 15,
       "unit": "pct",
       "source": {
-        "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מתמורה,_מתשלום_או_מרווח_הון_במכירת_נייר_ערך,_במכירת_יחידה_בקרן_נאמנות_או_בעסקה_עתידית)",
-        "title": "Income Tax (Withholding from Consideration, Payment or Capital Gain on Sale of a Security, Mutual-Fund Unit or Futures) Regulations 2002 (Wikisource mirror, page edited 19.2.2026)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "url": "https://www.btl.gov.il/Laws1/02_0103_100228.pdf",
+        "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס\"ג-2002, נוסח משולב, p.1, reg. 2(ב)",
+        "publisher": "המוסד לביטוח לאומי",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -59,6 +59,20 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100228.pdf",
+      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס\"ג-2002",
+      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס״ג-2002",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.1, reg. 1(א) מוסד כספי, reg. 2(א), (ב)",
+      "locator_he": "עמוד 1, תקנה 1(א) מוסד כספי, תקנה 2(א), (ב)",
+      "page": 1,
+      "quote": "בנייר ערך שאינו צמוד למדד, ינכה מס בשיעור של 15% מרווח ההון",
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
       "title": "Tax Authority guide 2025",
       "title_he": "דע זכויותיך וחובותיך 2025",
@@ -66,27 +80,11 @@
       "publisher_he": "רשות המסים",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.46, p.117",
-      "locator_he": "עמוד 46, עמוד 117",
-      "page": 46,
-      "quote": "ו. דיווח ותשלום מקדמות בגין עסקאות בניירות ערך",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מתמורה,_מתשלום_או_מרווח_הון_במכירת_נייר_ערך,_במכירת_יחידה_בקרן_נאמנות_או_בעסקה_עתידית)",
-      "title": "Income Tax Regulations (withholding from proceeds ... on sale of a security, sale of a unit in a mutual fund or a future transaction), 5763-2002",
-      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס״ג-2002",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg.1",
-      "locator_he": "תקנה 1",
-      "anchor": "סעיף_1",
-      "quote": "מוסד כספי",
-      "checked": "2026-10-22",
-      "qualifier": "(Wikisource shows the last amendment as תשע\"ח; see open question 3)"
+      "locator": "p.48, p.119",
+      "locator_he": "עמוד 48, עמוד 119",
+      "page": 48,
+      "quote": "במכירת ניירות ערך סחירים אין להגיש הודעה כאמור אם נוכה מלוא המס כחוק",
+      "checked": "2026-10-25"
     }
   ]
 }

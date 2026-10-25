@@ -24,11 +24,13 @@ export interface TimelineProps {
   ageMarker?: { ruleId: string; figure: string } | null;
   /** When the money becomes free (flows 6.5): the lock-up's years, or the age of an `at_age` exit (drawn once an age is entered). */
   lock?: { years: SiteValue | null; age: SiteValue | null } | null;
+  /** The page has a part that changes with employment (the study fund's deposit tax); elsewhere the switch changed nothing (2026-10-25). */
+  employment?: boolean;
 }
 
 const inputKeys: P05Input[] = ["amount_now", "monthly_deposit", "horizon_years", "A-01", "A-02"];
 
-export function Timeline({ bundle, initial, wrapperName, ageMarker, lock }: TimelineProps) {
+export function Timeline({ bundle, initial, wrapperName, ageMarker, lock, employment = false }: TimelineProps) {
   const { state, ready, setEntered, setAge, setEmployment, resetAll } = useInputs();
   const [mode, setMode] = useValueMode();
   const [hover, setHover] = useState<number | null>(null);
@@ -123,7 +125,7 @@ export function Timeline({ bundle, initial, wrapperName, ageMarker, lock }: Time
   };
   const anyEntered = Object.keys(state.entered).length > 0;
   const horizonValue = inputValue("horizon_years");
-  const panel = <ValuesPanel bundle={bundle} focusField={focusField} />;
+  const panel = <ValuesPanel bundle={bundle} focusField={focusField} employment={employment} />;
 
   const tableCard =
     timeline.kind === "ok" && values ? (
@@ -333,7 +335,7 @@ function TermsList({ bundle }: { bundle: Bundle }) {
 }
 
 /** The fields, in the order of design-spec 4; used both in the phone sheet and the PC panel. */
-function ValuesPanel({ bundle, focusField }: { bundle: Bundle; focusField: P05Input | "all" }) {
+function ValuesPanel({ bundle, focusField, employment }: { bundle: Bundle; focusField: P05Input | "all"; employment: boolean }) {
   const { state, ready, setEntered, setAge, setEmployment } = useInputs();
   const p05 = bundle.p05;
   const monthly = p05Range(p05, "sliders", "monthly_deposit");
@@ -367,6 +369,7 @@ function ValuesPanel({ bundle, focusField }: { bundle: Bundle; focusField: P05In
         <NumberField label={valuesCopy.fields["A-02"]} unit="pct_per_year" value={current("A-02")} isEntered={isEntered("A-02")} validate={between(pctRange, valuesCopy.errors.pct)} onCommit={commit("A-02")} onReset={() => setEntered("A-02", null)} disabled={!ready} autoFocus={focusField === "A-02"} />
       </div>
       {hints}
+      {employment && (
       <div className="field">
         <span className="field-label" id="emp-label">
           {valuesCopy.fields.employment} <span className="text-muted-foreground font-normal">{valuesCopy.optional}</span>
@@ -374,6 +377,7 @@ function ValuesPanel({ bundle, focusField }: { bundle: Bundle; focusField: P05In
         <SegmentedControl<Employment> labelledBy="emp-label" options={[{ value: "employee", label: valuesCopy.employment.employee }, { value: "self-employed", label: valuesCopy.employment["self-employed"] }]} value={state.employment} onChange={(v) => setEmployment(state.employment === v ? null : v)} />
         <span className="text-xs text-muted-foreground">{valuesCopy.hints.employment}</span>
       </div>
+      )}
       <NumberField label={<>{valuesCopy.fields.age} <span className="text-muted-foreground font-normal">{valuesCopy.optional}</span></>} unit="years" value={state.age} isEntered={state.age !== null} validate={between(ageRange, valuesCopy.errors.age, true)} onCommit={(n) => setAge(n)} onReset={() => setAge(null)} hint={valuesCopy.hints.age} placeholder={valuesCopy.agePlaceholder} inputMode="numeric" optional disabled={!ready} />
     </div>
   );

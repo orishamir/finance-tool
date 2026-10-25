@@ -6,7 +6,7 @@
   "figure_names_he": {
     "rate": "שיעור המס על חלוקה"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "distribution-policy",
     "tax-during"
@@ -17,12 +17,12 @@
       "value": 25,
       "unit": "pct",
       "source": {
-        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-        "title": "Income Tax Ordinance, s.125B1(b); Withholding Regulations 2005, reg. 10(b)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "url": "https://fs.knesset.gov.il/18/law/18_lsr_301335.pdf",
+        "title": "חוק לשינוי נטל המס (תיקוני חקיקה), התשע\"ב-2011, ספר החוקים 2324, p.5, item (11): s.125ב1(ב), \"20%\" replaced by \"25%\"",
+        "publisher": "הכנסת",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -38,43 +38,55 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Income Tax Ordinance",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.203, s.125ב1(ב)",
+      "locator_he": "עמוד 203, סעיף 125ב1(ב)",
+      "page": 203,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.3, reg. 10(ב)",
+      "locator_he": "עמוד 3, תקנה 10(ב)",
+      "page": 3,
+      "quote": "מנהל קרן נאמנות פטורה המשלם רווחים לבעל יחידה שהוא יחיד, ינכה מהם מס בשיעור של 25%",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/18/law/18_lsr_301335.pdf",
+      "title": "חוק לשינוי נטל המס (תיקוני חקיקה), התשע\"ב-2011, ספר החוקים 2324",
+      "title_he": "חוק לשינוי נטל המס (תיקוני חקיקה), התשע\"ב-2011, ספר החוקים 2324",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.125B1(b)",
-      "locator_he": "סעיף 125ב1(ב)",
-      "anchor": "סעיף_125ב1",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.5, item (11), s.125ב1(ב)",
+      "page": 5,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מריבית,_מדיבידנד_ומרווחים_מסוימים)",
-      "title": "Income Tax Regulations (withholding from interest, dividends and certain gains), 5766-2005",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg.10(b)",
-      "locator_he": "תקנה 10(ב)",
-      "anchor": "סעיף_10",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf",
-      "title": "Migdal main prospectus 30.1.2025",
-      "title_he": "תשקיף ראשי של מגדל קרנות נאמנות (30.1.2025)",
+      "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf",
+      "title": "מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026",
+      "title_he": "מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026",
       "publisher": "Maya (TASE filings)",
-      "publisher_he": "מגדל קרנות נאמנות",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "ch.25.2.2.6",
-      "checked": "2026-10-22"
+      "locator": "p.73, ch.25.2.2.6",
+      "page": 73,
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -3,7 +3,7 @@
   "title": "No tax on growth inside the fund",
   "title_he": "אין מס על הרווחים בתוך הקופה",
   "text_he": "הכנסות של קופת גמל פטורות ממס, חוץ מהכנסה מעסק שהקופה מנהלת או מחברה בשליטתה. קופת גמל להשקעה היא קופת גמל לפי חוק הפיקוח, ולכן הרווחים בתוכה לא ממוסים. המס חל רק כשהעמית מושך. איך החריג של הכנסה מעסק היה חל על קופה לא נחקר.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "tax-during",
     "distribution-policy"
@@ -13,32 +13,55 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Ordinance, Wikisource PDF",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "PDF pp.14-15, s.9(2)(a), (b)",
-      "anchor": "סעיף_9",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.32, s.9(2)(א)",
+      "locator_he": "עמוד 32, סעיף 9(2)(א)",
+      "page": 32,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "title": "Provident Funds Law",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.33, s.9(2)(ב), definition of קופת גמל",
+      "page": 33,
+      "quote": "למעט קופת ביטוח",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_12846863.pdf",
+      "title": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנת התקציב 2026), התשפ\"ו-2026, ספר החוקים 3511",
+      "title_he": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנת התקציב 2026), התשפ\"ו-2026, ספר החוקים 3511",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.1",
-      "locator_he": "סעיף 1",
-      "anchor": "סעיף_1",
-      "quote": "קופת גמל להשקעה",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.3, s.4",
+      "locator_he": "עמוד 3, סעיף 4",
+      "page": 3,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016, ספר החוקים 2554",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, ss.1-2 (definition of קופת גמל להשקעה; s.13(א))",
+      "page": 2,
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -15,21 +15,22 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
-      "title": "Disclosure rules 1992",
-      "title_he": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ״ב-1992",
+      "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",
+      "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל)",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
-      "kind": "regulation",
+      "kind": "regulator_page",
       "strength": "primary",
-      "locator": "s.7(b)(4)",
-      "locator_he": "סעיף 7(ב)(4)",
-      "checked": "2026-10-22"
+      "locator": "p.5, s.7(ב)(4)",
+      "locator_he": "עמוד 5, סעיף 7(ב)(4)",
+      "page": 5,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-      "title": "Yahav rate board",
-      "title_he": "לוח הריביות על פיקדונות של בנק יהב",
+      "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "title_he": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
       "publisher": "Bank Yahav",
       "publisher_he": "בנק יהב",
       "kind": "institution_doc",
@@ -37,52 +38,57 @@
       "locator": "pp.2, 4",
       "locator_he": "עמודים 2, 4",
       "page": 2,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.leumi.co.il/he/savings/saving_by_touch",
-      "title": "Leumi touch savings",
+      "title": "לאומי: חיסכון בנגיעה",
+      "title_he": "לאומי: חיסכון בנגיעה",
       "publisher": "Bank Leumi",
       "publisher_he": "בנק לאומי",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.leumi.co.il/he/savings",
-      "title": "Leumi savings",
+      "title": "לאומי: חסכונות",
+      "title_he": "לאומי: חסכונות",
       "publisher": "Bank Leumi",
       "publisher_he": "בנק לאומי",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.fibi.co.il/private/depositsandsavings/savingtypes/",
-      "title": "FIBI saving types",
+      "title": "הבינלאומי: סוגי חסכונות",
+      "title_he": "הבינלאומי: סוגי חסכונות",
       "publisher": "First International Bank",
       "publisher_he": "הבנק הבינלאומי",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.bankmassad.co.il/private/depositsandsavings/savingtypes/",
-      "title": "Massad saving types",
+      "title": "מסד: סוגי חסכונות",
+      "title_he": "מסד: סוגי חסכונות",
       "publisher": "Bank Massad",
       "publisher_he": "בנק מסד",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.discountbank.co.il/private/savings-investments/savings-interest/",
-      "title": "Discount",
+      "title": "דיסקונט: חיסכון וריבית",
+      "title_he": "דיסקונט: חיסכון וריבית",
       "publisher": "Discount Bank",
       "publisher_he": "בנק דיסקונט",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

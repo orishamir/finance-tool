@@ -14,12 +14,12 @@
       "value": 1,
       "unit": "count",
       "source": {
-        "url": "https://he.wikisource.org/wiki/חוק_הביטוח_הלאומי",
-        "title": "National Insurance Law s.74ב(א)(2א) (Wikisource mirror): \"בחירה כאמור תיעשה פעם אחת בלבד; סכום שנצבר ערב בחירתו ... ימשיך להיות מנוהל בבנק\"; NII change page; NII 2025 report pp.1-2",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
+        "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995, נוסח המוסד לביטוח לאומי, p.50, s.74ב(א)(2א): \"בחירה כאמור תיעשה פעם אחת בלבד\"",
+        "publisher": "National Insurance Institute (BTL)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2025-01-01",
       "effective_to": null,
       "tax_year": null,
@@ -39,14 +39,62 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/mavar.aspx",
-      "title": "NII change page",
-      "title_he": "חיסכון לכל ילד: עמודי המידע של הביטוח הלאומי",
+      "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
+      "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
       "publisher": "National Insurance Institute",
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "locator": "p.50, s.74ב(א)(2א)",
+      "locator_he": "עמוד 50, סעיף 74ב(א)(2א)",
+      "page": 50,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
+      "title": "חיסכון ארוך-טווח לכל ילד וילדה – דוח הביטוח הלאומי לשנת 2025",
+      "title_he": "חיסכון ארוך-טווח לכל ילד וילדה – דוח הביטוח הלאומי לשנת 2025",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "pp.1-2",
+      "locator_he": "עמודים 1 עד 2",
+      "page": 1,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/mavar.aspx",
+      "title": "ביטוח לאומי: שינוי הגוף החוסך ומסלול החיסכון",
+      "title_he": "ביטוח לאומי: שינוי הגוף החוסך ומסלול החיסכון",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://bank-yahav.co.il/media/qxed4yhi/השקעות-מונגש-חסכון-לכל-ילד-צפייה-בהסכם-חיסכון-לכל-ילד.pdf",
+      "title": "בנק יהב: הסכם חיסכון ארוך טווח לילד (חיסכון לכל ילד)",
+      "title_he": "בנק יהב: הסכם חיסכון ארוך טווח לילד (חיסכון לכל ילד)",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "s.3.3, 4.6",
+      "locator_he": "סעיף 3.3, 4.6",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.as-invest.co.il/interstedin/%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%95%D7%94%D7%A9%D7%A7%D7%A2%D7%94/%D7%A9%D7%90%D7%9C%D7%95%D7%AA-%D7%95%D7%AA%D7%A9%D7%95%D7%91%D7%95%D7%AA-%D7%91%D7%A0%D7%95%D7%A9%D7%90-%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%9C%D7%9B%D7%9C-%D7%99%D7%9C%D7%93/",
+      "title": "אלטשולר שחם: שאלות ותשובות בנושא חיסכון לכל ילד",
+      "title_he": "אלטשולר שחם: שאלות ותשובות בנושא חיסכון לכל ילד",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
     }
   ]
 }
