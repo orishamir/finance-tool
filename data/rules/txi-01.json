@@ -13,31 +13,30 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
-      "title": "Income Tax (Withholding from Interest, Dividend and Certain Profits) Regulations 2005, reg. 1",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
       "strength": "primary",
-      "locator": "reg. 1",
-      "locator_he": "תקנה 1",
-      "checked": "2026-10-22"
+      "locator": "p.204, s.125ג(א), definition ריבית",
+      "page": 204,
+      "quote": "לרבות דמי ניכיון",
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Income Tax Ordinance, s.125C(a)",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.125C(a)",
-      "locator_he": "סעיף 125ג(א)",
-      "anchor": "סעיף_125ג",
-      "checked": "2026-10-22",
-      "qualifier": "(legislation, Wikisource mirror)"
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.1, reg. 1, definition ריבית",
+      "page": 1,
+      "quote": "ריבית, הפרשי הצמדה שאינם פטורים ממס על פי כל דין",
+      "checked": "2026-10-25"
     }
   ]
 }

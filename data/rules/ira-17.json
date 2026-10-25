@@ -19,7 +19,7 @@
         "publisher": "Capital Market, Insurance and Savings Authority (Gemel-Net via data.gov.il)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2026-09-01",
       "effective_to": null,
       "tax_year": null,
@@ -39,7 +39,7 @@
         "publisher": "Capital Market, Insurance and Savings Authority (Gemel-Net via data.gov.il)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2026-09-01",
       "effective_to": null,
       "tax_year": null,
@@ -61,12 +61,13 @@
   "sources": [
     {
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&q=אישי&filters={\"REPORT_PERIOD\":202609}",
-      "title": "Gemel-Net datastore, 202609",
+      "title": "גמל-נט, רשות שוק ההון: נתוני קופות הגמל לתקופת דיווח 202609, חיפוש \"אישי\"",
+      "title_he": "גמל-נט, רשות שוק ההון: נתוני קופות הגמל לתקופת דיווח 202609, חיפוש \"אישי\"",
       "publisher": "data.gov.il",
       "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.meitav.co.il/provident_pension/ira/",
@@ -76,7 +77,8 @@
       "publisher_he": "מיטב",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "quote": "החברה רשאית להעלות את דמי ניהול בכפוף להוראות הדין",
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -17,11 +17,11 @@
       "unit": "pct",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2025/he/annual-debt-report_annual-debt-report-2025-accessible-version-he.pdf",
-        "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2025 (file dated April 2026)",
+        "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2025 (file dated April 2026), p.27",
         "publisher": "Ministry of Finance, Accountant General",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2025-01-01",
       "effective_to": "2025-12-31",
       "tax_year": null,
@@ -38,29 +38,29 @@
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf",
-      "title": "2024 glossary, \"אג\"ח סחיר\", \"אג\"ח לא סחיר\", \"מערכת ה-MTS\"",
+      "title": "החשב הכללי, היחידה לניהול החוב הממשלתי: הדו\"ח השנתי 2024, מילון מונחים",
       "title_he": "הדוח השנתי 2024 של היחידה לניהול החוב הממשלתי",
       "publisher": "gov.il",
       "publisher_he": "החשב הכללי, משרד האוצר",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "pp. 40, 43",
+      "locator": "pp.40, 43",
       "locator_he": "עמודים 40, 43",
       "page": 40,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2025/he/annual-debt-report_annual-debt-report-2025-accessible-version-he.pdf",
-      "title": "הדו\"ח השנתי 2025",
+      "title": "החשב הכללי, היחידה לניהול החוב הממשלתי: הדו\"ח השנתי 2025",
       "title_he": "הדוח השנתי 2025 של היחידה לניהול החוב הממשלתי",
       "publisher": "gov.il",
       "publisher_he": "החשב הכללי, משרד האוצר",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p. 27",
+      "locator": "p.27",
       "locator_he": "עמוד 27",
       "page": 27,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

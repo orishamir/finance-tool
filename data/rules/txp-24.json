@@ -20,35 +20,49 @@
       "publisher_he": "רשות המסים",
       "kind": "circular",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "locator": "p.13, s.5.2.1",
+      "locator_he": "עמוד 13, סעיף 5.2.1",
+      "page": 13,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "title": "Provident Funds Law",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.4, reg. 1 definitions `קופת גמל לקצבה`, `קרן ותיקה`, `קרן חדשה מקיפה`, `קרן חדשה כללית`",
+      "page": 4,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.10, reg. 34(ג)-(ה)",
+      "locator_he": "עמוד 10, תקנה 34(ג)-(ה)",
+      "page": 10,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.1",
-      "locator_he": "סעיף 1",
-      "anchor": "סעיף_1",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לאישור_ולניהול_קופות_גמל)",
-      "title": "Regulations 1964",
-      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg. 34",
-      "locator_he": "תקנה 34",
-      "anchor": "סעיף_34",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.3, s.1",
+      "locator_he": "עמוד 3, סעיף 1",
+      "page": 3,
+      "quote": "קופת גמל המיועדת לתשלום קצבה",
+      "checked": "2026-10-25"
     }
   ]
 }

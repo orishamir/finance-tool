@@ -2,7 +2,7 @@
   "id": "IRA-18",
   "title": "Brokerage chosen by competitive process; related-party broker limits",
   "title_he": "בחירת ברוקרים בהליך תחרותי ומגבלות על צד קשור",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "fee-trade",
     "regulator"
@@ -14,12 +14,12 @@
       "value": 3,
       "unit": "years",
       "source": {
-        "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
-        "title": "IRA regulations, reg. 12 (Nevo mirror, summarising fetch)",
-        "publisher": "Minister of Finance regulations (Nevo mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/iXRl3JX663X67T342MLtmOhZrYskYBxrQk+FHRN~mJM=#page=2",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ח-2017 (קובץ התקנות 7880), p.2, s.1 (reg. 12(א))",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -34,12 +34,12 @@
       "value": 4,
       "unit": "count",
       "source": {
-        "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
-        "title": "IRA regulations, reg. 12 (Nevo mirror, summarising fetch)",
-        "publisher": "Minister of Finance regulations (Nevo mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=6",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820), p.6, reg. 12(א) as first enacted (four participants); since קובץ התקנות 7880 (2017) reg. 12(א) requires eight",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -54,12 +54,12 @@
       "value": 20,
       "unit": "pct",
       "source": {
-        "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
-        "title": "IRA regulations, reg. 12 (Nevo mirror, summarising fetch)",
-        "publisher": "Minister of Finance regulations (Nevo mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/RATI4pBLty7qGIwDdx4vQyqqWGj~YlmHaa28WfpNxGU=#page=2",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי) (תיקון מס' 2), התש\"ע-2010 (קובץ התקנות 6901), p.2, reg. 12(ב) of 2010 (20% cap); replaced by קובץ התקנות 7880 (2017), which keeps no percentage cap",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -81,25 +81,56 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
-      "title": "Nevo, reg. 12",
-      "publisher": "Nevo",
-      "publisher_he": "נבו",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "reg. 12",
-      "locator_he": "תקנה 12",
-      "checked": "2026-10-22"
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/iXRl3JX663X67T342MLtmOhZrYskYBxrQk+FHRN~mJM=#page=2",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ח-2017 (קובץ התקנות 7880)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ח-2017 (קובץ התקנות 7880)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "pp.2-3, s.1",
+      "locator_he": "עמודים 2 עד 3, סעיף 1",
+      "page": 2,
+      "quote": "הליך תחרותי שיתקיים אחת לשלוש שנים לפחות בין שמונה משתתפים לפחות",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=6",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.6, reg. 12 (נוסח 2009)",
+      "locator_he": "עמוד 6, תקנה 12 (נוסח 2009)",
+      "page": 6,
+      "quote": "בין ארבעה משתתפים לפחות",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/RATI4pBLty7qGIwDdx4vQyqqWGj~YlmHaa28WfpNxGU=#page=2",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי) (תיקון מס' 2), התש\"ע-2010 (קובץ התקנות 6901)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי) (תיקון מס' 2), התש\"ע-2010 (קובץ התקנות 6901)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, s.1",
+      "locator_he": "עמוד 2, סעיף 1",
+      "page": 2,
+      "quote": "לא יעלו על 20 אחוזים מסך כל העמלות",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.meitav.co.il/provident_pension/ira/brokerage_commission_breakdown/",
-      "title": "Meitav brokerage letters",
+      "title": "פירוט עמלות הברוקראז׳ בקופת גמל בניהול אישי – מיטב",
+      "title_he": "פירוט עמלות הברוקראז׳ בקופת גמל בניהול אישי – מיטב",
       "publisher": "Meitav",
       "publisher_he": "מיטב",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

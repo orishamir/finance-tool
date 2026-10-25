@@ -13,15 +13,16 @@
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-      "title": "CMA circular 2022-9-30",
-      "title_he": "חוזר גופים מוסדיים 2022-9-30: ניהול מסלולי השקעה בקופות גמל",
+      "title": "חוזר גופים מוסדיים 2022-9-30 מסלולי השקעה בקופות גמל - תיקון",
+      "title_he": "חוזר גופים מוסדיים 2022-9-30: מסלולי השקעה בקופות גמל – תיקון",
       "publisher": "gov.il",
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
-      "locator": "appendix s.8, p.7",
+      "locator": "p.7, s.8",
+      "locator_he": "עמוד 7, סעיף 8",
       "page": 7,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

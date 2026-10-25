@@ -2,7 +2,7 @@
   "id": "IRA-01",
   "title": "What an IRA fund is in law",
   "title_he": "מהי קופת גמל בניהול אישי לפי החוק",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "regulator",
     "eligibility"
@@ -13,16 +13,32 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.nevo.co.il/law_html/law00/70391.htm",
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, Nevo",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
-      "publisher": "Nevo",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "s.1 definition, s.57",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.2, s.1 (קופת גמל בניהול אישי)",
+      "locator_he": "עמוד 2, סעיף 1 (קופת גמל בניהול אישי)",
+      "page": 2,
+      "quote": "המיועדות לעמית אחד בלבד אשר רשאי לתת הוראות לענין השקעת הכספים בקופה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.21, s.57",
+      "locator_he": "עמוד 21, סעיף 57",
+      "page": 21,
+      "quote": "על קופת גמל בניהול אישי שאושרה לפי",
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -8,6 +8,7 @@ import { PageShell } from "../components/shell";
 import { Card, cx, Disclosure } from "../components/ui";
 import { fmt } from "../lib/format";
 import type { DocumentCard, SectionId } from "../lib/documents.server";
+import { isPdfUrl } from "../lib/sources";
 
 /** The five sections in order (duplicated from the server module, which the client bundle must not import). */
 const sectionOrder: readonly SectionId[] = ["laws", "regulators", "exchange", "institutions", "secondary"] as const;
@@ -24,7 +25,6 @@ export function meta() {
   return [{ title: `${copy.title} · ${site.name}` }];
 }
 
-const isPdf = (url: string) => /\.pdf(?:$|[?#])/i.test(url);
 const firstRules = 6;
 
 function Latin({ text, english }: { text: string; english: boolean }) {
@@ -53,7 +53,7 @@ function DocCard({ doc }: { doc: DocumentCard }) {
       <p className="flex flex-wrap items-center gap-x-3 gap-y-1">
         <a href={doc.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-primary underline underline-offset-4 min-h-target">
           {copy.open}
-          {isPdf(doc.url) && <span className="text-xs font-medium rounded-sm bg-muted text-foreground px-1.5">PDF</span>}
+          {isPdfUrl(doc.url) && <span className="text-xs font-medium rounded-sm bg-muted text-foreground px-1.5">PDF</span>}
           <IconExternal size={16} className="shrink-0" />
         </a>
         {doc.strength !== "primary" && <StrengthLabel strength={doc.strength} />}

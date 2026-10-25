@@ -1,0 +1,1816 @@
+[
+ {
+  "law": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+  "section": "s.1 (definitions)",
+  "cited_by": [
+   "ETF-01",
+   "MF-05",
+   "MF-11"
+  ],
+  "official": [
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 4,
+    "locator": "p.4, s.1: \"קרן מחקה\", \"קרן סל\", \"קרן פתוחה\", \"קרן סגורה\", \"קרן כספית\"",
+    "quote": "\"קרן סל\" - קרן מחקה, שהיא קרן סגורה, שבהסכם הקרן שלה נקבע כי תהיה קרן סל; \"קרן פתוחה\" - קרן שבהסכם הקרן נקבע כי תהיה קרן פתוחה",
+    "basis": "ISA consolidated PDF (הוצאת הלכות for the ISA; page footers dated up to 1.4.2026; amendment lists end at Amendment 31, התשפ\"ד); Amendment 32 (ס\"ח 3510, 31.3.2026, s.1 definition only) and Amendment 33 (ס\"ח 3579, 2.8.2026, ss.113א, 113ד and others) are NOT in it"
+   },
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 3,
+    "locator": "p.3, s.1: \"מפיץ\"",
+    "quote": "\"מפיץ\" - חבר בורסה שניתן להגיש אצלו הזמנות ליחידות",
+    "basis": "ISA consolidated PDF (הוצאת הלכות for the ISA; page footers dated up to 1.4.2026; amendment lists end at Amendment 31, התשפ\"ד); Amendment 32 (ס\"ח 3510, 31.3.2026, s.1 definition only) and Amendment 33 (ס\"ח 3579, 2.8.2026, ss.113א, 113ד and others) are NOT in it"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_12224370.pdf",
+    "title_he": "חוק התוכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנת התקציב 2026), התשפ\"ו-2026",
+    "publisher_he": "הכנסת",
+    "file_page": 11,
+    "locator": "p.11 (gazette p.359), s.15: Amendment 32 to s.1",
+    "quote": "בסעיף 1, אחרי ההגדרה \"נושא משרה\" יבוא: \"\"נותן ערבות אחר\"",
+    "basis": "ספר החוקים 3510 (31.3.2026); file page = gazette page - 348"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "Amendment 32 (ס\"ח 3510, 31.3.2026, file p.11) added the definition \"נותן ערבות אחר\" and Amendment 33 (ס\"ח 3579, 2.8.2026, file pp.2-3) amended s.1 further; neither touches the cited definitions (קרן, קרן פתוחה/סגורה, קרן מחקה, קרן סל, קרן כספית, מפיץ)."
+ },
+ {
+  "law": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+  "section": "s.2-s.4 (ייסוד קרן, הסכם הקרן)",
+  "cited_by": [
+   "MF-01",
+   "REG-10"
+  ],
+  "official": [
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 5,
+    "locator": "p.5, ss.2, 3, 4",
+    "quote": "הסכם הקרן ייעשה בין חברה שאושרה כנאמן לפי סעיף 9, שיוקנו לה נכסי הקרן (להלן - הנאמן), לבין חברה אחרת שאושרה כמנהל קרן לפי סעיף 13",
+    "basis": "ISA consolidated PDF (הוצאת הלכות for the ISA; page footers dated up to 1.4.2026; amendment lists end at Amendment 31, התשפ\"ד); Amendment 32 (ס\"ח 3510, 31.3.2026, s.1 definition only) and Amendment 33 (ס\"ח 3579, 2.8.2026, ss.113א, 113ד and others) are NOT in it"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+  "section": "s.5(א) (incl. (7), (12))",
+  "cited_by": [
+   "MF-01",
+   "MF-16",
+   "MF-20",
+   "MF-21",
+   "MF-22"
+  ],
+  "official": [
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 5,
+    "locator": "p.5 (continues p.6), s.5(א)",
+    "quote": "פרטי הסכם הקרן ... 5. (א) בהסכם הקרן ייקבעו פרטים אלה",
+    "basis": "ISA consolidated PDF (הוצאת הלכות for the ISA; page footers dated up to 1.4.2026; amendment lists end at Amendment 31, התשפ\"ד); Amendment 32 (ס\"ח 3510, 31.3.2026, s.1 definition only) and Amendment 33 (ס\"ח 3579, 2.8.2026, ss.113א, 113ד and others) are NOT in it"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "Amendment 33 (ס\"ח 3579) is tagged on s.5 in the Wikisource text; check the gazette (file pp.2-3) before quoting a sub-paragraph."
+ },
+ {
+  "law": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+  "section": "s.8",
+  "cited_by": [
+   "MF-01"
+  ],
+  "official": [
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 7,
+    "locator": "p.7, s.8",
+    "quote": "מנהל קרן יגיש את הסכם הקרן לרשות לרישום טרם הוצאת היחידה הראשונה",
+    "basis": "ISA consolidated PDF (הוצאת הלכות for the ISA; page footers dated up to 1.4.2026; amendment lists end at Amendment 31, התשפ\"ד); Amendment 32 (ס\"ח 3510, 31.3.2026, s.1 definition only) and Amendment 33 (ס\"ח 3579, 2.8.2026, ss.113א, 113ד and others) are NOT in it"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+  "section": "ss.11, 12 (incl. 12(ג))",
+  "cited_by": [
+   "REG-11",
+   "REG-11 figure figures.trustee_replacement_days"
+  ],
+  "official": [
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 11,
+    "locator": "p.11, ss.11, 12",
+    "quote": "ידאג מנהל הקרן שחברה שאושרה לפי סעיף 9 תחתום על הסכם הקרן ותחל לשמש נאמן לקרן תוך תשעים ימים מיום שנסתיימה כהונתו של הנאמן",
+    "basis": "ISA consolidated PDF (הוצאת הלכות for the ISA; page footers dated up to 1.4.2026; amendment lists end at Amendment 31, התשפ\"ד); Amendment 32 (ס\"ח 3510, 31.3.2026, s.1 definition only) and Amendment 33 (ס\"ח 3579, 2.8.2026, ss.113א, 113ד and others) are NOT in it"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "Figure 90 days matches s.12(א) (the ninety-day period); s.12(ג) is on the same page."
+ },
+ {
+  "law": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+  "section": "ss.14, 15",
+  "cited_by": [
+   "REG-11"
+  ],
+  "official": [
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 14,
+    "locator": "p.14, ss.14, 15",
+    "quote": "פקיעת אישור ... 14. ביטול או התליה של אישור ... 15. (א) מצא יושב ראש הרשות כי חדלה להתקיים לגבי מנהל קרן הוראה",
+    "basis": "ISA consolidated PDF (הוצאת הלכות for the ISA; page footers dated up to 1.4.2026; amendment lists end at Amendment 31, התשפ\"ד); Amendment 32 (ס\"ח 3510, 31.3.2026, s.1 definition only) and Amendment 33 (ס\"ח 3579, 2.8.2026, ss.113א, 113ד and others) are NOT in it"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+  "section": "s.25(א)",
+  "cited_by": [
+   "MF-04"
+  ],
+  "official": [
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 28,
+    "locator": "p.28, s.25(א)",
+    "quote": "הצעה לציבור של יחידות, תיעשה על פי תשקיף",
+    "basis": "ISA consolidated PDF (הוצאת הלכות for the ISA; page footers dated up to 1.4.2026; amendment lists end at Amendment 31, התשפ\"ד); Amendment 32 (ס\"ח 3510, 31.3.2026, s.1 definition only) and Amendment 33 (ס\"ח 3579, 2.8.2026, ss.113א, 113ד and others) are NOT in it"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+  "section": "ss.31, 32",
+  "cited_by": [
+   "MF-04"
+  ],
+  "official": [
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 31,
+    "locator": "p.31 (s.31), p.32 (s.32)",
+    "quote": "תאריך התשקיף ופרסומו ... 31. (א) תשקיף ישא תאריך",
+    "basis": "ISA consolidated PDF (הוצאת הלכות for the ISA; page footers dated up to 1.4.2026; amendment lists end at Amendment 31, התשפ\"ד); Amendment 32 (ס\"ח 3510, 31.3.2026, s.1 definition only) and Amendment 33 (ס\"ח 3579, 2.8.2026, ss.113א, 113ד and others) are NOT in it"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+  "section": "ss.42, 43",
+  "cited_by": [
+   "MF-09",
+   "MF-21",
+   "MF-22"
+  ],
+  "official": [
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 35,
+    "locator": "p.35, ss.42, 43",
+    "quote": "מחיר הקניה ומחיר המכירה של נכסי קרן פתוחה יחושבו על ידי מנהל הקרן על פי השווי הנקי של",
+    "basis": "ISA consolidated PDF (הוצאת הלכות for the ISA; page footers dated up to 1.4.2026; amendment lists end at Amendment 31, התשפ\"ד); Amendment 32 (ס\"ח 3510, 31.3.2026, s.1 definition only) and Amendment 33 (ס\"ח 3579, 2.8.2026, ss.113א, 113ד and others) are NOT in it"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+  "section": "ss.44, 45",
+  "cited_by": [
+   "MF-11"
+  ],
+  "official": [
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 36,
+    "locator": "p.36, ss.44, 45",
+    "quote": "נמכרה יחידה בקרן פתוחה, יעביר המפיץ לחשבון מנהל הקרן או לחשבון הקרן, באמצעות המסלקה",
+    "basis": "ISA consolidated PDF (הוצאת הלכות for the ISA; page footers dated up to 1.4.2026; amendment lists end at Amendment 31, התשפ\"ד); Amendment 32 (ס\"ח 3510, 31.3.2026, s.1 definition only) and Amendment 33 (ס\"ח 3579, 2.8.2026, ss.113א, 113ד and others) are NOT in it"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "s.44 was amended by Amendment 31 (ס\"ח 3232 file p.2); the ISA text includes it."
+ },
+ {
+  "law": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+  "section": "s.46 (incl. (ב), (ג))",
+  "cited_by": [
+   "MF-09",
+   "MF-10",
+   "MF-11",
+   "MF-22"
+  ],
+  "official": [
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 36,
+    "locator": "p.36 (continues p.37), s.46",
+    "quote": "מנהל קרן פתוחה יפדה יחידה לפי הוראה שקיבל מהמפיץ",
+    "basis": "ISA consolidated PDF (הוצאת הלכות for the ISA; page footers dated up to 1.4.2026; amendment lists end at Amendment 31, התשפ\"ד); Amendment 32 (ס\"ח 3510, 31.3.2026, s.1 definition only) and Amendment 33 (ס\"ח 3579, 2.8.2026, ss.113א, 113ד and others) are NOT in it"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+  "section": "s.48",
+  "cited_by": [
+   "MF-13",
+   "MF-13 figure figures.manager_suspension_days",
+   "MF-13 figure figures.isa_suspension_days",
+   "MF-13 figure figures.max_suspension_days"
+  ],
+  "official": [
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 39,
+    "locator": "p.39, s.48(א)-(ב)",
+    "quote": "לתקופה שלא תעלה על שלושה ימי מסחר ... לתקופה שלא תעלה על שבעה ימי מסחר ... ולא יותר מששים ימים רצופים בסך הכל",
+    "basis": "ISA consolidated PDF (הוצאת הלכות for the ISA; page footers dated up to 1.4.2026; amendment lists end at Amendment 31, התשפ\"ד); Amendment 32 (ס\"ח 3510, 31.3.2026, s.1 definition only) and Amendment 33 (ס\"ח 3579, 2.8.2026, ss.113א, 113ד and others) are NOT in it"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "Figures 3 / 7 / 60 days match the official text."
+ },
+ {
+  "law": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+  "section": "s.49(ד)",
+  "cited_by": [
+   "MF-16"
+  ],
+  "official": [
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 39,
+    "locator": "p.39 (continues p.40), s.49",
+    "quote": "הגבלה על החזקת יחידות בידי גורם מקורב ... 49. (א) בסעיף זה",
+    "basis": "ISA consolidated PDF (הוצאת הלכות for the ISA; page footers dated up to 1.4.2026; amendment lists end at Amendment 31, התשפ\"ד); Amendment 32 (ס\"ח 3510, 31.3.2026, s.1 definition only) and Amendment 33 (ס\"ח 3579, 2.8.2026, ss.113א, 113ד and others) are NOT in it"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+  "section": "s.58",
+  "cited_by": [
+   "MF-49"
+  ],
+  "official": [
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 44,
+    "locator": "p.44, s.58",
+    "quote": "לא תוצא יחידה ללא תמורה",
+    "basis": "ISA consolidated PDF (הוצאת הלכות for the ISA; page footers dated up to 1.4.2026; amendment lists end at Amendment 31, התשפ\"ד); Amendment 32 (ס\"ח 3510, 31.3.2026, s.1 definition only) and Amendment 33 (ס\"ח 3579, 2.8.2026, ss.113א, 113ד and others) are NOT in it"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+  "section": "s.76",
+  "cited_by": [
+   "MF-02",
+   "REG-10"
+  ],
+  "official": [
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 56,
+    "locator": "p.56, s.76(א)",
+    "quote": "נכסי הקרן יהיו מוקנים לנאמן לטובת בעלי היחידות, ויהיו רכוש נפרד מרכושו האחר",
+    "basis": "ISA consolidated PDF (הוצאת הלכות for the ISA; page footers dated up to 1.4.2026; amendment lists end at Amendment 31, התשפ\"ד); Amendment 32 (ס\"ח 3510, 31.3.2026, s.1 definition only) and Amendment 33 (ס\"ח 3579, 2.8.2026, ss.113א, 113ד and others) are NOT in it"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+  "section": "s.78",
+  "cited_by": [
+   "MF-03",
+   "REG-10"
+  ],
+  "official": [
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 57,
+    "locator": "p.57, s.78",
+    "quote": "חובות הנאמן ותפקידיו",
+    "basis": "ISA consolidated PDF (הוצאת הלכות for the ISA; page footers dated up to 1.4.2026; amendment lists end at Amendment 31, התשפ\"ד); Amendment 32 (ס\"ח 3510, 31.3.2026, s.1 definition only) and Amendment 33 (ס\"ח 3579, 2.8.2026, ss.113א, 113ד and others) are NOT in it"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+  "section": "s.79",
+  "cited_by": [
+   "MF-02",
+   "REG-10"
+  ],
+  "official": [
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 58,
+    "locator": "p.58, s.79",
+    "quote": "נכסי קרן אינם ניתנים לעיקול; מנהל קרן לא ימשכן ולא ישעבד את נכסי הקרן אלא לצורך קיום עסקה בעד הקרן",
+    "basis": "ISA consolidated PDF (הוצאת הלכות for the ISA; page footers dated up to 1.4.2026; amendment lists end at Amendment 31, התשפ\"ד); Amendment 32 (ס\"ח 3510, 31.3.2026, s.1 definition only) and Amendment 33 (ס\"ח 3579, 2.8.2026, ss.113א, 113ד and others) are NOT in it"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+  "section": "s.80",
+  "cited_by": [
+   "MF-16",
+   "MF-20"
+  ],
+  "official": [
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 58,
+    "locator": "p.58, s.80(א)",
+    "quote": "הוצאות שייפרעו מנכסי קרן יהיו אלה בלבד",
+    "basis": "ISA consolidated PDF (הוצאת הלכות for the ISA; page footers dated up to 1.4.2026; amendment lists end at Amendment 31, התשפ\"ד); Amendment 32 (ס\"ח 3510, 31.3.2026, s.1 definition only) and Amendment 33 (ס\"ח 3579, 2.8.2026, ss.113א, 113ד and others) are NOT in it"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+  "section": "s.82",
+  "cited_by": [
+   "MF-21",
+   "MF-24",
+   "MF-26"
+  ],
+  "official": [
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 60,
+    "locator": "p.60, s.82",
+    "quote": "לא יוצע תשלום או הטבה אחרת בקשר עם רכישה, פדיון, מכירה או החזקה של יחידות",
+    "basis": "ISA consolidated PDF (הוצאת הלכות for the ISA; page footers dated up to 1.4.2026; amendment lists end at Amendment 31, התשפ\"ד); Amendment 32 (ס\"ח 3510, 31.3.2026, s.1 definition only) and Amendment 33 (ס\"ח 3579, 2.8.2026, ss.113א, 113ד and others) are NOT in it"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+  "section": "s.102(ה)-(ו)",
+  "cited_by": [
+   "ETF-01"
+  ],
+  "official": [
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 66,
+    "locator": "p.66, s.102",
+    "quote": "קרן פתוחה יכול שתהיה לקרן סגורה אם נתקבלה על כך החלטה",
+    "basis": "ISA consolidated PDF (הוצאת הלכות for the ISA; page footers dated up to 1.4.2026; amendment lists end at Amendment 31, התשפ\"ד); Amendment 32 (ס\"ח 3510, 31.3.2026, s.1 definition only) and Amendment 33 (ס\"ח 3579, 2.8.2026, ss.113א, 113ד and others) are NOT in it"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+  "section": "s.104",
+  "cited_by": [
+   "REG-11"
+  ],
+  "official": [
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 67,
+    "locator": "p.67, s.104",
+    "quote": "היתה הרשות סבורה, לאחר שנתנה הזדמנות נאותה למנהל הקרן ולנאמן להשמיע את טענותיהם",
+    "basis": "ISA consolidated PDF (הוצאת הלכות for the ISA; page footers dated up to 1.4.2026; amendment lists end at Amendment 31, התשפ\"ד); Amendment 32 (ס\"ח 3510, 31.3.2026, s.1 definition only) and Amendment 33 (ס\"ח 3579, 2.8.2026, ss.113א, 113ד and others) are NOT in it"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+  "section": "פרק ט'1, ss.113א-113ט",
+  "cited_by": [
+   "ETF-22"
+  ],
+  "official": [
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 75,
+    "locator": "pp.75-78: 113א p.75, 113ב pp.75-76, 113ג-113ד p.76, 113ה-113ז p.77, 113ח-113ט p.78",
+    "quote": "הסדרים להבטחת זכויות ... 113ט. הבורסה בישראל תקבע בתקנונה כללים להבטחת זכויותיו של בעל יחידות של קרן חוץ",
+    "basis": "ISA consolidated PDF (הוצאת הלכות for the ISA; page footers dated up to 1.4.2026; amendment lists end at Amendment 31, התשפ\"ד); Amendment 32 (ס\"ח 3510, 31.3.2026, s.1 definition only) and Amendment 33 (ס\"ח 3579, 2.8.2026, ss.113א, 113ד and others) are NOT in it"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_14375739.pdf",
+    "title_he": "חוק לעידוד פעילות בשוק ההון (תיקוני חקיקה), התשפ\"ו-2026",
+    "publisher_he": "הכנסת",
+    "file_page": 3,
+    "locator": "p.3 (gazette p.1071), Amendment 33: amendments to ss.113א, 113ד",
+    "quote": "בסעיף 113א ... בסעיף 113ד",
+    "basis": "ספר החוקים 3579 (2.8.2026), pp.1070-1076; file page = gazette page - 1068"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "ss.113א and 113ד were amended in August 2026 after the ISA edition; the gazette page is given alongside."
+ },
+ {
+  "law": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+  "section": "Amendment 31 (2024): ss.1(3), 5, 15, 20(א)",
+  "cited_by": [
+   "MF-07",
+   "MF-11"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_4619060.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות (תיקון מס' 31), התשפ\"ד-2024",
+    "publisher_he": "הכנסת",
+    "file_page": 2,
+    "locator": "p.2 (gazette p.990), s.1(3) (definition \"קרן כספית\"), s.2 (amends s.5), s.5 (amends s.44)",
+    "quote": "\"קרן כספית\" - קרן שמתקיימים בה שניים אלה: (1) סוג הנכסים המוחזקים בה מתאפיין בסיכון אשראי נמוך",
+    "basis": "ספר החוקים 3232 (3.7.2024), pp.990-996; file page = gazette page - 988"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_4619060.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות (תיקון מס' 31), התשפ\"ד-2024",
+    "publisher_he": "הכנסת",
+    "file_page": 3,
+    "locator": "p.3 (gazette p.991), s.15 (adds ss.129ג-129ד, קרן כספית)",
+    "quote": "הוספת סעיפים 129ג ו־129ד",
+    "basis": "ספר החוקים 3232 (3.7.2024), pp.990-996; file page = gazette page - 988"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_4619060.pdf",
+    "title_he": "חוק השקעות משותפות בנאמנות (תיקון מס' 31), התשפ\"ד-2024",
+    "publisher_he": "הכנסת",
+    "file_page": 8,
+    "locator": "p.8 (gazette p.996), s.20(א) (תחילה)",
+    "quote": "תחילתו של חוק זה שלושה חודשים מיום פרסומו",
+    "basis": "ספר החוקים 3232 (3.7.2024), pp.990-996; file page = gazette page - 988"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "Replaces the CapiTax re-host https://www.capitax.co.il/Attachments/03072024.pdf (MF-07, MF-11) with the Knesset's gazette PDF. The consolidated definition is also in the ISA text, p.4."
+ },
+ {
+  "law": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018",
+  "section": "reg. 1 (definitions)",
+  "cited_by": [
+   "ETF-14"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=",
+    "title_he": "קובץ התקנות 8038, 12.7.2018",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 2,
+    "locator": "p.2 (gazette p.2394), reg. 1",
+    "quote": "\"דמי ניהול משתנים\" - חלק משכר מנהל הקרן, הנגזר מתשואת הקרן ומהפרש העקיבה שלה",
+    "basis": "קובץ התקנות 8038 (12.7.2018); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=8038); file page 1 = cover/contents; regulations at gazette pp.2394-2400 = file pp.2-8; no later amendment found (Wikisource lists none)"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018",
+  "section": "regs. 4-9",
+  "cited_by": [
+   "ETF-04",
+   "ETF-05",
+   "ETF-05 figure figures.fee_israeli_bonds_or_equities",
+   "ETF-05 figure figures.fee_foreign_indices",
+   "ETF-05 figure figures.fee_other"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=",
+    "title_he": "קובץ התקנות 8038, 12.7.2018",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 4,
+    "locator": "p.4 (gazette p.2396), regs. 4-6 (reg. 6(א) continues p.5)",
+    "quote": "ניכוי עמלת פדיון",
+    "basis": "קובץ התקנות 8038 (12.7.2018); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=8038); file page 1 = cover/contents; regulations at gazette pp.2394-2400 = file pp.2-8; no later amendment found (Wikisource lists none)"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=",
+    "title_he": "קובץ התקנות 8038, 12.7.2018",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 5,
+    "locator": "p.5 (gazette p.2397), regs. 6(א)-9: 0.1% / 0.3% / 0.2%",
+    "quote": "0.1% ... 0.3% ... 0.2%",
+    "basis": "קובץ התקנות 8038 (12.7.2018); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=8038); file page 1 = cover/contents; regulations at gazette pp.2394-2400 = file pp.2-8; no later amendment found (Wikisource lists none)"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "Figures 0.1 / 0.3 / 0.2 pct appear on file p.5 (two-column page; pdftotext interleaves the columns)."
+ },
+ {
+  "law": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018",
+  "section": "regs. 11, 12, 16",
+  "cited_by": [
+   "ETF-14",
+   "ETF-14 figure figures.variable_fee_cap_max",
+   "ETF-14 figure figures.variable_fee_cap_israeli_bonds_or_equities",
+   "ETF-14 figure figures.variable_fee_cap_other",
+   "ETF-14 figure figures.variable_fee_cap_foreign_indices"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=",
+    "title_he": "קובץ התקנות 8038, 12.7.2018",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 5,
+    "locator": "p.5 (gazette p.2397), reg. 11 (פרק ה': דמי ניהול משתנים)",
+    "quote": "פרק ה': דמי ניהול משתנים",
+    "basis": "קובץ התקנות 8038 (12.7.2018); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=8038); file page 1 = cover/contents; regulations at gazette pp.2394-2400 = file pp.2-8; no later amendment found (Wikisource lists none)"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=",
+    "title_he": "קובץ התקנות 8038, 12.7.2018",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 6,
+    "locator": "p.6 (gazette p.2398), reg. 12",
+    "quote": "לא יעלה בערכו המוחלט על שיעור עמלת היצירה והפדיון בהתאם לסוג הקרן, כאמור בתקנה 6(א)",
+    "basis": "קובץ התקנות 8038 (12.7.2018); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=8038); file page 1 = cover/contents; regulations at gazette pp.2394-2400 = file pp.2-8; no later amendment found (Wikisource lists none)"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=",
+    "title_he": "קובץ התקנות 8038, 12.7.2018",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 7,
+    "locator": "p.7 (gazette p.2399), regs. 14-16",
+    "quote": "פרק ז': השתתפות מנהל קרן באסיפת מחזיקים",
+    "basis": "קובץ התקנות 8038 (12.7.2018); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=8038); file page 1 = cover/contents; regulations at gazette pp.2394-2400 = file pp.2-8; no later amendment found (Wikisource lists none)"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018",
+  "section": "reg. 15",
+  "cited_by": [
+   "ETF-21",
+   "ETF-21 figure figures.liquidation_notice_days"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=",
+    "title_he": "קובץ התקנות 8038, 12.7.2018",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 7,
+    "locator": "p.7 (gazette p.2399), reg. 15 (פרק ח': פירוק קרן סל)",
+    "quote": "הודעה על פירוק קרן סל תינתן לא יאוחר משלושים ימים לפני מועד הפירוק",
+    "basis": "קובץ התקנות 8038 (12.7.2018); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=8038); file page 1 = cover/contents; regulations at gazette pp.2394-2400 = file pp.2-8; no later amendment found (Wikisource lists none)"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "30 days matches. The NIS 10 million dormant-units figure (ETF-21 figure dormant_units_report_floor) is NOT in these regulations; it must rest on the ISA tracking-fund directive the rule also cites."
+ },
+ {
+  "law": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018",
+  "section": "reg. 18 (transition)",
+  "cited_by": [
+   "ETF-01"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=",
+    "title_he": "קובץ התקנות 8038, 12.7.2018",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 7,
+    "locator": "pp.7-8 (gazette pp.2399-2400), פרק ט': תחילה והוראת מעבר, regs. 17-18",
+    "quote": "פרק ט': תחילה והוראת מעבר",
+    "basis": "קובץ התקנות 8038 (12.7.2018); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=8038); file page 1 = cover/contents; regulations at gazette pp.2394-2400 = file pp.2-8; no later amendment found (Wikisource lists none)"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "תקנות השקעות משותפות בנאמנות (הצעת יחידות של קרן חוץ), התשע\"ו-2016",
+  "section": "reg. 2 (incl. (א), (10)), Schedules 1-2",
+  "cited_by": [
+   "ETF-23",
+   "ETF-31"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=",
+    "title_he": "קובץ התקנות 7653, 5.5.2016",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 2,
+    "locator": "p.2 (gazette p.1090), reg. 2 definitions and reg. 2(א)(1)-(2); continues p.3",
+    "quote": "הרשות רשאית להתיר למנהל קרן חוץ להציע יחידות של קרן חוץ לציבור בישראל אם נוכחה לדעת כי מתקיימים התנאים האלה",
+    "basis": "קובץ התקנות 7653 (5.5.2016); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=7653); file page 1 = cover/contents; regulations at gazette pp.1090-1096 = file pp.2-8"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/BTebX4k926xskBs4V~y+AuXSI0Ih1GZzIPSwKQOjGm4=",
+    "title_he": "קובץ התקנות 10198, 7.6.2022",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 2,
+    "locator": "p.2 (gazette p.3134), amendment of reg. 2(א)(8) and reg. 8(א)",
+    "quote": "בתקנה 2(א) לתקנות העיקריות, בפסקה (8), במקום \"בבורסה בחו\"ל\" יבוא",
+    "basis": "קובץ התקנות 10198 (7.6.2022); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=10198); file page 1 = cover/contents"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "Schedules 1-2 are on file pp.8-9 of booklet 7653 (after reg. 14)."
+ },
+ {
+  "law": "תקנות השקעות משותפות בנאמנות (הצעת יחידות של קרן חוץ), התשע\"ו-2016",
+  "section": "regs. 4, 8, 12, 13",
+  "cited_by": [
+   "ETF-24"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=",
+    "title_he": "קובץ התקנות 7653, 5.5.2016",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 4,
+    "locator": "p.4 (gazette p.1092), reg. 4 (continues p.5)",
+    "quote": "ניהול קרן זו נעשה לפי דין מדינת המוצא שלה ולא לפי חוק השקעות משותפות בנאמנות, התשנ\"ד-1994; רשות ניירות ערך לא בדקה את תשקיף הקרן",
+    "basis": "קובץ התקנות 7653 (5.5.2016); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=7653); file page 1 = cover/contents; regulations at gazette pp.1090-1096 = file pp.2-8"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=",
+    "title_he": "קובץ התקנות 7653, 5.5.2016",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 8,
+    "locator": "p.8 (gazette p.1096), regs. 12-13",
+    "quote": "פרסום שפרסם מנהל קרן חוץ בדבר קרן חוץ שבניהולו, יכלול אזהרה בדבר העובדה כי על הקרן ועל מנהל הקרן לא חלים הדינים והפיקוח החלים על קרנות נאמנות בישראל",
+    "basis": "קובץ התקנות 7653 (5.5.2016); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=7653); file page 1 = cover/contents; regulations at gazette pp.1090-1096 = file pp.2-8"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "reg. 8 is on file pp.6-7 (pdftotext did not find its heading; verify visually)."
+ },
+ {
+  "law": "תקנות השקעות משותפות בנאמנות (עמלת הפצה), התשס\"ו-2006",
+  "section": "regs. 1-4 (reg. 3 current rates)",
+  "cited_by": [
+   "MF-24",
+   "MF-24 figure figures.distribution_fee_cap_money_market",
+   "MF-24 figure figures.distribution_fee_cap_type1",
+   "MF-24 figure figures.distribution_fee_cap_type3",
+   "MF-26"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmfLeg7C4UCrAfbCcchwXa2I=",
+    "title_he": "קובץ התקנות 6464, 26.2.2006",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 2,
+    "locator": "p.2 (gazette p.494), regs. 1-2; p.3 (gazette p.495) regs. 2(ב)-4",
+    "quote": "מפיץ לא יגבה ומנהל קרן לא ישלם עמלת הפצה, בעד כל יום שבו מוחזקת יחידה",
+    "basis": "קובץ התקנות 6464 (26.2.2006); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=6464); file page 1 = cover/contents"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SR97yUyP2jSKVKeFojNZ63rHiXBWJs93gBRaURcO88U=",
+    "title_he": "קובץ התקנות 7236, 4.4.2013",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 2,
+    "locator": "p.2 (gazette p.900), reg. 2: current rates of reg. 3",
+    "quote": "בפסקה (1), במקום \"0.25%/365\" יבוא \"0.2%/365\"; (2) פסקה (2) - תימחק; (3) בפסקה (3), במקום \"0.4%/365\" יבוא \"0.35%/365\"; (4) בפסקה (4), במקום \"0.125%/365\" יבוא \"0.1%/365\"",
+    "basis": "קובץ התקנות 7236 (4.4.2013); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=7236); file page 1 = cover/contents"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=",
+    "title_he": "קובץ התקנות 7653, 5.5.2016",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 9,
+    "locator": "p.9 (gazette p.1097), 2016 amendment of regs. 1-2 (reg. 2(ד), money-market funds)",
+    "quote": "תקנות השקעות משותפות בנאמנות (עמלת הפצה) (תיקון), התשע\"ו-2016",
+    "basis": "קובץ התקנות 7653 (5.5.2016); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=7653); file page 1 = cover/contents"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "Figures 0.2 / 0.35 / 0.1 pct a year match the 2013 amendment (type 1 / type 3 / type 4). The 2016 amendment (booklet 7653, p.9) last touched regs. 1 and 2; reg. 4 is unchanged since 2006."
+ },
+ {
+  "law": "תקנות השקעות משותפות בנאמנות (נכסים שמותר לקנות ולהחזיק בקרן ושיעוריהם המרביים), התשנ\"ה-1994",
+  "section": "reg. 2א(ד), (ו)",
+  "cited_by": [
+   "MF-30"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fphh3DPmvYX3FiarYq7bbZFo=",
+    "title_he": "קובץ התקנות 6625, 28.11.2007",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 6,
+    "locator": "p.6 (gazette p.134), reg. 2א as added in 2007 (continues p.7)",
+    "quote": "נכסים בקרן כספית 2א. (א) על אף האמור בתקנה 2, רשאי מנהל קרן לקנות ולהחזיק בקרן כספית שבניהולו נכסים מסוגים ובתנאים כמפורט להלן בלבד",
+    "basis": "קובץ התקנות 6625 (28.11.2007); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=6625); file page 1 = cover/contents"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/B~E3uFa1MXbFd5GDhXeWnp3HpjRP0vw~6D+s1wJH8x4=",
+    "title_he": "קובץ התקנות 7947, 6.2.2018",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 3,
+    "locator": "p.3 (gazette p.952), reg. 3: last amendment of reg. 2א (adds (ז))",
+    "quote": "תיקון תקנה 2א",
+    "basis": "קובץ התקנות 7947 (6.2.2018); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=7947); file page 1 = cover/contents"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/HiehF7UL8gSftjhlpLxrKPH+yuGCEINw6ptzinFLzLk=",
+    "title_he": "קובץ התקנות 5637, 10.11.1994",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 15,
+    "locator": "p.15 (gazette p.317), original regulations (scanned)",
+    "quote": "תקנות השקעות משותפות בנאמנות (נכסים שמותר לקנות ולהחזיק בקרן ושיעוריהם המרביים), התשנ״ה-1994",
+    "basis": "קובץ התקנות 5637 (10.11.1994); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=5637); file page 1 = cover/contents"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "Sub-regulations (ד) and (ו) of 2א were inserted/changed by the 2010-2015 amendments (ק\"ת 6834, 7401, 7441); the 2007 text on booklet 6625 p.6-7 holds the original 2א. If an exact current wording of (ד)/(ו) is needed, the ISA money-market directive the rule already cites is the official statement; otherwise fetch booklets 6834/7401/7441 from the same collector."
+ },
+ {
+  "law": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום), התשס\"ח-2007",
+  "section": "regs. 2, 4",
+  "cited_by": [
+   "MF-45"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fphh3DPmvYX3FiarYq7bbZFo=",
+    "title_he": "קובץ התקנות 6625, 28.11.2007",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 24,
+    "locator": "p.24 (gazette p.152) reg. 1 definitions (\"כותרת על\", \"כותרת ראשית\"); p.25 reg. 2; p.27 reg. 4",
+    "quote": "על כל שינוי ברשימת הכותרות המאפיינות תשלח הרשות הודעה למנהלי הקרנות ארבעה עשר ימים לפני מועד השינוי כאמור",
+    "basis": "קובץ התקנות 6625 (28.11.2007); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=6625); file page 1 = cover/contents"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=",
+    "title_he": "קובץ התקנות 7653, 5.5.2016",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 10,
+    "locator": "pp.10-11 (gazette pp.1098-1099), 2016 amendment of regs. 2 and 4",
+    "quote": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום) (תיקון), התשע\"ו-2016",
+    "basis": "קובץ התקנות 7653 (5.5.2016); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=7653); file page 1 = cover/contents"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק ניירות ערך, התשכ\"ח-1968",
+  "section": "s.2",
+  "cited_by": [
+   "REG-07"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/6/law/6_lsr_210358.pdf",
+    "title_he": "חוק ניירות ערך, תשכ\"ח-1968",
+    "publisher_he": "הכנסת",
+    "file_page": 1,
+    "locator": "p.1, s.2 (never amended)",
+    "quote": "מוקמת בזה רשות ניירות ערך (להלן - הרשות) שתפקידה יהיה שמירת עניניו של ציבור המשקיעים בניירות ערך",
+    "basis": "ספר החוקים 541 (ס\"ח תשכ\"ח, 234), original enactment; scanned, OCR text layer"
+   },
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/IsaFile_8276.pdf",
+    "title_he": "חוק ניירות־ערך, התשכ\"ח-1968",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 10,
+    "locator": "p.10, s.2",
+    "quote": "כינון הרשות ... מוקמת בזה רשות ניירות־ערך (להלן - הרשות) שתפקידה יהיה שמירת עניניו של ציבור המשקיעים",
+    "basis": "ISA consolidated PDF (הוצאת הלכות; footer 1.10.2012; OUTDATED for every section amended since, in particular Amendment 63 of 2017)"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "s.2 and s.14 have never been amended, so the 1968 gazette and the ISA 2012 edition are both current for them."
+ },
+ {
+  "law": "חוק ניירות ערך, התשכ\"ח-1968",
+  "section": "s.3(א)",
+  "cited_by": [
+   "REG-07"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_382526.pdf",
+    "title_he": "חוק ניירות ערך (תיקון מס' 63), התשע\"ז-2017",
+    "publisher_he": "הכנסת",
+    "file_page": 2,
+    "locator": "p.2 (gazette p.676), s.2 of the amending law (amends s.3)",
+    "quote": "תיקון סעיף 3",
+    "basis": "ספר החוקים 2633 (6.4.2017), from p.676; file page = gazette page - 674"
+   },
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/IsaFile_8276.pdf",
+    "title_he": "חוק ניירות־ערך, התשכ\"ח-1968",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 10,
+    "locator": "p.10, s.3 (text before Amendment 63)",
+    "quote": "הרשות תהיה מורכבת מחברים שימנה שר האוצר ושמספרם לא יעלה על שלושה עשר",
+    "basis": "ISA consolidated PDF (הוצאת הלכות; footer 1.10.2012; OUTDATED for every section amended since, in particular Amendment 63 of 2017)"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "Last amended by Amendment 63 (2017); the ISA 2012 edition is outdated for s.3."
+ },
+ {
+  "law": "חוק ניירות ערך, התשכ\"ח-1968",
+  "section": "s.14",
+  "cited_by": [
+   "REG-07"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/6/law/6_lsr_210358.pdf",
+    "title_he": "חוק ניירות ערך, תשכ\"ח-1968",
+    "publisher_he": "הכנסת",
+    "file_page": 3,
+    "locator": "p.3, s.14",
+    "quote": "הרשות תמסור דו\"חות על פעולותיה לשר האוצר ולועדת הכספים של הכנסת, לפי דרישתם ולפחות אחת לשנה",
+    "basis": "ספר החוקים 541 (ס\"ח תשכ\"ח, 234), original enactment; scanned, OCR text layer"
+   },
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/IsaFile_8276.pdf",
+    "title_he": "חוק ניירות־ערך, התשכ\"ח-1968",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 14,
+    "locator": "p.14, s.14",
+    "quote": "הרשות תמסור דו\"חות על פעולותיה לשר האוצר ולועדת הכספים של הכנסת, לפי דרישתם ולפחות אחת לשנה",
+    "basis": "ISA consolidated PDF (הוצאת הלכות; footer 1.10.2012; OUTDATED for every section amended since, in particular Amendment 63 of 2017)"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק ניירות ערך, התשכ\"ח-1968",
+  "section": "s.44לא",
+  "cited_by": [
+   "REG-13",
+   "REG-15"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_382526.pdf",
+    "title_he": "חוק ניירות ערך (תיקון מס' 63), התשע\"ז-2017",
+    "publisher_he": "הכנסת",
+    "file_page": 2,
+    "locator": "p.2 (gazette p.676), s.4 of the amending law: adds סימן א' הגדרות, s.44לא",
+    "quote": "44לא. בפרק זה - \"בורסה\" - חברה שקיבלה רישיון להקמה ולניהול של מערכת למסחר בניירות ערך לפי סעיף 45",
+    "basis": "ספר החוקים 2633 (6.4.2017), from p.676; file page = gazette page - 674"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק ניירות ערך, התשכ\"ח-1968",
+  "section": "s.45",
+  "cited_by": [
+   "REG-13"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_382526.pdf",
+    "title_he": "חוק ניירות ערך (תיקון מס' 63), התשע\"ז-2017",
+    "publisher_he": "הכנסת",
+    "file_page": 3,
+    "locator": "p.3 (gazette p.677), s.9 of the amending law (amends s.45)",
+    "quote": "תיקון סעיף 45",
+    "basis": "ספר החוקים 2633 (6.4.2017), from p.676; file page = gazette page - 674"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק ניירות ערך, התשכ\"ח-1968",
+  "section": "s.45א",
+  "cited_by": [
+   "REG-13"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_382526.pdf",
+    "title_he": "חוק ניירות ערך (תיקון מס' 63), התשע\"ז-2017",
+    "publisher_he": "הכנסת",
+    "file_page": 3,
+    "locator": "p.3 (gazette p.677) onward, s.10: replaces ss.45א-45ד and adds 45ה-45יז",
+    "quote": "תנאים ושיקולים למתן רישיון בורסה 45א. (א) שר האוצר, לאחר התייעצות עם הרשות ובאישור ועדת הכספים של הכנסת",
+    "basis": "ספר החוקים 2633 (6.4.2017), from p.676; file page = gazette page - 674"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק ניירות ערך, התשכ\"ח-1968",
+  "section": "ss.45טז, 45יז",
+  "cited_by": [
+   "BRK-15"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_382526.pdf",
+    "title_he": "חוק ניירות ערך (תיקון מס' 63), התשע\"ז-2017",
+    "publisher_he": "הכנסת",
+    "file_page": 9,
+    "locator": "p.9 (gazette p.683), ss.45טז, 45יז as added",
+    "quote": "חובה לפרסם עמלות מסחר וסליקה 45טז. (א) בורסה תפרסם באתר האינטרנט שלה, וכן בדרך אחרת ... עמלות מסחר ... שגובים חברי בורסה",
+    "basis": "ספר החוקים 2633 (6.4.2017), from p.676; file page = gazette page - 674"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "Commencement of 45טו-45טז for TASE: s.41 of the amending law, file p.23."
+ },
+ {
+  "law": "חוק ניירות ערך, התשכ\"ח-1968",
+  "section": "s.46",
+  "cited_by": [
+   "REG-13"
+  ],
+  "official": [
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/IsaFile_8276.pdf",
+    "title_he": "חוק ניירות־ערך, התשכ\"ח-1968",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 90,
+    "locator": "pp.90-92, s.46 (last amended 2011, before the 2012 edition)",
+    "quote": "תקנון הבורסה",
+    "basis": "ISA consolidated PDF (הוצאת הלכות; footer 1.10.2012; OUTDATED for every section amended since, in particular Amendment 63 of 2017)"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "Wikisource's last tag on s.46 is a 2011 schedule amendment (ק\"ת 7012), so the ISA 2012 edition is current for s.46; pdftotext finds the heading on p.92 and the section body on pp.90-92 (verify the exact page visually)."
+ },
+ {
+  "law": "חוק ניירות ערך, התשכ\"ח-1968",
+  "section": "s.48",
+  "cited_by": [
+   "REG-13"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_382526.pdf",
+    "title_he": "חוק ניירות ערך (תיקון מס' 63), התשע\"ז-2017",
+    "publisher_he": "הכנסת",
+    "file_page": 10,
+    "locator": "p.10 (gazette p.684), s.13 (amends s.48)",
+    "quote": "השינוי טעון אישור של הרשות; אישרה הרשות את השינוי, תמסור לשר האוצר הודעה על שינוי התקנון",
+    "basis": "ספר החוקים 2633 (6.4.2017), from p.676; file page = gazette page - 674"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק ניירות ערך, התשכ\"ח-1968",
+  "section": "s.49א",
+  "cited_by": [
+   "BRK-01",
+   "BRK-06",
+   "SW-37"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_382526.pdf",
+    "title_he": "חוק ניירות ערך (תיקון מס' 63), התשע\"ז-2017",
+    "publisher_he": "הכנסת",
+    "file_page": 10,
+    "locator": "pp.10-11 (gazette pp.684-685), s.14: replaces s.49 and adds ss.49א-49ב (text of 49א on p.11)",
+    "quote": "החלפת סעיף 49 והוספת סעיפים 49א ו־49ב",
+    "basis": "ספר החוקים 2633 (6.4.2017), from p.676; file page = gazette page - 674"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "Replaces the Nevo copy https://www.nevo.co.il/law_html/law00/70349.htm. The ISA 2012 edition predates s.49א."
+ },
+ {
+  "law": "חוק ניירות ערך, התשכ\"ח-1968",
+  "section": "s.51",
+  "cited_by": [
+   "REG-13"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_382526.pdf",
+    "title_he": "חוק ניירות ערך (תיקון מס' 63), התשע\"ז-2017",
+    "publisher_he": "הכנסת",
+    "file_page": 20,
+    "locator": "p.20 (gazette p.694), s.22 (amends s.51)",
+    "quote": "תיקון סעיף 51",
+    "basis": "ספר החוקים 2633 (6.4.2017), from p.676; file page = gazette page - 674"
+   },
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/IsaFile_8276.pdf",
+    "title_he": "חוק ניירות־ערך, התשכ\"ח-1968",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 98,
+    "locator": "p.98, s.51 (text before Amendment 63)",
+    "quote": "הרשות תפקח על ניהולה התקין וההוגן של הבורסה",
+    "basis": "ISA consolidated PDF (הוצאת הלכות; footer 1.10.2012; OUTDATED for every section amended since, in particular Amendment 63 of 2017)"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק ניירות ערך, התשכ\"ח-1968",
+  "section": "s.50א (incl. (ד))",
+  "cited_by": [
+   "REG-15"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_10981603.pdf",
+    "title_he": "חוק חדלות פירעון ושיקום כלכלי (תיקון מס' 9), התשפ\"ו-2026",
+    "publisher_he": "הכנסת",
+    "file_page": 18,
+    "locator": "p.18 (gazette p.252), s.?: amends s.50א(א) definitions (last amendment)",
+    "quote": "בסעיף 50א(א) - (א) בהגדרה \"הליכי חדלות פירעון או פירוק\", אחרי \"צו לפתיחת הליכים\" יבוא \"או צו עיכוב הליכים זמני\"",
+    "basis": "ספר החוקים 3488 (21.1.2026), from p.236; file page = gazette page - 234"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_382526.pdf",
+    "title_he": "חוק ניירות ערך (תיקון מס' 63), התשע\"ז-2017",
+    "publisher_he": "הכנסת",
+    "file_page": 2,
+    "locator": "p.2 onward: Amendment 63 restructured ch. ח' (מסלקה licensing, s.50א)",
+    "quote": "\"מסלקה\" - חברה שקיבלה רישיון לפתיחה ולניהול של",
+    "basis": "ספר החוקים 2633 (6.4.2017), from p.676; file page = gazette page - 674"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "s.50א(ד) (collateral priority) wording predates 2026; the 2026 law changed only the definitions in 50א(א)."
+ },
+ {
+  "law": "חוק ניירות ערך, התשכ\"ח-1968",
+  "section": "s.50א3",
+  "cited_by": [
+   "REG-15"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_382400.pdf",
+    "title_he": "חוק ניירות ערך (תיקון מס' 61), התשע\"ז-2017",
+    "publisher_he": "הכנסת",
+    "file_page": 5,
+    "locator": "p.5 (gazette p.563), s.3 of the amending law: adds ss.50א2-50א8 (50א3 סופיות הסליקה במסלקות)",
+    "quote": "סופיות הסליקה במסלקות 50א3. (א) הוראת סליקה שהתקבלה במסלקה ... נחשבת בלתי",
+    "basis": "ספר החוקים 2623 (30.3.2017), from p.560; file page = gazette page - 558"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק ניירות ערך, התשכ\"ח-1968",
+  "section": "s.50א4",
+  "cited_by": [
+   "REG-15"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_382400.pdf",
+    "title_he": "חוק ניירות ערך (תיקון מס' 61), התשע\"ז-2017",
+    "publisher_he": "הכנסת",
+    "file_page": 5,
+    "locator": "pp.5-8 (gazette pp.563-566), s.50א4 as added (50א4 referenced p.8)",
+    "quote": "יחולו הוראות סעיפים 50א2 עד 50א4 לגבי הוראת סליקה הנוגעת לחבר מסלקה",
+    "basis": "ספר החוקים 2623 (30.3.2017), from p.560; file page = gazette page - 558"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_10981603.pdf",
+    "title_he": "חוק חדלות פירעון ושיקום כלכלי (תיקון מס' 9), התשפ\"ו-2026",
+    "publisher_he": "הכנסת",
+    "file_page": 18,
+    "locator": "p.18 (gazette p.252): amends s.50א4(א) (\"המועד הקובע\")",
+    "quote": "בסעיף 50א4 - (א) בסעיף קטן (א), בהגדרה \"המועד הקובע\", בסופה יבוא",
+    "basis": "ספר החוקים 3488 (21.1.2026), from p.236; file page = gazette page - 234"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק ניירות ערך, התשכ\"ח-1968",
+  "section": "s.50ג",
+  "cited_by": [
+   "REG-15"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_382526.pdf",
+    "title_he": "חוק ניירות ערך (תיקון מס' 63), התשע\"ז-2017",
+    "publisher_he": "הכנסת",
+    "file_page": 20,
+    "locator": "p.20 (gazette p.694), s.21 (amends s.50ג)",
+    "quote": "בסעיף 50ג לחוק העיקרי - (1) בסעיף קטן (א), המילים \"כהגדרתה בסעיף 50א\" - יימחקו",
+    "basis": "ספר החוקים 2633 (6.4.2017), from p.676; file page = gazette page - 674"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_390377.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (שירותים פיננסיים מוסדרים) (תיקון מס' 4), התשע\"ז-2017",
+    "publisher_he": "הכנסת",
+    "file_page": 13,
+    "locator": "p.13 (gazette p.1087), s.20: indirect amendment of the Securities Law (last tag on s.50ג)",
+    "quote": "תיקון חוק ניירות ערך - מס' 65",
+    "basis": "ספר החוקים 2655 (6.8.2017), from p.1076; file page = gazette page - 1074"
+   },
+   {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/IsaFile_8276.pdf",
+    "title_he": "חוק ניירות־ערך, התשכ\"ח-1968",
+    "publisher_he": "רשות ניירות ערך",
+    "file_page": 96,
+    "locator": "p.96, s.50ג (text before 2017)",
+    "quote": "פיקוח הרשות על פעולות המסלקה (תיקון התשס\"ח) 50ג. (א) הרשות תבצע בקרה על מסלקה",
+    "basis": "ISA consolidated PDF (הוצאת הלכות; footer 1.10.2012; OUTDATED for every section amended since, in particular Amendment 63 of 2017)"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "פקודת הבנקאות, 1941",
+  "section": "s.5(א)",
+  "cited_by": [
+   "REG-01"
+  ],
+  "official": [
+   {
+    "url": "https://boi.org.il/media/s5ub1z12/103.pdf",
+    "title_he": "פקודת הבנקאות, 1941",
+    "publisher_he": "בנק ישראל",
+    "file_page": 4,
+    "locator": "p.4, s.5(א) (last amended התשע\"ט; the BoI text is current for it)",
+    "quote": "הנגיד רשאי למנות מפקח על הבנקים (להלן - המפקח), ומשנתמנה יהיה עובד בנק ישראל ובידיו יהיו הפיקוח הכללי והביקורת על כל תאגיד בנקאי",
+    "basis": "Bank of Israel, קובץ חקיקה בנקאית item 103 (file dated 14.1.2025; amendment lists end at התשפ\"ד); the hub page https://boi.org.il/roles/supervisionregulation/legislation/ lists item 103 'פקודת הבנקאות 1941' updated 14/04/2026 but links a .doc (https://boi.org.il/media/x52d44px/103.doc) whose text layer reads as the 6/17 edition"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "Replaces both the Wikisource copy and the outdated BoI 10/11 edition (boi.org.il/media/esihqtk2/פקודת-הבנקאות-1941.pdf) cited by REG-01. Text matches Wikisource word for word (spelling הביקורת/הבקורת aside)."
+ },
+ {
+  "law": "פקודת הבנקאות, 1941",
+  "section": "ss.8ד(א), 8ו(ה), 8יב",
+  "cited_by": [
+   "REG-06",
+   "REG-06 figure figures.guarantee_cancel_notice_days"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_12224370.pdf",
+    "title_he": "חוק התוכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנת התקציב 2026), התשפ\"ו-2026",
+    "publisher_he": "הכנסת",
+    "file_page": 49,
+    "locator": "p.49 (gazette p.397), s.4(4)-(5): amends 8ד(א) and 8ו(ה); p.50 (gazette p.398): 8יב",
+    "quote": "בסעיף 8ד(א) - (א) ברישה, במקום \"אינו יכול לקיים את התחייבויותיו\" יבוא \"אינו יכול לקיים את התחייבויותיו, או שיש חשש של ממש שלא יהיה ביכולתו לקיים את התחייבויותיו\"",
+    "basis": "ספר החוקים 3510 (31.3.2026); file page = gazette page - 348"
+   },
+   {
+    "url": "https://boi.org.il/media/s5ub1z12/103.pdf",
+    "title_he": "פקודת הבנקאות, 1941",
+    "publisher_he": "בנק ישראל",
+    "file_page": 6,
+    "locator": "p.6 s.8ד, p.8 s.8ו, pp.10-11 s.8יב: text BEFORE the 2026 amendment",
+    "quote": "סמכויות לשמירת יציבותו של תאגיד בנקאי ... 8ד. (א) היה הנגיד סבור, לאחר התייעצות במפקח, כי תאגיד בנקאי פלוני אינו יכול לקיים התחייבויותיו",
+    "basis": "Bank of Israel, קובץ חקיקה בנקאית item 103 (file dated 14.1.2025; amendment lists end at התשפ\"ד); the hub page https://boi.org.il/roles/supervisionregulation/legislation/ lists item 103 'פקודת הבנקאות 1941' updated 14/04/2026 but links a .doc (https://boi.org.il/media/x52d44px/103.doc) whose text layer reads as the 6/17 edition"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "The rule's wording \"(or there is a real fear it will not)\" is the 2026 wording (ס\"ח 3510), which the BoI PDF does not yet carry. The 90-day figure appears in s.8יב as amended in 2026 (\"או שחלפו 90 ימים מהמועד שבו הוגשה לנגיד\"), i.e. only in the gazette text; the BoI PDF pp.10-11 shows ten-day periods for s.8י. Check which provision the figure name 'guarantee_cancel_notice_days' means before re-sourcing it."
+ },
+ {
+  "law": "פקודת הבנקאות, 1941",
+  "section": "s.8יא(א)-(ז)",
+  "cited_by": [
+   "REG-06"
+  ],
+  "official": [
+   {
+    "url": "https://boi.org.il/media/s5ub1z12/103.pdf",
+    "title_he": "פקודת הבנקאות, 1941",
+    "publisher_he": "בנק ישראל",
+    "file_page": 10,
+    "locator": "p.10, s.8יא (last amended התשמ\"א; BoI text current)",
+    "quote": "רשאי הנגיד, באישור הממשלה, להודיע ברשומות כי בנק ישראל, או תאגיד בנקאי אחר שהסכים לכך ושהנגיד הסמיכו לכך, יהיה ערב",
+    "basis": "Bank of Israel, קובץ חקיקה בנקאית item 103 (file dated 14.1.2025; amendment lists end at התשפ\"ד); the hub page https://boi.org.il/roles/supervisionregulation/legislation/ lists item 103 'פקודת הבנקאות 1941' updated 14/04/2026 but links a .doc (https://boi.org.il/media/x52d44px/103.doc) whose text layer reads as the 6/17 edition"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+  "section": "s.73",
+  "cited_by": [
+   "TXK-19"
+  ],
+  "official": [
+   {
+    "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
+    "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+    "publisher_he": "המוסד לביטוח לאומי",
+    "file_page": 47,
+    "locator": "p.47, s.73",
+    "quote": "קצבת ילדים כאמור בסעיף 68 לא תיחשב כהכנסה לענין פקודת מס הכנסה או לענין קביעת תשלומי חובה או היטלים אחרים",
+    "basis": "National Insurance Institute consolidated text, whole law in one PDF (324 pp., file dated 7.7.2026)"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "s.73 is the child-allowance tax exemption, not the savings one (that is 74ב(ו), p.51)."
+ },
+ {
+  "law": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+  "section": "s.74ב (incl. (א)(2א), (ד)(1א), (ו))",
+  "cited_by": [
+   "TXK-19",
+   "TXK-22",
+   "TXK-23",
+   "CS-12 figure figures.bank_to_provident_moves"
+  ],
+  "official": [
+   {
+    "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
+    "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+    "publisher_he": "המוסד לביטוח לאומי",
+    "file_page": 50,
+    "locator": "p.50, s.74ב(א)(1)-(3) incl. (2א)",
+    "quote": "בחירה כאמור תיעשה פעם אחת בלבד; סכום שנצבר ערב בחירתו של הורה זכאי לפי פסקה זו ימשיך להיות מנוהל בבנק בהתאם להוראות סימן זה",
+    "basis": "National Insurance Institute consolidated text, whole law in one PDF (324 pp., file dated 7.7.2026)"
+   },
+   {
+    "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
+    "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+    "publisher_he": "המוסד לביטוח לאומי",
+    "file_page": 51,
+    "locator": "p.51, s.74ב(ד)(1א) and (ו)",
+    "quote": "לא יראו את סכום החיסכון הצבור הכולל כהכנסה לעניין פקודת מס הכנסה, או לעניין תשלומי חובה או היטלים אחרים, לפי כל דין, וכן לעניין גמלאות לפי חוק זה ולפי חוק הבטחת הכנסה",
+    "basis": "National Insurance Institute consolidated text, whole law in one PDF (324 pp., file dated 7.7.2026)"
+   },
+   {
+    "url": "https://www.btl.gov.il/Laws1/00_0001_000004.pdf",
+    "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995 – פרק ד': ביטוח ילדים",
+    "publisher_he": "המוסד לביטוח לאומי",
+    "file_page": 9,
+    "locator": "p.9 s.74ב(א); p.10 s.74ב(ד)(1א), 74ג",
+    "quote": "בחירה כאמור תיעשה פעם אחת בלבד",
+    "basis": "National Insurance Institute consolidated text, chapter ד' (ביטוח ילדים) only (12 pp., file dated 7.9.2025)"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_316719.pdf",
+    "title_he": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2015 ו-2016), התשע\"ו-2015",
+    "publisher_he": "הכנסת",
+    "file_page": 28,
+    "locator": "pp.28-31, original enactment of סימן ה' (already cited by TXK-19)",
+    "quote": "זכאות של ילד לחיסכון ארוך טווח 74ב. (א) (1) המוסד יעביר, בעד כל ילד שמשתלמת בעדו קצבת ילדים",
+    "basis": "ספר החוקים 2511 (30.11.2015); original enactment of סימן ה' (ss.74ב-74ה), file pp.28-31"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "Replaces the Wikisource rendered PDF (he.wikisource.org/api/rest_v1/page/pdf/חוק_הביטוח_הלאומי) and the link-less 'Law 74ב(א)(2א) (Wikisource mirror)' of CS-12. BTL's text carries the 2024 amendment (תשפ\"ד) of 74ב. Figure 1 (one choice only) matches."
+ },
+ {
+  "law": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+  "section": "s.74ג",
+  "cited_by": [
+   "TXK-19"
+  ],
+  "official": [
+   {
+    "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
+    "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+    "publisher_he": "המוסד לביטוח לאומי",
+    "file_page": 51,
+    "locator": "p.51, s.74ג",
+    "quote": "רק בהגיע הילד הזכאי לגיל 18 (בסימן זה - גיל הפדיון), הוא יהיה זכאי למשוך את סכום החיסכון הצבור הכולל",
+    "basis": "National Insurance Institute consolidated text, whole law in one PDF (324 pp., file dated 7.7.2026)"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+  "section": "s.74ה",
+  "cited_by": [
+   "TXK-19"
+  ],
+  "official": [
+   {
+    "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
+    "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+    "publisher_he": "המוסד לביטוח לאומי",
+    "file_page": 52,
+    "locator": "p.52, s.74ה",
+    "quote": "תקנות - סימן ה' ... שר האוצר, באישור ועדת הכספים של הכנסת, יקבע הוראות בעניינים אלה",
+    "basis": "National Insurance Institute consolidated text, whole law in one PDF (324 pp., file dated 7.7.2026)"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+  "section": "s.345(א)",
+  "cited_by": [
+   "TXG-28"
+  ],
+  "official": [
+   {
+    "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
+    "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+    "publisher_he": "המוסד לביטוח לאומי",
+    "file_page": 241,
+    "locator": "p.241, s.345(א)",
+    "quote": "ומי שאינו עובד ואינו עובד עצמאי יראו כהכנסתו השנתית את הכנסתו מהמקורות המפורטים בסעיף 2 האמור",
+    "basis": "National Insurance Institute consolidated text, whole law in one PDF (324 pp., file dated 7.7.2026)"
+   },
+   {
+    "url": "https://www.btl.gov.il/Laws1/00_0001_000015.pdf",
+    "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995 – פרק ט\"ו: דמי ביטוח",
+    "publisher_he": "המוסד לביטוח לאומי",
+    "file_page": 9,
+    "locator": "p.9, s.345(א)",
+    "quote": "ומי שאינו עובד ואינו עובד עצמאי יראו כהכנסתו השנתית את הכנסתו מהמקורות המפורטים בסעיף 2 האמור",
+    "basis": "National Insurance Institute consolidated text, chapter ט\"ו (דמי ביטוח) only (34 pp., file dated 30.6.2026)"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "Replaces the Wikisource raw-wikitext link of TXG-28; the quoted span is verbatim on the BTL page."
+ },
+ {
+  "law": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+  "section": "s.350(א)(6), (7)",
+  "cited_by": [
+   "TXG-27"
+  ],
+  "official": [
+   {
+    "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
+    "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+    "publisher_he": "המוסד לביטוח לאומי",
+    "file_page": 245,
+    "locator": "p.245 s.350(א) opening; p.246 paragraphs (6)-(7)",
+    "quote": "הכנסה החייבת במס לפי הוראות סעיף 125ג(ב) או (ג) לפקודת מס הכנסה",
+    "basis": "National Insurance Institute consolidated text, whole law in one PDF (324 pp., file dated 7.7.2026)"
+   },
+   {
+    "url": "https://www.btl.gov.il/Laws1/00_0001_000015.pdf",
+    "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995 – פרק ט\"ו: דמי ביטוח",
+    "publisher_he": "המוסד לביטוח לאומי",
+    "file_page": 13,
+    "locator": "p.13 s.350(א); p.14 paragraphs (6)-(7)",
+    "quote": "הכנסה החייבת במס לפי הוראות סעיף 125ג(ב) או (ג) לפקודת מס הכנסה",
+    "basis": "National Insurance Institute consolidated text, chapter ט\"ו (דמי ביטוח) only (34 pp., file dated 30.6.2026)"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "TXG-27's quote spans p.245-246 of the whole-law PDF; cite p.246 for paragraph (6)."
+ },
+ {
+  "law": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע\"ז-2016",
+  "section": "regs. 7, 11 (whole text for TXK-20, TXK-23)",
+  "cited_by": [
+   "TXK-20",
+   "TXK-22",
+   "TXK-23"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8OfazOM9J2n~VjyzV5AWsITYS27PjZHrqw3iJWE0YJI=",
+    "title_he": "קובץ התקנות 7727, 14.11.2016",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 7,
+    "locator": "pp.7-10 (gazette pp.135-138): regulations start p.7; reg. 7 and reg. 11 on p.10 (gazette p.138)",
+    "quote": "החלת הוראות מגיל הפדיון 11. (א) סכום החיסכון הצבור הכולל שלא הוצא בגיל הפדיון ימשיך להתנהל בקופת גמל או בבנק, לפי העניין",
+    "basis": "קובץ התקנות 7727 (14.11.2016); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=7727); file page 1 = cover/contents"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "No consolidated text on btl.gov.il (its regulations list for the law has no חיסכון ארוך טווח entry). Wikisource lists no amendment to these regulations, so the 2016 gazette is the current text. TXK-20's point ('the regulations do not mention tax') is checkable on these four pages."
+ },
+ {
+  "law": "חוק מילווה המדינה, התשל\"ט-1979",
+  "section": "s.2",
+  "cited_by": [
+   "GOV-02"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/9/law/9_lsr_208641.PDF",
+    "title_he": "חוק מילווה המדינה, תשל\"ט-1979",
+    "publisher_he": "הכנסת",
+    "file_page": 1,
+    "locator": "p.1, s.2 (תשלום וערובה; unchanged since 1979)",
+    "quote": "הסכומים המשתלמים לפי איגרות החוב וכל ההוצאות הכרוכות בביצוע חוק זה ישולמו מתוך הכנסותיה הכלליות של המדינה ומתוך נכסיה",
+    "basis": "ספר החוקים 936 (24.6.1979), p.112; original enactment, 3 pp., scanned"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "Replaces Nevo 221_001. Scanned PDF; the text layer is readable."
+ },
+ {
+  "law": "חוק מילווה המדינה, התשל\"ט-1979",
+  "section": "s.4(3)",
+  "cited_by": [
+   "GOV-10"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/9/law/9_lsr_208641.PDF",
+    "title_he": "חוק מילווה המדינה, תשל\"ט-1979",
+    "publisher_he": "הכנסת",
+    "file_page": 1,
+    "locator": "pp.1-2, s.4 (תנאים מיוחדים); paragraph (3) wording per Nevo set by Amendment 14 (2005)",
+    "quote": "שר האוצר רשאי, באישור הועדה, לקבוע בתקנות, לגבי כל סדרה או כל סוג סדרות, הוראות בענינים אלה",
+    "basis": "ספר החוקים 936 (24.6.1979), p.112; original enactment, 3 pp., scanned"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299717.pdf",
+    "title_he": "חוק מילווה המדינה (תיקון מס' 14), התשס\"ה-2005",
+    "publisher_he": "הכנסת",
+    "file_page": 2,
+    "locator": "p.2: Amendment 14 (amends ss.3-4 and adds 6א)",
+    "quote": "הוספת סעיף 6א",
+    "basis": "ספר החוקים 1974 (17.1.2005), p.93; 3 pp."
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "חוק מילווה המדינה, התשל\"ט-1979",
+  "section": "s.6א(א), (ד)(1), (ז)",
+  "cited_by": [
+   "GOV-10"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299717.pdf",
+    "title_he": "חוק מילווה המדינה (תיקון מס' 14), התשס\"ה-2005",
+    "publisher_he": "הכנסת",
+    "file_page": 2,
+    "locator": "p.2 (gazette p.94), s.6 of the amending law: adds s.6א (עושי שוק ראשיים)",
+    "quote": "הממשלה רשאית למנות, מעת לעת, עושי שוק ראשיים לאיגרות חוב שהוצאו ושיוצאו לפי חוק זה, ולהתקשר עמם בהסכם",
+    "basis": "ספר החוקים 1974 (17.1.2005), p.93; 3 pp."
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "Nevo shows no later amendment of s.6א."
+ },
+ {
+  "law": "חוק מילווה קצר מועד, התשמ\"ד-1984",
+  "section": "ss.1(א), 3, 4, 5, 10",
+  "cited_by": [
+   "GOV-01",
+   "GOV-02"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/10/law/10_lsr_210160.PDF",
+    "title_he": "חוק מילווה קצר מועד, תשמ\"ד-1984",
+    "publisher_he": "הכנסת",
+    "file_page": 1,
+    "locator": "pp.1-2 (2-page scan): ss.1-6 p.1, ss.7-15 p.2",
+    "quote": "הממשלה תמכור את איגרות החוב לבנק ישראל בלבד",
+    "basis": "ספר החוקים 1107 (23.2.1984), p.69; original enactment, 2 pp., scanned"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "Replaces Nevo 72417. s.1(ב)-(ד) were later repealed and s.6 now refers to חוק בנק ישראל, התש\"ע-2010 (ס\"ח 2237, 24.3.2010; Knesset file https://fs.knesset.gov.il//18/law/18_ls2_175039.pdf, page not verified). ss.3, 4, 5, 10 read on Nevo as in the 1984 text."
+ },
+ {
+  "law": "חוק מילווה קצר מועד, התשמ\"ד-1984",
+  "section": "s.6",
+  "cited_by": [
+   "GOV-01"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/10/law/10_lsr_210160.PDF",
+    "title_he": "חוק מילווה קצר מועד, תשמ\"ד-1984",
+    "publisher_he": "הכנסת",
+    "file_page": 1,
+    "locator": "p.1, s.6 (original wording)",
+    "quote": "בנק ישראל ימכור את איגרות החוב לציבור ויקנה אותן ממנו",
+    "basis": "ספר החוקים 1107 (23.2.1984), p.69; original enactment, 2 pp., scanned"
+   }
+  ],
+  "status": "copy-kept",
+  "searched": "Knesset OData lists חוק בנק ישראל, התש\"ע-2010 (ס\"ח 2237 p.452) as the last amendment; its Knesset files are 18_ls1_174466.pdf / 18_ls2_175039.pdf (no lsr file listed); the page amending s.6 was not located today.",
+  "notes": "Keep the Nevo copy for the current wording of s.6 only, or cite the 2010 law once the page is found."
+ },
+ {
+  "law": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), התשס\"ו-2006",
+  "section": "regs. 1-6, 8, 9 (and reg. 4, reg. 8 alone)",
+  "cited_by": [
+   "GOV-10",
+   "GOV-11",
+   "GOV-11 figure figures.linkage",
+   "GOV-11 figure figures.coupon_every_months",
+   "GOV-11 figure figures.face_value",
+   "GOV-11 figure figures.term_min_months",
+   "GOV-12",
+   "GOV-12 figure figures.linkage_floor",
+   "TXI-14"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=",
+    "title_he": "קובץ התקנות 6457, 30.1.2006",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 3,
+    "locator": "p.3 (gazette p.401) title; p.4 (gazette p.402) regs. 1-4; p.5 (gazette p.403) regs. 5-9",
+    "quote": "איגרות החוב יוצאו בשווי נקוב של 1,000 שקלים חדשים או כפולה של 1,000 שקלים חדשים",
+    "basis": "קובץ התקנות 6457 (30.1.2006); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=6457); file page 1 = cover/contents"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=",
+    "title_he": "קובץ התקנות 6597, 28.6.2007",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 3,
+    "locator": "p.3 (gazette p.977): 2007 amendment of regs. 6 (term: שנה אחת instead of שנתיים) and 7",
+    "quote": "במקום \"לתקופה של שנתיים\" יבוא \"לתקופה של שנה אחת\"",
+    "basis": "קובץ התקנות 6597 (28.6.2007); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=6597); file page 1 = cover/contents"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "Replaces Nevo 999_564. Figures: face value 1,000 (reg. 3) and the one-year minimum term (reg. 6 as amended 2007) match; the 12-month interest period is in reg. 1 (\"תקופת ריבית\"); reg. 8 (linkage, \"כשהן מוגדלות או מוקטנות\") is on file p.5 - TXI-14's quoted span must be re-verified there (pdftotext of p.5 shows reg. 5-6; reg. 8 may run onto p.6)."
+ },
+ {
+  "law": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), התשס\"ו-2006",
+  "section": "reg. 7 (early redemption)",
+  "cited_by": [
+   "GOV-16"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=",
+    "title_he": "קובץ התקנות 6597, 28.6.2007",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 3,
+    "locator": "p.3 (gazette p.977), reg. 2 of the amending regulations: reg. 7(א)-(ב) as amended",
+    "quote": "בהליך הפדיון המוקדם ייקבע ממי יירכשו איגרות החוב: מכלל הציבור, מכלל עושי השוק הראשיים או מחלק מהם",
+    "basis": "קובץ התקנות 6597 (28.6.2007); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=6597); file page 1 = cover/contents"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": ""
+ },
+ {
+  "law": "תקנות מילווה המדינה (אגרות חוב מסוג \"אג\"ח ממשלתית קצרה\"), התשס\"ז-2007",
+  "section": "regs. 1-8 (reg. 7 alone for GOV-16)",
+  "cited_by": [
+   "GOV-15",
+   "GOV-15 figure figures.linkage",
+   "GOV-15 figure figures.pays_interest",
+   "GOV-15 figure figures.face_value",
+   "GOV-15 figure figures.term_max_months",
+   "GOV-16"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=",
+    "title_he": "קובץ התקנות 6597, 28.6.2007",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 2,
+    "locator": "p.2 (gazette p.976) regs. 1-4; p.3 (gazette p.977) regs. 5-8",
+    "quote": "איגרות החוב יוצאו בשווי נקוב של 1,000 שקלים חדשים או כפולה של 1,000 שקלים חדשים. ... המחיר שבו יימכרו איגרות החוב יהיה נמוך מסכום הפדיון שלהן, ואיגרות החוב לא ישאו ריבית",
+    "basis": "קובץ התקנות 6597 (28.6.2007); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=6597); file page 1 = cover/contents"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "Replaces Nevo 999_782. Figures (1,000 face value, no interest) match; the one-year maximum term is in reg. 5 on p.3."
+ },
+ {
+  "law": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), התשנ\"ט-1999",
+  "section": "definitions, regs. 4, 5, 7, 9, 9א",
+  "cited_by": [
+   "GOV-14",
+   "GOV-14 figure figures.linkage",
+   "GOV-14 figure figures.coupon_every_months",
+   "GOV-14 figure figures.margin_cap",
+   "GOV-14 figure figures.coupon_floor",
+   "GOV-16"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/eoe4vDYzpfM5D9J9SFlkgpyvqTXlCSUfYWr0ONo8ZQU=",
+    "title_he": "קובץ התקנות 5951, 12.2.1999",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 2,
+    "locator": "p.2 (gazette p.346) reg. 1 definitions; p.3 (gazette p.347) regs. 2-7; p.4 regs. 8-9 (scanned, OCR text)",
+    "quote": "בתוספת שיעור שיקבע שר האוצר או מי שהוא הסמיכו, במועד הוצאת הסדרה, ושלא יעלה על 4%",
+    "basis": "קובץ התקנות 5951 (12.2.1999); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=5951); file page 1 = cover/contents"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=",
+    "title_he": "קובץ התקנות 6457, 30.1.2006",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 9,
+    "locator": "p.9 (gazette p.407): 2006 amendment - reg. 1 (עושה שוק ראשי), reg. 5 replaced, reg. 6 repealed, reg. 7(ה), reg. 9א added",
+    "quote": "איגרות החוב יימכרו לעושי השוק הראשיים ולכלל הציבור במכרז או בהליך תחרותי ושוויוני אחר",
+    "basis": "קובץ התקנות 6457 (30.1.2006); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=6457); file page 1 = cover/contents"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=",
+    "title_he": "קובץ התקנות 6597, 28.6.2007",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 6,
+    "locator": "p.6 (gazette p.980): 2007 amendment of reg. 9א",
+    "quote": "תיקון תקנה 9א",
+    "basis": "קובץ התקנות 6597 (28.6.2007); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=6597); file page 1 = cover/contents"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/eoe4vDYzpfM5D9J9SFlkgpNDaj2+z9ida9BlI~8SpmA=",
+    "title_he": "קובץ התקנות 6069, 30.11.2000",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 3,
+    "locator": "p.3 (gazette p.163): 2000 amendment of reg. 7(ב)",
+    "quote": "בתקנה 7 לתקנות מילווה המדינה (סדרות מסוג \"גילון חדש\")",
+    "basis": "קובץ התקנות 6069 (30.11.2000); official gov.il Reshumot collector (https://www.gov.il/he/departments/dynamiccollectors/gazette-official?FolderType=3&BookletNum=6069); file page 1 = cover/contents"
+   }
+  ],
+  "status": "official",
+  "searched": "",
+  "notes": "Replaces Nevo 221_031. Figures: 4% margin cap and 0% floor (reg. 1 \"ריבית משתנה\", reg. 7(ג)-(ד)) and the three-month interest period (reg. 1 \"תקופת ריבית\") match. Nevo also lists 2000-2001 amendments in ק\"ת 6033, 6073, 6102, 6125 (not fetched; none tagged on regs. 4, 5, 9א)."
+ },
+ {
+  "law": "פעילות קרנות נאמנות בישראל 2025 (רשות ניירות ערך, מחלקת השקעות; PDF created 10.6.2026, 21 pp.)",
+  "section": "pp.3, 9, 13-14, 20",
+  "cited_by": [
+   "ETF-10",
+   "ETF-17",
+   "ETF-18",
+   "ETF-26",
+   "MF-18"
+  ],
+  "official": [
+   {
+    "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf",
+    "title_he": "פעילות קרנות נאמנות בישראל 2025",
+    "publisher_he": "פאנדר (עותק)",
+    "file_page": null,
+    "locator": "as cited",
+    "quote": "",
+    "basis": "third-party re-host; the funder.co.il article of 17.6.2026 (funder.co.il/article/203717) links only this copy"
+   }
+  ],
+  "status": "copy-kept",
+  "searched": "Google site:isa.gov.il / site:new.isa.gov.il for the title with 2025, for 'fundsReport', for 'מחלקת השקעות' 2025 (only fundsReport24.pdf and report_2024 appear); probed https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport25.pdf (returns the site's HTML, not a PDF); the ISA 'Funds-reports' nav-index URL returns 404; WebSearch found only press coverage.",
+  "notes": "Not on isa.gov.il as of today. Keep the copy with 'primary (third-party host)' and re-check the ISA 'פרסומים' page in a few weeks; the 2024 edition sits in the al_lobby-62bd445f910eb folder."
+ },
+ {
+  "law": "ice.co.il article 1005636: \"קופות הגמל חוגגות: לקראת שינוי משמעותי בסכומי ההפקדה?\"",
+  "section": "-",
+  "cited_by": [
+   "SW-21 (inherited from KGL-02/KGL-09/KGL-10/TXK-04)"
+  ],
+  "official": [],
+  "status": "copy-kept",
+  "searched": "Fetched the page: a consumer-news item reporting a preliminary Knesset reading of a bill to raise the kupat gemel lehashkaa deposit cap (meta description: מליאת הכנסת אישרה בקריאה טרומית הצעת חוק שתאפשר הגדלה של סכום ההפקדה המקסימלי לקופת גמל להשקעה).",
+  "notes": "Not a copy of any official text: it is a secondary news article. It was marked 'copy' only because SW-21's link list inherits the trailing strength word of the pointer rule. Correct label: secondary; the R-gemel owner of KGL-02/09/10 decides whether to keep it at all."
+ }
+]

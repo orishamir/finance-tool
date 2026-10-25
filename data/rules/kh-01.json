@@ -3,7 +3,7 @@
   "title": "What a study fund is in law",
   "title_he": "מהי קרן השתלמות לפי החוק",
   "text_he": "קרן השתלמות היא לפי החוק קופת גמל שמיועדת לשלם דמי השתלמות לעובדים, לעצמאים, לחברי קיבוץ, לחברי מושב שיתופי או למוטבים שלהם. קופת גמל היא קרן או תוכנית ביטוח שאושרה ככזו לפי חוק הפיקוח, ופקודת מס הכנסה מגדירה אותה בהפניה לחוק הזה. התקנונים מתארים את הקרן כתוכנית חיסכון לתקופה קצובה שאחריה מושכים או מעבירים, וגם כאמצעי להשתלמות מקצועית. נוסח החוק נקרא באתר שמעתיק אותו.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "regulator",
     "eligibility"
@@ -13,30 +13,32 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.nevo.co.il/law_html/law00/70391.htm",
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, s.1, Nevo (text current to 27-07-2026)",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
-      "publisher": "Nevo",
-      "publisher_he": "הכנסת",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "s.1",
-      "locator_he": "סעיף 1",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.16, s.1",
+      "locator_he": "עמוד 16, סעיף 1",
+      "page": 16,
+      "quote": "כהגדרתן בחוק הפיקוח על קופות גמל",
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.nevo.co.il/law_html/law01/255_001b.htm",
-      "title": "פקודת מס הכנסה s.1, Nevo",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Nevo",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "`כהגדרתן בחוק הפיקוח על קופות גמל`)",
-      "locator_he": "`כהגדרתן בחוק הפיקוח על קופות גמל`)",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.4, s.1",
+      "locator_he": "עמוד 4, סעיף 1",
+      "page": 4,
+      "quote": "קופת גמל המיועדת לתשלום דמי השתלמות לעובדים, לעצמאים, לחברי קיבוץ",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://harel-group.co.il/long-term-savings/study-funds/plans/harel-funds/doclib/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%95%d7%a4%d7%94/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a8%d7%90%d7%9c%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa-%20%d7%9c%d7%90%d7%97%d7%a8%20%d7%94%d7%9e%d7%99%d7%96%d7%95%d7%92/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa%20%2007.2024.pdf",
@@ -48,7 +50,7 @@
       "strength": "institution",
       "locator": "s.2",
       "locator_he": "סעיף 2",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

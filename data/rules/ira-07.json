@@ -14,47 +14,58 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=2",
+      "title": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "pp.2-3, s.2",
+      "locator_he": "עמודים 2 עד 3, סעיף 2",
+      "page": 2,
+      "quote": "הסכום הקובע",
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/legalinfo/regulation_0059/he/regulation_ira_pdf.pdf",
-      "title": "CMA draft 2025, explanatory notes to reg. 2",
+      "title": "CMA draft 2025",
       "title_he": "טיוטת תיקון לתקנות קופת גמל בניהול אישי (2025)",
       "publisher": "gov.il",
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "reg. 2",
-      "locator_he": "תקנה 2",
-      "checked": "2026-10-22",
+      "locator": "p.6",
+      "locator_he": "עמוד 6",
+      "page": 6,
+      "quote": "סוגי הכספים",
+      "checked": "2026-10-25",
       "qualifier": "(draft)"
     },
     {
-      "url": "https://www.meitav.co.il/media/0qulk3pk/תקנות-ira-חדשות-יוני-2017.pdf",
-      "title": "Reshumot 2017 amendment, reg. 2 and reg. 9",
-      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי)",
+      "url": "https://www.meitav.co.il/media/kiildnyn/נספח-להסכם-הצטרפות-לקרן-השתלמות-בניהול-אישי-115181124.pdf",
+      "title": "מיטב – נספח להסכם הצטרפות לקרן השתלמות בניהול אישי (1.151.8.11.24)",
+      "title_he": "מיטב – נספח להסכם הצטרפות לקרן השתלמות בניהול אישי (1.151.8.11.24)",
       "publisher": "Meitav",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "reg. 2 and reg. 9",
-      "checked": "2026-10-22"
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "במיטב השתלמות",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.meitav.co.il/provident_pension/ira/",
-      "title": "Meitav IRA page, \"אילו כספים יכולים להיכנס לקופות IRA?\"",
+      "title": "Meitav IRA page",
       "title_he": "קופת גמל בניהול אישי (IRA): עמוד המוצר של מיטב",
       "publisher": "Meitav",
       "publisher_he": "מיטב",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://www.meitav.co.il/media/kiildnyn/נספח-להסכם-הצטרפות-לקרן-השתלמות-בניהול-אישי-115181124.pdf",
-      "title": "Meitav joining-form annex 1.151.8.11.24",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-22"
+      "quote": "אילו כספים יכולים להיכנס לקופות IRA?",
+      "checked": "2026-10-25"
     }
   ]
 }

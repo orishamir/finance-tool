@@ -3,7 +3,7 @@
   "title": "Securities denominated in or linked to foreign currency: the exchange rate is the index for the real gain",
   "title_he": "נייר ערך צמוד למטבע חוץ: שער המטבע הוא המדד",
   "text_he": "בנייר ערך בידי יחיד שנקוב במטבע חוץ או שערכו צמוד למטבע חוץ, רואים את שער המטבע כמדד. הרווח הריאלי הוא לכן הרווח שמעבר לשינוי בשער של אותו מטבע, ולא מעבר לעליית מדד המחירים לצרכן. הכלל חל על ניירות ערך ויחידות בקרנות שנסחרים בישראל ונקובים במטבע חוץ או צמודים אליו, למשל יחידות שנקובות בדולר. ניירות ערך זרים הם כלל נפרד.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "real-vs-nominal",
     "currency"
@@ -13,18 +13,17 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Income Tax Ordinance",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.88",
-      "locator_he": "סעיף 88",
-      "anchor": "סעיף_88",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.146, s.88, definition מדד",
+      "page": 146,
+      "quote": "יראו את שער המטבע כמדד",
+      "checked": "2026-10-25"
     }
   ]
 }

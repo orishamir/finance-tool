@@ -22,7 +22,7 @@
       "strength": "institution",
       "locator": "clauses 7.1, 7.2, 11",
       "locator_he": "סעיפים 7.1, 7.2, 11",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://gemel.huji.ac.il/wp-content/uploads/2026/05/‏‏‏‏‏‏הצטרפות-קופת-גמל-להשקעה-מאי-2026.pdf",
@@ -32,19 +32,22 @@
       "publisher_he": "קופת הגמל של עובדי האוניברסיטה העברית",
       "kind": "form",
       "strength": "institution",
-      "locator": "p. 3, has a",
+      "locator": "p.3",
+      "locator_he": "עמוד 3",
       "page": 3,
       "quote": "חתימת אפוטרופוס",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.as-invest.co.il/interstedin/saving_plus_deposit/",
-      "title": "Altshuler deposit page",
+      "title": "אלטשולר שחם – הפקדות סוף שנה, קופת גמל להשקעה",
+      "title_he": "אלטשולר שחם – הפקדות סוף שנה, קופת גמל להשקעה",
       "publisher": "Altshuler Shaham",
       "publisher_he": "אלטשולר שחם",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "quote": "כל אדם רשאי לפתוח קופת גמל להשקעה, בכל גיל ובכל סכום",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.meitav.co.il/provident_pension/provident_invest/",
@@ -54,7 +57,8 @@
       "publisher_he": "מיטב",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "quote": "כמוה כמתן מתנה בלתי חוזרת לאותו אדם",
+      "checked": "2026-10-25"
     }
   ]
 }

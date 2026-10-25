@@ -13,31 +13,39 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://www.btl.gov.il/benefits/HozrimGimlaot/Hozrim/11.16%d7%97%d7%95%d7%96%d7%a8%20%d7%aa%d7%95%d7%9b%d7%a0%d7%99%d7%aa%20%d7%97%d7%99%d7%a1%d7%9b%d7%95%d7%9f%20%d7%9c%d7%9b%d7%9c%20%d7%99%d7%9c%d7%93_.pdf",
+      "title": "המוסד לביטוח לאומי, חוזר 1356 – תכנית חיסכון לכל ילד (30.11.2016)",
+      "title_he": "המוסד לביטוח לאומי, חוזר 1356 – תכנית חיסכון לכל ילד (30.11.2016)",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.21",
+      "locator_he": "עמוד 21",
+      "page": 21,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/mavar.aspx",
-      "title": "1",
+      "title": "ביטוח לאומי – שינוי הגוף החוסך ומסלול החיסכון, תכנית חיסכון לכל ילד",
+      "title_he": "ביטוח לאומי – שינוי הגוף החוסך ומסלול החיסכון, תכנית חיסכון לכל ילד",
       "publisher": "National Insurance Institute",
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "quote": "לא תוכלו להעביר את החיסכון לבנק אחר",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/default.aspx",
-      "title": "2",
+      "title": "ביטוח לאומי – חיסכון לכל ילד, שאלות ותשובות",
+      "title_he": "ביטוח לאומי – חיסכון לכל ילד, שאלות ותשובות",
       "publisher": "National Insurance Institute",
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://www.btl.gov.il/benefits/HozrimGimlaot/Hozrim/11.16%d7%97%d7%95%d7%96%d7%a8%20%d7%aa%d7%95%d7%9b%d7%a0%d7%99%d7%aa%20%d7%97%d7%99%d7%a1%d7%9b%d7%95%d7%9f%20%d7%9c%d7%9b%d7%9c%20%d7%99%d7%9c%d7%93_.pdf",
-      "title": "3",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "המוסד לביטוח לאומי",
-      "kind": "regulator_page",
-      "strength": "primary",
-      "checked": "2026-10-22"
+      "quote": "האם ניתן להעביר את החיסכון לגוף פיננסי אחר?",
+      "checked": "2026-10-25"
     }
   ],
   "derived_from": [

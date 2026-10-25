@@ -3,7 +3,7 @@
   "title": "Who can be a member: salaried member and self-employed member",
   "title_he": "מי יכול להיות עמית: שכיר ועצמאי",
   "text_he": "החוק מבחין בין עמית שכיר, שהמעסיק שלו מפקיד בעדו, לבין עמית עצמאי, שמפקיד בעד עצמו. החברות המנהלות משווקות קרנות השתלמות לשני הסוגים. לפי מיטב, שכירים יכולים לפתוח קרן השתלמות רק כהטבה מהמעסיק, ועצמאים יכולים לפתוח בעצמם בכל עת. בסיס חוקי לכך ששכיר לא יכול להפקיד בלי מעסיק לא נמצא בנוסח שנקרא.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "eligibility"
   ],
@@ -12,24 +12,40 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.as-invest.co.il/interstedin/קרנות-השתלמות/",
-      "title": "Altshuler Shaham, study funds page",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "`עבור כל חוסך – שכיר או עצמאי`)",
-      "locator_he": "`עבור כל חוסך – שכיר או עצמאי`)",
-      "checked": "2026-10-22"
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, s.1",
+      "locator_he": "עמוד 2, סעיף 1",
+      "page": 2,
+      "quote": "עמית-שכיר",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.meitav.co.il/provident_pension/hishtalmut/",
-      "title": "Meitav, study fund for employees",
+      "title": "מיטב – קרנות השתלמות: כל המידע אודות קרן השתלמות",
+      "title_he": "מיטב – קרנות השתלמות: כל המידע אודות קרן השתלמות",
       "publisher": "Meitav",
       "publisher_he": "מיטב",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "quote": "עובדים שכירים יכולים לפתוח קרן השתלמות רק כהטבה מטעם המעסיק",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.as-invest.co.il/interstedin/קרנות-השתלמות/",
+      "title": "אלטשולר שחם – קרן השתלמות",
+      "title_he": "אלטשולר שחם – קרן השתלמות",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "עבור כל חוסך – שכיר או עצמאי",
+      "checked": "2026-10-25"
     }
   ]
 }

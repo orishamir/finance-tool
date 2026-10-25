@@ -18,11 +18,11 @@
       "unit": "business_days",
       "source": {
         "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-        "title": "Mor comprehensive pension fund bylaws, version 01.06.2025, s.22(ד), 108 and annex א; Mor gemel standard bylaws 18.02.2026, s.18",
+        "title": "Mor comprehensive pension fund bylaws, version 01.06.2025, pp.27, 72, s.22(ד), 108 and annex א; Mor gemel standard bylaws 18.02.2026, p.8, s.18",
         "publisher": "Mor Gemel and Pension",
         "strength": "institution"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -45,8 +45,9 @@
       "publisher_he": "מור גמל ופנסיה",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "sections 22(ד), 108 and annex א",
-      "checked": "2026-10-22"
+      "locator": "sections 22(ד), 108 and annex א, pp.27, 72",
+      "page": 27,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf",
@@ -56,9 +57,10 @@
       "publisher_he": "מור גמל ופנסיה",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "section 18",
-      "locator_he": "סעיף 18",
-      "checked": "2026-10-22"
+      "locator": "section 18, p.8",
+      "locator_he": "סעיף 18, עמוד 8",
+      "page": 8,
+      "checked": "2026-10-25"
     }
   ]
 }

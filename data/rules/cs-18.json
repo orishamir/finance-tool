@@ -20,11 +20,11 @@
       "unit": "pct_per_year",
       "source": {
         "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
-        "title": "Harel child-savings standard bylaw, April 2026, ss.31-33 (0.23% of balance, 0% of deposits); Altshuler Q&A states the same after 21",
+        "title": "Harel child-savings standard bylaw, April 2026, pp.9-10, ss.31-33 (0.23% of balance, 0% of deposits); Altshuler Q&A states the same after 21",
         "publisher": "Harel Insurance and Finance",
         "strength": "institution"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -40,8 +40,21 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
+      "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.51, s.74ב(ה)",
+      "locator_he": "עמוד 51, סעיף 74ב(ה)",
+      "page": 51,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
-      "title": "NII 2025 report",
+      "title": "חיסכון ארוך-טווח לכל ילד וילדה – דוח הביטוח הלאומי לשנת 2025",
       "title_he": "חיסכון ארוך-טווח לכל ילד וילדה – דוח הביטוח הלאומי לשנת 2025",
       "publisher": "National Insurance Institute",
       "publisher_he": "המוסד לביטוח לאומי",
@@ -51,17 +64,64 @@
       "locator_he": "עמוד 1",
       "page": 1,
       "quote": "ולקופות הגמל דמי ניהול בשיעור של 0.23% לשנה מהכספים הצבורים בקופות",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8OfazOM9J2n~VjyzV5AWsITYS27PjZHrqw3iJWE0YJI=#page=10",
+      "title": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע\"ז-2016 (קובץ התקנות 7727)",
+      "title_he": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע״ז-2016 (קובץ התקנות 7727)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.10, reg. 13",
+      "locator_he": "עמוד 10, תקנה 13",
+      "page": 10,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/sum.aspx",
-      "title": "NII savings-amount page",
-      "title_he": "חיסכון לכל ילד: עמודי המידע של הביטוח הלאומי",
+      "title": "ביטוח לאומי: סכום החיסכון - תכנית חיסכון לכל ילד",
+      "title_he": "ביטוח לאומי: סכום החיסכון - תכנית חיסכון לכל ילד",
       "publisher": "National Insurance Institute",
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/default.aspx",
+      "title": "ביטוח לאומי: חיסכון לכל ילד - שאלות ותשובות",
+      "title_he": "ביטוח לאומי: חיסכון לכל ילד - שאלות ותשובות",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
+      "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד: הראל חיסכון לכל ילד, מהדורה 3, 04/2026",
+      "title_he": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד: הראל חיסכון לכל ילד, מהדורה 3, 04/2026",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.9-10, s.31-33",
+      "locator_he": "עמודים 9 עד 10, סעיף 31-33",
+      "page": 9,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.as-invest.co.il/interstedin/%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%95%D7%94%D7%A9%D7%A7%D7%A2%D7%94/%D7%A9%D7%90%D7%9C%D7%95%D7%AA-%D7%95%D7%AA%D7%A9%D7%95%D7%91%D7%95%D7%AA-%D7%91%D7%A0%D7%95%D7%A9%D7%90-%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%9C%D7%9B%D7%9C-%D7%99%D7%9C%D7%93/",
+      "title": "אלטשולר שחם: שאלות ותשובות בנושא חיסכון לכל ילד",
+      "title_he": "אלטשולר שחם: שאלות ותשובות בנושא חיסכון לכל ילד",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "יגבו דמי ניהול בגובה 0.23% מהיתרה בחשבונו בלבד",
+      "checked": "2026-10-25"
     }
   ]
 }

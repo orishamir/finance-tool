@@ -1,0 +1,28 @@
+[
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "onezero-full-tariff-2026",
+   "match": [
+    "תעריפון העמלות המלא, מהדורה מיום 26.7.26"
+   ],
+   "title_he": "תעריפון העמלות המלא (וואן זירו, מהדורה מיום 26.7.26)",
+   "publisher_he": "וואן זירו",
+   "kind": "institution_doc",
+   "official_url": null
+  }
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "cma-circular-2022-9-30-tracks",
+   "match": [
+    "חוזר גופים מוסדיים 2022-9-30 מסלולי השקעה בקופות גמל - תיקון"
+   ],
+   "title_he": "חוזר גופים מוסדיים 2022-9-30: מסלולי השקעה בקופות גמל – תיקון",
+   "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+   "kind": "circular",
+   "official_url": null
+  }
+ }
+]

@@ -21,12 +21,12 @@
       "value": "unlinked",
       "unit": "text",
       "source": {
-        "url": "https://www.nevo.co.il/law_html/law01/999_782.htm",
-        "title": "תקנות מילווה המדינה (אגרות חוב מסוג \"אג\"ח ממשלתית קצרה\"), תשס\"ז-2007 (Nevo mirror)",
-        "publisher": "Minister of Finance (Nevo mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=#page=2",
+        "title": "תקנות מילווה המדינה (אגרות חוב מסוג \"אג\"ח ממשלתית קצרה\"), התשס\"ז-2007 (קובץ התקנות 6597), p.2, regs. 1-4",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -41,12 +41,12 @@
       "value": false,
       "unit": "boolean",
       "source": {
-        "url": "https://www.nevo.co.il/law_html/law01/999_782.htm",
-        "title": "תקנות מילווה המדינה (אגרות חוב מסוג \"אג\"ח ממשלתית קצרה\"), תשס\"ז-2007 (Nevo mirror)",
-        "publisher": "Minister of Finance (Nevo mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=#page=2",
+        "title": "תקנות מילווה המדינה (אגרות חוב מסוג \"אג\"ח ממשלתית קצרה\"), התשס\"ז-2007 (קובץ התקנות 6597), p.2, reg. 4 (\"ואיגרות החוב לא ישאו ריבית\")",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -61,12 +61,12 @@
       "value": 1000,
       "unit": "nis",
       "source": {
-        "url": "https://www.nevo.co.il/law_html/law01/999_782.htm",
-        "title": "תקנות מילווה המדינה (אגרות חוב מסוג \"אג\"ח ממשלתית קצרה\"), תשס\"ז-2007 (Nevo mirror)",
-        "publisher": "Minister of Finance (Nevo mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=#page=2",
+        "title": "תקנות מילווה המדינה (אגרות חוב מסוג \"אג\"ח ממשלתית קצרה\"), התשס\"ז-2007 (קובץ התקנות 6597), p.2, reg. 3",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -81,12 +81,12 @@
       "value": 12,
       "unit": "months",
       "source": {
-        "url": "https://www.nevo.co.il/law_html/law01/999_782.htm",
-        "title": "תקנות מילווה המדינה (אגרות חוב מסוג \"אג\"ח ממשלתית קצרה\"), תשס\"ז-2007 (Nevo mirror)",
-        "publisher": "Minister of Finance (Nevo mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=#page=3",
+        "title": "תקנות מילווה המדינה (אגרות חוב מסוג \"אג\"ח ממשלתית קצרה\"), התשס\"ז-2007 (קובץ התקנות 6597), p.3, reg. 5",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -102,43 +102,43 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=#page=2",
+      "title": "תקנות מילווה המדינה (אגרות חוב מסוג \"אג\"ח ממשלתית קצרה\"), התשס\"ז-2007 (קובץ התקנות 6597)",
+      "title_he": "תקנות מילווה המדינה (איגרות חוב מסוג ״אג״ח ממשלתית קצרה״), התשס״ז-2007",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.2, regs. 1-4; p.3, regs. 5-8",
+      "locator_he": "עמוד 2, תקנות 1-4; עמוד 3, תקנות 5-8",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf",
-      "title": "2024 glossary, \"איגרות חוב קצרות\"",
+      "title": "החשב הכללי, היחידה לניהול החוב הממשלתי: הדו\"ח השנתי 2024, מילון מונחים",
       "title_he": "הדוח השנתי 2024 של היחידה לניהול החוב הממשלתי",
       "publisher": "gov.il",
       "publisher_he": "החשב הכללי, משרד האוצר",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p. 41",
+      "locator": "p.41",
       "locator_he": "עמוד 41",
       "page": 41,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2025/he/annual-debt-report_annual-debt-report-2025-accessible-version-he.pdf",
-      "title": "הדו\"ח השנתי 2025",
+      "title": "החשב הכללי, היחידה לניהול החוב הממשלתי: הדו\"ח השנתי 2025",
       "title_he": "הדוח השנתי 2025 של היחידה לניהול החוב הממשלתי",
       "publisher": "gov.il",
       "publisher_he": "החשב הכללי, משרד האוצר",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "pp. 27, 37",
+      "locator": "pp.27, 37",
       "locator_he": "עמודים 27, 37",
       "page": 27,
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://www.nevo.co.il/law_html/law01/999_782.htm",
-      "title": "תקנות מילווה המדינה (אגרות חוב מסוג \"אג\"ח ממשלתית קצרה\"), תשס\"ז-2007",
-      "title_he": "תקנות מילווה המדינה (איגרות חוב מסוג ״אג״ח ממשלתית קצרה״), התשס״ז-2007",
-      "publisher": "Nevo",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "ss. 1 to 8",
-      "locator_he": "סעיפים 1 עד 8",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

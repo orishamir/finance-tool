@@ -16,18 +16,17 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "title": "Provident Funds Law, section 34ב (Wikisource mirror)",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://fs.knesset.gov.il/24/law/24_lsr_611567.pdf",
+      "title": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2021 ו-2022), התשפ\"ב-2021",
+      "title_he": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2021 ו-2022), התשפ\"ב-2021",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "section 34ב",
-      "locator_he": "סעיף 34ב",
-      "anchor": "סעיף_34ב",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.34, s.34ב",
+      "locator_he": "עמוד 34, סעיף 34ב",
+      "page": 34,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf",
@@ -39,16 +38,18 @@
       "strength": "institution",
       "locator": "sections 8.3, 14.1, 47",
       "locator_he": "סעיפים 8.3, 14.1, 47",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.moreinvest.co.il/מוצרים/גמל-ופנסיה/קופות-גמל/",
-      "title": "Mor gemel product page",
+      "title": "מור – קופת גמל, חיסכון לטווח ארוך",
+      "title_he": "מור – קופת גמל, חיסכון לטווח ארוך",
       "publisher": "Mor Investment House",
       "publisher_he": "מור בית השקעות",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "quote": "והוא אינו כולל כיסויים ביטוחיים",
+      "checked": "2026-10-25"
     }
   ]
 }

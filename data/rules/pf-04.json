@@ -18,12 +18,12 @@
       "value": 0.5,
       "unit": "pct_per_year",
       "source": {
-        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
-        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 3(א) (Hebrew Wikisource; Nevo mirror)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=5",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131), p.5, reg. 3(א)(1)",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -38,12 +38,12 @@
       "value": 6,
       "unit": "pct_of_deposit",
       "source": {
-        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
-        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 3(א): \"מתוך התשלומים המועברים לקרן בשל כל עמית – בשיעור שלא יעלה על 6%\"",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=5",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131), p.5, reg. 3(א)(2)",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -59,36 +59,42 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
-      "title": "Management Fees Regulations, reg. 3(א) (Wikisource)",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg. 3(א)",
-      "locator_he": "תקנה 3(א)",
-      "anchor": "סעיף_3.א",
-      "checked": "2026-10-22"
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=5",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.5, reg. 3(א)",
+      "locator_he": "עמוד 5, תקנה 3(א)",
+      "page": 5,
+      "quote": "מתוך התשלומים המועברים לקרן בשל כל עמית - בשיעור שלא יעלה על 6%",
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.nevo.co.il/law_html/law01/500_714.htm",
-      "title": "Nevo mirror",
-      "publisher": "Nevo",
-      "publisher_he": "נבו",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8HBFRznZ1PqBBqBlhhXAb7L47e1dgbmyX~fXnBHkch8=#page=2",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשפ\"ב-2022 (קובץ התקנות 9942)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשפ\"ב-2022 (קובץ התקנות 9942)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.2, s.2",
+      "locator_he": "עמוד 2, סעיף 2",
+      "page": 2,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.menoramivt.co.il/general/investments-management-fee",
-      "title": "Menora fees page",
+      "title": "מנורה מבטחים – דמי ניהול והוצאות לניהול השקעות",
+      "title_he": "מנורה מבטחים – דמי ניהול והוצאות לניהול השקעות",
       "publisher": "Menora Mivtachim",
       "publisher_he": "מנורה מבטחים",
       "kind": "institution_doc",
-      "strength": "primary",
-      "checked": "2026-10-22"
+      "strength": "institution",
+      "quote": "שיעור דמי הניהול שרשאית הקרן לגבות מסך הנכסים",
+      "checked": "2026-10-25"
     }
   ]
 }

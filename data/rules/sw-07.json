@@ -7,7 +7,7 @@
     "deposits_returned_after_cancel_business_days": "ימי עסקים להחזרת הפקדות אחרי ביטול",
     "phoenix_cancel_window_business_days": "ימי עסקים לחרטה מניוד (הפניקס)"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "transfer-switch-process"
   ],
@@ -17,12 +17,12 @@
       "value": 10,
       "unit": "business_days",
       "source": {
-        "url": "https://www.analyst.co.il/media/dtnkdiyk/%D7%97%D7%95%D7%96%D7%A8-%D7%92%D7%95%D7%A4%D7%99%D7%9D-%D7%9E%D7%95%D7%A1%D7%93%D7%99%D7%99%D7%9D-2017-9-17-%D7%94%D7%A2%D7%91%D7%A8%D7%AA-%D7%9B%D7%A1%D7%A4%D7%99%D7%9D-%D7%91%D7%99%D7%9F-%D7%A7%D7%95%D7%A4%D7%95%D7%AA-%D7%92%D7%9E%D7%9C.pdf",
-        "title": "CMA circular 2017-9-17 \"העברת כספים בין קופות גמל\", 2.10.2017, consolidated copy, s.3(ט) to (יא), Annex F, pp.2 to 3, 12, 22",
-        "publisher": "Capital Market, Insurance and Savings Authority (copy hosted by Analyst)",
-        "strength": "primary-mirror"
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+        "title": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל, p.3, s.3(י)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -42,7 +42,7 @@
         "publisher": "The Phoenix",
         "strength": "institution"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -58,19 +58,57 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.analyst.co.il/media/dtnkdiyk/%D7%97%D7%95%D7%96%D7%A8-%D7%92%D7%95%D7%A4%D7%99%D7%9D-%D7%9E%D7%95%D7%A1%D7%93%D7%99%D7%99%D7%9D-2017-9-17-%D7%94%D7%A2%D7%91%D7%A8%D7%AA-%D7%9B%D7%A1%D7%A4%D7%99%D7%9D-%D7%91%D7%99%D7%9F-%D7%A7%D7%95%D7%A4%D7%95%D7%AA-%D7%92%D7%9E%D7%9C.pdf",
-      "title": "Circular 2017-9-17, s.3(ט) to (יא), Annex F, Annex A boxed notice",
-      "title_he": "חוזר גופים מוסדיים 2017-9-17: העברת כספים בין קופות גמל",
-      "publisher": "Analyst",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+      "title": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+      "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+      "publisher": "gov.il",
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "locator": "pp.2 to 3, 12, 22",
-      "locator_he": "עמודים 2 עד 3, 12, 22",
+      "strength": "primary",
+      "locator": "pp.2-3, s.3(ט)-(יא)",
+      "locator_he": "עמודים 2 עד 3, סעיף 3(ט)-(יא)",
       "page": 2,
-      "checked": "2026-10-22",
-      "qualifier": "(third-party host)"
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+      "title": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+      "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.3, s.3(י)",
+      "locator_he": "עמוד 3, סעיף 3(י)",
+      "page": 3,
+      "quote": "בתוך עשרה ימי עסקים מהיום שבו התברר לו כי בוטלה הבקשה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+      "title": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+      "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.12, Annex A",
+      "page": 12,
+      "quote": "על-ידי חתימה על טופס הודעת ביטול והעברתו לקופה המעבירה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+      "title": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+      "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.22, Annex F",
+      "page": 22,
+      "quote": "הודעת עמית על ביטול בקשת העברה",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.fnx.co.il/ishtalmutfund/faq/",
@@ -80,7 +118,8 @@
       "publisher_he": "הפניקס",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "quote": "תוך 10 ימי עסקים מקבלת בקשת הניוד",
+      "checked": "2026-10-25"
     }
   ]
 }

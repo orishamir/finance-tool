@@ -14,11 +14,11 @@
       "unit": "business_days",
       "source": {
         "url": "https://www.gov.il/BlobFolder/generalpage/pension-clearing/he/2020-9260.pdf",
-        "title": "רשות שוק ההון, שה. 2020-9260, 15.11.2020, המובאה מתקנה 5(א) לתקנות העברת כספים",
+        "title": "רשות שוק ההון, שה. 2020-9260, 15.11.2020, p.1, המובאה מתקנה 5(א) לתקנות העברת כספים",
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
         "strength": "primary"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": "2008-10-01",
       "effective_to": null,
       "tax_year": null,
@@ -31,11 +31,11 @@
       "unit": "business_days",
       "source": {
         "url": "https://www.gov.il/BlobFolder/generalpage/pension-clearing/he/2020-9260.pdf",
-        "title": "רשות שוק ההון, שה. 2020-9260, 15.11.2020, המובאה מתקנה 5(א)",
+        "title": "רשות שוק ההון, שה. 2020-9260, 15.11.2020, p.1, המובאה מתקנה 5(א) לתקנות העברת כספים",
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
         "strength": "primary"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": "2008-10-01",
       "effective_to": null,
       "tax_year": null,
@@ -53,32 +53,54 @@
   "checked": "2026-10-24",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/generalpage/pension-clearing/he/2020-9260.pdf",
+      "title": "רשות שוק ההון, שה. 2020-9260 – דחיית המועד להעברת כספים בין קופות גמל בעת השבתת מערכת סליקה פנסיונית מרכזית (15.11.2020)",
+      "title_he": "רשות שוק ההון, שה. 2020-9260 – דחיית המועד להעברת כספים בין קופות גמל בעת השבתת מערכת סליקה פנסיונית מרכזית (15.11.2020)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "עשרים ימי עסקים נוספים",
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-legislation26326/he/uniform_protocol_update_26.3.2026%20%5BPDF%5D.pdf",
-      "title": "חוזר גופים מוסדיים 2026-9-3, מבנה אחיד להעברת מידע ונתונים בשוק החיסכון הפנסיוני - עדכון, 26.3.2026 (gov.il), ss.6(ב), 7(ב)(3)-(4) and the annex ג summary",
+      "title": "חוזר גופים מוסדיים 2026-9-3 – מבנה אחיד להעברת מידע ונתונים בשוק החיסכון הפנסיוני – עדכון (26.3.2026)",
+      "title_he": "חוזר גופים מוסדיים 2026-9-3 – מבנה אחיד להעברת מידע ונתונים בשוק החיסכון הפנסיוני – עדכון (26.3.2026)",
       "publisher": "gov.il",
       "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "circular",
       "strength": "primary",
-      "locator": "ss.6(ב), 7(ב)(3)-(4) and the annex ג",
-      "checked": "2026-10-24"
+      "locator": "p.6, ss.6(ב), 7(ב)",
+      "locator_he": "עמוד 6, סעיפים 6(ב), 7(ב)",
+      "page": 6,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.gov.il/BlobFolder/generalpage/pension-clearing/he/2020-9260.pdf",
-      "title": "CMA, דחיית המועד להעברת כספים בין קופות גמל בעת השבתת מערכת סליקה פנסיונית מרכזית, שה. 2020-9260, 15.11.2020 (gov.il)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-legislation26326/he/uniform_protocol_update_26.3.2026%20%5BPDF%5D.pdf",
+      "title": "חוזר גופים מוסדיים 2026-9-3 – מבנה אחיד להעברת מידע ונתונים בשוק החיסכון הפנסיוני – עדכון (26.3.2026)",
+      "title_he": "חוזר גופים מוסדיים 2026-9-3 – מבנה אחיד להעברת מידע ונתונים בשוק החיסכון הפנסיוני – עדכון (26.3.2026)",
       "publisher": "gov.il",
       "publisher_he": "אתר הממשלה (gov.il)",
-      "kind": "official_pdf",
+      "kind": "circular",
       "strength": "primary",
-      "checked": "2026-10-24"
+      "locator": "p.10, annex ג",
+      "page": 10,
+      "quote": "ממשק הניוד קובע מבנה אחיד להעברת מידע",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.gov.il/he/pages/pension-clearing",
-      "title": "gov.il, המסלקה הפנסיונית (regulation page)",
+      "title": "רשות שוק ההון – המסלקה הפנסיונית",
+      "title_he": "רשות שוק ההון – המסלקה הפנסיונית",
       "publisher": "gov.il",
       "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "official_pdf",
       "strength": "primary",
-      "checked": "2026-10-24"
+      "checked": "2026-10-25"
     }
   ]
 }

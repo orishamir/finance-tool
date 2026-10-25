@@ -7,7 +7,7 @@
     "retirement_age_men": "גיל הפרישה לגברים",
     "retirement_age_women": "גיל הפרישה לנשים"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "age-or-use-exemption",
     "liquidity-lockup"
@@ -19,12 +19,12 @@
       "value": 67,
       "unit": "years",
       "source": {
-        "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
-        "title": "Retirement Age Law 2004, s.3: \"גיל 67 לגבר וגיל 65 לאישה (בחוק זה – גיל הפרישה)\" (Wikisource, page edited 13.5.2025)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",
+        "title": "חוק גיל פרישה, התשס\"ד-2004, p.1, s.3: \"גיל 67 לגבר\"",
+        "publisher": "The Knesset",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -39,12 +39,12 @@
       "value": 65,
       "unit": "years",
       "source": {
-        "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
-        "title": "Retirement Age Law 2004, s.3 and schedule (Wikisource, page edited 13.5.2025)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://fs.knesset.gov.il/24/law/24_lsr_611801.pdf",
+        "title": "חוק התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2021 ו-2022), התשפ\"ב-2021, p.172, s.73 (סעיף 3 לחוק גיל פרישה: \"לגבר וגיל 65 לאישה\") ו-p.174 (התוספת)",
+        "publisher": "The Knesset",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -60,17 +60,58 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
-      "title": "חוק גיל פרישה, התשס\"ד-2004, ss.3, 4 and schedule, Wikisource (page edited 13.5.2025)",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "ss.3, 4",
-      "locator_he": "סעיפים 3, 4",
-      "anchor": "סעיף_3",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.12, s.1",
+      "locator_he": "עמוד 12, סעיף 1",
+      "page": 12,
+      "quote": "גיל הפרישה כמשמעותו בחוק גיל פרישה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",
+      "title": "חוק גיל פרישה, התשס\"ד-2004",
+      "title_he": "חוק גיל פרישה, התשס\"ד-2004",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.1, ss.3, 4",
+      "locator_he": "עמוד 1, סעיפים 3, 4",
+      "page": 1,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/24/law/24_lsr_611801.pdf",
+      "title": "חוק התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2021 ו-2022), התשפ\"ב-2021",
+      "title_he": "חוק התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2021 ו-2022), התשפ\"ב-2021",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.172, s.73",
+      "locator_he": "עמוד 172, סעיף 73",
+      "page": 172,
+      "quote": "לגבר וגיל 65 לאישה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.as-invest.co.il/media/10040/בקשה-למשיכת-כספים-מקרן-השתלמות.pdf",
+      "title": "Altshuler withdrawal form",
+      "title_he": "בקשה למשיכת כספים מקרן השתלמות (טופס אלטשולר שחם)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "form",
+      "strength": "institution",
+      "locator": "p.1, section 2 item 2",
+      "page": 1,
+      "quote": "גיל פרישה כהגדרתו בחוק גיל פרישה",
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -15,13 +15,40 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.as-invest.co.il/interstedin/הנחיות-להפקדה-עבור-עצמאים/",
-      "title": "Altshuler, deposit instructions for the self-employed",
+      "url": "https://as-invest.co.il/media/khpp32k5/אלטשולר-שחם-השתלמות-תקנון-מהדורת-שינויים-דצמבר-2024.pdf",
+      "title": "Altshuler bylaws 1.12.2024",
+      "title_he": "תקנון קרן ההשתלמות של אלטשולר שחם (מהדורת דצמבר 2024)",
       "publisher": "Altshuler Shaham",
       "publisher_he": "אלטשולר שחם",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "locator": "s.6",
+      "locator_he": "סעיף 6",
+      "quote": "במזומנים בלבד",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://media.harel-group.co.il/media/smegncwi/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf",
+      "title": "Harel 2026 table",
+      "title_he": "תקרות וסכומים לשנת 2026 (הראל)",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.as-invest.co.il/interstedin/הנחיות-להפקדה-עבור-עצמאים/",
+      "title": "אלטשולר שחם – הנחיות להפקדה עבור עצמאים",
+      "title_he": "אלטשולר שחם – הנחיות להפקדה עבור עצמאים",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
     }
   ]
 }

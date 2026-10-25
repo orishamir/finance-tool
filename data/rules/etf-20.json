@@ -13,20 +13,20 @@
   "sources": [
     {
       "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
-      "title": "IBI ETF annual report, p.1, p.8",
+      "title": "IBI ETF annual report 31.12.2025",
       "title_he": "דוח שנתי ליום 31.12.2025 של אי.בי.אי. סל (4D) S&P 500",
       "publisher": "Maya (TASE filings)",
       "publisher_he": "אי.בי.אי",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "p.1, p.8",
-      "locator_he": "עמוד 1, עמוד 8",
+      "locator": "pp.1, 8",
+      "locator_he": "עמודים 1, 8",
       "page": 1,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
-      "title": "Yalin Lapidot annual report, p.1",
+      "title": "Yalin Lapidot annual report 31.12.2025",
       "title_he": "דוח שנתי ליום 31.12.2025 של ילין לפידות מחקה (4D) S&P 500",
       "publisher": "Maya (TASE filings)",
       "publisher_he": "ילין לפידות",
@@ -35,7 +35,7 @@
       "locator": "p.1",
       "locator_he": "עמוד 1",
       "page": 1,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -113,6 +113,8 @@ describe("S48 revisit after a rule change: F-82 over S39", () => {
   const dataFiles = [{ path: "data/rules/txs-09.json", checked: "2026-10-22" }];
 
   const rules = loadRules();
+  /** The rate's checked date as the record holds it (moved with each source check; 2026-10-25 at the time of writing). */
+  const rateChecked = (rules.find((r) => r.id === "TXS-09")!.figures!.rate as ValueObject).checked;
   const ctxThen = context(rules);
   const setThen = buildCandidateSet(inputs, ctxThen);
   const rankingThen = rankCandidates(setThen.candidates, { theta, ctx: ctxThen });
@@ -131,7 +133,7 @@ describe("S48 revisit after a rule change: F-82 over S39", () => {
   it("saves the S39 comparison with its versions", () => {
     expect(saved.savedOn).toBe("2026-10-23");
     expect(saved.result.top).toBe("kupat-gemel-lehashkaa");
-    expect(saved.rules.find((r) => r.ruleId === "TXS-09" && r.figure === "rate")).toMatchObject({ value: x.s48.rateBefore, checked: "2026-10-22" });
+    expect(saved.rules.find((r) => r.ruleId === "TXS-09" && r.figure === "rate")).toMatchObject({ value: x.s48.rateBefore, checked: rateChecked });
     expect(saved.parameters.find((p) => p.methodId === "P-01")?.value).toBe(0.5);
     expect(saved.assumptions).toEqual([
       { id: "A-01", value: 6, state: "entered" },
@@ -141,7 +143,7 @@ describe("S48 revisit after a rule change: F-82 over S39", () => {
   });
 
   it("reports the changed entry TXS-09 rate 25 to 30, and no other", () => {
-    expect(rv.diff).toEqual([{ kind: "rule", key: "TXS-09/rate", old: x.s48.rateBefore, new: x.s48.rateAfter, oldChecked: "2026-10-22", newChecked: "2026-10-22" }]);
+    expect(rv.diff).toEqual([{ kind: "rule", key: "TXS-09/rate", old: x.s48.rateBefore, new: x.s48.rateAfter, oldChecked: rateChecked, newChecked: rateChecked }]);
   });
 
   it("changes the brokerage value and nothing else", () => {

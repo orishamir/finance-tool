@@ -23,7 +23,7 @@
         "publisher": "Tel Aviv Stock Exchange",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -43,7 +43,7 @@
         "publisher": "Tel Aviv Stock Exchange",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -60,7 +60,7 @@
   "sources": [
     {
       "url": "https://content.tase.co.il/media/rhzcuxda/file_0623_leading_indices_2025.pdf",
-      "title": "TASE, \"מדדי הבורסה המובילים\" (brochure, PDF dated 12.5.2025)",
+      "title": "הבורסה, \"מדדי הבורסה המובילים\" (חוברת, PDF מ-12.5.2025)",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
@@ -68,7 +68,7 @@
       "locator": "p.2",
       "locator_he": "עמוד 2",
       "page": 2,
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "qualifier": "(index provider)"
     }
   ]

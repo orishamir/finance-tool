@@ -15,11 +15,11 @@
       "unit": "count",
       "source": {
         "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
-        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome's PDF viewer)",
+        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome; curl returns 403), p.22",
         "publisher": "S&P Dow Jones Indices",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -40,17 +40,17 @@
   "sources": [
     {
       "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
-      "title": "S&P Dow Jones Indices, \"S&P U.S. Indices Methodology\", July 2026, p. 21 \"Calculation Return Types\"",
+      "title": "S&P Dow Jones Indices, \"S&P U.S. Indices Methodology\", July 2026",
       "title_he": "S&P U.S. Indices Methodology (יולי 2026)",
       "publisher": "S&P Dow Jones Indices",
       "publisher_he": "S&P Dow Jones Indices",
       "kind": "other",
       "strength": "primary",
-      "locator": "p. 21",
-      "locator_he": "עמוד 21",
-      "page": 21,
-      "checked": "2026-10-23",
-      "qualifier": "(index provider)"
+      "locator": "p.22",
+      "locator_he": "עמוד 22",
+      "page": 22,
+      "checked": "2026-10-25",
+      "qualifier": "(index provider; read in Chrome, curl returns 403)"
     }
   ],
   "derived_from": [

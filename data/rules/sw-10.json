@@ -6,7 +6,7 @@
   "figure_names_he": {
     "employer_notice_business_days": "ימי עסקים להודעה למעסיק על פיצויים שעברו"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
     "eligibility"
@@ -17,12 +17,12 @@
       "value": 15,
       "unit": "business_days",
       "source": {
-        "url": "https://www.analyst.co.il/media/dtnkdiyk/%D7%97%D7%95%D7%96%D7%A8-%D7%92%D7%95%D7%A4%D7%99%D7%9D-%D7%9E%D7%95%D7%A1%D7%93%D7%99%D7%99%D7%9D-2017-9-17-%D7%94%D7%A2%D7%91%D7%A8%D7%AA-%D7%9B%D7%A1%D7%A4%D7%99%D7%9D-%D7%91%D7%99%D7%9F-%D7%A7%D7%95%D7%A4%D7%95%D7%AA-%D7%92%D7%9E%D7%9C.pdf",
-        "title": "CMA circular 2017-9-17 \"העברת כספים בין קופות גמל\", 2.10.2017, consolidated copy, s.5א, Annex 11, pp.8, 26 to 27",
-        "publisher": "Capital Market, Insurance and Savings Authority (copy hosted by Analyst)",
-        "strength": "primary-mirror"
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+        "title": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל, p.8, s.5א",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -38,19 +38,29 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.analyst.co.il/media/dtnkdiyk/%D7%97%D7%95%D7%96%D7%A8-%D7%92%D7%95%D7%A4%D7%99%D7%9D-%D7%9E%D7%95%D7%A1%D7%93%D7%99%D7%99%D7%9D-2017-9-17-%D7%94%D7%A2%D7%91%D7%A8%D7%AA-%D7%9B%D7%A1%D7%A4%D7%99%D7%9D-%D7%91%D7%99%D7%9F-%D7%A7%D7%95%D7%A4%D7%95%D7%AA-%D7%92%D7%9E%D7%9C.pdf",
-      "title": "Circular 2017-9-17, s.5א, Annex 11",
-      "title_he": "חוזר גופים מוסדיים 2017-9-17: העברת כספים בין קופות גמל",
-      "publisher": "Analyst",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+      "title": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+      "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+      "publisher": "gov.il",
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "locator": "pp.8, 26 to 27",
-      "locator_he": "עמודים 8, 26 עד 27",
+      "strength": "primary",
+      "locator": "p.8, s.5א",
+      "locator_he": "עמוד 8, סעיף 5א",
       "page": 8,
-      "checked": "2026-10-22",
-      "qualifier": "(third-party host)"
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+      "title": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+      "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "pp.26-27, Annex 11",
+      "page": 26,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.fnx.co.il/ishtalmutfund/faq/",
@@ -60,7 +70,8 @@
       "publisher_he": "הפניקס",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "quote": "האישור נשלח למעסיק באופן אוטומטי",
+      "checked": "2026-10-25"
     }
   ]
 }

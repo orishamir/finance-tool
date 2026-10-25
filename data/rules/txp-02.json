@@ -22,12 +22,12 @@
       "value": 7,
       "unit": "pct",
       "source": {
-        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-        "title": "Income Tax Ordinance s.45A(d) (Wikisource mirror): \"7% מהכנסתו המזכה\"",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+        "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, p.82, s.45א(ד): \"7% מהכנסתו המזכה\"",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -47,7 +47,7 @@
         "publisher": "Israel Tax Authority",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2024-01-01",
       "effective_to": null,
       "tax_year": 2026,
@@ -63,11 +63,11 @@
       "unit": "nis",
       "source": {
         "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-        "title": "Tax Authority deductions booklet 2026, p.12, row \"45א(ד)\" (189 a month); guide 2025 p.68",
+        "title": "Tax Authority deductions booklet 2026, p.12, row \"45א(ד)\" (189 a month); guide 2025 p.71",
         "publisher": "Israel Tax Authority",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2024-01-01",
       "effective_to": null,
       "tax_year": 2026,
@@ -82,12 +82,12 @@
       "value": 5,
       "unit": "pct",
       "source": {
-        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-        "title": "Income Tax Ordinance s.45A(d) (Wikisource mirror): \"5% מהכנסתו המזכה\" for an individual with no work income",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+        "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, p.82, s.45א(ד): \"5% מהכנסתו המזכה\" for an individual with no work income",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -103,8 +103,33 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.82, s.45א(ד)",
+      "locator_he": "עמוד 82, סעיף 45א(ד)",
+      "page": 82,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.84, s.47(א)(1), definition `הכנסה מזכה`",
+      "page": 84,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-      "title": "Tax Authority, deductions booklet from January 2026, updated April 2026, p.12",
+      "title": "Tax Authority, deductions booklet from January 2026, updated April 2026",
       "title_he": "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026",
       "publisher": "gov.il",
       "publisher_he": "רשות המסים",
@@ -113,7 +138,20 @@
       "locator": "p.12",
       "locator_he": "עמוד 12",
       "page": 12,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.71",
+      "locator_he": "עמוד 71",
+      "page": 71,
+      "checked": "2026-10-25"
     }
   ]
 }

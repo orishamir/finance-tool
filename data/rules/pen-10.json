@@ -16,15 +16,16 @@
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
-      "title": "Extension order 2011",
+      "title": "צו הרחבה (נוסח משולב) לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011",
       "title_he": "צו הרחבה [נוסח משולב] לפנסיה חובה, 2011",
       "publisher": "gov.il",
       "publisher_he": "משרד העבודה",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "section 2",
-      "locator_he": "סעיף 2",
-      "checked": "2026-10-22"
+      "locator": "p.2, s.2",
+      "locator_he": "עמוד 2, סעיף 2",
+      "page": 2,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.moreinvest.co.il/media/hphjzxvl/תקנון-קרן-פנסיה-כללית.pdf",
@@ -36,7 +37,7 @@
       "strength": "institution",
       "locator": "sections 8, 14, 18",
       "locator_he": "סעיפים 8, 14, 18",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
@@ -48,7 +49,7 @@
       "strength": "institution",
       "locator": "section 18",
       "locator_he": "סעיף 18",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

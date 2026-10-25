@@ -3,7 +3,7 @@
   "title": "Agents: a saver may act directly; what an agent or adviser may and may not be paid",
   "title_he": "סוכנים: אפשר לפעול ישירות; מה מותר לשלם",
   "text_he": "עסקה במוצר פנסיוני נעשית רק כחלק מייעוץ פנסיוני או משיווק פנסיוני, חוץ מעסקה שהלקוח עושה במישרין מול הגוף המוסדי ביוזמתו. יועץ פנסיוני רשאי לקבל שכר והחזר הוצאות ישירות מהלקוח, אבל אינו רשאי לגבות שכר המחושב כשיעור מהסכומים שהלקוח מעביר; ייעוץ מתמשך עם עסקה דורש ייפוי כוח שמאפשר ליועץ לקבל מידע על הלקוח. מזרחי טפחות מציין שהצטרפות או הישארות במוצר בעקבות ייעוצו מזכה את הבנק בעמלות הפצה, והפניקס מעבירה בקשה להצעה לסוכן של החשבון או לסוכנות בקבוצה, בעוד הטופס המקוון הוא הדרך הישירה. לא נמצא מקור על הסרת סוכן שכבר מחובר לחשבון, וזו שאלה פתוחה; החוק נקרא באתר שמעתיק אותו.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
     "fee-management-balance"
@@ -14,27 +14,84 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(ייעוץ,_שיווק_ומערכת_סליקה_פנסיוניים)",
-      "title": "Pension Advice, Marketing and Clearing System Law 2005, ss.13, 19(א)(1), 27(ב)(7), 28(ב), Hebrew Wikisource (amended to ס\"ח תשפ\"ו 912)",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים), התשס״ה-2005",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299985.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני), התשס\"ה-2005",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "ss.13, 19(א)(1), 27(ב)(7), 28(ב)",
-      "locator_he": "סעיפים 13, 19(א)(1), 27(ב)(7), 28(ב)",
-      "anchor": "סעיף_13",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.9, s.13(א)",
+      "locator_he": "עמוד 9, סעיף 13(א)",
+      "page": 9,
+      "quote": "רק כחלק מייעוץ פנסיוני או משיווק פנסיוני",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_316718.pdf",
+      "title": "חוק התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2015 ו-2016), התשע\"ו-2015",
+      "title_he": "חוק התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2015 ו-2016), התשע\"ו-2015",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.23",
+      "locator_he": "עמוד 23",
+      "page": 23,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299985.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני), התשס\"ה-2005",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.10, s.19(א)(1)",
+      "locator_he": "עמוד 10, סעיף 19(א)(1)",
+      "page": 10,
+      "quote": "שכר והחזר הוצאות המשולמים ישירות מאת הלקוח",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299985.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני), התשס\"ה-2005",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.12, s.27(ב)(7)",
+      "locator_he": "עמוד 12, סעיף 27(ב)(7)",
+      "page": 12,
+      "quote": "ייפוי כוח",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299985.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני), התשס\"ה-2005",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.13, s.28(ב)",
+      "locator_he": "עמוד 13, סעיף 28(ב)",
+      "page": 13,
+      "quote": "המחושבים כשיעור מהסכומים שמעביר הלקוח",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.mizrahi-tefahot.co.il/brokerage/pension/pension-consulting/",
-      "title": "Mizrahi-Tefahot, pension consulting page",
+      "title": "מזרחי טפחות – ייעוץ פנסיוני",
+      "title_he": "מזרחי טפחות – ייעוץ פנסיוני",
       "publisher": "Mizrahi Tefahot Bank",
       "publisher_he": "בנק מזרחי טפחות",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "quote": "מזכה את הבנק בעמלות הפצה מהיצרנים הפנסיונים",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.fnx.co.il/ishtalmutfund/faq/",
@@ -44,7 +101,7 @@
       "publisher_he": "הפניקס",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

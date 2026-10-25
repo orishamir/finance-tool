@@ -14,12 +14,13 @@
   "sources": [
     {
       "url": "https://www.interactivebrokers.ie/en/general/security-investor-protection.php",
-      "title": "Interactive Brokers Ireland, Client Protection",
+      "title": "אינטראקטיב ברוקרס אירלנד: הגנה על לקוחות",
+      "title_he": "אינטראקטיב ברוקרס אירלנד: הגנה על לקוחות",
       "publisher": "Interactive Brokers Ireland",
       "publisher_he": "Interactive Brokers",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

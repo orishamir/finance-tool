@@ -15,11 +15,11 @@
       "unit": "years",
       "source": {
         "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
-        "title": "National Insurance Institute, child savings: withdrawal page; law 74ג(ב) (Wikisource mirror)",
+        "title": "National Insurance Institute, child savings: withdrawal page; law 74ג(ב), BTL text p.51",
         "publisher": "National Insurance Institute (BTL)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -35,11 +35,11 @@
       "unit": "years",
       "source": {
         "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
-        "title": "National Insurance Institute, child savings: withdrawal page (\"מגיל 21 ... ללא אישור ההורה\"); law 74ג(ב): \"ובלבד שאחד מהוריו אישר בחתימתו את עצם המשיכה\"",
+        "title": "National Insurance Institute, child savings: withdrawal page (\"מגיל 21 - הילד יוכל למשוך את כספי החיסכון בכל עת וללא צורך באישור ההורים\"); law 74ג(ב), BTL text p.51: \"ובלבד שאחד מהוריו אישר בחתימתו את עצם המשיכה\"",
         "publisher": "National Insurance Institute (BTL)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -55,11 +55,11 @@
       "unit": "business_days",
       "source": {
         "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
-        "title": "Harel child-savings standard bylaw, April 2026, s.10.4: payment within 4 business days of a complete request",
+        "title": "Harel child-savings standard bylaw, April 2026, p.5, s.10.4: payment within 4 business days of a complete request",
         "publisher": "Harel Pension and Gemel",
         "strength": "institution"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -79,7 +79,7 @@
         "publisher": "Bank Leumi",
         "strength": "institution"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -102,23 +102,74 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
-      "title": "NII withdrawal page",
-      "title_he": "חיסכון לכל ילד: עמודי המידע של הביטוח הלאומי",
+      "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
+      "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
       "publisher": "National Insurance Institute",
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "locator": "p.51, s.74ג(ב)",
+      "locator_he": "עמוד 51, סעיף 74ג(ב)",
+      "page": 51,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
+      "title": "ביטוח לאומי: משיכה של כספי החיסכון",
+      "title_he": "ביטוח לאומי: משיכה של כספי החיסכון",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/default.aspx",
+      "title": "ביטוח לאומי: חיסכון לכל ילד - שאלות ותשובות",
+      "title_he": "ביטוח לאומי: חיסכון לכל ילד - שאלות ותשובות",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "quote": "את כספי החיסכון הילד יוכל למשוך מגיל 18 באישור ההורה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
+      "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד: הראל חיסכון לכל ילד, מהדורה 3, 04/2026",
+      "title_he": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד: הראל חיסכון לכל ילד, מהדורה 3, 04/2026",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.5-6, s.10-12",
+      "locator_he": "עמודים 5 עד 6, סעיף 10-12",
+      "page": 5,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://bank-yahav.co.il/media/qxed4yhi/השקעות-מונגש-חסכון-לכל-ילד-צפייה-בהסכם-חיסכון-לכל-ילד.pdf",
+      "title": "בנק יהב: הסכם חיסכון ארוך טווח לילד (חיסכון לכל ילד)",
+      "title_he": "בנק יהב: הסכם חיסכון ארוך טווח לילד (חיסכון לכל ילד)",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.5-6, s.6",
+      "locator_he": "עמודים 5 עד 6, סעיף 6",
+      "page": 5,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.leumi.co.il/Saving-Kids",
-      "title": "Leumi, child-savings withdrawal",
+      "title": "בנק לאומי: משיכת כספי חיסכון לכל ילד",
+      "title_he": "בנק לאומי: משיכת כספי חיסכון לכל ילד",
       "publisher": "Bank Leumi",
       "publisher_he": "בנק לאומי",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

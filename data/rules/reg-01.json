@@ -12,31 +12,17 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://boi.org.il/media/esihqtk2/פקודת-הבנקאות-1941.pdf",
-      "title": "BoI unofficial consolidated text, edition 10/11",
+      "url": "https://boi.org.il/media/s5ub1z12/103.pdf",
+      "title": "פקודת הבנקאות, 1941 (קובץ חקיקה בנקאית של בנק ישראל, פריט 103)",
+      "title_he": "פקודת הבנקאות, 1941 (קובץ חקיקה בנקאית של בנק ישראל, פריט 103)",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
       "kind": "regulator_page",
       "strength": "primary",
-      "locator": "p.103-2",
-      "locator_he": "עמוד 103-2",
-      "page": 103,
-      "checked": "2026-10-22",
-      "qualifier": "(unofficial, outdated edition)"
-    },
-    {
-      "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות",
-      "title": "פקודת הבנקאות, 1941, Wikisource consolidated text",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.5(א)",
-      "locator_he": "סעיף 5(א)",
-      "anchor": "סעיף_5.א",
-      "checked": "2026-10-22",
-      "qualifier": "(law text via Wikisource mirror)"
+      "locator": "p.4, s.5(א)",
+      "locator_he": "עמוד 4, סעיף 5(א)",
+      "page": 4,
+      "checked": "2026-10-25"
     }
   ]
 }

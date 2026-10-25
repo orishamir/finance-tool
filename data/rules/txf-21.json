@@ -19,11 +19,11 @@
       "unit": "nis",
       "source": {
         "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
-        "title": "Tax Authority, דע זכויותיך וחובותיך 2025",
-        "publisher": "Israel Tax Authority",
+        "title": "רשות המסים, דע זכויותיך וחובותיך 2025, p.5, item 3",
+        "publisher": "רשות המסים",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2025,
@@ -46,9 +46,10 @@
       "publisher_he": "רשות המסים",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "printed pp.116-117, p.3 item 3",
-      "quote": "2. תשלום מקדמות מס בגין הכנסות בשיעורים מיוחדים בישראל ובחו״ל",
-      "checked": "2026-10-22"
+      "locator": "pp.118-119, p.5 item 3",
+      "page": 118,
+      "quote": "תשלום מקדמות מס בגין הכנסות בשיעורי מס מיוחדים בישראל ובחו״ל",
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -3,7 +3,7 @@
   "title": "Accrued interest bought with a bond between coupon dates (s.3(h)): income without exemptions or offsets; not modelled until TXI OQ5 closes",
   "title_he": "ריבית צבורה שנקנתה עם אג״ח בין מועדי קופון",
   "text_he": "ריבית צבורה היא סכום שאדם מקבל כריבית על אג״ח, כולל הפרשי הצמדה, בעד תקופה שבה האג״ח הייתה בבעלות של אחר. כשאינה הכנסה עסקית של המקבל, רואים אותה כהכנסה בלי זכות לפטור, לזיכוי, לניכוי או לקיזוז, מלבד פטור שניתן על הריבית עצמה. בהכנסה עסקית יש מבחני תקופת החזקה, ובהתקיימם החלק ממחיר הרכישה ששווה לריבית הצבורה נטו יוצא מחישוב הרווח. השר רשאי להחריג סוגי השקעות; אם קיים צו כזה לאג״ח ממשלתיות סחירות, ואיך בנקים מיישמים זאת לקונה פרטי בין מועדי קופון, לא ידוע, ולכן האתר לא מחשב את ההשפעה.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "tax-during",
     "tax-at-exit"
@@ -13,28 +13,31 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Income Tax Ordinance, s.3(h)-(h1)",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.3(h)-(h1)",
-      "anchor": "סעיף_3",
-      "quote": "בשל תקופה שהאיגרת היתה בבעלותו של אחר",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "pp.22-23, s.3(ח)",
+      "locator_he": "עמודים 22 עד 23, סעיף 3(ח)",
+      "page": 22,
+      "quote": "יראו את הריבית הצבורה כהכנסה שאין לגביה זכות לפטור",
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.nevo.co.il/law_html/law01/255_001b.htm",
-      "title": "Nevo",
-      "publisher": "Nevo",
-      "publisher_he": "נבו",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.23, s.3(ח1)",
+      "locator_he": "עמוד 23, סעיף 3(ח1)",
+      "page": 23,
+      "checked": "2026-10-25"
     }
   ]
 }

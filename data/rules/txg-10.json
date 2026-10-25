@@ -21,11 +21,11 @@
       "unit": "pct",
       "source": {
         "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf",
-        "title": "Sefer HaChukim 3342, 26.12.2024, p.150 s.1(2)(c) (adding s.121B(a1)), p.152 s.3(b)",
-        "publisher": "Knesset (Sefer HaChukim)",
+        "title": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנת התקציב 2025) (הקפאת עדכוני מס ומס יסף), התשפ\"ה-2024, ספר החוקים 3342, p.2, s.1(2)(ג) (adding s.121ב(א1)), p.4, s.3(ב)",
+        "publisher": "The Knesset",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2025-01-01",
       "effective_to": null,
       "tax_year": 2026,
@@ -40,12 +40,12 @@
       "value": 721560,
       "unit": "nis",
       "source": {
-        "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf",
-        "title": "Sefer HaChukim 3342, 26.12.2024, p.150 s.1(2)(c) (adding s.121B(a1)), p.152 s.3(b)",
-        "publisher": "Knesset (Sefer HaChukim)",
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+        "title": "Tax Authority deductions booklet 2026, p.11 (721,560, \"מס נוסף על הכנסות גבוהות\"); ספר החוקים 3342, p.2, s.1(2)(ג): the s.121ב(א1) threshold is the amount in s.121ב(א)",
+        "publisher": "Israel Tax Authority",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2025-01-01",
       "effective_to": null,
       "tax_year": 2026,
@@ -72,21 +72,21 @@
       "locator": "p.11",
       "locator_he": "עמוד 11",
       "page": 11,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf",
-      "title": "SH 3342",
-      "title_he": "ספר החוקים 3342 (26.12.2024): חוק ההתייעלות הכלכלית (הקפאת עדכוני מס ומס יסף), התשפ״ה-2024",
+      "title": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנת התקציב 2025) (הקפאת עדכוני מס ומס יסף), התשפ\"ה-2024, ספר החוקים 3342",
+      "title_he": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנת התקציב 2025) (הקפאת עדכוני מס ומס יסף), התשפ\"ה-2024, ספר החוקים 3342",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.150 s.1(2)(c)",
-      "locator_he": "עמוד 150 סעיף 1(2)(ג)",
-      "page": 150,
+      "locator": "p.2, s.1(2)(ג)",
+      "locator_he": "עמוד 2, סעיף 1(2)(ג)",
+      "page": 2,
       "quote": "יחיד אשר הכנסתו החייבת ממקורות הוניים בשנת המס עלתה על הסכום הקבוע באותו סעיף קטן, יהיה חייב במס נוסף על חלק הכנסתו החייבת ממקורות הוניים העולה על הסכום האמור, בשיעור של 2%",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

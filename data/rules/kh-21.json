@@ -13,13 +13,64 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://as-invest.co.il/media/khpp32k5/אלטשולר-שחם-השתלמות-תקנון-מהדורת-שינויים-דצמבר-2024.pdf",
+      "title": "Altshuler bylaws 1.12.2024",
+      "title_he": "תקנון קרן ההשתלמות של אלטשולר שחם (מהדורת דצמבר 2024)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "s.23, 26",
+      "locator_he": "סעיף 23, 26",
+      "quote": "הקרן רשאית לתת הלוואות לעמיתיה בכפוף להוראות ההסדר התחיקתי",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://harel-group.co.il/long-term-savings/study-funds/plans/harel-funds/doclib/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%95%d7%a4%d7%94/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a8%d7%90%d7%9c%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa-%20%d7%9c%d7%90%d7%97%d7%a8%20%d7%94%d7%9e%d7%99%d7%96%d7%95%d7%92/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa%20%2007.2024.pdf",
+      "title": "Harel bylaws 07/2024",
+      "title_he": "תקנון קרן ההשתלמות של הראל (מהדורת 7/2024)",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "s.14, 16",
+      "locator_he": "סעיף 14, 16",
+      "quote": "רשאית, אך לא חייבת",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.as-invest.co.il/media/10040/בקשה-למשיכת-כספים-מקרן-השתלמות.pdf",
+      "title": "Altshuler withdrawal form",
+      "title_he": "בקשה למשיכת כספים מקרן השתלמות (טופס אלטשולר שחם)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "form",
+      "strength": "institution",
+      "locator": "p.1, section 3",
+      "locator_he": "עמוד 1, סעיף 3",
+      "page": 1,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.meitav.co.il/loans/",
-      "title": "Meitav, מיטב מימון",
+      "title": "מיטב מימון – הלוואות",
+      "title_he": "מיטב מימון – הלוואות",
       "publisher": "Meitav",
       "publisher_he": "מיטב",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.as-invest.co.il/interstedin/קרנות-השתלמות/שאלות-ותשובות-בנושא-קרנות-השתלמות/",
+      "title": "אלטשולר שחם – שאלות ותשובות בנושא קרנות השתלמות",
+      "title_he": "אלטשולר שחם – שאלות ותשובות בנושא קרנות השתלמות",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "הלוואה/עיקול/שיעבוד",
+      "checked": "2026-10-25"
     }
   ]
 }

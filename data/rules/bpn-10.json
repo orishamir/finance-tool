@@ -13,51 +13,55 @@
   "sources": [
     {
       "url": "https://www.bankhapoalim.co.il/api/media/PDFS/%D7%90%D7%97%D7%95%D7%96%D7%99%D7%9D%20%D7%90%D7%97%D7%99%D7%93%D7%99%D7%9D/hwsbym_qdymh.pdf",
-      "title": "חושבים קדימה",
-      "title_he": "חושבים קדימה",
+      "title": "הפועלים: תנאי התכנית חושבים קדימה",
+      "title_he": "הפועלים: תנאי התכנית חושבים קדימה",
       "publisher": "Bank Hapoalim",
       "publisher_he": "בנק הפועלים",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "s.1.3, 1.4",
-      "locator_he": "סעיף 1.3, 1.4",
-      "checked": "2026-10-22"
+      "locator": "p.1, s.1.3, 1.4",
+      "locator_he": "עמוד 1, סעיף 1.3, 1.4",
+      "page": 1,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.bankhapoalim.co.il/api/media/PDFS/standard-contract/mspty_hwsbym_qdymh_zmwd_03.04.24.pdf",
-      "title": "חושבים קדימה צמוד",
-      "title_he": "חושבים קדימה צמוד",
+      "title": "הפועלים: תנאי התכנית חושבים קדימה צמוד",
+      "title_he": "הפועלים: תנאי התכנית חושבים קדימה צמוד",
       "publisher": "Bank Hapoalim",
       "publisher_he": "בנק הפועלים",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "s.1.4-1.6",
-      "locator_he": "סעיף 1.4-1.6",
-      "checked": "2026-10-22"
+      "locator": "p.1, s.1.4-1.6",
+      "locator_he": "עמוד 1, סעיף 1.4-1.6",
+      "page": 1,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.bankhapoalim.co.il/api/media/PDFS/%D7%90%D7%97%D7%95%D7%96%D7%99%D7%9D%20%D7%90%D7%97%D7%99%D7%93%D7%99%D7%9D/sqly_lz_d_hb.pdf",
-      "title": "שקלי לצעד הבא",
-      "title_he": "שקלי לצעד הבא",
+      "title": "הפועלים: תנאי התכנית שקלי לצעד הבא",
+      "title_he": "הפועלים: תנאי התכנית שקלי לצעד הבא",
       "publisher": "Bank Hapoalim",
       "publisher_he": "בנק הפועלים",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "s.1.3-1.5",
-      "locator_he": "סעיף 1.3-1.5",
-      "checked": "2026-10-22"
+      "locator": "p.1, s.1.3-1.5",
+      "locator_he": "עמוד 1, סעיף 1.3-1.5",
+      "page": 1,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.bankhapoalim.co.il/api/media/PDFS/standard-contract/saving_for_the_future.pdf",
-      "title": "חיסכון צומח לעתיד",
-      "title_he": "חיסכון צומח לעתיד",
+      "title": "הפועלים: תנאי התכנית חיסכון צומח לעתיד",
+      "title_he": "הפועלים: תנאי התכנית חיסכון צומח לעתיד",
       "publisher": "Bank Hapoalim",
       "publisher_he": "בנק הפועלים",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "s.1.3-1.5",
-      "locator_he": "סעיף 1.3-1.5",
-      "checked": "2026-10-22"
+      "locator": "p.1, s.1.3-1.5",
+      "locator_he": "עמוד 1, סעיף 1.3-1.5",
+      "page": 1,
+      "checked": "2026-10-25"
     }
   ]
 }

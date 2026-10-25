@@ -19,11 +19,11 @@
       "unit": "count",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2025/he/annual-debt-report_annual-debt-report-2025-accessible-version-he.pdf",
-        "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2025 (file dated April 2026)",
+        "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2025 (file dated April 2026), p.26",
         "publisher": "Ministry of Finance, Accountant General",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2025-01-01",
       "effective_to": null,
       "tax_year": null,
@@ -39,43 +39,56 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=4",
+      "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), התשס\"ו-2006 (קובץ התקנות 6457)",
+      "title_he": "תקנות מילווה המדינה (איגרות חוב מסוג ״אג״ח ממשלתית צמודה״), התשס״ו-2006",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.4, reg. 4",
+      "locator_he": "עמוד 4, תקנה 4",
+      "page": 4,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2025/he/annual-debt-report_annual-debt-report-2025-accessible-version-he.pdf",
-      "title": "הדו\"ח השנתי 2025",
+      "title": "החשב הכללי, היחידה לניהול החוב הממשלתי: הדו\"ח השנתי 2025",
       "title_he": "הדוח השנתי 2025 של היחידה לניהול החוב הממשלתי",
       "publisher": "gov.il",
       "publisher_he": "החשב הכללי, משרד האוצר",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p. 26",
+      "locator": "p.26",
       "locator_he": "עמוד 26",
       "page": 26,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.nevo.co.il/law_html/law01/221_001.htm",
-      "title": "חוק מילווה המדינה",
-      "title_he": "חוק מילווה המדינה",
-      "publisher": "Nevo",
-      "publisher_he": "נבו",
+      "url": "https://fs.knesset.gov.il/9/law/9_lsr_208641.PDF",
+      "title": "חוק מילווה המדינה, התשל\"ט-1979 (ספר החוקים 936)",
+      "title_he": "חוק מילווה המדינה, התשל\"ט-1979 (ספר החוקים 936)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "ss. 4(3), 6א(א), 6א(ד)(1), 6א(ז)",
-      "locator_he": "סעיפים 4(3), 6א(א), 6א(ד)(1), 6א(ז)",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.1, s.4(3)",
+      "locator_he": "עמוד 1, סעיף 4(3)",
+      "page": 1,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.nevo.co.il/law_html/law01/999_564.htm",
-      "title": "תקנות ... \"אג\"ח ממשלתית צמודה\", תשס\"ו-2006",
-      "title_he": "תקנות מילווה המדינה (איגרות חוב מסוג ״אג״ח ממשלתית צמודה״), התשס״ו-2006",
-      "publisher": "Nevo",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "s. 4",
-      "locator_he": "סעיף 4",
-      "checked": "2026-10-22"
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299717.pdf",
+      "title": "חוק מילווה המדינה (תיקון מס' 14), התשס\"ה-2005 (ספר החוקים 1974)",
+      "title_he": "חוק מילווה המדינה (תיקון מס' 14), התשס\"ה-2005 (ספר החוקים 1974)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.1, s.3",
+      "locator_he": "עמוד 1, סעיף 3",
+      "page": 1,
+      "checked": "2026-10-25"
     }
   ]
 }

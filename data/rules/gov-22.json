@@ -23,7 +23,7 @@
         "publisher": "Bank of Israel",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -43,7 +43,7 @@
         "publisher": "Bank of Israel",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -60,12 +60,13 @@
   "sources": [
     {
       "url": "https://www.boi.org.il/information/bank-paymnts/savingsandinvestmentproducts/makam/",
-      "title": "BoI, מק\"ם",
+      "title": "בנק ישראל: מק\"ם",
+      "title_he": "בנק ישראל: מק\"ם",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

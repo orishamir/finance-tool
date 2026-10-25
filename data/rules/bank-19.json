@@ -18,11 +18,11 @@
       "unit": "days",
       "source": {
         "url": "https://fs.knesset.gov.il/25/law/25_lsr_4048300.pdf",
-        "title": "Banking (Customer Service) Law, Amendment 37, Sefer HaHukim 3152, 28.1.2024, p.496, s.1 (new s.5A1A) and s.5",
-        "publisher": "Knesset (Sefer HaHukim)",
+        "title": "חוק הבנקאות (שירות ללקוח) (תיקון מס' 37), התשפ\"ד-2024, ספר החוקים 3152, p.2, s.1 (סעיף 5א1א(ב))",
+        "publisher": "הכנסת",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -39,14 +39,15 @@
   "sources": [
     {
       "url": "https://fs.knesset.gov.il/25/law/25_lsr_4048300.pdf",
-      "title": "Banking (Customer Service) Law, Amendment 37, Sefer HaHukim 3152, 28.1.2024, p.496",
-      "title_he": "חוק הבנקאות (שירות ללקוח), התשמ״א-1981",
+      "title": "חוק הבנקאות (שירות ללקוח) (תיקון מס' 37), התשפ\"ד-2024",
+      "title_he": "חוק הבנקאות (שירות ללקוח) (תיקון מס' 37), התשפ\"ד-2024",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "s.1 and s.5",
-      "checked": "2026-10-22"
+      "locator": "pp.2 to 3, s.1 and s.5",
+      "page": 2,
+      "checked": "2026-10-25"
     }
   ]
 }

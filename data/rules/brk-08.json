@@ -14,16 +14,17 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://mayafiles.tase.co.il/reports/1149001-1150000/E1149190.pdf",
-      "title": "TASE 2018 amendment, guidelines s.26.ה",
-      "publisher": "Maya (TASE filings)",
-      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
-      "kind": "institution_doc",
+      "url": "https://content.tase.co.il/media/g2ekpw4d/274691.pdf",
+      "title": "מדריך לחברי הבורסה: הנחיות על פי החלק הראשון לתקנון (מעודכן עד 1.1.2026)",
+      "title_he": "מדריך לחברי הבורסה: הנחיות על פי החלק הראשון לתקנון (מעודכן עד 1.1.2026)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
       "strength": "primary",
-      "locator": "p.11",
-      "locator_he": "עמוד 11",
-      "page": 11,
-      "checked": "2026-10-22"
+      "locator": "p.98, s.26ה",
+      "locator_he": "עמוד 98, סעיף 26ה",
+      "page": 98,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.fair.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f/",
@@ -33,7 +34,7 @@
       "publisher_he": "פייר",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -26,7 +26,7 @@
         "publisher": "Tel Aviv Stock Exchange (Maya)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2026-10-22",
       "effective_to": null,
       "tax_year": null,
@@ -46,7 +46,7 @@
         "publisher": "Tel Aviv Stock Exchange (Maya)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2026-10-22",
       "effective_to": null,
       "tax_year": null,
@@ -69,7 +69,7 @@
       "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -25,11 +25,11 @@
       "unit": "nis",
       "source": {
         "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
-        "title": "Phoenix Invest FAQ, section 125D",
+        "title": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות, section 125ד",
         "publisher": "Phoenix Insurance",
         "strength": "institution"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -46,11 +46,11 @@
       "unit": "nis",
       "source": {
         "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
-        "title": "Phoenix Invest FAQ, section 125D",
+        "title": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות, section 125ד",
         "publisher": "Phoenix Insurance",
         "strength": "institution"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -66,11 +66,11 @@
       "unit": "nis",
       "source": {
         "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
-        "title": "Phoenix Invest FAQ, section 125D",
+        "title": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות, section 125ד",
         "publisher": "Phoenix Insurance",
         "strength": "institution"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -87,11 +87,11 @@
       "unit": "nis",
       "source": {
         "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
-        "title": "Phoenix Invest FAQ, section 125D",
+        "title": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות, section 125ד",
         "publisher": "Phoenix Insurance",
         "strength": "institution"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -108,23 +108,25 @@
   "sources": [
     {
       "url": "https://www.clalbit.co.il/savingandmanagementins/financialsaving/",
-      "title": "Clal, חיסכון פיננסי לעתיד product page",
-      "title_he": "תנאים כלליים לביטוח חיים – חיסכון פיננסי לעתיד (1418), מהדורת 8/2024",
+      "title": "עמוד המוצר של כלל: פוליסת חיסכון פיננסי לעתיד",
+      "title_he": "עמוד המוצר של כלל: פוליסת חיסכון פיננסי לעתיד",
       "publisher": "Clal Insurance",
-      "publisher_he": "כלל ביטוח",
+      "publisher_he": "כלל ביטוח ופיננסים",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-24"
+      "quote": "תשלום המס יבוצע רק בעת משיכת הכספים ורק על הרווח הריאלי",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
-      "title": "Phoenix Invest FAQ",
-      "title_he": "שאלות ותשובות על קופת הגמל להשקעה של הפניקס",
+      "title": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות",
+      "title_he": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות",
       "publisher": "The Phoenix",
       "publisher_he": "הפניקס",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-24"
+      "quote": "פדיון כפוף למס רווחי הון בהתאם לחוק ולמצב הלקוח",
+      "checked": "2026-10-25"
     }
   ]
 }

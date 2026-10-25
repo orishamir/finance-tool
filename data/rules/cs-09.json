@@ -15,11 +15,11 @@
       "unit": "pct",
       "source": {
         "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
-        "title": "Harel child-savings standard bylaw, edition 3, April 2026, Annex A (increased-risk track, fund 11377): equity exposure \"לא פחות מ-75% ולא יותר מ-120%\"",
+        "title": "Harel child-savings standard bylaw, edition 3, April 2026, p.11, Annex A (increased-risk track, fund 11377): equity exposure \"לא פחות מ-75% ולא יותר מ-120%\"",
         "publisher": "Harel Pension and Gemel",
         "strength": "institution"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -35,11 +35,11 @@
       "unit": "pct",
       "source": {
         "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
-        "title": "Harel child-savings standard bylaw, edition 3, April 2026, Annex A (increased-risk track, fund 11377)",
+        "title": "Harel child-savings standard bylaw, edition 3, April 2026, p.11, Annex A (increased-risk track, fund 11377)",
         "publisher": "Harel Pension and Gemel",
         "strength": "institution"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -61,12 +61,15 @@
   "sources": [
     {
       "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
-      "title": "Harel bylaw",
+      "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד: הראל חיסכון לכל ילד, מהדורה 3, 04/2026",
+      "title_he": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד: הראל חיסכון לכל ילד, מהדורה 3, 04/2026",
       "publisher": "Harel",
       "publisher_he": "הראל",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "locator": "p.11, Annex A",
+      "page": 11,
+      "checked": "2026-10-25"
     }
   ]
 }

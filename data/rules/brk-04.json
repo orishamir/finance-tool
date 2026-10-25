@@ -21,10 +21,10 @@
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "institution_doc",
       "strength": "primary",
-      "locator": "pp.17 to 18, 75 to 76",
-      "locator_he": "עמודים 17 עד 18, 75 עד 76",
-      "page": 17,
-      "checked": "2026-10-22"
+      "locator": "pp.20 to 21, 78 to 79",
+      "locator_he": "עמודים 20 עד 21, 78 עד 79",
+      "page": 20,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://content.tase.co.il/media/3fdpe5za/1150_nbcm_399328_eng.pdf",
@@ -37,7 +37,7 @@
       "locator": "pp.7 to 8",
       "locator_he": "עמודים 7 עד 8",
       "page": 7,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://content.tase.co.il/media/uqtbtwm3/1150_foreign_bank_372262_eng.pdf",
@@ -49,7 +49,7 @@
       "locator": "p.4",
       "locator_he": "עמוד 4",
       "page": 4,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -20,11 +20,11 @@
       "unit": "business_days",
       "source": {
         "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-        "title": "Altshuler Shaham \"חיסכון פלוס\" gemel lehashkaa bylaws, March 2025, clauses 11–15",
+        "title": "Altshuler Shaham \"חיסכון פלוס\" gemel lehashkaa bylaws, March 2025, p.5, clause 12.1",
         "publisher": "Altshuler Shaham Gemel and Pension",
         "strength": "institution"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -49,7 +49,7 @@
       "strength": "institution",
       "locator": "clauses 11–15, 27.1, 36.2.1",
       "locator_he": "סעיפים 11–15, 27.1, 36.2.1",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://infinity.co.il/wp-content/uploads/2025/07/תקנון-גמל-להשקעה-בתוקף-מיום-1.7.2024.pdf",
@@ -59,7 +59,7 @@
       "publisher_he": "אינפיניטי",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "http://www.krn-rofim.co.il/wp-content/uploads/2024/10/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f_%d7%a7%d7%95%d7%a4%d7%aa_%d7%92%d7%9e%d7%9c_%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94__25.7.2024-1.pdf",
@@ -69,7 +69,18 @@
       "publisher_he": "יחד רופאים",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.meitav.co.il/provident_pension/provident_invest/",
+      "title": "Meitav product page",
+      "title_he": "קופת גמל להשקעה: עמוד המוצר של מיטב",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "תוך 4 ימי עסקים",
+      "checked": "2026-10-25"
     }
   ]
 }

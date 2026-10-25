@@ -19,11 +19,11 @@
       "unit": "nis",
       "source": {
         "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-        "title": "Tax Authority deductions booklet 2026, p.12, row \"תקרת סכום הפיצויים להפקדה 3(ה3) 45,600 לשנה\"; Ordinance s.3(e3)(1a)",
+        "title": "Tax Authority deductions booklet 2026, p.12, row \"תקרת סכום הפיצויים להפקדה 3(ה3) 45,600 לשנה\"; Ordinance s.3(ה3)(1א) (פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, p.20)",
         "publisher": "Israel Tax Authority",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2026-01-01",
       "effective_to": null,
       "tax_year": 2026,
@@ -39,6 +39,19 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "pp.20-21, s.3(ה3)(1א), (1ב), (2)",
+      "locator_he": "עמודים 20 עד 21, סעיף 3(ה3)(1א), (1ב), (2)",
+      "page": 20,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
       "title": "Booklet 2026",
       "title_he": "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026",
@@ -49,35 +62,21 @@
       "locator": "p.12 row",
       "page": 12,
       "quote": "תקרת סכום הפיצויים להפקדה 3(ה3) 45,600 לשנה",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Ordinance",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.3(e3)(1a), (1b), (2)",
-      "locator_he": "סעיף 3(ה3)(1א), (1ב), (2)",
-      "anchor": "סעיף_3.ה3",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לאישור_ולניהול_קופות_גמל)",
-      "title": "Regulations 1964",
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
       "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "משרד האוצר",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg. 19",
-      "locator_he": "תקנה 19",
-      "anchor": "סעיף_19",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "pp.6-7, reg. 19(א)(1)(ב)(1)",
+      "locator_he": "עמודים 6 עד 7, תקנה 19(א)(1)(ב)(1)",
+      "page": 6,
+      "quote": "8 אחוזים ושליש",
+      "checked": "2026-10-25"
     }
   ]
 }

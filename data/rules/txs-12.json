@@ -7,7 +7,7 @@
     "rate": "שיעור המס על הרווח הריאלי בפדיון",
     "taxable_fund_rate": "שיעור המס ברמת הקרן בקרן חייבת"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "tax-at-exit",
     "tax-during",
@@ -20,12 +20,12 @@
       "value": 25,
       "unit": "pct",
       "source": {
-        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-        "title": "Income Tax Ordinance, ss.88, 91(b)(1), 125B1, 129C; Withholding Regulations 2002, regs. 2(b), 3A",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+        "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, p.151, s.91(ב)(1)",
+        "publisher": "רשות המסים",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -46,7 +46,7 @@
         "publisher": "bizportal",
         "strength": "secondary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -63,47 +63,86 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Income Tax Ordinance",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.88, s.91(b)(1), s.125B1, s.129C",
-      "locator_he": "סעיף 88, סעיף 91(ב)(1), סעיף 125ב1, סעיף 129ג",
-      "anchor": "סעיף_88",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.150, s.88, definitions קרן נאמנות חייבת, קרן נאמנות פטורה",
+      "page": 150,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מתמורה,_מתשלום_או_מרווח_הון_במכירת_נייר_ערך,_במכירת_יחידה_בקרן_נאמנות_או_בעסקה_עתידית)",
-      "title": "Withholding regulations 5763-2002",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.151, s.91(ב)(1)",
+      "locator_he": "עמוד 151, סעיף 91(ב)(1)",
+      "page": 151,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.203, s.125ב1",
+      "locator_he": "עמוד 203, סעיף 125ב1",
+      "page": 203,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.208, s.129ג",
+      "locator_he": "עמוד 208, סעיף 129ג",
+      "page": 208,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100228.pdf",
+      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס\"ג-2002",
       "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס״ג-2002",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "משרד האוצר",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg.2(b), reg.3A",
-      "locator_he": "תקנה 2(ב), תקנה 3א",
-      "anchor": "סעיף_2",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.1, reg. 2(ב), reg. 3א",
+      "locator_he": "עמוד 1, תקנה 2(ב), תקנה 3א",
+      "page": 1,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629214-00.pdf",
-      "title": "Yelin Lapidot (00) כספית ניהול נזילות, new-fund prospectus 26.11.2024",
+      "title": "ילין לפידות (00) כספית ניהול נזילות, תשקיף קרן חדשה מיום 26.11.2024",
+      "title_he": "ילין לפידות (00) כספית ניהול נזילות, תשקיף קרן חדשה מיום 26.11.2024",
       "publisher": "Maya (TASE filings)",
       "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
       "kind": "institution_doc",
       "strength": "institution",
       "locator": "p.1 and footnote 3, p.2 item 12",
       "page": 1,
-      "checked": "2026-10-22"
+      "quote": "סוג הקרן: קרן פתוחה, קרן כספית",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://mayafiles.tase.co.il/rpdf/878001-879000/p878453-00.pdf",
-      "title": "Migdal (00) כספית שקלית, prospectus Part A 17.2.2014",
+      "title": "מגדל (00) כספית שקלית, תשקיף חלק א' מיום 17.2.2014",
+      "title_he": "מגדל (00) כספית שקלית, תשקיף חלק א' מיום 17.2.2014",
       "publisher": "Maya (TASE filings)",
       "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
       "kind": "institution_doc",
@@ -111,7 +150,7 @@
       "locator": "p.1",
       "locator_he": "עמוד 1",
       "page": 1,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.bizportal.co.il/guides/news/article/20038659",
@@ -121,7 +160,7 @@
       "publisher_he": "ביזפורטל",
       "kind": "article",
       "strength": "secondary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

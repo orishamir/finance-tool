@@ -23,7 +23,8 @@
       "strength": "institution",
       "locator": "clause 8.2",
       "locator_he": "סעיף 8.2",
-      "checked": "2026-10-22"
+      "quote": "חברה מנהלת תבדוק עמידה בתקרת ההפקדה במועד הפקדת כספים לקופת גמל להשקעה ולא בתום שנת הכספים",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://infinity.co.il/wp-content/uploads/2025/07/תקנון-גמל-להשקעה-בתוקף-מיום-1.7.2024.pdf",
@@ -33,9 +34,9 @@
       "publisher_he": "אינפיניטי",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "8.2",
-      "locator_he": "8.2",
-      "checked": "2026-10-22"
+      "locator": "clause 8.2",
+      "locator_he": "סעיף 8.2",
+      "checked": "2026-10-25"
     },
     {
       "url": "http://www.krn-rofim.co.il/wp-content/uploads/2024/10/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f_%d7%a7%d7%95%d7%a4%d7%aa_%d7%92%d7%9e%d7%9c_%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94__25.7.2024-1.pdf",
@@ -45,18 +46,19 @@
       "publisher_he": "יחד רופאים",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "8.2",
-      "locator_he": "8.2",
-      "checked": "2026-10-22"
+      "locator": "clause 8.2",
+      "locator_he": "סעיף 8.2",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.as-invest.co.il/interstedin/saving_plus_deposit/",
-      "title": "Altshuler deposit page",
+      "title": "אלטשולר שחם – הפקדות סוף שנה, קופת גמל להשקעה",
+      "title_he": "אלטשולר שחם – הפקדות סוף שנה, קופת גמל להשקעה",
       "publisher": "Altshuler Shaham",
       "publisher_he": "אלטשולר שחם",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

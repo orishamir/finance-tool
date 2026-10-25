@@ -21,12 +21,12 @@
       "value": 1,
       "unit": "count",
       "source": {
-        "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
-        "title": "Banking Rules (Customer Service) (Fees) 2008, consolidated to the amendment of 9.4.2025, BoI copy, s.1, s.4A",
-        "publisher": "Bank of Israel (Banking Supervision)",
+        "url": "https://www.boi.org.il/media/mi2driua/159a.pdf",
+        "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב (בנק ישראל), p.2, s.1 (הגדרות \"מסלול בסיסי\", \"מסלול מורחב\")",
+        "publisher": "בנק ישראל",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -41,12 +41,12 @@
       "value": 10,
       "unit": "count",
       "source": {
-        "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
-        "title": "Banking Rules (Customer Service) (Fees) 2008, consolidated to the amendment of 9.4.2025, BoI copy, s.1, s.4A",
-        "publisher": "Bank of Israel (Banking Supervision)",
+        "url": "https://www.boi.org.il/media/mi2driua/159a.pdf",
+        "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב (בנק ישראל), p.2, s.1 (הגדרות \"מסלול בסיסי\", \"מסלול מורחב\")",
+        "publisher": "בנק ישראל",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -61,12 +61,12 @@
       "value": 10,
       "unit": "count",
       "source": {
-        "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
-        "title": "Banking Rules (Customer Service) (Fees) 2008, consolidated to the amendment of 9.4.2025, BoI copy, s.1, s.4A",
-        "publisher": "Bank of Israel (Banking Supervision)",
+        "url": "https://www.boi.org.il/media/mi2driua/159a.pdf",
+        "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב (בנק ישראל), p.2, s.1 (הגדרות \"מסלול בסיסי\", \"מסלול מורחב\")",
+        "publisher": "בנק ישראל",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -81,12 +81,12 @@
       "value": 50,
       "unit": "count",
       "source": {
-        "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
-        "title": "Banking Rules (Customer Service) (Fees) 2008, consolidated to the amendment of 9.4.2025, BoI copy, s.1, s.4A",
-        "publisher": "Bank of Israel (Banking Supervision)",
+        "url": "https://www.boi.org.il/media/mi2driua/159a.pdf",
+        "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב (בנק ישראל), p.2, s.1 (הגדרות \"מסלול בסיסי\", \"מסלול מורחב\")",
+        "publisher": "בנק ישראל",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -102,44 +102,48 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
-      "title": "Fees rules 2008 (BoI copy)",
+      "url": "https://www.boi.org.il/media/mi2driua/159a.pdf",
+      "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב (בנק ישראל)",
       "title_he": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "s.1",
-      "locator_he": "סעיף 1",
+      "locator": "pp.2, 5, 6 to 8, s.1",
+      "locator_he": "עמודים 2, 5, 6 עד 8, סעיף 1",
+      "page": 2,
       "quote": "מסלול בסיסי",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.leumi.co.il/he/commission-rate-tracks",
-      "title": "Leumi fee tracks",
+      "title": "לאומי: מסלולי עמלות",
+      "title_he": "לאומי: מסלולי עמלות",
       "publisher": "Bank Leumi",
       "publisher_he": "בנק לאומי",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.bankhapoalim.co.il/forms/he/fee-list",
-      "title": "Hapoalim tariff page",
+      "title": "הפועלים: תעריפון העמלות",
+      "title_he": "הפועלים: תעריפון העמלות",
       "publisher": "Bank Hapoalim",
       "publisher_he": "בנק הפועלים",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.mercantile.co.il/private/generalinfo/price-list-fees-tracks/",
-      "title": "Mercantile tariff page",
+      "title": "מרכנתיל: תעריפון ומסלולי עמלות",
+      "title_he": "מרכנתיל: תעריפון ומסלולי עמלות",
       "publisher": "Mercantile Discount Bank",
       "publisher_he": "בנק מרכנתיל דיסקונט",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

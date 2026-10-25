@@ -13,21 +13,52 @@
   "sources": [
     {
       "url": "https://meyda.education.gov.il/files/PortalOvdeyHoraa/POH/Salary/study-fund.pdf",
-      "title": "Civil Service Commission form, נספח א'-4 \"קרן השתלמות לעובדי הוראה\", edition 12/2020",
+      "title": "טופס נש\"מ (נציבות שירות המדינה) – נספח א'-4: קרן השתלמות לעובדי הוראה, מהדורה 12/2020",
+      "title_he": "טופס נש\"מ (נציבות שירות המדינה) – נספח א'-4: קרן השתלמות לעובדי הוראה, מהדורה 12/2020",
       "publisher": "Ministry of Education",
       "publisher_he": "משרד החינוך",
       "kind": "form",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "pp.9-10, s.20(א), (ב)",
+      "locator_he": "עמודים 9 עד 10, סעיף 20(א), (ב)",
+      "page": 9,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_343666.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 16), התשע\"ו-2016",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 16), התשע\"ו-2016",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, s.1",
+      "locator_he": "עמוד 2, סעיף 1",
+      "page": 2,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://pensuni.com/?p=2540",
-      "title": "Pensuni, \"מהם אחוזי הפקדה לקרן השתלמות?\", 16.08.2024",
+      "title": "פנסיוני – מהם אחוזי הפקדה לקרן השתלמות? (16.08.2024)",
+      "title_he": "פנסיוני – מהם אחוזי הפקדה לקרן השתלמות? (16.08.2024)",
       "publisher": "Pensuni",
       "publisher_he": "פנסיוני (pensuni.com)",
       "kind": "article",
       "strength": "secondary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

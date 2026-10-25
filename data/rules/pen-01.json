@@ -19,11 +19,11 @@
       "unit": "years",
       "source": {
         "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
-        "title": "צו הרחבה (נוסח משולב) לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011, section 4 (p. 6940): \"מי שטרם מלאו לו - באישה 20 שנים ובגבר 21 שנים\"",
-        "publisher": "Minister of Industry, Trade and Labour (scan hosted on gov.il)",
+        "title": "צו הרחבה (נוסח משולב) לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011, pp.3-4, s.4(7): \"מי שטרם מלאו לו - באישה 20 שנים ובגבר 21 שנים\"",
+        "publisher": "Ministry of Labour (scan on gov.il)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -39,11 +39,11 @@
       "unit": "years",
       "source": {
         "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
-        "title": "צו הרחבה (נוסח משולב) לפנסיה חובה, 2011, section 4 (p. 6940)",
-        "publisher": "Minister of Industry, Trade and Labour (scan hosted on gov.il)",
+        "title": "צו הרחבה (נוסח משולב) לפנסיה חובה, 2011, pp.3-4, s.4(7)",
+        "publisher": "Ministry of Labour (scan on gov.il)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -60,24 +60,16 @@
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
-      "title": "צו הרחבה (נוסח משולב) לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011, scan on gov.il",
+      "title": "צו הרחבה (נוסח משולב) לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011",
       "title_he": "צו הרחבה [נוסח משולב] לפנסיה חובה, 2011",
       "publisher": "gov.il",
       "publisher_he": "משרד העבודה",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "sections 3 and 4, pp. 6939-6941",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://www.hilan.co.il/%D7%9E%D7%A8%D7%9B%D7%96-%D7%99%D7%93%D7%A2/%D7%97%D7%A7%D7%99%D7%A7%D7%94/%D7%A6%D7%95%D7%95%D7%99-%D7%94%D7%A8%D7%97%D7%91%D7%94/%D7%A6%D7%95-%D7%94%D7%A8%D7%97%D7%91%D7%94-%D7%91%D7%99%D7%98%D7%95%D7%97-%D7%A4%D7%A0%D7%A1%D7%99%D7%95%D7%A0%D7%99-%D7%9E%D7%A7%D7%99%D7%A3-%D7%91%D7%9E%D7%A9%D7%A7/%D7%A6%D7%95-%D7%94%D7%A8%D7%97%D7%91%D7%94-%D7%A0%D7%95%D7%A1%D7%97-%D7%9E%D7%A9%D7%95%D7%9C%D7%91-%D7%9C%D7%A4%D7%A0%D7%A1%D7%99%D7%94-%D7%97%D7%95%D7%91%D7%94-%D7%91%D7%AA%D7%95%D7%A7%D7%A3-%D7%9E-27-%D7%91%D7%A1%D7%A4%D7%98%D7%9E%D7%91%D7%A8-2011/",
-      "title": "Hilan mirror of the consolidated order",
-      "title_he": "צו הרחבה [נוסח משולב] לפנסיה חובה, 2011",
-      "publisher": "Hilan",
-      "publisher_he": "משרד העבודה",
-      "kind": "official_pdf",
-      "strength": "secondary",
-      "checked": "2026-10-22"
+      "locator": "pp.2-4, ss.3, 4",
+      "locator_he": "עמודים 2 עד 4, סעיפים 3, 4",
+      "page": 2,
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -18,11 +18,11 @@
       "unit": "count",
       "source": {
         "url": "https://content.tase.co.il/media/3fdpe5za/1150_nbcm_399328_eng.pdf",
-        "title": "TASE, How to become a non-banking corporation member, January 2026",
+        "title": "TASE, How to become a non-banking corporation member, January 2026, p.3",
         "publisher": "Tel Aviv Stock Exchange",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -39,7 +39,8 @@
   "sources": [
     {
       "url": "https://content.tase.co.il/media/chilpz2c/1150_nbcm_372306_heb.pdf",
-      "title": "TASE, מדריך לחברות בבורסה - חש\"ב, ינואר 2026",
+      "title": "הבורסה לניירות ערך בתל אביב: מדריך לחברות בבורסה - חש\"ב, ינואר 2026",
+      "title_he": "הבורסה לניירות ערך בתל אביב: מדריך לחברות בבורסה - חש\"ב, ינואר 2026",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
@@ -47,7 +48,8 @@
       "locator": "pp.3, 12",
       "locator_he": "עמודים 3, 12",
       "page": 3,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25",
+      "qualifier": "(TASE publication)"
     },
     {
       "url": "https://content.tase.co.il/media/3fdpe5za/1150_nbcm_399328_eng.pdf",
@@ -60,7 +62,7 @@
       "locator": "pp.3, 7, 9, 12",
       "locator_he": "עמודים 3, 7, 9, 12",
       "page": 3,
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "qualifier": "(TASE publication)"
     }
   ]

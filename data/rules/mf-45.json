@@ -13,31 +13,57 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fphh3DPmvYX3FiarYq7bbZFo=#page=25",
+      "title": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום), התשס\"ח-2007 (קובץ התקנות 6625)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום), התשס״ח-2007 (קובץ התקנות 6625)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.25, reg. 2",
+      "locator_he": "עמוד 25, תקנה 2",
+      "page": 25,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fphh3DPmvYX3FiarYq7bbZFo=#page=27",
+      "title": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום), התשס\"ח-2007 (קובץ התקנות 6625)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום), התשס״ח-2007 (קובץ התקנות 6625)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.27, reg. 4",
+      "locator_he": "עמוד 27, תקנה 4",
+      "page": 27,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=#page=11",
+      "title": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום) (תיקון), התשע\"ו-2016 (קובץ התקנות 7653)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום) (תיקון), התשע״ו-2016 (קובץ התקנות 7653)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.11, reg. 2",
+      "locator_he": "עמוד 11, תקנה 2",
+      "page": 11,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
-      "title": "ISA investor guide (2017)",
+      "title": "מדריך למשקיע: קרנות נאמנות (רשות ניירות ערך, ינואר 2017)",
       "title_he": "מדריך למשקיע: קרנות נאמנות (ינואר 2017)",
       "publisher": "Israel Securities Authority",
       "publisher_he": "רשות ניירות ערך",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p. 17",
+      "locator": "p.17",
       "locator_he": "עמוד 17",
       "page": 17,
-      "checked": "2026-10-22",
-      "qualifier": "(dated)"
-    },
-    {
-      "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(סיווג_קרנות_לצורך_פרסום)",
-      "title": "Classification regulations (Wikisource mirror)",
-      "title_he": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום)",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "regulations 2, 4",
-      "anchor": "סעיף_2",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25",
+      "qualifier": "(dated; still linked by the ISA as its full guide)"
     }
   ]
 }

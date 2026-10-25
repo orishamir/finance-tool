@@ -15,26 +15,39 @@
   "sources": [
     {
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&filters=%7B%22REPORT_PERIOD%22%3A202609%7D&fields=FUND_CLASSIFICATION,TARGET_POPULATION&distinct=true&limit=200",
-      "title": "Gemel-Net query, period 202609",
+      "title": "גמל-נט – שאילתת סיווג קופות ואוכלוסיית יעד, תקופה 202609",
+      "title_he": "גמל-נט – שאילתת סיווג קופות ואוכלוסיית יעד, תקופה 202609",
       "publisher": "data.gov.il",
       "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "title": "Provident Funds Law, section 13(א)(4) (Wikisource mirror)",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "section 13(א)(4)",
-      "locator_he": "סעיף 13(א)(4)",
-      "anchor": "סעיף_13.א",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.8, s.13(א)",
+      "locator_he": "עמוד 8, סעיף 13(א)",
+      "page": 8,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, s.2",
+      "locator_he": "עמוד 2, סעיף 2",
+      "page": 2,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf",
@@ -44,7 +57,9 @@
       "publisher_he": "מור גמל ופנסיה",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "locator": "sections 13-15",
+      "locator_he": "סעיפים 13-15",
+      "checked": "2026-10-25"
     }
   ]
 }

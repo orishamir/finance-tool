@@ -20,9 +20,10 @@
       "publisher_he": "בנק לאומי",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "s.3.2.1 to 3.2.3, 3.4.3",
-      "locator_he": "סעיף 3.2.1 עד 3.2.3, 3.4.3",
-      "checked": "2026-10-22"
+      "locator": "pp.12 to 13, s.3.2.1 to 3.2.3, 3.4.3",
+      "locator_he": "עמודים 12 עד 13, סעיף 3.2.1 עד 3.2.3, 3.4.3",
+      "page": 12,
+      "checked": "2026-10-25"
     }
   ]
 }

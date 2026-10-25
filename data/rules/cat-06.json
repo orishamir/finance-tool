@@ -15,32 +15,45 @@
   "checked": "2026-10-23",
   "sources": [
     {
-      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"FUND_ID\":7978}&sort=REPORT_PERIOD",
-      "title": "7978 series",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
+      "title": "גמל-נט: מילון השדות",
+      "title_he": "גמל-נט: מילון השדות",
       "publisher": "data.gov.il",
       "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"FUND_ID\":7978}&sort=REPORT_PERIOD",
+      "title": "גמל-נט: סדרת קופה 7978",
+      "title_he": "גמל-נט: סדרת קופה 7978",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"FUND_ID\":7860}&sort=REPORT_PERIOD",
-      "title": "7860 series",
+      "title": "גמל-נט: סדרת קופה 7860",
+      "title_he": "גמל-נט: סדרת קופה 7860",
       "publisher": "data.gov.il",
       "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.meitav.co.il/provident_pension/kupa_gemel_invest_reports/",
-      "title": "Meitav tracks page",
+      "title": "מיטב: דוחות מסלולי קופת גמל להשקעה",
+      "title_he": "מיטב: דוחות מסלולי קופת גמל להשקעה",
       "publisher": "Meitav",
       "publisher_he": "מיטב",
       "kind": "institution_doc",
-      "strength": "primary",
-      "checked": "2026-10-22",
-      "qualifier": "(field name)"
+      "strength": "institution",
+      "checked": "2026-10-25",
+      "qualifier": "(period label)"
     }
   ]
 }

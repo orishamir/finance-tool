@@ -18,11 +18,11 @@
       "unit": "business_days",
       "source": {
         "url": "https://www.as-invest.co.il/media/10040/בקשה-למשיכת-כספים-מקרן-השתלמות.pdf",
-        "title": "Altshuler Shaham, \"בקשה למשיכת כספים מקרן השתלמות\", form MH4015_210519, guidance section 1: \"הינו 4 ימי עסקים ויספר מיום קבלת הבקשה מלאה ותקינה בחברה\"",
+        "title": "Altshuler Shaham, \"בקשה למשיכת כספים מקרן השתלמות\", form MH4015_210519, p.2, guidance section 1: \"הינו 4 ימי עסקים ויספר מיום קבלת הבקשה מלאה ותקינה בחברה\"",
         "publisher": "Altshuler Shaham Gemel and Pension",
         "strength": "institution"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -45,8 +45,11 @@
       "publisher_he": "אלטשולר שחם",
       "kind": "form",
       "strength": "institution",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
       "quote": "לתשומת לבך",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

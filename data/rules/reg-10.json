@@ -3,7 +3,7 @@
   "title": "Mutual funds (including money-market funds): trustee holds the assets",
   "title_he": "קרנות נאמנות וקרנות כספיות: הנאמן מחזיק בנכסים",
   "text_he": "הסכם הקרן נכרת בין מנהל לנאמן שאושר, ונכסי הקרן מוקנים לנאמן לטובת בעלי היחידות. הנכסים הם נכס נפרד משאר רכוש הנאמן, נכסים לא סחירים נרשמים על שמו, והמנהל חייב להפקיד את מזומני הקרן בחשבון בנק. נכסי קרן אינם ניתנים לעיקול, והנאמן מפקח על עמידת המנהל בחוק, בהסכם הקרן ובתשקיף. הפסדי שוק אינם מוגנים; מזומן של הקרן בבנק הוא פיקדון בנקאי של הקרן, ומה קורה לו אם הבנק קורס לא נמצא.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "protection"
   ],
@@ -12,18 +12,17 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
-      "title": "חוק השקעות משותפות בנאמנות, Wikisource",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994 (נוסח רשות ניירות ערך)",
       "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
-      "publisher": "Hebrew Wikisource",
+      "publisher": "Israel Securities Authority",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "ss.4, 76, 78(א), 79",
-      "locator_he": "סעיפים 4, 76, 78(א), 79",
-      "anchor": "סעיף_4",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.5, s.4; p.56, s.76; p.57, s.78; p.58, s.79",
+      "locator_he": "עמוד 5, סעיף 4; עמוד 56, סעיף 76; עמוד 57, סעיף 78; עמוד 58, סעיף 79",
+      "page": 5,
+      "checked": "2026-10-25"
     }
   ]
 }

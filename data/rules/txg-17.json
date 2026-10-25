@@ -19,11 +19,11 @@
       "unit": "nis",
       "source": {
         "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
-        "title": "Tax Authority, דע זכויותיך וחובותיך 2025",
+        "title": "Tax Authority, דע זכויותיך וחובותיך 2025, p.6, item 5 (\"הכנסה מריבית עד 717,000 ₪\")",
         "publisher": "Israel Tax Authority",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2025,
@@ -39,11 +39,11 @@
       "unit": "nis",
       "source": {
         "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
-        "title": "Tax Authority, דע זכויותיך וחובותיך 2025",
+        "title": "Tax Authority, דע זכויותיך וחובותיך 2025, p.6, item 6 (\"הכנסה מניירות ערך (מחזור מכירות) עד 2,810,000 ₪\")",
         "publisher": "Israel Tax Authority",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2025,
@@ -66,11 +66,10 @@
       "publisher_he": "רשות המסים",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.3 s.2 items 1, 3, 4; p.4 items 5-8",
-      "page": 3,
+      "locator": "p.5 s.2 items 1, 3, 4, p.6 items 5-8",
+      "page": 5,
       "quote": "אלה הסכומים המרביים לשנת 2025, המקנים פטור מהגשת דוח",
-      "checked": "2026-10-22",
-      "qualifier": "(read from a rendered page image; small print)"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
@@ -84,20 +83,48 @@
       "locator_he": "עמוד 15",
       "page": 15,
       "quote": "פטור מהגשה דין וחשבון 134א",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/%D7%AA%D7%A7%D7%A0%D7%95%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94_%28%D7%A4%D7%98%D7%95%D7%A8_%D7%9E%D7%94%D7%92%D7%A9%D7%AA_%D7%93%D7%99%D7%9F_%D7%95%D7%97%D7%A9%D7%91%D7%95%D7%9F%29",
-      "title": "Income Tax (Exemption from Filing a Return) Regulations 1988 (Wikisource mirror)",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/Rw7wUk704REbG2yxl42bdFeT2Z6A1RTn4GqifMATFc4=#page=8",
+      "title": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשס\"ד-2004 (קובץ התקנות 6317א)",
+      "title_he": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשס\"ד-2004 (קובץ התקנות 6317א)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "regs. 2, 3(a), 6A",
-      "locator_he": "תקנות 2, 3(א), 6א",
-      "anchor": "סעיף_2",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.8, s.2",
+      "locator_he": "עמוד 8, סעיף 2",
+      "page": 8,
+      "quote": "יהא פטור מהגשת דין וחשבון",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/ak9evgbauyE4aFg+Z1QNMGBl0iclUCMcryjwZ5y4OOE=#page=3",
+      "title": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשע\"ד-2014 (קובץ התקנות 7405)",
+      "title_he": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשע\"ד-2014 (קובץ התקנות 7405)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.3, s.2",
+      "locator_he": "עמוד 3, סעיף 2",
+      "page": 3,
+      "quote": "הוא או בן זוגו חייבים במס נוסף בהתאם לסעיף 121ב לפקודה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/7ImSG7R~31kgMHXzY2UjRTIi0nZwJhLAGkfNjyZo+zU=#page=2",
+      "title": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשפ\"ד-2024 (קובץ התקנות 11460)",
+      "title_he": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשפ\"ד-2024 (קובץ התקנות 11460)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.2, s.2",
+      "locator_he": "עמוד 2, סעיף 2",
+      "page": 2,
+      "checked": "2026-10-25"
     }
   ]
 }

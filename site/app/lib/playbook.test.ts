@@ -42,13 +42,18 @@ describe("the step lists", () => {
   });
   it("labels the brokerage steps by their strength: institution only gets the prefix flag", () => {
     const steps = buildSteps(rules, "brokerage-account", today);
-    expect(steps.map((s) => s.strength)).toEqual(["institution", "institution", "institution", "open", "primary-mirror"]);
+    // the checklist step (SW-38) reads the CMA circular itself since the source check of 2026-10-25; it was a copy before
+    expect(steps.map((s) => s.strength)).toEqual(["institution", "institution", "institution", "open", "primary"]);
     expect(steps.map((s) => s.institutionOnly)).toEqual([true, false, true, false, false]);
     expect(steps[3]!.open).toBe(true);
   });
-  it("names the mirror host of a primary-mirror text", () => {
-    const st = buildSteps(rules, "keren-hishtalmut", today)[7]!;
-    expect(st.text[0]!.host).toBe("אנליסט");
+  it("names the mirror host of a primary-mirror text, from the rule's own copy sources", () => {
+    // no switching rule rests on a copy since 2026-10-25, so SW-05 is made one here
+    const sw05 = rules["SW-05"]!;
+    const copy = { ...sw05.sources![0]!, url: "https://www.analyst.co.il/x.pdf", strength: "primary-mirror" as const, mirror_host: undefined };
+    const asCopy = { ...rules, "SW-05": { ...sw05, strength: "primary-mirror" as const, sources: [copy] } };
+    expect(buildSteps(asCopy, "keren-hishtalmut", today)[7]!.text[0]!.host).toBe("analyst.co.il");
+    expect(buildSteps(rules, "keren-hishtalmut", today)[7]!.text[0]!.host).toBeUndefined();
   });
 });
 

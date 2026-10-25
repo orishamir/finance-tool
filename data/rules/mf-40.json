@@ -13,16 +13,17 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.capitax.co.il/Attachments/03072024.pdf",
-      "title": "Amendment 31, ספר החוקים 3232",
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_4619060.pdf",
+      "title": "חוק השקעות משותפות בנאמנות (תיקון מס' 31), התשפ\"ד-2024 (ספר החוקים 3232)",
       "title_he": "חוק השקעות משותפות בנאמנות (תיקון מס׳ 31), התשפ״ד-2024 (ספר החוקים 3232)",
-      "publisher": "Capitax",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "section 18",
-      "locator_he": "סעיף 18",
-      "checked": "2026-10-22"
+      "locator": "p.5, s.18",
+      "locator_he": "עמוד 5, סעיף 18",
+      "page": 5,
+      "checked": "2026-10-25"
     }
   ]
 }

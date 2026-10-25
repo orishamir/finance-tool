@@ -15,6 +15,29 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/reports/tender-0102/he/Commissioner%20Report%202025%20chapter%204_Digital%20-%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9%20%D7%A1%D7%95%D7%A4%D7%99.pdf",
+      "title": "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025 – פרק 4: נתונים כמותיים – החיסכון הפנסיוני",
+      "title_he": "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025 – פרק 4: נתונים כמותיים – החיסכון הפנסיוני",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.12, table ד-14",
+      "page": 12,
+      "quote": "שיעור העודף או הגירעון האקטוארי בקרנות הפנסיה החדשות",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://data.gov.il/he/datasets/cma/pensia-net",
+      "title": "פנסיה-נט – מאגר המידע של רשות שוק ההון, ביטוח וחיסכון",
+      "title_he": "פנסיה-נט – מאגר המידע של רשות שוק ההון, ביטוח וחיסכון",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
       "title": "Mor comprehensive bylaws 01.06.2025",
       "title_he": "תקנון קרן הפנסיה המקיפה של מור (מהדורת 1.6.2025)",
@@ -22,23 +45,10 @@
       "publisher_he": "מור גמל ופנסיה",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "section 109",
-      "locator_he": "סעיף 109",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://adif-web-bucket.s3-eu-west-1.amazonaws.com/%D7%93%D7%95%D7%97%20%D7%94%D7%9E%D7%9E%D7%95%D7%A0%D7%94%20%D7%A2%D7%9C%20%D7%A9%D7%95%D7%A7%20%D7%94%D7%94%D7%95%D7%9F%20%D7%9C%D7%A9%D7%A0%D7%AA%202024.pdf",
-      "title": "CMA report 2024",
-      "title_he": "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2024",
-      "publisher": "Adif (copy)",
-      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
-      "kind": "official_pdf",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "locator": "table ד-13, p. 57",
-      "page": 57,
-      "checked": "2026-10-22",
-      "qualifier": "(third-party host)"
+      "locator": "section 109, p.73",
+      "locator_he": "סעיף 109, עמוד 73",
+      "page": 73,
+      "checked": "2026-10-25"
     }
   ]
 }

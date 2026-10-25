@@ -22,10 +22,10 @@
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "institution_doc",
       "strength": "primary",
-      "locator": "p.76",
-      "locator_he": "עמוד 76",
-      "page": 76,
-      "checked": "2026-10-22"
+      "locator": "p.79",
+      "locator_he": "עמוד 79",
+      "page": 79,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.leumi.co.il/leumi-hebrew/s3fs-public/newsite/generalpages/general%20terms/General_Terms_and_Conditions_acc.pdf",
@@ -38,7 +38,7 @@
       "locator": "p.55",
       "locator_he": "עמוד 55",
       "page": 55,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://lp3.inter-il.com/about-3",
@@ -48,7 +48,7 @@
       "publisher_he": "אינטראקטיב ישראל",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

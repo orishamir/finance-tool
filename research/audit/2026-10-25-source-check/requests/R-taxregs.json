@@ -1,0 +1,368 @@
+[
+ {
+  "file": "publishers.json",
+  "host": "tazkirim.gov.il",
+  "row": {
+   "publisher": "Government legislation website (Ministry of Justice)",
+   "publisher_he": "אתר החקיקה הממשלתי",
+   "kind": "law",
+   "mirror": null
+  },
+  "note": "official site of government bill memoranda; used for the 2024 study-fund memorandum (TXH-13, TXH-23)"
+ },
+ {
+  "file": "publishers.json",
+  "host": "www.tazkirim.gov.il",
+  "row": {
+   "publisher": "Government legislation website (Ministry of Justice)",
+   "publisher_he": "אתר החקיקה הממשלתי",
+   "kind": "law",
+   "mirror": null
+  }
+ },
+ {
+  "file": "publishers.json",
+  "host": "btl.gov.il",
+  "row": {
+   "publisher": "National Insurance Institute",
+   "publisher_he": "המוסד לביטוח לאומי",
+   "kind": "regulator_page",
+   "mirror": null
+  },
+  "note": "already present; listed so the lead knows the btl.gov.il/Laws1/02_0103_1xxxxx.pdf consolidated texts of income-tax regulations used here (100022, 100048, 100097, 100223, 100228, 100269) list amendments up to the last one Wikisource knows, unlike the 2013 Ordinance copy 02_0103_000000.pdf"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "provident-rules-1964",
+   "match": [
+    "Regulations 1964",
+    "Rules 1964",
+    "Approval and Management of Provident Funds",
+    "approval and management of provident funds",
+    "כללים לאישור ולניהול קופות גמל"
+   ],
+   "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+   "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+   "kind": "regulation",
+   "official_url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf"
+  },
+  "note": "existing row; add official_url (BTL consolidated text to ק\"ת 10716, 12.7.2023)"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "withholding-interest-dividend-regulations-2005",
+   "match": [
+    "Withholding from Interest, Dividend",
+    "Withholding Regulations 2005",
+    "ניכוי מריבית, מדיבידנד ומרווחים מסוימים"
+   ],
+   "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+   "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+   "kind": "regulation",
+   "official_url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf"
+  },
+  "note": "existing row; add official_url"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "withholding-securities-regulations-2002",
+   "match": [
+    "Withholding regulations 5763-2002",
+    "Withholding from Consideration",
+    "withholding ... sale of a security",
+    "withholding from proceeds",
+    "ניכוי מתמורה, מתשלום או מרווח הון"
+   ],
+   "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס״ג-2002",
+   "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+   "kind": "regulation",
+   "official_url": "https://www.btl.gov.il/Laws1/02_0103_100228.pdf"
+  },
+  "note": "existing row; add official_url"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "capital-gain-computation-regulations-2002",
+   "match": [
+    "Computation of Capital Gain on Sale of a Traded Security",
+    "Computation Regulations 2002",
+    "computing capital gain on sale of a traded security",
+    "חישוב רווח הון במכירת נייר ערך הנסחר בבורסה"
+   ],
+   "title_he": "תקנות מס הכנסה (חישוב רווח הון במכירת נייר ערך הנסחר בבורסה, מילווה המדינה או יחידה בקרן נאמנות), התשס״ג-2002",
+   "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+   "kind": "regulation",
+   "official_url": "https://www.btl.gov.il/Laws1/02_0103_100223.pdf"
+  },
+  "note": "new row unless one exists under another id"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "study-fund-withholding-regulations-1997",
+   "match": [
+    "Withholding regulations 1997",
+    "ניכוי מסכומים ששולמו מקרן השתלמות"
+   ],
+   "title_he": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות), התשנ״ח-1997",
+   "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+   "kind": "regulation",
+   "official_url": "https://www.btl.gov.il/Laws1/02_0103_100097.pdf"
+  }
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "study-fund-accounts-regulations-1993",
+   "match": [
+    "different study-fund accounts are one account",
+    "ייחשבו לחשבון אחד"
+   ],
+   "title_he": "תקנות מס הכנסה (כללים לתנאים שבהם חשבונות שונים בקרן השתלמות ייחשבו לחשבון אחד), התשנ״ג-1993",
+   "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+   "kind": "regulation",
+   "official_url": "https://www.btl.gov.il/Laws1/02_0103_100048.pdf"
+  }
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "study-fund-income-order-1997",
+   "match": [
+    "Order on amounts paid from a study fund as income",
+    "Order 1997",
+    "קביעת סכומים ששולמו מקרן השתלמות כהכנסה"
+   ],
+   "title_he": "צו מס הכנסה (קביעת סכומים ששולמו מקרן השתלמות כהכנסה), התשנ״ח-1997 (קובץ התקנות 5861; תיקון: קובץ התקנות 6214)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "regulation",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/qp4kOfn567Y9SVzCZ9fzttZlVRiBvp0mJWMdq5kP+yc="
+  }
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "inflationary-amount-fund-unit-regulations-2003",
+   "match": [
+    "computing the inflationary amount",
+    "חישוב סכום אינפלציוני במכירת יחידה בקרן נאמנות"
+   ],
+   "title_he": "תקנות מס הכנסה (חישוב סכום אינפלציוני במכירת יחידה בקרן נאמנות), התשס״ג-2003 (קובץ התקנות 6223)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "regulation",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3nxVBukfCLPiTSKOFP3CGC94="
+  },
+  "note": "existing row; add official_url"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "fx-deposit-exemption-order-2002",
+   "match": [
+    "Foreign-Currency Deposit) Order 2002",
+    "Olim order",
+    "(פטור ממס על הכנסה מריבית על פיקדון במטבע חוץ)"
+   ],
+   "title_he": "צו מס הכנסה (פטור ממס על הכנסה מריבית על פיקדון במטבע חוץ), התשס״ג-2002 (קובץ התקנות 6214)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "regulation",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n7vDlZAqFcmNW1LZdFh7qw8="
+  },
+  "note": "existing row; add official_url"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "fx-deposit-returning-resident-order-2003",
+   "match": [
+    "Returning Resident on Interest Income on a Foreign-Currency Deposit",
+    "returning-resident order",
+    "פטור ממס לתושב חוזר על הכנסה מריבית"
+   ],
+   "title_he": "צו מס הכנסה (פטור ממס לתושב חוזר על הכנסה מריבית על פיקדון במטבע חוץ), התשס״ד-2003 (קובץ התקנות 6270)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "regulation",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n~b7VXyTyYJCYD0R8CbjV2A="
+  },
+  "note": "\"Both orders\" stays on the 2002 row; check that this longer token wins for the returning-resident link"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "partial-linkage-regulations-2003",
+   "match": [
+    "Partial Linkage Differentials Regulations",
+    "קביעת הפרשי הצמדה חלקיים"
+   ],
+   "title_he": "תקנות מס הכנסה (קביעת הפרשי הצמדה חלקיים), התשס״ג-2003 (קובץ התקנות 6227; תיקון: קובץ התקנות 6377)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "regulation",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3nwBbruf4iR7WF16iEKrq2yI="
+  }
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "provident-transfer-exemption-rules-1990",
+   "match": [
+    "פטור ממס בשל העברה ושינוי יעוד"
+   ],
+   "title_he": "כללי מס הכנסה (פטור ממס בשל העברה ושינוי יעוד של כספים בקופות גמל), התש״ן-1990 (קובץ התקנות 5287; תיקון: קובץ התקנות 5613)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "regulation",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/xYWY4f5V6gsVHq6NUDp~YKCeau4cX~kDyqy86zbS4NU="
+  }
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "filing-exemption-regulations-1988",
+   "match": [
+    "Exemption from Filing a Return) Regulations",
+    "פטור מהגשת דין וחשבון"
+   ],
+   "title_he": "תקנות מס הכנסה (פטור מהגשת דין וחשבון), התשמ״ח-1988",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "regulation",
+   "official_url": null
+  },
+  "note": "no consolidated official text; cite the amending booklets (6317א, 7405, 11460, 11554, 12133)"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "vat-law-1975",
+   "match": [
+    "VAT Law",
+    "חוק מס ערך מוסף, התשל\"ו-1975",
+    "חוק מס ערך מוסף, התשל״ו-1975"
+   ],
+   "title_he": "חוק מס ערך מוסף, התשל״ו-1975",
+   "publisher_he": "הכנסת",
+   "kind": "law",
+   "official_url": "https://fs.knesset.gov.il/8/law/8_lsr_208901.PDF"
+  },
+  "note": "original (ס\"ח 791); no consolidated official text"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "vat-amendment-3-1979",
+   "match": [
+    "חוק מס ערך מוסף (תיקון מס' 3)",
+    "ספר החוקים 927"
+   ],
+   "title_he": "חוק מס ערך מוסף (תיקון מס׳ 3), תשל״ט-1979 (ספר החוקים 927)",
+   "publisher_he": "הכנסת",
+   "kind": "law",
+   "official_url": "https://fs.knesset.gov.il/9/law/9_lsr_208902.PDF"
+  }
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "vat-rate-order-2005",
+   "match": [
+    "Rate of Tax on a Transaction and on Import of Goods",
+    "שיעור המס על עסקה ועל יבוא טובין"
+   ],
+   "title_he": "צו מס ערך מוסף (שיעור המס על עסקה ועל יבוא טובין), התשס״ה-2005 (קובץ התקנות 6416; תיקון אחרון: קובץ התקנות 11179)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "regulation",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/ZsA~3yZgyGvixaLSmrNuT9FNV0Dr87ujJ8ymJhX0qnM="
+  }
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "vat-financial-institution-order-1977",
+   "match": [
+    "Determination of Financial Institution",
+    "קביעת מוסד כספי"
+   ],
+   "title_he": "צו מס ערך מוסף (קביעת מוסד כספי), התשל״ז-1977 (קובץ התקנות 3687; תיקון: קובץ התקנות 4132)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "regulation",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/KyvxBcEw7jx5BmW90PVjDMbbzloLDvqysbFwywmwKio="
+  }
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "efficiency-law-2017-2018",
+   "match": [
+    "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2017 ו-2018)",
+    "Economic Efficiency Law 2017-2018",
+    "חוק ההתייעלות הכלכלית 2017-2018"
+   ],
+   "title_he": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2017 ו-2018), התשע״ז-2016 (ספר החוקים 2592)",
+   "publisher_he": "הכנסת",
+   "kind": "law",
+   "official_url": "https://fs.knesset.gov.il/20/law/20_lsr_366872.pdf"
+  }
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "economic-plan-law-2026",
+   "match": [
+    "Economic Plan Law 2026",
+    "חוק התוכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנת התקציב 2026)"
+   ],
+   "title_he": "חוק התוכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנת התקציב 2026), התשפ״ו-2026 (ספר החוקים 3510)",
+   "publisher_he": "הכנסת",
+   "kind": "law",
+   "official_url": "https://fs.knesset.gov.il/25/law/25_lsr_12224370.pdf"
+  },
+  "note": "row requested by R-other with 25_lsr_12224370.pdf; the Knesset OData 'פרסום ברשומות' link for the same law is 25_lsr_12846788.pdf (64 pages, gazette pp.350-413; VAT Amendment 67 at file pp.57-58). Check which file is complete before choosing official_url"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "mof-memorandum-hishtalmut-2024",
+   "match": [
+    "Ministry of Finance memorandum, Income Tax Ordinance amendment 2024",
+    "MoF memorandum 2024",
+    "תזכיר חוק לתיקון פקודת מס הכנסה (מס'...), התשפ\"ד-2024"
+   ],
+   "title_he": "תזכיר חוק לתיקון פקודת מס הכנסה (מס׳...), התשפ״ד-2024 (משיכה מוקדמת מקרן השתלמות, הוראת שעה)",
+   "publisher_he": "משרד האוצר (אתר החקיקה הממשלתי)",
+   "kind": "bill",
+   "official_url": "https://www.tazkirim.gov.il/s/legislativeworkactivity/a133Y00000LPZM1QAP"
+  }
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "income-tax-circular-04-2026",
+   "match": [
+    "income tax circular 04/2026",
+    "חוזר מס הכנסה מס' 04/2026",
+    "טופס 150"
+   ],
+   "title_he": "חוזר מס הכנסה מס׳ 04/2026 – אופן הצהרה על החזקה בחבר בני אדם תושב חוץ, הנחיות למילוי טופס 150",
+   "publisher_he": "רשות המסים בישראל",
+   "kind": "circular",
+   "official_url": "https://www.gov.il/BlobFolder/policy/professional-directives-180226-1/he/IncomeTax_professional-directives-180226-1.pdf"
+  }
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "tax-authority-letter-foreign-funds-2019",
+   "match": [
+    "Tax Authority letter 4.7.2019",
+    "ניכוי מס במקור – קרנות חוץ"
+   ],
+   "title_he": "ניכוי מס במקור – קרנות חוץ (מכתב מחלקת מיסוי שוק ההון, 4.7.2019)",
+   "publisher_he": "רשות המסים בישראל",
+   "kind": "letter",
+   "official_url": null
+  },
+  "note": "existing row; no gov.il copy found, keep the capitax copy marked '(copy)'"
+ }
+]

@@ -14,16 +14,18 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.meitav.co.il/media/0qulk3pk/תקנות-ira-חדשות-יוני-2017.pdf",
-      "title": "Reshumot, ק\"ת 7819, 29.5.2017, p.1138, reg. 1(4) of the 2017 amendment",
-      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי)",
-      "publisher": "Meitav",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=2",
+      "title": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
       "strength": "primary",
-      "locator": "p.1138, reg. 1(4) of the 2017",
-      "page": 1138,
-      "checked": "2026-10-22"
+      "locator": "p.2, s.1(4)",
+      "locator_he": "עמוד 2, סעיף 1(4)",
+      "page": 2,
+      "quote": "למעט קרן פנסיה",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.meitav.co.il/provident_pension/ira/",
@@ -33,8 +35,8 @@
       "publisher_he": "מיטב",
       "kind": "institution_doc",
       "strength": "institution",
-      "quote": "האם ניתן להעביר את כספי קרן הפנסיה לניהול אישי?",
-      "checked": "2026-10-22"
+      "quote": "לא ניתן לבצע ניהול אישי של החסכונות",
+      "checked": "2026-10-25"
     }
   ]
 }

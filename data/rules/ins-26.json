@@ -6,7 +6,7 @@
   "figure_names_he": {
     "report_deadline_months": "מועד שליחת הדוח השנתי, בחודשים מתום שנת המאזן"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "reporting-obligation",
     "fee-management-balance",
@@ -18,12 +18,12 @@
       "value": 3,
       "unit": "months",
       "source": {
-        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(ביטוח)_(תנאים_בחוזי_ביטוח)",
-        "title": "Insurance Contract Terms Regulations 1981, reg. 6B(a)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/E5dM3Lqs3zVhAvU4rMf6c5wNTVAGlOIVXHsJEoAgsJ4=#page=2",
+        "title": "תקנות פיקוח על עסקי ביטוח (תנאים בחוזי ביטוח) (תיקון), התשנ\"ז-1996 (קובץ התקנות 5804), p.2, s.2, reg. 6ב(א): within three months of the insurer's balance-sheet year end",
+        "publisher": "רשומות (משרד המשפטים)",
+        "strength": "primary"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -39,18 +39,18 @@
   "checked": "2026-10-24",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(ביטוח)_(תנאים_בחוזי_ביטוח)",
-      "title": "Insurance Contract Terms Regulations, reg. 6ב and the schedule (Wikisource)",
-      "title_he": "תקנות הפיקוח על שירותים פיננסיים (ביטוח) (תנאים בחוזי ביטוח), התשמ״ב-1981",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg. 6ב",
-      "locator_he": "תקנה 6ב",
-      "anchor": "סעיף_6ב",
-      "checked": "2026-10-24"
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/E5dM3Lqs3zVhAvU4rMf6c5wNTVAGlOIVXHsJEoAgsJ4=#page=2",
+      "title": "תקנות פיקוח על עסקי ביטוח (תנאים בחוזי ביטוח) (תיקון), התשנ\"ז-1996 (קובץ התקנות 5804)",
+      "title_he": "תקנות פיקוח על עסקי ביטוח (תנאים בחוזי ביטוח) (תיקון), התשנ\"ז-1996 (קובץ התקנות 5804)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "pp.2-3, s.2",
+      "locator_he": "עמודים 2 עד 3, סעיף 2",
+      "page": 2,
+      "quote": "בתוך שלושה חודשים מתום שנת המאזן שלו",
+      "checked": "2026-10-25"
     }
   ]
 }

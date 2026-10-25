@@ -18,11 +18,11 @@
       "unit": "months",
       "source": {
         "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-        "title": "Mor comprehensive pension fund bylaws, version 01.06.2025, s.36 (\"ארכת ביטוח\")",
+        "title": "Mor comprehensive pension fund bylaws, version 01.06.2025, p.37, s.36 (\"ארכת ביטוח\")",
         "publisher": "Mor Gemel and Pension",
         "strength": "institution"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -45,9 +45,10 @@
       "publisher_he": "מור גמל ופנסיה",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "sections 13(א), 28, 36, 37",
-      "locator_he": "סעיפים 13(א), 28, 36, 37",
-      "checked": "2026-10-22"
+      "locator": "sections 13(א), 28, 36, 37, pp.18, 30, 37-38",
+      "locator_he": "סעיפים 13(א), 28, 36, 37, עמודים 18, 30, 37-38",
+      "page": 18,
+      "checked": "2026-10-25"
     }
   ]
 }
