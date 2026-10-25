@@ -151,6 +151,7 @@ Why A: the reader learns what the site does and the one thing that sets it apart
 | `home.quick.line` | הכול נשמר במכשיר הזה. גיל, שכר ותשואה אפשר להוסיף בתוצאה, אם תרצו. | `text-xs muted` under the button |
 | `home.quick.allFields` | לכל השדות | quiet link to the full goal form |
 | `home.quick.another` | שאלה נוספת | the closed disclosure under the saved-goal strip; adds a second goal (D12) |
+| `r2.strip.blank · fill · savedAll` | עוד לא מולאה · למילוי · נשמרו במכשיר הזה | added 2026-10-25: the first page's goal rows, a goal that holds nothing yet, and the line under several rows |
 | `r2.result.horizonDefaulted.before / mid / after / change` | לא ידעתם כמה שנים, ולכן ההשוואה רצה על {n} שנים, נקודת ההתחלה של ״{preset}״. לשנות | note under the result's headline when the years came from the preset; {n} a site-parameter `Num`; "לשנות" opens the assumptions at the years. Same pattern as `employmentInferred` |
 | `r2.result.horizonHonest.cannot` | האתר לא קובע אם {years} שנים מספיקות למניות: אין לו תשואה צפויה ואין לו נתון על ירידות. | product mode, when the years are below P-04's equity minimum; the site says what it does not know (D9, D11) |
 | `r2.result.horizonHonest.can` | לפי טבלת ההתאמה של האתר, מסלול מנייתי נחשב מתאים מ־{min} שנים, למי שמסכים לירידה של {drop} בדרך. | {min} and {drop} are P-04's two figures, site parameters |

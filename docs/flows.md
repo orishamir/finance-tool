@@ -875,6 +875,7 @@ Top to bottom:
 - A 56 px card row: the goal's name in weight 500 (or the preset's name when unnamed), then "{שנים} · {סכום}" as numbers in their state, then "נשמר במכשיר הזה" in `text-xs muted`.
 - Actions at the end: "לתוצאה" (link; hidden on the result itself), "עריכה" (link to the goal form), and a menu with "מטרה נוספת" and "מחיקה מהמכשיר".
 - With several goals: the current goal as the row, the others as chips under it in their order (D12); tapping a chip makes it current and re-runs the result.
+- Amended 2026-10-25 (the founder): on the first page every goal is a row like the current one, in their order, each with "לתוצאה", "עריכה" and its menu; a goal that holds nothing yet reads "עוד לא מולאה" with "למילוי". The chips stay on the result and the fee page.
 - On company and track pages the compact form: one line, "המטרה השמורה: {שם} · {שנים}", with "שינוי".
 
 **Phone:** full width, the actions as 44 px icon buttons. **PC:** the same row at `max-w-page`.

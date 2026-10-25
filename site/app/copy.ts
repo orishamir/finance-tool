@@ -949,6 +949,10 @@ export const r2 = {
 
   strip: {
     saved: "נשמר במכשיר הזה",
+    // NEW 2026-10-25 (the first page lists every goal as a row, the founder): a goal that holds nothing yet
+    blank: "עוד לא מולאה",
+    fill: "למילוי",
+    savedAll: "נשמרו במכשיר הזה",
     toResult: "לתוצאה",
     edit: "עריכה",
     menu: "עוד פעולות",
