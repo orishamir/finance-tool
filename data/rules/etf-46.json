@@ -1,0 +1,131 @@
+{
+  "id": "ETF-46",
+  "title": "NASDAQ-100: 100 of the largest non-financial Nasdaq-listed companies, modified market-cap weights with company and security caps, annual December reconstitution and quarterly rebalances",
+  "title_he": "נאסד״ק 100: בחירה, משקלים ותקרות",
+  "strength": "primary",
+  "dimensions": [
+    "currency",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-15",
+  "figures": {
+    "constituents": {
+      "value": 100,
+      "unit": "count",
+      "source": {
+        "url": "https://indexes.nasdaqomx.com/docs/Methodology_NDX.pdf",
+        "title": "Nasdaq, \"Nasdaq-100 Index Methodology\" (PDF of 30.4.2026)",
+        "publisher": "Nasdaq",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-46"
+      ],
+      "state": "sourced",
+      "notes": "Methodology p.1 and p.5: selection concludes at 100 constituents; the factsheet shows 101 securities on 09/30/2026 (multiple share classes)."
+    },
+    "company_cap": {
+      "value": 20,
+      "unit": "pct",
+      "source": {
+        "url": "https://indexes.nasdaqomx.com/docs/Methodology_NDX.pdf",
+        "title": "Nasdaq, \"Nasdaq-100 Index Methodology\" (PDF of 30.4.2026)",
+        "publisher": "Nasdaq",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-46"
+      ],
+      "state": "sourced",
+      "notes": "Methodology p.5: if any company's initial weight exceeds 24%, no company may exceed 20%."
+    },
+    "security_cap": {
+      "value": 14,
+      "unit": "pct",
+      "source": {
+        "url": "https://indexes.nasdaqomx.com/docs/Methodology_NDX.pdf",
+        "title": "Nasdaq, \"Nasdaq-100 Index Methodology\" (PDF of 30.4.2026)",
+        "publisher": "Nasdaq",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-46"
+      ],
+      "state": "sourced",
+      "notes": "Methodology p.6: if any security exceeds 15%, it is cut to 14%."
+    },
+    "min_advt": {
+      "value": 5000000,
+      "unit": "usd",
+      "source": {
+        "url": "https://indexes.nasdaqomx.com/docs/Methodology_NDX.pdf",
+        "title": "Nasdaq, \"Nasdaq-100 Index Methodology\" (PDF of 30.4.2026)",
+        "publisher": "Nasdaq",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-46"
+      ],
+      "state": "sourced",
+      "notes": "Methodology p.3: three-month average daily value traded (ADVT) of at least $5 million (USD)."
+    }
+  },
+  "text_he": "לפי נאסד״ק, המדד כולל מאה מהחברות הגדולות הנסחרות בנאסד״ק, בלי חברות פיננסיות, ומשקלן נקבע לפי שווי שוק עם תקרות לחברה בודדת ולקבוצת החברות הגדולות יחד. ההרכב נקבע מחדש פעם בשנה בדצמבר, ופעם ברבעון מתעדכנים מספרי המניות ונגרעות חברות שירדו בדירוג.",
+  "figure_names_he": {
+    "constituents": "מספר החברות במדד",
+    "company_cap": "תקרת משקל לחברה",
+    "security_cap": "תקרת משקל לנייר",
+    "min_advt": "מחזור יומי ממוצע מזערי"
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://indexes.nasdaqomx.com/docs/Methodology_NDX.pdf",
+      "title": "Nasdaq, \"Nasdaq-100 Index Methodology\"",
+      "publisher": "Nasdaq Global Indexes",
+      "publisher_he": "Nasdaq Global Indexes",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "pp.1-9",
+      "locator_he": "עמודים 1 עד 9",
+      "page": 1,
+      "checked": "2026-10-25",
+      "qualifier": "(index provider)"
+    },
+    {
+      "url": "https://indexes.nasdaqomx.com/docs/FS_NDX.pdf",
+      "title": "Nasdaq, \"Nasdaq-100 factsheet\" (data as of 09/30/2026)",
+      "publisher": "Nasdaq Global Indexes",
+      "publisher_he": "Nasdaq Global Indexes",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-10-25",
+      "qualifier": "(index provider)"
+    }
+  ]
+}

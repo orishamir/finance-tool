@@ -1,0 +1,190 @@
+{
+  "id": "ETF-51",
+  "title": "The legal frame for swaps in Israeli funds: an unfunded swap is allowed only on an index of foreign securities, a commodity or a currency, under credit-risk conditions and exposure caps",
+  "title_he": "עסקת החלף בקרן נאמנות: מתי מותר",
+  "strength": "primary",
+  "dimensions": [
+    "regulator",
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "swap_other_underlying_cap": {
+      "value": 110,
+      "unit": "pct",
+      "source": {
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=13",
+        "title": "קובץ התקנות 8038, p.13 (gazette p.2405), תקנות הנכסים תקנה 8א",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-51"
+      ],
+      "state": "sourced",
+      "notes": "Reg. 8א(א): exposure to an underlying that is not equity through an unfunded swap or forward at most 110% of net assets."
+    },
+    "swap_equity_default_cap": {
+      "value": 200,
+      "unit": "pct",
+      "source": {
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=13",
+        "title": "קובץ התקנות 8038, p.13 (gazette p.2405), תקנות הנכסים תקנה 8א",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-51"
+      ],
+      "state": "sourced",
+      "notes": "Reg. 8א(א): equity exposure through an unfunded swap at most the fund's stated maximum, or 200% if none is stated."
+    },
+    "collateral_cap_non_tracking": {
+      "value": 20,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(אופציות,_חוזים_עתידיים_ומכירות_בחסר)",
+        "title": "תקנות השקעות משותפות בנאמנות (אופציות, חוזים עתידיים ומכירות בחסר), תקנה 7(א)",
+        "publisher": "Hebrew Wikisource",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-51"
+      ],
+      "state": "sourced",
+      "notes": "Reg. 7(א): applies to a fund that is not a tracking fund (40% in a leveraged fund)."
+    }
+  },
+  "text_he": "החוק והתקנות מתירים לקרן נאמנות להחזיק עסקת החלף שאינה במימון, שבה הצדדים מחליפים רק את ההפרשים במחיר המדד כנגד ריבית, רק כשנכס הבסיס הוא מדד של ניירות ערך זרים, סחורה או מטבע חוץ, ובתנאים שמגבילים את סיכון האשראי. לכן קרן על מדד ישראלי משיגה את החשיפה בקניית המניות או בנגזרים הנסחרים בבורסה, ולא בעסקת החלף. התקנות קובעות גם תקרה לחשיפה דרך עסקה כזו ודרך לשערך אותה.",
+  "figure_names_he": {
+    "swap_other_underlying_cap": "תקרת חשיפה לנכס בסיס שאינו מניות",
+    "swap_equity_default_cap": "תקרת חשיפה מנייתית כשלא נקבעה אחרת",
+    "collateral_cap_non_tracking": "תקרת בטוחות בקרן שאינה מחקה"
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.47, s.64",
+      "locator_he": "עמוד 47, סעיף 64",
+      "page": 47,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=9",
+      "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018, ותיקון תקנות הנכסים ותקנות המחירים (קובץ התקנות 8038)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018, ותיקון תקנות הנכסים ותקנות המחירים (קובץ התקנות 8038)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "pp.9-10",
+      "locator_he": "עמודים 9 עד 10",
+      "page": 9,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=13",
+      "title": "קובץ התקנות 8038",
+      "title_he": "קובץ התקנות 8038",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.13",
+      "locator_he": "עמוד 13",
+      "page": 13,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=16",
+      "title": "קובץ התקנות 8038",
+      "title_he": "קובץ התקנות 8038",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.16",
+      "locator_he": "עמוד 16",
+      "page": 16,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=5",
+      "title": "קובץ התקנות 8038",
+      "title_he": "קובץ התקנות 8038",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.5",
+      "locator_he": "עמוד 5",
+      "page": 5,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(נכסים_שמותר_לקנות_ולהחזיק_בקרן_ושיעוריהם_המרביים)",
+      "title": "תקנות השקעות משותפות בנאמנות (נכסים שמותר לקנות ולהחזיק בקרן ושיעוריהם המרביים), התשנ\"ה-1994",
+      "title_he": "תקנות השקעות משותפות בנאמנות (נכסים שמותר לקנות ולהחזיק בקרן ושיעוריהם המרביים), התשנ״ה-1994",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "regs. 2, 3",
+      "locator_he": "תקנות 2, 3",
+      "anchor": "סעיף_2",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(אופציות,_חוזים_עתידיים_ומכירות_בחסר)",
+      "title": "תקנות השקעות משותפות בנאמנות (אופציות, חוזים עתידיים ומכירות בחסר), התשס\"א-2001",
+      "title_he": "תקנות השקעות משותפות בנאמנות (אופציות, חוזים עתידיים ומכירות בחסר), התשס\"א-2001",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "regs. 1, 2, 7",
+      "locator_he": "תקנות 1, 2, 7",
+      "anchor": "סעיף_1",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
+      "title": "הבורסה, \"הנחיות על פי החלק השביעי לתקנון\" (מדריך מעו\"ף, עמודים מעודכנים עד 4.8.2026)",
+      "title_he": "הנחיות על פי החלק השביעי לתקנון הבורסה (״מדריך מעו״ף״)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.9",
+      "locator_he": "עמוד 9",
+      "page": 9,
+      "checked": "2026-10-25",
+      "qualifier": "(index provider)"
+    }
+  ]
+}

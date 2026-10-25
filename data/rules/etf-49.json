@@ -1,0 +1,135 @@
+{
+  "id": "ETF-49",
+  "title": "MSCI return versions: gross and net (dividends after the highest non-treaty withholding rate: US 30%, Israel 25%); Israeli funds track the net version in USD",
+  "title_he": "מדדי MSCI: ברוטו ונטו",
+  "strength": "primary",
+  "dimensions": [
+    "distribution-policy",
+    "currency",
+    "foreign-withholding-domicile"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "us_withholding_in_net": {
+      "value": 30,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.msci.com/index/methodology/latest/IndexCalc",
+        "title": "MSCI, \"MSCI Index Calculation Methodology\", September 2026, pp.25, 51",
+        "publisher": "MSCI",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-49"
+      ],
+      "state": "sourced",
+      "notes": "Appendix table, USA foreign rate 30 (domestic 30)."
+    },
+    "israel_withholding_in_net": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.msci.com/index/methodology/latest/IndexCalc",
+        "title": "MSCI, \"MSCI Index Calculation Methodology\", September 2026, pp.25, 51",
+        "publisher": "MSCI",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-49"
+      ],
+      "state": "sourced",
+      "notes": "Appendix table, Israel 25."
+    }
+  },
+  "text_he": "MSCI מחשבת גרסה ברוטו, שמשקיעה מחדש את כל הדיבידנד, וגרסה נטו, שמנכה קודם את שיעור המס הגבוה ביותר שמדינת החברה גובה ממשקיע מוסדי זר שאינו נהנה מאמנת מס. הקרנות הישראליות על מדדי העולם שנבדקו עוקבות אחר גרסת הנטו בדולר, כך שמחזיק שמשלם בפועל מס נמוך יותר על הדיבידנד מקבל יותר ממה שהמדד מניח.",
+  "figure_names_he": {
+    "us_withholding_in_net": "מס על דיבידנד אמריקני בגרסת הנטו",
+    "israel_withholding_in_net": "מס על דיבידנד ישראלי בגרסת הנטו"
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.msci.com/index/methodology/latest/IndexCalc",
+      "title": "MSCI, \"MSCI Index Calculation Methodology\", September 2026",
+      "publisher": "MSCI",
+      "publisher_he": "MSCI",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "pp.25, 33, 50-51",
+      "locator_he": "עמודים 25, 33, 50-51",
+      "checked": "2026-10-25",
+      "qualifier": "(index provider)"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1729001-1730000/P1729627-00.pdf",
+      "title": "MTF, דוח שנתי \"MTF מחקה (MSCI World (4D\" (5122569), 31.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.2-3",
+      "locator_he": "עמודים 2 עד 3",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1731001-1732000/P1731275-00.pdf",
+      "title": "תכלית, דוח שנתי \"תכלית MSCI WORLD (4D) TTF\" (5124573), 31.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732496-00.pdf",
+      "title": "אי.בי.אי., דוח שנתי \"אי.בי.אי. מחקה (4D)י MSCI AC World\" (5139605), 31.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727505-00.pdf",
+      "title": "קסם, דוח שנתי \"קסם MSCI AC World (4A) ETF מנוטרלת דולר\" (1147362), 31.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.3, 11",
+      "locator_he": "עמודים 3, 11",
+      "page": 3,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1724001-1725000/P1724834-00.pdf",
+      "title": "קסם, דוח שנתי \"קסם MSCI World (4A) ETF מנוטרלת דולר\" (1147073), 31.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.3, 10",
+      "locator_he": "עמודים 3, 10",
+      "page": 3,
+      "checked": "2026-10-25"
+    }
+  ]
+}

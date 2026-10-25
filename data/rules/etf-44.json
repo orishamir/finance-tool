@@ -1,0 +1,129 @@
+{
+  "id": "ETF-44",
+  "title": "TA-35: what TASE says it is, how its 35 shares are chosen, a 7% weight cap, gross total return in shekels",
+  "title_he": "ת״א 35: בחירה, תקרת משקל, תשואה כוללת",
+  "strength": "primary",
+  "dimensions": [
+    "currency",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-15",
+  "figures": {
+    "constituents": {
+      "value": 35,
+      "unit": "count",
+      "source": {
+        "url": "https://market.tase.co.il/he/market_data/index/142/about",
+        "title": "הבורסה, \"ת\"א-35 אודות המדד\" (מדד 142; נקרא בכרום 2026-10-25)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-44"
+      ],
+      "state": "sourced",
+      "notes": "Index page \"מס' ני\"ע במדד 35\"; annex 1 s.3."
+    },
+    "weight_cap": {
+      "value": 7,
+      "unit": "pct",
+      "source": {
+        "url": "https://market.tase.co.il/he/market_data/index/142/about",
+        "title": "הבורסה, \"ת\"א-35 אודות המדד\" (מדד 142; נקרא בכרום 2026-10-25)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-44"
+      ],
+      "state": "sourced",
+      "notes": "Index page \"מגבלת משקל 7%\"; annex 1 footnote: the committee set 7% and a specific cap for each share of a U.S.-incorporated company."
+    },
+    "weight_cap_ceiling": {
+      "value": 10,
+      "unit": "pct",
+      "source": {
+        "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
+        "title": "הבורסה, \"הנחיות על פי החלק השביעי לתקנון\" (מדריך מעו\"ף; עמודי הנספחים מעודכנים ל-2.11.2023), p.29, annex 1 s.6",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-44"
+      ],
+      "state": "sourced",
+      "notes": "\"ובלבד שלא תעלה על 10%\"."
+    },
+    "min_public_holdings": {
+      "value": 30,
+      "unit": "pct",
+      "source": {
+        "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
+        "title": "הבורסה, \"הנחיות על פי החלק השביעי לתקנון\" (מדריך מעו\"ף; עמודי הנספחים מעודכנים ל-2.11.2023), p.28, annex 1 s.2(ג)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "ETF-44"
+      ],
+      "state": "sourced",
+      "notes": "20% for a share listed less than two years."
+    }
+  },
+  "text_he": "לפי הבורסה, מדד הדגל כולל את שלושים וחמש המניות בעלות שווי השוק הממוצע הגבוה ביותר מבין המניות שעומדות בתנאי הסף, וההרכב מתעדכן פעמיים בשנה. מניה נכנסת כשהיא מדורגת מספיק גבוה ויוצאת רק כשהיא יורדת מתחת לדירוג היציאה, וועדת המדדים קבעה תקרת משקל למניה בודדת. המדד מחושב כתשואה כוללת ברוטו: הדיבידנד נכנס למדד לפני מס, ולכן קרן שעוקבת אחריו נמדדת מול מדד שלא ניכה ממנו מס.",
+  "figure_names_he": {
+    "constituents": "מספר המניות במדד",
+    "weight_cap": "תקרת המשקל למניה",
+    "weight_cap_ceiling": "הגבול העליון לתקרה בהנחיות",
+    "min_public_holdings": "שיעור החזקות ציבור מזערי"
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://market.tase.co.il/he/market_data/index/142/about",
+      "title": "הבורסה, \"ת\"א-35 אודות המדד\" (מדד 142)",
+      "title_he": "הבורסה, \"ת\"א-35 אודות המדד\" (מדד 142)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-25",
+      "qualifier": "(index provider; read in Chrome)"
+    },
+    {
+      "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
+      "title": "הבורסה, \"הנחיות על פי החלק השביעי לתקנון\" (מדריך מעו\"ף, עמודים מעודכנים עד 4.8.2026)",
+      "title_he": "הנחיות על פי החלק השביעי לתקנון הבורסה (״מדריך מעו״ף״)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "pp.28-29, annex 1",
+      "page": 28,
+      "checked": "2026-10-25",
+      "qualifier": "(index provider)"
+    }
+  ]
+}

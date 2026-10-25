@@ -35,12 +35,13 @@ describe("fund-variant view", () => {
     expect(r.view.coverage.invariantOk).toBe(true);
   });
 
-  it("ranks the IBI S&P 500 ETF (8 of 9 by fee; an Israeli exempt fund, shekels) with a computed figure and the security number", () => {
+  it("ranks the IBI S&P 500 ETF (the dearest by fee; an Israeli exempt fund, shekels) with a computed figure and the security number", () => {
     const r = build("index-sp500");
     if (r.kind !== "ok") throw new Error("not ok");
     const ibi = r.view.rows.find((x) => x.recordId === "1148162")!;
     expect(ibi.kind).toBe("ranked");
-    expect(ibi.rank).toBe(8); // 8 of 9 by fee since the eight records of 2026-10-24
+    // its 0.8% fixed and 0.3% variable fee rank it last of the ranked funds (8 of 9 on 2026-10-24, 13 of 14 records on 2026-10-25)
+    expect(ibi.rank).toBe(Math.max(...r.view.rows.flatMap((x) => (x.rank === undefined ? [] : [x.rank]))));
     expect(ibi.number).toBe("1148162");
     expect(ibi.value?.state).toBe("computed");
     expect(ibi.tags).toEqual({ domicile: "IL", policy: "accumulating" });
