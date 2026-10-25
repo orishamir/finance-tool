@@ -178,3 +178,60 @@ All ways hold the same index, so the return mostly cancels. What differs is fees
   - the page's name (proposed: "השקעה במדד");
   - whether index tracks inside savings products (kupat gemel lehashkaa, study fund, IRA) appear as rows beside the securities-account ways;
   - 9.5 question 1 (ranking without an entered return).
+
+## 10. Second round: labels, a custom index, foreign brokers, onboarding (2026-10-25, evening)
+
+The founder asked for:
+- Interactive Israel and Interactive Brokers (an agent is collecting them);
+- a better "השקעה במדד" page, with an "אחר" index the person types;
+- the labels developed into a system that explains itself;
+- an easier start on the goal comparison for people who know less.
+He also asked that UI talk always come with visuals (memory `show-ui-visually`).
+
+### 10.1 Labels: one system, five families
+Each label is an icon plus two or three words. Colour never carries meaning alone (design system). Tapping a label opens a short sheet:
+- what it means, in one or two plain sentences;
+- what it means for this plan, with a number where the engine has one;
+- the rule chips;
+- a link to the term.
+A line above the table, "מה אומרות התוויות?", opens every label on the page at once. The labels become glossary terms (`data/terms`), so search finds them.
+
+| Family | Labels | Tone |
+|---|---|---|
+| Where it is held | קרן ישראלית · קרן חוץ בת״א · נקנית בחו״ל | neutral |
+| How it trades | קרן סל: נסחרת כל היום · קרן מחקה: פעם ביום | neutral |
+| How it follows the index | מחזיקה את המניות · עסקת החלף (ETF-51, ETF-52) | neutral |
+| Currency | חשיפה לדולר · מנוטרלת מט״ח · בשקלים | neutral |
+| Tax | מס גם על עליית הדולר (TXS-09) · מס דיבידנד 15% בקרן (TXF-16) · מס על כל חלוקה (TXF-08) · מס רק במכירה (open, TXF OQ1: carries the lock) | neutral, or the open-rule lock |
+| What it asks of you, and risk | דיווח עצמי למס (TXF-22) · מס עיזבון אמריקאי (TXF-27) · לא בפיקוח רשות ני״ע (BRK-06, ETF-24) · צריך טופס W-8BEN (TXF-13) | caution |
+| Availability | לא זמין בבית ההשקעות הזה | caution |
+
+A label states a sourced fact or an open rule. It never praises: there is no "good" label.
+
+### 10.2 The custom index ("אחר")
+- An "אחר" chip opens a field with suggestions: the indices named in the fund records and in the rule base, for example MSCI EM and MSCI Europe from ETF-32.
+- For a name the site doesn't know, two questions settle what can be said without any fund record: where the companies are (Israel / the US / the world / emerging markets / other), and the index's currency.
+- The page then shows the routes that exist in principle, each with its labels:
+  - An Israeli index: only Israeli funds, holding the shares (ETF-51). No foreign fund may specialise in Israel (ETF-31).
+  - A foreign index: Israeli funds through swaps, foreign funds on TASE if there are any, and funds abroad.
+- The brokers' costs per route still compute, because they depend on the instrument class, not the fund.
+- Funds without records are shown as "לא נאספו קרנות על המדד הזה", with a link to Maya's search for the index name. This follows D17: no blind spot, and no guess.
+- Availability per broker comes from a broker × vehicle matrix: Israeli tracking fund, Israeli ETF, TASE foreign fund, LSE UCITS ETF, US ETF. For example, a foreign broker does not sell Israeli tracking funds, and US ETFs may be blocked at an EU-regulated entity (the foreign-brokers agent is sourcing this).
+
+### 10.3 The page, improved
+- **"What each choice is worth"** comes before the table, as three short bars. For the founder's plan: the broker, up to 48,000 NIS; the fund, up to 16,000; the route, not priced yet. This is the dilemma-first rule made visible.
+- **Your own broker** is pinned as a row: "אצלכם היום: לאומי".
+- **Labels double as filters:** "בלי דיווח עצמי", "רק בשקלים", "רק בבורסה בתל אביב".
+- **Custom index:** the "אחר" chip, as in 10.2.
+
+### 10.4 Easier start on the goal comparison
+Today a person with a 20-year goal and no return typed sees a money-market fund ranked first, under a legend of number colours, a "type a return" line, "16 options not checked" and a past-record paragraph. Changes:
+1. **A journey line at the top:** מטרה → מוצר → מדד → דרך → מה עושים. It shows where they are and what comes after the product answer, and it is the bridge to "השקעה במדד".
+2. **The answer as a threshold instead of a demand for a return.** For example: "בכל תשואה מעל 3.6% בשנה, חשבון ניירות ערך משאיר הכי הרבה; מתחת לזה, קרן כספית." The comparison already computes this flip point. The person can still type a return. D9 holds: nothing is forecast.
+3. **Two quick questions,** employment type and age, asked as chips in the card itself. Today they hide behind "16 options not checked".
+4. **The number-colour legend** appears as a one-time tip beside the first number, not as a strip at the top.
+5. **After the product answer, the index step.** Explain-only cards per index, carrying the same labels (D27: no recommendation), or "compare more than one", which shows the ways for each chosen index side by side.
+
+### 10.5 For the founder
+1. Should the threshold sentence (10.4, point 2) replace "type a return" as the first answer for people who type none?
+2. Should the journey line appear only on the goal path, or also on "השקעה במדד"?
