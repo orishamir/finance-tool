@@ -100,16 +100,18 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
         <span />
       </div>
       <div className="sheet-body">
-        <div className="sheet-head">
+        {/* floats in the top corner beside the first line, and stays there while the body scrolls (2026-10-25: it had a row
+            of its own above the content) */}
+        <div className="sheet-head" data-back={onBack ? "" : undefined}>
           {onBack ? (
-            <Button variant="icon" onClick={onBack} aria-label={site.back} className="-ms-2.5">
-              <IconArrowBack />
+            <Button variant="icon" onClick={onBack} aria-label={site.back} className="!size-9 !rounded-full bg-popover/90 !text-muted-foreground hover:!text-foreground">
+              <IconArrowBack size={20} />
             </Button>
           ) : (
             <span />
           )}
-          <Button variant="icon" onClick={onClose} aria-label={site.close} className="-me-2.5">
-            <IconClose />
+          <Button variant="icon" onClick={onClose} aria-label={site.close} className="!size-9 !rounded-full bg-popover/90 !text-muted-foreground hover:!text-foreground">
+            <IconClose size={20} />
           </Button>
         </div>
         {children}

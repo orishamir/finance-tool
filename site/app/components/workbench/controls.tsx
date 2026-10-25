@@ -69,7 +69,7 @@ export function WorkbenchControls({
           <label htmlFor="wb-filter" className="sr-only">
             {copy.filter}
           </label>
-          <input id="wb-filter" dir="auto" value={filter} onChange={(e) => onFilter(e.target.value)} placeholder={copy.filter} className="field-input !text-start" autoComplete="off" />
+          <input id="wb-filter" dir="rtl" value={filter} onChange={(e) => onFilter(e.target.value)} placeholder={copy.filter} className="field-input !text-start text-mixed" autoComplete="off" />
         </div>
         <div role="group" aria-label={copy.sort.aria} className={cx("inline-flex w-full rounded-md bg-muted p-[3px] gap-[3px] lg:max-w-2xl", compact && "max-lg:hidden")}>
           {sortKeys.map((v) => {

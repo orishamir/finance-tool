@@ -92,7 +92,7 @@ export function EnteredOfferCard({ view, offer, today, writable, showFx, onSave,
             {t.whoText}
           </label>
           <div className="field-box">
-            <input id={`${dateId}-by`} type="text" dir="auto" value={draft.offeredBy} onChange={(e) => set("offeredBy", e.target.value)} className="field-input !text-start" autoComplete="off" />
+            <input id={`${dateId}-by`} type="text" dir="rtl" value={draft.offeredBy} onChange={(e) => set("offeredBy", e.target.value)} className="field-input !text-start text-mixed" autoComplete="off" />
           </div>
         </div>
         <div className="field">

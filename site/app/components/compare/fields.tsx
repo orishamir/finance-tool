@@ -136,7 +136,7 @@ export function NameField({ label, value, onChange }: { label: ReactNode; value:
       </label>
       <div className="field-body">
         <div className="field-box">
-          <input id={id} type="text" dir="auto" value={value} onChange={(e) => onChange(e.target.value)} className="field-input !text-start" autoComplete="off" />
+          <input id={id} type="text" dir="rtl" value={value} onChange={(e) => onChange(e.target.value)} className="field-input !text-start text-mixed" autoComplete="off" />
         </div>
       </div>
     </div>

@@ -809,7 +809,7 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 9 and the handoff in 
 | Return, hint | הזינו את התשואה שאתם מניחים. היא תסומן בכחול בכל מקום שבו היא משפיעה. |
 | Return, filled | תשואה שהזנתם תסומן בגרף בקו מקווקו, כי היא שלכם ולא של האתר. |
 | Inflation, start | ערך התחלתי, פרמטר של האתר | (now the one line above the fields, changed 2026-10-24, UX fix 17)
-| Button | להשוואה |
+| Button | ~~להשוואה~~ השוואה לפי מוצר (2026-10-25: beside "השוואה לפי חשיפה", the first button did not say what it compares); under both, "מוצר: איפה הכסף מוחזק, כמו קרן השתלמות, קופת גמל להשקעה, חשבון השקעות או פיקדון. חשיפה: במה הוא מושקע בתוך המוצר, כמו מדד מניות, אג״ח או מזומן." (`r5.form.firstDoor`, `r5.form.doorsLine`) |
 | Goals list heading | המטרות שלכם |
 | Goals list, line | המטרות נבדקות אחת אחת, מימין לשמאל: הראשונה מקבלת את הכסף קודם. גררו מטרה כדי לשנות את הסדר. | (was "…לפי הסדר. הראשונה מקבלת את הכסף קודם."; the chips are dragged since 2026-10-24, night)
 | Add a goal | מטרה נוספת |
@@ -2657,13 +2657,13 @@ Removed with the round, nothing renders them: `rulesPage.ruleCount`, `rulesFront
 |---|---|---|
 | `sourceBlock.mirrorKind` | נוסח החוק (עותק) | the document kind on a mirror link; "עותק" is the strength word already in use |
 | `sourceBlock.hosts.wikisource` / `.nevo` | ויקיטקסט · אתר נבו | |
-| `sourceBlock.readable` | לקריאה נוחה: הנוסח המשולב (עותק) | changed (was "המאוחד"): the legal term for a text with its amendments folded in is נוסח משולב, as in "חוק הביטוח הלאומי [נוסח משולב]" |
+| ~~`sourceBlock.readable`~~ | ~~לקריאה נוחה: הנוסח המשולב (עותק)~~ | removed 2026-10-25 (the founder: no copy "for an easy read"; a copy is left out when the rule has an official source, `pickSources`) |
 | `sourceBlock.checked` | נבדק | followed by the date, no colon: a sentence fragment |
 | `sourceBlock.mayHaveChanged` | מאז ייתכן שהנוסח השתנה. | |
 | `sourceBlock.pdfTag` | PDF | Latin as the source writes it |
 | `sourceBlock.more` | עוד מקור אחד · עוד שני מקורות · עוד `{n}` מקורות | dual form for 2 |
 | `sourceBlock.weak` | עותק · לפי החברה · מקור משני | the strength word after "נבדק {date} ·", only when weaker than the law |
-| `sourceBlock.citation.checked` / `.copied` | נבדק · ההפניה הועתקה. | toast after the copy button |
+| `sourceBlock.citation.checked` / `.copied` | נבדק · הועתק | the citation box's label turns into "הועתק" for two seconds after the copy ("ההפניה הועתקה." until 2026-10-25) |
 | `sourceBlock.officialMissing` | הפרסום הרשמי ברשומות עוד לא צורף; הנוסח נקרא מתוך עותק. | changed (was "נקרא בעותק"); rules page only, under a mirror rule |
 | `sourceBlock.legendLine` | כל כלל נכתב מנוסח החוק או ממסמך של הרשות כשאפשר; כשהוא נלקח ממסמך של חברה, זה מסומן לידו. התאריך הוא היום שבו האתר קרא את המקור. | changed ("כלל נכתב" → "כל כלל נכתב", "כתוב לידו" → "מסומן לידו": the mark is a tag, not a sentence) |
 
@@ -2690,7 +2690,7 @@ Removed with the round, nothing renders them: `rulesPage.ruleCount`, `rulesFront
 | `ruleCardMore.usesLead` | משפיע על | |
 | `ruleCardMore.usesEngine` | החישובים באתר | changed (was "מנוע החישוב"): a document word; the reader knows "חישובים" |
 | `ruleCardMore.usesNone` | כלל רקע: לא נכנס לחישוב ולא מוצג בעמוד אחר. | |
-| `ruleCardMore.copyCitation` | העתקת ההפניה | noun form, one-action button |
+| `ruleCardMore.copyCitation` · `ruleCardMore.citationLabel` | העתקת מראה המקום · מראה מקום | 2026-10-25 (the founder: "הפניה" is not the Hebrew word for a citation): "מראה מקום", the label of a one-line box at the foot of the rule card that shows the citation and copies it on a press; the first is its tooltip ("העתקת ההפניה" until then) |
 | `ruleCardMore.experienceTag` | ניסיון של אדם אחד | the four forum entries |
 
 ### rulesFront

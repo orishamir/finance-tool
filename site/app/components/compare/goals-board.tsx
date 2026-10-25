@@ -258,7 +258,7 @@ function RenameInput({ goal, onDone }: { goal: Goal; onDone: (name: string | nul
     <input
       ref={ref}
       type="text"
-      dir="auto"
+      dir="rtl"
       value={value}
       maxLength={80}
       aria-label={r2.form.renameField}
@@ -275,7 +275,7 @@ function RenameInput({ goal, onDone }: { goal: Goal; onDone: (name: string | nul
         }
       }}
       onBlur={() => onDone(cancelled.current ? null : value.trim())}
-      className="min-h-target rounded-full border border-ring bg-background px-3.5 text-sm text-foreground outline-none"
+      className="min-h-target rounded-full border border-ring bg-background px-3.5 text-sm text-foreground outline-none text-mixed"
     />
   );
 }

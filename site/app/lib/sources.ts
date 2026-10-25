@@ -64,7 +64,11 @@ function figureValues(figures: RuleRecord["figures"] | undefined): FigureValue[]
   return out;
 }
 
-/** The rule's sources, strongest first (stable inside a strength, so the data's own order is kept); the figures' sources, one per link, when the record has none. */
+/**
+ * The rule's sources, strongest first (stable inside a strength, so the data's own order is kept); the figures' sources, one
+ * per link, when the record has none. A copy of an official text (Wikisource, Nevo) is left out when an official source is
+ * there: the site no longer offers a copy "for an easy read" beside it (2026-10-25, the founder).
+ */
 export function pickSources(rule: Pick<SourcedRule, "sources" | "figures">): RuleSource[] {
   const own = rule.sources;
   const list: RuleSource[] = own && own.length > 0 ? [...own] : [];
@@ -77,7 +81,12 @@ export function pickSources(rule: Pick<SourcedRule, "sources" | "figures">): Rul
       list.push({ url: s.url, title: s.title, publisher: s.publisher, strength: s.strength as SourceStrength, checked: v.checked });
     }
   }
-  return list.map((s, i) => ({ s, i })).sort((a, b) => rankOf(a.s.strength) - rankOf(b.s.strength) || a.i - b.i).map((x) => x.s);
+  const official = list.some((s) => s.strength === "primary");
+  return list
+    .filter((s) => !(official && s.strength === "primary-mirror"))
+    .map((s, i) => ({ s, i }))
+    .sort((a, b) => rankOf(a.s.strength) - rankOf(b.s.strength) || a.i - b.i)
+    .map((x) => x.s);
 }
 
 /** True when the link opens a PDF (a `.pdf` path, or a Ministry of Finance blob folder file). */

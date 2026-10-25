@@ -48,7 +48,7 @@ function Body({ companies, institutions }: { companies: { id: string; name: stri
         </label>
         <div className="field-box text-muted-foreground">
           <IconSearch size={18} />
-          <input id="company-filter" dir="auto" value={q} onChange={(e) => setQ(e.target.value)} className="field-input !text-start" autoComplete="off" />
+          <input id="company-filter" dir="rtl" value={q} onChange={(e) => setQ(e.target.value)} className="field-input !text-start text-mixed" autoComplete="off" />
         </div>
       </div>
       {shown.length === 0 && shownInstitutions.length === 0 ? (
