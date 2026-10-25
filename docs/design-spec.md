@@ -287,7 +287,7 @@ Opens from any `Num`. It says what kind of number this is and lets the reader fo
 | Sourced | מקור (link, mirrored external-link icon), פורסם על ידי, נבדק, בתוקף מתאריך / עד, כלל (`RulesLine`); noun labels since 2026-10-24 so a label never ends in a maqaf in one cell with its date in the next ("נבדק ב־" and "בתוקף מ־" until then); a value valid for exactly one calendar year reads "תקף לשנת {year}"; the source title is shown when Hebrew, else the host with the English title behind "שם המקור באנגלית"; English notes are never shown (2026-10-24, UX audit) |
 | Computed | נוסחה (name plus F-ID chip); "ערכים שנכנסו לחישוב" as a readout-style list of `Num`s, each tappable; "כללים שנכנסו לחישוב" as rule chips with their `StrengthLabel` |
 | Entered | "הזנתם את הערך הזה.", במקום: the example value as a `Num`, and the reset button |
-| Site parameter | the value with "פרמטר של האתר", למה הערך הזה, תאריך אישור ("אושר ב־" until 2026-10-24; "עוד לא אושר" and a "ערך זמני" tag in the header for a provisional value) |
+| Site parameter | the value with "פרמטר של האתר", למה הערך הזה (the number's own `rationale_he` line first; the parameter file's general line behind the fold "עוד על הפרמטר", 2026-10-25), תאריך אישור ("אושר ב־" until 2026-10-24; "עוד לא אושר" and a "ערך זמני" tag in the header for a provisional value) |
 | Unknown | the reason from the value object's `notes` |
 | Caution line | for institution or secondary sources (copy 2 "Source strength"), or the stale line |
 

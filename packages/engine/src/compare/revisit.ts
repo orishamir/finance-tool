@@ -131,12 +131,22 @@ export function assumptionVersions(
 
 const descriptive = new Set(["id", "method_id", "rationale", "rationale_he", "signed_off_by", "signed_off_on", "shown_as"]);
 
+/**
+ * A parameter's value without the reader's prose: the per-number `rationale_he` lines (2026-10-25) sit inside the value
+ * objects, so a line added or reworded must not read as a changed parameter on a comparison saved before it.
+ */
+function withoutProse(node: unknown): unknown {
+  if (Array.isArray(node)) return node.map(withoutProse);
+  if (node === null || typeof node !== "object") return node;
+  return Object.fromEntries(Object.entries(node).filter(([k]) => k !== "rationale_he").map(([k, v]) => [k, withoutProse(v)]));
+}
+
 /** Every P-nn record passed, by its method ID. */
 export function parameterVersions(parameters: readonly unknown[]): ParameterVersion[] {
   return parameters
     .map((p) => {
       const r = parameterRecord.parse(p) as Record<string, unknown> & { id: string; method_id: string; value?: ValueObject };
-      const value = r.value ? r.value.value : Object.fromEntries(Object.entries(r).filter(([k]) => !descriptive.has(k)));
+      const value = r.value ? r.value.value : withoutProse(Object.fromEntries(Object.entries(r).filter(([k]) => !descriptive.has(k))));
       return { methodId: r.method_id, id: r.id, value };
     })
     .sort((a, b) => a.methodId.localeCompare(b.methodId));

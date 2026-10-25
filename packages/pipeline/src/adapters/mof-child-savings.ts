@@ -192,7 +192,7 @@ export function normalise(
       status: "confirmed",
       terms_url: TERMS_URL,
       read_on: "2026-10-23",
-      attribution: "מקור המידע: משרד האוצר, החשב הכללי, מאגר \"ריביות של פיקדונות חיסכון לכל ילד – עדכון יומי\", data.gov.il (https://data.gov.il/dataset/savingsplaninterest), לפי תנאי השימוש במאגרי המידע הממשלתיים",
+      attribution: "מקור המידע: משרד האוצר, החשב הכללי, מאגר \"ריביות של פיקדונות חיסכון לכל ילד – עדכון יומי\", data.gov.il (https://data.gov.il/he/datasets/mof/savingsplaninterest), לפי תנאי השימוש במאגרי המידע הממשלתיים",
       fallback: "none needed",
     },
     rule_ids: ["CS-10", "CS-22", "CS-23"],

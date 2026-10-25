@@ -18,7 +18,7 @@
       "value": 3,
       "unit": "months",
       "source": {
-        "url": "https://www.leumi.co.il/Lobby/pension_information/36830",
+        "url": "https://www.leumi.co.il/he/pension-advising/pension-information/pension-advising/pension-information",
         "title": "Bank Leumi, \"עושים סדר בפנסיה\" (clearing-house report service)",
         "publisher": "Bank Leumi",
         "strength": "institution"
@@ -79,7 +79,7 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.leumi.co.il/Lobby/pension_information/36830",
+      "url": "https://www.leumi.co.il/he/pension-advising/pension-information/pension-advising/pension-information",
       "title": "בנק לאומי – עושים סדר בפנסיה",
       "title_he": "בנק לאומי – עושים סדר בפנסיה",
       "publisher": "Bank Leumi",

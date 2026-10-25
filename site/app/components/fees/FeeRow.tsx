@@ -79,13 +79,12 @@ function ReductionField({ line, an, years, value, onChange }: { line: LineView; 
           {notReduction || !worth ? (
             <span className="text-muted-foreground font-normal">{r3fees.reduction.notReduction}</span>
           ) : (
-            <>
+            // one inline sentence: as direct children of the flex column, each piece took its own line (founder's screenshot, 2026-10-25)
+            <span>
               {r3fees.reduction.worthBefore}
-              <Num value={worth} animate />
-              {" "}
-              <LeadTail lead="ב־">{fmt.years(years)}</LeadTail>
+              <Num value={worth} animate /> <LeadTail lead="ב־">{fmt.years(years)}</LeadTail>
               {r3fees.reduction.worthAfter}
-            </>
+            </span>
           )}
           {!notReduction && worth && <span className="text-sm font-normal text-muted-foreground">{r3fees.reduction.noRanking}</span>}
         </p>
@@ -223,7 +222,7 @@ export function FeeRow({ line, an, subject, years, thresholds, reduction, onRedu
       </div>
       {reducible(line.line) && line.rateFraction !== undefined && <ReductionField line={line} an={an} years={years} value={reduction} onChange={onReduce} />}
       {line.reference.cma && (line.line === "balance" || line.line === "deposit") && toPct !== null && (
-        <Disclosure label={r3fees.negotiation.disclosure} defaultOpen={line.verdict === "negotiate"} summaryClassName="text-base font-medium">
+        <Disclosure label={r3fees.negotiation.disclosure} summaryClassName="text-base font-medium">
           <div className="pt-2">
             <NegotiationCard line={line} an={an} subject={subject} toPct={reduction} rules={rules} />
           </div>

@@ -1,0 +1,148 @@
+{
+  "id": "fibi-eitan-kavua-835",
+  "bank": "fibi",
+  "names": {
+    "447": [
+      "איתן-פקדון לשנה עד שנתיים ריבית קבועה",
+      "איתן"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": []
+  },
+  "type_447": "פיקדון לשנה",
+  "wrapper_id": "bank-deposit",
+  "term_months": {
+    "value": 12,
+    "unit": "months",
+    "source": {
+      "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+      "title": "הבנק הבינלאומי, 'ריביות על פיקדונות' (פרסום לפי הוראה 447; דף https://www.fibi.co.il/private/depositsandsavings/interest/ מפנה ל-https://online.fibi.co.il/appsng/Resources/PortalNG/deposits-details/#/details/31, הנתונים נטענים מ-https://apps.fibi.co.il/bff-depositmanagement/api/v1/fibi/depositDetails/31 ו-/creditBalance/31), 'effectiveDate' 2026-10-25, פריים 4.75%, משפחת 'פיקדונות מקובלים', מוצר 311/835 'איתן', סוג מוצר 'פיקדון לשנה'",
+      "publisher": "First International Bank of Israel Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-10-25",
+    "effective_from": "2026-10-25",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-27"
+    ],
+    "state": "sourced",
+    "notes": "Product type printed 'פיקדון לשנה'; recorded as 12 months. The product's full name allows a term of a year or more."
+  },
+  "rate_type": "fixed",
+  "anchor": null,
+  "spread": null,
+  "rate_offered": {
+    "value": 1.85,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+      "title": "הבנק הבינלאומי, 'ריביות על פיקדונות' (פרסום לפי הוראה 447; דף https://www.fibi.co.il/private/depositsandsavings/interest/ מפנה ל-https://online.fibi.co.il/appsng/Resources/PortalNG/deposits-details/#/details/31, הנתונים נטענים מ-https://apps.fibi.co.il/bff-depositmanagement/api/v1/fibi/depositDetails/31 ו-/creditBalance/31), 'effectiveDate' 2026-10-25, פריים 4.75%, 'nominal': '1.85%'",
+      "publisher": "First International Bank of Israel Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-10-25",
+    "effective_from": "2026-10-25",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25"
+    ],
+    "state": "sourced",
+    "notes": "Nominal annual rate printed '1.85%' (adjusted '1.8500%') for the lowest amount tier; fixed, 'לא צמוד', 'אין אפשרות שבירה', exit points 'לא קיימת'. Tiers: 1,000-249,999: 1.85% (common 1.85%); 250,000 and up: 1.95% (common 3.60%). Sister one-year fixed rows: 'גלבוע קבועה שנה' 1.75% from 10,000 (withdrawal on 33 days' notice), 'איתן-הכנסה חודשית' 1.85% from 10,000 (monthly interest), 'אדיר'/'כפיר' 1.50% with quarterly exit points. The publication's benefits list includes '.פיקדון איתן-הטבה של 0.1500% לשנה' (a benefit for this product); whether 1.85% includes it is not stated."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1): 15% על ריבית מנכס שאינו צמוד למדד; read through il-finance TXI-03 and TXI-04 (checked 2026-10-25)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08)."
+  },
+  "amount_range": {
+    "min": {
+      "value": 1000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+        "title": "הבנק הבינלאומי, 'ריביות על פיקדונות' (פרסום לפי הוראה 447; דף https://www.fibi.co.il/private/depositsandsavings/interest/ מפנה ל-https://online.fibi.co.il/appsng/Resources/PortalNG/deposits-details/#/details/31, הנתונים נטענים מ-https://apps.fibi.co.il/bff-depositmanagement/api/v1/fibi/depositDetails/31 ו-/creditBalance/31), 'effectiveDate' 2026-10-25, פריים 4.75%, 'minSum': 1000.00",
+        "publisher": "First International Bank of Israel Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": "2026-10-25",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27"
+      ],
+      "state": "sourced",
+      "notes": "Lowest tier starts at 1,000 ('minSum' 1000.00)."
+    },
+    "max": {
+      "value": 249999,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+        "title": "הבנק הבינלאומי, 'ריביות על פיקדונות' (פרסום לפי הוראה 447; דף https://www.fibi.co.il/private/depositsandsavings/interest/ מפנה ל-https://online.fibi.co.il/appsng/Resources/PortalNG/deposits-details/#/details/31, הנתונים נטענים מ-https://apps.fibi.co.il/bff-depositmanagement/api/v1/fibi/depositDetails/31 ו-/creditBalance/31), 'effectiveDate' 2026-10-25, פריים 4.75%, 'maxSum': 249999.00",
+        "publisher": "First International Bank of Israel Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": "2026-10-25",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27"
+      ],
+      "state": "sourced",
+      "notes": "Upper bound of the first tier; 250,000 and up earns 1.95%."
+    }
+  },
+  "break": {
+    "allowed": false,
+    "penalty": "not_allowed",
+    "mechanism_text": "'אין אפשרות שבירה' (breakage field of the 447 row).",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-14"
+    ]
+  },
+  "exit_points": {
+    "exists": false,
+    "every_months": null
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "snapshot": "2026-10-25",
+  "source": {
+    "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+    "title": "הבנק הבינלאומי, 'ריביות על פיקדונות' (פרסום לפי הוראה 447; דף https://www.fibi.co.il/private/depositsandsavings/interest/ מפנה ל-https://online.fibi.co.il/appsng/Resources/PortalNG/deposits-details/#/details/31, הנתונים נטענים מ-https://apps.fibi.co.il/bff-depositmanagement/api/v1/fibi/depositDetails/31 ו-/creditBalance/31), 'effectiveDate' 2026-10-25, פריים 4.75%",
+    "publisher": "First International Bank of Israel Ltd.",
+    "strength": "institution"
+  }
+}

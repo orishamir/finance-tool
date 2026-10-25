@@ -1,0 +1,152 @@
+{
+  "id": "yahav-mundial-hodshi-4y",
+  "bank": "yahav",
+  "names": {
+    "447": [
+      "חיסכון- מונדיאל",
+      "מונדיאל"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": []
+  },
+  "type_447": "חיסכון- מונדיאל",
+  "wrapper_id": "savings-plan",
+  "term_months": {
+    "value": 48,
+    "unit": "months",
+    "source": {
+      "url": "https://www.bank-yahav.co.il/investments/savings/",
+      "title": "בנק יהב, 'חסכונות', טבלת 'חסכונות בהפקדה חודשית', שורת 'מונדיאל', 'תקופת חיסכון': '4 שנים'",
+      "publisher": "Bank Yahav for Government Employees Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-10-25",
+    "effective_from": "2026-10-06",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-28",
+      "BANK-27"
+    ],
+    "state": "sourced",
+    "notes": "The savings page prints 'מונדיאל', 'תקופת חיסכון: 4 שנים' under 'חסכונות בהפקדה חודשית'; recorded as 48 months."
+  },
+  "rate_type": "fixed",
+  "anchor": null,
+  "spread": null,
+  "rate_offered": {
+    "value": 1.8,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+      "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', 'לוח מספר 13_26', 'בתוקף מיום 06/10/2026', עמ' 4 'לוח שיעורי ריבית חסכונות', טבלת 'חיסכון- מונדיאל', 'שנה ראשונה': 1.80%",
+      "publisher": "Bank Yahav for Government Employees Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-10-25",
+    "effective_from": "2026-10-06",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25",
+      "BANK-28"
+    ],
+    "state": "sourced",
+    "notes": "The board prints a rate per year of the plan: 'שנה ראשונה 1.80%, שנה שנייה 2.00%, שנה שלישית 2.20%, שנה רביעית 2.50%' ('תעריפית' equal to 'מתואמת'), amount 'מ-100 ש\"ח עד 5מ' ₪'. This record stores the first-year figure; a single rate does not describe the plan, and whether each figure applies to that year's interest only or to the whole balance on exit in that year is not stated. Yahav has no three-year monthly plan; its two monthly plans are 'מונדיאל' (4 years, fixed, rising) and 'חרמון חודשי' (10 years, variable: first two years (פריים - 3.50%) 1.25%, two to five years (פריים - 3.25%) 1.50%). Neither appears in Yahav's 447 PDF; both are on the board's savings page."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1): 15% על ריבית מנכס שאינו צמוד למדד; read through il-finance TXI-03 and TXI-04 (checked 2026-10-25)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08)."
+  },
+  "amount_range": {
+    "min": {
+      "value": 100,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+        "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', 'לוח מספר 13_26', 'בתוקף מיום 06/10/2026', עמ' 4 'לוח שיעורי ריבית חסכונות', טבלת 'חיסכון- מונדיאל', 'סכום': 'מ-100 ש\"ח עד 5מ' ₪'",
+        "publisher": "Bank Yahav for Government Employees Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": "2026-10-06",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "Printed 'מ-100 ש\"ח עד 5מ' ₪'; read as the amount per monthly deposit, not stated in words."
+    },
+    "max": {
+      "value": 5000000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+        "title": "בנק יהב, 'לוח שיעורי ריבית על פקדונות', 'לוח מספר 13_26', 'בתוקף מיום 06/10/2026', עמ' 4 'לוח שיעורי ריבית חסכונות', טבלת 'חיסכון- מונדיאל', 'סכום': 'מ-100 ש\"ח עד 5מ' ₪'",
+        "publisher": "Bank Yahav for Government Employees Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": "2026-10-06",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "Printed '5מ' ₪' (5 million NIS)."
+    }
+  },
+  "break": {
+    "allowed": false,
+    "penalty": "not_allowed",
+    "mechanism_text": "No break term is printed for this plan (it is not in the 447 table); recorded as not allowed outside exit points, unconfirmed. Exit points per the savings page: 'לאחר שנה ובכל 3 חודשים לאחר מכן'.",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-27"
+    ]
+  },
+  "exit_points": {
+    "exists": true,
+    "every_months": 3
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "snapshot": "2026-10-25",
+  "source": {
+    "url": "https://www.bank-yahav.co.il/media/bn5jiafl/447.pdf",
+    "title": "בנק יהב, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים' / 'שיעורי ריבית על סוגי פיקדונות שקליים נוספים' / 'יתרת זכות בחשבון' (פרסום לפי הוראה 447, קובץ PDF, נוצר 05.10.2026; מקושר מדף הבית); אותם נתונים בלוח 'לוח שיעורי ריבית על פקדונות' https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf, 'לוח מספר 13_26', 'בתוקף מיום 06/10/2026', 'מחליף לוח קודם מיום 03/09/2026', ריבית ב\"י 3.25%, פריים 4.75%",
+    "publisher": "Bank Yahav for Government Employees Ltd.",
+    "strength": "institution"
+  }
+}

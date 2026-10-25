@@ -4,9 +4,12 @@ import { pending as pendingFormulaReleases, type P05Input } from "@finance-tool/
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { wrapperId as wrapperIdEnum, type ExposureRecord, type RuleRecord, type ValueObject, type WrapperId, type WrapperRecord } from "@finance-tool/schema";
-import { buildHishtalmutTerms, buildInstrumentTerms, loadDepositTerms, loadExposures, loadFunds, regulatorAverageFees } from "./instruments.server";
+import { buildHishtalmutTerms, loadExposures, regulatorAverageFees } from "./instruments.server";
 import { loadChecklistRows, loadCma, loadCmaFees, loadFees, loadParameters, loadRules, loadTerms, loadWrappers, root, today, type ChecklistRow, type TermRow } from "./data.server";
-import { p05Range, runTimeline, type Bundle, type Timeline } from "./engine";
+import { runTimeline, type Bundle, type Timeline } from "./engine";
+import { buildInstrumentBundle, familyOf, missingParts, rulesTouched, type NoGraph } from "./guide-signature-bundle.server";
+import { buildSignatureData } from "./guide-signature.server";
+import type { SignatureData } from "./guide-signature";
 import { isClosedAudience } from "./guide-nav";
 import { playbookWrappers } from "./playbook";
 import { ruleFigure, weaker, type SiteValue, type Strength } from "./value";
@@ -35,6 +38,8 @@ export interface GuidePageData {
   hasPlaybook: boolean;
   /** Rule ids the record's exit sentence cites that have a Hebrew text, in the order the sentence names them (audit A22). */
   exitTextRules: string[];
+  /** The data of this page's "what makes it different" visual (D29), or null when the wrapper has none and its timeline stays open. */
+  signature: SignatureData | null;
   /** Why there is no graph, when there is none (copy: guideBlocks.noGraph). */
   noGraph: NoGraph | null;
   /** The record's formulas the engine does not compute yet, with the release number that brings each. */
@@ -43,11 +48,7 @@ export interface GuidePageData {
   today: string;
 }
 
-export type NoGraph =
-  | { kind: "missing"; parts: string[] }
-  | { kind: "pending"; formulas: string[] }
-  | { kind: "stops"; code: string | null }
-  | { kind: "none" };
+export type { NoGraph };
 
 /** Every rule id a prose module names, found in its source (a name is kept only when a rule record has that id). */
 function scanRuleIds(relPath: string, allRules: Record<string, RuleRecord>): string[] {
@@ -62,38 +63,6 @@ function scanRuleIds(relPath: string, allRules: Record<string, RuleRecord>): str
   // "TXI OQ3" is written with a space in prose; the record id has a hyphen
   for (const m of src.matchAll(/\b([A-Z0-9]{2,6}) OQ(\d{1,3})\b/g)) if (allRules[`${m[1]}-OQ${m[2]}`]) found.add(`${m[1]}-OQ${m[2]}`);
   return [...found];
-}
-
-/** The part of the data a missing-input line (instruments.server.ts) is about, in the words of copy noGraph. */
-function missingParts(messages: string[]): string[] {
-  const parts: string[] = [];
-  const add = (p: string) => parts.includes(p) || parts.push(p);
-  for (const m of messages) {
-    if (/deposit/i.test(m) && !/fees/i.test(m)) add("deposit");
-    else if (/ira_fees/.test(m)) add("ira");
-    else if (/employment/.test(m)) add("employment");
-    else if (/series_rule|GOV rule|data\/rules/.test(m)) add("series");
-    else if (/tariff|fees/i.test(m)) add("tariff");
-    else if (/fund/i.test(m)) add("fund");
-    else add("other");
-  }
-  return parts;
-}
-
-/** The rules a run may read, found by running the engine over the profiles that change its path. */
-function rulesTouched(bundle: Bundle): Set<string> {
-  const ids = new Set<string>();
-  // A large entered deposit takes the paths a small one does not (a study fund's deposit above the benefited
-  // share reads TXH-11; a gemel lehashkaa's above its ceiling reads its routing rules): probe the slider's top too.
-  const top = p05Range(bundle.p05, "sliders", "monthly_deposit")?.max;
-  const deposits: (number | undefined)[] = top === undefined ? [undefined] : [undefined, top];
-  for (const age of [null, 65]) {
-    for (const monthly_deposit of deposits) {
-      const t = runTimeline(bundle, { entered: monthly_deposit === undefined ? {} : { monthly_deposit }, age });
-      if (t.kind === "ok") t.rules.forEach((r) => ids.add(r.id));
-    }
-  }
-  return ids;
 }
 
 function collectRuleIds(node: unknown, out = new Set<string>()): Set<string> {
@@ -184,33 +153,16 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
       noGraph = { kind: "missing", parts: missingParts(missing) };
     }
   } else if (family) {
-    const built = buildInstrumentTerms(id, family, p05.instruments?.[id], {
-      fees: loadFees(),
-      funds: loadFunds(),
-      deposits: loadDepositTerms(),
-      rules: allRules,
-      today: t,
-    });
-    if ("missing" in built) {
-      for (const m of built.missing) console.log(`[guide] ${id}: no timeline: ${m}`);
-      noGraph = { kind: "missing", parts: missingParts(built.missing) };
-    } else {
-      const draft: Bundle = { record, p05, terms: built.terms, feeValues: built.feeValues, rules: Object.values(allRules), runDate: t };
-      const probe = runTimeline(draft, { entered: {}, age: null });
-      if (probe.kind === "failed") {
-        console.log(`[guide] ${id}: no timeline: the run stops (${probe.message})`);
-        noGraph = { kind: "stops", code: /G-\d+|OQ\d+/.exec(probe.message)?.[0] ?? null };
-      } else {
-        const touched = rulesTouched(draft);
-        bundle = { ...draft, rules: Object.values(allRules).filter((r) => touched.has(r.id)) };
-      }
-    }
+    const r = buildInstrumentBundle(record, family, p05, allRules, t);
+    bundle = r.bundle;
+    noGraph = r.noGraph;
   } else console.log(`[guide] ${id}: no timeline: no run for this wrapper`);
   if (!bundle) {
     // a formula the engine does not compute yet is the reason that names the release; missing data comes next
     if (Object.keys(pendingFormulas).length > 0) noGraph = { kind: "pending", formulas: Object.keys(pendingFormulas) };
     else if (!noGraph) noGraph = { kind: "none" };
   }
+  const signature = buildSignatureData(id, bundle);
   const initial = bundle ? runTimeline(bundle, { entered: {}, age: null }) : null;
   if (initial?.kind === "failed") console.log(`[guide] ${id}: the first run stops (${initial.message})`);
 
@@ -223,6 +175,9 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
   // rules the prose module cites (<RulesLine>, <RuleRef>, figure(...)): found in its source so the cards are not empty
   scanRuleIds(`site/app/content/guide/${id}.tsx`, allRules).forEach((r) => cited.add(r));
   bundle?.rules.forEach((r) => cited.add(r.id));
+  // the rules the visual cites and the ones the other wrappers' runs it shows read (their number sheets list them)
+  signature?.ruleIds.forEach((r) => cited.add(r));
+  for (const b of Object.values(signature?.bundles ?? {})) b.rules.forEach((r) => cited.add(r.id));
   const rules: Record<string, RuleRecord> = {};
   for (const rid of cited) if (allRules[rid]) rules[rid] = allRules[rid]!;
 
@@ -263,25 +218,10 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
     .filter((w): w is WrapperRecord => !!w)
     .map((w) => ({ href: `/guide/${w.id}`, label: w.names.he[0]! }));
 
-  return { record, name: record.names.he[0]!, lede, bundle, initial, rules, terms, wrapperCount: wrapperIdEnum.options.length, termsById, checklist, dimensionNames, marks, companies, exposures, hasPlaybook: playbookWrappers.includes(record.id), exitTextRules, noGraph, pendingFormulas, related, today: t };
+  return { record, name: record.names.he[0]!, lede, bundle, initial, rules, terms, wrapperCount: wrapperIdEnum.options.length, termsById, checklist, dimensionNames, marks, companies, exposures, hasPlaybook: playbookWrappers.includes(record.id), exitTextRules, signature, noGraph, pendingFormulas, related, today: t };
 }
 
-export function familyOf(id: WrapperId): "provident" | "deposit" | "securities" | "makam" | "bond" | null {
-  const map: Partial<Record<WrapperId, "provident" | "deposit" | "securities" | "makam" | "bond">> = {
-    "kupat-gemel-lehashkaa": "provident",
-    "keren-hishtalmut": "provident",
-    "bank-deposit": "deposit",
-    "savings-plan": "deposit",
-    "current-account": "deposit",
-    "money-market-fund-daily": "securities",
-    "money-market-fund-renewable": "securities",
-    "brokerage-account": "securities",
-    "ira-hishtalmut": "securities",
-    makam: "makam",
-    "government-bond": "bond",
-  };
-  return map[id] ?? null;
-}
+export { familyOf };
 
 /** The weakest strength among the cited rules that carry a dimension, and those rules' IDs. */
 export function dimensionSupport(dim: string, rules: Record<string, RuleRecord>): { weak: Strength | null; rules: string[] } {

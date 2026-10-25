@@ -32,7 +32,7 @@ under each release say what exists and what is open, and its closing section
 "After release 5" lists the work that continues (tier-2 graduation, data
 growth, quarterly tariff refresh, my approvals). Data: about 500 rules, 20
 tariff snapshots for 17 providers (Meitav Trade still missing), 12 fund records,
-Leumi's 3 deposit terms, 2 series; no fund list, because TASE's terms forbid
+deposit terms (Leumi's 3, and seven more banks' current accounts since 2026-10-25), 2 series; no fund list, because TASE's terms forbid
 republishing it (see `docs/data-inventory.md`). The saved state is version 3
 under `mekor.v2.state`; the entered offers, variant assumptions and playbook
 ticks are three side stores on the device pending a merge into it.
@@ -65,6 +65,12 @@ re-check the capabilities that depend on it.
   come from a file under `data/` that records its source and a date, or be a
   computation defined in `docs/method.md` over such figures, or be entered by
   the person. The page shows which of the three it is.
+- **General sources first; a company's term is never general** (founder,
+  2026-10-25). Cite the law, regulation or regulator (gov.il and the like)
+  whenever one exists; cite a company's document only for that company's
+  own terms, which appear named or on that company's page, never as a fact
+  about a product. A statement about the whole market comes from law or
+  from a count over every collected institution. See D30.
 - **Never fill in a financial or tax rule from memory.** Use the
   `il-finance` skill once it exists. If a rule is missing from it, say the
   rule is missing and stop; do not guess or approximate. Site judgements

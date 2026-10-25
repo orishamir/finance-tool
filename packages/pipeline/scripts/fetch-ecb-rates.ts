@@ -2,7 +2,7 @@
 // exchange rates itself; the person never types one). Run: npm run fetch:ecb -w @finance-tool/pipeline
 //   or: npx tsx packages/pipeline/scripts/fetch-ecb-rates.ts [--from-file path.xml]
 // The file keeps the latest reference day only, one observation per currency (`key` = ISO code, value = units of
-// that currency per one euro). Terms: https://www.ecb.europa.eu/services/disclaimer/html/index.en.html (read 2026-10-25):
+// that currency per one euro). Terms: https://www.ecb.europa.eu/services/using-our-site/disclaimer/html/index.en.html (read 2026-10-25):
 // free use if the information appears accurately, the ECB is cited, and any modification is stated.
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
@@ -10,7 +10,7 @@ import { fileURLToPath } from "node:url";
 import { seriesRecord, type SeriesRecord } from "@finance-tool/schema";
 
 export const ECB_URL = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
-export const TERMS_URL = "https://www.ecb.europa.eu/services/disclaimer/html/index.en.html";
+export const TERMS_URL = "https://www.ecb.europa.eu/services/using-our-site/disclaimer/html/index.en.html";
 export const FX_UNIT = "fx_per_eur";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 export const OUT_FILE = resolve(root, "data/series/ecb-fx.json");

@@ -15,7 +15,8 @@
     "effective_from": "2026-10-23",
     "effective_to": null,
     "update_rule": "founder",
-    "notes": ""
+    "notes": "",
+    "rationale_he": "ההפרש הגדול ביותר, בשקלים, שבו חישוב של האתר ובדיקה עצמאית של אותו חישוב עדיין נחשבים מסכימים. הבדיקה עוברת אם ההפרש קטן מהערך הזה או מהערך באחוזים, הגבוה מביניהם."
   },
   "rel_pct": {
     "value": 0.01,
@@ -31,10 +32,11 @@
     "effective_from": "2026-10-23",
     "effective_to": null,
     "update_rule": "founder",
-    "notes": ""
+    "notes": "",
+    "rationale_he": "ההפרש הגדול ביותר, באחוזים מהסכום, שבו חישוב של האתר ובדיקה עצמאית של אותו חישוב עדיין נחשבים מסכימים. הבדיקה עוברת אם ההפרש קטן מהערך הזה או מהערך בשקלים, הגבוה מביניהם."
   },
-  "rationale": "The engine and the independent check use the same conventions, so they should agree to the shekel: a test passes within 1 NIS or 0.01%, whichever is larger.",
-  "rationale_he": "המנוע והבדיקה העצמאית משתמשים באותן מוסכמות, ולכן הם צריכים להסכים עד השקל: בדיקה עוברת בטווח של 1 ₪ או 0.01%, הגבוה מביניהם.",
+  "rationale": "The site's calculations are checked against an independent calculation of the same thing, and both use the same conventions, so they should agree to the shekel. A check passes when the difference is within the tolerance in shekels or the tolerance in percent, whichever is larger.",
+  "rationale_he": "החישובים של האתר נבדקים מול חישוב עצמאי של אותו דבר, ושניהם משתמשים באותן מוסכמות, ולכן הם צריכים להסכים עד השקל. בדיקה עוברת כשההפרש קטן מהסטייה בשקלים או מהסטייה באחוזים, הגבוה מביניהם.",
   "chosen_by": "Claude, at the founder's request (2026-10-23: \"do whatever you think fits\")",
   "signed_off_by": "founder",
   "signed_off_on": "2026-10-23",

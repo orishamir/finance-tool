@@ -223,6 +223,10 @@
         },
         "notes": {
           "type": "string"
+        },
+        "rationale_he": {
+          "type": "string",
+          "minLength": 1
         }
       },
       "required": [
@@ -455,6 +459,10 @@
           },
           "notes": {
             "type": "string"
+          },
+          "rationale_he": {
+            "type": "string",
+            "minLength": 1
           }
         },
         "required": [
@@ -648,6 +656,10 @@
                 },
                 "notes": {
                   "type": "string"
+                },
+                "rationale_he": {
+                  "type": "string",
+                  "minLength": 1
                 }
               },
               "required": [
@@ -927,6 +939,10 @@
             },
             "notes": {
               "type": "string"
+            },
+            "rationale_he": {
+              "type": "string",
+              "minLength": 1
             }
           },
           "required": [
@@ -1110,6 +1126,10 @@
             },
             "notes": {
               "type": "string"
+            },
+            "rationale_he": {
+              "type": "string",
+              "minLength": 1
             }
           },
           "required": [
@@ -1293,6 +1313,10 @@
             },
             "notes": {
               "type": "string"
+            },
+            "rationale_he": {
+              "type": "string",
+              "minLength": 1
             }
           },
           "required": [
@@ -1476,6 +1500,10 @@
             },
             "notes": {
               "type": "string"
+            },
+            "rationale_he": {
+              "type": "string",
+              "minLength": 1
             }
           },
           "required": [
@@ -1669,6 +1697,10 @@
         },
         "notes": {
           "type": "string"
+        },
+        "rationale_he": {
+          "type": "string",
+          "minLength": 1
         }
       },
       "required": [

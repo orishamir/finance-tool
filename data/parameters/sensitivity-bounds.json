@@ -17,7 +17,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "הקצה התחתון של התשואה השנתית שבדיקת הרגישות מנסה. הטווח רחב כדי להראות אם התוצאה תלויה בניחוש התשואה."
       },
       "hi": {
         "value": 10,
@@ -33,7 +34,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "הקצה העליון של התשואה השנתית שבדיקת הרגישות מנסה. הטווח רחב כדי להראות אם התוצאה תלויה בניחוש התשואה."
       }
     },
     "A-02": {
@@ -51,7 +53,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "הקצה התחתון של האינפלציה השנתית שבדיקת הרגישות מנסה. הטווח רחב כדי להראות אם התוצאה תלויה בניחוש האינפלציה."
       },
       "hi": {
         "value": 5,
@@ -67,7 +70,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "הקצה העליון של האינפלציה השנתית שבדיקת הרגישות מנסה. הטווח רחב כדי להראות אם התוצאה תלויה בניחוש האינפלציה."
       }
     },
     "A-03": {
@@ -85,7 +89,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "הקצה התחתון של השינוי השנתי בשער המטבע מול השקל שבדיקת הרגישות מנסה. הבדיקה מנסה שינוי לשני הכיוונים."
       },
       "hi": {
         "value": 3,
@@ -101,7 +106,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "הקצה העליון של השינוי השנתי בשער המטבע מול השקל שבדיקת הרגישות מנסה. הבדיקה מנסה שינוי לשני הכיוונים."
       }
     },
     "A-06": {
@@ -119,7 +125,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "הקצה התחתון של העלות בתוך הקרן, בשנה, שבדיקת הרגישות מנסה. כך רואים אם קרן זולה יותר משנה את התוצאה."
       },
       "hi": {
         "value": 3,
@@ -135,7 +142,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "הקצה העליון של העלות בתוך הקרן, בשנה, שבדיקת הרגישות מנסה. כך רואים אם קרן יקרה יותר משנה את התוצאה."
       }
     },
     "fee_rates": {
@@ -153,7 +161,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": "multiplier on the current rate"
+        "notes": "multiplier on the current rate",
+        "rationale_he": "המכפיל הנמוך ביותר שבדיקת הרגישות מפעילה על כל עמלה, אחת בכל פעם. כך רואים אם עמלה זולה יותר משנה את התוצאה."
       },
       "hi": {
         "value": 2,
@@ -169,7 +178,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": "multiplier on the current rate"
+        "notes": "multiplier on the current rate",
+        "rationale_he": "המכפיל הגבוה ביותר שבדיקת הרגישות מפעילה על כל עמלה, אחת בכל פעם. כך רואים אם עמלה יקרה יותר משנה את התוצאה."
       },
       "notes": "multiplier on each fee rate, one fee at a time"
     },
@@ -188,7 +198,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": "years from the chosen horizon"
+        "notes": "years from the chosen horizon",
+        "rationale_he": "בכמה שנים בדיקת הרגישות מקצרת את האופק שבחרתם, כדי לראות אם התוצאה תלויה בבחירת האופק."
       },
       "hi": {
         "value": 2,
@@ -204,7 +215,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": "years from the chosen horizon"
+        "notes": "years from the chosen horizon",
+        "rationale_he": "בכמה שנים בדיקת הרגישות מאריכה את האופק שבחרתם, כדי לראות אם התוצאה תלויה בבחירת האופק."
       }
     }
   },

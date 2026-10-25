@@ -8,11 +8,14 @@ import { Num, NumberLegend, RuleRef, RulesLine, StrengthLabel } from "../compone
 import { Breadcrumb, PageShell } from "../components/shell";
 import { WorthKnowing, worthRows } from "../components/guide/worth-knowing";
 import { Timeline } from "../components/timeline/Timeline";
+import { hasSignatureVisual, SignatureFrame, signatureTitle } from "../components/guide-signature";
+import { accountWorthRow } from "../components/guide-signature/current-account";
+import { cashLikeIds } from "../lib/guide-signature";
 import { SavedGoalStrip } from "../components/compare/strip";
 import { Disclosure, Tag } from "../components/ui";
 import { GoalsProvider, type Presets } from "../lib/goal";
 import { fmt } from "../lib/format";
-import { rulesAnchor, splitTerms } from "../lib/guide-nav";
+import { splitTerms } from "../lib/guide-nav";
 import { useInputs } from "../lib/inputs";
 import { guideContent } from "../content/guide";
 import type { SiteValue } from "../lib/value";
@@ -343,8 +346,18 @@ export default function GuidePage() {
   });
 
   const regulatorName = blocks.regulatorNames[String(record.regulator.value)] ?? String(record.regulator.value);
-  const provenance = { rules, terms: data.termsById, dimensions: data.dimensionNames, today, rulesOf: { name: data.name, href: `/rules#${rulesAnchor(Object.values(rules))}` } }; // audit A27: the product's own topic, not the first rule's file
+  const provenance = { rules, terms: data.termsById, dimensions: data.dimensionNames, today, rulesOf: { name: data.name, href: `/rules?product=${record.id}` } }; // the rules page's product filter (2026-10-25): the old `#<file>` anchor stopped existing when groups became `<shelf>-<file>`
   const cp = { figure };
+  const signature = hasSignatureVisual(record.id, data.signature) ? data.signature : null;
+  // the current account starts from the rate most of the collected banks publish (F-85), and says how many do
+  const common = record.id === "current-account" && signature?.facts.commonCount && signature.facts.bankCount ? { count: signature.facts.commonCount, of: signature.facts.bankCount } : null;
+  const cash = cashLikeIds.includes(record.id) ? { id: record.id, published: !!data.bundle?.feeValues.balanceCeiling || ["bank-deposit", "savings-plan", "current-account"].includes(record.id), feesIndependent: record.id === "current-account", common } : null;
+  // a fact the site computes from the collected records, listed with the pinned rules (2026-10-25)
+  const worthFacts = signature && record.id === "current-account" ? [accountWorthRow(signature)].filter((r) => r !== null) : [];
+  const timelineNode =
+    data.bundle && data.initial ? (
+      <Timeline bundle={data.bundle} initial={data.initial} wrapperName={data.name} ageMarker={{ ruleId: "TXG-04", figure: "age" }} lock={{ years: (record.lawful_exit.years as SiteValue | undefined) ?? null, age: record.lawful_exit.kind === "at_age" ? ((record.lawful_exit.age as SiteValue | undefined) ?? null) : null }} employment={byEmployment} cash={cash} />
+    ) : null;
   // audit A83: the terms table the page's own text opens, the rest and the shared terms behind toggles; nothing under three rows
   const generalTerms = data.terms.filter((x) => x.wrapperIds.length >= data.wrapperCount);
   const mainTerms = splitTerms(
@@ -356,7 +369,7 @@ export default function GuidePage() {
     <GoalsProvider presets={data.goal.presets as Presets}>
     <PageShell current="guide" data={provenance}>
       <div className="lg:flex lg:gap-12 pt-2 lg:pt-8">
-        <SectionIndex sections={copy.sections.filter((x) => (x.id !== "terms" || !mainTerms.hide || generalTerms.length > 0) && ((x.id as string) !== "worth" || worthRows(data.worthIds, rules, today).length > 0))} current={current} />
+        <SectionIndex sections={copy.sections.filter((x) => (x.id !== "terms" || !mainTerms.hide || generalTerms.length > 0) && ((x.id as string) !== "worth" || worthRows(data.worthIds, rules, today).length > 0 || worthFacts.length > 0) && ((x.id as string) !== "different" || !!signature))} current={current} />
         <div className="flex-1 min-w-0 flex flex-col gap-section">
           <header className="flex flex-col gap-3">
             <Breadcrumb parent={{ href: "/guide", label: guideIndex.title }} current={data.name} />
@@ -368,11 +381,8 @@ export default function GuidePage() {
 
           <GuideSection id="what" title={title("what")} rulesToggle>
             {content?.what(cp)}
-            {data.bundle && data.initial ? (
-              <Timeline bundle={data.bundle} initial={data.initial} wrapperName={data.name} ageMarker={{ ruleId: "TXG-04", figure: "age" }} lock={{ years: (record.lawful_exit.years as SiteValue | undefined) ?? null, age: record.lawful_exit.kind === "at_age" ? ((record.lawful_exit.age as SiteValue | undefined) ?? null) : null }} employment={byEmployment} />
-            ) : (
-              <NoGraphLine data={data} />
-            )}
+            {/* D29: a page with a visual folds the timeline under it; without one (or without a run) it stays here */}
+            {!(signature && timelineNode) && (timelineNode ?? <NoGraphLine data={data} />)}
           </GuideSection>
 
           {/* audit A42: who it is for sits directly under what it is */}
@@ -382,7 +392,13 @@ export default function GuidePage() {
             <ExposureLinks items={data.exposures} />
           </GuideSection>
 
-          <WorthKnowing rows={worthRows(data.worthIds, rules, today)} />
+          {signature && (
+            <GuideSection id="different" title={signatureTitle(record.id)} rulesToggle>
+              <SignatureFrame id={record.id} data={signature} today={today} timeline={timelineNode} />
+            </GuideSection>
+          )}
+
+          <WorthKnowing rows={worthRows(data.worthIds, rules, today)} facts={worthFacts} />
 
           <GuideSection id="who" title={title("who")} rulesToggle>
             {content?.who(cp) ?? (

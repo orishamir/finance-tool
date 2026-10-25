@@ -1,0 +1,151 @@
+{
+  "id": "massad-ofek-hishtalmut-6y-841",
+  "bank": "massad",
+  "names": {
+    "447": [
+      "אופק להשתלמות-פיקדון שקלי בהו\"ק בריבית משתנה ל-6 שנים",
+      "אופק להשתלמות"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": []
+  },
+  "type_447": "פיקדון ל-6 שנים",
+  "wrapper_id": "savings-plan",
+  "term_months": {
+    "value": 72,
+    "unit": "months",
+    "source": {
+      "url": "https://www.bankmassad.co.il/private/depositsandsavings/interestratesondeposits/",
+      "title": "בנק מסד, 'ריביות על פיקדונות' (פרסום לפי הוראה 447; דף https://www.bankmassad.co.il/private/depositsandsavings/interestratesondeposits/ מפנה ל-https://online.bankmassad.co.il/appsng/Resources/PortalNG/deposits-details/#/details/46, הנתונים נטענים מ-https://apps.fibi.co.il/bff-depositmanagement/api/v1/bankmassad/depositDetails/46 ו-/creditBalance/46), 'effectiveDate' 2026-10-25, פריים 4.75%, משפחת 'פיקדונות בהוראת קבע', מוצר 287/841 'אופק להשתלמות'",
+      "publisher": "Bank Massad Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-10-25",
+    "effective_from": "2026-10-25",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-28",
+      "BANK-27"
+    ],
+    "state": "sourced",
+    "notes": "Printed 'פיקדון ל-6 שנים'; recorded as 72 months."
+  },
+  "rate_type": "variable",
+  "anchor": "prime",
+  "spread": {
+    "value": -2.0,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.bankmassad.co.il/private/depositsandsavings/interestratesondeposits/",
+      "title": "בנק מסד, 'ריביות על פיקדונות' (פרסום לפי הוראה 447; דף https://www.bankmassad.co.il/private/depositsandsavings/interestratesondeposits/ מפנה ל-https://online.bankmassad.co.il/appsng/Resources/PortalNG/deposits-details/#/details/46, הנתונים נטענים מ-https://apps.fibi.co.il/bff-depositmanagement/api/v1/bankmassad/depositDetails/46 ו-/creditBalance/46), 'effectiveDate' 2026-10-25, פריים 4.75%, 'nominal': '(2.75%)P-2%'",
+      "publisher": "Bank Massad Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-10-25",
+    "effective_from": "2026-10-25",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-25"
+    ],
+    "state": "sourced",
+    "notes": "Printed '(2.75%)P-2%'."
+  },
+  "rate_offered": {
+    "value": 2.75,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.bankmassad.co.il/private/depositsandsavings/interestratesondeposits/",
+      "title": "בנק מסד, 'ריביות על פיקדונות' (פרסום לפי הוראה 447; דף https://www.bankmassad.co.il/private/depositsandsavings/interestratesondeposits/ מפנה ל-https://online.bankmassad.co.il/appsng/Resources/PortalNG/deposits-details/#/details/46, הנתונים נטענים מ-https://apps.fibi.co.il/bff-depositmanagement/api/v1/bankmassad/depositDetails/46 ו-/creditBalance/46), 'effectiveDate' 2026-10-25, פריים 4.75%, 'nominal': '(2.75%)P-2%'",
+      "publisher": "Bank Massad Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-10-25",
+    "effective_from": "2026-10-25",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25",
+      "BANK-28"
+    ],
+    "state": "sourced",
+    "notes": "Printed '(2.75%)P-2%' (adjusted '2.7500%'), variable, 'לא צמוד', standing order. Massad publishes four standing-order plans and none of three years; this is the closest unlinked plan whose exit points include the 36-month mark ('בתום שנתיים וכל שנה לאחר מכן'). The other short one, 'פקדון שקלי גמיש בהפקדה חודשית ובריבית משתנה- 4 שנים' (288/283), pays '(0.75%)P-4%' with monthly exit points from 200 NIS. Whether 'אופק להשתלמות' is open to every Massad customer is not stated."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1): 15% על ריבית מנכס שאינו צמוד למדד; read through il-finance TXI-03 and TXI-04 (checked 2026-10-25)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08)."
+  },
+  "amount_range": {
+    "min": {
+      "value": 100,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.bankmassad.co.il/private/depositsandsavings/interestratesondeposits/",
+        "title": "בנק מסד, 'ריביות על פיקדונות' (פרסום לפי הוראה 447; דף https://www.bankmassad.co.il/private/depositsandsavings/interestratesondeposits/ מפנה ל-https://online.bankmassad.co.il/appsng/Resources/PortalNG/deposits-details/#/details/46, הנתונים נטענים מ-https://apps.fibi.co.il/bff-depositmanagement/api/v1/bankmassad/depositDetails/46 ו-/creditBalance/46), 'effectiveDate' 2026-10-25, פריים 4.75%, 'minSum': 100.00",
+        "publisher": "Bank Massad Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": "2026-10-25",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "'minSum' 100.00; read as the minimum monthly deposit, not stated in words."
+    },
+    "max": null
+  },
+  "break": {
+    "allowed": false,
+    "penalty": "not_allowed",
+    "mechanism_text": "'אין אפשרות שבירה'; withdrawal through exit points 'בתום שנתיים וכל שנה לאחר מכן'.",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-27"
+    ]
+  },
+  "exit_points": {
+    "exists": true,
+    "every_months": 12
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "snapshot": "2026-10-25",
+  "source": {
+    "url": "https://www.bankmassad.co.il/private/depositsandsavings/interestratesondeposits/",
+    "title": "בנק מסד, 'ריביות על פיקדונות' (פרסום לפי הוראה 447; דף https://www.bankmassad.co.il/private/depositsandsavings/interestratesondeposits/ מפנה ל-https://online.bankmassad.co.il/appsng/Resources/PortalNG/deposits-details/#/details/46, הנתונים נטענים מ-https://apps.fibi.co.il/bff-depositmanagement/api/v1/bankmassad/depositDetails/46 ו-/creditBalance/46), 'effectiveDate' 2026-10-25, פריים 4.75%",
+    "publisher": "Bank Massad Ltd.",
+    "strength": "institution"
+  }
+}
