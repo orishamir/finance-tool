@@ -15,6 +15,7 @@ The decision is recorded as D31 in `docs/product.md`, with matching lines in CLA
 ## What to build
 1. `SiteValue` (`site/app/lib/value.ts`) gets `own?: string`, the name of the company whose own product the figure describes. Only the code that builds a value for a named product's row sets it. A helper decides weakness in one place, `isWeak(v)`: true for secondary, or for institution without `own`. `Num`, the sheet, `weakInputs` and `NumberLegend` use it instead of testing `strength === "institution"`. `computed()`'s `weakest` skips inputs that are institution with `own`.
 2. **The sheet** (`provenance.tsx`): for an own figure, a neutral source line naming the company and the document instead of the amber block. Out-of-context figures keep the amber block.
+   - The line is only the source: "מקור: הדוח של הראל על הקרן, 30.9.2026". Don't explain the rule on the page; no sentence like "כשהמספר מוצג על הקרן עצמה, המסמך של החברה הוא המקור" (founder, 2026-10-26).
 3. **Set `own` at every call site that shows a company's figure on its own product.** List each call site in your report with the verdict (own, or out of context, and why):
    - fund records: fees and the fund's own figures on fund rows (index page, workbench funds, holdings);
    - tariff lines on a provider's row (workbench providers, the index page broker grid, the fees page provider rows, the comparison card that names its broker);
