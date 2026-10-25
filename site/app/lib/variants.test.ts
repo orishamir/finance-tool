@@ -4,6 +4,7 @@ import { buildFundVariants, withExposureReturn, matchesVariant, parseVariantQuer
 import { buildWorkbenchBundle } from "./providers.server";
 import type { FundAssumptions, WorkbenchInputs } from "./providers";
 import { entered } from "./value";
+import { loadFx } from "./fx.server";
 
 const bundle = buildWorkbenchBundle();
 const t = bundle.today;
@@ -23,6 +24,18 @@ const build = (exposureId: string, over: { returnFromParameter?: boolean; assump
   buildFundVariants({ bundle, exposureId, query: { provider: over.provider ?? null, orders: null }, inputs: inputs(over.returnFromParameter), assumptions: over.assumptions ?? {} });
 
 describe("fund-variant view", () => {
+  it("prices a fund bought abroad on the ECB start rate: nothing asks the person for one (D26)", () => {
+    const withFx = { ...bundle, fx: loadFx()! };
+    const r = buildFundVariants({ bundle: withFx, exposureId: "index-sp500", query: { provider: null, orders: null }, inputs: inputs(), assumptions: {} });
+    if (r.kind !== "ok") throw new Error("not ok");
+    expect(r.view.startRates.map((x) => x.code)).toContain("USD");
+    const usd = r.view.startRates.find((x) => x.code === "USD")!.rate!;
+    expect(usd.state).toBe("computed");
+    expect(usd.value as number).toBeGreaterThan(1);
+    expect(r.view.rows.some((x) => x.reason?.code === ("start-rate" as string))).toBe(false);
+    expect(r.view.rows.find((x) => x.trading?.abroad && x.reason?.code === "no-rate")).toBeUndefined();
+  });
+
   it("renders with no fund list: the records only, no count for a list it did not read", () => {
     const r = build("index-sp500");
     expect(r.kind).toBe("ok");

@@ -34,7 +34,7 @@ export interface RowCtx {
 const quietLink = "text-sm text-link hover:underline min-h-target inline-flex items-center";
 
 function ClassLine({ view }: { view: ProviderRowView }) {
-  const regulator = c.regulators[view.protection.regulator];
+  const regulator = view.protection.regulator === "foreign" ? (view.protection.foreignRegulator ?? "") : c.regulators[view.protection.regulator];
   return (
     <span className="text-sm text-muted-foreground">
       {c.classWords[view.providerClass] ?? view.providerClass} · {regulator}

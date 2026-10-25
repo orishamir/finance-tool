@@ -560,6 +560,7 @@ export const formulaNames: Record<string, string> = {
   "F-80": "דירוג האפשרויות והשוואה ביניהן",
   "F-81": "בדיקת רגישות להנחות",
   "F-83": "ספירת המסלולים שנכללו",
+  "F-84": "שער חליפין מחושב משערי הבנק המרכזי האירופי",
   B3: "אפשרות שהכסף בה נעול עד סוף התקופה",
   /** Shown when a formula has no name above: no code in place of words. */
   _other: "חישוב של האתר",
@@ -1963,7 +1964,7 @@ export const r4catalogue = {
 export const r4workbench = {
   // ---- 8.0 everywhere
   levels: { list: "תעריפון", average: "ממוצע שפורסם", entered: "ההצעה שלכם" },
-  classWords: { bank: "בנק", broker: "בית השקעות", "provident-manager": "חברה מנהלת", "fund-manager": "מנהל קרנות" } as Record<string, string>,
+  classWords: { bank: "בנק", broker: "בית השקעות", foreign_broker: "ברוקר זר", "provident-manager": "חברה מנהלת", "fund-manager": "מנהל קרנות" } as Record<string, string>,
   regulators: { BoI: "בנק ישראל", ISA: "רשות ניירות ערך", CMA: "רשות שוק ההון, ביטוח וחיסכון" } as Record<string, string>,
   feeTypes: { trade: "עמלת קנייה ומכירה", custody: "דמי ניהול פיקדון ניירות ערך", fx: "המרת מטבע", fixed: "דמי חשבון קבועים" } as Record<string, string>,
   notComparable: {
@@ -2170,7 +2171,7 @@ export const r4workbench = {
     /** copy.md 8.1: the cases the page cannot run, each with the word it needs */
     cannotRun: {
       fundType: "אין עדיין השוואת ספקים לקרן מהסוג הזה.",
-      needRate: (ccy: string) => `הזינו את שער ה־${ccy} בעמוד הקרנות כדי להשוות ספקים.`,
+      needRate: (ccy: string) => `אין שער ל־${ccy} בשערי הייחוס של הבנק המרכזי האירופי, ולכן אי אפשר להשוות ספקים לקרן הזו.`,
       needYield: "הקרן מחלקת: הזינו את תשואת החלוקה בעמוד הקרנות כדי להשוות ספקים.",
       engine: "החישוב נעצר על נתון בתעריפון:",
       noWrapper: "אין השוואת ספקים למוצר הזה.",
@@ -2198,7 +2199,7 @@ export const r4workbench = {
     sheet: {
       title: "ההנחות של השוואת הקרנות",
       w8ben: { label: "יש לכם טופס W-8BEN אצל הברוקר?", yes: "כן", no: "לא", line: "עובדה שלכם, לא חוק או כלל." },
-      fxD20: "שערי בנק ישראל מוצגים רק בקישור; הזינו את השער.",
+      fxD20: "שער היום נלקח משערי הייחוס של הבנק המרכזי האירופי; כאן מזינים רק כמה ישתנה בכל שנה.",
       fxLink: "לשערי בנק ישראל",
       yieldLabel: (fund: string) => `תשואת החלוקה של ${fund} (אחוז בשנה)`,
       perYear: "תשלומים בשנה",
@@ -2236,7 +2237,7 @@ export const r4workbench = {
       g18: "מקור משני: רשות המסים לא אישרה שקרן זרה שאינה מחלקת ממוסה רק במכירה. שאלה פתוחה TXF OQ1",
       taxableIsraeli: "לקרן נאמנות חייבת אין עדיין חישוב.",
       yieldMissing: "הזינו את תשואת החלוקה.",
-      startRate: (ccy: string) => `הזינו את שער ה־${ccy}.`,
+      noRate: (ccy: string) => `אין שער ל־${ccy} בשערי הייחוס של הבנק המרכזי האירופי.`,
       withholding: (country: string) => `ניכוי במקור ב${country}: לא נקבע.`,
       moneyMarket: "סוג הקרן הכספית אינו ברשומה.",
       otherCurrency: (a: string, b: string) => `אין חישוב לקרן ב־${a} על חשיפה ב־${b}.`,
@@ -2362,7 +2363,7 @@ export const r4playbook = {
     notEvaluated: "לא נבדק:",
     reasons: {
       "no-fund": "לא נמצאה אחת הקרנות באתר.",
-      "need-rate": "הזינו את שער המטבע בעמוד הקרן.",
+      "need-rate": "אין שער למטבע של הקרן בשערי הייחוס של הבנק המרכזי האירופי.",
       "need-yield": "הזינו את תשואת החלוקה בעמוד הקרן.",
       "fund-type": "אין עדיין חישוב לסוג הקרן הזה.",
       "other-currency": "אין חישוב לקרן שמטבעה שונה מהחשיפה.",

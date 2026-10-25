@@ -173,5 +173,13 @@
   "exposure_code": "4A",
   "distribution_fee_type": "3",
   "creation_redemption_fee_category": "0.10%",
+  "replication": {
+    "method": "physical",
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1770001-1771000/P1770337-00.pdf",
+      "page": 3,
+      "checked": "2026-10-25"
+    }
+  },
   "snapshot": "2026-10-25"
 }
