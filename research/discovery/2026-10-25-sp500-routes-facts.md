@@ -235,3 +235,74 @@ Today a person with a 20-year goal and no return typed sees a money-market fund 
 ### 10.5 For the founder
 1. Should the threshold sentence (10.4, point 2) replace "type a return" as the first answer for people who type none?
 2. Should the journey line appear only on the goal path, or also on "השקעה במדד"?
+
+### 10.6 The custom index from the site's side (2026-10-25, evening)
+**Saved on the device.**
+- A custom index the person adds is kept in the saved state (`mekor.v2.state`), like goals: its name, the two answers, and the date added.
+- It travels in the export file, and from then on it shows as a chip beside the site's indices, with × to remove it.
+- It never leaves the device. There are no accounts, and nothing goes to a server.
+
+**"Checks its sources" means its own data, not a live search.** The site is static, with no server, and TASE's terms forbid storing its lists (CAT-43). When someone types a name, the page looks it up only in what the build already holds:
+- the exposure records;
+- the fund records, matched on each Israeli fund's printed tracking asset ("נכס מעקב") and its names;
+- index names in the rule base, for example ETF-32's TASE foreign funds.
+For MSCI Emerging Markets today, that finds:
+- no exposure record and no fund record;
+- the names of two TASE foreign funds on it: iShares 01159169 and Invesco UCITS 01183490 (ETF-32);
+- MSCI's description of ACWI, which adds 24 emerging markets (ETF-48).
+Matching needs an alias list (MSCI EM = MSCI Emerging Markets = "שווקים מתפתחים"; hedged and net versions) in the style of `site/app/lib/search-aliases.ts`.
+
+**What the comparison needs, in three layers:**
+
+| Layer | Facts | Who gives them | What they unlock |
+|---|---|---|---|
+| The index | Where the companies are (Israel / abroad); the index's currency | The site for a known index; the person's two answers for an unknown one | Which routes exist by law (ETF-51, ETF-31); the currency and tax labels; whether buying converts currency |
+| The broker | Tariff lines per kind of security; FX conversion; which kinds of security the broker sells at all | The 14 tariffs (+2 coming); a new availability field | The broker's cost per route; "לא זמין כאן" |
+| The fund | Fees (fixed, variable, trustee or TER), legal form (ETF / tracking fund), domicile, distribution policy, where it trades and in what currency, tax status, tracking difference, spread, share price | A fund record, hand-collected from the fund's own report | The fund's own cost and tax; a full ranking of complete ways |
+
+What each level of knowledge gives:
+- **With the index layer only** (the two answers), the page can show the routes, the labels, and each broker's cost per route. That is already the largest lever (section 2).
+- **A full ranking needs at least one fund record per route.**
+- **Without fund records**, each route says so ("לא נאספו קרנות על המדד הזה"), with a link to Maya's search and a "בקשו שנאסוף" copy button for the founder (flow 10). Nothing is guessed.
+
+**Known limits:**
+- A distributing fund (most US ETFs) needs its distribution yield for the yearly tax (A-10). Without a record, that route cannot be priced.
+- Fund-level dividend withholding is sourced for US dividends only (an Irish fund pays 15%, TXF-16). For an index of other countries, such as emerging markets, it is not counted, and the row says so.
+
+### 10.7 Walk-through: a Japanese index (2026-10-25, evening)
+The site holds nothing on Japan today: no index record, no fund record, no rule naming Nikkei, TOPIX or MSCI Japan. The ECB's rates include the yen (175.51 yen per euro on 23.10.2026, so about 1.99 NIS per 100 yen). The walk-through led to four refinements:
+1. **The two questions change.**
+   - The legal fact is "are the companies Israeli?" (yes/no), and it alone decides the routes (ETF-51, ETF-31).
+   - Second, the index currency, from a list that includes the yen, the pound and "other".
+   - The region (Japan, Europe, emerging markets and so on) is optional and feeds only the labels.
+2. **The currency label generalises:** "חשיפה ל{מטבע}", for example "חשיפה לין". The tax label becomes "מס גם על עליית ה{מטבע}" for an Israeli fund.
+3. **The abroad route splits by exchange,** because tariffs differ by market and trading currency:
+   - a US-listed ETF (in dollars, so the dollar conversion and US estate tax apply);
+   - a London-listed UCITS ETF (in dollars or pounds);
+   - and the home exchange (Tokyo, in yen) where a broker offers it.
+   Without a fund record, each sub-route shows the broker's cost for that market.
+4. **Unknown dividend tax inside the fund gets its own label,** "מס דיבידנד בתוך הקרן: לא נבדק". The rule base sources it for US dividends only (TXF-16).
+
+For a Japanese index today, the page shows:
+- the routes;
+- the labels;
+- each broker's cost per route and exchange;
+- "לא נאספו קרנות" on every fund line, with Maya's search and the "בקשו שנאסוף" copy.
+After the founder (or an agent) collects the main funds (the largest Israeli funds on a Japanese index, a UCITS and a US ETF), the same saved chip shows a full ranking.
+
+### 10.8 Correction: the index's currency and region don't change the comparison (the founder, 2026-10-25)
+The founder pointed out that any currency other than NIS, USD or EUR is the same to the comparison, and so is the region. Checked against the engine and the rules, he is right, and further: for comparing ways on one index, the index's currency never changes the ranking.
+- **Conversion cost** depends on the currency the vehicle trades in: shekels on TASE; dollars, pounds or yen abroad. It does not depend on the index's currency. Every tariff has one FX conversion line for all currencies, so any foreign trading currency costs the same unless a broker prices by currency or does not offer that market.
+- **Tax.**
+  - An Israeli fund is taxed on its real gain against the CPI (TXS-09).
+  - A foreign security held directly is taxed against the exchange rate of the currency it is denominated in (TXF-03).
+  - A TASE foreign fund is taxed against its prospectus's main currency, under the 90% test (TXF-04).
+  All three are vehicle facts, not index facts.
+- **The return.** The index's currency only says what an entered return is in. The currency change on top of it (A-03) is zero by default (`securities.ts`: the return is grossReturn × (1 + fxChange)), and it is the same for every way on the index.
+- **Region:** fund-level dividend tax is sourced for US dividends only (TXF-16). US estate tax follows the fund's domicile, not the index's region (TXF-27).
+
+So the custom index asks **one question, "are the companies Israeli?"**, which decides the routes (ETF-51, ETF-31).
+- Currency and region are optional "for your information" fields. They are shown once, in the index's header, and are never row labels.
+- Row labels carry only what differs between ways: where the fund is held, how it trades, how it follows the index, hedging, tax mechanics, and burdens and risks.
+
+**Engine change to make when building:** `fund-variants.ts` line 211 refuses a fund whose trading currency differs from the exposure's currency ("a USD fund on a JPY exposure has no run"). A dollar-traded Nikkei ETF would be refused. The model should separate the index's currency (for an entered return and A-03, zero by default) from the vehicle's trading currency (for the broker's FX line and the TXF-03 tax base).
