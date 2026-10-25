@@ -75,6 +75,12 @@ const refOfExposure = (e: ExposureRecord): IndexRef => ({ id: e.id, name: e.name
 
 export const refOfCustom = (c: CustomIndex): IndexRef => ({ id: c.id, name: c.name, israeli: c.israeli, exposure: null, custom: c, oneLine: null });
 
+/** The index page's address (founder, 2026-10-26: /indices, with no redirect from /invest): `/indices/<x>` for the exposure `index-<x>`, a custom index at `/indices?custom=<id>`. */
+export const INDICES_PATH = "/indices";
+export const indexPath = (exposureId: string): string => `${INDICES_PATH}/${exposureId.replace(/^index-/, "")}`;
+export const customIndexPath = (id: string): string => `${INDICES_PATH}?custom=${encodeURIComponent(id)}`;
+export const exposureIdOfSlug = (slug: string): string => `index-${slug}`;
+
 export function indexById(bundle: Pick<WorkbenchBundle, "exposures">, id: string, customs: readonly CustomIndex[] = []): IndexRef | null {
   const known = knownIndices(bundle).find((i) => i.id === id);
   if (known) return known;

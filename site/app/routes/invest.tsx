@@ -1,6 +1,6 @@
 // "השקעה במדד" (D28, spec research/specs/2026-10-25-invest-page/spec.md): for an index the person chooses (or adds), the options
-// for owning it, the cheapest broker for each, and the cheapest complete way for the plan. `/invest` chooses nothing (D27);
-// `/invest/:exposureId` opens one known index (pre-rendered); a custom index lives on the device and opens at `/invest?custom=<id>`.
+// for owning it, the cheapest broker for each, and the cheapest complete way for the plan. `/indices` chooses nothing (D27);
+// `/indices/<x>` opens the known index `index-<x>` (pre-rendered); a custom index lives on the device and opens at `/indices?custom=<id>`.
 import { useEffect, useId, useMemo, useState } from "react";
 import { useLoaderData, useLocation, useNavigate } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
@@ -24,7 +24,7 @@ import { type CompareBundle } from "../lib/compare";
 import { planInputs } from "../lib/plan-inputs";
 import { GoalsProvider, useGoals, type Presets } from "../lib/goal";
 import { useInputs } from "../lib/inputs";
-import { buildInvest, indexById, providersOfInvest, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
+import { buildInvest, exposureIdOfSlug, indexById, INDICES_PATH, providersOfInvest, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
 import { loadWorkbenchBundle, type WorkbenchBundle, type WorkbenchInputs } from "../lib/providers";
 import { useInvestState } from "../lib/state";
 
@@ -37,7 +37,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const indices = loadExposures()
     .filter((e) => e.kind === "equity_index")
     .map((e) => ({ id: e.id, name: e.names.he[0] ?? e.id, israeli: e.constituents_israeli === true }));
-  const id = params.exposureId ?? null;
+  const id = params.slug ? exposureIdOfSlug(params.slug) : null;
   if (id && !indices.some((i) => i.id === id)) throw new Response("Not found", { status: 404 });
   return { ...goalFormData(), exposureId: id, indices };
 }
@@ -160,7 +160,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
       bundle={wb}
       onRemove={(id) => {
         invest.remove(id);
-        if (index?.id === id) navigate("/invest");
+        if (index?.id === id) navigate(INDICES_PATH);
       }}
       onRename={invest.rename}
       onSave={(x) => invest.add(x)}

@@ -317,7 +317,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
                   </>
                 ) : null}
                 .{" "}
-                <Link to="/invest" className="text-link hover:underline">
+                <Link to="/indices" className="text-link hover:underline">
                   {copy.hishtalmut.rangeBroker.more}
                 </Link>
               </li>
