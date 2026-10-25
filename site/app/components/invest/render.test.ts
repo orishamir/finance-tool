@@ -7,10 +7,10 @@ import { buildWorkbenchBundle } from "../../lib/providers.server";
 import { buildInvest, indexById, refOfCustom } from "../../lib/invest";
 import { entered } from "../../lib/value";
 import type { WorkbenchInputs } from "../../lib/providers";
-import { BrokerGrid } from "./grid";
+import { HousesSection } from "./houses";
 import { FundsSection } from "./funds";
 import { LabelSheetHost } from "./parts";
-import { Headline, IndexHeader, Options, Worth } from "./sections";
+import { Headline, IndexHeader, Matters, OptionsCompare, WorthBars } from "./sections";
 import { Foot, Steps } from "./steps";
 import { PlanBlock } from "./chips";
 import { ProvenanceProvider } from "../provenance";
@@ -30,24 +30,26 @@ describe("the index page's sections render", () => {
   it("all sections of a known index", () => {
     const out = html(createElement("div", null,
       createElement(IndexHeader, { view, onChangeAnswer: null }),
-      createElement(Headline, { view }), createElement(Worth, { view }),
-      createElement(Options, { view, selected: "il-etf", onSelect: () => undefined }),
-      createElement(BrokerGrid, { view }),
-      createElement(FundsSection, { view, optionId: "il-tracking", mayaHref: null }),
-      createElement(FundsSection, { view, optionId: "abroad", mayaHref: null }),
+      createElement(Headline, { view }), createElement(Matters, { view, years: plan.values.years }), createElement(WorthBars, { view }),
+      createElement(OptionsCompare, { view }),
+      createElement(HousesSection, { view, chosen: "leumi", onPick: () => undefined }),
+      createElement(FundsSection, { view, houseId: "leumi", onHouse: () => undefined, mayaHref: null }),
+      createElement(FundsSection, { view, houseId: "interactive-brokers", onHouse: () => undefined, mayaHref: null }),
       createElement(Steps, { view, monthly: plan.values.monthly }), createElement(Foot, { view }),
       createElement(PlanBlock, { items: [], onOpen: () => undefined, fx: bundle.fx, today: t, brokers: [], yourBroker: null, onBroker: () => undefined, hasGoal: true })));
     expect(out).toContain("הדרך הזולה ביותר לתוכנית שלכם");
+    expect(out).toContain("אותה קרן, בחשבון ניירות ערך אחר:");
+    expect(out).toContain("אותו חשבון ניירות ערך, קרן אחרת:");
+    expect(out).toContain("הקרנות על המדד, בחשבון ב");
     expect(out).toContain("פסגות");
-    expect(out).toContain("לא זמין");
-    expect(out).toContain("קרן מחקה ישראלית");
+    expect(out).toContain("קרן מחקה · נקנית פעם ביום");
     expect(out).toContain("שער הדולר");
   });
   it("a custom index: empty funds state with the request button", () => {
     const v = buildInvest({ bundle, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t }), plan });
-    const out = html(createElement("div", null, createElement(Headline, { view: v }), createElement(FundsSection, { view: v, optionId: "il-etf", mayaHref: "https://maya.tase.co.il" }), createElement(Steps, { view: v, monthly: plan.values.monthly })));
+    const out = html(createElement("div", null, createElement(Headline, { view: v }), createElement(FundsSection, { view: v, houseId: v.houses.find((h) => h.generic)?.provider.id ?? null, onHouse: () => undefined, mayaHref: "https://maya.tase.co.il" }), createElement(Steps, { view: v, monthly: plan.values.monthly })));
     expect(out).toContain("עוד לא נאספו קרנות על המדד הזה");
     expect(out).toContain("בקשו שנאסוף");
-    expect(out).toContain("בית ההשקעות הזול ביותר לקרן ישראלית על המדד");
+    expect(out).toContain("חשבון ניירות הערך הזול ביותר לקרן ישראלית על המדד");
   });
 });

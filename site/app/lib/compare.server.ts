@@ -36,11 +36,11 @@ export const tier2Table: { id: string; he: string; questions: string[]; display:
   { id: "executive-insurance", he: "ביטוח מנהלים", questions: ["TXA OQ6"], display: "TXA OQ6" },
   { id: "structured-deposits", he: "פיקדון מובנה", questions: ["TX2 OQ5"], display: "TX2 OQ5" },
   { id: "corporate-bonds", he: 'אג"ח קונצרניות', questions: ["TX2 OQ6"], display: "TX2 OQ6" },
-  { id: "managed-portfolios", he: "ניהול תיקי השקעות", questions: ["TX2 OQ12", "MF-28"], display: "TX2 OQ12, MF-28" },
-  { id: "foreign-currency-deposits", he: "פיקדון במטבע חוץ", questions: ["TX2 OQ1", "TX2 OQ2"], display: "TX2 OQ1, TX2 OQ2" },
+  { id: "managed-portfolios", he: "ניהול תיקי השקעות", questions: ["MF-28"], display: "MF-28" },
+  { id: "foreign-currency-deposits", he: "פיקדון במטבע חוץ", questions: ["TX2 OQ2"], display: "TX2 OQ2" },
   { id: "reits", he: "קרן להשקעות במקרקעין", questions: ["TX2 OQ8"], display: "TX2 OQ8" },
   { id: "gold-via-funds", he: "השקעה בזהב דרך קרנות סל", questions: ["TX2 OQ10"], display: "TX2 OQ10" },
-  { id: "amendment-190-deposits", he: "תיקון 190", questions: ["TXA OQ9"], display: "TXA OQ9" },
+  { id: "amendment-190-deposits", he: "תיקון 190", questions: ["TXA OQ14", "TXA OQ15"], display: "TXA OQ14, TXA OQ15" },
 ];
 
 function tier2List(): Tier2Row[] {

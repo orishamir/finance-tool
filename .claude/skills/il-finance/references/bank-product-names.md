@@ -526,7 +526,7 @@ Catalogued names (numbered entries; a range such as 147-162 counts each name in 
 
 ## Open questions
 
-1. **Discount product names.** The money-market page shows filters only; tables are script-loaded and returned "המידע אינו זמין כעת". Likely answer: the page in a browser or the Discount app; or the founder's paste. **[2026-10-22 browser pass: Update: the page loads in a real browser, but Chrome auto-translated it; names not captured.]** **[2026-10-22 browser pass 2: Closed by BPN-12 (second browser pass, translation off).]**
+1. ~~**Discount product names.**~~ Closed 2026-10-22: Discount's own 447 tables, read in a second browser pass, list its generic deposits and 47 named products (BPN-12). The money-market page shows filters only; tables are script-loaded and returned "המידע אינו זמין כעת". Likely answer: the page in a browser or the Discount app; or the founder's paste. **[2026-10-22 browser pass: Update: the page loads in a real browser, but Chrome auto-translated it; names not captured.]** **[2026-10-22 browser pass 2: Closed by BPN-12 (second browser pass, translation off).]**
 2. **Hapoalim 447 table content** (names in "ריבית בפיקדונות נוספים", the current-account row). Page renders by script. Browser needed.
 3. **Mizrahi 447 table content** (the "שם הפיקדון" column, current-account interest). Same.
 4. **FIBI-group PortalNG data source.** Whether online.fibi.co.il exposes a JSON endpoint behind "deposits-details"; Massad's code in the same app. Browser developer tools would show it.

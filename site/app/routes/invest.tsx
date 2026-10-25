@@ -10,12 +10,12 @@ import { AssumptionsPanel } from "../components/compare/assumptions";
 import type { FormData } from "../components/compare/goal-form";
 import { feePlanItems, ScenarioDefaults } from "../components/fees/chips";
 import { IndexChips, PlanBlock } from "../components/invest/chips";
-import { BrokerGrid } from "../components/invest/grid";
+import { HousesSection } from "../components/invest/houses";
 import { FundsSection } from "../components/invest/funds";
 import { LabelSheetHost } from "../components/invest/parts";
-import { Headline, IndexHeader, Options, Worth } from "../components/invest/sections";
+import { Headline, IndexHeader, Matters, OptionsCompare, WorthBars } from "../components/invest/sections";
 import { Foot, Steps } from "../components/invest/steps";
-import { Callout } from "../components/kit";
+import { Callout, Disclosure } from "../components/kit";
 import { Sheet } from "../components/Sheet";
 import { PageShell } from "../components/shell";
 import { RulesLine } from "../components/provenance";
@@ -24,7 +24,7 @@ import { type CompareBundle } from "../lib/compare";
 import { planInputs } from "../lib/plan-inputs";
 import { GoalsProvider, useGoals, type Presets } from "../lib/goal";
 import { useInputs } from "../lib/inputs";
-import { buildInvest, indexById, providersOfInvest, refOfCustom, type CustomIndex, type IndexRef, type OptionId } from "../lib/invest";
+import { buildInvest, indexById, providersOfInvest, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
 import { loadWorkbenchBundle, type WorkbenchBundle, type WorkbenchInputs } from "../lib/providers";
 import { useInvestState } from "../lib/state";
 
@@ -140,8 +140,15 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   // A chip opens the same fields the fees page opens, on the same current goal: a value typed here is the value there.
   const planItems = feePlanItems(fi, { return: plan.returnFromParameter ? c.plan.retExample : c.plan.retEntered });
 
-  const [picked, setPicked] = useState<{ index: string; option: OptionId } | null>(null);
-  const selected = picked && index && picked.index === index.id ? picked.option : view?.headline?.option ?? view?.options.find((o) => o.exists && o.bestWay)?.id ?? view?.options.find((o) => o.exists)?.id ?? null;
+  // the house whose funds are listed: the person's click, else their own account, else the cheapest way's house
+  const [picked, setPicked] = useState<{ index: string; house: string } | null>(null);
+  const pickable = (id: string | null) => !!id && !!view?.houses.some((h) => h.provider.id === id && (h.best || h.generic));
+  const house = picked && index && picked.index === index.id && pickable(picked.house) ? picked.house : pickable(yourBroker) ? yourBroker : view?.headline?.providerId ?? view?.genericHeadline?.cell.providerId ?? view?.houses.find((h) => h.best || h.generic)?.provider.id ?? null;
+  const pickHouse = (id: string) => {
+    if (!index) return;
+    setPicked({ index: index.id, house: id });
+    requestAnimationFrame(() => document.getElementById("invest-funds-section")?.scrollIntoView({ behavior: "smooth", block: "start" }));
+  };
 
   const rules = ["ETF-31", "ETF-24", "ETF-51", "TXS-09", "TXF-22"].filter((id) => wb.rules.some((r) => r.id === id));
 
@@ -176,11 +183,20 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
           <>
             <IndexHeader view={view} onChangeAnswer={index.custom ? () => invest.add({ ...index.custom!, israeli: !index.custom!.israeli }) : null} />
             <Headline view={view} />
-            <Worth view={view} />
-            <Options view={view} selected={selected} onSelect={(id) => setPicked({ index: index.id, option: id })} />
-            <BrokerGrid view={view} />
-            <FundsSection view={view} optionId={selected} mayaHref={wb.links.maya?.href ?? null} />
-            <Steps view={view} monthly={plan.values.monthly} />
+            <Matters view={view} years={plan.values.years} />
+            <HousesSection view={view} chosen={house} onPick={pickHouse} />
+            <FundsSection view={view} houseId={house} onHouse={(id) => setPicked({ index: index.id, house: id })} mayaHref={wb.links.maya?.href ?? null} />
+            <div className="flex flex-col divide-y divide-border border-y border-border">
+              <Disclosure label={c.folds.worth} spread>
+                <WorthBars view={view} />
+              </Disclosure>
+              <Disclosure label={c.options.foldLabel} spread>
+                <OptionsCompare view={view} />
+              </Disclosure>
+              <Disclosure label={c.folds.steps} spread>
+                <Steps view={view} monthly={plan.values.monthly} />
+              </Disclosure>
+            </div>
             <Foot view={view} />
             <RulesLine ids={rules} />
           </>

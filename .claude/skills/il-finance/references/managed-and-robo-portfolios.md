@@ -454,23 +454,16 @@ Out, and where it lives:
 - Likely to change: yes
 
 ### MGD-21 Online joining and algorithmic risk-setting (directive on technological means)
-- Rule: The ISA's "הוראה לבעלי רישיון בקשר למתן שירותים תוך שימוש באמצעים טכנולוגיים" came into force in 2016. It sets how advice, marketing and portfolio-management services may be given through technological means. ISA staff proposed amendments in March 2023, to chapter ה' (signals services) and chapter ו' (social trading).
-- Conditions / exceptions (secondary only; Funder, 27/07/2021, describing the directive):
-  - the needs process and the agreement may be done online without a meeting;
-  - the process cannot finish unless the client answers all questions, and contradictory answers lead to a conversation with the licensee;
-  - an algorithm may set the risk level and policy, and the licensee must understand the methodology and explain it to the client;
-  - if the client wants a different policy, a conversation with the licensee is required;
-  - technology-served clients are updated at least every 12 months;
-  - records are kept for seven years;
-  - the board must approve the technology.
-
-  None of these was read in the ISA text (open question 2).
-- Figures: in force 2016 (primary). The other figures here are secondary.
-- Source:
-  - [ISA, proposed amendment of 26 Mar 2023, "רקע כללי"](https://www.shibolet.com/wp-content/uploads/2023/05/הצעה-לתיקון-ההוראה-לבעלי-רישיון-בקשר-למתן-שירותים-תוך-שימוש.pdf), p.1 · checked 2026-10-22 · primary (third-party host, draft)
-  - [Funder, "הוראה לבעלי רישיון בקשר למתן שירותים תוך שימוש באמצעים טכנולוגיים", 27/07/2021](https://www.funder.co.il/article/121022) · checked 2026-10-22 · secondary
+- Rule: The ISA's "הוראה לבעלי רישיון בקשר למתן שירותים תוך שימוש באמצעים טכנולוגיים", issued under s.28(ב) of the Advice Law, came into force in 2016 and sets how advice, marketing and portfolio-management services may be given through technological means. Its current text (file of December 2024, with the amendment in force from 21 August 2023) lets a licensee:
+  - run the needs process and sign the agreement online (ch. ב', ss.11-13); the process cannot be completed until the client has answered every question, and if the client refuses a question or the answers contradict each other, it completes only after a conversation with a licensee (s.14);
+  - set the client's risk level and investment policy with an algorithm (ch. ג'), provided the appointed licensee and the serving licensee understand its methodology and the client gets an explanation of it (ss.15-17); a client who wants a different policy than the algorithm set completes the process only after a conversation with a licensee (s.18);
+  - run the ongoing service with an algorithm (ch. ד'); a portfolio managed by algorithm by a licensee related to a bank may hold only mutual-fund units (foreign funds permitted for offer in Israel included), ETFs, deposits and cash (s.21).
+- Conditions / exceptions: A corporation's board must approve the technological means and its use, with the approval kept for 7 years (s.6); a licensee keeps a retrievable record of each process for seven years (s.8); the licensee is liable to the client for damage caused by the technological means and its insurance must cover it (ss.4-5). Section 9 is marked cancelled from 7 August 2022; the "update at least every 12 months" that a secondary summary (Funder, 27/07/2021) described is not in the current text. The ISA staff's March 2023 proposal amended chapter ה' (signals services) and chapter ו' (social trading); the amendment's start is 21 August 2023. Re-sourced 2026-10-26 (open-questions audit): the record rested on the 2021 secondary summary and the 2023 draft until the ISA's own file was read; the address came from the glossary research of the same day.
+- Figures: in force 2016; amendment in force 21.8.2023; records kept 7 years.
+- Source: [רשות ניירות ערך: הוראה לבעלי רישיון בקשר למתן שירותים תוך שימוש באמצעים טכנולוגיים](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/horaa7822.pdf), p.8, ss.6, 8, 11-13; p.9, s.14 "ההליך יתבצע כך שלא ניתן יהיה להשלימו מבלי שהלקוח השיב לכל השאלות הנכללות בשאלון בירור הצרכים והמטרות של הלקוח", ch. ג' ss.15-18; p.9, s.21; p.4, note 1 (start of the 2023 amendment) · checked 2026-10-26 · primary
+- Scope: general
 - Dimensions: `eligibility`, `regulator`
-- Likely to change: yes (ISA directive; amendments proposed 2023)
+- Likely to change: yes (ISA directive; amended in 2022 and 2023)
 
 ### MGD-22 Qualified clients (לקוח כשיר): an individual can opt into a lighter-protection category
 - Rule: A "לקוח כשיר" is a client listed in the First Schedule at the time of engagement (s.1). An individual qualifies only with prior written consent to be treated as one, and if two of three tests are met:
@@ -535,7 +528,7 @@ Digital offerings confirmed on own pages: Meitav Manager, Phoenix digital portfo
 ## Open questions
 
 1. **Names of the 131 licensed portfolio managers, and which offer digital or low-minimum portfolios.** Tried: ISA register (JS); ISA report (counts only); Supermarker (secondary, 15 names). Probably in a browser export of the ISA register, or on ISA MAGNA. **[2026-10-22 browser pass: Names closed by MGD-23; digital/low-minimum offerings still open.]**
-2. **ISA directives' text.** Needed: needs clarification (new version 2021) and services through technological means (2016, as amended), including any rules on algorithmic portfolio management. Only secondary summaries and the 2023 draft were read. Probably on new.isa.gov.il (PDF), where the pages are JS.
+2. **ISA directives' text.** Needed: needs clarification (new version 2021) and services through technological means (2016, as amended), including any rules on algorithmic portfolio management. Only secondary summaries and the 2023 draft were read. Probably on new.isa.gov.il (PDF), where the pages are JS. **[2026-10-26 open-questions audit, lead]** Narrowed: the technological-means directive's own file (new.isa.gov.il `horaa7822.pdf`, December 2024 file, amendment in force 21.8.2023) was read by curl; MGD-21 now rests on it. Still open: the needs-clarification directive (new version 2021); one web search by title found only Funder articles. Would settle it: its PDF on new.isa.gov.il.
 3. **ISA "קול קורא – ניהול תיקים 2.0" (2 Apr 2019).** Bizportal (secondary) reports it as a model where a manager invests through a dedicated fund, joined online, with four risk profiles. Outcome unknown. Tried: one Bizportal article. Probably in ISA announcements.
 4. **Meitav Manager details.**
    - Where the account is held and in whose name (Meitav Trade? a bank?).
@@ -553,7 +546,7 @@ Digital offerings confirmed on own pages: Meitav Manager, Phoenix digital portfo
 12. **ISA complaints channel for portfolio-management clients.** Same as REG open question 5.
 13. **Termination fees.** Whether a manager may charge for ending the agreement, or for transferring securities out. The law read only says the client may cancel at any time. Custodian transfer fees are in BRK-18.
 14. **"Special risk" trades (s.18).** Which trades count. Section 18 was read only in summary.
-15. **VAT on portfolio-management fees.** Fjord states "בתוספת מע"מ"; the others do not say. This is a tax question for `tax-tier2-other.md`. **[2026-10-24 R5 pass: closed at the law level by TX2-17 (18% on a dealer's fee; none from a financial institution). Each manager's status is a fact to read from its tariff.]**
+15. ~~**VAT on portfolio-management fees.**~~ Closed 2026-10-24: 18% VAT on the fee of a manager that is not a financial institution, none on the fees of a bank or a TASE member; each manager's status is read from its tariff (TX2-17). Fjord states "בתוספת מע"מ"; the others do not say. This is a tax question for `tax-tier2-other.md`. **[2026-10-24 R5 pass: closed at the law level by TX2-17 (18% on a dealer's fee; none from a financial institution). Each manager's status is a fact to read from its tariff.]**
 16. **Investor compensation beyond the manager's security.** Whether any scheme covers a client loss from the manager's misconduct beyond reg. 3 security. None found.
 17. **Psagot's managed-portfolio offering and minimums.** The own site shows only a client login.
 
@@ -586,7 +579,7 @@ Digital offerings confirmed on own pages: Meitav Manager, Phoenix digital portfo
   - (a) ~~tax treatment in `tax-tier2-other.md`, including VAT on fees~~ closed 2026-10-24: the portfolio is taxed as the securities it holds (TX2-15) and VAT on the fee is sourced (TX2-17); only TX2 open question 11 (fees in a year with no gains) and TXS open question 12 remain, neither a block;
   - (b) no enumerable provider list (ISA register);
   - (c) no published per-firm tariffs for traditional portfolios, so the workbench (3.4) could show only the ISA average and "entered by you";
-  - (d) the ISA suitability and technology directives have not been read in the original.
+  - (d) the ISA suitability and technology directives have not been read in the original. *2026-10-26 (open-questions audit):* the technology directive is now read in the ISA's own file (MGD-21); the needs-clarification directive is still unread (open question 2, narrowed).
 - **Recommendation:** stays tier 2. The "not covered yet" page can state the duties, the custody model, the ISA averages by size, the fund-fee layer, the affiliation rules, and Meitav Manager's terms, with the open items above. *2026-10-24:* closest of the nine tier-2 instruments to graduation (ranking in `scratchpad/reports/r5-tier2.md`): the tax side computes, the provider list exists (MGD-23), and the record can be drafted as a brokerage account plus a direct fee layer (`scratchpad/reports/tier2-drafts/managed-portfolio.json`). Remaining: (b) which of the 129 licensees take retail clients and at what minimum (browser pass over their sites), (c) fees entered by the person or the ISA average (MGD-11) under D4, (d) the ISA directives in the original, and two method formulas (the direct fee with VAT; the fee-as-loss case) that `docs/method.md` does not have yet.
 - **Fit with D11:** robo products set a risk level by questionnaire. The site does not adopt such a score; per D11 the person sets their own loss filter. The UX report (`research/discovery/ux-landscape.md`, rows "Robo-advisor questionnaires" and "Questionnaire / robo") records why.
 

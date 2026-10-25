@@ -90,6 +90,20 @@
       "locator_he": "עמוד 10",
       "page": 10,
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.mvs.co.il/files/UpdatesEmployers/4-2019.pdf",
+      "title": "חוזר מס הכנסה 4/2019 – הפקדות מעסיק לקופות גמל לקצבה – תיקון 232 לפקודת מס הכנסה, 31.12.2019 (עותק באתר מבטחים, mvs.co.il)",
+      "publisher": "mvs.co.il",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "pp.1-2, s.2.1.1",
+      "locator_he": "עמודים 1 עד 2, סעיף 2.1.1",
+      "page": 1,
+      "quote": "תקרת הפיצויים בחישוב חודשי היא מכפלת משכורתו של העובד ביום ההפקדה בשיעור ההפקדה המרבי לרכיב הפיצויים בקופות גמל לקצבה (8.33%) או 2,833 ₪, שהם 1 חלקי 12 מ״תקרת הפיצויים",
+      "checked": "2026-10-26",
+      "qualifier": "(third-party host)"
     }
   ]
 }

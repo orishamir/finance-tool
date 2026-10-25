@@ -101,6 +101,33 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=6",
+      "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית - ריבית משתנה\"), התשס\"ו-2006 (קובץ התקנות 6457)",
+      "title_he": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית - ריבית משתנה\"), התשס\"ו-2006 (קובץ התקנות 6457)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "pp.404-406, reg. 1",
+      "locator_he": "עמודים 404 עד 406, תקנה 1",
+      "page": 404,
+      "quote": "נכס הבסיס",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=#page=4",
+      "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית - ריבית משתנה\") (תיקון), התשס\"ז-2007 (קובץ התקנות 6597)",
+      "title_he": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית - ריבית משתנה\") (תיקון), התשס\"ז-2007 (קובץ התקנות 6597)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.978, s.1",
+      "locator_he": "עמוד 978, סעיף 1",
+      "page": 978,
+      "checked": "2026-10-26"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf",
       "title": "החשב הכללי, היחידה לניהול החוב הממשלתי: הדו\"ח השנתי 2024, מילון מונחים",
       "title_he": "הדוח השנתי 2024 של היחידה לניהול החוב הממשלתי",
@@ -161,6 +188,27 @@
       "locator": "p.6, reg. 9א as",
       "page": 6,
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/he/pages/govermental-bonds",
+      "title": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו (מדריך, פורסם 24.08.2020)",
+      "title_he": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו (מדריך, פורסם 24.08.2020)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "quote": "מאפייני אג״ח סחיר",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=c92fdda2-0939-4110-8ebc-edfcf35e8723&limit=3&sort=ISSUANCEDATE%20desc&filters=%7B%22SERIES%22%3A1205145%7D",
+      "title": "משרד האוצר (data.gov.il): הנפקת אג\"ח סחירות בשוק המקומי, סדרה 1205145",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "quote": "ממשלתית בריבית משתנה",
+      "checked": "2026-10-26"
     }
   ]
 }

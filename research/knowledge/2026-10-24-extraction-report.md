@@ -5,42 +5,42 @@ Tables read: publishers.json yes, documents.json yes.
 ## Headline
 
 - Rules: 577; with sources: 577; unresolved (sources_missing_reason): 0
-- Entries: 1650; with locator 1347, locator_he 1170, quote 503, anchor 6, page 1289
-- Entries with title_he: 1533; with publisher_he: 1650; rules whose first source lacks publisher_he: 0
+- Entries: 1690; with locator 1378, locator_he 1196, quote 542, anchor 8, page 1316
+- Entries with title_he: 1567; with publisher_he: 1688; rules whose first source lacks publisher_he: 0
 - Rules with derived_from: 135
-- Strengths: primary 1291, institution 302, secondary 23, primary-mirror 34
+- Strengths: primary 1325, institution 299, primary-mirror 43, secondary 23
 - Rule strength realigned to its best source (primary/mirror pair only): 0
-- Kinds: regulator_page 150, institution_doc 304, circular 137, article 21, regulation 200, law 482, official_pdf 226, dataset 63, exchange_rules 35, other 22, form 10
+- Kinds: regulator_page 152, institution_doc 301, law 500, circular 143, article 21, regulation 206, official_pdf 236, dataset 64, exchange_rules 35, other 22, form 10
 
 ## Per rule base file
 
 | file | rules | entries | unresolved |
 |---|---|---|---|
-| bank-current-account-deposits.md | 22 | 76 | 0 |
+| bank-current-account-deposits.md | 22 | 79 | 0 |
 | bank-product-names.md | 1 | 4 | 0 |
 | brokerage-account.md | 39 | 97 | 0 |
-| child-savings.md | 25 | 92 | 0 |
+| child-savings.md | 25 | 98 | 0 |
 | etfs-and-index-funds.md | 60 | 158 | 0 |
-| government-bonds-and-makam.md | 23 | 60 | 0 |
-| ira-self-directed.md | 24 | 65 | 0 |
-| keren-hishtalmut.md | 27 | 66 | 0 |
+| government-bonds-and-makam.md | 23 | 66 | 0 |
+| ira-self-directed.md | 24 | 67 | 0 |
+| keren-hishtalmut.md | 27 | 68 | 0 |
 | kupat-gemel-lehashkaa.md | 19 | 52 | 0 |
 | mutual-funds-and-money-market-funds.md | 38 | 98 | 0 |
-| pension-and-gemel-lekitzba.md | 39 | 112 | 0 |
+| pension-and-gemel-lekitzba.md | 39 | 113 | 0 |
 | provident-family-common.md | 29 | 79 | 0 |
 | regulators-and-protection.md | 19 | 39 | 0 |
 | savings-policies-and-executive-insurance.md | 2 | 8 | 0 |
-| switching-and-transfers.md | 59 | 162 | 0 |
-| tax-gemel-lehashkaa-ira-child.md | 17 | 59 | 0 |
+| switching-and-transfers.md | 59 | 166 | 0 |
+| tax-gemel-lehashkaa-ira-child.md | 17 | 61 | 0 |
 | tax-general.md | 14 | 39 | 0 |
-| tax-hishtalmut.md | 15 | 63 | 0 |
+| tax-hishtalmut.md | 15 | 66 | 0 |
 | tax-insurance-and-amendment-190.md | 3 | 8 | 0 |
-| tax-interest-deposits-bonds.md | 18 | 48 | 0 |
-| tax-pension-gemel-lekitzba.md | 18 | 78 | 0 |
+| tax-interest-deposits-bonds.md | 18 | 53 | 0 |
+| tax-pension-gemel-lekitzba.md | 18 | 81 | 0 |
 | tax-securities-foreign.md | 19 | 46 | 0 |
-| tax-securities-israeli.md | 24 | 72 | 0 |
+| tax-securities-israeli.md | 24 | 77 | 0 |
 | tax-tier2-other.md | 5 | 19 | 0 |
-| tracks-catalogue-and-decoder.md | 18 | 50 | 0 |
+| tracks-catalogue-and-decoder.md | 18 | 48 | 0 |
 
 ## Unresolved (no URL on the Source line)
 
@@ -48,8 +48,9 @@ Tables read: publishers.json yes, documents.json yes.
 ## Skipped inside a line (entries without a link, unresolved references, bad URLs)
 
 
-## Hosts missing from publishers.json (0)
+## Hosts missing from publishers.json (1)
 
+- mvs.co.il: 2
 
 ## Most frequent document titles without title_he (title up to the locator)
 
@@ -111,21 +112,27 @@ Tables read: publishers.json yes, documents.json yes.
 - 1 x קסם, דוח שנתי "קסם (KTF (4A ת"א 35" (5124490), 30.6.2026
 - 1 x הראל, דוח שנתי "הראל סל (4A) MSCI AC World מנוטרלת דולר" (1150200), 31.12.2025
 - 1 x Wikipedia, איגרות חוב ממשלתיות בישראל
+- 1 x משרד האוצר (data.gov.il): הנפקת אג"ח סחירות בשוק המקומי, סדרה 1205145
 - 1 x בנק ישראל, EDGE: SECDWH
 - 1 x בנק ישראל, EDGE: רשימת זרימות הנתונים
 - 1 x data.gov.il: נתוני החוב הממשלתי המקומי (package_show)
+- 1 x חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס"ה-2005, נוסח משולב (ויקיטקסט, mirror of the law)
 - 1 x תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (כללי השקעה החלים על גופים מוסדיים), התשע"ב-2012, Wikisource mirror
 - 1 x חוזר פנסיה 2017-3-7 – ... עדכון, 1.1.2018 (עותק באתר prisha.co.il)
+- 1 x חוזר פנסיה 2022-3-3 – הוראות לניהול קרן חדשה – תיקון, 27.7.2022 (עותק באתר prisha.co.il)
 - 1 x data.gov.il, בנק ישראל: רשימת תאגידים בנקאיים בישראל - כתובות וקישורים
 - 1 x data.gov.il: רשימת תאגידים בנקאיים, משאב בעברית (datastore API)
 - 1 x Knesset OData, KNS_IsraelLaw 2242328
 - 1 x Knesset OData KNS_Bill, PrivateNumber 6522
 - 1 x Knesset OData KNS_Status 104
 - 1 x SIPC, What SIPC Protects
+- 1 x כללי הבנקאות (שירות ללקוח) (העברת פעילות פיננסית של לקוח בין בנקים), תש"ף-2019, נוסח עדכני נכון ליום 05-10-2026 (Nevo)
 - 1 x Reit 1, investor relations page, "שאלות ותשובות", "מהו שיעור המס שחל על דיבידנד?"
 - 1 x בנק לאומי: קרנות חוץ (ETF)
 - 1 x תוכנית המגירה של האוצר לתקציב הבא נחשפת: סוכני הביטוח וקרנות ההשתלמות במוקד הגזרות (N12, מתוך גלובס, 18.06.2026)
 - 1 x Calcalistech, 12.10.2026
+- 1 x חוזר מס הכנסה 4/2019 – הפקדות מעסיק לקופות גמל לקצבה – תיקון 232 לפקודת מס הכנסה, 31.12.2019 (עותק באתר מבטחים, mvs.co.il)
+- 1 x תקנות מס הכנסה (כללים בדבר חיוב במס על תשלומים לקרן שלא אושרה ותשלומים שלא כדין), תשכ"ב-1962, Wikisource raw text
 
 ## Rules whose first source lacks publisher_he
 

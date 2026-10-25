@@ -38,6 +38,34 @@
   "checked": "2026-10-25",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1071/he/regulation_h_2016-9-19.pdf",
+      "title": "חוזר גופים מוסדיים 2016-9-19 – הצטרפות לקרן פנסיה או לקופת גמל (29.9.2016)",
+      "title_he": "חוזר גופים מוסדיים 2016-9-19 – הצטרפות לקרן פנסיה או לקופת גמל (29.9.2016)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.2, s.4(ו)",
+      "locator_he": "עמוד 2, סעיף 4(ו)",
+      "page": 2,
+      "quote": "חברה מנהלת תשלח הודעה למעסיק בנוסח שבנספח ו' לחוזר זה בתוך 10 ימי עסקים מהיום שבו אושרה בקשתו של העמית להצטרף לקרן",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1071/he/regulation_h_2016-9-19.pdf",
+      "title": "חוזר גופים מוסדיים 2016-9-19 – הצטרפות לקרן פנסיה או לקופת גמל (29.9.2016)",
+      "title_he": "חוזר גופים מוסדיים 2016-9-19 – הצטרפות לקרן פנסיה או לקופת גמל (29.9.2016)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.3, s.4(ז)",
+      "locator_he": "עמוד 3, סעיף 4(ז)",
+      "page": 3,
+      "quote": "יפעל בהתאם לבחירת העובד בקרן פנסיה או בקופת גמל לא יאוחר מהחודש העוקב לחודש שלאחר קבלת ההודעה",
+      "checked": "2026-10-26"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
       "title": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
       "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
@@ -61,6 +89,19 @@
       "locator": "pp.26-27, Annex 11",
       "page": 26,
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mvs.co.il/files/UpdatesEmployers/1.pdf",
+      "title": "חוזר גופים מוסדיים 2016-9-29 – חוזר הצטרפות לקרן פנסיה או לקופת גמל – תיקון (1.1.2017), עותק באתר מבטחים",
+      "title_he": "חוזר גופים מוסדיים 2016-9-29 – חוזר הצטרפות לקרן פנסיה או לקופת גמל – תיקון (1.1.2017), עותק באתר מבטחים",
+      "publisher": "mvs.co.il",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "s.4(ו)-(ז)",
+      "locator_he": "סעיף 4(ו)-(ז)",
+      "checked": "2026-10-26",
+      "qualifier": "(third-party host)"
     }
   ]
 }
