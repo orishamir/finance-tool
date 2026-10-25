@@ -31,6 +31,13 @@ export const depositTerms = z.strictObject({
   }),
   exit_points: z.strictObject({ exists: z.boolean(), every_months: z.number().nullable() }),
   auto_renew: z.strictObject({ value: z.boolean(), max_renewals: z.number().int().nullable() }),
+  /**
+   * A short plain-Hebrew summary of the conditions the bank prints for the rate (2026-10-25, guide page of the current account). Faithful to the
+   * printed text quoted in the notes of `rate_offered`; it adds nothing that is not printed. Absent when the page has no summary yet.
+   */
+  conditions_he: z.string().min(1).optional(),
+  /** One plain-Hebrew sentence on an open doubt about the record (the printed rate and its conditions disagree, a stated end date has passed). The page shows it beside the figure. Absent when there is none. */
+  doubt_he: z.string().min(1).optional(),
   snapshot: isoDate,
   source,
 });

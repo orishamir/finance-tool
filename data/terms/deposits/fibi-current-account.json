@@ -1,0 +1,150 @@
+{
+  "id": "fibi-current-account",
+  "bank": "fibi",
+  "names": {
+    "447": [
+      "תשלום ריבית על יתרות זכות בעו\"ש ללקוחות פרטיים",
+      "הטבה של תשלום ריבית על יתרות זכות בעו\"ש בשקלים ללקוחות פרטיים"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": []
+  },
+  "type_447": "יתרת זכות בחשבון",
+  "wrapper_id": "current-account",
+  "term_months": {
+    "value": null,
+    "unit": "months",
+    "source": {
+      "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+      "title": "הבנק הבינלאומי, 'ריביות על פיקדונות' (פרסום לפי הוראה 447; דף https://www.fibi.co.il/private/depositsandsavings/interest/ מפנה ל-https://online.fibi.co.il/appsng/Resources/PortalNG/deposits-details/#/details/31, הנתונים נטענים מ-https://apps.fibi.co.il/bff-depositmanagement/api/v1/fibi/depositDetails/31 ו-/creditBalance/31), 'effectiveDate' 2026-10-25, פריים 4.75%, טבלת יתרת זכות (creditBalance)",
+      "publisher": "First International Bank of Israel Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-10-25",
+    "effective_from": "2026-10-25",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-09"
+    ],
+    "state": "sourced",
+    "notes": "a current account has no term; the publication prints no term."
+  },
+  "rate_type": "fixed",
+  "anchor": null,
+  "spread": null,
+  "rate_offered": {
+    "value": 2,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+      "title": "הבנק הבינלאומי, 'ריביות על פיקדונות' (פרסום לפי הוראה 447; דף https://www.fibi.co.il/private/depositsandsavings/interest/ מפנה ל-https://online.fibi.co.il/appsng/Resources/PortalNG/deposits-details/#/details/31, הנתונים נטענים מ-https://apps.fibi.co.il/bff-depositmanagement/api/v1/fibi/depositDetails/31 ו-/creditBalance/31), 'effectiveDate' 2026-10-25, פריים 4.75%, 'interestRate': '2%'",
+      "publisher": "First International Bank of Israel Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-10-25",
+    "effective_from": "2026-10-25",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-09",
+      "BANK-13"
+    ],
+    "state": "sourced",
+    "notes": "447 row: 'תשלום ריבית על יתרות זכות בעו\"ש ללקוחות פרטיים', 'interestType: קבועה', 'interestRate: 2%'. Conditions (linked PDF): private customers receiving a salary of at least 3,000 NIS into the account; total financial assets in the account (current account, securities, deposits) not above 50,000 NIS; not in the 'הטבה פלוס' programme; the current-account balance on every day of the month is 10,000 NIS or more ('אם באחד מימי החודש היתרה נמוכה מ-₪10,000 הלקוח לא יקבל זיכוי בריבית זכות עבור אותו החודש'); not for accounts with another credit-interest product; 'ריבית עו\"ש בשיעור של 2% עד לגובה של ₪10,000'; checked on the last day of each month; paid automatically each quarter. CONFLICT: the conditions PDF ends 'ההטבה בתוקף עד 31.03.2026', while the 447 publication dated 2026-10-25 still lists the 2% row; the 447 publication is stored as authoritative."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1): 15% על ריבית מנכס שאינו צמוד למדד; read through il-finance TXI-03 and TXI-04 (checked 2026-10-25)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08",
+      "BANK-09"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel credit balance: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate (TXI-04); the bank withholds 15% on any interest it pays an individual, current-account credit interest included (TXI-08)."
+  },
+  "amount_range": {
+    "min": {
+      "value": 10000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.fibi.co.il/helpsys-api?helpId=001&bankNum=031",
+        "title": "הבנק הבינלאומי, 'הטבה של תשלום ריבית על יתרות זכות בעו\"ש בשקלים ללקוחות פרטיים' (PDF, נפתח מקישור 'אופן הצטרפות ותנאים לקבלת הריבית' בפרסום; נוצר 09.02.2026), סעיף 1, אוכלוסייה זכאית",
+        "publisher": "First International Bank of Israel Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": "2026-10-25",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-09"
+      ],
+      "state": "sourced",
+      "notes": "Eligibility needs a balance of at least 10,000 NIS on every day of the month ('יתרת חשבון העו\"ש בכל אחד מהימים בחודש הנבדק לזכאות הינה ₪10,000 ומעלה'); this is a qualifying floor rather than a printed minimum on which interest is paid."
+    },
+    "max": {
+      "value": 10000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.fibi.co.il/helpsys-api?helpId=001&bankNum=031",
+        "title": "הבנק הבינלאומי, 'הטבה של תשלום ריבית על יתרות זכות בעו\"ש בשקלים ללקוחות פרטיים' (PDF, נפתח מקישור 'אופן הצטרפות ותנאים לקבלת הריבית' בפרסום; נוצר 09.02.2026), סעיף 2, הטבה",
+        "publisher": "First International Bank of Israel Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": "2026-10-25",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-09"
+      ],
+      "state": "sourced",
+      "notes": "'ריבית עו\"ש בשיעור של 2% עד לגובה של ₪10,000'."
+    }
+  },
+  "break": {
+    "allowed": true,
+    "penalty": "none",
+    "mechanism_text": "Current account: money is available at any time; no break mechanism is printed (the 447 credit-balance table has no break column).",
+    "rule_ids": [
+      "BANK-09"
+    ]
+  },
+  "exit_points": {
+    "exists": false,
+    "every_months": null
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "conditions_he": "ללקוחות פרטיים ששכר של לפחות 3,000 ₪ נכנס לחשבון שלהם, כשסך הנכסים הפיננסיים בחשבון (עו״ש, ניירות ערך, פיקדונות) לא עולה על 50,000 ₪ והיתרה בעו״ש היא 10,000 ₪ ומעלה בכל יום בחודש (ביום אחד מתחת לזה אין ריבית על כל החודש). לא למי שבתוכנית ״הטבה פלוס״ או שיש לו בחשבון מוצר אחר של ריבית זכות. הריבית על עד 10,000 ₪, נבדקת בסוף כל חודש ומשולמת כל רבעון.",
+  "doubt_he": "קובץ התנאים של הבנק כותב ״ההטבה בתוקף עד 31.03.2026״, אבל הפרסום מ־25.10.2026 עדיין מציג 2%. האתר מציג את הפרסום.",
+  "snapshot": "2026-10-25",
+  "source": {
+    "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",
+    "title": "הבנק הבינלאומי, 'ריביות על פיקדונות' (פרסום לפי הוראה 447; דף https://www.fibi.co.il/private/depositsandsavings/interest/ מפנה ל-https://online.fibi.co.il/appsng/Resources/PortalNG/deposits-details/#/details/31, הנתונים נטענים מ-https://apps.fibi.co.il/bff-depositmanagement/api/v1/fibi/depositDetails/31 ו-/creditBalance/31), 'effectiveDate' 2026-10-25, פריים 4.75%",
+    "publisher": "First International Bank of Israel Ltd.",
+    "strength": "institution"
+  }
+}

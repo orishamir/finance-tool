@@ -3,12 +3,18 @@
 //
 // 2026-10-25 (guide-page sweep, finding 2 and 3): a deposit-family wrapper runs on the published rate of the deposit-terms record
 // P-05 names (A-21, A-25), not on P-05's `cash_rate`; the current account also carries its balance ceiling (F-26, BANK-09).
+//
+// 2026-10-25 (current-account page, G3): the current account's illustrative run starts from the rate most of the collected banks
+// publish (F-85), not from one bank's rate; `commonAccountRate` makes that value and the page's counts from the bank records.
+import { mostCommonRate } from "@finance-tool/engine";
 import type { Bundle } from "./engine";
 import { p05Range, runTimeline } from "./engine";
 import type { DepositTerms, ParameterRecord, RuleRecord, ValueObject, WrapperId, WrapperRecord } from "@finance-tool/schema";
+import type { AccountBank } from "./guide-signature";
 import { buildInstrumentTerms, loadDepositTerms, loadFunds } from "./instruments.server";
 import { loadFees } from "./data.server";
-import type { SiteValue } from "./value";
+import { shortName } from "./providers";
+import { computed, type SiteValue, type Strength } from "./value";
 
 export type NoGraph =
   | { kind: "missing"; parts: string[] }
@@ -67,6 +73,74 @@ export function publishedDeposit(wrapperId: string, spec: { deposit_terms?: stri
   return { record, rate: { ...rate } as SiteValue, ...(ceiling ? { ceiling } : {}) };
 }
 
+/** One current-account record per bank: the latest by snapshot. */
+export function currentAccountRecords(deposits: DepositTerms[]): DepositTerms[] {
+  const latest = new Map<string, DepositTerms>();
+  for (const d of deposits) {
+    if (d.wrapper_id !== "current-account") continue;
+    const prev = latest.get(d.bank);
+    if (!prev || d.snapshot > prev.snapshot) latest.set(d.bank, d);
+  }
+  return [...latest.values()].sort((a, b) => (a.bank < b.bank ? -1 : 1));
+}
+
+/** The records as the page reads them: the printed rate and ceiling as sourced figures, with the record's own Hebrew text. A record whose rate is not a number is left out. */
+export function accountBanks(records: DepositTerms[]): AccountBank[] {
+  const banks: AccountBank[] = [];
+  for (const r of records) {
+    if (typeof r.rate_offered.value !== "number" || r.rate_offered.unit !== "pct_per_year") continue;
+    const max = r.amount_range.max;
+    // a doubt travels with the number: its sheet says it (the record's English notes stay in the data)
+    const rate = { ...r.rate_offered, ...(r.doubt_he ? { notes: r.doubt_he } : {}) } as SiteValue;
+    banks.push({
+      id: r.id,
+      bank: r.bank,
+      name: shortName(r.bank, r.bank),
+      rate,
+      ceiling: max && max.unit === "nis" && typeof max.value === "number" ? ({ ...max } as SiteValue) : null,
+      conditions: r.conditions_he ?? null,
+      doubt: r.doubt_he ?? null,
+      until: r.rate_offered.effective_to,
+      // the record's notes quote the sentence a bank prints when it offers no interest ("לא מוצעת ריבית על יתרת זכות")
+      noOffer: /לא מוצעת ריבית/.test(r.rate_offered.notes ?? ""),
+    });
+  }
+  return banks;
+}
+
+/** The rate most banks pay (F-85) as a computed value over the banks' printed rates, with the counts the page says beside it. */
+export interface CommonAccountRate {
+  rate: SiteValue;
+  /** Banks that print exactly that rate, banks collected, banks that print a rate above 0. */
+  count: SiteValue;
+  of: SiteValue;
+  paying: SiteValue;
+  /** The balance that earns that rate when it is above 0 and every bank that prints it prints a ceiling: the largest of them. Null otherwise (a rate of 0 pays on no balance). */
+  ceiling: SiteValue | null;
+}
+
+export function commonAccountRate(banks: AccountBank[], rules: Record<string, RuleRecord>, today: string): CommonAccountRate | null {
+  const result = mostCommonRate(banks.map((b) => Number(b.rate.value)));
+  if (!result) return null;
+  const inputs = Object.fromEntries(banks.map((b) => [b.name, b.rate]));
+  const bank09 = rules["BANK-09"];
+  const ruleRefs = bank09 ? [{ id: "BANK-09", strength: bank09.strength as Strength }] : [];
+  const make = (value: number, unit: SiteValue["unit"], about: string) => computed(value, unit, "F-85", inputs, { today, rules: ruleRefs, about });
+  const same = banks.filter((b) => Math.abs(Number(b.rate.value) - result.rate) < 1e-9);
+  const ceilings = same.map((b) => b.ceiling);
+  const ceiling =
+    result.rate > 0 && ceilings.every((c) => c !== null)
+      ? ceilings.reduce<SiteValue | null>((best, c) => (best === null || (c!.value as number) > (best.value as number) ? c : best), null)
+      : null;
+  return {
+    rate: make(result.rate, "pct_per_year", "הריבית שרוב הבנקים שנאספו מפרסמים על יתרה בעו״ש"),
+    count: make(result.count, "count", "כמה בנקים מפרסמים את הריבית הזאת"),
+    of: make(result.of, "count", "כמה בנקים נאספו"),
+    paying: make(result.paying, "count", "כמה בנקים מפרסמים ריבית מעל 0"),
+    ceiling,
+  };
+}
+
 /** P-05 with a published rate in place of `cash_rate` (the engine reads that input for every cash-like run). */
 export function withPublishedRate(p05: ParameterRecord, rate: ValueObject): ParameterRecord {
   const inputs = (p05 as unknown as { inputs: Record<string, unknown> }).inputs;
@@ -111,9 +185,13 @@ export function buildInstrumentBundle(
     return { bundle: null, noGraph: { kind: "missing", parts: missingParts(built.missing) }, published: null };
   }
   const published = family === "deposit" ? publishedDeposit(record.id, spec, deposits) : null;
-  const runP05 = published ? withPublishedRate(p05, published.rate) : p05;
-  const terms = published?.ceiling && built.terms.deposit ? { ...built.terms, deposit: { ...built.terms.deposit, balanceCeiling: published.ceiling.value as number } } : built.terms;
-  const feeValues = { ...built.feeValues, ...(published?.ceiling ? { balanceCeiling: published.ceiling } : {}) };
+  // the current account starts from the rate most banks pay (F-85, 2026-10-25), not from the one bank P-05 names
+  const common = record.id === "current-account" ? commonAccountRate(accountBanks(currentAccountRecords(deposits)), allRules, t) : null;
+  const rate = common ? common.rate : published?.rate;
+  const ceiling = common ? common.ceiling : published?.ceiling;
+  const runP05 = rate ? withPublishedRate(p05, rate) : p05;
+  const terms = ceiling && built.terms.deposit ? { ...built.terms, deposit: { ...built.terms.deposit, balanceCeiling: ceiling.value as number } } : built.terms;
+  const feeValues = { ...built.feeValues, ...(ceiling ? { balanceCeiling: ceiling } : {}) };
   const draft: Bundle = { record, p05: runP05, terms, feeValues, rules: Object.values(allRules), runDate: t };
   const probe = runTimeline(draft, { entered: {}, age: null });
   if (probe.kind === "failed") {

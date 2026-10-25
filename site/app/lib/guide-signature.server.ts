@@ -6,7 +6,7 @@ import type { DepositTerms, FundRecord, ParameterRecord, RuleRecord, WrapperReco
 import { loadParameters, loadRules, loadWrappers, today } from "./data.server";
 import type { Bundle } from "./engine";
 import { p05Value } from "./engine";
-import { buildInstrumentBundle, familyOf, publishedDeposit, type InstrumentFamily } from "./guide-signature-bundle.server";
+import { accountBanks, buildInstrumentBundle, commonAccountRate, currentAccountRecords, familyOf, publishedDeposit, type InstrumentFamily } from "./guide-signature-bundle.server";
 import type { SignatureData } from "./guide-signature";
 import { loadDepositTerms, loadFunds } from "./instruments.server";
 import { buildPension, buildProvident, buildStudyFund } from "./guide-signature-g2.server";
@@ -74,13 +74,6 @@ function breakFact(rec: DepositTerms): SiteValue {
   };
 }
 
-/** A figure that sits in the notes of a record's rate (the 447 table's footnote), as a value object of the same source. null when the notes do not hold it. */
-function noteFigure(rate: SiteValue, pattern: RegExp, unit: SiteValue["unit"], note: string): SiteValue | undefined {
-  const m = pattern.exec(rate.notes ?? "");
-  if (!m) return undefined;
-  return { ...rate, value: Number(m[1]!.replace(/,/g, "")), unit, notes: note };
-}
-
 const withRules = (d: SignatureData, ...ids: string[]): SignatureData => ({ ...d, ruleIds: [...new Set([...d.ruleIds, ...ids])] });
 
 function emptyData(id: string): SignatureData {
@@ -114,18 +107,31 @@ function depositFacts(d: SignatureData, c: Ctx, wrapperId: string, prefix = ""):
 
 // ---------------------------------------------------------------- current account
 
+/** The banks' current-account records and the rate most of them pay (F-85), on `d`: the data both the account page and the ladder read. */
+function addAccountBanks(d: SignatureData, c: Ctx): { common: ReturnType<typeof commonAccountRate> } {
+  const banks = accountBanks(currentAccountRecords(c.deposits));
+  d.banks = banks;
+  const common = commonAccountRate(banks, c.allRules, c.t);
+  if (!common) d.gaps.push("accountBanks");
+  return { common };
+}
+
 builders["current-account"] = (c) => {
   const d = emptyData(c.id);
   addBundle(d, c, "current-account");
   addBundle(d, c, "money-market-fund-daily");
-  const { rate } = depositFacts(d, c, "current-account");
-  d.facts.cashRate = p05Value(c.p05, "cash_rate");
-  if (rate) {
-    // the one number in the record's conditions: the monthly charge on a Leumi card (read from the rate's notes, same source row)
-    const card = noteFigure(rate, /minimum NIS ([\d,]+) monthly charge/, "nis", "החיוב החודשי המזערי בכרטיס אשראי של הבנק, אחד התנאים לריבית; נלקח מהערות הרשומה של הריבית");
-    if (card) d.facts.cardMonthly = card;
-    else d.gaps.push("conditionCard");
+  const { common } = addAccountBanks(d, c);
+  if (common) {
+    d.facts.commonRate = common.rate;
+    d.facts.commonCount = common.count;
+    d.facts.bankCount = common.of;
+    d.facts.payingCount = common.paying;
   }
+  d.facts.cashRate = p05Value(c.p05, "cash_rate");
+  // the tax the bank withholds on the interest, for the table's "the most it pays in a year, after tax" (TXI-08 withholds TXI-03's rate)
+  const tax = figureOf(c, "TXI-03", "rate");
+  if (tax) d.facts.taxRate = tax;
+  else d.gaps.push("rule:TXI-03");
   return withRules(d, "BANK-09", "BANK-13", "TXI-03", "TXI-08");
 };
 
@@ -166,11 +172,15 @@ builders["savings-plan"] = (c) => {
 builders["money-market-fund-daily"] = (c) => {
   const d = emptyData(c.id);
   addBundle(d, c, "money-market-fund-daily");
-  const cur = depositFacts(d, c, "current-account", "current:");
+  // the current-account row is the rate most of the collected banks publish (F-85), with the best a bank pays beside it
+  const { common } = addAccountBanks(d, c);
   const dep = depositFacts(d, c, "bank-deposit", "deposit:");
   // names the ladder reads
-  if (cur.rate) d.facts.currentRate = cur.rate;
-  if (d.facts["current:ceiling"]) d.facts.currentCeiling = d.facts["current:ceiling"]!;
+  if (common) {
+    d.facts.currentRate = common.rate;
+    d.facts.currentCount = common.count;
+    d.facts.currentBankCount = common.of;
+  }
   if (dep.rate) d.facts.depositRate = dep.rate;
   if (d.facts["deposit:term"]) d.facts.depositTerm = d.facts["deposit:term"]!;
   d.facts.cashRate = p05Value(c.p05, "cash_rate");
