@@ -25,6 +25,8 @@ export function prerenderPaths(): string[] {
   for (const w of providerWrapperIds()) paths.push(`/workbench/providers/${w}`);
   for (const e of loadExposures()) paths.push(`/workbench/funds/${e.id}`);
   paths.push("/workbench-bundle.json");
+  // the component gallery: for builders, noindex, in no menu and no search
+  paths.push("/kit");
   // the switching playbook (release 4): one page per wrapper that has a step list
   for (const w of playbookWrapperIds()) paths.push(`/switch/${w}`);
   return paths;
