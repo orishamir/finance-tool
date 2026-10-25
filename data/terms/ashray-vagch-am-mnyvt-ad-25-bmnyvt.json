@@ -2,7 +2,7 @@
   "id": "ashray-vagch-am-mnyvt-ad-25-bmnyvt",
   "he": "אשראי ואג\"ח עם מניות (עד 25% במניות)",
   "en": null,
-  "meaning": "מסלול שמשקיע בעיקר באיגרות חוב ובהלוואות, ועוד חלק קטן ומוגבל במניות",
+  "meaning": "מסלול שחשוף בעיקר לאיגרות חוב, להלוואות ולפיקדונות, בישראל ובחוץ לארץ, ובחלק מוגבל גם למניות",
   "where": [
     "app"
   ],
@@ -16,10 +16,10 @@
     "CAT-25"
   ],
   "source": {
-    "url": "https://www.meitav.co.il/media/53vlo3zc/שינוי-התמחות-גמל-להשקעה-7980.pdf",
-    "title": "שינוי שם ומדיניות השקעה תקנונית, track 7980 (Meitav)",
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf",
+    "title": "רשות שוק ההון, רשימת מסלולי השקעה – תיקון (2024-1471, 17.4.2024), מסלולים מתמחים, אשכול 1, עמ' 4",
     "publisher": "see title",
-    "strength": "institution",
-    "checked": "2026-10-22"
+    "strength": "primary",
+    "checked": "2026-10-26"
   }
 }

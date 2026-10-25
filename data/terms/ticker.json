@@ -2,7 +2,7 @@
   "id": "ticker",
   "he": "ticker",
   "en": null,
-  "meaning": "הסימן של נייר ערך בבורסה מסוימת; אותה קרן יכולה להיסחר בכמה בורסות ובכמה מטבעות.",
+  "meaning": "הסימן של קרן בבורסה שבה היא נסחרת; אם היא רשומה למסחר גם בבורסה בישראל, יש לה סימן גם שם.",
   "where": [
     "app"
   ],
@@ -18,10 +18,10 @@
     "ETF-28"
   ],
   "source": {
-    "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/cspx-ishares-core-s-p-500-ucits-etf-fund-fact-sheet-en-gb.pdf",
-    "title": "iShares Core S&P 500 UCITS ETF USD (Acc) factsheet, Sep 2026",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=#page=5",
+    "title": "תקנות השקעות משותפות בנאמנות (הצעת יחידות של קרן חוץ), התשע\"ו-2016, תקנה 4(ב)",
     "publisher": "see title",
-    "strength": "institution",
-    "checked": "2026-10-22"
+    "strength": "primary",
+    "checked": "2026-10-26"
   }
 }

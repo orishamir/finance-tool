@@ -2,7 +2,7 @@
   "id": "ashray-vagch",
   "he": "אשראי ואג\"ח",
   "en": null,
-  "meaning": "מסלול שמשקיע בעיקר באיגרות חוב, בהלוואות ובפיקדונות, בישראל ובחוץ לארץ",
+  "meaning": "מסלול שחשוף בעיקר לאיגרות חוב, להלוואות ולפיקדונות, בישראל ובחוץ לארץ",
   "where": [
     "app"
   ],
@@ -12,10 +12,10 @@
     "CAT-23"
   ],
   "source": {
-    "url": "https://www.meitav.co.il/media/r0wh30iv/%D7%A8%D7%99%D7%9B%D7%95%D7%96-%D7%9E%D7%99%D7%96%D7%95%D7%92%D7%99%D7%9D-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf",
-    "title": "ריכוז מיזוגים, Meitav merger and policy summary (Meitav)",
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf",
+    "title": "רשות שוק ההון, רשימת מסלולי השקעה – תיקון (2024-1471, 17.4.2024), מסלולים מתמחים, אשכול 1, עמ' 4",
     "publisher": "see title",
-    "strength": "institution",
-    "checked": "2026-10-22"
+    "strength": "primary",
+    "checked": "2026-10-26"
   }
 }

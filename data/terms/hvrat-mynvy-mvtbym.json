@@ -2,7 +2,7 @@
   "id": "hvrat-mynvy-mvtbym",
   "he": "הוראת מינוי מוטבים",
   "en": null,
-  "meaning": "הוראה שנותנים לקופה מי יקבלו את הכסף שבה במקרה של פטירה",
+  "meaning": "הוראה שנותנים לקופה מי יקבלו את הכסף שבה אחרי הפטירה; בקופת גמל, בלי הוראה כזו הכסף עובר ליורשים על פי דין או על פי צוואה",
   "where": [
     "bylaws",
     "form"
@@ -23,10 +23,10 @@
     "KH-26"
   ],
   "source": {
-    "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-    "title": "תקנון תקני לקופת גמל להשקעה, אלטשולר שחם חיסכון פלוס, מרץ 2025",
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1071/he/regulation_h_2016-9-19.pdf",
+    "title": "רשות שוק ההון, חוזר גופים מוסדיים 2016-9-19: הצטרפות לקרן פנסיה או לקופת גמל, ס' 12",
     "publisher": "see title",
-    "strength": "institution",
-    "checked": "2026-10-22"
+    "strength": "primary",
+    "checked": "2026-10-26"
   }
 }

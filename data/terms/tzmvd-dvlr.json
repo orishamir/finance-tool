@@ -2,7 +2,7 @@
   "id": "tzmvd-dvlr",
   "he": "צמוד דולר",
   "en": null,
-  "meaning": "פיקדון בשקלים שערכו עוקב אחרי שער הדולר; בחלק מהמוצרים הקרן אינה מובטחת.",
+  "meaning": "פיקדון בשקלים שצמוד לשער הדולר; הבנק צריך לגלות אם ההצמדה חלה רק כשהשער עולה או גם כשהוא יורד.",
   "where": [],
   "wrapper_ids": [],
   "variants": [
@@ -15,10 +15,10 @@
     "TX2-01"
   ],
   "source": {
-    "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-    "title": "Bank Yahav, rate board 13_26, effective 06/10/2026",
-    "publisher": "see title",
-    "strength": "institution",
-    "checked": "2026-10-22"
+    "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",
+    "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל), ס' 1, 2(ד) ו-7(א)(5)",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-26"
   }
 }

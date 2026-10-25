@@ -2,7 +2,7 @@
   "id": "pry",
   "he": "פר\"י",
   "en": null,
-  "meaning": "שם בבנקים לפיקדון בריבית יומית, שהריבית בו משתנה",
+  "meaning": "קיצור של פיקדון בריבית יומית, שהריבית בו משתנה; כך מגדיר אותו בנק יהב",
   "where": [
     "app",
     "provider-site"
@@ -14,9 +14,9 @@
   "rule_ids": [],
   "source": {
     "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-    "title": "Bank Yahav deposit rate board 13_26 (effective 06/10/2026)",
+    "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26 (בתוקף מ-06.10.2026), עמ' 2",
     "publisher": "see title",
     "strength": "institution",
-    "checked": "2026-10-22"
+    "checked": "2026-10-26"
   }
 }

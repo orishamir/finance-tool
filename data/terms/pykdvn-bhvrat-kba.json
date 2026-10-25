@@ -2,7 +2,7 @@
   "id": "pykdvn-bhvrat-kba",
   "he": "פיקדון בהוראת קבע",
   "en": null,
-  "meaning": "חיסכון שאליו עובר סכום קבוע מהעו\"ש באופן אוטומטי כל חודש",
+  "meaning": "פיקדון שמפקידים אליו מזמן לזמן, למשל בהוראת קבע; בפיקדון ליותר משנה, ההסכם צריך לפרט את סדרי ההפקדות ואת המגבלות על הסכומים ועל המועדים",
   "where": [
     "app"
   ],
@@ -18,10 +18,10 @@
     "BANK-31"
   ],
   "source": {
-    "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
-    "title": "Discount 447 table, \"פיקדון בהוראת קבע\" filter",
-    "publisher": "see title",
-    "strength": "institution",
-    "checked": "2026-10-22"
+    "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",
+    "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל), ס' 7(ב)(4)",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-26"
   }
 }

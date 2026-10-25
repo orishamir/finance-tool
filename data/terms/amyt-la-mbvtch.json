@@ -2,7 +2,7 @@
   "id": "amyt-la-mbvtch",
   "he": "עמית לא מבוטח",
   "en": null,
-  "meaning": "מעמד בקרן הפנסיה כשהחיסכון נשאר אבל אין ביטוח לנכות ולמוות, למשל אחרי הפסקת הפקדות ממושכת",
+  "meaning": "מעמד בקרן הפנסיה כשהחיסכון נשאר אבל אין ביטוח לנכות או למוות, למשל כשההפקדות נפסקו לתקופה ממושכת, או מגיל תום תקופת הביטוח",
   "where": [
     "statement"
   ],
@@ -17,10 +17,10 @@
     "PEN-16"
   ],
   "source": {
-    "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-    "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+    "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+    "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 6, 8 ו-28 עד 30, ס' 1, 36 ו-37",
     "publisher": "see title",
-    "strength": "institution",
-    "checked": "2026-10-22"
+    "strength": "primary-mirror",
+    "checked": "2026-10-26"
   }
 }

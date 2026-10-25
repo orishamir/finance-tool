@@ -2,7 +2,7 @@
   "id": "mank-f",
   "he": "מענק",
   "en": null,
-  "meaning": "תוספת תשואה בפיקדון מובנה שמשולמת רק אם תנאי שוק שנקבע מראש מתקיים.",
+  "meaning": "בפיקדון מובנה: תוספת שמשולמת רק אם מתקיים תנאי שוק שנקבע בתנאי המוצר; כך קורא לה הבינלאומי.",
   "where": [],
   "wrapper_ids": [],
   "variants": [
@@ -15,9 +15,9 @@
   ],
   "source": {
     "url": "https://www.fibi.co.il/private/depositsandsavings/structured/",
-    "title": "FIBI, פיקדונות מובנים page",
+    "title": "הבינלאומי: פיקדונות מובנים",
     "publisher": "see title",
     "strength": "institution",
-    "checked": "2026-10-22"
+    "checked": "2026-10-26"
   }
 }
