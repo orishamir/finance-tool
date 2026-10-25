@@ -69,6 +69,8 @@ export interface VariantRow {
   run?: RunResult;
   labels: Label[];
   rank?: number;
+  /** E4 (2026-10-25): the fund's currency differs from its exposure's; the return is the exposure's, not converted between the two. */
+  currencyMismatch?: { fund: string; exposure: string };
 }
 
 export interface VariantGroupLine {
@@ -155,6 +157,13 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], dist: { yield: numbe
   const domicile = rec.domicile === "US" ? "us" : rec.domicile === "IE" ? "ireland" : undefined;
   if (domicile) fund.domicile = domicile;
   if (w8ben !== undefined) fund.w8ben = w8ben;
+  // E1 (2026-10-25): the price of one unit, in the unit's currency, for per-share commissions.
+  const price = rec.share_price;
+  if (price && typeof price.value === "number") {
+    const unitCode = { nis: "ILS", usd: "USD", eur: "EUR" }[price.unit as string];
+    if (!unitCode) throw new RecordInputError(`fund ${rec.id} share_price: unit is ${price.unit}, expected a currency`);
+    fund.sharePrice = price.value;
+  }
   if (kind === "tase-foreign-fund" && rec.tax_status.tase_foreign_fund_90pct_test?.value === true) fund.ninetyPercentTest = true;
   return { fund, notCollected, hasManagement: management !== undefined };
 }
@@ -205,10 +214,14 @@ function evaluate(c: Cand, exposure: VariantExposure, ctx: RunContext): VariantR
   const f = x.fxChange ?? 0;
   const market: SecuritiesInput["market"] = { grossReturn: x.grossReturn, inflation: x.inflation };
   const tariff = { ...x.tariff };
+  let currencyMismatch: VariantRow["currencyMismatch"];
   if (fundCurrency === "ILS") {
     if (!isIls(exposureCurrency)) market.grossReturn = (1 + x.grossReturn) * (1 + f) - 1;
   } else {
-    if (fundCurrency !== exposureCurrency) return { ...base, notCollected: built.notCollected, kind: "not-evaluated", reasons: [{ code: "no-run", ruleIds: [], gapIds: [], detail: `a ${fundCurrency} fund on a ${exposureCurrency} exposure has no run` }] };
+    // E4 (2026-10-25, index page): a fund in another currency than its exposure runs. A-01 stays in the exposure's currency and A-03
+    // moves the fund's currency against the shekel; the FX line (F-13) and the tax index (TXF-03) are the fund's trading currency's.
+    // The change of the fund's currency against the exposure's currency is not modelled, and the row says so (`currencyMismatch`).
+    if (fundCurrency !== exposureCurrency) currencyMismatch = { fund: fundCurrency, exposure: isIls(exposureCurrency) ? "ILS" : exposureCurrency };
     market.returnIn = "instrument";
     market.fxChange = f;
     // Bought in shekels on TASE: no conversion, so no FX line; bought abroad in the fund's currency: converted (F-13).
@@ -236,7 +249,7 @@ function evaluate(c: Cand, exposure: VariantExposure, ctx: RunContext): VariantR
     // G-18: an accumulating foreign fund, computed under the secondary reading of TXF-11, listed and not ranked.
     reasons.push(run.outcome.reason.startsWith("G-") ? { code: "gap", ruleIds: [], gapIds: [run.outcome.reason] } : { code: "exit-blocked", ruleIds: [run.outcome.reason], gapIds: [] });
   }
-  return { ...base, notCollected: built.notCollected, kind: reasons.length > 0 ? "listed-not-ranked" : "ranked", reasons, plan, run, labels: run.labels };
+  return { ...base, notCollected: built.notCollected, kind: reasons.length > 0 ? "listed-not-ranked" : "ranked", reasons, plan, run, labels: run.labels, ...(currencyMismatch ? { currencyMismatch } : {}) };
 }
 
 /**

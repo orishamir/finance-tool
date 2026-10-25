@@ -40,6 +40,16 @@ export function nisPerNumber(fx: FxSnapshot, code: string): number | null {
   return crossRate(fx.perEur, norm(code));
 }
 
+/** The engine's `fx` run input (F-63, 2026-10-25): shekels per one unit of every currency the ECB quotes, for tariff lines set in dollars or pounds. */
+export function fxRunInput(fx: FxSnapshot): Record<string, number> {
+  const out: Record<string, number> = {};
+  for (const code of ["EUR", ...Object.keys(fx.perEur)]) {
+    const n = nisPerNumber(fx, code);
+    if (n !== null && code !== "ILS") out[code] = n;
+  }
+  return out;
+}
+
 /** The label the page shows beside a rate, e.g. "מחושב משערי הייחוס של הבנק המרכזי האירופי, 23.10.2026". */
 export function fxLabel(fx: FxSnapshot): string {
   return `מחושב משערי הייחוס של הבנק המרכזי האירופי, ${dmy(fx.date)}`;

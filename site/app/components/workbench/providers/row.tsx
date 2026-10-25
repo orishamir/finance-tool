@@ -184,6 +184,12 @@ export function reasonSentence(r: NotComparable, instrumentClass: string, channe
       return n.lineWithoutValue(r.lineName ?? r.detail);
     case "ambiguous":
       return n.ambiguous(cls);
+    case "needs-share-price":
+      return n.needsSharePrice;
+    case "needs-fx-rate":
+      return n.needsFxRate;
+    case "record-error":
+      return n.recordError;
   }
 }
 

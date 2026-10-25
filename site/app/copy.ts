@@ -1976,6 +1976,12 @@ export const r4workbench = {
     lineWithoutValue: (name: string) => `בשורה ״${name}״ חסר ערך בתעריפון.`,
     /** copy.md 8.0: the engine refuses a tariff whose lines it cannot choose between (a plan, a sub-class); the page says so rather than guess a price */
     ambiguous: (cls: string) => `בתעריפון יש כמה שורות שחלות על ${cls}, ולאתר אין עדיין דרך לבחור ביניהן בלי לנחש:`,
+    /** 2026-10-25 (engine E1): a fee per unit bought, and the fund's unit price is not collected */
+    needsSharePrice: "העמלה בתעריפון נקבעת לפי מספר היחידות, ומחיר היחידה של הקרן עוד לא נאסף.",
+    /** 2026-10-25 (engine E2): a minimum or fee in a foreign currency the site has no rate for */
+    needsFxRate: "התעריפון קובע עמלה במטבע חוץ, ולאתר אין שער למטבע הזה.",
+    /** 2026-10-25 (engine E5): the engine cannot read the tariff without guessing */
+    recordError: "האתר לא מצליח לקרוא את התעריפון הזה בלי לנחש, ולכן לא מחשב לו מחיר.",
   },
   recordedReason: "הסיבה כפי שנרשמה בקובץ הנתונים",
   noAverage: "אין ממוצע שנאסף",
