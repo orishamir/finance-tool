@@ -7,7 +7,7 @@ import type { SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconAlert, IconExternal, IconLock } from "../icons";
 import { LeadTail, Num, NumberLegend, RuleRef, StateTag, StrengthLabel } from "../provenance";
-import { Callout, Card, Tag, cx } from "../ui";
+import { Callout, Card, cx, Sentence, Tag } from "../kit";
 import { IconNotWorth, IconPhone, IconSwap, IconUnevaluated } from "./icons";
 
 // ---------------------------------------------------------------- subject strip
@@ -139,7 +139,7 @@ export function FeeHeadline({ product, total, withFees, withoutFees, years, preT
           </Link>
         </p>
       )}
-      <p className="text-lg">
+      <Sentence size="lg">
         {h.before}
         <bdi>{product}</bdi>
         {h.mid}
@@ -158,13 +158,13 @@ export function FeeHeadline({ product, total, withFees, withoutFees, years, preT
             </Tag>
           )}
         </span>
-      </p>
-      <p className="text-muted-foreground">
+      </Sentence>
+      <Sentence tone="muted">
         {h.under}
         <Num value={withoutFees} />
         {h.with}
         <Num value={withFees} />.
-      </p>
+      </Sentence>
       {omitted.length > 0 && (
         <Callout tone="caution">
           {omitted.map((o) => (
@@ -287,34 +287,25 @@ export function ReferenceLine({ reference }: { reference: ReferenceView }) {
     <div className="flex flex-col gap-1 text-sm">
       {cma ? (
         <>
-          <p className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
-            <StateTag state="computed" />
-            <span>
-              {r.before}
-              <bdi>{cma.specialization ? `${cma.classification} · ${cma.specialization}` : cma.classification}</bdi>
-              {r.mid}
-            </span>
-            <Num value={cma.mean} />
-            <span>{r.median}</span>
-            <Num value={cma.median} />
-            <span>{r.yearBefore}</span>
-            {cma.year && <Num value={cma.year} display={String(cma.year.value)} />}
+          <Sentence as="p">
+            <StateTag state="computed" /> {r.before}
+            <bdi>{cma.specialization ? `${cma.classification} · ${cma.specialization}` : cma.classification}</bdi>
+            {r.mid} <Num value={cma.mean} /> {r.median} <Num value={cma.median} /> {r.yearBefore} {cma.year && <Num value={cma.year} display={String(cma.year.value)} />}{" "}
             {cma.count.value === 1 ? (
-              <span>{r.tracksOne}</span>
+              r.tracksOne
             ) : (
               <>
-                <span>{r.tracksBefore}</span>
-                <Num value={cma.count} />
-                <span>{r.tracksAfter.replace(/^ /, " ")}</span>
+                {r.tracksBefore} <Num value={cma.count} />
+                {r.tracksAfter}
               </>
             )}
-          </p>
+          </Sentence>
           {reference.ownAverage && (
-            <p className="text-muted-foreground">
+            <Sentence tone="muted">
               {r3fees.ownAverage[0]}
               <Num value={reference.ownAverage} />
               {r3fees.ownAverage[1]}
-            </p>
+            </Sentence>
           )}
         </>
       ) : (
@@ -328,15 +319,11 @@ export function ReferenceLine({ reference }: { reference: ReferenceView }) {
         )
       )}
       {reference.official && (
-        <p className="text-muted-foreground flex flex-wrap items-center gap-x-1.5 gap-y-1">
-          <span>
-            {r3fees.review.official[0]}
-            <bdi dir="ltr">{reference.official.year}</bdi>
-            {r3fees.review.official[1]}
-          </span>
-          <Num value={reference.official.value} />
-          <RuleRef id="PF-39" />
-        </p>
+        <Sentence tone="muted">
+          {r3fees.review.official[0]}
+          <bdi dir="ltr">{reference.official.year}</bdi>
+          {r3fees.review.official[1]} <Num value={reference.official.value} /> <RuleRef id="PF-39" />
+        </Sentence>
       )}
       {reference.stale && (
         <p className="text-caution-foreground flex items-start gap-2">
@@ -375,14 +362,12 @@ export function CapLine({ cap }: { cap: CapView }) {
       </p>
     );
   return (
-    <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5 gap-y-1">
-      <span>{c.yearly}</span>
-      <Num value={cap.rate} />
-      <span>{cap.word === "per-year" ? c.perYear.trim() : c.perDeposit.trim()}</span>
+    <Sentence size="sm" tone="muted">
+      {c.yearly} <Num value={cap.rate} /> {cap.word === "per-year" ? c.perYear.trim() : c.perDeposit.trim()}
       {cap.ruleIds.map((id) => (
-        <RuleRef key={id} id={id} />
+        <span key={id}> <RuleRef id={id} /></span>
       ))}
-    </p>
+    </Sentence>
   );
 }
 
@@ -393,10 +378,10 @@ export function RemainderLine({ value }: { value: SiteValue }) {
   if (typeof value.value === "number" && Math.abs(value.value) < 0.5) return null;
   return (
     <div className="flex flex-col gap-1">
-      <p className="text-sm">
+      <Sentence size="sm">
         {r3fees.remainder.before}
         <Num value={value} />
-      </p>
+      </Sentence>
       <p className="text-xs text-muted-foreground">{r3fees.remainder.line}</p>
     </div>
   );
@@ -406,7 +391,7 @@ export function ThresholdsLine({ negotiate, avoid }: { negotiate: SiteValue; avo
   const t = r3fees.thresholds;
   // Plain inline flow: no flex gap, so no space opens between a figure (or its flag) and the punctuation after it.
   return (
-    <p className="text-sm text-muted-foreground">
+    <Sentence size="sm" tone="muted">
       {t.before}
       <Num value={negotiate} exact={!Number.isInteger(negotiate.value)} />
       {t.mid}
@@ -415,7 +400,7 @@ export function ThresholdsLine({ negotiate, avoid }: { negotiate: SiteValue; avo
       <Link to="/parameters" className="text-link hover:underline">
         {t.link}
       </Link>
-    </p>
+    </Sentence>
   );
 }
 

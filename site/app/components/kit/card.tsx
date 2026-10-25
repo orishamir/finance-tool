@@ -2,9 +2,9 @@
 import { useId, type ElementType, type HTMLAttributes, type ReactNode, type Ref } from "react";
 import { cx } from "./cx";
 
-/** Padding of a card: `default` for a card on its own, `snug` for a row inside a list, `aside` for a side panel, `tight` for a small card, `none` when the body brings its own. */
-export type CardPad = "default" | "snug" | "aside" | "tight" | "none";
-const PAD: Record<CardPad, string> = { default: "p-4 md:p-6", snug: "p-4 md:p-5", aside: "p-5", tight: "p-4", none: "" };
+/** Padding of a card: `default` for a card on its own, `snug` for a row inside a list, `roomy` for the headline card of a page, `aside` for a side panel, `tight` for a small card, `none` when the body brings its own. */
+export type CardPad = "default" | "snug" | "roomy" | "aside" | "tight" | "none";
+const PAD: Record<CardPad, string> = { default: "p-4 md:p-6", snug: "p-4 md:p-5", roomy: "p-5 lg:p-6", aside: "p-5", tight: "p-4", none: "" };
 
 type CardProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
   children: ReactNode;

@@ -26,7 +26,7 @@ import { IconExternal } from "../components/icons";
 import { Num, NumberLegend, RulesLine } from "../components/provenance";
 import { Sheet } from "../components/Sheet";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { Callout, Card, Disclosure, SegmentedControl } from "../components/ui";
+import { Callout, Card, Disclosure, SegmentedControl, Sentence, Tag } from "../components/kit";
 import { applyProviders, buildView, computeSensitivity, makeValues, runGoalOf, nothingToCompare, cashRateOf, type CompareBundle, type CompareView, type FeeKind, type RankedOption, type SensitivityView } from "../lib/compare";
 import { loadBundle } from "../lib/bundle";
 import { fmt } from "../lib/format";
@@ -35,7 +35,6 @@ import { goalTitle } from "../components/compare/goal-form";
 import { ExposureBody, ModeTabs } from "../components/exposure-mode/result";
 import { ChooseButton, RevisitBanner, SaveComparisonButton, UnreadableSavedForm, WhatChangedSheet } from "../components/revisit/revisit";
 import { forgetRevisit, useRevisit } from "../components/revisit/use-revisit";
-import { Tag } from "../components/ui";
 import { Tpl } from "../components/exposure-mode/tpl";
 import { snapshotWrapper } from "../lib/revisit";
 import { deleteSavedComparison, isoToday, saveComparisonRecord, type CompareMode } from "../lib/state";
@@ -383,25 +382,26 @@ function Body({ bundle: bundle0, wb, data, fit, frame, exposureId, registerSave 
               />
             </Card>
           </section>
-          <aside ref={panelRef} className="hidden lg:block bg-card border border-border rounded-lg p-5" aria-label={r2.result.assumptionsTitle}>
+          <Card as="aside" pad="aside" ref={panelRef} className="hidden lg:block" aria-label={r2.result.assumptionsTitle}>
             <h3 className="text-lg font-semibold mb-4">{r2.result.assumptionsTitle}</h3>
             <AssumptionsPanel data={data} suggestion={suggestion} onAdopted={() => setSuggestion(null)} />
-          </aside>
+          </Card>
         </div>
       </div>
 
       {view.cashRate && (
-        <p className="text-sm text-muted-foreground max-w-measure flex flex-wrap items-center gap-x-1.5">
-          <span>{r2.result.cashBefore}</span>
-          <Num value={view.cashRate} />
-          <span>{r2.result.cashAfter}</span>
+        <Sentence size="sm" tone="muted" measure>
+          {r2.result.cashBefore} <Num value={view.cashRate} /> {r2.result.cashAfter}
           {bundle.cashLink && (
-            <a href={bundle.cashLink.href} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-center gap-1 hover:underline">
-              {r2.result.cashLink}
-              <IconExternal size={16} />
-            </a>
+            <>
+              {" "}
+              <a href={bundle.cashLink.href} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-center gap-1 hover:underline">
+                {r2.result.cashLink}
+                <IconExternal size={16} />
+              </a>
+            </>
           )}
-        </p>
+        </Sentence>
       )}
 
       <CoverageLine ctx={ctx} open={showCoverageOpen} />

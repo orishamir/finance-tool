@@ -8,7 +8,7 @@ import type { IdleCoverageRow, IdleMateriality, IdleRowView, IdleVerdict, IdleVi
 import { IconClock, IconExternal, IconFile } from "../icons";
 import { Num, RulesLine } from "../provenance";
 import type { SiteValue } from "../../lib/value";
-import { CoverageFold, Tag, cx } from "../kit";
+import { Card, CoverageFold, cx, Sentence, Tag } from "../kit";
 import { ReasonText } from "./reasons";
 import type { ResultCtx } from "./ctx";
 import { IconBan, IconDash, IconDashed, IconEdit, IconOk } from "./icons";
@@ -223,32 +223,32 @@ export function VerdictBlock({ verdict, depositRate, fundRate }: { verdict: Idle
   const termKey = String(verdict.termMonths);
   const term = v.termOf[termKey] ?? `${v.termMonths.before}${fmt.number(verdict.termMonths)}${v.termMonths.after}`;
   return (
-    <section className="bg-card border border-border rounded-lg p-4 md:p-6 flex flex-col gap-3">
+    <Card as="section" className="flex flex-col gap-3">
       <h2 className="text-lg font-semibold">{v.heading}</h2>
-      <p className="text-lg max-w-measure">
+      <Sentence size="lg" measure>
         {v.bank} <Num value={verdict.offerRate} /> {term}
         {v.afterTax}
         <Num value={verdict.offerAfterTax} />
         {v.perYear}
-      </p>
-      <p className="text-lg max-w-measure">
+      </Sentence>
+      <Sentence size="lg" measure>
         {v.fund}
         <Num value={verdict.fundRate} /> <span className="text-sm text-muted-foreground">({v.fundState})</span>
         {v.afterTax}
         <Num value={verdict.fundAfterTax} />
         {v.perYear}
-      </p>
-      <p className="text-lg max-w-measure">
+      </Sentence>
+      <Sentence size="lg" measure>
         {v.gap} <Num value={verdict.gap} size="figure" />
         {v.perYearShort}{verdict.better !== "even" && <span className="text-base"> {v.inFavor[verdict.better]}</span>} —{" "}
         <Judged worth={verdict.worth} below={v.below} yes={v.worth} threshold={verdict.threshold} label={v.thresholdLabel} />
-      </p>
+      </Sentence>
       <p className="text-sm text-muted-foreground max-w-measure">{v.liquidity}</p>
       <RulesLine ids={["MF-34", "BANK-06"]} />
       {verdict.termMonths < 12 && <p className="text-sm text-muted-foreground max-w-measure">{v.rolled}</p>}
       {verdict.termMonths > 12 && <p className="text-sm text-muted-foreground max-w-measure">{v.longer}</p>}
       <TaxWords depositRate={depositRate} fundRate={fundRate} />
-    </section>
+    </Card>
   );
 }
 
@@ -258,13 +258,13 @@ export function TaxWords({ depositRate, fundRate }: { depositRate: SiteValue | n
   return (
     <div className="border-t border-border pt-3 flex flex-col gap-2">
       <h3 className="font-medium">{t.heading}</h3>
-      <p className="max-w-measure">
+      <Sentence measure>
         {t.deposit} {depositRate ? <Num value={depositRate} /> : null} {t.depositMid}
-      </p>
+      </Sentence>
       <RulesLine ids={["TXI-03", "TXI-07"]} />
-      <p className="max-w-measure">
+      <Sentence measure>
         {t.fund} {fundRate ? <Num value={fundRate} /> : null} {t.fundMid} {t.fundTrack}
-      </p>
+      </Sentence>
       <RulesLine ids={["TXS-12", "TXS-07"]} />
     </div>
   );
@@ -274,12 +274,12 @@ export function TaxWords({ depositRate, fundRate }: { depositRate: SiteValue | n
 export function MaterialityLine({ m }: { m: IdleMateriality }) {
   const t = copy.materiality;
   return (
-    <p className="max-w-measure">
+    <Sentence measure>
       {t.before}
       <Num value={m.amount} />
       {t.perYear}
       <Judged worth={m.worth} below={t.below} yes={t.worth} threshold={m.threshold} label={t.thresholdLabel} />
-    </p>
+    </Sentence>
   );
 }
 

@@ -7,7 +7,7 @@ import type { RefLink } from "../../../lib/providers";
 import { computed, type SiteValue } from "../../../lib/value";
 import { IconAlert, IconCheck, IconCopy, IconExternal } from "../../icons";
 import { Num } from "../../provenance";
-import { CoverageFold, Disclosure, FoldGroup, Tag } from "../../kit";
+import { CoverageFold, Disclosure, FoldGroup, Sentence, Tag } from "../../kit";
 
 /** Pieces of a sentence around its placeholders: `{A}` and `{B}` become the given nodes (dates and counts are Nums). */
 function fill(sentence: string, parts: Record<string, ReactNode>): ReactNode[] {
@@ -47,7 +47,7 @@ export function ListLine({ lists, links }: { lists: FundVariantsView["lists"]; l
   if (a && b)
     return (
       <div className="flex flex-col gap-1">
-        <p className="text-sm">{fill(t.both("{A}", "{B}"), { A: <Num value={a} />, B: <Num value={b} /> })}</p>
+        <Sentence size="sm">{fill(t.both("{A}", "{B}"), { A: <Num value={a} />, B: <Num value={b} /> })}</Sentence>
         {old(a)}
         {old(b)}
       </div>
@@ -56,7 +56,7 @@ export function ListLine({ lists, links }: { lists: FundVariantsView["lists"]; l
     <div className="flex flex-col gap-1">
       {a ? (
         <>
-          <p className="text-sm">{fill(t.onlyIsraeli("{A}"), { A: <Num value={a} /> })}</p>
+          <Sentence size="sm">{fill(t.onlyIsraeli("{A}"), { A: <Num value={a} /> })}</Sentence>
           {old(a)}
         </>
       ) : (
@@ -64,7 +64,7 @@ export function ListLine({ lists, links }: { lists: FundVariantsView["lists"]; l
       )}
       {b ? (
         <>
-          <p className="text-sm">{fill(t.onlyTase("{A}"), { A: <Num value={b} /> })}</p>
+          <Sentence size="sm">{fill(t.onlyTase("{A}"), { A: <Num value={b} /> })}</Sentence>
           {old(b)}
         </>
       ) : (

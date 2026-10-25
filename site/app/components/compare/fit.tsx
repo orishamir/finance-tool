@@ -11,7 +11,7 @@ import { useGoals } from "../../lib/goal";
 import type { Staleness } from "../../lib/value";
 import { IconClock } from "../icons";
 import { Num, StateTag } from "../provenance";
-import { Card, LinkButton, cx } from "../ui";
+import { Card, cx, LinkButton } from "../kit";
 import { goalTitle } from "./goal-form";
 import { IconDash, IconHelp, IconOk } from "./icons";
 
@@ -85,19 +85,17 @@ export function FitMarkCard({ table, track, stale, period }: { table: FitTableDa
           <StateTag state="parameter" />
         </p>
       )}
-      <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5 gap-y-1 max-w-measure">
-        <span>
-          {copy.ruleBefore}
-          <bdi>{result.classification}</bdi>
-          {copy.ruleAfter}
-          {result.kind !== "no-rule" && ":"}
-        </span>
+      <p className="text-sm text-muted-foreground max-w-measure">
+        {copy.ruleBefore}
+        <bdi>{result.classification}</bdi>
+        {copy.ruleAfter}
+        {result.kind !== "no-rule" && ":"}
         {result.kind !== "no-rule" && (
           <>
-            <span>{copy.ruleRange}</span>
-            <Num value={result.minYears} display={fmt.years(result.minYears.value as number)} />
+            {" "}
+            {copy.ruleRange} <Num value={result.minYears} display={fmt.years(result.minYears.value as number)} />
           </>
-        )}
+        )}{" "}
         <StateTag state="parameter" />
       </p>
       {stale && (

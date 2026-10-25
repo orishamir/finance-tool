@@ -3,7 +3,7 @@
 // rests on. NEW copy for the founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
 import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
-import { Callout } from "../../components/ui";
+import { Callout, Sentence } from "../../components/kit";
 
 export const content: GuideContent = {
   what: ({ figure }) => {
@@ -16,16 +16,16 @@ export const content: GuideContent = {
     const months = figure("CS-06", "choice_months");
     return (
       <>
-        <p className="max-w-measure">
+        <Sentence measure>
           <Term id="חיסכון לכל ילד">חיסכון</Term> שהביטוח הלאומי פותח לכל ילד שמשולמת עבורו קצבת ילדים. בכל חודש מופקדים {monthly ? <Num value={monthly} /> : null} עד גיל {until ? <Num value={until} /> : null} (<Term id="סכום החיסכון הבסיסי">סכום החיסכון הבסיסי</Term>), ואתם יכולים להורות להכפיל אותם מתוך קצבת הילדים (
           <Term id="סכום החיסכון הנוסף">סכום החיסכון הנוסף</Term>). כסף אחר אי אפשר להפקיד.
-        </p>
-        <p className="max-w-measure">
+        </Sentence>
+        <Sentence measure>
           בגילים קבועים הביטוח הלאומי מוסיף <Term id="מענק">מענקים</Term>: לילדים שנולדו מאז תחילת התכנית {grantYoung ? <Num value={grantYoung} /> : null} בגיל {ageFirst ? <Num value={ageFirst} /> : null} ושוב בגיל בר או בת מצווה, ולילדים שנולדו לפני כן מענק אחד בגיל הפדיון. לכולם {grantLast ? <Num value={grantLast} /> : null} בגיל {ageLast ? <Num value={ageLast} /> : null}, רק אם לא משכו קודם.
-        </p>
-        <p className="max-w-measure">
+        </Sentence>
+        <Sentence measure>
           במסלול הזה הכסף מנוהל בקופת גמל ייעודית, <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> שבוחרים מתוך הרשימה של הקופה. אם לא בוחרים בתוך {months ? <Num value={months} /> : null} חודשים מהלידה, הכסף נכנס לקופת גמל <Term prefix="ב" id="מסלול ברירת מחדל">מסלול ברירת המחדל</Term>: <Term id="חוסכים המעדיפים סיכון מוגבר">חוסכים המעדיפים סיכון מוגבר</Term>, או הקופה והמסלול של אח גדול.
-        </p>
+        </Sentence>
         <RulesLine ids={["CS-02", "CS-03", "CS-04", "CS-13", "CS-06", "CS-07", "CS-08"]} />
       </>
     );

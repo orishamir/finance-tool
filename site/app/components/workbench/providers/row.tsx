@@ -8,7 +8,7 @@ import type { SiteValue } from "../../../lib/value";
 import { IconDrillIn, IconPencil } from "../../icons";
 import { IconDashed, IconEqual } from "../../compare/icons";
 import { Num, RuleRef } from "../../provenance";
-import { Disclosure, Tag, cx } from "../../ui";
+import { Card, cx, Disclosure, KeyValue, RankBadge, Sentence, Tag } from "../../kit";
 import { BarLegend, CostByTypeBar, DecidingLine, MinimumsLine, ModelLines, ProtectionLine, TariffLine, typeHue, typeOrder } from "./parts";
 
 export { BarLegend };
@@ -102,11 +102,9 @@ export function ProviderRow({ view, ctx }: { view: ProviderRowView; ctx: RowCtx 
   const tied = view.tiedWith.length > 0;
   const enteredRow = !!view.offer;
   return (
-    <li data-flip={view.id} data-tied={tied ? "" : undefined} className={cx("bg-card border border-border rounded-lg p-4 md:p-5 flex flex-col gap-3", (tied || view.vs) && "border-s-[3px]", tied && "border-s-chart-marker", view.vs && !tied && "border-s-chart-fee-4")}>
+    <Card as="li" pad="snug" data-flip={view.id} data-tied={tied ? "" : undefined} className={cx("flex flex-col gap-3", (tied || view.vs) && "border-s-[3px]", tied && "border-s-chart-marker", view.vs && !tied && "border-s-chart-fee-4")}>
       <div className="flex items-start gap-3">
-        <span className={cx("size-7 shrink-0 rounded-full inline-flex items-center justify-center text-sm font-semibold mt-0.5", view.rank === 1 ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground")} aria-label={`דירוג ${view.rank}`}>
-          {view.rank}
-        </span>
+        <RankBadge rank={view.rank} label={`דירוג ${view.rank}`} />
         <div className="flex-1 min-w-0 flex flex-col">
           <h3 className="text-lg font-semibold leading-snug">
             <Link to={`/companies/${view.id}`} className="text-link hover:underline">
@@ -164,7 +162,7 @@ export function ProviderRow({ view, ctx }: { view: ProviderRowView; ctx: RowCtx 
         <ModelLines view={view} />
       </div>
       <RowLinks view={view} ctx={ctx} />
-    </li>
+    </Card>
   );
 }
 
@@ -238,15 +236,6 @@ export function NotComparableRow({ view, ctx, instrumentClass, channelWord }: { 
 
 // ---------------------------------------------------------------- the row's detail
 
-function Fact({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div className="flex items-baseline justify-between gap-3 text-sm">
-      <dt className="text-muted-foreground">{label}</dt>
-      <dd>{children}</dd>
-    </div>
-  );
-}
-
 const periodWord = (p: "month" | "quarter" | "year" | null) => (p ? c.providers.offer.periods[p] : null);
 
 export function RowDetail({ view, ctx }: { view: ProviderRowView; ctx: RowCtx }) {
@@ -266,22 +255,22 @@ export function RowDetail({ view, ctx }: { view: ProviderRowView; ctx: RowCtx })
                 <bdi>{l.name}</bdi>
               </span>
               <dl className="flex flex-col">
-                <Fact label={d.bases[l.base] ?? l.base}>
+                <KeyValue label={d.bases[l.base] ?? l.base}>
                   <Num value={l.rate} size="cell" />
-                </Fact>
+                </KeyValue>
                 {l.min && (
-                  <Fact label={d.min}>
+                  <KeyValue label={d.min}>
                     <Num value={l.min} size="cell" />
-                  </Fact>
+                  </KeyValue>
                 )}
                 {l.max && (
-                  <Fact label={d.max}>
+                  <KeyValue label={d.max}>
                     <Num value={l.max} size="cell" />
-                  </Fact>
+                  </KeyValue>
                 )}
-                {periodWord(l.period) && <Fact label={d.period}>{periodWord(l.period)}</Fact>}
-                {l.channel && <Fact label={d.channel}>{c.providers.behaviour.channelOptions[l.channel as "direct" | "branch"] ?? l.channel}</Fact>}
-                {l.level !== "list" && <Fact label={d.level}>{d.fromAverage}</Fact>}
+                {periodWord(l.period) && <KeyValue label={d.period}>{periodWord(l.period)}</KeyValue>}
+                {l.channel && <KeyValue label={d.channel}>{c.providers.behaviour.channelOptions[l.channel as "direct" | "branch"] ?? l.channel}</KeyValue>}
+                {l.level !== "list" && <KeyValue label={d.level}>{d.fromAverage}</KeyValue>}
               </dl>
             </li>
           ))}
@@ -293,18 +282,18 @@ export function RowDetail({ view, ctx }: { view: ProviderRowView; ctx: RowCtx })
               {view.offer.lines.map((l) => (
                 <li key={l.base} className="flex flex-col text-sm">
                   <dl className="flex flex-col">
-                    <Fact label={c.feeTypes[l.base]!}>
+                    <KeyValue label={c.feeTypes[l.base]!}>
                       <Num value={l.rate} size="cell" />
-                    </Fact>
+                    </KeyValue>
                     {l.min && (
-                      <Fact label={d.min}>
+                      <KeyValue label={d.min}>
                         <Num value={l.min} size="cell" />
-                      </Fact>
+                      </KeyValue>
                     )}
                     {l.max && (
-                      <Fact label={d.max}>
+                      <KeyValue label={d.max}>
                         <Num value={l.max} size="cell" />
-                      </Fact>
+                      </KeyValue>
                     )}
                   </dl>
                   {l.aboveList && <span className="text-xs text-muted-foreground">{c.providers.offer.above}</span>}
@@ -321,18 +310,18 @@ export function RowDetail({ view, ctx }: { view: ProviderRowView; ctx: RowCtx })
             {typeOrder.map((t) => {
               const x = typeCost(t);
               return x ? (
-                <Fact key={t} label={c.feeTypes[t]!}>
+                <KeyValue key={t} label={c.feeTypes[t]!}>
                   <span className="inline-flex items-center gap-2">
                     <span className={cx("size-2.5 rounded-sm", typeHue[t].bg)} />
                     <Num value={x.cost} size="cell" />
                   </span>
-                </Fact>
+                </KeyValue>
               ) : null;
             })}
             {view.interaction && Math.abs(view.interaction.value as number) >= 0.005 && (
-              <Fact label={d.remainder}>
+              <KeyValue label={d.remainder}>
                 <Num value={view.interaction} size="cell" />
-              </Fact>
+              </KeyValue>
             )}
           </dl>
         </section>
@@ -342,18 +331,18 @@ export function RowDetail({ view, ctx }: { view: ProviderRowView; ctx: RowCtx })
           <h3 className="font-medium">{c.providers.decidingDetail}</h3>
           <dl className="flex flex-col">
             {typeOrder.map((t) => (gaps[t] ? (
-              <Fact key={t} label={c.feeTypes[t]!}>
+              <KeyValue key={t} label={c.feeTypes[t]!}>
                 <Num value={gaps[t] as SiteValue} size="cell" />
-              </Fact>
+              </KeyValue>
             ) : null))}
           </dl>
         </section>
       )}
       {view.tiedWith.length > 0 && (
-        <p className="text-sm text-muted-foreground">
+        <Sentence size="sm" tone="muted">
           {c.providers.tieThreshold} <Num value={ctx.theta} size="cell" />
           {c.providers.tieThresholdAfter}
-        </p>
+        </Sentence>
       )}
       {view.ruleIds.length > 0 && (
         <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">

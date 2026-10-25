@@ -6,7 +6,7 @@ import { ownTermsCopy } from "../../copy";
 import type { IndexReading } from "../../lib/compare-index";
 import { Tpl } from "../exposure-mode/tpl";
 import { Num } from "../provenance";
-import { Button, cx } from "../ui";
+import { Button, cx } from "../kit";
 
 const t = ownTermsCopy.index;
 

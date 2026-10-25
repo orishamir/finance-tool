@@ -6,18 +6,16 @@
 // choice replaces the representative's tariff in the run, is marked "בחרתם" beside the line and has its own reset.
 import { useMemo, useState } from "react";
 import { Link } from "react-router";
-import { ownTermsCopy, values as valuesCopy } from "../../copy";
+import { ownTermsCopy } from "../../copy";
 import { feeFor, feeTargetOf, workbenchHref, type ProviderOutcome, type ProviderOutcomes, type RunGoal, type WrapperEntry } from "../../lib/compare";
 import type { SiteValue } from "../../lib/value";
 import { Tpl } from "../exposure-mode/tpl";
 import { Num } from "../provenance";
-import { NumberField } from "../timeline/fields";
-import { Button, Tag, cx } from "../ui";
+import { Button, cx, PercentField, Sentence, Tag } from "../kit";
 import { IndexCard, type IndexCardProps } from "./index-card";
 
 const t = ownTermsCopy.line;
 const tp = ownTermsCopy.provider;
-const pctError = (n: number) => (n < 0 || n > 50 ? `${valuesCopy.errors.pct[0]} 0 ${valuesCopy.errors.pct[1]}50.` : null);
 
 export interface RepresentativeProps {
   w: WrapperEntry;
@@ -88,17 +86,17 @@ export function Representative({ w, g, today, onFee, onRate, onProvider, outcome
         <div className={cx("flex flex-col gap-2", canPick ? "max-w-md" : "max-w-xs")}>
           {target && onFee && (
             <>
-              <NumberField label={t.feeLabel} unit="pct_per_year" value={ownFee ?? null} isEntered={ownFee !== undefined} validate={pctError} onCommit={(n) => onFee(w.id, n)} onReset={() => onFee(w.id, undefined)} optional />
+              <PercentField label={t.feeLabel} value={ownFee ?? null} isEntered={ownFee !== undefined} range={{ min: 0, max: 50 }} onCommit={(n) => onFee(w.id, n)} onReset={() => onFee(w.id, undefined)} optional />
               {r?.classMinFee && (
-                <p className="text-xs text-muted-foreground">
+                <Sentence size="xs" tone="muted">
                   <Tpl t={t.classMin} vars={{ fee: <Num value={r.classMinFee} size="cell" /> }} />
-                </p>
+                </Sentence>
               )}
             </>
           )}
           {canPick && <ProviderPicker w={w} chosen={chosen} outcomes={outcomes} figureOf={figureOf} onPick={(id) => onProvider?.(w.id, id)} />}
           {isDeposit && onRate && (
-            <NumberField label={t.rateLabel} unit="pct_per_year" value={ownRate ?? null} isEntered={ownRate !== undefined} validate={pctError} onCommit={(n) => onRate(w.id, n)} onReset={() => onRate(w.id, undefined)} optional />
+            <PercentField label={t.rateLabel} value={ownRate ?? null} isEntered={ownRate !== undefined} range={{ min: 0, max: 50 }} onCommit={(n) => onRate(w.id, n)} onReset={() => onRate(w.id, undefined)} optional />
           )}
           <Button
             variant="quiet"

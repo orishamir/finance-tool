@@ -9,7 +9,7 @@ import { NumberLegend, RuleRef } from "../components/provenance";
 import { SavedGoalStrip } from "../components/compare/strip";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { GoalsProvider, type Presets } from "../lib/goal";
-import { Card, Disclosure, Tag } from "../components/ui";
+import { Card, Disclosure, Tag } from "../components/kit";
 import { exposureContent } from "../content/exposure";
 import { splitTerms } from "../lib/guide-nav";
 import type { SiteValue } from "../lib/value";

@@ -472,10 +472,10 @@ export function ExposureBody({ bundle, data, frame, registerSave }: { bundle: Co
               <AssumptionChips g={g} sources={sources} onOpen={openField} exposure={{ acceptedFall: goal.assumptions.acceptedFall ?? null }} />
             </Card>
           </section>
-          <aside ref={panelRef} className="hidden lg:block bg-card border border-border rounded-lg p-5" aria-label={r5.exposure.assumptions.title}>
+          <Card as="aside" pad="aside" ref={panelRef} className="hidden lg:block" aria-label={r5.exposure.assumptions.title}>
             <h3 className="text-lg font-semibold mb-4">{r5.exposure.assumptions.title}</h3>
             <AssumptionsPanel data={data} suggestion={null} onAdopted={() => {}} exposure />
-          </aside>
+          </Card>
         </div>
       </div>
 

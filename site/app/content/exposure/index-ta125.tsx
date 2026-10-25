@@ -3,6 +3,7 @@
 // ETF, TXS, MF, BRK, IRA). Each block ends with the rules it rests on. NEW copy for the founder to review.
 import type { ExposureContent } from "../guide/types";
 import { Num, RulesLine, Term } from "../../components/provenance";
+import { Sentence } from "../../components/kit";
 
 const OQ = ({ id }: { id: string }) => (
   <bdi dir="ltr" className="whitespace-nowrap">
@@ -22,15 +23,15 @@ export const content: ExposureContent = {
     const exit90 = figure("ETF-41", "ta90_exit_rank");
     return (
       <>
-        <p className="max-w-measure">
+        <Sentence measure>
           הכסף מושקע, דרך קרן, במניות של {n ? <Num value={n} /> : null} החברות בעלות השווי הגבוה ביותר בבורסה בתל אביב, בשקלים. הבורסה מתארת את <Term id="ת&quot;א 125">ת"א-125</Term> כמדד הייחוס החשוב ביותר שלה, שמשקף את הכלכלה הישראלית וכולל את מניות ת"א-35 ות"א-90.
-        </p>
-        <p className="max-w-measure">
+        </Sentence>
+        <Sentence measure>
           המניות נבחרות ממאגר "רימון", כ-250 מניות שעומדות בתנאי שווי שוק, סחירות וזיקה לישראל, והרכב המדד מתעדכן {updates ? <Num value={updates} /> : null} פעמים בשנה, בתחילת מאי ונובמבר. משקל כל מניה נקבע לפי שווי החזקות הציבור, עם מדרגת נזילות ותקרת משקל: ועדת המדדים קבעה תקרה של {cap ? <Num value={cap} /> : null} למניה אחת, מתוך גבול של {ceiling ? <Num value={ceiling} /> : null} שהנחיות הבורסה מתירות. המדד מחושב בזמן אמת כל 15 שניות.
-        </p>
-        <p className="max-w-measure">
+        </Sentence>
+        <Sentence measure>
           לפי הנחיות הבורסה, המדד הוא פשוט מניות ת"א-35 ות"א-90 יחד, ומתעדכן איתם. בכל אחד מהם המניות מדורגות לפי שווי שוק ממוצע: לת"א-35 מניה נכנסת בדירוג {entry35 ? <Num value={entry35} /> : null} או גבוה ממנו ויוצאת בדירוג {exit35 ? <Num value={exit35} /> : null} או נמוך ממנו, ולת"א-90 נכנסת בדירוג {entry90 ? <Num value={entry90} /> : null} ויוצאת בדירוג {exit90 ? <Num value={exit90} /> : null}, כך שלא מחליפים מניה על כל שינוי קטן. המדד מחושב כתשואה כוללת ברוטו: <Term id="דיבידנד">דיבידנד</Term> נספר במדד ביום האקס בלי להוריד מס, ולכן קרן שעוקבת אחריו נמדדת מול מדד שלפני מס.
-        </p>
+        </Sentence>
         <p className="max-w-measure">
           מחזיקים את המדד דרך <Term id="קרן סל">קרן סל</Term> או <Term id="קרן מחקה פתוחה">קרן מחקה</Term> ישראלית, שהן קרנות נאמנות בשקלים עם <Term id="מספר בורסה">מספר בורסה</Term>; קרן חוץ אינה רשאית להתמחות בישראל, ולכן מדד ישראלי מגיעים אליו רק דרך קרן ישראלית. קרן על מדד מקומי קונה בדרך כלל את המניות עצמן. רשות ניירות ערך מפרסמת ממוצע שנתי של דמי הניהול של קרנות סל על מניות בארץ; הוא מופיע בקישור שבכרטיס הכלל. כל קרן קובעת לעצמה, בתוספת <Term id="דמי ניהול משתנים">דמי ניהול משתנים</Term> <Term prefix="ו" id="הפרש עקיבה">הפרש עקיבה</Term>.
         </p>
@@ -42,9 +43,9 @@ export const content: ExposureContent = {
     const rate = figure("TXS-09", "rate");
     return (
       <>
-        <p className="max-w-measure">
+        <Sentence measure>
           בחשבון ניירות ערך ובניהול אישי קונים את הקרן בעצמכם, ומשלמים {rate ? <Num value={rate} /> : null} מהרווח הריאלי במכירה, מנוכה במקור; החלפה לקרן אחרת היא מכירה. בקופות הגמל ובקרנות ההשתלמות יש מסלולים "עוקבי מדדי מניות", אבל שום מקור שנקרא לא אומר שמסלול כזה עוקב דווקא אחרי ת"א-125, ולכן הם לא מופיעים כאן. שאלה פתוחה: <OQ id="CAT OQ9" />.
-        </p>
+        </Sentence>
         <RulesLine ids={["TXS-09", "TXS-13", "TXS-21", "IRA-11", "CAT-10", "BRK-16"]} />
       </>
     );

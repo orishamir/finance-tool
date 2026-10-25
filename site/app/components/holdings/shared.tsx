@@ -8,7 +8,7 @@ import { ruleTitle } from "../../lib/rule-title";
 import type { SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
 import { Num, RuleRef } from "../provenance";
-import { Tag } from "../ui";
+import { Tag } from "../kit";
 
 export type RuleMap = Record<string, RuleRecord>;
 

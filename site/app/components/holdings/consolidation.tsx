@@ -9,7 +9,7 @@ import type { ConsolidationGroup, Fit, HoldingView } from "../../lib/holdings";
 import { IconBan, IconDash, IconDashed, IconHelp, IconOk } from "../compare/icons";
 import { IconLock } from "../icons";
 import { LeadTail, Num, RuleRef } from "../provenance";
-import { Callout, Card, Disclosure, Tag, cx } from "../ui";
+import { Callout, Card, cx, Disclosure, Sentence, Tag } from "../kit";
 import { OpenQuestion, RuleBullet, RuleText, YearsNum, type RuleMap } from "./shared";
 import { fit as fitCopy } from "../../copy";
 
@@ -102,15 +102,15 @@ export function ConsolidationCard({ group, views, rules }: { group: Consolidatio
           )}
 
           {group.notYet && (
-            <p className="text-sm flex flex-wrap items-center gap-x-1.5">
-              <IconLock size={16} className="text-muted-foreground shrink-0" />
-              <span>{c.notYet.before}</span>
-              <Num value={group.notYet.liquidFrom} />
-              <span>{c.notYet.after}</span>
-              {group.notYet.ruleIds.map((id) => (
-                <RuleRef key={id} id={id} />
-              ))}
-            </p>
+            <div className="text-sm flex items-start gap-1.5">
+              <IconLock size={16} className="text-muted-foreground shrink-0 mt-1" />
+              <Sentence as="span">
+                {c.notYet.before} <Num value={group.notYet.liquidFrom} /> {c.notYet.after}
+                {group.notYet.ruleIds.map((id) => (
+                  <span key={id}> <RuleRef id={id} /></span>
+                ))}
+              </Sentence>
+            </div>
           )}
 
           {group.missingFirstDeposit && <p className="text-sm text-caution-foreground">{c.missingFirstDeposit}</p>}

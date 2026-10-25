@@ -5,7 +5,7 @@ import { invest as c } from "../../copy";
 import type { InvestView } from "../../lib/invest";
 import { IconCopy } from "../icons";
 import { Num } from "../provenance";
-import { Button, Disclosure } from "../kit";
+import { Button, Disclosure, Sentence } from "../kit";
 import { ProviderLink, providerName } from "./sections";
 
 export function Steps({ view, monthly }: { view: InvestView; monthly: import("../../lib/value").SiteValue }) {
@@ -41,9 +41,9 @@ export function Steps({ view, monthly }: { view: InvestView; monthly: import("..
             )}
           </span>
           {yours && !stay && view.atYours?.less && typeof view.atYours.less.value === "number" && view.atYours.less.value > 0.5 && (
-            <span className="text-sm text-muted-foreground flex flex-wrap items-baseline gap-x-2">
+            <Sentence as="span" size="sm" tone="muted">
               {c.steps.stayDiff}: <Num value={view.atYours.less} />
-            </span>
+            </Sentence>
           )}
           <div>
             <Link to={`/switch/brokerage-account?to=${encodeURIComponent(p.id)}${yours ? `&from=${encodeURIComponent(yours.id)}` : ""}`} className="text-sm text-link hover:underline min-h-target inline-flex items-center">
@@ -69,9 +69,9 @@ export function Steps({ view, monthly }: { view: InvestView; monthly: import("..
           )}
         </li>
         <li className="ps-1">
-          <span className="flex flex-wrap items-baseline gap-x-2">
+          <Sentence as="span">
             {c.steps.standing}: <Num value={monthly} />
-          </span>
+          </Sentence>
         </li>
       </ol>
     </section>

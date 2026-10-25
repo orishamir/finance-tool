@@ -9,7 +9,7 @@ import { rulesFront as copy, site, sourceBlock, system, topicName, ruleCardMore 
 import { IconSearch } from "../components/icons";
 import { NumberLegend, RuleCard, type RuleUses } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { Card, cx, Disclosure, Tag } from "../components/ui";
+import { Card, cx, Disclosure, Tag } from "../components/kit";
 import { fmt } from "../lib/format";
 import { buildSections, emptyFilters, filtersToSearch, fullHaystack, isFiltering, lightHaystack, matchRules, norm, parseFilters, type Filters, type Group, type LightRule } from "../lib/rules-filter";
 import { shelfIds, type ShelfId } from "../lib/rule-shelves";

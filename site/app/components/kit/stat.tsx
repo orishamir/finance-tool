@@ -22,9 +22,9 @@ export function Stat({ label, children, note, tone }: { label: ReactNode; childr
   );
 }
 
-const COLS = { 2: "sm:grid-cols-2", 3: "sm:grid-cols-3", 4: "sm:grid-cols-2 lg:grid-cols-4" } as const;
+const COLS = { 2: "sm:grid-cols-2", 3: "sm:grid-cols-3", 4: "grid-cols-2 sm:grid-cols-4" } as const;
 
-/** Two to four `Stat`s side by side from `sm` up, stacked on a phone. */
+/** Two to four `Stat`s side by side from `sm` up; one column on a phone, except four, which go two by two. */
 export function StatRow({ children, cols = 3 }: { children: ReactNode; cols?: keyof typeof COLS }) {
   return <dl className={cx("grid gap-4", COLS[cols])}>{children}</dl>;
 }
@@ -56,7 +56,8 @@ export interface KeyValueItem {
 export function KeyValueList({ items }: { items: KeyValueItem[] }) {
   return (
     <>
-      <Card className="lg:hidden flex flex-col divide-y divide-border p-0 md:p-0">
+      {/* the card pads itself and each item pads again: the earlier `p-0 md:p-0` never took effect (the stylesheet puts p-4 after p-0), so the look is kept and the dead classes dropped */}
+      <Card className="lg:hidden flex flex-col divide-y divide-border">
         {items.map((it) => (
           <div key={it.id} className="flex flex-col gap-1 p-4">
             <span className="text-sm text-muted-foreground">{it.label}</span>

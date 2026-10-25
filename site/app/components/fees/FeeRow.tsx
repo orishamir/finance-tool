@@ -10,8 +10,7 @@ import type { SiteValue } from "../../lib/value";
 import { entered as enteredValue } from "../../lib/value";
 import { IconCopy } from "../icons";
 import { LeadTail, Num, RuleRef, StateTag } from "../provenance";
-import { NumberField } from "../timeline/fields";
-import { Button, Callout, Disclosure, Tag, cx } from "../ui";
+import { Button, Callout, Card, cx, Disclosure, NumberField, Sentence, Tag } from "../kit";
 import { CapLine, ReadingMark, ReferenceLine, VerdictTag } from "./parts";
 
 function periodWord(months: number): string {
@@ -182,14 +181,13 @@ export function FeeRow({ line, an, subject, years, thresholds, reduction, onRedu
   void notReported;
   const toPct = reduction ?? line.suggestion;
   return (
-    <li data-flip={line.line} className="bg-card border border-border rounded-lg p-4 md:p-6 flex flex-col gap-3">
+    <Card as="li" data-flip={line.line} className="flex flex-col gap-3">
       <div className="flex items-start justify-between gap-3">
         <div className="flex flex-col gap-1 min-w-0">
           <h3 className="text-lg font-semibold">{r3fees.names[line.line]}</h3>
-          <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5 gap-y-1">
-            {line.rate && <Num value={line.rate} />}
-            <span>{baseWords(line, an)}</span>
-          </p>
+          <Sentence size="sm" tone="muted">
+            {line.rate && <Num value={line.rate} />} {baseWords(line, an)}
+          </Sentence>
         </div>
         <div className="flex flex-col items-end shrink-0">
           <span className="text-xl font-semibold">
@@ -228,19 +226,19 @@ export function FeeRow({ line, an, subject, years, thresholds, reduction, onRedu
           </div>
         </Disclosure>
       )}
-    </li>
+    </Card>
   );
 }
 
 export function NotReportedRow({ name }: { name: string }) {
   return (
-    <li className="bg-card border border-border rounded-lg p-4 flex items-center justify-between gap-3 text-muted-foreground">
+    <Card as="li" pad="tight" className="flex items-center justify-between gap-3 text-muted-foreground">
       <span className="font-medium">{name}</span>
       <span className="flex items-center gap-2">
         <StateTag state="sourced" />
         {r3fees.notReported}
       </span>
-    </li>
+    </Card>
   );
 }
 

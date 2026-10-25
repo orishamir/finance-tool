@@ -5,7 +5,7 @@ import { r4playbook as c } from "../../copy";
 import { checklistFor, hasOldTickKeys, migrateTickKeys, ticksStore, tickKey, type ChecklistItem } from "../../lib/playbook";
 import { IconCheck } from "../icons";
 import { RuleRef } from "../provenance";
-import { Button, cx } from "../ui";
+import { Button, cx } from "../kit";
 import { StrengthChip } from "./step";
 import type { Strength } from "../../lib/playbook";
 

@@ -8,7 +8,7 @@ import { rememberUncatalogued } from "../lib/inputs";
 import { analyze, contentWords, groupHits, highlightRanges, nearHits, normalize, relaxedHits, searchEntries, snippetOf, type Analysis, type SearchEntry, type SearchHit, type SearchKind, type SearchTexts } from "../lib/search";
 import { IconClose, IconCopy, IconDrillIn, IconLock, IconSearch } from "./icons";
 import { Sheet } from "./Sheet";
-import { Button, cx } from "./ui";
+import { Button, cx } from "./kit";
 
 let indexPromise: Promise<SearchEntry[]> | null = null;
 function loadIndex(): Promise<SearchEntry[]> {

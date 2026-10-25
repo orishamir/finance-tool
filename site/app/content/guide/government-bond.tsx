@@ -3,7 +3,7 @@
 // rests on. NEW copy for the founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
 import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
-import { Callout } from "../../components/ui";
+import { Callout, Sentence } from "../../components/kit";
 
 const OQ = ({ id }: { id: string }) => (
   <bdi dir="ltr" className="whitespace-nowrap">
@@ -42,9 +42,9 @@ export const content: GuideContent = {
     const linked = figure("TXI-14", "rate");
     return (
       <>
-        <p className="max-w-measure">
+        <Sentence measure>
           <span className="font-medium">המס תלוי בהצמדה, לא בשם הסדרה.</span> באיגרת לא צמודה, בריבית קבועה או משתנה, הקופון ממוסה ב-{unlinked ? <Num value={unlinked} /> : null} מהסכום הנומינלי, ורווח ממכירה או מפדיון עד אותו שיעור מכל הרווח, בלי ניכוי של האינפלציה. באיגרת צמודה <Term id="הפרשי הצמדה">הפרשי ההצמדה</Term> פטורים ממס, והריבית הריאלית <Term prefix="וה" id="רווח הון ריאלי">רווח הריאלי</Term> ממוסים עד {linked ? <Num value={linked} /> : null}. אם המדד יורד, הקופון המוקטן ממוסה במלואו וההפסד מההצמדה לא מקוזז. בשני המקרים הבנק או חבר הבורסה מבצעים <Term id="ניכוי מס במקור">ניכוי מס במקור</Term>.
-        </p>
+        </Sentence>
         <Callout tone="blocked" className="max-w-measure">
           <span className="font-medium">קנייה בין מועדי קופון.</span> מי שקונה אחרי <Term prefix="ה" id="מועד קובע לזכאות">מועד הקובע</Term> לא מקבל את הקופון הקרוב, ומי שקונה באמצע תקופה משלם במחיר גם על ריבית שנצברה. איך המס מטפל בריבית הזאת לא מתועד, והאתר לא מחשב את זה. שאלה פתוחה: <OQ id="TXI OQ5" />.
         </Callout>

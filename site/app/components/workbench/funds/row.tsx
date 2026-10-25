@@ -7,7 +7,7 @@ import type { FundVariantRowView, VariantReason } from "../../../lib/variants";
 import { IconAlert, IconDrillIn, IconLock } from "../../icons";
 import { IconDash, IconDashed } from "../../compare/icons";
 import { Num, RuleRef } from "../../provenance";
-import { Tag, cx } from "../../ui";
+import { Card, cx, RankBadge, Tag } from "../../kit";
 import { CopyForFounder, FundFeesBlock, RowTags, SecurityNumber, TradingLine } from "./parts";
 
 const quiet = "text-sm text-link hover:underline min-h-target inline-flex items-center";
@@ -51,9 +51,7 @@ export function reasonText(r: VariantReason): ReactNode {
 function Marker({ row }: { row: FundVariantRowView }) {
   if (row.kind === "ranked" && row.rank !== undefined)
     return (
-      <span className={cx("size-7 shrink-0 rounded-full inline-flex items-center justify-center text-sm font-semibold mt-0.5", row.rank === 1 ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground")} aria-label={`דירוג ${row.rank}`}>
-        {row.rank}
-      </span>
+      <RankBadge rank={row.rank} label={`דירוג ${row.rank}`} />
     );
   if (row.kind === "listed") return <span className="size-7 shrink-0 inline-flex items-center justify-center mt-0.5">{row.reason?.code === "g18" || row.reason?.code === "exit-blocked" ? <IconLock size={20} className="text-blocked" /> : <IconDash size={20} className="text-muted-foreground" />}</span>;
   if (row.kind === "ranked") return <span className="size-7 shrink-0 inline-flex items-center justify-center mt-0.5"><IconDash size={20} className="text-muted-foreground" /></span>;
@@ -80,7 +78,7 @@ export function FundVariantRow({ row, onDetail, onField }: { row: FundVariantRow
   const listedBlocked = row.kind === "listed" && (row.reason?.code === "g18" || row.reason?.code === "exit-blocked");
   const fixable = row.reason?.code === "yield-missing";
   return (
-    <li data-flip={row.id} className={cx("bg-card border border-border rounded-lg p-4 md:p-5 flex flex-col gap-3", row.kind === "not-evaluated" && "bg-card/70")}>
+    <Card as="li" pad="snug" data-flip={row.id} className={cx("flex flex-col gap-3", row.kind === "not-evaluated" && "bg-card/70")}>
       <div className="flex items-start gap-3">
         <Marker row={row} />
         <div className="flex-1 min-w-0 flex flex-col gap-0.5">
@@ -148,7 +146,7 @@ export function FundVariantRow({ row, onDetail, onField }: { row: FundVariantRow
           {t.rowLinks.check}
         </Link>
       </div>
-    </li>
+    </Card>
   );
 }
 

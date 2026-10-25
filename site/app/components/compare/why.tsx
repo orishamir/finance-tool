@@ -2,7 +2,7 @@
 // the sheet that sets the top two side by side, and the detail of one option.
 import { Fragment, useMemo, useState, type ReactNode } from "react";
 import { Link } from "react-router";
-import { r2, scnCompare, values as valuesCopy } from "../../copy";
+import { r2, scnCompare } from "../../copy";
 import { fmt } from "../../lib/format";
 import type { FitTableData } from "../../lib/fit";
 import { showsHorizonHonestLine } from "../../lib/quick-goal";
@@ -13,12 +13,11 @@ import { enteredLead, feeShieldPair, goalValueObjects, asParameter, countPhrase,
 import type { FieldKey } from "../../lib/goal";
 import { Tpl } from "../exposure-mode/tpl";
 import { FlipSentence } from "./sensitivity";
-import { NumberField } from "../timeline/fields";
+import { Button, Callout, cx, PercentField, Sentence, Tag } from "../kit";
 import { relativeGap } from "@finance-tool/engine";
 import { IconAlert, IconCheck, IconExternal } from "../icons";
 import { Num, RuleRef, RulesLine, StrengthLabel } from "../provenance";
 import { strengthOf } from "../../lib/value";
-import { Button, Callout, Tag, cx } from "../ui";
 import type { ResultCtx } from "./ctx";
 
 const NameLink = ({ id, name }: { id: string; name: string }) => (
@@ -128,7 +127,6 @@ export function UnevaluatedLine({ state, onField }: { state: HeadlineState; onFi
 }
 
 /** The line with its sentence's Hebrew prefix kept apart from a name ("ל" + name): the name is isolated. */
-const pctError = (n: number) => (n < 0 || n > 50 ? `${valuesCopy.errors.pct[0]} 0 ${valuesCopy.errors.pct[1]}50.` : null);
 
 /** The limitation first (scenario fix 2026-10-24): the years are long enough for shares by P-04, no return is entered, so only the liquid options were ranked. */
 function LimitationLine({ ctx, onField }: { ctx: ResultCtx; onField: (f: FieldKey) => void }) {
@@ -169,7 +167,7 @@ function ParameterRateLine({ ctx }: { ctx: ResultCtx }) {
       </p>
       {open && (
         <div className="max-w-xs">
-          <NumberField label={t.label} unit="pct_per_year" value={own ?? null} isEntered={own !== undefined} validate={pctError} onCommit={(n) => ctx.setOwnRate?.(lead.id, n)} onReset={() => ctx.setOwnRate?.(lead.id, undefined)} optional />
+          <PercentField label={t.label} value={own ?? null} isEntered={own !== undefined} range={{ min: 0, max: 50 }} onCommit={(n) => ctx.setOwnRate?.(lead.id, n)} onReset={() => ctx.setOwnRate?.(lead.id, undefined)} optional />
         </div>
       )}
     </div>
@@ -547,14 +545,12 @@ export function HorizonDefaultedNote({ bundle, g, presetName, onChange, figures 
   if (!g.fromPreset.horizon) return null;
   const h = r2.result.horizonDefaulted;
   return (
-    <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5" data-horizon-defaulted>
-      <span>{h.before}</span>
-      <Num value={goalValueObjects(bundle, g).horizon} display={fmt.number(g.horizonYears)} />
-      <span>
-        {h.mid}
+    <div className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5" data-horizon-defaulted>
+      <Sentence as="span">
+        {h.before} <Num value={goalValueObjects(bundle, g).horizon} display={fmt.number(g.horizonYears)} /> {h.mid}
         <bdi>{presetName}</bdi>
         {h.after}
-      </span>
+      </Sentence>
       {figures && (
         <span data-horizon-figures>
           <Tpl t={scnCompare.horizonFigures.first} vars={{ a: figures.a }} />; <Tpl t={scnCompare.horizonFigures.rest} vars={{ n: fmt.number(g.horizonYears), b: figures.b }} />.
@@ -563,7 +559,7 @@ export function HorizonDefaultedNote({ bundle, g, presetName, onChange, figures 
       <button type="button" className="text-link min-h-9 inline-flex items-center hover:underline" onClick={onChange}>
         {h.change}
       </button>
-    </p>
+    </div>
   );
 }
 

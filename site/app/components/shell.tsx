@@ -7,7 +7,7 @@ import { IconBack, IconMenu, IconSearch } from "./icons";
 import { ProvenanceProvider, type ProvenanceData } from "./provenance";
 import { SearchCombo, SearchSheet } from "./search";
 import { Sheet } from "./Sheet";
-import { Button, cx } from "./ui";
+import { Button, cx } from "./kit";
 
 export type Current = "guide" | "questions" | "decoder" | "rules" | "documents" | "parameters" | "home" | "goal" | "holdings" | "other";
 

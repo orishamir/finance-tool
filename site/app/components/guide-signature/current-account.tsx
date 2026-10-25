@@ -14,10 +14,9 @@ import type { SiteValue } from "../../lib/value";
 import { AxisLabels, niceYearTicks } from "../chart/TimelineChart";
 import { IconAlert } from "../icons";
 import type { WorthFactRow } from "../guide/worth-knowing";
-import { NumberField, SliderField } from "../timeline/fields";
+import { ChartLegend, cx, Disclosure, NumberField, RangeField, Sentence, Stat, StatRow, Swatch, Tag, useWidth } from "../kit";
 import { Num, RuleRef, RulesLine } from "../provenance";
-import { Disclosure, Tag, cx } from "../kit";
-import { FigureRow, Gap, SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, useWidth, yearsRange, type VisualProps } from "./kit";
+import { Gap, SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, yearsRange, type VisualProps } from "./kit";
 
 const HEIGHT = 250;
 const TOP = 20;
@@ -141,9 +140,9 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
           </p>
           {!bank && commonIsZero && <p>{copy.account.mostPayNothing}</p>}
           {!bank && commonRate && commonCount && bankCount && (
-            <p className="text-muted-foreground">
+            <Sentence tone="muted">
               {copy.account.commonRate.before} <Num value={commonRate} />, <Num value={commonCount} prefix={copy.account.commonRate.prefix} /> {copy.account.commonRate.of} <Num value={bankCount} /> {copy.account.commonRate.after}
-            </p>
+            </Sentence>
           )}
           {bank && (
             <div role="status" className="flex flex-col gap-1.5 text-sm">
@@ -185,7 +184,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
           onReset={() => inputs.setAmount(null)}
           disabled={!inputs.ready}
         />
-        <SliderField
+        <RangeField
           label={copy.common.years}
           unit="years"
           value={years}
@@ -204,12 +203,14 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
 
       {model ? (
         <>
-          <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label="מקרא">
-            <li className="flex items-center gap-1.5"><span className="w-3.5 h-[3px] rounded-sm bg-chart-net" /> {copy.account.chart.account}</li>
-            <li className="flex items-center gap-1.5"><span className="w-3.5 h-[3px] rounded-sm bg-chart-alt" /> {copy.account.chart.fund}</li>
-            <li className="flex items-center gap-1.5"><span className="w-3.5 border-t-2 border-dashed border-chart-baseline" /> {copy.account.chart.baseline}</li>
-            <li className="flex items-center gap-1.5"><span className="size-2.5 rounded-sm bg-chart-alt/25" /> {copy.account.chart.cost}</li>
-          </ul>
+          <ChartLegend
+            items={[
+              { id: "account", swatch: <Swatch className="bg-chart-net" />, label: copy.account.chart.account },
+              { id: "fund", swatch: <Swatch className="bg-chart-alt" />, label: copy.account.chart.fund },
+              { id: "baseline", swatch: <Swatch shape="rule" className="border-chart-baseline" />, label: copy.account.chart.baseline },
+              { id: "cost", swatch: <Swatch shape="box" className="bg-chart-alt/25" />, label: copy.account.chart.cost },
+            ]}
+          />
           <div ref={box} className="relative w-full" dir="ltr" style={{ height: HEIGHT }}>
             <svg width={width} height={HEIGHT} viewBox={`0 0 ${width} ${HEIGHT}`} role="img" aria-label={copy.account.chart.aria} className="block select-none">
               {ticks.map((t) => (
@@ -248,24 +249,24 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
             )}
           </div>
           <p className="text-xs text-muted-foreground">{copy.account.axisNote}</p>
-          <dl className="grid gap-4 sm:grid-cols-3">
-            <FigureRow label={`${copy.account.figures.account} ${copy.account.after} ${fmt.years(years)}`} tone="value">
+          <StatRow cols={3}>
+            <Stat label={`${copy.account.figures.account} ${copy.account.after} ${fmt.years(years)}`} tone="value">
               {values && <Num value={values.account} size="inline" />}
-            </FigureRow>
-            <FigureRow label={copy.account.figures.fund} tone="alt">
+            </Stat>
+            <Stat label={copy.account.figures.fund} tone="alt">
               {values && <Num value={values.fund} />}
-            </FigureRow>
-            <FigureRow label={copy.account.figures.cost}>{cost && <Num value={cost} />}</FigureRow>
-          </dl>
-          <p className="text-xs text-muted-foreground max-w-measure">
+            </Stat>
+            <Stat label={copy.account.figures.cost}>{cost && <Num value={cost} />}</Stat>
+          </StatRow>
+          <Sentence size="xs" tone="muted" measure>
             {copy.account.todayMoney.before} <Num value={inflation} /> {copy.account.todayMoney.after}
-          </p>
+          </Sentence>
         </>
       ) : null}
 
-      <p className="text-sm text-muted-foreground max-w-measure">
+      <Sentence size="sm" tone="muted" measure>
         {copy.common.fundAssumption.before} <Num value={cash} /> {copy.common.fundAssumption.after}
-      </p>
+      </Sentence>
 
       {everyBank.length > 0 ? (
         <Disclosure detailsRef={foldRef} id={FOLD_ID} className="rounded-md border border-border scroll-mt-24" spread summaryClassName="px-4 py-2" labelClassName="font-medium" label={f.title}>
@@ -287,11 +288,11 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
             </div>
 
             {tax ? (
-              <p className="text-sm text-muted-foreground max-w-measure">
+              <Sentence size="sm" tone="muted" measure>
                 {f.maxNote.before} <Num value={balanceValue} />
                 {f.maxNote.middle} <Num value={tax} />
                 {f.maxNote.after}
-              </p>
+              </Sentence>
             ) : (
               <Gap id="rule:TXI-03" />
             )}

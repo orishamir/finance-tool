@@ -8,7 +8,7 @@ import { IconDashed } from "../components/compare/icons";
 import { Tpl } from "../components/exposure-mode/tpl";
 import { RuleRef, RulesLine, StrengthLabel } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { Callout, Card, Disclosure, Tag } from "../components/ui";
+import { Callout, Card, Disclosure, Tag } from "../components/kit";
 import type { GraduationStatusView } from "../lib/graduation.server";
 import { fmt } from "../lib/format";
 import { sourceLabel } from "../lib/source-label";

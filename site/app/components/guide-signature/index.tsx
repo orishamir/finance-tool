@@ -6,7 +6,7 @@ import type { ComponentType, ReactNode } from "react";
 import { Link } from "react-router";
 import { guideSignature as copy } from "../../copy";
 import type { SignatureData } from "../../lib/guide-signature";
-import { Disclosure } from "../ui";
+import { Card, Disclosure } from "../kit";
 import { BankDepositVisual } from "./bank-deposit";
 import { CurrentAccountVisual } from "./current-account";
 import { GovernmentBondVisual } from "./government-bond";
@@ -45,9 +45,9 @@ export function SignatureFrame({ id, data, today, timeline }: { id: string; data
   return (
     <>
       <p className="text-lg max-w-measure">{page.question}</p>
-      <div className="bg-card border border-border rounded-lg p-4 md:p-6">
+      <Card >
         <Visual data={data} today={today} />
-      </div>
+      </Card>
       {page.altId ? (
         <p className="text-sm max-w-measure">
           {copy.altBefore} <span className="font-medium">{page.alt}</span>. {page.altLine}{" "}
@@ -64,14 +64,14 @@ export function SignatureFrame({ id, data, today, timeline }: { id: string; data
         <p className="text-sm max-w-measure">{page.altLine}</p>
       )}
       {timeline && (
-        <div className="bg-card border border-border rounded-lg px-4 py-1 md:px-6">
+        <Card pad="none" className="px-4 py-1 md:px-6">
           <Disclosure label={<span className="font-medium">{copy.timeline.summary}</span>} openLabel={<span className="font-medium">{copy.timeline.hide}</span>} summaryClassName="justify-between">
             <div className="flex flex-col gap-4 pb-4">
               <p className="text-sm text-muted-foreground max-w-measure">{copy.timeline.lead}</p>
               {timeline}
             </div>
           </Disclosure>
-        </div>
+        </Card>
       )}
     </>
   );

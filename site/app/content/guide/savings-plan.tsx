@@ -3,7 +3,7 @@
 // shape and register as kupat-gemel-lehashkaa.tsx. NEW copy for the founder to review.
 import type { GuideContent } from "./types";
 import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
-import { Callout } from "../../components/ui";
+import { Callout, Sentence } from "../../components/kit";
 
 export const content: GuideContent = {
   what: () => (
@@ -33,9 +33,9 @@ export const content: GuideContent = {
     const deduction = figure("TXI-20", "deduction");
     return (
       <>
-        <p className="max-w-measure">
+        <Sentence measure>
           למי שההכנסה שלו ושל בן או בת הזוג בשנה {ceiling ? <>עד <Num value={ceiling} /> </> : "נמוכה "}יש <Term id="פטור למעוט הכנסה">פטור למעוט הכנסה</Term>{deduction ? <> של עד <Num value={deduction} /> בשנה</> : null} מהריבית על פיקדונות ותוכניות חיסכון. בדוח השנתי הוא מחושב אוטומטית; במהלך השנה מקבלים אותו דרך תיאום מס.
-        </p>
+        </Sentence>
         <RulesLine ids={["TXI-20"]} />
         <Callout tone="blocked" className="max-w-measure">
           <span className="font-medium"><Term id="שבירת פיקדון">שבירה</Term> של תוכנית חיסכון: האתר לא מחשב אותה.</span> איך בנק מתמחר שבירה, האם לכל הפקדה חודשית נעילה משלה, ואיך המס מתייחס לתוכנית שנשברה עוד פתוח. שאלות פתוחות: <bdi dir="ltr" className="whitespace-nowrap">BANK OQ12</bdi>, <bdi dir="ltr" className="whitespace-nowrap">TXI OQ14</bdi>.
@@ -52,9 +52,9 @@ export const content: GuideContent = {
         <p className="max-w-measure">
           אין בישראל ביטוח פיקדונות: אם בנק קורס, אין חוק שמחזיר לכם את הכסף. נגיד בנק ישראל רשאי למנות מנהל מורשה ולהעביר את הפיקדונות לבנק אחר, ובאישור הממשלה גם להכריז על ערבות; זו סמכות, לא זכות.
         </p>
-        <p className="max-w-measure">
+        <Sentence measure>
           חוק חדש מחייב לבחון {months ? <>תוך <Num value={months} /> חודשים </> : null}אם צריך ביטוח פיקדונות, והצעת חוק פרטית מציעה ערבות {proposed ? <>של <Num value={proposed} /> </> : null}בבנקים קטנים; היא רק הצעה.
-        </p>
+        </Sentence>
         <p className="max-w-measure">תוכנית בריבית משתנה זזה עם הפריים לאורך כל השנים; תוכנית לא צמודה לא מגינה מעליית מחירים לאורך תקופה ארוכה.</p>
         <RulesLine ids={["REG-04", "REG-05", "REG-06", "BANK-23", "BANK-25", "BANK-26"]} />
       </>

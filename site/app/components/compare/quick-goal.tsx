@@ -13,9 +13,7 @@ import { presetFor, purposeIds, quickFields, quickGoalPlan, type PurposeId, type
 import { Tpl } from "../exposure-mode/tpl";
 import { RawWatch } from "../holdings/fields";
 import { Num } from "../provenance";
-import { flushPendingFields, NumberField } from "../timeline/fields";
-import { Button, Card, cx } from "../ui";
-import { ChoiceChips } from "./fields";
+import { Button, Card, ChoiceChips, cx, flushPendingFields, NumberField } from "../kit";
 import type { Range } from "./goal-form";
 
 export interface QuickGoalCardProps {

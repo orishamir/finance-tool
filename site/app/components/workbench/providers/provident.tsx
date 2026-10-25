@@ -5,7 +5,7 @@ import { Link } from "react-router";
 import { r4workbench as c } from "../../../copy";
 import { companyHref, type Listing } from "../../../lib/providers";
 import { Num } from "../../provenance";
-import { Callout } from "../../ui";
+import { Callout, Card } from "../../kit";
 import { TariffLine } from "./parts";
 
 export function ProvidentListing({ listing, wrapperId }: { listing: Listing; wrapperId: string }) {
@@ -41,7 +41,7 @@ export function ProvidentListing({ listing, wrapperId }: { listing: Listing; wra
             {cards.map((card) => {
               const href = companyHref(card);
               return (
-                <li key={card.provider} className="bg-card border border-border rounded-lg p-4 flex flex-col gap-1.5">
+                <Card as="li" pad="tight" key={card.provider} className="flex flex-col gap-1.5">
                   <h3 className="text-lg font-semibold">
                     {href ? (
                       <Link to={href} className="text-link hover:underline">
@@ -67,7 +67,7 @@ export function ProvidentListing({ listing, wrapperId }: { listing: Listing; wra
                     </div>
                   ))}
                   <TariffLine tariff={card.tariff} />
-                </li>
+                </Card>
               );
             })}
           </ul>

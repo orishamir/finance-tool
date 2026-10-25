@@ -7,7 +7,7 @@ import type { FeeType, ProviderRowView, RowProtection, RowTariff } from "../../.
 import type { RuleRecord } from "@finance-tool/schema";
 import { IconAlert, IconClock, IconExternal } from "../../icons";
 import { LeadTail, Num, NumAfter, RuleRef } from "../../provenance";
-import { Disclosure, Tag, cx } from "../../ui";
+import { cx, Disclosure, Tag } from "../../kit";
 
 /** One fixed colour per fee type, the same on every row (design-system 8.3). */
 export const typeHue: Record<FeeType, { bg: string; stroke: string }> = {

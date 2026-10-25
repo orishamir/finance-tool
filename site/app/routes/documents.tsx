@@ -5,7 +5,7 @@ import { documents as copy, site } from "../copy";
 import { IconExternal } from "../components/icons";
 import { Num, NumberLegend, StrengthLabel } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { Card, cx, Disclosure } from "../components/ui";
+import { Card, cx, Disclosure, Sentence } from "../components/kit";
 import { fmt } from "../lib/format";
 import type { DocumentCard, SectionId } from "../lib/documents.server";
 import { isPdfUrl } from "../lib/sources";
@@ -203,10 +203,10 @@ export default function Documents() {
                 <Card as="li" key={s.key} className="flex flex-col gap-1 min-w-0 [overflow-wrap:anywhere]">
                   <h3 className="text-lg font-semibold"><bdi>{s.title}</bdi></h3>
                   {s.valueDate && (
-                    <p className="text-sm text-muted-foreground">
+                    <Sentence size="sm" tone="muted">
                       {s.value ? <>{d.latest}: <Num value={s.value} /> </> : <>{copy.checked} </>}
                       <bdi dir="ltr" className="tabular-nums">{s.value ? `(${fmt.date(s.valueDate)})` : fmt.date(s.valueDate)}</bdi>
-                    </p>
+                    </Sentence>
                   )}
                   {s.attribution && <p className={cx("text-xs text-muted-foreground")}><bdi>{s.attribution}</bdi></p>}
                 </Card>

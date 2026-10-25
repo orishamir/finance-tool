@@ -9,7 +9,7 @@ import { asParameter, parameterOf, type SensitivityRowView, type SensitivityView
 import type { FieldKey } from "../../lib/goal";
 import { Num } from "../provenance";
 import { Tpl } from "../exposure-mode/tpl";
-import { Tag, cx } from "../ui";
+import { Card, cx, Tag } from "../kit";
 import type { ResultCtx } from "./ctx";
 
 function bounds(ctx: ResultCtx, key: string): { lo: ValueObject; hi: ValueObject } | null {
@@ -150,11 +150,11 @@ export function SensitivityPanel({ view, ctx, onOpen }: { view: SensitivityView 
       {view === null ? (
         <p className="text-sm text-muted-foreground">{r2.result.sensRunning}</p>
       ) : (
-        <ul className="bg-card border border-border rounded-lg overflow-hidden">
+        <Card as="ul" pad="none" className="overflow-hidden">
           {orderRows(view.rows, ctx.g.fromPreset.horizon).map((r) => (
             <SensitivityRowItem key={r.key} row={r} ctx={ctx} onOpen={onOpen} />
           ))}
-        </ul>
+        </Card>
       )}
       <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-2">
         <span>{r2.result.sensFooter}</span>

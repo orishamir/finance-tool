@@ -13,11 +13,10 @@ import { useGoals } from "../../lib/goal";
 import { useInputs } from "../../lib/inputs";
 import { entered as enteredValue, type SiteValue } from "../../lib/value";
 import type { Bundle } from "../../lib/engine";
-import { NumberField } from "../timeline/fields";
+import { Callout, GainBars, Marker, MarkerMark, NumberField, Sentence, useWidth } from "../kit";
 import { Num, RuleRef, RulesLine, Term } from "../provenance";
-import { Callout } from "../ui";
 import { G2Gap, HoldRow, PlanInputs, text } from "./g2-parts";
-import { GainBars, Marker, MarkerMark, figure, inputSite, rulesOfBundle, useSigInputs, useWidth, yearsRange, type VisualProps } from "./kit";
+import { figure, inputSite, rulesOfBundle, useSigInputs, yearsRange, type VisualProps } from "./kit";
 
 const HEIGHT = 92;
 const LANE_Y = 26;
@@ -102,9 +101,9 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   return (
     <div className="flex flex-col gap-5">
       {earlyAge && (
-        <p className="max-w-measure">
+        <Sentence measure>
           {copy.provident.lead.before} <Num value={earlyAge} display={String(earlyAge.value)} /> {copy.provident.lead.after}
-        </p>
+        </Sentence>
       )}
       {indexName && trackName && fundName ? (
         <div className="flex flex-col gap-2 text-sm">
@@ -201,9 +200,9 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
         <p className="text-xs text-muted-foreground">{copy.common.drag}</p>
         {earlyYears === null && <p className="text-xs text-muted-foreground">{copy.provident.chart.noAge}</p>}
         {earlyYears !== null && earlyAge && (
-          <p className="text-xs text-muted-foreground">
+          <Sentence size="xs" tone="muted">
             {copy.provident.chart.legend.before} <Num value={earlyAge} display={String(earlyAge.value)} /> {copy.provident.chart.legend.after}
-          </p>
+          </Sentence>
         )}
       </div>
 
@@ -240,7 +239,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
               <G2Gap id="lump" />
             )}
             {taxRate && (
-              <p className="text-xs text-muted-foreground">
+              <Sentence size="xs" tone="muted">
                 {copy.provident.taxNote.before} <Num value={taxRate} /> <Term prefix="מ" id="הרווח הריאלי">{copy.provident.taxNote.term}</Term>
                 {copy.provident.taxNote.after}
                 {v.alt && nominalRate ? (
@@ -249,7 +248,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
                     {copy.provident.altNote.before} <Num value={nominalRate} /> {copy.provident.altNote.middle} <Num value={v.alt} />.
                   </>
                 ) : null}
-              </p>
+              </Sentence>
             )}
           </section>
           <section className="rounded-md border border-dashed border-border p-3.5 flex flex-col gap-2" aria-label={copy.provident.annuity}>
@@ -270,17 +269,17 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
                 </div>
               </dl>
             ) : model.annuityOpen === false && earlyAge ? (
-              <p className="text-sm">
+              <Sentence size="sm">
                 {copy.provident.closed.before} <Num value={earlyAge} display={String(earlyAge.value)} />.
-              </p>
+              </Sentence>
             ) : (
               <p className="text-sm">{copy.provident.needAge}</p>
             )}
             {model.annuityOpen === true && <G2Gap id="annuityFactors" />}
             {exemptAge && (
-              <p className="text-xs text-muted-foreground">
+              <Sentence size="xs" tone="muted">
                 {copy.provident.annuityNote.before} <Term id="קצבה מוכרת">{copy.provident.annuityNote.term}</Term> {copy.provident.annuityNote.middle} <Num value={exemptAge} display={String(exemptAge.value)} /> {copy.provident.annuityNote.after}
-              </p>
+              </Sentence>
             )}
           </section>
         </div>

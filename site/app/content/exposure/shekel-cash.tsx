@@ -2,6 +2,7 @@
 // BRK); each block ends with the rules it rests on. NEW copy for the founder to review.
 import type { ExposureContent } from "../guide/types";
 import { Num, RulesLine, Term } from "../../components/provenance";
+import { Sentence } from "../../components/kit";
 
 const OQ = ({ id }: { id: string }) => (
   <bdi dir="ltr" className="whitespace-nowrap">
@@ -17,9 +18,9 @@ export const content: ExposureContent = {
         <p className="max-w-measure">
           הכסף נשאר בשקלים ומקבל <Term id="ריבית">ריבית</Term>: <Term prefix="ב" id="חשבון עובר ושב">עו"ש</Term>, <Term prefix="ב" id="פיקדון">פיקדון</Term> לתקופה, בתכנית חיסכון, או בקרן כספית שמחזיקה פיקדונות, מק״מ ואיגרות חוב קצרות. הקרן אינה מושקעת במניות ואינה צמודה למטבע, ולכן בשקלים היא לא יורדת; מה שמשתנה הוא הריבית, שעוקבת אחרי <Term id="ריבית בנק ישראל">ריבית בנק ישראל</Term>.
         </p>
-        <p className="max-w-measure">
+        <Sentence measure>
           כל בנק חייב לפרסם טבלה אחידה של סוגי הפיקדונות והריבית עליהם, ובנק ישראל מפרסם כל חודש את הריבית ששילם כל בנק בפועל. על ריבית מפיקדון שאינו צמוד למדד משלמים מס של {unlinked ? <Num value={unlinked} /> : null} מכל הריבית, והבנק מנכה אותו בתשלום; בקרן כספית משלמים רק בפדיון, על הרווח שמעבר לעליית המדד.
-        </p>
+        </Sentence>
         <RulesLine ids={["BANK-09", "BANK-13", "BANK-14", "BANK-22", "BANK-25", "MF-07", "MF-29", "TXI-03", "TXI-07", "TXI-08", "TXS-12"]} />
       </>
     );

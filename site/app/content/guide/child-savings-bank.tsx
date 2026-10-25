@@ -3,7 +3,7 @@
 // NEW copy for the founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
 import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
-import { Callout } from "../../components/ui";
+import { Callout, Sentence } from "../../components/kit";
 
 export const content: GuideContent = {
   what: ({ figure }) => {
@@ -15,12 +15,12 @@ export const content: GuideContent = {
     const station = figure("CS-10", "exit_station_years");
     return (
       <>
-        <p className="max-w-measure">
+        <Sentence measure>
           אותו <Term id="חיסכון לכל ילד">חיסכון לכל ילד</Term>, כשההורים בחרו בנק במקום קופת גמל: הביטוח הלאומי מפקיד {monthly ? <Num value={monthly} /> : null} בחודש עד גיל {until ? <Num value={until} /> : null} (<Term id="סכום החיסכון הבסיסי">סכום החיסכון הבסיסי</Term>), אתם יכולים להכפיל מתוך קצבת הילדים (<Term id="סכום החיסכון הנוסף">סכום החיסכון הנוסף</Term>), <Term prefix="וה" id="מענק">מענקים</Term> מתווספים באותם גילים, כולל {grantLast ? <Num value={grantLast} /> : null} בגיל {ageLast ? <Num value={ageLast} /> : null} למי שלא משך קודם.
-        </p>
-        <p className="max-w-measure">
+        </Sentence>
+        <Sentence measure>
           בבנק הכסף נכנס לתכנית חיסכון באחד משלושה מסלולים: <Term id="ריבית קבועה לא צמודה">ריבית קבועה לא צמודה</Term>, <Term id="ריבית משתנה (פריים)">ריבית משתנה (פריים)</Term> או <Term id="ריבית קבועה צמודה">ריבית קבועה צמודה</Term> למדד; כל אחד בלי <Term id="תחנת יציאה">תחנות יציאה</Term> עד גיל הפדיון, או עם תחנת יציאה כל {station ? <Num value={station} /> : null} שנים. הריבית נקבעת ביום הפתיחה לכל התקופה. את הבנק צריך לבחור בפועל בתוך {months ? <Num value={months} /> : null} חודשים מהלידה; בלי בחירה הכסף הולך לקופת גמל.
-        </p>
+        </Sentence>
         <RulesLine ids={["CS-02", "CS-03", "CS-04", "CS-13", "CS-10", "CS-06", "CS-07"]} />
       </>
     );
@@ -29,9 +29,9 @@ export const content: GuideContent = {
     const banks = figure("CS-22", "bank_count");
     return (
       <>
-        <p className="max-w-measure">
+        <Sentence measure>
           {banks ? <Num value={banks} /> : null} בנקים שזכו במכרז של משרד האוצר, בפיקוח בנק ישראל. את הבחירה עושים דרך הביטוח הלאומי; את המשיכה דרך הבנק.
-        </p>
+        </Sentence>
         <RulesLine ids={["CS-22", "REG-23", "REG-01"]} />
       </>
     );

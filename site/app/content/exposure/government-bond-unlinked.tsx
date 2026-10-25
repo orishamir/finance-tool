@@ -2,6 +2,7 @@
 // BRK, CAT, IRA, MF); each block ends with the rules it rests on. NEW copy for the founder to review.
 import type { ExposureContent } from "../guide/types";
 import { Num, RulesLine, Term } from "../../components/provenance";
+import { Sentence } from "../../components/kit";
 
 const OQ = ({ id }: { id: string }) => (
   <bdi dir="ltr" className="whitespace-nowrap">
@@ -18,9 +19,9 @@ export const content: ExposureContent = {
         <p className="max-w-measure">
           הכסף מולווה למדינה בשקלים, לשנים, בלי הצמדה למדד: <Term id="איגרות חוב ממשלתיות">איגרת חוב ממשלתית</Term> שמשלמת <Term id="קופון">קופון</Term> <Term prefix="ב" id="אג&quot;ח בריבית קבועה">ריבית קבועה</Term> שנקבעה בהנפקה, או <Term prefix="ב" id="אג&quot;ח בריבית משתנה">ריבית משתנה</Term> שמתעדכנת לפי תשואת המק״מ. בסוף התקופה המדינה מחזירה את <Term prefix="ה" id="שווי נקוב">שווי הנקוב</Term> מהכנסותיה הכלליות. הסדרות מונפקות במכרזים שבועיים של משרד האוצר, ואיגרות החוב הקצרות, לשנה לכל היותר, נמכרות בניכיון בלי ריבית.
         </p>
-        <p className="max-w-measure">
+        <Sentence measure>
           על הקופון משלמים {couponRate ? <Num value={couponRate} /> : null} מכל הריבית, והמס מנוכה בתשלום; ריבית משתנה לא משנה את השיעור, כי המבחן הוא אם הקרן צמודה למדד. בסדרה בריבית משתנה הריבית מתעדכנת כל {floating ? <Num value={floating} /> : null} חודשים ואינה יורדת מאפס.
-        </p>
+        </Sentence>
         <RulesLine ids={["GOV-02", "GOV-08", "GOV-09", "GOV-13", "GOV-14", "GOV-15", "TXI-03", "TXI-09", "TXI-15"]} />
       </>
     );
@@ -37,9 +38,9 @@ export const content: ExposureContent = {
     const saleRate = figure("TXI-12", "rate");
     return (
       <>
-        <p className="max-w-measure">
+        <Sentence measure>
           מי שמחזיק עד הפדיון מקבל את הקופונים ואת השווי הנקוב כפי שנקבעו. מי שמוכר קודם מקבל את מחיר השוק, שיורד כשהריבית במשק עולה, ויותר ככל שנותרו יותר שנים לפדיון; הרווח ממכירה הוא <Term id="רווח הון ריאלי">רווח הון</Term> במס של עד {saleRate ? <Num value={saleRate} /> : null} מכל הרווח, בלי הפחתת המדד, והפסד מקזז רווחים וריבית מניירות ערך באותה שנה. כשהמחירים עולים יותר מהקופון, כוח הקנייה נשחק, כי אין הצמדה.
-        </p>
+        </Sentence>
         <p className="max-w-measure">
           מה לא מתועד עדיין: תקנות הסדרות בריבית קבועה (שווי נקוב, תדירות הקופון, מועד קובע) ואיזו תקנה חלה על הסדרות בריבית משתנה (<OQ id="GOV OQ4" />, <OQ id="GOV OQ5" />); איך הבנק מטפל בריבית הצבורה כשקונים בין מועדי קופון (<OQ id="TXI OQ5" />); וטקסט רשמי על סיכון המחיר לפני הפדיון (<OQ id="GOV OQ9" />).
         </p>

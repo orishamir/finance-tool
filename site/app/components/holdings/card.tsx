@@ -12,7 +12,7 @@ import { playbookQueryString, playbookWrappers } from "../../lib/playbook";
 import { IconAlert, IconClock, IconLock } from "../icons";
 import { IconDash, IconHelp, IconOk } from "../compare/icons";
 import { LeadTail, Num, RuleRef } from "../provenance";
-import { Button, Card, Disclosure, Tag, cx } from "../ui";
+import { Button, Card, cx, Disclosure, KeyValue, Sentence, Tag } from "../kit";
 import { ImportedTag } from "../transfer/imported-tag";
 import { IconDown, IconUp } from "../compare/icons";
 import { OpenQuestion, YearsNum, sourcedText } from "./shared";
@@ -83,10 +83,10 @@ export function HoldingCard({ view, ctx, index, count, onEdit, onDelete, onMove 
               )}
             </dl>
             <dl className="flex flex-col gap-3">
-              <Fact label={record.balance} value={about(h.balance as SiteValue, record.balance)} />
+              <KeyValue label={record.balance} size="base"><Num value={about(h.balance as SiteValue, record.balance)} /></KeyValue>
               {!child && h.feeBalance && (
                 <div className="flex flex-col gap-1">
-                  <Fact label={record.feeBalance} value={about(h.feeBalance as SiteValue, record.feeBalance)} />
+                  <KeyValue label={record.feeBalance} size="base"><Num value={about(h.feeBalance as SiteValue, record.feeBalance)} /></KeyValue>
                   {fromAverage(h.feeBalance, view) && <p className="text-sm text-muted-foreground">{copy.feePrefill.cardNote}</p>}
                   <FeeRefs view={view} kind="balance" skipAverage={fromAverage(h.feeBalance, view)} />
                   <CapLines view={view} kind="balance" />
@@ -94,13 +94,13 @@ export function HoldingCard({ view, ctx, index, count, onEdit, onDelete, onMove 
               )}
               {!child && h.feeDeposit && (
                 <div className="flex flex-col gap-1">
-                  <Fact label={record.feeDeposit} value={about(h.feeDeposit as SiteValue, record.feeDeposit)} />
+                  <KeyValue label={record.feeDeposit} size="base"><Num value={about(h.feeDeposit as SiteValue, record.feeDeposit)} /></KeyValue>
                   {fromAverage(h.feeDeposit, view) && <p className="text-sm text-muted-foreground">{copy.feePrefill.cardNote}</p>}
                   <FeeRefs view={view} kind="deposit" skipAverage={fromAverage(h.feeDeposit, view)} />
                   <CapLines view={view} kind="deposit" />
                 </div>
               )}
-              {!child && h.directExpenses && <Fact label={record.directExpenses} value={about(h.directExpenses as SiteValue, record.directExpenses)} />}
+              {!child && h.directExpenses && <KeyValue label={record.directExpenses} size="base"><Num value={about(h.directExpenses as SiteValue, record.directExpenses)} /></KeyValue>}
             </dl>
             {unmatched && <p className="text-sm text-muted-foreground max-w-measure">{copy.unmatchedLine}</p>}
           </div>
@@ -147,17 +147,6 @@ export function HoldingCard({ view, ctx, index, count, onEdit, onDelete, onMove 
         )}
       </footer>
     </Card>
-  );
-}
-
-function Fact({ label, value }: { label: string; value: SiteValue }) {
-  return (
-    <div className="flex items-baseline justify-between gap-3 text-sm">
-      <dt className="text-muted-foreground">{label}</dt>
-      <dd className="text-base">
-        <Num value={value} />
-      </dd>
-    </div>
   );
 }
 
@@ -218,12 +207,12 @@ function CapLines({ view, kind }: { view: HoldingView; kind: "balance" | "deposi
   const w = view.capWarnings.find((c) => c.feeType === kind);
   if (!w) return null;
   return (
-    <p className="text-sm text-caution-foreground flex flex-wrap items-center gap-x-1.5">
-      <IconAlert size={16} className="text-caution shrink-0" />
-      <span>{copy.capAbove}</span>
-      <Num value={w.cap} />
-      <RuleRef id={w.ruleId} />
-    </p>
+    <div className="text-sm text-caution-foreground flex items-start gap-1.5">
+      <IconAlert size={16} className="text-caution shrink-0 mt-1" />
+      <Sentence as="span">
+        {copy.capAbove} <Num value={w.cap} /> <RuleRef id={w.ruleId} />
+      </Sentence>
+    </div>
   );
 }
 
@@ -357,23 +346,21 @@ function LiquidityLine({ liq }: { liq: Liquidity }) {
   if (liq.kind === "unknown") return <p className="text-sm text-muted-foreground max-w-measure">{c.unknown}</p>;
   const notYet = liq.kind === "not-yet";
   return (
-    <p className={cx("text-sm flex flex-wrap items-center gap-x-1.5 gap-y-1", notYet ? "text-caution-foreground" : "text-positive")}>
-      {notYet ? <IconClock size={16} className="shrink-0" /> : <IconOk size={16} className="shrink-0" />}
-      {liq.from ? (
-        <>
-          <span>{notYet ? c.notYet : c.from}</span>
-          <Num value={liq.from} />
-          <span>{c.about}</span>
-        </>
-      ) : (
-        <>
-          <span>{c.overBefore}</span>
-          <YearsNum value={liq.lock} />
-          <span>{c.overAfter}</span>
-        </>
-      )}
-      <RuleRef id="TXH-09" />
-    </p>
+    <div className={cx("text-sm flex items-start gap-1.5", notYet ? "text-caution-foreground" : "text-positive")}>
+      {notYet ? <IconClock size={16} className="shrink-0 mt-1" /> : <IconOk size={16} className="shrink-0 mt-1" />}
+      <Sentence as="span">
+        {liq.from ? (
+          <>
+            {notYet ? c.notYet : c.from} <Num value={liq.from} /> {c.about}
+          </>
+        ) : (
+          <>
+            {c.overBefore} <YearsNum value={liq.lock} /> {c.overAfter}
+          </>
+        )}{" "}
+        <RuleRef id="TXH-09" />
+      </Sentence>
+    </div>
   );
 }
 
@@ -423,9 +410,9 @@ function DecisionBlock({ view, ctx }: { view: HoldingView; ctx: HoldingsCtx }) {
         <div className="flex flex-col gap-1">
           <p className="text-sm font-medium">{d.fee}</p>
           {h.feeBalance && (
-            <p className="text-sm">
+            <Sentence size="sm">
               {record.feeBalance} <Num value={about(h.feeBalance as SiteValue, record.feeBalance)} />
-            </p>
+            </Sentence>
           )}
           <FeeRefs view={view} kind="balance" />
         </div>

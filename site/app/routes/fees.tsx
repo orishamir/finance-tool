@@ -21,7 +21,7 @@ import { IconLock } from "../components/icons";
 import { Num, NumberLegend, RuleRef, RulesLine } from "../components/provenance";
 import { Sheet } from "../components/Sheet";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { Callout, Card } from "../components/ui";
+import { Callout, Card, Sentence } from "../components/kit";
 import { loadBundle } from "../lib/bundle";
 import { runGoalOf, type CompareBundle } from "../lib/compare";
 import { buildFees, buildHoldingFees, feeInputs, type FeeInputs, feeSensitivity, headlineGap, loadFeesData, parseSubject, rankedFor, ruleMap, softensAvoid, type FeeSensitivity, type FeesData, type FeesResult, type PlanError, type SubjectSpec } from "../lib/fees";
@@ -308,11 +308,11 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
         <ChartLegend an={an} />
         <FeeDragChart an={an} horizonYears={years} hover={hover} onHover={setHover} hasGoal={inputs.fromGoal} />
         {grossNote && an.exitGap && (
-          <p className="text-xs text-muted-foreground">
+          <Sentence size="xs" tone="muted">
             {r3fees.review.chartGross.before}
             <Num value={an.exitGap} />
             {r3fees.review.chartGross.after}
-          </p>
+          </Sentence>
         )}
         <ChartReadout an={an} year={hover ?? Math.round(an.series!.exitMonth / 12)} />
         <ChartTable an={an} />
@@ -352,11 +352,11 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
           </section>
           <div className="flex flex-col gap-6 min-w-0">
             {chartCard}
-            <aside className="hidden lg:block bg-card border border-border rounded-lg p-5" aria-label={r3fees.assumptionsTitle}>
+            <Card as="aside" pad="aside" className="hidden lg:block" aria-label={r3fees.assumptionsTitle}>
               <h3 className="text-lg font-semibold mb-4">{r3fees.assumptionsTitle}</h3>
               {!inputs.fromGoal && <ScenarioDefaults inputs={inputs} />}
               <AssumptionsPanel data={form} suggestion={suggestion} onAdopted={() => setSuggestion(null)} />
-            </aside>
+            </Card>
           </div>
         </div>
       )}

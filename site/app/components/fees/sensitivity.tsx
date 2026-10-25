@@ -8,7 +8,7 @@ import type { Analysis, FeeSensRow, FeeSensitivity } from "../../lib/fees";
 import { fmt } from "../../lib/format";
 import type { FieldKey } from "../../lib/goal";
 import { Num } from "../provenance";
-import { Tag, cx } from "../ui";
+import { Card, cx, Tag } from "../kit";
 
 type Bounds = Record<string, { lo: ValueObject; hi: ValueObject }>;
 
@@ -114,11 +114,11 @@ export function FeeSensitivityPanel({ view, an, bundle, onOpen }: { view: FeeSen
       {view === null ? (
         <p className="text-sm text-muted-foreground">{r3fees.review.sensRunning}</p>
       ) : (
-        <ul className="bg-card border border-border rounded-lg overflow-hidden">
+        <Card as="ul" pad="none" className="overflow-hidden">
           {view.rows.map((r) => (
             <Row key={r.key} row={r} an={an} onOpen={onOpen} p02={p02} />
           ))}
-        </ul>
+        </Card>
       )}
       <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-2">
         <span>{r3fees.review.sensFooter}</span>

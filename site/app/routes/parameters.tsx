@@ -4,7 +4,7 @@ import type { Route } from "./+types/parameters";
 import { parametersPage as copy, provenance as provCopy, site } from "../copy";
 import { Num } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { Card, Tag } from "../components/ui";
+import { Card, Tag } from "../components/kit";
 import { fmt } from "../lib/format";
 import { mostlyHebrew } from "../lib/source-label";
 import { fieldLabel, unitText } from "../lib/parameter-labels";
