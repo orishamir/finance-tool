@@ -78,8 +78,9 @@ re-check the capabilities that depend on it.
 - **Shared components first** (founder, 2026-10-25). Before building any UI
   piece, look in the kit (`site/app/components/kit/`, gallery at `/kit`) and
   use the piece that fits. A new pattern goes into the kit, its gallery and,
-  where it can be named, a guard test in `kit/guards.test.ts`; never into a
-  feature folder. Every builder's brief says so.
+  where it can be named, a guard in `kit/guards.test.ts` or a ratchet in
+  `kit/ratchets.test.ts` (leftovers listed by name, the list only shrinks);
+  never into a feature folder. Every builder's brief says so.
 - **Structure review before every merge** (founder, 2026-10-25). The lead
   reviews each builder's branch for structure, not line by line:
   `node research/audit/tools/merge-review.mjs <base>` lists what the branch
