@@ -3554,7 +3554,8 @@ export const kit = {
       closed: "סגור",
       nested: "פנימי בתוך פתוח",
       long: "ארוך",
-      interactive: "לחיצה וגרירה",
+      interactive: "אפשר לנסות",
+      draggable: "אפשר לגרור",
       withIcon: "עם אייקון",
     },
     uses: {
