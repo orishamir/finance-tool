@@ -21,7 +21,7 @@ export const content: ExposureContent = {
         <Sentence measure>
           בקופת גמל להשקעה ובקרן השתלמות החברה רשאית לנהל מסלול כללי לצד המסלולים המתמחים, ובקרן השתלמות הוא אחת משתי האפשרויות לברירת מחדל. מעבר ממנו למסלול אחר באותה קופה נעשה תוך {days ? <Num value={days} /> : null} ימי עסקים, בלי עמלה ובלי מס.
         </Sentence>
-        <RulesLine ids={["CAT-17", "CAT-15", "CAT-23", "CAT-24", "CAT-18", "PF-23", "PF-24", "TXK-04"]} />
+        <RulesLine ids={["CAT-17", "CAT-15", "CAT-24", "CAT-18", "PF-23", "PF-24", "KH-19", "TXK-04"]} />
       </>
     );
   },

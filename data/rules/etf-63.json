@@ -1,0 +1,80 @@
+{
+  "id": "ETF-63",
+  "title": "iShares: the share classes and listings of its Core S&P 500 UCITS ETF",
+  "title_he": "iShares: הסדרות והרישומים של הקרן האירופית על המדד האמריקני",
+  "text_he": "ב־iShares, לקרן האירופית על המדד האמריקני יש סדרה צוברת בדולרים וסדרה מחלקת, ולכל אחת מספר ISIN משלה. הסדרה הצוברת רשומה בכמה בורסות במטבעות שונים: בלונדון בדולרים ובלירות, ובאמסטרדם באירו. דמי הסדרה המחלקת ותדירות החלוקה לא הוצגו בעמוד שנקרא.",
+  "figure_names_he": {
+    "cspx_ter": "דמי הניהול הכוללים של הסדרה הצוברת בדולרים (CSPX)"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "distribution-policy",
+    "currency",
+    "fee-management-balance",
+    "foreign-withholding-domicile"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "cspx_ter": {
+      "value": 0.07,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/cspx-ishares-core-s-p-500-ucits-etf-fund-fact-sheet-en-gb.pdf",
+        "title": "iShares Core S&P 500 UCITS ETF USD (Acc) factsheet, September 2026, p.1",
+        "publisher": "iShares",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-63"
+      ],
+      "state": "sourced",
+      "notes": "iShares Core S&P 500 UCITS ETF USD (Accumulating), ISIN IE00B5BMR087, domicile Ireland, TER 0.07% (factsheet as of 05.10.2026), physical replication."
+    }
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/cspx-ishares-core-s-p-500-ucits-etf-fund-fact-sheet-en-gb.pdf",
+      "title": "iShares CSPX factsheet, September 2026",
+      "title_he": "iShares Core S&P 500 UCITS ETF: דף מידע (ספטמבר 2026)",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.ishares.com/uk/individual/en/products/253743/ishares-sp-500-b-ucits-etf-acc-fund",
+      "title": "iShares CSPX product page",
+      "title_he": "iShares Core S&P 500 UCITS ETF (CSPX): עמוד הקרן",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.ishares.com/uk/individual/en/products/251900/ishares-sp-500-ucits-etf-inc-fund",
+      "title": "iShares IUSA product page",
+      "title_he": "iShares S&P 500 UCITS ETF (IUSA, מחלקת): עמוד הקרן",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "ETF-28"
+  ]
+}

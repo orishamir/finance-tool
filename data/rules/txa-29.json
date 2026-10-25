@@ -1,0 +1,122 @@
+{
+  "id": "TXA-29",
+  "title": "The Phoenix: year-end notional redemption, the March certificate and the s.125D figures it prints",
+  "title_he": "הפניקס: פדיון רעיוני בסוף השנה, אישור הניכוי במרץ והסכומים שהיא מפרסמת",
+  "text_he": "הפניקס מתארת בפוליסת החיסכון שלה פדיון רעיוני בסוף שנת המס: הפוליסה נפדית על הנייר, המס מנוכה והכסף מושקע מחדש, כדי שאפשר יהיה לנצל את ההטבה לבני גיל פרישה שנה אחרי שנה; זה לא אפשרי בפוליסה משועבדת או עם הלוואה. היא שולחת את אישור הניכוי במקור במרץ, ומפרסמת תקרת רווח ומס ליחיד ולזוג שמשקפים רבע מהרווח. חוק או הנחיה של רשות המסים שמתארים פדיון רעיוני בפוליסה לא נמצאו, והסכומים שהפניקס מפרסמת לא תואמים את הסכומים שבחוק לשנה הזאת.",
+  "figure_names_he": {
+    "s125d_profit_cap_individual": "תקרת הרווח לניכוי לפי סעיף הפטור לגיל פרישה, יחיד, כפי שהפניקס מפרסמת",
+    "s125d_tax_individual": "המס ששולם בפועל על תקרת הרווח, יחיד, כפי שהפניקס מפרסמת",
+    "s125d_profit_cap_couple": "תקרת הרווח לניכוי, שני בני זוג, כפי שהפניקס מפרסמת",
+    "s125d_tax_couple": "המס ששולם בפועל על תקרת הרווח, שני בני זוג, כפי שהפניקס מפרסמת"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "tax-at-exit",
+    "age-or-use-exemption",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-03-31",
+  "figures": {
+    "s125d_profit_cap_individual": {
+      "value": 13440,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
+        "title": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות, section 125ד",
+        "publisher": "Phoenix Insurance",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TXA-29",
+        "TXI-20"
+      ],
+      "state": "sourced",
+      "notes": "As published by Phoenix on 2026-10-24; the statutory s.125D amounts are in TXI-20. 3,360 ÷ 13,440 implies a 25% rate on the gain."
+    },
+    "s125d_tax_individual": {
+      "value": 3360,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
+        "title": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות, section 125ד",
+        "publisher": "Phoenix Insurance",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TXA-29"
+      ],
+      "state": "sourced",
+      "notes": "Tax actually paid on the individual profit cap, as Phoenix publishes it."
+    },
+    "s125d_profit_cap_couple": {
+      "value": 16560,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
+        "title": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות, section 125ד",
+        "publisher": "Phoenix Insurance",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TXA-29",
+        "TXI-20"
+      ],
+      "state": "sourced",
+      "notes": "As published by Phoenix on 2026-10-24."
+    },
+    "s125d_tax_couple": {
+      "value": 4140,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
+        "title": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות, section 125ד",
+        "publisher": "Phoenix Insurance",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": 2026,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TXA-29"
+      ],
+      "state": "sourced",
+      "notes": "Tax actually paid on the couple profit cap, as Phoenix publishes it."
+    }
+  },
+  "il_finance_file": "tax-insurance-and-amendment-190.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
+      "title": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות",
+      "title_he": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות",
+      "publisher": "The Phoenix",
+      "publisher_he": "הפניקס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "פדיון כפוף למס רווחי הון בהתאם לחוק ולמצב הלקוח",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "TXA-28"
+  ]
+}

@@ -1,96 +1,34 @@
 {
   "id": "TX2-20",
-  "title": "REIT withholding in practice: profit component at the top marginal rate, depreciation component at 25% (Reit 1 FAQ)",
-  "title_he": "איך קרן ריט מנכה מס מהדיבידנד בפועל, לפי ריט אחת",
-  "text_he": "ריט אחת מסבירה באתרה שכל חלוקה רבעונית ליחיד מסווגת לפי מקורות ההכנסה שלה, בעיקר רווח ותזרים בגובה הוצאות הפחת. מרכיב הרווח מנוכה לפי שיעור המס השולי הגבוה ומרכיב הפחת לפי שיעור המס על רווח הון. התמהיל בכל חלוקה קובע את השיעור המשוקלל שמנוכה במקור, ומי ששיעור המס שלו נמוך יותר מקבל את ההפרש בדוח השנתי עם אישור הניכוי מהבנק. זו הצהרה של חברה אחת, והדוגמה שבה ישנה.",
-  "figure_names_he": {
-    "example_depreciation_component_rate": "שיעור המס על מרכיב הפחת בדוגמה",
-    "example_profit_component_rate": "שיעור המס על מרכיב הרווח בדוגמה",
-    "example_weighted_rate": "השיעור המשוקלל שנוכה בדוגמה"
-  },
-  "strength": "institution",
+  "title": "REIT dividends: withholding by income source (s.64א5(א))",
+  "title_he": "ניכוי מס מדיבידנד של קרן ריט לפי מקור ההכנסה",
+  "text_he": "קרן להשקעות במקרקעין (ריט) מנכה מס בעת תשלום דיבידנד לבעלי המניות, או בנק או חבר בורסה באישור המנהל, לפי מקור ההכנסה שמחולקת: על החלק שבגובה הוצאות הפחת לפי שיעורי המס על רווח הון, ועל הכנסה חייבת אחרת לפי שיעור המס השולי המרבי, או שיעור אחר שקבע שר האוצר. לכן השיעור שמנוכה מכל חלוקה תלוי בתמהיל המקורות שלה, ומי ששיעור המס שלו נמוך יותר מקבל את ההפרש רק בדוח שנתי. כך קובעת פקודת מס הכנסה.",
+  "strength": "primary",
   "dimensions": [
     "tax-during",
     "distribution-policy",
     "reporting-obligation"
   ],
-  "likely_to_change": "yes",
-  "recheck_date": "2027-03-31",
-  "figures": {
-    "example_depreciation_component_rate": {
-      "value": 25,
-      "unit": "pct",
-      "source": {
-        "url": "https://reit1.co.il/investor-relations/",
-        "title": "Reit 1 investor relations, FAQ: distribution of 27.9.2012, depreciation component 80.41%",
-        "publisher": "Reit 1 Ltd",
-        "strength": "institution"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": 2012,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "TX2-20",
-        "TX2-10"
-      ],
-      "state": "sourced",
-      "notes": "Example from 2012; matches s.64A5(a)(1) (s.91 rate)."
-    },
-    "example_profit_component_rate": {
-      "value": 48,
-      "unit": "pct",
-      "source": {
-        "url": "https://reit1.co.il/investor-relations/",
-        "title": "Reit 1 investor relations, FAQ: distribution of 27.9.2012, profit component 19.59%",
-        "publisher": "Reit 1 Ltd",
-        "strength": "institution"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": 2012,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "TX2-20",
-        "TX2-10"
-      ],
-      "state": "sourced",
-      "notes": "The top s.121 rate in 2012; 47% in 2026 (TXG-02). Matches s.64A5(a)(3) with no reduced ministerial rate."
-    },
-    "example_weighted_rate": {
-      "value": 29.51,
-      "unit": "pct",
-      "source": {
-        "url": "https://reit1.co.il/investor-relations/",
-        "title": "Reit 1 investor relations, FAQ: weighted rate withheld in the 27.9.2012 distribution",
-        "publisher": "Reit 1 Ltd",
-        "strength": "institution"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": 2012,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "TX2-20"
-      ],
-      "state": "sourced",
-      "notes": "80.41% × 25% + 19.59% × 48%, as the page computes it."
-    }
-  },
+  "likely_to_change": "no",
   "il_finance_file": "tax-tier2-other.md",
-  "checked": "2026-10-24",
+  "checked": "2026-10-25",
   "sources": [
     {
-      "url": "https://reit1.co.il/investor-relations/",
-      "title": "Reit 1, investor relations page, \"שאלות ותשובות\", \"מהו שיעור המס שחל על דיבידנד?\"",
-      "publisher": "Reit 1",
-      "publisher_he": "ריט 1",
-      "kind": "institution_doc",
-      "strength": "institution",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "pp.106-107, s.64א5(א)(1), (3)",
+      "locator_he": "עמודים 106 עד 107, סעיף 64א5(א)(1), (3)",
+      "page": 106,
+      "quote": "מהכנסה חייבת אחרת – בשיעור המס המרבי הקבוע בסעיף 121",
       "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "TXG-02"
   ]
 }

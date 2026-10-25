@@ -1,0 +1,32 @@
+{
+  "id": "BRK-47",
+  "title": "Bank Leumi: client securities pooled, equivalent securities returned, custodians' liens, liability for brokers",
+  "title_he": "בנק לאומי: ניירות הלקוחות במאגר משותף, שעבוד של משמורנים ואחריות לברוקרים",
+  "text_he": "לפי התנאים הכלליים של בנק לאומי, הבנק אינו חייב להחזיק את ניירות הערך של לקוח בנפרד מניירות של לקוחות אחרים, אבל מפריד בספריו בין ניירות של לקוחות לניירות שלו ובין לקוח ללקוח; הוא רשאי לרשום אותם דרך החברה לרישומים ולהפקיד אותם על שמו במסלקת הבורסה, ולהחזיר ניירות שווי ערך מאותו סוג ומנפיק. בלאומי ניירות זרים נסחרים ומוחזקים דרך ברוקרים או משמורנים בישראל או בחו״ל, אולי על שם הבנק; למשמורנים אלה עשויה להיות זכות שעבוד או קיזוז בעד דמי המשמורת והעסקה, והבנק פטור מאחריות לכשל של ברוקר שבחר בזהירות סבירה. תנאי בנקים אחרים לא נקראו.",
+  "strength": "institution",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-15",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.leumi.co.il/leumi-hebrew/s3fs-public/newsite/generalpages/general%20terms/General_Terms_and_Conditions_acc.pdf",
+      "title": "Leumi, \"חוברת תנאים כלליים לניהול חשבון\", 310-93, 08.25",
+      "title_he": "חוברת תנאים כלליים לניהול חשבון (בנק לאומי, מהדורת 8/2025)",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.12 to 13, s.3.2.1 to 3.2.3, 3.4.3",
+      "locator_he": "עמודים 12 עד 13, סעיף 3.2.1 עד 3.2.3, 3.4.3",
+      "page": 12,
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "BRK-10"
+  ]
+}

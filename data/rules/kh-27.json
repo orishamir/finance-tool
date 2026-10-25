@@ -1,0 +1,33 @@
+{
+  "id": "KH-27",
+  "title": "Altshuler Shaham: withdrawal documents and payment channel",
+  "title_he": "אלטשולר שחם: מסמכי המשיכה ודרך התשלום",
+  "text_he": "באלטשולר שחם משיכה מקרן השתלמות דורשת טופס חתום, צילום תעודת זהות ואסמכתה לחשבון הבנק. התשלום בהעברה בנקאית בלבד, לחשבון של העמית עצמו, ולפי הטופס במסגרת לוח הזמנים שבדין. החברה רשאית לעכב בקשה כדי לאמת זהות, גם בשיחת טלפון, והסכום משולם בניכוי הלוואה או שעבוד. המסמכים ודרך התשלום בחברות אחרות לא נבדקו.",
+  "strength": "institution",
+  "dimensions": [
+    "liquidity-lockup",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "keren-hishtalmut.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.as-invest.co.il/media/10040/בקשה-למשיכת-כספים-מקרן-השתלמות.pdf",
+      "title": "Altshuler withdrawal form",
+      "title_he": "בקשה למשיכת כספים מקרן השתלמות (טופס אלטשולר שחם)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "form",
+      "strength": "institution",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "quote": "לתשומת לבך",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "KH-16"
+  ]
+}

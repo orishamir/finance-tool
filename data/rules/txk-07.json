@@ -1,12 +1,12 @@
 {
   "id": "TXK-07",
-  "title": "Base is the real gain; the manager withholds 25%",
-  "title_he": "הבסיס הוא הרווח הריאלי, והחברה מנכה במקור",
-  "text_he": "החברות המנהלות מתארות משיכה הונית כניכוי מס במקור לפי שיעור הניכוי במקור על הרווח הריאלי בלבד, וכתבה אומרת 'עד' אותו שיעור. בפקודה חלק הפרשי ההצמדה מופרד מחלק הריבית, אבל ההוראה שפוטרת בפועל את חלק האינפלציה במשיכה מקופת גמל להשקעה לא נמצאה: מדריך רשות המסים אומר שהפטור על הפרשי הצמדה לא חל על חשבון בקופת גמל. גם תקנת הניכוי במקור שקובעת את השיעור לתשלום הזה לא נמצאה. עד שיימצא מקור של רשות המסים, 'השיעור על הרווח הריאלי' הוא מקור מוסדי.",
+  "title": "Lump sum: the linkage part is exempt, the rest is taxed at up to 25% (the real gain); the manager withholds",
+  "title_he": "משיכה הונית: חלק ההצמדה פטור, ועל השאר עד שיעור המס המרבי, כלומר על הרווח הריאלי",
+  "text_he": "בפקודה, הרווח שמושכים מקופת גמל להשקעה נחשב הכנסה מריבית, וחלק הרווח בגובה הפרשי ההצמדה על הכספים נחשב הכנסה מהפרשי הצמדה ופטור ממס. המשפט שהוציא חשבון בקופת גמל מהפטור הזה נמחק בתיקון לפקודה שנכנס לתוקף בתחילת שנת אלפיים שתים עשרה, אף שמדריך רשות המסים עדיין מדפיס אותו. על שאר הרווח חל מס עד שיעור המס המרבי על ריבית, כמדרגה העליונה של ההכנסה, ודברי ההסבר לחוק שהוסיף את קופת הגמל להשקעה אומרים במפורש שהמס הוא על הרווח הריאלי. החברה המנהלת מנכה את המס במקור, ובסיס הניכוי לא כולל את הפרשי ההצמדה הפטורים. שיעור הניכוי עצמו לא הוכרע.",
   "figure_names_he": {
-    "rate": "שיעור הניכוי במקור על הרווח הריאלי"
+    "rate": "שיעור המס המרבי על הרווח הריאלי"
   },
-  "strength": "institution",
+  "strength": "primary",
   "dimensions": [
     "real-vs-nominal",
     "tax-at-exit",
@@ -19,37 +19,38 @@
       "value": 25,
       "unit": "pct",
       "source": {
-        "url": "https://www.harel-group.co.il/long-term-savings/funding-saving/join/doclib/%d7%92%d7%9e%d7%9c%20%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94.pdf",
-        "title": "קופת גמל להשקעה (עלון הראל, 2023), p.1: \"בניכוי 25% מס רווחי הון על הרווח הריאלי בלבד\"",
-        "publisher": "Harel Insurance and Finance",
-        "strength": "institution"
+        "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+        "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, p.204, s.125ג(ב) \"בשיעור שלא יעלה על 25%\", applied by s.125ג(ה) to gains under s.3(ה4)(3), whose linkage part is exempt by s.9(13) (p.41); the 2016 bill's explanatory notes (הצעות חוק הממשלה 1029, p.875): \"25% מהרווח הריאלי\"",
+        "publisher": "Tax Authority (gov.il)",
+        "strength": "primary"
       },
       "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
-      "update_rule": "provider-set",
+      "update_rule": "fixed in law",
       "rule_ids": [
         "TXK-07"
       ],
       "state": "sourced",
-      "notes": "Manager withholds 25% on the REAL gain only at lump-sum withdrawal. Institution strength: a Bizportal article (secondary) says 'עד 25% על הרווח הריאלי'. The legal route that exempts the inflation part was not found (Tax Authority guide 2025 p.87 says s.9(13) 'לא יחולו על חשבון בקופת גמל'; open question 2), and the withholding regulation for this payment was not found (open question 3). update_rule 'provider-set' is the nearest value in the schema list: the basis is the manager's own document, not a located statute. Likely-to-change 'yes' via TXK-21."
+      "notes": "Tax on a lump-sum withdrawal: up to 25% of the real gain. The gains are interest income (s.3(ה4)(3)); the part equal to linkage on the money is linkage income, exempt under s.9(13) since Amendment 190 deleted the provident-account exclusion from 1.1.2012; s.125C(b) caps the rest at 25% as the top slice. The withholding rate is a separate, unsettled question (TXK-26); it does not change the final tax. Likely to change via TXK-21 (proposals, not law)."
     }
   },
   "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
-      "title": "Tax Authority guide 2025",
-      "title_he": "דע זכויותיך וחובותיך 2025",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
       "publisher": "gov.il",
       "publisher_he": "רשות המסים",
-      "kind": "official_pdf",
+      "kind": "law",
       "strength": "primary",
-      "locator": "p.89, row 9(13)",
-      "page": 89,
-      "quote": "הוראות אלה לא יחולו על חשבון בקופת גמל",
+      "locator": "p.21, s.3(ה4)(3)",
+      "locator_he": "עמוד 21, סעיף 3(ה4)(3)",
+      "page": 21,
+      "quote": "ואולם רווחים שקיבל כאמור בסכום הפרשי הצמדה שחושבו על הכספים כאמור יראו אותם כהכנסה מהפרשי הצמדה",
       "checked": "2026-10-25"
     },
     {
@@ -63,31 +64,115 @@
       "locator": "p.41, s.9(13)",
       "locator_he": "עמוד 41, סעיף 9(13)",
       "page": 41,
+      "quote": "הפרשי הצמדה שקיבל יחיד בשל נכס, ובלבד שהתקיימו כל אלה",
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.harel-group.co.il/long-term-savings/funding-saving/join/doclib/%d7%92%d7%9e%d7%9c%20%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94.pdf",
-      "title": "קופת גמל להשקעה (עלון הראל, 2023)",
-      "title_he": "קופת גמל להשקעה (עלון הראל, 2023)",
-      "publisher": "Harel",
-      "publisher_he": "הראל",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.1",
-      "locator_he": "עמוד 1",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.204, s.125ג(ה)",
+      "locator_he": "עמוד 204, סעיף 125ג(ה)",
+      "page": 204,
+      "quote": "ואולם הוראות סעיף זה יחולו על ריבית ורווחים אחרים שרואים אותם כהכנסה מריבית לפי הוראות סעיף 3(ה4)(3)",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, נוסח משולב (המוסד לביטוח לאומי)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.1, reg. 1",
+      "locator_he": "עמוד 1, תקנה 1",
       "page": 1,
-      "quote": "בניכוי 25% מס רווחי הון על הרווח הריאלי בלבד",
+      "quote": "קופת גמל",
+      "checked": "2026-10-25",
+      "qualifier": "(consolidated to ק\"ת 7907, 27.12.2017)"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/18/law/18_lsr_301456.pdf",
+      "title": "חוק לתיקון פקודת מס הכנסה (מס' 190 והוראת שעה), התשע\"ב-2012, ספר החוקים 2354",
+      "title_he": "חוק לתיקון פקודת מס הכנסה (מס' 190 והוראת שעה), התשע\"ב-2012, ספר החוקים 2354",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.359, s.4(2)",
+      "locator_he": "עמוד 359, סעיף 4(2)",
+      "page": 359,
+      "quote": "בפסקה (13), הסיפה החל במילים",
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.bizportal.co.il/additives/237/GEMEL306.html",
-      "title": "קופת גמל להשקעה: הפטור ממס בגיל 60 על הכוונת (ביזפורטל, ללא תאריך)",
-      "title_he": "קופת גמל להשקעה: הפטור ממס בגיל 60 על הכוונת (ביזפורטל, ללא תאריך)",
-      "publisher": "Bizportal",
-      "publisher_he": "ביזפורטל",
-      "kind": "article",
-      "strength": "secondary",
-      "checked": "2026-10-25"
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299994.pdf",
+      "title": "חוק לתיקון פקודת מס הכנסה (מס' 147), התשס\"ה-2005, ספר החוקים 2023",
+      "title_he": "חוק לתיקון פקודת מס הכנסה (מס' 147), התשס\"ה-2005, ספר החוקים 2023",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.767, s.3(3)",
+      "locator_he": "עמוד 767, סעיף 3(3)",
+      "page": 767,
+      "quote": "הוראות פסקה זו לא יחולו על נכס שהוא חשבון בקופת גמל",
+      "checked": "2026-10-25",
+      "qualifier": "(history: in force 2006 to 2011 only)"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_ls1_323033.pdf",
+      "title": "הצעת חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016, הצעות חוק הממשלה 1029, דברי הסבר",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.875",
+      "locator_he": "עמוד 875",
+      "page": 875,
+      "quote": "יראו ברווחים כאמור הכנסה ולפיכך הם יהיו חייבים במס רווחי הון בשיעור 25% מהרווח הריאלי",
+      "checked": "2026-10-25",
+      "qualifier": "(explanatory notes of the government bill; the operative text is s.3(ה4)(3))"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_ls1_831122.pdf",
+      "title": "הצעת חוק לתיקון פקודת מס הכנסה (מס' 147), התשס\"ה-2005, הצעות חוק הממשלה 186, דברי הסבר",
+      "title_he": "הצעת חוק לתיקון פקודת מס הכנסה (מס' 147), התשס\"ה-2005, הצעות חוק הממשלה 186, דברי הסבר",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.915",
+      "locator_he": "עמוד 915",
+      "page": 915,
+      "quote": "מרכיב הפרשי ההצמדה ברווחים אלה זכאי לפטור ממס בידי יחיד, לפי סעיף 9(13) לפקודה, אם אינם הכנסה מעסק בידיו",
+      "checked": "2026-10-25",
+      "qualifier": "(explanatory notes)"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/18/law/18_ls1_189245.pdf",
+      "title": "הצעת חוק לתיקון פקודת מס הכנסה (מס' 189 והוראת שעה) (הטבות מס לקצבה), התשע\"ב-2012, הצעות חוק הממשלה 661, דברי הסבר",
+      "title_he": "הצעת חוק לתיקון פקודת מס הכנסה (מס' 189 והוראת שעה) (הטבות מס לקצבה), התשע\"ב-2012, הצעות חוק הממשלה 661, דברי הסבר",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.382",
+      "locator_he": "עמוד 382",
+      "page": 382,
+      "quote": "מוצע לראות את הריבית והרווחים שנצברו על כספים אלה, למעט הפרשי ההצמדה, כהכנסה מריבית",
+      "checked": "2026-10-25",
+      "qualifier": "(explanatory notes; enacted as Amendment 190)"
     }
+  ],
+  "derived_from": [
+    "TXK-05",
+    "TXK-06"
   ]
 }

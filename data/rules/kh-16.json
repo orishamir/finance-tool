@@ -1,12 +1,12 @@
 {
   "id": "KH-16",
-  "title": "Withdrawal process and payment",
-  "title_he": "תהליך המשיכה והתשלום",
-  "text_he": "באלטשולר שחם משיכה דורשת טופס חתום, צילום תעודת זהות ואסמכתה לחשבון הבנק. התשלום בהעברה בנקאית בלבד, לחשבון של העמית עצמו, בתוך ימי העסקים לתשלום המשיכה מקבלת בקשה מלאה ותקינה; אם המועד נופל בימי העסקים הראשונים של החודש, הוא נדחה. החברה רשאית לעכב בקשה לאימות זהות, והסכום משולם בניכוי הלוואה או שעבוד. חברות אחרות לא נבדקו, ולוח הזמנים שבדין לא נקרא.",
+  "title": "Withdrawal payment: within 4 business days of the request",
+  "title_he": "מועד תשלום המשיכה",
+  "text_he": "מי שמבקש למשוך את כל הכסף או חלק ממנו מקבל אותו בתוך ימי העסקים לתשלום המשיכה מהיום שהבקשה הגיעה לקופה. אם המועד חל באחד משלושת ימי העסקים הראשונים של החודש, הקופה רשאית לדחות את התשלום ליום העסקים הרביעי באותו חודש. מי שמבקש תשלומים חודשיים מקבל אותם ביום קבוע שבתקנון או ביום העסקים הראשון של כל חודש. החזר הלוואה שהקופה רשאית לנכות יורד מהתשלום, ועל איחור הקופה משלמת ריבית פיגורים. כך קובעות תקנות מס הכנסה לקופות גמל, בכל החברות.",
   "figure_names_he": {
-    "payout_business_days": "ימי עסקים לתשלום המשיכה (אלטשולר שחם)"
+    "payout_business_days": "ימי עסקים לתשלום המשיכה"
   },
-  "strength": "institution",
+  "strength": "primary",
   "dimensions": [
     "liquidity-lockup",
     "transfer-switch-process"
@@ -17,38 +17,52 @@
       "value": 4,
       "unit": "business_days",
       "source": {
-        "url": "https://www.as-invest.co.il/media/10040/בקשה-למשיכת-כספים-מקרן-השתלמות.pdf",
-        "title": "Altshuler Shaham, \"בקשה למשיכת כספים מקרן השתלמות\", form MH4015_210519, p.2, guidance section 1: \"הינו 4 ימי עסקים ויספר מיום קבלת הבקשה מלאה ותקינה בחברה\"",
-        "publisher": "Altshuler Shaham Gemel and Pension",
-        "strength": "institution"
+        "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+        "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964, p.16, reg. 41יא(א)",
+        "publisher": "National Insurance Institute (btl.gov.il), consolidated text",
+        "strength": "primary"
       },
       "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "provider-set",
+      "update_rule": "fixed in regulation",
       "rule_ids": [
         "KH-16"
       ],
       "state": "sourced",
-      "notes": "Payment by bank transfer to the member's own account within 4 business days of a full and proper request (Altshuler). If the payment day falls in the first three business days of a month it moves to the next business day. Other managers' timing was not checked; the legal timetable was not read (keren-hishtalmut.md open question 16)."
+      "notes": "Rule 41יא(א): within 4 business days of the day the request reaches the fund; if that date falls in the month's first three business days the fund may defer to the 4th business day of the month. Applies to every provident fund, so to every study fund."
     }
   },
   "il_finance_file": "keren-hishtalmut.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
-      "url": "https://www.as-invest.co.il/media/10040/בקשה-למשיכת-כספים-מקרן-השתלמות.pdf",
-      "title": "Altshuler withdrawal form",
-      "title_he": "בקשה למשיכת כספים מקרן השתלמות (טופס אלטשולר שחם)",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "form",
-      "strength": "institution",
-      "locator": "p.2",
-      "locator_he": "עמוד 2",
-      "page": 2,
-      "quote": "לתשומת לבך",
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.16, reg. 41יא(א)",
+      "locator_he": "עמוד 16, תקנה 41יא(א)",
+      "page": 16,
+      "quote": "יקבל את הכספים כאמור בתוך 4 ימי עסקים מהיום שהגיעה בקשתו לקופה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.16, reg. 41ח(א1)(2)",
+      "locator_he": "עמוד 16, תקנה 41ח(א1)(2)",
+      "page": 16,
+      "quote": "החזרי הלוואה שהקופה רשאית לנכות",
       "checked": "2026-10-25"
     }
   ]

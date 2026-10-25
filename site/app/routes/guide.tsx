@@ -178,6 +178,9 @@ export default function GuidePage() {
   if (!lockUp) inout.push(exitItem());
   if (exit.payout_business_days) {
     const days = exit.payout_business_days as SiteValue;
+    // D30 (2026-10-25): a payout time that is one company's own (its rule is that company's record) is shown named, never as the product's
+    const dayRule = days.rule_ids?.[0] ? (rules[days.rule_ids[0]] as { strength?: string; sources?: { url: string; publisher_he?: string }[] } | undefined) : undefined;
+    const onlyAt = days.source.strength === "institution" && dayRule?.strength === "institution" ? dayRule.sources?.find((s) => s.url === days.source.url)?.publisher_he : undefined;
     inout.push({
       id: "days",
       label: blocks.exit.labelDays,
@@ -187,6 +190,7 @@ export default function GuidePage() {
         </>
       ),
       rules: days.rule_ids ?? [],
+      lead: onlyAt ? <span>{blocks.exit.onlyAt.before} {onlyAt}{blocks.exit.onlyAt.after}</span> : undefined,
     });
   }
   if (content && record.switch_is_tax_event.value === false) {
@@ -222,7 +226,8 @@ export default function GuidePage() {
     });
   }
   if (record.fee_bases_allowed.includes("direct_expenses")) fees.push({ id: "direct", name: blocks.fees.direct_expenses.name, base: blocks.fees.direct_expenses.base, cap: blocks.fees.direct_expenses.cap, rules: ["PF-10"] });
-  if (provident && !record.fee_bases_allowed.includes("exit")) fees.push({ id: "exit", name: blocks.fees.exit.name, base: blocks.fees.exit.base, cap: blocks.fees.exit.cap, rules: ["PF-01", ...(record.lawful_exit.payout_business_days?.rule_ids ?? [])], tag: weakTag(record.lawful_exit.payout_business_days?.rule_ids ?? []) });
+  // "no exit fee" is the law's (PF-01); the payout-time rule no longer lends it its rules or its strength tag (scope pass 2026-10-25)
+  if (provident && !record.fee_bases_allowed.includes("exit")) fees.push({ id: "exit", name: blocks.fees.exit.name, base: blocks.fees.exit.base, cap: blocks.fees.exit.cap, rules: ["PF-01"], tag: weakTag(["PF-01"]) });
 
   // ---- tax steps
   const stepCopy = (formula: string) => blocks.taxSteps[formula];

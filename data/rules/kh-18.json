@@ -1,17 +1,58 @@
 {
   "id": "KH-18",
   "title": "Track switching within the fund",
-  "title_he": "מעבר בין מסלולים בתוך הקרן",
-  "text_he": "עמית רשאי להעביר כסף ממסלול השקעה למסלול אחר, או לפצל בין מסלולים, אחרי בקשה מלאה וחתומה, במועדים שבהסדר התחיקתי. לפי אלטשולר שחם, המעבר מתבצע בתוך ימי העסקים למעבר מסלול שבכלל המשותף לקופות הגמל, לא כרוך במס, ואם המועד נופל בתחילת החודש הוא נדחה ליום העסקים הרביעי. הטופס מפריד בין הצבירה הקיימת לבין ההפקדות העתידיות. העמוד של אלטשולר שחם לא מזכיר עמלת מעבר.",
-  "strength": "institution",
+  "title_he": "מעבר בין מסלולים בתוך הקרן: מתי ואיך הכסף עובר",
+  "text_he": "עמית רשאי להעביר כסף ממסלול השקעה למסלול אחר באותה קרן, או לפצל בין מסלולים. לפי כללי מס הכנסה לקופות גמל, המעבר נעשה בתוך ימי העסקים למעבר מסלול שבתקנות, אלא אם התקנון קובע תקופה קצרה יותר; אם המועד נופל בשלושת ימי העסקים הראשונים של החודש, הקרן רשאית לדחות אותו ליום העסקים הרביעי. המעבר נעשה במזומן, על איחור משלמים ריבית פיגורים, והחוק לא מתיר עמלה עליו. מה קורה במס הוא כלל נפרד.",
+  "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
     "switching-tax-event"
   ],
   "likely_to_change": "no",
   "il_finance_file": "keren-hishtalmut.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.9, reg. 33ב(א)(1), (3), (ב)",
+      "locator_he": "עמוד 9, תקנה 33ב(א)(1), (3), (ב)",
+      "page": 9,
+      "quote": "העברת כספים ממסלול למסלול תיעשה בתוך שלושה ימי עסקים, אלא אם כן נקבעה בתקנון הקופה תקופה קצרה יותר",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.16, reg. 41יא(א)",
+      "locator_he": "עמוד 16, תקנה 41יא(א)",
+      "page": 16,
+      "quote": "רשאית הקופה לדחות את מועד התשלום ליום העסקים הרביעי באותו חודש",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.17, reg. 41יז(ג), 41יז1",
+      "locator_he": "עמוד 17, תקנה 41יז(ג), 41יז1",
+      "page": 17,
+      "checked": "2026-10-25"
+    },
     {
       "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
       "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
@@ -24,41 +65,10 @@
       "locator_he": "עמוד 11, סעיף 23(ב)(2)",
       "page": 11,
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://as-invest.co.il/media/khpp32k5/אלטשולר-שחם-השתלמות-תקנון-מהדורת-שינויים-דצמבר-2024.pdf",
-      "title": "Altshuler bylaws 1.12.2024",
-      "title_he": "תקנון קרן ההשתלמות של אלטשולר שחם (מהדורת דצמבר 2024)",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "s.8.5",
-      "locator_he": "סעיף 8.5",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://harel-group.co.il/long-term-savings/study-funds/plans/harel-funds/doclib/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%95%d7%a4%d7%94/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a8%d7%90%d7%9c%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa-%20%d7%9c%d7%90%d7%97%d7%a8%20%d7%94%d7%9e%d7%99%d7%96%d7%95%d7%92/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa%20%2007.2024.pdf",
-      "title": "Harel bylaws 07/2024",
-      "title_he": "תקנון קרן ההשתלמות של הראל (מהדורת 7/2024)",
-      "publisher": "Harel",
-      "publisher_he": "הראל",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "s.9.18",
-      "locator_he": "סעיף 9.18",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.as-invest.co.il/interstedin/gemel/מעבר-בין-מסלולים-1/",
-      "title": "אלטשולר שחם – מעבר בין מסלולים",
-      "title_he": "אלטשולר שחם – מעבר בין מסלולים",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "ואינה כרוכה בתשלום מס",
-      "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "TXH-17",
+    "PF-01"
   ]
 }

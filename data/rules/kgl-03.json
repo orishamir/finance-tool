@@ -1,12 +1,12 @@
 {
   "id": "KGL-03",
-  "title": "The 2026 ceiling figure",
+  "title": "The 2026 ceiling figure: the law's NIS 70,000 indexed to the CPI",
   "title_he": "סכום התקרה לשנה הנוכחית",
-  "text_he": "תקרת ההפקדה השנתית לשנת המס הנוכחית, לאדם, בכל קופות הגמל להשקעה שלו יחד. הסכום נלקח מפרסומים של חברות מנהלות בלבד; הודעת עדכון רשמית לא נמצאה, ולכן זהו מקור מוסדי. הנוסחה שבחוק, תקרת הבסיס צמודה למדד, היא המקור הראשי, והתאמת הסכום למדד נבדקה בכלל נפרד. הסכום מתעדכן בכל אחד בינואר.",
+  "text_he": "תקרת ההפקדה השנתית לשנת המס הנוכחית, לאדם, בכל קופות הגמל להשקעה שלו יחד. הסכום הוא תקרת הבסיס שבחוק, צמודה למדד המחירים לצרכן מהמדד הידוע באמצע שנת הבסיס עד המדד הידוע בתחילת השנה, כפי שמחשבון ההצמדה של הלשכה המרכזית לסטטיסטיקה מחשב אותו; האתר מציג אותו מעוגל לשקל. הודעת עדכון רשמית לא נמצאה, והחוק לא מחייב אחת. הסכום מתעדכן בכל אחד בינואר.",
   "figure_names_he": {
     "ceiling": "תקרת ההפקדה השנתית"
   },
-  "strength": "institution",
+  "strength": "primary",
   "dimensions": [
     "deposit-ceiling"
   ],
@@ -17,10 +17,10 @@
       "value": 83641,
       "unit": "nis",
       "source": {
-        "url": "https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf",
-        "title": "Harel, \"תקרות וסכומים לשנת 2026\" (PDF created 2026-03-08), p.1, row \"תקרת הפקדה שנתית לגמל להשקעה\": 83,641 ₪",
-        "publisher": "Harel Insurance and Finance",
-        "strength": "institution"
+        "url": "https://api.cbs.gov.il/index/data/calculator/120010?value=70000&date=07-01-2016&toDate=01-01-2026&format=json&download=false",
+        "title": "הלשכה המרכזית לסטטיסטיקה – מחשבון הצמדה, מדד המחירים לצרכן כללי (120010): 70,000 ₪ from 1.7.2016 to 1.1.2026, \"to_value\":83641.09",
+        "publisher": "Central Bureau of Statistics",
+        "strength": "primary"
       },
       "checked": "2026-10-25",
       "effective_from": "2026-01-01",
@@ -32,72 +32,39 @@
         "KGL-03"
       ],
       "state": "sourced",
-      "notes": "NIS per person per calendar year, 2026, across all kupat gemel lehashkaa accounts. Institution sources only: Harel, Phoenix, Meitav and the Hebrew University fund give 83,641; Altshuler gives 83,641.09. The official update notice was not reached (open question 1), and the CPI rise (83,641.09 / 70,000 = 1.1949) could not be checked against CBS data. Updated every 1 January."
+      "notes": "NIS per person per calendar year, 2026, across all kupat gemel lehashkaa accounts: the law's NIS 70,000 (Amendment 15 s.3, section 22(א); KGL-02) indexed by the CPI known on 1.1.2026 against the CPI known on 1.7.2016. The CBS calculator returns 83,641.09 (May 2016 index 98.8, November 2025 index 103.6, change 19.5%; KGL-24); shown rounded to the shekel. No regulator notice of the amount was found and the law does not require one. Updated every 1 January."
     }
   },
   "il_finance_file": "kupat-gemel-lehashkaa.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
-      "url": "https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf",
-      "title": "Harel, \"תקרות וסכומים לשנת 2026\" (PDF created 2026-03-08)",
-      "title_he": "תקרות וסכומים לשנת 2026 (הראל)",
-      "publisher": "Harel",
-      "publisher_he": "הראל",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.1",
-      "locator_he": "עמוד 1",
-      "page": 1,
-      "quote": "תקרת הפקדה שנתית לגמל להשקעה",
+      "url": "https://api.cbs.gov.il/index/data/calculator/120010?value=70000&date=07-01-2016&toDate=01-01-2026&format=json&download=false",
+      "title": "הלשכה המרכזית לסטטיסטיקה – מחשבון הצמדה, מדד המחירים לצרכן כללי (120010)",
+      "title_he": "הלשכה המרכזית לסטטיסטיקה – מחשבון הצמדה, מדד המחירים לצרכן כללי (120010)",
+      "publisher": "Central Bureau of Statistics",
+      "publisher_he": "הלשכה המרכזית לסטטיסטיקה",
+      "kind": "dataset",
+      "strength": "primary",
       "checked": "2026-10-25"
     },
     {
-      "url": "https://gemel.huji.ac.il/wp-content/uploads/2026/05/‏‏‏‏‏‏הצטרפות-קופת-גמל-להשקעה-מאי-2026.pdf",
-      "title": "Hebrew University fund joining form, modified 2026-03-16",
-      "title_he": "טופס הצטרפות לקופת הגמל של עובדי האוניברסיטה העברית",
-      "publisher": "Hebrew University provident fund",
-      "publisher_he": "קופת הגמל של עובדי האוניברסיטה העברית",
-      "kind": "form",
-      "strength": "institution",
-      "locator": "p.1",
-      "locator_he": "עמוד 1",
-      "page": 1,
-      "quote": "לאדם במהלך שנה קלנדרית בכל החברות המנהלות",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.as-invest.co.il/interstedin/saving_plus_deposit/",
-      "title": "אלטשולר שחם – הפקדות סוף שנה, קופת גמל להשקעה",
-      "title_he": "אלטשולר שחם – הפקדות סוף שנה, קופת גמל להשקעה",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "עד 83,641.09 ₪ בשנה",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.fnx.co.il/gemel/gemelhashkaa/tikrot-hafkada-hatvot-mas-gemelashkaa/",
-      "title": "הפניקס – תקרות הפקדה והטבות מס בקופת גמל להשקעה",
-      "title_he": "הפניקס – תקרות הפקדה והטבות מס בקופת גמל להשקעה",
-      "publisher": "The Phoenix",
-      "publisher_he": "הפניקס",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "תקרת הפקדה שנתית - נכון לשנת 2026",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.meitav.co.il/provident_pension/provident_invest/",
-      "title": "Meitav product page",
-      "title_he": "קופת גמל להשקעה: עמוד המוצר של מיטב",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "עד 83,641 ₪ (נכון לשנת 2026) בשנה קלנדרית",
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, s.3 (section 22(א))",
+      "locator_he": "עמוד 2, סעיף 3 (סעיף 22(א))",
+      "page": 2,
+      "quote": "לא יעלו על 70,000 שקלים חדשים",
       "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "KGL-02",
+    "KGL-24"
   ]
 }

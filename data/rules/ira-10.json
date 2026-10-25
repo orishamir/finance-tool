@@ -1,40 +1,15 @@
 {
   "id": "IRA-10",
-  "title": "No regulatory minimum balance found",
-  "title_he": "לא נמצא סכום מינימום בתקנות",
+  "title": "No regulatory minimum balance",
+  "title_he": "אין סכום מינימום בתקנות",
   "strength": "primary",
   "dimensions": [
     "minimum"
   ],
   "likely_to_change": "no",
-  "figures": {
-    "suitability_minimum": {
-      "value": 200000,
-      "unit": "nis",
-      "source": {
-        "url": "https://www.meitav.co.il/provident_pension/ira/",
-        "title": "Meitav, IRA product page: \"המתאים למי שיש בקופת הגמל או בקרן ההשתלמות שברשותו החל מ - 200,000 ₪\"",
-        "publisher": "Meitav Gemel and Pension",
-        "strength": "institution"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "IRA-10"
-      ],
-      "state": "sourced",
-      "notes": "A suitability statement by one manager, not a stated minimum. No regulatory minimum was found in the IRA regulations as read."
-    }
-  },
-  "text_he": "בתקנות לא נמצא סכום מינימום לפתיחה או להפקדה. מיטב אומרת שהמוצר מתאים למי שיש לו 'החל מ-200,000 ₪' בגמל או בהשתלמות; זו המלצת התאמה, לא מינימום. מינימום בחברות אחרות לא נמצא (שאלה פתוחה 7).",
-  "figure_names_he": {
-    "suitability_minimum": "סכום שממנו מיטב ממליצה על ניהול אישי"
-  },
+  "text_he": "בתקנות הניהול האישי אין סכום מינימום לפתיחה או להפקדה. חברה יכולה לומר מאיזה סכום המוצר מתאים לדעתה, אבל זו המלצה שלה, לא כלל.",
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=2",
@@ -60,17 +35,6 @@
       "locator": "pp.2-5, ss.1-8",
       "locator_he": "עמודים 2 עד 5, סעיפים 1-8",
       "page": 2,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.meitav.co.il/provident_pension/ira/",
-      "title": "Meitav IRA page",
-      "title_he": "קופת גמל בניהול אישי (IRA): עמוד המוצר של מיטב",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "החל מ - 200,000",
       "checked": "2026-10-25"
     }
   ]

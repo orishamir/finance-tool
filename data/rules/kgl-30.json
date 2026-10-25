@@ -1,0 +1,44 @@
+{
+  "id": "KGL-30",
+  "title": "Altshuler Shaham and Infinity: a two-year discount and a raise without notice (bylaws out of date)",
+  "title_he": "אלטשולר שחם ואינפיניטי: הנחה לשנתיים והעלאה בלי הודעה, לפי תקנון ישן",
+  "text_he": "בתקנונים של אלטשולר שחם ואינפיניטי לקופת גמל להשקעה, הנחה בדמי ניהול מובטחת לשנתיים בלבד, ומותר להעלות את דמי הניהול בלי ההודעה הרגילה אם העמית ובעל הרישיון קיבלו מסמך נפרד על הזכות לבטל את ההנחה. חוזר רשות שוק ההון קובע תקופה ארוכה יותר, אין בו חריג כזה, והוא חל גם על החברות האלה, ולכן החוזר גובר. השנתיים מתאימות לחוזר הקודם שהוחלף.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-change-over-time",
+    "fee-management-balance"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "kupat-gemel-lehashkaa.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
+      "title": "Altshuler bylaws March 2025",
+      "title_he": "תקנון קופת הגמל להשקעה ״חיסכון פלוס״ של אלטשולר שחם (מרץ 2025)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "clauses 36–37",
+      "locator_he": "סעיפים 36–37",
+      "quote": "ובלבד שההצעה האמורה תהיה תקפה במהלך תקופה של לפחות שנתיים",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://infinity.co.il/wp-content/uploads/2025/07/תקנון-גמל-להשקעה-בתוקף-מיום-1.7.2024.pdf",
+      "title": "Infinity 1.7.2024",
+      "title_he": "תקנון קופת הגמל להשקעה של אינפיניטי (בתוקף מ־1.7.2024)",
+      "publisher": "Infinity",
+      "publisher_he": "אינפיניטי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "KGL-16",
+    "PF-13",
+    "PF-14"
+  ]
+}

@@ -9,9 +9,9 @@
     "transfer-switch-process"
   ],
   "likely_to_change": "no",
-  "text_he": "תקנות הניהול האישי מגדירות קופה בניהול אישי 'למעט קרן פנסיה'. כספי פנסיה חייבים קודם לעבור לקופת גמל בניהול אישי, ומיטב מונה את ההשלכות על הכיסוי הביטוחי (גיל כניסה, שאירים, תקופת אכשרה חדשה).",
+  "text_he": "תקנות הניהול האישי מגדירות קופה בניהול אישי 'למעט קרן פנסיה', ולכן כספי פנסיה חייבים קודם לעבור לקופת גמל בניהול אישי. לפי התקנון התקני של קרן פנסיה, יציאה כזאת משפיעה על הכיסוי הביטוחי: גיל תחילת הכיסוי מתחיל מחדש בהפקדה הראשונה שאחרי משיכה או העברה, על הסכום שהועבר חלה תקופת אכשרה חדשה לאירוע של מוות, והארכת הביטוח מסתיימת בהעברה.",
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=2",
@@ -28,15 +28,32 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.meitav.co.il/provident_pension/ira/",
-      "title": "Meitav IRA page",
-      "title_he": "קופת גמל בניהול אישי (IRA): עמוד המוצר של מיטב",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "לא ניתן לבצע ניהול אישי של החסכונות",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4.pdf",
+      "title": "חוזר פנסיה 2016-3-4 – הוראות לעניין זכויות וחובות עמיתים בתקנון קרן פנסיה חדשה מקיפה, 29.9.2016",
+      "title_he": "חוזר פנסיה 2016-3-4 – הוראות לעניין זכויות וחובות עמיתים בתקנון קרן פנסיה חדשה מקיפה, 29.9.2016",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.1, s.2(א)",
+      "locator_he": "עמוד 1, סעיף 2(א)",
+      "page": 1,
+      "quote": "חברה מנהלת תקבע את נוסח תקנון קרן הפנסיה המקיפה שבניהולה בהתאם לנוסח התקנון המצורף",
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)",
+      "publisher": "Prisha.co.il",
+      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "p.26, s.33(א)(3); pp.26-27, s.34(ג); p.28, s.36(ג)(2)",
+      "locator_he": "עמוד 26, סעיף 33(א)(3); עמודים 26 עד 27, סעיף 34(ג); עמוד 28, סעיף 36(ג)(2)",
+      "page": 26,
+      "checked": "2026-10-25",
+      "qualifier": "(third-party host)"
     }
   ]
 }

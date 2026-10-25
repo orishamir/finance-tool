@@ -2,27 +2,53 @@
   "id": "PEN-11",
   "title": "Insurance tracks and the default insurance track",
   "title_he": "מסלולי הביטוח ומסלול ברירת המחדל",
-  "text_he": "עמית רשאי לבחור, בהצטרפות ובכל עת, אחד ממסלולי הביטוח שבתקנון. מסלול ברירת המחדל הוא כיסוי נכות בשיעור המרבי וכיסוי שאירים בשיעור המרבי, לנשים בכל גיל הצטרפות ולגברים שמצטרפים עד גיל מסוים; לגברים שמצטרפים מאוחר יותר כיסוי השאירים נמוך מהמרבי. אפשר גם לשלב שיעור נכות ושיעור שאירים מתוך האפשרויות שבתקנון, בגבולות המותרים לגיל ההצטרפות, ולבחור גיל תום תקופת ביטוח מבין הגילים שבתקנון; בלי בחירה חל מסלול ברירת המחדל עם גיל תום הביטוח המאוחר, ועמית שהגיע לגיל שבתקנון רשאי לוותר על כיסוי. הכלל לקוח מתקנון של חברה מנהלת אחת; התקנון האחיד של הרשות לא נקרא.",
-  "strength": "institution",
+  "text_he": "בתקנון האחיד של רשות שוק ההון יש שבעה מסלולי ביטוח, ועמית בוחר ביניהם בהצטרפות ובכל עת; חלק מהקרנות מוסיפות מסלולים. מסלול ברירת המחדל הוא כיסוי נכות בשיעור המרבי וכיסוי שאירים בשיעור המרבי, חוץ מגברים שמצטרפים מגיל מסוים, שכיסוי השאירים שלהם נמוך יותר. חברה מנהלת רשאית, באישור הממונה, לאפשר שילוב חופשי של שיעור נכות ושיעור שאירים ולכלול קצבת נכות כפולה בכיסוי ברירת המחדל. העמית בוחר גיל תום תקופת ביטוח מבין הגילים שבתקנון; בלי בחירה חל מסלול ברירת המחדל עם גיל תום הביטוח המאוחר. עמית שהגיע לגיל שבתקנון רשאי לוותר על כיסוי, ומעבר מסלול לא משנה את הגיל שבו הכיסוי התחיל.",
+  "strength": "primary",
   "dimensions": [
     "insurance-cover"
   ],
   "likely_to_change": "no",
   "il_finance_file": "pension-and-gemel-lekitzba.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "title": "Mor comprehensive bylaws 01.06.2025",
-      "title_he": "תקנון קרן הפנסיה המקיפה של מור (מהדורת 1.6.2025)",
-      "publisher": "Mor Investment House",
-      "publisher_he": "מור גמל ופנסיה",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "sections 24, 25, 27, 28, 29, 32, pp.28-33",
-      "locator_he": "סעיפים 24, 25, 27, 28, 29, 32, עמודים 28 עד 33",
-      "page": 28,
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4.pdf",
+      "title": "חוזר פנסיה 2016-3-4, 29.9.2016",
+      "title_he": "חוזר פנסיה 2016-3-4, 29.9.2016",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.4, annex א ss.2-3",
+      "page": 4,
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201737.pdf",
+      "title": "חוזר פנסיה 2017-3-7 – ... עדכון, 1.1.2018 (עותק באתר prisha.co.il)",
+      "publisher": "Prisha.co.il",
+      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "pp.3-4, annex א (new s.24(א)); pp.5-11, annex ב",
+      "page": 3,
+      "checked": "2026-10-25",
+      "qualifier": "(third-party host)"
+    },
+    {
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)",
+      "publisher": "Prisha.co.il",
+      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "pp.23-26, ss.25, 28, 29, 32-33",
+      "locator_he": "עמודים 23 עד 26, סעיפים 25, 28, 29, 32-33",
+      "page": 23,
+      "checked": "2026-10-25",
+      "qualifier": "(third-party host)"
     }
   ]
 }

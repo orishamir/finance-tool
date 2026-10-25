@@ -10,7 +10,7 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
   "il_finance_file": "brokerage-account.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://www.interactivebrokers.ie/en/general/security-investor-protection.php",
@@ -22,5 +22,8 @@
       "strength": "institution",
       "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "REG-27"
   ]
 }

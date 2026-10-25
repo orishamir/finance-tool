@@ -1,12 +1,12 @@
 {
   "id": "PEN-33",
-  "title": "Processing times",
-  "title_he": "זמני הטיפול בקרן הפנסיה",
-  "text_he": "זמני השירות של קרן הפנסיה לפי התקנון: הצטרפות בלי חיתום רפואי והודעה על הצטרפות בתוך ימים ספורים; העברת הפקדות עודפות לקרן הכללית בתחילת החודש הבא; מעבר בין מסלולי השקעה בתוך ימי עסקים ספורים; אישור בקשה לקצבת זקנה בתוך ימים ספורים ותשלום ראשון בתחילת החודש שאחרי הזכאות; תשובה לבקשת משיכה בתוך יומיים ותשלום משיכה מאושרת בתוך ימי העסקים לתשלום, בקרן פנסיה ובקופת גמל כאחד. תשלום שחל בשלושת ימי העסקים הראשונים של החודש עשוי להידחות ליום העסקים הרביעי. הזמנים לקוחים מתקנונים של חברה מנהלת אחת.",
+  "title": "Processing times; a withdrawal is paid within 4 business days",
+  "title_he": "זמני הטיפול בקרן הפנסיה ותשלום משיכה",
+  "text_he": "מי שמבקש למשוך את כל הכסף או חלק ממנו מקבל אותו בתוך ימי העסקים לתשלום משיכה מהיום שהבקשה הגיעה לקופה, בקרן פנסיה ובקופת גמל כאחד; אם המועד חל באחד משלושת ימי העסקים הראשונים של החודש, הקופה רשאית לדחות את התשלום ליום העסקים הרביעי באותו חודש. כך קובעות תקנות מס הכנסה לקופות גמל. שאר זמני השירות בקרן הפנסיה קבועים בתקנון האחיד של רשות שוק ההון: החלטה על הצטרפות והודעה עליה בתוך ימים ספורים; העברת הפקדות עודפות לקרן הכללית בתחילת החודש הבא; מעבר בין מסלולי השקעה בתוך ימי עסקים ספורים; אישור בקשה לקצבת זקנה בתוך ימים ספורים ותשלום הקצבה בתחילת כל חודש; ותשובה לבקשת משיכה בתוך יומיים.",
   "figure_names_he": {
-    "payout_business_days": "ימי עסקים לתשלום משיכה מאושרת"
+    "payout_business_days": "ימי עסקים לתשלום משיכה"
   },
-  "strength": "institution",
+  "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
     "liquidity-lockup"
@@ -17,50 +17,67 @@
       "value": 4,
       "unit": "business_days",
       "source": {
-        "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-        "title": "Mor comprehensive pension fund bylaws, version 01.06.2025, pp.27, 72, s.22(ד), 108 and annex א; Mor gemel standard bylaws 18.02.2026, p.8, s.18",
-        "publisher": "Mor Gemel and Pension",
-        "strength": "institution"
+        "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+        "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964, p.16, reg. 41יא(א)",
+        "publisher": "National Insurance Institute (btl.gov.il), consolidated text",
+        "strength": "primary"
       },
       "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "provider-set",
+      "update_rule": "fixed in regulation",
       "rule_ids": [
         "PEN-33"
       ],
       "state": "sourced",
-      "notes": "An approved withdrawal is paid within 4 business days (pension fund and provident fund alike); a request is answered within 2 days. Payment dates in the first three business days of a month may move to the fourth. Bylaws-level (Mor)."
+      "notes": "Rule 41יא(א): within 4 business days of the day the request reaches the fund; if that date falls in the month's first three business days the fund may defer to the 4th business day of the month. Binds pension funds and provident funds alike; the CMA standard pension bylaw repeats it (s.108(ז), \"בתוך 4 ימים ממועד קבלת הבקשה\") and answers a request within 2 days (s.108(ב))."
     }
   },
   "il_finance_file": "pension-and-gemel-lekitzba.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "title": "Mor comprehensive bylaws 01.06.2025",
-      "title_he": "תקנון קרן הפנסיה המקיפה של מור (מהדורת 1.6.2025)",
-      "publisher": "Mor Investment House",
-      "publisher_he": "מור גמל ופנסיה",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "sections 22(ד), 108 and annex א, pp.27, 72",
-      "page": 27,
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.16, reg. 41יא",
+      "locator_he": "עמוד 16, תקנה 41יא",
+      "page": 16,
+      "quote": "יקבל את הכספים כאמור בתוך 4 ימי עסקים מהיום שהגיעה בקשתו לקופה; ואולם אם חל מועד קבלת הכספים באחד משלושת ימי העסקים הראשונים בחודש פלוני, רשאית הקופה לדחות את מועד התשלום ליום העסקים הרביעי באותו חודש",
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf",
-      "title": "Mor gemel standard bylaws 18.02.2026",
-      "title_he": "תקנון תקני לקופת גמל לחיסכון של מור (18.2.2026)",
-      "publisher": "Mor Investment House",
-      "publisher_he": "מור גמל ופנסיה",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "section 18, p.8",
-      "locator_he": "סעיף 18, עמוד 8",
-      "page": 8,
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4.pdf",
+      "title": "חוזר פנסיה 2016-3-4 – הוראות לעניין זכויות וחובות עמיתים בתקנון קרן פנסיה חדשה מקיפה, 29.9.2016",
+      "title_he": "חוזר פנסיה 2016-3-4 – הוראות לעניין זכויות וחובות עמיתים בתקנון קרן פנסיה חדשה מקיפה, 29.9.2016",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.1, s.2(א)",
+      "locator_he": "עמוד 1, סעיף 2(א)",
+      "page": 1,
+      "quote": "חברה מנהלת תקבע את נוסח תקנון קרן הפנסיה המקיפה שבניהולה בהתאם לנוסח התקנון המצורף",
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)",
+      "publisher": "Prisha.co.il",
+      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "p.16, s.13(ג),(ה); p.18, s.18(א); p.20, s.22(ד); p.32, s.43(ג)-(ד); p.33, s.46(א); pp.63-64, s.108(ב),(ז)",
+      "locator_he": "עמוד 16, סעיף 13(ג),(ה); עמוד 18, סעיף 18(א); עמוד 20, סעיף 22(ד); עמוד 32, סעיף 43(ג)-(ד); עמוד 33, סעיף 46(א); עמודים 63 עד 64, סעיף 108(ב),(ז)",
+      "page": 16,
+      "checked": "2026-10-25",
+      "qualifier": "(third-party host)"
     }
   ]
 }

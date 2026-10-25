@@ -1,0 +1,44 @@
+{
+  "id": "ETF-62",
+  "title": "IBI and Yalin Lapidot: two S&P 500 funds' names, TASE numbers and shekel units",
+  "title_he": "אי.בי.אי וילין לפידות: שמות, מספרים ויחידות בשקלים",
+  "text_he": "באי.בי.אי ובילין לפידות, שתי הקרנות על המדד האמריקני שנקראו נקובות בשקלים: קרן הסל של אי.בי.אי, קרן סגורה, והקרן המחקה הפתוחה של ילין לפידות, כל אחת עם מספר משלה בבורסה. שמות קרנות משתנים: קרן הסל של אי.בי.אי נקראה בעבר על שם פסגות.",
+  "strength": "institution",
+  "dimensions": [
+    "currency"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
+      "title": "IBI ETF annual report 31.12.2025",
+      "title_he": "דוח שנתי ליום 31.12.2025 של אי.בי.אי. סל (4D) S&P 500",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "אי.בי.אי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.1, 8",
+      "locator_he": "עמודים 1, 8",
+      "page": 1,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
+      "title": "Yalin Lapidot annual report 31.12.2025",
+      "title_he": "דוח שנתי ליום 31.12.2025 של ילין לפידות מחקה (4D) S&P 500",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "ילין לפידות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "ETF-20"
+  ]
+}

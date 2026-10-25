@@ -13,7 +13,8 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 - **Agents and data:** no agent is needed. An adviser may not charge a percentage of the money moved. The clearing house must give the saver their own data on request (SW-17, SW-18).
 - **Retention:** no retention rule was found for provident products. Forum accounts describe retention calls and quotes that were withdrawn. Banks are bound by a retention-contact rule (SW-19, SW-28, experience section).
 - **Banks:** a current account moves online and free through the receiving bank (directive 448). Deposits stay at the old bank until they mature. Incoming payments are rerouted for three years, extended to 31.7.2029 for earlier switchers (SW-26 to SW-31). A deposit cannot be "ported" before maturity today. New money can go to another bank's closed-system deposit (SW-32).
-- **Brokerage:** securities move in kind at the client's request to the old institution. A bank charges a supervised price (NIS 5 per transfer at Discount) and at most NIS 10 when the account is closed. Non-bank brokers charge per security. Moving between accounts with the same owner is described as tax-neutral only by institutions (SW-33 to SW-37).
+- **Brokerage:** securities move in kind at the client's request to the old institution. A bank must take the request online and move Israeli securities within 5 business days and foreign ones within 14 (BoI directive 432). A bank's same-client transfer is a supervised price, at most NIS 10 when the account is closed; the order that sets the price was not found. No cap was found for non-bank brokers. Moving to another owner is a sale, and a gift to a relative keeps the giver's cost through the Tax Authority's route; that a move between one's own accounts is tax-neutral is stated only by institutions (SW-33 to SW-37, SW-52 to SW-55).
+- **Scope (2026-10-25):** the general records cite laws, regulations, circulars and the Bank of Israel only. What a company says or charges sits in its own record, named (SW-45 to SW-55), and the claims only companies make are marked unsettled (SW-34, SW-52, SW-55).
 
 ## Rules
 
@@ -29,12 +30,22 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 
 ### SW-02 Step 1: the saver goes to the receiving fund, which checks eligibility and hands over the forms
 - Rule: The receiving fund's manager checks two things: that the transfer is allowed from the transferring fund under the regulations, and that the member meets its joining rules. It does so under its own procedures, using forms that follow the circular's annexes (circular s.3(א)). If both hold, it gives the member the transfer request form (Annex A, parts 1 to 3). If insurance cover can be given, it also gives a form signed by the receiving fund on the insurance cover (Annex B). The forms are handed over with every required detail filled in (s.3(ב)). The member signs personally, or the guardian signs for a member who has one, and the member submits the form to the receiving fund (s.3(ג)).
-- Conditions / exceptions: Annex A has three parts. Part 1 is for a transfer into a pension fund or an insurance fund (salaried or self-employed member). Part 2 is for a provident fund that is neither. Part 3 is for an employer member or a cooperative member. When a tagmulim or savings account is opened for a minor as a gift, the giver who states that someone other than the minor's parents will manage the account is treated as the minor's guardian (s.3(ג)). Managers also take the request online. Phoenix says "ניתן לבצע זאת דיגיטלית למילוי הטופס המקוון" (institution). Gemel lehashkaa is not one of the fund types the Annex A form lists (open question 2).
+- Conditions / exceptions: Annex A has three parts. Part 1 is for a transfer into a pension fund or an insurance fund (salaried or self-employed member). Part 2 is for a provident fund that is neither. Part 3 is for an employer member or a cooperative member. When a tagmulim or savings account is opened for a minor as a gift, the giver who states that someone other than the minor's parents will manage the account is treated as the minor's guardian (s.3(ג)). Whether a manager takes the request online is its own practice: The Phoenix's online form is SW-45. Gemel lehashkaa is not one of the fund types the Annex A form lists (open question 2). Split on 2026-10-25 (scope pass): the companies' part is SW-45.
 - Figures: none.
-- Source: [חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf) p.2, s.3(א)-(ג) "הגוף המנהל של קופה מקבלת יבדוק אם ניתן לבצע העברה" · checked 2026-10-25 · primary; [חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf) pp.11-17, Annex A · checked 2026-10-25 · primary; [Phoenix study-fund FAQ](https://www.fnx.co.il/ishtalmutfund/faq/) "ניתן לבצע זאת דיגיטלית למילוי הטופס המקוון" · checked 2026-10-25 · institution
+- Source: [חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf) p.2, s.3(א)-(ג) "הגוף המנהל של קופה מקבלת יבדוק אם ניתן לבצע העברה" · checked 2026-10-25 · primary; [חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf) pp.11-17, Annex A · checked 2026-10-25 · primary
+- Scope: general
 - Dimensions: `transfer-switch-process`
 - Likely to change: yes. The CMA 2026 plan amends the transfer circular to allow identification other than an Israeli ID for residents abroad (PF-31).
 **[2026-10-24 R4 research pass]** Confirmed verbatim in the CMA's own copy on gov.il (SW-41).
+
+### SW-45 The Phoenix: the transfer request can be filled in online
+- Rule: The Phoenix says the transfer request "ניתן לבצע זאת דיגיטלית למילוי הטופס המקוון": at The Phoenix the member can fill in the request form online.
+- Conditions / exceptions: The forms and the member's own signature are the circular's (SW-02). Other managers' online channels were not read. Split from SW-02 on 2026-10-25 (scope pass).
+- Figures: none.
+- Source: [Phoenix study-fund FAQ](https://www.fnx.co.il/ishtalmutfund/faq/) "ניתן לבצע זאת דיגיטלית למילוי הטופס המקוון" · checked 2026-10-25 · institution. The general rule: SW-02.
+- Scope: institution: The Phoenix
+- Dimensions: `transfer-switch-process`
+- Likely to change: yes. A company page, changed at will.
 
 ### SW-03 What the transfer form says, and its defaults
 - Rule: In the Annex A form the member fills a table: "אני מבקש להעביר את" (the whole balance, or a percentage or amount), "שנצברו לזכותי" (all account components, or a named one), and "במסלול ההשקעה" (all tracks, or a named one). If the member leaves these blank, the default is full: "ברירת המחדל להעברת הכספים ... היא העברת מלוא הכספים שנצברו בחשבונך בקופה המעבירה, בכל מרכיבי החשבון ובכל מסלולי ההשקעה". The member declares that, from the determining date, "תהיו פטורים מלשלם לי כל תשלום שהוא, לרבות בשל חבות ביטוחית, הנובע מהכספים שהועברו". The member also declares that none of the blocks in SW-13 applies. If one arises between signing and the transfer date, the request is cancelled. A boxed notice says the request "ניתנת לביטול ובלבד שהכספים טרם הועברו" (SW-07).
@@ -65,48 +76,80 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 
 ### SW-06 Step 3: the money moves within 10 business days, directly, in cash, with no transfer fee
 - Rule: The transferring fund transfers within ten business days of a complete, signed request, unless the request was cancelled. The Commissioner may allow up to 20 more business days in special cases (reg. 5(א)). The money moves "ישירות בין הגופים המנהלים של הקופות ולא באמצעות העמית" and "העברת היתרה הצבורה תיעשה במזומנים" unless the managing bodies agree otherwise (reg. 7). If the transferring fund is late, it compensates the member out of its own management fees (reg. 6). It also sends the receiving fund the balance and daily returns within five business days so the return difference can be claimed (circular s.5(ה), (ו)).
-- Conditions / exceptions: Transfer fees, late-interest rate and the closed list of charges are in PF-01 and PF-19. IRA transfers can be in kind (SW-24). Phoenix says "ניוד בין גופים, יתבצע תוך עשרה ימי עסקים מהמועד הקובע" (institution).
+- Conditions / exceptions: Transfer fees, late-interest rate and the closed list of charges are in PF-01 and PF-19. IRA transfers can be in kind (SW-24). Reg. 5(א) counts the ten business days from the day the request reaches the transferring fund. A company FAQ that restated the rule was dropped as a source on 2026-10-25 (scope pass): the regulation carries the rule.
 - Figures: 10 business days (+20 with approval); 5 business days for data on a late transfer.
-- Source: [תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס"ח-2008 (קובץ התקנות 6657)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=6) p.6, reg. 5(א) "בתוך עשרה ימי עסקים מהיום שבו הועברה לו בקשת העברה" · checked 2026-10-25 · primary; [תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס"ח-2008 (קובץ התקנות 6657)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=6) p.6, reg. 6 (to p.7) · checked 2026-10-25 · primary; [תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס"ח-2008 (קובץ התקנות 6657)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=7) p.7, reg. 7 "העברת היתרה הצבורה תיעשה במזומנים" · checked 2026-10-25 · primary; [תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע"ד-2014 (קובץ התקנות 7407)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZbYNmyK9Qa3gH~lF+jEWmc=#page=3) p.3, s.4 (amends reg. 6) · checked 2026-10-25 · primary; [חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf) p.8, s.5(ה), (ו) · checked 2026-10-25 · primary; [Phoenix study-fund FAQ](https://www.fnx.co.il/ishtalmutfund/faq/) "ניוד בין גופים, יתבצע תוך עשרה ימי עסקים מהמועד הקובע" · checked 2026-10-25 · institution
+- Source: [תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס"ח-2008 (קובץ התקנות 6657)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=6) p.6, reg. 5(א) "בתוך עשרה ימי עסקים מהיום שבו הועברה לו בקשת העברה" · checked 2026-10-25 · primary; [תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס"ח-2008 (קובץ התקנות 6657)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=6) p.6, reg. 6 (to p.7) · checked 2026-10-25 · primary; [תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס"ח-2008 (קובץ התקנות 6657)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=7) p.7, reg. 7 "העברת היתרה הצבורה תיעשה במזומנים" · checked 2026-10-25 · primary; [תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע"ד-2014 (קובץ התקנות 7407)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZbYNmyK9Qa3gH~lF+jEWmc=#page=3) p.3, s.4 (amends reg. 6) · checked 2026-10-25 · primary; [חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf) p.8, s.5(ה), (ו) · checked 2026-10-25 · primary
+- Scope: general
 - Dimensions: `transfer-switch-process`, `fee-exit`
 - Likely to change: no.
 **[2026-10-24 R4 research pass]** Ten business days, and the Commissioner's power to defer by up to twenty more, confirmed from gov.il (SW-41, SW-42); the funds' information passes through the clearing house (SW-42).
 
 ### SW-07 Cancelling a transfer: until the money moves, by a signed notice to the transferring fund
 - Rule: The member cancels by signing a cancellation notice on the Annex F form ("הודעת עמית על ביטול בקשת העברה") before the transfer date under reg. 5(א). The form's boxed text says cancellation is "על-ידי חתימה על טופס הודעת ביטול והעברתו לקופה המעבירה", by fax, post or email among other ways. The transferring fund passes the notice to the receiving fund within that period. The request is cancelled when the notice reaches the transferring fund. Exception: if an insured event occurred after the determining date and before the notice was delivered, the request is not cancelled (s.3(ט)). After a cancellation, the receiving fund returns any money already deposited with it to the member's account in the transferring fund. It does so within 10 business days, with the receiving fund's return and with no deduction other than management fees (s.3(י)).
-- Conditions / exceptions: Phoenix states cancellation ("חרטה מניוד") is possible "תוך 10 ימי עסקים מקבלת בקשת הניוד", or until the money moves if earlier. It names a mailbox for cancelling transfers out of Phoenix, shimur_haavarot_out@fnx.co.il, whose name refers to retention ("שימור") (institution). The two sources agree in practice: the money must move within 10 business days (SW-06).
+- Conditions / exceptions: The money must move within 10 business days (reg. 5(א), SW-06), so the right to cancel lasts at most that long. A company's own cancellation window and retention mailbox are its practice: The Phoenix's are SW-46. Split on 2026-10-25 (scope pass): the companies' part is SW-46.
 - Figures: 10 business days to return deposits after cancellation.
-- Source: [חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf) pp.2-3, s.3(ט)-(יא) · checked 2026-10-25 · primary; [חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf) p.3, s.3(י) "בתוך עשרה ימי עסקים מהיום שבו התברר לו כי בוטלה הבקשה" · checked 2026-10-25 · primary; [חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf) p.12, Annex A boxed notice "על-ידי חתימה על טופס הודעת ביטול והעברתו לקופה המעבירה" · checked 2026-10-25 · primary; [חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf) p.22, Annex F "הודעת עמית על ביטול בקשת העברה" · checked 2026-10-25 · primary; [Phoenix study-fund FAQ](https://www.fnx.co.il/ishtalmutfund/faq/) "תוך 10 ימי עסקים מקבלת בקשת הניוד" · checked 2026-10-25 · institution
+- Source: [חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf) pp.2-3, s.3(ט)-(יא) · checked 2026-10-25 · primary; [חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf) p.3, s.3(י) "בתוך עשרה ימי עסקים מהיום שבו התברר לו כי בוטלה הבקשה" · checked 2026-10-25 · primary; [חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf) p.12, Annex A boxed notice "על-ידי חתימה על טופס הודעת ביטול והעברתו לקופה המעבירה" · checked 2026-10-25 · primary; [חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf) p.22, Annex F "הודעת עמית על ביטול בקשת העברה" · checked 2026-10-25 · primary
+- Scope: general
 - Dimensions: `transfer-switch-process`
 - Likely to change: no.
 **[2026-10-24 R4 research pass]** Confirmed in the gov.il copy (SW-41).
 
+### SW-46 The Phoenix: cancelling a transfer out within 10 business days, and a "retention" mailbox
+- Rule: The Phoenix states that cancellation ("חרטה מניוד") is possible "תוך 10 ימי עסקים מקבלת בקשת הניוד", or until the money moves if that is earlier. It names a mailbox for cancelling transfers out of The Phoenix, shimur_haavarot_out@fnx.co.il, whose name refers to retention ("שימור").
+- Conditions / exceptions: The right to cancel until the money moves, and the 10 business days for the move, are the circular's and the regulation's (SW-07, SW-06); The Phoenix's window agrees with them in practice. Other managers' statements were not read. Split from SW-07 on 2026-10-25 (scope pass).
+- Figures: 10 business days (The Phoenix).
+- Source: [Phoenix study-fund FAQ](https://www.fnx.co.il/ishtalmutfund/faq/) "תוך 10 ימי עסקים מקבלת בקשת הניוד" · checked 2026-10-25 · institution. The general rule: SW-07.
+- Scope: institution: The Phoenix
+- Dimensions: `transfer-switch-process`
+- Likely to change: yes. A company page, changed at will.
+
 ### SW-08 A request lapses: 120 days for an active member without a deposit, 60 days otherwise
 - Rule: An active member's request lapses if it is not forwarded to the transferring fund within 120 days of signing. Unless the member stated they will not deposit, it is forwarded only after a deposit arrives (SW-04). If the member told the receiving fund within those 120 days that no deposits will be made, the request lapses if not forwarded within 60 days of that notice (s.3(יב)). An inactive member's request lapses if not forwarded within 60 days of signing (s.3(יג)).
-- Conditions / exceptions: The form lets an active member tick that they already state no deposits will be made, and then the member is treated as inactive for the determining date (Annex A, item 6). Phoenix: "אם לא בוצעה הפקדה עד 120 יום מיום הבקשה - הניוד יבוטל" (institution).
+- Conditions / exceptions: The form lets an active member tick that they already state no deposits will be made, and then the member is treated as inactive for the determining date (Annex A, item 6). A company FAQ that restated s.3(יב) was dropped as a source on 2026-10-25 (scope pass): the circular carries the rule.
 - Figures: 120 days; 60 days.
-- Source: [חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf) p.3, s.3(יב), (יג) · checked 2026-10-25 · primary; [חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf) p.12, Annex A part 1 item 6 (part 2 on p.15) · checked 2026-10-25 · primary; [Phoenix study-fund FAQ](https://www.fnx.co.il/ishtalmutfund/faq/) "אם לא בוצעה הפקדה עד 120 יום מיום הבקשה" · checked 2026-10-25 · institution
+- Source: [חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf) p.3, s.3(יב), (יג) · checked 2026-10-25 · primary; [חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf) p.12, Annex A part 1 item 6 (part 2 on p.15) · checked 2026-10-25 · primary
+- Scope: general
 - Dimensions: `transfer-switch-process`
 - Likely to change: no.
 **[2026-10-24 R4 research pass]** 120 and 60 days confirmed in the gov.il copy (SW-41).
 
 ### SW-09 Step 4: both funds confirm in writing within 15 business days
 - Rule: The transferring fund sends the member a confirmation within 15 business days of the transfer. It shows at least: fund name and tax-approval number and the member's account number (policy number for an insurer); the manager's name and contact details; the transfer date; the determining date, with an explanation that the transferring fund's insurance liability ended from it; the amount moved, split for a salaried member into employee tagmulim, employer tagmulim and severance; and, after a partial transfer, the balance left and the reason the account was split (s.6(א)). The receiving fund sends a confirmation within 15 business days of receiving the money. It shows the same items, including that its insurance liability started on the determining date (s.6(ב)). Either fund may send these by email only if the member agreed (s.6(ג)).
-- Conditions / exceptions: Phoenix states "אישור לעמית על ביצוע ניוד יוצא / נכנס, יישלח תוך 14 ימי עסקים" (institution).
+- Conditions / exceptions: 15 business days is the circular's deadline; a company may commit to less (The Phoenix's 14 business days are SW-47). Split on 2026-10-25 (scope pass): the companies' part is SW-47.
 - Figures: 15 business days.
-- Source: [חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf) pp.8-9, s.6 "לא יאוחר מחמישה עשר ימי עסקים" · checked 2026-10-25 · primary; [Phoenix study-fund FAQ](https://www.fnx.co.il/ishtalmutfund/faq/) "יישלח תוך 14 ימי עסקים" · checked 2026-10-25 · institution
+- Source: [חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf) pp.8-9, s.6 "לא יאוחר מחמישה עשר ימי עסקים" · checked 2026-10-25 · primary
+- Scope: general
 - Dimensions: `transfer-switch-process`, `statement-disclosure` (proposed in PF)
 - Likely to change: no.
 **[2026-10-24 R4 research pass]** Fifteen business days confirmed in the gov.il copy (SW-41).
 
+### SW-47 The Phoenix: transfer confirmation within 14 business days
+- Rule: The Phoenix states "אישור לעמית על ביצוע ניוד יוצא / נכנס, יישלח תוך 14 ימי עסקים": at The Phoenix the confirmation of a transfer out or in is sent within 14 business days.
+- Conditions / exceptions: The circular's deadline is 15 business days for both funds (SW-09); The Phoenix's is its own, shorter commitment. Other managers' commitments were not read. Split from SW-09 on 2026-10-25 (scope pass).
+- Figures: 14 business days (The Phoenix).
+- Source: [Phoenix study-fund FAQ](https://www.fnx.co.il/ishtalmutfund/faq/) "יישלח תוך 14 ימי עסקים" · checked 2026-10-25 · institution. The general rule: SW-09.
+- Scope: institution: The Phoenix
+- Dimensions: `transfer-switch-process`
+- Likely to change: yes. A company page, changed at will.
+
 ### SW-10 The employer: the old fund notifies it of severance moved; future deposits follow the employee's choice
-- Rule: A transferring fund that moves money from a salaried member's account that includes a severance component notifies the member's employer within 15 business days. It uses the Annex 11 notice, which states the severance amount moved and to which fund (s.5א). Phoenix states that after a fund is opened "האישור נשלח למעסיק באופן אוטומטי" (institution).
-- Conditions / exceptions: The employee chooses the fund and the employer may not make its payments conditional on a fund (law s.20, `pension-and-gemel-lekitzba.md` PEN-06, `keren-hishtalmut.md` KH-03). No source read sets out who must tell the employer to redirect future deposits, or when (open question 6). For an active member the transfer waits on that first deposit (SW-04, SW-08).
+- Rule: A transferring fund that moves money from a salaried member's account that includes a severance component notifies the member's employer within 15 business days. It uses the Annex 11 notice, which states the severance amount moved and to which fund (s.5א).
+- Conditions / exceptions: The employee chooses the fund and the employer may not make its payments conditional on a fund (law s.20, `pension-and-gemel-lekitzba.md` PEN-06, `keren-hishtalmut.md` KH-03). No source read sets out who must tell the employer to redirect future deposits, or when (open question 6). For an active member the transfer waits on that first deposit (SW-04, SW-08). A company's own notice to the employer after joining is its practice: The Phoenix's is SW-48. Split on 2026-10-25 (scope pass): the companies' part is SW-48.
 - Figures: 15 business days.
-- Source: [חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf) p.8, s.5א · checked 2026-10-25 · primary; [חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf) pp.26-27, Annex 11 · checked 2026-10-25 · primary; [Phoenix study-fund FAQ](https://www.fnx.co.il/ishtalmutfund/faq/) "האישור נשלח למעסיק באופן אוטומטי" · checked 2026-10-25 · institution
+- Source: [חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf) p.8, s.5א · checked 2026-10-25 · primary; [חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf) pp.26-27, Annex 11 · checked 2026-10-25 · primary
+- Scope: general
 - Dimensions: `transfer-switch-process`, `eligibility`
 - Likely to change: no.
 **[2026-10-24 R4 research pass]** The 15-business-day employer notice under s.5א confirmed in the gov.il copy (SW-41); who tells the employer to redirect future deposits is still not in the circular (open question 6).
+
+### SW-48 The Phoenix: after joining, the confirmation goes to the employer automatically
+- Rule: The Phoenix states that after a fund is opened "האישור נשלח למעסיק באופן אוטומטי": at The Phoenix the joining confirmation is sent to the employer without the member asking.
+- Conditions / exceptions: The circular's own employer notice is the severance notice of the transferring fund (SW-10); who must tell the employer to redirect future deposits is open (open question 6). Other managers' practice was not read. Split from SW-10 on 2026-10-25 (scope pass).
+- Figures: none.
+- Source: [Phoenix study-fund FAQ](https://www.fnx.co.il/ishtalmutfund/faq/) "האישור נשלח למעסיק באופן אוטומטי" · checked 2026-10-25 · institution. The general rule: SW-10.
+- Scope: institution: The Phoenix
+- Dimensions: `transfer-switch-process`
+- Likely to change: yes. A company page, changed at will.
 
 ### SW-11 History travels with the money
 - Rule: On the transfer date the transferring fund sends the receiving fund a data file with: the member's identity; the fund details; for a new pension fund, the insurance cover the member had; the balance moved; "פירוט מלא של כל התנועות הכספיות" up to the determining date, including movements in earlier transferring funds, with each deposit split into its components; and the current and past employers (s.5(א)). For a new pension fund it also sends any exclusions or underwriting supplements in force (s.5(ב)). For a keren hishtalmut it also sends an Annex H data file (s.5(ג)).
@@ -172,27 +215,45 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 - Rule: A transaction in a pension product is made "רק כחלק מייעוץ פנסיוני או משיווק פנסיוני" (law s.13(א)). That does not apply to a transaction "בין לקוח לגוף מוסדי, בידי הלקוח, במישרין", made on the customer's own initiative (s.13(ב)(1)). A pension adviser may receive "שכר והחזר הוצאות המשולמים ישירות מאת הלקוח" (s.19(א)(1)). The adviser "אינו רשאי לגבות מלקוח שכר והחזר הוצאות המחושבים כשיעור מהסכומים שמעביר הלקוח" (s.28(ב)). Ongoing advice combined with a transaction requires a power of attorney ("ייפוי כוח") letting the adviser receive information about the customer (s.27(ב)(7)).
 - Conditions / exceptions:
   - The exceptions to s.13(ב)(1) and the distribution-fee consent rule are in PF-21.
-  - Institution practice: Mizrahi-Tefahot states that joining or staying in a pension product because of its advice "מזכה את הבנק בעמלות הפצה מהיצרנים הפנסיונים".
-  - Phoenix's "request an offer" route sends the request to the account's agent if there is one, and otherwise to an insurance agency in the Phoenix group. Its online form is the direct route (SW-02).
+  - What a bank earns from its advice and where a manager routes an offer request are each company's own practice: Mizrahi Tefahot's and The Phoenix's are SW-49.
   - No source was found on how a member removes an agent already attached to an account (open question 16).
   - IRA funds may not pay distribution or agency fees (IRA-19).
+  - Split on 2026-10-25 (scope pass): the companies' part is SW-49.
 - Figures: none.
-- Source: [חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני), התשס"ה-2005](https://fs.knesset.gov.il/16/law/16_lsr_299985.pdf) p.9, s.13(א) "רק כחלק מייעוץ פנסיוני או משיווק פנסיוני" · checked 2026-10-25 · primary; [חוק התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2015 ו-2016), התשע"ו-2015](https://fs.knesset.gov.il/20/law/20_lsr_316718.pdf) p.23 (s.13(ב)(1) of the advice law as now worded) · checked 2026-10-25 · primary; [חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני), התשס"ה-2005](https://fs.knesset.gov.il/16/law/16_lsr_299985.pdf) p.10, s.19(א)(1) "שכר והחזר הוצאות המשולמים ישירות מאת הלקוח" · checked 2026-10-25 · primary; [חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני), התשס"ה-2005](https://fs.knesset.gov.il/16/law/16_lsr_299985.pdf) p.12, s.27(ב)(7) "ייפוי כוח" · checked 2026-10-25 · primary; [חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני), התשס"ה-2005](https://fs.knesset.gov.il/16/law/16_lsr_299985.pdf) p.13, s.28(ב) "המחושבים כשיעור מהסכומים שמעביר הלקוח" · checked 2026-10-25 · primary; [מזרחי טפחות – ייעוץ פנסיוני](https://www.mizrahi-tefahot.co.il/brokerage/pension/pension-consulting/) "מזכה את הבנק בעמלות הפצה מהיצרנים הפנסיונים" · checked 2026-10-25 · institution; [Phoenix study-fund FAQ](https://www.fnx.co.il/ishtalmutfund/faq/) · checked 2026-10-25 · institution
+- Source: [חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני), התשס"ה-2005](https://fs.knesset.gov.il/16/law/16_lsr_299985.pdf) p.9, s.13(א) "רק כחלק מייעוץ פנסיוני או משיווק פנסיוני" · checked 2026-10-25 · primary; [חוק התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2015 ו-2016), התשע"ו-2015](https://fs.knesset.gov.il/20/law/20_lsr_316718.pdf) p.23 (s.13(ב)(1) of the advice law as now worded) · checked 2026-10-25 · primary; [חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני), התשס"ה-2005](https://fs.knesset.gov.il/16/law/16_lsr_299985.pdf) p.10, s.19(א)(1) "שכר והחזר הוצאות המשולמים ישירות מאת הלקוח" · checked 2026-10-25 · primary; [חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני), התשס"ה-2005](https://fs.knesset.gov.il/16/law/16_lsr_299985.pdf) p.12, s.27(ב)(7) "ייפוי כוח" · checked 2026-10-25 · primary; [חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני), התשס"ה-2005](https://fs.knesset.gov.il/16/law/16_lsr_299985.pdf) p.13, s.28(ב) "המחושבים כשיעור מהסכומים שמעביר הלקוח" · checked 2026-10-25 · primary
+- Scope: general
 - Dimensions: `transfer-switch-process`, `fee-management-balance`
 - Likely to change: yes. The CMA 2026 plan has a power-of-attorney circular for licensees (PF-31).
 
-### SW-18 The clearing house: the saver's own data, and consent
-- Rule: "מערכת סליקה פנסיונית מרכזית תמסור ללקוח, על פי בקשתו, מידע הנוגע לו לגבי מוצר פנסיוני או תכנית ביטוח, מכלל הגופים המוסדיים" (s.31ט(ג)). Information passes to advisers and agents only at the customer's request (s.31ט(א)(1)). Regulations are to cover "בדיקת קיומה של בקשה מטעם הלקוח או של ייפוי כוח" (s.31טז(ד)(1)). Where the CMA requires it, institutions must pass information and money through the system (penalty in s.32(ח)(1)).
-- Conditions / exceptions: Free routes found, both institution pages:
-  - Leumi: "שירות ללא עלות" for private customers of any bank aged 18 or over, once per customer. Registration finishes on the clearing-house site, where a credit card is entered for identity, "לא לצורך חיוב". The report shows balances, managers, the fees paid and projected pensions, and "המידע יהיה זמין לצפייה במשך שלושה חודשים בלבד".
-  - Mizrahi-Tefahot: the request is free and "הבנק מממן את מלוא עלות הפנייה למסלקה", but the bank earns distribution fees on the advice (SW-17).
-**[2026-10-24 R4 research pass]** The price cap for a saver's own request is now sourced (SW-44); the channel for fund-to-fund information is the clearing house (SW-42).
-
-  The clearing house's own price list for a direct request was not read (open question 5). A forum account alleges an agent read a report the saver had not authorised (experience SW-X01).
+### SW-49 Mizrahi Tefahot and The Phoenix: a bank's distribution fees, and where an offer request goes
+- Rule: Mizrahi Tefahot states that joining or staying in a pension product because of its advice "מזכה את הבנק בעמלות הפצה מהיצרנים הפנסיונים". The Phoenix's "request an offer" route sends the request to the account's agent if there is one, and otherwise to an insurance agency in The Phoenix group; its online form is the direct route (SW-45).
+- Conditions / exceptions: The right to act directly and what an adviser may be paid are the law's (SW-17); the distribution-fee consent rule is PF-21. Other banks and managers were not read. Split from SW-17 on 2026-10-25 (scope pass).
 - Figures: none.
-- Source: [חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע"א-2011](https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf) p.5, s.31ט(א)(1), (ג) "מערכת סליקה פנסיונית מרכזית תמסור ללקוח, על פי בקשתו, מידע הנוגע לו" · checked 2026-10-25 · primary; [חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע"א-2011](https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf) p.10, s.31טז(ד)(1) · checked 2026-10-25 · primary; [חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע"א-2011](https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf) p.12, s.32(ח)(1) · checked 2026-10-25 · primary; [בנק לאומי – עושים סדר בפנסיה](https://www.leumi.co.il/he/pension-advising/pension-information/pension-advising/pension-information) "המידע יהיה זמין לצפייה במשך שלושה חודשים בלבד" · checked 2026-10-25 · institution; [מזרחי טפחות – ייעוץ פנסיוני](https://www.mizrahi-tefahot.co.il/brokerage/pension/pension-consulting/) "הבנק מממן את מלוא עלות הפנייה למסלקה" · checked 2026-10-25 · institution
+- Source: [מזרחי טפחות – ייעוץ פנסיוני](https://www.mizrahi-tefahot.co.il/brokerage/pension/pension-consulting/) "מזכה את הבנק בעמלות הפצה מהיצרנים הפנסיונים" · checked 2026-10-25 · institution; [Phoenix study-fund FAQ](https://www.fnx.co.il/ishtalmutfund/faq/) · checked 2026-10-25 · institution. The general rules: SW-17, PF-21.
+- Scope: institution: Mizrahi Tefahot Bank, The Phoenix
+- Dimensions: `transfer-switch-process`, `fee-management-balance`
+- Likely to change: yes. Company pages, changed at will.
+
+### SW-18 The clearing house: the saver's own data, and consent
+- Rule: "מערכת סליקה פנסיונית מרכזית תמסור ללקוח, על פי בקשתו, מידע הנוגע לו לגבי מוצר פנסיוני או תכנית ביטוח, מכלל הגופים המוסדיים" (s.31ט(ג)). Information passes to advisers and agents only at the customer's request (s.31ט(א)(1)). Regulations are to cover "בדיקת קיומה של בקשה מטעם הלקוח או של ייפוי כוח" (s.31טז(ד)(1)). Where the CMA requires it, institutions must pass information and money through the system (penalty in s.32(ח)(1)). What the clearing house may charge a saver for a direct request is capped by the CMA's payment circular (SW-44).
+- Conditions / exceptions: Free routes that banks offer, and how long a report stays visible there, are each bank's own service: Leumi's and Mizrahi Tefahot's are SW-50. No general rule on how long a report stays visible was found. A forum account alleges an agent read a report the saver had not authorised (experience SW-X01). Split on 2026-10-25 (scope pass): the companies' part is SW-50.
+**[2026-10-24 R4 research pass]** The price cap for a saver's own request is now sourced (SW-44); the channel for fund-to-fund information is the clearing house (SW-42).
+- Figures: none.
+- Source: [חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע"א-2011](https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf) p.5, s.31ט(א)(1), (ג) "מערכת סליקה פנסיונית מרכזית תמסור ללקוח, על פי בקשתו, מידע הנוגע לו" · checked 2026-10-25 · primary; [חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע"א-2011](https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf) p.10, s.31טז(ד)(1) · checked 2026-10-25 · primary; [חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע"א-2011](https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf) p.12, s.32(ח)(1) · checked 2026-10-25 · primary. Price cap: SW-44.
+- Scope: general
 - Dimensions: `transfer-switch-process`, `statement-disclosure` (proposed in PF)
 - Likely to change: yes (CMA 2026 plan: clearing-house mandatory-use and payment circulars, PF-31).
+
+### SW-50 Bank Leumi and Mizrahi Tefahot: a free clearing-house report through the bank
+- Rule: Two banks offer the clearing-house report free:
+  - Bank Leumi: "שירות ללא עלות" for private customers of any bank aged 18 or over, once per customer. Registration finishes on the clearing-house site, where a credit card is entered for identity, "לא לצורך חיוב". The report shows balances, managers, the fees paid and projected pensions, and "המידע יהיה זמין לצפייה במשך שלושה חודשים בלבד".
+  - Mizrahi Tefahot: the request is free and "הבנק מממן את מלוא עלות הפנייה למסלקה", but the bank earns distribution fees on the advice (SW-49).
+- Conditions / exceptions: The saver's right to the data and the price cap of a direct request are the law's and the CMA's (SW-18, SW-44). Other banks' routes were not read. Split from SW-18 on 2026-10-25 (scope pass).
+- Figures: 3 months the report stays visible (Bank Leumi).
+- Source: [בנק לאומי – עושים סדר בפנסיה](https://www.leumi.co.il/he/pension-advising/pension-information/pension-advising/pension-information) "המידע יהיה זמין לצפייה במשך שלושה חודשים בלבד" · checked 2026-10-25 · institution; [מזרחי טפחות – ייעוץ פנסיוני](https://www.mizrahi-tefahot.co.il/brokerage/pension/pension-consulting/) "הבנק מממן את מלוא עלות הפנייה למסלקה" · checked 2026-10-25 · institution. The general rules: SW-18, SW-44.
+- Scope: institution: Bank Leumi, Mizrahi Tefahot Bank
+- Dimensions: `transfer-switch-process`, `statement-disclosure` (proposed in PF)
+- Likely to change: yes. Bank pages, changed at will.
 
 ### SW-19 Retention contacts and offers in provident products: no rule found; what is sourced
 - Rule: Neither the Advice, Marketing and Clearing Law (read in full on the mirror) nor transfer circular 2017-9-17 contains a rule on a transferring fund contacting a member who asked to leave, or on retention offers. Sourced rules that bear on it:
@@ -243,11 +304,21 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 
 ### SW-24 IRA: in kind only between IRAs; a cash transfer's clock starts once everything is sold
 - Rule: Money enters an IRA from a regular fund in cash. Between IRA funds the member chooses cash or in kind. Out of an IRA to a regular fund, the receiving company chooses (IRA-23). Where a cash transfer is chosen, the transfer period in reg. 5(א) of the Transfer Regulations and in income-tax reg. 33ב(ב) "יחל ... ביום שבו סיים העמית בקופת הגמל בניהול אישי או מנהל התיקים מטעמו, להמיר את כל נכסי הקופה למזומנים" (reg. 11(ב)).
-- Conditions / exceptions: Selling the holdings costs brokerage at the IRA's broker (IRA-21). Meitav Trade charges inside an IRA to move securities to another Israeli bank: NIS 20 per Israeli security, at most NIS 99 per portfolio, and USD 10 per foreign security (IRA-22). The member may cancel the IRA agreement at any time without payment (IRA-15).
-- Figures: as in IRA-22 (effective 01.05.2026).
-- Source: [תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע"ז-2017 (קובץ התקנות 7819)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=5) p.5, s.7 (adds reg. 11(ב)) · checked 2026-10-25 · primary; pointers IRA-15, IRA-21 to IRA-23
+- Conditions / exceptions: Selling the holdings costs brokerage at the IRA's broker (IRA-21). What a broker charges inside an IRA to move securities out is its own tariff; no general cap on it was found in the rule base: Meitav Trade's fees are SW-51 (and IRA-22). The member may cancel the IRA agreement at any time without payment (IRA-15). Split on 2026-10-25 (scope pass): the companies' part is SW-51.
+- Figures: none of its own (Meitav Trade's fees are SW-51).
+- Source: [תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע"ז-2017 (קובץ התקנות 7819)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=5) p.5, s.7 (adds reg. 11(ב)) · checked 2026-10-25 · primary; pointers IRA-15, IRA-21, IRA-23
+- Scope: general
 - Dimensions: `transfer-switch-process`, `liquidity-lockup`, `fee-trade`
 - Likely to change: yes. The 2025 draft IRA amendment (IRA-27) is pending.
+
+### SW-51 Meitav Trade: fees to move securities out of an IRA it serves
+- Rule: Meitav Trade charges inside an IRA to move securities to another Israeli bank: NIS 20 per Israeli security, at most NIS 99 per portfolio, and USD 10 per foreign security (annex 2.606.1.4.26T, IRA tender results 2026, effective 01.05.2026).
+- Conditions / exceptions: The IRA transfer rules are the regulations' (SW-24, IRA-23); the closed list of charges an IRA may carry is IRA-16, and the broker is chosen in a competitive process (IRA-18). No general cap on IRA broker transfer fees was found. The same tariff is described in IRA-22. Split from SW-24 on 2026-10-25 (scope pass).
+- Figures: NIS 20 per Israeli security; NIS 99 per portfolio at most; USD 10 per foreign security (Meitav Trade, effective 01.05.2026).
+- Source: [Meitav Trade annex 2.606.1.4.26T (IRA tender results 2026)](https://www.meitav.co.il/media/qm2penhs/26061426t-תוצאות-מכרז-לניהול-אישי-2026-טרייד.pdf), p.4 · checked 2026-10-25 · institution. The general rules: SW-24, IRA-16, IRA-18.
+- Scope: institution: Meitav Trade
+- Dimensions: `transfer-switch-process`, `fee-trade`
+- Likely to change: yes. The tender is repeated at least every three years (IRA-18).
 
 ### SW-25 Child savings: through the receiving fund and National Insurance; bank money cannot move to another bank
 - Rule: A parent who receives the child allowance moves the plan by contacting the receiving provident fund. Balance and gains move, and NII sends future deposits to the new fund (CS-11). The timelines are in National Insurance regulation 7 (CS-11). A bank plan cannot move to another bank. Since January 2025 a parent can, once, send future deposits from a bank to a provident fund, but the bank balance stays at the bank (CS-12). Before 18 the parent acts. From 18 only the child can act (CS-21).
@@ -357,53 +428,82 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
   - (3) "גוף פיננסי" is as defined in the Bank of Israel Law 2010.
 
   A foreign-currency transfer to the same client's account on closing is likewise capped at NIS 10 (part 5, item 10).
-- Conditions / exceptions:
-  - Discount's tariff (dated 07/02/2025), item 4.6.1, prices the supervised transfer at "5 ₪ להעברה (פיקוח)". It adds a broker's fee for a transfer abroad and exchange expenses for a transfer in Israel. A transfer to another client's account is 0.69%, minimum NIS 44, maximum NIS 220 per portfolio (4.6.2).
-  - Meitav Trade's article (03/08/2026) says the bank fee is "5 שקל לנייר ערך ישראל", about USD 10 per foreign security, and up to about NIS 150 for a whole portfolio.
-  - Calcalist (27.08.2026) reports a BoI rule capping a move from a bank to a non-bank member at NIS 5.
-  - These three disagree on the unit (per transfer or per security). The order fixing the supervised price was not found (open question 10). Use the bank's own tariff line.
-- Figures: NIS 5 per transfer (Discount, 07/02/2025, institution); NIS 10 cap on closing (rules, consolidated to 9.4.2025, primary).
-- Source: [כללי הבנקאות (שירות ללקוח) (עמלות), התשס"ח-2008, נוסח משולב (בנק ישראל)](https://www.boi.org.il/media/mi2driua/159a.pdf) pp.17-19, first schedule part 4(א)(6) and notes, part 5 item 10 "בעת סגירת חשבון לא תעלה על 10" · checked 2026-10-25 · primary; [דיסקונט – תעריפון, חלק 4 ניירות ערך (07/02/2025)](https://www.discountbank.co.il/media/bjudw31y/part4_securities07022025.pdf) p.5, items 4.6.1-4.6.2 "5 ₪ להעברה (פיקוח)" · checked 2026-10-25 · institution; [מיטב – המדריך למעבר חלק: איך לנייד את תיק ההשקעות מהבנק למסחר עצמאי (03/08/2026)](https://www.meitav.co.il/trade/financial_info/self_trading_portfolio_transfer/) "5 שקל לנייר ערך ישראל" · checked 2026-10-25 · institution; [כלכליסט – המעבר מבנק לבית השקעות הוא זול, אך לצאת משם מאוד יקר (27.08.26)](https://www.calcalist.co.il/article/hj55ri2pgx) · checked 2026-10-25 · secondary
+- Conditions / exceptions: The rules make the same-client price a supervised item but do not state the amount. The order that sets the supervised price was not found (open question 10); what bank tariffs and the press say about it, and their disagreement on the unit, is SW-52. Use your bank's own tariff line. Split on 2026-10-25 (scope pass): the companies' part is SW-52.
+- Figures: NIS 10 cap on closing (rules, consolidated to 9.4.2025).
+- Source: [כללי הבנקאות (שירות ללקוח) (עמלות), התשס"ח-2008, נוסח משולב (בנק ישראל)](https://www.boi.org.il/media/mi2driua/159a.pdf) pp.17-19, first schedule part 4(א)(6) and notes, part 5 item 10 "בעת סגירת חשבון לא תעלה על 10" · checked 2026-10-25 · primary
+- Scope: general
 - Dimensions: `fee-exit`, `transfer-switch-process`
 - Likely to change: possible.
 
-### SW-34 Non-bank brokers: no cap found; tariffs charge per security
-- Rule: No rule capping what a non-bank TASE member charges to move securities out was found. Examples:
-  - IBI's tariff ("נכון לתאריך: 1.7.2026") charges NIS 20 per security to the same client at another member, "מקסימום 150 ₪ להעברה" a day, and NIS 35 per security to an account with different ownership. Abroad it charges USD 10 per US security, USD 40 per Canadian security, and the foreign broker's cost with a USD 25 minimum for other foreign securities.
-  - Altshuler Shaham Trade says it charges no fee to receive a portfolio.
-  - Calcalist reports that moving out of a broker can cost hundreds or thousands of shekels (secondary).
-- Conditions / exceptions: Snapshot figures for `data/`, not rules. Fee lines and their names are in BRK-24.
-- Figures: as above, dated 1.7.2026 (IBI) and 2026-10-22 (Altshuler page).
-- Source: [אי.בי.אי – תעריפון (נכון לתאריך 1.7.2026)](https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf) p.5, part 4 item 9 "מקסימום 150 ₪ להעברה" · checked 2026-10-25 · institution; [אלטשולר שחם טרייד – מעבירים את תיק ההשקעות שלכם לאלטשולר שחם טרייד](https://www.as-invest.co.il/trade/faq_transfer/) "אנו לא גובים עמלה על העברת תיק" · checked 2026-10-25 · institution; [כלכליסט – המעבר מבנק לבית השקעות הוא זול, אך לצאת משם מאוד יקר (27.08.26)](https://www.calcalist.co.il/article/hj55ri2pgx) "למאות ואף לאלפי שקלים" · checked 2026-10-25 · secondary
+### SW-52 The supervised price to move securities out of a bank: what tariffs and the press say
+- Rule: Three sources give the supervised price of moving securities from a bank to the same client's account at another financial body, and disagree on the unit:
+  - Discount Bank's tariff (dated 07/02/2025), item 4.6.1, prices it at "5 ₪ להעברה (פיקוח)", and adds a broker's fee for a transfer abroad and exchange expenses for a transfer in Israel.
+  - Meitav Trade's article (03/08/2026) says the bank fee is "5 שקל לנייר ערך ישראל", about USD 10 per foreign security, and up to about NIS 150 for a whole portfolio.
+  - Calcalist (27.08.2026) reports a Bank of Israel rule capping a move from a bank to a non-bank member at NIS 5 (secondary).
+- Conditions / exceptions: That the item is supervised, and the NIS 10 cap on closing, are the Bank of Israel's rules (SW-33). Searched for the order that sets the amount: the Bank of Israel site through web search, and the press; not found (open question 10). Split from SW-33 on 2026-10-25 (scope pass).
+- Figures: NIS 5 (Discount Bank: per transfer; Meitav Trade: per Israeli security).
+- Source: [דיסקונט – תעריפון, חלק 4 ניירות ערך (07/02/2025)](https://www.discountbank.co.il/media/bjudw31y/part4_securities07022025.pdf) p.5, items 4.6.1-4.6.2 "5 ₪ להעברה (פיקוח)" · checked 2026-10-25 · institution; [מיטב – המדריך למעבר חלק: איך לנייד את תיק ההשקעות מהבנק למסחר עצמאי (03/08/2026)](https://www.meitav.co.il/trade/financial_info/self_trading_portfolio_transfer/) "5 שקל לנייר ערך ישראל" · checked 2026-10-25 · institution; [כלכליסט – המעבר מבנק לבית השקעות הוא זול, אך לצאת משם מאוד יקר (27.08.26)](https://www.calcalist.co.il/article/hj55ri2pgx) · checked 2026-10-25 · secondary. The general rule: SW-33.
+- Scope: unsettled: the Bank of Israel price-supervision order under s.7 of the Banking (Customer Service) Law that sets the amount (open question 10); seen at: Discount Bank, Meitav Trade
+- Dimensions: `fee-exit`, `transfer-switch-process`
+- Likely to change: possible.
+
+### SW-34 Non-bank brokers: no cap found on fees for moving securities out
+- Rule: No rule capping what a non-bank TASE member charges to move securities out was found. The Bank of Israel fee rules, made under s.9ט of the Banking (Customer Service) Law, bind banking corporations: they mark the same-owner transfer as supervised and cap it at NIS 10 on closing an account (SW-33). Nothing equivalent was found for non-bank members. The press reports that moving out of a broker can cost hundreds or thousands of shekels.
+- Conditions / exceptions: Searched: web searches for an Israel Securities Authority or TASE rule on members' transfer fees; only press turned up (Calcalist, on the Bank of Israel's NIS 5 for banks). The TASE members' rules make every member report its fees to TASE in the format of the bank fee schedule (BRK-24); that is a reporting duty, not a cap. What brokers charge is each one's tariff: IBI's and Altshuler Shaham Trade's are SW-53. Split on 2026-10-25 (scope pass): the companies' part is SW-53.
+- Figures: none.
+- Source: [כלכליסט – המעבר מבנק לבית השקעות הוא זול, אך לצאת משם מאוד יקר (27.08.26)](https://www.calcalist.co.il/article/hj55ri2pgx) "למאות ואף לאלפי שקלים" · checked 2026-10-25 · secondary. Banks: SW-33; fee reporting: BRK-24.
+- Scope: unsettled: the TASE rules and directives on what members may charge to move securities out, or an Israel Securities Authority statement
 - Dimensions: `fee-exit`, `fee-custody`
 - Likely to change: yes.
 
-### SW-35 Moving a portfolio: open at the receiver, then ask the old institution; what can and cannot move
-- Rule: Institution sources describe the same order:
-  - Open an account at the receiving institution.
-  - Submit a transfer request to the current institution. Meitav Trade: "מורידים את טופס בקשת ההעברה מהבנק" and send it with the new account details. Leumi takes the request online.
-  - The receiver then handles receipt.
+### SW-53 IBI and Altshuler Shaham Trade: what they charge to move securities
+- Rule: Two brokers' terms:
+  - IBI's tariff ("נכון לתאריך: 1.7.2026") charges NIS 20 per security to the same client at another member, "מקסימום 150 ₪ להעברה" a day, and NIS 35 per security to an account with different ownership. Abroad it charges USD 10 per US security, USD 40 per Canadian security, and the foreign broker's cost with a USD 25 minimum for other foreign securities.
+  - Altshuler Shaham Trade says it charges no fee to receive a portfolio.
+- Conditions / exceptions: Snapshot figures for `data/`, not rules. Fee lines and their names are in BRK-24. No cap on these fees was found (SW-34). Split from SW-34 on 2026-10-25 (scope pass).
+- Figures: as above, dated 1.7.2026 (IBI) and 2026-10-22 (Altshuler Shaham Trade page).
+- Source: [אי.בי.אי – תעריפון (נכון לתאריך 1.7.2026)](https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf) p.5, part 4 item 9 "מקסימום 150 ₪ להעברה" · checked 2026-10-25 · institution; [אלטשולר שחם טרייד – מעבירים את תיק ההשקעות שלכם לאלטשולר שחם טרייד](https://www.as-invest.co.il/trade/faq_transfer/) "אנו לא גובים עמלה על העברת תיק" · checked 2026-10-25 · institution. The general rules: SW-34, BRK-24.
+- Scope: institution: IBI, Altshuler Shaham Trade
+- Dimensions: `fee-exit`, `fee-custody`
+- Likely to change: yes.
 
-  Leumi's instructions:
-  - "בקשת ההעברה תכלול רק ניירות ערך אשר בוצע בגינם זיכוי/חיוב בפועל של החשבון";
-  - "לא ניתן להעביר שברי ניירות ערך";
-  - a transfer to the same owner needs proof of ownership of the receiving account;
-  - mutual funds need a signed mutual-fund transfer form;
-  - fees follow the tariff.
-
-  Altshuler Shaham Trade: "לא כל נייר ערך ניתן להעברה אוטומטית". TASE securities and most US-listed securities can move, subject to both institutions. It gives up to 5 trading days for Israeli securities and up to 14 for foreign ones.
-- Conditions / exceptions: Institution statements, not regulation. No regulator rule on the broker-to-broker timeline was found. For moving the whole bank relationship, see SW-29: untransferable securities stay at the old bank.
-- Figures: 5 and 14 trading days (Altshuler Shaham Trade).
-- Source: [בנק לאומי – הנחיות ללקוח להעברת ניירות ערך](https://leumi.co.il/he/Articles/47356) "לא ניתן להעביר שברי ניירות ערך" · checked 2026-10-25 · institution; [מיטב – המדריך למעבר חלק: איך לנייד את תיק ההשקעות מהבנק למסחר עצמאי (03/08/2026)](https://www.meitav.co.il/trade/financial_info/self_trading_portfolio_transfer/) "מורידים את טופס בקשת ההעברה מהבנק" · checked 2026-10-25 · institution; [אלטשולר שחם טרייד – מעבירים את תיק ההשקעות שלכם לאלטשולר שחם טרייד](https://www.as-invest.co.il/trade/faq_transfer/) "ניירות ערך ישראליים - עד 5 ימי מסחר" · checked 2026-10-25 · institution
+### SW-35 Moving a portfolio out of a bank: the bank takes the request online and moves it within 5 or 14 business days
+- Rule: Bank of Israel proper-conduct directive 432 covers moving securities activity "מהבנק לגוף פיננסי אחר" (s.3א). The bank must take the client's request to move a securities portfolio online (s.8א(א)). "הבנק יפעל להעברת תיק ניירות ערך ישראליים, תוך 5 ימי עסקים, ממועד השלמת הגשת הבקשה על ידי הלקוח" (s.8א(ב)(1)), and foreign securities "בתוך 14 ימי עסקים" (s.8א(ב)(2)). The bank may not refuse unreasonably, and gives its reasons (s.8א(ג)). A new bank may act for the client with the client's written consent (s.4).
+- Conditions / exceptions: The deadlines bind a bank as the transferring institution. No rule was found for the timeline and process when the transferring institution is a non-bank broker (open note; what would settle it: the TASE members' rules). Circular ח-06-2639 (30.12.2020) later added an exceptions section (s.3ב); re-check the consolidated directive on boi.org.il before encoding the deadlines. What the institutions add (which securities can move, forms, proof of ownership) is each one's own: Leumi's, Meitav Trade's and Altshuler Shaham Trade's are SW-54. For moving the whole bank relationship, see SW-29: untransferable securities stay at the old bank. Split on 2026-10-25 (scope pass): the companies' part is SW-54.
+- Figures: 5 business days for Israeli securities, 14 for foreign securities, from the day the client completes the request (a bank, directive 432).
+- Source: [בנק ישראל – הוראת ניהול בנקאי תקין 432, העברת פעילות וסגירת חשבון של לקוח (נוסח [10] 6/2020, מצורף לחוזר ח-06-2623)](https://www.boi.org.il/media/rrcbh2gl/%D7%94%D7%94%D7%95%D7%A8%D7%90%D7%94-%D7%91%D7%9E%D7%9C%D7%95%D7%90%D7%94.pdf) p.5, s.8א(ב)(1)-(2) "הבנק יפעל להעברת תיק ניירות ערך ישראליים, תוך 5 ימי עסקים" · checked 2026-10-25 · primary
+- Scope: general
 - Dimensions: `transfer-switch-process`, `liquidity-lockup`
 - Likely to change: yes.
 
-### SW-36 Tax on moving securities: same owner described as neutral, different owner taxed with zero cost basis (institution sources only)
-- Rule: Altshuler Shaham Trade states a transfer between accounts with the same ownership is not a tax event. With different ownership it may be one, and the securities are recorded at "שער עלות אפס". Leumi states that a transfer to a different entity, or to a relative without the signed declaration, is a sale "החייב בניכוי מס במקור" at the closing price, with the receiver's cost "שער עלות הנייר יהיה אפס". Meitav Trade's article says the move "אינה נחשבת לאירוע מס", that "רצף המס נשמר", and that tax losses "לא נמחקים במעבר" but may need confirmations from the bank.
-- Conditions / exceptions: No Tax Authority source was read (open question 11). Selling to switch funds or securities is a sale (`tax-securities-israeli.md` TXS-21). Withholding by foreign brokers: BRK-27.
+### SW-54 Bank Leumi, Meitav Trade and Altshuler Shaham Trade: how they describe moving a portfolio
+- Rule: Three institutions describe the same order: open an account at the receiving institution, submit a transfer request to the current institution, and the receiver handles receipt.
+  - Meitav Trade: "מורידים את טופס בקשת ההעברה מהבנק" and send it with the new account details.
+  - Bank Leumi takes the request online. Its instructions: "בקשת ההעברה תכלול רק ניירות ערך אשר בוצע בגינם זיכוי/חיוב בפועל של החשבון"; "לא ניתן להעביר שברי ניירות ערך"; a transfer to the same owner needs proof of ownership of the receiving account; mutual funds need a signed mutual-fund transfer form; fees follow the tariff.
+  - Altshuler Shaham Trade: "לא כל נייר ערך ניתן להעברה אוטומטית". TASE securities and most US-listed securities can move, subject to both institutions. It gives up to 5 trading days for Israeli securities and up to 14 for foreign ones, which match the bank deadlines of directive 432 counted in business days (SW-35).
+- Conditions / exceptions: Institution statements. The bank's duties and deadlines are directive 432's (SW-35). Other institutions' instructions were not read. Split from SW-35 on 2026-10-25 (scope pass).
+- Figures: 5 and 14 trading days (Altshuler Shaham Trade).
+- Source: [בנק לאומי – הנחיות ללקוח להעברת ניירות ערך](https://leumi.co.il/he/Articles/47356) "לא ניתן להעביר שברי ניירות ערך" · checked 2026-10-25 · institution; [מיטב – המדריך למעבר חלק: איך לנייד את תיק ההשקעות מהבנק למסחר עצמאי (03/08/2026)](https://www.meitav.co.il/trade/financial_info/self_trading_portfolio_transfer/) "מורידים את טופס בקשת ההעברה מהבנק" · checked 2026-10-25 · institution; [אלטשולר שחם טרייד – מעבירים את תיק ההשקעות שלכם לאלטשולר שחם טרייד](https://www.as-invest.co.il/trade/faq_transfer/) "ניירות ערך ישראליים - עד 5 ימי מסחר" · checked 2026-10-25 · institution. The general rule: SW-35.
+- Scope: institution: Bank Leumi, Meitav Trade, Altshuler Shaham Trade
+- Dimensions: `transfer-switch-process`, `liquidity-lockup`
+- Likely to change: yes.
+
+### SW-36 Tax on moving securities to another owner: a sale; a gift to a relative keeps the giver's cost through the Tax Authority's route
+- Rule: "מכירה" includes "חליפין, ויתור, הסבה, העברה, הענקה, מתנה, פדיון, וכן כל פעולה או אירוע אחרים שבעקבותם יצא נכס בדרך כל שהיא מרשותו של אדם" (Ordinance s.88), so moving securities to another owner is a sale. A gift is exempt when made "מתנה לקרוב וכן מתנה ליחיד אחר אם שוכנע פקיד השומה כי המתנה ניתנה בתום לב ובלבד שמקבל המתנה אינו תושב חוץ" (s.97(א)(5)), and the receiver takes the giver's remaining original price and purchase day (s.88, "מחיר מקורי" (3)(ג)(II) and "יום רכישה" (1)). The Tax Authority: without its approval, such a transfer "הייתה גוררת ניכוי מס במקור בגינה וכן רישום עלות אפס אצל הקרוב מקבל ניירות הערך"; from 1.1.2019 a declaration form "אשר ימולא בסניף הבנק" lets a gift of traded securities between an individual and a relative (both Israeli residents, relatives as listed) go without withholding, the relative receiving the giver's cost, and "המסלול נגיש באופן ישיר למבקשים באמצעות חברי הבורסה" (2019 professional-division summary, p.68). Losses: when computing withholding, the payer offsets only losses on securities it managed in the same year (withholding regulations 2002, reg. 9(א)); "פקיד השומה רשאי להתיר קיזוז בשל הפסדים מניירות ערך שנוצרו אצל מנהל תיק ניירות ערך אחר ... אם הועבר תיק ניירות ערך מאותו מנהל למנהל אחר, בתנאים שיקבע" (reg. 9(ב)).
+- Conditions / exceptions: Carrying losses forward through the annual return: `tax-securities-israeli.md` TXS-18. Selling to switch funds or securities is a sale (TXS-21). Withholding by foreign brokers: BRK-27. A move between accounts of the same owner is not covered by a Tax Authority sentence: the claim that it is neutral is SW-55. Bank and broker pages that restated the different-owner and gift rules were dropped as sources on 2026-10-25 (scope pass): the Ordinance and the Tax Authority carry them. Split on 2026-10-25 (scope pass): the unsettled same-owner claim is SW-55.
 - Figures: none.
-- Source: [אלטשולר שחם טרייד – מעבירים את תיק ההשקעות שלכם לאלטשולר שחם טרייד](https://www.as-invest.co.il/trade/faq_transfer/) "שער עלות אפס" · checked 2026-10-25 · institution; [בנק לאומי – הנחיות ללקוח להעברת ניירות ערך](https://leumi.co.il/he/Articles/47356) "שער עלות הנייר יהיה אפס" · checked 2026-10-25 · institution; [מיטב – המדריך למעבר חלק: איך לנייד את תיק ההשקעות מהבנק למסחר עצמאי (03/08/2026)](https://www.meitav.co.il/trade/financial_info/self_trading_portfolio_transfer/) "רצף המס נשמר" · checked 2026-10-25 · institution
+- Source: [פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים](https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf), pp.147-148, s.88 "חליפין, ויתור, הסבה, העברה, הענקה, מתנה, פדיון" (also the definitions of original price, item (3)(ג), and purchase day, item (1)) · checked 2026-10-25 · primary; [פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים](https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf) p.161, s.97(א)(5) "מתנה לקרוב וכן מתנה ליחיד אחר אם שוכנע פקיד השומה כי המתנה ניתנה בתום לב" · checked 2026-10-25 · primary; [רשות המסים, דוח סיכום פעילות החטיבה המקצועית לשנת המס 2019 (תמוז התש"ף)](https://www.gov.il/BlobFolder/reports/tax-professionaldivision/he/IncomeTax_IncomeTaxRepresentInfo_Professionaldivision2019.pdf), p.68 (file p.69), "מסלול ירוק - העברת ני"ע בין קרובים" · checked 2026-10-25 · primary; [תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס"ג-2002](https://www.btl.gov.il/Laws1/02_0103_100228.pdf), pp.2-3, reg. 9(א)-(ב) · checked 2026-10-25 · primary
+- Scope: general
 - Dimensions: `switching-tax-event`, `loss-offset`, `tax-at-exit`
+- Likely to change: no.
+
+### SW-55 Moving securities between your own accounts: described as no tax event, with no Tax Authority text found
+- Rule: Altshuler Shaham Trade states a transfer between accounts with the same ownership is not a tax event (with different ownership it may be one, and the securities are recorded at "שער עלות אפס"). Meitav Trade's article says the move "אינה נחשבת לאירוע מס" and that "רצף המס נשמר". This follows from the Ordinance's definition of a sale (the asset does not leave the owner's possession, s.88, SW-36), but no Tax Authority sentence saying so was found.
+- Conditions / exceptions: Searched: the web for Tax Authority guidance on moving securities between accounts of the same owner; the withholding regulations 2002; the Tax Authority's 2019 professional-division summary (it covers gifts to relatives, SW-36). The Tax Authority's form 747 lets an individual declare cost to a TASE member when the member's recorded cost does not match what was paid (up to NIS 500,000 a year): it shows recorded cost can be wrong after a move, and does not say a move is neutral. Meitav Trade's further statement that tax losses "לא נמחקים במעבר" is broader than reg. 9(ב), under which the assessing officer may allow the offset (SW-36), and is not relied on. Split from SW-36 on 2026-10-25 (scope pass). Mostly answers open question 11.
+- Figures: none.
+- Source: [אלטשולר שחם טרייד – מעבירים את תיק ההשקעות שלכם לאלטשולר שחם טרייד](https://www.as-invest.co.il/trade/faq_transfer/) "שער עלות אפס" · checked 2026-10-25 · institution; [מיטב – המדריך למעבר חלק: איך לנייד את תיק ההשקעות מהבנק למסחר עצמאי (03/08/2026)](https://www.meitav.co.il/trade/financial_info/self_trading_portfolio_transfer/) "רצף המס נשמר" · checked 2026-10-25 · institution. The general rule: SW-36.
+- Scope: unsettled: a Tax Authority instruction to TASE members on transfers between accounts of the same owner; seen at: Altshuler Shaham Trade, Meitav Trade
+- Dimensions: `switching-tax-event`, `tax-at-exit`
 - Likely to change: unknown.
 
 ### SW-37 Foreign brokers: no regulator process found
@@ -510,22 +610,22 @@ This is a composed index for 3.7; each step renders from the rule named.
 
 - **Keren hishtalmut:**
   1. Check the clock (KH-10, KH-14).
-  2. Get your own data (SW-18; the clearing house's own price cap, SW-44).
+  2. Get your own data (SW-18; the clearing house's own price cap, SW-44; the banks' free routes, named, SW-50).
   3. Choose the receiving fund and track (SW-16).
-  4. Join directly or through an agent (SW-17).
-  5. Sign the whole-balance request at the receiving fund (SW-02, SW-03, SW-20).
-  6. Tell the employer where to deposit (SW-10).
+  4. Join directly or through an agent (SW-17; Mizrahi Tefahot's and The Phoenix's practice, named, SW-49).
+  5. Sign the whole-balance request at the receiving fund (SW-02, SW-03, SW-20; The Phoenix's online form, named, SW-45).
+  6. Tell the employer where to deposit (SW-10; The Phoenix's automatic notice, named, SW-48).
   7. The first deposit sets the determining date (SW-04).
   8. Expect rejection or delay notices within 3 business days (SW-05).
   9. Expect a retention contact (SW-19, SW-X01).
-  10. The cancellation right lasts until the money moves (SW-07).
+  10. The cancellation right lasts until the money moves (SW-07; The Phoenix's own window, named, SW-46).
   11. The money moves within 10 business days (SW-06; the funds' data pass through the clearing house, SW-42).
-  12. Confirmations come within 15 business days (SW-09).
+  12. Confirmations come within 15 business days (SW-09; The Phoenix's 14, named, SW-47).
   13. Verify (SW-38).
 - **Pension fund:** the same order, adding the insurance form and continuity (SW-12), blocks (SW-13), partial transfers (SW-14) and inactive-account consolidation (SW-22).
 - **Provident fund for annuity:** as for pension, without insurance (SW-23).
 - **Kupat gemel lehashkaa:** routes (SW-21), then steps SW-02 to SW-09 (inactive member: the determining date is receipt), then verify (SW-38).
-- **IRA:** routes and money types (SW-01, SW-23), cash or in kind (SW-24), then SW-02 to SW-09.
+- **IRA:** routes and money types (SW-01, SW-23), cash or in kind (SW-24; Meitav Trade's transfer fees, named, SW-51), then SW-02 to SW-09.
 - **Child savings:** SW-25.
 - **Bank current account:**
   1. Request at the receiving bank (SW-26; early disclosure under version 4, SW-43).
@@ -538,9 +638,9 @@ This is a composed index for 3.7; each step renders from the rule named.
 - **Bank deposits:** SW-32.
 - **Brokerage:**
   1. Open at the receiver.
-  2. Request at the old institution (SW-35).
-  3. Cost (SW-33, SW-34).
-  4. Tax (SW-36).
+  2. Request at the old institution (SW-35; Leumi's, Meitav Trade's and Altshuler Shaham Trade's instructions, named, SW-54).
+  3. Cost (SW-33, SW-34; the supervised price as tariffs state it, SW-52; IBI's and Altshuler Shaham Trade's prices, named, SW-53).
+  4. Tax (SW-36; the same-owner claim, unsettled, SW-55).
   5. Foreign brokers (SW-37).
   6. Verify (SW-38).
 
@@ -592,7 +692,7 @@ This is a composed index for 3.7; each step renders from the rule named.
 
 ## Institutions
 
-This file does not enumerate providers. Who offers each wrapper, and from which register, is in the wrapper files: Gemel-Net and Pension-Net managers (KH-24, KGL-22, PEN institutions table, IRA institutions table), the child-savings funds and banks (CS-08, CS-22), the BoI bank list (`bank-current-account-deposits.md` Institutions), and TASE members (`brokerage-account.md` BRK-02, BRK-03). The switching duty in directive 448 binds every "bank" as s.5ב1(א) defines it, minus any bank exempted under s.5ב1(ה). Which banks, if any, are exempt was not found (open question 9). The institution pages used here (Phoenix, Leumi, Mizrahi-Tefahot, Discount, IBI, Altshuler Shaham Trade, Meitav Trade) are examples of how the rules appear in practice, not a register.
+This file does not enumerate providers. Who offers each wrapper, and from which register, is in the wrapper files: Gemel-Net and Pension-Net managers (KH-24, KGL-22, PEN institutions table, IRA institutions table), the child-savings funds and banks (CS-08, CS-22), the BoI bank list (`bank-current-account-deposits.md` Institutions), and TASE members (`brokerage-account.md` BRK-02, BRK-03). The switching duty in directive 448 binds every "bank" as s.5ב1(א) defines it, minus any bank exempted under s.5ב1(ה). Which banks, if any, are exempt was not found (open question 9). The institution pages used here (The Phoenix, Bank Leumi, Mizrahi Tefahot, Discount, IBI, Altshuler Shaham Trade, Meitav Trade) are examples of how the rules appear in practice, not a register. Since the scope pass of 2026-10-25 each sits in its own record, named in the record's Scope line (SW-45 to SW-54), never in a general record.
 
 ## Open questions
 
@@ -605,8 +705,8 @@ This file does not enumerate providers. Who offers each wrapper, and from which 
 7. **How PEN-14 combines with circular s.4(ב).** PEN-14 gives a new 60-month qualifying period when tagmulim money is moved out (bylaw). Circular s.4(ב) credits insurance months on a fund-to-fund move. Which governs a full pension-to-pension transfer? For `pension-and-gemel-lekitzba.md`: read a fund's bylaw section on incoming transfers.
 8. **Is a transfer between pension funds or provident funds for annuity tax-neutral?** The TXP file states nothing either way. For `tax-pension-gemel-lekitzba.md`. **[2026-10-23 R3 research pass: Narrowed, not closed. Reg. 2(ב) carries the payment dates over; the 1990 exemption rules cover sums "שהועברו על ידי מעביד"; no text found for the member's side (SW-40).]**
 9. **The Governor's rules 2019 on bank switching**: the account types and activity types covered, whether securities move under the service, which banks are exempt, and the exact meaning of "sixth business day" in directive 448 s.6. Only the directive and circulars were read. Likely answer: BoI media PDF of the consolidated rules, and Reshumot ק"ת התש"ף p.183, התשפ"א p.3574, and קובץ תקנות 12530 (17.9.2026).
-10. **The supervised price for moving securities**: the order that sets it, and whether it is per transfer (Discount "5 ₪ להעברה") or per security (Meitav "5 שקל לנייר ערך ישראל"). Also the source of the NIS 5 bank-to-non-bank cap Calcalist reports. One search found no order. Likely answer: the BoI price-supervision order under s.7 of the Banking (Customer Service) Law. This also closes BRK open question 12.
-11. **Tax on moving securities between your own accounts**: cost basis carried over, losses carried forward, and whether a declaration is needed. Only institution statements were read. For `tax-securities-israeli.md` and `tax-securities-foreign.md`. Likely answer: the Income Tax withholding regulations on securities transfers, or a Tax Authority circular.
+10. **The supervised price for moving securities**: the order that sets it, and whether it is per transfer (Discount "5 ₪ להעברה") or per security (Meitav "5 שקל לנייר ערך ישראל"). Also the source of the NIS 5 bank-to-non-bank cap Calcalist reports. One search found no order. Likely answer: the BoI price-supervision order under s.7 of the Banking (Customer Service) Law. This also closes BRK open question 12. **[2026-10-25 scope pass]** Still open. The tariff, article and press statements now sit in SW-52 (unsettled); the general record SW-33 cites only the Bank of Israel's rules.
+11. **Tax on moving securities between your own accounts**: cost basis carried over, losses carried forward, and whether a declaration is needed. Only institution statements were read. For `tax-securities-israeli.md` and `tax-securities-foreign.md`. Likely answer: the Income Tax withholding regulations on securities transfers, or a Tax Authority circular. **[2026-10-25 scope pass]** Mostly answered: a move to another owner is a sale and a gift to a relative keeps the giver's cost through the Tax Authority's declaration route (Ordinance s.88, s.97(א)(5), the 2019 professional-division summary), and the payer offsets only the losses it managed unless the assessing officer allows otherwise (withholding regulations 2002 reg. 9), SW-36. The same-owner case still has no Tax Authority sentence: SW-55 (unsettled).
 12. **Moving securities between an Israeli institution and a foreign broker**: feasibility for TASE lines, cost, and the withholding consequences. Only forum experience was found.
 13. **Competition Authority deposit-portability directive**: text, effective date and tribunal status (BANK open question 6).
 14. **"המנהל" in Transfer Regulations reg. 3(א)(12)**: confirm it is the Tax Authority director, as PF-17 reads it.
@@ -640,6 +740,10 @@ This file does not enumerate providers. Who offers each wrapper, and from which 
 | חוזר גופים מוסדיים 2026-9-3, מבנה אחיד להעברת מידע ונתונים בשוק החיסכון הפנסיוני - עדכון, 26.3.2026 (ss.1, 4-8 read) | CMA (gov.il) | primary | https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-legislation26326/he/uniform_protocol_update_26.3.2026%20%5BPDF%5D.pdf | 2026-10-24 |
 | חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026 | CMA (gov.il) | primary | https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf | 2026-10-24 |
 | BoI directive page נב"ת 448 (versions), חוזר ח-06-2833 (26.11.2025) and נב"ת 448 version 4 (11/25) | BoI Banking Supervision | primary | https://www.boi.org.il/roles/supervisionregulation/nbt/nbt448/ ; https://www.boi.org.il/media/wxoksahf/h2833.pdf ; https://www.boi.org.il/media/irmdw0r2/448_4-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf | 2026-10-24 |
+| BoI proper-conduct directive 432, העברת פעילות וסגירת חשבון של לקוח, version [10] 6/2020, attached to circular ח-06-2623 (23.6.2020); ss.3א, 4, 8א (scope pass 2026-10-25) | BoI Banking Supervision | primary | https://www.boi.org.il/media/rrcbh2gl/%D7%94%D7%94%D7%95%D7%A8%D7%90%D7%94-%D7%91%D7%9E%D7%9C%D7%95%D7%90%D7%94.pdf | 2026-10-25 |
+| פקודת מס הכנסה [נוסח חדש], the Tax Authority's text; ss.88, 97(א)(5) (scope pass 2026-10-25) | Tax Authority (gov.il) | primary | https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf | 2026-10-25 |
+| רשות המסים, דוח סיכום פעילות החטיבה המקצועית לשנת המס 2019, p.68 "מסלול ירוק - העברת ני"ע בין קרובים" (scope pass 2026-10-25) | Tax Authority (gov.il) | primary | https://www.gov.il/BlobFolder/reports/tax-professionaldivision/he/IncomeTax_IncomeTaxRepresentInfo_Professionaldivision2019.pdf | 2026-10-25 |
+| תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך ...), התשס"ג-2002, NII consolidated copy, reg. 9 (scope pass 2026-10-25) | National Insurance Institute (btl.gov.il) | primary | https://www.btl.gov.il/Laws1/02_0103_100228.pdf | 2026-10-25 |
 | gov.il, המסלקה הפנסיונית (regulation page, links to the operator swiftness.co.il) | CMA (gov.il) | primary | https://www.gov.il/he/pages/pension-clearing | 2026-10-24 |
 | תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס"ח-2008, regs. 1 to 9 | Minister of Finance; Wikisource mirror (amendments to תשפ"ג) | primary (mirror) | [tr] | 2026-10-22 |
 | חוק הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים), התשס"ה-2005, full text in two reads | Knesset; Wikisource mirror (to ס"ח תשפ"ו 912) | primary (mirror) | [lawadv] | 2026-10-22 |

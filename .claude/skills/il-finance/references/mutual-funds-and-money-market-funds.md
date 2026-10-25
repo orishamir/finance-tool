@@ -126,10 +126,11 @@ An Israeli mutual fund (קרן נאמנות) is a trust: a trustee holds the ass
 - Likely to change: yes, recently changed; open
 
 ### MF-15 Minimum investment: generally none
-- Rule: The ISA guide (2017) and Meitav's site both say that most mutual funds have no minimum investment ("במרבית קרנות הנאמנות לא קיימת כל מגבלה על הסכום המינימלי להשקעה", Meitav).
-- Conditions / exceptions: A distributor's own minimum commission can make very small orders costly (see MF-27). Whether any distributor imposes a minimum order amount was not checked.
+- Rule: The ISA guide (2017) says that most mutual funds have no minimum investment.
+- Conditions / exceptions: A distributor's own minimum commission can make very small orders costly (see MF-27). Whether any distributor imposes a minimum order amount was not checked. 2026-10-25 (scope pass): a manager's site that repeated the guide's statement was dropped as a source.
 - Figures: none
-- Source: [מדריך למשקיע: קרנות נאמנות (רשות ניירות ערך, ינואר 2017)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf), p.21 · primary (dated; still linked by the ISA as its full guide) · checked 2026-10-25. [מיטב, קרנות נאמנות](https://www.meitav.co.il/mutual_funds/) · institution · checked 2026-10-25.
+- Source: [מדריך למשקיע: קרנות נאמנות (רשות ניירות ערך, ינואר 2017)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf), p.21 · primary (dated; still linked by the ISA as its full guide) · checked 2026-10-25.
+- Scope: general
 - Dimensions: minimum
 - Likely to change: no
 
@@ -228,15 +229,21 @@ An Israeli mutual fund (קרן נאמנות) is a trust: a trustee holds the ass
 - Dimensions: fee-trade, fee-custody
 - Likely to change: no
 
-### MF-27 Bank and broker commissions and custody on fund units: institution examples
-- Rule: What a saver pays the distributor depends on the institution's tariff, within MF-26. Examples read:
-  - Leumi (tariff updated 01/10/2026): the buy/sell/redeem commission on TASE securities excludes mutual funds, except tracking funds and funds whose units are listed on TASE, which are charged like shares and bonds (part 4(א) item 1 and footnote {4}). A tracking fund bought by standing order is charged 0.225%, minimum NIS 5, maximum NIS 6,300 (note 10). The securities custody fee (דמי ניהול פיקדון ניירות ערך) applies "לרבות יחידות השתתפות בקרנות נאמנות", but "לא ניתן לגבות" it on makam or on a money-market fund as defined in the assets regulations (part 4(א) item 5, note 2). Leumi also lists charging the client the distribution fee "במקרים המותרים" under the 2006 regulations (part 4(ב) item 2).
-  - IBI (tariff as of 1.7.2026): buying, selling and redeeming mutual funds traded on TASE costs up to 0.08% of the transaction, minimum NIS 5 per transaction.
-  - Meitav's fund pages: "רכישת יחידות השתתפות בקרנות נאמנות אינה כרוכה בתשלומי עמלות קניה ומכירה".
-  - ISA guide (2017): banks may charge a custody fee on fund units; investment houses, unlike banks, usually do not; tracking funds carry buy and sell commissions set with the distributor.
-- Conditions / exceptions: Other banks and brokers were not checked (open question 10). Leumi's custody rate and other figures belong to `brokerage-account.md`.
+### MF-27 Bank and broker commissions and custody on fund units: what the rules allow
+- Rule: At every bank the full tariff's line "קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב" excludes "קרנות נאמנות" (BoI fee rules, first schedule part 4(א)(1)), but footnote 4 reads "אך לרבות 'קרן מחקה', כהגדרתה בחוק השקעות משותפות בנאמנות, התשנ"ד-1994, וכן של קרן להשקעות משותפות בנאמנות, שיחידותיה רשומות בבורסה לניירות ערך בתל אביב", so tracking funds and listed funds are charged on the trading line like shares and bonds. The custody fee line includes "(לרבות יחידות השתתפות בקרנות נאמנות)" (part 4(א)(5)), and "לא ניתן לגבות דמי ניהול פיקדון ניירות ערך בעבור מלווה קצר מועד או בעבור קרן כספית" (note 2). A bank may charge the buyer the distribution fee only in the cases permitted (part 4(ב)(2), BRK-16). For every distributor the distribution-fee regulations limit what it may charge the holder: no fee on money-market funds under an agreement, and on listed and tracking funds only a transaction fee (MF-26). The ISA guide (2017) says banks may charge a custody fee on fund units, investment houses usually do not, and tracking funds carry buy and sell commissions set with the distributor.
+- Conditions / exceptions: Within these rules each institution sets its own rates in its tariff; three institutions' lines are MF-56. Non-bank members' treatment of fund units was read only at the institutions in MF-56 (open question 10). Split on 2026-10-25 (scope pass): the companies' part is MF-56.
+- Figures: none
+- Source: [כללי הבנקאות (שירות ללקוח) (עמלות), התשס"ח-2008, נוסח משולב (בנק ישראל)](https://www.boi.org.il/media/mi2driua/159a.pdf), p.15, first schedule part 4(א)(1); p.16, part 4(א)(5); p.17, note 2; p.24, footnote 4 · checked 2026-10-25 · primary. [מדריך למשקיע: קרנות נאמנות (רשות ניירות ערך, ינואר 2017)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf), pp.7, 24 · primary (dated; still linked by the ISA as its full guide) · checked 2026-10-25. Distributor's charges: MF-26; bank tariff lines: BRK-16.
+- Scope: general
+- Dimensions: fee-trade, fee-custody
+- Likely to change: possible, if the BoI amends the fee rules.
+
+### MF-56 Bank Leumi, IBI and Meitav: their commissions and custody on fund units
+- Rule: Bank Leumi (tariff updated 01/10/2026): the buy/sell/redeem commission on TASE securities excludes mutual funds, except tracking funds and funds whose units are listed on TASE, which are charged like shares and bonds (part 4(א) item 1 and footnote {4}, the BoI rule in MF-27). At Leumi a tracking fund bought by standing order is charged 0.225%, minimum NIS 5, maximum NIS 6,300 (note 10). Leumi's securities custody fee applies "לרבות יחידות השתתפות בקרנות נאמנות", but "לא ניתן לגבות" it on makam or on a money-market fund (part 4(א) item 5, note 2), and Leumi lists charging the client the distribution fee "במקרים המותרים" (part 4(ב) item 2). IBI (tariff as of 1.7.2026): buying, selling and redeeming mutual funds traded on TASE costs up to 0.08% of the transaction, minimum NIS 5 per transaction. Meitav's fund pages: "רכישת יחידות השתתפות בקרנות נאמנות אינה כרוכה בתשלומי עמלות קניה ומכירה".
+- Conditions / exceptions: Other banks and brokers were not checked (open question 10). What every bank and distributor may charge is MF-27; Leumi's custody rate and other figures belong to `brokerage-account.md` and `data/fees/`. Split from MF-27 on 2026-10-25 (scope pass).
 - Figures: as quoted above, each with its tariff date
-- Source: [תעריפון העמלות המלא, בנק לאומי, מעודכן ל-01/10/2026](https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf), part 4, pp.30-34 · institution · checked 2026-10-25. [תעריפון עמלות אי.בי.אי, נכון ל-1.7.2026](https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf), part 4(א) item 2, p.3 · institution · checked 2026-10-25. [מיטב, קרנות נאמנות](https://www.meitav.co.il/mutual_funds/) · institution · checked 2026-10-25. [מדריך למשקיע: קרנות נאמנות (רשות ניירות ערך, ינואר 2017)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf), pp.7, 24 · primary (dated; still linked by the ISA as its full guide) · checked 2026-10-25.
+- Source: [תעריפון העמלות המלא, בנק לאומי, מעודכן ל-01/10/2026](https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf), part 4, pp.30-34 · institution · checked 2026-10-25. [תעריפון עמלות אי.בי.אי, נכון ל-1.7.2026](https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf), part 4(א) item 2, p.3 · institution · checked 2026-10-25. [מיטב, קרנות נאמנות](https://www.meitav.co.il/mutual_funds/) · institution · checked 2026-10-25. General rule: MF-27.
+- Scope: institution: Bank Leumi, IBI, Meitav
 - Dimensions: fee-trade, fee-custody
 - Likely to change: yes, tariffs change several times a year
 
@@ -597,7 +604,7 @@ Distributors: banks and TASE members. Tariffs read for Leumi and IBI only (MF-27
 7. Share of funds charging a load (הוספה) or a redemption deduction today, and their typical rates.
 8. The current ISA list of classification headings (כותרות). ISA site is JavaScript-only.
 9. The current ISA texts on fund naming principles and on the "(!)" mark (only the 2017 guide's description was read; a 2009 TheMarker report on the mark was a search result, not opened). **[2026-10-22 browser pass 2: Exposure codes closed by MF-54; the "(!)" directive text still unread.]**
-10. Bank-by-bank and broker-by-broker treatment of purchase/sale commissions and custody fees on mutual-fund units, and whether every manager still has distribution agreements with every bank. Only Leumi and IBI were read.
+10. Bank-by-bank and broker-by-broker treatment of purchase/sale commissions and custody fees on mutual-fund units, and whether every manager still has distribution agreements with every bank. Only Leumi and IBI were read. **[2026-10-25 scope pass]** Partly answered: for banks the treatment is the BoI fee rules' (first schedule part 4(א)(1), footnote 4, part 4(א)(5), note 2), the same at every bank (MF-27); what each bank and non-bank member charges within them is its tariff, read only at Leumi, IBI and Meitav (MF-56).
 11. Full ISA register of fund managers and trustees, and the list, number and assets of fixed-date (renewable) money-market funds and which managers offer them. The 2025 report gives no renewable-fund count.
 12. Whether the Wikisource mirrors are current and exact: the law (revision 30 Sep 2026), the assets regulations (last amendment shown 5778/2018), the distribution-fee regulations (5776/2016) and the classification regulations (5778/2018). Several law sections (46, 48, 76, 79, 82) were read through a summarising fetch with short exact quotes, not in full. Probably on the Knesset legislation database or Nevo.
 13. Regulatory basis and rules of the symmetric variable management fee (רצועת בטחון) Meitav describes for tracking funds and ETFs.

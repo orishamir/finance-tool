@@ -9,9 +9,9 @@
     "switching-tax-event"
   ],
   "likely_to_change": "no",
-  "text_he": "מקופה רגילה לקופה אישית הכסף עובר במזומן בלבד; בין קופות אישיות העמית בוחר מזומן או ניירות; מקופה אישית לקופה רגילה בוחרת הקופה הקולטת. בהעברה במזומן תקופת ההעברה מתחילה רק ביום שבו כל הנכסים הומרו למזומן. הוותק נשמר ומרכיבי הקופה לא משתנים (מיטב).",
+  "text_he": "מקופה רגילה לקופה אישית הכסף עובר במזומן בלבד; בין קופות אישיות העמית בוחר מזומן או ניירות; מקופה אישית לקופה רגילה בוחרת הקופה הקולטת. בהעברה במזומן תקופת ההעברה מתחילה רק ביום שבו כל הנכסים הומרו למזומן. הוותק נשמר: לפי תקנות ההעברה, מועדי התשלום לקופה המעבירה נחשבים מועדי התשלום לקופה המקבלת.",
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=5",
@@ -39,17 +39,10 @@
       "page": 5,
       "quote": "נכסי הקופה למזומנים",
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.meitav.co.il/provident_pension/ira/",
-      "title": "Meitav IRA page",
-      "title_he": "קופת גמל בניהול אישי (IRA): עמוד המוצר של מיטב",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "השינוי היחיד שמבוצע הוא הגוף המנהל ואופן הניהול",
-      "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "SW-39",
+    "SW-40"
   ]
 }

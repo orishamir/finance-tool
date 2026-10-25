@@ -2,7 +2,7 @@
   "id": "SW-08",
   "title": "A request lapses: 120 days for an active member without a deposit, 60 days otherwise",
   "title_he": "פקיעת בקשה: עמית פעיל ללא הפקדה, ועמית לא פעיל",
-  "text_he": "בקשה של עמית פעיל פוקעת אם לא הועברה לקופה המעבירה בתוך התקופה הארוכה שהחוזר קובע מיום החתימה; אלא אם העמית הצהיר שלא יפקיד, היא מועברת רק אחרי שהפקדה מגיעה. אם העמית הודיע לקופה המקבלת בתוך אותה תקופה שלא יבוצעו הפקדות, הבקשה פוקעת אם לא הועברה בתוך התקופה הקצרה מההודעה. בקשה של עמית לא פעיל פוקעת אם לא הועברה בתוך התקופה הקצרה מיום החתימה; בטופס אפשר לסמן מראש שלא יבוצעו הפקדות, ואז העמית נחשב לא פעיל לעניין המועד הקובע. הפניקס מציינת שאם לא בוצעה הפקדה עד תום התקופה הארוכה הניוד יבוטל; החוזר נקרא מעותק אצל צד שלישי.",
+  "text_he": "בקשה של עמית פעיל פוקעת אם לא הועברה לקופה המעבירה בתוך התקופה הארוכה שהחוזר קובע מיום החתימה; אלא אם העמית הצהיר שלא יפקיד, היא מועברת רק אחרי שהפקדה מגיעה. אם העמית הודיע לקופה המקבלת בתוך אותה תקופה שלא יבוצעו הפקדות, הבקשה פוקעת אם לא הועברה בתוך התקופה הקצרה מההודעה. בקשה של עמית לא פעיל פוקעת אם לא הועברה בתוך התקופה הקצרה מיום החתימה; בטופס אפשר לסמן מראש שלא יבוצעו הפקדות, ואז העמית נחשב לא פעיל לעניין המועד הקובע.",
   "figure_names_he": {
     "active_member_lapse_days": "ימים לפקיעת בקשה של עמית פעיל ללא הפקדה",
     "after_no_deposit_notice_lapse_days": "ימים לפקיעה אחרי הודעה שלא יבוצעו הפקדות",
@@ -32,7 +32,7 @@
         "SW-08"
       ],
       "state": "sourced",
-      "notes": "An active member's request lapses if not forwarded to the transferring fund within 120 days of signing (s.3(יב)); it is forwarded only once a deposit arrives. Phoenix states the same (institution)."
+      "notes": "An active member's request lapses if not forwarded to the transferring fund within 120 days of signing (s.3(יב)); it is forwarded only once a deposit arrives."
     },
     "after_no_deposit_notice_lapse_days": {
       "value": 60,
@@ -76,7 +76,7 @@
     }
   },
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
@@ -101,17 +101,6 @@
       "strength": "primary",
       "locator": "p.12, Annex A",
       "page": 12,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.fnx.co.il/ishtalmutfund/faq/",
-      "title": "Phoenix study-fund FAQ",
-      "title_he": "שאלות ותשובות על קרן ההשתלמות של הפניקס",
-      "publisher": "The Phoenix",
-      "publisher_he": "הפניקס",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "אם לא בוצעה הפקדה עד 120 יום מיום הבקשה",
       "checked": "2026-10-25"
     }
   ]

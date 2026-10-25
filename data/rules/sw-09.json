@@ -2,10 +2,9 @@
   "id": "SW-09",
   "title": "Step 4: both funds confirm in writing within 15 business days",
   "title_he": "שלב רביעי: שתי הקופות מאשרות בכתב",
-  "text_he": "הקופה המעבירה שולחת לעמית אישור בתוך מספר ימי העסקים שהחוזר קובע מההעברה, ובו לפחות: שם הקופה ומספר אישור המס ומספר החשבון, שם המנהל ופרטי התקשרות, מועד ההעברה, המועד הקובע עם הסבר שהאחריות הביטוחית של הקופה המעבירה הסתיימה בו, הסכום שהועבר בפירוט לפי תגמולי עובד, תגמולי מעסיק ופיצויים לעמית שכיר, ואחרי העברה חלקית גם היתרה שנשארה והסיבה לפיצול. הקופה המקבלת שולחת אישור באותו פרק זמן מקבלת הכסף, עם אותם פרטים, ובו שאחריותה הביטוחית התחילה במועד הקובע. האישורים נשלחים בדוא״ל רק אם העמית הסכים. הפניקס מציינת פרק זמן קצר במעט; החוזר נקרא מעותק אצל צד שלישי.",
+  "text_he": "הקופה המעבירה שולחת לעמית אישור בתוך מספר ימי העסקים שהחוזר קובע מההעברה, ובו לפחות: שם הקופה ומספר אישור המס ומספר החשבון, שם המנהל ופרטי התקשרות, מועד ההעברה, המועד הקובע עם הסבר שהאחריות הביטוחית של הקופה המעבירה הסתיימה בו, הסכום שהועבר בפירוט לפי תגמולי עובד, תגמולי מעסיק ופיצויים לעמית שכיר, ואחרי העברה חלקית גם היתרה שנשארה והסיבה לפיצול. הקופה המקבלת שולחת אישור באותו פרק זמן מקבלת הכסף, עם אותם פרטים, ובו שאחריותה הביטוחית התחילה במועד הקובע. האישורים נשלחים בדוא״ל רק אם העמית הסכים.",
   "figure_names_he": {
-    "confirmation_business_days": "ימי עסקים לאישור בכתב משתי הקופות",
-    "phoenix_confirmation_business_days": "ימי עסקים לאישור ניוד (הפניקס)"
+    "confirmation_business_days": "ימי עסקים לאישור בכתב משתי הקופות"
   },
   "strength": "primary",
   "dimensions": [
@@ -33,30 +32,10 @@
       ],
       "state": "sourced",
       "notes": "The transferring fund confirms to the member within 15 business days of the transfer (s.6(א)); the receiving fund within 15 business days of receiving the money (s.6(ב)). Email only with the member's consent (s.6(ג))."
-    },
-    "phoenix_confirmation_business_days": {
-      "value": 14,
-      "unit": "business_days",
-      "source": {
-        "url": "https://www.fnx.co.il/ishtalmutfund/faq/",
-        "title": "Phoenix study-fund FAQ (\"שאלות ותשובות\" on transfers)",
-        "publisher": "The Phoenix",
-        "strength": "institution"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "SW-09"
-      ],
-      "state": "sourced",
-      "notes": "Phoenix: \"אישור לעמית על ביצוע ניוד יוצא / נכנס, יישלח תוך 14 ימי עסקים\". Institution statement."
     }
   },
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
@@ -70,17 +49,6 @@
       "locator_he": "עמודים 8 עד 9, סעיף 6",
       "page": 8,
       "quote": "לא יאוחר מחמישה עשר ימי עסקים",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.fnx.co.il/ishtalmutfund/faq/",
-      "title": "Phoenix study-fund FAQ",
-      "title_he": "שאלות ותשובות על קרן ההשתלמות של הפניקס",
-      "publisher": "The Phoenix",
-      "publisher_he": "הפניקס",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "יישלח תוך 14 ימי עסקים",
       "checked": "2026-10-25"
     }
   ]

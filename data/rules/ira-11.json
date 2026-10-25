@@ -10,9 +10,9 @@
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
-  "text_he": "מ-2017 מותר להשקיע רק בניירות ערך סחירים, פיקדונות, מוצרים מובנים, מטבע חוץ, יחידות בקרן נאמנות וקרנות חוץ, ורק בישראל ובמדינת חוץ מאושרת (מיטב: דירוג BBB לפחות או חברה ב-OECD). טיוטת 2025 תבטל מוצרים מובנים ותצמצם את הגדרת קרן חוץ.",
+  "text_he": "מותר להשקיע רק בניירות ערך סחירים, פיקדונות, מוצרים מובנים, מטבע חוץ, יחידות בקרן נאמנות וקרנות חוץ, ורק בישראל ובמדינת חוץ מאושרת: לפי כללי ההשקעה של הגופים המוסדיים, מדינה בדירוג השקעה או מדינה החברה בארגון ה־OECD. טיוטת תיקון תבטל מוצרים מובנים ותצמצם את הגדרת קרן חוץ.",
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=3",
@@ -57,30 +57,17 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.meitav.co.il/media/r2djwzpw/26061426l-תוצאות-מכרז-לניהול-אישי-2026-לאומי.pdf",
-      "title": "מיטב – תוצאות מכרז לניהול אישי 2026, נספח בנק לאומי",
-      "title_he": "מיטב – תוצאות מכרז לניהול אישי 2026, נספח בנק לאומי",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.1",
-      "locator_he": "עמוד 1",
-      "page": 1,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.meitav.co.il/media/kiildnyn/נספח-להסכם-הצטרפות-לקרן-השתלמות-בניהול-אישי-115181124.pdf",
-      "title": "מיטב – נספח להסכם הצטרפות לקרן השתלמות בניהול אישי (1.151.8.11.24)",
-      "title_he": "מיטב – נספח להסכם הצטרפות לקרן השתלמות בניהול אישי (1.151.8.11.24)",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.1",
-      "locator_he": "עמוד 1",
-      "page": 1,
-      "quote": "רכישת קרן אלטרנטיבית",
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(כללי_השקעה_החלים_על_גופים_מוסדיים)",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (כללי השקעה החלים על גופים מוסדיים), התשע\"ב-2012, Wikisource mirror",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg. 1",
+      "locator_he": "תקנה 1",
+      "anchor": "סעיף_1",
+      "quote": "מדינת חוץ מאושרת",
       "checked": "2026-10-25"
     }
   ]

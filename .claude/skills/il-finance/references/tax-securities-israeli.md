@@ -144,10 +144,20 @@ How the law was read: the Income Tax Ordinance and the regulations were read on 
 - Likely to change: no
 
 ### TXS-15 Foreign tax inside an Israeli exempt fund
-- Rule: An Israeli exempt fund "עשויה להיות מחויבת, בין היתר, בתשלום מס בחו"ל" on income and gains from securities traded abroad, dual-listed securities, and securities of foreign issuers traded only in Israel. This is "בנוסף למס שבעל יחידות בקרן ישלם בגין פדיון יחידות הקרן בגין הרווח הריאלי שנצבר לו". The foreign tax is a cost inside the fund, and the saver still pays Israeli tax on the full real gain.
-- Conditions / exceptions: No primary source was found on whether the unit holder can credit that foreign tax (open question 8). Rates and treaty detail are in TXF.
+- Rule: An exempt fund's own income and gains are exempt (s.129ג(א)(1), TXS-08), with exceptions its prospectus lists. By regulation every exempt fund's annual report says, under its expense table, "כי קרן פטורה אינה חייבת בתשלום מסים, למעט חריגים המפורטים בתשקיף, בפסקה על מיסוי הקרן ומיסוי בעל יחידה בקרן, וכן כי בעת פדיון, יהיה חייב המשקיע בתשלום מס שינוכה מהרווח הריאלי שנצבר על היחידות שפדה, ויצוין שיעורו" (reg. 20(2)(ד)). A tax the fund pays under such an exception, for example abroad, is paid from the fund's assets and so is a cost inside the fund; the saver's real gain on redemption is still taxed and withheld at 25% (s.91(ב1), TXS-09).
+- Conditions / exceptions: A credit is given for "מסים המשתלמים על ידי תושב ישראל לרשויות המס של מדינה מחוץ לישראל" (s.199, TXF-16). Tax suffered by the fund is paid by the fund, so the saver gets no credit: the same reading as TXF-16, which no source states in words (open question 8). Rates and treaty detail are in TXF. Which foreign-tax situations a prospectus lists is each manager's wording: two prospectuses' list is TXS-25. Rewritten 2026-10-25 (scope pass): the record said the rule was in the managers' prospectuses, not in law; the regulations make every exempt fund state it. Split on 2026-10-25 (scope pass): the companies' part is TXS-25.
 - Figures: none
-- Source: [מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026](https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf), p.74, ch.25.7 · checked 2026-10-25 · institution. [ילין לפידות (00) כספית ניהול נזילות, תשקיף קרן חדשה מיום 26.11.2024](https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629214-00.pdf), p.1, footnote 3 · checked 2026-10-25 · institution
+- Source: [תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע"ו-2016 (קובץ התקנות 7646, צילום הרשומות)](https://olaw.org.il/takanot/takanot-7646.pdf), p.16 (gazette p.1016), reg. 20(2)(ד) · checked 2026-10-25 · primary (mirror of Reshumot). TXS-08, TXS-09, TXF-16.
+- Scope: general
+- Dimensions: `foreign-withholding-domicile`, `tax-during`
+- Likely to change: no
+
+### TXS-25 Migdal Mutual Funds and Yalin Lapidot: the foreign-tax situations their prospectuses list
+- Rule: Migdal Mutual Funds' and Yalin Lapidot's prospectuses say an exempt fund "עשויה להיות מחויבת, בין היתר, בתשלום מס בחו"ל" on income and gains from securities traded abroad, dual-listed securities, and securities of foreign issuers traded only in Israel, "בנוסף למס שבעל יחידות בקרן ישלם בגין פדיון יחידות הקרן בגין הרווח הריאלי שנצבר לו".
+- Conditions / exceptions: Every exempt-fund prospectus has a tax paragraph by regulation (TXS-15), so the wording is likely common, but only these two were read. Split from TXS-15 on 2026-10-25 (scope pass).
+- Figures: none
+- Source: [מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026](https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf), p.74, ch.25.7 · checked 2026-10-25 · institution. [ילין לפידות (00) כספית ניהול נזילות, תשקיף קרן חדשה מיום 26.11.2024](https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629214-00.pdf), p.1, footnote 3 · checked 2026-10-25 · institution. General rule: TXS-15.
+- Scope: institution: Migdal Mutual Funds, Yalin Lapidot
 - Dimensions: `foreign-withholding-domicile`, `tax-during`
 - Likely to change: no
 
@@ -269,7 +279,7 @@ Not applicable to a tax file. Fund managers and fund lists are in `mutual-funds-
 5. **Regulation basis for the bank offsetting a securities loss against interest or dividends at withholding.** The guide (p.39) says the payer may do it. Neither withholding regulation read contains it. Where: other withholding regulations, or a Tax Authority instruction to banks.
 6. **Age 60+ in practice.** Does the lower bracket reach exempt-fund and securities gains withheld at a flat 25%, and how is the excess recovered (annual return, or tax coordination)? Pointer to TXG.
 7. **Exempt-fund distributions and s.92(a)(4).** Does a 25% distribution under s.125B1(b) count as a "dividend" that a securities loss can absorb in the same year? Not found.
-8. **Foreign tax paid inside an Israeli exempt fund.** Is any credit available to the unit holder? The prospectuses say the saver's tax is "in addition". Where: s.199-210, or a Tax Authority ruling. Pointer to TXF.
+8. **Foreign tax paid inside an Israeli exempt fund.** Is any credit available to the unit holder? The prospectuses say the saver's tax is "in addition". Where: s.199-210, or a Tax Authority ruling. Pointer to TXF. **[2026-10-25 scope pass]** Narrowed: the regulations make every exempt fund state that it pays no tax except exceptions in its prospectus (reg. 20(2)(ד), TXS-15); what stays open is only that no source states the credit question in words.
 9. **s.101A(a)(12) deemed sale and repurchase of exempt-fund units.** Has an order or regulation ever been issued? Not found.
 10. **Has the Minister changed the 15% rate (s.91(b)(3)(b), s.125C(c)(2))?** Shared with TXI and with tax report Q3.
 11. **Fund-level rate in a taxable fund holding unlinked shekel assets.** This file derives 15% of nominal interest and gains from s.129C(a)(2) read with s.125C(c) and s.91(b)(3), and a secondary source agrees. A Tax Authority sentence saying it directly was not found. Only matters if a taxable money-market fund exists (question 1).
@@ -307,6 +317,7 @@ Note: the shared web-search budget for this session ran out during the research.
 | S7 | [Yelin Lapidot (00) כספית ניהול נזילות, new-fund prospectus, 26.11.2024](https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629214-00.pdf), pp.1-2 | Fund manager | institution | 2026-10-22 |
 | S8 | [Migdal (00) כספית שקלית, prospectus Part A, 17.2.2014](https://mayafiles.tase.co.il/rpdf/878001-879000/p878453-00.pdf), p.1 (old; corroborates S7 only) | Fund manager | institution | 2026-10-22 |
 | S10 | [bizportal, "מיסוי קרנות נאמנות: 25% ריאלי, 15% נומינלי ומתי כל אחד עדיף", 12.8.2026](https://www.bizportal.co.il/guides/news/article/20038659) | Press guide | secondary | 2026-10-22 |
+| S11 | [תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע"ו-2016 (קובץ התקנות 7646, צילום הרשומות)](https://olaw.org.il/takanot/takanot-7646.pdf), reg. 20(2)(ד) (scope pass) | Reshumot (copy on olaw.org.il) | primary (mirror) | 2026-10-25 |
 | blocked | Bank of Israel money-market fund pages (Radware check); gov.il circular 7/2003 (403 and 404); Maya fund pages 5141098 and others (empty JS shell); Maya HTML filing H1629214 (garbled, PDF used instead) | various | not used | 2026-10-22 |
 
 Discovery report `research/discovery/tax-landscape.md` sections 0, 2, 8, 10, 12 were used as leads only. Every claim above was re-read in the source cited.

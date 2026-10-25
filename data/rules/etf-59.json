@@ -1,0 +1,41 @@
+{
+  "id": "ETF-59",
+  "title": "IBI and iShares: how two S&P 500 funds say they replicate the index",
+  "title_he": "אי.בי.אי ו־iShares: איך שתי קרנות על המדד האמריקני משיגות אותו",
+  "text_he": "באי.בי.אי, קרן הסל על המדד האמריקני משיגה את חשיפתה בעיקר בנגזרים מעבר לדלפק, ומציינת סיכון צד נגדי ופער זמנים בין שער הסגירה שלה לסגירת החוזים על המדד. ב־iShares, דף הקרן האירופית על אותו מדד מציין שכפול פיזי. אלה תיאורים של הקרנות עצמן.",
+  "strength": "institution",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
+      "title": "IBI ETF annual report 31.12.2025",
+      "title_he": "דוח שנתי ליום 31.12.2025 של אי.בי.אי. סל (4D) S&P 500",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "אי.בי.אי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.2-3",
+      "locator_he": "עמודים 2 עד 3",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/cspx-ishares-core-s-p-500-ucits-etf-fund-fact-sheet-en-gb.pdf",
+      "title": "iShares CSPX factsheet, September 2026",
+      "title_he": "iShares Core S&P 500 UCITS ETF: דף מידע (ספטמבר 2026)",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "ETF-11"
+  ]
+}

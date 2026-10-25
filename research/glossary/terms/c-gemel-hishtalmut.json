@@ -416,9 +416,9 @@
       "url": "https://www.meitav.co.il/provident_pension/provident_invest/"
     },
     "variants_he": [],
-    "explain_he": "פתיחת קופה על שם מישהו אחר, למשל ילד: הכסף כבר לא שלכם ואי אפשר לקחת אותו בחזרה",
+    "explain_he": "הנוסח של מיטב לפתיחת קופה על שם מישהו אחר, למשל ילד: לפי מיטב, הכסף כבר לא שלכם ואי אפשר לקחת אותו בחזרה",
     "rule_ids": [
-      "KGL-06",
+      "KGL-26",
       "KGL-21"
     ],
     "source": {
@@ -431,7 +431,7 @@
       "guide:kupat-gemel-lehashkaa",
       "ad"
     ],
-    "notes": "Institution source only (Meitav: 'כמוה כמתן מתנה בלתי חוזרת'). For a minor, withdrawals are paid to the parent who is the guardian (KGL-06). Each child has a separate deposit ceiling (KGL-21)."
+    "notes": "Meitav's own wording ('כמוה כמתן מתנה בלתי חוזרת'), named as Meitav's (KGL-26, scope institution; 2026-10-25 scope pass). For a minor, withdrawals are paid to the parent who is the guardian in the bylaws read (KGL-27, unsettled). Each child has a separate deposit ceiling (KGL-21)."
   },
   {
     "term_he": "תקרת הפקדה",
@@ -861,7 +861,7 @@
     "variants_he": [
       "כללי"
     ],
-    "explain_he": "מסלול שמשקיע במגוון סוגי נכסים יחד; בגמל להשקעה ובקרן השתלמות הוא לרוב ברירת המחדל",
+    "explain_he": "מסלול שמשקיע במגוון סוגי נכסים יחד; בקרן השתלמות הוא אחת משתי ברירות המחדל שהרשות מתירה, ובקופת גמל להשקעה כל חברה קובעת את ברירת המחדל בתקנון שלה",
     "rule_ids": [
       "KGL-11",
       "KGL-12",
@@ -881,7 +881,7 @@
       "gemel-net",
       "decoder"
     ],
-    "notes": "'Usually the default' rests on the bylaws read (all gemel lehashkaa bylaws read; two study-fund bylaws). The bylaws state no equity range for it (KH-19). IRA funds also appear under 'כללי' in Gemel-Net (KH-20)."
+    "notes": "2026-10-25 scope pass: 'usually the default' rested on the bylaws read; the study-fund default is the general or the flexible index-tracking track (circular 2022-9-30 s.7(ג), KH-19), and a kupat gemel lehashkaa's bylaws must set a default (s.7(ב), KGL-11); the managers whose bylaws were read chose 'כללי' (KH-31, KGL-29). The bylaws state no equity range for it (KH-19). IRA funds also appear under 'כללי' in Gemel-Net (KH-20)."
   },
   {
     "term_he": "חוסכים המעדיפים סיכון מוגבר",

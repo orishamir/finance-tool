@@ -2,7 +2,7 @@
   "id": "PF-13",
   "title": "A fee discount must last a minimum period",
   "title_he": "הנחה בדמי ניהול חייבת להימשך תקופת מינימום",
-  "text_he": "גוף מוסדי שמציע לעמית דמי ניהול נמוכים מהתקרה מתחייב שההצעה תהיה תקפה לפחות לתקופת המינימום להנחה בדמי ניהול, מהיום שבו התחילו לגבות אותם. בקרן פנסיה ההנחה חלה על כל היתרה, והגבוהה מבין הנחות שונות חלה על הכול. החוזר חל על כל הגופים המוסדיים חוץ מקופות ענפיות וקופות מבטיחות תשואה, ולכן גם על קופת גמל להשקעה. תקנון אלטשולר שחם לקופת גמל להשקעה נוקב בתקופה קצרה יותר, שמתאימה לחוזר הקודם שהוחלף; לחישוב גובר החוזר, ואם הוא נכלל מאז בחוזר המאוחד עם שינוי לא נבדק.",
+  "text_he": "גוף מוסדי שמציע לעמית דמי ניהול נמוכים מהתקרה מתחייב שההצעה תהיה תקפה לפחות לתקופת המינימום להנחה בדמי ניהול, מהיום שבו התחילו לגבות אותם. בקרן פנסיה ההנחה חלה על כל היתרה, והגבוהה מבין הנחות שונות חלה על הכול. החוזר חל על כל הגופים המוסדיים חוץ מקופות ענפיות וקופות מבטיחות תשואה, ולכן גם על קופת גמל להשקעה. החוזר הקודם, שהוחלף, קבע תקופה קצרה יותר. אם החוזר נכלל מאז בחוזר המאוחד עם שינוי לא נבדק.",
   "figure_names_he": {
     "min_discount_years": "תקופת המינימום להנחה בדמי ניהול"
   },
@@ -31,11 +31,11 @@
         "PF-13"
       ],
       "state": "sourced",
-      "notes": "Minimum period a fee discount below the legal maximum must stay valid (\"חמש שנים או יותר\"). A CMA circular, not a regulation: update_rule \"fixed in regulation\" is the nearest value in the schema list. Conflict recorded in il-finance: the Altshuler Shaham gemel lehashkaa bylaws (March 2025, s.36.1) say two years (institution). Resolved for computation as 5 years: the circular covers kupat gemel lehashkaa managers (s.5(a) excludes only sector and guaranteed-return funds) and the bylaws' 2 years matches the superseded circular 2012-9-22. Whether the circular was later folded into the consolidated circular with a change is unchecked."
+      "notes": "Minimum period a fee discount below the legal maximum must stay valid (\"חמש שנים או יותר\"). A CMA circular, not a regulation: update_rule \"fixed in regulation\" is the nearest value in the schema list. The circular covers kupat gemel lehashkaa managers (s.5(a) excludes only sector and guaranteed-return funds). Some kupat gemel lehashkaa bylaws still carry the two years of the superseded circular 2012-9-22 (KGL-30); the circular governs. Whether the circular was later folded into the consolidated circular with a change is unchecked."
     }
   },
   "il_finance_file": "provident-family-common.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
@@ -48,19 +48,6 @@
       "locator": "pp.1-4, s.3(א) on p.1, s.3(ה) on p.2, s.5 on p.3, s.6 on p.4",
       "page": 1,
       "quote": "ובלבד שההצעה האמורה תהיה תקפה במהלך תקופה של חמש שנים או יותר",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-      "title": "אלטשולר שחם גמל להשקעה \"חיסכון פלוס\" – תקנון, מרץ 2025",
-      "title_he": "אלטשולר שחם גמל להשקעה \"חיסכון פלוס\" – תקנון, מרץ 2025",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.10, s.36.1",
-      "locator_he": "עמוד 10, סעיף 36.1",
-      "page": 10,
       "checked": "2026-10-25"
     }
   ]

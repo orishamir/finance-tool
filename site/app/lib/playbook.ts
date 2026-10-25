@@ -72,14 +72,24 @@ export interface StepSpec {
   verify?: boolean;
   /** The record-your-offer card sits before this step. */
   offerBefore?: boolean;
+  /**
+   * A company's own records shown after the step's rules, named in their own text (D30, scope pass 2026-10-25): what one
+   * company says or charges is never the step's rule, so these do not set the step's chip or its institution-only prefix.
+   * Their figures are listed with the step's (FIGURES), labelled with the company's name.
+   */
+  named?: string[];
 }
 
 const s = (title: string, ruleIds: string[], more: Partial<StepSpec> = {}): StepSpec => ({ title, ruleIds, ...more });
 const retention = s(T.retention, ["SW-19"], { noRule: { known: ["SW-07", "PF-13", "PF-14"] }, experience: ["SW-X01", "SW-X02"], openQuestions: ["SW OQ3"], offerBefore: true });
 const verify = s(T.verify, ["SW-38"], { verify: true });
-const data = s(T.data, ["SW-18", "SW-44"], { openQuestions: ["SW OQ5"] });
-const agent = s(T.agent, ["SW-17"], { experience: ["SW-X04"], openQuestions: ["SW OQ16"] });
-const employer = s(T.employer, ["SW-10"], { openQuestions: ["SW OQ6"] });
+const data = s(T.data, ["SW-18", "SW-44"], { openQuestions: ["SW OQ5"], named: ["SW-50"] });
+const agent = s(T.agent, ["SW-17"], { experience: ["SW-X04"], openQuestions: ["SW OQ16"], named: ["SW-49"] });
+const employer = s(T.employer, ["SW-10"], { openQuestions: ["SW OQ6"], named: ["SW-48"] });
+// the companies' own sentences split out of the circular's steps on 2026-10-25 (SW-45 to SW-47, The Phoenix)
+const signNamed = { named: ["SW-45"] };
+const cancel = s(T.cancel, ["SW-07"], { named: ["SW-46"] });
+const confirm = s(T.confirm, ["SW-09"], { named: ["SW-47"] });
 const money = s(T.money, ["SW-06", "SW-42"]);
 
 /** The step list of each wrapper that has one. Where the index says "the same order, adding …", the added steps sit where their subject comes (chosen 2026-10-24, revisable). */
@@ -89,14 +99,14 @@ export const STEP_LISTS: Record<string, StepSpec[]> = {
     data,
     s(T.track, ["SW-16"]),
     agent,
-    s(T.sign, ["SW-02", "SW-03", "SW-20"]),
+    s(T.sign, ["SW-02", "SW-03", "SW-20"], signNamed),
     employer,
     s(T.determining, ["SW-04"]),
     s(T.rejection, ["SW-05"]),
     retention,
-    s(T.cancel, ["SW-07"]),
+    cancel,
     money,
-    s(T.confirm, ["SW-09"]),
+    confirm,
     verify,
   ],
   "pension-comprehensive": pensionOrder(true),
@@ -105,13 +115,13 @@ export const STEP_LISTS: Record<string, StepSpec[]> = {
   "provident-for-annuity": [s(T.routes, ["SW-23"]), ...pensionOrder(false).filter((x) => x.ruleIds[0] !== "SW-22")],
   "kupat-gemel-lehashkaa": [
     s(T.kglRoutes, ["SW-21"], { openQuestions: ["SW OQ2"] }),
-    s(T.sign, ["SW-02", "SW-03"], { openQuestions: ["SW OQ2"] }),
+    s(T.sign, ["SW-02", "SW-03"], { openQuestions: ["SW OQ2"], ...signNamed }),
     s(T.determining, ["SW-04", "SW-08"]),
     s(T.rejection, ["SW-05"]),
     retention,
-    s(T.cancel, ["SW-07"]),
+    cancel,
     money,
-    s(T.confirm, ["SW-09"]),
+    confirm,
     verify,
   ],
   "ira-provident": iraOrder(),
@@ -129,9 +139,11 @@ export const STEP_LISTS: Record<string, StepSpec[]> = {
   ],
   "bank-deposit": [s(T.deposit, ["SW-32"])],
   "brokerage-account": [
-    s(T.brokerOpen, ["SW-35"], { offerBefore: true }),
-    s(T.brokerCost, ["SW-33", "SW-34"], { openQuestions: ["SW OQ10"] }),
-    s(T.brokerTax, ["SW-36"], { openQuestions: ["SW OQ11"] }),
+    // 2026-10-25 (scope pass): the bank's duty is directive 432 (SW-35); the institutions' own instructions are SW-54, the brokers' prices
+    // SW-53, both named; the claims only companies make are unsettled records and stay step rules (SW-52 the supervised price, SW-55 own accounts)
+    s(T.brokerOpen, ["SW-35"], { offerBefore: true, named: ["SW-54"] }),
+    s(T.brokerCost, ["SW-33", "SW-52", "SW-34"], { openQuestions: ["SW OQ10"], named: ["SW-53"] }),
+    s(T.brokerTax, ["SW-36", "SW-55"], { openQuestions: ["SW OQ11"] }),
     s(T.brokerForeign, ["SW-37"], { experience: ["SW-X03"], openQuestions: ["SW OQ12"] }),
     verify,
   ],
@@ -144,15 +156,15 @@ function pensionOrder(withInsurance: boolean): StepSpec[] {
     agent,
     s(T.blocks, ["SW-13"]),
     s(T.partial, ["SW-14"]),
-    s(T.sign, ["SW-02", "SW-03"]),
+    s(T.sign, ["SW-02", "SW-03"], signNamed),
     ...(withInsurance ? [s(T.insurance, ["SW-12"])] : []),
     employer,
     s(T.determining, ["SW-04"]),
     s(T.rejection, ["SW-05"]),
     retention,
-    s(T.cancel, ["SW-07"]),
+    cancel,
     money,
-    s(T.confirm, ["SW-09"]),
+    confirm,
     s(T.inactive, ["SW-22"]),
     verify,
   ];
@@ -161,13 +173,13 @@ function pensionOrder(withInsurance: boolean): StepSpec[] {
 function iraOrder(): StepSpec[] {
   return [
     s(T.routes, ["SW-01", "SW-23"]),
-    s(T.inKind, ["SW-24"]),
-    s(T.sign, ["SW-02", "SW-03"]),
+    s(T.inKind, ["SW-24"], { named: ["SW-51"] }),
+    s(T.sign, ["SW-02", "SW-03"], signNamed),
     s(T.determining, ["SW-04", "SW-08"]),
     s(T.rejection, ["SW-05"]),
-    s(T.cancel, ["SW-07"]),
+    cancel,
     s(T.money, ["SW-06"]),
-    s(T.confirm, ["SW-09"]),
+    confirm,
   ];
 }
 
@@ -187,6 +199,7 @@ export function playbookRuleIds(wrapperId: string): string[] {
     st.ruleIds.forEach((r) => out.add(r));
     st.experience?.forEach((r) => out.add(r));
     st.noRule?.known.forEach((r) => out.add(r));
+    st.named?.forEach((r) => out.add(r));
   }
   return [...out];
 }
@@ -269,17 +282,21 @@ const FIGURES: Record<string, { from: string; key: string; form: "within" | "pla
   "SW-05": [{ from: "SW-41", key: "rejection_notice", form: "within" }],
   "SW-06": [{ from: "SW-42", key: "transfer_deadline", form: "within" }, { from: "SW-42", key: "max_deferral", form: "plain" }],
   "SW-07": [{ from: "SW-41", key: "return_after_cancellation", form: "within" }],
+  "SW-46": [{ from: "SW-46", key: "phoenix_cancel_window_business_days", form: "plain" }],
   "SW-09": [{ from: "SW-41", key: "member_confirmations", form: "within" }],
+  "SW-47": [{ from: "SW-47", key: "phoenix_confirmation_business_days", form: "plain" }],
   "SW-10": [{ from: "SW-41", key: "employer_notice", form: "within" }],
   "SW-12": [{ from: "SW-12", key: "supplement_increase_no_carry_threshold_pct", form: "plain" }, { from: "SW-12", key: "notional_deposit_lookback_months", form: "plain" }],
-  "SW-18": [{ from: "SW-44", key: "saver_one_time_all_institutions", form: "plain" }, { from: "SW-18", key: "leumi_report_available_months", form: "plain" }],
-  "SW-24": [{ from: "SW-24", key: "meitav_israeli_security_transfer_nis", form: "plain" }, { from: "SW-24", key: "meitav_portfolio_transfer_cap_nis", form: "plain" }],
+  "SW-18": [{ from: "SW-44", key: "saver_one_time_all_institutions", form: "plain" }],
+  "SW-50": [{ from: "SW-50", key: "leumi_report_available_months", form: "plain" }],
+  "SW-51": [{ from: "SW-51", key: "meitav_israeli_security_transfer_nis", form: "plain" }, { from: "SW-51", key: "meitav_portfolio_transfer_cap_nis", form: "plain" }],
   "SW-27": [{ from: "SW-27", key: "completion_max_business_days", form: "within" }, { from: "SW-27", key: "cancel_until_business_day", form: "plain" }],
   "SW-28": [{ from: "SW-28", key: "benefits_kept_min_months", form: "plain" }],
   "SW-30": [{ from: "SW-30", key: "rerouting_years", form: "plain" }, { from: "SW-30", key: "rerouting_update_interval_months", form: "plain" }, { from: "SW-30", key: "stop_rerouting_business_days", form: "plain" }],
   "SW-32": [{ from: "SW-32", key: "in_force_from", form: "plain" }],
   "SW-33": [{ from: "SW-33", key: "closing_transfer_cap", form: "plain" }],
-  "SW-35": [{ from: "SW-35", key: "israeli_securities_trading_days", form: "plain" }, { from: "SW-35", key: "foreign_securities_trading_days", form: "plain" }],
+  "SW-52": [{ from: "SW-52", key: "discount_supervised_transfer_nis", form: "plain" }],
+  "SW-35": [{ from: "SW-35", key: "bank_israeli_securities_business_days", form: "plain" }, { from: "SW-35", key: "bank_foreign_securities_business_days", form: "plain" }],
   "SW-43": [{ from: "SW-43", key: "start", form: "plain" }],
 };
 
@@ -299,7 +316,7 @@ export function buildSteps(rules: Record<string, RuleRecord>, wrapperId: string,
   return list.map((spec, i) => {
     const sign: PlaybookStep["sign"] = [];
     const expect: PlaybookStep["expect"] = [];
-    const text: StepText[] = spec.ruleIds.map((id) => {
+    const text: StepText[] = [...spec.ruleIds, ...(spec.named ?? [])].map((id) => {
       const r = rules[id];
       if (!r) return { ruleId: id, title: id, strength: "open" as Strength, checked: today };
       let body = r.text_he;
@@ -316,7 +333,7 @@ export function buildSteps(rules: Record<string, RuleRecord>, wrapperId: string,
       }
       return { ruleId: id, ...(body ? { text: body } : {}), title: r.title_he ?? r.title, strength: r.strength, ...(r.strength === "primary-mirror" && hostOf(r) ? { host: hostOf(r)! } : {}), checked: r.checked };
     });
-    const figures: StepFigure[] = spec.ruleIds.flatMap((id) =>
+    const figures: StepFigure[] = [...spec.ruleIds, ...(spec.named ?? [])].flatMap((id) =>
       (FIGURES[id] ?? []).map((f) => {
         const src = rules[f.from];
         const label = src?.figure_names_he?.[f.key] ?? f.key;
@@ -327,7 +344,8 @@ export function buildSteps(rules: Record<string, RuleRecord>, wrapperId: string,
       const r = rules[id];
       return r?.text_he ? [{ id, text: r.text_he, source: experienceSource(r.title, r.checked) }] : [];
     });
-    const strengths = text.map((t) => t.strength);
+    // the chip and the prefix come from the step's own rules; the named company records after them do not set them
+    const strengths = text.slice(0, spec.ruleIds.length).map((t) => t.strength);
     return {
       n: i + 1,
       title: spec.title,
@@ -339,7 +357,7 @@ export function buildSteps(rules: Record<string, RuleRecord>, wrapperId: string,
       openQuestions: spec.openQuestions ?? [],
       ...(spec.noRule ? { noRule: { known: spec.noRule.known.flatMap((id) => (rules[id] ? [{ ruleId: id, title: rules[id]!.title_he ?? rules[id]!.title, strength: rules[id]!.strength as Strength }] : [])) } } : {}),
       experience,
-      institutionOnly: text.length > 0 && text.every((t) => t.strength === "institution"),
+      institutionOnly: strengths.length > 0 && strengths.every((s) => s === "institution"),
       strength: weakestOf(strengths),
       verify: !!spec.verify,
       offerBefore: !!spec.offerBefore,

@@ -1,9 +1,9 @@
 {
   "id": "BRK-24",
-  "title": "Non-bank member tariffs: the bank part structure plus extra fee lines (monthly account fee, custody, conversion spread, data, income handling, transfers, third-party charges)",
-  "title_he": "תעריפוני בתי ההשקעות: מבנה הבנקים ושורות עמלה נוספות",
-  "text_he": "תעריפוני בתי ההשקעות שנקראו בנויים לפי החלקים של תעריפון הבנקים ומוסיפים שורות שמשנות את העלות: דמי טיפול חודשיים לחשבון, דמי משמרת או דמי ניהול פיקדון ניירות ערך, מרווח המרה לצד עמלת החליפין או במקומה, תשלום חודשי על מערכות מתקדמות או ציטוטים בזמן אמת, עמלה על תשלומי ריבית ודיבידנד, עמלות העברת ניירות, והערה שעסקאות בארצות הברית עשויות לשאת חיובים נוספים של הרגולטור והבורסות מעבר לעמלה. אקסלנס מציינת שחבר הבורסה רשאי לגבות פחות מהתעריפון, כך שהתעריפון הוא תקרה ויש מחירים מוסכמים. אלה תעריפוני הגופים עצמם, והם משתנים כמה פעמים בשנה.",
-  "strength": "institution",
+  "title": "Every TASE member reports its fees to TASE in the bank fee schedule's format, and states them in the client agreement",
+  "title_he": "כל חבר בורסה מדווח על העמלות שלו במתכונת של תעריפון הבנקים",
+  "text_he": "לפי תקנון הבורסה כל חבר בורסה מדווח לבורסה על כל העמלות שהוא גובה מלקוחותיו, במתכונת התוספת הראשונה לכללי העמלות של הבנקים; שינוי מדווח בתוך שבעה ימי מסחר, והמידע שמדווח חייב להיות זהה למה שהחבר מפרסם. כל חבר עושה עם הלקוח הסכם בכתב לפני תחילת השירות, וההסכם חייב לפרט את שיעור העמלות, דמי הניהול וכל חיוב אחר; חבר שאינו בנק רשאי לעשות את ההסכם באופן מקוון. כלל שמחייב חבר שאינו בנק לפרסם תעריפון במבנה הזה, או שהופך תעריפון שפורסם לתקרה, לא נמצא.",
+  "strength": "primary",
   "dimensions": [
     "fee-custody",
     "fee-trade",
@@ -13,46 +13,35 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
   "il_finance_file": "brokerage-account.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
-      "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
-      "title": "IBI tariff, \"נכון לתאריך: 1.7.2026\"",
-      "title_he": "תעריפון עמלות אי.בי.אי (1.7.2026)",
-      "publisher": "IBI",
-      "publisher_he": "אי.בי.אי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
+      "url": "https://content.tase.co.il/media/q2mhob4u/274690.pdf",
+      "title": "מדריך לחברי הבורסה: החלק הראשון לתקנון (מעודכן עד 1.1.2026)",
+      "title_he": "מדריך לחברי הבורסה: החלק הראשון לתקנון (מעודכן עד 1.1.2026)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.23, s.18; p.35, s.29ב, 29ג(2)",
+      "locator_he": "עמוד 23, סעיף 18; עמוד 35, סעיף 29ב, 29ג(2)",
+      "page": 23,
+      "checked": "2026-10-25",
+      "qualifier": "(exchange rules, ISA-approved)"
     },
     {
-      "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
-      "title": "Excellence Trade full tariff (no date on document)",
-      "title_he": "תעריפון אקסלנס טרייד",
-      "publisher": "Excellence",
-      "publisher_he": "אקסלנס",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
-      "title": "Altshuler Shaham Trade tariff (no date on document)",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
-      "title": "Psagot Trade tariff page",
-      "title_he": "תעריפון פסגות טרייד",
-      "publisher": "Psagot",
-      "publisher_he": "פסגות",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
+      "url": "https://content.tase.co.il/media/g2ekpw4d/274691.pdf",
+      "title": "מדריך לחברי הבורסה: הנחיות על פי החלק הראשון לתקנון (מעודכן עד 1.1.2026)",
+      "title_he": "מדריך לחברי הבורסה: הנחיות על פי החלק הראשון לתקנון (מעודכן עד 1.1.2026)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "pp.40 to 41, s.17(א)-(ד); p.105, s.29א",
+      "locator_he": "עמודים 40 עד 41, סעיף 17(א)-(ד); עמוד 105, סעיף 29א",
+      "page": 40,
+      "checked": "2026-10-25",
+      "qualifier": "(exchange rules, ISA-approved)"
     }
   ]
 }

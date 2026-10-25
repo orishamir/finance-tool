@@ -1,9 +1,9 @@
 {
   "id": "SW-34",
-  "title": "Non-bank brokers: no cap on fees for moving securities out was found; tariffs charge per security",
-  "title_he": "העברת ניירות ערך מבית השקעות: אין תקרה, מחיר לנייר",
-  "text_he": "לא נמצא כלל שמגביל מה חבר בורסה שאינו בנק גובה על העברת ניירות ערך החוצה. תעריפון אי.בי.אי גובה סכום לנייר להעברה לאותו לקוח בחבר אחר, עם מקסימום ליום, וסכום גבוה יותר לנייר לחשבון בבעלות אחרת; בחו״ל הסכום לנייר נקוב בדולרים. אלטשולר שחם טרייד מציינת שאינה גובה עמלה על קליטת תיק, וכתבה מדווחת שיציאה מברוקר יכולה לעלות מאות או אלפי שקלים. אלה נתוני תעריפון, לא כללים.",
-  "strength": "institution",
+  "title": "Non-bank brokers: no cap found on fees for moving securities out",
+  "title_he": "העברת ניירות ערך מבית השקעות: לא נמצאה תקרה",
+  "text_he": "לא נמצא כלל שמגביל מה חבר בורסה שאינו בנק גובה על העברת ניירות ערך החוצה. כללי העמלות של בנק ישראל, עם המחיר המפוקח והתקרה בסגירת חשבון, חלים על בנקים בלבד, וכללי הבורסה מחייבים כל חבר לדווח על העמלות שלו אבל לא מגבילים אותן. כתבה מדווחת שיציאה מברוקר יכולה לעלות מאות ואף אלפי שקלים. עד שיימצא כלל של הבורסה או של רשות ניירות ערך, זו שאלה פתוחה.",
+  "strength": "secondary",
   "dimensions": [
     "fee-exit",
     "fee-custody"
@@ -11,33 +11,8 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
-    {
-      "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
-      "title": "אי.בי.אי – תעריפון (נכון לתאריך 1.7.2026)",
-      "title_he": "אי.בי.אי – תעריפון (נכון לתאריך 1.7.2026)",
-      "publisher": "IBI",
-      "publisher_he": "אי.בי.אי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.5",
-      "locator_he": "עמוד 5",
-      "page": 5,
-      "quote": "מקסימום 150 ₪ להעברה",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.as-invest.co.il/trade/faq_transfer/",
-      "title": "אלטשולר שחם טרייד – מעבירים את תיק ההשקעות שלכם לאלטשולר שחם טרייד",
-      "title_he": "אלטשולר שחם טרייד – מעבירים את תיק ההשקעות שלכם לאלטשולר שחם טרייד",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "אנו לא גובים עמלה על העברת תיק",
-      "checked": "2026-10-25"
-    },
     {
       "url": "https://www.calcalist.co.il/article/hj55ri2pgx",
       "title": "כלכליסט – המעבר מבנק לבית השקעות הוא זול, אך לצאת משם מאוד יקר (27.08.26)",
@@ -49,5 +24,9 @@
       "quote": "למאות ואף לאלפי שקלים",
       "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "SW-33",
+    "BRK-24"
   ]
 }

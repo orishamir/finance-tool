@@ -1,14 +1,14 @@
 {
   "id": "PF-26",
   "title": "Statements: annual report within three months, quarterly report within 60 days",
-  "title_he": "דוחות לעמית: שנתי ורבעוני, לפי התקנון",
-  "text_he": "החוק מחייב את החברה המנהלת לשלוח לעמיתים דוחות תקופתיים ונוספים, והממונה קובע את התוכן, המתכונת והעיתוי. לפי תקנון קופת גמל להשקעה של אלטשולר שחם, דוח שנתי לעמית נשלח אחת לשנה, לא יאוחר ממספר חודשים אחרי תום השנה, במתכונת שהממונה קובע, בדואר אלא אם העמית ביקש דוא״ל, ודוח מפורט מוצג באזור האישי המקוון; דוח רבעוני מוצג באזור האישי בתוך מספר ימים מתום כל רבעון חוץ מהרביעי. אין חובה להציג או לשלוח דוח רבעוני לעמית שלא הפקיד ולא העביר כסף לקופה באותו רבעון ושיתרתו מתחת לסכום שהתקנון קובע. נוסח הרגולטור עם אותם מועדים נמצא בכלל נפרד על חוזר הדוח האחיד; החוק נקרא באתר שמעתיק אותו והתקנון הוא מסמך של המוסד.",
+  "title_he": "דוחות לעמית: שנתי ורבעוני",
+  "text_he": "החוק מחייב את החברה המנהלת לשלוח לעמיתים דוחות, והממונה קובע את התוכן, המתכונת והעיתוי. לפי חוזר רשות שוק ההון, דוח שנתי נשלח לכל עמית אחת לשנה, לא יאוחר מכמה חודשים אחרי תום השנה, ודוח רבעוני מוצג באזור האישי המקוון בתוך מספר ימים מתום כל רבעון, חוץ מהרביעי. אין חובה להציג או לשלוח דוח רבעוני על מוצר שלא הופקד אליו כסף באותו רבעון ושיתרתו מתחת לסכום שהחוזר קובע.",
   "figure_names_he": {
     "annual_report_deadline_months": "חודשים אחרי תום השנה לשליחת הדוח השנתי",
     "quarterly_report_deadline_days": "ימים מתום הרבעון להצגת הדוח הרבעוני",
     "quarterly_report_exemption_balance_nis": "יתרה שמתחתיה אין חובת דוח רבעוני"
   },
-  "strength": "institution",
+  "strength": "primary",
   "dimensions": [
     "statement-disclosure"
   ],
@@ -28,12 +28,12 @@
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "provider-set",
+      "update_rule": "fixed in regulation",
       "rule_ids": [
         "PF-26"
       ],
       "state": "sourced",
-      "notes": "Annual report to the member once a year, no later than three months after year end (bylaws s. 31). The regulator's text with the same deadline is PF-33."
+      "notes": "Annual report to every member once a year, within three months of year end (circular 2020-9-22 s.3(א)); the full text is PF-33. A CMA circular: \"fixed in regulation\" is the nearest value in the schema list."
     },
     "quarterly_report_deadline_days": {
       "value": 60,
@@ -48,12 +48,12 @@
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "provider-set",
+      "update_rule": "fixed in regulation",
       "rule_ids": [
         "PF-26"
       ],
       "state": "sourced",
-      "notes": "Quarterly report shown in the personal online account within 60 days of the end of each quarter except the fourth (bylaws s. 32.1). Same figure in PF-33."
+      "notes": "Quarterly report shown in the personal online account within 60 days of the end of each quarter except the fourth (circular 2020-9-22 s.4(א)); same figure in PF-33. A CMA circular: \"fixed in regulation\" is the nearest value in the schema list."
     },
     "quarterly_report_exemption_balance_nis": {
       "value": 50000,
@@ -68,16 +68,16 @@
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "provider-set",
+      "update_rule": "fixed in regulation",
       "rule_ids": [
         "PF-26"
       ],
       "state": "sourced",
-      "notes": "No quarterly report need be shown or sent to a member with no deposit or transfer into the fund that quarter and a balance under NIS 50,000 (bylaws s. 32.2). Bylaws figure, not stated as indexed. Same figure in PF-33."
+      "notes": "No quarterly report need be shown or sent for a product with no deposits in that quarter and a balance under NIS 50,000 (circular 2020-9-22 s.4(ה)); not stated as indexed; same figure in PF-33. A CMA circular: \"fixed in regulation\" is the nearest value in the schema list."
     }
   },
   "il_finance_file": "provident-family-common.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
@@ -87,7 +87,8 @@
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
-      "locator": "pp.2-3, s.3(א) on p.2, s.4(א), 4(ה) on p.3",
+      "locator": "p.2, s.3(א); p.3, s.4(א), 4(ה)",
+      "locator_he": "עמוד 2, סעיף 3(א); עמוד 3, סעיף 4(א), 4(ה)",
       "page": 2,
       "quote": "מדי שנה, תוך שלושה חודשים מתום השנה",
       "checked": "2026-10-25"
@@ -105,20 +106,9 @@
       "page": 14,
       "quote": "חברה מנהלת תשלח לעמיתים",
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-      "title": "אלטשולר שחם גמל להשקעה \"חיסכון פלוס\" – תקנון, מרץ 2025",
-      "title_he": "אלטשולר שחם גמל להשקעה \"חיסכון פלוס\" – תקנון, מרץ 2025",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "pp.9-10, ss.29-32",
-      "locator_he": "עמודים 9 עד 10, סעיפים 29-32",
-      "page": 9,
-      "quote": "דין וחשבון שנתי לעמית",
-      "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "PF-33"
   ]
 }

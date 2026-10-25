@@ -2,7 +2,7 @@
   "id": "PF-03",
   "title": "Kupat gemel lehashkaa falls under the regulation-2 cap (4% of deposits, 1.05% of balance)",
   "title_he": "קופת גמל להשקעה תחת התקרה הכללית לקופות גמל",
-  "text_he": "קופת גמל להשקעה לא מופיעה ברשימת הקופות שהוצאו מהתקרה הכללית, ולכן התקרה הכללית לקופות גמל חלה עליה. התקנה לא נוקבת בשם המוצר; זו הקריאה שלנו של רשימת ההחרגות, וחברה מנהלת מאשרת אותה. תקנון אלטשולר שחם לא נוקב בסכום ומפנה לשיעור המרבי שבהסדר התחיקתי; הפניקס נוקבת בשתי התקרות במפורש. התקרה עצמה במקור ראשי; השיוך של המוצר לתקנה נשען על רשימת ההחרגות ועל אישור מוסדי אחד.",
+  "text_he": "קופת גמל להשקעה לא מופיעה ברשימת הקופות שהוצאו מהתקרה הכללית, ולכן התקרה הכללית לקופות גמל חלה עליה. התקנה לא נוקבת בשם המוצר; זו קריאה של האתר ברשימת ההחרגות. התקנון התקני של רשות שוק ההון לקופת גמל להשקעה מגביל את דמי הניהול לשיעור המרבי שבהסדר התחיקתי.",
   "strength": "primary",
   "dimensions": [
     "fee-management-balance",
@@ -10,7 +10,7 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "provident-family-common.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4",
@@ -26,29 +26,18 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-      "title": "אלטשולר שחם גמל להשקעה \"חיסכון פלוס\" – תקנון, מרץ 2025",
-      "title_he": "אלטשולר שחם גמל להשקעה \"חיסכון פלוס\" – תקנון, מרץ 2025",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.10, s.35.1",
-      "locator_he": "עמוד 10, סעיף 35.1",
-      "page": 10,
-      "quote": "שיעור דמי הניהול המרבי הקבוע בהסדר התחיקתי",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.fnx.co.il/gemel/gemelhashkaa/faq/",
-      "title": "הפניקס – קופת גמל להשקעה: שאלות ותשובות",
-      "title_he": "הפניקס – קופת גמל להשקעה: שאלות ותשובות",
-      "publisher": "The Phoenix",
-      "publisher_he": "הפניקס",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "עד תקרה חוקית של 4%",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-2829/he/regulation_hm_takanongemel.pdf",
+      "title": "CMA standard bylaw for kupat gemel lehashkaa (2016)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "s.35.1",
+      "locator_he": "סעיף 35.1",
       "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "PF-02"
   ]
 }

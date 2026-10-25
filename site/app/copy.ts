@@ -576,7 +576,7 @@ export const formulaNames: Record<string, string> = {
 
 /** What each engine flag means, in one line (method.md §12); copy.md 3.8. The code stays beside the words. */
 export const flags: Record<string, string> = {
-  "G-02": "בסיס המס במשיכה: החוק לא אומר במפורש אם המס הוא על הרווח הריאלי. האתר מחשב לפי מה שהחברות המנהלות מנכות, ומציג גם את החלופה.",
+  "G-02": "בסיס המס במשיכה: לפי החוק המס הוא על הרווח הריאלי, כי חלק ההצמדה פטור. האתר מציג גם את החלופה של שיעור נמוך יותר על הרווח הנומינלי, שלפי דברי ההסבר לחוק לא חלה כאן.", // 2026-10-25 tax-bases research: the base is the law's (TXK-07)
   "G-11": "דמי ביטוח לאומי על הרווח במשיכה: עוד לא ברור אם חלים. האתר לא מחשב אותם.",
   "G-14": "הוצאות ישירות של המסלול לא נאספו עדיין, ולכן לא נכללו בחישוב.",
   "G-21": "חלק מהמס מוסדר דרך דוח שנתי, לא בניכוי במקור.",
@@ -678,6 +678,8 @@ export const guideBlocks = {
     labelDays: "תוך כמה זמן הכסף אצלכם",
     upTo: "עד",
     businessDays: "ימי עסקים",
+    // a payout time that only one company was read for (D30, 2026-10-25): the company is named, the others were not checked
+    onlyAt: { before: "כך אצל", after: "; אצל האחרים לא נבדק" },
     labelSwitch: "מעבר בין מסלולים",
     labelCeiling: "תקרת הפקדה",
     // one line per `lawful_exit.kind` (data-schema 3.3); each number is a Num on the page; copy.md 3.5a

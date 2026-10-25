@@ -2,28 +2,28 @@
   "id": "ETF-29",
   "title": "UCITS ETF units are bought and sold on the exchange through an intermediary, not from the fund; the price can differ from NAV",
   "title_he": "יחידות קרן סל אירופית נקנות דרך מתווך, לא מהקרן",
-  "text_he": "בלאקרוק מצהירה שיחידות של קרן סל אירופית (UCITS) שנקנו בשוק המשני בדרך כלל אי אפשר למכור בחזרה לקרן ישירות. משקיע שאינו משתתף מורשה חייב לקנות ולמכור דרך מתווך, כמו ברוקר, עשוי לשלם עמלות ומסים נוספים, ועשוי לשלם יותר משווי הנכסים הנקי בקנייה ולקבל פחות ממנו במכירה. המסמך אינו מכוון לתושבי ארצות הברית וקנדה. זו הצהרת המנפיק.",
-  "strength": "institution",
+  "text_he": "לפי הנחיות הרגולטור האירופי (ESMA), כל קרן סל אירופית (UCITS) שיחידותיה שנקנו בשוק המשני בדרך כלל אינן נפדות בקרן חייבת להזהיר על כך בתשקיף ובפרסומים: את היחידות האלה בדרך כלל אי אפשר למכור בחזרה לקרן ישירות, קונים ומוכרים אותן דרך מתווך כמו ברוקר, ועשויים לשלם עמלות, לשלם יותר משווי הנכסים הנקי בקנייה ולקבל פחות ממנו במכירה. אם מחיר הבורסה סוטה מאוד מהשווי הנקי, משקיעים מהשוק המשני רשאים למכור בחזרה לקרן, לפי תהליך שהתשקיף מגלה.",
+  "strength": "primary",
   "dimensions": [
     "fee-trade",
     "liquidity-lockup"
   ],
   "likely_to_change": "no",
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
-      "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/cspx-ishares-core-s-p-500-ucits-etf-fund-fact-sheet-en-gb.pdf",
-      "title": "iShares CSPX factsheet, September 2026",
-      "title_he": "iShares Core S&P 500 UCITS ETF: דף מידע (ספטמבר 2026)",
-      "publisher": "iShares",
-      "publisher_he": "iShares",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.4",
-      "locator_he": "עמוד 4",
-      "page": 4,
-      "checked": "2026-10-25"
+      "url": "https://www.esma.europa.eu/sites/default/files/library/2015/11/esma-2014-0011-01-00_en_0.pdf",
+      "title": "ESMA, Guidelines on ETFs and other UCITS issues, ESMA/2014/937 (1.8.2014)",
+      "publisher": "ESMA (European Securities and Markets Authority)",
+      "publisher_he": "רשות ניירות הערך והשווקים האירופית (ESMA)",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.7",
+      "locator_he": "עמוד 7",
+      "page": 7,
+      "checked": "2026-10-25",
+      "qualifier": "(foreign regulator)"
     }
   ]
 }

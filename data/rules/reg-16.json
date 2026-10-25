@@ -1,25 +1,48 @@
 {
   "id": "REG-16",
-  "title": "Brokerage client assets at a non-bank TASE member: what is stated",
-  "title_he": "נכסי לקוחות אצל חבר בורסה שאינו בנק: מה נאמר",
-  "text_he": "מיטב טרייד מציינת שהיא חברת בורסה, שכספי הלקוחות וניירות הערך שלהם מופקדים במסלקת הבורסה, שניירות הערך רשומים על שם הלקוחות בספרי החברה, ושכספים נזילים מוחזקים בחשבון נאמנות בבנק. זו הצהרה מוסדית בלבד: לא נמצא חוק שמפריד את נכסי הלקוחות של חבר בורסה, וסעיפי חוק ניירות ערך שנקראו עוסקים בסליקה ולא בהפרדת נכסי לקוחות; הטקסט הקובע הוא כנראה בתקנון הבורסה ובחוקי העזר של המסלקה, שלא נקראו. מזומן של לקוחות בחשבון נאמנות בבנק חשוף לאותו בנק, שאין לו ביטוח פיקדונות; זה לא אומת.",
-  "strength": "institution",
+  "title": "Brokerage client assets at a non-bank TASE member: held apart, in trust, by TASE rule",
+  "title_he": "נכסי לקוחות אצל חבר בורסה שאינו בנק: בנפרד ובנאמנות, לפי תקנון הבורסה",
+  "text_he": "לפי תקנון הבורסה כל חבר בורסה שאינו בנק מחזיק את הנכסים הפיננסיים של לקוחותיו בנפרד מנכסיו, ומנהל חשבון נפרד לכל לקוח. ניירות ערך הנסחרים בבורסה מוחזקים בחשבון במסלקת הבורסה על שם החבר, בנאמנות עבור לקוחותיו, ומזומן של לקוחות מוחזק בחשבונות על שם החבר בנאמנות עבורם, בנפרד מכספו ובלי שעבוד של צד שלישי. מה קורה לנכסים אם חבר בורסה קורס, ואם מזומן בחשבון נאמנות בבנק חשוף לקריסת אותו בנק, לא נמצא.",
+  "strength": "primary",
   "dimensions": [
     "protection"
   ],
-  "likely_to_change": "no",
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-15",
   "il_finance_file": "regulators-and-protection.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
-      "url": "https://www.meitav.co.il/trade/about/",
-      "title": "מיטב טרייד: אודות",
-      "title_he": "מיטב טרייד: אודות",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
+      "url": "https://content.tase.co.il/media/q2mhob4u/274690.pdf",
+      "title": "מדריך לחברי הבורסה: החלק הראשון לתקנון (מעודכן עד 1.1.2026)",
+      "title_he": "מדריך לחברי הבורסה: החלק הראשון לתקנון (מעודכן עד 1.1.2026)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "pp.34 to 35, ss.25 to 26",
+      "locator_he": "עמודים 34 עד 35, סעיפים 25 עד 26",
+      "page": 34,
+      "checked": "2026-10-25",
+      "qualifier": "(exchange rules, ISA-approved)"
+    },
+    {
+      "url": "https://content.tase.co.il/media/g2ekpw4d/274691.pdf",
+      "title": "מדריך לחברי הבורסה: הנחיות על פי החלק הראשון לתקנון (מעודכן עד 1.1.2026)",
+      "title_he": "מדריך לחברי הבורסה: הנחיות על פי החלק הראשון לתקנון (מעודכן עד 1.1.2026)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "pp.95 to 102, s.26",
+      "locator_he": "עמודים 95 עד 102, סעיף 26",
+      "page": 95,
+      "checked": "2026-10-25",
+      "qualifier": "(exchange rules, ISA-approved)"
     }
+  ],
+  "derived_from": [
+    "BRK-07",
+    "BRK-08"
   ]
 }

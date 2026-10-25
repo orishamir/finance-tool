@@ -1,8 +1,8 @@
 {
   "id": "TXH-11",
-  "title": "Gains on non-benefited deposits: interest income, up to 25%",
+  "title": "Gains on non-benefited deposits: interest income, up to 25% of the real gain",
   "title_he": "המס על רווחים מהפקדות שאינן מוטבות",
-  "text_he": "ריבית ורווחים אחרים על הפקדות מעל התקרה, שנמשכים אחרי תקופת ההמתנה, ממוסים עד שיעור המס המרבי על רווחים מהפקדה לא מוטבת, כמדרגה העליונה של ההכנסה; רווחים מההפקדה המוטבת פטורים. בחוק אלה 'הכנסה מריבית', והחלק שמקביל להפרשי הצמדה הוא 'הכנסה מהפרשי הצמדה'. הקרן מנכה במקור, והמדריך אומר לדווח על ההכנסה בדוח השנתי. נייר הכלכלן הראשי במשרד האוצר מתאר את המס כמס על הרווח הריאלי, כלומר הרווח הנומינלי בניכוי עליית המדד; המדריך של רשות המסים לא אומר מה הבסיס, ואיך זה מתיישב עם 'הכנסה מהפרשי הצמדה' שבחוק היא שאלה פתוחה.",
+  "text_he": "ריבית ורווחים אחרים על הפקדות מעל התקרה, שנמשכים אחרי תקופת ההמתנה, ממוסים עד שיעור המס המרבי על רווחים מהפקדה לא מוטבת, כמדרגה העליונה של ההכנסה; רווחים מההפקדה המוטבת פטורים. בחוק אלה 'הכנסה מריבית', והחלק שמקביל להפרשי הצמדה הוא 'הכנסה מהפרשי הצמדה'. הקרן מנכה במקור, והמדריך אומר לדווח על ההכנסה בדוח השנתי. הבסיס הוא הרווח הריאלי, כלומר הרווח הנומינלי בניכוי עליית המדד, כך לפי נייר הכלכלן הראשי במשרד האוצר; זה מתיישב עם החוק: חלק הרווח בגובה הפרשי ההצמדה על ההפקדות נחשב הכנסה מהפרשי הצמדה ופטור ממס, כי המשפט שהוציא חשבון בקופת גמל מהפטור נמחק בתיקון לפקודה.",
   "figure_names_he": {
     "rate": "שיעור המס המרבי על רווחים מהפקדה לא מוטבת",
     "real_base": "הבסיס הוא הרווח הריאלי"
@@ -35,27 +35,27 @@
         "TXH-11"
       ],
       "state": "sourced",
-      "notes": "Gains accrued from 1.1.2003 on deposits above the ceiling, withdrawn after the holding period: maximum rate \"שלא יעלה על 25%\" (s.125C(b), top slice of income); the fund withholds 25%. The rule base does NOT say the base is the real gain: real vs nominal base, the treatment of the linkage part, and whether 15% (s.125C(c)) can ever apply are unsettled (open question 1; guide p.87 says the s.9(13) linkage exemption does not apply to a provident fund account). Strength is primary (the Tax Authority guide), not institution."
+      "notes": "Gains accrued from 1.1.2003 on deposits above the ceiling, withdrawn after the holding period: maximum rate \"שלא יעלה על 25%\" (s.125C(b), top slice of income); the fund withholds 25%. The base is the real gain (figure real_base, Chief Economist paper). Still unsettled: the treatment of the linkage part under s.3(ה4)(1), the guide's line that the s.9(13) linkage exemption does not apply to a provident fund account, and whether 15% (s.125C(c)) can ever apply (open question 1). Strength is primary (the Tax Authority guide)."
     },
     "real_base": {
       "value": true,
       "unit": "boolean",
       "source": {
-        "url": "https://www.moreinvest.co.il/%D7%9B%D7%AA%D7%91%D7%95%D7%AA/%D7%AA%D7%A7%D7%A8%D7%AA-%D7%94%D7%A4%D7%A7%D7%93%D7%94-%D7%9C%D7%A7%D7%A8%D7%9F-%D7%94%D7%A9%D7%AA%D7%9C%D7%9E%D7%95%D7%AA/",
-        "title": "Mor, \"תקרת הפקדה לקרן השתלמות\"; also Clal, \"מהי תקרת ההפקדה לקרן השתלמות?\" (https://www.clalbit.co.il/educationfund/faq/educationfundmax/)",
-        "publisher": "Mor Investment House; Clal Insurance",
-        "strength": "institution"
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf",
+        "title": "Ministry of Finance Chief Economist paper, October 2025, p.5, item 3 and note 7: \"בגובה 25% מהרווחים הריאליים\"; p.20: \"על כל רווח ריאלי שייווצר על ההפקדות מעל התקרה החדשה\"",
+        "publisher": "Ministry of Finance (Chief Economist)",
+        "strength": "primary"
       },
       "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
-      "update_rule": "provider-set",
+      "update_rule": "fixed in law",
       "rule_ids": [
         "TXH-11"
       ],
       "state": "sourced",
-      "notes": "Base of the 25%: the real gain. The Tax Authority guide gives no base (tax-hishtalmut.md open question 1); two managers state the real gain (browser pass 3, 2026-10-22). Institution strength: computes with a label (coverage F1, method G-04)."
+      "notes": "Base of the 25%: the real gain, nominal gains less the cumulative rise in the CPI (the paper's note 7). It fits the law: s.3(ה4)(1) makes the linkage part linkage income, exempt under s.9(13) since Amendment 190 deleted the provident-account exclusion from 1.1.2012 (tax-bases research 2026-10-25). Moved from two managers' pages (Mor, Clal) to the paper in the 2026-10-25 scope pass."
     }
   },
   "il_finance_file": "tax-hishtalmut.md",
@@ -76,16 +76,17 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
-      "title": "Tax Authority guide 2025",
-      "title_he": "דע זכויותיך וחובותיך 2025",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
       "publisher": "gov.il",
       "publisher_he": "רשות המסים",
-      "kind": "official_pdf",
+      "kind": "law",
       "strength": "primary",
-      "locator": "p.89, row 9(13)",
-      "page": 89,
-      "quote": "הוראות אלה לא יחולו על חשבון בקופת גמל",
+      "locator": "p.41, s.9(13)",
+      "locator_he": "עמוד 41, סעיף 9(13)",
+      "page": 41,
+      "quote": "הפרשי הצמדה שקיבל יחיד בשל נכס, ובלבד שהתקיימו כל אלה",
       "checked": "2026-10-25"
     },
     {
@@ -135,8 +136,7 @@
       "publisher_he": "משרד האוצר",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.5",
-      "locator_he": "עמוד 5",
+      "locator": "p.5, item 3",
       "page": 5,
       "quote": "בגובה 25% מהרווחים הריאליים",
       "checked": "2026-10-25"
@@ -153,6 +153,20 @@
       "locator_he": "עמוד 20",
       "page": 20,
       "quote": "על כל רווח ריאלי שייווצר על ההפקדות מעל התקרה החדשה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/18/law/18_lsr_301456.pdf",
+      "title": "חוק לתיקון פקודת מס הכנסה (מס' 190 והוראת שעה), התשע\"ב-2012, ספר החוקים 2354",
+      "title_he": "חוק לתיקון פקודת מס הכנסה (מס' 190 והוראת שעה), התשע\"ב-2012, ספר החוקים 2354",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.359, s.4(2)",
+      "locator_he": "עמוד 359, סעיף 4(2)",
+      "page": 359,
+      "quote": "בפסקה (13), הסיפה החל במילים",
       "checked": "2026-10-25"
     }
   ]

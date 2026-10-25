@@ -1,29 +1,43 @@
 {
   "id": "PF-24",
-  "title": "A member who does not choose a track is placed in the default track (bylaw text)",
+  "title": "A member who does not choose is placed in the default track",
   "title_he": "מי שלא בחר מסלול מצורף לברירת המחדל",
-  "text_he": "לפי תקנון אלטשולר שחם לקופת גמל להשקעה, עמית שלא בחר מסלול השקעה בתהליך ההצטרפות מצורף למסלול השקעה ברירת מחדל. המסלול הזה מוגדר כמסלול שמנהל את כספי העמית כל עוד לא בחר מסלול אחר. זהו מקור מוסדי בלבד; איזה מסלול הוא ברירת המחדל בכל מוצר ובכל חברה מופיע בקטלוג המסלולים.",
-  "strength": "institution",
+  "text_he": "בקופות גמל שאינן קרנות השתלמות ואינן קופות גמל להשקעה, עמית חדש שלא בחר מסלול מצורף למסלול ברירת המחדל שמתאים לגילו. בקופת גמל להשקעה התקנון חייב לקבוע מסלול ברירת מחדל, ומי שלא בחר בהצטרפות מצורף אליו. בקרן השתלמות ברירת המחדל היא אחד משני מסלולים, הכללי או מסלול עוקב מדדים גמיש, לפי התקנון. כך קובע חוזר המסלולים של רשות שוק ההון.",
+  "strength": "primary",
   "dimensions": [
     "transfer-switch-process"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
   "il_finance_file": "provident-family-common.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
-      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-      "title": "אלטשולר שחם גמל להשקעה \"חיסכון פלוס\" – תקנון, מרץ 2025",
-      "title_he": "אלטשולר שחם גמל להשקעה \"חיסכון פלוס\" – תקנון, מרץ 2025",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.4, s.7.4; definitions on p.3",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "title": "חוזר גופים מוסדיים 2022-9-30 – מסלולי השקעה בקופות גמל – תיקון",
+      "title_he": "חוזר גופים מוסדיים 2022-9-30: מסלולי השקעה בקופות גמל – תיקון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.4, annex s.4(ב); p.6, s.7(ב)-(ג)",
       "page": 4,
-      "quote": "לא בחר עמית מסלול השקעה במסגרת תהליך ההצטרפות",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-2829/he/regulation_hm_takanongemel.pdf",
+      "title": "CMA standard bylaw for kupat gemel lehashkaa (2016)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "s.7.4",
+      "locator_he": "סעיף 7.4",
       "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "KGL-11",
+    "KH-19"
   ]
 }

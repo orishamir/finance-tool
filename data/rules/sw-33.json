@@ -1,8 +1,8 @@
 {
   "id": "SW-33",
-  "title": "Banks: a supervised price to move securities to your own account elsewhere, and at most NIS 10 on closing the account",
+  "title": "Banks: a supervised price to move securities to your own account elsewhere, and at most NIS 10 on closing",
   "title_he": "העברת ניירות ערך מבנק: מחיר בפיקוח ותקרה בסגירה",
-  "text_he": "בתעריפון המלא לסעיף 'העברת ניירות ערך' שני מחירים: סכום בשקלים להעברה, בפיקוח, לחשבון של אותו לקוח בגוף פיננסי אחר, ואחוז עם מינימום ומקסימום לתיק לחשבון של לקוח אחר. חשבון של אותו לקוח כולל חשבון משותף עם בן או בת הזוג, והעברה לחשבון של אותו לקוח בעת סגירת החשבון לא תעלה על התקרה, כולל הוצאות צד שלישי; אותה תקרה חלה על העברת מטבע חוץ בסגירה. תעריפון דיסקונט מתמחר את ההעברה בפיקוח בסכום קבוע להעברה, אבל שלושה מקורות חולקים על היחידה (להעברה או לנייר), והצו שקובע את המחיר המפוקח לא נמצא; השתמשו בשורת התעריפון של הבנק שלכם.",
+  "text_he": "בתעריפון המלא לסעיף 'העברת ניירות ערך' שני מחירים: סכום בשקלים להעברה, בפיקוח, לחשבון של אותו לקוח בגוף פיננסי אחר, ואחוז עם מינימום ומקסימום לתיק לחשבון של לקוח אחר. חשבון של אותו לקוח כולל חשבון משותף עם בן או בת הזוג, והעברה לחשבון של אותו לקוח בעת סגירת החשבון לא תעלה על התקרה, כולל הוצאות צד שלישי; אותה תקרה חלה על העברת מטבע חוץ בסגירה. הכללים קובעים שהמחיר בפיקוח אבל לא נוקבים בו, והצו שקובע אותו לא נמצא; השתמשו בשורת התעריפון של הבנק שלכם.",
   "figure_names_he": {
     "closing_transfer_cap": "תקרת העמלה להעברה בעת סגירת החשבון"
   },
@@ -32,11 +32,11 @@
         "SW-33"
       ],
       "state": "sourced",
-      "notes": "Transfer of securities (and of foreign currency) to the same client's account on closing the account: not more than NIS 10 for the portfolio transfer and third-party costs. Discount's tariff prices the supervised per-transfer line at NIS 5 (institution); the three sources read disagree on whether that price is per transfer or per security (SW OQ10)."
+      "notes": "Transfer of securities (and of foreign currency) to the same client's account on closing the account: not more than NIS 10 for the portfolio transfer and third-party costs. The rules make the same-client price a supervised item without stating it; the order that sets it was not found (SW OQ10, SW-52)."
     }
   },
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://www.boi.org.il/media/mi2driua/159a.pdf",
@@ -50,40 +50,6 @@
       "locator_he": "עמודים 17 עד 19",
       "page": 17,
       "quote": "בעת סגירת חשבון לא תעלה על 10",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.discountbank.co.il/media/bjudw31y/part4_securities07022025.pdf",
-      "title": "דיסקונט – תעריפון, חלק 4 ניירות ערך (07/02/2025)",
-      "title_he": "דיסקונט – תעריפון, חלק 4 ניירות ערך (07/02/2025)",
-      "publisher": "Discount Bank",
-      "publisher_he": "בנק דיסקונט",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.5, items 4.6.1-4.6.2",
-      "page": 5,
-      "quote": "5 ₪ להעברה (פיקוח)",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.meitav.co.il/trade/financial_info/self_trading_portfolio_transfer/",
-      "title": "מיטב – המדריך למעבר חלק: איך לנייד את תיק ההשקעות מהבנק למסחר עצמאי (03/08/2026)",
-      "title_he": "מיטב – המדריך למעבר חלק: איך לנייד את תיק ההשקעות מהבנק למסחר עצמאי (03/08/2026)",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "5 שקל לנייר ערך ישראל",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.calcalist.co.il/article/hj55ri2pgx",
-      "title": "כלכליסט – המעבר מבנק לבית השקעות הוא זול, אך לצאת משם מאוד יקר (27.08.26)",
-      "title_he": "כלכליסט – המעבר מבנק לבית השקעות הוא זול, אך לצאת משם מאוד יקר (27.08.26)",
-      "publisher": "Calcalist",
-      "publisher_he": "כלכליסט",
-      "kind": "article",
-      "strength": "secondary",
       "checked": "2026-10-25"
     }
   ]

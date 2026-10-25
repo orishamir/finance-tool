@@ -14,10 +14,10 @@
       "value": 6303528,
       "unit": "nis",
       "source": {
-        "url": "https://www.meitav.co.il/provident_pension/ira/",
-        "title": "Meitav, IRA product page: \"קיימת מגבלת הפקדה בסך של 6,303,528 ₪ נכון לשנת 2026\"; formula in Reshumot 2017 amendment reg. 2(ב)-(ג)",
-        "publisher": "Meitav Gemel and Pension",
-        "strength": "institution"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=3",
+        "title": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819), p.3, reg. 2(ב): 4 × הסכום הקובע 1,575,882 = 6,303,528",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+        "strength": "primary"
       },
       "checked": "2026-10-25",
       "effective_from": "2026-01-01",
@@ -29,16 +29,16 @@
         "IRA-08"
       ],
       "state": "sourced",
-      "notes": "2026 cap on money in an IRA fund: 4 × הסכום הקובע, per product, across all the member's IRA accounts (reg. 2(ב)). 4 × 1,575,882 = 6,303,528 (computed in the rule base, matches Meitav). Institution source only; the official 2026 inputs were not found (IRA OQ8). The minimum-pension input is CPI-linked each 1 January (PEN-28); the conversion multiplier is set under s.9א of the Ordinance."
+      "notes": "2026 cap on money in an IRA fund: 4 × הסכום הקובע, per product, across all the member's IRA accounts (reg. 2(ב)). Computed under the regulation's formula from primary inputs (the Tax Authority's minimum pension amount 5,306 and the Ordinance's multiplier 180); it matches the figure Meitav prints. A method formula would let it carry the computed state."
     },
     "determining_amount": {
       "value": 1575882,
       "unit": "nis",
       "source": {
-        "url": "https://www.meitav.co.il/provident_pension/ira/",
-        "title": "Meitav, IRA product page: pension test \"צבירה למטרות קצבה בסכום שלא יפחת מ-1,575,882 ₪\"",
-        "publisher": "Meitav Gemel and Pension",
-        "strength": "institution"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=3",
+        "title": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819), p.3, reg. 2(ג): 5,306 (Tax Authority deductions booklet 2026, p.12) × 180 (Ordinance s.9א(א)) × 1.65 = 1,575,882",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+        "strength": "primary"
       },
       "checked": "2026-10-25",
       "effective_from": "2026-01-01",
@@ -49,16 +49,16 @@
         "IRA-08"
       ],
       "state": "sourced",
-      "notes": "הסכום הקובע for 2026 = minimum pension amount × capital conversion multiplier × 1.65 (reg. 2(ג)). Institution source only (IRA OQ8)."
+      "notes": "הסכום הקובע for 2026 = minimum pension amount × capital conversion multiplier × 1.65 (reg. 2(ג)). Computed under the regulation's formula from primary inputs; it matches the figure Meitav prints. A method formula would let it carry the computed state."
     },
     "minimum_pension": {
       "value": 5306,
       "unit": "nis_per_month",
       "source": {
-        "url": "https://www.moreinvest.co.il/media/ob5nzn0o/תקרות-וסכומים-2026.pdf",
-        "title": "Mor, \"תקרות וסכומים לשנת 2026\", p.2 (\"סכום קצבה מזערית ... 5,306 ₪\"); Meitav IRA page (\"5,306 ₪ ברוטו נכון לשנת 2026\")",
-        "publisher": "Mor Gemel and Pension",
-        "strength": "institution"
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+        "title": "חוברת ניכויים חודשית 2026, p.12, row \"מרכיב התגמולים - סכום קצבה מזערי\" 5,306",
+        "publisher": "Israel Tax Authority (gov.il)",
+        "strength": "primary"
       },
       "checked": "2026-10-25",
       "effective_from": "2026-01-01",
@@ -69,17 +69,17 @@
         "IRA-08"
       ],
       "state": "sourced",
-      "notes": "Minimum pension amount 2026, an input to הסכום הקובע and the pension test of reg. 2(א)(5). Two institution sources; the law sets it in Provident Funds Law s.23(ה), CPI-linked each 1 January (PEN-28)."
+      "notes": "Minimum pension amount 2026, an input to הסכום הקובע and the pension test of reg. 2(א)(5); the 2017 amendment defines it as in Provident Funds Law s.23(ה), CPI-linked each 1 January (PEN-28)."
     }
   },
-  "text_he": "'הסכום הקובע' הוא מכפלה של סכום הקצבה המזערי, מכפיל ההמרה להון ו-1.65. ל-2026 מיטב נוקבת בתקרה של 6,303,528 ₪ לכל מוצר, ובסכום קובע של 1,575,882 ₪; הקצבה המזערית 5,306 ₪ לחודש (מיטב ומור). מקור רשמי ל-2026 לא נמצא (שאלה פתוחה 8).",
+  "text_he": "'הסכום הקובע' הוא מכפלה של סכום הקצבה המזערי, מכפיל ההמרה להון שבפקודת מס הכנסה ומקדם קבוע שבתקנות. סכום הקצבה המזערי לשנה הנוכחית מופיע בחוברת הניכויים של רשות המסים, ומהמכפלה יוצאים הסכום הקובע ותקרת הכספים בקופה בניהול אישי, שהיא ארבע פעמים הסכום הקובע לכל מוצר.",
   "figure_names_he": {
     "cap": "תקרת הכספים בקופה בניהול אישי",
     "determining_amount": "הסכום הקובע",
     "minimum_pension": "סכום הקצבה המזערי"
   },
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=3",
@@ -96,27 +96,44 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.moreinvest.co.il/media/ob5nzn0o/תקרות-וסכומים-2026.pdf",
-      "title": "Mor, תקרות וסכומים לשנת 2026",
-      "title_he": "תקרות וסכומים לשנת 2026 (מור)",
-      "publisher": "Mor Investment House",
-      "publisher_he": "מור גמל ופנסיה",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.2",
-      "locator_he": "עמוד 2",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=2",
+      "title": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, s.1(3)",
+      "locator_he": "עמוד 2, סעיף 1(3)",
       "page": 2,
+      "quote": "סכום קצבה מזערי – כהגדרתו בסעיף 23(ה) לחוק",
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.meitav.co.il/provident_pension/ira/",
-      "title": "Meitav IRA page",
-      "title_he": "קופת גמל בניהול אישי (IRA): עמוד המוצר של מיטב",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "קבלת קצבת זקנה בגובה הקצבה המזערית",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+      "title": "חוברת ניכויים חודשית 2026",
+      "title_he": "חוברת ניכויים חודשית 2026",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.12, row",
+      "page": 12,
+      "quote": "מרכיב התגמולים - סכום קצבה מזערי",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.50, s.9א(א)",
+      "locator_he": "עמוד 50, סעיף 9א(א)",
+      "page": 50,
+      "quote": "מכפיל ההמרה להון – 180 או מכפיל אחר שקבע שר האוצר בצו",
       "checked": "2026-10-25"
     }
   ]

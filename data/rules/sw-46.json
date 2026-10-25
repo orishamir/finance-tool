@@ -1,0 +1,55 @@
+{
+  "id": "SW-46",
+  "title": "The Phoenix: cancelling a transfer out within 10 business days, and a \"retention\" mailbox",
+  "title_he": "הפניקס: חרטה מניוד ותיבת דואר לשימור",
+  "text_he": "בהפניקס אפשר לבטל ניוד בתוך ימי העסקים לחרטה מניוד מקבלת הבקשה, או עד שהכסף עובר אם זה מוקדם יותר. לביטול ניוד יוצא הפניקס מציינת תיבת דואר ששמה מרמז על שימור. הזכות לבטל עד שהכסף עובר קבועה בחוזר של רשות שוק ההון, לכל הקופות.",
+  "figure_names_he": {
+    "phoenix_cancel_window_business_days": "ימי עסקים לחרטה מניוד (הפניקס)"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "phoenix_cancel_window_business_days": {
+      "value": 10,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.fnx.co.il/ishtalmutfund/faq/",
+        "title": "Phoenix study-fund FAQ (\"שאלות ותשובות\" on transfers)",
+        "publisher": "The Phoenix",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "SW-46"
+      ],
+      "state": "sourced",
+      "notes": "Phoenix: cancellation (\"חרטה מניוד\") is possible within ten business days of receiving the transfer request, or until the money moves if earlier. Institution statement; it agrees in practice with reg. 5(א)."
+    }
+  },
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.fnx.co.il/ishtalmutfund/faq/",
+      "title": "Phoenix study-fund FAQ",
+      "title_he": "שאלות ותשובות על קרן ההשתלמות של הפניקס",
+      "publisher": "The Phoenix",
+      "publisher_he": "הפניקס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "תוך 10 ימי עסקים מקבלת בקשת הניוד",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "SW-07"
+  ]
+}

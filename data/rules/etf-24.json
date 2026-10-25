@@ -2,7 +2,7 @@
   "id": "ETF-24",
   "title": "The ISA does not supervise foreign funds; the Israeli annex must say so and disclose fees; an Israeli holder may sue in an Israeli court",
   "title_he": "הרשות אינה מפקחת על קרן חוץ: הנספח הישראלי והעמלות",
-  "text_he": "הנספח הישראלי לתשקיף של קרן חוץ חייב לציין בבולטות שהקרן כפופה לדין מדינת המוצא, שרשות ניירות ערך לא בדקה את התשקיף ואינה מפקחת על הקרן או על מנהלה, ושכללי הקרנות הישראליים אינם חלים; כל פרסומת חייבת לשאת אזהרה דומה. הנספח חייב לגלות עמלות קנייה ופדיון, דמי ניהול והוצאות אחרות שמשולמות מנכסי הקרן, ועלויות ידועות אחרות עם אזהרה שמפיצים עשויים לגבות יותר; לקרן נסחרת גם את הבורסה, הסימול, ואם היא רשומה גם בישראל. המנהל חייב לשלוח למחזיקים בישראל כל דוח שהוא שולח במדינת המוצא, ומחזיק ישראלי רשאי לתבוע את המנהל ואת הנציג בבית משפט בישראל. בלאקרוק מצהירה באתרה הישראלי שהיא וקרנותיה אינן כפופות לדין ולפיקוח שחלים על קרנות נאמנות בישראל.",
+  "text_he": "הנספח הישראלי לתשקיף של קרן חוץ חייב לציין בבולטות שהקרן כפופה לדין מדינת המוצא, שרשות ניירות ערך לא בדקה את התשקיף ואינה מפקחת על הקרן או על מנהלה, ושכללי הקרנות הישראליים אינם חלים; כל פרסומת חייבת לשאת אזהרה דומה. הנספח חייב לגלות עמלות קנייה ופדיון, דמי ניהול והוצאות אחרות שמשולמות מנכסי הקרן, ועלויות ידועות אחרות עם אזהרה שמפיצים עשויים לגבות יותר; לקרן נסחרת גם את הבורסה, הסימול, ואם היא רשומה גם בישראל. המנהל חייב לשלוח למחזיקים בישראל כל דוח שהוא שולח במדינת המוצא, ומחזיק ישראלי רשאי לתבוע את המנהל ואת הנציג בבית משפט בישראל.",
   "strength": "primary",
   "dimensions": [
     "regulator",
@@ -11,7 +11,7 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=#page=4",
@@ -50,16 +50,6 @@
       "locator": "p.8, regs. 12-13",
       "locator_he": "עמוד 8, תקנות 12-13",
       "page": 8,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.blackrock.com/il/individual/en/about-us/blackrock-in-israel",
-      "title": "BlackRock Israel, \"BlackRock in Israel\"",
-      "title_he": "BlackRock in Israel (אתר BlackRock ישראל)",
-      "publisher": "BlackRock",
-      "publisher_he": "BlackRock",
-      "kind": "institution_doc",
-      "strength": "institution",
       "checked": "2026-10-25"
     }
   ]

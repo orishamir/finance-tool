@@ -1,0 +1,102 @@
+{
+  "id": "SW-51",
+  "title": "Meitav Trade: fees to move securities out of an IRA it serves",
+  "title_he": "מיטב טרייד: עמלות העברת ניירות מקופה בניהול אישי",
+  "text_he": "מיטב טרייד גובה בתוך קופה בניהול אישי להעברת ניירות ערך לבנק ישראלי אחר עמלה לכל נייר ישראלי, עד תקרה לתיק, ועמלה בדולרים לכל נייר זר. אלה תוצאות ההליך התחרותי האחרון של מיטב. תקרה כללית לעמלות כאלה לא נמצאה.",
+  "figure_names_he": {
+    "meitav_israeli_security_transfer_nis": "עמלת העברת נייר ישראלי (מיטב טרייד, קופה אישית)",
+    "meitav_portfolio_transfer_cap_nis": "תקרת עמלת העברה לתיק (מיטב טרייד, קופה אישית)",
+    "meitav_foreign_security_transfer_usd": "עמלת העברת נייר זר בדולרים (מיטב טרייד, קופה אישית)"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "transfer-switch-process",
+    "fee-trade"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "meitav_israeli_security_transfer_nis": {
+      "value": 20,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.meitav.co.il/media/qm2penhs/26061426t-תוצאות-מכרז-לניהול-אישי-2026-טרייד.pdf",
+        "title": "Meitav Trade annex 2.606.1.4.26T (IRA tender results 2026), p.4",
+        "publisher": "Meitav Trade",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": "2026-05-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "SW-51"
+      ],
+      "state": "sourced",
+      "notes": "Inside a Meitav Trade IRA: transfer of securities to another Israeli bank, NIS 20 per Israeli security (IRA-22). Snapshot effective 01.05.2026."
+    },
+    "meitav_portfolio_transfer_cap_nis": {
+      "value": 99,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.meitav.co.il/media/qm2penhs/26061426t-תוצאות-מכרז-לניהול-אישי-2026-טרייד.pdf",
+        "title": "Meitav Trade annex 2.606.1.4.26T (IRA tender results 2026), p.4",
+        "publisher": "Meitav Trade",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": "2026-05-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "SW-51"
+      ],
+      "state": "sourced",
+      "notes": "Inside a Meitav Trade IRA: at most NIS 99 per portfolio for the transfer of Israeli securities to another Israeli bank (IRA-22). Snapshot effective 01.05.2026."
+    },
+    "meitav_foreign_security_transfer_usd": {
+      "value": 10,
+      "unit": "usd",
+      "source": {
+        "url": "https://www.meitav.co.il/media/qm2penhs/26061426t-תוצאות-מכרז-לניהול-אישי-2026-טרייד.pdf",
+        "title": "Meitav Trade annex 2.606.1.4.26T (IRA tender results 2026), p.4",
+        "publisher": "Meitav Trade",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": "2026-05-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "SW-51"
+      ],
+      "state": "sourced",
+      "notes": "Inside a Meitav Trade IRA: USD 10 per foreign security transferred out (IRA-22). Snapshot effective 01.05.2026."
+    }
+  },
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.meitav.co.il/media/qm2penhs/26061426t-תוצאות-מכרז-לניהול-אישי-2026-טרייד.pdf",
+      "title": "Meitav Trade annex 2.606.1.4.26T (IRA tender results 2026)",
+      "title_he": "תוצאות מכרז לניהול אישי 2026 (נספח מיטב טרייד 2.606.1.4.26T)",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב טרייד",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.4",
+      "locator_he": "עמוד 4",
+      "page": 4,
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "SW-24",
+    "IRA-16",
+    "IRA-18"
+  ]
+}

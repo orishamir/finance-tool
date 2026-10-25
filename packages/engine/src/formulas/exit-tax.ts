@@ -51,8 +51,8 @@ export function surtax(
 }
 
 /**
- * F-44 Kupat gemel lehashkaa, lump sum at any age. `τ = 0.25 × max(0, real)` on the real gain (TXK-07,
- * labelled), with the 15%-of-nominal line (TXK-06 second limb) as the sensitivity the page shows (G-02).
+ * F-44 Kupat gemel lehashkaa, lump sum at any age. `τ = 0.25 × max(0, real)` on the real gain (TXK-07; in law since the
+ * 2026-10-25 tax-bases research), with the 15%-of-nominal line (TXK-06 second limb) as the sensitivity the page shows (G-02).
  */
 export function kglExitTax(real: number, nominalGain: number, realRate: number, nominalRate: number) {
   return { tax: realRate * Math.max(0, real), alternative: nominalRate * Math.max(0, nominalGain) };
@@ -60,7 +60,7 @@ export function kglExitTax(real: number, nominalGain: number, realRate: number, 
 
 /**
  * F-46 Keren hishtalmut, lawful exit. The benefited part is exempt (TXH-09); gains on deposits above the
- * benefited amount are taxed at 25% of their real gain (TXH-11, institution base).
+ * benefited amount are taxed at 25% of their real gain (TXH-11; the real base is the Chief Economist paper's).
  */
 export function hishtalmutExitTax(excessRealGain: number, rate: number): number {
   return rate * Math.max(0, excessRealGain);
