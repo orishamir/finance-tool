@@ -25,6 +25,16 @@ describe("timeline fixes on the cash-like pages", () => {
     expect(withCeiling.years.at(-1)!.real).toBeCloseTo(63375.2, 0);
     expect(whole.years.at(-1)!.real).toBeGreaterThan(withCeiling.years.at(-1)!.real);
   });
+  it("counts what was paid in at each deposit's own price level (F-06), so idle cash shows its loss", () => {
+    const b = page("current-account").bundle!;
+    const t = runTimeline(b, { entered: {}, age: null });
+    if (t.kind !== "ok") throw new Error("run failed");
+    const end = t.years.at(-1)!;
+    // P-05: 10,000 now, then 500 a month in today's money (A-04 constant real, F-05) for 120 months: 70,000 in today's money
+    expect(end.paidInReal).toBeCloseTo(70000, 0);
+    expect(end.paidInReal).toBeGreaterThan(end.real);
+    expect(end.paidIn / end.index).toBeLessThan(end.real); // the old line, which drew a gain
+  });
   it("ignores A-01 on a cash page", () => {
     const b = page("makam").bundle!;
     const a = runTimeline(b, { entered: {}, age: null });
