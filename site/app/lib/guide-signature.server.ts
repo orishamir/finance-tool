@@ -9,6 +9,7 @@ import { p05Value } from "./engine";
 import { buildInstrumentBundle, familyOf, publishedDeposit, type InstrumentFamily } from "./guide-signature-bundle.server";
 import type { SignatureData } from "./guide-signature";
 import { loadDepositTerms, loadFunds } from "./instruments.server";
+import { buildPension, buildProvident, buildStudyFund } from "./guide-signature-g2.server";
 import { ruleFigure, type SiteValue } from "./value";
 
 interface Ctx {
@@ -249,3 +250,12 @@ builders["government-bond"] = (c) => {
   }
   return withRules(d, c.p05.instruments?.[c.id]?.series_rule ?? "GOV-11", "GOV-12", "GOV-16", "GOV-17", "TXI-14", "TXI-25");
 };
+
+// ---------------------------------------------------------------- builder G2: study fund, provident fund for investing, pensions
+// (the builders live in guide-signature-g2.server.ts)
+
+builders["keren-hishtalmut"] = buildStudyFund;
+builders["kupat-gemel-lehashkaa"] = buildProvident;
+builders["pension-comprehensive"] = buildPension;
+builders["pension-general"] = buildPension;
+builders["provident-for-annuity"] = buildPension;

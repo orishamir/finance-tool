@@ -10,6 +10,9 @@ import { Disclosure } from "../ui";
 import { BankDepositVisual } from "./bank-deposit";
 import { CurrentAccountVisual } from "./current-account";
 import { GovernmentBondVisual } from "./government-bond";
+import { KerenHishtalmutVisual } from "./keren-hishtalmut";
+import { KupatGemelLehashkaaVisual } from "./kupat-gemel-lehashkaa";
+import { PensionVisual } from "./pension";
 import type { VisualProps } from "./kit";
 import { MakamVisual } from "./makam";
 import { MoneyMarketDailyVisual } from "./money-market-daily";
@@ -24,6 +27,11 @@ export const signatureRegistry: Record<string, ComponentType<VisualProps>> = {
   "money-market-fund-renewable": MoneyMarketRenewableVisual,
   makam: MakamVisual,
   "government-bond": GovernmentBondVisual,
+  "keren-hishtalmut": KerenHishtalmutVisual,
+  "kupat-gemel-lehashkaa": KupatGemelLehashkaaVisual,
+  "pension-comprehensive": PensionVisual,
+  "pension-general": PensionVisual,
+  "provident-for-annuity": PensionVisual,
 };
 
 export const hasSignatureVisual = (id: string, data: SignatureData | null): data is SignatureData => !!data && id in signatureRegistry && id in copy.pages;
@@ -40,16 +48,21 @@ export function SignatureFrame({ id, data, today, timeline }: { id: string; data
       <div className="bg-card border border-border rounded-lg p-4 md:p-6">
         <Visual data={data} today={today} />
       </div>
-      <p className="text-sm max-w-measure">
-        {copy.altBefore} <span className="font-medium">{page.alt}</span>. {page.altLine}{" "}
-        <Link to={`/guide/${page.altId}`} className="text-link hover:underline">
-          {copy.altLinkBefore} {page.alt}
-        </Link>
-        {" · "}
-        <Link to="/goal/compare" className="text-link hover:underline">
-          {copy.compareLink}
-        </Link>
-      </p>
+      {page.altId ? (
+        <p className="text-sm max-w-measure">
+          {copy.altBefore} <span className="font-medium">{page.alt}</span>. {page.altLine}{" "}
+          <Link to={`/guide/${page.altId}`} className="text-link hover:underline">
+            {copy.altLinkBefore} {page.alt}
+          </Link>
+          {" · "}
+          <Link to="/goal/compare" className="text-link hover:underline">
+            {copy.compareLink}
+          </Link>
+        </p>
+      ) : (
+        // a product with no alternative on the same holding (a pension is required for salaried people): only the page's own line
+        <p className="text-sm max-w-measure">{page.altLine}</p>
+      )}
       {timeline && (
         <div className="bg-card border border-border rounded-lg px-4 py-1 md:px-6">
           <Disclosure label={<span className="font-medium">{copy.timeline.summary}</span>} openLabel={<span className="font-medium">{copy.timeline.hide}</span>} summaryClassName="justify-between">
