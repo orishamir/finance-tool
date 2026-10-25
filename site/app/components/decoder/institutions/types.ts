@@ -82,7 +82,9 @@ export interface TariffCardData {
   bases: string[];
   lines: TariffLineRow[];
   minimum: SiteValue | null;
-  regulator: "BoI" | "ISA" | "CMA";
+  regulator: "BoI" | "ISA" | "CMA" | "foreign";
+  /** S1 (2026-10-25): a foreign broker's regulator in Hebrew. */
+  foreignRegulator?: string;
   tase: boolean;
   protection: { id: string; title: string }[];
   notice: string[];

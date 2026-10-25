@@ -29,8 +29,8 @@ export function reasonText(r: VariantReason): ReactNode {
       );
     case "yield-missing":
       return t.yieldMissing;
-    case "start-rate":
-      return t.startRate(r.currency);
+    case "no-rate":
+      return t.noRate(r.currency);
     case "withholding":
       return t.withholding(c.domicile[r.country] ?? r.country);
     case "money-market":
@@ -57,7 +57,7 @@ function Marker({ row }: { row: FundVariantRowView }) {
     );
   if (row.kind === "listed") return <span className="size-7 shrink-0 inline-flex items-center justify-center mt-0.5">{row.reason?.code === "g18" || row.reason?.code === "exit-blocked" ? <IconLock size={20} className="text-blocked" /> : <IconDash size={20} className="text-muted-foreground" />}</span>;
   if (row.kind === "ranked") return <span className="size-7 shrink-0 inline-flex items-center justify-center mt-0.5"><IconDash size={20} className="text-muted-foreground" /></span>;
-  const fixable = row.reason?.code === "yield-missing" || row.reason?.code === "start-rate";
+  const fixable = row.reason?.code === "yield-missing";
   return (
     <span className="size-7 shrink-0 inline-flex items-center justify-center mt-0.5">
       <IconDashed size={20} className={fixable ? "text-muted-foreground" : "text-caution"} />
@@ -70,7 +70,7 @@ function Outcome({ row }: { row: FundVariantRowView }) {
   const w = c.funds.outcomes;
   if (row.kind === "ranked") return <Tag tone="positive">{w.ranked}</Tag>;
   if (row.kind === "listed") return row.reason?.code === "g18" || row.reason?.code === "exit-blocked" ? <Tag tone="blocked" icon={<IconLock size={14} />}>{w["listed-not-ranked"]}</Tag> : <Tag tone="neutral" icon={<IconDash size={14} />}>{w["listed-not-ranked"]}</Tag>;
-  const fixable = row.reason?.code === "yield-missing" || row.reason?.code === "start-rate";
+  const fixable = row.reason?.code === "yield-missing";
   return fixable ? <Tag tone="neutral" icon={<IconDashed size={14} />}>{w["not-evaluated"]}</Tag> : <Tag tone="caution" icon={<IconDashed size={14} />}>{w["not-evaluated"]}</Tag>;
 }
 
@@ -78,7 +78,7 @@ export function FundVariantRow({ row, onDetail, onField }: { row: FundVariantRow
   const t = c.funds;
   const hasFigure = row.kind !== "not-evaluated" && row.value;
   const listedBlocked = row.kind === "listed" && (row.reason?.code === "g18" || row.reason?.code === "exit-blocked");
-  const fixable = row.reason?.code === "yield-missing" || row.reason?.code === "start-rate";
+  const fixable = row.reason?.code === "yield-missing";
   return (
     <li data-flip={row.id} className={cx("bg-card border border-border rounded-lg p-4 md:p-5 flex flex-col gap-3", row.kind === "not-evaluated" && "bg-card/70")}>
       <div className="flex items-start gap-3">
@@ -131,7 +131,7 @@ export function FundVariantRow({ row, onDetail, onField }: { row: FundVariantRow
         <p className={cx("text-sm flex items-start gap-1.5", listedBlocked ? "text-blocked-foreground" : fixable ? "text-muted-foreground" : "text-foreground")}>
           {listedBlocked && <IconLock size={16} className="text-blocked mt-0.5 shrink-0" />}
           {fixable ? (
-            <button type="button" className="text-link hover:underline text-start" onClick={() => onField(row.reason!.code === "yield-missing" ? "yield" : "rate")}>
+            <button type="button" className="text-link hover:underline text-start" onClick={() => onField("yield")}>
               {reasonText(row.reason)}
             </button>
           ) : (

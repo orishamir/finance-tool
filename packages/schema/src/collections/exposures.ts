@@ -22,6 +22,8 @@ export const exposureRecord = z.strictObject({
   wrapper_ids: z.array(wrapperId).optional(),
   rule_ids: z.array(z.string().min(1)).optional(),
   open_questions: z.array(z.string().min(1)).optional(),
+  /** S5 (2026-10-25): true when the index is made of Israeli companies. Left out for cash, bond and general tracks. */
+  constituents_israeli: z.boolean().optional(),
   checked: isoDate,
 });
 

@@ -131,5 +131,12 @@
     "url": "https://www.ishares.com/uk/individual/en/products/253743/ishares-sp-500-b-ucits-etf-acc-fund",
     "date": null
   },
+  "replication": {
+    "method": "physical",
+    "source": {
+      "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/cspx-ishares-core-s-p-500-ucits-etf-fund-fact-sheet-en-gb.pdf",
+      "checked": "2026-10-24"
+    }
+  },
   "snapshot": "2026-10-24"
 }

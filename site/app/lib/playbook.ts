@@ -559,9 +559,9 @@ export function brokerageCost(args: { wb: WorkbenchBundle; fundFrom: string; fun
   const A = subjectOf(wb, args.fundFrom);
   const B = subjectOf(wb, args.fundTo);
   if (!A || !B) return { kind: "error", code: "no-fund" };
-  const runA = fundRun(A, wb.exposures.find((e) => e.id === A.exposureId), inputs.grossReturn, args.assumptionsFrom);
+  const runA = fundRun(A, wb.exposures.find((e) => e.id === A.exposureId), inputs.grossReturn, args.assumptionsFrom, wb.fx);
   if ("kind" in runA) return { kind: "error", code: runA.kind === "need-rate" ? "need-rate" : runA.kind === "need-yield" ? "need-yield" : runA.kind === "other-currency" ? "other-currency" : "fund-type", ...(runA.kind === "need-rate" ? { detail: runA.currency } : {}) };
-  const runB = fundRun(B, wb.exposures.find((e) => e.id === B.exposureId), inputs.grossReturn, args.assumptionsTo);
+  const runB = fundRun(B, wb.exposures.find((e) => e.id === B.exposureId), inputs.grossReturn, args.assumptionsTo, wb.fx);
   if ("kind" in runB) return { kind: "error", code: runB.kind === "need-rate" ? "need-rate" : runB.kind === "need-yield" ? "need-yield" : runB.kind === "other-currency" ? "other-currency" : "fund-type", ...(runB.kind === "need-rate" ? { detail: runB.currency } : {}) };
   const tA = tariffFor(wb, args.providerId, A.instrumentClass, A.currency);
   const tB = tariffFor(wb, args.providerId, B.instrumentClass, B.currency);

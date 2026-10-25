@@ -17,6 +17,7 @@ import {
 } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundListFile, FundRecord, ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
 import { flags as flagCopy, formulaNames, guideBlocks } from "../copy";
+import { nisPerNumber, type FxSnapshot } from "./fx";
 import { toEnteredTariff, type EnteredOffer } from "./offers";
 import { computed, entered as enteredValue, type SiteValue, type Staleness } from "./value";
 
@@ -54,6 +55,8 @@ export interface WorkbenchBundle {
   providerCompany: Record<string, string>;
   /** Per provident wrapper: how many managing companies the regulator's data holds (the "one of N" line). */
   wrapperCompanies: Record<string, number>;
+  /** The ECB's daily euro reference rates (D26): the start exchange rate of every foreign-currency run. The person never types one. */
+  fx?: FxSnapshot;
 }
 
 export const BROKERAGE = "brokerage-account";
@@ -221,8 +224,6 @@ export function subjectOf(bundle: WorkbenchBundle, recordId: string | null): Sub
 export interface FundAssumptions {
   /** A-03, % a year. Missing means flat (A-03's default 0). */
   fxChange?: number;
-  /** NIS per unit of a foreign currency today, by ISO code (BoI's series are a link, D20). */
-  fxStart?: Record<string, number>;
   w8ben?: boolean;
   /** A-10 per fund record id: yield in % a year and payments a year. */
   distributions?: Record<string, { yield: number; perYear: number }>;
@@ -238,6 +239,7 @@ export function fundRun(
   exposure: ExposureRecord | undefined,
   grossReturn: number,
   assumptions: FundAssumptions,
+  fx?: FxSnapshot,
 ): { fund: NonNullable<ReturnType<typeof fundOf>>["fund"]; market: { grossReturn: number; returnIn?: "instrument"; fxChange?: number }; currency?: { code: string; startRate: number } } | RunSpecError {
   const rec = s.record;
   if (!exposure || exposure.cash_like) return { kind: "fund-type" };
@@ -262,8 +264,8 @@ export function fundRun(
   market.fxChange = f;
   const quote = rec.trading_currency_on_tase;
   if (quote === null || !isIls(quote)) {
-    const rate = assumptions.fxStart?.[fundCurrency];
-    if (rate === undefined) return { kind: "need-rate", currency: fundCurrency };
+    const rate = fx ? nisPerNumber(fx, fundCurrency) : null;
+    if (rate === null) return { kind: "need-rate", currency: fundCurrency };
     return { fund: built.fund, market, currency: { code: fundCurrency, startRate: rate } };
   }
   return { fund: built.fund, market };
@@ -335,7 +337,9 @@ export interface RowTariff {
 }
 
 export interface RowProtection {
-  regulator: "BoI" | "ISA" | "CMA";
+  regulator: "BoI" | "ISA" | "CMA" | "foreign";
+  /** S1 (2026-10-25): a foreign broker's regulator in Hebrew, from the snapshot's `regulator_foreign`. */
+  foreignRegulator?: string;
   taseMember: boolean;
   ruleIds: string[];
   notIsaSupervised: boolean;
@@ -501,7 +505,7 @@ export function buildProviderWorkbench(a: BuildArgs): ProviderResult {
   const subject = subjectOf(bundle, query.fund);
   if (!subject) return { kind: "error", code: "no-fund" };
   const exposure = bundle.exposures.find((e) => e.id === subject.exposureId);
-  const run = fundRun(subject, exposure, inputs.grossReturn, assumptions);
+  const run = fundRun(subject, exposure, inputs.grossReturn, assumptions, bundle.fx);
   if ("kind" in run) {
     const code = run.kind === "need-rate" ? "need-rate" : run.kind === "need-yield" ? "need-yield" : run.kind === "other-currency" ? "other-currency" : "fund-type";
     return { kind: "error", code, subject, ...(run.kind === "need-rate" ? { currency: run.currency } : {}), ...(run.kind === "other-currency" ? { detail: `${run.fund}|${run.exposure}` } : {}) };
@@ -623,7 +627,7 @@ export function buildProviderWorkbench(a: BuildArgs): ProviderResult {
       tariff,
       stale,
       minimums: { accountOpening: s.minimums.account_opening ? withStale(s.minimums.account_opening, stale) : null },
-      protection: { regulator: s.provider.regulator, taseMember: s.provider.tase_member, ruleIds: [...s.provider.protection_rule_ids], notIsaSupervised: s.provider.protection_rule_ids.includes("BRK-06") } satisfies RowProtection,
+      protection: { regulator: s.provider.regulator, ...(s.provider.regulator_foreign ? { foreignRegulator: s.provider.regulator_foreign.name_he } : {}), taseMember: s.provider.tase_member, ruleIds: [...s.provider.protection_rule_ids], notIsaSupervised: s.provider.protection_rule_ids.includes("BRK-06") } satisfies RowProtection,
       hasOffer: offers[s.id] !== undefined,
       vs: query.vs === s.id,
       list: listOf(s, stale),

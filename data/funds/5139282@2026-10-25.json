@@ -171,5 +171,13 @@
   "exposure_code": "4D",
   "distribution_fee_type": "3",
   "creation_redemption_fee_category": null,
+  "replication": {
+    "method": "swap",
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
+      "page": 2,
+      "checked": "2026-10-25"
+    }
+  },
   "snapshot": "2026-10-25"
 }

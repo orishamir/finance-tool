@@ -130,7 +130,7 @@ export function ProtectionLine({ protection, rules }: { protection: RowProtectio
     <div className="text-sm flex flex-col gap-0.5">
       <p className="flex flex-wrap items-center gap-x-2 gap-y-1">
         <span>
-          {c.providers.protection} {c.regulators[protection.regulator]}
+          {c.providers.protection} {protection.regulator === "foreign" ? protection.foreignRegulator : c.regulators[protection.regulator]}
         </span>
         {protection.taseMember && <Tag tone="neutral">{c.providers.taseMember}</Tag>}
         {protection.notIsaSupervised && (

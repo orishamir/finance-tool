@@ -14,6 +14,7 @@ import {
 import type { ExposureRecord, FundRecord, ValueObject } from "@finance-tool/schema";
 import { deviceStore } from "./device-store";
 import { BROKERAGE, a28Value, parameterValue, ruleContext, staleTariff, type FundAssumptions, type WorkbenchBundle, type WorkbenchInputs } from "./providers";
+import { nisPer } from "./fx";
 import { computed, weaker, type SiteValue, type Strength } from "./value";
 
 /**
@@ -67,7 +68,7 @@ export type VariantReason =
   | { code: "g18"; openQuestion: string }
   | { code: "taxable-israeli" }
   | { code: "yield-missing"; fixable: true }
-  | { code: "start-rate"; currency: string; fixable: true }
+  | { code: "no-rate"; currency: string }
   | { code: "withholding"; country: string }
   | { code: "money-market" }
   | { code: "other-currency"; fund: string; exposure: string }
@@ -133,8 +134,8 @@ export interface FundVariantsView {
   hasDistributing: boolean;
   /** Fund records of the exposure that distribute, for the yield fields. */
   distributing: { recordId: string; name: string }[];
-  /** Foreign currencies the funds are bought in abroad, for the start-rate fields. */
-  startRateCurrencies: string[];
+  /** Foreign currencies the funds are bought in abroad, each with the start rate the run used: the ECB cross rate (D26, never typed); null when the ECB has none. */
+  startRates: { code: string; rate: SiteValue | null }[];
   ordersN: number;
   orders: SiteValue;
 }
@@ -195,7 +196,7 @@ function reasonOf(row: VariantRow): VariantReason | undefined {
   if (r.code === "missing-input") {
     if (/^distributions\./.test(d)) return { code: "yield-missing", fixable: true };
     const ccy = /^fxStartRates\.(\w+)/.exec(d)?.[1];
-    if (ccy) return { code: "start-rate", currency: ccy, fixable: true };
+    if (ccy) return { code: "no-rate", currency: ccy };
   }
   if (r.code === "no-run") {
     if (/taxable Israeli fund/.test(d)) return { code: "taxable-israeli" };
@@ -223,6 +224,11 @@ interface VariantArgs {
   assumptions: FundAssumptions;
 }
 
+/** Foreign currencies the funds are bought in abroad (their start rate is the ECB cross rate). */
+function foreignCurrencies(mine: FundRecord[]): string[] {
+  return [...new Set(mine.filter((f) => f.domicile !== "IL" || !isIls(f.currency)).filter((f) => !isIls(f.currency) && (f.trading_currency_on_tase === null || !isIls(f.trading_currency_on_tase))).map((f) => f.currency))];
+}
+
 export function buildFundVariants(a: VariantArgs): VariantResult {
   const { bundle, exposureId, query, inputs, assumptions } = a;
   const today = bundle.today;
@@ -239,6 +245,9 @@ export function buildFundVariants(a: VariantArgs): VariantResult {
   const dist: Record<string, { yield: number; perYear: number }> = {};
   for (const [id, d] of Object.entries(assumptions.distributions ?? {})) dist[id] = { yield: d.yield / 100, perYear: d.perYear };
   const theta = tieThreshold([bundle.p01]);
+  const startRates = foreignCurrencies(mine).map((code) => ({ code, rate: bundle.fx ? nisPer(bundle.fx, code, today) : null }));
+  const startRateNumbers: Record<string, number> = {};
+  for (const r of startRates) if (r.rate && typeof r.rate.value === "number") startRateNumbers[r.code] = r.rate.value;
   const x = {
     record: exposure,
     run: {
@@ -249,7 +258,7 @@ export function buildFundVariants(a: VariantArgs): VariantResult {
       tariff: tariff.tariff,
       profile: { ...(inputs.age !== null ? { ageAtStart: inputs.age } : {}), ...(inputs.income !== null && inputs.income > 0 ? { annualIncome: inputs.income } : {}) },
       ...(assumptions.w8ben !== undefined ? { w8ben: assumptions.w8ben } : {}),
-      ...(assumptions.fxStart ? { fxStartRates: assumptions.fxStart } : {}),
+      fxStartRates: startRateNumbers,
       distributions: dist,
       ordersPerMonth: ordersN,
     },
@@ -333,7 +342,6 @@ export function buildFundVariants(a: VariantArgs): VariantResult {
       notes: "",
     };
   };
-  const foreignCcys = [...new Set(mine.filter((f) => f.domicile !== "IL" || !isIls(f.currency)).filter((f) => !isIls(f.currency) && (f.trading_currency_on_tase === null || !isIls(f.trading_currency_on_tase))).map((f) => f.currency))];
   const ruleIds = new Set<string>(["TXF-11", "TXF-13", "TXS-22", "CAT-34", "ETF-32", "TXF-12", "TXF-08"]);
   rows.forEach((r) => r.ruleIds.forEach((id) => ruleIds.add(id)));
   const view: FundVariantsView = {
@@ -351,7 +359,7 @@ export function buildFundVariants(a: VariantArgs): VariantResult {
     needsFx: mine.some((f) => f.domicile !== "IL" || !isIls(f.currency)),
     hasDistributing: mine.some((f) => f.distribution_policy === "distributing"),
     distributing: mine.filter((f) => f.distribution_policy === "distributing").map((f) => ({ recordId: f.id, name: f.names.he[0] ?? f.names.en[0] ?? f.id })),
-    startRateCurrencies: foreignCcys,
+    startRates,
     ordersN,
     orders: query.orders !== null ? ({ ...a28Value(query.orders, "פעולות בחודש", today), state: "entered", update_rule: "founder" } as SiteValue) : a28Value(1, "פעולות בחודש", today),
   };
@@ -401,14 +409,6 @@ function parseAssumptions(raw: unknown): Record<string, FundAssumptions> {
     const fx = num(v.fxChange);
     if (fx !== undefined) a.fxChange = fx;
     if (typeof v.w8ben === "boolean") a.w8ben = v.w8ben;
-    if (rec(v.fxStart)) {
-      const m: Record<string, number> = {};
-      for (const [c, n] of Object.entries(v.fxStart)) {
-        const x = num(n);
-        if (x !== undefined && x > 0) m[c] = x;
-      }
-      if (Object.keys(m).length) a.fxStart = m;
-    }
     if (rec(v.distributions)) {
       const m: Record<string, { yield: number; perYear: number }> = {};
       for (const [f, d] of Object.entries(v.distributions)) if (rec(d) && num(d.yield) !== undefined && num(d.perYear) !== undefined && [1, 2, 3, 4, 6, 12].includes(d.perYear as number)) m[f] = { yield: d.yield as number, perYear: d.perYear as number };
