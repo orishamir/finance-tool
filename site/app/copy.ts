@@ -206,7 +206,7 @@ export const guide = {
   modes: { real: "בכסף של היום", nominal: "בשקלים של העתיד" },
   modeLabel: "אופן הצגת הסכומים",
   legend: { net: "נשאר לכם", tax: "מס", fees: "דמי ניהול", contributions: "ההפקדות שלכם" },
-  chips: { amount_now: "סכום היום", monthly_deposit: "הפקדה חודשית", horizon_years: "שנים", "A-01": "תשואה בשנה", cash_rate: "ריבית בשנה", "A-02": "אינפלציה בשנה", all: "כל ההנחות" },
+  chips: { amount_now: "סכום היום", monthly_deposit: "הפקדה חודשית", horizon_years: "תקופה", "A-01": "תשואה בשנה", cash_rate: "ריבית בשנה", "A-02": "אינפלציה בשנה", all: "כל ההנחות" },
   readout: { today: "היום", year: "שנה" },
   table: { year: "שנה", contributions: "ההפקדות שלכם", fees: "דמי ניהול", tax: "מס", net: "נשאר לכם" },
   graphAria: { before: "גרף: הכסף לאורך", after: "הנתונים המלאים בטבלה." },
@@ -1031,7 +1031,7 @@ export const r2 = {
     chartEnteredCaption: "הקווים המקווקווים מבוססים על תשואה שהזנתם, לא על הערכה של האתר.",
     chartEmpty: "אין אפשרויות מדורגות להצגה.",
     chartYear: "שנה",
-    chips: { years: "שנים", amountNow: "סכום היום", monthly: "הפקדה חודשית", available: "זמין מיד", return: "תשואה", inflation: "אינפלציה", all: "כל ההנחות" },
+    chips: { years: "תקופה", amountNow: "סכום היום", monthly: "הפקדה חודשית", available: "זמין מיד", return: "תשואה", inflation: "אינפלציה", all: "כל ההנחות" },
     chipEmpty: "לא הוזן",
     assumptionsTitle: "ההנחות של ההשוואה",
     suggestion: "הצעה מהבדיקה",
@@ -1547,7 +1547,7 @@ export const r3fees = {
     aria: ["גרף: העלות של ", " עמלות לאורך ", ". הנתונים המלאים בטבלה."],
     year: "שנה",
   },
-  chips: { amount: "סכום", monthly: "הפקדה חודשית", years: "שנים", return: "תשואה", inflation: "אינפלציה", all: "כל ההנחות" },
+  chips: { amount: "סכום", monthly: "הפקדה חודשית", years: "תקופה", return: "תשואה", inflation: "אינפלציה", all: "כל ההנחות" },
   assumptionsTitle: "ההנחות של חישוב העמלות",
   sens: {
     title: "מה היה משנה את המסקנה",
@@ -2063,7 +2063,7 @@ export const r4workbench = {
       fxShekels: "הקרן נקובה בשקלים: אין המרה.",
       deposits: "הפקדה אחת בכל חודש של השנה.",
       /** copy.md 8.1: the amounts chips' labels */
-      chips: { amount: "סכום", monthly: "הפקדה חודשית", years: "שנים", all: "כל ההנחות" },
+      chips: { amount: "סכום", monthly: "הפקדה חודשית", years: "תקופה", all: "כל ההנחות" },
     },
     levelAria: "רמת העמלה",
     levelLine: {
@@ -2226,7 +2226,7 @@ export const r4workbench = {
       links: { maya: "לרשימת הקרנות במאיה", tase: "לרשימת קרנות החוץ באתר הבורסה" },
       old: (d: string) => `הרשימה לא עודכנה מאז ${d}.`,
     },
-    chips: { amount: "סכום", monthly: "הפקדה חודשית", years: "שנים", return: (ccy: string) => `תשואה ב־${ccy}`, inflation: "אינפלציה", fxChange: (ccy: string) => `שינוי שער ${ccy}`, fxStart: (ccy: string) => `שער ${ccy} היום`, w8ben: "W-8BEN", provider: (name: string) => `התעריפון של ${name}`, orders: "פעולות בחודש", all: "כל ההנחות" },
+    chips: { amount: "סכום", monthly: "הפקדה חודשית", years: "תקופה", return: (ccy: string) => `תשואה ב־${ccy}`, inflation: "אינפלציה", fxChange: (ccy: string) => `שינוי שער ${ccy}`, fxStart: (ccy: string) => `שער ${ccy} היום`, w8ben: "W-8BEN", provider: (name: string) => `התעריפון של ${name}`, orders: "פעולות בחודש", all: "כל ההנחות" },
     sheet: {
       title: "ההנחות של השוואת הקרנות",
       w8ben: { label: "יש לכם טופס W-8BEN אצל הברוקר?", yes: "כן", no: "לא", line: "עובדה שלכם, לא חוק או כלל." },
@@ -2552,7 +2552,7 @@ export const r5 = {
       loading: "טוען…", // copy.md 9.2 to 9.6: the skeleton line (design-spec 21.4)
       aria: "גרף: הכסף בחשיפות לאורך",
     },
-    chips: { years: "שנים", amountNow: "סכום היום", monthly: "הפקדה חודשית", available: "זמין מיד", inflation: "אינפלציה", acceptedFall: "מסכימים לספוג עד", all: "כל ההנחות" },
+    chips: { years: "תקופה", amountNow: "סכום היום", monthly: "הפקדה חודשית", available: "זמין מיד", inflation: "אינפלציה", acceptedFall: "מסכימים לספוג עד", all: "כל ההנחות" },
     assumptions: {
       title: "ההנחות של ההשוואה לפי חשיפה",
       group: "{exposure}: תשואה · ירידה צפויה · מסכימים לספוג · מוחזקת במוצר",

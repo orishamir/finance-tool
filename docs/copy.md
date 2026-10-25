@@ -215,7 +215,7 @@ Why "למי ששלח לכם את האתר": every friend reached the site throug
 | Headline label | נשאר לכם אחרי `{שנים}`, אחרי דמי ניהול ומס, בכסף של היום |
 | Switch | בכסף של היום · בשקלים של העתיד |
 | Legend | נשאר לכם · מס · דמי ניהול · ההפקדות שלכם |
-| Value chips | סכום היום · הפקדה חודשית · שנים · תשואה בשנה · אינפלציה בשנה · כל ההנחות |
+| Value chips | סכום היום · הפקדה חודשית · תקופה · תשואה בשנה · אינפלציה בשנה · כל ההנחות |
 | Readout heading | היום / שנה `{n}` |
 | Table headings | שנה · ההפקדות שלכם · דמי ניהול · מס · נשאר לכם |
 | Graph's screen-reader name | גרף: הכסף לאורך `{שנים}`. הנתונים המלאים בטבלה. |
@@ -880,7 +880,7 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 9 and the handoff in 
 | Chart, tie bracket | שקולות |
 | Chart caption, entered return | הקווים המקווקווים מבוססים על תשואה שהזנתם, לא על הערכה של האתר. |
 | Chart, nothing to draw | אין אפשרויות מדורגות להצגה. |
-| Assumption chips | שנים · סכום היום · הפקדה חודשית · זמין מיד · תשואה · אינפלציה · כל ההנחות |
+| Assumption chips | תקופה · סכום היום · הפקדה חודשית · זמין מיד · תשואה · אינפלציה · כל ההנחות |
 | Assumptions sheet title | ההנחות של ההשוואה |
 | Coverage sentence | נבדקו `{מספר}` אפשרויות: `{מספר}` דורגו, `{מספר}` מוצגות בלי דירוג, `{מספר}` לא מתאימות לכם, `{מספר}` נפסלו לפי האילוצים שלכם, `{מספר}` עוד לא נבדקו. |
 | Coverage, open / close | כל האפשרויות ולמה · הסתרת הרשימה |
@@ -1145,7 +1145,7 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 12 and the handoff in
 | Chart, not reported in legend | לא דווח |
 | Chart marker, no goal | סוף התקופה |
 | Chart's screen-reader name | גרף: העלות של `{מספר}` עמלות לאורך `{שנים}`. הנתונים המלאים בטבלה. |
-| Assumption chips | סכום · הפקדה חודשית · שנים · תשואה · אינפלציה · כל ההנחות |
+| Assumption chips | סכום · הפקדה חודשית · תקופה · תשואה · אינפלציה · כל ההנחות |
 | Assumptions sheet title | ההנחות של חישוב העמלות |
 | Sensitivity title | מה היה משנה את המסקנה |
 | Sensitivity, flips a verdict | המסקנה על `{עמלה}` מתהפכת אם `{הנחה}` תעבור מ־`{ערך}` ל־`{ערך}`: אז `{פסק הדין}`. |
@@ -1584,7 +1584,7 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 | `r4workbench.providers.back` | המדריך למוצר | the breadcrumb parent |
 | `r4workbench.providers.noGoal` | אין מטרה שמורה: ההשוואה לפי התרחיש לדוגמה של האתר. | Was "…ההשוואה רצה על התרחיש המייצג של האתר.": P-05 is "התרחיש לדוגמה" (3.15) |
 | `r4workbench.providers.behaviour.ordersUp · ordersDown` | עוד פעולה בחודש · פחות פעולות בחודש | the stepper's screen-reader names |
-| `r4workbench.providers.behaviour.chips` | סכום · הפקדה חודשית · שנים · כל ההנחות | the amounts chips |
+| `r4workbench.providers.behaviour.chips` | סכום · הפקדה חודשית · תקופה · כל ההנחות | the amounts chips |
 | `r4workbench.providers.columns` | דירוג · ספק · עלות · בשנה הראשונה · לפי סוג עמלה · תעריפון מ־ · מינימום · פיקוח · פתיחה | PC column heads |
 | `r4workbench.providers.tariffLine.collected` | נאסף ב־`{תאריך}` | the tariff line when no published date exists |
 | `r4workbench.providers.formats` | PDF · דף אינטרנט · גיליון | the tariff link's file format |
@@ -1613,7 +1613,7 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 | List line, TASE list not collected | רשימת קרנות החוץ של הבורסה עוד לא נאספה. הרשימה המלאה באתר הבורסה. |
 | List links | לרשימת הקרנות במאיה · לרשימת קרנות החוץ באתר הבורסה |
 | Old list | הרשימה לא עודכנה מאז `{תאריך}`. |
-| Assumption chips | סכום · הפקדה חודשית · שנים · תשואה ב`{מטבע}` · אינפלציה · שינוי שער `{מטבע}` · שער `{מטבע}` היום · W-8BEN · התעריפון של `{ספק}` · פעולות בחודש · כל ההנחות |
+| Assumption chips | סכום · הפקדה חודשית · תקופה · תשואה ב`{מטבע}` · אינפלציה · שינוי שער `{מטבע}` · שער `{מטבע}` היום · W-8BEN · התעריפון של `{ספק}` · פעולות בחודש · כל ההנחות |
 | Assumptions sheet title | ההנחות של השוואת הקרנות |
 | W-8BEN field | יש לכם טופס W-8BEN אצל הברוקר? · כן · לא |
 | W-8BEN, line | עובדה שלכם, לא כלל. |
@@ -1982,7 +1982,7 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 18 and the handoff in
 | Reference line label | מזומן, להשוואה |
 | Chart caption (always) | הקווים המקווקווים מבוססים על תשואות שהזנתם, לא על הערכה של האתר. |
 | Chart, nothing to draw | אין חשיפות מדורגות להצגה. |
-| Assumption chips | שנים · סכום היום · הפקדה חודשית · זמין מיד · אינפלציה · מסכימים לספוג עד · כל ההנחות |
+| Assumption chips | תקופה · סכום היום · הפקדה חודשית · זמין מיד · אינפלציה · מסכימים לספוג עד · כל ההנחות |
 | Assumptions sheet title | ההנחות של ההשוואה לפי חשיפה |
 | Assumptions sheet, per-exposure group | `{חשיפה}`: תשואה · ירידה צפויה · מסכימים לספוג · מוחזקת במוצר · changed 2026-10-24 (Hebrew editor); was ״מוחזקת ב״ |
 | Coverage sentence | נבדקו `{מספר}` חשיפות: `{מספר}` דורגו, `{מספר}` מוצגות בלי דירוג, `{מספר}` נפסלו לפי מסנן הירידה, `{מספר}` עוד לא נבדקו. |
@@ -2513,6 +2513,11 @@ Every string edit of the day, as applied to `site/app/copy.ts` (the rows above c
 | `guideBlocks.terms.valueWords.list` (added today by a fixer) | מחירון | תעריפון | 1 · not in the tables above |
 
 Also fixed outside `copy.ts` the same day, at the lead's request: "הודעו" → "הודיעו" (`site/app/lib/playbook.ts`, the employer step title), "והותק" → "והוותק" (`site/app/content/guide/keren-hishtalmut.tsx`), and מק"מ → מק״מ in the site's own prose under `site/app/content/` (26 places; glossary `Term` ids unchanged).
+
+
+### 10.x Chip labels (2026-10-26)
+
+- תווית של צ'יפ לא חוזרת על היחידה שכבר יש בערך שלו: "תקופה 10 שנים", לא "שנים 10 שנים". שש שורות הצ'יפים (ההשוואה, דמי הניהול, ההשקעה במדד, שני ספסלי העבודה, ציר הזמן במדריך) עברו ל"תקופה" אחרי שהמייסד ראה את הכפילות בעמוד ההשקעה במדד.
 
 ## Added 2026-10-24 (audit wave, WP9: workbench and catalogue)
 
