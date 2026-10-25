@@ -7,6 +7,12 @@ The founder, on `/invest/index-ta35`:
 
 He approved the sketch: headline, then every investment house with the cheapest way at it, then the funds at a chosen house, with the fund type as a tag and the rest folded. On the worth sentence he said "its not really clear what that means", so it becomes the two lines below.
 
+**Amended 2026-10-26 (founder: "isnt the fund ⊂ the broker? … there is a sort of weird comparison here"):** item 3 below is replaced. Both lines are slices through the headline's cell, changing one thing at a time:
+- "אותה קרן, בית השקעות אחר: יישארו לכם עד {house gap} פחות": the same fund at other houses.
+- "אותו בית השקעות, קרן אחרת: עד {fund gap} פחות": the same house with other funds.
+
+The larger gap goes first, without "משנה הכי הרבה" wording, and the note under them reads "לעומת הדרך הזולה ביותר, בעוד {n} שנים, בכסף של היום".
+
 ## The page, top to bottom
 1. **Unchanged above the result:** the index pills, the plan chips, the dollar line, the account select, and `IndexHeader`.
 2. **Headline** (`Headline`): the cheapest complete way, as today, plus the fund type as a small tag next to the fund (see "Type tags").
