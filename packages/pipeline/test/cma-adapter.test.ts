@@ -98,7 +98,7 @@ describe("normalise", () => {
     });
     expect(file.checked).toBe("2026-10-23");
     expect(file.raw).toEqual({ archive_key: "cma/gemelnet/2026-10-23.csv.gz", sha256: "a".repeat(64) });
-    expect(file.source.url).toBe("https://data.gov.il/dataset/gemelnet");
+    expect(file.source.url).toBe("https://data.gov.il/he/datasets/cma/gemelnet");
     expect(file.source.title).toContain("a30dcbea-a1d2-482c-ae29-8f781f5025fb");
     expect(file.source.title).toContain("rows with REPORT_PERIOD 202609");
     expect(cmaPeriodFile.safeParse(file).success).toBe(true);

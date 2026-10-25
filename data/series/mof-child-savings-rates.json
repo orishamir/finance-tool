@@ -16,7 +16,7 @@
     "fallback": "none needed",
     "terms_url": "https://data.gov.il/he/terms-of-use",
     "read_on": "2026-10-23",
-    "attribution": "מקור המידע: משרד האוצר, החשב הכללי, מאגר \"ריביות של פיקדונות חיסכון לכל ילד – עדכון יומי\", data.gov.il (https://data.gov.il/dataset/savingsplaninterest), לפי תנאי השימוש במאגרי המידע הממשלתיים"
+    "attribution": "מקור המידע: משרד האוצר, החשב הכללי, מאגר \"ריביות של פיקדונות חיסכון לכל ילד – עדכון יומי\", data.gov.il (https://data.gov.il/he/datasets/mof/savingsplaninterest), לפי תנאי השימוש במאגרי המידע הממשלתיים"
   },
   "rule_ids": [
     "CS-10",

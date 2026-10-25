@@ -402,7 +402,7 @@ Added 2026-10-22 (approved by the founder, `docs/architecture.md` gap 8.1). One 
 {
   "dataset": "gemelnet",
   "report_period": "2026-09",
-  "source": { "url": "https://data.gov.il/dataset/gemelnet", "title": "גמל נט, resource 2024-today", "publisher": "Capital Market, Insurance and Savings Authority (data.gov.il)", "strength": "primary" },
+  "source": { "url": "https://data.gov.il/he/datasets/cma/gemelnet", "title": "גמל נט, resource 2024-today", "publisher": "Capital Market, Insurance and Savings Authority (data.gov.il)", "strength": "primary" },
   "checked": "2026-10-22",
   "raw": { "archive_key": "cma/gemelnet/2026-10-22.csv.gz", "sha256": "..." },
   "funds": [

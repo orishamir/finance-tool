@@ -190,7 +190,7 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 
   The clearing house's own price list for a direct request was not read (open question 5). A forum account alleges an agent read a report the saver had not authorised (experience SW-X01).
 - Figures: none.
-- Source: [חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע"א-2011](https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf) p.5, s.31ט(א)(1), (ג) "מערכת סליקה פנסיונית מרכזית תמסור ללקוח, על פי בקשתו, מידע הנוגע לו" · checked 2026-10-25 · primary; [חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע"א-2011](https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf) p.10, s.31טז(ד)(1) · checked 2026-10-25 · primary; [חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע"א-2011](https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf) p.12, s.32(ח)(1) · checked 2026-10-25 · primary; [בנק לאומי – עושים סדר בפנסיה](https://www.leumi.co.il/Lobby/pension_information/36830) "המידע יהיה זמין לצפייה במשך שלושה חודשים בלבד" · checked 2026-10-25 · institution; [מזרחי טפחות – ייעוץ פנסיוני](https://www.mizrahi-tefahot.co.il/brokerage/pension/pension-consulting/) "הבנק מממן את מלוא עלות הפנייה למסלקה" · checked 2026-10-25 · institution
+- Source: [חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע"א-2011](https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf) p.5, s.31ט(א)(1), (ג) "מערכת סליקה פנסיונית מרכזית תמסור ללקוח, על פי בקשתו, מידע הנוגע לו" · checked 2026-10-25 · primary; [חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע"א-2011](https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf) p.10, s.31טז(ד)(1) · checked 2026-10-25 · primary; [חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע"א-2011](https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf) p.12, s.32(ח)(1) · checked 2026-10-25 · primary; [בנק לאומי – עושים סדר בפנסיה](https://www.leumi.co.il/he/pension-advising/pension-information/pension-advising/pension-information) "המידע יהיה זמין לצפייה במשך שלושה חודשים בלבד" · checked 2026-10-25 · institution; [מזרחי טפחות – ייעוץ פנסיוני](https://www.mizrahi-tefahot.co.il/brokerage/pension/pension-consulting/) "הבנק מממן את מלוא עלות הפנייה למסלקה" · checked 2026-10-25 · institution
 - Dimensions: `transfer-switch-process`, `statement-disclosure` (proposed in PF)
 - Likely to change: yes (CMA 2026 plan: clearing-house mandatory-use and payment circulars, PF-31).
 
@@ -688,7 +688,7 @@ This file does not enumerate providers. Who offers each wrapper, and from which 
 [astr]: https://www.as-invest.co.il/trade/faq_transfer/
 [meitavtr]: https://www.meitav.co.il/trade/financial_info/self_trading_portfolio_transfer/
 [leumitr]: https://leumi.co.il/he/Articles/47356
-[leumipen]: https://www.leumi.co.il/Lobby/pension_information/36830
+[leumipen]: https://www.leumi.co.il/he/pension-advising/pension-information/pension-advising/pension-information
 [mizpen]: https://www.mizrahi-tefahot.co.il/brokerage/pension/pension-consulting/
 [fnxkh]: https://www.fnx.co.il/ishtalmutfund/faq/
 [calc]: https://www.calcalist.co.il/article/hj55ri2pgx

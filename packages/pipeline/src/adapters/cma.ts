@@ -36,6 +36,13 @@ export const DATASETS: DatasetConfig[] = [
   },
 ];
 
+/**
+ * The dataset page. data.gov.il's new portal addresses a dataset as /he/datasets/<organization>/<name>; the old
+ * /dataset/<name> now ends on a "page not found" (found 2026-10-25). Both datasets belong to the CMA (the `organization.name`
+ * of the portal's package_show answer).
+ */
+export const datasetPageUrl = (c: DatasetConfig): string => `https://data.gov.il/he/datasets/cma/${c.dataset}`;
+
 export const downloadUrl = (c: DatasetConfig): string =>
   `https://data.gov.il/dataset/${c.datasetUuid}/resource/${c.resourceId}/download/file.csv`;
 
@@ -299,7 +306,7 @@ export function normalise(csvText: string, ctx: NormaliseContext): NormaliseResu
     dataset: config.dataset,
     report_period: periodDashed(period),
     source: {
-      url: `https://data.gov.il/dataset/${config.dataset}`,
+      url: datasetPageUrl(config),
       title: `${config.heTitle}, resource 2024-today (id ${config.resourceId}), CSV downloaded from ${url} (Windows-1255)${lm}; rows with REPORT_PERIOD ${period}`,
       publisher: "Capital Market, Insurance and Savings Authority (data.gov.il)",
       strength: "primary",
