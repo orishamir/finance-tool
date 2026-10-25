@@ -6,6 +6,10 @@ import type { RuleRecord } from "@finance-tool/schema";
 import { r2, scnCompare, site, system } from "../copy";
 import { useValueMode } from "../lib/mode-store";
 import { splitOwnTerms, useOwnTerms } from "../lib/own-rate";
+import { applyIndex, planOfGoal } from "../lib/compare-index";
+import { knownIndices } from "../lib/invest";
+import { useInputs } from "../lib/inputs";
+import { BROKERAGE, loadWorkbenchBundle, type WorkbenchBundle } from "../lib/providers";
 import { AssumptionChips, AssumptionsPanel, type Suggestion } from "../components/compare/assumptions";
 import { ChartLegend, ChartReadout, ChartTable, ComparisonChart } from "../components/compare/chart";
 import type { ResultCtx } from "../components/compare/ctx";
@@ -40,7 +44,7 @@ import { r5 } from "../copy";
 import { bundleLinks } from "../lib/bundle";
 
 /** The data files this page fetches after it starts, requested with the HTML (audit 2026-10-24, A52). */
-export const links = () => bundleLinks("compare-bundle.json");
+export const links = () => bundleLinks("compare-bundle.json", "workbench-bundle.json");
 
 export async function loader() {
   const { goalFormData, fitTable } = await import("../lib/compare.server");
@@ -56,9 +60,16 @@ export default function GoalComparePage() {
   const data = useLoaderData<typeof loader>();
   const presets = data.presets as Presets;
   const [bundle, setBundle] = useState<CompareBundle | null>(null);
+  // the invest page's data (2026-10-25, D28): the securities account's way over the indices. If it does not load, the comparison still runs and the account names no index.
+  const [wb, setWb] = useState<WorkbenchBundle | null>(null);
   const [failed, setFailed] = useState(false);
   useEffect(() => {
-    loadBundle().then(setBundle).catch(() => setFailed(true));
+    Promise.all([loadBundle(), loadWorkbenchBundle().catch(() => null)])
+      .then(([b, w]) => {
+        setWb(w);
+        setBundle(b);
+      })
+      .catch(() => setFailed(true));
   }, []);
   const provenance = useMemo(() => {
     const rules: Record<string, RuleRecord> = Object.fromEntries((bundle?.rules ?? Object.values(data.rules)).map((r) => [r.id, r as RuleRecord]));
@@ -67,13 +78,13 @@ export default function GoalComparePage() {
   return (
     <GoalsProvider presets={presets}>
       <PageShell current="goal" data={provenance}>
-        <Result bundle={bundle} failed={failed} data={data.form as FormData} fit={data.fit as FitTableData} presets={presets} meta={data.meta} today={data.today} />
+        <Result bundle={bundle} wb={wb} failed={failed} data={data.form as FormData} fit={data.fit as FitTableData} presets={presets} meta={data.meta} today={data.today} />
       </PageShell>
     </GoalsProvider>
   );
 }
 
-function Result({ bundle, failed, data, fit, presets, meta, today }: { bundle: CompareBundle | null; failed: boolean; data: FormData; fit: FitTableData; presets: Presets; meta: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null }; today: string }) {
+function Result({ bundle, wb, failed, data, fit, presets, meta, today }: { bundle: CompareBundle | null; wb: WorkbenchBundle | null; failed: boolean; data: FormData; fit: FitTableData; presets: Presets; meta: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null }; today: string }) {
   const { status, current, resolved } = useGoals();
   const navigate = useNavigate();
   const [params] = useSearchParams();
@@ -111,25 +122,29 @@ function Result({ bundle, failed, data, fit, presets, meta, today }: { bundle: C
     );
   }
   if (mode === "exposure") return <ExposureBody bundle={bundle} data={data} frame={frame} registerSave={setSaveAction} />;
-  return <Body bundle={bundle} data={data} fit={fit} frame={frame} exposureId={params.get("exposure")} registerSave={setSaveAction} />;
+  return <Body bundle={bundle} wb={wb} data={data} fit={fit} frame={frame} exposureId={params.get("exposure")} registerSave={setSaveAction} />;
 }
 
-function Body({ bundle: bundle0, data, fit, frame, exposureId, registerSave }: { bundle: CompareBundle; data: FormData; fit: FitTableData; frame: (b: React.ReactNode) => React.ReactNode; exposureId: string | null; registerSave: (a: { run: () => void; again: boolean } | null) => void }) {
+function Body({ bundle: bundle0, wb, data, fit, frame, exposureId, registerSave }: { bundle: CompareBundle; wb: WorkbenchBundle | null; data: FormData; fit: FitTableData; frame: (b: React.ReactNode) => React.ReactNode; exposureId: string | null; registerSave: (a: { run: () => void; again: boolean } | null) => void }) {
   const { current, resolved } = useGoals();
   const [terms, setTerm] = useOwnTerms(current!.id);
-  const { ownRates, ownFees, ownProviders } = splitOwnTerms(terms);
+  const { ownRates, ownFees, ownProviders, ownIndices } = splitOwnTerms(terms);
+  const setOwnIndex = (id: string | undefined) => setTerm(BROKERAGE, "index", id);
+  const released = useInputs();
   const setOwnProvider = (w: string, id: string | undefined) => setTerm(w, "provider", id);
   const setOwnRate = (w: string, p: number | undefined) => setTerm(w, "rate", p);
   const setOwnFee = (w: string, p: number | undefined) => setTerm(w, "fee", p);
   const base0 = runGoalOf(current!, resolved!)!;
-  const base = { ...base0, ...(Object.keys(ownRates).length > 0 ? { ownRates } : {}), ...(Object.keys(ownFees).length > 0 ? { ownFees } : {}), ...(Object.keys(ownProviders).length > 0 ? { ownProviders } : {}) };
+  const base = { ...base0, ...(Object.keys(ownRates).length > 0 ? { ownRates } : {}), ...(Object.keys(ownFees).length > 0 ? { ownFees } : {}), ...(Object.keys(ownProviders).length > 0 ? { ownProviders } : {}), ...(Object.keys(ownIndices).length > 0 ? { ownIndices } : {}) };
   // opened from an exposure row ("באיזה מוצר להחזיק את זה"): A-01 is that exposure's entered return for this view, not saved into the goal
   const subject = exposureId ? bundle0.exposures?.find((e) => e.record.id === exposureId) : undefined;
   const subjectReturn = subject ? current!.exposures?.[subject.record.id]?.return : undefined;
   const g = subjectReturn && typeof subjectReturn.value === "number" ? { ...base, returnPct: subjectReturn.value } : base;
   const key = JSON.stringify(g);
   // the broker the person chose for the brokerage account, else the collected tariff that leaves this goal the most (F-80, 2026-10-24, Doron's case): its tariff is the account's everywhere below
-  const bundle = useMemo(() => applyProviders(bundle0, g), [bundle0, key]); // eslint-disable-line react-hooks/exhaustive-deps
+  // The securities account names no index until the person chooses one (D27, D28): the lowest of the ways over the known indices before, the chosen index's cheapest way after; its broker is that way's.
+  const index = useMemo(() => (wb ? applyIndex(bundle0, wb, planOfGoal(bundle0, g, released.state), g) : null), [bundle0, wb, key, released.state]); // eslint-disable-line react-hooks/exhaustive-deps
+  const bundle = useMemo(() => applyProviders(index?.bundle ?? bundle0, g), [bundle0, index, key]); // eslint-disable-line react-hooks/exhaustive-deps
   const outcome = useMemo(() => buildView(bundle, g), [bundle, key]); // eslint-disable-line react-hooks/exhaustive-deps
   const [mode, setMode] = useValueMode();
   const [hover, setHover] = useState<number | null>(null);
@@ -195,7 +210,7 @@ function Body({ bundle: bundle0, data, fit, frame, exposureId, registerSave }: {
   };
   saveNow.current = () => doSave(readableSaved?.choice);
   const holdsExposure = (id: string) => !subject || (subject.record.wrapper_ids ?? []).includes(id as never);
-  const ctx: ResultCtx = { bundle, view, g, mk, mode, openField, fall: current!.assumptions.acceptedFall ?? null, setOwnRate, setOwnFee, setOwnProvider, targetCost: current!.targetCost ?? null, subjectCurrency: subject && subject.record.currency !== "ILS" ? subject.record.currency : null };
+  const ctx: ResultCtx = { bundle, view, g, mk, mode, openField, fall: current!.assumptions.acceptedFall ?? null, setOwnRate, setOwnFee, setOwnProvider, targetCost: current!.targetCost ?? null, subjectCurrency: subject && subject.record.currency !== "ILS" ? subject.record.currency : null, index: { wrapperId: BROKERAGE, card: { reading: index?.reading ?? null, ranked: index?.ranked ?? null, known: wb ? knownIndices(wb).map((i) => ({ id: i.id, name: i.name })) : [], chosenId: index?.reading?.kind === "chosen" ? index.reading.index.id : undefined, onChoose: setOwnIndex } } };
   const hideAll = view.headline === "excludes-all" || view.headline === "nothing-ranked";
   const title = goalTitle(current!);
   const sources = {

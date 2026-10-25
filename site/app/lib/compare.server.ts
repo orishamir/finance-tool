@@ -7,10 +7,10 @@ import type { DepositTerms, FeesSnapshot, ParameterRecord, RuleRecord, ValueObje
 import { buildTariff as engineTariff, type InstrumentTerms, type WorkbenchInput } from "@finance-tool/engine";
 import { loadChecklistRows, loadCma, loadCmaFees, loadFees, loadNotCovered, loadParameters, loadRules, loadWrappers, root, today } from "./data.server";
 import { buildInstrumentTerms, loadDepositTerms, loadExposures, loadFunds, regulatorAverageFees } from "./instruments.server";
-import { evaluate, representativeFeeValue, type BundleDataFile, type ProviderTariff, type CompareBundle, type ExposureEntry, type Family, type HoldingTerms, type RunGoal, type Tier2Row, type WrapperEntry } from "./compare";
+import { evaluate, representativeFeeValue, type BundleDataFile, type ProviderTariff, type CompareBundle, type ExposureEntry, type Family, type HoldingTerms, type IndexFundTerms, type RunGoal, type Tier2Row, type WrapperEntry } from "./compare";
 import type { FitTableData } from "./fit";
 import { computed, type SiteValue } from "./value";
-import { BROKERAGE, providersOf } from "./providers";
+import { BROKERAGE, instrumentClassOf, providersOf } from "./providers";
 import { latestSnapshots } from "./providers.server";
 
 const familyById: Partial<Record<WrapperId, Family>> = {
@@ -268,6 +268,27 @@ function exposureData(wrappers: WrapperEntry[], p05: ParameterRecord, sources: P
   return { exposures, exposureTerms };
 }
 
+/**
+ * The funds the brokerage account can hold for an equity index (2026-10-25, D27/D28): each fund record collected for an `equity_index`
+ * exposure that the engine can run, as the fund kind with its cost lines (the same builder as the guide pages and exposure mode). A fund the
+ * builder refuses (another currency, a distributing fund with no yield, a tax track not modelled) has no entry, so a way over it is not run
+ * by the comparison. Which fund and broker a goal uses comes from `site/app/lib/invest.ts` on the client (`compare-index.ts`).
+ */
+function indexFundTerms(p05: ParameterRecord, sources: Parameters<typeof buildInstrumentTerms>[3]): Record<string, IndexFundTerms> {
+  const indices = new Set(loadExposures().filter((e) => e.kind === "equity_index").map((e) => e.id));
+  const out: Record<string, IndexFundTerms> = {};
+  const own = p05.instruments?.[BROKERAGE];
+  for (const f of loadFunds()) {
+    const rec = f as unknown as { id: string; exposure_id?: string; names: { he: string[]; en: string[] } };
+    if (!rec.exposure_id || !indices.has(rec.exposure_id)) continue;
+    const built = buildInstrumentTerms(BROKERAGE, "securities", { ...(own ?? {}), fund: rec.id }, sources);
+    if ("missing" in built || !built.terms.fund) continue;
+    const feeValues = Object.fromEntries(Object.entries(built.feeValues).filter(([k]) => k.startsWith("fund") || k === "ninetyPercentTest"));
+    out[rec.id] = { name: rec.names.he[0] ?? rec.names.en[0] ?? rec.id, fund: built.terms.fund, feeValues };
+  }
+  return out;
+}
+
 /** The latest `checked` date anywhere in a record: what a refresh of the file changes (F-82 compares it). */
 function latestChecked(node: unknown, best: string | null = null): string | null {
   if (Array.isArray(node)) return node.reduce<string | null>((b, n) => latestChecked(n, b), best);
@@ -368,11 +389,15 @@ export function buildCompareBundle(): CompareBundle {
   }
   for (const w of wrappers) {
     if (w.id !== BROKERAGE || !w.terms) continue;
-    const providers = providerTariffs(w.id, "etf_units");
+    // the tariff lines are read for the class of the fund the account holds, not a fixed one: a tariff with no line for that class gives no price (F-63, "No line, no price", 2026-10-25)
+    const fundRec = sources.funds.find((x) => x.id === String(p05.instruments?.[w.id]?.fund));
+    const fundClass = fundRec ? instrumentClassOf(fundRec, loadExposures().find((e) => e.id === fundRec.exposure_id)) : "etf_units";
+    const providers = providerTariffs(w.id, fundClass);
     if (Object.keys(providers).length > 0) w.providers = providers;
   }
   for (const w of wrappers) for (const m of w.missing) console.log(`[compare] ${w.id}: no terms: ${m}`);
 
+  const indexFunds = indexFundTerms(p05, sources);
   const tier2 = tier2List();
   const checklist = loadChecklistRows();
   const { exposures, exposureTerms } = exposureData(wrappers, p05, sources);
@@ -380,11 +405,12 @@ export function buildCompareBundle(): CompareBundle {
 
   // ---- the rules a run may read: found by running the comparison over the profiles above with every rule at hand,
   // plus every rule the wrapper records cite (reasons and chips link to them) and the two the screens quote.
-  const draft: CompareBundle = { runDate: t, wrappers, parameters, tier2, rules: Object.values(allRules), checklist, cashLink: cashLink(), exposures, exposureTerms, dataFiles, site: { version: `r5-${t}`, data: `bundle-${t}` }, fit: fitTable(), pastRecord: pastRecord(allRules) };
+  const draft: CompareBundle = { runDate: t, wrappers, parameters, tier2, rules: Object.values(allRules), checklist, cashLink: cashLink(), exposures, exposureTerms, indexFunds, dataFiles, site: { version: `r5-${t}`, data: `bundle-${t}` }, fit: fitTable(), pastRecord: pastRecord(allRules) };
   const needed = new Set<string>(["PEN-36", "BANK-22", "MKT-01"]);
   for (const w of wrappers) collectRuleIds(w.record).forEach((id) => needed.add(id));
   for (const w of wrappers) for (const f of Object.values(w.feeValues)) (f.rule_ids ?? []).forEach((id) => needed.add(id));
   for (const e of exposures) (e.record.rule_ids ?? []).forEach((id) => needed.add(id));
+  for (const h of Object.values(indexFunds)) for (const f of Object.values(h.feeValues)) (f.rule_ids ?? []).forEach((id) => needed.add(id));
   for (const byWrapper of Object.values(exposureTerms)) for (const h of Object.values(byWrapper)) for (const f of Object.values(h.feeValues)) (f.rule_ids ?? []).forEach((id) => needed.add(id));
   let runs = 0;
   for (const g of probeGoals()) {

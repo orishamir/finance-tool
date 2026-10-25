@@ -81,6 +81,8 @@ export interface WrapperEntry {
     /** The site picked this provider for the goal (F-80, 2026-10-24, Doron's case): of the collected list tariffs, the one that leaves this goal the most; `compared` is how many were run (`applyProviders`). */
     pickedBy?: "site";
     compared?: number;
+    /** The run rests on a way over the indices (`applyIndexWay`, 2026-10-25): `range`, the lowest of the ways over the known indices (nothing chosen, D27), or `chosen`, the cheapest way for the index the person chose. */
+    viaIndex?: "range" | "chosen";
     /** The in-fund cost (brokerage and the like) or the track's balance fee the run takes, as a value object (sourced, or computed when it is a sum of the fund's lines), % a year; 2026-10-24. */
     fee?: SiteValue;
     /** The lowest in-fund cost among the fund records collected for the same exposure (same measure as `fee`), % a year. */
@@ -133,6 +135,14 @@ export interface HoldingTerms {
   feeValues: Record<string, SiteValue>;
 }
 
+/** The fund a securities wrapper can hold for an index, as the engine takes it (2026-10-25, D27/D28): built on the server from the fund record, shekel funds only. */
+export interface IndexFundTerms {
+  name: string;
+  fund: NonNullable<InstrumentTerms["fund"]>;
+  /** The fund's own cost lines as value objects (`fundManagement`, `fundVariable`, `fundTrustee`, `fundTracking`, `fundWithholding`, `fundHalfSpread`, `ninetyPercentTest`). */
+  feeValues: Record<string, SiteValue>;
+}
+
 /** A data file a comparison reads, by path and its `checked` date (F-82); `for` names the wrapper or exposure ids it feeds (empty: every comparison). */
 export interface BundleDataFile {
   path: string;
@@ -154,6 +164,8 @@ export interface CompareBundle {
   exposures?: ExposureEntry[];
   /** Release 5: per exposure and securities-family wrapper, the terms through the fund collected for the exposure. */
   exposureTerms?: Record<string, Record<string, HoldingTerms>>;
+  /** The funds collected for the equity indices that the engine can run in shekels, by fund record id: what the brokerage account runs on once an index way is applied (`compare-index.ts`). */
+  indexFunds?: Record<string, IndexFundTerms>;
   /** Release 5: the data files the runs read, for the saved comparison's versions (F-82). */
   dataFiles?: BundleDataFile[];
   /** Release 5: the build's version and data snapshot, written into a saved comparison (as `StateFile.site`). */
@@ -193,6 +205,8 @@ export interface RunGoal {
   ownFees?: Record<string, number>;
   /** The provider the person chose for a wrapper (the brokerage account), by wrapper id: its id in `WrapperEntry.providers`. A choice, not a figure; the tariff lines it brings are sourced. */
   ownProviders?: Record<string, string>;
+  /** The index the person chose for a wrapper (the brokerage account, D27), by wrapper id: an `equity_index` exposure id. A choice, not a figure; with none the account names no index. */
+  ownIndices?: Record<string, string>;
   /** The largest fall the person accepts (A-29), % of value; null when not entered. With P-04's equity row it decides whether an equity-exposed option is ranked (F-83, 2026-10-24). */
   acceptedFall?: number | null;
   /** A forecast worst fall the person entered for the exposure this view is about (the "באיזה מוצר" view), %; passes the F-71 filter when it does not exceed `acceptedFall`. */
@@ -382,7 +396,7 @@ export function applyProviders(bundle: CompareBundle, g: RunGoal): CompareBundle
   const withOwn = applyOwnProviders(bundle, g);
   let out = withOwn;
   for (const w of withOwn.wrappers) {
-    if (!w.providers || !w.terms || g.ownProviders?.[w.id] !== undefined) continue;
+    if (!w.providers || !w.terms || g.ownProviders?.[w.id] !== undefined || w.representative?.viaIndex) continue;
     const ids = Object.keys(w.providers);
     if (ids.length === 0) continue;
     let best: { id: string; real: number } | null = null;
