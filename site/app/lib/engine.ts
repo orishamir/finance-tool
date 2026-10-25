@@ -43,6 +43,8 @@ export interface YearPoint {
   nominal: number;
   real: number;
   paidIn: number;
+  /** What was paid in, in today's money: each deposit at the price level of the month it was made (F-06), not the sum at the end's. */
+  paidInReal: number;
   fees: number;
   taxDuring: number;
   taxAtExit: number;
@@ -73,6 +75,30 @@ export interface TimelineInputs {
   age: number | null;
 }
 
+/**
+ * F-06 applied to the money paid in (2026-10-25): what was paid in, in today's money, is each deposit divided by the index of the
+ * month it was paid, `C_0 / I_0 + Σ C_m / I_m` (F-03: an event in month m uses `I_m`, the amount now `I_0 = 1`). The ledgers add the
+ * amount now inside month 1, so it is taken back out of that month and counted at `I_0`. The chart used to divide the whole sum by
+ * the last month's index, which shrank every deposit by all the inflation of the horizon and drew idle cash as a gain (finding 6 of
+ * research/discovery/2026-10-25-guide-pages-sweep.md).
+ */
+export function paidInToday(run: { paidIn: number; series: readonly { month: number; paidIn: number; index: number }[] }, amountNow: number): number {
+  if (run.series.length === 0) return run.paidIn;
+  let total = 0;
+  let prevPaid = 0;
+  for (const point of run.series) {
+    let deposit = point.paidIn - prevPaid;
+    if (point.month === 1) {
+      const now = Math.min(amountNow, deposit);
+      total += now;
+      deposit -= now;
+    }
+    total += deposit / point.index;
+    prevPaid = point.paidIn;
+  }
+  return total;
+}
+
 export function runTimeline(bundle: Bundle, inputs: TimelineInputs): Timeline {
   try {
     const entered: Partial<Record<P05Input, ValueObject>> = {};
@@ -95,6 +121,7 @@ export function runTimeline(bundle: Bundle, inputs: TimelineInputs): Timeline {
         nominal: run.nominal,
         real: run.real,
         paidIn: run.paidIn,
+        paidInReal: paidInToday(run, plan.input.goal.amountNow),
         fees: Object.values(run.fees).reduce((a, b) => a + b, 0),
         taxDuring: run.taxDuring,
         taxAtExit: run.taxAtExit,

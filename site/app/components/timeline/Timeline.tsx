@@ -103,7 +103,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
     const yearValues = (p: YearPoint, m: Mode) => {
       const div = m === "real" ? p.index : 1;
       const yearText = p.year === 0 ? copy.readout.today : `${copy.readout.year} ${p.year}`;
-      const contributions = computed(p.paidIn / div, "nis", "F-05", { [ci.amountNow]: inputs[ci.amountNow]!, [ci.monthly]: inputs[ci.monthly]!, [ci.inflation]: inputs[ci.inflation]! }, { today, about: `${ci.about.contributions} ${p.year}` });
+      const contributions = computed(m === "real" ? p.paidInReal : p.paidIn, "nis", "F-05", { [ci.amountNow]: inputs[ci.amountNow]!, [ci.monthly]: inputs[ci.monthly]!, [ci.inflation]: inputs[ci.inflation]! }, { today, about: `${ci.about.contributions} ${p.year}` });
       const fees = computed(p.fees / div, "nis", "F-15", { ...feeInputs, [returnLabel]: inputs[returnLabel]!, [ci.years]: inputs[ci.years]! }, { today, rules: rules.filter((r) => r.id.startsWith("PF-") || r.id.startsWith("KGL-1")), flags: timeline.flags.filter((f) => f === "G-14" || f === "PF-13"), about: `${ci.about.fees} ${p.year}` });
       const gross = computed(p.grossBalance / div, "nis", "F-08", { ...inputs, ...feeInputs }, { today, rules, about: `${ci.grossBalance}, ${copy.readout.year} ${p.year}` });
       const realGainInputs: Record<string, SiteValue> = { [ci.grossBalance]: gross, [ci.paidIn]: contributions };
@@ -122,7 +122,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
     if (timeline.kind !== "ok") return [];
     const amountNow = state.entered.amount_now ?? p05Number(bundle.p05, "amount_now");
     const div = (p: YearPoint) => (mode === "real" ? p.index : 1);
-    return [{ year: 0, net: amountNow, tax: 0, fees: 0, contributions: amountNow }, ...timeline.years.map((p) => ({ year: p.year, net: (mode === "real" ? p.real : p.nominal), tax: (p.taxDuring + p.taxAtExit) / div(p), fees: p.fees / div(p), contributions: p.paidIn / div(p) }))];
+    return [{ year: 0, net: amountNow, tax: 0, fees: 0, contributions: amountNow }, ...timeline.years.map((p) => ({ year: p.year, net: (mode === "real" ? p.real : p.nominal), tax: (p.taxDuring + p.taxAtExit) / div(p), fees: p.fees / div(p), contributions: mode === "real" ? p.paidInReal : p.paidIn }))];
   }, [timeline, mode, state.entered.amount_now, bundle.p05]);
 
   const readoutYear = hover ?? horizonYears;
