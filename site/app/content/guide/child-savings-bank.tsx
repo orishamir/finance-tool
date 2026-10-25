@@ -2,7 +2,7 @@
 // a Num). Written 2026-10-23 from the rule base (CS, TXK, REG); each block ends with the rules it rests on.
 // NEW copy for the founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
-import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
+import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
 
 export const content: GuideContent = {
@@ -42,7 +42,7 @@ export const content: GuideContent = {
   afterTax: () => (
     <>
       <Callout tone="caution" className="max-w-measure">
-        <span className="font-medium">שיעור המס <Term prefix="ב" id="משיכה">משיכה</Term> מגיע ממקור משני.</span> הביטוח הלאומי אומר רק שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>, בלי שיעור ובלי להבחין בין מסלול צמוד למסלול לא צמוד. שאלה פתוחה: <bdi dir="ltr" className="whitespace-nowrap">TXK OQ1</bdi>.
+        <span className="font-medium">שיעור המס <Term prefix="ב" id="משיכה">משיכה</Term> מגיע ממקור משני.</span> הביטוח הלאומי אומר רק שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>, בלי שיעור ובלי להבחין בין מסלול צמוד למסלול לא צמוד. שאלה פתוחה: <IdRef id="TXK OQ1" />.
       </Callout>
       <RulesLine ids={["TXK-20", "TXK-23"]} />
     </>

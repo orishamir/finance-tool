@@ -7,7 +7,7 @@ import { fmt } from "../../lib/format";
 import { hebrewCount } from "../../lib/hebrew";
 import type { ExperienceEntry, PlaybookStep as StepData, Strength, StepFigure } from "../../lib/playbook";
 import { IconAlert, IconCopy, IconLock } from "../icons";
-import { Num, RuleRef } from "../provenance";
+import { IdRef, Num, RuleRef } from "../provenance";
 import { Card, cx, Disclosure, RankBadge, Tag } from "../kit";
 
 /** "ראשוני" and its kin: always on a step. A copy opens its host and the day it was read (copy.md 8.0). */
@@ -64,9 +64,7 @@ export function OpenQuestionChip({ code }: { code: string }) {
       <Tag tone="blocked" icon={<IconLock size={14} />}>
         {c.openQuestion}
       </Tag>
-      <span className="rule-chip">
-        <bdi dir="ltr">{code}</bdi>
-      </span>
+<IdRef id={code} />
     </>
   );
 }

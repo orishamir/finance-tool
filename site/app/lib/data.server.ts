@@ -289,6 +289,16 @@ export function loadParameterUses(): Record<string, string[]> {
   return out;
 }
 
+/** The inverse of `loadParameterUses`: per formula, the site parameters it uses (the formula sheet's list), with the formula's Hebrew name. */
+export function loadFormulaMap(names: Record<string, string>): Record<string, { name: string; parameters: string[] }> {
+  const out: Record<string, { name: string; parameters: string[] }> = {};
+  for (const [param, formulas] of Object.entries(loadParameterUses())) {
+    for (const f of formulas) (out[f] ??= { name: names[f] ?? "", parameters: [] }).parameters.push(param);
+  }
+  for (const [f, name] of Object.entries(names)) if (f !== "_other") out[f] ??= { name, parameters: [] };
+  return out;
+}
+
 // ---------------------------------------------------------------- P-09 pinned rules
 
 export interface PinnedRules {

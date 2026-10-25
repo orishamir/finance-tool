@@ -19,7 +19,7 @@ import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
 
 // ---------------------------------------------------------------- context
 
-export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean } | { kind: "rule"; id: string } | { kind: "term"; id: string };
+export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean } | { kind: "rule"; id: string } | { kind: "term"; id: string } | { kind: "formula"; id: string } | { kind: "question"; id: string };
 
 interface ProvenanceApi {
   open: (item: Item, anchor: HTMLElement | null) => void;
@@ -41,6 +41,10 @@ export interface ProvenanceData {
   rulesOf?: { name: string; href: string };
   /** Where each rule is used (the rules pages fill it): pages that show it, and whether the calculation engine reads it. */
   ruleUses?: Record<string, RuleUses>;
+  /** Per formula, its Hebrew name and the site parameters it uses (the formula sheet). A page that does not pass it still gets the name from `formulaNames`. */
+  formulas?: Record<string, { name: string; parameters: string[] }>;
+  /** Per open question (`TX2 OQ6`): from data/open-questions.json once it exists; the question sheet shows these fields when the id is here. */
+  openQuestions?: Record<string, { title_he?: string; status_he?: string; blocks_he?: string }>;
 }
 
 /** What a rule affects: links to pages that use it, and whether the calculation engine reads it. */
@@ -74,9 +78,11 @@ export function ProvenanceProvider({ data, children }: { data: ProvenanceData; c
       <TodayCtx.Provider value={data.today}>
       {children}
       <PushCtx.Provider value={push}>
+       <CloseCtx.Provider value={close}>
         <Sheet open={open} onClose={close} anchor={anchor} pc="popover" height={70} className="lg:max-h-[60vh] lg:backdrop:bg-transparent" labelledBy={headId} describedBy={descId} onBack={back}>
           {top && <SheetContent item={top} data={data} headId={headId} descId={descId} />}
         </Sheet>
+       </CloseCtx.Provider>
       </PushCtx.Provider>
       </TodayCtx.Provider>
     </Ctx.Provider>
@@ -93,6 +99,8 @@ export function useOpen() {
 }
 
 const InsideSheetCtx = createContext(false);
+/** Closes the sheet: a link inside it that leaves the page calls it. */
+const CloseCtx = createContext<() => void>(() => {});
 
 // ---------------------------------------------------------------- Num
 
@@ -249,14 +257,42 @@ export function StrengthLabel({ strength }: { strength: Strength }) {
   return <Tag tone="neutral">{label}</Tag>;
 }
 
-/** A rule chip: the ID in LTR with a slashed zero, a 44px tap area, opening the rule card. */
-export function RuleRef({ id, className }: { id: string; className?: string }) {
+export type IdKind = "rule" | "formula" | "parameter" | "question";
+const QUESTION_ID = /^([A-Z0-9]+)[ -]OQ(\d+)$/;
+/** What an id is, from its shape: `TX2 OQ6` a question, `F-80` (and the names `formulaNames` has, `A-06`) a formula, `P-01` and other `A-nn` a parameter, the rest a rule. */
+export function idKind(id: string): IdKind {
+  if (QUESTION_ID.test(id)) return "question";
+  if (/^F-\d+$/.test(id) || id in formulaNames) return "formula";
+  if (/^[PA]-\d+$/.test(id)) return "parameter";
+  return "rule";
+}
+
+/**
+ * One chip for any id the site shows (2026-10-26): a rule opens its card, a formula its sheet, an open question its sheet,
+ * a parameter goes to its card on the parameters page. The ID is LTR with a slashed zero and a 44px tap area.
+ */
+export function IdRef({ id, className }: { id: string; className?: string }) {
   const open = useOpen();
+  const close = useContext(CloseCtx);
+  const kind = idKind(id);
+  const shown = kind === "question" ? id.replace("-OQ", " OQ") : id;
+  const label = kind === "rule" ? `${ruleCopy.title} ${id}` : `${copy.idRef[kind]} ${shown}`;
+  if (kind === "parameter")
+    return (
+      <Link to={`/parameters#${id}`} className={cx("rule-chip", className)} onClick={close} aria-label={label}>
+        <bdi dir="ltr">{id}</bdi>
+      </Link>
+    );
   return (
-    <button type="button" className={cx("rule-chip", className)} onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} aria-label={`${ruleCopy.title} ${id}`}>
-      <bdi dir="ltr">{id}</bdi>
+    <button type="button" className={cx("rule-chip", className)} onClick={(e) => open({ kind: kind === "rule" ? "rule" : kind, id: shown }, e.currentTarget)} aria-label={label}>
+      <bdi dir="ltr" className="whitespace-nowrap">{shown}</bdi>
     </button>
   );
+}
+
+/** The rule chip: `IdRef` for a rule id, kept under its old name so nothing else changes. */
+export function RuleRef({ id, className }: { id: string; className?: string }) {
+  return <IdRef id={id} className={className} />;
 }
 
 /** "כללים:" then the chips. Always the last line of its block, never inside a sentence (design review C1). */
@@ -437,7 +473,62 @@ function SheetContent({ item, data, headId, descId }: { item: Item; data: Proven
       {item.kind === "value" && <ValueSheet value={item.value} exact={!!item.exact} data={data} headId={headId} descId={descId} />}
       {item.kind === "rule" && <RuleCard id={item.id} data={data} headId={headId} />}
       {item.kind === "term" && <TermCard id={item.id} data={data} headId={headId} />}
+      {item.kind === "formula" && <FormulaSheet id={item.id} data={data} headId={headId} />}
+      {item.kind === "question" && <QuestionSheet id={item.id} data={data} headId={headId} />}
     </InsideSheetCtx.Provider>
+  );
+}
+
+/** A formula's sheet: its Hebrew name, the site parameters it uses (only when the page passed `formulas`: otherwise the list is unknown, not empty) (each a chip to its card), and the full definition in method.md. */
+function FormulaSheet({ id, data, headId }: { id: string; data: ProvenanceData; headId: string }) {
+  const known = data.formulas?.[id];
+  const name = formulaNames[id] || known?.name || formulaNames._other;
+  const parameters = known?.parameters ?? [];
+  return (
+    <div className="flex flex-col gap-3">
+      <h2 id={headId} className="text-lg font-semibold">
+        {name} <bdi dir="ltr" className="slashed-zero text-muted-foreground text-base">{id}</bdi>
+      </h2>
+      {data.formulas && (
+        <div className="flex flex-col gap-1.5">
+          <span className="text-sm text-muted-foreground">{copy.formulaSheet.usesLabel}</span>
+          {parameters.length > 0 ? (
+            <span className="flex flex-wrap gap-2">
+              {parameters.map((p) => (
+                <IdRef key={p} id={p} />
+              ))}
+            </span>
+          ) : (
+            <span className="text-sm">{copy.formulaSheet.noParameters}</span>
+          )}
+        </div>
+      )}
+      <a href={METHOD_URL} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-start gap-1 text-sm hover:underline" dir="ltr">
+        <span className="min-w-0 [overflow-wrap:anywhere]">{copy.formulaSheet.full}</span>
+        <IconExternal size={16} className="shrink-0 mt-0.5" />
+      </a>
+    </div>
+  );
+}
+const METHOD_URL = "https://github.com/orishamir/finance-tool/blob/main/docs/method.md";
+
+/** An open question's sheet: what the term means on the site, and its title, status and what it blocks once data/open-questions.json has the id. */
+function QuestionSheet({ id, data, headId }: { id: string; data: ProvenanceData; headId: string }) {
+  const q = data.openQuestions?.[id] ?? data.openQuestions?.[id.replace(" OQ", "-OQ")];
+  return (
+    <div className="flex flex-col gap-3">
+      <h2 id={headId} className="text-lg font-semibold">
+        {q?.title_he ?? copy.idRef.question} <bdi dir="ltr" className="slashed-zero text-muted-foreground text-base">{id}</bdi>
+      </h2>
+      {(q?.status_he || q?.blocks_he) && (
+        <dl className="sheet-dl">
+          {q.status_he && <Row label={copy.questionSheet.status}>{q.status_he}</Row>}
+          {q.blocks_he && <Row label={copy.questionSheet.blocks}>{q.blocks_he}</Row>}
+        </dl>
+      )}
+      <p className="text-sm">{copy.questionSheet.what}</p>
+      <p className="text-sm text-muted-foreground">{copy.questionSheet.onSite}</p>
+    </div>
   );
 }
 
@@ -664,9 +755,7 @@ export function ValueSheet({ value, exact, data, headId, descId }: { value: Site
             <Row label={copy.computed.formula}>
               <span className="flex flex-wrap items-center gap-2">
                 <span>{formulaNames[value.computed_from.formula] ?? formulaNames._other}</span>
-                <span className="rule-chip rule-chip-static">
-                  <bdi dir="ltr">{value.computed_from.formula}</bdi>
-                </span>
+                <IdRef id={value.computed_from.formula} />
               </span>
             </Row>
           </dl>

@@ -3,7 +3,7 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { Link, Navigate, useLoaderData, useNavigate, useSearchParams } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
-import { r2, scnCompare, site, system } from "../copy";
+import { formulaNames, r2, scnCompare, site, system } from "../copy";
 import { useValueMode } from "../lib/mode-store";
 import { splitOwnTerms, useOwnTerms } from "../lib/own-rate";
 import { applyIndex, planOfGoal } from "../lib/compare-index";
@@ -23,7 +23,7 @@ import { DetailSheetBody, HorizonDefaultedNote, HorizonHonestLine, PastRecordLin
 import type { FitTableData } from "../lib/fit";
 import { DimensionChecklist, type ChecklistRowView } from "../components/guide/sections";
 import { IconExternal } from "../components/icons";
-import { Num, NumberLegend, RulesLine } from "../components/provenance";
+import { IdRef, Num, NumberLegend, RulesLine } from "../components/provenance";
 import { Sheet } from "../components/Sheet";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { Callout, Card, Disclosure, SegmentedControl, Sentence, Tag } from "../components/kit";
@@ -46,9 +46,10 @@ import { bundleLinks } from "../lib/bundle";
 export const links = () => bundleLinks("compare-bundle.json", "workbench-bundle.json");
 
 export async function loader() {
+  const { loadFormulaMap } = await import("../lib/data.server");
   const { goalFormData, fitTable } = await import("../lib/compare.server");
   // P-04's table: the line under the headline quotes the equity row when the horizon is short (home question card 2026-10-24)
-  return { ...goalFormData(), fit: fitTable() };
+  return { ...goalFormData(), fit: fitTable(), formulas: loadFormulaMap(formulaNames) };
 }
 
 export function meta() {
@@ -72,7 +73,7 @@ export default function GoalComparePage() {
   }, []);
   const provenance = useMemo(() => {
     const rules: Record<string, RuleRecord> = Object.fromEntries((bundle?.rules ?? Object.values(data.rules)).map((r) => [r.id, r as RuleRecord]));
-    return { rules, terms: {}, dimensions: Object.fromEntries((bundle?.checklist ?? []).map((c) => [c.id, c.name])), today: data.today };
+    return { rules, terms: {}, dimensions: Object.fromEntries((bundle?.checklist ?? []).map((c) => [c.id, c.name])), today: data.today, formulas: data.formulas };
   }, [bundle, data.rules, data.today]);
   return (
     <GoalsProvider presets={presets}>
@@ -241,7 +242,7 @@ function Body({ bundle: bundle0, wb, data, fit, frame, exposureId, registerSave 
         {/* a covered row still shows the options blocked on it in their own record (scenario fix 2026-10-24: coverage is pooled across options) */}
         {m.blockedOptions && (
           <span className="text-xs text-blocked-foreground">
-            {scnCompare.blockedFor} {m.blockedOptions.options.map((id) => view.names[id] ?? id).join(", ")} (<bdi dir="ltr">{m.blockedOptions.code.replace("-OQ", " OQ")}</bdi>)
+            {scnCompare.blockedFor} {m.blockedOptions.options.map((id) => view.names[id] ?? id).join(", ")} (<IdRef id={m.blockedOptions.code} />)
           </span>
         )}
       </>

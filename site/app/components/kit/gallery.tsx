@@ -6,7 +6,7 @@ import { kit as copy } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { computed, entered } from "../../lib/value";
 import { IconLock } from "../icons";
-import { Num } from "../provenance";
+import { IdRef, Num } from "../provenance";
 import { Button, Callout, Card, ChartLegend, ChartReadout, ChartTable, ChipList, ChoiceChips, CoverageFold, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, KeyValue, KeyValueList, LinkButton, Marker, MarkerMark, NumberField, ParameterLine, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, Sentence, SourceLine, Stat, StatRow, Swatch, Tag, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
@@ -275,6 +275,14 @@ function Words({ today }: { today: string }) {
   const s = samples(today);
   return (
     <>
+      <Demo name="IdRef" use={g.uses.IdRef}>
+        <Grid>
+          <State label="rule: opens the rule card"><div><IdRef id="TXS-05" /></div></State>
+          <State label="formula: opens the formula sheet"><div><IdRef id="F-80" /></div></State>
+          <State label="parameter: goes to its card on /parameters"><div><IdRef id="P-01" /></div></State>
+          <State label="open question: opens the question sheet"><div><IdRef id="TX2 OQ6" /></div></State>
+        </Grid>
+      </Demo>
       <Demo name="Sentence, Tpl" use={g.uses.Sentence}>
         <Grid>
           <State label={`${g.states.sourced} / ${g.states.computed} / ${g.states.entered}`}>

@@ -2,7 +2,7 @@
 // content files; every figure is a Num). Written 2026-10-23 from the rule base (IRA, PEN, TXP, TXK, PF, REG);
 // each block ends with the rules it rests on. NEW copy for the founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
-import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
+import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
 
 export const content: GuideContent = {
@@ -36,10 +36,10 @@ export const content: GuideContent = {
     return (
       <>
         <Callout tone="blocked" className="max-w-measure">
-          <span className="font-medium">את המס ביציאה האתר לא מחשב.</span> הקצבה דורשת מקדמי המרה שלא נאספו, והקופה עצמה לא משלמת קצבה. <Term id="משיכה">משיכה</Term> שלא כדין ממוסה ב{rate ? <Num value={rate} /> : null} לפחות, אבל על איזה סכום לא נמצא. שאלות פתוחות: <bdi dir="ltr" className="whitespace-nowrap">PEN OQ7</bdi>, <bdi dir="ltr" className="whitespace-nowrap">TXP OQ3</bdi>.
+          <span className="font-medium">את המס ביציאה האתר לא מחשב.</span> הקצבה דורשת מקדמי המרה שלא נאספו, והקופה עצמה לא משלמת קצבה. <Term id="משיכה">משיכה</Term> שלא כדין ממוסה ב{rate ? <Num value={rate} /> : null} לפחות, אבל על איזה סכום לא נמצא. שאלות פתוחות: <IdRef id="PEN OQ7" />, <IdRef id="TXP OQ3" />.
         </Callout>
         <Callout tone="caution" className="max-w-measure">
-          <span className="font-medium">מה משלמים מעבר <Term prefix="ל" id="דמי ניהול">דמי הניהול</Term>.</span> <Term id="עמלות ברוקראז'">עמלות ברוקראז'</Term> על כל קנייה ומכירה, <Term id="דמי משמרת">דמי משמרת</Term> ודמי ניהול של הקרנות שמחזיקים נגבים מהקופה לפי תעריף הברוקר שבחרתם. התקרה לדמי הניהול של קופה אישית אחרי תיקון התקנות לא אותרה. שאלה פתוחה: <bdi dir="ltr" className="whitespace-nowrap">IRA OQ3</bdi>.
+          <span className="font-medium">מה משלמים מעבר <Term prefix="ל" id="דמי ניהול">דמי הניהול</Term>.</span> <Term id="עמלות ברוקראז'">עמלות ברוקראז'</Term> על כל קנייה ומכירה, <Term id="דמי משמרת">דמי משמרת</Term> ודמי ניהול של הקרנות שמחזיקים נגבים מהקופה לפי תעריף הברוקר שבחרתם. התקרה לדמי הניהול של קופה אישית אחרי תיקון התקנות לא אותרה. שאלה פתוחה: <IdRef id="IRA OQ3" />.
         </Callout>
         <RulesLine ids={["TXP-14", "TXP-18", "PEN-30", "IRA-16", "IRA-17", "PF-06"]} />
       </>

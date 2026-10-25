@@ -2,7 +2,7 @@
 // Num). Wording follows the approved mockup of 2026-10-23, checked against the rule base; each block
 // ends with the rules it rests on. NEW copy for the founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
-import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
+import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
 
 export const content: GuideContent = {
@@ -31,7 +31,7 @@ export const content: GuideContent = {
     return (
       <>
         <Callout tone="blocked" className="max-w-measure">
-          <span className="font-medium">מגיל {age ? <Num value={age} /> : null} אפשר להעביר את הכסף <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.</span> את <Term prefix="ה" id="קצבה">קצבה</Term> האתר עוד לא מחשב, כי חסרים מקדמי ההמרה. שאלה פתוחה: <bdi dir="ltr" className="whitespace-nowrap">PEN OQ7</bdi>.
+          <span className="font-medium">מגיל {age ? <Num value={age} /> : null} אפשר להעביר את הכסף <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.</span> את <Term prefix="ה" id="קצבה">קצבה</Term> האתר עוד לא מחשב, כי חסרים מקדמי ההמרה. שאלה פתוחה: <IdRef id="PEN OQ7" />.
         </Callout>
         <RulesLine ids={["TXK-10", "KGL-09"]} />
       </>

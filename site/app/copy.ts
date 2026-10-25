@@ -280,6 +280,19 @@ export const provenance = {
   computed: { formula: "נוסחה", inputs: "ערכים שנכנסו לחישוב", rules: "חוקים וכללים שנכנסו לחישוב", weakInputs: "בין הערכים שנכנסו לחישוב, אלה לפי מסמך של החברה:" },
   // audit 2026-10-24 (A21): a flag with no sentence of its own
   flagOther: "הערה על החישוב:",
+  // 2026-10-26: one chip for every id (IdRef); the formula sheet and the open-question sheet
+  idRef: { formula: "נוסחה", parameter: "פרמטר", question: "שאלה פתוחה" },
+  formulaSheet: {
+    usesLabel: "פרמטרים של האתר שהנוסחה משתמשת בהם",
+    noParameters: "הנוסחה לא משתמשת בפרמטרים של האתר.",
+    full: "Full definition (method.md, in English)",
+  },
+  questionSheet: {
+    what: "זו שאלה פתוחה בבסיס החוקים: משהו שעוד לא נמצא לו מקור ברור, בחוק או אצל הרשות.",
+    onSite: "כל עוד היא פתוחה, האתר לא מנחש תשובה. הוא לא מחשב את מה שתלוי בה, או מציג אותו עם הערה.",
+    status: "מצב",
+    blocks: "מה היא עוצרת",
+  },
   entered: { line: "הזנתם את הערך הזה.", instead: "במקום:" },
   // 2026-10-25: `more` folds the parameter file's general line away from the clicked number's own line
   parameter: { why: "למה הערך הזה", more: "עוד על הפרמטר", approved: "תאריך אישור", notApproved: "עוד לא אושר", noRationale: "ערך שהאתר קבע בעצמו; הוא לא בא מהחוק." },
@@ -3526,6 +3539,7 @@ export const kit = {
       withIcon: "עם אייקון",
     },
     uses: {
+      IdRef: "שבב לכל מזהה שהאתר מציג: חוק, נוסחה, פרמטר או שאלה פתוחה. לא כותבים מזהה כטקסט חשוף. גר ב־provenance.tsx, לא ב־kit.",
       Button: "Button לפעולה, LinkButton למעבר לעמוד. כפתור primary אחד בכל מסך.",
       Tag: "תווית קצרה עם גוון: מצב, סוג, דגל. הגוון לא עובד לבד: מוסיפים מילה או אייקון.",
       Callout: "הערה בקופסה מתחת לתוצאה: caution (לא עודכן, מקור חלש), blocked (שאלה פתוחה), info.",

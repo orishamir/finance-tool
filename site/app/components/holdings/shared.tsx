@@ -7,7 +7,7 @@ import { fmt } from "../../lib/format";
 import { ruleTitle } from "../../lib/rule-title";
 import type { SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
-import { Num, RuleRef } from "../provenance";
+import { IdRef, Num, RuleRef } from "../provenance";
 import { Tag } from "../kit";
 
 export type RuleMap = Record<string, RuleRecord>;
@@ -15,9 +15,12 @@ export type RuleMap = Record<string, RuleRecord>;
 /** "שאלה פתוחה CS OQ10": a lock, the word and the code; never a chip (an open question has no text to open). */
 export function OpenQuestion({ code }: { code: string }) {
   return (
-    <Tag tone="blocked" icon={<IconLock size={14} />}>
-      {copy.openQuestion} <bdi dir="ltr">{code}</bdi>
-    </Tag>
+    <>
+      <Tag tone="blocked" icon={<IconLock size={14} />}>
+        {copy.openQuestion}
+      </Tag>{" "}
+      <IdRef id={code} />
+    </>
   );
 }
 

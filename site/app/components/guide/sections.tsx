@@ -6,7 +6,7 @@ import { guide as copy, r3fees } from "../../copy";
 import type { TermRow } from "../../lib/data.server";
 import type { Strength } from "../../lib/value";
 import { IconCheck, IconChevronDown, IconDrillIn, IconLock, IconMinus } from "../icons";
-import { RuleRef, RulesLine, StrengthLabel } from "../provenance";
+import { IdRef, RuleRef, RulesLine, StrengthLabel } from "../provenance";
 import { Card, cx, Disclosure, KeyValueList as KitKeyValueList, Section, Tag } from "../kit";
 
 export interface SectionDef {
@@ -249,7 +249,7 @@ function ChecklistRow({ r }: { r: ChecklistRowView }) {
         <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
           <span className="font-medium">{r.name}</span>
           <span className={cx("text-xs", r.mark === "covered" ? "text-positive-foreground" : r.mark === "blocked" ? "text-blocked-foreground" : "text-muted-foreground")}>
-            {r.mark === "covered" ? copy.checklist.considered : r.mark === "na" ? copy.checklist.notRelevant : <>{copy.checklist.blockedMark} <bdi dir="ltr">{r.code?.replace("-OQ", " OQ")}</bdi></>}
+            {r.mark === "covered" ? copy.checklist.considered : r.mark === "na" ? copy.checklist.notRelevant : <>{copy.checklist.blockedMark} {r.code ? <IdRef id={r.code} /> : null}</>}
           </span>
           {r.weak && (r.weak === "institution" || r.weak === "secondary") && <StrengthLabel strength={r.weak} />}
           {r.applies}

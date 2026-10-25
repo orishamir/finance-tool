@@ -2,7 +2,7 @@
 // Written 2026-10-23 from the il-finance rules cited under each block (BANK, BPN, TXI, REG, SW, MF); same
 // shape and register as kupat-gemel-lehashkaa.tsx. NEW copy for the founder to review.
 import type { GuideContent } from "./types";
-import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
+import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
 
 export const content: GuideContent = {
@@ -38,7 +38,7 @@ export const content: GuideContent = {
         </Sentence>
         <RulesLine ids={["TXI-20"]} />
         <Callout tone="blocked" className="max-w-measure">
-          <span className="font-medium"><Term id="שבירת פיקדון">שבירה</Term> של תוכנית חיסכון: האתר לא מחשב אותה.</span> איך בנק מתמחר שבירה, האם לכל הפקדה חודשית נעילה משלה, ואיך המס מתייחס לתוכנית שנשברה עוד פתוח. שאלות פתוחות: <bdi dir="ltr" className="whitespace-nowrap">BANK OQ12</bdi>, <bdi dir="ltr" className="whitespace-nowrap">TXI OQ14</bdi>.
+          <span className="font-medium"><Term id="שבירת פיקדון">שבירה</Term> של תוכנית חיסכון: האתר לא מחשב אותה.</span> איך בנק מתמחר שבירה, האם לכל הפקדה חודשית נעילה משלה, ואיך המס מתייחס לתוכנית שנשברה עוד פתוח. שאלות פתוחות: <IdRef id="BANK OQ12" />, <IdRef id="TXI OQ14" />.
         </Callout>
         <RulesLine ids={["BANK-06", "BANK-28"]} />
       </>
