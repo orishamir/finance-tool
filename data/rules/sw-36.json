@@ -16,30 +16,36 @@
   "sources": [
     {
       "url": "https://www.as-invest.co.il/trade/faq_transfer/",
-      "title": "Altshuler Shaham Trade FAQ",
+      "title": "אלטשולר שחם טרייד – מעבירים את תיק ההשקעות שלכם לאלטשולר שחם טרייד",
+      "title_he": "אלטשולר שחם טרייד – מעבירים את תיק ההשקעות שלכם לאלטשולר שחם טרייד",
       "publisher": "Altshuler Shaham",
       "publisher_he": "אלטשולר שחם",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "quote": "שער עלות אפס",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://leumi.co.il/he/Articles/47356",
-      "title": "Leumi instructions",
+      "title": "בנק לאומי – הנחיות ללקוח להעברת ניירות ערך",
+      "title_he": "בנק לאומי – הנחיות ללקוח להעברת ניירות ערך",
       "publisher": "Bank Leumi",
       "publisher_he": "בנק לאומי",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "quote": "שער עלות הנייר יהיה אפס",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.meitav.co.il/trade/financial_info/self_trading_portfolio_transfer/",
-      "title": "Meitav Trade article",
+      "title": "מיטב – המדריך למעבר חלק: איך לנייד את תיק ההשקעות מהבנק למסחר עצמאי (03/08/2026)",
+      "title_he": "מיטב – המדריך למעבר חלק: איך לנייד את תיק ההשקעות מהבנק למסחר עצמאי (03/08/2026)",
       "publisher": "Meitav",
       "publisher_he": "מיטב",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "quote": "רצף המס נשמר",
+      "checked": "2026-10-25"
     }
   ]
 }

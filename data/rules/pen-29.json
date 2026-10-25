@@ -6,7 +6,7 @@
   "figure_names_he": {
     "minimum_accumulation": "סכום הצבירה המזערי"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "minimum",
     "liquidity-lockup"
@@ -18,12 +18,12 @@
       "value": 110250,
       "unit": "nis",
       "source": {
-        "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-        "title": "Provident Funds Law, section 23(א)(1)(ב)(3), 23(ה)-(ו) (Wikisource mirror; NIS 80,000 at 2008 values); Mor general bylaws 01.04.2026, s.1",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+        "title": "חוברת ניכויים חודשית 2026 (רשות המסים), p.12, row \"מרכיב התגמולים - סכום צבירה מזערי\": 110,250 למועד המשיכה",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2026-01-01",
       "effective_to": null,
       "tax_year": 2026,
@@ -39,18 +39,59 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "title": "Provident Funds Law, section 23(א)(1)(ב)(3), 23(ב)(1א), 23(ה)-(ו) (Wikisource mirror)",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+      "title": "חוברת ניכויים חודשית – לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה, 2026",
+      "title_he": "חוברת ניכויים חודשית – לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה, 2026",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.12",
+      "locator_he": "עמוד 12",
+      "page": 12,
+      "quote": "סכום צבירה מזערי",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_315848.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 13 והוראת שעה), התשע\"ו-2015",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 13 והוראת שעה), התשע\"ו-2015",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "section 23(א)(1)(ב)(3), 23(ב)(1א), 23(ה)-(ו)",
-      "locator_he": "סעיף 23(א)(1)(ב)(3), 23(ב)(1א), 23(ה)-(ו)",
-      "anchor": "סעיף_23.א",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.4 (section 23(א)(1)(ב))",
+      "locator_he": "עמוד 4 (סעיף 23(א)(1)(ב))",
+      "page": 4,
+      "quote": "הוא הגיע לגיל פרישת חובה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/18/law/18_lsr_301133.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 5 והוראת שעה), התשע\"א-2010",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 5 והוראת שעה), התשע\"א-2010",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.3",
+      "locator_he": "עמוד 3",
+      "page": 3,
+      "quote": "סכום צבירה מזערי",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/17/law/17_lsr_300727.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 3), התשס\"ח-2008",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 3), התשס\"ח-2008",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.4, section 23(ה)",
+      "locator_he": "עמוד 4, סעיף 23(ה)",
+      "page": 4,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
@@ -60,10 +101,10 @@
       "publisher_he": "מור גמל ופנסיה",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "section 1",
-      "locator_he": "סעיף 1",
+      "locator": "p.44, section 52 and section 1",
+      "page": 44,
       "quote": "קצבת מינימום",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.moreinvest.co.il/media/hphjzxvl/תקנון-קרן-פנסיה-כללית.pdf",
@@ -75,7 +116,7 @@
       "strength": "institution",
       "locator": "section 1",
       "locator_he": "סעיף 1",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

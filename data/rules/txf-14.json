@@ -22,7 +22,7 @@
         "publisher": "IRS",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -46,16 +46,17 @@
       "kind": "official_pdf",
       "strength": "primary",
       "locator": "Art. 15(1)(d)",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.irs.gov/publications/p519",
       "title": "IRS Publication 519 (2025)",
+      "title_he": "IRS Publication 519 (2025), U.S. Tax Guide for Aliens",
       "publisher": "IRS",
       "publisher_he": "רשות המס האמריקאית (IRS)",
-      "kind": "official_pdf",
+      "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

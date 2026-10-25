@@ -19,11 +19,11 @@
       "unit": "count",
       "source": {
         "url": "https://market.tase.co.il/he/market_data/f-etfs",
-        "title": "TASE, קרנות חוץ נסחרות, data as of 22/10/2026",
+        "title": "הבורסה, קרנות חוץ נסחרות, נכון ל-23/10/2026 (40 רשומות)",
         "publisher": "Tel Aviv Stock Exchange",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -40,13 +40,14 @@
   "sources": [
     {
       "url": "https://market.tase.co.il/he/market_data/f-etfs",
-      "title": "TASE, קרנות חוץ נסחרות",
+      "title": "הבורסה, קרנות חוץ נסחרות",
       "title_he": "קרנות חוץ נסחרות (רשימה)",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25",
+      "qualifier": "(read in Chrome; 40 records on 23/10/2026)"
     }
   ]
 }

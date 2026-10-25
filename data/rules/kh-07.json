@@ -3,7 +3,7 @@
   "title": "Deposits above the tax-advantaged ceiling are accepted",
   "title_he": "הפקדות מעל התקרה המוטבת מתקבלות",
   "text_he": "הקרנות מקבלות הפקדות מעל התקרה המוטבת במס. לפי טבלת הראל, הפקדות מעבר לתקרה נזקפות לעובד כשווי מס ויחויבו במס רווח הון במשיכה. בניגוד לקופת גמל להשקעה, בחוק לא נמצאה תקרה בשקלים לסך ההפקדות לקרן השתלמות. הקרן מפרידה בין כסף מוטב לכסף שאינו מוטב, והמס על כל אחד מופיע בכללי המס.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "deposit-ceiling"
   ],
@@ -12,17 +12,17 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.nevo.co.il/law_html/law00/70391.htm",
-      "title": "Provident Funds Law s.22, Nevo",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
-      "publisher": "Nevo",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "s.22",
-      "locator_he": "סעיף 22",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.10, s.22",
+      "locator_he": "עמוד 10, סעיף 22",
+      "page": 10,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://media.harel-group.co.il/media/smegncwi/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf",
@@ -32,11 +32,11 @@
       "publisher_he": "הראל",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "KH-04)",
-      "checked": "2026-10-22"
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "ניתן להפקיד מעבר לתקרה",
+      "checked": "2026-10-25"
     }
-  ],
-  "derived_from": [
-    "KH-04"
   ]
 }

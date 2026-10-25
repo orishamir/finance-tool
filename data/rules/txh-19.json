@@ -3,7 +3,7 @@
   "title": "Transfer to another study fund keeps the account's history",
   "title_he": "העברה לקרן השתלמות אחרת שומרת על הוותק",
   "text_he": "מותר להעביר כסף מקרן השתלמות אחת לאחרת. כשחשבון של עובד בקרן אחת נסגר להפקדות וההפקדות ממשיכות בקרן שנייה, שני החשבונות נחשבים אחד אם שתי הקרנות הודעו ולא נמשך מהראשון סכום פטור; הקרן הראשונה מוסרת לשנייה את מועד התשלום הראשון, וכל רישומי הרכיבים עוברים לקרן המקבלת. העברה חלקית מקרן השתלמות אסורה, והעברה לקופת גמל לקצבה מותרת רק אם העמית היה זכאי למשוך בפטור. משפט בחוק שאומר במפורש שהעברה בין קרנות השתלמות אינה אירוע מס לא נמצא; הכלל ראשי לגבי הוותק שעובר, ועקיף לגבי הנייטרליות במס.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "switching-tax-event",
     "transfer-switch-process"
@@ -13,31 +13,84 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)",
-      "title": "Supervision of Financial Services (Provident Funds) (Transfer of Money between Provident Funds) Regulations 2008, regs. 2(a)(4), 3(a)(4), 9(c), Wikisource",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008, קובץ התקנות 6657",
       "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
-      "publisher": "Hebrew Wikisource",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "משרד האוצר",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "regs. 2(a)(4), 3(a)(4), 9(c)",
-      "locator_he": "תקנות 2(א)(4), 3(א)(4), 9(ג)",
-      "anchor": "סעיף_2",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.4, reg. 2(א)(4)",
+      "locator_he": "עמוד 4, תקנה 2(א)(4)",
+      "page": 4,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לתנאים_שבהם_חשבונות_שונים_בקרן_השתלמות_ייחשבו_לחשבון_אחד)",
-      "title": "Income Tax Regulations (conditions under which different study-fund accounts are one account) 1993, regs. 1-3, Wikisource",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=5",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008, קובץ התקנות 6657",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "משרד האוצר",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "regs. 1-3",
-      "locator_he": "תקנות 1-3",
-      "anchor": "סעיף_1",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.5, reg. 3(א)(4)",
+      "locator_he": "עמוד 5, תקנה 3(א)(4)",
+      "page": 5,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZbYNmyK9Qa3gH~lF+jEWmc=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014, קובץ התקנות 7407",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014, קובץ התקנות 7407",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.4, reg. 9(ג)",
+      "locator_he": "עמוד 4, תקנה 9(ג)",
+      "page": 4,
+      "quote": "לא ניתן להעביר חלק מן הכספים שנצברו לזכותו של עמית מקופה מעבירה שהיא קרן השתלמות",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100048.pdf",
+      "title": "תקנות מס הכנסה (כללים לתנאים שבהם חשבונות שונים בקרן השתלמות ייחשבו לחשבון אחד), התשנ\"ג-1993",
+      "title_he": "תקנות מס הכנסה (כללים לתנאים שבהם חשבונות שונים בקרן השתלמות ייחשבו לחשבון אחד), התשנ״ג-1993",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.1, regs. 1-3",
+      "locator_he": "עמוד 1, תקנות 1-3",
+      "page": 1,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.22, reg. 49ד1",
+      "locator_he": "עמוד 22, תקנה 49ד1",
+      "page": 22,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf",
+      "title": "Chief Economist paper Oct 2025",
+      "title_he": "על הטבת המס בקרן השתלמות – ניתוח מדיניות (אגף הכלכלן הראשי, אוקטובר 2025)",
+      "publisher": "gov.il",
+      "publisher_he": "משרד האוצר",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.5",
+      "locator_he": "עמוד 5",
+      "page": 5,
+      "quote": "רק במעבר בין מסלולים, אך לא בין חברות מנהלות",
+      "checked": "2026-10-25"
     }
   ]
 }

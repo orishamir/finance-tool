@@ -6,7 +6,7 @@
   "figure_names_he": {
     "guarantee_cancel_notice_days": "ימי הודעה מראש לביטול ערבות"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "protection"
   ],
@@ -17,12 +17,12 @@
       "value": 90,
       "unit": "days",
       "source": {
-        "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות",
-        "title": "פקודת הבנקאות, ss.8ד, 8ו, 8יא, 8יב (Wikisource mirror)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://boi.org.il/media/s5ub1z12/103.pdf",
+        "title": "פקודת הבנקאות, 1941 (קובץ חקיקה בנקאית של בנק ישראל, פריט 103), p.11, s.8יא(ה): \"שלא יפחת מתשעים יום מיום פרסום ההודעה\"",
+        "publisher": "Bank of Israel",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -38,18 +38,29 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/פקודת_הבנקאות",
-      "title": "פקודת הבנקאות, Wikisource",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
+      "url": "https://boi.org.il/media/s5ub1z12/103.pdf",
+      "title": "פקודת הבנקאות, 1941 (קובץ חקיקה בנקאית של בנק ישראל, פריט 103)",
+      "title_he": "פקודת הבנקאות, 1941 (קובץ חקיקה בנקאית של בנק ישראל, פריט 103)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.6, s.8ד ; p.8, s.8ו; p.10, s.8יא",
+      "locator_he": "עמוד 6, סעיף 8ד ; עמוד 8, סעיף 8ו; עמוד 10, סעיף 8יא",
+      "page": 6,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_12224370.pdf",
+      "title": "חוק התוכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנת התקציב 2026), התשפ\"ו-2026 (ספר החוקים 3510)",
+      "title_he": "חוק התוכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנת התקציב 2026), התשפ״ו-2026 (ספר החוקים 3510)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "ss.8ד(א), 8ו(ה), 8יא(א) to (ז), 8יב",
-      "locator_he": "סעיפים 8ד(א), 8ו(ה), 8יא(א) עד (ז), 8יב",
-      "anchor": "סעיף_8ד",
-      "checked": "2026-10-22",
-      "qualifier": "(law text via Wikisource mirror)"
+      "strength": "primary",
+      "locator": "p.49, s.4(4)-(5): 8ד(א) and 8ו(ה) as",
+      "page": 49,
+      "checked": "2026-10-25"
     }
   ]
 }

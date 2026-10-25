@@ -21,11 +21,11 @@
       "unit": "text",
       "source": {
         "url": "https://fs.knesset.gov.il/25/law/25_lsr_6803031.pdf",
-        "title": "Banking (Customer Service) Law, Amendment 38, Sefer HaHukim 3413, 14.5.2025, p.638, new s.5B2 and s.5",
-        "publisher": "Knesset (Sefer HaHukim)",
+        "title": "חוק הבנקאות (שירות ללקוח) (תיקון מס' 38), התשפ\"ה-2025, ספר החוקים 3413, p.3, s.5 (תחילה)",
+        "publisher": "הכנסת",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2025-12-01",
       "effective_to": null,
       "tax_year": null,
@@ -41,82 +41,108 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://boi.org.il/media/d10jeelv/h2782.pdf",
-      "title": "Directive 417 \"פעילות תאגיד בנקאי במערכת סגורה\" v4 and circular 2782-06",
-      "publisher": "Bank of Israel",
-      "publisher_he": "בנק ישראל",
-      "kind": "circular",
-      "strength": "primary",
-      "locator": "s.3-5",
-      "locator_he": "סעיף 3-5",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://www.boi.org.il/media/pcuny0hd/עמדת-בנק-ישראל-בנוגע-להכרזת-הממונה-על-התחרות-על-חמש-הקבוצות-הבנקאיות-כקבוצת-ריכוז-ומתן-הוראות-בתחום-הפיקדונות.pdf",
-      "title": "BoI press statement, 6 May 2026",
-      "title_he": "עמדת בנק ישראל בנוגע להכרזת הממונה על התחרות על חמש הקבוצות הבנקאיות כקבוצת ריכוז (6.5.2026)",
+      "url": "https://www.boi.org.il/media/3bacxlsl/417.pdf",
+      "title": "הוראת ניהול בנקאי תקין 417: פעילות תאגיד בנקאי במערכת סגורה (5/24)",
+      "title_he": "הוראת ניהול בנקאי תקין 417: פעילות תאגיד בנקאי במערכת סגורה (5/24)",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "locator": "p.2, s.3-5",
+      "locator_he": "עמוד 2, סעיף 3-5",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://boi.org.il/media/d10jeelv/h2782.pdf",
+      "title": "חוזר הפיקוח על הבנקים ח-2782-06 (20.5.2024)",
+      "title_he": "חוזר הפיקוח על הבנקים ח-2782-06 (20.5.2024)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "pp.1 to 3",
+      "locator_he": "עמודים 1 עד 3",
+      "page": 1,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.boi.org.il/media/pcuny0hd/עמדת-בנק-ישראל-בנוגע-להכרזת-הממונה-על-התחרות-על-חמש-הקבוצות-הבנקאיות-כקבוצת-ריכוז-ומתן-הוראות-בתחום-הפיקדונות.pdf",
+      "title": "בנק ישראל, הודעה לעיתונות 6.5.2026: עמדת בנק ישראל בנוגע להכרזת הממונה על התחרות",
+      "title_he": "בנק ישראל, הודעה לעיתונות 6.5.2026: עמדת בנק ישראל בנוגע להכרזת הממונה על התחרות",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://fs.knesset.gov.il/25/law/25_lsr_6803031.pdf",
-      "title": "Banking (Customer Service) Law, Amendment 38, Sefer HaHukim 3413, 14.5.2025, p.638",
-      "title_he": "חוק הבנקאות (שירות ללקוח), התשמ״א-1981",
+      "title": "חוק הבנקאות (שירות ללקוח) (תיקון מס' 38), התשפ\"ה-2025",
+      "title_he": "חוק הבנקאות (שירות ללקוח) (תיקון מס' 38), התשפ\"ה-2025",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "new s.5B2 and s.5",
-      "checked": "2026-10-22"
+      "locator": "pp.2 to 3, new s.5B2 and s.5",
+      "page": 2,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://fs.knesset.gov.il/25/law/25_ls1_5748073.pdf",
-      "title": "Amendment 38 bill with explanatory notes, Hatzaot Hok 1099, 24.2.2025",
-      "title_he": "ספר החוקים 3413 (14.5.2025): חוק הבנקאות (שירות ללקוח) (תיקון מס׳ 38)",
+      "title": "הצעת חוק הבנקאות (שירות ללקוח) (תיקון מס' 38) (הפקדת כספים במערכת סגורה – ניוד פיקדונות), הצעות חוק הכנסת 1099 (24.2.2025)",
+      "title_he": "הצעת חוק הבנקאות (שירות ללקוח) (תיקון מס' 38) (הפקדת כספים במערכת סגורה – ניוד פיקדונות), הצעות חוק הכנסת 1099 (24.2.2025)",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
-      "kind": "law",
+      "kind": "official_pdf",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "locator": "pp.2 to 3",
+      "locator_he": "עמודים 2 עד 3",
+      "page": 2,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.leumi.co.il/he/accountless-deposit",
-      "title": "Leumi",
+      "title": "לאומי: פיקדון ללא חשבון",
+      "title_he": "לאומי: פיקדון ללא חשבון",
       "publisher": "Bank Leumi",
       "publisher_he": "בנק לאומי",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/deposits-without-account/",
-      "title": "Mercantile",
+      "title": "מרכנתיל: פיקדונות ללא חשבון",
+      "title_he": "מרכנתיל: פיקדונות ללא חשבון",
       "publisher": "Mercantile Discount Bank",
       "publisher_he": "בנק מרכנתיל דיסקונט",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.bankmassad.co.il/private/depositsandsavings/openingthedepositaccount/",
-      "title": "Massad",
+      "title": "מסד: פתיחת חשבון פיקדון",
+      "title_he": "מסד: פתיחת חשבון פיקדון",
       "publisher": "Bank Massad",
       "publisher_he": "בנק מסד",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.ice.co.il/finance/news/article/1114246",
-      "title": "ice.co.il on Bank of Jerusalem Q1 2026",
+      "title": "אייס, על דוחות בנק ירושלים לרבעון הראשון של 2026",
+      "title_he": "אייס, על דוחות בנק ירושלים לרבעון הראשון של 2026",
       "publisher": "ice",
       "publisher_he": "ice",
       "kind": "article",
       "strength": "secondary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

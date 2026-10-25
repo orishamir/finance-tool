@@ -3,7 +3,7 @@
   "title": "Lump-sum withdrawal before retirement (product side)",
   "title_he": "משיכה חד פעמית לפני הפרישה: צד המוצר",
   "text_he": "משיכה חד פעמית מקופת גמל לקצבה (כולל קרן פנסיה), שלא בדרך היוון קצבה, אפשרית רק ממרכיב הפיצויים; מחשבון חדש שנפתח לכספי פיצויים או מוטבים; מקרן שאינה ותיקה אחרי גיל פרישת חובה כשהיתרה עד סכום הצבירה המזערי; מכספי עובד שהופקדו לפני שנת אלפיים, בתנאי גיל או עזיבת עבודה; מכספי עצמאים ישנים מסוימים; או כשמתקיימים תנאי הבריאות והכלכלה שקבע השר או כלל היתרה הקטנה. תקנון הפנסיה מוסיף שמשיכה ממרכיב התגמולים אפשרית רק לעמית שלא מקבל קצבת נכות, ושסכום שנמשך מסיים את כל זכויות הפנסיה הקשורות בו. משיכת תגמולים פותחת תקופת אכשרה חדשה לכיסוי שהכסף מימן. החוק נקרא בעותק בוויקיטקסט; הרשות מתכננת כללי משיכה אחידים שלא נבדקו.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "liquidity-lockup",
     "tax-at-exit"
@@ -14,18 +14,31 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "title": "Provident Funds Law, section 23(א)(1)(ב) (Wikisource mirror)",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_315848.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 13 והוראת שעה), התשע\"ו-2015",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 13 והוראת שעה), התשע\"ו-2015",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "section 23(א)(1)(ב)",
-      "locator_he": "סעיף 23(א)(1)(ב)",
-      "anchor": "סעיף_23.א",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.4 (section 23(א)(1)(ב))",
+      "locator_he": "עמוד 4 (סעיף 23(א)(1)(ב))",
+      "page": 4,
+      "quote": "מחשבון חדש כאמור בפסקאות (2א) או (2ב)",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.11, s.23(א)",
+      "locator_he": "עמוד 11, סעיף 23(א)",
+      "page": 11,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
@@ -35,9 +48,10 @@
       "publisher_he": "מור גמל ופנסיה",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "sections 103, 106",
-      "locator_he": "סעיפים 103, 106",
-      "checked": "2026-10-22"
+      "locator": "sections 103, 106, pp.71-72",
+      "locator_he": "סעיפים 103, 106, עמודים 71 עד 72",
+      "page": 71,
+      "checked": "2026-10-25"
     }
   ]
 }

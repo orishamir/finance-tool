@@ -15,6 +15,7 @@ import {
 import type { FeesSnapshot, RuleRecord, ValueObject } from "@finance-tool/schema";
 import { deviceStore } from "./device-store";
 import { fundRun, instrumentClassOf, subjectOf, BROKERAGE, ruleContext, type FundAssumptions, type WorkbenchBundle, type WorkbenchInputs } from "./providers";
+import { sourceLabel2 } from "./sources";
 import { computed, ruleFigure, weaker, type SiteValue, type Strength as VStrength } from "./value";
 
 export type Strength = "primary" | "primary-mirror" | "institution" | "secondary" | "open" | "experience";
@@ -196,16 +197,15 @@ const ONLY_FOR: Record<string, { re: RegExp; wrappers: string[] }[]> = { "SW-03"
 
 export const sentences = (text: string): string[] => text.split(/(?<=[.!?])\s+/u).filter(Boolean);
 
-/** Where a mirror is hosted, as the rule base's sources name it (switching-and-transfers.md); absent where the file does not say. */
-const circular = ["SW-02", "SW-03", "SW-04", "SW-05", "SW-06", "SW-07", "SW-08", "SW-09", "SW-10", "SW-11", "SW-16", "SW-19", "SW-38"];
-const regulations = ["SW-01", "SW-12", "SW-13", "SW-14", "SW-22", "SW-23", "SW-39", "SW-40", "SW-17", "SW-18", "SW-21"];
-export function hostOf(ruleId: string): string | null {
-  if (ruleId === "SW-24") return "מיטב";
-  if (ruleId === "SW-12") return "אנליסט, ויקיטקסט";
-  if (ruleId === "SW-39" || ruleId === "SW-40") return "נבו, ויקיטקסט";
-  if (circular.includes(ruleId)) return "אנליסט";
-  if (regulations.includes(ruleId)) return "ויקיטקסט";
-  return null;
+/**
+ * Where the copy a `primary-mirror` rule is read on is hosted, named from its own copy sources; null when they name none.
+ * Until 2026-10-25 this was a fixed table of the switching rules' hosts, which went stale when the source check moved
+ * those rules onto official texts.
+ */
+export function hostOf(rule: RuleRecord): string | null {
+  const names = (rule.sources ?? []).filter((s) => s.strength === "primary-mirror").map((s) => sourceLabel2(s).mirror);
+  const unique = [...new Set(names.filter((n): n is string => !!n))];
+  return unique.length ? unique.join(", ") : null;
 }
 
 export interface StepText {
@@ -307,7 +307,7 @@ export function buildSteps(rules: Record<string, RuleRecord>, wrapperId: string,
         }
         body = rest.join(" ");
       }
-      return { ruleId: id, ...(body ? { text: body } : {}), title: r.title_he ?? r.title, strength: r.strength, ...(r.strength === "primary-mirror" && hostOf(id) ? { host: hostOf(id)! } : {}), checked: r.checked };
+      return { ruleId: id, ...(body ? { text: body } : {}), title: r.title_he ?? r.title, strength: r.strength, ...(r.strength === "primary-mirror" && hostOf(r) ? { host: hostOf(r)! } : {}), checked: r.checked };
     });
     const figures: StepFigure[] = spec.ruleIds.flatMap((id) =>
       (FIGURES[id] ?? []).map((f) => {

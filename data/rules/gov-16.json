@@ -3,7 +3,7 @@
   "title": "State buybacks before maturity are at market price",
   "title_he": "פדיון מוקדם על ידי המדינה הוא במחיר השוק",
   "text_he": "פדיון מוקדם של סדרה על ידי המדינה נעשה בהליך תחרותי ושוויוני בתקופות שמתפרסמות, ויכול להיות מוצע לכל הציבור, לכל עושי השוק הראשיים או לחלקם. המחיר הוא מחיר השוק של האיגרת ביום הפדיון בפועל, והרכישה מהציבור עוברת דרך בנקים, חברי בורסה וגופים מאושרים. זו זכות של המדינה, לא של המחזיק: מי שרוצה לצאת לפני הפדיון מוכר בשוק המשני. התקנות נקראו בעותק באתר נבו.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "liquidity-lockup"
   ],
@@ -12,43 +12,54 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.nevo.co.il/law_html/law01/999_564.htm",
-      "title": "תקנות ... \"אג\"ח ממשלתית צמודה\"",
-      "title_he": "תקנות מילווה המדינה (איגרות חוב מסוג ״אג״ח ממשלתית צמודה״), התשס״ו-2006",
-      "publisher": "Nevo",
-      "publisher_he": "משרד האוצר",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=#page=3",
+      "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\") (תיקון), התשס\"ז-2007 (קובץ התקנות 6597)",
+      "title_he": "תקנות מילווה המדינה (איגרות חוב מסוג ״אג״ח ממשלתית צמודה״) (תיקון), התשס״ז-2007 (קובץ התקנות 6597)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "s. 7",
-      "locator_he": "סעיף 7",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.3, reg. 7 as",
+      "page": 3,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.nevo.co.il/law_html/law01/999_782.htm",
-      "title": "תקנות ... \"אג\"ח ממשלתית קצרה\"",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=#page=3",
+      "title": "תקנות מילווה המדינה (אגרות חוב מסוג \"אג\"ח ממשלתית קצרה\"), התשס\"ז-2007 (קובץ התקנות 6597)",
       "title_he": "תקנות מילווה המדינה (איגרות חוב מסוג ״אג״ח ממשלתית קצרה״), התשס״ז-2007",
-      "publisher": "Nevo",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "משרד האוצר",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "s. 7",
-      "locator_he": "סעיף 7",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.3, reg. 7",
+      "locator_he": "עמוד 3, תקנה 7",
+      "page": 3,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.nevo.co.il/law_html/law01/221_031.htm",
-      "title": "תקנות ... \"גילון חדש\"",
-      "title_he": "תקנות מילווה המדינה (סדרות מסוג ״גילון חדש״), התשנ״ט-1999",
-      "publisher": "Nevo",
-      "publisher_he": "משרד האוצר",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=9",
+      "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\") (תיקון), התשס\"ו-2006 (קובץ התקנות 6457)",
+      "title_he": "תקנות מילווה המדינה (סדרות מסוג ״גילון חדש״) (תיקון), התשס״ו-2006 (קובץ התקנות 6457)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "reg. 9א",
-      "locator_he": "תקנה 9א",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.9, reg. 9א",
+      "locator_he": "עמוד 9, תקנה 9א",
+      "page": 9,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=#page=6",
+      "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\") (תיקון), התשס\"ז-2007 (קובץ התקנות 6597)",
+      "title_he": "תקנות מילווה המדינה (סדרות מסוג ״גילון חדש״) (תיקון), התשס״ז-2007 (קובץ התקנות 6597)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.6, reg. 9א as",
+      "page": 6,
+      "checked": "2026-10-25"
     }
   ]
 }

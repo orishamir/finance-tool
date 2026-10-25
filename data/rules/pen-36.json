@@ -3,7 +3,7 @@
   "title": "What a payslip must show about pension deposits",
   "title_he": "מה תלוש השכר חייב להראות על ההפקדות לפנסיה",
   "text_he": "תלוש השכר חייב להציג את השכר שנספר לצורך זכויות פנסיוניות, בפירוט לפי הזכות שהוא נספר לה. הוא חייב להציג כל ניכוי לקופת גמל לפי הקופה והסכום, וגם את תשלומי המעסיק להטבות סוציאליות, כולל הפרשות המעסיק לקופה. החוק לא מחייב להציג את שיעור ההפקדה באחוזים ולא להפריד את מרכיב הפיצויים, ולכן את השיעורים מחשבים בעצמם: הניכוי או התשלום של המעסיק, מחולקים בשכר הפנסיוני.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "reporting-obligation",
     "deposit-ceiling"
@@ -13,16 +13,45 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/חוק_הגנת_השכר",
-      "title": "חוק הגנת השכר, התשי\"ח-1958, section 24 and תוספת items 5(6), 6(4), 7 (Wikisource mirror)",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
+      "url": "https://fs.knesset.gov.il/17/law/17_lsr_300652.pdf",
+      "title": "חוק הגנת השכר (תיקון מס' 24), התשס\"ח-2008",
+      "title_he": "חוק הגנת השכר (תיקון מס' 24), התשס\"ח-2008",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "section 24 and תוספת items 5(6), 6(4), 7",
-      "anchor": "סעיף_24",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.2, s.24",
+      "locator_he": "עמוד 2, סעיף 24",
+      "page": 2,
+      "quote": "מעביד חייב לנהל פנקס שכר ולמסור לכל עובד",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/17/law/17_lsr_300652.pdf",
+      "title": "חוק הגנת השכר (תיקון מס' 24), התשס\"ח-2008",
+      "title_he": "חוק הגנת השכר (תיקון מס' 24), התשס\"ח-2008",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.6",
+      "locator_he": "עמוד 6",
+      "page": 6,
+      "quote": "ניכוי לקופת גמל, שיפורט לפי הקופה שאליה הניכוי מיועד וסכומו",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/19/law/19_lsr_306572.pdf",
+      "title": "חוק להחלפת המונח מעביד (תיקוני חקיקה), התשע\"ד-2014",
+      "title_he": "חוק להחלפת המונח מעביד (תיקוני חקיקה), התשע\"ד-2014",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, s.1; p.5",
+      "locator_he": "עמוד 2, סעיף 1; עמוד 5",
+      "page": 2,
+      "checked": "2026-10-25"
     }
   ]
 }

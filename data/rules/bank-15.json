@@ -16,57 +16,64 @@
   "sources": [
     {
       "url": "https://boi.org.il/media/gcmk52bw/447a.pdf",
-      "title": "Directive 447A \"פרסום מידע מרוכז על קרנות כספיות ומק\"מ\" (04/25)",
-      "title_he": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון",
-      "publisher": "Bank of Israel",
-      "publisher_he": "בנק ישראל",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "s.1-20, Annexes A-B",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://boi.org.il/media/rall4hl2/h2813.pdf",
-      "title": "Circular 2813-06, 9 April 2025",
-      "publisher": "Bank of Israel",
-      "publisher_he": "בנק ישראל",
-      "kind": "circular",
-      "strength": "primary",
-      "locator": "s.5-12",
-      "locator_he": "סעיף 5-12",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://boi.org.il/media/1gmhymzy/202511.pdf",
-      "title": "Regulatory impact report for 447A, 7 April 2025",
-      "title_he": "הוראת ניהול בנקאי תקין 447א: פרסום מידע מרוכז על קרנות כספיות ומק״מ",
-      "publisher": "Bank of Israel",
-      "publisher_he": "בנק ישראל",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "pp.1-7",
-      "locator_he": "עמודים 1 עד 7",
-      "page": 1,
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://www.boi.org.il/media/pcuny0hd/עמדת-בנק-ישראל-בנוגע-להכרזת-הממונה-על-התחרות-על-חמש-הקבוצות-הבנקאיות-כקבוצת-ריכוז-ומתן-הוראות-בתחום-הפיקדונות.pdf",
-      "title": "BoI press statement, 6 May 2026",
-      "title_he": "עמדת בנק ישראל בנוגע להכרזת הממונה על התחרות על חמש הקבוצות הבנקאיות כקבוצת ריכוז (6.5.2026)",
+      "title": "הוראת ניהול בנקאי תקין 447א: פרסום מידע מרוכז על קרנות כספיות ומק\"מ (04/25)",
+      "title_he": "הוראת ניהול בנקאי תקין 447א: פרסום מידע מרוכז על קרנות כספיות ומק\"מ (04/25)",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "locator": "pp.1 to 6, s.1-20, Annexes A-B",
+      "page": 1,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://boi.org.il/media/rall4hl2/h2813.pdf",
+      "title": "חוזר הפיקוח על הבנקים ח-2813-06 (9.4.2025)",
+      "title_he": "חוזר הפיקוח על הבנקים ח-2813-06 (9.4.2025)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "pp.2 to 4, s.5-12",
+      "locator_he": "עמודים 2 עד 4, סעיף 5-12",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://boi.org.il/media/1gmhymzy/202511.pdf",
+      "title": "דוח קביעת אסדרה: פרסום מידע מרוכז על קרנות כספיות ומק\"מ (7.4.2025)",
+      "title_he": "דוח קביעת אסדרה: פרסום מידע מרוכז על קרנות כספיות ומק\"מ (7.4.2025)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "pp.1 to 7",
+      "locator_he": "עמודים 1 עד 7",
+      "page": 1,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.boi.org.il/media/pcuny0hd/עמדת-בנק-ישראל-בנוגע-להכרזת-הממונה-על-התחרות-על-חמש-הקבוצות-הבנקאיות-כקבוצת-ריכוז-ומתן-הוראות-בתחום-הפיקדונות.pdf",
+      "title": "בנק ישראל, הודעה לעיתונות 6.5.2026: עמדת בנק ישראל בנוגע להכרזת הממונה על התחרות",
+      "title_he": "בנק ישראל, הודעה לעיתונות 6.5.2026: עמדת בנק ישראל בנוגע להכרזת הממונה על התחרות",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.funder.co.il/article/188090",
-      "title": "Funder, 25 Sep 2025 (deferral)",
+      "title": "פאנדר, 25.9.2025: פרסום מידע מרוכז על קרנות כספיות ומק\"מ (דחייה)",
+      "title_he": "פאנדר, 25.9.2025: פרסום מידע מרוכז על קרנות כספיות ומק\"מ (דחייה)",
       "publisher": "Funder",
       "publisher_he": "פאנדר",
       "kind": "article",
       "strength": "secondary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

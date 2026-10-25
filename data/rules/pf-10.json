@@ -3,7 +3,7 @@
   "title": "Direct investment-management expenses are charged on top of the management fee, from a closed list",
   "title_he": "הוצאות ישירות נגבות מעבר לדמי הניהול",
   "text_he": "הוצאות ישירות של עסקאות בנכסי הגוף המוסדי הן רק מהרשימה שבתקנות: עמלות מסחר בניירות ערך, דמי משמורת, עלויות של השקעות לא סחירות, הלוואות ונדל״ן לצדדים לא קשורים, מסים, ביטוח משנה, הוצאות משפט על השקעות, עמלת ניהול חיצוני במצבים מוגדרים, ועלויות העמדת משכנתאות בגבולות שקבע הממונה. מסלולים מתמחים חדשים ומסלולים עוקבי מדד רשאים לגבות רק חלק מהרשימה, ומסלולים עם דמי ניהול משתנים רק מסים. ההוצאות האלה יורדות מהקופה ונראות בתשואה, לא כשורה בחשבון העמית. תקרה כוללת באחוזים להוצאות הישירות לא נמצאה בתקנה; לעמלת ניהול חיצוני יש תקרה בכלל נפרד.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "fee-direct-expenses",
     "fee-trade",
@@ -15,20 +15,59 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(הוצאות_ישירות_בשל_ביצוע_עסקאות)",
-      "title": "Provident Funds (Direct Expenses for Executing Transactions) Regulations 2008, reg. 1, 2 (Wikisource)",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg. 1, 2",
-      "locator_he": "תקנה 1, 2",
-      "anchor": "סעיף_1",
-      "checked": "2026-10-22"
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpsFM+Hq~v6+ysOsYBj7v7sI=#page=2",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008 (קובץ התקנות 6652)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008 (קובץ התקנות 6652)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, reg. 2",
+      "locator_he": "עמוד 2, תקנה 2",
+      "page": 2,
+      "quote": "בשל ביצוע עסקאות בנכסי קופת גמל יהיו אלה בלבד",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dRGsI+SrmavYbn73icZsjwvAYSdKZdahWniBQ2IENis=#page=2",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות) (תיקון), התשפ\"ג-2022 (קובץ התקנות 10377)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות) (תיקון), התשפ\"ג-2022 (קובץ התקנות 10377)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, s.2",
+      "locator_he": "עמוד 2, סעיף 2",
+      "page": 2,
+      "quote": "הוצאה הנובעת מכל אחד מאלה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dRGsI+SrmavYbn73icZsjwvAYSdKZdahWniBQ2IENis=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות) (תיקון), התשפ\"ג-2022 (קובץ התקנות 10377)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות) (תיקון), התשפ\"ג-2022 (קובץ התקנות 10377)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.4, s.3",
+      "locator_he": "עמוד 4, סעיף 3",
+      "page": 4,
+      "quote": "שבתקנונו נקבע כי עיקר השקעותיו הן השקעות בנכסים סחירים",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.13, s.32(א)(2)",
+      "locator_he": "עמוד 13, סעיף 32(א)(2)",
+      "page": 13,
+      "checked": "2026-10-25"
     }
-  ],
-  "derived_from": [
-    "PF-01"
   ]
 }

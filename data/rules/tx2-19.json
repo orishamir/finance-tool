@@ -10,7 +10,7 @@
     "declaration_within_days": "הימים להצהרה לבנק",
     "olim_minimum_term_months": "התקופה המזערית של פיקדון העולה, בחודשים"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "age-or-use-exemption",
     "eligibility",
@@ -25,12 +25,12 @@
       "value": 20,
       "unit": "years",
       "source": {
-        "url": "https://he.wikisource.org/wiki/צו_מס_הכנסה_(פטור_ממס_על_הכנסה_מריבית_על_פיקדון_במטבע_חוץ)",
-        "title": "Income Tax (Exemption from Tax on Interest Income on a Foreign-Currency Deposit) Order 2002, s.2(3)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n7vDlZAqFcmNW1LZdFh7qw8=#page=9",
+        "title": "צו מס הכנסה (פטור ממס על הכנסה מריבית על פיקדון במטבע חוץ), התשס\"ג-2002 (קובץ התקנות 6214), p.9, s.2(3)",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+        "strength": "primary"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -46,12 +46,12 @@
       "value": 5,
       "unit": "years",
       "source": {
-        "url": "https://he.wikisource.org/wiki/צו_מס_הכנסה_(פטור_ממס_לתושב_חוזר_על_הכנסה_מריבית_על_פיקדון_במטבע_חוץ)",
-        "title": "Income Tax (Exemption for a Returning Resident on Interest Income on a Foreign-Currency Deposit) Order 2003, s.2(3)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n~b7VXyTyYJCYD0R8CbjV2A=#page=7",
+        "title": "צו מס הכנסה (פטור ממס לתושב חוזר על הכנסה מריבית על פיקדון במטבע חוץ), התשס\"ד-2003 (קובץ התקנות 6270), p.7, s.2(3)",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+        "strength": "primary"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -67,12 +67,12 @@
       "value": 90,
       "unit": "days",
       "source": {
-        "url": "https://he.wikisource.org/wiki/צו_מס_הכנסה_(פטור_ממס_על_הכנסה_מריבית_על_פיקדון_במטבע_חוץ)",
-        "title": "Both orders, s.2(2)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n7vDlZAqFcmNW1LZdFh7qw8=#page=9",
+        "title": "צו מס הכנסה (פטור ממס על הכנסה מריבית על פיקדון במטבע חוץ), התשס\"ג-2002 (קובץ התקנות 6214), p.9, s.2(2); returning-resident order (קובץ התקנות 6270) p.7, s.2(2)",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+        "strength": "primary"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -87,12 +87,12 @@
       "value": 14,
       "unit": "days",
       "source": {
-        "url": "https://he.wikisource.org/wiki/צו_מס_הכנסה_(פטור_ממס_על_הכנסה_מריבית_על_פיקדון_במטבע_חוץ)",
-        "title": "Olim order s.2(4) (form 2402); returning-resident order s.2(4) (form 2409)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n7vDlZAqFcmNW1LZdFh7qw8=#page=9",
+        "title": "צו מס הכנסה (פטור ממס על הכנסה מריבית על פיקדון במטבע חוץ), התשס\"ג-2002 (קובץ התקנות 6214), p.9, s.2(4) (form 2402); returning-resident order (קובץ התקנות 6270) p.7, s.2(4) (form 2409)",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+        "strength": "primary"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -107,12 +107,12 @@
       "value": 3,
       "unit": "months",
       "source": {
-        "url": "https://he.wikisource.org/wiki/צו_מס_הכנסה_(פטור_ממס_על_הכנסה_מריבית_על_פיקדון_במטבע_חוץ)",
-        "title": "Olim order s.1, definition of a foreign-currency deposit",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n7vDlZAqFcmNW1LZdFh7qw8=#page=9",
+        "title": "צו מס הכנסה (פטור ממס על הכנסה מריבית על פיקדון במטבע חוץ), התשס\"ג-2002 (קובץ התקנות 6214), p.9, s.1, definition \"פיקדון במטבע חוץ\"",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+        "strength": "primary"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -128,25 +128,32 @@
   "checked": "2026-10-24",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/צו_מס_הכנסה_(פטור_ממס_על_הכנסה_מריבית_על_פיקדון_במטבע_חוץ)",
-      "title": "צו מס הכנסה (פטור ממס על הכנסה מריבית על פיקדון במטבע חוץ), התשס\"ג-2002 (Wikisource; ק\"ת תשס\"ג 293)",
-      "title_he": "צו מס הכנסה (פטור ממס על הכנסה מריבית על פיקדון במטבע חוץ), התשס״ג-2002",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "משרד האוצר",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n7vDlZAqFcmNW1LZdFh7qw8=#page=9",
+      "title": "קובץ התקנות 6214 (19.12.2002): תיקוני תקנות קרן השתלמות וצו מס הכנסה (פטור ממס על הכנסה מריבית על פיקדון במטבע חוץ), התשס\"ג-2002",
+      "title_he": "צו מס הכנסה (פטור ממס על הכנסה מריבית על פיקדון במטבע חוץ), התשס״ג-2002 (קובץ התקנות 6214)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "checked": "2026-10-24"
+      "strength": "primary",
+      "locator": "p.9",
+      "locator_he": "עמוד 9",
+      "page": 9,
+      "quote": "לא חלפו עשרים שנים מיום שהיה לראשונה לתושב ישראל",
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/צו_מס_הכנסה_(פטור_ממס_לתושב_חוזר_על_הכנסה_מריבית_על_פיקדון_במטבע_חוץ)",
-      "title": "צו מס הכנסה (פטור ממס לתושב חוזר על הכנסה מריבית על פיקדון במטבע חוץ), התשס\"ד-2003 (Wikisource; ק\"ת תשס\"ד 19)",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "checked": "2026-10-24"
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n~b7VXyTyYJCYD0R8CbjV2A=#page=7",
+      "title": "צו מס הכנסה (פטור ממס לתושב חוזר על הכנסה מריבית על פיקדון במטבע חוץ), התשס\"ד-2003 (קובץ התקנות 6270)",
+      "title_he": "צו מס הכנסה (פטור ממס לתושב חוזר על הכנסה מריבית על פיקדון במטבע חוץ), התשס״ד-2003 (קובץ התקנות 6270)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.7, s.1, s.2",
+      "locator_he": "עמוד 7, סעיף 1, סעיף 2",
+      "page": 7,
+      "quote": "הריבית משולמת בעבור התקופה שבה זכאי התושב החוזר לפטור",
+      "checked": "2026-10-25"
     }
   ]
 }

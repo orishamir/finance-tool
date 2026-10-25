@@ -6,7 +6,7 @@
   "figure_names_he": {
     "trustee_replacement_days": "ימים להחלפת נאמן לפני שהרשות רשאית להעביר את הקרן"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "protection"
   ],
@@ -16,12 +16,12 @@
       "value": 90,
       "unit": "days",
       "source": {
-        "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
-        "title": "חוק השקעות משותפות בנאמנות, section 12(ג) (Wikisource mirror)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+        "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994 (נוסח רשות ניירות ערך), p.11, s.12",
+        "publisher": "Israel Securities Authority",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -37,18 +37,17 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
-      "title": "חוק השקעות משותפות בנאמנות, Wikisource",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994 (נוסח רשות ניירות ערך)",
       "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
-      "publisher": "Hebrew Wikisource",
+      "publisher": "Israel Securities Authority",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "ss.11, 12, 14, 15, 104",
-      "locator_he": "סעיפים 11, 12, 14, 15, 104",
-      "anchor": "סעיף_11",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.11, ss.11, 12; p.14, ss.14, 15; p.67, s.104",
+      "locator_he": "עמוד 11, סעיפים 11, 12; עמוד 14, סעיפים 14, 15; עמוד 67, סעיף 104",
+      "page": 11,
+      "checked": "2026-10-25"
     }
   ]
 }

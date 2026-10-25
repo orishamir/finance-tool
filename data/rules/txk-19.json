@@ -12,46 +12,90 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/maanak.aspx",
-      "title": "maanak",
+      "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
+      "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995, נוסח המוסד לביטוח לאומי",
+      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995, נוסח המוסד לביטוח לאומי",
       "publisher": "National Insurance Institute",
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "locator": "p.51, s.74ב(ו)",
+      "locator_he": "עמוד 51, סעיף 74ב(ו)",
+      "page": 51,
+      "quote": "לא יראו את סכום החיסכון הצבור הכולל כהכנסה לעניין פקודת מס הכנסה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
+      "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995, נוסח המוסד לביטוח לאומי",
+      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995, נוסח המוסד לביטוח לאומי",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.50, s.74ב(א), (ג)",
+      "locator_he": "עמוד 50, סעיף 74ב(א), (ג)",
+      "page": 50,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
+      "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995, נוסח המוסד לביטוח לאומי",
+      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995, נוסח המוסד לביטוח לאומי",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.47, s.73",
+      "locator_he": "עמוד 47, סעיף 73",
+      "page": 47,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
+      "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995, נוסח המוסד לביטוח לאומי",
+      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995, נוסח המוסד לביטוח לאומי",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "pp.51-52, s.74ג(ב)-(ג), s.74ה(4)",
+      "locator_he": "עמודים 51 עד 52, סעיף 74ג(ב)-(ג), סעיף 74ה(4)",
+      "page": 51,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/maanak.aspx",
+      "title": "האם מופקדים סכומים נוספים בתכנית החיסכון? (ביטוח לאומי)",
+      "title_he": "האם מופקדים סכומים נוספים בתכנית החיסכון? (ביטוח לאומי)",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/enlarge.aspx",
-      "title": "enlarge",
+      "title": "איך אני יכול להגדיל את סכום החיסכון של ילדיי? (ביטוח לאומי)",
+      "title_he": "איך אני יכול להגדיל את סכום החיסכון של ילדיי? (ביטוח לאומי)",
       "publisher": "National Insurance Institute",
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://fs.knesset.gov.il/20/law/20_lsr_316719.pdf",
-      "title": "Sefer HaChukim 2511, 30.11.2015",
+      "title": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2015 ו-2016), התשע\"ו-2015, ספר החוקים 2511",
+      "title_he": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2015 ו-2016), התשע\"ו-2015, ספר החוקים 2511",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "pp.244-247",
-      "locator_he": "עמודים 244 עד 247",
-      "page": 244,
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://he.wikisource.org/wiki/חוק_הביטוח_הלאומי",
-      "title": "NII Law, Wikisource rendered PDF",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "PDF pp.19-21, ss.73, 74B, 74C, 74E",
-      "anchor": "סעיף_73",
-      "checked": "2026-10-22"
+      "locator": "pp.28-31",
+      "locator_he": "עמודים 28 עד 31",
+      "page": 28,
+      "checked": "2026-10-25"
     }
   ]
 }

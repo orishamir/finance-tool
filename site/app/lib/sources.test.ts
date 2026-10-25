@@ -29,6 +29,7 @@ describe("sourceHref", () => {
   it("knows a PDF", () => {
     expect(isPdfUrl("https://x/BlobFolder/generalpage/a/he/b.pdf")).toBe(true);
     expect(isPdfUrl("https://x/page")).toBe(false);
+    expect(isPdfUrl("https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77Q=#page=6")).toBe(true);
   });
 });
 

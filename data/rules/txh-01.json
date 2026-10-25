@@ -19,12 +19,12 @@
       "value": 7.5,
       "unit": "pct",
       "source": {
-        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-        "title": "Income Tax Ordinance, s.3(e) (\"סעיף 3(ה)\"): employer payments within the collective-agreement rate, capped at 7.5% of the determining salary (8.4% for a teacher), are work income only \"בעת שקיבל אותם\"",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+        "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, pp.19-20, s.3(ה): employer payments within the collective-agreement rate, up to 7.5% of the determining salary (8.4% for a teacher), are work income only \"בעת שקיבל אותם\"",
+        "publisher": "רשות המסים",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -40,20 +40,36 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "pp.19-20, s.3(ה)",
+      "locator_he": "עמודים 19 עד 20, סעיף 3(ה)",
+      "page": 19,
+      "quote": "בעת שקיבל אותם",
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-      "title": "Tax Authority, deductions booklet from January 2026, updated April 2026, p.12 row \"משכורת קובעת להפרשות לקרן השתלמות 3(ה)\" 188,544 לשנה",
+      "title": "Deductions booklet 2026",
       "title_he": "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026",
       "publisher": "gov.il",
       "publisher_he": "רשות המסים",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.12 row",
+      "locator": "p.12",
+      "locator_he": "עמוד 12",
       "page": 12,
-      "checked": "2026-10-22"
+      "quote": "משכורת קובעת להפרשות לקרן השתלמות",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf",
-      "title": "Ministry of Finance, Chief Economist, \"על הטבת המס בקרן השתלמות – ניתוח מדיניות\", October 2025, p.5",
+      "title": "Chief Economist paper Oct 2025",
       "title_he": "על הטבת המס בקרן השתלמות – ניתוח מדיניות (אגף הכלכלן הראשי, אוקטובר 2025)",
       "publisher": "gov.il",
       "publisher_he": "משרד האוצר",
@@ -62,21 +78,8 @@
       "locator": "p.5",
       "locator_he": "עמוד 5",
       "page": 5,
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Income Tax Ordinance s.3(e) (`סעיף 3(ה)`), Wikisource",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.3(e) (`סעיף 3(ה)`)",
-      "locator_he": "סעיף 3(ה) (`סעיף 3(ה)`)",
-      "anchor": "סעיף_3",
-      "checked": "2026-10-22"
+      "quote": "פטור ממס הכנסה, הפרשות לביטוח לאומי ומס בריאות על הפקדות המעסיק",
+      "checked": "2026-10-25"
     }
   ]
 }

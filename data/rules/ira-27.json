@@ -15,8 +15,23 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/regulation_0059/he/regulation_ira_pdf.pdf",
+      "title": "CMA draft 2025",
+      "title_he": "טיוטת תיקון לתקנות קופת גמל בניהול אישי (2025)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "pp.1-8",
+      "locator_he": "עמודים 1 עד 8",
+      "page": 1,
+      "quote": "כשלים מסוימים שהתגלו במספר גופים",
+      "checked": "2026-10-25",
+      "qualifier": "(draft)"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/reports/report_0015/he/regulation_plan_26_1.pdf",
-      "title": "CMA, תכנית אסדרה לשנת 2026, p.16 (published 31.12.2025, updated 14.01.2026)",
+      "title": "CMA, תכנית אסדרה לשנת 2026",
       "title_he": "תכנית אסדרה לשנת 2026",
       "publisher": "gov.il",
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
@@ -25,27 +40,17 @@
       "locator": "p.16",
       "locator_he": "עמוד 16",
       "page": 16,
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/legalinfo/regulation_0059/he/regulation_ira_pdf.pdf",
-      "title": "CMA draft 2025, gov.il PDF",
-      "title_he": "טיוטת תיקון לתקנות קופת גמל בניהול אישי (2025)",
-      "publisher": "gov.il",
-      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
-      "kind": "regulation",
-      "strength": "primary",
-      "checked": "2026-10-22",
-      "qualifier": "(draft)"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.shibolet.com/עדכוני-רגולציה-פיננסית-מאי-2025/",
-      "title": "Shibolet, עדכוני רגולציה פיננסית – מאי 2025",
+      "title": "עדכוני רגולציה פיננסית – מאי 2025, שבלת",
+      "title_he": "עדכוני רגולציה פיננסית – מאי 2025, שבלת",
       "publisher": "Shibolet law firm",
       "publisher_he": "שבלת עורכי דין",
       "kind": "article",
       "strength": "secondary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -22,12 +22,12 @@
       "value": 1,
       "unit": "pct_of_deposit",
       "source": {
-        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf",
-        "title": "CMA circular 2024-9-6 \"הוראות לעניין בחירת קופת גמל - עדכון\", 25.8.2024, annex sections 4, 5; CMA report 2024 p. 10",
+        "url": "https://www.gov.il/BlobFolder/news/press_0083/he/Commisioner%20Report%20Design%20B_chapter2%20ver6_digital.pdf",
+        "title": "דוח הממונה על שוק ההון, החיסכון והביטוח לשנת 2024 – פרק 2, p.2: \"דמי הניהול שנקבעו עומדים על 1% מההפקדה ועל 0.22% מהצבירה\"",
         "publisher": "Capital Market, Insurance and Savings Authority",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2024-11-01",
       "effective_to": null,
       "tax_year": null,
@@ -42,12 +42,12 @@
       "value": 0.22,
       "unit": "pct_per_year",
       "source": {
-        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf",
-        "title": "CMA circular 2024-9-6, 25.8.2024, annex sections 4, 5",
+        "url": "https://www.gov.il/BlobFolder/news/press_0083/he/Commisioner%20Report%20Design%20B_chapter2%20ver6_digital.pdf",
+        "title": "דוח הממונה על שוק ההון, החיסכון והביטוח לשנת 2024 – פרק 2, p.2: \"דמי הניהול שנקבעו עומדים על 1% מההפקדה ועל 0.22% מהצבירה\"",
         "publisher": "Capital Market, Insurance and Savings Authority",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2024-11-01",
       "effective_to": null,
       "tax_year": null,
@@ -63,11 +63,11 @@
       "unit": "years",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf",
-        "title": "CMA circular 2024-9-6, annex section 5: \"יהיו בתוקף למשך 10 שנים לפחות ממועד הצטרפותו לקרן\"",
+        "title": "חוזר גופים מוסדיים 2024-9-6 – הוראות לעניין בחירת קופת גמל – עדכון, p.5, annex s.5: \"יהיו בתוקף למשך 10 שנים לפחות ממועד הצטרפותו לקרן\"",
         "publisher": "Capital Market, Insurance and Savings Authority",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2024-11-01",
       "effective_to": null,
       "tax_year": null,
@@ -84,40 +84,41 @@
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf",
-      "title": "CMA circular 2024-9-6, 25.8.2024",
+      "title": "חוזר גופים מוסדיים 2024-9-6 – הוראות לעניין בחירת קופת גמל – עדכון",
       "title_he": "חוזר גופים מוסדיים 2024-9-6: הוראות לעניין בחירת קופת גמל – עדכון",
       "publisher": "gov.il",
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
-      "locator": "annex sections 2, 4, 5 and annex ג'",
-      "quote": "המועד הקובע",
-      "checked": "2026-10-22"
+      "locator": "pp.4-5, annex ss.2, 4, 5",
+      "page": 4,
+      "quote": "יהיו בתוקף למשך 10 שנים לפחות ממועד הצטרפותו לקרן",
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://adif-web-bucket.s3-eu-west-1.amazonaws.com/%D7%93%D7%95%D7%97%20%D7%94%D7%9E%D7%9E%D7%95%D7%A0%D7%94%20%D7%A2%D7%9C%20%D7%A9%D7%95%D7%A7%20%D7%94%D7%94%D7%95%D7%9F%20%D7%9C%D7%A9%D7%A0%D7%AA%202024.pdf",
-      "title": "CMA report 2024",
-      "title_he": "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2024",
-      "publisher": "Adif (copy)",
+      "url": "https://www.gov.il/BlobFolder/news/press_0083/he/Commisioner%20Report%20Design%20B_chapter2%20ver6_digital.pdf",
+      "title": "דוח הממונה על שוק ההון, החיסכון והביטוח לשנת 2024 – פרק 2: סקירת פעילות הרשות",
+      "title_he": "דוח הממונה על שוק ההון, החיסכון והביטוח לשנת 2024 – פרק 2: סקירת פעילות הרשות",
+      "publisher": "gov.il",
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "official_pdf",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "locator": "p. 10",
-      "locator_he": "עמוד 10",
-      "page": 10,
-      "quote": "ההליך הרביעי לקביעת קרנות פנסיה נבחרות",
-      "checked": "2026-10-22",
-      "qualifier": "(third-party host)"
+      "strength": "primary",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "quote": "השלימה הרשות את ההליך הרביעי לקביעת קרנות פנסיה נבחרות",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.moreinvest.co.il/%D7%9E%D7%95%D7%A6%D7%A8%D7%99%D7%9D/%D7%92%D7%9E%D7%9C-%D7%95%D7%A4%D7%A0%D7%A1%D7%99%D7%94/%D7%A7%D7%A8%D7%9F-%D7%A4%D7%A0%D7%A1%D7%99%D7%94/",
-      "title": "Mor selected pension fund page",
+      "title": "מור – קרן פנסיה נבחרת",
+      "title_he": "מור – קרן פנסיה נבחרת",
       "publisher": "Mor Investment House",
       "publisher_he": "מור בית השקעות",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "quote": "דמי ניהול של 1% מההפקדות ו-0.22% מהחיסכון הצבור בקרן",
+      "checked": "2026-10-25"
     }
   ]
 }

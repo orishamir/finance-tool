@@ -14,15 +14,36 @@
   "sources": [
     {
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&q=IRA&filters={\"REPORT_PERIOD\":202609}",
-      "title": "CMA Gemel-Net dataset, resource 2024-today, datastore query q=אישי and q=IRA, REPORT_PERIOD 202609",
+      "title": "גמל-נט, רשות שוק ההון: נתוני קופות הגמל לתקופת דיווח 202609",
+      "title_he": "גמל-נט, רשות שוק ההון: נתוני קופות הגמל לתקופת דיווח 202609",
       "publisher": "data.gov.il",
       "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&q=אישי&filters={\"REPORT_PERIOD\":202609}",
+      "title": "גמל-נט, רשות שוק ההון: נתוני קופות הגמל לתקופת דיווח 202609, חיפוש \"אישי\"",
+      "title_he": "גמל-נט, רשות שוק ההון: נתוני קופות הגמל לתקופת דיווח 202609, חיפוש \"אישי\"",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, s.1 (קופת גמל בניהול אישי)",
+      "locator_he": "עמוד 2, סעיף 1 (קופת גמל בניהול אישי)",
+      "page": 2,
+      "checked": "2026-10-25"
     }
-  ],
-  "derived_from": [
-    "IRA-01"
   ]
 }

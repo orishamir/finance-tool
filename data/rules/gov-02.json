@@ -3,7 +3,7 @@
   "title": "Who stands behind the payment",
   "title_he": "מי עומד מאחורי התשלום",
   "text_he": "התשלומים על מק\"ם ועל איגרות חוב שהונפקו לפי חוק מילווה המדינה משולמים מהכנסותיה הכלליות של המדינה. שני החוקים לא משתמשים במילה \"ערבות\", אבל הופכים את התשלום לחובה של המדינה, לא של הבנק או הברוקר שמוכר או מחזיק את הנייר. ההגנה על חשבון ניירות הערך בבנק או אצל הברוקר היא שאלה נפרדת. נוסח החוקים נקרא בעותק באתר נבו.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "protection"
   ],
@@ -12,30 +12,30 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.nevo.co.il/law_html/law00/72417.htm",
-      "title": "חוק מילווה קצר מועד, תשמ\"ד-1984",
-      "title_he": "חוק מילווה קצר מועד, התשמ״ד-1984",
-      "publisher": "Nevo",
+      "url": "https://fs.knesset.gov.il/10/law/10_lsr_210160.PDF",
+      "title": "חוק מילווה קצר מועד, התשמ\"ד-1984 (ספר החוקים 1107)",
+      "title_he": "חוק מילווה קצר מועד, התשמ\"ד-1984 (ספר החוקים 1107)",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "s. 3",
-      "locator_he": "סעיף 3",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.1, s.3",
+      "locator_he": "עמוד 1, סעיף 3",
+      "page": 1,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.nevo.co.il/law_html/law01/221_001.htm",
-      "title": "חוק מילווה המדינה, תשל\"ט-1979",
-      "title_he": "חוק מילווה המדינה, תשל\"ט-1979",
-      "publisher": "Nevo",
-      "publisher_he": "נבו",
+      "url": "https://fs.knesset.gov.il/9/law/9_lsr_208641.PDF",
+      "title": "חוק מילווה המדינה, התשל\"ט-1979 (ספר החוקים 936)",
+      "title_he": "חוק מילווה המדינה, התשל\"ט-1979 (ספר החוקים 936)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "s. 2",
-      "locator_he": "סעיף 2",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.1, s.2",
+      "locator_he": "עמוד 1, סעיף 2",
+      "page": 1,
+      "checked": "2026-10-25"
     }
   ]
 }

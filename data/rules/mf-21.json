@@ -12,32 +12,57 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.6, s.5(א)(7)",
+      "locator_he": "עמוד 6, סעיף 5(א)(7)",
+      "page": 6,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.35, s.42(ג)",
+      "locator_he": "עמוד 35, סעיף 42(ג)",
+      "page": 35,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.60, s.82(א)(1)",
+      "locator_he": "עמוד 60, סעיף 82(א)(1)",
+      "page": 60,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
-      "title": "ISA investor guide (2017)",
+      "title": "מדריך למשקיע: קרנות נאמנות (רשות ניירות ערך, ינואר 2017)",
       "title_he": "מדריך למשקיע: קרנות נאמנות (ינואר 2017)",
       "publisher": "Israel Securities Authority",
       "publisher_he": "רשות ניירות ערך",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "pp. 6, 24",
+      "locator": "pp.6, 24",
       "locator_he": "עמודים 6, 24",
       "page": 6,
-      "checked": "2026-10-22",
-      "qualifier": "(dated)"
-    },
-    {
-      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
-      "title": "Law (Wikisource mirror)",
-      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "sections 5(א)(7), 42(ג), 82(א)(1)",
-      "locator_he": "סעיפים 5(א)(7), 42(ג), 82(א)(1)",
-      "anchor": "סעיף_5.א",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25",
+      "qualifier": "(dated; still linked by the ISA as its full guide)"
     }
   ]
 }

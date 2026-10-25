@@ -3,7 +3,7 @@
   "title": "Fee bases and the regulated maximum",
   "title_he": "בסיסי דמי הניהול והתקרה שבתקנות",
   "text_he": "החברה המנהלת רשאית לגבות דמי ניהול משני בסיסים, מהיתרה הצבורה ומההפקדות, עד התקרות שבתקנות דמי הניהול. קופת גמל להשקעה לא מופיעה ברשימת הקופות שהוצאו מהתקרה הכללית, ולכן התקרה הכללית חלה עליה; התקרות עצמן מופיעות בכלל על התקרה לקופות גמל. כל מסלול נחשב קופה נפרדת לעניין דמי הניהול. נוסח התקנות נקרא רק באתר שמעתיק אותו.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "fee-management-balance",
     "fee-deposit"
@@ -13,18 +13,31 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
-      "title": "Fee regulations: תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (Wikisource)",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012",
       "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע״ב-2012",
-      "publisher": "Hebrew Wikisource",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "משרד האוצר",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "regulations 2(א)(1), 2(א)(2), 2(ב), 4, 5, 6",
-      "anchor": "סעיף_2.א",
-      "checked": "2026-10-22",
-      "qualifier": "(mirror of regulation text)"
+      "strength": "primary",
+      "locator": "pp.4-6, regs. 2(א)(1), 2(א)(2), 2(ב), 4, 5, 6",
+      "locator_he": "עמודים 4 עד 6, תקנות 2(א)(1), 2(א)(2), 2(ב), 4, 5, 6",
+      "page": 4,
+      "quote": "מן היתרה הצבורה בחשבונו של כל עמית בשיעור שלא יעלה על 1.05% לשנה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAeOdRzFXelp1D6CGA3tNK3g=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשע\"ד-2014",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשע\"ד-2014",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.4, ss.2, 4",
+      "locator_he": "עמוד 4, סעיפים 2, 4",
+      "page": 4,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
@@ -36,7 +49,7 @@
       "strength": "institution",
       "locator": "clause 35",
       "locator_he": "סעיף 35",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "http://www.krn-rofim.co.il/wp-content/uploads/2024/10/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f_%d7%a7%d7%95%d7%a4%d7%aa_%d7%92%d7%9e%d7%9c_%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94__25.7.2024-1.pdf",
@@ -48,7 +61,7 @@
       "strength": "institution",
       "locator": "clause 35",
       "locator_he": "סעיף 35",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

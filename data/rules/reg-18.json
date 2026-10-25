@@ -3,7 +3,7 @@
   "title": "Provident, study, investment-provident and pension assets: held in trust, separate, not attachable",
   "title_he": "נכסי קופות הגמל והפנסיה: בנאמנות, בנפרד, לא לעיקול",
   "text_he": "חברה מנהלת משמשת נאמן על נכסי קופות הגמל שבניהולה לטובת העמיתים, ומחזיקה ומנהלת אותם בנפרד מרכושה, עם מערכת חשבונות נפרדת לכל קופה. נכסי קופת גמל אינם ניתנים לעיקול, וזכויות עמית לא ניתנות לעיקול אלא לפי כללים שהשר קובע. חל על כל הקופות שבפיקוח רשות שוק ההון; הפסדי שוק אינם מוגנים. לחיסכון לכל ילד בקופת גמל יש כלל נפרד.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "protection"
   ],
@@ -12,18 +12,17 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), Wikisource",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (ספר החוקים 2024)",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (ספר החוקים 2024)",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "ss.3, 25(ב), 27, 30(א)",
-      "locator_he": "סעיפים 3, 25(ב), 27, 30(א)",
-      "anchor": "סעיף_3",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.4, s.3; p.11, s.25; p.12, ss.27, 30(א)",
+      "locator_he": "עמוד 4, סעיף 3; עמוד 11, סעיף 25; עמוד 12, סעיפים 27, 30(א)",
+      "page": 4,
+      "checked": "2026-10-25"
     }
   ]
 }

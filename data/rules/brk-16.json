@@ -17,16 +17,17 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://boi.org.il/media/w2lgmymp/159a.pdf",
-      "title": "BoI, \"כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008\", consolidated to the amendment of 5.11.2024",
+      "url": "https://www.boi.org.il/media/mi2driua/159a.pdf",
+      "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב (בנק ישראל)",
       "title_he": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "s.2(א)",
-      "locator_he": "סעיף 2(א)",
-      "checked": "2026-10-22"
+      "locator": "pp.3, 15 to 18, s.2(א)",
+      "locator_he": "עמודים 3, 15 עד 18, סעיף 2(א)",
+      "page": 3,
+      "checked": "2026-10-25"
     }
   ]
 }

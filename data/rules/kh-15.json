@@ -21,7 +21,8 @@
       "strength": "institution",
       "locator": "s.17",
       "locator_he": "סעיף 17",
-      "checked": "2026-10-22"
+      "quote": "למעט אם משך כספים להשתלמות בישראל כמפורט בסעיף 18.1.1",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.as-invest.co.il/media/10040/בקשה-למשיכת-כספים-מקרן-השתלמות.pdf",
@@ -31,7 +32,7 @@
       "publisher_he": "אלטשולר שחם",
       "kind": "form",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

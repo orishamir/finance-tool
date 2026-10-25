@@ -16,7 +16,7 @@
         "publisher": "J.P. Morgan Asset Management",
         "strength": "secondary"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": "1950-01-01",
       "effective_to": null,
       "tax_year": null,
@@ -36,7 +36,7 @@
         "publisher": "J.P. Morgan Asset Management",
         "strength": "secondary"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": "1950-01-01",
       "effective_to": null,
       "tax_year": null,
@@ -56,7 +56,7 @@
         "publisher": "J.P. Morgan Asset Management",
         "strength": "secondary"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": "1950-01-01",
       "effective_to": null,
       "tax_year": null,
@@ -76,7 +76,7 @@
         "publisher": "J.P. Morgan Asset Management",
         "strength": "secondary"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": "1950-01-01",
       "effective_to": null,
       "tax_year": null,
@@ -96,7 +96,7 @@
         "publisher": "J.P. Morgan Asset Management",
         "strength": "secondary"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": "1950-01-01",
       "effective_to": null,
       "tax_year": null,
@@ -116,7 +116,7 @@
         "publisher": "J.P. Morgan Asset Management",
         "strength": "secondary"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": "1950-01-01",
       "effective_to": null,
       "tax_year": null,
@@ -136,7 +136,7 @@
         "publisher": "J.P. Morgan Asset Management",
         "strength": "secondary"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": "1950-01-01",
       "effective_to": null,
       "tax_year": null,
@@ -156,7 +156,7 @@
         "publisher": "J.P. Morgan Asset Management",
         "strength": "secondary"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": "1950-01-01",
       "effective_to": null,
       "tax_year": null,
@@ -184,6 +184,16 @@
   "checked": "2026-10-24",
   "sources": [
     {
+      "url": "https://am.jpmorgan.com/us/en/asset-management/adv/insights/market-insights/guide-to-the-markets/",
+      "title": "guide's FAQ page",
+      "title_he": "Guide to the Markets: עמוד השאלות הנפוצות ותנאי השימוש",
+      "publisher": "J.P. Morgan Asset Management",
+      "publisher_he": "J.P. Morgan Asset Management",
+      "kind": "other",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://am.jpmorgan.com/content/dam/jpm-am-aem/global/en/insights/market-insights/guide-to-the-markets/mi-guide-to-the-markets-us.pdf",
       "title": "J.P. Morgan Asset Management, Guide to the Markets – U.S., 4Q 2026, slide 60",
       "title_he": "Guide to the Markets – U.S., רבעון 4 2026",
@@ -191,16 +201,10 @@
       "publisher_he": "J.P. Morgan Asset Management",
       "kind": "other",
       "strength": "secondary",
-      "checked": "2026-10-24"
-    },
-    {
-      "url": "https://am.jpmorgan.com/us/en/asset-management/adv/insights/market-insights/guide-to-the-markets/",
-      "title": "guide's FAQ page",
-      "publisher": "J.P. Morgan Asset Management",
-      "publisher_he": "J.P. Morgan Asset Management",
-      "kind": "other",
-      "strength": "secondary",
-      "checked": "2026-10-24",
+      "locator": "p.60",
+      "locator_he": "עמוד 60",
+      "page": 60,
+      "checked": "2026-10-25",
       "qualifier": "(asset manager republishing S&P data)"
     }
   ]

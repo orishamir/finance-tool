@@ -21,11 +21,11 @@
       "unit": "text",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf",
-        "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2024, מילון מונחים",
+        "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2024, מילון מונחים, p.41",
         "publisher": "Ministry of Finance, Accountant General",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -40,12 +40,12 @@
       "value": 3,
       "unit": "months",
       "source": {
-        "url": "https://www.nevo.co.il/law_html/law01/221_031.htm",
-        "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), תשנ\"ט-1999 (Nevo mirror)",
-        "publisher": "Minister of Finance (Nevo mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/eoe4vDYzpfM5D9J9SFlkgpyvqTXlCSUfYWr0ONo8ZQU=#page=2",
+        "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), התשנ\"ט-1999 (קובץ התקנות 5951), p.2, reg. 1 (תקופת ריבית)",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -60,12 +60,12 @@
       "value": 4,
       "unit": "pct",
       "source": {
-        "url": "https://www.nevo.co.il/law_html/law01/221_031.htm",
-        "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), תשנ\"ט-1999 (Nevo mirror)",
-        "publisher": "Minister of Finance (Nevo mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/eoe4vDYzpfM5D9J9SFlkgpyvqTXlCSUfYWr0ONo8ZQU=#page=3",
+        "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), התשנ\"ט-1999 (קובץ התקנות 5951), p.3, reg. 1 (ריבית משתנה): \"ושלא יעלה על 4%\"",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -80,12 +80,12 @@
       "value": 0,
       "unit": "pct",
       "source": {
-        "url": "https://www.nevo.co.il/law_html/law01/221_031.htm",
-        "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), תשנ\"ט-1999 (Nevo mirror)",
-        "publisher": "Minister of Finance (Nevo mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/eoe4vDYzpfM5D9J9SFlkgpyvqTXlCSUfYWr0ONo8ZQU=#page=3",
+        "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), התשנ\"ט-1999 (קובץ התקנות 5951), p.3, reg. 7(ג)-(ד)",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -102,28 +102,65 @@
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf",
-      "title": "2024 glossary, \"אג\"ח בריבית משתנה\"",
+      "title": "החשב הכללי, היחידה לניהול החוב הממשלתי: הדו\"ח השנתי 2024, מילון מונחים",
       "title_he": "הדוח השנתי 2024 של היחידה לניהול החוב הממשלתי",
       "publisher": "gov.il",
       "publisher_he": "החשב הכללי, משרד האוצר",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p. 41",
+      "locator": "p.41",
       "locator_he": "עמוד 41",
       "page": 41,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.nevo.co.il/law_html/law01/221_031.htm",
-      "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), תשנ\"ט-1999",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/eoe4vDYzpfM5D9J9SFlkgpyvqTXlCSUfYWr0ONo8ZQU=#page=2",
+      "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), התשנ\"ט-1999 (קובץ התקנות 5951)",
       "title_he": "תקנות מילווה המדינה (סדרות מסוג ״גילון חדש״), התשנ״ט-1999",
-      "publisher": "Nevo",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "משרד האוצר",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "definitions, regs. 4, 5, 7, 9, 9א",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.2, reg. 1 ; p.3, regs. 4, 7; p.4, reg. 9",
+      "locator_he": "עמוד 2, תקנה 1 ; עמוד 3, תקנות 4, 7; עמוד 4, תקנה 9",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/eoe4vDYzpfM5D9J9SFlkgpNDaj2+z9ida9BlI~8SpmA=#page=3",
+      "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\") (תיקון), התשס\"א-2000 (קובץ התקנות 6069)",
+      "title_he": "תקנות מילווה המדינה (סדרות מסוג ״גילון חדש״) (תיקון), התשס״א-2000 (קובץ התקנות 6069)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.3, reg. 7(ב) as",
+      "page": 3,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=9",
+      "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\") (תיקון), התשס\"ו-2006 (קובץ התקנות 6457)",
+      "title_he": "תקנות מילווה המדינה (סדרות מסוג ״גילון חדש״) (תיקון), התשס״ו-2006 (קובץ התקנות 6457)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.9, reg. 5 as",
+      "page": 9,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=#page=6",
+      "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\") (תיקון), התשס\"ז-2007 (קובץ התקנות 6597)",
+      "title_he": "תקנות מילווה המדינה (סדרות מסוג ״גילון חדש״) (תיקון), התשס״ז-2007 (קובץ התקנות 6597)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.6, reg. 9א as",
+      "page": 6,
+      "checked": "2026-10-25"
     }
   ]
 }

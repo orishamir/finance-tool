@@ -14,7 +14,7 @@
   "sources": [
     {
       "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/cspx-ishares-core-s-p-500-ucits-etf-fund-fact-sheet-en-gb.pdf",
-      "title": "iShares CSPX factsheet, p.4 \"Important information\"",
+      "title": "iShares CSPX factsheet, September 2026",
       "title_he": "iShares Core S&P 500 UCITS ETF: דף מידע (ספטמבר 2026)",
       "publisher": "iShares",
       "publisher_he": "iShares",
@@ -23,7 +23,7 @@
       "locator": "p.4",
       "locator_he": "עמוד 4",
       "page": 4,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

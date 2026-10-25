@@ -18,11 +18,11 @@
       "unit": "years",
       "source": {
         "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/MoneyMarketFundReg24.pdf",
-        "title": "ISA money-market directive (2024), sections 6 and 7.4 (pp. 33-34)",
-        "publisher": "Israel Securities Authority",
+        "title": "הוראה למנהלי קרנות ונאמנים בדבר תנאים שיחולו לגבי קרן כספית (2024), pp.33-34, ss.6, 7.4",
+        "publisher": "רשות ניירות ערך",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2024-10-03",
       "effective_to": null,
       "tax_year": null,
@@ -39,16 +39,16 @@
   "sources": [
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/MoneyMarketFundReg24.pdf",
-      "title": "ISA money-market directive",
+      "title": "הוראה למנהלי קרנות ונאמנים בדבר תנאים שיחולו לגבי קרן כספית (2024)",
       "title_he": "הוראה למנהלי קרנות ונאמנים בדבר תנאים שיחולו לגבי קרן כספית (2024)",
       "publisher": "Israel Securities Authority",
       "publisher_he": "רשות ניירות ערך",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "sections 6, 7.4 (pp. 33-34)",
-      "locator_he": "סעיפים 6, 7.4 (עמודים 33 עד 34)",
+      "locator": "pp.33-34, ss.6, 7.4",
+      "locator_he": "עמודים 33 עד 34, סעיפים 6, 7.4",
       "page": 33,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -18,11 +18,11 @@
       "unit": "pct_per_year",
       "source": {
         "url": "https://www.meitav.co.il/provident_pension/provident_invest/",
-        "title": "Meitav, קופת גמל להשקעה product page: \"דמי הניהול ... עומדים על שיעור של 0.8% מהצבירה ונגבים באופן שנתי\"",
+        "title": "Meitav, קופת גמל להשקעה product page: \"עומדים על שיעור של 0.8% מהצבירה ונגבים באופן שנתי\"",
         "publisher": "Meitav Gemel and Pension",
         "strength": "institution"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -45,7 +45,8 @@
       "publisher_he": "מיטב",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "quote": "עומדים על שיעור של 0.8% מהצבירה ונגבים באופן שנתי",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.meitav.co.il/provident_pension/saving_kids/",
@@ -56,7 +57,7 @@
       "kind": "institution_doc",
       "strength": "institution",
       "quote": "0.8% בלבד מהצבירה השנתית",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

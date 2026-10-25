@@ -13,12 +13,13 @@
   "sources": [
     {
       "url": "https://www.meitav.co.il/trade/about/",
-      "title": "Meitav Trade, אודות",
+      "title": "מיטב טרייד: אודות",
+      "title_he": "מיטב טרייד: אודות",
       "publisher": "Meitav",
       "publisher_he": "מיטב",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

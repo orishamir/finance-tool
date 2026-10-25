@@ -6,7 +6,7 @@
   "figure_names_he": {
     "leumi_report_available_months": "חודשים שבהם דוח המסלקה זמין לצפייה (לאומי)"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
     "statement-disclosure"
@@ -23,7 +23,7 @@
         "publisher": "Bank Leumi",
         "strength": "institution"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -39,36 +39,66 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(ייעוץ,_שיווק_ומערכת_סליקה_פנסיוניים)",
-      "title": "Pension Advice, Marketing and Clearing System Law, ss.31ט(א)(1), 31ט(ג), 31טז(ד)(1), 32(ח)(1)",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים), התשס״ה-2005",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע\"א-2011",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע\"א-2011",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "ss.31ט(א)(1), 31ט(ג), 31טז(ד)(1), 32(ח)(1)",
-      "locator_he": "סעיפים 31ט(א)(1), 31ט(ג), 31טז(ד)(1), 32(ח)(1)",
-      "anchor": "סעיף_31ט",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.5, s.31ט(א)(1), (ג)",
+      "locator_he": "עמוד 5, סעיף 31ט(א)(1), (ג)",
+      "page": 5,
+      "quote": "מערכת סליקה פנסיונית מרכזית תמסור ללקוח, על פי בקשתו, מידע הנוגע לו",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע\"א-2011",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע\"א-2011",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.10, s.31טז(ד)(1)",
+      "locator_he": "עמוד 10, סעיף 31טז(ד)(1)",
+      "page": 10,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע\"א-2011",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע\"א-2011",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.12, s.32(ח)(1)",
+      "locator_he": "עמוד 12, סעיף 32(ח)(1)",
+      "page": 12,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.leumi.co.il/Lobby/pension_information/36830",
-      "title": "Leumi, \"עושים סדר בפנסיה\"",
+      "title": "בנק לאומי – עושים סדר בפנסיה",
+      "title_he": "בנק לאומי – עושים סדר בפנסיה",
       "publisher": "Bank Leumi",
       "publisher_he": "בנק לאומי",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "quote": "המידע יהיה זמין לצפייה במשך שלושה חודשים בלבד",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.mizrahi-tefahot.co.il/brokerage/pension/pension-consulting/",
-      "title": "Mizrahi-Tefahot pension consulting",
+      "title": "מזרחי טפחות – ייעוץ פנסיוני",
+      "title_he": "מזרחי טפחות – ייעוץ פנסיוני",
       "publisher": "Mizrahi Tefahot Bank",
       "publisher_he": "בנק מזרחי טפחות",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "quote": "הבנק מממן את מלוא עלות הפנייה למסלקה",
+      "checked": "2026-10-25"
     }
   ]
 }

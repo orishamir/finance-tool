@@ -3,7 +3,7 @@
   "title": "Only a closed list of charges may come out of a provident-family account",
   "title_he": "רשימה סגורה של חיובים מחשבון בקופת גמל",
   "text_he": "חברה מנהלת רשאית לחייב את נכסי הקופה, את חשבונות העמיתים או את ההפקדות רק בשלושה דברים: דמי ניהול, הוצאות ישירות של עסקאות בנכסי הקופה כפי שקבע השר, ופרמיות ביטוח לפי החוק. היא והקשורים אליה לא יקבלו שום טובת הנאה אחרת בקשר לניהול הקופה. קופה ענפית גובה דמי ניהול לפי ההוצאות שהוציאה בפועל, והשר קובע את התקרות באישור ועדת הכספים. קריאה שלנו, לא ציטוט: ברשימה אין עמלת העברה, עמלת יציאה או עמלת מעבר מסלול, ולא נמצאה תקנה שמתירה אחת.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "fee-management-balance",
     "fee-deposit",
@@ -15,18 +15,31 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "title": "Supervision of Financial Services (Provident Funds) Law 2005, s. 32 \"הוצאות, דמי ניהול ועמלת הפצה\" (Hebrew Wikisource mirror)",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s. 32",
-      "locator_he": "סעיף 32",
-      "anchor": "סעיף_32",
-      "checked": "2026-10-22",
-      "qualifier": "(law text read through a mirror)"
+      "strength": "primary",
+      "locator": "p.13, s.32(א)-(ג)",
+      "locator_he": "עמוד 13, סעיף 32(א)-(ג)",
+      "page": 13,
+      "quote": "חברה מנהלת לא תגבה מנכסי קופת גמל שבניהולה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_366997.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 20), התשע\"ז-2017",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 20), התשע\"ז-2017",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, s.1",
+      "locator_he": "עמוד 2, סעיף 1",
+      "page": 2,
+      "checked": "2026-10-25"
     }
   ]
 }

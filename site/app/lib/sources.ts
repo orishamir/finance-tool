@@ -89,8 +89,13 @@ export function pickSources(rule: Pick<SourcedRule, "sources" | "figures">): Rul
     .map((x) => x.s);
 }
 
-/** True when the link opens a PDF (a `.pdf` path, or a Ministry of Finance blob folder file). */
-export const isPdfUrl = (url: string): boolean => /\.pdf(?:$|[?#])/i.test(url) || /BlobFolder/i.test(url);
+/**
+ * True when the link opens a PDF: a `.pdf` path, a gov.il blob folder file, or a gazette file from the Ministry of Justice's
+ * Reshumot service (its addresses end in a document key, not `.pdf`; added 2026-10-25 when the source check moved the
+ * regulations onto it).
+ */
+export const isPdfUrl = (url: string): boolean =>
+  /\.pdf(?:$|[?#])/i.test(url) || /BlobFolder/i.test(url) || /^https:\/\/free-justice\.openapi\.gov\.il\/.*\/Documents\//i.test(url);
 
 /** The link target: url + `#page=N` for a PDF with a page, url + `#anchor` for an anchor. */
 export function sourceHref(source: Pick<RuleSource, "url" | "page" | "anchor">): string {

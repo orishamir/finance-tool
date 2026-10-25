@@ -14,7 +14,8 @@
   "sources": [
     {
       "url": "https://www.btl.gov.il/benefits/HozrimGimlaot/Hozrim/11.16%d7%97%d7%95%d7%96%d7%a8%20%d7%aa%d7%95%d7%9b%d7%a0%d7%99%d7%aa%20%d7%97%d7%99%d7%a1%d7%9b%d7%95%d7%9f%20%d7%9c%d7%9b%d7%9c%20%d7%99%d7%9c%d7%93_.pdf",
-      "title": "NII circular 1356",
+      "title": "ביטוח לאומי, חוזר 1356: תוכנית חיסכון לכל ילד, 30.11.2016",
+      "title_he": "ביטוח לאומי, חוזר 1356: תוכנית חיסכון לכל ילד, 30.11.2016",
       "publisher": "National Insurance Institute",
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "circular",
@@ -22,18 +23,19 @@
       "locator": "p.5",
       "locator_he": "עמוד 5",
       "page": 5,
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "qualifier": "(historical)"
     },
     {
       "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/default.aspx",
-      "title": "NII FAQ",
-      "title_he": "חיסכון לכל ילד: עמודי המידע של הביטוח הלאומי",
+      "title": "ביטוח לאומי: חיסכון לכל ילד - שאלות ותשובות",
+      "title_he": "ביטוח לאומי: חיסכון לכל ילד - שאלות ותשובות",
       "publisher": "National Insurance Institute",
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "quote": "רק ההורה שמקבל את קצבת הילדים יכול לבצע שינויים",
+      "checked": "2026-10-25"
     }
   ]
 }

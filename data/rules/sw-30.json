@@ -22,12 +22,12 @@
       "value": 3,
       "unit": "years",
       "source": {
-        "url": "https://boi.org.il/media/qempydw4/h2863.pdf",
-        "title": "BoI circular h-06-2863 \"הארכת תקופת הניתוב בעת מעבר בין בנקים – דברי הסבר\", 18.10.2026, explanatory notes on the Governor's rules s.5(א)",
-        "publisher": "Bank of Israel (Banking Supervision)",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/F9bg9ryZESlDqrIFTdQefnXqkLtWsLmUW7mzw7WyHNs=#page=2",
+        "title": "כללי הבנקאות (שירות ללקוח) (העברת פעילות פיננסית של לקוח בין בנקים) (תיקון), התשפ\"ז-2026 (קובץ התקנות 12530), p.2 (rule 5(א) as quoted in new rule 5א)",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2023-09-21",
       "effective_to": null,
       "tax_year": null,
@@ -42,12 +42,12 @@
       "value": "2029-07-31",
       "unit": "text",
       "source": {
-        "url": "https://boi.org.il/media/qempydw4/h2863.pdf",
-        "title": "BoI circular h-06-2863 \"הארכת תקופת הניתוב בעת מעבר בין בנקים – דברי הסבר\", 18.10.2026, s.5 and the rules amendment published 17.9.2026",
-        "publisher": "Bank of Israel (Banking Supervision)",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/F9bg9ryZESlDqrIFTdQefnXqkLtWsLmUW7mzw7WyHNs=#page=2",
+        "title": "כללי הבנקאות (שירות ללקוח) (העברת פעילות פיננסית של לקוח בין בנקים) (תיקון), התשפ\"ז-2026 (קובץ התקנות 12530), p.2, rule 5א",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2026-09-17",
       "effective_to": null,
       "tax_year": null,
@@ -62,12 +62,12 @@
       "value": 60,
       "unit": "days",
       "source": {
-        "url": "https://boi.org.il/media/ahflwvpw/448_2.pdf",
-        "title": "BoI directive 448 \"העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון\", version 2 (8/21), s.36",
+        "url": "https://www.boi.org.il/media/irmdw0r2/448_4-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf",
+        "title": "הוראת ניהול בנקאי תקין 448 – העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון, גרסה 4 (11/25), p.11, s.36",
         "publisher": "Bank of Israel (Banking Supervision)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -82,12 +82,12 @@
       "value": 6,
       "unit": "months",
       "source": {
-        "url": "https://boi.org.il/media/ahflwvpw/448_2.pdf",
-        "title": "BoI directive 448 \"העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון\", version 2 (8/21), s.39",
+        "url": "https://www.boi.org.il/media/irmdw0r2/448_4-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf",
+        "title": "הוראת ניהול בנקאי תקין 448 – העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון, גרסה 4 (11/25), p.11, s.39",
         "publisher": "Bank of Israel (Banking Supervision)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -102,12 +102,12 @@
       "value": 5,
       "unit": "business_days",
       "source": {
-        "url": "https://boi.org.il/media/ahflwvpw/448_2.pdf",
-        "title": "BoI directive 448 \"העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון\", version 2 (8/21), s.40",
+        "url": "https://www.boi.org.il/media/irmdw0r2/448_4-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf",
+        "title": "הוראת ניהול בנקאי תקין 448 – העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון, גרסה 4 (11/25), p.11, s.40",
         "publisher": "Bank of Israel (Banking Supervision)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -123,46 +123,44 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://boi.org.il/media/ahflwvpw/448_2.pdf",
-      "title": "Directive 448 version 2, ss.35 to 40",
-      "title_he": "הוראת ניהול בנקאי תקין 448: העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון",
-      "publisher": "Bank of Israel",
-      "publisher_he": "בנק ישראל",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "ss.35 to 40",
-      "locator_he": "סעיפים 35 עד 40",
-      "checked": "2026-10-22"
-    },
-    {
       "url": "https://boi.org.il/media/qempydw4/h2863.pdf",
-      "title": "BoI circular h-06-2863 \"הארכת תקופת הניתוב בעת מעבר בין בנקים – דברי הסבר\", 18.10.2026",
-      "title_he": "חוזר ח-06-2863: הארכת תקופת הניתוב בעת מעבר בין בנקים – דברי הסבר (18.10.2026)",
+      "title": "חוזר ח-06-2863 – הארכת תקופת הניתוב בעת מעבר בין בנקים – דברי הסבר (18.10.2026)",
+      "title_he": "חוזר ח-06-2863 – הארכת תקופת הניתוב בעת מעבר בין בנקים – דברי הסבר (18.10.2026)",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
       "kind": "circular",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "locator": "pp.1-2",
+      "locator_he": "עמודים 1 עד 2",
+      "page": 1,
+      "quote": "מוארכת הוראת המעבר עד ליום",
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://boi.org.il/media/ydrnjadk/111609.pdf",
-      "title": "BoI draft of the same, 9.8.2026 (draft rules text)",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/F9bg9ryZESlDqrIFTdQefnXqkLtWsLmUW7mzw7WyHNs=#page=2",
+      "title": "כללי הבנקאות (שירות ללקוח) (העברת פעילות פיננסית של לקוח בין בנקים) (תיקון), התשפ\"ז-2026 (קובץ התקנות 12530)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (העברת פעילות פיננסית של לקוח בין בנקים) (תיקון), התשפ\"ז-2026 (קובץ התקנות 12530)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.boi.org.il/media/irmdw0r2/448_4-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf",
+      "title": "הוראת ניהול בנקאי תקין 448 – העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון, גרסה 4 (11/25)",
+      "title_he": "הוראת ניהול בנקאי תקין 448 – העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון, גרסה 4 (11/25)",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22",
-      "qualifier": "(draft)"
-    },
-    {
-      "url": "https://boi.org.il/media/qy0gzddj/111486.pdf",
-      "title": "BoI draft 3.7.2023 (two to three years)",
-      "publisher": "Bank of Israel",
-      "publisher_he": "בנק ישראל",
-      "kind": "regulator_page",
-      "strength": "primary",
-      "checked": "2026-10-22",
-      "qualifier": "(draft)"
+      "locator": "p.11, ss.35-40",
+      "locator_he": "עמוד 11, סעיפים 35-40",
+      "page": 11,
+      "checked": "2026-10-25"
     }
   ]
 }

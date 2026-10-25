@@ -16,12 +16,13 @@
   "sources": [
     {
       "url": "https://market.tase.co.il/he/market_data/trading_fees",
-      "title": "TASE, מחשבון עמלות מסחר",
+      "title": "הבורסה לניירות ערך: מחשבון עמלות מסחר",
+      "title_he": "הבורסה לניירות ערך: מחשבון עמלות מסחר",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

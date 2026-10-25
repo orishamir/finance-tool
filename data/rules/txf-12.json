@@ -23,7 +23,7 @@
         "publisher": "US Internal Revenue Service",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "1995-01-01",
       "effective_to": null,
       "tax_year": 2026,
@@ -47,7 +47,7 @@
       "kind": "official_pdf",
       "strength": "primary",
       "locator": "Art. 12(1)-(2)",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.irs.gov/pub/irs-lbi/tax-treaty-table-1.pdf",
@@ -57,7 +57,7 @@
       "publisher_he": "רשות המס האמריקאית (IRS)",
       "kind": "official_pdf",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

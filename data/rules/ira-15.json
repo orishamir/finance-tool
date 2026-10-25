@@ -14,29 +14,32 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.4, reg. 6(א)-(ב)",
+      "locator_he": "עמוד 4, תקנה 6(א)-(ב)",
+      "page": 4,
+      "quote": "העמית רשאי לבטל בכל עת את ההסכם בינו לבין החברה המנהלת",
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/legalinfo/regulation_0059/he/regulation_ira_pdf.pdf",
-      "title": "CMA draft 2025, s.6",
+      "title": "CMA draft 2025",
       "title_he": "טיוטת תיקון לתקנות קופת גמל בניהול אישי (2025)",
       "publisher": "gov.il",
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "s.6",
-      "locator_he": "סעיף 6",
-      "checked": "2026-10-22",
+      "locator": "p.4, s.6",
+      "locator_he": "עמוד 4, סעיף 6",
+      "page": 4,
+      "checked": "2026-10-25",
       "qualifier": "(draft)"
-    },
-    {
-      "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
-      "title": "Nevo, reg. 6",
-      "publisher": "Nevo",
-      "publisher_he": "נבו",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "reg. 6",
-      "locator_he": "תקנה 6",
-      "checked": "2026-10-22"
     }
   ]
 }

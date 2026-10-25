@@ -18,7 +18,7 @@
         "publisher": "Tel Aviv Stock Exchange (Maya)",
         "strength": "primary"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": "2026-10-24",
       "effective_to": null,
       "tax_year": null,
@@ -504,13 +504,13 @@
   "sources": [
     {
       "url": "https://maya.tase.co.il/he/funds/mutual-funds",
-      "title": "Maya, רשימת קרנות",
-      "title_he": "רשימת קרנות הנאמנות במאיה",
+      "title": "מאיה: רשימת קרנות",
+      "title_he": "מאיה: רשימת קרנות",
       "publisher": "Maya (TASE filings)",
       "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
-      "kind": "dataset",
+      "kind": "institution_doc",
       "strength": "primary",
-      "checked": "2026-10-24"
+      "checked": "2026-10-25"
     }
   ]
 }

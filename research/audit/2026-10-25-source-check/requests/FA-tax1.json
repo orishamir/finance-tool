@@ -1,0 +1,30 @@
+[
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "study-fund-income-order-amendment-2002",
+   "match": [
+    "(תיקון), התשס\"ג-2002, קובץ התקנות 6214"
+   ],
+   "title_he": "צו מס הכנסה (קביעת סכומים ששולמו מקרן השתלמות כהכנסה) (תיקון), התשס״ג-2002 (קובץ התקנות 6214)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "regulation",
+   "official_url": null
+  },
+  "note": "TXH-15: the 2002 amendment of the study-fund income order otherwise takes the base order's title through the token 'קביעת סכומים ששולמו מקרן השתלמות כהכנסה'"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "clal-financial-savings-product-page",
+   "match": [
+    "עמוד המוצר של כלל: פוליסת חיסכון פיננסי לעתיד"
+   ],
+   "title_he": "עמוד המוצר של כלל: פוליסת חיסכון פיננסי לעתיד",
+   "publisher_he": "כלל ביטוח ופיננסים",
+   "kind": "institution_doc",
+   "official_url": null
+  },
+  "note": "TXA-28: the token 'חיסכון פיננסי לעתיד' of clal-financial-savings-1418 gave the product page (clalbit.co.il/savingandmanagementins/financialsaving/) the title of the 1418 policy terms PDF; this longer token wins"
+ }
+]

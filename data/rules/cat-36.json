@@ -22,27 +22,10 @@
       "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "circular",
       "strength": "primary",
-      "locator": "§§2, 6",
-      "locator_he": "§§2, 6",
-      "checked": "2026-10-23"
-    },
-    {
-      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"FUND_ID\":7978}&sort=REPORT_PERIOD",
-      "title": "7978 series 2024+",
-      "publisher": "data.gov.il",
-      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
-      "kind": "dataset",
-      "strength": "primary",
-      "checked": "2026-10-23"
-    },
-    {
-      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=2016d770-f094-4a2e-983e-797c26479720&limit=100&filters={\"FUND_ID\":7978}&sort=REPORT_PERIOD",
-      "title": "7978 series 2023",
-      "publisher": "data.gov.il",
-      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
-      "kind": "dataset",
-      "strength": "primary",
-      "checked": "2026-10-23"
+      "locator": "pp.1 to 2, §§2, 6",
+      "locator_he": "עמודים 1 עד 2, §§2, 6",
+      "page": 1,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-2030/he/regulation_2003-13.pdf",
@@ -52,11 +35,50 @@
       "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "circular",
       "strength": "primary",
-      "checked": "2026-10-23",
-      "qualifier": "(2026 rows, portal label)"
+      "locator": "pp.1 to 2",
+      "locator_he": "עמודים 1 עד 2",
+      "page": 1,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://gemelnet.cma.gov.il/views/gemelTsuot.aspx",
+      "title": "דוח תשואות גמל-נט, קופה 7978, תקופה 10/2025 עד 09/2026",
+      "title_he": "דוח תשואות גמל-נט, קופה 7978, תקופה 10/2025 עד 09/2026",
+      "publisher": "Gemel-Net (Capital Market Authority)",
+      "publisher_he": "גמל־נט (רשות שוק ההון, ביטוח וחיסכון)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://pensyanet.cma.gov.il/Parameters",
+      "title": "דוח פנסיה-נט, קרן 214, תקופה 10/2025 עד 09/2026",
+      "title_he": "דוח פנסיה-נט, קרן 214, תקופה 10/2025 עד 09/2026",
+      "publisher": "Pensia-Net (Capital Market Authority)",
+      "publisher_he": "פנסיה־נט (רשות שוק ההון, ביטוח וחיסכון)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"FUND_ID\":7978}&sort=REPORT_PERIOD",
+      "title": "גמל-נט: סדרת קופה 7978 (מ-2024)",
+      "title_he": "גמל-נט: סדרת קופה 7978 (מ-2024)",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=2016d770-f094-4a2e-983e-797c26479720&limit=100&filters={\"FUND_ID\":7978}&sort=REPORT_PERIOD",
+      "title": "גמל-נט: סדרת קופה 7978 (2023)",
+      "title_he": "גמל-נט: סדרת קופה 7978 (2023)",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-25"
     }
-  ],
-  "derived_from": [
-    "CAT-35"
   ]
 }

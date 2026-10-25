@@ -3,7 +3,7 @@
   "title": "Deduction on redemption (exit fee)",
   "title_he": "ניכוי ממחיר הפדיון",
   "text_he": "ניכוי ממחיר הפדיון מותר רק אם הסכם הקרן קובע אותו, והתקרה שלו חייבת להופיע בהסכם. הניכוי נעשה לפני שבעל היחידה מקבל את הכסף. כמה קרנות גובות ניכוי כזה היום לא נמצא.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "fee-exit"
   ],
@@ -12,18 +12,43 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
-      "title": "Law (Wikisource mirror)",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
       "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
-      "publisher": "Hebrew Wikisource",
+      "publisher": "Israel Securities Authority",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "sections 5(א)(7), 42(ג), 46(ב)",
-      "locator_he": "סעיפים 5(א)(7), 42(ג), 46(ב)",
-      "anchor": "סעיף_5.א",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.6, s.5(א)(7)",
+      "locator_he": "עמוד 6, סעיף 5(א)(7)",
+      "page": 6,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.35, s.42(ג)",
+      "locator_he": "עמוד 35, סעיף 42(ג)",
+      "page": 35,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.36, s.46(ב)",
+      "locator_he": "עמוד 36, סעיף 46(ב)",
+      "page": 36,
+      "checked": "2026-10-25"
     }
   ]
 }

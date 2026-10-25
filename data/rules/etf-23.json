@@ -14,8 +14,59 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=#page=2",
+      "title": "תקנות השקעות משותפות בנאמנות (הצעת יחידות של קרן חוץ), התשע\"ו-2016 (קובץ התקנות 7653)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (הצעת יחידות של קרן חוץ), התשע״ו-2016",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.2, reg. 2(א)(1)-(6)",
+      "locator_he": "עמוד 2, תקנה 2(א)(1)-(6)",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=#page=3",
+      "title": "תקנות השקעות משותפות בנאמנות (הצעת יחידות של קרן חוץ), התשע\"ו-2016 (קובץ התקנות 7653)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (הצעת יחידות של קרן חוץ), התשע״ו-2016",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.3, reg. 2(א)(7)-(11), 2(ב)",
+      "locator_he": "עמוד 3, תקנה 2(א)(7)-(11), 2(ב)",
+      "page": 3,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=#page=9",
+      "title": "תקנות השקעות משותפות בנאמנות (הצעת יחידות של קרן חוץ), התשע\"ו-2016 (קובץ התקנות 7653)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (הצעת יחידות של קרן חוץ), התשע״ו-2016",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.9, Schedules 1-2",
+      "page": 9,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/BTebX4k926xskBs4V~y+AuXSI0Ih1GZzIPSwKQOjGm4=#page=2",
+      "title": "תקנות השקעות משותפות בנאמנות (הצעת יחידות של קרן חוץ) (תיקון), התשפ\"ב-2022 (קובץ התקנות 10198)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (הצעת יחידות של קרן חוץ) (תיקון), התשפ״ב-2022 (קובץ התקנות 10198)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.2, reg. 2(א)(8)",
+      "locator_he": "עמוד 2, תקנה 2(א)(8)",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf",
-      "title": "ISA 2024 report, p.20",
+      "title": "פעילות קרנות נאמנות בישראל 2024",
       "title_he": "פעילות קרנות נאמנות בישראל 2024",
       "publisher": "Israel Securities Authority",
       "publisher_he": "רשות ניירות ערך",
@@ -24,20 +75,7 @@
       "locator": "p.20",
       "locator_he": "עמוד 20",
       "page": 20,
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(הצעת_יחידות_של_קרן_חוץ)",
-      "title": "Regulations on offering units of a foreign fund 2016 (תקנות השקעות משותפות בנאמנות (הצעת יחידות של קרן חוץ), התשע\"ו-2016), reg. 2, Schedules 1–2",
-      "title_he": "תקנות השקעות משותפות בנאמנות (הצעת יחידות של קרן חוץ), התשע״ו-2016",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg. 2, Schedules 1–2",
-      "anchor": "סעיף_2",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

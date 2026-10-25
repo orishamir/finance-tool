@@ -19,12 +19,12 @@
       "value": 3,
       "unit": "months",
       "source": {
-        "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-        "title": "Altshuler Shaham gemel lehashkaa bylaws (\"חיסכון פלוס\"), March 2025, s. 31",
-        "publisher": "Altshuler Shaham Gemel ve-Pensia",
-        "strength": "institution"
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
+        "title": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון, p.2, s.3(א)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -39,12 +39,12 @@
       "value": 60,
       "unit": "days",
       "source": {
-        "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-        "title": "Altshuler Shaham gemel lehashkaa bylaws (\"חיסכון פלוס\"), March 2025, s. 32.1",
-        "publisher": "Altshuler Shaham Gemel ve-Pensia",
-        "strength": "institution"
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
+        "title": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון, p.3, s.4(א)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -59,12 +59,12 @@
       "value": 50000,
       "unit": "nis",
       "source": {
-        "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-        "title": "Altshuler Shaham gemel lehashkaa bylaws (\"חיסכון פלוס\"), March 2025, s. 32.2",
-        "publisher": "Altshuler Shaham Gemel ve-Pensia",
-        "strength": "institution"
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
+        "title": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון, p.3, s.4(ה)",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -80,29 +80,45 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "title": "Provident Funds Law s. 35 (Wikisource)",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
+      "title": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
+      "title_he": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "pp.2-3, s.3(א) on p.2, s.4(א), 4(ה) on p.3",
+      "page": 2,
+      "quote": "מדי שנה, תוך שלושה חודשים מתום השנה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s. 35",
-      "locator_he": "סעיף 35",
-      "anchor": "סעיף_35",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.14, s.35",
+      "locator_he": "עמוד 14, סעיף 35",
+      "page": 14,
+      "quote": "חברה מנהלת תשלח לעמיתים",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-      "title": "Altshuler bylaws s. 29 to 32",
+      "title": "אלטשולר שחם גמל להשקעה \"חיסכון פלוס\" – תקנון, מרץ 2025",
+      "title_he": "אלטשולר שחם גמל להשקעה \"חיסכון פלוס\" – תקנון, מרץ 2025",
       "publisher": "Altshuler Shaham",
       "publisher_he": "אלטשולר שחם",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "s. 29 to 32",
-      "locator_he": "סעיף 29 עד 32",
-      "checked": "2026-10-22"
+      "locator": "pp.9-10, ss.29-32",
+      "locator_he": "עמודים 9 עד 10, סעיפים 29-32",
+      "page": 9,
+      "quote": "דין וחשבון שנתי לעמית",
+      "checked": "2026-10-25"
     }
   ]
 }

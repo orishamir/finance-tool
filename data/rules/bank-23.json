@@ -15,23 +15,29 @@
   "sources": [
     {
       "url": "https://www.boi.org.il/media/pcuny0hd/עמדת-בנק-ישראל-בנוגע-להכרזת-הממונה-על-התחרות-על-חמש-הקבוצות-הבנקאיות-כקבוצת-ריכוז-ומתן-הוראות-בתחום-הפיקדונות.pdf",
-      "title": "BoI press statement, 6 May 2026",
-      "title_he": "עמדת בנק ישראל בנוגע להכרזת הממונה על התחרות על חמש הקבוצות הבנקאיות כקבוצת ריכוז (6.5.2026)",
+      "title": "בנק ישראל, הודעה לעיתונות 6.5.2026: עמדת בנק ישראל בנוגע להכרזת הממונה על התחרות",
+      "title_he": "בנק ישראל, הודעה לעיתונות 6.5.2026: עמדת בנק ישראל בנוגע להכרזת הממונה על התחרות",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf",
-      "title": "Bill P/6522/25 text, tabled 02.02.2026",
+      "title": "הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ\"ו-2026 (פ/6522/25)",
       "title_he": "הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ״ו-2026 (פ/6522/25)",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "locator": "pp.2 to 3",
+      "locator_he": "עמודים 2 עד 3",
+      "page": 2,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill?$filter=PrivateNumber%20eq%206522%20and%20KnessetNum%20eq%2025&$format=json",
@@ -40,7 +46,7 @@
       "publisher_he": "הכנסת",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Status?$filter=StatusID%20eq%20104&$format=json",
@@ -49,7 +55,7 @@
       "publisher_he": "הכנסת",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill?$filter=substringof('ביטוח%20פיקדונות',Name)&$format=json",
@@ -58,16 +64,17 @@
       "publisher_he": "הכנסת",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.funder.co.il/article/203575",
-      "title": "Funder, 15 Jun 2026",
+      "title": "פאנדר, 15.6.2026: זהירות, אין ביטוח פיקדונות",
+      "title_he": "פאנדר, 15.6.2026: זהירות, אין ביטוח פיקדונות",
       "publisher": "Funder",
       "publisher_he": "פאנדר",
       "kind": "article",
       "strength": "secondary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

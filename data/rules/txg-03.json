@@ -24,7 +24,7 @@
         "publisher": "Israel Tax Authority",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2026-01-01",
       "effective_to": null,
       "tax_year": 2026,
@@ -46,7 +46,7 @@
             "publisher": "Israel Tax Authority",
             "strength": "primary"
           },
-          "checked": "2026-10-22",
+          "checked": "2026-10-25",
           "effective_from": "2026-01-01",
           "effective_to": null,
           "tax_year": 2026,
@@ -66,7 +66,7 @@
             "publisher": "Israel Tax Authority",
             "strength": "primary"
           },
-          "checked": "2026-10-22",
+          "checked": "2026-10-25",
           "effective_from": "2026-01-01",
           "effective_to": null,
           "tax_year": 2026,
@@ -87,7 +87,7 @@
             "publisher": "Israel Tax Authority",
             "strength": "primary"
           },
-          "checked": "2026-10-22",
+          "checked": "2026-10-25",
           "effective_from": "2026-01-01",
           "effective_to": null,
           "tax_year": 2026,
@@ -107,7 +107,7 @@
             "publisher": "Israel Tax Authority",
             "strength": "primary"
           },
-          "checked": "2026-10-22",
+          "checked": "2026-10-25",
           "effective_from": "2026-01-01",
           "effective_to": null,
           "tax_year": 2026,
@@ -128,7 +128,7 @@
             "publisher": "Israel Tax Authority",
             "strength": "primary"
           },
-          "checked": "2026-10-22",
+          "checked": "2026-10-25",
           "effective_from": "2026-01-01",
           "effective_to": null,
           "tax_year": 2026,
@@ -148,7 +148,7 @@
             "publisher": "Israel Tax Authority",
             "strength": "primary"
           },
-          "checked": "2026-10-22",
+          "checked": "2026-10-25",
           "effective_from": "2026-01-01",
           "effective_to": null,
           "tax_year": 2026,
@@ -176,7 +176,7 @@
       "locator_he": "עמוד 10",
       "page": 10,
       "quote": "שיעורי המס החלים על הכנסה שאינה מיגיעה אישית",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
@@ -186,11 +186,11 @@
       "publisher_he": "רשות המסים",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.8 s.9b",
-      "locator_he": "עמוד 8 סעיף 9ב",
-      "page": 8,
+      "locator": "p.10 s.9b",
+      "locator_he": "עמוד 10 סעיף 9ב",
+      "page": 10,
       "quote": "הכנסות שאינן מיגיעה אישית חייבות בשיעור מס התחלתי של 31%",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

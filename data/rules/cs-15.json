@@ -14,11 +14,11 @@
       "unit": "nis",
       "source": {
         "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
-        "title": "National Insurance Institute, child savings: withdrawal page (medical early withdrawal: a NIS 582 grant is deposited instead of at 18); law 74ד",
+        "title": "National Insurance Institute, child savings: withdrawal page (medical early withdrawal: a NIS 582 grant is deposited instead of at 18); law 74ד, BTL text p.52",
         "publisher": "National Insurance Institute (BTL)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2026-01-01",
       "effective_to": null,
       "tax_year": null,
@@ -38,14 +38,37 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
-      "title": "NII withdrawal page",
-      "title_he": "חיסכון לכל ילד: עמודי המידע של הביטוח הלאומי",
+      "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
+      "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
       "publisher": "National Insurance Institute",
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "locator": "p.52, s.74ד",
+      "locator_he": "עמוד 52, סעיף 74ד",
+      "page": 52,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
+      "title": "ביטוח לאומי: משיכה של כספי החיסכון",
+      "title_he": "ביטוח לאומי: משיכה של כספי החיסכון",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/default.aspx",
+      "title": "ביטוח לאומי: חיסכון לכל ילד - שאלות ותשובות",
+      "title_he": "ביטוח לאומי: חיסכון לכל ילד - שאלות ותשובות",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-25"
     }
   ]
 }

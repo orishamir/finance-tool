@@ -19,7 +19,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 - Rule: The Governor may appoint a Supervisor of Banks (המפקח על הבנקים). The Supervisor is a Bank of Israel employee and holds "הפיקוח הכללי והבקורת על כל תאגיד בנקאי", with power to demand information and documents from any banking corporation.
 - Conditions / exceptions: Applies to every "תאגיד בנקאי" as defined in the Banking (Licensing) Law 1981 (Banking Ordinance s.2(2)).
 - Figures: none.
-- Source: [פקודת הבנקאות, 1941, Wikisource consolidated text](https://he.wikisource.org/wiki/פקודת_הבנקאות), s.5(א) (section last tagged תשע"ט־2; page header lists amendments up to ע"ר תשפ"ו, 397) · checked 2026-10-22 · primary (law text via Wikisource mirror). Cross-check: [BoI unofficial consolidated text, edition 10/11](https://boi.org.il/media/esihqtk2/פקודת-הבנקאות-1941.pdf), p.103-2 · checked 2026-10-22 · primary (unofficial, outdated edition)
+- Source: [פקודת הבנקאות, 1941 (קובץ חקיקה בנקאית של בנק ישראל, פריט 103)](https://boi.org.il/media/s5ub1z12/103.pdf), p.4, s.5(א) (file dated 14.1.2025; s.5 last amended התשע"ט) · checked 2026-10-25 · primary.
 - Dimensions: `regulator`
 - Likely to change: no
 
@@ -43,7 +43,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
   - Esh is listed as a regular bank but has no website in the list. Whether it serves the public is still open.
   - The dataset is titled "addresses and links". Whether it equals the full licensing register is not stated.
 - Figures: 17 entries; dataset and both resources modified 2026-10-22 (daily refresh observed).
-- Source: [data.gov.il dataset 375, רשימת תאגידים בנקאיים בישראל - כתובות וקישורים](https://data.gov.il/dataset/375) (owner: בנק ישראל); records read through the [datastore API, Hebrew resource](https://data.gov.il/api/3/action/datastore_search?resource_id=ebb61778-e34c-4e67-8fcf-0e643d9cf8c2&limit=200); format CSV (Hebrew and English) · checked 2026-10-22 · primary
+- Source: [data.gov.il, בנק ישראל: רשימת תאגידים בנקאיים בישראל - כתובות וקישורים](https://data.gov.il/he/datasets/bank_israel/375) · checked 2026-10-25 · primary. [data.gov.il: רשימת תאגידים בנקאיים, משאב בעברית (datastore API)](https://data.gov.il/api/3/action/datastore_search?resource_id=ebb61778-e34c-4e67-8fcf-0e643d9cf8c2&limit=200) · checked 2026-10-25 · primary.
 - Dimensions: `regulator`
 - Likely to change: yes. Licences are added and merged, and the file is refreshed daily.
 
@@ -55,7 +55,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
   - "יום התחילה" is defined in s.15(ז) as the law's commencement. The commencement date itself was not found in the text read (open question 12).
   - The law was published in ס"ח 3510 on 31.3.2026, as part of the Economic Plan Law for 2026. The Knesset database marks it "תקף" (in force) from 2026-03-31.
 - Figures: deadline is one year from commencement, and progress report at six months. Fixed in law.
-- Source: [Law text, BoI-hosted PDF (prepared by הוצאת הלכות, version 1.7.2026)](https://boi.org.il/media/5folwk5o/119.pdf), ss.15, 16, footnote 1 · checked 2026-10-22 · primary. [Knesset OData, KNS_IsraelLaw 2242328](https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_IsraelLaw()?$filter=substringof('התחרות%20בשוק%20הבנקאות',Name)&$format=json) · checked 2026-10-22 · primary
+- Source: [חוק לקידום התחרות בשוק הבנקאות (תיקוני חקיקה), התשפ"ו-2026 (נוסח בנק ישראל, 1.7.2026)](https://boi.org.il/media/5folwk5o/119.pdf), p.2, ss.15, 16; p.1, footnote 1 · checked 2026-10-25 · primary. [חוק התוכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנת התקציב 2026), התשפ"ו-2026 (ספר החוקים 3510)](https://fs.knesset.gov.il/25/law/25_lsr_12224370.pdf), p.60 (gazette p.408), chapter י"א s.16 · checked 2026-10-25 · primary. [Knesset OData, KNS_IsraelLaw 2242328](https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_IsraelLaw()?$filter=substringof('התחרות%20בשוק%20הבנקאות',Name)&$format=json) · checked 2026-10-25 · primary.
 - Context (secondary): a Movement for Quality Government letter dated 27 July 2026 says that on 22.6.2026 a Knesset subcommittee asked the Treasury and the BoI to set up the examination team within two weeks, and that this had not happened by the letter's date ([MQG letter](https://mqg.org.il/wp-content/uploads/2026/08/תזכורת-–-קידום-מנגנון-של-ביטוח-פיקדונות-כחלק-הכרחי-ברפורמה-לעידוד-התחרות-במערכת-הבנקאית-בישראל.pdf), paras 2, 7 to 9, checked 2026-10-22, secondary). Funder (15 Jun 2026) describes the current arrangement as an informal one, "מנגנון לא פורמלי" ([Funder](https://www.funder.co.il/article/203575), checked 2026-10-22, secondary).
 - Dimensions: `protection`, `regulator`
 - Likely to change: **yes**. The examination is due within a year of commencement, so it is a re-check item.
@@ -69,7 +69,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
   - Banking corporations and portfolio managers may not claim.
 - Status: the Knesset database shows StatusID 104, "הונחה על שולחן הכנסת לדיון מוקדם" (tabled for preliminary discussion). The record was last updated 2026-02-02 and has no committee assigned. The bill was tabled on 02.02.2026.
 - Figures: NIS 250,000 per client (bill only, not law).
-- Source: [Bill PDF](https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf), ss.1 to 4 and explanatory notes · checked 2026-10-22 · primary. [Knesset OData KNS_Bill, PrivateNumber 6522](https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill()?$filter=KnessetNum%20eq%2025%20and%20PrivateNumber%20eq%206522&$format=json) and [KNS_Status 104](https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Status(104)?$format=json) · checked 2026-10-22 · primary
+- Source: [הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ"ו-2026 (פ/6522/25)](https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf), pp.2-3, ss.1 to 4 and explanatory notes · checked 2026-10-25 · primary. [Knesset OData KNS_Bill, PrivateNumber 6522](https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill()?$filter=KnessetNum%20eq%2025%20and%20PrivateNumber%20eq%206522&$format=json), StatusID 104 · checked 2026-10-25 · primary. [Knesset OData KNS_Status 104](https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Status(104)?$format=json) · checked 2026-10-25 · primary.
 - Dimensions: `protection`
 - Likely to change: yes. The site must show this as a bill, never as protection.
 
@@ -82,7 +82,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 - Insolvency filings: a creditor's or shareholder's insolvency or winding-up application against a bank must first be submitted to the Governor (s.8יב).
 - Conditions / exceptions: No deposit-priority rule, bail-in or bridge-bank provision was found in the Ordinance text (as reported for the Wikisource version). Sections 8ד, 8ו and 8יב are tagged as amended in תשפ"ו. The BoI 10/11 edition predates that amendment and must not be used for these sections.
 - Figures: 90 days' notice to cancel a guarantee (s.8יא(ה)). Fixed in law.
-- Source: [פקודת הבנקאות, Wikisource](https://he.wikisource.org/wiki/פקודת_הבנקאות), ss.8ד(א), 8ו(ה), 8יא(א) to (ז), 8יב · checked 2026-10-22 · primary (law text via Wikisource mirror)
+- Source: [פקודת הבנקאות, 1941 (קובץ חקיקה בנקאית של בנק ישראל, פריט 103)](https://boi.org.il/media/s5ub1z12/103.pdf), p.6, s.8ד (text before 2026); p.8, s.8ו; p.10, s.8יא · checked 2026-10-25 · primary. [חוק התוכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנת התקציב 2026), התשפ"ו-2026 (ספר החוקים 3510)](https://fs.knesset.gov.il/25/law/25_lsr_12224370.pdf), p.49 (gazette p.397), s.4(4)-(5): 8ד(א) and 8ו(ה) as amended; p.50 (gazette p.398), s.4(6): 8יב replaced · checked 2026-10-25 · primary.
 - Dimensions: `protection`
 - Likely to change: yes. These sections were amended in תשפ"ו, and REG-04 may lead to a new scheme.
 
@@ -90,7 +90,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 - Rule: The ISA (רשות ניירות ערך) is established by Securities Law s.2. Its role is "שמירת עניניו של ציבור המשקיעים בניירות ערך". It reports to the Finance Minister and the Knesset Finance Committee at least once a year (s.14).
 - Conditions / exceptions: Its powers over funds come from the Joint Investment Trust Law (REG-10, REG-11), over portfolio managers from the Investment Advice Law (REG-08), and over the exchange and clearing house from the Securities Law (REG-13, REG-15).
 - Figures: none.
-- Source: [חוק ניירות ערך, Wikisource](https://he.wikisource.org/wiki/חוק_ניירות_ערך), ss.2, 3(א), 14 (amendment list ends ס"ח תשפ"ו, 1070) · checked 2026-10-22 · primary (mirror)
+- Source: [חוק ניירות ערך, התשכ"ח-1968 (פרסום מקורי ברשומות)](https://fs.knesset.gov.il/6/law/6_lsr_210358.pdf), p.1, s.2; p.3, s.14 · checked 2026-10-25 · primary. [חוק ניירות ערך (תיקון מס' 63), התשע"ז-2017 (ספר החוקים 2633)](https://fs.knesset.gov.il/20/law/20_lsr_382526.pdf), p.2, s.2 of the amending law (s.3 as amended) · checked 2026-10-25 · primary.
 - Dimensions: `regulator`
 - Likely to change: no
 
@@ -118,7 +118,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
   - The trustee supervises the manager's compliance with the law, the fund agreement and the prospectus (s.78(א)).
 - Conditions / exceptions: Market losses are not protected. Fund cash held at a bank is a bank deposit of the fund (see REG-04 for banks). How that cash is treated if the bank fails was not found.
 - Figures: none.
-- Source: [חוק השקעות משותפות בנאמנות, Wikisource](https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות), ss.4, 76, 78(א), 79 · checked 2026-10-22 · primary (mirror)
+- Source: [חוק השקעות משותפות בנאמנות, התשנ"ד-1994 (נוסח רשות ניירות ערך)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf), p.5, s.4; p.56, s.76; p.57, s.78; p.58, s.79 · checked 2026-10-25 · primary.
 - Dimensions: `protection`
 - Likely to change: no
 
@@ -129,7 +129,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
   - **Liquidation:** the ISA may petition to liquidate a fund (s.104(א)). The court may instead order transfer to another manager (s.104(ד)).
 - Conditions / exceptions: none found.
 - Figures: 90 days (s.12(ג)).
-- Source: [חוק השקעות משותפות בנאמנות, Wikisource](https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות), ss.11, 12, 14, 15, 104 · checked 2026-10-22 · primary (mirror)
+- Source: [חוק השקעות משותפות בנאמנות, התשנ"ד-1994 (נוסח רשות ניירות ערך)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf), p.11, ss.11, 12; p.14, ss.14, 15; p.67, s.104 · checked 2026-10-25 · primary.
 - Dimensions: `protection`
 - Likely to change: no
 
@@ -156,7 +156,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
   - TASE describes itself as "a regulated exchange, as well as a self-regulating organization (SRO)", supervised by the ISA.
 - Conditions / exceptions: TASE is a listed company (since August 2019). Its wholly owned subsidiaries are the TASE Clearing House (מסלקת הבורסה), the MAOF Clearing House (מסלקת מעו"ף) and the Nominee Company (החברה לרישומים).
 - Figures: none.
-- Source: [חוק ניירות ערך, Wikisource](https://he.wikisource.org/wiki/חוק_ניירות_ערך), ss.44לא, 45, 45א, 46, 48, 51 · checked 2026-10-22 · primary (mirror). [TASE, How to become TASE Remote Member, January 2026](https://content.tase.co.il/media/xrwbgkhk/1150_remote_member_372145_eng.pdf), pp.3 to 4 · checked 2026-10-22 · primary (TASE publication)
+- Source: [חוק ניירות ערך (תיקון מס' 63), התשע"ז-2017 (ספר החוקים 2633)](https://fs.knesset.gov.il/20/law/20_lsr_382526.pdf), p.2, s.4 (s.44לא); p.3, ss.9-10 (ss.45, 45א); p.10, s.13 (s.48); p.20, s.22 (s.51) · checked 2026-10-25 · primary. [חוק ניירות ערך, התשכ"ח-1968 (נוסח רשות ניירות ערך, 2012)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/IsaFile_8276.pdf), p.88, s.46; p.98, s.51(א) (text before Amendment 63) · checked 2026-10-25 · primary. [TASE, How to become TASE Remote Member, January 2026](https://content.tase.co.il/media/xrwbgkhk/1150_remote_member_372145_eng.pdf), pp.3-4 · checked 2026-10-25 · primary (TASE publication).
 - Dimensions: `regulator`
 - Likely to change: no
 
@@ -169,7 +169,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
   - A member that is not a clearing member clears through a General Clearing Member. That can happen "without segregation between the TASE member's nostro and client's securities and the GCM clients", unless an "Additional Client Subsidiary Account" is used.
   - Bank Massad, listed by the BoI as a bank (REG-03), is not in the clearing-member list. How it clears was not found.
 - Figures: 25 members (January 2026). Non-bank member equity: the higher of a capital model or NIS 5.9 m in the first five years, and the higher of the model or NIS 17.9 m after that.
-- Source: [TASE, מדריך לחברות בבורסה - חש"ב, ינואר 2026](https://content.tase.co.il/media/chilpz2c/1150_nbcm_372306_heb.pdf), pp.3, 12. [TASE, How to become an NBCM, January 2026](https://content.tase.co.il/media/3fdpe5za/1150_nbcm_399328_eng.pdf), pp.3, 7, 9, 12 · checked 2026-10-22 · primary (TASE publication)
+- Source: [הבורסה לניירות ערך בתל אביב: מדריך לחברות בבורסה - חש"ב, ינואר 2026](https://content.tase.co.il/media/chilpz2c/1150_nbcm_372306_heb.pdf), pp.3, 12 · checked 2026-10-25 · primary (TASE publication). [TASE, How to become an NBCM, January 2026](https://content.tase.co.il/media/3fdpe5za/1150_nbcm_399328_eng.pdf), pp.3, 7, 9, 12 · checked 2026-10-25 · primary (TASE publication).
 - Dimensions: `regulator`
 - Likely to change: yes (membership changes)
 
@@ -182,7 +182,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
   - The ISA oversees clearing houses (s.50ג(א)).
 - Conditions / exceptions: These rules protect the settlement system, not the individual client's account balance. Clearing members participate in a Risk Fund under the clearing-house bylaws. Whether it covers client losses is not stated (open question 11). TASE states the ISA has confirmed its clearing houses comply with the CPMI-IOSCO principles and should be considered Qualifying Central Counterparties.
 - Figures: none.
-- Source: [חוק ניירות ערך, Wikisource](https://he.wikisource.org/wiki/חוק_ניירות_ערך), ss.44לא, 50א, 50א3, 50א4, 50ג · checked 2026-10-22 · primary (mirror). [TASE NBCM guide](https://content.tase.co.il/media/3fdpe5za/1150_nbcm_399328_eng.pdf), p.10. [TASE remote-member guide](https://content.tase.co.il/media/xrwbgkhk/1150_remote_member_372145_eng.pdf), p.4 · checked 2026-10-22 · primary (TASE publication)
+- Source: [חוק ניירות ערך (תיקון מס' 63), התשע"ז-2017 (ספר החוקים 2633)](https://fs.knesset.gov.il/20/law/20_lsr_382526.pdf), p.2, s.4 (s.44לא); p.20, s.21 (s.50ג) · checked 2026-10-25 · primary. [חוק ניירות ערך, התשכ"ח-1968 (נוסח רשות ניירות ערך, 2012)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/IsaFile_8276.pdf), p.94, s.50א(ד) (text before 2017); p.96, s.50ג · checked 2026-10-25 · primary. [חוק ניירות ערך (תיקון מס' 61), התשע"ז-2017 (ספר החוקים 2623)](https://fs.knesset.gov.il/20/law/20_lsr_382400.pdf), p.5, s.2(3) (s.50א(ד) as amended); pp.5-8, s.3 (ss.50א3, 50א4 added) · checked 2026-10-25 · primary. [חוק חדלות פירעון ושיקום כלכלי (תיקון מס' 9), התשפ"ו-2026 (ספר החוקים 3488)](https://fs.knesset.gov.il/25/law/25_lsr_10981603.pdf), p.18, s.10 (ss.50א(א), 50א4 as amended) · checked 2026-10-25 · primary. [TASE, How to become an NBCM, January 2026](https://content.tase.co.il/media/3fdpe5za/1150_nbcm_399328_eng.pdf), p.10 · checked 2026-10-25 · primary (TASE publication). [TASE, How to become TASE Remote Member, January 2026](https://content.tase.co.il/media/xrwbgkhk/1150_remote_member_372145_eng.pdf), p.4 · checked 2026-10-25 · primary (TASE publication).
 - Dimensions: `protection`
 - Likely to change: no
 
@@ -194,7 +194,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
   - that liquid funds are held "בחשבון נאמנות בבנק".
 - Conditions / exceptions: **No statute segregating a TASE member's client assets was found in this pass.** The Securities Law sections read cover clearing (REG-15), not client segregation. The governing text is probably in the TASE rules (תקנון הבורסה) and clearing-house bylaws, which were not read (open questions 9, 10). Client cash in a bank trust account is exposed to that bank, which has no deposit insurance (REG-04). Whether this is so was not verified (open question 21).
 - Figures: none.
-- Source: [Meitav Trade, אודות](https://www.meitav.co.il/trade/about/) · checked 2026-10-22 · institution
+- Source: [מיטב טרייד: אודות](https://www.meitav.co.il/trade/about/) · checked 2026-10-25 · institution.
 - Dimensions: `protection`
 - Likely to change: no
 
@@ -205,7 +205,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
   - The Commissioner approves provident funds (s.13(א)). A fund's first approval needs the consent of "המנהל כהגדרתו בפקודת מס הכנסה" (s.13(ג)(1)), which is the Tax Authority's role in fund approval.
 - Conditions / exceptions: "קופת גמל" covers every approved fund. Pension funds (קרן ותיקה, קרן חדשה כללית, קרן חדשה מקיפה) are defined as "קופת גמל לקצבה". Study funds (קרן השתלמות) and investment provident funds (קופת גמל להשקעה) are also provident funds (s.1).
 - Figures: none.
-- Source: [חוק הפיקוח על שירותים פיננסיים (ביטוח), Wikisource](https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(ביטוח)), ss.1א, 2 (amendments to ס"ח תשפ"ו, 909). [חוק הפיקוח על שירותים פיננסיים (קופות גמל), Wikisource](https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)), ss.1, 13, 39 (amendments to ס"ח תשפ"ו, 912) · checked 2026-10-22 · primary (mirror)
+- Source: [חוק הפיקוח על שירותים פיננסיים (תיקוני חקיקה), התשע"ו-2016 (ספר החוקים 2582)](https://fs.knesset.gov.il/20/law/20_lsr_348687.pdf), pp.2-3, s.1 (ss.1א, 2 of the insurance law) · checked 2026-10-25 · primary. [חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס"ה-2005 (ספר החוקים 2024)](https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf), p.2, s.1; p.8, s.13; p.15, s.39 · checked 2026-10-25 · primary. [חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע"ו-2016](https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf), p.2 (ss.1, 13 as amended) · checked 2026-10-25 · primary.
 - Dimensions: `regulator`
 - Likely to change: no
 
@@ -217,7 +217,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
   - A member's rights cannot be attached except under rules set by the Minister (s.25(ב)).
 - Conditions / exceptions: Applies to every tier-1 CMA wrapper (definitions in REG-17). Market losses are not protected. For child savings held at a provident fund, see REG-23.
 - Figures: none.
-- Source: [חוק הפיקוח על שירותים פיננסיים (קופות גמל), Wikisource](https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)), ss.3, 25(ב), 27, 30(א) · checked 2026-10-22 · primary (mirror)
+- Source: [חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס"ה-2005 (ספר החוקים 2024)](https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf), p.4, s.3; p.11, s.25; p.12, ss.27, 30(א) · checked 2026-10-25 · primary.
 - Dimensions: `protection`
 - Likely to change: no
 
@@ -228,7 +228,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
   - A voluntary transfer needs the Commissioner's prior approval (s.41).
 - Conditions / exceptions: none found.
 - Figures: 60 days (s.42(א)). Fixed in law.
-- Source: [Provident Funds Law, Wikisource](https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)), ss.39(ג), 41, 42. [Insurance Supervision Law, Wikisource](https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(ביטוח)), ss.68(א), 70(א) · checked 2026-10-22 · primary (mirror)
+- Source: [חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס"ה-2005 (ספר החוקים 2024)](https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf), p.15, ss.39, 41, 42 · checked 2026-10-25 · primary. [חוק הפיקוח על עסקי ביטוח, התשמ"א-1981 (פרסום מקורי ברשומות)](https://fs.knesset.gov.il/9/law/9_lsr_209334.PDF), pp.15-16, ss.68, 70 (as enacted) · checked 2026-10-25 · primary. [חוק הפיקוח על שירותים פיננסיים (תיקוני חקיקה), התשע"ו-2016 (ספר החוקים 2582)](https://fs.knesset.gov.il/20/law/20_lsr_348687.pdf), p.2, s.1(1) (המפקח → הממונה) · checked 2026-10-25 · primary.
 - Dimensions: `protection`, `transfer-switch-process`
 - Likely to change: no
 
@@ -249,7 +249,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
   - "איגרות חוב מיועדות" are defined as Arad (ערד) and Miron (מירון) bonds (s.34ב).
 - Conditions / exceptions: The determining date is "יום ב' בתמוז התשפ"ב (1 ביולי 2022)". Wikisource annotates it as postponed to 1.10.2022 (open question 18). The guarantee stays in force for covered assets even if the rules later change (s.34ד). It does not cover a comprehensive fund's other 70% of assets, provident funds, study funds or investment provident funds (not "קרן זכאית").
 - Figures: 30% or 70%; 5.15% a year real (target plus CPI); 60 months. Fixed in law.
-- Source: [Provident Funds Law, Wikisource](https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)), ss.34ב, 34ג, 34ד, 34ה · checked 2026-10-22 · primary (mirror)
+- Source: [חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2021 ו-2022), התשפ"ב-2021 (ספר החוקים 2932)](https://fs.knesset.gov.il/24/law/24_lsr_611567.pdf), pp.33-39, ss.34א to 34ז (s.34ב p.34) · checked 2026-10-25 · primary.
 - Dimensions: `protection`, `real-vs-nominal`
 - Likely to change: yes. Re-check the determining date and any amendment.
 - Note: The product mechanics belong in `pension-and-gemel-lekitzba.md`. This entry records only the protection aspect.
@@ -266,7 +266,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 - Rule: The plan is opened "בקופת גמל או בבנק לפי בחירתכם". Questions about the balance go to "קופת הגמל או לבנק שמנהלים את החיסכון".
 - Conditions / exceptions: At a provident fund, REG-18 and REG-19 apply. At a bank, the money is a bank deposit with no deposit insurance (REG-04 to REG-06). The NII page names no supervising regulator, and the default when parents do not choose is not stated on this page (see `child-savings.md`).
 - Figures: none here.
-- Source: [NII, תכנית חיסכון לכל ילד](https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/default.aspx) · checked 2026-10-22 · primary
+- Source: [ביטוח לאומי: תכנית חיסכון לכל ילד](https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/default.aspx) · checked 2026-10-25 · primary.
 - Dimensions: `protection`, `regulator`
 - Likely to change: no
 
@@ -294,7 +294,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 - Protection as stated by the introducer: US accounts "מוגנים ע"י ביטוח של 500,000 דולר ארה"ב עבור כל חשבון". Irish accounts "מוגנים ע"י הקרן לפיצוי משקיעים עד 20,000 יורו".
 - Conditions / exceptions: IBKR's own protection pages returned 403. The amounts are as the introducer states them (open question 14).
 - Figures: USD 500,000 (US); EUR 20,000 (Ireland). Both set by foreign schemes.
-- Source: [Interactive Israel, about](https://lp3.inter-il.com/about-3) · checked 2026-10-22 · institution
+- Source: [Interactive Israel, about](https://lp3.inter-il.com/about-3) · checked 2026-10-25 · institution.
 - Dimensions: `protection`, `regulator`, `currency`
 - Likely to change: yes (foreign scheme limits)
 
@@ -302,7 +302,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 - Rule: "The limit of SIPC protection is $500,000, which includes a $250,000 limit for cash." "SIPC only protects the custody function of the broker dealer". "SIPC does not protect against the decline in value of your securities." "There is no requirement that a customer reside in or be a citizen of the United States."
 - Conditions / exceptions: Applies only to accounts at SIPC-member broker-dealers (for example IBKR LLC per REG-26). It does not apply to non-US entities of the same group.
 - Figures: USD 500,000 total, USD 250,000 cash. Set by SIPC.
-- Source: [SIPC, What SIPC Protects](https://www.sipc.org/for-investors/what-sipc-protects) · checked 2026-10-22 · primary (foreign statutory body)
+- Source: [SIPC, What SIPC Protects](https://www.sipc.org/for-investors/what-sipc-protects) · checked 2026-10-25 · primary (foreign statutory body).
 - Dimensions: `protection`, `currency`
 - Likely to change: no
 
@@ -468,7 +468,7 @@ Registers used and what each listed on 2026-10-22:
 
 | Source | Publisher | Strength | Checked |
 |---|---|---|---|
-| [data.gov.il dataset 375](https://data.gov.il/dataset/375); [datastore API](https://data.gov.il/api/3/action/datastore_search?resource_id=ebb61778-e34c-4e67-8fcf-0e643d9cf8c2&limit=200); [package_show](https://data.gov.il/api/3/action/package_show?id=375) | Bank of Israel via data.gov.il | primary | 2026-10-22 |
+| [data.gov.il dataset 375](https://data.gov.il/he/datasets/bank_israel/375); [datastore API](https://data.gov.il/api/3/action/datastore_search?resource_id=ebb61778-e34c-4e67-8fcf-0e643d9cf8c2&limit=200); [package_show](https://data.gov.il/api/3/action/package_show?id=375) | Bank of Israel via data.gov.il | primary | 2026-10-22 |
 | [Deposit-insurance bill P/6522/25](https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf) | Knesset | primary | 2026-10-22 |
 | [Knesset OData KNS_Bill (6522)](https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill()?$filter=KnessetNum%20eq%2025%20and%20PrivateNumber%20eq%206522&$format=json); [KNS_Status 104](https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Status(104)?$format=json); [KNS_Bill search "פיקדונות"](https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill()?$filter=KnessetNum%20eq%2025%20and%20substringof('פיקדונות',Name)&$format=json); [KNS_IsraelLaw 2242328](https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_IsraelLaw()?$filter=substringof('ביטוח%20פיקדונות',Name)%20or%20substringof('התחרות%20בשוק%20הבנקאות',Name)&$format=json); [KNS_Bill 2240483](https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill()?$filter=KnessetNum%20eq%2025%20and%20substringof('התחרות%20בשוק%20הבנקאות',Name)&$format=json) | Knesset | primary | 2026-10-22 |
 | [חוק לקידום התחרות בשוק הבנקאות (תיקוני חקיקה), התשפ"ו-2026](https://boi.org.il/media/5folwk5o/119.pdf) | BoI-hosted (הוצאת הלכות, version 1.7.2026) | primary | 2026-10-22 |

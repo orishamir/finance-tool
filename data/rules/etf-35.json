@@ -19,11 +19,11 @@
       "unit": "count",
       "source": {
         "url": "https://www.tase.co.il/he/content/knowledge_center/index_universe/",
-        "title": "TASE, מאגרי המניות למדדים - תמר ורימון (read through TASE's content API, route /content/knowledge_center/index_universe)",
+        "title": "הבורסה, \"מאגרי המניות למדדים - תמר ורימון\", מועד עדכון (נקרא בכרום 2026-10-25)",
         "publisher": "Tel Aviv Stock Exchange",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -39,11 +39,11 @@
       "unit": "count",
       "source": {
         "url": "https://www.tase.co.il/he/content/knowledge_center/calculating_shares_weight/",
-        "title": "TASE, קביעת משקל המניה במדד (read through TASE's content API, route /content/knowledge_center/calculating_shares_weight)",
+        "title": "הבורסה, \"קביעת משקל המניה במדד\" (נקרא בכרום 2026-10-25)",
         "publisher": "Tel Aviv Stock Exchange",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -60,33 +60,36 @@
   "sources": [
     {
       "url": "https://www.tase.co.il/he/content/knowledge_center/index_universe/",
-      "title": "TASE, \"מאגרי המניות למדדים - תמר ורימון\"",
+      "title": "הבורסה, \"מאגרי המניות למדדים - תמר ורימון\"",
       "title_he": "מאגרי המניות למדדים – תמר ורימון",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
       "strength": "primary",
-      "checked": "2026-10-23"
+      "checked": "2026-10-25",
+      "qualifier": "(index provider; read in Chrome)"
     },
     {
       "url": "https://www.tase.co.il/he/content/knowledge_center/calculating_shares_weight/",
-      "title": "TASE, \"קביעת משקל המניה במדד\"",
+      "title": "הבורסה, \"קביעת משקל המניה במדד\"",
       "title_he": "קביעת משקל המניה במדד",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
       "strength": "primary",
-      "checked": "2026-10-23"
+      "checked": "2026-10-25",
+      "qualifier": "(index provider; read in Chrome)"
     },
     {
       "url": "https://www.tase.co.il/he/content/knowledge_center/indices_overview/",
-      "title": "TASE, \"מדדי הבורסה\"",
+      "title": "הבורסה, \"מדדי הבורסה\"",
+      "title_he": "הבורסה, \"מדדי הבורסה\"",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
       "strength": "primary",
-      "checked": "2026-10-23",
-      "qualifier": "(index provider)"
+      "checked": "2026-10-25",
+      "qualifier": "(index provider; read in Chrome)"
     }
   ]
 }

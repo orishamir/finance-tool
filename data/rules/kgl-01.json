@@ -13,29 +13,31 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://fs.knesset.gov.il//20/law/20_lsr_343169.pdf",
-      "title": "Sefer HaChukim 2554, 7.6.2016, p. 885–886: חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "sections 1–9",
-      "locator_he": "סעיפים 1–9",
-      "checked": "2026-10-22"
+      "locator": "pp.2-3, ss.1-9",
+      "locator_he": "עמודים 2 עד 3, סעיפים 1-9",
+      "page": 2,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://fs.knesset.gov.il/25/law/25_lst_2708087.pdf",
-      "title": "Knesset bill P/3539/25 explanatory notes",
+      "title": "הצעת חוק לתיקון פקודת מס הכנסה (חשבון השקעה), התשפ\"ג-2023 (פ/3539/25)",
+      "title_he": "הצעת חוק לתיקון פקודת מס הכנסה (חשבון השקעה), התשפ\"ג-2023 (פ/3539/25)",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p. 3",
+      "locator": "p.3",
       "locator_he": "עמוד 3",
       "page": 3,
-      "quote": "אפשר לחברות מנהלות להקים מוצר חיסכון שנקרא 'קופת גמל להשקעה'",
-      "checked": "2026-10-22",
+      "quote": "שאפשר לחברות מנהלות להקים מוצר חיסכון שנקרא",
+      "checked": "2026-10-25",
       "qualifier": "(Knesset document, descriptive)"
     }
   ]

@@ -14,14 +14,16 @@
   "sources": [
     {
       "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-      "title": "Altshuler bylaws, definitions and s. 7.4",
+      "title": "אלטשולר שחם גמל להשקעה \"חיסכון פלוס\" – תקנון, מרץ 2025",
+      "title_he": "אלטשולר שחם גמל להשקעה \"חיסכון פלוס\" – תקנון, מרץ 2025",
       "publisher": "Altshuler Shaham",
       "publisher_he": "אלטשולר שחם",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "s. 7.4",
-      "locator_he": "סעיף 7.4",
-      "checked": "2026-10-22"
+      "locator": "p.4, s.7.4; definitions on p.3",
+      "page": 4,
+      "quote": "לא בחר עמית מסלול השקעה במסגרת תהליך ההצטרפות",
+      "checked": "2026-10-25"
     }
   ]
 }

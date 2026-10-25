@@ -12,24 +12,28 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8OfazOM9J2n~VjyzV5AWsITYS27PjZHrqw3iJWE0YJI=#page=7",
+      "title": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע\"ז-2016, קובץ התקנות 7727",
+      "title_he": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע״ז-2016 (קובץ התקנות 7727)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "pp.7-10",
+      "locator_he": "עמודים 7 עד 10",
+      "page": 7,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/tax.aspx",
-      "title": "BTL FAQ, tax",
+      "title": "האם אני חייב במס כלשהו בעת משיכת הכספים? (ביטוח לאומי)",
+      "title_he": "האם אני חייב במס כלשהו בעת משיכת הכספים? (ביטוח לאומי)",
       "publisher": "National Insurance Institute",
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://he.wikisource.org/wiki/תקנות_הביטוח_הלאומי_(חיסכון_ארוך_טווח_לילד)",
-      "title": "child-savings regulations, Wikisource",
-      "title_he": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד)",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "משרד האוצר והמוסד לביטוח לאומי",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "checked": "2026-10-22"
+      "quote": "בעת משיכה תחויב במס רווחי הון",
+      "checked": "2026-10-25"
     }
   ]
 }

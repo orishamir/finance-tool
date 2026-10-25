@@ -22,11 +22,11 @@
       "unit": "pct",
       "source": {
         "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
-        "title": "IBI, annual report of אי.בי.אי. סל (4D) S&P 500 (1148162), 31.12.2025",
-        "publisher": "IBI Mutual Funds (Maya)",
+        "title": "דוח שנתי ליום 31.12.2025 של אי.בי.אי. סל (4D) S&P 500 (1148162), p.9",
+        "publisher": "אי.בי.אי",
         "strength": "institution"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -42,11 +42,11 @@
       "unit": "pct",
       "source": {
         "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
-        "title": "IBI, annual report of אי.בי.אי. סל (4D) S&P 500 (1148162), 31.12.2025",
-        "publisher": "IBI Mutual Funds (Maya)",
+        "title": "דוח שנתי ליום 31.12.2025 של אי.בי.אי. סל (4D) S&P 500 (1148162), p.1",
+        "publisher": "אי.בי.אי",
         "strength": "institution"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -61,11 +61,11 @@
       "unit": "pct",
       "source": {
         "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
-        "title": "Yalin Lapidot, annual report of ילין לפידות מחקה (4D) S&P 500 (5139282), 31.12.2025",
-        "publisher": "Yalin Lapidot (Maya)",
+        "title": "דוח שנתי ליום 31.12.2025 של ילין לפידות מחקה (4D) S&P 500 (5139282), p.8",
+        "publisher": "ילין לפידות",
         "strength": "institution"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -82,29 +82,29 @@
   "sources": [
     {
       "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
-      "title": "IBI ETF annual report, p.1, p.8–9",
+      "title": "IBI ETF annual report 31.12.2025",
       "title_he": "דוח שנתי ליום 31.12.2025 של אי.בי.אי. סל (4D) S&P 500",
       "publisher": "Maya (TASE filings)",
       "publisher_he": "אי.בי.אי",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "p.1, p.8–9",
-      "locator_he": "עמוד 1, עמוד 8–9",
+      "locator": "pp.1, 8-9",
+      "locator_he": "עמודים 1, 8-9",
       "page": 1,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
-      "title": "Yalin Lapidot annual report, p.1, p.8",
+      "title": "Yalin Lapidot annual report 31.12.2025",
       "title_he": "דוח שנתי ליום 31.12.2025 של ילין לפידות מחקה (4D) S&P 500",
       "publisher": "Maya (TASE filings)",
       "publisher_he": "ילין לפידות",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "p.1, p.8",
-      "locator_he": "עמוד 1, עמוד 8",
+      "locator": "pp.1, 8",
+      "locator_he": "עמודים 1, 8",
       "page": 1,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

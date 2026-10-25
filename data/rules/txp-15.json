@@ -17,12 +17,12 @@
       "value": 180,
       "unit": "count",
       "source": {
-        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-        "title": "Income Tax Ordinance s.9A(a) \"מכפיל ההמרה להון\", s.9A(c) (Wikisource mirror); circular 2/2013 ss.4.1-4.3",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+        "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, p.50, s.9א(א), definition \"מכפיל ההמרה להון\", s.9א(ג); circular 2/2013 ss.4.1-4.3",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -38,6 +38,19 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.50, s.9א(א) `מכפיל ההמרה להון`, s.9א(ג)",
+      "locator_he": "עמוד 50, סעיף 9א(א) `מכפיל ההמרה להון`, סעיף 9א(ג)",
+      "page": 50,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf",
       "title": "Circular 2/2013",
       "title_he": "חוזר מס הכנסה 2/2013: תיקון 190 לפקודה",
@@ -45,9 +58,10 @@
       "publisher_he": "רשות המסים",
       "kind": "circular",
       "strength": "primary",
-      "locator": "ss.4.1-4.3, 6, 7.6",
-      "locator_he": "סעיפים 4.1-4.3, 6, 7.6",
-      "checked": "2026-10-22"
+      "locator": "p.6, ss.4.1-4.3, 6, 7.6",
+      "locator_he": "עמוד 6, סעיפים 4.1-4.3, 6, 7.6",
+      "page": 6,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
@@ -57,22 +71,10 @@
       "publisher_he": "רשות המסים",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "printed p.31",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Ordinance",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.9A(a) `מכפיל ההמרה להון`, s.9A(c)",
-      "locator_he": "סעיף 9א(א) `מכפיל ההמרה להון`, סעיף 9א(ג)",
-      "anchor": "סעיף_9א",
-      "checked": "2026-10-22"
+      "locator": "p.33",
+      "locator_he": "עמוד 33",
+      "page": 33,
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -12,6 +12,19 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.155, s.92(א)(1), (3), (4), (5)",
+      "locator_he": "עמוד 155, סעיף 92(א)(1), (3), (4), (5)",
+      "page": 155,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
       "title": "Tax Authority guide 2025",
       "title_he": "דע זכויותיך וחובותיך 2025",
@@ -19,25 +32,11 @@
       "publisher_he": "רשות המסים",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.47",
-      "locator_he": "עמוד 47",
-      "page": 47,
-      "quote": "4. הפסדי הון וקיזוז רווח הון",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Income Tax Ordinance",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.92(a)(1), (3), (4), (5)",
-      "locator_he": "סעיף 92(א)(1), (3), (4), (5)",
-      "anchor": "סעיף_92",
-      "checked": "2026-10-22"
+      "locator": "p.49",
+      "locator_he": "עמוד 49",
+      "page": 49,
+      "quote": "ובלבד ששיעור המס החל על הריבית או הדיבידנד אינו עולה על 25%",
+      "checked": "2026-10-25"
     }
   ]
 }

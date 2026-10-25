@@ -17,11 +17,11 @@
       "unit": "days",
       "source": {
         "url": "https://www.boi.org.il/media/ytal5ozx/makam.pdf",
-        "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\" (undated)",
+        "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\" (undated), p.4, s.3.2.2; Annex ג, p.15",
         "publisher": "Bank of Israel, Markets Division",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -38,15 +38,15 @@
   "sources": [
     {
       "url": "https://www.boi.org.il/media/ytal5ozx/makam.pdf",
-      "title": "BoI makam auction general conditions",
+      "title": "בנק ישראל, חטיבת השווקים: מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים",
       "title_he": "מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל, חטיבת השווקים",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "s. 3.2.2, p. 4; Annex ג, p. 15",
+      "locator": "p.4, s.3.2.2; Annex ג, p.15",
       "page": 4,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

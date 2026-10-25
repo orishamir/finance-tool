@@ -3,7 +3,7 @@
   "title": "Pension fund: insurance first, then route; automatic consolidation of inactive accounts",
   "title_he": "ניוד קרן פנסיה: ביטוח קודם, ואיחוד חשבונות לא פעילים",
   "text_he": "העברת פנסיה נעשית לפי תהליך הניוד הכללי, עם חלק הטופס הייעודי וטופס הביטוח; רציפות הביטוח מטופלת בכלל נפרד. כשעמית מצטרף לקרן פנסיה, חשבונות לא פעילים שלו בקרנות פנסיה אחרות מאותרים ומועברים אליה אלא אם הוא מתנגד בתוך התקופה שנקבעה. כספי פנסיה לא יכולים לעבור לקופת גמל בניהול אישי, ועמית שעדיין פעיל בקרן לא מקיפה לא יכול לעבור לקרן מקיפה. היחס המיסויי להעברה בין קרנות פנסיה לא נכתב בכללי המס (שאלה פתוחה).",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
     "insurance-cover"
@@ -13,17 +13,30 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)",
-      "title": "Transfer Regulations, reg. 4(8)",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg. 4(8)",
-      "locator_he": "תקנה 4(8)",
-      "anchor": "סעיף_4",
-      "checked": "2026-10-22"
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZbYNmyK9Qa3gH~lF+jEWmc=#page=3",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014 (קובץ התקנות 7407)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014 (קובץ התקנות 7407)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.3, s.3",
+      "locator_he": "עמוד 3, סעיף 3",
+      "page": 3,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/qa0DjAH11hv4cTvqv8pm34W06X1DvaxhWwgq239BXaQ=#page=7",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשפ\"ב-2022 (קובץ התקנות 10170)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשפ\"ב-2022 (קובץ התקנות 10170)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.7, s.2",
+      "locator_he": "עמוד 7, סעיף 2",
+      "page": 7,
+      "checked": "2026-10-25"
     }
   ],
   "derived_from": [

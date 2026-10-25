@@ -1,0 +1,2394 @@
+[
+ {
+  "law": "חוזר גופים מוסדיים 2017-9-17 \"העברת כספים בין קופות גמל\" (2.10.2017)",
+  "section": "s.3(א)-(ג) (receiving fund checks eligibility, gives forms)",
+  "cited_by": [
+   "SW-02",
+   "PF-20"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+    "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 2,
+    "locator": "p.2, s.3(א)-(ג)",
+    "quote": "הגוף המנהל של קופה מקבלת יבדוק אם ניתן לבצע העברה של עמית המבקש לעבור מקופה מעבירה לקופה המקבלת",
+    "basis": "CMA PDF (gov.il regulation collector, regulation-988; byte-identical to the 28-page circular of 2.10.2017; the analyst.co.il copy is a Dec 2017 re-save with the same 28 pages, so page numbers carry over 1:1)"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il CMA regulation-legislation collector (\"העברת כספים\", 19 results; \"2017-9-17\"); Google site:gov.il; consolidated circular (קודקס הרגולציה, updated 04.06.2026): its pension part (שער 6 חלק 4) has no published file and its list of incorporated circulars (Codex_hoz_list.pdf, 2014) predates this circular",
+  "notes": "No later in-force amendment found: after 2017-9-17 the collector lists only a draft amendment (טיוטה 2018-77, never issued as a circular in the collector), circular 2020-9-2 (central severance funds only), clarification 2020-7709 and the 2020-9260 notice (Commissioner extension under reg. 5(א) during a clearing-house outage)."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2017-9-17 \"העברת כספים בין קופות גמל\" (2.10.2017)",
+  "section": "s.3(ו) (forwarding within two business days of the determining date)",
+  "cited_by": [
+   "SW-04",
+   "SW-04 figure figures.forward_request_business_days",
+   "PF-20"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+    "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 2,
+    "locator": "p.2, s.3(ו)",
+    "quote": "בתוך שני ימי עסקים מהמועד הקובע; לבקשה תצורף הצהרה בטופס לפי הנוסח שבנספח ד'",
+    "basis": "CMA PDF (gov.il regulation collector, regulation-988; byte-identical to the 28-page circular of 2.10.2017; the analyst.co.il copy is a Dec 2017 re-save with the same 28 pages, so page numbers carry over 1:1)"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il CMA regulation-legislation collector (\"העברת כספים\", 19 results; \"2017-9-17\"); Google site:gov.il; consolidated circular (קודקס הרגולציה, updated 04.06.2026): its pension part (שער 6 חלק 4) has no published file and its list of incorporated circulars (Codex_hoz_list.pdf, 2014) predates this circular",
+  "notes": "No later in-force amendment found: after 2017-9-17 the collector lists only a draft amendment (טיוטה 2018-77, never issued as a circular in the collector), circular 2020-9-2 (central severance funds only), clarification 2020-7709 and the 2020-9260 notice (Commissioner extension under reg. 5(א) during a clearing-house outage)."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2017-9-17 \"העברת כספים בין קופות גמל\" (2.10.2017)",
+  "section": "s.3(ז)-(ח) (rejection or delay notice within three business days)",
+  "cited_by": [
+   "SW-05",
+   "SW-05 figure figures.rejection_or_delay_notice_business_days",
+   "PF-20"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+    "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 2,
+    "locator": "p.2, s.3(ז)",
+    "quote": "בתוך שלושה ימי עסקים ממועד העברת הבקשה לגוף המנהל של הקופה המעבירה",
+    "basis": "CMA PDF (gov.il regulation collector, regulation-988; byte-identical to the 28-page circular of 2.10.2017; the analyst.co.il copy is a Dec 2017 re-save with the same 28 pages, so page numbers carry over 1:1)"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il CMA regulation-legislation collector (\"העברת כספים\", 19 results; \"2017-9-17\"); Google site:gov.il; consolidated circular (קודקס הרגולציה, updated 04.06.2026): its pension part (שער 6 חלק 4) has no published file and its list of incorporated circulars (Codex_hoz_list.pdf, 2014) predates this circular",
+  "notes": "Description check: SW-05 and PF-20 say the three business days run \"of the determining date\"; the circular counts them \"ממועד העברת הבקשה לגוף המנהל של הקופה המעבירה\" (from the day the request was forwarded to the transferring fund). Report to the founder; rule text not changed. No later in-force amendment found: after 2017-9-17 the collector lists only a draft amendment (טיוטה 2018-77, never issued as a circular in the collector), circular 2020-9-2 (central severance funds only), clarification 2020-7709 and the 2020-9260 notice (Commissioner extension under reg. 5(א) during a clearing-house outage)."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2017-9-17 \"העברת כספים בין קופות גמל\" (2.10.2017)",
+  "section": "s.3(ט)-(יא) (cancellation notice; deposits returned within ten business days)",
+  "cited_by": [
+   "SW-07",
+   "SW-07 figure figures.deposits_returned_after_cancel_business_days",
+   "PF-20"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+    "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 3,
+    "locator": "pp.2-3, s.3(ט)-(יא); p.3 for the ten business days",
+    "quote": "בתוך עשרה ימי עסקים מהיום שבו התברר לו כי בוטלה הבקשה",
+    "basis": "CMA PDF (gov.il regulation collector, regulation-988; byte-identical to the 28-page circular of 2.10.2017; the analyst.co.il copy is a Dec 2017 re-save with the same 28 pages, so page numbers carry over 1:1)"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il CMA regulation-legislation collector (\"העברת כספים\", 19 results; \"2017-9-17\"); Google site:gov.il; consolidated circular (קודקס הרגולציה, updated 04.06.2026): its pension part (שער 6 חלק 4) has no published file and its list of incorporated circulars (Codex_hoz_list.pdf, 2014) predates this circular",
+  "notes": "No later in-force amendment found: after 2017-9-17 the collector lists only a draft amendment (טיוטה 2018-77, never issued as a circular in the collector), circular 2020-9-2 (central severance funds only), clarification 2020-7709 and the 2020-9260 notice (Commissioner extension under reg. 5(א) during a clearing-house outage)."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2017-9-17 \"העברת כספים בין קופות גמל\" (2.10.2017)",
+  "section": "s.3(יב)-(יג) (request lapses: 120 / 60 days)",
+  "cited_by": [
+   "SW-08",
+   "SW-08 figures active_member_lapse_days, after_no_deposit_notice_lapse_days, inactive_member_lapse_days"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+    "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 3,
+    "locator": "p.3, s.3(יב), (יג)",
+    "quote": "כי לא יופקדו בשלו כספים לקופה ,בקשתו תפקע אם לא תועבר לגוף המנהל של קופה המעבירה",
+    "basis": "CMA PDF (gov.il regulation collector, regulation-988; byte-identical to the 28-page circular of 2.10.2017; the analyst.co.il copy is a Dec 2017 re-save with the same 28 pages, so page numbers carry over 1:1)"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il CMA regulation-legislation collector (\"העברת כספים\", 19 results; \"2017-9-17\"); Google site:gov.il; consolidated circular (קודקס הרגולציה, updated 04.06.2026): its pension part (שער 6 חלק 4) has no published file and its list of incorporated circulars (Codex_hoz_list.pdf, 2014) predates this circular",
+  "notes": "No later in-force amendment found: after 2017-9-17 the collector lists only a draft amendment (טיוטה 2018-77, never issued as a circular in the collector), circular 2020-9-2 (central severance funds only), clarification 2020-7709 and the 2020-9260 notice (Commissioner extension under reg. 5(א) during a clearing-house outage)."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2017-9-17 \"העברת כספים בין קופות גמל\" (2.10.2017)",
+  "section": "s.4 (transfer to a new pension fund: notional deposit, cover, qualifying months)",
+  "cited_by": [
+   "SW-12",
+   "SW-12 figures notional_deposit_lookback_months, supplement_increase_no_carry_threshold_pct"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+    "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 3,
+    "locator": "pp.3-5, s.4(א) on p.3 (12 months), s.4(ב)(2) on p.4 (10%)",
+    "quote": "החודשים האחרונים שבשלם הופקדו בפועל כספים כאמור; לעניין זה לא יובאו בחשבון הפקדות כספים בשל מרכיב הפיצויים",
+    "basis": "CMA PDF (gov.il regulation collector, regulation-988; byte-identical to the 28-page circular of 2.10.2017; the analyst.co.il copy is a Dec 2017 re-save with the same 28 pages, so page numbers carry over 1:1)"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il CMA regulation-legislation collector (\"העברת כספים\", 19 results; \"2017-9-17\"); Google site:gov.il; consolidated circular (קודקס הרגולציה, updated 04.06.2026): its pension part (שער 6 חלק 4) has no published file and its list of incorporated circulars (Codex_hoz_list.pdf, 2014) predates this circular",
+  "notes": "No later in-force amendment found: after 2017-9-17 the collector lists only a draft amendment (טיוטה 2018-77, never issued as a circular in the collector), circular 2020-9-2 (central severance funds only), clarification 2020-7709 and the 2020-9260 notice (Commissioner extension under reg. 5(א) during a clearing-house outage)."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2017-9-17 \"העברת כספים בין קופות גמל\" (2.10.2017)",
+  "section": "s.5(א)-(ג) (data file sent with the money)",
+  "cited_by": [
+   "SW-11"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+    "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 7,
+    "locator": "p.7, s.5(א)-(ג)",
+    "quote": "לפי הפורמט ופירוט השדות שבנספח ז'",
+    "basis": "CMA PDF (gov.il regulation collector, regulation-988; byte-identical to the 28-page circular of 2.10.2017; the analyst.co.il copy is a Dec 2017 re-save with the same 28 pages, so page numbers carry over 1:1)"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il CMA regulation-legislation collector (\"העברת כספים\", 19 results; \"2017-9-17\"); Google site:gov.il; consolidated circular (קודקס הרגולציה, updated 04.06.2026): its pension part (שער 6 חלק 4) has no published file and its list of incorporated circulars (Codex_hoz_list.pdf, 2014) predates this circular",
+  "notes": "No later in-force amendment found: after 2017-9-17 the collector lists only a draft amendment (טיוטה 2018-77, never issued as a circular in the collector), circular 2020-9-2 (central severance funds only), clarification 2020-7709 and the 2020-9260 notice (Commissioner extension under reg. 5(א) during a clearing-house outage)."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2017-9-17 \"העברת כספים בין קופות גמל\" (2.10.2017)",
+  "section": "s.5(ה)-(ו) (late transfer: data within five business days)",
+  "cited_by": [
+   "SW-06",
+   "SW-06 figure figures.late_transfer_data_business_days"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+    "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 8,
+    "locator": "p.8, s.5(ה), (ו)",
+    "quote": "בדואר אלקטרוני ובתוך חמישה ימי עסקים ממועד העברת הכספים",
+    "basis": "CMA PDF (gov.il regulation collector, regulation-988; byte-identical to the 28-page circular of 2.10.2017; the analyst.co.il copy is a Dec 2017 re-save with the same 28 pages, so page numbers carry over 1:1)"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il CMA regulation-legislation collector (\"העברת כספים\", 19 results; \"2017-9-17\"); Google site:gov.il; consolidated circular (קודקס הרגולציה, updated 04.06.2026): its pension part (שער 6 חלק 4) has no published file and its list of incorporated circulars (Codex_hoz_list.pdf, 2014) predates this circular",
+  "notes": "No later in-force amendment found: after 2017-9-17 the collector lists only a draft amendment (טיוטה 2018-77, never issued as a circular in the collector), circular 2020-9-2 (central severance funds only), clarification 2020-7709 and the 2020-9260 notice (Commissioner extension under reg. 5(א) during a clearing-house outage)."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2017-9-17 \"העברת כספים בין קופות גמל\" (2.10.2017)",
+  "section": "s.5א and Annex 11 (notice to the employer within 15 business days)",
+  "cited_by": [
+   "SW-10",
+   "SW-10 figure figures.employer_notice_business_days"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+    "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 8,
+    "locator": "p.8, s.5א; Annex 11 on pp.26-27",
+    "quote": "בתוך חמישה עשר ימי עסקים ממועד העברת הכספים",
+    "basis": "CMA PDF (gov.il regulation collector, regulation-988; byte-identical to the 28-page circular of 2.10.2017; the analyst.co.il copy is a Dec 2017 re-save with the same 28 pages, so page numbers carry over 1:1)"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il CMA regulation-legislation collector (\"העברת כספים\", 19 results; \"2017-9-17\"); Google site:gov.il; consolidated circular (קודקס הרגולציה, updated 04.06.2026): its pension part (שער 6 חלק 4) has no published file and its list of incorporated circulars (Codex_hoz_list.pdf, 2014) predates this circular",
+  "notes": "No later in-force amendment found: after 2017-9-17 the collector lists only a draft amendment (טיוטה 2018-77, never issued as a circular in the collector), circular 2020-9-2 (central severance funds only), clarification 2020-7709 and the 2020-9260 notice (Commissioner extension under reg. 5(א) during a clearing-house outage)."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2017-9-17 \"העברת כספים בין קופות גמל\" (2.10.2017)",
+  "section": "s.6 (confirmations to the member within 15 business days)",
+  "cited_by": [
+   "SW-09",
+   "SW-09 figure figures.confirmation_business_days",
+   "PF-20"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+    "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 8,
+    "locator": "pp.8-9, s.6(א) on p.8, s.6(ב) on p.9",
+    "quote": "לא יאוחר מחמישה עשר ימי עסקים מיום העברת הכספים ,אישור על העברת הכספים שיכלול לפחות פרטים אלה",
+    "basis": "CMA PDF (gov.il regulation collector, regulation-988; byte-identical to the 28-page circular of 2.10.2017; the analyst.co.il copy is a Dec 2017 re-save with the same 28 pages, so page numbers carry over 1:1)"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il CMA regulation-legislation collector (\"העברת כספים\", 19 results; \"2017-9-17\"); Google site:gov.il; consolidated circular (קודקס הרגולציה, updated 04.06.2026): its pension part (שער 6 חלק 4) has no published file and its list of incorporated circulars (Codex_hoz_list.pdf, 2014) predates this circular",
+  "notes": "No later in-force amendment found: after 2017-9-17 the collector lists only a draft amendment (טיוטה 2018-77, never issued as a circular in the collector), circular 2020-9-2 (central severance funds only), clarification 2020-7709 and the 2020-9260 notice (Commissioner extension under reg. 5(א) during a clearing-house outage)."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2017-9-17 \"העברת כספים בין קופות גמל\" (2.10.2017)",
+  "section": "ss.9, 11 (repeal of circular 2015-9-1; commencement)",
+  "cited_by": [
+   "PF-20"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+    "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 10,
+    "locator": "p.9, s.9; p.10, s.11",
+    "quote": "תחילתן של הוראות חוזר זה",
+    "basis": "CMA PDF (gov.il regulation collector, regulation-988; byte-identical to the 28-page circular of 2.10.2017; the analyst.co.il copy is a Dec 2017 re-save with the same 28 pages, so page numbers carry over 1:1)"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il CMA regulation-legislation collector (\"העברת כספים\", 19 results; \"2017-9-17\"); Google site:gov.il; consolidated circular (קודקס הרגולציה, updated 04.06.2026): its pension part (שער 6 חלק 4) has no published file and its list of incorporated circulars (Codex_hoz_list.pdf, 2014) predates this circular",
+  "notes": "No later in-force amendment found: after 2017-9-17 the collector lists only a draft amendment (טיוטה 2018-77, never issued as a circular in the collector), circular 2020-9-2 (central severance funds only), clarification 2020-7709 and the 2020-9260 notice (Commissioner extension under reg. 5(א) during a clearing-house outage)."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2017-9-17 \"העברת כספים בין קופות גמל\" (2.10.2017)",
+  "section": "Annex A (transfer request form, parts 1-3; cancellation sentence)",
+  "cited_by": [
+   "SW-02",
+   "SW-03",
+   "SW-08",
+   "PF-20"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+    "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 12,
+    "locator": "pp.11-17 (Annex A1 from p.11); cancellation sentence on p.12",
+    "quote": "בקשת העברה זו ניתנת לביטול ובלבד שהכספים טרם הועברו",
+    "basis": "CMA PDF (gov.il regulation collector, regulation-988; byte-identical to the 28-page circular of 2.10.2017; the analyst.co.il copy is a Dec 2017 re-save with the same 28 pages, so page numbers carry over 1:1)"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il CMA regulation-legislation collector (\"העברת כספים\", 19 results; \"2017-9-17\"); Google site:gov.il; consolidated circular (קודקס הרגולציה, updated 04.06.2026): its pension part (שער 6 חלק 4) has no published file and its list of incorporated circulars (Codex_hoz_list.pdf, 2014) predates this circular",
+  "notes": "No later in-force amendment found: after 2017-9-17 the collector lists only a draft amendment (טיוטה 2018-77, never issued as a circular in the collector), circular 2020-9-2 (central severance funds only), clarification 2020-7709 and the 2020-9260 notice (Commissioner extension under reg. 5(א) during a clearing-house outage)."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2017-9-17 \"העברת כספים בין קופות גמל\" (2.10.2017)",
+  "section": "Annex D (handling employee declaration)",
+  "cited_by": [
+   "SW-04"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+    "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 19,
+    "locator": "p.19, Annex D",
+    "quote": "טופס הצהרת עובד מטפל",
+    "basis": "CMA PDF (gov.il regulation collector, regulation-988; byte-identical to the 28-page circular of 2.10.2017; the analyst.co.il copy is a Dec 2017 re-save with the same 28 pages, so page numbers carry over 1:1)"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il CMA regulation-legislation collector (\"העברת כספים\", 19 results; \"2017-9-17\"); Google site:gov.il; consolidated circular (קודקס הרגולציה, updated 04.06.2026): its pension part (שער 6 חלק 4) has no published file and its list of incorporated circulars (Codex_hoz_list.pdf, 2014) predates this circular",
+  "notes": "No later in-force amendment found: after 2017-9-17 the collector lists only a draft amendment (טיוטה 2018-77, never issued as a circular in the collector), circular 2020-9-2 (central severance funds only), clarification 2020-7709 and the 2020-9260 notice (Commissioner extension under reg. 5(א) during a clearing-house outage)."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2017-9-17 \"העברת כספים בין קופות גמל\" (2.10.2017)",
+  "section": "Annex E, E1 (rejection, delay)",
+  "cited_by": [
+   "SW-05"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+    "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 20,
+    "locator": "p.20 (Annex E), p.21 (Annex E1)",
+    "quote": "דחיית בקשה להעברת כספים",
+    "basis": "CMA PDF (gov.il regulation collector, regulation-988; byte-identical to the 28-page circular of 2.10.2017; the analyst.co.il copy is a Dec 2017 re-save with the same 28 pages, so page numbers carry over 1:1)"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il CMA regulation-legislation collector (\"העברת כספים\", 19 results; \"2017-9-17\"); Google site:gov.il; consolidated circular (קודקס הרגולציה, updated 04.06.2026): its pension part (שער 6 חלק 4) has no published file and its list of incorporated circulars (Codex_hoz_list.pdf, 2014) predates this circular",
+  "notes": "No later in-force amendment found: after 2017-9-17 the collector lists only a draft amendment (טיוטה 2018-77, never issued as a circular in the collector), circular 2020-9-2 (central severance funds only), clarification 2020-7709 and the 2020-9260 notice (Commissioner extension under reg. 5(א) during a clearing-house outage)."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2017-9-17 \"העברת כספים בין קופות גמל\" (2.10.2017)",
+  "section": "Annex F (member cancellation notice)",
+  "cited_by": [
+   "SW-07"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+    "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 22,
+    "locator": "p.22, Annex F",
+    "quote": "הודעת עמית על ביטול בקשת העברה",
+    "basis": "CMA PDF (gov.il regulation collector, regulation-988; byte-identical to the 28-page circular of 2.10.2017; the analyst.co.il copy is a Dec 2017 re-save with the same 28 pages, so page numbers carry over 1:1)"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il CMA regulation-legislation collector (\"העברת כספים\", 19 results; \"2017-9-17\"); Google site:gov.il; consolidated circular (קודקס הרגולציה, updated 04.06.2026): its pension part (שער 6 חלק 4) has no published file and its list of incorporated circulars (Codex_hoz_list.pdf, 2014) predates this circular",
+  "notes": "No later in-force amendment found: after 2017-9-17 the collector lists only a draft amendment (טיוטה 2018-77, never issued as a circular in the collector), circular 2020-9-2 (central severance funds only), clarification 2020-7709 and the 2020-9260 notice (Commissioner extension under reg. 5(א) during a clearing-house outage)."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2017-9-15 \"דמי ניהול במכשירי החיסכון הפנסיוני - תיקון\" (11.9.2017)",
+  "section": "s.3א (notice of a discount; email within 10 business days)",
+  "cited_by": [
+   "PF-16",
+   "PF-16 figure figures.discount_email_business_days"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
+    "title_he": "חוזר גופים מוסדיים 2017-9-15 – דמי ניהול במכשירי החיסכון הפנסיוני – תיקון",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 2,
+    "locator": "p.2, s.3א(א)-(ג)",
+    "quote": "יציג הגוף המוסדי ,בהקדם האפשרי ,הודעה על מתן ההנחה ,בחשבון האישי המקוון של העמית",
+    "basis": "CMA PDF (gov.il regulation collector, regulation-989; 7 pages; the prisha.co.il copy hoz2017915.pdf has the same 7 pages, page for page)"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il CMA regulation-legislation collector (\"דמי ניהול במכשירי החיסכון הפנסיוני\": 2012-9-22 original, 2017-9-15, 2020-9-14 temporary order)",
+  "notes": "Currency: circular 2020-9-14 (gov.il fees_pension_covid19/he/2020-128.pdf, 2.9.2020) was a temporary COVID order on s.3(ב)(1) (raising a discounted fee after six months without deposits); it does not touch ss.3א or 4. No later amendment of ss.3א, 4 found in the collector. The consolidated circular (קודקס) has no published pension-product chapter carrying these provisions."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2017-9-15 \"דמי ניהול במכשירי החיסכון הפנסיוני - תיקון\" (11.9.2017)",
+  "section": "s.4 (notice before a fee increase; two / four months; SMS 30 days ahead; appendices A, B)",
+  "cited_by": [
+   "PF-16",
+   "PF-16 figures increase_notice_months, increase_notice_max_lead_months, increase_sms_days_before",
+   "SW-15",
+   "SW-38"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
+    "title_he": "חוזר גופים מוסדיים 2017-9-15 – דמי ניהול במכשירי החיסכון הפנסיוני – תיקון",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 3,
+    "locator": "p.3, s.4(א)-(ד); appendices A and B follow on pp.5-7",
+    "quote": "הודעה כאמור לא תישלח מוקדם יותר מארבעה חודשים לפני מועד ההעלאה הצפוי",
+    "basis": "CMA PDF (gov.il regulation collector, regulation-989; 7 pages; the prisha.co.il copy hoz2017915.pdf has the same 7 pages, page for page)"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il CMA regulation-legislation collector (\"דמי ניהול במכשירי החיסכון הפנסיוני\": 2012-9-22 original, 2017-9-15, 2020-9-14 temporary order)",
+  "notes": "Currency: circular 2020-9-14 (gov.il fees_pension_covid19/he/2020-128.pdf, 2.9.2020) was a temporary COVID order on s.3(ב)(1) (raising a discounted fee after six months without deposits); it does not touch ss.3א or 4. No later amendment of ss.3א, 4 found in the collector. The consolidated circular (קודקס) has no published pension-product chapter carrying these provisions."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2020-9-22 \"דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי - תיקון\" (14.12.2020)",
+  "section": "ss.1-10 (who gets which report, when)",
+  "cited_by": [
+   "PF-33"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
+    "title_he": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 2,
+    "locator": "pp.2-5, ss.1-10; p.35 (chapter 1 sign ב general directions)",
+    "quote": "מדי שנה ,תוך שלושה חודשים מתום השנה ,דוח שנתי מקוצר בגין השנה שהסתיימה",
+    "basis": "CMA PDF (gov.il regulation collector, r_2020-9-22; 152 pages: p.1 the amending circular, pp.2 on the full consolidated edition \"בשינויי מהדורה\"); the prisha.co.il copy hoz2020922.pdf is the same 152 pages page for page, so the rule page numbers carry over"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il CMA regulation-legislation collector (\"דוח שנתי ודוח רבעוני\", 13 results: 2016-9-18, 2017-9-2, 2017-9-14, 2017-9-22, 2018-9-26, 2020-9-22, and drafts)",
+  "notes": "Currency: 2020-9-22 is the newest in-force edition in the collector; a draft amendment was published in 2025 (notice_2025_51, \"טיוטת חוזר דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון\") and is not in force as of 2026-10-25 as far as the collector shows. Recheck when it is issued."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2020-9-22 \"דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי - תיקון\" (14.12.2020)",
+  "section": "chapter 1 sign ב (shortened annual report, provident / study fund / gemel lehashkaa)",
+  "cited_by": [
+   "PF-34",
+   "PF-35"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
+    "title_he": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 32,
+    "locator": "pp.32-42 (template p.32, directions pp.35-42; fee definitions pp.37-39)",
+    "quote": "דוח שנתי לעמית בקופת גמל/להשקעה/קרן השתלמות",
+    "basis": "CMA PDF (gov.il regulation collector, r_2020-9-22; 152 pages: p.1 the amending circular, pp.2 on the full consolidated edition \"בשינויי מהדורה\"); the prisha.co.il copy hoz2020922.pdf is the same 152 pages page for page, so the rule page numbers carry over"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il CMA regulation-legislation collector (\"דוח שנתי ודוח רבעוני\", 13 results: 2016-9-18, 2017-9-2, 2017-9-14, 2017-9-22, 2018-9-26, 2020-9-22, and drafts)",
+  "notes": "Currency: 2020-9-22 is the newest in-force edition in the collector; a draft amendment was published in 2025 (notice_2025_51, \"טיוטת חוזר דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון\") and is not in force as of 2026-10-25 as far as the collector shows. Recheck when it is issued."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2020-9-22 \"דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי - תיקון\" (14.12.2020)",
+  "section": "chapter 1 sign ב, table ג (fee definitions)",
+  "cited_by": [
+   "PF-35"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
+    "title_he": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 37,
+    "locator": "pp.37-39; quarterly directions pp.149-150",
+    "quote": "דמי ניהול מהפקדה – יש להציג את שיעור דמי הניהול מהפקדה שוטפת שנגבו בפועל מהחשבון בתקופת הדוח",
+    "basis": "CMA PDF (gov.il regulation collector, r_2020-9-22; 152 pages: p.1 the amending circular, pp.2 on the full consolidated edition \"בשינויי מהדורה\"); the prisha.co.il copy hoz2020922.pdf is the same 152 pages page for page, so the rule page numbers carry over"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il CMA regulation-legislation collector (\"דוח שנתי ודוח רבעוני\", 13 results: 2016-9-18, 2017-9-2, 2017-9-14, 2017-9-22, 2018-9-26, 2020-9-22, and drafts)",
+  "notes": "Currency: 2020-9-22 is the newest in-force edition in the collector; a draft amendment was published in 2025 (notice_2025_51, \"טיוטת חוזר דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון\") and is not in force as of 2026-10-25 as far as the collector shows. Recheck when it is issued."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2020-9-22 \"דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי - תיקון\" (14.12.2020)",
+  "section": "chapter 1 sign ג (shortened annual report, new pension fund)",
+  "cited_by": [
+   "PF-38"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
+    "title_he": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 44,
+    "locator": "pp.44-45; detailed pension report pp.116-121",
+    "quote": "דוח שנתי לעמית בקרן הפנסיה החדשה",
+    "basis": "CMA PDF (gov.il regulation collector, r_2020-9-22; 152 pages: p.1 the amending circular, pp.2 on the full consolidated edition \"בשינויי מהדורה\"); the prisha.co.il copy hoz2020922.pdf is the same 152 pages page for page, so the rule page numbers carry over"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il CMA regulation-legislation collector (\"דוח שנתי ודוח רבעוני\", 13 results: 2016-9-18, 2017-9-2, 2017-9-14, 2017-9-22, 2018-9-26, 2020-9-22, and drafts)",
+  "notes": "Currency: 2020-9-22 is the newest in-force edition in the collector; a draft amendment was published in 2025 (notice_2025_51, \"טיוטת חוזר דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון\") and is not in force as of 2026-10-25 as far as the collector shows. Recheck when it is issued."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2020-9-22 \"דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי - תיקון\" (14.12.2020)",
+  "section": "chapter 2 sign ב (detailed annual report, provident / study fund / gemel lehashkaa)",
+  "cited_by": [
+   "PF-36"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
+    "title_he": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 92,
+    "locator": "pp.92-114",
+    "quote": "דוח שנתי מפורט לעמית בקופת גמל ,בקרן השתלמות ובקופת גמל להשקעה",
+    "basis": "CMA PDF (gov.il regulation collector, r_2020-9-22; 152 pages: p.1 the amending circular, pp.2 on the full consolidated edition \"בשינויי מהדורה\"); the prisha.co.il copy hoz2020922.pdf is the same 152 pages page for page, so the rule page numbers carry over"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il CMA regulation-legislation collector (\"דוח שנתי ודוח רבעוני\", 13 results: 2016-9-18, 2017-9-2, 2017-9-14, 2017-9-22, 2018-9-26, 2020-9-22, and drafts)",
+  "notes": "Currency: 2020-9-22 is the newest in-force edition in the collector; a draft amendment was published in 2025 (notice_2025_51, \"טיוטת חוזר דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון\") and is not in force as of 2026-10-25 as far as the collector shows. Recheck when it is issued."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2020-9-22 \"דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי - תיקון\" (14.12.2020)",
+  "section": "chapter 3 (quarterly report)",
+  "cited_by": [
+   "PF-37",
+   "PF-35"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
+    "title_he": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 149,
+    "locator": "pp.149-151",
+    "quote": "את מלא הדוח במתכונת הדוח השנתי המקוצר לפי סימן ב' לפרק 1בחוזר זה",
+    "basis": "CMA PDF (gov.il regulation collector, r_2020-9-22; 152 pages: p.1 the amending circular, pp.2 on the full consolidated edition \"בשינויי מהדורה\"); the prisha.co.il copy hoz2020922.pdf is the same 152 pages page for page, so the rule page numbers carry over"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il CMA regulation-legislation collector (\"דוח שנתי ודוח רבעוני\", 13 results: 2016-9-18, 2017-9-2, 2017-9-14, 2017-9-22, 2018-9-26, 2020-9-22, and drafts)",
+  "notes": "Currency: 2020-9-22 is the newest in-force edition in the collector; a draft amendment was published in 2025 (notice_2025_51, \"טיוטת חוזר דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון\") and is not in force as of 2026-10-25 as far as the collector shows. Recheck when it is issued."
+ },
+ {
+  "law": "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2024 (re-hosted at adif-web-bucket)",
+  "section": "p.10 of the copy (chapter 2: fourth selected-pension-fund process)",
+  "cited_by": [
+   "PEN-06",
+   "PEN-23",
+   "pension-and-gemel-lekitzba.md line 403 (selected funds table)"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/news/press_0083/he/Commisioner%20Report%20Design%20B_chapter2%20ver6_digital.pdf",
+    "title_he": "דוח הממונה על שוק ההון, החיסכון והביטוח לשנת 2024 – פרק 2: סקירת פעילות הרשות",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 2,
+    "locator": "p.2 (printed 10)",
+    "quote": "השלימה הרשות את ההליך הרביעי לקביעת קרנות פנסיה נבחרות",
+    "basis": "CMA PDF (gov.il, 2024 report chapter 2, byte-identical to the chapter file already in the scratchpad); copy p.10 = chapter file p.2"
+   },
+   {
+    "url": "https://www.gov.il/BlobFolder/reports/tender-0102/he/Commissioner%20Report%202025%20chapter%202_Digital%20-%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9%20%D7%A1%D7%95%D7%A4%D7%99.pdf",
+    "title_he": "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025 – פרק 2: סקירת פעילות הרשות",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 4,
+    "locator": "p.4",
+    "quote": "נכנס לתוקף מנגנון חלוקה חדש בין קרנות הפנסיה הנבחרות",
+    "basis": "CMA PDF (gov.il, 2025 report chapter 2, 21 pages, published 07.09.2026)"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il search \"דוח הממונה לשנת 2025\" -> report page /he/pages/tender-0102 (published 07.09.2026, eight chapter PDFs); 2024 report page /he/pages/press_0083 (eight chapter PDFs); gov.il publishes the report only by chapter, no single full-report PDF found; the adif-web-bucket file is a 112-page full-report copy (ModDate 21.9.2025)",
+  "notes": "The 2025 report does not replace the fourth process (four funds, 1.11.2024, four years); it adds that from June 2025 employees who did not choose are allocated among the four selected funds by the check digit of their ID number. Keep the 2024 chapter 2 page for the process and add the 2025 page only if the rules state the allocation."
+ },
+ {
+  "law": "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2024 (re-hosted at adif-web-bucket)",
+  "section": "p.57 of the copy, table ד-13 (actuarial surplus / deficit of new pension funds 2021-2024)",
+  "cited_by": [
+   "PEN-19"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/reports/tender-0102/he/Commissioner%20Report%202025%20chapter%204_Digital%20-%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9%20%D7%A1%D7%95%D7%A4%D7%99.pdf",
+    "title_he": "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025 – פרק 4: נתונים כמותיים – החיסכון הפנסיוני",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 12,
+    "locator": "p.12, table ד-14 (2022-2025)",
+    "quote": "שיעור העודף או הגירעון האקטוארי בקרנות הפנסיה החדשות",
+    "basis": "CMA PDF (gov.il, 2025 report chapter 4, 18 pages, published 07.09.2026) - newest edition"
+   },
+   {
+    "url": "https://www.gov.il/BlobFolder/news/press_0083/he/Commisioner%20Report%20Design%20B_chapter4%20ver%206.0_digital.pdf",
+    "title_he": "דוח הממונה על שוק ההון, החיסכון והביטוח לשנת 2024 – פרק 4: נתונים כמותיים בתחום החיסכון הפנסיוני",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 14,
+    "locator": "p.14, table ד-13 (2021-2024)",
+    "quote": "שיעור העודף או הגירעון האקטוארי בקרנות הפנסיה החדשות",
+    "basis": "CMA PDF (gov.il, 2024 report chapter 4, 21 pages; byte-identical to the scratchpad chapter file); copy p.57 = chapter file p.14"
+   }
+  ],
+  "status": "official",
+  "searched": "gov.il search \"דוח הממונה לשנת 2025\" -> report page /he/pages/tender-0102 (published 07.09.2026, eight chapter PDFs); 2024 report page /he/pages/press_0083 (eight chapter PDFs); gov.il publishes the report only by chapter, no single full-report PDF found; the adif-web-bucket file is a 112-page full-report copy (ModDate 21.9.2025)",
+  "notes": "The 2025 table repeats the 2024 column with the same values as PEN-19 (Infinity 0.57%, Altshuler Shaham 0.27%, Mor 0.17%, Phoenix 0.00%, Meitav 0.29%, Clal -0.03%, Harel 0.00%, Migdal Makefet 0.15%, Menora -0.10%) and adds 2025: Infinity 0.14%, Altshuler Shaham 0.02%, Mor -0.06%, Phoenix 0.01%, Meitav 0.13%, Clal -0.03%, Harel -0.03%, Migdal Makefet 0.09%, Menora -0.28%. Figures that differ (newer year): PEN-19 shows 2024 values; the newest report gives 2025 values. Rule not changed."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008",
+  "section": "reg. 1 (definitions: מועד קבלת הבקשה, המועד הקובע, גיל הפרישה המוקדמת, מועד התשלום הראשון)",
+  "cited_by": [
+   "SW-04",
+   "PF-17"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=3",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 3,
+    "locator": "p.3, reg. 1",
+    "quote": "בתקנות אלה",
+    "basis": "base text: קובץ התקנות 6657 (24.3.2008), gazette pp.626-636; gazette page = file page + 624"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZbYNmyK9Qa3gH~lF+jEWmc=#page=3",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014 (קובץ התקנות 7407)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 3,
+    "locator": "p.3, s.1 (amends reg. 1)",
+    "quote": "ונמסרו טופסי הצטרפות מלאים",
+    "basis": "קובץ התקנות 7407 (amendment of 2014), file pp.3-5 (gazette 1613-1615)"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/tZDvucD9RCpb4OFgftW2Mghx2FA7HU11Svr+ngxOA9o=#page=2",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התש\"ף-2020 (קובץ התקנות 8735)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 2,
+    "locator": "p.2, s.1 (adds \"גיל הפרישה המוקדמת\")",
+    "quote": "כמשמעותו בסעיף 5לחוק גיל פרישה",
+    "basis": "קובץ התקנות 8735 (amendment of 2020), file p.2 (gazette 2560)"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/ZZKYP1JasTIK3+puGrB48nEoGOFH3NQjhXnAe4snPwo=#page=3",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשפ\"ג-2023 (קובץ התקנות 10716)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 3,
+    "locator": "p.3, s.1 (adds \"מועד התשלום הראשון\")",
+    "quote": "כהגדרתו בסעיף 16(9א)(ג) לפקודת מס הכנסה",
+    "basis": "קובץ התקנות 10716 (amendment of 2023), file p.3 (gazette 2099)"
+   }
+  ],
+  "status": "official",
+  "searched": "CMA regulation-legislation collector (only a draft, regulation-2494, after 2023); Wikisource amendment box (lists 2014, 2020, 2022, 2023: all five booklets read here); Reshumot file service for each booklet; no consolidated CMA PDF of these regulations found",
+  "notes": "Amendment list per Wikisource box: תשע\"ד (7407), תש\"ף (8735), תשפ\"ב (10170), תשפ\"ג (10716); no amendment after 2023 found. The 2020 amendment footnote lists a \"התשע\"ו, עמ' 634\" amendment not in the Wikisource box - unverified, recheck in Reshumot."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008",
+  "section": "reg. 2 (transfers into an annuity fund: 2(א)(1), (2), (4), (6), (7); 2(ב)(1), (2); 2(ד))",
+  "cited_by": [
+   "SW-01",
+   "SW-23",
+   "SW-40",
+   "KGL-09",
+   "TXK-10",
+   "PF-17",
+   "KH-17"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=4",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 4,
+    "locator": "p.4, reg. 2(א); 2(ב) continues on p.5",
+    "quote": "העברת כספים לקופת גמל לקצבה",
+    "basis": "base text: קובץ התקנות 6657 (24.3.2008), gazette pp.626-636; gazette page = file page + 624"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZbYNmyK9Qa3gH~lF+jEWmc=#page=3",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014 (קובץ התקנות 7407)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 3,
+    "locator": "p.3, s.2 (amends reg. 2(א)(2), 2(ד))",
+    "quote": "קופת גמל לתגמולים ,ובלבד שהקופה המקבלת היא קופת גמל משלמת לקצבה",
+    "basis": "קובץ התקנות 7407 (amendment of 2014), file pp.3-5 (gazette 1613-1615)"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/tZDvucD9RCpb4OFgftW2Mghx2FA7HU11Svr+ngxOA9o=#page=2",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התש\"ף-2020 (קובץ התקנות 8735)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 2,
+    "locator": "p.2, s.2 (adds reg. 2(א)(7), 2(ב)(2))",
+    "quote": "קופת גמל להשקעה ,ובלבד שהעמית הגיע לגיל הפרישה המוקדמת",
+    "basis": "קובץ התקנות 8735 (amendment of 2020), file p.2 (gazette 2560)"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/ZZKYP1JasTIK3+puGrB48nEoGOFH3NQjhXnAe4snPwo=#page=3",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשפ\"ג-2023 (קובץ התקנות 10716)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 3,
+    "locator": "p.3, s.2 (replaces the opening of reg. 2(ד))",
+    "quote": "גוף מנהל של קופה מקבלת לא יהיה רשאי לקבל כספים שלא ניתן להעביר",
+    "basis": "קובץ התקנות 10716 (amendment of 2023), file p.3 (gazette 2099)"
+   }
+  ],
+  "status": "official",
+  "searched": "CMA regulation-legislation collector (only a draft, regulation-2494, after 2023); Wikisource amendment box (lists 2014, 2020, 2022, 2023: all five booklets read here); Reshumot file service for each booklet; no consolidated CMA PDF of these regulations found",
+  "notes": "Amendment list per Wikisource box: תשע\"ד (7407), תש\"ף (8735), תשפ\"ב (10170), תשפ\"ג (10716); no amendment after 2023 found. The 2020 amendment footnote lists a \"התשע\"ו, עמ' 634\" amendment not in the Wikisource box - unverified, recheck in Reshumot. The 2022 amendment (10170 p.7, s.2) renames \"קרן חדשה זכאית\" throughout."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008",
+  "section": "reg. 3 (transfers between non-annuity funds: 3(א)(1), (4), (11א), (12); 3(ב)(1))",
+  "cited_by": [
+   "SW-01",
+   "SW-23",
+   "SW-39",
+   "KGL-10",
+   "TXK-04",
+   "TXH-19",
+   "KH-17",
+   "PF-17"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=5",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 5,
+    "locator": "p.5, reg. 3(א)(1)-(12); reg. 3(ב) on p.6",
+    "quote": "ניתן להעביר כספים מקופת גמל אחת לקופת גמל אחרת שאינה קופת גמל לקצבה",
+    "basis": "base text: קובץ התקנות 6657 (24.3.2008), gazette pp.626-636; gazette page = file page + 624"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=6",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 6,
+    "locator": "p.6, reg. 3(ב)(1)",
+    "quote": "תיעשה לחשבון על שם העמית העובר בקופה המקבלת ,ויראו לעניין דיני המס ,את כל מועדי התשלום לקופה המעבירה כמועדי התשלום לקופה המקבלת",
+    "basis": "base text: קובץ התקנות 6657 (24.3.2008), gazette pp.626-636; gazette page = file page + 624"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/tZDvucD9RCpb4OFgftW2Mghx2FA7HU11Svr+ngxOA9o=#page=2",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התש\"ף-2020 (קובץ התקנות 8735)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 2,
+    "locator": "p.2, s.3 (adds reg. 3(א)(11א))",
+    "quote": "מקופת גמל להשקעה לקופת גמל להשקעה אחרת",
+    "basis": "קובץ התקנות 8735 (amendment of 2020), file p.2 (gazette 2560)"
+   }
+  ],
+  "status": "official",
+  "searched": "CMA regulation-legislation collector (only a draft, regulation-2494, after 2023); Wikisource amendment box (lists 2014, 2020, 2022, 2023: all five booklets read here); Reshumot file service for each booklet; no consolidated CMA PDF of these regulations found",
+  "notes": "Amendment list per Wikisource box: תשע\"ד (7407), תש\"ף (8735), תשפ\"ב (10170), תשפ\"ג (10716); no amendment after 2023 found. The 2020 amendment footnote lists a \"התשע\"ו, עמ' 634\" amendment not in the Wikisource box - unverified, recheck in Reshumot. Reg. 3 was amended only in 2020 (per Wikisource); SW-39 quotes reg. 3(ב)(1) verbatim as in the 2008 text."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008",
+  "section": "reg. 4 (limits on transfer, incl. 4(8))",
+  "cited_by": [
+   "SW-13",
+   "SW-22",
+   "PF-17"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=6",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 6,
+    "locator": "p.6, reg. 4(1)-(6)",
+    "quote": "לא ניתן להעביר כספים מקופה מעבירה לקופה מקבלת במקרים אלה",
+    "basis": "base text: קובץ התקנות 6657 (24.3.2008), gazette pp.626-636; gazette page = file page + 624"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZbYNmyK9Qa3gH~lF+jEWmc=#page=3",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014 (קובץ התקנות 7407)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 3,
+    "locator": "p.3, s.3 (adds reg. 4(8))",
+    "quote": "העמית הגיש בקשת העברה לקרן חדשה זכאית מקופת גמל שאינה קרן חדשה זכאית",
+    "basis": "קובץ התקנות 7407 (amendment of 2014), file pp.3-5 (gazette 1613-1615)"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/qa0DjAH11hv4cTvqv8pm34W06X1DvaxhWwgq239BXaQ=#page=7",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשפ\"ב-2022 (קובץ התקנות 10170)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 7,
+    "locator": "p.7, s.2 (\"קרן חדשה זכאית\" becomes \"קרן חדשה מקיפה\")",
+    "quote": "במקום \"קרן חדשה זכאית\" יבוא \"קרן חדשה מקיפה\"",
+    "basis": "קובץ התקנות 10170 (amendment of 2022), file pp.6-7 (gazette 2936-2937); replaces \"קרן חדשה זכאית\" by \"קרן חדשה מקיפה\" throughout"
+   }
+  ],
+  "status": "official",
+  "searched": "CMA regulation-legislation collector (only a draft, regulation-2494, after 2023); Wikisource amendment box (lists 2014, 2020, 2022, 2023: all five booklets read here); Reshumot file service for each booklet; no consolidated CMA PDF of these regulations found",
+  "notes": "Amendment list per Wikisource box: תשע\"ד (7407), תש\"ף (8735), תשפ\"ב (10170), תשפ\"ג (10716); no amendment after 2023 found. The 2020 amendment footnote lists a \"התשע\"ו, עמ' 634\" amendment not in the Wikisource box - unverified, recheck in Reshumot."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008",
+  "section": "reg. 5 (transfer within ten business days; Commissioner extension; amount moved)",
+  "cited_by": [
+   "SW-06",
+   "SW-06 figures transfer_business_days, commissioner_extension_business_days",
+   "SW-13",
+   "PF-19",
+   "KGL-10",
+   "KH-17"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=6",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 6,
+    "locator": "p.6, reg. 5(א); 5(ב) follows on p.6-7",
+    "quote": "בתוך עשרה ימי עסקים מהיום שבו הועברה לו בקשת העברה מפורטת ,חתומה ומלאה",
+    "basis": "base text: קובץ התקנות 6657 (24.3.2008), gazette pp.626-636; gazette page = file page + 624"
+   }
+  ],
+  "status": "official",
+  "searched": "CMA regulation-legislation collector (only a draft, regulation-2494, after 2023); Wikisource amendment box (lists 2014, 2020, 2022, 2023: all five booklets read here); Reshumot file service for each booklet; no consolidated CMA PDF of these regulations found",
+  "notes": "Amendment list per Wikisource box: תשע\"ד (7407), תש\"ף (8735), תשפ\"ב (10170), תשפ\"ג (10716); no amendment after 2023 found. The 2020 amendment footnote lists a \"התשע\"ו, עמ' 634\" amendment not in the Wikisource box - unverified, recheck in Reshumot. Reg. 5 has not been amended (Wikisource shows no amendment note)."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008",
+  "section": "regs. 6-7 (late transfer; transfer directly between managers, in cash)",
+  "cited_by": [
+   "SW-06",
+   "PF-19"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=7",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 7,
+    "locator": "pp.6-7, reg. 6 (from p.6); reg. 7 on p.7",
+    "quote": "העברת כספים בין קופות תתבצע ישירות בין הגופים המנהלים של הקופות",
+    "basis": "base text: קובץ התקנות 6657 (24.3.2008), gazette pp.626-636; gazette page = file page + 624"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZbYNmyK9Qa3gH~lF+jEWmc=#page=3",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014 (קובץ התקנות 7407)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 3,
+    "locator": "p.3, s.4 (amends reg. 6: \"תשואת\", fifteen business days, adds 6(ג1))",
+    "quote": "בתוך חמישה עשר ימי עסקים מהמועד שבו נודע לו כאמור",
+    "basis": "קובץ התקנות 7407 (amendment of 2014), file pp.3-5 (gazette 1613-1615)"
+   }
+  ],
+  "status": "official",
+  "searched": "CMA regulation-legislation collector (only a draft, regulation-2494, after 2023); Wikisource amendment box (lists 2014, 2020, 2022, 2023: all five booklets read here); Reshumot file service for each booklet; no consolidated CMA PDF of these regulations found",
+  "notes": "Amendment list per Wikisource box: תשע\"ד (7407), תש\"ף (8735), תשפ\"ב (10170), תשפ\"ג (10716); no amendment after 2023 found. The 2020 amendment footnote lists a \"התשע\"ו, עמ' 634\" amendment not in the Wikisource box - unverified, recheck in Reshumot."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008",
+  "section": "reg. 8(א)-(ג) (insurance liability on a transfer)",
+  "cited_by": [
+   "SW-12"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=7",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 7,
+    "locator": "p.7, reg. 8(א)-(ג) (continues on p.8)",
+    "quote": "יהיה אחראי לתשלום כספים לפי הכיסויים בקופה המעבירה בשל מקרה ביטוח",
+    "basis": "base text: קובץ התקנות 6657 (24.3.2008), gazette pp.626-636; gazette page = file page + 624"
+   }
+  ],
+  "status": "official",
+  "searched": "CMA regulation-legislation collector (only a draft, regulation-2494, after 2023); Wikisource amendment box (lists 2014, 2020, 2022, 2023: all five booklets read here); Reshumot file service for each booklet; no consolidated CMA PDF of these regulations found",
+  "notes": "Amendment list per Wikisource box: תשע\"ד (7407), תש\"ף (8735), תשפ\"ב (10170), תשפ\"ג (10716); no amendment after 2023 found. The 2020 amendment footnote lists a \"התשע\"ו, עמ' 634\" amendment not in the Wikisource box - unverified, recheck in Reshumot. Reg. 8 not amended."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008",
+  "section": "reg. 9(א)-(ד) (merging and splitting accounts; partial transfers)",
+  "cited_by": [
+   "PF-18",
+   "SW-14",
+   "SW-39",
+   "TXH-19",
+   "KH-17"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=8",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 8,
+    "locator": "p.8, reg. 9(א)-(ג)",
+    "quote": "איחוד חשבונות של עמית באותה קופת גמל על ידי העברת כספים מחשבון אחד לחשבון אחר",
+    "basis": "base text: קובץ התקנות 6657 (24.3.2008), gazette pp.626-636; gazette page = file page + 624"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZbYNmyK9Qa3gH~lF+jEWmc=#page=5",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014 (קובץ התקנות 7407)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 5,
+    "locator": "p.5 (replaces reg. 9(ד))",
+    "quote": "לפי סדר הפקדתם, מן המועד המאוחר ביותר עד המועד המוקדם ביותר",
+    "basis": "קובץ התקנות 7407 (amendment of 2014), file pp.3-5 (gazette 1613-1615)"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/qa0DjAH11hv4cTvqv8pm34W06X1DvaxhWwgq239BXaQ=#page=7",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשפ\"ב-2022 (קובץ התקנות 10170)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 7,
+    "locator": "p.7, s.3 (reg. 9(ד): \"מקיפה או קרן חדשה כללית\")",
+    "quote": "מקיפה או קרן תיקון תקנה 9 חדשה כללית",
+    "basis": "קובץ התקנות 10170 (amendment of 2022), file pp.6-7 (gazette 2936-2937); replaces \"קרן חדשה זכאית\" by \"קרן חדשה מקיפה\" throughout"
+   }
+  ],
+  "status": "official",
+  "searched": "CMA regulation-legislation collector (only a draft, regulation-2494, after 2023); Wikisource amendment box (lists 2014, 2020, 2022, 2023: all five booklets read here); Reshumot file service for each booklet; no consolidated CMA PDF of these regulations found",
+  "notes": "Amendment list per Wikisource box: תשע\"ד (7407), תש\"ף (8735), תשפ\"ב (10170), תשפ\"ג (10716); no amendment after 2023 found. The 2020 amendment footnote lists a \"התשע\"ו, עמ' 634\" amendment not in the Wikisource box - unverified, recheck in Reshumot."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012",
+  "section": "reg. 2 (caps in a provident fund: 2(א)(1) 1.05% of balance, 2(א)(2) 4% of deposits, 2(א)(2א), 2(א)(4), 2(ב))",
+  "cited_by": [
+   "PF-02",
+   "PF-03",
+   "KGL-14",
+   "PEN-22",
+   "PEN-22 figures balance_cap, deposit_cap"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 4,
+    "locator": "p.4, reg. 2(א)(1)-(3); 2(ב) continues on p.5",
+    "quote": "מן היתרה הצבורה בחשבונו של כל עמית בשיעור שלא יעלה על 1.05% לשנה",
+    "basis": "base text: קובץ התקנות 7131 (21.6.2012), gazette pp.1260-1265; gazette page = file page + 1256"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAeOdRzFXelp1D6CGA3tNK3g=#page=4",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשע\"ד-2014 (קובץ התקנות 7358)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 4,
+    "locator": "p.4, s.2 (adds reg. 2(א)(2א))",
+    "quote": "לעניין עמית אשר באחד מחשבונותיו בקופת גמל שאינה קופת ביטוח",
+    "basis": "קובץ התקנות 7358 (24.3.2014), file pp.3-5 (gazette 977-979)"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8HBFRznZ1PqBBqBlhhXAb7L47e1dgbmyX~fXnBHkch8=#page=2",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשפ\"ב-2022 (קובץ התקנות 9942)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 2,
+    "locator": "p.2, s.1 (adds reg. 2(א)(4): 0.3% for old-age annuitants of insurance policies from 1.2.2022)",
+    "quote": "לעניין מקבלי קצבת זקנה בפוליסות ביטוח שהוצאו לפי קופות ביטוח",
+    "basis": "קובץ התקנות 9942 (24.1.2022), file pp.2-3 (gazette 1812-1813); in force 1.2.2022"
+   }
+  ],
+  "status": "official",
+  "searched": "Wikisource amendment box (תשע\"ד 7358, תשפ\"ב 9942: both read here); CMA regulation-legislation collector; no CMA consolidated PDF of these regulations found; Nevo 500_714 and Wikisource are the copies replaced",
+  "notes": "Amendments: 2014 (7358) and 2022 (9942) only, per Wikisource; none later found."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012",
+  "section": "reg. 3 (caps in new comprehensive / general pension funds: 3(א) 0.5% / 6%, 3(א)(1א), 3(ב), 3(ג))",
+  "cited_by": [
+   "PF-04",
+   "PF-05",
+   "PEN-21",
+   "PEN-21 figures comprehensive_balance_cap, comprehensive_deposit_cap, general_balance_cap, general_deposit_cap, annuitant_balance_cap_from_2022"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=5",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 5,
+    "locator": "p.5, reg. 3(א)(1)-(3), 3(ב)",
+    "quote": "מתוך התשלומים המועברים לקרן בשל כל עמית -בשיעור שלא יעלה על ;6%",
+    "basis": "base text: קובץ התקנות 7131 (21.6.2012), gazette pp.1260-1265; gazette page = file page + 1256"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAeOdRzFXelp1D6CGA3tNK3g=#page=4",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשע\"ד-2014 (קובץ התקנות 7358)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 4,
+    "locator": "p.4, s.3 (replaces reg. 3(ב)(3))",
+    "quote": "אשר החלו לקבל קצבה מיום י\"ט בטבת התשע\"ג",
+    "basis": "קובץ התקנות 7358 (24.3.2014), file pp.3-5 (gazette 977-979)"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8HBFRznZ1PqBBqBlhhXAb7L47e1dgbmyX~fXnBHkch8=#page=2",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשפ\"ב-2022 (קובץ התקנות 9942)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 2,
+    "locator": "p.2, s.2 (adds reg. 3(א)(1א) and 3(ב)(3)(ג): 0.3% for old-age annuitants from 1.2.2022)",
+    "quote": "לכלל מקבלי קצבת הזקנה שהחלו לקבל קצבת זקנה ביום ל' בשבט התשפ\"ב",
+    "basis": "קובץ התקנות 9942 (24.1.2022), file pp.2-3 (gazette 1812-1813); in force 1.2.2022"
+   }
+  ],
+  "status": "official",
+  "searched": "Wikisource amendment box (תשע\"ד 7358, תשפ\"ב 9942: both read here); CMA regulation-legislation collector; no CMA consolidated PDF of these regulations found; Nevo 500_714 and Wikisource are the copies replaced",
+  "notes": "Amendments: 2014 (7358) and 2022 (9942) only, per Wikisource; none later found."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012",
+  "section": "regs. 4-6 (2% cap for study funds, IRA, central and other funds; sector funds; track funds)",
+  "cited_by": [
+   "PF-06",
+   "KGL-14",
+   "KH-22",
+   "KH-22 figure figures.balance_cap",
+   "PEN-22"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 6,
+    "locator": "p.6, regs. 4, 5, 6",
+    "quote": "רשאית לגבות דמי ניהול מיתרת הכספים הצבורה בחשבונו של כל עמית ,בשיעור שלא יעלה על 2%לשנה",
+    "basis": "base text: קובץ התקנות 7131 (21.6.2012), gazette pp.1260-1265; gazette page = file page + 1256"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAeOdRzFXelp1D6CGA3tNK3g=#page=4",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשע\"ד-2014 (קובץ התקנות 7358)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 4,
+    "locator": "p.4, s.4 (reg. 6: \"למעט לעניין תקנה (2א)(2א)\")",
+    "quote": "בתקנה 6לתקנות העיקריות ,בסופה יבוא",
+    "basis": "קובץ התקנות 7358 (24.3.2014), file pp.3-5 (gazette 977-979)"
+   }
+  ],
+  "status": "official",
+  "searched": "Wikisource amendment box (תשע\"ד 7358, תשפ\"ב 9942: both read here); CMA regulation-legislation collector; no CMA consolidated PDF of these regulations found; Nevo 500_714 and Wikisource are the copies replaced",
+  "notes": "Amendments: 2014 (7358) and 2022 (9942) only, per Wikisource; none later found."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012",
+  "section": "regs. 7-8 (temporary 1.1% until 2013; 0.3% for lost-contact and deceased members)",
+  "cited_by": [
+   "PF-02",
+   "KH-22"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 6,
+    "locator": "p.6, regs. 7, 8(א)",
+    "quote": "בשיעור שלא יעלה על 0.3%לשנה",
+    "basis": "base text: קובץ התקנות 7131 (21.6.2012), gazette pp.1260-1265; gazette page = file page + 1256"
+   }
+  ],
+  "status": "official",
+  "searched": "Wikisource amendment box (תשע\"ד 7358, תשפ\"ב 9942: both read here); CMA regulation-legislation collector; no CMA consolidated PDF of these regulations found; Nevo 500_714 and Wikisource are the copies replaced",
+  "notes": "Amendments: 2014 (7358) and 2022 (9942) only, per Wikisource; none later found."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012",
+  "section": "regs. 10, 10א, 12 (pro-rata fee; indexation; commencement 1.1.2013)",
+  "cited_by": [
+   "PF-02",
+   "KH-22",
+   "KGL-14"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=8",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 8,
+    "locator": "p.8, regs. 9-12",
+    "quote": "בדמי ניהול בשיעור יחסי למספר הימים שנוהלו בחשבון באותו חודש",
+    "basis": "base text: קובץ התקנות 7131 (21.6.2012), gazette pp.1260-1265; gazette page = file page + 1256"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAeOdRzFXelp1D6CGA3tNK3g=#page=5",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשע\"ד-2014 (קובץ התקנות 7358)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 5,
+    "locator": "p.5, s.8 (adds reg. 10א)",
+    "quote": "יתעדכן ביום העסקים הראשון בכל שנה",
+    "basis": "קובץ התקנות 7358 (24.3.2014), file pp.3-5 (gazette 977-979)"
+   }
+  ],
+  "status": "official",
+  "searched": "Wikisource amendment box (תשע\"ד 7358, תשפ\"ב 9942: both read here); CMA regulation-legislation collector; no CMA consolidated PDF of these regulations found; Nevo 500_714 and Wikisource are the copies replaced",
+  "notes": "Amendments: 2014 (7358) and 2022 (9942) only, per Wikisource; none later found."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008",
+  "section": "regs. 1-2 (closed list of direct expenses; external management fee; post-2023 specialised tracks)",
+  "cited_by": [
+   "PF-10"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpsFM+Hq~v6+ysOsYBj7v7sI=#page=2",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008 (קובץ התקנות 6652)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 2,
+    "locator": "p.2, reg. 2 (2008 list)",
+    "quote": "בשל ביצוע עסקאות בנכסי קופת גמל יהיו אלה בלבד",
+    "basis": "base text: קובץ התקנות 6652 (2008), gazette p.584 on file p.2"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dRGsI+SrmavYbn73icZsjwvAYSdKZdahWniBQ2IENis=#page=2",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות) (תיקון), התשפ\"ג-2022 (קובץ התקנות 10377)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 2,
+    "locator": "p.2, s.2 (reg. 1: \"עמלת ניהול חיצוני\" defined by six situations)",
+    "quote": "הוצאה הנובעת מכל אחד מאלה",
+    "basis": "קובץ התקנות 10377 (25.10.2022), file pp.2-7 (gazette 212-217)"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dRGsI+SrmavYbn73icZsjwvAYSdKZdahWniBQ2IENis=#page=4",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות) (תיקון), התשפ\"ג-2022 (קובץ התקנות 10377)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 4,
+    "locator": "pp.3-5, s.3 (reg. 2(א)(9)-(10) added; reg. 2(ב) specialised tracks set up after 1.1.2023)",
+    "quote": "שבתקנונו נקבע כי עיקר השקעותיו הן השקעות בנכסים סחירים",
+    "basis": "קובץ התקנות 10377 (25.10.2022)"
+   }
+  ],
+  "status": "official",
+  "searched": "Wikisource amendment box (ten instruments 2012-2023; base 6652 and the 2020 and 2022/3 amendments read here, earlier amendments superseded by the 2022/3 rewrite of regs 1-2); CMA collector; no consolidated CMA PDF found",
+  "notes": "Latest amendment: התשפ\"ג-2022 (10377, in force 1.1.2023) rewrote reg. 2 (now 2(א)-(ד)), added reg. 2א, amended reg. 3ב and repealed reg. 4. Temporary order 10034 (2022) only extended reg. 3א. None later found."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008",
+  "section": "reg. 3ב (disclosure of direct expenses; expected annual cost)",
+  "cited_by": [
+   "PF-12"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/tZDvucD9RCpb4OFgftW2Mkr7NqSpiUfGbyQHeI17Cx8=#page=2",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות) (תיקון), התש\"ף-2020 (קובץ התקנות 8744)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 2,
+    "locator": "p.2, s.2 (adds reg. 3ב(א)-(ב))",
+    "quote": "גוף מוסדי יידע אדם המעוניין להצטרף כעמית או כמבוטח לקופת גמל",
+    "basis": "קובץ התקנות 8744 (9.9.2020), file p.2 (gazette 2644)"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dRGsI+SrmavYbn73icZsjwvAYSdKZdahWniBQ2IENis=#page=7",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות) (תיקון), התשפ\"ג-2022 (קובץ התקנות 10377)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 7,
+    "locator": "p.7, s.6 (reg. 3ב: expected annual cost; 3ב(ג), (ד))",
+    "quote": "בכל מקום שבו קיימת חובה על פי דין להציג לעמית או למבוטח את דמי הניהול",
+    "basis": "קובץ התקנות 10377 (25.10.2022), in force 1.1.2023"
+   }
+  ],
+  "status": "official",
+  "searched": "Wikisource amendment box (ten instruments 2012-2023; base 6652 and the 2020 and 2022/3 amendments read here, earlier amendments superseded by the 2022/3 rewrite of regs 1-2); CMA collector; no consolidated CMA PDF found",
+  "notes": "Latest amendment: התשפ\"ג-2022 (10377, in force 1.1.2023) rewrote reg. 2 (now 2(א)-(ד)), added reg. 2א, amended reg. 3ב and repealed reg. 4. Temporary order 10034 (2022) only extended reg. 3א. None later found. PF-12 says it was read \"in summary from the Wikisource text\"; the gazette wording confirms reg. 3ב(א)-(ד) as described."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009",
+  "section": "reg. 3 (who gives investment instructions; one person per account; no restriction)",
+  "cited_by": [
+   "IRA-05"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=3",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 3,
+    "locator": "p.3, reg. 3(ב)-(ג)",
+    "quote": "והחברה המנהלת לא תטיל כל מגבלה על אפשרויות הבחירה של העמית באדם האמור",
+    "basis": "base text: קובץ התקנות 6820 (22.10.2009), gazette pp.54-60; gazette page = file page + 52"
+   }
+  ],
+  "status": "official",
+  "searched": "Wikisource amendment box (6820 base [box links 6829 in error], 6859, 6901, 7125, 7819, 7880 - all read except 7125, which per Wikisource amends only reg. 1); Reshumot collector (token for 6820 taken from the gov.il gazette collector); CMA collector (2025 draft amendment of these regulations noted in IRA-05/IRA-13); no consolidated CMA PDF found; Nevo 500_217 is the copy replaced",
+  "notes": "Amendments per Wikisource: 2010 (6859: reg. 14; 6901: reg. 12(ב)), 2012 (7125: reg. 1), 2017 (7819: regs. 1, 2, 4, 5, 7, 9, 11), 2017/8 (7880: reg. 12 replaced). A 2025 CMA draft (not in force) is cited by the rules themselves. Reg. 3 not amended."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009",
+  "section": "reg. 5(ב)-(ג) (quarterly compliance check; 7 business days notice; 45 business days cure)",
+  "cited_by": [
+   "IRA-14",
+   "IRA-14 figures check_interval_months, breach_notice_business_days, breach_cure_business_days"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=4",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 4,
+    "locator": "p.4, reg. 5(ג)(1)-(3)",
+    "quote": "בתוך תקופה שלא תעלה על ארבעים וחמישה ימי עסקים מיום המצאתה",
+    "basis": "base text: קובץ התקנות 6820 (22.10.2009), gazette pp.54-60; gazette page = file page + 52"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=4",
+    "title_he": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 4,
+    "locator": "p.4, s.4(ב) (reg. 5(ג)(2): breach \"שנוצרה בשל השקעה חדשה\")",
+    "quote": "שנוצרה בשל השקעה חדשה",
+    "basis": "קובץ התקנות 7819 (2017), file pp.2-5 (gazette 1138-1141); the meitav.co.il PDF \"תקנות-ira-חדשות-יוני-2017.pdf\" is a re-host of this booklet (same page 5 for reg. 11(ב))"
+   }
+  ],
+  "status": "official",
+  "searched": "Wikisource amendment box (6820 base [box links 6829 in error], 6859, 6901, 7125, 7819, 7880 - all read except 7125, which per Wikisource amends only reg. 1); Reshumot collector (token for 6820 taken from the gov.il gazette collector); CMA collector (2025 draft amendment of these regulations noted in IRA-05/IRA-13); no consolidated CMA PDF found; Nevo 500_217 is the copy replaced",
+  "notes": "Amendments per Wikisource: 2010 (6859: reg. 14; 6901: reg. 12(ב)), 2012 (7125: reg. 1), 2017 (7819: regs. 1, 2, 4, 5, 7, 9, 11), 2017/8 (7880: reg. 12 replaced). A 2025 CMA draft (not in force) is cited by the rules themselves."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009",
+  "section": "reg. 6 (written agreement; member may cancel at any time without charge)",
+  "cited_by": [
+   "IRA-15"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=4",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 4,
+    "locator": "p.4, reg. 6(א)-(ב)",
+    "quote": "העמית רשאי לבטל בכל עת את ההסכם בינו לבין החברה המנהלת",
+    "basis": "base text: קובץ התקנות 6820 (22.10.2009), gazette pp.54-60; gazette page = file page + 52"
+   }
+  ],
+  "status": "official",
+  "searched": "Wikisource amendment box (6820 base [box links 6829 in error], 6859, 6901, 7125, 7819, 7880 - all read except 7125, which per Wikisource amends only reg. 1); Reshumot collector (token for 6820 taken from the gov.il gazette collector); CMA collector (2025 draft amendment of these regulations noted in IRA-05/IRA-13); no consolidated CMA PDF found; Nevo 500_217 is the copy replaced",
+  "notes": "Amendments per Wikisource: 2010 (6859: reg. 14; 6901: reg. 12(ב)), 2012 (7125: reg. 1), 2017 (7819: regs. 1, 2, 4, 5, 7, 9, 11), 2017/8 (7880: reg. 12 replaced). A 2025 CMA draft (not in force) is cited by the rules themselves. Reg. 6 not amended."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009",
+  "section": "reg. 7 (closed list of charges; custody fee cap since 2017)",
+  "cited_by": [
+   "IRA-16"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=4",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 4,
+    "locator": "p.4, reg. 7(א) (continues on p.5)",
+    "quote": "דמי הניהול וההוצאות שייגבו מנכסי הקופה יהיו אלה בלבד",
+    "basis": "base text: קובץ התקנות 6820 (22.10.2009), gazette pp.54-60; gazette page = file page + 52"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=4",
+    "title_he": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 4,
+    "locator": "p.4, s.5 (reg. 7(א)(2), (3), (5), (6))",
+    "quote": "ובלבד שדמי השמירה או העמלה לא יעלו על דמי השמירה או העמלה הנגבים מקופות הגמל שאינן קופות גמל בניהול אישי",
+    "basis": "קובץ התקנות 7819 (2017), file pp.2-5 (gazette 1138-1141); the meitav.co.il PDF \"תקנות-ira-חדשות-יוני-2017.pdf\" is a re-host of this booklet (same page 5 for reg. 11(ב))"
+   }
+  ],
+  "status": "official",
+  "searched": "Wikisource amendment box (6820 base [box links 6829 in error], 6859, 6901, 7125, 7819, 7880 - all read except 7125, which per Wikisource amends only reg. 1); Reshumot collector (token for 6820 taken from the gov.il gazette collector); CMA collector (2025 draft amendment of these regulations noted in IRA-05/IRA-13); no consolidated CMA PDF found; Nevo 500_217 is the copy replaced",
+  "notes": "Amendments per Wikisource: 2010 (6859: reg. 14; 6901: reg. 12(ב)), 2012 (7125: reg. 1), 2017 (7819: regs. 1, 2, 4, 5, 7, 9, 11), 2017/8 (7880: reg. 12 replaced). A 2025 CMA draft (not in force) is cited by the rules themselves."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009",
+  "section": "reg. 8 (no credit, pledges, guarantees or member loans)",
+  "cited_by": [
+   "IRA-13"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=5",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 5,
+    "locator": "p.5, reg. 8",
+    "quote": "שעבוד נכסים, הלוואות לעמיתיה",
+    "basis": "base text: קובץ התקנות 6820 (22.10.2009), gazette pp.54-60; gazette page = file page + 52"
+   }
+  ],
+  "status": "official",
+  "searched": "Wikisource amendment box (6820 base [box links 6829 in error], 6859, 6901, 7125, 7819, 7880 - all read except 7125, which per Wikisource amends only reg. 1); Reshumot collector (token for 6820 taken from the gov.il gazette collector); CMA collector (2025 draft amendment of these regulations noted in IRA-05/IRA-13); no consolidated CMA PDF found; Nevo 500_217 is the copy replaced",
+  "notes": "Amendments per Wikisource: 2010 (6859: reg. 14; 6901: reg. 12(ב)), 2012 (7125: reg. 1), 2017 (7819: regs. 1, 2, 4, 5, 7, 9, 11), 2017/8 (7880: reg. 12 replaced). A 2025 CMA draft (not in force) is cited by the rules themselves. Reg. 8 not amended."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009",
+  "section": "reg. 11 (transfers into / out of an IRA: cash or in kind; 11(ב) clock starts when all assets are sold)",
+  "cited_by": [
+   "IRA-23",
+   "SW-24"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=5",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 5,
+    "locator": "p.5, reg. 11 (now 11(א))",
+    "quote": "תיעשה במזומנים או בנכסים ,לפי בחירת העמית",
+    "basis": "base text: קובץ התקנות 6820 (22.10.2009), gazette pp.54-60; gazette page = file page + 52"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=5",
+    "title_he": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 5,
+    "locator": "p.5, s.7 (adds reg. 11(ב))",
+    "quote": "נכסי הקופה למזומנים",
+    "basis": "קובץ התקנות 7819 (2017), file pp.2-5 (gazette 1138-1141); the meitav.co.il PDF \"תקנות-ira-חדשות-יוני-2017.pdf\" is a re-host of this booklet (same page 5 for reg. 11(ב))"
+   }
+  ],
+  "status": "official",
+  "searched": "Wikisource amendment box (6820 base [box links 6829 in error], 6859, 6901, 7125, 7819, 7880 - all read except 7125, which per Wikisource amends only reg. 1); Reshumot collector (token for 6820 taken from the gov.il gazette collector); CMA collector (2025 draft amendment of these regulations noted in IRA-05/IRA-13); no consolidated CMA PDF found; Nevo 500_217 is the copy replaced",
+  "notes": "Amendments per Wikisource: 2010 (6859: reg. 14; 6901: reg. 12(ב)), 2012 (7125: reg. 1), 2017 (7819: regs. 1, 2, 4, 5, 7, 9, 11), 2017/8 (7880: reg. 12 replaced). A 2025 CMA draft (not in force) is cited by the rules themselves. Note: file p.5 of 7819 has a doubled text layer in pdftotext; the wording of 11(ב) is legible in the PDF."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009",
+  "section": "reg. 12 (brokers chosen by a competitive process; related-party trades)",
+  "cited_by": [
+   "IRA-18",
+   "IRA-18 figures process_max_years, min_participants, related_party_commission_cap"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/iXRl3JX663X67T342MLtmOhZrYskYBxrQk+FHRN~mJM=#page=2",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ח-2017 (קובץ התקנות 7880)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 2,
+    "locator": "pp.2-3, s.1 (reg. 12 replaced: 12(א) every three years among at least eight participants; 12(ב) related party only at no more than the winner's commission; 12(ג) a broker chosen by the member)",
+    "quote": "הליך תחרותי שיתקיים אחת לשלוש שנים לפחות בין שמונה משתתפים לפחות",
+    "basis": "קובץ התקנות 7880 (2017), file pp.2-3 (gazette 174-175); replaces reg. 12"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=6",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 6,
+    "locator": "p.6, reg. 12 as first enacted (four participants; no related party)",
+    "quote": "בין ארבעה משתתפים לפחות",
+    "basis": "superseded base text: קובץ התקנות 6820 (22.10.2009), gazette pp.54-60; gazette page = file page + 52"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/RATI4pBLty7qGIwDdx4vQyqqWGj~YlmHaa28WfpNxGU=#page=2",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי) (תיקון מס' 2), התש\"ע-2010 (קובץ התקנות 6901)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 2,
+    "locator": "p.2 (2010 reg. 12(ב): 20% related-party cap) - superseded by 7880",
+    "quote": "לא יעלו על 20אחוזים מסך כל העמלות",
+    "basis": "superseded: קובץ התקנות 6901 (30.6.2010)"
+   }
+  ],
+  "status": "official",
+  "searched": "Wikisource amendment box (6820 base [box links 6829 in error], 6859, 6901, 7125, 7819, 7880 - all read except 7125, which per Wikisource amends only reg. 1); Reshumot collector (token for 6820 taken from the gov.il gazette collector); CMA collector (2025 draft amendment of these regulations noted in IRA-05/IRA-13); no consolidated CMA PDF found; Nevo 500_217 is the copy replaced",
+  "notes": "Amendments per Wikisource: 2010 (6859: reg. 14; 6901: reg. 12(ב)), 2012 (7125: reg. 1), 2017 (7819: regs. 1, 2, 4, 5, 7, 9, 11), 2017/8 (7880: reg. 12 replaced). A 2025 CMA draft (not in force) is cited by the rules themselves. CONTRADICTION: IRA-18 states \"at least four participants\" and a 20% related-party cap (Nevo summary). The current reg. 12 (replaced by ק\"ת 7880, signed 3.10.2017) requires at least EIGHT participants, drops the 20% cap (keeps only \"no higher than the unrelated winner's commission\"), and adds 12(ג): trades may go through a broker the member chose, if the member was shown the winners' terms. Figures that differ: IRA-18 min_participants 4 vs 8 (7880 p.2); related_party_commission_cap 20% no longer in force. Founder decision / rule fix needed."
+ },
+ {
+  "law": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+  "section": "s.1 (definitions: קופת גמל להשקעה, קרן השתלמות, קופת גמל בניהול אישי, קופת גמל לקצבה)",
+  "cited_by": [
+   "KH-01",
+   "TXK-03",
+   "TXK-16",
+   "TXP-24",
+   "IRA-01",
+   "REG-17",
+   "KH-02 (link-less, s.1 עמית-שכיר / עמית-עצמאי)",
+   "TXA-13 (link-less)"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+    "publisher_he": "הכנסת",
+    "file_page": 2,
+    "locator": "p.2, s.1 (\"קופת גמל בניהול אישי\", \"קופת גמל לקצבה\", \"קרן השתלמות\")",
+    "quote": "קרן שאושרה לפי הוראות סעיף",
+    "basis": "ספר החוקים 2024 (gazette p.889 onward) - base text as enacted 2005; gazette page = file page + 888"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), ה",
+    "publisher_he": "הכנסת",
+    "file_page": 2,
+    "locator": "p.2, s.1 (Amendment 15 adds \"קופת גמל להשקעה\")",
+    "quote": "קופת גמל להשקעה",
+    "basis": "ספר החוקים 2554 (gazette p.885 onward) (Amendment 15, 2016); this booklet has a doubled text layer in pdftotext, read the PDF"
+   }
+  ],
+  "status": "official",
+  "searched": "No consolidated official text: the CMA regulation collector holds only bills and memoranda, the Knesset site serves amendment gazettes only (Knesset OData list of 31 amending laws, all downloaded); Wikisource section notes used to tell which amendment touched each section; Nevo 70391 and Wikisource are the copies replaced",
+  "notes": "s.1 was amended ten times (Wikisource note: 2007-2022); the definitions the rules rely on are the 2005 text plus Amendment 15 (gemel lehashkaa). The 2022 amendment (ס\"ח 2932) changed pension-fund definitions only (s.34ב family)."
+ },
+ {
+  "law": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+  "section": "s.3 (trust and members' interest)",
+  "cited_by": [
+   "PF-29",
+   "REG-18"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+    "publisher_he": "הכנסת",
+    "file_page": 4,
+    "locator": "p.4, s.3",
+    "quote": "נאמנות וטובת העמיתים",
+    "basis": "ספר החוקים 2024 (gazette p.889 onward) - base text as enacted 2005; gazette page = file page + 888"
+   }
+  ],
+  "status": "official",
+  "searched": "No consolidated official text: the CMA regulation collector holds only bills and memoranda, the Knesset site serves amendment gazettes only (Knesset OData list of 31 amending laws, all downloaded); Wikisource section notes used to tell which amendment touched each section; Nevo 70391 and Wikisource are the copies replaced",
+  "notes": "s.3 never amended (Wikisource)."
+ },
+ {
+  "law": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+  "section": "s.13 (approval of a provident fund: 13(א)(4); 13(ג)(2))",
+  "cited_by": [
+   "PEN-34",
+   "TXK-16",
+   "REG-17"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+    "publisher_he": "הכנסת",
+    "file_page": 8,
+    "locator": "p.8, s.13",
+    "quote": "הממונה רשאי לאשר קרן שהוגשה לגביה בקשה",
+    "basis": "ספר החוקים 2024 (gazette p.889 onward) - base text as enacted 2005; gazette page = file page + 888"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), ה",
+    "publisher_he": "הכנסת",
+    "file_page": 2,
+    "locator": "p.2, s.2 (Amendment 15 amends s.13(א) - adds gemel lehashkaa)",
+    "quote": "תיקון סעיף 13",
+    "basis": "ספר החוקים 2554 (gazette p.885 onward) (Amendment 15, 2016)"
+   }
+  ],
+  "status": "official",
+  "searched": "No consolidated official text: the CMA regulation collector holds only bills and memoranda, the Knesset site serves amendment gazettes only (Knesset OData list of 31 amending laws, all downloaded); Wikisource section notes used to tell which amendment touched each section; Nevo 70391 and Wikisource are the copies replaced",
+  "notes": "Latest change to s.13: Amendment 15 (ס\"ח 2554, 2016)."
+ },
+ {
+  "law": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+  "section": "s.20 (employee chooses the fund; employer may not condition)",
+  "cited_by": [
+   "PEN-06",
+   "SW-10",
+   "KH-03 (link-less, s.20(א), (ב))"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+    "publisher_he": "הכנסת",
+    "file_page": 9,
+    "locator": "p.9, s.20(א)",
+    "quote": "בחירת קופת גמל",
+    "basis": "ספר החוקים 2024 (gazette p.889 onward) - base text as enacted 2005; gazette page = file page + 888"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_313645.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 12), ה",
+    "publisher_he": "הכנסת",
+    "file_page": 2,
+    "locator": "p.2, s.2 (Amendment 12, 2015: rate of deposit, 20(א1))",
+    "quote": "ואת שיעור ההפקדה בעדו",
+    "basis": "ספר החוקים 2499 (gazette p.236 onward) (Amendment 12, 2015)"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_343666.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 16), ה",
+    "publisher_he": "הכנסת",
+    "file_page": 2,
+    "locator": "p.2, s.1 (Amendment 16, 2016, latest change to s.20)",
+    "quote": "תיקון סעיף 20",
+    "basis": "ספר החוקים 2555 (gazette p.896 onward) (Amendment 16, 2016)"
+   }
+  ],
+  "status": "official",
+  "searched": "No consolidated official text: the CMA regulation collector holds only bills and memoranda, the Knesset site serves amendment gazettes only (Knesset OData list of 31 amending laws, all downloaded); Wikisource section notes used to tell which amendment touched each section; Nevo 70391 and Wikisource are the copies replaced",
+  "notes": "Amendments to s.20: 2008, 2011, 2015 (A12), 2016 (Economic Plan law), 2016 (A16)."
+ },
+ {
+  "law": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+  "section": "s.22(א) (payments to a provident fund; gemel lehashkaa deposit ceiling)",
+  "cited_by": [
+   "KGL-02",
+   "KH-07"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+    "publisher_he": "הכנסת",
+    "file_page": 10,
+    "locator": "p.10, s.22(א)",
+    "quote": "השר ,באישור ועדת הכספים של הכנסת ,יקבע שיעור",
+    "basis": "ספר החוקים 2024 (gazette p.889 onward) - base text as enacted 2005; gazette page = file page + 888"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), ה",
+    "publisher_he": "הכנסת",
+    "file_page": 2,
+    "locator": "p.2 (Amendment 15 amends s.22: total payments to gemel lehashkaa)",
+    "quote": "תיקון סעיף 22",
+    "basis": "ספר החוקים 2554 (gazette p.885 onward) (Amendment 15, 2016)"
+   }
+  ],
+  "status": "official",
+  "searched": "No consolidated official text: the CMA regulation collector holds only bills and memoranda, the Knesset site serves amendment gazettes only (Knesset OData list of 31 amending laws, all downloaded); Wikisource section notes used to tell which amendment touched each section; Nevo 70391 and Wikisource are the copies replaced",
+  "notes": "Later amendments to s.22 (2016 ס\"ח 2582, 2017 ס\"ח 2592 and the HCJ 10042/16 ruling) were not pinned to a page here; check before relying on 22(ה) wording."
+ },
+ {
+  "law": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+  "section": "s.23 (withdrawal and transfer: 23(א)(1)(א)-(ב), 23(א)(2א), 23(א)(3), 23(ב)(1א), 23(ה)-(ו))",
+  "cited_by": [
+   "PEN-28",
+   "PEN-29",
+   "PEN-30",
+   "PEN-31",
+   "PF-17",
+   "TXP-17",
+   "PEN-28 figure figures.minimum_annuity",
+   "PEN-29 figure figures.minimum_accumulation",
+   "KH-17 (link-less, s.23(ב)(2))"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+    "publisher_he": "הכנסת",
+    "file_page": 11,
+    "locator": "p.11, s.23(א) as enacted",
+    "quote": "משיכת כספים מקופת גמל ,לרבות קבלת קצבה מקופת",
+    "basis": "ספר החוקים 2024 (gazette p.889 onward) - base text as enacted 2005; gazette page = file page + 888"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/17/law/17_lsr_300727.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 3), הת",
+    "publisher_he": "הכנסת",
+    "file_page": 4,
+    "locator": "p.4 (Amendment 3, 2008: s.23(ה) \"סכום קצבה מזערי\" 3,850)",
+    "quote": "סכום קצבה מזערי",
+    "basis": "ספר החוקים 2130 (gazette p.160 onward) (Amendment 3, 2008); doubled text layer on p.3"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301133.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 5 והור",
+    "publisher_he": "הכנסת",
+    "file_page": 3,
+    "locator": "p.3 (Amendment 5, 2010: \"סכום צבירה מזערי\" 80,000)",
+    "quote": "סכום צבירה מזערי",
+    "basis": "ספר החוקים 2262 (gazette p.50 onward) (Amendment 5, 2010)"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_502710.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 21), ה",
+    "publisher_he": "הכנסת",
+    "file_page": 2,
+    "locator": "p.2, s.1 (Amendment 21, 2018: s.23(א)(3)(ב) severance withdrawals)",
+    "quote": "משיכה כאמור בפסקת משנה (א) תיעשה רק אם יחסי העבודה הסתיימו",
+    "basis": "ספר החוקים 2730 (gazette p.730 onward) (Amendment 21, 2018)"
+   }
+  ],
+  "status": "official",
+  "searched": "No consolidated official text: the CMA regulation collector holds only bills and memoranda, the Knesset site serves amendment gazettes only (Knesset OData list of 31 amending laws, all downloaded); Wikisource section notes used to tell which amendment touched each section; Nevo 70391 and Wikisource are the copies replaced",
+  "notes": "s.23 was amended 14 times (2008-2020). Pinned: base, A3 (minimum annuity), A5 (minimum accumulation), A21 (severance). Also touched: 2009 (ס\"ח 2203), 2011 (2280), 2012 (2354, ITO amendment 190), 2014 (2427), 2015 (2499 A12, p.2), 2015 (2507 A13, p.3), 2016 (2582), 2016 (2592), 2020 (2835, corona temporary order). The current wording of 23(א)(1)(ב), (2א) is not pinned to its last amending page."
+ },
+ {
+  "law": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+  "section": "ss.24א-24ב (consolidation of inactive pension accounts)",
+  "cited_by": [
+   "PF-28"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_315848.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 13 והו",
+    "publisher_he": "הכנסת",
+    "file_page": 10,
+    "locator": "p.10 (Amendment 13, 2015: adds s.24ב; s.24א on the pages before)",
+    "quote": "איחוד חשבונות בעת הצטרפות לקרן פנסיה",
+    "basis": "ספר החוקים 2507 (gazette p.14 onward) (Amendment 13, 2015); doubled text layer on some pages"
+   }
+  ],
+  "status": "official",
+  "searched": "No consolidated official text: the CMA regulation collector holds only bills and memoranda, the Knesset site serves amendment gazettes only (Knesset OData list of 31 amending laws, all downloaded); Wikisource section notes used to tell which amendment touched each section; Nevo 70391 and Wikisource are the copies replaced",
+  "notes": "ss.24א-24ב were added by Amendment 13 (ס\"ח 2507) and not amended since (Wikisource note only תשע\"ו)."
+ },
+ {
+  "law": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+  "section": "ss.25(ב), 27, 30(א) (no assignment / attachment of member rights; separation of assets; no attachment of fund assets)",
+  "cited_by": [
+   "PF-29",
+   "REG-18"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+    "publisher_he": "הכנסת",
+    "file_page": 11,
+    "locator": "p.11, s.25",
+    "quote": "איסור העברה, שעבוד או עיקול",
+    "basis": "ספר החוקים 2024 (gazette p.889 onward) - base text as enacted 2005; gazette page = file page + 888"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+    "publisher_he": "הכנסת",
+    "file_page": 12,
+    "locator": "p.12, ss.27, 30(א)",
+    "quote": "נכסי קופת גמל אינם ניתנים לעיקול",
+    "basis": "ספר החוקים 2024 (gazette p.889 onward) - base text as enacted 2005; gazette page = file page + 888"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), ה",
+    "publisher_he": "הכנסת",
+    "file_page": 2,
+    "locator": "p.2 (Amendment 15 amends s.25: gemel lehashkaa; doubled text layer, no clean quote)",
+    "quote": "",
+    "basis": "ספר החוקים 2554 (gazette p.885 onward) (Amendment 15, 2016)"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_348687.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (תיקוני חקיקה), התשע\"ו-2016",
+    "publisher_he": "הכנסת",
+    "file_page": 8,
+    "locator": "p.8 (2016 Financial Services law amends s.27(ד))",
+    "quote": "במקום \"השר רשאי לקבוע\" יבוא \"הממונה רשאי לתת\"",
+    "basis": "ספר החוקים 2582 (gazette p.1259 onward) (חוק הפיקוח על שירותים פיננסיים (תיקוני חקיקה), 2016)"
+   }
+  ],
+  "status": "official",
+  "searched": "No consolidated official text: the CMA regulation collector holds only bills and memoranda, the Knesset site serves amendment gazettes only (Knesset OData list of 31 amending laws, all downloaded); Wikisource section notes used to tell which amendment touched each section; Nevo 70391 and Wikisource are the copies replaced",
+  "notes": "s.30 was changed in 2015 only to delete \"של הכנסת\" (A13 p.13)."
+ },
+ {
+  "law": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+  "section": "s.32 (expenses, management fees, distribution fee)",
+  "cited_by": [
+   "PF-01",
+   "KH-22 (link-less, s.32(א))"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+    "publisher_he": "הכנסת",
+    "file_page": 13,
+    "locator": "p.13, s.32(א)",
+    "quote": "חברה מנהלת לא תגבה מנכסי קופת גמל שבניהולה",
+    "basis": "ספר החוקים 2024 (gazette p.889 onward) - base text as enacted 2005; gazette page = file page + 888"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_366997.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 20), ה",
+    "publisher_he": "הכנסת",
+    "file_page": 2,
+    "locator": "p.2, s.1 (Amendment 20, 2017, latest change to s.32)",
+    "quote": "תיקון סעיף 32",
+    "basis": "ספר החוקים 2597 (gazette p.336 onward) (Amendment 20, 2017)"
+   }
+  ],
+  "status": "official",
+  "searched": "No consolidated official text: the CMA regulation collector holds only bills and memoranda, the Knesset site serves amendment gazettes only (Knesset OData list of 31 amending laws, all downloaded); Wikisource section notes used to tell which amendment touched each section; Nevo 70391 and Wikisource are the copies replaced",
+  "notes": "Amendments to s.32: 2011, 2016 (A13), 2017 (A20)."
+ },
+ {
+  "law": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+  "section": "ss.34א-34ז (chapter ג סימן ה1: return supplement for pension funds; target return 5.15%)",
+  "cited_by": [
+   "PEN-18",
+   "PEN-35",
+   "REG-21",
+   "PEN-18 figures guaranteed_share, target_return"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/24/law/24_lsr_611567.pdf",
+    "title_he": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות ",
+    "publisher_he": "הכנסת",
+    "file_page": 34,
+    "locator": "p.34, s.34ב (\"תשואת היעד\" 5.15%; 70% for existing members)",
+    "quote": "ריבית שנתית בשיעור ;5.15%",
+    "basis": "ספר החוקים 2932 (gazette p.51 onward) (Economic Efficiency Law 2021, ס\"ח 2932, added סימן ה1)"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/24/law/24_lsr_611567.pdf",
+    "title_he": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות ",
+    "publisher_he": "הכנסת",
+    "file_page": 33,
+    "locator": "pp.33-39, ss.34א-34ז (doubled text layer on several pages)",
+    "quote": "השלמת תשואה לקרנות",
+    "basis": "ספר החוקים 2932 (gazette p.51 onward) (Economic Efficiency Law 2021)"
+   }
+  ],
+  "status": "official",
+  "searched": "No consolidated official text: the CMA regulation collector holds only bills and memoranda, the Knesset site serves amendment gazettes only (Knesset OData list of 31 amending laws, all downloaded); Wikisource section notes used to tell which amendment touched each section; Nevo 70391 and Wikisource are the copies replaced",
+  "notes": "The whole סימן ה1 comes from ס\"ח 2932 (15.11.2021, gazette p.51 onward); Wikisource marks no later change."
+ },
+ {
+  "law": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+  "section": "s.35 (reports to members)",
+  "cited_by": [
+   "PF-26",
+   "PF-33"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+    "publisher_he": "הכנסת",
+    "file_page": 14,
+    "locator": "p.14, s.35",
+    "quote": "חברה מנהלת תשלח לעמיתים",
+    "basis": "ספר החוקים 2024 (gazette p.889 onward) - base text as enacted 2005; gazette page = file page + 888"
+   }
+  ],
+  "status": "official",
+  "searched": "No consolidated official text: the CMA regulation collector holds only bills and memoranda, the Knesset site serves amendment gazettes only (Knesset OData list of 31 amending laws, all downloaded); Wikisource section notes used to tell which amendment touched each section; Nevo 70391 and Wikisource are the copies replaced",
+  "notes": "s.35 never amended (Wikisource)."
+ },
+ {
+  "law": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+  "section": "ss.39(ג), 41, 42 (Commissioner supervision; voluntary and compelled transfer of management)",
+  "cited_by": [
+   "REG-17",
+   "REG-19"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+    "publisher_he": "הכנסת",
+    "file_page": 15,
+    "locator": "p.15, ss.39, 41, 42",
+    "quote": "העברת ניהול מרצון",
+    "basis": "ספר החוקים 2024 (gazette p.889 onward) - base text as enacted 2005; gazette page = file page + 888"
+   }
+  ],
+  "status": "official",
+  "searched": "No consolidated official text: the CMA regulation collector holds only bills and memoranda, the Knesset site serves amendment gazettes only (Knesset OData list of 31 amending laws, all downloaded); Wikisource section notes used to tell which amendment touched each section; Nevo 70391 and Wikisource are the copies replaced",
+  "notes": "s.39 amended 2008, 2011 (ס\"ח 2316), 2016 (2582), 2018 (2741 consumer law A57), 2018 (2759 BoI law A7) - the current 39(ג) wording not pinned; ss.41-42 never amended."
+ },
+ {
+  "law": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+  "section": "s.57 (self-directed (IRA) funds)",
+  "cited_by": [
+   "IRA-01",
+   "TXK-16"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+    "publisher_he": "הכנסת",
+    "file_page": 21,
+    "locator": "p.21, s.57(א)",
+    "quote": "על קופת גמל בניהול אישי שאושרה לפי",
+    "basis": "ספר החוקים 2024 (gazette p.889 onward) - base text as enacted 2005; gazette page = file page + 888"
+   }
+  ],
+  "status": "official",
+  "searched": "No consolidated official text: the CMA regulation collector holds only bills and memoranda, the Knesset site serves amendment gazettes only (Knesset OData list of 31 amending laws, all downloaded); Wikisource section notes used to tell which amendment touched each section; Nevo 70391 and Wikisource are the copies replaced",
+  "notes": "s.57 changed only in 2015 (A13: deletion of \"של הכנסת\")."
+ },
+ {
+  "law": "חוק גיל פרישה, התשס\"ד-2004",
+  "section": "s.3 (retirement age: 67 for a man, 65 for a woman)",
+  "cited_by": [
+   "KH-12",
+   "PEN-26",
+   "KH-12 figures retirement_age_men, retirement_age_women",
+   "PEN-26 figures retirement_age_men, retirement_age_women",
+   "SW-21"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",
+    "title_he": "חוק גיל פרישה, התשס\"ד-2004",
+    "publisher_he": "הכנסת",
+    "file_page": 1,
+    "locator": "p.1, s.3 as enacted (67 / 62)",
+    "quote": "בחוק זה ­ גיל הפרישה",
+    "basis": "ספר החוקים 1919 (gazette p.46) - base text"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/24/law/24_lsr_611801.pdf",
+    "title_he": "חוק התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2021 ו-2022), התשפ\"ב-2021",
+    "publisher_he": "הכנסת",
+    "file_page": 172,
+    "locator": "p.172, s.73(1) (2021: s.3 now \"לגבר וגיל 65לאישה\")",
+    "quote": "יבוא \"לגבר וגיל 65לאישה\"",
+    "basis": "ספר החוקים 2933 (gazette p.80) (Economic Plan Law 2021-2022, chapter ט\"ז, Amendment 7; file p.172 = gazette p.250)"
+   }
+  ],
+  "status": "official",
+  "searched": "Knesset OData (8 amending laws, all downloaded); Wikisource section notes; no consolidated official text (the National Insurance Institute and CMA publish none for this law); Wikisource is the copy replaced",
+  "notes": "Current s.3 = 2005 text as amended by ס\"ח 2933 (18.11.2021). KH-12 quotes s.3 as \"הוא גיל 67 לגבר וגיל 65 לאישה (בחוק זה – גיל הפרישה)\": consistent with the amended text."
+ },
+ {
+  "law": "חוק גיל פרישה, התשס\"ד-2004",
+  "section": "ss.4-5 (mandatory retirement age 67; early retirement age 60)",
+  "cited_by": [
+   "PEN-26",
+   "PEN-26 figure figures.early_retirement_age",
+   "KGL-09",
+   "TXK-10"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",
+    "title_he": "חוק גיל פרישה, התשס\"ד-2004",
+    "publisher_he": "הכנסת",
+    "file_page": 1,
+    "locator": "p.1, ss.4, 5",
+    "quote": "הגיל שבהגיעו אליו זכאי אדם לקבל גמלה",
+    "basis": "ספר החוקים 1919 (gazette p.46) - base text"
+   }
+  ],
+  "status": "official",
+  "searched": "Knesset OData (8 amending laws, all downloaded); Wikisource section notes; no consolidated official text (the National Insurance Institute and CMA publish none for this law); Wikisource is the copy replaced",
+  "notes": "ss.4-5 never amended (Wikisource); the age 60 figure is in s.5 on the same page."
+ },
+ {
+  "law": "חוק גיל פרישה, התשס\"ד-2004",
+  "section": "ss.6, 9 and the schedule (transitional ages for women born up to December 1969)",
+  "cited_by": [
+   "PEN-26",
+   "KH-12"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",
+    "title_he": "חוק גיל פרישה, התשס\"ד-2004",
+    "publisher_he": "הכנסת",
+    "file_page": 2,
+    "locator": "p.2, ss.6, 9 as enacted (parts א-ג of the schedule)",
+    "quote": "בחלק ב' בתוספת",
+    "basis": "ספר החוקים 1919 (gazette p.46) - base text"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/24/law/24_lsr_611801.pdf",
+    "title_he": "חוק התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2021 ו-2022), התשפ\"ב-2021",
+    "publisher_he": "הכנסת",
+    "file_page": 172,
+    "locator": "p.172, s.73(2) (s.6(2): \"עד חודש דצמבר 1969\"; s.6(3) deleted; chapter ד repealed)",
+    "quote": "עד חודש דצמבר ;\"1969",
+    "basis": "ספר החוקים 2933 (gazette p.80) (Economic Plan Law 2021-2022)"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/24/law/24_lsr_611801.pdf",
+    "title_he": "חוק התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2021 ו-2022), התשפ\"ב-2021",
+    "publisher_he": "הכנסת",
+    "file_page": 174,
+    "locator": "p.174 (new schedule rows up to \"ינואר 1969 עד דצמבר 1969 64 ו-9 חודשים\"; file p.174 = gazette p.252)",
+    "quote": "ינואר 1969עד דצמבר 1969",
+    "basis": "ספר החוקים 2933 (gazette p.80) (Economic Plan Law 2021-2022)"
+   }
+  ],
+  "status": "official",
+  "searched": "Knesset OData (8 amending laws, all downloaded); Wikisource section notes; no consolidated official text (the National Insurance Institute and CMA publish none for this law); Wikisource is the copy replaced",
+  "notes": "Also amended 2011 (A3, ס\"ח 2328), 2014 (2459), 2016 (2592), 2017 (A6, 2652); the 2021 law rewrote the women's rows, so it carries the current wording."
+ },
+ {
+  "law": "חוק הגנת השכר, התשי\"ח-1958",
+  "section": "s.24 and the schedule (payslip items 5(6), 6(4), 7)",
+  "cited_by": [
+   "PEN-36"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/17/law/17_lsr_300652.pdf",
+    "title_he": "חוק הגנת השכר (תיקון מס' 24), התשס\"ח-2008",
+    "publisher_he": "הכנסת",
+    "file_page": 2,
+    "locator": "p.2, s.24 (replaced in 2008: \"פנקס שכר ותלוש שכר\")",
+    "quote": "מעביד חייב לנהל פנקס שכר ולמסור לכל עובד",
+    "basis": "ספר החוקים 2162 (gazette p.612) (Amendment 24, 2008)"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/17/law/17_lsr_300652.pdf",
+    "title_he": "חוק הגנת השכר (תיקון מס' 24), התשס\"ח-2008",
+    "publisher_he": "הכנסת",
+    "file_page": 6,
+    "locator": "p.6, schedule items 5(6), 6(4), 7",
+    "quote": "ניכוי לקופת גמל ,שיפורט לפי הקופה שאליה הניכוי מיועד וסכומו",
+    "basis": "ספר החוקים 2162 (gazette p.612) (Amendment 24, 2008)"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/19/law/19_lsr_306572.pdf",
+    "title_he": "חוק להחלפת המונח מעביד (תיקוני חקיקה), התשע\"ד-2014",
+    "publisher_he": "הכנסת",
+    "file_page": 2,
+    "locator": "p.2, s.1 (\"המעביד\" becomes \"המעסיק\" in the listed laws)",
+    "quote": "במקום \"המעביד\" יבוא \"המעסיק\"",
+    "basis": "ספר החוקים 2459 (gazette p.600) (2014)"
+   }
+  ],
+  "status": "official",
+  "searched": "Knesset OData (32 amending laws); Wikisource section notes (s.24 and the schedule: 2008 and 2014 only); no consolidated official text found; Wikisource is the copy replaced",
+  "notes": "The 2014 law replacing the term \"מעביד\" (ס\"ח 2459, gazette p.600) changed \"המעביד\" to \"המעסיק\" throughout, which is why PEN-36 quotes item 7 as \"לרבות הפרשות המעסיק לקופת גמל\"; the 2008 gazette reads \"הפרשות המעביד\". The quote in PEN-36 matches the current (post-2014) wording, not the 2008 page."
+ },
+ {
+  "law": "חוק הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים), התשס\"ה-2005",
+  "section": "ss.13, 19(א)(1), 27(ב)(7), 28(ב) (transactions as part of advice; incentives; written advice agreement; adviser pay)",
+  "cited_by": [
+   "SW-17"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299985.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני), התשס\"ה-2005",
+    "publisher_he": "הכנסת",
+    "file_page": 9,
+    "locator": "p.9, s.13",
+    "quote": "ביצוע עסקה בעבור לקוח כחלק מייעוץ פנסיוני",
+    "basis": "ספר החוקים 2024 (gazette p.918) - base text (law then titled \"עיסוק בייעוץ פנסיוני ובשיווק פנסיוני\")"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299985.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני), התשס\"ה-2005",
+    "publisher_he": "הכנסת",
+    "file_page": 10,
+    "locator": "p.10, s.19",
+    "quote": "תמריצים ועמלות בקשר עם ייעוץ פנסיוני",
+    "basis": "ספר החוקים 2024 (gazette p.918) - base text"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299985.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני), התשס\"ה-2005",
+    "publisher_he": "הכנסת",
+    "file_page": 12,
+    "locator": "p.12, s.27; s.28 on p.13",
+    "quote": "יועץ פנסיוני יערוך הסכם בכתב עם לקוח",
+    "basis": "ספר החוקים 2024 (gazette p.918) - base text"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע\"א-2011",
+    "publisher_he": "הכנסת",
+    "file_page": 1,
+    "locator": "p.1 (Amendment 3, 2011: amends s.27; adds chapter ה1 on the clearing house)",
+    "quote": "תיקון סעיף 27",
+    "basis": "ספר החוקים 2280 (gazette p.366) (Amendment 3, 2011)"
+   }
+  ],
+  "status": "official",
+  "searched": "Knesset OData (16 amending laws; base and Amendment 3 read here); Wikisource section notes; no consolidated official text found; Wikisource is the copy replaced",
+  "notes": "s.13 was amended in 2015 (ס\"ח 2507) and 2015 (2510); ss.19, 28 in 2008 (2125/2130); those later pages were not pinned here."
+ },
+ {
+  "law": "חוק הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים), התשס\"ה-2005",
+  "section": "ss.31ט, 31יא, 31יד, 31טז (central pension clearing house)",
+  "cited_by": [
+   "PF-22",
+   "SW-18"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע\"א-2011",
+    "publisher_he": "הכנסת",
+    "file_page": 5,
+    "locator": "p.5, s.31ט(א)",
+    "quote": "השימוש במערכת סליקה פנסיונית מרכזית",
+    "basis": "ספר החוקים 2280 (gazette p.366) (Amendment 3, 2011, added chapter ה1)"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע\"א-2011",
+    "publisher_he": "הכנסת",
+    "file_page": 7,
+    "locator": "p.7, s.31יא",
+    "quote": "על חברה להפעלת מערכת סליקה פנסיונית מרכזית",
+    "basis": "ספר החוקים 2280 (gazette p.366) (Amendment 3, 2011)"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע\"א-2011",
+    "publisher_he": "הכנסת",
+    "file_page": 9,
+    "locator": "p.9, s.31טז; s.31יד on p.8",
+    "quote": "הוראות בדבר אבטחת מידע, שמירתו ונגישותו",
+    "basis": "ספר החוקים 2280 (gazette p.366) (Amendment 3, 2011)"
+   }
+  ],
+  "status": "official",
+  "searched": "Knesset OData (16 amending laws; base and Amendment 3 read here); Wikisource section notes; no consolidated official text found; Wikisource is the copy replaced",
+  "notes": "s.31ט later amended 2015 (ס\"ח 2507) and 2016 (2582); s.31טז in 2015 and 2024 (Privacy Protection Law amendment 13, ס\"ח 3287) - not pinned."
+ },
+ {
+  "law": "חוק הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים), התשס\"ה-2005",
+  "section": "s.1 and s.32(ח)(1) (definitions; administrative fine)",
+  "cited_by": [
+   "PF-22",
+   "SW-18"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע\"א-2011",
+    "publisher_he": "הכנסת",
+    "file_page": 12,
+    "locator": "p.12 (Amendment 3, 2011: fines for breach of ss.31ט-31יא)",
+    "quote": "בניגוד סעיף 31ט",
+    "basis": "ספר החוקים 2280 (gazette p.366) (Amendment 3, 2011)"
+   }
+  ],
+  "status": "official",
+  "searched": "Knesset OData (16 amending laws; base and Amendment 3 read here); Wikisource section notes; no consolidated official text found; Wikisource is the copy replaced",
+  "notes": "s.32 was amended again in 2023 (ס\"ח 3046) and on 22.7.2026 (Consumer Protection Law amendment 74, ס\"ח 3569) - the current 32(ח)(1) wording is not pinned; s.1 has seven amendments (latest 2024)."
+ },
+ {
+  "law": "חוק הפיקוח על שירותים פיננסיים (ביטוח), התשמ\"א-1981",
+  "section": "ss.1א, 2 (the Authority; the Commissioner)",
+  "cited_by": [
+   "REG-17"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_348687.pdf",
+    "title_he": "חוק הפיקוח על שירותים פיננסיים (תיקוני חקיקה), התשע\"ו-2016",
+    "publisher_he": "הכנסת",
+    "file_page": 2,
+    "locator": "p.2 (2016: chapter א - s.1א establishes the Authority; s.2 the Commissioner)",
+    "quote": "מוקמת בזה רשות שוק ההון ביטוח וחיסכון",
+    "basis": "ספר החוקים 2582 (gazette p.1254) (חוק הפיקוח על שירותים פיננסיים (תיקוני חקיקה), התשע\"ו-2016)"
+   }
+  ],
+  "status": "official",
+  "searched": "Knesset OData (48 amending laws); Wikisource section notes; no consolidated official text found; Wikisource is the copy replaced",
+  "notes": "s.1א set by ס\"ח 2582 (21.8.2016) and unchanged since; s.2 also amended 2005, 2008 and 2018 (ס\"ח 2759, BoI law amendment 7) - that last page not pinned."
+ },
+ {
+  "law": "חוק הפיקוח על שירותים פיננסיים (ביטוח), התשמ\"א-1981",
+  "section": "ss.68(א), 70(א) (powers to keep an insurer stable; authorised manager)",
+  "cited_by": [
+   "REG-19"
+  ],
+  "official": [
+   {
+    "url": "https://fs.knesset.gov.il/9/law/9_lsr_209334.PDF",
+    "title_he": "חוק הפיקוח על עסקי ביטוח, התשמ\"א-1981",
+    "publisher_he": "הכנסת",
+    "file_page": 15,
+    "locator": "p.15, s.68 as enacted (law then \"חוק הפיקוח על עסקי ביטוח\")",
+    "quote": "סמכויות לשמירת יציבות של מבטח",
+    "basis": "ספר החוקים 1021 (gazette p.208) - base text 1981"
+   },
+   {
+    "url": "https://fs.knesset.gov.il/9/law/9_lsr_209334.PDF",
+    "title_he": "חוק הפיקוח על עסקי ביטוח, התשמ\"א-1981",
+    "publisher_he": "הכנסת",
+    "file_page": 16,
+    "locator": "p.16, s.70",
+    "quote": "סמכויות מנהל מורשה",
+    "basis": "ספר החוקים 1021 (gazette p.208) - base text 1981"
+   }
+  ],
+  "status": "official",
+  "searched": "Knesset OData (48 amending laws); Wikisource section notes; no consolidated official text found; Wikisource is the copy replaced",
+  "notes": "ss.68 and 70 were amended in 2016 (ס\"ח 2582, wording \"המפקח\" to \"הממונה\"); s.68 also 1993 and 2005. The 2016 pages were not pinned."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (ביטוח) (תנאים בחוזי ביטוח), התשמ\"ב-1981",
+  "section": "reg. 1 (definitions)",
+  "cited_by": [
+   "INS-25"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/iLs08NX3KGA9~rkIKOndkkLRxv00yJMyWBaZlR4KaIc=#page=16",
+    "title_he": "תקנות הפיקוח על עסקי ביטוח (תנאים בחוזי ביטוח), התשמ\"ב-1981 (קובץ התקנות 4290)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 16,
+    "locator": "p.16 (gazette p.300), reg. 1",
+    "quote": "תנאים בחוזי ביטוח",
+    "basis": "base text, קובץ התקנות 4290 (1981); scanned booklet, OCR text"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=8",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (ביטוח) (תנאים בחוזי ביטוח) (תיקון), התשע\"ב-2012 (קובץ התקנות 7131)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 8,
+    "locator": "p.8, s.1 (adds \"קופת ביטוח\" to reg. 1; continues on p.9)",
+    "quote": "אחרי ההגדרה \"ביטוח חיים משתתף ברווחים\" יבוא",
+    "basis": "קובץ התקנות 7131 (21.6.2012), gazette p.1264; in force 1.1.2013"
+   }
+  ],
+  "status": "official",
+  "searched": "Wikisource amendment box (4290 base; 5682 1995; 5804 1996; 6284 2004; 6609 2007; 7131 2012 [box links 7151 in error, the amendment is on gazette p.1264 = 7131 file p.8]); Reshumot file service; CMA collector; no consolidated CMA PDF found",
+  "notes": "reg. 1 also amended 1995 (5682) and 2004 (6284)."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (ביטוח) (תנאים בחוזי ביטוח), התשמ\"ב-1981",
+  "section": "reg. 6א (management fee on a profit-sharing policy: 1/12% a month; up to 2/12% with approval; 6א(א2))",
+  "cited_by": [
+   "INS-25",
+   "INS-25 figures balance_fee_cap, balance_fee_cap_with_approval"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3nwsTVeYYmhGDid2kIqKI~Hk=#page=3",
+    "title_he": "תקנות הפיקוח על עסקי ביטוח (תנאים בחוזי ביטוח) (תיקון), התשס\"ד-2004 (קובץ התקנות 6284)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 3,
+    "locator": "p.3, s.3 (replaces reg. 6א(א), adds 6א(א1))",
+    "quote": "המפקח רשאי לאשר דמי ניהול בשיעור העולה על הקבוע בתקנת משנה (א)",
+    "basis": "קובץ התקנות 6284 (12.1.2004)"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTugNmENKcUIwHrUSZW9ZBg=#page=3",
+    "title_he": "תקנות הפיקוח על עסקי ביטוח (תנאים בחוזי ביטוח) (תיקון), התשס\"ז-2007 (קובץ התקנות 6609)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 3,
+    "locator": "pp.3-4 (adds reg. 6א(א2))",
+    "quote": "מבטח המנפיק פוליסות ביטוח חיים משתתף ברווחים שאינן קופות ביט",
+    "basis": "קובץ התקנות 6609 (2007)"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=9",
+    "title_he": "תקנות הפיקוח על שירותים פיננסיים (ביטוח) (תנאים בחוזי ביטוח) (תיקון), התשע\"ב-2012 (קובץ התקנות 7131)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 9,
+    "locator": "p.9, s.2 (current opening of 6א(א): \"פוליסה שאינה קופת ביטוח\")",
+    "quote": "מבטח המנפיק פוליסת ביטוח חיים משתתף ברווחים שאינה קופת ביטוח",
+    "basis": "קובץ התקנות 7131 (21.6.2012), in force 1.1.2013"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/BTwXToK9tgT1T4C743xB1YM5f+QhBADNjCgwTr9rv3c=#page=2",
+    "title_he": "תקנות הפיקוח על עסקי ביטוח (תנאים בחוזי ביטוח) (תיקון), התשנ\"ה-1995 (קובץ התקנות 5682)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 2,
+    "locator": "p.2, s.2 (reg. 6א first added)",
+    "quote": "הוספת תקנה 6א",
+    "basis": "קובץ התקנות 5682 (23.5.1995) - original 6א, superseded in part"
+   }
+  ],
+  "status": "official",
+  "searched": "Wikisource amendment box (4290 base; 5682 1995; 5804 1996; 6284 2004; 6609 2007; 7131 2012 [box links 7151 in error, the amendment is on gazette p.1264 = 7131 file p.8]); Reshumot file service; CMA collector; no consolidated CMA PDF found",
+  "notes": "INS-25 quotes 6א(א) as \"פוליסות ביטוח חיים משתתף ברווחים שאינה קופת ביטוח\": the 2012 text (7131 p.9) reads \"פוליסת ביטוח חיים משתתף ברווחים שאינה קופת ביטוח\" (singular) - a one-letter quote difference to fix in the rule's quote. The 1/12% and 2/12% rates are in the 2004 text (6284 p.3; the PDF is scanned, OCR shows \"1/12%\" and \"2/12%\")."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (ביטוח) (תנאים בחוזי ביטוח), התשמ\"ב-1981",
+  "section": "reg. 6ב (annual report to policyholders within three months of the balance-sheet year)",
+  "cited_by": [
+   "INS-26",
+   "INS-26 figure figures.report_deadline_months"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/E5dM3Lqs3zVhAvU4rMf6c5wNTVAGlOIVXHsJEoAgsJ4=#page=2",
+    "title_he": "תקנות פיקוח על עסקי ביטוח (תנאים בחוזי ביטוח) (תיקון), התשנ\"ז-1996 (קובץ התקנות 5804)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 2,
+    "locator": "pp.2-3, s.2 (adds reg. 6ב)",
+    "quote": "בחוזה לביטוח חיים ייקבע כי מבטח המנפיק פוליסות ביטוח חיים",
+    "basis": "קובץ התקנות 5804 (31.12.1996)"
+   }
+  ],
+  "status": "official",
+  "searched": "Wikisource amendment box (4290 base; 5682 1995; 5804 1996; 6284 2004; 6609 2007; 7131 2012 [box links 7151 in error, the amendment is on gazette p.1264 = 7131 file p.8]); Reshumot file service; CMA collector; no consolidated CMA PDF found",
+  "notes": "reg. 6ב not amended since (Wikisource)."
+ },
+ {
+  "law": "תקנות הפיקוח על שירותים פיננסיים (ביטוח) (דרכי השקעת ההון והקרנות של מבטח וניהול התחייבויותיו), התשס\"א-2001",
+  "section": "reg. 1 (definitions; \"ביטוח חיים משתתף ברווחים\" by reference)",
+  "cited_by": [
+   "INS-25"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/mh6R6bmXcoR6N~XeNh6QPrA2iEfIYDZsqtdZ2FAMxdQ=#page=8",
+    "title_he": "תקנות הפיקוח על עסקי ביטוח (דרכי השקעת ההון והקרנות של מבטח וניהול התחייבויותיו), התשס\"א-2001 (קובץ התקנות 6094)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 8,
+    "locator": "pp.7-8, reg. 1 (gazette p.607-608)",
+    "quote": "כהגדרתם בתקנות הפיקוח על עסקי ביטוח (פרטי דין וחשבון)",
+    "basis": "base text, קובץ התקנות 6094 (2001); reg. 1 amended 2004 (6333)"
+   }
+  ],
+  "status": "official",
+  "searched": "Wikisource box (6094; 6224 2003; 6333 2004; 6793 2009; 7125 2012); Reshumot file service",
+  "notes": "reg. 1 defines \"ביטוח חיים משתתף ברווחים\" by reference to the report-details regulations of 1998, which were REPEALED on 20.6.2023 (ק\"ת 10695). The definition chain now points to a repealed instrument; the 2004 amendment (6333) of reg. 1 was not pinned."
+ },
+ {
+  "law": "תקנות הפיקוח על עסקי ביטוח (פרטי דין וחשבון), התשנ\"ח-1998",
+  "section": "reg. 1 (definitions) - repealed 2023",
+  "cited_by": [
+   "INS-25"
+  ],
+  "official": [
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/7C66hQ7JW8mJlcziZA1hgK1PPp5NbPw07CG3J3T~8lA=#page=2",
+    "title_he": "תקנות הפיקוח על עסקי ביטוח (פרטי דין וחשבון) (ביטול), התשפ\"ג-2023 (קובץ התקנות 10695)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 2,
+    "locator": "p.2, reg. 1 (repeal)",
+    "quote": "תקנות הפיקוח על עסקי ביטוח (פרטי דין וחשבון) ,התשנ\"ח - 21998-בטלות",
+    "basis": "קובץ התקנות 10695 (28.6.2023), gazette p.1990"
+   },
+   {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/qp4kOfn567Y9SVzCZ9fztqtrgsHQki1Al7l1DteQKBc=#page=2",
+    "title_he": "תקנות הפיקוח על עסקי ביטוח (פרטי דין וחשבון), התשנ\"ח-1998 (קובץ התקנות 5884)",
+    "publisher_he": "רשומות (משרד המשפטים)",
+    "file_page": 2,
+    "locator": "p.2, reg. 1 as it stood until repeal",
+    "quote": "פרק א' :פרשנות",
+    "basis": "repealed text, קובץ התקנות 5884 (1998)"
+   }
+  ],
+  "status": "official",
+  "searched": "Wikisource box (marked repealed תשפ\"ג); Reshumot file service",
+  "notes": "The regulations were repealed on 20.6.2023. INS-25 already says \"marked repealed\"; cite the repeal booklet and, for the historical definition only, the 1998 booklet."
+ },
+ {
+  "law": "אלטשולר שחם חיסכון פלוס – תקנון תקני לקופת גמל להשקעה, מהדורה מרץ 2025",
+  "section": "whole document",
+  "cited_by": [
+   "SW-15 [3]",
+   "SW-21 [3]"
+  ],
+  "official": [
+   {
+    "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
+    "title_he": "אלטשולר שחם חיסכון פלוס – תקנון תקני לקופת גמל להשקעה, מהדורה מרץ 2025",
+    "publisher_he": "",
+    "file_page": null,
+    "locator": "",
+    "quote": "",
+    "basis": "institution document"
+   }
+  ],
+  "status": "not-a-copy",
+  "searched": "Checked 2026-10-25: each file opens (curl 200); first page read",
+  "notes": "Institution bylaws (14 pages), not a copy of an official text. Label it institution. Its clauses follow the CMA template 'תקנון תקני לקופת גמל להשקעה' (gov.il regulation-2829/he/regulation_hm_takanongemel.pdf, 2016); where a rule needs the regulatory rule rather than this fund's terms, cite that template or the law/circular behind the clause. These links sit in the pointer rules SW-15, SW-21, SW-38 as bare numbers [1]..[8] with no per-link strength word; the extract marked them copies. Fix: give each link its own strength word (or point to the cited rules only)."
+ },
+ {
+  "law": "אינפיניטי – תקנון תקני לקופת גמל להשקעה, בתוקף מיום 1.7.2024",
+  "section": "whole document",
+  "cited_by": [
+   "SW-15 [8]"
+  ],
+  "official": [
+   {
+    "url": "https://infinity.co.il/wp-content/uploads/2025/07/תקנון-גמל-להשקעה-בתוקף-מיום-1.7.2024.pdf",
+    "title_he": "אינפיניטי – תקנון תקני לקופת גמל להשקעה, בתוקף מיום 1.7.2024",
+    "publisher_he": "",
+    "file_page": null,
+    "locator": "",
+    "quote": "",
+    "basis": "institution document"
+   }
+  ],
+  "status": "not-a-copy",
+  "searched": "Checked 2026-10-25: each file opens (curl 200); first page read",
+  "notes": "Institution bylaws (13 pages), not a copy. Label institution. These links sit in the pointer rules SW-15, SW-21, SW-38 as bare numbers [1]..[8] with no per-link strength word; the extract marked them copies. Fix: give each link its own strength word (or point to the cited rules only)."
+ },
+ {
+  "law": "הראל – קופת גמל להשקעה, עיקרי התוכנית (flyer)",
+  "section": "whole document",
+  "cited_by": [
+   "SW-21 [8]"
+  ],
+  "official": [
+   {
+    "url": "https://www.harel-group.co.il/long-term-savings/funding-saving/join/doclib/%d7%92%d7%9e%d7%9c%20%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94.pdf",
+    "title_he": "הראל – קופת גמל להשקעה, עיקרי התוכנית (flyer)",
+    "publisher_he": "",
+    "file_page": null,
+    "locator": "",
+    "quote": "",
+    "basis": "institution document"
+   }
+  ],
+  "status": "not-a-copy",
+  "searched": "Checked 2026-10-25: each file opens (curl 200); first page read",
+  "notes": "One-page institution marketing flyer (shows the 2026 deposit ceiling ₪76,749), not a copy. Label institution; for the ceiling cite the Tax Authority / law source of KGL-02. These links sit in the pointer rules SW-15, SW-21, SW-38 as bare numbers [1]..[8] with no per-link strength word; the extract marked them copies. Fix: give each link its own strength word (or point to the cited rules only)."
+ },
+ {
+  "law": "הפניקס – שאלות נפוצות, קופת גמל להשקעה",
+  "section": "whole document",
+  "cited_by": [
+   "SW-15 [4]"
+  ],
+  "official": [
+   {
+    "url": "https://www.fnx.co.il/gemel/gemelhashkaa/faq/",
+    "title_he": "הפניקס – שאלות נפוצות, קופת גמל להשקעה",
+    "publisher_he": "",
+    "file_page": null,
+    "locator": "",
+    "quote": "",
+    "basis": "institution document"
+   }
+  ],
+  "status": "not-a-copy",
+  "searched": "Checked 2026-10-25: each file opens (curl 200); first page read",
+  "notes": "Institution FAQ page (HTML, 200), not a copy. Label institution. These links sit in the pointer rules SW-15, SW-21, SW-38 as bare numbers [1]..[8] with no per-link strength word; the extract marked them copies. Fix: give each link its own strength word (or point to the cited rules only)."
+ },
+ {
+  "law": "הפניקס – שאלות נפוצות, קרן השתלמות",
+  "section": "whole document",
+  "cited_by": [
+   "SW-38 [4]"
+  ],
+  "official": [
+   {
+    "url": "https://www.fnx.co.il/ishtalmutfund/faq/",
+    "title_he": "הפניקס – שאלות נפוצות, קרן השתלמות",
+    "publisher_he": "",
+    "file_page": null,
+    "locator": "",
+    "quote": "",
+    "basis": "institution document"
+   }
+  ],
+  "status": "not-a-copy",
+  "searched": "Checked 2026-10-25: each file opens (curl 200); first page read",
+  "notes": "Institution FAQ page (HTML, 200), not a copy. Label institution. These links sit in the pointer rules SW-15, SW-21, SW-38 as bare numbers [1]..[8] with no per-link strength word; the extract marked them copies. Fix: give each link its own strength word (or point to the cited rules only)."
+ },
+ {
+  "law": "אייס – \"קופות הגמל חוגגות: לקראת שינוי משמעותי בסכומי ההפקדה?\"",
+  "section": "whole document",
+  "cited_by": [
+   "SW-21 [4]"
+  ],
+  "official": [
+   {
+    "url": "https://www.ice.co.il/consumerism/news/article/1005636",
+    "title_he": "אייס – \"קופות הגמל חוגגות: לקראת שינוי משמעותי בסכומי ההפקדה?\"",
+    "publisher_he": "",
+    "file_page": null,
+    "locator": "",
+    "quote": "",
+    "basis": "institution document"
+   }
+  ],
+  "status": "not-a-copy",
+  "searched": "Checked 2026-10-25: each file opens (curl 200); first page read",
+  "notes": "News article (secondary), not a copy. Label secondary; other.json already maps it. These links sit in the pointer rules SW-15, SW-21, SW-38 as bare numbers [1]..[8] with no per-link strength word; the extract marked them copies. Fix: give each link its own strength word (or point to the cited rules only)."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2020-9-18 \"מסלולי השקעה בקופות גמל - תיקון\"",
+  "section": "s.12(ג)(5) (right to move between tracks at any time)",
+  "cited_by": [
+   "KGL-13 (link-less)"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/investmentsoptions16112020/he/2020-9-18.pdf",
+    "title_he": "חוזר גופים מוסדיים 2020-9-18 – מסלולי השקעה בקופות גמל – תיקון",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 4,
+    "locator": "p.4 (s.12(ג)(5) wording also on p.8)",
+    "quote": "זכותו של כל עמית להעביר בכל עת את כספיו ,כולם או חלקם ,מכל מסלול לכל מסלול אחר באותה הקופה",
+    "basis": "CMA PDF (gov.il regulation collector)"
+   },
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+    "title_he": "חוזר גופים מוסדיים 2022-9-30 – מסלולי השקעה בקופות גמל – תיקון",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 4,
+    "locator": "p.4 (same wording, later edition; also p.8)",
+    "quote": "זכותו של כל עמית להעביר בכל עת את כספיו ,כולם או חלקם",
+    "basis": "CMA PDF, later amending edition (verified on page)"
+   }
+  ],
+  "status": "official",
+  "searched": "Wayback CDX index of gov.il/BlobFolder/dynamiccollectorresultitem/ filtered by circular number (per the coordinator), live file fetched from gov.il with GET",
+  "notes": "The 2022-9-30 amendment keeps the same wording (p.4): cite 2022-9-30 as the current edition."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\"",
+  "section": "definition of specialised tracks (halacha / religious-law track)",
+  "cited_by": [
+   "PEN-17 (link-less)"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+    "title_he": "חוזר גופים מוסדיים 2022-9-30 – מסלולי השקעה בקופות גמל – תיקון",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 3,
+    "locator": "p.3 (definitions)",
+    "quote": "מסלולי השקעה שמתמחים בניהול השקעות בהתאם לכללי הלכה דתית",
+    "basis": "CMA PDF (gov.il regulation collector)"
+   }
+  ],
+  "status": "official",
+  "searched": "Wayback CDX index of gov.il/BlobFolder/dynamiccollectorresultitem/ filtered by circular number (per the coordinator), live file fetched from gov.il with GET",
+  "notes": "12 pages. Notice 2024-1471 (also named in PEN-17) was not found in the Wayback index."
+ },
+ {
+  "law": "חוזר גופים מוסדיים 2018-9-26 \"דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי - תיקון\"",
+  "section": "table ד note (negative amounts shown with a minus sign)",
+  "cited_by": [
+   "CAT-41 (link-less)"
+  ],
+  "official": [
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
+    "title_he": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 13,
+    "locator": "p.13 (same note; also p.28)",
+    "quote": "יסומנו רק באמצעות סימן מינוס משמאל למספר",
+    "basis": "CMA PDF, current edition (verified on page)"
+   },
+   {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-710/he/regulation_h_2018-9-26.pdf",
+    "title_he": "חוזר גופים מוסדיים 2018-9-26 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
+    "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+    "file_page": 13,
+    "locator": "p.13 (general directions: negative amounts)",
+    "quote": "יסומנו רק באמצעות סימן מינוס משמאל למספר",
+    "basis": "CMA PDF (gov.il regulation collector)"
+   }
+  ],
+  "status": "official",
+  "searched": "Wayback CDX index of gov.il/BlobFolder/dynamiccollectorresultitem/ filtered by circular number (per the coordinator), live file fetched from gov.il with GET",
+  "notes": "Superseded by 2020-9-22, which carries the same note on p.13 (verified): cite 2020-9-22 first; 2018-9-26 kept as the older edition."
+ }
+]

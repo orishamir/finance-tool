@@ -15,61 +15,65 @@
   "sources": [
     {
       "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
-      "title": "Directive 447",
-      "title_he": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון",
+      "title": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון (5/24)",
+      "title_he": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון (5/24)",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
-      "kind": "regulation",
+      "kind": "regulator_page",
       "strength": "primary",
-      "locator": "s.5(c), Annex A",
-      "checked": "2026-10-22"
+      "locator": "pp.2 to 3, s.5(ג), Annex A",
+      "page": 2,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.leumi.co.il/he/savings",
-      "title": "Leumi savings FAQ",
+      "title": "לאומי: חסכונות, שאלות ותשובות",
+      "title_he": "לאומי: חסכונות, שאלות ותשובות",
       "publisher": "Bank Leumi",
       "publisher_he": "בנק לאומי",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.leumi.co.il/he/savings/interest-rate-table",
-      "title": "Leumi interest-rate table",
-      "title_he": "טבלת הריביות של בנק לאומי",
+      "title": "לאומי: טבלת שיעורי הריבית",
+      "title_he": "לאומי: טבלת שיעורי הריבית",
       "publisher": "Bank Leumi",
       "publisher_he": "בנק לאומי",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.bankmassad.co.il/private/depositsandsavings/savingtypes/",
-      "title": "Massad saving types",
+      "title": "מסד: סוגי חסכונות",
+      "title_he": "מסד: סוגי חסכונות",
       "publisher": "Bank Massad",
       "publisher_he": "בנק מסד",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-      "title": "Yahav rate board",
-      "title_he": "לוח הריביות על פיקדונות של בנק יהב",
+      "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "title_he": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
       "publisher": "Bank Yahav",
       "publisher_he": "בנק יהב",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/deposits-without-account/",
-      "title": "Mercantile",
+      "title": "מרכנתיל: פיקדונות ללא חשבון",
+      "title_he": "מרכנתיל: פיקדונות ללא חשבון",
       "publisher": "Mercantile Discount Bank",
       "publisher_he": "בנק מרכנתיל דיסקונט",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

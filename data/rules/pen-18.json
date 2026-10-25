@@ -7,7 +7,7 @@
     "guaranteed_share": "חלק הנכסים בהבטחת התשואה",
     "target_return": "תשואת היעד השנתית"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "protection",
     "real-vs-nominal",
@@ -20,12 +20,12 @@
       "value": 30,
       "unit": "pct",
       "source": {
-        "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-        "title": "Provident Funds Law, chapter ג' סימן ה'1, sections 34א-34ז (Wikisource mirror)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://fs.knesset.gov.il/24/law/24_lsr_611567.pdf",
+        "title": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2021 ו-2022), התשפ\"ב-2021, p.34, s.34ב (סעיף 34ב לחוק קופות גמל): \"שיעור הנכסים להבטחת השלמת תשואה\" 30%",
+        "publisher": "The Knesset",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2022-10-01",
       "effective_to": null,
       "tax_year": null,
@@ -40,12 +40,12 @@
       "value": 5.15,
       "unit": "pct_per_year",
       "source": {
-        "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-        "title": "Provident Funds Law, s.34ב-34ג (Wikisource mirror): \"ריבית שנתית בשיעור 5.15%\"",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://fs.knesset.gov.il/24/law/24_lsr_611567.pdf",
+        "title": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2021 ו-2022), התשפ\"ב-2021, p.34, s.34ב (סעיף 34ב לחוק קופות גמל): \"תשואת היעד\" – ריבית שנתית בשיעור 5.15%",
+        "publisher": "The Knesset",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2022-10-01",
       "effective_to": null,
       "tax_year": null,
@@ -61,18 +61,31 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "title": "Provident Funds Law, chapter ג' סימן ה'1, sections 34א-34ז (Wikisource mirror)",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://fs.knesset.gov.il/24/law/24_lsr_611567.pdf",
+      "title": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2021 ו-2022), התשפ\"ב-2021",
+      "title_he": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2021 ו-2022), התשפ\"ב-2021",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "sections 34א-34ז",
-      "locator_he": "סעיפים 34א-34ז",
-      "anchor": "סעיף_34א",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.34, s.34ב",
+      "locator_he": "עמוד 34, סעיף 34ב",
+      "page": 34,
+      "quote": "שיעור הנכסים להבטחת השלמת תשואה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/24/law/24_lsr_611567.pdf",
+      "title": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2021 ו-2022), התשפ\"ב-2021",
+      "title_he": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2021 ו-2022), התשפ\"ב-2021",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "pp.33-39, ss.34א-34ז",
+      "locator_he": "עמודים 33 עד 39, סעיפים 34א-34ז",
+      "page": 33,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
@@ -82,10 +95,11 @@
       "publisher_he": "מור גמל ופנסיה",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "section 19",
-      "locator_he": "סעיף 19",
+      "locator": "section 19, p.21",
+      "locator_he": "סעיף 19, עמוד 21",
+      "page": 21,
       "quote": "אפיק השקעה מובטח תשואה",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

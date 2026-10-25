@@ -3,7 +3,7 @@
   "title": "Pension: inactive accounts are merged into the new fund when a member joins, unless they object",
   "title_he": "פנסיה: חשבונות לא פעילים מאוחדים בהצטרפות אלא אם מתנגדים",
   "text_he": "כשעמית מצטרף לקרן פנסיה, הקרן המקבלת רשאית לבדוק לפי תעודת זהות ותאריך לידה אם רשום על שמו כסף בקרנות פנסיה אחרות. היא מודיעה לעמית, שרשאי להתנגד בתוך פרק זמן קבוע בחוק; מי שלא התנגד נחשב כמי שביקש להעביר את הכסף. זה חל על 'עמית לא מפקיד', בלי תשלום בחודשים האחרונים ובלי קצבה, והקרן המעבירה דוחה את הבקשה אם היה תשלום בחודשים שלפני. רק בקרנות פנסיה; איחוד אוטומטי דומה לקופות גמל, קרנות השתלמות או קופת גמל להשקעה לא נמצא.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "transfer-switch-process"
   ],
@@ -12,18 +12,30 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "title": "Provident Funds Law s. 24א, 24ב (amendment תשע\"ו) (Wikisource)",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_315848.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 13 והוראת שעה), התשע\"ו-2015",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 13 והוראת שעה), התשע\"ו-2015",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s. 24א, 24ב",
-      "locator_he": "סעיף 24א, 24ב",
-      "anchor": "סעיף_24א",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.10, s.24ב (pp.10-13)",
+      "locator_he": "עמוד 10, סעיף 24ב (עמודים 10 עד 13)",
+      "page": 10,
+      "quote": "איחוד חשבונות בעת הצטרפות לקרן פנסיה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_315848.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 13 והוראת שעה), התשע\"ו-2015",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 13 והוראת שעה), התשע\"ו-2015",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.6, s.24א (pp.6-10; s.24א(ה) on p.10: בתוקף עד 31.3.2018)",
+      "page": 6,
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -3,7 +3,7 @@
   "title": "What an Israeli ETF (קרן סל) and an Israeli open tracking fund (קרן מחקה פתוחה) are in law",
   "title_he": "מה הן קרן סל וקרן מחקה פתוחה בחוק",
   "text_he": "קרן מחקה היא קרן שמדיניות ההשקעה שלה היא להשיג תוצאות הנגזרות משיעור השינוי במחיר של מדד או סחורה. קרן סל היא קרן מחקה סגורה שהסכם הקרן שלה קובע שתהיה קרן סל; קרן פתוחה היא קרן שהסכם הקרן שלה עושה אותה פתוחה. קרן מחקה פתוחה יכולה להפוך לקרן סל בפרסום תשקיף לשינוי הסוג, דיווח לרשות ניירות ערך ולבורסה ושליחתו לבעלי היחידות, והשינוי נכנס לתוקף רק כעבור זמן קצוב מהדיווח; אחרי הפיכה כזו היסטוריית התשואה הקודמת אינה מוצגת, ומועד ההפיכה נחשב למועד ההצעה הראשונה. נוסח החוק נקרא באתר שמעתיק אותו.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "regulator",
     "liquidity-lockup"
@@ -13,31 +13,43 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
-      "title": "Joint Investment Trust Law 1994 (חוק השקעות משותפות בנאמנות, תשנ\"ד-1994), s. 1 definitions; s. 102(ה)–(ו)",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
       "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
-      "publisher": "Hebrew Wikisource",
+      "publisher": "Israel Securities Authority",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s. 1 definitions; s. 102(ה)–(ו)",
-      "anchor": "סעיף_1",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.4, s.1",
+      "locator_he": "עמוד 4, סעיף 1",
+      "page": 4,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(קרנות_מחקות)",
-      "title": "Tracking-fund regulations 2018, reg. 18(b)",
-      "title_he": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע״ח-2018",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg. 18(b)",
-      "locator_he": "תקנה 18(ב)",
-      "anchor": "סעיף_18",
-      "checked": "2026-10-22"
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.67, s.102(ה)-(ו)",
+      "locator_he": "עמוד 67, סעיף 102(ה)-(ו)",
+      "page": 67,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=7",
+      "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018 (קובץ התקנות 8038)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018 (קובץ התקנות 8038)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.7, reg. 18(ב)",
+      "locator_he": "עמוד 7, תקנה 18(ב)",
+      "page": 7,
+      "checked": "2026-10-25"
     }
   ]
 }

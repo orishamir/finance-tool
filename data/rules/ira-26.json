@@ -13,13 +13,17 @@
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/regulation_0059/he/regulation_ira_pdf.pdf",
-      "title": "CMA draft 2025, explanatory notes \"כללי\"",
+      "title": "CMA draft 2025",
       "title_he": "טיוטת תיקון לתקנות קופת גמל בניהול אישי (2025)",
       "publisher": "gov.il",
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "regulation",
       "strength": "primary",
-      "checked": "2026-10-22",
+      "locator": "p.6",
+      "locator_he": "עמוד 6",
+      "page": 6,
+      "quote": "עלולה לחשוף אותו לסיכוני השקעה גדולים יותר",
+      "checked": "2026-10-25",
       "qualifier": "(draft)"
     }
   ]

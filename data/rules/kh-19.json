@@ -23,7 +23,7 @@
       "strength": "institution",
       "locator": "s.4.4, 8.4",
       "locator_he": "סעיף 4.4, 8.4",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://harel-group.co.il/long-term-savings/study-funds/plans/harel-funds/doclib/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%95%d7%a4%d7%94/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a8%d7%90%d7%9c%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa-%20%d7%9c%d7%90%d7%97%d7%a8%20%d7%94%d7%9e%d7%99%d7%96%d7%95%d7%92/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa%20%2007.2024.pdf",
@@ -35,7 +35,8 @@
       "strength": "institution",
       "locator": "s.8, 9.1",
       "locator_he": "סעיף 8, 9.1",
-      "checked": "2026-10-22"
+      "quote": "יצורף למסלול ברירת המחדל של הקרן",
+      "checked": "2026-10-25"
     }
   ]
 }

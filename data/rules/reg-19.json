@@ -3,7 +3,7 @@
   "title": "If a managing company fails: management moves to another company",
   "title_he": "אם חברה מנהלת קורסת: הניהול עובר לחברה אחרת",
   "text_he": "הוראות חוק הפיקוח על הביטוח על מנהל מורשה כשמבטח אינו יכול לעמוד בהתחייבויותיו חלות גם על חברות מנהלות, והממונה רשאי להורות גם על העברת ניהול קופת גמל לחברה מנהלת אחרת. אם מונה לחברה כונס נכסים זמני או מפרק והצו לא בוטל בתוך התקופה שבחוק (או תקופה ארוכה יותר שהממונה קובע), החברה חייבת להעביר את הניהול לחברה מנהלת אחרת כפי שהממונה מורה, ואם לא, הממונה משתמש בסמכויותיו. העברה מרצון דורשת אישור מראש של הממונה.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "protection",
     "transfer-switch-process"
@@ -13,32 +13,43 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "title": "Provident Funds Law, Wikisource",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (ספר החוקים 2024)",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (ספר החוקים 2024)",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "ss.39(ג), 41, 42",
-      "locator_he": "סעיפים 39(ג), 41, 42",
-      "anchor": "סעיף_39.ג",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.15, ss.39, 41, 42",
+      "locator_he": "עמוד 15, סעיפים 39, 41, 42",
+      "page": 15,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(ביטוח)",
-      "title": "Insurance Supervision Law, Wikisource",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (ביטוח), התשמ״א-1981",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://fs.knesset.gov.il/9/law/9_lsr_209334.PDF",
+      "title": "חוק הפיקוח על עסקי ביטוח, התשמ\"א-1981 (פרסום מקורי ברשומות)",
+      "title_he": "חוק הפיקוח על עסקי ביטוח, התשמ\"א-1981 (פרסום מקורי ברשומות)",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "ss.68(א), 70(א)",
-      "locator_he": "סעיפים 68(א), 70(א)",
-      "anchor": "סעיף_68.א",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "pp.15-16, ss.68, 70",
+      "locator_he": "עמודים 15 עד 16, סעיפים 68, 70",
+      "page": 15,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_348687.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (תיקוני חקיקה), התשע\"ו-2016 (ספר החוקים 2582)",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (תיקוני חקיקה), התשע\"ו-2016",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, s.1(1) (המפקח → הממונה)",
+      "locator_he": "עמוד 2, סעיף 1(1) (המפקח → הממונה)",
+      "page": 2,
+      "checked": "2026-10-25"
     }
   ]
 }

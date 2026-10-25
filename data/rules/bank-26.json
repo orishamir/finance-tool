@@ -13,31 +13,34 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
-      "title": "Disclosure rules 1992",
-      "title_he": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ״ב-1992",
+      "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
+      "title": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון (5/24)",
+      "title_he": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון (5/24)",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
-      "kind": "regulation",
+      "kind": "regulator_page",
       "strength": "primary",
-      "locator": "s.2(d), 7(a)(5)",
-      "locator_he": "סעיף 2(ד), 7(א)(5)",
-      "checked": "2026-10-22"
+      "locator": "p.3, Annex A",
+      "page": 3,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
-      "title": "Directive 447",
-      "title_he": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון",
+      "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",
+      "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל)",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
-      "kind": "regulation",
+      "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "locator": "pp.2, 5, s.2(ד), 7(א)(5)",
+      "locator_he": "עמודים 2, 5, סעיף 2(ד), 7(א)(5)",
+      "page": 2,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-      "title": "Yahav rate board",
-      "title_he": "לוח הריביות על פיקדונות של בנק יהב",
+      "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "title_he": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
       "publisher": "Bank Yahav",
       "publisher_he": "בנק יהב",
       "kind": "institution_doc",
@@ -45,26 +48,27 @@
       "locator": "pp.4, 6, 8",
       "locator_he": "עמודים 4, 6, 8",
       "page": 4,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.leumi.co.il/he/savings/interest-rate-table",
-      "title": "Leumi interest-rate table",
-      "title_he": "טבלת הריביות של בנק לאומי",
+      "title": "לאומי: טבלת שיעורי הריבית",
+      "title_he": "לאומי: טבלת שיעורי הריבית",
       "publisher": "Bank Leumi",
       "publisher_he": "בנק לאומי",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.discountbank.co.il/private/savings-investments/savings-interest/",
-      "title": "Discount",
+      "title": "דיסקונט: חיסכון וריבית",
+      "title_he": "דיסקונט: חיסכון וריבית",
       "publisher": "Discount Bank",
       "publisher_he": "בנק דיסקונט",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

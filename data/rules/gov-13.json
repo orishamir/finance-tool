@@ -18,11 +18,11 @@
       "unit": "text",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf",
-        "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2024, מילון מונחים",
+        "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2024, מילון מונחים, p.41",
         "publisher": "Ministry of Finance, Accountant General",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -39,25 +39,25 @@
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf",
-      "title": "2024 glossary, \"אג\"ח בריבית קבועה\"",
+      "title": "החשב הכללי, היחידה לניהול החוב הממשלתי: הדו\"ח השנתי 2024, מילון מונחים",
       "title_he": "הדוח השנתי 2024 של היחידה לניהול החוב הממשלתי",
       "publisher": "gov.il",
       "publisher_he": "החשב הכללי, משרד האוצר",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p. 41",
+      "locator": "p.41",
       "locator_he": "עמוד 41",
       "page": 41,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=c92fdda2-0939-4110-8ebc-edfcf35e8723&limit=40&sort=ISSUANCEDATE%20desc",
-      "title": "data.gov.il auction resource",
+      "title": "משרד האוצר (data.gov.il): נתוני החוב הממשלתי המקומי, הנפקת אג\"ח סחירות בשוק המקומי",
       "publisher": "data.gov.il",
       "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://he.wikipedia.org/wiki/איגרות_חוב_ממשלתיות_בישראל",
@@ -66,7 +66,7 @@
       "publisher_he": "ויקיפדיה",
       "kind": "article",
       "strength": "secondary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

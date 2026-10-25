@@ -14,12 +14,12 @@
       "value": 3,
       "unit": "months",
       "source": {
-        "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
-        "title": "IRA regulations, reg. 5(ב)-(ג) (Nevo mirror, summarising fetch)",
-        "publisher": "Minister of Finance regulations (Nevo mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=3",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820), p.3, reg. 5(ג)(1)",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -34,12 +34,12 @@
       "value": 7,
       "unit": "business_days",
       "source": {
-        "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
-        "title": "IRA regulations, reg. 5(ב)-(ג) (Nevo mirror, summarising fetch)",
-        "publisher": "Minister of Finance regulations (Nevo mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=4",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820), pp.3-4, reg. 5(ג)(2)",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -54,12 +54,12 @@
       "value": 45,
       "unit": "business_days",
       "source": {
-        "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
-        "title": "IRA regulations, reg. 5(ב)-(ג) (Nevo mirror, summarising fetch)",
-        "publisher": "Minister of Finance regulations (Nevo mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=4",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820), p.4, reg. 5(ג)(2)",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -81,29 +81,46 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.4, reg. 5(ג)(1)-(3) (5(ב) and 5(ג)(1) on p.3)",
+      "page": 4,
+      "quote": "בתוך תקופה שלא תעלה על ארבעים וחמישה ימי עסקים מיום המצאתה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.4, s.4 (reg. 5(ג)(2))",
+      "locator_he": "עמוד 4, סעיף 4 (תקנה 5(ג)(2))",
+      "page": 4,
+      "quote": "שנוצרה בשל השקעה חדשה",
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/legalinfo/regulation_0059/he/regulation_ira_pdf.pdf",
-      "title": "CMA draft 2025, s.5(2)",
+      "title": "CMA draft 2025",
       "title_he": "טיוטת תיקון לתקנות קופת גמל בניהול אישי (2025)",
       "publisher": "gov.il",
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "s.5(2)",
-      "locator_he": "סעיף 5(2)",
-      "checked": "2026-10-22",
+      "locator": "p.4, s.5(2)",
+      "locator_he": "עמוד 4, סעיף 5(2)",
+      "page": 4,
+      "quote": "לכל הפחות",
+      "checked": "2026-10-25",
       "qualifier": "(draft)"
-    },
-    {
-      "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
-      "title": "Nevo, reg. 5(ב)-(ג)",
-      "publisher": "Nevo",
-      "publisher_he": "נבו",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "reg. 5(ב)-(ג)",
-      "locator_he": "תקנה 5(ב)-(ג)",
-      "checked": "2026-10-22"
     }
   ]
 }

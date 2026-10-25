@@ -14,11 +14,11 @@
       "unit": "count",
       "source": {
         "url": "https://market.tase.co.il/he/market_data/index/137/about",
-        "title": "TASE, ת\"א-125 אודות המדד (index 137; read in Chrome 2026-10-23)",
+        "title": "הבורסה, \"ת\"א-125 אודות המדד\" (מדד 137; נקרא בכרום 2026-10-25)",
         "publisher": "Tel Aviv Stock Exchange",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -34,11 +34,11 @@
       "unit": "text",
       "source": {
         "url": "https://market.tase.co.il/he/market_data/index/137/about",
-        "title": "TASE, ת\"א-125 אודות המדד (index 137; read in Chrome 2026-10-23)",
+        "title": "הבורסה, \"ת\"א-125 אודות המדד\" (מדד 137; נקרא בכרום 2026-10-25)",
         "publisher": "Tel Aviv Stock Exchange",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -54,11 +54,11 @@
       "unit": "text",
       "source": {
         "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
-        "title": "TASE, מדריך מעו\"ף - הנחיות על פי החלק השביעי לתקנון, update 173 to 25.12.2025 (annex 3 page stamped 2.11.2023)",
+        "title": "הבורסה, \"הנחיות על פי החלק השביעי לתקנון\" (מדריך מעו\"ף; עמודי הנספחים מעודכנים ל-2.11.2023), p.31, annex 3",
         "publisher": "Tel Aviv Stock Exchange",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -74,11 +74,11 @@
       "unit": "days",
       "source": {
         "url": "https://market.tase.co.il/he/market_data/index/137/about",
-        "title": "TASE, ת\"א-125 אודות המדד (index 137; read in Chrome 2026-10-23)",
+        "title": "הבורסה, \"ת\"א-125 אודות המדד\" (מדד 137; נקרא בכרום 2026-10-25)",
         "publisher": "Tel Aviv Stock Exchange",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -102,25 +102,41 @@
   "sources": [
     {
       "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
-      "title": "TASE, \"הנחיות על פי החלק השביעי לתקנון\", chapter א section 7 (formulas, pp. ב-15 to ב-16) and annex 3 (p. ב-32)",
+      "title": "הבורסה, \"הנחיות על פי החלק השביעי לתקנון\" (מדריך מעו\"ף, עמודים מעודכנים עד 4.8.2026)",
       "title_he": "הנחיות על פי החלק השביעי לתקנון הבורסה (״מדריך מעו״ף״)",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
       "strength": "primary",
-      "locator": "section 7 and annex 3 (p. ב-32)",
-      "checked": "2026-10-23",
+      "locator": "pp.14-15",
+      "locator_he": "עמודים 14 עד 15",
+      "page": 14,
+      "checked": "2026-10-25",
+      "qualifier": "(index provider)"
+    },
+    {
+      "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
+      "title": "הבורסה, \"הנחיות על פי החלק השביעי לתקנון\" (מדריך מעו\"ף, עמודים מעודכנים עד 4.8.2026)",
+      "title_he": "הנחיות על פי החלק השביעי לתקנון הבורסה (״מדריך מעו״ף״)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.31, annex 3",
+      "page": 31,
+      "checked": "2026-10-25",
       "qualifier": "(index provider)"
     },
     {
       "url": "https://market.tase.co.il/he/market_data/index/137/about",
-      "title": "TASE, \"ת\"א-125 אודות המדד\" (index 137)",
+      "title": "הבורסה, \"ת\"א-125 אודות המדד\" (מדד 137)",
       "title_he": "ת״א-125: אודות המדד",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-23"
+      "checked": "2026-10-25",
+      "qualifier": "(index provider; read in Chrome)"
     }
   ]
 }
