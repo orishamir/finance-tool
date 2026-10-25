@@ -89,8 +89,8 @@ function GraduationStatus({ s }: { s: GraduationStatusView }) {
           <p className="text-sm text-muted-foreground">{g.none}</p>
         ) : (
           <ul className="flex flex-col gap-1">
-            {s.closed.map((c) => (
-              <li key={c.code} className={`text-sm flex flex-wrap items-center gap-1.5 ${c.closedOn ? "text-muted-foreground" : "text-caution-foreground"}`}>
+            {s.closed.map((c, i) => (
+              <li key={`${c.code}-${i}`} className={`text-sm flex flex-wrap items-center gap-1.5 ${c.closedOn ? "text-muted-foreground" : "text-caution-foreground"}`}>
                 <span className="line-through">
                   {c.closedOn ? <Tpl t={g.closure} vars={{ date: dateNode(c.closedOn), rule: <bdi dir="ltr" className="num-id">{c.code}</bdi> }} /> : <Tpl t={g.closureNoDate} vars={{ rule: <bdi dir="ltr" className="num-id">{c.code}</bdi> }} />}
                 </span>

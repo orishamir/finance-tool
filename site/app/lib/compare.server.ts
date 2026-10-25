@@ -32,7 +32,7 @@ const familyById: Partial<Record<WrapperId, Family>> = {
 
 /** The nine tier-2 instruments (product D2) with the glossary row that names each; the open questions are method G-24's. */
 export const tier2Table: { id: string; he: string; questions: string[]; display: string }[] = [
-  { id: "savings-policies", he: "פוליסת חיסכון", questions: ["TXA OQ1", "TXA OQ3"], display: "TXA OQ1, TXA OQ3" },
+  { id: "savings-policies", he: "פוליסת חיסכון", questions: ["TXA OQ1"], display: "TXA OQ1" },
   { id: "executive-insurance", he: "ביטוח מנהלים", questions: ["TXA OQ6"], display: "TXA OQ6" },
   { id: "structured-deposits", he: "פיקדון מובנה", questions: ["TX2 OQ5"], display: "TX2 OQ5" },
   { id: "corporate-bonds", he: 'אג"ח קונצרניות', questions: ["TX2 OQ6"], display: "TX2 OQ6" },

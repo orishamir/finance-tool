@@ -148,7 +148,7 @@ const input = (id: WrapperId, t?: InstrumentTerms, cashRatePct?: number): Candid
 });
 
 const tier2: Tier2Instrument[] = [
-  ["savings-policies", "savings policies", "TXA OQ1, TXA OQ3"],
+  ["savings-policies", "savings policies", "TXA OQ1"],
   ["executive-insurance", "executive insurance", "TXA OQ6"],
   ["structured-deposits", "structured deposits", "TX2 OQ5"],
   ["corporate-bonds", "corporate bonds", "TX2 OQ6"],
