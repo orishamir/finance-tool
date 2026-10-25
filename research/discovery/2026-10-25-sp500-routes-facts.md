@@ -105,3 +105,64 @@ Not money (dimensions, not numbers):
 5. What does the page say for a route it can't price yet (US ETF, foreign broker)? D17 wants the route visible with the reason.
 6. Which defaults should the three pages share, so that they never disagree again (the comparison's broker pick, the funds page's broker, the representative fund)?
 7. How does the person give the facts only they have (dollar rate, W-8BEN, distribution yield) without a long form?
+
+## 8. Facts added the same evening
+
+- **Replication.** By law, an Israeli fund may hold an unfunded swap only on an index of foreign securities, a commodity or a currency (ETF-51), so every TA-35, TA-90 and TA-125 fund holds the shares; Harel's TA-35 funds included (ETF-52). Every Israeli fund on the S&P 500, the NASDAQ-100, MSCI World or MSCI ACWI uses swaps or futures.
+- **Do swaps pay more?** The sources do not show it after expenses. In 2025, six of seven swap funds read beat their net index before expenses, by about 0.1 to 0.8 points, and six of seven trailed it after expenses (ETF-53, ETF-54; that comparison is the agent's own arithmetic over the reports). The net index assumes a 30% US dividend tax. An Irish fund holding the shares pays 15% (TXF-16).
+- **Tracking difference.** No annual report prints the 12-month figure; each points to Funds Center, whose terms forbid redistribution. The reports do print the fund's return beside its tracking asset's for the period, so a tracking difference can be computed from them (a formula to define in `docs/method.md`).
+- **Records.**
+  - Pushed: 10 more S&P 500 and TA-125 funds, among them the five largest S&P 500 funds, which had no record.
+  - Held back: TA-35, TA-90, NASDAQ-100, MSCI World and ACWI (26 funds, 5 exposures). Any exposure record publishes its own pages, and the design comes first.
+
+## 9. Two people, one question (design thinking, 2026-10-25)
+
+The founder named two people:
+- **The one who knows.** They have chosen the index and ask how to hold it: Israeli fund or iShares, which broker, which exchange. This is why the site was started.
+- **The one who didn't know to ask.** A goal led to "a securities account beats a kupat gemel". Now they must pick an index, and then they face the first person's question.
+
+**They meet at one question: how do I hold index X with my money, all things counted?** So there should be one answer screen for "the way" (broker + route + fund), reached through two doors, not two features.
+
+### 9.1 The way screen
+- **Headline: the cheapest complete way for this plan,** and what it saves against the person's own bank (or a typical bank). For example: "Psagot Trade, Yelin Lapidot tracking fund, in shekels: about 13,000 NIS more than at Leumi over 20 years". The broker leads because it moves this plan most (section 2; `dilemma-first-home`).
+- **Then the ladder of choices, each with what it is worth:**
+  - broker;
+  - route (an Israeli fund / iShares in Tel Aviv / abroad);
+  - fund (manager, ETF or tracking fund);
+  - hedged or not.
+  Each row opens its full ranked list. Today's brokers page and funds page become these two lists, sharing one computation and one set of defaults, so the pages can no longer disagree.
+- **Not money, beside the money:** chips per route for US estate tax, reporting to the Tax Authority yourself, ISA supervision, swap counterparty and hedging. Each has one line and a rule link.
+- **Asked only where it matters:**
+  - where your account is today (it turns the headline into "stay or move");
+  - the dollar rate, only when a route bought abroad is opened;
+  - W-8BEN, only for a US ETF.
+- **Routes the site can't price yet** stay on the screen with the reason: US ETFs, foreign brokers (D17).
+- **What to do next:** the chosen way becomes three or four steps.
+  1. Open an account (or keep yours).
+  2. Buy the fund by its security number.
+  3. Set a standing order of 400 a month.
+  4. For a route bought abroad: the semi-annual report.
+
+### 9.2 Does the way screen need a return?
+All ways hold the same index, so the return mostly cancels. What differs is fees, tax, and tracking. The way screen could rank ways without asking for a return: it would check that the order holds across a range of returns and dollar moves, and say "the order holds for any return from X to Y" or "depends on the dollar". Amounts would show at the entered return, or as "even with no growth". This would be a robustness statement, not a forecast. Whether it fits D9 is a product decision for the founder.
+
+### 9.3 The index step (the second person)
+- The comparison already priced the securities account on the S&P 500 (the representative fund, P-05). The card should say so ("חושב לפי S&P 500") and make it changeable, so the hidden choice becomes visible.
+- Choosing an index shows what a person can judge without a forecast:
+  - what is inside (how many companies, which countries);
+  - currency (and that an Israeli fund on a foreign index is taxed on the dollar's rise);
+  - typical fees per index;
+  - published past ranges, where the rule base has them.
+- No ranking by return (D9). Exposure mode stays for someone who wants to enter returns and worst falls.
+- After the index, the person lands on the way screen with their plan already filled in.
+
+### 9.4 Doors for the first person
+- On the first page: "I know what I want to buy". Index chips (S&P 500, TA-35, TA-90, TA-125, NASDAQ-100, world) and the three numbers lead to the way screen. With no saved goal, the numbers start from P-05 and are marked as the site's.
+- Each index guide page carries the way screen as its main block.
+- **A third door, from search:** a fund the person already has in mind (the founder's "הראל מחקה ת"א 35") opens the way screen with that fund marked: where it ranks, and what the cheapest way saves against it.
+
+### 9.5 Decisions for the founder
+1. May the way screen rank ways without an entered return, through the robustness check of 9.2?
+2. For the index step: explain only, or also a site default that is marked as the site's judgement (a parameter, like P-05)?
+3. Where the first person's door lives: the first page, the index pages, or both.
+4. Whether "where is your account today" becomes a standing question that turns every way answer into stay-or-move.
