@@ -9,7 +9,7 @@ Background: `research/discovery/2026-10-25-guide-pages-sweep.md` (what the old c
 - The fixed skeleton of the guide page stays (`site/app/routes/guide.tsx`, sections in `copy.ts` `sections`).
 - A new block, titled "מה מייחד את {המוצר}" (wording to fit the copy guide), sits directly after "למה משתמשים בזה" and before "שווה לדעת". Full width of the content column. One visual per product, from section 3.
 - The old illustrative timeline (Timeline.tsx and its assumptions panel) moves below the new block, collapsed by default, as "שחקו עם המספרים שלכם" (wording to the copy guide). Opening it shows it as today, with the fixes in section 4.
-- A page without a visual in section 3 keeps the old timeline open where it is now (brokerage account, child savings, IRA study fund, IRA provident).
+- A page without a visual in section 3 or 6 keeps the old timeline open where it is now (child savings, IRA study fund, IRA provident). The brokerage account gets its visual in section 6 (added 2026-10-25) and its timeline folds like the others.
 
 ## 2. Rules for every visual (the founder's, 2026-10-25)
 
@@ -48,6 +48,39 @@ On the cash-like pages (current account, deposit, savings plan, money-market fun
 |---|---|---|
 | G1 (Sonnet, medium) | `site/app/components/guide-signature/**` (new: the shared frame, the registry by wrapper id, the G1 visuals), `site/app/routes/guide.tsx` (the slot and the collapsed timeline), `site/app/components/timeline/**`, `site/app/lib/guide.server.ts`, `site/app/lib/engine.ts`, `site/app/lib/guide-signature*.ts` (new), copy.ts blocks `guideSignature` (new) and the guide/timeline strings, method notes in `docs/method.md` (a dated note on F-67 and one formula note per visual that computes something new) | — |
 | G2 (Sonnet, medium) | its own visual files in `site/app/components/guide-signature/` and their lib files, its entries in the registry, its strings in `guideSignature` | G1 |
+| G3 (Sonnet, medium) | section 6: `site/app/components/guide-signature/brokerage-*.tsx`, `site/app/lib/guide-signature-brokerage*.ts` (and its test), a new exported holdings block in `site/app/content/guide/brokerage-account.tsx`, one registry entry, one function and one line in the signature bundle loader, the sub-block `guideSignature.brokerage` in copy.ts, one dated method note on F-63 | G1; runs beside G2 (different files; the registry, the bundle loader and copy.ts are touched with exact-string edits after a fresh read) |
 | Lead | `docs/product.md`, `docs/design-spec.md`, `docs/design-system.md`, `docs/copy.md`, `npm run check`, smoke tests, commits | — |
 
 Rules for every builder: run `npx vitest run site packages/engine`, `npm run typecheck`, `npm run validate`; never `npm run check` or the site build, never pkill, never commit. Copy edits only with exact-string Edit. Engine changes only if a visual needs a formula the engine lacks: write it as a formula with a method note, and say so in the report. Report as the final message.
+
+## 6. The brokerage account: what can live inside it (added 2026-10-25, builder G3)
+
+**Why this one is different.** The founder rejected two earlier sketches: a broker-cost table ("thats not gonna make me switch banks") and a comparison against a provident fund on long-term index money ("why do you think he specifically thinks about long-term index money?"; I had projected his own case). A brokerage account is a container that can hold almost anything, and both its cost and its tax depend on what goes in ("כשמוכרים says 25% but it depends"). He approved this version on 2026-10-25 ("lets do the last visualization you suggested"). The sketch is in the session log; the build follows this section, not the sketch's wording (several of its tax lines were loose).
+
+**The question.** What can I hold in a brokerage account, and for each holding, how do I buy it, what does it cost here, and how is it taxed?
+
+**Controls (rule 1).**
+1. A holding picker, chips, 44 px: קרן על מדד, מניות, מק״מ, קרן כספית, אג״ח ממשלתית, ניירות ערך בחו״ל. The default is the index fund. Each chip names its holding (rule 2): the index fund is P-05's `brokerage-account` fund (5139282) with an Israeli ETF on the same index as its exchange-traded twin (the cost row shows both instrument classes); the money-market fund is P-05's `money-market-fund-daily` fund; the makam and the bond follow P-05 (`makam`, and `government-bond` via GOV-11); shares are "a share you choose" (no record; class `tase_shares_bonds`); foreign securities use the foreign fund record in `data/funds/` (ie00b5bmr087) and class `foreign_securities`.
+2. An amount, from the saved goal's amount now when there is one, else P-05's `amount_now`, marked which (rule 9).
+3. Optional, under the cost row: "יש לכם כבר חשבון? בחרו את הבנק או בית ההשקעות" (a select over the collected providers). Picking one highlights it and turns the cost figures into that provider's own numbers (rule 3). Nothing is picked by default.
+
+**The card, four rows.**
+1. **איך קונים.** One or two sentences per holding, in the new holdings block of `content/guide/brokerage-account.tsx`, with `Term` links. Every fact comes from a rule record or the glossary (read `.claude/skills/il-finance`: mutual funds and money-market funds, ETFs and index funds, government bonds and makam, brokerage account). Where the rule base doesn't say it, leave the claim out; don't fill from memory.
+2. **כמה עולה (range by provider, rule 3).** Two dot strips, each one horizontal axis in ₪, one dot per collected bank or broker, the lowest and highest labelled with the provider's name and the figure:
+   - "קנייה אחת של {amount}": the provider's buy commission for the holding's instrument class (engine `tradeCommission`, through the same tariff building the provider workbench uses); for foreign securities add the currency conversion line (`fxFee`) and say so on the strip.
+   - "שנה של החזקה": twelve months of custody on the amount (engine `custodyFee`).
+   Providers with no line for the class are not dots: one line under the strip counts them ("לעוד {n} אין שורה לסוג הזה בתעריפון, ולכן הם לא מחושבים"), per the "no line, no price" note on F-63, money-market units excepted (MF-26). Where BRK-17 applies (makam, money-market funds), one sentence says banks may not charge custody on them, and that brokers' tariffs read so far don't show such an exemption. For a fund, a third figure, not a strip: the fund's own yearly fee from its record ("ובתוך הקרן: …"). Every figure through `Num`, computed state.
+3. **מס (exact, rule 5).** The mechanic for the holding, with each rate as the rule record's figure through `Num`, and the rule id beside it:
+   - index fund: by the fund record's `tax_status.il_fund_tax_track`: exempt TXS-09 (real gain against CPI, withheld at sale), distributions TXS-10; taxable TXS-11 (the fund pays inside, nothing at sale, losses lost).
+   - shares: TXS-01, dividends TXS-16.
+   - makam: TXI-01 (the discount is interest) and TXI-03 (the fixed rate on the whole nominal interest, no inflation deduction). Sale before redemption: find its rule (TXI, GOV); if missing, write "עוד לא חושב" and name the gap.
+   - money-market fund: TXS-12 (on the exempt track, the real-gain rate at redemption on the gain above CPI; a loss offsets).
+   - government bond: unlinked TXI-03, CPI-linked TXI-05; sale before maturity as for makam.
+   - foreign securities: TXF-03 and TXS-04 (the gain is measured in the currency, not against CPI), dividends TXF-08, a foreign broker means reporting yourself (TXF-22).
+   **The split bar ("ממה בדיוק לוקחים מס").** One horizontal stacked bar of a sale of {amount} after P-05's horizon at P-05's return (A-01 for funds and shares; `cash_rate` for makam, the money-market fund and the bond, labelled as the site's assumption) and P-05's inflation (A-02). Segments, each with its number written on it (rule 4): what you paid (neutral), the part from CPI that isn't taxed (neutral, hatched), the real gain (teal), with the tax (rose) as a bracket over the part it is taken from. For makam and the unlinked bond there is no CPI segment: the tax bracket spans the whole nominal gain. That contrast is the point. For a taxable fund the bar shows no tax slice and says "המס שולם בתוך הקרן". For foreign securities the base depends on the exchange rate at sale, and the site holds no exchange-rate assumption: show the mechanic in words and no numbers ("לא חושב: תלוי בשער המטבע ביום המכירה"). Compute with the engine (`capitalGainsTax` and the existing real-gain formula); if a step has no formula, write one with a method note.
+   **"מה משנה את זה".** Chips under the tax, only those that apply to the holding, each opening its rule card: losses (TXS-17, TXS-19), age 60 and over (TXS-23), high income (TXG-09, TXG-10), a substantial shareholder (shares: TXS-01, TXS-16), switching is a sale (TXS-21), a foreign broker (TXF-22), a taxable fund (TXS-11).
+4. **לאן ממשיכים.** Index fund and foreign securities: "השקעה במדד" (/invest). Makam, money-market fund, government bond: that holding's guide page. Shares: none.
+
+**Nearest alternative (D29).** No chart. One line per holding names where else the same holding can live and links there: the index fund in a provident fund for investing (switching tracks isn't a sale there, TXS-21); makam against a bank deposit; the money-market fund against the current account; foreign securities at an Israeli broker against a foreign broker (who withholds tax).
+
+**Out of scope.** Ranking brokers (that is "השקעה במדד"), any recommendation, holdings with no rule base (options, corporate bonds beyond a sentence, crypto).
