@@ -1,6 +1,6 @@
 // Shared primitives (design-system 3.9, design-spec 1.3): button, tag, callout, disclosure, segmented
 // control, card. Styled with role tokens only.
-import { useId, useRef, type ButtonHTMLAttributes, type KeyboardEvent, type ReactNode } from "react";
+import { useId, useRef, useState, type ButtonHTMLAttributes, type KeyboardEvent, type ReactNode } from "react";
 import { Link } from "react-router";
 import { IconAlert, IconCheck, IconChevronDown, IconInfo, IconLock } from "./icons";
 
@@ -72,13 +72,17 @@ export function Callout({ tone, title, children, className }: { tone: "caution" 
 }
 
 /** Native details/summary (works before scripts), 44px summary, chevron beside the label (or `spread` to the far end), rotating on open. */
+/**
+ * A fold. Its label and chevron follow its own open state, kept in React: the earlier CSS `group-open:` variant matched any open
+ * ancestor, so a fold inside an open fold (the timeline's table inside "שחקו עם המספרים שלכם") read as open while closed (2026-10-25).
+ */
 export function Disclosure({ label, openLabel, children, className, defaultOpen, summaryClassName, spread }: { label: ReactNode; openLabel?: ReactNode; children: ReactNode; className?: string; defaultOpen?: boolean; summaryClassName?: string; /** Chevron at the far end of the row (a list-group header); the default keeps it beside the label. */ spread?: boolean }) {
+  const [open, setOpen] = useState(!!defaultOpen);
   return (
-    <details className={cx("group", className)} open={defaultOpen}>
+    <details className={className} open={open} onToggle={(e) => setOpen(e.currentTarget.open)}>
       <summary className={cx("flex items-center gap-2", spread && "justify-between gap-3", "min-h-target cursor-pointer list-none select-none rounded-md [&::-webkit-details-marker]:hidden", summaryClassName)}>
-        <span className="group-open:hidden">{label}</span>
-        <span className="hidden group-open:inline">{openLabel ?? label}</span>
-        <IconChevronDown className="text-muted-foreground shrink-0 transition-transform duration-[var(--duration-fast)] group-open:rotate-180" />
+        <span>{open ? (openLabel ?? label) : label}</span>
+        <IconChevronDown className={cx("text-muted-foreground shrink-0 transition-transform duration-[var(--duration-fast)]", open && "rotate-180")} />
       </summary>
       {children}
     </details>
