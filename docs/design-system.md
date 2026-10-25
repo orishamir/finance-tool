@@ -819,3 +819,13 @@ Called for by D2 ("a tier-2 instrument moves to tier 1 when it has a sourced rec
 Called for by flows 34 to 37 and 18.6.
 
 Removed 2026-10-24 (D24): the menu and footer row "מה השתנה", the first page's "since your last visit" line and the "מה השתנה" links in the rules and parameters ledes. The menu, footer, first page and the rules and parameters ledes get no such addition. The exposure guide page's "how to hold it" line becomes two links ("איזה מוצר יחזיק את זה למטרה שלכם", "איזו חשיפה מתאימה למטרה"). The fit mark's line names the accepted fall when the goal has one. A tier-2 holding gains "מה חוסם את הכיסוי". The export file's contents line gains the saved comparisons' count.
+
+## 10. Guide-page visuals (D29, 2026-10-25)
+
+Built from `research/specs/2026-10-25-guide-signatures/spec.md`; components in `site/app/components/guide-signature/`.
+
+- **The section "מה מייחד את …"** sits after "למה משתמשים בזה": the page's one question, the visual in a card, one line naming the nearest alternative on the same holding (links to its guide page and to the goal comparison), and the old illustrative timeline folded below as "שחקו עם המספרים שלכם". A page without a visual keeps its timeline open in "מה זה".
+- **Colour.** New role `chart-alt` (gold-200): the nearest alternative's line or bar, against the product's teal `chart-value`. The pair is the one the cumulative-cost chart already uses for fee lines 2 and 3 (6.x), so it passed the same check; validate it again against the card with the dataviz validator when a page draws both on a fill. The starting amount is a dashed neutral line. A gap between two lines may be filled at 22% opacity only with its number written on it (spec rule 4).
+- **Draggable marker** (`Marker` in `kit.tsx`): a native range input laid over the plot, so it drags, takes a tap on the axis, and answers the arrow keys, Page Up/Down, Home and End; 44 px tall touch area.
+- **A difference is a bracket** (`GainBars`): two bars from the same start and a bracket between their ends carrying the difference, never a third bar (spec rule 6).
+- **Where the inputs come from** is printed under the controls: "הזנתם", "מהמטרה השמורה" or "דוגמה של האתר".

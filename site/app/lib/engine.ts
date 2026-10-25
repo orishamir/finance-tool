@@ -117,6 +117,8 @@ export function runTimeline(bundle: Bundle, inputs: TimelineInputs): Timeline {
 /** P-05's own value of an input, as the parameter file holds it (with its rationale for the sheet). */
 export function p05Value(p05: ParameterRecord, key: P05Input): SiteValue {
   const inputs = (p05 as unknown as { inputs: Record<P05Input, ValueObject> }).inputs;
+  // an input a guide page replaced with a record's own value (a bank's published rate, 2026-10-25) is that record's number, not a site parameter
+  if (inputs[key].update_rule !== "founder") return { ...inputs[key] };
   return {
     ...inputs[key],
     parameter: { rationale: p05.rationale, rationaleHe: p05.rationale_he ?? null, signedOffOn: p05.signed_off_on, provisional: false },
