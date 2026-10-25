@@ -407,14 +407,14 @@ Note for the discovery report: `domain-landscape.md` 4.3 says "14 public manager
 
 ## Open questions
 
-1. **Official 2026 ceiling (domain question 11): not closed.** **[2026-10-22 browser pass 3: Closed by KGL-24: the CBS calculator reproduces 83,641.09 from the law's formula; no separate notice found or needed.]** **[2026-10-25 scope pass]** KGL-03 now rests on the law and the CBS calculator; the company sources were dropped. A regulator notice was searched for again on gov.il and the web and not found, KGL-03.
+1. ~~**Official 2026 ceiling (domain question 11): not closed.**~~ Closed 2026-10-22: NIS 83,641.09, the law's NIS 70,000 indexed by the CBS linkage calculator; no regulator notice exists or is required (KGL-03, KGL-24). **[2026-10-22 browser pass 3: Closed by KGL-24: the CBS calculator reproduces 83,641.09 from the law's formula; no separate notice found or needed.]** **[2026-10-25 scope pass]** KGL-03 now rests on the law and the CBS calculator; the company sources were dropped. A regulator notice was searched for again on gov.il and the web and not found, KGL-03.
    - Tried: Tax Authority and gov.il CMA pages are blocked by bot protection (`data-landscape.md` 1.8). The CBS CPI API (`api.cbs.gov.il/index/data/price` and `/calculator`) returned ECONNRESET, so the indexation could not be recomputed. Wikisource notes that amount updates are published in "י"פ תשפ"ה, 9555" for the law in general, which suggests the update appears in Yalkut HaPirsumim.
    - Where the answer probably is: the Yalkut HaPirsumim notice for 1 January 2026, or a Tax Authority or CMA "עדכון סכומים" notice. As a cross-check, the CBS CPI known on 1 Jan 2026 against the CPI known on 1 July 2016, times 70,000.
 2. **Home-sale exception (section 22(א1)).**
    - Open: which law added it (the Wikisource tags point to תשע"ז־2), and whether it lapsed on its own date or was voided by בג"ץ 10042/16 (6 Aug 2017, the multi-apartment tax ruling).
    - Tried: Wikisource (marks it repealed) and bylaws (window to 31.12.2017). The ruling and the amending law were not opened; the search budget ran out.
    - Where the answer probably is: the official consolidated law text in the Knesset National Legislation Database, and the ruling on supremedecisions.court.gov.il (file `16100420_o23.pdf`, linked from Wikisource).
-3. **Fee cap from the official text (domain question 8): closed for this product at mirror strength.**
+3. ~~**Fee cap from the official text (domain question 8): closed for this product at mirror strength.**~~ Closed 2026-10-25: regulation 2(א)(1)-(2) is read in the official gazette (קובץ התקנות 7131, with the 2014 and 2022 amendments): 1.05% a year of the balance and 4% of deposits (PF-02, PF-03).
    - Regulations 2(א)(1)–(2) were read only on Wikisource. Kol Zchut returned 403.
    - Where the answer probably is: the Reshumot ק"ת files (תשע"ב 1260; תשע"ד 977; תשפ"ב 1812), or Nevo as a mirror.
 4. **Deposits over the ceiling across managers.** How is a breach that spans two managers detected, and what happens to the excess: refund, refund with returns, or tax? The bylaws only say each manager checks at deposit time. **[2026-10-25 scope pass]** Partly answered: the check at deposit is the CMA standard bylaw s.8.2, KGL-04; detection and refund across managers are still open.
@@ -425,7 +425,7 @@ Note for the discovery report: `domain-landscape.md` 4.3 says "14 public manager
    - Found so far: the 2026 plan (p. 21) implies that Israelis living abroad hold provident accounts.
    - Where the answer probably is: the joining circular ("חוזר הצטרפות לפנסיה וגמל"), which is being revised (2026 plan p. 19).
 7. **Minimum deposits** per manager. Only Altshuler was found (NIS 100 a month by standing order). Other managers' joining pages or forms have not been collected.
-8. **Regulatory source of the two-year minimum for a fee discount**, and of the early-raise conditions. Only the bylaws were read. Probably a CMA circular on management fees or on disclosure of fee discounts. **[2026-10-25 scope pass]** Answered: CMA circular 2017-9-15 sets five years and the early-raise cases, and covers kupat gemel lehashkaa managers, KGL-16; the bylaws' two years is the replaced circular 2012-9-22, KGL-30.
+8. ~~**Regulatory source of the two-year minimum for a fee discount**, and of the early-raise conditions.~~ Closed 2026-10-25: CMA circular 2017-9-15 sets five years and the early-raise cases and covers kupat gemel lehashkaa managers; the bylaws' two years is the replaced circular 2012-9-22 (KGL-16, KGL-30). Only the bylaws were read. Probably a CMA circular on management fees or on disclosure of fee discounts. **[2026-10-25 scope pass]** Answered: CMA circular 2017-9-15 sets five years and the early-raise cases, and covers kupat gemel lehashkaa managers, KGL-16; the bylaws' two years is the replaced circular 2012-9-22, KGL-30.
 9. **Transfers into a gemel lehashkaa from other products** (study fund, tagmulim, policies), and from a gemel lehashkaa to products other than an annuity fund.
    - The mirror's regulation 3(א) lists only gemel lehashkaa to gemel lehashkaa. The תשפ"ג amendment (ק"ת 2099) was not checked in its official text.
    - Where the answer probably is: the official transfer regulations and the CMA transfer circular.
@@ -437,7 +437,7 @@ Note for the discovery report: `domain-landscape.md` 4.3 says "14 public manager
 12. **Status of the bill to raise the ceiling to NIS 300,000** (preliminary reading reported 20 Mar 2024; secondary source). Where the answer probably is: the Knesset bills database.
 13. **Meitav's own gemel lehashkaa bylaws** were not found. The site footer links only to product pages. Needed to confirm Meitav's default track, loan clause and discount terms.
     - Lead for the founder's duplicate "general" track: Gemel-Net shows only one Meitav gemel lehashkaa "כללי" track (7978). The duplicate in the app may be the Meitav Kids entry point, or a general track listed for another product.
-14. **Units of the Gemel-Net fee fields** (AVG_ANNUAL_MANAGEMENT_FEE, AVG_DEPOSIT_FEE) are not defined in the dataset. This must be settled before fee figures are shown.
+14. ~~**Units of the Gemel-Net fee fields** (AVG_ANNUAL_MANAGEMENT_FEE, AVG_DEPOSIT_FEE) are not defined in the dataset.~~ Closed 2026-10-23: both are percent values (of assets a year; of deposits), as the CMA's Gemel-Net and Pensia-Net portals print them, and hold the latest completed calendar year's average (CAT-35, CAT-36). This must be settled before fee figures are shown.
 
 ## Left out and why
 

@@ -1,0 +1,1223 @@
+{
+ "files": [
+  "pension-and-gemel-lekitzba.md",
+  "tax-pension-gemel-lekitzba.md",
+  "savings-policies-and-executive-insurance.md",
+  "tax-insurance-and-amendment-190.md",
+  "switching-and-transfers.md"
+ ],
+ "items": [
+  {
+   "code": "PEN OQ1",
+   "file": "pension-and-gemel-lekitzba.md",
+   "n": 1,
+   "line_at_extraction": 494,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Official text of the 2016 extension order.** Tried: the registered 2016 collective agreement (read), Harel's June 2016 letter (says signed 26 May 2016), searc"
+  },
+  {
+   "code": "PEN OQ2",
+   "file": "pension-and-gemel-lekitzba.md",
+   "n": 2,
+   "line_at_extraction": 495,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Any change to minimum rates after 1.1.2017.** No later agreement or order found; the web-search budget ran out before a dedicated check. Check the Ministry of"
+  },
+  {
+   "code": "PEN OQ3",
+   "file": "pension-and-gemel-lekitzba.md",
+   "n": 3,
+   "line_at_extraction": 496,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Readability of the 2011 order scan.** The gov.il PDF is an image scan; section texts were read from the image and cross-checked against the Hilan mirror. A te"
+  },
+  {
+   "code": "PEN OQ4",
+   "file": "pension-and-gemel-lekitzba.md",
+   "n": 4,
+   "line_at_extraction": 497,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Start year of the self-employed deposit obligation (section 3 of the 2017-2018 Efficiency Law).** The Wikisource text read stated effective dates only for sec"
+  },
+  {
+   "code": "PEN OQ5",
+   "file": "pension-and-gemel-lekitzba.md",
+   "n": 5,
+   "line_at_extraction": 498,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "pension-comprehensive",
+     "pension-general"
+    ]
+   },
+   "start": "**NII publication of the 2026 average wage (NIS 13,769).** Only institution tables (Harel; Mor bylaws for derived ceilings). Tried the NII rates page; it has no"
+  },
+  {
+   "code": "PEN OQ6",
+   "file": "pension-and-gemel-lekitzba.md",
+   "n": 6,
+   "line_at_extraction": 499,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "pension-comprehensive",
+     "pension-general"
+    ]
+   },
+   "start": "**Income Tax regulation defining the comprehensive-fund deposit ceiling (20.5% × 2 × average wage).** Only Harel states the formula. The regulation (תקנות מס הכ"
+  },
+  {
+   "code": "PEN OQ7",
+   "file": "pension-and-gemel-lekitzba.md",
+   "n": 7,
+   "line_at_extraction": 500,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-03",
+     "G-12"
+    ],
+    "instrument record": [
+     "ira-provident",
+     "pension-comprehensive",
+     "pension-general",
+     "provident-for-annuity"
+    ],
+    "instrument blocker": [
+     "ira-provident",
+     "pension-comprehensive",
+     "pension-general",
+     "provident-for-annuity"
+    ],
+    "site code": [
+     "components/guide-signature/pension.tsx:6",
+     "copy.ts:3040",
+     "lib/guide-signature-g2.server.ts:297",
+     "lib/guide-signature-g2.server.ts:345",
+     "lib/guide-signature-g2.ts:303"
+    ]
+   },
+   "start": "**Insurance cost tables and conversion factors.** Bylaws annexes ד to י\"ב (premium factors, conversion factors) are in a separate XLSX (Mor lists \"נספחים מור מק"
+  },
+  {
+   "code": "PEN OQ8",
+   "file": "pension-and-gemel-lekitzba.md",
+   "n": 8,
+   "line_at_extraction": 501,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "pension-comprehensive"
+    ],
+    "instrument blocker": [
+     "pension-comprehensive"
+    ]
+   },
+   "start": "**Is the 5.15% target return CPI-linked?** The law text read says \"ריבית שנתית בשיעור 5.15%\"; press says real. Read section 34ב in full (Wikisource or Knesset P"
+  },
+  {
+   "code": "PEN OQ9",
+   "file": "pension-and-gemel-lekitzba.md",
+   "n": 9,
+   "line_at_extraction": 502,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Designated bonds still held and redemption profile.** Whether any new \"ערד\" bonds are issued after 1.10.2022, and how much of each fund still holds them; Mini"
+  },
+  {
+   "code": "PEN OQ10",
+   "file": "pension-and-gemel-lekitzba.md",
+   "n": 10,
+   "line_at_extraction": 503,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "pension-comprehensive",
+     "pension-general"
+    ]
+   },
+   "start": "**Fee discounts in pension funds after leaving an employer.** The pension bylaws read set only caps; the provident standard bylaws (PEN-25) cover gemel. The CMA"
+  },
+  {
+   "code": "PEN OQ11",
+   "file": "pension-and-gemel-lekitzba.md",
+   "n": 11,
+   "line_at_extraction": 504,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-19"
+    ]
+   },
+   "start": "**Payslip line labels.** The law fixes the content (PEN-36) but no official list of labels was found; payroll vendors use their own. Tried Hilan knowledge centr"
+  },
+  {
+   "code": "PEN OQ12",
+   "file": "pension-and-gemel-lekitzba.md",
+   "n": 12,
+   "line_at_extraction": 505,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**\"ריסק זמני\".** Not found in the bylaws read; its meaning and whether it is a fund feature or a separate insurer product are unverified. Check the managers' an"
+  },
+  {
+   "code": "PEN OQ13",
+   "file": "pension-and-gemel-lekitzba.md",
+   "n": 13,
+   "line_at_extraction": 506,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "pension-comprehensive",
+     "pension-general"
+    ]
+   },
+   "start": "**CMA uniform bylaws for comprehensive funds.** Only Mor's bylaws were read; the insurance and track rules (PEN-11 to PEN-17, PEN-27) may differ in detail at ot"
+  },
+  {
+   "code": "PEN OQ14",
+   "file": "pension-and-gemel-lekitzba.md",
+   "n": 14,
+   "line_at_extraction": 507,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Official CMA notice listing the 2024 selected funds and the end date of the period.** The CMA annual report (third-party host) and Mor's page were used. The g"
+  },
+  {
+   "code": "PEN OQ15",
+   "file": "pension-and-gemel-lekitzba.md",
+   "n": 15,
+   "line_at_extraction": 508,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Alternative fee mixes at Infinity, Altshuler Shaham and Meitav.** Only Mor's alternatives were read."
+  },
+  {
+   "code": "PEN OQ16",
+   "file": "pension-and-gemel-lekitzba.md",
+   "n": 16,
+   "line_at_extraction": 509,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Disability pension start day (61st day).** Read from a page image of Mor's bylaws section 72(א); verify against the text version. **[2026-10-25 scope pass]** "
+  },
+  {
+   "code": "PEN OQ17",
+   "file": "pension-and-gemel-lekitzba.md",
+   "n": 17,
+   "line_at_extraction": 510,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**CMA unified withdrawal rules and retirement circular (2026 plan).** Status not checked."
+  },
+  {
+   "code": "PEN OQ18",
+   "file": "pension-and-gemel-lekitzba.md",
+   "n": 18,
+   "line_at_extraction": 511,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "provident-for-annuity"
+    ]
+   },
+   "start": "**Default investment track of the provident fund for annuity.** The standard bylaws refer to annex א for the default track; the annex was not read."
+  },
+  {
+   "code": "PEN OQ19",
+   "file": "pension-and-gemel-lekitzba.md",
+   "n": 19,
+   "line_at_extraction": 512,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "provident-for-annuity"
+    ],
+    "instrument blocker": [
+     "provident-for-annuity"
+    ]
+   },
+   "start": "**Annuity in practice from a provident fund for annuity.** Which insurers or pension funds accept transfers for annuity, and on what conversion factors."
+  },
+  {
+   "code": "PEN OQ20",
+   "file": "pension-and-gemel-lekitzba.md",
+   "n": 20,
+   "line_at_extraction": 513,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Women's retirement age for those born from 1970.** Inferred as 65 from section 3; the schedule stops at December 1969."
+  },
+  {
+   "code": "PEN OQ21",
+   "file": "pension-and-gemel-lekitzba.md",
+   "n": 21,
+   "line_at_extraction": 514,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "pension-comprehensive"
+    ]
+   },
+   "start": "**Coverage above the average wage.** The extension order requires contributions only up to the average wage; whether employers must insure the full wage depends"
+  },
+  {
+   "code": "PEN OQ22",
+   "file": "pension-and-gemel-lekitzba.md",
+   "n": 22,
+   "line_at_extraction": 515,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Small-balance withdrawal (NIS 8,000, 2016 values) for new pension funds.** Which fund types section 23(ב)(1א) covers, and the 2026 indexed amount."
+  },
+  {
+   "code": "INS OQ1",
+   "file": "savings-policies-and-executive-insurance.md",
+   "n": 1,
+   "line_at_extraction": 344,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**Legal definition of \"ביטוח חיים משתתף ברווחים\" in the Insurance Contract Regulations, and the legal status of a pure savings policy (\"חוזה השקעה\").** Tried: f"
+  },
+  {
+   "code": "INS OQ2",
+   "file": "savings-policies-and-executive-insurance.md",
+   "n": 2,
+   "line_at_extraction": 345,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**Is there any regulatory cap on savings-policy management fees?** Searched (3 queries) and found none. Clal's 6%/1.5% and Phoenix's 4%/1.7% suggest none. Likel"
+  },
+  {
+   "code": "INS OQ3",
+   "file": "savings-policies-and-executive-insurance.md",
+   "n": 3,
+   "line_at_extraction": 346,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**Does CMA circular 2017-9-15 (fee discount duration and increase notices) apply to savings policies?** It applies to \"institutional bodies\" for \"מכשירי החיסכון"
+  },
+  {
+   "code": "INS OQ4",
+   "file": "savings-policies-and-executive-insurance.md",
+   "n": 4,
+   "line_at_extraction": 347,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Period and definition of the Comptroller's 0.94% savings-policy average fee.** Only the summary (pp. 336 to 337) was read; the detailed chapter was not locate"
+  },
+  {
+   "code": "INS OQ5",
+   "file": "savings-policies-and-executive-insurance.md",
+   "n": 5,
+   "line_at_extraction": 348,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Minimum deposits at Clal, Harel, Migdal, Menora, Ayalon, Hachshara and IDI.** Only Phoenix's are sourced. Each insurer's product page or offer form (\"הצעה לבי"
+  },
+  {
+   "code": "INS OQ6",
+   "file": "savings-policies-and-executive-insurance.md",
+   "n": 6,
+   "line_at_extraction": 349,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Hosted tracks: is there an extra fee, who bears the outside manager's fee, and what happens if the hosting agreement ends?** Look in Hachshara and Phoenix tra"
+  },
+  {
+   "code": "INS OQ7",
+   "file": "savings-policies-and-executive-insurance.md",
+   "n": 7,
+   "line_at_extraction": 350,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**Transfer of a savings policy to another insurer without withdrawing.** No official source found (one search). Check CMA circulars and the Tax Authority positi"
+  },
+  {
+   "code": "INS OQ8",
+   "file": "savings-policies-and-executive-insurance.md",
+   "n": 8,
+   "line_at_extraction": 351,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Fee regime for guaranteed-return insurance funds (\"קופת ביטוח מבטיחת תשואה\") and old \"עדיף\" and classic policies.** Excluded from reg. 2; not researched."
+  },
+  {
+   "code": "INS OQ9",
+   "file": "savings-policies-and-executive-insurance.md",
+   "n": 9,
+   "line_at_extraction": 352,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**What the Bituach-Net cohorts mean officially, and whether the old-cohort fee field includes the 15% variable fee.** Only Phoenix's legacy page and the data we"
+  },
+  {
+   "code": "INS OQ10",
+   "file": "savings-policies-and-executive-insurance.md",
+   "n": 10,
+   "line_at_extraction": 353,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**Guaranteed annuity factors: which policies have them, when sale stopped, under which CMA rule, and whether they survive a transfer or a raise in deposits.** O"
+  },
+  {
+   "code": "INS OQ11",
+   "file": "savings-policies-and-executive-insurance.md",
+   "n": 11,
+   "line_at_extraction": 354,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**Disability (אובדן כושר עבודה) and risk cover prices inside executive policies, and the \"ריסק זמני\" product** (also PEN open question 12). The CMA comparison r"
+  },
+  {
+   "code": "INS OQ12",
+   "file": "savings-policies-and-executive-insurance.md",
+   "n": 12,
+   "line_at_extraction": 355,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**ח\"ץ bond holdings in old-cohort portfolios** and whether they affect returns credited to holders. Accountant General debt reports (GOV)."
+  },
+  {
+   "code": "INS OQ13",
+   "file": "savings-policies-and-executive-insurance.md",
+   "n": 13,
+   "line_at_extraction": 356,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Phoenix track 2081 \"מסלול השקעה בניהול אישי\" in Bituach-Net** (NIS 14.5 bn, fee field 3.72): a self-directed policy product? Not checked."
+  },
+  {
+   "code": "INS OQ14",
+   "file": "savings-policies-and-executive-insurance.md",
+   "n": 14,
+   "line_at_extraction": 357,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Partial-withdrawal floors and payout times at the other insurers**, and whether the regulations under s. 23 set a payout deadline for insurance funds (Harel 1"
+  },
+  {
+   "code": "INS OQ15",
+   "file": "savings-policies-and-executive-insurance.md",
+   "n": 15,
+   "line_at_extraction": 358,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**CMA \"חוזי השקעה\" anti-money-laundering letter (about 2019)** seen only in a search extract; not opened."
+  },
+  {
+   "code": "INS OQ16",
+   "file": "savings-policies-and-executive-insurance.md",
+   "n": 16,
+   "line_at_extraction": 359,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "rule record": [
+     "INS-25"
+    ],
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**On which provision do savings-policy deposit fees rest?** Reg. 6א(א) and (א1) cap only a fee as a percentage of the portfolio value; (א2) forbids any other ki"
+  },
+  {
+   "code": "SW OQ1",
+   "file": "switching-and-transfers.md",
+   "n": 1,
+   "line_at_extraction": 699,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Current version of circular 2017-9-17.** The copy read (Analyst host) is a consolidated, amended text: s.3(ד) reads \"בוטל\" and sections 4א and 5א were added. "
+  },
+  {
+   "code": "SW OQ2",
+   "file": "switching-and-transfers.md",
+   "n": 2,
+   "line_at_extraction": 700,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "site code": [
+     "copy.ts:2424",
+     "lib/playbook.ts:117",
+     "lib/playbook.ts:118"
+    ]
+   },
+   "start": "**Does circular 2017-9-17 govern gemel lehashkaa?** Annex A's fund-type list has no \"קופת גמל להשקעה\", which postdates the 2017 text. The gemel lehashkaa bylaws"
+  },
+  {
+   "code": "SW OQ3",
+   "file": "switching-and-transfers.md",
+   "n": 3,
+   "line_at_extraction": 701,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "site code": [
+     "copy.ts:2425",
+     "lib/playbook.ts:84"
+    ]
+   },
+   "start": "**CMA rule on retention contacts and retention offers in provident products.** Not in the Advice, Marketing and Clearing Law or the transfer circular. Two searc"
+  },
+  {
+   "code": "SW OQ4",
+   "file": "switching-and-transfers.md",
+   "n": 4,
+   "line_at_extraction": 702,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "site code": [
+     "components/playbook/offer-card.tsx:54",
+     "components/playbook/offer-card.tsx:55",
+     "copy.ts:2075",
+     "copy.ts:2182",
+     "copy.ts:2426"
+    ]
+   },
+   "start": "**Does a fee quoted before joining bind the institution?** The CMA discount circular (PF-13) runs from when the fee is first charged. Likely answer: the joining"
+  },
+  {
+   "code": "SW OQ5",
+   "file": "switching-and-transfers.md",
+   "n": 5,
+   "line_at_extraction": 703,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "site code": [
+     "copy.ts:2427",
+     "lib/playbook.ts:86"
+    ],
+    "rule record": [
+     "SW-50"
+    ]
+   },
+   "start": "**Clearing house: the price of a direct request, and how consent is checked.** Only bank routes, which are free, were read. Kol Zchut is blocked. Likely answer:"
+  },
+  {
+   "code": "SW OQ6",
+   "file": "switching-and-transfers.md",
+   "n": 6,
+   "line_at_extraction": 704,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "site code": [
+     "copy.ts:2428",
+     "lib/playbook.ts:88"
+    ]
+   },
+   "start": "**Who must tell the employer to redirect future deposits after an active member's transfer, and the employer's deadline.** Not found. Likely answer: the payment"
+  },
+  {
+   "code": "SW OQ7",
+   "file": "switching-and-transfers.md",
+   "n": 7,
+   "line_at_extraction": 705,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**How PEN-14 combines with circular s.4(ב).** PEN-14 gives a new 60-month qualifying period when tagmulim money is moved out (bylaw). Circular s.4(ב) credits in"
+  },
+  {
+   "code": "SW OQ8",
+   "file": "switching-and-transfers.md",
+   "n": 8,
+   "line_at_extraction": 706,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "pension-comprehensive",
+     "pension-general",
+     "provident-for-annuity"
+    ],
+    "instrument blocker": [
+     "pension-comprehensive",
+     "pension-general",
+     "provident-for-annuity"
+    ]
+   },
+   "start": "**Is a transfer between pension funds or provident funds for annuity tax-neutral?** The TXP file states nothing either way. For `tax-pension-gemel-lekitzba.md`."
+  },
+  {
+   "code": "SW OQ9",
+   "file": "switching-and-transfers.md",
+   "n": 9,
+   "line_at_extraction": 707,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "site code": [
+     "copy.ts:2429",
+     "lib/playbook.ts:132"
+    ],
+    "rule record": [
+     "SW-26",
+     "SW-27"
+    ]
+   },
+   "start": "**The Governor's rules 2019 on bank switching**: the account types and activity types covered, whether securities move under the service, which banks are exempt"
+  },
+  {
+   "code": "SW OQ10",
+   "file": "switching-and-transfers.md",
+   "n": 10,
+   "line_at_extraction": 708,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "site code": [
+     "copy.ts:2430",
+     "lib/playbook.ts:145"
+    ],
+    "rule record": [
+     "SW-33",
+     "SW-52"
+    ]
+   },
+   "start": "**The supervised price for moving securities**: the order that sets it, and whether it is per transfer (Discount \"5 ₪ להעברה\") or per security (Meitav \"5 שקל לנ"
+  },
+  {
+   "code": "SW OQ11",
+   "file": "switching-and-transfers.md",
+   "n": 11,
+   "line_at_extraction": 709,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "brokerage-account"
+    ],
+    "instrument blocker": [
+     "brokerage-account"
+    ],
+    "site code": [
+     "components/playbook/cost.tsx:129",
+     "copy.ts:2431",
+     "lib/playbook.ts:146"
+    ]
+   },
+   "start": "**Tax on moving securities between your own accounts**: cost basis carried over, losses carried forward, and whether a declaration is needed. Only institution s"
+  },
+  {
+   "code": "SW OQ12",
+   "file": "switching-and-transfers.md",
+   "n": 12,
+   "line_at_extraction": 710,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "site code": [
+     "copy.ts:2432",
+     "lib/playbook.ts:147"
+    ]
+   },
+   "start": "**Moving securities between an Israeli institution and a foreign broker**: feasibility for TASE lines, cost, and the withholding consequences. Only forum experi"
+  },
+  {
+   "code": "SW OQ13",
+   "file": "switching-and-transfers.md",
+   "n": 13,
+   "line_at_extraction": 711,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Competition Authority deposit-portability directive**: text, effective date and tribunal status (BANK open question 6)."
+  },
+  {
+   "code": "SW OQ14",
+   "file": "switching-and-transfers.md",
+   "n": 14,
+   "line_at_extraction": 712,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**\"המנהל\" in Transfer Regulations reg. 3(א)(12)**: confirm it is the Tax Authority director, as PF-17 reads it."
+  },
+  {
+   "code": "SW OQ15",
+   "file": "switching-and-transfers.md",
+   "n": 15,
+   "line_at_extraction": 713,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Directive 448 after version 2 (8/21)**: whether a later version exists. Circular h-2863 refers to s.37 of the directive but amends only the rules. **[2026-10-"
+  },
+  {
+   "code": "SW OQ16",
+   "file": "switching-and-transfers.md",
+   "n": 16,
+   "line_at_extraction": 714,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "site code": [
+     "copy.ts:2433",
+     "lib/playbook.ts:87"
+    ]
+   },
+   "start": "**Removing an agent already attached to a provident account**, and whether an agent is re-attached on a direct transfer. CMA 2026 power-of-attorney circular (PF"
+  },
+  {
+   "code": "TXA OQ1",
+   "file": "tax-insurance-and-amendment-190.md",
+   "n": 1,
+   "line_at_extraction": 295,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "G-24 blocker": [
+     "G-24"
+    ],
+    "site code": [
+     "lib/compare.server.ts:35",
+     "lib/graduation.server.ts:52"
+    ],
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**Policy gains: linked (25% real) or unlinked (15% nominal)? (Q5, main gap.)** **[2026-10-24 R5 pass: narrowed, not closed. Exact wording of s.3(ה5) and s.125C "
+  },
+  {
+   "code": "TXA OQ2",
+   "file": "tax-insurance-and-amendment-190.md",
+   "n": 2,
+   "line_at_extraction": 296,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Policy deposits made before 1.12.2002**: reg. 20(a)(4) covers only later deposits. What tax applies to gains on earlier deposits? Likely in the same circular "
+  },
+  {
+   "code": "TXA OQ3",
+   "file": "tax-insurance-and-amendment-190.md",
+   "n": 3,
+   "line_at_extraction": 297,
+   "already_struck": true,
+   "closed_date": "2026-10-25",
+   "site_dependent": true,
+   "deps": {
+    "G-24 blocker": [
+     "G-24"
+    ]
+   },
+   "start": "~~**Moving a savings policy to another insurer**: tax event or not?~~ Closed 2026-10-25 (see the tax-bases note below). No source found. Likely in CMA rules on "
+  },
+  {
+   "code": "TXA OQ4",
+   "file": "tax-insurance-and-amendment-190.md",
+   "n": 4,
+   "line_at_extraction": 298,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Partial withdrawal from a policy**: s.3(ה5) has no pro-rata rule. Insurer terms or a circular."
+  },
+  {
+   "code": "TXA OQ5",
+   "file": "tax-insurance-and-amendment-190.md",
+   "n": 5,
+   "line_at_extraction": 299,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Death**: tax on the savings component paid to beneficiaries of a savings policy, and on Amendment 190 money of someone who dies before 75."
+  },
+  {
+   "code": "TXA OQ6",
+   "file": "tax-insurance-and-amendment-190.md",
+   "n": 6,
+   "line_at_extraction": 300,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "G-24 blocker": [
+     "G-24"
+    ],
+    "site code": [
+     "lib/compare.server.ts:36"
+    ],
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**Growth inside executive insurance** (s.9(2)(b) excludes insurance funds): how investment income attributable to members is taxed, and whether it reduces the m"
+  },
+  {
+   "code": "TXA OQ7",
+   "file": "tax-insurance-and-amendment-190.md",
+   "n": 7,
+   "line_at_extraction": 301,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Risk and disability components in executive insurance**: which credit (25% life vs 35% survivors' annuity) applies to the employee's share; tax on employer pa"
+  },
+  {
+   "code": "TXA OQ8",
+   "file": "tax-insurance-and-amendment-190.md",
+   "n": 8,
+   "line_at_extraction": 302,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Pre-2008 capital money in executive insurance**: does s.9(18) exempt the gains on a lawful lump-sum withdrawal (TXA-15 is a reading)? Also bears on TXP open q"
+  },
+  {
+   "code": "TXA OQ9",
+   "file": "tax-insurance-and-amendment-190.md",
+   "n": 9,
+   "line_at_extraction": 303,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "G-24 blocker": [
+     "G-24"
+    ],
+    "site code": [
+     "lib/compare.server.ts:43"
+    ]
+   },
+   "start": "**Legal source of the Amendment 190 age ceilings and the 38,412 benefited layer**: Mor says the ceiling is for withdrawal without an approval; no Tax Authority "
+  },
+  {
+   "code": "TXA OQ10",
+   "file": "tax-insurance-and-amendment-190.md",
+   "n": 10,
+   "line_at_extraction": 304,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Age 60 and three payslips as conditions for the 15% commutation**: stated by funds; statutory basis not found. Same likely source as 9. **[2026-10-24 R5 pass:"
+  },
+  {
+   "code": "TXA OQ11",
+   "file": "tax-insurance-and-amendment-190.md",
+   "n": 11,
+   "line_at_extraction": 305,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**s.9A(e)(1) and (e)(3) together**: can the exempt-commutation capacity be used on recognized-annuity money, and in what order?"
+  },
+  {
+   "code": "TXA OQ12",
+   "file": "tax-insurance-and-amendment-190.md",
+   "n": 12,
+   "line_at_extraction": 306,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**The separate circular on the recognized annuity** promised in circular 2/2013 s.2.2.2 (\"צפויה רשות המסים לפרסם חוזר מקצועי בעתיד\"): not found (one search)."
+  },
+  {
+   "code": "TXA OQ13",
+   "file": "tax-insurance-and-amendment-190.md",
+   "n": 13,
+   "line_at_extraction": 307,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Recognized annuity before 60** (outside disability): taxable as a qualifying annuity, or otherwise?"
+  },
+  {
+   "code": "TXA OQ14",
+   "file": "tax-insurance-and-amendment-190.md",
+   "n": 14,
+   "line_at_extraction": 308,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-11"
+    ]
+   },
+   "start": "**NII and health contributions** on a recognized annuity and on a commuted amount (also TXK open question 9)."
+  },
+  {
+   "code": "TXA OQ15",
+   "file": "tax-insurance-and-amendment-190.md",
+   "n": 15,
+   "line_at_extraction": 309,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Surtax and brackets**: does the 15% commutation income count toward s.121B surtax, and is it \"income from capital sources\" for the extra 2% (TXG-10)?"
+  },
+  {
+   "code": "TXA OQ16",
+   "file": "tax-insurance-and-amendment-190.md",
+   "n": 16,
+   "line_at_extraction": 310,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Proposed changes**: re-check the Arbitrage Committee proposals (TXK-21) and the 2027 budget for Amendment 190 and savings-policy changes."
+  },
+  {
+   "code": "TXA OQ17",
+   "file": "tax-insurance-and-amendment-190.md",
+   "n": 17,
+   "line_at_extraction": 311,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Notional redemption (\"פדיון רעיוני\") of a savings policy**: Phoenix describes a year-end paper redemption to use the s.125D deduction (TXA-28). Whether the Ta"
+  },
+  {
+   "code": "TXP OQ1",
+   "file": "tax-pension-gemel-lekitzba.md",
+   "n": 1,
+   "line_at_extraction": 308,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Fixing the exemption (`קיבוע זכויות`): current form and process.** Circular 2/2013 s.7.1 says to apply to the assessing officer \"until a new instruction\". The"
+  },
+  {
+   "code": "TXP OQ2",
+   "file": "tax-pension-gemel-lekitzba.md",
+   "n": 2,
+   "line_at_extraction": 309,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Forms on leaving a job** (employer notice of retirement and the employee's choice between taking severance, continuity and annuity continuity): not read. Trie"
+  },
+  {
+   "code": "TXP OQ3",
+   "file": "tax-pension-gemel-lekitzba.md",
+   "n": 3,
+   "line_at_extraction": 310,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-06"
+    ],
+    "instrument record": [
+     "ira-provident",
+     "pension-comprehensive",
+     "pension-general",
+     "provident-for-annuity"
+    ],
+    "instrument blocker": [
+     "ira-provident",
+     "pension-comprehensive",
+     "pension-general",
+     "provident-for-annuity"
+    ]
+   },
+   "start": "**Taxable base of a non-compliant withdrawal**: the whole amount, only benefited deposits, or gains? The 1962 regulations (reg. 3) were cited by circular 2/2013"
+  },
+  {
+   "code": "TXP OQ4",
+   "file": "tax-pension-gemel-lekitzba.md",
+   "n": 4,
+   "line_at_extraction": 311,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**2025 average wage**: the s.3(e3) footnote and the 2025 guide give the 2025 employer ceiling as 33,290 (2.5 × 13,316), while the s.47 footnote and the 2025 gui"
+  },
+  {
+   "code": "TXP OQ5",
+   "file": "tax-pension-gemel-lekitzba.md",
+   "n": 5,
+   "line_at_extraction": 312,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Severance ceiling 45,600**: the law says \"the employee's salary on the deposit date or\" the indexed amount; the booklet labels it \"לשנה\". Is the cap applied t"
+  },
+  {
+   "code": "TXP OQ6",
+   "file": "tax-pension-gemel-lekitzba.md",
+   "n": 6,
+   "line_at_extraction": 313,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "pension-comprehensive"
+    ]
+   },
+   "start": "**Does payroll grant the employee's 45A credit monthly**, and how is it shown on the payslip? The Income Tax (Deduction from Salary) Regulations were not read; "
+  },
+  {
+   "code": "TXP OQ7",
+   "file": "tax-pension-gemel-lekitzba.md",
+   "n": 7,
+   "line_at_extraction": 314,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-13"
+    ]
+   },
+   "start": "**Age-50 enlarged deduction**: 2026 amounts and the regulation text (2025 guide gives 11,508 / 18,084 / 5,820)."
+  },
+  {
+   "code": "TXP OQ8",
+   "file": "tax-pension-gemel-lekitzba.md",
+   "n": 8,
+   "line_at_extraction": 315,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Self-employed mandatory deposit**: the statutory section and the 2026 thresholds. Probably the Provident Funds Law or the Ordinance; product file `pension-and"
+  },
+  {
+   "code": "TXP OQ9",
+   "file": "tax-pension-gemel-lekitzba.md",
+   "n": 9,
+   "line_at_extraction": 316,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "provident-for-annuity"
+    ],
+    "instrument blocker": [
+     "provident-for-annuity"
+    ]
+   },
+   "start": "**s.9(18) scope**: its wording covers gains received \"from a provident fund for benefits\". How gains are taxed on the lump sums that are allowed from a providen"
+  },
+  {
+   "code": "TXP OQ10",
+   "file": "tax-pension-gemel-lekitzba.md",
+   "n": 10,
+   "line_at_extraction": 317,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**s.9(17b) small-balance withdrawal exemption** (`משיכת יתרה צבורה נמוכה`): the Provident Funds Law summary suggested s.23(b)(1a) applies to savings funds and o"
+  },
+  {
+   "code": "TXP OQ11",
+   "file": "tax-pension-gemel-lekitzba.md",
+   "n": 11,
+   "line_at_extraction": 318,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Form 106 \"מס מוגבל 40%\"** on income after death and on the taxable death grant: statutory basis not read."
+  },
+  {
+   "code": "TXP OQ12",
+   "file": "tax-pension-gemel-lekitzba.md",
+   "n": 12,
+   "line_at_extraction": 319,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Version currency of the 1964 regulations on Wikisource** (latest amendment tag shown תשע\"ג): confirm reg. 19 (7.5% employer, 7% employee, 8 1/3% severance) ag"
+  },
+  {
+   "code": "TXP OQ13",
+   "file": "tax-pension-gemel-lekitzba.md",
+   "n": 13,
+   "line_at_extraction": 320,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Men's retirement age**: 67 is from the 2025 guide; the Retirement Age Law itself was not read."
+  },
+  {
+   "code": "TXP OQ14",
+   "file": "tax-pension-gemel-lekitzba.md",
+   "n": 14,
+   "line_at_extraction": 321,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Exact wording**: all Ordinance quotes came through a fetch tool from Wikisource; re-read on the Knesset or Nevo text before encoding."
+  },
+  {
+   "code": "TXP OQ15",
+   "file": "tax-pension-gemel-lekitzba.md",
+   "n": 15,
+   "line_at_extraction": 322,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Whether the taxable part of an annuity is personal-exertion income for every purpose** (brackets, the age-60 rules in `tax-general.md`): the s.1 definition of"
+  },
+  {
+   "code": "TXP OQ16",
+   "file": "tax-pension-gemel-lekitzba.md",
+   "n": 16,
+   "line_at_extraction": 323,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-19"
+    ]
+   },
+   "start": "**Payslip labels used by payroll software** for employee deposits, employer deposits, severance and insured salary: not sourced. Needs sample payslips from the "
+  }
+ ]
+}

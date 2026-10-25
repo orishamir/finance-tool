@@ -62,6 +62,20 @@
   "checked": "2026-10-25",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf",
+      "title": "Chief Economist paper Oct 2025",
+      "title_he": "על הטבת המס בקרן השתלמות – ניתוח מדיניות (אגף הכלכלן הראשי, אוקטובר 2025)",
+      "publisher": "gov.il",
+      "publisher_he": "משרד האוצר",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.5",
+      "locator_he": "עמוד 5",
+      "page": 5,
+      "quote": "רווחים נומינליים בניכוי העליות המצטברות במדד המחיר לצרכן",
+      "checked": "2026-10-26"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
       "title": "Tax Authority guide 2025",
       "title_he": "דע זכויותיך וחובותיך 2025",

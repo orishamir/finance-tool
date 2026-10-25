@@ -152,11 +152,11 @@ const tier2: Tier2Instrument[] = [
   ["executive-insurance", "executive insurance", "TXA OQ6"],
   ["structured-deposits", "structured deposits", "TX2 OQ5"],
   ["corporate-bonds", "corporate bonds", "TX2 OQ6"],
-  ["managed-portfolios", "managed and robo portfolios", "TX2 OQ12, MF-28"],
-  ["foreign-currency-deposits", "foreign-currency deposits", "TX2 OQ1, TX2 OQ2"],
+  ["managed-portfolios", "managed and robo portfolios", "MF-28"],
+  ["foreign-currency-deposits", "foreign-currency deposits", "TX2 OQ2"],
   ["reits", "REITs", "TX2 OQ8"],
   ["gold-via-funds", "gold via funds", "TX2 OQ10"],
-  ["amendment-190-deposits", "Amendment 190 deposits", "TXA OQ9"],
+  ["amendment-190-deposits", "Amendment 190 deposits", "TXA OQ14, TXA OQ15"],
 ].map(([id, name, openQuestion]) => ({ id: id!, name: name!, openQuestion: openQuestion! }));
 
 const byId = (set: CandidateSet, id: string) => set.candidates.find((c) => c.id === id)!;

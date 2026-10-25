@@ -172,6 +172,19 @@
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
+      "locator": "p.51, footnote 35",
+      "page": 51,
+      "quote": "בהגיע הילד הזכאי לגיל 18 (בסימן זה - מענק המשיכה הראשון)",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
+      "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
       "locator": "p.50, s.74ב(א)(1)(א)-(ב)",
       "locator_he": "עמוד 50, סעיף 74ב(א)(1)(א)-(ב)",
       "page": 50,
@@ -235,6 +248,20 @@
       "kind": "regulator_page",
       "strength": "primary",
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_366872.pdf",
+      "title": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי המדיניות הכלכלית לשנות התקציב 2017 ו-2018), התשע\"ז-2016, ספר החוקים 2592",
+      "title_he": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי המדיניות הכלכלית לשנות התקציב 2017 ו-2018), התשע\"ז-2016, ספר החוקים 2592",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.318, ss.162-164, s.163",
+      "locator_he": "עמוד 318, סעיפים 162-164, סעיף 163",
+      "page": 318,
+      "quote": "יחולו על ילד זכאי, כמשמעותו בסעיף 74ב לחוק האמור, שנולד ביום תחילתו של חוק זה ואילך",
+      "checked": "2026-10-26"
     }
   ]
 }

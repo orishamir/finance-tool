@@ -1,0 +1,1298 @@
+{
+ "files": [
+  "brokerage-account.md",
+  "etfs-and-index-funds.md",
+  "mutual-funds-and-money-market-funds.md",
+  "tax-securities-israeli.md",
+  "tax-securities-foreign.md"
+ ],
+ "items": [
+  {
+   "code": "BRK OQ1",
+   "file": "brokerage-account.md",
+   "n": 1,
+   "line_at_extraction": 529,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Full TASE member list and the 3 unnamed Israeli non-bank members.** TASE counts 8 Israeli brokers; only 6 non-bank names appear in the clearing-house list. Tr"
+  },
+  {
+   "code": "BRK OQ2",
+   "file": "brokerage-account.md",
+   "n": 2,
+   "line_at_extraction": 530,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Status of the broker-dealer bill.** Only a 2024 press report was opened; search budget ran out. Answer: Knesset bill page or ISA publications."
+  },
+  {
+   "code": "BRK OQ3",
+   "file": "brokerage-account.md",
+   "n": 3,
+   "line_at_extraction": 531,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "brokerage-account"
+    ]
+   },
+   "start": "**Current text of TASE rules on client assets (s.25, s.26) and any amendment after March 2018.** TASE rule book pages are JS-only. Answer: TASE \"תקנון הבורסה\" p"
+  },
+  {
+   "code": "BRK OQ4",
+   "file": "brokerage-account.md",
+   "n": 4,
+   "line_at_extraction": 532,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Other banks' securities custody terms.** Only Leumi was read. FIBI (פח-90 booklet), Otzar Hahayal and Pagi general-terms PDFs were seen in search results but "
+  },
+  {
+   "code": "BRK OQ5",
+   "file": "brokerage-account.md",
+   "n": 5,
+   "line_at_extraction": 533,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "brokerage-account"
+    ]
+   },
+   "start": "**What happens to a bank's clients' securities if the bank fails.** No official text found; the Banking Ordinance and the custody committee report are likely pl"
+  },
+  {
+   "code": "BRK OQ6",
+   "file": "brokerage-account.md",
+   "n": 6,
+   "line_at_extraction": 534,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**The 2011 inter-ministerial custody committee report** (adopted by the Supervisor of Banks). Not opened; probably on boi.org.il or isa.gov.il. **[2026-10-25 sc"
+  },
+  {
+   "code": "BRK OQ7",
+   "file": "brokerage-account.md",
+   "n": 7,
+   "line_at_extraction": 535,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Interactive Brokers' own protection pages and the Irish Investor Compensation Company page.** interactivebrokers.com returned 403; investorcompensation.ie ret"
+  },
+  {
+   "code": "BRK OQ8",
+   "file": "brokerage-account.md",
+   "n": 8,
+   "line_at_extraction": 536,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**TASE's member-fee comparison under s.45טז.** market.tase.co.il/he/market_data/trading_fees (redirect target of tase.co.il/he/market_data/trading_fees) is a JS"
+  },
+  {
+   "code": "BRK OQ9",
+   "file": "brokerage-account.md",
+   "n": 9,
+   "line_at_extraction": 537,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "brokerage-account"
+    ]
+   },
+   "start": "**Direct accounts at Interactive Brokers and eToro for Israeli residents.** Whether a foreign broker that does not solicit in Israel needs a 49A permit, and whi"
+  },
+  {
+   "code": "BRK OQ10",
+   "file": "brokerage-account.md",
+   "n": 10,
+   "line_at_extraction": 538,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "brokerage-account"
+    ]
+   },
+   "start": "**Whether a bank may charge a securities fee not listed in part 4** (for example a dividend-collection or monthly account fee on a securities account). The Bank"
+  },
+  {
+   "code": "BRK OQ11",
+   "file": "brokerage-account.md",
+   "n": 11,
+   "line_at_extraction": 539,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "brokerage-account",
+     "makam",
+     "money-market-fund-daily",
+     "money-market-fund-renewable"
+    ]
+   },
+   "start": "**Custody fee on makam and money-market funds at non-bank members.** The bank ban (BRK-17) applies to banks; non-bank tariffs read do not mention an exemption."
+  },
+  {
+   "code": "BRK OQ12",
+   "file": "brokerage-account.md",
+   "n": 12,
+   "line_at_extraction": 540,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "brokerage-account"
+    ],
+    "rule record": [
+     "BRK-18"
+    ]
+   },
+   "start": "**The supervised price for transferring securities to the client's own account elsewhere** (\"(בפיקוח)\"). Not in the rules; BoI supervised-price notices or each "
+  },
+  {
+   "code": "BRK OQ13",
+   "file": "brokerage-account.md",
+   "n": 13,
+   "line_at_extraction": 541,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "rule record": [
+     "BRK-21"
+    ]
+   },
+   "start": "**Later amendments to the 1992 disclosure rules** after 30.12.2014, and the exact wording of s.5(א)(5) (read from a scanned page)."
+  },
+  {
+   "code": "BRK OQ14",
+   "file": "brokerage-account.md",
+   "n": 14,
+   "line_at_extraction": 542,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Notice period for fee changes at non-bank members.** Not found in TASE rules read or in the tariffs (Psagot only says it may update fees from time to time)."
+  },
+  {
+   "code": "BRK OQ15",
+   "file": "brokerage-account.md",
+   "n": 15,
+   "line_at_extraction": 543,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**The rule that makes banks publish actual securities fees by size band** (\"גילוי עלות שירותים בני\"ע\"). Probably a Supervisor of Banks directive; not found."
+  },
+  {
+   "code": "BRK OQ16",
+   "file": "brokerage-account.md",
+   "n": 16,
+   "line_at_extraction": 544,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "brokerage-account"
+    ]
+   },
+   "start": "**Withholding by non-bank members and by foreign brokers.** No member page read states it; tax-file owners and broker account agreements are the likely sources."
+  },
+  {
+   "code": "BRK OQ17",
+   "file": "brokerage-account.md",
+   "n": 17,
+   "line_at_extraction": 545,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "brokerage-account"
+    ]
+   },
+   "start": "**Minors' brokerage accounts and joint-account rules beyond Leumi's section heading.** Not found on any page read."
+  },
+  {
+   "code": "BRK OQ18",
+   "file": "brokerage-account.md",
+   "n": 18,
+   "line_at_extraction": 546,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Meitav Trade tariff.** Not linked from meitav.co.il/trade, the independent-trading page or the terms page; meitavtrade.co.il redirects to meitav.co.il/trade/i"
+  },
+  {
+   "code": "BRK OQ19",
+   "file": "brokerage-account.md",
+   "n": 19,
+   "line_at_extraction": 547,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**One Zero brokerage offer and tariff.** onezerobank.com returns 403. **[2026-10-22 browser pass: Closed by BRK-34.]**"
+  },
+  {
+   "code": "BRK OQ20",
+   "file": "brokerage-account.md",
+   "n": 20,
+   "line_at_extraction": 548,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Psagot brokerage ownership after the 2024 transactions** (domain open question 16). Psagot's home and about pages do not name owners; TASE guide confirms \"Psa"
+  },
+  {
+   "code": "BRK OQ21",
+   "file": "brokerage-account.md",
+   "n": 21,
+   "line_at_extraction": 549,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Fractional shares and order types that change cost.** No provider page read mentions fractional shares; TASE trading guide (part three of the rules, `content."
+  },
+  {
+   "code": "ETF OQ1",
+   "file": "etfs-and-index-funds.md",
+   "n": 1,
+   "line_at_extraction": 748,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**TASE trading hours and phases for ETF units.** Tried https://www.tase.co.il/he/content/knowledge_center/trading_hours (renders as \"Tase Site\" only). Search bu"
+  },
+  {
+   "code": "ETF OQ2",
+   "file": "etfs-and-index-funds.md",
+   "n": 2,
+   "line_at_extraction": 749,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "OQ-tag": [
+     "site/app/content/exposure/index-ta125.tsx:59"
+    ],
+    "instrument record": [
+     "index-ta125"
+    ]
+   },
+   "start": "**Market makers' spread and minimum-size obligations.** Tried searches for TASE Part 3 guidelines. Only a law-firm attachment and press were found, not opened a"
+  },
+  {
+   "code": "ETF OQ3",
+   "file": "etfs-and-index-funds.md",
+   "n": 3,
+   "line_at_extraction": 750,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Complete list of Israeli ETF issuers.** https://www.tase.co.il/he/content/knowledge_center/etf_issuers_list does not render to scripts. The ISA 2024 split cov"
+  },
+  {
+   "code": "ETF OQ4",
+   "file": "etfs-and-index-funds.md",
+   "n": 4,
+   "line_at_extraction": 751,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-29"
+    ],
+    "site code": [
+     "copy.ts:2282"
+    ],
+    "rule record": [
+     "ETF-30"
+    ]
+   },
+   "start": "**Complete list of foreign funds registered in Israel, their managers and representatives.** https://www.new.isa.gov.il/nav-index/api/mutualfunds-foreignfunds-a"
+  },
+  {
+   "code": "ETF OQ5",
+   "file": "etfs-and-index-funds.md",
+   "n": 5,
+   "line_at_extraction": 752,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**BlackRock brochure table** (fund names, TASE security numbers, TASE symbols, fees). The PDF renders as one tall image too small to read. Need the brochure's t"
+  },
+  {
+   "code": "ETF OQ6",
+   "file": "etfs-and-index-funds.md",
+   "n": 6,
+   "line_at_extraction": 753,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Is the Wikisource text of the 2018 tracking-fund regulations current?** The page shows the original text without an amendment list. Check Nevo or the Reshumot"
+  },
+  {
+   "code": "ETF OQ7",
+   "file": "etfs-and-index-funds.md",
+   "n": 7,
+   "line_at_extraction": 754,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Do the ISA average fees for ETFs include variable management fees?** Not stated in the 2024 or 2025 reports as read. A 2024 footnote (p.12) seems to relate ET"
+  },
+  {
+   "code": "ETF OQ8",
+   "file": "etfs-and-index-funds.md",
+   "n": 8,
+   "line_at_extraction": 755,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**How the positive variable management fee is computed** (relation to positive tracking difference). The regulations define it only in general terms. Each fund'"
+  },
+  {
+   "code": "ETF OQ9",
+   "file": "etfs-and-index-funds.md",
+   "n": 9,
+   "line_at_extraction": 756,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Official definitions of the exposure-profile scale** (digits 0–6, letters A–F). Only \"4\" and \"D\" were read from reports. The letter \"A\" was read from a filing"
+  },
+  {
+   "code": "ETF OQ10",
+   "file": "etfs-and-index-funds.md",
+   "n": 10,
+   "line_at_extraction": 757,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**The 6 open foreign funds** (end-2025): how the public buys and redeems them, and whether they are on TASE."
+  },
+  {
+   "code": "ETF OQ11",
+   "file": "etfs-and-index-funds.md",
+   "n": 11,
+   "line_at_extraction": 758,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "OQ-tag": [
+     "site/app/content/exposure/index-sp500.tsx:60"
+    ],
+    "instrument record": [
+     "index-sp500"
+    ]
+   },
+   "start": "**EU PRIIPs/KID restriction for Israeli residents** at EU-regulated brokers (which US-domiciled ETFs they can buy). EUR-Lex (Regulation 1286/2014) returned empt"
+  },
+  {
+   "code": "ETF OQ12",
+   "file": "etfs-and-index-funds.md",
+   "n": 12,
+   "line_at_extraction": 759,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "OQ-tag": [
+     "site/app/content/exposure/index-ta125.tsx:59"
+    ],
+    "instrument record": [
+     "index-ta125"
+    ]
+   },
+   "start": "**Minimum trade size or lot for ETF units on TASE.** Not found. The IBI report says only that creation orders have no minimum value."
+  },
+  {
+   "code": "ETF OQ13",
+   "file": "etfs-and-index-funds.md",
+   "n": 13,
+   "line_at_extraction": 760,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Is accumulation the norm for Israeli ETFs and open tracking funds?** Only the IBI ETF was confirmed accumulating. **[2026-10-25 scope pass]** Partly answered:"
+  },
+  {
+   "code": "ETF OQ14",
+   "file": "etfs-and-index-funds.md",
+   "n": 14,
+   "line_at_extraction": 761,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Distribution fee (עמלת הפצה) for tracking funds and ETFs.** Report footnotes mention a \"fund type for distribution fee\" (IBI: 4; Yalin: 3), and that a distrib"
+  },
+  {
+   "code": "ETF OQ15",
+   "file": "etfs-and-index-funds.md",
+   "n": 15,
+   "line_at_extraction": 762,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Security-number conventions** (ETFs 11xxxxx, open funds 5xxxxxx in the examples). Not confirmed as a rule. **[2026-10-25 scope pass]** Still open; the annual "
+  },
+  {
+   "code": "ETF OQ16",
+   "file": "etfs-and-index-funds.md",
+   "n": 16,
+   "line_at_extraction": 763,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Trading currency of each foreign fund on TASE.** BlackRock says shekel-denominated. Confirm per fund from its Israeli annex (reg. 4(b)). **[2026-10-22 browser"
+  },
+  {
+   "code": "ETF OQ17",
+   "file": "etfs-and-index-funds.md",
+   "n": 17,
+   "line_at_extraction": 764,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Amendment number for the foreign-fund chapter.** Leumi cites \"תיקון 23\" and 1.1.2017. The law page shows ch. 9.1, and the 2016 regulations took effect six mon"
+  },
+  {
+   "code": "ETF OQ18",
+   "file": "etfs-and-index-funds.md",
+   "n": 18,
+   "line_at_extraction": 765,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Currency-hedged share classes of UCITS ETFs** (whether hedged classes exist for the indices in scope, and their cost). Not researched before the search budget"
+  },
+  {
+   "code": "ETF OQ19",
+   "file": "etfs-and-index-funds.md",
+   "n": 19,
+   "line_at_extraction": 767,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**S&P 500: the index provider's own description.** Closed 2026-10-23 by ETF-37 to ETF-40 (browser pass in the founder's Chrome: the index page and the July 2026"
+  },
+  {
+   "code": "ETF OQ20",
+   "file": "etfs-and-index-funds.md",
+   "n": 20,
+   "line_at_extraction": 768,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "rule record": [
+     "ETF-33"
+    ]
+   },
+   "start": "**TA-125's own rules: the 125-share count mechanics, its weight cap, entry and exit ranks.** Closed 2026-10-23 by ETF-41 and ETF-42: the index page market.tase."
+  },
+  {
+   "code": "ETF OQ21",
+   "file": "etfs-and-index-funds.md",
+   "n": 21,
+   "line_at_extraction": 770,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**ISA directive on custody and credit risks (28.08.2018) and its \"first credit-risk group\".** Cited by IBI, Harel and Mor as the source of their counterparty li"
+  },
+  {
+   "code": "ETF OQ22",
+   "file": "etfs-and-index-funds.md",
+   "n": 22,
+   "line_at_extraction": 771,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Swap spread or financing cost as a number.** No annual report read gives it (ETF-53). The main prospectus of each manager (\"עמלות שמשלם מנהל הקרן מאמצעי הקרן\""
+  },
+  {
+   "code": "ETF OQ23",
+   "file": "etfs-and-index-funds.md",
+   "n": 23,
+   "line_at_extraction": 772,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**U.S. withholding on dividends paid to an Israeli exempt mutual fund that holds U.S. shares directly.** Needed to compare a physical Israeli fund with a swap f"
+  },
+  {
+   "code": "ETF OQ24",
+   "file": "etfs-and-index-funds.md",
+   "n": 24,
+   "line_at_extraction": 773,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**S&P 500 net total return withholding rate.** Still open from question 19: the S&P \"Equity Indices Policies & Practices\" PDF opens in Chrome's viewer but its t"
+  },
+  {
+   "code": "ETF OQ25",
+   "file": "etfs-and-index-funds.md",
+   "n": 25,
+   "line_at_extraction": 774,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Official comparison of tracking difference by replication method.** Not in the ISA's 2024 and 2025 fund reports (read in full) or on TASE's pages read. The ma"
+  },
+  {
+   "code": "ETF OQ26",
+   "file": "etfs-and-index-funds.md",
+   "n": 26,
+   "line_at_extraction": 775,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**\"NNDX\" in the Israeli NASDAQ-100 reports versus Nasdaq's \"XNDXNNR\".** Whether they are the same series under a data vendor's code, or a different net version,"
+  },
+  {
+   "code": "ETF OQ27",
+   "file": "etfs-and-index-funds.md",
+   "n": 27,
+   "line_at_extraction": 776,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**TA-90 launch base.** The guidelines give 299.89 for ת\"א-75 on 3.1.1999; the index page shows \"מדד בסיס בעת השקה 100\" (ETF-45)."
+  },
+  {
+   "code": "ETF OQ28",
+   "file": "etfs-and-index-funds.md",
+   "n": 28,
+   "line_at_extraction": 777,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Does a swap counterparty pass any withholding saving to the fund?** The net index deducts 30% on U.S. dividends; if the counterparty hedges with shares taxed "
+  },
+  {
+   "code": "MF OQ1",
+   "file": "mutual-funds-and-money-market-funds.md",
+   "n": 1,
+   "line_at_extraction": 598,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "money-market-fund-daily",
+     "money-market-fund-renewable"
+    ]
+   },
+   "start": "Final text of the ISA money-market directive. The 2024 file has explanatory notes, then a directive section headed \"טיוטת הוראה\" (p. 26), and states it takes ef"
+  },
+  {
+   "code": "MF OQ2",
+   "file": "mutual-funds-and-money-market-funds.md",
+   "n": 2,
+   "line_at_extraction": 599,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "money-market-fund-daily",
+     "money-market-fund-renewable"
+    ]
+   },
+   "start": "Final text of BoI directive A447. The PDF read is watermarked \"טיוטה\" (draft); the ISA says the directive was published 9 April 2025. Tried: boi.org.il media PD"
+  },
+  {
+   "code": "MF OQ3",
+   "file": "mutual-funds-and-money-market-funds.md",
+   "n": 3,
+   "line_at_extraction": 600,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-26"
+    ],
+    "instrument record": [
+     "money-market-fund-daily",
+     "money-market-fund-renewable"
+    ]
+   },
+   "start": "Current designated hours (cut-off times) by fund type, and the TASE clearing-house rules that set them; whether mutual-fund creations and redemptions happen on "
+  },
+  {
+   "code": "MF OQ4",
+   "file": "mutual-funds-and-money-market-funds.md",
+   "n": 4,
+   "line_at_extraction": 601,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-26"
+    ],
+    "instrument record": [
+     "money-market-fund-daily",
+     "money-market-fund-renewable",
+     "shekel-cash"
+    ],
+    "instrument blocker": [
+     "money-market-fund-daily",
+     "money-market-fund-renewable"
+    ],
+    "site code": [
+     "copy.ts:2873",
+     "lib/guide-signature.server.ts:187",
+     "lib/guide.server.ts:261"
+    ]
+   },
+   "start": "When redemption cash is available to the holder in practice (same day as the price, or the next business day). The law says the distributor pays \"בו ביום\" but t"
+  },
+  {
+   "code": "MF OQ5",
+   "file": "mutual-funds-and-money-market-funds.md",
+   "n": 5,
+   "line_at_extraction": 602,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "money-market-fund-daily",
+     "money-market-fund-renewable"
+    ]
+   },
+   "start": "Whether the 1 January fee-increase rule (MF-17) is binding regulation or a voluntary outline, and its current text. Tried: ISA reports. Probably an ISA circular"
+  },
+  {
+   "code": "MF OQ6",
+   "file": "mutual-funds-and-money-market-funds.md",
+   "n": 6,
+   "line_at_extraction": 603,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "Whether the ISA's headline averages per fund type are simple averages (inferred from the report's numbers); current trustee-fee range and average (only the 2017"
+  },
+  {
+   "code": "MF OQ7",
+   "file": "mutual-funds-and-money-market-funds.md",
+   "n": 7,
+   "line_at_extraction": 604,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "Share of funds charging a load (הוספה) or a redemption deduction today, and their typical rates."
+  },
+  {
+   "code": "MF OQ8",
+   "file": "mutual-funds-and-money-market-funds.md",
+   "n": 8,
+   "line_at_extraction": 605,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "The current ISA list of classification headings (כותרות). ISA site is JavaScript-only."
+  },
+  {
+   "code": "MF OQ9",
+   "file": "mutual-funds-and-money-market-funds.md",
+   "n": 9,
+   "line_at_extraction": 606,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "The current ISA texts on fund naming principles and on the \"(!)\" mark (only the 2017 guide's description was read; a 2009 TheMarker report on the mark was a sea"
+  },
+  {
+   "code": "MF OQ10",
+   "file": "mutual-funds-and-money-market-funds.md",
+   "n": 10,
+   "line_at_extraction": 607,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "Bank-by-bank and broker-by-broker treatment of purchase/sale commissions and custody fees on mutual-fund units, and whether every manager still has distribution"
+  },
+  {
+   "code": "MF OQ11",
+   "file": "mutual-funds-and-money-market-funds.md",
+   "n": 11,
+   "line_at_extraction": 608,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "money-market-fund-renewable"
+    ]
+   },
+   "start": "Full ISA register of fund managers and trustees, and the list, number and assets of fixed-date (renewable) money-market funds and which managers offer them. The"
+  },
+  {
+   "code": "MF OQ12",
+   "file": "mutual-funds-and-money-market-funds.md",
+   "n": 12,
+   "line_at_extraction": 609,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "money-market-fund-daily",
+     "money-market-fund-renewable"
+    ]
+   },
+   "start": "Whether the Wikisource mirrors are current and exact: the law (revision 30 Sep 2026), the assets regulations (last amendment shown 5778/2018), the distribution-"
+  },
+  {
+   "code": "MF OQ13",
+   "file": "mutual-funds-and-money-market-funds.md",
+   "n": 13,
+   "line_at_extraction": 610,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "Regulatory basis and rules of the symmetric variable management fee (רצועת בטחון) Meitav describes for tracking funds and ETFs."
+  },
+  {
+   "code": "MF OQ14",
+   "file": "mutual-funds-and-money-market-funds.md",
+   "n": 14,
+   "line_at_extraction": 611,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "Whether any קפ\"מ funds still exist."
+  },
+  {
+   "code": "MF OQ15",
+   "file": "mutual-funds-and-money-market-funds.md",
+   "n": 15,
+   "line_at_extraction": 612,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "URL of the ISA's general information page on money-market funds that A447 requires banks to link to."
+  },
+  {
+   "code": "MF OQ16",
+   "file": "mutual-funds-and-money-market-funds.md",
+   "n": 16,
+   "line_at_extraction": 613,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "Where the law or regulations set distribution rules for funds (only the guide's description and section 58(ב) bonus units were found), and how many funds distri"
+  },
+  {
+   "code": "MF OQ17",
+   "file": "mutual-funds-and-money-market-funds.md",
+   "n": 17,
+   "line_at_extraction": 614,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "money-market-fund-renewable"
+    ]
+   },
+   "start": "Content of the 5786 (2025-26) amendments to the law (ס\"ח תשפ\"ו 359, 1070), including private investment trust funds and changes effective 2.2.2027 to sections 5"
+  },
+  {
+   "code": "TXF OQ1",
+   "file": "tax-securities-foreign.md",
+   "n": 1,
+   "line_at_extraction": 272,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "OQ-tag": [
+     "site/app/content/exposure/index-sp500.tsx:60",
+     "site/app/content/guide/brokerage-account.tsx:84"
+    ],
+    "method gap": [
+     "G-18"
+    ],
+    "instrument record": [
+     "brokerage-account",
+     "index-sp500"
+    ],
+    "instrument blocker": [
+     "brokerage-account"
+    ],
+    "site code": [
+     "copy.ts:2268",
+     "lib/variants.ts:214"
+    ]
+   },
+   "start": "**Q1 (narrowed, not closed): accumulating foreign funds.** No Tax Authority statement found that an accumulating foreign fund (for example an Irish UCITS) is ta"
+  },
+  {
+   "code": "TXF OQ2",
+   "file": "tax-securities-foreign.md",
+   "n": 2,
+   "line_at_extraction": 273,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Q19 (narrowed): PFIC-like rule.** The only anti-deferral regimes found (s.75B CFC, s.75B1 foreign professional company) require control. No passive-foreign-fu"
+  },
+  {
+   "code": "TXF OQ3",
+   "file": "tax-securities-foreign.md",
+   "n": 3,
+   "line_at_extraction": 274,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "brokerage-account"
+    ],
+    "rule record": [
+     "TXF-10"
+    ]
+   },
+   "start": "**Q14 residual: Israeli withholding on top of foreign withholding.** Reg. 2(d) of the 2005 withholding regulations says an Israeli recipient of a foreign divide"
+  },
+  {
+   "code": "TXF OQ4",
+   "file": "tax-securities-foreign.md",
+   "n": 4,
+   "line_at_extraction": 275,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**FX gain on the cash leg.** No provision in Part E (ss.88-103) on gains from holding or converting foreign currency itself was found; s.1 \"הפרשי שער\" covers de"
+  },
+  {
+   "code": "TXF OQ5",
+   "file": "tax-securities-foreign.md",
+   "n": 5,
+   "line_at_extraction": 276,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "G-24 blocker": [
+     "G-24"
+    ]
+   },
+   "start": "**Currency weakening against the shekel.** How the real gain under TXF-03 is computed when the foreign currency fell against the shekel (whether a \"negative inf"
+  },
+  {
+   "code": "TXF OQ6",
+   "file": "tax-securities-foreign.md",
+   "n": 6,
+   "line_at_extraction": 277,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-05"
+    ],
+    "instrument record": [
+     "index-sp500"
+    ]
+   },
+   "start": "**Ireland-side tax on an Irish fund's distributions to an Israeli resident, and the Israel-Ireland treaty.** Revenue.ie page tried (404); the Tax Authority's tr"
+  },
+  {
+   "code": "TXF OQ7",
+   "file": "tax-securities-foreign.md",
+   "n": 7,
+   "line_at_extraction": 278,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "index-sp500"
+    ]
+   },
+   "start": "**What US withholding an Irish fund actually suffers.** The IRS table gives 15% for US dividends paid to Irish residents; whether a given Irish UCITS qualifies,"
+  },
+  {
+   "code": "TXF OQ8",
+   "file": "tax-securities-foreign.md",
+   "n": 8,
+   "line_at_extraction": 279,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Israeli-domiciled funds holding foreign assets vs foreign-domiciled funds.** No official source compared them (fund-level foreign withholding of an Israeli mu"
+  },
+  {
+   "code": "TXF OQ9",
+   "file": "tax-securities-foreign.md",
+   "n": 9,
+   "line_at_extraction": 280,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**TXF-07 vs s.92(a)(4).** Does the 2019 letter's \"not offsettable against securities capital losses\" for \"קרן חוץ\" distributions apply only to the withholder's "
+  },
+  {
+   "code": "TXF OQ10",
+   "file": "tax-securities-foreign.md",
+   "n": 10,
+   "line_at_extraction": 281,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "rule record": [
+     "TXF-05"
+    ]
+   },
+   "start": "**Is the 4.7.2019 \"קרן חוץ\" letter still in force, and is there an official gov.il copy?** Only the capitax.co.il mirror was reachable."
+  },
+  {
+   "code": "TXF OQ11",
+   "file": "tax-securities-foreign.md",
+   "n": 11,
+   "line_at_extraction": 282,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**US estate tax details.** Rate schedule (Form 706 Table A, not read); how the USD 13,000 credit maps to an exemption amount; whether a US ETF organised as a tr"
+  },
+  {
+   "code": "TXF OQ12",
+   "file": "tax-securities-foreign.md",
+   "n": 12,
+   "line_at_extraction": 283,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Shekel conversion rules (s.240A).** \"כללי מס הכנסה (המרה לשקלים חדשים של סכומים שמקורם מחוץ לישראל), התשס״ד–2003\" not read: which exchange rate and date conve"
+  },
+  {
+   "code": "TXF OQ13",
+   "file": "tax-securities-foreign.md",
+   "n": 13,
+   "line_at_extraction": 284,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**US portfolio-interest exemption** for an Israeli resident on US Treasuries or US bond funds, vs the treaty 17.5% cap (TXF-15). IRS Pub 519/515 sections on por"
+  },
+  {
+   "code": "TXF OQ14",
+   "file": "tax-securities-foreign.md",
+   "n": 14,
+   "line_at_extraction": 285,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Foreign bond fund distributions:** taxed as interest (TXF-09) or as dividend (TXF-08)? Not sourced."
+  },
+  {
+   "code": "TXF OQ15",
+   "file": "tax-securities-foreign.md",
+   "n": 15,
+   "line_at_extraction": 286,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**How Israeli banks compute and withhold on foreign securities traded abroad** (whether they apply the exchange-rate index of TXF-03 automatically). The 2002 wi"
+  },
+  {
+   "code": "TXF OQ16",
+   "file": "tax-securities-foreign.md",
+   "n": 16,
+   "line_at_extraction": 287,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "rule record": [
+     "TXF-21"
+    ]
+   },
+   "start": "**Guide p.3 item 3 wording** (shortened reporting route for foreign income) was read from a low-resolution page image; re-read before encoding TXF-21. **[2026-1"
+  },
+  {
+   "code": "TXF OQ17",
+   "file": "tax-securities-foreign.md",
+   "n": 17,
+   "line_at_extraction": 288,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Official gov.il URL of circular 04/2026** (the circular cites https://www.gov.il/he/pages/pa111224-2 for the December 2024 form notice; the circular itself wa"
+  },
+  {
+   "code": "TXS OQ1",
+   "file": "tax-securities-israeli.md",
+   "n": 1,
+   "line_at_extraction": 275,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Tax track across all money-market funds and ETFs.** Two money-market funds and one manager's ETF range were read; all are exempt. Is any money-market fund or "
+  },
+  {
+   "code": "TXS OQ2",
+   "file": "tax-securities-israeli.md",
+   "n": 2,
+   "line_at_extraction": 276,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Income Tax circular 7/2003 (foreign-investment funds).** Known only through the Migdal prospectus 25.4.2. Tried: gov.il landing page `https://www.gov.il/he/de"
+  },
+  {
+   "code": "TXS OQ3",
+   "file": "tax-securities-israeli.md",
+   "n": 3,
+   "line_at_extraction": 277,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Current consolidated text of the two withholding regulations.** Wikisource lists the last amendments as תשע\"ח 442 and 444. Have later amendments changed reg.2"
+  },
+  {
+   "code": "TXS OQ4",
+   "file": "tax-securities-israeli.md",
+   "n": 4,
+   "line_at_extraction": 278,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Loss offset between spouses.** Can one spouse's securities loss offset the other's gain in the joint return? Nothing found in the guide pages read or in s.92."
+  },
+  {
+   "code": "TXS OQ5",
+   "file": "tax-securities-israeli.md",
+   "n": 5,
+   "line_at_extraction": 279,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Regulation basis for the bank offsetting a securities loss against interest or dividends at withholding.** The guide (p.39) says the payer may do it. Neither "
+  },
+  {
+   "code": "TXS OQ6",
+   "file": "tax-securities-israeli.md",
+   "n": 6,
+   "line_at_extraction": 280,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "money-market-fund-daily",
+     "money-market-fund-renewable"
+    ]
+   },
+   "start": "**Age 60+ in practice.** Does the lower bracket reach exempt-fund and securities gains withheld at a flat 25%, and how is the excess recovered (annual return, o"
+  },
+  {
+   "code": "TXS OQ7",
+   "file": "tax-securities-israeli.md",
+   "n": 7,
+   "line_at_extraction": 281,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Exempt-fund distributions and s.92(a)(4).** Does a 25% distribution under s.125B1(b) count as a \"dividend\" that a securities loss can absorb in the same year?"
+  },
+  {
+   "code": "TXS OQ8",
+   "file": "tax-securities-israeli.md",
+   "n": 8,
+   "line_at_extraction": 282,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Foreign tax paid inside an Israeli exempt fund.** Is any credit available to the unit holder? The prospectuses say the saver's tax is \"in addition\". Where: s."
+  },
+  {
+   "code": "TXS OQ9",
+   "file": "tax-securities-israeli.md",
+   "n": 9,
+   "line_at_extraction": 283,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**s.101A(a)(12) deemed sale and repurchase of exempt-fund units.** Has an order or regulation ever been issued? Not found."
+  },
+  {
+   "code": "TXS OQ10",
+   "file": "tax-securities-israeli.md",
+   "n": 10,
+   "line_at_extraction": 284,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Has the Minister changed the 15% rate (s.91(b)(3)(b), s.125C(c)(2))?** Shared with TXI and with tax report Q3."
+  },
+  {
+   "code": "TXS OQ11",
+   "file": "tax-securities-israeli.md",
+   "n": 11,
+   "line_at_extraction": 285,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument blocker": [
+     "money-market-fund-daily",
+     "money-market-fund-renewable"
+    ]
+   },
+   "start": "**Fund-level rate in a taxable fund holding unlinked shekel assets.** This file derives 15% of nominal interest and gains from s.129C(a)(2) read with s.125C(c) "
+  },
+  {
+   "code": "TXS OQ12",
+   "file": "tax-securities-israeli.md",
+   "n": 12,
+   "line_at_extraction": 286,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-20"
+    ],
+    "instrument record": [
+     "brokerage-account"
+    ]
+   },
+   "start": "**Fee deduction (reg.6(a) of the computation regulations).** Do banks deduct same-year management and custody fees when withholding, or only through a return?"
+  },
+  {
+   "code": "TXS OQ13",
+   "file": "tax-securities-israeli.md",
+   "n": 13,
+   "line_at_extraction": 287,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Bank of Israel money-market fund pages** ([savings products](https://www.boi.org.il/information/bank-paymnts/savingsandinvestmentproducts/moneyfund/), [financ"
+  },
+  {
+   "code": "TXS OQ14",
+   "file": "tax-securities-israeli.md",
+   "n": 14,
+   "line_at_extraction": 288,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**\"המועד הקובע\" in s.88.** Its date was not read. It matters only for the computation regulations' expense definition and for old holdings."
+  },
+  {
+   "code": "TXS OQ15",
+   "file": "tax-securities-israeli.md",
+   "n": 15,
+   "line_at_extraction": 289,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "OQ-tag": [
+     "site/app/content/exposure/government-bond-cpi.tsx:46"
+    ],
+    "method gap": [
+     "G-07"
+    ],
+    "instrument record": [
+     "government-bond-cpi",
+     "money-market-fund-daily",
+     "money-market-fund-renewable"
+    ]
+   },
+   "start": "**Falling CPI.** If CPI falls over the holding period of a shekel exempt-fund unit (for example a money-market fund), is the taxable base still the real gain, w"
+  }
+ ]
+}
