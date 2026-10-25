@@ -74,3 +74,27 @@ describe("the gallery is not on the site's surface", () => {
     expect(read(join(root, "routes/kit.tsx"))).toContain('name: "robots", content: "noindex"');
   });
 });
+
+// 2026-10-26: one chip for every id (IdRef in provenance.tsx). A formula, parameter or open-question id is never plain text.
+describe("ids go through IdRef", () => {
+  it("no rule-chip-static anywhere", () => {
+    expect(files.filter((f) => /rule-chip-static/.test(code(read(f)))).map(rel)).toEqual([]);
+  });
+  it("no local OQ component in the content files", () => {
+    expect(files.filter((f) => rel(f).startsWith("content/") && /const OQ\s*=/.test(code(read(f)))).map(rel)).toEqual([]);
+  });
+  it("no <bdi> holds a bare formula, parameter or open-question id outside provenance.tsx", () => {
+    const idLike = /\bF-\d\d|\bP-\d\d|OQ\d/;
+    const bare = /<bdi\b[^>]*>(?:([^<{]*)|\{["'`]([^"'`]*)["'`]\})<\/bdi>/g;
+    const bad: string[] = [];
+    for (const f of files.filter((x) => x.endsWith(".tsx") && rel(x) !== "components/provenance.tsx")) {
+      for (const m of code(read(f)).matchAll(bare)) if (idLike.test(m[1] ?? m[2] ?? "")) bad.push(`${rel(f)}: ${m[0]}`);
+    }
+    expect(bad).toEqual([]);
+  });
+  it("the scan sees the broken pattern", () => {
+    const bare = /<bdi\b[^>]*>(?:([^<{]*)|\{["'`]([^"'`]*)["'`]\})<\/bdi>/g;
+    expect([...`<bdi dir="ltr">P-03</bdi>`.matchAll(bare)].length).toBe(1);
+    expect([...`<bdi dir="ltr">{"BANK OQ12"}</bdi>`.matchAll(bare)].length).toBe(1);
+  });
+});

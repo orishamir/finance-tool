@@ -1,7 +1,7 @@
 // The app shell: header, menu sheet, search, footer and the page frame (design-spec 1.3, flows 6.2, 6.3).
-import { createContext, useContext, useEffect, useId, useRef, useState, type ReactNode, type RefObject } from "react";
-import { Link, useLocation } from "react-router";
-import { companies as companiesCopy, home as homeCopy, knowledgeEntry, r3workbench, site } from "../copy";
+import { createContext, useContext, useEffect, useId, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
+import { Link, useLocation, useRouteLoaderData } from "react-router";
+import { companies as companiesCopy, formulaNames, home as homeCopy, knowledgeEntry, r3workbench, site } from "../copy";
 import { fmt } from "../lib/format";
 import { IconBack, IconMenu, IconSearch } from "./icons";
 import { ProvenanceProvider, type ProvenanceData } from "./provenance";
@@ -50,7 +50,14 @@ export function useOpenSearch() {
   return useContext(SearchOpenCtx);
 }
 
-export function PageShell({ current, data, children, wide }: { current: Current; data: ProvenanceData; children: ReactNode; wide?: boolean }) {
+export function PageShell({ current, data: pageData, children, wide }: { current: Current; data: ProvenanceData; children: ReactNode; wide?: boolean }) {
+  // every page's sheets know the method: the formulas with their parameters, and the parameter cards (root loader)
+  const method = useRouteLoaderData("root") as { formulaParameters: Record<string, string[]>; parameterAnchors: Record<string, string> } | undefined;
+  const data = useMemo<ProvenanceData>(() => {
+    if (!method) return pageData;
+    const formulas = pageData.formulas ?? Object.fromEntries([...new Set([...Object.keys(formulaNames), ...Object.keys(method.formulaParameters)])].filter((f) => f !== "_other").map((f) => [f, { name: formulaNames[f] ?? "", parameters: method.formulaParameters[f] ?? [] }]));
+    return { ...pageData, formulas, parameters: pageData.parameters ?? method.parameterAnchors };
+  }, [pageData, method]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchAnchor, setSearchAnchor] = useState<HTMLElement | null>(null);

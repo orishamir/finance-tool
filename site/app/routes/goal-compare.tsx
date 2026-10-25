@@ -23,7 +23,7 @@ import { DetailSheetBody, HorizonDefaultedNote, HorizonHonestLine, PastRecordLin
 import type { FitTableData } from "../lib/fit";
 import { DimensionChecklist, type ChecklistRowView } from "../components/guide/sections";
 import { IconExternal } from "../components/icons";
-import { Num, NumberLegend, RulesLine } from "../components/provenance";
+import { IdRef, Num, NumberLegend, RulesLine } from "../components/provenance";
 import { Sheet } from "../components/Sheet";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { Callout, Card, Disclosure, SegmentedControl, Sentence, Tag } from "../components/kit";
@@ -241,7 +241,7 @@ function Body({ bundle: bundle0, wb, data, fit, frame, exposureId, registerSave 
         {/* a covered row still shows the options blocked on it in their own record (scenario fix 2026-10-24: coverage is pooled across options) */}
         {m.blockedOptions && (
           <span className="text-xs text-blocked-foreground">
-            {scnCompare.blockedFor} {m.blockedOptions.options.map((id) => view.names[id] ?? id).join(", ")} (<bdi dir="ltr">{m.blockedOptions.code.replace("-OQ", " OQ")}</bdi>)
+            {scnCompare.blockedFor} {m.blockedOptions.options.map((id) => view.names[id] ?? id).join(", ")} (<IdRef id={m.blockedOptions.code} />)
           </span>
         )}
       </>

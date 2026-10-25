@@ -201,13 +201,6 @@
   .rule-chip:hover {
     text-decoration: underline;
   }
-  .rule-chip-static {
-    color: var(--foreground);
-    cursor: default;
-  }
-  .rule-chip-static::after {
-    content: none;
-  }
   /* A glossary term: a dashed teal underline, a third pattern next to the solid grey (sourced) and dotted violet
      (computed) of numbers (audit 2026-10-24, A78). */
   .term {

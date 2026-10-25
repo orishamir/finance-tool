@@ -9,6 +9,7 @@ import type { SignatureData } from "../../lib/guide-signature";
 import { useInputs } from "../../lib/inputs";
 import { computed, entered as enteredValue, type SiteValue, type Strength } from "../../lib/value";
 import { GapNote, SourceLine as SourceNote } from "../kit";
+import { IdText } from "../provenance";
 
 // ---------------------------------------------------------------- the guide inputs a visual starts from
 
@@ -60,7 +61,7 @@ export function SourceLine({ sources }: { sources: InputSource[] }) {
 /** "עוד לא חושב" with its reason, for a part the data cannot compute yet. */
 export function Gap({ id, className }: { id: string; className?: string }) {
   const reason = (copy.common.gaps as Record<string, string>)[id.split(":")[0]!] ?? copy.common.gapFallback;
-  return <GapNote reason={reason} className={className} />;
+  return <GapNote reason={<IdText text={reason} />} className={className} />;
 }
 
 /** A computed value of a visual: the engine run or formula that gave it, the inputs it read and the rules. */

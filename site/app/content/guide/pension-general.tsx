@@ -4,7 +4,7 @@
 // not under this wrapper id. NEW copy for the founder to review.
 import type { GuideContent } from "./types";
 import type { SiteValue } from "../../lib/value";
-import { Num, RuleRef, RulesLine } from "../../components/provenance";
+import { IdRef, Num, RuleRef, RulesLine } from "../../components/provenance";
 import { Callout } from "../../components/kit";
 
 const N = ({ v }: { v: SiteValue | null }) => (v ? <Num value={v} /> : null);
@@ -37,9 +37,9 @@ export const content: GuideContent = {
       </p>
       <RulesLine ids={["TXP-01", "TXP-02", "TXP-10", "TXP-24"]} />
       <Callout tone="blocked" className="max-w-measure">
-        <span className="font-medium">את הקצבה האתר עוד לא מחשב, כי חסרים מקדמי ההמרה.</span> שאלה פתוחה: <bdi dir="ltr" className="whitespace-nowrap">PEN OQ7</bdi>. מגיל הפרישה חלק מהקצבה פטור ממס:{" "}
+        <span className="font-medium">את הקצבה האתר עוד לא מחשב, כי חסרים מקדמי ההמרה.</span> שאלה פתוחה: <IdRef id="PEN OQ7" />. מגיל הפרישה חלק מהקצבה פטור ממס:{" "}
         <N v={figure("TXP-14", "exempt_share")} /> מתקרה של <N v={figure("TXP-14", "annuity_ceiling")} /> בחודש. משיכה שלא כדין ממוסה לפחות ב־<N v={figure("TXP-18", "minimum_rate")} />, ועל איזה סכום
-        בדיוק: שאלה פתוחה <bdi dir="ltr" className="whitespace-nowrap">TXP OQ3</bdi>.
+        בדיוק: שאלה פתוחה <IdRef id="TXP OQ3" />.
       </Callout>
       <RulesLine ids={["TXP-14", "TXP-18", "PEN-27", "PEN-30"]} />
     </>

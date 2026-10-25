@@ -1,14 +1,8 @@
 // Exposure prose for אג"ח ממשלתית לא צמודה (flows 6.6). Written 2026-10-23 from the rule base (GOV, TXI, TXS,
 // BRK, CAT, IRA, MF); each block ends with the rules it rests on. NEW copy for the founder to review.
 import type { ExposureContent } from "../guide/types";
-import { Num, RulesLine, Term } from "../../components/provenance";
+import { IdRef, Num, RulesLine, Term } from "../../components/provenance";
 import { Sentence } from "../../components/kit";
-
-const OQ = ({ id }: { id: string }) => (
-  <bdi dir="ltr" className="whitespace-nowrap">
-    {id}
-  </bdi>
-);
 
 export const content: ExposureContent = {
   what: ({ figure }) => {
@@ -42,7 +36,7 @@ export const content: ExposureContent = {
           מי שמחזיק עד הפדיון מקבל את הקופונים ואת השווי הנקוב כפי שנקבעו. מי שמוכר קודם מקבל את מחיר השוק, שיורד כשהריבית במשק עולה, ויותר ככל שנותרו יותר שנים לפדיון; הרווח ממכירה הוא <Term id="רווח הון ריאלי">רווח הון</Term> במס של עד {saleRate ? <Num value={saleRate} /> : null} מכל הרווח, בלי הפחתת המדד, והפסד מקזז רווחים וריבית מניירות ערך באותה שנה. כשהמחירים עולים יותר מהקופון, כוח הקנייה נשחק, כי אין הצמדה.
         </Sentence>
         <p className="max-w-measure">
-          מה לא מתועד עדיין: תקנות הסדרות בריבית קבועה (שווי נקוב, תדירות הקופון, מועד קובע) ואיזו תקנה חלה על הסדרות בריבית משתנה (<OQ id="GOV OQ4" />, <OQ id="GOV OQ5" />); איך הבנק מטפל בריבית הצבורה כשקונים בין מועדי קופון (<OQ id="TXI OQ5" />); וטקסט רשמי על סיכון המחיר לפני הפדיון (<OQ id="GOV OQ9" />).
+          מה לא מתועד עדיין: תקנות הסדרות בריבית קבועה (שווי נקוב, תדירות הקופון, מועד קובע) ואיזו תקנה חלה על הסדרות בריבית משתנה (<IdRef id="GOV OQ4" />, <IdRef id="GOV OQ5" />); איך הבנק מטפל בריבית הצבורה כשקונים בין מועדי קופון (<IdRef id="TXI OQ5" />); וטקסט רשמי על סיכון המחיר לפני הפדיון (<IdRef id="GOV OQ9" />).
         </p>
         <RulesLine ids={["GOV-16", "GOV-17", "TXI-12", "TXI-13", "TXI-16", "TXI-17", "TXS-03"]} />
       </>

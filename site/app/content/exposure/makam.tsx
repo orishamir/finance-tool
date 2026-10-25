@@ -2,14 +2,8 @@
 // each block ends with the rules it rests on. NEW copy for the founder to review.
 import { Link } from "react-router";
 import type { ExposureContent } from "../guide/types";
-import { Num, RulesLine, Term } from "../../components/provenance";
+import { IdRef, Num, RulesLine, Term } from "../../components/provenance";
 import { Sentence } from "../../components/kit";
-
-const OQ = ({ id }: { id: string }) => (
-  <bdi dir="ltr" className="whitespace-nowrap">
-    {id}
-  </bdi>
-);
 
 export const content: ExposureContent = {
   what: ({ figure }) => {
@@ -50,7 +44,7 @@ export const content: ExposureContent = {
           מי שמחזיק עד הפדיון יודע מראש כמה יקבל, ובנק ישראל מתאר את המק״מ כהשקעה חסרת סיכון. מי שמוכר לפני כן מקבל את מחיר השוק של אותו יום, שיכול להיות נמוך ממחיר הקנייה כשהריבית במשק עולה; הרווח ממכירה כזאת הוא <Term id="רווח הון ריאלי">רווח הון</Term> במס של עד {saleRate ? <Num value={saleRate} /> : null} מכל הרווח, בלי הפחתה של המדד. בשנה שבה המחירים עולים יותר מהתשואה, כוח הקנייה נשחק.
         </Sentence>
         <p className="max-w-measure">
-          שתי שאלות פתוחות נוגעות לכם ישירות: איך הזמנה של אדם פרטי מגיעה למכרז ההנפקה ובאיזו עמלה (<OQ id="GOV OQ2" />), ושורה אחת במדריך רשות המסים שמדברת על מס של 20% על דמי הניכיון, בניגוד לחוק; האתר מחשב לפי החוק ומסמן את הסתירה (<OQ id="TXI OQ3" />).
+          שתי שאלות פתוחות נוגעות לכם ישירות: איך הזמנה של אדם פרטי מגיעה למכרז ההנפקה ובאיזו עמלה (<IdRef id="GOV OQ2" />), ושורה אחת במדריך רשות המסים שמדברת על מס של 20% על דמי הניכיון, בניגוד לחוק; האתר מחשב לפי החוק ומסמן את הסתירה (<IdRef id="TXI OQ3" />).
         </p>
         <RulesLine ids={["GOV-22", "GOV-17", "TXI-12", "TXI-13", "GOV-05", "TXI-11"]} />
       </>
