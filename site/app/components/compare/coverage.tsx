@@ -3,9 +3,8 @@
 import { Link } from "react-router";
 import { r2 } from "../../copy";
 import { countForm, type CoverageRow } from "../../lib/compare";
-import { IconChevronDown } from "../icons";
 import { Num } from "../provenance";
-import { cx } from "../ui";
+import { CoverageFold, FoldGroup } from "../kit";
 import type { ResultCtx } from "./ctx";
 import { OutcomeTag } from "./rows";
 import { ReasonLines } from "./reasons";
@@ -46,15 +45,9 @@ export function CoverageList({ rows, ctx }: { rows: CoverageRow[]; ctx: ResultCt
         return (
           <section key={kind} className="flex flex-col gap-1">
             {kind === "ranked" ? (
-              <details className="group">
-                <summary className="flex items-center gap-2 min-h-target cursor-pointer list-none [&::-webkit-details-marker]:hidden">
-                  <h4 className="font-medium">
-                    {r2.result.coverageGroups[kind]} <span className="text-muted-foreground font-normal">({list.length})</span>
-                  </h4>
-                  <IconChevronDown className="text-muted-foreground transition-transform duration-[var(--duration-fast)] group-open:rotate-180" />
-                </summary>
+              <FoldGroup title={r2.result.coverageGroups[kind]} count={list.length} level={4}>
                 {body}
-              </details>
+              </FoldGroup>
             ) : (
               <>
                 <h4 className="font-medium flex items-center gap-2">
@@ -87,22 +80,18 @@ export function CoverageLine({ ctx, open }: { ctx: ResultCtx; open?: boolean }) 
   const cov = view.evaluated.coverage;
   const n = (k: CoverageRow["kind"]) => <CountPhrase n={cov.counts[k]} forms={r2.result.counts[k] as { one: string; other: string }} about={r2.outcomesPlural[k]!} mk={mk} />;
   return (
-    <details className="group bg-card border border-border rounded-lg p-4 md:p-6" open={open} key={String(open)}>
-      <summary className="flex items-start cursor-pointer list-none [&::-webkit-details-marker]:hidden">
-        <span className="flex flex-col gap-1">
-          <span>
-            {r2.result.coverageBefore} <Num value={mk.count(cov.considered, r2.result.coverageBefore)} animate /> {r2.result.coverageMid} {n("ranked")}, {n("listed-not-ranked")}, {n("not-eligible")}, {n("excluded")}, {n("not-evaluated")}.
-          </span>
-          <span className="text-sm text-link flex items-center gap-1 min-h-9">
-            <span className="group-open:hidden">{r2.result.coverageOpen}</span>
-            <span className="hidden group-open:inline">{r2.result.coverageClose}</span>
-            <IconChevronDown size={16} className={cx("transition-transform duration-[var(--duration-fast)] group-open:rotate-180")} />
-          </span>
-        </span>
-      </summary>
-      <div className="mt-4 border-t border-border pt-4">
-        <CoverageList rows={view.coverageRows} ctx={ctx} />
-      </div>
-    </details>
+    <CoverageFold
+      lead={
+        <>
+          {r2.result.coverageBefore} <Num value={mk.count(cov.considered, r2.result.coverageBefore)} animate /> {r2.result.coverageMid} {n("ranked")}, {n("listed-not-ranked")}, {n("not-eligible")}, {n("excluded")}, {n("not-evaluated")}.
+        </>
+      }
+      openLabel={r2.result.coverageOpen}
+      closeLabel={r2.result.coverageClose}
+      defaultOpen={open}
+      key={String(open)}
+    >
+      <CoverageList rows={view.coverageRows} ctx={ctx} />
+    </CoverageFold>
   );
 }

@@ -5,7 +5,7 @@ import { invest as c } from "../../copy";
 import type { InvestView } from "../../lib/invest";
 import { IconCopy } from "../icons";
 import { Num } from "../provenance";
-import { Button } from "../ui";
+import { Button, Disclosure } from "../kit";
 import { ProviderLink, providerName } from "./sections";
 
 export function Steps({ view, monthly }: { view: InvestView; monthly: import("../../lib/value").SiteValue }) {
@@ -92,10 +92,9 @@ export function Foot({ view }: { view: InvestView }) {
       </p>
       {o && o.holds && <p>{c.foot.holds}</p>}
       {o && !o.holds && (
-        <details>
-          <summary className="cursor-pointer">{c.foot.flipsSummary(new Set(flips.map((f) => words(f))).size)}</summary>
+        <Disclosure plain label={c.foot.flipsSummary(new Set(flips.map((f) => words(f))).size)}>
           <p className="mt-1">{`${c.foot.flips} ${[...new Set(flips.map((f) => `${words(f)} (${c.foot.flipsAt(f.at)})`))].join("; ")}.`}</p>
-        </details>
+        </Disclosure>
       )}
       <p>{c.foot.values}</p>
       <p>{c.foot.sharePrice}</p>

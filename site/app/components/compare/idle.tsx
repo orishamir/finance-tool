@@ -8,7 +8,7 @@ import type { IdleCoverageRow, IdleMateriality, IdleRowView, IdleVerdict, IdleVi
 import { IconClock, IconExternal, IconFile } from "../icons";
 import { Num, RulesLine } from "../provenance";
 import type { SiteValue } from "../../lib/value";
-import { Tag, cx } from "../ui";
+import { CoverageFold, Tag, cx } from "../kit";
 import { ReasonText } from "./reasons";
 import type { ResultCtx } from "./ctx";
 import { IconBan, IconDash, IconDashed, IconEdit, IconOk } from "./icons";
@@ -115,54 +115,50 @@ export function IdleCoverage({ view, ctx }: { view: IdleView; ctx: ResultCtx }) 
   const order: IdleCoverageRow["kind"][] = ["not-eligible", "not-evaluated", "compared", "baseline"];
   const n = (k: IdleCoverageRow["kind"]) => <Num value={ctx.mk.count(cov.counts[k], copy.kinds[k]!)} animate />;
   return (
-    <details className="group bg-card border border-border rounded-lg p-4 md:p-6">
-      <summary className="flex items-start justify-between gap-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
-        <span className="flex flex-col gap-1">
-          <span>
-            {copy.coverageBefore} <Num value={ctx.mk.count(cov.considered, copy.coverageBefore)} animate /> {copy.coverageMid} {n("baseline")} {copy.kinds.baseline}, {n("compared")} {copy.kinds.compared}, {n("not-eligible")} {copy.kinds["not-eligible"]}, {n("not-evaluated")}{" "}
-            {copy.kinds["not-evaluated"]}.
-          </span>
-          <span className="text-sm text-link flex items-center gap-1 min-h-9">
-            <span className="group-open:hidden">{copy.coverageOpen}</span>
-            <span className="hidden group-open:inline">{copy.coverageClose}</span>
-          </span>
-        </span>
-      </summary>
-      <div className="mt-4 border-t border-border pt-4 flex flex-col gap-5">
-        {order.map((kind) => {
-          const list = view.coverageRows.filter((r) => r.kind === kind);
-          if (list.length === 0) return null;
-          return (
-            <section key={kind} className="flex flex-col gap-1">
-              <h4 className="font-medium">
-                {copy.kinds[kind]} <span className="text-muted-foreground font-normal">({list.length})</span>
-              </h4>
-              <ul className="flex flex-col">
-                {list.map((row) => (
-                  <li key={row.id} className="flex flex-col gap-1 py-3 border-b border-border last:border-b-0">
-                    <span className="flex items-center gap-2 flex-wrap">
-                      <Link to={row.href ?? "/not-covered"} className="font-medium text-link hover:underline">
-                        <bdi>{row.name}</bdi>
-                      </Link>
-                      <KindTag kind={kind} />
+    <CoverageFold
+      lead={
+        <>
+          {copy.coverageBefore} <Num value={ctx.mk.count(cov.considered, copy.coverageBefore)} animate /> {copy.coverageMid} {n("baseline")} {copy.kinds.baseline}, {n("compared")} {copy.kinds.compared}, {n("not-eligible")} {copy.kinds["not-eligible"]}, {n("not-evaluated")}{" "}
+          {copy.kinds["not-evaluated"]}.
+        </>
+      }
+      openLabel={copy.coverageOpen}
+      closeLabel={copy.coverageClose}
+      bodyClassName="flex flex-col gap-5"
+    >
+      {order.map((kind) => {
+        const list = view.coverageRows.filter((r) => r.kind === kind);
+        if (list.length === 0) return null;
+        return (
+          <section key={kind} className="flex flex-col gap-1">
+            <h4 className="font-medium">
+              {copy.kinds[kind]} <span className="text-muted-foreground font-normal">({list.length})</span>
+            </h4>
+            <ul className="flex flex-col">
+              {list.map((row) => (
+                <li key={row.id} className="flex flex-col gap-1 py-3 border-b border-border last:border-b-0">
+                  <span className="flex items-center gap-2 flex-wrap">
+                    <Link to={row.href ?? "/not-covered"} className="font-medium text-link hover:underline">
+                      <bdi>{row.name}</bdi>
+                    </Link>
+                    <KindTag kind={kind} />
+                  </span>
+                  {row.reasons.length > 0 && (
+                    <span className="text-sm text-muted-foreground">
+                      {row.reasons.map((r, i) => (
+                        <span key={i} className="block">
+                          <IdleReason r={r} id={row.id} ctx={ctx} />
+                        </span>
+                      ))}
                     </span>
-                    {row.reasons.length > 0 && (
-                      <span className="text-sm text-muted-foreground">
-                        {row.reasons.map((r, i) => (
-                          <span key={i} className="block">
-                            <IdleReason r={r} id={row.id} ctx={ctx} />
-                          </span>
-                        ))}
-                      </span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          );
-        })}
-      </div>
-    </details>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
+        );
+      })}
+    </CoverageFold>
   );
 }
 

@@ -5,9 +5,9 @@ import { r2, buttons, r4workbench as c } from "../../../copy";
 import { feeKeys, type FeeKey, type FundVariantRowView, type FundVariantsView } from "../../../lib/variants";
 import type { RefLink } from "../../../lib/providers";
 import { computed, type SiteValue } from "../../../lib/value";
-import { IconAlert, IconCheck, IconChevronDown, IconCopy, IconExternal } from "../../icons";
+import { IconAlert, IconCheck, IconCopy, IconExternal } from "../../icons";
 import { Num } from "../../provenance";
-import { Disclosure, Tag, cx } from "../../ui";
+import { CoverageFold, Disclosure, FoldGroup, Tag } from "../../kit";
 
 /** Pieces of a sentence around its placeholders: `{A}` and `{B}` become the given nodes (dates and counts are Nums). */
 function fill(sentence: string, parts: Record<string, ReactNode>): ReactNode[] {
@@ -244,58 +244,49 @@ export function VariantCoverage({ view, today }: { view: FundVariantsView; today
   const rowsCount = view.rows.length;
   if (import.meta.env.DEV && (!cov.invariantOk || cov.ranked + cov.listed + cov.notEvaluated !== rowsCount)) console.error("fund coverage: counts do not equal rows", cov, rowsCount);
   return (
-    <details className="group bg-card border border-border rounded-lg p-4 md:p-5">
-      <summary className="flex items-start justify-between gap-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
-        <span className="flex flex-col gap-1">
-          <span>
-            {rowsCount === 1 ? (
-              <>
-                {t.beforeOne}
-                {t.oneFund}
-                {t.midOne}
-              </>
-            ) : (
-              <>
-                {t.before}
-                {n(rowsCount, "קרנות")}
-                {t.mid1}
-              </>
-            )}
-            {part(cov.ranked, view.waitsForReturn ? "waits" : "ranked", c.funds.groups[view.waitsForReturn ? "waits" : "ranked"]!)}
-            {", "}
-            {part(cov.listed, "listed", c.funds.groups.listed!)}
-            {", "}
-            {part(cov.notEvaluated, "notEvaluated", c.funds.groups["not-evaluated"]!)}
-            {", "}
-            {t.end}
-          </span>
-          <span className="text-sm text-link flex items-center gap-1 min-h-9">
-            <span className="group-open:hidden">{r2.result.coverageOpen}</span>
-            <span className="hidden group-open:inline">{r2.result.coverageClose}</span>
-            <IconChevronDown size={16} className="transition-transform duration-[var(--duration-fast)] group-open:rotate-180" />
-          </span>
-        </span>
-      </summary>
-      <div className="mt-4 border-t border-border pt-3 flex flex-col gap-1">
-        {groups.map((g) => (
-          <details key={g.key} className="group/g" open={g.key !== "ranked"}>
-            <summary className="flex items-center gap-2 min-h-target cursor-pointer list-none [&::-webkit-details-marker]:hidden">
-              <h3 className="font-medium">
-                {g.label} <span className="text-muted-foreground font-normal">(<bdi dir="ltr">{g.rows.length}</bdi>)</span>
-              </h3>
-              <IconChevronDown className={cx("text-muted-foreground transition-transform duration-[var(--duration-fast)] group-open/g:rotate-180")} />
-            </summary>
-            <ul className="flex flex-col">
-              {g.rows.map((r) => (
-                <li key={r.id} className="py-2 border-b border-border last:border-b-0 text-sm">
-                  <bdi>{r.name}</bdi> <bdi dir="ltr" className="text-xs text-muted-foreground slashed-zero">{r.number}</bdi>
-                </li>
-              ))}
-            </ul>
-          </details>
-        ))}
-        <p className="text-sm text-muted-foreground pt-2">{c.funds.groupLine.before}{n(view.held.value as number, "קרנות זרות")}{c.funds.groupLine.after}</p>
-      </div>
-    </details>
+    <CoverageFold
+      lead={
+        <>
+          {rowsCount === 1 ? (
+            <>
+              {t.beforeOne}
+              {t.oneFund}
+              {t.midOne}
+            </>
+          ) : (
+            <>
+              {t.before}
+              {n(rowsCount, "קרנות")}
+              {t.mid1}
+            </>
+          )}
+          {part(cov.ranked, view.waitsForReturn ? "waits" : "ranked", c.funds.groups[view.waitsForReturn ? "waits" : "ranked"]!)}
+          {", "}
+          {part(cov.listed, "listed", c.funds.groups.listed!)}
+          {", "}
+          {part(cov.notEvaluated, "notEvaluated", c.funds.groups["not-evaluated"]!)}
+          {", "}
+          {t.end}
+        </>
+      }
+      openLabel={r2.result.coverageOpen}
+      closeLabel={r2.result.coverageClose}
+      pad="snug"
+      bodyPad="snug"
+      bodyClassName="flex flex-col gap-1"
+    >
+      {groups.map((g) => (
+        <FoldGroup key={g.key} title={g.label} count={g.rows.length} defaultOpen={g.key !== "ranked"}>
+          <ul className="flex flex-col">
+            {g.rows.map((r) => (
+              <li key={r.id} className="py-2 border-b border-border last:border-b-0 text-sm">
+                <bdi>{r.name}</bdi> <bdi dir="ltr" className="text-xs text-muted-foreground slashed-zero">{r.number}</bdi>
+              </li>
+            ))}
+          </ul>
+        </FoldGroup>
+      ))}
+      <p className="text-sm text-muted-foreground pt-2">{c.funds.groupLine.before}{n(view.held.value as number, "קרנות זרות")}{c.funds.groupLine.after}</p>
+    </CoverageFold>
   );
 }

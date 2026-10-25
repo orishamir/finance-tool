@@ -5,10 +5,9 @@ import { r2, r4workbench as c } from "../../../copy";
 import { countForm } from "../../../lib/compare";
 import type { CoverageView } from "../../../lib/providers";
 import { computed } from "../../../lib/value";
-import { IconChevronDown } from "../../icons";
 import { Num } from "../../provenance";
 import { reasonSentence } from "./row";
-import { cx } from "../../ui";
+import { CoverageFold, FoldGroup } from "../../kit";
 
 /** A count with its own form (the numeral in words for one and two, the digit otherwise) and the word that agrees with it. */
 function CountWord({ n, forms, value, numerals }: { n: number; forms: { one: string; other: string }; value: ReturnType<typeof computed>; numerals: { one: string; two: string } }) {
@@ -31,66 +30,57 @@ export function ProviderCoverage({ coverage, today, instrumentClass, channelWord
     { key: "not", label: t.groups.notComparable, rows: coverage.notComparable.map((r) => ({ id: r.id, name: r.name, note: reasonSentence(r.reason, instrumentClass, channelWord) })), open: true },
   ].filter((g) => g.rows.length > 0);
   return (
-    <details className="group bg-card border border-border rounded-lg p-4 md:p-5">
-      <summary className="flex items-start justify-between gap-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
-        <span className="flex flex-col gap-1">
-          <span>
-            {ranked === 1 && coverage.considered > 1 ? (
-              <>
-                {t.oneRanked.before}
-                <Num value={count(ranked, t.groups.ranked)} />
-                {t.oneRanked.mid}
-                <Num value={count(coverage.considered, "ספקים")} />
-                {t.oneRanked.after}
-              </>
-            ) : (
-              <>
-                {coverage.considered === 1 ? t.sentence.verbOne : t.sentence.verbMany}
-                {coverage.considered === 1 || coverage.considered === 2 ? (
-                  <Num value={count(coverage.considered, "ספקים")} display={coverage.considered === 1 ? t.sentence.one : t.sentence.two} />
-                ) : (
-                  <>
-                    <Num value={count(coverage.considered, "ספקים")} />
-                    {t.sentence.after}
-                  </>
-                )}
-                {t.sentence.colon}
-                <CountWord n={ranked} forms={t.sentence.ranked} value={count(ranked, t.groups.ranked)} numerals={t.sentence.numerals} />
-                {t.sentence.sep}
-                <CountWord n={not} forms={{ one: t.sentence.not, other: t.sentence.not }} value={count(not, t.groups.notComparable)} numerals={t.sentence.numerals} />
-                {t.sentence.end}
-              </>
-            )}
-          </span>
-          <span className="text-sm text-link flex items-center gap-1 min-h-9">
-            <span className="group-open:hidden">{r2.result.coverageOpen}</span>
-            <span className="hidden group-open:inline">{r2.result.coverageClose}</span>
-            <IconChevronDown size={16} className={cx("transition-transform duration-[var(--duration-fast)] group-open:rotate-180")} />
-          </span>
-        </span>
-      </summary>
-      <div className="mt-4 border-t border-border pt-3 flex flex-col gap-1">
-        {groups.map((g) => (
-          <details key={g.key} className="group/g" open={g.open}>
-            <summary className="flex items-center gap-2 min-h-target cursor-pointer list-none [&::-webkit-details-marker]:hidden">
-              <h3 className="font-medium">
-                {g.label} <span className="text-muted-foreground font-normal">(<bdi dir="ltr">{g.rows.length}</bdi>)</span>
-              </h3>
-              <IconChevronDown className="text-muted-foreground transition-transform duration-[var(--duration-fast)] group-open/g:rotate-180" />
-            </summary>
-            <ul className="flex flex-col">
-              {g.rows.map((r) => (
-                <li key={r.id} className="flex items-baseline gap-2 flex-wrap py-2 border-b border-border last:border-b-0">
-                  <Link to={`/companies/${r.id}`} className="text-link hover:underline">
-                    {r.name}
-                  </Link>
-                  {r.note && <bdi dir="ltr" className="text-xs text-muted-foreground">{r.note}</bdi>}
-                </li>
-              ))}
-            </ul>
-          </details>
-        ))}
-      </div>
-    </details>
+    <CoverageFold
+      lead={
+        <>
+          {ranked === 1 && coverage.considered > 1 ? (
+            <>
+              {t.oneRanked.before}
+              <Num value={count(ranked, t.groups.ranked)} />
+              {t.oneRanked.mid}
+              <Num value={count(coverage.considered, "ספקים")} />
+              {t.oneRanked.after}
+            </>
+          ) : (
+            <>
+              {coverage.considered === 1 ? t.sentence.verbOne : t.sentence.verbMany}
+              {coverage.considered === 1 || coverage.considered === 2 ? (
+                <Num value={count(coverage.considered, "ספקים")} display={coverage.considered === 1 ? t.sentence.one : t.sentence.two} />
+              ) : (
+                <>
+                  <Num value={count(coverage.considered, "ספקים")} />
+                  {t.sentence.after}
+                </>
+              )}
+              {t.sentence.colon}
+              <CountWord n={ranked} forms={t.sentence.ranked} value={count(ranked, t.groups.ranked)} numerals={t.sentence.numerals} />
+              {t.sentence.sep}
+              <CountWord n={not} forms={{ one: t.sentence.not, other: t.sentence.not }} value={count(not, t.groups.notComparable)} numerals={t.sentence.numerals} />
+              {t.sentence.end}
+            </>
+          )}
+        </>
+      }
+      openLabel={r2.result.coverageOpen}
+      closeLabel={r2.result.coverageClose}
+      pad="snug"
+      bodyPad="snug"
+      bodyClassName="flex flex-col gap-1"
+    >
+      {groups.map((g) => (
+        <FoldGroup key={g.key} title={g.label} count={g.rows.length} defaultOpen={g.open}>
+          <ul className="flex flex-col">
+            {g.rows.map((r) => (
+              <li key={r.id} className="flex items-baseline gap-2 flex-wrap py-2 border-b border-border last:border-b-0">
+                <Link to={`/companies/${r.id}`} className="text-link hover:underline">
+                  {r.name}
+                </Link>
+                {r.note && <bdi dir="ltr" className="text-xs text-muted-foreground">{r.note}</bdi>}
+              </li>
+            ))}
+          </ul>
+        </FoldGroup>
+      ))}
+    </CoverageFold>
   );
 }

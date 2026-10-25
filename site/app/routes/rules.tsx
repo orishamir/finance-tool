@@ -6,7 +6,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLoaderData, useLocation } from "react-router";
 import type { Route } from "./+types/rules";
 import { rulesFront as copy, site, sourceBlock, system, topicName, ruleCardMore } from "../copy";
-import { IconChevronDown, IconSearch } from "../components/icons";
+import { IconSearch } from "../components/icons";
 import { NumberLegend, RuleCard, type RuleUses } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { Card, cx, Disclosure, Tag } from "../components/ui";
@@ -422,21 +422,24 @@ function GroupBlock({ g, open, onToggle, pd, failed, lightById }: { g: Group; op
   const missing = open && g.ids.some((id) => !pd.rules[id]);
   const broken = missing && g.ids.some((id) => !pd.rules[id] && failed.has(lightById.get(id)!.shelf));
   return (
-    <details
+    <Disclosure
       id={g.id}
       open={open}
-      onToggle={(e) => onToggle(e.currentTarget.open)}
-      className={cx("group flex flex-col", scrollMargin)}
-    >
-      <summary className="min-h-12 flex items-center justify-between gap-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden rounded-md">
-        <h3 className="text-lg font-semibold flex flex-wrap items-baseline gap-x-2">
+      onOpenChange={onToggle}
+      className={cx("flex flex-col", scrollMargin)}
+      spread
+      size="field"
+      as="h3"
+      labelClassName="text-lg font-semibold flex flex-wrap items-baseline gap-x-2"
+      label={
+        <>
           {title}
           <span className="text-sm font-normal text-muted-foreground">
             · <Num2 n={g.ids.length} />
           </span>
-        </h3>
-        <IconChevronDown className="text-muted-foreground shrink-0 transition-transform duration-[var(--duration-fast)] group-open:rotate-180" />
-      </summary>
+        </>
+      }
+    >
       {open && (
         <>
           {g.kind === "experience" && (
@@ -459,6 +462,6 @@ function GroupBlock({ g, open, onToggle, pd, failed, lightById }: { g: Group; op
           )}
         </>
       )}
-    </details>
+    </Disclosure>
   );
 }

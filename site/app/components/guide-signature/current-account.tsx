@@ -12,11 +12,11 @@ import { p05Value } from "../../lib/engine";
 import { accountAxis, accountFact, bankYearlyMax, currentAccountModel, fact, payingBanks, silentBanks, type SignatureData } from "../../lib/guide-signature";
 import type { SiteValue } from "../../lib/value";
 import { AxisLabels, niceYearTicks } from "../chart/TimelineChart";
-import { IconAlert, IconChevronDown } from "../icons";
+import { IconAlert } from "../icons";
 import type { WorthFactRow } from "../guide/worth-knowing";
 import { NumberField, SliderField } from "../timeline/fields";
 import { Num, RuleRef, RulesLine } from "../provenance";
-import { Tag, cx } from "../ui";
+import { Disclosure, Tag, cx } from "../kit";
 import { FigureRow, Gap, SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, useWidth, yearsRange, type VisualProps } from "./kit";
 
 const HEIGHT = 250;
@@ -268,11 +268,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
       </p>
 
       {everyBank.length > 0 ? (
-        <details ref={foldRef} id={FOLD_ID} className="group rounded-md border border-border scroll-mt-24">
-          <summary className="flex items-center justify-between gap-3 min-h-target px-4 py-2 cursor-pointer list-none select-none rounded-md [&::-webkit-details-marker]:hidden">
-            <span className="font-medium">{f.title}</span>
-            <IconChevronDown className="text-muted-foreground shrink-0 transition-transform duration-[var(--duration-fast)] group-open:rotate-180" />
-          </summary>
+        <Disclosure detailsRef={foldRef} id={FOLD_ID} className="rounded-md border border-border scroll-mt-24" spread summaryClassName="px-4 py-2" labelClassName="font-medium" label={f.title}>
           <div className="flex flex-col gap-4 px-4 pb-4">
             <p className="text-sm text-muted-foreground max-w-measure">{f.lead}</p>
 
@@ -380,7 +376,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
               </tbody>
             </table>
           </div>
-        </details>
+        </Disclosure>
       ) : (
         <Gap id="accountBanks" />
       )}

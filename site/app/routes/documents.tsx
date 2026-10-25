@@ -2,7 +2,7 @@
 // each with the rules that rest on it, then the data records the site read, each pointing at the page that uses it.
 import { Link, useLoaderData } from "react-router";
 import { documents as copy, site } from "../copy";
-import { IconChevronDown, IconExternal } from "../components/icons";
+import { IconExternal } from "../components/icons";
 import { Num, NumberLegend, StrengthLabel } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { Card, cx, Disclosure } from "../components/ui";
@@ -81,13 +81,9 @@ function DocCard({ doc }: { doc: DocumentCard }) {
 /** A collapsible group like the rules page; the first starts open, a closed one paints nothing. */
 function Group({ id, title, open, children }: { id: string; title: string; open?: boolean; children: React.ReactNode }) {
   return (
-    <details id={id} open={open} className="group scroll-mt-[112px] lg:scroll-mt-[88px] flex flex-col">
-      <summary className="min-h-12 flex items-center justify-between gap-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden rounded-md">
-        <h2 className="text-xl lg:text-2xl font-semibold">{title}</h2>
-        <IconChevronDown className="text-muted-foreground shrink-0 transition-transform duration-[var(--duration-fast)] group-open:rotate-180" />
-      </summary>
+    <Disclosure id={id} defaultOpen={open} className="scroll-mt-[112px] lg:scroll-mt-[88px] flex flex-col" spread size="field" as="h2" labelClassName="text-xl lg:text-2xl font-semibold" label={title}>
       {children}
-    </details>
+    </Disclosure>
   );
 }
 

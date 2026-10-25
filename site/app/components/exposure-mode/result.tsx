@@ -16,7 +16,7 @@ import { goalTitle } from "../compare/goal-form";
 import { DimensionChecklist, type ChecklistRowView } from "../guide/sections";
 import { Num, NumberLegend, RulesLine } from "../provenance";
 import { Sheet } from "../Sheet";
-import { Callout, Card, Disclosure, SegmentedControl, Tag } from "../ui";
+import { Callout, Card, CoverageFold, Disclosure, SegmentedControl, Tag } from "../kit";
 import { ChooseButton, RevisitBanner, SaveComparisonButton, UnreadableSavedForm, WhatChangedSheet } from "../revisit/revisit";
 import { forgetRevisit, useRevisit } from "../revisit/use-revisit";
 import { computed } from "../../lib/value";
@@ -32,7 +32,6 @@ import { ExposureRow, useFlipList } from "./row";
 import { ExposureReason } from "./reason";
 import { Tpl } from "./tpl";
 import { IconDash, IconDashed, IconEdit, IconOk } from "../compare/icons";
-import { IconChevronDown } from "../icons";
 
 // ---------------------------------------------------------------- the mode tabs
 
@@ -217,52 +216,49 @@ function ExposureCoverage({ ctx, open }: { ctx: ExpCtx; open: boolean }) {
     );
   };
   return (
-    <details className="group bg-card border border-border rounded-lg p-4 md:p-6" open={open} key={String(open)}>
-      <summary className="flex items-start cursor-pointer list-none [&::-webkit-details-marker]:hidden">
-        <span className="flex flex-col gap-1">
-          <span>
-            <Tpl t={c.sentence} vars={{ n: <Num value={mk.count(cov.considered, c.sentence)} animate /> }} /> {count("ranked")}, {count("listed-not-ranked")}, {count("excluded")}, {count("not-evaluated")}
-            {cov.counts["not-eligible"] > 0 && <>, {count("not-eligible")}</>}.
-          </span>
-          <span className="text-sm text-link flex items-center gap-1 min-h-9">
-            <span className="group-open:hidden">{r2.result.coverageOpen}</span>
-            <span className="hidden group-open:inline">{r2.result.coverageClose}</span>
-            <IconChevronDown size={16} className="transition-transform duration-[var(--duration-fast)] group-open:rotate-180" />
-          </span>
-        </span>
-      </summary>
-      <div className="mt-4 border-t border-border pt-4 flex flex-col gap-5">
-        {kinds.map((k) => {
-          const list = view.rows.filter((r) => r.kind === k);
-          if (list.length === 0) return null;
-          return (
-            <section key={k} className="flex flex-col gap-1">
-              <h4 className="font-medium">
-                {c.groups[k]} <span className="text-muted-foreground font-normal">({list.length})</span>
-              </h4>
-              <ul className="flex flex-col">
-                {list.map((r) => (
-                  <li key={r.id} className="flex flex-col gap-1 py-3 border-b border-border last:border-b-0">
-                    <span className="flex items-center gap-2 flex-wrap">
-                      <Link to={r.entry.guideHref} className="font-medium text-link hover:underline">
-                        <bdi>{r.entry.name}</bdi>
-                      </Link>
-                      {k === "ranked" ? <Tag tone="positive" icon={<IconOk size={14} />}>{r2.outcomes.ranked}</Tag> : k === "excluded" ? <Tag tone="entered" icon={<IconEdit size={14} />}>{r5.exposure.headings.excluded}</Tag> : k === "not-evaluated" ? <Tag tone="neutral" icon={<IconDashed size={14} />}>{r2.outcomes["not-evaluated"]}</Tag> : <Tag tone="neutral" icon={<IconDash size={14} />}>{r2.outcomes[k]}</Tag>}
+    <CoverageFold
+      lead={
+        <>
+          <Tpl t={c.sentence} vars={{ n: <Num value={mk.count(cov.considered, c.sentence)} animate /> }} /> {count("ranked")}, {count("listed-not-ranked")}, {count("excluded")}, {count("not-evaluated")}
+          {cov.counts["not-eligible"] > 0 && <>, {count("not-eligible")}</>}.
+        </>
+      }
+      openLabel={r2.result.coverageOpen}
+      closeLabel={r2.result.coverageClose}
+      bodyClassName="flex flex-col gap-5"
+      defaultOpen={open}
+      key={String(open)}
+    >
+      {kinds.map((k) => {
+        const list = view.rows.filter((r) => r.kind === k);
+        if (list.length === 0) return null;
+        return (
+          <section key={k} className="flex flex-col gap-1">
+            <h4 className="font-medium">
+              {c.groups[k]} <span className="text-muted-foreground font-normal">({list.length})</span>
+            </h4>
+            <ul className="flex flex-col">
+              {list.map((r) => (
+                <li key={r.id} className="flex flex-col gap-1 py-3 border-b border-border last:border-b-0">
+                  <span className="flex items-center gap-2 flex-wrap">
+                    <Link to={r.entry.guideHref} className="font-medium text-link hover:underline">
+                      <bdi>{r.entry.name}</bdi>
+                    </Link>
+                    {k === "ranked" ? <Tag tone="positive" icon={<IconOk size={14} />}>{r2.outcomes.ranked}</Tag> : k === "excluded" ? <Tag tone="entered" icon={<IconEdit size={14} />}>{r5.exposure.headings.excluded}</Tag> : k === "not-evaluated" ? <Tag tone="neutral" icon={<IconDashed size={14} />}>{r2.outcomes["not-evaluated"]}</Tag> : <Tag tone="neutral" icon={<IconDash size={14} />}>{r2.outcomes[k]}</Tag>}
+                  </span>
+                  {k !== "ranked" && (
+                    <span className="text-sm text-muted-foreground">
+                      <ExposureReason row={r} ctx={ctx} />
                     </span>
-                    {k !== "ranked" && (
-                      <span className="text-sm text-muted-foreground">
-                        <ExposureReason row={r} ctx={ctx} />
-                      </span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          );
-        })}
-        <p className="text-sm text-muted-foreground">{c.last}</p>
-      </div>
-    </details>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
+        );
+      })}
+      <p className="text-sm text-muted-foreground">{c.last}</p>
+    </CoverageFold>
   );
 }
 
