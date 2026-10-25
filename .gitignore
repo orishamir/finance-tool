@@ -5,3 +5,6 @@ coverage/
 *.log
 # raw source downloads; kept in the archive store, not in git (docs/architecture.md 3.3)
 .archive/
+
+# Personal Claude Code permissions (2026-10-25)
+.claude/settings.local.json

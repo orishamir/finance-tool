@@ -36,10 +36,19 @@ These apply to the whole knowledge base, not to one topic.
      (3) Yearly series keep one name pattern (`Guides_IncomeTax_da-YYYY.pdf`,
      `…monthly-deductions-booklet-YYYY.pdf`, `Policy_IncomeTaxProfessionalInst_hoz_NN_YYYY_acc.pdf`), so
      the next edition can be tried by name.
-     gov.il's HTML pages and their data APIs stay behind Cloudflare's human check, and a script does not
-     get around it. Using a challenge solver such as FlareSolverr is the founder's call (asked
-     2026-10-25), so until then a source that exists only as an HTML page goes through Chrome. These are
-     not behind such a check: fs.knesset.gov.il (Reshumot PDFs), the Knesset OData API, data.gov.il,
+     gov.il's HTML pages and their data APIs sit behind Cloudflare's human check. The founder allowed
+     FlareSolverr for gov.il pages only (2026-10-25). It runs in Docker on this machine (start it with
+     `docker start flaresolverr`), and `research/audit/tools/govil-page.sh URL` prints one page's HTML,
+     refusing any address outside gov.il. A page takes about 15 seconds. The script waits 6 seconds after
+     the check, because without the wait a page could come back as the bare frame. The page is where to
+     see which edition is current: an old PDF stays online after a new one replaces it, so a link check
+     never shows it is out of date. Read this way on the first day:
+     - "דע זכויותיך" lists the 2025 and 2024 editions, so 2025 is the newest.
+     - The clearing-house page lists its six attachments.
+     - Circular 7/2003, on this list's not-done items, has its PDF at
+       `/BlobFolder/policy/income-tax-professional-inst-7-2003/he/Policy_IncomeTaxInst_hoz7-2003.pdf`.
+     - The tax-treaties collector address in `tax-securities-foreign.md` now leads to gov.il's error page.
+     These are not behind such a check: fs.knesset.gov.il (Reshumot PDFs), the Knesset OData API, data.gov.il,
      btl.gov.il, new.isa.gov.il, boi.org.il and gemelnet.cma.gov.il.
    - **Bank of Israel:** consumer pages and the makam auction pages (bot check).
    - **TASE:** the member list, trading pages, and the s.45טז fee-comparison page.
