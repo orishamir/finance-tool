@@ -32,11 +32,11 @@
         "CS-03"
       ],
       "state": "sourced",
-      "notes": "NIS 58 a month per child in 2026, paid by the National Insurance Institute on the 20th. Updated each 1 January by the CPI rise (reg. 12); the update was skipped on 1 January 2025 (law s.74ה(4)), when the amount stayed at the 2024 level (NIS 57). NIS 50 at the 2017 start. Law 74ב(א)(1) bracket also reads 'בשנת 2026, 58 ש״ח'."
+      "notes": "NIS 58 a month per child in 2026, paid by the National Insurance Institute on the 20th. Updated each 1 January by the CPI rise (reg. 12); the update was skipped on 1 January 2025 (law s.74ה(4)), when the amount stayed at the 2024 level (NIS 57). NIS 50 at the 2017 start. The law itself (s.74ב(א)(1), NII's consolidated text p.50) holds only the base amount of 50 shekels; a bracket 'בשנת 2026, 58 ש״ח' seen earlier was a Wikisource editor note, not law text."
     }
   },
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
