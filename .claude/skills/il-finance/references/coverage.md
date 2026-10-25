@@ -23,7 +23,24 @@ These apply to the whole knowledge base, not to one topic.
 2. **Some sources can't be opened by a script.** A browser pass through your Chrome on 2026-10-22 got past most of these (§12): TASE, the ISA register, hly.gov.il, gov.il service pages, Bank of Israel pages, Bank of Jerusalem and One Zero all opened. Still not done from this list: Kol Zchut (opens, not yet used), S&P Maalot, the CMA fslproviders register, circular 7/2003, Accountant General bond terms, and Mercantile's rate table. Discount's rate table opened but was machine-translated. *Status 2026-10-23:* the Gemel-Net and Pensia-Net portals were read in browser pass 4 (CAT-35 to CAT-41, the fee fields confirmed for display); the Bank of Israel's terms of use were read in archived copies (republication not permitted, discovery O14); S&P Dow Jones Indices' pages and TASE's TA-125 page were read in Chrome (ETF-33 to ETF-42). Still not done: Kol Zchut, S&P Maalot, the CMA fslproviders register, circular 7/2003, Accountant General bond terms, Mercantile's rate table. *Status 2026-10-24 (browser pass 5, release 4):* Bank Yahav's, Bank of Jerusalem's and One Zero's tariffs were read in Chrome (snapshots in `data/fees/*@2026-10-24.json`, BRK-30, BRK-38); Meitav Trade still publishes none (BRK OQ18); Maya's fund list and TASE's foreign-funds list were read and counted but not republished because TASE's August 2026 terms forbid it (CAT-42, CAT-43, ETF-43); TASE's Data Hub and Data Store terms and prices were read (BRK-39, discovery O13); the CMA transfer circular, the clearing-house letters and circulars and directive 448 version 4 were read on gov.il and boi.org.il (SW-41 to SW-44). The original list:
    - **gov.il landing pages (403):** Har HaKesef, CMA public enquiries, Tax Authority forms 161/161d,
      Accountant General bond terms, Tax Authority circular 7/2003. Note that gov.il *BlobFolder* PDFs
-     do open.
+     do open. *Finding a gov.il PDF without Chrome (2026-10-25):* the address is
+     `https://www.gov.il/BlobFolder/{kind}/{page-slug}/{he|en}/{file}.pdf`. The kind follows the page:
+     `generalpage` for `/he/pages/…`, `policy` for circulars, `dynamiccollectorresultitem` for CMA and
+     Tax Authority collector items, and also `legalinfo`, `service`, `guide` and `reports`. The slug is
+     the page's own, and the file name cannot be worked out. A HEAD request answers 404 for files that
+     exist, so check with GET. Three ways to the file without opening the page:
+     (1) The Wayback Machine's index lists every archived file under a folder. For example,
+     `https://web.archive.org/cdx/search/cdx?url=gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/*&fl=timestamp,original&collapse=urlkey`
+     gave every yearly edition from 2014 to 2025. The live file is then fetched from gov.il itself.
+     (2) A web search limited to gov.il returns BlobFolder PDF links directly.
+     (3) Yearly series keep one name pattern (`Guides_IncomeTax_da-YYYY.pdf`,
+     `…monthly-deductions-booklet-YYYY.pdf`, `Policy_IncomeTaxProfessionalInst_hoz_NN_YYYY_acc.pdf`), so
+     the next edition can be tried by name.
+     gov.il's HTML pages and their data APIs stay behind Cloudflare's human check, and a script does not
+     get around it. Using a challenge solver such as FlareSolverr is the founder's call (asked
+     2026-10-25), so until then a source that exists only as an HTML page goes through Chrome. These are
+     not behind such a check: fs.knesset.gov.il (Reshumot PDFs), the Knesset OData API, data.gov.il,
+     btl.gov.il, new.isa.gov.il, boi.org.il and gemelnet.cma.gov.il.
    - **Bank of Israel:** consumer pages and the makam auction pages (bot check).
    - **TASE:** the member list, trading pages, and the s.45טז fee-comparison page.
    - **Securities Authority (ISA):** the licensee registers (portfolio managers, rating agencies, bond
