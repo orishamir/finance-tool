@@ -285,7 +285,7 @@ export const provenance = {
   formulaSheet: {
     usesLabel: "פרמטרים של האתר שהנוסחה משתמשת בהם",
     noParameters: "הנוסחה לא משתמשת בפרמטרים של האתר.",
-    full: "Full definition (method.md, in English)",
+    full: "ההגדרה המלאה במסמך שיטת החישוב (באנגלית)",
   },
   questionSheet: {
     what: "זו שאלה פתוחה בבסיס החוקים: משהו שעוד לא נמצא לו מקור ברור, בחוק או אצל הרשות.",
