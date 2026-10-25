@@ -24,6 +24,7 @@ The structure review asks one question of every new piece: which layer?
 | `Section`, adopted | the kit has it, but only the guide uses it; section headings are hand-built at three sizes | 31 section headings in 16 files |
 | `TextField`, `SelectField`, `DateField` | private to `holdings/fields.tsx`; elsewhere raw inputs and selects (the index page's account select renders with a light grey box) | 24 raw inputs in 16 files, 5 raw selects |
 | `DividedList` (rows with a divider, the last without) | `border-b border-border last:border-b-0 py-…` by hand, in the coverage lists, idle cash, exposure, revisit | 14 lists in 12 files |
+| Filter chips, aligned | the rules page's filter chips (by question, product) show the chosen chip in teal, like the index pills before `invest-edit`; the site's chosen state is `sec-chip-on` | 1 page, 3 rows |
 | `ChipRow` (scrolls sideways on a phone, wraps on a PC) | the bleed and scroll classes copied into four chip rows; `ChoiceChips` has its own copy | 5 copies |
 | `ChartLabel`, `ChartFrame`, `AxisLabels` | two near-identical label chips on charts (`bg-card/85 px-1.5` in five guide visuals, `bg-card/80 px-1` in four charts); the chart's base `svg` classes in four charts; `AxisLabels` lives in `TimelineChart.tsx` but four charts import it | 9 + 4 + 4 |
 | `Skeleton`, `LoadingLine` | four hand-built pulse placeholders; twelve "loading" lines | 4 + 12 |
