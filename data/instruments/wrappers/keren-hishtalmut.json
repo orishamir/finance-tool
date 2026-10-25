@@ -123,21 +123,21 @@
       "value": 4,
       "unit": "business_days",
       "source": {
-        "url": "https://www.as-invest.co.il/media/10040/בקשה-למשיכת-כספים-מקרן-השתלמות.pdf",
-        "title": "Altshuler Shaham \"בקשה למשיכת כספים מקרן השתלמות\", form MH4015_210519, guidance section 1",
-        "publisher": "Altshuler Shaham Gemel and Pension",
-        "strength": "institution"
+        "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+        "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964, p.16, reg. 41יא(א)",
+        "publisher": "National Insurance Institute (btl.gov.il), consolidated text",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "fixed in law",
+      "update_rule": "fixed in regulation",
       "rule_ids": [
         "KH-16"
       ],
       "state": "sourced",
-      "notes": "Within 4 business days of a full and proper request, by bank transfer to the member's own account (Altshuler). Other managers not checked; the legal timetable was not read (KH OQ16)."
+      "notes": "Rule 41יא(א) of the 1964 Income Tax Rules: a provident fund pays a withdrawal within 4 business days of the day the request reaches it; if that date falls in the month's first three business days it may defer to the 4th business day of the month. The law's timetable for every fund, not one company's (scope pass 2026-10-25). The documents and channel each manager asks for are its own (Altshuler Shaham's: KH-27)."
     },
     "text": "the money becomes free 6 years after the first payment date (3 years at retirement age, or for the member's study); withdrawing earlier is allowed but taxed as work income on the employer's benefited deposits and at the rates for income not from personal effort on the gains, with 47% withheld (TXH-13, TXH-15; method F-47, pending R2, so the site does not compute it yet); the 2025 to 2027 proposals to narrow the exemption are not law (TXH-22)"
   },

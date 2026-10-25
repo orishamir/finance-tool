@@ -41,28 +41,51 @@
     "notes": "The National Insurance Institute runs the programme under the National Insurance Law and the Ministry of Finance (Accountant General) sets the approved list by tender. The money sits in a provident fund classified 'קופת גמל להשקעה - חסכון לילד', whose managing company is under the CMA Commissioner's supervision (Harel's bylaw refers to 'הממונה'); the CMA is the regulator of the fund that holds the money."
   },
   "fee_bases_allowed": [
+    "deposit",
     "balance"
   ],
   "fee_caps": {
-    "balance": {
-      "value": 0.23,
-      "unit": "pct_per_year",
+    "deposit": {
+      "value": 4,
+      "unit": "pct_of_deposit",
       "source": {
-        "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
-        "title": "Harel child-savings standard bylaw, edition 3, April 2026, ss.10.4 (payment within 4 business days), 31-33 (fees)",
-        "publisher": "Harel Pension and Gemel",
-        "strength": "institution"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131), p.4, reg. 2(א)(2)",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "provider-set",
+      "update_rule": "fixed in regulation",
       "rule_ids": [
-        "CS-18"
+        "CS-18",
+        "PF-02"
       ],
       "state": "sourced",
-      "notes": "NOT A REGULATORY CAP. Until the child is 21 the National Insurance Institute bears the management cost (law 74ב(ה)) and pays provident funds 0.23% a year of the balance (NII 2025 report p.1, primary); from 21 the fee comes out of the savings, 0.23% of the balance at Harel (bylaw s.31) and Altshuler (Q&A), institution strength, and a manager may raise it by notice (Harel s.33). Whether 0.23% holds at every manager was not checked (CS OQ8). The management-fee regulations do not name child savings (PF OQ4), so no regulatory cap is recorded. Harel's bylaw charges 0% of deposits; NII says the member pays nothing until 21."
+      "notes": "The legal cap on the fee from each deposit (fee regulations reg. 2(א)(2)), on the same reasoning as the balance cap. Until 21 NII bears the management cost (CS-18). Each manager sets its own rate (Harel's bylaw: none; CS-30)."
+    },
+    "balance": {
+      "value": 1.05,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131), p.4, reg. 2(א)(1)",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "CS-18",
+        "PF-02"
+      ],
+      "state": "sourced",
+      "notes": "The legal cap on the yearly fee from the balance (fee regulations reg. 2(א)(1)): the child-savings fund is a kupat gemel lehashkaa to which every kupat gemel lehashkaa provision applies (circular 2022-9-29 s.1), and the CMA standard child bylaw caps the rate at the legal maximum (s.31.1). Until the child is 21 NII bears the management cost and pays the fund itself (CS-18); after 21 the fee comes out of the savings, within this cap. Each manager sets its own rate (Harel's and Altshuler Shaham's: CS-30)."
     }
   },
   "ceiling": null,
@@ -123,21 +146,21 @@
       "value": 4,
       "unit": "business_days",
       "source": {
-        "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
-        "title": "Harel child-savings standard bylaw, edition 3, April 2026, ss.10.4 (payment within 4 business days), 31-33 (fees)",
-        "publisher": "Harel Pension and Gemel",
-        "strength": "institution"
+        "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+        "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964, p.16, reg. 41יא(א)",
+        "publisher": "National Insurance Institute (btl.gov.il), consolidated text",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "provider-set",
+      "update_rule": "fixed in regulation",
       "rule_ids": [
         "CS-14"
       ],
       "state": "sourced",
-      "notes": "Harel's bylaw s.10.4; other managers' timing was not read. The request goes to the fund, not to NII."
+      "notes": "Rule 41יא(א) of the 1964 Income Tax Rules: a provident fund pays a withdrawal within 4 business days of the day the request reaches it; if that date falls in the month's first three business days it may defer to the 4th business day of the month. The law's timetable for every fund, not one company's (scope pass 2026-10-25). The child-savings fund is a kupat gemel lehashkaa (circular 2022-9-29 s.1), and the CMA standard child-savings bylaw says the same: within four business days, to the member's bank account only (s.10.4-10.5). The request goes to the fund, not to NII."
     },
     "text": "from 18 with a parent's signature, from 21 alone; a withdrawal before 21 forfeits the age-21 grant; before 18 only to fund the child's medical needs where a condition endangers the child's life, body or mind, with an NII-appointed doctor's approval (CS-15); no withdrawal for financial hardship; money not withdrawn keeps being managed in the fund, with no new deposits (CS-16)"
   },

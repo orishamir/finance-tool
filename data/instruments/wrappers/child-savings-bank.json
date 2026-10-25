@@ -98,20 +98,20 @@
       "unit": "business_days",
       "source": {
         "url": "https://www.leumi.co.il/he/Withdrawing-savings-for-your-kids",
-        "title": "Bank Leumi, child-savings withdrawal page (processed within 3 business days)",
+        "title": "Bank Leumi, child-savings withdrawal page: the digital request withdraws the whole balance, closes the account and is processed within 3 business days",
         "publisher": "Bank Leumi",
         "strength": "institution"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "CS-14"
+        "CS-29"
       ],
       "state": "sourced",
-      "notes": "Leumi's digital request withdraws the whole balance, closes the account and is processed within 3 business days; Leumi pays only into a current account held solely in the child's name. Other banks' timing was not read (CS OQ12)."
+      "notes": "Bank Leumi's own service time, not the product's: its digital request withdraws the whole balance, closes the account and is processed within 3 business days, into a current account held solely in the child's name (CS-29, scope institution: Bank Leumi). No general timetable for the bank route was found (CS-14), and other banks were not read (CS OQ12)."
     },
     "text": "from 18 with a parent's signature, from 21 alone; a withdrawal before 21 forfeits the age-21 grant; before 18 only for the child's medical needs with an NII-appointed doctor's approval (CS-15); the bank track is fixed until 18 unless an exit-station type was chosen, which allows a track change every 5 years (CS-10, CS-12); money not withdrawn at 18 renews at the bank for further saving periods, and breaking such a period early can lose interest and linkage (CS-16)"
   },
