@@ -1,0 +1,148 @@
+{
+  "id": "yahav-pikadon-leshana-kavua",
+  "bank": "yahav",
+  "names": {
+    "447": [
+      "פיקדון לשנה",
+      "פיקדון לשנה (365 יום)"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": []
+  },
+  "type_447": "פיקדון לשנה",
+  "wrapper_id": "bank-deposit",
+  "term_months": {
+    "value": 12,
+    "unit": "months",
+    "source": {
+      "url": "https://www.bank-yahav.co.il/media/bn5jiafl/447.pdf",
+      "title": "בנק יהב, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים' / 'שיעורי ריבית על סוגי פיקדונות שקליים נוספים' / 'יתרת זכות בחשבון' (פרסום לפי הוראה 447, קובץ PDF, נוצר 05.10.2026; מקושר מדף הבית); אותם נתונים בלוח 'לוח שיעורי ריבית על פקדונות' https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf, 'לוח מספר 13_26', 'בתוקף מיום 06/10/2026', 'מחליף לוח קודם מיום 03/09/2026', ריבית ב\"י 3.25%, פריים 4.75%, שורת 'פיקדון לשנה (365 יום)', 'קבועה', 'לא צמוד'",
+      "publisher": "Bank Yahav for Government Employees Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-10-25",
+    "effective_from": "2026-10-06",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-27"
+    ],
+    "state": "sourced",
+    "notes": "Printed 'פיקדון לשנה (365 יום)'; recorded as 12 months."
+  },
+  "rate_type": "fixed",
+  "anchor": null,
+  "spread": null,
+  "rate_offered": {
+    "value": 1.95,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.bank-yahav.co.il/media/bn5jiafl/447.pdf",
+      "title": "בנק יהב, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים' / 'שיעורי ריבית על סוגי פיקדונות שקליים נוספים' / 'יתרת זכות בחשבון' (פרסום לפי הוראה 447, קובץ PDF, נוצר 05.10.2026; מקושר מדף הבית); אותם נתונים בלוח 'לוח שיעורי ריבית על פקדונות' https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf, 'לוח מספר 13_26', 'בתוקף מיום 06/10/2026', 'מחליף לוח קודם מיום 03/09/2026', ריבית ב\"י 3.25%, פריים 4.75%, 'שיעור הריבית המוצעת (נומינלי שנתי)': 1.95%",
+      "publisher": "Bank Yahav for Government Employees Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-10-25",
+    "effective_from": "2026-10-06",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25"
+    ],
+    "state": "sourced",
+    "notes": "Nominal annual rate printed 1.95% for the 1,000-50,000 tier. Other tiers: 50,000-100,000: 2.15% (the board's 447 page prints the bound as '100,00', the 447 PDF as '100,000'); 100,000-200,000: 2.30%; 200,000 and up: 2.80%. The board's fixed-rate table (360-380 days) prints the same figures (1.95% / 1.95% / 2.15% / 2.30% / 2.80% / 2.80% / 2.80% by tier from 1,000), 'תעריפית' equal to 'מתואמת'. Variable sister row: 'פיקדון לשנה' (פריים - 2.9%) 1.85% to 25,000, (פריים - 2.85%) 1.90% above."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1): 15% על ריבית מנכס שאינו צמוד למדד; read through il-finance TXI-03 and TXI-04 (checked 2026-10-25)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08)."
+  },
+  "amount_range": {
+    "min": {
+      "value": 1000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.bank-yahav.co.il/media/bn5jiafl/447.pdf",
+        "title": "בנק יהב, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים' / 'שיעורי ריבית על סוגי פיקדונות שקליים נוספים' / 'יתרת זכות בחשבון' (פרסום לפי הוראה 447, קובץ PDF, נוצר 05.10.2026; מקושר מדף הבית); אותם נתונים בלוח 'לוח שיעורי ריבית על פקדונות' https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf, 'לוח מספר 13_26', 'בתוקף מיום 06/10/2026', 'מחליף לוח קודם מיום 03/09/2026', ריבית ב\"י 3.25%, פריים 4.75%, 'טווח סכום להפקדה': '1,000 עד 50,000 ש\"ח'",
+        "publisher": "Bank Yahav for Government Employees Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": "2026-10-06",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27"
+      ],
+      "state": "sourced",
+      "notes": "Lowest tier '1,000 עד 50,000 ש\"ח'."
+    },
+    "max": {
+      "value": 50000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.bank-yahav.co.il/media/bn5jiafl/447.pdf",
+        "title": "בנק יהב, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים' / 'שיעורי ריבית על סוגי פיקדונות שקליים נוספים' / 'יתרת זכות בחשבון' (פרסום לפי הוראה 447, קובץ PDF, נוצר 05.10.2026; מקושר מדף הבית); אותם נתונים בלוח 'לוח שיעורי ריבית על פקדונות' https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf, 'לוח מספר 13_26', 'בתוקף מיום 06/10/2026', 'מחליף לוח קודם מיום 03/09/2026', ריבית ב\"י 3.25%, פריים 4.75%, 'טווח סכום להפקדה': '1,000 עד 50,000 ש\"ח'",
+        "publisher": "Bank Yahav for Government Employees Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": "2026-10-06",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27"
+      ],
+      "state": "sourced",
+      "notes": "Upper bound of the first tier; higher tiers are noted on rate_offered."
+    }
+  },
+  "break": {
+    "allowed": false,
+    "penalty": "not_allowed",
+    "mechanism_text": "'אין אפשרות לשבירה' (one merged break cell covering every standard type in the 447 table).",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-14"
+    ]
+  },
+  "exit_points": {
+    "exists": false,
+    "every_months": null
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "snapshot": "2026-10-25",
+  "source": {
+    "url": "https://www.bank-yahav.co.il/media/bn5jiafl/447.pdf",
+    "title": "בנק יהב, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים' / 'שיעורי ריבית על סוגי פיקדונות שקליים נוספים' / 'יתרת זכות בחשבון' (פרסום לפי הוראה 447, קובץ PDF, נוצר 05.10.2026; מקושר מדף הבית); אותם נתונים בלוח 'לוח שיעורי ריבית על פקדונות' https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf, 'לוח מספר 13_26', 'בתוקף מיום 06/10/2026', 'מחליף לוח קודם מיום 03/09/2026', ריבית ב\"י 3.25%, פריים 4.75%",
+    "publisher": "Bank Yahav for Government Employees Ltd.",
+    "strength": "institution"
+  }
+}

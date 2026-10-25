@@ -1,0 +1,130 @@
+{
+  "id": "mizrahi-tefahot-current-account",
+  "bank": "mizrahi-tefahot",
+  "names": {
+    "447": [
+      "יתרת זכות בחשבון",
+      "ריבית יתרת זכות בחשבון",
+      "לא מוצעת ריבית על יתרת זכות"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": []
+  },
+  "type_447": "יתרת זכות בחשבון",
+  "wrapper_id": "current-account",
+  "term_months": {
+    "value": null,
+    "unit": "months",
+    "source": {
+      "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/",
+      "title": "בנק מזרחי טפחות, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447/447א; הטבלאות נטענות בדף מ-https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits (depositType=fixed: 'פיקדונות מקובלים'; depositType=additional: 'פיקדונות נוספים') ו-/GetBalanceRightTablePartial), 'כל המידע המוצג נכון לתאריך ושעה' 25/10/2026 19:24, טבלת 'יתרת זכות בחשבון'",
+      "publisher": "Mizrahi Tefahot Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-10-25",
+    "effective_from": "2026-10-25",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-09"
+    ],
+    "state": "sourced",
+    "notes": "a current account has no term; the publication prints no term."
+  },
+  "rate_type": "fixed",
+  "anchor": null,
+  "spread": null,
+  "rate_offered": {
+    "value": 0,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/",
+      "title": "בנק מזרחי טפחות, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447/447א; הטבלאות נטענות בדף מ-https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits (depositType=fixed: 'פיקדונות מקובלים'; depositType=additional: 'פיקדונות נוספים') ו-/GetBalanceRightTablePartial), 'כל המידע המוצג נכון לתאריך ושעה' 25/10/2026 19:24, 'לא מוצעת ריבית על יתרת זכות'",
+      "publisher": "Mizrahi Tefahot Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-10-25",
+    "effective_from": "2026-10-25",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-09",
+      "BANK-13"
+    ],
+    "state": "sourced",
+    "notes": "The 'יתרת זכות בחשבון' table prints no rate type and no rate; its conditions cell reads 'לא מוצעת ריבית על יתרת זכות'. Recorded as 0 because no interest is paid; no figure is printed. rate_type 'fixed' is a placeholder the schema requires. Check made: the partial was called with a test value for the no-offer label and returned that label in the conditions cell with empty rate cells, so the no-offer branch is the server's answer, not a default of the request. A March 2025 press release announced 2% on up to 30,000 NIS for some customers (seen in a search result only, not read); the 447 publication read today shows no offer."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1): 15% על ריבית מנכס שאינו צמוד למדד; read through il-finance TXI-03 and TXI-04 (checked 2026-10-25)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08",
+      "BANK-09"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel credit balance: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate (TXI-04); the bank withholds 15% on any interest it pays an individual, current-account credit interest included (TXI-08)."
+  },
+  "amount_range": {
+    "min": {
+      "value": null,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/",
+        "title": "בנק מזרחי טפחות, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447/447א; הטבלאות נטענות בדף מ-https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits (depositType=fixed: 'פיקדונות מקובלים'; depositType=additional: 'פיקדונות נוספים') ו-/GetBalanceRightTablePartial), 'כל המידע המוצג נכון לתאריך ושעה' 25/10/2026 19:24",
+        "publisher": "Mizrahi Tefahot Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": "2026-10-25",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-09"
+      ],
+      "state": "sourced",
+      "notes": "No interest is offered, so no minimum is printed."
+    },
+    "max": null
+  },
+  "break": {
+    "allowed": true,
+    "penalty": "none",
+    "mechanism_text": "Current account: money is available at any time; no break mechanism is printed (the 447 credit-balance table has no break column).",
+    "rule_ids": [
+      "BANK-09"
+    ]
+  },
+  "exit_points": {
+    "exists": false,
+    "every_months": null
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "snapshot": "2026-10-25",
+  "source": {
+    "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/",
+    "title": "בנק מזרחי טפחות, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447/447א; הטבלאות נטענות בדף מ-https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits (depositType=fixed: 'פיקדונות מקובלים'; depositType=additional: 'פיקדונות נוספים') ו-/GetBalanceRightTablePartial), 'כל המידע המוצג נכון לתאריך ושעה' 25/10/2026 19:24",
+    "publisher": "Mizrahi Tefahot Bank Ltd.",
+    "strength": "institution"
+  }
+}

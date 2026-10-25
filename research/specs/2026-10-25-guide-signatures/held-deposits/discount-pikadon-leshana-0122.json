@@ -1,0 +1,129 @@
+{
+  "id": "discount-pikadon-leshana-0122",
+  "bank": "discount",
+  "names": {
+    "447": [
+      "פקדון לשנה",
+      "פיקדון לשנה"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": []
+  },
+  "type_447": "פקדון לשנה",
+  "wrapper_id": "bank-deposit",
+  "term_months": {
+    "value": 12,
+    "unit": "months",
+    "source": {
+      "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+      "title": "בנק דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון' (פרסום לפי הוראה 447; הטבלאות נטענות בדף מ-https://www.discountbank.co.il/api/MoneyMarket/Saving?pageId=6c03bad7-2f01-4a73-bcf3-8c3599a58221, 'lastUpdatedAt' 2026-10-25T18:00:00), פריים 4.75%, טבלת 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', שורת 'פקדון לשנה' קוד 0122",
+      "publisher": "Israel Discount Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-10-25",
+    "effective_from": "2026-10-25",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-27"
+    ],
+    "state": "sourced",
+    "notes": "Printed 'פקדון לשנה', 'סוג מוצר: 1 שנה' (365 days in the feed); recorded as 12 months."
+  },
+  "rate_type": "fixed",
+  "anchor": null,
+  "spread": null,
+  "rate_offered": {
+    "value": 2.25,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+      "title": "בנק דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון' (פרסום לפי הוראה 447; הטבלאות נטענות בדף מ-https://www.discountbank.co.il/api/MoneyMarket/Saving?pageId=6c03bad7-2f01-4a73-bcf3-8c3599a58221, 'lastUpdatedAt' 2026-10-25T18:00:00), פריים 4.75%, 'שיעור הריבית המוצעת': 2.25",
+      "publisher": "Israel Discount Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-10-25",
+    "effective_from": "2026-10-25",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25"
+    ],
+    "state": "sourced",
+    "notes": "Nominal annual rate before tax, printed 2.25 for 'פקדון לשנה' code 0122 (fixed, 'לא צמוד', 'ללא תחנות יציאה'); common-deposit column empty; deposit channels 'סניף,טלבנק' only (not online). Other fixed one-year rows in the same table: code 0192 with quarterly exit points 1.0 (common 1.25); code 0191 with monthly exit points 0.5 (common 0.75). In the additional-deposits table: 'קבועה לשנה' code 0183 2.25 ('מוצר מבצע', online too), 'שנה קבועה -ללקוחות כל הבנקים' code 0513 2.4 ('פיקדון במערכת סגורה'), 'פק\"מ הכנסה שוטפת' code 0130 2.0 (interest paid monthly)."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1): 15% על ריבית מנכס שאינו צמוד למדד; read through il-finance TXI-03 and TXI-04 (checked 2026-10-25)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08)."
+  },
+  "amount_range": {
+    "min": {
+      "value": 250,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+        "title": "בנק דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון' (פרסום לפי הוראה 447; הטבלאות נטענות בדף מ-https://www.discountbank.co.il/api/MoneyMarket/Saving?pageId=6c03bad7-2f01-4a73-bcf3-8c3599a58221, 'lastUpdatedAt' 2026-10-25T18:00:00), פריים 4.75%, 'טווח סכום להפקדה': 'החל מ-250 שח'",
+        "publisher": "Israel Discount Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": "2026-10-25",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27"
+      ],
+      "state": "sourced",
+      "notes": "Printed 'החל מ-250 שח'; single amount row."
+    },
+    "max": null
+  },
+  "break": {
+    "allowed": true,
+    "penalty": "with_penalty",
+    "mechanism_text": "'קיימת עם קנס שבירה'. The page's clarification: the bank may allow a break at its discretion; the penalty is computed on the remaining period to the next exit point or maturity from the bank's daily 'טבלת ריבית לווים', is never less than the deposit rate plus a 'מרווח שבירה' set by the bank, may cut into principal ('ואף תיתכן פגיעה בקרן הפיקדון'); a deposit of a year or more cannot be broken partially in its first year and a liquidity cost is added. Not computable from the publication.",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-14"
+    ]
+  },
+  "exit_points": {
+    "exists": false,
+    "every_months": null
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "snapshot": "2026-10-25",
+  "source": {
+    "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+    "title": "בנק דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון' (פרסום לפי הוראה 447; הטבלאות נטענות בדף מ-https://www.discountbank.co.il/api/MoneyMarket/Saving?pageId=6c03bad7-2f01-4a73-bcf3-8c3599a58221, 'lastUpdatedAt' 2026-10-25T18:00:00), פריים 4.75%",
+    "publisher": "Israel Discount Bank Ltd.",
+    "strength": "institution"
+  }
+}

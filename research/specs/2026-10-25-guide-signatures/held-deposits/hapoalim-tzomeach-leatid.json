@@ -1,0 +1,131 @@
+{
+  "id": "hapoalim-tzomeach-leatid",
+  "bank": "hapoalim",
+  "names": {
+    "447": [
+      "חיסכון צומח לעתיד"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": []
+  },
+  "type_447": "חיסכון צומח לעתיד",
+  "wrapper_id": "savings-plan",
+  "term_months": {
+    "value": null,
+    "unit": "months",
+    "source": {
+      "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+      "title": "בנק הפועלים, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון' (פרסום לפי הוראה 447, https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest; הטבלה נטענת בדף מ-https://www.bankhapoalim.co.il/forms/he/_api/deposit-products-data), 'המידע נכון ל-26.10.2026 ולפני חישוב מס במקור', לשונית 'ריבית בפיקדונות נוספים', שורת 'חיסכון צומח לעתיד', אופן הפקדה 'הוראת קבע'",
+      "publisher": "Bank Hapoalim B.M.",
+      "strength": "institution"
+    },
+    "checked": "2026-10-25",
+    "effective_from": "2026-10-26",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-28",
+      "BANK-27"
+    ],
+    "state": "sourced",
+    "notes": "The row prints no plan term; it prints rates 'לאחר 12 חודשים', 'לאחר 24 חודשים', 'לאחר 36 חודשים' and exit points 'לאחר 12 חודשים וכל 1 חודשים בהמשך'. The full term of the plan is not printed (searched the bank's site; not found)."
+  },
+  "rate_type": "fixed",
+  "anchor": null,
+  "spread": null,
+  "rate_offered": {
+    "value": 2.6,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+      "title": "בנק הפועלים, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון' (פרסום לפי הוראה 447, https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest; הטבלה נטענת בדף מ-https://www.bankhapoalim.co.il/forms/he/_api/deposit-products-data), 'המידע נכון ל-26.10.2026 ולפני חישוב מס במקור', 'שיעור הריבית': 'לאחר 36 חודשים - 2.6%'",
+      "publisher": "Bank Hapoalim B.M.",
+      "strength": "institution"
+    },
+    "checked": "2026-10-25",
+    "effective_from": "2026-10-26",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25",
+      "BANK-28"
+    ],
+    "state": "sourced",
+    "notes": "Printed 'לאחר 12 חודשים - 2.4% / לאחר 24 חודשים - 2.5% / לאחר 36 חודשים - 2.6%' (fixed, unlinked, standing order 'הוראת קבע'). This record stores the 36-month figure, the one matching a three-year plan; whether 'after N months' counts from the plan's start or from each monthly deposit is not stated. Hapoalim has no product named as a three-year monthly plan; this is the closest: a monthly standing-order plan with a printed 36-month rate. Sister monthly plans on the same tab: 'שיקלי לצעד הבא' (first exit after 36 months, 2.4% after 36 months, rising to 2.7% after 72), 'חיסכון גמיש' (variable, '0.14% = 4.61% - פריים', a 24-month plan with monthly exits). The publication prints 'המידע נכון ל-26.10.2026', one day after the read date (2026-10-25), as Leumi's page did."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1): 15% על ריבית מנכס שאינו צמוד למדד; read through il-finance TXI-03 and TXI-04 (checked 2026-10-25)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08)."
+  },
+  "amount_range": {
+    "min": {
+      "value": 50,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+        "title": "בנק הפועלים, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון' (פרסום לפי הוראה 447, https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest; הטבלה נטענת בדף מ-https://www.bankhapoalim.co.il/forms/he/_api/deposit-products-data), 'המידע נכון ל-26.10.2026 ולפני חישוב מס במקור', 'טווח סכום': 'החל מ-50 ₪'",
+        "publisher": "Bank Hapoalim B.M.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": "2026-10-26",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27",
+        "BANK-28"
+      ],
+      "state": "sourced",
+      "notes": "Printed 'החל מ-50 ₪'; for a standing-order plan this is read as the minimum monthly deposit, but the row does not say so in words."
+    },
+    "max": null
+  },
+  "break": {
+    "allowed": false,
+    "penalty": "not_allowed",
+    "mechanism_text": "'אין אפשרות לשבירת הפיקדון' (break column); withdrawal is through the exit points 'לאחר 12 חודשים וכל 1 חודשים בהמשך'.",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-27"
+    ]
+  },
+  "exit_points": {
+    "exists": true,
+    "every_months": 1
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": null
+  },
+  "snapshot": "2026-10-25",
+  "source": {
+    "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
+    "title": "בנק הפועלים, 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון' (פרסום לפי הוראה 447, https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest; הטבלה נטענת בדף מ-https://www.bankhapoalim.co.il/forms/he/_api/deposit-products-data), 'המידע נכון ל-26.10.2026 ולפני חישוב מס במקור'",
+    "publisher": "Bank Hapoalim B.M.",
+    "strength": "institution"
+  }
+}
