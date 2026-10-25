@@ -2,7 +2,7 @@
   "id": "KH-14",
   "title": "Seniority (ותק) across accounts and funds",
   "title_he": "ותק בין חשבונות ובין קרנות",
-  "text_he": "שני חשבונות בקרנות השתלמות נחשבים חשבון אחד כשחשבון בקרן אחת נסגר להפקדות ונפתח חשבון בקרן שנייה, בתנאי שהעובד והמעסיק הודיעו לשתי הקרנות שכל ההפקדות עוברות לקרן השנייה בלבד, ולא נמשך מהחשבון הסגור סכום פטור. אותו כלל חל במעבר משכיר לעצמאי ולהפך. הקרן הראשונה מוסרת לשנייה את מועד התשלום הראשון, ומהחשבון הראשון מושכים רק אחרי משיכת כל הכסף מהשני. טופס אלטשולר שחם מתרגם זאת ל'קרן צעירה' שנמשכת על סמך ותק של 'קרן ותיקה', בתנאים; אם העברה מלאה תמיד נושאת את הוותק לא נמצא כתוב בחוק.",
+  "text_he": "שני חשבונות בקרנות השתלמות נחשבים חשבון אחד כשחשבון בקרן אחת נסגר להפקדות ונפתח חשבון בקרן שנייה, בתנאי שהעובד והמעסיק הודיעו לשתי הקרנות שכל ההפקדות עוברות לקרן השנייה בלבד, ולא נמשך מהחשבון הסגור סכום פטור. אותו כלל חל במעבר משכיר לעצמאי ולהפך. הקרן הראשונה מוסרת לשנייה את מועד התשלום הראשון, ומהחשבון הראשון מושכים רק אחרי משיכת כל הכסף מהשני. בהעברה בין קרנות, כל מועדי התשלום של הקופה המעבירה נחשבים מועדי התשלום של הקופה המקבלת.",
   "strength": "primary",
   "dimensions": [
     "liquidity-lockup",
@@ -10,7 +10,7 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "keren-hishtalmut.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bMMl8kD79jjAGdMyfpq2CV~XoGoe1aVlkfbcWtF~mD4=#page=2",
@@ -38,38 +38,9 @@
       "locator_he": "עמוד 2, סעיף 1",
       "page": 2,
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://harel-group.co.il/long-term-savings/study-funds/plans/harel-funds/doclib/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%95%d7%a4%d7%94/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a8%d7%90%d7%9c%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa-%20%d7%9c%d7%90%d7%97%d7%a8%20%d7%94%d7%9e%d7%99%d7%96%d7%95%d7%92/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa%20%2007.2024.pdf",
-      "title": "Harel bylaws 07/2024",
-      "title_he": "תקנון קרן ההשתלמות של הראל (מהדורת 7/2024)",
-      "publisher": "Harel",
-      "publisher_he": "הראל",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "s.3.3, 4.1.1",
-      "locator_he": "סעיף 3.3, 4.1.1",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.as-invest.co.il/media/10040/בקשה-למשיכת-כספים-מקרן-השתלמות.pdf",
-      "title": "Altshuler withdrawal form",
-      "title_he": "בקשה למשיכת כספים מקרן השתלמות (טופס אלטשולר שחם)",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "form",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.as-invest.co.il/interstedin/קרנות-השתלמות/שאלות-ותשובות-בנושא-קרנות-השתלמות/",
-      "title": "אלטשולר שחם – שאלות ותשובות בנושא קרנות השתלמות",
-      "title_he": "אלטשולר שחם – שאלות ותשובות בנושא קרנות השתלמות",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "TXH-19"
   ]
 }

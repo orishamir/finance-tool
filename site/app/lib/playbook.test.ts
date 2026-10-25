@@ -30,7 +30,17 @@ describe("the step lists", () => {
     const f = (n: number) => steps[n - 1]!.figures.map((x) => x.value?.value);
     expect(f(8)).toEqual([3]);
     expect(f(11)).toEqual([10, 20]);
-    expect(f(12)).toEqual([15]);
+    // 2026-10-25 (scope pass): The Phoenix's own 14 days moved out of SW-09 into SW-47 and is listed after the circular's 15, named
+    expect(f(12)).toEqual([15, 14]);
+    expect(steps[11]!.figures[1]!.label).toContain("הפניקס");
+  });
+  it("shows a company's own records after the step's rules, named, without setting the step's chip (scope pass 2026-10-25)", () => {
+    const steps = buildSteps(rules, "keren-hishtalmut", today);
+    const cancel = steps[9]!;
+    expect(cancel.text.map((t) => t.ruleId)).toEqual(["SW-07", "SW-46"]);
+    expect(cancel.strength).toBe("primary");
+    expect(cancel.text[1]!.text).toContain("הפניקס");
+    for (const id of ["SW-45", "SW-46", "SW-47", "SW-48", "SW-49", "SW-50"]) expect(playbookRuleIds("keren-hishtalmut"), id).toContain(id);
   });
   it("moves the sentences that name the forms to the labelled lines, whole, out of the body", () => {
     const steps = buildSteps(rules, "keren-hishtalmut", today);
@@ -42,9 +52,12 @@ describe("the step lists", () => {
   });
   it("labels the brokerage steps by their strength: institution only gets the prefix flag", () => {
     const steps = buildSteps(rules, "brokerage-account", today);
-    // the checklist step (SW-38) reads the CMA circular itself since the source check of 2026-10-25; it was a copy before
-    expect(steps.map((s) => s.strength)).toEqual(["institution", "institution", "institution", "open", "primary"]);
-    expect(steps.map((s) => s.institutionOnly)).toEqual([true, false, true, false, false]);
+    // the checklist step (SW-38) reads the CMA circular itself since the source check of 2026-10-25; it was a copy before.
+    // 2026-10-25 (scope pass): the request step rests on BoI directive 432 (SW-35, primary) with the institutions' own instructions
+    // named after it (SW-54); the cost step's weakest rule is SW-34's press report (secondary); the tax step carries the unsettled
+    // same-owner claim (SW-55, institution) beside the Ordinance (SW-36, primary). No step rests on company texts alone any more.
+    expect(steps.map((s) => s.strength)).toEqual(["primary", "secondary", "institution", "open", "primary"]);
+    expect(steps.map((s) => s.institutionOnly)).toEqual([false, false, false, false, false]);
     expect(steps[3]!.open).toBe(true);
   });
   it("names the mirror host of a primary-mirror text, from the rule's own copy sources", () => {

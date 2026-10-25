@@ -30,6 +30,13 @@ copied into `data/` or the rule base with its source and date.
    eligibility, limits, liquidity, protection, process, and anything else the
    research shows matters. Lists in briefs are starting points.
 8. Do not duplicate another file's topic. Point to it by file name and rule ID.
+9. **Scope** per rule (D30, 2026-10-25): who the rule holds for, recorded apart
+   from strength (how good the evidence is). A company's document proves only
+   what that company does. Cite the law, regulation or regulator whenever one
+   says it, and a company's document only for that company's own term. One
+   record has one scope: a record that joins a general rule and a company's
+   term is split, the general part keeping the id and the company part taking
+   the next free id of the prefix. See "The Scope line" below.
 
 ## File structure
 
@@ -49,6 +56,7 @@ Plain-English, at most ten lines.
 - Conditions / exceptions:
 - Figures: value, unit, tax year or effective date, how it is updated
 - Source: [title](url), section or page · checked YYYY-MM-DD · strength
+- Scope: general | institution: <names> | unsettled: <what would settle it>[; seen at: <names>]
 - Dimensions: from the list below
 - Likely to change: no | yes, why
 
@@ -66,6 +74,48 @@ Numbered, each with what was tried and where the answer probably is.
 ## Sources
 Every URL used, with title, publisher, strength and date checked.
 ```
+
+## The Scope line
+
+Added 2026-10-25 for D30 (`docs/product.md`), from the scope research in
+`research/knowledge/2026-10-25-scope/`. A later builder turns it into a field of
+the rule records, so the format is strict. One line, directly after `- Source:`,
+in exactly one of three forms:
+
+```
+- Scope: general
+- Scope: institution: <Name>[, <Name>...]
+- Scope: unsettled: <what would settle it>[; seen at: <Name>[, <Name>...]]
+```
+
+- **general**: a law, a regulation, a regulator's circular, guide or published
+  data, an exchange's rules, or a standard bylaw text the regulator issued says
+  it, and the record cites that source first. A count over every collected
+  institution is also general when the record says it is a count ("4 of 8
+  banks"). Company documents that only repeat the rule are dropped from the
+  Source line (founder's rule 1, 2026-10-25).
+- **institution**: the content is set by the named companies themselves (their
+  fees, service times, forms, product features, policies, statements, examples
+  from their own reports). The rule text names each company in the sentence
+  that carries its term. Where a general counterpart exists (a legal maximum
+  while each company sets its own figure), the conditions point to that rule.
+- **unsettled**: the content looks general but rests only on company
+  documents, and the general source was searched for and not found. The text
+  after `unsettled: ` says what would settle it, in English; `; seen at: `
+  lists where it was seen. The record's conditions say what was searched.
+  Shown only as those companies' (D30) until settled.
+
+Names: the company's short English name, as in `data/sources/publishers.json`
+where the company is there ("Altshuler Shaham", "Harel", "Meitav", "The
+Phoenix", "Bank Leumi", "Interactive Brokers"); a broker owned by a manager is
+named apart ("Altshuler Shaham Trade", "Meitav Trade"); others as the company
+names itself in English ("Mor", "Yalin Lapidot", "Reit 1"). Several names are
+separated by ", ".
+
+Not a scope question: an open question inside a general rule ("what happens if
+a bank fails was not found") stays in the conditions and asserts nothing. A
+record whose claim is general except for one sentence that only companies make
+is split, so that the sentence's record can say `unsettled` or `institution`.
 
 ## Dimension vocabulary
 

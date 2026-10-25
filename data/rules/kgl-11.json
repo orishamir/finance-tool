@@ -2,7 +2,7 @@
   "id": "KGL-11",
   "title": "Default track when none is chosen",
   "title_he": "מסלול ברירת המחדל כשלא בוחרים",
-  "text_he": "מי שלא בחר מסלול בהצטרפות מצורף למסלול ברירת המחדל שבנספח לתקנון. בכל תקנון של קופת גמל להשקעה שנקרא, ברירת המחדל היא המסלול הכללי של החברה. מודל ברירת המחדל לפי גיל של רשות שוק ההון לא חל על קופת גמל להשקעה. התקנון של מיטב לא נמצא, וברירת המחדל שלה מוסקת רק מעמוד המוצר.",
+  "text_he": "לכל קופת גמל להשקעה יש מסלול ברירת מחדל שהתקנון שלה קובע; כך מחייב חוזר המסלולים של רשות שוק ההון. מי שלא בחר מסלול בהצטרפות מצורף אליו. מודל ברירת המחדל לפי גיל לא חל על קופת גמל להשקעה. איזה מסלול הוא ברירת המחדל זו בחירה של כל חברה.",
   "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
@@ -11,8 +11,20 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "kupat-gemel-lehashkaa.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "title": "חוזר גופים מוסדיים 2022-9-30 – מסלולי השקעה בקופות גמל – תיקון",
+      "title_he": "חוזר גופים מוסדיים 2022-9-30: מסלולי השקעה בקופות גמל – תיקון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.6, annex s.7(ב)",
+      "page": 6,
+      "checked": "2026-10-25"
+    },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
       "title": "חוזר גופים מוסדיים 2022-9-30 – מסלולי השקעה בקופות גמל – תיקון",
@@ -27,59 +39,18 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://gemel.huji.ac.il/wp-content/uploads/2026/05/‏‏‏‏‏‏הצטרפות-קופת-גמל-להשקעה-מאי-2026.pdf",
-      "title": "Hebrew University joining form",
-      "title_he": "טופס הצטרפות לקופת הגמל של עובדי האוניברסיטה העברית",
-      "publisher": "Hebrew University provident fund",
-      "publisher_he": "קופת הגמל של עובדי האוניברסיטה העברית",
-      "kind": "form",
-      "strength": "institution",
-      "locator": "p.2",
-      "locator_he": "עמוד 2",
-      "page": 2,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-      "title": "Altshuler bylaws March 2025",
-      "title_he": "תקנון קופת הגמל להשקעה ״חיסכון פלוס״ של אלטשולר שחם (מרץ 2025)",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://infinity.co.il/wp-content/uploads/2025/07/תקנון-גמל-להשקעה-בתוקף-מיום-1.7.2024.pdf",
-      "title": "Infinity bylaws 1.7.2024",
-      "title_he": "תקנון קופת הגמל להשקעה של אינפיניטי (בתוקף מ־1.7.2024)",
-      "publisher": "Infinity",
-      "publisher_he": "אינפיניטי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "http://www.krn-rofim.co.il/wp-content/uploads/2024/10/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f_%d7%a7%d7%95%d7%a4%d7%aa_%d7%92%d7%9e%d7%9c_%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94__25.7.2024-1.pdf",
-      "title": "Yachad Rofim bylaws 25.7.2024",
-      "title_he": "תקנון קופת הגמל להשקעה של יחד רופאים (25.7.2024)",
-      "publisher": "Yachad Rofim",
-      "publisher_he": "יחד רופאים",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "יצורף העמית למסלול השקעה כללי כברירת מחדל",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.meitav.co.il/provident_pension/saving_kids/",
-      "title": "Meitav Kids page",
-      "title_he": "חיסכון לכל ילד: עמוד המוצר של מיטב",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "שמתפקד כמסלול ברירת מחדל",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-2829/he/regulation_hm_takanongemel.pdf",
+      "title": "CMA standard bylaw for kupat gemel lehashkaa (2016)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "s.7.4",
+      "locator_he": "סעיף 7.4",
       "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "PF-24"
   ]
 }

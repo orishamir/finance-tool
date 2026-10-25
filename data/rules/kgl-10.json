@@ -2,7 +2,7 @@
   "id": "KGL-10",
   "title": "Transfers between funds",
   "title_he": "העברת הכסף בין קופות",
-  "text_he": "מותר להעביר כסף מקופת גמל להשקעה לקופת גמל להשקעה אחרת, ומגיל הפרישה המוקדמת גם לקופת גמל לקצבה. כל העברה אחרת דורשת אישור של הממונה והסכמה של החברה המנהלת; מסלול מקרן השתלמות או מקופת גמל אחרת אל קופת גמל להשקעה לא נמצא בתקנות. לפי התקנון מעבירים את כל היתרה או חלק ממנה, אבל לא כשיש עיקול או שעבוד על כל היתרה, הלוואה שלא נפרעה, או כשהקופה המקבלת סגורה. על איחור בהעברה העמית מקבל את הפרש התשואה מהחברה שגרמה לו.",
+  "text_he": "מותר להעביר כסף מקופת גמל להשקעה לקופת גמל להשקעה אחרת, ומגיל הפרישה המוקדמת גם לקופת גמל לקצבה. כל העברה אחרת דורשת אישור של הממונה והסכמה של החברה המנהלת; מסלול מקרן השתלמות או מקופת גמל אחרת אל קופת גמל להשקעה לא נמצא בתקנות. מעבירים את כל היתרה או חלק ממנה, חוץ מהמקרים שהתקנות חוסמות, כמו עיקול או שעבוד על כל היתרה, הלוואה שלא נפרעה, או קופה מקבלת סגורה. על איחור בהעברה העמית מקבל פיצוי מדמי הניהול של הגוף שאיחר.",
   "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
@@ -11,7 +11,7 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "kupat-gemel-lehashkaa.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/tZDvucD9RCpb4OFgftW2Mghx2FA7HU11Svr+ngxOA9o=#page=2",
@@ -56,16 +56,50 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-      "title": "Altshuler bylaws March 2025",
-      "title_he": "תקנון קופת הגמל להשקעה ״חיסכון פלוס״ של אלטשולר שחם (מרץ 2025)",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "clauses 16–19",
-      "locator_he": "סעיפים 16–19",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=6",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.6, reg. 4",
+      "locator_he": "עמוד 6, תקנה 4",
+      "page": 6,
+      "quote": "לא ניתן להעביר כספים מקופה מעבירה לקופה מקבלת במקרים אלה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=7",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "pp.6-7, reg. 6",
+      "locator_he": "עמודים 6 עד 7, תקנה 6",
+      "page": 6,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZbYNmyK9Qa3gH~lF+jEWmc=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.4, s.4",
+      "locator_he": "עמוד 4, סעיף 4",
+      "page": 4,
+      "quote": "יזקוף הגוף המנהל של הקופה המקבלת",
       "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "PF-17",
+    "PF-18",
+    "PF-19"
   ]
 }

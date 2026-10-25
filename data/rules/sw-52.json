@@ -1,0 +1,79 @@
+{
+  "id": "SW-52",
+  "title": "The supervised price to move securities out of a bank: what tariffs and the press say",
+  "title_he": "המחיר המפוקח להעברת ניירות מבנק: מה כתוב בתעריפונים",
+  "text_he": "שלושה מקורות נוקבים במחיר המפוקח להעברת ניירות ערך מבנק לחשבון של אותו לקוח בגוף אחר, וחולקים על היחידה: תעריפון דיסקונט נוקב בסכום להעברה, מאמר של מיטב טרייד נוקב באותו סכום לכל נייר ישראלי, וכלכליסט מדווח על תקרה של בנק ישראל להעברה מבנק לבית השקעות. הצו שקובע את המחיר לא נמצא, ולכן אין כאן עדיין כלל שחל על כל הבנקים.",
+  "figure_names_he": {
+    "discount_supervised_transfer_nis": "המחיר המפוקח להעברה בתעריפון דיסקונט"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "fee-exit",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "discount_supervised_transfer_nis": {
+      "value": 5,
+      "unit": "nis_per_transfer",
+      "source": {
+        "url": "https://www.discountbank.co.il/media/bjudw31y/part4_securities07022025.pdf",
+        "title": "דיסקונט – תעריפון, חלק 4 ניירות ערך (07/02/2025), p.5, item 4.6.1 \"5 ₪ להעברה (פיקוח)\"",
+        "publisher": "Discount Bank",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": "2025-02-07",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "SW-52"
+      ],
+      "state": "sourced",
+      "notes": "Discount's tariff line for the supervised same-client transfer: NIS 5 per transfer. Meitav Trade's article gives NIS 5 per Israeli security; the order that sets the supervised price was not found (SW OQ10)."
+    }
+  },
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.discountbank.co.il/media/bjudw31y/part4_securities07022025.pdf",
+      "title": "דיסקונט – תעריפון, חלק 4 ניירות ערך (07/02/2025)",
+      "title_he": "דיסקונט – תעריפון, חלק 4 ניירות ערך (07/02/2025)",
+      "publisher": "Discount Bank",
+      "publisher_he": "בנק דיסקונט",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.5, items 4.6.1-4.6.2",
+      "page": 5,
+      "quote": "5 ₪ להעברה (פיקוח)",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.meitav.co.il/trade/financial_info/self_trading_portfolio_transfer/",
+      "title": "מיטב – המדריך למעבר חלק: איך לנייד את תיק ההשקעות מהבנק למסחר עצמאי (03/08/2026)",
+      "title_he": "מיטב – המדריך למעבר חלק: איך לנייד את תיק ההשקעות מהבנק למסחר עצמאי (03/08/2026)",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "5 שקל לנייר ערך ישראל",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.calcalist.co.il/article/hj55ri2pgx",
+      "title": "כלכליסט – המעבר מבנק לבית השקעות הוא זול, אך לצאת משם מאוד יקר (27.08.26)",
+      "title_he": "כלכליסט – המעבר מבנק לבית השקעות הוא זול, אך לצאת משם מאוד יקר (27.08.26)",
+      "publisher": "Calcalist",
+      "publisher_he": "כלכליסט",
+      "kind": "article",
+      "strength": "secondary",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "SW-33"
+  ]
+}

@@ -1,13 +1,13 @@
 {
   "id": "KH-04",
-  "title": "Contribution rates for employees are set by agreement; common split 2.5% and 7.5%",
+  "title": "Contribution rates: set by agreement, within the tax-benefited limits of 7.5% employer and 2.5% employee",
   "title_he": "שיעורי ההפקדה של העובד והמעסיק",
-  "text_he": "העובד והמעסיק מפקידים כל חודש בשיעורים שבהסדר התחיקתי וכפי שסוכם ביניהם. תקנון הראל נוקב בשיעור ההפקדה של העובד מהשכר ברוטו ובשיעור ההפקדה של המעסיק, שהוא הנפוץ; יש גם שיעור מעסיק נמוך יותר. חלק העובד מנוכה מהשכר על ידי המעסיק. לקרנות של עובדי הוראה שיעורים גבוהים יותר, ותקרת המס על הפקדת המעסיק מופיעה בכללי המס.",
+  "text_he": "העובד והמעסיק מפקידים כל חודש בשיעורים שנקבעו בהסכם העבודה. חוק המס קובע את הגבול המוטב: הפקדת המעסיק פטורה עד התקרה המוטבת להפקדת המעסיק (לעובדי הוראה שיעור גבוה יותר), והפקדת העובד מוטבת עד התקרה המוטבת להפקדת העובד. כדי שהקרן תהיה מאושרת, העובד חייב להפקיד לפחות שליש ממה שהמעסיק מפקיד. אלה התקרות המוטבות, לא שיעור שהמעסיק חייב לשלם, וכמה עובדים מקבלים בפועל את המבנה הזה לא נמצא. חלק העובד מנוכה מהשכר על ידי המעסיק.",
   "figure_names_he": {
-    "employee_pct": "שיעור ההפקדה של העובד",
-    "employer_pct": "שיעור ההפקדה של המעסיק"
+    "employee_pct": "התקרה המוטבת להפקדת העובד",
+    "employer_pct": "התקרה המוטבת להפקדת המעסיק"
   },
-  "strength": "institution",
+  "strength": "primary",
   "dimensions": [
     "deposit-ceiling",
     "eligibility"
@@ -18,82 +18,72 @@
       "value": 2.5,
       "unit": "pct",
       "source": {
-        "url": "https://harel-group.co.il/long-term-savings/study-funds/plans/harel-funds/doclib/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%95%d7%a4%d7%94/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a8%d7%90%d7%9c%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa-%20%d7%9c%d7%90%d7%97%d7%a8%20%d7%94%d7%9e%d7%99%d7%96%d7%95%d7%92/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa%20%2007.2024.pdf",
-        "title": "Harel study-fund bylaws, fund 154, edition 07/2024, p.2, s.3.2: \"כל עמית יפקיד מדי חודש בחודשו סכומים בשיעור של 2.5% ממשכורתו ברוטו\"",
-        "publisher": "Harel Pension and Gemel",
-        "strength": "institution"
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf",
+        "title": "Ministry of Finance Chief Economist paper, October 2025, p.5: \"ובין הפקדות העובד לקרן בגובה 2.5% משכרו ברוטו\"",
+        "publisher": "Ministry of Finance (Chief Economist)",
+        "strength": "primary"
       },
       "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "provider-set",
+      "update_rule": "fixed in law",
       "rule_ids": [
         "KH-04"
       ],
       "state": "sourced",
-      "notes": "Share of gross salary the employee deposits each month under the common arrangement. Fixed by agreement, not indexed; teachers' funds use 4.2% (KH-03). Institution source: the rate is a matter of the employment agreement, not law."
+      "notes": "The employee's tax-benefited deposit as a share of gross salary, as the Chief Economist paper describes the benefited structure; in law s.9(16א)(ג) counts the employee's deposit as benefited up to one third of the employer's payment, or 2.5% of the determining salary (TXH-08). A maximum of the benefit, not a rate the employee must pay: the actual rate comes from the employment agreement. Teachers' funds use 4.2% (KH-03)."
     },
     "employer_pct": {
       "value": 7.5,
       "unit": "pct",
       "source": {
-        "url": "https://harel-group.co.il/long-term-savings/study-funds/plans/harel-funds/doclib/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%95%d7%a4%d7%94/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a8%d7%90%d7%9c%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa-%20%d7%9c%d7%90%d7%97%d7%a8%20%d7%94%d7%9e%d7%99%d7%96%d7%95%d7%92/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa%20%2007.2024.pdf",
-        "title": "Harel study-fund bylaws, fund 154, edition 07/2024, p.2, s.3.2: \"והמעסיק מצידו יוסיף 5% או 7.5% מהמשכורת הנ\"ל\"",
-        "publisher": "Harel Pension and Gemel",
-        "strength": "institution"
+        "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+        "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, p.19, s.3(ה): \"ולא יותר מ-7.5% מהמשכורת הקובעת לגבי כל עובד אחר\"",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
       },
       "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "provider-set",
+      "update_rule": "fixed in law",
       "rule_ids": [
         "KH-04"
       ],
       "state": "sourced",
-      "notes": "Employer share under the common arrangement (5% or 7.5% in Harel's bylaws; 7.5% is the usual rate and the tax limit in TXH-01). Fixed by agreement, not indexed. Institution source."
+      "notes": "The employer's payment is exempt up to 7.5% of the determining salary (8.4% for teaching staff, KH-03), within the limits of the collective agreement and up to the salary ceiling (TXH-01, TXH-02). A maximum of the tax benefit, not a rate the employer must pay: the actual rate comes from the employment agreement. Whether most employees get 7.5% is not known (open question 3)."
     }
   },
   "il_finance_file": "keren-hishtalmut.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
-      "url": "https://as-invest.co.il/media/khpp32k5/אלטשולר-שחם-השתלמות-תקנון-מהדורת-שינויים-דצמבר-2024.pdf",
-      "title": "Altshuler Shaham study-fund bylaws, tracked-changes edition current from 1.12.2024, s.5.1",
-      "title_he": "תקנון קרן ההשתלמות של אלטשולר שחם (מהדורת דצמבר 2024)",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "s.5.1",
-      "locator_he": "סעיף 5.1",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.19, s.3(ה)",
+      "locator_he": "עמוד 19, סעיף 3(ה)",
+      "page": 19,
+      "quote": "ולא יותר מ-7.5% מהמשכורת הקובעת לגבי כל עובד אחר",
       "checked": "2026-10-25"
     },
     {
-      "url": "https://harel-group.co.il/long-term-savings/study-funds/plans/harel-funds/doclib/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%95%d7%a4%d7%94/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a8%d7%90%d7%9c%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa-%20%d7%9c%d7%90%d7%97%d7%a8%20%d7%94%d7%9e%d7%99%d7%96%d7%95%d7%92/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa%20%2007.2024.pdf",
-      "title": "Harel bylaws 07/2024",
-      "title_he": "תקנון קרן ההשתלמות של הראל (מהדורת 7/2024)",
-      "publisher": "Harel",
-      "publisher_he": "הראל",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "s.3.2",
-      "locator_he": "סעיף 3.2",
-      "quote": "כל עמית יפקיד מדי חודש בחודשו סכומים בשיעור של 2.5% ממשכורתו ברוטו",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://media.harel-group.co.il/media/smegncwi/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf",
-      "title": "Harel, תקרות וסכומים לשנת 2026 (file dated March 2026)",
-      "title_he": "תקרות וסכומים לשנת 2026 (הראל)",
-      "publisher": "Harel",
-      "publisher_he": "הראל",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.1",
-      "locator_he": "עמוד 1",
-      "page": 1,
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf",
+      "title": "Chief Economist paper Oct 2025",
+      "title_he": "על הטבת המס בקרן השתלמות – ניתוח מדיניות (אגף הכלכלן הראשי, אוקטובר 2025)",
+      "publisher": "gov.il",
+      "publisher_he": "משרד האוצר",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.5",
+      "locator_he": "עמוד 5",
+      "page": 5,
+      "quote": "מבנה ההפקדות המוטבות במס מתחלק בין הפקדות המעביד לקרן בגובה 7.5% משכרו ברוטו של העובד",
       "checked": "2026-10-25"
     }
   ]

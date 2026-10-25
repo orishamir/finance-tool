@@ -2,10 +2,7 @@
   "id": "SW-18",
   "title": "The clearing house: the saver's own data, and consent",
   "title_he": "המסלקה הפנסיונית: הנתונים שלכם וההסכמה",
-  "text_he": "המסלקה הפנסיונית המרכזית מוסרת ללקוח, לפי בקשתו, מידע הנוגע לו על מוצר פנסיוני או תוכנית ביטוח מכלל הגופים המוסדיים; מידע עובר ליועצים ולסוכנים רק לבקשת הלקוח, והתקנות אמורות לקבוע איך נבדק קיום בקשה או ייפוי כוח. בנק לאומי מציע את הדוח ללא עלות ללקוחות פרטיים של כל בנק מגיל בגרות, פעם אחת ללקוח; ההרשמה מסתיימת באתר המסלקה, שם מוזן כרטיס אשראי לזיהוי בלבד, והמידע זמין לצפייה חודשים ספורים בלבד. מזרחי טפחות מממן את מלוא עלות הפנייה אבל מרוויח עמלות הפצה על הייעוץ. את המחיר לפנייה ישירה של חוסך קובע כיום חוזר התשלומים של רשות שוק ההון (SW-44): בקשה חד-פעמית מכל הגופים עד 11 ש״ח מ-1.1.2027; החוק נקרא באתר שמעתיק אותו.",
-  "figure_names_he": {
-    "leumi_report_available_months": "חודשים שבהם דוח המסלקה זמין לצפייה (לאומי)"
-  },
+  "text_he": "המסלקה הפנסיונית המרכזית מוסרת ללקוח, לפי בקשתו, מידע הנוגע לו על מוצר פנסיוני או תוכנית ביטוח מכלל הגופים המוסדיים; מידע עובר ליועצים ולסוכנים רק לבקשת הלקוח, והתקנות אמורות לקבוע איך נבדק קיום בקשה או ייפוי כוח. את המחיר שהמסלקה רשאית לגבות מחוסך על פנייה ישירה קובע חוזר התשלומים של רשות שוק ההון. כלל על משך הזמן שדוח נשאר זמין לצפייה לא נמצא.",
   "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
@@ -13,30 +10,8 @@
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
-  "figures": {
-    "leumi_report_available_months": {
-      "value": 3,
-      "unit": "months",
-      "source": {
-        "url": "https://www.leumi.co.il/he/pension-advising/pension-information/pension-advising/pension-information",
-        "title": "Bank Leumi, \"עושים סדר בפנסיה\" (clearing-house report service)",
-        "publisher": "Bank Leumi",
-        "strength": "institution"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "SW-18"
-      ],
-      "state": "sourced",
-      "notes": "Leumi's free clearing-house report: \"המידע יהיה זמין לצפייה במשך שלושה חודשים בלבד\". Institution page; the clearing house's own price list was not read (SW OQ5)."
-    }
-  },
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf",
@@ -77,28 +52,9 @@
       "locator_he": "עמוד 12, סעיף 32(ח)(1)",
       "page": 12,
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.leumi.co.il/he/pension-advising/pension-information/pension-advising/pension-information",
-      "title": "בנק לאומי – עושים סדר בפנסיה",
-      "title_he": "בנק לאומי – עושים סדר בפנסיה",
-      "publisher": "Bank Leumi",
-      "publisher_he": "בנק לאומי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "המידע יהיה זמין לצפייה במשך שלושה חודשים בלבד",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.mizrahi-tefahot.co.il/brokerage/pension/pension-consulting/",
-      "title": "מזרחי טפחות – ייעוץ פנסיוני",
-      "title_he": "מזרחי טפחות – ייעוץ פנסיוני",
-      "publisher": "Mizrahi Tefahot Bank",
-      "publisher_he": "בנק מזרחי טפחות",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "הבנק מממן את מלוא עלות הפנייה למסלקה",
-      "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "SW-44"
   ]
 }

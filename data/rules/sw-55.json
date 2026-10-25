@@ -1,0 +1,42 @@
+{
+  "id": "SW-55",
+  "title": "Moving securities between your own accounts: described as no tax event, with no Tax Authority text found",
+  "title_he": "העברה בין חשבונות של אותו בעלים: לא נמצא מקור של רשות המסים",
+  "text_he": "אלטשולר שחם טרייד ומיטב טרייד מציינות שהעברת ניירות ערך בין חשבונות של אותו בעלים אינה אירוע מס ושרצף המס נשמר. זה מתיישב עם ההגדרה של מכירה בפקודה, כי הנכס לא יוצא מרשות הבעלים, אבל מקור של רשות המסים שאומר זאת לא נמצא.",
+  "strength": "institution",
+  "dimensions": [
+    "switching-tax-event",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.as-invest.co.il/trade/faq_transfer/",
+      "title": "אלטשולר שחם טרייד – מעבירים את תיק ההשקעות שלכם לאלטשולר שחם טרייד",
+      "title_he": "אלטשולר שחם טרייד – מעבירים את תיק ההשקעות שלכם לאלטשולר שחם טרייד",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "שער עלות אפס",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.meitav.co.il/trade/financial_info/self_trading_portfolio_transfer/",
+      "title": "מיטב – המדריך למעבר חלק: איך לנייד את תיק ההשקעות מהבנק למסחר עצמאי (03/08/2026)",
+      "title_he": "מיטב – המדריך למעבר חלק: איך לנייד את תיק ההשקעות מהבנק למסחר עצמאי (03/08/2026)",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "רצף המס נשמר",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "SW-36"
+  ]
+}

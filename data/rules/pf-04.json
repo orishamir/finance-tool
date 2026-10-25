@@ -2,7 +2,7 @@
   "id": "PF-04",
   "title": "Cap for a new comprehensive pension fund: 0.5% a year of balance and 6% of deposits",
   "title_he": "תקרת דמי הניהול לקרן פנסיה חדשה מקיפה",
-  "text_he": "חברה מנהלת של קרן פנסיה חדשה מקיפה רשאית לגבות מהיתרה של כל עמית עד תקרת דמי הניהול השנתיים מהיתרה, ומהתשלומים שמועברים לקרן בעדו עד תקרת דמי הניהול מההפקדה. למקבלי קצבת זקנה תקרה נמוכה יותר, ויש כלל נפרד לקצבאות מתחת לקצבת המינימום. בקרן פנסיה הנחה חלה על כל היתרה, וכשיש הנחות שונות על יתרות שונות, הגבוהה חלה על הכול. מנורה מבטחים מפרסמת את אותן תקרות.",
+  "text_he": "חברה מנהלת של קרן פנסיה חדשה מקיפה רשאית לגבות מהיתרה של כל עמית עד תקרת דמי הניהול השנתיים מהיתרה, ומהתשלומים שמועברים לקרן בעדו עד תקרת דמי הניהול מההפקדה. למקבלי קצבת זקנה תקרה נמוכה יותר, ויש כלל נפרד לקצבאות מתחת לקצבת המינימום. בקרן פנסיה הנחה חלה על כל היתרה, וכשיש הנחות שונות על יתרות שונות, הגבוהה חלה על הכול.",
   "figure_names_he": {
     "balance_cap": "תקרת דמי הניהול השנתיים מהיתרה",
     "deposit_cap": "תקרת דמי הניהול מההפקדה"
@@ -32,7 +32,7 @@
         "PF-04"
       ],
       "state": "sourced",
-      "notes": "Maximum fee of a new comprehensive pension fund (קרן חדשה מקיפה) per year of each member's balance. Old-age annuitants from 1 Feb 2022: up to 0.3% (reg. 3(א)(1א)). Corroborated by Menora Mivtachim's published caps for 2026 (institution)."
+      "notes": "Maximum fee of a new comprehensive pension fund (קרן חדשה מקיפה) per year of each member's balance. Old-age annuitants from 1 Feb 2022: up to 0.3% (reg. 3(א)(1א))."
     },
     "deposit_cap": {
       "value": 6,
@@ -56,7 +56,7 @@
     }
   },
   "il_finance_file": "provident-family-common.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=5",
@@ -83,17 +83,6 @@
       "locator": "p.2, s.2",
       "locator_he": "עמוד 2, סעיף 2",
       "page": 2,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.menoramivt.co.il/general/investments-management-fee",
-      "title": "מנורה מבטחים – דמי ניהול והוצאות לניהול השקעות",
-      "title_he": "מנורה מבטחים – דמי ניהול והוצאות לניהול השקעות",
-      "publisher": "Menora Mivtachim",
-      "publisher_he": "מנורה מבטחים",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "שיעור דמי הניהול שרשאית הקרן לגבות מסך הנכסים",
       "checked": "2026-10-25"
     }
   ]

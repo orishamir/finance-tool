@@ -1,64 +1,47 @@
 {
   "id": "KGL-06",
-  "title": "Who may open one, and in whose name",
-  "title_he": "מי יכול לפתוח קופה ועל שם מי",
-  "text_he": "כל אדם יכול לפתוח קופת גמל להשקעה, בכל גיל, לפי פרסומי החברות המנהלות. אפשר לפתוח אותה גם על שם אדם אחר, כולל ילד, נכד או בן זוג; לפי מיטב זו מתנה בלתי חוזרת, והחשבון מנוהל על ידי אותו אדם. לקטין, משיכה משולמת להורה שהוא האפוטרופוס שלו, והחברה רשאית לקבל או לדחות בקשת הצטרפות אך לא לסגור חשבון בניגוד לרצון העמית אלא במקרים שבתקנון. כלל על תושבות או על גיל מינימום לפעולה עצמאית לא נמצא, וגם לא הגבלה על מספר החשבונות.",
-  "strength": "institution",
+  "title": "Who may open one",
+  "title_he": "מי יכול לפתוח קופה",
+  "text_he": "קופת גמל להשקעה משלמת סכום הון לעמית שמפקיד בעצמו, או למוטבים שלו. הכללים לקופות גמל מגדירים עמית כזה כיחיד, כולל עובד שמשלם לקופה בלי תשלום מקביל של מעביד. התקרה היא לעמית, לכל החשבונות שלו יחד. החוק והכללים לא קובעים תנאי גיל או תושבות לפתיחה; זו קריאה של מה שהם לא אומרים, לא כלל כתוב. הגבלה על מספר החשבונות לא נמצאה.",
+  "strength": "primary",
   "dimensions": [
     "eligibility"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "kupat-gemel-lehashkaa.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
-      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-      "title": "Altshuler bylaws March 2025",
-      "title_he": "תקנון קופת הגמל להשקעה ״חיסכון פלוס״ של אלטשולר שחם (מרץ 2025)",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "clauses 7.1, 7.2, 11",
-      "locator_he": "סעיפים 7.1, 7.2, 11",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://gemel.huji.ac.il/wp-content/uploads/2026/05/‏‏‏‏‏‏הצטרפות-קופת-גמל-להשקעה-מאי-2026.pdf",
-      "title": "Hebrew University fund joining form",
-      "title_he": "טופס הצטרפות לקופת הגמל של עובדי האוניברסיטה העברית",
-      "publisher": "Hebrew University provident fund",
-      "publisher_he": "קופת הגמל של עובדי האוניברסיטה העברית",
-      "kind": "form",
-      "strength": "institution",
-      "locator": "p.3",
-      "locator_he": "עמוד 3",
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.3, reg. 1 (עמית-עצמאי)",
+      "locator_he": "עמוד 3, תקנה 1 (עמית-עצמאי)",
       "page": 3,
-      "quote": "חתימת אפוטרופוס",
+      "quote": "עמית יחיד, לרבות עובד בשל תשלום שהוא משלם לקופת גמל בלא תשלום מקביל של מעביד",
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.as-invest.co.il/interstedin/saving_plus_deposit/",
-      "title": "אלטשולר שחם – הפקדות סוף שנה, קופת גמל להשקעה",
-      "title_he": "אלטשולר שחם – הפקדות סוף שנה, קופת גמל להשקעה",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "כל אדם רשאי לפתוח קופת גמל להשקעה, בכל גיל ובכל סכום",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.meitav.co.il/provident_pension/provident_invest/",
-      "title": "Meitav product page",
-      "title_he": "קופת גמל להשקעה: עמוד המוצר של מיטב",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "כמוה כמתן מתנה בלתי חוזרת לאותו אדם",
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, ss.1, 3",
+      "locator_he": "עמוד 2, סעיפים 1, 3",
+      "page": 2,
       "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "KGL-01",
+    "KGL-02"
   ]
 }

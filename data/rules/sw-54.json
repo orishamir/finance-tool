@@ -1,0 +1,99 @@
+{
+  "id": "SW-54",
+  "title": "Bank Leumi, Meitav Trade and Altshuler Shaham Trade: how they describe moving a portfolio",
+  "title_he": "לאומי, מיטב טרייד ואלטשולר שחם טרייד: איך מעבירים תיק",
+  "text_he": "שלושה מוסדות מתארים אותו סדר: פותחים חשבון במוסד הקולט, מגישים בקשת העברה למוסד הנוכחי עם פרטי החשבון החדש, והקולט מטפל בקליטה. מיטב טרייד: מורידים את טופס בקשת ההעברה מהבנק. בנק לאומי מקבל את הבקשה באופן מקוון; לפי לאומי, הבקשה כוללת רק ניירות שכבר זוכו או חויבו בפועל, אי אפשר להעביר שברי ניירות, העברה לאותו בעלים דורשת הוכחת בעלות על החשבון הקולט, וקרנות נאמנות דורשות טופס חתום נפרד. אלטשולר שחם טרייד מציינת שלא כל נייר ניתן להעברה אוטומטית, ונוקבת במספר ימי מסחר מרבי לניירות ישראליים ובמספר גבוה יותר לניירות זרים.",
+  "figure_names_he": {
+    "israeli_securities_trading_days": "ימי מסחר להעברת ניירות ישראליים (אלטשולר שחם טרייד)",
+    "foreign_securities_trading_days": "ימי מסחר להעברת ניירות זרים (אלטשולר שחם טרייד)"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "transfer-switch-process",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "israeli_securities_trading_days": {
+      "value": 5,
+      "unit": "days",
+      "source": {
+        "url": "https://www.as-invest.co.il/trade/faq_transfer/",
+        "title": "אלטשולר שחם טרייד – מעבירים את תיק ההשקעות שלכם לאלטשולר שחם טרייד (שאלות ותשובות)",
+        "publisher": "Altshuler Shaham Trade",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "SW-54"
+      ],
+      "state": "sourced",
+      "notes": "Altshuler Shaham Trade: up to 5 trading days for Israeli securities, up to 14 for foreign ones. Its own statement; a bank's deadlines are directive 432's (SW-35)."
+    },
+    "foreign_securities_trading_days": {
+      "value": 14,
+      "unit": "days",
+      "source": {
+        "url": "https://www.as-invest.co.il/trade/faq_transfer/",
+        "title": "אלטשולר שחם טרייד – מעבירים את תיק ההשקעות שלכם לאלטשולר שחם טרייד (שאלות ותשובות)",
+        "publisher": "Altshuler Shaham Trade",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "SW-54"
+      ],
+      "state": "sourced",
+      "notes": "Altshuler Shaham Trade: up to 14 trading days for foreign securities. Its own statement."
+    }
+  },
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://leumi.co.il/he/Articles/47356",
+      "title": "בנק לאומי – הנחיות ללקוח להעברת ניירות ערך",
+      "title_he": "בנק לאומי – הנחיות ללקוח להעברת ניירות ערך",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "לא ניתן להעביר שברי ניירות ערך",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.meitav.co.il/trade/financial_info/self_trading_portfolio_transfer/",
+      "title": "מיטב – המדריך למעבר חלק: איך לנייד את תיק ההשקעות מהבנק למסחר עצמאי (03/08/2026)",
+      "title_he": "מיטב – המדריך למעבר חלק: איך לנייד את תיק ההשקעות מהבנק למסחר עצמאי (03/08/2026)",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "מורידים את טופס בקשת ההעברה מהבנק",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.as-invest.co.il/trade/faq_transfer/",
+      "title": "אלטשולר שחם טרייד – מעבירים את תיק ההשקעות שלכם לאלטשולר שחם טרייד",
+      "title_he": "אלטשולר שחם טרייד – מעבירים את תיק ההשקעות שלכם לאלטשולר שחם טרייד",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "ניירות ערך ישראליים - עד 5 ימי מסחר",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "SW-35"
+  ]
+}

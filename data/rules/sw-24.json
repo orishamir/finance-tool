@@ -2,12 +2,7 @@
   "id": "SW-24",
   "title": "IRA: in kind only between IRAs; a cash transfer's clock starts once everything is sold",
   "title_he": "קופה בניהול אישי: במזומן או בעין",
-  "text_he": "כסף נכנס לקופה בניהול אישי מקופה רגילה במזומן; בין קופות בניהול אישי העמית בוחר מזומן או בעין, ומקופה בניהול אישי לקופה רגילה בוחרת החברה המקבלת. כשנבחרה העברה במזומן, תקופת ההעברה שבתקנות מתחילה ביום שבו העמית או מנהל התיקים מטעמו סיים להמיר את כל נכסי הקופה למזומנים. מכירת ההחזקות עולה עמלות מסחר אצל הברוקר של הקופה, ומיטב טרייד גובה בתוך קופה אישית סכום לנייר ישראלי עד תקרה לתיק וסכום בדולרים לנייר זר להעברת ניירות לבנק ישראלי אחר; העמית רשאי לבטל את הסכם הניהול האישי בכל עת ללא תשלום. תיקון התקנות נקרא מעותק של הרשומות המתארח אצל מיטב.",
-  "figure_names_he": {
-    "meitav_israeli_security_transfer_nis": "עמלת העברת נייר ישראלי (מיטב טרייד, קופה אישית)",
-    "meitav_portfolio_transfer_cap_nis": "תקרת עמלת העברה לתיק (מיטב טרייד, קופה אישית)",
-    "meitav_foreign_security_transfer_usd": "עמלת העברת נייר זר בדולרים (מיטב טרייד, קופה אישית)"
-  },
+  "text_he": "כסף נכנס לקופה בניהול אישי מקופה רגילה במזומן; בין קופות בניהול אישי העמית בוחר מזומן או בעין, ומקופה בניהול אישי לקופה רגילה בוחרת החברה המקבלת. כשנבחרה העברה במזומן, תקופת ההעברה שבתקנות מתחילה ביום שבו העמית או מנהל התיקים מטעמו סיים להמיר את כל נכסי הקופה למזומנים. מכירת ההחזקות עולה עמלות מסחר אצל הברוקר של הקופה, ומה שהברוקר גובה להעברת ניירות החוצה הוא לפי התעריפון שלו; העמית רשאי לבטל את הסכם הניהול האישי בכל עת ללא תשלום.",
   "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
@@ -16,70 +11,8 @@
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
-  "figures": {
-    "meitav_israeli_security_transfer_nis": {
-      "value": 20,
-      "unit": "nis",
-      "source": {
-        "url": "https://www.meitav.co.il/media/qm2penhs/26061426t-תוצאות-מכרז-לניהול-אישי-2026-טרייד.pdf",
-        "title": "Meitav Trade annex 2.606.1.4.26T (IRA tender results 2026), p.4",
-        "publisher": "Meitav Trade",
-        "strength": "institution"
-      },
-      "checked": "2026-10-25",
-      "effective_from": "2026-05-01",
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "SW-24"
-      ],
-      "state": "sourced",
-      "notes": "Inside a Meitav Trade IRA: transfer of securities to another Israeli bank, NIS 20 per Israeli security (IRA-22). Snapshot effective 01.05.2026."
-    },
-    "meitav_portfolio_transfer_cap_nis": {
-      "value": 99,
-      "unit": "nis",
-      "source": {
-        "url": "https://www.meitav.co.il/media/qm2penhs/26061426t-תוצאות-מכרז-לניהול-אישי-2026-טרייד.pdf",
-        "title": "Meitav Trade annex 2.606.1.4.26T (IRA tender results 2026), p.4",
-        "publisher": "Meitav Trade",
-        "strength": "institution"
-      },
-      "checked": "2026-10-25",
-      "effective_from": "2026-05-01",
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "SW-24"
-      ],
-      "state": "sourced",
-      "notes": "Inside a Meitav Trade IRA: at most NIS 99 per portfolio for the transfer of Israeli securities to another Israeli bank (IRA-22). Snapshot effective 01.05.2026."
-    },
-    "meitav_foreign_security_transfer_usd": {
-      "value": 10,
-      "unit": "usd",
-      "source": {
-        "url": "https://www.meitav.co.il/media/qm2penhs/26061426t-תוצאות-מכרז-לניהול-אישי-2026-טרייד.pdf",
-        "title": "Meitav Trade annex 2.606.1.4.26T (IRA tender results 2026), p.4",
-        "publisher": "Meitav Trade",
-        "strength": "institution"
-      },
-      "checked": "2026-10-25",
-      "effective_from": "2026-05-01",
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "SW-24"
-      ],
-      "state": "sourced",
-      "notes": "Inside a Meitav Trade IRA: USD 10 per foreign security transferred out (IRA-22). Snapshot effective 01.05.2026."
-    }
-  },
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=5",
