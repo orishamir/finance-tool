@@ -338,7 +338,7 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
       {an.lines.length === 0 ? (
         <p className="text-muted-foreground">{r3fees.noFees}</p>
       ) : (
-        <div className="flex flex-col gap-section lg:grid lg:grid-cols-[3fr_2fr] lg:gap-x-12 lg:items-start">
+        <div className="flex flex-col gap-section lg:grid lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:gap-x-12 lg:items-start">
           <section className="flex flex-col gap-4 min-w-0" aria-labelledby={`${headId}-list`}>
             <h2 id={`${headId}-list`} className="text-xl lg:text-2xl font-semibold">
               {r3fees.listHeading}

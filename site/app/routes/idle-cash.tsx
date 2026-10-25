@@ -152,7 +152,7 @@ function Screen({ bundle, failed, rules, today, p03 }: { bundle: CompareBundle |
         <p className="text-lg text-muted-foreground max-w-measure">{copy.lede}</p>
         <NumberLegend />
       </header>
-      <div className={cx("flex flex-col gap-6", resultShown && "lg:grid lg:grid-cols-[360px_1fr] lg:gap-x-12 lg:items-start")}>
+      <div className={cx("flex flex-col gap-6", resultShown && "lg:grid lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-x-12 lg:items-start")}>
         <div className="flex flex-col gap-6">
           <Card className="flex flex-col gap-5">
             <RawWatch onRaw={watch("balance", positive)}>

@@ -27,15 +27,18 @@ export function StrengthChip({ strength, host, checked }: { strength: Strength; 
       </Tag>
     );
   if (strength === "institution" || strength === "secondary") return <Tag tone="caution">{word}</Tag>;
-  if (strength === "primary-mirror") {
+  // A button only where it has the copy's host and date to show (the checklist passes neither: a press opened nothing), and
+  // `contents`, so in the flex row around it the line it opens wraps on its own and the chip stays where it was pressed
+  // (2026-10-25; it moved from the end of the heading's line to the next one).
+  if (strength === "primary-mirror" && host && checked) {
     return (
-      <span className="inline-flex flex-wrap items-center gap-x-2">
+      <span className="contents">
         <button type="button" aria-expanded={open} onClick={() => setOpen((v) => !v)} className="inline-flex items-center -my-3 py-3">
           <Tag tone="neutral" icon={<IconCopy size={14} />}>
             {word}
           </Tag>
         </button>
-        {open && host && checked && (
+        {open && (
           <span className="text-xs text-muted-foreground" role="status">
             {c.chipCopy.before}
             {host}
@@ -47,7 +50,11 @@ export function StrengthChip({ strength, host, checked }: { strength: Strength; 
       </span>
     );
   }
-  return <Tag tone="neutral">{word}</Tag>;
+  return (
+    <Tag tone="neutral" icon={strength === "primary-mirror" ? <IconCopy size={14} /> : undefined}>
+      {word}
+    </Tag>
+  );
 }
 
 /** "שאלה פתוחה" as the lock tag, the code after the sentence in its own chip: the code is never inside the label (audit 2026-10-24, A56). */

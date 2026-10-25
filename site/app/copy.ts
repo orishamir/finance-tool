@@ -102,6 +102,11 @@ export const home = {
     unknownYears: "לא יודעים",
     purposeLabel: "בשביל מה",
     purposes: { apartment: "דירה", wedding: "חתונה", studies: "לימודים", child: "ילד", retirement: "פרישה", cushion: "כרית ביטחון", none: "בלי מטרה מסוימת" } as Record<string, string>,
+    // NEW 2026-10-25 (the founder: only "כרית ביטחון" changed the card): what each purpose asks and assumes
+    costLabel: { apartment: "כמה הדירה תעלה, בערך", wedding: "כמה החתונה תעלה, בערך", studies: "כמה הלימודים יעלו, בערך" } as Record<string, string>,
+    costHint: "לא חובה. התוצאה תראה אם הסכום מספיק.",
+    childNote: "החיסכון נבדק עד גיל {n}, המספר שהאתר קבע ל״{preset}״.",
+    unknownNote: "בלי מספר שנים, ההשוואה תרוץ על {n} שנים, המספר שהאתר קבע ל״{preset}״.",
     submit: "מה הכי מתאים",
     submitCushion: "כמה עולה להשאיר בעו״ש",
     needAmount: "הזינו סכום: היום או בכל חודש.",
@@ -112,7 +117,6 @@ export const home = {
     already: "יש לכם כבר…",
     alreadyDeposit: "פיקדון שמסתיים",
     alreadyStudyFund: "קרן השתלמות נזילה",
-    alreadyLarge: "סכום גדול בלי מטרה",
   },
 } as const;
 

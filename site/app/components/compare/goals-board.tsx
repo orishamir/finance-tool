@@ -88,9 +88,11 @@ export function GoalsList() {
     return () => document.removeEventListener("mousedown", close);
   }, [confirm]);
 
-  // One goal that holds nothing yet is a fresh form: no board. One goal with something in it shows the board, for "מטרה נוספת".
-  if (goals.length === 0 || (goals.length === 1 && isBlank(goals[0]!))) return null;
+  // Shown from the first goal on, blank or not: until 2026-10-25 it appeared once the first goal held something, so typing
+  // a name or choosing a preset pushed the whole form down under the pointer.
+  if (goals.length === 0) return null;
   const many = goals.length > 1;
+  const fresh = !many && isBlank(goals[0]!);
   const byId = new Map(goals.map((g) => [g.id, g]));
   // The drop preview reorders the chips with CSS `order` only: moving the dragged chip's node in the page would make the
   // browser drop its pointer capture, and the drop would never arrive.
@@ -182,9 +184,11 @@ export function GoalsList() {
                   <Button variant="icon" className="size-9 rounded-full" aria-label={r2.form.renameGoal} title={r2.form.renameGoal} onClick={() => setRenaming(g.id)}>
                     <IconEdit size={16} />
                   </Button>
-                  <Button variant="icon" className="size-9 rounded-full me-0.5" aria-label={r2.form.deleteGoal} title={r2.form.deleteGoal} aria-expanded={confirm?.id === g.id} onClick={() => askDelete(g)}>
-                    <IconTrash size={16} />
-                  </Button>
+                  {!fresh && (
+                    <Button variant="icon" className="size-9 rounded-full me-0.5" aria-label={r2.form.deleteGoal} title={r2.form.deleteGoal} aria-expanded={confirm?.id === g.id} onClick={() => askDelete(g)}>
+                      <IconTrash size={16} />
+                    </Button>
+                  )}
                 </>
               )}
               {confirm?.id === g.id && (

@@ -10,7 +10,8 @@ export interface PresetMeta {
   signedOffOn: string | null;
 }
 
-const asParam = (v: ValueObject, meta: PresetMeta): SiteValue => ({ ...v, parameter: { rationale: meta.rationale, rationaleHe: meta.rationaleHe ?? null, signedOffOn: meta.signedOffOn, provisional: false } });
+/** A P-07 value object with the site-parameter marker the provenance sheet reads. */
+export const asPresetParam = (v: ValueObject, meta: PresetMeta): SiteValue => ({ ...v, parameter: { rationale: meta.rationale, rationaleHe: meta.rationaleHe ?? null, signedOffOn: meta.signedOffOn, provisional: false } });
 
 export interface FieldValues {
   years: SiteValue | null;
@@ -21,7 +22,7 @@ export interface FieldValues {
 export function stripValues(goal: Goal, r: ResolvedGoal, presets: Presets, meta: PresetMeta, today: string): FieldValues {
   const record: PresetRecord | undefined = goal.preset === "none" ? undefined : presets[goal.preset];
   const years =
-    r.horizonYears === null ? null : r.source.horizonYears === "entered" || !record?.horizon_years ? enteredValue(r.horizonYears, "years", today) : asParam(record.horizon_years, meta);
+    r.horizonYears === null ? null : r.source.horizonYears === "entered" || !record?.horizon_years ? enteredValue(r.horizonYears, "years", today) : asPresetParam(record.horizon_years, meta);
   const amount = r.amountNow === null ? null : enteredValue(r.amountNow, "nis", today);
   return { years, amount };
 }

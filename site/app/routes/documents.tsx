@@ -204,7 +204,7 @@ export default function Documents() {
           <Group id="data-series" title={d.series}>
             <ul className="grid gap-4 lg:grid-cols-2 pt-2">
               {data.series.map((s) => (
-                <Card as="li" key={s.key} className="flex flex-col gap-1 min-w-0">
+                <Card as="li" key={s.key} className="flex flex-col gap-1 min-w-0 [overflow-wrap:anywhere]">
                   <h3 className="text-lg font-semibold"><bdi>{s.title}</bdi></h3>
                   {s.valueDate && (
                     <p className="text-sm text-muted-foreground">
