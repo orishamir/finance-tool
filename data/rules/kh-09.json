@@ -1,8 +1,8 @@
 {
   "id": "KH-09",
-  "title": "Not every fund accepts every status; what happens when the employer stops paying",
-  "title_he": "המשך הפקדות כשהמעסיק מפסיק או כשהמעמד משתנה",
-  "text_he": "הקרנות נבדלות במי רשאי להמשיך להפקיד. בהראל, הקרן לא ממשיכה לקבל הפקדות לעמית שהמעסיק שלו הפסיק להפקיד, מכל סיבה, או שנעשה עצמאי; העמית יכול אז למשוך לפי כללי הוותק. באלטשולר שחם, שכיר שהפסיק לעבוד רשאי להמשיך לחסוך כעצמאי, ועצמאי שנעשה שכיר ממשיך כשכיר. בהחלפת עבודה החשבון נשאר בקרן; אם המעסיק החדש מפקיד אליו ובאיזה שיעור תלוי בהסכם החדש ובבחירת העובד.",
+  "title": "Harel and Altshuler Shaham: continuing deposits when the employer stops or the status changes",
+  "title_he": "הראל ואלטשולר שחם: המשך הפקדות כשהמעסיק מפסיק או כשהמעמד משתנה",
+  "text_he": "בהראל, הקרן לא ממשיכה לקבל הפקדות לעמית שהמעסיק שלו הפסיק להפקיד, מכל סיבה, או שנעשה עצמאי; העמית יכול אז למשוך לפי כללי הוותק. באלטשולר שחם, שכיר שהפסיק לעבוד רשאי להמשיך לחסוך כעצמאי, ועצמאי שנעשה שכיר ממשיך כשכיר. מה שבחוק: הפקדה כעצמאי מוכרת רק למי שיש לו הכנסה מעסק או ממשלח יד, וחשבון שכיר וחשבון עצמאי יכולים להיחשב חשבון אחד בתנאים. בהחלפת עבודה החשבון נשאר בקרן; תקנונים של חברות אחרות לא נקראו בעניין הזה.",
   "strength": "institution",
   "dimensions": [
     "eligibility",
@@ -10,18 +10,8 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "keren-hishtalmut.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
-    {
-      "url": "https://data.gov.il/he/datasets/cma/gemelnet",
-      "title": "גמל-נט – מאגר המידע של רשות שוק ההון, ביטוח וחיסכון",
-      "title_he": "גמל-נט – מאגר המידע של רשות שוק ההון, ביטוח וחיסכון",
-      "publisher": "data.gov.il",
-      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
-      "kind": "dataset",
-      "strength": "primary",
-      "checked": "2026-10-25"
-    },
     {
       "url": "https://harel-group.co.il/long-term-savings/study-funds/plans/harel-funds/doclib/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%95%d7%a4%d7%94/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a8%d7%90%d7%9c%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa-%20%d7%9c%d7%90%d7%97%d7%a8%20%d7%94%d7%9e%d7%99%d7%96%d7%95%d7%92/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa%20%2007.2024.pdf",
       "title": "Harel bylaws 07/2024",
@@ -46,5 +36,9 @@
       "locator_he": "סעיף 19, 20",
       "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "KH-08",
+    "KH-14"
   ]
 }

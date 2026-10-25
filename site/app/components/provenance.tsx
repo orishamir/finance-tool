@@ -123,6 +123,9 @@ export function startsAfter(value: SiteValue, today: string): string | null {
   return value.effective_from > today ? value.effective_from : null;
 }
 
+/** A figure is isolated left to right ("1,234.50 ₪"), unless its text carries Hebrew words ("36 חודשים", "חודשיים"), which a forced LTR isolate would print backwards (2026-10-25). */
+const textDir = (text: string): "ltr" | "rtl" => (/[\u0590-\u05FF]/.test(text) ? "rtl" : "ltr");
+
 /** The provenance number: a button holding the formatted value in an isolating span, then its flags. Marks sit before the digits, never between a number and the unit word that follows it. */
 export function Num({ value, size = "inline", display, animate, className, prefix, exact, mark: showMark = true }: NumProps) {
   const open = useOpen();
@@ -154,7 +157,7 @@ export function Num({ value, size = "inline", display, animate, className, prefi
       {value.stale && <IconClock size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
       {((showMark && fromDate) || markWeak) && <IconAlert size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
       {fromDate && size === "figure" && <span className="text-xs text-caution-foreground font-normal me-1 no-underline select-none">{numbers.startsOn}<bdi dir="ltr">{fmt.date(fromDate)}</bdi></span>}
-      <bdi dir="ltr" className="whitespace-nowrap">{text}</bdi>
+      <bdi dir={textDir(text)} className="whitespace-nowrap">{text}</bdi>
     </button>
   );
   return prefix ? <span className="whitespace-nowrap">{prefix}{button}</span> : button;
@@ -538,7 +541,30 @@ function FigureSource({ value, data }: { value: SiteValue; data: ProvenanceData 
   return <SourceBlock source={source} rule={owner} today={data.today} english />;
 }
 
-function ValueSheet({ value, exact, data, headId, descId }: { value: SiteValue; exact: boolean; data: ProvenanceData; headId: string; descId: string }) {
+/**
+ * Why a site parameter has this value. The clicked number's own line comes first; the parameter file's general line, which
+ * covers every number of the file, waits behind "more" (2026-10-25: one line served all of P-05's numbers, and the founder
+ * asked what "2%" was and got the lot). A number with no line of its own shows the general line directly.
+ */
+export function ParameterWhy({ value }: { value: SiteValue }) {
+  const general = value.parameter?.rationaleHe ?? (mostlyHebrew(value.parameter?.rationale) ? value.parameter?.rationale : null) ?? null;
+  const own = value.rationale_he ?? null;
+  const first = own ?? general ?? copy.parameter.noRationale;
+  const more = own && general && general !== own ? general : null;
+  return (
+    <>
+      <span className="text-sm">{first}</span>
+      {more && (
+        <Disclosure label={<span className="text-sm">{copy.parameter.more}</span>} className="mt-0.5">
+          <p className="text-sm text-muted-foreground pt-1">{more}</p>
+        </Disclosure>
+      )}
+    </>
+  );
+}
+
+/** The sheet behind a figure (exported for the render tests). */
+export function ValueSheet({ value, exact, data, headId, descId }: { value: SiteValue; exact: boolean; data: ProvenanceData; headId: string; descId: string }) {
   const strength = strengthOf(value);
   const param = isParameter(value);
   const provisional = isProvisional(value);
@@ -554,7 +580,7 @@ function ValueSheet({ value, exact, data, headId, descId }: { value: SiteValue; 
       <header className="flex flex-col gap-1">
         <div className="flex items-center gap-2 flex-wrap">
           <span id={headId} className={cx("num num-static text-2xl font-semibold", `num-${value.state}`, value.value === null && "text-muted-foreground")}>
-            <bdi dir="ltr" className="whitespace-nowrap">{text}</bdi>
+            <bdi dir={textDir(text)} className="whitespace-nowrap">{text}</bdi>
           </span>
           {unitWord && <span className="text-sm text-muted-foreground">{unitWord}</span>}
           <StateTag state={param ? "parameter" : value.state} />
@@ -590,7 +616,7 @@ function ValueSheet({ value, exact, data, headId, descId }: { value: SiteValue; 
       {value.state === "sourced" && param && (
         <dl className="sheet-dl">
           <Row label={copy.parameter.why}>
-            <span className="text-sm">{value.parameter?.rationaleHe ?? (mostlyHebrew(value.parameter?.rationale) ? value.parameter?.rationale : copy.parameter.noRationale)}</span>
+            <ParameterWhy value={value} />
           </Row>
           <Row label={copy.parameter.approved}>{!provisional && value.parameter?.signedOffOn ? <bdi dir="ltr">{fmt.date(value.parameter.signedOffOn)}</bdi> : <span className="text-sm">{copy.parameter.notApproved}</span>}</Row>
         </dl>

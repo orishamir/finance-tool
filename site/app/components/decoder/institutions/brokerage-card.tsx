@@ -7,7 +7,7 @@ import { r4catalogue as copy, guideBlocks } from "../../../copy";
 import { fmt } from "../../../lib/format";
 import { IconAlert, IconExternal } from "../../icons";
 import { LeadTail, Num, NumAfter, RuleRef, RulesLine } from "../../provenance";
-import { Card, Disclosure, LinkButton, Tag } from "../../ui";
+import { Card, Disclosure, LinkButton, Sentence, Tag } from "../../kit";
 import type { InstitutionKind, TariffCardData, TariffLineRow } from "./types";
 
 const baseName = (b: string) => (guideBlocks.fees as Record<string, { name: string }>)[b]?.name ?? b;
@@ -92,7 +92,7 @@ export function BrokerageGroupCard({ id, tariff, kind, className }: { id: string
         <p className="text-sm max-w-measure">
           <bdi>{tariff.title}</bdi>
         </p>
-        <p className="text-sm">
+        <Sentence size="sm">
           {tariff.published ? (
             <>
               <NumAfter lead={copy.card.tariffFrom} value={tariff.published} />
@@ -101,7 +101,7 @@ export function BrokerageGroupCard({ id, tariff, kind, className }: { id: string
             <span className="text-caution-foreground">{copy.card.noPublishedDate}</span>
           )}
           <NumAfter lead={copy.card.collectedAt} value={tariff.snapshot} />
-        </p>
+        </Sentence>
         {tariff.stale && (
           <p className="flex items-start gap-1.5 text-sm text-caution-foreground">
             <IconAlert size={18} className="text-caution shrink-0 mt-0.5" />
@@ -125,7 +125,7 @@ export function BrokerageGroupCard({ id, tariff, kind, className }: { id: string
           <bdi dir="ltr">{fmt.number(tariff.lineCount)}</bdi> {copy.card.linesMid} {bases.join(", ")}
         </p>
         {tariff.lines.length > 0 && <ul className="flex flex-col">{tariff.lines.map((l) => <LineItem key={l.id} l={l} />)}</ul>}
-        <p className="text-sm">
+        <Sentence size="sm">
           {tariff.minimum ? (
             <>
               {copy.card.minimum} <Num value={tariff.minimum} />
@@ -135,7 +135,7 @@ export function BrokerageGroupCard({ id, tariff, kind, className }: { id: string
               {copy.card.minimum.replace(/:$/, "")}: {copy.card.minimumNone}
             </span>
           )}
-        </p>
+        </Sentence>
         <div className="flex flex-col gap-1.5 text-sm">
           <p className="flex flex-wrap items-center gap-x-2 gap-y-1">
             <span>

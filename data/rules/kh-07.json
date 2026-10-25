@@ -1,16 +1,44 @@
 {
   "id": "KH-07",
-  "title": "Deposits above the tax-advantaged ceiling are accepted",
-  "title_he": "הפקדות מעל התקרה המוטבת מתקבלות",
-  "text_he": "הקרנות מקבלות הפקדות מעל התקרה המוטבת במס. לפי טבלת הראל, הפקדות מעבר לתקרה נזקפות לעובד כשווי מס ויחויבו במס רווח הון במשיכה. בניגוד לקופת גמל להשקעה, בחוק לא נמצאה תקרה בשקלים לסך ההפקדות לקרן השתלמות. הקרן מפרידה בין כסף מוטב לכסף שאינו מוטב, והמס על כל אחד מופיע בכללי המס.",
+  "title": "Deposits above the tax-advantaged ceiling are allowed, and taxed",
+  "title_he": "הפקדות מעל התקרה המוטבת מותרות וחייבות במס",
+  "text_he": "מותר להפקיד לקרן השתלמות יותר מהתקרה המוטבת, אבל כל ההפקדות שמעליה חייבות במס, כך לפי נייר הכלכלן הראשי במשרד האוצר. הפקדת מעסיק מעל הגבול הפטור נחשבת הכנסה של העובד כשהיא משולמת לקרן. בניגוד לקופת גמל להשקעה, בחוק לא נמצאה תקרה בשקלים לסך ההפקדות לקרן השתלמות. הקרן מפרידה בין כסף מוטב לכסף שאינו מוטב, והמס על כל אחד מופיע בכללי המס.",
   "strength": "primary",
   "dimensions": [
     "deposit-ceiling"
   ],
   "likely_to_change": "no",
   "il_finance_file": "keren-hishtalmut.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf",
+      "title": "Chief Economist paper Oct 2025",
+      "title_he": "על הטבת המס בקרן השתלמות – ניתוח מדיניות (אגף הכלכלן הראשי, אוקטובר 2025)",
+      "publisher": "gov.il",
+      "publisher_he": "משרד האוצר",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.5",
+      "locator_he": "עמוד 5",
+      "page": 5,
+      "quote": "ניתן להפקיד לקרן ההשתלמות סכום העולה על גובה התקרה הנ״ל אולם כלל ההפקדות מעבר לתקרה יחויבו במס",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.19, s.3(ה)",
+      "locator_he": "עמוד 19, סעיף 3(ה)",
+      "page": 19,
+      "quote": "בעת ששולמו לקרן",
+      "checked": "2026-10-25"
+    },
     {
       "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
       "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
@@ -23,20 +51,9 @@
       "locator_he": "עמוד 10, סעיף 22",
       "page": 10,
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://media.harel-group.co.il/media/smegncwi/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf",
-      "title": "Harel 2026 table",
-      "title_he": "תקרות וסכומים לשנת 2026 (הראל)",
-      "publisher": "Harel",
-      "publisher_he": "הראל",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.1",
-      "locator_he": "עמוד 1",
-      "page": 1,
-      "quote": "ניתן להפקיד מעבר לתקרה",
-      "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "TXH-03"
   ]
 }

@@ -1,0 +1,33 @@
+{
+  "id": "ETF-56",
+  "title": "IBI: its S&P 500 ETF's price-to-NAV differences in 2025 and its daily settlement with the market maker",
+  "title_he": "אי.בי.אי: פערי המחיר מהשווי בקרן הסל על המדד האמריקני",
+  "text_he": "באי.בי.אי, הדוח השנתי של קרן הסל על המדד האמריקני אומר שמחיר היחידה לכל יום מסחר נקבע לפי שווי הנכסים הנקי, ובמהלך המסחר לפי העסקאות בבורסה. הדוח מפרט את טווח הפערים ואת הפער הממוצע בשנה המדווחת, ואומר שבקרן סל שאינה מוגבלת בניירות ערך זרים הקרן מתחשבנת עם עושה השוק כל יום סמוך לסוף המסחר, לפי השווי הנקי האחרון הידוע. אלה נתונים של קרן אחת לשנה אחת.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-trade",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
+      "title": "IBI ETF annual report 31.12.2025",
+      "title_he": "דוח שנתי ליום 31.12.2025 של אי.בי.אי. סל (4D) S&P 500",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "אי.בי.אי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.1, 4, 10",
+      "locator_he": "עמודים 1, 4, 10",
+      "page": 1,
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "ETF-06"
+  ]
+}

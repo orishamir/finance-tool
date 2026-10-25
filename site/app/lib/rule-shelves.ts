@@ -84,12 +84,12 @@ const uniformFiles = new Set(["tax-general.md", "tax-interest-deposits-bonds.md"
 
 /** Explicit moves from the IA report §3.2 (a rule whose first dimension would mislead the reader). */
 const overrides: Record<string, ShelfId> = {
-  "SW-15": "costs", "SW-33": "costs", "SW-34": "costs", "SW-36": "state",
+  "SW-15": "costs", "SW-33": "costs", "SW-34": "costs", "SW-36": "state", "SW-52": "costs", "SW-53": "costs", "SW-55": "state",
   "PF-29": "protection", "PF-26": "structure", "PF-33": "structure", "PF-34": "structure", "PF-36": "structure", "PF-37": "structure", "PF-38": "structure",
   "BRK-27": "state",
   "BANK-23": "protection", "BANK-09": "structure", "BANK-13": "structure", "BANK-14": "structure", "BANK-15": "structure", "BANK-22": "structure",
   "GOV-02": "protection", "GOV-23": "access",
-  "CS-05": "protection", "CS-18": "costs", "CS-20": "structure", "CS-26": "structure", "CS-27": "structure",
+  "CS-05": "protection", "CS-18": "costs", "CS-30": "costs", "CS-20": "structure", "CS-26": "structure", "CS-27": "structure",
   "CAT-15": "protection", "CAT-16": "protection",
   "MKT-01": "structure",
   "SW-X01": "access", "SW-X02": "access", "SW-X03": "access", "SW-X04": "access",

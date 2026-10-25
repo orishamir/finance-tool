@@ -1,10 +1,11 @@
-// The inputs behind the graph (design-spec 4, design-system 3.3): number field, slider field, field state.
-import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+// The inputs behind the graph (design-spec 4, design-system 3.3): number field, range field (slider and number), percent field, field state.
+import { useEffect, useId, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { buttons, values as copy } from "../../copy";
-import { formatTyped, parseNumber, unitWord } from "../../lib/format";
+import { fmt, formatTyped, parseNumber, unitWord } from "../../lib/format";
 import { IconReset } from "../icons";
 import { StateTag } from "../provenance";
-import { Button, cx } from "../ui";
+import { Button } from "./button";
+import { cx } from "./cx";
 
 /** Commits typed values that are still waiting out the 150 ms typing pause (F13). */
 const pendingCommits = new Set<() => void>();
@@ -36,6 +37,7 @@ export interface FieldProps {
   externalError?: ReactNode | null;
 }
 
+/** A box for one typed number, with its unit, hint, error and the state line (start value, or entered with a reset). The default for any number the reader may change. */
 export function NumberField(props: FieldProps) {
   const { label, unit, value, isEntered, validate, onCommit, onReset, hint, note, placeholder, disabled, compact, optional, inputMode = "decimal", autoFocus, externalError = null } = props;
 
@@ -168,6 +170,7 @@ export function NumberField(props: FieldProps) {
   );
 }
 
+/** The line under a field: "loading", or "entered by you" with a reset; nothing while the field holds its start value. */
 export function FieldState({ entered, onReset, disabled }: { entered: boolean; onReset: () => void; disabled?: boolean }) {
   if (disabled) return <span className="text-xs text-muted-foreground">{copy.loading}</span>;
   if (!entered) return null;
@@ -181,14 +184,17 @@ export function FieldState({ entered, onReset, disabled }: { entered: boolean; o
   );
 }
 
-export interface SliderFieldProps extends FieldProps {
+export interface RangeFieldProps extends FieldProps {
   min: number;
   max: number;
   step: number;
+  /** Replaces the state line under the slider (the goal form's own: a preset's value, not the start value). */
+  footer?: ReactNode;
 }
 
-export function SliderField(props: SliderFieldProps) {
-  const { label, min, max, step, value, onCommit, disabled, isEntered, onReset } = props;
+/** A number and a slider for it, together: the label and the box on one row, the slider under them. For a quantity with a natural range (years, a monthly deposit). */
+export function RangeField(props: RangeFieldProps) {
+  const { label, min, max, step, value, onCommit, disabled, isEntered, onReset, footer } = props;
   const id = useId();
   const current = value ?? min;
   const clamped = Math.max(min, Math.min(max, current));
@@ -210,12 +216,22 @@ export function SliderField(props: SliderFieldProps) {
         step={step}
         value={clamped}
         disabled={disabled}
-        style={{ "--fill": `${fill}%` } as React.CSSProperties}
+        style={{ "--fill": `${fill}%` } as CSSProperties}
         onChange={(e) => onCommit(Number(e.target.value))}
       />
-      <FieldState entered={isEntered} onReset={onReset} disabled={disabled} />
+      {footer ?? <FieldState entered={isEntered} onReset={onReset} disabled={disabled} />}
     </div>
   );
+}
+
+/** The check for a percent field: the number must lie in the range, else the standard sentence "הזינו אחוז בין … ל־…". */
+export function percentCheck(range: { min: number; max: number } = { min: 0, max: 100 }): (n: number) => string | null {
+  return (n) => (n < range.min || n > range.max ? `${copy.errors.pct[0]} ${fmt.number(range.min)} ${copy.errors.pct[1]}${fmt.number(range.max)}.` : null);
+}
+
+/** A number field for a percent: the unit is a yearly rate unless `unit` says otherwise, and the range check is the standard one (0 to 100 unless `range` says otherwise). */
+export function PercentField({ unit = "pct_per_year", range, validate, ...rest }: Omit<FieldProps, "unit" | "validate"> & { unit?: string; range?: { min: number; max: number }; validate?: FieldProps["validate"] }) {
+  return <NumberField unit={unit} validate={validate ?? percentCheck(range)} {...rest} />;
 }
 
 /** The one line above a panel of fields: what an untouched field is (UX fix 17). */

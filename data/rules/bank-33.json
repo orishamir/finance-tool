@@ -1,0 +1,43 @@
+{
+  "id": "BANK-33",
+  "title": "Discount Bank and Bank Yahav: what breaking a deposit means in their terms",
+  "title_he": "דיסקונט ויהב: מה המשמעות של שבירת פיקדון בתנאים שלהם",
+  "text_he": "בבנק דיסקונט שבירת פיקדון צריכה את אישור הבנק, והקנס נקבע ביום השבירה לפי טבלת ריביות שמתעדכנת מדי יום, לפי סוג הפיקדון והזמן שנשאר עד תחנת היציאה הבאה או עד הפירעון. אצל דיסקונט הקנס לא יורד מריבית הפיקדון בתוספת מרווח שבירה, והלקוח מקבל את הנמוך מבין הקרן לבין שווי השבירה, כך ששבירה יכולה להסתיים בלי ריבית ואף בהפסד מהקרן; פיקדון לשנה או יותר אי אפשר לשבור בחלקו בשנה הראשונה. בבנק יהב לוח הריביות מסמן את כל הפיקדונות המקובלים כפיקדונות שאי אפשר לשבור. תנאי השבירה של בנקים אחרים לא נקראו.",
+  "strength": "institution",
+  "dimensions": [
+    "liquidity-lockup",
+    "fee-exit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+      "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "title_he": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.6",
+      "locator_he": "עמוד 6",
+      "page": 6,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.discountbank.co.il/private/savings-investments/savings-interest/",
+      "title": "דיסקונט: חיסכון וריבית, \"הבהרות\"",
+      "title_he": "דיסקונט: חיסכון וריבית, \"הבהרות\"",
+      "publisher": "Discount Bank",
+      "publisher_he": "בנק דיסקונט",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "BANK-06"
+  ]
+}

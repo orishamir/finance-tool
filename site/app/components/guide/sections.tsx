@@ -6,8 +6,8 @@ import { guide as copy, r3fees } from "../../copy";
 import type { TermRow } from "../../lib/data.server";
 import type { Strength } from "../../lib/value";
 import { IconCheck, IconChevronDown, IconDrillIn, IconLock, IconMinus } from "../icons";
-import { Disclosure, RuleRef, RulesLine, StrengthLabel } from "../provenance";
-import { Card, cx, Tag } from "../ui";
+import { RuleRef, RulesLine, StrengthLabel } from "../provenance";
+import { Card, cx, Disclosure, KeyValueList as KitKeyValueList, Section, Tag } from "../kit";
 
 export interface SectionDef {
   id: string;
@@ -71,19 +71,20 @@ export function SectionIndex({ sections, current }: { sections: readonly Section
 export function GuideSection({ id, title, children, className, rulesToggle }: { id: string; title: string; children: ReactNode; className?: string; rulesToggle?: boolean }) {
   const [rulesOpen, setRulesOpen] = useState(false);
   return (
-    <section id={id} aria-labelledby={`${id}-h`} className={cx("flex flex-col gap-4 scroll-mt-[112px] lg:scroll-mt-[88px]", className)}>
-      <div className="flex flex-wrap items-baseline justify-between gap-x-4">
-        <h2 id={`${id}-h`} className="text-xl lg:text-2xl font-semibold">
-          {title}
-        </h2>
-        {rulesToggle && (
+    <Section
+      id={id}
+      title={title}
+      className={className}
+      action={
+        rulesToggle && (
           <button type="button" aria-expanded={rulesOpen} onClick={() => setRulesOpen((v) => !v)} className="text-sm text-link hover:underline min-h-target inline-flex items-center">
             {rulesOpen ? copy.rulesToggle.hide : copy.rulesToggle.show}
           </button>
-        )}
-      </div>
+        )
+      }
+    >
       <div className={cx("flex flex-col gap-4", rulesToggle && !rulesOpen && "[&_.rules-line]:hidden")}>{children}</div>
-    </section>
+    </Section>
   );
 }
 
@@ -97,40 +98,9 @@ export interface KeyValueItem {
   lead?: ReactNode;
 }
 
-/** Phone: a list in one card. PC: a 2×2 grid of cards with the value at 20px (design-spec 2). */
+/** The guide page's facts as the kit's key/value cards, each closed by its rule chips (design-spec 2). */
 export function KeyValueList({ items }: { items: KeyValueItem[] }) {
-  return (
-    <>
-      <Card className="lg:hidden flex flex-col divide-y divide-border p-0 md:p-0">
-        {items.map((it) => (
-          <div key={it.id} className="flex flex-col gap-1 p-4">
-            <span className="text-sm text-muted-foreground">{it.label}</span>
-            <span className="flex flex-wrap items-center gap-2">
-              <span>{it.value}</span>
-              {it.tag}
-            </span>
-            {it.line && <span className="text-sm">{it.line}</span>}
-            {it.lead && <span className="text-xs text-muted-foreground">{it.lead}</span>}
-            <RulesLine ids={it.rules} />
-          </div>
-        ))}
-      </Card>
-      <div className="hidden lg:grid grid-cols-2 gap-4">
-        {items.map((it) => (
-          <Card key={it.id} className="flex flex-col gap-1.5">
-            <span className="text-sm text-muted-foreground">{it.label}</span>
-            <span className="text-xl font-semibold flex flex-wrap items-center gap-2">
-              <span>{it.value}</span>
-              {it.tag}
-            </span>
-            {it.line && <span className="text-sm">{it.line}</span>}
-            {it.lead && <span className="text-xs text-muted-foreground">{it.lead}</span>}
-            <RulesLine ids={it.rules} />
-          </Card>
-        ))}
-      </div>
-    </>
-  );
+  return <KitKeyValueList items={items.map((it) => ({ id: it.id, label: it.label, value: it.value, tag: it.tag, line: it.line, lead: it.lead, footer: <RulesLine ids={it.rules} /> }))} />;
 }
 
 export interface FeeRow {

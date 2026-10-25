@@ -21,11 +21,14 @@ export async function loader({ params }: Route.LoaderArgs) {
   const { buildWorkbench } = await import("../lib/workbench.server");
   const { loadRules } = await import("../lib/data.server");
   const { goalContext } = await import("../lib/compare.server");
+  const { providerWrapperIds } = await import("../lib/providers.server");
   const wb = buildWorkbench(params.wrapper);
   if (!wb) throw new Response("Not found", { status: 404 });
   const rules = loadRules();
   const ids = wb.dataset === "pensia-net" ? [...ruleIds, "CAT-39"] : [...ruleIds];
-  return { wb, goal: goalContext(), rules: Object.fromEntries(ids.filter((id) => rules[id]).map((id) => [id, rules[id]!])), ruleIds: ids.filter((id) => rules[id]) };
+  // the "לפי ספק" tab leads to a page that is built only for these wrappers
+  const hasProviders = providerWrapperIds().includes(wb.wrapperId);
+  return { wb, hasProviders, goal: goalContext(), rules: Object.fromEntries(ids.filter((id) => rules[id]).map((id) => [id, rules[id]!])), ruleIds: ids.filter((id) => rules[id]) };
 }
 
 export function meta({ loaderData: data }: Route.MetaArgs) {
@@ -48,7 +51,7 @@ function NoGoalLine() {
 }
 
 export default function WorkbenchTracks() {
-  const { wb, goal, rules, ruleIds: ids } = useLoaderData<typeof loader>();
+  const { wb, hasProviders, goal, rules, ruleIds: ids } = useLoaderData<typeof loader>();
   const year = wb.feeYear ? feeYear(wb.feeYear) : null;
   return (
     <GoalsProvider presets={goal.presets as Presets}>
@@ -84,7 +87,7 @@ export default function WorkbenchTracks() {
               {companyCopy.toGuide} {wb.wrapperName}
             </Link>
           </header>
-          <WorkbenchTabs current="track" wrapperId={wb.wrapperId} />
+          <WorkbenchTabs current="track" wrapperId={wb.wrapperId} hasProviders={hasProviders} />
           {wb.rows.length === 0 ? <Callout tone="info">{copy.noTracks}</Callout> : <Workbench data={wb as unknown as WbData} />}
           <RulesLine ids={ids} />
         </div>

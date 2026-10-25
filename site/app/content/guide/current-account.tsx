@@ -3,7 +3,7 @@
 // and register as kupat-gemel-lehashkaa.tsx. NEW copy for the founder to review.
 import type { GuideContent } from "./types";
 import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
-import { Callout } from "../../components/ui";
+import { Callout, Sentence } from "../../components/kit";
 
 export const content: GuideContent = {
   what: ({ figure }) => {
@@ -17,14 +17,14 @@ export const content: GuideContent = {
         <p className="max-w-measure">
           <Term id="חשבון עובר ושב">חשבון הבנק השוטף</Term>: המשכורת נכנסת אליו וההוצאות יוצאות ממנו. לא כל בנק משלם <Term id="ריבית על יתרת זכות">ריבית על יתרת זכות</Term>; בנק שמשלם חייב להציג את התנאים, ובנק שלא משלם חייב לכתוב זאת בטבלת הריביות שלו. על ריבית שכן משולמת הבנק מנכה מס כבר כשהיא נזקפת לחשבון.
         </p>
-        <p className="max-w-measure">
+        <Sentence measure>
           אם <Term id="יתרת זכות בחשבון">יתרת הזכות</Term> נשארת {threshold ? <>מעל <Num value={threshold} /> </> : "מעל הסף שקבוע בחוק "}רבעון שלם, הבנק חייב לשלוח לכם הודעה שמפנה לחלופות שעשויות להניב יותר.
-        </p>
-        <p className="max-w-measure">
+        </Sentence>
+        <Sentence measure>
           העלות היא מסלול העמלות: <Term prefix="ה" id="מסלול בסיסי">מסלול הבסיסי</Term> כולל {basicTeller ? <>עד <Num value={basicTeller} /> פעולה בפקיד ו</> : null}
           {basicDirect ? <>עד <Num value={basicDirect} /> פעולות בערוץ ישיר בחודש</> : "מעט פעולות בחודש"}, <Term prefix="ה" id="מסלול מורחב">מורחב</Term>{" "}
           {extendedTeller && extendedDirect ? <>עד <Num value={extendedTeller} /> ו־<Num value={extendedDirect} /></> : "יותר"}. כל בנק חייב להציע את שניהם ולתת לכל לקוח להצטרף.
-        </p>
+        </Sentence>
         <RulesLine ids={["BANK-01", "BANK-09", "BANK-20", "BANK-17", "TXI-08"]} />
       </>
     );
@@ -56,9 +56,9 @@ export const content: GuideContent = {
         <p className="max-w-measure">
           אין בישראל ביטוח פיקדונות. אם בנק לא יכול לעמוד בהתחייבויותיו, נגיד בנק ישראל רשאי למנות לו מנהל מורשה ולהעביר את נכסיו והתחייבויותיו, ובאישור הממשלה גם להכריז על ערבות לפיקדונותיו; זו סמכות שבשיקול דעת, לא זכות שלכם.
         </p>
-        <p className="max-w-measure">
+        <Sentence measure>
           חוק חדש מחייב לבחון {months ? <>תוך <Num value={months} /> חודשים </> : null}אם צריך ביטוח פיקדונות, והצעת חוק פרטית מציעה ערבות {proposed ? <>של <Num value={proposed} /> </> : null}בבנקים קטנים; היא רק הצעה, ויתרת עו"ש ממילא לא נכללת בה.
-        </p>
+        </Sentence>
         <p className="max-w-measure">כסף שיושב בעו"ש בלי ריבית לא גדל, ולכן החוק מחייב את הבנק להזכיר לכם חלופות. <Term id="הטבה בנקאית">הטבה</Term> על ריבית או עמלה נגמרת רק אחרי הודעה מראש.</p>
         <RulesLine ids={["REG-04", "REG-05", "REG-06", "BANK-23", "BANK-20", "BANK-19"]} />
       </>

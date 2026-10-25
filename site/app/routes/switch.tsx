@@ -17,7 +17,7 @@ import { RuleRef, RulesLine } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { Callout, SegmentedControl } from "../components/ui";
 import { GoalsProvider, type Presets } from "../lib/goal";
-import { checklistFor, parsePlaybookQuery, playbookQueryString, type PlaybookQuery, type PlaybookStep as StepData, type SummaryItem, type Side, type Strength } from "../lib/playbook";
+import { checklistFor, parsePlaybookQuery, playbookQueryString, SWITCH_RULES_HREF, type PlaybookQuery, type PlaybookStep as StepData, type SummaryItem, type Side, type Strength } from "../lib/playbook";
 import { BROKERAGE } from "../lib/providers";
 import { useHoldings } from "../lib/state";
 import { useInputs } from "../lib/inputs";
@@ -212,7 +212,7 @@ function Body() {
               <Link to={`/guide/${data.wrapperId}`} className="text-link hover:underline min-h-target inline-flex items-center">
                 {c.links.guide}
               </Link>
-              <Link to="/rules#switching-and-transfers" className="text-link hover:underline min-h-target inline-flex items-center">
+              <Link to={SWITCH_RULES_HREF} className="text-link hover:underline min-h-target inline-flex items-center">
                 {c.links.rules}
               </Link>
             </nav>

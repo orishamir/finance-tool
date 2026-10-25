@@ -1,15 +1,15 @@
 {
   "id": "ETF-10",
-  "title": "The tracking asset of an unhedged Israeli fund on a foreign index includes the currency (for example 'S&P 500 100%, דולר ארה\"ב 100%', net total return)",
-  "title_he": "נכס המעקב בקרן לא מנוטרלת כולל את המטבע",
-  "text_he": "בקרן ישראלית לא מנוטרלת על מדד זר, התשקיף מגדיר את נכס המעקב כמדד בתוספת המטבע: המדד האמריקני במלואו והדולר במלואו, כשהמדד מחושב כתשואה כוללת נטו. כך מגדירות אותו גם קרן הסל של אי.בי.אי וגם הקרן המחקה הפתוחה של ילין לפידות. המנהל חייב לנטרל חשיפה למטבע חוץ שאינה נובעת מנכס המעקב, חוץ מחשיפה מזערית לצרכים תפעוליים. גרסה מנוטרלת מט\"ח היא נכס מעקב אחר, עם קוד חשיפה אחר.",
-  "strength": "institution",
+  "title": "The tracking asset and its currency: the fund's policy sets what it tracks, and currency exposure outside it is neutralised",
+  "title_he": "נכס המעקב והמטבע",
+  "text_he": "נכס המעקב של קרן מחקה הוא המדד או הסחורה שמדיניות ההשקעות שלה מכוונת אליהם. המנהל חייב לנטרל חשיפה למטבע חוץ שאינה חלק מנכס המעקב, חוץ מחשיפה מזערית לצרכים תפעוליים. לכן בקרן לא מנוטרלת על מדד זר המטבע הוא חלק מנכס המעקב, ובגרסה מנוטרלת מט״ח הוא לא, והיא נושאת קוד חשיפה אחר. כשנכס הייחוס נקוב במטבע חוץ, הדוח השנתי מראה גם את השינוי בשער המטבע.",
+  "strength": "primary",
   "dimensions": [
     "currency"
   ],
   "likely_to_change": "no",
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf",
@@ -38,29 +38,16 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
-      "title": "IBI ETF annual report 31.12.2025",
-      "title_he": "דוח שנתי ליום 31.12.2025 של אי.בי.אי. סל (4D) S&P 500",
-      "publisher": "Maya (TASE filings)",
-      "publisher_he": "אי.בי.אי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.2",
-      "locator_he": "עמוד 2",
-      "page": 2,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
-      "title": "Yalin Lapidot annual report 31.12.2025",
-      "title_he": "דוח שנתי ליום 31.12.2025 של ילין לפידות מחקה (4D) S&P 500",
-      "publisher": "Maya (TASE filings)",
-      "publisher_he": "ילין לפידות",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "pp.1-2",
-      "locator_he": "עמודים 1 עד 2",
-      "page": 1,
+      "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(דוח_שנתי_של_קרן)",
+      "title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן) (Wikisource mirror)",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg. 18(ב)(10)",
+      "locator_he": "תקנה 18(ב)(10)",
+      "anchor": "סעיף_18.ב",
       "checked": "2026-10-25"
     }
   ]

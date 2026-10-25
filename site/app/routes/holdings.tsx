@@ -13,7 +13,7 @@ import { ChildSavingsCard, ConsolidationCard, DifferentTypesLine } from "../comp
 import { Breadcrumb, PageShell } from "../components/shell";
 import { RuleRef, RulesLine } from "../components/provenance";
 import { TransferSheet } from "../components/transfer/sheet";
-import { Button, Callout, Card, cx } from "../components/ui";
+import { Button, Callout, Card, cx } from "../components/kit";
 import { loadBundle } from "../lib/bundle";
 import type { CompareBundle } from "../lib/compare";
 import { fmt } from "../lib/format";

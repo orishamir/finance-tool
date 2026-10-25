@@ -2,7 +2,7 @@
   "id": "SW-06",
   "title": "Step 3: the money moves within 10 business days, directly, in cash, with no transfer fee",
   "title_he": "שלב שלישי: הכסף עובר במזומן, ישירות, בלי עמלה",
-  "text_he": "הקופה המעבירה מעבירה את הכסף בתוך מספר ימי העסקים שהתקנות קובעות מבקשה שלמה וחתומה, אלא אם הבקשה בוטלה, והממונה רשאי להתיר הארכה במקרים מיוחדים. הכסף עובר ישירות בין הגופים המנהלים ולא דרך העמית, ובמזומן, אלא אם הגופים הסכימו אחרת; קופה שמאחרת מפצה את העמית מדמי הניהול שלה, ושולחת לקופה המקבלת את היתרה והתשואות היומיות כדי שאפשר יהיה לתבוע את הפרש התשואה. אין עמלת העברה; מה שכן יכול לעלות הוא סיום מוקדם של הנחה, ובקופה בניהול אישי ההעברה יכולה להיות בעין. הפניקס מציינת שניוד בין גופים מתבצע באותו פרק זמן מהמועד הקובע; התקנות נקראו באתר שמעתיק אותן והחוזר מעותק אצל צד שלישי.",
+  "text_he": "הקופה המעבירה מעבירה את הכסף בתוך מספר ימי העסקים שהתקנות קובעות מבקשה שלמה וחתומה, אלא אם הבקשה בוטלה, והממונה רשאי להתיר הארכה במקרים מיוחדים. הכסף עובר ישירות בין הגופים המנהלים ולא דרך העמית, ובמזומן, אלא אם הגופים הסכימו אחרת; קופה שמאחרת מפצה את העמית מדמי הניהול שלה, ושולחת לקופה המקבלת את היתרה והתשואות היומיות כדי שאפשר יהיה לתבוע את הפרש התשואה. אין עמלת העברה; מה שכן יכול לעלות הוא סיום מוקדם של הנחה, ובקופה בניהול אישי ההעברה יכולה להיות בעין.",
   "figure_names_he": {
     "transfer_business_days": "ימי עסקים להעברת הכסף",
     "commissioner_extension_business_days": "ימי עסקים נוספים שהממונה רשאי להתיר",
@@ -33,7 +33,7 @@
         "SW-06"
       ],
       "state": "sourced",
-      "notes": "The transferring fund transfers within ten business days of a complete, signed request unless cancelled (reg. 5(א)). Phoenix states the same count from the determining date (institution)."
+      "notes": "The transferring fund transfers within ten business days of a complete, signed request unless cancelled (reg. 5(א)), counted from the day the request reaches it."
     },
     "commissioner_extension_business_days": {
       "value": 20,
@@ -77,7 +77,7 @@
     }
   },
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=6",
@@ -143,17 +143,6 @@
       "locator": "p.8, s.5(ה), (ו)",
       "locator_he": "עמוד 8, סעיף 5(ה), (ו)",
       "page": 8,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.fnx.co.il/ishtalmutfund/faq/",
-      "title": "Phoenix study-fund FAQ",
-      "title_he": "שאלות ותשובות על קרן ההשתלמות של הפניקס",
-      "publisher": "The Phoenix",
-      "publisher_he": "הפניקס",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "ניוד בין גופים, יתבצע תוך עשרה ימי עסקים מהמועד הקובע",
       "checked": "2026-10-25"
     }
   ]

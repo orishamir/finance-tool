@@ -1,0 +1,29 @@
+{
+  "id": "KGL-25",
+  "title": "Altshuler Shaham: the 2026 year-end deposit cut-offs",
+  "title_he": "אלטשולר שחם: המועד האחרון להפקדה בשנה",
+  "text_he": "באלטשולר שחם, כדי שהפקדה תיספר בשנה הנוכחית, העברה בנקאית צריכה להגיע לחשבון החברה עד השעה שהחברה קובעת ביום האחרון של השנה, וצ׳ק צריך להגיע למשרדיה כמה ימים קודם. הפקדה שמגיעה אחר כך נספרת בשנה הבאה. כל חברה קובעת מועד משלה, ונקרא רק המועד של אלטשולר שחם.",
+  "strength": "institution",
+  "dimensions": [
+    "deposit-ceiling"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "kupat-gemel-lehashkaa.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.as-invest.co.il/interstedin/saving_plus_deposit/",
+      "title": "אלטשולר שחם – הפקדות סוף שנה, קופת גמל להשקעה",
+      "title_he": "אלטשולר שחם – הפקדות סוף שנה, קופת גמל להשקעה",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "KGL-04"
+  ]
+}

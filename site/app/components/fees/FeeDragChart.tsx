@@ -6,12 +6,12 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { scaleLinear } from "d3-scale";
 import { area, line as d3line } from "d3-shape";
 import type { FeeLine } from "@finance-tool/engine";
-import { buttons, guide as guideCopy, r3fees } from "../../copy";
+import { guide as guideCopy, r3fees } from "../../copy";
 import type { Analysis } from "../../lib/fees";
 import { fmt } from "../../lib/format";
 import { Num } from "../provenance";
-import { AxisLabels, niceYearTicks, scrollCueStyle } from "../chart/TimelineChart";
-import { Disclosure, cx } from "../ui";
+import { AxisLabels, niceYearTicks } from "../chart/TimelineChart";
+import { ChartLegend as Legend, ChartReadout as Readout, ChartTable as Table, Swatch, cx } from "../kit";
 
 const STRIP = 104;
 const TOP = 20; // room for the top axis label above its gridline (audit 2026-10-24 (sweep))
@@ -181,19 +181,13 @@ export function FeeDragChart({ an, horizonYears, hover, onHover, hasGoal, dimmed
 export function ChartLegend({ an }: { an: Analysis }) {
   const bands = bandsOf(an);
   return (
-    <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label="מקרא">
-      {bands.map((b) => (
-        <li key={b.id} className="flex items-center gap-1.5">
-          <span className={cx("size-2.5 rounded-sm", b.bg)} />
-          <bdi>{b.name}</bdi>
-        </li>
-      ))}
-      <li className="flex items-center gap-1.5">
-        <span className="w-3.5 h-[3px] rounded-sm bg-chart-fee-total" />
-        {r3fees.chart.total}
-      </li>
-      <li>{r3fees.chart.remainderLegend}</li>
-    </ul>
+    <Legend
+      items={[
+        ...bands.map((b) => ({ id: b.id, swatch: <Swatch shape="box" className={b.bg} />, label: <bdi>{b.name}</bdi> })),
+        { id: "total", swatch: <Swatch className="bg-chart-fee-total" />, label: r3fees.chart.total },
+        { id: "remainder", label: r3fees.chart.remainderLegend },
+      ]}
+    />
   );
 }
 
@@ -203,38 +197,14 @@ export function ChartReadout({ an, year }: { an: Analysis; year: number }) {
   const run = { rules: an.fm.run.rules, flags: an.fm.run.flags };
   const sum = p.parts.reduce((a, b) => a + b, 0);
   return (
-    <dl className="readout" aria-live="polite">
-      <div className="readout-row readout-head">
-        <dt>{p.year === 0 ? guideCopy.readout.today : `${r3fees.chart.year} ${p.year}`}</dt>
-        <dd />
-      </div>
-      {bands.map((b, i) => (
-        <div key={b.id} className="readout-row">
-          <dt className="flex items-center gap-2">
-            <span className={cx("size-2.5 rounded-sm", b.bg)} />
-            <bdi>{b.name}</bdi>
-          </dt>
-          <dd>
-            <Num value={an.mk.nis(p.parts[i]!, "F-61", b.name, run)} animate />
-          </dd>
-        </div>
-      ))}
-      <div className="readout-row">
-        <dt className="flex items-center gap-2">
-          <span className="w-3.5 h-[3px] rounded-sm bg-chart-fee-total" />
-          {r3fees.chart.total}
-        </dt>
-        <dd>
-          <Num value={an.mk.nis(p.total, "F-61", r3fees.chart.total, run)} animate />
-        </dd>
-      </div>
-      <div className="readout-row">
-        <dt>{r3fees.chart.remainderLegend.split(":")[0]}</dt>
-        <dd>
-          <Num value={an.mk.nis(p.total - sum, "F-61", r3fees.chart.remainderLegend, run)} animate />
-        </dd>
-      </div>
-    </dl>
+    <Readout
+      title={p.year === 0 ? guideCopy.readout.today : `${r3fees.chart.year} ${p.year}`}
+      rows={[
+        ...bands.map((b, i) => ({ id: b.id, swatch: <Swatch shape="box" className={b.bg} />, label: <bdi>{b.name}</bdi>, value: <Num value={an.mk.nis(p.parts[i]!, "F-61", b.name, run)} animate /> })),
+        { id: "total", swatch: <Swatch className="bg-chart-fee-total" />, label: r3fees.chart.total, value: <Num value={an.mk.nis(p.total, "F-61", r3fees.chart.total, run)} animate /> },
+        { id: "remainder", label: r3fees.chart.remainderLegend.split(":")[0], value: <Num value={an.mk.nis(p.total - sum, "F-61", r3fees.chart.remainderLegend, run)} animate /> },
+      ]}
+    />
   );
 }
 
@@ -243,43 +213,18 @@ export function ChartTable({ an }: { an: Analysis }) {
   const rows = points(an, bands);
   const run = { rules: an.fm.run.rules, flags: an.fm.run.flags };
   return (
-    <Disclosure label={buttons.showTable} openLabel={buttons.hideTable} summaryClassName="text-sm">
-      <div className="overflow-x-auto mt-2" style={scrollCueStyle}>
-        <table className="tbl text-sm">
-          <thead>
-            <tr>
-              <th scope="col">שנה</th>
-              {bands.map((b) => (
-                <th key={b.id} scope="col">
-                  <bdi>{b.name}</bdi>
-                </th>
-              ))}
-              <th scope="col">{r3fees.chart.total}</th>
-              <th scope="col">{r3fees.chart.remainderLegend.split(":")[0]}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((p) => (
-              <tr key={p.year}>
-                <th scope="row">
-                  <bdi dir="ltr">{p.year}</bdi>
-                </th>
-                {bands.map((b, i) => (
-                  <td key={b.id}>
-                    <Num size="cell" value={an.mk.nis(p.parts[i]!, "F-61", b.name, run)} />
-                  </td>
-                ))}
-                <td>
-                  <Num size="cell" value={an.mk.nis(p.total, "F-61", r3fees.chart.total, run)} />
-                </td>
-                <td>
-                  <Num size="cell" value={an.mk.nis(p.total - p.parts.reduce((a, b) => a + b, 0), "F-61", r3fees.chart.remainderLegend, run)} />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </Disclosure>
+    <Table
+      rowHead="שנה"
+      columns={[...bands.map((b) => ({ id: b.id, head: <bdi>{b.name}</bdi> })), { id: "total", head: r3fees.chart.total }, { id: "remainder", head: r3fees.chart.remainderLegend.split(":")[0] }]}
+      rows={rows.map((p) => ({
+        key: p.year,
+        head: p.year,
+        cells: [
+          ...bands.map((b, i) => <Num key={b.id} size="cell" value={an.mk.nis(p.parts[i]!, "F-61", b.name, run)} />),
+          <Num key="total" size="cell" value={an.mk.nis(p.total, "F-61", r3fees.chart.total, run)} />,
+          <Num key="remainder" size="cell" value={an.mk.nis(p.total - p.parts.reduce((a, b) => a + b, 0), "F-61", r3fees.chart.remainderLegend, run)} />,
+        ],
+      }))}
+    />
   );
 }

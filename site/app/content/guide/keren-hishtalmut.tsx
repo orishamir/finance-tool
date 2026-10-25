@@ -4,7 +4,7 @@
 import type { GuideContent } from "./types";
 import type { SiteValue } from "../../lib/value";
 import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
-import { Callout } from "../../components/ui";
+import { Callout } from "../../components/kit";
 
 const N = ({ v }: { v: SiteValue | null }) => (v ? <Num value={v} /> : null);
 
@@ -12,7 +12,7 @@ export const content: GuideContent = {
   what: ({ figure }) => (
     <>
       <p className="max-w-measure">
-        חיסכון <Term prefix="ש" id="הפקדות המעסיק">המעסיק</Term> ואתם מפקידים אליו מהשכר, בדרך כלל <N v={figure("KH-04", "employer_pct")} /> מהמעסיק ו־
+        חיסכון <Term prefix="ש" id="הפקדות המעסיק">המעסיק</Term> ואתם מפקידים אליו מהשכר, בשיעורים שבהסכם העבודה; הטבת המס חלה על הפקדות עד <N v={figure("KH-04", "employer_pct")} /> מהשכר מהמעסיק ועד
         <N v={figure("KH-04", "employee_pct")} /> מכם; <Term id="עמית-עצמאי">עצמאים</Term> מפקידים בעצמם. הכסף מושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> שבוחרים, ועל הרווחים לא
         משלמים מס כל עוד הוא בפנים. <N v={figure("TXH-09", "lock_years")} /> שנים אחרי <Term id="מועד התשלום הראשון">התשלום הראשון</Term> אפשר <Term id="משיכה">למשוך</Term> הכול בפטור
         ממס; לפני כן משיכה אפשרית, אבל ממוסה.
@@ -42,7 +42,7 @@ export const content: GuideContent = {
       <RulesLine ids={["TXH-01", "TXH-08", "TXH-02", "TXH-11", "TXH-03"]} />
       <Callout tone="caution" className="max-w-measure">
         <span className="font-medium">משיכה לפני הזמן אפשרית, אבל יקרה.</span> הפקדות המעסיק ממוסות כשכר, הרווחים לפי מדרגות המס של הכנסה שלא מיגיעה אישית, והקרן מנכה במקור{" "}
-        <N v={figure("TXH-15", "withholding_early")} />. את החישוב הזה האתר עוד לא עושה; הוא מגיע בגרסה הבאה.
+        <N v={figure("TXH-15", "withholding_early")} />. למי ששכיר, כמה זה עולה מופיע למעלה, ב"מה מייחד"; לעצמאים האתר עוד לא מחשב את זה.
       </Callout>
       <RulesLine ids={["TXH-13", "TXH-15", "TXG-03"]} />
       <p className="max-w-measure text-sm text-muted-foreground">באוצר דנים בצמצום ההטבה. נכון להיום החוק לא השתנה; האתר יעודכן אם ישתנה.</p>
@@ -52,7 +52,7 @@ export const content: GuideContent = {
   risks: () => (
     <>
       <p className="max-w-measure">הנכסים מוחזקים בנאמנות, בנפרד מהרכוש של החברה המנהלת, ואי אפשר לעקל אותם. אם החברה המנהלת קורסת, הניהול עובר לחברה אחרת. אין ערבות של המדינה לשווי הקרן.</p>
-      <p className="max-w-measure">השווי עולה ויורד עם ההשקעות של המסלול שבחרתם. אחרי משיכה החשבון נסגר להפקדות, והפקדות חדשות פותחות חשבון עם <Term id="ותק">ותק</Term> חדש.</p>
+      <p className="max-w-measure">השווי עולה ויורד עם ההשקעות של המסלול שבחרתם. אחרי משיכה החשבון נסגר להפקדות, והפקדות חדשות הולכות לחשבון אחר עם <Term id="ותק">ותק</Term> חדש.</p>
       <RulesLine ids={["PF-29", "REG-18", "REG-19", "KH-15"]} />
     </>
   ),

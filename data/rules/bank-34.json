@@ -1,0 +1,63 @@
+{
+  "id": "BANK-34",
+  "title": "Bank Leumi, Bank Hapoalim and Bank Yahav: prime as the anchor, each bank's own definition",
+  "title_he": "לאומי, הפועלים ויהב: הפריים כעוגן, וכל בנק מגדיר אותו",
+  "text_he": "בשלושת הבנקים שנבדקו, לאומי, הפועלים ויהב, העוגן של פיקדונות בריבית משתנה הוא הפריים, וכל בנק מגדיר אותו בעצמו. לאומי מגדיר אותו כריבית המקובלת אצלו מזמן לזמן כריבית הבסיס על יתרות חובה בעובר ושב; הפועלים מציין שהפריים הוא ריבית בנק ישראל בתוספת מרווח קבוע; יהב מציג את ריבית בנק ישראל ואת הפריים זו לצד זו ומצטט פיקדונות משתנים כמרווח מהפריים. יהב מציין גם שהוא רשאי לשנות ריביות או לסגור מוצר להפקדות חדשות בכל עת. בנקים אחרים לא נבדקו.",
+  "strength": "institution",
+  "dimensions": [
+    "real-vs-nominal",
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+      "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "title_he": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.1-2",
+      "locator_he": "עמודים 1 עד 2",
+      "page": 1,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.leumi.co.il/he/savings/interest-rate-table",
+      "title": "לאומי: טבלת שיעורי הריבית, הגדרות",
+      "title_he": "לאומי: טבלת שיעורי הריבית, הגדרות",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.bankhapoalim.co.il/interest-update",
+      "title": "הפועלים: שינויים בריבית בנק ישראל וריבית הפריים",
+      "title_he": "הפועלים: שינויים בריבית בנק ישראל וריבית הפריים",
+      "publisher": "Bank Hapoalim",
+      "publisher_he": "בנק הפועלים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.leumi.co.il/he/savings",
+      "title": "לאומי: חסכונות, שאלות ותשובות",
+      "title_he": "לאומי: חסכונות, שאלות ותשובות",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "BANK-25"
+  ]
+}

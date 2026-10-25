@@ -89,7 +89,7 @@
       "notes": "Across all the member's IRA funds, holdings of any class of control means in a corporation held through foreign funds may not exceed 5%."
     }
   },
-  "text_he": "ניירות ערך של תאגיד אחד לא יעלו על 10% מנכסי הקופה (לא כולל תעודות סל, קרנות חוץ ואג\"ח ממשלתיות). אופציות שנקנו, למעט אופציית רכש 001, עד 5%; בטוחות לנגזרים ולמכירה בחסר עד 10%; החזקה באמצעי שליטה דרך קרנות חוץ עד 5%. מיטב אינה מאפשרת כתיבת אופציות.",
+  "text_he": "ניירות ערך של תאגיד אחד לא יעלו על 10% מנכסי הקופה (לא כולל תעודות סל, קרנות חוץ ואג\"ח ממשלתיות). אופציות שנקנו, למעט אופציית רכש 001, עד 5%; בטוחות לנגזרים ולמכירה בחסר עד 10%; החזקה באמצעי שליטה דרך קרנות חוץ עד 5%. התקנות מתירות כתיבת אופציות בגבולות הבטוחות.",
   "figure_names_he": {
     "single_issuer_cap": "מגבלת החזקה בתאגיד אחד",
     "bought_options_cap": "מגבלת אופציות שנקנו",
@@ -97,7 +97,7 @@
     "foreign_fund_control_cap": "מגבלת אמצעי שליטה דרך קרנות חוץ"
   },
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=3",
@@ -125,20 +125,6 @@
       "locator_he": "עמוד 4, סעיף 4 (תקנה 5(א)(6)-(9))",
       "page": 4,
       "quote": "אופציית רכש 001",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.meitav.co.il/media/r2djwzpw/26061426l-תוצאות-מכרז-לניהול-אישי-2026-לאומי.pdf",
-      "title": "מיטב – תוצאות מכרז לניהול אישי 2026, נספח בנק לאומי",
-      "title_he": "מיטב – תוצאות מכרז לניהול אישי 2026, נספח בנק לאומי",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.1",
-      "locator_he": "עמוד 1",
-      "page": 1,
-      "quote": "כתיבת אופציות",
       "checked": "2026-10-25"
     }
   ]

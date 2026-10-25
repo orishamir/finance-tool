@@ -1,0 +1,39 @@
+{
+  "id": "PEN-43",
+  "title": "Mor: its provident fund carries no insurance cover",
+  "title_he": "מור: בקופת הגמל שלה אין כיסוי ביטוחי",
+  "text_he": "מור כותבת בעמוד המוצר שקופת הגמל שלה לא כוללת כיסויים ביטוחיים, ובתקנון התקני של מור לקופת גמל יש פרק ביטוח רק כשהחברה קונה ביטוח לעמיתים. אם זה כך בכל קופה לקצבה תלוי בתקנות על כיסוי ביטוחי בקופות גמל, שלא נקראו.",
+  "strength": "institution",
+  "dimensions": [
+    "insurance-cover"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.moreinvest.co.il/מוצרים/גמל-ופנסיה/קופות-גמל/",
+      "title": "מור – קופת גמל, חיסכון לטווח ארוך",
+      "title_he": "מור – קופת גמל, חיסכון לטווח ארוך",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור בית השקעות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "והוא אינו כולל כיסויים ביטוחיים",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf",
+      "title": "Mor gemel standard bylaws 18.02.2026",
+      "title_he": "תקנון תקני לקופת גמל לחיסכון של מור (18.2.2026)",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור גמל ופנסיה",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "PEN-35"
+  ]
+}

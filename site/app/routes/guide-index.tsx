@@ -6,7 +6,7 @@ import { IconDrillIn } from "../components/icons";
 import { SavedGoalStrip } from "../components/compare/strip";
 import { PageShell } from "../components/shell";
 import { GoalsProvider, type Presets } from "../lib/goal";
-import { Card } from "../components/ui";
+import { Card } from "../components/kit";
 import { groupGuides } from "../lib/guide-nav";
 
 export async function loader() {

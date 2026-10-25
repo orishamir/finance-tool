@@ -8,7 +8,7 @@ import { hebrewCount } from "../../lib/hebrew";
 import type { ExperienceEntry, PlaybookStep as StepData, Strength, StepFigure } from "../../lib/playbook";
 import { IconAlert, IconCopy, IconLock } from "../icons";
 import { Num, RuleRef } from "../provenance";
-import { Card, Disclosure, Tag, cx } from "../ui";
+import { Card, cx, Disclosure, RankBadge, Tag } from "../kit";
 
 /** "ראשוני" and its kin: always on a step. A copy opens its host and the day it was read (copy.md 8.0). */
 export function StrengthChip({ strength, host, checked }: { strength: Strength; host?: string; checked?: string }) {
@@ -156,9 +156,7 @@ export function PlaybookStep({ step, offer, skip, children }: { step: StepData; 
       {offer}
       <Card as="li" className={cx("flex flex-col gap-3", step.noRule && "border-caution")}>
         <div className="flex items-start gap-3">
-          <span className="size-7 shrink-0 rounded-full bg-secondary text-sm font-semibold inline-flex items-center justify-center" aria-label={`${c.stepNumber} ${step.n}`}>
-            {step.n}
-          </span>
+          <RankBadge rank={step.n} label={`${c.stepNumber} ${step.n}`} first={false} flush />
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 min-w-0">
             <h3 className="text-lg font-medium">{title}</h3>
             <StrengthChip strength={step.strength} host={first?.host} checked={first?.checked} />

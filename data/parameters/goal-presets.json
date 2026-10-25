@@ -18,7 +18,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": "a reserve is judged a year ahead; the idle-cash preset (F-60) uses the same set"
+        "notes": "a reserve is judged a year ahead; the idle-cash preset (F-60) uses the same set",
+        "rationale_he": "עתודה נזילה נבדקת על שנה קדימה. הטופס ממלא את האופק הזה כשבוחרים בה, ואפשר לשנות אותו."
       },
       "monthly_deposit": {
         "value": 0,
@@ -34,7 +35,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "בעתודה נזילה אין הפקדות חודשיות: הכסף כבר קיים ומחכה."
       },
       "must_stay_available_share": {
         "value": 100,
@@ -50,7 +52,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": "the whole amount stays available at once (product 3.2 idle-cash preset)"
+        "notes": "the whole amount stays available at once (product 3.2 idle-cash preset)",
+        "rationale_he": "בעתודה נזילה כל הסכום צריך להישאר זמין בבת אחת."
       },
       "withdrawable_any_time": {
         "value": true,
@@ -66,7 +69,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "בעתודה נזילה צריך להיות אפשר למשוך את הכסף בכל רגע."
       }
     },
     "known-date": {
@@ -85,7 +89,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": "the founder's apartment case, golden S40"
+        "notes": "the founder's apartment case, golden S40",
+        "rationale_he": "האופק לקנייה במועד ידוע, למשל דירה. הטופס ממלא ערך התחלה, ואפשר לשנות אותו."
       },
       "must_stay_available_share": {
         "value": 0,
@@ -101,7 +106,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "בקנייה במועד ידוע אין חלק מהכסף שחייב להיות זמין לפני המועד."
       },
       "withdrawable_any_time": {
         "value": false,
@@ -117,7 +123,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "בקנייה במועד ידוע לא חייבים שאפשר יהיה למשוך את הכסף בכל רגע."
       }
     },
     "long-term": {
@@ -136,7 +143,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": "the founder's ETF-vs-provident case, golden S39"
+        "notes": "the founder's ETF-vs-provident case, golden S39",
+        "rationale_he": "אופק התחלתי לחיסכון ארוך, כמו השוואה בין קרן סל לקופת גמל להשקעה. אפשר לשנות אותו."
       },
       "must_stay_available_share": {
         "value": 0,
@@ -152,7 +160,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "בחיסכון ארוך אין חלק מהכסף שחייב להיות זמין בכל רגע."
       },
       "withdrawable_any_time": {
         "value": false,
@@ -168,7 +177,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "בחיסכון ארוך לא חייבים שאפשר יהיה למשוך את הכסף בכל רגע."
       }
     },
     "lump-sum": {
@@ -187,7 +197,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": "the illustrative scenario's horizon (P-05)"
+        "notes": "the illustrative scenario's horizon (P-05)",
+        "rationale_he": "אופק התחלתי לסכום חד־פעמי בלי הפקדות נוספות. אפשר לשנות אותו."
       },
       "monthly_deposit": {
         "value": 0,
@@ -203,7 +214,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": "a lump sum has no monthly deposits"
+        "notes": "a lump sum has no monthly deposits",
+        "rationale_he": "בסכום חד־פעמי אין הפקדות חודשיות."
       },
       "must_stay_available_share": {
         "value": 0,
@@ -219,7 +231,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "בסכום חד־פעמי אין חלק מהכסף שחייב להיות זמין בכל רגע."
       },
       "withdrawable_any_time": {
         "value": false,
@@ -235,7 +248,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "בסכום חד־פעמי לא חייבים שאפשר יהיה למשוך את הכסף בכל רגע."
       }
     },
     "child": {
@@ -254,7 +268,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": "until the child's withdrawal age (CS-14); the person shortens it by the child's age"
+        "notes": "until the child's withdrawal age (CS-14); the person shortens it by the child's age",
+        "rationale_he": "חיסכון לילד נמשך עד גיל המשיכה של הילד. הטופס ממלא את האופק עד הגיל הזה, ואפשר לקצר אותו לפי גיל הילד."
       },
       "must_stay_available_share": {
         "value": 0,
@@ -270,7 +285,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "בחיסכון לילד אין חלק מהכסף שחייב להיות זמין לפני גיל המשיכה."
       },
       "withdrawable_any_time": {
         "value": false,
@@ -286,7 +302,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "בחיסכון לילד לא חייבים שאפשר יהיה למשוך את הכסף בכל רגע."
       }
     }
   },
@@ -306,7 +323,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "הנקודה שבה מחוון השנים בטופס המטרה מתחיל. זה גבול של האתר לנוחות השימוש, לא כלל."
       },
       "max": {
         "value": 40,
@@ -322,7 +340,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "הנקודה שבה מחוון השנים בטופס המטרה נגמר. אפשר להקליד גם מספר שנים גבוה יותר."
       },
       "step": {
         "value": 1,
@@ -338,12 +357,13 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "הגודל של כל צעד במחוון השנים בטופס המטרה."
       }
     }
   },
-  "rationale": "Starting values a preset fills into the goal form (product D13); every one can be edited and is then the person's own. Amounts (now, monthly) are never preset. Horizons come from the founder's own cases in the golden scenarios and from the illustrative scenario, so the examples on the site and in the tests agree.",
-  "rationale_he": "ערכי התחלה שנקודת התחלה ממלאת בטופס המטרה; כל ערך ניתן לשינוי ואז הוא שלכם. סכומים (היום, חודשי) לא ממולאים מראש. האופקים לקוחים מהמקרים של מייסד האתר בתרחישי הבדיקה ומהתרחיש להמחשה, כדי שהדוגמאות באתר ובבדיקות יתאימו.",
+  "rationale": "A starting point in the goal form fills in starting values: a horizon, and whether the money must stay available. Every value can be edited and is then the person's own. The amount today is never preset, and the monthly deposit is preset only as \"none\" for goals with no deposits. The horizons are examples for each kind of goal, not a recommendation.",
+  "rationale_he": "נקודות ההתחלה בטופס המטרה ממלאות ערכי התחלה: אופק, והאם הכסף צריך להישאר זמין. כל ערך אפשר לשנות, ואז הוא שלכם. סכום היום לא ממולא מראש, וההפקדה החודשית ממולאת רק כ״אין״ במטרות שבהן אין הפקדות. האופקים הם דוגמאות לכל סוג מטרה, לא המלצה.",
   "chosen_by": "Claude, at the founder's request (2026-10-23); revisable",
   "signed_off_by": "founder",
   "signed_off_on": "2026-10-23",

@@ -5,10 +5,9 @@ import { AcceptedFallField } from "../exposure-mode/fields";
 import { fmt } from "../../lib/format";
 import { useGoals, type FieldKey } from "../../lib/goal";
 import type { RunGoal } from "../../lib/compare";
-import { Button, Tag, cx } from "../ui";
+import { Button, cx, ParameterLine, Tag } from "../kit";
 import { availableTooBig, InsuranceField, type FormData } from "./goal-form";
 import { GoalNumber, GoalSlider, SwitchRow } from "./fields";
-import { ParameterLine } from "../timeline/fields";
 
 export interface Suggestion {
   field: FieldKey;

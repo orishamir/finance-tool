@@ -1,0 +1,110 @@
+{
+  "id": "TXK-26",
+  "title": "Withholding rate on a kupat gemel lehashkaa lump sum: Harel says 25%, the regulation's text found says 20%",
+  "title_he": "שיעור הניכוי במקור במשיכה מקופת גמל להשקעה (לא הוכרע)",
+  "text_he": "הראל כותבת שבמשיכה הונית היא מנכה במקור את שיעור המס המרבי על הרווח הריאלי. תקנות הניכוי במקור, בנוסח המשולב האחרון שנמצא, קובעות לקופת גמל שמשלמת ריבית שיעור ניכוי נמוך יותר; התיקון שהעלה את שיעורי הניכוי של הבנקים ושל משלמים אחרים לא שינה את התקנה הזאת. הוראה של רשות המסים שקובעת שיעור אחר לתשלום הזה לא נמצאה. הניכוי הוא מקדמה: המס הסופי נקבע לפי הכלל על המשיכה, ומה שלא נוכה משולם בדוח השנתי.",
+  "figure_names_he": {
+    "regulation_text_rate": "שיעור הניכוי בתקנה, בנוסח שנמצא",
+    "harel_stated_rate": "שיעור הניכוי לפי הראל"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "tax-at-exit",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "regulation_text_rate": {
+      "value": 20,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
+        "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, נוסח משולב (המוסד לביטוח לאומי, to ק\"ת 7907, 27.12.2017), p.2, reg. 3(א) \"קופת גמל המשלמת ליחיד ריבית, תנכה ממנה מס בשיעור של 20%\"",
+        "publisher": "National Insurance Institute (btl.gov.il), consolidated text",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXK-26"
+      ],
+      "state": "sourced",
+      "notes": "The rate in the text found (consolidated to 27.12.2017); 15% on interest for sums deposited before the regulations' start. The 2012 amendment (ק\"ת 7076) raised regs. 4 and 5 to 25% and did not amend reg. 3. Whether a later amendment exists was not established."
+    },
+    "harel_stated_rate": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.harel-group.co.il/long-term-savings/funding-saving/join/doclib/%d7%92%d7%9e%d7%9c%20%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94.pdf",
+        "title": "קופת גמל להשקעה (עלון הראל, 2023), p.1: \"בניכוי 25% מס רווחי הון על הרווח הריאלי בלבד\"",
+        "publisher": "Harel Insurance and Finance",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TXK-26"
+      ],
+      "state": "sourced",
+      "notes": "Harel's statement of what it withholds. It contradicts the regulation's text found; no Tax Authority instruction was found either way."
+    }
+  },
+  "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, נוסח משולב (המוסד לביטוח לאומי)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.2, reg. 3(א)",
+      "locator_he": "עמוד 2, תקנה 3(א)",
+      "page": 2,
+      "quote": "קופת גמל המשלמת ליחיד ריבית, תנכה ממנה מס בשיעור של 20%",
+      "checked": "2026-10-25",
+      "qualifier": "(consolidated to ק\"ת 7907, 27.12.2017)"
+    },
+    {
+      "url": "https://olaw.org.il/takanot/takanot-7076.pdf",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, ק\"ת 7076",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Open Law (copy of Reshumot)",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "p.600, ss.1-9",
+      "locator_he": "עמוד 600, סעיפים 1-9",
+      "page": 600,
+      "checked": "2026-10-25",
+      "qualifier": "(mirror of Reshumot)"
+    },
+    {
+      "url": "https://www.harel-group.co.il/long-term-savings/funding-saving/join/doclib/%d7%92%d7%9e%d7%9c%20%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94.pdf",
+      "title": "קופת גמל להשקעה (עלון הראל, 2023)",
+      "title_he": "קופת גמל להשקעה (עלון הראל, 2023)",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "בניכוי 25% מס רווחי הון על הרווח הריאלי בלבד",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "TXK-07"
+  ]
+}

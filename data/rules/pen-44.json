@@ -1,0 +1,118 @@
+{
+  "id": "PEN-44",
+  "title": "Loans against a provident fund (unsettled)",
+  "title_he": "הלוואה כנגד קופת גמל (לא מוסדר)",
+  "text_he": "בתקנון התקני של מור לקופת גמל אפשר ללוות כנגד הקופה: עד חלק מהכסף הנזיל ועד חלק קטן יותר מהכסף שאינו נזיל (בלי כספי פיצויים), לתקופה מוגבלת, וסך ההלוואות מוגבל לחלק מנכסי הקופה. נמצא רק בתקנון של מור; מקור כללי לא נמצא.",
+  "figure_names_he": {
+    "liquid_loan_max_pct": "תקרת הלוואה מכסף נזיל (במור)",
+    "nonliquid_loan_max_pct": "תקרת הלוואה מכסף שאינו נזיל (במור)",
+    "loan_max_years": "תקופת הלוואה מרבית בשנים (במור)",
+    "total_loans_max_pct_of_assets": "תקרת סך ההלוואות מנכסי הקופה (במור)"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "liquid_loan_max_pct": {
+      "value": 80,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf",
+        "title": "Mor standard bylaws for a provident savings fund (\"אלפא מור\"), 18.02.2026, s.47",
+        "publisher": "Mor Gemel and Pension",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "PEN-44"
+      ],
+      "state": "sourced",
+      "notes": "Share of liquid money a member may borrow, in Mor's gemel bylaws. Not traced to a CMA standard bylaw or loans circular (unsettled)."
+    },
+    "nonliquid_loan_max_pct": {
+      "value": 30,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf",
+        "title": "Mor standard bylaws for a provident savings fund (\"אלפא מור\"), 18.02.2026, s.47",
+        "publisher": "Mor Gemel and Pension",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "PEN-44"
+      ],
+      "state": "sourced",
+      "notes": "Share of non-liquid money, excluding severance, in Mor's gemel bylaws. Unsettled."
+    },
+    "loan_max_years": {
+      "value": 7,
+      "unit": "years",
+      "source": {
+        "url": "https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf",
+        "title": "Mor standard bylaws for a provident savings fund (\"אלפא מור\"), 18.02.2026, s.47",
+        "publisher": "Mor Gemel and Pension",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "PEN-44"
+      ],
+      "state": "sourced",
+      "notes": "Longest loan term in Mor's gemel bylaws. Unsettled."
+    },
+    "total_loans_max_pct_of_assets": {
+      "value": 10,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf",
+        "title": "Mor standard bylaws for a provident savings fund (\"אלפא מור\"), 18.02.2026, s.47",
+        "publisher": "Mor Gemel and Pension",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "PEN-44"
+      ],
+      "state": "sourced",
+      "notes": "Total loans as a share of fund assets in Mor's gemel bylaws. Unsettled."
+    }
+  },
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf",
+      "title": "Mor gemel standard bylaws 18.02.2026",
+      "title_he": "תקנון תקני לקופת גמל לחיסכון של מור (18.2.2026)",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור גמל ופנסיה",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "section 47",
+      "locator_he": "סעיף 47",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "PEN-35"
+  ]
+}

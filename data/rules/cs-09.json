@@ -1,7 +1,7 @@
 {
   "id": "CS-09",
-  "title": "What the default (increased-risk) track holds",
-  "title_he": "מה מחזיק מסלול ברירת המחדל בסיכון מוגבר",
+  "title": "Harel: what its default (increased-risk) track holds",
+  "title_he": "הראל: מה מחזיק מסלול ברירת המחדל שלה",
   "strength": "institution",
   "dimensions": [
     "currency",
@@ -51,13 +51,13 @@
       "notes": "Upper bound of the equity exposure of Harel's increased-risk (default) track; above 100% through derivatives. Harel's bylaw only (CS OQ7)."
     }
   },
-  "text_he": "בהראל, מסלול הסיכון המוגבר (ברירת המחדל) מחזיק חשיפה למניות בארץ ובחו\"ל של 75% עד 120% מנכסי המסלול, ועשוי להיות חשוף למטבע חוץ. מסלולי המועט והבינוני מתוארים רק כ'לפי שיקול דעת ועדת ההשקעות'. נקרא תקנון הראל בלבד (שאלה פתוחה 7).",
+  "text_he": "בהראל, מסלול הסיכון המוגבר (ברירת המחדל) מחזיק חשיפה למניות בארץ ובחו״ל בין החשיפה המינימלית למקסימלית שבתקנון שלה, ועשוי להיות חשוף למטבע חוץ. את מסלולי הסיכון המועט והבינוני הראל מתארת רק כ'לפי שיקול דעת ועדת ההשקעות'. מדיניות ההשקעה של כל מסלול נקבעת בידי החברה המנהלת ומאושרת בידי הממונה, ולכן הטווח הזה הוא של הראל; תקנונים של חברות אחרות לא נבדקו.",
   "figure_names_he": {
     "equity_exposure_min": "חשיפה מינימלית למניות במסלול ברירת המחדל (הראל)",
     "equity_exposure_max": "חשיפה מקסימלית למניות במסלול ברירת המחדל (הראל)"
   },
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
@@ -71,5 +71,8 @@
       "page": 11,
       "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "CS-26"
   ]
 }

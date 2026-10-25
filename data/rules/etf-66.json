@@ -1,0 +1,140 @@
+{
+  "id": "ETF-66",
+  "title": "IBI, MTF, Mor, Tachlit and Harel: one-year tracking figures of their index funds, by replication method",
+  "title_he": "אי.בי.אי, MTF, מור, תכלית והראל: הפרש העקיבה בשנה אחת לפי שיטה",
+  "text_he": "בדוחות של קרנות של אי.בי.אי, MTF, מור ותכלית על מדדים זרים, רוב קרנות ההחלף הקדימו מעט את מדד הנטו לפני ההוצאות בשנה האחרונה, ופיגרו אחריו אחרי ההוצאות. בדוחות של קרנות של הראל שמחזיקות מניות על מדדי הבורסה בתל אביב, התשואה הייתה קרובה מאוד למדד. זו שנה אחת ומעט קרנות, וההשוואה בין השיטות אינה מדויקת כי הן עוקבות אחרי גרסאות שונות של מדדים, ולכן אי אפשר לקבוע ששיטה אחת מניבה יותר.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-management-balance"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-30",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
+      "title": "IBI ETF annual report 31.12.2025",
+      "title_he": "דוח שנתי ליום 31.12.2025 של אי.בי.אי. סל (4D) S&P 500",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "אי.בי.אי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.7, 9",
+      "locator_he": "עמודים 7, 9",
+      "page": 7,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1729001-1730000/P1729157-00.pdf",
+      "title": "אי.בי.אי., דוח שנתי \"אי.בי.אי. מחקה (4D)י Nasdaq 100\" (5127766), 31.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.6, 8",
+      "locator_he": "עמודים 6, 8",
+      "page": 6,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1730001-1731000/P1730711-00.pdf",
+      "title": "MTF, דוח שנתי \"MTF מחקה (Nasdaq 100 (4D\" (5134531), 31.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.7, 9",
+      "locator_he": "עמודים 7, 9",
+      "page": 7,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1729001-1730000/P1729977-00.pdf",
+      "title": "מור, דוח שנתי \"מור מחקה (4D)י NASDAQ 100\" (5117585), 31.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.6, 8",
+      "locator_he": "עמודים 6, 8",
+      "page": 6,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1729001-1730000/P1729627-00.pdf",
+      "title": "MTF, דוח שנתי \"MTF מחקה (MSCI World (4D\" (5122569), 31.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.7, 9",
+      "locator_he": "עמודים 7, 9",
+      "page": 7,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1731001-1732000/P1731275-00.pdf",
+      "title": "תכלית, דוח שנתי \"תכלית MSCI WORLD (4D) TTF\" (5124573), 31.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.6, 8",
+      "locator_he": "עמודים 6, 8",
+      "page": 6,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732496-00.pdf",
+      "title": "אי.בי.אי., דוח שנתי \"אי.בי.אי. מחקה (4D)י MSCI AC World\" (5139605), 31.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.6, 8",
+      "locator_he": "עמודים 6, 8",
+      "page": 6,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1761001-1762000/P1761272-00.pdf",
+      "title": "הראל, דוח שנתי \"הראל סל (4A) ת\"א 35\" (1148907), 30.6.2026",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.7-8",
+      "locator_he": "עמודים 7 עד 8",
+      "page": 7,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1769001-1770000/P1769340-00.pdf",
+      "title": "הראל, דוח שנתי \"הראל מחקה (4A) ת\"א 35\" (5130661), 30.6.2026",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.6, 8",
+      "locator_he": "עמודים 6, 8",
+      "page": 6,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1769001-1770000/P1769378-00.pdf",
+      "title": "הראל, דוח שנתי \"הראל מחקה (4A) ת\"א 90\" (5130638), 30.6.2026",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.6, 8",
+      "locator_he": "עמודים 6, 8",
+      "page": 6,
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "ETF-54"
+  ]
+}

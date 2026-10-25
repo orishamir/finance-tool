@@ -1,0 +1,111 @@
+{
+  "id": "ETF-57",
+  "title": "IBI and Yalin Lapidot: 2025 tracking results of two S&P 500 funds, with the managers' explanations",
+  "title_he": "אי.בי.אי וילין לפידות: פער העקיבה בשתי קרנות על המדד האמריקני",
+  "text_he": "באי.בי.אי ובילין לפידות, הדוחות השנתיים של שתי קרנות על המדד האמריקני משווים את תשואת הקרן לשינוי בנכס המעקב באותה שנה. קרן הסל של אי.בי.אי פיגרה אחרי נכס המעקב, והמנהל מייחס את הפער בעיקר להוצאות הקרן. הקרן המחקה הפתוחה של ילין לפידות עלתה עליו, והמנהל מייחס את העודף לחשיפה דרך נגזרים כשיתר הנכסים מושקעים בנכסים נזילים. אלה שתי דוגמאות לשנה אחת, לא כלל על כל הקרנות.",
+  "figure_names_he": {
+    "ibi_sp500_fund_return_2025": "תשואת קרן הסל של אי.בי.אי על S&P 500 בשנה המדווחת",
+    "ibi_sp500_tracking_asset_return_2025": "שינוי נכס המעקב באותה שנה",
+    "yalin_sp500_fund_return_2025": "תשואת הקרן המחקה של ילין לפידות על S&P 500 בשנה המדווחת"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "fee-management-balance"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "ibi_sp500_fund_return_2025": {
+      "value": 1.85,
+      "unit": "pct",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
+        "title": "דוח שנתי ליום 31.12.2025 של אי.בי.אי. סל (4D) S&P 500 (1148162), p.7",
+        "publisher": "אי.בי.אי",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "ETF-57"
+      ],
+      "state": "sourced",
+      "notes": "IBI S&P 500 ETF (1148162), calendar 2025: fund 1.85% vs tracking asset 2.61%; the manager attributes the gap mainly to expenses of about 0.8085%."
+    },
+    "ibi_sp500_tracking_asset_return_2025": {
+      "value": 2.61,
+      "unit": "pct",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
+        "title": "דוח שנתי ליום 31.12.2025 של אי.בי.אי. סל (4D) S&P 500 (1148162), p.7",
+        "publisher": "אי.בי.אי",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "ETF-57"
+      ],
+      "state": "sourced"
+    },
+    "yalin_sp500_fund_return_2025": {
+      "value": 2.98,
+      "unit": "pct",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
+        "title": "דוח שנתי ליום 31.12.2025 של ילין לפידות מחקה (4D) S&P 500 (5139282), p.6",
+        "publisher": "ילין לפידות",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "ETF-57"
+      ],
+      "state": "sourced",
+      "notes": "Yalin Lapidot open tracking fund S&P 500 (5139282), calendar 2025: fund 2.98% vs 2.61%; the manager attributes the excess to exposure through derivatives."
+    }
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
+      "title": "IBI ETF annual report 31.12.2025",
+      "title_he": "דוח שנתי ליום 31.12.2025 של אי.בי.אי. סל (4D) S&P 500",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "אי.בי.אי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.7",
+      "locator_he": "עמוד 7",
+      "page": 7,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
+      "title": "Yalin Lapidot annual report 31.12.2025",
+      "title_he": "דוח שנתי ליום 31.12.2025 של ילין לפידות מחקה (4D) S&P 500",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "ילין לפידות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.6",
+      "locator_he": "עמוד 6",
+      "page": 6,
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "ETF-09"
+  ]
+}

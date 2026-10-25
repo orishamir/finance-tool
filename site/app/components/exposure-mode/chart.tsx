@@ -7,7 +7,7 @@ import type { SeriesLine } from "../../lib/compare";
 import { defaultSelection, seriesFor, type ExposureResultView } from "../../lib/exposure-mode";
 import { ChartLegend, ChartReadout, ChartTable, ComparisonChart } from "../compare/chart";
 import type { ResultCtx } from "../compare/ctx";
-import { SegmentedControl, cx } from "../ui";
+import { cx, SegmentedControl } from "../kit";
 import { IconPencil } from "../icons";
 import { Tpl } from "./tpl";
 import type { ExpCtx, Mode } from "./ctx";

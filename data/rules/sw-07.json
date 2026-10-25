@@ -2,10 +2,9 @@
   "id": "SW-07",
   "title": "Cancelling a transfer: until the money moves, by a signed notice to the transferring fund",
   "title_he": "ביטול העברה: עד שהכסף עובר, בהודעה חתומה",
-  "text_he": "העמית מבטל בחתימה על הודעת ביטול (נספח ו׳) ובהעברתה לקופה המעבירה, בפקס, בדואר או בדוא״ל בין השאר, לפני מועד ההעברה; הבקשה מתבטלת כשההודעה מגיעה לקופה המעבירה, שמעבירה אותה לקופה המקבלת. אם אירע מקרה ביטוח אחרי המועד הקובע ולפני מסירת ההודעה, הבקשה אינה מתבטלת. אחרי ביטול, הקופה המקבלת מחזירה כסף שכבר הופקד אצלה לחשבון העמית בקופה המעבירה בתוך מספר ימי עסקים, עם התשואה שלה ובלי ניכוי מלבד דמי ניהול. הפניקס מציינת שחרטה מניוד אפשרית בתוך מספר ימי עסקים מקבלת הבקשה או עד שהכסף עובר, ומציינת תיבת דואר ששמה מרמז על שימור; החוזר נקרא מעותק אצל צד שלישי.",
+  "text_he": "העמית מבטל בחתימה על הודעת ביטול (נספח ו׳) ובהעברתה לקופה המעבירה, בפקס, בדואר או בדוא״ל בין השאר, לפני מועד ההעברה; הבקשה מתבטלת כשההודעה מגיעה לקופה המעבירה, שמעבירה אותה לקופה המקבלת. אם אירע מקרה ביטוח אחרי המועד הקובע ולפני מסירת ההודעה, הבקשה אינה מתבטלת. אחרי ביטול, הקופה המקבלת מחזירה כסף שכבר הופקד אצלה לחשבון העמית בקופה המעבירה בתוך מספר ימי עסקים, עם התשואה שלה ובלי ניכוי מלבד דמי ניהול.",
   "figure_names_he": {
-    "deposits_returned_after_cancel_business_days": "ימי עסקים להחזרת הפקדות אחרי ביטול",
-    "phoenix_cancel_window_business_days": "ימי עסקים לחרטה מניוד (הפניקס)"
+    "deposits_returned_after_cancel_business_days": "ימי עסקים להחזרת הפקדות אחרי ביטול"
   },
   "strength": "primary",
   "dimensions": [
@@ -32,30 +31,10 @@
       ],
       "state": "sourced",
       "notes": "After a cancellation the receiving fund returns money already deposited with it to the member's account in the transferring fund within ten business days, with its return and no deduction other than management fees (s.3(י))."
-    },
-    "phoenix_cancel_window_business_days": {
-      "value": 10,
-      "unit": "business_days",
-      "source": {
-        "url": "https://www.fnx.co.il/ishtalmutfund/faq/",
-        "title": "Phoenix study-fund FAQ (\"שאלות ותשובות\" on transfers)",
-        "publisher": "The Phoenix",
-        "strength": "institution"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "SW-07"
-      ],
-      "state": "sourced",
-      "notes": "Phoenix: cancellation (\"חרטה מניוד\") is possible within ten business days of receiving the transfer request, or until the money moves if earlier. Institution statement; it agrees in practice with reg. 5(א)."
     }
   },
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
@@ -108,17 +87,6 @@
       "locator": "p.22, Annex F",
       "page": 22,
       "quote": "הודעת עמית על ביטול בקשת העברה",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.fnx.co.il/ishtalmutfund/faq/",
-      "title": "Phoenix study-fund FAQ",
-      "title_he": "שאלות ותשובות על קרן ההשתלמות של הפניקס",
-      "publisher": "The Phoenix",
-      "publisher_he": "הפניקס",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "תוך 10 ימי עסקים מקבלת בקשת הניוד",
       "checked": "2026-10-25"
     }
   ]
