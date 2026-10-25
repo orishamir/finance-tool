@@ -411,7 +411,7 @@ describe("F-70 classification fit, each outcome", () => {
 
 // ---------------------------------------------------------------- F-68 and F-64 fixtures
 
-const source = { url: "https://data.gov.il/dataset/gemelnet", title: "fixture", publisher: "CMA", strength: "primary" as const };
+const source = { url: "https://data.gov.il/he/datasets/cma/gemelnet", title: "fixture", publisher: "CMA", strength: "primary" as const };
 const fee = (value: number | null, unit: ValueObject["unit"]): ValueObject => ({
   value,
   unit,
