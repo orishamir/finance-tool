@@ -2,12 +2,12 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { checkGoal, emptyGoal, resolveGoal, type Presets } from "./goal";
-import { presetFor, purposeIds, quickGoalPlan, showsHorizonHonestLine, type PurposeId, type QuickInput, type QuickMessages } from "./quick-goal";
+import { presetFor, purposeIds, quickFields, quickGoalPlan, showsHorizonHonestLine, type PurposeId, type QuickInput, type QuickMessages } from "./quick-goal";
 
 const presets = (JSON.parse(readFileSync(new URL("../../../data/parameters/goal-presets.json", import.meta.url), "utf8")) as { presets: Presets }).presets;
-const bounds = { horizon: { min: 1, max: 40 }, pct: { min: -50, max: 50 }, age: { min: 16, max: 100 } };
+const bounds = { horizon: { min: 1, max: 40 }, pct: { min: -50, max: 50 }, age: { min: 16, max: 100 }, today: "2026-10-25" };
 const names: Record<PurposeId, string> = { apartment: "דירה", wedding: "חתונה", studies: "לימודים", child: "ילד", retirement: "פרישה", cushion: "כרית ביטחון", none: "בלי מטרה מסוימת" };
-const msgs: QuickMessages = { needAmount: "need", nan: "nan", years: "years", yearsWhole: "whole", yearsRange: "range", names };
+const msgs: QuickMessages = { needAmount: "need", nan: "nan", years: "years", yearsWhole: "whole", yearsRange: "range", childAge: "age", negative: "neg", names };
 const checkMsgs = { years: "years", yearsWhole: "whole", yearsRange: "range", negative: "neg", available: "avail", age: "age", pct: () => "pct" };
 const input = (over: Partial<QuickInput> = {}): QuickInput => ({ amountNow: 120_000, monthly: null, years: 7, unknownYears: false, purpose: "apartment", ...over });
 const plan = (over: Partial<QuickInput> = {}) => quickGoalPlan(input(over), bounds, msgs);
@@ -82,7 +82,8 @@ describe("quickGoalPlan", () => {
         const g = p.patch(emptyGoal(0));
         const r = resolveGoal(g, presets);
         expect(checkGoal(g, r, bounds, checkMsgs).ready, purpose).toBe(true);
-        if (unknownYears) {
+        // a child's goal asks the age, not the years: years typed before the chip are not used
+        if (unknownYears || purpose === "child") {
           expect(r.source.horizonYears).toBe("preset");
           expect(r.horizonYears).toBe((presets[p.preset]!.horizon_years!.value as number));
         } else expect(r.horizonYears).toBe(7);
@@ -107,6 +108,44 @@ describe("quickGoalPlan", () => {
     expect(after.exposures).toEqual(before.exposures);
     expect(after.available).toEqual(before.available);
     expect(after.anytime).toEqual(before.anytime);
+  });
+});
+
+describe("what each purpose asks", () => {
+  it("the cushion asks the sum only, a child the age instead of the years, a purchase its cost", () => {
+    expect(quickFields("cushion")).toEqual({ monthly: false, years: false, childAge: false, targetCost: false });
+    expect(quickFields("child")).toEqual({ monthly: true, years: false, childAge: true, targetCost: false });
+    for (const p of ["apartment", "wedding", "studies"] as const) expect(quickFields(p)).toEqual({ monthly: true, years: true, childAge: false, targetCost: true });
+    for (const p of ["retirement", "none", null] as const) expect(quickFields(p)).toEqual({ monthly: true, years: true, childAge: false, targetCost: false });
+  });
+  it("a child's age (or birth year) sets the horizon to the preset's 18 less the age", () => {
+    const horizon = (childAge: number | null) => {
+      const p = plan({ purpose: "child", years: 30, childAge });
+      if (p.kind !== "compare") throw new Error("expected compare");
+      const g = p.patch(emptyGoal(0));
+      return [g.childAge, resolveGoal(g, presets).horizonYears];
+    };
+    expect(horizon(5)).toEqual([5, 13]);
+    expect(horizon(2021)).toEqual([5, 13]);
+    expect(horizon(null)).toEqual([null, 18]);
+  });
+  it("a child's age outside 0 to 17, or not a number, is refused on its own field", () => {
+    expect(plan({ purpose: "child", childAge: 18 })).toMatchObject({ kind: "invalid", field: "childAge", message: "age" });
+    expect(plan({ purpose: "child", childAge: 2.5 })).toMatchObject({ kind: "invalid", field: "childAge", message: "age" });
+    expect(plan({ purpose: "child", childAge: Number.NaN })).toMatchObject({ kind: "invalid", field: "childAge", message: "nan" });
+  });
+  it("a purchase's cost is kept as an entered value; a negative one is refused", () => {
+    const p = plan({ purpose: "wedding", targetCost: 80_000.4 });
+    if (p.kind !== "compare") throw new Error("expected compare");
+    expect(p.patch(emptyGoal(0)).targetCost).toMatchObject({ value: 80_000, unit: "nis", checked: "2026-10-25" });
+    expect(plan({ purpose: "apartment", targetCost: -1 })).toMatchObject({ kind: "invalid", field: "cost", message: "neg" });
+  });
+  it("a field the purpose does not ask is ignored, even when it holds text", () => {
+    const p = plan({ purpose: "retirement", childAge: 99, targetCost: -5 });
+    if (p.kind !== "compare") throw new Error("expected compare");
+    const g = p.patch({ ...emptyGoal(0), childAge: 3 });
+    expect(g.childAge).toBe(3);
+    expect(g.targetCost).toBeUndefined();
   });
 });
 

@@ -158,7 +158,7 @@ function Body() {
           />
         </header>
 
-        <div className="flex flex-col gap-5 lg:grid lg:grid-cols-[62fr_38fr] lg:gap-10 lg:items-start max-w-page">
+        <div className="flex flex-col gap-5 lg:grid lg:grid-cols-[minmax(0,62fr)_minmax(0,38fr)] lg:gap-10 lg:items-start max-w-page">
           <div className="flex flex-col gap-5 lg:gap-6 min-w-0">
             {costCard && <div className="lg:hidden">{costCard}</div>}
             {oneStep && <Callout tone="info">{oneStep}</Callout>}

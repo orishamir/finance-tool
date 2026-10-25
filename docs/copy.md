@@ -141,6 +141,10 @@ Why A: the reader learns what the site does and the one thing that sets it apart
 | `home.quick.purposes.retirement` | פרישה | chip; long-term preset; also the goal's name |
 | `home.quick.purposes.cushion` | כרית ביטחון | chip; opens idle cash (not a preset of the comparison). "כרית ביטחון" over the preset's own name "עתודה נזילה" on the card; the preset's name stays on the form and the strip |
 | `home.quick.purposes.none` | בלי מטרה מסוימת | chip; lump-sum preset, or long-term when a monthly sum is typed; no name |
+| `home.quick.costLabel.apartment · wedding · studies` | כמה הדירה תעלה, בערך · כמה החתונה תעלה, בערך · כמה הלימודים יעלו, בערך | added 2026-10-25: the fourth field with a purchase purpose; ₪; saved as the goal's purchase cost |
+| `home.quick.costHint` | לא חובה. התוצאה תראה אם הסכום מספיק. | added 2026-10-25: hint under the cost field |
+| `home.quick.childNote` | החיסכון נבדק עד גיל {n}, המספר שהאתר קבע ל״{preset}״. | added 2026-10-25: under the fields with "ילד"; {n} is P-07's child horizon (a parameter `Num`), {preset} its name. The age field reuses `r2.form.childAge` |
+| `home.quick.unknownNote` | בלי מספר שנים, ההשוואה תרוץ על {n} שנים, המספר שהאתר קבע ל״{preset}״. | added 2026-10-25: under the fields with a purpose chosen and no years typed, or with "לא יודעים" pressed; {n} the preset's horizon (a parameter `Num`) |
 | `home.quick.submit` | מה הכי מתאים | the button; the result page's own title (`r2.result.title`), so one word names the answer |
 | `home.quick.submitCushion` | כמה עולה להשאיר בעו״ש | the button with "כרית ביטחון" chosen |
 | `home.quick.needAmount` | הזינו סכום: היום או בכל חודש. | under the button when no sum above zero is typed |
@@ -1298,7 +1302,7 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 12 and the handoff in
 | `idle.materiality` | בסכום כזה ההפרש הוא כ־`{x}` בשנה: `{מתחת לסף שהאתר קבע (P-03)/שווה את הטרחה}` (הסף: `{n}`) | added 2026-10-24 |
 | `idle.smallSum` | בקרן כספית קונים ופודים בדרך כלל בלי סכום מינימלי, ובבנק שיש לו הסכם הפצה עם מנהל הקרן אסור לגבות עמלה על קנייה, החזקה או פדיון. | added 2026-10-24; chips MF-15, MF-26, BANK-18; shown when the yearly cost of the whole sum is under P-03's threshold |
 | `idle.anytime · anytimeHint` | הכסף צריך להיות זמין בכל רגע · אם לא תסמנו, ההשוואה המלאה תכלול גם פיקדון נעול. | added 2026-10-24, the box by the hand-off button |
-| `home.quick.already · alreadyDeposit · alreadyStudyFund · alreadyLarge` | יש לכם כבר… · פיקדון שמסתיים · קרן השתלמות נזילה · סכום גדול בלי מטרה | added 2026-10-24: a second row under the purpose chips; links to /idle-cash and /holdings, the last selects "בלי מטרה מסוימת" |
+| `home.quick.already · alreadyDeposit · alreadyStudyFund` | יש לכם כבר… · פיקדון שמסתיים · קרן השתלמות נזילה | added 2026-10-24: a second row under the purpose chips; links to /idle-cash and /holdings. `alreadyLarge` ("סכום גדול בלי מטרה", which selected "בלי מטרה מסוימת") removed 2026-10-25 as a copy of choosing nothing |
 
 ### 7.3 Track workbench page
 

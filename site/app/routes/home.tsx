@@ -60,7 +60,7 @@ function QuestionBlock({ presets, meta, today, bounds }: { presets: Presets; met
   const { status, current } = useGoals();
   const has = status === "old-version" || (status === "ok" && current && !isBlank(current));
   const wide = "lg:w-[calc(100%+8rem)] lg:-mx-16 xl:w-auto xl:mx-0";
-  if (!has) return <QuickGoalCard mode="current" bounds={bounds} className={wide} />;
+  if (!has) return <QuickGoalCard mode="current" bounds={bounds} presets={presets} meta={meta} today={today} className={wide} />;
   return (
     <div className={`min-h-[5.5rem] flex flex-col gap-3 ${wide}`}>
       <Suspense fallback={<div className="h-14 rounded-lg bg-card border border-border" aria-hidden="true" />}>
@@ -68,7 +68,7 @@ function QuestionBlock({ presets, meta, today, bounds }: { presets: Presets; met
       </Suspense>
       {status === "ok" && (
         <Disclosure label={<span className="font-medium">{copy.quick.another}</span>} summaryClassName="bg-card border border-border rounded-lg px-4">
-          <QuickGoalCard mode="new" bounds={bounds} className="mt-3" />
+          <QuickGoalCard mode="new" bounds={bounds} presets={presets} meta={meta} today={today} className="mt-3" />
         </Disclosure>
       )}
     </div>

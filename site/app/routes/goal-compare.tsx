@@ -308,7 +308,7 @@ function Body({ bundle: bundle0, data, fit, frame, exposureId, registerSave }: {
         )}
       </header>
 
-      <div className="flex flex-col gap-section lg:grid lg:grid-cols-[3fr_2fr] lg:gap-x-12 lg:items-start">
+      <div className="flex flex-col gap-section lg:grid lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:gap-x-12 lg:items-start">
         <div className="flex flex-col gap-6 min-w-0">
           {view.ranked.length > 0 && (
             <section className="flex flex-col gap-4" aria-labelledby={`${headId}-list`}>

@@ -452,7 +452,7 @@ export function ExposureBody({ bundle, data, frame, registerSave }: { bundle: Co
         <HorizonDefaultedNote bundle={bundle} g={g} presetName={r2.presets[current!.preset] ?? ""} onChange={() => openField("horizonYears")} figures={exposureFigures(view, g, mk)} />
       </header>
 
-      <div className="flex flex-col gap-section lg:grid lg:grid-cols-[3fr_2fr] lg:gap-x-12 lg:items-start">
+      <div className="flex flex-col gap-section lg:grid lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:gap-x-12 lg:items-start">
         <div
           ref={listRef}
           className="flex flex-col gap-6 min-w-0"
