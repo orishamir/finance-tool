@@ -555,6 +555,8 @@ A `card` row, 56 px, `rounded-lg`: at the start a `Target` icon (Lucide) in `mut
 
 Why a strip and not a page: the goal is context for every other page (the fit mark, the result), so it must be visible and editable from anywhere without a "my goals" destination the site does not have (D1: no accounts).
 
+**Amended 2026-10-25 (the founder: "maybe the different goals should be displayed each in a row, like the Doron one").** On the first page every goal is a row of its own, in the goals' order (`SavedGoalStrip all`, `GoalRow` in `components/compare/strip.tsx`): its name, "{שנים} · {סכום}", its saved comparison's line, "לתוצאה", "עריכה" and its own menu (whose delete removes that goal). A row's link first makes its goal the current one, then opens the page. A goal that holds nothing yet reads "עוד לא מולאה", with "למילוי" in place of the two links; one line under the rows, "נשמרו במכשיר הזה" ("נשמר…" with one goal). The rows show whenever any goal holds something. The comparison and the fee page keep the current goal's row and the others as chips, since there a chip switches which goal the page computes.
+
 ### 6.8 Fit mark
 
 Called for by 3.10 Out ("a fit mark against the person's saved goal, with a link to run the comparison"), roadmap R2, method F-70, P-04, D11 (loss filter deferred to R5), D17.

@@ -57,14 +57,15 @@ type Bounds = { horizon: Range; monthly: Range };
 /** The question, which the comparison and the holdings depend on (docs/design-spec.md 1a). The pre-rendered page and the first client render show
  * the card; a saved goal replaces it with the strip (in a box of at least the strip's height) and the card waits closed as "שאלה נוספת" (D12). */
 function QuestionBlock({ presets, meta, today, bounds }: { presets: Presets; meta: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null }; today: string; bounds: Bounds }) {
-  const { status, current } = useGoals();
-  const has = status === "old-version" || (status === "ok" && current && !isBlank(current));
+  const { status, goals } = useGoals();
+  // any goal holding something: the rows list them all, the blank ones too (2026-10-25)
+  const has = status === "old-version" || (status === "ok" && goals.some((g) => !isBlank(g)));
   const wide = "lg:w-[calc(100%+8rem)] lg:-mx-16 xl:w-auto xl:mx-0";
   if (!has) return <QuickGoalCard mode="current" bounds={bounds} presets={presets} meta={meta} today={today} className={wide} />;
   return (
     <div className={`min-h-[5.5rem] flex flex-col gap-3 ${wide}`}>
       <Suspense fallback={<div className="h-14 rounded-lg bg-card border border-border" aria-hidden="true" />}>
-        <SavedGoalStrip presets={presets} meta={meta} today={today} />
+        <SavedGoalStrip presets={presets} meta={meta} today={today} all />
       </Suspense>
       {status === "ok" && (
         <Disclosure label={<span className="font-medium">{copy.quick.another}</span>} summaryClassName="bg-card border border-border rounded-lg px-4">
