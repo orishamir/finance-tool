@@ -2,7 +2,7 @@
 import { useId, useMemo, useState } from "react";
 import { invest as c } from "../../copy";
 import type { FieldKey } from "../../lib/goal";
-import { customIdOf, indexSuggestions, matchKnownIndex, type CustomIndex, type IndexRef } from "../../lib/invest";
+import { customIdOf, customIndexPath, indexPath, indexSuggestions, matchKnownIndex, type CustomIndex, type IndexRef } from "../../lib/invest";
 import { fxLabel, nisPer, type FxSnapshot } from "../../lib/fx";
 import type { WorkbenchBundle } from "../../lib/providers";
 import { Num } from "../provenance";
@@ -14,8 +14,8 @@ export const pillName = (name: string): string => name.replace(/^מדד\s+/, "")
 export function IndexChips({ known, customs, selectedId, bundle, onRemove, onRename, onSave, onGo }: { known: IndexRef[]; customs: CustomIndex[]; selectedId: string | null; bundle: Pick<WorkbenchBundle, "exposures"> | null; onRemove: (id: string) => void; onRename: (id: string, name: string) => void; onSave: (c: CustomIndex) => void; onGo: (path: string) => void }) {
   const [adding, setAdding] = useState(false);
   const items: ChipItem[] = [
-    ...known.map((i) => ({ id: i.id, label: pillName(i.name), href: `/invest/${i.id}` })),
-    ...customs.map((i) => ({ id: i.id, label: pillName(i.name), href: `/invest?custom=${encodeURIComponent(i.id)}`, editable: true })),
+    ...known.map((i) => ({ id: i.id, label: pillName(i.name), href: indexPath(i.id) })),
+    ...customs.map((i) => ({ id: i.id, label: pillName(i.name), href: customIndexPath(i.id), editable: true })),
   ];
   return (
     <div className="flex flex-col gap-3">
@@ -29,7 +29,7 @@ export function IndexChips({ known, customs, selectedId, bundle, onRemove, onRen
         onDelete={onRemove}
         add={{ label: c.chips.other, onClick: () => setAdding((v) => !v), expanded: adding }}
       />
-      {adding && bundle && <CustomPanel bundle={bundle} customs={customs} onCancel={() => setAdding(false)} onSave={(x) => { setAdding(false); onSave(x); onGo(`/invest?custom=${encodeURIComponent(x.id)}`); }} onKnown={(k) => { setAdding(false); onGo(`/invest/${k}`); }} />}
+      {adding && bundle && <CustomPanel bundle={bundle} customs={customs} onCancel={() => setAdding(false)} onSave={(x) => { setAdding(false); onSave(x); onGo(customIndexPath(x.id)); }} onKnown={(k) => { setAdding(false); onGo(indexPath(k)); }} />}
     </div>
   );
 }

@@ -235,7 +235,7 @@ function Chips() {
         <State label="items (links), no editing">
           <ChipList heading={w.heading} note={w.note} items={sites} value="y" words={words} />
         </State>
-        <State label={`editable chosen item (pencil, bin), drag, ${g.states.interactive}`}>
+        <State label={`editable chosen item (pencil, bin), ${g.states.interactive}, ${g.states.draggable}`}>
           <ChipList
             heading={w.heading}
             items={order.map((id) => ({ id, label: label(id), editable: true, movable: true }))}
@@ -397,7 +397,7 @@ function Fields() {
       </Demo>
       <Demo name="RangeField" use={g.uses.RangeField}>
         <Grid>
-          <State label={g.states.interactive}>
+          <State label={`${g.states.interactive}, ${g.states.draggable}`}>
             <RangeField label={g.sample.range} unit="years" value={years} min={1} max={40} step={1} isEntered={years !== 10} validate={(n) => (n < 1 || n > 40 ? g.sample.error : null)} onCommit={(n) => setYears(n)} onReset={() => setYears(10)} inputMode="numeric" />
           </State>
           <State label={g.states.disabled}>
@@ -440,7 +440,7 @@ function MarkerDemo({ today }: { today: string }) {
   return (
     <>
       <Demo name="Marker, MarkerMark" use={g.uses.Marker}>
-        <State label={g.states.interactive} wide>
+        <State label={`${g.states.interactive}, ${g.states.draggable}`} wide>
           <div ref={box} className="relative w-full" dir="ltr" style={{ height: HEIGHT }}>
             <svg width={width} height={HEIGHT} viewBox={`0 0 ${width} ${HEIGHT}`} role="img" aria-label={g.sample.markerName} className="block select-none">
               <line x1={left} x2={left + w} y1={HEIGHT - 24} y2={HEIGHT - 24} className="stroke-chart-axis" strokeWidth="1" />

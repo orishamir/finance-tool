@@ -18,7 +18,7 @@ export const site = {
     { href: "/rules", label: "חוקים וכללים", current: "rules" },
     { href: "/parameters", label: "פרמטרים", current: "parameters" },
     { href: "/goal", label: "השוואה למטרה", current: "goal" },
-    { href: "/invest", label: "השקעה במדד" }, // D28, 2026-10-25
+    { href: "/indices", label: "השקעה במדד" }, // D28, 2026-10-25
   ] as const,
   notCovered: { href: "/not-covered", label: "מה האתר עוד לא מכסה" },
   // audit 2026-10-24 (A54, A29, A96): the menu's second group, the home crumb, the footer lines, back to top
@@ -3554,7 +3554,8 @@ export const kit = {
       closed: "סגור",
       nested: "פנימי בתוך פתוח",
       long: "ארוך",
-      interactive: "לחיצה וגרירה",
+      interactive: "אפשר לנסות",
+      draggable: "אפשר לגרור",
       withIcon: "עם אייקון",
     },
     uses: {
