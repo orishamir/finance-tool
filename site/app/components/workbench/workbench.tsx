@@ -127,16 +127,19 @@ export type WorkbenchTab = "provider" | "track" | "fund";
 /**
  * "לפי ספק" · "לפי מסלול" · "לפי קרן", on the three workbench pages. The tab you are on is a label; the others are links
  * to the same subject. A brokerage account has no tracks in the regulator's data, so its track tab is disabled with the line
- * that says why; a provident wrapper has no fund tab (no exposure to list funds for).
+ * that says why; a provident wrapper has no fund tab (no exposure to list funds for). A wrapper with a track page and no providers
+ * page (`hasProviders` false, from `providerWrapperIds()`) has no provider tab, and a strip left with the tab you are on is not drawn
+ * (2026-10-25: the tab led to `/workbench/providers/child-savings-provident`, which does not exist).
  */
-export function WorkbenchTabs({ current, wrapperId, providerHref, trackHref, fundHref }: { current: WorkbenchTab; wrapperId: string; providerHref?: string; trackHref?: string | null; fundHref?: string | null }) {
+export function WorkbenchTabs({ current, wrapperId, providerHref, trackHref, fundHref, hasProviders = true }: { current: WorkbenchTab; wrapperId: string; providerHref?: string; trackHref?: string | null; fundHref?: string | null; hasProviders?: boolean }) {
   const t = r4workbench.tabs;
   const brokerage = wrapperId === "brokerage-account";
   const tabs: { key: WorkbenchTab; label: string; href: string | null; disabled?: boolean }[] = [
-    { key: "provider", label: t.byProvider, href: providerHref ?? `/workbench/providers/${wrapperId}` },
+    ...(hasProviders || current === "provider" ? [{ key: "provider" as const, label: t.byProvider, href: providerHref ?? `/workbench/providers/${wrapperId}` }] : []),
     { key: "track", label: t.byTrack, href: brokerage ? null : (trackHref ?? `/workbench/tracks/${wrapperId}`), disabled: brokerage },
     ...(fundHref ? [{ key: "fund" as const, label: t.byFund, href: fundHref }] : []),
   ];
+  if (tabs.length < 2) return null;
   const base = "min-h-target lg:min-h-10 px-4 inline-flex items-center rounded-[5px] text-sm";
   return (
     <div className="flex flex-col gap-1.5">

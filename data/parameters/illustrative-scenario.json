@@ -16,7 +16,8 @@
       "effective_from": "2026-10-23",
       "effective_to": null,
       "update_rule": "founder",
-      "notes": ""
+      "notes": "",
+      "rationale_he": "הסכום שהגרף במדריכים מתחיל ממנו. זה סכום עגול שהאתר בחר לדוגמה, לא ממוצע ולא המלצה. אפשר להזין את הסכום שלכם."
     },
     "monthly_deposit": {
       "value": 500,
@@ -32,7 +33,8 @@
       "effective_from": "2026-10-23",
       "effective_to": null,
       "update_rule": "founder",
-      "notes": ""
+      "notes": "",
+      "rationale_he": "ההפקדה החודשית שהגרף מניח. זה סכום עגול שהאתר בחר לדוגמה, לא ממוצע ולא המלצה. אפשר לשנות אותה במחוון או להקליד סכום אחר."
     },
     "horizon_years": {
       "value": 10,
@@ -48,7 +50,8 @@
       "effective_from": "2026-10-23",
       "effective_to": null,
       "update_rule": "founder",
-      "notes": ""
+      "notes": "",
+      "rationale_he": "מספר השנים שהגרף מציג. זה אופק עגול שהאתר בחר לדוגמה, לא המלצה לכמה זמן לחסוך. אפשר לשנות אותו במחוון או להקליד מספר אחר."
     },
     "A-01": {
       "value": 5,
@@ -64,7 +67,8 @@
       "effective_from": "2026-10-23",
       "effective_to": null,
       "update_rule": "founder",
-      "notes": "gross yearly return for market products (funds, ETFs, provident, hishtalmut, pension); a starting value, not a forecast (D9)"
+      "notes": "gross yearly return for market products (funds, ETFs, provident, hishtalmut, pension); a starting value, not a forecast (D9)",
+      "rationale_he": "התשואה השנתית ברוטו שהגרף מניח למוצרי שוק: קרנות, קרנות סל, קופות גמל, קרנות השתלמות ופנסיה. זה ערך התחלה עגול שהאתר בחר, לא תחזית ולא תשואה שנמדדה. אפשר להזין תשואה אחרת."
     },
     "A-02": {
       "value": 2,
@@ -80,7 +84,8 @@
       "effective_from": "2026-10-23",
       "effective_to": null,
       "update_rule": "founder",
-      "notes": "yearly inflation"
+      "notes": "yearly inflation",
+      "rationale_he": "האינפלציה השנתית שהגרף מניח, כדי להציג סכומים בכסף של היום. זה ערך התחלה עגול שהאתר בחר: לא ממוצע שנמדד ולא תחזית. אפשר להזין אינפלציה אחרת."
     },
     "cash_rate": {
       "value": 3.5,
@@ -96,7 +101,8 @@
       "effective_from": "2026-10-23",
       "effective_to": null,
       "update_rule": "founder",
-      "notes": "yearly rate for cash-like products (deposit, money-market fund, makam, government bond, current account); the site's assumption for options with no published rate of their own (money-market fund, makam, government bond); the bank deposit and the current account run on their published rates (2026-10-24)"
+      "notes": "yearly rate for cash-like products (deposit, money-market fund, makam, government bond, current account); the site's assumption for options with no published rate of their own (money-market fund, makam, government bond); the bank deposit and the current account run on their published rates (2026-10-24)",
+      "rationale_he": "הריבית השנתית שהגרף מניח למוצרים דמויי מזומן: קרן כספית, מק״מ ואג״ח ממשלתית. זה ערך התחלה עגול שהאתר בחר, לא ריבית שפורסמה ולא תחזית. פיקדון בבנק ועו״ש מחושבים לפי הריבית שהבנק פרסם. אפשר להזין ריבית אחרת."
     },
     "annual_income": {
       "value": 144000,
@@ -112,7 +118,8 @@
       "effective_from": "2026-10-23",
       "effective_to": null,
       "update_rule": "founder",
-      "notes": "read only by runs that need an income (the self-employed study-fund deduction, TXH-05); the person's entered income replaces it"
+      "notes": "read only by runs that need an income (the self-employed study-fund deduction, TXH-05); the person's entered income replaces it",
+      "rationale_he": "ההכנסה השנתית ברוטו שהחישוב מניח כשהוא צריך הכנסה, למשל בקרן השתלמות של עצמאי. זה סכום עגול שהאתר בחר לדוגמה; הכנסה שהזנתם מחליפה אותו."
     }
   },
   "sliders": {
@@ -131,7 +138,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "הנקודה שבה מחוון ההפקדה החודשית מתחיל. זה גבול של האתר לנוחות השימוש, לא כלל."
       },
       "max": {
         "value": 10000,
@@ -147,7 +155,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "הנקודה שבה מחוון ההפקדה החודשית נגמר, בטווח שרוב האנשים ינסו. אפשר להקליד גם סכום גבוה יותר."
       },
       "step": {
         "value": 100,
@@ -163,7 +172,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "הגודל של כל צעד במחוון ההפקדה החודשית. סכום שבין שני צעדים אפשר להקליד."
       }
     },
     "horizon_years": {
@@ -181,7 +191,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "הנקודה שבה מחוון האופק מתחיל. זה גבול של האתר לנוחות השימוש, לא כלל."
       },
       "max": {
         "value": 40,
@@ -197,7 +208,8 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "הנקודה שבה מחוון האופק נגמר, בטווח שרוב האנשים ינסו. אפשר להקליד גם מספר שנים גבוה יותר."
       },
       "step": {
         "value": 1,
@@ -213,12 +225,13 @@
         "effective_from": "2026-10-23",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": ""
+        "notes": "",
+        "rationale_he": "הגודל של כל צעד במחוון האופק. מספר שבין שני צעדים אפשר להקליד."
       }
     }
   },
-  "rationale": "The graph opens on 10,000 NIS today, 500 NIS a month, for 10 years, with 5% a year for market products, 3.5% for cash-like products and 2% inflation. These are round, middle-of-the-road starting values for someone starting to save, not a forecast; change any of them on the page. They are the values the test scenarios use, so every guide graph is checked. The sliders run from 0 to 10,000 NIS a month and from 1 to 40 years; larger values can be typed. On the comparison page the 3.5% is the rate the site assumes for the options that have no published rate of their own (the money-market fund, makam, the government bond; 2026-10-24): it is not a published rate and not a forecast, and a person can enter another rate to replace it. Representative fund of the brokerage account (2026-10-24, provisional, chosen by Claude; the founder has not signed this value off): fund 5139282 (Yelin Lapidot tracking fund (4D) S&P 500), the lowest all-in cost inside the fund among the nine S&P 500 funds collected on 2026-10-24 (0.02% a year, all of it trustee fee; management fee 0%; no load); it replaces IBI's 1148162 (about 1.115% a year), which made 'a cheap tracker in a brokerage account' look about 100,000 NIS worse over 20 years than it is. Runner-up: 5139100 (Altshuler Shaham tracking fund, 0.03% trustee). The fees provider stays Leumi.",
-  "rationale_he": "הגרף נפתח על 10,000 ₪ היום, 500 ₪ בחודש, ל-10 שנים, עם 5% בשנה למוצרי שוק, 3.5% למוצרים דמויי מזומן ו-2% אינפלציה. אלה ערכי התחלה עגולים ואמצעיים למי שמתחיל לחסוך, לא תחזית; אפשר לשנות כל אחד מהם בעמוד. אלה הערכים שתרחישי הבדיקה משתמשים בהם, כך שכל גרף במדריך נבדק. המחוונים נעים מ-0 עד 10,000 ₪ בחודש ומשנה אחת עד 40 שנים; ערכים גדולים יותר אפשר להקליד. בעמוד ההשוואה 3.5% היא הריבית שהאתר מניח לאפשרויות שאין להן ריבית שפורסמה (הקרן הכספית, המק״מ, האג״ח הממשלתית; 24.10.2026): היא לא ריבית שפורסמה ולא תחזית, ואפשר להזין ריבית אחרת במקומה. הקרן המייצגת של חשבון הניהול העצמי (24.10.2026, זמני, נבחר על ידי Claude; המייסד עוד לא אישר ערך זה): קרן 5139282 (ילין לפידות מחקה (4D) S&P 500), העלות הכוללת הנמוכה ביותר בתוך הקרן מבין תשע קרני ה-S&P 500 שנאספו ב-24.10.2026 (0.02% בשנה, כולה שכר נאמן; דמי הניהול 0%; בלי תוספת); היא מחליפה את 1148162 של אי.בי.אי (כ-1.115% בשנה), שגרמה ל\"קרן מחקה זולה בחשבון מסחר\" להיראות גרועה בכ-100,000 ₪ ב-20 שנה. מקום שני: 5139100 (אלטשולר שחם מחקה, 0.03% נאמן). ספק התעריפים נשאר לאומי.",
+  "rationale": "The guide graphs open on round, middle-of-the-road starting values for someone starting to save: the amount today, a monthly deposit, a horizon, a return for market products, a rate for cash-like products and inflation. They are not a forecast and not a measured average, and each can be changed on the page. The sliders cover what most people would try; larger values can be typed. On the comparison page the cash-like rate is the site's assumption for options with no published rate of their own (the money-market fund, makam, the government bond): it is not a published rate and not a forecast, and a person can enter another rate to replace it. For each product the graph uses one collected representative record (a deposit, a fund or a track), and the page says which.",
+  "rationale_he": "גרפי המדריכים נפתחים על ערכי התחלה עגולים ואמצעיים למי שמתחיל לחסוך: סכום היום, הפקדה חודשית, אופק, תשואה למוצרי שוק, ריבית למוצרים דמויי מזומן ואינפלציה. הם לא תחזית ולא ממוצע שנמדד, ואפשר לשנות כל אחד מהם בעמוד. המחוונים מכסים את מה שרוב האנשים ינסו, וערכים גדולים יותר אפשר להקליד. בעמוד ההשוואה הריבית למוצרים דמויי מזומן היא ההנחה של האתר לאפשרויות שאין להן ריבית שפורסמה (הקרן הכספית, המק״מ והאג״ח הממשלתית): היא לא ריבית שפורסמה ולא תחזית, ואפשר להזין ריבית אחרת במקומה. לכל מוצר בגרף האתר מחשב לפי רשומה מייצגת אחת שנאספה, למשל פיקדון, קרן או מסלול, והעמוד אומר איזו.",
   "chosen_by": "Claude, at the founder's request (2026-10-23: \"do whatever you think fits\")",
   "signed_off_by": "founder",
   "signed_off_on": "2026-10-23",
@@ -281,7 +294,8 @@
         "update_rule": "founder",
         "rule_ids": [],
         "state": "sourced",
-        "notes": "provisional: lowest age the age field accepts; set by Claude on 2026-10-23 for the values sheet's error messages (copy 3.7), not yet signed off by the founder"
+        "notes": "provisional: lowest age the age field accepts; set by Claude on 2026-10-23 for the values sheet's error messages (copy 3.7), not yet signed off by the founder",
+        "rationale_he": "הגיל הנמוך ביותר ששדה הגיל מקבל. זה גבול שהאתר קבע כדי לתפוס טעות הקלדה, לא כלל."
       },
       "max": {
         "value": 120,
@@ -299,7 +313,8 @@
         "update_rule": "founder",
         "rule_ids": [],
         "state": "sourced",
-        "notes": "provisional: highest age the age field accepts; set by Claude on 2026-10-23 for the values sheet's error messages (copy 3.7), not yet signed off by the founder"
+        "notes": "provisional: highest age the age field accepts; set by Claude on 2026-10-23 for the values sheet's error messages (copy 3.7), not yet signed off by the founder",
+        "rationale_he": "הגיל הגבוה ביותר ששדה הגיל מקבל. זה גבול שהאתר קבע כדי לתפוס טעות הקלדה, לא כלל."
       }
     },
     "pct": {
@@ -319,7 +334,8 @@
         "update_rule": "founder",
         "rule_ids": [],
         "state": "sourced",
-        "notes": "provisional: lowest yearly percentage the return and inflation fields accept; set by Claude on 2026-10-23 for the values sheet's error messages (copy 3.7), not yet signed off by the founder"
+        "notes": "provisional: lowest yearly percentage the return and inflation fields accept; set by Claude on 2026-10-23 for the values sheet's error messages (copy 3.7), not yet signed off by the founder",
+        "rationale_he": "האחוז השנתי הנמוך ביותר ששדות התשואה והאינפלציה מקבלים. זה גבול שהאתר קבע כדי לתפוס טעות הקלדה, לא תחזית."
       },
       "max": {
         "value": 50,
@@ -337,7 +353,8 @@
         "update_rule": "founder",
         "rule_ids": [],
         "state": "sourced",
-        "notes": "provisional: highest yearly percentage the return and inflation fields accept; set by Claude on 2026-10-23 for the values sheet's error messages (copy 3.7), not yet signed off by the founder"
+        "notes": "provisional: highest yearly percentage the return and inflation fields accept; set by Claude on 2026-10-23 for the values sheet's error messages (copy 3.7), not yet signed off by the founder",
+        "rationale_he": "האחוז השנתי הגבוה ביותר ששדות התשואה והאינפלציה מקבלים. זה גבול שהאתר קבע כדי לתפוס טעות הקלדה, לא תחזית."
       }
     }
   }

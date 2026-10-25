@@ -173,6 +173,13 @@ function iraOrder(): StepSpec[] {
 
 export const playbookWrappers = Object.keys(STEP_LISTS);
 
+/**
+ * "כל החוקים והכללים על מעבר": the rules page filtered to the rules of the switching file, whose ids all begin SW (the page's own
+ * `prefix` filter, `site/app/lib/rules-filter.ts`). It replaces `/rules#switching-and-transfers` (2026-10-25): the page's group anchors
+ * are `<shelf>-<file>` since the rules page became one list, and the file sits on four shelves, so no one anchor was the right one.
+ */
+export const SWITCH_RULES_HREF = "/rules?prefix=SW";
+
 /** Every rule the page may render or cite, for the provenance cards and the engine's rule book. */
 export function playbookRuleIds(wrapperId: string): string[] {
   const out = new Set<string>(["SW-38", "SW-36", "SW-39", "SW-40", "SW-41", "SW-42", "SW-44", "PF-16", "PF-14", "SW-15", "PF-13", "PF-18", "KH-17", "TXK-04", "TXH-17", "TXH-19", "PF-19", "PF-23"]);

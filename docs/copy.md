@@ -417,7 +417,7 @@ Why "בשקלים של העתיד" rather than "נומינלי": the reader sees
 | Row labels, calculated | נוסחה · ערכים שנכנסו לחישוב · כללים שנכנסו לחישוב |
 | Entered, first line | הזנתם את הערך הזה. |
 | Entered, the value it replaced | במקום: |
-| Site parameter | למה הערך הזה · תאריך אישור (changed 2026-10-24, UX fix 9) |
+| Site parameter | למה הערך הזה (the clicked number's own line first; the file's general line behind the fold "עוד על הפרמטר", 2026-10-25) · תאריך אישור (changed 2026-10-24, UX fix 9) |
 | Stale, line | לא עודכן מאז `{תאריך}`. בדרך כלל מתעדכן `{כל יום / כל חודש / כל רבעון}`. |
 | Unknown, line | `{הסיבה מהנתונים}` |
 

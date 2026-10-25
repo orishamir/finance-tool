@@ -15,7 +15,8 @@
     "effective_from": "2026-10-23",
     "effective_to": null,
     "update_rule": "founder",
-    "notes": "real cost over the horizon; since 2026-10-24 the idle-cash page also reads it over one year (the offer-versus-fund gap and the small-sum line), see docs/parameters-rationale.md#fee-verdict-thresholds"
+    "notes": "real cost over the horizon; since 2026-10-24 the idle-cash page also reads it over one year (the offer-versus-fund gap and the small-sum line), see docs/parameters-rationale.md#fee-verdict-thresholds",
+    "rationale_he": "מהעלות הזאת ומעלה, בכסף של היום ולאורך האופק, עמלה שווה שיחת טלפון, כשיש חלופה זולה יותר להשוואה. מתחתיה השיחה לא שווה את הזמן. בעמוד על כסף שיושב בעו״ש הסף נבדק על שנה אחת."
   },
   "avoid_nis": {
     "value": 2500,
@@ -31,7 +32,8 @@
     "effective_from": "2026-10-23",
     "effective_to": null,
     "update_rule": "founder",
-    "notes": "real cost over the horizon"
+    "notes": "real cost over the horizon",
+    "rationale_he": "מהעלות הזאת ומעלה, בכסף של היום ולאורך האופק, עמלה שווה הימנעות, כשאפשרות אחרת בהשוואה מבטלת אותה."
   },
   "negotiate_share": {
     "value": 10,
@@ -47,7 +49,8 @@
     "effective_from": "2026-10-23",
     "effective_to": null,
     "update_rule": "founder",
-    "notes": "share of total fee drag; method F-62 reports the share beside the verdict and compares it with this threshold, it does not change the verdict"
+    "notes": "share of total fee drag; method F-62 reports the share beside the verdict and compares it with this threshold, it does not change the verdict",
+    "rationale_he": "אם עמלה אחת היא לפחות החלק הזה מכלל העלות של העמלות, האתר מציין זאת ליד ההכרעה. החלק הזה לא משנה את ההכרעה."
   },
   "rationale": "A fee is worth a phone call when it costs 1,000 NIS or more in today's money over the horizon and a cheaper reference exists, and worth avoiding when it costs 2,500 NIS or more and another option removes it. Below about 1,000 NIS over several years, the call is not worth the time.",
   "rationale_he": "עמלה שווה שיחת טלפון כשהיא עולה 1,000 ₪ או יותר במחירי היום לאורך האופק ויש חלופה זולה יותר להשוואה, ושווה הימנעות כשהיא עולה 2,500 ₪ או יותר ואפשרות אחרת מבטלת אותה. מתחת לכ-1,000 ₪ לאורך כמה שנים, השיחה לא שווה את הזמן.",

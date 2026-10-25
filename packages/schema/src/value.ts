@@ -90,6 +90,12 @@ export const valueObject = z
     state: numberState,
     computed_from: computedFrom.optional(),
     notes: z.string().optional(),
+    /**
+     * Site parameters only (`data/parameters/`, data-schema §3.2): the reader's own short line for this one number, in plain
+     * Hebrew. The number's sheet shows it first; the parameter file's general `rationale_he` waits behind "more". It never
+     * carries working history (who chose the value, test scenarios, audit ids); that stays in docs/parameters-rationale.md.
+     */
+    rationale_he: z.string().min(1).optional(),
   })
   .refine((v) => v.value !== null || (v.notes ?? "").trim() !== "", {
     message: "value is null, so notes must say why",
