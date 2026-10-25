@@ -222,6 +222,7 @@
   --chart-option-2: var(--palette-teal-400);
   --chart-option-3: var(--palette-teal-600);
   --chart-baseline: var(--palette-neutral-300);
+  --chart-alt: var(--palette-gold-200); /* the nearest alternative in a guide page's two-line drawing (D29, 2026-10-25): gold against the teal value line; same pair as fee kinds 2 and 3 */
 }
 
 /* ---------------------------------------------------------------- Non-colour tokens */
@@ -368,4 +369,5 @@
   --color-chart-option-2: var(--chart-option-2);
   --color-chart-option-3: var(--chart-option-3);
   --color-chart-baseline: var(--chart-baseline);
+  --color-chart-alt: var(--chart-alt);
 }

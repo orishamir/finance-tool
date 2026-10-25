@@ -47,6 +47,22 @@ export function bondCoupon(couponRate: number, face: number, indexRatio: number)
 }
 
 /**
+ * F-25 Price of a government bond after a change in rates (2026-10-25, the guide page's "if rates move" drawing). Per 100 of
+ * face value, a bond that pays `couponRate` a year in `perYear` equal coupons and redeems at 100 after `years` years is worth
+ * the present value of what is left at the new yield `yieldRate`: `P = Σ (100 c / f) / (1 + i)^k + 100 / (1 + i)^n`, with
+ * `f = perYear`, `i = (1 + y)^(1/f) − 1`, `n = years × f` and `k = 1 … n`. At `y = c` the price is 100 (a bond sold at par).
+ * Real terms for a CPI-linked series: the index multiplies price and face alike, so the percentage change is the same.
+ */
+export function bondPrice(couponRate: number, yieldRate: number, years: number, perYear = 1): number {
+  const n = Math.round(years * perYear);
+  const i = Math.pow(1 + yieldRate, 1 / perYear) - 1;
+  const c = (100 * couponRate) / perYear;
+  let pv = 0;
+  for (let k = 1; k <= n; k++) pv += c / Math.pow(1 + i, k);
+  return pv + 100 / Math.pow(1 + i, n);
+}
+
+/**
  * F-26 Current-account credit balance. Monthly interest `B × g` at A-25, taxed at the unlinked-interest
  * rate at crediting (TXI-08, TXI-03).
  */
