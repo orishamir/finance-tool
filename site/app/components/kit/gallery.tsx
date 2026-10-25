@@ -306,7 +306,7 @@ function Fields() {
             <NumberField label={g.sample.field} unit="nis" value={null} isEntered={false} validate={() => null} onCommit={() => undefined} onReset={() => undefined} placeholder="0" />
           </State>
           <State label={`${g.states.filled}, ${g.states.interactive}`}>
-            <NumberField label={g.sample.field} unit="nis" value={a} isEntered={false} validate={(n) => (n < 0 ? g.sample.error : null)} onCommit={(n) => setA(n)} onReset={() => setA(1000)} hint={g.sample.hint} />
+            <NumberField label={g.sample.field} unit="nis" value={a} isEntered={a !== 1000} validate={(n) => (n < 0 ? g.sample.error : null)} onCommit={(n) => setA(n)} onReset={() => setA(1000)} hint={g.sample.hint} />
           </State>
           <State label={g.states.entered}>
             <NumberField label={g.sample.field} unit="nis" value={b} isEntered={b !== 1000} validate={(n) => (n < 0 ? g.sample.error : null)} onCommit={(n) => setB(n)} onReset={() => setB(1000)} />

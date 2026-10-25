@@ -351,11 +351,15 @@ function LiquidityLine({ liq }: { liq: Liquidity }) {
       <Sentence as="span">
         {liq.from ? (
           <>
-            {notYet ? c.notYet : c.from} <Num value={liq.from} /> {c.about}
+            {notYet ? c.notYet : c.from}
+            <Num value={liq.from} />
+            {c.about}
           </>
         ) : (
           <>
-            {c.overBefore} <YearsNum value={liq.lock} /> {c.overAfter}
+            {c.overBefore}
+            <YearsNum value={liq.lock} />
+            {c.overAfter}
           </>
         )}{" "}
         <RuleRef id="TXH-09" />

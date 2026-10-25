@@ -105,7 +105,9 @@ export function ConsolidationCard({ group, views, rules }: { group: Consolidatio
             <div className="text-sm flex items-start gap-1.5">
               <IconLock size={16} className="text-muted-foreground shrink-0 mt-1" />
               <Sentence as="span">
-                {c.notYet.before} <Num value={group.notYet.liquidFrom} /> {c.notYet.after}
+                {c.notYet.before}
+                <Num value={group.notYet.liquidFrom} />
+                {c.notYet.after}
                 {group.notYet.ruleIds.map((id) => (
                   <span key={id}> <RuleRef id={id} /></span>
                 ))}

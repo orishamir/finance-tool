@@ -391,7 +391,8 @@ function Body({ bundle: bundle0, wb, data, fit, frame, exposureId, registerSave 
 
       {view.cashRate && (
         <Sentence size="sm" tone="muted" measure>
-          {r2.result.cashBefore} <Num value={view.cashRate} /> {r2.result.cashAfter}
+          {r2.result.cashBefore} <Num value={view.cashRate} />
+          {r2.result.cashAfter}
           {bundle.cashLink && (
             <>
               {" "}

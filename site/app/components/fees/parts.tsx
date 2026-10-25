@@ -290,12 +290,18 @@ export function ReferenceLine({ reference }: { reference: ReferenceView }) {
           <Sentence as="p">
             <StateTag state="computed" /> {r.before}
             <bdi>{cma.specialization ? `${cma.classification} · ${cma.specialization}` : cma.classification}</bdi>
-            {r.mid} <Num value={cma.mean} /> {r.median} <Num value={cma.median} /> {r.yearBefore} {cma.year && <Num value={cma.year} display={String(cma.year.value)} />}{" "}
+            {r.mid}
+            <Num value={cma.mean} />
+            {r.median}
+            <Num value={cma.median} />
+            {r.yearBefore}
+            {cma.year && <Num value={cma.year} display={String(cma.year.value)} />}
             {cma.count.value === 1 ? (
               r.tracksOne
             ) : (
               <>
-                {r.tracksBefore} <Num value={cma.count} />
+                {r.tracksBefore}
+                <Num value={cma.count} />
                 {r.tracksAfter}
               </>
             )}

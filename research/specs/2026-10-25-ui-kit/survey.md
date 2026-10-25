@@ -58,7 +58,7 @@ Name clashes that are **not** duplicates: `Mark` in `compare/fit.tsx` (fit icon 
 | `ChartReadout` | 3 named + 1 inline | `compare/chart.tsx:187`, `fees/FeeDragChart.tsx:197`, `workbench/providers/chart.tsx:152`; inline `<dl className="readout">` in `timeline/Timeline.tsx:260` |
 | `ChartTable` | 3 named + 1 inline | `compare/chart.tsx:213`, `fees/FeeDragChart.tsx:240`, `workbench/providers/chart.tsx:172`; inline in `timeline/Timeline.tsx:158` (`tableCard`) |
 
-They differ only in the data they read and the swatch (a 14 by 3 px line for a line series, a 10 px square for a band, a dashed line for an entered return). One legend takes `{ id, label, swatch, note }` items; one readout takes a title and `{ id, label, swatch, value }` rows; one table takes columns and rows of cells and the fold labels. The scroll cue and the phone bleed (`-mx-4 px-4 md:mx-0`) differ between the copies; the kit uses the fee and compare charts' version (the scroll cue), which the provider chart lacked (a bug of omission).
+They differ only in the data they read and the swatch (a 14 by 3 px line for a line series, a 10 px square for a band, a dashed line for an entered return). One legend takes `{ id, label, swatch, note }` items; one readout takes a title and `{ id, label, swatch, value }` rows; one table takes columns and rows of cells and the fold labels. The scroll cue (compare, fee drag, timeline) and the phone bleed to the card's edge (`-mx-4 px-4 md:mx-0`, the provider chart) differ between the copies; the kit keeps both as `scroll="cue"` and `scroll="bleed"` so no page changes. The timeline's table also has a region label and tighter cells (`compact`).
 
 ## 4. Numbers in words
 
@@ -84,10 +84,18 @@ They differ only in the data they read and the swatch (a 14 by 3 px line for a l
 | Tag | 1 shared | `ui.tsx` `Tag` (used by 40+ files) and two local tag-likes (`ExclusionTag`, `StrengthChip`) | `Tag` unchanged |
 | Callout | 1 shared | `ui.tsx` | unchanged |
 
-## 6. Verdicts of this survey
+## 6. What was done with each finding
 
-Moved into the kit and migrated: every fold (1.1, with 3 and 1.3), the chart legend/readout/table (3), the number fields (2), `Marker`, `GainBars`, `SourceLine`, `Gap`/`G2Gap`, `Sentence`, `KeyValueList`, `FigureRow`, `RankBadge`, `Card` padding variants.
-Left alone, with the reason: the provenance sheet's own `<details>` and `Row` (another builder owns `provenance.tsx` today); `Mark`/`Fact` lookalikes that are different things; the three `Row`s; the 60 section headers except where the heading already sits in a card the kit builds; the guide visuals' SVG plots (they are drawings, not layout).
+Moved into the kit and migrated: every fold (1.1: items 1 to 14; the two in `provenance.tsx` stay, see below), the chart legend, readout and table (3, all four named copies and the three inline legends), the number fields (`NumberField`, `FieldState`, `ParameterLine` moved out of `timeline/fields.tsx`, which is deleted; `SliderField` became `RangeField`, `GoalSlider` is a thin wrapper of it; `PercentField` replaces three identical 0 to 50 fields), `Marker`, `MarkerMark`, `GainBars`, `useWidth`, `SourceLine`, `Gap`/`G2Gap` (the wrappers that look up the visuals' copy stay in `guide-signature/`, the markup is `GapNote`), `FigureRow` (now `Stat`, and the five `<dl className="grid …">` rows are `StatRow`), `KeyValueList` (guide) and `Fact` (two copies, now `KeyValue`), the headline figure block (two copies, `HeadlineFigure`), the rank badge (five copies and the step number, `RankBadge`), the card surface (18 hand-built ones, `Card pad=…`), the guide section (`Section`), and 108 paragraphs that carry numbers (`Sentence`).
+
+Found while migrating, fixed (a bug, not a design change): 18 `<p>`/`<span>` that carried numbers were flex or grid containers, so their pieces were separate items (the 2026-10-25 what-if bug in other places); they are flowed text now, or a `div` row holding an icon and a `Sentence`. The idle-cash coverage toggle had no chevron where its five siblings had one; it has it now. The guide's key/value card carried `p-0 md:p-0` that never applied (the stylesheet puts `p-4` after `p-0`); the dead classes are gone, the look is the same.
+
+Left alone, with the reason:
+- `provenance.tsx` (another builder owns it today): its two plain `<details>` (English title under a source, item 15 and 16) and its own `Row`; the guard test carries an allow-list line for the file, with the instruction to remove it when it moves.
+- `routes/switch.tsx`, `routes/workbench-*.tsx` (same reason): their imports still point at `components/ui`, which re-exports the primitives; one hand-built card in `switch.tsx` and one in `workbench-funds.tsx`.
+- The three `Row`s and the `Mark`/`Marker` lookalikes: different things sharing a name.
+- Chip rows that are not a choice among options (the workbench's filter chips, the exposure chart's series chips): a toggle set, not `ChoiceChips`; the input kinds of `holdings/fields.tsx` (text, date, select); `Item` of `product-row.tsx`; the 60 `<h2>` section headers except the guide's; the two cards whose summary or wrapper carry the card look (`home.tsx`, `idle-cash.tsx` pass the look to `Disclosure`).
+- The guide visuals' SVG plots, and the chart drawings of the three charts.
 
 ## 7. Inventory (every component under `site/app/components/` and `site/app/routes/`)
 

@@ -93,7 +93,7 @@ export function FitMarkCard({ table, track, stale, period }: { table: FitTableDa
         {result.kind !== "no-rule" && (
           <>
             {" "}
-            {copy.ruleRange} <Num value={result.minYears} display={fmt.years(result.minYears.value as number)} />
+            {copy.ruleRange}<Num value={result.minYears} display={fmt.years(result.minYears.value as number)} />
           </>
         )}{" "}
         <StateTag state="parameter" />
