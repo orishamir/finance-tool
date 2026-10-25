@@ -16,8 +16,8 @@ A competition-authority declaration of the five large banking groups as a "conce
 ## Rules
 
 ### BANK-01 A bank may not unreasonably refuse a deposit or a current account
-- Rule: A banking corporation may not unreasonably refuse to accept a monetary deposit in Israeli or foreign currency, or to open and run a current account in Israeli currency as long as the account is in credit and the customer meets the account agreement. There is no duty to give credit.
-- Conditions / exceptions: Setting unreasonable conditions counts as refusal (s.2(b)). Anti-money-laundering identification rules can still be a barrier, which is why the closed system exists (BANK-21).
+- Rule: A banking corporation may not unreasonably refuse to accept a monetary deposit in Israeli or foreign currency, or to open and run a current account in Israeli currency as long as either of two conditions holds ("כל עוד מתקיימת אחת מאלה"): the account is in credit, or the customer meets the account agreement (s.2(א)(2)). There is no duty to give credit.
+- Conditions / exceptions: Setting unreasonable conditions counts as refusal (s.2(b)). Anti-money-laundering identification rules can still be a barrier, which is why the closed system exists (BANK-21). *2026-10-25 rule-text pass:* the rule required both conditions ("and"); s.2(א)(2) of the law (BoI consolidated text, p.4) requires only one of them, so "and" became "or".
 - Figures: none.
 - Source: [חוק הבנקאות (שירות ללקוח), התשמ"א-1981, נוסח משולב (בנק ישראל)](https://www.boi.org.il/media/nvadftgk/150.pdf), p.4, s.2(א)(1)-(2), 2(ב) · checked 2026-10-25 · primary; restated in [הוראת ניהול בנקאי תקין 417: פעילות תאגיד בנקאי במערכת סגורה (5/24)](https://www.boi.org.il/media/3bacxlsl/417.pdf), p.1, s.1(א) · checked 2026-10-25 · primary
 - Dimensions: eligibility, regulator

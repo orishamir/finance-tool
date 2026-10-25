@@ -108,7 +108,7 @@
         "IRA-21"
       ],
       "state": "sourced",
-      "notes": "No cap. Buy and sell commissions are charged to the fund on top of the management fee, at the tariff of the broker the member picks from the winners of the managing company's competitive process (at least every 3 years, at least 4 participants). Meitav's 2026 tariffs per broker are in IRA-21 and belong in data/fees/ (R4)."
+      "notes": "No cap. Buy and sell commissions are charged to the fund on top of the management fee, at the tariff of the broker the member picks: one of the winners of the managing company's competitive process (at least every 3 years, at least 8 participants since 2017), or, under reg. 12(ג) as replaced in 2017, another broker the member chooses after being shown the winners' terms (IRA-18, updated 2026-10-25). Meitav's 2026 tariffs per broker are in IRA-21 and belong in data/fees/ (R4)."
     },
     "custody": {
       "value": null,

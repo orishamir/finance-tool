@@ -2,7 +2,7 @@
   "id": "SW-05",
   "title": "Step 2: the transferring fund may reject or delay, and must say why within 3 business days",
   "title_he": "שלב שני: דחייה או עיכוב בתוך ימים ספורים",
-  "text_he": "אם הקופה המעבירה אינה יכולה להעביר, היא מודיעה לקופה המקבלת בתוך מספר ימי העסקים שהחוזר קובע מהמועד הקובע, בטופס דחייה (נספח ה׳) או בטופס העיכוב שצמוד לו; דחייה נשלחת באותו פרק זמן גם לכתובת העמית. עילות דחייה: מסלול שאינו מותר, עיקול או שעבוד על כל היתרה, קצבת זקנה שהתחילה, תביעת נכות תלויה או זכאות לנכות, הלוואה שלא נפרעה, פטירה, בקשה לעבור לקרן פנסיה חדשה בעוד העמית פעיל בקופה המעבירה, חשבון סגור או בקשה שפקעה. עילות עיכוב: חסר צילום תעודת זהות או פרוטוקול חתימה, אין חתימה או תאריך חתימה, מספר חשבון או סטטוס עמית שגויים, חסר נספח או מספר אישור מס של הקופה. כשעילת עיכוב מתוקנת בתוך התקופה העמית אינו צריך למלא טפסים מחדש, ואם רק חלק מהכסף יכול לעבור אותו חלק עובר; חוזר הרשות נקרא מעותק אצל צד שלישי.",
+  "text_he": "אם הקופה המעבירה אינה יכולה להעביר, היא מודיעה לקופה המקבלת בתוך מספר ימי העסקים שהחוזר קובע מהיום שבו הבקשה הועברה אליה, בטופס דחייה (נספח ה׳) או בטופס העיכוב שצמוד לו; דחייה נשלחת באותו פרק זמן גם לכתובת העמית. עילות דחייה: מסלול שאינו מותר, עיקול או שעבוד על כל היתרה, קצבת זקנה שהתחילה, תביעת נכות תלויה או זכאות לנכות, הלוואה שלא נפרעה, פטירה, בקשה לעבור לקרן פנסיה חדשה בעוד העמית פעיל בקופה המעבירה, חשבון סגור או בקשה שפקעה. עילות עיכוב: חסר צילום תעודת זהות או פרוטוקול חתימה, אין חתימה או תאריך חתימה, מספר חשבון או סטטוס עמית שגויים, חסר נספח או מספר אישור מס של הקופה. כשעילת עיכוב מתוקנת בתוך התקופה העמית אינו צריך למלא טפסים מחדש, ואם רק חלק מהכסף יכול לעבור אותו חלק עובר.",
   "figure_names_he": {
     "rejection_or_delay_notice_business_days": "ימי עסקים להודעת דחייה או עיכוב"
   },
@@ -30,11 +30,11 @@
         "SW-05"
       ],
       "state": "sourced",
-      "notes": "The transferring fund notifies the receiving fund of a rejection (Annex E) or delay (Annex E1) within three business days of the determining date, and sends a rejection to the member within the same period (s.3(ז))."
+      "notes": "The transferring fund notifies the receiving fund of a rejection (Annex E) or delay (Annex E1) within three business days of the day the request was passed to the transferring fund's managing body (\"ממועד העברת הבקשה לגוף המנהל של הקופה המעבירה\"), and sends a rejection to the member within the same period (s.3(ז)). Until 2026-10-25 this note counted the days from the determining date."
     }
   },
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",

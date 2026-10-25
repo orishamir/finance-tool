@@ -1,7 +1,7 @@
 {
   "id": "IRA-18",
-  "title": "Brokerage chosen by competitive process; related-party broker limits",
-  "title_he": "בחירת ברוקרים בהליך תחרותי ומגבלות על צד קשור",
+  "title": "Brokerage chosen by competitive process; related-party limit; a broker the member chooses",
+  "title_he": "בחירת ברוקרים בהליך תחרותי, צד קשור וברוקר שהעמית בוחר",
   "strength": "primary",
   "dimensions": [
     "fee-trade",
@@ -31,11 +31,11 @@
       "notes": "The competitive process for brokerage is held at least once every three years."
     },
     "min_participants": {
-      "value": 4,
+      "value": 8,
       "unit": "count",
       "source": {
-        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=6",
-        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820), p.6, reg. 12(א) as first enacted (four participants); since קובץ התקנות 7880 (2017) reg. 12(א) requires eight",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/iXRl3JX663X67T342MLtmOhZrYskYBxrQk+FHRN~mJM=#page=2",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ח-2017 (קובץ התקנות 7880), p.2, s.1 (reg. 12(א)): \"בין שמונה משתתפים לפחות\"",
         "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
         "strength": "primary"
       },
@@ -48,37 +48,16 @@
         "IRA-18"
       ],
       "state": "sourced",
-      "notes": "At least four participants in the competitive process."
-    },
-    "related_party_commission_cap": {
-      "value": 20,
-      "unit": "pct",
-      "source": {
-        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/RATI4pBLty7qGIwDdx4vQyqqWGj~YlmHaa28WfpNxGU=#page=2",
-        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי) (תיקון מס' 2), התש\"ע-2010 (קובץ התקנות 6901), p.2, reg. 12(ב) of 2010 (20% cap); replaced by קובץ התקנות 7880 (2017), which keeps no percentage cap",
-        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-        "strength": "primary"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "fixed in regulation",
-      "rule_ids": [
-        "IRA-18"
-      ],
-      "state": "sourced",
-      "notes": "A related-party broker's commissions may be at most 20% of all commissions the company paid that year, and no higher than the unrelated winner's for the same or a similar trade."
+      "notes": "At least eight participants in the competitive process (reg. 12(א) as replaced in 2017, ק\"ת 7880 p.2); the 2009 text (ק\"ת 6820 p.6) said four. Under the transitional rule (7880 p.3, s.2) the new 12(א) does not apply to trades whose process took place before 1.11.2017."
     }
   },
-  "text_he": "החברה המנהלת קונה ומוכרת דרך ברוקרים שנבחרו בהליך תחרותי, לפחות אחת לשלוש שנים ובין ארבעה משתתפים לפחות. מסחר דרך צד קשור מותר רק אם עמלותיו עד 20% מכלל העמלות באותה שנה ולא גבוהות מהזוכה הלא-קשור.",
+  "text_he": "החברה המנהלת קונה ומוכרת ניירות ערך לפי הליך תחרותי שנערך לפחות אחת לשלוש שנים בין שמונה משתתפים לפחות. מסחר דרך צד קשור מותר רק אם העמלה שמשולמת לו לא גבוהה מהעמלה שמשולמת לזוכה בהליך שאינו צד קשור; מאז תיקון התקנות אין תקרה באחוזים לצד קשור. העמית רשאי לבחור ברוקר אחר, גם כזה שלא השתתף בהליך או השתתף ולא זכה, ובלבד שהוצגו לו כל התנאים שהחברה המנהלת התקשרה בהם עם הזוכים.",
   "figure_names_he": {
     "process_max_years": "שנים לכל היותר בין הליכים תחרותיים",
-    "min_participants": "מספר משתתפים מינימלי בהליך",
-    "related_party_commission_cap": "תקרת עמלות לצד קשור"
+    "min_participants": "מספר משתתפים מינימלי בהליך"
   },
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/iXRl3JX663X67T342MLtmOhZrYskYBxrQk+FHRN~mJM=#page=2",
