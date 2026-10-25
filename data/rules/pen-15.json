@@ -2,8 +2,8 @@
   "id": "PEN-15",
   "title": "Cost of insurance",
   "title_he": "עלות הכיסוי הביטוחי",
-  "text_he": "דמי הביטוח למקרה מוות מחושבים לפי מקדמים אקטואריים לפי מין, שנת לידה, גיל, שיעור הכיסוי, השכר הקובע והיתרה הצבורה; דמי ביטוח הנכות לפי מין, גיל, שנת לידה, שיעור הכיסוי והשכר הקובע. הם מנוכים כל חודש ממרכיב התגמולים בחשבון העמית, רק כל עוד הוא מבוטח. הקרן מבטחת את הסיכונים במבטח משנה, ודמי ביטוח המשנה לא עולים על מה שנגבה מהעמיתים, חוץ מסיכוני קטסטרופה שמנוכים מנכסי הקרן. התעריפים לפי גיל נמצאים בנספחים שלא נקראו; הכלל לקוח מתקנון של חברה מנהלת אחת.",
-  "strength": "institution",
+  "text_he": "דמי הביטוח למקרה מוות ונכות מחושבים לפי מקדם שתלוי במין, בגיל, בשנת הלידה, בשיעור הכיסוי, בשכר הקובע וביתרה הצבורה, לפי נספח שכל חברה מנהלת קובעת באישור הממונה. לעלות המצטברת של הכיסוי הביטוחי יש תקרה. דמי הביטוח באים מההפקדות למרכיב התגמולים, רק כל עוד העמית מבוטח, ודמי ביטוח המשנה הם תשלום מהקרן. כך קובעים התקנון האחיד של רשות שוק ההון והקודקס של הרשות; מה שמשתנה בין הקרנות הוא רק טבלאות התעריפים.",
+  "strength": "primary",
   "dimensions": [
     "insurance-cover",
     "fee-change-over-time"
@@ -11,20 +11,48 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "pension-and-gemel-lekitzba.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "title": "Mor comprehensive bylaws 01.06.2025",
-      "title_he": "תקנון קרן הפנסיה המקיפה של מור (מהדורת 1.6.2025)",
-      "publisher": "Mor Investment House",
-      "publisher_he": "מור גמל ופנסיה",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "sections 7, 38, 40, pp.15, 39",
-      "locator_he": "סעיפים 7, 38, 40, עמודים 15, 39",
-      "page": 15,
+      "url": "https://www.gov.il/BlobFolder/guide/information-entities-codex/he/codex6.6_clean_new.pdf",
+      "title": "קודקס הרגולציה, חלק 6 – הוראות ספציפיות לקרן פנסיה",
+      "title_he": "קודקס הרגולציה, חלק 6 – הוראות ספציפיות לקרן פנסיה",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.7, items (5)-(6)",
+      "page": 7,
+      "quote": "עלות מצטברת מרבית לכיסוי ביטוחי",
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4.pdf",
+      "title": "חוזר פנסיה 2016-3-4 – הוראות לעניין זכויות וחובות עמיתים בתקנון קרן פנסיה חדשה מקיפה, 29.9.2016",
+      "title_he": "חוזר פנסיה 2016-3-4 – הוראות לעניין זכויות וחובות עמיתים בתקנון קרן פנסיה חדשה מקיפה, 29.9.2016",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.1, s.2(א)",
+      "locator_he": "עמוד 1, סעיף 2(א)",
+      "page": 1,
+      "quote": "חברה מנהלת תקבע את נוסח תקנון קרן הפנסיה המקיפה שבניהולה בהתאם לנוסח התקנון המצורף",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)",
+      "publisher": "Prisha.co.il",
+      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "pp.30-31, ss.38-40",
+      "locator_he": "עמודים 30 עד 31, סעיפים 38-40",
+      "page": 30,
+      "checked": "2026-10-25",
+      "qualifier": "(third-party host)"
     }
   ]
 }

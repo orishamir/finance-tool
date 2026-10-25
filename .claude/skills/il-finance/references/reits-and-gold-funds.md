@@ -153,7 +153,7 @@ Out (and where): physical gold (bars, coins) is out of scope under D2 and is not
 - Source: [Funder, Reit 1 H1 2026 results, 12.8.2026](https://funder.co.il/article/207322) · checked 2026-10-22 · secondary. [Reit 1 home page](https://www.reit1.co.il/) · checked 2026-10-22 · institution
 - Dimensions: distribution-policy, fee-trade, liquidity-lockup
 - Likely to change: yes
-- *2026-10-24 R5 pass:* Reit 1's investor-relations page (read directly) states a quarterly dividend policy, expected 2026 dividends of about NIS 178 m (88 agorot a share, about 3.5% at the decision-day price, per its Q1 2026 directors' report), and a tax FAQ: the profit component of each distribution is withheld at the top marginal rate and the depreciation component at 25%, with form 867 for a refund (TX2-20). The page links each Maya filing by report number (for example P1740921-00 for the Q1 2026 presentation), so a browser pass can reach the distribution reports from there.
+- *2026-10-24 R5 pass:* Reit 1's investor-relations page (read directly) states a quarterly dividend policy, expected 2026 dividends of about NIS 178 m (88 agorot a share, about 3.5% at the decision-day price, per its Q1 2026 directors' report), and a tax FAQ: the profit component of each distribution is withheld at the top marginal rate and the depreciation component at 25%, with form 867 for a refund (TX2-21; the rates by law are TX2-20). The page links each Maya filing by report number (for example P1740921-00 for the Q1 2026 presentation), so a browser pass can reach the distribution reports from there.
 
 ### RG-12 Foreign REITs: TASE dual listing (secondary, undated)
 - Rule: A press item reports that TASE would allow foreign REITs to list under the dual-listing law. The conditions it gives:
@@ -421,7 +421,7 @@ Under D2, a tier-2 instrument moves to tier 1 once it has a sourced record and i
   - Sourced: the product rules, from primary law (mirror).
   - Blockers: the official REIT list (OQ 4); mirror vs official text (OQ 1); the consequence of a distribution shortfall (OQ 3); all tax rules (TX2).
   - Costs depend on each company's management agreement (OQ 5) and on the brokerage wrapper, which is already tier 1.
-  - Of the topics in this file, the closest to ready once TX2 is done. *2026-10-24:* TX2 exists; the rates compute (TX2-09 to TX2-11) and one REIT's withholding practice is recorded (TX2-20). Still blocking: the official list (OQ 4), the per-distribution source split (OQ 5), TX2 open question 8, and a pass-through formula in `docs/method.md`. Fourth in the graduation ranking (`scratchpad/reports/r5-tier2.md`).
+  - Of the topics in this file, the closest to ready once TX2 is done. *2026-10-24:* TX2 exists; the rates compute (TX2-09 to TX2-11) and one REIT's withholding practice is recorded (TX2-21, split from TX2-20 on 2026-10-25; the rates by law stay TX2-20). Still blocking: the official list (OQ 4), the per-distribution source split (OQ 5), TX2 open question 8, and a pass-through formula in `docs/method.md`. Fourth in the graduation ranking (`scratchpad/reports/r5-tier2.md`).
 - **Foreign REITs (dual-listed) and REIT funds: not ready as a separate instrument.**
   - Blockers: no dual-listed REIT confirmed (OQ 6); no Israeli REIT fund found (OQ 7).
   - A foreign UCITS REIT ETF bought abroad already fits the tier-1 path for foreign-domiciled ETFs (`etfs-and-index-funds.md`), subject to `tax-securities-foreign.md`. It may need no separate instrument and could be handled as an exposure inside tier-1 ETF wrappers.

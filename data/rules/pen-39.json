@@ -1,0 +1,31 @@
+{
+  "id": "PEN-39",
+  "title": "Mor: an eighth insurance track and the optional combinations",
+  "title_he": "מור: מסלול ביטוח שמיני והשילובים שהחוזר מתיר",
+  "text_he": "אצל מור יש שמונה מסלולי ביטוח: שבעת המסלולים של התקנון האחיד ועוד מסלול של כיסוי נכות חלקי וכיסוי שאירים חלקי. מור אימצה את שתי ההוראות שהחוזר מתיר: שילוב חופשי של שיעור נכות ושיעור שאירים מתוך האפשרויות שבתקנון, בגבולות המותרים לגיל ההצטרפות, וקצבת נכות כפולה בחודשים הראשונים ככיסוי ברירת מחדל. אם קרנות אחרות אימצו אותן לא נבדק.",
+  "strength": "institution",
+  "dimensions": [
+    "insurance-cover"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "title": "Mor comprehensive bylaws 01.06.2025",
+      "title_he": "תקנון קרן הפנסיה המקיפה של מור (מהדורת 1.6.2025)",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור גמל ופנסיה",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "sections 24, 25, 27, 28, 29, 32, pp.28-33",
+      "locator_he": "סעיפים 24, 25, 27, 28, 29, 32, עמודים 28 עד 33",
+      "page": 28,
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "PEN-11"
+  ]
+}

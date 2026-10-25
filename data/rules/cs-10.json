@@ -1,7 +1,7 @@
 {
   "id": "CS-10",
-  "title": "Bank option: tracks, exit stations, how interest is set",
-  "title_he": "מסלול הבנק: מסלולים, תחנות יציאה וקביעת הריבית",
+  "title": "Bank option: tracks, exit stations, interest known in advance",
+  "title_he": "מסלול הבנק: מסלולים, תחנות יציאה וריבית ידועה מראש",
   "strength": "primary",
   "dimensions": [
     "real-vs-nominal",
@@ -31,12 +31,12 @@
       "notes": "Interval between exit stations in a bank plan of the exit-station type; the other type has no exit station until 18."
     }
   },
-  "text_he": "כל בנק מציע שלושה מסלולים: ריבית קבועה לא צמודה, ריבית משתנה (פריים), וריבית קבועה צמודה למדד; כל אחד בלי תחנות יציאה עד גיל 18 או עם תחנת יציאה כל חמש שנים. הריבית נקבעת ביום פתיחת החשבון לתקופה של 18 פחות גיל הילד (הסכם יהב). היתרה לא יורדת מהסכומים שהביטוח הלאומי הפקיד.",
+  "text_he": "כל בנק מציע שלושה מסלולים: ריבית קבועה לא צמודה, ריבית משתנה (פריים), וריבית קבועה צמודה למדד; כל אחד בלי תחנות יציאה, או עם תחנת יציאה כל כמה שנים. הריבית ידועה מראש לפי המסלול שנבחר, והבנק מבטיח לפחות את הקרן שהופקדה. איך כל בנק קובע את הריבית ומנהל את תחנות היציאה כתוב בהסכם שלו.",
   "figure_names_he": {
     "exit_station_years": "שנים בין תחנות יציאה"
   },
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://www.btl.gov.il/benefits/HozrimGimlaot/Hozrim/11.16%d7%97%d7%95%d7%96%d7%a8%20%d7%aa%d7%95%d7%9b%d7%a0%d7%99%d7%aa%20%d7%97%d7%99%d7%a1%d7%9b%d7%95%d7%9f%20%d7%9c%d7%9b%d7%9c%20%d7%99%d7%9c%d7%93_.pdf",
@@ -49,6 +49,7 @@
       "locator": "p.5, pp.21-22",
       "locator_he": "עמוד 5, עמודים 21 עד 22",
       "page": 5,
+      "quote": "והכספים יצברו ריבית שתהיה ידועה מראש בהתאם למסלול החיסכון הנבחר",
       "checked": "2026-10-25",
       "qualifier": "(historical)"
     },
@@ -62,19 +63,9 @@
       "strength": "primary",
       "quote": "בכל אחד מהבנקים תוכל לבחור לחסוך את כספי החיסכון באחד מ-3 המסלולים שמציע כל בנק",
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://bank-yahav.co.il/media/qxed4yhi/השקעות-מונגש-חסכון-לכל-ילד-צפייה-בהסכם-חיסכון-לכל-ילד.pdf",
-      "title": "בנק יהב: הסכם חיסכון ארוך טווח לילד (חיסכון לכל ילד)",
-      "title_he": "בנק יהב: הסכם חיסכון ארוך טווח לילד (חיסכון לכל ילד)",
-      "publisher": "Bank Yahav",
-      "publisher_he": "בנק יהב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "pp.3-4, s.3.3-3.8",
-      "locator_he": "עמודים 3 עד 4, סעיף 3.3-3.8",
-      "page": 3,
-      "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "CS-25"
   ]
 }

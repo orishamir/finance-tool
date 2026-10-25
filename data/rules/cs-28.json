@@ -1,0 +1,32 @@
+{
+  "id": "CS-28",
+  "title": "Bank Yahav: how the rate is set and how exit stations work",
+  "title_he": "בנק יהב: קביעת הריבית ותחנות היציאה",
+  "text_he": "בהסכם של בנק יהב הריבית היא הריבית שהבנק מציע ביום פתיחת החשבון, לכל התקופה שעד גיל הפדיון. מסלול עם תחנות יציאה מוצע רק לילד מתחת לגיל מסוים כשהתוכנית מתחילה; הבנק מודיע לפני כל תחנה, וההורה נותן הוראה כמה ימי עסקים לפניה. לפי ההסכם היתרה לא יורדת מהסכומים הנומינליים שהביטוח הלאומי הפקיד. הסכמים של בנקים אחרים לא נבדקו.",
+  "strength": "institution",
+  "dimensions": [
+    "real-vs-nominal",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://bank-yahav.co.il/media/qxed4yhi/השקעות-מונגש-חסכון-לכל-ילד-צפייה-בהסכם-חיסכון-לכל-ילד.pdf",
+      "title": "בנק יהב: הסכם חיסכון ארוך טווח לילד (חיסכון לכל ילד)",
+      "title_he": "בנק יהב: הסכם חיסכון ארוך טווח לילד (חיסכון לכל ילד)",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.3-4, s.3.3-3.8",
+      "locator_he": "עמודים 3 עד 4, סעיף 3.3-3.8",
+      "page": 3,
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "CS-10"
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "id": "IRA-29",
+  "title": "Meitav: how its IRA accounts are run",
+  "title_he": "מיטב: איך מתנהלת אצלה קופה בניהול אישי",
+  "text_he": "במיטב העמית בוחר ניהול עצמי או ניהול דרך מנהל תיק בייפוי כוח, ומיטב מקבלת מנהלי תיקים 'שיהיו מקובלים על החברה', אף שהתקנות אוסרות על החברה להגביל את הבחירה. מיטב מאפשרת לקנות קרנות שהיא מכנה אלטרנטיביות נגד כתב שיפוי, ולא מאפשרת כתיבת אופציות. שיעור דמי הניהול נכתב בטופס לכל עמית, ומיטב אומרת שהיא רשאית להעלות אותו בכפוף לדין. עצמאים מפקידים בהעברה בנקאית לחשבונות של מיטב בבנק מזרחי טפחות ומדווחים עליה בטופס. לפי מיטב המוצר מתאים למי שיש לו לפחות הסכום שממנו היא ממליצה על ניהול אישי; זו המלצה שלה, לא מינימום.",
+  "figure_names_he": {
+    "suitability_minimum": "סכום שממנו מיטב ממליצה על ניהול אישי"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "eligibility",
+    "minimum",
+    "fee-management-balance",
+    "fee-change-over-time",
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "suitability_minimum": {
+      "value": 200000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.meitav.co.il/provident_pension/ira/",
+        "title": "Meitav, IRA product page: \"המתאים למי שיש בקופת הגמל או בקרן ההשתלמות שברשותו החל מ - 200,000 ₪\"",
+        "publisher": "Meitav Gemel and Pension",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "IRA-29"
+      ],
+      "state": "sourced",
+      "notes": "Meitav's own suitability statement, not a minimum: the IRA regulations set no minimum balance or deposit (IRA-10). Other managers' statements were not found (IRA open question 7)."
+    }
+  },
+  "il_finance_file": "ira-self-directed.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.meitav.co.il/media/kiildnyn/נספח-להסכם-הצטרפות-לקרן-השתלמות-בניהול-אישי-115181124.pdf",
+      "title": "מיטב – נספח להסכם הצטרפות לקרן השתלמות בניהול אישי (1.151.8.11.24)",
+      "title_he": "מיטב – נספח להסכם הצטרפות לקרן השתלמות בניהול אישי (1.151.8.11.24)",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "רכישת קרן אלטרנטיבית",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.meitav.co.il/media/r2djwzpw/26061426l-תוצאות-מכרז-לניהול-אישי-2026-לאומי.pdf",
+      "title": "מיטב – תוצאות מכרז לניהול אישי 2026, נספח בנק לאומי",
+      "title_he": "מיטב – תוצאות מכרז לניהול אישי 2026, נספח בנק לאומי",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "כתיבת אופציות",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.meitav.co.il/provident_pension/ira/",
+      "title": "Meitav IRA page",
+      "title_he": "קופת גמל בניהול אישי (IRA): עמוד המוצר של מיטב",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "על אופן הניהול",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "IRA-05",
+    "IRA-10",
+    "IRA-12",
+    "IRA-17"
+  ]
+}

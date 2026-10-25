@@ -1,0 +1,44 @@
+{
+  "id": "PEN-41",
+  "title": "Mor: the comprehensive fund's investment-track menu",
+  "title_he": "מור: מסלולי ההשקעה בקרן המקיפה",
+  "text_he": "אצל מור, מלבד מסלולי ברירת המחדל לפי גיל, יש בקרן המקיפה מסלולים מתמחים כמו מניות, שקלי, משולב סחיר, עוקבי מדדים ומסלול מחקה מדד S&P 500, ומסלול הלכה חדש. לפנסיונרים יש אצל מור מסלול בסיסי למקבלי קצבה ומסלול עוקב מדדים למקבלי קצבה. לפי התקנון של מור, הנכסים באיגרות חוב מיועדות או באפיק מובטח התשואה נמצאים מחוץ למדיניות המוצהרת של כל מסלול. התפריטים של קרנות אחרות לא נבדקו.",
+  "strength": "institution",
+  "dimensions": [
+    "transfer-switch-process",
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "title": "Mor comprehensive bylaws 01.06.2025",
+      "title_he": "תקנון קרן הפנסיה המקיפה של מור (מהדורת 1.6.2025)",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור גמל ופנסיה",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "sections 19-22, pp.21-27",
+      "locator_he": "סעיפים 19-22, עמודים 21 עד 27",
+      "page": 21,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.moreinvest.co.il/media/zkmhas4r/res_מסמך-שינויים-פנסיה-מקיפה.pdf",
+      "title": "מור – מסמך ריכוז שינויים בקרן הפנסיה המקיפה (23.2.2026)",
+      "title_he": "מור – מסמך ריכוז שינויים בקרן הפנסיה המקיפה (23.2.2026)",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור בית השקעות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "row 4",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "PEN-17"
+  ]
+}

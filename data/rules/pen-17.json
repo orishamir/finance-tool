@@ -2,8 +2,8 @@
   "id": "PEN-17",
   "title": "Investment tracks and the age-dependent default",
   "title_he": "מסלולי ההשקעה וברירת המחדל לפי גיל",
-  "text_he": "מסלול ההשקעה של ברירת המחדל הוא מסלול תלוי גיל, בשלוש קבוצות גיל: העמית עובר אוטומטית למסלול של גילו בחודש שאחרי שהגיע אליו, אלא אם בחר אחרת, ורשאי להישאר במסלול שלא תואם את גילו. שאר המסלולים מתמחים, למשל מניות, שקלי ועוקבי מדדים, ולפנסיונרים יש מסלולים נפרדים; בכל מסלול, הנכסים באיגרות מיועדות או באפיק מובטח התשואה נמצאים מחוץ למדיניות המוצהרת שלו. אפשר להעביר את כל היתרה או ההפקדות או חלקן בין מסלולים בתוך ימי עסקים ספורים; כספי פיצויים ממעסיק מסוים עוברים למסלול שאינו ברירת מחדל רק בהסכמת המעסיק או כשהעמית זכאי להם. הכלל לקוח מתקנון של חברה מנהלת אחת.",
-  "strength": "institution",
+  "text_he": "מסלול ההשקעה של ברירת המחדל הוא מסלול תלוי גיל, בשלוש קבוצות גיל, והעמית עובר אוטומטית למסלול של גילו אלא אם בחר אחרת; למקבלי קצבה יש מסלול ברירת מחדל משלהם. מי שמצטרף בלי לבחור נכנס לברירת המחדל, ומי שחוזר בתוך שנה נשאר במסלול הקודם, וכספי פיצויים חדשים נכנסים לברירת המחדל. אפשר להעביר את כל היתרה או ההפקדות או חלקן בין מסלולים, והמעבר נעשה בתוך ימי העסקים שהתקנות קובעות; כספי פיצויים ממעסיק מסוים עוברים למסלול שאינו ברירת מחדל רק באישור המעסיק או כשהעמית זכאי להם. אילו מסלולים מתמחים יש בכל קרן, זה התפריט של כל חברה.",
+  "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
     "switching-tax-event",
@@ -12,7 +12,7 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "pension-and-gemel-lekitzba.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
@@ -41,28 +41,32 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "title": "Mor comprehensive bylaws 01.06.2025",
-      "title_he": "תקנון קרן הפנסיה המקיפה של מור (מהדורת 1.6.2025)",
-      "publisher": "Mor Investment House",
-      "publisher_he": "מור גמל ופנסיה",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "sections 19-22, pp.21-27",
-      "locator_he": "סעיפים 19-22, עמודים 21 עד 27",
-      "page": 21,
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.9, reg. 33ב(א)(2), (ב)",
+      "locator_he": "עמוד 9, תקנה 33ב(א)(2), (ב)",
+      "page": 9,
+      "quote": "בתוך שלושה ימי עסקים",
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.moreinvest.co.il/media/zkmhas4r/res_מסמך-שינויים-פנסיה-מקיפה.pdf",
-      "title": "מור – מסמך ריכוז שינויים בקרן הפנסיה המקיפה (23.2.2026)",
-      "title_he": "מור – מסמך ריכוז שינויים בקרן הפנסיה המקיפה (23.2.2026)",
-      "publisher": "Mor Investment House",
-      "publisher_he": "מור בית השקעות",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "row 4",
-      "checked": "2026-10-25"
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)",
+      "publisher": "Prisha.co.il",
+      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "pp.19-20, ss.19-22",
+      "locator_he": "עמודים 19 עד 20, סעיפים 19-22",
+      "page": 19,
+      "checked": "2026-10-25",
+      "qualifier": "(third-party host)"
     }
   ]
 }

@@ -34,7 +34,8 @@ export type ChildSavingsResult = RunResult & { checkpoints: Checkpoint[]; grants
 /**
  * F-54 Child savings accumulation. Monthly `58 × I` from NII, `I` the index at the last 1 January (CS-03),
  * doubled if the parent adds (CS-04), from birth to 18 (CS-02); grants at 3, 12 or 13, and 21 by cohort,
- * updated the same way (CS-13); no fees until 21, then CS-18 on the provident route. Deposits and grants
+ * updated the same way (CS-13); no fees until 21 (NII pays, CS-18), then on the provident route the after-21 rate
+ * Harel and Altshuler Shaham state (CS-30, a company rate inside CS-18's legal cap). Deposits and grants
  * are principal (TXK-19). Exit tax per F-50.
  */
 export function runChildSavings(input: ChildSavingsInput, ctx: RunContext): ChildSavingsResult {
@@ -57,7 +58,9 @@ export function runChildSavings(input: ChildSavingsInput, ctx: RunContext): Chil
     },
     { month: lastGrantMonth, amount: book.amount("CS-13", "grant_age_21") },
   ];
-  const feeAfter = provident ? book.rate("CS-18", "fee_after_21") : 0;
+  // the after-21 rate is a company's (CS-30, split from CS-18 on 2026-10-25); CS-18 holds who pays until 21 and the legal cap
+  if (provident) book.cite("CS-18");
+  const feeAfter = provident ? book.rate("CS-30", "fee_after_21") : 0;
   book.cite("TXK-19");
   book.cite("TXK-20");
 

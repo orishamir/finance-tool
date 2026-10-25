@@ -12,30 +12,44 @@
       "value": 3,
       "unit": "business_days",
       "source": {
-        "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
-        "title": "Harel child-savings standard bylaw, April 2026, p.6, s.16.2: a track switch is executed within 3 business days of a complete request",
-        "publisher": "Harel Pension and Gemel",
-        "strength": "institution"
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1056/he/regulation_h2016-9-20a.pdf",
+        "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד (נספח לחוזר גופים מוסדיים 2016-9-20), p.6, s.16.2",
+        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
+        "strength": "primary"
       },
       "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "provider-set",
+      "update_rule": "fixed in regulation",
       "rule_ids": [
         "CS-11"
       ],
       "state": "sourced",
-      "notes": "Harel's bylaw. A fund-to-fund transfer follows regulation 7: the receiving manager notifies NII within 7 business days, NII deposits from the following month, the transfer request goes within 2 business days of that deposit and the balance moves within 5 business days."
+      "notes": "The CMA standard child bylaw: a track switch within three business days of a complete, signed request, under the legislative arrangement. A fund-to-fund transfer follows regulation 7: the receiving manager notifies NII within 7 business days, NII deposits from the following month, the transfer request goes within 2 business days of that deposit and the balance moves within 5 business days."
     }
   },
-  "text_he": "את המסלול אפשר לשנות בכל עת דרך הקופה, ואת החיסכון אפשר להעביר לקופה אחרת מהרשימה דרך הקופה הקולטת; היתרה והרווחים עוברים והביטוח הלאומי מפנה את ההפקדות הבאות. אי אפשר לעבור לבנק. לפני גיל 18 פועל ההורה, אחרי 18 רק הילד.",
+  "text_he": "את המסלול אפשר לשנות בכל עת דרך הקופה, והמעבר מתבצע בתוך ימי העסקים לשינוי מסלול מבקשה מלאה וחתומה, לפי התקנון התקני של רשות שוק ההון. את החיסכון אפשר להעביר לקופה אחרת מהרשימה דרך הקופה הקולטת; היתרה והרווחים עוברים והביטוח הלאומי מפנה את ההפקדות הבאות. אי אפשר לעבור לבנק. לפני גיל 18 פועל ההורה, אחרי 18 רק הילד.",
   "figure_names_he": {
-    "track_switch_business_days": "ימי עסקים לשינוי מסלול (הראל)"
+    "track_switch_business_days": "ימי עסקים לשינוי מסלול"
   },
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1056/he/regulation_h2016-9-20a.pdf",
+      "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד (נספח לחוזר גופים מוסדיים 2016-9-20)",
+      "title_he": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד (נספח לחוזר גופים מוסדיים 2016-9-20)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.6, s.16.2",
+      "locator_he": "עמוד 6, סעיף 16.2",
+      "page": 6,
+      "quote": "בתוך שלושה ימי עסקים ממועד קבלת בקשת העברה מלאה וחתומה",
+      "checked": "2026-10-25"
+    },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8OfazOM9J2n~VjyzV5AWsITYS27PjZHrqw3iJWE0YJI=#page=8",
       "title": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע\"ז-2016 (קובץ התקנות 7727)",
@@ -80,19 +94,6 @@
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
-      "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד: הראל חיסכון לכל ילד, מהדורה 3, 04/2026",
-      "title_he": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד: הראל חיסכון לכל ילד, מהדורה 3, 04/2026",
-      "publisher": "Harel",
-      "publisher_he": "הראל",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.6, s.14-16",
-      "locator_he": "עמוד 6, סעיף 14-16",
-      "page": 6,
       "checked": "2026-10-25"
     }
   ]
