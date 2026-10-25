@@ -127,8 +127,9 @@ Look approved by the founder (2026-10-23). Tokens live in `site/app/theme.css`;
   `muted-foreground`, `primary`, `border`, `input`, `ring`).
 - **Number states (D7).** Sourced: solid grey underline. Computed: dotted
   violet underline. Entered by you: blue ink on a blue highlight. Flags:
-  `caution` amber (stale, secondary source, a figure from the institution's own
-  document, labelled "לפי החברה"), `blocked` red with a lock (open rule),
+  `caution` amber (stale, secondary source, a company's figure used outside its
+  own context, labelled "לפי החברה"; a company's figure about its own product,
+  shown on that product, is plain sourced, D31), `blocked` red with a lock (open rule),
   `positive` green (dimension considered). Colour never works alone:
   each state also has a pattern, icon or word. Every number goes through the
   provenance component.
