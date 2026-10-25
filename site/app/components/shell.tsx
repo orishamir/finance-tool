@@ -1,5 +1,5 @@
 // The app shell: header, menu sheet, search, footer and the page frame (design-spec 1.3, flows 6.2, 6.3).
-import { createContext, useContext, useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useId, useRef, useState, type ReactNode, type RefObject } from "react";
 import { Link, useLocation } from "react-router";
 import { companies as companiesCopy, home as homeCopy, knowledgeEntry, r3workbench, site } from "../copy";
 import { fmt } from "../lib/format";
@@ -103,16 +103,51 @@ export function PageSearchField({ inputId }: { inputId: string }) {
   return <SearchCombo inputId={inputId} variant="home" ready={ready} onSheet={open} />;
 }
 
+/** The room the header's line keeps besides the name and the menu, in px: the gaps (32 after the name, 16 before the end group), the resting search icon (40) and a margin (8). */
+const HEADER_REST = 32 + 16 + 40 + 8;
+
+/**
+ * Whether the menu fits on the header's line beside the name and the resting search icon (2026-10-25, the founder: the
+ * search field ran over the last menu item; each item added since release 1 had narrowed the room). When it doesn't,
+ * the menu folds into the menu button, at any width and with any number of items.
+ */
+function useNavFits(row: RefObject<HTMLDivElement | null>, name: RefObject<HTMLAnchorElement | null>, nav: RefObject<HTMLElement | null>): boolean {
+  const [fits, setFits] = useState(true);
+  /** The menu's own width, taken while it is shown (folded, it measures nothing). */
+  const natural = useRef(0);
+  useEffect(() => {
+    const r = row.current;
+    const n = nav.current;
+    if (!r || !n) return;
+    const measure = () => {
+      if (n.offsetParent !== null) natural.current = n.scrollWidth;
+      const pad = parseFloat(getComputedStyle(r).paddingInlineStart) + parseFloat(getComputedStyle(r).paddingInlineEnd);
+      setFits((name.current?.offsetWidth ?? 0) + natural.current + HEADER_REST <= r.clientWidth - pad);
+    };
+    const ro = new ResizeObserver(measure);
+    ro.observe(r);
+    ro.observe(n);
+    document.fonts?.ready.then(measure);
+    measure();
+    return () => ro.disconnect();
+  }, [row, name, nav]);
+  return fits;
+}
+
 function Header({ current, ready, onMenu, onSearch }: { current: Current; ready: boolean; onMenu: () => void; onSearch: OpenSearch }) {
   const { pathname } = useLocation();
+  const row = useRef<HTMLDivElement>(null);
+  const name = useRef<HTMLAnchorElement>(null);
+  const navRef = useRef<HTMLElement>(null);
+  const navFits = useNavFits(row, name, navRef);
   return (
-    <header className="sticky top-0 z-[var(--z-sticky)] bg-background/90 backdrop-blur border-b border-border">
-      <div className="mx-auto max-w-page h-14 lg:h-16 px-gutter flex items-center justify-between gap-4">
+    <header className="group/header sticky top-0 z-[var(--z-sticky)] bg-background/90 backdrop-blur border-b border-border">
+      <div ref={row} className="mx-auto max-w-page h-14 lg:h-16 px-gutter flex items-center justify-between gap-4">
         <div className="flex items-center gap-6 xl:gap-8 min-w-0">
-          <Link to="/" className="text-lg font-semibold text-foreground py-2 whitespace-nowrap">
+          <Link ref={name} to="/" className="text-lg font-semibold text-foreground py-2 whitespace-nowrap">
             {site.name}
           </Link>
-          <nav aria-label="ראשי" className="hidden xl:flex items-center gap-5">
+          <nav ref={navRef} aria-label="ראשי" className={cx("hidden items-center gap-5 transition-opacity duration-[var(--duration-fast)] group-has-[[data-search-active]]/header:opacity-0 group-has-[[data-search-active]]/header:pointer-events-none", navFits && "xl:flex")}>
             {doorItems.map((item) => {
               const on = isCurrentItem(item, current, pathname);
               return (
@@ -127,12 +162,12 @@ function Header({ current, ready, onMenu, onSearch }: { current: Current; ready:
           <Button variant="icon" aria-label={site.search} disabled={!ready} onClick={(e) => onSearch(e.currentTarget)} className="lg:hidden disabled:opacity-40 disabled:cursor-wait">
             <IconSearch />
           </Button>
-          <Button variant="icon" aria-label={site.menu} disabled={!ready} onClick={onMenu} className="xl:hidden disabled:opacity-40 disabled:cursor-wait">
+          <Button variant="icon" aria-label={site.menu} disabled={!ready} onClick={onMenu} className={cx(navFits && "xl:hidden", "disabled:opacity-40 disabled:cursor-wait")}>
             <IconMenu />
           </Button>
           {/* the first page has its own large field; the header's would be a second one on the same screen */}
           {current !== "home" && (
-            <div className="hidden lg:block">
+            <div className="hidden lg:block xl:relative xl:size-10">
               <SearchCombo inputId="header-search" variant="header" ready={ready} onSheet={onSearch} />
             </div>
           )}

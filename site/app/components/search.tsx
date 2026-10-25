@@ -327,12 +327,16 @@ export function SearchSheet({ open, onClose, anchor, seed }: { open: boolean; on
 /**
  * The search field that is on the page (the header, the first page). On a PC it is the field itself and the results
  * open under it; Escape, the X and a click elsewhere close them. On a phone it only opens the bottom sheet.
+ * In the header from 80rem, where the menu shares the line, it rests as an icon and widens while in use, and the menu
+ * fades out meanwhile (2026-10-25, the founder: the full field ran over the last menu item).
  */
 export function SearchCombo({ inputId, variant, ready, onSheet }: { inputId: string; variant: "header" | "home"; ready: boolean; onSheet: (el: HTMLElement | null, text: string, via: "focus" | "tap") => void }) {
   const desktop = useDesktop();
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false);
+  const [focused, setFocused] = useState(false);
   const wrap = useRef<HTMLDivElement>(null);
+  const input = useRef<HTMLInputElement>(null);
   const panelId = useId();
   const navigate = useNavigate();
   const location = useLocation();
@@ -349,8 +353,9 @@ export function SearchCombo({ inputId, variant, ready, onSheet }: { inputId: str
     return () => document.removeEventListener("pointerdown", down);
   }, [open]);
   const panelOpen = open && desktop;
+  const resting = variant === "header" && !focused && !open && !text;
   return (
-    <div ref={wrap} className={cx("relative", variant === "header" && "w-56 xl:w-64")}>
+    <div ref={wrap} data-search-active={(variant === "header" && !resting) || undefined} className={cx("relative", variant === "header" && "w-56 xl:absolute xl:end-0 xl:top-1/2 xl:-translate-y-1/2 xl:transition-[width] xl:duration-[var(--duration-fast)]", variant === "header" && (resting ? "xl:w-10" : "xl:w-64"))}>
       <form
         role="search"
         onSubmit={(e) => {
@@ -365,8 +370,10 @@ export function SearchCombo({ inputId, variant, ready, onSheet }: { inputId: str
           className={cx(
             "flex items-center gap-2 px-3 rounded-md border border-input bg-card text-muted-foreground focus-within:outline-2 focus-within:outline-ring focus-within:outline-offset-1",
             variant === "header" ? "h-10" : "h-field",
+            resting && "xl:px-0 xl:gap-0 xl:justify-center xl:cursor-pointer",
             !ready && "opacity-60",
           )}
+          onClick={() => input.current?.focus()}
         >
           <IconSearch size={18} />
           {variant === "header" && (
@@ -375,6 +382,7 @@ export function SearchCombo({ inputId, variant, ready, onSheet }: { inputId: str
             </label>
           )}
           <input
+            ref={input}
             id={inputId}
             dir="rtl"
             value={text}
@@ -386,8 +394,13 @@ export function SearchCombo({ inputId, variant, ready, onSheet }: { inputId: str
             aria-autocomplete="list"
             autoComplete="off"
             placeholder={site.searchPlaceholder}
-            className={cx("flex-1 min-w-0 bg-transparent outline-none placeholder:text-muted-foreground disabled:cursor-wait text-mixed", variant === "header" ? "text-sm text-foreground" : "field-input !text-start")}
-            onFocus={(e) => (desktop ? setOpen(true) : onSheet(e.currentTarget, text, "focus"))}
+            className={cx("flex-1 min-w-0 bg-transparent outline-none placeholder:text-muted-foreground disabled:cursor-wait text-mixed", variant === "header" ? "text-sm text-foreground" : "field-input !text-start", resting && "xl:w-0 xl:flex-none")}
+            onFocus={(e) => {
+              setFocused(true);
+              if (desktop) setOpen(true);
+              else onSheet(e.currentTarget, text, "focus");
+            }}
+            onBlur={() => setFocused(false)}
             onClick={(e) => (desktop ? setOpen(true) : onSheet(e.currentTarget, text, "tap"))}
             onChange={(e) => {
               setText(e.target.value);
