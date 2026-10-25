@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { dropOrder } from "./goals-board";
+import { dropOrder } from "./chip-list";
 
 // Three 100px chips on one row, right to left as on the page: a at 300-400, b at 180-280, c at 60-160.
 const row = new Map([

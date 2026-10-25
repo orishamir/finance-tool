@@ -7,6 +7,8 @@ export { Callout } from "./callout";
 export { Card, Section, type CardPad, type SectionLevel } from "./card";
 export { CoverageFold, Disclosure, FoldGroup, type DisclosureProps } from "./disclosure";
 export { ChoiceChips, SegmentedControl, type SegmentOption } from "./choice";
+export { ChipList, dropOrder, type ChipItem, type ChipListProps, type ChipListWords } from "./chip-list";
+export { PlanChips, type PlanChipItem } from "./plan-chips";
 export { Sentence, Tpl, fill } from "./sentence";
 export { HeadlineFigure, KeyValue, KeyValueList, Stat, StatRow, type KeyValueItem } from "./stat";
 export { GapNote, SourceLine } from "./notes";

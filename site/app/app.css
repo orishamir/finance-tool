@@ -267,6 +267,23 @@
     color: var(--background);
     font-weight: 500;
   }
+  /* The last pill of a ChipList: adds one. Dashed, no fill, a plus. Its own class (the site has no class merger). */
+  .sec-chip-add {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--target);
+    padding: 0 14px;
+    border-radius: 999px;
+    border: 1px dashed var(--input);
+    background: transparent;
+    color: var(--foreground);
+    font-size: var(--text-sm);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .sec-chip-add:hover {
+    background: var(--accent);
+  }
 
   /* ---- readout and definition lists in sheets */
   .readout {

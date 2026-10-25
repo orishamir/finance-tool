@@ -15,7 +15,7 @@ const html = (el: React.ReactElement) => renderToString(createElement(MemoryRout
 describe("the gallery", () => {
   const out = html(createElement(KitGallery, { today }));
   it("names every component of the kit", () => {
-    for (const name of ["Button, LinkButton", "Tag", "Callout", "Card, pad", "Section", "Disclosure", "FoldGroup", "CoverageFold", "SegmentedControl", "ChoiceChips", "Sentence", "Stat, StatRow", "KeyValue, KeyValueList", "HeadlineFigure", "RankBadge", "SourceLine, GapNote", "NumberField", "RangeField", "PercentField", "Marker, MarkerMark", "GainBars", "ChartLegend, Swatch, ChartReadout, ChartTable"]) {
+    for (const name of ["Button, LinkButton", "Tag", "Callout", "Card, pad", "Section", "Disclosure", "FoldGroup", "CoverageFold", "SegmentedControl", "ChoiceChips", "ChipList", "PlanChips", "Sentence", "Stat, StatRow", "KeyValue, KeyValueList", "HeadlineFigure", "RankBadge", "SourceLine, GapNote", "NumberField", "RangeField", "PercentField", "Marker, MarkerMark", "GainBars", "ChartLegend, Swatch, ChartReadout, ChartTable"]) {
       expect(out, name).toContain(`>${name}</code>`);
     }
   });
