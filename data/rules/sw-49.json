@@ -1,0 +1,41 @@
+{
+  "id": "SW-49",
+  "title": "Mizrahi Tefahot and The Phoenix: a bank's distribution fees, and where an offer request goes",
+  "title_he": "מזרחי טפחות והפניקס: עמלות הפצה ובקשה להצעה",
+  "text_he": "מזרחי טפחות מציין שהצטרפות או הישארות במוצר פנסיוני בעקבות הייעוץ שלו מזכה את הבנק בעמלות הפצה מהחברות המנהלות. בהפניקס בקשה להצעה עוברת לסוכן של החשבון, ואם אין לו סוכן, לסוכנות ביטוח בקבוצת הפניקס; הטופס המקוון הוא הדרך הישירה. בנקים וחברות אחרים לא נבדקו.",
+  "strength": "institution",
+  "dimensions": [
+    "transfer-switch-process",
+    "fee-management-balance"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.mizrahi-tefahot.co.il/brokerage/pension/pension-consulting/",
+      "title": "מזרחי טפחות – ייעוץ פנסיוני",
+      "title_he": "מזרחי טפחות – ייעוץ פנסיוני",
+      "publisher": "Mizrahi Tefahot Bank",
+      "publisher_he": "בנק מזרחי טפחות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "מזכה את הבנק בעמלות הפצה מהיצרנים הפנסיונים",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.fnx.co.il/ishtalmutfund/faq/",
+      "title": "Phoenix study-fund FAQ",
+      "title_he": "שאלות ותשובות על קרן ההשתלמות של הפניקס",
+      "publisher": "The Phoenix",
+      "publisher_he": "הפניקס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "SW-17"
+  ]
+}

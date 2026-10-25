@@ -14,15 +14,17 @@
   "sources": [
     {
       "url": "https://www.btl.gov.il/Laws1/02_0103_100223.pdf",
-      "title": "Income Tax (Computation of Capital Gain on Sale of a Traded Security, State Loan or Mutual-Fund Unit) Regulations 2002, reg. 4",
+      "title": "תקנות מס הכנסה (חישוב רווח הון במכירת נייר ערך הנסחר בבורסה, מילווה המדינה או יחידה בקרן נאמנות), התשס\"ג-2002",
+      "title_he": "תקנות מס הכנסה (חישוב רווח הון במכירת נייר ערך הנסחר בבורסה, מילווה המדינה או יחידה בקרן נאמנות), התשס״ג-2002",
       "publisher": "National Insurance Institute",
-      "publisher_he": "המוסד לביטוח לאומי",
-      "kind": "regulator_page",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
       "strength": "primary",
-      "locator": "reg. 4",
-      "locator_he": "תקנה 4",
-      "checked": "2026-10-22",
-      "qualifier": "(government copy; later amendments not checked)"
+      "locator": "p.2, reg. 4",
+      "locator_he": "עמוד 2, תקנה 4",
+      "page": 2,
+      "quote": "יראו כתמורת הפדיון את התמורה בתוספת דמי הניכיון",
+      "checked": "2026-10-25"
     }
   ]
 }

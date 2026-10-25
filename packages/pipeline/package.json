@@ -9,6 +9,7 @@
     "typecheck": "tsc -p .",
     "validate": "tsx src/cli.ts validate",
     "extract:sources": "tsx scripts/extract-sources.ts",
+    "fetch:ecb": "tsx scripts/fetch-ecb-rates.ts",
     "refresh": "tsx src/cli.ts refresh"
   },
   "dependencies": {

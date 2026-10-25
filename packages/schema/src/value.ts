@@ -16,6 +16,10 @@ export const unit = z.enum([
   "nis_per_month",
   "nis_per_trade",
   "nis_per_transfer",
+  "usd_per_share",
+  "usd_per_trade",
+  "gbp_per_trade",
+  "fx_per_eur",
   "months",
   "years",
   "days",
@@ -24,6 +28,19 @@ export const unit = z.enum([
   "count",
   "boolean",
   "text",
+]);
+
+/** data-schema §2, security types for tariff lines and for a snapshot's `availability.applies_to` (`all` is every one). */
+export const instrumentClass = z.enum([
+  "tase_shares_bonds",
+  "tase_bonds",
+  "makam",
+  "foreign_securities",
+  "mutual_fund_units",
+  "money_market_units",
+  "etf_units",
+  "tase_foreign_fund_units",
+  "all",
 ]);
 
 /** data-schema §1, strength vocabulary (il-finance README plus primary-mirror and entered). */
@@ -73,6 +90,12 @@ export const valueObject = z
     state: numberState,
     computed_from: computedFrom.optional(),
     notes: z.string().optional(),
+    /**
+     * Site parameters only (`data/parameters/`, data-schema §3.2): the reader's own short line for this one number, in plain
+     * Hebrew. The number's sheet shows it first; the parameter file's general `rationale_he` waits behind "more". It never
+     * carries working history (who chose the value, test scenarios, audit ids); that stays in docs/parameters-rationale.md.
+     */
+    rationale_he: z.string().min(1).optional(),
   })
   .refine((v) => v.value !== null || (v.notes ?? "").trim() !== "", {
     message: "value is null, so notes must say why",

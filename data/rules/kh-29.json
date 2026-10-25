@@ -1,0 +1,43 @@
+{
+  "id": "KH-29",
+  "title": "Altshuler Shaham: self-employed deposits in money only, its channels and its 2026 cut-off",
+  "title_he": "אלטשולר שחם: הפקדות של עצמאים, דרכי ההפקדה והמועד האחרון בשנה",
+  "text_he": "באלטשולר שחם עמית עצמאי מפקיד בכסף בלבד, לא בניירות ערך, בהעברה בנקאית לחשבון הקרן או דרך האזור האישי. כדי שהפקדה תיספר בשנת המס היא צריכה להגיע לחברה עד המועד האחרון שהחברה מפרסמת לסוף השנה. מי רשאי להפקיד כעצמאי קובע החוק; מועדים ודרכי הפקדה של חברות אחרות לא נקראו.",
+  "strength": "institution",
+  "dimensions": [
+    "eligibility",
+    "minimum"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "keren-hishtalmut.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://as-invest.co.il/media/khpp32k5/אלטשולר-שחם-השתלמות-תקנון-מהדורת-שינויים-דצמבר-2024.pdf",
+      "title": "Altshuler bylaws 1.12.2024",
+      "title_he": "תקנון קרן ההשתלמות של אלטשולר שחם (מהדורת דצמבר 2024)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "s.6",
+      "locator_he": "סעיף 6",
+      "quote": "במזומנים בלבד",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.as-invest.co.il/interstedin/הנחיות-להפקדה-עבור-עצמאים/",
+      "title": "אלטשולר שחם – הנחיות להפקדה עבור עצמאים",
+      "title_he": "אלטשולר שחם – הנחיות להפקדה עבור עצמאים",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "KH-08"
+  ]
+}

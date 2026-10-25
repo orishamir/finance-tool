@@ -14,6 +14,19 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.200, ss.120א, 120ב(א)",
+      "locator_he": "עמוד 200, סעיפים 120א, 120ב(א)",
+      "page": 200,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
       "title": "Booklet 2026",
       "title_he": "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026",
@@ -24,21 +37,20 @@
       "locator": "p.3",
       "locator_he": "עמוד 3",
       "page": 3,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Ordinance",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf",
+      "title": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנת התקציב 2025) (הקפאת עדכוני מס ומס יסף), התשפ\"ה-2024, ספר החוקים 3342",
+      "title_he": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנת התקציב 2025) (הקפאת עדכוני מס ומס יסף), התשפ\"ה-2024, ספר החוקים 3342",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "ss.120A, 120B(e) (`ב־1 בינואר של שנות המס 2025 עד 2027 לא יתואמו הסכומים`)",
-      "locator_he": "סעיפים 120א, 120ב(ה) (`ב־1 בינואר של שנות המס 2025 עד 2027 לא יתואמו הסכומים`)",
-      "anchor": "סעיף_120א",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.2, s.1 (s.120ב(ה)) (`ב־1 בינואר של שנות המס 2025 עד 2027 לא יתואמו הסכומים`)",
+      "locator_he": "עמוד 2, סעיף 1 (סעיף 120ב(ה)) (`ב־1 בינואר של שנות המס 2025 עד 2027 לא יתואמו הסכומים`)",
+      "page": 2,
+      "checked": "2026-10-25"
     }
   ]
 }

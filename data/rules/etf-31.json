@@ -3,7 +3,7 @@
   "title": "A foreign fund offered in Israel must not specialise in Israeli investments; Israeli indices are reached through Israeli ETFs and tracking funds",
   "title_he": "קרן חוץ לא מתמחה בישראל; למדדים ישראליים קרנות ישראליות",
   "text_he": "קרן חוץ מוצעת לציבור בישראל רק אם היא אינה מתמחה בהשקעות בישראל. לכן בדרך של קרן חוץ רשומה החוסך הישראלי מקבל חשיפות לא ישראליות בלבד, ואל מדדים ישראליים מגיעים דרך קרנות סל וקרנות מחקות ישראליות. נוסח התקנות נקרא באתר שמעתיק אותו.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "eligibility"
   ],
@@ -12,18 +12,17 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(הצעת_יחידות_של_קרן_חוץ)",
-      "title": "Foreign-fund regulations, reg. 2",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=#page=3",
+      "title": "תקנות השקעות משותפות בנאמנות (הצעת יחידות של קרן חוץ), התשע\"ו-2016 (קובץ התקנות 7653)",
       "title_he": "תקנות השקעות משותפות בנאמנות (הצעת יחידות של קרן חוץ), התשע״ו-2016",
-      "publisher": "Hebrew Wikisource",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "משרד האוצר",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg. 2",
-      "locator_he": "תקנה 2",
-      "anchor": "סעיף_2",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.3, reg. 2(א)(10)",
+      "locator_he": "עמוד 3, תקנה 2(א)(10)",
+      "page": 3,
+      "checked": "2026-10-25"
     }
   ]
 }

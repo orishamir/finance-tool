@@ -5,8 +5,7 @@ import { r4workbench as c } from "../../../copy";
 import { fmt } from "../../../lib/format";
 import { draftOf, hasErrors, offerFromDraft, validateDraft, type DraftErrors, type EnteredOffer, type OfferDraft } from "../../../lib/offers";
 import type { ProviderRowView } from "../../../lib/providers";
-import { Button, cx } from "../../ui";
-import { NumberField } from "../../timeline/fields";
+import { Button, cx, NumberField } from "../../kit";
 
 const monthsOf = { month: 1, quarter: 3, year: 12 } as const;
 const periodOfMonths = (m: number): "month" | "quarter" | "year" => (m === 1 ? "month" : m === 3 ? "quarter" : "year");
@@ -92,7 +91,7 @@ export function EnteredOfferCard({ view, offer, today, writable, showFx, onSave,
             {t.whoText}
           </label>
           <div className="field-box">
-            <input id={`${dateId}-by`} type="text" dir="auto" value={draft.offeredBy} onChange={(e) => set("offeredBy", e.target.value)} className="field-input !text-start" autoComplete="off" />
+            <input id={`${dateId}-by`} type="text" dir="rtl" value={draft.offeredBy} onChange={(e) => set("offeredBy", e.target.value)} className="field-input !text-start text-mixed" autoComplete="off" />
           </div>
         </div>
         <div className="field">

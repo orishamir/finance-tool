@@ -1,0 +1,103 @@
+{
+  "id": "CS-30",
+  "title": "Harel, Altshuler Shaham and Bank Yahav: the fees they state for child savings",
+  "title_he": "הראל, אלטשולר שחם ובנק יהב: דמי הניהול שהם מציינים",
+  "text_he": "בתקנון של הראל דמי הניהול אחרי גיל המענק האחרון הם שיעור שנתי מהיתרה, בלי דמי ניהול מהפקדה, ואלטשולר שחם אומרת שהיא גובה אחרי הגיל הזה דמי ניהול מהיתרה בלבד באותו שיעור. בבנק יהב חשבון העו״ש שנפתח לתוכנית פטור מעמלות. אלה השיעורים של החברות האלה בתוך התקרה שבתקנות; חברות אחרות לא נבדקו.",
+  "figure_names_he": {
+    "fee_after_21": "דמי ניהול שנתיים מהיתרה אחרי גיל המענק האחרון (הראל, אלטשולר שחם)",
+    "deposit_fee_after_21": "דמי ניהול מהפקדה אחרי גיל המענק האחרון (הראל)"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-deposit",
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "fee_after_21": {
+      "value": 0.23,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
+        "title": "Harel child-savings standard bylaw, April 2026, pp.9-10, s.31.1.1 (0.23% of balance, the rate Harel wrote into the blank of the CMA standard bylaw); Altshuler Shaham Q&A states the same after 21",
+        "publisher": "Harel Insurance and Finance",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "CS-30"
+      ],
+      "state": "sourced",
+      "notes": "Harel's and Altshuler Shaham's own yearly fee on the balance once the child is 21. No law sets 0.23% after 21: it equals what NII pays funds until 21 (CS-18). The legal cap after 21 is 1.05% of the balance and 4% of deposits (CS-18). Other managers' rates were not checked (CS open question 8). Harel may raise it after 21 by notice (s.33)."
+    },
+    "deposit_fee_after_21": {
+      "value": 0,
+      "unit": "pct_of_deposit",
+      "source": {
+        "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
+        "title": "Harel child-savings standard bylaw, April 2026, pp.9-10, s.31.1.2 (0% of deposits)",
+        "publisher": "Harel Insurance and Finance",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "CS-30"
+      ],
+      "state": "sourced",
+      "notes": "Harel's own fee from deposits after 21, within the legal cap of 4% (CS-18). Other managers were not checked."
+    }
+  },
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
+      "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד: הראל חיסכון לכל ילד, מהדורה 3, 04/2026",
+      "title_he": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד: הראל חיסכון לכל ילד, מהדורה 3, 04/2026",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.9-10, s.31-33",
+      "locator_he": "עמודים 9 עד 10, סעיף 31-33",
+      "page": 9,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://bank-yahav.co.il/media/qxed4yhi/השקעות-מונגש-חסכון-לכל-ילד-צפייה-בהסכם-חיסכון-לכל-ילד.pdf",
+      "title": "בנק יהב: הסכם חיסכון ארוך טווח לילד (חיסכון לכל ילד)",
+      "title_he": "בנק יהב: הסכם חיסכון ארוך טווח לילד (חיסכון לכל ילד)",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "s.5.4",
+      "locator_he": "סעיף 5.4",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.as-invest.co.il/interstedin/%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%95%D7%94%D7%A9%D7%A7%D7%A2%D7%94/%D7%A9%D7%90%D7%9C%D7%95%D7%AA-%D7%95%D7%AA%D7%A9%D7%95%D7%91%D7%95%D7%AA-%D7%91%D7%A0%D7%95%D7%A9%D7%90-%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%9C%D7%9B%D7%9C-%D7%99%D7%9C%D7%93/",
+      "title": "אלטשולר שחם: שאלות ותשובות בנושא חיסכון לכל ילד",
+      "title_he": "אלטשולר שחם: שאלות ותשובות בנושא חיסכון לכל ילד",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "יגבו דמי ניהול בגובה 0.23% מהיתרה בחשבונו בלבד",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "CS-18"
+  ]
+}

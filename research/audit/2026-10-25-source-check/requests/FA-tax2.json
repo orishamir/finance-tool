@@ -1,0 +1,44 @@
+[
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "filing-exemption-regulations-amendment-2004",
+   "match": [
+    "(פטור מהגשת דין וחשבון) (תיקון), התשס\"ד-2004"
+   ],
+   "title_he": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשס\"ד-2004 (קובץ התקנות 6317א)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "regulation",
+   "official_url": null
+  },
+  "note": "TXG-17 cites this amending booklet; without the row it takes the 1988 base title"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "filing-exemption-regulations-amendment-2014",
+   "match": [
+    "(פטור מהגשת דין וחשבון) (תיקון), התשע\"ד-2014"
+   ],
+   "title_he": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשע\"ד-2014 (קובץ התקנות 7405)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "regulation",
+   "official_url": null
+  },
+  "note": "TXG-17 cites this amending booklet; without the row it takes the 1988 base title"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "filing-exemption-regulations-amendment-2024",
+   "match": [
+    "(פטור מהגשת דין וחשבון) (תיקון), התשפ\"ד-2024"
+   ],
+   "title_he": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשפ\"ד-2024 (קובץ התקנות 11460)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "regulation",
+   "official_url": null
+  },
+  "note": "TXG-17 cites this amending booklet; without the row it takes the 1988 base title"
+ }
+]

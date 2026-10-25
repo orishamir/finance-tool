@@ -20,11 +20,11 @@
       "unit": "text",
       "source": {
         "url": "https://fs.knesset.gov.il/25/law/25_lsr_6803031.pdf",
-        "title": "Banking (Customer Service) Law, Amendment 38, Sefer HaHukim 3413, 14.5.2025, p.638, new s.5B2 and s.5",
+        "title": "חוק הבנקאות (שירות ללקוח) (תיקון מס' 38), התשפ\"ה-2025, ספר החוקים 3413, p.3, s.5",
         "publisher": "Knesset (Sefer HaHukim)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2025-12-01",
       "effective_to": null,
       "tax_year": null,
@@ -41,74 +41,85 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://boi.org.il/media/ahflwvpw/448_2.pdf",
-      "title": "Directive 448 version 2, s.29(ב)",
-      "title_he": "הוראת ניהול בנקאי תקין 448: העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון",
+      "url": "https://www.boi.org.il/media/irmdw0r2/448_4-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf",
+      "title": "הוראת ניהול בנקאי תקין 448 – העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון, גרסה 4 (11/25)",
+      "title_he": "הוראת ניהול בנקאי תקין 448 – העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון, גרסה 4 (11/25)",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
-      "kind": "regulation",
+      "kind": "regulator_page",
       "strength": "primary",
-      "locator": "s.29(ב)",
-      "locator_he": "סעיף 29(ב)",
-      "checked": "2026-10-22"
+      "locator": "p.9, s.29(ב)",
+      "locator_he": "עמוד 9, סעיף 29(ב)",
+      "page": 9,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://fs.knesset.gov.il/25/law/25_lsr_6803031.pdf",
-      "title": "Banking (Customer Service) Law Amendment 38, ספר החוקים 3413, 14.5.2025, pp.638 to 639",
-      "title_he": "חוק הבנקאות (שירות ללקוח), התשמ״א-1981",
+      "title": "חוק הבנקאות (שירות ללקוח) (תיקון מס' 38), התשפ\"ה-2025 (ספר החוקים 3413)",
+      "title_he": "ספר החוקים 3413 (14.5.2025): חוק הבנקאות (שירות ללקוח) (תיקון מס׳ 38)",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "pp.638 to 639",
-      "locator_he": "עמודים 638 עד 639",
-      "page": 638,
-      "checked": "2026-10-22"
+      "locator": "pp.2-3, s.5ב2 on p.2, s.5 on p.3",
+      "page": 2,
+      "quote": "מושבים רק לחשבון שממנו הועברו",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://fs.knesset.gov.il/25/law/25_lst_5380049.pdf",
-      "title": "Bill P/5281/25 text",
+      "title": "הצעת חוק הבנקאות (שירות ללקוח) (תיקון – ניוד פקדונות ללקוחות הבנקים ללא העברת חשבון), פ/5281/25",
+      "title_he": "הצעת חוק הבנקאות (שירות ללקוח) (תיקון – ניוד פקדונות ללקוחות הבנקים ללא העברת חשבון), פ/5281/25",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "official_pdf",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill?$filter=PrivateNumber%20eq%205281%20and%20KnessetNum%20eq%2025&$format=json",
-      "title": "Knesset OData, bill 2226120",
+      "title": "הכנסת – מאגר המידע הפרלמנטרי: הצעת חוק 2226120 (פ/5281/25)",
+      "title_he": "הכנסת – מאגר המידע הפרלמנטרי: הצעת חוק 2226120 (פ/5281/25)",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill?$filter=PrivateNumber%20eq%204960%20and%20KnessetNum%20eq%2025&$format=json",
-      "title": "bill 2222052 (P/4960/25)",
+      "title": "הכנסת – מאגר המידע הפרלמנטרי: הצעת חוק 2222052 (פ/4960/25)",
+      "title_he": "הכנסת – מאגר המידע הפרלמנטרי: הצעת חוק 2222052 (פ/4960/25)",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Status?$filter=StatusID%20eq%20104&$format=json",
-      "title": "status 104",
+      "title": "הכנסת – מאגר המידע הפרלמנטרי: סטטוס 104",
+      "title_he": "הכנסת – מאגר המידע הפרלמנטרי: סטטוס 104",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "quote": "הונחה על שולחן הכנסת לדיון מוקדם",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Status?$filter=StatusID%20eq%20118&$format=json",
-      "title": "status 118",
+      "title": "הכנסת – מאגר המידע הפרלמנטרי: סטטוס 118",
+      "title_he": "הכנסת – מאגר המידע הפרלמנטרי: סטטוס 118",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "quote": "התקבלה בקריאה שלישית",
+      "checked": "2026-10-25"
     }
   ]
 }

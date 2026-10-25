@@ -3,7 +3,7 @@
   "title": "Which lot is sold, and which fees reduce the gain",
   "title_he": "איזה נייר נמכר קודם, ואילו הוצאות מקטינות את הרווח",
   "text_he": "כשמוכרים ניירות ערך זהים שנקנו במועדים שונים, רואים אותם כנמכרים לפי סדר הקנייה, הראשון שנקנה נמכר ראשון, אלא אם המוכר מוכיח לפקיד השומה את תאריך הקנייה והמחיר של נייר מסוים. ניירות ערך זהים כוללים יחידות באותה קרן נאמנות אם מנהל אותן מנהל תיקים אחד. בחישוב רווח ההון מנכים מהתמורה את ההוצאות של אותה שנת מס, כלומר דמי ניהול ודמי משמורת בעד פעולות בניירות ערך. אם הבנקים מנכים את ההוצאות כבר בניכוי במקור או רק דרך דוח שנתי לא נמצא.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "tax-at-exit",
     "fee-custody",
@@ -14,18 +14,31 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(חישוב_רווח_הון_במכירת_נייר_ערך_הנסחר_בבורסה,_מילווה_המדינה_או_יחידה_בקרן_נאמנות)",
-      "title": "Income Tax Regulations (computing capital gain on sale of a traded security, government loan or unit in a mutual fund), 5763-2002",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100223.pdf",
+      "title": "תקנות מס הכנסה (חישוב רווח הון במכירת נייר ערך הנסחר בבורסה, מילווה המדינה או יחידה בקרן נאמנות), התשס\"ג-2002",
+      "title_he": "תקנות מס הכנסה (חישוב רווח הון במכירת נייר ערך הנסחר בבורסה, מילווה המדינה או יחידה בקרן נאמנות), התשס״ג-2002",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg.1",
-      "locator_he": "תקנה 1",
-      "anchor": "סעיף_1",
-      "quote": "ניירות ערך זהים",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.1, reg. 1, definitions הוצאות, ניירות ערך זהים",
+      "page": 1,
+      "quote": "ניירות ערך מאותו סוג ושל אותו מנפיק",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100223.pdf",
+      "title": "תקנות מס הכנסה (חישוב רווח הון במכירת נייר ערך הנסחר בבורסה, מילווה המדינה או יחידה בקרן נאמנות), התשס\"ג-2002",
+      "title_he": "תקנות מס הכנסה (חישוב רווח הון במכירת נייר ערך הנסחר בבורסה, מילווה המדינה או יחידה בקרן נאמנות), התשס״ג-2002",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.2, regs. 5, 6(א)",
+      "locator_he": "עמוד 2, תקנות 5, 6(א)",
+      "page": 2,
+      "quote": "יותרו בניכוי מהתמורה ההוצאות שהוצאו באותה שנת מס",
+      "checked": "2026-10-25"
     }
   ]
 }

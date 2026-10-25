@@ -1,4 +1,5 @@
 export * from "./formulas/time.ts";
+export * from "./formulas/account-interest.ts";
 export * from "./formulas/fees.ts";
 export * from "./formulas/holding-tax.ts";
 export * from "./formulas/exit-tax.ts";

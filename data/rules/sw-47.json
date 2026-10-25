@@ -1,0 +1,55 @@
+{
+  "id": "SW-47",
+  "title": "The Phoenix: transfer confirmation within 14 business days",
+  "title_he": "הפניקס: אישור ניוד בתוך ימי עסקים ספורים",
+  "text_he": "בהפניקס אישור על ניוד יוצא או נכנס נשלח לעמית בתוך ימי העסקים לאישור ניוד. זו התחייבות של הפניקס, קצרה במעט מהמועד שהחוזר קובע לשתי הקופות. התחייבויות של חברות אחרות לא נבדקו.",
+  "figure_names_he": {
+    "phoenix_confirmation_business_days": "ימי עסקים לאישור ניוד (הפניקס)"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "phoenix_confirmation_business_days": {
+      "value": 14,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.fnx.co.il/ishtalmutfund/faq/",
+        "title": "Phoenix study-fund FAQ (\"שאלות ותשובות\" on transfers)",
+        "publisher": "The Phoenix",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "SW-47"
+      ],
+      "state": "sourced",
+      "notes": "Phoenix: \"אישור לעמית על ביצוע ניוד יוצא / נכנס, יישלח תוך 14 ימי עסקים\". Institution statement."
+    }
+  },
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.fnx.co.il/ishtalmutfund/faq/",
+      "title": "Phoenix study-fund FAQ",
+      "title_he": "שאלות ותשובות על קרן ההשתלמות של הפניקס",
+      "publisher": "The Phoenix",
+      "publisher_he": "הפניקס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "יישלח תוך 14 ימי עסקים",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "SW-09"
+  ]
+}

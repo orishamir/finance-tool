@@ -141,12 +141,17 @@ Why A: the reader learns what the site does and the one thing that sets it apart
 | `home.quick.purposes.retirement` | פרישה | chip; long-term preset; also the goal's name |
 | `home.quick.purposes.cushion` | כרית ביטחון | chip; opens idle cash (not a preset of the comparison). "כרית ביטחון" over the preset's own name "עתודה נזילה" on the card; the preset's name stays on the form and the strip |
 | `home.quick.purposes.none` | בלי מטרה מסוימת | chip; lump-sum preset, or long-term when a monthly sum is typed; no name |
+| `home.quick.costLabel.apartment · wedding · studies` | כמה הדירה תעלה, בערך · כמה החתונה תעלה, בערך · כמה הלימודים יעלו, בערך | added 2026-10-25: the fourth field with a purchase purpose; ₪; saved as the goal's purchase cost |
+| `home.quick.costHint` | לא חובה. התוצאה תראה אם הסכום מספיק. | added 2026-10-25: hint under the cost field |
+| `home.quick.childNote` | החיסכון נבדק עד גיל {n}, המספר שהאתר קבע ל״{preset}״. | added 2026-10-25: under the fields with "ילד"; {n} is P-07's child horizon (a parameter `Num`), {preset} its name. The age field reuses `r2.form.childAge` |
+| `home.quick.unknownNote` | בלי מספר שנים, ההשוואה תרוץ על {n} שנים, המספר שהאתר קבע ל״{preset}״. | added 2026-10-25: under the fields with a purpose chosen and no years typed, or with "לא יודעים" pressed; {n} the preset's horizon (a parameter `Num`) |
 | `home.quick.submit` | מה הכי מתאים | the button; the result page's own title (`r2.result.title`), so one word names the answer |
 | `home.quick.submitCushion` | כמה עולה להשאיר בעו״ש | the button with "כרית ביטחון" chosen |
 | `home.quick.needAmount` | הזינו סכום: היום או בכל חודש. | under the button when no sum above zero is typed |
 | `home.quick.line` | הכול נשמר במכשיר הזה. גיל, שכר ותשואה אפשר להוסיף בתוצאה, אם תרצו. | `text-xs muted` under the button |
 | `home.quick.allFields` | לכל השדות | quiet link to the full goal form |
 | `home.quick.another` | שאלה נוספת | the closed disclosure under the saved-goal strip; adds a second goal (D12) |
+| `r2.strip.blank · fill · savedAll` | עוד לא מולאה · למילוי · נשמרו במכשיר הזה | added 2026-10-25: the first page's goal rows, a goal that holds nothing yet, and the line under several rows |
 | `r2.result.horizonDefaulted.before / mid / after / change` | לא ידעתם כמה שנים, ולכן ההשוואה רצה על {n} שנים, נקודת ההתחלה של ״{preset}״. לשנות | note under the result's headline when the years came from the preset; {n} a site-parameter `Num`; "לשנות" opens the assumptions at the years. Same pattern as `employmentInferred` |
 | `r2.result.horizonHonest.cannot` | האתר לא קובע אם {years} שנים מספיקות למניות: אין לו תשואה צפויה ואין לו נתון על ירידות. | product mode, when the years are below P-04's equity minimum; the site says what it does not know (D9, D11) |
 | `r2.result.horizonHonest.can` | לפי טבלת ההתאמה של האתר, מסלול מנייתי נחשב מתאים מ־{min} שנים, למי שמסכים לירידה של {drop} בדרך. | {min} and {drop} are P-04's two figures, site parameters |
@@ -275,6 +280,7 @@ Added 2026-10-23 (added 2026-10-23, for the founder's review). The lines of the 
 | `guideBlocks.exit.otherKind` | לפי התנאים שבנוסח שלמטה | a kind without its figure |
 | `guideBlocks.exit.textNote` | הנוסח המלא, כפי שהוא במקור: | disclosure over the record's own text. Was "ברשומה" (a data word) |
 | `guideBlocks.exit.labelDays · upTo · businessDays` | תוך כמה זמן הכסף אצלכם · עד · ימי עסקים | the payout row: "עד `{ימים}` ימי עסקים" |
+| `guideBlocks.exit.onlyAt` (before · after) | כך אצל `{שם}`; אצל האחרים לא נבדק | 2026-10-25 (D30): the line under a payout time that is one company's own term (child savings in a bank: Bank Leumi's), naming the company |
 | `guideBlocks.exit.labelSwitch` | מעבר בין מסלולים | row label |
 | `guideBlocks.exit.labelCeiling` | תקרת הפקדה | row label, yearly or monthly cap |
 | `guideBlocks.fees.balance` | דמי ניהול מחיסכון · כל שנה, מכל הכסף שנצבר · בשנה | name · what it is charged on · word after the cap |
@@ -412,7 +418,7 @@ Why "בשקלים של העתיד" rather than "נומינלי": the reader sees
 | Row labels, calculated | נוסחה · ערכים שנכנסו לחישוב · כללים שנכנסו לחישוב |
 | Entered, first line | הזנתם את הערך הזה. |
 | Entered, the value it replaced | במקום: |
-| Site parameter | למה הערך הזה · תאריך אישור (changed 2026-10-24, UX fix 9) |
+| Site parameter | למה הערך הזה (the clicked number's own line first; the file's general line behind the fold "עוד על הפרמטר", 2026-10-25) · תאריך אישור (changed 2026-10-24, UX fix 9) |
 | Stale, line | לא עודכן מאז `{תאריך}`. בדרך כלל מתעדכן `{כל יום / כל חודש / כל רבעון}`. |
 | Unknown, line | `{הסיבה מהנתונים}` |
 
@@ -446,7 +452,7 @@ Why "בשקלים של העתיד" rather than "נומינלי": the reader sees
 | `formulaNames.F-43` | מס נוסף על הכנסה גבוהה |  |
 | `formulaNames.F-44` | מס במשיכה מקופת גמל להשקעה |  |
 | `formulaNames.F-67` | הגרף בעמודי המדריך |  |
-| `flags.G-02` | בסיס המס במשיכה: החוק לא אומר במפורש אם המס הוא על הרווח הריאלי. האתר מחשב לפי מה שהחברות המנהלות מנכות, ומציג גם את החלופה. | flags, one line each |
+| `flags.G-02` | בסיס המס במשיכה: לפי החוק המס הוא על הרווח הריאלי, כי חלק ההצמדה פטור. האתר מציג גם את החלופה של שיעור נמוך יותר על הרווח הנומינלי, שלפי דברי ההסבר לחוק לא חלה כאן. | flags, one line each |
 | `flags.G-11` | דמי ביטוח לאומי על הרווח במשיכה: עוד לא ברור אם חלים. האתר לא מחשב אותם. |  |
 | `flags.G-14` | הוצאות ישירות של המסלול לא נאספו עדיין, ולכן לא נכללו בחישוב. |  |
 | `flags.G-21` | חלק מהמס מוסדר דרך דוח שנתי, לא בניכוי במקור. |  |
@@ -805,7 +811,7 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 9 and the handoff in 
 | Return, hint | הזינו את התשואה שאתם מניחים. היא תסומן בכחול בכל מקום שבו היא משפיעה. |
 | Return, filled | תשואה שהזנתם תסומן בגרף בקו מקווקו, כי היא שלכם ולא של האתר. |
 | Inflation, start | ערך התחלתי, פרמטר של האתר | (now the one line above the fields, changed 2026-10-24, UX fix 17)
-| Button | להשוואה |
+| Button | ~~להשוואה~~ השוואה לפי מוצר (2026-10-25: beside "השוואה לפי חשיפה", the first button did not say what it compares); under both, "מוצר: איפה הכסף מוחזק, כמו קרן השתלמות, קופת גמל להשקעה, חשבון השקעות או פיקדון. חשיפה: במה הוא מושקע בתוך המוצר, כמו מדד מניות, אג״ח או מזומן." (`r5.form.firstDoor`, `r5.form.doorsLine`) |
 | Goals list heading | המטרות שלכם |
 | Goals list, line | המטרות נבדקות אחת אחת, מימין לשמאל: הראשונה מקבלת את הכסף קודם. גררו מטרה כדי לשנות את הסדר. | (was "…לפי הסדר. הראשונה מקבלת את הכסף קודם."; the chips are dragged since 2026-10-24, night)
 | Add a goal | מטרה נוספת |
@@ -1298,7 +1304,7 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 12 and the handoff in
 | `idle.materiality` | בסכום כזה ההפרש הוא כ־`{x}` בשנה: `{מתחת לסף שהאתר קבע (P-03)/שווה את הטרחה}` (הסף: `{n}`) | added 2026-10-24 |
 | `idle.smallSum` | בקרן כספית קונים ופודים בדרך כלל בלי סכום מינימלי, ובבנק שיש לו הסכם הפצה עם מנהל הקרן אסור לגבות עמלה על קנייה, החזקה או פדיון. | added 2026-10-24; chips MF-15, MF-26, BANK-18; shown when the yearly cost of the whole sum is under P-03's threshold |
 | `idle.anytime · anytimeHint` | הכסף צריך להיות זמין בכל רגע · אם לא תסמנו, ההשוואה המלאה תכלול גם פיקדון נעול. | added 2026-10-24, the box by the hand-off button |
-| `home.quick.already · alreadyDeposit · alreadyStudyFund · alreadyLarge` | יש לכם כבר… · פיקדון שמסתיים · קרן השתלמות נזילה · סכום גדול בלי מטרה | added 2026-10-24: a second row under the purpose chips; links to /idle-cash and /holdings, the last selects "בלי מטרה מסוימת" |
+| `home.quick.already · alreadyDeposit · alreadyStudyFund` | יש לכם כבר… · פיקדון שמסתיים · קרן השתלמות נזילה | added 2026-10-24: a second row under the purpose chips; links to /idle-cash and /holdings. `alreadyLarge` ("סכום גדול בלי מטרה", which selected "בלי מטרה מסוימת") removed 2026-10-25 as a copy of choosing nothing |
 
 ### 7.3 Track workbench page
 
@@ -2653,13 +2659,13 @@ Removed with the round, nothing renders them: `rulesPage.ruleCount`, `rulesFront
 |---|---|---|
 | `sourceBlock.mirrorKind` | נוסח החוק (עותק) | the document kind on a mirror link; "עותק" is the strength word already in use |
 | `sourceBlock.hosts.wikisource` / `.nevo` | ויקיטקסט · אתר נבו | |
-| `sourceBlock.readable` | לקריאה נוחה: הנוסח המשולב (עותק) | changed (was "המאוחד"): the legal term for a text with its amendments folded in is נוסח משולב, as in "חוק הביטוח הלאומי [נוסח משולב]" |
+| ~~`sourceBlock.readable`~~ | ~~לקריאה נוחה: הנוסח המשולב (עותק)~~ | removed 2026-10-25 (the founder: no copy "for an easy read"; a copy is left out when the rule has an official source, `pickSources`) |
 | `sourceBlock.checked` | נבדק | followed by the date, no colon: a sentence fragment |
 | `sourceBlock.mayHaveChanged` | מאז ייתכן שהנוסח השתנה. | |
 | `sourceBlock.pdfTag` | PDF | Latin as the source writes it |
 | `sourceBlock.more` | עוד מקור אחד · עוד שני מקורות · עוד `{n}` מקורות | dual form for 2 |
 | `sourceBlock.weak` | עותק · לפי החברה · מקור משני | the strength word after "נבדק {date} ·", only when weaker than the law |
-| `sourceBlock.citation.checked` / `.copied` | נבדק · ההפניה הועתקה. | toast after the copy button |
+| `sourceBlock.citation.checked` / `.copied` | נבדק · הועתק | the citation box's label turns into "הועתק" for two seconds after the copy ("ההפניה הועתקה." until 2026-10-25) |
 | `sourceBlock.officialMissing` | הפרסום הרשמי ברשומות עוד לא צורף; הנוסח נקרא מתוך עותק. | changed (was "נקרא בעותק"); rules page only, under a mirror rule |
 | `sourceBlock.legendLine` | כל כלל נכתב מנוסח החוק או ממסמך של הרשות כשאפשר; כשהוא נלקח ממסמך של חברה, זה מסומן לידו. התאריך הוא היום שבו האתר קרא את המקור. | changed ("כלל נכתב" → "כל כלל נכתב", "כתוב לידו" → "מסומן לידו": the mark is a tag, not a sentence) |
 
@@ -2686,7 +2692,7 @@ Removed with the round, nothing renders them: `rulesPage.ruleCount`, `rulesFront
 | `ruleCardMore.usesLead` | משפיע על | |
 | `ruleCardMore.usesEngine` | החישובים באתר | changed (was "מנוע החישוב"): a document word; the reader knows "חישובים" |
 | `ruleCardMore.usesNone` | כלל רקע: לא נכנס לחישוב ולא מוצג בעמוד אחר. | |
-| `ruleCardMore.copyCitation` | העתקת ההפניה | noun form, one-action button |
+| `ruleCardMore.copyCitation` · `ruleCardMore.citationLabel` | העתקת מראה המקום · מראה מקום | 2026-10-25 (the founder: "הפניה" is not the Hebrew word for a citation): "מראה מקום", the label of a one-line box at the foot of the rule card that shows the citation and copies it on a press; the first is its tooltip ("העתקת ההפניה" until then) |
 | `ruleCardMore.experienceTag` | ניסיון של אדם אחד | the four forum entries |
 
 ### rulesFront

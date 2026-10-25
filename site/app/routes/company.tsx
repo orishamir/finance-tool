@@ -12,7 +12,7 @@ import { NumAfter, NumberLegend } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { FitProvider } from "../components/compare/fit";
 import { SavedGoalStrip } from "../components/compare/strip";
-import { Callout, Card, Disclosure } from "../components/ui";
+import { Callout, Card, Disclosure } from "../components/kit";
 import { GoalsProvider, type Presets } from "../lib/goal";
 import { fit as fitCopy } from "../copy";
 import type { SiteValue } from "../lib/value";

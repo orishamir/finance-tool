@@ -18,12 +18,12 @@
       "value": 21,
       "unit": "days",
       "source": {
-        "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
-        "title": "Banking Rules (Customer Service) (Fair Disclosure and Delivery of Documents) 1992, consolidated to 30.12.2014, BoI copy, s.11",
-        "publisher": "Bank of Israel (Banking Supervision)",
+        "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",
+        "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל), p.6, s.11(א)",
+        "publisher": "בנק ישראל",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -38,12 +38,12 @@
       "value": 45,
       "unit": "days",
       "source": {
-        "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
-        "title": "Banking Rules (Customer Service) (Fair Disclosure and Delivery of Documents) 1992, consolidated to 30.12.2014, BoI copy, s.11",
-        "publisher": "Bank of Israel (Banking Supervision)",
+        "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",
+        "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל), p.6, s.11(א)",
+        "publisher": "בנק ישראל",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -59,15 +59,16 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
-      "title": "Disclosure rules 1992 (BoI copy)",
-      "title_he": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ״ב-1992",
+      "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",
+      "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל)",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
-      "kind": "regulation",
+      "kind": "regulator_page",
       "strength": "primary",
-      "locator": "s.11, 34, 35, Schedule E",
-      "checked": "2026-10-22"
+      "locator": "pp.6 to 7, 15, 18, s.11, 34, 35, Schedule E",
+      "page": 6,
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -1,0 +1,58 @@
+{
+  "id": "PEN-38",
+  "title": "Mor: the general pension fund's determining-salary cap",
+  "title_he": "מור: תקרת השכר הקובע בקרן הפנסיה הכללית",
+  "text_he": "בקרן הפנסיה הכללית של מור השכר הקובע מוגבל לארבע פעמים השכר הממוצע במשק, לעומת שלוש פעמים בקרן המקיפה. לקרן כללית לא נמצא תקנון אחיד של רשות שוק ההון, ולכן התקרה בקרנות כלליות של חברות אחרות לא נבדקה.",
+  "figure_names_he": {
+    "determining_salary_cap_multiple": "תקרת השכר הקובע בקרן הכללית של מור (כפולות של השכר הממוצע)"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "insurance-cover",
+    "deposit-ceiling"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "determining_salary_cap_multiple": {
+      "value": 4,
+      "unit": "count",
+      "source": {
+        "url": "https://www.moreinvest.co.il/media/hphjzxvl/תקנון-קרן-פנסיה-כללית.pdf",
+        "title": "Mor general pension fund bylaws, version 01.04.2026, p.11, s.1 \"שכר קובע\"",
+        "publisher": "Mor Gemel and Pension",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "PEN-38"
+      ],
+      "state": "sourced",
+      "notes": "Four times the average wage in Mor's general fund; 2026: 4 × 13,769 (NII) = NIS 55,076 (the record said 55,706, a digit swap, corrected 2026-10-25). No CMA standard text for the general fund was found; other managers not checked."
+    }
+  },
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.moreinvest.co.il/media/hphjzxvl/תקנון-קרן-פנסיה-כללית.pdf",
+      "title": "Mor general bylaws 01.04.2026",
+      "title_he": "תקנון קרן הפנסיה הכללית של מור (מהדורת 1.4.2026)",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור גמל ופנסיה",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "section 1, p.11",
+      "locator_he": "סעיף 1, עמוד 11",
+      "page": 11,
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "PEN-09"
+  ]
+}

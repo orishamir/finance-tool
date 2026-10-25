@@ -10,16 +10,20 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
   "il_finance_file": "brokerage-account.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://www.interactivebrokers.ie/en/general/security-investor-protection.php",
-      "title": "Interactive Brokers Ireland, Client Protection",
+      "title": "אינטראקטיב ברוקרס אירלנד: הגנה על לקוחות",
+      "title_he": "אינטראקטיב ברוקרס אירלנד: הגנה על לקוחות",
       "publisher": "Interactive Brokers Ireland",
       "publisher_he": "Interactive Brokers",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "REG-27"
   ]
 }

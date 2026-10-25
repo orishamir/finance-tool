@@ -19,11 +19,11 @@
       "unit": "days",
       "source": {
         "url": "https://www.boi.org.il/boi_files/hanpaka.pdf",
-        "title": "בנק ישראל, מק\"מ - מועדי הנפקות עתידיים",
+        "title": "בנק ישראל, מק\"מ - מועדי הנפקות עתידיים, p.1",
         "publisher": "Bank of Israel",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2025-12-02",
       "effective_to": "2027-02-02",
       "tax_year": null,
@@ -39,11 +39,11 @@
       "unit": "days",
       "source": {
         "url": "https://www.boi.org.il/boi_files/hanpaka.pdf",
-        "title": "בנק ישראל, מק\"מ - מועדי הנפקות עתידיים",
+        "title": "בנק ישראל, מק\"מ - מועדי הנפקות עתידיים, p.1",
         "publisher": "Bank of Israel",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2025-12-02",
       "effective_to": "2027-02-02",
       "tax_year": null,
@@ -60,21 +60,26 @@
   "sources": [
     {
       "url": "https://www.boi.org.il/boi_files/hanpaka.pdf",
-      "title": "BoI, מק\"מ - מועדי הנפקות עתידיים",
+      "title": "בנק ישראל: מק\"מ - מועדי הנפקות עתידיים",
+      "title_he": "בנק ישראל: מק\"מ - מועדי הנפקות עתידיים",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.boi.org.il/roles/statistics/makamandbonds/actions-and-balances/",
-      "title": "BoI, מק\"מ - מכרזים ויתרות",
+      "title": "בנק ישראל: מק\"מ - מכרזים ויתרות",
+      "title_he": "בנק ישראל: מק\"מ - מכרזים ויתרות",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

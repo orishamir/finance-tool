@@ -20,11 +20,11 @@
       "unit": "years",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-        "title": "CMA circular 2022-9-30, ניהול מסלולי השקעה בקופות גמל, appendix",
-        "publisher": "Capital Market, Insurance and Savings Authority",
+        "title": "חוזר גופים מוסדיים 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\", p.4, s.4(א)",
+        "publisher": "רשות שוק ההון, ביטוח וחיסכון",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -40,11 +40,11 @@
       "unit": "years",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-        "title": "CMA circular 2022-9-30, ניהול מסלולי השקעה בקופות גמל, appendix",
-        "publisher": "Capital Market, Insurance and Savings Authority",
+        "title": "חוזר גופים מוסדיים 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\", p.4, s.4(א)",
+        "publisher": "רשות שוק ההון, ביטוח וחיסכון",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -60,15 +60,16 @@
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-      "title": "CMA circular 2022-9-30",
-      "title_he": "חוזר גופים מוסדיים 2022-9-30: ניהול מסלולי השקעה בקופות גמל",
+      "title": "חוזר גופים מוסדיים 2022-9-30 מסלולי השקעה בקופות גמל - תיקון",
+      "title_he": "חוזר גופים מוסדיים 2022-9-30: מסלולי השקעה בקופות גמל – תיקון",
       "publisher": "gov.il",
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
-      "locator": "appendix ss.3 to 4, p.4",
+      "locator": "p.4, ss.3 to 4",
+      "locator_he": "עמוד 4, סעיפים 3 עד 4",
       "page": 4,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

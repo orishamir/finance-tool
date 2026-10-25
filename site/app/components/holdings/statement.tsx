@@ -7,7 +7,7 @@ import type { WrapperId } from "@finance-tool/schema";
 import type { HoldingsBundle } from "../../lib/holdings";
 import { isChild } from "../../lib/holdings";
 import { RuleRef } from "../provenance";
-import { Disclosure, Tag } from "../ui";
+import { Disclosure, Tag } from "../kit";
 import { OpenQuestion, RuleText, type RuleMap } from "./shared";
 
 export type StatementField = "balance" | "feeBalance" | "feeDeposit" | "direct" | "embeddedGain" | "fundNumber" | "firstDeposit" | "statementDate" | "company";

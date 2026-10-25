@@ -1,0 +1,74 @@
+{
+  "id": "KGL-29",
+  "title": "Altshuler Shaham, Infinity, Yachad Rofim, the Hebrew University fund and Meitav: the default is the general track",
+  "title_he": "אלטשולר שחם, אינפיניטי, יחד רופאים, קופת האוניברסיטה העברית ומיטב: ברירת המחדל היא המסלול הכללי",
+  "text_he": "באלטשולר שחם, באינפיניטי, ביחד רופאים ובקופה של האוניברסיטה העברית, התקנון קובע את המסלול הכללי של החברה כמסלול ברירת המחדל. גם עמוד מיטב קידס מציין מסלול כללי כברירת מחדל; התקנון של מיטב לקופת גמל להשקעה לא נמצא, ולכן אצלה זו הסקה מעמוד המוצר. חברות אחרות לא נבדקו.",
+  "strength": "institution",
+  "dimensions": [
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "kupat-gemel-lehashkaa.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://gemel.huji.ac.il/wp-content/uploads/2026/05/‏‏‏‏‏‏הצטרפות-קופת-גמל-להשקעה-מאי-2026.pdf",
+      "title": "Hebrew University joining form",
+      "title_he": "טופס הצטרפות לקופת הגמל של עובדי האוניברסיטה העברית",
+      "publisher": "Hebrew University provident fund",
+      "publisher_he": "קופת הגמל של עובדי האוניברסיטה העברית",
+      "kind": "form",
+      "strength": "institution",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
+      "title": "Altshuler bylaws March 2025",
+      "title_he": "תקנון קופת הגמל להשקעה ״חיסכון פלוס״ של אלטשולר שחם (מרץ 2025)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://infinity.co.il/wp-content/uploads/2025/07/תקנון-גמל-להשקעה-בתוקף-מיום-1.7.2024.pdf",
+      "title": "Infinity bylaws 1.7.2024",
+      "title_he": "תקנון קופת הגמל להשקעה של אינפיניטי (בתוקף מ־1.7.2024)",
+      "publisher": "Infinity",
+      "publisher_he": "אינפיניטי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "http://www.krn-rofim.co.il/wp-content/uploads/2024/10/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f_%d7%a7%d7%95%d7%a4%d7%aa_%d7%92%d7%9e%d7%9c_%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94__25.7.2024-1.pdf",
+      "title": "Yachad Rofim bylaws 25.7.2024",
+      "title_he": "תקנון קופת הגמל להשקעה של יחד רופאים (25.7.2024)",
+      "publisher": "Yachad Rofim",
+      "publisher_he": "יחד רופאים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "יצורף העמית למסלול השקעה כללי כברירת מחדל",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.meitav.co.il/provident_pension/saving_kids/",
+      "title": "Meitav Kids page",
+      "title_he": "חיסכון לכל ילד: עמוד המוצר של מיטב",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "שמתפקד כמסלול ברירת מחדל",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "KGL-11"
+  ]
+}

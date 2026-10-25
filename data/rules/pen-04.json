@@ -23,7 +23,7 @@
         "publisher": "Israel Tax Authority",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2026-01-01",
       "effective_to": null,
       "tax_year": 2026,
@@ -40,27 +40,30 @@
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
-      "title": "Extension order 2011",
+      "title": "צו הרחבה (נוסח משולב) לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011",
       "title_he": "צו הרחבה [נוסח משולב] לפנסיה חובה, 2011",
       "publisher": "gov.il",
       "publisher_he": "משרד העבודה",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "sections 2(ב), 6(ב)-(ג)",
-      "locator_he": "סעיפים 2(ב), 6(ב)-(ג)",
-      "checked": "2026-10-22"
+      "locator": "p.2, s.2(ב); p.4, s.6(ב)-(ג)",
+      "locator_he": "עמוד 2, סעיף 2(ב); עמוד 4, סעיף 6(ב)-(ג)",
+      "page": 2,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/kibuzi03042016.pdf",
-      "title": "2016 collective agreement",
-      "title_he": "הסכם קיבוצי כללי (מסגרת) להגדלת ההפרשות לביטוח פנסיוני במשק, 3.4.2016",
-      "publisher": "Prisha.co.il",
-      "publisher_he": "ההסתדרות ונשיאות הארגונים העסקיים",
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_Pension2016.pdf",
+      "title": "צו הרחבה בדבר הגדלת ההפרשות לביטוח פנסיוני במשק (2016)",
+      "title_he": "צו הרחבה בדבר הגדלת ההפרשות לביטוח פנסיוני במשק (2016)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "section 2(א)",
-      "locator_he": "סעיף 2(א)",
-      "checked": "2026-10-22"
+      "locator": "p.1, s.2(א)",
+      "locator_he": "עמוד 1, סעיף 2(א)",
+      "page": 1,
+      "quote": "השכר הקובע",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf",
@@ -70,11 +73,11 @@
       "publisher_he": "הראל",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "p. 1",
+      "locator": "p.1",
       "locator_he": "עמוד 1",
       "page": 1,
       "quote": "שכר ממוצע במשק",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

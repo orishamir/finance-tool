@@ -1,0 +1,143 @@
+[
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "fund-classification-regulations-amendment-2016",
+   "match": [
+    "(סיווג קרנות לצורך פרסום) (תיקון), התשע\"ו-2016"
+   ],
+   "title_he": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום) (תיקון), התשע״ו-2016 (קובץ התקנות 7653)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "regulation",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw="
+  },
+  "note": "MF-45: the 2016 amendment otherwise takes the 2007 base title through the row fund-classification-regulations-2007"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "fund-assets-regulations-amendment-2014",
+   "match": [
+    "ושיעוריהם המרביים) (תיקון), התשע\"ה-2014"
+   ],
+   "title_he": "תקנות השקעות משותפות בנאמנות (נכסים שמותר לקנות ולהחזיק בקרן ושיעוריהם המרביים) (תיקון), התשע״ה-2014 (קובץ התקנות 7441)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "regulation",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZKDXbUdV2EdDbmN7uTh+Ns="
+  },
+  "note": "MF-30: the 2014 amendment otherwise takes the 1994 base title through the row fund-assets-regulations-1994"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "isa-funds-report-2025",
+   "match": [
+    "ISA 2025 report",
+    "פעילות קרנות נאמנות בישראל 2025"
+   ],
+   "title_he": "פעילות קרנות נאמנות בישראל 2025",
+   "publisher_he": "רשות ניירות ערך",
+   "kind": "official_pdf",
+   "official_url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf"
+  },
+  "note": "existing row; add official_url. The ISA's own PDF exists (listed on its page 'פעילות קרנות נאמנות בישראל', dated 17.6.2026) and its text is identical to the cdn.funder.co.il re-host, page for page; maps/other.json marks it copy-kept, which is out of date"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "foreign-fund-regulations-amendment-2022",
+   "match": [
+    "(הצעת יחידות של קרן חוץ) (תיקון), התשפ\"ב-2022"
+   ],
+   "title_he": "תקנות השקעות משותפות בנאמנות (הצעת יחידות של קרן חוץ) (תיקון), התשפ״ב-2022 (קובץ התקנות 10198)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "regulation",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/BTebX4k926xskBs4V~y+AuXSI0Ih1GZzIPSwKQOjGm4="
+  },
+  "note": "ETF-23: the 2022 amendment otherwise takes the 2016 base title through the foreign-fund rows"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "blackrock-in-israel-page",
+   "match": [
+    "BlackRock Israel, \"BlackRock in Israel\""
+   ],
+   "title_he": "BlackRock in Israel (אתר BlackRock ישראל)",
+   "publisher_he": "BlackRock",
+   "kind": "institution_doc",
+   "official_url": null
+  },
+  "note": "ETF-24: English title, no row so far"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "blackrock-israel-brochure",
+   "match": [
+    "BlackRock Israel brochure (PDF)"
+   ],
+   "title_he": "קרנות הסל של iShares בבורסה בתל אביב (עלון BlackRock ישראל)",
+   "publisher_he": "BlackRock",
+   "kind": "institution_doc",
+   "official_url": null
+  },
+  "note": "ETF-27"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "ishares-cspx-product-page",
+   "match": [
+    "iShares CSPX product page"
+   ],
+   "title_he": "iShares Core S&P 500 UCITS ETF (CSPX): עמוד הקרן",
+   "publisher_he": "iShares",
+   "kind": "institution_doc",
+   "official_url": null
+  },
+  "note": "ETF-28"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "ishares-iusa-product-page",
+   "match": [
+    "iShares IUSA product page"
+   ],
+   "title_he": "iShares S&P 500 UCITS ETF (IUSA, מחלקת): עמוד הקרן",
+   "publisher_he": "iShares",
+   "kind": "institution_doc",
+   "official_url": null
+  },
+  "note": "ETF-28"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "ishares-ivv-product-page",
+   "match": [
+    "iShares IVV product page"
+   ],
+   "title_he": "iShares Core S&P 500 ETF (IVV): עמוד הקרן",
+   "publisher_he": "iShares",
+   "kind": "institution_doc",
+   "official_url": null
+  },
+  "note": "ETF-30"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "jpm-guide-to-the-markets-faq",
+   "match": [
+    "guide's FAQ page"
+   ],
+   "title_he": "Guide to the Markets: עמוד השאלות הנפוצות ותנאי השימוש",
+   "publisher_he": "J.P. Morgan Asset Management",
+   "kind": "other",
+   "official_url": null
+  },
+  "note": "MKT-01: the terms link had no row"
+ }
+]

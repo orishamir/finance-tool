@@ -12,45 +12,57 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.35, ss.42, 43",
+      "locator_he": "עמוד 35, סעיפים 42, 43",
+      "page": 35,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.36, s.46",
+      "locator_he": "עמוד 36, סעיף 46",
+      "page": 36,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
-      "title": "ISA investor guide (2017)",
+      "title": "מדריך למשקיע: קרנות נאמנות (רשות ניירות ערך, ינואר 2017)",
       "title_he": "מדריך למשקיע: קרנות נאמנות (ינואר 2017)",
       "publisher": "Israel Securities Authority",
       "publisher_he": "רשות ניירות ערך",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "pp. 5-7",
+      "locator": "pp.5-7",
       "locator_he": "עמודים 5 עד 7",
       "page": 5,
-      "checked": "2026-10-22",
-      "qualifier": "(dated)"
+      "checked": "2026-10-25",
+      "qualifier": "(dated; still linked by the ISA as its full guide)"
     },
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/MoneyMarketFundReg24.pdf",
-      "title": "ISA money-market directive",
+      "title": "הוראה למנהלי קרנות ונאמנים בדבר תנאים שיחולו לגבי קרן כספית (2024)",
       "title_he": "הוראה למנהלי קרנות ונאמנים בדבר תנאים שיחולו לגבי קרן כספית (2024)",
       "publisher": "Israel Securities Authority",
       "publisher_he": "רשות ניירות ערך",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "section 2 (p. 31)",
-      "locator_he": "סעיף 2 (עמוד 31)",
+      "locator": "p.31, s.2",
+      "locator_he": "עמוד 31, סעיף 2",
       "page": 31,
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
-      "title": "Law (Wikisource mirror)",
-      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "sections 42, 43, 46",
-      "locator_he": "סעיפים 42, 43, 46",
-      "anchor": "סעיף_42",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

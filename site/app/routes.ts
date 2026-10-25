@@ -27,9 +27,12 @@ export default [
   route("holdings", "routes/holdings.tsx"),
   route("holdings-bundle.json", "routes/holdings-bundle.ts"),
   route("transfer", "routes/transfer.tsx"),
+  route("invest", "routes/invest.tsx"),
+  route("invest/:exposureId", "routes/invest.tsx", { id: "invest-index" }),
   route("workbench/providers/:wrapper", "routes/workbench-providers.tsx"),
   route("workbench/funds/:exposure", "routes/workbench-funds.tsx"),
   route("workbench-bundle.json", "routes/workbench-bundle.ts"),
   route("switch/:wrapper", "routes/switch.tsx"),
+  route("kit", "routes/kit.tsx"),
   route("*", "routes/not-found.tsx"),
 ] satisfies RouteConfig;

@@ -23,7 +23,33 @@ These apply to the whole knowledge base, not to one topic.
 2. **Some sources can't be opened by a script.** A browser pass through your Chrome on 2026-10-22 got past most of these (§12): TASE, the ISA register, hly.gov.il, gov.il service pages, Bank of Israel pages, Bank of Jerusalem and One Zero all opened. Still not done from this list: Kol Zchut (opens, not yet used), S&P Maalot, the CMA fslproviders register, circular 7/2003, Accountant General bond terms, and Mercantile's rate table. Discount's rate table opened but was machine-translated. *Status 2026-10-23:* the Gemel-Net and Pensia-Net portals were read in browser pass 4 (CAT-35 to CAT-41, the fee fields confirmed for display); the Bank of Israel's terms of use were read in archived copies (republication not permitted, discovery O14); S&P Dow Jones Indices' pages and TASE's TA-125 page were read in Chrome (ETF-33 to ETF-42). Still not done: Kol Zchut, S&P Maalot, the CMA fslproviders register, circular 7/2003, Accountant General bond terms, Mercantile's rate table. *Status 2026-10-24 (browser pass 5, release 4):* Bank Yahav's, Bank of Jerusalem's and One Zero's tariffs were read in Chrome (snapshots in `data/fees/*@2026-10-24.json`, BRK-30, BRK-38); Meitav Trade still publishes none (BRK OQ18); Maya's fund list and TASE's foreign-funds list were read and counted but not republished because TASE's August 2026 terms forbid it (CAT-42, CAT-43, ETF-43); TASE's Data Hub and Data Store terms and prices were read (BRK-39, discovery O13); the CMA transfer circular, the clearing-house letters and circulars and directive 448 version 4 were read on gov.il and boi.org.il (SW-41 to SW-44). The original list:
    - **gov.il landing pages (403):** Har HaKesef, CMA public enquiries, Tax Authority forms 161/161d,
      Accountant General bond terms, Tax Authority circular 7/2003. Note that gov.il *BlobFolder* PDFs
-     do open.
+     do open. *Finding a gov.il PDF without Chrome (2026-10-25):* the address is
+     `https://www.gov.il/BlobFolder/{kind}/{page-slug}/{he|en}/{file}.pdf`. The kind follows the page:
+     `generalpage` for `/he/pages/…`, `policy` for circulars, `dynamiccollectorresultitem` for CMA and
+     Tax Authority collector items, and also `legalinfo`, `service`, `guide` and `reports`. The slug is
+     the page's own, and the file name cannot be worked out. A HEAD request answers 404 for files that
+     exist, so check with GET. Three ways to the file without opening the page:
+     (1) The Wayback Machine's index lists every archived file under a folder. For example,
+     `https://web.archive.org/cdx/search/cdx?url=gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/*&fl=timestamp,original&collapse=urlkey`
+     gave every yearly edition from 2014 to 2025. The live file is then fetched from gov.il itself.
+     (2) A web search limited to gov.il returns BlobFolder PDF links directly.
+     (3) Yearly series keep one name pattern (`Guides_IncomeTax_da-YYYY.pdf`,
+     `…monthly-deductions-booklet-YYYY.pdf`, `Policy_IncomeTaxProfessionalInst_hoz_NN_YYYY_acc.pdf`), so
+     the next edition can be tried by name.
+     gov.il's HTML pages and their data APIs sit behind Cloudflare's human check. The founder allowed
+     FlareSolverr for gov.il pages only (2026-10-25). It runs in Docker on this machine (start it with
+     `docker start flaresolverr`), and `research/audit/tools/govil-page.sh URL` prints one page's HTML,
+     refusing any address outside gov.il. A page takes about 15 seconds. The script waits 6 seconds after
+     the check, because without the wait a page could come back as the bare frame. The page is where to
+     see which edition is current: an old PDF stays online after a new one replaces it, so a link check
+     never shows it is out of date. Read this way on the first day:
+     - "דע זכויותיך" lists the 2025 and 2024 editions, so 2025 is the newest.
+     - The clearing-house page lists its six attachments.
+     - Circular 7/2003, on this list's not-done items, has its PDF at
+       `/BlobFolder/policy/income-tax-professional-inst-7-2003/he/Policy_IncomeTaxInst_hoz7-2003.pdf`.
+     - The tax-treaties collector address in `tax-securities-foreign.md` now leads to gov.il's error page.
+     These are not behind such a check: fs.knesset.gov.il (Reshumot PDFs), the Knesset OData API, data.gov.il,
+     btl.gov.il, new.isa.gov.il, boi.org.il and gemelnet.cma.gov.il.
    - **Bank of Israel:** consumer pages and the makam auction pages (bot check).
    - **TASE:** the member list, trading pages, and the s.45טז fee-comparison page.
    - **Securities Authority (ISA):** the licensee registers (portfolio managers, rating agencies, bond
@@ -94,7 +120,7 @@ The guide page has a fixed structure. These are the parts not yet sourced for ea
 | FX and structured deposits | Classifying a structured payout for tax (TX2 OQ5; *2026-10-24:* derived per payout type from the partial-linkage regulations, TX2-18); the legal basis of 25% withholding on FX deposits (TX2 OQ2, wording confirmed, still open); a falling currency (TX2 OQ1); who supervises non-bank FX providers (FXD OQ8). The olim orders are read (TX2-19; TX2 OQ3 closed 2026-10-24 except a check of the 2026 wording). FX deposits rank second for graduation; draft record in the scratch report |
 | Corporate bonds | The ISA registers of rating agencies and trustees (CORP OQ1, OQ2; ISA site is JavaScript, browser to-do); default-loss timing (TX2 OQ6). *2026-10-24:* acceleration quorum read verbatim (CORP-07); third in the graduation ranking, the normal held-to-maturity case computes as a government bond |
 | Managed and robo portfolios | ~~Named licensees (MGD OQ1)~~ closed by MGD-23; the ISA directives seen only in secondary sources (MGD OQ2); ~~VAT on fees (MGD OQ15)~~ closed 2026-10-24 (TX2-17; the same question as TX2 OQ12, closed with it). *2026-10-24:* closest to graduation; the tax side computes (TX2-15, TX2-17); what remains is a retail-offer pass over the licensees, an entered or ISA-average fee (D4) and two method formulas; draft record in the scratch report |
-| REITs | The current REIT list, which is secondary only (RG OQ4); the per-distribution source split (RG OQ5); NII on pass-through income (TX2 OQ8). *2026-10-24:* withholding practice recorded from Reit 1 (TX2-20, institution), which narrows TX2 OQ7 (the ministerial rate) but does not close it; fourth in the ranking |
+| REITs | The current REIT list, which is secondary only (RG OQ4); the per-distribution source split (RG OQ5); NII on pass-through income (TX2 OQ8). *2026-10-24:* withholding practice recorded from Reit 1 (TX2-20, institution; since the 2026-10-25 scope pass the withholding rates by law are TX2-20 and Reit 1's statement and example are TX2-21), which narrows TX2 OQ7 (the ministerial rate) but does not close it; fourth in the ranking |
 | Gold via funds | Gold fund names and fees, secondary only (RG-16, RG OQ8; the managers' lists load by script, browser to-do on Maya); tax on foreign gold ETCs and US trusts (TX2 OQ10). *2026-10-24:* fifth in the ranking; an exposure plus fund records, not a wrapper |
 
 ---

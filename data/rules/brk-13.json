@@ -22,7 +22,7 @@
       "locator": "p.4",
       "locator_he": "עמוד 4",
       "page": 4,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a",
@@ -32,10 +32,10 @@
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "institution_doc",
       "strength": "primary",
-      "locator": "p.21",
-      "locator_he": "עמוד 21",
-      "page": 21,
-      "checked": "2026-10-22"
+      "locator": "p.24",
+      "locator_he": "עמוד 24",
+      "page": 24,
+      "checked": "2026-10-25"
     }
   ]
 }

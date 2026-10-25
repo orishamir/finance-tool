@@ -13,15 +13,65 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
+      "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.50, s.74ב(ב), (ג)",
+      "locator_he": "עמוד 50, סעיף 74ב(ב), (ג)",
+      "page": 50,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
+      "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.51, s.74ב(ו)",
+      "locator_he": "עמוד 51, סעיף 74ב(ו)",
+      "page": 51,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/default.aspx",
+      "title": "ביטוח לאומי: חיסכון לכל ילד - שאלות ותשובות",
+      "title_he": "ביטוח לאומי: חיסכון לכל ילד - שאלות ותשובות",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "quote": "אינה ניתנת לעיקול",
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://bank-yahav.co.il/media/qxed4yhi/השקעות-מונגש-חסכון-לכל-ילד-צפייה-בהסכם-חיסכון-לכל-ילד.pdf",
-      "title": "Bank Yahav, child-savings agreement",
+      "title": "בנק יהב: הסכם חיסכון ארוך טווח לילד (חיסכון לכל ילד)",
+      "title_he": "בנק יהב: הסכם חיסכון ארוך טווח לילד (חיסכון לכל ילד)",
       "publisher": "Bank Yahav",
       "publisher_he": "בנק יהב",
       "kind": "institution_doc",
       "strength": "institution",
       "locator": "s.1.5, 3.8, 7.1",
       "locator_he": "סעיף 1.5, 3.8, 7.1",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
+      "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד: הראל חיסכון לכל ילד, מהדורה 3, 04/2026",
+      "title_he": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד: הראל חיסכון לכל ילד, מהדורה 3, 04/2026",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.11, Annex A",
+      "page": 11,
+      "checked": "2026-10-25"
     }
   ]
 }

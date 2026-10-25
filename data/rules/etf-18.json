@@ -8,7 +8,7 @@
     "open_tracking_fund_count": "מספר הקרנות המחקות הפתוחות",
     "foreign_fund_count": "מספר קרנות החוץ"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "liquidity-lockup"
   ],
@@ -19,12 +19,12 @@
       "value": 465,
       "unit": "count",
       "source": {
-        "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf",
-        "title": "ISA, פעילות קרנות נאמנות בישראל 2025 (Funder-hosted copy)",
-        "publisher": "Israel Securities Authority (third-party host)",
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf",
+        "title": "פעילות קרנות נאמנות בישראל 2025, p.3",
+        "publisher": "רשות ניירות ערך",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -39,12 +39,12 @@
       "value": 799,
       "unit": "count",
       "source": {
-        "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf",
-        "title": "ISA, פעילות קרנות נאמנות בישראל 2025 (Funder-hosted copy)",
-        "publisher": "Israel Securities Authority (third-party host)",
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf",
+        "title": "פעילות קרנות נאמנות בישראל 2025, p.3",
+        "publisher": "רשות ניירות ערך",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -58,12 +58,12 @@
       "value": 46,
       "unit": "count",
       "source": {
-        "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf",
-        "title": "ISA, פעילות קרנות נאמנות בישראל 2025 (Funder-hosted copy)",
-        "publisher": "Israel Securities Authority (third-party host)",
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf",
+        "title": "פעילות קרנות נאמנות בישראל 2025, p.3",
+        "publisher": "רשות ניירות ערך",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -78,19 +78,17 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf",
-      "title": "ISA 2025 report, p.3, p.9",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf",
+      "title": "פעילות קרנות נאמנות בישראל 2025",
       "title_he": "פעילות קרנות נאמנות בישראל 2025",
-      "publisher": "Funder (copy)",
+      "publisher": "Israel Securities Authority",
       "publisher_he": "רשות ניירות ערך",
       "kind": "official_pdf",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "locator": "p.3, p.9",
-      "locator_he": "עמוד 3, עמוד 9",
+      "strength": "primary",
+      "locator": "pp.3, 9",
+      "locator_he": "עמודים 3, 9",
       "page": 3,
-      "checked": "2026-10-22",
-      "qualifier": "(third-party host)"
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -7,7 +7,7 @@ import type { FeeType, ProviderRowView, RowProtection, RowTariff } from "../../.
 import type { RuleRecord } from "@finance-tool/schema";
 import { IconAlert, IconClock, IconExternal } from "../../icons";
 import { LeadTail, Num, NumAfter, RuleRef } from "../../provenance";
-import { Disclosure, Tag, cx } from "../../ui";
+import { cx, Disclosure, Tag } from "../../kit";
 
 /** One fixed colour per fee type, the same on every row (design-system 8.3). */
 export const typeHue: Record<FeeType, { bg: string; stroke: string }> = {
@@ -130,7 +130,7 @@ export function ProtectionLine({ protection, rules }: { protection: RowProtectio
     <div className="text-sm flex flex-col gap-0.5">
       <p className="flex flex-wrap items-center gap-x-2 gap-y-1">
         <span>
-          {c.providers.protection} {c.regulators[protection.regulator]}
+          {c.providers.protection} {protection.regulator === "foreign" ? protection.foreignRegulator : c.regulators[protection.regulator]}
         </span>
         {protection.taseMember && <Tag tone="neutral">{c.providers.taseMember}</Tag>}
         {protection.notIsaSupervised && (

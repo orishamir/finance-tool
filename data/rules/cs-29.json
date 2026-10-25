@@ -1,0 +1,88 @@
+{
+  "id": "CS-29",
+  "title": "Bank Leumi and Bank Yahav: withdrawing child savings from the bank",
+  "title_he": "בנק לאומי ובנק יהב: משיכת חיסכון לכל ילד מהבנק",
+  "text_he": "בבנק לאומי משיכה מחיסכון לכל ילד משולמת רק לחשבון עו״ש שרשום על שם הילד בלבד; הבקשה הדיגיטלית מושכת את כל היתרה, סוגרת את החשבון ומטופלת בתוך ימי העסקים לתשלום מבנק. בבנק יהב משיכה חלקית מותרת רק אם נשארת בחשבון יתרת המינימום שבהסכם. בנקים אחרים לא נבדקו, ומועד כללי לתשלום מבנק לא נמצא.",
+  "figure_names_he": {
+    "bank_payout_business_days": "ימי עסקים לתשלום מבנק (לאומי)",
+    "partial_withdrawal_min_balance": "יתרת מינימום אחרי משיכה חלקית (יהב)"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "liquidity-lockup",
+    "minimum"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "bank_payout_business_days": {
+      "value": 3,
+      "unit": "business_days",
+      "source": {
+        "url": "https://www.leumi.co.il/he/Withdrawing-savings-for-your-kids",
+        "title": "Bank Leumi, child-savings withdrawal page: the digital request withdraws the whole balance, closes the account and is processed within 3 business days",
+        "publisher": "Bank Leumi",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "CS-29"
+      ],
+      "state": "sourced",
+      "notes": "Bank Leumi only: its digital request withdraws the whole balance, closes the account and is processed within 3 business days, paid only into a current account held solely in the child's name. No general timetable for the bank route was found (CS-14)."
+    },
+    "partial_withdrawal_min_balance": {
+      "value": 100,
+      "unit": "nis",
+      "source": {
+        "url": "https://bank-yahav.co.il/media/qxed4yhi/השקעות-מונגש-חסכון-לכל-ילד-צפייה-בהסכם-חיסכון-לכל-ילד.pdf",
+        "title": "Bank Yahav, child-savings agreement, pp.5-6, s.6.6: a partial withdrawal only if at least NIS 100 stays in the account (as of 1.5.2017)",
+        "publisher": "Bank Yahav",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "CS-29"
+      ],
+      "state": "sourced",
+      "notes": "Bank Yahav's agreement only (undated, 2017-era figures); other banks were not read."
+    }
+  },
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://bank-yahav.co.il/media/qxed4yhi/השקעות-מונגש-חסכון-לכל-ילד-צפייה-בהסכם-חיסכון-לכל-ילד.pdf",
+      "title": "בנק יהב: הסכם חיסכון ארוך טווח לילד (חיסכון לכל ילד)",
+      "title_he": "בנק יהב: הסכם חיסכון ארוך טווח לילד (חיסכון לכל ילד)",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.5-6, s.6",
+      "locator_he": "עמודים 5 עד 6, סעיף 6",
+      "page": 5,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.leumi.co.il/he/Withdrawing-savings-for-your-kids",
+      "title": "בנק לאומי: משיכת כספי חיסכון לכל ילד",
+      "title_he": "בנק לאומי: משיכת כספי חיסכון לכל ילד",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "CS-14"
+  ]
+}

@@ -21,11 +21,11 @@
       "unit": "count",
       "source": {
         "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
-        "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24), Annex A",
-        "publisher": "Bank of Israel (Banking Supervision)",
+        "title": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון (5/24), p.3, נספח א",
+        "publisher": "בנק ישראל",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2025-04-01",
       "effective_to": null,
       "tax_year": null,
@@ -42,27 +42,33 @@
   "sources": [
     {
       "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
-      "title": "Directive 447",
-      "title_he": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון",
+      "title": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון (5/24)",
+      "title_he": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון (5/24)",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
-      "kind": "regulation",
+      "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "locator": "p.3, Annex A",
+      "page": 3,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://boi.org.il/media/nxzbaarp/h2781.pdf",
-      "title": "Circular 2781-06",
+      "title": "חוזר הפיקוח על הבנקים ח-2781-06 (20.5.2024)",
+      "title_he": "חוזר הפיקוח על הבנקים ח-2781-06 (20.5.2024)",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
       "kind": "circular",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "locator": "p.3",
+      "locator_he": "עמוד 3",
+      "page": 3,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-      "title": "Yahav rate board",
-      "title_he": "לוח הריביות על פיקדונות של בנק יהב",
+      "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "title_he": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
       "publisher": "Bank Yahav",
       "publisher_he": "בנק יהב",
       "kind": "institution_doc",
@@ -70,7 +76,7 @@
       "locator": "p.6",
       "locator_he": "עמוד 6",
       "page": 6,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

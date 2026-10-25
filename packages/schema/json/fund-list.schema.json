@@ -242,6 +242,10 @@
                       "nis_per_month",
                       "nis_per_trade",
                       "nis_per_transfer",
+                      "usd_per_share",
+                      "usd_per_trade",
+                      "gbp_per_trade",
+                      "fx_per_eur",
                       "months",
                       "years",
                       "days",
@@ -382,6 +386,10 @@
                   },
                   "notes": {
                     "type": "string"
+                  },
+                  "rationale_he": {
+                    "type": "string",
+                    "minLength": 1
                   }
                 },
                 "required": [
@@ -428,6 +436,10 @@
                       "nis_per_month",
                       "nis_per_trade",
                       "nis_per_transfer",
+                      "usd_per_share",
+                      "usd_per_trade",
+                      "gbp_per_trade",
+                      "fx_per_eur",
                       "months",
                       "years",
                       "days",
@@ -568,6 +580,10 @@
                   },
                   "notes": {
                     "type": "string"
+                  },
+                  "rationale_he": {
+                    "type": "string",
+                    "minLength": 1
                   }
                 },
                 "required": [

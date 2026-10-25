@@ -1,0 +1,92 @@
+{
+  "id": "PEN-40",
+  "title": "Survivors' pension with several orphans (unsettled)",
+  "title_he": "קצבת שאירים כשיש כמה יתומים (לא מוסדר)",
+  "text_he": "כשיש יותר מיתום אחד, הנוסח המקורי של התקנון האחיד של רשות שוק ההון נותן לכל יתום שיעור משלו. בתקנונים העדכניים של מור, הראל, אלטשולר שחם, מיטב ומנורה מבטחים כל היתומים יחד מקבלים שיעור אחד ומתחלקים בו שווה בשווה, ובאלטשולר שחם ובמיטב יש שיעור נוסף למסלול אחד. חוזר שמשנה את השיעור לא נמצא, ולכן לא ברור מה מחייב היום. נמצא רק בתקנונים של החברות האלה; מקור כללי לא נמצא.",
+  "figure_names_he": {
+    "orphan_share_each_standard_text": "שיעור לכל יתום בנוסח המקורי של התקנון האחיד",
+    "orphans_share_total_current_bylaws": "שיעור לכל היתומים יחד בתקנונים העדכניים"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "insurance-cover"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "orphan_share_each_standard_text": {
+      "value": 30,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+        "title": "חוזר פנסיה 2016-3-4, נספח ב' (CMA standard pension bylaw, January 2018 edition, copy on prisha.co.il), pp.56-57, s.94: \"30% לכל יתום\"",
+        "publisher": "Prisha.co.il (copy of CMA pension circular 2016-3-4, annex ב)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PEN-40"
+      ],
+      "state": "sourced",
+      "notes": "Share of the basic survivors pension for each of several orphans in the CMA standard text of 2016. The current bylaws read give 40% to all the orphans together (next figure); which binds today is unsettled."
+    },
+    "orphans_share_total_current_bylaws": {
+      "value": 40,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+        "title": "Mor comprehensive pension fund bylaws, version 01.06.2025, pp.65-66, s.94",
+        "publisher": "Mor Gemel and Pension",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "PEN-40"
+      ],
+      "state": "sourced",
+      "notes": "All the orphans together, shared equally, in the 2025 bylaws of Mor (cited), Harel, Altshuler Shaham, Meitav and Menora Mivtachim (read by the scope research, links not recorded); Altshuler Shaham and Meitav add a 15% variant for one track."
+    }
+  },
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)",
+      "publisher": "Prisha.co.il",
+      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "pp.56-57, s.94",
+      "locator_he": "עמודים 56 עד 57, סעיף 94",
+      "page": 56,
+      "quote": "30% לכל יתום",
+      "checked": "2026-10-25",
+      "qualifier": "(third-party host)"
+    },
+    {
+      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
+      "title": "Mor comprehensive bylaws 01.06.2025",
+      "title_he": "תקנון קרן הפנסיה המקיפה של מור (מהדורת 1.6.2025)",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור גמל ופנסיה",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.65-66, s.94",
+      "locator_he": "עמודים 65 עד 66, סעיף 94",
+      "page": 65,
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "PEN-13"
+  ]
+}

@@ -9,7 +9,7 @@ import { Num, NumAfter } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { FitMarkCard } from "../components/compare/fit";
 import { SavedGoalStrip } from "../components/compare/strip";
-import { Callout, Card, Tag } from "../components/ui";
+import { Callout, Card, Sentence, Tag } from "../components/kit";
 import { GoalsProvider, type Presets } from "../lib/goal";
 import { cmaFeeValue, feeYear, type SiteValue } from "../lib/value";
 
@@ -101,9 +101,9 @@ export default function TrackPage() {
             <bdi>{track.name}</bdi>
             {data.isDefault && <Tag tone="parameter">{companyCopy.default}</Tag>}
           </h1>
-          <p className="text-muted-foreground">
+          <Sentence tone="muted">
             {copy.fundLine} <Num value={data.values.fundId} />
-          </p>
+          </Sentence>
           {data.others.length > 0 && (
             <Callout tone="caution">
               {copy.sameNameElsewhere} {companyCopy.sameName.distinct}.{" "}

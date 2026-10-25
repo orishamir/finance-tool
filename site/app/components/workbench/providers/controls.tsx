@@ -6,8 +6,7 @@ import { ORDERS_MAX, ORDERS_MIN, type Channel, type ProviderWorkbenchView, type 
 import { IconDown, IconUp } from "../../compare/icons";
 import { IconExternal, IconReset } from "../../icons";
 import { Num } from "../../provenance";
-import { NumberField, ParameterLine } from "../../timeline/fields";
-import { Button, Card, SegmentedControl, cx } from "../../ui";
+import { Button, Card, cx, NumberField, ParameterLine, SegmentedControl } from "../../kit";
 
 // ---------------------------------------------------------------- subject strip
 

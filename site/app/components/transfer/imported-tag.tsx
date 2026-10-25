@@ -3,7 +3,7 @@ import { r3holdings } from "../../copy";
 import { fmt } from "../../lib/format";
 import { LeadTail } from "../provenance";
 import { IconDownload } from "../holdings/icons";
-import { Tag } from "../ui";
+import { Tag } from "../kit";
 
 export function ImportedTag({ date, className }: { date: string; className?: string }) {
   return (

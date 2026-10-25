@@ -35,8 +35,11 @@ export interface ProviderInput {
   entered?: EnteredTariff;
   /** When a line has averages for several bands, the band to use (the snapshot's own text). */
   averageBand?: string;
-  /** F-63 (2026-10-24): the plan the person is on, as the snapshot's `band` text names it (for example "מסלול ONE"); a plan line is read only when asked for here. */
-  band?: string;
+  /**
+   * F-63 (2026-10-24): the plan the person is on, as the snapshot's `band` text names it (for example "מסלול ONE"); a plan line is read only when asked for here.
+   * 2026-10-25: several texts may be given, one per base the snapshot splits by band (a trade band and an FX band); a line is asked for when its band contains any of them.
+   */
+  band?: string | readonly string[];
 }
 
 export interface WorkbenchInput {
@@ -57,6 +60,12 @@ export interface WorkbenchInput {
   channel?: string;
   /** Set when the fund is quoted in a foreign currency: the FX line then applies (F-13). */
   currency?: { code: string; startRate: number };
+  /**
+   * F-63 (2026-10-25, index page): shekels per one unit of a currency, by ISO code ("USD", "GBP"), for the tariff lines set in
+   * dollars or pounds (per share, minimum, maximum). The site fills it from the ECB series with `crossRate` (F-84). A provider
+   * whose line needs a currency this does not hold is "not comparable" (`needs-fx-rate`).
+   */
+  fx?: Record<string, number>;
   /** P-01 as a fraction (`tieThreshold`). */
   theta: number;
   /** The provider list for the wrapper (F-83); the workbench accounts for each exactly once. */
@@ -90,7 +99,13 @@ export type NotComparableReason =
   | { code: "data-missing"; detail: string | null }
   | { code: "no-applicable-line"; detail: string }
   | { code: "no-average"; detail: string }
-  | { code: "line-without-value"; detail: string };
+  | { code: "line-without-value"; detail: string }
+  /** 2026-10-25: a per-share line and the fund record has no `share_price`. */
+  | { code: "needs-share-price"; detail: string }
+  /** 2026-10-25: a line in dollars or pounds and `fx` holds no rate for the currency. */
+  | { code: "needs-fx-rate"; detail: string }
+  /** 2026-10-25: the snapshot is ambiguous or a unit is not one the tariff reads; `detail` is the engine's message. */
+  | { code: "record-error"; detail: string };
 
 export interface ProviderBase {
   id: string;
@@ -167,7 +182,7 @@ export interface ProviderWorkbench {
 
 /** A value the snapshot holds as null: the provider's data is incomplete, so its row is "not comparable". */
 class Unusable extends Error {
-  constructor(readonly code: "line-without-value", message: string) {
+  constructor(readonly code: "line-without-value" | "needs-share-price" | "needs-fx-rate", message: string) {
     super(message);
   }
 }
@@ -185,6 +200,15 @@ function nis(vo: ValueObject, what: string): number {
   if (!NIS_UNITS.has(vo.unit)) throw new RecordInputError(`${what}: unit is ${vo.unit}, expected shekels`);
   if (typeof vo.value !== "number") throw new Unusable("line-without-value", `${what} has no value`);
   return vo.value;
+}
+
+const USD_UNITS = new Set(["usd", "usd_per_trade"]);
+
+/** Shekels per unit of a currency from the run's `fx` input; a provider that needs a rate the run lacks is "not comparable" (2026-10-25). */
+function rateOf(fx: WorkbenchInput["fx"], code: string, what: string): number {
+  const r = fx?.[code];
+  if (typeof r !== "number" || !(r > 0)) throw new Unusable("needs-fx-rate", `${what}: no ${code} exchange rate in the run`);
+  return r;
 }
 
 /** A minimum or maximum the line prints. A value object with a null value is a bound the tariff does not have (its notes say so), not missing data. */
@@ -231,7 +255,8 @@ export function buildTariff(input: WorkbenchInput, p: ProviderInput, snapshot: F
     // F-63 (2026-10-24): a plan line (a `band` the person names in `p.band`) wins when asked for; otherwise the standard line (`band: null`)
     // wins over every banded line. A fixed fee that only a plan has is the plan's price, not the standard tariff's.
     if (p.band !== undefined) {
-      const asked = found.filter((l) => l.band !== null && (l.band === p.band || l.band.includes(p.band!)));
+      const wanted = typeof p.band === "string" ? [p.band] : p.band;
+      const asked = found.filter((l) => l.band !== null && wanted.some((w) => l.band === w || l.band!.includes(w)));
       if (asked.length > 1) throw ambiguous(asked);
       if (asked.length === 1) return asked[0];
     }
@@ -257,16 +282,16 @@ export function buildTariff(input: WorkbenchInput, p: ProviderInput, snapshot: F
     if (own) {
       // F-63: an average is a percentage with no bounds, also when the snapshot gives it as a line of its own level.
       out.averagesApplied++;
-      return { line: own, rate: own.rate, min: null, max: null };
+      return { line: own, rate: own.rate, min: null, max: null, cap: null };
     }
     const list = pick(base, "list");
     if (!list) return undefined;
     const avg = averageFor(list);
     if (avg) {
       out.averagesApplied++;
-      return { line: list, rate: avg, min: null, max: null, average: true };
+      return { line: list, rate: avg, min: null, max: null, cap: null, average: true };
     }
-    return { line: list, rate: list.rate, min: list.min, max: list.max };
+    return { line: list, rate: list.rate, min: list.min, max: list.max, cap: list.cap };
   };
 
   const entered = level === "entered" ? p.entered! : undefined;
@@ -278,12 +303,28 @@ export function buildTariff(input: WorkbenchInput, p: ProviderInput, snapshot: F
   } else {
     const r = resolve("trade");
     if (r) {
-      const c: Commission = { rate: pct(r.rate, "pct_of_trade", `${r.line.id} rate`) };
-      if (hasBound(r.min)) c.min = nis(r.min, `${r.line.id} min`);
-      if (hasBound(r.max)) c.max = nis(r.max, `${r.line.id} max`);
+      // E1 (2026-10-25): a dollar rate per share is charged on the share count, which needs the fund's price.
+      const c: Commission = { rate: 0 };
+      if (r.rate.unit === "usd_per_share") {
+        if (typeof r.rate.value !== "number") throw new Unusable("line-without-value", `${r.line.id} rate has no value`);
+        if (!input.fund.sharePrice) throw new Unusable("needs-share-price", `${r.line.id} is a fee per share and the fund record has no share_price`);
+        c.perShare = r.rate.value * rateOf(input.fx, "USD", `${r.line.id} rate`);
+      } else c.rate = pct(r.rate, "pct_of_trade", `${r.line.id} rate`);
+      // E2: minimums and maximums in dollars or pounds are converted at the run's rate.
+      const bound = (vo: ValueObject, what: string): number => {
+        if (NIS_UNITS.has(vo.unit)) return nis(vo, what);
+        const code = USD_UNITS.has(vo.unit) ? "USD" : vo.unit === "gbp_per_trade" ? "GBP" : null;
+        if (!code) throw new RecordInputError(`${what}: unit is ${vo.unit}, expected shekels, dollars or pounds`);
+        if (typeof vo.value !== "number") throw new Unusable("line-without-value", `${what} has no value`);
+        return vo.value * rateOf(input.fx, code, what);
+      };
+      if (hasBound(r.min)) c.min = bound(r.min, `${r.line.id} min`);
+      if (hasBound(r.max)) c.max = bound(r.max, `${r.line.id} max`);
+      // E3: the cap is a share of the trade value and wins over the minimum.
+      if (hasBound(r.cap)) c.cap = pct(r.cap, "pct_of_trade", `${r.line.id} cap`);
       out.tariff.buy = c;
       out.tariff.sell = { ...c };
-      used(r.line, r.rate, r.min, r.max);
+      used(r.line, r.rate, r.min, r.max, r.cap);
     } else out.noLine.push("trade");
   }
 
@@ -331,13 +372,13 @@ export function buildTariff(input: WorkbenchInput, p: ProviderInput, snapshot: F
           const units = new Set(bounds.map((b) => b.unit));
           if (units.size > 1) throw new RecordInputError(`${r.line.id}: min and max are in different units (${[...units].join(", ")})`);
           const unit = bounds[0]!.unit;
-          if (unit === "usd") {
+          if (USD_UNITS.has(unit)) {
             if (input.currency!.code !== "USD") throw new RecordInputError(`${r.line.id}: bounds are in USD but the instrument currency is ${input.currency!.code}`);
             c.in = "instrument";
           }
           const bound = (vo: ValueObject, what: string) => {
             if (typeof vo.value !== "number") throw new Unusable("line-without-value", `${what} has no value`);
-            if (vo.unit !== "usd" && !NIS_UNITS.has(vo.unit)) throw new RecordInputError(`${what}: unit is ${vo.unit}, expected shekels or dollars`);
+            if (!USD_UNITS.has(vo.unit) && !NIS_UNITS.has(vo.unit)) throw new RecordInputError(`${what}: unit is ${vo.unit}, expected shekels or dollars`);
             return vo.value;
           };
           if (hasBound(r.min)) c.min = bound(r.min, `${r.line.id} min`);
@@ -418,6 +459,11 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
     } catch (e) {
       if (e instanceof Unusable) {
         notComparable({ code: e.code, detail: e.message });
+        continue;
+      }
+      // E5 (2026-10-25): one provider's unreadable record is that provider's row, not a failure of the whole run.
+      if (e instanceof RecordInputError) {
+        notComparable({ code: "record-error", detail: e.message });
         continue;
       }
       throw e;
@@ -516,7 +562,7 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
   }
 
   const reasonOf = (r: NotComparableProvider): Reason => ({
-    code: r.reason.code === "data-missing" ? "missing-record" : "missing-input",
+    code: r.reason.code === "data-missing" || r.reason.code === "record-error" ? "missing-record" : "missing-input",
     ruleIds: [],
     gapIds: [],
     detail: r.reason.detail ?? r.reason.code,

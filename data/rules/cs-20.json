@@ -27,7 +27,7 @@
         "publisher": "National Insurance Institute",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -47,7 +47,7 @@
         "publisher": "National Insurance Institute",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -67,7 +67,7 @@
         "publisher": "National Insurance Institute",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -87,7 +87,7 @@
         "publisher": "National Insurance Institute",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -107,7 +107,7 @@
         "publisher": "National Insurance Institute",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -127,7 +127,7 @@
         "publisher": "National Insurance Institute",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -144,7 +144,7 @@
   "sources": [
     {
       "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
-      "title": "NII 2025 report",
+      "title": "חיסכון ארוך-טווח לכל ילד וילדה – דוח הביטוח הלאומי לשנת 2025",
       "title_he": "חיסכון ארוך-טווח לכל ילד וילדה – דוח הביטוח הלאומי לשנת 2025",
       "publisher": "National Insurance Institute",
       "publisher_he": "המוסד לביטוח לאומי",
@@ -153,7 +153,7 @@
       "locator": "pp.3, 6",
       "locator_he": "עמודים 3, 6",
       "page": 3,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

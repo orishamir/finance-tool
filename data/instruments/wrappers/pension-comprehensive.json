@@ -92,12 +92,12 @@
       "value": 5645.29,
       "unit": "nis_per_month",
       "source": {
-        "url": "https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf",
-        "title": "Harel, \"תקרות וסכומים לשנת 2026\" (March 2026), p. 1: comprehensive-fund monthly deposit ceiling, 20.5% of twice the average wage; Mor general fund bylaws 01.04.2026, s.1 (NIS 5,645)",
-        "publisher": "Harel Insurance and Finance",
-        "strength": "institution"
+        "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+        "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964, p.4, reg. 1 (\"תקרת הפקדה חודשית\": 20.5% of the monthly insured-salary ceiling, which is twice the NII average wage) and p.8, reg. 19(ב1)(1): 2 × NII average wage 13,769 (from 1.1.2026) × 20.5% = 5,645.29",
+        "publisher": "National Insurance Institute (btl.gov.il), consolidated text",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2026-01-01",
       "effective_to": null,
       "tax_year": 2026,
@@ -108,7 +108,7 @@
         "PEN-04"
       ],
       "state": "sourced",
-      "notes": "NIS per month, 2026. Monthly deposits above the lower of this ceiling and 22.83% of the reported salary components are moved automatically to the same manager's general pension fund (PEN-10). Institution sources only: the Income Tax regulation defining the ceiling was not opened (PEN OQ6); the NII's own 2026 average wage was not reached (PEN OQ5). Updated with the average wage every year."
+      "notes": "NIS per month, 2026: 20.5% of the monthly insured-salary ceiling, which is twice the NII average wage (13,769 from 1.1.2026), under reg. 1 and 19(ב1)(1) of the 1964 Income Tax Rules; computed under the regulation's formula from primary inputs (PEN-08). Monthly deposits above the lower of this ceiling and 22.83% of the reported salary components move automatically to the same manager's general pension fund (CMA standard pension bylaw s.1; PEN-10). Updated with the average wage."
     }
   },
   "deposit_side_tax": {
@@ -183,21 +183,21 @@
       "value": 4,
       "unit": "business_days",
       "source": {
-        "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-        "title": "Mor comprehensive pension fund bylaws, version 01.06.2025, s.108 and annex א",
-        "publisher": "Mor Gemel and Pension",
-        "strength": "institution"
+        "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+        "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964, p.16, reg. 41יא(א)",
+        "publisher": "National Insurance Institute (btl.gov.il), consolidated text",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "fixed in law",
+      "update_rule": "fixed in regulation",
       "rule_ids": [
         "PEN-33"
       ],
       "state": "sourced",
-      "notes": "An approved lump-sum withdrawal (severance component, small balances) is paid within 4 business days; the first pension payment is by the third of the month after eligibility. Bylaws-level (Mor)."
+      "notes": "Rule 41יא(א) of the 1964 Income Tax Rules: a provident fund pays a withdrawal within 4 business days of the day the request reaches it; if that date falls in the month's first three business days it may defer to the 4th business day of the month. The law's timetable for every fund, not one company's (scope pass 2026-10-25). The CMA standard pension bylaw repeats it (s.108(ז)) and answers a withdrawal request within 2 days (s.108(ב)); the first pension payment is by the third of the month (s.46(א))."
     },
     "text": "the lawful exit is an old-age pension from the minimum eligibility age, 60 (early retirement age); before that only the severance component on leaving a job and the narrow cases in the law (small balances past mandatory retirement age, pre-2000 money, health and income conditions) can be taken as a lump sum; any other withdrawal is a non-compliant withdrawal taxed at the higher of 35% and the marginal rate, whose taxable base is open (TXP OQ3), so early withdrawal is a blocked route (method F-48, G-06); the annuity itself needs conversion factors that are not collected (PEN OQ7), so the exit value is blocked too (F-49, G-03) and the page shows the gross balance with the exemption rule as text"
   },

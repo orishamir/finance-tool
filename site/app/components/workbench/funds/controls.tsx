@@ -6,9 +6,8 @@ import { fmt } from "../../../lib/format";
 import type { FundAssumptions, WorkbenchInputs } from "../../../lib/providers";
 import { DISTRIBUTION_PAYMENTS, type FundVariantsView, type SortKey } from "../../../lib/variants";
 import { IconReset, IconSearch } from "../../icons";
-import { RuleRef } from "../../provenance";
-import { NumberField, ParameterLine } from "../../timeline/fields";
-import { Button, SegmentedControl, cx } from "../../ui";
+import { Num, RuleRef } from "../../provenance";
+import { Button, cx, NumberField, ParameterLine, SegmentedControl } from "../../kit";
 
 export function VariantControls({ filter, sort, onFilter, onSort, enteredReturn }: { filter: string; sort: SortKey; onFilter: (v: string) => void; onSort: (s: SortKey) => void; enteredReturn: boolean }) {
   const t = c.funds;
@@ -20,7 +19,7 @@ export function VariantControls({ filter, sort, onFilter, onSort, enteredReturn 
           <label htmlFor="fv-filter" className="sr-only">
             {t.filter}
           </label>
-          <input id="fv-filter" dir="auto" value={filter} onChange={(e) => onFilter(e.target.value)} placeholder={t.filter} className="field-input !text-start" autoComplete="off" />
+          <input id="fv-filter" dir="rtl" value={filter} onChange={(e) => onFilter(e.target.value)} placeholder={t.filter} className="field-input !text-start text-mixed" autoComplete="off" />
         </div>
         <SegmentedControl<SortKey>
           label={t.sort.aria}
@@ -52,7 +51,7 @@ export function FundChips({ view, inputs, assumptions, onOpen }: { view: FundVar
   ];
   if (view.needsFx) {
     chips.push({ key: "fx", label: t.fxChange(ccy), text: assumptions.fxChange !== undefined ? fmt.pct(assumptions.fxChange) : "0%", entered: assumptions.fxChange !== undefined });
-    for (const code of view.startRateCurrencies) chips.push({ key: `start-${code}`, label: t.fxStart(code), text: assumptions.fxStart?.[code] !== undefined ? fmt.nis(assumptions.fxStart[code]!) : "", entered: assumptions.fxStart?.[code] !== undefined });
+    for (const { code, rate } of view.startRates) chips.push({ key: `start-${code}`, label: t.fxStart(code), text: rate && typeof rate.value === "number" ? fmt.nis(rate.value) : "", entered: false });
     chips.push({ key: "w8", label: t.w8ben, text: assumptions.w8ben === undefined ? "" : assumptions.w8ben ? c.funds.sheet.w8ben.yes : c.funds.sheet.w8ben.no, entered: assumptions.w8ben !== undefined });
   }
   chips.push({ key: "provider", label: t.provider(view.provider.name).replace(/ ?\(.*$/, ""), text: "", entered: false });
@@ -96,7 +95,7 @@ export function VariantFields({
 }) {
   const t = c.funds.sheet;
   const ccy = view.currency;
-  const hasAny = assumptions.fxChange !== undefined || assumptions.w8ben !== undefined || !!assumptions.fxStart || !!assumptions.distributions;
+  const hasAny = assumptions.fxChange !== undefined || assumptions.w8ben !== undefined || !!assumptions.distributions;
   return (
     <div className="flex flex-col gap-4">
       <div className="field">
@@ -154,25 +153,20 @@ export function VariantFields({
             hint={<span>{t.fxD20}</span>}
             optional
           />
-          {view.startRateCurrencies.map((code) => (
-            <NumberField
-              key={code}
-              label={t.fxStartLabel(code)}
-              unit="nis"
-              value={assumptions.fxStart?.[code] ?? null}
-              isEntered={assumptions.fxStart?.[code] !== undefined}
-              validate={(n) => (n <= 0 ? c.providers.offer.errors.negative : null)}
-              onCommit={(n) => patch((a) => ({ ...a, fxStart: { ...(a.fxStart ?? {}), [code]: n } }))}
-              onReset={() =>
-                patch((a) => {
-                  const m = { ...(a.fxStart ?? {}) };
-                  delete m[code];
-                  return { ...a, fxStart: m };
-                })
-              }
-              hint={<span>{t.fxD20}</span>}
-              optional
-            />
+          {view.startRates.map(({ code, rate }) => (
+            <div key={code} className="flex flex-col gap-1">
+              <span className="field-label">{t.fxStartLabel(code)}</span>
+              {rate ? (
+                <>
+                  <span>
+                    <Num value={rate} exact />
+                  </span>
+                  <span className="text-xs text-muted-foreground">{rate.about}</span>
+                </>
+              ) : (
+                <span className="text-xs text-muted-foreground">{c.funds.reasons.noRate(code)}</span>
+              )}
+            </div>
           ))}
         </>
       )}

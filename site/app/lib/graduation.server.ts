@@ -48,10 +48,9 @@ const sources: Record<string, { file: string; block: RegExp | null; prefix: stri
   "gold-via-funds": { file: "reits-and-gold-funds.md", block: /^- \*\*Israeli gold funds/, prefix: "RG" },
 };
 
-/** Where an institution's statement is the only answer to a blocking question (r5-tier2.md, D23; a REIT's TX2-20 answers TX2 OQ7, which G-24 no longer lists as blocking, so it is not a blocker line): checked against the rule record at build. */
-const institutionAnswers: { instrument: string; code: string; ruleId: string }[] = [
-  { instrument: "savings-policies", code: "TXA OQ1", ruleId: "TXA-28" },
-];
+/** Where an institution's statement is the only answer to a blocking question (r5-tier2.md, D23; a REIT's TX2-21 answers TX2 OQ7, which G-24 no longer lists as blocking, so it is not a blocker line): checked against the rule record at build.
+ * Empty since 2026-10-25: TXA OQ1's base is now answered by the law (TXA-28, general; tax-bases research), and its remaining rate question has no insurer answer. */
+const institutionAnswers: { instrument: string; code: string; ruleId: string }[] = [];
 
 function statusSection(file: string): string[] {
   const path = join(root, REFS, file);

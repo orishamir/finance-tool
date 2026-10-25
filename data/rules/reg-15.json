@@ -12,22 +12,60 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/חוק_ניירות_ערך",
-      "title": "חוק ניירות ערך, Wikisource",
-      "title_he": "חוק ניירות ערך, התשכ״ח-1968",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/IsaFile_8276.pdf",
+      "title": "חוק ניירות ערך, התשכ\"ח-1968 (נוסח רשות ניירות ערך, 2012)",
+      "title_he": "חוק ניירות ערך, התשכ\"ח-1968 (נוסח רשות ניירות ערך, 2012)",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.94, s.50א(ד) ; p.96, s.50ג",
+      "locator_he": "עמוד 94, סעיף 50א(ד) ; עמוד 96, סעיף 50ג",
+      "page": 94,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_382526.pdf",
+      "title": "חוק ניירות ערך (תיקון מס' 63), התשע\"ז-2017 (ספר החוקים 2633)",
+      "title_he": "חוק ניירות ערך (תיקון מס׳ 63), התשע״ז-2017 (ספר החוקים 2633)",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "ss.44לא, 50א, 50א3, 50א4, 50ג",
-      "locator_he": "סעיפים 44לא, 50א, 50א3, 50א4, 50ג",
-      "anchor": "סעיף_44לא",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.2, s.4 (s.44לא); p.20, s.21 (s.50ג)",
+      "locator_he": "עמוד 2, סעיף 4 (סעיף 44לא); עמוד 20, סעיף 21 (סעיף 50ג)",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_382400.pdf",
+      "title": "חוק ניירות ערך (תיקון מס' 61), התשע\"ז-2017 (ספר החוקים 2623)",
+      "title_he": "חוק ניירות ערך (תיקון מס' 61), התשע\"ז-2017 (ספר החוקים 2623)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.5, s.2(3)",
+      "locator_he": "עמוד 5, סעיף 2(3)",
+      "page": 5,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_10981603.pdf",
+      "title": "חוק חדלות פירעון ושיקום כלכלי (תיקון מס' 9), התשפ\"ו-2026 (ספר החוקים 3488)",
+      "title_he": "חוק חדלות פירעון ושיקום כלכלי (תיקון מס' 9), התשפ\"ו-2026 (ספר החוקים 3488)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.18, s.10",
+      "locator_he": "עמוד 18, סעיף 10",
+      "page": 18,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://content.tase.co.il/media/3fdpe5za/1150_nbcm_399328_eng.pdf",
-      "title": "TASE NBCM guide",
+      "title": "TASE, How to become an NBCM, January 2026",
       "title_he": "How to become a non-banking corporation member (ינואר 2026)",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
@@ -36,11 +74,12 @@
       "locator": "p.10",
       "locator_he": "עמוד 10",
       "page": 10,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25",
+      "qualifier": "(TASE publication)"
     },
     {
       "url": "https://content.tase.co.il/media/xrwbgkhk/1150_remote_member_372145_eng.pdf",
-      "title": "TASE remote-member guide",
+      "title": "TASE, How to become TASE Remote Member, January 2026",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
@@ -48,7 +87,7 @@
       "locator": "p.4",
       "locator_he": "עמוד 4",
       "page": 4,
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "qualifier": "(TASE publication)"
     }
   ]

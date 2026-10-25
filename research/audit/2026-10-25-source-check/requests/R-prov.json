@@ -1,0 +1,714 @@
+[
+ {
+  "file": "publishers.json",
+  "host": "free-justice.openapi.gov.il",
+  "row": {
+   "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "mirror": null
+  },
+  "note": "same request as R-other; listed so the lead sees R-prov depends on it"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "provident-funds-law-2005",
+   "official_url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf"
+  },
+  "note": "existing row; set official_url only"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "cma-circular-2017-9-17",
+   "official_url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf"
+  },
+  "note": "existing row; set official_url only"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "cma-circular-2017-9-15",
+   "official_url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf"
+  },
+  "note": "existing row; set official_url only"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "cma-circular-2020-9-22",
+   "official_url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf"
+  },
+  "note": "existing row; set official_url only"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "cma-commissioner-report-2025",
+   "official_url": "https://www.gov.il/he/pages/tender-0102"
+  },
+  "note": "existing row; set official_url only"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "cma-commissioner-report-2024",
+   "official_url": "https://www.gov.il/he/pages/press_0083"
+  },
+  "note": "existing row; set official_url only"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "retirement-age-law-2004",
+   "official_url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf"
+  },
+  "note": "existing row; set official_url only"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "pension-advice-law-2005",
+   "official_url": "https://fs.knesset.gov.il/16/law/16_lsr_299985.pdf"
+  },
+  "note": "existing row; set official_url only"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "insurance-contract-terms-regulations-1981"
+  },
+  "note": "existing row: remove the generic match token '(תנאים בחוזי ביטוח)' - it would give every amendment ('... (תנאים בחוזי ביטוח) (תיקון), התשס\"ד-2004' etc.) the base title (title hijack); keep 'Insurance Contract Terms Regulations'"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "prov-d7600f68",
+   "match": [
+    "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל"
+   ],
+   "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+   "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+   "kind": "circular",
+   "official_url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf"
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "prov-659e275e",
+   "match": [
+    "חוזר גופים מוסדיים 2017-9-15 – דמי ניהול במכשירי החיסכון הפנסיוני – תיקון"
+   ],
+   "title_he": "חוזר גופים מוסדיים 2017-9-15 – דמי ניהול במכשירי החיסכון הפנסיוני – תיקון",
+   "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+   "kind": "circular",
+   "official_url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf"
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "prov-c6dac54c",
+   "match": [
+    "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון"
+   ],
+   "title_he": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
+   "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+   "kind": "circular",
+   "official_url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf"
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "prov-1aa2b59b",
+   "match": [
+    "דוח הממונה על שוק ההון, החיסכון והביטוח לשנת 2024 – פרק 2: סקירת פעילות הרשות"
+   ],
+   "title_he": "דוח הממונה על שוק ההון, החיסכון והביטוח לשנת 2024 – פרק 2: סקירת פעילות הרשות",
+   "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+   "kind": "report",
+   "official_url": "https://www.gov.il/BlobFolder/news/press_0083/he/Commisioner%20Report%20Design%20B_chapter2%20ver6_digital.pdf"
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "prov-17daeeab",
+   "match": [
+    "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025 – פרק 2: סקירת פעילות הרשות"
+   ],
+   "title_he": "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025 – פרק 2: סקירת פעילות הרשות",
+   "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+   "kind": "report",
+   "official_url": "https://www.gov.il/BlobFolder/reports/tender-0102/he/Commissioner%20Report%202025%20chapter%202_Digital%20-%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9%20%D7%A1%D7%95%D7%A4%D7%99.pdf"
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "prov-ec7f1811",
+   "match": [
+    "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025 – פרק 4: נתונים כמותיים – החיסכון הפנסיוני"
+   ],
+   "title_he": "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025 – פרק 4: נתונים כמותיים – החיסכון הפנסיוני",
+   "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+   "kind": "report",
+   "official_url": "https://www.gov.il/BlobFolder/reports/tender-0102/he/Commissioner%20Report%202025%20chapter%204_Digital%20-%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9%20%D7%A1%D7%95%D7%A4%D7%99.pdf"
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "prov-3c054f06",
+   "match": [
+    "דוח הממונה על שוק ההון, החיסכון והביטוח לשנת 2024 – פרק 4: נתונים כמותיים בתחום החיסכון הפנסיוני"
+   ],
+   "title_he": "דוח הממונה על שוק ההון, החיסכון והביטוח לשנת 2024 – פרק 4: נתונים כמותיים בתחום החיסכון הפנסיוני",
+   "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+   "kind": "report",
+   "official_url": "https://www.gov.il/BlobFolder/news/press_0083/he/Commisioner%20Report%20Design%20B_chapter4%20ver%206.0_digital.pdf"
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "kt-6657",
+   "match": [
+    "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)"
+   ],
+   "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE="
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "kt-7407",
+   "match": [
+    "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014 (קובץ התקנות 7407)"
+   ],
+   "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014 (קובץ התקנות 7407)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZbYNmyK9Qa3gH~lF+jEWmc="
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "kt-8735",
+   "match": [
+    "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התש\"ף-2020 (קובץ התקנות 8735)"
+   ],
+   "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התש\"ף-2020 (קובץ התקנות 8735)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/tZDvucD9RCpb4OFgftW2Mghx2FA7HU11Svr+ngxOA9o="
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "kt-10716",
+   "match": [
+    "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשפ\"ג-2023 (קובץ התקנות 10716)"
+   ],
+   "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשפ\"ג-2023 (קובץ התקנות 10716)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/ZZKYP1JasTIK3+puGrB48nEoGOFH3NQjhXnAe4snPwo="
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "kt-10170",
+   "match": [
+    "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשפ\"ב-2022 (קובץ התקנות 10170)"
+   ],
+   "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשפ\"ב-2022 (קובץ התקנות 10170)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/qa0DjAH11hv4cTvqv8pm34W06X1DvaxhWwgq239BXaQ="
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "kt-7131",
+   "match": [
+    "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131)"
+   ],
+   "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg="
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "kt-7358",
+   "match": [
+    "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשע\"ד-2014 (קובץ התקנות 7358)"
+   ],
+   "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשע\"ד-2014 (קובץ התקנות 7358)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAeOdRzFXelp1D6CGA3tNK3g="
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "kt-9942",
+   "match": [
+    "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשפ\"ב-2022 (קובץ התקנות 9942)"
+   ],
+   "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשפ\"ב-2022 (קובץ התקנות 9942)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8HBFRznZ1PqBBqBlhhXAb7L47e1dgbmyX~fXnBHkch8="
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "kt-6652",
+   "match": [
+    "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008 (קובץ התקנות 6652)"
+   ],
+   "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות), התשס\"ח-2008 (קובץ התקנות 6652)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpsFM+Hq~v6+ysOsYBj7v7sI="
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "kt-10377",
+   "match": [
+    "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות) (תיקון), התשפ\"ג-2022 (קובץ התקנות 10377)"
+   ],
+   "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות) (תיקון), התשפ\"ג-2022 (קובץ התקנות 10377)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dRGsI+SrmavYbn73icZsjwvAYSdKZdahWniBQ2IENis="
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "kt-8744",
+   "match": [
+    "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות) (תיקון), התש\"ף-2020 (קובץ התקנות 8744)"
+   ],
+   "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות) (תיקון), התש\"ף-2020 (קובץ התקנות 8744)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/tZDvucD9RCpb4OFgftW2Mkr7NqSpiUfGbyQHeI17Cx8="
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "kt-6820",
+   "match": [
+    "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)"
+   ],
+   "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ="
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "kt-7819",
+   "match": [
+    "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819)"
+   ],
+   "title_he": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk="
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "kt-7880",
+   "match": [
+    "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ח-2017 (קובץ התקנות 7880)"
+   ],
+   "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ח-2017 (קובץ התקנות 7880)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/iXRl3JX663X67T342MLtmOhZrYskYBxrQk+FHRN~mJM="
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "kt-6901",
+   "match": [
+    "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי) (תיקון מס' 2), התש\"ע-2010 (קובץ התקנות 6901)"
+   ],
+   "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי) (תיקון מס' 2), התש\"ע-2010 (קובץ התקנות 6901)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/RATI4pBLty7qGIwDdx4vQyqqWGj~YlmHaa28WfpNxGU="
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "prov-df9eea2b",
+   "match": [
+    "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), ה"
+   ],
+   "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), ה",
+   "publisher_he": "הכנסת",
+   "kind": "law",
+   "official_url": "https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf"
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "prov-fb9b1516",
+   "match": [
+    "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 12), ה"
+   ],
+   "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 12), ה",
+   "publisher_he": "הכנסת",
+   "kind": "law",
+   "official_url": "https://fs.knesset.gov.il/20/law/20_lsr_313645.pdf"
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "prov-6414bb2f",
+   "match": [
+    "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 16), ה"
+   ],
+   "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 16), ה",
+   "publisher_he": "הכנסת",
+   "kind": "law",
+   "official_url": "https://fs.knesset.gov.il/20/law/20_lsr_343666.pdf"
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "prov-56575e88",
+   "match": [
+    "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 3), הת"
+   ],
+   "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 3), הת",
+   "publisher_he": "הכנסת",
+   "kind": "law",
+   "official_url": "https://fs.knesset.gov.il/17/law/17_lsr_300727.pdf"
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "prov-4baf6226",
+   "match": [
+    "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 5 והור"
+   ],
+   "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 5 והור",
+   "publisher_he": "הכנסת",
+   "kind": "law",
+   "official_url": "https://fs.knesset.gov.il/18/law/18_lsr_301133.pdf"
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "prov-e865f970",
+   "match": [
+    "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 21), ה"
+   ],
+   "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 21), ה",
+   "publisher_he": "הכנסת",
+   "kind": "law",
+   "official_url": "https://fs.knesset.gov.il/20/law/20_lsr_502710.pdf"
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "prov-d9b54e7c",
+   "match": [
+    "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 13 והו"
+   ],
+   "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 13 והו",
+   "publisher_he": "הכנסת",
+   "kind": "law",
+   "official_url": "https://fs.knesset.gov.il/20/law/20_lsr_315848.pdf"
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "prov-5edb167c",
+   "match": [
+    "חוק הפיקוח על שירותים פיננסיים (תיקוני חקיקה), התשע\"ו-2016"
+   ],
+   "title_he": "חוק הפיקוח על שירותים פיננסיים (תיקוני חקיקה), התשע\"ו-2016",
+   "publisher_he": "הכנסת",
+   "kind": "law",
+   "official_url": "https://fs.knesset.gov.il/20/law/20_lsr_348687.pdf"
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "prov-ffa2cdfc",
+   "match": [
+    "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 20), ה"
+   ],
+   "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 20), ה",
+   "publisher_he": "הכנסת",
+   "kind": "law",
+   "official_url": "https://fs.knesset.gov.il/20/law/20_lsr_366997.pdf"
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "prov-21e7046a",
+   "match": [
+    "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות "
+   ],
+   "title_he": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות ",
+   "publisher_he": "הכנסת",
+   "kind": "law",
+   "official_url": "https://fs.knesset.gov.il/24/law/24_lsr_611567.pdf"
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "prov-4803d30b",
+   "match": [
+    "חוק התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2021 ו-2022), התשפ\"ב-2021"
+   ],
+   "title_he": "חוק התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2021 ו-2022), התשפ\"ב-2021",
+   "publisher_he": "הכנסת",
+   "kind": "law",
+   "official_url": "https://fs.knesset.gov.il/24/law/24_lsr_611801.pdf"
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "prov-9c81e8ba",
+   "match": [
+    "חוק הגנת השכר (תיקון מס' 24), התשס\"ח-2008"
+   ],
+   "title_he": "חוק הגנת השכר (תיקון מס' 24), התשס\"ח-2008",
+   "publisher_he": "הכנסת",
+   "kind": "law",
+   "official_url": "https://fs.knesset.gov.il/17/law/17_lsr_300652.pdf"
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "prov-ff85bf6e",
+   "match": [
+    "חוק להחלפת המונח מעביד (תיקוני חקיקה), התשע\"ד-2014"
+   ],
+   "title_he": "חוק להחלפת המונח מעביד (תיקוני חקיקה), התשע\"ד-2014",
+   "publisher_he": "הכנסת",
+   "kind": "law",
+   "official_url": "https://fs.knesset.gov.il/19/law/19_lsr_306572.pdf"
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "prov-de5294fe",
+   "match": [
+    "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע\"א-2011"
+   ],
+   "title_he": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע\"א-2011",
+   "publisher_he": "הכנסת",
+   "kind": "law",
+   "official_url": "https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf"
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "kt-4290",
+   "match": [
+    "תקנות הפיקוח על עסקי ביטוח (תנאים בחוזי ביטוח), התשמ\"ב-1981 (קובץ התקנות 4290)"
+   ],
+   "title_he": "תקנות הפיקוח על עסקי ביטוח (תנאים בחוזי ביטוח), התשמ\"ב-1981 (קובץ התקנות 4290)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/iLs08NX3KGA9~rkIKOndkkLRxv00yJMyWBaZlR4KaIc="
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "kt-7131-insurance-terms",
+   "match": [
+    "תקנות הפיקוח על שירותים פיננסיים (ביטוח) (תנאים בחוזי ביטוח) (תיקון), התשע\"ב-2012 (קובץ התקנות 7131)"
+   ],
+   "title_he": "תקנות הפיקוח על שירותים פיננסיים (ביטוח) (תנאים בחוזי ביטוח) (תיקון), התשע\"ב-2012 (קובץ התקנות 7131)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg="
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "kt-6284",
+   "match": [
+    "תקנות הפיקוח על עסקי ביטוח (תנאים בחוזי ביטוח) (תיקון), התשס\"ד-2004 (קובץ התקנות 6284)"
+   ],
+   "title_he": "תקנות הפיקוח על עסקי ביטוח (תנאים בחוזי ביטוח) (תיקון), התשס\"ד-2004 (קובץ התקנות 6284)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3nwsTVeYYmhGDid2kIqKI~Hk="
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "kt-6609",
+   "match": [
+    "תקנות הפיקוח על עסקי ביטוח (תנאים בחוזי ביטוח) (תיקון), התשס\"ז-2007 (קובץ התקנות 6609)"
+   ],
+   "title_he": "תקנות הפיקוח על עסקי ביטוח (תנאים בחוזי ביטוח) (תיקון), התשס\"ז-2007 (קובץ התקנות 6609)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTugNmENKcUIwHrUSZW9ZBg="
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "kt-5682",
+   "match": [
+    "תקנות הפיקוח על עסקי ביטוח (תנאים בחוזי ביטוח) (תיקון), התשנ\"ה-1995 (קובץ התקנות 5682)"
+   ],
+   "title_he": "תקנות הפיקוח על עסקי ביטוח (תנאים בחוזי ביטוח) (תיקון), התשנ\"ה-1995 (קובץ התקנות 5682)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/BTwXToK9tgT1T4C743xB1YM5f+QhBADNjCgwTr9rv3c="
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "kt-5804",
+   "match": [
+    "תקנות פיקוח על עסקי ביטוח (תנאים בחוזי ביטוח) (תיקון), התשנ\"ז-1996 (קובץ התקנות 5804)"
+   ],
+   "title_he": "תקנות פיקוח על עסקי ביטוח (תנאים בחוזי ביטוח) (תיקון), התשנ\"ז-1996 (קובץ התקנות 5804)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/E5dM3Lqs3zVhAvU4rMf6c5wNTVAGlOIVXHsJEoAgsJ4="
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "kt-6094",
+   "match": [
+    "תקנות הפיקוח על עסקי ביטוח (דרכי השקעת ההון והקרנות של מבטח וניהול התחייבויותיו), התשס\"א-2001 (קובץ התקנות 6094)"
+   ],
+   "title_he": "תקנות הפיקוח על עסקי ביטוח (דרכי השקעת ההון והקרנות של מבטח וניהול התחייבויותיו), התשס\"א-2001 (קובץ התקנות 6094)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/mh6R6bmXcoR6N~XeNh6QPrA2iEfIYDZsqtdZ2FAMxdQ="
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "kt-10695",
+   "match": [
+    "תקנות הפיקוח על עסקי ביטוח (פרטי דין וחשבון) (ביטול), התשפ\"ג-2023 (קובץ התקנות 10695)"
+   ],
+   "title_he": "תקנות הפיקוח על עסקי ביטוח (פרטי דין וחשבון) (ביטול), התשפ\"ג-2023 (קובץ התקנות 10695)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/7C66hQ7JW8mJlcziZA1hgK1PPp5NbPw07CG3J3T~8lA="
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ },
+ {
+  "file": "documents.json",
+  "row": {
+   "id": "kt-5884",
+   "match": [
+    "תקנות הפיקוח על עסקי ביטוח (פרטי דין וחשבון), התשנ\"ח-1998 (קובץ התקנות 5884)"
+   ],
+   "title_he": "תקנות הפיקוח על עסקי ביטוח (פרטי דין וחשבון), התשנ\"ח-1998 (קובץ התקנות 5884)",
+   "publisher_he": "רשומות (משרד המשפטים)",
+   "kind": "law",
+   "official_url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/qp4kOfn567Y9SVzCZ9fztqtrgsHQki1Al7l1DteQKBc="
+  },
+  "note": "specific full-title token so the longest match wins over a base-law row"
+ }
+]

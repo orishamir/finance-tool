@@ -9,41 +9,58 @@
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
-  "text_he": "אם לא בוחרים בתוך שישה חודשים, הכסף נכנס לקופת גמל להשקעה. הקופה והמסלול הולכים אחרי אח גדול שנבחרה לו קופה; אחרת למסלול 'חוסכים המעדיפים סיכון מוגבר'. הכלל השתנה שלוש פעמים מאז 2020. איך נבחרת הקופה לילד ראשון לא נאמר (שאלה פתוחה 4).",
+  "text_he": "אם לא בוחרים בתוך שישה חודשים מהלידה, הכסף נכנס לקופת גמל להשקעה. הקופה והמסלול הולכים אחרי אח גדול שההורה בחר לו קופה; אם לאח הגדול נבחר בנק, או שזה הילד הראשון, הכסף נכנס למסלול 'חוסכים המעדיפים סיכון מוגבר'. גם חוזר רשות שוק ההון קובע את מסלול הסיכון המוגבר כברירת המחדל לכל ילד שמצטרף לראשונה מאז שהחוזר נכנס לתוקף, ונותן לילד בלי בחירה את המסלול של האח הצעיר ביותר מבין הגדולים שההורה בחר לו מסלול. הכלל השתנה כמה פעמים, ואיך נבחרת הקופה לילד ראשון לא נאמר.",
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
+      "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
+      "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.51, s.74ב(ד)(1א)",
+      "locator_he": "עמוד 51, סעיף 74ב(ד)(1א)",
+      "page": 51,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
-      "title": "NII 2025 report",
+      "title": "חיסכון ארוך-טווח לכל ילד וילדה – דוח הביטוח הלאומי לשנת 2025",
       "title_he": "חיסכון ארוך-טווח לכל ילד וילדה – דוח הביטוח הלאומי לשנת 2025",
       "publisher": "National Insurance Institute",
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "pp.2–3, 6",
+      "locator": "pp.2-3, 6",
       "locator_he": "עמודים 2 עד 3, 6",
       "page": 2,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-304/he/Provident%20fund%20for%20long-term%20child%20savings.pdf",
+      "title": "חוזר גופים מוסדיים 2022-9-29 – קופת גמל להשקעה לחיסכון ארוך טווח לילד – תיקון, 28.9.2022",
+      "title_he": "חוזר גופים מוסדיים 2022-9-29 – קופת גמל להשקעה לחיסכון ארוך טווח לילד – תיקון, 28.9.2022",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.4, annex s.3(ד1)-(ד2)",
+      "page": 4,
+      "quote": "לכל ילד המצטרף לראשונה החל מיום 1 בדצמבר 2022",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/nolad.aspx",
-      "title": "NII newborn page",
+      "title": "ביטוח לאומי: פתיחת תכנית חיסכון לילד שנולד",
       "title_he": "חיסכון לכל ילד: עמודי המידע של הביטוח הלאומי",
       "publisher": "National Insurance Institute",
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://www.as-invest.co.il/interstedin/%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%95%D7%94%D7%A9%D7%A7%D7%A2%D7%94/%D7%A9%D7%90%D7%9C%D7%95%D7%AA-%D7%95%D7%AA%D7%A9%D7%95%D7%91%D7%95%D7%AA-%D7%91%D7%A0%D7%95%D7%A9%D7%90-%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%9C%D7%9B%D7%9C-%D7%99%D7%9C%D7%93/",
-      "title": "Altshuler Shaham child-savings Q&A",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

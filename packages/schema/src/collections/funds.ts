@@ -40,6 +40,17 @@ export const fundRecord = z.strictObject({
   exposure_code: z.string().nullable().optional(),
   distribution_fee_type: z.string().nullable().optional(),
   creation_redemption_fee_category: z.string().nullable().optional(),
+  /** S4 (2026-10-25): how the fund follows its index, with the page that says so. */
+  replication: z
+    .strictObject({
+      method: z.enum(["physical", "swap", "futures", "mixed"]),
+      source: z.strictObject({ url: z.string().min(1), page: z.number().int().positive().optional(), checked: isoDate }),
+    })
+    .optional(),
+  /** S4: true when the fund neutralises the currency (מנוטרלת מט"ח). */
+  hedged: z.boolean().optional(),
+  /** S4: the price of one unit, in a currency unit, for per-share commissions. */
+  share_price: valueObject.optional(),
   snapshot: isoDate,
 });
 

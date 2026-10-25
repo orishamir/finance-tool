@@ -1,0 +1,569 @@
+# Copies (primary-mirror) in data/rules as of 2026-10-25 before the copy step: rule sources and figure sources, grouped by copied URL
+
+## https://he.wikisource.org/wiki/פקודת_מס_הכנסה (112)
+  SW-21 [switching-and-transfers.md] source: -
+  TX2-18 [tax-tier2-other.md] source: s.3(ה6), s.9(13)(1), s.125C(c)(1)
+  TX2-18 [tax-tier2-other.md] figure figures.rate_unlinked_or_partly_linked: Income Tax Ordinance s.125C(c)(1); s.3(e6); Partial Linkage Differentials Regulations 2003 reg. 1
+  TX2-18 [tax-tier2-other.md] figure figures.rate_linked_max: Income Tax Ordinance s.125C(b)
+  TXF-01 [tax-securities-foreign.md] source: s.88
+  TXF-02 [tax-securities-foreign.md] source: s.91(b)(1)
+  TXF-03 [tax-securities-foreign.md] source: s.88
+  TXF-08 [tax-securities-foreign.md] source: s.125B(1)
+  TXF-11 [tax-securities-foreign.md] source: s.75B(a)(1), (a)(3), (b)(1); ss.3A, 62A, 67C, 67G
+  TXF-16 [tax-securities-foreign.md] source: s.199
+  TXF-17 [tax-securities-foreign.md] source: ss.199, 200(a), 201(a), 206, 207B, 208, 240A
+  TXF-18 [tax-securities-foreign.md] source: s.199, s.204(a)-(c)
+  TXF-22 [tax-securities-foreign.md] source: s.91(d)(2C)
+  TXF-23 [tax-securities-foreign.md] source: s.92(a)(3), (a)(4), (b)
+  TXG-04 [tax-general.md] source: s.121(b)(1)
+  TXG-04 [tax-general.md] figure figures.age: Income Tax Ordinance, s.121(b)(1), "הכנסה חייבת בשנת המס של יחיד שמלאו לו 60 שנים"
+  TXG-07 [tax-general.md] source: s.91(b)(1), s.125C(b), s.125C(c)(1)
+  TXG-09 [tax-general.md] source: s.121B(a)
+  TXG-12 [tax-general.md] source: s.88
+  TXG-13 [tax-general.md] source: -
+  TXG-28 [tax-general.md] source: s.2(1)-(10), s.2(4)
+  TXH-01 [tax-hishtalmut.md] source: s.3(e) (`סעיף 3(ה)`)
+  TXH-01 [tax-hishtalmut.md] figure figures.employer_exempt_pct: Income Tax Ordinance, s.3(e) ("סעיף 3(ה)"): employer payments within the collective-agreement rate, 
+  TXH-02 [tax-hishtalmut.md] source: s.3(e)
+  TXH-02 [tax-hishtalmut.md] figure figures.determining_salary_cap: Income Tax Ordinance, s.3(e) (law-text list: 15,400 until 2004; 15,712 from March 2004); Tax Authori
+  TXH-03 [tax-hishtalmut.md] source: s.3(e)
+  TXH-05 [tax-hishtalmut.md] source: s.17(5A)
+  TXH-05 [tax-hishtalmut.md] figure figures.deduction_pct: Income Tax Ordinance, s.17(5A): deduction of amounts paid to a self-employed study fund up to 4.5% o
+  TXH-08 [tax-hishtalmut.md] source: s.9(16A)(c), s.9(16B)
+  TXH-08 [tax-hishtalmut.md] figure figures.own_benefited_pct: Income Tax Ordinance, s.9(16A)(c)
+  TXH-09 [tax-hishtalmut.md] source: s.9(16A)(a)-(d), s.9(16B)
+  TXH-09 [tax-hishtalmut.md] figure figures.lock_years: Income Tax Ordinance, s.9(16A)(a)-(d), s.9(16B)
+  TXH-09 [tax-hishtalmut.md] figure figures.lock_years_retirement_or_study: Income Tax Ordinance, s.1, s.9(16A)(a)-(b), s.9(16B)
+  TXH-10 [tax-hishtalmut.md] source: s.1, s.9(16A)(a)-(b), s.9(16B)
+  TXH-10 [tax-hishtalmut.md] figure figures.lock_years: Income Tax Ordinance, s.1, s.9(16A)(a)-(b), s.9(16B)
+  TXH-18 [tax-hishtalmut.md] source: s.3(e4)(1)
+  TXI-01 [tax-interest-deposits-bonds.md] source: s.125C(a)
+  TXI-02 [tax-interest-deposits-bonds.md] source: s.125C(b)
+  TXI-03 [tax-interest-deposits-bonds.md] source: s.125C(c)(1)-(2)
+  TXI-04 [tax-interest-deposits-bonds.md] source: s.125C(a)
+  TXI-05 [tax-interest-deposits-bonds.md] source: s.9(13)
+  TXI-11 [tax-interest-deposits-bonds.md] source: s.125C(a),(c)
+  TXI-12 [tax-interest-deposits-bonds.md] source: s.88
+  TXI-12 [tax-interest-deposits-bonds.md] source: s.91(b)(3)
+  TXI-14 [tax-interest-deposits-bonds.md] source: s.91(b)(1)
+  TXI-15 [tax-interest-deposits-bonds.md] source: ss.125C(c), 91(b)(3)
+  TXI-16 [tax-interest-deposits-bonds.md] source: s.3(h)-(h1)
+  TXI-17 [tax-interest-deposits-bonds.md] source: s.92(a)(4)
+  TXI-19 [tax-interest-deposits-bonds.md] source: s.121(b)(1)
+  TXI-20 [tax-interest-deposits-bonds.md] source: s.125D(a)-(b)
+  TXK-01 [tax-gemel-lehashkaa-ira-child.md] source: PDF pp.47 (s.45A(b)), 49 (s.47(b)), 25
+  TXK-03 [tax-gemel-lehashkaa-ira-child.md] source: PDF pp.14-15, s.9(2)(a), (b)
+  TXK-04 [tax-gemel-lehashkaa-ira-child.md] source: p.8, s.3(ה4)(3)
+  TXK-05 [tax-gemel-lehashkaa-ira-child.md] source: PDF p.8, s.3(ה4)(3)
+  TXK-06 [tax-gemel-lehashkaa-ira-child.md] source: PDF p.131, s.125C(a)-(e)
+  TXK-07 [tax-gemel-lehashkaa-ira-child.md] source: p.20, s.9(13)
+  TXK-09 [tax-gemel-lehashkaa-ira-child.md] source: PDF p.25, s.9A(b1)
+  TXK-17 [tax-gemel-lehashkaa-ira-child.md] source: pp.14-15, s.9(2)
+  TXK-18 [tax-gemel-lehashkaa-ira-child.md] source: pp.14-15, s.9(2)
+  TXK-23 [tax-gemel-lehashkaa-ira-child.md] source: -
+  TXK-25 [tax-gemel-lehashkaa-ira-child.md] source: p.25
+  TXP-01 [tax-pension-gemel-lekitzba.md] source: s.45A(b), s.47(c)
+  TXP-01 [tax-pension-gemel-lekitzba.md] figure figures.credit_pct: Income Tax Ordinance s.45A(b) (Wikisource mirror); Tax Authority guide 2025 pp.60, 68: "הזיכוי הוא ב
+  TXP-02 [tax-pension-gemel-lekitzba.md] figure figures.credited_pct_of_income: Income Tax Ordinance s.45A(d) (Wikisource mirror): "7% מהכנסתו המזכה"
+  TXP-02 [tax-pension-gemel-lekitzba.md] figure figures.credited_pct_no_work_income: Income Tax Ordinance s.45A(d) (Wikisource mirror): "5% מהכנסתו המזכה" for an individual with no work
+  TXP-03 [tax-pension-gemel-lekitzba.md] source: s.47(a) definitions `עמית מוטב`, `השכר הממוצע במשק`
+  TXP-03 [tax-pension-gemel-lekitzba.md] figure figures.threshold_pct_of_average_wage: Income Tax Ordinance s.47(a), definition "עמית מוטב" (Wikisource mirror)
+  TXP-04 [tax-pension-gemel-lekitzba.md] source: s.45A(e), s.47(a) `הכנסה מבוטחת`
+  TXP-04 [tax-pension-gemel-lekitzba.md] figure figures.insured_pct: Income Tax Ordinance s.45A(e), s.47(a) (Wikisource mirror); deductions booklet 2026 p.12 (45א(ה)(2))
+  TXP-04 [tax-pension-gemel-lekitzba.md] figure figures.no_insured_pct: Income Tax Ordinance s.45A(e), s.47(a) (Wikisource mirror); deductions booklet 2026 p.12 (45א(ה)(2))
+  TXP-04 [tax-pension-gemel-lekitzba.md] figure figures.income_cap: Income Tax Ordinance s.45A(e), s.47(a) (Wikisource mirror); deductions booklet 2026 p.12 (45א(ה)(2))
+  TXP-05 [tax-pension-gemel-lekitzba.md] source: s.47(a), (b)
+  TXP-05 [tax-pension-gemel-lekitzba.md] figure figures.deduction_pct_non_work: Income Tax Ordinance s.47(a), (b) (Wikisource mirror)
+  TXP-05 [tax-pension-gemel-lekitzba.md] figure figures.non_insured_work_pct: Income Tax Ordinance s.47(a), (b) (Wikisource mirror); deductions booklet 2026 p.12
+  TXP-05 [tax-pension-gemel-lekitzba.md] figure figures.taxable_work_income_cap: Income Tax Ordinance s.47(a), (b) (Wikisource mirror); deductions booklet 2026 p.12
+  TXP-06 [tax-pension-gemel-lekitzba.md] source: s.47(a), (b1), (b2)
+  TXP-06 [tax-pension-gemel-lekitzba.md] figure figures.first_tier_pct: Income Tax Ordinance s.47(b1) (Wikisource mirror); guide 2025 pp.60-62 ("רובד ראשון")
+  TXP-06 [tax-pension-gemel-lekitzba.md] figure figures.second_tier_pct: Income Tax Ordinance s.47(a), (b1) (Wikisource mirror); guide 2025 pp.60-62; deductions booklet 2026
+  TXP-06 [tax-pension-gemel-lekitzba.md] figure figures.second_tier_extra_pct: Income Tax Ordinance s.47(a), (b1) (Wikisource mirror); guide 2025 pp.60-62; deductions booklet 2026
+  TXP-06 [tax-pension-gemel-lekitzba.md] figure figures.second_tier_extra_above_pct: Income Tax Ordinance s.47(a), (b1) (Wikisource mirror); guide 2025 pp.60-62; deductions booklet 2026
+  TXP-06 [tax-pension-gemel-lekitzba.md] figure figures.self_employed_income_cap: Income Tax Ordinance s.47(a), (b1) (Wikisource mirror); guide 2025 pp.60-62; deductions booklet 2026
+  TXP-06 [tax-pension-gemel-lekitzba.md] figure figures.additional_income_cap: Income Tax Ordinance s.47(a), (b1) (Wikisource mirror); guide 2025 pp.60-62; deductions booklet 2026
+  TXP-10 [tax-pension-gemel-lekitzba.md] figure figures.employer_exempt_pct: Income Tax Ordinance s.3(e3)(1), (2) (Wikisource mirror); Income Tax (Rules for Approval and Managem
+  TXP-11 [tax-pension-gemel-lekitzba.md] source: s.3(e3)(1a), (1b), (2)
+  TXP-13 [tax-pension-gemel-lekitzba.md] source: s.9(2), s.9(18)
+  TXP-14 [tax-pension-gemel-lekitzba.md] source: s.9A(a), (b), (g)
+  TXP-14 [tax-pension-gemel-lekitzba.md] figure figures.exempt_share.by_tax_year.2026: Income Tax Ordinance s.9A(b), (g) as amended by Amendment 275 (Wikisource mirror); Tax Authority ded
+  TXP-14 [tax-pension-gemel-lekitzba.md] figure figures.exempt_share.by_tax_year.2027: Income Tax Ordinance s.9A(b), (g) as amended by Amendment 275 (Wikisource mirror); Tax Authority ded
+  TXP-14 [tax-pension-gemel-lekitzba.md] figure figures.exempt_share.by_tax_year.2028: Income Tax Ordinance s.9A(b), (g) as amended by Amendment 275 (Wikisource mirror); Tax Authority ded
+  TXP-15 [tax-pension-gemel-lekitzba.md] source: s.9A(a) `מכפיל ההמרה להון`, s.9A(c)
+  TXP-15 [tax-pension-gemel-lekitzba.md] figure figures.capital_multiplier: Income Tax Ordinance s.9A(a) "מכפיל ההמרה להון", s.9A(c) (Wikisource mirror); circular 2/2013 ss.4.1
+  TXP-18 [tax-pension-gemel-lekitzba.md] source: s.87
+  TXP-19 [tax-pension-gemel-lekitzba.md] source: s.9(7a)(a)(1)-(2), (c), (d), (f) (`סעיף 9(7א)`), s.8(c)(3)
+  TXP-21 [tax-pension-gemel-lekitzba.md] source: s.9(7a)(g), (g1), (h); s.9A(e)(4)
+  TXP-27 [tax-pension-gemel-lekitzba.md] source: ss.120A, 120B(e) (`ב־1 בינואר של שנות המס 2025 עד 2027 לא יתואמו הסכומים`)
+  TXS-01 [tax-securities-israeli.md] source: s.91(b)(1), (b)(2)
+  TXS-02 [tax-securities-israeli.md] source: s.88
+  TXS-03 [tax-securities-israeli.md] source: s.91(b)(3)(a)-(c)
+  TXS-04 [tax-securities-israeli.md] source: s.88
+  TXS-07 [tax-securities-israeli.md] source: s.88
+  TXS-08 [tax-securities-israeli.md] source: s.129C(a)(1), (a)(4)
+  TXS-09 [tax-securities-israeli.md] source: s.91(b)(1)
+  TXS-10 [tax-securities-israeli.md] source: s.125B1(b)
+  TXS-11 [tax-securities-israeli.md] source: s.129C(a)(2), s.97(a)(7), s.125B1(a), s.92(a)(1)
+  TXS-12 [tax-securities-israeli.md] source: s.88, s.91(b)(1), s.125B1, s.129C
+  TXS-14 [tax-securities-israeli.md] source: s.88
+  TXS-16 [tax-securities-israeli.md] source: s.125B(1), (2)
+  TXS-17 [tax-securities-israeli.md] source: s.92(a)(1), (3), (4), (5)
+  TXS-18 [tax-securities-israeli.md] source: s.92(b)
+  TXS-21 [tax-securities-israeli.md] source: s.88
+  TXS-22 [tax-securities-israeli.md] source: -
+  TXS-23 [tax-securities-israeli.md] source: s.121(b)(1)
+
+## https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל) (28)
+  KGL-02 [kupat-gemel-lehashkaa.md] source: section 22(א)
+  PEN-06 [pension-and-gemel-lekitzba.md] source: section 20
+  PEN-18 [pension-and-gemel-lekitzba.md] source: sections 34א-34ז
+  PEN-18 [pension-and-gemel-lekitzba.md] figure figures.guaranteed_share: Provident Funds Law, chapter ג' סימן ה'1, sections 34א-34ז (Wikisource mirror)
+  PEN-18 [pension-and-gemel-lekitzba.md] figure figures.target_return: Provident Funds Law, s.34ב-34ג (Wikisource mirror): "ריבית שנתית בשיעור 5.15%"
+  PEN-28 [pension-and-gemel-lekitzba.md] source: section 23(א)(1)(א), 23(ה)-(ו)
+  PEN-28 [pension-and-gemel-lekitzba.md] figure figures.minimum_annuity: Provident Funds Law, section 23(ה)-(ו) (Wikisource mirror; NIS 3,850 at 2008 values, 5,306 for 2026)
+  PEN-29 [pension-and-gemel-lekitzba.md] source: section 23(א)(1)(ב)(3), 23(ב)(1א), 23(ה)-(ו)
+  PEN-29 [pension-and-gemel-lekitzba.md] figure figures.minimum_accumulation: Provident Funds Law, section 23(א)(1)(ב)(3), 23(ה)-(ו) (Wikisource mirror; NIS 80,000 at 2008 values
+  PEN-30 [pension-and-gemel-lekitzba.md] source: section 23(א)(1)(ב)
+  PEN-31 [pension-and-gemel-lekitzba.md] source: section 23(א)(2א), 23(א)(3)
+  PEN-34 [pension-and-gemel-lekitzba.md] source: section 13(א)(4)
+  PEN-35 [pension-and-gemel-lekitzba.md] source: section 34ב
+  PF-01 [provident-family-common.md] source: s. 32
+  PF-17 [provident-family-common.md] source: s. 23
+  PF-26 [provident-family-common.md] source: s. 35
+  PF-28 [provident-family-common.md] source: s. 24א, 24ב
+  PF-29 [provident-family-common.md] source: s. 3, 25, 27, 30
+  REG-17 [regulators-and-protection.md] source: ss.1, 13, 39
+  REG-18 [regulators-and-protection.md] source: ss.3, 25(ב), 27, 30(א)
+  REG-19 [regulators-and-protection.md] source: ss.39(ג), 41, 42
+  REG-21 [regulators-and-protection.md] source: ss.34ב, 34ג, 34ד, 34ה
+  SW-15 [switching-and-transfers.md] source: -
+  SW-21 [switching-and-transfers.md] source: -
+  TXK-03 [tax-gemel-lehashkaa-ira-child.md] source: s.1
+  TXK-16 [tax-gemel-lehashkaa-ira-child.md] source: s.1, s.13(c)(2), s.57
+  TXP-17 [tax-pension-gemel-lekitzba.md] source: s.23
+  TXP-24 [tax-pension-gemel-lekitzba.md] source: s.1
+
+## https://www.analyst.co.il/media/dtnkdiyk/חוזר-גופים-מוסדיים-2017-9-17-העברת-כספים-בין-קופות-גמל.pdf (27)
+  PF-20 [provident-family-common.md] source: s. 3, 4, 6, 9, 11, pp. 1 to 12 of 28
+  SW-02 [switching-and-transfers.md] source: s.3(א) to (ג) and Annex A, pp.2, 11 to 17 of 28
+  SW-03 [switching-and-transfers.md] source: pp.11 to 17
+  SW-04 [switching-and-transfers.md] source: s.3(ו), Annex D
+  SW-04 [switching-and-transfers.md] figure figures.forward_request_business_days: CMA circular 2017-9-17 "העברת כספים בין קופות גמל", 2.10.2017, consolidated copy, s.3(ו), Annex D
+  SW-05 [switching-and-transfers.md] source: pp.2 to 3, 20 to 21
+  SW-05 [switching-and-transfers.md] figure figures.rejection_or_delay_notice_business_days: CMA circular 2017-9-17 "העברת כספים בין קופות גמל", 2.10.2017, consolidated copy, s.3(ז) to (ט), Ann
+  SW-06 [switching-and-transfers.md] source: s.5(ה), (ו)
+  SW-06 [switching-and-transfers.md] figure figures.late_transfer_data_business_days: CMA circular 2017-9-17 "העברת כספים בין קופות גמל", 2.10.2017, consolidated copy, s.5(ה), (ו)
+  SW-07 [switching-and-transfers.md] source: pp.2 to 3, 12, 22
+  SW-07 [switching-and-transfers.md] figure figures.deposits_returned_after_cancel_business_days: CMA circular 2017-9-17 "העברת כספים בין קופות גמל", 2.10.2017, consolidated copy, s.3(ט) to (יא), An
+  SW-08 [switching-and-transfers.md] source: s.3(יב), (יג), Annex A item 6
+  SW-08 [switching-and-transfers.md] figure figures.active_member_lapse_days: CMA circular 2017-9-17 "העברת כספים בין קופות גמל", 2.10.2017, consolidated copy, s.3(יב), Annex A i
+  SW-08 [switching-and-transfers.md] figure figures.after_no_deposit_notice_lapse_days: CMA circular 2017-9-17 "העברת כספים בין קופות גמל", 2.10.2017, consolidated copy, s.3(יב)
+  SW-08 [switching-and-transfers.md] figure figures.inactive_member_lapse_days: CMA circular 2017-9-17 "העברת כספים בין קופות גמל", 2.10.2017, consolidated copy, s.3(יג)
+  SW-09 [switching-and-transfers.md] source: pp.8 to 9
+  SW-09 [switching-and-transfers.md] figure figures.confirmation_business_days: CMA circular 2017-9-17 "העברת כספים בין קופות גמל", 2.10.2017, consolidated copy, s.6, pp.8 to 9
+  SW-10 [switching-and-transfers.md] source: pp.8, 26 to 27
+  SW-10 [switching-and-transfers.md] figure figures.employer_notice_business_days: CMA circular 2017-9-17 "העברת כספים בין קופות גמל", 2.10.2017, consolidated copy, s.5א, Annex 11, pp
+  SW-11 [switching-and-transfers.md] source: pp.7 to 8
+  SW-12 [switching-and-transfers.md] source: pp.3 to 5, 18
+  SW-12 [switching-and-transfers.md] figure figures.supplement_increase_no_carry_threshold_pct: CMA circular 2017-9-17 "העברת כספים בין קופות גמל", 2.10.2017, consolidated copy, s.4(ב)(2), pp.3 to
+  SW-12 [switching-and-transfers.md] figure figures.notional_deposit_lookback_months: CMA circular 2017-9-17 "העברת כספים בין קופות גמל", 2.10.2017, consolidated copy, s.4(א)
+  SW-16 [switching-and-transfers.md] source: -
+  SW-19 [switching-and-transfers.md] source: -
+  SW-23 [switching-and-transfers.md] source: -
+  SW-38 [switching-and-transfers.md] source: -
+
+## https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות (24)
+  ETF-01 [etfs-and-index-funds.md] source: s. 1 definitions; s. 102(ה)–(ו)
+  ETF-22 [etfs-and-index-funds.md] source: s. 113א–113ט
+  MF-01 [mutual-funds-and-money-market-funds.md] source: sections 3, 4, 5(א), 8
+  MF-02 [mutual-funds-and-money-market-funds.md] source: sections 76, 79
+  MF-03 [mutual-funds-and-money-market-funds.md] source: section 78
+  MF-04 [mutual-funds-and-money-market-funds.md] source: sections 25(א), 31, 32
+  MF-05 [mutual-funds-and-money-market-funds.md] source: section 1
+  MF-09 [mutual-funds-and-money-market-funds.md] source: sections 42, 43, 46
+  MF-10 [mutual-funds-and-money-market-funds.md] source: section 46(ג)
+  MF-11 [mutual-funds-and-money-market-funds.md] source: sections 1, 44, 45, 46(ב)
+  MF-13 [mutual-funds-and-money-market-funds.md] source: section 48
+  MF-13 [mutual-funds-and-money-market-funds.md] figure figures.manager_suspension_days: חוק השקעות משותפות בנאמנות, התשנ"ד-1994, section 48 (Wikisource mirror)
+  MF-13 [mutual-funds-and-money-market-funds.md] figure figures.isa_suspension_days: Law, section 48 (Wikisource mirror)
+  MF-13 [mutual-funds-and-money-market-funds.md] figure figures.max_suspension_days: Law, section 48 (Wikisource mirror)
+  MF-16 [mutual-funds-and-money-market-funds.md] source: sections 5(א)(12), 49(ד), 80
+  MF-20 [mutual-funds-and-money-market-funds.md] source: sections 5(א)(12), 80
+  MF-21 [mutual-funds-and-money-market-funds.md] source: sections 5(א)(7), 42(ג), 82(א)(1)
+  MF-22 [mutual-funds-and-money-market-funds.md] source: sections 5(א)(7), 42(ג), 46(ב)
+  MF-24 [mutual-funds-and-money-market-funds.md] source: section 82
+  MF-26 [mutual-funds-and-money-market-funds.md] source: section 82
+  MF-49 [mutual-funds-and-money-market-funds.md] source: section 58
+  REG-10 [regulators-and-protection.md] source: ss.4, 76, 78(א), 79
+  REG-11 [regulators-and-protection.md] source: ss.11, 12, 14, 15, 104
+  REG-11 [regulators-and-protection.md] figure figures.trustee_replacement_days: חוק השקעות משותפות בנאמנות, section 12(ג) (Wikisource mirror)
+
+## https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל) (22)
+  KGL-09 [kupat-gemel-lehashkaa.md] source: regulations 2(א)(7) and 2(ב)(2)
+  KGL-10 [kupat-gemel-lehashkaa.md] source: regulations 3(א)(11א), 3(א)(12), 5(א)
+  PF-17 [provident-family-common.md] source: reg. 2, 3, 4
+  PF-18 [provident-family-common.md] source: reg. 9(ב), 9(ג)
+  PF-19 [provident-family-common.md] source: reg. 5, 6, 7
+  SW-01 [switching-and-transfers.md] source: regs. 2(א)(1), (4), (6), (7); 3(א)(1), (4), (11א), (12)
+  SW-04 [switching-and-transfers.md] source: reg. 1
+  SW-06 [switching-and-transfers.md] source: regs. 5(א), 6, 7
+  SW-06 [switching-and-transfers.md] figure figures.transfer_business_days: תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס"ח-2008, reg. 5(א)
+  SW-06 [switching-and-transfers.md] figure figures.commissioner_extension_business_days: תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס"ח-2008, reg. 5(א)
+  SW-12 [switching-and-transfers.md] source: reg. 8(א) to (ג)
+  SW-13 [switching-and-transfers.md] source: regs. 4, 5(ב)
+  SW-14 [switching-and-transfers.md] source: reg. 9(ד)
+  SW-15 [switching-and-transfers.md] source: -
+  SW-21 [switching-and-transfers.md] source: -
+  SW-22 [switching-and-transfers.md] source: reg. 4(8)
+  SW-23 [switching-and-transfers.md] source: regs. 2(א)(1), 3(א)(1)
+  SW-38 [switching-and-transfers.md] source: -
+  SW-39 [switching-and-transfers.md] source: -
+  TXH-19 [tax-hishtalmut.md] source: regs. 2(a)(4), 3(a)(4), 9(c)
+  TXK-04 [tax-gemel-lehashkaa-ira-child.md] source: reg. 3(א)(11א), 3(ב)(1)
+  TXK-10 [tax-gemel-lehashkaa-ira-child.md] source: reg. 2(א)(7), 2(ב)(2)
+
+## https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול) (15)
+  KGL-14 [kupat-gemel-lehashkaa.md] source: regulations 2(א)(1), 2(א)(2), 2(ב), 4, 5, 6
+  PEN-21 [pension-and-gemel-lekitzba.md] source: -
+  PEN-21 [pension-and-gemel-lekitzba.md] figure figures.comprehensive_balance_cap: Management Fees Regulations 2012, regulation 3 (Wikisource mirror); Mor comprehensive bylaws 01.06.2
+  PEN-21 [pension-and-gemel-lekitzba.md] figure figures.comprehensive_deposit_cap: Management Fees Regulations 2012, regulation 3 (Wikisource mirror)
+  PEN-21 [pension-and-gemel-lekitzba.md] figure figures.general_balance_cap: Management Fees Regulations 2012, regulation 3 (Wikisource mirror); Mor general bylaws 01.04.2026, s
+  PEN-21 [pension-and-gemel-lekitzba.md] figure figures.general_deposit_cap: Management Fees Regulations 2012, regulation 3 (Wikisource mirror)
+  PEN-21 [pension-and-gemel-lekitzba.md] figure figures.annuitant_balance_cap_from_2022: Management Fees Regulations 2012, regulation 3 (Wikisource mirror)
+  PEN-22 [pension-and-gemel-lekitzba.md] source: -
+  PEN-22 [pension-and-gemel-lekitzba.md] figure figures.balance_cap: Management Fees Regulations 2012, regulations 2, 4 (Wikisource mirror); Mor gemel standard bylaws 18
+  PEN-22 [pension-and-gemel-lekitzba.md] figure figures.deposit_cap: Management Fees Regulations 2012, regulation 2 (Wikisource mirror)
+  PF-02 [provident-family-common.md] source: reg. 2(א)(1), (2), (2א), 2(ב), 7, 10א
+  PF-03 [provident-family-common.md] source: reg. 2(ב)
+  PF-04 [provident-family-common.md] source: reg. 3(א)
+  PF-05 [provident-family-common.md] source: reg. 3(ב)
+  PF-06 [provident-family-common.md] source: reg. 4, 5
+
+## https://www.nevo.co.il/law_html/law01/500_217.htm (14)
+  IRA-05 [ira-self-directed.md] source: reg. 3
+  IRA-10 [ira-self-directed.md] source: -
+  IRA-13 [ira-self-directed.md] source: reg. 8
+  IRA-14 [ira-self-directed.md] source: reg. 5(ב)-(ג)
+  IRA-14 [ira-self-directed.md] figure figures.check_interval_months: IRA regulations, reg. 5(ב)-(ג) (Nevo mirror, summarising fetch)
+  IRA-14 [ira-self-directed.md] figure figures.breach_notice_business_days: IRA regulations, reg. 5(ב)-(ג) (Nevo mirror, summarising fetch)
+  IRA-14 [ira-self-directed.md] figure figures.breach_cure_business_days: IRA regulations, reg. 5(ב)-(ג) (Nevo mirror, summarising fetch)
+  IRA-15 [ira-self-directed.md] source: reg. 6
+  IRA-16 [ira-self-directed.md] source: reg. 7
+  IRA-18 [ira-self-directed.md] source: reg. 12
+  IRA-18 [ira-self-directed.md] figure figures.process_max_years: IRA regulations, reg. 12 (Nevo mirror, summarising fetch)
+  IRA-18 [ira-self-directed.md] figure figures.min_participants: IRA regulations, reg. 12 (Nevo mirror, summarising fetch)
+  IRA-18 [ira-self-directed.md] figure figures.related_party_commission_cap: IRA regulations, reg. 12 (Nevo mirror, summarising fetch)
+  IRA-23 [ira-self-directed.md] source: reg. 11(א)
+
+## https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(קרנות_מחקות) (13)
+  ETF-01 [etfs-and-index-funds.md] source: reg. 18(b)
+  ETF-04 [etfs-and-index-funds.md] source: regs. 4–9
+  ETF-05 [etfs-and-index-funds.md] source: regs. 6–8
+  ETF-05 [etfs-and-index-funds.md] figure figures.fee_israeli_bonds_or_equities: Joint Investment Trust (Tracking Funds) Regulations 2018 (Hebrew Wikisource mirror)
+  ETF-05 [etfs-and-index-funds.md] figure figures.fee_foreign_indices: Joint Investment Trust (Tracking Funds) Regulations 2018 (Hebrew Wikisource mirror)
+  ETF-05 [etfs-and-index-funds.md] figure figures.fee_other: Joint Investment Trust (Tracking Funds) Regulations 2018 (Hebrew Wikisource mirror)
+  ETF-14 [etfs-and-index-funds.md] source: regs. 1, 11, 12, 16
+  ETF-14 [etfs-and-index-funds.md] figure figures.variable_fee_cap_max: Joint Investment Trust (Tracking Funds) Regulations 2018 (Hebrew Wikisource mirror)
+  ETF-14 [etfs-and-index-funds.md] figure figures.variable_fee_cap_israeli_bonds_or_equities: Joint Investment Trust (Tracking Funds) Regulations 2018 (Hebrew Wikisource mirror)
+  ETF-14 [etfs-and-index-funds.md] figure figures.variable_fee_cap_other: Joint Investment Trust (Tracking Funds) Regulations 2018 (Hebrew Wikisource mirror)
+  ETF-14 [etfs-and-index-funds.md] figure figures.variable_fee_cap_foreign_indices: Joint Investment Trust (Tracking Funds) Regulations 2018 (Hebrew Wikisource mirror)
+  ETF-21 [etfs-and-index-funds.md] source: reg. 15
+  ETF-21 [etfs-and-index-funds.md] figure figures.liquidation_notice_days: Joint Investment Trust (Tracking Funds) Regulations 2018 (Hebrew Wikisource mirror)
+
+## https://www.nevo.co.il/law_html/law01/999_564.htm (10)
+  GOV-10 [government-bonds-and-makam.md] source: s. 4
+  GOV-11 [government-bonds-and-makam.md] source: ss. 1 to 6, 8, 9
+  GOV-11 [government-bonds-and-makam.md] figure figures.linkage: תקנות מילווה המדינה (איגרות חוב מסוג "אג"ח ממשלתית צמודה"), תשס"ו-2006 (Nevo mirror)
+  GOV-11 [government-bonds-and-makam.md] figure figures.coupon_every_months: תקנות מילווה המדינה (איגרות חוב מסוג "אג"ח ממשלתית צמודה"), תשס"ו-2006 (Nevo mirror)
+  GOV-11 [government-bonds-and-makam.md] figure figures.face_value: תקנות מילווה המדינה (איגרות חוב מסוג "אג"ח ממשלתית צמודה"), תשס"ו-2006 (Nevo mirror)
+  GOV-11 [government-bonds-and-makam.md] figure figures.term_min_months: תקנות מילווה המדינה (איגרות חוב מסוג "אג"ח ממשלתית צמודה"), תשס"ו-2006 (Nevo mirror)
+  GOV-12 [government-bonds-and-makam.md] source: s. 8
+  GOV-12 [government-bonds-and-makam.md] figure figures.linkage_floor: תקנות מילווה המדינה (איגרות חוב מסוג "אג"ח ממשלתית צמודה"), תשס"ו-2006 (Nevo mirror)
+  GOV-16 [government-bonds-and-makam.md] source: s. 7
+  TXI-14 [tax-interest-deposits-bonds.md] source: ss.1, 5, 8
+
+## https://he.wikisource.org/wiki/חוק_גיל_פרישה (10)
+  KGL-09 [kupat-gemel-lehashkaa.md] source: section 5
+  KH-12 [keren-hishtalmut.md] source: ss.3, 4
+  KH-12 [keren-hishtalmut.md] figure figures.retirement_age_men: Retirement Age Law 2004, s.3: "גיל 67 לגבר וגיל 65 לאישה (בחוק זה – גיל הפרישה)" (Wikisource, page e
+  KH-12 [keren-hishtalmut.md] figure figures.retirement_age_women: Retirement Age Law 2004, s.3 and schedule (Wikisource, page edited 13.5.2025)
+  PEN-26 [pension-and-gemel-lekitzba.md] source: sections 3-6, 9
+  PEN-26 [pension-and-gemel-lekitzba.md] figure figures.early_retirement_age: Retirement Age Law 2004, sections 3-6, 9 and schedule (Wikisource mirror); Mor comprehensive bylaws 
+  PEN-26 [pension-and-gemel-lekitzba.md] figure figures.retirement_age_men: Retirement Age Law 2004, section 3 (Wikisource mirror)
+  PEN-26 [pension-and-gemel-lekitzba.md] figure figures.retirement_age_women: Retirement Age Law 2004, section 3 and schedule (Wikisource mirror)
+  SW-21 [switching-and-transfers.md] source: -
+  TXK-10 [tax-gemel-lehashkaa-ira-child.md] source: s.5
+
+## https://www.nevo.co.il/law_html/law01/999_929.htm (7)
+  KH-17 [keren-hishtalmut.md] source: regs. 2(א)(4), 3(א)(4), 3(א)(12), 5(א), 9(ג)
+  PF-17 [provident-family-common.md] source: -
+  PF-18 [provident-family-common.md] source: -
+  PF-19 [provident-family-common.md] source: reg. 5(א)
+  SW-15 [switching-and-transfers.md] source: -
+  SW-39 [switching-and-transfers.md] source: reg. 3(ב)(1), 9(א) to 9(ג)
+  SW-40 [switching-and-transfers.md] source: reg. 2(א)(1), 2(ב), 2(ד)
+
+## https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2017915.pdf (7)
+  PF-16 [provident-family-common.md] source: s. 3א, 4
+  PF-16 [provident-family-common.md] figure figures.increase_notice_months: CMA circular 2017-9-15 (fee-change notice and discount display), s. 4(א)
+  PF-16 [provident-family-common.md] figure figures.increase_notice_max_lead_months: CMA circular 2017-9-15 (fee-change notice and discount display), s. 4(א)
+  PF-16 [provident-family-common.md] figure figures.increase_sms_days_before: CMA circular 2017-9-15 (fee-change notice and discount display), s. 4(ג), (ד), appendix B
+  PF-16 [provident-family-common.md] figure figures.discount_email_business_days: CMA circular 2017-9-15 (fee-change notice and discount display), s. 3א
+  SW-15 [switching-and-transfers.md] source: -
+  SW-38 [switching-and-transfers.md] source: -
+
+## https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מתמורה,_מתשלום_או_מרווח_הון_במכירת_נייר_ערך,_במכירת_יחידה_בקרן_נאמנות_או_בעסקה_עתידית) (7)
+  TXF-05 [tax-securities-foreign.md] source: reg. 1(a), 2(a), 9(a)
+  TXI-12 [tax-interest-deposits-bonds.md] source: reg. 2(b)
+  TXS-05 [tax-securities-israeli.md] source: reg.1
+  TXS-09 [tax-securities-israeli.md] source: reg.3A
+  TXS-12 [tax-securities-israeli.md] source: reg.2(b), reg.3A
+  TXS-19 [tax-securities-israeli.md] source: reg.9(a), (b), (d), reg.10
+  TXS-22 [tax-securities-israeli.md] source: -
+
+## https://he.wikisource.org/wiki/חוק_הביטוח_הלאומי (6)
+  CS-12 [child-savings.md] figure figures.bank_to_provident_moves: National Insurance Law s.74ב(א)(2א) (Wikisource mirror): "בחירה כאמור תיעשה פעם אחת בלבד; סכום שנצבר
+  TXG-27 [tax-general.md] source: s.350(a)(6) או (ג) לפקודת מס הכנסה
+  TXG-28 [tax-general.md] source: s.345(a)
+  TXK-19 [tax-gemel-lehashkaa-ira-child.md] source: PDF pp.19-21, ss.73, 74B, 74C, 74E
+  TXK-22 [tax-gemel-lehashkaa-ira-child.md] source: pp.20-21, s.74B(a)(2a), (d)(1a)
+  TXK-23 [tax-gemel-lehashkaa-ira-child.md] source: -
+
+## https://www.nevo.co.il/law_html/law01/999_782.htm (6)
+  GOV-15 [government-bonds-and-makam.md] source: ss. 1 to 8
+  GOV-15 [government-bonds-and-makam.md] figure figures.linkage: תקנות מילווה המדינה (אגרות חוב מסוג "אג"ח ממשלתית קצרה"), תשס"ז-2007 (Nevo mirror)
+  GOV-15 [government-bonds-and-makam.md] figure figures.pays_interest: תקנות מילווה המדינה (אגרות חוב מסוג "אג"ח ממשלתית קצרה"), תשס"ז-2007 (Nevo mirror)
+  GOV-15 [government-bonds-and-makam.md] figure figures.face_value: תקנות מילווה המדינה (אגרות חוב מסוג "אג"ח ממשלתית קצרה"), תשס"ז-2007 (Nevo mirror)
+  GOV-15 [government-bonds-and-makam.md] figure figures.term_max_months: תקנות מילווה המדינה (אגרות חוב מסוג "אג"ח ממשלתית קצרה"), תשס"ז-2007 (Nevo mirror)
+  GOV-16 [government-bonds-and-makam.md] source: s. 7
+
+## https://www.nevo.co.il/law_html/law01/500_714.htm (6)
+  KH-22 [keren-hishtalmut.md] source: regs. 2(ב), 4, 6, 8, 10, 12 (ק"ת 7131, 21.6.2012)
+  KH-22 [keren-hishtalmut.md] figure figures.balance_cap: Provident Funds (Management Fees) Regulations 2012, regs. 2(ב), 4, 6, 8, 10, 12 (ק"ת 7131, 21.6.2012
+  PF-02 [provident-family-common.md] source: -
+  PF-04 [provident-family-common.md] source: -
+  PF-05 [provident-family-common.md] source: -
+  PF-06 [provident-family-common.md] source: -
+
+## https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2020922.pdf (6)
+  PF-33 [provident-family-common.md] source: pp. 2 to 5 (s. 1 to 10), p. 35
+  PF-34 [provident-family-common.md] source: pp. 32 to 42
+  PF-35 [provident-family-common.md] source: pp. 37 to 39, pp. 149 to 150
+  PF-36 [provident-family-common.md] source: pp. 92 to 114
+  PF-37 [provident-family-common.md] source: pp. 149 to 151
+  PF-38 [provident-family-common.md] source: pp. 44 to 45, 116 to 121
+
+## https://cdn.funder.co.il/פעילות קרנות נאמנות בישראל 2025_YJoJL5D9H.pdf (5)
+  ETF-10 [etfs-and-index-funds.md] source: p.20
+  ETF-17 [etfs-and-index-funds.md] source: p.13–14
+  ETF-18 [etfs-and-index-funds.md] source: p.3, p.9
+  ETF-26 [etfs-and-index-funds.md] source: p.3
+  MF-18 [mutual-funds-and-money-market-funds.md] source: p. 13
+
+## https://www.nevo.co.il/law_html/law01/221_031.htm (5)
+  GOV-14 [government-bonds-and-makam.md] source: definitions, regs. 4, 5, 7, 9, 9א
+  GOV-14 [government-bonds-and-makam.md] figure figures.coupon_every_months: תקנות מילווה המדינה (סדרות מסוג "גילון חדש"), תשנ"ט-1999 (Nevo mirror)
+  GOV-14 [government-bonds-and-makam.md] figure figures.margin_cap: תקנות מילווה המדינה (סדרות מסוג "גילון חדש"), תשנ"ט-1999 (Nevo mirror)
+  GOV-14 [government-bonds-and-makam.md] figure figures.coupon_floor: תקנות מילווה המדינה (סדרות מסוג "גילון חדש"), תשנ"ט-1999 (Nevo mirror)
+  GOV-16 [government-bonds-and-makam.md] source: reg. 9א
+
+## https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(ביטוח)_(תנאים_בחוזי_ביטוח) (5)
+  INS-25 [savings-policies-and-executive-insurance.md] source: reg. 1, 6א
+  INS-25 [savings-policies-and-executive-insurance.md] figure figures.balance_fee_cap: Insurance Contract Terms Regulations 1981, reg. 6A(a): 1/12% a month or 1/365% a day of the revalued
+  INS-25 [savings-policies-and-executive-insurance.md] figure figures.balance_fee_cap_with_approval: Insurance Contract Terms Regulations 1981, reg. 6A(a1): up to 2/12% a month or 2/365% a day with the
+  INS-26 [savings-policies-and-executive-insurance.md] source: reg. 6ב
+  INS-26 [savings-policies-and-executive-insurance.md] figure figures.report_deadline_months: Insurance Contract Terms Regulations 1981, reg. 6B(a)
+
+## https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(עמלת_הפצה) (5)
+  MF-24 [mutual-funds-and-money-market-funds.md] source: regulations 1-4
+  MF-24 [mutual-funds-and-money-market-funds.md] figure figures.distribution_fee_cap_money_market: תקנות השקעות משותפות בנאמנות (עמלת הפצה), התשס"ו-2006, regulation 3 (type 4 fund: 0.1%/365 a day) (W
+  MF-24 [mutual-funds-and-money-market-funds.md] figure figures.distribution_fee_cap_type1: Distribution fee regulations, regulation 3 (type 1 fund)
+  MF-24 [mutual-funds-and-money-market-funds.md] figure figures.distribution_fee_cap_type3: Distribution fee regulations, regulation 3 (type 3 fund)
+  MF-26 [mutual-funds-and-money-market-funds.md] source: regulation 2
+
+## https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לאישור_ולניהול_קופות_גמל) (5)
+  PF-23 [provident-family-common.md] source: reg. 1, 33ב
+  TXH-17 [tax-hishtalmut.md] source: -
+  TXP-10 [tax-pension-gemel-lekitzba.md] source: reg. 19
+  TXP-11 [tax-pension-gemel-lekitzba.md] source: reg. 19
+  TXP-24 [tax-pension-gemel-lekitzba.md] source: reg. 34
+
+## https://he.wikisource.org/wiki/צו_מס_הכנסה_(פטור_ממס_על_הכנסה_מריבית_על_פיקדון_במטבע_חוץ) (5)
+  TX2-19 [tax-tier2-other.md] source: -
+  TX2-19 [tax-tier2-other.md] figure figures.olim_exemption_years: Income Tax (Exemption from Tax on Interest Income on a Foreign-Currency Deposit) Order 2002, s.2(3)
+  TX2-19 [tax-tier2-other.md] figure figures.deposit_within_days: Both orders, s.2(2)
+  TX2-19 [tax-tier2-other.md] figure figures.declaration_within_days: Olim order s.2(4) (form 2402); returning-resident order s.2(4) (form 2409)
+  TX2-19 [tax-tier2-other.md] figure figures.olim_minimum_term_months: Olim order s.1, definition of a foreign-currency deposit
+
+## https://www.nevo.co.il/law_html/law01/255_001.htm (5)
+  TXK-01 [tax-gemel-lehashkaa-ira-child.md] source: s.9A(a)(4)
+  TXK-05 [tax-gemel-lehashkaa-ira-child.md] source: s.3(ה4)(3)
+  TXK-09 [tax-gemel-lehashkaa-ira-child.md] source: -
+  TXK-17 [tax-gemel-lehashkaa-ira-child.md] source: -
+  TXK-23 [tax-gemel-lehashkaa-ira-child.md] source: -
+
+## https://www.nevo.co.il/law_html/law00/70349.htm (4)
+  BRK-01 [brokerage-account.md] source: s.49A
+  BRK-06 [brokerage-account.md] source: s.49A
+  BRK-15 [brokerage-account.md] source: ss.45טז, 45יז
+  SW-37 [switching-and-transfers.md] source: -
+
+## https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(ייעוץ,_שיווק_ומערכת_סליקה_פנסיוניים) (4)
+  PF-22 [provident-family-common.md] source: s. 1, 31ט, 31יא, 31יד
+  SW-17 [switching-and-transfers.md] source: ss.13, 19(א)(1), 27(ב)(7), 28(ב)
+  SW-18 [switching-and-transfers.md] source: ss.31ט(א)(1), 31ט(ג), 31טז(ד)(1), 32(ח)(1)
+  SW-19 [switching-and-transfers.md] source: -
+
+## https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מריבית,_מדיבידנד_ומרווחים_מסוימים) (4)
+  TXF-10 [tax-securities-foreign.md] source: reg. 2(d)
+  TXS-10 [tax-securities-israeli.md] source: reg.10(b)
+  TXS-16 [tax-securities-israeli.md] source: reg.2(a)(1), (2)
+  TXS-22 [tax-securities-israeli.md] source: -
+
+## https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(הצעת_יחידות_של_קרן_חוץ) (3)
+  ETF-23 [etfs-and-index-funds.md] source: reg. 2, Schedules 1–2
+  ETF-24 [etfs-and-index-funds.md] source: regs. 4, 8, 12, 13
+  ETF-31 [etfs-and-index-funds.md] source: reg. 2
+
+## https://www.nevo.co.il/law_html/law00/70391.htm (3)
+  IRA-01 [ira-self-directed.md] source: s.1 definition, s.57
+  KH-01 [keren-hishtalmut.md] source: s.1
+  KH-07 [keren-hishtalmut.md] source: s.22
+
+## https://adif-web-bucket.s3-eu-west-1.amazonaws.com/דוח הממונה על שוק ההון לשנת 2024.pdf (3)
+  PEN-06 [pension-and-gemel-lekitzba.md] source: p. 10
+  PEN-19 [pension-and-gemel-lekitzba.md] source: table ד-13, p. 57
+  PEN-23 [pension-and-gemel-lekitzba.md] source: p. 10
+
+## https://he.wikisource.org/wiki/חוק_ההתייעלות_הכלכלית_(תיקוני_חקיקה_להשגת_יעדי_התקציב_לשנות_התקציב_2017_ו-2018) (3)
+  PEN-07 [pension-and-gemel-lekitzba.md] source: sections 2-11, 18
+  PEN-07 [pension-and-gemel-lekitzba.md] figure figures.rate_up_to_half_average_wage: חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2017 ו-2018), chapter ב', section
+  PEN-07 [pension-and-gemel-lekitzba.md] figure figures.rate_half_to_full_average_wage: חוק ההתייעלות הכלכלית 2017-2018, chapter ב', section 3 (Wikisource mirror)
+
+## https://he.wikisource.org/wiki/פקודת_הבנקאות (3)
+  REG-01 [regulators-and-protection.md] source: s.5(א)
+  REG-06 [regulators-and-protection.md] source: ss.8ד(א), 8ו(ה), 8יא(א) to (ז), 8יב
+  REG-06 [regulators-and-protection.md] figure figures.guarantee_cancel_notice_days: פקודת הבנקאות, ss.8ד, 8ו, 8יא, 8יב (Wikisource mirror)
+
+## https://he.wikisource.org/wiki/חוק_ניירות_ערך (3)
+  REG-07 [regulators-and-protection.md] source: ss.2, 3(א), 14
+  REG-13 [regulators-and-protection.md] source: ss.44לא, 45, 45א, 46, 48, 51
+  REG-15 [regulators-and-protection.md] source: ss.44לא, 50א, 50א3, 50א4, 50ג
+
+## https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מסכומים_ששולמו_מקרן_השתלמות) (3)
+  TXH-11 [tax-hishtalmut.md] source: reg. 2(b)
+  TXH-15 [tax-hishtalmut.md] source: regs. 1, 2(a), 2(b)
+  TXH-15 [tax-hishtalmut.md] figure figures.withholding_taxable_interest: Income Tax Regulations (withholding from amounts paid from a study fund) 1997, reg. 2(b): 25% on "סכ
+
+## https://he.wikisource.org/wiki/תקנות_הביטוח_הלאומי_(חיסכון_ארוך_טווח_לילד) (3)
+  TXK-20 [tax-gemel-lehashkaa-ira-child.md] source: -
+  TXK-22 [tax-gemel-lehashkaa-ira-child.md] source: reg. 7, 11
+  TXK-23 [tax-gemel-lehashkaa-ira-child.md] source: -
+
+## https://www.nevo.co.il/law_html/law00/72417.htm (2)
+  GOV-01 [government-bonds-and-makam.md] source: ss. 1(א), 4, 5, 6, 10; page
+  GOV-02 [government-bonds-and-makam.md] source: s. 3
+
+## https://www.nevo.co.il/law_html/law01/221_001.htm (2)
+  GOV-02 [government-bonds-and-makam.md] source: s. 2
+  GOV-10 [government-bonds-and-makam.md] source: ss. 4(3), 6א(א), 6א(ד)(1), 6א(ז)
+
+## https://www.nevo.co.il/law_html/law01/255_001b.htm (2)
+  KH-01 [keren-hishtalmut.md] source: `כהגדרתן בחוק הפיקוח על קופות גמל`)
+  TXI-16 [tax-interest-deposits-bonds.md] source: -
+
+## https://www.nevo.co.il/law_html/law01/255_226.htm (2)
+  KH-14 [keren-hishtalmut.md] source: -
+  SW-38 [switching-and-transfers.md] source: -
+
+## https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(הוצאות_ישירות_בשל_ביצוע_עסקאות) (2)
+  PF-10 [provident-family-common.md] source: reg. 1, 2
+  PF-12 [provident-family-common.md] source: reg. 3ב
+
+## https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(ביטוח) (2)
+  REG-17 [regulators-and-protection.md] source: ss.1א, 2
+  REG-19 [regulators-and-protection.md] source: ss.68(א), 70(א)
+
+## https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf (2)
+  SW-15 [switching-and-transfers.md] source: -
+  SW-21 [switching-and-transfers.md] source: -
+
+## https://he.wikisource.org/wiki/צו_מס_ערך_מוסף_(שיעור_המס_על_עסקה_ועל_יבוא_טובין) (2)
+  TX2-17 [tax-tier2-other.md] source: s.1
+  TX2-17 [tax-tier2-other.md] figure figures.vat_rate: VAT (Rate of Tax on a Transaction and on Import of Goods) Order 2005, s.1, as amended (ק"ת תשפ"ד 184
+
+## https://he.wikisource.org/wiki/צו_מס_ערך_מוסף_(קביעת_מוסד_כספי) (2)
+  TX2-17 [tax-tier2-other.md] source: s.1
+  TX2-17 [tax-tier2-other.md] figure figures.financial_institution_turnover_test: VAT (Determination of Financial Institution) Order 1977, s.1(a)(1), (2)
+
+## https://he.wikisource.org/wiki/צו_מס_הכנסה_(פטור_ממס_לתושב_חוזר_על_הכנסה_מריבית_על_פיקדון_במטבע_חוץ) (2)
+  TX2-19 [tax-tier2-other.md] source: -
+  TX2-19 [tax-tier2-other.md] figure figures.returning_resident_exemption_years: Income Tax (Exemption for a Returning Resident on Interest Income on a Foreign-Currency Deposit) Ord
+
+## https://he.wikisource.org/wiki/צו_מס_הכנסה_(קביעת_סכומים_ששולמו_מקרן_השתלמות_כהכנסה) (2)
+  TXH-13 [tax-hishtalmut.md] source: s.1
+  TXH-15 [tax-hishtalmut.md] source: s.1-2
+
+## https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(ביטוח)_(דרכי_השקעת_ההון_והקרנות_של_מבטח_וניהול_התחייבויותיו) (1)
+  INS-25 [savings-policies-and-executive-insurance.md] source: reg. 1
+
+## https://he.wikisource.org/wiki/תקנות_הפיקוח_על_עסקי_ביטוח_(פרטי_דין_וחשבון) (1)
+  INS-25 [savings-policies-and-executive-insurance.md] source: reg. 1
+
+## https://www.capitax.co.il/Attachments/03072024.pdf (1)
+  MF-07 [mutual-funds-and-money-market-funds.md] source: sections 1(3), 15, 20(א)
+
+## https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(נכסים_שמותר_לקנות_ולהחזיק_בקרן_ושיעוריהם_המרביים) (1)
+  MF-30 [mutual-funds-and-money-market-funds.md] source: regulation 2א(ד), (ו)
+
+## https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(סיווג_קרנות_לצורך_פרסום) (1)
+  MF-45 [mutual-funds-and-money-market-funds.md] source: regulations 2, 4
+
+## https://he.wikisource.org/wiki/חוק_הגנת_השכר (1)
+  PEN-36 [pension-and-gemel-lekitzba.md] source: section 24 and תוספת items 5(6), 6(4), 7
+
+## https://www.fnx.co.il/gemel/gemelhashkaa/faq/ (1)
+  SW-15 [switching-and-transfers.md] source: -
+
+## https://infinity.co.il/wp-content/uploads/2025/07/תקנון-גמל-להשקעה-בתוקף-מיום-1.7.2024.pdf (1)
+  SW-15 [switching-and-transfers.md] source: -
+
+## https://www.harel-group.co.il/long-term-savings/funding-saving/join/doclib/גמל להשקעה.pdf (1)
+  SW-21 [switching-and-transfers.md] source: -
+
+## https://www.ice.co.il/consumerism/news/article/1005636 (1)
+  SW-21 [switching-and-transfers.md] source: -
+
+## https://www.meitav.co.il/media/0qulk3pk/תקנות-ira-חדשות-יוני-2017.pdf (1)
+  SW-24 [switching-and-transfers.md] source: reg. 7 (new reg. 11(ב)), p.5
+
+## https://www.fnx.co.il/ishtalmutfund/faq/ (1)
+  SW-38 [switching-and-transfers.md] source: -
+
+## https://he.wikisource.org/wiki/כללי_מס_הכנסה_(פטור_ממס_בשל_העברה_ושינוי_יעוד_של_כספים_בקופות_גמל) (1)
+  SW-40 [switching-and-transfers.md] source: s. 1, 2
+
+## https://he.wikisource.org/wiki/חוק_מס_ערך_מוסף (1)
+  TX2-17 [tax-tier2-other.md] source: ss.1, 2, 4(ב)
+
+## https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(קביעת_הפרשי_הצמדה_חלקיים) (1)
+  TX2-18 [tax-tier2-other.md] source: reg. 1
+
+## https://www.nevo.co.il/law_html/law01/999_549.htm (1)
+  TXG-15 [tax-general.md] source: -
+
+## https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(פטור_מהגשת_דין_וחשבון) (1)
+  TXG-17 [tax-general.md] source: regs. 2, 3(a), 6A
+
+## https://www.capitax.co.il/Attachments/07072024.pdf (1)
+  TXH-13 [tax-hishtalmut.md] source: p.2
+
+## https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לתנאים_שבהם_חשבונות_שונים_בקרן_השתלמות_ייחשבו_לחשבון_אחד) (1)
+  TXH-19 [tax-hishtalmut.md] source: regs. 1-3
+
+## https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(חישוב_רווח_הון_במכירת_נייר_ערך_הנסחר_בבורסה,_מילווה_המדינה_או_יחידה_בקרן_נאמנות) (1)
+  TXS-06 [tax-securities-israeli.md] source: reg.1
+
+## https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(חישוב_סכום_אינפלציוני_במכירת_יחידה_בקרן_נאמנות) (1)
+  TXS-14 [tax-securities-israeli.md] source: definitions and reg.2

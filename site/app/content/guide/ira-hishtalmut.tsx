@@ -3,7 +3,7 @@
 // rests on. NEW copy for the founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
 import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
-import { Callout } from "../../components/ui";
+import { Callout, Sentence } from "../../components/kit";
 
 export const content: GuideContent = {
   what: ({ figure }) => {
@@ -14,9 +14,9 @@ export const content: GuideContent = {
         <p className="max-w-measure">
           <Term id="קופת גמל בניהול אישי">קרן השתלמות בניהול אישי</Term>: קרן השתלמות שבה אתם, <Term prefix="ב" id="ניהול עצמי">ניהול עצמי</Term> או דרך <Term id="מנהל תיקים">מנהל תיקים</Term> שבחרתם, מחליטים במה להשקיע. מותר להחזיק ניירות ערך סחירים, קרנות, פיקדונות ומטבע חוץ, בישראל ובמדינות מאושרות, בלי ועדת השקעות של החברה.
         </p>
-        <p className="max-w-measure">
+        <Sentence measure>
           כללי המס והנזילות הם של קרן השתלמות רגילה: אחרי {years ? <Num value={years} /> : null} שנים מהתשלום הראשון מושכים בפטור ממס על הרווחים מההפקדות המוטבות, ואחרי {short ? <Num value={short} /> : null} שנים בגיל פרישה או לצורך השתלמות. <Term prefix="ה" id="ותק">ותק</Term> של קרן שמעבירים נשמר. בתוך הקופה קונים ומוכרים בלי מס.
-        </p>
+        </Sentence>
         <RulesLine ids={["IRA-01", "IRA-05", "IRA-11", "TXH-09", "TXH-10", "IRA-23", "TXK-17"]} />
       </>
     );
@@ -44,7 +44,7 @@ export const content: GuideContent = {
     const issuer = figure("IRA-12", "single_issuer_cap");
     return (
       <>
-        <p className="max-w-measure">הסיכון כולו שלכם: אין ועדת השקעות, והרגולטור עצמו כותב שהגמישות חושפת לסיכוני השקעה גדולים יותר. התקנות מגבילות ריכוז (עד {issuer ? <Num value={issuer} /> : null} מהקופה בתאגיד אחד) ואוסרות אשראי ומינוף; חריגה שלא תוקנה חוסמת את החשבון.</p>
+        <Sentence measure>הסיכון כולו שלכם: אין ועדת השקעות, והרגולטור עצמו כותב שהגמישות חושפת לסיכוני השקעה גדולים יותר. התקנות מגבילות ריכוז (עד {issuer ? <Num value={issuer} /> : null} מהקופה בתאגיד אחד) ואוסרות אשראי ומינוף; חריגה שלא תוקנה חוסמת את החשבון.</Sentence>
         <p className="max-w-measure">נכסי הקופה מוחזקים בנאמנות, בנפרד מרכוש החברה המנהלת, ואם היא קורסת הניהול עובר לחברה אחרת. מה קורה לניירות אם החברה או הברוקר קורסים לא נמצא במקור, ושני גופים שניהלו קופות אישיות כשלו בשנים האחרונות. מס זר שנוכה על דיבידנדים בתוך הקופה הוא עלות.</p>
         <RulesLine ids={["IRA-26", "IRA-12", "IRA-13", "IRA-14", "REG-18", "REG-19", "IRA-28", "TXK-18"]} />
       </>

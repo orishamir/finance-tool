@@ -2,12 +2,13 @@
 // each with the rules that rest on it, then the data records the site read, each pointing at the page that uses it.
 import { Link, useLoaderData } from "react-router";
 import { documents as copy, site } from "../copy";
-import { IconChevronDown, IconExternal } from "../components/icons";
+import { IconExternal } from "../components/icons";
 import { Num, NumberLegend, StrengthLabel } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { Card, cx, Disclosure } from "../components/ui";
+import { Card, cx, Disclosure, Sentence } from "../components/kit";
 import { fmt } from "../lib/format";
 import type { DocumentCard, SectionId } from "../lib/documents.server";
+import { isPdfUrl } from "../lib/sources";
 
 /** The five sections in order (duplicated from the server module, which the client bundle must not import). */
 const sectionOrder: readonly SectionId[] = ["laws", "regulators", "exchange", "institutions", "secondary"] as const;
@@ -24,7 +25,6 @@ export function meta() {
   return [{ title: `${copy.title} · ${site.name}` }];
 }
 
-const isPdf = (url: string) => /\.pdf(?:$|[?#])/i.test(url);
 const firstRules = 6;
 
 function Latin({ text, english }: { text: string; english: boolean }) {
@@ -53,7 +53,7 @@ function DocCard({ doc }: { doc: DocumentCard }) {
       <p className="flex flex-wrap items-center gap-x-3 gap-y-1">
         <a href={doc.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-primary underline underline-offset-4 min-h-target">
           {copy.open}
-          {isPdf(doc.url) && <span className="text-xs font-medium rounded-sm bg-muted text-foreground px-1.5">PDF</span>}
+          {isPdfUrl(doc.url) && <span className="text-xs font-medium rounded-sm bg-muted text-foreground px-1.5">PDF</span>}
           <IconExternal size={16} className="shrink-0" />
         </a>
         {doc.strength !== "primary" && <StrengthLabel strength={doc.strength} />}
@@ -81,13 +81,9 @@ function DocCard({ doc }: { doc: DocumentCard }) {
 /** A collapsible group like the rules page; the first starts open, a closed one paints nothing. */
 function Group({ id, title, open, children }: { id: string; title: string; open?: boolean; children: React.ReactNode }) {
   return (
-    <details id={id} open={open} className="group scroll-mt-[112px] lg:scroll-mt-[88px] flex flex-col">
-      <summary className="min-h-12 flex items-center justify-between gap-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden rounded-md">
-        <h2 className="text-xl lg:text-2xl font-semibold">{title}</h2>
-        <IconChevronDown className="text-muted-foreground shrink-0 transition-transform duration-[var(--duration-fast)] group-open:rotate-180" />
-      </summary>
+    <Disclosure id={id} defaultOpen={open} className="scroll-mt-[112px] lg:scroll-mt-[88px] flex flex-col" spread size="field" as="h2" labelClassName="text-xl lg:text-2xl font-semibold" label={title}>
       {children}
-    </details>
+    </Disclosure>
   );
 }
 
@@ -204,13 +200,13 @@ export default function Documents() {
           <Group id="data-series" title={d.series}>
             <ul className="grid gap-4 lg:grid-cols-2 pt-2">
               {data.series.map((s) => (
-                <Card as="li" key={s.key} className="flex flex-col gap-1 min-w-0">
+                <Card as="li" key={s.key} className="flex flex-col gap-1 min-w-0 [overflow-wrap:anywhere]">
                   <h3 className="text-lg font-semibold"><bdi>{s.title}</bdi></h3>
                   {s.valueDate && (
-                    <p className="text-sm text-muted-foreground">
+                    <Sentence size="sm" tone="muted">
                       {s.value ? <>{d.latest}: <Num value={s.value} /> </> : <>{copy.checked} </>}
                       <bdi dir="ltr" className="tabular-nums">{s.value ? `(${fmt.date(s.valueDate)})` : fmt.date(s.valueDate)}</bdi>
-                    </p>
+                    </Sentence>
                   )}
                   {s.attribution && <p className={cx("text-xs text-muted-foreground")}><bdi>{s.attribution}</bdi></p>}
                 </Card>

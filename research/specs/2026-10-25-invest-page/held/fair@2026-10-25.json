@@ -1,0 +1,359 @@
+{
+  "id": "fair",
+  "provider": {
+    "name_he": "פייר פיננשיאל טכנולוג’יז בע”מ (fair)",
+    "class": "broker",
+    "regulator": "ISA",
+    "tase_member": true,
+    "protection_rule_ids": [
+      "BRK-07",
+      "BRK-08",
+      "BRK-09",
+      "BRK-12",
+      "BRK-13",
+      "REG-16"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.fair.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f/",
+    "title": "תעריפון (עמוד HTML באתר fair.co.il): 'להלן פירוט העמלות שיחולו על הלקוח'; עמלות בגין עסקה בקרן נאמנות פתוחה, עמלות קניה ומכירה בגין קרנות מחקות, עמלות כלליות; 'מועד עדכון אחרון של התעריפון: 03/06/2026'. דמי משמרת והמרת מט\"ח: שאלות ותשובות בדף הבית ובעמוד 'אודות'",
+    "published": "2026-06-03",
+    "format": "html"
+  },
+  "snapshot": "2026-10-25",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "fair-buy-sell-open-fund",
+      "base": "trade",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.fair.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f/",
+          "title": "תעריפון fair (עמוד HTML, 'מועד עדכון אחרון של התעריפון: 03/06/2026'), 'עמלות בגין עסקה בקרן נאמנות פתוחה'",
+          "publisher": "Fair Financial Technologies Ltd. (פייר פיננשיאל טכנולוג'יז בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": "2026-06-03",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15",
+          "BRK-03"
+        ],
+        "state": "sourced",
+        "notes": "Printed: 'עמלה שתגבה החברה בגין ביצוע עסקה בקרן נאמנות פתוחה תהיה עמלה קבועה על סך 0 ₪ לכל עסקה כאמור.' The printed unit is shekels per trade; the value is zero, which is the same in pct_of_trade, and it is stored in pct_of_trade because the engine reads a trade rate only in pct_of_trade or usd_per_share (no conversion of a non-zero figure was made). Banded: Fair prices tracking funds (קרנות מחקות, which are also open-end mutual funds and the site's class mutual_fund_units) on a separate line at 0.08%, and the engine has no class that tells a tracking fund from another mutual fund. With both lines banded and neither standard, a mutual fund at Fair is 'not comparable' (two lines, named) unless the run names the band: 'קרנות מחקות' for a tracking fund, 'קרן נאמנות פתוחה' for any other open fund. Money-market funds are not named on the tariff, so money_market_units is not listed. Provider fields: Fair's about page says 'חברת פייר היא חברת טכנולוגיה פיננסית ישראלית בעלת רישיון חבר בורסה, המפוקחת על ידי הבורסה לניירות ערך בתל אביב ורשות לניירות ערך'; its home page names TASE alone ('אנחנו בעלי רישיון לחברות בבורסה בתל אביב ובהתאם נמצאים תחת פיקוח שוטף של הבורסה'). The schema's regulator list has no TASE value, so regulator is ISA on the about page's words; TASE's own records list Fair as a custodial member of its clearing house only ('Custodial Member only', BRK-03). No ISA register naming Fair was read."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "קרן נאמנות פתוחה",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלות בגין עסקה בקרן נאמנות פתוחה",
+          "קרן נאמנות פתוחה"
+        ]
+      }
+    },
+    {
+      "id": "fair-buy-sell-tracking-fund",
+      "base": "trade",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.08,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.fair.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f/",
+          "title": "תעריפון fair (עמוד HTML, 'מועד עדכון אחרון של התעריפון: 03/06/2026'), 'עמלות קניה ומכירה בגין קרנות מחקות'",
+          "publisher": "Fair Financial Technologies Ltd. (פייר פיננשיאל טכנולוג'יז בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": "2026-06-03",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15",
+          "BRK-03"
+        ],
+        "state": "sourced",
+        "notes": "Printed: 'ישנן קרנות מסוימות, המכונות קרנות מחקות, אשר מסומנות ככאלו באפליקציה ובאתר. כאשר תבקשו לקנות ולמכור קרן כזו, יחולו עליכם עמלת קניה ועמלת מכירה בשיעור של 0.08% (מינ׳ 3 שקלים) מתוך העסקה.' Doubt: the same paragraph ends 'לפני הקניה של קרן כזו תתבקשו להסכים לגביית העמלה של הקרן המבוקשת', which may mean the fee is shown per fund before purchase; the tariff prints only the one rate. Banded 'קרנות מחקות' so that the run asks for it for a tracking fund (see fair-buy-sell-open-fund)."
+      },
+      "min": {
+        "value": 3,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.fair.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f/",
+          "title": "תעריפון fair (עמוד HTML, 'מועד עדכון אחרון של התעריפון: 03/06/2026'), 'עמלות קניה ומכירה בגין קרנות מחקות', מינימום",
+          "publisher": "Fair Financial Technologies Ltd. (פייר פיננשיאל טכנולוג'יז בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": "2026-06-03",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15",
+          "BRK-03"
+        ],
+        "state": "sourced",
+        "notes": "'(מינ׳ 3 שקלים)'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "קרנות מחקות",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלות קניה ומכירה בגין קרנות מחקות",
+          "קרנות מחקות"
+        ]
+      }
+    },
+    {
+      "id": "fair-custody",
+      "base": "custody",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.fair.co.il/",
+          "title": "fair, דף הבית, שאלות ותשובות: 'כמה זה עולה לי?'",
+          "publisher": "Fair Financial Technologies Ltd. (פייר פיננשיאל טכנולוג'יז בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15",
+          "BRK-03"
+        ],
+        "state": "sourced",
+        "notes": "Printed in the FAQ answer 'כמה זה עולה לי?' on the home page and on the about page: 'בלי עמלות נסתרות, דמי משמרת ואותיות קטנות.' The tariff page itself prints no custody line (neither a rate nor an exemption). No period is printed; the rate is zero."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי משמרת"
+        ]
+      }
+    },
+    {
+      "id": "fair-account-fee",
+      "base": "fixed_period",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0,
+        "unit": "nis_per_month",
+        "source": {
+          "url": "https://www.fair.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f/",
+          "title": "תעריפון fair (עמוד HTML, 'מועד עדכון אחרון של התעריפון: 03/06/2026'), 'עמלות כלליות'",
+          "publisher": "Fair Financial Technologies Ltd. (פייר פיננשיאל טכנולוג'יז בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": "2026-06-03",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15",
+          "BRK-03"
+        ],
+        "state": "sourced",
+        "notes": "Printed: 'דמי טיפול חודשיים – 0 ₪ בחודש.' and 'עמלת פתיחות חשבון/סגירת חשבון – פטור.' The home page adds 'בלי עמלות נסתרות, בלי דמי ניהול'. Cash transfers out (no fee base in the schema, so not a line): 'העברה שקלית: ... הלקוח יהיה פטור מתשלום עמלה כאמור עד 5 העברות בשנה קלנדרית. כל העברה נוספת כרוכה בעלות של 5.2 ש\"ח.'; 'העברת מט\"ח: עמלה בסך $30, בגין כל העברה (החל מההעברה הראשונה).' Interest on a credit balance (BRK-25): paid only 'ובלבד שהריבית שנצברה בגין כספו שהושקע גבוהה משיעור מינימאלי של 5% וסך הריבית החודשית שנתקבלה בגין כספו יהיה גבוה מסך מינימאלי של 15 ש\"ח'. Debit interest 10% a year; late interest prime plus 15 points. applies_to names mutual funds only, the only class Fair offers, so that a zero account fee does not make the tariff look complete for another class."
+      },
+      "min": null,
+      "max": null,
+      "period": "month",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי טיפול חודשיים",
+          "עמלת פתיחות חשבון/סגירת חשבון"
+        ]
+      }
+    },
+    {
+      "id": "fair-fx",
+      "base": "fx",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.fair.co.il/",
+          "title": "fair, דף הבית, שאלות ותשובות: 'כמה זה עולה לי?'",
+          "publisher": "Fair Financial Technologies Ltd. (פייר פיננשיאל טכנולוג'יז בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15",
+          "BRK-03"
+        ],
+        "state": "sourced",
+        "notes": "Printed: 'המרת מט\"ח בזמן אמת ללא עמלת המרה (שער מתעדכן בזמן אמת)' (same text on the about page). The FAQ 'מה אפשר לעשות ב-fair?': 'אפשר גם להמיר דולרים אונליין אם רוצים קרן שנסחרת בדולר!'. The FX service page: 'לא צריך אלפי דולרים כדי להתחיל, 100$ ואפשר להמיר' (a minimum amount to convert, not a fee). The tariff page has no conversion line."
+      },
+      "min": null,
+      "max": null,
+      "spread": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.fair.co.il/services/%d7%94%d7%9e%d7%a8%d7%aa-%d7%9e%d7%98%d7%97/",
+          "title": "fair, שירות המרת מט\"ח (עמוד HTML)",
+          "publisher": "Fair Financial Technologies Ltd. (פייר פיננשיאל טכנולוג'יז בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15",
+          "BRK-03"
+        ],
+        "state": "sourced",
+        "notes": "The rate Fair converts at is not published: the page says only 'שירות המרה דיגיטלי ... עם שער שמתעדכן בזמן אמת. מה שרואים, זה מה שמקבלים.' No spread or reference rate is printed."
+      },
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "המרת מט\"ח",
+          "עמלת המרה"
+        ]
+      }
+    },
+    {
+      "id": "fair-transfer-out",
+      "base": "transfer_out",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 35,
+        "unit": "nis_per_transfer",
+        "source": {
+          "url": "https://www.fair.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f/",
+          "title": "תעריפון fair (עמוד HTML, 'מועד עדכון אחרון של התעריפון: 03/06/2026'), 'עמלות כלליות'",
+          "publisher": "Fair Financial Technologies Ltd. (פייר פיננשיאל טכנולוג'יז בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": "2026-06-03",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15",
+          "BRK-03"
+        ],
+        "state": "sourced",
+        "notes": "Printed: 'עלות העברת תי\"ק ני\"ע מפייר לבנק המקור – 35 ₪.' (moving the securities portfolio from Fair to the client's source bank). Same section, a transfer-in offer: 'זיכוי מלא בגין עלויות העברת ני\"ע למי שפותח חשבון עד סוף השנה.' (no year printed)."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עלות העברת תי\"ק ני\"ע מפייר לבנק המקור"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": {
+      "value": 250,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.fair.co.il/",
+        "title": "fair, דף הבית: 'פתיחת חשבון במינימום של 250 ש\"ח ברכישה או ללא רכישה בכלל'",
+        "publisher": "Fair Financial Technologies Ltd. (פייר פיננשיאל טכנולוג'יז בע\"מ)",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BRK-28"
+      ],
+      "state": "sourced",
+      "notes": "Printed on the home page and the about page: 'פתיחת חשבון במינימום של 250 ש\"ח ברכישה או ללא רכישה בכלל'; home page: 'השקעה ראשונה במינימום 250 ש\"ח ואחר כך כמה שרוצים' and 'הרכישה מתבצעת באופן מיידי, בכל סכום מעל 250 שקלים'. Doubt: the sentence also allows opening 'ללא רכישה בכלל', so 250 NIS reads as the minimum first purchase rather than a deposit needed to open."
+    }
+  },
+  "notice_rule_ids": [],
+  "availability": [
+    {
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.fair.co.il/",
+        "title": "fair, דף הבית, שאלות ותשובות: 'מה אפשר לעשות ב-fair?'",
+        "checked": "2026-10-25"
+      },
+      "note": "'אפשר לקבל מידע עשיר ונטול אינטרסים על כל קרנות הנאמנות בישראל, לרכוש ולמכור אותן.' Fair names no ETFs or foreign securities (BRK-03); that is 'not found', so no entry says they are unavailable."
+    }
+  ]
+}

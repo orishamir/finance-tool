@@ -15,6 +15,60 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.208, s.129ג(א)(2)",
+      "locator_he": "עמוד 208, סעיף 129ג(א)(2)",
+      "page": 208,
+      "quote": "אלא אם כן נקבע במפורש אחרת",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.161, s.97(א)(7)",
+      "locator_he": "עמוד 161, סעיף 97(א)(7)",
+      "page": 161,
+      "quote": "רווח הון שהיה ליחיד במכירה או בפדיון של יחידה בקרן נאמנות חייבת",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.203, s.125ב1(א)",
+      "locator_he": "עמוד 203, סעיף 125ב1(א)",
+      "page": 203,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.155, s.92(א)(1)",
+      "locator_he": "עמוד 155, סעיף 92(א)(1)",
+      "page": 155,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
       "title": "Tax Authority guide 2025",
       "title_he": "דע זכויותיך וחובותיך 2025",
@@ -22,35 +76,23 @@
       "publisher_he": "רשות המסים",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.47",
-      "locator_he": "עמוד 47",
-      "page": 47,
-      "checked": "2026-10-22"
+      "locator": "p.49",
+      "locator_he": "עמוד 49",
+      "page": 49,
+      "quote": "הפסד ממכירת נכס שאילו היה רווח היה פטור ממס, אינו בגדר הפסד הון",
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Income Tax Ordinance",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.129C(a)(2), s.97(a)(7), s.125B1(a), s.92(a)(1)",
-      "locator_he": "סעיף 129ג(א)(2), סעיף 97(א)(7), סעיף 125ב1(א), סעיף 92(א)(1)",
-      "anchor": "סעיף_129ג",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf",
-      "title": "Migdal main prospectus 30.1.2025",
-      "title_he": "תשקיף ראשי של מגדל קרנות נאמנות (30.1.2025)",
+      "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf",
+      "title": "מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026",
+      "title_he": "מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026",
       "publisher": "Maya (TASE filings)",
-      "publisher_he": "מגדל קרנות נאמנות",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "ch.25.2.1.1-25.2.1.7",
-      "checked": "2026-10-22"
+      "locator": "p.72, ch.25.2.1.1-25.2.1.7",
+      "page": 72,
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -15,11 +15,11 @@
       "unit": "count",
       "source": {
         "url": "https://market.tase.co.il/he/market_data/f-etfs",
-        "title": "הבורסה, קרנות חוץ נסחרות, 'סה\"כ 40 רשומות', נכון ל-23/10/2026",
+        "title": "הבורסה, קרנות חוץ נסחרות, \"סה\"כ 40 רשומות\", נכון ל-23/10/2026",
         "publisher": "Tel Aviv Stock Exchange",
         "strength": "primary"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": "2026-10-23",
       "effective_to": null,
       "tax_year": null,
@@ -36,7 +36,7 @@
         "publisher": "Tel Aviv Stock Exchange",
         "strength": "primary"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": "2026-10-23",
       "effective_to": null,
       "tax_year": null,
@@ -49,11 +49,11 @@
       "unit": "count",
       "source": {
         "url": "https://market.tase.co.il/he/market_data/f-etfs?dType=1&oId=18",
-        "title": "הבורסה, קרנות חוץ נסחרות, קטגוריה 'קרנות חוץ נסחרות בשוק האג\"ח', 'סה\"כ 11 רשומות'",
+        "title": "הבורסה, קרנות חוץ נסחרות, קטגוריה \"קרנות חוץ נסחרות בשוק האג\"ח\", \"סה\"כ 11 רשומות\", נכון ל-23/10/2026",
         "publisher": "Tel Aviv Stock Exchange",
         "strength": "primary"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": "2026-10-23",
       "effective_to": null,
       "tax_year": null,
@@ -73,13 +73,25 @@
   "sources": [
     {
       "url": "https://market.tase.co.il/he/market_data/f-etfs",
-      "title": "TASE, קרנות חוץ נסחרות",
+      "title": "הבורסה, קרנות חוץ נסחרות",
       "title_he": "קרנות חוץ נסחרות (רשימה)",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-24"
+      "checked": "2026-10-25",
+      "qualifier": "(read in Chrome; 40 records on 23/10/2026)"
+    },
+    {
+      "url": "https://market.tase.co.il/he/market_data/f-etfs?dType=1&oId=18",
+      "title": "הבורסה, קרנות חוץ נסחרות בשוק האג\"ח",
+      "title_he": "קרנות חוץ נסחרות (רשימה)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-25",
+      "qualifier": "(read in Chrome; 11 records on 23/10/2026)"
     }
   ],
   "derived_from": [

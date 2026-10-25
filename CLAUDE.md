@@ -32,7 +32,7 @@ under each release say what exists and what is open, and its closing section
 "After release 5" lists the work that continues (tier-2 graduation, data
 growth, quarterly tariff refresh, my approvals). Data: about 500 rules, 20
 tariff snapshots for 17 providers (Meitav Trade still missing), 12 fund records,
-Leumi's 3 deposit terms, 2 series; no fund list, because TASE's terms forbid
+deposit terms (Leumi's 3, and seven more banks' current accounts since 2026-10-25), 2 series; no fund list, because TASE's terms forbid
 republishing it (see `docs/data-inventory.md`). The saved state is version 3
 under `mekor.v2.state`; the entered offers, variant assumptions and playbook
 ticks are three side stores on the device pending a merge into it.
@@ -65,10 +65,33 @@ re-check the capabilities that depend on it.
   come from a file under `data/` that records its source and a date, or be a
   computation defined in `docs/method.md` over such figures, or be entered by
   the person. The page shows which of the three it is.
+- **General sources first; a company's term is never general** (founder,
+  2026-10-25). Cite the law, regulation or regulator (gov.il and the like)
+  whenever one exists; cite a company's document only for that company's
+  own terms, which appear named or on that company's page, never as a fact
+  about a product. A statement about the whole market comes from law or
+  from a count over every collected institution. See D30.
 - **Never fill in a financial or tax rule from memory.** Use the
   `il-finance` skill once it exists. If a rule is missing from it, say the
   rule is missing and stop; do not guess or approximate. Site judgements
   (thresholds, bounds) live in `data/parameters/` and are not rules.
+- **Shared components first** (founder, 2026-10-25). Before building any UI
+  piece, look in the kit (`site/app/components/kit/`, gallery at `/kit`) and
+  use the piece that fits. A new pattern goes into the kit, its gallery and,
+  where it can be named, a guard test in `kit/guards.test.ts`; never into a
+  feature folder. Every builder's brief says so.
+- **Structure review before every merge** (founder, 2026-10-25). The lead
+  reviews each builder's branch for structure, not line by line:
+  `node research/audit/tools/merge-review.mjs <base>` lists what the branch
+  adds (components outside the kit, hand-styled pills, cards and fields,
+  literal colours, Hebrew outside the copy files, kit changes without the
+  gallery). Each item is judged kept (a one-off, with the reason), sent back
+  (the kit has it) or promoted (it becomes a kit piece), and the builder's
+  screenshots are compared with the gallery. The verdict goes at the end of
+  the builder's report under "Structure review"; the branch merges only when
+  nothing is left to send back. A branch of more than about 30 files also
+  gets an independent reviewer that sees the diff and the kit, not the
+  builder's report.
 - **Lists are starting points, not limits.** When I give a list of items,
   options, or sources, add to it where sensible unless I say otherwise.
 
@@ -81,6 +104,7 @@ re-check the capabilities that depend on it.
 - `packages/engine/` — calculation engine, one function per `docs/method.md` formula; no I/O
 - `packages/pipeline/` — validator (and, later, refresh adapters)
 - `site/` — React Router app, pre-rendered, Hebrew right to left; `site/app/copy.ts` holds the UI strings, `site/app/content/guide/` the prose of each guide page
+- `site/app/components/kit/` — the shared component kit every page builds from; the gallery at `/kit` shows each piece in its states, `docs/design-system.md` section 11 says when to use which
 - `docs/architecture.md` — stack and design (React chosen 2026-10-22)
 - `docs/design-system.md` — tokens, conventions and the release 1 components
 - `docs/flows.md` — user flows for release 1 (approved 2026-10-23), the screens they need and a design brief per screen

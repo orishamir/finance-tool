@@ -14,6 +14,47 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.2, regs. 2(א), 2(ד), 4, 5(א)",
+      "locator_he": "עמוד 2, תקנות 2(א), 2(ד), 4, 5(א)",
+      "page": 2,
+      "quote": "תאגיד בנקאי המשלם ליחיד ריבית ינכה ממנה מס בשיעור של 25%",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.3, reg. 10(ב)",
+      "locator_he": "עמוד 3, תקנה 10(ב)",
+      "page": 3,
+      "quote": "מנהל קרן נאמנות פטורה המשלם רווחים לבעל יחידה שהוא יחיד, ינכה מהם מס בשיעור של 25%",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.4, reg. 16",
+      "locator_he": "עמוד 4, תקנה 16",
+      "page": 4,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
       "title": "Guide 2025",
       "title_he": "דע זכויותיך וחובותיך 2025",
@@ -21,23 +62,11 @@
       "publisher_he": "רשות המסים",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.38 המפרט את סוג ההכנסה ... וניכוי המס ממנה",
-      "locator_he": "עמוד 38 המפרט את סוג ההכנסה ... וניכוי המס ממנה",
-      "page": 38,
-      "quote": "לפי הסכומים המופיעים בטופסי 867",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://www.nevo.co.il/law_html/law01/999_549.htm",
-      "title": "Income Tax (Withholding from Interest, Dividends and Certain Profits) Regulations 2005 (Nevo mirror)",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
-      "publisher": "Nevo",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "checked": "2026-10-22",
-      "qualifier": "(mirror; last amendment shown 27.12.2017)"
+      "locator": "p.40, p.42",
+      "locator_he": "עמוד 40, עמוד 42",
+      "page": 40,
+      "quote": "בדרך כלל אישור שנתי מהמשלם",
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -8,7 +8,7 @@
     "retirement_age_men": "גיל פרישה לגברים",
     "retirement_age_women": "גיל פרישה לנשים"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "age-or-use-exemption",
     "liquidity-lockup"
@@ -20,12 +20,12 @@
       "value": 60,
       "unit": "years",
       "source": {
-        "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
-        "title": "Retirement Age Law 2004, sections 3-6, 9 and schedule (Wikisource mirror); Mor comprehensive bylaws 01.06.2025, s.1 \"גיל זכאות מינימלי לקצבת זקנה\"",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",
+        "title": "חוק גיל פרישה, התשס\"ד-2004, p.1, s.5: \"גיל 60 לגבר ולאישה\"",
+        "publisher": "The Knesset",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -40,12 +40,12 @@
       "value": 67,
       "unit": "years",
       "source": {
-        "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
-        "title": "Retirement Age Law 2004, section 3 (Wikisource mirror)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",
+        "title": "חוק גיל פרישה, התשס\"ד-2004, p.1, s.3: \"גיל 67 לגבר\"",
+        "publisher": "The Knesset",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -60,12 +60,12 @@
       "value": 65,
       "unit": "years",
       "source": {
-        "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
-        "title": "Retirement Age Law 2004, section 3 and schedule (Wikisource mirror)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://fs.knesset.gov.il/24/law/24_lsr_611801.pdf",
+        "title": "חוק התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2021 ו-2022), התשפ\"ב-2021, p.172, s.73 (סעיף 3 לחוק גיל פרישה: \"לגבר וגיל 65 לאישה\") ו-p.174 (התוספת)",
+        "publisher": "The Knesset",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -81,17 +81,45 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
-      "title": "חוק גיל פרישה, התשס\"ד-2004, sections 3-6, 9 and schedule (Wikisource mirror)",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",
+      "title": "חוק גיל פרישה, התשס\"ד-2004",
+      "title_he": "חוק גיל פרישה, התשס\"ד-2004",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "sections 3-6, 9",
-      "locator_he": "סעיפים 3-6, 9",
-      "anchor": "סעיף_3",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.1, ss.3-5",
+      "locator_he": "עמוד 1, סעיפים 3-5",
+      "page": 1,
+      "quote": "גיל 60 לגבר ולאישה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",
+      "title": "חוק גיל פרישה, התשס\"ד-2004",
+      "title_he": "חוק גיל פרישה, התשס\"ד-2004",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, ss.6, 9",
+      "locator_he": "עמוד 2, סעיפים 6, 9",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/24/law/24_lsr_611801.pdf",
+      "title": "חוק התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2021 ו-2022), התשפ\"ב-2021",
+      "title_he": "חוק התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2021 ו-2022), התשפ\"ב-2021",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.172, s.73",
+      "locator_he": "עמוד 172, סעיף 73",
+      "page": 172,
+      "quote": "לגבר וגיל 65 לאישה",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
@@ -103,7 +131,7 @@
       "strength": "institution",
       "locator": "section 1",
       "locator_he": "סעיף 1",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

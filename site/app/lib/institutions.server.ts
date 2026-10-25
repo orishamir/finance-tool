@@ -219,6 +219,7 @@ function tariffCard(s: FeesSnapshot, rules: Record<string, RuleRecord>, t: strin
     lines,
     minimum: min ? site(min, t, s.snapshot) : null,
     regulator: s.provider.regulator,
+    ...(s.provider.regulator_foreign ? { foreignRegulator: s.provider.regulator_foreign.name_he } : {}),
     tase: s.provider.tase_member,
     protection: s.provider.protection_rule_ids.filter((id) => rules[id]).map((id) => ({ id, title: rules[id]!.title_he ?? rules[id]!.title })),
     notice: s.notice_rule_ids.filter((id) => rules[id]),

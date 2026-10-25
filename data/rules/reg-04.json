@@ -20,11 +20,11 @@
       "unit": "months",
       "source": {
         "url": "https://boi.org.il/media/5folwk5o/119.pdf",
-        "title": "Law for Promoting Competition in the Banking Market (Legislative Amendments) 2026, ss.15, 16 (BoI-hosted text, version 1.7.2026)",
-        "publisher": "Knesset legislation (BoI-hosted copy)",
+        "title": "חוק לקידום התחרות בשוק הבנקאות (תיקוני חקיקה), התשפ\"ו-2026, נוסח בנק ישראל (1.7.2026), p.2, s.16(ב)",
+        "publisher": "Bank of Israel",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2026-03-31",
       "effective_to": null,
       "tax_year": null,
@@ -40,11 +40,11 @@
       "unit": "months",
       "source": {
         "url": "https://boi.org.il/media/5folwk5o/119.pdf",
-        "title": "Law for Promoting Competition in the Banking Market (Legislative Amendments) 2026, ss.15, 16 (BoI-hosted text, version 1.7.2026)",
-        "publisher": "Knesset legislation (BoI-hosted copy)",
+        "title": "חוק לקידום התחרות בשוק הבנקאות (תיקוני חקיקה), התשפ\"ו-2026, נוסח בנק ישראל (1.7.2026), p.2, s.16(ג)",
+        "publisher": "Bank of Israel",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2026-03-31",
       "effective_to": null,
       "tax_year": null,
@@ -61,13 +61,28 @@
   "sources": [
     {
       "url": "https://boi.org.il/media/5folwk5o/119.pdf",
-      "title": "Law text, BoI-hosted PDF (prepared by הוצאת הלכות, version 1.7.2026)",
+      "title": "חוק לקידום התחרות בשוק הבנקאות (תיקוני חקיקה), התשפ\"ו-2026 (נוסח בנק ישראל, 1.7.2026)",
+      "title_he": "חוק לקידום התחרות בשוק הבנקאות (תיקוני חקיקה), התשפ\"ו-2026 (נוסח בנק ישראל, 1.7.2026)",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
       "kind": "regulator_page",
       "strength": "primary",
-      "locator": "ss.15, 16, footnote 1",
-      "checked": "2026-10-22"
+      "locator": "p.2, ss.15, 16; p.1, footnote 1",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_12224370.pdf",
+      "title": "חוק התוכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנת התקציב 2026), התשפ\"ו-2026 (ספר החוקים 3510)",
+      "title_he": "חוק התוכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנת התקציב 2026), התשפ״ו-2026 (ספר החוקים 3510)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.60",
+      "locator_he": "עמוד 60",
+      "page": 60,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_IsraelLaw()?$filter=substringof('התחרות%20בשוק%20הבנקאות',Name)&$format=json",
@@ -76,7 +91,7 @@
       "publisher_he": "הכנסת",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

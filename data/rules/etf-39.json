@@ -14,11 +14,11 @@
       "unit": "count",
       "source": {
         "url": "https://www.spglobal.com/spdji/en/indices/equity/sp-500/",
-        "title": "S&P Dow Jones Indices, S&P 500® index page (read in Chrome 2026-10-23; curl returns 403)",
+        "title": "S&P Dow Jones Indices, S&P 500® index page (read in Chrome 2026-10-25; curl returns 403), Rebalancing Frequency",
         "publisher": "S&P Dow Jones Indices",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -34,11 +34,11 @@
       "unit": "business_days",
       "source": {
         "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
-        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome's PDF viewer)",
+        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome; curl returns 403), p.18",
         "publisher": "S&P Dow Jones Indices",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -54,11 +54,11 @@
       "unit": "pct",
       "source": {
         "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
-        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome's PDF viewer)",
+        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome; curl returns 403), p.18",
         "publisher": "S&P Dow Jones Indices",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -81,27 +81,28 @@
   "sources": [
     {
       "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
-      "title": "S&P Dow Jones Indices, \"S&P U.S. Indices Methodology\", July 2026, pp. 5, 12, 16–18",
+      "title": "S&P Dow Jones Indices, \"S&P U.S. Indices Methodology\", July 2026",
       "title_he": "S&P U.S. Indices Methodology (יולי 2026)",
       "publisher": "S&P Dow Jones Indices",
       "publisher_he": "S&P Dow Jones Indices",
       "kind": "other",
       "strength": "primary",
-      "locator": "pp. 5, 12, 16–18",
-      "locator_he": "עמודים 5, 12, 16–18",
-      "page": 5,
-      "checked": "2026-10-23"
+      "locator": "pp.6, 13, 17-19",
+      "locator_he": "עמודים 6, 13, 17-19",
+      "page": 6,
+      "checked": "2026-10-25",
+      "qualifier": "(index provider; read in Chrome, curl returns 403)"
     },
     {
       "url": "https://www.spglobal.com/spdji/en/indices/equity/sp-500/",
-      "title": "S&P Dow Jones Indices, \"S&P 500®\" index page, \"Rebalancing Frequency\"",
+      "title": "S&P Dow Jones Indices, \"S&P 500®\" index page",
       "title_he": "S&P 500: עמוד המדד",
       "publisher": "S&P Dow Jones Indices",
       "publisher_he": "S&P Dow Jones Indices",
       "kind": "other",
       "strength": "primary",
-      "checked": "2026-10-23",
-      "qualifier": "(index provider)"
+      "checked": "2026-10-25",
+      "qualifier": "(index provider; read in Chrome)"
     }
   ]
 }

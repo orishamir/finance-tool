@@ -2,12 +2,12 @@
   "id": "TXS-14",
   "title": "Which index measures a fund unit's real gain: CPI for shekel units, the exchange rate for currency-denominated units and for foreign-investment funds",
   "title_he": "איזה מדד מודד את הרווח הריאלי על יחידת קרן",
-  "text_he": "המדד שמולו מודדים את הרווח הריאלי על יחידה תלוי במטבע שבו היחידה נקובה ובמעמד הקרן: ביחידות שקליות של קרן פטורה רגילה זה מדד המחירים לצרכן; ביחידות שנקובות במטבע חוץ או צמודות אליו זה שער אותו מטבע; ובקרן להשקעות חוץ, קרן פטורה שלפחות החלק המזערי מהשקעותיה בכל שנת מס צמוד למטבע עיקרי שנבחר בתשקיף, זה שער המטבע העיקרי. לכן בקרן שקלית שמחזיקה נכסים זרים ואינה קרן להשקעות חוץ, רווח שנובע מהיחלשות השקל מעבר למדד ממוסה כרווח ריאלי, והתחזקות השקל מקטינה את הרווח. חריגה מהתנאי של עד ימי החריגה המותרים בשנה לא נחשבת; מה קורה בחריגה ארוכה יותר ידוע רק מתיאור של התשקיף על חוזר של רשות המסים שלא נקרא, ולכן חלק זה במעמד מקור מוסדי בלבד.",
+  "text_he": "המדד שמולו מודדים את הרווח הריאלי על יחידה תלוי במטבע שבו היחידה נקובה ובמעמד הקרן: ביחידות שקליות של קרן פטורה רגילה זה מדד המחירים לצרכן; ביחידות שנקובות במטבע חוץ או צמודות אליו זה שער אותו מטבע; ובקרן להשקעות חוץ, קרן פטורה שלפחות החלק המזערי מהשקעותיה בכל שנת מס צמוד למטבע עיקרי שנבחר בתשקיף, זה שער המטבע העיקרי. לכן בקרן שקלית שמחזיקה נכסים זרים ואינה קרן להשקעות חוץ, רווח שנובע מהיחלשות השקל מעבר למדד ממוסה כרווח ריאלי, והתחזקות השקל מקטינה את הרווח. חריגה מהתנאי של עד ימי החריגה המותרים בשנה לא נחשבת. בחריגה ארוכה יותר, לפי חוזר של רשות המסים, הקרן מפסיקה להיות קרן להשקעות חוץ ולא חוזרת להיות כזו: מי שפדה לפני החריגה ממוסה כבקרן להשקעות חוץ, ומי שפדה אחריה לפי המדד לכל תקופת ההחזקה. אם התקנות האלה עדיין בתוקף היא שאלה פתוחה: הן נשענות על סעיפים בפקודה שבוטלו בתיקון משנת 2005, ולא נמצא תיקון שמשאיר אותן בתוקף או מבטל אותן.",
   "figure_names_he": {
     "foreign_investment_fund_threshold": "חלק מזערי של ההשקעות הצמוד למטבע העיקרי",
     "tolerance_days": "ימי חריגה מותרים בשנת מס"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "real-vs-nominal",
     "currency",
@@ -19,12 +19,12 @@
       "value": 90,
       "unit": "pct",
       "source": {
-        "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(חישוב_סכום_אינפלציוני_במכירת_יחידה_בקרן_נאמנות)",
-        "title": "Income Tax Regulations (computing the inflationary amount on sale of a unit in a mutual fund) 2003, definitions and reg.2",
-        "publisher": "Legislation (Hebrew Wikisource mirror)",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3nxVBukfCLPiTSKOFP3CGC94=#page=9",
+        "title": "תקנות מס הכנסה (חישוב סכום אינפלציוני במכירת יחידה בקרן נאמנות), התשס\"ג-2003, קובץ התקנות 6223, p.9, reg. 1",
+        "publisher": "רשומות (משרד המשפטים)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -39,12 +39,12 @@
       "value": 10,
       "unit": "days",
       "source": {
-        "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(חישוב_סכום_אינפלציוני_במכירת_יחידה_בקרן_נאמנות)",
-        "title": "Income Tax Regulations (computing the inflationary amount on sale of a unit in a mutual fund) 2003, definitions and reg.2",
-        "publisher": "Legislation (Hebrew Wikisource mirror)",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3nxVBukfCLPiTSKOFP3CGC94=#page=9",
+        "title": "תקנות מס הכנסה (חישוב סכום אינפלציוני במכירת יחידה בקרן נאמנות), התשס\"ג-2003, קובץ התקנות 6223, p.9, reg. 1",
+        "publisher": "רשומות (משרד המשפטים)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -57,45 +57,70 @@
     }
   },
   "il_finance_file": "tax-securities-israeli.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Income Tax Ordinance",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.146, s.88, definition מדד",
+      "page": 146,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3nxVBukfCLPiTSKOFP3CGC94=#page=9",
+      "title": "תקנות מס הכנסה (חישוב סכום אינפלציוני במכירת יחידה בקרן נאמנות), התשס\"ג-2003 (קובץ התקנות 6223)",
+      "title_he": "תקנות מס הכנסה (חישוב סכום אינפלציוני במכירת יחידה בקרן נאמנות), התשס״ג-2003 (קובץ התקנות 6223)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "pp.9-10, reg. 1, reg. 2",
+      "locator_he": "עמודים 9 עד 10, תקנה 1, תקנה 2",
+      "page": 9,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-7-2003/he/Policy_IncomeTaxInst_hoz7-2003.pdf",
+      "title": "חוזר מס הכנסה 7/2003: הרפורמה במס הכנסה – מיסוי קרנות נאמנות ובעלי היחידות בהן",
+      "title_he": "חוזר מס הכנסה 7/2003: הרפורמה במס הכנסה – מיסוי קרנות נאמנות ובעלי היחידות בהן",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "pp.17-18, section 4.1",
+      "locator_he": "עמודים 17 עד 18, סעיף 4.1",
+      "page": 17,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299994.pdf",
+      "title": "חוק לתיקון פקודת מס הכנסה (מס' 147), התשס\"ה-2005, ספר החוקים 2023",
+      "title_he": "חוק לתיקון פקודת מס הכנסה (מס' 147), התשס\"ה-2005, ספר החוקים 2023",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.88",
-      "locator_he": "סעיף 88",
-      "anchor": "סעיף_88",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.36, s.36 ; p.58, s.80",
+      "locator_he": "עמוד 36, סעיף 36 ; עמוד 58, סעיף 80",
+      "page": 36,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(חישוב_סכום_אינפלציוני_במכירת_יחידה_בקרן_נאמנות)",
-      "title": "Income Tax Regulations (computing the inflationary amount on sale of a unit in a mutual fund), 5763-2003",
-      "title_he": "תקנות מס הכנסה (חישוב סכום אינפלציוני במכירת יחידה בקרן נאמנות), התשס״ג-2003",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "definitions and reg.2",
-      "anchor": "סעיף_2",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf",
-      "title": "Migdal main prospectus 30.1.2025",
-      "title_he": "תשקיף ראשי של מגדל קרנות נאמנות (30.1.2025)",
+      "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf",
+      "title": "מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026",
+      "title_he": "מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026",
       "publisher": "Maya (TASE filings)",
-      "publisher_he": "מגדל קרנות נאמנות",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "ch.25.3, 25.4",
-      "checked": "2026-10-22"
+      "locator": "p.73, ch.25.3, 25.4",
+      "page": 73,
+      "checked": "2026-10-25"
     }
   ]
 }

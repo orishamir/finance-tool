@@ -7,9 +7,8 @@ import { fmt } from "../../lib/format";
 import { checkGoal, childAgeFrom, filledFields, pctBoundsFor, presetNumbers, reconcileEmployment, type CheckBounds, type CheckMessages, type FieldSource, type Goal, type Presets } from "../../lib/goal";
 import { useGoals } from "../../lib/goal";
 import { IconCheck } from "../icons";
-import { flushPendingFields } from "../timeline/fields";
+import { Button, Callout, Card, cx, Disclosure, flushPendingFields, SegmentedControl } from "../kit";
 import { RuleRef } from "../provenance";
-import { Button, Callout, Card, Disclosure, SegmentedControl, cx } from "../ui";
 import { AgeStepper, GoalNumber, GoalSlider, MonthField, NameField, PercentPair, PresetChips, SwitchRow } from "./fields";
 import { presetIds } from "../../lib/goal";
 import { AcceptedFallField } from "../exposure-mode/fields";
@@ -405,13 +404,14 @@ export function GoalFormBody({ data, to }: { data: FormData; to: string }) {
         <div className="flex flex-col gap-2 md:items-start">
           <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-3 w-full md:w-auto">
             <Button type="submit" variant="primary" aria-disabled={!check?.ready} aria-describedby="goal-submit-line" className={cx("w-full md:w-auto md:min-w-48", !check?.ready && "opacity-60")}>
-              {r2.compare}
+              {r5.form.firstDoor}
             </Button>
             {/* the quiet second door (release 5): the same goal, by exposure */}
             <Button variant="secondary" aria-disabled={!check?.ready} className={cx("w-full md:w-auto", !check?.ready && "opacity-60")} onClick={() => { submit("exposure"); }}>
               {r5.form.secondDoor}
             </Button>
           </div>
+          <p className="text-xs text-muted-foreground max-w-measure">{r5.form.doorsLine}</p>
           <p id="goal-submit-line" role="status" className={cx("text-sm", message ? "text-destructive" : "text-muted-foreground", !line && "sr-only")}>
             {line}
           </p>

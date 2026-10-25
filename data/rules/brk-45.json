@@ -1,0 +1,44 @@
+{
+  "id": "BRK-45",
+  "title": "A foreign broker and tax: the W-8BEN, US withholding, and no Israeli withholding",
+  "title_he": "ברוקר זר ומס: טופס W-8BEN, ניכוי אמריקאי, ובלי ניכוי ישראלי",
+  "strength": "primary",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "reporting-obligation",
+    "tax-during"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-25",
+  "text_he": "מי שאינו אמריקאי ומקבל הכנסה שחייבת בניכוי מס אמריקאי מוסר טופס W-8BEN למי שמנכה או משלם, לא לרשות המס האמריקאית. הטופס בתוקף עד סוף השנה השלישית אחרי שנת החתימה, ובלעדיו המס האמריקאי עלול להיות מנוכה בשיעור המלא לזרים. לתושב ישראל האמנה מגבילה את המס האמריקאי על דיבידנד לשיעור מופחת. ניכוי מס ישראלי במכירת ניירות ערך חל רק על בנק או חבר בורסה; ברוקר זר אינו אף אחד מאלה, ולכן לא מנוכה מס בישראל והחוסך מדווח ומשלם בעצמו.",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.irs.gov/forms-pubs/about-form-w-8-ben",
+      "title": "IRS, About Form W-8BEN",
+      "title_he": "About Form W-8BEN (דף הטופס באתר ה-IRS)",
+      "publisher": "IRS",
+      "publisher_he": "רשות המס האמריקאית (IRS)",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.irs.gov/instructions/iw8ben",
+      "title": "IRS, Instructions for Form W-8BEN (rev. 10/2021)",
+      "title_he": "Instructions for Form W-8BEN (10/2021)",
+      "publisher": "IRS",
+      "publisher_he": "רשות המס האמריקאית (IRS)",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "TXF-12",
+    "TXF-13",
+    "TXS-05",
+    "TXF-22"
+  ]
+}

@@ -6,13 +6,13 @@ import { AxisLabels, niceYearTicks } from "../../chart/TimelineChart";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { scaleLinear } from "d3-scale";
 import { curveStepAfter, line as d3line } from "d3-shape";
-import { buttons, r4workbench as c } from "../../../copy";
+import { r4workbench as c } from "../../../copy";
 import { fmt } from "../../../lib/format";
 import type { ChartLine } from "../../../lib/providers";
 import { computed } from "../../../lib/value";
 import { IconPencil } from "../../icons";
 import { Num } from "../../provenance";
-import { Disclosure, cx } from "../../ui";
+import { ChartLegend as Legend, ChartReadout as Readout, ChartTable as Table, Swatch, cx } from "../../kit";
 
 const STRIP = 112;
 const TOP = 20; // room for the top axis label above its gridline (audit 2026-10-24 (sweep))
@@ -134,16 +134,19 @@ export function CumulativeCostChart({ lines, years, today, hover, onHover, dimme
 export function ChartLegend({ lines }: { lines: ChartLine[] }) {
   const shown = drawn(lines);
   return (
-    <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label="מקרא">
-      {shown.map((l) => (
-        <li key={l.id} className="flex items-center gap-1.5">
-          <span className={cx("w-3.5 h-[3px] rounded-sm", style[l.role].bg, l.entered && "opacity-70 [background-image:repeating-linear-gradient(90deg,transparent_0_4px,var(--card)_4px_6px)]")} />
-          <bdi>{l.short}</bdi>
-          {l.entered && <IconPencil size={14} />}
-          {l.role === "vs" && <span>({c.providers.chart.legendVs})</span>}
-        </li>
-      ))}
-    </ul>
+    <Legend
+      items={shown.map((l) => ({
+        id: l.id,
+        swatch: <Swatch className={cx(style[l.role].bg, l.entered && "opacity-70 [background-image:repeating-linear-gradient(90deg,transparent_0_4px,var(--card)_4px_6px)]")} />,
+        label: (
+          <>
+            <bdi>{l.short}</bdi>
+            {l.entered && <IconPencil size={14} />}
+            {l.role === "vs" && <span>({c.providers.chart.legendVs})</span>}
+          </>
+        ),
+      }))}
+    />
   );
 }
 
@@ -151,23 +154,10 @@ export function ChartReadout({ lines, year, today }: { lines: ChartLine[]; year:
   const shown = drawn(lines);
   const m = Math.min((shown[0]?.real.length ?? 1) - 1, year * 12);
   return (
-    <dl className="readout" aria-live="polite">
-      <div className="readout-row readout-head">
-        <dt>{year === 0 ? c.providers.chart.today : `${c.providers.chart.year} ${year}`}</dt>
-        <dd />
-      </div>
-      {shown.map((l) => (
-        <div key={l.id} className="readout-row">
-          <dt className="flex items-center gap-2">
-            <span className={cx("size-2.5 rounded-sm", style[l.role].bg)} />
-            <bdi>{l.short}</bdi>
-          </dt>
-          <dd>
-            <Num value={computed(l.real[m]!, "nis", "F-63", {}, { today, about: l.short })} animate />
-          </dd>
-        </div>
-      ))}
-    </dl>
+    <Readout
+      title={year === 0 ? c.providers.chart.today : `${c.providers.chart.year} ${year}`}
+      rows={shown.map((l) => ({ id: l.id, swatch: <Swatch shape="box" className={style[l.role].bg} />, label: <bdi>{l.short}</bdi>, value: <Num value={computed(l.real[m]!, "nis", "F-63", {}, { today, about: l.short })} animate /> }))}
+    />
   );
 }
 
@@ -176,35 +166,11 @@ export function ChartTable({ lines, today }: { lines: ChartLine[]; today: string
   const yearsList = Array.from({ length: Math.floor(months / 12) + 1 }, (_, i) => i).filter((i) => i > 0);
   if (months % 12 !== 0) yearsList.push(months / 12);
   return (
-    <Disclosure label={buttons.showTable} openLabel={buttons.hideTable} summaryClassName="text-sm">
-      <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 mt-2">
-        <table className="tbl text-sm">
-          <thead>
-            <tr>
-              <th scope="col">{c.providers.chart.year}</th>
-              {lines.map((l) => (
-                <th key={l.id} scope="col">
-                  <bdi>{l.short}</bdi>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {yearsList.map((yr) => (
-              <tr key={yr}>
-                <th scope="row">
-                  <bdi dir="ltr">{yr}</bdi>
-                </th>
-                {lines.map((l) => (
-                  <td key={l.id}>
-                    <Num size="cell" value={computed(l.real[Math.min(l.real.length - 1, yr * 12)]!, "nis", "F-63", {}, { today, about: l.short })} />
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </Disclosure>
+    <Table
+      scroll="bleed"
+      rowHead={c.providers.chart.year}
+      columns={lines.map((l) => ({ id: l.id, head: <bdi>{l.short}</bdi> }))}
+      rows={yearsList.map((yr) => ({ key: yr, head: yr, cells: lines.map((l) => <Num key={l.id} size="cell" value={computed(l.real[Math.min(l.real.length - 1, yr * 12)]!, "nis", "F-63", {}, { today, about: l.short })} />) }))}
+    />
   );
 }

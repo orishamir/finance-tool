@@ -3,7 +3,7 @@
   "title": "Disclosure of direct expenses and of the \"expected annual cost\"",
   "title_he": "גילוי הוצאות ישירות והעלות השנתית הצפויה",
   "text_he": "לפני שאדם מצטרף לקופת גמל, המוסד חייב למסור לו מידע על הוצאות ישירות, על שיעור ההוצאות בשנה הקודמת ועל העלות השנתית הצפויה של דמי הניהול וההוצאות. דוחות לעמית כוללים את שיעור ההוצאות, סוגי ההשקעות שגרמו להוצאות ישירות, תשואות נטו והעלות הצפויה, במתכונת שהממונה קובע; בכל מקום שבו חייבים להציג דמי ניהול, חייבים להציג גם את העלות השנתית הצפויה. הוצאות של השקעות מבטיחות תשואה אינן נכללות בדוחות לעמית. התקנות נקראו בסיכום באתר שמעתיק אותן.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "statement-disclosure",
     "fee-direct-expenses"
@@ -14,17 +14,32 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(הוצאות_ישירות_בשל_ביצוע_עסקאות)",
-      "title": "Direct Expenses Regulations, reg. 3ב (Wikisource)",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg. 3ב",
-      "locator_he": "תקנה 3ב",
-      "anchor": "סעיף_3ב",
-      "checked": "2026-10-22"
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/tZDvucD9RCpb4OFgftW2Mkr7NqSpiUfGbyQHeI17Cx8=#page=2",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות) (תיקון), התש\"ף-2020 (קובץ התקנות 8744)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות) (תיקון), התש\"ף-2020 (קובץ התקנות 8744)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, s.2",
+      "locator_he": "עמוד 2, סעיף 2",
+      "page": 2,
+      "quote": "גוף מוסדי יידע אדם המעוניין להצטרף כעמית או כמבוטח לקופת גמל",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dRGsI+SrmavYbn73icZsjwvAYSdKZdahWniBQ2IENis=#page=7",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות) (תיקון), התשפ\"ג-2022 (קובץ התקנות 10377)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות) (תיקון), התשפ\"ג-2022 (קובץ התקנות 10377)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.7, s.6 (reg. 3ב(ג)-(ד))",
+      "locator_he": "עמוד 7, סעיף 6 (תקנה 3ב(ג)-(ד))",
+      "page": 7,
+      "quote": "בכל מקום שבו קיימת חובה על פי דין להציג לעמית או למבוטח את דמי הניהול",
+      "checked": "2026-10-25"
     }
   ]
 }

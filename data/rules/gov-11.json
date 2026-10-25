@@ -9,7 +9,7 @@
     "face_value": "שווי נקוב ליחידת הנפקה",
     "term_min_months": "תקופה מזערית לפדיון"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "real-vs-nominal",
     "distribution-policy",
@@ -21,12 +21,12 @@
       "value": "cpi",
       "unit": "text",
       "source": {
-        "url": "https://www.nevo.co.il/law_html/law01/999_564.htm",
-        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), תשס\"ו-2006 (Nevo mirror)",
-        "publisher": "Minister of Finance (Nevo mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=5",
+        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), התשס\"ו-2006 (קובץ התקנות 6457), p.5, reg. 8",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -41,12 +41,12 @@
       "value": 12,
       "unit": "months",
       "source": {
-        "url": "https://www.nevo.co.il/law_html/law01/999_564.htm",
-        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), תשס\"ו-2006 (Nevo mirror)",
-        "publisher": "Minister of Finance (Nevo mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=4",
+        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), התשס\"ו-2006 (קובץ התקנות 6457), p.4, reg. 1 (תקופת ריבית)",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -61,12 +61,12 @@
       "value": 1000,
       "unit": "nis",
       "source": {
-        "url": "https://www.nevo.co.il/law_html/law01/999_564.htm",
-        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), תשס\"ו-2006 (Nevo mirror)",
-        "publisher": "Minister of Finance (Nevo mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=4",
+        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), התשס\"ו-2006 (קובץ התקנות 6457), p.4, reg. 3",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -81,12 +81,12 @@
       "value": 12,
       "unit": "months",
       "source": {
-        "url": "https://www.nevo.co.il/law_html/law01/999_564.htm",
-        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), תשס\"ו-2006 (Nevo mirror)",
-        "publisher": "Minister of Finance (Nevo mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=#page=3",
+        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\") (תיקון), התשס\"ז-2007 (קובץ התקנות 6597), p.3: reg. 6 as amended (\"לתקופה של שנה אחת\")",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -102,17 +102,30 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.nevo.co.il/law_html/law01/999_564.htm",
-      "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), תשס\"ו-2006",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=4",
+      "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), התשס\"ו-2006 (קובץ התקנות 6457)",
       "title_he": "תקנות מילווה המדינה (איגרות חוב מסוג ״אג״ח ממשלתית צמודה״), התשס״ו-2006",
-      "publisher": "Nevo",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "משרד האוצר",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "ss. 1 to 6, 8, 9",
-      "locator_he": "סעיפים 1 עד 6, 8, 9",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.4, regs. 1-4; p.5, regs. 5-9",
+      "locator_he": "עמוד 4, תקנות 1-4; עמוד 5, תקנות 5-9",
+      "page": 4,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=#page=3",
+      "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\") (תיקון), התשס\"ז-2007 (קובץ התקנות 6597)",
+      "title_he": "תקנות מילווה המדינה (איגרות חוב מסוג ״אג״ח ממשלתית צמודה״) (תיקון), התשס״ז-2007 (קובץ התקנות 6597)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.3, reg. 6",
+      "locator_he": "עמוד 3, תקנה 6",
+      "page": 3,
+      "checked": "2026-10-25"
     }
   ]
 }

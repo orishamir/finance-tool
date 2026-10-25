@@ -3,7 +3,8 @@
 // data snapshot the bundle carries, so the strip does not recompute on every route.
 import { useEffect, useMemo, useState } from "react";
 import { loadBundle } from "../../lib/bundle";
-import { useGoals } from "../../lib/goal";
+import { loadWorkbenchBundle } from "../../lib/providers";
+import { useGoals, type Goal } from "../../lib/goal";
 import { goalChanges, revisitSaved, type RevisitView } from "../../lib/revisit";
 import { isoToday, isReadableSaved, useSavedComparisons, type CompareMode, type SavedComparisonRecord } from "../../lib/state";
 
@@ -15,8 +16,10 @@ export interface RevisitState {
   view: RevisitView | null;
 }
 
-export function useRevisit(mode?: CompareMode): RevisitState {
-  const { current } = useGoals();
+/** `goal` is the current one unless given (the first page's rows, one per goal, 2026-10-25). */
+export function useRevisit(mode?: CompareMode, goal?: Goal | null): RevisitState {
+  const { current: active } = useGoals();
+  const current = goal ?? active;
   const { list, ready } = useSavedComparisons();
   const mine = ready && current ? list.filter((c) => (c as { goalId?: string }).goalId === current.id) : [];
   const saved = (mode ? mine.find((c) => c.mode === mode) : [...mine].sort((a, b) => String(b.savedOn).localeCompare(String(a.savedOn)))[0]) as SavedComparisonRecord | undefined;
@@ -30,8 +33,8 @@ export function useRevisit(mode?: CompareMode): RevisitState {
       setView(revisitSaved(null, saved, isoToday()));
       return;
     }
-    loadBundle()
-      .then((bundle) => {
+    Promise.all([loadBundle(), loadWorkbenchBundle().catch(() => null)])
+      .then(([bundle, wb]) => {
         if (cancelled) return;
         const ck = `${key}|${bundle.runDate}|${(bundle.dataFiles ?? []).length}`;
         const hit = cache.get(ck);
@@ -39,7 +42,7 @@ export function useRevisit(mode?: CompareMode): RevisitState {
         // let the page paint before the re-run
         window.setTimeout(() => {
           if (cancelled) return;
-          const v = revisitSaved(bundle, saved, isoToday());
+          const v = revisitSaved(bundle, saved, isoToday(), wb);
           cache.set(ck, v);
           setView(v);
         }, 30);

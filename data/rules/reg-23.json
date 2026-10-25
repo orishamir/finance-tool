@@ -14,12 +14,13 @@
   "sources": [
     {
       "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/default.aspx",
-      "title": "NII, תכנית חיסכון לכל ילד",
+      "title": "ביטוח לאומי: תכנית חיסכון לכל ילד",
+      "title_he": "ביטוח לאומי: תכנית חיסכון לכל ילד",
       "publisher": "National Insurance Institute",
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -2,7 +2,7 @@
   "id": "PF-04",
   "title": "Cap for a new comprehensive pension fund: 0.5% a year of balance and 6% of deposits",
   "title_he": "תקרת דמי הניהול לקרן פנסיה חדשה מקיפה",
-  "text_he": "חברה מנהלת של קרן פנסיה חדשה מקיפה רשאית לגבות מהיתרה של כל עמית עד תקרת דמי הניהול השנתיים מהיתרה, ומהתשלומים שמועברים לקרן בעדו עד תקרת דמי הניהול מההפקדה. למקבלי קצבת זקנה תקרה נמוכה יותר, ויש כלל נפרד לקצבאות מתחת לקצבת המינימום. בקרן פנסיה הנחה חלה על כל היתרה, וכשיש הנחות שונות על יתרות שונות, הגבוהה חלה על הכול. מנורה מבטחים מפרסמת את אותן תקרות.",
+  "text_he": "חברה מנהלת של קרן פנסיה חדשה מקיפה רשאית לגבות מהיתרה של כל עמית עד תקרת דמי הניהול השנתיים מהיתרה, ומהתשלומים שמועברים לקרן בעדו עד תקרת דמי הניהול מההפקדה. למקבלי קצבת זקנה תקרה נמוכה יותר, ויש כלל נפרד לקצבאות מתחת לקצבת המינימום. בקרן פנסיה הנחה חלה על כל היתרה, וכשיש הנחות שונות על יתרות שונות, הגבוהה חלה על הכול.",
   "figure_names_he": {
     "balance_cap": "תקרת דמי הניהול השנתיים מהיתרה",
     "deposit_cap": "תקרת דמי הניהול מההפקדה"
@@ -18,12 +18,12 @@
       "value": 0.5,
       "unit": "pct_per_year",
       "source": {
-        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
-        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 3(א) (Hebrew Wikisource; Nevo mirror)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=5",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131), p.5, reg. 3(א)(1)",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -32,18 +32,18 @@
         "PF-04"
       ],
       "state": "sourced",
-      "notes": "Maximum fee of a new comprehensive pension fund (קרן חדשה מקיפה) per year of each member's balance. Old-age annuitants from 1 Feb 2022: up to 0.3% (reg. 3(א)(1א)). Corroborated by Menora Mivtachim's published caps for 2026 (institution)."
+      "notes": "Maximum fee of a new comprehensive pension fund (קרן חדשה מקיפה) per year of each member's balance. Old-age annuitants from 1 Feb 2022: up to 0.3% (reg. 3(א)(1א))."
     },
     "deposit_cap": {
       "value": 6,
       "unit": "pct_of_deposit",
       "source": {
-        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
-        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 3(א): \"מתוך התשלומים המועברים לקרן בשל כל עמית – בשיעור שלא יעלה על 6%\"",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=5",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131), p.5, reg. 3(א)(2)",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -56,39 +56,34 @@
     }
   },
   "il_finance_file": "provident-family-common.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
-      "title": "Management Fees Regulations, reg. 3(א) (Wikisource)",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg. 3(א)",
-      "locator_he": "תקנה 3(א)",
-      "anchor": "סעיף_3.א",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://www.nevo.co.il/law_html/law01/500_714.htm",
-      "title": "Nevo mirror",
-      "publisher": "Nevo",
-      "publisher_he": "נבו",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=5",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.5, reg. 3(א)",
+      "locator_he": "עמוד 5, תקנה 3(א)",
+      "page": 5,
+      "quote": "מתוך התשלומים המועברים לקרן בשל כל עמית - בשיעור שלא יעלה על 6%",
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.menoramivt.co.il/general/investments-management-fee",
-      "title": "Menora fees page",
-      "publisher": "Menora Mivtachim",
-      "publisher_he": "מנורה מבטחים",
-      "kind": "institution_doc",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8HBFRznZ1PqBBqBlhhXAb7L47e1dgbmyX~fXnBHkch8=#page=2",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשפ\"ב-2022 (קובץ התקנות 9942)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשפ\"ב-2022 (קובץ התקנות 9942)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "locator": "p.2, s.2",
+      "locator_he": "עמוד 2, סעיף 2",
+      "page": 2,
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -5,7 +5,7 @@ import { r3workbench as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import type { SortDir, SortKey } from "../../lib/workbench";
 import { IconChevronDown, IconSearch } from "../icons";
-import { cx } from "../ui";
+import { cx } from "../kit";
 
 /** Chips filter: a press shows that group alone; "הכול" shows every group; the pressed chip again returns to the default. */
 export function ExposureChips({ groups, open, onPress, onAll }: { groups: { key: string; label: string; count: number }[]; open: Set<string>; onPress: (key: string) => void; onAll: () => void }) {
@@ -69,7 +69,7 @@ export function WorkbenchControls({
           <label htmlFor="wb-filter" className="sr-only">
             {copy.filter}
           </label>
-          <input id="wb-filter" dir="auto" value={filter} onChange={(e) => onFilter(e.target.value)} placeholder={copy.filter} className="field-input !text-start" autoComplete="off" />
+          <input id="wb-filter" dir="rtl" value={filter} onChange={(e) => onFilter(e.target.value)} placeholder={copy.filter} className="field-input !text-start text-mixed" autoComplete="off" />
         </div>
         <div role="group" aria-label={copy.sort.aria} className={cx("inline-flex w-full rounded-md bg-muted p-[3px] gap-[3px] lg:max-w-2xl", compact && "max-lg:hidden")}>
           {sortKeys.map((v) => {

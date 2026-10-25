@@ -18,11 +18,11 @@
       "unit": "months",
       "source": {
         "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
-        "title": "צו הרחבה (נוסח משולב) לפנסיה חובה, 2011, section 6(ה)-(ו) (p. 6941): \"מיד בתום 6 חודשים מתחילת העבודה\"",
-        "publisher": "Minister of Industry, Trade and Labour (scan hosted on gov.il)",
+        "title": "צו הרחבה (נוסח משולב) לפנסיה חובה, 2011, p.4, s.6(ה)-(ו): \"מיד בתום 6 חודשים מתחילת העבודה\"",
+        "publisher": "Ministry of Labour (scan on gov.il)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -39,15 +39,17 @@
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
-      "title": "Extension order 2011 (scan)",
+      "title": "צו הרחבה (נוסח משולב) לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011",
       "title_he": "צו הרחבה [נוסח משולב] לפנסיה חובה, 2011",
       "publisher": "gov.il",
       "publisher_he": "משרד העבודה",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "section 6(ה)-(ו), p. 6941",
-      "locator_he": "סעיף 6(ה)-(ו), עמוד 6941",
-      "checked": "2026-10-22"
+      "locator": "p.4, s.6(ה)-(ו)",
+      "locator_he": "עמוד 4, סעיף 6(ה)-(ו)",
+      "page": 4,
+      "quote": "מיד בתום 6 חודשים מתחילת העבודה",
+      "checked": "2026-10-25"
     }
   ]
 }

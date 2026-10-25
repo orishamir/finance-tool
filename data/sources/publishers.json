@@ -29,6 +29,9 @@
   "irs.gov": { "publisher": "IRS", "publisher_he": "רשות המס האמריקאית (IRS)", "kind": "official_pdf", "mirror": null },
   "sipc.org": { "publisher": "SIPC", "publisher_he": "SIPC", "kind": "regulator_page", "mirror": null },
   "spglobal.com": { "publisher": "S&P Dow Jones Indices", "publisher_he": "S&P Dow Jones Indices", "kind": "other", "mirror": null },
+  "indexes.nasdaqomx.com": { "publisher": "Nasdaq Global Indexes", "publisher_he": "Nasdaq Global Indexes", "kind": "other", "mirror": null },
+  "msci.com": { "publisher": "MSCI", "publisher_he": "MSCI", "kind": "other", "mirror": null },
+  "www-cdn.msci.com": { "publisher": "MSCI", "publisher_he": "MSCI", "kind": "other", "mirror": null },
   "am.jpmorgan.com": { "publisher": "J.P. Morgan Asset Management", "publisher_he": "J.P. Morgan Asset Management", "kind": "other", "mirror": null },
   "ishares.com": { "publisher": "iShares", "publisher_he": "iShares", "kind": "institution_doc", "mirror": null },
   "blackrock.com": { "publisher": "BlackRock", "publisher_he": "BlackRock", "kind": "institution_doc", "mirror": null },
@@ -36,6 +39,7 @@
   "lbma.org.uk": { "publisher": "LBMA", "publisher_he": "LBMA", "kind": "other", "mirror": null },
   "ice.com": { "publisher": "ICE (Intercontinental Exchange)", "publisher_he": "ICE (Intercontinental Exchange)", "kind": "other", "mirror": null },
   "interactivebrokers.ie": { "publisher": "Interactive Brokers Ireland", "publisher_he": "Interactive Brokers", "kind": "institution_doc", "mirror": null },
+  "interactivebrokers.com": { "publisher": "Interactive Brokers", "publisher_he": "Interactive Brokers", "kind": "institution_doc", "mirror": null },
   "israelbonds.com": { "publisher": "Israel Bonds", "publisher_he": "Israel Bonds (בונדס)", "kind": "institution_doc", "mirror": null },
   "leumi.co.il": { "publisher": "Bank Leumi", "publisher_he": "בנק לאומי", "kind": "institution_doc", "mirror": null },
   "bankleumi.co.il": { "publisher": "Bank Leumi", "publisher_he": "בנק לאומי", "kind": "institution_doc", "mirror": null },
@@ -78,6 +82,9 @@
   "swiftness.co.il": { "publisher": "Swiftness (pension clearing house)", "publisher_he": "המסלקה הפנסיונית (סוויפטנס)", "kind": "institution_doc", "mirror": null },
   "hilan.co.il": { "publisher": "Hilan", "publisher_he": "חילן", "kind": "other", "mirror": null },
   "prisha.co.il": { "publisher": "Prisha.co.il", "publisher_he": "אתר פרישה (prisha.co.il)", "kind": "circular", "mirror": null },
+  "olaw.org.il": { "publisher": "Open Law (copy of Reshumot)", "publisher_he": "החוק הפתוח (צילום רשומות)", "kind": "regulation", "mirror": null },
+  "esma.europa.eu": { "publisher": "ESMA (European Securities and Markets Authority)", "publisher_he": "רשות ניירות הערך והשווקים האירופית (ESMA)", "kind": "regulator_page", "mirror": null },
+  "amf-france.org": { "publisher": "AMF (French markets authority), hosting an ESMA document", "publisher_he": "רשות השווקים הפיננסיים של צרפת (AMF), עותק של מסמך ESMA", "kind": "regulator_page", "mirror": null },
   "analyst.co.il": { "publisher": "Analyst", "publisher_he": "אנליסט", "kind": "circular", "mirror": null },
   "capitax.co.il": { "publisher": "Capitax", "publisher_he": "קפיטקס (capitax.co.il)", "kind": "other", "mirror": null },
   "adif-web-bucket.s3-eu-west-1.amazonaws.com": { "publisher": "Adif (copy)", "publisher_he": "עדיף (עותק)", "kind": "official_pdf", "mirror": null },
@@ -97,5 +104,8 @@
   "he.wikipedia.org": { "publisher": "Hebrew Wikipedia", "publisher_he": "ויקיפדיה", "kind": "article", "mirror": null },
   "meitar.com": { "publisher": "Meitar law firm", "publisher_he": "מיתר עורכי דין", "kind": "article", "mirror": null },
   "shibolet.com": { "publisher": "Shibolet law firm", "publisher_he": "שבלת עורכי דין", "kind": "article", "mirror": null },
-  "behar-law.co.il": { "publisher": "behar-law.co.il", "publisher_he": "behar-law.co.il", "kind": "other", "mirror": null }
+  "behar-law.co.il": { "publisher": "behar-law.co.il", "publisher_he": "behar-law.co.il", "kind": "other", "mirror": null },
+  "free-justice.openapi.gov.il": { "publisher": "Reshumot (Ministry of Justice) – official gazette file service", "publisher_he": "רשומות (משרד המשפטים)", "kind": "law", "mirror": null },
+  "tazkirim.gov.il": { "publisher": "Government legislation website (Ministry of Justice)", "publisher_he": "אתר החקיקה הממשלתי", "kind": "law", "mirror": null },
+  "www.tazkirim.gov.il": { "publisher": "Government legislation website (Ministry of Justice)", "publisher_he": "אתר החקיקה הממשלתי", "kind": "law", "mirror": null }
 }

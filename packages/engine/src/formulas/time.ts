@@ -66,6 +66,21 @@ export function fxPath(annualChange: number, months: number): number[] {
 }
 
 /**
+ * F-84 Exchange rate (cross rate). Shekels per one unit of `code`: `S_c = E_ILS / E_c`, where `perEur` holds the
+ * ECB's units of each currency per one euro on one reference day; `S_EUR = E_ILS`, `S_ILS = 1` ("NIS" is read
+ * as "ILS"). Null when the day holds no shekel rate or no rate for `code` (D26).
+ */
+export function crossRate(perEur: Readonly<Record<string, number>>, code: string): number | null {
+  const c = code === "NIS" ? "ILS" : code.toUpperCase();
+  const ils = perEur.ILS;
+  if (!ils) return null;
+  if (c === "ILS") return 1;
+  if (c === "EUR") return ils;
+  const per = perEur[c];
+  return per ? ils / per : null;
+}
+
+/**
  * F-05 Contributions. `C_0` = amount now; for `m ≥ 1`, `C_m = C × I_m` when A-04 is "constant real", else
  * `C_m = C`. Ceilings are applied by the wrapper that has one (section 8).
  */

@@ -20,20 +20,23 @@
       "publisher_he": "משרד האוצר",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.5 item 2 (`פטור ממס רווחי הון בעת שינוי הרכב הנכסים (דחיית מס)`)",
+      "locator": "p.5, item 2",
       "page": 5,
-      "checked": "2026-10-22"
+      "quote": "פטור ממס רווחי הון בעת שינוי הרכב הנכסים (דחיית מס)",
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לאישור_ולניהול_קופות_גמל)",
-      "title": "Income Tax Rules 1964",
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
       "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "משרד האוצר",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.9, reg. 33ב(ב)",
+      "locator_he": "עמוד 9, תקנה 33ב(ב)",
+      "page": 9,
+      "checked": "2026-10-25"
     }
   ]
 }

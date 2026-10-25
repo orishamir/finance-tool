@@ -364,12 +364,26 @@
     flex-direction: column;
     gap: 14px;
   }
+  /* The back and close buttons float over the body's top corners, centred on its first line (the handle, 16px, and the
+     body's 4px above it on a phone); the first child keeps clear of them. The head is outside the scrolling, so the buttons
+     stay put while the body scrolls under them. */
   .sheet-head {
+    position: absolute;
+    top: 13px;
+    inset-inline: 8px;
+    z-index: 1;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    min-height: 0;
-    margin-bottom: -10px;
+    pointer-events: none;
+  }
+  .sheet-head > * {
+    pointer-events: auto;
+  }
+  .sheet-head + * {
+    padding-inline-end: 36px;
+  }
+  .sheet-head[data-back] + * {
+    padding-inline-start: 36px;
   }
   @media (min-width: 64rem) {
     .sheet {
@@ -394,6 +408,10 @@
     }
     .sheet-body {
       padding: 12px 20px 20px;
+    }
+    .sheet-head {
+      top: 8px;
+      inset-inline: 10px;
     }
   }
   @keyframes sheet-in {
@@ -484,6 +502,13 @@
   }
   .field-box-error {
     border-color: var(--destructive);
+  }
+  /* A Hebrew text field that may hold Latin (a fund name, a rule id, a pasted track name): right to left and right-aligned
+     when empty, and each entry keeps the order of its own punctuation (2026-10-25: `dir="auto"` made an empty field left to
+     right, so the search hint sat at the left). Used with `dir="rtl"`. */
+  .text-mixed {
+    unicode-bidi: plaintext;
+    text-align: right !important;
   }
   .field-input {
     flex: 1;

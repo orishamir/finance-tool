@@ -495,3 +495,41 @@ describe("side stores in the export file (A32)", () => {
 });
 
 const emptyOf2 = (): StateV3 => ({ version: 3, goals: [], inputs: {}, holdings: [], uncatalogued: [], imports: [], savedComparisons: [] });
+
+describe("the index page's saved state (D28)", () => {
+  const nikkei = { id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: day };
+
+  it("keeps a custom index and the current broker through the store and the export file", async () => {
+    const { saveCustomIndex, setCurrentBroker, removeCustomIndex } = await import("./state");
+    ensureLoaded();
+    saveCustomIndex(nikkei);
+    setCurrentBroker("leumi");
+    flush(true);
+    const raw = JSON.parse(storage.data.get(STATE_KEY)!);
+    expect(raw.customIndices).toEqual([nikkei]);
+    expect(raw.broker).toBe("leumi");
+    const file = buildStateFile(getSnapshot().state, site, new Date("2026-10-25T10:00:00Z"));
+    const read = readImport(stateFileText(file));
+    if (!read.ok) throw new Error("refused");
+    expect(read.preview.state.customIndices).toEqual([nikkei]);
+    removeCustomIndex("custom-nikkei");
+    expect(getSnapshot().state.customIndices).toBeUndefined();
+  });
+
+  it("loads a document saved before this release, and leaves out a custom index that fails its shape", () => {
+    const old = { version: 3, goals: [], inputs: {}, holdings: [], uncatalogued: [], imports: [], savedComparisons: [] };
+    storage.data.set(STATE_KEY, JSON.stringify(old));
+    expect(ensureLoaded().status).toBe("ok");
+    expect(getSnapshot().state.customIndices).toBeUndefined();
+    resetStore(storage);
+    storage.data.set(STATE_KEY, JSON.stringify({ ...old, customIndices: [nikkei, { id: "x" }, 5] }));
+    ensureLoaded();
+    expect(getSnapshot().state.customIndices).toEqual([nikkei]);
+  });
+
+  it("import add keeps the device's indices and adds the file's others", () => {
+    const base: StateV3 = { version: 3, goals: [], inputs: {}, holdings: [], uncatalogued: [], imports: [], savedComparisons: [] };
+    const merged = applyImport({ ...base, customIndices: [nikkei] }, { ...base, customIndices: [nikkei, { id: "custom-b", name: "ב", israeli: true, added: day }] }, "add", day);
+    expect(merged.state.customIndices!.map((c) => c.id)).toEqual(["custom-nikkei", "custom-b"]);
+  });
+});

@@ -3,7 +3,7 @@
   "title": "Provident fund for annuity: same process, no insurance to carry",
   "title_he": "ניוד קופת גמל לקצבה: אותו תהליך, בלי ביטוח",
   "text_he": "קופת גמל לקצבה (תגמולים ופיצויים אישיים) עוברת לפי אותו חוזר ובחלק הטופס המתאים, בין קופות לקצבה ובין קופות תגמולים. אין בה ביטוח משותף, ולכן כלל רציפות הביטוח חל רק כשהקופה הקולטת היא קרן פנסיה. היא יכולה לעבור לקופת גמל בניהול אישי רק בסוגי כסף מותרים ועד התקרה, וכספי פיצויים רק באישור המעסיק.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
     "eligibility"
@@ -13,29 +13,42 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)",
-      "title": "Transfer Regulations, regs. 2(א)(1), 3(א)(1)",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "regs. 2(א)(1), 3(א)(1)",
-      "locator_he": "תקנות 2(א)(1), 3(א)(1)",
-      "anchor": "סעיף_2.א",
-      "checked": "2026-10-22"
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.4, reg. 2(א)(1)",
+      "locator_he": "עמוד 4, תקנה 2(א)(1)",
+      "page": 4,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.analyst.co.il/media/dtnkdiyk/%D7%97%D7%95%D7%96%D7%A8-%D7%92%D7%95%D7%A4%D7%99%D7%9D-%D7%9E%D7%95%D7%A1%D7%93%D7%99%D7%99%D7%9D-2017-9-17-%D7%94%D7%A2%D7%91%D7%A8%D7%AA-%D7%9B%D7%A1%D7%A4%D7%99%D7%9D-%D7%91%D7%99%D7%9F-%D7%A7%D7%95%D7%A4%D7%95%D7%AA-%D7%92%D7%9E%D7%9C.pdf",
-      "title": "Circular 2017-9-17, Annex A part 2",
-      "title_he": "חוזר גופים מוסדיים 2017-9-17: העברת כספים בין קופות גמל",
-      "publisher": "Analyst",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=5",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.5, reg. 3(א)(1)",
+      "locator_he": "עמוד 5, תקנה 3(א)(1)",
+      "page": 5,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+      "title": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+      "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+      "publisher": "gov.il",
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "checked": "2026-10-22",
-      "qualifier": "(third-party host)"
+      "strength": "primary",
+      "locator": "pp.14-15, Annex A",
+      "page": 14,
+      "checked": "2026-10-25"
     }
   ],
   "derived_from": [

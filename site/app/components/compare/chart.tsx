@@ -4,12 +4,12 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { scaleLinear } from "d3-scale";
 import { line } from "d3-shape";
-import { buttons, guide as guideCopy, r2 } from "../../copy";
+import { guide as guideCopy, r2 } from "../../copy";
 import type { SeriesLine } from "../../lib/compare";
 import { fmt } from "../../lib/format";
 import { durationChart, Num } from "../provenance";
-import { AxisLabels, niceYearTicks, scrollCueStyle } from "../chart/TimelineChart";
-import { Disclosure, cx } from "../ui";
+import { AxisLabels, niceYearTicks } from "../chart/TimelineChart";
+import { ChartLegend as Legend, ChartReadout as Readout, ChartTable as Table, Swatch, cx } from "../kit";
 import type { Mode, ResultCtx } from "./ctx";
 
 const STRIP = 104;
@@ -166,84 +166,39 @@ export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dim
 }
 
 export function ChartLegend({ lines }: { lines: SeriesLine[] }) {
-  return (
-    <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label="מקרא">
-      {lines.map((l) => (
-        <li key={l.id} className="flex items-center gap-1.5">
-          {l.enteredReturn ? (
-            <svg width="14" height="3" aria-hidden="true">
-              <line x1="0" y1="1.5" x2="14" y2="1.5" strokeDasharray="4 2" strokeWidth="3" className={roleClass[l.role].stroke} />
-            </svg>
-          ) : (
-            <span className={cx("w-3.5 h-[3px] rounded-sm", roleClass[l.role].bg)} />
-          )}
-          <bdi>{l.name}</bdi>
-        </li>
-      ))}
-    </ul>
-  );
+  return <Legend items={lines.map((l) => ({ id: l.id, swatch: l.enteredReturn ? <Swatch shape="entered-line" className={roleClass[l.role].stroke} /> : <Swatch className={roleClass[l.role].bg} />, label: <bdi>{l.name}</bdi> }))} />;
 }
 
 /** One row per line at the hovered year (or the horizon): swatch, name, value. */
 export function ChartReadout({ lines, mode, year, ctx }: { lines: SeriesLine[]; mode: Mode; year: number; ctx: ResultCtx }) {
   return (
-    <dl className="readout" aria-live="polite">
-      <div className="readout-row readout-head">
-        <dt>{year === 0 ? guideCopy.readout.today : `${r2.result.chartYear} ${year}`}</dt>
-        <dd />
-      </div>
-      {lines.map((l) => {
+    <Readout
+      title={year === 0 ? guideCopy.readout.today : `${r2.result.chartYear} ${year}`}
+      rows={lines.map((l) => {
         const p = l.points.find((q) => q.year === year) ?? l.points[l.points.length - 1]!;
         const opt = ctx.view.ranked.find((o) => o.id === l.id);
         const v = mode === "real" ? p.real : p.nominal;
-        return (
-          <div key={l.id} className="readout-row">
-            <dt className="flex items-center gap-2">
-              <span className={cx("w-3.5 h-[3px] rounded-sm", roleClass[l.role].bg)} />
-              <bdi>{l.name}</bdi>
-            </dt>
-            <dd>
-              <Num value={ctx.mk.nis(v, mode === "real" ? "F-06" : "F-09", l.name, opt)} animate />
-            </dd>
-          </div>
-        );
+        return { id: l.id, swatch: <Swatch className={roleClass[l.role].bg} />, label: <bdi>{l.name}</bdi>, value: <Num value={ctx.mk.nis(v, mode === "real" ? "F-06" : "F-09", l.name, opt)} animate /> };
       })}
-    </dl>
+    />
   );
 }
 
 export function ChartTable({ lines, mode, ctx }: { lines: SeriesLine[]; mode: Mode; ctx: ResultCtx }) {
   const years = lines[0]?.points.map((p) => p.year) ?? [];
   return (
-    <Disclosure label={buttons.showTable} openLabel={buttons.hideTable} summaryClassName="text-sm">
-      <div className="overflow-x-auto mt-2" style={scrollCueStyle}>
-        <table className="tbl text-sm">
-          <thead>
-            <tr>
-              <th scope="col">{r2.result.tableYear}</th>
-              {lines.map((l) => (
-                <th key={l.id} scope="col">
-                  <bdi>{l.name}</bdi>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {years.map((yr) => (
-              <tr key={yr}>
-                <th scope="row">
-                  <bdi dir="ltr">{yr}</bdi>
-                </th>
-                {lines.map((l) => {
-                  const p = l.points.find((q) => q.year === yr);
-                  const opt = ctx.view.ranked.find((o) => o.id === l.id);
-                  return <td key={l.id}>{p ? <Num size="cell" value={ctx.mk.nis(mode === "real" ? p.real : p.nominal, mode === "real" ? "F-06" : "F-09", l.name, opt)} /> : null}</td>;
-                })}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </Disclosure>
+    <Table
+      rowHead={r2.result.tableYear}
+      columns={lines.map((l) => ({ id: l.id, head: <bdi>{l.name}</bdi> }))}
+      rows={years.map((yr) => ({
+        key: yr,
+        head: yr,
+        cells: lines.map((l) => {
+          const p = l.points.find((q) => q.year === yr);
+          const opt = ctx.view.ranked.find((o) => o.id === l.id);
+          return p ? <Num size="cell" value={ctx.mk.nis(mode === "real" ? p.real : p.nominal, mode === "real" ? "F-06" : "F-09", l.name, opt)} /> : null;
+        }),
+      }))}
+    />
   );
 }

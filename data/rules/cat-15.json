@@ -14,27 +14,30 @@
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-      "title": "CMA circular 2022-9-30",
-      "title_he": "חוזר גופים מוסדיים 2022-9-30: ניהול מסלולי השקעה בקופות גמל",
+      "title": "חוזר גופים מוסדיים 2022-9-30 מסלולי השקעה בקופות גמל - תיקון",
+      "title_he": "חוזר גופים מוסדיים 2022-9-30: מסלולי השקעה בקופות גמל – תיקון",
       "publisher": "gov.il",
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
-      "locator": "appendix ss.2",
+      "locator": "pp.3, 7, s.2",
+      "locator_he": "עמודים 3, 7, סעיף 2",
+      "page": 3,
       "quote": "רשימת מסלולי השקעה",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-25/he/Management-of-investment-tracks-in-a-provident-fund-draft.pdf",
-      "title": "draft 2020-253",
+      "title": "חוזר גופים מוסדיים 2020-253 ניהול מסלולי השקעה בקופת גמל - טיוטה (19.5.2022)",
+      "title_he": "חוזר גופים מוסדיים 2020-253 ניהול מסלולי השקעה בקופת גמל - טיוטה (19.5.2022)",
       "publisher": "gov.il",
       "publisher_he": "אתר הממשלה (gov.il)",
-      "kind": "official_pdf",
+      "kind": "circular",
       "strength": "primary",
       "locator": "p.14",
       "locator_he": "עמוד 14",
       "page": 14,
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "qualifier": "(draft labelled)"
     }
   ]

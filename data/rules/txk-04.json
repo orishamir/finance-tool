@@ -3,7 +3,7 @@
   "title": "Track switches and transfers between kupot gemel lehashkaa are not taxed",
   "title_he": "מעבר מסלול והעברה בין קופות גמל להשקעה אינם ממוסים",
   "text_he": "המס על קופת גמל להשקעה חל על סכומים שיחיד 'משך' ממנה. מעבר בין מסלולים בתוך הקופה, או העברת היתרה לקופת גמל להשקעה אחרת, אינם משיכה, ובהעברה מועדי ההפקדה לקופה המעבירה נחשבים מועדי הפקדה לקופה המקבלת. בחוק אין משפט מפורש שאומר 'אין אירוע מס'; המסקנה נשענת על נוסח המשיכה ועל הפטור ברמת הקופה, וחברה מנהלת אומרת זאת במפורש. העברה למוצר אחר, למשל לחשבון השקעות, היא משיכה.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "switching-tax-event",
     "transfer-switch-process"
@@ -14,41 +14,59 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)",
-      "title": "Transfer regulations 2008, Wikisource",
-      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg. 3(א)(11א), 3(ב)(1)",
-      "locator_he": "תקנה 3(א)(11א), 3(ב)(1)",
-      "anchor": "סעיף_3.א",
-      "checked": "2026-10-22"
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.21, s.3(ה4)(3)",
+      "locator_he": "עמוד 21, סעיף 3(ה4)(3)",
+      "page": 21,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Ordinance PDF",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/tZDvucD9RCpb4OFgftW2Mghx2FA7HU11Svr+ngxOA9o=#page=2",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התש\"ף-2020, קובץ התקנות 8735",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התש\"ף-2020, קובץ התקנות 8735",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "p.8, s.3(ה4)(3)",
-      "locator_he": "עמוד 8, סעיף 3(ה4)(3)",
-      "anchor": "סעיף_3.ה4",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.2, s.3",
+      "locator_he": "עמוד 2, סעיף 3",
+      "page": 2,
+      "quote": "מקופת גמל להשקעה לקופת גמל להשקעה אחרת",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=6",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008, קובץ התקנות 6657",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.6, reg. 3(ב)(1)",
+      "locator_he": "עמוד 6, תקנה 3(ב)(1)",
+      "page": 6,
+      "quote": "ויראו לעניין דיני המס",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.harel-group.co.il/long-term-savings/funding-saving/join/doclib/%d7%92%d7%9e%d7%9c%20%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94.pdf",
-      "title": "Harel, \"קופת גמל להשקעה\" flyer (2023)",
+      "title": "קופת גמל להשקעה (עלון הראל, 2023)",
+      "title_he": "קופת גמל להשקעה (עלון הראל, 2023)",
       "publisher": "Harel",
       "publisher_he": "הראל",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "ללא אירוע מס",
+      "checked": "2026-10-25"
     }
   ]
 }

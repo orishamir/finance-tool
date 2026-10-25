@@ -10,6 +10,8 @@ export interface OwnTerms {
   rate?: number;
   fee?: number;
   provider?: string;
+  /** The index the person chose for the brokerage option (D27: none until they choose), an `equity_index` exposure id. */
+  index?: string;
 }
 
 /** As stored: a bare number is a rate (older files and devices), an object holds either or both. */
@@ -31,12 +33,13 @@ export function termsOfStored(v: unknown): OwnTerms | null {
   if (okPct(o.rate)) out.rate = o.rate;
   if (okPct(o.fee)) out.fee = o.fee;
   if (okProvider(o.provider)) out.provider = o.provider;
+  if (okProvider(o.index)) out.index = o.index;
   return Object.keys(out).length > 0 ? out : null;
 }
 
 /** The canonical stored form: a bare number when only a rate is held (the old shape), else the object. */
 export function storedOfTerms(t: OwnTerms): OwnTermsStored {
-  return t.fee === undefined && t.provider === undefined && t.rate !== undefined ? t.rate : t;
+  return t.fee === undefined && t.provider === undefined && t.index === undefined && t.rate !== undefined ? t.rate : t;
 }
 
 export function parseOwnRates(raw: unknown): OwnRates {
@@ -65,21 +68,23 @@ export function termsOfGoal(stored: Record<string, OwnTermsStored> | undefined):
 }
 
 /** What `RunGoal` takes: the entered rates, the entered fees and the chosen providers, by wrapper id. */
-export function splitOwnTerms(terms: Record<string, OwnTerms>): { ownRates: Record<string, number>; ownFees: Record<string, number>; ownProviders: Record<string, string> } {
+export function splitOwnTerms(terms: Record<string, OwnTerms>): { ownRates: Record<string, number>; ownFees: Record<string, number>; ownProviders: Record<string, string>; ownIndices: Record<string, string> } {
   const ownRates: Record<string, number> = {};
   const ownFees: Record<string, number> = {};
   const ownProviders: Record<string, string> = {};
+  const ownIndices: Record<string, string> = {};
   for (const [w, t] of Object.entries(terms)) {
     if (t.rate !== undefined) ownRates[w] = t.rate;
     if (t.fee !== undefined) ownFees[w] = t.fee;
     if (t.provider !== undefined) ownProviders[w] = t.provider;
+    if (t.index !== undefined) ownIndices[w] = t.index;
   }
-  return { ownRates, ownFees, ownProviders };
+  return { ownRates, ownFees, ownProviders, ownIndices };
 }
 
 const store = deviceStore<OwnRates>("mekor.v2.own-rates", {}, parseOwnRates, (v) => v);
 
-type Patch = { rate?: number | undefined; fee?: number | undefined; provider?: string | undefined };
+type Patch = { rate?: number | undefined; fee?: number | undefined; provider?: string | undefined; index?: string | undefined };
 
 function apply(all: OwnRates, goalId: string, wrapperId: string, patch: Patch, keys: readonly (keyof Patch)[]): OwnRates {
   const mine = { ...(all[goalId] ?? {}) };
@@ -88,6 +93,7 @@ function apply(all: OwnRates, goalId: string, wrapperId: string, patch: Patch, k
     const v = patch[k];
     if (v === undefined) delete cur[k];
     else if (k === "provider") cur.provider = v as string;
+    else if (k === "index") cur.index = v as string;
     else cur[k] = v as number;
   }
   if (Object.keys(cur).length === 0) delete mine[wrapperId];
@@ -101,7 +107,7 @@ function apply(all: OwnRates, goalId: string, wrapperId: string, patch: Patch, k
 /** Sets one field of one wrapper's terms: a percentage for `rate` and `fee`, a provider id for `provider`; undefined clears it. */
 export type OwnTermsSetter = {
   (wrapperId: string, field: "rate" | "fee", pct: number | undefined): void;
-  (wrapperId: string, field: "provider", id: string | undefined): void;
+  (wrapperId: string, field: "provider" | "index", id: string | undefined): void;
 };
 
 /** The goal's entered terms by wrapper id, and a setter for one field of one wrapper (undefined clears it). Reads after hydration. */

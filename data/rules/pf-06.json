@@ -6,7 +6,7 @@
   "figure_names_he": {
     "balance_cap": "תקרת דמי הניהול השנתיים מהיתרה"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "fee-management-balance",
     "fee-deposit"
@@ -17,12 +17,12 @@
       "value": 2,
       "unit": "pct_per_year",
       "source": {
-        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
-        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 4, 5 (Hebrew Wikisource; Nevo mirror)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131), p.6, reg. 4",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -38,27 +38,18 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
-      "title": "Management Fees Regulations, reg. 4, 5 (Wikisource)",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg. 4, 5",
-      "locator_he": "תקנה 4, 5",
-      "anchor": "סעיף_4",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://www.nevo.co.il/law_html/law01/500_714.htm",
-      "title": "Nevo mirror",
-      "publisher": "Nevo",
-      "publisher_he": "נבו",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.6, regs. 4, 5",
+      "locator_he": "עמוד 6, תקנות 4, 5",
+      "page": 6,
+      "quote": "רשאית לגבות דמי ניהול מיתרת הכספים הצבורה בחשבונו של כל עמית",
+      "checked": "2026-10-25"
     }
   ]
 }
