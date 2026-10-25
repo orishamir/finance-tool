@@ -17,6 +17,12 @@ export interface DepositInput {
     termMonths: number;
     /** A-16: unlinked, CPI-linked, or prime-linked (taxed as unlinked by the rule base's reading, TXI-04). */
     linkage: "unlinked" | "cpi" | "prime";
+    /**
+     * F-26 (2026-10-25): the largest balance of a current account that earns the rate (the record's `amount_range.max`,
+     * BANK-09); interest is on min(balance, ceiling). Read for a current account only; a deposit's amount range is a
+     * condition of the offer, not a cap on what the ladder holds.
+     */
+    balanceCeiling?: number;
   };
   profile: Profile;
 }
@@ -85,10 +91,17 @@ export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
     const due = open.filter((d) => d.startMonth + n - 1 === m || m === T);
     open = open.filter((d) => !due.includes(d));
     let rolled = 0;
+    // F-26: the current account pays on the first `balanceCeiling` of the whole balance; the open pieces share that
+    // part in proportion to their size (all of them are one month old, termMonths 1)
+    let earning = 1;
+    if (isCurrentAccount && deposit.balanceCeiling !== undefined) {
+      const balance = due.reduce((s, d) => s + d.principal, 0);
+      if (balance > deposit.balanceCeiling) earning = deposit.balanceCeiling / balance;
+    }
     for (const d of due) {
       const months = m - d.startMonth + 1;
       const indexed = d.principal * (linked ? I[m]! / d.baseIndex : 1);
-      const interest = depositInterest(indexed, deposit.rate, months);
+      const interest = depositInterest(indexed * earning, deposit.rate, months);
       const tax = rate * interest;
       totalInterest += interest;
       yearTaxable += interest;

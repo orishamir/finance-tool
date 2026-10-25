@@ -29,7 +29,7 @@ describe("provider workbench view", () => {
     const r = run(q());
     expect(r.kind).toBe("ok");
     if (r.kind !== "ok") return;
-    const providers = bundle.snapshots.filter((s) => s.provider.class === "bank" || s.provider.class === "broker");
+    const providers = bundle.snapshots.filter((s) => s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker");
     expect(r.view.rows.map((x) => x.id).sort()).toEqual(providers.map((s) => s.id).sort());
     expect(r.view.coverage.considered).toBe(providers.length);
     expect(r.view.coverage.ranked.length + r.view.coverage.notComparable.length).toBe(providers.length);
@@ -42,7 +42,7 @@ describe("provider workbench view", () => {
     const r = run(q());
     if (r.kind !== "ok") throw new Error("not ok");
     const missing = r.view.rows.filter((x) => x.reason?.code === "data-missing");
-    const files = bundle.snapshots.filter((s) => (s.provider.class === "bank" || s.provider.class === "broker") && s.missing);
+    const files = bundle.snapshots.filter((s) => (s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker") && s.missing);
     expect(missing.map((x) => x.id).sort()).toEqual(files.map((s) => s.id).sort());
     for (const m of missing) expect(m.reason).toMatchObject({ code: "data-missing" });
   });
@@ -61,13 +61,23 @@ describe("provider workbench view", () => {
   });
 
   it("re-ranks when the trades a month go from one to ten (A-28)", () => {
-    const one = run(q());
-    const ten = run(q({ orders: 10 }));
+    // an Israeli ETF (2026-10-25): since a tariff with no line for tracking funds gives no price, the P-05 tracking fund ranks too few providers to re-rank
+    const one = run(q({ fund: "1148162" }));
+    const ten = run(q({ fund: "1148162", orders: 10 }));
     if (one.kind !== "ok" || ten.kind !== "ok") throw new Error("not ok");
     const order = (x: typeof one) => x.view.rows.filter((r) => r.kind === "ranked").map((r) => r.id);
     expect(order(one)).not.toEqual(order(ten));
     expect(ten.view.behaviour.orders.state).toBe("entered");
     expect(one.view.behaviour.orders.state).toBe("sourced");
+  });
+
+  it("gives no price, not a free trade, to a tariff with no buy/sell line for the fund's class (F-63, MF-26)", () => {
+    const r = run(q());
+    if (r.kind !== "ok") throw new Error("not ok");
+    const oneZero = r.view.rows.find((x) => x.id === "one-zero")!;
+    expect(oneZero.kind).toBe("not-comparable");
+    expect(oneZero.reason).toMatchObject({ code: "no-applicable-line" });
+    for (const row of r.view.rows.filter((x) => x.kind === "ranked")) expect(row.noLine ?? []).not.toContain("trade");
   });
 
   it("shows the lines the engine cannot choose between as not comparable, naming them", () => {

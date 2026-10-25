@@ -1,0 +1,662 @@
+{
+  "id": "interactive-brokers",
+  "provider": {
+    "name_he": "Interactive Brokers (לקוח ישיר)",
+    "class": "foreign_broker",
+    "regulator": "foreign",
+    "regulator_foreign": {
+      "name": "SEC and CFTC (Interactive Brokers LLC, US) or Central Bank of Ireland (Interactive Brokers Ireland), by the entity that carries the account",
+      "name_he": "SEC ו־CFTC בארה\"ב (Interactive Brokers LLC) או הבנק המרכזי של אירלנד (Interactive Brokers Ireland), לפי הישות שמנהלת את החשבון",
+      "country": "US or Ireland (by entity)"
+    },
+    "tase_member": false,
+    "protection_rule_ids": [
+      "BRK-14",
+      "BRK-35",
+      "BRK-43"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+    "title": "Commissions: Stocks, ETFs, Warrants and Structured Products; Spot Currencies; Other Fees; Required Minimums (interactivebrokers.com, ללא תאריך; אותן טבלאות ב-interactivebrokers.ie). התעריף ללקוח ישיר; לקוח שהופנה דרך ברוקר מציג משלם את תעריף הברוקר המציג",
+    "published": null,
+    "format": "html"
+  },
+  "snapshot": "2026-10-25",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "interactive-brokers-buy-sell-us-fixed",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.005,
+        "unit": "usd_per_share",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United States, IBKR Pro - Fixed",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "Printed per share: 'USD 0.005' a share (unit usd_per_share since 2026-10-25), 'Minimum per order (shares) USD 1.00', 'Maximum per order 1% of Trade Value' (recorded in cap). 'In the event the calculated maximum per order is less than the minimum per order, the maximum per order will be assessed.' Third-party fees for Fixed: regulatory fees (SEC Transaction Fee USD 0.0000206 * Value of Aggregate Sales; FINRA Trading Activity Fee, with a 'Fee Holiday ... from Oct 1, 2026 through Dec 31, 2026'; FINRA CAT fees USD 0.000003 * Quantity). IBKR Lite (USD 0 commissions) is 'US Residents Only'. The page: 'The published rates are for direct clients of IBKR. Clients introduced through another broker or managed by an advisor may pay additional commissions set by their introducing broker or advisor.' The same tables are on interactivebrokers.ie (IB Ireland) as read on 2026-10-25."
+      },
+      "min": {
+        "value": 1.0,
+        "unit": "usd_per_trade",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United States, IBKR Pro - Fixed, Minimum per order (shares)",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "'USD 1.00' per order (unit usd_per_trade since 2026-10-25)."
+      },
+      "max": null,
+      "cap": {
+        "value": 1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com), United States, IBKR Pro - Fixed, 'Maximum per order 1% of Trade Value'",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "'Maximum per order 1% of Trade Value'; 'In the event the calculated maximum per order is less than the minimum per order, the maximum per order will be assessed.' (the cap wins over the minimum). Commission = min(cap x trade, max(minimum, rate x shares))."
+      },
+      "period": null,
+      "channel": null,
+      "band": "IBKR Pro - Fixed: מניות ותעודות סל בארה\"ב",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "IBKR Pro - Fixed",
+          "United States"
+        ]
+      }
+    },
+    {
+      "id": "interactive-brokers-buy-sell-us-tiered",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.0035,
+        "unit": "usd_per_share",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United States, IBKR Pro - Tiered",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "Printed per share by monthly volume; the rate recorded is the first tier ('≤ 300,000' shares 'USD 0.0035', unit usd_per_share since 2026-10-25), then 0.0020, 0.0015, 0.0010, 0.0005 (a monthly plan of a few hundred shekels stays in the first tier); 'Minimum per order (shares) USD 0.35'; 'Maximum per order 1% of Trade Value' and 'Tiered commissions will be capped at 0.5% of trade value' (both printed). Plus regulatory, exchange, clearing (NSCC, DTC USD 0.00020 per share) and pass-through fees (NYSE Commissions * 0.000175; FINRA Commissions * 0.000565). The page: 'The published rates are for direct clients of IBKR. Clients introduced through another broker or managed by an advisor may pay additional commissions set by their introducing broker or advisor.' The same tables are on interactivebrokers.ie (IB Ireland) as read on 2026-10-25."
+      },
+      "min": {
+        "value": 0.35,
+        "unit": "usd_per_trade",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United States, IBKR Pro - Tiered, Minimum per order (shares)",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "'USD 0.35' per order (unit usd_per_trade since 2026-10-25)."
+      },
+      "max": null,
+      "cap": {
+        "value": 1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com), United States, IBKR Pro - Tiered, 'Maximum per order 1% of Trade Value'",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "'Maximum per order 1% of Trade Value' as printed in the table. The same page also prints 'Tiered commissions will be capped at 0.5% of trade value'; the 1% figure is recorded because it is the table's own 'Maximum per order', the 0.5% reading is the open doubt. Commission = min(cap x trade, max(minimum, rate x shares))."
+      },
+      "period": null,
+      "channel": null,
+      "band": "IBKR Pro - Tiered: מניות ותעודות סל בארה\"ב",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "IBKR Pro - Tiered",
+          "United States"
+        ]
+      }
+    },
+    {
+      "id": "interactive-brokers-buy-sell-lse-usd-fixed",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.05,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United Kingdom, USD Denominated, Fixed - IB SmartRouting",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "'0.05% of Trade Value', 'Minimum per order (shares) USD 4.00', 'Maximum per order (shares) None'. Direct Routing: 0.10%, minimum USD 6.00. This is the line for a USD-quoted UCITS ETF on the LSE such as CSPX. Example printed: '250 Shares @ USD 32 Share Price = USD 4.00'. The page: 'The published rates are for direct clients of IBKR. Clients introduced through another broker or managed by an advisor may pay additional commissions set by their introducing broker or advisor.' The same tables are on interactivebrokers.ie (IB Ireland) as read on 2026-10-25."
+      },
+      "min": {
+        "value": 4.0,
+        "unit": "usd_per_trade",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United Kingdom, USD Denominated, Fixed - IB SmartRouting, Minimum per order (shares)",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "'USD 4.00'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "IBKR Pro - Fixed: בורסת לונדון, נקוב בדולר",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "IBKR Pro - Fixed",
+          "United Kingdom",
+          "USD Denominated"
+        ]
+      }
+    },
+    {
+      "id": "interactive-brokers-buy-sell-lse-usd-tiered",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.05,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United Kingdom, USD Denominated, Tiered",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "'0.05% of Trade Value' up to the first monthly value tier (then 0.03%, 0.02%, 0.015%), 'Minimum per order (shares) USD 1.70', 'Maximum per order (shares) USD 39.00'. Plus exchange and clearing fees for LSE, LSEETF and LSEIOB1; their amounts sit in a collapsed section that the page text read does not show (not collected). The page: 'The published rates are for direct clients of IBKR. Clients introduced through another broker or managed by an advisor may pay additional commissions set by their introducing broker or advisor.' The same tables are on interactivebrokers.ie (IB Ireland) as read on 2026-10-25."
+      },
+      "min": {
+        "value": 1.7,
+        "unit": "usd_per_trade",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United Kingdom, USD Denominated, Tiered, Minimum per order (shares)",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "'USD 1.70'."
+      },
+      "max": {
+        "value": 39.0,
+        "unit": "usd_per_trade",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United Kingdom, USD Denominated, Tiered, Maximum per order (shares)",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "'USD 39.00'."
+      },
+      "period": null,
+      "channel": null,
+      "band": "IBKR Pro - Tiered: בורסת לונדון, נקוב בדולר",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "IBKR Pro - Tiered",
+          "United Kingdom",
+          "USD Denominated"
+        ]
+      }
+    },
+    {
+      "id": "interactive-brokers-buy-sell-tase-fixed",
+      "base": "trade",
+      "applies_to": [
+        "etf_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), Israel (Tel Aviv Exchange), Fixed",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "'0.1% of Trade Value', 'Minimum per order ILS 15.00', 'Maximum per order None'; example '200 Shares @ ILS 75 Share Price = ILS 15.00'. The section prices TASE stocks and ETFs; applies_to names ETF units only because the class for shares also covers bonds, which this line does not price. Whether an Israeli-resident retail client may trade TASE at IBKR directly is not stated on any page read (BRK-43). The page: 'The published rates are for direct clients of IBKR. Clients introduced through another broker or managed by an advisor may pay additional commissions set by their introducing broker or advisor.' The same tables are on interactivebrokers.ie (IB Ireland) as read on 2026-10-25."
+      },
+      "min": {
+        "value": 15.0,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), Israel, Fixed, Minimum per order",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "'ILS 15.00'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "IBKR Pro - Fixed: בורסת תל אביב",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "IBKR Pro - Fixed",
+          "Israel",
+          "Tel Aviv Exchange"
+        ]
+      }
+    },
+    {
+      "id": "interactive-brokers-buy-sell-tase-tiered",
+      "base": "trade",
+      "applies_to": [
+        "etf_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.05,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), Israel (Tel Aviv Exchange), Tiered",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "'0.05% of Trade Value' up to EUR 50,000,000 a month (then 0.03%, 0.02%, 0.015%), 'Minimum per order ILS 5.25', 'Maximum per order ILS 120.00', plus clearing fees (amounts in a collapsed section, not collected). The page: 'The published rates are for direct clients of IBKR. Clients introduced through another broker or managed by an advisor may pay additional commissions set by their introducing broker or advisor.' The same tables are on interactivebrokers.ie (IB Ireland) as read on 2026-10-25."
+      },
+      "min": {
+        "value": 5.25,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), Israel, Tiered, Minimum per order",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "'ILS 5.25'."
+      },
+      "max": {
+        "value": 120.0,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), Israel, Tiered, Maximum per order",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "'ILS 120.00'."
+      },
+      "period": null,
+      "channel": null,
+      "band": "IBKR Pro - Tiered: בורסת תל אביב",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "IBKR Pro - Tiered",
+          "Israel",
+          "Tel Aviv Exchange"
+        ]
+      }
+    },
+    {
+      "id": "interactive-brokers-custody",
+      "base": "custody",
+      "applies_to": [
+        "foreign_securities",
+        "etf_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), page footer",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "'IBKR charges no custody fees. Custody fees may be charged by third parties.' The same sentence is on the spot-currency page. applies_to names the two classes this snapshot prices (foreign listings and TASE ETFs), so that a zero custody line alone does not make the tariff look complete for a class with no trade line."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "custody fees"
+        ]
+      }
+    },
+    {
+      "id": "interactive-brokers-fx-spot",
+      "base": "fx",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-spot-currencies.php",
+          "title": "Commissions Spot Currencies (interactivebrokers.com, no date shown), Tiered",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "Printed '0.20 basis point * Trade Value' for monthly trade value up to USD 1,000,000,000 (then 0.15, 0.10, 0.08 basis point), with '1 basis point=0.0001'; the unit vocabulary has no basis-point unit (0.20 basis point = 0.002%), so no rate is recorded; the USD 2.00 minimum is recorded in usd_per_trade. 'Commissions for currency trades are calculated off the trade value and then converted and charged to the base currency of the account.' 'All exchange and regulatory fees included.'"
+      },
+      "min": {
+        "value": 2.0,
+        "unit": "usd_per_trade",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-spot-currencies.php",
+          "title": "Commissions Spot Currencies, Minimum per order, Tier I",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "'Tier I - USD 2.00' ('Or USD currency equivalent')."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "Spot Currencies"
+        ]
+      }
+    },
+    {
+      "id": "interactive-brokers-fx-auto-conversion",
+      "base": "fx",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.03,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-spot-currencies.php",
+          "title": "Commissions Spot Currencies (interactivebrokers.com), note on the auto currency conversion service",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "'For currency trades executed under the auto currency conversion service, IB will typically add or subtract (at its discretion) 0.03% to the exchange rate that would otherwise apply. Please note that IB does not separately charge a commission on these auto-conversion trades.' A markup on the rate, not a commission; 'typically' and 'at its discretion' are the page's words."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "המרה אוטומטית (auto currency conversion)",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "auto currency conversion"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": {
+      "value": 0,
+      "unit": "usd",
+      "source": {
+        "url": "https://www.interactivebrokers.com/en/accounts/required-minimums.php",
+        "title": "Required Minimums, Individual, Joint, Trust and Org Accounts (interactivebrokers.com)",
+        "publisher": "Interactive Brokers LLC",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BRK-42",
+        "BRK-43"
+      ],
+      "state": "sourced",
+      "notes": "'Account Minimums USD 0.00' and 'Inactivity Fees USD 0.00' for both IBKR Pro and IBKR Lite."
+    }
+  },
+  "notice_rule_ids": [],
+  "availability": [
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+        "title": "Interactive Brokers: Commissions Stocks, ETFs, Warrants and Structured Products (BRK-42)",
+        "checked": "2026-10-25"
+      },
+      "note": "The price list prices US listings and USD-denominated shares on the London Stock Exchange (BRK-42). US-listed ETFs: IBKR's PRIIPs block covers retail clients resident in the EEA or the UK, not an Israeli resident (BRK-44); the entity for Israelis is not named (BRK-43)."
+    }
+  ]
+}

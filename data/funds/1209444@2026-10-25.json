@@ -1,0 +1,185 @@
+{
+  "id": "1209444",
+  "names": {
+    "en": [],
+    "he": [
+      "אי.בי.אי. סל (4A) ת\"א-90",
+      "איביאי סל ת\"א-90"
+    ],
+    "tase": [
+      "1209444"
+    ]
+  },
+  "identifiers": {
+    "isin": "IL0012094442",
+    "tase_number": "1209444",
+    "cusip": null,
+    "ticker": {
+      "TASE_he": "IBI.ס182"
+    }
+  },
+  "manager": "אי.בי.אי קרנות נאמנות בע\"מ",
+  "domicile": "IL",
+  "legal_form": "קרן סגורה, קרן סל (Israeli ETF under the Joint Investment Trust Law 1994; traded on TASE, created and redeemed through the manager, ETF-04); קרן מוגבלת בניירות ערך חוץ; exposure profile 4A. Trustee: יובנק חברה לנאמנות בע\"מ. Tracking asset on Maya's fund page: ת\"א 90 100%. Payment policy on Maya: 'לא מתחייבת לחלק תשלומים'. REPLICATION: physical: mainly the underlying assets (נכסי בסיס) (annual report p. 2, 'הדרך שבה הקרן תנוהל': 'בכוונת מנהל הקרן לחשוף את הקרן למדד בעיקר באמצעות ביצוע עסקאות בנכסי בסיס'). Size used to rank the fund (not a fee input): market value 1,627,455 thousand NIS on 23/10/2026 (TASE security page, 'שווי שוק').",
+  "exposure_id": "index-ta90",
+  "currency": "NIS",
+  "trading_currency_on_tase": "NIS",
+  "distribution_policy": "accumulating",
+  "tax_status": {
+    "il_fund_tax_track": "exempt",
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0.1,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1771001-1772000/P1771494-00.pdf",
+        "title": "דוח שנתי 'אי.בי.אי. סל (4A) ת\"א-90' (מספר בורסה 1209444), תאריך הדוח 30 ביוני 2026, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing 1771494, PDF), עמ' 1 'שכר מנהל הקרן' / 'דמי ניהול קבועים'",
+        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13",
+        "MF-16",
+        "MF-17"
+      ],
+      "state": "sourced",
+      "notes": "Fixed management fee as printed in the report: 0.1% of average annual net assets. Maya's fund page (https://maya.tase.co.il/he/funds/etfs/1209444, read 2026-10-25) shows the same 'דמי ניהול' 0.1%. The manager committed to the ISA outline to raise its fees only on 1 January (ETF-16). Main prospectus published on Magna on 2026-07-20, reference 2026-03-068653 (not opened; Magna returns 403 to scripts), as the report states; the prospectus block cites this report."
+    },
+    "trustee": {
+      "value": 0.01,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1771001-1772000/P1771494-00.pdf",
+        "title": "דוח שנתי 'אי.בי.אי. סל (4A) ת\"א-90' (מספר בורסה 1209444), תאריך הדוח 30 ביוני 2026, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing 1771494, PDF), עמ' 1 'שכר הנאמן'",
+        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13",
+        "MF-20"
+      ],
+      "state": "sourced",
+      "notes": "Trustee fee as printed: 0.01% of average annual net assets; Maya's fund page shows the same rate."
+    },
+    "variable_management": {
+      "value": 0.1,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1771001-1772000/P1771494-00.pdf",
+        "title": "דוח שנתי 'אי.בי.אי. סל (4A) ת\"א-90' (מספר בורסה 1209444), תאריך הדוח 30 ביוני 2026, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing 1771494, PDF), עמ' 1 'דמי ניהול משתנים'",
+        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-14",
+        "ETF-13"
+      ],
+      "state": "sourced",
+      "notes": "Variable management fee rate as printed: 0.1% a year of net assets. Maya's fund page shows 0.1%. The mechanism works in both directions (ETF-14): the amount actually charged or paid depends on the gap to the tracking asset."
+    },
+    "tracking_difference_12m": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1771001-1772000/P1771494-00.pdf",
+        "title": "דוח שנתי 'אי.בי.אי. סל (4A) ת\"א-90' (מספר בורסה 1209444), תאריך הדוח 30 ביוני 2026, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing 1771494, PDF), עמ' 5 'תשואות, סטיות תקן ונתוני השוואה'",
+        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-07",
+        "ETF-08",
+        "ETF-09"
+      ],
+      "state": "sourced",
+      "notes": "Not printed as one number. The report's table 'תשואות, סטיות תקן ונתוני השוואה' (p. 5) prints the fund's return against its tracking asset: 2025 46.40% against 46.56%; 01.01.2026-30.06.2026 0.22% against 0.28%. Its comparison with the tracking asset of the previous report (p. 5) prints for 01.07.2025-30.06.2026 the fund's shekel return 16.94% against the tracking asset's change 17.07%. The difference is not computed here (data-update rule). The ISA directive (ETF-07(e)) makes the manager publish the 12-month tracking difference every pricing day; this report points to the third-party page https://chart.bursagraph.co.il/funds.shtml?m=4 for it. That page (Funds Center by Guideline, run for the managers) states on the page 'אין להפיץ בכל דרך כלשהי ... את הנתונים המוצגים באתר', so its figures are not copied here (same position as CAT-43 for TASE lists); founder decision pending."
+    },
+    "median_spread": {
+      "value": null,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1771001-1772000/P1771494-00.pdf",
+        "title": "דוח שנתי 'אי.בי.אי. סל (4A) ת\"א-90' (מספר בורסה 1209444), תאריך הדוח 30 ביוני 2026, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing 1771494, PDF), עמ' 1 'עמלת יצירה' / 'עמלת פדיון' and 'הפרשים שבין שווי היחידה למחירה בבורסה'",
+        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-06",
+        "ETF-07"
+      ],
+      "state": "sourced",
+      "notes": "No median bid-ask spread is printed in the annual report; the report prints only the range and average of the differences between unit value and exchange price, a premium/discount measure, not a spread (ETF-06). The median spread is published under ETF-07(b) on the same third-party page (https://chart.bursagraph.co.il/funds.shtml?m=4), whose terms forbid redistribution; not copied. Creation and redemption fee on direct orders to the manager: 0.10% each (p. 1; ETF-05)."
+    },
+    "fund_level_withholding_drag": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1771001-1772000/P1771494-00.pdf",
+        "title": "דוח שנתי 'אי.בי.אי. סל (4A) ת\"א-90' (מספר בורסה 1209444), תאריך הדוח 30 ביוני 2026, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing 1771494, PDF), עמ' 2 'הדרך שבה הקרן תנוהל'",
+        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-11"
+      ],
+      "state": "sourced",
+      "notes": "Not applicable as a foreign-withholding figure: the fund tracks a TASE index and holds its shares (ETF-11, local index); no computation is made here."
+    }
+  },
+  "dimensions": {
+    "fund-tax-track": "covered:TXS-24",
+    "fee-management-balance": "covered:ETF-13",
+    "distribution-policy": "covered:MF-49",
+    "currency": "covered:MF-54",
+    "fee-trade": "covered:ETF-05",
+    "protection": "covered:MF-02"
+  },
+  "prospectus": {
+    "url": "https://mayafiles.tase.co.il/rpdf/1771001-1772000/P1771494-00.pdf",
+    "date": "2026-07-20"
+  },
+  "exposure_code": "4A",
+  "distribution_fee_type": "3",
+  "creation_redemption_fee_category": "0.10%",
+  "replication": {
+    "method": "physical",
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1771001-1772000/P1771494-00.pdf",
+      "page": 2,
+      "checked": "2026-10-25"
+    }
+  },
+  "snapshot": "2026-10-25"
+}

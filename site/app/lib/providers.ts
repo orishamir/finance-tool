@@ -198,7 +198,9 @@ export function instrumentClassOf(rec: FundRecord, exposure: ExposureRecord | un
   if (exposure?.cash_like) return "money_market_units";
   const israeli = rec.domicile === "IL";
   if (!israeli) return rec.trading_currency_on_tase ? "etf_units" : "foreign_securities";
-  return /קרן סל|ETF/i.test(rec.legal_form) ? "etf_units" : "mutual_fund_units";
+  // an open tracking fund's legal form says "not traded on the exchange, ETF-04": the rule id must not read as an ETF (2026-10-25)
+  const lf = rec.legal_form;
+  return /קרן סל/.test(lf) || (!/קרן מחקה/.test(lf) && /\bETF\b/i.test(lf)) ? "etf_units" : "mutual_fund_units";
 }
 
 export function subjectOf(bundle: WorkbenchBundle, recordId: string | null): SubjectFund | null {
@@ -259,7 +261,8 @@ export function fundRun(
     if (!isIls(exposure.currency)) market.grossReturn = (1 + grossReturn) * (1 + f) - 1;
     return { fund: built.fund, market };
   }
-  if (fundCurrency !== exposure.currency) return { kind: "other-currency", fund: fundCurrency, exposure: exposure.currency };
+  // E4 (2026-10-25): a fund in another currency than its index runs; A-01 stays in the index's currency, A-03 moves the fund's currency
+  // against the shekel, and the FX line and the tax index are the fund's trading currency's (the fund-against-index move is not modelled).
   market.returnIn = "instrument";
   market.fxChange = f;
   const quote = rec.trading_currency_on_tase;
@@ -471,10 +474,10 @@ function snapshotValues(s: FeesSnapshot, today: string): { tariff: RowTariff; st
 
 const levelOf = (s: FeesSnapshot, ui: UiLevel, entered: boolean): FeeLevel => (entered ? "entered" : ui === "average" ? (s.provider.class === "bank" ? "regulator_average" : "tase_average") : "list");
 
-/** Providers of the wrapper: every bank and broker snapshot (F-83). */
+/** Providers of the wrapper: every bank, broker and foreign-broker snapshot (F-83; the foreign class joined 2026-10-25 so the brokers page, the funds page and "השקעה במדד" list the same providers). */
 export function providersOf(bundle: Pick<WorkbenchBundle, "snapshots">, wrapperId: string): FeesSnapshot[] {
   if (wrapperId !== BROKERAGE) return [];
-  return bundle.snapshots.filter((s) => s.provider.class === "bank" || s.provider.class === "broker").sort((a, b) => a.provider.name_he.localeCompare(b.provider.name_he, "he"));
+  return bundle.snapshots.filter((s) => s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker").sort((a, b) => a.provider.name_he.localeCompare(b.provider.name_he, "he"));
 }
 
 export function averagesIn(snapshots: readonly FeesSnapshot[]): boolean {
@@ -551,7 +554,14 @@ export function buildProviderWorkbench(a: BuildArgs): ProviderResult {
   const runnable: typeof inputsFor = [];
   for (const x of inputsFor) {
     try {
-      if (!x.s.missing || x.p.level === "entered") buildTariff({ ...base, providers: [] }, x.p, x.s.missing ? { ...x.s, lines: [], averages: [] } : x.s);
+      const built = !x.s.missing || x.p.level === "entered" ? buildTariff({ ...base, providers: [] }, x.p, x.s.missing ? { ...x.s, lines: [], averages: [] } : x.s) : null;
+      // F-63 (2026-10-25): a tariff with no buy/sell line for the fund's class gives no price, not a free trade (a distributor
+      // may charge for buying and selling tracking funds, MF-26); a money-market fund is the exception, bought free under a
+      // distribution agreement (MF-26, BANK-17), so a missing line there stays a zero.
+      if (built && built.noLine.includes("trade") && subject.instrumentClass !== "money_market_units") {
+        ambiguous.set(x.s.id, { code: "no-applicable-line", detail: `no trade line of the ${x.s.id} snapshot applies to ${subject.instrumentClass}` });
+        continue;
+      }
       runnable.push(x);
     } catch (e) {
       // Any other refusal is that provider's row: the engine names it (E5, 2026-10-25), never an error for the whole page.
@@ -813,7 +823,7 @@ export function companyHref(card: Pick<ListingCard, "companyId">): string | null
 export function buildProvidentListing(bundle: WorkbenchBundle, wrapperId: string): Listing {
   const cards: ListingCard[] = [];
   for (const s of bundle.snapshots) {
-    if (s.missing || s.provider.class === "bank" || s.provider.class === "broker") continue;
+    if (s.missing || s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker") continue;
     const { tariff, stale } = snapshotValues(s, bundle.today);
     const lines: ListingLine[] = [];
     for (const l of s.lines) {

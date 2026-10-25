@@ -1,0 +1,60 @@
+{
+  "id": "index-ta35",
+  "names": {
+    "he": [
+      "מדד ת\"א-35",
+      "ת\"א 35",
+      "ת\"א-35"
+    ],
+    "en": [
+      "TA-35"
+    ]
+  },
+  "one_line_he": "מדד של שלושים וחמש המניות בעלות שווי השוק הגבוה ביותר בבורסה בתל אביב; הכסף מושקע בשקלים דרך קרן שעוקבת אחריו.",
+  "kind": "equity_index",
+  "currency": "ILS",
+  "cash_like": false,
+  "return_source": {
+    "mode": "entered",
+    "series": null
+  },
+  "variants": [
+    "fund:1146570",
+    "fund:1143700",
+    "fund:1148907",
+    "fund:5130661",
+    "fund:1150184"
+  ],
+  "wrapper_ids": [
+    "brokerage-account",
+    "ira-hishtalmut",
+    "ira-provident"
+  ],
+  "rule_ids": [
+    "ETF-35",
+    "ETF-36",
+    "ETF-01",
+    "ETF-04",
+    "ETF-05",
+    "ETF-06",
+    "ETF-11",
+    "ETF-13",
+    "ETF-14",
+    "ETF-17",
+    "ETF-20",
+    "ETF-21",
+    "ETF-31",
+    "MF-45",
+    "TXS-01",
+    "TXS-02",
+    "TXS-09",
+    "TXS-13",
+    "TXS-21",
+    "TXS-16",
+    "BRK-16",
+    "IRA-11",
+    "CAT-10"
+  ],
+  "constituents_israeli": true,
+  "checked": "2026-10-25"
+}

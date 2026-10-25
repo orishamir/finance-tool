@@ -145,7 +145,7 @@ function Body({ wb, compare, data, presets, search }: { wb: WorkbenchBundle; com
   const filtered = filter.trim() ? rows.filter((r) => matchesVariant(r, filter)) : rows;
   const groups = (["ranked", "listed", "not-evaluated"] as const).map((k) => ({ key: k, rows: sortVariants(filtered.filter((r) => r.kind === k), effectiveSort) })).filter((g) => g.rows.length > 0);
   const flipRef = useFlip(groups.map((g) => g.rows.map((r) => r.id).join(",")).join("|"));
-  const providers = wb.snapshots.filter((s) => (s.provider.class === "bank" || s.provider.class === "broker") && !s.missing).sort((a, b) => a.provider.name_he.localeCompare(b.provider.name_he, "he")).map((s) => ({ id: s.id, name: s.provider.name_he }));
+  const providers = wb.snapshots.filter((s) => (s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker") && !s.missing).sort((a, b) => a.provider.name_he.localeCompare(b.provider.name_he, "he")).map((s) => ({ id: s.id, name: s.provider.name_he }));
   const form = data.form as FormData;
   const onField = (f: "yield" | "rate" | "return") => (f === "return" ? navigate("/goal") : setPanelOpen(true));
 

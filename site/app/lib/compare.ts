@@ -546,7 +546,12 @@ function pensionTerms(w: WrapperEntry, t: InstrumentTerms, g: RunGoal, needs: Pa
 /** The study fund's terms come from the person: employment, and an employee's salary (A-12). */
 export function termsFor(w: WrapperEntry, g: RunGoal, scale: Record<string, number>, needs: Partial<Record<string, FieldKey>>): InstrumentTerms | undefined {
   if (!w.terms) return undefined;
-  const t = scaleTerms(withOwnFee(w, w.terms, g), w.id, scale);
+  let t = scaleTerms(withOwnFee(w, w.terms, g), w.id, scale);
+  // F-26 (2026-10-25): the published balance ceiling belongs to the published rate; a rate the person entered applies to the whole balance
+  if (t.deposit?.balanceCeiling !== undefined && g.ownRates?.[w.id] !== undefined) {
+    const { balanceCeiling: _ceiling, ...rest } = t.deposit;
+    t = { ...t, deposit: rest };
+  }
   if (w.family === "pension") return pensionTerms(w, t, g, needs);
   if (w.id !== "keren-hishtalmut") return t;
   const next = clone(t);
