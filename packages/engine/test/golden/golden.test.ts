@@ -482,7 +482,8 @@ describe("Part B: provident-family wrappers", () => {
     g.done();
     expect(r.routed).toEqual([]);
     expect(flagCodes(r)).toEqual(expect.arrayContaining(["G-11", "G-02"]));
-    expect(labelOf(r, "TXK-07")).toBe("institution-source");
+    // 2026-10-25 tax-bases research: TXK-07's base and rate rest on the Ordinance (s.3(ה4)(3), s.9(13), s.125ג) and the 2016 bill's notes, so no institution label.
+    expect(labelOf(r, "TXK-07")).toBeUndefined();
   });
 
   it("S21 kupat gemel lehashkaa, ceiling breached", () => {
@@ -554,7 +555,8 @@ describe("Part B: provident-family wrappers", () => {
     g.value("excess a month", r.detail.excessMonthly, 107.2);
     g.value("tax on the excess gains", r.taxAtExit, 257.96);
     g.done();
-    expect(labelOf(r, "TXH-11")).toBe("institution-source");
+    // 2026-10-25 scope pass: TXH-11's real base now rests on the Chief Economist paper (primary), so the run carries no institution label.
+    expect(labelOf(r, "TXH-11")).toBeUndefined();
   });
 
   for (const sex of ["boy", "girl"] as const) {

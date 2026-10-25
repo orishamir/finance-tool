@@ -116,15 +116,17 @@ describe("figure resolver (D10, method §13)", () => {
 
   it("records every rule it served, and labels secondary and institution figures", () => {
     const book = ruleBook({ rules, runDate });
-    book.rate("TXK-07", "rate");
+    // 2026-10-25 scope pass: TXK-07 rests on the law since the tax-bases research, so the institution example is CS-30 (Harel's and
+    // Altshuler Shaham's own fee after 21, split from CS-18)
+    book.rate("CS-30", "fee_after_21");
     book.rate("TXK-23", "provident_rate");
     book.rate("TXS-09", "rate");
     book.rate("TXF-04", "threshold_pct");
-    expect(book.used().map((u) => u.id)).toEqual(["TXK-07", "TXK-23", "TXS-09", "TXF-04"]);
+    expect(book.used().map((u) => u.id)).toEqual(["CS-30", "TXK-23", "TXS-09", "TXF-04"]);
     // TXS-09 reads the Tax Authority's consolidated ordinance since the source check of 2026-10-25, so it carries no label;
     // TXF-04 rests only on a re-hosted copy of a Tax Authority letter, so its figure carries the mirror label
     expect(book.labels()).toEqual([
-      { code: "institution-source", ruleId: "TXK-07" },
+      { code: "institution-source", ruleId: "CS-30" },
       { code: "secondary-source", ruleId: "TXK-23" },
       { code: "mirror-source", ruleId: "TXF-04" },
     ]);

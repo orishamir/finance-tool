@@ -2,7 +2,7 @@
   "id": "TXK-06",
   "title": "Rate on that interest: up to 25%, as the top slice of income",
   "title_he": "שיעור המס על הריבית, כמדרגה העליונה של ההכנסה",
-  "text_he": "על הריבית שנחשבת במשיכה מקופת גמל להשקעה יחיד משלם עד שיעור המס המרבי על הריבית, וההכנסה נחשבת המדרגה העליונה של הכנסתו. לנכס שאינו צמוד למדד, או צמוד חלקית, הפקודה קובעת את שיעור המס על נכס לא צמוד, על הרווח הנומינלי. שום מקור רשמי לא אומר אם יתרה בקופת גמל להשקעה היא 'נכס צמוד למדד'; החברות המנהלות מחילות את השיעור המרבי על הרווח הריאלי. במקרים מסוימים, למשל הכנסה מעסק, הריבית ממוסה בשיעור השולי, וייתכן מס יסף בנוסף.",
+  "text_he": "על הריבית שנחשבת במשיכה מקופת גמל להשקעה יחיד משלם עד שיעור המס המרבי על הריבית, וההכנסה נחשבת המדרגה העליונה של הכנסתו. לנכס שאינו צמוד למדד, או צמוד חלקית, הפקודה קובעת שיעור נמוך יותר על הרווח הנומינלי, אבל הוא לא חל כאן: הפקודה מוציאה מהרווח את הפרשי ההצמדה על הכספים ופוטרת אותם, ודברי ההסבר לחוק אומרים שהמס הוא השיעור המרבי על הרווח הריאלי. במקרים מסוימים, למשל הכנסה מעסק, הריבית ממוסה בשיעור השולי, וייתכן מס יסף בנוסף.",
   "figure_names_he": {
     "rate": "שיעור המס המרבי על הריבית",
     "nominal_rate": "שיעור המס על נכס לא צמוד (רווח נומינלי)"
@@ -33,7 +33,7 @@
         "TXK-06"
       ],
       "state": "sourced",
-      "notes": "Interest deemed under s.3(ה4)(3) on a lump-sum withdrawal from a kupat gemel lehashkaa: maximum rate \"שלא יעלה על 25%\", top slice of income (s.125C(b)). Whether the balance is an \"asset linked to the index\" (25% on real) or not (15% on nominal) is not stated by any official source; managers apply 25% on real (TXK-07). Likely-to-change is \"yes\" because il-finance points to TXK-21 (proposed uniform 25% on real gains across products, not law)."
+      "notes": "Interest deemed under s.3(ה4)(3) on a lump-sum withdrawal from a kupat gemel lehashkaa: maximum rate \"שלא יעלה על 25%\", top slice of income (s.125C(b)). The base is the real gain: the linkage part is exempt under s.9(13) (TXK-07), and the 2016 bill's explanatory notes say \"25% מהרווח הריאלי\". Likely-to-change is \"yes\" because il-finance points to TXK-21 (proposed uniform 25% on real gains across products, not law)."
     },
     "nominal_rate": {
       "value": 15,
@@ -53,11 +53,11 @@
         "TXK-06"
       ],
       "state": "sourced",
-      "notes": "s.125C(c) limb: 15% of the nominal interest where the interest is paid on an asset not CPI-linked or only partly linked. Used as the sensitivity alternative (method F-44). The Minister may change the 15% by order (s.125C(c)(2))."
+      "notes": "s.125C(c) limb: 15% of the nominal interest where the interest is paid on an asset not CPI-linked or only partly linked. It does not reach kupat gemel lehashkaa gains (TXK-07: linkage carved out and exempt; the 2016 notes say 25% of the real gain); the method still shows it as F-44's sensitivity line (G-02) until that line is reviewed. The Minister may change the 15% by order (s.125C(c)(2))."
     }
   },
   "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
@@ -72,6 +72,24 @@
       "page": 203,
       "quote": "בשיעור שלא יעלה על 25%",
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_ls1_323033.pdf",
+      "title": "הצעת חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016, הצעות חוק הממשלה 1029, דברי הסבר",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.875",
+      "locator_he": "עמוד 875",
+      "page": 875,
+      "quote": "יראו ברווחים כאמור הכנסה ולפיכך הם יהיו חייבים במס רווחי הון בשיעור 25% מהרווח הריאלי",
+      "checked": "2026-10-25",
+      "qualifier": "(explanatory notes of the government bill; the operative text is s.3(ה4)(3))"
     }
+  ],
+  "derived_from": [
+    "TXK-07"
   ]
 }

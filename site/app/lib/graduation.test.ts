@@ -13,8 +13,9 @@ describe("graduation status", () => {
   it("lists the savings policy's fee-cap closure with its rule and date, and flags the insurer-statement answer", () => {
     const c = by("savings-policies").closed.find((x) => x.code === "INS OQ2");
     expect(c).toMatchObject({ closedOn: "2026-10-24", ruleIds: expect.arrayContaining(["INS-25"]) });
-    expect(by("savings-policies").open.find((o) => o.code === "TXA OQ1")?.institutionAnswer).toEqual({ ruleId: "TXA-28" });
-    // a REIT's blocker in G-24 is TX2 OQ8, which has no institution answer; TX2-20 answers OQ7, which G-24 no longer lists
+    // 2026-10-25 tax-bases research: TXA OQ1's base is answered by the law (TXA-28 became general), so no insurer statement is flagged as its answer
+    expect(by("savings-policies").open.find((o) => o.code === "TXA OQ1")?.institutionAnswer).toBeUndefined();
+    // a REIT's blocker in G-24 is TX2 OQ8, which has no institution answer; TX2-21 (split from TX2-20) answers OQ7, which G-24 no longer lists
     expect(by("reits").open.some((o) => o.institutionAnswer)).toBe(false);
   });
   it("lists no closure where the status section names none", () => {

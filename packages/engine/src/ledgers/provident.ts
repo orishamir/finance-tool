@@ -292,7 +292,7 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
   let taxAtExit: number;
 
   if (kgl) {
-    // F-44: 25% of the real gain (TXK-07, institution), with the 15%-of-nominal line (TXK-06) beside it.
+    // F-44: 25% of the real gain (TXK-07, primary since 2026-10-25), with the 15%-of-nominal line (TXK-06) beside it.
     book.cite("TXK-05");
     if (exitTaxUnknown) tally.flag("PF-36");
     const realRate = book.rate("TXK-07", "rate");
@@ -312,7 +312,7 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     if (exitTaxUnknown) for (const k of ["realGain", "altTaxAtExit", "altNominal", "altReal"]) delete detail[k];
   } else {
     // F-46: benefited money is exempt (TXH-09); gains on the excess are taxed at 25% of their real gain
-    // (TXH-11; the real base rests on two managers' statements, institution).
+    // (TXH-11; the real base is the Ministry of Finance Chief Economist paper's, primary).
     const excessReal = realGain(excess);
     taxAtExit = 0;
     if (early) {
