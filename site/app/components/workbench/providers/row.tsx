@@ -34,7 +34,7 @@ export interface RowCtx {
 const quietLink = "text-sm text-link hover:underline min-h-target inline-flex items-center";
 
 function ClassLine({ view }: { view: ProviderRowView }) {
-  const regulator = c.regulators[view.protection.regulator];
+  const regulator = view.protection.regulator === "foreign" ? (view.protection.foreignRegulator ?? "") : c.regulators[view.protection.regulator];
   return (
     <span className="text-sm text-muted-foreground">
       {c.classWords[view.providerClass] ?? view.providerClass} · {regulator}
@@ -184,6 +184,12 @@ export function reasonSentence(r: NotComparable, instrumentClass: string, channe
       return n.lineWithoutValue(r.lineName ?? r.detail);
     case "ambiguous":
       return n.ambiguous(cls);
+    case "needs-share-price":
+      return n.needsSharePrice;
+    case "needs-fx-rate":
+      return n.needsFxRate;
+    case "record-error":
+      return n.recordError;
   }
 }
 

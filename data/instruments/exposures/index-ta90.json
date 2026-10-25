@@ -1,0 +1,61 @@
+{
+  "id": "index-ta90",
+  "names": {
+    "he": [
+      "מדד ת\"א-90",
+      "ת\"א 90",
+      "ת\"א-90"
+    ],
+    "en": [
+      "TA-90"
+    ]
+  },
+  "one_line_he": "מדד של תשעים המניות בעלות שווי השוק הגבוה ביותר בבורסה בתל אביב שאינן במדד ת\"א-35; הכסף מושקע בשקלים דרך קרן שעוקבת אחריו.",
+  "kind": "equity_index",
+  "currency": "ILS",
+  "cash_like": false,
+  "return_source": {
+    "mode": "entered",
+    "series": null
+  },
+  "variants": [
+    "fund:1146331",
+    "fund:1150259",
+    "fund:1148931",
+    "fund:1143783",
+    "fund:1209444",
+    "fund:5130638"
+  ],
+  "wrapper_ids": [
+    "brokerage-account",
+    "ira-hishtalmut",
+    "ira-provident"
+  ],
+  "rule_ids": [
+    "ETF-35",
+    "ETF-36",
+    "ETF-01",
+    "ETF-04",
+    "ETF-05",
+    "ETF-06",
+    "ETF-11",
+    "ETF-13",
+    "ETF-14",
+    "ETF-17",
+    "ETF-20",
+    "ETF-21",
+    "ETF-31",
+    "MF-45",
+    "TXS-01",
+    "TXS-02",
+    "TXS-09",
+    "TXS-13",
+    "TXS-21",
+    "TXS-16",
+    "BRK-16",
+    "IRA-11",
+    "CAT-10"
+  ],
+  "constituents_israeli": true,
+  "checked": "2026-10-25"
+}

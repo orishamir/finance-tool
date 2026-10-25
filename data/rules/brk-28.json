@@ -16,42 +16,46 @@
   "sources": [
     {
       "url": "https://www.leumi.co.il/leumi-hebrew/s3fs-public/newsite/generalpages/general%20terms/General_Terms_and_Conditions_acc.pdf",
-      "title": "Leumi general terms 08.25, s.3, 3.6.1, 25",
+      "title": "Leumi general terms 08.25",
       "title_he": "חוברת תנאים כלליים לניהול חשבון (בנק לאומי, מהדורת 8/2025)",
       "publisher": "Bank Leumi",
       "publisher_he": "בנק לאומי",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "s.3, 3.6.1, 25",
-      "locator_he": "סעיף 3, 3.6.1, 25",
-      "checked": "2026-10-22"
+      "locator": "pp.12 to 17, 48, s.3, 3.6.1, 25",
+      "locator_he": "עמודים 12 עד 17, 48, סעיף 3, 3.6.1, 25",
+      "page": 12,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.meitav.co.il/trade/independent_trading/",
-      "title": "Meitav Trade, independent trading page",
+      "title": "מיטב טרייד: חשבון מסחר עצמאי",
+      "title_he": "מיטב טרייד: חשבון מסחר עצמאי",
       "publisher": "Meitav",
       "publisher_he": "מיטב",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.meitav.co.il/trade",
-      "title": "Meitav Trade home",
+      "title": "מיטב טרייד: דף הבית",
+      "title_he": "מיטב טרייד: דף הבית",
       "publisher": "Meitav",
       "publisher_he": "מיטב",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.fair.co.il/",
-      "title": "Fair home",
+      "title": "פייר: דף הבית",
+      "title_he": "פייר: דף הבית",
       "publisher": "Fair",
       "publisher_he": "פייר",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
@@ -61,7 +65,7 @@
       "publisher_he": "פסגות",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -3,7 +3,7 @@
   "title": "Keren hishtalmut: no partial transfer; consolidation only once liquid",
   "title_he": "קרן השתלמות: אין העברה חלקית, ואיחוד רק כשנזיל",
   "text_he": "אי אפשר להעביר חלק מהכסף שנצבר לעמית מקרן השתלמות, בין לחשבון אחר באותה קרן ובין לקרן השתלמות אחרת, וגם אם חשבון היעד כבר היה קיים. איחוד חשבונות השתלמות של עמית נעשה רק אם במועד האיחוד העמית יכול למשוך את הכסף מכל חשבון בפטור ממס. בסוגי קופות אחרים העברה חלקית מותרת.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
     "liquidity-lockup"
@@ -13,27 +13,32 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)",
-      "title": "Transfer Regulations, reg. 9(ב), 9(ג) (Wikisource, quoted in full)",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg. 9(ב), 9(ג)",
-      "locator_he": "תקנה 9(ב), 9(ג)",
-      "anchor": "סעיף_9.ב",
-      "checked": "2026-10-22"
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZbYNmyK9Qa3gH~lF+jEWmc=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014 (קובץ התקנות 7407)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014 (קובץ התקנות 7407)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.4, s.5",
+      "locator_he": "עמוד 4, סעיף 5",
+      "page": 4,
+      "quote": "לא ניתן להעביר חלק מן הכספים שנצברו לזכותו של עמית מקופה מעבירה שהיא קרן השתלמות",
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.nevo.co.il/law_html/law01/999_929.htm",
-      "title": "Nevo mirror",
-      "publisher": "Nevo",
-      "publisher_he": "נבו",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=6",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.6, reg. 5(א)",
+      "locator_he": "עמוד 6, תקנה 5(א)",
+      "page": 6,
+      "quote": "או את חלקה",
+      "checked": "2026-10-25"
     }
   ]
 }

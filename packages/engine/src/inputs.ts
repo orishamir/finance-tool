@@ -48,7 +48,7 @@ export interface InstrumentTerms {
   /** Pension: A-17 insurance cost as a share of each deposit, entered by the person (F-53, G-12). Not for a provident fund for annuity (PEN-35). */
   insurance?: PensionInput["insurance"];
   /** Deposits and current accounts: A-15 term and A-16 linkage. */
-  deposit?: Pick<DepositInput["deposit"], "termMonths" | "linkage">;
+  deposit?: Pick<DepositInput["deposit"], "termMonths" | "linkage" | "balanceCeiling">;
   /** Funds: the fund's kind and drag (A-06 to A-11). */
   fund?: Fund;
   /** Tariff lines (F-12 to F-17). */
@@ -120,7 +120,7 @@ const nestedKeys: Partial<Record<keyof InstrumentTerms, string[]>> = {
   hishtalmut: ["employment", "monthlySalary", "clockStartMonth", "earlyWithdrawal", "employerRate", "employerMonthly"],
   pension: ["employment", "monthlySalary", "annualIncome", "existingEmployeeRate", "employer"],
   insurance: ["rate"],
-  deposit: ["termMonths", "linkage"],
+  deposit: ["termMonths", "linkage", "balanceCeiling"],
   currency: ["returnIn", "fxChange"],
   ira: ["managerFee", "clockStartMonth"],
   makam: ["termMonths"],

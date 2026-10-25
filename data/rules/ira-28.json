@@ -15,30 +15,34 @@
   "sources": [
     {
       "url": "https://www.bizportal.co.il/general/news/article/20032690",
-      "title": "Bizportal, 25.05.2026",
+      "title": "עוד מקור להשבת כספים לעמיתי סלייס: פשרה של כ-33 מיליון שקל עם הפניקס, ביזפורטל, 25.05.2026",
+      "title_he": "עוד מקור להשבת כספים לעמיתי סלייס: פשרה של כ-33 מיליון שקל עם הפניקס, ביזפורטל, 25.05.2026",
       "publisher": "Bizportal",
       "publisher_he": "ביזפורטל",
       "kind": "article",
       "strength": "secondary",
-      "checked": "2026-10-22"
+      "quote": "פשרה של כ-33 מיליון שקל עם הפניקס",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.bizportal.co.il/takdin/news/article/20034029",
-      "title": "Bizportal, 16.06.2026",
+      "title": "בקשה לייצוגית נגד גלובלנט של דן דוברי בעקבות אובדן כספי השקעות, ביזפורטל, 16.06.2026",
+      "title_he": "בקשה לייצוגית נגד גלובלנט של דן דוברי בעקבות אובדן כספי השקעות, ביזפורטל, 16.06.2026",
       "publisher": "Bizportal",
       "publisher_he": "ביזפורטל",
       "kind": "article",
       "strength": "secondary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.calcalist.co.il/market/article/bjnkrerfa",
-      "title": "Calcalist, 06.05.2024",
+      "title": "\"מה שקרה לסלייס לא יקרה לנו. הם הכניסו מוצרים רעילים שפגעו בעמיתים\", כלכליסט, 06.05.2024",
+      "title_he": "\"מה שקרה לסלייס לא יקרה לנו. הם הכניסו מוצרים רעילים שפגעו בעמיתים\", כלכליסט, 06.05.2024",
       "publisher": "Calcalist",
       "publisher_he": "כלכליסט",
       "kind": "article",
       "strength": "secondary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

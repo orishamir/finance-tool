@@ -22,7 +22,7 @@
         "publisher": "US Internal Revenue Service",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -40,20 +40,22 @@
     {
       "url": "https://www.irs.gov/forms-pubs/about-form-w-8-ben",
       "title": "IRS, About Form W-8BEN",
+      "title_he": "About Form W-8BEN (דף הטופס באתר ה-IRS)",
       "publisher": "IRS",
       "publisher_he": "רשות המס האמריקאית (IRS)",
-      "kind": "official_pdf",
+      "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.irs.gov/instructions/iw8ben",
       "title": "IRS, Instructions for Form W-8BEN (rev. 10/2021)",
+      "title_he": "Instructions for Form W-8BEN (10/2021)",
       "publisher": "IRS",
       "publisher_he": "רשות המס האמריקאית (IRS)",
-      "kind": "official_pdf",
+      "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

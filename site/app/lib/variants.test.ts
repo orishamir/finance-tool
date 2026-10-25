@@ -4,6 +4,8 @@ import { buildFundVariants, withExposureReturn, matchesVariant, parseVariantQuer
 import { buildWorkbenchBundle } from "./providers.server";
 import type { FundAssumptions, WorkbenchInputs } from "./providers";
 import { entered } from "./value";
+import { loadFx } from "./fx.server";
+import { buildProviderWorkbench } from "./providers";
 
 const bundle = buildWorkbenchBundle();
 const t = bundle.today;
@@ -23,6 +25,35 @@ const build = (exposureId: string, over: { returnFromParameter?: boolean; assump
   buildFundVariants({ bundle, exposureId, query: { provider: over.provider ?? null, orders: null }, inputs: inputs(over.returnFromParameter), assumptions: over.assumptions ?? {} });
 
 describe("fund-variant view", () => {
+  it("prices a fund bought abroad on the ECB start rate: nothing asks the person for one (D26)", () => {
+    const withFx = { ...bundle, fx: loadFx()! };
+    const r = buildFundVariants({ bundle: withFx, exposureId: "index-sp500", query: { provider: null, orders: null }, inputs: inputs(), assumptions: {} });
+    if (r.kind !== "ok") throw new Error("not ok");
+    expect(r.view.startRates.map((x) => x.code)).toContain("USD");
+    const usd = r.view.startRates.find((x) => x.code === "USD")!.rate!;
+    expect(usd.state).toBe("computed");
+    expect(usd.value as number).toBeGreaterThan(1);
+    expect(r.view.rows.some((x) => x.reason?.code === ("start-rate" as string))).toBe(false);
+    expect(r.view.rows.find((x) => x.trading?.abroad && x.reason?.code === "no-rate")).toBeUndefined();
+  });
+
+  it("prices each fund with its own instrument class, so the funds page agrees with the brokers page for the same fund and provider", () => {
+    const withFx = { ...bundle, fx: loadFx()! };
+    const v = buildFundVariants({ bundle: withFx, exposureId: "index-sp500", query: { provider: "psagot", orders: null }, inputs: inputs(), assumptions: {} });
+    if (v.kind !== "ok") throw new Error("not ok");
+    for (const fund of ["5139282", "1144385"]) {
+      const row = v.view.rows.find((r) => r.recordId === fund)!;
+      const w = buildProviderWorkbench({ bundle: withFx, wrapperId: "brokerage-account", query: { fund, orders: null, channel: null, level: "list", vs: null }, inputs: inputs(), offers: {}, assumptions: {} });
+      if (w.kind !== "ok") throw new Error("not ok");
+      const psagot = w.view.rows.find((r) => r.id === "psagot")!;
+      expect(row.value!.value as number).toBeCloseTo(psagot.real!, 4);
+    }
+    // the tracking fund and the ETF sit on different Psagot lines (a mutual-fund line and the exchange-traded one)
+    const tracking = v.view.rows.find((r) => r.recordId === "5139282")!;
+    const etf = v.view.rows.find((r) => r.recordId === "1144385")!;
+    expect(tracking.detail!.provider.value).not.toBe(etf.detail!.provider.value);
+  });
+
   it("renders with no fund list: the records only, no count for a list it did not read", () => {
     const r = build("index-sp500");
     expect(r.kind).toBe("ok");
@@ -35,12 +66,13 @@ describe("fund-variant view", () => {
     expect(r.view.coverage.invariantOk).toBe(true);
   });
 
-  it("ranks the IBI S&P 500 ETF (8 of 9 by fee; an Israeli exempt fund, shekels) with a computed figure and the security number", () => {
+  it("ranks the IBI S&P 500 ETF (the dearest by fee; an Israeli exempt fund, shekels) with a computed figure and the security number", () => {
     const r = build("index-sp500");
     if (r.kind !== "ok") throw new Error("not ok");
     const ibi = r.view.rows.find((x) => x.recordId === "1148162")!;
     expect(ibi.kind).toBe("ranked");
-    expect(ibi.rank).toBe(8); // 8 of 9 by fee since the eight records of 2026-10-24
+    // its 0.8% fixed and 0.3% variable fee rank it last of the ranked funds (8 of 9 on 2026-10-24, 13 of 14 records on 2026-10-25)
+    expect(ibi.rank).toBe(Math.max(...r.view.rows.flatMap((x) => (x.rank === undefined ? [] : [x.rank]))));
     expect(ibi.number).toBe("1148162");
     expect(ibi.value?.state).toBe("computed");
     expect(ibi.tags).toEqual({ domicile: "IL", policy: "accumulating" });

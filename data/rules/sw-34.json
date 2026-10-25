@@ -15,31 +15,39 @@
   "sources": [
     {
       "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
-      "title": "IBI tariff, part 4 item 9",
-      "title_he": "תעריפון עמלות אי.בי.אי (1.7.2026)",
+      "title": "אי.בי.אי – תעריפון (נכון לתאריך 1.7.2026)",
+      "title_he": "אי.בי.אי – תעריפון (נכון לתאריך 1.7.2026)",
       "publisher": "IBI",
       "publisher_he": "אי.בי.אי",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "locator": "p.5",
+      "locator_he": "עמוד 5",
+      "page": 5,
+      "quote": "מקסימום 150 ₪ להעברה",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.as-invest.co.il/trade/faq_transfer/",
-      "title": "Altshuler Shaham Trade, transfer FAQ",
+      "title": "אלטשולר שחם טרייד – מעבירים את תיק ההשקעות שלכם לאלטשולר שחם טרייד",
+      "title_he": "אלטשולר שחם טרייד – מעבירים את תיק ההשקעות שלכם לאלטשולר שחם טרייד",
       "publisher": "Altshuler Shaham",
       "publisher_he": "אלטשולר שחם",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "quote": "אנו לא גובים עמלה על העברת תיק",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.calcalist.co.il/article/hj55ri2pgx",
-      "title": "Calcalist, 27.08.2026",
+      "title": "כלכליסט – המעבר מבנק לבית השקעות הוא זול, אך לצאת משם מאוד יקר (27.08.26)",
+      "title_he": "כלכליסט – המעבר מבנק לבית השקעות הוא זול, אך לצאת משם מאוד יקר (27.08.26)",
       "publisher": "Calcalist",
       "publisher_he": "כלכליסט",
       "kind": "article",
       "strength": "secondary",
-      "checked": "2026-10-22"
+      "quote": "למאות ואף לאלפי שקלים",
+      "checked": "2026-10-25"
     }
   ]
 }

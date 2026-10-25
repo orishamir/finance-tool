@@ -12,12 +12,12 @@
       "value": 10,
       "unit": "pct",
       "source": {
-        "url": "https://www.meitav.co.il/media/0qulk3pk/תקנות-ira-חדשות-יוני-2017.pdf",
-        "title": "IRA regulations, reg. 5(א) as amended 2017 (Reshumot ק\"ת 7819, reg. 4(א)(3)); Meitav brokerage letter 2.606.1.4.26L",
-        "publisher": "Reshumot ק\"ת 7819, 29.5.2017 (copy hosted by Meitav)",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=3",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820), p.3, reg. 5(א)(5)",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -32,12 +32,12 @@
       "value": 5,
       "unit": "pct",
       "source": {
-        "url": "https://www.meitav.co.il/media/0qulk3pk/תקנות-ira-חדשות-יוני-2017.pdf",
-        "title": "IRA regulations, reg. 5(א) as amended 2017 (Reshumot ק\"ת 7819)",
-        "publisher": "Reshumot ק\"ת 7819, 29.5.2017 (copy hosted by Meitav)",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=4",
+        "title": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819), p.4, s.4 (reg. 5(א), paragraphs added in 2017)",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -52,12 +52,12 @@
       "value": 10,
       "unit": "pct",
       "source": {
-        "url": "https://www.meitav.co.il/media/0qulk3pk/תקנות-ira-חדשות-יוני-2017.pdf",
-        "title": "IRA regulations, reg. 5(א) as amended 2017 (Reshumot ק\"ת 7819)",
-        "publisher": "Reshumot ק\"ת 7819, 29.5.2017 (copy hosted by Meitav)",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=4",
+        "title": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819), p.4, s.4 (reg. 5(א), paragraphs added in 2017)",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -72,12 +72,12 @@
       "value": 5,
       "unit": "pct",
       "source": {
-        "url": "https://www.meitav.co.il/media/0qulk3pk/תקנות-ira-חדשות-יוני-2017.pdf",
-        "title": "IRA regulations, reg. 5(א) as amended 2017 (Reshumot ק\"ת 7819)",
-        "publisher": "Reshumot ק\"ת 7819, 29.5.2017 (copy hosted by Meitav)",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=4",
+        "title": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819), p.4, s.4 (reg. 5(א), paragraphs added in 2017)",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -100,25 +100,46 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.meitav.co.il/media/0qulk3pk/תקנות-ira-חדשות-יוני-2017.pdf",
-      "title": "Reshumot 2017 amendment, reg. 4(א)(3)",
-      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי)",
-      "publisher": "Meitav",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=3",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
       "strength": "primary",
-      "locator": "reg. 4(א)(3)",
-      "locator_he": "תקנה 4(א)(3)",
-      "checked": "2026-10-22"
+      "locator": "p.3, reg. 5(א)(4)-(5)",
+      "locator_he": "עמוד 3, תקנה 5(א)(4)-(5)",
+      "page": 3,
+      "quote": "השקעת הכספים בניירות ערך סחירים של תאגיד מסוים",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.4, s.4 (reg. 5(א)(6)-(9))",
+      "locator_he": "עמוד 4, סעיף 4 (תקנה 5(א)(6)-(9))",
+      "page": 4,
+      "quote": "אופציית רכש 001",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.meitav.co.il/media/r2djwzpw/26061426l-תוצאות-מכרז-לניהול-אישי-2026-לאומי.pdf",
-      "title": "Meitav brokerage letter 2.606.1.4.26L",
+      "title": "מיטב – תוצאות מכרז לניהול אישי 2026, נספח בנק לאומי",
+      "title_he": "מיטב – תוצאות מכרז לניהול אישי 2026, נספח בנק לאומי",
       "publisher": "Meitav",
       "publisher_he": "מיטב",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "כתיבת אופציות",
+      "checked": "2026-10-25"
     }
   ]
 }

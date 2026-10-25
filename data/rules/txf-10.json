@@ -6,7 +6,7 @@
   "figure_names_he": {
     "rate": "שיעור הניכוי במקור על דיבידנד זר ליחיד"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "foreign-withholding-domicile",
     "tax-during"
@@ -17,12 +17,12 @@
       "value": 25,
       "unit": "pct",
       "source": {
-        "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מריבית,_מדיבידנד_ומרווחים_מסוימים)",
-        "title": "Income Tax Regulations (withholding from interest, dividends and certain gains) 2005",
-        "publisher": "Legislation (Hebrew Wikisource mirror)",
+        "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
+        "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, נוסח משולב, p.2, reg. 2(ד)(1)",
+        "publisher": "המוסד לביטוח לאומי",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -38,18 +38,18 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/%D7%AA%D7%A7%D7%A0%D7%95%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94_(%D7%A0%D7%99%D7%9B%D7%95%D7%99_%D7%9E%D7%A8%D7%99%D7%91%D7%99%D7%AA,_%D7%9E%D7%93%D7%99%D7%91%D7%99%D7%93%D7%A0%D7%93_%D7%95%D7%9E%D7%A8%D7%95%D7%95%D7%97%D7%99%D7%9D_%D7%9E%D7%A1%D7%95%D7%99%D7%9E%D7%99%D7%9D)",
-      "title": "Income Tax Regulations (deduction from interest, dividend and certain profits), 2005, Hebrew Wikisource",
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005",
       "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "משרד האוצר",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "reg. 2(d)",
-      "locator_he": "תקנה 2(ד)",
-      "anchor": "סעיף_2",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.2, reg. 2(ד)",
+      "locator_he": "עמוד 2, תקנה 2(ד)",
+      "page": 2,
+      "quote": "המקבל מתושב חוץ דיבידנד על מניות בשל תושב ישראל או לזכותו, ינכה ממנו מס בשיעורים אלה",
+      "checked": "2026-10-25"
     }
   ]
 }

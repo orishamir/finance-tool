@@ -13,13 +13,52 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.as-invest.co.il/interstedin/gemel/מעבר-בין-מסלולים-1/",
-      "title": "Altshuler, \"מעבר בין מסלולים\"",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.11, s.23(ב)(2)",
+      "locator_he": "עמוד 11, סעיף 23(ב)(2)",
+      "page": 11,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://as-invest.co.il/media/khpp32k5/אלטשולר-שחם-השתלמות-תקנון-מהדורת-שינויים-דצמבר-2024.pdf",
+      "title": "Altshuler bylaws 1.12.2024",
+      "title_he": "תקנון קרן ההשתלמות של אלטשולר שחם (מהדורת דצמבר 2024)",
       "publisher": "Altshuler Shaham",
       "publisher_he": "אלטשולר שחם",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "locator": "s.8.5",
+      "locator_he": "סעיף 8.5",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://harel-group.co.il/long-term-savings/study-funds/plans/harel-funds/doclib/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%95%d7%a4%d7%94/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a8%d7%90%d7%9c%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa-%20%d7%9c%d7%90%d7%97%d7%a8%20%d7%94%d7%9e%d7%99%d7%96%d7%95%d7%92/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa%20%2007.2024.pdf",
+      "title": "Harel bylaws 07/2024",
+      "title_he": "תקנון קרן ההשתלמות של הראל (מהדורת 7/2024)",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "s.9.18",
+      "locator_he": "סעיף 9.18",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.as-invest.co.il/interstedin/gemel/מעבר-בין-מסלולים-1/",
+      "title": "אלטשולר שחם – מעבר בין מסלולים",
+      "title_he": "אלטשולר שחם – מעבר בין מסלולים",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "ואינה כרוכה בתשלום מס",
+      "checked": "2026-10-25"
     }
   ]
 }

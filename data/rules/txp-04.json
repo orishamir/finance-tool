@@ -23,12 +23,12 @@
       "value": 7,
       "unit": "pct",
       "source": {
-        "title": "Income Tax Ordinance s.45A(e), s.47(a) (Wikisource mirror); deductions booklet 2026 p.12 (45א(ה)(2))",
-        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, p.82, s.45א(ה), and p.84, s.47(א)(1); deductions booklet 2026 p.12 (45א(ה)(2))",
+        "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -43,12 +43,12 @@
       "value": 5,
       "unit": "pct",
       "source": {
-        "title": "Income Tax Ordinance s.45A(e), s.47(a) (Wikisource mirror); deductions booklet 2026 p.12 (45א(ה)(2))",
-        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, p.82, s.45א(ה), and p.84, s.47(א)(1); deductions booklet 2026 p.12 (45א(ה)(2))",
+        "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -63,12 +63,12 @@
       "value": 232800,
       "unit": "nis",
       "source": {
-        "title": "Income Tax Ordinance s.45A(e), s.47(a) (Wikisource mirror); deductions booklet 2026 p.12 (45א(ה)(2))",
-        "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, p.82, s.45א(ה), and p.84, s.47(א)(1); deductions booklet 2026 p.12 (45א(ה)(2))",
+        "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -82,6 +82,44 @@
   },
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.82, s.45א(ה)",
+      "locator_he": "עמוד 82, סעיף 45א(ה)",
+      "page": 82,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.81, s.45א(ב1)",
+      "locator_he": "עמוד 81, סעיף 45א(ב1)",
+      "page": 81,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.84, s.47(א) definition `הכנסה מבוטחת`",
+      "page": 84,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
       "title": "Booklet 2026",
       "title_he": "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026",
@@ -92,7 +130,7 @@
       "locator": "p.12",
       "locator_he": "עמוד 12",
       "page": 12,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
@@ -102,22 +140,10 @@
       "publisher_he": "רשות המסים",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "printed p.69",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Ordinance",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.45A(e), s.47(a) `הכנסה מבוטחת`",
-      "locator_he": "סעיף 45א(ה), סעיף 47(א) `הכנסה מבוטחת`",
-      "anchor": "סעיף_45א",
-      "checked": "2026-10-22"
+      "locator": "p.71",
+      "locator_he": "עמוד 71",
+      "page": 71,
+      "checked": "2026-10-25"
     }
   ]
 }

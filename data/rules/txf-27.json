@@ -23,7 +23,7 @@
         "publisher": "US Internal Revenue Service",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -42,38 +42,42 @@
     {
       "url": "https://www.irs.gov/individuals/international-taxpayers/some-nonresidents-with-us-assets-must-file-estate-tax-returns",
       "title": "IRS, Some nonresidents with U.S. assets must file estate tax returns",
+      "title_he": "Some nonresidents with U.S. assets must file estate tax returns (IRS)",
       "publisher": "IRS",
       "publisher_he": "רשות המס האמריקאית (IRS)",
-      "kind": "official_pdf",
+      "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.irs.gov/instructions/i706na",
       "title": "IRS, Instructions for Form 706-NA (09/2025)",
+      "title_he": "Instructions for Form 706-NA (09/2025)",
       "publisher": "IRS",
       "publisher_he": "רשות המס האמריקאית (IRS)",
-      "kind": "official_pdf",
+      "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.irs.gov/businesses/small-businesses-self-employed/frequently-asked-questions-on-estate-taxes-for-nonresidents-not-citizens-of-the-united-states",
       "title": "IRS, FAQ on estate taxes for nonresidents not citizens",
+      "title_he": "Frequently asked questions on estate taxes for nonresidents not citizens of the United States (IRS)",
       "publisher": "IRS",
       "publisher_he": "רשות המס האמריקאית (IRS)",
-      "kind": "official_pdf",
+      "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.irs.gov/businesses/small-businesses-self-employed/estate-gift-tax-treaties-international",
       "title": "IRS, Estate & gift tax treaties (international)",
+      "title_he": "Estate & gift tax treaties (international) (IRS)",
       "publisher": "IRS",
       "publisher_he": "רשות המס האמריקאית (IRS)",
-      "kind": "official_pdf",
+      "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

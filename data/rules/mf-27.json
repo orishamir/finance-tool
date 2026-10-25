@@ -15,46 +15,47 @@
   "sources": [
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
-      "title": "ISA investor guide (2017)",
+      "title": "מדריך למשקיע: קרנות נאמנות (רשות ניירות ערך, ינואר 2017)",
       "title_he": "מדריך למשקיע: קרנות נאמנות (ינואר 2017)",
       "publisher": "Israel Securities Authority",
       "publisher_he": "רשות ניירות ערך",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "pp. 7, 24",
+      "locator": "pp.7, 24",
       "locator_he": "עמודים 7, 24",
       "page": 7,
-      "checked": "2026-10-22",
-      "qualifier": "(dated)"
+      "checked": "2026-10-25",
+      "qualifier": "(dated; still linked by the ISA as its full guide)"
     },
     {
       "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
-      "title": "Leumi tariff, updated 01/10/2026",
+      "title": "תעריפון העמלות המלא, בנק לאומי, מעודכן ל-01/10/2026",
       "title_he": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (בנק לאומי, 1.10.2026)",
       "publisher": "Bank Leumi",
       "publisher_he": "בנק לאומי",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
-      "title": "IBI, תעריפון עמלות, as of 1.7.2026",
-      "title_he": "תעריפון עמלות אי.בי.אי (1.7.2026)",
+      "title": "תעריפון עמלות אי.בי.אי, נכון ל-1.7.2026",
+      "title_he": "תעריפון עמלות אי.בי.אי, נכון ל-1.7.2026",
       "publisher": "IBI",
       "publisher_he": "אי.בי.אי",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.meitav.co.il/mutual_funds/",
-      "title": "Meitav, mutual funds",
+      "title": "מיטב, קרנות נאמנות",
+      "title_he": "מיטב, קרנות נאמנות",
       "publisher": "Meitav",
       "publisher_he": "מיטב",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

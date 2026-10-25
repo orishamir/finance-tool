@@ -16,12 +16,13 @@
   "sources": [
     {
       "url": "https://www.inter-il.com/regulation-and-security/",
-      "title": "Interactive Israel, רגולציה וביטחון",
+      "title": "אינטראקטיב ישראל: רגולציה וביטחון",
+      "title_he": "אינטראקטיב ישראל: רגולציה וביטחון",
       "publisher": "Interactive Israel",
       "publisher_he": "אינטראקטיב ישראל",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

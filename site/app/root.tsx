@@ -1,5 +1,5 @@
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, useLocation, useNavigationType, useRouteError } from "react-router";
-import { useEffect, useLayoutEffect, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, type ReactNode } from "react";
 import "./app.css";
 import interLatin from "../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
 import heeboHebrew from "../../node_modules/@fontsource-variable/heebo/files/heebo-hebrew-wght-normal.woff2?url";
@@ -36,13 +36,23 @@ const persist = () => {
 };
 
 /**
+ * The key a scroll position is kept under: the history entry and its address. Every page loaded fresh in a tab (a typed
+ * address, a bookmark, a reload) has the entry key "default", so the key alone brought one page's position to another
+ * page (2026-10-25, found by research/audit/tools/jump-check.mjs: a guide page typed after scrolling another opened 2,900 px down).
+ */
+const entryKey = (l: { key: string; pathname: string; search: string }) => `${l.key}:${l.pathname}${l.search}`;
+
+/**
  * Scroll position per history entry (audit 2026-10-24, A51). Back and forward bring the page to where it was, waiting for
  * the page to be tall enough and turning off the smooth scrolling meanwhile (it made the jump arrive after the check);
- * a new page opens at the top, or at its `#` target. Replaces the router's ScrollRestoration.
+ * a new page opens at the top, or at its `#` target. Replaces the router's ScrollRestoration. A change of the query on the
+ * same page (a filter or a switch that keeps its state in the address, passing `preventScrollReset`) keeps the place: until
+ * 2026-10-25 it went to the top, so pressing such a control moved the page under the pointer (research/audit/tools/jump-check.mjs).
  */
 function RestoreScroll() {
   const location = useLocation();
   const type = useNavigationType();
+  const lastPath = useRef<string | null>(null);
   useEffect(() => {
     window.history.scrollRestoration = "manual";
     const save = () => persist();
@@ -50,7 +60,7 @@ function RestoreScroll() {
     return () => window.removeEventListener("pagehide", save);
   }, []);
   useEffect(() => {
-    const key = location.key;
+    const key = entryKey(location);
     const on = () => {
       positions[key] = window.scrollY;
     };
@@ -61,8 +71,11 @@ function RestoreScroll() {
     };
   }, [location.key]);
   useIsoLayoutEffect(() => {
+    const samePage = lastPath.current === location.pathname;
+    lastPath.current = location.pathname;
+    if (type !== "POP" && samePage && !location.hash) return;
     const html = document.documentElement;
-    const target = type === "POP" ? positions[location.key] : undefined;
+    const target = type === "POP" ? positions[entryKey(location)] : undefined;
     if (target === undefined || target <= 0) {
       const el = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
       if (el) el.scrollIntoView();

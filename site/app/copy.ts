@@ -18,6 +18,7 @@ export const site = {
     { href: "/rules", label: "חוקים וכללים", current: "rules" },
     { href: "/parameters", label: "פרמטרים", current: "parameters" },
     { href: "/goal", label: "השוואה למטרה", current: "goal" },
+    { href: "/invest", label: "השקעה במדד" }, // D28, 2026-10-25
   ] as const,
   notCovered: { href: "/not-covered", label: "מה האתר עוד לא מכסה" },
   // audit 2026-10-24 (A54, A29, A96): the menu's second group, the home crumb, the footer lines, back to top
@@ -102,6 +103,11 @@ export const home = {
     unknownYears: "לא יודעים",
     purposeLabel: "בשביל מה",
     purposes: { apartment: "דירה", wedding: "חתונה", studies: "לימודים", child: "ילד", retirement: "פרישה", cushion: "כרית ביטחון", none: "בלי מטרה מסוימת" } as Record<string, string>,
+    // NEW 2026-10-25 (the founder: only "כרית ביטחון" changed the card): what each purpose asks and assumes
+    costLabel: { apartment: "כמה הדירה תעלה, בערך", wedding: "כמה החתונה תעלה, בערך", studies: "כמה הלימודים יעלו, בערך" } as Record<string, string>,
+    costHint: "לא חובה. התוצאה תראה אם הסכום מספיק.",
+    childNote: "החיסכון נבדק עד גיל {n}, המספר שהאתר קבע ל״{preset}״.",
+    unknownNote: "בלי מספר שנים, ההשוואה תרוץ על {n} שנים, המספר שהאתר קבע ל״{preset}״.",
     submit: "מה הכי מתאים",
     submitCushion: "כמה עולה להשאיר בעו״ש",
     needAmount: "הזינו סכום: היום או בכל חודש.",
@@ -112,7 +118,6 @@ export const home = {
     already: "יש לכם כבר…",
     alreadyDeposit: "פיקדון שמסתיים",
     alreadyStudyFund: "קרן השתלמות נזילה",
-    alreadyLarge: "סכום גדול בלי מטרה",
   },
 } as const;
 
@@ -556,6 +561,7 @@ export const formulaNames: Record<string, string> = {
   "F-80": "דירוג האפשרויות והשוואה ביניהן",
   "F-81": "בדיקת רגישות להנחות",
   "F-83": "ספירת המסלולים שנכללו",
+  "F-84": "שער חליפין מחושב משערי הבנק המרכזי האירופי",
   B3: "אפשרות שהכסף בה נעול עד סוף התקופה",
   /** Shown when a formula has no name above: no code in place of words. */
   _other: "חישוב של האתר",
@@ -841,7 +847,6 @@ export const r2 = {
   savedAuto: "נשמר אוטומטית במכשיר הזה. בלי חשבון, בלי שרת.",
   couldNotSave: "האתר לא הצליח לשמור במכשיר הזה. ההשוואה תעבוד, אבל המטרה לא תישמר.",
   loadingGoal: "טוען את המטרה השמורה…",
-  compare: "להשוואה",
   menuRow: "השוואה למטרה",
 
   form: {
@@ -946,6 +951,10 @@ export const r2 = {
 
   strip: {
     saved: "נשמר במכשיר הזה",
+    // NEW 2026-10-25 (the first page lists every goal as a row, the founder): a goal that holds nothing yet
+    blank: "עוד לא מולאה",
+    fill: "למילוי",
+    savedAll: "נשמרו במכשיר הזה",
     toResult: "לתוצאה",
     edit: "עריכה",
     menu: "עוד פעולות",
@@ -1168,6 +1177,19 @@ export const ownTermsCopy = {
   } as Record<"fund" | "balance", { below: string; above: string }>,
   openMinimum: "סכום המינימום: שאלה פתוחה", // scenario fix 2026-10-24
   line: { named: "לפי {name}", fee: " בדמי ניהול {fee}", tariff: " ותעריפון {provider}", tariffCheapest: " ותעריפון {provider}, הזול ביותר למטרה הזו מבין התעריפונים שנאספו", end: ".", change: "להחליף", workbench: "לבחירת מוצר אחר", feeLabel: "דמי ניהול שנתיים בקרן, באחוזים", reset: "לחזור לדמי הניהול של הרשומה", classMin: "הנמוכים ביותר שנאספו באותה חשיפה: {fee}", rateLabel: "ריבית שנתית שהבנק הציע לכם", rateReset: "לחזור לריבית שפורסמה" }, // scenario fix 2026-10-24
+  // 2026-10-25 (D27, D28): the securities account names no index until the person chooses one
+  index: {
+    range: "בין {low} ל־{high} לפי המדד שתבחרו", // 2026-10-25
+    rangeNote: "האתר לא ממליץ על מדד. הדירוג מניח את התוצאה הנמוכה מביניהם, כדי לא להציג את החשבון טוב ממה שהוא.", // 2026-10-25
+    pickLabel: "בחרו מדד כדי לראות תוצאה אחת", // 2026-10-25
+    groupLabel: "מדדים", // 2026-10-25
+    chosen: "המדד שבחרתם", // 2026-10-25
+    cheapest: "הדרך הזולה: {broker} · {fund}", // 2026-10-25
+    all: "כל הדרכים להשקיע במדד ←", // 2026-10-25
+    clear: "לבטל את בחירת המדד", // 2026-10-25
+    noWay: "לא נמצאה דרך להשקיע במדד הזה לפי התוכנית, והחשבון מדורג לפי קרן הדוגמה של האתר.", // 2026-10-25
+    notRun: "הדרך הזולה למדד הזה לא נכנסת עדיין לחישוב, והחשבון מדורג לפי קרן הדוגמה של האתר.", // 2026-10-25
+  },
 };
 
 // scenario fix 2026-10-24 (sc-compare): what the comparison's headline says beyond the leader. docs/copy.md section 6.8 holds the rows.
@@ -1956,7 +1978,7 @@ export const r4catalogue = {
 export const r4workbench = {
   // ---- 8.0 everywhere
   levels: { list: "תעריפון", average: "ממוצע שפורסם", entered: "ההצעה שלכם" },
-  classWords: { bank: "בנק", broker: "בית השקעות", "provident-manager": "חברה מנהלת", "fund-manager": "מנהל קרנות" } as Record<string, string>,
+  classWords: { bank: "בנק", broker: "בית השקעות", foreign_broker: "ברוקר זר", "provident-manager": "חברה מנהלת", "fund-manager": "מנהל קרנות" } as Record<string, string>,
   regulators: { BoI: "בנק ישראל", ISA: "רשות ניירות ערך", CMA: "רשות שוק ההון, ביטוח וחיסכון" } as Record<string, string>,
   feeTypes: { trade: "עמלת קנייה ומכירה", custody: "דמי ניהול פיקדון ניירות ערך", fx: "המרת מטבע", fixed: "דמי חשבון קבועים" } as Record<string, string>,
   notComparable: {
@@ -1968,6 +1990,12 @@ export const r4workbench = {
     lineWithoutValue: (name: string) => `בשורה ״${name}״ חסר ערך בתעריפון.`,
     /** copy.md 8.0: the engine refuses a tariff whose lines it cannot choose between (a plan, a sub-class); the page says so rather than guess a price */
     ambiguous: (cls: string) => `בתעריפון יש כמה שורות שחלות על ${cls}, ולאתר אין עדיין דרך לבחור ביניהן בלי לנחש:`,
+    /** 2026-10-25 (engine E1): a fee per unit bought, and the fund's unit price is not collected */
+    needsSharePrice: "העמלה בתעריפון נקבעת לפי מספר היחידות, ומחיר היחידה של הקרן עוד לא נאסף.",
+    /** 2026-10-25 (engine E2): a minimum or fee in a foreign currency the site has no rate for */
+    needsFxRate: "התעריפון קובע עמלה במטבע חוץ, ולאתר אין שער למטבע הזה.",
+    /** 2026-10-25 (engine E5): the engine cannot read the tariff without guessing */
+    recordError: "האתר לא מצליח לקרוא את התעריפון הזה בלי לנחש, ולכן לא מחשב לו מחיר.",
   },
   recordedReason: "הסיבה כפי שנרשמה בקובץ הנתונים",
   noAverage: "אין ממוצע שנאסף",
@@ -2163,7 +2191,7 @@ export const r4workbench = {
     /** copy.md 8.1: the cases the page cannot run, each with the word it needs */
     cannotRun: {
       fundType: "אין עדיין השוואת ספקים לקרן מהסוג הזה.",
-      needRate: (ccy: string) => `הזינו את שער ה־${ccy} בעמוד הקרנות כדי להשוות ספקים.`,
+      needRate: (ccy: string) => `אין שער ל־${ccy} בשערי הייחוס של הבנק המרכזי האירופי, ולכן אי אפשר להשוות ספקים לקרן הזו.`,
       needYield: "הקרן מחלקת: הזינו את תשואת החלוקה בעמוד הקרנות כדי להשוות ספקים.",
       engine: "החישוב נעצר על נתון בתעריפון:",
       noWrapper: "אין השוואת ספקים למוצר הזה.",
@@ -2191,7 +2219,7 @@ export const r4workbench = {
     sheet: {
       title: "ההנחות של השוואת הקרנות",
       w8ben: { label: "יש לכם טופס W-8BEN אצל הברוקר?", yes: "כן", no: "לא", line: "עובדה שלכם, לא חוק או כלל." },
-      fxD20: "שערי בנק ישראל מוצגים רק בקישור; הזינו את השער.",
+      fxD20: "שער היום נלקח משערי הייחוס של הבנק המרכזי האירופי; כאן מזינים רק כמה ישתנה בכל שנה.",
       fxLink: "לשערי בנק ישראל",
       yieldLabel: (fund: string) => `תשואת החלוקה של ${fund} (אחוז בשנה)`,
       perYear: "תשלומים בשנה",
@@ -2229,7 +2257,7 @@ export const r4workbench = {
       g18: "מקור משני: רשות המסים לא אישרה שקרן זרה שאינה מחלקת ממוסה רק במכירה. שאלה פתוחה TXF OQ1",
       taxableIsraeli: "לקרן נאמנות חייבת אין עדיין חישוב.",
       yieldMissing: "הזינו את תשואת החלוקה.",
-      startRate: (ccy: string) => `הזינו את שער ה־${ccy}.`,
+      noRate: (ccy: string) => `אין שער ל־${ccy} בשערי הייחוס של הבנק המרכזי האירופי.`,
       withholding: (country: string) => `ניכוי במקור ב${country}: לא נקבע.`,
       moneyMarket: "סוג הקרן הכספית אינו ברשומה.",
       otherCurrency: (a: string, b: string) => `אין חישוב לקרן ב־${a} על חשיפה ב־${b}.`,
@@ -2355,7 +2383,7 @@ export const r4playbook = {
     notEvaluated: "לא נבדק:",
     reasons: {
       "no-fund": "לא נמצאה אחת הקרנות באתר.",
-      "need-rate": "הזינו את שער המטבע בעמוד הקרן.",
+      "need-rate": "אין שער למטבע של הקרן בשערי הייחוס של הבנק המרכזי האירופי.",
       "need-yield": "הזינו את תשואת החלוקה בעמוד הקרן.",
       "fund-type": "אין עדיין חישוב לסוג הקרן הזה.",
       "other-currency": "אין חישוב לקרן שמטבעה שונה מהחשיפה.",
@@ -2427,6 +2455,9 @@ export const r5 = {
     use: "משמש את ההשוואה לפי חשיפה ואת סימון ההתאמה של מסלולים.",
     empty: "לא הוזן: ההשוואה לפי חשיפה תרוץ בלי מסנן, ותציין את זה.",
     secondDoor: "השוואה לפי חשיפה (במה הכסף מושקע)", // audit 2026-10-24 (sweep): was "איזו חשיפה מתאימה למטרה"
+    // 2026-10-25 (the founder: what is the difference between the two buttons?): the first said only "להשוואה"
+    firstDoor: "השוואה לפי מוצר",
+    doorsLine: "מוצר: איפה הכסף מוחזק, כמו קרן השתלמות, קופת גמל להשקעה, חשבון השקעות או פיקדון. חשיפה: במה הוא מושקע בתוך המוצר, כמו מדד מניות, אג״ח או מזומן.",
   },
   // 9.2 exposure result
   exposure: {
@@ -2651,7 +2682,6 @@ export const sourceBlock = {
   copyKind: "עותק",
   hosts: { wikisource: "ויקיטקסט", nevo: "אתר נבו" } as Record<string, string>,
   /** The second block when an official document is first and a mirror second. */
-  readable: "לקריאה נוחה: הנוסח המשולב (עותק)",
   checked: "נבדק",
   mayHaveChanged: "מאז ייתכן שהנוסח השתנה.",
   pdfTag: "PDF",
@@ -2659,7 +2689,7 @@ export const sourceBlock = {
   /** The word after "נבדק {date} ·" when the source is weaker than the law. */
   weak: { "primary-mirror": "עותק", institution: "לפי החברה", secondary: "מקור משני" } as Record<string, string>,
   /** The one-line citation the copy button writes: "{claim} — {publisher}, {document}, {locator}. {url} (נבדק {date})" */
-  citation: { checked: "נבדק", copied: "ההפניה הועתקה." },
+  citation: { checked: "נבדק", copied: "הועתק" }, // 2026-10-25: was "ההפניה הועתקה."; the box's own label turns into it
   /** The rules page only, under a mirror rule's source: the official publication is not attached yet. */
   officialMissing: "הפרסום הרשמי ברשומות עוד לא צורף; הנוסח נקרא מתוך עותק.",
   /** The lede sentence of the rules pages' legend: what a copy is and what a date is. */
@@ -2687,7 +2717,9 @@ export const ruleCardMore = {
   usesLead: "משפיע על",
   usesEngine: "החישובים באתר",
   usesNone: "רקע בלבד: לא נכנס לחישוב ולא מוצג בעמוד אחר.",
-  copyCitation: "העתקת ההפניה",
+  // 2026-10-25 (the founder: "הפניה" for a citation; a better Hebrew word): "מראה מקום", on a box that shows the citation
+  copyCitation: "העתקת מראה המקום",
+  citationLabel: "מראה מקום",
   experienceTag: "ניסיון של אדם אחד",
 } as const;
 
@@ -2809,3 +2841,265 @@ export const knowledgeEntry = {
 } as const;
 
 Object.assign(parametersPage.names, { "P-09": "השאלות שכולם שואלים: תשובה של שורה לכל שאלה בעמוד השאלות, והבלוק ״שווה לדעת״ בכל מדריך" });
+
+/**
+ * "השקעה במדד" (D28, 2026-10-25; spec research/specs/2026-10-25-invest-page/spec.md). Figures never appear here: a number is a Num on the page.
+ * The labels are defined in lib/labels.ts (id, icon, tone, rules); their words are here.
+ */
+export const invest = {
+  nav: "השקעה במדד",
+  metaTitle: "השקעה במדד",
+  h1: "איפה ואיך הכי זול להשקיע במדד, לאורך זמן",
+  sub: "לפי התעריפון של כל בנק ובית השקעות ולפי הדוח של כל קרן",
+  loading: "טוען את התעריפונים והקרנות…",
+  failed: "האתר לא הצליח לטעון את התעריפונים והקרנות. נסו לרענן את העמוד.",
+  noGoal: "הסכום, ההפקדה והשנים הם של האתר לדוגמה; הזינו מטרה כדי לחשב לפי התוכנית שלכם.",
+  goalLink: "להזנת מטרה",
+  breadcrumbHome: "ראשי",
+
+  chips: {
+    heading: "המדד",
+    none: "בחרו מדד כדי לראות את הדרכים להחזיק אותו.",
+    ownChoice: "הבחירה שלכם; האתר לא ממליץ על מדד",
+    other: "אחר",
+    remove: (name: string) => `הסרת ${name} מהרשימה`,
+    savedTag: "נשמר במכשיר",
+    israeliTag: "ישראלי",
+    foreignTag: "זר",
+  },
+  custom: {
+    heading: "מדד אחר",
+    field: "שם המדד",
+    placeholder: "למשל ניקיי 225",
+    go: "המשך",
+    matched: (name: string) => `האתר מכיר את ״${name}״ ובחר אותו.`,
+    question: "החברות במדד ישראליות?",
+    questionWhy: "זו השאלה היחידה שמשנה את הדרכים: על מדד ישראלי יש רק קרנות ישראליות שמחזיקות את המניות; על מדד זר יש גם קרנות חוץ.",
+    yes: "כן",
+    no: "לא",
+    forInfo: "לידיעתכם בלבד, לא משנה את החישוב:",
+    currency: "מטבע המדד",
+    region: "אזור",
+    save: "שמירה במכשיר",
+    cancel: "ביטול",
+    savedNote: "מדד שהוספתם, שמור במכשיר הזה",
+    change: "שינוי התשובה",
+    nameTaken: "יש כבר מדד בשם הזה.",
+    missing: "המדד הזה לא שמור במכשיר הזה. בחרו מדד מהרשימה או הוסיפו אותו שוב.",
+  },
+
+  plan: {
+    heading: "התוכנית שלכם",
+    now: "היום",
+    monthly: "בחודש",
+    years: "שנים",
+    inflation: "אינפלציה",
+    ret: "תשואה",
+    retExample: "תשואה לדוגמה",
+    retEntered: "התשואה שהזנתם",
+    fromGoal: "מהמטרה השמורה",
+    siteExample: "לדוגמה של האתר",
+    change: "שינוי במטרה",
+    dollar: "שער הדולר",
+    dollarSource: "מחושב משערי הייחוס של הבנק המרכזי האירופי",
+    dollarMissing: "אין שער דולר בשערי הייחוס; הדרך בחו״ל לא מחושבת.",
+    yourAccount: "החשבון שלכם",
+    yourAccountNone: "לא נבחר",
+    yourAccountLead: "ב־",
+    yourAccountHelp: "אם יש לכם כבר חשבון, האתר יראה כמה עולה להישאר בו.",
+    todayShekels: "בכסף של היום",
+  },
+
+  header: {
+    israeliIndex: "מדד של חברות ישראליות",
+    foreignIndex: "מדד של חברות מחוץ לישראל",
+    foreignNote: "אפשר להחזיק אותו גם דרך קרן חוץ.",
+    israeliNote: "קרנות ישראליות שמחזיקות את המניות; אין קרן חוץ שמתמחה בישראל.",
+    forInfo: "לידיעתכם",
+    currency: "מטבע",
+    region: "אזור",
+  },
+
+  headline: {
+    title: "הדרך הזולה ביותר לתוכנית שלכם",
+    left: "נשאר בסוף, בכסף של היום",
+    at: "ב־",
+    withFund: "עם",
+    yours: (broker: string) => `ב${broker}, עם אותה קרן`,
+    yoursLess: "פחות",
+    yoursSame: "אותו סכום",
+    yoursCannot: (broker: string) => `ב${broker} אי אפשר לחשב את אותה קרן`,
+    open: "הדרך הזו נשענת על כלל פתוח, ולכן מוצגת בלי דירוג.",
+    noWay: "עוד לא חושבה דרך שלמה: אין קרן שהאתר יכול לחשב בשבילה.",
+    noFunds: "בית ההשקעות הזול ביותר לקרן ישראלית על המדד:",
+    noFundsCost: "עלות בית ההשקעות לאורך התקופה",
+    noFundsWhy: "האתר לא אסף קרנות על המדד הזה, ולכן אין דירוג של דרכים שלמות; בית ההשקעות זול או יקר באותה מידה לכל קרן באותו סוג.",
+    onlyOpen: "כל הדרכים שחושבו נשענות על כלל פתוח; הן מוצגות למטה, בלי דירוג.",
+  },
+
+  worth: {
+    heading: "מה כל בחירה שווה בתוכנית שלכם",
+    sub: "ההפרש בין הבחירה הטובה לגרועה, בכסף של היום.",
+    bars: {
+      broker: "איזה בית השקעות",
+      fund: "איזו קרן",
+      "etf-tracking": "קרן סל או קרן מחקה",
+      abroad: "בארץ או בחו״ל",
+    } as Record<string, string>,
+    barNote: {
+      broker: (option: string) => `בין הזול ליקר, ב${option}`,
+      fund: (option: string) => `בין הקרנות ב${option}, אצל הזול`,
+      "etf-tracking": "הטובה בכל אחת מהשתיים",
+      abroad: "הטובה בארץ מול הטובה בחו״ל",
+    },
+    upTo: "עד",
+    pendingNoRecords: "אין רשומות",
+    pendingNotPriced: "בחישוב",
+    open: "נשען על כלל פתוח",
+  },
+
+  options: {
+    heading: "(א) מה האפשרויות",
+    sub: "כל אחת היא דרך אחרת להחזיק את אותו מדד. הקישו על אפשרות כדי לראות את הקרנות שלה.",
+    titles: { "il-tracking": "קרן מחקה ישראלית", "il-etf": "קרן סל ישראלית", "tase-foreign": "קרן חוץ בת״א", abroad: "בחו״ל" } as Record<string, string>,
+    titlesIn: { "il-tracking": "קרן מחקה ישראלית", "il-etf": "קרן סל ישראלית", "tase-foreign": "קרן חוץ בבורסה בתל אביב", abroad: "דרך בחו״ל" } as Record<string, string>,
+    funds: (n: number) => (n === 0 ? "אין קרנות שנאספו" : n === 1 ? "קרן אחת שנאספה" : `${n} קרנות שנאספו`),
+    bestBroker: "בית ההשקעות הזול",
+    bestFund: "הקרן הטובה",
+    brokerCost: "עלות בית ההשקעות",
+    left: "נשאר",
+    noBroker: "אין בית השקעות שאפשר לחשב לו",
+    notYet: "עוד לא חושב",
+    noRate: "אין שער דולר בשערי הייחוס.",
+    noFundsFor: "לא נאספו קרנות על המדד הזה",
+    open: "נשען על כלל פתוח",
+    on: (exchange: string) => `בבורסה ב${exchange}`,
+    selected: "נבחרה",
+    exchange: { us: "ארצות הברית", europe: "לונדון" } as Record<string, string>,
+  },
+
+  grid: {
+    heading: "(ב) איזה בית השקעות הכי זול לכל אפשרות",
+    sub: "עלות בית ההשקעות לאורך התקופה, בכסף של היום, לקרן בלי עלויות משלה. הזול בכל עמודה מסומן.",
+    broker: "בית השקעות",
+    cheapest: "הזול",
+    unavailable: "לא זמין",
+    noLine: "אין שורה בתעריפון",
+    none: "—",
+    noCandidate: "אין אפשרות",
+    more: (n: number) => (n === 1 ? "עוד בית השקעות אחד" : `עוד ${n} בתי השקעות`),
+    less: "פחות בתי השקעות",
+    yours: "החשבון שלכם",
+    foreignTag: "ברוקר זר",
+    sourceOf: "המקור לכך שלא זמין",
+    cellReason: "למה אי אפשר לחשב",
+    viaExchange: (exchange: string) => `לפי הבורסה ב${exchange}`,
+    tableLabel: "עלות כל בית השקעות לכל אפשרות",
+    fixedOnly: "אינטראקטיב ברוקרס: מחושבים רק תעריפי ה־Fixed. תעריפי ה־Tiered משאירים בחוץ עמלות בורסה וסליקה שהנתונים לא מכילים, ולכן הדירוג שלהם היה מקטין את העלות.",
+    fxPair: "המרה בין שני מטבעות זרים אינה חלה כאן: משקיע בשקלים מחליף שקלים למטבע.",
+  },
+
+  funds: {
+    heading: "(ג) הקרנות באפשרות שבחרתם",
+    pick: "בחרו אפשרות למעלה כדי לראות את הקרנות שלה.",
+    rank: "מקום",
+    name: "קרן",
+    fees: "דמי הניהול שלה",
+    fixed: "קבועים",
+    variable: "משתנים",
+    trustee: "נאמן",
+    labels: "תוויות",
+    value: (broker: string) => `נשאר ב${broker}`,
+    yours: (broker: string) => `ב${broker}`,
+    filterAll: "הכול",
+    filterUnhedged: "בלי נטרול מט״ח",
+    filterHedged: "רק מנוטרלות",
+    whatLabels: "מה אומרות התוויות?",
+    trackingNote: "הפרש העקיבה של הקרנות עוד לא נאסף, ונלקח כאפס.",
+    notCollected: "לא נאסף",
+    cannot: "אי אפשר לחשב",
+    noMatch: "אין קרן שמתאימה לסינון.",
+    currencyMismatch: (fund: string, index: string) => `הקרן נקובה ב${fund} והמדד ב${index}; האתר לא מחשב את ההפרש ביניהם.`,
+    mismatchTag: "מטבע שונה ממטבע המדד",
+    number: "מספר נייר",
+    sameAsBest: "אותו בית השקעות",
+    emptyHeading: "עוד לא נאספו קרנות על המדד הזה",
+    emptyBody: "בלי רשומת קרן האתר לא מנחש דמי ניהול. אפשר לבחור קרן במאיה לפי דמי הניהול שלה, או לבקש שהאתר יאסוף.",
+    maya: "לחיפוש במאיה",
+    request: "בקשו שנאסוף",
+    requestText: (index: string) => `אבקש שהאתר יאסוף קרנות על המדד ״${index}״.`,
+    copied: "הועתק",
+    noOption: "לאפשרות הזו אין קרנות שנאספו.",
+    israelTitle: "קרנות ישראליות",
+  },
+
+  steps: {
+    heading: "מה עושים עכשיו",
+    openLead: "פותחים חשבון ב",
+    stay: (broker: string) => `נשארים ב${broker}`,
+    stayDiff: "ההפרש מול הדרך הזולה",
+    buy: (fund: string) => `קונים את ${fund} לפי מספר הנייר`,
+    buyNumber: "מספר נייר",
+    copy: "העתקה",
+    copied: "הועתק",
+    buyCustom: "בוחרים קרן במאיה לפי דמי הניהול",
+    standing: "מגדירים הוראת קבע של הסכום החודשי",
+    standingWith: "הסכום החודשי",
+    switchLink: "איך עוברים בית השקעות",
+    noWay: "כשתהיה דרך שלמה, כאן יופיעו שלושת השלבים.",
+  },
+
+  foot: {
+    returnUsed: "התשואה שבחישוב",
+    example: "תשואה לדוגמה, לא תחזית: הסדר של הדרכים לפי עלויות, לא לפי מה שהמדד יעשה.",
+    entered: "התשואה שהזנתם",
+    holds: "הסדר נשמר בכל תשואה בין 0% ל־10%.",
+    flips: "הסדר משתנה בתשואה שונה:",
+    flipsAt: (at: number) => `ב־${at}%`,
+    /** 2026-10-25 (lead): the order check in one line; the places it changes are behind the toggle */
+    flipsSummary: (n: number) => `בתשואה של 0% או של 10% הסדר משתנה ב־${n} ${n === 1 ? "מקום" : "מקומות"}. פירוט`,
+    flipWhat: { options: "הסדר בין האפשרויות", brokers: (o: string) => `הסדר בין בתי ההשקעות ב${o}`, funds: (o: string) => `הסדר בין הקרנות ב${o}` },
+    engine: "המספרים מהמנוע, על הנתונים של היום.",
+    values: "הערכים הם בכסף של היום.",
+    ibkr: "אינטראקטיב ברוקרס: מחושבים רק תעריפי ה־Fixed; תעריפי ה־Tiered משאירים בחוץ עמלות בורסה וסליקה שהנתונים לא מכילים.",
+    sharePrice: "קרנות בחו״ל שהתעריפון שלהן נקבע לפי מספר המניות מחכות למחיר היחידה של הקרן, שעוד לא נאסף.",
+    d27: "האתר לא ממליץ על מדד.",
+  },
+
+  reasons: {
+    fundType: "הקרן הזו עוד לא מחושבת באתר (סוג או מס שאין להם חישוב).",
+    needYield: "הקרן מחלקת, וצריך את תשואת החלוקה שלה כדי לחשב.",
+    needRate: (ccy: string) => `אין שער ל${ccy} בשערי הייחוס.`,
+    noBroker: "אין בית השקעות שאפשר לחשב לו את הקרן הזו.",
+  },
+
+  /** The word for an option inside a sentence ("ב…"). */
+  optionIn: { "il-tracking": "קרן מחקה ישראלית", "il-etf": "קרן סל ישראלית", "tase-foreign": "קרן חוץ בבורסה בתל אביב", abroad: "דרך בחו״ל" } as Record<string, string>,
+
+  currencies: { USD: "דולר", EUR: "אירו", GBP: "פאונד", JPY: "ין", CHF: "פרנק שוויצרי", CAD: "דולר קנדי", AUD: "דולר אוסטרלי", CNY: "יואן", HKD: "דולר הונג קונג", NIS: "שקל", ILS: "שקל" } as Record<string, string>,
+
+  labelFamilies: { held: "איפה הקרן מוחזקת", trade: "איך היא נסחרת", follow: "איך היא עוקבת אחרי המדד", currency: "מטבע", tax: "מס", asks: "מה היא דורשת מכם, וסיכון", availability: "זמינות" },
+  labelsSheet: { rules: "מקורות", close: "סגירה", forPlan: "" },
+  labels: {
+    "held-il": { text: "קרן ישראלית", explain: "הקרן רשומה בישראל ומפוקחת כאן. על מדד זר היא מקבלת את החשיפה בעסקאות, ועל מדד ישראלי היא מחזיקה את המניות." },
+    "held-tase-foreign": { text: "קרן חוץ בת״א", explain: "קרן מחוץ לישראל שנסחרת גם בבורסה בתל אביב, בשקלים. קרן חוץ לא מתמחה בישראל, ולכן היא רק על מדדים זרים." },
+    "held-abroad": { text: "נקנית בחו״ל", explain: "הקרן נקנית בבורסה בחו״ל, דרך בנק או בית השקעות שמוכרים ניירות ערך זרים. הרשות לניירות ערך לא מפקחת עליה." },
+    "trade-etf": { text: "קרן סל: נסחרת כל היום", explain: "קרן סל נסחרת בבורסה כל יום המסחר, במחיר שמשתנה במהלך היום." },
+    "trade-tracking": { text: "קרן מחקה: פעם ביום", explain: "קרן מחקה נקנית ונפדית במחיר היחידה אחת ביום, דרך הבנק או בית ההשקעות, לא בבורסה." },
+    "follow-physical": { text: "מחזיקה את המניות", explain: "הקרן קונה את המניות שבמדד עצמן. כך עוקבות בדרך כלל קרנות על מדדים מקומיים." },
+    "follow-swap": { text: "עסקת החלף", explain: "הקרן מקבלת את תשואת המדד מבנק בעסקת החלף. כך עוקבות בדרך כלל קרנות ישראליות על מדדים זרים, ויש בכך סיכון לבנק שמול הקרן." },
+    "follow-futures": { text: "חוזים עתידיים", explain: "הקרן יוצרת את החשיפה למדד בחוזים עתידיים הנסחרים בבורסה." },
+    "follow-mixed": { text: "כמה דרכים יחד", explain: "הקרן משלבת כמה דרכים לעקוב אחרי המדד, למשל עסקאות החלף וחוזים עתידיים, ולפעמים גם קרנות אחרות." },
+    currency: { text: (ccy: string) => `חשיפה ל${ccy}`, explain: (ccy: string) => `ערך הקרן עולה ויורד גם עם שער ה${ccy} מול השקל, כי המדד מחושב בו.` },
+    hedged: { text: "מנוטרלת מט״ח", explain: "הקרן מנטרלת את השפעת שער המטבע, ולכן שינוי בשער לא משנה את ערכה. הנטרול עולה כסף, שנכלל בדמי הקרן או בעקיבה." },
+    "tax-currency": { text: "מס גם על שינויי המטבע", explain: "בקרן ישראלית המס נמדד על הרווח הריאלי ביחידות השקליות, ולכן גם עליית המטבע שבתוך הרווח ממוסה." },
+    "tax-fund-dividend": { text: "מס דיבידנד בתוך הקרן", explain: "קרן אירית משלמת מס אמריקני על דיבידנדים מחברות אמריקניות. המס הזה הוא עלות של הקרן ואינו מזוכה בישראל." },
+    "tax-distribution": { text: "מס על כל חלוקה", explain: "קרן שמחלקת משלמת לכם דיבידנד, וממנו משלמים מס בכל חלוקה, לפני המכירה." },
+    "tax-on-sale-open": { text: "מס רק במכירה", explain: "לא נמצא כלל שממסה יחיד על רווחים שקרן זרה צברה ולא חילקה, ורשות המסים לא אישרה זאת. זו שאלה פתוחה, ולכן הדרך מוצגת בלי דירוג." },
+    "ask-self-report": { text: "דיווח עצמי למס", explain: "כשאין ניכוי מס במקור במכירה, מדווחים על הרווח ומשלמים מקדמה פעמיים בשנה, ומגישים דוח שנתי." },
+    "ask-estate": { text: "מס עיזבון אמריקאי", explain: "מי שאינו אמריקאי ומחזיק נכסים אמריקניים מעל סף הנקוב בדולרים עלול להיות חייב בדוח מס ירושה אמריקני. קרן שמאוגדת בארצות הברית היא נכס אמריקני." },
+    "risk-unsupervised": { text: "לא בפיקוח רשות ני״ע", explain: "בית ההשקעות פועל בישראל בהיתר, והרשות לניירות ערך לא מפקחת עליו. חשבונות הלקוחות נפתחים אצל גוף זר." },
+    "ask-w8": { text: "צריך טופס W-8BEN", explain: "לקרן אמריקנית צריך למסור לבית ההשקעות טופס W-8BEN. בלי הטופס הניכוי האמריקני עלול להיות גבוה יותר." },
+    unavailable: { text: "לא זמין בבית ההשקעות הזה", explain: "לפי מה שבית ההשקעות מפרסם, הוא לא מוכר את הסוג הזה ללקוחות פרטיים." },
+  },
+} as const;

@@ -14,27 +14,31 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
-      "title": "Nevo, reg. 11(א)",
-      "publisher": "Nevo",
-      "publisher_he": "נבו",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "reg. 11(א)",
-      "locator_he": "תקנה 11(א)",
-      "checked": "2026-10-22"
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=5",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.5, reg. 11 (now 11(א))",
+      "page": 5,
+      "quote": "תיעשה במזומנים או בנכסים, לפי בחירת העמית",
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.meitav.co.il/media/0qulk3pk/תקנות-ira-חדשות-יוני-2017.pdf",
-      "title": "Reshumot 2017 amendment, reg. 7 (new reg. 11(ב))",
-      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי)",
-      "publisher": "Meitav",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=5",
+      "title": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
       "strength": "primary",
-      "locator": "reg. 7 (new reg. 11(ב))",
-      "checked": "2026-10-22"
+      "locator": "p.5, s.7",
+      "locator_he": "עמוד 5, סעיף 7",
+      "page": 5,
+      "quote": "נכסי הקופה למזומנים",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.meitav.co.il/provident_pension/ira/",
@@ -44,7 +48,8 @@
       "publisher_he": "מיטב",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "quote": "השינוי היחיד שמבוצע הוא הגוף המנהל ואופן הניהול",
+      "checked": "2026-10-25"
     }
   ]
 }

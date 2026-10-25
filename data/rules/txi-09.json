@@ -20,11 +20,11 @@
       "unit": "pct",
       "source": {
         "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
-        "title": "Income Tax (Withholding from Interest, Dividend and Certain Profits) Regulations 2005, consolidated to 27.12.2017 (copy on the National Insurance site)",
-        "publisher": "Finance Ministry; copy on National Insurance site",
+        "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, נוסח משולב, p.2, reg. 5(א)",
+        "publisher": "המוסד לביטוח לאומי",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -40,11 +40,11 @@
       "unit": "pct",
       "source": {
         "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
-        "title": "Income Tax (Withholding from Interest, Dividend and Certain Profits) Regulations 2005, consolidated to 27.12.2017 (copy on the National Insurance site)",
-        "publisher": "Finance Ministry; copy on National Insurance site",
+        "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, נוסח משולב, p.2, reg. 5(א)",
+        "publisher": "המוסד לביטוח לאומי",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -60,11 +60,11 @@
       "unit": "pct",
       "source": {
         "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
-        "title": "Income Tax (Withholding from Interest, Dividend and Certain Profits) Regulations 2005, consolidated to 27.12.2017 (copy on the National Insurance site)",
-        "publisher": "Finance Ministry; copy on National Insurance site",
+        "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, נוסח משולב, p.2, reg. 5(ב)",
+        "publisher": "המוסד לביטוח לאומי",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -81,15 +81,29 @@
   "sources": [
     {
       "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
-      "title": "Withholding Regulations 2005, reg. 1 (definitions \"מילווה מדינה\", \"ריבית\"), reg. 5",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005",
       "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
       "publisher": "National Insurance Institute",
-      "publisher_he": "משרד האוצר",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "reg. 1",
-      "locator_he": "תקנה 1",
-      "checked": "2026-10-22"
+      "locator": "p.1, reg. 1, definitions מילווה מדינה, ריבית",
+      "page": 1,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.2, reg. 5",
+      "locator_he": "עמוד 2, תקנה 5",
+      "page": 2,
+      "quote": "ואולם אם שילם ליחיד ריבית על נכס שאינו צמוד למדד, למעט על תכנית חיסכון בפוליסה משתתפת ברווחים, ינכה ממנה מס בשיעור של 15%",
+      "checked": "2026-10-25"
     }
   ]
 }

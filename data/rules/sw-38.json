@@ -3,7 +3,7 @@
   "title": "What to check after a switch",
   "title_he": "מה לבדוק אחרי המעבר",
   "text_he": "שני האישורים בכתב מגיעים בתוך ימי העסקים שהחוזר קובע, ומראים את הסכום לפי מרכיבים, את המועד הקובע ואת היתרה שנשארה; דמי הניהול בחשבון החדש תואמים את ההצעה, והנחה מופיעה באזור האישי עם תאריכי התחלה וסיום ונשלחת בדוא״ל כשהוא ידוע; המסלול הוא זה שנבחר ולא ברירת המחדל. בקרן פנסיה: מסלול הביטוח והכיסוי, התנאים וההחרגות בנספח ב׳, ושחודשי האכשרה עברו; המעסיק מפקיד לקופה החדשה, שאחרת בקשה של עמית פעיל פוקעת; בקרן השתלמות: מועד התשלום הראשון עבר. במעבר בנק: הוראות קבע והרשאות לחיוב מגיעות לחשבון החדש, העדכון החצי שנתי על הניתוב מונה את המשלמים, פיקדונות וניירות שלא ניתנים להעברה שנשארו בבנק הישן רשומים, ולא נגבות עמלות על חשבון תמורה. בניירות ערך: כל נייר הגיע, ועלות הרכישה וההפסדים להעברה רשומים אצל המקבל; זוהי רשימה מורכבת מכללים אחרים ואינה מוסיפה כלל משלה.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
     "statement-disclosure"
@@ -14,81 +14,92 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)",
-      "title": "3",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://www.nevo.co.il/law_html/law01/255_226.htm",
-      "title": "5",
-      "publisher": "Nevo",
-      "publisher_he": "נבו",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://www.analyst.co.il/media/dtnkdiyk/%D7%97%D7%95%D7%96%D7%A8-%D7%92%D7%95%D7%A4%D7%99%D7%9D-%D7%9E%D7%95%D7%A1%D7%93%D7%99%D7%99%D7%9D-2017-9-17-%D7%94%D7%A2%D7%91%D7%A8%D7%AA-%D7%9B%D7%A1%D7%A4%D7%99%D7%9D-%D7%91%D7%99%D7%9F-%D7%A7%D7%95%D7%A4%D7%95%D7%AA-%D7%92%D7%9E%D7%9C.pdf",
-      "title": "1",
-      "publisher": "Analyst",
-      "publisher_he": "אנליסט",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+      "title": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+      "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "pp.1-28",
+      "locator_he": "עמודים 1 עד 28",
+      "page": 1,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz2017915.pdf",
-      "title": "2",
-      "publisher": "Prisha.co.il",
-      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
+      "title": "חוזר גופים מוסדיים 2017-9-15 – דמי ניהול במכשירי החיסכון הפנסיוני – תיקון",
+      "title_he": "חוזר גופים מוסדיים 2017-9-15 – דמי ניהול במכשירי החיסכון הפנסיוני – תיקון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.3, s.4",
+      "locator_he": "עמוד 3, סעיף 4",
+      "page": 3,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.fnx.co.il/ishtalmutfund/faq/",
-      "title": "4",
-      "publisher": "The Phoenix",
-      "publisher_he": "הפניקס",
-      "kind": "institution_doc",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "checked": "2026-10-22"
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=1",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100048.pdf",
+      "title": "תקנות מס הכנסה (כללים לתנאים שבהם חשבונות שונים בקרן השתלמות ייחשבו לחשבון אחד), התשנ\"ג-1993",
+      "title_he": "תקנות מס הכנסה (כללים לתנאים שבהם חשבונות שונים בקרן השתלמות ייחשבו לחשבון אחד), התשנ״ג-1993",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.1, regs. 1-3",
+      "locator_he": "עמוד 1, תקנות 1-3",
+      "page": 1,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://boi.org.il/media/qempydw4/h2863.pdf",
-      "title": "6",
+      "title": "חוזר ח-06-2863 – הארכת תקופת הניתוב בעת מעבר בין בנקים – דברי הסבר (18.10.2026)",
+      "title_he": "חוזר ח-06-2863 – הארכת תקופת הניתוב בעת מעבר בין בנקים – דברי הסבר (18.10.2026)",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
-      "kind": "regulator_page",
-      "strength": "secondary",
-      "checked": "2026-10-22"
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "pp.1-2",
+      "locator_he": "עמודים 1 עד 2",
+      "page": 1,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://boi.org.il/media/ydrnjadk/111609.pdf",
-      "title": "7",
-      "publisher": "Bank of Israel",
-      "publisher_he": "בנק ישראל",
-      "kind": "regulator_page",
-      "strength": "secondary",
-      "checked": "2026-10-22"
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/F9bg9ryZESlDqrIFTdQefnXqkLtWsLmUW7mzw7WyHNs=#page=2",
+      "title": "כללי הבנקאות (שירות ללקוח) (העברת פעילות פיננסית של לקוח בין בנקים) (תיקון), התשפ\"ז-2026 (קובץ התקנות 12530)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (העברת פעילות פיננסית של לקוח בין בנקים) (תיקון), התשפ\"ז-2026 (קובץ התקנות 12530)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://boi.org.il/media/qy0gzddj/111486.pdf",
-      "title": "8",
-      "publisher": "Bank of Israel",
-      "publisher_he": "בנק ישראל",
-      "kind": "regulator_page",
-      "strength": "secondary",
-      "checked": "2026-10-22"
+      "url": "https://www.fnx.co.il/ishtalmutfund/faq/",
+      "title": "Phoenix study-fund FAQ",
+      "title_he": "שאלות ותשובות על קרן ההשתלמות של הפניקס",
+      "publisher": "The Phoenix",
+      "publisher_he": "הפניקס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
     }
   ]
 }

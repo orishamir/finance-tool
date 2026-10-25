@@ -15,24 +15,27 @@
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-      "title": "CMA circular 2022-9-30",
-      "title_he": "חוזר גופים מוסדיים 2022-9-30: ניהול מסלולי השקעה בקופות גמל",
+      "title": "חוזר גופים מוסדיים 2022-9-30 מסלולי השקעה בקופות גמל - תיקון",
+      "title_he": "חוזר גופים מוסדיים 2022-9-30: מסלולי השקעה בקופות גמל – תיקון",
       "publisher": "gov.il",
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
-      "locator": "appendix s.2, pp.2 to 3",
+      "locator": "pp.2 to 3, s.2",
+      "locator_he": "עמודים 2 עד 3, סעיף 2",
       "page": 2,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.harel-group.co.il/long-term-savings/information/reform",
-      "title": "Harel reform page",
+      "title": "הראל: רפורמה במסלולי השקעה",
+      "title_he": "הראל: רפורמה במסלולי השקעה",
       "publisher": "Harel",
       "publisher_he": "הראל",
       "kind": "institution_doc",
-      "strength": "primary",
-      "checked": "2026-10-22"
+      "strength": "institution",
+      "checked": "2026-10-25",
+      "qualifier": "(institution describing the reform)"
     }
   ]
 }

@@ -15,17 +15,17 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.nevo.co.il/law_html/law00/70349.htm",
-      "title": "Securities Law s.49A (Nevo)",
-      "title_he": "חוק ניירות ערך, התשכ״ח-1968",
-      "publisher": "Nevo",
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_382526.pdf",
+      "title": "חוק ניירות ערך (תיקון מס' 63), התשע\"ז-2017",
+      "title_he": "חוק ניירות ערך (תיקון מס׳ 63), התשע״ז-2017 (ספר החוקים 2633)",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "s.49A",
-      "locator_he": "סעיף 49א",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.10, s.49א",
+      "locator_he": "עמוד 10, סעיף 49א",
+      "page": 10,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://lp3.inter-il.com/about-3",
@@ -35,16 +35,17 @@
       "publisher_he": "אינטראקטיב ישראל",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.bank-yahav.co.il/footer/footer-menu/securrities-permit/",
-      "title": "Bank Yahav, \"היתר למתן שירותי מסחר בניירות ערך\"",
+      "title": "בנק יהב: היתר למתן שירותי מסחר בניירות ערך",
+      "title_he": "בנק יהב: היתר למתן שירותי מסחר בניירות ערך",
       "publisher": "Bank Yahav",
       "publisher_he": "בנק יהב",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -13,30 +13,30 @@
   "sources": [
     {
       "url": "https://edge.boi.org.il/FusionEdgeServer/sdmx/v2/data/dataflow/BOI.STATISTICS/SECDWH/1.0/?format=csv&lastNObservations=1&labels=name",
-      "title": "EDGE SECDWH",
+      "title": "בנק ישראל, EDGE: SECDWH",
       "publisher": "Bank of Israel (data)",
       "publisher_he": "בנק ישראל (מאגר הנתונים)",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://edge.boi.org.il/FusionEdgeServer/sdmx/v2/structure/dataflow",
-      "title": "EDGE dataflow list",
+      "title": "בנק ישראל, EDGE: רשימת זרימות הנתונים",
       "publisher": "Bank of Israel (data)",
       "publisher_he": "בנק ישראל (מאגר הנתונים)",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://data.gov.il/api/3/action/package_show?id=goverment-domesticdebt",
-      "title": "data.gov.il package_show goverment-domesticdebt",
+      "title": "data.gov.il: נתוני החוב הממשלתי המקומי (package_show)",
       "publisher": "data.gov.il",
       "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

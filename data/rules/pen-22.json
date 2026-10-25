@@ -7,7 +7,7 @@
     "balance_cap": "תקרת דמי ניהול מהצבירה",
     "deposit_cap": "תקרת דמי ניהול מההפקדות"
   },
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "fee-management-balance",
     "fee-deposit"
@@ -19,12 +19,12 @@
       "value": 1.05,
       "unit": "pct_per_year",
       "source": {
-        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
-        "title": "Management Fees Regulations 2012, regulations 2, 4 (Wikisource mirror); Mor gemel standard bylaws 18.02.2026, s.44",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131), p.4, reg. 2(א)(1): \"בשיעור שלא יעלה על 1.05% לשנה\"",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -40,12 +40,12 @@
       "value": 4,
       "unit": "pct_of_deposit",
       "source": {
-        "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
-        "title": "Management Fees Regulations 2012, regulation 2 (Wikisource mirror)",
-        "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-        "strength": "primary-mirror"
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131), p.4, reg. 2(א)(2): 4%",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -62,15 +62,31 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)",
-      "title": "Management Fees Regulations 2012, regulations 2, 4 (Wikisource mirror)",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012",
       "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע״ב-2012",
-      "publisher": "Hebrew Wikisource",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "משרד האוצר",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.4, reg. 2",
+      "locator_he": "עמוד 4, תקנה 2",
+      "page": 4,
+      "quote": "מן היתרה הצבורה בחשבונו של כל עמית בשיעור שלא יעלה על 1.05% לשנה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע״ב-2012",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.6, reg. 4",
+      "locator_he": "עמוד 6, תקנה 4",
+      "page": 6,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf",
@@ -80,9 +96,10 @@
       "publisher_he": "מור גמל ופנסיה",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "section 44",
-      "locator_he": "סעיף 44",
-      "checked": "2026-10-22"
+      "locator": "section 44, p.13",
+      "locator_he": "סעיף 44, עמוד 13",
+      "page": 13,
+      "checked": "2026-10-25"
     }
   ]
 }

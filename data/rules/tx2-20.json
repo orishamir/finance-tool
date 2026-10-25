@@ -26,7 +26,7 @@
         "publisher": "Reit 1 Ltd",
         "strength": "institution"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2012,
@@ -47,7 +47,7 @@
         "publisher": "Reit 1 Ltd",
         "strength": "institution"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2012,
@@ -68,7 +68,7 @@
         "publisher": "Reit 1 Ltd",
         "strength": "institution"
       },
-      "checked": "2026-10-24",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2012,
@@ -90,7 +90,7 @@
       "publisher_he": "ריט 1",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-24"
+      "checked": "2026-10-25"
     }
   ]
 }

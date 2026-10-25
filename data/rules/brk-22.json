@@ -13,16 +13,16 @@
   "sources": [
     {
       "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",
-      "title": "BoI disclosure rules 1992, consolidated, s.3(א)(5)",
-      "title_he": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ״ב-1992",
+      "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל)",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
-      "kind": "regulation",
+      "kind": "regulator_page",
       "strength": "primary",
-      "locator": "p.2",
-      "locator_he": "עמוד 2",
+      "locator": "p.2, s.3(א)(5)",
+      "locator_he": "עמוד 2, סעיף 3(א)(5)",
       "page": 2,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

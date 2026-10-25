@@ -26,7 +26,21 @@
       "locator_he": "עמוד 24",
       "page": 24,
       "quote": "סכום קצבה מזערי",
-      "checked": "2026-10-24"
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf",
+      "title": "Income Tax circular 2/2013, \"תיקון 190 לפקודה\" (27.5.2013)",
+      "title_he": "חוזר מס הכנסה 2/2013: תיקון 190 לפקודה",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.15, s.5.6",
+      "locator_he": "עמוד 15, סעיף 5.6",
+      "page": 15,
+      "quote": "לאחר שקיבל שלושה תלושי שכר הכוללים את הפטור על הקצבה",
+      "checked": "2026-10-25"
     }
   ]
 }

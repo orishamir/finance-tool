@@ -3,7 +3,7 @@
   "title": "Retention contacts and offers in provident products: no rule found; what is sourced",
   "title_he": "שימור במוצרי גמל: לא נמצא כלל",
   "text_he": "לא בחוק הייעוץ, השיווק והסליקה הפנסיוניים, שנקרא במלואו באתר שמעתיק אותו, ולא בחוזר ההעברה, שנקרא כולו מעותק אצל צד שלישי, נמצא כלל על פנייה של קופה מעבירה לעמית שביקש לעזוב או על הצעות שימור. מה שכן קבוע: העמית יכול לבטל עד שהכסף עובר; הנחה שניתנה חייבת להישאר בתוקף לתקופת מינימום מהגבייה הראשונה, להופיע באזור האישי ולהישלח בדוא״ל בתוך ימי עסקים ספורים כשהדוא״ל ידוע; והעברה, מלאה או חלקית, מתירה למנהל להעלות הנחה מוקדם. האם הצעת דמי ניהול שניתנה לפני ההצטרפות מחייבת את המוסד לא נמצא, וזו שאלה פתוחה. רשמו כל הצעה עם התאריך והמקור שלה.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
     "fee-change-over-time"
@@ -14,27 +14,37 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(ייעוץ,_שיווק_ומערכת_סליקה_פנסיוניים)",
-      "title": "Pension Advice, Marketing and Clearing System Law (full text, two reads)",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים), התשס״ה-2005",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://www.analyst.co.il/media/dtnkdiyk/%D7%97%D7%95%D7%96%D7%A8-%D7%92%D7%95%D7%A4%D7%99%D7%9D-%D7%9E%D7%95%D7%A1%D7%93%D7%99%D7%99%D7%9D-2017-9-17-%D7%94%D7%A2%D7%91%D7%A8%D7%AA-%D7%9B%D7%A1%D7%A4%D7%99%D7%9D-%D7%91%D7%99%D7%9F-%D7%A7%D7%95%D7%A4%D7%95%D7%AA-%D7%92%D7%9E%D7%9C.pdf",
-      "title": "Circular 2017-9-17 (all 28 pages)",
-      "title_he": "חוזר גופים מוסדיים 2017-9-17: העברת כספים בין קופות גמל",
-      "publisher": "Analyst",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
+      "title": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+      "title_he": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
+      "publisher": "gov.il",
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "checked": "2026-10-22",
-      "qualifier": "(third-party host)"
+      "strength": "primary",
+      "locator": "pp.1-28",
+      "locator_he": "עמודים 1 עד 28",
+      "page": 1,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299985.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני), התשס\"ה-2005",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע\"א-2011",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני) (תיקון מס' 3), התשע\"א-2011",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "checked": "2026-10-25"
     }
   ],
   "derived_from": [

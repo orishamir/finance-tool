@@ -1,0 +1,65 @@
+{
+  "id": "BRK-42",
+  "title": "Interactive Brokers direct: IBKR Pro Fixed or Tiered (Lite is for US residents only), no custody fee, no account minimum or inactivity fee, spot conversion in basis points with a USD 2 minimum, two free withdrawals a month",
+  "title_he": "אינטראקטיב ברוקרס ישירות: מסלול קבוע או מדורג, בלי דמי משמרת ובלי מינימום",
+  "strength": "institution",
+  "dimensions": [
+    "fee-trade",
+    "fee-fx",
+    "fee-custody",
+    "minimum",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-25",
+  "text_he": "לקוח ישיר של אינטראקטיב ברוקרס בוחר בין מסלול עמלה קבוע למסלול מדורג; המסלול בלי עמלות מיועד לתושבי ארצות הברית בלבד. הברוקר אינו גובה דמי משמרת, אין מינימום לפתיחת חשבון ואין דמי אי פעילות, ושתי משיכות בחודש חינם. המרת מטבע עולה שבר זעיר של אחוז עם מינימום בדולרים, או תוספת קטנה לשער בהמרה האוטומטית. התעריף הזה הוא ללקוחות ישירים; מי שהגיע דרך ברוקר מציג משלם את תעריף הברוקר המציג.",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+      "title": "Interactive Brokers: Commissions Stocks, ETFs, Warrants and Structured Products",
+      "publisher": "Interactive Brokers",
+      "publisher_he": "Interactive Brokers",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.interactivebrokers.com/en/pricing/commissions-spot-currencies.php",
+      "title": "Interactive Brokers: Commissions Spot Currencies",
+      "publisher": "Interactive Brokers",
+      "publisher_he": "Interactive Brokers",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.interactivebrokers.com/en/accounts/required-minimums.php",
+      "title": "Interactive Brokers: Required Minimums",
+      "publisher": "Interactive Brokers",
+      "publisher_he": "Interactive Brokers",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.interactivebrokers.com/en/pricing/other-fees.php",
+      "title": "Interactive Brokers: Other Fees, Withdrawals",
+      "publisher": "Interactive Brokers",
+      "publisher_he": "Interactive Brokers",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.interactivebrokers.com/en/pricing/market-data-pricing.php",
+      "title": "Interactive Brokers: Market Data Pricing",
+      "publisher": "Interactive Brokers",
+      "publisher_he": "Interactive Brokers",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ]
+}

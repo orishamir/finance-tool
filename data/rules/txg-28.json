@@ -3,7 +3,7 @@
   "title": "National Insurance: capital gains are outside the base",
   "title_he": "ביטוח לאומי: רווחי הון מחוץ לבסיס",
   "text_he": "למי שאינו עובד ואינו עצמאי, ההכנסה השנתית לדמי ביטוח היא ההכנסה מהמקורות שמנויים בסעיף המקורות של פקודת מס הכנסה, אחרי הוצאות שקשורות ישירות. הסעיף הזה מונה עסק, עבודה, דיבידנד, ריבית, הצמדה ודמי ניכיון, קצבאות, שכר דירה וכדומה, ו'כל מקור אחר', אבל אין בו פסקה לרווחי הון, שממוסים בחלק אחר של הפקודה; לכן רווחי הון אינם בבסיס דמי הביטוח. זהו היסק משני נוסחי חוק; לא נפתח משפט של הביטוח הלאומי או רשות המסים שאומר זאת. רווח הון שהוא הכנסה עסקית (סוחר) היה נכלל.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "tax-at-exit"
   ],
@@ -12,35 +12,32 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%94%D7%91%D7%99%D7%98%D7%95%D7%97_%D7%94%D7%9C%D7%90%D7%95%D7%9E%D7%99",
-      "title": "National Insurance Law (Wikisource mirror)",
-      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.345(a)",
-      "locator_he": "סעיף 345(א)",
-      "anchor": "סעיף_345",
+      "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
+      "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.241, s.345(א)",
+      "locator_he": "עמוד 241, סעיף 345(א)",
+      "page": 241,
       "quote": "ומי שאינו עובד ואינו עובד עצמאי יראו כהכנסתו השנתית את הכנסתו מהמקורות המפורטים בסעיף 2 האמור",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94",
-      "title": "Ordinance (Wikisource mirror)",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.2(1)-(10), s.2(4)",
-      "locator_he": "סעיף 2(1)-(10), סעיף 2(4)",
-      "anchor": "סעיף_2",
+      "strength": "primary",
+      "locator": "p.17, s.2(1)-(10), s.2(4)",
+      "locator_he": "עמוד 17, סעיף 2(1)-(10), סעיף 2(4)",
+      "page": 17,
       "quote": "דיבידנד, לרבות דיבידנד המשתלם מתוך רווחי הון של חברה, ריבית, הפרשי הצמדה או דמי נכיון",
-      "checked": "2026-10-22",
-      "qualifier": "(mirror; derived)"
+      "checked": "2026-10-25"
     }
   ]
 }

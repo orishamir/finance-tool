@@ -14,11 +14,11 @@
       "unit": "months",
       "source": {
         "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/nolad.aspx",
-        "title": "National Insurance Institute, child savings: newborn page (\"בתוך 6 חודשים מיום הלידה\"); law 74ב(ד)(1א)",
+        "title": "National Insurance Institute, child savings: newborn page (\"בתוך 6 חודשים מיום הלידה\"); law 74ב(ד)(1א), BTL text p.51",
         "publisher": "National Insurance Institute (BTL)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -38,14 +38,53 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
+      "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.51, s.74ב(ד)(1א)",
+      "locator_he": "עמוד 51, סעיף 74ב(ד)(1א)",
+      "page": 51,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8OfazOM9J2n~VjyzV5AWsITYS27PjZHrqw3iJWE0YJI=#page=8",
+      "title": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע\"ז-2016 (קובץ התקנות 7727)",
+      "title_he": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע״ז-2016 (קובץ התקנות 7727)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.8, reg. 3",
+      "locator_he": "עמוד 8, תקנה 3",
+      "page": 8,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/nolad.aspx",
-      "title": "NII newborn page",
+      "title": "ביטוח לאומי: פתיחת תכנית חיסכון לילד שנולד",
       "title_he": "חיסכון לכל ילד: עמודי המידע של הביטוח הלאומי",
       "publisher": "National Insurance Institute",
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
+      "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד: הראל חיסכון לכל ילד, מהדורה 3, 04/2026",
+      "title_he": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד: הראל חיסכון לכל ילד, מהדורה 3, 04/2026",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.5, s.7.1",
+      "locator_he": "עמוד 5, סעיף 7.1",
+      "page": 5,
+      "checked": "2026-10-25"
     }
   ]
 }

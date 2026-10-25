@@ -3,7 +3,7 @@
   "title": "Exempt fund: what the fund itself pays",
   "title_he": "קרן פטורה: מה הקרן עצמה משלמת",
   "text_he": "הכנסותיה ורווחיה של קרן נאמנות פטורה פטורים ממס: ריבית, דיבידנד ורווחים בתוך הקרן לא ממוסים בישראל כל עוד הם נשארים בה. הקרן לא רשאית לנכות הוצאות ריבית והצמדה. מס שנוכה מהכנסה של קרן ריט שעברה לקרן פטורה הוא סופי, והקרן לא מקבלת עליו פטור, החזר, זיכוי או קיזוז. מס זר יכול להיגבות בתוך הקרן על החזקות בחו״ל.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "tax-during"
   ],
@@ -12,29 +12,44 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Income Tax Ordinance",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.129C(a)(1), (a)(4)",
-      "locator_he": "סעיף 129ג(א)(1), (א)(4)",
-      "anchor": "סעיף_129ג",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.208, s.129ג(א)(1)",
+      "locator_he": "עמוד 208, סעיף 129ג(א)(1)",
+      "page": 208,
+      "quote": "הכנסותיה ורווחיה של קרן נאמנות פטורה פטורים ממס",
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf",
-      "title": "Migdal main prospectus 30.1.2025",
-      "title_he": "תשקיף ראשי של מגדל קרנות נאמנות (30.1.2025)",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.209, s.129ג(א)(4)",
+      "locator_he": "עמוד 209, סעיף 129ג(א)(4)",
+      "page": 209,
+      "quote": "לא יותרו בניכוי הוצאות ריבית או הפרשי הצמדה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf",
+      "title": "מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026",
+      "title_he": "מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026",
       "publisher": "Maya (TASE filings)",
-      "publisher_he": "מגדל קרנות נאמנות",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "ch.25.2.2.1-25.2.2.3",
-      "checked": "2026-10-22"
+      "locator": "p.72, ch.25.2.2.1-25.2.2.3",
+      "page": 72,
+      "checked": "2026-10-25"
     }
   ]
 }

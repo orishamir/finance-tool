@@ -7,6 +7,7 @@ import { loadCma, loadFees, loadParameters, loadRules, today } from "./data.serv
 import { loadExposures, loadFunds } from "./instruments.server";
 import { BROKERAGE, PROVIDENT_WRAPPERS, type WorkbenchBundle } from "./providers";
 import { loadFundLists, workbenchLinks } from "./variants.server";
+import { loadFx } from "./fx.server";
 
 /** Rules a securities run, the protection lines and the pages' quotes may read, by family prefix, plus every rule the shipped records cite. */
 const families = ["BRK-", "ETF-", "TXS-", "TXF-", "TXI-", "TXG-", "REG-", "BANK-", "MF-", "CAT-3", "SW-"];
@@ -63,7 +64,8 @@ export function buildWorkbenchBundle(): WorkbenchBundle {
   const needed = collectRuleIds({ snapshots, funds, exposures });
   const rules: RuleRecord[] = Object.values(allRules).filter((r) => needed.has(r.id) || families.some((f) => r.id.startsWith(f)));
   const { providerCompany, wrapperCompanies } = companyLinks(snapshots);
-  const bundle: WorkbenchBundle = { today: t, snapshots, funds, exposures, fundLists, rules, p01: find("P-01"), p05: find("P-05"), links: workbenchLinks(), providerCompany, wrapperCompanies };
+  const fx = loadFx();
+  const bundle: WorkbenchBundle = { today: t, snapshots, funds, exposures, fundLists, rules, p01: find("P-01"), p05: find("P-05"), links: workbenchLinks(), providerCompany, wrapperCompanies, ...(fx ? { fx } : {}) };
   console.log(`[workbench] bundle: ${snapshots.length} snapshots, ${funds.length} funds, ${exposures.length} exposures, ${fundLists.length} fund lists, ${rules.length} rules, ${(JSON.stringify(bundle).length / 1024).toFixed(0)} KB`);
   return bundle;
 }

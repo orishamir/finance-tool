@@ -23,7 +23,7 @@
         "publisher": "National Insurance Institute (BTL)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2026-01-01",
       "effective_to": null,
       "tax_year": null,
@@ -39,25 +39,63 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8OfazOM9J2n~VjyzV5AWsITYS27PjZHrqw3iJWE0YJI=#page=7",
+      "title": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע\"ז-2016 (קובץ התקנות 7727)",
+      "title_he": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע״ז-2016 (קובץ התקנות 7727)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.7, reg. 2",
+      "locator_he": "עמוד 7, תקנה 2",
+      "page": 7,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8OfazOM9J2n~VjyzV5AWsITYS27PjZHrqw3iJWE0YJI=#page=9",
+      "title": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע\"ז-2016 (קובץ התקנות 7727)",
+      "title_he": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע״ז-2016 (קובץ התקנות 7727)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.9, reg. 5",
+      "locator_he": "עמוד 9, תקנה 5",
+      "page": 9,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/HisahonKupot.aspx",
-      "title": "NII doubling page",
+      "title": "ביטוח לאומי: הכפלת סכום החיסכון - תכנית חיסכון לכל ילד",
+      "title_he": "ביטוח לאומי: הכפלת סכום החיסכון - תכנית חיסכון לכל ילד",
       "publisher": "National Insurance Institute",
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
       "quote": "הסכום הנוסף יופקד לחיסכון של הילד בחודש שלאחר ביצוע הבחירה",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/default.aspx",
+      "title": "ביטוח לאומי: חיסכון לכל ילד - שאלות ותשובות",
+      "title_he": "ביטוח לאומי: חיסכון לכל ילד - שאלות ותשובות",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
-      "title": "Harel standard bylaw, April 2026",
+      "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד: הראל חיסכון לכל ילד, מהדורה 3, 04/2026",
+      "title_he": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד: הראל חיסכון לכל ילד, מהדורה 3, 04/2026",
       "publisher": "Harel",
       "publisher_he": "הראל",
       "kind": "institution_doc",
       "strength": "institution",
       "locator": "s.8",
       "locator_he": "סעיף 8",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

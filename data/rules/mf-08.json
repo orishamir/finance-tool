@@ -18,12 +18,12 @@
       "value": 12,
       "unit": "months",
       "source": {
-        "url": "https://www.capitax.co.il/Attachments/03072024.pdf",
-        "title": "חוק השקעות משותפות בנאמנות (תיקון מס' 31), התשפ\"ד-2024, ספר החוקים 3232, section 7 (new section 47(א))",
-        "publisher": "Knesset / Reshumot (official gazette scan hosted by CapiTax)",
+        "url": "https://fs.knesset.gov.il/25/law/25_lsr_4619060.pdf",
+        "title": "חוק השקעות משותפות בנאמנות (תיקון מס' 31), התשפ\"ד-2024, ספר החוקים 3232, pp.2-3 (gazette pp.990-991), s.7 (new s.47(א))",
+        "publisher": "הכנסת",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2024-10-03",
       "effective_to": null,
       "tax_year": null,
@@ -38,12 +38,12 @@
       "value": 36,
       "unit": "months",
       "source": {
-        "url": "https://www.capitax.co.il/Attachments/03072024.pdf",
-        "title": "Amendment 31, section 7 (new section 47(א))",
-        "publisher": "Knesset / Reshumot (official gazette scan hosted by CapiTax)",
+        "url": "https://fs.knesset.gov.il/25/law/25_lsr_4619060.pdf",
+        "title": "חוק השקעות משותפות בנאמנות (תיקון מס' 31), התשפ\"ד-2024, ספר החוקים 3232, pp.2-3 (gazette pp.990-991), s.7 (new s.47(א))",
+        "publisher": "הכנסת",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2024-10-03",
       "effective_to": null,
       "tax_year": null,
@@ -59,16 +59,30 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.capitax.co.il/Attachments/03072024.pdf",
-      "title": "Amendment 31, ספר החוקים 3232",
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_4619060.pdf",
+      "title": "חוק השקעות משותפות בנאמנות (תיקון מס' 31), התשפ\"ד-2024 (ספר החוקים 3232)",
       "title_he": "חוק השקעות משותפות בנאמנות (תיקון מס׳ 31), התשפ״ד-2024 (ספר החוקים 3232)",
-      "publisher": "Capitax",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "section 7, section 20",
-      "locator_he": "סעיף 7, סעיף 20",
-      "checked": "2026-10-22"
+      "locator": "p.2, s.7",
+      "locator_he": "עמוד 2, סעיף 7",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_4619060.pdf",
+      "title": "חוק השקעות משותפות בנאמנות (תיקון מס' 31), התשפ\"ד-2024 (ספר החוקים 3232)",
+      "title_he": "חוק השקעות משותפות בנאמנות (תיקון מס׳ 31), התשפ״ד-2024 (ספר החוקים 3232)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.8, s.20",
+      "locator_he": "עמוד 8, סעיף 20",
+      "page": 8,
+      "checked": "2026-10-25"
     }
   ]
 }

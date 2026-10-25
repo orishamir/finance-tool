@@ -14,11 +14,11 @@
       "unit": "usd",
       "source": {
         "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
-        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome's PDF viewer)",
+        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome; curl returns 403), p.9",
         "publisher": "S&P Dow Jones Indices",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -34,11 +34,11 @@
       "unit": "pct",
       "source": {
         "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
-        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome's PDF viewer)",
+        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome; curl returns 403), p.9",
         "publisher": "S&P Dow Jones Indices",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -54,11 +54,11 @@
       "unit": "count",
       "source": {
         "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
-        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome's PDF viewer)",
+        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome; curl returns 403), p.9",
         "publisher": "S&P Dow Jones Indices",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -74,11 +74,11 @@
       "unit": "count",
       "source": {
         "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
-        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome's PDF viewer)",
+        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome; curl returns 403), p.10",
         "publisher": "S&P Dow Jones Indices",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -94,11 +94,11 @@
       "unit": "count",
       "source": {
         "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
-        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome's PDF viewer)",
+        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome; curl returns 403), p.10",
         "publisher": "S&P Dow Jones Indices",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -114,11 +114,11 @@
       "unit": "months",
       "source": {
         "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
-        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome's PDF viewer)",
+        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome; curl returns 403), p.11",
         "publisher": "S&P Dow Jones Indices",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -134,11 +134,11 @@
       "unit": "years",
       "source": {
         "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
-        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome's PDF viewer)",
+        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome; curl returns 403), p.19",
         "publisher": "S&P Dow Jones Indices",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -165,17 +165,17 @@
   "sources": [
     {
       "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
-      "title": "S&P Dow Jones Indices, \"S&P U.S. Indices Methodology\", July 2026, pp. 7–12, 18",
+      "title": "S&P Dow Jones Indices, \"S&P U.S. Indices Methodology\", July 2026",
       "title_he": "S&P U.S. Indices Methodology (יולי 2026)",
       "publisher": "S&P Dow Jones Indices",
       "publisher_he": "S&P Dow Jones Indices",
       "kind": "other",
       "strength": "primary",
-      "locator": "pp. 7–12, 18",
-      "locator_he": "עמודים 7 עד 12, 18",
-      "page": 7,
-      "checked": "2026-10-23",
-      "qualifier": "(index provider)"
+      "locator": "pp.8-13, 19",
+      "locator_he": "עמודים 8 עד 13, 19",
+      "page": 8,
+      "checked": "2026-10-25",
+      "qualifier": "(index provider; read in Chrome, curl returns 403)"
     }
   ]
 }

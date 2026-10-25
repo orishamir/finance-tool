@@ -19,11 +19,11 @@
       "unit": "nis_per_month",
       "source": {
         "url": "https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf",
-        "title": "Harel, \"תקרות וסכומים לשנת 2026\" (March 2026), p. 1: comprehensive-fund monthly ceiling 20.5% of twice the average wage; Mor general fund bylaws 01.04.2026, s.1 \"תקרת הפקדה חודשית לקרן פנסיה מקיפה\" (NIS 5,645)",
+        "title": "Harel, \"תקרות וסכומים לשנת 2026\" (March 2026), p.1: comprehensive-fund monthly ceiling 20.5% of twice the average wage, 5,645.29 ₪; Mor general fund bylaws 01.04.2026, p.12, s.1 \"תקרת הפקדה חודשית לקרן פנסיה מקיפה\" (NIS 5,645)",
         "publisher": "Harel Insurance and Finance",
         "strength": "institution"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2026-01-01",
       "effective_to": null,
       "tax_year": 2026,
@@ -40,41 +40,43 @@
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
-      "title": "Extension order 2011",
+      "title": "צו הרחבה (נוסח משולב) לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011",
       "title_he": "צו הרחבה [נוסח משולב] לפנסיה חובה, 2011",
       "publisher": "gov.il",
       "publisher_he": "משרד העבודה",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "section 2(ד)",
-      "locator_he": "סעיף 2(ד)",
-      "checked": "2026-10-22"
+      "locator": "p.2, s.2(ד)",
+      "locator_he": "עמוד 2, סעיף 2(ד)",
+      "page": 2,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "title": "Mor comprehensive fund bylaws, version 01.06.2025",
+      "title": "Mor comprehensive bylaws 01.06.2025",
       "title_he": "תקנון קרן הפנסיה המקיפה של מור (מהדורת 1.6.2025)",
       "publisher": "Mor Investment House",
       "publisher_he": "מור גמל ופנסיה",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "section 1",
-      "locator_he": "סעיף 1",
+      "locator": "section 1 definitions, p.12",
+      "page": 12,
       "quote": "תקרת הפקדה חודשית",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.moreinvest.co.il/media/hphjzxvl/תקנון-קרן-פנסיה-כללית.pdf",
-      "title": "Mor general fund bylaws, version 01.04.2026",
+      "title": "Mor general bylaws 01.04.2026",
       "title_he": "תקנון קרן הפנסיה הכללית של מור (מהדורת 1.4.2026)",
       "publisher": "Mor Investment House",
       "publisher_he": "מור גמל ופנסיה",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "section 1",
-      "locator_he": "סעיף 1",
+      "locator": "section 1, p.12",
+      "locator_he": "סעיף 1, עמוד 12",
+      "page": 12,
       "quote": "תקרת הפקדה חודשית לקרן פנסיה מקיפה",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf",
@@ -84,10 +86,10 @@
       "publisher_he": "הראל",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "p. 1",
+      "locator": "p.1",
       "locator_he": "עמוד 1",
       "page": 1,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

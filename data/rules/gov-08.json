@@ -19,11 +19,11 @@
       "unit": "count",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2025/he/annual-debt-report_annual-debt-report-2025-accessible-version-he.pdf",
-        "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2025 (file dated April 2026)",
+        "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2025 (file dated April 2026), p.37",
         "publisher": "Ministry of Finance, Accountant General",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2025-12-31",
       "effective_to": null,
       "tax_year": null,
@@ -40,29 +40,29 @@
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2025/he/annual-debt-report_annual-debt-report-2025-accessible-version-he.pdf",
-      "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2025",
+      "title": "החשב הכללי, היחידה לניהול החוב הממשלתי: הדו\"ח השנתי 2025",
       "title_he": "הדוח השנתי 2025 של היחידה לניהול החוב הממשלתי",
       "publisher": "gov.il",
       "publisher_he": "החשב הכללי, משרד האוצר",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "pp. 16 to 18, 37",
+      "locator": "pp.16-18, 37",
       "locator_he": "עמודים 16 עד 18, 37",
       "page": 16,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf",
-      "title": "הדו\"ח השנתי 2024, מילון מונחים",
+      "title": "החשב הכללי, היחידה לניהול החוב הממשלתי: הדו\"ח השנתי 2024, מילון מונחים",
       "title_he": "הדוח השנתי 2024 של היחידה לניהול החוב הממשלתי",
       "publisher": "gov.il",
       "publisher_he": "החשב הכללי, משרד האוצר",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "pp. 41, 44",
+      "locator": "pp.41, 44",
       "locator_he": "עמודים 41, 44",
       "page": 41,
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

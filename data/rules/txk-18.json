@@ -18,7 +18,7 @@
         "publisher": "Internal Revenue Service (US)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -38,7 +38,7 @@
         "publisher": "Internal Revenue Service (US)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -58,7 +58,7 @@
         "publisher": "Internal Revenue Service (US)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -80,6 +80,19 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.32, s.9(2)(א)",
+      "locator_he": "עמוד 32, סעיף 9(2)(א)",
+      "page": 32,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.irs.gov/pub/irs-lbi/tax-treaty-table-1.pdf",
       "title": "IRS Tax Treaty Table 1",
       "title_he": "Tax Treaty Table 1 (מאי 2023)",
@@ -87,23 +100,9 @@
       "publisher_he": "רשות המס האמריקאית (IRS)",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.2, row",
+      "locator": "p.2, row Israel",
       "page": 2,
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Ordinance PDF",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "pp.14-15, s.9(2)",
-      "locator_he": "עמודים 14 עד 15, סעיף 9(2)",
-      "anchor": "סעיף_9",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

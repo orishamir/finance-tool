@@ -2,7 +2,7 @@
   "id": "IRA-10",
   "title": "No regulatory minimum balance found",
   "title_he": "לא נמצא סכום מינימום בתקנות",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "minimum"
   ],
@@ -13,11 +13,11 @@
       "unit": "nis",
       "source": {
         "url": "https://www.meitav.co.il/provident_pension/ira/",
-        "title": "Meitav, IRA product page: \"המתאים למי שיש בקופת הגמל או בקרן ההשתלמות שברשותו החל מ - 200,000 ₪\" (read again 2026-10-23)",
+        "title": "Meitav, IRA product page: \"המתאים למי שיש בקופת הגמל או בקרן ההשתלמות שברשותו החל מ - 200,000 ₪\"",
         "publisher": "Meitav Gemel and Pension",
         "strength": "institution"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -37,15 +37,30 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
-      "title": "Nevo, IRA regulations",
-      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי)",
-      "publisher": "Nevo",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "checked": "2026-10-22"
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=2",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "pp.2-6, regs. 1-13",
+      "locator_he": "עמודים 2 עד 6, תקנות 1-13",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=2",
+      "title": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "pp.2-5, ss.1-8",
+      "locator_he": "עמודים 2 עד 5, סעיפים 1-8",
+      "page": 2,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.meitav.co.il/provident_pension/ira/",
@@ -55,7 +70,8 @@
       "publisher_he": "מיטב",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "quote": "החל מ - 200,000",
+      "checked": "2026-10-25"
     }
   ]
 }

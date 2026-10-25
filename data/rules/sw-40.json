@@ -3,7 +3,7 @@
   "title": "Pension to pension and gemel lehashkaa to gemel lehashkaa: payment dates carry over; the explicit tax exemption covers the employer transfers",
   "title_he": "ניוד מקרן פנסיה לקרן פנסיה ומקופת גמל להשקעה לאחרת: מועדי התשלום נשמרים, והפטור המפורש חל על העברות של מעסיק",
   "text_he": "לקופת גמל לקצבה אפשר להעביר כסף מקופת גמל לקצבה אחרת, והתקנות קובעות שרואים את כל מועדי התשלום לקופה המעבירה כמועדי התשלום לקופה המקבלת; כשהקופה המקבלת היא קופת ביטוח, רק לעניין דיני המס. קופה מקבלת אינה רשאית לקבל כסף שאסור להעביר, למשל לקרן מקיפה מעל תקרת ההפקדה החודשית כפול החודשים מאז התשלום הראשון. כללי מס הכנסה משנת אלף תשע מאות ותשעים פוטרים ממס סכומים שהעביר מעביד מקופה לקופה במקרים המנויים, ובהם מקופה לקצבה לקופה אחרת לקצבה ומקרן השתלמות לקרן השתלמות באישור הנציב. לא נמצא טקסט רשמי שאומר במפורש שניוד של העמית עצמו בין קרנות פנסיה אינו אירוע מס, ולכן השאלה נותרה פתוחה בחלקה.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
     "switching-tax-event"
@@ -13,30 +13,72 @@
   "checked": "2026-10-23",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/כללי_מס_הכנסה_(פטור_ממס_בשל_העברה_ושינוי_יעוד_של_כספים_בקופות_גמל)",
-      "title": "כללי מס הכנסה (פטור ממס בשל העברה ושינוי יעוד של כספים בקופות גמל), התש\"ן-1990, s. 1, 2 (Wikisource)",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s. 1, 2",
-      "locator_he": "סעיף 1, 2",
-      "anchor": "סעיף_1",
-      "checked": "2026-10-23"
+      "strength": "primary",
+      "locator": "p.4, reg. 2(א)(1), 2(ב)",
+      "locator_he": "עמוד 4, תקנה 2(א)(1), 2(ב)",
+      "page": 4,
+      "quote": "לפי מרכיבי חשבון קופת הגמל בקופה המעבירה",
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.nevo.co.il/law_html/law01/999_929.htm",
-      "title": "Transfer Regulations 2008, reg. 2(א)(1), 2(ב), 2(ד) (Nevo consolidated HTML, read verbatim)",
-      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
-      "publisher": "Nevo",
-      "publisher_he": "משרד האוצר",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZbYNmyK9Qa3gH~lF+jEWmc=#page=3",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014 (קובץ התקנות 7407)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014 (קובץ התקנות 7407)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.3, s.2",
+      "locator_he": "עמוד 3, סעיף 2",
+      "page": 3,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/ZZKYP1JasTIK3+puGrB48nEoGOFH3NQjhXnAe4snPwo=#page=3",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשפ\"ג-2023 (קובץ התקנות 10716)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשפ\"ג-2023 (קובץ התקנות 10716)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.3, s.2 (reg. 2(ד)(1), (1א))",
+      "locator_he": "עמוד 3, סעיף 2 (תקנה 2(ד)(1), (1א))",
+      "page": 3,
+      "quote": "גוף מנהל של קופה מקבלת לא יהיה רשאי לקבל כספים שלא ניתן להעביר",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/xYWY4f5V6gsVHq6NUDp~YKCeau4cX~kDyqy86zbS4NU=#page=23",
+      "title": "כללי מס הכנסה (פטור ממס בשל העברה ושינוי יעוד של כספים בקופות גמל), התש\"ן-1990 (קובץ התקנות 5287)",
+      "title_he": "כללי מס הכנסה (פטור ממס בשל העברה ושינוי יעוד של כספים בקופות גמל), התש״ן-1990 (קובץ התקנות 5287; תיקון: קובץ התקנות 5613)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "reg. 2(א)(1), 2(ב), 2(ד)",
-      "locator_he": "תקנה 2(א)(1), 2(ב), 2(ד)",
-      "checked": "2026-10-23"
+      "strength": "primary",
+      "locator": "pp.23-24, ss.1-2",
+      "locator_he": "עמודים 23 עד 24, סעיפים 1-2",
+      "page": 23,
+      "quote": "סכומים שהועברו על ידי מעביד מקופת גמל אחת לקופת גמל אחרת",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bMMl8kD79jjAGdMyfpq2CaEqca27WIXRVq1k8yn3eXI=#page=21",
+      "title": "כללי מס הכנסה (פטור ממס בשל העברה ושינוי יעוד של כספים בקופת גמל) (תיקון), התשנ\"ד-1994 (קובץ התקנות 5613)",
+      "title_he": "כללי מס הכנסה (פטור ממס בשל העברה ושינוי יעוד של כספים בקופות גמל), התש״ן-1990 (קובץ התקנות 5287; תיקון: קובץ התקנות 5613)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.21, s.1",
+      "locator_he": "עמוד 21, סעיף 1",
+      "page": 21,
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -3,7 +3,7 @@
   "title": "Fund assets are held in trust, separately from the manager's property, and cannot be attached",
   "title_he": "נכסי הקופה מוחזקים בנאמנות ולא ניתנים לעיקול",
   "text_he": "החברה המנהלת משמשת נאמן על נכסי הקופות שבניהולה לטובת העמיתים, ומחזיקה ומנהלת אותם בנפרד מרכושה, עם מערכת חשבונות נפרדת לכל קופה. נכסי קופת גמל אינם ניתנים לעיקול, והחברה לא רשאית לשעבד אותם אלא לעסקה בעד הקופה. זכויות העמית לא ניתנות להעברה או לשעבוד, חוץ מהמקרים שבחוק; בקופת גמל להשקעה מותר לשעבד. אין ערבות של המדינה לשווי הקופה; השלמת התשואה בחוק נוגעת לקרנות פנסיה מסוימות.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "protection"
   ],
@@ -12,18 +12,59 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "title": "Provident Funds Law s. 3, 25, 27, 30 (Wikisource)",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s. 3, 25, 27, 30",
-      "locator_he": "סעיף 3, 25, 27, 30",
-      "anchor": "סעיף_3",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.4, s.3",
+      "locator_he": "עמוד 4, סעיף 3",
+      "page": 4,
+      "quote": "חברה מנהלת תשמש נאמן על נכסי קופות הגמל שבניהולה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.11, s.25",
+      "locator_he": "עמוד 11, סעיף 25",
+      "page": 11,
+      "quote": "זכויות עמית בקופת גמל אינן ניתנות להעברה",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.12, ss.27, 30",
+      "locator_he": "עמוד 12, סעיפים 27, 30",
+      "page": 12,
+      "quote": "נכסי קופת גמל אינם ניתנים לעיקול",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "checked": "2026-10-25"
     }
   ]
 }

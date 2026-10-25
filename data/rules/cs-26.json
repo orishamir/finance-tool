@@ -23,7 +23,7 @@
         "publisher": "National Insurance Institute (gov)",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -40,44 +40,45 @@
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-740/he/regulation_h_2018-9-25.pdf",
-      "title": "CMA circular 2018-9-25, s. 3(ד) (gov.il)",
+      "title": "חוזר גופים מוסדיים 2018-9-25: קופת גמל להשקעה לחיסכון ארוך טווח לילד – תיקון, 9.7.2018",
       "title_he": "חוזר גופים מוסדיים 2018-9-25: קופת גמל להשקעה לחיסכון ארוך טווח לילד – תיקון",
       "publisher": "gov.il",
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
-      "locator": "s. 3(ד)",
-      "locator_he": "סעיף 3(ד)",
-      "checked": "2026-10-23"
+      "locator": "p.3, s.3(ד)",
+      "locator_he": "עמוד 3, סעיף 3(ד)",
+      "page": 3,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/nolad.aspx",
-      "title": "NII, פתיחת תכנית חיסכון לילד שנולד",
+      "title": "ביטוח לאומי: פתיחת תכנית חיסכון לילד שנולד",
       "title_he": "חיסכון לכל ילד: עמודי המידע של הביטוח הלאומי",
       "publisher": "National Insurance Institute",
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-23"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/newborn.aspx",
-      "title": "NII FAQ, נולד לי ילד, איך אני בוחר לו תכנית חיסכון?",
-      "title_he": "חיסכון לכל ילד: עמודי המידע של הביטוח הלאומי",
+      "title": "ביטוח לאומי: נולד לי ילד, איך אני בוחר לו תכנית חיסכון?",
+      "title_he": "ביטוח לאומי: נולד לי ילד, איך אני בוחר לו תכנית חיסכון?",
       "publisher": "National Insurance Institute",
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-23"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://b2b.btl.gov.il/BTL.ILG.Payments/TochnitChisachonYeledListInfo.aspx",
-      "title": "NII, מידע אישי על תכנית החיסכון של הילד/ה (service entry page)",
+      "title": "ביטוח לאומי: מידע אישי על תכנית החיסכון של הילד/ה (service entry page)",
       "publisher": "National Insurance Institute",
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-23"
+      "checked": "2026-10-25"
     }
   ]
 }

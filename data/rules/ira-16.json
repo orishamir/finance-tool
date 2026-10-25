@@ -15,37 +15,46 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
-      "title": "Nevo, reg. 7",
-      "publisher": "Nevo",
-      "publisher_he": "נבו",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "nevo",
-      "locator": "reg. 7",
-      "locator_he": "תקנה 7",
-      "checked": "2026-10-22"
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.4, reg. 7",
+      "locator_he": "עמוד 4, תקנה 7",
+      "page": 4,
+      "quote": "דמי הניהול וההוצאות שייגבו מנכסי הקופה יהיו אלה בלבד",
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.meitav.co.il/media/0qulk3pk/תקנות-ira-חדשות-יוני-2017.pdf",
-      "title": "Reshumot 2017 amendment, reg. 5",
-      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי)",
-      "publisher": "Meitav",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
       "strength": "primary",
-      "locator": "reg. 5",
-      "locator_he": "תקנה 5",
-      "checked": "2026-10-22"
+      "locator": "p.4, s.5 (reg. 7(א)(2), (3), (5), (6))",
+      "locator_he": "עמוד 4, סעיף 5 (תקנה 7(א)(2), (3), (5), (6))",
+      "page": 4,
+      "quote": "ובלבד שדמי השמירה או העמלה לא יעלו על דמי השמירה או העמלה הנגבים מקופות הגמל שאינן קופות גמל בניהול אישי",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.meitav.co.il/media/kiildnyn/נספח-להסכם-הצטרפות-לקרן-השתלמות-בניהול-אישי-115181124.pdf",
-      "title": "Meitav joining-form annex",
+      "title": "מיטב – נספח להסכם הצטרפות לקרן השתלמות בניהול אישי (1.151.8.11.24)",
+      "title_he": "מיטב – נספח להסכם הצטרפות לקרן השתלמות בניהול אישי (1.151.8.11.24)",
       "publisher": "Meitav",
       "publisher_he": "מיטב",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-22"
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "הוצאות ישירות בשל ביצוע עסקאות",
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -21,9 +21,10 @@
       "publisher_he": "מור גמל ופנסיה",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "sections 7, 38, 40",
-      "locator_he": "סעיפים 7, 38, 40",
-      "checked": "2026-10-22"
+      "locator": "sections 7, 38, 40, pp.15, 39",
+      "locator_he": "סעיפים 7, 38, 40, עמודים 15, 39",
+      "page": 15,
+      "checked": "2026-10-25"
     }
   ]
 }

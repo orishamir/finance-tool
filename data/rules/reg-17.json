@@ -3,7 +3,7 @@
   "title": "Capital Market, Insurance and Savings Authority (CMA): legal basis and role",
   "title_he": "רשות שוק ההון: בסיס בחוק ותפקיד",
   "text_he": "רשות שוק ההון, ביטוח וחיסכון מוקמת בחוק הפיקוח על הביטוח; שר האוצר ממנה את הממונה, באישור הממשלה, לכהונה אחת, והממונה עומד בראש הרשות. לפי חוק קופות הגמל, החברות המנהלות נתונות לפיקוח הממונה, והוא מאשר קופות גמל; האישור הראשון של קופה דורש גם הסכמה של מנהל רשות המסים. 'קופת גמל' מכסה כל קופה מאושרת: קרנות פנסיה הן קופות גמל לקצבה, וגם קרן השתלמות וקופת גמל להשקעה הן קופות גמל.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "regulator"
   ],
@@ -12,32 +12,43 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(ביטוח)",
-      "title": "חוק הפיקוח על שירותים פיננסיים (ביטוח), Wikisource",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (ביטוח), התשמ״א-1981",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_348687.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (תיקוני חקיקה), התשע\"ו-2016 (ספר החוקים 2582)",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (תיקוני חקיקה), התשע\"ו-2016",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "ss.1א, 2",
-      "locator_he": "סעיפים 1א, 2",
-      "anchor": "סעיף_1א",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "pp.2-3, s.1",
+      "locator_he": "עמודים 2 עד 3, סעיף 1",
+      "page": 2,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), Wikisource",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (ספר החוקים 2024)",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (ספר החוקים 2024)",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "ss.1, 13, 39",
-      "locator_he": "סעיפים 1, 13, 39",
-      "anchor": "סעיף_1",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.2, s.1; p.8, s.13; p.15, s.39",
+      "locator_he": "עמוד 2, סעיף 1; עמוד 8, סעיף 13; עמוד 15, סעיף 39",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "checked": "2026-10-25"
     }
   ]
 }

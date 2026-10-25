@@ -21,12 +21,12 @@
           "value": 57.5,
           "unit": "pct",
           "source": {
-            "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-            "title": "Income Tax Ordinance s.9A(b), (g) as amended by Amendment 275 (Wikisource mirror); Tax Authority deductions booklet 2026, p.6 (Amendment 275 table) and p.12 row \"תקרת הפטור ל'קיצבה מזכה' 9א(ב) - בשיעור 57.5%\"",
-            "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-            "strength": "primary-mirror"
+            "url": "https://fs.knesset.gov.il/25/law/25_lsr_5336499.pdf",
+            "title": "חוק לתיקון פקודת מס הכנסה (מס' 275), התשפ\"ה-2024, ספר החוקים 3336, p.2, s.1 (s.9א(ז)); deductions booklet 2026 p.6 (Amendment 275 table) and p.12 row \"תקרת הפטור ל'קיצבה מזכה' 9א(ב) - בשיעור 57.5%\"",
+            "publisher": "The Knesset",
+            "strength": "primary"
           },
-          "checked": "2026-10-22",
+          "checked": "2026-10-25",
           "effective_from": "2026-01-01",
           "effective_to": null,
           "tax_year": 2026,
@@ -41,12 +41,12 @@
           "value": 62.5,
           "unit": "pct",
           "source": {
-            "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-            "title": "Income Tax Ordinance s.9A(b), (g) as amended by Amendment 275 (Wikisource mirror); Tax Authority deductions booklet 2026, p.6 (Amendment 275 table) and p.12 row \"תקרת הפטור ל'קיצבה מזכה' 9א(ב) - בשיעור 57.5%\"",
-            "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-            "strength": "primary-mirror"
+            "url": "https://fs.knesset.gov.il/25/law/25_lsr_5336499.pdf",
+            "title": "חוק לתיקון פקודת מס הכנסה (מס' 275), התשפ\"ה-2024, ספר החוקים 3336, p.2, s.1 (s.9א(ז)); deductions booklet 2026 p.6 (Amendment 275 table) and p.12 row \"תקרת הפטור ל'קיצבה מזכה' 9א(ב) - בשיעור 57.5%\"",
+            "publisher": "The Knesset",
+            "strength": "primary"
           },
-          "checked": "2026-10-22",
+          "checked": "2026-10-25",
           "effective_from": "2027-01-01",
           "effective_to": null,
           "tax_year": 2027,
@@ -61,12 +61,12 @@
           "value": 67,
           "unit": "pct",
           "source": {
-            "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-            "title": "Income Tax Ordinance s.9A(b), (g) as amended by Amendment 275 (Wikisource mirror); Tax Authority deductions booklet 2026, p.6 (Amendment 275 table) and p.12 row \"תקרת הפטור ל'קיצבה מזכה' 9א(ב) - בשיעור 57.5%\"",
-            "publisher": "Knesset legislation (Hebrew Wikisource mirror)",
-            "strength": "primary-mirror"
+            "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+            "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, p.50, s.9א(ב) (67%), which s.9א(ז) as amended by Amendment 275 (ספר החוקים 3336 p.2) no longer overrides from 2028",
+            "publisher": "Israel Tax Authority",
+            "strength": "primary"
           },
-          "checked": "2026-10-22",
+          "checked": "2026-10-25",
           "effective_from": "2028-01-01",
           "effective_to": null,
           "tax_year": 2028,
@@ -88,7 +88,7 @@
         "publisher": "Israel Tax Authority",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": "2024-01-01",
       "effective_to": null,
       "tax_year": 2026,
@@ -104,6 +104,31 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.12, s.1 definition `גיל הפרישה`",
+      "page": 12,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "pp.49-51, s.9א(א), (ב), (ז)",
+      "locator_he": "עמודים 49 עד 51, סעיף 9א(א), (ב), (ז)",
+      "page": 49,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
       "title": "Booklet 2026",
       "title_he": "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026",
@@ -115,7 +140,7 @@
       "locator_he": "עמוד 6, עמוד 7, עמוד 12",
       "page": 6,
       "quote": "תקרת 'קיצבה מזכה' 9א(א)",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
@@ -125,8 +150,10 @@
       "publisher_he": "רשות המסים",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "printed pp.30-31, p.89",
-      "checked": "2026-10-22"
+      "locator": "pp.32-33, p.91",
+      "locator_he": "עמודים 32 עד 33, עמוד 91",
+      "page": 32,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf",
@@ -136,9 +163,10 @@
       "publisher_he": "רשות המסים",
       "kind": "circular",
       "strength": "primary",
-      "locator": "ss.3.1-3.4",
-      "locator_he": "סעיפים 3.1-3.4",
-      "checked": "2026-10-22"
+      "locator": "pp.5-6, ss.3.1-3.4",
+      "locator_he": "עמודים 5 עד 6, סעיפים 3.1-3.4",
+      "page": 5,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://www.gov.il/BlobFolder/service/itc-106/en/Service_Pages_Income_tax_itc106-acc.pdf",
@@ -148,20 +176,23 @@
       "publisher_he": "רשות המסים",
       "kind": "form",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "locator": "p.4",
+      "locator_he": "עמוד 4",
+      "page": 4,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/פקודת_מס_הכנסה",
-      "title": "Ordinance",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_5336499.pdf",
+      "title": "חוק לתיקון פקודת מס הכנסה (מס' 275), התשפ\"ה-2024, ספר החוקים 3336",
+      "title_he": "חוק לתיקון פקודת מס הכנסה (מס' 275), התשפ\"ה-2024, ספר החוקים 3336",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.9A(a), (b), (g)",
-      "anchor": "סעיף_9א",
-      "checked": "2026-10-22"
+      "strength": "primary",
+      "locator": "p.2, s.1",
+      "locator_he": "עמוד 2, סעיף 1",
+      "page": 2,
+      "checked": "2026-10-25"
     }
   ]
 }

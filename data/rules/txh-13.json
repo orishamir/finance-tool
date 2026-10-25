@@ -3,7 +3,7 @@
   "title": "Early withdrawal by an employee: what is taxed and at what rate",
   "title_he": "משיכה מוקדמת של שכיר: מה ממוסה ובאיזה שיעור",
   "text_he": "במשיכה לפני תום התקופה, הפקדות המעסיק המוטבות ממוסות כהכנסת עבודה כשמקבלים אותן, והריבית והרווחים ממוסים בשיעורי המס השוליים הרגילים, כי השיעור המופחת על ריבית לא חל על ריבית מקרן השתלמות לפני התקופות. הפקדות העובד עצמו, והפקדות המעסיק שכבר מוסו בהפקדה, לא ממוסות שוב. הצו אומר זאת לעניין הניכוי במקור; המסקנה למס הסופי מוסקת מהפקודה ומהצו, ותזכיר של משרד האוצר מתאר זאת באותן מילים. הרווחים הם הכנסה מריבית ולא מיגיעה אישית, ולכן מדרגות המס עליהם למי שמתחת לגיל שישים מתחילות במדרגה גבוהה.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "tax-at-exit",
     "liquidity-lockup"
@@ -13,32 +13,69 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/צו_מס_הכנסה_(קביעת_סכומים_ששולמו_מקרן_השתלמות_כהכנסה)",
-      "title": "Order on amounts paid from a study fund as income, 1997, s.1",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "ויקיטקסט",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "s.1",
-      "locator_he": "סעיף 1",
-      "anchor": "סעיף_1",
-      "checked": "2026-10-22"
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.19, s.3(ה)",
+      "locator_he": "עמוד 19, סעיף 3(ה)",
+      "page": 19,
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://www.capitax.co.il/Attachments/07072024.pdf",
-      "title": "Ministry of Finance memorandum, Income Tax Ordinance amendment 2024 (mirror)",
-      "title_he": "פקודת מס הכנסה",
-      "publisher": "Capitax",
-      "publisher_he": "הכנסת",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "locator": "p.2",
-      "locator_he": "עמוד 2",
+      "strength": "primary",
+      "locator": "p.204, s.125ג(ד)(5)",
+      "locator_he": "עמוד 204, סעיף 125ג(ד)(5)",
+      "page": 204,
+      "quote": "הריבית שולמה מקרן השתלמות לפני שחלפו התקופות",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Tax Authority guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.41, item 5",
+      "page": 41,
+      "quote": "ריבית ששולמה מקרן השתלמות לפני חלוף שש שנים מיום התשלום הראשון לקרן",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/qp4kOfn567Y9SVzCZ9fzttZlVRiBvp0mJWMdq5kP+yc=#page=2",
+      "title": "צו מס הכנסה (קביעת סכומים ששולמו מקרן השתלמות כהכנסה), התשנ\"ח-1997, קובץ התקנות 5861",
+      "title_he": "צו מס הכנסה (קביעת סכומים ששולמו מקרן השתלמות כהכנסה), התשנ״ח-1997 (קובץ התקנות 5861; תיקון: קובץ התקנות 6214)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.2, s.1",
+      "locator_he": "עמוד 2, סעיף 1",
       "page": 2,
-      "checked": "2026-10-22",
-      "qualifier": "(draft, mirror)"
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.tazkirim.gov.il/s/legislativeworkactivity/a133Y00000LPZM1QAP",
+      "title": "תזכיר חוק לתיקון פקודת מס הכנסה (מס'...), התשפ\"ד-2024",
+      "title_he": "תזכיר חוק לתיקון פקודת מס הכנסה (מס׳...), התשפ״ד-2024 (משיכה מוקדמת מקרן השתלמות, הוראת שעה)",
+      "publisher": "Government legislation website (Ministry of Justice)",
+      "publisher_he": "משרד האוצר (אתר החקיקה הממשלתי)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "quote": "כשמשיכה מוקדמת מהאמור, תחייב תשלום מס בשיעור המס השולי על הכספים שנמשכו",
+      "checked": "2026-10-25",
+      "qualifier": "(draft memorandum, not law)"
     }
   ]
 }

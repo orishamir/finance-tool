@@ -3,7 +3,7 @@
   "title": "Taking the money as an annuity: transfer to an annuity provident fund from early retirement age",
   "title_he": "קבלת הכסף כקצבה מגיל הפרישה המוקדמת",
   "text_he": "מגיל הפרישה המוקדמת אפשר להעביר את הכסף מקופת גמל להשקעה לקופת גמל לקצבה. הכסף נכנס למסלול למקבלי קצבה בקופה המקבלת, לקבלת קצבה בלבד. גיל הפרישה המוקדמת קבוע בחוק גיל פרישה, זהה לגברים ולנשים, ומופיע בכלל המס על המסלול לפטור. נוסח התקנות והחוק נקרא באתר שמעתיק אותם; הטענה של מיטב על פטור מלא ממס לא אומתה כאן.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "liquidity-lockup",
     "age-or-use-exemption",
@@ -15,32 +15,45 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)",
-      "title": "Transfer regulations 2008 (Wikisource)",
-      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "regulations 2(א)(7) and 2(ב)(2)",
-      "anchor": "סעיף_2.א",
-      "checked": "2026-10-22"
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/tZDvucD9RCpb4OFgftW2Mghx2FA7HU11Svr+ngxOA9o=#page=2",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התש\"ף-2020",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התש\"ף-2020",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, s.2",
+      "locator_he": "עמוד 2, סעיף 2",
+      "page": 2,
+      "quote": "קופת גמל להשקעה, ובלבד שהעמית הגיע לגיל הפרישה המוקדמת",
+      "checked": "2026-10-25"
     },
     {
-      "url": "https://he.wikisource.org/wiki/חוק_גיל_פרישה",
-      "title": "Retirement Age Law (Wikisource)",
-      "title_he": "חוק גיל פרישה, התשס״ד-2004",
-      "publisher": "Hebrew Wikisource",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.4, reg. 2",
+      "locator_he": "עמוד 4, תקנה 2",
+      "page": 4,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",
+      "title": "חוק גיל פרישה, התשס\"ד-2004",
+      "title_he": "חוק גיל פרישה, התשס\"ד-2004",
+      "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "section 5",
-      "locator_he": "סעיף 5",
-      "anchor": "סעיף_5",
-      "checked": "2026-10-22",
-      "qualifier": "(mirror of law and regulation text; official text not reached)"
+      "strength": "primary",
+      "locator": "p.1, s.5",
+      "locator_he": "עמוד 1, סעיף 5",
+      "page": 1,
+      "quote": "גיל 60 לגבר ולאישה",
+      "checked": "2026-10-25"
     }
   ]
 }

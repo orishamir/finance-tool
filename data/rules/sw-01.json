@@ -3,7 +3,7 @@
   "title": "Route map: where money may move",
   "title_he": "מפת המסלולים: לאן הכסף יכול לעבור",
   "text_he": "העברה בין קופות גמל מותרת רק במסלולים שתקנות ההעברה מונות. לקופת גמל לקצבה מעבירים מקופת קצבה אחרת, מקרן השתלמות אם העמית זכאי למשוך את הכסף בפטור ממס, מקופת גמל להשקעה אם הגיע לגיל הפרישה המוקדמת, ומקופה אחרת שהממונה אישר. לקופה שאינה לקצבה: תגמולים לתגמולים, קרן השתלמות לקרן השתלמות אחרת, קופת גמל להשקעה לקופת גמל להשקעה אחרת, וכל העברה אחרת רק באישור הממונה. אין מסלול מקופת קצבה או מקרן השתלמות לקופת גמל להשקעה; נוסח התקנות נקרא באתר שמעתיק אותו.",
-  "strength": "primary-mirror",
+  "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
     "liquidity-lockup"
@@ -13,18 +13,45 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל)",
-      "title": "Transfer Regulations 2008, regs. 2(א)(1), (4), (6), (7); 3(א)(1), (4), (11א), (12), Hebrew Wikisource",
-      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
-      "publisher": "Hebrew Wikisource",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
-      "strength": "primary-mirror",
-      "mirror_host": "wikisource",
-      "locator": "regs. 2(א)(1), (4), (6), (7); 3(א)(1), (4), (11א), (12)",
-      "locator_he": "תקנות 2(א)(1), (4), (6), (7); 3(א)(1), (4), (11א), (12)",
-      "anchor": "סעיף_2.א",
-      "checked": "2026-10-22"
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.4, reg. 2(א)(1), (4), (6)",
+      "locator_he": "עמוד 4, תקנה 2(א)(1), (4), (6)",
+      "page": 4,
+      "quote": "ובלבד שהעמית היה זכאי למשוך את הכספים בפטור ממס",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=5",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.5, reg. 3(א)(1), (4), (12)",
+      "locator_he": "עמוד 5, תקנה 3(א)(1), (4), (12)",
+      "page": 5,
+      "quote": "מקרן השתלמות לקרן השתלמות אחרת",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/tZDvucD9RCpb4OFgftW2Mghx2FA7HU11Svr+ngxOA9o=#page=2",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התש\"ף-2020 (קובץ התקנות 8735)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התש\"ף-2020 (קובץ התקנות 8735)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, s.2 and s.3: reg. 2(א)(7) and reg. 3(א)(11א)",
+      "page": 2,
+      "quote": "מקופת גמל להשקעה לקופת גמל להשקעה אחרת",
+      "checked": "2026-10-25"
     }
   ]
 }

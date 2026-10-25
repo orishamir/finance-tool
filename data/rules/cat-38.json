@@ -16,42 +16,45 @@
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1446/he/regulation_h_2015-9-9.pdf",
-      "title": "חוזר גופים מוסדיים 2015-9-9",
-      "title_he": "חוזר גופים מוסדיים 2015-9-9",
+      "title": "חוזר גופים מוסדיים 2015-9-9 דוח חודשי לגבי קופות גמל, קרנות פנסיה וחברות ביטוח",
+      "title_he": "חוזר גופים מוסדיים 2015-9-9 דוח חודשי לגבי קופות גמל, קרנות פנסיה וחברות ביטוח",
       "publisher": "gov.il",
       "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "circular",
       "strength": "primary",
-      "locator": "§§2ז–ח, 3ה, 4ב, 5ה(2)–(3), 11",
-      "locator_he": "§§2ז–ח, 3ה, 4ב, 5ה(2)–(3), 11",
-      "checked": "2026-10-23"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-3157/he/regulation_t2013-138.pdf",
-      "title": "draft 2013-138",
-      "publisher": "gov.il",
-      "publisher_he": "אתר הממשלה (gov.il)",
-      "kind": "official_pdf",
-      "strength": "primary",
-      "checked": "2026-10-23"
+      "locator": "pp.9, 15, 20, §§2ז–ח, 3ה, 4ב, 5ה(2)–(3), 11",
+      "locator_he": "עמודים 9, 15, 20, §§2ז–ח, 3ה, 4ב, 5ה(2)–(3), 11",
+      "page": 9,
+      "checked": "2026-10-25",
+      "qualifier": "(reporting codes)"
     },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-3157/he/regulation_t2013-138a.pdf",
-      "title": "file structure א (gemel)",
+      "title": "טיוטה 2013-138, מבנה דוח חודשי לגבי קופות גמל (קובץ א)",
+      "title_he": "טיוטה 2013-138, מבנה דוח חודשי לגבי קופות גמל (קובץ א)",
       "publisher": "gov.il",
       "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "official_pdf",
       "strength": "primary",
-      "checked": "2026-10-23"
+      "locator": "p.16",
+      "locator_he": "עמוד 16",
+      "page": 16,
+      "checked": "2026-10-25",
+      "qualifier": "(draft labelled)"
     },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-3157/he/regulation_t2013-138b.pdf",
-      "title": "ב (pension)",
+      "title": "טיוטה 2013-138, מבנה דוח חודשי לגבי קרן פנסיה (קובץ ב)",
+      "title_he": "טיוטה 2013-138, מבנה דוח חודשי לגבי קרן פנסיה (קובץ ב)",
       "publisher": "gov.il",
       "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "official_pdf",
       "strength": "primary",
-      "checked": "2026-10-23"
+      "locator": "p.4",
+      "locator_he": "עמוד 4",
+      "page": 4,
+      "checked": "2026-10-25",
+      "qualifier": "(draft labelled)"
     },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1630/he/regulation_2013-2-1.pdf",
@@ -61,8 +64,21 @@
       "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "circular",
       "strength": "primary",
-      "checked": "2026-10-23",
-      "qualifier": "(reporting codes)"
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-3157/he/regulation_t2013-138.pdf",
+      "title": "חוזר גופים מוסדיים 2013-138 דוח חודשי של קופות גמל, קרנות פנסיה וחברות ביטוח - טיוטה",
+      "title_he": "חוזר גופים מוסדיים 2013-138 דוח חודשי של קופות גמל, קרנות פנסיה וחברות ביטוח - טיוטה",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "checked": "2026-10-25",
+      "qualifier": "(draft labelled)"
     }
   ]
 }

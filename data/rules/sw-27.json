@@ -18,12 +18,12 @@
       "value": 30,
       "unit": "business_days",
       "source": {
-        "url": "https://boi.org.il/media/ahflwvpw/448_2.pdf",
-        "title": "BoI directive 448 \"העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון\", version 2 (8/21), ss.5, 6, 24, 26, 34",
+        "url": "https://www.boi.org.il/media/irmdw0r2/448_4-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf",
+        "title": "הוראת ניהול בנקאי תקין 448 – העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון, גרסה 4 (11/25), p.3, s.5(א)",
         "publisher": "Bank of Israel (Banking Supervision)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -38,12 +38,12 @@
       "value": 6,
       "unit": "business_days",
       "source": {
-        "url": "https://boi.org.il/media/ahflwvpw/448_2.pdf",
-        "title": "BoI directive 448 \"העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון\", version 2 (8/21), s.6",
+        "url": "https://www.boi.org.il/media/irmdw0r2/448_4-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf",
+        "title": "הוראת ניהול בנקאי תקין 448 – העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון, גרסה 4 (11/25), p.3, s.6",
         "publisher": "Bank of Israel (Banking Supervision)",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -59,16 +59,44 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://boi.org.il/media/ahflwvpw/448_2.pdf",
-      "title": "Directive 448 version 2 (8/21), ss.5, 6, 24, 26, 34",
-      "title_he": "הוראת ניהול בנקאי תקין 448: העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון",
+      "url": "https://www.boi.org.il/media/irmdw0r2/448_4-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf",
+      "title": "הוראת ניהול בנקאי תקין 448 – העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון, גרסה 4 (11/25)",
+      "title_he": "הוראת ניהול בנקאי תקין 448 – העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון, גרסה 4 (11/25)",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
-      "kind": "regulation",
+      "kind": "regulator_page",
       "strength": "primary",
-      "locator": "ss.5, 6, 24, 26, 34",
-      "locator_he": "סעיפים 5, 6, 24, 26, 34",
-      "checked": "2026-10-22"
+      "locator": "p.3, ss.5-6",
+      "locator_he": "עמוד 3, סעיפים 5-6",
+      "page": 3,
+      "quote": "ועד לסוף יום העסקים השישי של תהליך הניוד",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.boi.org.il/media/irmdw0r2/448_4-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf",
+      "title": "הוראת ניהול בנקאי תקין 448 – העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון, גרסה 4 (11/25)",
+      "title_he": "הוראת ניהול בנקאי תקין 448 – העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון, גרסה 4 (11/25)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.7, ss.24, 26",
+      "locator_he": "עמוד 7, סעיפים 24, 26",
+      "page": 7,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.boi.org.il/media/irmdw0r2/448_4-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf",
+      "title": "הוראת ניהול בנקאי תקין 448 – העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון, גרסה 4 (11/25)",
+      "title_he": "הוראת ניהול בנקאי תקין 448 – העברת פעילות פיננסית של לקוח בין בנקים באופן מקוון, גרסה 4 (11/25)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.11, s.34",
+      "locator_he": "עמוד 11, סעיף 34",
+      "page": 11,
+      "checked": "2026-10-25"
     }
   ]
 }

@@ -19,11 +19,11 @@
       "unit": "nis",
       "source": {
         "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf",
-        "title": "Bill \"הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ\"ו–2026\" (P/6522/25), tabled 02.02.2026, ss.1 to 4",
+        "title": "הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ\"ו-2026 (פ/6522/25), tabled 02.02.2026, pp.2-3, ss.1 to 4",
         "publisher": "Knesset",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -39,11 +39,11 @@
       "unit": "pct",
       "source": {
         "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf",
-        "title": "Bill \"הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ\"ו–2026\" (P/6522/25), tabled 02.02.2026, ss.1 to 4",
+        "title": "הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ\"ו-2026 (פ/6522/25), tabled 02.02.2026, p.2, s.1 (\"אינו עולה על חמישה אחוזים\")",
         "publisher": "Knesset",
         "strength": "primary"
       },
-      "checked": "2026-10-22",
+      "checked": "2026-10-25",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -60,15 +60,16 @@
   "sources": [
     {
       "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf",
-      "title": "Bill PDF",
+      "title": "הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ\"ו-2026 (פ/6522/25)",
       "title_he": "הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ״ו-2026 (פ/6522/25)",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "ss.1 to 4",
-      "locator_he": "סעיפים 1 עד 4",
-      "checked": "2026-10-22"
+      "locator": "pp.2-3, ss.1 to 4",
+      "locator_he": "עמודים 2 עד 3, סעיפים 1 עד 4",
+      "page": 2,
+      "checked": "2026-10-25"
     },
     {
       "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill()?$filter=KnessetNum%20eq%2025%20and%20PrivateNumber%20eq%206522&$format=json",
@@ -77,16 +78,17 @@
       "publisher_he": "הכנסת",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "locator": "StatusID 104",
+      "checked": "2026-10-25"
     },
     {
       "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Status(104)?$format=json",
-      "title": "KNS_Status 104",
+      "title": "Knesset OData KNS_Status 104",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-22"
+      "checked": "2026-10-25"
     }
   ]
 }

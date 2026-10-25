@@ -13,6 +13,7 @@ import { Tpl } from "../exposure-mode/tpl";
 import { Num } from "../provenance";
 import { NumberField } from "../timeline/fields";
 import { Button, Tag, cx } from "../ui";
+import { IndexCard, type IndexCardProps } from "./index-card";
 
 const t = ownTermsCopy.line;
 const tp = ownTermsCopy.provider;
@@ -32,9 +33,11 @@ export interface RepresentativeProps {
   outcomes?: () => ProviderOutcomes;
   /** One provider's figure as a value object, so it shows its provenance. */
   figureOf?: (o: ProviderOutcome) => SiteValue;
+  /** The securities account over the indices (2026-10-25, D27): the card names no index by itself, so the representative fund's name is not shown while this is set. */
+  index?: IndexCardProps;
 }
 
-export function Representative({ w, g, today, onFee, onRate, onProvider, outcomes, figureOf }: RepresentativeProps) {
+export function Representative({ w, g, today, onFee, onRate, onProvider, outcomes, figureOf, index }: RepresentativeProps) {
   const [open, setOpen] = useState(false);
   const r = w.representative;
   const target = feeTargetOf(w);
@@ -52,8 +55,9 @@ export function Representative({ w, g, today, onFee, onRate, onProvider, outcome
   const showFields = open || entered;
   return (
     <div className="flex flex-col gap-1.5" data-representative>
+      {index && <IndexCard {...index} />}
       <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
-        {r && (
+        {r && !index && (
           <span>
             <Tpl t={t.named} vars={{ name: <bdi>{r.name}</bdi> }} />
             {fee && <Tpl t={t.fee} vars={{ fee: <Num value={fee} size="cell" /> }} />}
