@@ -12,7 +12,7 @@ import { hasSignatureVisual, SignatureFrame, signatureTitle } from "../component
 import { accountWorthRow } from "../components/guide-signature/current-account";
 import { cashLikeIds } from "../lib/guide-signature";
 import { SavedGoalStrip } from "../components/compare/strip";
-import { Disclosure, Tag } from "../components/ui";
+import { Disclosure, Tag } from "../components/kit";
 import { GoalsProvider, type Presets } from "../lib/goal";
 import { fmt } from "../lib/format";
 import { splitTerms } from "../lib/guide-nav";

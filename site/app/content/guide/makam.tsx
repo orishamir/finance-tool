@@ -4,7 +4,7 @@
 import { Link } from "react-router";
 import type { GuideContent } from "./types";
 import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
-import { Callout } from "../../components/ui";
+import { Callout, Sentence } from "../../components/kit";
 
 const OQ = ({ id }: { id: string }) => (
   <bdi dir="ltr" className="whitespace-nowrap">
@@ -24,9 +24,9 @@ export const content: GuideContent = {
         <p className="max-w-measure">
           הלוואה קצרה למדינה, לתקופה של עד שנה, שבנק ישראל מוכר לציבור. המק״מ לא משלם ריבית ולא צמוד למדד: קונים אותו במחיר נמוך <Term prefix="מה" id="שווי נקוב">שווי הנקוב</Term>, ובמועד <Term prefix="ה" id="פדיון">פדיון</Term> המדינה משלמת את השווי הנקוב במלואו. ההפרש הוא הרווח שלכם, ובמס הוא נחשב <Term id="דמי ניכיון">דמי ניכיון</Term>, כלומר <Term id="ריבית">ריבית</Term>.
         </p>
-        <p className="max-w-measure">
+        <Sentence measure>
           בכל חודש מונפקת סדרה חדשה לכשנה, כך שבכל רגע יש {series ? <Num value={series} /> : null} סדרות בשוק, עם מועדי פדיון שונים. <Term prefix="ה" id="תשואה לפדיון">תשואה לפדיון</Term> ידועה מראש ביום הקנייה למי שמחזיק עד הסוף.
-        </p>
+        </Sentence>
         <RulesLine ids={["GOV-01", "GOV-03", "GOV-22", "GOV-23", "TXI-01"]} />
       </>
     );
@@ -50,9 +50,9 @@ export const content: GuideContent = {
     const saleRate = figure("TXI-12", "rate");
     return (
       <>
-        <p className="max-w-measure">
+        <Sentence measure>
           מי שמוכר לפני הפדיון משלם מס על ההפרש בין מחיר המכירה למחיר הקנייה <Term prefix="כ" id="רווח הון ריאלי">רווח הון ריאלי</Term>, עד {saleRate ? <Num value={saleRate} /> : null} מכל הרווח, בלי ניכוי של האינפלציה. בשני המקרים הבנק או חבר הבורסה מבצעים <Term id="ניכוי מס במקור">ניכוי מס במקור</Term>, ואם זה כל המס שלכם, אין צורך בדוח שנתי.
-        </p>
+        </Sentence>
         <Callout tone="caution" className="max-w-measure">
           <span className="font-medium">מקור אחד סותר.</span> במדריך של רשות המסים לשנת 2025 כתוב שדמי ניכיון על מק״מ ממוסים ב-20%, ואילו בפקודת מס הכנסה השיעור על ריבית מנכס לא צמוד הוא {rate ? <Num value={rate} /> : null}. האתר מחשב לפי החוק ומסמן את הסתירה. שאלה פתוחה: <OQ id="TXI OQ3" />.
         </Callout>

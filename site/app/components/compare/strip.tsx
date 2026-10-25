@@ -8,7 +8,7 @@ import { deleteDoc, isBlank, resolveGoal, useGoals, type Goal, type Presets } fr
 import { stripValues, type PresetMeta } from "../../lib/goal-values";
 import { fmt } from "../../lib/format";
 import { Num } from "../provenance";
-import { Button, cx } from "../ui";
+import { Button, cx } from "../kit";
 import { RevisitLine, CompactRevisit, UnreadableSavedForm, WhatChangedSheet } from "../revisit/revisit";
 import { useRevisit } from "../revisit/use-revisit";
 import { deleteSavedComparison, isoToday, type CompareMode } from "../../lib/state";
@@ -76,7 +76,7 @@ export function SavedGoalStrip({ variant = "full", presets, meta, today, showRes
 
   if (variant === "compact") {
     return (
-      <p className="text-sm flex flex-wrap items-center gap-x-1.5">
+      <div className="text-sm flex flex-wrap items-center gap-x-1.5">
         <span className="text-muted-foreground">{label ?? r2.strip.compact}</span>
         <bdi className="font-medium">{goalTitle(current)}</bdi>
         {saved && <CompactRevisit view={revisit} />}
@@ -89,7 +89,7 @@ export function SavedGoalStrip({ variant = "full", presets, meta, today, showRes
         <Link to={editHref} className="text-link min-h-target inline-flex items-center hover:underline">
           {r2.strip.change}
         </Link>
-      </p>
+      </div>
     );
   }
 

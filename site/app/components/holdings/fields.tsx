@@ -5,7 +5,7 @@ import { r3holdings as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { transferBars, type TransferBar } from "../../lib/state";
 import { RuleRef } from "../provenance";
-import { Disclosure, cx } from "../ui";
+import { cx, Disclosure } from "../kit";
 
 /** A native date picker in the field box; the text form of the value is `22.10.2026` (design-spec 1.5). */
 export function DateField({ label, value, onChange, max, hint, error }: { label: ReactNode; value: string; onChange: (v: string) => void; max?: string; hint?: ReactNode; error?: ReactNode | null }) {

@@ -5,12 +5,10 @@ import { Link, useLoaderData, useNavigate, useSearchParams } from "react-router"
 import type { RuleRecord } from "@finance-tool/schema";
 import { idle as copy, r2, site } from "../copy";
 import { BoiLine, CostRows, IdleCoverage, idleCtx, MaterialityLine, SmallSumLine, VerdictBlock } from "../components/compare/idle";
-import { ChoiceChips } from "../components/compare/fields";
 import { LeadTail, Num, NumberLegend } from "../components/provenance";
 import { RawWatch } from "../components/holdings/fields";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { NumberField } from "../components/timeline/fields";
-import { Button, Callout, Card, cx, Disclosure } from "../components/ui";
+import { Button, Callout, Card, ChoiceChips, cx, Disclosure, NumberField, Sentence } from "../components/kit";
 import { loadBundle } from "../lib/bundle";
 import { fmt, parseNumber } from "../lib/format";
 import type { CompareBundle } from "../lib/compare";
@@ -226,20 +224,20 @@ function Result({ outcome, bundle, ctx, over, onFull, offerGiven, termGiven, dep
       <Card className="flex flex-col gap-4">
         {view.headline ? (
           <div className="flex flex-col gap-1">
-            <p className="text-lg">
+            <Sentence size="lg">
               {copy.headlineBefore} <Num value={view.amount} />{" "}
               <LeadTail lead={copy.headlineMid}>
                 {" "}
                 <Num value={view.headline} size="figure" animate /> {copy.headlineAfter}
               </LeadTail>
-            </p>
+            </Sentence>
             {view.yearly && (
-              <p className="text-lg">
+              <Sentence size="lg">
                 <LeadTail lead={copy.soWhat.before}>
                   <Num value={view.yearly} />
                 </LeadTail>
                 {copy.soWhat.after}
-              </p>
+              </Sentence>
             )}
             <p className="text-sm text-muted-foreground">{copy.headlineLabel}</p>
             {view.materiality && !view.verdict && <MaterialityLine m={view.materiality} />}

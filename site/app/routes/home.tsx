@@ -8,7 +8,7 @@ import { home as copy, knowledgeEntry, questions as questionsCopy, r3workbench, 
 import { IconDrillIn } from "../components/icons";
 import { PageSearchField, PageShell } from "../components/shell";
 import { QuickGoalCard } from "../components/compare/quick-goal";
-import { Card, Disclosure } from "../components/ui";
+import { Card, Disclosure } from "../components/kit";
 import { GoalsProvider, isBlank, useGoals, type Presets } from "../lib/goal";
 import type { Range } from "../components/compare/goal-form";
 import { useHoldings } from "../lib/state";

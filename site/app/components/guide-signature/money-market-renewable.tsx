@@ -8,7 +8,8 @@ import { fmt } from "../../lib/format";
 import { addDays, daysBetween, fact, fixedDateModel } from "../../lib/guide-signature";
 import { computed, entered as enteredValue, type SiteValue } from "../../lib/value";
 import { Num, RulesLine } from "../provenance";
-import { Gap, Marker, MarkerMark, useWidth, type VisualProps } from "./kit";
+import { Gap, type VisualProps } from "./kit";
+import { Marker, MarkerMark, useWidth } from "../kit";
 
 const HEIGHT = 130;
 const LANE_Y = 40;

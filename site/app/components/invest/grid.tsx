@@ -7,7 +7,7 @@ import type { BrokerCell, InvestView, OptionId } from "../../lib/invest";
 import { brokerLabels } from "../../lib/labels";
 import { IconExternal, IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, Tag, cx } from "../ui";
+import { Button, cx, Tag } from "../kit";
 import { LabelRow, reasonText } from "./parts";
 import { ProviderLink } from "./sections";
 

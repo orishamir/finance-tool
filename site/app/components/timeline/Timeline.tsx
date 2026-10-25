@@ -9,12 +9,11 @@ import { useInputs, type Employment } from "../../lib/inputs";
 import { useOwnRates } from "../../lib/own-rate";
 import { useValueMode, type ValueMode as Mode } from "../../lib/mode-store";
 import { computed, entered as enteredValue, feeLabel, feeYear, ruleFigure, weaker, type SiteValue, type Strength } from "../../lib/value";
-import { scrollCueStyle, TimelineChart, type ChartPoint, type Marker } from "../chart/TimelineChart";
+import { TimelineChart, type ChartPoint, type Marker } from "../chart/TimelineChart";
 import { IconPencil, IconReset } from "../icons";
 import { Num, RuleRef, RulesLine, StateTag } from "../provenance";
 import { Sheet } from "../Sheet";
-import { Button, Callout, cx, Disclosure, SegmentedControl } from "../ui";
-import { NumberField, ParameterLine, SliderField } from "./fields";
+import { Button, Callout, Card, ChartLegend, ChartReadout, ChartTable, cx, NumberField, ParameterLine, RangeField, SegmentedControl, Swatch } from "../kit";
 
 export interface TimelineProps {
   bundle: Bundle;
@@ -157,43 +156,33 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
 
   const tableCard =
     timeline.kind === "ok" && values ? (
-      <div className="bg-card border border-border rounded-lg px-4 py-2 md:px-6">
-      <Disclosure label={buttons.showTable} openLabel={buttons.hideTable} summaryClassName="text-sm">
-        <div className="overflow-x-auto mt-2" style={scrollCueStyle} tabIndex={0} role="region" aria-label={copy.graphTitle}>
-          <table className="tbl text-sm [&_td]:px-2 [&_th]:px-2 [&_td]:whitespace-nowrap [&_th]:whitespace-nowrap">
-            <thead>
-              <tr>
-                <th scope="col">{copy.table.year}</th>
-                <th scope="col">{copy.table.contributions}</th>
-                <th scope="col">{copy.table.fees}</th>
-                <th scope="col">{copy.table.tax}</th>
-                <th scope="col">{copy.table.net}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {timeline.years.map((p) => {
-                const v = values!.yearValues(p, mode);
-                return (
-                  <tr key={p.year}>
-                    <th scope="row"><bdi dir="ltr">{p.year}</bdi></th>
-                    <td><Num value={v.contributions} size="cell" /></td>
-                    <td>{cash?.feesIndependent ? <span className="text-sm">{copy.feesIndependentShort}</span> : <Num value={v.fees} size="cell" />}</td>
-                    <td><Num value={v.tax} size="cell" /></td>
-                    <td><Num value={v.net} size="cell" /></td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Disclosure>
-      </div>
+      <Card pad="none" className="px-4 py-2 md:px-6">
+        <ChartTable
+          compact
+          regionLabel={copy.graphTitle}
+          rowHead={copy.table.year}
+          columns={[
+            { id: "contributions", head: copy.table.contributions },
+            { id: "fees", head: copy.table.fees },
+            { id: "tax", head: copy.table.tax },
+            { id: "net", head: copy.table.net },
+          ]}
+          rows={timeline.years.map((p) => {
+            const v = values!.yearValues(p, mode);
+            return {
+              key: p.year,
+              head: p.year,
+              cells: [<Num key="c" value={v.contributions} size="cell" />, cash?.feesIndependent ? <span key="f" className="text-sm">{copy.feesIndependentShort}</span> : <Num key="f" value={v.fees} size="cell" />, <Num key="t" value={v.tax} size="cell" />, <Num key="n" value={v.net} size="cell" />],
+            };
+          })}
+        />
+      </Card>
     ) : null;
 
   return (
     <div className="flex flex-col gap-6">
     <div className="flex flex-col lg:flex-row-reverse lg:items-start gap-6">
-      <div className="flex-1 min-w-0 bg-card border border-border rounded-lg p-4 md:p-6 flex flex-col gap-4" aria-labelledby={titleId}>
+      <Card className="flex-1 min-w-0 flex flex-col gap-4" aria-labelledby={titleId}>
         <div className="flex flex-col gap-3 lg:flex-row lg:flex-wrap lg:items-start lg:justify-between">
           <div className="flex flex-col gap-2.5 min-w-0">
             <h3 id={titleId} className="text-lg font-semibold">
@@ -245,28 +234,29 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
               </button>
             </div>
 
-            <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label="מקרא">
-              <li className="flex items-center gap-1.5"><span className="size-2.5 rounded-sm bg-chart-value" /> {copy.legend.net}</li>
-              {/* audit A79: no swatch for an area that is not drawn (no tax in this run) */}
-              {points.some((p) => p.tax > 0) && <li className="flex items-center gap-1.5"><span className="size-2.5 rounded-sm bg-chart-tax" /> {copy.legend.tax}</li>}
-              {!cash?.feesIndependent && <li className="flex items-center gap-1.5"><span className="size-2.5 rounded-sm bg-chart-fee" /> {copy.legend.fees}</li>}
-              <li className="flex items-center gap-1.5"><span className="w-3.5 h-[3px] rounded-sm bg-chart-contributions" /> {copy.legend.contributions}</li>
-            </ul>
+            <ChartLegend
+              items={[
+                { id: "net", swatch: <Swatch shape="box" className="bg-chart-value" />, label: copy.legend.net },
+                // audit A79: no swatch for an area that is not drawn (no tax in this run)
+                ...(points.some((p) => p.tax > 0) ? [{ id: "tax", swatch: <Swatch shape="box" className="bg-chart-tax" />, label: copy.legend.tax }] : []),
+                ...(!cash?.feesIndependent ? [{ id: "fees", swatch: <Swatch shape="box" className="bg-chart-fee" />, label: copy.legend.fees }] : []),
+                { id: "contributions", swatch: <Swatch className="bg-chart-contributions" />, label: copy.legend.contributions },
+              ]}
+            />
 
             <TimelineChart points={points} hover={hover} onHover={setHover} markers={markers} enteredReturn={returnEntered} ariaLabel={`${copy.graphAria.before} ${fmt.years(horizonYears)}. ${copy.graphAria.after}`} />
             {returnEntered && <p className="text-xs text-entered">{cash ? copy.enteredRateCaption : copy.enteredReturnCaption}</p>}
 
             {readout && (
-              <dl className="readout" aria-live="polite">
-                <div className="readout-row readout-head">
-                  <dt>{readout.yearText}</dt>
-                  <dd />
-                </div>
-                <div className="readout-row"><dt>{copy.legend.net}</dt><dd><Num value={readout.net} animate /></dd></div>
-                <div className="readout-row"><dt>{copy.legend.tax}</dt><dd><Num value={readout.tax} animate /></dd></div>
-                <div className="readout-row"><dt>{copy.legend.fees}</dt><dd>{cash?.feesIndependent ? <span className="text-sm">{copy.feesIndependent}</span> : <Num value={readout.fees} animate />}</dd></div>
-                <div className="readout-row"><dt>{copy.legend.contributions}</dt><dd><Num value={readout.contributions} animate /></dd></div>
-              </dl>
+              <ChartReadout
+                title={readout.yearText}
+                rows={[
+                  { id: "net", label: copy.legend.net, value: <Num value={readout.net} animate /> },
+                  { id: "tax", label: copy.legend.tax, value: <Num value={readout.tax} animate /> },
+                  { id: "fees", label: copy.legend.fees, value: cash?.feesIndependent ? <span className="text-sm">{copy.feesIndependent}</span> : <Num value={readout.fees} animate /> },
+                  { id: "contributions", label: copy.legend.contributions, value: <Num value={readout.contributions} animate /> },
+                ]}
+              />
             )}
 
             <RulesLine ids={timeline.rules.map((r) => r.id)} />
@@ -287,14 +277,14 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
             </Button>
           </div>
         )}
-      </div>
+      </Card>
 
-      <aside className="hidden lg:block w-[300px] shrink-0 bg-card border border-border rounded-lg p-5" aria-label={valuesCopy.title}>
+      <Card as="aside" pad="aside" className="hidden lg:block w-[300px] shrink-0" aria-label={valuesCopy.title}>
         <h3 className="text-lg font-semibold mb-4">{valuesCopy.title}</h3>
         {panel}
         <TermsList bundle={bundle} />
         {anyEntered && <ResetAll onReset={resetAll} />}
-      </aside>
+      </Card>
 
       <Sheet open={sheetOpen} onClose={() => setSheetOpen(false)} pc="center" height={78} labelledBy={`${titleId}-v`} className="lg:hidden">
         <h2 id={`${titleId}-v`} className="text-lg font-semibold mb-3">
@@ -405,8 +395,8 @@ function ValuesPanel({ bundle, focusField, employment, cash, ownRate, setOwnRate
     <div className="flex flex-col gap-4 lg:gap-[18px]">
       <ParameterLine />
       <NumberField label={valuesCopy.fields.amount_now} unit="nis" value={current("amount_now")} isEntered={isEntered("amount_now")} validate={nonNegative} onCommit={commit("amount_now")} onReset={() => setEntered("amount_now", null)} disabled={!ready} autoFocus={focusField === "amount_now"} />
-      <SliderField label={valuesCopy.fields.monthly_deposit} unit="nis_per_month" value={current("monthly_deposit")} isEntered={isEntered("monthly_deposit")} validate={nonNegative} onCommit={commit("monthly_deposit")} onReset={() => setEntered("monthly_deposit", null)} min={monthly?.min ?? 0} max={monthly?.max ?? 10000} step={monthly?.step ?? 100} disabled={!ready} autoFocus={focusField === "monthly_deposit"} />
-      <SliderField label={valuesCopy.fields.horizon_years} unit="years" value={current("horizon_years")} isEntered={isEntered("horizon_years")} validate={between(years, valuesCopy.errors.years, true)} onCommit={commit("horizon_years")} onReset={() => setEntered("horizon_years", null)} min={years?.min ?? 1} max={years?.max ?? 40} step={years?.step ?? 1} inputMode="numeric" disabled={!ready} autoFocus={focusField === "horizon_years"} />
+      <RangeField label={valuesCopy.fields.monthly_deposit} unit="nis_per_month" value={current("monthly_deposit")} isEntered={isEntered("monthly_deposit")} validate={nonNegative} onCommit={commit("monthly_deposit")} onReset={() => setEntered("monthly_deposit", null)} min={monthly?.min ?? 0} max={monthly?.max ?? 10000} step={monthly?.step ?? 100} disabled={!ready} autoFocus={focusField === "monthly_deposit"} />
+      <RangeField label={valuesCopy.fields.horizon_years} unit="years" value={current("horizon_years")} isEntered={isEntered("horizon_years")} validate={between(years, valuesCopy.errors.years, true)} onCommit={commit("horizon_years")} onReset={() => setEntered("horizon_years", null)} min={years?.min ?? 1} max={years?.max ?? 40} step={years?.step ?? 1} inputMode="numeric" disabled={!ready} autoFocus={focusField === "horizon_years"} />
       <div className="field-row grid grid-cols-2 gap-3">
         {cash ? (
           <NumberField label={valuesCopy.fields.cash_rate} unit="pct_per_year" value={current("cash_rate")} isEntered={isEntered("cash_rate")} validate={between(pctRange, valuesCopy.errors.pct)} onCommit={(n) => setOwnRate(n === p05Number(p05, "cash_rate") ? null : n)} onReset={() => setOwnRate(null)} disabled={!ready} autoFocus={focusField === "cash_rate"} />

@@ -8,8 +8,8 @@ import { decidingFormulaOf } from "../../lib/compare";
 import type { ExposureRowView } from "../../lib/exposure-mode";
 import { IconDrillIn, IconLock } from "../icons";
 import { IconDash, IconDashed, IconEdit, IconEqual } from "../compare/icons";
-import { durationChart, Num, StateTag } from "../provenance";
-import { Tag, cx } from "../ui";
+import { durationChart, Num } from "../provenance";
+import { Card, cx, HeadlineFigure, RankBadge, Sentence, Tag } from "../kit";
 import type { ExpCtx } from "./ctx";
 import { AcceptedFallChip, CashRateLine, EnteredReturnField, ExclusionTag, HoldingWrapperChips, LossNote, ReturnLabel, WorstFallField } from "./fields";
 import { ExposureReason } from "./reason";
@@ -39,9 +39,7 @@ export function useFlipList(order: string) {
 function Mark({ row }: { row: ExposureRowView }) {
   if (row.kind === "ranked")
     return (
-      <span className={cx("size-7 shrink-0 rounded-full inline-flex items-center justify-center text-sm font-semibold mt-0.5", row.rank === 1 ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground")} aria-label={`${r5.exposure.rank} ${row.rank}`}>
-        {row.rank}
-      </span>
+      <RankBadge rank={row.rank} label={`${r5.exposure.rank} ${row.rank}`} />
     );
   const Icon = row.kind === "excluded" ? IconEdit : row.kind === "not-evaluated" ? IconDashed : IconDash;
   const blocked = row.kind === "listed-not-ranked" && row.reasons.some((r) => r.code === "engine" && r.reason.code === "exit-blocked");
@@ -78,7 +76,7 @@ export function ExposureRow({ row, ctx, above, onDetail, choose }: { row: Exposu
   const tied = row.tiedWith.length > 0;
   const f = row.deciding;
   return (
-    <div data-flip={row.id} className={cx("bg-card border border-border rounded-lg p-4 md:p-6 flex flex-col gap-3", tied && "border-s-[3px] border-s-chart-marker", !ranked && "bg-card/70")}>
+    <Card data-flip={row.id} className={cx("flex flex-col gap-3", tied && "border-s-[3px] border-s-chart-marker", !ranked && "bg-card/70")}>
       <div className="flex items-start gap-3">
         <Mark row={row} />
         <div className="flex-1 min-w-0 flex flex-col gap-0.5">
@@ -108,15 +106,7 @@ export function ExposureRow({ row, ctx, above, onDetail, choose }: { row: Exposu
       <InputsStrip row={row} ctx={ctx} />
 
       {showFigure && value && (
-        <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-3 flex-wrap">
-            <span className="figure">
-              <Num value={value} size="figure" animate />
-            </span>
-            <StateTag state="computed" />
-          </div>
-          <span className="text-sm text-muted-foreground">{mode === "real" ? r5.exposure.valueLabel : r5.exposure.valueLabelNominal}</span>
-        </div>
+        <HeadlineFigure value={value} caption={mode === "real" ? r5.exposure.valueLabel : r5.exposure.valueLabelNominal} />
       )}
 
       {(ranked || row.kind === "listed-not-ranked") && (
@@ -134,9 +124,9 @@ export function ExposureRow({ row, ctx, above, onDetail, choose }: { row: Exposu
       {row.lossNote && <LossNote missing={row.lossNote} href={row.lossNote === "largest-fall-accepted" ? "/goal" : undefined} />}
 
       {ranked && f && above && !tied && (
-        <p className="text-sm text-muted-foreground">
+        <Sentence size="sm" tone="muted">
           {r2.result.decidingLine} {r2.deciding[f.formula]}, <Num value={mk.nis(f.mine, decidingFormulaOf(f.formula), r2.deciding[f.formula]!, row.run ? { usedRules: row.run.rules } : undefined)} /> {r2.result.reasonFeeVs} <Num value={mk.nis(f.above, decidingFormulaOf(f.formula), r2.deciding[f.formula]!, above.run ? { usedRules: above.run.rules } : undefined)} />
-        </p>
+        </Sentence>
       )}
 
       {row.kind !== "ranked" && row.kind !== "excluded" && row.reasons.length > 0 && (
@@ -166,6 +156,6 @@ export function ExposureRow({ row, ctx, above, onDetail, choose }: { row: Exposu
         )}
         {ranked && choose}
       </div>
-    </div>
+    </Card>
   );
 }

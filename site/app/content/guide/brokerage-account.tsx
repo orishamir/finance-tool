@@ -4,7 +4,7 @@
 // review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
 import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
-import { Callout } from "../../components/ui";
+import { Callout, Sentence } from "../../components/kit";
 
 const OQ = ({ id }: { id: string }) => (
   <bdi dir="ltr" className="whitespace-nowrap">
@@ -20,9 +20,9 @@ export const content: GuideContent = {
         <p className="max-w-measure">
           חשבון בבנק או בבית השקעות שהוא <Term id="חבר בורסה">חבר בורסה</Term>, שבו קונים, מוכרים ומחזיקים ניירות ערך: קרנות סל וקרנות מחקות ישראליות, קרנות חוץ שנסחרות בתל אביב, מק״מ ואיגרות חוב ממשלתיות, ודרך <Term id="ברוקר זר">ברוקר זר</Term> גם <Term id="קרן זרה">קרנות זרות</Term> בבורסות בחו"ל. אין תקרת הפקדה ואין נעילה: מוכרים בכל יום מסחר, והבורסה פתוחה מיום שני עד יום שישי.
         </p>
-        <p className="max-w-measure">
+        <Sentence measure>
           על הרווחים משלמים <Term id="מס רווחי הון">מס רווחי הון</Term> רק כשמוכרים. בבנק או אצל חבר בורסה בישראל המס מנוכה במקור במכירה, {rate ? <Num value={rate} /> : null} <Term prefix="מה" id="רווח הון ריאלי">רווח הריאלי</Term>, כלומר מהרווח שמעבר לעליית המדד. גם <Term id="מכירה">מכירה</Term> של קרן אחת כדי לקנות אחרת היא מכירה לכל דבר, ומשלמים עליה מס אף שהכסף נשאר בחשבון.
-        </p>
+        </Sentence>
         <RulesLine ids={["BRK-01", "BRK-32", "BRK-29", "TXS-01", "TXS-05", "TXS-21", "ETF-04", "ETF-26"]} />
       </>
     );
@@ -31,9 +31,9 @@ export const content: GuideContent = {
     const members = figure("REG-14", "member_count");
     return (
       <>
-        <p className="max-w-measure">
+        <Sentence measure>
           רק דרך חבר בורסה אפשר לקנות ולמכור בבורסה בתל אביב: {members ? <Num value={members} /> : null} חברים, מהם בנקים ובתי השקעות שהם <Term id="חש&quot;ב">חש"בים</Term>. כל אחד מהם מפרסם <Term id="התעריפון המלא">תעריפון</Term>, והבורסה מפרסמת לכל חבר את העמלות שגבה בפועל, לפי סוג נייר וגודל התיק; חבר בורסה חייב לומר לכם זאת לפני פתיחת החשבון.
-        </p>
+        </Sentence>
         <p className="max-w-measure">
           ברוקר זר שמציע מסחר בבורסות בחו"ל פועל בישראל לפי <Term id="היתר לפי סעיף 49א">היתר לפי סעיף 49א</Term>, ואינו בפיקוח רשות ניירות ערך. האם חשבון שנפתח ישירות אצל ברוקר בחו"ל צריך היתר כזה עדיין לא מתועד. שאלה פתוחה: <OQ id="BRK OQ9" />.
         </p>
@@ -74,9 +74,9 @@ export const content: GuideContent = {
     const ceiling = figure("TXG-17", "securities_proceeds_ceiling");
     return (
       <>
-        <p className="max-w-measure">
+        <Sentence measure>
           על מק״מ ואיגרת חוב לא צמודה המס במכירה הוא {unlinked ? <Num value={unlinked} /> : null} מכל הרווח, בלי הפחתה של המדד. הפסד ממכירה מקזז רווחים באותה שנה בתוך אותו בנק; <Term id="קיזוז הפסדים">קיזוז</Term> בין בנקים, או <Term id="הפסד מועבר">העברת הפסד</Term> לשנים הבאות, דורשים דוח שנתי. מי שכל המס נוכה לו במקור ותמורת המכירות שלו נמוכה מ{ceiling ? <Num value={ceiling} /> : null} בשנה אינו חייב בדוח רק בגלל החשבון.
-        </p>
+        </Sentence>
         <p className="max-w-measure">
           אצל ברוקר זר לא מנוכה מס בישראל: מדווחים ומשלמים מקדמה פעמיים בשנה, ומגישים דוח שנתי. דיבידנד מחברה אמריקאית חייב גם מס בארצות הברית, שמתקזז מהמס בישראל אם מסרתם לברוקר טופס W-8BEN.
         </p>

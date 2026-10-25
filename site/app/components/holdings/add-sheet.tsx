@@ -7,8 +7,7 @@ import type { WrapperId } from "@finance-tool/schema";
 import { r3holdings as copy } from "../../copy";
 import { IconSearch } from "../icons";
 import { Sheet } from "../Sheet";
-import { NumberField, flushPendingFields } from "../timeline/fields";
-import { Button, SegmentedControl, cx } from "../ui";
+import { Button, cx, flushPendingFields, NumberField, SegmentedControl, Sentence } from "../kit";
 import { Num, RuleRef } from "../provenance";
 import { feeYear, type SiteValue } from "../../lib/value";
 import { IconCopy } from "../icons";
@@ -71,16 +70,16 @@ export function AddHoldingSheet({ open, onClose, hb, rules, value, onSave }: { o
 function PrefillLine({ lead, value, note }: { lead: string; value: SiteValue; note: string }) {
   const year = feeYear(value);
   return (
-    <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5">
-      <span>{lead}</span>
-      <Num value={value} />
+    <Sentence size="sm" tone="muted">
+      {lead} <Num value={value} />
       {year && (
-        <span>
+        <>
+          {" "}
           {copy.feePrefill.year} <bdi dir="ltr">{year}</bdi>.
-        </span>
-      )}
-      <span>{note}</span>
-    </p>
+        </>
+      )}{" "}
+      {note}
+    </Sentence>
   );
 }
 

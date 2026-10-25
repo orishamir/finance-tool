@@ -13,11 +13,10 @@ import { p05Number, p05Value, type Bundle } from "../../lib/engine";
 import { useGoals } from "../../lib/goal";
 import { useInputs } from "../../lib/inputs";
 import { entered as enteredValue, type SiteValue } from "../../lib/value";
-import { NumberField, SliderField } from "../timeline/fields";
+import { Callout, NumberField, RangeField, Sentence, Stat, StatRow } from "../kit";
 import { Num, RulesLine, Term } from "../provenance";
-import { Callout } from "../ui";
 import { G2Gap } from "./g2-parts";
-import { FigureRow, figure, inputSite, rulesOfBundle, useSigInputs, yearsRange, type VisualProps } from "./kit";
+import { figure, inputSite, rulesOfBundle, useSigInputs, yearsRange, type VisualProps } from "./kit";
 
 export function PensionVisual(props: VisualProps) {
   const bundle = props.data.bundles[props.data.id];
@@ -127,7 +126,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
             hint={copy.pension.insuranceHint}
           />
         )}
-        <SliderField
+        <RangeField
           label={copy.common.years}
           unit="years"
           value={years}
@@ -174,22 +173,22 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
         </div>
       </div>
 
-      <dl className="grid gap-4 sm:grid-cols-2">
-        <FigureRow label={copy.pension.figures.net}>
+      <StatRow cols={2}>
+        <Stat label={copy.pension.figures.net}>
           <Num value={v.net} />
-        </FigureRow>
+        </Stat>
         {hasInsurance && (
-          <FigureRow label={copy.pension.figures.insurance}>{v.insurance ? <Num value={v.insurance} /> : <span className="text-base font-normal text-muted-foreground">{copy.pension.insuranceNeeded}</span>}</FigureRow>
+          <Stat label={copy.pension.figures.insurance}>{v.insurance ? <Num value={v.insurance} /> : <span className="text-base font-normal text-muted-foreground">{copy.pension.insuranceNeeded}</span>}</Stat>
         )}
         {v.depositFee && (
-          <FigureRow label={copy.pension.figures.depositFee}>
+          <Stat label={copy.pension.figures.depositFee}>
             <Num value={v.depositFee} />
-          </FigureRow>
+          </Stat>
         )}
-        <FigureRow label={`${copy.pension.figures.balance} ${fmt.years(years)}`} tone="value">
+        <Stat label={`${copy.pension.figures.balance} ${fmt.years(years)}`} tone="value">
           {v.balance ? <Num value={v.balance} /> : <span className="text-base font-normal text-muted-foreground">{copy.pension.balanceGap[model.balanceGap ?? "no-run"]}</span>}
-        </FigureRow>
-      </dl>
+        </Stat>
+      </StatRow>
       <G2Gap id="annuityFactors" />
 
       <div className="flex flex-col gap-2 text-sm max-w-measure">
@@ -211,7 +210,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
         )}
         {hasInsurance ? <p className="text-muted-foreground">{copy.pension.insuranceNote}</p> : <p className="text-muted-foreground">{copy.pension.noInsurance}</p>}
         {trackName && trackFee ? (
-          <p className="text-muted-foreground">
+          <Sentence tone="muted">
             {copy.pension.feesLine.before} ״<bdi>{String(trackName.value)}</bdi>״: <Num value={trackFee} /> {copy.pension.feesLine.balance}
             {depositFee ? (
               <>
@@ -220,18 +219,18 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
               </>
             ) : null}
             .{hasInsurance ? ` ${copy.pension.feesLine.after}` : ""}
-          </p>
+          </Sentence>
         ) : (
           <G2Gap id="pensionTrack" />
         )}
         {hasInsurance && earlyAge && (
-          <p className="text-muted-foreground">
+          <Sentence tone="muted">
             {copy.pension.none.before} <Num value={earlyAge} display={String(earlyAge.value)} />.
-          </p>
+          </Sentence>
         )}
-        <p className="text-muted-foreground">
+        <Sentence tone="muted">
           {copy.hishtalmut.assumption.before} {returnPct && <Num value={returnPct} />} {copy.hishtalmut.assumption.middle} {inflationPct && <Num value={inflationPct} />} {copy.hishtalmut.assumption.after} {copy.pension.todayMoney}
-        </p>
+        </Sentence>
       </div>
       <RulesLine ids={[...data.ruleIds, ...model.rules.filter((r) => /^(PEN|TXP)-/.test(r))].filter((r, i, a) => a.indexOf(r) === i)} />
     </div>

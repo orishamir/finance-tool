@@ -9,7 +9,7 @@ import { FeeNum } from "./fees";
 import { IconAlert, IconDrillIn, IconSearch } from "../icons";
 import { useOpenSearch } from "../shell";
 import { RowFit } from "../compare/fit";
-import { Card, cx, Tag } from "../ui";
+import { Card, cx, Tag } from "../kit";
 
 export type Resolution = "distinct" | "twice" | "unresolved";
 

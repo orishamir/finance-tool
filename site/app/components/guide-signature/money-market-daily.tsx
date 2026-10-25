@@ -7,7 +7,7 @@ import { guideSignature as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { bestWithin, ladderRows, speedOrder, type Speed } from "../../lib/guide-signature";
 import { Num, RulesLine } from "../provenance";
-import { SegmentedControl, Tag, cx } from "../ui";
+import { cx, SegmentedControl, Sentence, Tag } from "../kit";
 import { Gap, type VisualProps } from "./kit";
 
 export function MoneyMarketDailyVisual({ data }: VisualProps) {
@@ -56,13 +56,13 @@ export function MoneyMarketDailyVisual({ data }: VisualProps) {
                 )}
               </div>
               {r.banks && (
-                <p className="text-sm text-muted-foreground">
+                <Sentence size="sm" tone="muted">
                   <Num value={r.banks.count} /> {copy.ladder.common.of} <Num value={r.banks.of} /> {copy.ladder.common.after}
-                </p>
+                </Sentence>
               )}
               {r.top && (
                 // the best a bank pays, with its conditions: a few banks pay up to this, on a small balance only
-                <p className="text-sm text-muted-foreground">
+                <Sentence size="sm" tone="muted">
                   {copy.ladder.top.before} <Num value={r.top.rate} /> (<bdi>{r.top.name}</bdi>),{" "}
                   {r.top.ceiling ? (
                     <>
@@ -71,7 +71,7 @@ export function MoneyMarketDailyVisual({ data }: VisualProps) {
                   ) : (
                     <>{copy.ladder.top.conditionsNoCeiling}.</>
                   )}
-                </p>
+                </Sentence>
               )}
             </li>
           );
@@ -79,9 +79,9 @@ export function MoneyMarketDailyVisual({ data }: VisualProps) {
       </ol>
 
       {best && (
-        <p className="max-w-measure">
+        <Sentence measure>
           {copy.ladder.best.before} <span className="font-medium">{copy.ladder.rows[best.id]}</span>, <Num value={best.rate} /> {copy.ladder.best.middle}.
-        </p>
+        </Sentence>
       )}
       <p className="text-sm text-muted-foreground max-w-measure">
         {copy.ladder.foot} {copy.ladder.depositFoot}

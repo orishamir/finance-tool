@@ -6,6 +6,7 @@ Amended 2026-10-24 after the overnight user audit; see research/audit/2026-10-24
 > Release 3 section added 2026-10-23: section 7, components for release 3.
 > Release 4 section added 2026-10-24: section 8, components for release 4.
 > Release 5 section added 2026-10-24: section 9, components for release 5.
+> Kit section added 2026-10-25: section 11, the shared component kit (`site/app/components/kit/`); the primitives in 3.9 live there now.
 
 Written 2026-10-22 by the product designer from `docs/product.md` (D1 to D13, section 3), `docs/roadmap.md` (release 1), `docs/architecture.md` (K7, K8, K12, 3.5, 3.9, gap 8.6), `docs/method.md` and `docs/data-schema.md`.
 Status: **look approved by the founder on 2026-10-23**; the label wording and the site name were settled on 2026-10-23 (section 5). The tokens are live in `site/app/theme.css`. Mockups (architecture 3.9) of the guide page and the company page at phone and PC widths (the company page was redrawn on 2026-10-23 as one list, in the same look, after the app-mirroring view was removed, product.md appendix E), built from what is defined here: https://claude.ai/artifact/T2WWNHiNhqXxSkmssTFbCS (2026-10-23; the founder approved the look the same day). No page is built before its mockup is approved.
@@ -403,6 +404,8 @@ Amended 2026-10-24 (knowledge layer, D25). Called for by flows 6.9, 6.14 and 6.1
 - **Icons.** `ExternalLink` for every link that leaves the site (new in 2.8's list); the `PDF` mark is a text tag, not an icon.
 
 ### 3.9 Shared primitives
+
+**Amended 2026-10-25.** The primitives below, and everything built since from the same patterns, are the kit of section 11 (`site/app/components/kit/`); `ui.tsx` re-exports the primitives for `provenance.tsx` only. Read section 11 before building a component.
 
 | Component | Spec |
 |---|---|
@@ -826,7 +829,35 @@ Built from `research/specs/2026-10-25-guide-signatures/spec.md`; components in `
 
 - **The section "מה מייחד את …"** sits after "למה משתמשים בזה": the page's one question, the visual in a card, one line naming the nearest alternative on the same holding (links to its guide page and to the goal comparison), and the old illustrative timeline folded below as "שחקו עם המספרים שלכם". A page without a visual keeps its timeline open in "מה זה".
 - **Colour.** New role `chart-alt` (gold-200): the nearest alternative's line or bar, against the product's teal `chart-value`. The pair is the one the cumulative-cost chart already uses for fee lines 2 and 3 (6.x), so it passed the same check; validate it again against the card with the dataviz validator when a page draws both on a fill. The starting amount is a dashed neutral line. A gap between two lines may be filled at 22% opacity only with its number written on it (spec rule 4).
-- **Draggable marker** (`Marker` in `kit.tsx`): a native range input laid over the plot, so it drags, takes a tap on the axis, and answers the arrow keys, Page Up/Down, Home and End; 44 px tall touch area.
+- **Draggable marker** (`Marker` in the shared kit, section 11): a native range input laid over the plot, so it drags, takes a tap on the axis, and answers the arrow keys, Page Up/Down, Home and End; 44 px tall touch area.
 - **A difference is a bracket** (`GainBars`): two bars from the same start and a bracket between their ends carrying the difference, never a third bar (spec rule 6).
 - **Where the inputs come from** is printed under the controls: "הזנתם", "מהמטרה השמורה" or "דוגמה של האתר".
 - **Pension deposit bar** (pension pages): one bar of the monthly deposit in three clearly different hues, each with its number above it: the person's part teal (`chart-value`), the employer's gold (`chart-alt`), severance magenta (`chart-fee-4`, borrowed from the fee-kind palette); a bracket under the person's part carries the tax credit. The study fund and the provident fund draw the container teal and the brokerage account gold. Validate the teal, gold and magenta trio with the dataviz validator against the card.
+
+## 11. Kit (the shared components, 2026-10-25)
+
+The founder, 2026-10-25, after two layout bugs in a day (a sentence with a number laid out as a flex column, one piece to a line; a closed fold inside an open fold that read as open): "custom components so we have consistent UI and an easier and faster time programming, like the equivalent of a class, but for UI components". The kit is `site/app/components/kit/`, one file per component or small family, re-exported from `kit/index.ts`. Import from `components/kit`, never from a neighbouring feature. The gallery at `/kit` (pre-rendered, `noindex`, in no menu and no search; every number on it is a labelled example) shows each component in its states, right to left, with its name beside it, and is the place to review the look. The survey that found the duplicates is `research/specs/2026-10-25-ui-kit/survey.md`.
+
+**The rule.** A pattern that appears a second time goes into the kit first, then the feature uses it. A component takes the *choices* as props (`pad`, `size`, `tone`, `scroll`) and never as an overriding class: the site has no class merger, so two classes for one property are decided by the order of the generated stylesheet, not by the order in `class` (the `p-0 md:p-0` on the guide's key/value card never applied for that reason). No new look is made in the kit: each component is the best existing version.
+
+| Component | When to use it |
+|---|---|
+| `Button`, `LinkButton` | `Button` for an action (`primary` once per screen, `quiet` for a text action, `destructive` for a quiet one that deletes, `icon` for a 44 px icon), `LinkButton` for a place to go. |
+| `Tag` | A one-to-three-word label with a tone (state, kind, flag). Never colour alone: give it a word or an icon. |
+| `Callout` | A boxed note under a result: `caution`, `blocked` or `info`. |
+| `Card` (`pad`) | The one raised surface: a card, a list row (`as="li"`), a side panel (`as="aside"`). `pad`: `default` p-4 md:p-6, `snug` p-4 md:p-5, `roomy` p-5 lg:p-6, `aside` p-5, `tight` p-4, `none`. No page writes `bg-card border border-border rounded-lg` itself. |
+| `Section` | A heading (`level`: `page`, `card`, `form`) with an optional lead and an action at the end of its row, then the body; `id` makes it an anchor with the scroll margin. |
+| `Disclosure` | Anything the reader may open. The label and the chevron follow the fold's own state, kept in React: never `group-open:` (it matches any open ancestor). Options: `openLabel`, `defaultOpen`, controlled `open` + `onOpenChange`, `spread` (chevron at the far end), `size="field"`, `as="h3"` (the label is a heading), `plain` (a footnote fold with the native marker), `detailsRef`, `id`. |
+| `FoldGroup`, `CoverageFold` | A coverage card: a lead sentence of counts, a show/hide line with a chevron, the list under a rule; inside it a group header with its count (heading level 3 or 4). Every option is accounted for once. |
+| `SegmentedControl`, `ChoiceChips` | Two to four equal short options, one always chosen; four or more or longer labels as chips (`wrap` to break lines on a phone). |
+| `Sentence` (and `Tpl`) | Text with numbers or links in it, as pieces (`before <Num/> after`) or a copy string with `{name}` places. Inline only: it has no layout prop. Never give a `<p>` or a `<span>` that holds a `Num` a `flex` or `grid` class; if an icon, a tag or a button must sit beside a sentence, make a `div` the row and put the `Sentence` in it. |
+| `Stat`, `StatRow` | A figure with its name above and a note under it, two to four side by side (`cols` 2, 3 or 4; four go two by two on a phone); `tone` adds the swatch of the bar or line it names. |
+| `KeyValue`, `KeyValueList`, `HeadlineFigure` | A label at the start and its value at the end (a fee line); facts as cards (a list on a phone, 2 by 2 from `lg`); the big computed figure with its state tag and one caption line. |
+| `NumberField`, `RangeField`, `PercentField` | A typed number (unit, hint, error, state line, 150 ms pause); a number with its slider; a percent (yearly rate unless `unit` says otherwise, standard range sentence, `range` for the bounds). |
+| `Marker` (`MarkerMark`), `GainBars` | A draggable marker on a chart's axis (the invisible slider and the drawn mark); two bars from one start with the difference as a bracket, never a third bar. |
+| `ChartLegend` (`Swatch`), `ChartReadout`, `ChartTable` | The three parts around every chart: what each mark means (shapes `line`, `box`, `entered-line`, `rule`), the values at the hovered year, the same numbers as a table behind a fold (`scroll` `cue` or `bleed`, `compact`). |
+| `SourceLine`, `GapNote`, `RankBadge` | Where a starting value came from; "עוד לא חושב" with its reason; the rank (or step number) in a circle, first place filled. |
+
+**Guards** (`kit/guards.test.ts`, run by `npx vitest run site`): no `<details>` outside the kit (`provenance.tsx`'s two footnote folds are on a visible allow-list until that file is next opened); no `group-open:` anywhere; no `<p>`, and no `<span>` with words of its own, that holds a `Num` is a flex or grid container (a scan of the source by `lib/jsx-scan.ts`); the gallery stays out of the menu and the search and keeps its `noindex`.
+
+**Where the kit stops.** Chart drawings (the SVG plots), the provenance component and its sheet, the shell, and rows that are one feature's own anatomy (a ranked row, a holding card) are not in the kit; they are built from it. A feature's own helper that only looks up its copy (the guide visuals' `SourceLine` and `Gap` wrappers) stays with the feature and renders the kit's component.

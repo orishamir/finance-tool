@@ -5,7 +5,7 @@ import { r4catalogue as copy } from "../../../copy";
 import { fmt } from "../../../lib/format";
 import { IconAlert, IconDrillIn } from "../../icons";
 import { LeadTail, Num, RuleRef, RulesLine } from "../../provenance";
-import { Card, Disclosure, Tag } from "../../ui";
+import { Card, Disclosure, Tag } from "../../kit";
 import type { ProductRowData } from "./types";
 
 function Chips({ ids, known }: { ids: readonly string[]; known: ReadonlySet<string> }) {

@@ -7,10 +7,9 @@ import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact, factNumber, planModel } from "../../lib/guide-signature";
 import { entered as enteredValue } from "../../lib/value";
-import { NumberField } from "../timeline/fields";
+import { Callout, ChartLegend, Marker, MarkerMark, NumberField, SegmentedControl, Stat, StatRow, Swatch, useWidth } from "../kit";
 import { Num, RulesLine } from "../provenance";
-import { Callout, SegmentedControl } from "../ui";
-import { FigureRow, Marker, MarkerMark, SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, useWidth, type VisualProps } from "./kit";
+import { SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
 
 const TOP = 22;
 const AXIS = 24;
@@ -79,11 +78,13 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
         </Callout>
       )}
 
-      <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label="מקרא">
-        <li className="flex items-center gap-1.5"><span className="size-2.5 rounded-sm bg-chart-value" /> {copy.plan.legend.free}</li>
-        <li className="flex items-center gap-1.5"><span className="size-2.5 rounded-sm bg-muted border border-chart-marker" /> {copy.plan.legend.locked}</li>
-        <li className="flex items-center gap-1.5"><span className="size-2.5 rounded-sm border border-chart-axis" /> {copy.plan.legend.notYet}</li>
-      </ul>
+      <ChartLegend
+        items={[
+          { id: "free", swatch: <Swatch shape="box" className="bg-chart-value" />, label: copy.plan.legend.free },
+          { id: "locked", swatch: <Swatch shape="box" className="bg-muted border border-chart-marker" />, label: copy.plan.legend.locked },
+          { id: "notYet", swatch: <Swatch shape="box" className="border border-chart-axis" />, label: copy.plan.legend.notYet },
+        ]}
+      />
 
       <div className="flex flex-col gap-2">
         <span className="text-sm font-medium">{copy.plan.marker}</span>
@@ -132,11 +133,11 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
         <p className="text-sm font-medium">
           {copy.plan.at.before} <bdi dir="ltr">{m}</bdi> {copy.plan.at.after}:
         </p>
-        <dl className="grid gap-4 sm:grid-cols-3">
-          <FigureRow label={copy.plan.figures.free} tone="value">{free && <Num value={free} />}</FigureRow>
-          <FigureRow label={copy.plan.figures.locked}>{locked && <Num value={locked} />}</FigureRow>
-          <FigureRow label={copy.plan.figures.last}>{lastUnlock && <Num value={lastUnlock} />}</FigureRow>
-        </dl>
+        <StatRow cols={3}>
+          <Stat label={copy.plan.figures.free} tone="value">{free && <Num value={free} />}</Stat>
+          <Stat label={copy.plan.figures.locked}>{locked && <Num value={locked} />}</Stat>
+          <Stat label={copy.plan.figures.last}>{lastUnlock && <Num value={lastUnlock} />}</Stat>
+        </StatRow>
       </div>
 
       <div className="flex flex-col gap-2 text-sm max-w-measure">

@@ -15,8 +15,7 @@ import type { ValueObject } from "@finance-tool/schema";
 import { GoalNumber } from "../compare/fields";
 import { IconAlert, IconClock, IconExternal, IconFile, IconInfo, IconPencil } from "../icons";
 import { Num, StateTag, startsAfter, useToday } from "../provenance";
-import { NumberField } from "../timeline/fields";
-import { Button, Tag, cx } from "../ui";
+import { Button, cx, NumberField, Tag } from "../kit";
 import { Tpl } from "./tpl";
 
 const pct100 = (n: number) => (n < 0 || n > 100 ? `${r2.form.errPercentBefore}100.` : null);
@@ -104,14 +103,14 @@ export function CashRateLine({ row, onChange, cashLink, range }: { row: Exposure
   if (row.published && !overriding && !open) {
     return (
       <div className="flex flex-col gap-1.5 text-sm">
-        <span className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap">
           <Num value={row.published.rate} />
           <Tag tone="neutral" icon={<IconFile size={14} />}>
             {f.institution}
           </Tag>
           {row.published.stale && <IconClock size={16} className="text-caution" />}
           {note}
-        </span>
+        </div>
         <span className="text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
           <Tpl t={f.cashPublished} vars={{ date: <bdi dir="ltr">{row.published.effectiveFrom ? fmt.date(row.published.effectiveFrom) : ""}</bdi> }} />
           {row.published.effectiveFrom && startsAfter(row.published.rate, today) && (

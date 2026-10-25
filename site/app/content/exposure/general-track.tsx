@@ -2,6 +2,7 @@
 // block ends with the rules it rests on. NEW copy for the founder to review.
 import type { ExposureContent } from "../guide/types";
 import { Num, RulesLine, Term } from "../../components/provenance";
+import { Sentence } from "../../components/kit";
 
 const OQ = ({ id }: { id: string }) => (
   <bdi dir="ltr" className="whitespace-nowrap">
@@ -17,9 +18,9 @@ export const content: ExposureContent = {
         <p className="max-w-measure">
           הכסף מושקע בתמהיל של נכסים מסוגים שונים, מניות, איגרות חוב, פיקדונות ונכסים לא סחירים, בארץ ובחו"ל, לפי שיקול דעת ועדת ההשקעות של החברה המנהלת. בחוזר רשות שוק ההון <Term id="מסלול כללי">מסלול כללי</Term> הוא מסלול שאינו מתמחה, אינו <Term id="מסלול ברירת מחדל">ברירת מחדל</Term> ואינו מסלול למקבלי קצבה; השם מחייב רק את המדיניות התקנונית, והתמהיל בפועל יכול להשתנות בלי שהשם ישתנה.
         </p>
-        <p className="max-w-measure">
+        <Sentence measure>
           בקופת גמל להשקעה ובקרן השתלמות החברה רשאית לנהל מסלול כללי לצד המסלולים המתמחים, ובקרן השתלמות הוא אחת משתי האפשרויות לברירת מחדל. מעבר ממנו למסלול אחר באותה קופה נעשה תוך {days ? <Num value={days} /> : null} ימי עסקים, בלי עמלה ובלי מס.
-        </p>
+        </Sentence>
         <RulesLine ids={["CAT-17", "CAT-15", "CAT-23", "CAT-24", "CAT-18", "PF-23", "PF-24", "TXK-04"]} />
       </>
     );
@@ -28,9 +29,9 @@ export const content: ExposureContent = {
     const age = figure("CAT-19", "age_band_1");
     return (
       <>
-        <p className="max-w-measure">
+        <Sentence measure>
           מחזיקים אותו רק דרך קופה שחברה מנהלת מנהלת: קופת גמל להשקעה או קרן השתלמות. בקרנות פנסיה ובקופות גמל לקצבה המסלול הכללי סגור למצטרפים חדשים, שנכנסים למסלול לפי גיל, עד {age ? <Num value={age} /> : null} וכן הלאה; מי שכבר היה בו יכול להישאר. אי אפשר לקנות "מסלול כללי" בחשבון ניירות ערך.
-        </p>
+        </Sentence>
         <RulesLine ids={["CAT-18", "CAT-19", "CAT-10"]} />
       </>
     );

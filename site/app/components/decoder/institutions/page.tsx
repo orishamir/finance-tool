@@ -7,7 +7,7 @@ import { fmt } from "../../../lib/format";
 import { IconAlert, IconDrillIn, IconExternal } from "../../icons";
 import { LeadTail, NumAfter, NumberLegend } from "../../provenance";
 import { Breadcrumb, PageShell } from "../../shell";
-import { Button, Callout, Card, Disclosure } from "../../ui";
+import { Button, Callout, Card, Disclosure } from "../../kit";
 import { PasteCard } from "../tracks";
 import { BrokerageGroupCard } from "./brokerage-card";
 import { BankProductRow } from "./product-row";

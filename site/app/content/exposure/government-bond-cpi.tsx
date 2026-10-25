@@ -2,6 +2,7 @@
 // BRK, CAT, IRA); each block ends with the rules it rests on. NEW copy for the founder to review.
 import type { ExposureContent } from "../guide/types";
 import { Num, RulesLine, Term } from "../../components/provenance";
+import { Sentence } from "../../components/kit";
 
 const OQ = ({ id }: { id: string }) => (
   <bdi dir="ltr" className="whitespace-nowrap">
@@ -16,12 +17,12 @@ export const content: ExposureContent = {
     const rate = figure("TXI-14", "rate");
     return (
       <>
-        <p className="max-w-measure">
+        <Sentence measure>
           הכסף מולווה למדינה בשקלים, לשנה לפחות, כשהקרן והריבית <Term id="צמוד למדד המחירים לצרכן">צמודות למדד המחירים לצרכן</Term>: <Term id="אג&quot;ח ממשלתית צמודה">איגרת חוב ממשלתית צמודה</Term> נמכרת ביחידות של {face ? <Num value={face} /> : null} <Term id="שווי נקוב">שווי נקוב</Term>, משלמת <Term id="קופון">קופון</Term> קבוע פעם ב{every ? <Num value={every} /> : null} חודשים, ובסוף התקופה מחזירה את הקרן בתשלום אחד, מוגדלת או מוקטנת לפי השינוי במדד מאז <Term id="מדד הבסיס">מדד הבסיס</Term>.
-        </p>
-        <p className="max-w-measure">
+        </Sentence>
+        <Sentence measure>
           מי שמחזיק עד הפדיון שומר על כוח הקנייה של הכסף ועוד הריבית הריאלית. <Term prefix="ה" id="הפרשי הצמדה">הצמדה</Term> פטורה ממס; על הריבית שמעליה משלמים עד {rate ? <Num value={rate} /> : null}, והמס מנוכה בתשלום הקופון. את הקופון מקבל מי שרשום כמחזיק <Term prefix="ב" id="מועד קובע לזכאות">מועד הקובע</Term>; מי שקונה אחריו מפסיד את הקופון הקרוב.
-        </p>
+        </Sentence>
         <RulesLine ids={["GOV-02", "GOV-08", "GOV-11", "GOV-12", "TXI-02", "TXI-05", "TXI-09", "TXI-14"]} />
       </>
     );
@@ -38,9 +39,9 @@ export const content: ExposureContent = {
     const saleRate = figure("TXS-01", "rate");
     return (
       <>
-        <p className="max-w-measure">
+        <Sentence measure>
           מי שמוכר לפני הפדיון מקבל את מחיר השוק של אותו יום, שיורד כשהריבית הריאלית במשק עולה, ויותר ככל שנותרו יותר שנים; הרווח ממכירה הוא <Term id="רווח הון ריאלי">רווח הון ריאלי</Term> במס של עד {saleRate ? <Num value={saleRate} /> : null}, אחרי הפחתת החלק שנבע מעליית המדד. כשהמדד יורד, התקנות מקטינות את הקרן ואת הקופון, בלי רצפה; הריבית עדיין ממוסה במלואה, וההפסד מההצמדה השלילית אינו מתקזז.
-        </p>
+        </Sentence>
         <p className="max-w-measure">
           מה לא מתועד עדיין: האם לסדרה מסוימת יש רצפה בירידת מדד (<OQ id="GOV OQ6" />); איך מטפלים במס בירידת מדד במכירה (<OQ id="TXS OQ15" />); ואיך הבנק מטפל בריבית הצבורה כשקונים בין מועדי קופון (<OQ id="TXI OQ5" />).
         </p>

@@ -8,10 +8,9 @@ import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact, makamModel } from "../../lib/guide-signature";
 import { entered as enteredValue } from "../../lib/value";
-import { NumberField } from "../timeline/fields";
+import { Callout, Marker, MarkerMark, NumberField, Sentence, Stat, StatRow, useWidth } from "../kit";
 import { Num, RuleRef, RulesLine } from "../provenance";
-import { Callout } from "../ui";
-import { FigureRow, Marker, MarkerMark, SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, useWidth, type VisualProps } from "./kit";
+import { SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
 
 const HEIGHT = 230;
 const TOP = 24;
@@ -111,14 +110,14 @@ export function MakamVisual({ data, today }: VisualProps) {
           <p className="text-sm font-medium">
             {m >= term ? copy.makam.atRedemption : `${copy.makam.atSale} ${fmt.months(m)}`}:
           </p>
-          <dl className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            <FigureRow label={copy.makam.figures.price}>
+          <StatRow cols={4}>
+            <Stat label={copy.makam.figures.price}>
               <Num value={v.price} />
-            </FigureRow>
-            <FigureRow label={copy.makam.figures.gain} tone="value">
+            </Stat>
+            <Stat label={copy.makam.figures.gain} tone="value">
               <Num value={v.gain} />
-            </FigureRow>
-            <FigureRow
+            </Stat>
+            <Stat
               label={
                 <>
                   {model.atRedemption ? copy.makam.taxRedeem : copy.makam.taxSale}
@@ -134,15 +133,15 @@ export function MakamVisual({ data, today }: VisualProps) {
               }
             >
               <Num value={v.tax} />
-            </FigureRow>
-            <FigureRow label={copy.makam.figures.net}>
+            </Stat>
+            <Stat label={copy.makam.figures.net}>
               <Num value={v.net} />
-            </FigureRow>
-          </dl>
+            </Stat>
+          </StatRow>
           {model.fees > 0 && (
-            <p className="text-sm text-muted-foreground">
+            <Sentence size="sm" tone="muted">
               {copy.makam.figures.fees}: <Num value={v.fees} />, {copy.makam.feesWhose}
-            </p>
+            </Sentence>
           )}
           {model.blocked && (
             <Callout tone="blocked">

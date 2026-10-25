@@ -5,7 +5,7 @@ import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } f
 import { createPortal } from "react-dom";
 import { r2 } from "../../copy";
 import { isBlank, useGoals, type Goal } from "../../lib/goal";
-import { Button, cx } from "../ui";
+import { Button, cx } from "../kit";
 import { goalTitle } from "./goal-form";
 import { IconEdit, IconGrip, IconPlus, IconTrash } from "./icons";
 

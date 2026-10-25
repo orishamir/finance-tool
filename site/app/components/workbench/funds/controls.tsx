@@ -7,8 +7,7 @@ import type { FundAssumptions, WorkbenchInputs } from "../../../lib/providers";
 import { DISTRIBUTION_PAYMENTS, type FundVariantsView, type SortKey } from "../../../lib/variants";
 import { IconReset, IconSearch } from "../../icons";
 import { Num, RuleRef } from "../../provenance";
-import { NumberField, ParameterLine } from "../../timeline/fields";
-import { Button, SegmentedControl, cx } from "../../ui";
+import { Button, cx, NumberField, ParameterLine, SegmentedControl } from "../../kit";
 
 export function VariantControls({ filter, sort, onFilter, onSort, enteredReturn }: { filter: string; sort: SortKey; onFilter: (v: string) => void; onSort: (s: SortKey) => void; enteredReturn: boolean }) {
   const t = c.funds;

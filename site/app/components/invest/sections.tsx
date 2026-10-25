@@ -5,7 +5,7 @@ import type { Bar, InvestView, OptionView, ProviderInfo } from "../../lib/invest
 import { optionLabels } from "../../lib/labels";
 import { IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Callout, Tag, cx } from "../ui";
+import { Callout, Card, cx, Tag } from "../kit";
 import { LabelRow } from "./parts";
 
 export const providerName = (view: InvestView, id: string): ProviderInfo | undefined => view.providers.find((p) => p.id === id);
@@ -62,7 +62,7 @@ export function Headline({ view }: { view: InvestView }) {
   const g = view.genericHeadline;
   const gp = g ? providerName(view, g.cell.providerId) : undefined;
   return (
-    <section className="bg-card border border-border rounded-lg p-5 lg:p-6 flex flex-col gap-3" aria-labelledby="invest-headline">
+    <Card as="section" pad="roomy" className="flex flex-col gap-3" aria-labelledby="invest-headline">
       <h2 id="invest-headline" className="text-lg font-semibold">
         {c.headline.title}
       </h2>
@@ -104,7 +104,7 @@ export function Headline({ view }: { view: InvestView }) {
       ) : (
         <p className="text-muted-foreground">{c.headline.noWay}</p>
       )}
-    </section>
+    </Card>
   );
 }
 
@@ -113,21 +113,19 @@ function AtYours({ view }: { view: InvestView }) {
   const p = providerName(view, y.providerId);
   if (!p) return null;
   return (
-    <p className="text-sm flex flex-wrap items-baseline gap-x-2 border-t border-border pt-3">
+    <p className="text-sm border-t border-border pt-3">
       {y.price && y.less ? (
         y.less.value !== null && (y.less.value as number) > 0.5 ? (
           <>
-            <span>{c.headline.yours(p.name)}:</span>
-            <Num value={y.less} />
-            <span>{c.headline.yoursLess}</span>
+            {c.headline.yours(p.name)}: <Num value={y.less} /> {c.headline.yoursLess}
           </>
         ) : (
-          <span>
+          <>
             {c.headline.yours(p.name)}: {c.headline.yoursSame}
-          </span>
+          </>
         )
       ) : (
-        <span>{c.headline.yoursCannot(p.name)}</span>
+        c.headline.yoursCannot(p.name)
       )}
     </p>
   );

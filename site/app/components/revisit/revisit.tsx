@@ -10,7 +10,7 @@ import { todayLocal } from "../../lib/today";
 import { Sheet } from "../Sheet";
 import { IconAlert, IconCheck, IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, Callout, Disclosure, Tag, cx } from "../ui";
+import { Button, Callout, cx, Disclosure, Tag } from "../kit";
 import { Tpl } from "../exposure-mode/tpl";
 
 const date = (iso: string) => <bdi dir="ltr">{fmt.date(iso)}</bdi>;

@@ -7,7 +7,7 @@ import { fxLabel, nisPer, type FxSnapshot } from "../../lib/fx";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { IconClose } from "../icons";
 import { Num } from "../provenance";
-import { Button, SegmentedControl, Tag, cx } from "../ui";
+import { Button, Card, cx, SegmentedControl, Sentence, Tag } from "../kit";
 
 const chip = "inline-flex items-center gap-1 min-h-target lg:min-h-10 px-3.5 rounded-full border text-sm";
 
@@ -76,7 +76,7 @@ function CustomPanel({ bundle, customs, onCancel, onSave, onKnown }: { bundle: P
     onSave(idx);
   };
   return (
-    <div className="bg-card border border-border rounded-lg p-4 flex flex-col gap-3 max-w-measure" role="group" aria-label={c.custom.heading}>
+    <Card pad="tight" className="flex flex-col gap-3 max-w-measure" role="group" aria-label={c.custom.heading}>
       <label htmlFor={`${id}-n`} className="text-sm font-medium">
         {c.custom.field}
       </label>
@@ -120,7 +120,7 @@ function CustomPanel({ bundle, customs, onCancel, onSave, onKnown }: { bundle: P
           </div>
         </div>
       )}
-    </div>
+    </Card>
   );
 }
 
@@ -163,17 +163,15 @@ export function PlanChips({ plan, fx, today, brokers, yourBroker, onBroker, hasG
           {c.plan.change}
         </Link>
       </p>
-      <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2">
+      <Sentence size="sm" tone="muted">
         {usd ? (
           <>
-            <span>{c.plan.dollar}</span>
-            <Num value={usd} exact />
-            <span>· {fxLabel(fx!)}</span>
+            {c.plan.dollar} <Num value={usd} exact /> · {fxLabel(fx!)}
           </>
         ) : (
           <Tag tone="caution">{c.plan.dollarMissing}</Tag>
         )}
-      </p>
+      </Sentence>
       <div className="flex flex-col gap-1 max-w-measure">
         <label htmlFor={`${id}-b`} className="text-sm font-medium">
           {c.plan.yourAccount}

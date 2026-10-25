@@ -36,7 +36,7 @@ import { computed } from "../../lib/value";
 import { IconAlert, IconCopy } from "../icons";
 import { IconDownload, IconFileUp, IconShare } from "../holdings/icons";
 import { LeadTail, Num } from "../provenance";
-import { Button, Callout, Card, SegmentedControl, cx } from "../ui";
+import { Button, Callout, Card, cx, SegmentedControl, Sentence } from "../kit";
 
 type Site = { version: string; data: string };
 
@@ -380,13 +380,13 @@ function ImportHalf() {
             </p>
           )}
           {done.skipped > 0 && (
-            <p className="text-sm text-muted-foreground">
+            <Sentence size="sm" tone="muted">
               {done.skipped === 1 ? copy.duplicatesForms.one : done.skipped === 2 ? copy.duplicatesForms.two : (
                 <>
                   <Num value={count(done.skipped, copy.duplicates)} /> {copy.duplicates}
                 </>
               )}
-            </p>
+            </Sentence>
           )}
           {done.sideFailed && <p className="text-sm text-caution-foreground">{copy.sideFailed}</p>}
           {done.goalId && snap.state.currentId !== done.goalId && !switched && (

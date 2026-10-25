@@ -5,7 +5,7 @@ import { r3workbench as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import type { SortDir, SortKey } from "../../lib/workbench";
 import { IconChevronDown, IconSearch } from "../icons";
-import { cx } from "../ui";
+import { cx } from "../kit";
 
 /** Chips filter: a press shows that group alone; "הכול" shows every group; the pressed chip again returns to the default. */
 export function ExposureChips({ groups, open, onPress, onAll }: { groups: { key: string; label: string; count: number }[]; open: Set<string>; onPress: (key: string) => void; onAll: () => void }) {

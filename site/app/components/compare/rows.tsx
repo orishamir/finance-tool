@@ -2,15 +2,14 @@
 // the part kept available, outcome tags, and the row animation when the order changes.
 import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router";
-import { ownTermsCopy, r2, r3fees, scnCompare, values as valuesCopy } from "../../copy";
+import { ownTermsCopy, r2, r3fees, scnCompare } from "../../copy";
 import { addMonths, decidingFormulaOf, depositRangeFlag, feeShieldPair, providerOutcomes, workbenchHref, type CoverageRow, type ListedOption, type ProviderOutcome, type RankedOption } from "../../lib/compare";
 import { fmt } from "../../lib/format";
 import { playbookWrappers } from "../../lib/playbook";
-import { NumberField } from "../timeline/fields";
+import { Button, Card, cx, HeadlineFigure, PercentField, RankBadge, Sentence, Tag } from "../kit";
 import { Tpl } from "../exposure-mode/tpl";
 import { IconAlert, IconDrillIn, IconLock } from "../icons";
-import { durationChart, Num, StateTag } from "../provenance";
-import { Button, Tag, cx } from "../ui";
+import { durationChart, Num } from "../provenance";
 import type { ResultCtx } from "./ctx";
 import { IconBan, IconDash, IconDashed, IconEdit, IconEqual, IconOk } from "./icons";
 import { ReasonLines } from "./reasons";
@@ -71,11 +70,9 @@ export function RankedRow({ o, above, ctx, onDetail, extra, choose, chosen }: { 
   const deciding = o.deciding && above ? o.deciding : null;
   const wrapperEntry = ctx.bundle.wrappers.find((x) => x.id === o.id);
   return (
-    <li data-flip={o.id} data-tied={tied ? "" : undefined} className={cx("bg-card border border-border rounded-lg p-4 md:p-6 flex flex-col gap-3", tied && "border-s-[3px] border-s-chart-marker")}>
+    <Card as="li" data-flip={o.id} data-tied={tied ? "" : undefined} className={cx("flex flex-col gap-3", tied && "border-s-[3px] border-s-chart-marker")}>
       <div className="flex items-start gap-3">
-        <span className={cx("size-7 shrink-0 rounded-full inline-flex items-center justify-center text-sm font-semibold mt-0.5", o.rank === 1 ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground")} aria-label={`${r2.result.rank} ${o.rank}`}>
-          {o.rank}
-        </span>
+        <RankBadge rank={o.rank} label={`${r2.result.rank} ${o.rank}`} />
         <h3 className="text-lg font-semibold flex-1 min-w-0">
           <Link to={`/guide/${o.id}`} className="text-link hover:underline">
             {o.name}
@@ -85,15 +82,7 @@ export function RankedRow({ o, above, ctx, onDetail, extra, choose, chosen }: { 
           <IconDrillIn />
         </button>
       </div>
-      <div className="flex flex-col gap-1">
-        <div className="flex items-center gap-3 flex-wrap">
-          <span className="figure">
-            <Num value={figure} size="figure" animate />
-          </span>
-          <StateTag state="computed" />
-        </div>
-        <span className="text-sm text-muted-foreground">{mode === "real" ? r2.realLabel : r2.nominalLabel}</span>
-      </div>
+      <HeadlineFigure value={figure} caption={mode === "real" ? r2.realLabel : r2.nominalLabel} />
       {(tied || o.secondaryRules.length > 0) && (
         <div className="flex flex-wrap items-center gap-2">
           {tied && (
@@ -109,13 +98,13 @@ export function RankedRow({ o, above, ctx, onDetail, extra, choose, chosen }: { 
         </div>
       )}
       {deciding && (
-        <p className="text-sm text-muted-foreground">
+        <Sentence size="sm" tone="muted">
           {r2.result.decidingLine} {r2.deciding[deciding.formula]}, <Num value={mk.nis(deciding.mine, decidingFormulaOf(deciding.formula), r2.deciding[deciding.formula]!, o)} /> {r2.result.reasonFeeVs} <Num value={mk.nis(deciding.above, decidingFormulaOf(deciding.formula), r2.deciding[deciding.formula]!, above!)} />
           {deciding.formula === "tax-at-exit" && (() => {
             const shield = feeShieldPair(ctx.bundle, o, above!);
             return shield ? <>.<FeeShieldNote shield={shield} /></> : null;
           })()}
-        </p>
+        </Sentence>
       )}
       {stale && (
         <p className="text-sm text-caution-foreground flex items-start gap-2">
@@ -136,7 +125,7 @@ export function RankedRow({ o, above, ctx, onDetail, extra, choose, chosen }: { 
         {choose}
       </div>
       {chosen && <ChosenNext id={o.id} />}
-    </li>
+    </Card>
   );
 }
 
@@ -186,12 +175,11 @@ function DepositRange({ o, ctx }: { o: RankedOption; ctx: ResultCtx }) {
       )}
       {showField ? (
         <div className="flex flex-col gap-1.5 max-w-xs">
-          <NumberField
+          <PercentField
             label={t.ownLabel}
-            unit="pct_per_year"
             value={own ?? null}
             isEntered={own !== undefined}
-            validate={(n) => (n < 0 || n > 50 ? `${valuesCopy.errors.pct[0]} 0 ${valuesCopy.errors.pct[1]}50.` : null)}
+            range={{ min: 0, max: 50 }}
             onCommit={(n) => ctx.setOwnRate?.(o.id, n)}
             onReset={() => ctx.setOwnRate?.(o.id, undefined)}
             optional
@@ -237,7 +225,7 @@ export function ListedRow({ o, ctx, onDetail }: { o: ListedOption; ctx: ResultCt
   // a listed option shows no headline figure beside the ranked ones (scenario fix 2026-10-24): "לא מדורג" and its reason; the run stays in its detail
   const blocked = o.blockedBy.length > 0;
   return (
-    <li className="bg-card border border-border rounded-lg p-4 flex flex-col gap-2">
+    <Card as="li" pad="tight" className="flex flex-col gap-2">
       <div className="flex items-start gap-3">
         <span className="size-7 shrink-0 inline-flex items-center justify-center text-muted-foreground mt-0.5" aria-hidden="true">
           {blocked ? <IconLock size={18} className="text-blocked" /> : <IconDash size={18} />}
@@ -266,7 +254,7 @@ export function ListedRow({ o, ctx, onDetail }: { o: ListedOption; ctx: ResultCt
           {r3fees.links.fromResult}
         </Link>
       )}
-    </li>
+    </Card>
   );
 }
 

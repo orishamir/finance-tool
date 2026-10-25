@@ -3,7 +3,7 @@
 // ends with the rules it rests on. NEW copy for the founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
 import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
-import { Callout } from "../../components/ui";
+import { Callout, Sentence } from "../../components/kit";
 
 export const content: GuideContent = {
   what: () => (
@@ -48,9 +48,9 @@ export const content: GuideContent = {
     const age = figure("TXK-10", "early_retirement_age");
     return (
       <>
-        <p className="max-w-measure">
+        <Sentence measure>
           חיסכון שצריך להישאר זמין, בלי נעילה, עם השקעה במסלול לבחירה. מגיל {age ? <Num value={age} /> : null} אפשר להעביר אותו לקופת גמל לקצבה.
-        </p>
+        </Sentence>
         <RulesLine ids={["KGL-08", "TXK-10"]} />
       </>
     );

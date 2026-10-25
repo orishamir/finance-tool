@@ -10,7 +10,7 @@ import { FeeNum } from "../decoder/fees";
 import { IconAlert, IconChevronDown, IconClock, IconDrillIn } from "../icons";
 import { IconDash, IconHelp, IconOk } from "../compare/icons";
 import { Num } from "../provenance";
-import { Card, cx, Tag } from "../ui";
+import { Card, cx, Sentence, Tag } from "../kit";
 
 const PAGE = 50;
 
@@ -125,7 +125,7 @@ export function ReferenceLines({ data, groupKey, label }: { data: WbData; groupK
   const year = data.feeYear ? feeYear(data.feeYear) : null;
   const line = (r: NonNullable<typeof ref>["management"], lead?: string) =>
     r.mean.value === null ? null : (
-      <p className="text-sm text-muted-foreground">
+      <Sentence size="sm" tone="muted">
         {lead ?? copy.reference.before}
         {!lead && <bdi>{label}</bdi>}
         {!lead && ": "}
@@ -149,7 +149,7 @@ export function ReferenceLines({ data, groupKey, label }: { data: WbData; groupK
             {copy.reference.tracks}
           </>
         )}
-      </p>
+      </Sentence>
     );
   return (
     <div className="flex flex-col gap-1 px-4 py-3 border-b border-border">

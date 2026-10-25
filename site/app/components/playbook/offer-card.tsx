@@ -7,7 +7,7 @@ import { r4playbook as c } from "../../copy";
 import { isProvident, sentences } from "../../lib/playbook";
 import { IconCopy } from "../icons";
 import { RuleRef } from "../provenance";
-import { Button, Card } from "../ui";
+import { Button, Card } from "../kit";
 import { OpenQuestionChip } from "./step";
 
 export function RecordOfferCard({ brokerage, wrapperId, rules, className }: { brokerage: boolean; wrapperId: string; rules: Record<string, RuleRecord>; className?: string }) {

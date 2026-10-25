@@ -12,7 +12,7 @@ import { FundsSection } from "../components/invest/funds";
 import { LabelSheetHost } from "../components/invest/parts";
 import { Headline, IndexHeader, Options, Worth } from "../components/invest/sections";
 import { Foot, Steps } from "../components/invest/steps";
-import { Callout } from "../components/ui";
+import { Callout } from "../components/kit";
 import { PageShell } from "../components/shell";
 import { RulesLine } from "../components/provenance";
 import { loadBundle, bundleLinks } from "../lib/bundle";

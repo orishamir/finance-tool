@@ -1,13 +1,12 @@
 // The goal form's inputs (design-spec 6.3): number and slider fields that know whether their value is the
 // person's or a preset's, month field, switch row, percent pair, age stepper and the preset chips. They reuse
-// the release 1 field anatomy (timeline/fields.tsx) and add the "ערך התחלתי" / "הוזן על ידך" state line.
+// the release 1 field anatomy (the kit's NumberField and RangeField) and add the "ערך התחלתי" / "הוזן על ידך" state line.
 import { useId, useState, type ReactNode } from "react";
 import { buttons, r2, values as valuesCopy } from "../../copy";
 import type { FieldSource, PresetId } from "../../lib/goal";
 import { IconReset } from "../icons";
 import { StateTag } from "../provenance";
-import { NumberField } from "../timeline/fields";
-import { Button, cx } from "../ui";
+import { Button, ChoiceChips, cx, NumberField, RangeField } from "../kit";
 import { IconDash, IconPlus } from "./icons";
 
 /** The state line under a field: "הוזן על ידך" with a reset, or the site parameter a preset filled in. */
@@ -98,31 +97,22 @@ export function GoalSlider({
   step: number;
   inputMode?: "decimal" | "numeric";
 }) {
-  const id = useId();
-  const current = value ?? min;
-  const clamped = Math.max(min, Math.min(max, current));
-  const fill = ((clamped - min) / (max - min)) * 100;
   return (
-    <div className="field">
-      <div className="flex items-center justify-between gap-3">
-        <span className="field-label" id={`${id}-l`}>
-          {label}
-        </span>
-        <NumberField label={label} unit={unit} value={value} isEntered={source === "entered"} validate={validate ?? (() => null)} onCommit={(n) => onChange(n)} onReset={() => onChange(null)} compact optional inputMode={inputMode} />
-      </div>
-      <input
-        type="range"
-        className="slider"
-        aria-labelledby={`${id}-l`}
-        min={min}
-        max={max}
-        step={step}
-        value={clamped}
-        style={{ "--fill": `${fill}%` } as React.CSSProperties}
-        onChange={(e) => onChange(Number(e.target.value))}
-      />
-      <StateLine source={source} canReset={presetValue !== undefined && presetValue !== null} onReset={() => onChange(null)} />
-    </div>
+    <RangeField
+      label={label}
+      unit={unit}
+      value={value}
+      isEntered={source === "entered"}
+      validate={validate ?? (() => null)}
+      onCommit={(n) => onChange(n)}
+      onReset={() => onChange(null)}
+      min={min}
+      max={max}
+      step={step}
+      inputMode={inputMode}
+      optional
+      footer={<StateLine source={source} canReset={presetValue !== undefined && presetValue !== null} onReset={() => onChange(null)} />}
+    />
   );
 }
 
@@ -238,19 +228,6 @@ export function AgeStepper({ label, value, onChange, validate, hint }: { label: 
       <Button variant="icon" className="border border-input h-field w-11 shrink-0" aria-label={r2.form.ageUp} disabled={value === null} onClick={() => value !== null && onChange(value + 1)}>
         <IconPlus size={18} />
       </Button>
-    </div>
-  );
-}
-
-/** One chip is chosen at a time; the row scrolls sideways on a phone and wraps from md. A chip never submits. `value` may be null (nothing chosen). */
-export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ariaLabel, bleed = "-mx-gutter px-gutter", wrap }: { ids: readonly T[]; labels: Record<string, string>; value: T | null; onChange: (id: T) => void; ariaLabel: string; /** Wrap into rows on a phone too, instead of scrolling sideways (the goal form's preset row, scenario fix 2026-10-24). */ wrap?: boolean; /** The phone bleed to the edge of whatever holds the row (a card pads 16px, the page pads its gutter). */ bleed?: string }) {
-  return (
-    <div role="radiogroup" aria-label={ariaLabel} className={wrap ? "flex flex-wrap gap-2" : cx(bleed, "md:mx-0 md:px-0 flex gap-2 overflow-x-auto md:flex-wrap md:overflow-visible pb-1 scrollbar-none")}>
-      {ids.map((id) => (
-        <button key={id} type="button" role="radio" aria-checked={value === id} onClick={() => onChange(id)} className={cx("sec-chip border border-border shrink-0 transition-colors duration-[var(--duration-fast)]", value === id ? "sec-chip-on" : "bg-card hover:bg-accent")}>
-          {labels[id]}
-        </button>
-      ))}
     </div>
   );
 }

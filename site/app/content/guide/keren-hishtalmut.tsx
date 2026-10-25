@@ -4,7 +4,7 @@
 import type { GuideContent } from "./types";
 import type { SiteValue } from "../../lib/value";
 import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
-import { Callout } from "../../components/ui";
+import { Callout } from "../../components/kit";
 
 const N = ({ v }: { v: SiteValue | null }) => (v ? <Num value={v} /> : null);
 

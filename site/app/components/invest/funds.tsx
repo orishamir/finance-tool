@@ -8,7 +8,7 @@ import type { FundWay, InvestView, OptionView } from "../../lib/invest";
 import { fundLabels, matchesHedge, type HedgeFilter } from "../../lib/labels";
 import { IconCopy, IconExternal, IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, SegmentedControl, Tag, cx } from "../ui";
+import { Button, Card, RankBadge, SegmentedControl, Sentence, Tag } from "../kit";
 import { LabelRow, LabelsLegend, reasonText } from "./parts";
 import { providerName } from "./sections";
 import type { SiteValue } from "../../lib/value";
@@ -87,11 +87,9 @@ function FundRow({ view, fund: f, rank }: { view: InvestView; fund: FundWay; ran
   const mine = f.atYours && "value" in f.atYours && f.atYours.providerId !== f.best?.providerId ? f.atYours : null;
   const labels = fundLabels(f.rec, view.index, f.option);
   return (
-    <li className="bg-card border border-border rounded-lg p-4 flex flex-col gap-2.5">
+    <Card as="li" pad="tight" className="flex flex-col gap-2.5">
       <div className="flex items-start gap-3">
-        <span className={cx("size-7 shrink-0 rounded-full inline-flex items-center justify-center text-sm font-semibold mt-0.5", rank === 1 ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground")} aria-label={rank ? `${c.funds.rank} ${rank}` : undefined}>
-          {rank ?? "—"}
-        </span>
+        <RankBadge rank={rank} label={rank ? `${c.funds.rank} ${rank}` : undefined} />
         <div className="flex-1 min-w-0 flex flex-col">
           <h3 className="font-semibold leading-snug">
             <bdi>{f.name}</bdi>
@@ -128,12 +126,11 @@ function FundRow({ view, fund: f, rank }: { view: InvestView; fund: FundWay; ran
         )}
       </div>
       {mine && yp && (
-        <p className="text-sm flex flex-wrap items-baseline gap-x-2 text-muted-foreground">
-          <span>{c.funds.yours(yp.short)}:</span>
-          <Num value={(mine as { value: SiteValue }).value} />
-        </p>
+        <Sentence size="sm" tone="muted">
+          {c.funds.yours(yp.short)}: <Num value={(mine as { value: SiteValue }).value} />
+        </Sentence>
       )}
-    </li>
+    </Card>
   );
 }
 

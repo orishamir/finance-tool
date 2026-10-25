@@ -5,8 +5,7 @@ import { r4workbench as c } from "../../../copy";
 import { fmt } from "../../../lib/format";
 import { draftOf, hasErrors, offerFromDraft, validateDraft, type DraftErrors, type EnteredOffer, type OfferDraft } from "../../../lib/offers";
 import type { ProviderRowView } from "../../../lib/providers";
-import { Button, cx } from "../../ui";
-import { NumberField } from "../../timeline/fields";
+import { Button, cx, NumberField } from "../../kit";
 
 const monthsOf = { month: 1, quarter: 3, year: 12 } as const;
 const periodOfMonths = (m: number): "month" | "quarter" | "year" => (m === 1 ? "month" : m === 3 ? "quarter" : "year");
