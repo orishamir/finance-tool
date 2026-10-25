@@ -14,6 +14,18 @@
   "checked": "2026-10-25",
   "sources": [
     {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-627b50ab87f01/ListofCompanies130623.pdf",
+      "title": "רשות ניירות ערך: רשימת גופים בעלי היתר לפי סעיף 49א לחוק ניירות ערך",
+      "title_he": "רשות ניירות ערך: רשימת גופים בעלי היתר לפי סעיף 49א לחוק ניירות ערך",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.4 row 9, p.13 row 3, p.14 row 19",
+      "page": 4,
+      "checked": "2026-10-26"
+    },
+    {
       "url": "https://lp3.inter-il.com/about-3",
       "title": "Interactive Israel, about page",
       "title_he": "אינטראקטיב ישראל: עמוד אודות",

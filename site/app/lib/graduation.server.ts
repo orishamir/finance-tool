@@ -82,9 +82,11 @@ function closuresOf(prefix: string, lines: string[]): GraduationClosed[] {
       const rest = m[2]!;
       const date = /[Cc]losed[^\d]{0,12}(\d{4}-\d{2}-\d{2})/.exec(rest)?.[1];
       if (!/closed/i.test(rest) && !date) continue;
-      const oq = /open questions? (\d+)/i.exec(struck)?.[1];
+      const q = /(?:\b([A-Z]{2,4}\d?) )?open questions? (\d+)/i.exec(struck);
       const rules = ruleIdsIn(rest);
-      out.push({ code: oq ? `${prefix} OQ${oq}` : struck.replace(/^\W+|\W+$/g, "").slice(0, 80), ...(date ? { closedOn: date } : {}), ruleIds: rules });
+      // the struck text itself is the rule base's English note, never shown (2026-10-26: "tax treatment in `tax-tier2-other.md`…"
+      // reached the page); a closure without a question number shows only the rules that closed it
+      out.push({ code: q ? `${q[1] ?? prefix} OQ${q[2]}` : "", ...(date ? { closedOn: date } : {}), ruleIds: rules });
     }
   }
   return out;

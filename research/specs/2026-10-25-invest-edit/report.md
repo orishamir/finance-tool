@@ -28,3 +28,16 @@ Really off. `bg-input` is the *edge* token (`--input` = neutral-600), so the "ה
 ## Not done / notes
 - Full-page screenshots of long pages were clipped at 1800 px (Chromium ran out of resources on the whole page); `/goal/compare` after typing only an amount was not changed.
 - Vitest (843) and typecheck pass; `npm run check` not run (per brief).
+
+## Structure review (lead, 2026-10-26)
+
+`node research/audit/tools/merge-review.mjs main invest-edit`: 88 files, 18 of them code or docs, so no second reviewer.
+
+| Item | Verdict |
+|---|---|
+| `ChipList`, `PlanChips` (new kit pieces) | Kept as planned. Both are in the gallery, and the goals board, comparison, fees and index page use them. |
+| `ScenarioDefaults` (moved to `fees/chips.tsx`, used by fees and the index page) | Kept for now. It belongs to the blocks layer in kit round 2 (`research/specs/2026-10-25-ui-kit/round-2.md`). |
+| `IndexChips`, `PlanBlock` | Kept: feature pieces of the index page, built from kit parts. |
+| Three raw inputs and one select in `invest/chips.tsx` | Kept. They're older fields, only restyled here; the kit has no text or select field yet. Round 2 promotes `TextField` and `SelectField`. |
+
+Screenshots compared with `/kit` by the lead: the pills and plan chips match the gallery. Found on screen and fixed by the lead: the years chip read "שנים 10 שנים" on six chip rows (now "תקופה"), and the site-example sentence then needed "10 שנים".

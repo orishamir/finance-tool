@@ -166,7 +166,7 @@ function NegotiationCard({ line, an, subject, toPct, rules }: { line: LineView; 
         <Button variant="secondary" onClick={copy}>
           <IconCopy size={16} /> {copied ? n.copied : n.copy}
         </Button>
-        {fallback && <textarea readOnly dir="rtl" className="w-full bg-input rounded-md p-2 text-sm" rows={4} value={`${text}\n${source}`} onFocus={(e) => e.currentTarget.select()} />}
+        {fallback && <textarea readOnly dir="rtl" className="w-full bg-card border border-input rounded-md p-2 text-sm" rows={4} value={`${text}\n${source}`} onFocus={(e) => e.currentTarget.select()} />}
       </div>
       {ruleLine("PF-13")}
       {ruleLine("PF-16")}

@@ -5,12 +5,12 @@ Tables read: publishers.json yes, documents.json yes.
 ## Headline
 
 - Rules: 577; with sources: 577; unresolved (sources_missing_reason): 0
-- Entries: 1641; with locator 1341, locator_he 1166, quote 503, anchor 6, page 1283
-- Entries with title_he: 1527; with publisher_he: 1641; rules whose first source lacks publisher_he: 0
+- Entries: 1650; with locator 1347, locator_he 1170, quote 503, anchor 6, page 1289
+- Entries with title_he: 1533; with publisher_he: 1650; rules whose first source lacks publisher_he: 0
 - Rules with derived_from: 135
-- Strengths: primary 1285, institution 299, secondary 23, primary-mirror 34
+- Strengths: primary 1291, institution 302, secondary 23, primary-mirror 34
 - Rule strength realigned to its best source (primary/mirror pair only): 0
-- Kinds: regulator_page 144, institution_doc 301, circular 137, article 21, regulation 200, law 482, official_pdf 226, dataset 63, exchange_rules 35, other 22, form 10
+- Kinds: regulator_page 150, institution_doc 304, circular 137, article 21, regulation 200, law 482, official_pdf 226, dataset 63, exchange_rules 35, other 22, form 10
 
 ## Per rule base file
 
@@ -18,7 +18,7 @@ Tables read: publishers.json yes, documents.json yes.
 |---|---|---|---|
 | bank-current-account-deposits.md | 22 | 76 | 0 |
 | bank-product-names.md | 1 | 4 | 0 |
-| brokerage-account.md | 39 | 88 | 0 |
+| brokerage-account.md | 39 | 97 | 0 |
 | child-savings.md | 25 | 92 | 0 |
 | etfs-and-index-funds.md | 60 | 158 | 0 |
 | government-bonds-and-makam.md | 23 | 60 | 0 |
@@ -84,6 +84,9 @@ Tables read: publishers.json yes, documents.json yes.
 - 1 x Interactive Brokers: Required Minimums
 - 1 x Interactive Brokers: Other Fees, Withdrawals
 - 1 x Interactive Brokers: Market Data Pricing
+- 1 x Interactive Brokers: FAQ, ILS Deposits and Withdrawals
+- 1 x Interactive Brokers: Traders and Investors (individual accounts)
+- 1 x Interactive Brokers: NEWs @ IBKR 2019, Vol. 6
 - 1 x Interactive Brokers: FAQ, Which IBKR entity carries my account?
 - 1 x Interactive Brokers: Commissions Stocks (footer and Israel section)
 - 1 x Interactive Brokers Ireland: Commissions Stocks (footer)

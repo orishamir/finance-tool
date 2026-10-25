@@ -38,7 +38,7 @@ export function ScenarioDefaults({ inputs }: { inputs: FeeInputs }) {
         {r3fees.review.defaultsLead}
         {items.map(([label, value], i) => (
           <span key={label}>
-            {label} <Num value={value} />
+            {label} {value === v.years ? <Num value={value} display={fmt.years(value.value as number)} /> : <Num value={value} />}
             {i < items.length - 1 ? ", " : "."}
           </span>
         ))}

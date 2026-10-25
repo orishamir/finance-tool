@@ -7,7 +7,7 @@ import type { SiteValue } from "../../lib/value";
 import { computed, entered } from "../../lib/value";
 import { IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, Callout, Card, ChartLegend, ChartReadout, ChartTable, ChipList, ChoiceChips, CoverageFold, Disclosure, FoldGroup, GainBars, GapNote, HeadlineFigure, KeyValue, KeyValueList, LinkButton, Marker, MarkerMark, NumberField, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, Sentence, SourceLine, Stat, StatRow, Swatch, Tag, cx, useWidth } from "./index";
+import { Button, Callout, Card, ChartLegend, ChartReadout, ChartTable, ChipList, ChoiceChips, CoverageFold, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, KeyValue, KeyValueList, LinkButton, Marker, MarkerMark, NumberField, ParameterLine, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, Sentence, SourceLine, Stat, StatRow, Swatch, Tag, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -275,7 +275,7 @@ function Words({ today }: { today: string }) {
   const s = samples(today);
   return (
     <>
-      <Demo name="Sentence" use={g.uses.Sentence}>
+      <Demo name="Sentence, Tpl" use={g.uses.Sentence}>
         <Grid>
           <State label={`${g.states.sourced} / ${g.states.computed} / ${g.states.entered}`}>
             <Sentence size="sm" measure>
@@ -284,6 +284,9 @@ function Words({ today }: { today: string }) {
           </State>
           <State label={`${g.states.stale}, tone=muted`}>
             <Sentence size="sm" tone="muted" t="{a} · {b}" vars={{ a: <Num value={s.stale} />, b: <Num value={s.rate} /> }} />
+          </State>
+          <State label="Tpl">
+            <Tpl t="{a} · {b}" vars={{ a: <Num value={s.sourced} display="8" />, b: <Num value={s.comp} /> }} />
           </State>
         </Grid>
       </Demo>
@@ -369,6 +372,19 @@ function Fields() {
             <NumberField label={g.sample.field} unit="nis" value={null} isEntered={false} validate={() => null} onCommit={() => undefined} onReset={() => undefined} disabled />
           </State>
         </div>
+      </Demo>
+      <Demo name="FieldState, ParameterLine" use={g.uses.FieldState}>
+        <Grid>
+          <State label={g.states.entered}>
+            <FieldState entered onReset={() => undefined} />
+          </State>
+          <State label={g.states.disabled}>
+            <FieldState entered={false} onReset={() => undefined} disabled />
+          </State>
+          <State label="ParameterLine">
+            <ParameterLine />
+          </State>
+        </Grid>
       </Demo>
       <Demo name="RangeField" use={g.uses.RangeField}>
         <Grid>

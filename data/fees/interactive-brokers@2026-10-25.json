@@ -11,6 +11,7 @@
     },
     "tase_member": false,
     "protection_rule_ids": [
+      "BRK-06",
       "BRK-14",
       "BRK-35",
       "BRK-43"
