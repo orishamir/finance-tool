@@ -65,6 +65,12 @@ re-check the capabilities that depend on it.
   come from a file under `data/` that records its source and a date, or be a
   computation defined in `docs/method.md` over such figures, or be entered by
   the person. The page shows which of the three it is.
+- **General sources first; a company's term is never general** (founder,
+  2026-10-25). Cite the law, regulation or regulator (gov.il and the like)
+  whenever one exists; cite a company's document only for that company's
+  own terms, which appear named or on that company's page, never as a fact
+  about a product. A statement about the whole market comes from law or
+  from a count over every collected institution. See D30.
 - **Never fill in a financial or tax rule from memory.** Use the
   `il-finance` skill once it exists. If a rule is missing from it, say the
   rule is missing and stop; do not guess or approximate. Site judgements
