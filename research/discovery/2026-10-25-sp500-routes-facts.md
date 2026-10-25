@@ -289,3 +289,20 @@ For a Japanese index today, the page shows:
 - each broker's cost per route and exchange;
 - "לא נאספו קרנות" on every fund line, with Maya's search and the "בקשו שנאסוף" copy.
 After the founder (or an agent) collects the main funds (the largest Israeli funds on a Japanese index, a UCITS and a US ETF), the same saved chip shows a full ranking.
+
+### 10.8 Correction: the index's currency and region don't change the comparison (the founder, 2026-10-25)
+The founder pointed out that any currency other than NIS, USD or EUR is the same to the comparison, and so is the region. Checked against the engine and the rules, he is right, and further: for comparing ways on one index, the index's currency never changes the ranking.
+- **Conversion cost** depends on the currency the vehicle trades in: shekels on TASE; dollars, pounds or yen abroad. It does not depend on the index's currency. Every tariff has one FX conversion line for all currencies, so any foreign trading currency costs the same unless a broker prices by currency or does not offer that market.
+- **Tax.**
+  - An Israeli fund is taxed on its real gain against the CPI (TXS-09).
+  - A foreign security held directly is taxed against the exchange rate of the currency it is denominated in (TXF-03).
+  - A TASE foreign fund is taxed against its prospectus's main currency, under the 90% test (TXF-04).
+  All three are vehicle facts, not index facts.
+- **The return.** The index's currency only says what an entered return is in. The currency change on top of it (A-03) is zero by default (`securities.ts`: the return is grossReturn × (1 + fxChange)), and it is the same for every way on the index.
+- **Region:** fund-level dividend tax is sourced for US dividends only (TXF-16). US estate tax follows the fund's domicile, not the index's region (TXF-27).
+
+So the custom index asks **one question, "are the companies Israeli?"**, which decides the routes (ETF-51, ETF-31).
+- Currency and region are optional "for your information" fields. They are shown once, in the index's header, and are never row labels.
+- Row labels carry only what differs between ways: where the fund is held, how it trades, how it follows the index, hedging, tax mechanics, and burdens and risks.
+
+**Engine change to make when building:** `fund-variants.ts` line 211 refuses a fund whose trading currency differs from the exposure's currency ("a USD fund on a JPY exposure has no run"). A dollar-traded Nikkei ETF would be refused. The model should separate the index's currency (for an entered return and A-03, zero by default) from the vehicle's trading currency (for the broker's FX line and the TXF-03 tax base).
