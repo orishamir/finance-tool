@@ -9,7 +9,7 @@ Background: `research/discovery/2026-10-25-guide-pages-sweep.md` (what the old c
 - The fixed skeleton of the guide page stays (`site/app/routes/guide.tsx`, sections in `copy.ts` `sections`).
 - A new block, titled "מה מייחד את {המוצר}" (wording to fit the copy guide), sits directly after "למה משתמשים בזה" and before "שווה לדעת". Full width of the content column. One visual per product, from section 3.
 - The old illustrative timeline (Timeline.tsx and its assumptions panel) moves below the new block, collapsed by default, as "שחקו עם המספרים שלכם" (wording to the copy guide). Opening it shows it as today, with the fixes in section 4.
-- A page without a visual in section 3 or 6 keeps the old timeline open where it is now (child savings, IRA study fund, IRA provident). The brokerage account gets its visual in section 6 (added 2026-10-25) and its timeline folds like the others.
+- A page without a visual in section 3 keeps the old timeline open where it is now (brokerage account, child savings, IRA study fund, IRA provident). The brokerage account has no visual for now (section 6, withdrawn 2026-10-25).
 
 ## 2. Rules for every visual (the founder's, 2026-10-25)
 
@@ -48,12 +48,13 @@ On the cash-like pages (current account, deposit, savings plan, money-market fun
 |---|---|---|
 | G1 (Sonnet, medium) | `site/app/components/guide-signature/**` (new: the shared frame, the registry by wrapper id, the G1 visuals), `site/app/routes/guide.tsx` (the slot and the collapsed timeline), `site/app/components/timeline/**`, `site/app/lib/guide.server.ts`, `site/app/lib/engine.ts`, `site/app/lib/guide-signature*.ts` (new), copy.ts blocks `guideSignature` (new) and the guide/timeline strings, method notes in `docs/method.md` (a dated note on F-67 and one formula note per visual that computes something new) | — |
 | G2 (Sonnet, medium) | its own visual files in `site/app/components/guide-signature/` and their lib files, its entries in the registry, its strings in `guideSignature` | G1 |
-| G3 (Sonnet, medium) | section 6: `site/app/components/guide-signature/brokerage-*.tsx`, `site/app/lib/guide-signature-brokerage*.ts` (and its test), a new exported holdings block in `site/app/content/guide/brokerage-account.tsx`, one registry entry, one function and one line in the signature bundle loader, the sub-block `guideSignature.brokerage` in copy.ts, one dated method note on F-63 | G1; runs beside G2 (different files; the registry, the bundle loader and copy.ts are touched with exact-string edits after a fresh read) |
 | Lead | `docs/product.md`, `docs/design-spec.md`, `docs/design-system.md`, `docs/copy.md`, `npm run check`, smoke tests, commits | — |
 
 Rules for every builder: run `npx vitest run site packages/engine`, `npm run typecheck`, `npm run validate`; never `npm run check` or the site build, never pkill, never commit. Copy edits only with exact-string Edit. Engine changes only if a visual needs a formula the engine lacks: write it as a formula with a method note, and say so in the report. Report as the final message.
 
-## 6. The brokerage account: what can live inside it (added 2026-10-25, builder G3)
+## 6. The brokerage account: what can live inside it (added 2026-10-25; withdrawn the same day, not built)
+
+**Withdrawn.** After the third sketch the founder decided the page gets no visual for now: "i think we shouldnt have anything there for now. its just trying to distill tons of information into a specific visualization but the truth is just more complex than that. so for now dont." The brokerage page keeps its prose and its old timeline, open, as before. The design below stays as a record of what was tried and why it was dropped; don't build it. What it taught: a container that can hold almost anything has no single question to draw, and three sketches each squeezed a different slice of it (broker cost, long-term index money, what can live inside) without being true to the whole.
 
 **Why this one is different.** The founder rejected two earlier sketches: a broker-cost table ("thats not gonna make me switch banks") and a comparison against a provident fund on long-term index money ("why do you think he specifically thinks about long-term index money?"; I had projected his own case). A brokerage account is a container that can hold almost anything, and both its cost and its tax depend on what goes in ("כשמוכרים says 25% but it depends"). He approved this version on 2026-10-25 ("lets do the last visualization you suggested"). The sketch is in the session log; the build follows this section, not the sketch's wording (several of its tax lines were loose).
 
