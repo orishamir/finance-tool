@@ -541,7 +541,30 @@ function FigureSource({ value, data }: { value: SiteValue; data: ProvenanceData 
   return <SourceBlock source={source} rule={owner} today={data.today} english />;
 }
 
-function ValueSheet({ value, exact, data, headId, descId }: { value: SiteValue; exact: boolean; data: ProvenanceData; headId: string; descId: string }) {
+/**
+ * Why a site parameter has this value. The clicked number's own line comes first; the parameter file's general line, which
+ * covers every number of the file, waits behind "more" (2026-10-25: one line served all of P-05's numbers, and the founder
+ * asked what "2%" was and got the lot). A number with no line of its own shows the general line directly.
+ */
+export function ParameterWhy({ value }: { value: SiteValue }) {
+  const general = value.parameter?.rationaleHe ?? (mostlyHebrew(value.parameter?.rationale) ? value.parameter?.rationale : null) ?? null;
+  const own = value.rationale_he ?? null;
+  const first = own ?? general ?? copy.parameter.noRationale;
+  const more = own && general && general !== own ? general : null;
+  return (
+    <>
+      <span className="text-sm">{first}</span>
+      {more && (
+        <Disclosure label={<span className="text-sm">{copy.parameter.more}</span>} className="mt-0.5">
+          <p className="text-sm text-muted-foreground pt-1">{more}</p>
+        </Disclosure>
+      )}
+    </>
+  );
+}
+
+/** The sheet behind a figure (exported for the render tests). */
+export function ValueSheet({ value, exact, data, headId, descId }: { value: SiteValue; exact: boolean; data: ProvenanceData; headId: string; descId: string }) {
   const strength = strengthOf(value);
   const param = isParameter(value);
   const provisional = isProvisional(value);
@@ -593,7 +616,7 @@ function ValueSheet({ value, exact, data, headId, descId }: { value: SiteValue; 
       {value.state === "sourced" && param && (
         <dl className="sheet-dl">
           <Row label={copy.parameter.why}>
-            <span className="text-sm">{value.parameter?.rationaleHe ?? (mostlyHebrew(value.parameter?.rationale) ? value.parameter?.rationale : copy.parameter.noRationale)}</span>
+            <ParameterWhy value={value} />
           </Row>
           <Row label={copy.parameter.approved}>{!provisional && value.parameter?.signedOffOn ? <bdi dir="ltr">{fmt.date(value.parameter.signedOffOn)}</bdi> : <span className="text-sm">{copy.parameter.notApproved}</span>}</Row>
         </dl>

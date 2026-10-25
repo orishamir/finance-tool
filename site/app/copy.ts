@@ -281,7 +281,8 @@ export const provenance = {
   // audit 2026-10-24 (A21): a flag with no sentence of its own
   flagOther: "הערה על החישוב:",
   entered: { line: "הזנתם את הערך הזה.", instead: "במקום:" },
-  parameter: { why: "למה הערך הזה", approved: "תאריך אישור", notApproved: "עוד לא אושר", noRationale: "ערך שהאתר קבע בעצמו; הוא לא בא מהחוק." },
+  // 2026-10-25: `more` folds the parameter file's general line away from the clicked number's own line
+  parameter: { why: "למה הערך הזה", more: "עוד על הפרמטר", approved: "תאריך אישור", notApproved: "עוד לא אושר", noRationale: "ערך שהאתר קבע בעצמו; הוא לא בא מהחוק." },
   stale: { before: "לא עודכן מאז", middle: "בדרך כלל מתעדכן", cadence: { daily: "כל יום", monthly: "כל חודש", quarterly: "כל רבעון", yearly: "כל שנה" } },
   allRulesOf: "לכל החוקים והכללים של",
   unit: {

@@ -15,7 +15,7 @@ import { SavedGoalStrip } from "../components/compare/strip";
 import { Disclosure, Tag } from "../components/ui";
 import { GoalsProvider, type Presets } from "../lib/goal";
 import { fmt } from "../lib/format";
-import { rulesAnchor, splitTerms } from "../lib/guide-nav";
+import { splitTerms } from "../lib/guide-nav";
 import { useInputs } from "../lib/inputs";
 import { guideContent } from "../content/guide";
 import type { SiteValue } from "../lib/value";
@@ -346,7 +346,7 @@ export default function GuidePage() {
   });
 
   const regulatorName = blocks.regulatorNames[String(record.regulator.value)] ?? String(record.regulator.value);
-  const provenance = { rules, terms: data.termsById, dimensions: data.dimensionNames, today, rulesOf: { name: data.name, href: `/rules#${rulesAnchor(Object.values(rules))}` } }; // audit A27: the product's own topic, not the first rule's file
+  const provenance = { rules, terms: data.termsById, dimensions: data.dimensionNames, today, rulesOf: { name: data.name, href: `/rules?product=${record.id}` } }; // the rules page's product filter (2026-10-25): the old `#<file>` anchor stopped existing when groups became `<shelf>-<file>`
   const cp = { figure };
   const signature = hasSignatureVisual(record.id, data.signature) ? data.signature : null;
   // the current account starts from the rate most of the collected banks publish (F-85), and says how many do
