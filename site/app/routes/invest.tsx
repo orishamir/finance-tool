@@ -1,24 +1,28 @@
 // "השקעה במדד" (D28, spec research/specs/2026-10-25-invest-page/spec.md): for an index the person chooses (or adds), the options
 // for owning it, the cheapest broker for each, and the cheapest complete way for the plan. `/invest` chooses nothing (D27);
 // `/invest/:exposureId` opens one known index (pre-rendered); a custom index lives on the device and opens at `/invest?custom=<id>`.
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { useLoaderData, useLocation, useNavigate } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import type { Route } from "./+types/invest";
 import { invest as c, site } from "../copy";
-import { IndexChips, PlanChips } from "../components/invest/chips";
+import { AssumptionsPanel } from "../components/compare/assumptions";
+import type { FormData } from "../components/compare/goal-form";
+import { feePlanItems, ScenarioDefaults } from "../components/fees/chips";
+import { IndexChips, PlanBlock } from "../components/invest/chips";
 import { BrokerGrid } from "../components/invest/grid";
 import { FundsSection } from "../components/invest/funds";
 import { LabelSheetHost } from "../components/invest/parts";
 import { Headline, IndexHeader, Options, Worth } from "../components/invest/sections";
 import { Foot, Steps } from "../components/invest/steps";
 import { Callout } from "../components/kit";
+import { Sheet } from "../components/Sheet";
 import { PageShell } from "../components/shell";
 import { RulesLine } from "../components/provenance";
 import { loadBundle, bundleLinks } from "../lib/bundle";
-import { runGoalOf, type CompareBundle } from "../lib/compare";
-import { feeInputs } from "../lib/fees";
-import { GoalsProvider, hasMeaning, useGoals, type Presets } from "../lib/goal";
+import { type CompareBundle } from "../lib/compare";
+import { planInputs } from "../lib/plan-inputs";
+import { GoalsProvider, useGoals, type Presets } from "../lib/goal";
 import { useInputs } from "../lib/inputs";
 import { buildInvest, indexById, providersOfInvest, refOfCustom, type CustomIndex, type IndexRef, type OptionId } from "../lib/invest";
 import { loadWorkbenchBundle, type WorkbenchBundle, type WorkbenchInputs } from "../lib/providers";
@@ -104,8 +108,8 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   const { current, resolved } = useGoals();
   const released = useInputs();
   const invest = useInvestState();
-  const goalG = current && resolved && hasMeaning(resolved) ? runGoalOf(current, resolved) : null;
-  const fi = useMemo(() => feeInputs(compare, goalG, released.state), [compare, JSON.stringify(goalG), released.state]); // eslint-disable-line react-hooks/exhaustive-deps
+  // The person may type only one number here (this page may be all they use): the goal's empty numbers take the site's example.
+  const fi = useMemo(() => planInputs(compare, current, resolved, released.state), [compare, current, resolved, released.state]);
   const plan: WorkbenchInputs = useMemo(
     () => ({
       amountNow: Math.max(0, fi.g.amountNow - fi.g.available),
@@ -131,6 +135,11 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   const yourBroker = invest.broker && brokers.some((b) => b.id === invest.broker) ? invest.broker : null;
   const view = useMemo(() => (index ? buildInvest({ bundle: wb, index, plan, yourBroker }) : null), [wb, index, plan, yourBroker]);
 
+  const [panelOpen, setPanelOpen] = useState(false);
+  const headId = useId();
+  // A chip opens the same fields the fees page opens, on the same current goal: a value typed here is the value there.
+  const planItems = feePlanItems(fi, { return: plan.returnFromParameter ? c.plan.retExample : c.plan.retEntered });
+
   const [picked, setPicked] = useState<{ index: string; option: OptionId } | null>(null);
   const selected = picked && index && picked.index === index.id ? picked.option : view?.headline?.option ?? view?.options.find((o) => o.exists && o.bestWay)?.id ?? view?.options.find((o) => o.exists)?.id ?? null;
 
@@ -146,6 +155,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
         invest.remove(id);
         if (index?.id === id) navigate("/invest");
       }}
+      onRename={invest.rename}
       onSave={(x) => invest.add(x)}
       onGo={(p) => navigate(p)}
     />
@@ -157,7 +167,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
         <div className="flex flex-col gap-5">
           <Head />
           {chips}
-          <PlanChips plan={plan} fx={wb.fx} today={data.today} brokers={brokers} yourBroker={yourBroker} onBroker={(id) => invest.setBroker(id)} hasGoal={plan.fromGoal} />
+          <PlanBlock items={planItems} onOpen={() => setPanelOpen(true)} fx={wb.fx} today={data.today} brokers={brokers} yourBroker={yourBroker} onBroker={(id) => invest.setBroker(id)} hasGoal={plan.fromGoal} />
         </div>
         {customId && !data.exposureId && !index && <Callout tone="caution">{c.custom.missing}</Callout>}
         {!index || !view ? (
@@ -176,6 +186,13 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
           </>
         )}
       </div>
+      <Sheet open={panelOpen} onClose={() => setPanelOpen(false)} pc="center" height={78} labelledBy={`${headId}-as`}>
+        <h2 id={`${headId}-as`} className="text-lg font-semibold mb-3">
+          {c.plan.panelTitle}
+        </h2>
+        {panelOpen && !fi.fromGoal && <ScenarioDefaults inputs={fi} />}
+        {panelOpen && <AssumptionsPanel data={data.form as FormData} suggestion={null} onAdopted={() => {}} />}
+      </Sheet>
     </LabelSheetHost>
   );
 }

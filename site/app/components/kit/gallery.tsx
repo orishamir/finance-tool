@@ -7,7 +7,7 @@ import type { SiteValue } from "../../lib/value";
 import { computed, entered } from "../../lib/value";
 import { IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, Callout, Card, ChartLegend, ChartReadout, ChartTable, ChoiceChips, CoverageFold, Disclosure, FoldGroup, GainBars, GapNote, HeadlineFigure, KeyValue, KeyValueList, LinkButton, Marker, MarkerMark, NumberField, PercentField, RangeField, RankBadge, Section, SegmentedControl, Sentence, SourceLine, Stat, StatRow, Swatch, Tag, cx, useWidth } from "./index";
+import { Button, Callout, Card, ChartLegend, ChartReadout, ChartTable, ChipList, ChoiceChips, CoverageFold, Disclosure, FoldGroup, GainBars, GapNote, HeadlineFigure, KeyValue, KeyValueList, LinkButton, Marker, MarkerMark, NumberField, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, Sentence, SourceLine, Stat, StatRow, Swatch, Tag, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -214,6 +214,57 @@ function Choices() {
       <Demo name="ChoiceChips" use={g.uses.ChoiceChips}>
         <State label={`wrap, ${g.states.interactive}`}>
           <ChoiceChips ids={["0", "1", "2", "3"]} labels={labels} value={chip} onChange={setChip} ariaLabel={g.sample.title} wrap />
+        </State>
+      </Demo>
+    </>
+  );
+}
+
+function Chips() {
+  const w = g.sample.list;
+  const words = { confirm: w.confirm, confirmYes: w.yes, confirmNo: w.no, rename: w.rename, remove: w.remove, renameField: w.renameField };
+  const [names, setNames] = useState<Record<string, string>>({});
+  const [order, setOrder] = useState(["a", "b", "c"]);
+  const [on, setOn] = useState<string | null>("b");
+  const [added, setAdded] = useState(false);
+  const label = (id: string) => names[id] ?? w.items[["a", "b", "c"].indexOf(id)]!;
+  const sites = [{ id: "x", label: w.items[0]!, href: "/kit" }, { id: "y", label: w.items[1]!, href: "/kit" }, { id: "z", label: w.longItem, href: "/kit" }];
+  return (
+    <>
+      <Demo name="ChipList" use={g.uses.ChipList}>
+        <State label="items (links), no editing">
+          <ChipList heading={w.heading} note={w.note} items={sites} value="y" words={words} />
+        </State>
+        <State label={`editable chosen item (pencil, bin), drag, ${g.states.interactive}`}>
+          <ChipList
+            heading={w.heading}
+            items={order.map((id) => ({ id, label: label(id), editable: true, movable: true }))}
+            value={on}
+            words={words}
+            onSelect={setOn}
+            onRename={(id, name) => setNames((n) => ({ ...n, [id]: name || label(id) }))}
+            onDelete={(id) => setOrder((o) => o.filter((x) => x !== id))}
+            onMove={(id, to) => setOrder((o) => { const r = o.filter((x) => x !== id); r.splice(to, 0, id); return r; })}
+            add={{ label: w.add, onClick: () => setOrder((o) => (o.length < 5 ? [...o, "n" + o.length] : o)) }}
+            footer={<p className="text-sm text-muted-foreground">{w.foot}</p>}
+          />
+        </State>
+        <State label="add pill alone, expanded">
+          <ChipList heading={w.heading} items={[]} value={null} words={words} add={{ label: w.add, onClick: () => setAdded((v) => !v), expanded: added }} />
+        </State>
+      </Demo>
+      <Demo name="PlanChips" use={g.uses.PlanChips}>
+        <State label={`${g.states.filled}, ${g.states.entered}, parameter, fixed`}>
+          <PlanChips
+            allLabel={g.sample.plan.all}
+            onOpen={() => undefined}
+            items={[
+              { field: "amountNow", label: g.sample.plan.amount, text: "10,000 ₪", entered: false },
+              { field: "monthly", label: g.sample.plan.monthly, text: "1,000 ₪", entered: true },
+              { field: "horizonYears", label: g.sample.plan.years, text: "10", entered: false, parameter: true },
+              { field: "return", label: g.sample.plan.ret, text: "5%", entered: true, fixed: true },
+            ]}
+          />
         </State>
       </Demo>
     </>
@@ -440,6 +491,7 @@ export function KitGallery({ today }: { today: string }) {
         <Basics />
         <Folds />
         <Choices />
+        <Chips />
         <Words today={today} />
         <Fields />
         <MarkerDemo today={today} />

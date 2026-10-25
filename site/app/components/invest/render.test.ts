@@ -12,7 +12,7 @@ import { FundsSection } from "./funds";
 import { LabelSheetHost } from "./parts";
 import { Headline, IndexHeader, Options, Worth } from "./sections";
 import { Foot, Steps } from "./steps";
-import { PlanChips } from "./chips";
+import { PlanBlock } from "./chips";
 import { ProvenanceProvider } from "../provenance";
 
 const bundle = buildWorkbenchBundle();
@@ -36,7 +36,7 @@ describe("the index page's sections render", () => {
       createElement(FundsSection, { view, optionId: "il-tracking", mayaHref: null }),
       createElement(FundsSection, { view, optionId: "abroad", mayaHref: null }),
       createElement(Steps, { view, monthly: plan.values.monthly }), createElement(Foot, { view }),
-      createElement(PlanChips, { plan, fx: bundle.fx, today: t, brokers: [], yourBroker: null, onBroker: () => undefined, hasGoal: true })));
+      createElement(PlanBlock, { items: [], onOpen: () => undefined, fx: bundle.fx, today: t, brokers: [], yourBroker: null, onBroker: () => undefined, hasGoal: true })));
     expect(out).toContain("הדרך הזולה ביותר לתוכנית שלכם");
     expect(out).toContain("פסגות");
     expect(out).toContain("לא זמין");
