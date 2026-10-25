@@ -235,3 +235,36 @@ Today a person with a 20-year goal and no return typed sees a money-market fund 
 ### 10.5 For the founder
 1. Should the threshold sentence (10.4, point 2) replace "type a return" as the first answer for people who type none?
 2. Should the journey line appear only on the goal path, or also on "השקעה במדד"?
+
+### 10.6 The custom index from the site's side (2026-10-25, evening)
+**Saved on the device.**
+- A custom index the person adds is kept in the saved state (`mekor.v2.state`), like goals: its name, the two answers, and the date added.
+- It travels in the export file, and from then on it shows as a chip beside the site's indices, with × to remove it.
+- It never leaves the device. There are no accounts, and nothing goes to a server.
+
+**"Checks its sources" means its own data, not a live search.** The site is static, with no server, and TASE's terms forbid storing its lists (CAT-43). When someone types a name, the page looks it up only in what the build already holds:
+- the exposure records;
+- the fund records, matched on each Israeli fund's printed tracking asset ("נכס מעקב") and its names;
+- index names in the rule base, for example ETF-32's TASE foreign funds.
+For MSCI Emerging Markets today, that finds:
+- no exposure record and no fund record;
+- the names of two TASE foreign funds on it: iShares 01159169 and Invesco UCITS 01183490 (ETF-32);
+- MSCI's description of ACWI, which adds 24 emerging markets (ETF-48).
+Matching needs an alias list (MSCI EM = MSCI Emerging Markets = "שווקים מתפתחים"; hedged and net versions) in the style of `site/app/lib/search-aliases.ts`.
+
+**What the comparison needs, in three layers:**
+
+| Layer | Facts | Who gives them | What they unlock |
+|---|---|---|---|
+| The index | Where the companies are (Israel / abroad); the index's currency | The site for a known index; the person's two answers for an unknown one | Which routes exist by law (ETF-51, ETF-31); the currency and tax labels; whether buying converts currency |
+| The broker | Tariff lines per kind of security; FX conversion; which kinds of security the broker sells at all | The 14 tariffs (+2 coming); a new availability field | The broker's cost per route; "לא זמין כאן" |
+| The fund | Fees (fixed, variable, trustee or TER), legal form (ETF / tracking fund), domicile, distribution policy, where it trades and in what currency, tax status, tracking difference, spread, share price | A fund record, hand-collected from the fund's own report | The fund's own cost and tax; a full ranking of complete ways |
+
+What each level of knowledge gives:
+- **With the index layer only** (the two answers), the page can show the routes, the labels, and each broker's cost per route. That is already the largest lever (section 2).
+- **A full ranking needs at least one fund record per route.**
+- **Without fund records**, each route says so ("לא נאספו קרנות על המדד הזה"), with a link to Maya's search and a "בקשו שנאסוף" copy button for the founder (flow 10). Nothing is guessed.
+
+**Known limits:**
+- A distributing fund (most US ETFs) needs its distribution yield for the yearly tax (A-10). Without a record, that route cannot be priced.
+- Fund-level dividend withholding is sourced for US dividends only (an Irish fund pays 15%, TXF-16). For an index of other countries, such as emerging markets, it is not counted, and the row says so.
