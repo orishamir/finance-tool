@@ -7,6 +7,10 @@ The founder, on the index page's fund rows (fixed fee 0.24%, variable 0.1%, trus
 
 The decision is recorded as D31 in `docs/product.md`, with matching lines in CLAUDE.md's number states and `docs/design-system.md`. Read D31 and D30 first.
 
+**Amended 2026-10-26 (founder's screenshot of `/guide/money-market-fund-renewable`):** the timeline's "מועד הפדיון של הסדרה: 16.11.2026" carries the amber icon and the sheet's "לפי החברה" block. The date is written in the fund's own name ("אלטשולר שחם (00) כספית מתחדשת חודשי לפדיון 16/11/2026"), so it is that series' own fact. It is built in `site/app/lib/guide-signature.server.ts` (`builders["money-market-fund-renewable"]`, `facts.seriesDate`) from the P-05 example fund. The visual should name the series (for example "מועד הפדיון של הסדרה {fund name}" or a line naming the example fund above the timeline), and the value is then own. The earlier line of this brief that kept every P-05 representative input out of context is replaced by step 3's guide-visual bullet.
+
+**Order of work (2026-10-26):** the index-page reorder (branch `invest-reorder`) is being merged now and rewrites `site/app/components/invest/*`, `site/app/lib/invest.ts` and the `invest` part of `copy.ts`, including the full fee labels ("דמי ניהול קבועים", "דמי ניהול משתנים", "שכר נאמן"), which are therefore already done there. Start with everything else (`value.ts`, `isWeak`, `provenance.tsx`, `NumberLegend`, the guide visuals, workbench, holdings, fees, the comparison card). Don't touch the invest files until the lead tells you the reorder is on main; then rebase onto main and do the index page's call sites.
+
 ## The rule
 - **Own figure:** a company's figure about its own product, shown on the row, card or page that names that product or company. It is the official source for that fact. Show it as sourced (solid grey underline, no caution icon); its sheet names the document in a neutral line ("מקור: הדוח של הראל על הקרן, 30.9.2026").
 - **Out of context:** a company's figure used as an example or stand-in for the market or a product type, or a company's statement about something it doesn't decide. It keeps the amber "לפי החברה", exactly as today. Examples: P-05's representative tariff in the guide's illustrative timeline; a company's rate inside a generic computation, such as CS-30 in the child-savings ledger.
@@ -20,7 +24,7 @@ The decision is recorded as D31 in `docs/product.md`, with matching lines in CLA
    - fund records: fees and the fund's own figures on fund rows (index page, workbench funds, holdings);
    - tariff lines on a provider's row (workbench providers, the index page broker grid, the fees page provider rows, the comparison card that names its broker);
    - a bank's own deposit and current-account terms on that bank's line (guide visuals' bank table and picker, idle cash).
-   - The guide's illustrative timeline and any P-05 representative input stay out of context.
+   - **Guide visuals with an example product (amended 2026-10-26, see below):** where the visual names the product the figure belongs to, the figure is own. Where it doesn't name it yet, name it on the visual (the guide visual principle: name the holding), then mark it own. Only a company figure that stands for the market or a product type without being named as that company's keeps the caution.
 4. **`NumberLegend`** shows the "לפי החברה" item only on a page that has an out-of-context company figure.
 5. **Fee labels on fund rows:** "קבועים", "משתנים", "נאמן" (`copy.ts`, around the index page's `funds` strings) become "דמי ניהול קבועים", "דמי ניהול משתנים", "שכר נאמן". Search for other short fee labels that stand alone without the word "דמי" (workbench rows, holdings) and use the full names from `copy.ts`'s fee-type names. Check that the rows still read well at 390 px.
 6. **Tests:**
@@ -35,7 +39,8 @@ Build your worktree, serve on port 4234, and photograph at 1280 and 390 px:
 - `/invest/index-ta35`: fund rows with no amber icons; a fee's sheet shows the neutral source line;
 - the providers workbench for the brokerage account: tariff numbers with no amber icons;
 - `/guide/current-account`: the bank table's rates with no amber icons;
-- a guide page's illustrative timeline: the representative tariff keeps "לפי החברה";
+- `/guide/money-market-fund-renewable`: the timeline names the series and its redemption date has no amber icon; its sheet shows the neutral source line;
+- every guide page whose visual uses a P-05 example product: list each in the report with the verdict;
 - `/fees`;
 - the legend on each of those pages.
 
