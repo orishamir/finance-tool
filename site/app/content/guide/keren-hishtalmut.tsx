@@ -42,7 +42,7 @@ export const content: GuideContent = {
       <RulesLine ids={["TXH-01", "TXH-08", "TXH-02", "TXH-11", "TXH-03"]} />
       <Callout tone="caution" className="max-w-measure">
         <span className="font-medium">משיכה לפני הזמן אפשרית, אבל יקרה.</span> הפקדות המעסיק ממוסות כשכר, הרווחים לפי מדרגות המס של הכנסה שלא מיגיעה אישית, והקרן מנכה במקור{" "}
-        <N v={figure("TXH-15", "withholding_early")} />. את החישוב הזה האתר עוד לא עושה; הוא מגיע בגרסה הבאה.
+        <N v={figure("TXH-15", "withholding_early")} />. למי ששכיר, כמה זה עולה מופיע למעלה, ב"מה מייחד"; לעצמאים האתר עוד לא מחשב את זה.
       </Callout>
       <RulesLine ids={["TXH-13", "TXH-15", "TXG-03"]} />
       <p className="max-w-measure text-sm text-muted-foreground">באוצר דנים בצמצום ההטבה. נכון להיום החוק לא השתנה; האתר יעודכן אם ישתנה.</p>
