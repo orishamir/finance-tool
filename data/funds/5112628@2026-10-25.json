@@ -1,0 +1,175 @@
+{
+  "id": "5112628",
+  "names": {
+    "en": [],
+    "he": [
+      "אי.בי.אי. מחקה (4A) ת\"א 125",
+      "איביאי מחקה תא 125"
+    ],
+    "tase": [
+      "5112628"
+    ]
+  },
+  "identifiers": {
+    "isin": "IL0051126287",
+    "tase_number": "5112628",
+    "cusip": null,
+    "ticker": {}
+  },
+  "manager": "אי.בי.אי קרנות נאמנות בע\"מ",
+  "domicile": "IL",
+  "legal_form": "קרן פתוחה, קרן מחקה (open tracking fund under the Joint Investment Trust Law 1994; bought and redeemed at the unit price through a distributor, not traded on the exchange, ETF-04); קרן מוגבלת בניירות ערך חוץ; exposure profile 4A. Trustee: יובנק חברה לנאמנות בע\"מ. Tracking asset on Maya's fund page: ת\"א 125 100%. Payment policy on Maya: 'לא מתחייבת לחלק תשלומים'. REPLICATION: physical: mainly the underlying assets (נכסי בסיס) (annual report p. 2, 'הדרך שבה הקרן תנוהל': 'בכוונת מנהל הקרן לחשוף את הקרן למדד בעיקר באמצעות ביצוע עסקאות בנכסי בסיס'). Size used to rank the fund (not a fee input): net assets 2506.3 million NIS as of 2026-09-30 (Maya fund page, 'שווי נכסים').",
+  "exposure_id": "index-ta125",
+  "currency": "NIS",
+  "trading_currency_on_tase": null,
+  "distribution_policy": "accumulating",
+  "tax_status": {
+    "il_fund_tax_track": "exempt",
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0.1,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1768001-1769000/P1768535-00.pdf",
+        "title": "דוח שנתי 'אי.בי.אי. מחקה (4A) ת\"א 125' (מספר בורסה 5112628), תאריך הדוח 30 ביוני 2026, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing 1768535, PDF), עמ' 1 'שכר מנהל הקרן' / 'דמי ניהול קבועים'",
+        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13",
+        "MF-16",
+        "MF-17"
+      ],
+      "state": "sourced",
+      "notes": "Fixed management fee as printed in the report: 0.1% of average annual net assets. Maya's fund page (https://maya.tase.co.il/he/funds/mutual-funds/5112628, read 2026-10-25) shows the same 'דמי ניהול' 0.1%. The manager committed to the ISA outline to raise its fees only on 1 January (ETF-16). Main prospectus published on Magna on 2026-07-20, reference 2026-03-068653 (not opened; Magna returns 403 to scripts), as the report states; the prospectus block cites this report."
+    },
+    "trustee": {
+      "value": 0.025,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1768001-1769000/P1768535-00.pdf",
+        "title": "דוח שנתי 'אי.בי.אי. מחקה (4A) ת\"א 125' (מספר בורסה 5112628), תאריך הדוח 30 ביוני 2026, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing 1768535, PDF), עמ' 1 'שכר הנאמן'",
+        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13",
+        "MF-20"
+      ],
+      "state": "sourced",
+      "notes": "Trustee fee as printed: 0.025% of average annual net assets; Maya's fund page shows the same rate."
+    },
+    "variable_management": {
+      "value": 0,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1768001-1769000/P1768535-00.pdf",
+        "title": "דוח שנתי 'אי.בי.אי. מחקה (4A) ת\"א 125' (מספר בורסה 5112628), תאריך הדוח 30 ביוני 2026, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing 1768535, PDF), עמ' 1 'דמי ניהול משתנים'",
+        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-14",
+        "ETF-13"
+      ],
+      "state": "sourced",
+      "notes": "Variable management fee rate as printed: 0% a year of net assets. Maya's fund page shows 0%. The mechanism works in both directions (ETF-14): the amount actually charged or paid depends on the gap to the tracking asset."
+    },
+    "tracking_difference_12m": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1768001-1769000/P1768535-00.pdf",
+        "title": "דוח שנתי 'אי.בי.אי. מחקה (4A) ת\"א 125' (מספר בורסה 5112628), תאריך הדוח 30 ביוני 2026, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing 1768535, PDF), עמ' 5 'תשואות, סטיות תקן ונתוני השוואה'",
+        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-07",
+        "ETF-08",
+        "ETF-09"
+      ],
+      "state": "sourced",
+      "notes": "Not printed as one number. The report's table 'תשואות, סטיות תקן ונתוני השוואה' (p. 5) prints the fund's return against its tracking asset: 2025 50.92% against 50.96%; 01.01.2026-30.06.2026 9.42% against 9.48%. Its comparison with the tracking asset of the previous report (p. 5) prints for 01.07.2025-30.06.2026 the fund's shekel return 32.60% against the tracking asset's change 32.70%. The difference is not computed here (data-update rule). The ISA directive (ETF-07(e)) makes the manager publish the 12-month tracking difference every pricing day; this report points to the third-party page https://chart.bursagraph.co.il/funds.shtml?m=4 for it. That page (Funds Center by Guideline, run for the managers) states on the page 'אין להפיץ בכל דרך כלשהי ... את הנתונים המוצגים באתר', so its figures are not copied here (same position as CAT-43 for TASE lists); founder decision pending."
+    },
+    "median_spread": {
+      "value": null,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1768001-1769000/P1768535-00.pdf",
+        "title": "דוח שנתי 'אי.בי.אי. מחקה (4A) ת\"א 125' (מספר בורסה 5112628), תאריך הדוח 30 ביוני 2026, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing 1768535, PDF), עמ' 1 'שיעור ההוספה'",
+        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-04",
+        "MF-21"
+      ],
+      "state": "sourced",
+      "notes": "Not applicable: an open tracking fund is bought and redeemed at the unit price computed from net asset value, with no exchange spread. Load (שיעור הוספה): 0% on Maya's fund page. The distributor may charge its own buy and sell commission (MF-26)."
+    },
+    "fund_level_withholding_drag": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1768001-1769000/P1768535-00.pdf",
+        "title": "דוח שנתי 'אי.בי.אי. מחקה (4A) ת\"א 125' (מספר בורסה 5112628), תאריך הדוח 30 ביוני 2026, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing 1768535, PDF), עמ' 2 'הדרך שבה הקרן תנוהל'",
+        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-11"
+      ],
+      "state": "sourced",
+      "notes": "Not applicable as a foreign-withholding figure: the fund tracks a TASE index and holds its shares (ETF-11, local index); no computation is made here."
+    }
+  },
+  "dimensions": {
+    "fund-tax-track": "covered:TXS-24",
+    "fee-management-balance": "covered:ETF-13",
+    "distribution-policy": "covered:MF-49",
+    "currency": "covered:MF-54",
+    "fee-trade": "covered:MF-21",
+    "protection": "covered:MF-02"
+  },
+  "prospectus": {
+    "url": "https://mayafiles.tase.co.il/rpdf/1768001-1769000/P1768535-00.pdf",
+    "date": "2026-07-20"
+  },
+  "exposure_code": "4A",
+  "distribution_fee_type": "3",
+  "creation_redemption_fee_category": null,
+  "snapshot": "2026-10-25"
+}

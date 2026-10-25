@@ -1,0 +1,173 @@
+{
+  "id": "1148162",
+  "names": {
+    "en": [],
+    "he": [
+      "אי.בי.אי. סל (4D) S&P 500"
+    ],
+    "tase": [
+      "1148162"
+    ]
+  },
+  "identifiers": {
+    "isin": null,
+    "tase_number": "1148162",
+    "cusip": null,
+    "ticker": {}
+  },
+  "manager": "אי.בי.אי קרנות נאמנות בע\"מ",
+  "domicile": "IL",
+  "legal_form": "קרן סגורה, קרן סל (Israeli ETF under the Joint Investment Trust Law 1994); קרן בלתי מוגבלת בניירות ערך חוץ; קרן להשקעות חוץ שהמטבע העיקרי שלה דולר ארה\"ב. REPLICATION: swap (OTC derivatives): mainly OTC derivatives on the index; ETFs, futures, the underlying assets and tracking funds allowed (annual report https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf, p. 2, 'הדרך שבה הקרן תנוהל': 'בכוונת מנהל הקרן לחשוף את הקרן למדד בעיקר באמצעות ביצוע עסקאות בנגזרי OTC'; read 2026-10-25).",
+  "exposure_id": "index-sp500",
+  "currency": "NIS",
+  "trading_currency_on_tase": "NIS",
+  "distribution_policy": "accumulating",
+  "tax_status": {
+    "il_fund_tax_track": "exempt",
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0.8,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
+        "title": "דוח שנתי 'אי.בי.אי. סל (4D) S&P 500' (מספר בורסה 1148162), תאריך הדוח 31 בדצמבר 2025, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing PDF), עמ' 1: 'שכר מנהל הקרן: 0.80% מהשווי הנקי השנתי הממוצע של נכסי הקרן'; עמ' 8 'הוצאות שנפרעו מנכסי הקרן': דמי ניהול קבועים 0.80% בכל אחת מהשנים 2022-2025",
+        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13",
+        "MF-16",
+        "MF-17"
+      ],
+      "state": "sourced",
+      "notes": "Fixed management fee (דמי ניהול קבועים). Note 6: the manager committed to the ISA outline not to raise the fee during a calendar year; it may raise it on 01.01.2027. Main prospectus: published on Magna on 20.07.2025, reference 2025-03-053595 (Magna returns 403 to scripts, so the prospectus itself was not opened; the prospectus block cites this annual report, which states the prospectus date). Name until 08.05.2024: 'פסגות S&P 500 (4D) ETF'. Hebrew name as printed; the English name is not printed in the report."
+    },
+    "trustee": {
+      "value": 0.015,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
+        "title": "דוח שנתי 'אי.בי.אי. סל (4D) S&P 500' (מספר בורסה 1148162), תאריך הדוח 31 בדצמבר 2025, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing PDF), עמ' 1 הערה 8 ועמ' 7 הערה 1: 'החל מיום 01.07.2026, כל עוד לא ידווח אחרת, שכר הנאמן יהיה בשיעור של 0.015% מהשווי הנקי השנתי הממוצע של נכסי הקרן'",
+        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-23",
+      "effective_from": "2026-07-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13",
+        "MF-20"
+      ],
+      "state": "sourced",
+      "notes": "Trustee fee (שכר נאמן). The report (as of 31.12.2025) prints 0.0085% as a trustee promotion in force from 01.01.2026 to 30.06.2026 and 0.015% from 01.07.2026 unless reported otherwise; 0.0085% was charged in 2022-2025 (p. 8). A later immediate report could have changed the rate; Maya's fund page blocks scripts, so this was not re-checked. Trustee: יובנק חברה לנאמנות בע\"מ."
+    },
+    "variable_management": {
+      "value": 0.3,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
+        "title": "דוח שנתי 'אי.בי.אי. סל (4D) S&P 500' (מספר בורסה 1148162), תאריך הדוח 31 בדצמבר 2025, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing PDF), עמ' 1: 'שיעור דמי ניהול משתנים: 0.30%'; עמ' 8: דמי ניהול משתנים 0.30% בכל אחת מהשנים 2022-2025",
+        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-14",
+        "ETF-13"
+      ],
+      "state": "sourced",
+      "notes": "Variable management fee rate (דמי ניהול משתנים), the published rate the mechanism applies in both directions (ETF-14: at most the creation/redemption category rate, here 0.30%); the manager may change it on 01.01.2027 (note 7). The amount actually paid depends on the tracking difference; the report's expense table shows 0.30% paid in each of 2022-2025."
+    },
+    "tracking_difference_12m": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
+        "title": "דוח שנתי 'אי.בי.אי. סל (4D) S&P 500' (מספר בורסה 1148162), תאריך הדוח 31 בדצמבר 2025, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing PDF), עמ' 6 'תשואת הקרן בהשוואה לשיעור השינוי בנכס המעקב', 2025",
+        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-08",
+        "ETF-09"
+      ],
+      "state": "sourced",
+      "notes": "Not printed as one number. The report prints for 2025 the fund's shekel return 1.85% and the tracking asset's change 2.61% (S&P 500 100%, USD 100%) side by side, and the manager attributes most of the gap to expenses paid from fund assets of about 0.8085% (management plus trustee fees). The difference is not computed here (data-update rule). Earlier years printed: 2024 fund 24.06% vs 24.96%; 2023 29.56% vs 29.43%; 2022 -8.15% vs -7.55%. Added 2026-10-25: the third-party page the report points to (chart.bursagraph.co.il / fundscenter.co.il, 'Funds Center' by Guideline) publishes the 12-month tracking difference under ETF-07(e), but states 'אין להפיץ בכל דרך כלשהי ... את הנתונים המוצגים באתר', so its figures are not copied here; founder decision pending."
+    },
+    "median_spread": {
+      "value": null,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
+        "title": "דוח שנתי 'אי.בי.אי. סל (4D) S&P 500' (מספר בורסה 1148162), תאריך הדוח 31 בדצמבר 2025, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing PDF), עמ' 1: 'הפרשים באגורות שבין שווי היחידה למחירה בבורסה' 01.01.2025-31.12.2025",
+        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-06",
+        "ETF-07"
+      ],
+      "state": "sourced",
+      "notes": "No median bid-ask spread is printed in the annual report. The report prints the range of differences between unit value and exchange price in 2025 (1,814.15 to -1,079.70 agorot) and their average (-0.04 agorot), which is a premium/discount measure, not a spread (ETF-06). Spread data is published by the manager elsewhere (ETF-07; the report points to chart.bursagraph.co.il, a third-party page, not read)."
+    },
+    "fund_level_withholding_drag": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
+        "title": "דוח שנתי 'אי.בי.אי. סל (4D) S&P 500' (מספר בורסה 1148162), תאריך הדוח 31 בדצמבר 2025, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing PDF), עמ' 2-3 (חשיפה באמצעות נגזרים)",
+        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-23",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-11"
+      ],
+      "state": "sourced",
+      "notes": "Not collected: no computation is made here (data-update rule) and the report prints no withholding figure. The fund takes its S&P 500 exposure mainly through OTC derivatives (ETF-11), so any dividend-withholding drag sits inside the swap pricing and is not published as a rate."
+    }
+  },
+  "dimensions": {
+    "fund-tax-track": "covered:TXS-24",
+    "fee-management-balance": "covered:ETF-13",
+    "distribution-policy": "covered:ETF-19",
+    "currency": "covered:ETF-10",
+    "fee-trade": "covered:ETF-05",
+    "protection": "covered:MF-02"
+  },
+  "prospectus": {
+    "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
+    "date": "2025-07-20"
+  },
+  "exposure_code": "4D",
+  "distribution_fee_type": "3",
+  "creation_redemption_fee_category": "0.30%",
+  "snapshot": "2026-10-25"
+}

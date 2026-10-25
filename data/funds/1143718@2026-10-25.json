@@ -1,0 +1,180 @@
+{
+  "id": "1143718",
+  "names": {
+    "en": [
+      "Tachlit SAL (40) TA 125",
+      "TACHLIT SAL TA 125"
+    ],
+    "he": [
+      "תכלית סל (40) ת\"א 125",
+      "תכלית סל תא 125"
+    ],
+    "tase": [
+      "1143718"
+    ]
+  },
+  "identifiers": {
+    "isin": null,
+    "tase_number": "1143718",
+    "cusip": null,
+    "ticker": {
+      "TASE": "TCH.F2",
+      "TASE_he": "תכל.ס2"
+    }
+  },
+  "manager": "מיטב קרנות נאמנות בע\"מ",
+  "domicile": "IL",
+  "legal_form": "קרן סגורה, קרן סל (Israeli ETF under the Joint Investment Trust Law 1994); קרן מוגבלת בניירות ערך חוץ; קרן מקבילה (parallel fund) to the kosher ETF 'תכלית סל (40) כשרה ת\"א 125' (1155373) through a kosher swap; units denominated in NIS, 1 ₪ par value (annual report as of 30.06.2026, p. 1). REPLICATION: physical: the assets that make up the tracking asset, plus synthetic contracts (options) on it (annual report https://mayafiles.tase.co.il/rpdf/1770001-1771000/P1770898-00.pdf, p. 2, 'הדרך שבה הקרן תנוהל': 'נכון למועד דוח זה, מנהל הקרן מייצר חשיפה לנכס המעקב באמצעות נכסים המרכיבים את נכס המעקב וכן באמצעות חוזים סינתטיים (אופציות) על נכס המעקב'; read 2026-10-25).",
+  "exposure_id": "index-ta125",
+  "currency": "NIS",
+  "trading_currency_on_tase": "NIS",
+  "distribution_policy": "accumulating",
+  "tax_status": {
+    "il_fund_tax_track": "exempt",
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0.25,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1770001-1771000/P1770898-00.pdf",
+        "title": "דוח שנתי 'תכלית סל (40) ת\"א 125' (מספר בורסה 1143718), תאריך הדוח 30 ביוני 2026, מיטב קרנות נאמנות בע\"מ (Maya filing 1770898, published 16.09.2026), עמ' 1: 'שכר מנהל הקרן: 0.25% מהשווי הנקי השנתי הממוצע של נכסי הקרן'; עמ' 6 'שינויים במאפייני הקרן': 0.20% עד 01.01.2023, 0.25% מאז; עמ' 7 'הוצאות שנפרעו מנכסי הקרן': דמי ניהול קבועים 0.25% בכל אחת מהשנים 2023-2025 ו-0.12% בחציון 01.01.2026-30.06.2026",
+        "publisher": "מיטב קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": "2023-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13",
+        "MF-16",
+        "MF-17"
+      ],
+      "state": "sourced",
+      "notes": "Fixed management fee (דמי ניהול קבועים). Report note 7: the manager committed to the ISA outline not to raise the fee (fixed or variable) or the load during a calendar year; it may raise it only on 01.01.2027. The same 0.25% is printed on TASE's fund page (market.tase.co.il, 'דמי ניהול (%)', read 2026-10-24) and in the manager's main prospectus of 07.07.2026, section 3.1 row 28. The report says the fee is computed on the assets of the parallel fund including those held against the kosher swap. An institutional 'other people's money' manager gets a full refund (0.25%) under the tracking-fund regulations; that is not a retail saver's fee. Hebrew name as printed in the report; 'תכלית סל תא 125' is TASE's short name; the English names are TASE's ('Full Name' and page title on market.tase.co.il/en), not printed in the report or prospectus."
+    },
+    "trustee": {
+      "value": 0.02,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1770001-1771000/P1770898-00.pdf",
+        "title": "דוח שנתי 'תכלית סל (40) ת\"א 125' (מספר בורסה 1143718), תאריך הדוח 30 ביוני 2026, מיטב קרנות נאמנות בע\"מ (Maya filing 1770898), עמ' 1: 'שכר נאמן: 0.02% מהשווי הנקי השנתי הממוצע של נכסי הקרן'; עמ' 7: שכר הנאמן 0.02% בכל אחת מהשנים 2023-2025 ו-0.01% בחציון 01.01.2026-30.06.2026",
+        "publisher": "מיטב קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13",
+        "MF-20"
+      ],
+      "state": "sourced",
+      "notes": "Trustee fee (שכר נאמן). Trustee: אלמגור בריטמן נאמנויות בע\"מ (ח.פ 511496960). The report's change table shows no change in the trustee fee in 2023-2026, so no effective_from is printed. The same 0.02% is on TASE's fund page ('דמי נאמנות (%)')."
+    },
+    "variable_management": {
+      "value": 0.1,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1770001-1771000/P1770898-00.pdf",
+        "title": "דוח שנתי 'תכלית סל (40) ת\"א 125' (מספר בורסה 1143718), תאריך הדוח 30 ביוני 2026, מיטב קרנות נאמנות בע\"מ (Maya filing 1770898), עמ' 1: 'שיעור דמי ניהול משתנים: 0.10%'; עמ' 7: דמי ניהול משתנים שנגבו 0.10% ב-2023, 0.10% ב-2024, 0.04% ב-2025 ו-0.01% בחציון 01.01.2026-30.06.2026",
+        "publisher": "מיטב קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-14",
+        "ETF-13"
+      ],
+      "state": "sourced",
+      "notes": "Variable management fee rate (דמי ניהול משתנים), the published rate the mechanism applies in both directions (ETF-14: at most the creation/redemption category rate, here 0.10%). The amount actually paid depends on the tracking difference; the report's expense table (note 4: a balance of the variable fees collected or added from the start of each calendar year) shows 0.10% in 2023 and 2024, 0.04% in 2025 and 0.01% in the first half of 2026. The report's note 8 refers to the main prospectus for the mechanism. The same 0.1% is on TASE's fund page ('דמי ניהול משתנים (%)')."
+    },
+    "tracking_difference_12m": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1770001-1771000/P1770898-00.pdf",
+        "title": "דוח שנתי 'תכלית סל (40) ת\"א 125' (מספר בורסה 1143718), תאריך הדוח 30 ביוני 2026, מיטב קרנות נאמנות בע\"מ (Maya filing 1770898), עמ' 5 'תשואות, סטיות תקן ונתוני השוואה' ו'תשואת הקרן בהשוואה לשיעור השינוי בנכס המעקב', 01.07.2025-30.06.2026",
+        "publisher": "מיטב קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-08",
+        "ETF-09"
+      ],
+      "state": "sourced",
+      "notes": "Not printed as one number. For 01.07.2025-30.06.2026 the report prints the fund's shekel return 32.34% beside the tracking asset's change 32.70% (מדד ת\"א 125). Calendar periods printed side by side (fund price return vs TA-125): 2025 50.55% vs 50.96%; 2024 28.36% vs 28.61%; 2023 3.89% vs 4.07%; 01.01.2026-30.06.2026 9.33% vs 9.48%. The difference is not computed here (data-update rule). The report prints no explanation of the gap. The report points to https://fundscenter.co.il/funds.shtml?m=3 (a third-party page, not read) for the tracking difference and error. Added 2026-10-25: the third-party page the report points to (chart.bursagraph.co.il / fundscenter.co.il, 'Funds Center' by Guideline) publishes the 12-month tracking difference under ETF-07(e), but states 'אין להפיץ בכל דרך כלשהי ... את הנתונים המוצגים באתר', so its figures are not copied here; founder decision pending."
+    },
+    "median_spread": {
+      "value": null,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1770001-1771000/P1770898-00.pdf",
+        "title": "דוח שנתי 'תכלית סל (40) ת\"א 125' (מספר בורסה 1143718), תאריך הדוח 30 ביוני 2026, מיטב קרנות נאמנות בע\"מ (Maya filing 1770898), עמ' 1: 'הפרשים שבין שווי היחידה למחירה בבורסה' 01.07.2025-30.06.2026",
+        "publisher": "מיטב קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-06",
+        "ETF-07"
+      ],
+      "state": "sourced",
+      "notes": "No median bid-ask spread is printed in the annual report. The report prints the range of differences between unit value and exchange price over 01.07.2025-30.06.2026 (-0.73% to 0.60%) and their average (0.04%), which is a premium/discount measure in percent, not a spread (ETF-06). Spread data is published by the manager elsewhere (ETF-07; the report points to fundscenter.co.il, a third-party page, not read). Market maker: מיטב עשיית שוק בע\"מ (report p. 8)."
+    },
+    "fund_level_withholding_drag": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1770001-1771000/P1770898-00.pdf",
+        "title": "דוח שנתי 'תכלית סל (40) ת\"א 125' (מספר בורסה 1143718), תאריך הדוח 30 ביוני 2026, מיטב קרנות נאמנות בע\"מ (Maya filing 1770898), עמ' 2 'הדרך שבה הקרן תנוהל' ועמ' 7 'הוצאות מס' והערה 6",
+        "publisher": "מיטב קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-11"
+      ],
+      "state": "sourced",
+      "notes": "Not collected: no computation is made here (data-update rule) and the report prints no withholding rate. The fund holds the index constituents plus synthetic contracts (options) on the index (ETF-11, local index). The report's expense table prints 'הוצאות מס' as a negligible share (*) in 2023, 2025 and the first half of 2026 and 0.01% in 2024; note 6 says the fund may owe tax on income from dual-listed securities and prints the amounts: ₪110,517.96 (2023), ₪129,133.24 (2024), ₪314,547.54 (2025), ₪104,465.39 (01.01.2026-30.06.2026)."
+    }
+  },
+  "dimensions": {
+    "fund-tax-track": "covered:TXS-24",
+    "fee-management-balance": "covered:ETF-13",
+    "distribution-policy": "covered:ETF-19",
+    "currency": "covered:MF-54",
+    "fee-trade": "covered:ETF-05",
+    "protection": "covered:MF-02"
+  },
+  "prospectus": {
+    "url": "https://mayafiles.tase.co.il/rpdf/1753001-1754000/P1753287-00.pdf",
+    "date": "2026-07-07"
+  },
+  "exposure_code": "40",
+  "distribution_fee_type": "3",
+  "creation_redemption_fee_category": "0.10%",
+  "snapshot": "2026-10-25"
+}
