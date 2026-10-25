@@ -68,13 +68,13 @@ check("marker moves with the arrow keys", Number(after) === Number(before) + 2, 
 // 6. the compare page's coverage fold
 await page.goto(`${base}/goal/compare`, { waitUntil: "networkidle" });
 await page.waitForTimeout(2500);
-const c2 = page.locator('details:has(summary:has-text("הצגת הרשימה"))').first();
-if (await c2.count()) {
-  const s2 = c2.locator("summary").first();
+const s2loc = page.locator('summary:has-text("כל האפשרויות ולמה")').first();
+if (await s2loc.count()) {
+  const s2 = await s2loc.elementHandle(); // the text changes when it opens, so hold the element, not the text selector
   await s2.scrollIntoViewIfNeeded(); await s2.click(); await page.waitForTimeout(300);
   check("compare coverage toggles its label", (await s2.innerText()).includes("הסתרת הרשימה"), (await s2.innerText()).slice(-30));
   await s2.click(); await page.waitForTimeout(300);
-  check("compare coverage toggles back", (await s2.innerText()).includes("הצגת הרשימה"));
+  check("compare coverage toggles back", (await s2.innerText()).includes("כל האפשרויות ולמה"));
 } else check("compare coverage present", false);
 
 // 7. the current-account worth-knowing link opens the folded table

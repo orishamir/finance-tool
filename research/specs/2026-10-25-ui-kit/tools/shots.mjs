@@ -13,8 +13,10 @@ const goal = { id: "gfounder", name: "", preset: "none", horizonYears: { value: 
   assumptions: { return: 7, inflation: 2, insurance: null, acceptedFall: null }, exposures: {}, order: 0 };
 const day = "2026-10-25";
 const val = (value, unit) => ({ value, unit, source: { url: "local", title: "הוזן על ידך", publisher: "אתם", strength: "entered" }, checked: day, effective_from: day, effective_to: null, update_rule: "founder", state: "entered" });
-// HOLDING=1 adds one saved holding (a catalogued track), so the holdings card, its fee lines and the consolidation are drawn too
-const holdings = process.env.HOLDING === "1" ? [{ id: "h1", wrapperId: "keren-hishtalmut", company: { name: "חברה לדוגמה", legalId: "510142789" }, track: { fundId: 233, name: "מסלול לדוגמה" }, balance: val(80000, "nis"), feeBalance: val(0.9, "pct_per_year"), feeDeposit: val(0, "pct_of_deposit"), statementDate: { ...val(0, "text"), value: "2026-06-30" }, order: 0 }] : [];
+// HOLDING=1 adds one saved holding, HOLDING=2 two study funds (one not liquid yet, one over six years; one fee above the cap) (a catalogued track), so the holdings card, its fee lines and the consolidation are drawn too
+const h1 = { id: "h1", wrapperId: "keren-hishtalmut", company: { name: "חברה לדוגמה", legalId: "510142789" }, track: { fundId: 233, name: "מסלול לדוגמה" }, balance: val(80000, "nis"), feeBalance: val(2.5, "pct_per_year"), feeDeposit: val(0, "pct_of_deposit"), firstDeposit: { ...val(0, "text"), value: "2024-03-15" }, statementDate: { ...val(0, "text"), value: "2026-06-30" }, order: 0 };
+const h2 = { ...h1, id: "h2", company: { name: "חברה אחרת", legalId: "510694821" }, feeBalance: val(0.9, "pct_per_year"), firstDeposit: undefined, firstDepositOverSix: { ...val(1, "boolean"), value: true }, order: 1 };
+const holdings = process.env.HOLDING === "2" ? [h1, h2] : process.env.HOLDING === "1" ? [{ id: "h1", wrapperId: "keren-hishtalmut", company: { name: "חברה לדוגמה", legalId: "510142789" }, track: { fundId: 233, name: "מסלול לדוגמה" }, balance: val(80000, "nis"), feeBalance: val(0.9, "pct_per_year"), feeDeposit: val(0, "pct_of_deposit"), statementDate: { ...val(0, "text"), value: "2026-06-30" }, order: 0 }] : [];
 const state = { version: 3, goals: [goal], currentId: "gfounder", inputs: {}, holdings, uncatalogued: [], imports: [], savedComparisons: [] };
 const browser = await chromium.launch({ executablePath: "/home/ori/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome" });
 const report = [];

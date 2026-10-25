@@ -1,0 +1,6 @@
+/fees?holding=h1
+/fees?wrapper=keren-hishtalmut
+/fees?wrapper=brokerage-account
+/fees?track=233
+/workbench/providers/brokerage-account
+/workbench/funds/index-sp500
