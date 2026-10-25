@@ -1,0 +1,119 @@
+INDEPENDENT SCOPE REVIEW: HELPER BRIEF (finance-tool, 2026-10-25/26)
+
+You are one of five helpers to the independent reviewer. The project is /home/ori/dev/finance-tool, a personal Israeli
+saving and investing site. Every rule record in data/rules/*.json (577 records) gets exactly one "scope". You review the
+records of your group and write your verdicts. The reviewer merges them and compares them with another editor's scopes
+later; you never see the editor's scopes.
+
+== INDEPENDENCE (strict) ==
+Another editor has written scopes for many records. You must not be anchored by them. So:
+- Do NOT open .claude/skills/il-finance/references/*.md directly (they carry the editor's "- Scope:" lines and inline
+  "2026-10-25 (scope pass ...)" notes). Use the bundles instead (below), which hold each record's references block with
+  those notes removed. Do NOT invoke the il-finance skill (it reads those files).
+- Do NOT open anything in research/knowledge/2026-10-25-scope/ except the tools/ folder (applied.md, provident.md,
+  pension.md, markets.md, tax-bases.md, brief.md are off limits).
+- Do NOT read git log messages or diffs from 2026-10-25.
+- Do NOT read research/discovery/2026-10-25-institution-rules-sweep.md.
+Work from the record (data/rules/<id>.json, also in the bundle) and the sources it cites.
+
+== THE DEFINITION (spec section 1, verbatim in substance) ==
+Every rule record has exactly one scope, decided by what its sources say, never by where the record happens to be used.
+- general: a law, a regulation, a regulator's circular, a standard bylaw (CMA "תקנון תקני/אחיד") or published regulator
+  guidance, or an exchange rule says it, and it binds every institution of that kind. Cited from that general source
+  first; a company document only as a named example, never as the source.
+  Examples: payout within 4 business days (Income Tax Rules 1964, r.41יא); the provident fund's fee cap of 1.05% (fee
+  regulations, r.2); track switching is not a tax event.
+- institution: <names>: it is found only in one (or more named) institution's documents and no general source requires
+  it: its forms and channels, its own figure inside a legal range, its own deadline shorter than the legal one, its
+  track menu, its tariff. Examples: Altshuler Shaham's withdrawal form and bank-transfer-only channel; Harel's and
+  Altshuler's 0.23% child-savings fee after 21; Mor's track menu.
+- unsettled: <what would settle it>: it reads like a general rule, but only institution documents (or the press) support
+  it, and a recorded search found no general source. Name the documents seen, what you searched, and what would settle it.
+Not rule records (flag them in "note" if a record is one):
+- a count over the collected institutions ("4 of 8 banks pay no interest"): belongs in data/ as a computed count;
+- an example of a general rule (a company document showing how it applies the rule): the record is general, cites the
+  general source, and may carry the company detail as a named example.
+Edge cases, decided:
+- a legal maximum with each company's own figure: two records, the maximum general, the figure institution;
+- a company's wording that contradicts a general rule: the general rule is shown; the company clause, if kept, is
+  institution and must say it departs from the rule;
+- a mixed record (general part + company part) is split: the general part keeps the id, the company part gets a new id.
+  Give the scope of the part that keeps the id, and describe the part to split off in "split";
+- a third-party copy of a regulator's text (prisha.co.il hosting a CMA circular, olaw.org.il, he.wikisource, Capitax,
+  Nevo) is a general source with the host named; the scope is general;
+- a count over only some institutions ("in the three bylaws we read") is never general: unsettled or institution.
+Practical readings (reviewer's guidance; say in "note" when you lean on one):
+- Scope is about who the statement applies to. A regulator's dataset (Gemel-Net, Pension-Net, data.gov.il) that shows one
+  company's track menu or one fund's figure makes the record institution: <that company>, even though the source kind is
+  general. A statement about how the dataset itself is built, true for every row, is general.
+- A company's own bylaw (one fund's "תקנון") is an institution document, unless the clause is copied from a CMA
+  standard bylaw; then look for the standard bylaw (gov.il circular annexes, prisha.co.il) and, if found, it is general.
+- Bank of Israel Proper Conduct of Banking Business directives (ניהול בנקאי תקין), banking (customer service) rules and
+  BoI circulars bind every bank: general. A bank's own tariff, deposit terms or channel: institution.
+- TASE rules, bylaws, directives and guidelines (תקנון, הנחיות) are exchange rules: general. A TASE corporate document
+  (its periodic report, its website terms) is TASE's own document: decide on the content and explain.
+- Index methodologies (S&P DJI, MSCI, Nasdaq) and foreign fund issuers' pages (iShares, Vanguard) are company documents.
+- Foreign law or a foreign regulator (IRS, ESMA, SIPC, US statutes) binding everyone in that jurisdiction: general, note
+  the jurisdiction.
+- Press, forums, Wikipedia: never general; with no general source the record is unsettled (or institution if it is
+  about one named company).
+- A bill or a draft is not binding: if that is all, say so in "note" (scope as the definition gives).
+
+== THE QUOTE RULE ==
+No record is general on your word alone. For every general verdict, quote the general source: the exact sentence (Hebrew
+as printed), its URL, and its locator (section, regulation, page). Read it yourself in the fetched source:
+  python3 research/knowledge/2026-10-25-scope/tools/src.py find URL "quoted span"      (is it there? which page?)
+  python3 research/knowledge/2026-10-25-scope/tools/src.py grep URL "regex" [--page N] [--ctx 200]
+  python3 research/knowledge/2026-10-25-scope/tools/src.py text URL --page N [--max 6000]
+The record's references block often already carries a quoted span; check it with "find" and take the sentence around
+it. Mark "read": "fetched" when you found it in the fetched source; if the source cannot be fetched (blocked, login,
+dead link), use "read": "recorded only: <why>" and still give the recorded quote. The reviewer re-checks every
+fetched quote by script, so copy the span exactly as src.py prints it (a run of at least 8 Hebrew words is ideal).
+
+== FETCHING RULES ==
+- gov.il HTML pages: src.py routes them through research/audit/tools/govil-page.sh (FlareSolverr, allowed for gov.il
+  only). gov.il PDFs (/BlobFolder/) and other sites: plain curl via src.py. No disguised headless browsers and no
+  bot-check workarounds anywhere else. If src.py warns of a bot check or block page, stop and record it.
+- Do not use the Chrome browser tools or Playwright.
+- To search for a general source where a record cites only company documents, use WebSearch (load it with ToolSearch
+  "select:WebSearch,WebFetch") and look at gov.il (CMA circulars, the "קודקס הרגולציה"/regulation code, the Tax
+  Authority, NII), the Bank of Israel, the Israel Securities Authority, TASE rules, Nevo, Knesset/Reshumot
+  (free-justice.openapi.gov.il). Record what you searched in "note" (queries and places), especially for unsettled.
+- Never fill a financial or tax rule from memory. Every claim comes from a source you read.
+
+== TOOLS AND FILES ==
+  python3 research/knowledge/2026-10-25-scope/tools/ref.py --group GROUP     your ids with each source's class
+  python3 research/knowledge/2026-10-25-scope/tools/ref.py ID [ID ...]      the bundle: record JSON + references block
+                                                                             (cross-references such as "PF-02" can be
+                                                                             looked up the same way)
+Run commands from /home/ori/dev/finance-tool. Keep shell commands simple; if you need a script, put it in the
+session scratchpad, not in the repo. Do not edit any file in the repo except your own verdict file below. Do not commit.
+
+== OUTPUT ==
+Write research/knowledge/2026-10-25-scope/tools/work/verdicts-GROUP.json: a JSON array, one object per record of your
+group, in id order. Write it incrementally (rewrite the whole file after every 10 or so records) so nothing is lost.
+  {
+    "id": "CS-30",
+    "scope": "general" | "institution" | "unsettled",
+    "institutions": [{"name": "Harel", "name_he": "הראל"}],     // institution: required; unsettled: whose documents
+    "general_source": {"quote": "...", "url": "...", "locator": "p.4, reg. 2(א)(1)", "read": "fetched"},  // general only
+    "settle": "...",                    // unsettled only: what would settle it (and what you searched)
+    "split": "...",                     // only if the record is mixed: the part to split off and its scope/institutions
+    "company_doc_needed": true | false, // only if the record cites both a general source and a company document:
+                                        // is the company document needed at all, or does the general source carry
+                                        // every statement? Say why in note.
+    "note": "...",                      // short reasoning; searches made; judgement calls
+    "text_issue": "..."                 // only if something is wrong in the record's own text or sources: a quote not
+                                        // in the source, a wrong page or section, a company term worded as general,
+                                        // a dead link, a source kind or strength mislabelled
+  }
+Institution names: the short English name of the company or group as the record's sources publish it (Harel, Altshuler
+Shaham, Meitav, Mor Investment House, The Phoenix, Migdal, Clal, Menora, Infinity, Yachad Rofim, Bank Leumi, Bank
+Hapoalim, Discount Bank, Mercantile Discount Bank, Mizrahi Tefahot Bank, First International Bank, Bank Massad, Bank
+Yahav, One Zero Bank, Bank Jerusalem, Interactive Israel, Interactive Brokers, IBI, Psagot, Excellence, Fair, iShares,
+S&P Dow Jones Indices, MSCI, Nasdaq, Tel Aviv Stock Exchange, Hebrew University provident fund, J.P. Morgan Asset
+Management ...), plus the Hebrew name. For a Maya filing, the issuer or manager that filed it.
+
+When every record of your group has an entry, finish with a short report: counts per scope, the records that turned on
+a judgement call (one line each), the text issues found, the sources you could not fetch, and the records where a
+company document sits beside a general one and is not needed.
