@@ -1,0 +1,37 @@
+{
+  "id": "BRK-44",
+  "title": "PRIIPs at Interactive Brokers: a product without a KID is blocked for retail clients resident in the EEA or the UK, so US-listed ETFs are closed to them; the rule as IBKR states it does not reach a resident of Israel",
+  "title_he": "חסימת תעודות סל אמריקאיות בלי מסמך מידע מרכזי: לפי הברוקר חלה על תושבי אירופה ובריטניה",
+  "strength": "institution",
+  "dimensions": [
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-25",
+  "text_he": "אינטראקטיב ברוקרס כותבת שהיא חייבת לחסום מסחר במוצר שאין לו מסמך מידע מרכזי, ושהחסימה חלה על לקוחות קמעונאיים תושבי האזור הכלכלי האירופי ובריטניה. מנפיקי תעודות סל אמריקאיות בדרך כלל אינם מכינים מסמך כזה, ולכן הלקוחות האלה אינם יכולים לקנות אותן, בעוד שתעודות סל איריות בדרך כלל זמינות. לפי הנוסח הזה החסימה תלויה במקום המגורים, ותושב ישראל אינו בתוכה; איך הישות האירית נוהגת בלקוח קמעונאי שאינו תושב אירופה לא כתוב.",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.inter-il.com/wp-content/uploads/2025/05/KID.pdf",
+      "title": "אינטראקטיב ישראל: PRIIPs Regulation (KID)",
+      "publisher": "Interactive Israel",
+      "publisher_he": "אינטראקטיב ישראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.interactivebrokers.com/lib/cstools/faq/#/content/1136192471",
+      "title": "Interactive Brokers: FAQ, PRIIPs regulation",
+      "publisher": "Interactive Brokers",
+      "publisher_he": "Interactive Brokers",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ]
+}

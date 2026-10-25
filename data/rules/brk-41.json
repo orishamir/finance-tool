@@ -1,0 +1,70 @@
+{
+  "id": "BRK-41",
+  "title": "Interactive Israel: the account is at Interactive Brokers LLC (US) or Interactive Brokers Ireland, by the client's choice of a US- or Irish-regulated account; US ETFs and Irish UCITS ETFs are offered; TASE securities only to institutional clients",
+  "title_he": "אינטראקטיב ישראל: חשבון אמריקאי או אירי לבחירה; תעודות סל אמריקאיות ואיריות; בורסת תל אביב למוסדיים בלבד",
+  "strength": "institution",
+  "dimensions": [
+    "eligibility",
+    "regulator",
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-25",
+  "text_he": "דרך אינטראקטיב ישראל אפשר לבחור חשבון בפיקוח אמריקאי אצל אינטראקטיב ברוקרס בארצות הברית או חשבון בפיקוח אירי אצל אינטראקטיב ברוקרס אירלנד, באותן עמלות. החברה מציגה כזמינות למסחר תעודות סל אמריקאיות על מדדי ארצות הברית ותעודות סל איריות הנסחרות באירופה. לפי האתר שלה, קנייה ומכירה של ניירות ערך בבורסת תל אביב ניתנת נכון להיום ללקוחות מוסדיים בלבד, ואין בה קרנות נאמנות או קרנות מחקות ישראליות.",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.inter-il.com/wp-content/uploads/2025/05/KID.pdf",
+      "title": "אינטראקטיב ישראל: PRIIPs Regulation (KID)",
+      "publisher": "Interactive Israel",
+      "publisher_he": "אינטראקטיב ישראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.inter-il.com/open-account/",
+      "title": "אינטראקטיב ישראל: פתיחת חשבון",
+      "title_he": "אינטראקטיב ישראל: פתיחת חשבון",
+      "publisher": "Interactive Israel",
+      "publisher_he": "אינטראקטיב ישראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.inter-il.com/commission/",
+      "title": "אינטראקטיב ישראל: עמלות מסחר",
+      "title_he": "אינטראקטיב ישראל: עמלות מסחר",
+      "publisher": "Interactive Israel",
+      "publisher_he": "אינטראקטיב ישראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.inter-il.com/financial-products-on-indices/",
+      "title": "אינטראקטיב ישראל: רשימת תעודות סל וחוזים עתידיים שימושיים",
+      "title_he": "אינטראקטיב ישראל: רשימת תעודות סל וחוזים עתידיים שימושיים",
+      "publisher": "Interactive Israel",
+      "publisher_he": "אינטראקטיב ישראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.inter-il.com/israeli-stock-market/",
+      "title": "אינטראקטיב ישראל: בורסה ישראלית",
+      "title_he": "אינטראקטיב ישראל: בורסה ישראלית",
+      "publisher": "Interactive Israel",
+      "publisher_he": "אינטראקטיב ישראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ]
+}

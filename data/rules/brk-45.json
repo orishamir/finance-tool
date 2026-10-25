@@ -1,0 +1,36 @@
+{
+  "id": "BRK-45",
+  "title": "Interactive Brokers and US tax: a W-8BEN at opening, valid three calendar years, 30% US withholding on dividends unless a treaty rate applies; nothing read says IBKR withholds Israeli tax",
+  "title_he": "אינטראקטיב ברוקרס ומס אמריקאי: טופס W-8BEN, ניכוי במקור על דיבידנדים; אין ניכוי מס ישראלי",
+  "strength": "institution",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "reporting-obligation",
+    "tax-during"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-25",
+  "text_he": "לקוח שאינו אמריקאי ממלא בפתיחת החשבון טופס W-8BEN, שתוקפו עד סוף השנה השלישית אחרי שנת החתימה. על דיבידנד ממניות אמריקאיות מנוכה מס אמריקאי בשיעור המלא, אלא אם האמנה בין ארצות הברית למדינת המגורים מפחיתה אותו, וטופס שפג תוקפו מחזיר את השיעור המלא גם על תמורת מכירות. באף עמוד של הברוקר לא מוזכר מס ישראלי, ולכן בחשבון ישיר החוסך מדווח ומשלם בעצמו; דרך אינטראקטיב ישראל אפשר להצטרף לשירות ניכוי מס חיצוני.",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.interactivebrokers.com/en/support/tax-nonus-initial.php",
+      "title": "Interactive Brokers: Tax Information and Reporting, Non-US, Initial Application & Data Collection",
+      "publisher": "Interactive Brokers",
+      "publisher_he": "Interactive Brokers",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.inter-il.com/question-answer/%D7%90%D7%99%D7%9A-%D7%90%D7%A0%D7%99-%D7%9E%D7%A2%D7%93%D7%9B%D7%9F-%D7%90%D7%AA-%D7%98%D7%95%D7%A4%D7%A1-w-8ben/",
+      "title": "אינטראקטיב ישראל: איך אני מעדכן את טופס W-8BEN?",
+      "publisher": "Interactive Israel",
+      "publisher_he": "אינטראקטיב ישראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ]
+}

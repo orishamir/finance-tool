@@ -1,0 +1,45 @@
+{
+  "id": "BRK-43",
+  "title": "Interactive Brokers: the carrying entity follows the client's country of legal residence; Israel is not named; IB LLC is SEC/CFTC-regulated and a FINRA and SIPC member, IB Ireland is regulated by the Central Bank of Ireland",
+  "title_he": "אינטראקטיב ברוקרס: הישות שמחזיקה בחשבון נקבעת לפי מדינת המגורים; ישראל לא מוזכרת",
+  "strength": "institution",
+  "dimensions": [
+    "regulator",
+    "protection",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-25",
+  "text_he": "לפי אינטראקטיב ברוקרס, החברה בקבוצה שמחזיקה בחשבון נקבעת בדרך כלל לפי מדינת המגורים החוקית של בעל החשבון, ואפשר לראות אותה בראש דוח הפעילות. הישות האמריקאית מפוקחת על ידי הרשויות בארצות הברית וחברה בקרן ההגנה על לקוחות ברוקרים, והישות האירית מפוקחת על ידי הבנק המרכזי של אירלנד. באף עמוד שנקרא לא כתוב איזו ישות משרתת תושב ישראל שפותח חשבון ישירות, ואם הוא רשאי לסחור שם בבורסת תל אביב.",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.interactivebrokers.com/lib/cstools/faq/",
+      "title": "Interactive Brokers: FAQ, Which IBKR entity carries my account?",
+      "publisher": "Interactive Brokers",
+      "publisher_he": "Interactive Brokers",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+      "title": "Interactive Brokers: Commissions Stocks (footer and Israel section)",
+      "publisher": "Interactive Brokers",
+      "publisher_he": "Interactive Brokers",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.interactivebrokers.ie/en/pricing/commissions-stocks.php",
+      "title": "Interactive Brokers Ireland: Commissions Stocks (footer)",
+      "publisher": "Interactive Brokers Ireland",
+      "publisher_he": "Interactive Brokers",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ]
+}
