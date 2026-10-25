@@ -306,3 +306,35 @@ So the custom index asks **one question, "are the companies Israeli?"**, which d
 - Row labels carry only what differs between ways: where the fund is held, how it trades, how it follows the index, hedging, tax mechanics, and burdens and risks.
 
 **Engine change to make when building:** `fund-variants.ts` line 211 refuses a fund whose trading currency differs from the exposure's currency ("a USD fund on a JPY exposure has no run"). A dollar-traded Nikkei ETF would be refused. The model should separate the index's currency (for an entered return and A-03, zero by default) from the vehicle's trading currency (for the broker's FX line and the TXF-03 tax base).
+
+### 10.9 The founder's critique: options, and the best broker for each (2026-10-25, evening)
+The founder found 10.8's page useless: three routes with no answer. The page must answer two things for any index:
+- (a) what are my options for owning it;
+- (b) which broker is best for each option, because a broker can be cheap for an Israeli fund and dear for a US ETF, or the other way round.
+He also wants both "חשיפה לדולר" and "מנוטרלת מט״ח" kept as labels: they tell the unhedged and the hedged funds apart.
+
+**The redesign:**
+- **The options:** one card per way of owning the index (Israeli tracking fund, Israeli ETF, TASE foreign fund, a fund bought abroad), each naming its best broker, that broker's cost, and the cheapest fund in it.
+- **The broker × option matrix:** one row per broker, one column per option. Each cell holds the broker's 20-year cost, or "לא זמין". The best broker in each column is marked.
+- **The headline** is the cheapest complete way: the best broker in the best option.
+
+**Computed with the engine** for the founder's plan (6,000 + 400 a month, 20 years, 7% typed, 2% inflation), as each broker's 20-year cost in today's shekels:
+
+| Broker | Israeli tracking fund (Yelin 5139282) | Israeli ETF (Tachlit 1144385) |
+|---|---|---|
+| Psagot Trade | 2,894 | 2,565 |
+| One Zero | 9,760 | 8,811 |
+| Bank of Jerusalem | 11,973 | 10,581 |
+| Hapoalim, Yahav | 16,829 | 14,979 |
+| Leumi | 18,544 | 16,532 |
+| Altshuler Shaham Trade | 56,968 | 51,040 |
+| Excellence | 61,559 | 55,145 |
+| Interactive Israel | not available (no line of its new snapshot applies to TASE units) | not available |
+
+- Between the two Israeli options the broker order is the same today. The interaction the founder expects shows between the Israeli and the abroad options. Interactive Israel has no line for TASE units, and the banks price foreign trading separately.
+- The abroad option did not compute. Altshuler Shaham Trade's foreign-trade line sets its minimum in dollars, and the engine rejects that ("unit is usd, expected shekels"). It rejects it for the whole run, not just that broker's row.
+- **Engine changes to make when building:**
+  - convert foreign-currency minimums and maximums at the site's rate (D26);
+  - make a broker the engine can't run a "not comparable" row instead of an error for the whole page.
+
+The Interactive snapshots in this table are the foreign-brokers agent's work in progress (uncommitted).

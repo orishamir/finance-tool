@@ -1,0 +1,62 @@
+{
+  "id": "BRK-40",
+  "title": "Interactive Israel's tariff (updated 23.09.2026): per-share US commission with a USD minimum, a percentage on European exchanges, shekel conversion at a small percentage with a 10 NIS minimum and none in the recurring plan, no custody, system or inactivity fee",
+  "title_he": "תעריפון אינטראקטיב ישראל: עמלה לפי מניה בארצות הברית, אחוז באירופה, בלי דמי משמרת",
+  "strength": "institution",
+  "dimensions": [
+    "fee-trade",
+    "fee-fx",
+    "fee-custody",
+    "minimum"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-25",
+  "text_he": "התעריפון המלא של אינטראקטיב ישראל גובה על מניות ותעודות סל בארצות הברית עמלה לפי מספר המניות עם מינימום בדולרים לעסקה, ובבורסות אירופה אחוז משווי העסקה עם מינימום. המרת שקלים עולה אחוז זעיר משווי ההמרה עם מינימום בשקלים, ובתוכנית ההשקעה הקבועה אין עמלת המרה כלל. החברה מצהירה שאין דמי משמרת, דמי מערכת, דמי ניהול או דמי אי פעילות, ושמשיכה אחת בחודש חינם. המספרים עצמם שמורים בקובץ העמלות.",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+      "title": "אינטראקטיב ישראל: תעריף עמלות מסחר, מעודכן מ-23.09.2026",
+      "title_he": "אינטראקטיב ישראל: תעריף עמלות מסחר, מעודכן מ-23.09.2026",
+      "publisher": "Interactive Israel",
+      "publisher_he": "אינטראקטיב ישראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.1, 6, 7",
+      "locator_he": "עמודים 1, 6, 7",
+      "page": 1,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.inter-il.com/commission/",
+      "title": "אינטראקטיב ישראל: עמלות מסחר",
+      "title_he": "אינטראקטיב ישראל: עמלות מסחר",
+      "publisher": "Interactive Israel",
+      "publisher_he": "אינטראקטיב ישראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.inter-il.com/regulation-and-security/",
+      "title": "אינטראקטיב ישראל: רגולציה וביטחון",
+      "title_he": "אינטראקטיב ישראל: רגולציה וביטחון",
+      "publisher": "Interactive Israel",
+      "publisher_he": "אינטראקטיב ישראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.inter-il.com/question-answer/%D7%9E%D7%94%D7%99-%D7%A2%D7%9C%D7%95%D7%AA-%D7%94%D7%A9%D7%99%D7%A8%D7%95%D7%AA-%D7%A9%D7%9C-%D7%AA%D7%95%D7%9B%D7%A0%D7%99%D7%AA-%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F/",
+      "title": "אינטראקטיב ישראל: מהי עלות השירות של תוכנית חיסכון?",
+      "title_he": "אינטראקטיב ישראל: מהי עלות השירות של תוכנית חיסכון?",
+      "publisher": "Interactive Israel",
+      "publisher_he": "אינטראקטיב ישראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ]
+}
