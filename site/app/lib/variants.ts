@@ -4,16 +4,21 @@
 // Pure: no storage, no fetch (the assumption store is at the end).
 import {
   buildTariff,
+  coverageLine,
   fundVariants,
+  outcomeOrder,
+  rankCandidates,
   RecordInputError,
   tieThreshold,
+  type Candidate,
+  type FundVariants,
   type RunContext,
   type VariantRow,
   type VariantSource,
 } from "@finance-tool/engine";
 import type { ExposureRecord, FundRecord, ValueObject } from "@finance-tool/schema";
 import { deviceStore } from "./device-store";
-import { BROKERAGE, a28Value, parameterValue, ruleContext, staleTariff, type FundAssumptions, type WorkbenchBundle, type WorkbenchInputs } from "./providers";
+import { BROKERAGE, a28Value, instrumentClassOf, parameterValue, ruleContext, staleTariff, type FundAssumptions, type WorkbenchBundle, type WorkbenchInputs } from "./providers";
 import { nisPer } from "./fx";
 import { computed, weaker, type SiteValue, type Strength } from "./value";
 
@@ -151,7 +156,7 @@ function tariffFor(bundle: WorkbenchBundle, wanted: string | null, instrumentCla
   if (wanted) candidates.push({ id: wanted, fromP05: wanted === p05Tariff, fellBack: false });
   if (p05Tariff && p05Tariff !== wanted) candidates.push({ id: p05Tariff, fromP05: true, fellBack: wanted !== null });
   for (const c of candidates) {
-    const s = bundle.snapshots.find((x) => x.id === c.id && (x.provider.class === "bank" || x.provider.class === "broker"));
+    const s = bundle.snapshots.find((x) => x.id === c.id && (x.provider.class === "bank" || x.provider.class === "broker" || x.provider.class === "foreign_broker"));
     if (!s || s.missing) continue;
     const input = {
       goal: { amountNow: 0, monthly: 0, months: 12 },
@@ -235,12 +240,19 @@ export function buildFundVariants(a: VariantArgs): VariantResult {
   const exposure = bundle.exposures.find((e) => e.id === exposureId);
   if (!exposure) return { kind: "error", code: "no-exposure" };
   const mine = bundle.funds.filter((f) => f.exposure_id === exposure.id);
-  // the class the shared tariff is read for: TASE-traded funds are priced as exchange-traded funds; only when every fund is bought abroad, as foreign securities
-  const allAbroad = mine.length > 0 && mine.every((f) => f.domicile !== "IL" && f.trading_currency_on_tase === null);
-  const instrumentClass = allAbroad ? "foreign_securities" : "etf_units";
+  // Each fund is priced with its own instrument class (2026-10-25): a tracking fund on the mutual-fund lines, an ETF and a TASE-traded
+  // foreign fund on the exchange-traded lines, a fund bought abroad on the foreign-securities lines. A list row with no record has no run.
+  const classOf = new Map(mine.map((f) => [f.id, instrumentClassOf(f, exposure)] as const));
+  const classes = [...new Set(classOf.values())];
+  if (classes.length === 0) classes.push("etf_units");
   const ordersN = query.orders ?? 1;
-  const tariff = tariffFor(bundle, query.provider, instrumentClass, exposure.currency, ordersN);
-  if (!tariff) return { kind: "error", code: "no-tariff" };
+  const tariffs = new Map<string, NonNullable<ReturnType<typeof tariffFor>>>();
+  for (const cls of classes) {
+    const t = tariffFor(bundle, query.provider, cls, exposure.currency, ordersN);
+    if (!t) return { kind: "error", code: "no-tariff" };
+    tariffs.set(cls, t);
+  }
+  const tariff = tariffs.get(classes[0]!)!;
 
   const dist: Record<string, { yield: number; perYear: number }> = {};
   for (const [id, d] of Object.entries(assumptions.distributions ?? {})) dist[id] = { yield: d.yield / 100, perYear: d.perYear };
@@ -248,14 +260,14 @@ export function buildFundVariants(a: VariantArgs): VariantResult {
   const startRates = foreignCurrencies(mine).map((code) => ({ code, rate: bundle.fx ? nisPer(bundle.fx, code, today) : null }));
   const startRateNumbers: Record<string, number> = {};
   for (const r of startRates) if (r.rate && typeof r.rate.value === "number") startRateNumbers[r.code] = r.rate.value;
-  const x = {
+  const xFor = (t: typeof tariff) => ({
     record: exposure,
     run: {
       goal: { amountNow: inputs.amountNow, monthly: inputs.monthly, months: 12 * inputs.years },
       grossReturn: inputs.grossReturn,
       inflation: inputs.inflation,
       ...(assumptions.fxChange !== undefined ? { fxChange: assumptions.fxChange / 100 } : {}),
-      tariff: tariff.tariff,
+      tariff: t.tariff,
       profile: { ...(inputs.age !== null ? { ageAtStart: inputs.age } : {}), ...(inputs.income !== null && inputs.income > 0 ? { annualIncome: inputs.income } : {}) },
       ...(assumptions.w8ben !== undefined ? { w8ben: assumptions.w8ben } : {}),
       fxStartRates: startRateNumbers,
@@ -263,10 +275,26 @@ export function buildFundVariants(a: VariantArgs): VariantResult {
       ordersPerMonth: ordersN,
     },
     theta,
-  };
-  let fv: ReturnType<typeof fundVariants>;
+  });
+  let fv: FundVariants;
   try {
-    fv = fundVariants(x, bundle.fundLists, bundle.funds, ruleContext(bundle) as RunContext);
+    const ctx = ruleContext(bundle) as RunContext;
+    const runs = classes.map((cls) => ({ cls, fv: fundVariants(xFor(tariffs.get(cls)!), bundle.fundLists, bundle.funds, ctx) }));
+    // a record's row comes from the run of its own class; a row with no record (a list row) from the first run
+    const rows = runs.flatMap(({ cls, fv: r }, i) => r.rows.filter((row) => (row.recordId ? classOf.get(row.recordId) === cls : i === 0)));
+    const first = runs[0]!.fv;
+    const asCandidates: Candidate[] = rows.map((r) => ({ id: r.id, name: r.name, tier: 1, kind: r.kind, reasons: r.reasons, ...(r.plan ? { plan: r.plan } : {}), ...(r.run ? { run: r.run } : {}) }));
+    const ranking = rankCandidates(asCandidates, { theta, ctx });
+    for (const e of ranking.entries) rows.find((r) => r.id === e.id)!.rank = e.rank;
+    const coverage = coverageLine(
+      [
+        ...rows.map((r) => ({ id: r.id, name: r.name, kind: r.kind, reasons: r.reasons })),
+        { id: first.group.id, name: "foreign-domiciled funds traded abroad, not held one by one", kind: "not-evaluated" as const, reasons: [{ code: "gap" as const, ruleIds: [], gapIds: [first.group.gapId], detail: `not held one by one; ${first.group.held} held` }] },
+      ],
+      outcomeOrder,
+      ["ranked"],
+    );
+    fv = { ...first, rows, ranking, coverage };
   } catch (e) {
     return { kind: "error", code: "engine", detail: e instanceof Error ? e.message : String(e) };
   }

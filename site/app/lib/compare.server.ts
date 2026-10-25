@@ -338,7 +338,10 @@ export function buildCompareBundle(): CompareBundle {
     if ("missing" in built) return { ...base, missing: built.missing };
     const range = depositRange(record.id, family, p05.instruments?.[record.id], sources.deposits);
     const rep = repOf(record.id);
-    return { ...base, terms: built.terms, feeValues: built.feeValues, ...(rate ? { cashRate: rate } : {}), ...(range ? { cashRange: range } : {}), ...(rep ? { representative: rep } : {}) };
+    // F-26 (2026-10-25): the current account's rate is paid on the balance up to the record's `amount_range.max` (BANK-09)
+    const ceiling = record.id === "current-account" && rate && range?.max && range.max.unit === "nis" && typeof range.max.value === "number" ? range.max.value : undefined;
+    const terms = ceiling !== undefined && built.terms.deposit ? { ...built.terms, deposit: { ...built.terms.deposit, balanceCeiling: ceiling } } : built.terms;
+    return { ...base, terms, feeValues: built.feeValues, ...(rate ? { cashRate: rate } : {}), ...(range ? { cashRange: range } : {}), ...(rep ? { representative: rep } : {}) };
   });
   // review fix 2026-10-24: what P-04 judges each wrapper's run by (see `WrapperEntry.fitBasis`)
   for (const w of wrappers) {

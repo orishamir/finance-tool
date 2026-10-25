@@ -1,0 +1,186 @@
+{
+  "id": "1146505",
+  "names": {
+    "en": [],
+    "he": [
+      "קסם NASDAQ 100 (4D) ETF",
+      "קסם NDX100 ETF"
+    ],
+    "tase": [
+      "1146505"
+    ]
+  },
+  "identifiers": {
+    "isin": "IL0011465056",
+    "tase_number": "1146505",
+    "cusip": null,
+    "ticker": {
+      "TASE_he": "קסם.ס52"
+    }
+  },
+  "manager": "קסם קרנות נאמנות בע\"מ",
+  "domicile": "IL",
+  "legal_form": "קרן סגורה, קרן סל (Israeli ETF under the Joint Investment Trust Law 1994; traded on TASE, created and redeemed through the manager, ETF-04); קרן בלתי מוגבלת בניירות ערך חוץ; exposure profile 4D. Trustee: הרמטיק קרנות לנאמנות (2022) בע\"מ. Tracking asset on Maya's fund page: NASDAQ 100 - NTR 100% + דולר ארה\"ב 100%. Payment policy on Maya: 'לא מתחייבת לחלק תשלומים'. REPLICATION: futures and swaps: mainly futures abroad on the tracking asset and swaps on it, with FX forwards and spot (annual report p. 3, 'הדרך שבה הקרן תנוהל': 'ניהול השקעות הקרן מתאפיין בעיקר בביצוע עסקאות בחוזים עתידיים בחו\"ל על נכס המעקב, בעסקאות החלף על נכס המעקב'). Size used to rank the fund (not a fee input): market value 1,506,765 thousand NIS on 23/10/2026 (TASE security page, 'שווי שוק').",
+  "exposure_id": "index-nasdaq100",
+  "currency": "NIS",
+  "trading_currency_on_tase": "NIS",
+  "distribution_policy": "accumulating",
+  "tax_status": {
+    "il_fund_tax_track": "exempt",
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0.59,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1724001-1725000/P1724797-00.pdf",
+        "title": "דוח שנתי 'קסם NASDAQ 100 (4D) ETF' (מספר בורסה 1146505), תאריך הדוח 31 בדצמבר 2025, קסם קרנות נאמנות בע\"מ (Maya filing 1724797, PDF), עמ' 2 'שכר מנהל הקרן' / 'דמי ניהול קבועים'",
+        "publisher": "קסם קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13",
+        "MF-16",
+        "MF-17"
+      ],
+      "state": "sourced",
+      "notes": "Fixed management fee as printed in the report: 0.59% of average annual net assets. Maya's fund page (https://maya.tase.co.il/he/funds/etfs/1146505, read 2026-10-25) shows the same 'דמי ניהול' 0.59%. The manager committed to the ISA outline to raise its fees only on 1 January (ETF-16). Main prospectus published on Magna on 2025-08-07, reference 2025-03-058648 (not opened; Magna returns 403 to scripts), as the report states; the prospectus block cites this report."
+    },
+    "trustee": {
+      "value": 0.03,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1724001-1725000/P1724797-00.pdf",
+        "title": "דוח שנתי 'קסם NASDAQ 100 (4D) ETF' (מספר בורסה 1146505), תאריך הדוח 31 בדצמבר 2025, קסם קרנות נאמנות בע\"מ (Maya filing 1724797, PDF), עמ' 2 'שכר הנאמן'",
+        "publisher": "קסם קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13",
+        "MF-20"
+      ],
+      "state": "sourced",
+      "notes": "Trustee fee as printed: 0.03% of average annual net assets; Maya's fund page shows the same rate."
+    },
+    "variable_management": {
+      "value": 0.3,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1724001-1725000/P1724797-00.pdf",
+        "title": "דוח שנתי 'קסם NASDAQ 100 (4D) ETF' (מספר בורסה 1146505), תאריך הדוח 31 בדצמבר 2025, קסם קרנות נאמנות בע\"מ (Maya filing 1724797, PDF), עמ' 2 'דמי ניהול משתנים'",
+        "publisher": "קסם קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-14",
+        "ETF-13"
+      ],
+      "state": "sourced",
+      "notes": "Variable management fee rate as printed: 0.3% a year of net assets. Maya's fund page shows 0.3%. The mechanism works in both directions (ETF-14): the amount actually charged or paid depends on the gap to the tracking asset."
+    },
+    "tracking_difference_12m": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1724001-1725000/P1724797-00.pdf",
+        "title": "דוח שנתי 'קסם NASDAQ 100 (4D) ETF' (מספר בורסה 1146505), תאריך הדוח 31 בדצמבר 2025, קסם קרנות נאמנות בע\"מ (Maya filing 1724797, PDF), עמ' 8 'תשואות, סטיות תקן ונתוני השוואה'",
+        "publisher": "קסם קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-07",
+        "ETF-08",
+        "ETF-09",
+        "ETF-10"
+      ],
+      "state": "sourced",
+      "notes": "Not printed as one number. The report's table 'תשואות, סטיות תקן ונתוני השוואה' (p. 8) prints the fund's return against its tracking asset: 2025 4.97% against 5.52% (Nasdaq 100 NTR 100%, US dollar 100%). The difference is not computed here (data-update rule). The ISA directive (ETF-07(e)) makes the manager publish the 12-month tracking difference every pricing day; this report points to the third-party page https://chart.bursagraph.co.il/funds.shtml?m=5 for it. That page (Funds Center by Guideline, run for the managers) states on the page 'אין להפיץ בכל דרך כלשהי ... את הנתונים המוצגים באתר', so its figures are not copied here (same position as CAT-43 for TASE lists); founder decision pending."
+    },
+    "median_spread": {
+      "value": null,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1724001-1725000/P1724797-00.pdf",
+        "title": "דוח שנתי 'קסם NASDAQ 100 (4D) ETF' (מספר בורסה 1146505), תאריך הדוח 31 בדצמבר 2025, קסם קרנות נאמנות בע\"מ (Maya filing 1724797, PDF), עמ' 1 'עמלת יצירה' / 'עמלת פדיון' and 'הפרשים שבין שווי היחידה למחירה בבורסה'",
+        "publisher": "קסם קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-06",
+        "ETF-07"
+      ],
+      "state": "sourced",
+      "notes": "No median bid-ask spread is printed in the annual report; the report prints only the range and average of the differences between unit value and exchange price, a premium/discount measure, not a spread (ETF-06). The median spread is published under ETF-07(b) on the same third-party page (https://chart.bursagraph.co.il/funds.shtml?m=5), whose terms forbid redistribution; not copied. Creation and redemption fee on direct orders to the manager: 0.30% each (p. 1; ETF-05)."
+    },
+    "fund_level_withholding_drag": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1724001-1725000/P1724797-00.pdf",
+        "title": "דוח שנתי 'קסם NASDAQ 100 (4D) ETF' (מספר בורסה 1146505), תאריך הדוח 31 בדצמבר 2025, קסם קרנות נאמנות בע\"מ (Maya filing 1724797, PDF), עמ' 3 'הדרך שבה הקרן תנוהל'",
+        "publisher": "קסם קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-11"
+      ],
+      "state": "sourced",
+      "notes": "Not collected: the report prints no withholding figure and no computation is made here. The fund takes its exposure mainly through derivatives (see REPLICATION in legal_form), so any dividend-withholding drag sits inside the instrument pricing and is not published as a rate."
+    }
+  },
+  "dimensions": {
+    "fund-tax-track": "covered:TXS-24",
+    "fee-management-balance": "covered:ETF-13",
+    "distribution-policy": "covered:MF-49",
+    "currency": "covered:ETF-10",
+    "fee-trade": "covered:ETF-05",
+    "protection": "covered:MF-02"
+  },
+  "prospectus": {
+    "url": "https://mayafiles.tase.co.il/rpdf/1724001-1725000/P1724797-00.pdf",
+    "date": "2025-08-07"
+  },
+  "exposure_code": "4D",
+  "distribution_fee_type": "3",
+  "creation_redemption_fee_category": "0.30%",
+  "replication": {
+    "method": "mixed",
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1724001-1725000/P1724797-00.pdf",
+      "page": 3,
+      "checked": "2026-10-25"
+    }
+  },
+  "snapshot": "2026-10-25"
+}

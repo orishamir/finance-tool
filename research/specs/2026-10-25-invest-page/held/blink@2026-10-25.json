@@ -1,0 +1,460 @@
+{
+  "id": "blink",
+  "provider": {
+    "name_he": "בלינק פינטק (ישראל) בע\"מ",
+    "class": "broker",
+    "regulator": "ISA",
+    "tase_member": true,
+    "protection_rule_ids": [
+      "BRK-07",
+      "BRK-08",
+      "BRK-09",
+      "BRK-12",
+      "BRK-13",
+      "REG-16"
+    ]
+  },
+  "tariff": {
+    "url": "https://heyblink.com/wp-content/uploads/2026/09/blink-trading-fees-070926.pdf",
+    "title": "תעריפון מלא (PDF, 3 עמ', קובץ 'blink-trading-fees-070926.pdf', ללא תאריך מודפס; כותרת המסמך במטא-נתונים 'תעריפון מעודכן בלינק 7.9.26'), מקושר 'לתעריפון העמלות המלא' מעמוד 'כמה עולה?' (heyblink.com/pricing); חלק 4 - ניירות ערך (עמ' 2), חלק 5 - מט\"ח (עמ' 2-3)",
+    "published": null,
+    "format": "pdf"
+  },
+  "snapshot": "2026-10-25",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "blink-buy-sell-foreign",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.01,
+        "unit": "usd_per_share",
+        "source": {
+          "url": "https://heyblink.com/wp-content/uploads/2026/09/blink-trading-fees-070926.pdf",
+          "title": "תעריפון מלא של בלינק (PDF, 3 עמ', ללא תאריך מודפס; 'blink-trading-fees-070926.pdf'), עמ' 2, חלק 4 - ניירות ערך, (4א) סעיפים (5) 'רק ארה\"ב' ו-(6) 'מחוץ לארה\"ב'",
+          "publisher": "Blink Fintech (Israel) Ltd. (בלינק פינטק (ישראל) בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15",
+          "BRK-32"
+        ],
+        "state": "sourced",
+        "notes": "Printed for both item (5) 'קניה, מכירה ופדיון של ניירות ערך של ניירות ערך בחוץ לארץ – רק ארה\"ב (כולל קניה או מכירה שלא בוצעה)' and item (6) '... בחוץ לארץ – מחוץ לארה\"ב ...': '1 סנט למניה מינימום $1.5 מקסימום 1.8% משווי העסקה', charged 'בעת ביצוע הפעולה'. One line for both items because the prices are identical. Free allowance (pricing page, not in the PDF): 'עמלת מסחר (למעט תוכניות בלינקידס) עד 10 פעולות / 1,000 מניות בחודש (המוקדם מביניהם) 0 ₪' and 'אחרי שניצלתם את כמות הפעולות/מניות חינם ובתוכניות בלינקידס, תשלמו $0.01 למניה או לחלק היחסי ממנה. מינימום $1.5 לפעולה, מקסימום 1.8% משווי הפעולה.' The investments FAQ adds that dividend reinvestments count toward the 10 actions or 1,000 shares. The schema and the engine have no field for a monthly free allowance, so it is held in this note only and a run will charge every trade. The full-tariff PDF prints the per-share price with no free allowance. Fractional shares: the pricing page charges 'למניה או לחלק היחסי ממנה' (its example: 164.3 shares x $0.01 = $1.643). Outside the US: the investments FAQ describes Irish UCITS ETFs on the London exchange in dollars as a pilot ('המסחר בפיילוט מתבצע בהוראות מרקט בלבד', orders only 16:30-18:30 Israel time). The document prints no date; the PDF's metadata title says 'תעריפון מעודכן בלינק 7.9.26' and the file name 070926, so effective_from is left null. The pricing page says 'עדכון אחרון בתאריך 16 לינואר 2024' although it links this 2026 file."
+      },
+      "min": {
+        "value": 1.5,
+        "unit": "usd_per_trade",
+        "source": {
+          "url": "https://heyblink.com/wp-content/uploads/2026/09/blink-trading-fees-070926.pdf",
+          "title": "תעריפון מלא של בלינק (PDF, 3 עמ', ללא תאריך מודפס; 'blink-trading-fees-070926.pdf'), עמ' 2, חלק 4, (4א) סעיפים (5) ו-(6), מינימום",
+          "publisher": "Blink Fintech (Israel) Ltd. (בלינק פינטק (ישראל) בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15",
+          "BRK-32"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום $1.5'."
+      },
+      "max": null,
+      "cap": {
+        "value": 1.8,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://heyblink.com/wp-content/uploads/2026/09/blink-trading-fees-070926.pdf",
+          "title": "תעריפון מלא של בלינק (PDF, 3 עמ', ללא תאריך מודפס; 'blink-trading-fees-070926.pdf'), עמ' 2, חלק 4, (4א) סעיפים (5) ו-(6), מקסימום",
+          "publisher": "Blink Fintech (Israel) Ltd. (בלינק פינטק (ישראל) בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15",
+          "BRK-32"
+        ],
+        "state": "sourced",
+        "notes": "'מקסימום 1.8% משווי העסקה' (recorded in cap, not max). The pricing page shows the cap winning over the minimum: 'עידו ביצע פעולה בשווי של $70 ... מקסימום 1.8% משווי הפעולה = $1.26 עמלה' (below the $1.5 minimum), which matches commission = min(cap x trade, max(min, rate x shares))."
+      },
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ניירות ערך של ניירות ערך בחוץ לארץ – רק ארה\"ב",
+          "קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ – מחוץ לארה\"ב"
+        ]
+      }
+    },
+    {
+      "id": "blink-buy-sell-mutual-fund",
+      "base": "trade",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.01,
+        "unit": "usd_per_share",
+        "source": {
+          "url": "https://heyblink.com/wp-content/uploads/2026/09/blink-trading-fees-070926.pdf",
+          "title": "תעריפון מלא של בלינק (PDF, 3 עמ', ללא תאריך מודפס; 'blink-trading-fees-070926.pdf'), עמ' 2, חלק 4 - ניירות ערך, (4א) סעיף (2)",
+          "publisher": "Blink Fintech (Israel) Ltd. (בלינק פינטק (ישראל) בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15",
+          "BRK-32"
+        ],
+        "state": "sourced",
+        "notes": "Printed: '(2) קניה, מכירה ופדיון של קרנות נאמנות מסורתיות הזמינות באפליקציה ונסחרות בבורסה בתל אביב' | '1 סנט למניה מינימום $1.5 מקסימום 1.8% משווי העסקה', charged 'בעת ביצוע הפעולה'. Free allowance (pricing page, not in the PDF): 'עמלת מסחר (למעט תוכניות בלינקידס) עד 10 פעולות / 1,000 מניות בחודש (המוקדם מביניהם) 0 ₪' and 'אחרי שניצלתם את כמות הפעולות/מניות חינם ובתוכניות בלינקידס, תשלמו $0.01 למניה או לחלק היחסי ממנה. מינימום $1.5 לפעולה, מקסימום 1.8% משווי הפעולה.' The investments FAQ adds that dividend reinvestments count toward the 10 actions or 1,000 shares. The schema and the engine have no field for a monthly free allowance, so it is held in this note only and a run will charge every trade. The full-tariff PDF prints the per-share price with no free allowance. Which Israeli funds: the investments FAQ says 'בשלב זה זמינות באפליקציה קרנות ישראליות הנסחרות במטבע דולר בלבד' and 'ניתן להשקיע בקרנות ישראליות הנסחרות בבורסה בתל אביב ונקובות במטבע דולר. קרנות אלו הן קרנות מחקות, העוקבות אחר מדדים מובילים בבורסה הישראלית, כמו תל אביב 125 ותל אביב 90.'; units are whole only ('ביחידות שלמות בלבד'), the price is shown in cents. Conflict: the PDF prices 'קרנות נאמנות מסורתיות' here, while its item (1) puts 'קרנות סל וקרנות מחקות' among the TASE securities marked 'לא רלוונטי'; the FAQ calls the Israeli funds it offers tracking funds (קרנות מחקות). The PDF is the full tariff and is kept for the price; which Israeli funds are tradable is not settled, so the snapshot has no availability entry for mutual_fund_units. The schema has no field for 'dollar-denominated funds only'; a shekel-denominated fund is, on the FAQ's words, not offered."
+      },
+      "min": {
+        "value": 1.5,
+        "unit": "usd_per_trade",
+        "source": {
+          "url": "https://heyblink.com/wp-content/uploads/2026/09/blink-trading-fees-070926.pdf",
+          "title": "תעריפון מלא של בלינק (PDF, 3 עמ', ללא תאריך מודפס; 'blink-trading-fees-070926.pdf'), עמ' 2, חלק 4, (4א) סעיף (2), מינימום",
+          "publisher": "Blink Fintech (Israel) Ltd. (בלינק פינטק (ישראל) בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15",
+          "BRK-32"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום $1.5'."
+      },
+      "max": null,
+      "cap": {
+        "value": 1.8,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://heyblink.com/wp-content/uploads/2026/09/blink-trading-fees-070926.pdf",
+          "title": "תעריפון מלא של בלינק (PDF, 3 עמ', ללא תאריך מודפס; 'blink-trading-fees-070926.pdf'), עמ' 2, חלק 4, (4א) סעיף (2), מקסימום",
+          "publisher": "Blink Fintech (Israel) Ltd. (בלינק פינטק (ישראל) בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15",
+          "BRK-32"
+        ],
+        "state": "sourced",
+        "notes": "'מקסימום 1.8% משווי העסקה' (recorded in cap, not max)."
+      },
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של קרנות נאמנות מסורתיות הזמינות באפליקציה ונסחרות בבורסה בתל אביב"
+        ]
+      }
+    },
+    {
+      "id": "blink-custody",
+      "base": "custody",
+      "applies_to": [
+        "foreign_securities",
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://heyblink.com/wp-content/uploads/2026/09/blink-trading-fees-070926.pdf",
+          "title": "תעריפון מלא של בלינק (PDF, 3 עמ', ללא תאריך מודפס; 'blink-trading-fees-070926.pdf'), עמ' 2, חלק 4, (4א) סעיף (7)",
+          "publisher": "Blink Fintech (Israel) Ltd. (בלינק פינטק (ישראל) בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15",
+          "BRK-32"
+        ],
+        "state": "sourced",
+        "notes": "Printed: '(7) דמי ניהול/טיפול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)' | 'פטור'. The pricing page: 'דמי ניהול 0 ₪'. No period printed; the rate is zero. Other part-4 items printed 'לא רלוונטי': '(3) עמלת קסטודיאן', '(2) עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות', issues, Maof options and futures, conversions."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול/טיפול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)"
+        ]
+      }
+    },
+    {
+      "id": "blink-fx",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://heyblink.com/wp-content/uploads/2026/09/blink-trading-fees-070926.pdf",
+          "title": "תעריפון מלא של בלינק (PDF, 3 עמ', ללא תאריך מודפס; 'blink-trading-fees-070926.pdf'), עמ' 2, חלק 5 - מט\"ח, סעיף (1) 'עמלת חליפין'",
+          "publisher": "Blink Fintech (Israel) Ltd. (בלינק פינטק (ישראל) בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15",
+          "BRK-32"
+        ],
+        "state": "sourced",
+        "notes": "Printed: '(1) עמלת חליפין' | 'פטור'. Deposits and withdrawals: 'פטור' (part 1, items 1 and 2); the pricing page: 'עמלת הפקדה/משיכה 0 ₪'. No interest is paid on cash: 'אין ללקוח זכאות לריבית בגין יתרת זכות'."
+      },
+      "min": null,
+      "max": null,
+      "spread": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://heyblink.com/wp-content/uploads/2026/09/blink-trading-fees-070926.pdf",
+          "title": "תעריפון מלא של בלינק (PDF, 3 עמ', ללא תאריך מודפס; 'blink-trading-fees-070926.pdf'), עמ' 2-3, חלק 5 - מט\"ח, סעיף (3) 'מרווח המרה'",
+          "publisher": "Blink Fintech (Israel) Ltd. (בלינק פינטק (ישראל) בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15",
+          "BRK-32"
+        ],
+        "state": "sourced",
+        "notes": "Not published. Item (3) 'מרווח המרה' says for each case (credit-card, quick or regular deposit in the app; a deposit made outside the app; a standing deposit or Blinkids; a withdrawal) only 'בהתאם לשער ההמרה שיקבע על ידי בלינק' at the time of the action, shown in the app under 'הכסף שלי / שערי המרה'. The commissions FAQ ('אם אין עמלות, ממה אתם מרוויחים?') names 'מרווח המרת מט״ח' as one of Blink's sources of income, so a zero commission does not mean a zero conversion cost."
+      },
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת חליפין",
+          "מרווח המרה"
+        ]
+      }
+    },
+    {
+      "id": "blink-transfer-out-foreign",
+      "base": "transfer_out",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 8,
+        "unit": "usd",
+        "source": {
+          "url": "https://heyblink.com/wp-content/uploads/2026/09/blink-trading-fees-070926.pdf",
+          "title": "תעריפון מלא של בלינק (PDF, 3 עמ', ללא תאריך מודפס; 'blink-trading-fees-070926.pdf'), עמ' 2, חלק 4, (4א) סעיף (8)(1) 'העברת ניירות ערך זרים'",
+          "publisher": "Blink Fintech (Israel) Ltd. (בלינק פינטק (ישראל) בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15",
+          "BRK-32"
+        ],
+        "state": "sourced",
+        "notes": "Printed: 'עבור כל נייר מועבר סך של $8.00', charged 'בעת ביצוע הפעולה'. Per security moved, not per transfer; the schema has no per-security unit, so the unit is plain usd and this note says what it counts."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "העברת ניירות ערך זרים"
+        ]
+      }
+    },
+    {
+      "id": "blink-transfer-out-israel",
+      "base": "transfer_out",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 15,
+        "unit": "nis",
+        "source": {
+          "url": "https://heyblink.com/wp-content/uploads/2026/09/blink-trading-fees-070926.pdf",
+          "title": "תעריפון מלא של בלינק (PDF, 3 עמ', ללא תאריך מודפס; 'blink-trading-fees-070926.pdf'), עמ' 2, חלק 4, (4א) סעיף (8)(2) 'העברת ניירות ערך ישראלים'",
+          "publisher": "Blink Fintech (Israel) Ltd. (בלינק פינטק (ישראל) בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15",
+          "BRK-32"
+        ],
+        "state": "sourced",
+        "notes": "Printed: 'עבור כל נייר מועבר סך של 15 ש״ח עם מקסימום של 60 ש״ח להעברה (שתבוצע באותו יום).' Per security moved; plain nis unit for the same reason as the foreign line. applies_to names the only Israeli class Blink prices (item (2))."
+      },
+      "min": null,
+      "max": {
+        "value": 60,
+        "unit": "nis_per_transfer",
+        "source": {
+          "url": "https://heyblink.com/wp-content/uploads/2026/09/blink-trading-fees-070926.pdf",
+          "title": "תעריפון מלא של בלינק (PDF, 3 עמ', ללא תאריך מודפס; 'blink-trading-fees-070926.pdf'), עמ' 2, חלק 4, (4א) סעיף (8)(2), מקסימום",
+          "publisher": "Blink Fintech (Israel) Ltd. (בלינק פינטק (ישראל) בע\"מ)",
+          "strength": "institution"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15",
+          "BRK-32"
+        ],
+        "state": "sourced",
+        "notes": "'מקסימום של 60 ש״ח להעברה (שתבוצע באותו יום)'."
+      },
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "העברת ניירות ערך ישראלים"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": {
+      "value": 0,
+      "unit": "nis",
+      "source": {
+        "url": "https://heyblink.com/pricing/",
+        "title": "בלינק, 'כמה עולה?' (עמוד HTML): 'פתיחת חשבון ללא מינימום הפקדה'; 'מינימום הפקדה: אין'",
+        "publisher": "Blink Fintech (Israel) Ltd. (בלינק פינטק (ישראל) בע\"מ)",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BRK-28"
+      ],
+      "state": "sourced",
+      "notes": "'פתיחת חשבון ללא מינימום הפקדה' and, in the fee table, 'מינימום הפקדה' | 'אין'."
+    }
+  },
+  "notice_rule_ids": [],
+  "availability": [
+    {
+      "applies_to": [
+        "tase_shares_bonds",
+        "tase_bonds",
+        "makam",
+        "etf_units",
+        "tase_foreign_fund_units"
+      ],
+      "available": false,
+      "source": {
+        "url": "https://heyblink.com/wp-content/uploads/2026/09/blink-trading-fees-070926.pdf",
+        "title": "תעריפון מלא של בלינק (PDF, 3 עמ', ללא תאריך מודפס; 'blink-trading-fees-070926.pdf'), עמ' 2, חלק 4 - ניירות ערך, (4א) סעיף (1)",
+        "checked": "2026-10-25"
+      },
+      "note": "Printed 'לא רלוונטי' for '(1) קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה בת\"א, כולל קניה או מכירה שלא בוצעה (אך למעט קרנות נאמנות מסורתיות, אופציות מעו\"ף וחוזים עתידיים במעו\"ף ולרבות קרנות סל וקרנות מחקות)'. The item covers every TASE security except traditional mutual funds and Maof derivatives; makam and foreign funds listed on TASE are not named but fall under 'ניירות ערך הנסחרים בבורסה'. The investments FAQ: 'בקרוב נאפשר מסחר גם בבורסה הישראלית ובשווקים נוספים בעולם.' Tracking funds (mutual_fund_units) are left out of this entry because the FAQ says the Israeli funds Blink offers are tracking funds (see blink-buy-sell-mutual-fund)."
+    },
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://heyblink.com/support-category/investments/",
+        "title": "בלינק, שאלות ותשובות: השקעות ('באילו מוצרים אפשר להשקיע דרך בלינק?', 'איך קונים קרנות סל איריות בבלינק?')",
+        "checked": "2026-10-25"
+      },
+      "note": "'אפשר להשקיע במניות וקרנות סל (ETF) הנסחרות בארה״ב. בבלינק תמצאו קרוב ל-10,000 מניות וקרנות סל.' Irish UCITS ETFs on the London exchange in dollars are a pilot with market orders only, 16:30-18:30 Israel time. US trades go through Interactive Brokers LLC (about-Blink FAQ). Provider fields: Blink's about-Blink FAQ says 'בלינק הנה בעלת רישיון חבר בורסה בבורסה לניירות ערך בתל אביב' and 'אנו נמצאים תחת פיקוח הדוק של הבורסה לניירות ערך ורשות ניירות ערך'; the schema has no TASE regulator value, so regulator is ISA on those words. TASE's member list names Blink Fintech (BRK-32). Client assets: 'בחשבונות נאמנות לקוחות בבנקים ישראלים או בברוקר דרכו אנחנו עובדים – Interactive Brokers LLC'."
+    }
+  ]
+}

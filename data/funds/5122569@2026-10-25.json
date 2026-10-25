@@ -1,0 +1,184 @@
+{
+  "id": "5122569",
+  "names": {
+    "en": [],
+    "he": [
+      "MTF מחקה (MSCI World (4D",
+      "MTF מח MSCI World"
+    ],
+    "tase": [
+      "5122569"
+    ]
+  },
+  "identifiers": {
+    "isin": "IL0051225691",
+    "tase_number": "5122569",
+    "cusip": null,
+    "ticker": {}
+  },
+  "manager": "מגדל קרנות נאמנות בע\"מ",
+  "domicile": "IL",
+  "legal_form": "קרן פתוחה, קרן מחקה (open tracking fund under the Joint Investment Trust Law 1994; bought and redeemed at the unit price through a distributor, not traded on the exchange, ETF-04); קרן בלתי מוגבלת בניירות ערך חוץ; exposure profile 4D. Trustee: אלמגור-בריטמן נאמנויות בע\"מ. Tracking asset on Maya's fund page: MSCI WORLD INDEX - NTR 100% + דולר ארה\"ב 100%. Payment policy on Maya: 'לא מתחייבת לחלק תשלומים'. REPLICATION: swap: mainly unfunded swaps on the index (futures abroad and ETFs allowed) (annual report p. 2, 'הדרך שבה הקרן תנוהל': 'בכוונת מנהל הקרן לחשוף את הקרן למניות הנכללות במדד בעיקר באמצעות ביצוע העסקאות המפורטות בס\"ק (א)(1) [עסקאות החלף שאינן במימון שנכס הבסיס שלהן הינו המדד]'). Size used to rank the fund (not a fee input): net assets 571.7 million NIS as of 2026-09-30 (Maya fund page, 'שווי נכסים').",
+  "exposure_id": "index-msci-world",
+  "currency": "NIS",
+  "trading_currency_on_tase": null,
+  "distribution_policy": "accumulating",
+  "tax_status": {
+    "il_fund_tax_track": "exempt",
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0.25,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1729001-1730000/P1729627-00.pdf",
+        "title": "דוח שנתי 'MTF מחקה (MSCI World (4D' (מספר בורסה 5122569), תאריך הדוח 31 בדצמבר 2025, מגדל קרנות נאמנות בע\"מ (Maya filing 1729627, PDF), עמ' 1 'שכר מנהל הקרן' / 'דמי ניהול קבועים'",
+        "publisher": "מגדל קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13",
+        "MF-16",
+        "MF-17"
+      ],
+      "state": "sourced",
+      "notes": "Fixed management fee as printed in the report: 0.25% of average annual net assets. Maya's fund page (https://maya.tase.co.il/he/funds/mutual-funds/5122569, read 2026-10-25) shows the same 'דמי ניהול' 0.25%. The manager committed to the ISA outline to raise its fees only on 1 January (ETF-16). Main prospectus published on Magna on 2026-01-27, reference 2026-03-010136 (not opened; Magna returns 403 to scripts), as the report states; the prospectus block cites this report."
+    },
+    "trustee": {
+      "value": 0.02,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1729001-1730000/P1729627-00.pdf",
+        "title": "דוח שנתי 'MTF מחקה (MSCI World (4D' (מספר בורסה 5122569), תאריך הדוח 31 בדצמבר 2025, מגדל קרנות נאמנות בע\"מ (Maya filing 1729627, PDF), עמ' 1 'שכר הנאמן'",
+        "publisher": "מגדל קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13",
+        "MF-20"
+      ],
+      "state": "sourced",
+      "notes": "Trustee fee as printed: 0.02% of average annual net assets; Maya's fund page shows the same rate."
+    },
+    "variable_management": {
+      "value": 0.3,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1729001-1730000/P1729627-00.pdf",
+        "title": "דוח שנתי 'MTF מחקה (MSCI World (4D' (מספר בורסה 5122569), תאריך הדוח 31 בדצמבר 2025, מגדל קרנות נאמנות בע\"מ (Maya filing 1729627, PDF), עמ' 1 'דמי ניהול משתנים'",
+        "publisher": "מגדל קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-14",
+        "ETF-13"
+      ],
+      "state": "sourced",
+      "notes": "Variable management fee rate as printed: 0.3% a year of net assets. Maya's fund page shows 0.3%. The mechanism works in both directions (ETF-14): the amount actually charged or paid depends on the gap to the tracking asset."
+    },
+    "tracking_difference_12m": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1729001-1730000/P1729627-00.pdf",
+        "title": "דוח שנתי 'MTF מחקה (MSCI World (4D' (מספר בורסה 5122569), תאריך הדוח 31 בדצמבר 2025, מגדל קרנות נאמנות בע\"מ (Maya filing 1729627, PDF), עמ' 7 'תשואות, סטיות תקן ונתוני השוואה'",
+        "publisher": "מגדל קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-07",
+        "ETF-08",
+        "ETF-09",
+        "ETF-10"
+      ],
+      "state": "sourced",
+      "notes": "Not printed as one number. The report's table 'תשואות, סטיות תקן ונתוני השוואה' (p. 7) prints the fund's return against its tracking asset: 2025 4.68% against 4.96% ('מדד MSCI WORLD שקלי'); 2024 21.18% against 21.37%; 2023 28.01% against 27.46%; 2022 -7.81% against -7.82%. The difference is not computed here (data-update rule). The ISA directive (ETF-07(e)) makes the manager publish the 12-month tracking difference every pricing day; this report points to the third-party page https://chart.bursagraph.co.il/funds.shtml?m=6&inav=0705 for it. That page (Funds Center by Guideline, run for the managers) states on the page 'אין להפיץ בכל דרך כלשהי ... את הנתונים המוצגים באתר', so its figures are not copied here (same position as CAT-43 for TASE lists); founder decision pending."
+    },
+    "median_spread": {
+      "value": null,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1729001-1730000/P1729627-00.pdf",
+        "title": "דוח שנתי 'MTF מחקה (MSCI World (4D' (מספר בורסה 5122569), תאריך הדוח 31 בדצמבר 2025, מגדל קרנות נאמנות בע\"מ (Maya filing 1729627, PDF), עמ' 1 'שיעור ההוספה'",
+        "publisher": "מגדל קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-04",
+        "MF-21"
+      ],
+      "state": "sourced",
+      "notes": "Not applicable: an open tracking fund is bought and redeemed at the unit price computed from net asset value, with no exchange spread. Load (שיעור הוספה): 0% on Maya's fund page and in the report (p. 1). The distributor may charge its own buy and sell commission (MF-26)."
+    },
+    "fund_level_withholding_drag": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1729001-1730000/P1729627-00.pdf",
+        "title": "דוח שנתי 'MTF מחקה (MSCI World (4D' (מספר בורסה 5122569), תאריך הדוח 31 בדצמבר 2025, מגדל קרנות נאמנות בע\"מ (Maya filing 1729627, PDF), עמ' 2 'הדרך שבה הקרן תנוהל'",
+        "publisher": "מגדל קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-11"
+      ],
+      "state": "sourced",
+      "notes": "Not collected: the report prints no withholding figure and no computation is made here. The fund takes its exposure mainly through derivatives (see REPLICATION in legal_form), so any dividend-withholding drag sits inside the instrument pricing and is not published as a rate."
+    }
+  },
+  "dimensions": {
+    "fund-tax-track": "covered:TXS-24",
+    "fee-management-balance": "covered:ETF-13",
+    "distribution-policy": "covered:MF-49",
+    "currency": "covered:ETF-10",
+    "fee-trade": "covered:MF-21",
+    "protection": "covered:MF-02"
+  },
+  "prospectus": {
+    "url": "https://mayafiles.tase.co.il/rpdf/1729001-1730000/P1729627-00.pdf",
+    "date": "2026-01-27"
+  },
+  "exposure_code": "4D",
+  "distribution_fee_type": "3",
+  "creation_redemption_fee_category": null,
+  "replication": {
+    "method": "swap",
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1729001-1730000/P1729627-00.pdf",
+      "page": 2,
+      "checked": "2026-10-25"
+    }
+  },
+  "snapshot": "2026-10-25"
+}

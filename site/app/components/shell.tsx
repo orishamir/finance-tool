@@ -25,6 +25,7 @@ const doorItems: NavItem[] = [
   byHref("/companies"),
   goalItem,
   { href: r3workbench.entry.holdings.href, label: r3workbench.entry.holdings.title, current: r3workbench.entry.holdings.current },
+  byHref("/invest"),
   { href: homeCopy.door3.href, label: homeCopy.door3.title },
 ];
 /** "Behind the scenes": the rule base, the parameters, what is not covered, the tool for moving to another device. */
