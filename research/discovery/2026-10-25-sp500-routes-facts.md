@@ -268,3 +268,24 @@ What each level of knowledge gives:
 **Known limits:**
 - A distributing fund (most US ETFs) needs its distribution yield for the yearly tax (A-10). Without a record, that route cannot be priced.
 - Fund-level dividend withholding is sourced for US dividends only (an Irish fund pays 15%, TXF-16). For an index of other countries, such as emerging markets, it is not counted, and the row says so.
+
+### 10.7 Walk-through: a Japanese index (2026-10-25, evening)
+The site holds nothing on Japan today: no index record, no fund record, no rule naming Nikkei, TOPIX or MSCI Japan. The ECB's rates include the yen (175.51 yen per euro on 23.10.2026, so about 1.99 NIS per 100 yen). The walk-through led to four refinements:
+1. **The two questions change.**
+   - The legal fact is "are the companies Israeli?" (yes/no), and it alone decides the routes (ETF-51, ETF-31).
+   - Second, the index currency, from a list that includes the yen, the pound and "other".
+   - The region (Japan, Europe, emerging markets and so on) is optional and feeds only the labels.
+2. **The currency label generalises:** "חשיפה ל{מטבע}", for example "חשיפה לין". The tax label becomes "מס גם על עליית ה{מטבע}" for an Israeli fund.
+3. **The abroad route splits by exchange,** because tariffs differ by market and trading currency:
+   - a US-listed ETF (in dollars, so the dollar conversion and US estate tax apply);
+   - a London-listed UCITS ETF (in dollars or pounds);
+   - and the home exchange (Tokyo, in yen) where a broker offers it.
+   Without a fund record, each sub-route shows the broker's cost for that market.
+4. **Unknown dividend tax inside the fund gets its own label,** "מס דיבידנד בתוך הקרן: לא נבדק". The rule base sources it for US dividends only (TXF-16).
+
+For a Japanese index today, the page shows:
+- the routes;
+- the labels;
+- each broker's cost per route and exchange;
+- "לא נאספו קרנות" on every fund line, with Maya's search and the "בקשו שנאסוף" copy.
+After the founder (or an agent) collects the main funds (the largest Israeli funds on a Japanese index, a UCITS and a US ETF), the same saved chip shows a full ranking.
