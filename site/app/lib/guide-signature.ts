@@ -2,7 +2,7 @@
 // Everything here is a pure function over the data the page loader ships (`SignatureData`): each figure is an engine run on a
 // bundle (`runTimeline`, `runAtMonths`) or an engine formula over a sourced figure, never a number typed here. The components
 // wrap the results in `computed(...)` value objects so every figure goes through `Num` with its state.
-import { bondPrice, makamPrice, runInputs, runPlanned, type P05Input, type RunResult } from "@finance-tool/engine";
+import { bondPrice, currentAccountYearlyInterest, makamPrice, runInputs, runPlanned, type P05Input, type RunResult } from "@finance-tool/engine";
 import type { ValueObject } from "@finance-tool/schema";
 import { p05Number, p05Units, runTimeline, type Bundle } from "./engine";
 import { entered as enteredValue, type SiteValue } from "./value";
@@ -14,6 +14,8 @@ export interface SignatureData {
   bundles: Record<string, Bundle>;
   /** Sourced figures by name (a record's rate, a rule's figure, P-05's assumption). */
   facts: Record<string, SiteValue>;
+  /** The banks whose current-account record the site holds, one each (the current-account page and the ladder read them). */
+  banks?: AccountBank[];
   /** Things the visual needs that the data does not hold yet: each shows "עוד לא חושב" with its reason (copy `guideSignature.gaps`). */
   gaps: string[];
   /** Rule ids the visual cites beyond those its bundles read. */
@@ -46,29 +48,135 @@ const totalFees = (r: RunResult) => Object.values(r.fees).reduce((a, b) => a + b
 
 // ---------------------------------------------------------------- current account
 
+/** One bank's current-account record as the page reads it (2026-10-25): what it prints, as sourced figures, and the plain-Hebrew text the record carries. */
+export interface AccountBank {
+  /** The deposit-terms record id. */
+  id: string;
+  bank: string;
+  /** The bank's short Hebrew name. */
+  name: string;
+  /** The printed rate (0 for a bank that prints that it offers no interest, BANK-09). */
+  rate: SiteValue;
+  /** The balance that earns the rate (`amount_range.max`), when the record prints one. */
+  ceiling: SiteValue | null;
+  /** `conditions_he` of the record. */
+  conditions: string | null;
+  /** `doubt_he` of the record: an open doubt, shown with the caution mark. */
+  doubt: string | null;
+  /** The last day of the offer, when the record prints one. */
+  until: string | null;
+  /** The bank printed the sentence that says it offers no interest (BANK-09), not a rate. */
+  noOffer: boolean;
+}
+
+const rateOf = (b: AccountBank) => Number(b.rate.value);
+const collator = new Intl.Collator("he");
+
+/** The banks that print a rate above 0, the highest first. */
+export const payingBanks = (d: SignatureData): AccountBank[] => (d.banks ?? []).filter((b) => rateOf(b) > 0).sort((a, b) => rateOf(b) - rateOf(a) || collator.compare(a.name, b.name));
+/** The banks that print no interest (rate 0), by name. */
+export const silentBanks = (d: SignatureData): AccountBank[] => (d.banks ?? []).filter((b) => !(rateOf(b) > 0)).sort((a, b) => collator.compare(a.name, b.name));
+/** The bank with the highest printed rate (the first of equals, in the order of `payingBanks`), or null when none pays. */
+export const topPayer = (d: SignatureData): AccountBank | null => payingBanks(d)[0] ?? null;
+/** The largest ceiling among the paying banks: that bank's own sourced figure, or null when none prints one. */
+export function largestCeiling(d: SignatureData): SiteValue | null {
+  let best: SiteValue | null = null;
+  for (const b of payingBanks(d)) if (b.ceiling && typeof b.ceiling.value === "number" && (best === null || b.ceiling.value > (best.value as number))) best = b.ceiling;
+  return best;
+}
+
+export interface AccountFact {
+  /** Banks that print a rate above 0 / banks collected (F-85). */
+  paying: SiteValue;
+  of: SiteValue;
+  /** The largest ceiling, when every paying bank prints one. */
+  ceiling: SiteValue | null;
+  top: AccountBank;
+  /** Every paying bank states conditions (the record carries them). */
+  allConditional: boolean;
+}
+
+/** The "worth knowing" fact of the page, computed from the published records: how many banks pay, on what terms, and the most. Null when none pays or the counts are missing. */
+export function accountFact(d: SignatureData): AccountFact | null {
+  const paying = fact(d, "payingCount");
+  const of = fact(d, "bankCount");
+  const top = topPayer(d);
+  if (!paying || !of || !top) return null;
+  const payers = payingBanks(d);
+  const ceiling = payers.every((b) => b.ceiling && typeof b.ceiling.value === "number") ? largestCeiling(d) : null;
+  return { paying, of, ceiling, top, allConditional: payers.every((b) => !!b.conditions) };
+}
+
+/** The account bundle run at a bank's printed rate and ceiling (its conditions assumed met); the bundle itself runs at the rate most banks pay (F-85). */
+export function bundleAtBank(bundle: Bundle, bank: AccountBank): Bundle {
+  const inputs = (bundle.p05 as unknown as { inputs: Record<string, unknown> }).inputs;
+  const p05 = { ...bundle.p05, inputs: { ...inputs, cash_rate: bank.rate } } as unknown as Bundle["p05"];
+  const ceiling = rateOf(bank) > 0 && bank.ceiling && typeof bank.ceiling.value === "number" ? bank.ceiling : null;
+  const { balanceCeiling: _was, ...feeValues } = bundle.feeValues;
+  const deposit = bundle.terms.deposit;
+  if (!deposit) return { ...bundle, p05, feeValues };
+  const { balanceCeiling: _old, ...rest } = deposit;
+  return { ...bundle, p05, feeValues: ceiling ? { ...feeValues, balanceCeiling: ceiling } : feeValues, terms: { ...bundle.terms, deposit: ceiling ? { ...rest, balanceCeiling: ceiling.value as number } : rest } };
+}
+
 export interface AccountModel {
   /** In today's money, year 0 to `years`. */
   points: { year: number; account: number; fund: number }[];
   start: number;
-  end: { account: number; fund: number; cost: number };
+  end: {
+    account: number;
+    fund: number;
+    cost: number;
+    /** The account less the starting balance: negative when the money lost value. */
+    change: number;
+  };
+  /** The rate the account line runs on: the chosen bank's printed rate, else the rate most banks pay (F-85). */
+  rate: SiteValue;
+  /** The ceiling of the balance that earns it, for a paying bank. */
+  ceiling: SiteValue | null;
+  bank: AccountBank | null;
 }
 
 /**
  * What money costs while it sits in the current account, against a daily money-market fund (F-26 with its ceiling, F-23): both runs
- * in today's money with no monthly deposit. Without the bank's conditions the account pays no interest (BANK-09: the table pays
- * customers who meet them), which the run takes as a rate of 0.
+ * in today's money with no monthly deposit. The account runs on the rate most banks pay (F-85, 0% on the published data) or, when
+ * `bankId` names a bank, on that bank's printed rate and ceiling, assuming the person meets its conditions.
  */
-export function currentAccountModel(d: SignatureData, c: { balance: number; years: number; conditionsMet: boolean }): AccountModel | null {
+export function currentAccountModel(d: SignatureData, c: { balance: number; years: number; bankId?: string | null }): AccountModel | null {
   const account = d.bundles["current-account"];
   const fund = d.bundles["money-market-fund-daily"];
   if (!account || !fund) return null;
+  const bank = c.bankId ? ((d.banks ?? []).find((b) => b.id === c.bankId) ?? null) : null;
+  const bundle = bank ? bundleAtBank(account, bank) : account;
   const entered = { amount_now: c.balance, monthly_deposit: 0, horizon_years: c.years };
-  const a = runTimeline(account, { entered: c.conditionsMet ? entered : { ...entered, cash_rate: 0 }, age: null });
+  const a = runTimeline(bundle, { entered, age: null });
   const f = runTimeline(fund, { entered, age: null });
   if (a.kind !== "ok" || f.kind !== "ok") return null;
   const points = [{ year: 0, account: c.balance, fund: c.balance }, ...a.years.map((p, i) => ({ year: p.year, account: p.real, fund: f.years[i]!.real }))];
   const last = points[points.length - 1]!;
-  return { points, start: c.balance, end: { account: last.account, fund: last.fund, cost: last.fund - last.account } };
+  const base = (bundle.p05 as unknown as { inputs: { cash_rate: SiteValue } }).inputs.cash_rate;
+  return {
+    points,
+    start: c.balance,
+    end: { account: last.account, fund: last.fund, cost: last.fund - last.account, change: last.account - c.balance },
+    rate: bank ? bank.rate : base,
+    ceiling: bank ? (rateOf(bank) > 0 ? bank.ceiling : null) : (bundle.feeValues.balanceCeiling ?? null),
+    bank,
+  };
+}
+
+/** The most one bank's rate pays in a year on `balance`, after the tax the bank withholds (F-26 over one year); 0 for a bank that pays nothing. */
+export function bankYearlyMax(bank: AccountBank, balance: number, taxPct: number): number {
+  const ceiling = bank.ceiling && typeof bank.ceiling.value === "number" ? bank.ceiling.value : null;
+  return currentAccountYearlyInterest(balance, rateOf(bank), ceiling, taxPct);
+}
+
+/** The y-axis of the account chart: the data with some room, not forced down to 0, so a gap of a few percent is visible. */
+export function accountAxis(values: number[]): { lo: number; hi: number } {
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const pad = Math.max((max - min) * 0.12, max * 0.01, 1);
+  return { lo: Math.max(0, min - pad), hi: max + pad };
 }
 
 // ---------------------------------------------------------------- bank deposit
@@ -156,19 +264,33 @@ export interface LadderRow {
   id: string;
   speed: Speed;
   rate: SiteValue;
-  /** `published`: a bank's own table; `assumption`: the site's P-05 `cash_rate` (D20). */
-  kind: "published" | "assumption";
+  /** `published`: a bank's own table; `assumption`: the site's P-05 `cash_rate` (D20); `common`: the rate most of the collected banks publish (F-85). */
+  kind: "published" | "assumption" | "common";
   /** The term of a row that comes back only at its end. */
   term?: SiteValue;
-  /** The balance that earns the rate, of a current account. */
-  ceiling?: SiteValue;
+  /** The current account: how many collected banks print the row's rate, out of how many (F-85). */
+  banks?: { count: SiteValue; of: SiteValue };
+  /** The current account: the most a bank pays, with the largest ceiling (the conditions are the bank's). */
+  top?: { rate: SiteValue; name: string; ceiling: SiteValue | null };
 }
 
 /** The four products on the ladder, from the fastest to the slowest, each with its rate and where the rate comes from. */
 export function ladderRows(d: SignatureData): LadderRow[] {
   const rows: LadderRow[] = [];
   const cur = fact(d, "currentRate");
-  if (cur) rows.push({ id: "current-account", speed: "any-time", rate: cur, kind: "published", ...(fact(d, "currentCeiling") ? { ceiling: fact(d, "currentCeiling")! } : {}) });
+  if (cur) {
+    const top = topPayer(d);
+    const count = fact(d, "currentCount");
+    const of = fact(d, "currentBankCount");
+    rows.push({
+      id: "current-account",
+      speed: "any-time",
+      rate: cur,
+      kind: "common",
+      ...(count && of ? { banks: { count, of } } : {}),
+      ...(top ? { top: { rate: top.rate, name: top.name, ceiling: largestCeiling(d) } } : {}),
+    });
+  }
   const assumed = fact(d, "cashRate");
   if (assumed) {
     rows.push({ id: "money-market-fund-daily", speed: "trading-day", rate: assumed, kind: "assumption" });

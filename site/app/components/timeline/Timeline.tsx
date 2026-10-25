@@ -32,7 +32,7 @@ export interface TimelineProps {
    * uses, kept on this device per page (the own-rates store, goal id "guide"). A rate the person enters applies to the whole balance (F-26, no ceiling).
    * `feesIndependent`: the account's fees do not depend on the balance, so the fee row says that instead of printing 0.
    */
-  cash?: { id: string; published: boolean; feesIndependent?: boolean } | null;
+  cash?: { id: string; published: boolean; feesIndependent?: boolean; /** The run starts from the rate most of the collected banks publish (F-85): how many print it, out of how many (the current account, 2026-10-25). */ common?: { count: SiteValue; of: SiteValue } | null } | null;
 }
 
 export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, lock, employment = false, cash = null }: TimelineProps) {
@@ -381,9 +381,16 @@ function ValuesPanel({ bundle, focusField, employment, cash, ownRate, setOwnRate
     return null;
   };
   const publishedFrom = cashBase.update_rule === "founder" ? null : cashBase.effective_from;
+  const common = cash?.common;
   const hints = cash ? (
     <div className="flex flex-col gap-0.5 text-xs text-muted-foreground -mt-2">
-      <span>{publishedFrom ? `${valuesCopy.hints.cashPublished} ${valuesCopy.hints.asOf}${fmt.date(publishedFrom)}.` : valuesCopy.hints.cashAssumption}</span>
+      {common ? (
+        <span>
+          {valuesCopy.hints.cashCommon.before} <Num value={cashBase} />, <Num value={common.count} prefix={valuesCopy.hints.cashCommon.prefix} /> {valuesCopy.hints.cashCommon.of} <Num value={common.of} /> {valuesCopy.hints.cashCommon.after}
+        </span>
+      ) : (
+        <span>{publishedFrom ? `${valuesCopy.hints.cashPublished} ${valuesCopy.hints.asOf}${fmt.date(publishedFrom)}.` : valuesCopy.hints.cashAssumption}</span>
+      )}
       <span>{valuesCopy.returnNoteCash}</span>
       <span>{valuesCopy.hints.inflation}</span>
     </div>

@@ -9,6 +9,7 @@ import { Breadcrumb, PageShell } from "../components/shell";
 import { WorthKnowing, worthRows } from "../components/guide/worth-knowing";
 import { Timeline } from "../components/timeline/Timeline";
 import { hasSignatureVisual, SignatureFrame, signatureTitle } from "../components/guide-signature";
+import { accountWorthRow } from "../components/guide-signature/current-account";
 import { cashLikeIds } from "../lib/guide-signature";
 import { SavedGoalStrip } from "../components/compare/strip";
 import { Disclosure, Tag } from "../components/ui";
@@ -348,7 +349,11 @@ export default function GuidePage() {
   const provenance = { rules, terms: data.termsById, dimensions: data.dimensionNames, today, rulesOf: { name: data.name, href: `/rules#${rulesAnchor(Object.values(rules))}` } }; // audit A27: the product's own topic, not the first rule's file
   const cp = { figure };
   const signature = hasSignatureVisual(record.id, data.signature) ? data.signature : null;
-  const cash = cashLikeIds.includes(record.id) ? { id: record.id, published: !!data.bundle?.feeValues.balanceCeiling || ["bank-deposit", "savings-plan", "current-account"].includes(record.id), feesIndependent: record.id === "current-account" } : null;
+  // the current account starts from the rate most of the collected banks publish (F-85), and says how many do
+  const common = record.id === "current-account" && signature?.facts.commonCount && signature.facts.bankCount ? { count: signature.facts.commonCount, of: signature.facts.bankCount } : null;
+  const cash = cashLikeIds.includes(record.id) ? { id: record.id, published: !!data.bundle?.feeValues.balanceCeiling || ["bank-deposit", "savings-plan", "current-account"].includes(record.id), feesIndependent: record.id === "current-account", common } : null;
+  // a fact the site computes from the collected records, listed with the pinned rules (2026-10-25)
+  const worthFacts = signature && record.id === "current-account" ? [accountWorthRow(signature)].filter((r) => r !== null) : [];
   const timelineNode =
     data.bundle && data.initial ? (
       <Timeline bundle={data.bundle} initial={data.initial} wrapperName={data.name} ageMarker={{ ruleId: "TXG-04", figure: "age" }} lock={{ years: (record.lawful_exit.years as SiteValue | undefined) ?? null, age: record.lawful_exit.kind === "at_age" ? ((record.lawful_exit.age as SiteValue | undefined) ?? null) : null }} employment={byEmployment} cash={cash} />
@@ -364,7 +369,7 @@ export default function GuidePage() {
     <GoalsProvider presets={data.goal.presets as Presets}>
     <PageShell current="guide" data={provenance}>
       <div className="lg:flex lg:gap-12 pt-2 lg:pt-8">
-        <SectionIndex sections={copy.sections.filter((x) => (x.id !== "terms" || !mainTerms.hide || generalTerms.length > 0) && ((x.id as string) !== "worth" || worthRows(data.worthIds, rules, today).length > 0) && ((x.id as string) !== "different" || !!signature))} current={current} />
+        <SectionIndex sections={copy.sections.filter((x) => (x.id !== "terms" || !mainTerms.hide || generalTerms.length > 0) && ((x.id as string) !== "worth" || worthRows(data.worthIds, rules, today).length > 0 || worthFacts.length > 0) && ((x.id as string) !== "different" || !!signature))} current={current} />
         <div className="flex-1 min-w-0 flex flex-col gap-section">
           <header className="flex flex-col gap-3">
             <Breadcrumb parent={{ href: "/guide", label: guideIndex.title }} current={data.name} />
@@ -393,7 +398,7 @@ export default function GuidePage() {
             </GuideSection>
           )}
 
-          <WorthKnowing rows={worthRows(data.worthIds, rules, today)} />
+          <WorthKnowing rows={worthRows(data.worthIds, rules, today)} facts={worthFacts} />
 
           <GuideSection id="who" title={title("who")} rulesToggle>
             {content?.who(cp) ?? (

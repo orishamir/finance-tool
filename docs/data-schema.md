@@ -310,12 +310,14 @@ One file per bank per product per snapshot.
   "break": { "allowed": true, "penalty": "with_penalty", "mechanism_text": "..." , "rule_ids": ["BANK-06", "BANK-14"] },
   "exit_points": { "exists": false, "every_months": null },
   "auto_renew": { "value": true, "max_renewals": null },
+  "conditions_he": "optional: a short plain-Hebrew summary of the conditions the bank prints for the rate",
+  "doubt_he": "optional: one sentence on an open doubt about the record",
   "snapshot": "2026-10-22",
   "source": { "url": "...", "title": "Discount 447 concentrated publication", "publisher": "Discount Bank", "strength": "institution" }
 }
 ```
 
-The schema is `depositTerms` (strict). Enums: `rate_type` is `fixed` or `variable`; `linkage` is `none`, `cpi` or `fx`; `break.penalty` is `none`, `with_penalty` or `not_allowed`. `anchor` and `spread` are `null` or absent for a fixed rate. `exit_points.every_months` and `auto_renew.max_renewals` are numbers or `null`. The folder `terms/deposits/` is matched before `terms/`.
+The schema is `depositTerms` (strict). Enums: `rate_type` is `fixed` or `variable`; `linkage` is `none`, `cpi` or `fx`; `break.penalty` is `none`, `with_penalty` or `not_allowed`. `anchor` and `spread` are `null` or absent for a fixed rate. `exit_points.every_months` and `auto_renew.max_renewals` are numbers or `null`. The folder `terms/deposits/` is matched before `terms/`. **`conditions_he` and `doubt_he` (added 2026-10-25, the current-account page).** Both are optional plain Hebrew strings. `conditions_he` summarises the conditions the bank prints for the rate (who gets it, on what balance, how often it is paid); it is faithful to the printed text quoted in the notes of `rate_offered` and adds nothing that is not printed. A bank that pays nothing gets the sentence it prints ("לא מוצעת ריבית…"). `doubt_he` is one sentence on an open doubt the researcher found (the printed rate and its conditions disagree, a stated end date has passed); the page shows it beside the figure with the caution mark, and the doubt stays out of the rate itself. A current-account record with `amount_range.max` is read as the balance that earns the rate (BANK-09, F-26). The page of the current account reads every `wrapper_id: "current-account"` record: the most common `rate_offered` among them is the default (F-85).
 
 ### 3.8 `data/series/` — sourced time series (dependency 7)
 

@@ -1,6 +1,7 @@
 // Daily money-market fund (D29): how fast can I get my money, and what does it pay? A ladder of four cash products from the fastest to
-// the slowest way back, each with its yearly rate and where the rate comes from (a bank's published table, or the site's assumption,
-// D20), this product highlighted. One control: when the money is needed; the rows that bring it back in time stay lit.
+// the slowest way back, each with its yearly rate and where the rate comes from (a bank's published table, the rate most of the
+// collected banks publish, or the site's assumption, D20), this product highlighted. One control: when the money is needed; the rows
+// that bring it back in time stay lit.
 import { useState } from "react";
 import { guideSignature as copy } from "../../copy";
 import { fmt } from "../../lib/format";
@@ -48,18 +49,30 @@ export function MoneyMarketDailyVisual({ data }: VisualProps) {
               <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-sm text-muted-foreground">
                 <span className="font-medium text-foreground">{copy.ladder.speeds[r.speed]}</span>
                 <span>{copy.ladder.wait[r.speed]}</span>
-                {r.ceiling && (
-                  <span>
-                    {copy.ladder.ceiling.before} <Num value={r.ceiling} />
-                    {copy.ladder.ceiling.after}
-                  </span>
-                )}
                 {r.term && (
                   <span>
                     {copy.ladder.term} <Num value={r.term} display={fmt.months(Number(r.term.value))} />
                   </span>
                 )}
               </div>
+              {r.banks && (
+                <p className="text-sm text-muted-foreground">
+                  <Num value={r.banks.count} /> {copy.ladder.common.of} <Num value={r.banks.of} /> {copy.ladder.common.after}
+                </p>
+              )}
+              {r.top && (
+                // the best a bank pays, with its conditions: a few banks pay up to this, on a small balance only
+                <p className="text-sm text-muted-foreground">
+                  {copy.ladder.top.before} <Num value={r.top.rate} /> (<bdi>{r.top.name}</bdi>),{" "}
+                  {r.top.ceiling ? (
+                    <>
+                      {copy.ladder.top.conditions} <Num value={r.top.ceiling} display={fmt.nisWhole(Number(r.top.ceiling.value))} /> {copy.ladder.top.only}.
+                    </>
+                  ) : (
+                    <>{copy.ladder.top.conditionsNoCeiling}.</>
+                  )}
+                </p>
+              )}
             </li>
           );
         })}
@@ -71,7 +84,7 @@ export function MoneyMarketDailyVisual({ data }: VisualProps) {
         </p>
       )}
       <p className="text-sm text-muted-foreground max-w-measure">
-        {copy.ladder.foot} {copy.common.onlyLeumi}
+        {copy.ladder.foot} {copy.ladder.depositFoot}
       </p>
       <Gap id="mmfPayoutDays" />
       <RulesLine ids={data.ruleIds} />
