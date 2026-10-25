@@ -1,0 +1,55 @@
+{
+  "id": "BRK-49",
+  "title": "IBI, Excellence and Fair: interest on a credit balance as a tariff line, with conditions",
+  "title_he": "אי.בי.אי, אקסלנס ופייר: ריבית על יתרת זכות כשורה בתעריפון",
+  "text_he": "בתעריפונים של אי.בי.אי, אקסלנס ופייר יש שורה לריבית על יתרת זכות בחשבון, עם תנאים כמו סוג לקוח או מינימום; אצל אי.בי.אי ואקסלנס אין ריבית על יתרות במטבע חוץ. תעריפונים של חברים אחרים לא נקראו לשורה הזו.",
+  "strength": "institution",
+  "dimensions": [
+    "currency"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+      "title": "IBI tariff",
+      "title_he": "תעריפון עמלות אי.בי.אי (1.7.2026)",
+      "publisher": "IBI",
+      "publisher_he": "אי.בי.אי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+      "title": "Excellence tariff",
+      "title_he": "תעריפון אקסלנס טרייד",
+      "publisher": "Excellence",
+      "publisher_he": "אקסלנס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.fair.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f/",
+      "title": "Fair tariff",
+      "title_he": "תעריפון פייר",
+      "publisher": "Fair",
+      "publisher_he": "פייר",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "BRK-25"
+  ]
+}

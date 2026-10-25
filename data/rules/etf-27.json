@@ -1,8 +1,8 @@
 {
   "id": "ETF-27",
-  "title": "TASE-listed iShares funds, as BlackRock states: accumulating, shekel-denominated, with foreign-currency exposure, no variable management fee",
-  "title_he": "קרנות iShares בבורסה: צוברות, בשקלים, עם חשיפת מט\"ח",
-  "text_he": "חוברת של בלאקרוק ישראל על קרנות iShares הרשומות בישראל מתארת אותן כרשומות בבורסה בתל אביב, צוברות דיבידנד, נקובות בשקלים, עם חשיפת מט\"ח, ועם עלות כוללת ידועה מאחר שאין דמי ניהול משתנים. דף הקרן של iShares על המדד האמריקני מונה את הבורסה בתל אביב בין הרישומים האחרים של אותה סדרה צוברת בדולרים. טבלת הקרנות, המספרים, הסימולים והעמלות בחוברת הייתה קטנה מכדי לקרוא בביטחון, והחוברת אינה מתוארכת. אלה הצהרות החברה עצמה, ורשימת הקרנות משתנה.",
+  "title": "BlackRock: what it states about its iShares funds listed on TASE (accumulating, shekel-denominated, with foreign-currency exposure, no variable management fee)",
+  "title_he": "בלאקרוק: מה היא אומרת על קרנות iShares בבורסה",
+  "text_he": "בלאקרוק מתארת בחוברת שלה בישראל את קרנות iShares הרשומות בבורסה בתל אביב כצוברות דיבידנד, נקובות בשקלים, עם חשיפת מט״ח, ועם עלות כוללת ידועה מאחר שאין דמי ניהול משתנים. דף הקרן של iShares על המדד האמריקני מונה את הבורסה בתל אביב בין הרישומים של אותה סדרה צוברת בדולרים. טבלת הקרנות, המספרים והעמלות בחוברת הייתה קטנה מכדי לקרוא בביטחון, והחוברת אינה מתוארכת. אלה הצהרות של בלאקרוק על הקרנות שלה, ורשימת הקרנות משתנה.",
   "strength": "institution",
   "dimensions": [
     "distribution-policy",
@@ -12,7 +12,7 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/cspx-ishares-core-s-p-500-ucits-etf-fund-fact-sheet-en-gb.pdf",
@@ -37,5 +37,9 @@
       "strength": "institution",
       "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "ETF-32",
+    "ETF-24"
   ]
 }

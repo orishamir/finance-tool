@@ -1,9 +1,9 @@
 {
   "id": "BRK-06",
-  "title": "Foreign brokers reached through an ISA section 49A permit are not ISA-supervised",
-  "title_he": "ברוקר זר דרך היתר של הרשות אינו בפיקוחה",
-  "text_he": "אינטראקטיב ישראל, מותג של חברת מקסם, מצהירה באתרה שהיא פועלת בישראל לפי היתר לפי סעיף 49א לחוק ניירות ערך, שהיא אינה מפוקחת על ידי רשות ניירות ערך, ושחשבונות הלקוחות נפתחים אצל אינטראקטיב ברוקרס בארצות הברית או באירלנד. בנק יהב מצהיר שקיבל היתר דומה להציע מסחר דרך מערכת שפועלת מחוץ לישראל, בהישען על הפיקוח של בנק ישראל עליו, ושפעילות זו אינה בפיקוח הרשות. שני העמודים אומרים שההיתר אינו מביע דעה על איכות השירות או על הסיכון שבו, ואינטראקטיב ישראל מוסיפה שאינה אחראית לחיובי הברוקר הזר. אלה הצהרות של הגופים עצמם.",
-  "strength": "institution",
+  "title": "Foreign brokers and foreign trading through an ISA 49A permit: not ISA-supervised, and the holder must say so",
+  "title_he": "ברוקר זר דרך היתר של הרשות: לא בפיקוחה, ובעל ההיתר חייב לומר זאת",
+  "text_he": "חוק ניירות ערך אוסר להציע שירותי מסחר דרך מערכת שאינה מופעלת על ידי בורסה, אלא אם יושב ראש רשות ניירות ערך התיר זאת למערכת של בורסה מחוץ לישראל, בתנאים שקבע. לפי תנאי ההיתר הכללי, בעל היתר יכול להיות תאגיד בנקאי, חבר בורסה שאינו בנק, גוף שמפוקח כברוקר בארצות הברית, באיחוד האירופי או בבריטניה או כבנק שווייצרי, או יועץ או משווק השקעות מורשה שפועל דרך אחד מאלה. בעל היתר שמזכיר את ההיתר חייב לצרף גילוי בנוסח קבוע: ההיתר ניתן על סמך הצהרתו שהוא מפוקח על ידי רגולטור מסוים, פעילותו אינה בפיקוח רשות ניירות ערך, וההיתר אינו חוות דעת על איכות השירות או על הסיכון שבו. ברוקר זר שמבצע עבור לקוחות של בעל היתר לא צריך היתר משלו כשההסכם הוא בין בעל ההיתר ללקוחותיו. התנאים נקראו בתרגום הרשמי לאנגלית; הנוסח העברי הוא המחייב.",
+  "strength": "primary",
   "dimensions": [
     "regulator",
     "protection",
@@ -12,8 +12,35 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
   "il_finance_file": "brokerage-account.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/en/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64d0945455c5c/Conditions_of_a_general.pdf",
+      "title": "ISA, Conditions of the General Permit under Section 49A of the Securities Law, new version (December 2023), English translation",
+      "title_he": "חוק ניירות ערך, התשכ״ח-1968",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.8, s.(1)(a)-(d); p.11",
+      "locator_he": "עמוד 8, סעיף (1)(א)-(ד); עמוד 11",
+      "page": 8,
+      "checked": "2026-10-25",
+      "qualifier": "(official translation; the Hebrew text binds)"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-626a5f3377ef9/QAA49a.pdf",
+      "title": "רשות ניירות ערך: שאלות ותשובות בעקבות פרסום תנאי ההיתר הכללי לפי סעיף 49א (עדכון 13.1.2025)",
+      "title_he": "רשות ניירות ערך: שאלות ותשובות בעקבות פרסום תנאי ההיתר הכללי לפי סעיף 49א (עדכון 13.1.2025)",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.4",
+      "locator_he": "עמוד 4",
+      "page": 4,
+      "checked": "2026-10-25"
+    },
     {
       "url": "https://fs.knesset.gov.il/20/law/20_lsr_382526.pdf",
       "title": "חוק ניירות ערך (תיקון מס' 63), התשע\"ז-2017",
@@ -25,26 +52,6 @@
       "locator": "p.10, s.49א",
       "locator_he": "עמוד 10, סעיף 49א",
       "page": 10,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://lp3.inter-il.com/about-3",
-      "title": "Interactive Israel, about page",
-      "title_he": "אינטראקטיב ישראל: עמוד אודות",
-      "publisher": "Interactive Israel",
-      "publisher_he": "אינטראקטיב ישראל",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.bank-yahav.co.il/footer/footer-menu/securrities-permit/",
-      "title": "בנק יהב: היתר למתן שירותי מסחר בניירות ערך",
-      "title_he": "בנק יהב: היתר למתן שירותי מסחר בניירות ערך",
-      "publisher": "Bank Yahav",
-      "publisher_he": "בנק יהב",
-      "kind": "institution_doc",
-      "strength": "institution",
       "checked": "2026-10-25"
     }
   ]

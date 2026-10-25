@@ -1,9 +1,9 @@
 {
   "id": "MF-27",
-  "title": "Bank and broker commissions and custody on fund units: institution examples",
-  "title_he": "עמלות הבנק והברוקר ודמי משמרת על יחידות קרן: דוגמאות",
-  "text_he": "מה שחוסך משלם למפיץ תלוי בתעריפון של המוסד, במסגרת מה שהתקנות מתירות. בלאומי, עמלת הקנייה והמכירה בניירות ערך לא חלה על קרנות נאמנות, למעט קרנות מחקות וקרנות שיחידותיהן רשומות בבורסה, שמחויבות כמו מניות ואג״ח; דמי ניהול פיקדון ניירות ערך חלים גם על יחידות בקרנות, אבל אסור לגבות אותם על מק״מ ועל קרן כספית. באי־בי־אי קנייה, מכירה ופדיון של קרנות שנסחרות בבורסה עולים אחוז מהעסקה עם מינימום לעסקה, ומיטב כותבת שקניית יחידות אצלה לא כרוכה בעמלות קנייה ומכירה. לפי מדריך הרשות, בנקים רשאים לגבות דמי משמורת על יחידות ובתי השקעות בדרך כלל לא; בנקים וברוקרים אחרים לא נבדקו, והתעריפונים משתנים כמה פעמים בשנה.",
-  "strength": "institution",
+  "title": "Bank and broker commissions and custody on fund units: what the rules allow",
+  "title_he": "עמלות ודמי משמרת על יחידות קרן: מה הכללים מתירים",
+  "text_he": "בכל בנק, עמלת הקנייה והמכירה של ניירות ערך בבורסה לא חלה על קרנות נאמנות, אבל כן חלה על קרנות מחקות ועל קרנות שיחידותיהן רשומות בבורסה, שמחויבות כמו מניות ואג״ח. דמי ניהול פיקדון ניירות ערך חלים גם על יחידות בקרנות, אבל אסור לגבות אותם על מק״מ ועל קרן כספית, ועמלת הפצה אפשר לגבות מהקונה רק במקרים המותרים. כל מפיץ מוגבל בתקנות עמלת ההפצה: על קרן כספית בהסכם הפצה אין עמלה, ועל קרן נסחרת או מחקה רק עמלת עסקה. לפי מדריך הרשות, בנקים רשאים לגבות דמי משמרת על יחידות ובתי השקעות בדרך כלל לא. בתוך הכללים האלה כל גוף קובע את השיעורים בתעריפון שלו.",
+  "strength": "primary",
   "dimensions": [
     "fee-trade",
     "fee-custody"
@@ -11,8 +11,21 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "mutual-funds-and-money-market-funds.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
+    {
+      "url": "https://www.boi.org.il/media/mi2driua/159a.pdf",
+      "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב (בנק ישראל)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.15",
+      "locator_he": "עמוד 15",
+      "page": 15,
+      "checked": "2026-10-25"
+    },
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
       "title": "מדריך למשקיע: קרנות נאמנות (רשות ניירות ערך, ינואר 2017)",
@@ -26,36 +39,10 @@
       "page": 7,
       "checked": "2026-10-25",
       "qualifier": "(dated; still linked by the ISA as its full guide)"
-    },
-    {
-      "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
-      "title": "תעריפון העמלות המלא, בנק לאומי, מעודכן ל-01/10/2026",
-      "title_he": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (בנק לאומי, 1.10.2026)",
-      "publisher": "Bank Leumi",
-      "publisher_he": "בנק לאומי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
-      "title": "תעריפון עמלות אי.בי.אי, נכון ל-1.7.2026",
-      "title_he": "תעריפון עמלות אי.בי.אי, נכון ל-1.7.2026",
-      "publisher": "IBI",
-      "publisher_he": "אי.בי.אי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.meitav.co.il/mutual_funds/",
-      "title": "מיטב, קרנות נאמנות",
-      "title_he": "מיטב, קרנות נאמנות",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "MF-26",
+    "BRK-16"
   ]
 }

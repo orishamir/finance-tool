@@ -58,5 +58,8 @@
       "strength": "institution",
       "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "BRK-06"
   ]
 }

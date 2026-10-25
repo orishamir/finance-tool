@@ -1,0 +1,39 @@
+{
+  "id": "BRK-50",
+  "title": "Interactive Brokers: how it collects the W-8 and what it withholds; nothing on Israeli tax",
+  "title_he": "אינטראקטיב ברוקרס: איסוף טופס W-8, הניכוי האמריקאי, ובלי מס ישראלי",
+  "text_he": "אינטראקטיב ברוקרס מבקשת מכל לקוח שאינו אמריקאי טופס W-8 בפתיחת החשבון, וכותבת שהטופס בתוקף לשנת החתימה ולשלוש השנים הבאות. היא מנכה מס אמריקאי על דיבידנד ממניות אמריקאיות בשיעור המלא, אלא אם אמנה מפחיתה אותו, וטופס שפג תוקפו מחזיר אצלה את השיעור המלא גם על ריבית ועל תמורת מכירות. באף עמוד שלה לא מוזכר מס ישראלי. אינטראקטיב ישראל מסבירה איך מעדכנים את הטופס באזור האישי של החשבון.",
+  "strength": "institution",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "reporting-obligation",
+    "tax-during"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-25",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://www.interactivebrokers.com/en/support/tax-nonus-initial.php",
+      "title": "Interactive Brokers: Tax Information and Reporting, Non-US, Initial Application & Data Collection",
+      "publisher": "Interactive Brokers",
+      "publisher_he": "Interactive Brokers",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.inter-il.com/question-answer/%D7%90%D7%99%D7%9A-%D7%90%D7%A0%D7%99-%D7%9E%D7%A2%D7%93%D7%9B%D7%9F-%D7%90%D7%AA-%D7%98%D7%95%D7%A4%D7%A1-w-8ben/",
+      "title": "אינטראקטיב ישראל: איך אני מעדכן את טופס W-8BEN?",
+      "publisher": "Interactive Israel",
+      "publisher_he": "אינטראקטיב ישראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "BRK-45"
+  ]
+}

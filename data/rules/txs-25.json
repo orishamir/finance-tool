@@ -1,0 +1,43 @@
+{
+  "id": "TXS-25",
+  "title": "Migdal Mutual Funds and Yalin Lapidot: the foreign-tax situations their exempt-fund prospectuses list",
+  "title_he": "מגדל קרנות נאמנות וילין לפידות: מתי קרן פטורה משלמת מס בחו״ל",
+  "text_he": "במגדל קרנות נאמנות ובילין לפידות, התשקיפים אומרים שקרן פטורה עשויה לשלם מס בחו״ל על הכנסות ורווחים מניירות ערך שנסחרים בחו״ל, מניירות ערך דואליים ומניירות ערך של מנפיקים זרים שנסחרים רק בישראל, בנוסף למס שבעל היחידות משלם בפדיון על הרווח הריאלי. סביר שהנוסח דומה בתשקיפים אחרים, אבל נקראו רק שני אלה.",
+  "strength": "institution",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "tax-during"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-securities-israeli.md",
+  "checked": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf",
+      "title": "מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026",
+      "title_he": "מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.74, ch.25.7",
+      "page": 74,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629214-00.pdf",
+      "title": "ילין לפידות (00) כספית ניהול נזילות, תשקיף קרן חדשה מיום 26.11.2024",
+      "title_he": "ילין לפידות (00) כספית ניהול נזילות, תשקיף קרן חדשה מיום 26.11.2024",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1, footnote 3",
+      "page": 1,
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "TXS-15"
+  ]
+}
