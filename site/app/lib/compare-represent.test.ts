@@ -54,7 +54,7 @@ describe("own terms store shape", () => {
   it("reads the old numbers as rates and keeps rate and fee side by side", () => {
     const stored = parseOwnRates({ g1: { "bank-deposit": 3.5, "brokerage-account": { fee: 0.1 }, x: { rate: 2, fee: 1 }, bad: { fee: 400 } } });
     expect(stored.g1).toEqual({ "bank-deposit": 3.5, "brokerage-account": { fee: 0.1 }, x: { rate: 2, fee: 1 } });
-    expect(splitOwnTerms(termsOfGoal(stored.g1))).toEqual({ ownRates: { "bank-deposit": 3.5, x: 2 }, ownFees: { "brokerage-account": 0.1, x: 1 }, ownProviders: {} });
+    expect(splitOwnTerms(termsOfGoal(stored.g1))).toEqual({ ownRates: { "bank-deposit": 3.5, x: 2 }, ownFees: { "brokerage-account": 0.1, x: 1 }, ownProviders: {}, ownIndices: {} });
   });
 });
 

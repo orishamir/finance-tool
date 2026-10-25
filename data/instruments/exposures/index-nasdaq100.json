@@ -1,0 +1,59 @@
+{
+  "id": "index-nasdaq100",
+  "names": {
+    "he": [
+      "מדד נאסד\"ק 100",
+      "NASDAQ 100",
+      "נאסד\"ק 100"
+    ],
+    "en": [
+      "NASDAQ-100",
+      "NASDAQ 100",
+      "Nasdaq 100"
+    ]
+  },
+  "one_line_he": "מדד של מאה המניות בעלות שווי השוק הגבוה ביותר הנסחרות בבורסת נאסד\"ק, בלי חברות פיננסיות; הכסף מושקע בשקלים דרך קרן שעוקבת אחריו, עם חשיפה לדולר או מנוטרלת ממנו.",
+  "kind": "equity_index",
+  "currency": "USD",
+  "cash_like": false,
+  "return_source": {
+    "mode": "entered",
+    "series": null
+  },
+  "variants": [
+    "fund:1165844",
+    "fund:5128905",
+    "fund:5129283",
+    "fund:1146505",
+    "fund:1143734"
+  ],
+  "wrapper_ids": [
+    "brokerage-account",
+    "ira-hishtalmut",
+    "ira-provident"
+  ],
+  "rule_ids": [
+    "ETF-01",
+    "ETF-04",
+    "ETF-05",
+    "ETF-06",
+    "ETF-09",
+    "ETF-10",
+    "ETF-11",
+    "ETF-12",
+    "ETF-13",
+    "ETF-14",
+    "ETF-17",
+    "ETF-19",
+    "ETF-20",
+    "TXS-09",
+    "TXS-13",
+    "TXS-14",
+    "TXS-15",
+    "TXS-21",
+    "CAT-10",
+    "IRA-11"
+  ],
+  "constituents_israeli": false,
+  "checked": "2026-10-25"
+}

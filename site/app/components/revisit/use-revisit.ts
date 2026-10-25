@@ -3,6 +3,7 @@
 // data snapshot the bundle carries, so the strip does not recompute on every route.
 import { useEffect, useMemo, useState } from "react";
 import { loadBundle } from "../../lib/bundle";
+import { loadWorkbenchBundle } from "../../lib/providers";
 import { useGoals, type Goal } from "../../lib/goal";
 import { goalChanges, revisitSaved, type RevisitView } from "../../lib/revisit";
 import { isoToday, isReadableSaved, useSavedComparisons, type CompareMode, type SavedComparisonRecord } from "../../lib/state";
@@ -32,8 +33,8 @@ export function useRevisit(mode?: CompareMode, goal?: Goal | null): RevisitState
       setView(revisitSaved(null, saved, isoToday()));
       return;
     }
-    loadBundle()
-      .then((bundle) => {
+    Promise.all([loadBundle(), loadWorkbenchBundle().catch(() => null)])
+      .then(([bundle, wb]) => {
         if (cancelled) return;
         const ck = `${key}|${bundle.runDate}|${(bundle.dataFiles ?? []).length}`;
         const hit = cache.get(ck);
@@ -41,7 +42,7 @@ export function useRevisit(mode?: CompareMode, goal?: Goal | null): RevisitState
         // let the page paint before the re-run
         window.setTimeout(() => {
           if (cancelled) return;
-          const v = revisitSaved(bundle, saved, isoToday());
+          const v = revisitSaved(bundle, saved, isoToday(), wb);
           cache.set(ck, v);
           setView(v);
         }, 30);

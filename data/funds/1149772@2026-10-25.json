@@ -1,0 +1,187 @@
+{
+  "id": "1149772",
+  "names": {
+    "en": [],
+    "he": [
+      "אי.בי.אי. סל (4D)י MSCI AC World",
+      "אי.בי.אי. סל (4D) MSCI AC World",
+      "איביאי סל MSCI ACWorld"
+    ],
+    "tase": [
+      "1149772"
+    ]
+  },
+  "identifiers": {
+    "isin": "IL0011497729",
+    "tase_number": "1149772",
+    "cusip": null,
+    "ticker": {
+      "TASE_he": "אבא.ס106"
+    }
+  },
+  "manager": "אי.בי.אי קרנות נאמנות בע\"מ",
+  "domicile": "IL",
+  "legal_form": "קרן סגורה, קרן סל (Israeli ETF under the Joint Investment Trust Law 1994; traded on TASE, created and redeemed through the manager, ETF-04); קרן בלתי מוגבלת בניירות ערך חוץ; exposure profile 4D. Trustee: יובנק חברה לנאמנות בע\"מ. Tracking asset on Maya's fund page: MSCI AC WORLD INDEX - NTR 100% + דולר ארה\"ב 100%. Payment policy on Maya: 'הינה קרן צבירה-מתחייבת לא לחלק תשלומים'. REPLICATION: swap (OTC derivatives): mainly OTC derivatives on the index; ETFs, futures, the underlying assets and tracking funds allowed (annual report p. 2, 'הדרך שבה הקרן תנוהל': 'בכוונת מנהל הקרן לחשוף את הקרן למדד בעיקר באמצעות ביצוע עסקאות בנגזרי OTC'). Size used to rank the fund (not a fee input): market value 645,431 thousand NIS on 23/10/2026 (TASE security page, 'שווי שוק').",
+  "exposure_id": "index-msci-acwi",
+  "currency": "NIS",
+  "trading_currency_on_tase": "NIS",
+  "distribution_policy": "accumulating",
+  "tax_status": {
+    "il_fund_tax_track": "exempt",
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0.8,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727830-00.pdf",
+        "title": "דוח שנתי 'אי.בי.אי. סל (4D)י MSCI AC World' (מספר בורסה 1149772), תאריך הדוח 31 בדצמבר 2025, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing 1727830, PDF), עמ' 1 'שכר מנהל הקרן' / 'דמי ניהול קבועים'",
+        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13",
+        "MF-16",
+        "MF-17"
+      ],
+      "state": "sourced",
+      "notes": "Fixed management fee as printed in the report: 0.8% of average annual net assets. Maya's fund page (https://maya.tase.co.il/he/funds/etfs/1149772, read 2026-10-25) shows the same 'דמי ניהול' 0.8%. The manager committed to the ISA outline to raise its fees only on 1 January (ETF-16). Main prospectus published on Magna on 2025-07-20, reference 2025-03-053595 (not opened; Magna returns 403 to scripts), as the report states; the prospectus block cites this report."
+    },
+    "trustee": {
+      "value": 0.02,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727830-00.pdf",
+        "title": "דוח שנתי 'אי.בי.אי. סל (4D)י MSCI AC World' (מספר בורסה 1149772), תאריך הדוח 31 בדצמבר 2025, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing 1727830, PDF), עמ' 1 'שכר הנאמן'",
+        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13",
+        "MF-20"
+      ],
+      "state": "sourced",
+      "notes": "Trustee fee as printed: 0.02% of average annual net assets; Maya's fund page shows the same rate."
+    },
+    "variable_management": {
+      "value": 0.15,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727830-00.pdf",
+        "title": "דוח שנתי 'אי.בי.אי. סל (4D)י MSCI AC World' (מספר בורסה 1149772), תאריך הדוח 31 בדצמבר 2025, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing 1727830, PDF), עמ' 1 'דמי ניהול משתנים'",
+        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-14",
+        "ETF-13"
+      ],
+      "state": "sourced",
+      "notes": "Variable management fee rate as printed: 0.15% a year of net assets. Maya's fund page shows 0.15%. The mechanism works in both directions (ETF-14): the amount actually charged or paid depends on the gap to the tracking asset."
+    },
+    "tracking_difference_12m": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727830-00.pdf",
+        "title": "דוח שנתי 'אי.בי.אי. סל (4D)י MSCI AC World' (מספר בורסה 1149772), תאריך הדוח 31 בדצמבר 2025, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing 1727830, PDF), עמ' 7 'תשואות, סטיות תקן ונתוני השוואה'",
+        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-07",
+        "ETF-08",
+        "ETF-09",
+        "ETF-10"
+      ],
+      "state": "sourced",
+      "notes": "Not printed as one number. The report's table 'תשואות, סטיות תקן ונתוני השוואה' (p. 7) prints the fund's return against its tracking asset: 2025 5.27% against 6.01% (MSCI AC World 100%, US dollar 100%; the manager puts expenses at about 0.82% of net assets); 2024 19.11% against 20.48%; 2023 25.65% against 25.83%; 2022 -8.74% against -7.98%. The difference is not computed here (data-update rule). The ISA directive (ETF-07(e)) makes the manager publish the 12-month tracking difference every pricing day; this report points to the third-party page https://chart.bursagraph.co.il/funds.shtml?m=4 for it. That page (Funds Center by Guideline, run for the managers) states on the page 'אין להפיץ בכל דרך כלשהי ... את הנתונים המוצגים באתר', so its figures are not copied here (same position as CAT-43 for TASE lists); founder decision pending."
+    },
+    "median_spread": {
+      "value": null,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727830-00.pdf",
+        "title": "דוח שנתי 'אי.בי.אי. סל (4D)י MSCI AC World' (מספר בורסה 1149772), תאריך הדוח 31 בדצמבר 2025, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing 1727830, PDF), עמ' 1 'עמלת יצירה' / 'עמלת פדיון' and 'הפרשים שבין שווי היחידה למחירה בבורסה'",
+        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-06",
+        "ETF-07"
+      ],
+      "state": "sourced",
+      "notes": "No median bid-ask spread is printed in the annual report; the report prints only the range and average of the differences between unit value and exchange price, a premium/discount measure, not a spread (ETF-06). The median spread is published under ETF-07(b) on the same third-party page (https://chart.bursagraph.co.il/funds.shtml?m=4), whose terms forbid redistribution; not copied. Creation and redemption fee on direct orders to the manager: 0.30% each (p. 1; ETF-05)."
+    },
+    "fund_level_withholding_drag": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727830-00.pdf",
+        "title": "דוח שנתי 'אי.בי.אי. סל (4D)י MSCI AC World' (מספר בורסה 1149772), תאריך הדוח 31 בדצמבר 2025, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing 1727830, PDF), עמ' 2 'הדרך שבה הקרן תנוהל'",
+        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-11"
+      ],
+      "state": "sourced",
+      "notes": "Not collected: the report prints no withholding figure and no computation is made here. The fund takes its exposure mainly through derivatives (see REPLICATION in legal_form), so any dividend-withholding drag sits inside the instrument pricing and is not published as a rate."
+    }
+  },
+  "dimensions": {
+    "fund-tax-track": "covered:TXS-24",
+    "fee-management-balance": "covered:ETF-13",
+    "distribution-policy": "covered:MF-49",
+    "currency": "covered:ETF-10",
+    "fee-trade": "covered:ETF-05",
+    "protection": "covered:MF-02"
+  },
+  "prospectus": {
+    "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727830-00.pdf",
+    "date": "2025-07-20"
+  },
+  "exposure_code": "4D",
+  "distribution_fee_type": "3",
+  "creation_redemption_fee_category": "0.30%",
+  "replication": {
+    "method": "swap",
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727830-00.pdf",
+      "page": 2,
+      "checked": "2026-10-25"
+    }
+  },
+  "snapshot": "2026-10-25"
+}

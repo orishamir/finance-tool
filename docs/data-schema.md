@@ -64,7 +64,9 @@ Field rules:
 
 ## 2. Units and enumerations
 
-Units: `nis`, `usd`, `eur`, `pct` (a share), `pct_per_year`, `pct_of_deposit`, `pct_of_trade`, `pct_of_balance_per_period`, `nis_per_month`, `nis_per_trade`, `nis_per_transfer`, `months`, `years`, `days`, `business_days`, `index_points`, `count`, `boolean`, `text`.
+Units: `nis`, `usd`, `eur`, `pct` (a share), `pct_per_year`, `pct_of_deposit`, `pct_of_trade`, `pct_of_balance_per_period`, `nis_per_month`, `nis_per_trade`, `nis_per_transfer`, `usd_per_share`, `usd_per_trade`, `gbp_per_trade`, `fx_per_eur`, `months`, `years`, `days`, `business_days`, `index_points`, `count`, `boolean`, `text`.
+
+**2026-10-25 (invest page).** `usd_per_share` (a dollar amount per share, a per-share commission rate), `usd_per_trade` and `gbp_per_trade` (a dollar or pound amount per trade: a minimum or maximum commission in a foreign currency) were added for the foreign brokers' tariffs; the engine converts them at the run's exchange rate. `fx_per_eur` (units of a currency per one euro, the ECB reference rate) was added for the FX series `data/series/ecb-fx.json` (request of agent A3).
 
 Fee bases (`fee.base`): `deposit`, `balance`, `trade`, `custody`, `fx`, `exit`, `fixed_period`, `distribution_handling`, `spread`, `creation_redemption`, `transfer_out`, `load`, `redemption_deduction`, `variable_management`, `trustee`, `direct_expenses`, `insurance_premium`.
 
@@ -184,6 +186,8 @@ An optional `rationale_he` (string) holds the Hebrew version of `rationale` for 
 
 The schema is `exposureRecord` in `packages/schema` (strict). `id` is lowercase kebab. `kind` is one of `equity_index`, `bond_index`, `cash_like`, `mixed`, `commodity`, `other`. `currency` is an ISO 4217 code. Optional `wrapper_ids` lists the wrappers that can hold the exposure (the link had no home before 2026-10-23); optional `rule_ids` and `open_questions` list rule and open-question IDs. A `variants` entry `fund:<id>` must be the `id` of a record under `data/funds/` once that folder has files (validator).
 
+**2026-10-25 (invest page).** `constituents_israeli` (optional boolean, S5): `true` when the index is made of Israeli companies (TA-35, TA-90, TA-125), `false` when it is not (S&P 500, NASDAQ-100, MSCI World, MSCI ACWI). Left out for the cash and bond exposures and the general track, where the question has no meaning. The invest page reads it to decide which ways of owning the index exist (an Israeli index has only Israeli funds).
+
 `one_line_he` (optional, added 2026-10-23) is the one Hebrew line on what the money is invested in, shown under the page's h1 and on the guide list.
 
 For cash-like exposures `return_source.mode` is `series` and `series` names the `data/series/` ID (A-20 to A-24).
@@ -218,6 +222,11 @@ One record per fund whose details have been collected. The set of Israeli funds 
 ```
 
 The schema is `fundRecord` (strict). `id` is lowercase ASCII, digits and hyphens, without a prefix; an exposure's `variants` names the record as `fund:<id>`, and the file is `funds/<id>@<snapshot>.json`. Each entry of `fees` is a value object or `null`. `distribution_policy` is `accumulating`, `distributing` or `null`; `tax_status.il_fund_tax_track` is `exempt`, `taxable` or `null`; `tax_status.tase_foreign_fund_90pct_test` is a value object or `null`. `dimensions` marks use the wrapper format (`covered`, `blocked:<OQ>`).
+
+**2026-10-25 (invest page).** Three optional fields (S4), all left out when the record does not say:
+- `replication: { method, source }`: how the fund follows its index. `method` is `physical` (holds the index securities), `swap` (unfunded swaps on the index), `futures` (futures on the index) or `mixed` (more than one of these as co-equal parts, for example swaps and futures, or the securities plus synthetic options). `source` is `{ url, page?, checked }`: the document that says so (the annual report or the factsheet), the PDF page that says it (never a printed page), and the date it was read. The Israeli records carry it from the sentence after `REPLICATION:` in `legal_form`; the iShares record from its factsheet ('Methodology: Physical Replication').
+- `hedged` (boolean): `true` when the fund's name or its Maya record says the currency is neutralised (מנוטרלת מט"ח / דולר, currency-hedged). Left out, not `false`, when the record does not say.
+- `share_price`: a value object in a currency unit (`usd`, `nis`, `eur`) with its own source and date: the price of one unit, which a per-share commission (`usd_per_share`) needs. No record carries it yet.
 
 Israeli funds (Maya export, CAT-34, TXS-24) add `il_fund_tax_track` (`exempt` or `taxable`, MF/TXS), the exposure code (MF-54, field `exposure_code`), `distribution_fee_type` (MF-24) and `creation_redemption_fee_category` (ETF-05); the last three are optional strings.
 
@@ -271,6 +280,10 @@ One file per provider per snapshot: `fees/<provider-id>@<date>.json`. A line's `
 }
 ```
 
+- **2026-10-25 (invest page).** Foreign brokers (S1 to S3):
+  - `provider.class` takes `foreign_broker`, and `provider.regulator` takes `foreign` (they go together; the validator fails one without the other). `provider.regulator_foreign: { name, name_he, country }` is required exactly when `regulator` is `foreign` and names the supervisor (for Interactive Israel, CySEC in Cyprus).
+  - A fee line takes an optional `cap` value object (unit `pct_of_trade`): a ceiling as a share of the trade value. Commission = min(cap x trade value, max(`min`, `rate` x base)); a cap below the minimum wins. A per-share line has `rate` in `usd_per_share` and `min` and `max` in `usd_per_trade` (or `gbp_per_trade`).
+  - The snapshot takes an optional `availability: [{ applies_to, available, source: { url, title, checked }, note? }]`. `applies_to` lists instrument classes (the security types of this section, `all` included), and a class appears in at most one entry. `available: false` is a sourced statement that a private client cannot buy that class there (Interactive Israel and TASE securities: 'ללקוחות מוסדיים בלבד'); `true` is a sourced statement that it can. With no entry for a class, availability is derived as before: it is available when a trade line applies. A class the source does not settle gets no entry ("not found" is not "not available").
 - `level` is `list`, `regulator_average`, `tase_average` or `entered` (D4). An `entered` line is never stored under `data/`; it lives in saved state with the same shape.
 - A provider whose tariff could not be obtained has `missing: true` and `missing_reason` (for example "PDF not located, BRK OQ18"), and no `lines`; the workbench shows the row as "not comparable, data missing".
 - Provident and pension managers use the same file with `base: deposit`, `base: balance`, `base: direct_expenses` lines per track (`track_id` = CMA fund number), the discount period (`discount_months`, A-19) and the list fee the discount reverts to.

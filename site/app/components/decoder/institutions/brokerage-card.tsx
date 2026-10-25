@@ -81,7 +81,7 @@ export function BrokerageGroupCard({ id, tariff, kind, className }: { id: string
       </Card>
     );
   }
-  const regulator = copy.regulators[tariff.regulator];
+  const regulator = tariff.regulator === "foreign" ? (tariff.foreignRegulator ?? "") : copy.regulators[tariff.regulator];
   const bases = tariff.bases.map(baseName);
   return (
     <Card as="section" aria-labelledby={h} className={className}>

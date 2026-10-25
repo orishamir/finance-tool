@@ -125,6 +125,19 @@ export function validateData(ctx: ValidationContext): Problem[] {
         if (!cmaFundIds.has(id)) report(file, `maps_to: fund ${id} is not in the latest data/cma/ period (data-schema §4 item 10)`);
       }
     }
+    if (collection === "fees" && result.success) {
+      // S1 (2026-10-25): a foreign broker is regulated abroad and says by whom; the schema refine checks the pair
+      // regulator/regulator_foreign, this checks the class too, and that availability does not name a class twice.
+      const snap = parsed.value as { provider: { class: string; regulator: string }; availability?: { applies_to: string[] }[] };
+      if ((snap.provider.class === "foreign_broker") !== (snap.provider.regulator === "foreign"))
+        report(file, 'provider.class "foreign_broker" and provider.regulator "foreign" go together (data-schema §3.6, S1)');
+      const seen = new Set<string>();
+      for (const a of snap.availability ?? [])
+        for (const c of a.applies_to) {
+          if (seen.has(c)) report(file, `availability: class ${c} appears in two entries`);
+          seen.add(c);
+        }
+    }
     if (collection === "instruments/exposures" && result.success && fundIds) {
       for (const v of (parsed.value as { variants: string[] }).variants) {
         if (v.startsWith("fund:") && !fundIds.has(v.slice("fund:".length)))

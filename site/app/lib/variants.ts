@@ -4,16 +4,22 @@
 // Pure: no storage, no fetch (the assumption store is at the end).
 import {
   buildTariff,
+  coverageLine,
   fundVariants,
+  outcomeOrder,
+  rankCandidates,
   RecordInputError,
   tieThreshold,
+  type Candidate,
+  type FundVariants,
   type RunContext,
   type VariantRow,
   type VariantSource,
 } from "@finance-tool/engine";
 import type { ExposureRecord, FundRecord, ValueObject } from "@finance-tool/schema";
 import { deviceStore } from "./device-store";
-import { BROKERAGE, a28Value, parameterValue, ruleContext, staleTariff, type FundAssumptions, type WorkbenchBundle, type WorkbenchInputs } from "./providers";
+import { BROKERAGE, a28Value, instrumentClassOf, parameterValue, ruleContext, staleTariff, type FundAssumptions, type WorkbenchBundle, type WorkbenchInputs } from "./providers";
+import { nisPer } from "./fx";
 import { computed, weaker, type SiteValue, type Strength } from "./value";
 
 /**
@@ -67,7 +73,7 @@ export type VariantReason =
   | { code: "g18"; openQuestion: string }
   | { code: "taxable-israeli" }
   | { code: "yield-missing"; fixable: true }
-  | { code: "start-rate"; currency: string; fixable: true }
+  | { code: "no-rate"; currency: string }
   | { code: "withholding"; country: string }
   | { code: "money-market" }
   | { code: "other-currency"; fund: string; exposure: string }
@@ -133,8 +139,8 @@ export interface FundVariantsView {
   hasDistributing: boolean;
   /** Fund records of the exposure that distribute, for the yield fields. */
   distributing: { recordId: string; name: string }[];
-  /** Foreign currencies the funds are bought in abroad, for the start-rate fields. */
-  startRateCurrencies: string[];
+  /** Foreign currencies the funds are bought in abroad, each with the start rate the run used: the ECB cross rate (D26, never typed); null when the ECB has none. */
+  startRates: { code: string; rate: SiteValue | null }[];
   ordersN: number;
   orders: SiteValue;
 }
@@ -150,7 +156,7 @@ function tariffFor(bundle: WorkbenchBundle, wanted: string | null, instrumentCla
   if (wanted) candidates.push({ id: wanted, fromP05: wanted === p05Tariff, fellBack: false });
   if (p05Tariff && p05Tariff !== wanted) candidates.push({ id: p05Tariff, fromP05: true, fellBack: wanted !== null });
   for (const c of candidates) {
-    const s = bundle.snapshots.find((x) => x.id === c.id && (x.provider.class === "bank" || x.provider.class === "broker"));
+    const s = bundle.snapshots.find((x) => x.id === c.id && (x.provider.class === "bank" || x.provider.class === "broker" || x.provider.class === "foreign_broker"));
     if (!s || s.missing) continue;
     const input = {
       goal: { amountNow: 0, monthly: 0, months: 12 },
@@ -195,7 +201,7 @@ function reasonOf(row: VariantRow): VariantReason | undefined {
   if (r.code === "missing-input") {
     if (/^distributions\./.test(d)) return { code: "yield-missing", fixable: true };
     const ccy = /^fxStartRates\.(\w+)/.exec(d)?.[1];
-    if (ccy) return { code: "start-rate", currency: ccy, fixable: true };
+    if (ccy) return { code: "no-rate", currency: ccy };
   }
   if (r.code === "no-run") {
     if (/taxable Israeli fund/.test(d)) return { code: "taxable-israeli" };
@@ -223,41 +229,72 @@ interface VariantArgs {
   assumptions: FundAssumptions;
 }
 
+/** Foreign currencies the funds are bought in abroad (their start rate is the ECB cross rate). */
+function foreignCurrencies(mine: FundRecord[]): string[] {
+  return [...new Set(mine.filter((f) => f.domicile !== "IL" || !isIls(f.currency)).filter((f) => !isIls(f.currency) && (f.trading_currency_on_tase === null || !isIls(f.trading_currency_on_tase))).map((f) => f.currency))];
+}
+
 export function buildFundVariants(a: VariantArgs): VariantResult {
   const { bundle, exposureId, query, inputs, assumptions } = a;
   const today = bundle.today;
   const exposure = bundle.exposures.find((e) => e.id === exposureId);
   if (!exposure) return { kind: "error", code: "no-exposure" };
   const mine = bundle.funds.filter((f) => f.exposure_id === exposure.id);
-  // the class the shared tariff is read for: TASE-traded funds are priced as exchange-traded funds; only when every fund is bought abroad, as foreign securities
-  const allAbroad = mine.length > 0 && mine.every((f) => f.domicile !== "IL" && f.trading_currency_on_tase === null);
-  const instrumentClass = allAbroad ? "foreign_securities" : "etf_units";
+  // Each fund is priced with its own instrument class (2026-10-25): a tracking fund on the mutual-fund lines, an ETF and a TASE-traded
+  // foreign fund on the exchange-traded lines, a fund bought abroad on the foreign-securities lines. A list row with no record has no run.
+  const classOf = new Map(mine.map((f) => [f.id, instrumentClassOf(f, exposure)] as const));
+  const classes = [...new Set(classOf.values())];
+  if (classes.length === 0) classes.push("etf_units");
   const ordersN = query.orders ?? 1;
-  const tariff = tariffFor(bundle, query.provider, instrumentClass, exposure.currency, ordersN);
-  if (!tariff) return { kind: "error", code: "no-tariff" };
+  const tariffs = new Map<string, NonNullable<ReturnType<typeof tariffFor>>>();
+  for (const cls of classes) {
+    const t = tariffFor(bundle, query.provider, cls, exposure.currency, ordersN);
+    if (!t) return { kind: "error", code: "no-tariff" };
+    tariffs.set(cls, t);
+  }
+  const tariff = tariffs.get(classes[0]!)!;
 
   const dist: Record<string, { yield: number; perYear: number }> = {};
   for (const [id, d] of Object.entries(assumptions.distributions ?? {})) dist[id] = { yield: d.yield / 100, perYear: d.perYear };
   const theta = tieThreshold([bundle.p01]);
-  const x = {
+  const startRates = foreignCurrencies(mine).map((code) => ({ code, rate: bundle.fx ? nisPer(bundle.fx, code, today) : null }));
+  const startRateNumbers: Record<string, number> = {};
+  for (const r of startRates) if (r.rate && typeof r.rate.value === "number") startRateNumbers[r.code] = r.rate.value;
+  const xFor = (t: typeof tariff) => ({
     record: exposure,
     run: {
       goal: { amountNow: inputs.amountNow, monthly: inputs.monthly, months: 12 * inputs.years },
       grossReturn: inputs.grossReturn,
       inflation: inputs.inflation,
       ...(assumptions.fxChange !== undefined ? { fxChange: assumptions.fxChange / 100 } : {}),
-      tariff: tariff.tariff,
+      tariff: t.tariff,
       profile: { ...(inputs.age !== null ? { ageAtStart: inputs.age } : {}), ...(inputs.income !== null && inputs.income > 0 ? { annualIncome: inputs.income } : {}) },
       ...(assumptions.w8ben !== undefined ? { w8ben: assumptions.w8ben } : {}),
-      ...(assumptions.fxStart ? { fxStartRates: assumptions.fxStart } : {}),
+      fxStartRates: startRateNumbers,
       distributions: dist,
       ordersPerMonth: ordersN,
     },
     theta,
-  };
-  let fv: ReturnType<typeof fundVariants>;
+  });
+  let fv: FundVariants;
   try {
-    fv = fundVariants(x, bundle.fundLists, bundle.funds, ruleContext(bundle) as RunContext);
+    const ctx = ruleContext(bundle) as RunContext;
+    const runs = classes.map((cls) => ({ cls, fv: fundVariants(xFor(tariffs.get(cls)!), bundle.fundLists, bundle.funds, ctx) }));
+    // a record's row comes from the run of its own class; a row with no record (a list row) from the first run
+    const rows = runs.flatMap(({ cls, fv: r }, i) => r.rows.filter((row) => (row.recordId ? classOf.get(row.recordId) === cls : i === 0)));
+    const first = runs[0]!.fv;
+    const asCandidates: Candidate[] = rows.map((r) => ({ id: r.id, name: r.name, tier: 1, kind: r.kind, reasons: r.reasons, ...(r.plan ? { plan: r.plan } : {}), ...(r.run ? { run: r.run } : {}) }));
+    const ranking = rankCandidates(asCandidates, { theta, ctx });
+    for (const e of ranking.entries) rows.find((r) => r.id === e.id)!.rank = e.rank;
+    const coverage = coverageLine(
+      [
+        ...rows.map((r) => ({ id: r.id, name: r.name, kind: r.kind, reasons: r.reasons })),
+        { id: first.group.id, name: "foreign-domiciled funds traded abroad, not held one by one", kind: "not-evaluated" as const, reasons: [{ code: "gap" as const, ruleIds: [], gapIds: [first.group.gapId], detail: `not held one by one; ${first.group.held} held` }] },
+      ],
+      outcomeOrder,
+      ["ranked"],
+    );
+    fv = { ...first, rows, ranking, coverage };
   } catch (e) {
     return { kind: "error", code: "engine", detail: e instanceof Error ? e.message : String(e) };
   }
@@ -333,7 +370,6 @@ export function buildFundVariants(a: VariantArgs): VariantResult {
       notes: "",
     };
   };
-  const foreignCcys = [...new Set(mine.filter((f) => f.domicile !== "IL" || !isIls(f.currency)).filter((f) => !isIls(f.currency) && (f.trading_currency_on_tase === null || !isIls(f.trading_currency_on_tase))).map((f) => f.currency))];
   const ruleIds = new Set<string>(["TXF-11", "TXF-13", "TXS-22", "CAT-34", "ETF-32", "TXF-12", "TXF-08"]);
   rows.forEach((r) => r.ruleIds.forEach((id) => ruleIds.add(id)));
   const view: FundVariantsView = {
@@ -351,7 +387,7 @@ export function buildFundVariants(a: VariantArgs): VariantResult {
     needsFx: mine.some((f) => f.domicile !== "IL" || !isIls(f.currency)),
     hasDistributing: mine.some((f) => f.distribution_policy === "distributing"),
     distributing: mine.filter((f) => f.distribution_policy === "distributing").map((f) => ({ recordId: f.id, name: f.names.he[0] ?? f.names.en[0] ?? f.id })),
-    startRateCurrencies: foreignCcys,
+    startRates,
     ordersN,
     orders: query.orders !== null ? ({ ...a28Value(query.orders, "פעולות בחודש", today), state: "entered", update_rule: "founder" } as SiteValue) : a28Value(1, "פעולות בחודש", today),
   };
@@ -401,14 +437,6 @@ function parseAssumptions(raw: unknown): Record<string, FundAssumptions> {
     const fx = num(v.fxChange);
     if (fx !== undefined) a.fxChange = fx;
     if (typeof v.w8ben === "boolean") a.w8ben = v.w8ben;
-    if (rec(v.fxStart)) {
-      const m: Record<string, number> = {};
-      for (const [c, n] of Object.entries(v.fxStart)) {
-        const x = num(n);
-        if (x !== undefined && x > 0) m[c] = x;
-      }
-      if (Object.keys(m).length) a.fxStart = m;
-    }
     if (rec(v.distributions)) {
       const m: Record<string, { yield: number; perYear: number }> = {};
       for (const [f, d] of Object.entries(v.distributions)) if (rec(d) && num(d.yield) !== undefined && num(d.perYear) !== undefined && [1, 2, 3, 4, 6, 12].includes(d.perYear as number)) m[f] = { yield: d.yield as number, perYear: d.perYear as number };

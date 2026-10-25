@@ -12,6 +12,7 @@ import { valueObject, type ValueObject, type WrapperId } from "@finance-tool/sch
 import type { ComparisonResult, Versions } from "@finance-tool/engine";
 import type { RunGoal } from "./compare";
 import type { Goal } from "./goal";
+import type { CustomIndex } from "./invest";
 import { todayLocal } from "./today";
 import { entered as enteredValue } from "./value";
 import { sanitizeRawState, type Rejected } from "./import-check";
@@ -123,6 +124,10 @@ export interface StateV3 extends Omit<StateV2, "version"> {
   version: 3;
   /** One per goal and mode. A record this release cannot read is kept as it is (see `isReadableSaved`). */
   savedComparisons: SavedComparisonRecord[];
+  /** "השקעה במדד" (D28, 2026-10-25): the indices the person added, kept on the device and in the export file; an older document has none. */
+  customIndices?: CustomIndex[];
+  /** The person's current broker (a fee snapshot id), optional; "החשבון שלכם" on the same page. */
+  broker?: string;
 }
 
 export interface StateFile {
@@ -282,6 +287,16 @@ export function checkState(s: unknown): string | null {
   return null;
 }
 
+/** The custom indices of a document that pass the shape check; a bad entry is left out, never a reason to refuse the file. */
+export function validCustomIndices(list: unknown[]): CustomIndex[] {
+  const out: CustomIndex[] = [];
+  for (const c of list) {
+    if (!isObj(c) || typeof c.id !== "string" || !c.id || typeof c.name !== "string" || !c.name.trim() || typeof c.israeli !== "boolean" || out.some((x) => x.id === c.id)) continue;
+    out.push({ id: c.id, name: c.name, israeli: c.israeli, ...(typeof c.currency === "string" && c.currency ? { currency: c.currency } : {}), ...(typeof c.region === "string" && c.region ? { region: c.region } : {}), added: typeof c.added === "string" ? c.added : "" });
+  }
+  return out;
+}
+
 /** A version 2 or 3 document as the version 3 shape: each goal gains an empty `exposures` map, the document an empty list of saved comparisons; a `visits` field of an earlier file is ignored (the migration chain, design-spec 21.5). */
 function normalizeState(s: Record<string, unknown>): StateV3 {
   const base = emptyState();
@@ -292,6 +307,8 @@ function normalizeState(s: Record<string, unknown>): StateV3 {
     savedComparisons: Array.isArray(s.savedComparisons) ? (s.savedComparisons as SavedComparisonRecord[]) : base.savedComparisons,
     ...(typeof s.currentId === "string" ? { currentId: s.currentId } : {}),
     ...(typeof s.bank === "string" ? { bank: s.bank } : {}),
+    ...(Array.isArray(s.customIndices) && validCustomIndices(s.customIndices).length ? { customIndices: validCustomIndices(s.customIndices) } : {}),
+    ...(typeof s.broker === "string" && s.broker ? { broker: s.broker } : {}),
     inputs: s.inputs as Record<string, ValueObject>,
     holdings: s.holdings as Holding[],
     uncatalogued: s.uncatalogued as Uncatalogued[],
@@ -646,6 +663,38 @@ export function useHoldings() {
   return { ready: snapshot.ready, status: snapshot.status, saved: snapshot.saved, holdings: sortedHoldings(snapshot.state.holdings), save: saveHolding, remove: removeHolding, move: moveHolding };
 }
 
+// ---------------------------------------------------------------- the index page's own state (D28)
+
+export function saveCustomIndex(c: CustomIndex): void {
+  updateState((s) => {
+    const have = s.customIndices ?? [];
+    return { ...s, customIndices: [...have.filter((x) => x.id !== c.id), c] };
+  });
+}
+
+export function removeCustomIndex(id: string): void {
+  updateState((s) => {
+    const next = (s.customIndices ?? []).filter((x) => x.id !== id);
+    const { customIndices: _drop, ...rest } = s;
+    void _drop;
+    return next.length ? { ...rest, customIndices: next } : rest;
+  });
+}
+
+/** The person's current broker for "החשבון שלכם"; null clears it. */
+export function setCurrentBroker(id: string | null): void {
+  updateState((s) => {
+    const { broker: _drop, ...rest } = s;
+    void _drop;
+    return id ? { ...rest, broker: id } : rest;
+  });
+}
+
+export function useInvestState() {
+  const snapshot = useStateStore();
+  return { ready: snapshot.ready, status: snapshot.status, customIndices: snapshot.state.customIndices ?? [], broker: snapshot.state.broker ?? null, saved: snapshot.saved, add: saveCustomIndex, remove: removeCustomIndex, setBroker: setCurrentBroker };
+}
+
 // ---------------------------------------------------------------- saved comparisons
 
 const sameSlot = (c: unknown, goalId: string, mode: CompareMode) => isObj(c) && c.goalId === goalId && c.mode === mode;
@@ -715,6 +764,7 @@ export function exportCounts(s: StateV3, side?: SideStores) {
     names: s.uncatalogued.length,
     inputs: Object.keys(s.inputs).length > 0,
     comparisons: s.savedComparisons.length,
+    indices: (s.customIndices ?? []).length,
     offers: sc.offers,
     variants: sc.variants,
     ticks: sc.ticks,
@@ -730,7 +780,7 @@ export function currentSideStores(): SideStores {
 /** Nothing worth a file: no goal with content, no holding, no name, no guide input, no saved comparison, no side store. */
 export function isEmptyState(s: StateV3, side?: SideStores): boolean {
   const c = exportCounts(s, side);
-  return c.goals === 0 && c.holdings === 0 && c.names === 0 && !c.inputs && c.comparisons === 0 && c.offers + c.variants + c.ticks + c.ownRates === 0;
+  return c.goals === 0 && c.holdings === 0 && c.names === 0 && !c.inputs && c.comparisons === 0 && c.indices === 0 && c.offers + c.variants + c.ticks + c.ownRates === 0;
 }
 
 export function buildStateFile(s: StateV3, site: { version: string; data: string }, now = new Date(), side?: SideStores): StateFile {
@@ -920,6 +970,14 @@ export function applyImport(current: StateV3, incoming: StateV3, mode: "add" | "
     holdings,
     uncatalogued: names,
     ...(current.bank ? { bank: current.bank } : incoming.bank ? { bank: incoming.bank } : {}),
+    ...(() => {
+      // an index the device already has (by id) stays as it is; the file's others are added; the device's own broker stays
+      const have = current.customIndices ?? [];
+      const more = (incoming.customIndices ?? []).filter((c) => !have.some((x) => x.id === c.id));
+      const all = [...have, ...more];
+      const broker = current.broker ?? incoming.broker;
+      return { ...(all.length ? { customIndices: all } : {}), ...(broker ? { broker } : {}) };
+    })(),
     imports: [...current.imports, { at: today, mode, goals: added.goals, holdings: added.holdings, names: added.names, skipped }],
   };
   return { state, added, skipped, ...(firstAddedGoalId ? { firstAddedGoalId } : {}) };

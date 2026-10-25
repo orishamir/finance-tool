@@ -1,0 +1,59 @@
+{
+  "id": "index-msci-acwi",
+  "names": {
+    "he": [
+      "מדד MSCI AC World",
+      "MSCI ACWI",
+      "MSCI All Country World"
+    ],
+    "en": [
+      "MSCI ACWI",
+      "MSCI AC World",
+      "MSCI All Country World Index"
+    ]
+  },
+  "one_line_he": "מדד של מניות חברות בשווקים מפותחים ומתפתחים, בארבעים ושבע מדינות; הכסף מושקע בשקלים דרך קרן שעוקבת אחריו, עם חשיפה לדולר או מנוטרלת ממנו.",
+  "kind": "equity_index",
+  "currency": "USD",
+  "cash_like": false,
+  "return_source": {
+    "mode": "entered",
+    "series": null
+  },
+  "variants": [
+    "fund:1149772",
+    "fund:1144237",
+    "fund:1201003",
+    "fund:1147362",
+    "fund:1144336"
+  ],
+  "wrapper_ids": [
+    "brokerage-account",
+    "ira-hishtalmut",
+    "ira-provident"
+  ],
+  "rule_ids": [
+    "ETF-01",
+    "ETF-04",
+    "ETF-05",
+    "ETF-06",
+    "ETF-09",
+    "ETF-10",
+    "ETF-11",
+    "ETF-12",
+    "ETF-13",
+    "ETF-14",
+    "ETF-17",
+    "ETF-19",
+    "ETF-20",
+    "TXS-09",
+    "TXS-13",
+    "TXS-14",
+    "TXS-15",
+    "TXS-21",
+    "CAT-10",
+    "IRA-11"
+  ],
+  "constituents_israeli": false,
+  "checked": "2026-10-25"
+}
