@@ -528,7 +528,13 @@ function scoreFull(entry: SearchEntry, a: Analysis, docs: Map<string, TextDoc> |
     const key = entry.key ?? "";
     const id = idForms(key);
     if (id.forms.includes(a.q)) return { score: -2 };
-    if (a.q.length >= 2 && id.prefix && a.q === id.prefix) return { score: ID_PREFIX_SCORE };
+    // "bank", "bank-" and "bank-1" list the family (the last: the ids whose number starts with 1); a trailing hyphen found nothing before (2026-10-25)
+    const qq = a.q.replace(/[-\s]+$/, "");
+    if (qq.length >= 2 && id.prefix && qq.startsWith(id.prefix)) {
+      const rest = qq.slice(id.prefix.length).replace(/^[-\s]/, "").replace(/^0+(?=\d)/, "");
+      const num = key.slice(key.lastIndexOf("-") + 1).replace(/^0+(?=\d)/, "");
+      if (rest === "" || (/^\d+$/.test(rest) && num.startsWith(rest))) return { score: ID_PREFIX_SCORE };
+    }
   }
   let best: Scored | null = null;
   const take = (score: number, extra?: Partial<Scored>) => {
