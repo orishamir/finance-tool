@@ -17,7 +17,7 @@ import {
 } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundListFile, FundRecord, ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
 import { flags as flagCopy, formulaNames, guideBlocks } from "../copy";
-import { nisPerNumber, type FxSnapshot } from "./fx";
+import { fxRunInput, nisPerNumber, type FxSnapshot } from "./fx";
 import { toEnteredTariff, type EnteredOffer } from "./offers";
 import { computed, entered as enteredValue, type SiteValue, type Staleness } from "./value";
 
@@ -350,6 +350,8 @@ export type NotComparable =
   | { code: "no-applicable-line"; detail: string }
   | { code: "no-average"; detail: string }
   | { code: "line-without-value"; detail: string; lineName: string | null }
+  /** 2026-10-25 (engine E1, E2, E5): a per-share line and no share price; a line in a foreign currency and no rate; a record the engine cannot read. */
+  | { code: "needs-share-price" | "needs-fx-rate" | "record-error"; detail: string }
   | { code: "ambiguous"; detail: string; lines: { id: string; name: string; band: string | null }[] };
 
 export interface ProviderRowView {
@@ -531,6 +533,7 @@ export function buildProviderWorkbench(a: BuildArgs): ProviderResult {
     instrumentClass: subject.instrumentClass,
     channel: channelId,
     ...(run.currency ? { currency: run.currency } : {}),
+    ...(bundle.fx ? { fx: fxRunInput(bundle.fx) } : {}),
     theta,
   };
 
@@ -551,9 +554,10 @@ export function buildProviderWorkbench(a: BuildArgs): ProviderResult {
       if (!x.s.missing || x.p.level === "entered") buildTariff({ ...base, providers: [] }, x.p, x.s.missing ? { ...x.s, lines: [], averages: [] } : x.s);
       runnable.push(x);
     } catch (e) {
+      // Any other refusal is that provider's row: the engine names it (E5, 2026-10-25), never an error for the whole page.
       const amb = e instanceof RecordInputError ? ambiguity(e.message, x.s) : null;
-      if (!amb) return { kind: "error", code: "engine", detail: e instanceof Error ? e.message : String(e), subject };
-      ambiguous.set(x.s.id, { code: "ambiguous", ...amb });
+      if (amb) ambiguous.set(x.s.id, { code: "ambiguous", ...amb });
+      else runnable.push(x);
     }
   }
 

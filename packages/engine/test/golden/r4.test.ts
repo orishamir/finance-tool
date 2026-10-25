@@ -298,8 +298,10 @@ describe("S45 provider with an entered fee, F-63", () => {
     expect(at(wb, "broker-d").noLine).toEqual(["custody"]);
   });
 
-  it("level entered without an entered tariff stops with the field named", () => {
-    expect(() => providerWorkbench(s44Base(1, [{ snapshot: bankA, level: "entered" }]), ctx)).toThrow(RecordInputError);
+  it("level entered without an entered tariff is that provider's row, with the field named (E5, 2026-10-25)", () => {
+    const r = providerWorkbench(s44Base(1, [{ snapshot: bankA, level: "entered" }]), ctx).rows[0]!;
+    expect(r.kind).toBe("not-comparable");
+    if (r.kind === "not-comparable") expect(r.reason).toMatchObject({ code: "record-error", detail: expect.stringContaining("entered") });
   });
 });
 
@@ -385,8 +387,10 @@ describe("F-63 on real and fixture snapshot shapes", () => {
     expect(l.notModelled.map((n) => n.lineId)).toEqual(["leumi-distribution-fee-type-1", "leumi-distribution-fee-type-3"]);
   });
 
-  it("a channel must be named when the snapshot's lines differ by channel", () => {
-    expect(() => providerWorkbench(input([{ snapshot: leumi, level: "list" }]), ctx)).toThrow(/name the channel/);
+  it("a channel must be named when the snapshot's lines differ by channel: the provider's row says so (E5, 2026-10-25)", () => {
+    const r = providerWorkbench(input([{ snapshot: leumi, level: "list" }]), ctx).rows[0]!;
+    expect(r.kind).toBe("not-comparable");
+    if (r.kind === "not-comparable") expect(r.reason).toMatchObject({ code: "record-error", detail: expect.stringMatching(/name the channel/) });
   });
 
   it("Leumi has no averages, so at an average level it is not comparable with the reason", () => {

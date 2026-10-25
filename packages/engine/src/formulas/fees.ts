@@ -1,7 +1,7 @@
 // docs/method.md §4.1: fee types and their bases. Rates are fractions; amounts are NIS unless a tariff
 // line says it is set in the instrument's currency.
 
-/** A tariff line (F-12): `max(min, min(rate × amount, max))`, plus a per-share part where the tariff has one. */
+/** A tariff line (F-12): `min(cap × amount, max(min, min(rate × amount + perShare × shares, max)))`, plus a per-share part above a threshold where the tariff has one. */
 export interface Commission {
   rate: number;
   min?: number;
@@ -10,6 +10,10 @@ export interface Commission {
   in?: "nis" | "instrument";
   /** A fee per share above a number of shares in one order (BRK-36). */
   perShareAbove?: { shares: number; perShare: number };
+  /** A fee per share on the whole order, in NIS (the line's dollar fee converted at the run's rate, 2026-10-25). Needs the share price. */
+  perShare?: number;
+  /** The most the commission can be, as a fraction of the trade value; it wins over the minimum (E3, 2026-10-25). */
+  cap?: number;
 }
 
 /** Converts a tariff line's fixed amounts to NIS: the rate of the instrument's currency at the trade. */
@@ -22,18 +26,24 @@ export interface TradeTerms {
 
 /**
  * F-12 Trade commission. Per order, `max(min, min(pct × amount, max))` on the trade value `amount`, from
- * the tariff line for the security type (BRK-16).
+ * the tariff line for the security type (BRK-16). A per-share line adds `perShare × shares`, and a cap
+ * (a share of the trade value) limits the result last (2026-10-25).
  */
 export function tradeCommission(line: Commission | undefined, amount: number, terms: TradeTerms): number {
   if (!line || amount <= 0) return 0;
   const k = line.in === "instrument" ? terms.fxRate : 1;
   let fee = line.rate * amount;
+  if (line.perShare) {
+    if (!terms.sharePrice) throw new RangeError("a per-share commission needs the share price (F-12)");
+    fee += line.perShare * (amount / terms.fxRate / terms.sharePrice);
+  }
   if (line.max !== undefined) fee = Math.min(fee, line.max * k);
   if (line.min !== undefined) fee = Math.max(fee, line.min * k);
   if (line.perShareAbove && terms.sharePrice) {
     const shares = amount / terms.fxRate / terms.sharePrice;
     fee += Math.max(0, shares - line.perShareAbove.shares) * line.perShareAbove.perShare * k;
   }
+  if (line.cap !== undefined) fee = Math.min(fee, line.cap * amount);
   return fee;
 }
 
