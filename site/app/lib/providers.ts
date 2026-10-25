@@ -19,7 +19,7 @@ import type { ExposureRecord, FeesSnapshot, FundListFile, FundRecord, ParameterR
 import { flags as flagCopy, formulaNames, guideBlocks } from "../copy";
 import { fxRunInput, nisPerNumber, type FxSnapshot } from "./fx";
 import { toEnteredTariff, type EnteredOffer } from "./offers";
-import { computed, entered as enteredValue, type SiteValue, type Staleness } from "./value";
+import { computed, entered as enteredValue, ownBy, type SiteValue, type Staleness } from "./value";
 
 // Names the number sheet shows for the formulas and gaps of this release (copy.md 3.8 style: the code stays beside the words).
 Object.assign(formulaNames, { "F-63": "השוואת ספקים לפי עלות", "F-65": "השוואת קרנות לאותה חשיפה", "F-83": "ספירת כל מה שנבדק" });
@@ -167,7 +167,7 @@ export function a28Value(value: number, about: string, today: string): SiteValue
 }
 
 /** The engine's computed value, its raw inputs turned into values the provenance sheet can open, with the clock of a stale tariff. */
-function lift(v: ValueObject, stale: Staleness | null, today: string): SiteValue {
+function lift(v: ValueObject, stale: Staleness | null, today: string, owner: string): SiteValue {
   const inputs: Record<string, SiteValue> = {};
   if (v.computed_from) {
     for (const [label, raw] of Object.entries(v.computed_from.inputs)) {
@@ -175,10 +175,12 @@ function lift(v: ValueObject, stale: Staleness | null, today: string): SiteValue
       inputs[label] = { ...computed(isNum ? raw : null, isNum ? "count" : "text", v.computed_from.formula, {}, { today, about: label }), ...(isNum ? {} : { value: String(raw) }) };
     }
   }
-  return { ...v, computed_from: v.computed_from ? { formula: v.computed_from.formula, inputs } : undefined, weakest: v.source.strength, stale, rulesUsed: (v.rule_ids ?? []).map((id) => ({ id, strength: v.source.strength })) } as SiteValue;
+  // D31: a cost built from the provider's own tariff on the provider's own row is not weakened by it
+  return ownBy({ ...v, computed_from: v.computed_from ? { formula: v.computed_from.formula, inputs } : undefined, weakest: v.source.strength, stale, rulesUsed: (v.rule_ids ?? []).map((id) => ({ id, strength: v.source.strength })) } as SiteValue, owner);
 }
 
-const withStale = (v: ValueObject, stale: Staleness | null): SiteValue => ({ ...v, stale });
+/** D31: a tariff figure of a provider, shown on that provider's row, is the provider's own. */
+const withStale = (v: ValueObject, stale: Staleness | null, owner: string): SiteValue => ownBy({ ...v, stale } as SiteValue, owner);
 
 // ---------------------------------------------------------------- the subject fund
 
@@ -446,7 +448,7 @@ function snapshotValues(s: FeesSnapshot, today: string): { tariff: RowTariff; st
   const stale = staleTariff(s.snapshot, today);
   const staleness: Staleness | null = stale ? { since: s.snapshot, cadence: "quarterly" } : null;
   const source = { url: s.tariff.url, title: s.tariff.title, publisher: s.provider.name_he, strength: "institution" as const };
-  const date = (value: string, about: string, from: string | null): SiteValue => ({
+  const date = (value: string, about: string, from: string | null): SiteValue => ownBy({
     value,
     unit: "text",
     source,
@@ -458,7 +460,7 @@ function snapshotValues(s: FeesSnapshot, today: string): { tariff: RowTariff; st
     about,
     stale: staleness,
     notes: "",
-  });
+  } as SiteValue, s.provider.name_he);
   return {
     stale: staleness,
     tariff: {
@@ -598,9 +600,9 @@ export function buildProviderWorkbench(a: BuildArgs): ProviderResult {
         id,
         base: l.base,
         name: l.names.tariff[0] ?? id,
-        rate: withStale(avg ? avg.rate : l.rate, stale),
-        min: !isAvg && l.min && l.min.value !== null ? withStale(l.min, stale) : null,
-        max: !isAvg && l.max && l.max.value !== null ? withStale(l.max, stale) : null,
+        rate: withStale(avg ? avg.rate : l.rate, stale, s.provider.name_he),
+        min: !isAvg && l.min && l.min.value !== null ? withStale(l.min, stale, s.provider.name_he) : null,
+        max: !isAvg && l.max && l.max.value !== null ? withStale(l.max, stale, s.provider.name_he) : null,
         period: l.period,
         channel: l.channel,
         level: lvl,
@@ -625,7 +627,7 @@ export function buildProviderWorkbench(a: BuildArgs): ProviderResult {
       const found = s.lines.filter((l) => l.base === base && l.level === "list" && l.applies_to.some((x) => x === subject.instrumentClass || x === "all" || x === wrapperId) && !(l.excludes ?? []).includes(subject.instrumentClass) && (l.channel === null || l.channel === channelId));
       if (found.length !== 1) continue;
       const l = found[0]!;
-      out[type] = { rate: withStale(l.rate, stale), min: l.min && l.min.value !== null ? withStale(l.min, stale) : null, max: l.max && l.max.value !== null ? withStale(l.max, stale) : null, period: l.period };
+      out[type] = { rate: withStale(l.rate, stale, s.provider.name_he), min: l.min && l.min.value !== null ? withStale(l.min, stale, s.provider.name_he) : null, max: l.max && l.max.value !== null ? withStale(l.max, stale, s.provider.name_he) : null, period: l.period };
     }
     return out;
   };
@@ -640,7 +642,7 @@ export function buildProviderWorkbench(a: BuildArgs): ProviderResult {
       broker: s.provider.class !== "bank",
       tariff,
       stale,
-      minimums: { accountOpening: s.minimums.account_opening ? withStale(s.minimums.account_opening, stale) : null },
+      minimums: { accountOpening: s.minimums.account_opening ? withStale(s.minimums.account_opening, stale, s.provider.name_he) : null },
       protection: { regulator: s.provider.regulator, ...(s.provider.regulator_foreign ? { foreignRegulator: s.provider.regulator_foreign.name_he } : {}), taseMember: s.provider.tase_member, ruleIds: [...s.provider.protection_rule_ids], notIsaSupervised: s.provider.protection_rule_ids.includes("BRK-06") } satisfies RowProtection,
       hasOffer: offers[s.id] !== undefined,
       vs: query.vs === s.id,
@@ -681,8 +683,8 @@ export function buildProviderWorkbench(a: BuildArgs): ProviderResult {
     const perTrade = r.linesUsed.flatMap((id) => {
       const l = s.lines.find((x) => x.id === id);
       if (!l || l.base !== "trade") return [];
-      const min = l.min && l.min.value !== null ? withStale(l.min, staleness) : null;
-      const max = l.max && l.max.value !== null ? withStale(l.max, staleness) : null;
+      const min = l.min && l.min.value !== null ? withStale(l.min, staleness, s.provider.name_he) : null;
+      const max = l.max && l.max.value !== null ? withStale(l.max, staleness, s.provider.name_he) : null;
       return min || max ? [{ name: l.names.tariff[0] ?? id, min, max }] : [];
     });
     rows.push({
@@ -690,8 +692,8 @@ export function buildProviderWorkbench(a: BuildArgs): ProviderResult {
       kind: "ranked",
       rank: tieSet.has(r.id) ? 1 : i + 1,
       tiedWith: tieSet.has(r.id) ? [...tieSet].filter((x) => x !== r.id) : [],
-      horizonCost: lift(r.horizonCost, staleness, today),
-      yearOneCost: lift(r.yearOneCost, staleness, today),
+      horizonCost: lift(r.horizonCost, staleness, today, s.provider.name_he),
+      yearOneCost: lift(r.yearOneCost, staleness, today, s.provider.name_he),
       real: r.real,
       byType: r.byType.map((t) => ({ type: t.line as FeeType, cost: lift2(t.cost, t.line), share: Math.max(0, t.cost) / sumPos })),
       interaction: lift2(r.interaction, "interaction"),
@@ -828,7 +830,7 @@ export function buildProvidentListing(bundle: WorkbenchBundle, wrapperId: string
     const lines: ListingLine[] = [];
     for (const l of s.lines) {
       if (l.level !== "list" || !l.applies_to.includes(wrapperId) || (l.base !== "balance" && l.base !== "deposit" && l.base !== "direct_expenses")) continue;
-      lines.push({ id: l.id, base: l.base, rate: withStale(l.rate, stale), line: l.names.tariff[0] ?? (guideBlocks.fees as Record<string, { name: string }>)[l.base]?.name ?? l.base });
+      lines.push({ id: l.id, base: l.base, rate: withStale(l.rate, stale, s.provider.name_he), line: l.names.tariff[0] ?? (guideBlocks.fees as Record<string, { name: string }>)[l.base]?.name ?? l.base });
     }
     if (lines.length) cards.push({ provider: s.id, providerName: s.provider.name_he, companyId: bundle.providerCompany?.[s.id] ?? null, lines, tariff });
   }

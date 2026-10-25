@@ -11,7 +11,7 @@ import { hasHebrew, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/sour
 import { isExperience } from "../lib/rule-shelves";
 import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, sourceHref, sourceLabel2, shownTitle, type RuleSource, type SourcedRule } from "../lib/sources";
 import { useInputs } from "../lib/inputs";
-import { isParameter, isProvisional, strengthOf, type SiteValue, type Strength } from "../lib/value";
+import { isParameter, isProvisional, isWeak, strengthOf, type SiteValue, type Strength } from "../lib/value";
 import type { TermRow } from "../lib/data.server";
 import { IconAlert, IconCalculator, IconCheck, IconClock, IconCopy, IconExternal, IconFile, IconLock, IconPencil, IconReset } from "./icons";
 import { Sheet } from "./Sheet";
@@ -153,7 +153,7 @@ export function Num({ value, size = "inline", display, animate, className, prefi
   const roundState = keepDecimals ? undefined : value.state;
   const text = display ?? (shown !== null && typeof value.value === "number" ? formatValue(shown, value.unit, roundState, param) : formatValue(value.value, value.unit, roundState, param));
   const strength = strengthOf(value);
-  const weak = strength === "institution" || strength === "secondary" ? numbers.weak[strength] : null;
+  const weak = isWeak(value) && (strength === "institution" || strength === "secondary") ? numbers.weak[strength] : null;
   const fromDate = startsAfter(value, today);
   const future = fromDate ? `${numbers.startsOn}${fmt.date(fromDate)}` : null;
   const label = [text, stateWord[value.state], param ? numbers.parameter : null, weak, future, value.stale ? `${numbers.staleSince} ${fmt.date(staleDate(value))}` : null, numbers.details].filter(Boolean).join(", ");
@@ -375,10 +375,10 @@ export function Term({ id, children, prefix }: { id: string; children?: ReactNod
 
 /**
  * The key to the number styles (copy 2). Samples are marks, not figures. The fourth item (audit A23) is the mark a figure
- * carries when it rests on a company's own document; `institution={false}` leaves it out on a page that has none. `term`
+ * carries when it rests on a company's document used out of its own context (D31); a page passes `institution` only when it has such a figure. `term`
  * adds the glossary-term sample (dashed teal underline, `.term`) for pages whose text has `Term`s (the guide, exposure pages; wp6, A78).
  */
-export function NumberLegend({ className, institution = true, term = false }: { className?: string; institution?: boolean; term?: boolean }) {
+export function NumberLegend({ className, institution = false, term = false }: { className?: string; institution?: boolean; term?: boolean }) {
   return (
     <p className={cx("flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground", className)} data-sample>
       <span>
@@ -417,11 +417,12 @@ function Iso({ children, ltr }: { children: ReactNode; ltr?: boolean }) {
 }
 
 /** One source: the link line, the quoted words, then when it was read (synthesis 3.3). */
-function OneSource({ source, rule, today, english }: { source: RuleSource; rule?: Pick<SourcedRule, "likely_to_change" | "recheck_date">; today: string; english?: boolean }) {
+function OneSource({ source, rule, today, english, own }: { source: RuleSource; rule?: Pick<SourcedRule, "likely_to_change" | "recheck_date">; today: string; english?: boolean; own?: boolean }) {
   const n = sourceLabel2(source);
   const title = shownTitle(n.title, source.url, source.kind);
   const pubHebrew = hasHebrew(n.publisher);
-  const weak = source.strength !== "primary" ? sourceCopy.weak[source.strength] : null;
+  // D31: a company's own figure on its own product is shown with a neutral source line, no "לפי החברה"
+  const weak = source.strength !== "primary" && !own ? sourceCopy.weak[source.strength] : null;
   const changed = mayHaveChanged(rule ?? { likely_to_change: "no" }, source, today);
   const titleNode = <Iso ltr={title.host || !isHebrewTitle(n.title)}>{title.text}</Iso>;
   return (
@@ -468,15 +469,15 @@ function OneSource({ source, rule, today, english }: { source: RuleSource; rule?
  * The source block (synthesis 3.3): the first source in full; further ones behind "עוד מקור אחד" in the sheet and all
  * shown when `inline` (the rules pages). `english` keeps the English title in a collapsed line when the shown name is a host.
  */
-export function SourceBlock({ source, rule, today, inline, english }: { source: RuleSource | readonly RuleSource[]; rule?: Pick<SourcedRule, "likely_to_change" | "recheck_date">; today: string; inline?: boolean; english?: boolean }) {
+export function SourceBlock({ source, rule, today, inline, english, own }: { source: RuleSource | readonly RuleSource[]; rule?: Pick<SourcedRule, "likely_to_change" | "recheck_date">; today: string; inline?: boolean; english?: boolean; own?: boolean }) {
   const list = Array.isArray(source) ? (source as readonly RuleSource[]) : [source as RuleSource];
   const [first, ...rest] = list;
   if (!first) return null;
   // no "לקריאה נוחה" copy after an official source any more: pickSources leaves copies out when there is one (2026-10-25)
-  const more = rest.map((s) => <OneSource key={s.url + (s.locator ?? "")} source={s} rule={rule} today={today} english={english} />);
+  const more = rest.map((s) => <OneSource key={s.url + (s.locator ?? "")} source={s} rule={rule} today={today} english={english} own={own} />);
   return (
     <div className="flex flex-col gap-3">
-      <OneSource source={first} rule={rule} today={today} english={english} />
+      <OneSource source={first} rule={rule} today={today} english={english} own={own} />
       {rest.length > 0 &&
         (inline ? (
           more
@@ -623,8 +624,7 @@ export function weakInputNames(value: SiteValue): string[] {
   const out: string[] = [];
   for (const [key, input] of Object.entries((value.computed_from?.inputs ?? {}) as Record<string, SiteValue>)) {
     if (!input || typeof input !== "object" || !("state" in input)) continue;
-    const st = strengthOf(input);
-    if (st === "institution" || st === "secondary") out.push(inputName(key));
+    if (isWeak(input)) out.push(inputName(key));
   }
   return out;
 }
@@ -679,7 +679,7 @@ function FigureSource({ value, data }: { value: SiteValue; data: ProvenanceData 
   };
   // a figure's source can be a file of the site, not a web address: the old plain label stays for it
   if (!/^https?:/.test(source.url)) return <SourceLink url={source.url} title={source.title} />;
-  return <SourceBlock source={source} rule={owner} today={data.today} english />;
+  return <SourceBlock source={source} rule={owner} today={data.today} english own={!!value.own} />;
 }
 
 /**
@@ -870,7 +870,7 @@ export function ValueSheet({ value, exact, data, headId, descId }: { value: Site
         </div>
       )}
 
-      {(strength === "institution" || strength === "secondary" || strength === "primary-mirror" || strength === "open") && value.state !== "entered" && (
+      {(isWeak(value) || strength === "primary-mirror" || strength === "open") && value.state !== "entered" && (
         <Callout tone={strength === "open" ? "blocked" : strength === "primary-mirror" ? "info" : "caution"} title={strengthCopy[strength].label}>
           {strengthCopy[strength].line}
           {weakNames.length > 0 && (

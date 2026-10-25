@@ -15,7 +15,7 @@ import type { CompareBundle } from "../lib/compare";
 import { GoalsProvider, isBlank, useGoals, type Presets } from "../lib/goal";
 import { buildIdle, maxTermMonths, negotiateThreshold } from "../lib/idle";
 import { useOwnTerms } from "../lib/own-rate";
-import { ruleFigure, type SiteValue } from "../lib/value";
+import { anyWeak, ruleFigure, type SiteValue } from "../lib/value";
 import { bundleLinks } from "../lib/bundle";
 
 /** The data files this page fetches after it starts, requested with the HTML (audit 2026-10-24, A52). */
@@ -148,7 +148,7 @@ function Screen({ bundle, failed, rules, today, p03 }: { bundle: CompareBundle |
       <header className="flex flex-col gap-2">
         <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
         <p className="text-lg text-muted-foreground max-w-measure">{copy.lede}</p>
-        <NumberLegend />
+        <NumberLegend institution={bundle ? anyWeak(bundle.wrappers.flatMap((w) => [w.cashRate, ...Object.values(w.feeValues)])) : false} />
       </header>
       <div className={cx("flex flex-col gap-6", resultShown && "lg:grid lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-x-12 lg:items-start")}>
         <div className="flex flex-col gap-6">

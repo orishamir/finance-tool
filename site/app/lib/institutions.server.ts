@@ -16,7 +16,8 @@ import type {
 } from "../components/decoder/institutions/types";
 import { loadRules, loadWrappers, root, today } from "./data.server";
 import { loadCatalog, loadDepositTerms, seenValue, seenWhere } from "./instruments.server";
-import type { SiteValue } from "./value";
+import { shortName } from "./providers";
+import { ownBy, type SiteValue } from "./value";
 
 /** The cadence until `docs/data-schema.md` §3.6 writes `staleTariff` (flow 33 data note): 90 days. */
 const staleDays = 90;
@@ -105,12 +106,13 @@ function rateTableUrl(bank: string): string | null {
 
 // ---------------------------------------------------------------- value objects
 
-function site(v: ValueObject, t: string, snapshot: string): SiteValue {
-  return { ...v, stale: isStale(snapshot, t) ? { since: snapshot, cadence: "quarterly" } : null };
+// D31: everything on a company's page is that company's own figure about its own product
+function site(v: ValueObject, t: string, snapshot: string, owner: string): SiteValue {
+  return ownBy({ ...v, stale: isStale(snapshot, t) ? { since: snapshot, cadence: "quarterly" } : null } as SiteValue, owner);
 }
 
-function dateValue(date: string, from: Pick<ValueObject, "source">, checked: string, t: string, snapshot: string): SiteValue {
-  return {
+function dateValue(date: string, from: Pick<ValueObject, "source">, checked: string, t: string, snapshot: string, owner: string): SiteValue {
+  return ownBy({
     value: date,
     unit: "text",
     source: from.source,
@@ -121,11 +123,11 @@ function dateValue(date: string, from: Pick<ValueObject, "source">, checked: str
     state: "sourced",
     stale: isStale(snapshot, t) ? { since: snapshot, cadence: "quarterly" } : null,
     notes: "",
-  };
+  } as SiteValue, owner);
 }
 
-function textValue(value: string, from: { source: ValueObject["source"]; checked: string }, notes: string): SiteValue {
-  return { value, unit: "text", source: from.source, checked: from.checked, effective_from: null, effective_to: null, update_rule: "provider-set", state: "sourced", notes };
+function textValue(value: string, from: { source: ValueObject["source"]; checked: string }, notes: string, owner: string): SiteValue {
+  return ownBy({ value, unit: "text", source: from.source, checked: from.checked, effective_from: null, effective_to: null, update_rule: "provider-set", state: "sourced", notes } as SiteValue, owner);
 }
 
 // ---------------------------------------------------------------- deposits
@@ -144,7 +146,8 @@ function productRow(d: DepositTerms, t: string): ProductRowData {
   const current = d.wrapper_id === "current-account";
   const asOfDate = d.rate_offered.effective_from;
   const stale = isStale(d.snapshot, t);
-  const mark = (v: ValueObject) => site(v, t, d.snapshot);
+  const owner = shortName(d.bank, d.bank);
+  const mark = (v: ValueObject) => site(v, t, d.snapshot, owner);
   return {
     id: d.id,
     name,
@@ -158,10 +161,10 @@ function productRow(d: DepositTerms, t: string): ProductRowData {
     anchor: d.anchor ?? null,
     spread: d.spread ? mark(d.spread) : null,
     rate: mark(d.rate_offered),
-    asOf: dateValue(asOfDate ?? d.snapshot, d.rate_offered, d.rate_offered.checked, t, d.snapshot),
+    asOf: dateValue(asOfDate ?? d.snapshot, d.rate_offered, d.rate_offered.checked, t, d.snapshot, owner),
     asOfAfterRead: !!asOfDate && asOfDate > d.rate_offered.checked,
     linkage: d.linkage,
-    linkageValue: textValue(d.linkage, { source: d.source, checked: d.snapshot }, `linkage "${d.linkage}" as the record holds it`),
+    linkageValue: textValue(d.linkage, { source: d.source, checked: d.snapshot }, `linkage "${d.linkage}" as the record holds it`, owner),
     taxBucket: mark(d.tax_bucket),
     amountMin: mark(d.amount_range.min),
     amountMax: d.amount_range.max ? mark(d.amount_range.max) : null,
@@ -179,16 +182,16 @@ function productRow(d: DepositTerms, t: string): ProductRowData {
 const tasePapers = ["tase_shares_bonds", "etf_units"];
 const custodyPapers = [...tasePapers, "foreign_securities"];
 
-function lineRow(l: FeeLine, t: string, snapshot: string): TariffLineRow {
+function lineRow(l: FeeLine, t: string, snapshot: string, owner: string): TariffLineRow {
   return {
     id: l.id,
     base: l.base as LineBase,
     classes: l.applies_to,
     channel: l.channel === "direct" || l.channel === "branch" ? l.channel : null,
-    rate: site(l.rate, t, snapshot),
+    rate: site(l.rate, t, snapshot, owner),
     period: l.period,
-    min: l.min ? site(l.min, t, snapshot) : null,
-    max: l.max ? site(l.max, t, snapshot) : null,
+    min: l.min ? site(l.min, t, snapshot, owner) : null,
+    max: l.max ? site(l.max, t, snapshot, owner) : null,
   };
 }
 
@@ -199,9 +202,9 @@ function tariffCard(s: FeesSnapshot, rules: Record<string, RuleRecord>, t: strin
   for (const l of s.lines) {
     if (l.level !== "list") continue;
     const covers = (papers: string[]) => l.applies_to.some((a) => papers.includes(a));
-    if (l.base === "trade" && covers(tasePapers)) lines.push(lineRow(l, t, s.snapshot));
-    else if (l.base === "custody" && covers(custodyPapers)) lines.push(lineRow(l, t, s.snapshot));
-    else if (l.base === "fx") lines.push(lineRow(l, t, s.snapshot));
+    if (l.base === "trade" && covers(tasePapers)) lines.push(lineRow(l, t, s.snapshot, s.provider.name_he));
+    else if (l.base === "custody" && covers(custodyPapers)) lines.push(lineRow(l, t, s.snapshot, s.provider.name_he));
+    else if (l.base === "fx") lines.push(lineRow(l, t, s.snapshot, s.provider.name_he));
   }
   const bases = [...new Set(s.lines.map((l) => l.base as string))];
   const min = s.minimums.account_opening;
@@ -211,13 +214,13 @@ function tariffCard(s: FeesSnapshot, rules: Record<string, RuleRecord>, t: strin
     title: s.tariff.title,
     url: s.tariff.url,
     format: s.tariff.format,
-    published: s.tariff.published ? dateValue(s.tariff.published, from, s.snapshot, t, s.snapshot) : null,
-    snapshot: dateValue(s.snapshot, from, s.snapshot, t, s.snapshot),
+    published: s.tariff.published ? dateValue(s.tariff.published, from, s.snapshot, t, s.snapshot, s.provider.name_he) : null,
+    snapshot: dateValue(s.snapshot, from, s.snapshot, t, s.snapshot, s.provider.name_he),
     stale,
     lineCount: s.lines.length,
     bases,
     lines,
-    minimum: min ? site(min, t, s.snapshot) : null,
+    minimum: min ? site(min, t, s.snapshot, s.provider.name_he) : null,
     regulator: s.provider.regulator,
     ...(s.provider.regulator_foreign ? { foreignRegulator: s.provider.regulator_foreign.name_he } : {}),
     tase: s.provider.tase_member,

@@ -18,7 +18,7 @@ import { fmt } from "../lib/format";
 import { splitTerms } from "../lib/guide-nav";
 import { useInputs } from "../lib/inputs";
 import { guideContent } from "../content/guide";
-import type { SiteValue } from "../lib/value";
+import { anyWeak, type SiteValue } from "../lib/value";
 
 const providentIds = ["kupat-gemel-lehashkaa", "keren-hishtalmut", "pension-comprehensive", "pension-general", "provident-for-annuity", "child-savings-provident", "ira-provident", "ira-hishtalmut"];
 const isProvidentFamily = (id: string) => providentIds.includes(id);
@@ -381,7 +381,7 @@ export default function GuidePage() {
             <h1 className="text-2xl lg:text-3xl font-semibold">{data.name}</h1>
             {data.lede && <p className="text-lg text-muted-foreground max-w-measure">{data.lede}</p>}
             <SavedGoalStrip variant="compact" presets={data.goal.presets as Presets} meta={data.goal.meta} today={today} />
-            <NumberLegend term />
+            <NumberLegend term institution={anyWeak([...Object.values(data.bundle?.feeValues ?? {}), ...Object.values(signature?.facts ?? {}), ...(signature?.banks ?? []).flatMap((b) => [b.rate, b.ceiling])])} />
           </header>
 
           <GuideSection id="what" title={title("what")} rulesToggle>

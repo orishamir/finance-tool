@@ -10,7 +10,7 @@ import type { SignatureData } from "./guide-signature";
 import { buildInstrumentBundle } from "./guide-signature-bundle.server";
 import { hishtalmutTerms, pensionModel, rulesRead, runWith, sideOf, type Employment } from "./guide-signature-g2";
 import { loadCatalog, loadExposures, regulatorAverageFees } from "./instruments.server";
-import { cmaFeeValue, computed, ruleFigure, type SiteValue } from "./value";
+import { cmaFeeValue, computed, ownBy, ruleFigure, type SiteValue } from "./value";
 
 /** What the builders of guide-signature.server.ts pass in (structurally the same as its private `Ctx`). */
 export interface G2Ctx {
@@ -104,10 +104,11 @@ function addHoldings(d: SignatureData, c: G2Ctx, holding: { fund: FundRecord; ex
   const { fund, exposure } = holding;
   const src = fund.fees.trustee?.source ?? fund.fees.fixed_management?.source;
   d.facts.indexName = textFact(exposure.names.he[0] ?? exposure.id, { source: { url: `data/instruments/exposures/${exposure.id}.json`, title: "רשומת החשיפה במאגר האתר", publisher: "האתר", strength: "primary" }, checked: exposure.checked }, "שם המדד כפי שהוא ברשומת החשיפה");
-  if (src) d.facts.fundName = textFact(fund.names.he[0] ?? fund.id, { source: src, checked: fund.snapshot }, `הקרן של חשבון ניירות ערך בפרמטרים של האתר (מספר ${fund.id})`);
-  d.facts.fundNumber = textFact(fund.id, { source: src ?? { url: `data/funds/${fund.id}`, title: "רשומת הקרן", publisher: "האתר", strength: "primary" }, checked: fund.snapshot }, "מספר הנייר בבורסה");
-  if (fund.fees.trustee && typeof fund.fees.trustee.value === "number") d.facts.fundTrustee = fund.fees.trustee as SiteValue;
-  if (fund.fees.fixed_management && typeof fund.fees.fixed_management.value === "number") d.facts.fundManagement = fund.fees.fixed_management as SiteValue;
+  // D31: the fund's fees are its manager's own figures, shown beside the fund's name
+  if (src) d.facts.fundName = ownBy(textFact(fund.names.he[0] ?? fund.id, { source: src, checked: fund.snapshot }, `הקרן של חשבון ניירות ערך בפרמטרים של האתר (מספר ${fund.id})`), fund.manager);
+  d.facts.fundNumber = ownBy(textFact(fund.id, { source: src ?? { url: `data/funds/${fund.id}`, title: "רשומת הקרן", publisher: "האתר", strength: "primary" }, checked: fund.snapshot }, "מספר הנייר בבורסה"), fund.manager);
+  if (fund.fees.trustee && typeof fund.fees.trustee.value === "number") d.facts.fundTrustee = ownBy(fund.fees.trustee as SiteValue, fund.manager);
+  if (fund.fees.fixed_management && typeof fund.fees.fixed_management.value === "number") d.facts.fundManagement = ownBy(fund.fees.fixed_management as SiteValue, fund.manager);
   if (track) {
     const from = track.fee ?? undefined;
     if (from) {
@@ -188,11 +189,11 @@ function addBrokerRange(d: SignatureData, c: G2Ctx) {
   const [worst, best] = [rows[0]!, rows[rows.length - 1]!];
   d.bundles["brokerage-worst"] = widen(worst.bundle, c, brokerVariants);
   d.bundles["brokerage-best"] = widen(best.bundle, c, brokerVariants);
-  d.facts.brokerWorstName = textFact(worst.name, worst, "בית ההשקעות שהחשבון בו משאיר הכי מעט בתוכנית לדוגמה של האתר");
-  d.facts.brokerBestName = textFact(best.name, best, "בית ההשקעות שהחשבון בו משאיר הכי הרבה בתוכנית לדוגמה של האתר");
+  d.facts.brokerWorstName = ownBy(textFact(worst.name, worst, "בית ההשקעות שהחשבון בו משאיר הכי מעט בתוכנית לדוגמה של האתר"), worst.name);
+  d.facts.brokerBestName = ownBy(textFact(best.name, best, "בית ההשקעות שהחשבון בו משאיר הכי הרבה בתוכנית לדוגמה של האתר"), best.name);
   d.facts.brokerCount = computed(rows.length, "count", "F-63", {}, { today: c.t, about: "כמה בנקים ובתי השקעות שהתעריפון שלהם נאסף ושהאתר מחשב בשבילם את החשבון" });
   const own = loadFees().filter((x) => x.id === c.p05.instruments?.["brokerage-account"]?.tariff).sort((a, b) => a.snapshot.localeCompare(b.snapshot)).at(-1);
-  if (own) d.facts.brokerName = textFact(own.provider.name_he, { source: { url: own.tariff.url, title: own.tariff.title, publisher: own.provider.name_he, strength: "institution" }, checked: own.snapshot }, "בית ההשקעות שהפרמטרים של האתר מניחים לחשבון ניירות ערך");
+  if (own) d.facts.brokerName = ownBy(textFact(own.provider.name_he, { source: { url: own.tariff.url, title: own.tariff.title, publisher: own.provider.name_he, strength: "institution" }, checked: own.snapshot }, "בית ההשקעות שהפרמטרים של האתר מניחים לחשבון ניירות ערך"), own.provider.name_he);
 }
 
 /**

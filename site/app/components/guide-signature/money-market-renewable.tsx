@@ -9,7 +9,7 @@ import { addDays, daysBetween, fact, fixedDateModel } from "../../lib/guide-sign
 import { computed, entered as enteredValue, type SiteValue } from "../../lib/value";
 import { Num, RulesLine } from "../provenance";
 import { Gap, type VisualProps } from "./kit";
-import { Marker, MarkerMark, useWidth } from "../kit";
+import { Marker, MarkerMark, Sentence, useWidth } from "../kit";
 
 const HEIGHT = 130;
 const LANE_Y = 40;
@@ -21,6 +21,7 @@ const dateValue = (iso: string, formula: string, inputs: Record<string, SiteValu
 
 export function MoneyMarketRenewableVisual({ data, today }: VisualProps) {
   const series = fact(data, "seriesDate");
+  const seriesName = fact(data, "seriesName");
   const maxInterval = fact(data, "maxInterval");
   const absMax = fact(data, "absoluteMax");
   const [offset, setOffset] = useState<number | null>(null);
@@ -41,6 +42,12 @@ export function MoneyMarketRenewableVisual({ data, today }: VisualProps) {
 
   return (
     <div className="flex flex-col gap-5">
+      {/* D31: the visual names the series whose date it shows, so the date is that series' own fact */}
+      {seriesName && (
+        <Sentence size="sm" tone="muted">
+          {copy.renewable.series} <Num value={seriesName} />
+        </Sentence>
+      )}
       <div className="flex flex-col gap-2">
         <span className="text-sm font-medium">{copy.renewable.marker}</span>
         <div ref={box} className="relative w-full" dir="ltr" style={{ height: HEIGHT }}>

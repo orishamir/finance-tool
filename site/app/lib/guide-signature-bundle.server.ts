@@ -14,7 +14,7 @@ import type { AccountBank } from "./guide-signature";
 import { buildInstrumentTerms, loadDepositTerms, loadFunds } from "./instruments.server";
 import { loadFees } from "./data.server";
 import { shortName } from "./providers";
-import { computed, type SiteValue, type Strength } from "./value";
+import { computed, ownBy, type SiteValue, type Strength } from "./value";
 
 export type NoGraph =
   | { kind: "missing"; parts: string[] }
@@ -91,13 +91,15 @@ export function accountBanks(records: DepositTerms[]): AccountBank[] {
     if (typeof r.rate_offered.value !== "number" || r.rate_offered.unit !== "pct_per_year") continue;
     const max = r.amount_range.max;
     // a doubt travels with the number: its sheet says it (the record's English notes stay in the data)
-    const rate = { ...r.rate_offered, ...(r.doubt_he ? { notes: r.doubt_he } : {}) } as SiteValue;
+    // D31: each rate and ceiling is the bank's own, shown on the line that names the bank
+    const name = shortName(r.bank, r.bank);
+    const rate = ownBy({ ...r.rate_offered, ...(r.doubt_he ? { notes: r.doubt_he } : {}) } as SiteValue, name);
     banks.push({
       id: r.id,
       bank: r.bank,
-      name: shortName(r.bank, r.bank),
+      name,
       rate,
-      ceiling: max && max.unit === "nis" && typeof max.value === "number" ? ({ ...max } as SiteValue) : null,
+      ceiling: max && max.unit === "nis" && typeof max.value === "number" ? ownBy({ ...max } as SiteValue, name) : null,
       conditions: r.conditions_he ?? null,
       doubt: r.doubt_he ?? null,
       until: r.rate_offered.effective_to,
