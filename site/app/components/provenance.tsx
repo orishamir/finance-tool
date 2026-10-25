@@ -16,10 +16,11 @@ import type { TermRow } from "../lib/data.server";
 import { IconAlert, IconCalculator, IconCheck, IconClock, IconCopy, IconExternal, IconFile, IconLock, IconPencil, IconReset } from "./icons";
 import { Sheet } from "./Sheet";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
+import { Tpl } from "./kit";
 
 // ---------------------------------------------------------------- context
 
-export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean } | { kind: "rule"; id: string } | { kind: "term"; id: string } | { kind: "formula"; id: string } | { kind: "question"; id: string };
+export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean } | { kind: "rule"; id: string } | { kind: "term"; id: string } | { kind: "formula"; id: string } | { kind: "question"; id: string; /** The question was closed on this date (a closure on the not-covered page): the sheet says so. */ closedOn?: string };
 
 interface ProvenanceApi {
   open: (item: Item, anchor: HTMLElement | null) => void;
@@ -43,6 +44,8 @@ export interface ProvenanceData {
   ruleUses?: Record<string, RuleUses>;
   /** Per formula, its Hebrew name and the site parameters it uses (the formula sheet). A page that does not pass it still gets the name from `formulaNames`. */
   formulas?: Record<string, { name: string; parameters: string[] }>;
+  /** Per id a card on /parameters answers to: `P-01` to itself, an `A-01` that is an input of a card to that card. PageShell fills it for every page. */
+  parameters?: Record<string, string>;
   /** Per open question (`TX2 OQ6`): from data/open-questions.json once it exists; the question sheet shows these fields when the id is here. */
   openQuestions?: Record<string, { title_he?: string; status_he?: string; blocks_he?: string }>;
 }
@@ -75,6 +78,7 @@ export function ProvenanceProvider({ data, children }: { data: ProvenanceData; c
   const descId = useId();
   return (
     <Ctx.Provider value={api}>
+      <DataCtx.Provider value={data}>
       <TodayCtx.Provider value={data.today}>
       {children}
       <PushCtx.Provider value={push}>
@@ -85,9 +89,13 @@ export function ProvenanceProvider({ data, children }: { data: ProvenanceData; c
        </CloseCtx.Provider>
       </PushCtx.Provider>
       </TodayCtx.Provider>
+      </DataCtx.Provider>
     </Ctx.Provider>
   );
 }
+
+/** The page's provenance data, for the chips that must know what exists (a parameter card, a formula). */
+const DataCtx = createContext<ProvenanceData | null>(null);
 
 const PushCtx = createContext<(item: Item) => void>(() => {});
 
@@ -257,36 +265,70 @@ export function StrengthLabel({ strength }: { strength: Strength }) {
   return <Tag tone="neutral">{label}</Tag>;
 }
 
-export type IdKind = "rule" | "formula" | "parameter" | "question";
+export type IdKind = "rule" | "formula" | "parameter" | "assumption" | "question";
 const QUESTION_ID = /^([A-Z0-9]+)[ -]OQ(\d+)$/;
-/** What an id is, from its shape: `TX2 OQ6` a question, `F-80` (and the names `formulaNames` has, `A-06`) a formula, `P-01` and other `A-nn` a parameter, the rest a rule. */
-export function idKind(id: string): IdKind {
+/**
+ * What an id is, from its shape: `TX2 OQ6` a question; `F-80`, and any id `formulaNames` names (`A-06`, which is a method
+ * assumption that has a formula of its own), a formula; `P-01` a site parameter; any other `A-nn` an assumption of the
+ * method (a parameter card links to it only when the card has it as an input); `ABC-12` a rule. Anything else is null: no chip.
+ */
+export function idKind(id: string): IdKind | null {
   if (QUESTION_ID.test(id)) return "question";
-  if (/^F-\d+$/.test(id) || id in formulaNames) return "formula";
-  if (/^[PA]-\d+$/.test(id)) return "parameter";
-  return "rule";
+  if (/^F-\d+$/.test(id) || (id !== "_other" && Object.hasOwn(formulaNames, id))) return "formula";
+  if (/^P-\d+$/.test(id)) return "parameter";
+  if (/^A-\d+$/.test(id)) return "assumption";
+  if (/^[A-Z][A-Z0-9]*-\d+$/.test(id)) return "rule";
+  return null;
 }
 
 /**
  * One chip for any id the site shows (2026-10-26): a rule opens its card, a formula its sheet, an open question its sheet,
  * a parameter goes to its card on the parameters page. The ID is LTR with a slashed zero and a 44px tap area.
+ * - `closedOn`: a question that was closed on that date; the chip looks the same, its sheet says it was closed.
+ * - `asLabel`: the id as a label that does nothing (a parameter's own card, which a link would only point back at).
+ * An empty id renders nothing; an id that is no kind, or an `A-nn` no card has, renders as plain text.
  */
-export function IdRef({ id, className }: { id: string; className?: string }) {
+export function IdRef({ id, className, closedOn, asLabel }: { id: string; className?: string; closedOn?: string; asLabel?: boolean }) {
   const open = useOpen();
   const close = useContext(CloseCtx);
+  const data = useContext(DataCtx);
+  if (!id) return null;
   const kind = idKind(id);
+  const plain = <bdi dir="ltr" className="slashed-zero whitespace-nowrap">{id}</bdi>;
+  if (!kind) return plain;
   const shown = kind === "question" ? id.replace("-OQ", " OQ") : id;
-  const label = kind === "rule" ? `${ruleCopy.title} ${id}` : `${copy.idRef[kind]} ${shown}`;
-  if (kind === "parameter")
+  if (asLabel) return <span className={cx("rule-chip pointer-events-none", className)}><bdi dir="ltr" className="whitespace-nowrap">{shown}</bdi></span>;
+  let card: string | undefined;
+  if (kind === "parameter") card = data?.parameters ? data.parameters[id] : id;
+  if (kind === "assumption") card = data?.parameters?.[id];
+  if ((kind === "parameter" || kind === "assumption") && !card) return plain;
+  if (card) {
     return (
-      <Link to={`/parameters#${id}`} className={cx("rule-chip", className)} onClick={close} aria-label={label}>
+      <Link to={`/parameters#${card}`} className={cx("rule-chip", className)} onClick={close} aria-label={`${copy.idRef.parameter} ${id}`}>
         <bdi dir="ltr">{id}</bdi>
       </Link>
     );
+  }
+  const aria = kind === "rule" ? `${ruleCopy.title} ${id}` : kind === "formula" && id.startsWith("A-") ? `${copy.idRef.howComputed} ${id}` : `${copy.idRef[kind as "formula" | "question"]} ${shown}`;
+  const item: Item = kind === "question" ? { kind: "question", id: shown, ...(closedOn ? { closedOn } : {}) } : { kind: kind as "rule" | "formula", id: shown };
   return (
-    <button type="button" className={cx("rule-chip", className)} onClick={(e) => open({ kind: kind === "rule" ? "rule" : kind, id: shown }, e.currentTarget)} aria-label={label}>
+    <button type="button" className={cx("rule-chip", className)} onClick={(e) => open(item, e.currentTarget)} aria-label={aria}>
       <bdi dir="ltr" className="whitespace-nowrap">{shown}</bdi>
     </button>
+  );
+}
+
+/**
+ * Text that names open questions inside a sentence (a copy string that ends "... שאלה פתוחה SW OQ4"): each code in it becomes an `IdRef`.
+ * A string with no code comes back unchanged.
+ */
+export function IdText({ text }: { text: string }) {
+  const parts = text.split(/\b([A-Z0-9]+[ -]OQ\d+)\b/);
+  if (parts.length === 1) return <>{text}</>;
+  return (
+    <>
+      {parts.map((part, i) => (i % 2 === 1 ? <IdRef key={i} id={part} /> : part))}
+    </>
   );
 }
 
@@ -474,7 +516,7 @@ function SheetContent({ item, data, headId, descId }: { item: Item; data: Proven
       {item.kind === "rule" && <RuleCard id={item.id} data={data} headId={headId} />}
       {item.kind === "term" && <TermCard id={item.id} data={data} headId={headId} />}
       {item.kind === "formula" && <FormulaSheet id={item.id} data={data} headId={headId} />}
-      {item.kind === "question" && <QuestionSheet id={item.id} data={data} headId={headId} />}
+      {item.kind === "question" && <QuestionSheet id={item.id} closedOn={item.closedOn} data={data} headId={headId} />}
     </InsideSheetCtx.Provider>
   );
 }
@@ -513,7 +555,7 @@ function FormulaSheet({ id, data, headId }: { id: string; data: ProvenanceData; 
 const METHOD_URL = "https://github.com/orishamir/finance-tool/blob/main/docs/method.md";
 
 /** An open question's sheet: what the term means on the site, and its title, status and what it blocks once data/open-questions.json has the id. */
-function QuestionSheet({ id, data, headId }: { id: string; data: ProvenanceData; headId: string }) {
+function QuestionSheet({ id, closedOn, data, headId }: { id: string; closedOn?: string; data: ProvenanceData; headId: string }) {
   const q = data.openQuestions?.[id] ?? data.openQuestions?.[id.replace(" OQ", "-OQ")];
   return (
     <div className="flex flex-col gap-3">
@@ -526,8 +568,16 @@ function QuestionSheet({ id, data, headId }: { id: string; data: ProvenanceData;
           {q.blocks_he && <Row label={copy.questionSheet.blocks}>{q.blocks_he}</Row>}
         </dl>
       )}
-      <p className="text-sm">{copy.questionSheet.what}</p>
-      <p className="text-sm text-muted-foreground">{copy.questionSheet.onSite}</p>
+      {closedOn ? (
+        <p className="text-sm">
+          <Tpl t={copy.questionSheet.closed} vars={{ date: <bdi dir="ltr">{fmt.date(closedOn)}</bdi> }} />
+        </p>
+      ) : (
+        <>
+          <p className="text-sm">{copy.questionSheet.what}</p>
+          <p className="text-sm text-muted-foreground">{copy.questionSheet.onSite}</p>
+        </>
+      )}
     </div>
   );
 }
@@ -752,7 +802,7 @@ export function ValueSheet({ value, exact, data, headId, descId }: { value: Site
       {value.state === "computed" && value.computed_from && (
         <>
           <dl className="sheet-dl">
-            <Row label={copy.computed.formula}>
+            <Row label={value.computed_from.formula.startsWith("A-") ? copy.idRef.howComputed : copy.computed.formula}>
               <span className="flex flex-wrap items-center gap-2">
                 <span>{formulaNames[value.computed_from.formula] ?? formulaNames._other}</span>
                 <IdRef id={value.computed_from.formula} />

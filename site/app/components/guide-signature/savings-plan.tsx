@@ -8,7 +8,7 @@ import { fmt } from "../../lib/format";
 import { fact, factNumber, planModel } from "../../lib/guide-signature";
 import { entered as enteredValue } from "../../lib/value";
 import { Callout, ChartLegend, Marker, MarkerMark, NumberField, SegmentedControl, Stat, StatRow, Swatch, useWidth } from "../kit";
-import { Num, RulesLine } from "../provenance";
+import { IdText, Num, RulesLine } from "../provenance";
 import { SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
 
 const TOP = 22;
@@ -151,7 +151,7 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
         )}
         <p className="text-muted-foreground">{copy.common.onlyLeumi}</p>
       </div>
-      <Callout tone="caution">{copy.common.gaps.planLockPerDeposit}</Callout>
+      <Callout tone="caution"><IdText text={copy.common.gaps.planLockPerDeposit ?? ""} /></Callout>
       <RulesLine ids={data.ruleIds} />
     </div>
   );

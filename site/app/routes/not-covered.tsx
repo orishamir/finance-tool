@@ -92,7 +92,7 @@ function GraduationStatus({ s }: { s: GraduationStatusView }) {
             {s.closed.map((c, i) => (
               <li key={`${c.code}-${i}`} className={`text-sm flex flex-wrap items-center gap-1.5 ${c.closedOn ? "text-muted-foreground" : "text-caution-foreground"}`}>
                 <span className="line-through">
-                  {c.closedOn ? <Tpl t={g.closure} vars={{ date: dateNode(c.closedOn), rule: <IdRef id={c.code} /> }} /> : <Tpl t={g.closureNoDate} vars={{ rule: <IdRef id={c.code} /> }} />}
+                  {c.closedOn ? <Tpl t={g.closure} vars={{ date: dateNode(c.closedOn), rule: <IdRef id={c.code} closedOn={c.closedOn} /> }} /> : <Tpl t={g.closureNoDate} vars={{ rule: <IdRef id={c.code} closedOn={c.closedOn} /> }} />}
                 </span>
                 {c.ruleIds.map((id) => (
                   <RuleRef key={id} id={id} />

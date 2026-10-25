@@ -289,13 +289,27 @@ export function loadParameterUses(): Record<string, string[]> {
   return out;
 }
 
-/** The inverse of `loadParameterUses`: per formula, the site parameters it uses (the formula sheet's list), with the formula's Hebrew name. */
-export function loadFormulaMap(names: Record<string, string>): Record<string, { name: string; parameters: string[] }> {
-  const out: Record<string, { name: string; parameters: string[] }> = {};
-  for (const [param, formulas] of Object.entries(loadParameterUses())) {
-    for (const f of formulas) (out[f] ??= { name: names[f] ?? "", parameters: [] }).parameters.push(param);
-  }
-  for (const [f, name] of Object.entries(names)) if (f !== "_other") out[f] ??= { name, parameters: [] };
+/** The inverse of `loadParameterUses`: per formula, the site parameters it uses (the formula sheet's list). */
+export function loadFormulaParameters(): Record<string, string[]> {
+  const out: Record<string, string[]> = {};
+  for (const [param, formulas] of Object.entries(loadParameterUses())) for (const f of formulas) (out[f] ??= []).push(param);
+  return out;
+}
+
+/** Which card on /parameters each id answers to: `P-01` to itself, and an `A-01` that a card holds as an input key to that card. */
+export function loadParameterAnchors(): Record<string, string> {
+  const out: Record<string, string> = {};
+  const scan = (node: unknown, card: string) => {
+    if (Array.isArray(node)) node.forEach((n) => scan(n, card));
+    else if (node && typeof node === "object")
+      for (const [k, v] of Object.entries(node)) {
+        if (/^A-\d+$/.test(k)) out[k] ??= card;
+        scan(v, card);
+      }
+  };
+  const cards = loadParameters().sort((a, b) => a.method_id.localeCompare(b.method_id));
+  for (const p of cards) out[p.method_id] = p.method_id;
+  for (const p of cards) scan(p, p.method_id);
   return out;
 }
 

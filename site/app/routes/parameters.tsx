@@ -1,7 +1,7 @@
 // The parameters page (flows 6.15): the site's own judgement calls, each value a Num with its rationale.
 import { useLoaderData } from "react-router";
 import type { Route } from "./+types/parameters";
-import { formulaNames, parametersPage as copy, provenance as provCopy, site } from "../copy";
+import { parametersPage as copy, provenance as provCopy, site } from "../copy";
 import { IdRef, Num } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { Card, Tag } from "../components/kit";
@@ -29,7 +29,7 @@ function walk(node: unknown, path: string[], out: Entry[]) {
 }
 
 export async function loader() {
-  const { loadFormulaMap, loadParameters, loadParameterUses, today } = await import("../lib/data.server");
+  const { loadParameters, loadParameterUses, today } = await import("../lib/data.server");
   const uses = loadParameterUses();
   const skip = new Set(["id", "method_id", "rationale", "rationale_he", "signed_off_by", "signed_off_on", "shown_as", "chosen_by"]);
   const parameters = loadParameters()
@@ -40,7 +40,7 @@ export async function loader() {
       const values = entries.map((e) => ({ ...e, label: fieldLabel(p.method_id, e.path, p as unknown as Record<string, unknown>), value: { ...e.value, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null, signedOffOn: p.signed_off_on, provisional: (e.value.notes ?? "").startsWith("provisional") } } }));
       return { id: p.id, methodId: p.method_id, rationale: p.rationale, rationaleHe: p.rationale_he ?? null, chosenBy: (p as { chosen_by?: string }).chosen_by ?? null, signedOffOn: p.signed_off_on, values, usedIn: uses[p.method_id] ?? [] };
     });
-  return { parameters, today: today(), formulas: loadFormulaMap(formulaNames) };
+  return { parameters, today: today() };
 }
 
 export function meta() {
@@ -50,7 +50,7 @@ export function meta() {
 export default function Parameters() {
   const data = useLoaderData<typeof loader>();
   return (
-    <PageShell current="parameters" data={{ rules: {}, terms: {}, dimensions: {}, today: data.today, formulas: data.formulas }}>
+    <PageShell current="parameters" data={{ rules: {}, terms: {}, dimensions: {}, today: data.today }}>
       <div className="flex flex-col gap-section pt-6 lg:pt-10">
         <header className="flex flex-col gap-2">
           <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
@@ -61,7 +61,7 @@ export default function Parameters() {
             <Card as="li" key={p.id} id={p.methodId} className="flex flex-col gap-3 scroll-mt-24">
               <header className="flex flex-wrap items-center gap-2">
                 <h2 className="text-lg font-semibold">{copy.names[p.methodId] ?? p.id}</h2>
-                <IdRef id={p.methodId} />
+                <IdRef id={p.methodId} asLabel />
               </header>
               {p.values.length === 0 ? (
                 <p className="text-muted-foreground">{copy.notSet}</p>

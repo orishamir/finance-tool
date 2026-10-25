@@ -64,7 +64,7 @@ export function OpenQuestionChip({ code }: { code: string }) {
       <Tag tone="blocked" icon={<IconLock size={14} />}>
         {c.openQuestion}
       </Tag>
-<IdRef id={code} />
+      <IdRef id={code} />
     </>
   );
 }

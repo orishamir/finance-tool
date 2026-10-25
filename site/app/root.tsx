@@ -8,6 +8,12 @@ import NotFound from "./routes/not-found";
 import { PageShell } from "./components/shell";
 import { system } from "./copy";
 
+/** What every page's provenance sheet needs to know about the method: which parameters each formula uses and which parameter card each id belongs to (PageShell reads it). */
+export async function loader() {
+  const { loadFormulaParameters, loadParameterAnchors } = await import("./lib/data.server");
+  return { formulaParameters: loadFormulaParameters(), parameterAnchors: loadParameterAnchors() };
+}
+
 export function links() {
   return [
     { rel: "icon", type: "image/svg+xml", href: `${import.meta.env.BASE_URL}favicon.svg` },

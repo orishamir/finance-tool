@@ -6,7 +6,7 @@ import { feeKeys, type FeeKey, type FundVariantRowView, type FundVariantsView } 
 import type { RefLink } from "../../../lib/providers";
 import { computed, type SiteValue } from "../../../lib/value";
 import { IconAlert, IconCheck, IconCopy, IconExternal } from "../../icons";
-import { Num } from "../../provenance";
+import { IdText, Num } from "../../provenance";
 import { CoverageFold, Disclosure, FoldGroup, Sentence, Tag } from "../../kit";
 
 /** Pieces of a sentence around its placeholders: `{A}` and `{B}` become the given nodes (dates and counts are Nums). */
@@ -286,7 +286,7 @@ export function VariantCoverage({ view, today }: { view: FundVariantsView; today
           </ul>
         </FoldGroup>
       ))}
-      <p className="text-sm text-muted-foreground pt-2">{c.funds.groupLine.before}{n(view.held.value as number, "קרנות זרות")}{c.funds.groupLine.after}</p>
+      <p className="text-sm text-muted-foreground pt-2">{c.funds.groupLine.before}{n(view.held.value as number, "קרנות זרות")}<IdText text={c.funds.groupLine.after} /></p>
     </CoverageFold>
   );
 }

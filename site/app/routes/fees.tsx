@@ -5,7 +5,7 @@
 import { useEffect, useId, useMemo, useState } from "react";
 import { Link, useLoaderData, useLocation } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
-import { formulaNames, r3fees, r3holdings, site } from "../copy";
+import { r3fees, r3holdings, site } from "../copy";
 import { AssumptionsPanel, type Suggestion } from "../components/compare/assumptions";
 import type { FormData } from "../components/compare/goal-form";
 import { goalTitle } from "../components/compare/goal-form";
@@ -35,7 +35,6 @@ import { playbookWrappers } from "../lib/playbook";
 export const links = () => bundleLinks("fees-data.json", "compare-bundle.json");
 
 export async function loader() {
-  const { loadFormulaMap } = await import("../lib/data.server");
   const { goalFormData } = await import("../lib/compare.server");
   const { latestSnapshots } = await import("../lib/institutions.server");
   // The English publisher a fee line records, to the provider's Hebrew name, so the subject strip names it in Hebrew.
@@ -49,7 +48,7 @@ export async function loader() {
     }
   };
   for (const snap of latestSnapshots()) walk(snap, snap.provider.name_he);
-  return { ...goalFormData(), publisherNames, formulas: loadFormulaMap(formulaNames) };
+  return { ...goalFormData(), publisherNames };
 }
 
 export function meta() {
@@ -72,8 +71,8 @@ export default function FeesPage() {
   }, []);
   const provenance = useMemo(() => {
     const rules: Record<string, RuleRecord> = Object.fromEntries([...(bundle?.rules ?? Object.values(data.rules)), ...(fees?.rules ?? [])].map((r) => [r.id, r as RuleRecord]));
-    return { rules, terms: {}, dimensions: Object.fromEntries((bundle?.checklist ?? []).map((c) => [c.id, c.name])), today: data.today, formulas: data.formulas };
-  }, [bundle, fees, data.rules, data.today, data.formulas]);
+    return { rules, terms: {}, dimensions: Object.fromEntries((bundle?.checklist ?? []).map((c) => [c.id, c.name])), today: data.today };
+  }, [bundle, fees, data.rules, data.today]);
   return (
     <GoalsProvider presets={presets}>
       <PageShell current="other" data={provenance}>

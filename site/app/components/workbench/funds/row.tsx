@@ -6,7 +6,7 @@ import { r4workbench as c } from "../../../copy";
 import type { FundVariantRowView, VariantReason } from "../../../lib/variants";
 import { IconAlert, IconDrillIn, IconLock } from "../../icons";
 import { IconDash, IconDashed } from "../../compare/icons";
-import { Num, RuleRef } from "../../provenance";
+import { IdText, Num, RuleRef } from "../../provenance";
 import { Card, cx, RankBadge, Tag } from "../../kit";
 import { CopyForFounder, FundFeesBlock, RowTags, SecurityNumber, TradingLine } from "./parts";
 
@@ -20,7 +20,7 @@ export function reasonText(r: VariantReason): ReactNode {
     case "field-missing":
       return t.fieldMissing(t.fields[r.field] ?? r.field);
     case "g18":
-      return t.g18;
+      return <IdText text={t.g18} />;
     case "taxable-israeli":
       return (
         <>

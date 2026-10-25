@@ -281,7 +281,7 @@ export const provenance = {
   // audit 2026-10-24 (A21): a flag with no sentence of its own
   flagOther: "הערה על החישוב:",
   // 2026-10-26: one chip for every id (IdRef); the formula sheet and the open-question sheet
-  idRef: { formula: "נוסחה", parameter: "פרמטר", question: "שאלה פתוחה" },
+  idRef: { formula: "נוסחה", parameter: "פרמטר", question: "שאלה פתוחה", howComputed: "איך זה מחושב" },
   formulaSheet: {
     usesLabel: "פרמטרים של האתר שהנוסחה משתמשת בהם",
     noParameters: "הנוסחה לא משתמשת בפרמטרים של האתר.",
@@ -290,6 +290,7 @@ export const provenance = {
   questionSheet: {
     what: "זו שאלה פתוחה בבסיס החוקים: משהו שעוד לא נמצא לו מקור ברור, בחוק או אצל הרשות.",
     onSite: "כל עוד היא פתוחה, האתר לא מנחש תשובה. הוא לא מחשב את מה שתלוי בה, או מציג אותו עם הערה.",
+    closed: "השאלה הזאת נסגרה ב{date}. היא כבר לא עוצרת שום דבר באתר.",
     status: "מצב",
     blocks: "מה היא עוצרת",
   },
@@ -2085,7 +2086,7 @@ export const r4workbench = {
       averageSome: (source: string) => `ממוצע העמלות שנגבו בפועל, כפי שפורסם ב${source}. ספק בלי ממוצע מופיע כ״אי אפשר להשוות״.`,
       entered: "ההצעה שלכם מושווית לתעריפון של האחרים.",
     },
-    entered: { none: "עוד לא הזנתם הצעה.", link: "להזין הצעה", count: (n: number) => `ההצעה שלכם · ${n}`, binding: "להצעה שלא בכתב לא נמצא מקור שמחייב אותה. שאלה פתוחה SW OQ4" },
+    entered: { none: "עוד לא הזנתם הצעה.", link: "להזין הצעה", count: (n: number) => `ההצעה שלכם · ${n}` },
     tableHeading: "לפי העלות, מהזולה ליקרה",
     columns: ["דירוג", "ספק", "עלות", "בשנה הראשונה", "לפי סוג עמלה", "תעריפון מ־", "מינימום", "פיקוח", "פתיחה"],
     horizon: { after: ", בכסף של היום" },
