@@ -2,7 +2,7 @@
   "id": "TXG-17",
   "title": "Exemption from filing: ceilings, and the salary-vs-surtax threshold",
   "title_he": "פטור מהגשת דוח: התקרות וסף השכר מול מס יסף",
-  "text_he": "תושב שהכנסתו היא רק מהסוגים המנויים, כל אחת מתחת לתקרה שלה ועם ניכוי מס מלא במקור (או פטור, או מקדמה כשהכלל מאפשר), פטור מהגשת דוח שנתי. תקרת הריבית מכסה ריבית, דמי ניכיון והצמדה מפיקדונות, תוכניות חיסכון, קופות גמל ואג״ח סחירות; תקרת ניירות הערך היא על תמורת המכירה (מחזור), לא על הרווח, וכוללת ניירות זרים ומק״ם. תקרת השכר לא קובעת בפועל, כי מי שחייב במס נוסף חייב להגיש דוח בכל מקרה. שתי התקרות מסומנות במקורות לשנת המס הקודמת; ההקפאה מרמזת שהן זהות השנה, אבל לא נמצא מקור שמסומן לשנה הנוכחית.",
+  "text_he": "תושב שהכנסתו היא רק מהסוגים המנויים, כל אחת מתחת לתקרה שלה ועם ניכוי מס מלא במקור (או פטור, או מקדמה כשהכלל מאפשר), פטור מהגשת דוח שנתי. תקרת הריבית מכסה ריבית, דמי ניכיון והצמדה מפיקדונות, תוכניות חיסכון, קופות גמל ואג״ח סחירות; תקרת ניירות הערך היא על תמורת המכירה (מחזור), לא על הרווח, וכוללת ניירות זרים ומק״ם. תקרת השכר לא קובעת בפועל, כי מי שחייב במס נוסף חייב להגיש דוח בכל מקרה. התקנות תוקנו ב־2024 וב־2025: הפטור הוגבל ליחיד תושב ישראל לגבי מי שנעשה תושב לראשונה או תושב חוזר ותיק מ־2026, ונוספה הכנסה מעסק זעיר בתנאים, ומ־2025 גם דמי מילואים ודמי לידה של בעל עסק זעיר. שתי התקרות מסומנות במקורות לשנת המס הקודמת; ההקפאה מרמזת שהן זהות השנה, אבל לא נמצא מקור שמסומן לשנה הנוכחית.",
   "figure_names_he": {
     "interest_ceiling": "תקרת הריבית לפטור מהגשת דוח",
     "securities_proceeds_ceiling": "תקרת תמורת מכירת ניירות ערך לפטור מהגשת דוח"
@@ -56,7 +56,7 @@
     }
   },
   "il_finance_file": "tax-general.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
@@ -124,6 +124,32 @@
       "locator": "p.2, s.2",
       "locator_he": "עמוד 2, סעיף 2",
       "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKS~1BBjU32HN1nb8TNDx2wnFP3xGBckFAgJwavyX7I=#page=2",
+      "title": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשפ\"ה-2024 (קובץ התקנות 11554)",
+      "title_he": "תקנות מס הכנסה (פטור מהגשת דין וחשבון), התשמ״ח-1988",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "pp.2-3, ss.1-3 (definition `הכנסה מעסק זעיר`; reg. 2(א))",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/Uuh2ES8salCrWXzldTo5n6PYrwWKZUerq6Y+Md8drCE=#page=2",
+      "title": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשפ\"ו-2025 (קובץ התקנות 12133)",
+      "title_he": "תקנות מס הכנסה (פטור מהגשת דין וחשבון), התשמ״ח-1988",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.2, ss.1-2",
+      "locator_he": "עמוד 2, סעיפים 1-2",
+      "page": 2,
+      "quote": "והכנסה מדמי מילואים ודמי לידה של בעל עסק זעיר",
       "checked": "2026-10-25"
     }
   ]

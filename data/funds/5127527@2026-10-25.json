@@ -1,0 +1,177 @@
+{
+  "id": "5127527",
+  "names": {
+    "en": [
+      "Harel Htf (4A) S&P 500 Currency-Hedged"
+    ],
+    "he": [
+      "הראל מחקה (4A) S&P 500 - מנוטרלת מט\"ח",
+      "הראל מחקה SP500 ממ"
+    ],
+    "tase": [
+      "5127527"
+    ]
+  },
+  "identifiers": {
+    "isin": "IL0051275274",
+    "tase_number": "5127527",
+    "cusip": null,
+    "ticker": {}
+  },
+  "manager": "הראל קרנות נאמנות בע\"מ",
+  "domicile": "IL",
+  "legal_form": "קרן פתוחה, קרן מחקה (open tracking fund under the Joint Investment Trust Law 1994; bought and redeemed at the unit price through a distributor, not traded on the exchange, ETF-04); קרן בלתי מוגבלת בניירות ערך חוץ; currency-hedged (מנוטרלת מט\"ח): exposure code 4A, foreign-currency exposure up to 10% of net assets in absolute value; the fund's aim is the S&P 500's change in US dollars without the dollar/shekel exchange-rate change (p. 1 'מטרת הקרן'); units of 1 ₪ par value; kosher approval. Trustee: מזרחי טפחות חברה לנאמנות בע\"מ. Short name on Maya: 'הראל מחקה SP500 ממ'. REPLICATION: swap and futures: mainly unfunded swaps on the index or its components and/or futures and synthetic contracts on the index (annual report https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725343-00.pdf, p. 2, 'הדרך שבה הקרן תנוהל': 'בכוונת מנהל הקרן לחשוף את הקרן למניות הנכללות במדד בעיקר באמצעות עסקאות החלף שאינן במימון שנכס הבסיס שלהן הינו המדד או מרכיביו ו/או באמצעות חוזים על המדד'; read 2026-10-25).",
+  "exposure_id": "index-sp500",
+  "currency": "NIS",
+  "trading_currency_on_tase": null,
+  "distribution_policy": "accumulating",
+  "tax_status": {
+    "il_fund_tax_track": "exempt",
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725343-00.pdf",
+        "title": "דוח שנתי 'הראל מחקה (4A) S&P 500 - מנוטרלת מט\"ח' / 'Harel Htf (4A) S&P 500 Currency-Hedged' (מספר בורסה 5127527), תאריך הדוח 31 בדצמבר 2025, הראל קרנות נאמנות בע\"מ (Maya filing 1725343, PDF, linked from the fund's Maya page as 'דו\"ח שנתי של הקרן'), עמ' 1 'שכר מנהל הקרן' ופרק ההוצאות שנפרעו מנכסי הקרן",
+        "publisher": "הראל קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13",
+        "MF-16",
+        "MF-17"
+      ],
+      "state": "sourced",
+      "notes": "Fixed management fee: p. 1 'דמי הניהול הקבועים בקרן: 0% מהשווי הנקי השנתי הממוצע של נכסי הקרן'. Load (שיעור ההוספה): 0% of the unit price. Expense table (chapter ה'): fixed management fee 0.00% in each of 2022 to 2025; total expenses 0.32% in each year. Prospectus published on Magna on 28.4.2025, reference 2025-03-029778 (not opened; Magna returns 403 to scripts). ISIN read on the fund's Maya page (https://maya.tase.co.il/he/funds/mutual-funds/5127527, field 'ISIN', read in Chrome on 2026-10-24); the page states its fund data is collected from the manager's filings and not audited by TASE. The annual report itself prints no ISIN."
+    },
+    "trustee": {
+      "value": 0.02,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725343-00.pdf",
+        "title": "דוח שנתי 'הראל מחקה (4A) S&P 500 - מנוטרלת מט\"ח' / 'Harel Htf (4A) S&P 500 Currency-Hedged' (מספר בורסה 5127527), תאריך הדוח 31 בדצמבר 2025, הראל קרנות נאמנות בע\"מ (Maya filing 1725343, PDF, linked from the fund's Maya page as 'דו\"ח שנתי של הקרן'), עמ' 1 'שכר הנאמן' ופרק ההוצאות שנפרעו מנכסי הקרן",
+        "publisher": "הראל קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-13",
+        "MF-20"
+      ],
+      "state": "sourced",
+      "notes": "Trustee fee (שכר הנאמן): p. 1 '0.02% מהשווי הנקי השנתי הממוצע של נכסי הקרן'; expense table 0.02% in each of 2022 to 2025."
+    },
+    "variable_management": {
+      "value": 0.3,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725343-00.pdf",
+        "title": "דוח שנתי 'הראל מחקה (4A) S&P 500 - מנוטרלת מט\"ח' / 'Harel Htf (4A) S&P 500 Currency-Hedged' (מספר בורסה 5127527), תאריך הדוח 31 בדצמבר 2025, הראל קרנות נאמנות בע\"מ (Maya filing 1725343, PDF, linked from the fund's Maya page as 'דו\"ח שנתי של הקרן'), עמ' 1 'דמי ניהול משתנים' ופרק ההוצאות שנפרעו מנכסי הקרן",
+        "publisher": "הראל קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-14",
+        "ETF-13"
+      ],
+      "state": "sourced",
+      "notes": "Variable management fee: p. 1 'דמי הניהול המשתנים בקרן (חיוביים או שליליים): 0.30% מהשווי הנקי של נכסי הקרן'. Expense table: variable management fee 0.30% in each of 2022 to 2025 (the mechanism works in both directions, ETF-14). The Maya fund page read on 2026-10-24 shows the same 0%, 0.3% and 0.02%."
+    },
+    "tracking_difference_12m": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725343-00.pdf",
+        "title": "דוח שנתי 'הראל מחקה (4A) S&P 500 - מנוטרלת מט\"ח' / 'Harel Htf (4A) S&P 500 Currency-Hedged' (מספר בורסה 5127527), תאריך הדוח 31 בדצמבר 2025, הראל קרנות נאמנות בע\"מ (Maya filing 1725343, PDF, linked from the fund's Maya page as 'דו\"ח שנתי של הקרן'), פרק 'תשואות, סטיות תקן ונתוני השוואה', 2025",
+        "publisher": "הראל קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-08",
+        "ETF-09",
+        "ETF-10"
+      ],
+      "state": "sourced",
+      "notes": "Not printed as one number. Chapter ג' prints for 2025 the fund's redemption-price return 15.32% (standard deviation 18.35) against 'מדד S&P 500' 17.43% (standard deviation 18.63), the index in US dollars, which is the hedged fund's tracking asset; earlier years: 2024 21.86% against 24.16%; 2023 23.60% against 25.70%; 2022 -21.78% against -18.52%. The difference, which includes the cost of the currency hedge, is not computed here (data-update rule). Hedged variant: the shekel return is meant to follow the dollar index, so the 2025 gap to the unhedged tracking asset of the (4D) funds (2.61% in shekels) is not comparable. Added 2026-10-25: the third-party page the report points to (chart.bursagraph.co.il / fundscenter.co.il, 'Funds Center' by Guideline) publishes the 12-month tracking difference under ETF-07(e), but states 'אין להפיץ בכל דרך כלשהי ... את הנתונים המוצגים באתר', so its figures are not copied here; founder decision pending."
+    },
+    "median_spread": {
+      "value": null,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725343-00.pdf",
+        "title": "דוח שנתי 'הראל מחקה (4A) S&P 500 - מנוטרלת מט\"ח' / 'Harel Htf (4A) S&P 500 Currency-Hedged' (מספר בורסה 5127527), תאריך הדוח 31 בדצמבר 2025, הראל קרנות נאמנות בע\"מ (Maya filing 1725343, PDF, linked from the fund's Maya page as 'דו\"ח שנתי של הקרן'), עמ' 1 'שיעור ההוספה'",
+        "publisher": "הראל קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-04",
+        "MF-21"
+      ],
+      "state": "sourced",
+      "notes": "Not applicable: an open tracking fund is bought and redeemed at the unit price computed from net asset value (MF-09), with no exchange spread; the load on purchase is 0% (p. 1). The distributor may charge its own buy and sell commission (p. 1 footnote; MF-26)."
+    },
+    "fund_level_withholding_drag": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725343-00.pdf",
+        "title": "דוח שנתי 'הראל מחקה (4A) S&P 500 - מנוטרלת מט\"ח' / 'Harel Htf (4A) S&P 500 Currency-Hedged' (מספר בורסה 5127527), תאריך הדוח 31 בדצמבר 2025, הראל קרנות נאמנות בע\"מ (Maya filing 1725343, PDF, linked from the fund's Maya page as 'דו\"ח שנתי של הקרן'), פרק מדיניות ההשקעות (חשיפה דרך נגזרים)",
+        "publisher": "הראל קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-11"
+      ],
+      "state": "sourced",
+      "notes": "Not collected: no computation is made here and the report prints no withholding figure; any dividend-withholding drag and the hedge's carry sit inside the pricing of the instruments the fund uses and are not published as a rate."
+    }
+  },
+  "dimensions": {
+    "fund-tax-track": "covered:TXS-24",
+    "fee-management-balance": "covered:ETF-13",
+    "distribution-policy": "covered:MF-49",
+    "currency": "covered:ETF-10",
+    "fee-trade": "covered:MF-21",
+    "protection": "covered:MF-02"
+  },
+  "prospectus": {
+    "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725343-00.pdf",
+    "date": "2025-04-28"
+  },
+  "exposure_code": "4A",
+  "distribution_fee_type": "3",
+  "creation_redemption_fee_category": null,
+  "snapshot": "2026-10-25"
+}

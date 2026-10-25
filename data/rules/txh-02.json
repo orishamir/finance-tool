@@ -2,7 +2,7 @@
   "id": "TXH-02",
   "title": "Determining salary (`משכורת קובעת`): definition and update",
   "title_he": "המשכורת הקובעת: הגדרה ועדכון",
-  "text_he": "המשכורת הקובעת היא הכנסת עבודה בלי החזרי הוצאות, שעות נוספות ותשלומים מיוחדים דומים, ולא יותר מכפל התקרה לתשלום תוספת היוקר. נוסח החוק נוקב בתקרת המשכורת הקובעת לחודש, שבתוקף מאז תחילת שנות האלפיים. התקרה לא צמודה למדד ומתעדכנת רק אם תקרת תוספת היוקר משתנה; בפועל היא קפואה שנים רבות, וטבלת רשות המסים לשנה הנוכחית עדיין מראה אותה. הורדת התקרה היא האפשרות שהכלכלן הראשי העדיף.",
+  "text_he": "המשכורת הקובעת היא הכנסת עבודה בלי החזרי הוצאות, שעות נוספות ותשלומים מיוחדים דומים, ולא יותר מכפל התקרה לתשלום תוספת היוקר, כפי שהיא נקבעת מעת לעת בהסכם בין לשכת התיאום של הארגונים הכלכליים להסתדרות. הפקודה לא נוקבת בסכום; הסכום שבתוקף השנה הוא זה שבחוברת הניכויים של רשות המסים. התקרה לא צמודה למדד ומשתנה רק אם תקרת תוספת היוקר משתנה; ממתי עומד הסכום הנוכחי לא כתוב במקורות הרשמיים שנקראו. הורדת התקרה היא האפשרות שהכלכלן הראשי העדיף.",
   "figure_names_he": {
     "determining_salary_cap": "תקרת המשכורת הקובעת לחודש"
   },
@@ -23,7 +23,7 @@
         "strength": "primary"
       },
       "checked": "2026-10-25",
-      "effective_from": "2004-03-01",
+      "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
       "update_rule": "fixed in law",
@@ -31,11 +31,11 @@
         "TXH-02"
       ],
       "state": "sourced",
-      "notes": "Determining salary (\"משכורת קובעת\") cap: twice the cost-of-living-allowance ceiling. Not CPI-linked, not in s.120B; updated only if the cost-of-living ceiling changes, and in practice unchanged since March 2004 (inferred from the law text and the 2026 table, which shows 188,544 per year = 15,712 x 12). update_rule \"fixed in law\" is the nearest value in the schema list."
+      "notes": "Determining salary (\"משכורת קובעת\") cap: twice the cost-of-living-allowance ceiling as set from time to time in the coordination bureau-Histadrut agreement (Ordinance s.3(ה), p.19, no amount in the text). Not CPI-linked: s.3(ה) is not among the s.120א amounts. Value from the 2026 booklet (188,544 per year = 15,712 x 12). effective_from cleared 2026-10-25: the March 2004 date came from a Wikisource editor note, not an official text. update_rule \"fixed in law\" is the nearest value in the schema list."
     }
   },
   "il_finance_file": "tax-hishtalmut.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-25",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
@@ -63,6 +63,19 @@
       "locator_he": "עמוד 12",
       "page": 12,
       "quote": "משכורת קובעת להפרשות לקרן השתלמות",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.200, s.120א, s.120ב(א)",
+      "locator_he": "עמוד 200, סעיף 120א, סעיף 120ב(א)",
+      "page": 200,
       "checked": "2026-10-25"
     }
   ]
