@@ -13,7 +13,7 @@ import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, sourceHref
 import { useInputs } from "../lib/inputs";
 import { isParameter, isProvisional, strengthOf, type SiteValue, type Strength } from "../lib/value";
 import type { TermRow } from "../lib/data.server";
-import { IconAlert, IconCalculator, IconClock, IconExternal, IconFile, IconLock, IconPencil, IconReset } from "./icons";
+import { IconAlert, IconCalculator, IconCheck, IconClock, IconCopy, IconExternal, IconFile, IconLock, IconPencil, IconReset } from "./icons";
 import { Sheet } from "./Sheet";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
 
@@ -336,7 +336,7 @@ function Iso({ children, ltr }: { children: ReactNode; ltr?: boolean }) {
 }
 
 /** One source: the link line, the quoted words, then when it was read (synthesis 3.3). */
-function OneSource({ source, rule, today, lead, english }: { source: RuleSource; rule?: Pick<SourcedRule, "likely_to_change" | "recheck_date">; today: string; lead?: string; english?: boolean }) {
+function OneSource({ source, rule, today, english }: { source: RuleSource; rule?: Pick<SourcedRule, "likely_to_change" | "recheck_date">; today: string; english?: boolean }) {
   const n = sourceLabel2(source);
   const title = shownTitle(n.title, source.url, source.kind);
   const pubHebrew = hasHebrew(n.publisher);
@@ -345,7 +345,6 @@ function OneSource({ source, rule, today, lead, english }: { source: RuleSource;
   const titleNode = <Iso ltr={title.host || !isHebrewTitle(n.title)}>{title.text}</Iso>;
   return (
     <div className="flex flex-col gap-1">
-      {lead && <span className="text-xs text-muted-foreground">{lead}</span>}
       <a href={sourceHref(source)} target="_blank" rel="noopener noreferrer" className="text-link inline-flex max-w-full items-start gap-1 hover:underline">
         <span className="min-w-0 [overflow-wrap:anywhere]">
           {n.mirror ? (
@@ -392,9 +391,8 @@ export function SourceBlock({ source, rule, today, inline, english }: { source: 
   const list = Array.isArray(source) ? (source as readonly RuleSource[]) : [source as RuleSource];
   const [first, ...rest] = list;
   if (!first) return null;
-  const firstIsCopy = first.strength === "primary-mirror";
-  const leadFor = (s: RuleSource) => (!firstIsCopy && s.strength === "primary-mirror" ? sourceCopy.readable : undefined);
-  const more = rest.map((s) => <OneSource key={s.url + (s.locator ?? "")} source={s} rule={rule} today={today} lead={leadFor(s)} english={english} />);
+  // no "לקריאה נוחה" copy after an official source any more: pickSources leaves copies out when there is one (2026-10-25)
+  const more = rest.map((s) => <OneSource key={s.url + (s.locator ?? "")} source={s} rule={rule} today={today} english={english} />);
   return (
     <div className="flex flex-col gap-3">
       <OneSource source={first} rule={rule} today={today} english={english} />
@@ -763,18 +761,6 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
   const sources = pickSources(sourced);
   const uses = data.ruleUses?.[id];
   const derived = sourced.derived_from ?? [];
-  const [copied, setCopied] = useState(false);
-  const copyCitation = async () => {
-    const first = sources[0];
-    if (!first) return;
-    try {
-      await navigator.clipboard.writeText(citationText(sourced, first, first.checked));
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // no clipboard permission: nothing is written, nothing is claimed
-    }
-  };
   // the figure's Hebrew name when the record has one; else its key as written
   const figureLabel = (name: string) => (rule.figure_names_he?.[name] ? <span className="text-xs">{rule.figure_names_he[name]}</span> : <bdi dir="ltr" className="text-xs">{name}</bdi>);
   const unitSuffix = (unit: string) => (suffixUnits.has(unit) ? <span className="text-sm text-muted-foreground"> {unitWordOf(unit)}</span> : null);
@@ -811,7 +797,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
     );
   };
   return (
-    <div className={cx("flex flex-col gap-3", open && "rule-open")}>
+    <div className={cx("flex-1 flex flex-col gap-3", open && "rule-open")}>
       <header className="flex flex-col gap-1.5">
         <h2 id={headId} className="text-lg font-semibold leading-snug">
           {open && <>{ruleCopy.open.title} </>}
@@ -930,15 +916,43 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
       </dl>
       {rule.likely_to_change === "no" && !rule.recheck_date && <p className="text-xs text-muted-foreground">{ruleCardMore.stable}</p>}
       {uses && uses.pages.length === 0 && !uses.engine && <p className="text-xs text-muted-foreground">{ruleCardMore.usesNone}</p>}
-      <div className="flex flex-wrap items-center gap-x-3">
+      {/* the card's foot: pushed to the bottom, so cards side by side have it at one height */}
+      <div className="mt-auto flex flex-col gap-3 pt-1">
+        {sources[0] && <CitationBox text={citationText(sourced, sources[0], sources[0].checked)} />}
         {!inline && <LinkButton to={`/rules#${id}`}>{ruleCopy.all}</LinkButton>}
-        {sources.length > 0 && (
-          <Button variant="quiet" className="text-sm" onClick={() => void copyCitation()}>
-            {copied ? sourceCopy.citation.copied : ruleCardMore.copyCitation}
-          </Button>
-        )}
       </div>
     </div>
+  );
+}
+
+/**
+ * The rule's citation ("מראה מקום") on one line, copied by a press anywhere on it; the line shows what will be copied
+ * (2026-10-25, the founder: "העתקת ההפניה" was a bare text button at another height on every card).
+ */
+function CitationBox({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // no clipboard permission: nothing is written, nothing is claimed
+    }
+  };
+  return (
+    <button
+      type="button"
+      onClick={() => void copy()}
+      title={ruleCardMore.copyCitation}
+      className="group flex items-center gap-2 w-full min-h-10 px-3 rounded-md border border-border bg-background text-xs text-start hover:border-input transition-colors duration-[var(--duration-fast)]"
+    >
+      <span className={cx("shrink-0 font-medium", copied ? "text-positive" : "text-foreground")}>
+        {copied ? sourceCopy.citation.copied : ruleCardMore.citationLabel}
+      </span>
+      <span className="min-w-0 flex-1 truncate text-muted-foreground">{text}</span>
+      {copied ? <IconCheck size={16} className="shrink-0 text-positive" /> : <IconCopy size={16} className="shrink-0 text-muted-foreground group-hover:text-foreground" />}
+    </button>
   );
 }
 

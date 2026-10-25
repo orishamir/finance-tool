@@ -8,8 +8,12 @@ const fig = (url: string, strength: string) => ({
 
 describe("pickSources", () => {
   it("sorts strongest first and keeps the order inside a strength", () => {
-    const list = pickSources({ sources: [src({ url: "https://a/1", strength: "secondary" }), src({ url: "https://a/2", strength: "primary-mirror" }), src({ url: "https://a/3" }), src({ url: "https://a/4" })] });
+    const list = pickSources({ sources: [src({ url: "https://a/1", strength: "secondary" }), src({ url: "https://a/2", strength: "institution" }), src({ url: "https://a/3" }), src({ url: "https://a/4" })] });
     expect(list.map((s) => s.url)).toEqual(["https://a/3", "https://a/4", "https://a/2", "https://a/1"]);
+  });
+  it("leaves out a copy when an official source is there, and keeps it when it is the only text", () => {
+    expect(pickSources({ sources: [src({ url: "https://he.wikisource.org/wiki/X", strength: "primary-mirror" }), src({ url: "https://a/1" })] }).map((s) => s.url)).toEqual(["https://a/1"]);
+    expect(pickSources({ sources: [src({ url: "https://a/2", strength: "institution" }), src({ url: "https://he.wikisource.org/wiki/X", strength: "primary-mirror" })] }).map((s) => s.url)).toEqual(["https://he.wikisource.org/wiki/X", "https://a/2"]);
   });
   it("falls back to the figures' sources, one per url", () => {
     const figures = { x: fig("https://f/1", "primary"), y: { by_tax_year: { "2025": fig("https://f/1", "primary"), "2026": fig("https://f/2", "institution") } } } as never;

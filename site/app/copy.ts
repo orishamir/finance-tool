@@ -845,7 +845,6 @@ export const r2 = {
   savedAuto: "נשמר אוטומטית במכשיר הזה. בלי חשבון, בלי שרת.",
   couldNotSave: "האתר לא הצליח לשמור במכשיר הזה. ההשוואה תעבוד, אבל המטרה לא תישמר.",
   loadingGoal: "טוען את המטרה השמורה…",
-  compare: "להשוואה",
   menuRow: "השוואה למטרה",
 
   form: {
@@ -2431,6 +2430,9 @@ export const r5 = {
     use: "משמש את ההשוואה לפי חשיפה ואת סימון ההתאמה של מסלולים.",
     empty: "לא הוזן: ההשוואה לפי חשיפה תרוץ בלי מסנן, ותציין את זה.",
     secondDoor: "השוואה לפי חשיפה (במה הכסף מושקע)", // audit 2026-10-24 (sweep): was "איזו חשיפה מתאימה למטרה"
+    // 2026-10-25 (the founder: what is the difference between the two buttons?): the first said only "להשוואה"
+    firstDoor: "השוואה לפי מוצר",
+    doorsLine: "מוצר: איפה הכסף מוחזק, כמו קרן השתלמות, קופת גמל להשקעה, חשבון השקעות או פיקדון. חשיפה: במה הוא מושקע בתוך המוצר, כמו מדד מניות, אג״ח או מזומן.",
   },
   // 9.2 exposure result
   exposure: {
@@ -2655,7 +2657,6 @@ export const sourceBlock = {
   copyKind: "עותק",
   hosts: { wikisource: "ויקיטקסט", nevo: "אתר נבו" } as Record<string, string>,
   /** The second block when an official document is first and a mirror second. */
-  readable: "לקריאה נוחה: הנוסח המשולב (עותק)",
   checked: "נבדק",
   mayHaveChanged: "מאז ייתכן שהנוסח השתנה.",
   pdfTag: "PDF",
@@ -2663,7 +2664,7 @@ export const sourceBlock = {
   /** The word after "נבדק {date} ·" when the source is weaker than the law. */
   weak: { "primary-mirror": "עותק", institution: "לפי החברה", secondary: "מקור משני" } as Record<string, string>,
   /** The one-line citation the copy button writes: "{claim} — {publisher}, {document}, {locator}. {url} (נבדק {date})" */
-  citation: { checked: "נבדק", copied: "ההפניה הועתקה." },
+  citation: { checked: "נבדק", copied: "הועתק" }, // 2026-10-25: was "ההפניה הועתקה."; the box's own label turns into it
   /** The rules page only, under a mirror rule's source: the official publication is not attached yet. */
   officialMissing: "הפרסום הרשמי ברשומות עוד לא צורף; הנוסח נקרא מתוך עותק.",
   /** The lede sentence of the rules pages' legend: what a copy is and what a date is. */
@@ -2691,7 +2692,9 @@ export const ruleCardMore = {
   usesLead: "משפיע על",
   usesEngine: "החישובים באתר",
   usesNone: "רקע בלבד: לא נכנס לחישוב ולא מוצג בעמוד אחר.",
-  copyCitation: "העתקת ההפניה",
+  // 2026-10-25 (the founder: "הפניה" for a citation; a better Hebrew word): "מראה מקום", on a box that shows the citation
+  copyCitation: "העתקת מראה המקום",
+  citationLabel: "מראה מקום",
   experienceTag: "ניסיון של אדם אחד",
 } as const;
 

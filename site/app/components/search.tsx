@@ -305,11 +305,11 @@ export function SearchSheet({ open, onClose, anchor, seed }: { open: boolean; on
           <input
             id={`${id}-q`}
             ref={inputRef}
-            dir="auto"
+            dir="rtl"
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder={site.searchPlaceholder}
-            className="flex-1 min-w-0 bg-transparent outline-none placeholder:text-muted-foreground"
+            className="flex-1 min-w-0 bg-transparent outline-none placeholder:text-muted-foreground text-mixed"
             autoComplete="off"
           />
           {text && (
@@ -376,7 +376,7 @@ export function SearchCombo({ inputId, variant, ready, onSheet }: { inputId: str
           )}
           <input
             id={inputId}
-            dir="auto"
+            dir="rtl"
             value={text}
             disabled={!ready}
             readOnly={!desktop}
@@ -386,7 +386,7 @@ export function SearchCombo({ inputId, variant, ready, onSheet }: { inputId: str
             aria-autocomplete="list"
             autoComplete="off"
             placeholder={site.searchPlaceholder}
-            className={cx("flex-1 min-w-0 bg-transparent outline-none placeholder:text-muted-foreground disabled:cursor-wait", variant === "header" ? "text-sm text-foreground" : "field-input !text-start")}
+            className={cx("flex-1 min-w-0 bg-transparent outline-none placeholder:text-muted-foreground disabled:cursor-wait text-mixed", variant === "header" ? "text-sm text-foreground" : "field-input !text-start")}
             onFocus={(e) => (desktop ? setOpen(true) : onSheet(e.currentTarget, text, "focus"))}
             onClick={(e) => (desktop ? setOpen(true) : onSheet(e.currentTarget, text, "tap"))}
             onChange={(e) => {

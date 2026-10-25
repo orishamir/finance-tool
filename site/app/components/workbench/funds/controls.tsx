@@ -20,7 +20,7 @@ export function VariantControls({ filter, sort, onFilter, onSort, enteredReturn 
           <label htmlFor="fv-filter" className="sr-only">
             {t.filter}
           </label>
-          <input id="fv-filter" dir="auto" value={filter} onChange={(e) => onFilter(e.target.value)} placeholder={t.filter} className="field-input !text-start" autoComplete="off" />
+          <input id="fv-filter" dir="rtl" value={filter} onChange={(e) => onFilter(e.target.value)} placeholder={t.filter} className="field-input !text-start text-mixed" autoComplete="off" />
         </div>
         <SegmentedControl<SortKey>
           label={t.sort.aria}

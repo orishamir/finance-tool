@@ -418,7 +418,7 @@ Amended 2026-10-24 (knowledge layer, D25): the card puts the source where the re
 9. "נוגע ל" tags (the dimensions).
 10. "משפיע על": the pages that quote the rule and, when the engine reads it, "מנוע החישוב". Shown on the rules pages only.
 11. "לכל החוקים והכללים" opens the rule on the rules page (6.14, `/rules#{ID}`), in its group, with the page's filters at hand.
-12. A quiet button "העתקת ההפניה" copies the rule's title, the publisher, the document, the section, the link and the date read, as one line, so the reader can paste the reference into a message.
+12. (2026-10-25: a one-line box "מראה מקום" at the foot of the card, showing the citation, replaces the quiet button "העתקת ההפניה"; a press anywhere on it) A quiet button "העתקת ההפניה" copies the rule's title, the publisher, the document, the section, the link and the date read, as one line, so the reader can paste the reference into a message.
 
 An open question keeps the blocked style and shows what is unknown and which numbers wait for it. The sheet's sourced-number view (6.8) shows the same source block directly under the figure's name in place of its three separate rows. Components: rule reference, source block (design-system 3.8), strength label, disclosure, callout (blocked).
 
