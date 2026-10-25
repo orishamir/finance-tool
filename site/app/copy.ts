@@ -1177,6 +1177,19 @@ export const ownTermsCopy = {
   } as Record<"fund" | "balance", { below: string; above: string }>,
   openMinimum: "סכום המינימום: שאלה פתוחה", // scenario fix 2026-10-24
   line: { named: "לפי {name}", fee: " בדמי ניהול {fee}", tariff: " ותעריפון {provider}", tariffCheapest: " ותעריפון {provider}, הזול ביותר למטרה הזו מבין התעריפונים שנאספו", end: ".", change: "להחליף", workbench: "לבחירת מוצר אחר", feeLabel: "דמי ניהול שנתיים בקרן, באחוזים", reset: "לחזור לדמי הניהול של הרשומה", classMin: "הנמוכים ביותר שנאספו באותה חשיפה: {fee}", rateLabel: "ריבית שנתית שהבנק הציע לכם", rateReset: "לחזור לריבית שפורסמה" }, // scenario fix 2026-10-24
+  // 2026-10-25 (D27, D28): the securities account names no index until the person chooses one
+  index: {
+    range: "בין {low} ל־{high} לפי המדד שתבחרו", // 2026-10-25
+    rangeNote: "האתר לא ממליץ על מדד. הדירוג מניח את התוצאה הנמוכה מביניהם, כדי לא להציג את החשבון טוב ממה שהוא.", // 2026-10-25
+    pickLabel: "בחרו מדד כדי לראות תוצאה אחת", // 2026-10-25
+    groupLabel: "מדדים", // 2026-10-25
+    chosen: "המדד שבחרתם", // 2026-10-25
+    cheapest: "הדרך הזולה: {broker} · {fund}", // 2026-10-25
+    all: "כל הדרכים להשקיע במדד ←", // 2026-10-25
+    clear: "לבטל את בחירת המדד", // 2026-10-25
+    noWay: "לא נמצאה דרך להשקיע במדד הזה לפי התוכנית, והחשבון מדורג לפי קרן הדוגמה של האתר.", // 2026-10-25
+    notRun: "הדרך הזולה למדד הזה לא נכנסת עדיין לחישוב, והחשבון מדורג לפי קרן הדוגמה של האתר.", // 2026-10-25
+  },
 };
 
 // scenario fix 2026-10-24 (sc-compare): what the comparison's headline says beyond the leader. docs/copy.md section 6.8 holds the rows.

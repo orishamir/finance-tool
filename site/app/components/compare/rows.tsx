@@ -127,7 +127,7 @@ export function RankedRow({ o, above, ctx, onDetail, extra, choose, chosen }: { 
       )}
       {extra && <div className="flex flex-wrap gap-2">{extra}</div>}
       <AssumptionRow o={o} ctx={ctx} />
-      {wrapperEntry && <Representative w={wrapperEntry} g={ctx.g} today={ctx.bundle.runDate} {...(ctx.setOwnFee ? { onFee: ctx.setOwnFee } : {})} {...(ctx.setOwnRate ? { onRate: ctx.setOwnRate } : {})} {...(ctx.setOwnProvider ? { onProvider: ctx.setOwnProvider, outcomes: () => providerOutcomes(ctx.bundle, ctx.g, o.id), figureOf: (p: ProviderOutcome) => mk.nis(Math.round(mode === "real" ? p.real : p.nominal), mode === "real" ? "F-06" : "F-09", mode === "real" ? r2.realLabel : r2.nominalLabel, p.run) } : {})} />}
+      {wrapperEntry && <Representative w={wrapperEntry} g={ctx.g} today={ctx.bundle.runDate} {...(ctx.setOwnFee ? { onFee: ctx.setOwnFee } : {})} {...(ctx.setOwnRate ? { onRate: ctx.setOwnRate } : {})} {...(ctx.setOwnProvider ? { onProvider: ctx.setOwnProvider, outcomes: () => providerOutcomes(ctx.bundle, ctx.g, o.id), figureOf: (p: ProviderOutcome) => mk.nis(Math.round(mode === "real" ? p.real : p.nominal), mode === "real" ? "F-06" : "F-09", mode === "real" ? r2.realLabel : r2.nominalLabel, p.run) } : {})} {...(ctx.index && o.id === ctx.index.wrapperId ? { index: ctx.index.card } : {})} />}
       <DepositRange o={o} ctx={ctx} />
       <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
         <Link to={`/fees?wrapper=${o.id}&from=compare`} className="text-sm text-link hover:underline self-start min-h-target inline-flex items-center">

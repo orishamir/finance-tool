@@ -24,6 +24,8 @@ import {
 import type { ValueObject } from "@finance-tool/schema";
 import { parametersPage, r2, r5 } from "../copy";
 import { applyProviders, comparisonGoal, evaluate, type CompareBundle, type RunGoal } from "./compare";
+import { applyIndex, planOfGoal } from "./compare-index";
+import type { WorkbenchBundle } from "./providers";
 import { computeExposureMode, type ExposureResultView } from "./exposure-mode";
 import type { Goal } from "./goal";
 import { isReadableSaved, type CompareMode, type SavedComparisonRecord } from "./state";
@@ -324,7 +326,7 @@ function reasonText(code: string, detail?: string): string {
 }
 
 /** Re-runs a saved comparison at today's bundle (flow 35). Never throws: an engine data error is "cannot run" with its text. */
-export function revisitSaved(bundleOrNull: CompareBundle | null, rec: unknown, today: string): RevisitView {
+export function revisitSaved(bundleOrNull: CompareBundle | null, rec: unknown, today: string, wb?: WorkbenchBundle | null): RevisitView {
   const names = bundleOrNull ? namesOf(bundleOrNull) : {};
   if (!isReadableSaved(rec) || !bundleOrNull) {
     const r = (rec ?? {}) as { savedOn?: string; mode?: CompareMode; choice?: { id: string; name: string } };
@@ -339,7 +341,9 @@ export function revisitSaved(bundleOrNull: CompareBundle | null, rec: unknown, t
     const ctx = { rules: bundle.rules, runDate: bundle.runDate };
     const rules = rec.versions.rules.map((r) => ruleFigureVersion(ctx, r.ruleId, r.figure));
     if (rec.mode === "wrapper") {
-      const ev = evaluate(applyProviders(bundle, rec.run), rec.run); // the same tariff pick as the page (2026-10-24)
+      // the same way over the indices and tariff pick as the page (2026-10-24, 2026-10-25): the securities account's index layer needs the invest data; without it the account keeps P-05's fund
+      const withIndex = wb ? applyIndex(bundle, wb, planOfGoal(bundle, rec.run, { entered: {}, age: null, employment: null }), rec.run).bundle : bundle;
+      const ev = evaluate(applyProviders(withIndex, rec.run), rec.run);
       after = resultOf(ev.ranking);
       now = { rules, parameters: parameterVersions(parametersFor(bundle, "wrapper")), data: dataFor(bundle, "wrapper", []), assumptions: assumptionVersions(ev.goal, ev.inputs.wrappers) };
       if (rec.choice) {

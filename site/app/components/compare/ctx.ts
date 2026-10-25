@@ -3,6 +3,7 @@
 import type { CompareBundle, CompareView, RunGoal, makeValues } from "../../lib/compare";
 import type { ValueObject } from "@finance-tool/schema";
 import type { FieldKey } from "../../lib/goal";
+import type { IndexCardProps } from "./index-card";
 
 export type Mode = "real" | "nominal";
 
@@ -26,4 +27,6 @@ export interface ResultCtx {
   setOwnFee?: (wrapperId: string, pct: number | undefined) => void;
   /** The provider whose tariff a wrapper's run uses (2026-10-24, brokerage): sets its id or clears it. */
   setOwnProvider?: (wrapperId: string, id: string | undefined) => void;
+  /** The securities account over the indices (2026-10-25, D27): what its card shows beside the wrapper it belongs to. Absent when the invest data did not load. */
+  index?: { wrapperId: string; card: IndexCardProps };
 }
