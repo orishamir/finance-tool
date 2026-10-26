@@ -374,7 +374,7 @@ What continues, none of it a release:
 
 **Later on 2026-10-26 (the founder, on the company page, D34):**
 
-- **No goal on the company and track pages.** The saved-goal strip, the fit mark on each track row and the track page's "מתאים למטרה שלכם?" card are gone; goal UI comes back on the goals page.
+- **No goal on the company and track pages.** The saved-goal strip, the fit mark on each track row and the track page's "מתאים למטרה שלכם?" card are gone; goal UI comes back on the goals page. The card's component (`FitMarkCard` in `site/app/components/compare/fit.tsx`) is kept, unused, for that page.
 - **Stock exposure instead.** The track table's last column, and a row of the track page, show the share of the track's assets exposed to shares at the end of the latest report period (F-87, computed from the CMA's own amounts, CAT-24). The CMA adapter now keeps `TOTAL_ASSETS` and `STOCK_MARKET_EXPOSURE` as value objects (`holdings`, data-schema 3.13), and the CSV's other numeric columns as received for later use.
 - **A fund's "עוקבת אחרי" link** on a company page leads to the index's guide page (`/exposure/<index>`), not to the index comparison.
 - **The workbench pages are listed as not final** (section "Not final" above).

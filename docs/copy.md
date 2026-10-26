@@ -1916,7 +1916,8 @@ The founder, 2026-10-26: the company page's last column shows something other th
 |---|---|
 | Company page, column heading; track page, row label | חשיפה למניות בסוף `{חודש שנה}` |
 | Company page, phone line | חשיפה למניות: `{אחוז}` |
-| A track that did not report the amounts | לא דווח |
+| A track that did not report the amounts; one that reported assets of 0 | לא דווח · אין נכסים |
+| The sheet, the note on every share | לפי דיווח המסלול לרשות שוק ההון. הרשות לא מפרסמת אם החשיפה כוללת נגזרים או את מה שבתוך קרנות שהמסלול מחזיק, ולכן היא יכולה להיות גבוהה מ־100%. |
 | The sheet, what the figure is | החלק מנכסי המסלול שחשוף לשוק המניות בסוף `{חודש שנה}` |
 | The sheet, formula name (F-87) | החלק מנכסי המסלול שחשוף למניות |
 | The sheet, the two inputs | החשיפה לשוק המניות · סך נכסי המסלול |
