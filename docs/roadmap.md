@@ -284,6 +284,12 @@ Approval of this document fixes the release contents and order. It did not start
 - **The holdings page (`/holdings`).** Held with it: the home door and menu item "מה כבר יש לכם", the home card's "יש לכם כבר קרן השתלמות" pill, and the links back to it from the fee page, the switching playbook (whose breadcrumb now leads to the product's guide page) and the transfer page. The fee page and the playbook still work when reached from elsewhere. **Before it returns:** the founder enters his own holdings from his annual statements and reviews the flow: adding a holding, the fit mark, consolidation, child savings, and the hand-off to the fee page and the playbook; what he changes is built, and the three side stores are merged into the saved state if he wants that first.
 - **Three "מה מייחד" visuals (D29):** the renewable money-market fund, the bank deposit and the provident fund for investing. Their pages keep the timeline open, as a page without a visual does; `?review` in the address shows the visual with a note. **Before they return:** for the provident fund for investing, the founder finds the comparison with the securities account unfair; the comparison is rebuilt so both sides carry the same assumptions (the same index and fund costs, the broker priced the way F-80 prices it, the tax at exit on both sides at the same age) and the founder agrees it is fair. For the renewable fund and the bank deposit, the founder decides what question each visual answers and approves a mockup, by the reading test of design-system 2.3.
 
+## Not final
+
+*Written 2026-10-26.* Built and linked from the site, but not final: the founder has not settled their design and UX, and they may change. Unlike the held items above they stay reachable from the company pages, the guides and search.
+
+- **The workbench pages (`/workbench/*`):** the tracks of a product across every company (`/workbench/tracks/<wrapper>`, F-64), the banks and investment houses for a fund (`/workbench/providers/<wrapper>`, F-63) and the fund variants of an exposure (`/workbench/funds/<exposure>`, F-65). They still carry the saved-goal strip and a fit mark on each track, which D34 moves off the company and track pages to the goals page. **Before they are final:** the founder walks through them and says what each should answer and in what order; whether their goal UI stays or moves with D34 is decided then.
+
 ## After release 5
 
 *Written 2026-10-24.*
@@ -365,6 +371,13 @@ What continues, none of it a release:
   - a security's guide page names the account it is bought in, and the account's page lists the securities bought in it; the account's eligibility, supervision and protection text is no longer copied into four records.
 
   Research and the full list: `research/discovery/2026-10-26-wrappers-and-securities.md`.
+
+**Later on 2026-10-26 (the founder, on the company page, D34):**
+
+- **No goal on the company and track pages.** The saved-goal strip, the fit mark on each track row and the track page's "מתאים למטרה שלכם?" card are gone; goal UI comes back on the goals page.
+- **Stock exposure instead.** The track table's last column, and a row of the track page, show the share of the track's assets exposed to shares at the end of the latest report period (F-87, computed from the CMA's own amounts, CAT-24). The CMA adapter now keeps `TOTAL_ASSETS` and `STOCK_MARKET_EXPOSURE` as value objects (`holdings`, data-schema 3.13), and the CSV's other numeric columns as received for later use.
+- **A fund's "עוקבת אחרי" link** on a company page leads to the index's guide page (`/exposure/<index>`), not to the index comparison.
+- **The workbench pages are listed as not final** (section "Not final" above).
 
 **What continues, in order:**
 

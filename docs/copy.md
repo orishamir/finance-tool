@@ -1904,9 +1904,25 @@ The founder, 2026-10-26: someone browsing the companies wants a company's produc
 | Fund groups | קרנות סל · קרנות מחקות · קרנות כספיות · קרנות נאמנות |
 | Fund group count | קרן אחת · שתי קרנות · `{מספר}` קרנות |
 | Fund group note | רק הקרנות שהאתר אסף עליהן דוח, לא כל הקרנות של החברה. דמי הניהול לפי הדוח של כל קרן. |
-| Fund row, what it follows (link to the index page or the money-market guide) | עוקבת אחרי `{מדד}` · קרן כספית |
+| Fund row, what it follows (link to the index's guide page, `/exposure/<index>` since 2026-10-26, or the money-market guide) | עוקבת אחרי `{מדד}` · קרן כספית |
 
 The fund row's other words (מנהלת הקרן, מספר נייר, בדף הקרן במאיה, the three fee names, לא נאסף) are the index page's (`invest.funds` in `site/app/copy.ts`).
+
+### 8.8 Stock exposure of a track (D34, 2026-10-26)
+
+The founder, 2026-10-26: the company page's last column shows something other than the goal fit, and no goal UI on the company and track pages. The figure is F-87, computed; the words are `company.stock` in `site/app/copy.ts`.
+
+| Where | Hebrew |
+|---|---|
+| Company page, column heading; track page, row label | חשיפה למניות בסוף `{חודש שנה}` |
+| Company page, phone line | חשיפה למניות: `{אחוז}` |
+| A track that did not report the amounts | לא דווח |
+| The sheet, what the figure is | החלק מנכסי המסלול שחשוף לשוק המניות בסוף `{חודש שנה}` |
+| The sheet, formula name (F-87) | החלק מנכסי המסלול שחשוף למניות |
+| The sheet, the two inputs | החשיפה לשוק המניות · סך נכסי המסלול |
+| The unit of the regulator's amounts | `{מספר}` מיליון ₪ |
+
+Removed the same day with the fit mark on these pages: the row mark (מתאים · לא מתאים · אין כלל לסיווג הזה, "התאמה למטרה:") and the strip's "ההתאמה לפי המטרה השמורה:" there; the workbench keeps them (`docs/roadmap.md`, "Not final").
 
 ## 9. Release 5 screens
 

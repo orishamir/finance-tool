@@ -89,7 +89,7 @@ export interface BrandFundRow {
   name: string;
   number: string | null;
   manager: string;
-  /** What the fund follows, and the page that compares the ways to own it: the index page, or the money-market fund's guide. */
+  /** What the fund follows, and the guide page that explains it: the index's page under /exposure (founder, 2026-10-26: not the index comparison at /indices), or the money-market fund's guide. */
   follows: { name: string; href: string } | null;
   mayaHref: string | null;
   fixed: SiteValue | null;
@@ -126,7 +126,7 @@ function fundRow(rec: FundRecord, exposureName: string | null): BrandFundRow {
   const mayaHref = rec.domicile === "IL" && number ? `https://maya.tase.co.il/he/funds/${kind === "etf" ? "etfs" : "mutual-funds"}/${number}` : null;
   const exposure = rec.exposure_id ?? "";
   const follows = exposure.startsWith("index-") && exposureName
-    ? { name: exposureName, href: `/indices/${exposure.slice("index-".length)}` }
+    ? { name: exposureName, href: `/exposure/${exposure}` }
     : kind === "money-market"
       ? { name: exposureName ?? "", href: `/guide/${rec.legal_form.includes("מתחדשת") ? "money-market-fund-renewable" : "money-market-fund-daily"}` }
       : null;

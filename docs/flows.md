@@ -746,6 +746,8 @@ The header's menu gains one row, "השוואה למטרה", which opens the goal
 
 ### Flow 18. See the fit mark on a track and on a company page
 
+*Amended 2026-10-26 (D34): the company and track pages no longer show the strip or the fit mark; the company page's last column shows the track's stock exposure (F-87) instead. Goal UI moves to the goals page; the workbench keeps its own for now (roadmap "Not final").*
+
 **Starts:** a company page or a track page, when a goal is saved.
 
 1. On the track page, the slot reserved under the h1 in release 1 ("מתאים למטרה שלכם?") shows the mark: the track's regulator classification looked up in the site's fit table (P-04) against the saved goal's horizon band (method F-70). Three answers: fits, does not fit, or no rule for this classification. The mark names the goal it was computed against and links to its result.

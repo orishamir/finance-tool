@@ -179,6 +179,13 @@ export function loadCmaFees(): Map<number, { balance: ValueObject; deposit: Valu
   return out;
 }
 
+/** Each track's two amounts for F-87 (data-schema 3.13 `holdings`), by fund id; a track of a file without them is absent. */
+export function loadCmaHoldings(): Map<number, NonNullable<CmaPeriodFile["funds"][number]["holdings"]>> {
+  const out = new Map<number, NonNullable<CmaPeriodFile["funds"][number]["holdings"]>>();
+  for (const f of latestCmaFiles().values()) for (const fund of f.funds) if (fund.holdings) out.set(fund.fund_id, fund.holdings);
+  return out;
+}
+
 export function loadCma(): CmaData {
   const latest = latestCmaFiles();
   const tracks: Track[] = [];

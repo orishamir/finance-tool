@@ -55,6 +55,8 @@ export const numbers = {
   legendHintPc: "לחצו על מספר כדי לראות מאיפה הוא.",
   details: "פרטים",
   unknown: "לא ידוע",
+  /** The unit of the regulator's amounts (data-schema 2, `nis_millions`): `25,706.14 מיליון ₪`. */
+  nisMillions: "מיליון ₪",
   parameter: "פרמטר של האתר",
   provisional: "ערך זמני שהאתר קבע",
   // audit 2026-10-24 (A77): the short tag beside a provisional parameter
@@ -489,6 +491,13 @@ export const company = {
   notInData: "לא נמצא בנתוני הרשות",
   default: "ברירת המחדל",
   subSpecialization: "התמחות:",
+  /** D34 (founder, 2026-10-26): the last column of the track table, and a row of the track page (F-87). */
+  stock: {
+    column: "חשיפה למניות בסוף {period}",
+    row: "חשיפה למניות",
+    about: "החלק מנכסי המסלול שחשוף לשוק המניות בסוף",
+    missing: "לא דווח",
+  },
 } as const;
 
 export const track = {
@@ -593,6 +602,7 @@ export const formulaNames: Record<string, string> = {
   "F-83": "ספירת המסלולים שנכללו",
   "F-84": "שער חליפין מחושב משערי הבנק המרכזי האירופי",
   "F-85": "הריבית שרוב הבנקים משלמים בעו״ש",
+  "F-87": "החלק מנכסי המסלול שחשוף למניות",
   B3: "אפשרות שהכסף בה נעול עד סוף התקופה",
   /** Shown when a formula has no name above: no code in place of words. */
   _other: "חישוב של האתר",
@@ -616,6 +626,8 @@ export const computedInputs = {
   /** audit 2026-10-24 (A21): Hebrew names for the input keys the engine and the site's lifts write in English; a key not here (already Hebrew) is shown as written */
   names: {
     amount: "הסכום שנבדק",
+    stock_market_exposure: "החשיפה לשוק המניות",
+    total_assets: "סך נכסי המסלול",
     rate: "הריבית שהוצעה",
     baseline: "הריבית בעו״ש",
     balance: "היתרה",

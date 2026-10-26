@@ -737,6 +737,8 @@ Two inputs and the person's own offer (the balance can arrive prefilled from the
 
 ## 10. Screen 8: saved-goal strip and fit mark
 
+*Amended 2026-10-26 (D34): the company and track pages no longer show the strip or the fit mark; the company page's last column shows the track's stock exposure (F-87) instead. Goal UI moves to the goals page; the workbench keeps its own for now (roadmap "Not final").*
+
 ### Overview
 
 The strip shows the goal saved on this device wherever it matters (flow 17); the fit mark says whether a track fits that goal (flow 18). Data: the saved goals (6.5); for the mark, the track's CMA classification and period, the fit table P-04 (`data/parameters/classification-fit.json`: horizon bands only in R2; the loss-filter column waits for R5), and the engine's F-70.

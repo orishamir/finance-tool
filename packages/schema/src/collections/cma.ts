@@ -15,6 +15,8 @@ const cmaFund = z.object({
   // As received, kept beside the confirmed `fees` (CAT-35 to CAT-39, discovery O11).
   raw_fields: z.record(z.string(), z.string()),
   fees: z.object({ avg_annual_management_fee: valueObject, avg_deposit_fee: valueObject }),
+  // NIS millions at the period end (D34, F-87); absent in files written before 2026-10-26.
+  holdings: z.object({ total_assets: valueObject, stock_market_exposure: valueObject }).optional(),
 });
 
 export const cmaPeriodFile = z.object({

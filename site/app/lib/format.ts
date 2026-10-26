@@ -116,6 +116,8 @@ export function formatValue(value: number | string | boolean | null, unit: strin
     case "nis_per_trade":
     case "nis_per_transfer":
       return state ? nisShown(value, state, parameter) : fmt.nis(value);
+    case "nis_millions":
+      return `${fmt.number(value)} ${numbers.nisMillions}`;
     case "pct":
     case "pct_per_year":
     case "pct_of_deposit":
