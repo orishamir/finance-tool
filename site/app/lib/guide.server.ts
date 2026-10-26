@@ -1,7 +1,6 @@
 // Builds the data of one guide page at build time (design-spec 2): the wrapper record, its rule figures,
 // the engine bundle and its first run on P-05, the checklist marks, the terms and the companies that offer it.
 import { pending as pendingFormulaReleases, type P05Input } from "@finance-tool/engine";
-import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { companyTermRule, isSecurity, productIds, type ExposureRecord, type RuleRecord, type ProductRecord } from "@finance-tool/schema";
 import { buildHishtalmutTerms, loadExposures } from "./instruments.server";
@@ -14,6 +13,7 @@ import type { SignatureData } from "./guide-signature";
 import { isClosedAudience } from "./guide-nav";
 import { playbookWrappers } from "./playbook";
 import { ruleFigure, weaker, type SiteValue, type Strength } from "./value";
+import { readTextCached } from "./read-cache.server";
 
 export interface GuidePageData {
   record: ProductRecord;
@@ -64,7 +64,7 @@ export type { NoGraph };
 function scanRuleIds(relPath: string, allRules: Record<string, RuleRecord>): string[] {
   let src = "";
   try {
-    src = readFileSync(join(root, relPath), "utf8");
+    src = readTextCached(join(root, relPath));
   } catch {
     return [];
   }

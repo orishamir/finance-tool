@@ -2,7 +2,7 @@
 // calculation engine reads it, which data collections reference it, and a score that orders rules inside a group.
 // Computed once per build from the source files themselves (a quoted id in content/, routes/, components/, a few lib/ files),
 // so a page that starts citing a rule shows up here with no table to maintain.
-import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { existsSync, readdirSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
 import { guideIndex, idle, r2, r3fees, r3holdings, r3transfer, r3workbench, r4playbook, r4workbench, companies as companiesCopy } from "../copy";
@@ -13,6 +13,7 @@ import { playbookWrapperIds } from "./playbook.server";
 import { providerWrapperIds } from "./providers.server";
 import { workbenchWrapperIds } from "./workbench.server";
 import { shown } from "./review";
+import { readTextCached } from "./read-cache.server";
 
 export interface RuleUsePage {
   href: string;
@@ -193,7 +194,7 @@ function build(): Scan {
       page = k ? table[k] ?? null : null;
     }
     if (!page) continue;
-    const found = idsIn(readFileSync(file, "utf8"), quoted, known);
+    const found = idsIn(readTextCached(file), quoted, known);
     for (const id of found) {
       if (shown(page.href)) addPage(id, page); // a page held for review is not linked from a rule card (lib/review.ts)
       bump(siteFiles, id);
@@ -202,7 +203,7 @@ function build(): Scan {
 
   // the engine
   for (const file of walk(join(root, "packages", "engine", "src"), /\.ts$/)) {
-    for (const id of idsIn(readFileSync(file, "utf8"), bare, known)) bump(engineFiles, id);
+    for (const id of idsIn(readTextCached(file), bare, known)) bump(engineFiles, id);
   }
 
   // data collections (not the rules themselves, the regulator's bulk files or the pinned list)
@@ -212,7 +213,7 @@ function build(): Scan {
     const parts = relative(dataDir, file).split(sep);
     if (skip.has(parts[0]!) || parts[parts.length - 1] === "pinned-rules.json") continue;
     const name = parts[0] === "instruments" || parts[0] === "terms" ? parts.slice(0, parts.length > 2 ? 2 : 1).join("/") : parts[0]!;
-    const found = idsIn(readFileSync(file, "utf8"), quoted, known);
+    const found = idsIn(readTextCached(file), quoted, known);
     for (const id of found) {
       const m = collections.get(id) ?? new Map<string, number>();
       bump(m, name);
@@ -292,7 +293,7 @@ export function ruleProducts(): Record<string, string[]> {
     if (!list.includes(p)) list.push(p);
   };
   for (const w of loadProducts()) {
-    const text = readFileSync(join(root, "data/instruments", "held_in" in w ? "securities" : "wrappers", `${w.id}.json`), "utf8");
+    const text = readTextCached(join(root, "data/instruments", "held_in" in w ? "securities" : "wrappers", `${w.id}.json`));
     for (const m of text.matchAll(/"([A-Z][A-Z0-9]*-[A-Z0-9]+)"/g)) if (known.has(m[1]!)) add(m[1]!, w.id);
   }
   for (const r of Object.values(all)) {

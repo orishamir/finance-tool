@@ -1,6 +1,6 @@
 // Builds the track workbench of one wrapper at build time (flows 25, design-spec 14): the engine's F-64 over the
 // latest CMA period, shaped compactly for the page. Server-only.
-import { readdirSync, readFileSync } from "node:fs";
+import { readdirSync } from "node:fs";
 import { join } from "node:path";
 import { latestTracks, trackWorkbench, type WorkbenchReferences } from "@finance-tool/engine";
 import { referenceOfClass } from "./class-reference";
@@ -10,6 +10,7 @@ import { fitTable } from "./compare.server";
 import { institutionCompanies, loadCatalog, resolutionOf } from "./instruments.server";
 import { staleCma, cmaFeeValue, compactFee, feeYear, type SiteValue } from "./value";
 import { NO_CLASS, type Resolution, type WbData, type WbReference, type WbRow } from "./workbench";
+import { readParsedCached } from "./read-cache.server";
 
 let files: CmaPeriodFile[] | null = null;
 function cmaFiles(): CmaPeriodFile[] {
@@ -18,7 +19,7 @@ function cmaFiles(): CmaPeriodFile[] {
     files = readdirSync(dir)
       .filter((f) => f.endsWith(".json"))
       .sort()
-      .map((f) => cmaPeriodFile.parse(JSON.parse(readFileSync(join(dir, f), "utf8"))));
+      .map((f) => readParsedCached(join(dir, f), cmaPeriodFile));
   }
   return files;
 }

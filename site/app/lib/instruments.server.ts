@@ -2,7 +2,7 @@
 // instrument collections and the step from the records P-05's `instruments` map names to the engine's
 // `InstrumentTerms`. Server-only. Nothing here holds a rate or a term: every number comes from a record under
 // `data/` and keeps its value object, so the values sheet can show its source.
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { memberKindOf, type InstrumentTerms } from "@finance-tool/engine";
 import {
@@ -23,12 +23,11 @@ import {
 import type { z } from "zod";
 import { root } from "./data.server";
 import { cmaFeeValue, ruleFigure, type SiteValue } from "./value";
+import { readParsedCached } from "./read-cache.server";
 
-// The two helpers of data.server.ts are private there; copied, not imported.
+// The two helpers of data.server.ts are private there; copied, not imported (both read through the one cache).
 function readJson<T extends z.ZodType>(path: string, schema: T): z.infer<T> {
-  const parsed = schema.safeParse(JSON.parse(readFileSync(path, "utf8")));
-  if (!parsed.success) throw new Error(`${path}: ${parsed.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`).join("; ")}`);
-  return parsed.data;
+  return readParsedCached(path, schema);
 }
 
 function readDir<T extends z.ZodType>(sub: string, schema: T): { file: string; record: z.infer<T> }[] {

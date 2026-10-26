@@ -3,11 +3,12 @@
 // G-24's open questions (the table in compare.server.ts); never typed by hand. The `data/instruments/tier2/` files the
 // design spec proposes do not exist, so a closure is a struck-through item with "closed <date>" in a status section,
 // and an instrument with none shows "עוד לא נרשמו סגירות". Server-only.
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { loadRules, root } from "./data.server";
 import { tier2Table } from "./compare.server";
 import { parseMdLink } from "./md-link";
+import { readTextCached } from "./read-cache.server";
 
 export interface GraduationOpen {
   code: string;
@@ -57,7 +58,7 @@ const institutionAnswers: { instrument: string; code: string; ruleId: string }[]
 function statusSection(file: string): string[] {
   const path = join(root, REFS, file);
   if (!existsSync(path)) return [];
-  const lines = readFileSync(path, "utf8").split("\n");
+  const lines = readTextCached(path).split("\n");
   const start = lines.findIndex((l) => /^## Graduation status/.test(l));
   if (start < 0) return [];
   const end = lines.findIndex((l, i) => i > start && /^## /.test(l));
@@ -150,7 +151,7 @@ export function graduationRuleIds(list: GraduationStatusView[]): string[] {
  * parentheses (audit A28). `loadNotCovered` (data.server.ts) still cuts a url at its first ")"; the page prefers this.
  */
 export function notCoveredSources(): Map<string, { title: string; url: string }> {
-  const doc = readFileSync(join(root, "docs/glossary.md"), "utf8");
+  const doc = readTextCached(join(root, "docs/glossary.md"));
   const section = doc.slice(doc.indexOf("## 3. Not covered yet"), doc.indexOf("## 4. Missing from the rule base"));
   const out = new Map<string, { title: string; url: string }>();
   for (const m of section.matchAll(/^\| \*\*(.+?)\*\* \| (.*?) \| (.*?) \| (.*) \|$/gm)) {
