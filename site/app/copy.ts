@@ -1935,6 +1935,22 @@ export const r3transfer = {
  * written; the ones the build added are in copy.md 8.4's "Added 2026-10-24" table, keyed by path.
  * Figures never appear here: a `{…}` place is filled by a Num.
  */
+/** D33 (founder, 2026-10-26): a group's companies shown as one company, under the name people know it by; copy.md 8.7. */
+export const brands = {
+  heading: "בתי השקעות",
+  searchLine: "בית השקעות",
+  lede: "כל מה שהחברה מציעה, כל סוג מוצר תחת כותרת משלו.",
+  members: "כולל את החברות:",
+  listHeading: "כל המוצרים של",
+  funds: {
+    groups: { etf: "קרנות סל", tracking: "קרנות מחקות", "money-market": "קרנות כספיות", other: "קרנות נאמנות" },
+    count: { one: "קרן אחת", two: "שתי קרנות", many: "קרנות" },
+    collected: "רק הקרנות שהאתר אסף עליהן דוח, לא כל הקרנות של החברה. דמי הניהול לפי הדוח של כל קרן.",
+    follows: "עוקבת אחרי",
+    moneyMarket: "קרן כספית",
+  },
+} as const;
+
 export const r4catalogue = {
   headings: { companies: "חברות מנהלות", institutions: "בנקים ובתי השקעות", fundManagers: "מנהלי קרנות" },
   classWord: { bank: "בנק", broker: "בית השקעות" },

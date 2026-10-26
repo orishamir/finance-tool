@@ -182,6 +182,26 @@ export function checkScope(ctx: { dataDir: string; ruleBase: RuleBaseIds }, rule
   }
   const byId = new Map(registry.map((r) => [r.id, r]));
 
+  // ---- the brands (D33): each names registry companies, each company in one brand at most, and fund managers the fund records write
+  const brandsPath = join(dataDir, "sources/brands.json");
+  const brands = (readJson(brandsPath) as { id?: string; members?: string[]; fund_managers?: string[] }[] | undefined) ?? [];
+  if (brands.length > 0) {
+    const managers = new Set(listJson(join(dataDir, "funds")).map((f) => (readJson(f) as { manager?: string } | undefined)?.manager).filter((x): x is string => !!x));
+    const brandIds = new Set<string>();
+    const memberOf = new Map<string, string>();
+    for (const b of brands) {
+      if (!b.id) continue;
+      if (brandIds.has(b.id)) report(brandsPath, `brands: id ${b.id} appears twice`);
+      brandIds.add(b.id);
+      for (const m of b.members ?? []) {
+        if (registry.length > 0 && !byId.has(m)) report(brandsPath, `brands: ${b.id}: member ${m} is not in data/sources/institutions.json`);
+        if (memberOf.has(m)) report(brandsPath, `brands: ${m} is a member of ${memberOf.get(m)} and ${b.id}`);
+        memberOf.set(m, b.id);
+      }
+      for (const n of b.fund_managers ?? []) if (!managers.has(n)) report(brandsPath, `brands: ${b.id}: no record under data/funds/ has the manager "${n}"`);
+    }
+  }
+
   // ---- each rule
   const ruleFile = (id: string) => join(dataDir, "rules", `${id.toLowerCase()}.json`);
   for (const rule of rules.values()) {

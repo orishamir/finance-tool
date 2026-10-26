@@ -1,0 +1,131 @@
+[
+  {
+    "id": "meitav",
+    "name_he": "מיטב",
+    "members": [
+      "meitav",
+      "meitav-trade",
+      "meitav-funds"
+    ],
+    "fund_managers": [
+      "מיטב קרנות נאמנות בע\"מ"
+    ]
+  },
+  {
+    "id": "altshuler-shaham",
+    "name_he": "אלטשולר שחם",
+    "members": [
+      "altshuler-shaham",
+      "altshuler-trade"
+    ],
+    "fund_managers": [
+      "אלטשולר - שחם ניהול קרנות נאמנות בע\"מ",
+      "אלטשולר שחם"
+    ],
+    "note": "The two money-market fund records write the manager as \"אלטשולר שחם\"."
+  },
+  {
+    "id": "ibi",
+    "name_he": "אי.בי.אי",
+    "members": [
+      "ibi",
+      "ibi-funds"
+    ],
+    "fund_managers": [
+      "אי.בי.אי קרנות נאמנות בע\"מ"
+    ]
+  },
+  {
+    "id": "harel",
+    "name_he": "הראל",
+    "members": [
+      "harel",
+      "harel-funds"
+    ],
+    "fund_managers": [
+      "הראל קרנות נאמנות בע\"מ"
+    ]
+  },
+  {
+    "id": "migdal",
+    "name_he": "מגדל",
+    "members": [
+      "migdal",
+      "migdal-funds"
+    ],
+    "fund_managers": [
+      "מגדל קרנות נאמנות בע\"מ"
+    ]
+  },
+  {
+    "id": "mor",
+    "name_he": "מור",
+    "members": [
+      "mor",
+      "mor-funds"
+    ],
+    "fund_managers": [
+      "מור ניהול קרנות נאמנות (2013) בע\"מ"
+    ]
+  },
+  {
+    "id": "yalin-lapidot",
+    "name_he": "ילין לפידות",
+    "members": [
+      "yalin-lapidot",
+      "yalin-funds"
+    ],
+    "fund_managers": [
+      "ילין לפידות - ניהול קרנות נאמנות בע\"מ"
+    ]
+  },
+  {
+    "id": "phoenix",
+    "name_he": "הפניקס",
+    "members": [
+      "phoenix",
+      "excellence",
+      "phoenix-insurance"
+    ],
+    "fund_managers": [],
+    "note": "Excellence: its own snapshot names it 'אקסלנס טרייד (קבוצת הפניקס)'. KSM (kesem) is kept as its own page, as the founder listed it."
+  },
+  {
+    "id": "kesem",
+    "name_he": "קסם",
+    "members": [
+      "kesem"
+    ],
+    "fund_managers": [
+      "קסם קרנות נאמנות בע\"מ"
+    ]
+  },
+  {
+    "id": "analyst",
+    "name_he": "אנליסט",
+    "members": [
+      "analyst"
+    ],
+    "fund_managers": [
+      "אנליסט אי.אמ.אס. ניהול קרנות בנאמנות (1986) בע\"מ"
+    ]
+  },
+  {
+    "id": "interactive-brokers",
+    "name_he": "Interactive Brokers",
+    "members": [
+      "interactive-brokers",
+      "ib-ireland"
+    ],
+    "fund_managers": []
+  },
+  {
+    "id": "interactive-israel",
+    "name_he": "אינטראקטיב ישראל",
+    "members": [
+      "interactive-israel"
+    ],
+    "fund_managers": [],
+    "note": "A brand of MEXEM LTD, a separate company from Interactive Brokers."
+  }
+]
