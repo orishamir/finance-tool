@@ -13,7 +13,7 @@ import { computed, ownBy, ownEach, type SiteValue } from "./value";
 import { publisherHe } from "./publisher-he.server";
 
 const tariffKeys: string[] = ["tradeRate", "tradeMin", "tradeMax", "custodyRate", "custodyMin", "custodyMax", "fxRate", "monthlyFee"];
-import { BROKERAGE, instrumentClassOf, providersOf } from "./providers";
+import { BROKERAGE, instrumentClassOf, providersOf, shortName } from "./providers";
 import { latestSnapshots } from "./providers.server";
 
 const familyById: Partial<Record<WrapperId, Family>> = {
@@ -78,18 +78,20 @@ function providentTerms(
   const deposit = line("deposit");
   const direct = line("direct_expenses");
   const pct = (v: ValueObject) => (v.value as number) / 100;
+  // D31: a list fee is that company's own; the guide's terms block and the comparison name the company whose list the example reads
+  const own = (v: ValueObject): SiteValue => (snap ? ownBy({ ...v } as SiteValue, shortName(snap.id, snap.provider.name_he)) : ({ ...v } as SiteValue));
   if (balance && deposit) {
-    const feeValues: Record<string, SiteValue> = { balance: { ...balance.rate }, deposit: { ...deposit.rate } };
-    if (direct) feeValues.direct = { ...direct.rate };
+    const feeValues: Record<string, SiteValue> = { balance: own(balance.rate), deposit: own(deposit.rate) };
+    if (direct) feeValues.direct = own(direct.rate);
     return { terms: { fees: { deposit: pct(deposit.rate), balance: pct(balance.rate), direct: direct ? pct(direct.rate) : 0 } }, feeValues, missing: [] };
   }
   const reg = regulatorAverageFees(id, spec, loadCmaFees(), allRules, today, { balance: !!balance, deposit: !!deposit });
   if (!reg) return { feeValues: {}, missing: [snap ? `${id}: ${snap.id} has no list ${balance ? "deposit" : "balance"} line for it and P-05 names no track` : `${id}: no list-fee snapshot in data/fees/ covers it and P-05 names no track`] };
   if ("missing" in reg) return { feeValues: {}, missing: reg.missing };
   const feeValues: Record<string, SiteValue> = { ...reg.feeValues };
-  if (balance) feeValues.balance = { ...balance.rate };
-  if (deposit) feeValues.deposit = { ...deposit.rate };
-  if (direct) feeValues.direct = { ...direct.rate };
+  if (balance) feeValues.balance = own(balance.rate);
+  if (deposit) feeValues.deposit = own(deposit.rate);
+  if (direct) feeValues.direct = own(direct.rate);
   return {
     terms: { fees: { balance: balance ? pct(balance.rate) : reg.fees.balance, deposit: deposit ? pct(deposit.rate) : reg.fees.deposit, direct: direct ? pct(direct.rate) : 0 } },
     feeValues,
