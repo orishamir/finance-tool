@@ -114,7 +114,7 @@ export function MakamVisual({ data, today }: VisualProps) {
             <Stat label={copy.makam.figures.price}>
               <Num value={v.price} />
             </Stat>
-            <Stat label={copy.makam.figures.gain} tone="value">
+            <Stat label={copy.makam.figures.gain} tone="net">
               <Num value={v.gain} />
             </Stat>
             <Stat

@@ -64,15 +64,6 @@ function points(an: Analysis, bands: Band[]): Pt[] {
     });
 }
 
-/** All months, for a smooth outline; the readout and table use whole years. */
-function monthly(an: Analysis, bands: Band[]): Pt[] {
-  return an.series!.points.map((p) => {
-    const parts = bands.map((b) => b.lines.reduce((sum, l) => sum + (p.cost[l] ?? 0), 0));
-    let acc = 0;
-    return { year: p.month / 12, edges: parts.map((v) => (acc += v)), total: p.total, parts };
-  });
-}
-
 export function FeeDragChart({ an, horizonYears, hover, onHover, hasGoal, dimmed }: { an: Analysis; horizonYears: number; hover: number | null; onHover: (y: number | null) => void; hasGoal: boolean; dimmed?: boolean }) {
   const box = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -87,7 +78,9 @@ export function FeeDragChart({ an, horizonYears, hover, onHover, hasGoal, dimmed
     return () => ro.disconnect();
   }, []);
   const bands = bandsOf(an);
-  const pts = monthly(an, bands);
+  // whole years and the exit month, as the readout and the table: drawn month by month, each band's edge rose and fell between charges
+  // and every boundary showed as a saw (2026-10-26)
+  const pts = points(an, bands);
   const { width, height } = size;
   const plotW = width - STRIP;
   const years = pts[pts.length - 1]?.year ?? horizonYears;
@@ -150,8 +143,9 @@ export function FeeDragChart({ an, horizonYears, hover, onHover, hasGoal, dimmed
             <path key={b.id} d={bandArea(i)(pts) ?? ""} className={b.fill} />
           ))}
         </g>
-        <AxisLabels ticks={ticks} y={y} />
         <path d={totalLine(pts) ?? ""} fill="none" className="stroke-chart-fee-total" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
+        {/* after the total line, with the card-colour halo (2026-10-26) */}
+        <AxisLabels ticks={ticks} y={y} />
         <line x1={x(years)} x2={x(years)} y1={TOP} y2={height - BOTTOM} className="stroke-chart-marker" strokeWidth="1" />
         {yearTicks.map((yr) => (
           <text key={yr} x={x(yr)} y={height - 8} textAnchor={yr === 0 ? "start" : yr === Math.round(years) ? "end" : "middle"} direction="ltr" className="text-xs fill-chart-text" data-scale>
@@ -171,7 +165,8 @@ export function FeeDragChart({ an, horizonYears, hover, onHover, hasGoal, dimmed
       {placed.map((p) => (
         <div key={p.id} className="absolute text-xs leading-tight" style={{ left: `${plotW + 8}px`, top: `${p.y - LABEL_H / 2}px`, width: `${STRIP - 10}px`, height: `${LABEL_H}px` }}>
           <span className="line-clamp-1 font-medium">{p.name}</span>
-          <Num value={an.mk.nis(p.value, "F-61", p.name, run)} size="cell" />
+          {/* whole shekels, as on the headline (design-system 2.7); "cell" kept the agorot */}
+          <Num value={an.mk.nis(p.value, "F-61", p.name, run)} />
         </div>
       ))}
     </div>

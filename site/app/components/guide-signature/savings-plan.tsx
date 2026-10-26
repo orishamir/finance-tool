@@ -121,11 +121,10 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
             ))}
             <MarkerMark x={x(m)} y1={TOP - 10} y2={height - AXIS + 2} />
           </svg>
-          <span className="absolute text-xs text-chart-text" dir="rtl" style={{ right: 0, top: height - 16 }}>
-            {copy.plan.unit}
-          </span>
           <Marker min={0} max={last} step={1} value={m} onChange={setMonth} label={copy.plan.marker} valueText={`${m} ${copy.plan.unit}`} left={0} top={TOP - 12} width={plotW} height={height - AXIS - TOP + 14} />
         </div>
+        {/* under the month numbers, not on their line: on a phone it covered "24" and "36" (2026-10-26) */}
+        <span className="block text-xs text-chart-text -mt-1.5">{copy.plan.unit}</span>
         <p className="text-xs text-muted-foreground">{copy.common.drag}</p>
       </div>
 

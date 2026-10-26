@@ -560,6 +560,7 @@ function ChartParts({ today }: { today: string }) {
             { id: "b", swatch: <Swatch shape="box" className="bg-chart-fee" />, label: <bdi>{g.sample.fee}</bdi> },
             { id: "c", swatch: <Swatch shape="entered-line" className="stroke-chart-entered" />, label: <bdi>{g.sample.seriesC}</bdi> },
             { id: "d", swatch: <Swatch shape="rule" className="border-chart-baseline" />, label: g.sample.today },
+            { id: "e", swatch: <Swatch shape="dotted-line" className="stroke-chart-baseline" />, label: g.sample.baselineDots },
             { id: "e", label: g.sample.note },
           ]}
         />

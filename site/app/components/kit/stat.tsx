@@ -6,7 +6,9 @@ import type { SiteValue } from "../../lib/value";
 import { cx } from "./cx";
 import { Card } from "./card";
 
-const SWATCH = { alt: "bg-chart-alt", value: "bg-chart-net", cost: "bg-muted-foreground" } as const;
+// `value` is the teal of the bars and lanes (GainBars, the savings plan's open deposits); `net` the pale teal of a net line (the makam's
+// price, the current account's balance). Until 2026-10-26 `value` drew the net line's pale teal beside teal bars it did not match.
+const SWATCH = { alt: "bg-chart-alt", value: "bg-chart-value", net: "bg-chart-net", cost: "bg-muted-foreground" } as const;
 
 /** One figure with its name above it (and a note under it): a result of a visual or a card. Sits in a `<dl>`; `tone` adds the swatch of the bar or line it names. */
 export function Stat({ label, children, note, tone }: { label: ReactNode; children: ReactNode; note?: ReactNode; tone?: keyof typeof SWATCH }) {

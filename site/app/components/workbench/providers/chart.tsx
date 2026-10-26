@@ -88,12 +88,13 @@ export function CumulativeCostChart({ lines, years, today, hover, onHover, dimme
         {ticks.map((tk) => (
           <line key={tk} x1={0} x2={plotW} y1={y(tk)} y2={y(tk)} className={tk === 0 ? "stroke-chart-axis" : "stroke-chart-grid"} strokeWidth="1" />
         ))}
-        <AxisLabels ticks={ticks} y={y} />
         <line x1={x(horizonYears)} x2={x(horizonYears)} y1={TOP} y2={height - BOTTOM} className="stroke-chart-marker" strokeWidth="1" />
         {yearOneX !== null && <line x1={yearOneX} x2={yearOneX} y1={TOP} y2={height - BOTTOM} className="stroke-chart-marker" strokeWidth="1" strokeDasharray="2 4" />}
         {[...shown].reverse().map((l) => (
           <path key={l.id} d={path(l.real) ?? ""} fill="none" className={cx(style[l.role].stroke, "transition-[d] duration-[var(--duration-chart)]")} strokeWidth={style[l.role].width} strokeDasharray={l.entered ? "6 4" : undefined} strokeLinejoin="round" strokeLinecap="round" />
         ))}
+        {/* after the lines, with the card-colour halo (2026-10-26) */}
+        <AxisLabels ticks={ticks} y={y} />
         {yearTicks.map((yr) => (
           <text key={yr} x={x(yr)} y={height - 8} textAnchor={yr === 0 ? "start" : yr === Math.round(horizonYears) ? "end" : "middle"} direction="ltr" className="text-xs fill-chart-text" data-scale>
             {yr === 0 ? c.providers.chart.today : yr}
@@ -114,17 +115,20 @@ export function CumulativeCostChart({ lines, years, today, hover, onHover, dimme
         {c.providers.chart.marker.horizon}
       </span>
       {yearOneX !== null && (
-        <span className="absolute bottom-6 text-xs text-chart-text whitespace-nowrap px-1 bg-card/80 rounded-sm" style={{ left: `${yearOneX + 3}px` }} dir="rtl">
+        // just under the top gridline, clear of the value labels that sit over each gridline: at the foot it covered the lines where they
+        // all start (2026-10-26)
+        <span className="absolute text-xs text-chart-text whitespace-nowrap px-1 bg-card/80 rounded-sm" style={{ left: `${yearOneX + 3}px`, top: `${y(ticks[ticks.length - 1] ?? 0) + 3}px` }} dir="rtl">
           {c.providers.chart.yearOneMarker}
         </span>
       )}
       {placed.map((p) => (
         <div key={p.id} className="absolute text-xs leading-tight" style={{ left: `${plotW + 8}px`, top: `${p.y - LABEL_H / 2}px`, width: `${STRIP - 10}px`, height: `${LABEL_H}px` }}>
-          <span className="line-clamp-1 font-medium inline-flex items-center gap-1">
+          {/* its own line: inline, the name ran into the whole-shekel amount ("לאומי27,104 ₪") */}
+          <span className="line-clamp-1 font-medium flex items-center gap-1">
             {p.line.entered && <IconPencil size={14} className="shrink-0" />}
             <bdi>{p.line.short}</bdi>
           </span>
-          <Num value={p.line.horizonCost} size="cell" />
+          <Num value={p.line.horizonCost} />
         </div>
       ))}
     </div>

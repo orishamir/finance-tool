@@ -10,12 +10,18 @@ export const scrollCueStyle: CSSProperties = {
     "linear-gradient(to right, var(--card) 30%, transparent) left center / 32px 100% no-repeat local, linear-gradient(to left, var(--card) 30%, transparent) right center / 32px 100% no-repeat local, radial-gradient(farthest-side at 0 50%, rgb(255 255 255 / 0.22), transparent) left center / 14px 100% no-repeat scroll, radial-gradient(farthest-side at 100% 50%, rgb(255 255 255 / 0.22), transparent) right center / 14px 100% no-repeat scroll",
 };
 
-export type SwatchShape = "line" | "box" | "entered-line" | "rule";
+export type SwatchShape = "line" | "box" | "entered-line" | "rule" | "dotted-line";
 
-/** The little mark of a series: `line` (14 by 3 px) for a line, `box` (10 px) for a band, `entered-line` (dashed, a stroke class) for a series that rests on an entered return, `rule` (dashed border) for a reference. `className` carries the colour role. */
+/** The little mark of a series: `line` (14 by 3 px) for a line, `box` (10 px) for a band, `entered-line` (dashed, a stroke class) for a series that rests on an entered return, `rule` (dashed border) for a reference, `dotted-line` (round dots, a stroke class) for the comparison chart's baseline, which runs beside dashed entered-return lines. `className` carries the colour role. */
 export function Swatch({ shape = "line", className }: { shape?: SwatchShape; className?: string }) {
   if (shape === "box") return <span className={cx("size-2.5 rounded-sm", className)} />;
   if (shape === "rule") return <span className={cx("w-3.5 border-t-2 border-dashed", className)} />;
+  if (shape === "dotted-line")
+    return (
+      <svg width="14" height="4" aria-hidden="true">
+        <line x1="1.5" y1="2" x2="13" y2="2" strokeDasharray="0.1 4" strokeLinecap="round" strokeWidth="3" className={className} />
+      </svg>
+    );
   if (shape === "entered-line")
     return (
       <svg width="14" height="3" aria-hidden="true">
