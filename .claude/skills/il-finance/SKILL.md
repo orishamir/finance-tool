@@ -1,7 +1,7 @@
 ---
 name: il-finance
 description: Sourced rule base for Israeli saving and investing - tax rules, ceilings, fee caps, product terms, transfer rules, regulators and protection - each rule with its source link, checked date and strength. Use it whenever work in this project needs an Israeli financial or tax fact rather than recalling one, for example capital-gains or interest tax rates, section 45A/47 pension credits, keren hishtalmut or kupat gemel lehashkaa ceilings and exemptions, money-market fund or ETF taxation, management-fee caps, child savings, IRA, makam and government bonds, bank deposit types, switching providers, or decoding a bank or fund product name. Also use it when writing data files, docs/method.md, test cases, guide pages or reviewing the calculation engine. Not for UI, RTL or Hebrew copy, code structure, or finance outside Israel.
-user-invocable: false
+argument-hint: <question or rule id, e.g. "hishtalmut ceiling" or "TXS-12">
 ---
 
 # il-finance
