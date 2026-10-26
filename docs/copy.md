@@ -2102,7 +2102,7 @@ Removed 2026-10-24 (D24): the page and its strings (`r5.changes`) are gone from 
 | Counts line, whole log | מאז תחילת היומן, `{תאריך}` |
 | Precise-test line | האם שינוי נגע להשוואה ששמרתם, בודקים בעמוד ההשוואה. |
 | Group headings | משפיע על דירוגים · לא משפיע על דירוגים |
-| Collection names (by file key) | rules: כללים · parameters: פרמטרים · fees: תעריפונים · terms/deposits: תנאי פיקדונות · terms: מונחים · dimensions: מימדים לבדיקה · catalog: קטלוג · funds: רשומות קרנות · series: סדרות · instruments/wrappers: רשומות מוצרים · instruments/exposures: רשומות חשיפות · cma: נתוני רשות שוק ההון · site/content: תוכן האתר · site/content/guide: עמודי המדריך · il-finance: מאגר הכללים |
+| Collection names (by file key) | rules: כללים · parameters: פרמטרים · fees: תעריפונים · terms/deposits: תנאי פיקדונות · terms: מונחים · dimensions: מימדים לבדיקה · catalog: קטלוג · funds: רשומות קרנות · series: סדרות · instruments/wrappers: רשומות מוצרים · instruments/securities: רשומות ניירות ערך · instruments/exposures: רשומות חשיפות · cma: נתוני רשות שוק ההון · site/content: תוכן האתר · site/content/guide: עמודי המדריך · il-finance: מאגר הכללים |
 | Columns | תאריך · מה · שדה · היה · עכשיו · למה |
 | Values | לא היה · הוסר · פירוט |
 | Reason label (screen-reader name) | הסיבה כפי שנרשמה ביומן |

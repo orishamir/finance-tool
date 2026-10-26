@@ -1,5 +1,22 @@
 {
   "id": "makam",
+  "held_as": "direct",
+  "held_in": {
+    "wrapper_ids": [
+      "brokerage-account",
+      "ira-hishtalmut",
+      "ira-provident"
+    ],
+    "rule_ids": [
+      "GOV-21",
+      "GOV-22",
+      "GOV-05",
+      "BRK-01",
+      "IRA-11",
+      "TXK-16"
+    ],
+    "text": "a security held directly in a securities account at a bank or a TASE member: an individual buys it on TASE or bids in the monthly issue through the account, and only clearing-house members bid directly (GOV-21, GOV-22, GOV-05, BRK-01). A self-directed provident or study fund may hold it too (IRA-11), and there that wrapper's tax applies instead of this record's (TXK-16). Who may open the account, who supervises it and how client securities are kept are the account's (brokerage-account)."
+  },
   "names": {
     "he": [
       "מק\"מ",
@@ -27,16 +44,15 @@
     "update_rule": "fixed in law",
     "rule_ids": [
       "GOV-01",
-      "GOV-05",
-      "BRK-04",
-      "REG-13"
+      "GOV-05"
     ],
     "state": "sourced",
-    "notes": "The state borrows; the Bank of Israel sells the bills to the public by auction, administers the loan and runs the register (Short-Term Loan Law ss.1(א), 4, 5, 6, 10). The securities account that holds the paper is supervised separately: a bank by the Supervisor of Banks, a non-bank TASE member by TASE under the ISA (BRK-04, REG-13)."
+    "notes": "The state borrows; the Bank of Israel sells the bills to the public by auction, administers the loan and runs the register (Short-Term Loan Law ss.1(א), 4, 5, 6, 10). This is the issuer's side; the securities account that holds the paper has its own supervisor (brokerage-account)."
   },
   "fee_bases_allowed": [
     "trade",
-    "custody"
+    "custody",
+    "fixed_period"
   ],
   "fee_caps": {
     "custody": {
@@ -60,7 +76,7 @@
         "BRK-52"
       ],
       "state": "sourced",
-      "notes": "A bank may not charge \"דמי ניהול פיקדון ניירות ערך\" for makam (First Schedule part 4(א)(5) note 2). Buy, sell and redemption commissions in part 4 still apply, with a separate makam line priced by each bank (BRK-16). The ban binds banks only: no rule limits a non-bank TASE member's custody fee on makam (BRK-17, BRK-52; BRK open question 11 closed 2026-10-26), so its tariff applies as published."
+      "notes": "A bank may not charge \"דמי ניהול פיקדון ניירות ערך\" for makam (First Schedule part 4(א)(5) note 2). The ban binds banks only: no rule limits a non-bank TASE member's custody fee on makam (BRK-17, BRK-52; BRK open question 11 closed 2026-10-26), so its tariff applies as published (method F-14). Buy, sell and redemption commissions in part 4 still apply, with a separate makam line priced by each bank (BRK-16)."
     }
   },
   "ceiling": null,
@@ -130,21 +146,17 @@
       "GOV-22",
       "GOV-05",
       "GOV-04",
-      "BANK-15",
-      "BRK-32"
+      "GOV-24",
+      "BANK-15"
     ],
-    "text": "any individual with a securities account at a bank or at a non-bank TASE member (BRK-32): a purchase on TASE on any trading day, or a bid in the monthly issue auction through the account (GOV-22). Only TASE clearing-house members bid directly (GOV-05); the minimum and fee for an individual's auction order are open (GOV open question 2), and the TASE trading unit and minimum trade were not readable (GOV open question 7). A bank through which makam can be bought must show it next to deposits and money-market funds under \"מוצרי שוק הכסף\" and explain how to buy it (BANK-15)"
+    "text": "whoever holds a securities account (held_in): a purchase on TASE on any trading day, with a minimum order of 10,000 face value in continuous trading (GOV-24), or a bid in the monthly issue auction through the account (GOV-22). Only TASE clearing-house members bid directly (GOV-05); the minimum and fee for an individual's auction order are open (GOV open question 2). A bank through which makam can be bought must show it next to deposits and money-market funds under \"מוצרי שוק הכסף\" and explain how to buy it (BANK-15)"
   },
   "protection": {
     "rule_ids": [
       "GOV-02",
-      "GOV-01",
-      "BRK-07",
-      "BRK-10",
-      "REG-16",
-      "REG-06"
+      "GOV-01"
     ],
-    "text": "the face value is paid from the state's general revenues, an obligation of the state and not of the bank or broker (GOV-02). The paper sits in a securities account: at a non-bank TASE member client securities are held apart from the member's own, in trust at the TASE clearing house, under TASE rules (BRK-07; no statute was found, REG open question 9); at a bank they are registered through the nominee company, pooled, and separated from the bank's own in its books (BRK-10, one bank's terms). What happens to client securities if a bank fails was not found in an official source (REG open question 10); a guarantee of a failing bank's deposits is discretionary (REG-06)"
+    "text": "the face value is paid from the state's general revenues, an obligation of the state and not of the bank or broker (GOV-02). How the account keeps the paper, and what happens if the bank or member fails, is the account's (brokerage-account)"
   },
   "dimensions": {
     "age-or-use-exemption": "blocked:TXI-OQ9",
@@ -173,8 +185,7 @@
     "GOV-OQ3",
     "GOV-OQ7",
     "TXI-OQ3",
-    "TXI-OQ9",
-    "REG-OQ10"
+    "TXI-OQ9"
   ],
-  "checked": "2026-10-23"
+  "checked": "2026-10-26"
 }

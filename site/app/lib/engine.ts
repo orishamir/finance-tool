@@ -14,7 +14,7 @@ import {
   type P05Input,
   type UsedRule,
 } from "@finance-tool/engine";
-import type { ParameterRecord, RuleRecord, ValueObject, WrapperRecord } from "@finance-tool/schema";
+import type { ParameterRecord, RuleRecord, ValueObject, ProductRecord } from "@finance-tool/schema";
 import { blockedHe, failureHe, figureNotUpdatedHe } from "./failure-he";
 import { entered as enteredValue, type SiteValue } from "./value";
 
@@ -29,7 +29,7 @@ export const p05Units: Record<P05Input, ValueObject["unit"]> = {
 };
 
 export interface Bundle {
-  record: WrapperRecord;
+  record: ProductRecord;
   p05: ParameterRecord;
   terms: InstrumentTerms;
   /** The list-fee lines the terms came from, so the page can show where each rate is from. */

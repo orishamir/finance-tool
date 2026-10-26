@@ -4,7 +4,7 @@
 // `data/` and keeps its value object, so the values sheet can show its source.
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import type { InstrumentTerms } from "@finance-tool/engine";
+import { memberKindOf, type InstrumentTerms } from "@finance-tool/engine";
 import {
   catalogEntry,
   depositTerms,
@@ -172,6 +172,9 @@ export function buildInstrumentTerms(wrapperId: string, family: Family, spec: In
     const isMmf = wrapperId === "money-market-fund-daily" || wrapperId === "money-market-fund-renewable";
     const tariff = isMmf ? buildMoneyMarketTariff(wrapperId, src, missing, feeValues) : buildTariff(wrapperId, "securities", spec, src, missing, feeValues);
     if (tariff) terms.tariff = tariff;
+    // F-14: the member's kind decides custody on money-market units; the money-market funds are modelled at a bank (MF-26, BANK-18)
+    const member = isMmf ? undefined : memberOf(src, spec.tariff);
+    if (tariff && member) terms.memberKind = member;
     if (wrapperId === "ira-hishtalmut") {
       const managerFee = buildIraFee(wrapperId, spec, src, missing, feeValues);
       if (managerFee !== null) terms.ira = { managerFee, clockStartMonth: 0 };
@@ -179,6 +182,9 @@ export function buildInstrumentTerms(wrapperId: string, family: Family, spec: In
   } else if (family === "makam") {
     const tariff = buildTariff(wrapperId, "makam", spec, src, missing, feeValues);
     if (tariff) terms.tariff = tariff;
+    // F-14: a bank may not charge custody on makam (BRK-17); P-05's tariff names its provider, whose class says which it is
+    const member = memberOf(src, spec.tariff);
+    if (tariff && member) terms.memberKind = member;
     // The series term is optional (GOV-22, GOV-23): read from the rule P-05 names, else the ledger's default.
     if (spec.series_rule) {
       const term = figure(src, spec.series_rule, "term_months");
@@ -237,6 +243,12 @@ export function buildHishtalmutTerms(wrapperId: string, spec: InstrumentSpec | u
   };
 }
 
+/** F-14: the member kind of the provider whose latest snapshot P-05's tariff entry names (`memberKindOf` its class). */
+function memberOf(src: InstrumentSources, provider: string | undefined): InstrumentTerms["memberKind"] | undefined {
+  const snap = provider ? src.fees.filter((f) => f.id === provider).sort((a, b) => a.snapshot.localeCompare(b.snapshot)).at(-1) : undefined;
+  return snap ? memberKindOf(snap.provider.class) : undefined;
+}
+
 function figure(src: InstrumentSources, ruleId: string, name: string): SiteValue | null {
   const r = src.rules[ruleId];
   return r ? ruleFigure(r, name, src.today) : null;
@@ -258,7 +270,7 @@ function snapshotOf(src: InstrumentSources, provider: string | undefined, what: 
 /** The security types (data-schema 2, `fee.applies_to`) a tariff line may name for the instruments a wrapper holds. */
 const securityTypesOf: Record<string, string[]> = {
   makam: ["makam"],
-  "government-bond": ["tase_shares_bonds"],
+  "government-bond": ["tase_bonds", "tase_shares_bonds"],
   "brokerage-account": ["tase_shares_bonds", "etf_units", "mutual_fund_units", "tase_foreign_fund_units", "foreign_securities"],
   "ira-hishtalmut": ["tase_shares_bonds", "etf_units", "mutual_fund_units", "tase_foreign_fund_units", "foreign_securities"],
   "money-market-fund-daily": ["money_market_units", "mutual_fund_units"],
@@ -272,7 +284,9 @@ const securityTypesOf: Record<string, string[]> = {
 function listLines(snap: FeesSnapshot, wrapperId: string, base: FeeLine["base"]): FeeLine[] {
   const types = securityTypesOf[wrapperId] ?? [];
   const rank = (l: FeeLine) => (l.channel === null || l.channel === "direct" ? 0 : 1);
-  return snap.lines.filter((l) => l.level === "list" && l.base === base && (l.applies_to.includes(wrapperId) || l.applies_to.includes("all") || l.applies_to.some((a) => types.includes(a)))).sort((a, b) => rank(a) - rank(b));
+  // a line that excludes the product's own security type (a bank's custody line leaves out makam, BRK-17) does not apply to it
+  const excluded = (l: FeeLine) => (l.excludes ?? []).some((x) => types.includes(x));
+  return snap.lines.filter((l) => l.level === "list" && l.base === base && (l.applies_to.includes(wrapperId) || l.applies_to.includes("all") || l.applies_to.some((a) => types.includes(a))) && !excluded(l)).sort((a, b) => rank(a) - rank(b));
 }
 
 function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSources, missing: string[], feeValues: Record<string, SiteValue>) {
@@ -409,7 +423,9 @@ function buildTariff(
   if (!snap) return null;
   type Tariff = NonNullable<InstrumentTerms["tariff"]>;
   const tariff: Tariff = {};
-  const wants = family === "makam" ? ["trade"] : family === "bond" ? ["trade", "custody"] : ["trade", "custody", "fx", "fixed_period"];
+  // makam and a government bond are securities held in the securities account (D6, 2026-10-26): the account's custody line for their class
+  // and its monthly fee apply to them too (F-14, F-17); a bank's custody on makam is barred in the run itself (BRK-17)
+  const wants = family === "makam" || family === "bond" ? ["trade", "custody", "fixed_period"] : ["trade", "custody", "fx", "fixed_period"];
   const nis = (v: ValueObject | null) => (isNum(v) && (v.unit === "nis_per_trade" || v.unit === "nis") ? (v.value as number) : undefined);
 
   const trade = wants.includes("trade") ? listLines(snap, wrapperId, "trade") : [];

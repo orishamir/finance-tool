@@ -75,7 +75,11 @@ Security types for tariff lines (`fee.applies_to`): `tase_shares_bonds`, `tase_b
 
 Provider classes (`provider.class`): `bank`, `tase_member_nonbank`, `foreign_broker`, `fund_manager`, `provident_manager`, `pension_manager`, `insurer`.
 
-Wrapper IDs (`data/instruments/wrappers/`): `current-account`, `bank-deposit`, `savings-plan`, `money-market-fund-daily`, `money-market-fund-renewable`, `makam`, `government-bond`, `brokerage-account`, `kupat-gemel-lehashkaa`, `keren-hishtalmut`, `pension-comprehensive`, `pension-general`, `provident-for-annuity`, `child-savings-provident`, `child-savings-bank`, `ira-hishtalmut`, `ira-provident`. Tier-2 wrappers get IDs when they graduate (D2).
+Wrapper IDs (`data/instruments/wrappers/`): `current-account`, `bank-deposit`, `savings-plan`, `brokerage-account`, `kupat-gemel-lehashkaa`, `keren-hishtalmut`, `pension-comprehensive`, `pension-general`, `provident-for-annuity`, `child-savings-provident`, `child-savings-bank`, `ira-hishtalmut`, `ira-provident`. Tier-2 wrappers get IDs when they graduate (D2).
+
+Security IDs (`data/instruments/securities/`, added 2026-10-26 with D6's amendment): `makam`, `government-bond`, `money-market-fund-daily`, `money-market-fund-renewable`. Until that date the four were wrapper IDs; the IDs, the guide addresses and the keys the device stores are unchanged. A tier-2 instrument bought inside a securities account (corporate bonds, REITs) graduates as a security, not a wrapper.
+
+Product IDs: a wrapper ID or a security ID, what a person chooses between. A guide page (`/guide/<id>`), a comparison option, a term's and an exposure's `wrapper_ids`, P-05's `instruments` and P-08's `holding` rows are named by product ID (`productId` in `packages/schema`).
 
 Exposure IDs (`data/instruments/exposures/`): `cash-nis`, `cash-fx`, `makam`, `gov-bond-unlinked`, `gov-bond-linked`, `index-<index-code>` (for example `index-sp500`, `index-ta125`), `track-<cma-classification>` for provident tracks, `general-track`.
 
@@ -174,6 +178,30 @@ An optional `rationale_he` (string) holds the Hebrew version of `rationale` for 
 - A closed wrapper (for example after a future merger of wrappers, D6) keeps its record with `effective_to` set.
 - The schema is `wrapperRecord` in `packages/schema` (added 2026-10-23). It is strict: a field not named above is an error. Which fields become a run's inputs is in `docs/method.md` §2.4.
 
+### 3.3a `data/instruments/securities/` — one record per security held in a wrapper (D6, amended 2026-10-26)
+
+A security, in the site's model, is what a person buys inside a wrapper and that carries rules of its own: a security held directly (makam, a government bond) or units of a fund (the money-market funds). Only the securities that are products a person chooses between have a record here; the index funds an account holds are `data/funds/` records with their exposure. Its record has every field of a wrapper record, with the same meaning, plus two:
+
+```json
+{
+  "id": "makam",
+  "held_as": "direct",
+  "held_in": {
+    "wrapper_ids": ["brokerage-account", "ira-hishtalmut", "ira-provident"],
+    "rule_ids": ["GOV-21", "GOV-22", "GOV-05", "BRK-01", "IRA-11"],
+    "text": "a security held directly in a securities account at a bank or a TASE member ..."
+  },
+  "names": { "he": ["מק\"מ"], "statement": [], "app": ["מק\"מ"] },
+  "...": "the fields of §3.3"
+}
+```
+
+- `held_as` is `direct` (held directly) or `fund_units` (units of a fund).
+- `held_in.wrapper_ids` names the wrappers that can hold it; the first is the one its guide page and its comparison option run in (the securities account for all four). `rule_ids` are the rules that say it is held there; they may cover a dimension the security's own rules do not (validator §4 item 9), but a dimension only they carry need not be marked.
+- The other fields hold what belongs to the security: its tax in a taxable account, its own liquidity, the issuer or fund law behind it (`regulator`, `protection`), its own route and minimum (`eligibility`), and a fee rule set by its security type (`fee_caps`: a bank may not charge custody on makam or money-market units, BRK-17). What the wrapper decides (who may open the account, who supervises it, how client assets are kept, what happens if the member fails) is read from the wrapper's record and is not copied into the security's.
+- Inside a wrapper that sets its own tax (an IRA), the wrapper's tax applies instead of the security's.
+- The schema is `securityRecord` in `packages/schema`; `productRecord` is either, `productSchemaOf` picks the schema by the presence of `held_in`.
+
 ### 3.4 `data/instruments/exposures/` — one record per exposure type
 
 ```json
@@ -190,7 +218,7 @@ An optional `rationale_he` (string) holds the Hebrew version of `rationale` for 
 }
 ```
 
-The schema is `exposureRecord` in `packages/schema` (strict). `id` is lowercase kebab. `kind` is one of `equity_index`, `bond_index`, `cash_like`, `mixed`, `commodity`, `other`. `currency` is an ISO 4217 code. Optional `wrapper_ids` lists the wrappers that can hold the exposure (the link had no home before 2026-10-23); optional `rule_ids` and `open_questions` list rule and open-question IDs. A `variants` entry `fund:<id>` must be the `id` of a record under `data/funds/` once that folder has files (validator).
+The schema is `exposureRecord` in `packages/schema` (strict). `id` is lowercase kebab. `kind` is one of `equity_index`, `bond_index`, `cash_like`, `mixed`, `commodity`, `other`. `currency` is an ISO 4217 code. Optional `wrapper_ids` lists the products that can hold the exposure (the link had no home before 2026-10-23); since 2026-10-26 these are product IDs: `brokerage-account` means "through a fund in a securities account", a security ID (`makam`, `government-bond`) means "bought directly", and the makam exposure no longer lists `brokerage-account`, because holding makam directly in the account is the `makam` security record; optional `rule_ids` and `open_questions` list rule and open-question IDs. A `variants` entry `fund:<id>` must be the `id` of a record under `data/funds/` once that folder has files (validator).
 
 **2026-10-25 (invest page).** `constituents_israeli` (optional boolean, S5): `true` when the index is made of Israeli companies (TA-35, TA-90, TA-125), `false` when it is not (S&P 500, NASDAQ-100, MSCI World, MSCI ACWI). Left out for the cash and bond exposures and the general track, where the question has no meaning. The invest page reads it to decide which ways of owning the index exist (an Israeli index has only Israeli funds).
 
@@ -504,7 +532,7 @@ One file, an array with one entry per numbered item of the "## Open questions" s
 6. Every wrapper record's `tax_at_exit.formula` exists in `docs/method.md`.
 7. Every series file's last observation is within `stale_after_days`, else the page shows the stale flag (D3).
 8. Every `data/funds/` record names its `exposure_id` and its `exposure_id` lists it under `variants`.
-9. Dimension marks in wrappers and funds are regenerated from `rule_ids`, never edited by hand.
+9. Dimension marks in wrappers, securities and funds are regenerated from `rule_ids`, never edited by hand. A security's `held_in.rule_ids` may cover a mark but do not require one (2026-10-26).
 10. Every `track_ids` entry in `data/catalog/` exists in the latest `data/cma/` period of its dataset; one that has disappeared is reported, not silently dropped. `cma_fund_id` is the fund number (CAT-09), which the track datasets do not list, so it is not checked against them.
 11. Every Israeli fund and every foreign fund traded on TASE in `data/funds/` has its fund number in the latest matching list in `data/fund-lists/`; one that has disappeared is reported, not silently dropped.
 12. Rule sources (added 2026-10-24). Fails: a rule has neither `sources` nor `sources_missing_reason` (a warning only while no record carries either); a `he.wikisource.org` or `nevo.co.il` source is `primary`; `mirror_host` is set exactly when `strength` is `primary-mirror`; `page` on a URL that is not a PDF (path ends `.pdf` or contains `BlobFolder`); `anchor` on a PDF; a `sources[].url` is not in the rule's markdown block verbatim (or as the rewrite of a raw Wikisource URL that is); a `derived_from` id has no record; a `data/parameters/pinned-rules.json` id has no record, or a row's first rule has no `primary` or `primary-mirror` source; a row's `answer_he` (the questions page, 2026-10-24 late evening) carries a digit outside a `{ID:figure}` slot, or a slot names a rule outside the row or a figure that rule does not have. Warns (printed, not failing): the rule's `strength` differs from its strongest source (`open` excepted); a source `checked` later than the rule's; the first source lacks `publisher_he` or `title_he`; `recheck_date` has passed; a rule's latest `tax_year` is behind the current year.

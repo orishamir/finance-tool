@@ -1,14 +1,30 @@
 {
-  "id": "money-market-fund-daily",
+  "id": "money-market-fund-renewable",
+  "held_as": "fund_units",
+  "held_in": {
+    "wrapper_ids": [
+      "brokerage-account",
+      "ira-hishtalmut",
+      "ira-provident"
+    ],
+    "rule_ids": [
+      "MF-11",
+      "BRK-01",
+      "IRA-11",
+      "TXK-16"
+    ],
+    "text": "units of a mutual fund, ordered through a distributor, a bank or TASE member with which the holder keeps a securities account, and held in that account (MF-11, BRK-01). A self-directed provident or study fund may hold units too (IRA-11), and there that wrapper's tax applies instead of this record's (TXK-16). Who may open the account, who supervises it and how client assets are kept are the account's (brokerage-account)."
+  },
   "names": {
     "he": [
-      "קרן כספית",
-      "קרן כספית יומית",
-      "קרנות כספיות יומיות"
+      "קרן כספית מתחדשת",
+      "קרן מועדים קבועים",
+      "קרן כספית מועדים קבועים",
+      "קרנות כספיות מתחדשות"
     ],
     "statement": [],
     "app": [
-      "קרנות כספיות יומיות"
+      "קרנות כספיות מועדים קבועים"
     ]
   },
   "regulator": {
@@ -218,8 +234,8 @@
     ]
   },
   "lawful_exit": {
-    "kind": "trading_day",
-    "text": "any trading day: an order that reaches the clearing house before the fund's designated hour is executed at that day's price, a later one at the next pricing day's price (MF-10); the redemption money reaches the holder's account on the day the distributor must pass the order to the clearing house in a fund whose investment policy keeps foreign securities at no more than 10% of net assets, and on the next trading day in any other fund (MF-11, prices regulations reg. 15; MF open question 4 closed 2026-10-26); current designated hours, and whether units can be bought or redeemed on Fridays since TASE moved to Monday to Friday on 5.1.2026, are open (MF OQ3, BRK-29)"
+    "kind": "at_maturity",
+    "text": "only on the fund's fixed dates, set in the fund agreement and chosen when buying (the ISA's examples: a week, a month, a quarter); the interval between fixed dates is at most 12 months (36 with ISA leave); money cannot be withdrawn before the next fixed date; a holding that is not redeemed at a fixed date renews automatically for the next period; advance notice may be required only when the interval exceeds one year (MF-38); on a fixed date the redemption money reaches the holder's account on the day the distributor must pass the order to the clearing house in a fund whose investment policy keeps foreign securities at no more than 10% of net assets, and on the next trading day in any other fund (MF-11, prices regulations reg. 15; MF open question 4 closed 2026-10-26)"
   },
   "switch_is_tax_event": {
     "value": true,
@@ -244,11 +260,11 @@
   "transfer_routes": [],
   "eligibility": {
     "rule_ids": [
-      "BRK-01",
       "MF-15",
-      "MF-11"
+      "MF-11",
+      "MF-35"
     ],
-    "text": "anyone with a securities account at a bank or at a TASE member (the distributor); most funds have no minimum investment, though a distributor may set its own account minimum or minimum commission"
+    "text": "whoever holds a securities account (held_in), through the distributor; most funds have no minimum investment, though a distributor may set its own account minimum or minimum commission; units of a new series are offered from seven days after the series date (MF-35)"
   },
   "protection": {
     "rule_ids": [
@@ -262,10 +278,11 @@
       "MF-30",
       "MF-31",
       "MF-40",
-      "BRK-07",
-      "BANK-23"
+      "BANK-23",
+      "MF-36",
+      "MF-37"
     ],
-    "text": "fund assets belong to the trustee for the unit holders, separate from the manager's and the trustee's own property, and cannot be attached; the trustee supervises the manager; if the manager or trustee fails, the fund moves to another manager; the ISA directive limits the fund to short, highly rated shekel or FX assets with an average life of at most 90 days; market losses are not protected, there is no state guarantee, and redemptions can be suspended for a few trading days"
+    "text": "as for every money-market fund: assets held by the trustee for the unit holders, separate and not attachable; if the manager or trustee fails the fund moves to another manager; the expected yield is the manager's estimate, net of fund fees and before tax, and is not guaranteed; market losses are not protected and there is no state guarantee; how the account keeps the units is the account's (brokerage-account)"
   },
   "dimensions": {
     "age-or-use-exemption": "covered",
@@ -320,7 +337,9 @@
     "MF-OQ1",
     "MF-OQ3",
     "MF-OQ5",
-    "MF-OQ12"
+    "MF-OQ11",
+    "MF-OQ12",
+    "MF-OQ17"
   ],
-  "checked": "2026-10-23"
+  "checked": "2026-10-26"
 }

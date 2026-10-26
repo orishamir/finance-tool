@@ -358,6 +358,14 @@ What continues, none of it a release:
   - **Search** has two groups.
   - **The validator** enforces all of this, file by file.
 
+- **Wrappers and securities (D6 amended, 2026-10-26, founder: "change D6").** Makam, government bonds and the two money-market funds are securities bought in a securities account, not wrappers. Their records moved to `data/instruments/securities/` with `held_in`; IDs, pages and saved keys stay. What changed for a person:
+  - the comparison prices makam and the government bond on the provider that leaves the goal the most, as it already did the account (F-80), with each provider's own lines for the class;
+  - makam at a non-bank member pays that member's custody line, and any account's monthly fee follows a security into the account (F-14, F-17); before, the makam run read neither;
+  - exposure mode no longer lists the securities account beside makam as a second way that never ran; the makam choice reads "מק״מ, קנייה ישירה בחשבון ניירות ערך";
+  - a security's guide page names the account it is bought in, and the account's page lists the securities bought in it; the account's eligibility, supervision and protection text is no longer copied into four records.
+
+  Research and the full list: `research/discovery/2026-10-26-wrappers-and-securities.md`.
+
 **What continues, in order:**
 
 1. **F-48, early pension withdrawal:** re-read TXP-18's official text, then build it.
@@ -379,4 +387,9 @@ What continues, none of it a release:
    - EUR-Lex;
    - the Supreme Court site;
    - and the link check's 43 links.
-6. **Unchanged from the list above:** tier-2 graduation, data growth, the quarterly tariff refresh and the founder's approvals.
+6. **Unchanged from the list above:** tier-2 graduation, data growth, the quarterly tariff refresh and the founder's approvals. Corporate bonds and REITs graduate as securities held in the securities account (D6 as amended 2026-10-26), not as wrappers.
+7. **Securities in the account, what is left (D6, 2026-10-26):**
+   - **The "which bank or investment house" page (F-63) for makam and government bonds.** It still ranks funds only: its run is the fund run and its subject is a fund record. It needs a makam and a bond subject that run the makam and bond ledgers on every provider's lines for their class, as the comparison card's picker already does.
+   - **Money-market funds at a non-bank member in the comparison.** The comparison keeps the bank case, where a bank with a distribution agreement charges the holder nothing (MF-26, BANK-18). At a non-bank member that is an investment marketer, MF-26 does not bind and the tariff applies (BRK-52), so a person who already holds an account at such a member is priced as if they bought at a bank. Needs: the provider pick for the money-market securities, with each member's `money_market_units` lines and the bank case as one of the options.
+   - **One account or a pick per option.** Makam and the bond each take their own cheapest provider, and a provider the person chose for the securities account does not carry over to them. If the founder means one account for everything held there, the pick becomes one choice shared by the account and its securities.
+   - **The general track is not an exposure.** `data/instruments/exposures/general-track.json` names no contents: its own line says the mix is up to each manager's investment committee with no committed equity range, so two general tracks can hold different things. It exists only inside provident wrappers (kupat gemel lehashkaa, keren hishtalmut), which makes it a track, the provident counterpart of a fund in a securities account, and D18 already said track classifications get no exposure page. Today exposure mode asks for a return for an undefined mix and judges it at P-04's "כללי" row. A decision for the founder, since it is exposure mode's only mixed option: drop it from the exposures, or model tracks as the layer inside the provident wrappers and rank them by the asset mix each manager publishes.

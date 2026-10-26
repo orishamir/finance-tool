@@ -5,7 +5,7 @@
 // as S15 (open tracking fund, trustee 0.02%, 0.1% min 10, custody as S14), on the S39 goal.
 import { readdirSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import type { ExposureRecord, RuleRecord, ValueObject, WrapperId, WrapperRecord } from "@finance-tool/schema";
+import { isSecurityId, type ExposureRecord, type RuleRecord, type ValueObject, type ProductId, type ProductRecord, type WrapperRecord } from "@finance-tool/schema";
 import {
   buildCandidateSet,
   compareExposures,
@@ -44,9 +44,13 @@ const vo = (value: number | string | boolean, unit: ValueObject["unit"], state: 
   state,
 });
 
+/** A test product: a security's id also gets what a security record carries (D6, amended 2026-10-26). */
+const asProduct = (r: Omit<WrapperRecord, "id"> & { id: ProductId }): ProductRecord =>
+  (isSecurityId(r.id) ? { ...r, held_as: "direct", held_in: { wrapper_ids: ["brokerage-account"], rule_ids: [], text: "held in a securities account" } } : r) as ProductRecord;
+
 /** A test record in the shape of data-schema §3.3 (as r2-compare.test.ts). */
-function wrapper(id: WrapperId, during: string, exit: string, over: Partial<WrapperRecord> = {}): WrapperRecord {
-  return {
+function wrapper(id: ProductId, during: string, exit: string, over: Partial<ProductRecord> = {}): ProductRecord {
+  return asProduct({
     id,
     names: { he: ["שם"], statement: [], app: [] },
     regulator: vo("CMA", "text"),
@@ -66,7 +70,7 @@ function wrapper(id: WrapperId, during: string, exit: string, over: Partial<Wrap
     open_questions: [],
     checked: "2026-10-23",
     ...over,
-  };
+  });
 }
 const brokerage = wrapper("brokerage-account", "F-20", "F-40");
 const mmfDaily = wrapper("money-market-fund-daily", "F-23", "F-40");
@@ -179,7 +183,7 @@ describe("S48 revisit after a rule change: F-82 over S39", () => {
   it("reports a changed top option when the current data reorders the ranking", () => {
     // Test only: the current fee snapshot gives the brokerage a fund with no fees and no tariff (a data file change).
     const cheaper: CandidateInput[] = inputs.wrappers.map((w) =>
-      (w.record as WrapperRecord).id === "brokerage-account" ? { ...w, terms: { fund: { kind: "israeli-fund" as const, drag: {} }, tariff: {} } } : w,
+      (w.record as ProductRecord).id === "brokerage-account" ? { ...w, terms: { fund: { kind: "israeli-fund" as const, drag: {} }, tariff: {} } } : w,
     );
     const r = revisit(saved, { ...bundle, wrappers: cheaper, dataFiles: [{ path: dataFiles[0]!.path, checked: "2026-11-01" }] }, ctxThen);
     expect(r.diff).toMatchObject([{ kind: "data", key: dataFiles[0]!.path, old: "2026-10-22", new: "2026-11-01" }]);
@@ -192,7 +196,7 @@ describe("S48 revisit after a rule change: F-82 over S39", () => {
 // ---------------------------------------------------------------- S49
 
 describe("S49 exposure mode with entered returns and the loss filter: F-71", () => {
-  const exposure = (id: string, kind: ExposureRecord["kind"], cashLike: boolean, mode: "entered" | "series", wrappers: WrapperId[]): ExposureRecord => ({
+  const exposure = (id: string, kind: ExposureRecord["kind"], cashLike: boolean, mode: "entered" | "series", wrappers: ProductId[]): ExposureRecord => ({
     id,
     names: { he: [id], en: [id] },
     kind,

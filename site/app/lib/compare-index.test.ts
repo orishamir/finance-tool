@@ -49,7 +49,7 @@ describe("before a choice (D27)", () => {
   });
   it("the pick of a tariff does not override the way's broker", () => {
     const again = applyProviders(out.bundle, founder);
-    expect(again).toBe(out.bundle);
+    expect(again.wrappers.find((w) => w.id === BRK)).toBe(out.bundle.wrappers.find((w) => w.id === BRK));
   });
   it("the founder's plan: the lowest is the MSCI ACWI ETF at about 147,744, the highest the S&P 500 at 155,116", () => {
     if (out.reading?.kind !== "range") throw new Error("range");

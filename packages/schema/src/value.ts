@@ -129,15 +129,14 @@ export const feeBase = z.enum([
   "insurance_premium",
 ]);
 
-/** data-schema §2, wrapper IDs (`data/instruments/wrappers/`). */
+/**
+ * data-schema §2, wrapper IDs (`data/instruments/wrappers/`): the containers whose rules apply to whatever they hold (D6, amended
+ * 2026-10-26). Makam, government bonds and the money-market funds are securities held in a wrapper, not wrappers (`securityId`).
+ */
 export const wrapperId = z.enum([
   "current-account",
   "bank-deposit",
   "savings-plan",
-  "money-market-fund-daily",
-  "money-market-fund-renewable",
-  "makam",
-  "government-bond",
   "brokerage-account",
   "kupat-gemel-lehashkaa",
   "keren-hishtalmut",
@@ -151,3 +150,25 @@ export const wrapperId = z.enum([
 ]);
 
 export type WrapperId = z.infer<typeof wrapperId>;
+
+/**
+ * data-schema §2, security IDs (`data/instruments/securities/`): what a person buys inside a wrapper and that carries rules of its own,
+ * a security held directly or a fund (D6, amended 2026-10-26). Each is held in a securities account (`held_in`).
+ */
+export const securityId = z.enum(["makam", "government-bond", "money-market-fund-daily", "money-market-fund-renewable"]);
+
+export type SecurityId = z.infer<typeof securityId>;
+
+/**
+ * data-schema §2, product IDs: what a person chooses between, a wrapper or a security held in one (D6, 2026-10-26). A guide page, a comparison
+ * option and a term's `wrapper_ids` are named by product id; the wrapper a security sits in is its record's `held_in`.
+ */
+export const productId = z.union([wrapperId, securityId]);
+
+export type ProductId = z.infer<typeof productId>;
+
+/** Every product id, wrappers first: a comparison's candidate set (F-83). */
+export const productIds: readonly ProductId[] = [...wrapperId.options, ...securityId.options];
+
+/** Whether a product id names a security (true) or a wrapper (false). */
+export const isSecurityId = (id: string): id is SecurityId => (securityId.options as readonly string[]).includes(id);

@@ -17,6 +17,7 @@ import {
   termRecord,
   valueObject,
   wrapperRecord,
+  securityRecord,
 } from "../src/index.ts";
 
 const out = fileURLToPath(new URL("../json/", import.meta.url));
@@ -28,6 +29,7 @@ const schemas = {
   "cma-period": cmaPeriodFile,
   "fund-list": fundListFile,
   wrapper: wrapperRecord,
+  security: securityRecord,
   exposure: exposureRecord,
   fund: fundRecord,
   "deposit-terms": depositTerms,
