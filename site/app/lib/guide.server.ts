@@ -233,7 +233,7 @@ export interface ExposurePageData {
    * Wrappers that can hold this exposure. `blockedBy` are the wrapper's own exit-tax blockers (its record's
    * `tax_at_exit.blocked_by`): only these make the card say the tax is unclear (audit A85). `openQuestions` are the open
    * questions the wrapper and the exposure both carry and the wrapper does not list as exit-tax blockers: some are tax questions that
-   * do not block the run (TXI-OQ2, TXI-OQ14, TXI-OQ3), others are not tax questions (BANK-OQ8, MF-OQ4), so the card shows them in a neutral tag.
+   * do not block the run (TXI-OQ14, TXI-OQ3), others are not tax questions (BANK-OQ8, MF-OQ3), so the card shows them in a neutral tag.
    */
   holders: { id: string; name: string; blockedBy: string[]; openQuestions: string[] }[];
   checklist: (ChecklistRow & { mark: "covered" | "na"; rules: string[] })[];

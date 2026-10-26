@@ -126,7 +126,9 @@
       "TXK-07"
     ],
     "blocked_by": [],
-    "labels": []
+    "labels": [
+      "known, not computed: from age 60 the reduced brackets apply first to the deemed interest, since s.125C(b) is a maximum rate (TXK-06; TXK OQ12 closed 2026-10-26); F-44 does not apply them yet (F-42 is not wired to this exit), so the run flags the relief it leaves out (flag TXK-06) and the guide says so beside the rule"
+    ]
   },
   "lawful_exit": {
     "kind": "any_time",

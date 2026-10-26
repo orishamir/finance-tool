@@ -31,7 +31,7 @@
         "GOV-13"
       ],
       "state": "sourced",
-      "notes": "Per the Debt Unit glossary (p. 41, \"אג\"ח בריבית קבועה\"): payments of principal and interest are not linked to an index, a currency or any other asset. The 2006 \"אג\"ח ממשלתית\" regulations (ק\"ת 6457 pp.2-3) set a fixed rate, NIS 1,000 face value and twelve-month interest periods; that today's \"ממשלתית\" series fall under them is inferred, not confirmed (GOV open question 4, narrowed). Method F-25 takes the coupon frequency of a fixed-rate series from the series data."
+      "notes": "Per the Debt Unit glossary (p. 41, \"אג\"ח בריבית קבועה\"): payments of principal and interest are not linked to an index, a currency or any other asset. The 2006 \"אג\"ח ממשלתית\" regulations (ק\"ת 6457 pp.2-3) set a fixed rate, NIS 1,000 face value and twelve-month interest periods; the Accountant General's bond page lists \"אג\"ח ממשלתית\" (first issued 6.11.2006, interest once a year) as the current fixed-rate type with these regulations, so today's \"ממשלתית\" series are of this type (GOV open question 4 now asks only for the 1995 \"שחר\" base text and amendments after 2007). Method F-25 takes the coupon frequency of a fixed-rate series from the series data."
     }
   },
   "il_finance_file": "government-bonds-and-makam.md",

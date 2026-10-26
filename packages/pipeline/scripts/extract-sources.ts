@@ -378,24 +378,43 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
     const publisherHe = doc?.publisher_he ?? pub?.publisher_he;
     if (publisherHe) entry.publisher_he = publisherHe;
     if (mirrorHost) entry.mirror_host = mirrorHost;
-    if (locator) {
-      entry.locator = locator;
-      const he = toHebrewLocator(locator);
-      if (he) entry.locator_he = he;
-      const page = firstPage(locator, url);
-      if (page) entry.page = page;
-      if (host === "he.wikisource.org" && /\/wiki\//.test(url)) {
-        const anchor = wikisourceAnchor(locator);
-        if (anchor) entry.anchor = anchor;
+    const locate = (e: ExtractedSource, loc: string, quoteText: string) => {
+      if (loc) {
+        e.locator = loc;
+        const he = toHebrewLocator(loc);
+        if (he) e.locator_he = he;
+        const page = firstPage(loc, url);
+        if (page) e.page = page;
+        if (host === "he.wikisource.org" && /\/wiki\//.test(url)) {
+          const anchor = wikisourceAnchor(loc);
+          if (anchor) e.anchor = anchor;
+        }
       }
-    }
-    const quote = findQuote(rest.slice(0, rest.includes("·") ? rest.indexOf("·") : rest.length));
-    if (quote) entry.quote = quote;
+      const quote = findQuote(quoteText);
+      if (quote) e.quote = quote;
+    };
+    const body = rest.slice(0, rest.includes("·") ? rest.indexOf("·") : rest.length);
+    // One link may cite several passages of its document, each from its own page ("p.8, s.4.1 "…"; p.9, s.4.2.3 "…"; p.11,
+    // s.4.2.8 "…""). The locator above runs up to the first quote mark, so it covers the passages up to the first quoted one;
+    // each passage after that becomes a source of its own, with its locator, page and quote, so the rule card shows every
+    // passage the rule rests on (TXF-28's two exempting passages were dropped; review, 2026-10-26).
+    const passages = body.split(/;\s*(?=pp?\.\s*\d)/);
+    const firstQuoted = passages.findIndex((x) => /["“]/.test(x.replace(/(?<=[\u05D0-\u05EA])"(?=[\u05D0-\u05EA])/g, "")));
+    const covered = firstQuoted < 0 ? passages : passages.slice(0, firstQuoted + 1);
+    locate(entry, locator, covered.join("; "));
     if (note && !/^\(\s*(nevo |wikisource )?mirror\s*\)$/i.test(note)) {
       if (note.length <= 120) entry.qualifier = note;
       else entry.note = note;
     }
     sources.push(orderKeys(entry));
+    for (const passage of passages.slice(covered.length)) {
+      const loc = cleanLocator(passage);
+      if (!loc) continue;
+      const more: ExtractedSource = { ...entry };
+      for (const k of ["locator", "locator_he", "page", "anchor", "quote"] as const) delete more[k];
+      locate(more, loc, passage);
+      sources.push(orderKeys(more));
+    }
   });
 
   const outside = links.reduceRight((acc, l) => acc.slice(0, l.start) + " " + acc.slice(l.end), raw);

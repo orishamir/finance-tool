@@ -170,6 +170,15 @@ export function cmaFeeValue(v: ValueObject, today: string): SiteValue {
   return { ...v, stale: staleCmaFee(v.effective_to, today) };
 }
 
+/**
+ * The day a sourced figure takes effect (its `effective_from`) as a value of its own, with the figure's source, so prose shows
+ * the date through `Num` instead of typing it (BANK-35's two dates, 2026-10-26). `about` says what the date is. Null without a date.
+ */
+export function effectiveFromValue(v: SiteValue | null, about: string): SiteValue | null {
+  if (!v?.effective_from) return null;
+  return { ...v, value: v.effective_from, unit: "text", effective_to: null, about };
+}
+
 /** The calendar year a CMA fee average belongs to (its `effective_from`), or null. */
 export function feeYear(v: Pick<ValueObject, "effective_from">): string | null {
   return v.effective_from ? v.effective_from.slice(0, 4) : null;

@@ -3,12 +3,37 @@
   "title": "Orders go through a distributor (bank or TASE member), in cash, through the clearing house",
   "title_he": "הוראות עוברות דרך מפיץ, במזומן, דרך המסלקה",
   "text_he": "הוראות קנייה ופדיון מוגשות למפיץ, שהוא חבר בורסה, ועוברות ממנו למנהל הקרן דרך מסלקת הבורסה. מנהל הקרן מקבל תשלום על יחידות במזומן בלבד; בפדיון הקרן משלמת דרך המפיץ, והמפיץ מעביר את הסכום לבעל היחידה בו ביום. מפיץ לא רשאי לסרב מטעמים שקשורים בקרן או במנהל הקרן להפיץ יחידות של קרן שהרשות התירה את התשקיף שלה; תיקון לחוק מוחק את הסייג הזה החל מהשני בפברואר אלפיים עשרים ושבע, ומאז הדרך והמועד להעברת ההוראות דרך המסלקה ייקבעו בהוראות של הרשות ולא בכללים. לפי מדריך הרשות אפשר לתת הוראה בסניף, בטלפון, באתר המפיץ או דרך יועץ השקעות, קונים בסכום כסף ומקבלים יחידות. מתי כסף הפדיון מגיע קובעות התקנות: בקרן שלפי מדיניות ההשקעות שלה ניירות ערך זרים לא יעלו על עשירית מנכסיה, הכסף מועבר ביום שבו המפיץ חייב להעביר את ההוראה למסלקה, כלומר באותו יום אם ההוראה ניתנה לפני השעה היעודה ביום חישוב מחירים; בקרן שיכולה להחזיק יותר, ביום המסחר הבא. בקרן כספית במועדים קבועים ההוראות מתבצעות רק במועד הקבוע.",
+  "figure_names_he": {
+    "foreign_securities_line": "שיעור ניירות הערך הזרים בנכסי הקרן שעד אליו כסף מפדיון מועבר ביום ההוראה"
+  },
   "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
     "liquidity-lockup"
   ],
   "likely_to_change": "no",
+  "figures": {
+    "foreign_securities_line": {
+      "value": 10,
+      "unit": "pct",
+      "source": {
+        "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(מחירי_קניה_ומכירה_של_נכסי_קרן_ושווי_נכסי_קרן)",
+        "title": "תקנות השקעות משותפות בנאמנות (מחירי קניה ומכירה של נכסי קרן ושווי נכסי קרן), התשנ\"ה-1994, נוסח משולב (ויקיטקסט, מראה של התקנות), reg. 15(א): \"בקרן שעל פי מדיניות ההשקעות שלה, לא יעלה שווי ניירות ערך חוץ שיוחזקו בה על עשרה אחוזים מהשווי הנקי של נכסיה\"",
+        "publisher": "Hebrew Wikisource",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "MF-11"
+      ],
+      "state": "sourced",
+      "notes": "Prices regulations 1994, reg. 15 as amended in 1999: in a fund whose investment policy keeps foreign securities at no more than 10% of net assets, the redemption amount is transferred on the day the distributor must pass the order to the clearing house (law s.46(ג)(1)); in any other fund, on the first trading day after it. Crediting the distributor's and the holder's accounts counts as the transfer (reg. 15(ב)). Read in the Wikisource consolidated text and the 1994 and 1999 gazette scans (open question 4 closed 2026-10-26)."
+    }
+  },
   "il_finance_file": "mutual-funds-and-money-market-funds.md",
   "checked": "2026-10-26",
   "sources": [

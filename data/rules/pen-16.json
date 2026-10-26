@@ -65,6 +65,34 @@
       "quote": "כיסוי ביטוחי לעמית שחדל להיות עמית פעיל בקרן יישמר לתקופה של חמישה חדשים מלאים ורצופים",
       "checked": "2026-10-25",
       "qualifier": "(third-party host)"
+    },
+    {
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)",
+      "publisher": "Prisha.co.il",
+      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "p.23, s.28",
+      "locator_he": "עמוד 23, סעיף 28",
+      "page": 23,
+      "checked": "2026-10-25",
+      "qualifier": "(third-party host)"
+    },
+    {
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)",
+      "publisher": "Prisha.co.il",
+      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "p.26, ss.33-34",
+      "locator_he": "עמוד 26, סעיפים 33-34",
+      "page": 26,
+      "checked": "2026-10-25",
+      "qualifier": "(third-party host)"
     }
   ]
 }

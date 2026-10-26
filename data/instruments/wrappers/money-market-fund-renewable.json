@@ -174,7 +174,7 @@
         "MF-27"
       ],
       "state": "sourced",
-      "notes": "At a bank: no securities custody fee (דמי ניהול פיקדון ניירות ערך) may be charged on a money-market fund as defined in the Joint Investment Trust regulations. Under a distribution agreement a distributor may charge the holder nothing for buying, holding or redeeming money-market units (MF-26, reg. 2(ד)). Whether a non-bank TASE member may charge custody on money-market units is open (BRK open question 11): there the tariff applies as published (MF-27 examples)."
+      "notes": "At a bank: no securities custody fee (דמי ניהול פיקדון ניירות ערך) may be charged on a money-market fund as defined in the Joint Investment Trust regulations. Under a distribution agreement, a distributor that is not an investment marketer may charge the holder nothing for buying, holding or redeeming money-market units (MF-26, reg. 2(ד)). Most non-bank TASE members are investment marketers, outside those regulations, and no rule limits their custody fee on money-market units (BRK-17, BRK-52; BRK open question 11 closed 2026-10-26): there the tariff applies as published (MF-27 examples)."
     }
   },
   "ceiling": null,
@@ -219,7 +219,7 @@
   },
   "lawful_exit": {
     "kind": "at_maturity",
-    "text": "only on the fund's fixed dates, set in the fund agreement and chosen when buying (the ISA's examples: a week, a month, a quarter); the interval between fixed dates is at most 12 months (36 with ISA leave); money cannot be withdrawn before the next fixed date; a holding that is not redeemed at a fixed date renews automatically for the next period; advance notice may be required only when the interval exceeds one year (MF-38); how many business days after the fixed date the cash is usable was not found (MF OQ4)"
+    "text": "only on the fund's fixed dates, set in the fund agreement and chosen when buying (the ISA's examples: a week, a month, a quarter); the interval between fixed dates is at most 12 months (36 with ISA leave); money cannot be withdrawn before the next fixed date; a holding that is not redeemed at a fixed date renews automatically for the next period; advance notice may be required only when the interval exceeds one year (MF-38); on a fixed date the redemption money reaches the holder's account on the day the distributor must pass the order to the clearing house in a fund whose investment policy keeps foreign securities at no more than 10% of net assets, and on the next trading day in any other fund (MF-11, prices regulations reg. 15; MF open question 4 closed 2026-10-26)"
   },
   "switch_is_tax_event": {
     "value": true,
@@ -284,7 +284,7 @@
     "fee-management-balance": "covered",
     "fee-trade": "covered",
     "fund-tax-track": "covered",
-    "liquidity-lockup": "blocked:MF-OQ4",
+    "liquidity-lockup": "covered",
     "loss-offset": "covered",
     "minimum": "covered",
     "protection": "covered",
@@ -301,13 +301,10 @@
   "open_questions": [
     "MF-OQ1",
     "MF-OQ3",
-    "MF-OQ4",
     "MF-OQ5",
     "MF-OQ11",
     "MF-OQ12",
-    "MF-OQ17",
-    "TXS-OQ15",
-    "BRK-OQ11"
+    "MF-OQ17"
   ],
   "checked": "2026-10-23"
 }

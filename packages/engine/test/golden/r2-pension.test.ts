@@ -364,19 +364,20 @@ describe("S30 provident fund for annuity, same money as S27", () => {
   });
 });
 
-describe("F-45, F-48, F-49 blocked exits (G-03, G-06)", () => {
-  it("return the gross balance, the gap and the rules, never a value after tax", () => {
-    expect(blockedWrapperExit("F-45", 1_000)).toMatchObject({ blocked: true, gap: "G-03", grossBalance: 1_000 });
-    // TXP OQ3 closed 2026-10-26: F-48 is blocked only because it is not built, with no open question behind it
-    expect(blockedWrapperExit("F-48", 1_000)).toMatchObject({ blocked: true, gap: "G-06", openQuestions: [] });
+describe("F-45, F-48, F-49 blocked exits (G-03; F-48 not built)", () => {
+  it("return the gross balance, the reason and the rules, never a value after tax", () => {
+    expect(blockedWrapperExit("F-45", 1_000)).toMatchObject({ blocked: true, reason: "G-03", gap: "G-03", grossBalance: 1_000 });
+    // TXP OQ3 and G-06 closed 2026-10-26: F-48's rule is known (TXP-18); it is blocked only because the formula is not built
+    expect(blockedWrapperExit("F-48", 1_000)).toMatchObject({ blocked: true, reason: "F-48", gap: null, openQuestions: [] });
+    expect(blockedWrapperExit("F-48", 1_000).ruleIds).toContain("TXP-18");
     expect(blockedWrapperExit("F-49", 1_000).ruleIds).toContain("TXP-14");
   });
 
-  it("an opt-in to early withdrawal from a pension stays blocked (F-48, G-06)", () => {
+  it("an opt-in to early withdrawal from a pension stays blocked, because F-48 is not built", () => {
     const r = runPension({ ...s27, goal: { ...s27.goal, months: 120 }, earlyWithdrawal: true }, ctx);
-    expect(r.exit).toMatchObject({ formula: "F-48", gap: "G-06" });
-    expect(r.outcome).toMatchObject({ code: "listed-not-ranked", reason: "G-06" });
-    expect(flagCodes(r)).toContain("G-06");
+    expect(r.exit).toMatchObject({ formula: "F-48", reason: "F-48", gap: null });
+    expect(r.outcome).toMatchObject({ code: "listed-not-ranked", reason: "F-48" });
+    expect(flagCodes(r)).not.toContain("G-06");
   });
 });
 

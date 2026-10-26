@@ -404,8 +404,12 @@ describe("open questions (data-schema 3.15, 2026-10-26)", () => {
   };
 
   it("reads every numbered item under the file's prefix, with the closures the audit struck", () => {
-    expect(items.length).toBe(493);
+    // the audit's 493, and SW OQ17, opened by the scope settling on 2026-10-26
+    expect(items.length).toBe(494);
     expect(items.find((q) => q.id === "TXP OQ3")).toMatchObject({ file: "tax-pension-gemel-lekitzba.md", closedOn: "2026-10-26" });
+    // a closure of the open-question hunt (main, 2026-10-26), struck with its bold title inside the strike
+    expect(items.find((q) => q.id === "BRK OQ11")).toMatchObject({ file: "brokerage-account.md", closedOn: "2026-10-26" });
+    expect(items.find((q) => q.id === "SW OQ17")?.closedOn).toBeNull();
     expect(items.find((q) => q.id === "PEN OQ7")?.closedOn).toBeNull();
   });
 

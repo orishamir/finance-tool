@@ -189,7 +189,7 @@
     ],
     "labels": [
       "blocked: the lawful exit is an annuity paid by a pension fund or an insurer the money is moved to, and no conversion factors are collected (F-49, G-03, PEN OQ7)",
-      "an early withdrawal is taxed at the higher of 35% and the marginal rate, on the whole amount paid (TXP-18); F-48 is not in the engine yet, so it is not computed (G-06, closed 2026-10-26)",
+      "an early withdrawal is taxed at 35% at least, on the whole amount paid: the higher of 35% and the marginal rate from a provident fund for annuity, 35% from a provident fund for benefits (TXP-18); F-48 is not in the engine yet, so it is not computed (G-06, closed 2026-10-26)",
       "F-51: the IRA follows the tax of the wrapper it was approved as (TXK-17)"
     ]
   },

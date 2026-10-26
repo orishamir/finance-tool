@@ -8,7 +8,7 @@ import { fmt } from "../../lib/format";
 import { bestWithin, ladderRows, speedOrder, type Speed } from "../../lib/guide-signature";
 import { Num, RulesLine } from "../provenance";
 import { cx, SegmentedControl, Sentence, Tag } from "../kit";
-import { Gap, type VisualProps } from "./kit";
+import type { VisualProps } from "./kit";
 
 export function MoneyMarketDailyVisual({ data }: VisualProps) {
   const rows = ladderRows(data);
@@ -86,7 +86,6 @@ export function MoneyMarketDailyVisual({ data }: VisualProps) {
       <p className="text-sm text-muted-foreground max-w-measure">
         {copy.ladder.foot} {copy.ladder.depositFoot}
       </p>
-      <Gap id="mmfPayoutDays" />
       <RulesLine ids={data.ruleIds} />
     </div>
   );

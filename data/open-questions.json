@@ -212,7 +212,8 @@
   },
   {
     "id": "BRK OQ11",
-    "status": "narrowed",
+    "status": "closed",
+    "closed_on": "2026-10-26",
     "title_he": "האם חבר בורסה שאינו בנק רשאי לגבות דמי משמרת על מק״מ ועל קרנות כספיות"
   },
   {
@@ -584,7 +585,7 @@
   {
     "id": "GOV OQ4",
     "status": "narrowed",
-    "title_he": "התקנות של הסדרות השקליות בריבית קבועה שנמכרות היום"
+    "title_he": "הנוסח המקורי של התקנות של הסוג הישן ״שחר״, לסדרות שלו שאולי עוד נסחרות, ותיקונים מאוחרים לתקנות"
   },
   {
     "id": "GOV OQ5",
@@ -923,7 +924,8 @@
   },
   {
     "id": "MF OQ4",
-    "status": "narrowed",
+    "status": "closed",
+    "closed_on": "2026-10-26",
     "title_he": "תוך כמה ימי עסקים הכסף מפדיון זמין בחשבון",
     "blocks_he": "שורת הנזילות בקרנות הכספיות"
   },
@@ -1233,7 +1235,8 @@
   },
   {
     "id": "REG OQ18",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-10-26"
   },
   {
     "id": "REG OQ19",
@@ -1464,6 +1467,10 @@
     "blocks_he": "השלב ״הצטרפו ישירות, או דרך סוכן אם תרצו״ במדריך המעבר"
   },
   {
+    "id": "SW OQ17",
+    "status": "open"
+  },
+  {
     "id": "TXK OQ1",
     "status": "narrowed",
     "title_he": "שיעור המס, הבסיס והניכוי במשיכה מחיסכון לכל ילד",
@@ -1541,7 +1548,8 @@
   },
   {
     "id": "TXG OQ5",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-10-26"
   },
   {
     "id": "TXG OQ6",
@@ -1576,7 +1584,8 @@
   },
   {
     "id": "TXG OQ13",
-    "status": "narrowed"
+    "status": "closed",
+    "closed_on": "2026-10-26"
   },
   {
     "id": "TXH OQ1",
@@ -1730,7 +1739,8 @@
   },
   {
     "id": "TXI OQ2",
-    "status": "open",
+    "status": "closed",
+    "closed_on": "2026-10-26",
     "title_he": "האם פיקדון צמוד פריים נחשב לעניין המס צמוד או לא צמוד"
   },
   {
@@ -1905,7 +1915,8 @@
   },
   {
     "id": "TXF OQ5",
-    "status": "narrowed"
+    "status": "closed",
+    "closed_on": "2026-10-26"
   },
   {
     "id": "TXF OQ6",
@@ -1986,7 +1997,8 @@
   },
   {
     "id": "TXS OQ7",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-10-26"
   },
   {
     "id": "TXS OQ8",
@@ -2021,7 +2033,8 @@
   },
   {
     "id": "TXS OQ15",
-    "status": "narrowed",
+    "status": "closed",
+    "closed_on": "2026-10-26",
     "title_he": "מה קורה לבסיס המס כשהמדד יורד"
   },
   {

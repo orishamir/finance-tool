@@ -2,7 +2,7 @@
   "id": "KH-12",
   "title": "Retirement age for the 3-year route",
   "title_he": "גיל הפרישה למסלול המשיכה המקוצר",
-  "text_he": "פקודת מס הכנסה מגדירה את 'גיל הפרישה' בהפניה לחוק גיל פרישה. החוק קובע את גיל הפרישה לגברים ואת גיל הפרישה לנשים, עם לוח של גילים נמוכים יותר לנשים לפי שנת לידה. זה הגיל שהחוק עצמו מכנה 'גיל הפרישה', ולא גיל הפרישה המוקדמת, שהחוק נותן לו שם אחר.",
+  "text_he": "פקודת מס הכנסה מגדירה את 'גיל הפרישה' בהפניה לחוק גיל פרישה, והחוק נותן את השם 'גיל הפרישה' רק לגיל שבסעיף 3: גיל לגברים וגיל לנשים, עם לוח של גילים נמוכים יותר לנשים לפי תאריך לידה. לגיל הפרישה המוקדמת ולגיל פרישת החובה החוק נותן שמות אחרים, ולכן זה הגיל שמקצר את תקופת ההמתנה; רשות המסים מציגה את לוח הגילים לנשים כשינוי ב'גיל הפרישה'.",
   "figure_names_he": {
     "retirement_age_men": "גיל הפרישה לגברים",
     "retirement_age_women": "גיל הפרישה לנשים"
@@ -33,7 +33,7 @@
         "KH-12"
       ],
       "state": "sourced",
-      "notes": "The age the law itself labels \"the retirement age\" (s.3), read as the age that shortens the study-fund period to 3 years. Inference from the Ordinance's defined term (tax-hishtalmut.md open question 5; keren-hishtalmut.md open question 8)."
+      "notes": "The age the law itself labels \"the retirement age\" (s.3), read as the age that shortens the study-fund period to 3 years. The law names only this age \"גיל הפרישה\" (s.3; the early age is \"גיל הפרישה המוקדמת\", s.5, and the mandatory age \"גיל פרישת חובה\", s.4), so the Ordinance's term points here (tax-hishtalmut.md open question 5 and keren-hishtalmut.md open question 8, closed 2026-10-26)."
     },
     "retirement_age_women": {
       "value": 65,
@@ -53,7 +53,7 @@
         "KH-12"
       ],
       "state": "sourced",
-      "notes": "65 for women, with a schedule of lower ages (62 to 64 years and 9 months) for women born up to 1969. Same inference as retirement_age_men."
+      "notes": "65 for women, with a schedule of lower ages (62 to 64 years and 9 months) for women born up to 1969. Same s.3 age as retirement_age_men; the Tax Authority prints the women's schedule as the change in \"גיל הפרישה\" (deductions booklet 2026, p.7)."
     }
   },
   "il_finance_file": "keren-hishtalmut.md",
