@@ -92,6 +92,13 @@ D20 keeps Bank of Israel numbers off the site until the Bank consents, so these 
    - This changes method (P-05, F-23, F-24) and needs golden values recomputed.
 5. **D20:** the Bank of Israel's policy rate is one figure in a press release, not a series. Quoting it with attribution, as D22 allows for a single published figure, would let the daily fund run on "the Bank of Israel rate minus the fund's fee" (MF-34: the ISA says these funds track the rate less costs). That is the founder's call; D20 stands until then.
 
+## 7. The Bank of Israel's terms, re-read in a browser (2026-10-26)
+- **https://www.boi.org.il/website_terms/** ("דף זה עודכן לאחרונה בתאריך: 17/02/2025"), the same date D20 read in archived copies: "אסור למשתמש להעתיק, לפרסם, להפיץ, לשדר או למכור חומר המופיע באתר זה ללא קבלת רשות הבנק מראש ובכתב". D20's reading stands.
+- **Against it,** GOV-19 records that each of the 87 SECDWH series on EDGE carries "Free (free for publication)" in its "Confidentiality status" column (fetched 2026-10-26). That reads as a confidentiality class (the data are public), not as a licence that overrides the site's terms.
+- **So the clean routes are:**
+  - a short written request to the Bank (the founder's call; on 2026-10-23 he chose not to ask for now);
+  - or D22's line for one published figure (the policy rate in a press release) quoted with attribution, also his call.
+
 ## Blocked or not read
 - Bank of Israel HTML pages: Radware check for scripts (read in Chrome instead).
 - Hapoalim's money-market page: no table rendered.
