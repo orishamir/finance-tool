@@ -15,6 +15,7 @@ import { buildInstrumentTerms, loadDepositTerms, loadFunds } from "./instruments
 import { loadFees } from "./data.server";
 import { shortName } from "./providers";
 import { computed, ownBy, type SiteValue, type Strength } from "./value";
+import { publisherHe } from "./publisher-he.server";
 
 export type NoGraph =
   | { kind: "missing"; parts: string[] }
@@ -189,13 +190,19 @@ export function buildInstrumentBundle(
   const published = family === "deposit" ? publishedDeposit(record.id, spec, deposits) : null;
   // the current account starts from the rate most banks pay (F-85, 2026-10-25), not from the one bank P-05 names
   const common = record.id === "current-account" ? commonAccountRate(accountBanks(currentAccountRecords(deposits)), allRules, t) : null;
-  // D31: the guide page's terms block names the company whose document each figure comes from, so the figure is that company's own
-  const ownOf = (v: SiteValue): SiteValue => (v.state === "sourced" ? ownBy(v, v.source.publisher) : v);
-  const rate = common ? common.rate : published?.rate ? ownOf(published.rate) : undefined;
+  // D31: the guide page's terms block names the company each figure belongs to, so the figure is that company's own: the fund's figures
+  // its manager's, the tariff's lines its provider's, the deposit's terms its bank's (the source's host would name Maya for a fund report)
+  const fundRec = spec?.fund ? loadFunds().find((f) => f.id === spec.fund) : undefined;
+  const tariffSnap = spec?.tariff ? loadFees().filter((f) => f.id === spec.tariff).sort((a, b) => b.snapshot.localeCompare(a.snapshot))[0] : undefined;
+  const depositRec = spec?.deposit_terms ? deposits.find((d) => d.id === spec.deposit_terms) : undefined;
+  const ownerOf = (key: string, v: SiteValue): string =>
+    fundRec && (key.startsWith("fund") || key === "ninetyPercentTest") ? shortName("", fundRec.manager) : tariffSnap && !depositRec ? shortName(tariffSnap.id, tariffSnap.provider.name_he) : depositRec ? shortName(depositRec.bank, depositRec.bank) : publisherHe(v);
+  const ownOf = (v: SiteValue, key = ""): SiteValue => (v.state === "sourced" ? ownBy(v, ownerOf(key, v)) : v);
+  const rate = common ? common.rate : published?.rate ? ownOf(published.rate, "rate") : undefined;
   const ceiling = common ? common.ceiling : published?.ceiling;
   const runP05 = rate ? withPublishedRate(p05, rate) : p05;
   const terms = ceiling && built.terms.deposit ? { ...built.terms, deposit: { ...built.terms.deposit, balanceCeiling: ceiling.value as number } } : built.terms;
-  const feeValues = Object.fromEntries(Object.entries({ ...built.feeValues, ...(ceiling ? { balanceCeiling: ceiling } : {}) }).map(([k, v]) => [k, ownOf(v)]));
+  const feeValues = Object.fromEntries(Object.entries({ ...built.feeValues, ...(ceiling ? { balanceCeiling: ceiling } : {}) }).map(([k, v]) => [k, ownOf(v, k)]));
   const draft: Bundle = { record, p05: runP05, terms, feeValues, rules: Object.values(allRules), runDate: t };
   const probe = runTimeline(draft, { entered: {}, age: null });
   if (probe.kind === "failed") {

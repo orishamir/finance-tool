@@ -10,6 +10,7 @@ import { buildInstrumentTerms, loadDepositTerms, loadExposures, loadFunds, regul
 import { evaluate, representativeFeeValue, type BundleDataFile, type ProviderTariff, type CompareBundle, type ExposureEntry, type Family, type HoldingTerms, type IndexFundTerms, type RunGoal, type Tier2Row, type WrapperEntry } from "./compare";
 import type { FitTableData } from "./fit";
 import { computed, ownBy, ownEach, type SiteValue } from "./value";
+import { publisherHe } from "./publisher-he.server";
 
 const tariffKeys: string[] = ["tradeRate", "tradeMin", "tradeMax", "custodyRate", "custodyMin", "custodyMax", "fxRate", "monthlyFee"];
 import { BROKERAGE, instrumentClassOf, providersOf } from "./providers";
@@ -142,7 +143,7 @@ function depositRate(wrapperId: string, family: string, spec: { deposit_terms?: 
   const rate = rec?.rate_offered;
   if (!rate || typeof rate.value !== "number" || rate.unit !== "pct_per_year") return null;
   // D31: the idle-cash row and the comparison name the bank whose published rate this is
-  return ownBy({ ...rate }, rate.source.publisher);
+  return ownBy({ ...rate }, publisherHe(rate as SiteValue));
 }
 
 /** A deposit wrapper's `amount_range` as its record holds it (audit 2026-10-24 (sweep)): the amounts the published rate applies to. */
