@@ -11,6 +11,21 @@
   "recheck_date": "2027-04-01",
   "il_finance_file": "brokerage-account.md",
   "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "ibi",
+      "name_he": "אי.בי.אי"
+    },
+    {
+      "id": "excellence",
+      "name_he": "אקסלנס"
+    },
+    {
+      "id": "fair",
+      "name_he": "פייר"
+    }
+  ],
   "sources": [
     {
       "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",

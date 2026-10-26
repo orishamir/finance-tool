@@ -4,7 +4,7 @@ import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/guide";
 import { formulaNames, guideBlocks as blocks, guide as copy, guideIndex, site } from "../copy";
 import { DimensionChecklist, ExposureLinks, FeeTable, GuideSection, InstitutionChips, KeyValueList, RelatedProducts, SectionIndex, TaxSteps, TermTable, useCurrentSection, type ChecklistRowView, type FeeRow, type KeyValueItem, type TaxStep } from "../components/guide/sections";
-import { Num, NumberLegend, RuleRef, RulesLine, StrengthLabel } from "../components/provenance";
+import { Num, NumberLegend, RuleRef, RulesLine, StrengthLabel, VariesByCompany } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { WorthKnowing, worthRows } from "../components/guide/worth-knowing";
 import { Timeline } from "../components/timeline/Timeline";
@@ -19,6 +19,7 @@ import { splitTerms } from "../lib/guide-nav";
 import { useInputs } from "../lib/inputs";
 import { guideContent } from "../content/guide";
 import { anyWeak, type SiteValue } from "../lib/value";
+import { generalOnly, isGeneral } from "../lib/scope";
 
 const providentIds = ["kupat-gemel-lehashkaa", "keren-hishtalmut", "pension-comprehensive", "pension-general", "provident-for-annuity", "child-savings-provident", "ira-provident", "ira-hishtalmut"];
 const isProvidentFamily = (id: string) => providentIds.includes(id);
@@ -90,6 +91,8 @@ export default function GuidePage() {
     const v = "by_tax_year" in f ? f.by_tax_year[today.slice(0, 4)] ?? Object.values(f.by_tax_year).at(-1) : f;
     return v ? { ...v, rule_ids: v.rule_ids ?? [ruleId] } : null;
   };
+  // a guide is a product context (D30): every list of rules on it holds general rules only; a company's own term is on its page
+  const gen = (ids: readonly string[]) => generalOnly(ids, rules);
   const strengthOfRules = (ids: readonly string[]) => (ids.map((id) => rules[id]?.strength).some((s) => s === "institution") ? "institution" : ids.map((id) => rules[id]?.strength).some((s) => s === "secondary") ? "secondary" : null);
   const weakTag = (ids: readonly string[]) => {
     const s = strengthOfRules(ids);
@@ -125,7 +128,7 @@ export default function GuidePage() {
         return { value: exitCopy.otherKind as string, rules: [] };
     }
   };
-  const hebrewExit = data.exitTextRules.map((id) => ({ id, text: rules[id]?.text_he ?? "" })).filter((h) => h.text !== "");
+  const hebrewExit = data.exitTextRules.filter((id) => isGeneral(rules[id])).map((id) => ({ id, text: rules[id]?.text_he ?? "" })).filter((h) => h.text !== "");
   const exitItem = (): KeyValueItem => {
     const v = exitValue();
     return {
@@ -197,6 +200,14 @@ export default function GuidePage() {
     inout.push({ id: "switch", label: blocks.exit.labelSwitch, value: content.switchLine, line: data.hasPlaybook ? <Link to={`/switch/${record.id}`} className="text-link hover:underline">{blocks.exit.switchHow}</Link> : undefined, rules: [...(record.switch_is_tax_event.rule_ids ?? []), ...content.switchRules.filter((r) => !(record.switch_is_tax_event.rule_ids ?? []).includes(r))] });
   }
 
+  for (const it of inout) it.rules = gen(it.rules);
+  // where each company sets a fee, the record's company_terms name the companies' own terms under the checklist dimension of that fee
+  const feeDimension: Record<string, string> = { balance: "fee-management-balance", deposit: "fee-deposit", trade: "fee-trade", custody: "fee-custody", fx: "fee-fx", fixed_period: "fee-account", exit: "fee-exit" };
+  const feeVaries = (base: string) => {
+    const ids = record.company_terms?.[feeDimension[base] ?? ""] ?? [];
+    return ids.length > 0 ? <VariesByCompany ids={ids} size="xs" /> : undefined;
+  };
+
   // ---- fees: every base the record allows, in a fixed order; the cap is the record's figure, else the provider's own tariff
   const provident = isProvidentFamily(record.id);
   const feeCopy = blocks.fees as Record<string, any>;
@@ -222,7 +233,8 @@ export default function GuidePage() {
       ) : (
         feeCopy.tariffSet
       ),
-      rules: cap?.rule_ids ?? [],
+      rules: gen(cap?.rule_ids ?? []),
+      varies: feeVaries(base),
     });
   }
   if (record.fee_bases_allowed.includes("direct_expenses")) fees.push({ id: "direct", name: blocks.fees.direct_expenses.name, base: blocks.fees.direct_expenses.base, cap: blocks.fees.direct_expenses.cap, rules: ["PF-10"] });
@@ -333,20 +345,25 @@ export default function GuidePage() {
       rules: record.tax_at_exit.rule_ids,
     },
   ];
+  for (const st of steps) st.rules = gen(st.rules);
 
   // ---- checklist
   const checklist: ChecklistRowView[] = data.checklist.map((row) => {
     const mark = data.marks[row.id];
-    const carrying = Object.values(rules).filter((r) => r.dimensions.includes(row.id)).map((r) => r.id);
+    // the general rules only (D30); where each company sets the property, the record's company_terms give "תלוי בחברה" and the companies
+    const carrying = Object.values(rules).filter((r) => isGeneral(r) && r.dimensions.includes(row.id)).map((r) => r.id);
     const allWeak = carrying.length > 0 && carrying.every((id) => rules[id]!.strength === "institution" || rules[id]!.strength === "secondary");
+    const companyTerms = record.company_terms?.[row.id] ?? [];
+    const base = mark === "covered" ? "covered" : mark?.startsWith("blocked:") ? "blocked" : "na";
     return {
       id: row.id,
       name: row.name,
       explanation: row.explanation,
-      mark: mark === "covered" ? "covered" : mark?.startsWith("blocked:") ? "blocked" : "na",
+      mark: base === "na" && companyTerms.length > 0 ? "varies" : base,
       code: mark?.startsWith("blocked:") ? mark.slice("blocked:".length) : undefined,
       rules: carrying,
       weak: allWeak ? (carrying.some((id) => rules[id]!.strength === "secondary") ? "secondary" : "institution") : null,
+      varies: companyTerms.length > 0 ? <VariesByCompany ids={companyTerms} size="xs" /> : undefined,
     };
   });
 
@@ -433,7 +450,7 @@ export default function GuidePage() {
                 <p className="max-w-measure">
                   <bdi dir="ltr">{record.protection.text}</bdi>
                 </p>
-                <RulesLine ids={record.protection.rule_ids} />
+                <RulesLine ids={gen(record.protection.rule_ids)} />
               </>
             )}
           </GuideSection>

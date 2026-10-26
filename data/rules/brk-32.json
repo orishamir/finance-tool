@@ -12,6 +12,7 @@
   "recheck_date": "2027-01-15",
   "il_finance_file": "brokerage-account.md",
   "checked": "2026-10-22",
+  "scope": "general",
   "sources": [
     {
       "url": "https://market.tase.co.il/he/about_tase/tase_members/tase_members_list",

@@ -82,6 +82,13 @@
   },
   "il_finance_file": "tax-tier2-other.md",
   "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "reit1",
+      "name_he": "ריט 1"
+    }
+  ],
   "sources": [
     {
       "url": "https://reit1.co.il/investor-relations/",

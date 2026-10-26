@@ -12,6 +12,7 @@
   "text_he": "תקנות הניהול האישי מגדירות קופה בניהול אישי 'למעט קרן פנסיה', ולכן כספי פנסיה חייבים קודם לעבור לקופת גמל בניהול אישי. לפי התקנון התקני של קרן פנסיה, יציאה כזאת משפיעה על הכיסוי הביטוחי: גיל תחילת הכיסוי מתחיל מחדש בהפקדה הראשונה שאחרי משיכה או העברה, על הסכום שהועבר חלה תקופת אכשרה חדשה לאירוע של מוות, והארכת הביטוח מסתיימת בהעברה.",
   "il_finance_file": "ira-self-directed.md",
   "checked": "2026-10-25",
+  "scope": "general",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=2",

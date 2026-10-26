@@ -37,6 +37,17 @@
   },
   "il_finance_file": "switching-and-transfers.md",
   "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "leumi",
+      "name_he": "בנק לאומי"
+    },
+    {
+      "id": "mizrahi-tefahot",
+      "name_he": "בנק מזרחי טפחות"
+    }
+  ],
   "sources": [
     {
       "url": "https://www.leumi.co.il/he/pension-advising/pension-information/pension-advising/pension-information",

@@ -12,6 +12,7 @@
   "text_he": "נכנסים: כספי קרן השתלמות עד פי ארבעה מ'הסכום הקובע' (על כל חשבונות ההשתלמות); כספים הוניים הניתנים למשיכה; כסף במוצרים עוקבי מדד פומבי; כסף של מי שמקבל קצבת זקנה בגובה הקצבה המזערית או שיש לו 'הסכום הקובע' בקופה לקצבה; וכסף בחשבון חדש. הכל עד פי ארבעה מהסכום הקובע על כל חשבונות הניהול האישי. טיוטת 2025 תצמצם את הכניסה לכספי גמל.",
   "il_finance_file": "ira-self-directed.md",
   "checked": "2026-10-26",
+  "scope": "general",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=2",

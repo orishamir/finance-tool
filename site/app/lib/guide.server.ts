@@ -147,6 +147,8 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
   const exitTextRules = [...new Set(record.lawful_exit.text?.match(/\b[A-Z0-9]{2,6}-[A-Z0-9]{1,5}\b/g) ?? [])].filter((r) => !!allRules[r]?.text_he);
   exitTextRules.forEach((r) => cited.add(r));
   extraRuleIds.forEach((r) => cited.add(r));
+  // the companies' own terms the record names where a property is each company's (D30): their records give the guide's "תלוי בחברה" links
+  for (const ids of Object.values(record.company_terms ?? {})) ids.forEach((r) => cited.add(r));
   // rules the prose module cites (<RulesLine>, <RuleRef>, figure(...)): found in its source so the cards are not empty
   scanRuleIds(`site/app/content/guide/${id}.tsx`, allRules).forEach((r) => cited.add(r));
   bundle?.rules.forEach((r) => cited.add(r.id));

@@ -3,7 +3,7 @@
 // computed here but the stale flag (D3: a snapshot older than three months, until the schema holds its own rule).
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { feesSnapshot, type DepositTerms, type FeeLine, type FeesSnapshot, type RuleRecord, type ValueObject } from "@finance-tool/schema";
+import { feesSnapshot, institutionsTable, type DepositTerms, type FeeLine, type FeesSnapshot, type InstitutionRegistryRow, type RuleRecord, type ValueObject } from "@finance-tool/schema";
 import type {
   InstitutionKind,
   InstitutionPageData,
@@ -14,10 +14,13 @@ import type {
   TariffCardData,
   TariffLineRow,
 } from "../components/decoder/institutions/types";
-import { loadRules, loadWrappers, root, today } from "./data.server";
+import { loadChecklistRows, loadRules, loadWrappers, root, today } from "./data.server";
+import { topicName } from "../copy";
 import { loadCatalog, loadDepositTerms, seenValue, seenWhere } from "./instruments.server";
 import { shortName } from "./providers";
 import { ownBy, type SiteValue } from "./value";
+import { fileRank } from "./rule-shelves";
+import { noPageAnchor, type CompanyLink } from "./scope";
 
 /** The cadence until `docs/data-schema.md` §3.6 writes `staleTariff` (flow 33 data note): 90 days. */
 const staleDays = 90;
@@ -260,6 +263,13 @@ export function buildInstitution(id: string): InstitutionPageData | null {
     for (const l of snap.lines) for (const r of l.rate.rule_ids ?? []) cited.add(r);
   }
   const rules = Object.fromEntries([...cited].filter((r) => allRules[r]).map((r) => [r, allRules[r]!]));
+  // what the site found in the company's own documents (D30): the records that name it, by topic; their cards open from the same data
+  const registryIds = registryIdsOfPage(id);
+  const termGroups = companyTermGroups(registryIds, allRules, topicName);
+  for (const rid of termGroups.flatMap((g) => g.ids)) {
+    rules[rid] = allRules[rid]!;
+    for (const d of (allRules[rid] as { derived_from?: string[] }).derived_from ?? []) if (allRules[d]) rules[d] = allRules[d]!;
+  }
 
   return {
     id,
@@ -276,6 +286,7 @@ export function buildInstitution(id: string): InstitutionPageData | null {
     })(),
     catalogue,
     rules,
+    terms: { groups: termGroups, company: registryIds[0] ?? null, name: loadInstitutionRegistry().find((r) => r.id === registryIds[0])?.name_he ?? snap?.provider.name_he ?? id, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} },
   };
 }
 
@@ -305,4 +316,81 @@ export function institutionSearchEntries(words: { bank: string; broker: string }
     }
   }
   return out;
+}
+
+// ---------------------------------------------------------------- who a rule applies to (D30, spec 2026-10-25-rules-scope §4)
+
+/** data/sources/institutions.json: every company a rule's scope can name (spec §3). */
+export function loadInstitutionRegistry(): InstitutionRegistryRow[] {
+  return institutionsTable.parse(JSON.parse(readFileSync(join(root, "data/sources/institutions.json"), "utf8")));
+}
+
+/**
+ * Every company's link, for every page's sheets (the root loader): a managing company's page by its CMA id, a bank's or broker's by
+ * its snapshot or deposit id, else its group on /companies (a company with no page of its own here).
+ */
+export function companyLinks(): Record<string, CompanyLink> {
+  const cmaIds = new Set(loadCmaCompanyIds());
+  const pages = new Set(institutionIds());
+  const out: Record<string, CompanyLink> = {};
+  for (const r of loadInstitutionRegistry()) {
+    const page = r.cma_legal_id && cmaIds.has(r.cma_legal_id) ? r.cma_legal_id : r.fees_id && pages.has(r.fees_id) ? r.fees_id : r.deposit_bank_id && pages.has(r.deposit_bank_id) ? r.deposit_bank_id : null;
+    out[r.id] = page ? { name: r.name_he, href: `/companies/${page}`, hasPage: true } : { name: r.name_he, href: `/companies#${noPageAnchor(r.id)}`, hasPage: false };
+  }
+  return out;
+}
+
+function loadCmaCompanyIds(): string[] {
+  const ids = new Set<string>();
+  for (const f of readdirSync(join(root, "data/cma")).filter((x) => x.endsWith(".json"))) {
+    const d = JSON.parse(readFileSync(join(root, "data/cma", f), "utf8")) as { funds: { managing_corporation: { legal_id: string } }[] };
+    for (const fund of d.funds) ids.add(fund.managing_corporation.legal_id);
+  }
+  return [...ids];
+}
+
+/** The registry ids a company page stands for: the rows whose CMA id, snapshot id or deposit id is the page's id. */
+export function registryIdsOfPage(pageId: string): string[] {
+  return loadInstitutionRegistry()
+    .filter((r) => r.cma_legal_id === pageId || r.fees_id === pageId || r.deposit_bank_id === pageId)
+    .map((r) => r.id);
+}
+
+export interface CompanyTermGroup {
+  /** The topic's key (the rule-base file) and its Hebrew name. */
+  key: string;
+  title: string;
+  ids: string[];
+}
+
+/** Records that are not general and name one of these companies, grouped by topic in the rules pages' order (spec §4: "grouped by product"). */
+export function companyTermGroups(registryIds: readonly string[], rules: Record<string, RuleRecord>, topic: (file: string) => string): CompanyTermGroup[] {
+  const want = new Set(registryIds);
+  const mine = Object.values(rules).filter((r) => r.scope !== "general" && (r.scope_institutions ?? []).some((i) => want.has(i.id)));
+  return groupByTopic(mine, topic);
+}
+
+function groupByTopic(list: RuleRecord[], topic: (file: string) => string): CompanyTermGroup[] {
+  const files = [...new Set(list.map((r) => r.il_finance_file))].sort((a, b) => fileRank(a) - fileRank(b));
+  return files.map((f) => ({
+    key: f,
+    title: topic(f),
+    ids: list
+      .filter((r) => r.il_finance_file === f)
+      .map((r) => r.id)
+      .sort((a, b) => a.localeCompare(b, "en", { numeric: true })),
+  }));
+}
+
+/** /companies: the companies that have no page of their own and whose terms the site holds, each with its records; then the records that name no company. */
+export function noPageCompanyTerms(rules: Record<string, RuleRecord>): { companies: { id: string; name: string; ids: string[] }[]; none: string[] } {
+  const links = companyLinks();
+  const nonGeneral = Object.values(rules).filter((r) => r.scope !== "general");
+  const companies = loadInstitutionRegistry()
+    .filter((r) => !links[r.id]?.hasPage)
+    .map((r) => ({ id: r.id, name: r.name_he, ids: nonGeneral.filter((x) => (x.scope_institutions ?? []).some((i) => i.id === r.id)).map((x) => x.id).sort((a, b) => a.localeCompare(b, "en", { numeric: true })) }))
+    .filter((c) => c.ids.length > 0)
+    .sort((a, b) => collator.compare(a.name, b.name));
+  const none = nonGeneral.filter((r) => (r.scope_institutions ?? []).length === 0).map((r) => r.id).sort((a, b) => a.localeCompare(b, "en", { numeric: true }));
+  return { companies, none };
 }

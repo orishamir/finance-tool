@@ -12,6 +12,7 @@
   "text_he": "במסלול הקופה הכסף יושב בקופה בסיווג 'קופת גמל להשקעה - חסכון לילד'. כל חברה חייבת להציע שלושה מסלולים: סיכון מועט, בינוני ומוגבר; מסלול הלכה או שריעה היא מציעה רק אם היא מנהלת מסלול כזה בקופה אחרת. בוחרים מסלול אחד, כך שהכסף לא מתפצל בין מסלולים.",
   "il_finance_file": "child-savings.md",
   "checked": "2026-10-26",
+  "scope": "general",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-304/he/Provident%20fund%20for%20long-term%20child%20savings.pdf",

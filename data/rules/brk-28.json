@@ -13,6 +13,25 @@
   "recheck_date": "2027-04-01",
   "il_finance_file": "brokerage-account.md",
   "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "leumi",
+      "name_he": "בנק לאומי"
+    },
+    {
+      "id": "meitav-trade",
+      "name_he": "מיטב טרייד"
+    },
+    {
+      "id": "fair",
+      "name_he": "פייר"
+    },
+    {
+      "id": "psagot",
+      "name_he": "פסגות"
+    }
+  ],
   "sources": [
     {
       "url": "https://www.leumi.co.il/leumi-hebrew/s3fs-public/newsite/generalpages/general%20terms/General_Terms_and_Conditions_acc.pdf",

@@ -40,6 +40,7 @@ const rule = {
   figures: { rate_on_real_gain: vo },
   il_finance_file: "tax-securities-israeli.md",
   checked: "2026-10-22",
+  scope: "general",
 };
 
 describe("reference IDs", () => {
@@ -437,5 +438,58 @@ describe("open questions (data-schema 3.15, 2026-10-26)", () => {
       expect.arrayContaining([expect.stringMatching(/^open_questions: TXP-OQ3 is closed/), expect.stringMatching(/^blocked_by: TXP-OQ3 is closed/), expect.stringMatching(/^dimensions.real-vs-nominal: PEN-OQ8 is closed/)]),
     );
     expect(messages.some((m) => m.includes("PEN-OQ7"))).toBe(false);
+// D30 (research/specs/2026-10-25-rules-scope/spec.md §3): who a rule applies to, and where it may appear
+describe("scope", () => {
+  const run = (files: Record<string, unknown>) => validateData({ dataDir: dataDir(files), ruleBase, formulas, warn: () => {} });
+  const harel = { id: "harel", name_he: "הראל", kind: "provident-manager", scope_names: [{ name: "Harel" }], cma_legal_id: null, fees_id: null, deposit_bank_id: null };
+  const harelFunds = { id: "harel-funds", name_he: "הראל קרנות נאמנות", kind: "fund-manager", scope_names: [{ name: "Harel", only_records: ["ETF-64"] }], cma_legal_id: null, fees_id: null, deposit_bank_id: null };
+  const src = (kind: string, strength: string) => ({ url: "https://example.org/x", title: "x", publisher: "x", kind, strength, checked: "2026-10-22" });
+  const cs30 = { ...rule, id: "CS-30", title: "Harel's fee after 21", il_finance_file: "child-savings.md", figures: undefined, dimensions: ["fee-management-balance"], scope: "institution", scope_institutions: [{ id: "harel", name_he: "הראל" }] };
+
+  it("reads the three Scope forms and resolves a shared name by its record", async () => {
+    const { scopeFromLine } = await import("../src/scope.ts");
+    const reg = [harel, harelFunds] as never;
+    expect(scopeFromLine("general", "X-1", reg).fields).toEqual({ scope: "general" });
+    expect(scopeFromLine("institution: Harel", "CS-30", reg).fields).toEqual({ scope: "institution", scope_institutions: [{ id: "harel", name_he: "הראל" }] });
+    expect(scopeFromLine("institution: Harel", "ETF-64", reg).fields?.scope_institutions).toEqual([{ id: "harel-funds", name_he: "הראל קרנות נאמנות" }]);
+    expect(scopeFromLine("unsettled: a CMA circular; seen at: Harel", "PEN-37", reg).fields).toEqual({ scope: "unsettled", scope_settle: "a CMA circular", scope_institutions: [{ id: "harel", name_he: "הראל" }] });
+    expect(scopeFromLine("unsettled; seen at: Harel", "TXK-28", reg).problems[0]).toMatch(/not what would settle it/);
+    expect(scopeFromLine("institution: Nobody", "X-1", reg).problems[0]).toMatch(/Nobody/);
+    expect(scopeFromLine("company: Harel", "X-1", reg).problems[0]).toMatch(/none of the three forms/);
+  });
+
+  it("fails a general rule whose first source is a company's document, and passes an official one", () => {
+    const bad = { ...rule, sources: [src("institution_doc", "institution")] };
+    expect(run({ "rules/txs-09.json": bad }).map((p) => p.message).join("\n")).toMatch(/first source is a company's document/);
+    expect(run({ "rules/txs-09.json": { ...rule, sources: [src("law", "primary")] } }).filter((p) => /scope/.test(p.message))).toEqual([]);
+    expect(run({ "rules/txs-09.json": { ...rule, sources: [src("other", "primary")] } }).filter((p) => /scope/.test(p.message))).toEqual([]);
+    expect(run({ "rules/txs-09.json": { ...rule, sources: [src("article", "secondary")] } }).map((p) => p.message).join("\n")).toMatch(/not a general source/);
+  });
+
+  it("fails a company's term in the questions page, the guide blocks, a wrapper's rule_ids and company_terms, and a company-sourced value", () => {
+    const pinned = { rows: [{ ids: ["CS-30"], question_he: "?" }], guide_blocks: { "child-savings-provident": ["CS-30"] } };
+    const files = { "rules/cs-30.json": cs30, "sources/institutions.json": [harel], "parameters/pinned-rules.json": pinned };
+    const messages = run(files).map((p) => p.message).join("\n");
+    expect(messages).toMatch(/questions page holds general rules only; CS-30/);
+    expect(messages).toMatch(/"שווה לדעת" of child-savings-provident holds general rules only/);
+    // a wrapper (partial on purpose: the schema reports the rest, the scope walk still reads it)
+    const wrapper = { fee_caps: { balance: { value: 0.23, unit: "pct_per_year", source: { url: "https://example.org", title: "Harel bylaw", publisher: "Harel", strength: "institution" }, rule_ids: ["CS-30"] } }, company_terms: { "fee-management-balance": ["TXS-09"], "fee-deposit": ["CS-30"] } };
+    const w = run({ "rules/cs-30.json": cs30, "rules/txs-09.json": rule, "sources/institutions.json": [harel], "instruments/wrappers/child-savings-provident.json": wrapper }).map((p) => p.message).join("\n");
+    expect(w).toMatch(/a wrapper is a product context and cites general rules only; CS-30/);
+    expect(w).toMatch(/holds a value whose source is a company's document \("Harel bylaw"\)/);
+    expect(w).toMatch(/company_terms.fee-management-balance: TXS-09 is general/);
+    expect(w).toMatch(/company_terms.fee-deposit: CS-30 does not carry the dimension fee-deposit/);
+  });
+
+  it("fails an institution rule naming a company the registry does not have, or under another name", () => {
+    const stranger = { ...cs30, scope_institutions: [{ id: "nobody", name_he: "אף אחד" }] };
+    expect(run({ "rules/cs-30.json": stranger, "sources/institutions.json": [harel] }).map((p) => p.message).join("\n")).toMatch(/nobody is not in data\/sources\/institutions.json/);
+    const renamed = { ...cs30, scope_institutions: [{ id: "harel", name_he: "הראל ביטוח" }] };
+    expect(run({ "rules/cs-30.json": renamed, "sources/institutions.json": [harel] }).map((p) => p.message).join("\n")).toMatch(/is "הראל" in the registry/);
+  });
+
+  it("fails two registry rows that both claim a name as their default", () => {
+    const twin = { ...harelFunds, scope_names: [{ name: "Harel" }] };
+    expect(run({ "sources/institutions.json": [harel, twin] }).map((p) => p.message).join("\n")).toMatch(/the name "Harel" is the default of harel and harel-funds/);
   });
 });

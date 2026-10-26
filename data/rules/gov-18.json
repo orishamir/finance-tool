@@ -10,6 +10,7 @@
   "likely_to_change": "no",
   "il_finance_file": "government-bonds-and-makam.md",
   "checked": "2026-10-26",
+  "scope": "general",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/policy/regulation-02/en/files_regulations_nohalagach_notrad.pdf",

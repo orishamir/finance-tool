@@ -15,6 +15,7 @@
   "recheck_date": "2027-01-15",
   "il_finance_file": "brokerage-account.md",
   "checked": "2026-10-22",
+  "scope": "general",
   "sources": [
     {
       "url": "https://www.boi.org.il/media/mi2driua/159a.pdf",

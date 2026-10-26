@@ -60,6 +60,7 @@
   },
   "il_finance_file": "tax-securities-foreign.md",
   "checked": "2026-10-26",
+  "scope": "general",
   "sources": [
     {
       "url": "https://www.btl.gov.il/Laws1/02_0103_100228.pdf",

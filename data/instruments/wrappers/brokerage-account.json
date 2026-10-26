@@ -111,53 +111,10 @@
       "update_rule": "provider-set",
       "rule_ids": [
         "BRK-16",
-        "BRK-23",
         "BRK-24"
       ],
       "state": "sourced",
-      "notes": "No regulatory cap. A bank converts at its rate plus the conversion fee when a foreign security is paid for or sold without enough foreign currency in the account (Leumi terms); non-bank members charge a conversion fee or a spread on the rate (מרווח המרה)."
-    },
-    "fixed_period": {
-      "value": null,
-      "unit": "nis_per_month",
-      "source": {
-        "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
-        "title": "IBI tariff (1.7.2026); Excellence, Altshuler Shaham Trade and Psagot tariffs read 2026-10-22",
-        "publisher": "IBI; Excellence; Altshuler Shaham Trade; Psagot",
-        "strength": "institution"
-      },
-      "checked": "2026-10-22",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "BRK-24",
-        "BRK-28"
-      ],
-      "state": "sourced",
-      "notes": "A monthly account fee (דמי טיפול, דמי שימוש, דמי ניהול תקופתיים) and a monthly fee for advanced systems or real-time quotes appear in non-bank tariffs; no cap found. A bank may charge only for services in the Governor's full tariff, or added with the Supervisor's approval (BANK-16, BRK-16)."
-    },
-    "distribution_handling": {
-      "value": null,
-      "unit": "pct",
-      "source": {
-        "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
-        "title": "Altshuler Shaham Trade and Psagot tariffs (fee on interest, dividend and redemption payments), read 2026-10-22",
-        "publisher": "Altshuler Shaham Trade; Psagot",
-        "strength": "institution"
-      },
-      "checked": "2026-10-22",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "BRK-24",
-        "BRK-13"
-      ],
-      "state": "sourced",
-      "notes": "A fee on dividend, coupon and redemption payments appears in some non-bank tariffs (טיפול בתשלומי ריבית/דיבידנד); no cap found. The clearing house and the nominee company pass the payments to the member gross."
+      "notes": "No regulatory cap. A bank converts at its rate plus the conversion fee when a foreign security is paid for or sold without enough foreign currency in the account; non-bank members charge a conversion fee or a spread on the rate (מרווח המרה)."
     },
     "transfer_out": {
       "value": 10,
@@ -272,14 +229,13 @@
   "eligibility": {
     "rule_ids": [
       "BRK-01",
-      "BRK-28",
       "BRK-32",
       "BRK-22",
       "BRK-29",
       "ETF-04",
       "ETF-26"
     ],
-    "text": "anyone who opens a securities account at a bank that is a TASE member or at a non-bank TASE member (a written custody agreement at a bank); minimums are provider-set (Fair from NIS 250; Meitav Trade NIS 5,000 or 10,000, inconsistent on its own page); rules for minors' accounts were not found (BRK OQ17); a foreign broker is reached directly or through a section 49A permit holder (BRK OQ9); trading is on TASE trading days, Monday to Friday since 5.1.2026"
+    "text": "anyone who opens a securities account at a bank that is a TASE member or at a non-bank TASE member (a written custody agreement at a bank); minimums are provider-set (each provider's own terms: BRK-28, on the companies' pages); rules for minors' accounts were not found (BRK OQ17); a foreign broker is reached directly or through a section 49A permit holder (BRK OQ9); trading is on TASE trading days, Monday to Friday since 5.1.2026"
   },
   "protection": {
     "rule_ids": [
@@ -287,15 +243,12 @@
       "BRK-07",
       "BRK-08",
       "BRK-10",
-      "BRK-12",
-      "BRK-13",
       "REG-15",
       "REG-16",
       "REG-04",
       "REG-06",
       "BRK-06",
       "BRK-35",
-      "REG-26",
       "REG-27"
     ],
     "text": "at a non-bank member, TASE rules require client securities and cash to be held apart from the member's own, in trust, at the clearing house and at banks, with a yearly independent audit; no statute segregating them was found, and what happens if the member fails is open (REG OQ9). At a bank, securities are registered through the nominee company and kept apart from the bank's own in its books (one bank's terms); what happens to them if the bank fails is not sourced (REG OQ10, BRK OQ5), and deposits are not insured. The clearing house guarantees settlement between members, not a client's balance. No Israeli investor-compensation scheme was found. Abroad: SIPC for a US broker-dealer and the Irish scheme for IB Ireland, as stated by those bodies"
@@ -305,7 +258,6 @@
     "currency": "covered",
     "distribution-policy": "covered",
     "eligibility": "covered",
-    "fee-account": "covered",
     "fee-change-over-time": "covered",
     "fee-custody": "covered",
     "fee-exit": "covered",
@@ -324,6 +276,20 @@
     "tax-at-exit": "covered",
     "tax-during": "covered",
     "transfer-switch-process": "covered"
+  },
+  "company_terms": {
+    "eligibility": [
+      "BRK-28"
+    ],
+    "minimum": [
+      "BRK-28"
+    ],
+    "fee-account": [
+      "BRK-28"
+    ],
+    "fee-fx": [
+      "BRK-23"
+    ]
   },
   "tier": 1,
   "open_questions": [

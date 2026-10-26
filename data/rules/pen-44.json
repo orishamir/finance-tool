@@ -98,6 +98,22 @@
   },
   "il_finance_file": "pension-and-gemel-lekitzba.md",
   "checked": "2026-10-26",
+  "scope": "unsettled",
+  "scope_institutions": [
+    {
+      "id": "mor",
+      "name_he": "מור"
+    },
+    {
+      "id": "analyst",
+      "name_he": "אנליסט"
+    },
+    {
+      "id": "altshuler-shaham",
+      "name_he": "אלטשולר שחם"
+    }
+  ],
+  "scope_settle": "the CMA standard bylaw for a provident savings fund (\"תקנון תקני קופת גמל לחיסכון\", base text) or a CMA loans circular",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2021-2-1/he/takanon-tikni-kupat-gemel-lehisachon-tikun-word.docx",

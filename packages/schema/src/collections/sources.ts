@@ -33,8 +33,36 @@ export const documentRow = z.strictObject({
 
 export const documentsTable = z.array(documentRow);
 
-/** A file under data/sources/ is one of the two tables. */
-export const sourcesFile = z.union([publishersTable, documentsTable]);
+/**
+ * One row of `institutions.json` (spec 2026-10-25-rules-scope §3): a company a rule's scope can name, so that an `institution` or
+ * `unsettled` rule resolves to its page (`/companies/:id`: the CMA legal id of a managing company, else the fee snapshot or deposit
+ * bank id of a bank or broker). A company with none of the three has no page on the site.
+ */
+export const institutionRow = z.strictObject({
+  id: z.string().regex(/^[a-z0-9-]+$/),
+  /** The name the site shows (rule card, chip, search row, company section). */
+  name_he: z.string().min(1),
+  kind: z.enum(["provident-manager", "bank", "broker", "foreign-broker", "fund-manager", "insurer", "index-provider", "exchange", "regulator", "other"]),
+  /**
+   * The names the rule base writes in its `- Scope:` lines. A name two companies of one group share ("IBI": the broker and the fund
+   * manager) is the default of one row and carries `only_records` on the other: the records where it means that company.
+   */
+  scope_names: z.array(z.strictObject({ name: z.string().min(1), only_records: z.array(z.string().regex(/^[A-Z0-9]+-[A-Z0-9]+$/)).min(1).optional() })).min(1),
+  /** The managing company's legal id in the CMA data (data/cma/), which is its page id. */
+  cma_legal_id: z.string().regex(/^\d{9}$/).nullable(),
+  /** The id of its fee snapshot under data/fees/. */
+  fees_id: z.string().min(1).nullable(),
+  /** The `bank` of its records under data/terms/deposits/. */
+  deposit_bank_id: z.string().min(1).nullable(),
+  /** Optional working note; never shown. */
+  note: z.string().optional(),
+});
+
+export const institutionsTable = z.array(institutionRow);
+
+/** A file under data/sources/ is one of the three tables. */
+export const sourcesFile = z.union([publishersTable, documentsTable, institutionsTable]);
 
 export type PublisherRow = z.infer<typeof publisherRow>;
 export type DocumentRow = z.infer<typeof documentRow>;
+export type InstitutionRegistryRow = z.infer<typeof institutionRow>;

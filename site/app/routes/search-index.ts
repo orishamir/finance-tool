@@ -59,9 +59,32 @@ export async function loader() {
   // knowledge layer (synthesis 3.6): rules by title, id and figures; parameters by name and id; documents by title
   const { ruleTitle } = await import("../lib/rule-title");
   const strengthRank: Record<string, number> = { primary: 0, "primary-mirror": 1, entered: 1, institution: 2, secondary: 3, open: 4 };
+  // D30 (spec 2026-10-25-rules-scope §4): two groups; a company's term (or an unsettled one) names its company and leads to where it is listed
+  const { companyLinks } = await import("../lib/institutions.server");
+  const { companyTermsHref, joinNames } = await import("../lib/scope");
+  const { scopeWords } = await import("../copy");
+  const links = companyLinks();
   for (const rule of Object.values(loadRules())) {
     const title = ruleTitle(rule).text;
     const topic = topicName(rule.il_finance_file);
+    if (rule.scope !== "general") {
+      const who = joinNames((rule.scope_institutions ?? []).map((c) => c.name_he));
+      const firstSourceHe = (rule as { sources?: { title_he?: string }[] }).sources?.[0]?.title_he;
+      const altC = normalize([...Object.values(rule.figure_names_he ?? {}), topic, who, firstSourceHe ?? ""].join(" "));
+      const figsC = ruleFigs(rule.figures, rule.figure_names_he);
+      entries.push({
+        kind: "companyRule",
+        name: title,
+        line: [rule.scope === "unsettled" && !who ? scopeWords.tag.unsettled : who, topic, rule.id].filter(Boolean).join(" · "),
+        href: companyTermsHref(rule, links),
+        norm: normalize(title),
+        key: rule.id,
+        st: strengthRank[rule.strength] ?? 3,
+        ...(altC ? { alt: altC } : {}),
+        ...(figsC.length > 0 ? { figs: figsC } : {}),
+      });
+      continue;
+    }
     const weak = sourceBlock.weak[rule.strength];
     // W1 adds sources[]; the first source's Hebrew title is one more word the rule can be found by
     const firstSource = (rule as { sources?: { title_he?: string }[] }).sources?.[0]?.title_he;

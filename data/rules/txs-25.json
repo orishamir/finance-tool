@@ -11,6 +11,17 @@
   "likely_to_change": "no",
   "il_finance_file": "tax-securities-israeli.md",
   "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "migdal-funds",
+      "name_he": "מגדל קרנות נאמנות"
+    },
+    {
+      "id": "yalin-funds",
+      "name_he": "ילין לפידות קרנות נאמנות"
+    }
+  ],
   "sources": [
     {
       "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf",

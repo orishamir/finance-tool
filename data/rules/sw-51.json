@@ -79,6 +79,13 @@
   },
   "il_finance_file": "switching-and-transfers.md",
   "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "meitav-trade",
+      "name_he": "מיטב טרייד"
+    }
+  ],
   "sources": [
     {
       "url": "https://www.meitav.co.il/media/qm2penhs/26061426t-תוצאות-מכרז-לניהול-אישי-2026-טרייד.pdf",

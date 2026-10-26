@@ -60,6 +60,7 @@
   },
   "il_finance_file": "tax-securities-israeli.md",
   "checked": "2026-10-26",
+  "scope": "general",
   "sources": [
     {
       "url": "https://maya.tase.co.il/he/funds/mutual-funds",

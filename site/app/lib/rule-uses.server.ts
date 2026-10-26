@@ -305,7 +305,8 @@ export function ruleProducts(): Record<string, string[]> {
 /** One shelf's data file (`/rules-data/<shelf>.json`): the full records of its rules, plus the records they derive from, and where each is used. */
 export function shelfBundle(shelf: ShelfId) {
   const all = loadRules();
-  const mine = Object.values(all).filter((r) => shelfOf(r) === shelf);
+  // the rules page lists general rules only (D30); a company's term a card points at (derived_from) still travels below, so its chip opens
+  const mine = Object.values(all).filter((r) => r.scope === "general" && shelfOf(r) === shelf);
   const rules: Record<string, RuleRecord> = Object.fromEntries(mine.map((r) => [r.id, r]));
   // a rule a card points at (derived_from) may live on another shelf: its record travels too, so the chip opens it
   for (const r of mine) for (const d of (r as { derived_from?: string[] }).derived_from ?? []) if (all[d] && !rules[d]) rules[d] = all[d]!;

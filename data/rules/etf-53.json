@@ -12,6 +12,7 @@
   "text_he": "עסקת החלף לא ממומנת מחליפה את השינויים במחיר נכס הבסיס כנגד תשלום ריבית, בלי להעביר את סכום החשיפה. גרסת הנטו של מדד מניחה שהדיבידנדים מושקעים מחדש אחרי ניכוי מס, בשיעור שספק המדד קובע במתודולוגיה שלו. דמי הניהול המשתנים הם חלק משכר המנהל שנגזר מתשואת הקרן ומהפרש העקיבה שלה, ולכן הם עולים כשהקרן עוקפת את נכס המעקב. מס שהקרן עצמה נושאת הוא עלות של הקרן, והחוסך לא מקבל עליו זיכוי.",
   "il_finance_file": "etfs-and-index-funds.md",
   "checked": "2026-10-26",
+  "scope": "general",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=2",

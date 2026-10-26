@@ -56,6 +56,34 @@
   },
   "il_finance_file": "pension-and-gemel-lekitzba.md",
   "checked": "2026-10-26",
+  "scope": "unsettled",
+  "scope_institutions": [
+    {
+      "id": "mor",
+      "name_he": "מור"
+    },
+    {
+      "id": "harel",
+      "name_he": "הראל"
+    },
+    {
+      "id": "altshuler-shaham",
+      "name_he": "אלטשולר שחם"
+    },
+    {
+      "id": "meitav",
+      "name_he": "מיטב"
+    },
+    {
+      "id": "menora-mivtachim",
+      "name_he": "מנורה מבטחים"
+    },
+    {
+      "id": "infinity",
+      "name_he": "אינפיניטי"
+    }
+  ],
+  "scope_settle": "a CMA circular or approval that changed the orphans' share in s.94 of the standard pension bylaw",
   "sources": [
     {
       "url": "https://media.harel-group.co.il/media/slyhz2yj/תקנון-הראל-פנסיה-יוני-2025.pdf",

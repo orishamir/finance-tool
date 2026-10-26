@@ -2,19 +2,24 @@
 // Written 2026-10-23 from the il-finance rules cited under each block (BANK, BPN, TXI, REG, SW, MF); same
 // shape and register as kupat-gemel-lehashkaa.tsx. NEW copy for the founder to review.
 import type { GuideContent } from "./types";
-import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
+import { IdRef, Num, RuleRef, RulesLine, Term, VariesByCompany } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
 
 export const content: GuideContent = {
   what: () => (
     <>
       <p className="max-w-measure">
-        <Term id="תכנית חיסכון">תכנית חיסכון</Term> היא פיקדון שמפקידים אליו מדי פעם, לרוב סכום קבוע כל חודש <Term prefix="ב" id="פיקדון בהוראת קבע">הוראת קבע</Term>, לתקופה של יותר משנה. ההסכם חייב לקבוע את לוח ההפקדות ואת הגבולות על הסכומים והמועדים, ואת הריבית: קבועה, או <Term id="ריבית משתנה">משתנה</Term>, לפי ריבית עוגן ומרווח שהבנק מפרסם (בלאומי, בפועלים וביהב העוגן הוא <Term id="ריבית הפריים">הפריים</Term>); לא צמודה או <Term id="צמוד למדד המחירים לצרכן">צמודה למדד</Term>. אין הוראה של בנק ישראל שמיוחדת לתוכניות חיסכון, וכל בנק בונה אותן אחרת.
+        <Term id="תכנית חיסכון">תכנית חיסכון</Term> היא פיקדון שמפקידים אליו מדי פעם, לרוב סכום קבוע כל חודש <Term prefix="ב" id="פיקדון בהוראת קבע">הוראת קבע</Term>, לתקופה של יותר משנה. ההסכם חייב לקבוע את לוח ההפקדות ואת הגבולות על הסכומים והמועדים, ואת הריבית: קבועה, או <Term id="ריבית משתנה">משתנה</Term>, לפי ריבית עוגן ומרווח שהבנק מפרסם; לא צמודה או <Term id="צמוד למדד המחירים לצרכן">צמודה למדד</Term>. אין הוראה של בנק ישראל שמיוחדת לתוכניות חיסכון, וכל בנק בונה אותן אחרת.
       </p>
+      {/* D30: the anchor (BANK-34) and the exit points (BPN-10) are each bank's own terms; the guide names no bank's as the product's */}
       <p className="max-w-measure">
-        בתוכניות של בנק הפועלים שנקראו ברמת החוזה, <Term id="תחנת יציאה">תחנות היציאה</Term> נספרות מתחילת התוכנית וחלות על כל ההפקדות, ומושכים בהן רק את כל הסכום בבת אחת. החוזים של בנקים אחרים לא נקראו.
+        <Term id="תחנת יציאה">תחנות היציאה</Term>, ממתי הן נספרות ומה מושכים בהן, נקבעים בהסכם של כל תוכנית.
       </p>
-      <RulesLine ids={["BANK-28", "BANK-25", "BANK-34", "BANK-26", "BPN-10"]} />
+      <div className="max-w-measure flex flex-col gap-1">
+        <VariesByCompany ids={["BANK-34"]} lead="איזו ריבית היא העוגן תלוי בבנק" />
+        <VariesByCompany ids={["BPN-10"]} lead="תחנות היציאה תלויות בבנק" />
+      </div>
+      <RulesLine ids={["BANK-28", "BANK-25", "BANK-26"]} />
     </>
   ),
   who: () => (
@@ -59,8 +64,8 @@ export const content: GuideContent = {
         <Sentence measure>
           חוק חדש מחייב לבחון {months ? <>תוך <Num value={months} /> חודשים </> : null}אם צריך ביטוח פיקדונות, והצעת חוק פרטית מציעה ערבות {proposed ? <>של <Num value={proposed} /> </> : null}בבנקים קטנים; היא רק הצעה.
         </Sentence>
-        <p className="max-w-measure">תוכנית בריבית משתנה זזה עם ריבית העוגן שלה לאורך כל השנים (בלאומי, בפועלים וביהב: הפריים); תוכנית לא צמודה לא מגינה מעליית מחירים לאורך תקופה ארוכה.</p>
-        <RulesLine ids={["REG-04", "REG-05", "REG-06", "BANK-23", "BANK-25", "BANK-34", "BANK-26"]} />
+        <p className="max-w-measure">תוכנית בריבית משתנה זזה עם ריבית העוגן שלה לאורך כל השנים; תוכנית לא צמודה לא מגינה מעליית מחירים לאורך תקופה ארוכה.</p>
+        <RulesLine ids={["REG-04", "REG-05", "REG-06", "BANK-23", "BANK-25", "BANK-26"]} />
       </>
     );
   },
@@ -70,9 +75,9 @@ export const content: GuideContent = {
         חיסכון למטרה עם תאריך, שבונים אותו מהמשכורת כל חודש בלי לחשוב: הוראת הקבע עושה את העבודה, וכל ההפקדות מקבלות את תנאי התוכנית.
       </p>
       <p className="max-w-measure">
-        מול פיקדון רגיל, תוכנית חיסכון עדיפה כשמפקידים כל חודש: לא פותחים פיקדון חדש בכל פעם, ובתוכניות של בנק הפועלים שנקראו תחנות היציאה נספרות מתחילת התוכנית. מול קרן כספית יומית היא עדיפה כשרוצים ריבית שנקבעת מראש לכל התקופה: בקרן היומית התשואה זזה עם ריבית בנק ישראל.
+        מול פיקדון רגיל, תוכנית חיסכון עדיפה כשמפקידים כל חודש: לא פותחים פיקדון חדש בכל פעם. מול קרן כספית יומית היא עדיפה כשרוצים ריבית שנקבעת מראש לכל התקופה: בקרן היומית התשואה זזה עם ריבית בנק ישראל.
       </p>
-      <RulesLine ids={["BANK-28", "BPN-10", "BANK-25", "MF-34"]} />
+      <RulesLine ids={["BANK-28", "BANK-25", "MF-34"]} />
     </>
   ),
 };

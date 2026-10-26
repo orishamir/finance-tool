@@ -13,6 +13,26 @@
   "recheck_date": "2027-04-01",
   "il_finance_file": "switching-and-transfers.md",
   "checked": "2026-10-22",
+  "scope": "unsettled",
+  "scope_institutions": [
+    {
+      "id": "leumi",
+      "name_he": "בנק לאומי"
+    },
+    {
+      "id": "interactive-israel",
+      "name_he": "אינטראקטיב ישראל"
+    },
+    {
+      "id": "yahav",
+      "name_he": "בנק יהב"
+    },
+    {
+      "id": "tase",
+      "name_he": "הבורסה לניירות ערך בתל אביב"
+    }
+  ],
+  "scope_settle": "an Israel Securities Authority or TASE rule (or a Bank of Israel directive) on moving securities between an Israeli custodian and a foreign broker, or a regulator's statement that none applies",
   "sources": [
     {
       "url": "https://fs.knesset.gov.il/20/law/20_lsr_382526.pdf",

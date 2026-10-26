@@ -183,6 +183,7 @@
   },
   "il_finance_file": "etfs-and-index-funds.md",
   "checked": "2026-10-26",
+  "scope": "general",
   "sources": [
     {
       "url": "https://market.tase.co.il/he/market_data/etfs",

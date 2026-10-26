@@ -7,6 +7,7 @@ import { catalogue, companies as companiesCopy, company as copy, r3workbench, si
 import { feeLabel } from "../components/decoder/fees";
 import { groupTracks, PasteCard, TrackList } from "../components/decoder/tracks";
 import { InstitutionPage } from "../components/decoder/institutions/page";
+import { CompanyTerms } from "../components/decoder/company-terms";
 import { IconDrillIn } from "../components/icons";
 import { NumAfter, NumberLegend } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
@@ -67,7 +68,19 @@ export async function loader({ params }: Route.LoaderArgs) {
   const unassigned = mine
     .filter((c) => c.status === "not-catalogued-yet")
     .map((c) => ({ id: c.id, names: c.names.he, where: seenWhere(c), seen: seenValue(c) }));
-  return { kind: "company" as const, company, groups, period: cma.periodValue, defaultIds, known, unassigned, today: t, goal: goalContext(), fit: fitTable() };
+  // what the site found in the company's own documents (D30): the records that name it, by topic, with their cards' data
+  const { companyTermGroups, registryIdsOfPage } = await import("../lib/institutions.server");
+  const { loadChecklistRows, loadRules } = await import("../lib/data.server");
+  const { topicName } = await import("../copy");
+  const allRules = loadRules();
+  const registryIds = registryIdsOfPage(company.id);
+  const termGroups = companyTermGroups(registryIds, allRules, topicName);
+  const termRules = Object.fromEntries(termGroups.flatMap((g) => g.ids).map((id) => [id, allRules[id]!]));
+  for (const r of Object.values({ ...termRules })) for (const d of (r as { derived_from?: string[] }).derived_from ?? []) if (allRules[d]) termRules[d] = allRules[d]!;
+  const { loadInstitutionRegistry } = await import("../lib/institutions.server");
+  const shortName = loadInstitutionRegistry().find((r) => r.id === registryIds[0])?.name_he ?? company.name;
+  const companyTerms = { groups: termGroups, rules: termRules, company: registryIds[0] ?? null, name: shortName, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} };
+  return { kind: "company" as const, company, groups, period: cma.periodValue, defaultIds, known, unassigned, today: t, goal: goalContext(), fit: fitTable(), companyTerms };
 }
 
 export function meta({ loaderData: data }: Route.MetaArgs) {
@@ -97,7 +110,7 @@ function ManagerCompany({ data }: { data: Extract<ReturnType<typeof useLoaderDat
   return (
     <GoalsProvider presets={data.goal.presets as Presets}>
     <FitProvider table={data.fit} stale={data.period.stale ?? null}>
-    <PageShell current="decoder" data={{ rules: {}, terms: {}, dimensions: {}, today: data.today }}>
+    <PageShell current="decoder" data={{ rules: data.companyTerms.rules, terms: {}, dimensions: data.companyTerms.dimensions, today: data.today, ...(data.companyTerms.company ? { company: data.companyTerms.company } : {}) }}>
       <div className="pt-2 lg:pt-8">
         <div className="flex-1 min-w-0 flex flex-col gap-6 lg:gap-8">
           <header className="flex flex-col gap-3">
@@ -196,6 +209,7 @@ function ManagerCompany({ data }: { data: Extract<ReturnType<typeof useLoaderDat
               </Card>
             </section>
           )}
+          <CompanyTerms name={data.companyTerms.name} groups={data.companyTerms.groups} />
           <PasteCard className="lg:hidden" />
         </div>
 

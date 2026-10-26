@@ -2747,6 +2747,43 @@ export const updateRules = {
   frozen: "מוקפא בשנים {years}",
 } as const;
 
+/**
+ * Who a rule applies to (D30; research/specs/2026-10-25-rules-scope/spec.md §4, 2026-10-26): the rule card's label and lines by
+ * scope, the chip of a company's term, "תלוי בחברה", the company pages' section, the rules page's line and the search group.
+ * `{names}` is a Hebrew list ("הראל ואלטשולר שחם"), `{name}` one company.
+ */
+export const scopeWords = {
+  tag: { general: "חל על כולם", institution: "של {names}", unsettled: "לא הוכח שחל על כולם" },
+  line: {
+    institution: "נמצא במסמכים של {names}; בחברות אחרות זה יכול להיות אחרת.",
+    unsettledSeen: "נמצא במסמכים של {names}. אולי כך בכל החברות; לא מצאנו לזה מקור רשמי.",
+    unsettled: "אולי כך בכל החברות; לא מצאנו לזה מקור רשמי.",
+  },
+  /** The card's foot: where the company's terms are listed, one link per company. */
+  allAt: "לכל מה שמצאנו אצל {name}",
+  allNoCompany: "לכל מה שלא נמצא אצל חברה מסוימת",
+  /** The card's foot of a general rule on a page about one product. */
+  rulesOf: "לכל החוקים והכללים של {product}",
+  /** The chip of a record that names several companies: "לאומי ועוד 3". */
+  chipMore: { one: "ועוד אחת", two: "ועוד שתיים", many: "ועוד {n}" },
+  /** Where a property is each company's own: the guide's line and checklist mark, with the companies as links. */
+  varies: "תלוי בחברה",
+  variesBank: "תלוי בבנק",
+  section: {
+    title: "מה כתוב במסמכים של {name}",
+    line: "מה שנמצא רק במסמכים של החברה, לא בחוק ולא אצל הרשות, ולכן לא מופיע במדריך. ליד כל אחד המסמך והיום שבו האתר קרא אותו.",
+    unsettledMark: "אולי כך בכל החברות; לא מצאנו לזה מקור רשמי",
+  },
+  noPage: {
+    title: "מה כתוב במסמכים של חברות שאין להן עמוד כאן",
+    line: "מה שנמצא במסמכים של חברות שלאתר אין עליהן עמוד משלהן, לפי חברה.",
+    none: { title: "לא נמצא אצל חברה מסוימת", line: "נראה כמו כלל לכל החברות, אבל נמצא רק בכתבה או בפורום." },
+  },
+  /** The rules page: company terms are not listed there. */
+  rulesLine: { before: "מה שנמצא רק במסמכים של חברה מסוימת מופיע בעמוד של אותה חברה, לא כאן.", link: "לרשימת החברות" },
+  searchGroup: "אצל חברות מסוימות",
+} as const;
+
 /** Additions to the rule card (synthesis §3.3). */
 export const ruleCardMore = {
   forTaxYear: "לשנת המס",
@@ -3240,7 +3277,7 @@ export const guideWorth = {
 
 /** Search additions (synthesis §3.6): the three new groups, their row lines and the empty states by query type. */
 export const searchMore = {
-  groups: { rule: "חוקים וכללים", parameter: "פרמטרים", document: "מסמכים" },
+  groups: { rule: "חוקים וכללים", companyRule: "אצל חברות מסוימות" /* D30, 2026-10-26: a company's own terms, each row naming the company */, parameter: "פרמטרים", document: "מסמכים" },
   parameterLine: "פרמטר של האתר",
   documentLine: "מסמך",
   figureLine: "מספר מתוך המאגר",
@@ -3607,6 +3644,7 @@ export const kit = {
       Marker: "סמן שנגררים אותו על ציר של תרשים: לחיצה בכל מקום בשטח מזיזה אותו, וגם מקשי החצים. Marker הוא המחוון הבלתי נראה; MarkerMark הוא מה שהתרשים מצייר.",
       GainBars: "שני סכומים כעמודות מאותה נקודת התחלה, וההפרש כסוגר עם מספר משלו (אף פעם לא עמודה שלישית).",
       ChartLegend: "שלושת החלקים סביב כל תרשים: מה כל סימן אומר, הערכים בשנה שמצביעים עליה, ואותם מספרים כטבלה.",
+      CompanyLinks: "פתיח ואחריו החברות שהוא עוסק בהן, כל אחת קישור לעמוד שלה: ״תלוי בחברה״ כשכל חברה קובעת לעצמה, ״לכל מה שמצאנו אצל״ מתחת לתנאי של חברה. רצוף: יכול לסגור משפט או לעמוד בשורה משלו.",
     },
     sample: {
       list: { heading: "הרשימה שלכם", note: "הערה קטנה ליד הכותרת, שיורדת שורה כשאין מקום", items: ["ראשון", "שני", "שלישי"], longItem: "פריט עם שם ארוך מאוד כדי לראות איך השורה יורדת", add: "פריט נוסף", confirm: "למחוק את הפריט?", yes: "מחיקה", no: "ביטול", rename: "שינוי השם", remove: "מחיקת הפריט", renameField: "שם הפריט", foot: "שורה מתחת לרשימה." },
@@ -3659,6 +3697,8 @@ export const kit = {
         { id: "b", label: "פטור ממס", line: "עוד שורה." },
       ],
       headCaption: "אחרי ניכוי דמים, במונחי היום",
+      companyLead: "תלוי בחברה",
+      companies: ["חברה ראשונה", "חברה שנייה", "חברה שלישית"],
     },
   },
 } as const;

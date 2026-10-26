@@ -103,10 +103,9 @@
   "eligibility": {
     "rule_ids": [
       "BANK-01",
-      "BANK-28",
-      "BPN-10"
+      "BANK-28"
     ],
-    "text": "any individual with an account at the bank to fund the deposits (usually a monthly standing order); the deposit schedule and the limits on amounts and dates are set in the agreement; minimums are product terms (for example from NIS 200 a month at one bank, institution source)"
+    "text": "any individual with an account at the bank to fund the deposits (usually a monthly standing order); the deposit schedule and the limits on amounts and dates are set in the agreement; minimums are product terms"
   },
   "protection": {
     "rule_ids": [
@@ -137,6 +136,11 @@
     "tax-at-exit": "covered",
     "tax-during": "covered",
     "transfer-switch-process": "covered"
+  },
+  "company_terms": {
+    "liquidity-lockup": [
+      "BPN-10"
+    ]
   },
   "tier": 1,
   "open_questions": [

@@ -201,10 +201,9 @@
       "KH-03",
       "KH-04",
       "KH-08",
-      "KH-09",
       "TXH-05"
     ],
-    "text": "a salaried employee only through an employer that pays in under a personal contract, a collective agreement or an extension order, usually 7.5% employer and 2.5% employee of salary; a self-employed person with business or professional income may open one at any time and deduct up to 4.5% of income; some funds stop accepting deposits once the employer stops paying"
+    "text": "a salaried employee only through an employer that pays in under a personal contract, a collective agreement or an extension order, usually 7.5% employer and 2.5% employee of salary; a self-employed person with business or professional income may open one at any time and deduct up to 4.5% of income"
   },
   "protection": {
     "rule_ids": [
@@ -241,5 +240,10 @@
     "tax-at-exit": "covered",
     "tax-during": "covered",
     "transfer-switch-process": "covered"
+  },
+  "company_terms": {
+    "eligibility": [
+      "KH-09"
+    ]
   }
 }

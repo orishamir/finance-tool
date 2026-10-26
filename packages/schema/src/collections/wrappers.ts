@@ -32,6 +32,12 @@ export const wrapperRecord = z.strictObject({
   eligibility: z.strictObject({ rule_ids: ruleIds, text: z.string().min(1) }),
   protection: z.strictObject({ rule_ids: ruleIds, text: z.string().min(1) }),
   dimensions: z.record(z.string(), z.string().regex(/^(covered|blocked)(:[A-Z0-9-]+)?$/)),
+  /**
+   * A property that each company sets for itself (D30, spec 2026-10-25-rules-scope §4): dimension id → the `institution` or
+   * `unsettled` records that hold the companies' own terms. The guide says "תלוי בחברה" there and links to those companies' pages;
+   * the records are never cited as the product's (they are not `rule_ids`, so they mark no dimension).
+   */
+  company_terms: z.record(z.string(), z.array(z.string().regex(/^[A-Z0-9]+-[A-Z0-9]+$/)).min(1)).optional(),
   tier: z.union([z.literal(1), z.literal(2)]),
   open_questions: z.array(z.string()),
   /** Set when the wrapper closes (D6); absent or null while it is open. */

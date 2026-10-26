@@ -12,6 +12,7 @@
   "recheck_date": "2027-02-02",
   "il_finance_file": "bank-current-account-deposits.md",
   "checked": "2026-10-26",
+  "scope": "general",
   "sources": [
     {
       "url": "https://boi.org.il/media/5folwk5o/119.pdf",

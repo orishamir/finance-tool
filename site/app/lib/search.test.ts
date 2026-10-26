@@ -1,7 +1,7 @@
 // The search ranking and number matching (audit 2026-10-24, A4, A92): numbers find tracks, pages come before catalogue
 // rows, one row per page, exact beats partial.
 import { describe, expect, it } from "vitest";
-import { groupHits, normalize, scoreEntry, searchEntries, type SearchEntry } from "./search";
+import { groupHits, normalize, scoreEntry, searchEntries, type SearchEntry, isRuleKind } from "./search";
 
 const e = (kind: SearchEntry["kind"], name: string, href: string, ids?: string[]): SearchEntry => ({ kind, name, line: "", href, norm: normalize(name), ...(ids ? { ids } : {}) });
 
@@ -173,7 +173,8 @@ describe("the nineteen queries (top href)", () => {
     ["83,641", "/rules#KGL-03"],
     ["83641", "/rules#KGL-03"],
     ["15%", "/rules#TXI-03"],
-    ["תשואה היסטורית", "/rules#MKT-01"],
+    // MKT-01 is J.P. Morgan's past-return slide (scope institution, 2026-10-26): it is listed with that company's terms on /companies (D30)
+    ["תשואה היסטורית", "/companies#terms-jpmorgan-am"],
   ];
   it.each(cases.map((c, i) => [i + 1, ...c] as const))("%i: %s", (_i, query, href) => {
     expect(top(query)[0]?.entry.href).toBe(href);
@@ -192,6 +193,20 @@ describe("rules in groups and the negatives", () => {
     expect(h.indexOf("/rules#TXH-17")).toBeLessThan(h.indexOf("/rules#TXK-04") === -1 ? 999 : h.indexOf("/rules#TXK-04"));
     expect(h.some((x) => x.includes("#PF-23"))).toBe(true);
   });
+  // D30 (spec 2026-10-25-rules-scope §4): general rules in "חוקים וכללים", a company's own terms in a second group, each naming the company
+  it("splits the rules in two groups, and a company's term names its company and leads to it", () => {
+    const groups = groupHits(top("דמי ניהול"));
+    const general = groups.find((g) => g.kind === "rule");
+    const company = groups.find((g) => g.kind === "companyRule");
+    expect(general?.items.length).toBeGreaterThan(0);
+    expect(company?.items.length).toBeGreaterThan(0);
+    expect(general!.items.every((h) => h.entry.href.startsWith("/rules#"))).toBe(true);
+    expect(company!.items.every((h) => h.entry.href.startsWith("/companies"))).toBe(true);
+    const cs30 = real.find((e) => e.key === "CS-30")!;
+    expect(cs30.kind).toBe("companyRule");
+    expect(cs30.line).toMatch(/^הראל, אלטשולר שחם ובנק יהב · /);
+    expect(cs30.href).toBe("/companies/512267592#CS-30");
+  });
   it("puts the guide first and the rule after it for a product name", () => {
     const hits = top("קרן כספית");
     expect(hits[0]!.entry.kind).toBe("guide");
@@ -205,9 +220,9 @@ describe("rules in groups and the negatives", () => {
     expect(search("בן זוג")).toHaveLength(0);
     // the real rule base has rules about a spouse, and since 2026-10-26 the survivors' pension term names "בן או בת הזוג"
     // (its explanation now follows the CMA's standard bylaw): only rules and terms answer, nothing in the catalogue
-    expect(top("בן זוג").every((h) => h.entry.kind === "rule" || h.entry.kind === "term")).toBe(true);
+    expect(top("בן זוג").every((h) => isRuleKind(h.entry.kind) || h.entry.kind === "term")).toBe(true);
     // the real rule base does have rules about loans against a fund, so "הלוואה" now finds those and nothing in the catalogue
-    expect(top("הלוואה", false).every((h) => h.entry.kind === "rule" || h.entry.kind === "term")).toBe(true);
+    expect(top("הלוואה", false).every((h) => isRuleKind(h.entry.kind) || h.entry.kind === "term")).toBe(true);
   });
   it("shows track numbers first for a bare 25, then the 25% rules before the tracks that merely contain it", () => {
     const withTrack: SearchEntry[] = [...real, e("track", "מסלול לדוגמה", "/companies/1/2500", ["2500"])];
@@ -257,7 +272,7 @@ describe("empty states", () => {
     const maybe = relaxedHits(real, texts, a);
     expect(maybe.length).toBeGreaterThan(0);
     expect(maybe.length).toBeLessThanOrEqual(3);
-    expect(maybe.every((h) => h.entry.kind === "rule")).toBe(true);
+    expect(maybe.every((h) => isRuleKind(h.entry.kind))).toBe(true);
   });
   it("offers figures within two percent for a number nothing has", () => {
     const near = nearHits(real, analyze("83,000 ₪"));

@@ -58,6 +58,13 @@
   },
   "il_finance_file": "child-savings.md",
   "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "harel",
+      "name_he": "הראל"
+    }
+  ],
   "sources": [
     {
       "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",

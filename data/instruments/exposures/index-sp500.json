@@ -55,15 +55,12 @@
     "ETF-13",
     "ETF-14",
     "ETF-17",
-    "ETF-19",
     "ETF-20",
     "ETF-22",
     "ETF-24",
     "ETF-26",
-    "ETF-27",
     "ETF-28",
     "ETF-29",
-    "ETF-30",
     "ETF-32",
     "ETF-37",
     "ETF-38",
@@ -92,8 +89,7 @@
     "CAT-17",
     "CAT-18",
     "CAT-24",
-    "IRA-11",
-    "BRK-23"
+    "IRA-11"
   ],
   "open_questions": [
     "ETF-OQ11",

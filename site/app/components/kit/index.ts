@@ -16,3 +16,4 @@ export { RankBadge } from "./rank";
 export { FieldState, NumberField, ParameterLine, PercentField, RangeField, SelectField, flushPendingFields, percentCheck, type FieldProps, type RangeFieldProps } from "./fields";
 export { GainBars, Marker, MarkerMark, useWidth, type GainBar, type MarkerProps } from "./marker";
 export { ChartLegend, ChartReadout, ChartTable, Swatch, scrollCueStyle, type LegendItem, type ReadoutRow, type SwatchShape, type TableColumn, type TableRowData } from "./chart-parts";
+export { CompanyLinks, type CompanyLinkItem } from "./company-links";

@@ -849,6 +849,40 @@
         "minLength": 1
       }
     },
+    "scope": {
+      "type": "string",
+      "enum": [
+        "general",
+        "institution",
+        "unsettled"
+      ]
+    },
+    "scope_institutions": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "name_he": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "name_he"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "scope_settle": {
+      "type": "string",
+      "minLength": 1
+    },
     "sources": {
       "minItems": 1,
       "type": "array",
@@ -972,6 +1006,7 @@
     "strength",
     "dimensions",
     "likely_to_change",
+    "scope",
     "il_finance_file",
     "checked"
   ],

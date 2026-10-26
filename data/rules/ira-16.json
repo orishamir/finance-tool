@@ -13,6 +13,7 @@
   "text_he": "מהקופה מותר לגבות רק: עמלות קנייה ומכירה; דמי משמרת ועמלת משמורת (לא יותר מבקופות הרגילות של אותה חברה); דמי ניהול ושכר נאמן של קרנות שמחזיקים; מסים; דמי ניהול לחברה המנהלת לפי ההסכם (מתוכם משולם מנהל התיקים); והוצאות השקעה בתעודת סל. שום דבר מעבר לרשימה.",
   "il_finance_file": "ira-self-directed.md",
   "checked": "2026-10-26",
+  "scope": "general",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=4",

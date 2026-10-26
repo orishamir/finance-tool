@@ -11,6 +11,8 @@ import { mostlyHebrew } from "./source-label";
 import { ruleTitle } from "./rule-title";
 import type { Strength } from "./value";
 import * as dataServer from "./data.server";
+import { companyLinks } from "./institutions.server";
+import { companyTermsHref } from "./scope";
 
 export type SectionId = "laws" | "regulators" | "exchange" | "institutions" | "secondary";
 export const sectionOrder: SectionId[] = ["laws", "regulators", "exchange", "institutions", "secondary"];
@@ -159,7 +161,8 @@ function sectionOf(kind: string, strength: Strength, host: string, mirror: strin
 }
 
 /** The grouping itself, on given inputs (the tests use fixtures). */
-export function groupDocuments(rules: Record<string, RuleRecord>, table: TableDoc[], publishers: Record<string, PublisherRow>): DocumentCard[] {
+/** `hrefOf`: where a rule's link goes; by default the rules page (a company's term goes to where it is listed, D30: loadDocuments passes that). */
+export function groupDocuments(rules: Record<string, RuleRecord>, table: TableDoc[], publishers: Record<string, PublisherRow>, hrefOf: (id: string) => string = (id) => `/rules#${id}`): DocumentCard[] {
   const groups = new Map<string, { doc: TableDoc | null; entries: Entry[] }>();
   const all = entriesOf(rules);
   // the same address is the same document whatever a link called it ("[1](url)"): the table match found by any entry of an address serves them all (QA 2026-10-24, F4)
@@ -193,7 +196,7 @@ export function groupDocuments(rules: Record<string, RuleRecord>, table: TableDo
     const strength = entries.map((e) => e.strength ?? "secondary").sort((a, b) => (strengthOrder[a] ?? 9) - (strengthOrder[b] ?? 9))[0]! as Strength;
     const checked = entries.map((e) => e.checked ?? "").sort().at(-1) ?? "";
     const ids = [...new Set(entries.map((e) => e.ruleId))].sort();
-    const cardRules = ids.map((id) => ({ id, title: ruleTitle(rules[id]!).text, href: `/rules#${id}` }));
+    const cardRules = ids.map((id) => ({ id, title: ruleTitle(rules[id]!).text, href: hrefOf(id) }));
     // a card for a document the table names or that several rules rest on; the long tail of single-rule pages and articles is a row (lead, 2026-10-24)
     const featured = !!doc || ids.length >= 3;
     const section = sectionOf(kind, strength, hostOf(url), mirror, doc ? undefined : pub(entries[0]!)?.kind);
@@ -206,7 +209,11 @@ export function loadDocuments(): DocumentCard[] {
   const { root, loadRules } = dataServer;
   const table = readJson<TableDoc[]>("data/sources/documents.json", [], root);
   const publishers = readJson<Record<string, PublisherRow>>("data/sources/publishers.json", {}, root);
-  return groupDocuments(loadRules(), Array.isArray(table) ? table : [], publishers);
+  const rules = loadRules();
+  // the rules page lists general rules only (D30): a company's term links to where it is listed
+  const links = companyLinks();
+  const hrefOf = (id: string) => (rules[id] && rules[id]!.scope !== "general" ? companyTermsHref(rules[id]!, links) : `/rules#${id}`);
+  return groupDocuments(rules, Array.isArray(table) ? table : [], publishers, hrefOf);
 }
 
 

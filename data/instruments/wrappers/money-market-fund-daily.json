@@ -244,8 +244,7 @@
   "eligibility": {
     "rule_ids": [
       "MF-15",
-      "MF-11",
-      "BRK-28"
+      "MF-11"
     ],
     "text": "anyone with a securities account at a bank or at a TASE member (the distributor); most funds have no minimum investment, though a distributor may set its own account minimum or minimum commission"
   },
@@ -270,8 +269,6 @@
     "age-or-use-exemption": "covered",
     "currency": "covered",
     "distribution-policy": "covered",
-    "eligibility": "covered",
-    "fee-account": "covered",
     "fee-change-over-time": "covered",
     "fee-custody": "covered",
     "fee-deposit": "covered",
@@ -292,6 +289,14 @@
     "tax-at-exit": "covered",
     "tax-during": "covered",
     "transfer-switch-process": "covered"
+  },
+  "company_terms": {
+    "eligibility": [
+      "BRK-28"
+    ],
+    "fee-account": [
+      "BRK-28"
+    ]
   },
   "tier": 1,
   "open_questions": [

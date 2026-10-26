@@ -11,6 +11,7 @@
   "text_he": "הכסף מושקע רק לפי הוראות העמית, ישירות או דרך מנהל תיקים שיש לו איתו הסכם בכתב. לכל חשבון אדם אחד מוסמך להורות; העמית בוחר אותו ויכול להחליף בכל עת, והחברה המנהלת לא רשאית להגביל את הבחירה. טיוטת תיקון תוסיף לכך 'בכפוף לכל דין'.",
   "il_finance_file": "ira-self-directed.md",
   "checked": "2026-10-26",
+  "scope": "general",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=3",

@@ -77,6 +77,7 @@
   },
   "il_finance_file": "mutual-funds-and-money-market-funds.md",
   "checked": "2026-10-22",
+  "scope": "general",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SR97yUyP2jSKVKeFojNZ63rHiXBWJs93gBRaURcO88U=#page=2",

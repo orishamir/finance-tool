@@ -10,6 +10,13 @@
   "likely_to_change": "no",
   "il_finance_file": "bank-product-names.md",
   "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "hapoalim",
+      "name_he": "בנק הפועלים"
+    }
+  ],
   "sources": [
     {
       "url": "https://www.bankhapoalim.co.il/api/media/PDFS/%D7%90%D7%97%D7%95%D7%96%D7%99%D7%9D%20%D7%90%D7%97%D7%99%D7%93%D7%99%D7%9D/hwsbym_qdymh.pdf",

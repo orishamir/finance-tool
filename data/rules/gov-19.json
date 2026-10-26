@@ -10,6 +10,7 @@
   "likely_to_change": "no",
   "il_finance_file": "government-bonds-and-makam.md",
   "checked": "2026-10-26",
+  "scope": "general",
   "sources": [
     {
       "url": "https://edge.boi.org.il/FusionEdgeServer/sdmx/v2/data/dataflow/BOI.STATISTICS/SECDWH/1.0/?format=csv&lastNObservations=1&labels=name",

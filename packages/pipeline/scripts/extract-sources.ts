@@ -1,11 +1,14 @@
 // Extracts the `sources` of every rule record from the rule base markdown (`- Source:` line under `### <ID>`),
-// plus `derived_from` and `sources_missing_reason`. Re-runnable: it strips its own keys from a record and writes them again,
+// plus `derived_from` and `sources_missing_reason`, and, since 2026-10-26, who it applies to from the `- Scope:` line:
+// `scope`, `scope_institutions` and `scope_settle` (D30; research/specs/2026-10-25-rules-scope/spec.md §3), with the company names
+// resolved against data/sources/institutions.json. Re-runnable: it strips its own keys from a record and writes them again,
 // never touches any other field and never touches the markdown. Spec: research/knowledge/2026-10-24-synthesis.md 3.2,
 // docs/data-schema.md 3.1. Run: `npm run extract:sources -w @finance-tool/pipeline` (add `--dry` to only print the report).
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { readRuleBaseIds, rewriteRawWikisource, type RuleBlock } from "../src/references.ts";
+import { readRegistry, scopeFromLine, scopeLineOf } from "../src/scope.ts";
 
 export type SourceKind = "law" | "regulation" | "circular" | "regulator_page" | "official_pdf" | "exchange_rules" | "institution_doc" | "article" | "dataset" | "form" | "other";
 export type SourceStrength = "primary" | "primary-mirror" | "institution" | "secondary";
@@ -304,7 +307,9 @@ function rankOf(s: ExtractedSource, host: string): number {
   if (host === "nevo.co.il") return 3;
   if (host === "fs.knesset.gov.il" || host === "knesset.gov.il") return 1;
   if (s.kind === "article" || s.strength === "secondary") return 5;
-  if (OFFICIAL(host) || host.endsWith(".gov") || host === "btl.gov.il" || host.endsWith("isa.gov.il") || s.kind === "dataset") return 0;
+  // a company's own data page (TASE's index pages, labelled a dataset by host) is that company's document, not a regulator's: it ranks
+  // with the institutions, after the exchange's guidelines (scope settling requests §7, ETF-44 and ETF-45; 2026-10-26)
+  if (OFFICIAL(host) || host.endsWith(".gov") || host === "btl.gov.il" || host.endsWith("isa.gov.il") || (s.kind === "dataset" && s.strength !== "institution")) return 0;
   return 4;
 }
 
@@ -459,12 +464,12 @@ export function sourceLineOf(body: string): string | undefined {
   return line;
 }
 
-const OWN_KEYS = ["sources", "sources_missing_reason", "derived_from"];
+const OWN_KEYS = ["scope", "scope_institutions", "scope_settle", "sources", "sources_missing_reason", "derived_from"];
 
 /** Removes the keys this script wrote from the text of a record (they are always last, at two-space indent), then appends the new ones. */
 export function writeKeys(text: string, add: Record<string, unknown>): string {
   let body = text;
-  const cut = [...body.matchAll(/,\n  "(sources|sources_missing_reason|derived_from)":/g)].map((m) => m.index!);
+  const cut = [...body.matchAll(/,\n  "(scope|scope_institutions|scope_settle|sources|sources_missing_reason|derived_from)":/g)].map((m) => m.index!);
   if (cut.length > 0) body = body.slice(0, Math.min(...cut)) + body.slice(body.lastIndexOf("\n}"));
   const close = body.lastIndexOf("}");
   const head = body.slice(0, close).replace(/\s+$/, "");
@@ -505,6 +510,9 @@ function main() {
   const documentsPath = join(root, "data/sources/documents.json");
   const publishers = existsSync(publishersPath) ? (JSON.parse(readFileSync(publishersPath, "utf8")) as Record<string, PublisherRow>) : undefined;
   const documents = existsSync(documentsPath) ? (JSON.parse(readFileSync(documentsPath, "utf8")) as DocumentRow[]) : undefined;
+  const registry = readRegistry(join(root, "data"));
+  const scopeProblems: string[] = [];
+  const scopeCounts: Record<string, number> = {};
   const files = readdirSync(rulesDir).filter((f) => f.endsWith(".json")).sort();
   const known = new Set(files.map((f) => (JSON.parse(readFileSync(join(rulesDir, f), "utf8")) as { id: string }).id));
 
@@ -534,6 +542,19 @@ function main() {
     pf.rules++;
     const line = block ? sourceLineOf(block.body) : undefined;
     const add: Record<string, unknown> = {};
+    // who it applies to, first among this script's keys (D30): a record whose Scope line is missing or does not resolve is reported and left without
+    const scopeLine = block ? scopeLineOf(block.body) : undefined;
+    if (scopeLine === undefined) scopeProblems.push(`${rec.id}: ${block ? "no Scope line in its block" : "no block in the rule base"}`);
+    else {
+      const { fields, problems } = scopeFromLine(scopeLine, rec.id, registry);
+      problems.forEach((p) => scopeProblems.push(`${rec.id}: ${p}`));
+      if (fields) {
+        add.scope = fields.scope;
+        if (fields.scope_institutions) add.scope_institutions = fields.scope_institutions;
+        if (fields.scope_settle) add.scope_settle = fields.scope_settle;
+        scopeCounts[fields.scope] = (scopeCounts[fields.scope] ?? 0) + 1;
+      }
+    }
     if (line === undefined) {
       add.sources_missing_reason = block ? "no Source line in the rule base block" : "no block for this rule in the rule base";
       rep.unresolved.push({ id: rec.id, reason: String(add.sources_missing_reason) });
@@ -588,6 +609,9 @@ function main() {
 
   const md = renderReport(rep, { publishers: !!publishers, documents: !!documents });
   console.log(md);
+  console.log(`Scope: ${Object.entries(scopeCounts).map(([k, v]) => `${k} ${v}`).join(", ")}; problems ${scopeProblems.length}`);
+  for (const p of scopeProblems) console.error(`scope: ${p}`);
+  if (scopeProblems.length > 0) process.exitCode = 1;
   if (!dry) writeFileSync(join(root, "research/knowledge/2026-10-24-extraction-report.md"), md);
 }
 

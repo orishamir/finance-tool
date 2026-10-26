@@ -12,6 +12,7 @@
   "recheck_date": "2027-01-01",
   "il_finance_file": "provident-family-common.md",
   "checked": "2026-10-26",
+  "scope": "general",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/tZDvucD9RCpb4OFgftW2Mkr7NqSpiUfGbyQHeI17Cx8=#page=2",

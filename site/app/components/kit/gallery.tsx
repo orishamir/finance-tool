@@ -7,7 +7,7 @@ import type { SiteValue } from "../../lib/value";
 import { computed, entered } from "../../lib/value";
 import { IconLock } from "../icons";
 import { IdRef, Num } from "../provenance";
-import { Button, Callout, Card, ChartLegend, ChartReadout, ChartTable, ChipList, ChoiceChips, CoverageFold, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, KeyValue, KeyValueList, LinkButton, Marker, MarkerMark, NumberField, ParameterLine, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, SourceLine, Stat, StatRow, Swatch, Tag, Tpl, cx, useWidth } from "./index";
+import { Button, Callout, Card, ChartLegend, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CoverageFold, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, KeyValue, KeyValueList, LinkButton, Marker, MarkerMark, NumberField, ParameterLine, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, SourceLine, Stat, StatRow, Swatch, Tag, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -342,6 +342,18 @@ function Words({ today }: { today: string }) {
           <RankBadge rank={2} label="2" />
           <RankBadge rank={3} label="3" flush />
         </div>
+      </Demo>
+      <Demo name="CompanyLinks" use={g.uses.CompanyLinks}>
+        <Grid>
+          <State label="size=sm, two companies">
+            <p>
+              <CompanyLinks lead={g.sample.companyLead} items={g.sample.companies.slice(0, 2).map((name) => ({ name, href: "/kit" }))} />
+            </p>
+          </State>
+          <State label="size=xs, one company">
+            <CompanyLinks size="xs" lead={g.sample.companyLead} items={[{ name: g.sample.companies[2]!, href: "/kit" }]} />
+          </State>
+        </Grid>
       </Demo>
       <Demo name="SourceLine, GapNote" use={g.uses.SourceLine}>
         <State label="SourceLine">
