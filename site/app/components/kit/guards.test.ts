@@ -4,7 +4,8 @@
 //  3. a <p>, or a <span> with words of its own, that holds a <Num> is flowed text: never a flex or grid container, whose children
 //     (each piece of text, each number) become separate items and lines (the fees page's "שווה … ב־8 שנים." sentence);
 //  4. the gallery at /kit stays out of the menu and the search;
-//  5. a question data/open-questions.json has as closed is not named as open (2026-10-26).
+//  5. a question data/open-questions.json has as closed is not named as open (2026-10-26);
+//  6. "אחר" in a row of choices is the kit's OtherChip (ChoiceChips `other`), never an ordinary chip (2026-10-26).
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { join, relative } from "node:path";
@@ -136,5 +137,24 @@ describe("no closed open question is named as open", () => {
     ].join("\n");
     expect(idRefIds(src)).toEqual(["TXI OQ11", "REG OQ9", "REG OQ10"]);
     expect(named(src)).toEqual(["TXI OQ11", "REG OQ9", "REG OQ10", "GOV OQ6", "SW OQ6"]);
+  });
+});
+
+/** The id lists a ChoiceChips row is given, inline or by a `const` in the same file. */
+const choiceIds = (src: string): string[] =>
+  [...src.matchAll(/<ChoiceChips\b[^>]*?\bids=\{([^}]+)\}/g)].map((m) => {
+    const expr = m[1]!.trim();
+    if (!/^\w+$/.test(expr)) return expr;
+    return new RegExp(`const ${expr}\\b[^=]*=\\s*(\\[[^\\]]*\\])`).exec(src)?.[1] ?? expr;
+  });
+
+describe("\"אחר\" is the kit's OtherChip", () => {
+  it("no ChoiceChips row lists an \"other\" id among its choices", () => {
+    const bad = files.filter((f) => f.endsWith(".tsx") && !rel(f).startsWith("components/kit/")).flatMap((f) => choiceIds(code(read(f))).filter((ids) => /["']other["']/.test(ids)).map((ids) => `${rel(f)}: ${ids}: pass "אחר" as \`other\` instead`));
+    expect(bad).toEqual([]);
+  });
+  it("the scanner sees the broken pattern", () => {
+    expect(choiceIds(`const termIds: K[] = ["1", "other"];\n<ChoiceChips ids={termIds} wrap />`)).toEqual([`["1", "other"]`]);
+    expect(choiceIds(`<ChoiceChips ids={["a", "other"]} />`)).toEqual([`["a", "other"]`]);
   });
 });

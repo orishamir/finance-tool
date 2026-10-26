@@ -2,7 +2,7 @@
 // inputs of one run: docs/method.md §2.4. Every value is passed through as it is, converted only from
 // percent to a fraction and from years to months. Anything missing or unexpected stops here with the
 // field named; a run the method cannot evaluate yet stops here with its gap (F-83 "not evaluated").
-import { parameterRecord, valueObject, wrapperRecord, type ValueObject, type WrapperId, type WrapperRecord } from "@finance-tool/schema";
+import { securityRecord, parameterRecord, valueObject, productSchemaOf, type ValueObject, type ProductId, type ProductRecord } from "@finance-tool/schema";
 import type { z } from "zod";
 import type { BondInput } from "./ledgers/bond.ts";
 import type { Profile } from "./ledgers/common.ts";
@@ -54,6 +54,8 @@ export interface InstrumentTerms {
   /** Tariff lines (F-12 to F-17). */
   tariff?: SecuritiesInput["tariff"];
   broker?: SecuritiesInput["broker"];
+  /** F-14: whether the account's member is a bank, where the custody ban on makam and money-market units binds (BRK-17). */
+  memberKind?: SecuritiesInput["memberKind"];
   /** A-03 and the currency the return is quoted in. */
   currency?: Pick<SecuritiesInput["market"], "returnIn" | "fxChange">;
   /** IRA hishtalmut (F-51): the manager's balance fee and the start of the 6-year clock. */
@@ -81,8 +83,8 @@ export type RunPlan =
 
 type Family = "provident" | "pension" | "deposit" | "securities" | "makam" | "bond";
 
-/** The run each wrapper uses, and the instrument terms it takes (required, then optional). */
-const runOf: Partial<Record<WrapperId, Family>> = {
+/** The run each product uses (a wrapper, or a security run in the account that holds it: D6, 2026-10-26), and the instrument terms it takes. */
+const runOf: Partial<Record<ProductId, Family>> = {
   "kupat-gemel-lehashkaa": "provident",
   "keren-hishtalmut": "provident",
   "pension-comprehensive": "pension",
@@ -99,7 +101,7 @@ const runOf: Partial<Record<WrapperId, Family>> = {
   "government-bond": "bond",
 };
 
-const notRun: Partial<Record<WrapperId, string>> = {
+const notRun: Partial<Record<ProductId, string>> = {
   "child-savings-provident": "runs on the NII amounts (F-54), not on P-05",
   "child-savings-bank": "runs on the NII amounts (F-54), not on P-05",
   "ira-provident": "exit F-49 is blocked (G-03) and F-48 is not built yet",
@@ -109,8 +111,8 @@ const termKeys: Record<Family, { required: (keyof InstrumentTerms)[]; optional: 
   provident: { required: ["fees"], optional: [] },
   pension: { required: ["fees", "pension"], optional: ["insurance"] },
   deposit: { required: ["deposit"], optional: [] },
-  securities: { required: ["fund", "tariff"], optional: ["broker", "currency"] },
-  makam: { required: ["tariff"], optional: ["makam"] },
+  securities: { required: ["fund", "tariff"], optional: ["broker", "currency", "memberKind"] },
+  makam: { required: ["tariff"], optional: ["makam", "memberKind"] },
   bond: { required: ["bond", "tariff"], optional: [] },
 };
 
@@ -128,7 +130,7 @@ const nestedKeys: Partial<Record<keyof InstrumentTerms, string[]>> = {
 };
 
 /** Tariff lines each run reads; a line the run would ignore is an error, not a silent drop. */
-const tariffKeys: Partial<Record<Family, string[]>> = { makam: ["buy", "sell"], bond: ["buy", "sell", "custody"] };
+const tariffKeys: Partial<Record<Family, string[]>> = { makam: ["buy", "sell", "custody", "monthlyFee"], bond: ["buy", "sell", "custody", "monthlyFee"] };
 
 /**
  * Fund kinds a wrapper can hold. The engine runs a taxable money-market fund with a daily fund's liquidity
@@ -136,7 +138,7 @@ const tariffKeys: Partial<Record<Family, string[]>> = { makam: ["buy", "sell"], 
  * renewable fund is not in the rule base, and its fund record must say.
  */
 const fundsHeldAsSecurities: Fund["kind"][] = ["israeli-fund", "tase-foreign-fund", "foreign-fund"];
-const fundKinds: Partial<Record<WrapperId, Fund["kind"][]>> = {
+const fundKinds: Partial<Record<ProductId, Fund["kind"][]>> = {
   "money-market-fund-daily": ["money-market-daily", "money-market-taxable"],
   "money-market-fund-renewable": ["money-market-renewable"],
   "brokerage-account": fundsHeldAsSecurities,
@@ -144,7 +146,7 @@ const fundKinds: Partial<Record<WrapperId, Fund["kind"][]>> = {
 };
 
 /** Instrument terms a wrapper needs beyond its run's own. */
-const extraTerms: Partial<Record<WrapperId, keyof InstrumentTerms>> = { "keren-hishtalmut": "hishtalmut", "ira-hishtalmut": "ira" };
+const extraTerms: Partial<Record<ProductId, keyof InstrumentTerms>> = { "keren-hishtalmut": "hishtalmut", "ira-hishtalmut": "ira" };
 
 const depositKind = {
   "bank-deposit": "deposit",
@@ -162,7 +164,7 @@ export function runInputs(
   instrument: InstrumentTerms,
   options: RunInputOptions = {},
 ): RunPlan {
-  const w = parse(wrapperRecord, record, `wrapper record`);
+  const w = parse(productSchemaOf(record), record, `${productSchemaOf(record) === securityRecord ? "security" : "wrapper"} record`);
   checkFormulas(w);
   const family = runOf[w.id];
   if (!family) throw new RecordInputError(`${w.id} has no run yet: ${notRun[w.id]}`);
@@ -216,11 +218,12 @@ export function runInputs(
       const grossReturn = fundsHeldAsSecurities.includes(t.fund!.kind) ? p05["A-01"] / 100 : cashRate;
       const input: SecuritiesInput = { goal, market: { grossReturn, inflation, ...t.currency }, fund: t.fund!, tariff: t.tariff!, profile };
       if (t.broker) input.broker = t.broker;
+      if (t.memberKind) input.memberKind = t.memberKind;
       if (t.ira) input.wrapper = { kind: "ira-hishtalmut", ...t.ira };
       return { run: "runSecurities", input };
     }
     case "makam":
-      return { run: "runMakam", input: { goal, market: { inflation }, makam: { yield: cashRate, ...t.makam }, tariff: t.tariff!, profile } };
+      return { run: "runMakam", input: { goal, market: { inflation }, makam: { yield: cashRate, ...t.makam }, tariff: t.tariff!, ...(t.memberKind ? { memberKind: t.memberKind } : {}), profile } };
     case "bond":
       return { run: "runBond", input: { goal, market: { inflation }, bond: { coupon: cashRate, ...t.bond! }, tariff: t.tariff!, profile } };
   }
@@ -252,7 +255,7 @@ function parse<T extends z.ZodType>(schema: T, value: unknown, what: string): z.
 }
 
 /** Each formula the record names must be one the engine computes; a pending one stops with its release. */
-function checkFormulas(w: WrapperRecord) {
+function checkFormulas(w: ProductRecord) {
   for (const [field, id] of [
     ["deposit_side_tax", w.deposit_side_tax.formula],
     ["tax_during", w.tax_during.formula],
@@ -266,7 +269,7 @@ function checkFormulas(w: WrapperRecord) {
   }
 }
 
-function checkTerms(id: WrapperId, family: Family, t: InstrumentTerms) {
+function checkTerms(id: ProductId, family: Family, t: InstrumentTerms) {
   const { required, optional } = termKeys[family];
   const extra = extraTerms[id];
   const needed = extra ? [...required, extra] : required;

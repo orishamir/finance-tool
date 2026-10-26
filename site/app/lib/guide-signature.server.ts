@@ -2,21 +2,21 @@
 // the sourced figures it shows by name, and what the data does not hold yet. One builder per wrapper id; builder G2 adds its own
 // entries to `builders`. Server-only. Nothing here types a rate or a date: every figure is a record's value object, a rule's
 // figure, or a P-05 parameter, and a missing one becomes a `gap` (shown as "עוד לא חושב" with its reason).
-import type { DepositTerms, FundRecord, ParameterRecord, RuleRecord, WrapperRecord } from "@finance-tool/schema";
-import { loadParameters, loadRules, loadWrappers, today } from "./data.server";
+import type { DepositTerms, FundRecord, ParameterRecord, RuleRecord, ProductRecord } from "@finance-tool/schema";
+import { loadParameters, loadRules, loadProducts, today } from "./data.server";
 import type { Bundle } from "./engine";
 import { p05Value } from "./engine";
 import { accountBanks, buildInstrumentBundle, commonAccountRate, currentAccountRecords, depositRange, familyOf, oneYearDepositRecords, publishedDeposit, type InstrumentFamily } from "./guide-signature-bundle.server";
 import type { SignatureData } from "./guide-signature";
 import { loadDepositTerms, loadFunds } from "./instruments.server";
 import { buildPension, buildProvident, buildStudyFund } from "./guide-signature-g2.server";
-import { ownBy, ruleFigure, type SiteValue } from "./value";
+import { computed, ownBy, ruleFigure, type SiteValue } from "./value";
 import { shortName } from "./providers";
 
 interface Ctx {
   p05: ParameterRecord;
   allRules: Record<string, RuleRecord>;
-  wrappers: WrapperRecord[];
+  wrappers: ProductRecord[];
   deposits: DepositTerms[];
   funds: FundRecord[];
   t: string;
@@ -40,7 +40,7 @@ export function buildSignatureData(id: string, own: Bundle | null): SignatureDat
   if (!build) return null;
   const p05 = loadParameters().find((p) => p.method_id === "P-05");
   if (!p05) throw new Error("data/parameters/ holds no P-05 record");
-  return build({ p05, allRules: loadRules(), wrappers: loadWrappers(), deposits: loadDepositTerms(), funds: loadFunds(), t: today(), own, id });
+  return build({ p05, allRules: loadRules(), wrappers: loadProducts(), deposits: loadDepositTerms(), funds: loadFunds(), t: today(), own, id });
 }
 
 // ---------------------------------------------------------------- helpers
@@ -209,9 +209,21 @@ builders["money-market-fund-daily"] = (c) => {
     d.facts.depositHi = range.hi;
     d.facts.depositCount = range.count;
   }
+  // F-86: of the same deposits, how many forbid taking the money out before the end of the term (each record's 447 column); a count
+  // over the collected banks, naming none (D30)
+  const depositRecords = oneYearDepositRecords(c.deposits);
+  if (range && depositRecords.length) {
+    const inputs = Object.fromEntries(depositRecords.map((r) => [shortName(r.bank, r.bank), breakFact(r)]));
+    d.facts.depositNoExitCount = computed(depositRecords.filter((r) => !r.break.allowed).length, "count", "F-86", inputs, { today: c.t, about: "בכמה מהבנקים שנאספו אי אפשר למשוך מהפיקדון לפני סוף התקופה" });
+  }
   d.facts.cashRate = p05Value(c.p05, "cash_rate");
-  // MF-11 (prices regulations reg. 15): when redemption money reaches the account, stated in the guide's prose (MF OQ4 closed 2026-10-26); MF-35: the renewable fund's dates are chosen when buying
-  return withRules(d, "MF-10", "MF-11", "MF-34", "MF-35", "BANK-09", "BANK-13");
+  // MF-08: the longest a renewable fund's money can wait for its next date, by the law's default
+  const max = figureOf(c, "MF-08", "max_interval_months");
+  if (max) d.facts.maxInterval = max;
+  else d.gaps.push("maxInterval");
+  // MF-10, MF-11 (prices regulations reg. 15): an order before the fund's set hour is redeemed that day and the distributor pays the same day
+  // (MF OQ4 closed 2026-10-26); MF-35: the renewable fund's dates are chosen when buying
+  return withRules(d, "MF-08", "MF-10", "MF-11", "MF-34", "MF-35", "BANK-06", "BANK-09", "BANK-13");
 };
 
 // ---------------------------------------------------------------- renewable money-market fund

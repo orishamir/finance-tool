@@ -1,7 +1,7 @@
 // Banks and brokers in the catalogue (flows 32, 33; design-spec 20): the institutions the fee snapshots and the
 // deposit records name, one page each. Server-only. Every number keeps its value object and its source; nothing is
 // computed here but the stale flag (D3: a snapshot older than three months, until the schema holds its own rule).
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { feesSnapshot, institutionsTable, ownDocumentCompanies, type DepositTerms, type FeeLine, type FeesSnapshot, type InstitutionRegistryRow, type RuleRecord, type ValueObject } from "@finance-tool/schema";
 import type {
@@ -14,13 +14,15 @@ import type {
   TariffCardData,
   TariffLineRow,
 } from "../components/decoder/institutions/types";
-import { loadChecklistRows, loadRules, loadWrappers, pointedRecords, root, today } from "./data.server";
+import { loadChecklistRows, loadRules, loadProducts, pointedRecords, root, today } from "./data.server";
 import { topicName } from "../copy";
 import { loadCatalog, loadDepositTerms, seenValue, seenWhere } from "./instruments.server";
 import { shortName } from "./providers";
 import { ownBy, type SiteValue } from "./value";
 import { fileRank } from "./rule-shelves";
 import { listedCompanies, noPageAnchor, type CompanyLink, type OwnDocs } from "./scope";
+import { brandOfMember, brandOfPage, loadBrands } from "./brands.server";
+import { readParsedCached, readJsonCached, readTextCached } from "./read-cache.server";
 
 /** The cadence until `docs/data-schema.md` §3.6 writes `staleTariff` (flow 33 data note): 90 days. */
 const staleDays = 90;
@@ -37,7 +39,7 @@ export function latestSnapshots(): FeesSnapshot[] {
   if (!existsSync(dir)) return [];
   const best = new Map<string, { date: string; record: FeesSnapshot }>();
   for (const f of readdirSync(dir).filter((x) => x.endsWith(".json")).sort()) {
-    const record = feesSnapshot.parse(JSON.parse(readFileSync(join(dir, f), "utf8")));
+    const record = readParsedCached(join(dir, f), feesSnapshot);
     const date = /@(\d{4}-\d{2}-\d{2})\.json$/.exec(f)?.[1] ?? record.snapshot;
     const prev = best.get(record.id);
     if (!prev || date > prev.date) best.set(record.id, { date, record });
@@ -61,7 +63,13 @@ export function institutionIds(): string[] {
   return [...ids];
 }
 
+/** The companies list's banks and brokers: those that are not a brand's member (a brand has its own row, D33). */
 export function institutionRows(): InstitutionRow[] {
+  const inBrand = new Set(loadBrands().flatMap((b) => b.pageIds));
+  return allInstitutionRows().filter((r) => !inBrand.has(r.id));
+}
+
+function allInstitutionRows(): InstitutionRow[] {
   const snaps = institutionSnapshots();
   const rows: InstitutionRow[] = snaps.map((s) => ({ id: s.id, name: s.provider.name_he, kind: s.kind, published: s.tariff.published, missing: s.missing, noSnapshot: false }));
   for (const d of loadDepositTerms()) {
@@ -95,7 +103,7 @@ function rateTableUrl(bank: string): string | null {
   const label = rateTableLabel[bank];
   const path = join(root, ".claude/skills/il-finance/references/bank-product-names.md");
   if (!label || !existsSync(path)) return null;
-  const doc = readFileSync(path, "utf8");
+  const doc = readTextCached(path);
   const start = doc.indexOf("## Directive-447 publication: machine-readability per bank");
   if (start < 0) return null;
   const section = doc.slice(start);
@@ -233,6 +241,20 @@ function tariffCard(s: FeesSnapshot, rules: Record<string, RuleRecord>, t: strin
   };
 }
 
+// ---------------------------------------------------------------- a brand's brokerage account (D33)
+
+/** The tariff card of a broker or a foreign broker, with the records its card cites; null when no snapshot has that id. */
+export function brokeragePart(id: string): { kind: InstitutionKind; tariff: TariffCardData; rules: Record<string, RuleRecord> } | null {
+  const snap = latestSnapshots().find((s) => s.id === id && (s.provider.class === "broker" || s.provider.class === "foreign_broker"));
+  if (!snap) return null;
+  const allRules = loadRules();
+  const cited = new Set<string>(["BRK-20", "BRK-21", "BRK-16"]);
+  for (const r of [...snap.provider.protection_rule_ids, ...snap.notice_rule_ids]) cited.add(r);
+  for (const l of snap.lines) for (const r of l.rate.rule_ids ?? []) cited.add(r);
+  const rules = Object.fromEntries([...cited].filter((r) => allRules[r]).map((r) => [r, allRules[r]!]));
+  return { kind: "broker", tariff: tariffCard(snap, allRules, today()), rules };
+}
+
 // ---------------------------------------------------------------- the page
 
 export function buildInstitution(id: string): InstitutionPageData | null {
@@ -241,7 +263,7 @@ export function buildInstitution(id: string): InstitutionPageData | null {
   const deposits = loadDepositTerms().filter((d) => d.bank === id);
   if (!snap && deposits.length === 0) return null;
   const allRules = loadRules();
-  const wrappers = loadWrappers();
+  const wrappers = loadProducts();
   const rows = deposits.map((d) => productRow(d, t));
   const groups: ProductGroup[] = wrapperOrder
     .map((w) => ({ wrapperId: w, wrapperName: wrappers.find((x) => x.id === w)?.names.he[0] ?? w, products: rows.filter((r) => r.wrapperId === w).sort((a, b) => collator.compare(a.name, b.name)) }))
@@ -304,7 +326,12 @@ export function institutionSearchEntries(words: { bank: string; broker: string }
   const out: InstitutionSearchEntry[] = [];
   const names = new Map<string, string>(institutionRows().map((r) => [r.id, r.name]));
   for (const r of institutionRows()) out.push({ name: r.name, line: r.kind === "bank" ? words.bank : words.broker, href: `/companies/${r.id}`, extra: r.id });
-  const wrappers = loadWrappers();
+  // a brand member's legal name finds the brand's page (D33)
+  for (const r of allInstitutionRows()) {
+    const brand = brandOfPage(r.id);
+    if (brand) out.push({ name: r.name, line: brand.name, href: `/companies/${brand.page}`, extra: r.id });
+  }
+  const wrappers = loadProducts();
   for (const d of loadDepositTerms()) {
     const wrapper = wrappers.find((w) => w.id === d.wrapper_id)?.names.he[0] ?? "";
     const line = [names.get(d.bank) ?? d.bank, wrapper].filter(Boolean).join(" · ");
@@ -322,7 +349,7 @@ export function institutionSearchEntries(words: { bank: string; broker: string }
 
 /** data/sources/institutions.json: every company a rule's scope can name (spec §3). */
 export function loadInstitutionRegistry(): InstitutionRegistryRow[] {
-  return institutionsTable.parse(JSON.parse(readFileSync(join(root, "data/sources/institutions.json"), "utf8")));
+  return readParsedCached(join(root, "data/sources/institutions.json"), institutionsTable);
 }
 
 /**
@@ -334,7 +361,8 @@ export function companyLinks(): Record<string, CompanyLink> {
   const pages = new Set(institutionIds());
   const out: Record<string, CompanyLink> = {};
   for (const r of loadInstitutionRegistry()) {
-    const page = r.cma_legal_id && cmaIds.has(r.cma_legal_id) ? r.cma_legal_id : r.fees_id && pages.has(r.fees_id) ? r.fees_id : r.deposit_bank_id && pages.has(r.deposit_bank_id) ? r.deposit_bank_id : null;
+    const brand = brandOfMember(r.id);
+    const page = brand ? brand.page : r.cma_legal_id && cmaIds.has(r.cma_legal_id) ? r.cma_legal_id : r.fees_id && pages.has(r.fees_id) ? r.fees_id : r.deposit_bank_id && pages.has(r.deposit_bank_id) ? r.deposit_bank_id : null;
     // where its own documents live travels too: a rule card drops "לפי החברה" only on a source there (D31; review, 2026-10-26)
     const docs = { own_hosts: r.own_hosts, ...(r.filing_names ? { filing_names: r.filing_names } : {}) };
     out[r.id] = page ? { name: r.name_he, href: `/companies/${page}`, hasPage: true, docs } : { name: r.name_he, href: `/companies#${noPageAnchor(r.id)}`, hasPage: false, docs };
@@ -345,7 +373,7 @@ export function companyLinks(): Record<string, CompanyLink> {
 function loadCmaCompanyIds(): string[] {
   const ids = new Set<string>();
   for (const f of readdirSync(join(root, "data/cma")).filter((x) => x.endsWith(".json"))) {
-    const d = JSON.parse(readFileSync(join(root, "data/cma", f), "utf8")) as { funds: { managing_corporation: { legal_id: string } }[] };
+    const d = readJsonCached(join(root, "data/cma", f)) as { funds: { managing_corporation: { legal_id: string } }[] };
     for (const fund of d.funds) ids.add(fund.managing_corporation.legal_id);
   }
   return [...ids];
@@ -353,6 +381,8 @@ function loadCmaCompanyIds(): string[] {
 
 /** The registry ids a company page stands for: the rows whose CMA id, snapshot id or deposit id is the page's id. */
 export function registryIdsOfPage(pageId: string): string[] {
+  const brand = brandOfPage(pageId);
+  if (brand) return brand.members.map((m) => m.id);
   return loadInstitutionRegistry()
     .filter((r) => r.cma_legal_id === pageId || r.fees_id === pageId || r.deposit_bank_id === pageId)
     .map((r) => r.id);

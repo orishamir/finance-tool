@@ -2,7 +2,7 @@
 import { useLoaderData } from "react-router";
 import type { Route } from "./+types/parameters";
 import { parametersPage as copy, provenance as provCopy, site } from "../copy";
-import { IdRef, Num } from "../components/provenance";
+import { IdRef, IdText, Num } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { Card, Tag } from "../components/kit";
 import { fmt } from "../lib/format";
@@ -69,7 +69,9 @@ export default function Parameters() {
                 <dl className="readout">
                   {p.values.map((e) => (
                     <div key={e.path} className="readout-row">
-                      <dt>{e.label}</dt>
+                      <dt>
+                        <IdText text={e.label} assumptions />
+                      </dt>
                       <dd>
                         <Num value={e.value} display={unitText(e.path, e.value).display} />
                         {unitText(e.path, e.value).suffix && <span className="text-sm text-muted-foreground">{unitText(e.path, e.value).suffix}</span>}

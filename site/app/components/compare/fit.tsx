@@ -1,7 +1,6 @@
-// The fit mark (design-spec 10, flow 18): a card on the track page, a small mark on each track row of the company
-// page. The saved goal lives on the device, so both read it after hydration; the pages themselves are pre-rendered
-// with the fit table. "Does not fit" and "no rule" are answers, not warnings: muted, never red.
-import { createContext, useContext, type ReactNode } from "react";
+// The fit mark (design-spec 10, flow 18): a card saying whether a track fits the saved goal. The saved goal lives on the
+// device, so it reads it after hydration. "Does not fit" and "no rule" are answers, not warnings: muted, never red.
+// D34 (founder, 2026-10-26): the company and track pages show no goal UI; the card waits for the goals page.
 import { Link } from "react-router";
 import { fit as copy, r5 } from "../../copy";
 import { Tpl } from "../exposure-mode/tpl";
@@ -14,18 +13,6 @@ import { Num } from "../provenance";
 import { Card, cx, LinkButton } from "../kit";
 import { goalTitle } from "./goal-form";
 import { IconDash, IconHelp, IconOk } from "./icons";
-
-interface FitCtx {
-  table: FitTableData;
-  stale: Staleness | null;
-}
-
-const FitContext = createContext<FitCtx | null>(null);
-
-/** Gives the company page's rows the fit table. */
-export function FitProvider({ table, stale, children }: { table: FitTableData; stale: Staleness | null; children: ReactNode }) {
-  return <FitContext.Provider value={{ table, stale }}>{children}</FitContext.Provider>;
-}
 
 type TrackClass = { specialization: string; subSpecialization: string; classification: string };
 
@@ -48,7 +35,7 @@ function Mark({ result, size = 24, word = true, className }: { result: FitResult
   );
 }
 
-/** The card under the track page's h1 (the slot reserved in release 1): "מתאים למטרה שלכם?". */
+/** The fit card: "מתאים למטרה שלכם?". */
 export function FitMarkCard({ table, track, stale, period }: { table: FitTableData; track: TrackClass; stale: Staleness | null; period: string }) {
   const { status } = useGoals();
   const goal = useGoalHorizon();
@@ -110,22 +97,5 @@ export function FitMarkCard({ table, track, stale, period }: { table: FitTableDa
         </Link>
       </div>
     </Card>
-  );
-}
-
-/** A company page row's mark: the icon and the word, on every track (a classification with no rule reads "אין כלל לסיווג הזה", muted). Nothing without a saved goal. */
-export function RowFit({ track }: { track: TrackClass }) {
-  const ctx = useContext(FitContext);
-  const goal = useGoalHorizon();
-  if (!ctx || !goal) return null;
-  const result = fitOf(ctx.table, track, goal.years, goal.acceptedFall);
-  return (
-    <span className="inline-flex items-center gap-1" role="img" aria-label={`${copy.rowAria} ${copy.marks[result.kind]}`}>
-      <Mark result={result} size={16} word={false} />
-      <span className={cx("text-xs", result.kind === "fits" ? "text-positive" : "text-muted-foreground")} aria-hidden="true">
-        {copy.marks[result.kind]}
-      </span>
-      {ctx.stale && <IconClock size={14} className="text-caution" />}
-    </span>
   );
 }

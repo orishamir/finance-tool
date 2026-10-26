@@ -5,9 +5,10 @@ import { Link } from "react-router";
 import { kit as copy } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { computed, entered } from "../../lib/value";
+import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
 import { IconLock } from "../icons";
 import { IdRef, Num } from "../provenance";
-import { Button, Callout, Card, ChartLegend, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CoverageFold, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, KeyValue, KeyValueList, LinkButton, Marker, MarkerMark, NumberField, ParameterLine, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, SourceLine, Stat, StatRow, Swatch, Tag, Tpl, cx, useWidth } from "./index";
+import { Button, Callout, Card, ChartLegend, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, CoverageFold, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, NumberField, ParameterLine, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -84,6 +85,11 @@ function Basics() {
             {g.states.withIcon}
           </Tag>
         </div>
+        <State label={`wrap, ${g.states.long}`}>
+          <div className="max-w-60 flex flex-wrap items-center gap-2">
+            <Tag wrap>{g.sample.longTag}</Tag>
+          </div>
+        </State>
       </Demo>
       <Demo name="Callout" use={g.uses.Callout}>
         <Grid>
@@ -214,6 +220,7 @@ function Folds() {
 function Choices() {
   const [seg, setSeg] = useState<"a" | "b" | "c">("a");
   const [chip, setChip] = useState<string | null>("0");
+  const [own, setOwn] = useState<string | null>(null);
   const labels = Object.fromEntries(g.sample.chip.map((c, i) => [String(i), c]));
   return (
     <>
@@ -225,6 +232,10 @@ function Choices() {
       <Demo name="ChoiceChips" use={g.uses.ChoiceChips}>
         <State label={`wrap, ${g.states.interactive}`}>
           <ChoiceChips ids={["0", "1", "2", "3"]} labels={labels} value={chip} onChange={setChip} ariaLabel={g.sample.title} wrap />
+        </State>
+        <State label={`other, ${g.states.interactive}`}>
+          <ChoiceChips ids={["0", "1", "2"]} labels={labels} value={own} onChange={(id) => setOwn((k) => (k === id ? null : id))} ariaLabel={g.sample.title} wrap other={{ label: g.sample.other, open: own === "other", onToggle: () => setOwn((k) => (k === "other" ? null : "other")) }} />
+          {own === "other" && <NumberField label={g.sample.otherField} unit="months" value={null} isEntered={false} validate={() => null} onCommit={() => {}} onReset={() => {}} optional inputMode="numeric" />}
         </State>
       </Demo>
     </>
@@ -259,6 +270,12 @@ function Chips() {
             add={{ label: w.add, onClick: () => setOrder((o) => (o.length < 5 ? [...o, "n" + o.length] : o)) }}
             footer={<p className="text-sm text-muted-foreground">{w.foot}</p>}
           />
+        </State>
+        <State label="headingHidden, links in a card that shows its own title (the first page's guide door)">
+          <Card className="!p-5 flex flex-col gap-3">
+            <span className="text-lg font-semibold">{w.heading}</span>
+            <ChipList heading={w.heading} headingHidden items={sites} value={null} footer={<p className="text-sm text-muted-foreground">{w.foot}</p>} />
+          </Card>
         </State>
         <State label="add pill alone, expanded">
           <ChipList heading={w.heading} items={[]} value={null} words={words} add={{ label: w.add, onClick: () => setAdded((v) => !v), expanded: added }} />
@@ -306,6 +323,21 @@ function Words({ today }: { today: string }) {
           </State>
           <State label="Tpl">
             <Tpl t="{a} · {b}" vars={{ a: <Num value={s.sourced} display="8" />, b: <Num value={s.comp} /> }} />
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="InputSlot" use={g.uses.InputSlot}>
+        <Grid>
+          <State label={`${g.states.entered}, chars=10`}>
+            <Sentence size="sm" measure>
+              {g.sample.sentenceBefore} <InputSlot chars={10} onEdit={() => undefined} editLabel="שינוי">
+                <Num value={s.ent} />
+              </InputSlot>{" "}
+              {g.sample.sentenceMid} <InputSlot chars={8} onEdit={() => undefined} editLabel="שינוי">
+                <Num value={s.sourced} display="8" />
+              </InputSlot>
+              .
+            </Sentence>
           </State>
         </Grid>
       </Demo>
@@ -366,6 +398,11 @@ function Words({ today }: { today: string }) {
           </State>
         </Grid>
       </Demo>
+      <Demo name="NoteList" use={g.uses.NoteList}>
+        <State label="NoteList" wide>
+          <NoteList items={[...g.sample.notes]} />
+        </State>
+      </Demo>
       <Demo name="SourceLine, GapNote" use={g.uses.SourceLine}>
         <State label="SourceLine">
           <SourceLine lead={g.sample.sourceLead} items={[...g.sample.sourceItems]} />
@@ -384,6 +421,7 @@ function Fields() {
   const [years, setYears] = useState<number | null>(10);
   const [pct, setPct] = useState<number | null>(5);
   const [pick, setPick] = useState<string | null>(null);
+  const [count, setCount] = useState(1);
   return (
     <>
       <Demo name="NumberField" use={g.uses.NumberField}>
@@ -404,6 +442,18 @@ function Fields() {
             <NumberField label={g.sample.field} unit="nis" value={null} isEntered={false} validate={() => null} onCommit={() => undefined} onReset={() => undefined} disabled />
           </State>
         </div>
+      </Demo>
+      <Demo name="StepButtons" use={g.uses.StepButtons}>
+        <Grid>
+          <State label={g.states.interactive}>
+            <div className="flex items-end gap-2">
+              <div className="flex-1 min-w-0">
+                <NumberField label={g.sample.count} unit="count" value={count} isEntered={count !== 1} validate={(n) => (n < 1 || n > 9 ? g.sample.error : null)} onCommit={(n) => setCount(n)} onReset={() => setCount(1)} optional />
+              </div>
+              <StepButtons downLabel={g.sample.stepDown} upLabel={g.sample.stepUp} downDisabled={count <= 1} upDisabled={count >= 9} onDown={() => setCount(count - 1)} onUp={() => setCount(count + 1)} />
+            </div>
+          </State>
+        </Grid>
       </Demo>
       <Demo name="FieldState, ParameterLine" use={g.uses.FieldState}>
         <Grid>
@@ -462,12 +512,13 @@ function MarkerDemo({ today }: { today: string }) {
   const s = samples(today);
   return (
     <>
-      <Demo name="Marker, MarkerMark" use={g.uses.Marker}>
+      <Demo name="Marker, MarkerMark, LaneLabel" use={g.uses.Marker}>
         <State label={`${g.states.interactive}, ${g.states.draggable}`} wide>
           <div ref={box} className="relative w-full" dir="ltr" style={{ height: HEIGHT }}>
             <svg width={width} height={HEIGHT} viewBox={`0 0 ${width} ${HEIGHT}`} role="img" aria-label={g.sample.markerName} className="block select-none">
               <line x1={left} x2={left + w} y1={HEIGHT - 24} y2={HEIGHT - 24} className="stroke-chart-axis" strokeWidth="1" />
-              <rect x={left} y={HEIGHT - 40} width={(v / 20) * w} height={16} rx="2" className="fill-chart-value" fillOpacity="0.5" />
+              <rect x={left} y={HEIGHT - 52} width={w / 2} height={22} rx="3" className="fill-muted" />
+              <rect x={left + w / 2} y={HEIGHT - 52} width={w / 2} height={22} rx="3" className="fill-chart-value" fillOpacity="0.5" />
               <MarkerMark x={x} y1={10} y2={HEIGHT - 24} />
               <text x={left} y={HEIGHT - 6} className="text-xs fill-chart-text">
                 0
@@ -476,8 +527,37 @@ function MarkerDemo({ today }: { today: string }) {
                 20
               </text>
             </svg>
+            <LaneLabel from={left} to={left + w / 2} top={HEIGHT - 52} markerX={x}>
+              {g.sample.laneA}
+            </LaneLabel>
+            <LaneLabel from={left + w / 2} to={left + w} top={HEIGHT - 52} markerX={x} prefer="end">
+              {g.sample.laneB}
+            </LaneLabel>
             <Marker min={0} max={20} step={1} value={v} onChange={setV} label={g.sample.markerName} valueText={String(v)} left={left} top={0} width={w} height={HEIGHT} />
           </div>
+        </State>
+      </Demo>
+      <Demo name="StepTag" use={g.uses.StepTag}>
+        <State label="step 1 to 4" wide>
+          <div className="flex flex-wrap gap-2">
+            {([<Zap key="1" aria-hidden="true" />, <CalendarCheck key="2" aria-hidden="true" />, <CalendarDays key="3" aria-hidden="true" />, <Lock key="4" aria-hidden="true" />] as ReactNode[]).map((icon, i) => (
+              <StepTag key={i} step={(i + 1) as 1 | 2 | 3 | 4} icon={icon}>
+                {g.sample.steps[i]}
+              </StepTag>
+            ))}
+          </div>
+        </State>
+      </Demo>
+      <Demo name="CompareTable, ValueBar" use={g.uses.CompareTable}>
+        <State label="three rows, the page's option tinted, a zero and a range" wide>
+          <CompareTable
+            columns={[g.sample.compare.product, g.sample.compare.when, g.sample.compare.rate]}
+            rows={[
+              { key: "a", head: g.sample.compare.a, cells: [<StepTag key="w" step={1} icon={<Zap aria-hidden="true" />}>{g.sample.steps[0]}</StepTag>, <ValueBar key="r" value={<Num value={{ ...s.rate, value: 0 }} />} frac={0} />] },
+              { key: "b", head: g.sample.compare.b, highlight: true, cells: [<StepTag key="w" step={2} icon={<CalendarCheck aria-hidden="true" />}>{g.sample.steps[1]}</StepTag>, <ValueBar key="r" value={<Num value={s.rate} />} frac={5 / 6} note={g.sample.compare.mine} />] },
+              { key: "c", head: g.sample.compare.c, cells: [<StepTag key="w" step={4} icon={<Lock aria-hidden="true" />}>{g.sample.steps[3]}</StepTag>, <ValueBar key="r" value={<Num value={{ ...s.rate, value: 4 }} />} frac={4 / 6} lo={2 / 6} note={g.sample.compare.range} />] },
+            ]}
+          />
         </State>
       </Demo>
       <Demo name="GainBars" use={g.uses.GainBars}>
@@ -509,6 +589,7 @@ function ChartParts({ today }: { today: string }) {
             { id: "b", swatch: <Swatch shape="box" className="bg-chart-fee" />, label: <bdi>{g.sample.fee}</bdi> },
             { id: "c", swatch: <Swatch shape="entered-line" className="stroke-chart-entered" />, label: <bdi>{g.sample.seriesC}</bdi> },
             { id: "d", swatch: <Swatch shape="rule" className="border-chart-baseline" />, label: g.sample.today },
+            { id: "e", swatch: <Swatch shape="dotted-line" className="stroke-chart-baseline" />, label: g.sample.baselineDots },
             { id: "e", label: g.sample.note },
           ]}
         />
@@ -537,6 +618,24 @@ function ChartParts({ today }: { today: string }) {
   );
 }
 
+function Rings() {
+  return (
+    <Demo name="ShareRings" use={g.uses.ShareRings}>
+      <Grid>
+        <State label="two rings: 49% stocks outside, 21% currency inside">
+          <ShareRings rings={[{ id: "a", fraction: 0.49, className: "stroke-chart-stocks" }, { id: "b", fraction: 0.21, className: "stroke-chart-currency" }]} />
+        </State>
+        <State label="above 100% draws full; 0 draws an empty ring">
+          <ShareRings rings={[{ id: "a", fraction: 1.087, className: "stroke-chart-stocks" }, { id: "b", fraction: 0, className: "stroke-chart-currency" }]} />
+        </State>
+        <State label="one ring, size 48">
+          <ShareRings size={48} rings={[{ id: "a", fraction: 0.05, className: "stroke-chart-stocks" }]} />
+        </State>
+      </Grid>
+    </Demo>
+  );
+}
+
 export function KitGallery({ today }: { today: string }) {
   return (
     <div className="flex flex-col gap-section pt-6 lg:pt-10">
@@ -554,6 +653,7 @@ export function KitGallery({ today }: { today: string }) {
         <Fields />
         <MarkerDemo today={today} />
         <ChartParts today={today} />
+        <Rings />
       </div>
     </div>
   );

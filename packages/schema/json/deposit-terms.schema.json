@@ -56,10 +56,6 @@
         "current-account",
         "bank-deposit",
         "savings-plan",
-        "money-market-fund-daily",
-        "money-market-fund-renewable",
-        "makam",
-        "government-bond",
         "brokerage-account",
         "kupat-gemel-lehashkaa",
         "keren-hishtalmut",
@@ -87,6 +83,7 @@
           "type": "string",
           "enum": [
             "nis",
+            "nis_millions",
             "usd",
             "eur",
             "pct",
@@ -294,6 +291,7 @@
               "type": "string",
               "enum": [
                 "nis",
+                "nis_millions",
                 "usd",
                 "eur",
                 "pct",
@@ -486,6 +484,7 @@
           "type": "string",
           "enum": [
             "nis",
+            "nis_millions",
             "usd",
             "eur",
             "pct",
@@ -681,6 +680,7 @@
           "type": "string",
           "enum": [
             "nis",
+            "nis_millions",
             "usd",
             "eur",
             "pct",
@@ -871,6 +871,7 @@
               "type": "string",
               "enum": [
                 "nis",
+                "nis_millions",
                 "usd",
                 "eur",
                 "pct",
@@ -1060,6 +1061,7 @@
                   "type": "string",
                   "enum": [
                     "nis",
+                    "nis_millions",
                     "usd",
                     "eur",
                     "pct",

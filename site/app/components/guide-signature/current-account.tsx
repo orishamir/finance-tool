@@ -14,9 +14,9 @@ import type { SiteValue } from "../../lib/value";
 import { AxisLabels, niceYearTicks } from "../chart/TimelineChart";
 import { IconAlert } from "../icons";
 import type { WorthFactRow } from "../guide/worth-knowing";
-import { ChartLegend, cx, Disclosure, NumberField, RangeField, Sentence, Stat, StatRow, Swatch, Tag, useWidth } from "../kit";
+import { ChartLegend, cx, Disclosure, InputSlot, NumberField, RangeField, Sentence, Stat, StatRow, Swatch, Tag, useWidth } from "../kit";
 import { Num, RuleRef, RulesLine } from "../provenance";
-import { Gap, SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, yearsRange, type VisualProps } from "./kit";
+import { CommonRateLine, Gap, SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, yearsRange, type VisualProps } from "./kit";
 
 const HEIGHT = 250;
 const TOP = 20;
@@ -128,7 +128,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
       {model && values && change ? (
         <div className="flex flex-col gap-2 max-w-measure">
           <p className="text-lg lg:text-xl font-medium">
-            {copy.account.headline.lead} <Num value={yearsValue} display={fmt.years(years)} />, <Num value={balanceValue} />{" "}
+            {copy.account.headline.lead} <InputSlot chars={10}><Num value={yearsValue} display={fmt.years(years)} /></InputSlot>, <InputSlot chars={12}><Num value={balanceValue} /></InputSlot>{" "}
             {bank ? (
               <>
                 {copy.account.headline.inBank} <bdi>{bank.name}</bdi> {copy.account.headline.worth}
@@ -141,7 +141,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
           {!bank && commonIsZero && <p>{copy.account.mostPayNothing}</p>}
           {!bank && commonRate && commonCount && bankCount && (
             <Sentence tone="muted">
-              {copy.account.commonRate.before} <Num value={commonRate} />, <Num value={commonCount} prefix={copy.account.commonRate.prefix} /> {copy.account.commonRate.of} <Num value={bankCount} /> {copy.account.commonRate.after}
+              <CommonRateLine rate={commonRate} count={commonCount} of={bankCount} />
             </Sentence>
           )}
           {bank && (
@@ -217,11 +217,12 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
                 <line key={t} x1={0} x2={plotW} y1={y(t)} y2={y(t)} className="stroke-chart-grid" strokeWidth="1" />
               ))}
               <line x1={0} x2={plotW} y1={HEIGHT - BOTTOM} y2={HEIGHT - BOTTOM} className="stroke-chart-axis" strokeWidth="1" />
-              <AxisLabels ticks={ticks} y={y} />
               <path d={gap(pts) ?? ""} className="fill-chart-alt" fillOpacity="0.22" />
               <line x1={0} x2={plotW} y1={y(model.start)} y2={y(model.start)} className="stroke-chart-baseline" strokeWidth="1.5" strokeDasharray="5 4" />
               <path d={fnd(pts) ?? ""} fill="none" className="stroke-chart-alt" strokeWidth="2.5" strokeLinejoin="round" />
               <path d={acct(pts) ?? ""} fill="none" className="stroke-chart-net" strokeWidth="2.5" strokeLinejoin="round" />
+              {/* after the lines and the dashed start, with the card-colour halo: the start line ran through "50 אלף ₪" (2026-10-26) */}
+              <AxisLabels ticks={ticks} y={y} />
               {last && Math.abs(y(last.fund) - y(last.account)) > 12 && (
                 // the gap as a difference: a bracket between the two ends, its number beside it (D29 rule 6)
                 <path d={`M ${plotW - 8} ${y(last.fund)} h 4 V ${y(last.account)} h -4`} fill="none" className="stroke-chart-text" strokeWidth="1.5" />
@@ -250,7 +251,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
           </div>
           <p className="text-xs text-muted-foreground">{copy.account.axisNote}</p>
           <StatRow cols={3}>
-            <Stat label={`${copy.account.figures.account} ${copy.account.after} ${fmt.years(years)}`} tone="value">
+            <Stat label={`${copy.account.figures.account} ${copy.account.after} ${fmt.years(years)}`} tone="net">
               {values && <Num value={values.account} size="inline" />}
             </Stat>
             <Stat label={copy.account.figures.fund} tone="alt">

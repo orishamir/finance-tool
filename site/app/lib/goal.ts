@@ -4,7 +4,7 @@
 // A field the person typed is `entered`; a field a preset filled keeps no number of its own: it is read from the
 // preset record each time (so a changed parameter never leaves a stale copy), and shows as a site parameter.
 import { createContext, createElement, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import type { ValueObject, WrapperId } from "@finance-tool/schema";
+import type { ValueObject, ProductId } from "@finance-tool/schema";
 import { useInputs, type Employment } from "./inputs";
 import { clearGoals, ensureLoaded, getSnapshot, STATE_KEY, takeOver, updateState, useStateStore } from "./state";
 
@@ -28,7 +28,7 @@ export interface ExposureInputs {
   worstFall?: ValueObject;
   /** The largest fall accepted for this exposure alone, wins over the goal's common one (A-29), `pct`. */
   acceptedFall?: ValueObject;
-  wrapperId?: WrapperId;
+  wrapperId?: ProductId;
 }
 
 export interface Goal {

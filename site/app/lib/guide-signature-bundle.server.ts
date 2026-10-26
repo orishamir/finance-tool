@@ -12,7 +12,7 @@
 import { mostCommonRate, rateRange } from "@finance-tool/engine";
 import type { Bundle } from "./engine";
 import { p05Range, runTimeline } from "./engine";
-import type { DepositTerms, ParameterRecord, RuleRecord, ValueObject, WrapperId, WrapperRecord } from "@finance-tool/schema";
+import type { DepositTerms, ParameterRecord, RuleRecord, ValueObject, ProductId, ProductRecord } from "@finance-tool/schema";
 import type { AccountBank } from "./guide-signature";
 import { buildInstrumentTerms, loadDepositTerms, loadFunds } from "./instruments.server";
 import { loadFees } from "./data.server";
@@ -183,8 +183,8 @@ export function withPublishedRate(p05: ParameterRecord, rate: ValueObject): Para
   return { ...p05, inputs: { ...inputs, cash_rate: rate } } as unknown as ParameterRecord;
 }
 
-export function familyOf(id: WrapperId): "provident" | "deposit" | "securities" | "makam" | "bond" | null {
-  const map: Partial<Record<WrapperId, "provident" | "deposit" | "securities" | "makam" | "bond">> = {
+export function familyOf(id: ProductId): "provident" | "deposit" | "securities" | "makam" | "bond" | null {
+  const map: Partial<Record<ProductId, "provident" | "deposit" | "securities" | "makam" | "bond">> = {
     "kupat-gemel-lehashkaa": "provident",
     "keren-hishtalmut": "provident",
     "bank-deposit": "deposit",
@@ -207,7 +207,7 @@ export type InstrumentFamily = "deposit" | "securities" | "makam" | "bond";
  * values); the rules the run may read are kept, so the browser can run it again for any entered value.
  */
 export function buildInstrumentBundle(
-  record: WrapperRecord,
+  record: ProductRecord,
   family: InstrumentFamily,
   p05: ParameterRecord,
   allRules: Record<string, RuleRecord>,
@@ -235,7 +235,11 @@ export function buildInstrumentBundle(
   const ceiling = common ? common.ceiling : published?.ceiling;
   const runP05 = rate ? withPublishedRate(p05, rate) : p05;
   const terms = ceiling && built.terms.deposit ? { ...built.terms, deposit: { ...built.terms.deposit, balanceCeiling: ceiling.value as number } } : built.terms;
-  const feeValues = Object.fromEntries(Object.entries({ ...built.feeValues, ...(ceiling ? { balanceCeiling: ceiling } : {}) }).map(([k, v]) => [k, ownOf(v, k)]));
+  // the current account runs on no single bank (F-85): the record P-05 names lends it nothing to show, so its linkage line, which only
+  // named that bank ("התנאים והתעריף בדוגמה הם של לאומי") and said a balance is not linked, is left out (founder, 2026-10-26)
+  const shown = common ? Object.fromEntries(Object.entries(built.feeValues).filter(([k]) => k !== "linkage")) : built.feeValues;
+  // a common ceiling is already the bank's that prints it (accountBanks), not the bank P-05 names
+  const feeValues = { ...Object.fromEntries(Object.entries(shown).map(([k, v]) => [k, ownOf(v, k)])), ...(ceiling ? { balanceCeiling: common ? ceiling : ownOf(ceiling, "balanceCeiling") } : {}) };
   const draft: Bundle = { record, p05: runP05, terms, feeValues, rules: Object.values(allRules), runDate: t };
   const probe = runTimeline(draft, { entered: {}, age: null });
   if (probe.kind === "failed") {

@@ -214,6 +214,21 @@
     "own_hosts": []
   },
   {
+    "id": "yalin-lapidot",
+    "name_he": "ילין לפידות",
+    "kind": "provident-manager",
+    "scope_names": [
+      {
+        "name": "Yalin Lapidot provident"
+      }
+    ],
+    "cma_legal_id": "513611509",
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [],
+    "note": "Added 2026-10-26 for the Yalin Lapidot brand page (D33): the managing company of its provident and study funds in the CMA data. The rule base names only the fund manager (yalin-funds)."
+  },
+  {
     "id": "leumi",
     "name_he": "בנק לאומי",
     "kind": "bank",

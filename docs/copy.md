@@ -102,6 +102,7 @@ The numbers match the briefs in `docs/flows.md` section 6.
 | Search placeholder | הדביקו שם של מוצר, מסלול או מונח |
 | Door 1 | להבין סוג של חיסכון |
 | Door 1, line | מה זה, כמה זה עולה ואיך זה ממוסה |
+| Door 1, link to the list (`home.door1.all`) | לכל סוגי החיסכון במדריך (2026-10-26: the door is no longer a link; it shows the P-10 kinds as pills, each named as its wrapper record names it, and this link) |
 | Door 2 | מה חברה מציעה לי |
 | Door 2, line | כל המוצרים והמסלולים שלה, עם הסבר לכל אחד |
 | Small link | מה האתר עוד לא מכסה |
@@ -128,7 +129,7 @@ Why A: the reader learns what the site does and the one thing that sets it apart
 
 | Key in `copy.ts` | Hebrew | Note |
 |---|---|---|
-| `home.quick.heading` | מה השאלה שלכם? | h2 of the card |
+| `home.quick.heading` | ~~מה השאלה שלכם?~~ מה המטרה שלכם? | h2 of the card (founder 2026-10-26: the card sets a goal, so it asks for the goal) |
 | `home.quick.amountNow` | יש לכם היום | field label; ₪ |
 | `home.quick.monthly` | ובכל חודש | field label; ₪ |
 | `home.quick.years` | כמה שנים עד שתצטרכו את הכסף | field label, in place of the goal form's "שנים עד המטרה" |
@@ -150,7 +151,7 @@ Why A: the reader learns what the site does and the one thing that sets it apart
 | `home.quick.needAmount` | הזינו סכום: היום או בכל חודש. | under the button when no sum above zero is typed |
 | `home.quick.line` | הכול נשמר במכשיר הזה. גיל, שכר ותשואה אפשר להוסיף בתוצאה, אם תרצו. | `text-xs muted` under the button |
 | `home.quick.allFields` | לכל השדות | quiet link to the full goal form |
-| `home.quick.another` | שאלה נוספת | the closed disclosure under the saved-goal strip; adds a second goal (D12) |
+| `home.quick.another` | ~~שאלה נוספת~~ מטרה נוספת (2026-10-26) | the closed disclosure under the saved-goal strip; adds a second goal (D12) |
 | `r2.strip.blank · fill · savedAll` | עוד לא מולאה · למילוי · נשמרו במכשיר הזה | added 2026-10-25: the first page's goal rows, a goal that holds nothing yet, and the line under several rows |
 | `r2.result.horizonDefaulted.before / mid / after / change` | לא ידעתם כמה שנים, ולכן ההשוואה רצה על {n} שנים, נקודת ההתחלה של ״{preset}״. לשנות | note under the result's headline when the years came from the preset; {n} a site-parameter `Num`; "לשנות" opens the assumptions at the years. Same pattern as `employmentInferred` |
 | `r2.result.horizonHonest.cannot` | האתר לא קובע אם {years} שנים מספיקות למניות: אין לו תשואה צפויה ואין לו נתון על ירידות. | product mode, when the years are below P-04's equity minimum; the site says what it does not know (D9, D11) |
@@ -246,7 +247,8 @@ Why "למי ששלח לכם את האתר": every friend reached the site throug
 
 | Key in `copy.ts` | Hebrew | Note |
 |---|---|---|
-| `guide.headline.afterNominal` | אחרי דמי ניהול ומס, בשקלים של העתיד | the headline's tail when the switch is on future shekels |
+| `guide.headline.afterBoth` · `afterTax` · `afterFees` · `real` · `nominal` | אחרי דמי ניהול ומס · אחרי מס · אחרי דמי ניהול · בכסף של היום · בשקלים של העתיד | the headline's tail (changed 2026-10-26, founder): it names only the parts the run has, then the value mode. Was one string "אחרי דמי ניהול ומס, בשקלים של העתיד" and its real twin, which named fees and tax on a current account that has neither |
+| `guide.editSlot` | שינוי של | spoken name of the pencil beside a number the reader sets in the example sentence, before the field's name (kit `InputSlot`, 2026-10-26) |
 | `guide.modeLabel` | אופן הצגת הסכומים | screen-reader name of the real / nominal switch. Was "מטבע ההצגה": the switch is not about a currency |
 | `guide.feeNoteOther` | הסכומים בפועל נקבעים אצל הגורם המציע. כאן מופיעים סוגי העלויות, ותקרה כשיש תקרה בחוק. | the fee-table note for a product that is not a provident fund (the provident note is above) |
 | `guide.generalTermsLabel` | מונחים כלליים | disclosure under the term table |
@@ -1887,6 +1889,45 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 - **"מה חותמים / מה לצפות"** as the two labelled lines of a step: product 3.7 Out names exactly these two things for every step; the labels make them scannable.
 - **Added 2026-10-24** (the build's strings, folded the same day): **"כמה עולה המעבר"** for the cost block, the question a person asks (not "מה עולה"). **"הפקדה אחת בכל חודש של השנה"** says A-28's twelve deposits without a digit. **"להשוות אליו · ביטול ההשוואה"** as infinitive and noun, like every other button. **"הכללים שהחישוב נשען עליהם"** mirrors 6.2's "הכללים שההשוואה נשענת עליהם". **"מחיסכון · מהפקדה"** in the provident listing, the glossary's words, never "מצבירה".
 
+### 8.7 Brands: a group's companies as one (D33, 2026-10-26)
+
+The founder, 2026-10-26: someone browsing the companies wants a company's products, not its legal structure. A group's managing company, broker and fund manager are one row and one page, under the name people use (`data/sources/brands.json`).
+
+| Where | Hebrew |
+|---|---|
+| Companies list, first heading | בתי השקעות |
+| Companies list, a brand's quiet line | its product kinds, joined with " · ": the CMA classifications, then קרנות סל · קרנות מחקות · קרנות כספיות, then חשבון השקעות |
+| Search, a brand's row line | בית השקעות |
+| Brand page, lede without CMA tracks | כל מה שהחברה מציעה, כל סוג מוצר תחת כותרת משלו. |
+| Brand page, the companies line | כולל את החברות: `{שם חוקי}` · `{שם חוקי}` |
+| Brand page, list heading | כל המוצרים של `{שם}` |
+| Fund groups | קרנות סל · קרנות מחקות · קרנות כספיות · קרנות נאמנות |
+| Fund group count | קרן אחת · שתי קרנות · `{מספר}` קרנות |
+| Fund group note | רק הקרנות שהאתר אסף עליהן דוח, לא כל הקרנות של החברה. דמי הניהול לפי הדוח של כל קרן. |
+| Fund row, what it follows (link to the index's guide page, `/exposure/<index>` since 2026-10-26, or the money-market guide) | עוקבת אחרי `{מדד}` · קרן כספית |
+
+The fund row's other words (מנהלת הקרן, מספר נייר, בדף הקרן במאיה, the three fee names, לא נאסף) are the index page's (`invest.funds` in `site/app/copy.ts`).
+
+### 8.8 Stock exposure of a track (D34, 2026-10-26)
+
+The founder, 2026-10-26: the company page's last column shows something other than the goal fit, and no goal UI on the company and track pages. The figure is F-87, computed; the words are `company.stock` in `site/app/copy.ts`.
+
+| Where | Hebrew |
+|---|---|
+| Company page, column heading | חשיפה בסוף `{חודש שנה}` |
+| Beside the rings, each with its colour dot (no legend above the table) | מניות `{אחוז}` · מט״ח `{אחוז}` |
+| Track page, row labels | חשיפה למניות בסוף `{חודש שנה}` · חשיפה למט״ח בסוף `{חודש שנה}` |
+| A track that did not report the amounts; one that reported assets of 0 | לא דווח · אין נכסים |
+| The sheet, the note on every share | לפי דיווח המסלול לרשות שוק ההון. הרשות לא מפרסמת אם החשיפה כוללת נגזרים או את מה שבתוך קרנות שהמסלול מחזיק, ולכן היא יכולה להיות גבוהה מ־100%. |
+| The sheet, what the figure is | החלק מנכסי המסלול שחשוף לשוק המניות בסוף `{חודש שנה}` · החלק מנכסי המסלול שחשוף למטבע חוץ בסוף `{חודש שנה}` |
+| The sheet, formula names (F-87, F-88) | החלק מנכסי המסלול שחשוף למניות · החלק מנכסי המסלול שחשוף למטבע חוץ |
+| The sheet, the inputs | החשיפה לשוק המניות · החשיפה למטבע חוץ · סך נכסי המסלול |
+| The unit of the regulator's amounts | `{מספר}` מיליון ₪ |
+
+Fee cell and labels (D36, the same day): header "דמי ניהול, ממוצע `{שנה}`"; each cell "`{אחוז}` מהחיסכון" over "`{אחוז}` מההפקדות" (phone: "דמי ניהול, ממוצע: `{אחוז}` מהחיסכון `{אחוז}` מההפקדות"); under the table "התקרה בחוק: `{אחוז}` מהחיסכון, `{אחוז}` מההפקדות" and "בנוסף לדמי הניהול יורדות מהקופה הוצאות ישירות (עמלות מסחר, משמורת ועוד), שלא מופיעות כאן: הן נראות בתשואה, לא כשורה בחשבון." with the PF-10 chip; labels "חדש" · "לעובדי סקטור מסוים" · "לעובדי גוף מסוים" beside "ברירת המחדל".
+
+Removed the same day with the fit mark on these pages: the row mark (מתאים · לא מתאים · אין כלל לסיווג הזה, "התאמה למטרה:") and the strip's "ההתאמה לפי המטרה השמורה:" there; the workbench keeps them (`docs/roadmap.md`, "Not final").
+
 ## 9. Release 5 screens
 
 Added 2026-10-24 for the briefs in `docs/flows.md` section 18 and the handoff in `docs/design-spec.md` sections 21 to 25. Same voice and conventions as section 1: plural imperative or impersonal, no typed figures (every `{…}` is a value object with its state), names as the source writes them, codes after the words. Exposure names are the records' `names.he[0]` (מזומן שקלי · מק"מ · אג"ח ממשלתית לא צמודה · אג"ח ממשלתית צמודה · מדד S&P 500 · מדד ת"א-125 · מסלול כללי) and their one-line explanations are the records' `one_line_he`, never retyped here. Rule texts render from the rule base with their chips. Status: **draft** (2026-10-24), to be settled by the founder as sections 3, 6, 7 and 8 were. Every wording choice is "chosen 2026-10-24, revisable"; section 9.7 says why.
@@ -2100,7 +2141,7 @@ Removed 2026-10-24 (D24): the page and its strings (`r5.changes`) are gone from 
 | Counts line, whole log | מאז תחילת היומן, `{תאריך}` |
 | Precise-test line | האם שינוי נגע להשוואה ששמרתם, בודקים בעמוד ההשוואה. |
 | Group headings | משפיע על דירוגים · לא משפיע על דירוגים |
-| Collection names (by file key) | rules: כללים · parameters: פרמטרים · fees: תעריפונים · terms/deposits: תנאי פיקדונות · terms: מונחים · dimensions: מימדים לבדיקה · catalog: קטלוג · funds: רשומות קרנות · series: סדרות · instruments/wrappers: רשומות מוצרים · instruments/exposures: רשומות חשיפות · cma: נתוני רשות שוק ההון · site/content: תוכן האתר · site/content/guide: עמודי המדריך · il-finance: מאגר הכללים |
+| Collection names (by file key) | rules: כללים · parameters: פרמטרים · fees: תעריפונים · terms/deposits: תנאי פיקדונות · terms: מונחים · dimensions: מימדים לבדיקה · catalog: קטלוג · funds: רשומות קרנות · series: סדרות · instruments/wrappers: רשומות מוצרים · instruments/securities: רשומות ניירות ערך · instruments/exposures: רשומות חשיפות · cma: נתוני רשות שוק ההון · site/content: תוכן האתר · site/content/guide: עמודי המדריך · il-finance: מאגר הכללים |
 | Columns | תאריך · מה · שדה · היה · עכשיו · למה |
 | Values | לא היה · הוסר · פירוט |
 | Reason label (screen-reader name) | הסיבה כפי שנרשמה ביומן |

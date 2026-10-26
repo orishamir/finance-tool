@@ -232,6 +232,7 @@
                     "type": "string",
                     "enum": [
                       "nis",
+                      "nis_millions",
                       "usd",
                       "eur",
                       "pct",
@@ -426,6 +427,7 @@
                     "type": "string",
                     "enum": [
                       "nis",
+                      "nis_millions",
                       "usd",
                       "eur",
                       "pct",

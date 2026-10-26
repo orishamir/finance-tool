@@ -1,5 +1,22 @@
 {
   "id": "government-bond",
+  "held_as": "direct",
+  "held_in": {
+    "wrapper_ids": [
+      "brokerage-account",
+      "ira-hishtalmut",
+      "ira-provident"
+    ],
+    "rule_ids": [
+      "GOV-21",
+      "GOV-10",
+      "GOV-17",
+      "BRK-01",
+      "IRA-11",
+      "TXK-16"
+    ],
+    "text": "a security held directly in a securities account at a bank or a TASE member: a tradable series is bought on TASE on any trading day, and sales to the public in the issue auctions go through banks and TASE members (GOV-21, GOV-10, GOV-17, BRK-01). A self-directed provident or study fund may hold it too (IRA-11), and there that wrapper's tax applies instead of this record's (TXK-16). Who may open the account, who supervises it and how client securities are kept are the account's (brokerage-account)."
+  },
   "names": {
     "he": [
       "איגרות חוב ממשלתיות",
@@ -28,15 +45,15 @@
     "update_rule": "fixed in law",
     "rule_ids": [
       "GOV-10",
-      "REG-13",
-      "BRK-04"
+      "REG-13"
     ],
     "state": "sourced",
-    "notes": "The issuer is the State of Israel through the Accountant General's Government Debt Management Unit; sales to the public go through banks and TASE members (GOV-10). Trading on TASE is under the ISA's supervision of the exchange (Securities Law ss.45, 51; REG-13). The account that holds the bonds is supervised separately: a bank by the Supervisor of Banks, a non-bank member by TASE (BRK-04). The site's copy has no name for the Finance Ministry as an issuer, so the regulator shown is the one over the market."
+    "notes": "The issuer is the State of Israel through the Accountant General's Government Debt Management Unit (GOV-10). Trading on TASE is under the ISA's supervision of the exchange (Securities Law ss.45, 51; REG-13). The securities account that holds the bonds has its own supervisor (brokerage-account). The site's copy has no name for the Finance Ministry as an issuer, so the regulator shown is the one over the market."
   },
   "fee_bases_allowed": [
     "trade",
-    "custody"
+    "custody",
+    "fixed_period"
   ],
   "fee_caps": {},
   "ceiling": null,
@@ -114,22 +131,18 @@
       "GOV-17",
       "GOV-18",
       "GOV-08",
-      "BRK-32",
+      "GOV-24",
       "BRK-16"
     ],
-    "text": "any individual with a securities account at a bank or at a non-bank TASE member (BRK-32), buying a tradable series on TASE on any trading day (GOV-17); the bank's fee types for the trade follow its tariff (BRK-16). Sales to the public in the weekly auctions go by law through banks, TASE members and other approved bodies (GOV-10), but how a retail order reaches an auction, with what minimum and fee, was not found (GOV open question 8). The issue unit is NIS 1,000 face value (GOV-11, GOV-15); the TASE trading unit was not readable (GOV open question 7). Designated series (ערד, ח\"ץ) are issued only to pension funds and insurers (GOV-18)"
+    "text": "whoever holds a securities account (held_in), buying a tradable series on TASE on any trading day (GOV-17), with a minimum order of NIS 10,000 in continuous trading (GOV-24); the bank's fee types for the trade follow its tariff (BRK-16). Sales to the public in the weekly auctions go by law through banks, TASE members and other approved bodies (GOV-10), but how a retail order reaches an auction, with what minimum and fee, was not found (GOV open question 8). The issue unit is NIS 1,000 face value (GOV-11, GOV-15). Designated series (ערד, ח\"ץ) are issued only to pension funds and insurers (GOV-18)"
   },
   "protection": {
     "rule_ids": [
       "GOV-02",
       "GOV-12",
-      "GOV-16",
-      "BRK-07",
-      "BRK-10",
-      "REG-16",
-      "REG-06"
+      "GOV-16"
     ],
-    "text": "principal and coupons are paid from the state's general revenues, an obligation of the state and not of the bank or broker (GOV-02). A CPI-linked series has no floor in the regulation text: if the index falls below the base index, principal and coupon are reduced (GOV-12; per-series floors unverified, GOV open question 6). A state buyback before maturity is at market price and the state's option (GOV-16). The paper sits in a securities account: at a non-bank TASE member client securities are held apart, in trust at the clearing house (BRK-07; REG open question 9); at a bank they are pooled through the nominee company and separated in its books (BRK-10, one bank's terms). What happens to client securities if a bank fails was not found (REG open question 10); a guarantee of a failing bank's deposits is discretionary (REG-06)"
+    "text": "principal and coupons are paid from the state's general revenues, an obligation of the state and not of the bank or broker (GOV-02). A CPI-linked series has no floor in the regulation text: if the index falls below the base index, principal and coupon are reduced (GOV-12; per-series floors unverified, GOV open question 6). A state buyback before maturity is at market price and the state's option (GOV-16). How the account keeps the bonds, and what happens if the bank or member fails, is the account's (brokerage-account)"
   },
   "dimensions": {
     "age-or-use-exemption": "covered",
@@ -159,8 +172,7 @@
     "GOV-OQ7",
     "GOV-OQ8",
     "TXI-OQ5",
-    "TXI-OQ9",
-    "REG-OQ10"
+    "TXI-OQ9"
   ],
-  "checked": "2026-10-23"
+  "checked": "2026-10-26"
 }

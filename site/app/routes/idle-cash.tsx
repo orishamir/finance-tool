@@ -73,7 +73,7 @@ const validateOffer = (n: number): ReactNode | null =>
   ) : null;
 
 type TermKey = "1" | "3" | "12" | "other";
-const termIds: TermKey[] = ["1", "3", "12", "other"];
+const termIds: TermKey[] = ["1", "3", "12"];
 const validateMonths = (n: number) => (!Number.isInteger(n) || n < 1 || n > maxTermMonths ? copy.term.errMonths : null);
 
 function Screen({ bundle, failed, rules, today, p03 }: { bundle: CompareBundle | null; failed: boolean; rules: Record<string, RuleRecord>; today: string; p03: unknown }) {
@@ -169,7 +169,7 @@ function Screen({ bundle, failed, rules, today, p03 }: { bundle: CompareBundle |
               </RawWatch>
               <div className="flex flex-col gap-2">
                 <span className="field-label">{copy.term.label}</span>
-                <ChoiceChips ids={termIds} labels={copy.term.options} value={termKey} onChange={(id) => setTermKey((k) => (k === id ? null : id))} ariaLabel={copy.term.label} wrap />
+                <ChoiceChips ids={termIds} labels={copy.term.options} value={termKey} onChange={(id) => setTermKey((k) => (k === id ? null : id))} ariaLabel={copy.term.label} wrap other={{ label: copy.term.options.other!, open: termKey === "other", onToggle: () => setTermKey((k) => (k === "other" ? null : "other")) }} />
                 {termKey === "other" && (
                   <RawWatch onRaw={watch("months", validateMonths)}>
                     <NumberField label={copy.term.otherLabel} unit="months" value={otherMonths} isEntered={otherMonths !== null} validate={validateMonths} onCommit={setOtherMonths} onReset={() => setOtherMonths(null)} optional inputMode="numeric" />

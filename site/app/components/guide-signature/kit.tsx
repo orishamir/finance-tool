@@ -9,7 +9,7 @@ import type { SignatureData } from "../../lib/guide-signature";
 import { useInputs } from "../../lib/inputs";
 import { computed, entered as enteredValue, weaker, type SiteValue, type Strength } from "../../lib/value";
 import { GapNote, SourceLine as SourceNote } from "../kit";
-import { IdText } from "../provenance";
+import { IdText, Num } from "../provenance";
 
 // ---------------------------------------------------------------- the guide inputs a visual starts from
 
@@ -97,4 +97,14 @@ export function inputSite(bundle: Bundle, key: P05Input, n: number, source: Inpu
 export interface VisualProps {
   data: SignatureData;
   today: string;
+}
+
+/** The rate most of the collected banks pay on a current account (F-85), in one sentence: the current-account page and the notes under the
+ *  daily money-market fund's table say it in the same words (2026-10-26). */
+export function CommonRateLine({ rate, count, of }: { rate: SiteValue; count: SiteValue; of: SiteValue }) {
+  return (
+    <>
+      {copy.common.commonRate.before} <Num value={rate} />: <Num value={count} /> {copy.common.commonRate.of} <Num value={of} /> {copy.common.commonRate.after}
+    </>
+  );
 }

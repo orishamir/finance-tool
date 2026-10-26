@@ -2,11 +2,12 @@
 // links out to the lists themselves. Server-only. A list ships only when its republishing terms are confirmed
 // (architecture 3.3; CAT-43: Maya's export may be downloaded for personal use, not republished), so until then the
 // page holds no list and says so.
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { fundListFile, type FundListFile } from "@finance-tool/schema";
 import { root } from "./data.server";
 import type { RefLink } from "./providers";
+import { readJsonCached, readTextCached } from "./read-cache.server";
 
 /** The latest file of each list whose terms are confirmed. `data/fund-lists/` does not exist yet. */
 export function loadFundLists(): FundListFile[] {
@@ -14,7 +15,7 @@ export function loadFundLists(): FundListFile[] {
   if (!existsSync(dir)) return [];
   const latest = new Map<string, FundListFile>();
   for (const f of readdirSync(dir).filter((x) => x.endsWith(".json")).sort()) {
-    const parsed = fundListFile.safeParse(JSON.parse(readFileSync(join(dir, f), "utf8")));
+    const parsed = fundListFile.safeParse(readJsonCached(join(dir, f)));
     if (!parsed.success) throw new Error(`data/fund-lists/${f}: ${parsed.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`).join("; ")}`);
     if (parsed.data.terms_of_use.status !== "confirmed") continue;
     const prev = latest.get(parsed.data.list);
@@ -27,7 +28,7 @@ export function loadFundLists(): FundListFile[] {
 export function refLink(file: string, heading: string, match: RegExp): RefLink | null {
   const path = join(root, ".claude/skills/il-finance/references", file);
   if (!existsSync(path)) return null;
-  const doc = readFileSync(path, "utf8");
+  const doc = readTextCached(path);
   const start = doc.indexOf(`### ${heading}`);
   if (start < 0) return null;
   const end = doc.indexOf("\n### ", start + 5);

@@ -23,7 +23,7 @@ function listTitle(r: Parameters<typeof ruleTitle>[0] & { il_finance_file: strin
 }
 
 export async function loader() {
-  const { loadChecklistRows, loadPinnedRules, loadRules, loadWrappers, today } = await import("../lib/data.server");
+  const { loadChecklistRows, loadPinnedRules, loadRules, loadProducts, today } = await import("../lib/data.server");
   const { ruleProducts, ruleScores } = await import("../lib/rule-uses.server");
   const { shelfOf } = await import("../lib/rule-shelves");
   const rules = loadRules();
@@ -55,7 +55,7 @@ export async function loader() {
   for (const r of light) for (const p of r.products) productCounts.set(p, (productCounts.get(p) ?? 0) + 1);
   // the wrappers by how many rules they carry, the most first (on a phone the row scrolls sideways, so the first chips matter); the two catch-alls last
   const productChips = [
-    ...loadWrappers()
+    ...loadProducts()
       .filter((w) => productCounts.has(w.id))
       .map((w) => ({ id: w.id, name: w.names.he[0] ?? w.id, n: productCounts.get(w.id)! }))
       .sort((a, b) => b.n - a.n || a.name.localeCompare(b.name, "he")),

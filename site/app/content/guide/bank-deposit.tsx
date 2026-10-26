@@ -5,6 +5,7 @@ import type { GuideContent } from "./types";
 import { IdRef, Num, RuleRef, RulesLine, Term, VariesByCompany } from "../../components/provenance";
 import { Link } from "react-router";
 import { Callout, Sentence } from "../../components/kit";
+import { shown } from "../../lib/review";
 
 export const content: GuideContent = {
   what: ({ figure }) => {
@@ -107,14 +108,17 @@ export const content: GuideContent = {
         פיקדון עדיף על קרן כספית יומית כשרוצים ריבית שנקבעת ביום ההפקדה: בקרן היומית התשואה לא ידועה מראש וזזה עם ריבית בנק ישראל, ובפיקדון בריבית קבועה היא ננעלת לכל התקופה.
       </p>
       <RulesLine ids={["BANK-15", "BANK-25", "MF-34", "MF-41"]} />
-      {/* NEW 2026-10-24 (scenario audit 7): the door from the guide to the page that checks a bank's offer */}
-      <p className="max-w-measure">
-        קיבלתם הצעה מהבנק?{" "}
-        <Link to="/idle-cash" className="text-link hover:underline">
-          בדקו אותה בעמוד כסף שיושב בעו״ש
-        </Link>
-        .
-      </p>
+      {/* NEW 2026-10-24 (scenario audit 7): the door from the guide to the page that checks a bank's offer; hidden while that
+          page is held for review (lib/review.ts) */}
+      {shown("/idle-cash") && (
+        <p className="max-w-measure">
+          קיבלתם הצעה מהבנק?{" "}
+          <Link to="/idle-cash" className="text-link hover:underline">
+            בדקו אותה בעמוד כסף שיושב בעו״ש
+          </Link>
+          .
+        </p>
+      )}
     </>
   ),
 };
