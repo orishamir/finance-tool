@@ -96,7 +96,7 @@ export const home = {
   holdingsSaved: { one: "החזקה אחת שמורה: {names}", many: "{n} החזקות שמורות: {names}" },
   // home question card 2026-10-24
   quick: {
-    heading: "מה השאלה שלכם?",
+    heading: "מה המטרה שלכם?", // was "מה השאלה שלכם?" (founder 2026-10-26: the card sets a goal)
     amountNow: "יש לכם היום",
     monthly: "ובכל חודש",
     years: "כמה שנים עד שתצטרכו את הכסף",
@@ -113,7 +113,7 @@ export const home = {
     needAmount: "הזינו סכום: היום או בכל חודש.",
     line: "הכול נשמר במכשיר הזה. גיל, שכר ותשואה אפשר להוסיף בתוצאה, אם תרצו.",
     allFields: "לכל השדות",
-    another: "שאלה נוספת",
+    another: "מטרה נוספת", // was "שאלה נוספת" (founder 2026-10-26)
     // NEW 2026-10-24 (scenario audit 7, 8, 4): doors for people who start from what they already hold, not from a purpose
     already: "יש לכם כבר…",
     alreadyDeposit: "פיקדון שמסתיים",
