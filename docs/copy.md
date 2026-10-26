@@ -102,6 +102,7 @@ The numbers match the briefs in `docs/flows.md` section 6.
 | Search placeholder | הדביקו שם של מוצר, מסלול או מונח |
 | Door 1 | להבין סוג של חיסכון |
 | Door 1, line | מה זה, כמה זה עולה ואיך זה ממוסה |
+| Door 1, link to the list (`home.door1.all`) | לכל סוגי החיסכון במדריך (2026-10-26: the door is no longer a link; it shows the P-10 kinds as pills, each named as its wrapper record names it, and this link) |
 | Door 2 | מה חברה מציעה לי |
 | Door 2, line | כל המוצרים והמסלולים שלה, עם הסבר לכל אחד |
 | Small link | מה האתר עוד לא מכסה |
