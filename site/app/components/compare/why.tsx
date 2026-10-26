@@ -19,6 +19,7 @@ import { IconAlert, IconCheck, IconExternal } from "../icons";
 import { Num, RuleRef, RulesLine, StrengthLabel } from "../provenance";
 import { strengthOf } from "../../lib/value";
 import type { ResultCtx } from "./ctx";
+import { shown } from "../../lib/review";
 
 const NameLink = ({ id, name }: { id: string; name: string }) => (
   <Link to={`/guide/${id}`} className="text-link font-medium hover:underline">
@@ -235,9 +236,11 @@ function NextStepLine({ ctx }: { ctx: ResultCtx }) {
     <p className="text-sm flex flex-wrap items-center gap-x-1.5" data-next-step>
       <Tpl t={t.text} vars={{ x: <Num value={row.cost} /> }} />
       {!top.cashLike && <span>{t.stocks}</span>}
-      <Link to={`/idle-cash?balance=${g.amountNow}&keep=${g.available}`} className="text-link min-h-9 inline-flex items-center hover:underline">
-        {t.link}
-      </Link>
+      {shown("/idle-cash") && (
+        <Link to={`/idle-cash?balance=${g.amountNow}&keep=${g.available}`} className="text-link min-h-9 inline-flex items-center hover:underline">
+          {t.link}
+        </Link>
+      )}
     </p>
   );
 }

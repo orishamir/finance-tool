@@ -3,6 +3,7 @@
 // (routes/search-texts.ts) holds the raw texts of rules, terms and parameters and only re-ranks and answers questions.
 import { aliasRows } from "./search-aliases";
 import { parseNumber } from "./format";
+import { shown } from "./review";
 
 // ------------------------------------------------------------------------------------------------ normalisation
 
@@ -100,7 +101,7 @@ export function highlightRanges(name: string, query: string): [number, number][]
 /** Phrases people type that name a task, not a product, with the page that does the task (scenario audit 2026-10-24, 7): shown as pages. */
 export const pageAliases: { href: string; line: string; names: string[] }[] = [
   { href: "/idle-cash", line: "כסף שיושב בעו״ש · בדיקת הצעה מהבנק", names: ["לחדש פיקדון", "פיקדון מסתיים", "הצעה מהבנק", "הצעה לחידוש פיקדון", "כסף שיושב בעו״ש"] },
-];
+].filter((a) => shown(a.href)); // a page held for review is not a result (lib/review.ts)
 
 // ------------------------------------------------------------------------------------------------ entries
 

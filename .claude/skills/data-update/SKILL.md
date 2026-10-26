@@ -3,7 +3,7 @@ name: data-update
 description: Collect or refresh the data from one source into data/, following docs/data-schema.md. Use it whenever the task is to fetch, add, update or re-check fees, tariffs, deposit terms, fund lists, fund details, CMA or Bank of Israel series or averages from a named source (for example "update the Leumi tariff", "refresh the BOI series", "collect the Psagot Trade fees", "pull this month's gemelnet"). Reads the official page or document, records a source URL and today's date on every value, never estimates, lists what was not found, and runs the data check at the end. Not for tax or financial rules (those come from il-finance), for UI, or for engine code.
 model: sonnet
 effort: high
-argument-hint: <source, e.g. "leumi tariff" or "boi edge policy rate">
+user-invocable: false
 ---
 
 # data-update

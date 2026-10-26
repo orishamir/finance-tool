@@ -276,6 +276,14 @@ Approval of this document fixes the release contents and order. It did not start
 
 ---
 
+## Held for review
+
+*Written 2026-10-26 (D32).* The founder holds these back until he has reviewed their design and UX. They are not linked from anywhere on the site, but their addresses work, with a note at the top saying they are waiting for review. The list is `site/app/lib/review.ts`; to bring an item back, remove it from there and record the change here.
+
+- **The idle-cash page (`/idle-cash`).** The founder finds the page "a bit weird". Held with it: the home card's "כרית ביטחון" chip and its "יש לכם כבר פיקדון" pill (both lead there), the menu item and home door "כסף שיושב בעו״ש", the comparison's next step and the deposit guide's "קיבלתם הצעה מהבנק?" line. **Before it returns:** the founder walks through it as a friend with money in a current account, and says what the page should answer and in what order; the page is reworked to that, keeping F-60 and the D20 rule (entered rates, no Bank of Israel numbers); then where a cushion on the home card should land is decided again.
+- **The holdings page (`/holdings`).** Held with it: the home door and menu item "מה כבר יש לכם", the home card's "יש לכם כבר קרן השתלמות" pill, and the links back to it from the fee page, the switching playbook (whose breadcrumb now leads to the product's guide page) and the transfer page. The fee page and the playbook still work when reached from elsewhere. **Before it returns:** the founder enters his own holdings from his annual statements and reviews the flow: adding a holding, the fit mark, consolidation, child savings, and the hand-off to the fee page and the playbook; what he changes is built, and the three side stores are merged into the saved state if he wants that first.
+- **Three "מה מייחד" visuals (D29):** the renewable money-market fund, the bank deposit and the provident fund for investing. Their pages keep the timeline open, as a page without a visual does; `?review` in the address shows the visual with a note. **Before they return:** for the provident fund for investing, the founder finds the comparison with the securities account unfair; the comparison is rebuilt so both sides carry the same assumptions (the same index and fund costs, the broker priced the way F-80 prices it, the tax at exit on both sides at the same age) and the founder agrees it is fair. For the renewable fund and the bank deposit, the founder decides what question each visual answers and approves a mockup, by the reading test of design-system 2.3.
+
 ## After release 5
 
 *Written 2026-10-24.*
