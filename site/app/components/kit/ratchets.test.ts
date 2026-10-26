@@ -18,7 +18,7 @@ const classStrings = (s: string) => [...s.matchAll(/className=(?:\{cx\()?["'`]([
 
 // Today's leftovers (2026-10-26), per file.
 const PILL: Record<string, number> = {
-    "components/compare/quick-goal.tsx": 4,
+    "components/compare/quick-goal.tsx": 2,
     "components/compare/strip.tsx": 1,
     "components/exposure-mode/chart.tsx": 2,
     "components/exposure-mode/fields.tsx": 2,

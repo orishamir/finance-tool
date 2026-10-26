@@ -13,7 +13,7 @@ import { presetFor, purposeIds, quickFields, quickGoalPlan, type PurposeId, type
 import { Tpl } from "../exposure-mode/tpl";
 import { RawWatch } from "../holdings/fields";
 import { Num } from "../provenance";
-import { Button, Card, ChoiceChips, cx, flushPendingFields, NumberField } from "../kit";
+import { Button, Card, ChipList, ChoiceChips, cx, flushPendingFields, NumberField } from "../kit";
 import type { Range } from "./goal-form";
 
 export interface QuickGoalCardProps {
@@ -126,14 +126,21 @@ export function QuickGoalCard({ bounds, presets, meta, today, mode, className }:
           <span className="field-label">{copy.quick.purposeLabel}</span>
           {/* wraps on a phone too: the first question shows all its answers (two of seven scrolled out of sight before) */}
           <ChoiceChips ids={purposeIds} labels={copy.quick.purposes} value={purpose} onChange={(id) => setPurpose((p) => (p === id ? null : id))} ariaLabel={copy.quick.purposeLabel} wrap />
-          <div className="-mx-4 px-4 md:mx-0 md:px-0 flex items-center gap-2 overflow-x-auto md:flex-wrap md:overflow-visible pb-1 scrollbar-none">
-            <span className="text-sm text-muted-foreground shrink-0">{copy.quick.already}</span>
-            <Link to="/idle-cash" className="sec-chip !min-h-8 !px-3 border border-border bg-card hover:bg-accent shrink-0">
-              {copy.quick.alreadyDeposit}
-            </Link>
-            <Link to="/holdings" className="sec-chip !min-h-8 !px-3 border border-border bg-card hover:bg-accent shrink-0">
-              {copy.quick.alreadyStudyFund}
-            </Link>
+          {/* the kit's link pills, wrapping like the purposes above: as a sideways row of 32 px pills the second was cut at the
+              card's edge on a phone (2026-10-26) */}
+          <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-3">
+            <span className="text-sm text-muted-foreground shrink-0" aria-hidden="true">
+              {copy.quick.already}
+            </span>
+            <ChipList
+              heading={copy.quick.already}
+              headingHidden
+              items={[
+                { id: "deposit", label: copy.quick.alreadyDeposit, href: "/idle-cash" },
+                { id: "study-fund", label: copy.quick.alreadyStudyFund, href: "/holdings" },
+              ]}
+              value={null}
+            />
           </div>
         </div>
         {/* a field row (app.css): the boxes line up even where a label wraps (2026-10-24 night, the founder's screenshot); the
