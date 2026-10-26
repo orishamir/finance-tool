@@ -46,8 +46,11 @@ export interface ProvenanceData {
   formulas?: Record<string, { name: string; parameters: string[] }>;
   /** Per id a card on /parameters answers to: `P-01` to itself, an `A-01` that is an input of a card to that card. PageShell fills it for every page. */
   parameters?: Record<string, string>;
-  /** Per open question (`TX2 OQ6`): from data/open-questions.json once it exists; the question sheet shows these fields when the id is here. */
-  openQuestions?: Record<string, { title_he?: string; status_he?: string; blocks_he?: string }>;
+  /**
+   * Per open question (`TX2 OQ6`), from data/open-questions.json: the root loader fills it for every page (PageShell), as `parameters`.
+   * `status` and `closed_on` make a closed question's chip open the closure wherever it appears; the sheet shows the Hebrew lines.
+   */
+  openQuestions?: Record<string, { status?: "open" | "narrowed" | "closed"; closed_on?: string; title_he?: string; status_he?: string; blocks_he?: string }>;
   /** Per source host, the company's Hebrew name (`data/sources/publishers.json`); PageShell fills it for every page. */
   publishersHe?: Record<string, string>;
 }
@@ -286,7 +289,9 @@ export function idKind(id: string): IdKind | null {
 /**
  * One chip for any id the site shows (2026-10-26): a rule opens its card, a formula its sheet, an open question its sheet,
  * a parameter goes to its card on the parameters page. The ID is LTR with a slashed zero and a 44px tap area.
- * - `closedOn`: a question that was closed on that date; the chip looks the same, its sheet says it was closed.
+ * - `closedOn`: a question that was closed on that date; the chip looks the same, its sheet says it was closed. Since 2026-10-26 the
+ *   status and date also come from the page's `openQuestions` (data/open-questions.json), so a closed question shows as closed
+ *   without the prop.
  * - `asLabel`: the id as a label that does nothing (a parameter's own card, which a link would only point back at).
  * An empty id renders nothing; an id that is no kind, or an `A-nn` no card has, renders as plain text.
  */
@@ -312,7 +317,9 @@ export function IdRef({ id, className, closedOn, asLabel }: { id: string; classN
     );
   }
   const aria = kind === "rule" ? `${ruleCopy.title} ${id}` : kind === "formula" && id.startsWith("A-") ? `${copy.idRef.howComputed} ${id}` : `${copy.idRef[kind as "formula" | "question"]} ${shown}`;
-  const item: Item = kind === "question" ? { kind: "question", id: shown, ...(closedOn ? { closedOn } : {}) } : { kind: kind as "rule" | "formula", id: shown };
+  const known = kind === "question" ? questionOf(data, shown) : undefined;
+  const closed = closedOn ?? (known?.status === "closed" ? known.closed_on : undefined);
+  const item: Item = kind === "question" ? { kind: "question", id: shown, ...(closed ? { closedOn: closed } : {}) } : { kind: kind as "rule" | "formula", id: shown };
   return (
     <button type="button" className={cx("rule-chip", className)} onClick={(e) => open(item, e.currentTarget)} aria-label={aria}>
       <bdi dir="ltr" className="whitespace-nowrap">{shown}</bdi>
@@ -564,18 +571,28 @@ function FormulaSheet({ id, data, headId }: { id: string; data: ProvenanceData; 
 }
 const METHOD_URL = "https://github.com/orishamir/finance-tool/blob/main/docs/method.md";
 
-/** An open question's sheet: what the term means on the site, and its title, status and what it blocks once data/open-questions.json has the id. */
+/** A question's entry in the page's `openQuestions`, by either spelling of its code (`TX2 OQ6`, `TX2-OQ6`). */
+function questionOf(data: ProvenanceData | null, id: string) {
+  return data?.openQuestions?.[id.replace("-OQ", " OQ")] ?? data?.openQuestions?.[id];
+}
+
+/**
+ * An open question's sheet: its title, status and what it blocks from data/open-questions.json, then what an open question means on
+ * the site. A closed one (from the data, or `closedOn` from the not-covered page) says when it closed and blocks nothing.
+ */
 function QuestionSheet({ id, closedOn, data, headId }: { id: string; closedOn?: string; data: ProvenanceData; headId: string }) {
-  const q = data.openQuestions?.[id] ?? data.openQuestions?.[id.replace(" OQ", "-OQ")];
+  const q = questionOf(data, id);
+  const status = closedOn ? undefined : (q?.status_he ?? (q?.status ? copy.questionSheet.statuses[q.status] : undefined));
+  const blocks = closedOn ? undefined : q?.blocks_he;
   return (
     <div className="flex flex-col gap-3">
       <h2 id={headId} className="text-lg font-semibold">
         {q?.title_he ?? copy.idRef.question} <bdi dir="ltr" className="slashed-zero text-muted-foreground text-base">{id}</bdi>
       </h2>
-      {(q?.status_he || q?.blocks_he) && (
+      {(status || blocks) && (
         <dl className="sheet-dl">
-          {q.status_he && <Row label={copy.questionSheet.status}>{q.status_he}</Row>}
-          {q.blocks_he && <Row label={copy.questionSheet.blocks}>{q.blocks_he}</Row>}
+          {status && <Row label={copy.questionSheet.status}>{status}</Row>}
+          {blocks && <Row label={copy.questionSheet.blocks}>{blocks}</Row>}
         </dl>
       )}
       {closedOn ? (

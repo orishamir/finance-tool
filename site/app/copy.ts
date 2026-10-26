@@ -293,6 +293,8 @@ export const provenance = {
     closed: "השאלה הזאת נסגרה ב־{date}. היא כבר לא עוצרת שום דבר באתר.",
     status: "מצב",
     blocks: "מה היא עוצרת",
+    // 2026-10-26: the status line, from data/open-questions.json (a closed one says its date in `closed` instead)
+    statuses: { open: "פתוחה", narrowed: "פתוחה בחלקה: חלק ממנה כבר נענה" } as Record<string, string>,
   },
   entered: { line: "הזנתם את הערך הזה.", instead: "במקום:" },
   // 2026-10-25: `more` folds the parameter file's general line away from the clicked number's own line

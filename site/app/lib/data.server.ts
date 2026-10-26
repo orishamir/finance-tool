@@ -7,6 +7,7 @@ import {
   dimensionId,
   dimensionRecord,
   feesSnapshot,
+  openQuestionsFile,
   parameterRecord,
   ruleRecord,
   termRecord,
@@ -300,6 +301,23 @@ export function loadFormulaParameters(): Record<string, string[]> {
 export function loadPublishersHe(): Record<string, string> {
   const rows = JSON.parse(readFileSync(join(root, "data/sources/publishers.json"), "utf8")) as Record<string, { publisher_he?: string }>;
   return Object.fromEntries(Object.entries(rows).flatMap(([host, r]) => (r.publisher_he ? [[host, r.publisher_he]] : [])));
+}
+
+/** What a question sheet knows about an open question, by its code (`TX2 OQ6`): its status, the closing date, and its Hebrew lines. */
+export type OpenQuestionView = { status: "open" | "narrowed" | "closed"; closed_on?: string; title_he?: string; blocks_he?: string };
+
+/**
+ * data/open-questions.json (data-schema 3.15) for every page's sheets, through the root loader (2026-10-26). Only the questions a
+ * sheet has something to say about: a closed one (its chip shows the closure wherever it appears) and one with Hebrew lines (every
+ * question the site names). Any other code opens the sheet's general lines, which are true of an open question.
+ */
+export function loadOpenQuestions(): Record<string, OpenQuestionView> {
+  const out: Record<string, OpenQuestionView> = {};
+  for (const q of readJson(join(root, "data/open-questions.json"), openQuestionsFile)) {
+    if (q.status !== "closed" && !q.title_he && !q.blocks_he) continue;
+    out[q.id] = { status: q.status, ...(q.closed_on ? { closed_on: q.closed_on } : {}), ...(q.title_he ? { title_he: q.title_he } : {}), ...(q.blocks_he ? { blocks_he: q.blocks_he } : {}) };
+  }
+  return out;
 }
 
 /** Which card on /parameters each id answers to: `P-01` to itself, and an `A-01` that a card holds as an input key to that card. */
