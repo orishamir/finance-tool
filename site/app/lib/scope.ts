@@ -2,6 +2,7 @@
 // the record carries its scope and the companies it names (extracted from the rule base), and the root loader gives every page the
 // link of each company (`ProvenanceData.companies`).
 import type { RuleRecord } from "@finance-tool/schema";
+import { scopeWords } from "../copy";
 
 export type Scope = RuleRecord["scope"];
 
@@ -52,7 +53,7 @@ export function companyTermsHref(rule: Pick<RuleRecord, "id" | "scope_institutio
 
 /**
  * The chip's words for a record that is not general (spec §4: the chip shows the company's name, not a code): the page's own company
- * when the record names it, else the first company, with "ועוד" and the count of the others. Null when it names none (the code stays).
+ * when the record names it, else the first company, with "and N more" (copy) and the count of the others. Null when it names none (the code stays).
  */
 export function chipName(rule: Pick<RuleRecord, "scope_institutions">, current: string | undefined, more: (n: number) => string): string | null {
   const list = scopeCompanies(rule);
@@ -61,10 +62,10 @@ export function chipName(rule: Pick<RuleRecord, "scope_institutions">, current: 
   return list.length === 1 ? first.name_he : `${first.name_he} ${more(list.length - 1)}`;
 }
 
-/** Hebrew list of names: "א", "א ו־ב" written "א וב", "א, ב וג" (copy.md 10.4: commas, and ו׳ only before the last). */
+/** A Hebrew list of names (copy.md 10.4): commas, and the conjunction only before the last. */
 export function joinNames(names: readonly string[]): string {
   if (names.length <= 1) return names[0] ?? "";
   const last = names[names.length - 1]!;
-  // a maqaf between ו and a Latin name (copy.md 10.4: ו־S&P), none before a Hebrew one
-  return `${names.slice(0, -1).join(", ")} ${/^[א-ת]/.test(last) ? "ו" : "ו־"}${last}`;
+  // a maqaf between the conjunction and a Latin name (copy.md 10.4), none before a Hebrew one
+  return `${names.slice(0, -1).join(", ")} ${/^[\u05D0-\u05EA]/.test(last) ? scopeWords.and.hebrew : scopeWords.and.latin}${last}`;
 }

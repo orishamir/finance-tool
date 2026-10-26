@@ -2782,6 +2782,8 @@ export const scopeWords = {
   /** The rules page: company terms are not listed there. */
   rulesLine: { before: "מה שנמצא רק במסמכים של חברה מסוימת מופיע בעמוד של אותה חברה, לא כאן.", link: "לרשימת החברות" },
   searchGroup: "אצל חברות מסוימות",
+  /** "and" before the last name of a list: joined to a Hebrew name, with a maqaf before a Latin one (copy.md 10.4). */
+  and: { hebrew: "ו", latin: "ו־" },
 } as const;
 
 /** Additions to the rule card (synthesis §3.3). */
