@@ -62,14 +62,13 @@ export const content: GuideContent = {
   use: ({ figure }) => {
     // D30: the cap after 21 is the law's (CS-18); each company's own rate is its term (CS-30), on the companies' pages
     const balanceCap = figure("CS-18", "balance_cap_after_21");
-    const depositCap = figure("CS-18", "deposit_cap_after_21");
     return (
     <>
       <p className="max-w-measure">
-        חיסכון שנפתח ממילא, ומי שלא צריך את הכסף עד שהילד מתבגר מרוויח ממנו פעמיים: הביטוח הלאומי משלם את <Term id="דמי ניהול">דמי הניהול</Term> עד גיל עשרים ואחת, והמענק האחרון ניתן רק למי שמחכה. אחרי גיל עשרים ואחת דמי הניהול יורדים מהחיסכון, עד התקרה שבתקנות: {balanceCap ? <Num value={balanceCap} /> : null} בשנה מהיתרה{depositCap ? <> ו־<Num value={depositCap} /> מכל הפקדה</> : null}. כמה גובה כל חברה בתוך התקרה, החברה קובעת. ההחלטות שלכם הן שתיים: האם להכפיל את ההפקדה מקצבת הילדים, ובאיזו רמת סיכון. בלי בחירה הכסף הולך למסלול הסיכון המוגבר.
+        חיסכון שנפתח ממילא, ומי שלא צריך את הכסף עד שהילד מתבגר מרוויח ממנו פעמיים: הביטוח הלאומי משלם את <Term id="דמי ניהול">דמי הניהול</Term> עד גיל עשרים ואחת, והמענק האחרון ניתן רק למי שמחכה. אחרי גיל עשרים ואחת דמי הניהול יורדים מהחיסכון. כל חברה קובעת שיעור משלה, עד התקרה שבתקנות{balanceCap ? <>: עד <Num value={balanceCap} /> בשנה מהיתרה</> : null}. ההחלטות שלכם הן שתיים: האם להכפיל את ההפקדה מקצבת הילדים, ובאיזו רמת סיכון. בלי בחירה הכסף הולך למסלול הסיכון המוגבר.
       </p>
       <p className="max-w-measure">
-        <VariesByCompany ids={["CS-30"]} lead="דמי הניהול אחרי גיל עשרים ואחת תלויים בחברה" />
+        <VariesByCompany ids={[{ rule: "CS-30", companies: ["harel", "altshuler-shaham"] }]} lead="דמי הניהול אחרי גיל עשרים ואחת תלויים בחברה" />
       </p>
       <RulesLine ids={["CS-04", "CS-18", "CS-13", "CS-07"]} />
     </>

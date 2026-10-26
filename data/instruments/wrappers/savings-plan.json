@@ -140,10 +140,22 @@
   "company_terms": {
     "liquidity-lockup": [
       "BPN-10",
-      "BANK-38"
+      {
+        "rule": "BANK-38",
+        "companies": [
+          "yahav",
+          "leumi"
+        ]
+      }
     ],
     "minimum": [
-      "BANK-38"
+      {
+        "rule": "BANK-38",
+        "companies": [
+          "yahav",
+          "leumi"
+        ]
+      }
     ]
   },
   "tier": 1,

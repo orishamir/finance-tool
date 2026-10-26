@@ -16,7 +16,7 @@ export const content: GuideContent = {
         <Term id="תחנת יציאה">תחנות היציאה</Term>, ממתי הן נספרות ומה מושכים בהן, נקבעים בהסכם של כל תוכנית.
       </p>
       <div className="max-w-measure flex flex-col gap-1">
-        <VariesByCompany ids={["BANK-34"]} lead="איזו ריבית היא העוגן תלוי בבנק" />
+        <VariesByCompany ids={[{ rule: "BANK-34", companies: ["leumi", "hapoalim", "yahav"] }]} lead="איזו ריבית היא העוגן תלוי בבנק" />
         <VariesByCompany ids={["BPN-10"]} lead="תחנות היציאה תלויות בבנק" />
       </div>
       <RulesLine ids={["BANK-28", "BANK-27", "BANK-25", "BANK-26"]} />

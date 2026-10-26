@@ -176,7 +176,13 @@
   },
   "company_terms": {
     "liquidity-lockup": [
-      "CS-29"
+      {
+        "rule": "CS-29",
+        "companies": [
+          "leumi",
+          "yahav"
+        ]
+      }
     ]
   }
 }

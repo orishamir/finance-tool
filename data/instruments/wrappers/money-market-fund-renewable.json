@@ -308,7 +308,15 @@
       }
     ],
     "fee-account": [
-      "BRK-48"
+      {
+        "rule": "BRK-48",
+        "companies": [
+          "ibi",
+          "excellence",
+          "altshuler-trade",
+          "psagot"
+        ]
+      }
     ]
   },
   "tier": 1,

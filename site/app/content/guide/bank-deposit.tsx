@@ -22,7 +22,7 @@ export const content: GuideContent = {
         </p>
         {/* D30: which rate is the anchor is each bank's own term (BANK-25 sets no anchor; BANK-34 holds three banks' definitions) */}
         <p className="max-w-measure">
-          <VariesByCompany ids={["BANK-34"]} lead="איזו ריבית היא העוגן תלוי בבנק" />
+          <VariesByCompany ids={[{ rule: "BANK-34", companies: ["leumi", "hapoalim", "yahav"] }]} lead="איזו ריבית היא העוגן תלוי בבנק" />
         </p>
         <RulesLine ids={["BANK-13", "BANK-14", "BANK-25", "BANK-26", "BANK-05"]} />
       </>

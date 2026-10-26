@@ -545,6 +545,11 @@ describe("scope", () => {
     const files = { "rules/cs-30.json": both, "sources/institutions.json": [harel, leumi] };
     expect(run({ ...files, "instruments/wrappers/child-savings-provident.json": wrapper(["harel"]) }).map((p) => p.message).join("\n")).not.toMatch(/is not listed at/);
     expect(run({ ...files, "instruments/wrappers/child-savings-provident.json": wrapper(["leumi"]) }).map((p) => p.message).join("\n")).toMatch(/company_terms.minimum: CS-30 is not listed at leumi/);
+    // a record that names several companies, cited by its bare id, would name them all: the entry must say which
+    const bare = run({ ...files, "instruments/wrappers/child-savings-provident.json": { company_terms: { minimum: ["CS-30"] } } }).map((p) => p.message).join("\n");
+    expect(bare).toMatch(/company_terms.minimum: CS-30 names 2 companies; write \{ "rule": "CS-30", "companies": \[\.\.\.\] \}/);
+    const single = run({ "rules/cs-30.json": { ...cs30, dimensions: ["minimum"], sources: [harelDoc] }, "sources/institutions.json": [harel], "instruments/wrappers/child-savings-provident.json": { company_terms: { minimum: ["CS-30"] } } }).map((p) => p.message).join("\n");
+    expect(single).not.toMatch(/names \d companies/);
   });
 
   it("lets an index page cite only the provider records named for it", () => {

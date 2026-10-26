@@ -144,8 +144,9 @@ export interface ScopeCounts {
  *    `filing_names`): a company's section lists only records from that company's own documents, so it would be listed nowhere;
  *  - the questions page rows and the "שווה לדעת" blocks (P-09) hold a rule that is not general;
  *  - a wrapper record cites a rule that is not general, or holds a value whose source is one company's document; its `company_terms`
- *    (a property each company sets) name records that are not general and carry that dimension, and an entry's `companies` are
- *    companies whose section lists the record;
+ *    (a property each company sets) name records that are not general and carry that dimension, an entry whose record names several
+ *    companies says which (`{ rule, companies }`: those whose own term on the property the record states), and an entry's
+ *    `companies` are companies whose section lists the record;
  *  - an exposure record cites a rule that is not general, other than the records `ownContextExposures` names for it (D31), each the
  *    index provider's own.
  * A record the rule base keeps that is not a rule (`notRules`) and is not general is cited only in the files its entry names: every
@@ -247,6 +248,8 @@ export function checkScope(ctx: { dataDir: string; ruleBase: RuleBaseIds }, rule
         if (!r) report(file, `company_terms.${dim}: ${id} has no record under data/rules/`);
         else if (r.scope === "general") report(file, `company_terms.${dim}: ${id} is general; cite it in rule_ids, company_terms holds companies' own terms`);
         else if (!(r.dimensions ?? []).includes(dim)) report(file, `company_terms.${dim}: ${id} does not carry the dimension ${dim}`);
+        // a record that names several companies rarely states the property for all of them: the entry names those it does (review, 2026-10-26)
+        else if (typeof ref === "string" && (r.scope_institutions ?? []).length > 1) report(file, `company_terms.${dim}: ${id} names ${(r.scope_institutions ?? []).length} companies; write { "rule": "${id}", "companies": [...] } with only those whose own term on ${dim} the record states`);
         else if (typeof ref !== "string" && registry.length > 0) {
           // the companies an entry names are among those whose section lists the record (their own documents say it)
           const listed = new Set(listedAt({ id: r.id, scope: r.scope ?? "" }, ownDocumentCompanies(r, byId)));

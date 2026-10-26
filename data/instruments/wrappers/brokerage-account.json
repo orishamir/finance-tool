@@ -329,14 +329,31 @@
           "fair"
         ]
       },
-      "BRK-42"
+      "BRK-42",
+      "BRK-40"
     ],
     "fee-account": [
-      "BRK-48"
+      {
+        "rule": "BRK-48",
+        "companies": [
+          "ibi",
+          "excellence",
+          "altshuler-trade",
+          "psagot"
+        ]
+      }
     ],
     "fee-fx": [
       "BRK-23",
-      "BRK-48",
+      {
+        "rule": "BRK-48",
+        "companies": [
+          "ibi",
+          "excellence",
+          "altshuler-trade",
+          "psagot"
+        ]
+      },
       "BRK-40",
       "BRK-42"
     ]
