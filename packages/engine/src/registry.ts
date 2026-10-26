@@ -18,7 +18,7 @@ import {
   makamPrice,
   socialContributions,
 } from "./formulas/holding-tax.ts";
-import { mostCommonRate } from "./formulas/account-interest.ts";
+import { mostCommonRate, rateRange } from "./formulas/account-interest.ts";
 import { annualToMonthly, contributions, cpiPath, crossRate, fxPath, monthlyInflation, realValue, taxYearOf } from "./formulas/time.ts";
 import { runBond } from "./ledgers/bond.ts";
 import { runChildSavings } from "./ledgers/child-savings.ts";
@@ -113,6 +113,7 @@ export const formulas = {
   "F-83": buildCandidateSet,
   "F-84": crossRate,
   "F-85": mostCommonRate,
+  "F-86": rateRange,
 } as const;
 
 /** Ledger runs, by the instrument family they model. */

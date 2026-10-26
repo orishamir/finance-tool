@@ -31,6 +31,7 @@ A new researcher for any item gets its brief plus the line "resume: read what's 
   - SW-43 should cite directive 448 version 4 (11/25);
   - the clearing-house regulations of 2012 (SW-18) are cited from an olaw.org.il scan of the gazette: find the gov.il copy (job 1 above can).
 - **Cash-products data**, branch `data-cash` (pushed, not merged; report `specs/2026-10-26-cash-data/report.md` on that branch).
+  - Its six deposit files (Hapoalim, Discount, Mizrahi-Tefahot, one-year fixed and prime) are on main since 2026-10-26: the money-market ladder shows the one-year fixed deposit as the range across the collected banks (F-86), linked to a per-bank list on the bank-deposit page (founder). The funds, bond auctions and the rest wait as below.
   - Meitav Trade's tariff was taken out of it on the founder's word; see 4.
   - Before merging:
     - decide a field for the renewing funds' expected net yield (2.81%, 2.75%);

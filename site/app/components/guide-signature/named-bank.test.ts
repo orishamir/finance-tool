@@ -8,6 +8,7 @@ import { GoalsProvider } from "../../lib/goal";
 import { buildGuidePage } from "../../lib/guide.server";
 import { InputsProvider } from "../../lib/inputs";
 import { ProvenanceProvider } from "../provenance";
+import { BankDepositVisual } from "./bank-deposit";
 import { MoneyMarketDailyVisual } from "./money-market-daily";
 import { SavingsPlanVisual } from "./savings-plan";
 
@@ -17,13 +18,26 @@ const render = (el: ReturnType<typeof createElement>) =>
 const text = (html: string) => html.replace(/<[^>]+>/g, "").replace(/\s+/g, " ");
 
 describe("one bank's rate is named where it is quoted", () => {
-  it("the ladder's deposit row names its bank", () => {
+  // 2026-10-26 (founder): the money-market page names no bank at all; its deposit row is the range across the collected banks (F-86),
+  // linked to the bank-deposit page, where each bank's rate stands on the line that names it
+  it("the ladder's deposit row is the range across the banks, names none and links to each bank's rate", () => {
     const sig = buildGuidePage("money-market-fund-daily")!.signature!;
     const html = render(createElement(MoneyMarketDailyVisual, { data: sig, today: "2026-10-26" }));
-    const rows = [...html.matchAll(/<li[\s\S]*?<\/li>/g)].map((m) => text(m[0]));
-    const deposit = rows.find((r) => r.includes("פיקדון לשנה"));
-    expect(deposit).toBeDefined();
-    expect(deposit).toContain("של לאומי");
+    const raw = [...html.matchAll(/<li[\s\S]*?<\/li>/g)].map((m) => m[0]).find((r) => text(r).includes("פיקדון לשנה"));
+    expect(raw).toBeDefined();
+    const row = text(raw!);
+    for (const bank of ["לאומי", "הפועלים", "דיסקונט", "מזרחי"]) expect(row).not.toContain(bank);
+    expect(row).toMatch(/1\.55%.*עד.*2\.25%/);
+    expect(row).toContain("הבנקים שנאספו");
+    expect(raw).toContain('href="/guide/bank-deposit#deposit-banks"');
+  });
+  it("the bank-deposit page lists each bank's one-year deposit at the anchor the ladder links to", () => {
+    const sig = buildGuidePage("bank-deposit")!.signature!;
+    const html = render(createElement(BankDepositVisual, { data: sig, today: "2026-10-26" }));
+    const list = /<section id="deposit-banks"[\s\S]*?<\/section>/.exec(html);
+    expect(list).not.toBeNull();
+    const t = text(list![0]);
+    for (const bank of ["לאומי", "הפועלים", "דיסקונט", "מזרחי"]) expect(t).toContain(bank);
   });
   it("the savings plan's one-off deposit sentence names its bank", () => {
     const sig = buildGuidePage("savings-plan")!.signature!;
