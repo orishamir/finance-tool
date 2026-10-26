@@ -4,34 +4,34 @@ Tables read: publishers.json yes, documents.json yes.
 
 ## Headline
 
-- Rules: 583; with sources: 583; unresolved (sources_missing_reason): 0
-- Entries: 1749; with locator 1463, locator_he 1262, quote 694, anchor 18, page 1403
-- Entries with title_he: 1633; with publisher_he: 1746; rules whose first source lacks publisher_he: 0
-- Rules with derived_from: 137
-- Strengths: primary 1405, primary-mirror 77, secondary 17, institution 250
+- Rules: 596; with sources: 596; unresolved (sources_missing_reason): 0
+- Entries: 1788; with locator 1487, locator_he 1284, quote 701, anchor 18, page 1425
+- Entries with title_he: 1664; with publisher_he: 1785; rules whose first source lacks publisher_he: 0
+- Rules with derived_from: 148; general rules with examples (companies' terms they point to): 6
+- Strengths: primary 1409, primary-mirror 81, secondary 17, institution 281
 - Rule strength realigned to its best source (primary/mirror pair only): 0
-- Kinds: regulator_page 160, circular 184, regulation 381, article 15, law 391, official_pdf 271, dataset 62, institution_doc 228, exchange_rules 25, other 23, form 9
+- Kinds: regulator_page 161, circular 184, regulation 383, article 15, law 392, official_pdf 275, dataset 62, institution_doc 259, exchange_rules 25, other 23, form 9
 
 ## Per rule base file
 
 | file | rules | entries | unresolved |
 |---|---|---|---|
-| bank-current-account-deposits.md | 23 | 65 | 0 |
+| bank-current-account-deposits.md | 26 | 79 | 0 |
 | bank-product-names.md | 1 | 4 | 0 |
-| brokerage-account.md | 39 | 100 | 0 |
+| brokerage-account.md | 41 | 109 | 0 |
 | child-savings.md | 25 | 101 | 0 |
-| etfs-and-index-funds.md | 61 | 155 | 0 |
+| etfs-and-index-funds.md | 63 | 163 | 0 |
 | government-bonds-and-makam.md | 24 | 68 | 0 |
 | ira-self-directed.md | 24 | 66 | 0 |
-| keren-hishtalmut.md | 27 | 66 | 0 |
+| keren-hishtalmut.md | 28 | 69 | 0 |
 | kupat-gemel-lehashkaa.md | 19 | 50 | 0 |
 | mutual-funds-and-money-market-funds.md | 38 | 109 | 0 |
-| pension-and-gemel-lekitzba.md | 39 | 130 | 0 |
+| pension-and-gemel-lekitzba.md | 41 | 132 | 0 |
 | provident-family-common.md | 29 | 77 | 0 |
-| regulators-and-protection.md | 19 | 39 | 0 |
+| regulators-and-protection.md | 20 | 40 | 0 |
 | savings-policies-and-executive-insurance.md | 2 | 8 | 0 |
-| switching-and-transfers.md | 59 | 163 | 0 |
-| tax-gemel-lehashkaa-ira-child.md | 18 | 65 | 0 |
+| switching-and-transfers.md | 60 | 164 | 0 |
+| tax-gemel-lehashkaa-ira-child.md | 19 | 66 | 0 |
 | tax-general.md | 14 | 47 | 0 |
 | tax-hishtalmut.md | 15 | 64 | 0 |
 | tax-insurance-and-amendment-190.md | 4 | 11 | 0 |
@@ -56,19 +56,20 @@ Tables read: publishers.json yes, documents.json yes.
 ## Most frequent document titles without title_he (title up to the locator)
 
 - 24 x חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)
+- 4 x MTF, דוח שנתי "MTF מחקה (MSCI World (4D" (5122569), 31.12.2025
+- 4 x מור, דוח שנתי "מור מחקה (4D)י NASDAQ 100" (5117585), 31.12.2025
 - 3 x רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024), קובץ Word
-- 3 x MTF, דוח שנתי "MTF מחקה (MSCI World (4D" (5122569), 31.12.2025
-- 3 x מור, דוח שנתי "מור מחקה (4D)י NASDAQ 100" (5117585), 31.12.2025
+- 3 x אי.בי.אי., דוח שנתי "אי.בי.אי. מחקה (4D)י Nasdaq 100" (5127766), 31.12.2025
+- 3 x תכלית, דוח שנתי "תכלית MSCI WORLD (4D) TTF" (5124573), 31.12.2025
+- 3 x MTF, דוח שנתי "MTF מחקה (Nasdaq 100 (4D" (5134531), 31.12.2025
+- 3 x אי.בי.אי., דוח שנתי "אי.בי.אי. מחקה (4D)י MSCI AC World" (5139605), 31.12.2025
 - 2 x אינטראקטיב ישראל: PRIIPs Regulation (KID)
 - 2 x hly.gov.il, ההבדלים בין חיסכון בקופת גמל לחיסכון בבנק
 - 2 x Nasdaq, "Nasdaq-100 factsheet" (data as of 09/30/2026)
 - 2 x הראל, דוח שנתי "הראל סל (4A) ת"א 35" (1148907), 30.6.2026
 - 2 x הראל, דוח שנתי "הראל מחקה (4A) ת"א 90" (5130638), 30.6.2026
 - 2 x הראל, דוח שנתי "הראל מחקה (4A) ת"א 35" (5130661), 30.6.2026
-- 2 x אי.בי.אי., דוח שנתי "אי.בי.אי. מחקה (4D)י Nasdaq 100" (5127766), 31.12.2025
-- 2 x תכלית, דוח שנתי "תכלית MSCI WORLD (4D) TTF" (5124573), 31.12.2025
-- 2 x MTF, דוח שנתי "MTF מחקה (Nasdaq 100 (4D" (5134531), 31.12.2025
-- 2 x אי.בי.אי., דוח שנתי "אי.בי.אי. מחקה (4D)י MSCI AC World" (5139605), 31.12.2025
+- 2 x קסם, דוח שנתי "קסם MSCI AC World (4A) ETF מנוטרלת דולר" (1147362), 31.12.2025
 - 2 x משרד האוצר (data.gov.il): נתוני החוב הממשלתי המקומי, הנפקת אג"ח סחירות בשוק המקומי
 - 2 x חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס"ה-2005, נוסח משולב (ויקיטקסט, mirror of the law)
 - 1 x EDGE dataflow INTEREST_DASH
@@ -106,7 +107,7 @@ Tables read: publishers.json yes, documents.json yes.
 - 1 x MSCI, "MSCI Index Calculation Methodology", September 2026
 - 1 x קסם, דוח שנתי "קסם (KTF (4A ת"א 35" (5124490), 30.6.2026
 - 1 x הראל, דוח שנתי "הראל סל (4A) MSCI AC World מנוטרלת דולר" (1150200), 31.12.2025
-- 1 x קסם, דוח שנתי "קסם MSCI AC World (4A) ETF מנוטרלת דולר" (1147362), 31.12.2025
+- 1 x קסם, דוח שנתי "קסם MSCI World (4A) ETF מנוטרלת דולר" (1147073), 31.12.2025
 - 1 x משרד האוצר (data.gov.il): הנפקת אג"ח סחירות בשוק המקומי, סדרה 1205145
 - 1 x בנק ישראל, EDGE: SECDWH
 - 1 x בנק ישראל, EDGE: רשימת זרימות הנתונים

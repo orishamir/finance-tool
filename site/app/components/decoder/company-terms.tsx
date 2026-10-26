@@ -105,8 +105,9 @@ export function NoPageCompanyTerms({ companies, none }: { companies: readonly { 
   useScrollToHash(hash, !!named && (named === noCompanyAnchor || opened.has(named)));
   if (companies.length === 0 && none.length === 0) return null;
   const toggle = (key: string) => (now: boolean) => setOpened((o) => { const n = new Set(o); if (now) n.add(key); else n.delete(key); return n; });
+  // two sections one after the other: the page's section gap between them
   return (
-    <>
+    <div className="flex flex-col gap-section">
       {companies.length > 0 && (
         <Section id={companyTermsAnchor} title={scopeWords.noPage.title} lead={scopeWords.noPage.line}>
           <div className="flex flex-col gap-3">
@@ -123,6 +124,6 @@ export function NoPageCompanyTerms({ companies, none }: { companies: readonly { 
           <Cards ids={none} />
         </Section>
       )}
-    </>
+    </div>
   );
 }
