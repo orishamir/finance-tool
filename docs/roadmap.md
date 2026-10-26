@@ -358,6 +358,14 @@ What continues, none of it a release:
   - **Search** has two groups.
   - **The validator** enforces all of this, file by file.
 
+- **Wrappers and securities (D6 amended, 2026-10-26, founder: "change D6").** Makam, government bonds and the two money-market funds are securities bought in a securities account, not wrappers. Their records moved to `data/instruments/securities/` with `held_in`; IDs, pages and saved keys stay. What changed for a person:
+  - the comparison prices makam and the government bond on the provider that leaves the goal the most, as it already did the account (F-80), with each provider's own lines for the class;
+  - makam at a non-bank member pays that member's custody line, and any account's monthly fee follows a security into the account (F-14, F-17); before, the makam run read neither;
+  - exposure mode no longer lists the securities account beside makam as a second way that never ran; the makam choice reads "מק״מ, קנייה ישירה בחשבון ניירות ערך";
+  - a security's guide page names the account it is bought in, and the account's page lists the securities bought in it; the account's eligibility, supervision and protection text is no longer copied into four records.
+
+  Research and the full list: `research/discovery/2026-10-26-wrappers-and-securities.md`.
+
 **What continues, in order:**
 
 1. **F-48, early pension withdrawal:** re-read TXP-18's official text, then build it.
@@ -379,4 +387,5 @@ What continues, none of it a release:
    - EUR-Lex;
    - the Supreme Court site;
    - and the link check's 43 links.
-6. **Unchanged from the list above:** tier-2 graduation, data growth, the quarterly tariff refresh and the founder's approvals.
+6. **Unchanged from the list above:** tier-2 graduation, data growth, the quarterly tariff refresh and the founder's approvals. Corporate bonds and REITs graduate as securities held in the securities account (D6 as amended 2026-10-26), not as wrappers.
+7. **Securities in the account, what is left (D6, 2026-10-26):** the "which bank or investment house" page (F-63) for makam and bonds, which still ranks funds only; the money-market funds at a non-bank member, where MF-26 does not bind an investment marketer and the comparison keeps the bank case.

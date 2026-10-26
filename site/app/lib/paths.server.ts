@@ -1,5 +1,5 @@
 // Every path the site pre-renders (react-router.config.ts): one page per guide, company and track.
-import { loadCma, loadWrappers } from "./data.server";
+import { loadCma, loadProducts } from "./data.server";
 import { loadExposures } from "./instruments.server";
 import { workbenchWrapperIds } from "./workbench.server";
 import { institutionIds } from "./institutions.server";
@@ -9,7 +9,7 @@ import { playbookWrapperIds } from "./playbook.server";
 
 export function prerenderPaths(): string[] {
   const paths = ["/", "/guide", "/questions", "/companies", "/rules", "/rules/state", "/rules/costs", "/rules/access", "/rules/protection", "/rules/structure", "/rules-data/state.json", "/rules-data/costs.json", "/rules-data/access.json", "/rules-data/protection.json", "/rules-data/structure.json", "/documents", "/parameters", "/not-covered", "/search-index.json", "/search-texts.json", "/goal", "/goal/compare", "/idle-cash", "/compare-bundle.json"];
-  for (const w of loadWrappers()) paths.push(`/guide/${w.id}`);
+  for (const w of loadProducts()) paths.push(`/guide/${w.id}`);
   for (const e of loadExposures()) paths.push(`/exposure/${e.id}`);
   const cma = loadCma();
   for (const c of cma.companies) paths.push(`/companies/${c.id}`);

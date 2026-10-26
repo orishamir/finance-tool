@@ -2,8 +2,8 @@
 // the sourced figures it shows by name, and what the data does not hold yet. One builder per wrapper id; builder G2 adds its own
 // entries to `builders`. Server-only. Nothing here types a rate or a date: every figure is a record's value object, a rule's
 // figure, or a P-05 parameter, and a missing one becomes a `gap` (shown as "עוד לא חושב" with its reason).
-import type { DepositTerms, FundRecord, ParameterRecord, RuleRecord, WrapperRecord } from "@finance-tool/schema";
-import { loadParameters, loadRules, loadWrappers, today } from "./data.server";
+import type { DepositTerms, FundRecord, ParameterRecord, RuleRecord, ProductRecord } from "@finance-tool/schema";
+import { loadParameters, loadRules, loadProducts, today } from "./data.server";
 import type { Bundle } from "./engine";
 import { p05Value } from "./engine";
 import { accountBanks, buildInstrumentBundle, commonAccountRate, currentAccountRecords, depositRange, familyOf, oneYearDepositRecords, publishedDeposit, type InstrumentFamily } from "./guide-signature-bundle.server";
@@ -16,7 +16,7 @@ import { shortName } from "./providers";
 interface Ctx {
   p05: ParameterRecord;
   allRules: Record<string, RuleRecord>;
-  wrappers: WrapperRecord[];
+  wrappers: ProductRecord[];
   deposits: DepositTerms[];
   funds: FundRecord[];
   t: string;
@@ -40,7 +40,7 @@ export function buildSignatureData(id: string, own: Bundle | null): SignatureDat
   if (!build) return null;
   const p05 = loadParameters().find((p) => p.method_id === "P-05");
   if (!p05) throw new Error("data/parameters/ holds no P-05 record");
-  return build({ p05, allRules: loadRules(), wrappers: loadWrappers(), deposits: loadDepositTerms(), funds: loadFunds(), t: today(), own, id });
+  return build({ p05, allRules: loadRules(), wrappers: loadProducts(), deposits: loadDepositTerms(), funds: loadFunds(), t: today(), own, id });
 }
 
 // ---------------------------------------------------------------- helpers

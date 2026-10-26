@@ -14,7 +14,7 @@ import type {
   TariffCardData,
   TariffLineRow,
 } from "../components/decoder/institutions/types";
-import { loadChecklistRows, loadRules, loadWrappers, pointedRecords, root, today } from "./data.server";
+import { loadChecklistRows, loadRules, loadProducts, pointedRecords, root, today } from "./data.server";
 import { topicName } from "../copy";
 import { loadCatalog, loadDepositTerms, seenValue, seenWhere } from "./instruments.server";
 import { shortName } from "./providers";
@@ -241,7 +241,7 @@ export function buildInstitution(id: string): InstitutionPageData | null {
   const deposits = loadDepositTerms().filter((d) => d.bank === id);
   if (!snap && deposits.length === 0) return null;
   const allRules = loadRules();
-  const wrappers = loadWrappers();
+  const wrappers = loadProducts();
   const rows = deposits.map((d) => productRow(d, t));
   const groups: ProductGroup[] = wrapperOrder
     .map((w) => ({ wrapperId: w, wrapperName: wrappers.find((x) => x.id === w)?.names.he[0] ?? w, products: rows.filter((r) => r.wrapperId === w).sort((a, b) => collator.compare(a.name, b.name)) }))
@@ -304,7 +304,7 @@ export function institutionSearchEntries(words: { bank: string; broker: string }
   const out: InstitutionSearchEntry[] = [];
   const names = new Map<string, string>(institutionRows().map((r) => [r.id, r.name]));
   for (const r of institutionRows()) out.push({ name: r.name, line: r.kind === "bank" ? words.bank : words.broker, href: `/companies/${r.id}`, extra: r.id });
-  const wrappers = loadWrappers();
+  const wrappers = loadProducts();
   for (const d of loadDepositTerms()) {
     const wrapper = wrappers.find((w) => w.id === d.wrapper_id)?.names.he[0] ?? "";
     const line = [names.get(d.bank) ?? d.bank, wrapper].filter(Boolean).join(" · ");

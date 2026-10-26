@@ -7,7 +7,7 @@ import { join, relative, sep } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
 import { guideIndex, idle, r2, r3fees, r3holdings, r3transfer, r3workbench, r4playbook, r4workbench, companies as companiesCopy } from "../copy";
 import { loadExposures } from "./instruments.server";
-import { loadRules, loadWrappers, pointedRecords, root } from "./data.server";
+import { loadRules, loadProducts, pointedRecords, root } from "./data.server";
 import { fileProducts, commonRulesFile, shelfOf, tier2RuleFiles, type ShelfId } from "./rule-shelves";
 import { playbookWrapperIds } from "./playbook.server";
 import { providerWrapperIds } from "./providers.server";
@@ -83,7 +83,7 @@ function pageTable(): Record<string, RuleUsePage> {
   if (sw) t.switch = { href: `/switch/${sw}`, label: trimColon(r4playbook.title.before) };
   if (pw) t.providers = { href: `/workbench/providers/${pw}`, label: trimColon(r4workbench.providers.title.before) };
   if (wb) {
-    const name = loadWrappers().find((w) => w.id === wb)?.names.he[0] ?? "";
+    const name = loadProducts().find((w) => w.id === wb)?.names.he[0] ?? "";
     t.tracks = { href: `/workbench/tracks/${wb}`, label: `${r3workbench.title.before}${name}${r3workbench.title.after}` };
   }
   if (fx) t.funds = { href: `/workbench/funds/${fx}`, label: trimColon(r4workbench.funds.title.before) };
@@ -151,7 +151,7 @@ function build(): Scan {
   const known = new Set(Object.keys(rules));
   const table = pageTable();
   const appDir = join(root, "site", "app");
-  const wrappers = loadWrappers();
+  const wrappers = loadProducts();
   const wrapperName = new Map<string, string>(wrappers.map((w) => [w.id, w.names.he[0] ?? w.id]));
 
   const pages = new Map<string, Map<string, RuleUsePage>>();
@@ -217,7 +217,7 @@ function build(): Scan {
       const m = collections.get(id) ?? new Map<string, number>();
       bump(m, name);
       collections.set(id, m);
-      if (name === "instruments/wrappers") {
+      if (name === "instruments/wrappers" || name === "instruments/securities") {
         const wid = parts[parts.length - 1]!.replace(/\.json$/, "");
         addPage(id, { href: `/guide/${wid}`, label: wrapperName.get(wid) ?? wid });
       }
@@ -291,8 +291,8 @@ export function ruleProducts(): Record<string, string[]> {
     const list = (out[id] ??= []);
     if (!list.includes(p)) list.push(p);
   };
-  for (const w of loadWrappers()) {
-    const text = readFileSync(join(root, "data/instruments/wrappers", `${w.id}.json`), "utf8");
+  for (const w of loadProducts()) {
+    const text = readFileSync(join(root, "data/instruments", "held_in" in w ? "securities" : "wrappers", `${w.id}.json`), "utf8");
     for (const m of text.matchAll(/"([A-Z][A-Z0-9]*-[A-Z0-9]+)"/g)) if (known.has(m[1]!)) add(m[1]!, w.id);
   }
   for (const r of Object.values(all)) {

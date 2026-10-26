@@ -311,11 +311,11 @@ export function DimensionChecklist({ rows }: { rows: ChecklistRowView[] }) {
   );
 }
 
-export function RelatedProducts({ items }: { items: { href: string; label: string }[] }) {
+export function RelatedProducts({ items, label = copy.related }: { items: { href: string; label: string }[]; label?: string }) {
   if (items.length === 0) return null;
   return (
     <p className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-      <span>{copy.related}</span>
+      <span>{label}</span>
       {items.map((it) => (
         <Link key={it.href} to={it.href} className="a-chip">
           {it.label}

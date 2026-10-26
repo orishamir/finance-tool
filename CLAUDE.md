@@ -26,6 +26,8 @@ site's pick (method F-80, "Doron's case" in the scenario audit).
 
 On 2026-10-24 (night) the knowledge layer (D25) followed: every rule record carries its sources, the rule card shows them first, the rules page ("חוקים וכללים": the set has that name, a single record no noun) is one page of filters over every rule (by the reader's question, product, id prefix and about-to-change), the twelve questions (P-09) have their own page with a one-line sourced answer each and a block on the home page (the five shelf pages of the first build were merged the same evening at my request, and the questions left the rules page later that night), and there are a documents page, search over rules, parameters and documents, and a "שווה לדעת" block on each wrapper guide. Its build spec is `research/knowledge/2026-10-24-synthesis.md`, and the decisions waiting for me are in its section 5.
 
+On 2026-10-26 D6 was amended: makam, government bonds and the money-market funds are securities bought in a securities account, not wrappers (`data/instruments/securities/`, `research/discovery/2026-10-26-wrappers-and-securities.md`); a guide page or comparison option stands for a product, a wrapper or a security held in one.
+
 Since 2026-10-26 some pages and visuals are held for the founder's review (D32): not linked from the site, still at their addresses; the list is `site/app/lib/review.ts` and `docs/roadmap.md` "Held for review" says what each needs.
 
 All five releases of `docs/roadmap.md` are built (release 1 on 2026-10-23,

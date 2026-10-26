@@ -3,9 +3,9 @@
 // parameters, the rule records any run may read, the tier-2 list and the checklist rows. Server-only.
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import type { DepositTerms, FeesSnapshot, ParameterRecord, RuleRecord, ValueObject, WrapperId, WrapperRecord } from "@finance-tool/schema";
-import { buildTariff as engineTariff, type InstrumentTerms, type WorkbenchInput } from "@finance-tool/engine";
-import { loadChecklistRows, loadCma, loadCmaFees, loadFees, loadNotCovered, loadParameters, loadRules, loadWrappers, pointedRecords, root, today } from "./data.server";
+import type { DepositTerms, FeesSnapshot, ParameterRecord, RuleRecord, ValueObject, ProductId, ProductRecord } from "@finance-tool/schema";
+import { buildTariff as engineTariff, memberKindOf, type InstrumentTerms, type WorkbenchInput } from "@finance-tool/engine";
+import { loadChecklistRows, loadCma, loadCmaFees, loadFees, loadNotCovered, loadParameters, loadRules, loadProducts, pointedRecords, root, today } from "./data.server";
 import { buildInstrumentTerms, loadDepositTerms, loadExposures, loadFunds, regulatorAverageFees } from "./instruments.server";
 import { evaluate, representativeFeeValue, type BundleDataFile, type ProviderTariff, type CompareBundle, type ExposureEntry, type Family, type HoldingTerms, type IndexFundTerms, type RunGoal, type Tier2Row, type WrapperEntry } from "./compare";
 import type { FitTableData } from "./fit";
@@ -17,7 +17,7 @@ const tariffKeys: string[] = ["tradeRate", "tradeMin", "tradeMax", "custodyRate"
 import { BROKERAGE, instrumentClassOf, providersOf, shortName } from "./providers";
 import { latestSnapshots } from "./providers.server";
 
-const familyById: Partial<Record<WrapperId, Family>> = {
+const familyById: Partial<Record<ProductId, Family>> = {
   "kupat-gemel-lehashkaa": "provident",
   "keren-hishtalmut": "provident",
   "pension-comprehensive": "pension",
@@ -181,19 +181,28 @@ function representativeOf(
  * workbench's default, direct, and the branch one only where the snapshot has no direct trade line. FX is left out as it is in the
  * run (a fund in shekels). A provider whose snapshot is missing, ambiguous or has no trade line is left out. Only the lines the
  * run reads are kept, each as its record's value object.
+ *
+ * A security run in the securities account (D6, amended 2026-10-26: makam and a government bond held directly) takes the same choice:
+ * `productId` is the security, the lines are the account's for its class, and only the lines its run reads are
+ * kept (commissions, custody, the account's monthly fee). The member's kind travels with the tariff (F-14: a bank may not charge
+ * custody on makam, BRK-17; a non-bank member's line applies).
  */
-function providerTariffs(wrapperId: string, instrumentClass: string): Record<string, ProviderTariff> {
+function providerTariffs(productId: string, instrumentClass: string): Record<string, ProviderTariff> {
   const out: Record<string, ProviderTariff> = {};
-  for (const snap of providersOf({ snapshots: latestSnapshots() }, wrapperId)) {
+  const direct = productId !== BROKERAGE;
+  for (const snap of providersOf({ snapshots: latestSnapshots() }, BROKERAGE)) {
     if (snap.missing) continue;
+    // a security held directly is bought on TASE through an Israeli member; a foreign broker does not sell makam or Israeli government bonds
+    if (direct && snap.provider.class === "foreign_broker") continue;
     for (const channel of ["direct", "branch"]) {
       let built: ReturnType<typeof engineTariff>;
       try {
-        built = engineTariff({ instrumentClass, wrapper: wrapperId, channel } as WorkbenchInput, { snapshot: snap, level: "list" }, snap);
+        built = engineTariff({ instrumentClass, wrapper: BROKERAGE, channel } as WorkbenchInput, { snapshot: snap, level: "list" }, snap);
       } catch {
         break;
       }
       if (built.noLine.includes("trade") || !built.tariff.buy) continue;
+      const tariff = direct ? pickLines(built.tariff, ["buy", "sell", "custody", "monthlyFee"]) : built.tariff;
       const feeValues: Record<string, SiteValue> = {};
       for (const id of built.linesUsed) {
         const l = snap.lines.find((x) => x.id === id);
@@ -204,22 +213,30 @@ function providerTariffs(wrapperId: string, instrumentClass: string): Record<str
           const lo = bound(l.min), hi = bound(l.max);
           if (lo) feeValues.tradeMin = lo;
           if (hi) feeValues.tradeMax = hi;
-        } else if (l.base === "custody") {
+        } else if (l.base === "custody" && tariff.custody) {
           feeValues.custodyRate = { ...l.rate };
           const lo = bound(l.min), hi = bound(l.max);
           if (lo) feeValues.custodyMin = lo;
           if (hi) feeValues.custodyMax = hi;
-        } else if (l.base === "fixed_period" && built.tariff.monthlyFee !== undefined) {
-          feeValues.monthlyFee = l.rate.unit === "nis_per_month" ? { ...l.rate } : { ...l.rate, value: built.tariff.monthlyFee, unit: "nis_per_month", state: "computed" };
+        } else if (l.base === "fixed_period" && tariff.monthlyFee !== undefined) {
+          feeValues.monthlyFee = l.rate.unit === "nis_per_month" ? { ...l.rate } : { ...l.rate, value: tariff.monthlyFee, unit: "nis_per_month", state: "computed" };
         }
       }
       // D31: the card names the provider whose tariff the run reads, so its lines are that provider's own figures
-      out[snap.id] = { name: snap.provider.name_he, channel, tariff: built.tariff as ProviderTariff["tariff"], feeValues: ownEach(feeValues, snap.provider.name_he) };
+      out[snap.id] = { name: snap.provider.name_he, channel, tariff: tariff as ProviderTariff["tariff"], feeValues: ownEach(feeValues, snap.provider.name_he), memberKind: memberKindOf(snap.provider.class) };
       break;
     }
   }
   return out;
 }
+
+/** The tariff with only the lines a run reads (a makam or bond run refuses any other, `runInputs`). */
+function pickLines<T extends Record<string, unknown>>(tariff: T, keys: readonly string[]): T {
+  return Object.fromEntries(Object.entries(tariff).filter(([k]) => keys.includes(k))) as T;
+}
+
+/** The security class each security held directly in the securities account is priced at (data-schema §2, `fee.applies_to`). */
+const securityClass: Partial<Record<ProductId, string>> = { makam: "makam", "government-bond": "tase_bonds" };
 
 /**
  * The lowest in-fund cost (fixed and variable management and trustee, the same measure as the run's fee) among the fund records
@@ -245,7 +262,7 @@ function classMinFee(spec: { fund?: string | number } | undefined, funds: Return
 }
 
 /** Wrappers whose fund (and so whose terms) depend on the exposure they hold: the fund collected for the exposure (`exposure_id`) gives the terms. */
-const fundHoldingWrappers: WrapperId[] = ["brokerage-account", "money-market-fund-daily", "money-market-fund-renewable"];
+const fundHoldingWrappers: ProductId[] = ["brokerage-account", "money-market-fund-daily", "money-market-fund-renewable"];
 
 /**
  * Release 5, exposure mode: every exposure record, and for each exposure the terms of a securities wrapper that holds
@@ -317,6 +334,7 @@ function dataFileVersions(): BundleDataFile[] {
   const out: BundleDataFile[] = [];
   const dirs: { dir: string; feeds: (rec: Record<string, unknown>) => string[] }[] = [
     { dir: "data/instruments/wrappers", feeds: (r) => [String(r.id)] },
+    { dir: "data/instruments/securities", feeds: (r) => [String(r.id)] },
     { dir: "data/instruments/exposures", feeds: (r) => [String(r.id)] },
     { dir: "data/terms/deposits", feeds: (r) => (typeof r.wrapper_id === "string" ? [r.wrapper_id] : []) },
     { dir: "data/funds", feeds: (r) => [String(r.exposure_id ?? ""), ...fundHoldingWrappers].filter(Boolean) },
@@ -354,7 +372,7 @@ export function buildCompareBundle(): CompareBundle {
   const sources = { fees, funds: loadFunds(), deposits: loadDepositTerms(), rules: allRules, today: t };
   const cmaTracks = loadCma().tracks;
   const repOf = (id: string) => representativeOf(p05.instruments?.[id] as never, sources.funds as never, cmaTracks, fees);
-  const wrappers: WrapperEntry[] = loadWrappers().map((record: WrapperRecord): WrapperEntry => {
+  const wrappers: WrapperEntry[] = loadProducts().map((record: ProductRecord): WrapperEntry => {
     const family = familyById[record.id] ?? null;
     const base = { id: record.id, name: record.names.he[0]!, family, record, feeValues: {} as Record<string, SiteValue>, missing: [] as string[] };
     if (family === "provident" || family === "pension") {
@@ -413,6 +431,15 @@ export function buildCompareBundle(): CompareBundle {
     const fundRec = sources.funds.find((x) => x.id === String(p05.instruments?.[w.id]?.fund));
     const fundClass = fundRec ? instrumentClassOf(fundRec, loadExposures().find((e) => e.id === fundRec.exposure_id)) : "etf_units";
     const providers = providerTariffs(w.id, fundClass);
+    if (Object.keys(providers).length > 0) w.providers = providers;
+  }
+  // D6 (amended 2026-10-26): makam and a government bond are held in the securities account, so the account's choice of provider
+  // (F-80) prices them too, at the lines for their own class. The money-market funds keep the bank case P-05 names: at a bank with a
+  // distribution agreement the holder pays nothing to buy, hold or redeem them (MF-26, BANK-18), which no tariff can undercut.
+  for (const w of wrappers) {
+    const cls = securityClass[w.id];
+    if (!cls || !w.terms) continue;
+    const providers = providerTariffs(w.id, cls);
     if (Object.keys(providers).length > 0) w.providers = providers;
   }
   for (const w of wrappers) for (const m of w.missing) console.log(`[compare] ${w.id}: no terms: ${m}`);

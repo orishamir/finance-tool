@@ -178,6 +178,8 @@ export const guideIndex = {
 
 export const guide = {
   indexTitle: "בעמוד הזה",
+  // D6 (amended 2026-10-26): makam, a government bond and a money-market fund are bought inside an account, not a container of their own
+  heldIn: { before: "קונים ומחזיקים את זה בתוך", after: "מי יכול לפתוח אותו, מי מפקח עליו ואיך שומרים בו את הנכסים: בעמוד שלו." },
   sections: [
     { id: "what", title: "מה זה" },
     { id: "use", title: "למה משתמשים בזה" }, // audit 2026-10-24 (A42): directly under "מה זה"
@@ -194,6 +196,8 @@ export const guide = {
   // audit 2026-10-24 (A42, A43, A86)
   rulesToggle: { show: "הצגת החוקים והכללים", hide: "הסתרת החוקים והכללים" },
   exposuresRow: "במה אפשר להשקיע בתוכו:",
+  // D6 (2026-10-26): on a wrapper's page, the securities bought inside it that have a page of their own (makam, bonds, money-market funds)
+  securitiesRow: "מה קונים בתוכו, ולכל אחד עמוד משלו:",
   companiesShow: "הצגת החברות",
   companiesHide: "הסתרת החברות",
   companiesOpen: "פתוחות לכלל הציבור",
@@ -2500,6 +2504,8 @@ export const r5 = {
   },
   // 9.2 exposure result
   exposure: {
+    // D6 (2026-10-26): a security in the list of products that can hold an exposure is bought directly inside its account
+    heldDirect: "{name}, קנייה ישירה ב{account}",
     title: "{goal}: איזו חשיפה מתאימה",
     pageTitle: "איזו חשיפה מתאימה",
     headline: {

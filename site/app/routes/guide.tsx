@@ -402,6 +402,18 @@ export default function GuidePage() {
             <Breadcrumb parent={{ href: "/guide", label: guideIndex.title }} current={data.name} />
             <h1 className="text-2xl lg:text-3xl font-semibold">{data.name}</h1>
             {data.lede && <p className="text-lg text-muted-foreground max-w-measure">{data.lede}</p>}
+            {data.heldIn && (
+              <div className="flex flex-col gap-1 max-w-measure">
+                <p className="text-muted-foreground">
+                  {copy.heldIn.before}{" "}
+                  <Link to={`/guide/${data.heldIn.id}`} className="text-link hover:underline">
+                    {data.heldIn.name}
+                  </Link>
+                  . {copy.heldIn.after}
+                </p>
+                <RulesLine ids={gen(data.heldIn.ruleIds)} />
+              </div>
+            )}
             <SavedGoalStrip variant="compact" presets={data.goal.presets as Presets} meta={data.goal.meta} today={today} />
             <NumberLegend term institution={anyWeak([...Object.values(data.bundle?.feeValues ?? {}), ...Object.values(signature?.facts ?? {}), ...(signature?.banks ?? []).flatMap((b) => [b.rate, b.ceiling])])} />
           </header>
@@ -416,6 +428,7 @@ export default function GuidePage() {
           <GuideSection id="use" title={title("use")} rulesToggle>
             {content?.use(cp)}
             <RelatedProducts items={data.related} />
+            <RelatedProducts items={data.securities} label={copy.securitiesRow} />
             <ExposureLinks items={data.exposures} />
           </GuideSection>
 

@@ -522,7 +522,7 @@ describe("F-68 regulator reference", () => {
 
   it("funds, banks and brokers have no reference: null with the reason (D20)", () => {
     const cma = new Set<WrapperId>(["keren-hishtalmut"]);
-    expect(referenceForWrapper("money-market-fund-daily", cma, tracks, classKey)).toMatchObject({ reference: null, reason: "none-available", decision: "D20" });
+    expect(referenceForWrapper("brokerage-account", cma, tracks, classKey)).toMatchObject({ reference: null, reason: "none-available", decision: "D20" });
     expect(referenceForWrapper("bank-deposit", cma, tracks, classKey)).toMatchObject({ reference: null });
     expect(referenceForWrapper("keren-hishtalmut", cma, tracks, classKey)).toMatchObject({ formula: "F-68" });
   });

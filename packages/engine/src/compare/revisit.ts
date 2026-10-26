@@ -1,7 +1,7 @@
 // F-82 Revisit (product 3.9): a saved comparison keeps the versions it rested on; on revisit the engine re-runs
 // with the current ones, lists what differs, and says whether F-80's top option and tie set are unchanged.
 // No I/O: callers pass the data.
-import { parameterRecord, type ValueObject, type WrapperId } from "@finance-tool/schema";
+import { parameterRecord, type ValueObject, type ProductId } from "@finance-tool/schema";
 import type { RunContext } from "../result.ts";
 import { buildCandidateSet, type CandidateSet, type CandidateSetInput } from "./candidates.ts";
 import { rankCandidates, tieThreshold, type Ranking } from "./ranking.ts";
@@ -102,7 +102,7 @@ export interface Revisit {
 // ---------------------------------------------------------------- snapshots
 
 /** The wrapper's cash rate is the assumption A-20 (daily fund), A-22 (makam), A-23 (bond), A-24 (renewable fund) or A-25 (deposit family). */
-const cashRateAssumption: Partial<Record<WrapperId, string>> = {
+const cashRateAssumption: Partial<Record<ProductId, string>> = {
   "money-market-fund-daily": "A-20",
   makam: "A-22",
   "government-bond": "A-23",
@@ -122,7 +122,7 @@ export function assumptionVersions(
   if (goal.grossReturnPct !== undefined) out.push({ id: "A-01", value: goal.grossReturnPct, state: "entered" });
   if (goal.inflationPct !== undefined) out.push({ id: "A-02", value: goal.inflationPct, state: "entered" });
   for (const w of wrappers) {
-    const id = (w.record as { id?: WrapperId } | undefined)?.id;
+    const id = (w.record as { id?: ProductId } | undefined)?.id;
     const a = id ? cashRateAssumption[id] : undefined;
     if (a && w.cashRate) out.push({ id: id === "bank-deposit" || id === "savings-plan" || id === "current-account" ? `${a}:${id}` : a, value: w.cashRate.value, state: w.cashRate.state });
   }

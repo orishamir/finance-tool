@@ -1,6 +1,6 @@
 // Shared shapes of the release 2 comparison: the candidate set and its outcomes (F-83), the coverage line,
 // and the inputs every comparison takes. The engine returns codes, never Hebrew text; the site maps them.
-import type { ValueObject, WrapperId } from "@finance-tool/schema";
+import type { ValueObject, ProductId } from "@finance-tool/schema";
 import type { InstrumentTerms, RunPlan } from "../inputs.ts";
 import type { Profile } from "../ledgers/common.ts";
 import type { RunResult } from "../result.ts";
@@ -128,7 +128,7 @@ export interface ComparisonGoal {
   /** A-02 in percent a year; entered by the person. */
   inflationPct?: number;
   /** "Must stay available at once" (D13): this much stays in the current account or a daily money-market fund. */
-  keepAvailable?: { amount: number; in?: Extract<WrapperId, "current-account" | "money-market-fund-daily"> };
+  keepAvailable?: { amount: number; in?: Extract<ProductId, "current-account" | "money-market-fund-daily"> };
   /** "Must be withdrawable at any time" (section 8). */
   mustBeWithdrawableAnytime?: boolean;
   /**

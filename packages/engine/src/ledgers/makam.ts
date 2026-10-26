@@ -1,7 +1,8 @@
-// Makam bought at issue and rolled: F-24, with F-12 commissions and the F-40 exit for a sale before redemption.
-import { buyWithCash, tradeCommission, type Commission } from "../formulas/fees.ts";
+// Makam held directly in a securities account (a security, not a wrapper: D6 amended 2026-10-26), bought at issue and rolled: F-24, with F-12
+// commissions, F-14 custody where the account's member may charge it, and the F-40 exit for a sale before redemption.
+import { buyWithCash, custodyFee, fixedFee, tradeCommission, type Commission, type Custody } from "../formulas/fees.ts";
 import { makamPrice } from "../formulas/holding-tax.ts";
-import { closesTaxYear, contributions, cpiPath, type Goal } from "../formulas/time.ts";
+import { closesTaxYear, contributions, cpiPath, taxYearOf, type Goal } from "../formulas/time.ts";
 import { ruleBook } from "../resolver.ts";
 import type { RunContext, RunResult } from "../result.ts";
 import { exitTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
@@ -11,8 +12,16 @@ export interface MakamInput {
   market: { inflation: number };
   /** A-22 yield to redemption; series term in months (12 for the yearly series, GOV-22, GOV-23). */
   makam: { yield: number; termMonths?: number };
-  /** Buy and sell lines for makam (F-12). No sale order at redemption; no custody (BRK-17). */
-  tariff: { buy?: Commission; sell?: Commission };
+  /**
+   * Buy and sell lines for makam (F-12); no sale order at redemption. The custody line, if the tariff has one for makam (F-14), and
+   * the account's F-17 monthly fee in NIS, which the account charges whatever it holds.
+   */
+  tariff: { buy?: Commission; sell?: Commission; custody?: Custody; monthlyFee?: number };
+  /**
+   * F-14 (2026-10-26): a bank may not charge custody on makam (BRK-17, BANK-18); no rule limits a non-bank member's custody fee on
+   * it (BRK-52), so there the tariff's custody line applies. Default `bank`, the case P-05's tariff (a bank's) is.
+   */
+  memberKind?: "bank" | "non-bank";
   profile?: Profile;
 }
 
@@ -40,7 +49,9 @@ export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
   const I = cpiPath(input.market.inflation, T);
   const C = contributions(goal, I);
   const discountRate = book.rate("TXI-11", "rate");
-  book.cite("BRK-17");
+  const custodyFree = input.memberKind !== "non-bank";
+  if (custodyFree) book.cite("BRK-17");
+  const custodyLine = custodyFree ? undefined : tariff.custody;
   const tally = new Tally();
   tally.flag("G-09");
 
@@ -59,6 +70,7 @@ export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
   let saleGain = 0;
   let interestThisYear = 0;
   let exitYearInterest = 0;
+  let exitYearFees = 0;
   let blocked: string | undefined;
   tally.point(0, 1, 0);
 
@@ -76,14 +88,29 @@ export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
       tally.taxDuring += tax;
       proceeds += s.face - tax;
     }
+    // before the horizon the net proceeds buy the next series at once, so a redemption month holds paper when custody is counted
+    if (m < T && proceeds > 0) {
+      held.push(buy(proceeds, m + term));
+      proceeds = 0;
+    }
+    // F-14 and F-17: a custody fee and the account's monthly fee on the series held at the month's price, paid by selling a slice of each (the slice's gain is not taxed
+    // apart, as the bond and fund ledgers pay theirs by removing units); the exit year's fees come off the sale gain once (TXS-06)
+    const heldValue = held.reduce((v, s) => v + (s.face * price(Math.max(0, s.maturity - m))) / 100, 0);
+    const fee = custodyFee(custodyLine, m, heldValue);
+    const fixed = fixedFee(tariff.monthlyFee, heldValue - fee);
+    if (fee + fixed > 0 && heldValue > 0) {
+      const keep = 1 - (fee + fixed) / heldValue;
+      held = held.map((s) => ({ ...s, face: s.face * keep, cost: s.cost * keep }));
+      tally.fee("custody", fee);
+      tally.fee("fixed", fixed);
+      if (taxYearOf(m, first) === taxYearOf(T, first)) exitYearFees += fee + fixed;
+    }
     if (closesTaxYear(m, T, first)) {
       tally.taxDuring += yearlySurtax(book, profile, interestThisYear);
       if (m === T) exitYearInterest = interestThisYear;
       interestThisYear = 0;
     }
-    if (m < T) {
-      if (proceeds > 0) held.push(buy(proceeds, m + term));
-    } else {
+    if (m === T) {
       cashAtExit += proceeds;
       for (const s of held) {
         const gross = (s.face * price(s.maturity - T)) / 100;
@@ -93,7 +120,7 @@ export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
         cashAtExit += gross - commission;
       }
       if (held.length > 0) {
-        const exit = unlessBlocked(() => exitTax(book, profile, T, saleGain, book.rate("TXI-12", "rate"), true, exitYearInterest, first));
+        const exit = unlessBlocked(() => exitTax(book, profile, T, saleGain - exitYearFees, book.rate("TXI-12", "rate"), true, exitYearInterest, first));
         taxAtExit = exit.value?.tax ?? 0;
         blocked = exit.blocked;
       }
@@ -109,6 +136,6 @@ export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
     taxAtExit,
     outcome: blocked ? { code: "listed-not-ranked", reason: blocked } : undefined,
     detail: { saleGain },
-    formulas: ["F-24", "F-12", "F-40"],
+    formulas: ["F-24", "F-12", ...(custodyLine ? ["F-14"] : []), ...(tariff.monthlyFee ? ["F-17"] : []), "F-40"],
   });
 }

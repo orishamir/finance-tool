@@ -17,17 +17,18 @@ import {
   type RunContext,
   type RunResult,
 } from "@finance-tool/engine";
-import type { ParameterRecord, ValueObject, WrapperId } from "@finance-tool/schema";
+import { isSecurity, type ParameterRecord, type ValueObject, type ProductId } from "@finance-tool/schema";
 import { comparisonGoal, equityFit, parameterOf, termsFor, yearSeries, type CompareBundle, type ExposureEntry, type RunGoal, type WrapperEntry } from "./compare";
 import type { ExposureInputs, FieldKey, Goal } from "./goal";
 import { entered as enteredValue, type SiteValue } from "./value";
+import { r5 } from "../copy";
 
 const FUND_WRAPPERS = new Set<string>(["brokerage-account", "money-market-fund-daily", "money-market-fund-renewable"]);
 
 // ---------------------------------------------------------------- P-08
 
 export interface HoldingRule {
-  wrapperId: WrapperId;
+  wrapperId: ProductId;
   /** "evaluated", "not-evaluated" (an open question stops it) or "needs-fund" (a fund record is needed). */
   status: string;
   blockedBy?: string;
@@ -41,7 +42,7 @@ export function holdingRule(bundle: CompareBundle, exposureId: string): HoldingR
   const row = p.holding?.[exposureId];
   if (!row) return null;
   const value: SiteValue = { ...row.wrapper_id, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null, signedOffOn: p.signed_off_on ?? null, provisional: false } };
-  return { wrapperId: row.wrapper_id.value as WrapperId, status: row.status ?? "evaluated", ...(row.blocked_by ? { blockedBy: row.blocked_by } : {}), value };
+  return { wrapperId: row.wrapper_id.value as ProductId, status: row.status ?? "evaluated", ...(row.blocked_by ? { blockedBy: row.blocked_by } : {}), value };
 }
 
 // ---------------------------------------------------------------- the input and the view
@@ -75,7 +76,7 @@ export interface ExposureRowView {
   noSeries: boolean;
   worstFall?: ValueObject;
   acceptedFall: { value?: ValueObject; perExposure: boolean };
-  holding: { wrapperId: WrapperId | null; name?: string; fromParameter: boolean; parameter: SiteValue | null; options: { id: WrapperId; name: string }[] };
+  holding: { wrapperId: ProductId | null; name?: string; fromParameter: boolean; parameter: SiteValue | null; options: { id: ProductId; name: string }[] };
   lossNote?: "worst-fall" | "largest-fall-accepted";
   exclusion?: { worst: number; accepted: number };
   /** Kept by the filter, with both numbers (the row detail says so). */
@@ -148,11 +149,17 @@ export function lossFilterOf(goal: Goal, today: string): LossFilterEntered {
   return { worstFall, ...(a !== null && a !== undefined ? { acceptedFall: pct(a, today) } : {}), ...(Object.keys(acceptedFallById).length > 0 ? { acceptedFallById } : {}) };
 }
 
+/** A product's name in the list of what can hold an exposure; a security names the account it is bought in (D6, 2026-10-26). */
 function wrapperName(bundle: CompareBundle, id: string): string {
-  return bundle.wrappers.find((w) => w.id === id)?.name ?? id;
+  const w = bundle.wrappers.find((x) => x.id === id);
+  if (!w) return id;
+  const r = w.record;
+  const accountId = isSecurity(r) ? r.held_in.wrapper_ids[0] : undefined;
+  const account = accountId ? bundle.wrappers.find((x) => x.id === accountId) : undefined;
+  return account ? r5.exposure.heldDirect.replace("{name}", w.name).replace("{account}", account.name) : w.name;
 }
 
-type Plan = { entry: ExposureEntry; wrapperId: WrapperId | null; fromParameter: boolean; blocked: RowReason | null; wrapper?: WrapperEntry; terms?: ExposureHolding["terms"]; gross?: ValueObject; published?: ExposureRowView["published"]; fromProduct?: ValueObject };
+type Plan = { entry: ExposureEntry; wrapperId: ProductId | null; fromParameter: boolean; blocked: RowReason | null; wrapper?: WrapperEntry; terms?: ExposureHolding["terms"]; gross?: ValueObject; published?: ExposureRowView["published"]; fromProduct?: ValueObject };
 
 /** Runs exposure mode (F-71, F-83, F-80) for the saved goal at the bundle's data. Throws the engine's data errors. */
 export function computeExposureMode({ bundle, g, goal }: ExposureModeInput): ExposureResultView {
@@ -166,7 +173,7 @@ export function computeExposureMode({ bundle, g, goal }: ExposureModeInput): Exp
   const plans: Plan[] = entries.map((entry): Plan => {
     const rule = holdingRule(bundle, entry.record.id);
     const mine = inputsOf(entry.record.id);
-    const wrapperId = (mine.wrapperId ?? rule?.wrapperId ?? null) as WrapperId | null;
+    const wrapperId = (mine.wrapperId ?? rule?.wrapperId ?? null) as ProductId | null;
     const fromParameter = !mine.wrapperId;
     const base = { entry, wrapperId, fromParameter };
     if (!wrapperId) return { ...base, blocked: { code: "no-wrapper" } };
