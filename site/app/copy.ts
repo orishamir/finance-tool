@@ -3031,7 +3031,7 @@ export const guideSignature = {
     at: { before: "אחרי", after: "חודשים מתחילת התוכנית" },
     figures: { free: "פנוי לקחת", locked: "עדיין נעול", last: "ההפקדה האחרונה נפתחת בחודש" },
     lockLine: { before: "בתוכנית של לאומי התקופה היא", middle: "והריבית", after: "בשנה; אין אפשרות שבירה." },
-    alt: { before: "בפיקדון חד־פעמי לתקופה של", rate: "ריבית", middle: "כל הסכום נעול ואז פנוי בבת אחת; בתוכנית ההפקדה האחרונה נפתחת רק בחודש" },
+    alt: { before: "בפיקדון חד־פעמי", ofBank: "של", forTerm: "לתקופה של", rate: "ריבית", middle: "כל הסכום נעול ואז פנוי בבת אחת; בתוכנית ההפקדה האחרונה נפתחת רק בחודש" },
     rangeLine: "הטווח בטבלה של הבנק נקרא כסכום להפקדה אחת; הטבלה לא אומרת זאת במילים.",
     about: { free: "מה שפנוי לקחת ביום שבחרתם: ההפקדות שהתקופה שלהן הסתיימה, אחרי מס", locked: "הכסף שהופקד ועדיין נעול ביום שבחרתם", last: "החודש שבו ההפקדה האחרונה נפתחת" },
   },
@@ -3041,6 +3041,8 @@ export const guideSignature = {
     rows: { "current-account": "עו״ש", "money-market-fund-daily": "קרן כספית יומית", "money-market-fund-renewable": "קרן כספית מתחדשת", "bank-deposit": "פיקדון לשנה" } as Record<string, string>,
     wait: { "any-time": "בכל רגע", "trading-day": "הוראת פדיון בכל יום מסחר", "fixed-dates": "רק במועדים שנקבעו מראש", "at-maturity": "בסוף התקופה, בלי שבירה" } as Record<string, string>,
     thisOne: "המוצר בעמוד",
+    // 2026-10-26: a row whose rate is one bank's own figure names the bank ("פיקדון לשנה של לאומי"), D30/D31
+    ofBank: "של",
     // 2026-10-25 (G3): the current-account row is the rate most of the collected banks publish, with the best a bank pays beside it
     common: { of: "מתוך", after: "הבנקים שנאספו מפרסמים ריבית כזאת." },
     top: { before: "יש בנקים שמשלמים עד", conditions: "בתנאים ועל עד", only: "בלבד", conditionsNoCeiling: "בתנאי הבנק" },
