@@ -226,7 +226,7 @@ describe("the ladder", () => {
       ["current-account", 0, "common"],
       ["money-market-fund-daily", 3.25, "assumption"],
       ["money-market-fund-renewable", 3.25, "assumption"],
-      ["bank-deposit", 1.8, "published"],
+      ["bank-deposit", 2.25, "range"],
     ]);
     expect(bestWithin(rows, "any-time")!.id).toBe("current-account");
     expect(bestWithin(rows, "at-maturity")!.rate.value).toBe(3.25);
@@ -237,6 +237,12 @@ describe("the ladder", () => {
     expect(row.top!.rate.value).toBe(3);
     expect(row.top!.name).toBe("דיסקונט");
     expect(row.top!.ceiling!.value).toBe(10000);
+  });
+  it("shows the one-year deposit as the range across the collected banks' fixed rates (F-86), naming none", () => {
+    const row = ladderRows(d).find((r) => r.id === "bank-deposit")!;
+    expect([row.range!.lo.value, row.rate.value, row.range!.count.value]).toEqual([1.55, 2.25, 4]);
+    expect([row.rate.state, row.rate.own]).toEqual(["computed", undefined]);
+    expect(d.depositBanks!.map((b) => [b.bank, b.rate.value])).toEqual([["discount", 2.25], ["hapoalim", 1.74], ["leumi", 1.8], ["mizrahi-tefahot", 1.55]]);
   });
 });
 

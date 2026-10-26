@@ -1,8 +1,9 @@
 // Daily money-market fund (D29): how fast can I get my money, and what does it pay? A ladder of four cash products from the fastest to
-// the slowest way back, each with its yearly rate and where the rate comes from (a bank's published table, the rate most of the
-// collected banks publish, or the site's assumption, D20), this product highlighted. One control: when the money is needed; the rows
+// the slowest way back, each with its yearly rate and where the rate comes from (the rate most of the collected banks publish, the
+// range across the collected banks, F-86, or the site's assumption, D20), this product highlighted. One control: when the money is needed; the rows
 // that bring it back in time stay lit.
 import { useState } from "react";
+import { Link } from "react-router";
 import { guideSignature as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { bestWithin, ladderRows, speedOrder, type LadderRow, type Speed } from "../../lib/guide-signature";
@@ -38,23 +39,34 @@ export function MoneyMarketDailyVisual({ data }: VisualProps) {
                 </span>
                 <span className="flex items-center gap-2">
                   <Tag tone={r.kind === "assumption" ? "parameter" : "neutral"}>{copy.ladder.kinds[r.kind]}</Tag>
-                  <span className="font-semibold text-lg">
-                    <Num value={r.rate} />
+                  <span className="font-semibold text-lg whitespace-nowrap">
+                    {r.range ? (
+                      <>
+                        <Num value={r.range.lo} /> {copy.ladder.range.to} <Num value={r.rate} />
+                      </>
+                    ) : (
+                      <Num value={r.rate} />
+                    )}
                   </span>
                 </span>
               </div>
-              <div className="h-3 rounded-sm bg-muted overflow-hidden" aria-hidden="true">
-                <div className={cx("h-full rounded-sm", mine ? "bg-chart-value" : "bg-chart-alt")} style={{ width: `${Math.max(1, ((Number(r.rate.value) || 0) / maxRate) * 100)}%` }} />
+              <div className="relative h-3 rounded-sm bg-muted overflow-hidden" aria-hidden="true">
+                {/* a range: solid up to the lowest rate, light from there to the highest */}
+                {r.range && <div className={cx("absolute inset-y-0 start-0 rounded-sm", mine ? "bg-chart-value/40" : "bg-chart-alt/40")} style={{ width: `${Math.max(1, ((Number(r.rate.value) || 0) / maxRate) * 100)}%` }} />}
+                <div className={cx("relative h-full rounded-sm", mine ? "bg-chart-value" : "bg-chart-alt")} style={{ width: `${Math.max(1, ((Number(r.range?.lo.value ?? r.rate.value) || 0) / maxRate) * 100)}%` }} />
               </div>
               <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-sm text-muted-foreground">
                 <span className="font-medium text-foreground">{copy.ladder.speeds[r.speed]}</span>
                 <span>{copy.ladder.wait[r.speed]}</span>
-                {r.term && (
-                  <span>
-                    {copy.ladder.term} <Num value={r.term} display={fmt.months(Number(r.term.value))} />
-                  </span>
-                )}
               </div>
+              {r.range && (
+                <Sentence size="sm" tone="muted">
+                  <Num value={r.range.count} prefix={copy.ladder.range.before} /> {copy.ladder.range.after}{" "}
+                  <Link to={`/guide/bank-deposit#${copy.ladder.range.anchorId}`} className="text-link hover:underline">
+                    {copy.ladder.range.link}
+                  </Link>
+                </Sentence>
+              )}
               {r.banks && (
                 <Sentence size="sm" tone="muted">
                   <Num value={r.banks.count} /> {copy.ladder.common.of} <Num value={r.banks.of} /> {copy.ladder.common.after}
@@ -80,11 +92,11 @@ export function MoneyMarketDailyVisual({ data }: VisualProps) {
 
       {best && (
         <Sentence measure>
-          {copy.ladder.best.before} <span className="font-medium"><RowName row={best} /></span>, <Num value={best.rate} /> {copy.ladder.best.middle}.
+          {copy.ladder.best.before} <span className="font-medium"><RowName row={best} /></span>, {best.range && <>{copy.ladder.range.upTo} </>}<Num value={best.rate} /> {copy.ladder.best.middle}.
         </Sentence>
       )}
       <p className="text-sm text-muted-foreground max-w-measure">
-        {copy.ladder.foot} {copy.ladder.depositFoot}
+        {copy.ladder.foot}
       </p>
       <RulesLine ids={data.ruleIds} />
     </div>

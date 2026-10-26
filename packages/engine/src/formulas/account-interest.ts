@@ -1,5 +1,5 @@
 // What banks pay on a current account (guide page of the current account, 2026-10-25): the rate most of them pay, and the most one
-// of them pays in a year on a given balance. Pure functions over published figures; the page supplies the bank records.
+// of them pays in a year on a given balance; and the range of a one-year deposit's rate across the banks (2026-10-26). Pure functions over published figures; the page supplies the bank records.
 
 /** The answer of F-85: the rate, how many of the banks pay it, how many banks were collected, and how many of them pay anything. */
 export interface CommonRate {
@@ -28,6 +28,25 @@ export function mostCommonRate(rates: readonly number[]): CommonRate | null {
   let best: [number, number] | null = null;
   for (const [rate, count] of counts) if (best === null || count > best[1] || (count === best[1] && rate < best[0])) best = [rate, count];
   return { rate: best![0], count: best![1], of: rates.length, paying: rates.filter((r) => r > 0).length };
+}
+
+/** The answer of F-86: the lowest and the highest published rate, and how many banks were collected. */
+export interface RateRange {
+  /** The lowest rate, % a year. */
+  lo: number;
+  /** The highest rate, % a year. */
+  hi: number;
+  /** Banks collected (one rate each). */
+  count: number;
+}
+
+/**
+ * F-86 The range of a deposit's rate across the banks. The lowest and the highest published rate among the banks collected, one rate
+ * per bank. Null when no bank was collected.
+ */
+export function rateRange(rates: readonly number[]): RateRange | null {
+  if (rates.length === 0) return null;
+  return { lo: Math.min(...rates), hi: Math.max(...rates), count: rates.length };
 }
 
 /**

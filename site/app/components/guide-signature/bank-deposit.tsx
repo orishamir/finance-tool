@@ -7,7 +7,7 @@ import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { breakKindOf, depositModel, fact, factNumber } from "../../lib/guide-signature";
 import { fmt } from "../../lib/format";
 import { entered as enteredValue, type SiteValue } from "../../lib/value";
-import { Callout, GainBars, Marker, MarkerMark, NumberField, Sentence, Stat, StatRow, useWidth } from "../kit";
+import { Callout, GainBars, KeyValue, Marker, MarkerMark, NumberField, Sentence, Stat, StatRow, useWidth } from "../kit";
 import { Num, RulesLine } from "../provenance";
 import { Gap, SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
 
@@ -25,6 +25,9 @@ export function BankDepositVisual({ data, today }: VisualProps) {
   const termFact = fact(data, "term")!;
   const brk = fact(data, "break");
   const cash = fact(data, "cashRate")!;
+  const banks = data.depositBanks ?? [];
+  const lo = fact(data, "depositLo");
+  const hi = fact(data, "depositHi");
   const kind = breakKindOf(brk);
   const model = useMemo(() => depositModel(data, { amount: inputs.amount }), [data, inputs.amount]);
   const term = model?.term ?? factNumber(data, "term") ?? 12;
@@ -185,6 +188,22 @@ export function BankDepositVisual({ data, today }: VisualProps) {
           {copy.common.fundAssumption.before} <Num value={cash} /> {copy.common.fundAssumption.after}
         </Sentence>
       </div>
+      {banks.length > 0 && lo && hi && (
+        // the list the money-market ladder links to (F-86): each bank's rate on the line that names it (D31)
+        <section id={copy.ladder.range.anchorId} className="flex flex-col gap-2 max-w-measure scroll-mt-[112px] lg:scroll-mt-[88px]">
+          <h3 className="text-sm font-medium">{copy.deposit.banks.title}</h3>
+          <dl className="flex flex-col gap-1">
+            {banks.map((b) => (
+              <KeyValue key={b.id} label={<bdi>{b.name}</bdi>}>
+                <Num value={b.rate} />
+              </KeyValue>
+            ))}
+          </dl>
+          <Sentence size="sm" tone="muted">
+            {copy.deposit.banks.range.before} <Num value={lo} /> <Num value={hi} prefix={copy.deposit.banks.range.middle} /> {copy.deposit.banks.range.after}
+          </Sentence>
+        </section>
+      )}
       <RulesLine ids={data.ruleIds} />
     </div>
   );

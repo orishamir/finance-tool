@@ -1,0 +1,128 @@
+{
+  "id": "discount-pikadon-leshana-0122",
+  "bank": "discount",
+  "names": {
+    "447": [
+      "פקדון לשנה"
+    ],
+    "app": [],
+    "ad": [],
+    "abbrev": []
+  },
+  "type_447": "פקדון לשנה",
+  "wrapper_id": "bank-deposit",
+  "term_months": {
+    "value": 12,
+    "unit": "months",
+    "source": {
+      "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+      "title": "בנק דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון' (פרסום לפי הוראה 447; הטבלאות נטענות בדף מ-https://www.discountbank.co.il/api/MoneyMarket/Saving?pageId=6c03bad7-2f01-4a73-bcf3-8c3599a58221, 'lastUpdatedAt' 2026-10-25T18:00), פריים 4.75%, טבלת 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', שורת 'פקדון לשנה' קוד 0122",
+      "publisher": "Israel Discount Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-10-26",
+    "effective_from": "2026-10-25",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-27"
+    ],
+    "state": "sourced",
+    "notes": "Printed 'פקדון לשנה', period '1 שנה'; recorded as 12 months."
+  },
+  "rate_type": "fixed",
+  "anchor": null,
+  "spread": null,
+  "rate_offered": {
+    "value": 2.25,
+    "unit": "pct_per_year",
+    "source": {
+      "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+      "title": "בנק דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון' (פרסום לפי הוראה 447; הטבלאות נטענות בדף מ-https://www.discountbank.co.il/api/MoneyMarket/Saving?pageId=6c03bad7-2f01-4a73-bcf3-8c3599a58221, 'lastUpdatedAt' 2026-10-25T18:00), פריים 4.75%, טבלת 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', שורת 'פקדון לשנה' קוד 0122, 'שיעור הריבית המוצעת'",
+      "publisher": "Israel Discount Bank Ltd.",
+      "strength": "institution"
+    },
+    "checked": "2026-10-26",
+    "effective_from": "2026-10-25",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [
+      "BANK-13",
+      "BANK-25"
+    ],
+    "state": "sourced",
+    "notes": "Nominal annual rate before tax, printed 2.25 for 'פקדון לשנה' code 0122 (קבועה, 'לא צמוד', 'ללא תחנות יציאה'); common-deposit column empty; renewal 'ללא אפשרות חידוש' (0); deposit channels 'סניף,טלבנק' only. Other one-year rows in the same table: code 0224 משתנה, exit points 'קיימות תחנות יציאה' חודשית: p-4 (0.75); code 0192 קבועה, exit points 'קיימות תחנות יציאה' רבעונית: 1.0; code 0226 משתנה, exit points 'קיימות תחנות יציאה' רבעונית: p-3.25 (1.5); code 0811 צמוד מדד, exit points 'ללא תחנות יציאה' לא קיים: 0.5; code 0191 קבועה, exit points 'קיימות תחנות יציאה' חודשית: 0.5; the prime-linked one without exit points is record discount-pikadon-leshana-prime-0213."
+  },
+  "linkage": "none",
+  "tax_bucket": {
+    "value": "unlinked_15",
+    "unit": "text",
+    "source": {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, עמ' 204, סעיף 125ג(ג)(1): 15% על ריבית מנכס שאינו צמוד למדד; read through il-finance TXI-03 and TXI-04 (checked 2026-10-25)",
+      "publisher": "Israel Tax Authority (gov.il)",
+      "strength": "primary"
+    },
+    "checked": "2026-10-25",
+    "effective_from": null,
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "fixed in law",
+    "rule_ids": [
+      "TXI-03",
+      "TXI-04",
+      "TXI-08"
+    ],
+    "state": "sourced",
+    "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."
+  },
+  "amount_range": {
+    "min": {
+      "value": 250,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+        "title": "בנק דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון' (פרסום לפי הוראה 447; הטבלאות נטענות בדף מ-https://www.discountbank.co.il/api/MoneyMarket/Saving?pageId=6c03bad7-2f01-4a73-bcf3-8c3599a58221, 'lastUpdatedAt' 2026-10-25T18:00), פריים 4.75%, טבלת 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון', שורת 'פקדון לשנה' קוד 0122, 'טווח סכום להפקדה'",
+        "publisher": "Israel Discount Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-25",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-27"
+      ],
+      "state": "sourced",
+      "notes": "Printed 'החל מ-250 שח'."
+    },
+    "max": null
+  },
+  "break": {
+    "allowed": true,
+    "penalty": "with_penalty",
+    "mechanism_text": "'אפשרות לשבירת פיקדון: קיימת עם קנס שבירה' (447 table column).",
+    "rule_ids": [
+      "BANK-06",
+      "BANK-14"
+    ]
+  },
+  "exit_points": {
+    "exists": false,
+    "every_months": null
+  },
+  "auto_renew": {
+    "value": false,
+    "max_renewals": 0
+  },
+  "snapshot": "2026-10-26",
+  "source": {
+    "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+    "title": "בנק דיסקונט, 'פרסום מרוכז - שיעורי ריבית בפקדונות ויתרות זכות בחשבון' (פרסום לפי הוראה 447; הטבלאות נטענות בדף מ-https://www.discountbank.co.il/api/MoneyMarket/Saving?pageId=6c03bad7-2f01-4a73-bcf3-8c3599a58221, 'lastUpdatedAt' 2026-10-25T18:00), פריים 4.75%, טבלת 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון'",
+    "publisher": "Israel Discount Bank Ltd.",
+    "strength": "institution"
+  }
+}

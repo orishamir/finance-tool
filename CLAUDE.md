@@ -32,7 +32,7 @@ under each release say what exists and what is open, and its closing section
 "After release 5" lists the work that continues (tier-2 graduation, data
 growth, quarterly tariff refresh, my approvals). Data: about 500 rules, 20
 tariff snapshots for 17 providers (Meitav Trade still missing), 12 fund records,
-deposit terms (Leumi's 3, and seven more banks' current accounts since 2026-10-25), 2 series; no fund list, because TASE's terms forbid
+deposit terms (Leumi's 3, seven more banks' current accounts since 2026-10-25, and one-year deposits of Hapoalim, Discount and Mizrahi-Tefahot since 2026-10-26), 2 series; no fund list, because TASE's terms forbid
 republishing it (see `docs/data-inventory.md`). The saved state is version 3
 under `mekor.v2.state`; the entered offers, variant assumptions and playbook
 ticks are three side stores on the device pending a merge into it.
