@@ -1,6 +1,6 @@
 // Reads data/, docs/ and research/ at build time for the route loaders (architecture 3.5: every page is
 // generated from data/ at build). Server-only: the `.server` suffix keeps node:fs out of the browser bundle.
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 import {
   cmaPeriodFile,
@@ -11,6 +11,7 @@ import {
   parameterRecord,
   ruleRecord,
   termRecord,
+  securityRecord,
   wrapperRecord,
   type CmaPeriodFile,
   type FeesSnapshot,
@@ -19,12 +20,15 @@ import {
   type ValueObject,
   type WrapperId,
   type WrapperRecord,
+  type SecurityRecord,
+  type ProductRecord,
 } from "@finance-tool/schema";
 import type { z } from "zod";
 import { parseMdLink } from "./md-link";
 import { newestChecked } from "./data-as-of";
 import { staleCma, type SiteValue } from "./value";
 import { pointedIds } from "./scope";
+import { readJsonCached, readParsedCached, readTextCached } from "./read-cache.server";
 
 function findRoot(): string {
   let dir = process.cwd();
@@ -48,9 +52,7 @@ export function dataAsOf(): string {
 }
 
 function readJson<T extends z.ZodType>(path: string, schema: T): z.infer<T> {
-  const parsed = schema.safeParse(JSON.parse(readFileSync(path, "utf8")));
-  if (!parsed.success) throw new Error(`${path}: ${parsed.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`).join("; ")}`);
-  return parsed.data;
+  return readParsedCached(path, schema);
 }
 
 function readDir<T extends z.ZodType>(sub: string, schema: T): z.infer<T>[] {
@@ -91,8 +93,19 @@ export function loadParameters(): ParameterRecord[] {
   return readDir("data/parameters", parameterRecord);
 }
 
+/** The wrappers only (D6): the containers whose rules apply to whatever they hold. */
 export function loadWrappers(): WrapperRecord[] {
   return readDir("data/instruments/wrappers", wrapperRecord);
+}
+
+/** The securities (D6, amended 2026-10-26): makam, government bonds and the money-market funds, each held in a securities account. */
+export function loadSecurities(): SecurityRecord[] {
+  return readDir("data/instruments/securities", securityRecord);
+}
+
+/** Every product a person chooses between, a wrapper or a security held in one: what the guide, the comparison and the rules page list. */
+export function loadProducts(): ProductRecord[] {
+  return [...loadWrappers(), ...loadSecurities()];
 }
 
 export function loadFees(): FeesSnapshot[] {
@@ -163,6 +176,13 @@ function latestCmaFiles(): Map<string, CmaPeriodFile> {
 export function loadCmaFees(): Map<number, { balance: ValueObject; deposit: ValueObject }> {
   const out = new Map<number, { balance: ValueObject; deposit: ValueObject }>();
   for (const f of latestCmaFiles().values()) for (const fund of f.funds) out.set(fund.fund_id, { balance: fund.fees.avg_annual_management_fee, deposit: fund.fees.avg_deposit_fee });
+  return out;
+}
+
+/** Each track's two amounts for F-87 (data-schema 3.13 `holdings`), by fund id; a track of a file without them is absent. */
+export function loadCmaHoldings(): Map<number, NonNullable<CmaPeriodFile["funds"][number]["holdings"]>> {
+  const out = new Map<number, NonNullable<CmaPeriodFile["funds"][number]["holdings"]>>();
+  for (const f of latestCmaFiles().values()) for (const fund of f.funds) if (fund.holdings) out.set(fund.fund_id, fund.holdings);
   return out;
 }
 
@@ -284,7 +304,7 @@ export interface NotCoveredRow {
 
 /** docs/glossary.md section 3: the products the "not covered yet" page lists. */
 export function loadNotCovered(): NotCoveredRow[] {
-  const doc = readFileSync(join(root, "docs/glossary.md"), "utf8");
+  const doc = readTextCached(join(root, "docs/glossary.md"));
   const section = doc.slice(doc.indexOf("## 3. Not covered yet"), doc.indexOf("## 4. Missing from the rule base"));
   return [...section.matchAll(/^\| \*\*(.+?)\*\* \| (.*?) \| (.*?) \| (.*) \|$/gm)].map((m) => {
     const cell = m[4]!;
@@ -305,7 +325,7 @@ export function loadNotCovered(): NotCoveredRow[] {
 
 /** docs/method.md §2.3: which formulas each site parameter is used by. */
 export function loadParameterUses(): Record<string, string[]> {
-  const doc = readFileSync(join(root, "docs/method.md"), "utf8");
+  const doc = readTextCached(join(root, "docs/method.md"));
   const section = doc.slice(doc.indexOf("### 2.3"), doc.indexOf("### 2.4"));
   const out: Record<string, string[]> = {};
   for (const m of section.matchAll(/^\| (P-\d{2}) \| .+? \| (.+?) \|$/gm)) out[m[1]!] = [...m[2]!.matchAll(/F-\d{2}/g)].map((x) => x[0]);
@@ -321,7 +341,7 @@ export function loadFormulaParameters(): Record<string, string[]> {
 
 /** The Hebrew name of each source host (`data/sources/publishers.json`): a data file names its company in English ("Bank Leumi le-Israel B.M."), and the sheet's source line shows the Hebrew one (founder, 2026-10-26). */
 export function loadPublishersHe(): Record<string, string> {
-  const rows = JSON.parse(readFileSync(join(root, "data/sources/publishers.json"), "utf8")) as Record<string, { publisher_he?: string }>;
+  const rows = readJsonCached(join(root, "data/sources/publishers.json")) as Record<string, { publisher_he?: string }>;
   return Object.fromEntries(Object.entries(rows).flatMap(([host, r]) => (r.publisher_he ? [[host, r.publisher_he]] : [])));
 }
 
@@ -372,12 +392,12 @@ export interface PinnedRules {
 
 /** data/parameters/home-guide-door.json (P-10): the guide pages the first page's guide door names, as id and name, in order. */
 export function loadHomeGuideDoor(): { id: string; name: string }[] {
-  const ids = (JSON.parse(readFileSync(join(root, "data/parameters/home-guide-door.json"), "utf8")) as { wrappers: string[] }).wrappers;
-  const names = new Map<string, string>(loadWrappers().map((w) => [w.id, w.names.he[0]!]));
+  const ids = (readJsonCached(join(root, "data/parameters/home-guide-door.json")) as { wrappers: string[] }).wrappers;
+  const names = new Map<string, string>(loadProducts().map((w) => [w.id, w.names.he[0]!]));
   return ids.filter((id) => names.has(id)).map((id) => ({ id, name: names.get(id)! }));
 }
 
 /** data/parameters/pinned-rules.json (P-09): the questions at the top of the rules page and the facts per guide page. A site judgement, not a rule. */
 export function loadPinnedRules(): PinnedRules {
-  return JSON.parse(readFileSync(join(root, "data/parameters/pinned-rules.json"), "utf8")) as PinnedRules;
+  return readJsonCached(join(root, "data/parameters/pinned-rules.json")) as PinnedRules;
 }

@@ -13,6 +13,7 @@ import { BrokerageGroupCard } from "./brokerage-card";
 import { CompanyTerms } from "../company-terms";
 import { BankProductRow } from "./product-row";
 import type { InstitutionPageData } from "./types";
+import { shown } from "../../../lib/review";
 
 function countLine(n: number) {
   if (n === 1) return copy.count.one;
@@ -135,7 +136,7 @@ export function InstitutionPage({ data }: { data: InstitutionPageData }) {
                     {copy.groupLink} {g.wrapperName}
                     <IconDrillIn size={16} />
                   </Link>
-                  {g.wrapperId === "bank-deposit" && g.products.length === 1 && (
+                  {g.wrapperId === "bank-deposit" && g.products.length === 1 && shown("/idle-cash") && (
                     <p className="text-sm text-muted-foreground max-w-measure px-1">
                       {copy.oneTariff.before}
                       <Link to="/idle-cash" className="text-link hover:underline">

@@ -276,6 +276,20 @@ Approval of this document fixes the release contents and order. It did not start
 
 ---
 
+## Held for review
+
+*Written 2026-10-26 (D32).* The founder holds these back until he has reviewed their design and UX. They are not linked from anywhere on the site, but their addresses work, with a note at the top saying they are waiting for review. The list is `site/app/lib/review.ts`; to bring an item back, remove it from there and record the change here.
+
+- **The idle-cash page (`/idle-cash`).** The founder finds the page "a bit weird". Held with it: the home card's "כרית ביטחון" chip and its "יש לכם כבר פיקדון" pill (both lead there), the menu item and home door "כסף שיושב בעו״ש", the comparison's next step and the deposit guide's "קיבלתם הצעה מהבנק?" line. **Before it returns:** the founder walks through it as a friend with money in a current account, and says what the page should answer and in what order; the page is reworked to that, keeping F-60 and the D20 rule (entered rates, no Bank of Israel numbers); then where a cushion on the home card should land is decided again.
+- **The holdings page (`/holdings`).** Held with it: the home door and menu item "מה כבר יש לכם", the home card's "יש לכם כבר קרן השתלמות" pill, and the links back to it from the fee page, the switching playbook (whose breadcrumb now leads to the product's guide page) and the transfer page. The fee page and the playbook still work when reached from elsewhere. **Before it returns:** the founder enters his own holdings from his annual statements and reviews the flow: adding a holding, the fit mark, consolidation, child savings, and the hand-off to the fee page and the playbook; what he changes is built, and the three side stores are merged into the saved state if he wants that first.
+- **Three "מה מייחד" visuals (D29):** the renewable money-market fund, the bank deposit and the provident fund for investing. Their pages keep the timeline open, as a page without a visual does; `?review` in the address shows the visual with a note. **Before they return:** for the provident fund for investing, the founder finds the comparison with the securities account unfair; the comparison is rebuilt so both sides carry the same assumptions (the same index and fund costs, the broker priced the way F-80 prices it, the tax at exit on both sides at the same age) and the founder agrees it is fair. For the renewable fund and the bank deposit, the founder decides what question each visual answers and approves a mockup, by the reading test of design-system 2.3.
+
+## Not final
+
+*Written 2026-10-26.* Built and linked from the site, but not final: the founder has not settled their design and UX, and they may change. Unlike the held items above they stay reachable from the company pages, the guides and search.
+
+- **The workbench pages (`/workbench/*`):** the tracks of a product across every company (`/workbench/tracks/<wrapper>`, F-64), the banks and investment houses for a fund (`/workbench/providers/<wrapper>`, F-63) and the fund variants of an exposure (`/workbench/funds/<exposure>`, F-65). They still carry the saved-goal strip and a fit mark on each track, which D34 moves off the company and track pages to the goals page. **Before they are final:** the founder walks through them and says what each should answer and in what order; whether their goal UI stays or moves with D34 is decided then.
+
 ## After release 5
 
 *Written 2026-10-24.*
@@ -350,6 +364,22 @@ What continues, none of it a release:
   - **Search** has two groups.
   - **The validator** enforces all of this, file by file.
 
+- **Wrappers and securities (D6 amended, 2026-10-26, founder: "change D6").** Makam, government bonds and the two money-market funds are securities bought in a securities account, not wrappers. Their records moved to `data/instruments/securities/` with `held_in`; IDs, pages and saved keys stay. What changed for a person:
+  - the comparison prices makam and the government bond on the provider that leaves the goal the most, as it already did the account (F-80), with each provider's own lines for the class;
+  - makam at a non-bank member pays that member's custody line, and any account's monthly fee follows a security into the account (F-14, F-17); before, the makam run read neither;
+  - exposure mode no longer lists the securities account beside makam as a second way that never ran; the makam choice reads "מק״מ, קנייה ישירה בחשבון ניירות ערך";
+  - a security's guide page names the account it is bought in, and the account's page lists the securities bought in it; the account's eligibility, supervision and protection text is no longer copied into four records.
+
+  Research and the full list: `research/discovery/2026-10-26-wrappers-and-securities.md`.
+
+**Later on 2026-10-26 (the founder, on the company page, D34):**
+
+- **No goal on the company and track pages.** The saved-goal strip, the fit mark on each track row and the track page's "מתאים למטרה שלכם?" card are gone; goal UI comes back on the goals page. The card's component (`FitMarkCard` in `site/app/components/compare/fit.tsx`) is kept, unused, for that page.
+- **Exposure instead.** The track table's last column shows two small rings with their numbers: the share of the track's assets in stocks (F-87) and in foreign currency (F-88) at the end of the latest report period, computed from the CMA's own amounts (CAT-24); the track page shows both as rows. The rings are a kit piece (`ShareRings`). The CMA adapter now keeps `TOTAL_ASSETS` and `STOCK_MARKET_EXPOSURE` as value objects (`holdings`, data-schema 3.13), and the CSV's other numeric columns as received for later use.
+- **Fees and labels (D36).** The fee cell shows the savings and the deposit fee on every row; the product's legal caps and the direct-expenses note sit under each table; labels beside a track's name say it is new or only for some employees. A company's page compares nothing with other companies (D35).
+- **A fund's "עוקבת אחרי" link** on a company page leads to the index's guide page (`/exposure/<index>`), not to the index comparison.
+- **The workbench pages are listed as not final** (section "Not final" above).
+
 **What continues, in order:**
 
 1. **F-48, early pension withdrawal:** re-read TXP-18's official text, then build it.
@@ -371,4 +401,9 @@ What continues, none of it a release:
    - EUR-Lex;
    - the Supreme Court site;
    - and the link check's 43 links.
-6. **Unchanged from the list above:** tier-2 graduation, data growth, the quarterly tariff refresh and the founder's approvals.
+6. **Unchanged from the list above:** tier-2 graduation, data growth, the quarterly tariff refresh and the founder's approvals. Corporate bonds and REITs graduate as securities held in the securities account (D6 as amended 2026-10-26), not as wrappers.
+7. **Securities in the account, what is left (D6, 2026-10-26):**
+   - **The "which bank or investment house" page (F-63) for makam and government bonds.** It still ranks funds only: its run is the fund run and its subject is a fund record. It needs a makam and a bond subject that run the makam and bond ledgers on every provider's lines for their class, as the comparison card's picker already does.
+   - **Money-market funds at a non-bank member in the comparison.** The comparison keeps the bank case, where a bank with a distribution agreement charges the holder nothing (MF-26, BANK-18). At a non-bank member that is an investment marketer, MF-26 does not bind and the tariff applies (BRK-52), so a person who already holds an account at such a member is priced as if they bought at a bank. Needs: the provider pick for the money-market securities, with each member's `money_market_units` lines and the bank case as one of the options.
+   - **One account or a pick per option.** Makam and the bond each take their own cheapest provider, and a provider the person chose for the securities account does not carry over to them. If the founder means one account for everything held there, the pick becomes one choice shared by the account and its securities.
+   - **The general track is not an exposure.** `data/instruments/exposures/general-track.json` names no contents: its own line says the mix is up to each manager's investment committee with no committed equity range, so two general tracks can hold different things. It exists only inside provident wrappers (kupat gemel lehashkaa, keren hishtalmut), which makes it a track, the provident counterpart of a fund in a securities account, and D18 already said track classifications get no exposure page. Today exposure mode asks for a return for an undefined mix and judges it at P-04's "כללי" row. A decision for the founder, since it is exposure mode's only mixed option: drop it from the exposures, or model tracks as the layer inside the provident wrappers and rank them by the asset mix each manager publishes.

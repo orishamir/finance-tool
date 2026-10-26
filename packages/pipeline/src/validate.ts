@@ -19,7 +19,8 @@ import {
   ruleRecord,
   seriesRecord,
   termRecord,
-  wrapperId,
+  securityRecord,
+  productId,
   wrapperRecord,
   type SeriesRecord,
   sourcesFile,
@@ -36,6 +37,7 @@ const collections: Record<string, z.ZodType> = {
   parameters: parameterRecord,
   cma: cmaPeriodFile,
   "instruments/wrappers": wrapperRecord,
+  "instruments/securities": securityRecord,
   "instruments/exposures": exposureRecord,
   fees: feesSnapshot,
   funds: fundRecord,
@@ -148,7 +150,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
           report(file, `variants: ${v} has no record under data/funds/ (data-schema §3.4)`);
       }
     }
-    if (collection === "instruments/wrappers" && result.success) {
+    if ((collection === "instruments/wrappers" || collection === "instruments/securities") && result.success) {
       for (const message of checkDimensionMarks(parsed.value as Record<string, unknown>, ruleDimensions, ctx.ruleBase)) report(file, message);
     }
   }
@@ -307,17 +309,17 @@ function checkPinnedRules(files: string[], dataDir: string, all: Map<string, Rul
   }
 }
 
-/** P-10 (`data/parameters/home-guide-door.json`): every wrapper id it names has a record under data/instruments/wrappers/, once. */
+/** P-10 (`data/parameters/home-guide-door.json`): every product id it names has a record under data/instruments/wrappers/ or securities/, once. */
 function checkHomeGuideDoor(files: string[], dataDir: string, report: (file: string, message: string) => void) {
   const at = (f: string) => relative(dataDir, f).replace(/\\/g, "/");
   const file = files.find((f) => at(f) === "parameters/home-guide-door.json");
   if (!file) return;
   const rec = parseJson(readFileSync(file, "utf8")).value as { wrappers?: unknown } | undefined;
   if (!Array.isArray(rec?.wrappers) || rec.wrappers.length === 0) return report(file, "home-guide-door: `wrappers` must be a non-empty list of wrapper ids");
-  const known = new Set(files.filter((f) => at(f).startsWith("instruments/wrappers/") && f.endsWith(".json")).map((f) => (parseJson(readFileSync(f, "utf8")).value as { id?: string } | undefined)?.id));
+  const known = new Set(files.filter((f) => (at(f).startsWith("instruments/wrappers/") || at(f).startsWith("instruments/securities/")) && f.endsWith(".json")).map((f) => (parseJson(readFileSync(f, "utf8")).value as { id?: string } | undefined)?.id));
   const seen = new Set<string>();
   for (const id of rec.wrappers as string[]) {
-    if (!known.has(id)) report(file, `home-guide-door: ${id} has no record under data/instruments/wrappers/`);
+    if (!known.has(id)) report(file, `home-guide-door: ${id} has no record under data/instruments/wrappers/ or securities/`);
     if (seen.has(id)) report(file, `home-guide-door: ${id} is listed twice`);
     seen.add(id);
   }
@@ -427,7 +429,7 @@ function checkInstrumentsMap(files: string[], dataDir: string, ruleIds: Map<stri
     if (rec?.method_id !== "P-05" || typeof rec.instruments !== "object" || rec.instruments === null) continue;
     for (const [wrapper, spec] of Object.entries(rec.instruments as Record<string, Record<string, unknown>>)) {
       const at = `instruments.${wrapper}`;
-      if (!wrapperId.safeParse(wrapper).success) report(file, `${at}: ${wrapper} is not a wrapper id`);
+      if (!productId.safeParse(wrapper).success) report(file, `${at}: ${wrapper} is not a wrapper or security id`);
       const check = (key: string, known: boolean, where: string) => {
         const id = spec?.[key];
         if (typeof id === "string" && !known) report(file, `${at}.${key}: "${id}" ${where}`);
@@ -516,23 +518,30 @@ function readRuleDimensions(files: string[], dataDir: string): Map<string, strin
  */
 function checkDimensionMarks(record: Record<string, unknown>, ruleDimensions: Map<string, string[]>, ruleBase: RuleBaseIds): string[] {
   const out: string[] = [];
-  const cited = new Set(collectStrings(record, "rule_ids"));
-  const union = new Set<string>();
-  for (const id of cited) {
-    const dims = ruleDimensions.get(id);
-    if (!dims) {
-      out.push(`rule ${id} is cited but has no record under data/rules/`);
-      continue;
+  // a security's `held_in` rules (where it is held) can cover a dimension, but a dimension only they carry need not be marked:
+  // the wrapper's own dimensions are that wrapper's record's
+  const { held_in: _heldIn, ...own } = record;
+  const dimsOf = (ids: Iterable<string>) => {
+    const union = new Set<string>();
+    for (const id of ids) {
+      const dims = ruleDimensions.get(id);
+      if (!dims) {
+        out.push(`rule ${id} is cited but has no record under data/rules/`);
+        continue;
+      }
+      dims.forEach((d) => union.add(d));
     }
-    dims.forEach((d) => union.add(d));
-  }
+    return union;
+  };
+  const ownUnion = dimsOf(new Set(collectStrings(own, "rule_ids")));
+  const heldUnion = _heldIn ? dimsOf(new Set(collectStrings(_heldIn, "rule_ids"))) : new Set<string>();
   const marks = (record.dimensions ?? {}) as Record<string, string>;
   for (const [dim, mark] of Object.entries(marks)) {
-    if (mark === "covered" && !union.has(dim)) out.push(`dimensions.${dim}: marked covered, but no cited rule carries it (§4 item 9)`);
+    if (mark === "covered" && !ownUnion.has(dim) && !heldUnion.has(dim)) out.push(`dimensions.${dim}: marked covered, but no cited rule carries it (§4 item 9)`);
     if (mark.startsWith("blocked:") && !ruleBase.openQuestions.has(mark.slice("blocked:".length)))
       out.push(`dimensions.${dim}: ${mark.slice("blocked:".length)} is not an open question in il-finance`);
   }
-  for (const dim of union) {
+  for (const dim of ownUnion) {
     if (!(dim in marks)) out.push(`dimensions.${dim}: a cited rule carries it, but it is not marked (§4 item 9)`);
   }
   return out;

@@ -1,6 +1,6 @@
 // F-83 Candidate set and coverage line (product D17): every comparison starts from the full candidate set and
 // accounts for each candidate exactly once, with the first outcome that applies in the method's order.
-import { wrapperId, wrapperRecord, type ValueObject, type WrapperId, type WrapperRecord } from "@finance-tool/schema";
+import { productIds, productSchemaOf, type ValueObject, type ProductId, type ProductRecord } from "@finance-tool/schema";
 import { RecordInputError, runInputs, runPlanned, type P05Input, type RunPlan } from "../inputs.ts";
 import type { Profile } from "../ledgers/common.ts";
 import { NotEvaluatedError } from "../ledgers/securities.ts";
@@ -37,7 +37,7 @@ export interface CandidateSetInput {
 
 /** The part of the amount that must stay available (D13), held in the current account or a daily fund. */
 export interface KeptAvailable {
-  wrapper: WrapperId;
+  wrapper: ProductId;
   amount: number;
   plan?: RunPlan;
   run?: RunResult;
@@ -87,9 +87,9 @@ export function withCashRate(parameters: readonly unknown[], cashRate: ValueObje
   });
 }
 
-/** The wrapper record, checked against the schema; a bad record stops the comparison with the field named. */
-export function parseWrapper(record: unknown): WrapperRecord {
-  const r = wrapperRecord.safeParse(record);
+/** The product record (a wrapper or a security held in one, D6), checked against its schema; a bad record stops the comparison with the field named. */
+export function parseWrapper(record: unknown): ProductRecord {
+  const r = productSchemaOf(record).safeParse(record);
   if (r.success) return r.data;
   const issues = r.error.issues.map((i) => `${i.path.join(".") || "(top)"}: ${i.message}`);
   throw new RecordInputError(`wrapper record: ${issues.join("; ")}`);
@@ -163,7 +163,7 @@ export function buildCandidateSet(input: CandidateSetInput, ctx: RunContext): Ca
     candidates.push(evaluate(c, w, parameters, entered, goal, profile, months, ctx));
   }
   if (!input.restricted) {
-    for (const id of wrapperId.options) {
+    for (const id of productIds) {
       if (!seen.has(id)) candidates.push({ id, tier: 1, kind: "not-evaluated", reasons: [{ code: "missing-record", ruleIds: [], gapIds: [], detail: id }] });
     }
   }
@@ -200,7 +200,7 @@ export function buildCandidateSet(input: CandidateSetInput, ctx: RunContext): Ca
 
 export function evaluate(
   c: CandidateInput,
-  w: WrapperRecord,
+  w: ProductRecord,
   parameters: readonly unknown[],
   entered: Partial<Record<P05Input, ValueObject>>,
   goal: ComparisonGoal,

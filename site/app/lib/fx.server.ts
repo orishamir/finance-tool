@@ -1,9 +1,10 @@
 // Reads data/series/ecb-fx.json (the ECB's daily euro reference rates, D26) into the FxSnapshot the pages carry.
 // Server-only: the `.server` suffix keeps node:fs out of the browser bundle.
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { root } from "./data.server";
 import type { FxSnapshot } from "./fx";
+import { readJsonCached } from "./read-cache.server";
 
 /** Builds the snapshot from a parsed series record (the newest reference day's observations). */
 export function snapshotFromSeries(rec: { observations: { key?: string; date: string; value: unknown; checked: string }[]; terms_of_use: { attribution?: string }; stale_after_days: number; flow?: string }): FxSnapshot {
@@ -32,6 +33,6 @@ export function loadFx(): FxSnapshot | null {
   if (cached) return cached;
   const p = join(root, "data/series/ecb-fx.json");
   if (!existsSync(p)) return null;
-  cached = snapshotFromSeries(JSON.parse(readFileSync(p, "utf8")));
+  cached = snapshotFromSeries(readJsonCached(p));
   return cached;
 }

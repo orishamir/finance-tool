@@ -19,3 +19,4 @@ export { GainBars, LaneLabel, Marker, MarkerMark, useWidth, type GainBar, type M
 export { ChartLegend, ChartReadout, ChartTable, Swatch, scrollCueStyle, type LegendItem, type ReadoutRow, type SwatchShape, type TableColumn, type TableRowData } from "./chart-parts";
 export { CompanyLinks, type CompanyLinkItem } from "./company-links";
 export { CompareTable, ValueBar, type CompareRow } from "./compare-table";
+export { ShareRings, type Ring } from "./rings";

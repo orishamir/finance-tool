@@ -7,15 +7,21 @@ import { DimensionChecklist, type ChecklistRowView } from "../components/guide/s
 import { IconDrillIn } from "../components/icons";
 import { Num, NumAfter } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { FitMarkCard } from "../components/compare/fit";
-import { SavedGoalStrip } from "../components/compare/strip";
 import { Callout, Card, Sentence, Tag } from "../components/kit";
-import { GoalsProvider, type Presets } from "../lib/goal";
 import { cmaFeeValue, feeYear, type SiteValue } from "../lib/value";
+import { compactHoldings, exposureShares, holdingsTemplate, type ExposureShares, type Holdings } from "../lib/track-exposure";
+import { ShareNum } from "../components/decoder/tracks";
+import { trackLabels } from "../lib/track-labels";
+import { fmt } from "../lib/format";
+
+/** F-87 and F-88 for one track; null when its data file has no amounts. */
+function exposureOf(h: Holdings | undefined, period: string, today: string): ExposureShares | null {
+  const template = holdingsTemplate([h], period, today);
+  return exposureShares(compactHoldings(h, template), template, period, today);
+}
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const { loadChecklistRows, loadCma, loadCmaFees, loadRules, loadWrappers, pointedRecords, today } = await import("../lib/data.server");
-  const { fitTable, goalContext } = await import("../lib/compare.server");
+  const { loadChecklistRows, loadCma, loadCmaFees, loadCmaHoldings, loadRules, loadWrappers, pointedRecords, today } = await import("../lib/data.server");
   const { institutionCompanies, loadCatalog, seenValue, seenWhere } = await import("../lib/instruments.server");
   const cma = loadCma();
   const track = cma.tracks.find((t) => t.companyId === params.id && String(t.fundId) === params.fund);
@@ -69,11 +75,9 @@ export async function loader({ params }: Route.LoaderArgs) {
       fundId: sourced(String(track.fundId), "text"),
       period: cma.periodValue,
       inception: track.inception ? sourced(track.inception, "text") : null,
+      exposure: exposureOf(loadCmaHoldings().get(track.fundId), track.reportPeriod, t),
     },
     today: t,
-    goal: goalContext(),
-    fit: fitTable(),
-    stale: cma.periodValue.stale ?? null,
   };
 }
 
@@ -93,7 +97,6 @@ export default function TrackPage() {
   // pension fees belong to the fund, not to the track (CAT-39)
   const feeText = (template: string, v: SiteValue) => feeLabel(template, feeYear(v)) + (track.dataset === "pensia-net" ? ` ${copy.feeWhole}` : "");
   return (
-    <GoalsProvider presets={data.goal.presets as Presets}>
     <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: data.dimensionNames, today: data.today }}>
       <div className="flex flex-col gap-8 pt-2 lg:pt-8 max-w-page">
         <header className="flex flex-col gap-3">
@@ -101,6 +104,9 @@ export default function TrackPage() {
           <h1 className="text-2xl lg:text-3xl font-semibold flex flex-wrap items-center gap-3">
             <bdi>{track.name}</bdi>
             {data.isDefault && <Tag tone="parameter">{companyCopy.default}</Tag>}
+            {trackLabels(track).map((l) => (
+              <Tag key={l}>{companyCopy.labels[l]}</Tag>
+            ))}
           </h1>
           <Sentence tone="muted">
             {copy.fundLine} <Num value={data.values.fundId} />
@@ -115,9 +121,7 @@ export default function TrackPage() {
               ))}
             </Callout>
           )}
-          <SavedGoalStrip variant="compact" presets={data.goal.presets as Presets} meta={data.goal.meta} today={data.today} />
         </header>
-        <FitMarkCard table={data.fit} track={track} stale={data.stale} period={String(data.values.period.value)} />
         <Card>
           <dl className="flex flex-col">
             {row(copy.labels.manager, <Link to={`/companies/${track.companyId}`} className="text-link hover:underline"><bdi>{track.companyName}</bdi></Link>)}
@@ -146,6 +150,8 @@ export default function TrackPage() {
             {track.targetPopulation && row(copy.labels.population, <bdi>{track.targetPopulation}</bdi>)}
             {row(feeText(copy.feeBalanceLabel, data.values.balanceFee), <FeeNum value={data.values.balanceFee} />)}
             {row(feeText(copy.feeDepositLabel, data.values.depositFee), <FeeNum value={data.values.depositFee} />)}
+            {data.values.exposure?.stock && row(companyCopy.stock.rowStock.replace("{period}", fmt.period(track.reportPeriod)), <ShareNum value={data.values.exposure.stock} />)}
+            {data.values.exposure?.currency && row(companyCopy.stock.rowCurrency.replace("{period}", fmt.period(track.reportPeriod)), <ShareNum value={data.values.exposure.currency} />)}
             {data.values.inception && row(copy.labels.inception, <Num value={data.values.inception} />)}
             {row(copy.labels.period, <Num value={data.values.period} />)}
           </dl>
@@ -189,6 +195,5 @@ export default function TrackPage() {
         )}
       </div>
     </PageShell>
-    </GoalsProvider>
   );
 }

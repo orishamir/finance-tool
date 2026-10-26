@@ -12,7 +12,7 @@
 import { mostCommonRate, rateRange } from "@finance-tool/engine";
 import type { Bundle } from "./engine";
 import { p05Range, runTimeline } from "./engine";
-import type { DepositTerms, ParameterRecord, RuleRecord, ValueObject, WrapperId, WrapperRecord } from "@finance-tool/schema";
+import type { DepositTerms, ParameterRecord, RuleRecord, ValueObject, ProductId, ProductRecord } from "@finance-tool/schema";
 import type { AccountBank } from "./guide-signature";
 import { buildInstrumentTerms, loadDepositTerms, loadFunds } from "./instruments.server";
 import { loadFees } from "./data.server";
@@ -183,8 +183,8 @@ export function withPublishedRate(p05: ParameterRecord, rate: ValueObject): Para
   return { ...p05, inputs: { ...inputs, cash_rate: rate } } as unknown as ParameterRecord;
 }
 
-export function familyOf(id: WrapperId): "provident" | "deposit" | "securities" | "makam" | "bond" | null {
-  const map: Partial<Record<WrapperId, "provident" | "deposit" | "securities" | "makam" | "bond">> = {
+export function familyOf(id: ProductId): "provident" | "deposit" | "securities" | "makam" | "bond" | null {
+  const map: Partial<Record<ProductId, "provident" | "deposit" | "securities" | "makam" | "bond">> = {
     "kupat-gemel-lehashkaa": "provident",
     "keren-hishtalmut": "provident",
     "bank-deposit": "deposit",
@@ -207,7 +207,7 @@ export type InstrumentFamily = "deposit" | "securities" | "makam" | "bond";
  * values); the rules the run may read are kept, so the browser can run it again for any entered value.
  */
 export function buildInstrumentBundle(
-  record: WrapperRecord,
+  record: ProductRecord,
   family: InstrumentFamily,
   p05: ParameterRecord,
   allRules: Record<string, RuleRecord>,

@@ -32,7 +32,7 @@ import {
   type SensitivityAxis,
   type UsedRule,
 } from "@finance-tool/engine";
-import type { ExposureRecord, ParameterRecord, RuleRecord, ValueObject, WrapperId, WrapperRecord } from "@finance-tool/schema";
+import type { ExposureRecord, ParameterRecord, RuleRecord, ValueObject, ProductId, ProductRecord } from "@finance-tool/schema";
 import { computedInputs as ci, formulaNames, guideBlocks, ownTermsCopy, r2 } from "../copy";
 import { fmt } from "./format";
 import type { Employment } from "./inputs";
@@ -55,11 +55,11 @@ Object.assign(formulaNames, {
 export type Family = "provident" | "pension" | "deposit" | "securities" | "makam" | "bond";
 
 export interface WrapperEntry {
-  id: WrapperId;
+  id: ProductId;
   /** The glossary name: the record's first Hebrew name. */
   name: string;
   family: Family | null;
-  record: WrapperRecord;
+  record: ProductRecord;
   /** The instrument terms the guide page uses for it; absent when a record the run needs is missing. */
   terms?: InstrumentTerms;
   /** The list-fee lines the terms came from, with their sources. */
@@ -109,6 +109,8 @@ export interface ProviderTariff {
   channel: string;
   tariff: NonNullable<InstrumentTerms["tariff"]>;
   feeValues: Record<string, SiteValue>;
+  /** F-14: whether the provider is a bank (custody barred on makam and money-market units, BRK-17) or a non-bank member. */
+  memberKind?: "bank" | "non-bank";
 }
 
 export interface Tier2Row {
@@ -382,7 +384,9 @@ export function applyOwnProviders(bundle: CompareBundle, g: Pick<RunGoal, "ownPr
     const feeValues = { ...w.feeValues };
     for (const k of tariffValueKeys) delete feeValues[k];
     Object.assign(feeValues, p.feeValues);
-    return { ...w, terms: { ...w.terms, tariff: clone(p.tariff) }, feeValues, representative: { ...(w.representative ?? { name: w.name }), provider: p.name, providerId: id!, chosen: true } };
+    // the member's kind decides custody on makam (F-14, BRK-17); a bond run takes no such input
+    const memberKind = p.memberKind && (w.family === "makam" || w.family === "securities") ? { memberKind: p.memberKind } : {};
+    return { ...w, terms: { ...w.terms, tariff: clone(p.tariff), ...memberKind }, feeValues, representative: { ...(w.representative ?? { name: w.name }), provider: p.name, providerId: id!, chosen: true } };
   });
   return changed ? { ...bundle, wrappers } : bundle;
 }
@@ -621,7 +625,7 @@ const eligibilityDimensions = ["minimum", "eligibility"] as const;
  * F-83 (2026-10-24): an option whose minimum-amount (or other eligibility) rule is open is shown, not ranked: its ranked value would
  * rest on a purchase the site does not know is possible. The reason is `rule-open` with `detail` "minimum:GOV-OQ7" (dimension and open question).
  */
-export function openConstraintOf(record: Pick<WrapperRecord, "dimensions">): Reason | null {
+export function openConstraintOf(record: Pick<ProductRecord, "dimensions">): Reason | null {
   for (const d of eligibilityDimensions) {
     const m = (record.dimensions as Record<string, string> | undefined)?.[d];
     if (typeof m === "string" && m.startsWith("blocked:")) return { code: "rule-open", ruleIds: [], gapIds: [], detail: `${d}:${m.slice("blocked:".length)}` };

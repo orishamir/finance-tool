@@ -37,6 +37,7 @@ import { IconAlert, IconCopy } from "../icons";
 import { IconDownload, IconFileUp, IconShare } from "../holdings/icons";
 import { LeadTail, Num } from "../provenance";
 import { Button, Callout, Card, cx, SegmentedControl, Sentence } from "../kit";
+import { shown } from "../../lib/review";
 
 type Site = { version: string; data: string };
 
@@ -403,9 +404,11 @@ function ImportHalf() {
           )}
           {switched && <p className="text-sm text-muted-foreground">{copy.switched}</p>}
           <p className="flex flex-wrap gap-x-4">
-            <Link to="/holdings" className="text-link min-h-target inline-flex items-center hover:underline">
-              {copy.afterLinks.holdings}
-            </Link>
+            {shown("/holdings") && (
+              <Link to="/holdings" className="text-link min-h-target inline-flex items-center hover:underline">
+                {copy.afterLinks.holdings}
+              </Link>
+            )}
             <Link to="/goal/compare" className="text-link min-h-target inline-flex items-center hover:underline">
               {copy.afterLinks.result}
             </Link>

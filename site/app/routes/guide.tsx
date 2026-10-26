@@ -8,11 +8,12 @@ import { Num, NumberLegend, RuleRef, RulesLine, StrengthLabel, VariesByCompany }
 import { Breadcrumb, PageShell } from "../components/shell";
 import { WorthKnowing, worthRows } from "../components/guide/worth-knowing";
 import { Timeline } from "../components/timeline/Timeline";
-import { hasSignatureVisual, SignatureFrame, signatureTitle } from "../components/guide-signature";
+import { hasSignatureVisual, SignatureFrame, signatureTitle, useReviewMode } from "../components/guide-signature";
+import { heldSignatures } from "../lib/review";
 import { accountWorthRow } from "../components/guide-signature/current-account";
 import { cashLikeIds } from "../lib/guide-signature";
 import { SavedGoalStrip } from "../components/compare/strip";
-import { Disclosure, Tag } from "../components/kit";
+import { Disclosure, Sentence, Tag } from "../components/kit";
 import { GoalsProvider, type Presets } from "../lib/goal";
 import { fmt } from "../lib/format";
 import { splitTerms } from "../lib/guide-nav";
@@ -83,6 +84,7 @@ export default function GuidePage() {
   const content = guideContent[record.id];
   const current = useCurrentSection(copy.sections.map((s) => s.id));
   const { state: inputsState } = useInputs();
+  const review = useReviewMode();
   const title = (id: string) => copy.sections.find((x) => x.id === id)!.title;
   const figure = (ruleId: string, name: string): SiteValue | null => {
     const r = rules[ruleId];
@@ -371,7 +373,9 @@ export default function GuidePage() {
   const regulatorName = blocks.regulatorNames[String(record.regulator.value)] ?? String(record.regulator.value);
   const provenance = { rules, pointed: data.pointed, terms: data.termsById, dimensions: data.dimensionNames, today, rulesOf: { name: data.name, href: `/rules?product=${record.id}` } }; // the rules page's product filter (2026-10-25): the old `#<file>` anchor stopped existing when groups became `<shelf>-<file>`
   const cp = { figure };
-  const signature = hasSignatureVisual(record.id, data.signature) ? data.signature : null;
+  // a visual held for review (lib/review.ts) shows only with ?review in the address; the page then keeps its timeline open, as one without a visual
+  const held = heldSignatures.includes(record.id);
+  const signature = hasSignatureVisual(record.id, data.signature) && (!held || review) ? data.signature : null;
   // the current account starts from the rate most of the collected banks publish (F-85), and says how many do
   const common = record.id === "current-account" && signature?.facts.commonCount && signature.facts.bankCount ? { count: signature.facts.commonCount, of: signature.facts.bankCount } : null;
   const cash = cashLikeIds.includes(record.id) ? { id: record.id, published: !!data.bundle?.feeValues.balanceCeiling || ["bank-deposit", "savings-plan", "current-account"].includes(record.id), common } : null;
@@ -398,6 +402,22 @@ export default function GuidePage() {
             <Breadcrumb parent={{ href: "/guide", label: guideIndex.title }} current={data.name} />
             <h1 className="text-2xl lg:text-3xl font-semibold">{data.name}</h1>
             {data.lede && <p className="text-lg text-muted-foreground max-w-measure">{data.lede}</p>}
+            {data.heldIn && (
+              <div className="flex flex-col gap-1 max-w-measure">
+                <Sentence
+                  tone="muted"
+                  t={copy.heldIn}
+                  vars={{
+                    account: (
+                      <Link to={`/guide/${data.heldIn.id}`} className="text-link hover:underline">
+                        {data.heldIn.name}
+                      </Link>
+                    ),
+                  }}
+                />
+                <RulesLine ids={gen(data.heldIn.ruleIds)} />
+              </div>
+            )}
             <SavedGoalStrip variant="compact" presets={data.goal.presets as Presets} meta={data.goal.meta} today={today} />
             <NumberLegend term institution={anyWeak([...Object.values(data.bundle?.feeValues ?? {}), ...Object.values(signature?.facts ?? {}), ...(signature?.banks ?? []).flatMap((b) => [b.rate, b.ceiling])])} />
           </header>
@@ -412,12 +432,13 @@ export default function GuidePage() {
           <GuideSection id="use" title={title("use")} rulesToggle>
             {content?.use(cp)}
             <RelatedProducts items={data.related} />
+            <RelatedProducts items={data.securities} label={copy.securitiesRow} />
             <ExposureLinks items={data.exposures} />
           </GuideSection>
 
           {signature && (
             <GuideSection id="different" title={signatureTitle(record.id)} rulesToggle>
-              <SignatureFrame id={record.id} data={signature} today={today} timeline={timelineNode} />
+              <SignatureFrame id={record.id} data={signature} today={today} timeline={timelineNode} held={held} />
             </GuideSection>
           )}
 

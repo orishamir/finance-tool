@@ -1,6 +1,7 @@
 // Guide prose for איגרות חוב ממשלתיות (architecture 3.5: prose lives in content files; every figure is a
 // Num). Written 2026-10-23 from the rule base (GOV, TXI, TXS, BRK, REG); each block ends with the rules it
 // rests on. NEW copy for the founder to review (docs/copy.md holds only labels).
+import { Link } from "react-router";
 import type { GuideContent } from "./types";
 import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
@@ -52,9 +53,10 @@ export const content: GuideContent = {
         את הקרן והקופונים משלמת המדינה מהכנסותיה הכלליות, לא הבנק ולא הברוקר. מחיר האיגרת בבורסה עולה ויורד עם הריבית במשק: מי שמוכר לפני הפדיון יכול לקבל פחות ממה ששילם, ומי שמחזיק עד הפדיון מקבל את השווי הנקוב. באיגרת צמודה אין רצפה בתקנות: אם המדד יורד מתחת <Term prefix="ל" id="מדד הבסיס">מדד הבסיס</Term>, גם הקרן וגם הריבית מוקטנות. באיגרת לא צמודה, אינפלציה גבוהה מהריבית שוחקת את הכסף. המדינה רשאית לפדות סדרה מוקדם, רק במחיר השוק.
       </p>
       <p className="max-w-measure">
-        הנייר מוחזק בחשבון ניירות ערך. אצל חבר בורסה שאינו בנק, ניירות הערך של הלקוחות מוחזקים בנפרד מנכסי החבר, בנאמנות במסלקת הבורסה, לפי תקנון הבורסה. בבנק, המפקח על הבנקים מחייב כל בנק שמחזיק ניירות ערך עבור לקוחות לרשום ולהפריד את נכסי הלקוחות כך שאפשר לזהות אותם בנפרד מנכסיו, ולעבור ביקורת חיצונית בלתי תלויה לפחות פעם בשנה. מה קורה לניירות ערך של לקוחות אם בנק קורס לא נמצא במקור רשמי. שאלה פתוחה: <IdRef id="REG OQ10" />.
+        {/* D6 (2026-10-26): how the account keeps the paper is the account's, said once on its page, not copied here */}
+        הנייר מוחזק בחשבון ניירות ערך. איך החשבון שומר על נכסי הלקוחות, ומה קורה אם הבנק או בית ההשקעות קורסים, מוסבר בעמוד של <Link to="/guide/brokerage-account" className="text-link hover:underline">חשבון ניירות ערך</Link>.
       </p>
-      <RulesLine ids={["GOV-02", "GOV-12", "GOV-16", "GOV-17", "BRK-07", "BRK-10", "REG-16"]} />
+      <RulesLine ids={["GOV-02", "GOV-12", "GOV-16", "GOV-17"]} />
     </>
   ),
   use: () => (

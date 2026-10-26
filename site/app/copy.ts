@@ -9,6 +9,8 @@ export const site = {
   searchPlaceholder: "הדביקו שם של מוצר, מסלול או מונח",
   menu: "תפריט",
   close: "סגירה",
+  // 2026-10-26 (founder): a page or visual held for review (lib/review.ts) says so where it still shows
+  held: { title: "בבדיקה", page: "העמוד הזה עוד לא מקושר מהאתר: הוא מחכה לבדיקה של העיצוב והחוויה. אפשר להגיע אליו רק מהכתובת.", signature: "התרשים הזה מוסתר בעמוד: הוא מחכה לבדיקה. רואים אותו כאן רק בגלל ⁦?review⁩ בכתובת." },
   back: "חזרה",
   currentPage: "העמוד הנוכחי",
   menuItems: [
@@ -53,6 +55,8 @@ export const numbers = {
   legendHintPc: "לחצו על מספר כדי לראות מאיפה הוא.",
   details: "פרטים",
   unknown: "לא ידוע",
+  /** The unit of the regulator's amounts (data-schema 2, `nis_millions`): `25,706.14 מיליון ₪`. */
+  nisMillions: "מיליון ₪",
   parameter: "פרמטר של האתר",
   provisional: "ערך זמני שהאתר קבע",
   // audit 2026-10-24 (A77): the short tag beside a provisional parameter
@@ -176,6 +180,8 @@ export const guideIndex = {
 
 export const guide = {
   indexTitle: "בעמוד הזה",
+  // D6 (amended 2026-10-26): makam, a government bond and a money-market fund are bought inside an account, not a container of their own
+  heldIn: "את המוצר הזה קונים ומחזיקים בתוך {account}. מי יכול לפתוח את החשבון, מי מפקח עליו ואיך שומרים בו את הנכסים: בעמוד שלו.",
   sections: [
     { id: "what", title: "מה זה" },
     { id: "use", title: "למה משתמשים בזה" }, // audit 2026-10-24 (A42): directly under "מה זה"
@@ -192,6 +198,8 @@ export const guide = {
   // audit 2026-10-24 (A42, A43, A86)
   rulesToggle: { show: "הצגת החוקים והכללים", hide: "הסתרת החוקים והכללים" },
   exposuresRow: "במה אפשר להשקיע בתוכו:",
+  // D6 (2026-10-26): on a wrapper's page, the securities bought inside it that have a page of their own (makam, bonds, money-market funds)
+  securitiesRow: "מה קונים בתוכו, ולכל אחד עמוד משלו:",
   companiesShow: "הצגת החברות",
   companiesHide: "הסתרת החברות",
   companiesOpen: "פתוחות לכלל הציבור",
@@ -467,8 +475,19 @@ export const companies = {
 export const company = {
   lineBefore: "כל מה שהחברה מציעה, עם הסבר לכל מסלול. המסלולים לפי נתוני רשות שוק ההון, ביטוח וחיסכון, נכון ל",
   feesLine: "דמי הניהול שמופיעים ליד כל מסלול הם ממוצע של כל העמיתים במסלול, אחרי הנחות, לפי דיווח המסלול לרשות שוק ההון. לא בהכרח מה שתשלמו אתם.",
-  feeColumn: "דמי ניהול מחיסכון, ממוצע {year}",
-  feeRow: "דמי ניהול מחיסכון, ממוצע",
+  feeColumn: "דמי ניהול, ממוצע {year}",
+  feeRow: "דמי ניהול, ממוצע",
+  /** D34 (founder, 2026-10-26): both fees on every row, the words after each figure; the legal cap and the direct expenses under the table. */
+  fees: {
+    savings: "מהחיסכון",
+    deposits: "מההפקדות",
+    cap: "התקרה בחוק:",
+    capSavings: "מהחיסכון,",
+    capDeposits: "מההפקדות",
+    direct: "בנוסף לדמי הניהול יורדות מהקופה הוצאות ישירות (עמלות מסחר, משמורת ועוד), שלא מופיעות כאן: הן נראות בתשואה, לא כשורה בחשבון.",
+  },
+  /** The labels beside a track's name (lib/track-labels.ts): facts about this track only (D35). */
+  labels: { new: "חדש", sector: "לעובדי סקטור מסוים", body: "לעובדי גוף מסוים" } as Record<string, string>,
   feeRowWhole: "לקרן כולה",
   listHeading: "כל המסלולים של",
   tracks: { one: "מסלול אחד", two: "שני מסלולים", many: "מסלולים" },
@@ -483,6 +502,22 @@ export const company = {
   notInData: "לא נמצא בנתוני הרשות",
   default: "ברירת המחדל",
   subSpecialization: "התמחות:",
+  /** D34 (founder, 2026-10-26): the exposure rings in the last column of the track table, and two rows of the track page (F-87, F-88). */
+  stock: {
+    column: "חשיפה בסוף {period}",
+    rowStock: "חשיפה למניות בסוף {period}",
+    rowCurrency: "חשיפה למט״ח בסוף {period}",
+    stocks: "מניות",
+    currency: "מט״ח",
+    about: "החלק מנכסי המסלול שחשוף לשוק המניות בסוף",
+    aboutCurrency: "החלק מנכסי המסלול שחשוף למטבע חוץ בסוף",
+    missing: "לא דווח",
+    noAssets: "אין נכסים",
+    /** The sheet's note on every share (F-87): what the regulator does not publish. */
+    note: "לפי דיווח המסלול לרשות שוק ההון. הרשות לא מפרסמת אם החשיפה כוללת נגזרים או את מה שבתוך קרנות שהמסלול מחזיק, ולכן היא יכולה להיות גבוהה מ־100%.",
+    noteMissing: "המסלול לא דיווח לרשות את סך הנכסים או את החשיפה לתקופה הזו.",
+    noteNoAssets: "המסלול דיווח לרשות על סך נכסים 0 לתקופה הזו, ולכן אין חלק לחשב.",
+  },
 } as const;
 
 export const track = {
@@ -587,6 +622,8 @@ export const formulaNames: Record<string, string> = {
   "F-83": "ספירת המסלולים שנכללו",
   "F-84": "שער חליפין מחושב משערי הבנק המרכזי האירופי",
   "F-85": "הריבית שרוב הבנקים משלמים בעו״ש",
+  "F-87": "החלק מנכסי המסלול שחשוף למניות",
+  "F-88": "החלק מנכסי המסלול שחשוף למטבע חוץ",
   B3: "אפשרות שהכסף בה נעול עד סוף התקופה",
   /** Shown when a formula has no name above: no code in place of words. */
   _other: "חישוב של האתר",
@@ -610,6 +647,9 @@ export const computedInputs = {
   /** audit 2026-10-24 (A21): Hebrew names for the input keys the engine and the site's lifts write in English; a key not here (already Hebrew) is shown as written */
   names: {
     amount: "הסכום שנבדק",
+    stock_market_exposure: "החשיפה לשוק המניות",
+    foreign_currency_exposure: "החשיפה למטבע חוץ",
+    total_assets: "סך נכסי המסלול",
     rate: "הריבית שהוצעה",
     baseline: "הריבית בעו״ש",
     balance: "היתרה",
@@ -1193,7 +1233,7 @@ export const ownTermsCopy = {
   provider: {
     chosen: "בחרתם", // scenario fix 2026-10-24
     heading: "ספק שהתעריפון שלו ישמש בחישוב", // scenario fix 2026-10-24
-    hint: "הספקים שנאספו בעמוד הספקים, לפי מה שהאפשרות הזו משאירה בסוף. התעריפון הוא של הספק; הבחירה שלכם.", // scenario fix 2026-10-24
+    hint: "הבנקים ובתי ההשקעות שהתעריפון שלהם נאסף, לפי מה שהאפשרות הזו משאירה בסוף. התעריפון הוא של הספק; הבחירה שלכם.", // scenario fix 2026-10-24; review 2026-10-26: makam and bonds are not on the providers page
     pick: "לבחור", // scenario fix 2026-10-24
     channel: { direct: "ערוץ ישיר", branch: "סניף" } as Record<string, string>, // scenario fix 2026-10-24
     reset: "לחזור לספק שהאתר בחר", // scenario fix 2026-10-24
@@ -1929,6 +1969,22 @@ export const r3transfer = {
  * written; the ones the build added are in copy.md 8.4's "Added 2026-10-24" table, keyed by path.
  * Figures never appear here: a `{…}` place is filled by a Num.
  */
+/** D33 (founder, 2026-10-26): a group's companies shown as one company, under the name people know it by; copy.md 8.7. */
+export const brands = {
+  heading: "בתי השקעות",
+  searchLine: "בית השקעות",
+  lede: "כל מה שהחברה מציעה, כל סוג מוצר תחת כותרת משלו.",
+  members: "כולל את החברות:",
+  listHeading: "כל המוצרים של",
+  funds: {
+    groups: { etf: "קרנות סל", tracking: "קרנות מחקות", "money-market": "קרנות כספיות", other: "קרנות נאמנות" },
+    count: { one: "קרן אחת", two: "שתי קרנות", many: "קרנות" },
+    collected: "רק הקרנות שהאתר אסף עליהן דוח, לא כל הקרנות של החברה. דמי הניהול לפי הדוח של כל קרן.",
+    follows: "עוקבת אחרי",
+    moneyMarket: "קרן כספית",
+  },
+} as const;
+
 export const r4catalogue = {
   headings: { companies: "חברות מנהלות", institutions: "בנקים ובתי השקעות", fundManagers: "מנהלי קרנות" },
   classWord: { bank: "בנק", broker: "בית השקעות" },
@@ -2498,6 +2554,9 @@ export const r5 = {
   },
   // 9.2 exposure result
   exposure: {
+    // D6 (2026-10-26): a security in the list of products that can hold an exposure is bought directly inside its account
+    heldDirect: "{name}, קנייה ישירה ב{account}",
+    heldFund: "{name}, יחידות קרן ב{account}",
     title: "{goal}: איזו חשיפה מתאימה",
     pageTitle: "איזו חשיפה מתאימה",
     headline: {
@@ -2901,7 +2960,7 @@ export const documents = {
  */
 export const guideSignature = {
   indexTitle: "מה מייחד",
-  titleBefore: "מה מייחד את",
+  titleBefore: "מה מייחד", // founder 2026-10-26: without "את" ("מה מייחד קרן כספית מתחדשת")
   pages: {
     "current-account": { name: "חשבון עובר ושב", question: "כמה עולה להשאיר כסף בעו״ש?", alt: "קרן כספית יומית", altId: "money-market-fund-daily", altLine: "אותו כסף, באותה זמינות, בקרן כספית יומית. כך נראה ההפרש." },
     "bank-deposit": { name: "פיקדון בנקאי", question: "על מה מוותרים כשנועלים את הכסף?", alt: "קרן כספית יומית", altId: "money-market-fund-daily", altLine: "אותו כסף בקרן כספית יומית, שאפשר לפדות בכל יום מסחר." },
@@ -3668,6 +3727,7 @@ export const kit = {
       PercentField: "שדה מספר לאחוז: שיעור שנתי אלא אם unit אומר אחרת, ומשפט הטווח הרגיל (0 עד 100, או הטווח שניתן).",
       Marker: "סמן שנגררים אותו על ציר של תרשים: לחיצה בכל מקום בשטח מזיזה אותו, וגם מקשי החצים. Marker הוא המחוון הבלתי נראה; MarkerMark הוא מה שהתרשים מצייר. LaneLabel הוא שם של פס על הנתיב: כשהסמן עומד עליו הוא זז לקצה השני של הפס או לצד הסמן.",
       StepTag: "תגית אפורה על סולם מסודר (1 עד 4), עם אייקון ומילה תמיד: כמה מהר הכסף חוזר, מ״בכל רגע״ עד ״בסוף השנה״. רק האייקון צבעוני, מטורקיז לאדום, כך שהתגית לא נקראת כדגל.",
+      ShareRings: "טבעות קטנות זו בתוך זו, כל אחת חלק נפרד מ־0 עד 100% (חשיפה למניות ולמט״ח של מסלול). לא עוגה: המדדים חופפים. המספרים לידן נושאים את המשמעות, הציור מוסתר מקוראי מסך. חלק מעל 100% מצויר מלא.",
       CompareTable: "טבלה של כמה אפשרויות עם גרף קטן בתאים: עמודות עם כותרת אומרות מה משווים, ועמודה בתא (ValueBar) מאפשרת להשוות לפני שקוראים. בטלפון השם בשורה משלו והתאים מתחתיו. ValueBar: מספר ועמודה מתחתיו, באותו סולם בכל השורות; טווח הוא חלק מלא וחלק מפוספס.",
       NoteList: "ההערות שמתחת לתרשים, נקודה לכל הערה: מה המספר לא כולל, מאיפה ריבית מגיעה. אף פעם לא משפט אחד ארוך.",
       GainBars: "שני סכומים כעמודות מאותה נקודת התחלה, וההפרש כסוגר עם מספר משלו (אף פעם לא עמודה שלישית).",
