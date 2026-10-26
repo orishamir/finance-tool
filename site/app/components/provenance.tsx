@@ -587,7 +587,7 @@ function QuestionSheet({ id, closedOn, data, headId }: { id: string; closedOn?: 
   return (
     <div className="flex flex-col gap-3">
       <h2 id={headId} className="text-lg font-semibold">
-        {q?.title_he ?? copy.idRef.question} <bdi dir="ltr" className="slashed-zero text-muted-foreground text-base">{id}</bdi>
+        {q?.title_he ?? copy.idRef.question} <bdi dir="ltr" className="slashed-zero whitespace-nowrap text-muted-foreground text-base">{id}</bdi>
       </h2>
       {(status || blocks) && (
         <dl className="sheet-dl">
