@@ -322,33 +322,49 @@ What continues, none of it a release:
   - 54 glossary entries are re-sourced from company pages to official ones.
   - The documents page links the Income Tax Ordinance's own PDF.
 
-**Running on 2026-10-26:**
+**Landed later on 2026-10-26 (overnight, with the founder's go to merge):**
 
-- The site stops naming closed questions as open, and each open-question chip gets its own data (`data/open-questions.json`), with a guard.
-- The scope review is being settled in the rule base (`research/knowledge/2026-10-25-scope/settle-brief.md`).
-- Two researchers are on the open questions that move the site's numbers most:
-  - **cash, deposits and bonds:** reported, with 3 closed, 6 narrowed and 1 open;
-  - **securities tax:** running.
+- **The site stops naming closed questions as open.**
+  - `data/open-questions.json` holds all the rule base's questions with their status.
+  - The question chips read their status from it.
+  - A guard fails the build if a page presents a closed question as open.
+  - Guide prose states the answers, and dimensions that waited on them are unblocked.
+- **The scope review is settled in the rule base:** 482 general, 101 institution and 13 unsettled records. Its text fixes include rules that were backwards: IRA-09, and PEN-28, PEN-29 and PEN-34. Both researchers' findings closed 8 more questions and narrowed 11.
+- **Idle cash.**
+  - The headline says the sum is the part not needed at once.
+  - The current account runs on the rate most collected banks print (F-85), not one bank's.
+  - Sheets name a source's company once, in Hebrew.
+  - Every select's option list is readable.
+- **Engine follow-ups:**
+  - a falling index or currency never raises the taxable gain (TXS-02, TXF-03, circular 10/2025);
+  - the relief from 60 at the kupat gemel lehashkaa exit, settled against the manager's 20% withholding (TXK-06, TXK-26);
+  - credit points flagged where not applied (G-23);
+  - the child-savings fee after 21 at the legal cap, labelled "עד" (CS-18);
+  - custody on money-market units at non-bank members (BRK-52);
+  - source labels: regulations labelled as regulations.
 
-  Their findings go into the rule base after the settling.
+  All of it was checked by a finance review and an independent review. Golden values come from a separate script.
+- **The rules-scope layout (spec sections 3 and 4).** General rules on guides and the rules page; a company's terms on its company page; search in two groups; validator checks. In its third review round at the time of writing.
 
 **What continues, in order:**
 
-1. **The rules-scope layout:** `research/specs/2026-10-25-rules-scope/spec.md` sections 3 and 4, after the settling.
-2. **The researchers' findings into the rule base, and then the site.** From cash and bonds:
-   - a non-bank broker may charge custody on money-market funds, so the earlier contradiction note was wrong;
-   - money-market redemption cash arrives the same day before the cut-off;
-   - a prime-linked deposit is unlinked for tax, at 15%.
-3. **The child-savings fee after 21:** the legal cap (CS-18) shown as "עד", the companies' own fee only as a named example, and an entered rate replacing it.
-4. **D31 follow-up:** the study-fund and provident-fund guides' bar visuals name the company behind their example fee, so it shows plain.
-5. **The account-versus-manager wording** on the comparison card, the fees page, holdings and the funds page, with a sourced glossary entry for "בית השקעות" in its account sense.
-6. **Kit round 2** (`research/specs/2026-10-25-ui-kit/round-2.md`), waiting for the founder's go.
-7. **Pages for a person to open** in a browser, because they stop scripts:
+1. **F-48, early pension withdrawal:** re-read TXP-18's official text, then build it.
+2. **The money-market and makam rate:** tie it to the Bank of Israel rate minus the fund's fees once a person reads the BoI page, which stops scripts. Today it is a round 3.5%.
+3. **The founder's calls:**
+   - a credit-points input (G-23);
+   - the minimum order that would rank makam and bonds (GOV OQ7, GOV-24);
+   - the tax when a refund at 60 is not claimed (the engine assumes 25%, an upper bound);
+   - kit round 2;
+   - whether the caution on accumulating foreign funds (TXF OQ1) stays.
+4. **Rule-base requests:**
+   - the source for a falling CPI in the provident products' real gain (`research/specs/2026-10-26-followups/requests.md`);
+   - the scope requests (`research/knowledge/2026-10-25-scope/requests.md`);
+   - the rules-scope requests (`research/specs/2026-10-25-rules-scope/requests.md`).
+5. **Pages for a person to open in a browser:**
    - the Bank of Israel's prime-rate and deposit pages;
    - TASE's content and trading-hours pages;
-   - two EUR-Lex pages;
-   - the ISA's foreign-funds search;
-   - the court download for TX2 OQ1;
-   - and the 43 links listed by the link check.
-8. **Unchanged from the list above:** tier-2 graduation, data growth, the quarterly tariff refresh, and the founder's approvals.
-
+   - the ISA's foreign-funds search and portfolio-manager register;
+   - EUR-Lex;
+   - the Supreme Court site;
+   - and the link check's 43 links.
+6. **Unchanged from the list above:** tier-2 graduation, data growth, the quarterly tariff refresh and the founder's approvals.
