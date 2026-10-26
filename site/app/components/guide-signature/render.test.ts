@@ -35,7 +35,7 @@ describe("current account page", () => {
     expect(text).toContain("8,203");
     expect(text).toContain("1,797");
     expect(text).toContain("רוב הבנקים לא משלמים ריבית על עו״ש");
-    expect(text).toContain("הריבית שרוב הבנקים משלמים");
+    expect(text).toContain("רוב הבנקים משלמים בעו״ש");
   });
 
   it("no longer names Leumi or the conditions switch", () => {

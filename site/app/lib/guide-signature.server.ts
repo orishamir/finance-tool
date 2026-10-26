@@ -10,7 +10,7 @@ import { accountBanks, buildInstrumentBundle, commonAccountRate, currentAccountR
 import type { SignatureData } from "./guide-signature";
 import { loadDepositTerms, loadFunds } from "./instruments.server";
 import { buildPension, buildProvident, buildStudyFund } from "./guide-signature-g2.server";
-import { ownBy, ruleFigure, type SiteValue } from "./value";
+import { computed, ownBy, ruleFigure, type SiteValue } from "./value";
 import { shortName } from "./providers";
 
 interface Ctx {
@@ -209,9 +209,21 @@ builders["money-market-fund-daily"] = (c) => {
     d.facts.depositHi = range.hi;
     d.facts.depositCount = range.count;
   }
+  // F-86: of the same deposits, how many forbid taking the money out before the end of the term (each record's 447 column); a count
+  // over the collected banks, naming none (D30)
+  const depositRecords = oneYearDepositRecords(c.deposits);
+  if (range && depositRecords.length) {
+    const inputs = Object.fromEntries(depositRecords.map((r) => [shortName(r.bank, r.bank), breakFact(r)]));
+    d.facts.depositNoExitCount = computed(depositRecords.filter((r) => !r.break.allowed).length, "count", "F-86", inputs, { today: c.t, about: "בכמה מהבנקים שנאספו אי אפשר למשוך מהפיקדון לפני סוף התקופה" });
+  }
   d.facts.cashRate = p05Value(c.p05, "cash_rate");
-  // MF-11 (prices regulations reg. 15): when redemption money reaches the account, stated in the guide's prose (MF OQ4 closed 2026-10-26); MF-35: the renewable fund's dates are chosen when buying
-  return withRules(d, "MF-10", "MF-11", "MF-34", "MF-35", "BANK-09", "BANK-13");
+  // MF-08: the longest a renewable fund's money can wait for its next date, by the law's default
+  const max = figureOf(c, "MF-08", "max_interval_months");
+  if (max) d.facts.maxInterval = max;
+  else d.gaps.push("maxInterval");
+  // MF-10, MF-11 (prices regulations reg. 15): an order before the fund's set hour is redeemed that day and the distributor pays the same day
+  // (MF OQ4 closed 2026-10-26); MF-35: the renewable fund's dates are chosen when buying
+  return withRules(d, "MF-08", "MF-10", "MF-11", "MF-34", "MF-35", "BANK-06", "BANK-09", "BANK-13");
 };
 
 // ---------------------------------------------------------------- renewable money-market fund
