@@ -23,3 +23,13 @@ export function Tag({ tone = "neutral", icon, children, className, wrap }: { ton
     </span>
   );
 }
+
+/**
+ * A tag on an ordered scale (2026-10-26): how soon the money is back, from step 1 (at any moment, teal) to step 4 (at the end of the
+ * term, red). Larger than `Tag`, with an icon and a word always, so the colour never works alone; it is never set beside a number, so its
+ * green, amber and red are not the flags of a number.
+ */
+export function StepTag({ step, icon, children }: { step: 1 | 2 | 3 | 4; icon: ReactNode; children: ReactNode }) {
+  const styles = { 1: "bg-access-1-subtle text-access-1", 2: "bg-access-2-subtle text-access-2", 3: "bg-access-3-subtle text-access-3", 4: "bg-access-4-subtle text-access-4" }[step];
+  return <span className={cx("inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-sm font-semibold whitespace-nowrap [&_svg]:size-4 [&_svg]:shrink-0", styles)}>{icon}{children}</span>;
+}

@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { bondPrice, makamPrice } from "@finance-tool/engine";
 import { buildGuidePage } from "./guide.server";
 import { runTimeline } from "./engine";
-import { accountAxis, accountFact, bankYearlyMax, bondModel, breakKindOf, bestWithin, bundleAtBank, currentAccountModel, depositModel, fact, fixedDateModel, largestCeiling, ladderRows, makamModel, payingBanks, planModel, runAtMonths, addMonthsIso, silentBanks, topPayer } from "./guide-signature";
+import { accountAxis, accountFact, bankYearlyMax, bondModel, breakKindOf, slowerPayNoMore, bundleAtBank, currentAccountModel, depositModel, fact, fixedDateModel, largestCeiling, ladderRows, makamModel, payingBanks, planModel, runAtMonths, addMonthsIso, silentBanks, topPayer } from "./guide-signature";
 
 const page = (id: string) => buildGuidePage(id)!;
 const cashRate = (id: string) => ((page(id).bundle!.p05 as unknown as { inputs: { cash_rate: { value: number } } }).inputs.cash_rate.value);
@@ -228,15 +228,21 @@ describe("the ladder", () => {
       ["money-market-fund-renewable", 3.25, "assumption"],
       ["bank-deposit", 2.25, "range"],
     ]);
-    expect(bestWithin(rows, "any-time")!.id).toBe("current-account");
-    expect(bestWithin(rows, "at-maturity")!.rate.value).toBe(3.25);
   });
-  it("shows the current account at the rate most banks publish, with the best a bank pays and the largest ceiling beside it", () => {
+  it("says waiting does not pay only when every slower row pays no more than the fund", () => {
+    const rows = ladderRows(d);
+    expect(slowerPayNoMore(rows, "money-market-fund-daily")).toBe(true);
+    const richer = rows.map((r) => (r.id === "bank-deposit" ? { ...r, rate: { ...r.rate, value: 4 } } : r));
+    expect(slowerPayNoMore(richer, "money-market-fund-daily")).toBe(false);
+    expect(slowerPayNoMore(rows, "bank-deposit")).toBe(false); // nothing slower
+  });
+  it("shows the current account at the rate most banks publish, out of the banks collected", () => {
     const row = ladderRows(d)[0]!;
     expect([row.banks!.count.value, row.banks!.of.value]).toEqual([4, 8]);
-    expect(row.top!.rate.value).toBe(3);
-    expect(row.top!.name).toBe("דיסקונט");
-    expect(row.top!.ceiling!.value).toBe(10000);
+  });
+  it("counts the collected one-year deposits that cannot be left before the end (F-86), and reads the law's longest interval (MF-08)", () => {
+    expect([d.facts.depositNoExitCount!.value, d.facts.depositNoExitCount!.state]).toEqual([3, "computed"]);
+    expect(d.facts.maxInterval!.value).toBe(12);
   });
   it("shows the one-year deposit as the range across the collected banks' fixed rates (F-86), naming none", () => {
     const row = ladderRows(d).find((r) => r.id === "bank-deposit")!;

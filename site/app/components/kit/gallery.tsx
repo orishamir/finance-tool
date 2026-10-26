@@ -5,9 +5,10 @@ import { Link } from "react-router";
 import { kit as copy } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { computed, entered } from "../../lib/value";
+import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
 import { IconLock } from "../icons";
 import { IdRef, Num } from "../provenance";
-import { Button, Callout, Card, ChartLegend, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CoverageFold, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NumberField, ParameterLine, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, SourceLine, Stat, StatRow, StepButtons, Swatch, Tag, Tpl, cx, useWidth } from "./index";
+import { Button, Callout, Card, ChartLegend, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, CoverageFold, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, NumberField, ParameterLine, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, SourceLine, Stat, StatRow, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -397,6 +398,11 @@ function Words({ today }: { today: string }) {
           </State>
         </Grid>
       </Demo>
+      <Demo name="NoteList" use={g.uses.NoteList}>
+        <State label="NoteList" wide>
+          <NoteList items={[...g.sample.notes]} />
+        </State>
+      </Demo>
       <Demo name="SourceLine, GapNote" use={g.uses.SourceLine}>
         <State label="SourceLine">
           <SourceLine lead={g.sample.sourceLead} items={[...g.sample.sourceItems]} />
@@ -529,6 +535,29 @@ function MarkerDemo({ today }: { today: string }) {
             </LaneLabel>
             <Marker min={0} max={20} step={1} value={v} onChange={setV} label={g.sample.markerName} valueText={String(v)} left={left} top={0} width={w} height={HEIGHT} />
           </div>
+        </State>
+      </Demo>
+      <Demo name="StepTag" use={g.uses.StepTag}>
+        <State label="step 1 to 4" wide>
+          <div className="flex flex-wrap gap-2">
+            {([<Zap key="1" aria-hidden="true" />, <CalendarCheck key="2" aria-hidden="true" />, <CalendarDays key="3" aria-hidden="true" />, <Lock key="4" aria-hidden="true" />] as ReactNode[]).map((icon, i) => (
+              <StepTag key={i} step={(i + 1) as 1 | 2 | 3 | 4} icon={icon}>
+                {g.sample.steps[i]}
+              </StepTag>
+            ))}
+          </div>
+        </State>
+      </Demo>
+      <Demo name="CompareTable, ValueBar" use={g.uses.CompareTable}>
+        <State label="three rows, the page's option tinted, a zero and a range" wide>
+          <CompareTable
+            columns={[g.sample.compare.product, g.sample.compare.when, g.sample.compare.rate]}
+            rows={[
+              { key: "a", head: g.sample.compare.a, cells: [<StepTag key="w" step={1} icon={<Zap aria-hidden="true" />}>{g.sample.steps[0]}</StepTag>, <ValueBar key="r" value={<Num value={{ ...s.rate, value: 0 }} />} frac={0} />] },
+              { key: "b", head: g.sample.compare.b, highlight: true, cells: [<StepTag key="w" step={2} icon={<CalendarCheck aria-hidden="true" />}>{g.sample.steps[1]}</StepTag>, <ValueBar key="r" value={<Num value={s.rate} />} frac={5 / 6} note={g.sample.compare.mine} />] },
+              { key: "c", head: g.sample.compare.c, cells: [<StepTag key="w" step={4} icon={<Lock aria-hidden="true" />}>{g.sample.steps[3]}</StepTag>, <ValueBar key="r" value={<Num value={{ ...s.rate, value: 4 }} />} frac={4 / 6} lo={2 / 6} note={g.sample.compare.range} />] },
+            ]}
+          />
         </State>
       </Demo>
       <Demo name="GainBars" use={g.uses.GainBars}>

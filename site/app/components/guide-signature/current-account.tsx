@@ -16,7 +16,7 @@ import { IconAlert } from "../icons";
 import type { WorthFactRow } from "../guide/worth-knowing";
 import { ChartLegend, cx, Disclosure, InputSlot, NumberField, RangeField, Sentence, Stat, StatRow, Swatch, Tag, useWidth } from "../kit";
 import { Num, RuleRef, RulesLine } from "../provenance";
-import { Gap, SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, yearsRange, type VisualProps } from "./kit";
+import { CommonRateLine, Gap, SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, yearsRange, type VisualProps } from "./kit";
 
 const HEIGHT = 250;
 const TOP = 20;
@@ -141,7 +141,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
           {!bank && commonIsZero && <p>{copy.account.mostPayNothing}</p>}
           {!bank && commonRate && commonCount && bankCount && (
             <Sentence tone="muted">
-              {copy.account.commonRate.before} <Num value={commonRate} />, <Num value={commonCount} prefix={copy.account.commonRate.prefix} /> {copy.account.commonRate.of} <Num value={bankCount} /> {copy.account.commonRate.after}
+              <CommonRateLine rate={commonRate} count={commonCount} of={bankCount} />
             </Sentence>
           )}
           {bank && (

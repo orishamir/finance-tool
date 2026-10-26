@@ -2922,6 +2922,8 @@ export const guideSignature = {
   timeline: { summary: "שחקו עם המספרים שלכם", hide: "הסתרת המספרים", lead: "גרף לדוגמה של כסף שנכנס, גדל לפי הנחה ויוצא אחרי עלויות ומס. אפשר לשנות כל הנחה." },
   common: {
     notComputed: "עוד לא חושב",
+    // one sentence for the rate most banks pay on a current account, on the current-account page and under the money-market ladder (2026-10-26)
+    commonRate: { before: "רוב הבנקים משלמים בעו״ש", of: "מתוך", after: "הבנקים שנאספו." },
     onlyLeumi: "לפי הפרסום של לאומי; בנקים אחרים עוד לא נאספו.",
     fundAssumption: { before: "אין תשואה שפורסמה לקרן כספית שהאתר רשאי להציג, ולכן הקרן רצה כאן על", after: "בשנה. זו הנחה של האתר, לא הבטחה ולא תחזית." },
     source: { guide: "הזנתם", goal: "מהמטרה השמורה", p05: "דוגמה של האתר" } as Record<string, string>,
@@ -2958,7 +2960,6 @@ export const guideSignature = {
     // 2026-10-25 (G3): the page leads with 0%; most banks pay nothing on a current account, and the interest of the few that do is a fold
     headline: { lead: "אחרי", inAccount: "בעו״ש שווים", inBank: "בעו״ש של", worth: "שווים", today: "בכסף של היום:", less: "פחות", more: "יותר", same: "בלי שינוי" },
     mostPayNothing: "רוב הבנקים לא משלמים ריבית על עו״ש, ולכן הכסף מאבד מערכו בקצב עליית המחירים.",
-    commonRate: { before: "הריבית שרוב הבנקים משלמים:", prefix: "ב־", of: "מתוך", after: "הבנקים שנאספו." },
     todayMoney: { before: "בכסף של היום: מה שהסכום יקנה במחירים של היום. המחירים עולים", after: "בשנה (הנחה של האתר), ולכן סכום שלא גדל קונה פחות עם השנים. הסכומים אחרי מס ועלויות." },
     axisNote: "הציר האנכי לא מתחיל באפס, כדי שההפרש ייראה.",
     picked: {
@@ -3041,22 +3042,28 @@ export const guideSignature = {
     about: { free: "מה שפנוי לקחת ביום שבחרתם: ההפקדות שהתקופה שלהן הסתיימה, אחרי מס", locked: "הכסף שהופקד ועדיין נעול ביום שבחרתם", last: "החודש שבו ההפקדה האחרונה נפתחת" },
   },
   ladder: {
-    need: "מתי אתם צריכים את הכסף?",
-    speeds: { "any-time": "מיד", "trading-day": "ביום מסחר", "fixed-dates": "במועד קבוע", "at-maturity": "בסוף התקופה" } as Record<string, string>,
+    // 2026-10-26 (founder): a table of the four products instead of a filter over cards; how soon the money is back is a coloured tag with
+    // an icon and a word (no made-up unit), the rate a bar with its figure; the notes are a list under it
+    columns: { product: "מוצר", when: "מתי הכסף אצלכם", rate: "ריבית שנתית" },
+    caption: "ארבעה מוצרים לפי כמה מהר הכסף חוזר, וריבית כל אחד",
     rows: { "current-account": "עו״ש", "money-market-fund-daily": "קרן כספית יומית", "money-market-fund-renewable": "קרן כספית מתחדשת", "bank-deposit": "פיקדון לשנה" } as Record<string, string>,
-    wait: { "any-time": "בכל רגע", "trading-day": "הוראת פדיון בכל יום מסחר", "fixed-dates": "רק במועדים שנקבעו מראש", "at-maturity": "בסוף התקופה, בלי שבירה" } as Record<string, string>,
+    when: { "any-time": "בכל רגע", "trading-day": "תוך יום מסחר", "fixed-dates": "במועדים קבועים", "at-maturity": "בסוף השנה" } as Record<string, string>,
+    tradingDay: "הוראה עד השעה היעודה, הכסף באותו יום",
+    interval: { before: "עד", after: "חודשים בין מועדים" },
     thisOne: "המוצר בעמוד",
     // 2026-10-26: a row whose rate is one bank's own figure names the bank ("פיקדון לשנה של לאומי"), D30/D31
     ofBank: "של",
-    // 2026-10-25 (G3): the current-account row is the rate most of the collected banks publish, with the best a bank pays beside it
-    common: { of: "מתוך", after: "הבנקים שנאספו מפרסמים ריבית כזאת." },
-    top: { before: "יש בנקים שמשלמים עד", conditions: "בתנאים ועל עד", only: "בלבד", conditionsNoCeiling: "בתנאי הבנק" },
-    // 2026-10-26 (founder): the one-year deposit is the range across the collected banks (F-86), linked to each bank's rate
-    range: { to: "עד", upTo: "עד", before: "ריבית קבועה, ב־", after: "הבנקים שנאספו.", link: "הריבית בכל בנק", anchorId: "deposit-banks" },
-    kinds: { assumption: "לפי ריבית בנק ישראל", common: "הריבית שרוב הבנקים משלמים", range: "טווח בבנקים שנאספו" } as Record<string, string>,
-    chart: { aria: "ארבעה מוצרים לפי מהירות החזרת הכסף, וריבית כל אחד" },
-    best: { before: "הריבית הגבוהה ביותר שמחזירה את הכסף בזמן:", middle: "בשנה" },
-    foot: "ריבית שנתית לפני מס ועלויות.",
+    kinds: { assumption: "לפי ריבית בנק ישראל", range: { before: "טווח ב־", after: "בנקים" } },
+    take: "הקרן היומית זמינה כמעט כמו עו״ש, ומשלמת לפחות כמו המוצרים שמחזירים את הכסף לאט יותר.",
+    legend: { rate: "ריבית שנתית", range: "טווח בין הבנקים" },
+    notes: {
+      beforeTax: "ריבית שנתית לפני מס ועלויות.",
+      assumption: "הריבית של שתי הקרנות היא הנחה של האתר לפי ריבית בנק ישראל, לא ריבית שפורסמה.",
+      // F-86: the count of the collected one-year deposits that cannot be left early, naming none (D30)
+      exit: { before: "פיקדון לשנה: ב־", of: "מתוך", after: "הבנקים שנאספו אי אפשר למשוך את הכסף לפני סוף השנה; באחרים אפשר, לפי תנאי הבנק.", all: "פיקדון לשנה: באף אחד מהבנקים שנאספו אי אפשר למשוך את הכסף לפני סוף השנה." },
+      banksLink: "הריבית בכל בנק",
+    },
+    range: { anchorId: "deposit-banks" },
   },
   renewable: {
     marker: "מתי תצטרכו את הכסף?",
@@ -3660,11 +3667,17 @@ export const kit = {
       SelectField: "בחירה של פריט אחד מרשימה של שמות, ב־select רגיל: תווית מעל, אפשרות \"לא נבחר\" ראשונה אם צריך, ושורת עזר מתחת. חשבון, ספק.",
       PercentField: "שדה מספר לאחוז: שיעור שנתי אלא אם unit אומר אחרת, ומשפט הטווח הרגיל (0 עד 100, או הטווח שניתן).",
       Marker: "סמן שנגררים אותו על ציר של תרשים: לחיצה בכל מקום בשטח מזיזה אותו, וגם מקשי החצים. Marker הוא המחוון הבלתי נראה; MarkerMark הוא מה שהתרשים מצייר. LaneLabel הוא שם של פס על הנתיב: כשהסמן עומד עליו הוא זז לקצה השני של הפס או לצד הסמן.",
+      StepTag: "תגית גדולה על סולם מסודר (1 עד 4), עם אייקון ומילה תמיד: כמה מהר הכסף חוזר, מ״בכל רגע״ (טורקיז) עד ״בסוף השנה״ (אדום). לא ליד מספר, כדי שהצבעים לא ייקראו כדגלים של מספר.",
+      CompareTable: "טבלה של כמה אפשרויות עם גרף קטן בתאים: עמודות עם כותרת אומרות מה משווים, ועמודה בתא (ValueBar) מאפשרת להשוות לפני שקוראים. בטלפון השם בשורה משלו והתאים מתחתיו. ValueBar: מספר ועמודה מתחתיו, באותו סולם בכל השורות; טווח הוא חלק מלא וחלק מפוספס.",
+      NoteList: "ההערות שמתחת לתרשים, נקודה לכל הערה: מה המספר לא כולל, מאיפה ריבית מגיעה. אף פעם לא משפט אחד ארוך.",
       GainBars: "שני סכומים כעמודות מאותה נקודת התחלה, וההפרש כסוגר עם מספר משלו (אף פעם לא עמודה שלישית).",
       ChartLegend: "שלושת החלקים סביב כל תרשים: מה כל סימן אומר, הערכים בשנה שמצביעים עליה, ואותם מספרים כטבלה.",
       CompanyLinks: "פתיח ואחריו החברות שהוא עוסק בהן, כל אחת קישור לעמוד שלה: ״תלוי בחברה״ כשכל חברה קובעת לעצמה, ״לכל מה שמצאנו אצל״ מתחת לתנאי של חברה. רצוף: יכול לסגור משפט או לעמוד בשורה משלו.",
     },
     sample: {
+      steps: ["בכל רגע", "תוך יום מסחר", "במועדים קבועים", "בסוף השנה"],
+      compare: { product: "אפשרות", when: "מתי", rate: "ריבית שנתית", a: "אפשרות ראשונה", b: "אפשרות שנייה", c: "אפשרות שלישית", mine: "בעמוד", range: "טווח לדוגמה" },
+      notes: ["הערה ראשונה: מה המספר לא כולל.", "הערה שנייה: מאיפה הריבית מגיעה."],
       list: { heading: "הרשימה שלכם", note: "הערה קטנה ליד הכותרת, שיורדת שורה כשאין מקום", items: ["ראשון", "שני", "שלישי"], longItem: "פריט עם שם ארוך מאוד כדי לראות איך השורה יורדת", add: "פריט נוסף", confirm: "למחוק את הפריט?", yes: "מחיקה", no: "ביטול", rename: "שינוי השם", remove: "מחיקת הפריט", renameField: "שם הפריט", foot: "שורה מתחת לרשימה." },
       select: { label: "חשבון לדוגמה", none: "לא נבחר", options: [{ id: "a", name: "ראשון" }, { id: "b", name: "שני" }, { id: "c", name: "שלישי" }], help: "שורת עזר קצרה מתחת לשדה." },
       plan: { amount: "סכום", monthly: "הפקדה חודשית", years: "שנים", ret: "תשואה", all: "כל ההנחות" },
