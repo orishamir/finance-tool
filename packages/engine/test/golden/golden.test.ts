@@ -107,7 +107,7 @@ describe("Part A: the ledger on single instruments", () => {
     g.done();
   });
 
-  it("S04 prime-linked monthly deposit, 15% bucket by reading", () => {
+  it("S04 prime-linked monthly deposit, 15% bucket (TXI-04)", () => {
     const r = runDeposit(
       {
         goal: { amountNow: 50_000, monthly: 1_000, months: 36 },
@@ -123,7 +123,9 @@ describe("Part A: the ledger on single instruments", () => {
     g.value("tax during", r.taxDuring, 1_064.89);
     g.value("tax at exit", r.taxAtExit, 0);
     g.done();
-    expect(labelOf(r, "TXI-04")).toBe("reading");
+    // TXI OQ2 closed 2026-10-26: TXI-04 states the prime case (the statutory index is the CPI or an exchange rate), so it is cited, not labelled a reading
+    expect(labelOf(r, "TXI-04")).toBeUndefined();
+    expect(r.rules.map((u) => u.id)).toContain("TXI-04");
   });
 
   it("S05 current-account credit balance", () => {

@@ -1,6 +1,6 @@
 // Pension fund (comprehensive and general) and provident fund for annuity: the deposit-side relief (F-30 to
 // F-32), the provident-family ledger (F-27, F-11, F-15, F-16), the insurance cost (F-53) and the exit, which
-// is blocked (F-48, F-49; G-03, G-06). The employer's deposits run through the same ledger as a separate
+// is blocked (F-49, G-03; F-48 is not built yet). The employer's deposits run through the same ledger as a separate
 // line (F-52, B2).
 import { deductionValue, grossForYear, spreadReliefByYear, type PensionRelief } from "../formulas/deposit-side.ts";
 import { blockedWrapperExit, type BlockedExit } from "../formulas/blocked-exit.ts";
@@ -36,7 +36,7 @@ export interface PensionInput {
   /** A-17: the insurance cost as a share of each deposit, entered by the person (G-12). Zero for a provident fund for annuity (PEN-35). */
   insurance: { rate: number };
   pension: PensionProfile;
-  /** The person opts into early withdrawal (F-48). It stays blocked (G-06). */
+  /** The person opts into early withdrawal (F-48). Its rule is known (TXP-18), but the formula is not built yet, so it stays blocked. */
   earlyWithdrawal?: boolean;
   /**
    * A balance already in the fund (a holding under review, F-61): it starts the ledger as it is, with no deposit
@@ -217,15 +217,15 @@ export function runPension(input: PensionInput, ctx: RunContext): PensionResult 
 
   const exit = blockedWrapperExit(input.earlyWithdrawal ? "F-48" : "F-49", out.balance);
   formulas.push(exit.formula);
-  tally.flag(exit.gap);
+  if (exit.gap) tally.flag(exit.gap);
   for (const q of exit.openQuestions) tally.flag(q);
   citeIfPresent(book, exit.ruleIds);
 
   // PEN-26: the lawful exit is an old-age annuity from 60. The wrapper is blocked either way; when 60 is after the horizon it is also locked.
-  let outcome: Outcome = { code: "listed-not-ranked", reason: exit.gap };
+  let outcome: Outcome = { code: "listed-not-ranked", reason: exit.reason };
   if (input.profile.ageAtStart !== undefined) {
     const lawful = 12 * (book.amount("PEN-26", "early_retirement_age") - input.profile.ageAtStart);
-    if (lawful > T) outcome = { code: "listed-not-ranked", reason: exit.gap, untilMonth: lawful };
+    if (lawful > T) outcome = { code: "listed-not-ranked", reason: exit.reason, untilMonth: lawful };
   }
 
   const sum = (f: (y: YearRelief) => number) => years.reduce((a, y) => a + f(y), 0);
@@ -279,12 +279,14 @@ export function employerLinePension(input: PensionInput, ctx: RunContext): Pensi
   commonFlags(book, tally, input);
   const out = ledger(book, tally, input, gross, gross.map(() => 0), T, I);
 
-  // TXP-10: employer component above the exempt limit; TXP-11: the severance ceiling (its base is open, TXP-OQ5).
+  // TXP-10: employer component above the exempt limit. TXP-11: the severance ceiling, applied monthly as 1/12 of the yearly
+  // amount (Income Tax circular 4/2019 s.2.1.1; TXP OQ5 closed 2026-10-26); a severance deposit above it is work income at
+  // deposit, which this run does not tax yet, so it is flagged under the rule.
   const ceiling = book.amount("TXP-10", "employer_ceiling");
   const exemptPct = book.rate("TXP-10", "employer_exempt_pct");
   const pensionPart = p.employer.pensionRate * salary;
   const excessMonthly = Math.max(0, pensionPart - Math.min(exemptPct, p.employer.pensionRate) * Math.min(salary, ceiling));
-  if (p.employer.severanceRate * salary > book.amount("TXP-11", "severance_ceiling") / 12) tally.flag("TXP-OQ5");
+  if (p.employer.severanceRate * salary > book.amount("TXP-11", "severance_ceiling") / 12) tally.flag("TXP-11");
   const brackets = book.brackets("TXG-02", "brackets");
   const perYear = new Map<number, number>();
   for (let m = 1; m <= T; m++) perYear.set(taxYearOf(m, first), (perYear.get(taxYearOf(m, first)) ?? 0) + excessMonthly);
@@ -292,7 +294,7 @@ export function employerLinePension(input: PensionInput, ctx: RunContext): Pensi
   for (const x of perYear.values()) depositTax += deductionValue(brackets, 12 * salary + x, x);
 
   const exit = blockedWrapperExit("F-49", out.balance);
-  tally.flag(exit.gap);
+  if (exit.gap) tally.flag(exit.gap);
   for (const q of exit.openQuestions) tally.flag(q);
   citeIfPresent(book, exit.ruleIds);
   const result = tally.result(book, {

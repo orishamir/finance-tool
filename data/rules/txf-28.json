@@ -27,6 +27,34 @@
       "page": 8,
       "checked": "2026-10-26",
       "qualifier": "(foreign tax authority)"
+    },
+    {
+      "url": "https://www.revenue.ie/en/tax-professionals/tdm/income-tax-capital-gains-tax-corporation-tax/part-27/27-01a-02.pdf",
+      "title": "Irish Revenue, Tax and Duty Manual Part 27-01a-02, Investment Undertakings (document last updated January 2026)",
+      "title_he": "Tax and Duty Manual Part 27-01a-02, Investment Undertakings (Irish Revenue)",
+      "publisher": "Irish Revenue",
+      "publisher_he": "רשות המסים של אירלנד",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.9, s.4.2.3",
+      "locator_he": "עמוד 9, סעיף 4.2.3",
+      "page": 9,
+      "checked": "2026-10-26",
+      "qualifier": "(foreign tax authority)"
+    },
+    {
+      "url": "https://www.revenue.ie/en/tax-professionals/tdm/income-tax-capital-gains-tax-corporation-tax/part-27/27-01a-02.pdf",
+      "title": "Irish Revenue, Tax and Duty Manual Part 27-01a-02, Investment Undertakings (document last updated January 2026)",
+      "title_he": "Tax and Duty Manual Part 27-01a-02, Investment Undertakings (Irish Revenue)",
+      "publisher": "Irish Revenue",
+      "publisher_he": "רשות המסים של אירלנד",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.11, s.4.2.8",
+      "locator_he": "עמוד 11, סעיף 4.2.8",
+      "page": 11,
+      "checked": "2026-10-26",
+      "qualifier": "(foreign tax authority)"
     }
   ]
 }

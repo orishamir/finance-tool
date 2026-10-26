@@ -300,7 +300,7 @@
           "BRK-15"
         ],
         "state": "sourced",
-        "notes": "'0.1% משווי החשבון לרבעון', charged once a quarter ('אחת לרבעון'); 'השיעור נקבע משווי נכסי החשבון על בסיס רבעוני'. A foreign security whose trading stopped or is 'worthless' per the broker: USD 11 per security; ADR holdings: a monthly foreign-bank custody charge passed on. The tariff prints no exemption of makam or money-market funds from custody; the bank ban (BRK-17) does not apply to a non-bank member (BRK OQ11), so no excludes are recorded."
+        "notes": "'0.1% משווי החשבון לרבעון', charged once a quarter ('אחת לרבעון'); 'השיעור נקבע משווי נכסי החשבון על בסיס רבעוני'. A foreign security whose trading stopped or is 'worthless' per the broker: USD 11 per security; ADR holdings: a monthly foreign-bank custody charge passed on. The tariff prints no exemption of makam or money-market funds from custody; the bank ban (BRK-17) does not apply to a non-bank member, and no rule limits its custody fee on them (BRK-52; BRK open question 11 closed 2026-10-26), so no excludes are recorded."
       },
       "min": null,
       "max": null,

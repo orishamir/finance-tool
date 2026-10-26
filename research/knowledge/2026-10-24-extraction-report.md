@@ -4,41 +4,41 @@ Tables read: publishers.json yes, documents.json yes.
 
 ## Headline
 
-- Rules: 577; with sources: 577; unresolved (sources_missing_reason): 0
-- Entries: 1708; with locator 1424, locator_he 1230, quote 677, anchor 18, page 1367
-- Entries with title_he: 1591; with publisher_he: 1702; rules whose first source lacks publisher_he: 1
+- Rules: 583; with sources: 583; unresolved (sources_missing_reason): 0
+- Entries: 1749; with locator 1463, locator_he 1262, quote 694, anchor 18, page 1403
+- Entries with title_he: 1630; with publisher_he: 1745; rules whose first source lacks publisher_he: 1
 - Rules with derived_from: 137
-- Strengths: primary 1369, primary-mirror 72, secondary 17, institution 250
+- Strengths: primary 1405, primary-mirror 77, secondary 17, institution 250
 - Rule strength realigned to its best source (primary/mirror pair only): 0
-- Kinds: regulator_page 165, circular 170, law 522, article 16, regulation 229, official_pdf 263, dataset 64, institution_doc 208, exchange_rules 38, other 24, form 9
+- Kinds: regulator_page 171, circular 184, law 529, article 17, regulation 234, official_pdf 267, dataset 64, institution_doc 208, exchange_rules 40, other 26, form 9
 
 ## Per rule base file
 
 | file | rules | entries | unresolved |
 |---|---|---|---|
-| bank-current-account-deposits.md | 22 | 60 | 0 |
+| bank-current-account-deposits.md | 23 | 65 | 0 |
 | bank-product-names.md | 1 | 4 | 0 |
 | brokerage-account.md | 39 | 100 | 0 |
-| child-savings.md | 25 | 97 | 0 |
-| etfs-and-index-funds.md | 60 | 154 | 0 |
-| government-bonds-and-makam.md | 23 | 66 | 0 |
-| ira-self-directed.md | 24 | 65 | 0 |
+| child-savings.md | 25 | 101 | 0 |
+| etfs-and-index-funds.md | 61 | 155 | 0 |
+| government-bonds-and-makam.md | 24 | 68 | 0 |
+| ira-self-directed.md | 24 | 66 | 0 |
 | keren-hishtalmut.md | 27 | 66 | 0 |
-| kupat-gemel-lehashkaa.md | 19 | 48 | 0 |
-| mutual-funds-and-money-market-funds.md | 38 | 108 | 0 |
-| pension-and-gemel-lekitzba.md | 39 | 125 | 0 |
+| kupat-gemel-lehashkaa.md | 19 | 50 | 0 |
+| mutual-funds-and-money-market-funds.md | 38 | 109 | 0 |
+| pension-and-gemel-lekitzba.md | 39 | 130 | 0 |
 | provident-family-common.md | 29 | 77 | 0 |
 | regulators-and-protection.md | 19 | 39 | 0 |
 | savings-policies-and-executive-insurance.md | 2 | 8 | 0 |
 | switching-and-transfers.md | 59 | 163 | 0 |
-| tax-gemel-lehashkaa-ira-child.md | 17 | 62 | 0 |
-| tax-general.md | 14 | 45 | 0 |
-| tax-hishtalmut.md | 15 | 63 | 0 |
-| tax-insurance-and-amendment-190.md | 3 | 8 | 0 |
-| tax-interest-deposits-bonds.md | 18 | 69 | 0 |
+| tax-gemel-lehashkaa-ira-child.md | 18 | 65 | 0 |
+| tax-general.md | 14 | 47 | 0 |
+| tax-hishtalmut.md | 15 | 64 | 0 |
+| tax-insurance-and-amendment-190.md | 4 | 11 | 0 |
+| tax-interest-deposits-bonds.md | 18 | 71 | 0 |
 | tax-pension-gemel-lekitzba.md | 18 | 81 | 0 |
-| tax-securities-foreign.md | 19 | 58 | 0 |
-| tax-securities-israeli.md | 24 | 76 | 0 |
+| tax-securities-foreign.md | 20 | 62 | 0 |
+| tax-securities-israeli.md | 24 | 81 | 0 |
 | tax-tier2-other.md | 5 | 19 | 0 |
 | tracks-catalogue-and-decoder.md | 18 | 47 | 0 |
 
@@ -48,16 +48,15 @@ Tables read: publishers.json yes, documents.json yes.
 ## Skipped inside a line (entries without a link, unresolved references, bad URLs)
 
 
-## Hosts missing from publishers.json (4)
+## Hosts missing from publishers.json (3)
 
 - mvs.co.il: 2
-- secapp.taxes.gov.il: 2
 - ccpc.ie: 1
 - tahun.co.il: 1
 
 ## Most frequent document titles without title_he (title up to the locator)
 
-- 22 x חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)
+- 24 x חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)
 - 3 x רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024), קובץ Word
 - 3 x MTF, דוח שנתי "MTF מחקה (MSCI World (4D" (5122569), 31.12.2025
 - 3 x מור, דוח שנתי "מור מחקה (4D)י NASDAQ 100" (5117585), 31.12.2025

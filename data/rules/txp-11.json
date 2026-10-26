@@ -32,7 +32,7 @@
         "TXP-11"
       ],
       "state": "sourced",
-      "notes": "Employer severance deposits above the lower of the employee's salary on the deposit date and this amount are work income when paid. 44,100 (2025), 41,500 (2024), 39,300 (2023); 32,000 at the 2017 base. Indexed each 1 January by the rise in the average wage, rounded to 100 NIS; not frozen. How the \"salary on the deposit date\" limb is applied over a year is open question 5."
+      "notes": "Employer severance deposits above the lower of the employee's salary on the deposit date and this amount are work income when paid. 44,100 (2025), 41,500 (2024), 39,300 (2023); 32,000 at the 2017 base. Indexed each 1 January by the rise in the average wage, rounded to 100 NIS; not frozen. Income Tax circular 4/2019 s.2.1.1 applies it monthly: the lower of the salary on the deposit date times 8.33% and 1/12 of this yearly amount, tested on all employers' severance deposits together (open question 5 closed 2026-10-26)."
     }
   },
   "il_finance_file": "tax-pension-gemel-lekitzba.md",

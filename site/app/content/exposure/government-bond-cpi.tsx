@@ -1,7 +1,7 @@
 // Exposure prose for אג"ח ממשלתית צמודה (flows 6.6). Written 2026-10-23 from the rule base (GOV, TXI, TXS,
 // BRK, CAT, IRA); each block ends with the rules it rests on. NEW copy for the founder to review.
 import type { ExposureContent } from "../guide/types";
-import { IdRef, Num, RulesLine, Term } from "../../components/provenance";
+import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Sentence } from "../../components/kit";
 
 export const content: ExposureContent = {
@@ -34,10 +34,10 @@ export const content: ExposureContent = {
     return (
       <>
         <Sentence measure>
-          מי שמוכר לפני הפדיון מקבל את מחיר השוק של אותו יום, שיורד כשהריבית הריאלית במשק עולה, ויותר ככל שנותרו יותר שנים; הרווח ממכירה הוא <Term id="רווח הון ריאלי">רווח הון ריאלי</Term> במס של עד {saleRate ? <Num value={saleRate} /> : null}, אחרי הפחתת החלק שנבע מעליית המדד. כשהמדד יורד, התקנות מקטינות את הקרן ואת הקופון, בלי רצפה; הריבית עדיין ממוסה במלואה, וההפסד מההצמדה השלילית אינו מתקזז.
+          מי שמוכר לפני הפדיון מקבל את מחיר השוק של אותו יום, שיורד כשהריבית הריאלית במשק עולה, ויותר ככל שנותרו יותר שנים; הרווח ממכירה הוא <Term id="רווח הון ריאלי">רווח הון ריאלי</Term> במס של עד {saleRate ? <Num value={saleRate} /> : null}, אחרי הפחתת החלק שנבע מעליית המדד. כשהמדד יורד, התקנות מקטינות את הקרן ואת הקופון, בלי רצפה; הריבית עדיין ממוסה במלואה, וההפסד מההצמדה השלילית אינו מתקזז. במכירה אחרי ירידת מדד לא מפחיתים כלום מהרווח: המס חל על כל הרווח הנומינלי ולא יותר ממנו, ואם יש הפסד, החלק שלו ששווה לירידת המדד לא מותר בקיזוז <RuleRef id="TXS-02" />.
         </Sentence>
         <p className="max-w-measure">
-          מה לא מתועד עדיין: האם לסדרה מסוימת יש רצפה בירידת מדד (<IdRef id="GOV OQ6" />); איך מטפלים במס בירידת מדד במכירה (<IdRef id="TXS OQ15" />); ואיך הבנק מטפל בריבית הצבורה כשקונים בין מועדי קופון (<IdRef id="TXI OQ5" />).
+          מה לא מתועד עדיין: האם לסדרה מסוימת יש רצפה בירידת מדד (<IdRef id="GOV OQ6" />); ואיך הבנק מטפל בריבית הצבורה כשקונים בין מועדי קופון (<IdRef id="TXI OQ5" />).
         </p>
         <RulesLine ids={["GOV-12", "GOV-16", "GOV-17", "TXS-01", "TXS-02", "TXI-14", "TXI-25", "TXI-16", "TXI-17"]} />
       </>

@@ -33,7 +33,7 @@
         "TXP-10"
       ],
       "state": "sourced",
-      "notes": "Employer deposits to the employer-contribution component up to 7.5% of the salary (capped at employer_ceiling) are work income only when the employee receives them; the part above is salary when paid to the fund (Form 106: \"סה\"כ ההפרשה שהעובד חוייב במס בגינה\"). The regulations' version currency is unconfirmed (open question 12)."
+      "notes": "Employer deposits to the employer-contribution component up to 7.5% of the salary (capped at employer_ceiling) are work income only when the employee receives them; the part above is salary when paid to the fund (Form 106: \"סה\"כ ההפרשה שהעובד חוייב במס בגינה\"). Reg. 19's rates are quoted from the NII's consolidated copy of the regulations on btl.gov.il (open question 12 closed 2026-10-25)."
     },
     "employer_ceiling": {
       "value": 34423,

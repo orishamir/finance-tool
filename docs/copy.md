@@ -458,6 +458,7 @@ Why "בשקלים של העתיד" rather than "נומינלי": the reader sees
 | `flags.G-21` | חלק מהמס מוסדר דרך דוח שנתי, לא בניכוי במקור. |  |
 | `flags.PF-13` | ההנחה בדמי הניהול הוארכה לחמש שנים לפחות, לפי חוזר הרשות. |  |
 | `flags.TXK-06` | מדרגות המס המופחתות לבני הגיל המבוגר חלות קודם גם על הרווח במשיכה, כי השיעור עליו הוא שיעור מרבי. האתר עוד לא מחשב את ההקלה הזאת. | what an engine flag means, one line each; the code stays beside the words. Changed 2026-10-26: TXK OQ12 closed (TXK-06), the flag was `TXK-OQ12` and said the answer was unclear; no typed age |
+| `flags.TXP-11` | הפקדת המעסיק לפיצויים עוברת את תקרת הפיצויים, שנבדקת כל חודש: החלק שמעל התקרה הוא הכנסת עבודה כבר במועד ההפקדה, והאתר עוד לא מחשב את המס עליו. | added 2026-10-26: TXP OQ5 closed (circular 4/2019 s.2.1.1 applies the ceiling monthly, TXP-11); the pension run's flag was `TXP-OQ5`, shown with the general line |
 | `computedInputs.amountNow` | סכום היום | labels of the values a computation read ("ערכים שנכנסו לחישוב") |
 | `computedInputs.monthly` | הפקדה חודשית |  |
 | `computedInputs.years` | שנים |  |
@@ -2010,7 +2011,8 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 18 and the handoff in
 | `r5.exposure.fields.worstInfo · holdingAria · holdingDone` | על ההערכה · באיזה מוצר להחזיק · סגירה | screen-reader names of the worst-fall info button and the holding-wrapper chooser, and its close |
 | `r5.exposure.notes.passedEqual` | עברה את מסנן הירידה: `{אחוז}`, בדיוק המספר שתסכימו לספוג. ירידה שווה למספר שלכם נשארת בהשוואה. | F-71 keeps an equal fall; said on the row. Was "…, בדיוק כמו המספר שתסכימו לספוג (שווה נשאר)." |
 | `r5.exposure.coverageReasons.cannotHold · noFund · noTerms` | `{מוצר}` לא מחזיק את החשיפה הזו · לא נבדקה: פרטי הקרן עוד לא נאספו. · עוד אין לאתר את תנאי המוצר | engine reason `wrapper-cannot-hold`; a P-08 row waiting for a fund record; a wrapper without terms |
-| `r5.exposure.p08.gov` | לא נבדקה: תדירות הקופון של סדרה לא צמודה עוד לא במאגר הכללים. שאלה פתוחה GOV OQ4 | the unlinked government bond row of P-08. Was "…במאגר הכללים (GOV OQ4).": a code is never in brackets at the end of a sentence (section 1) |
+| `r5.exposure.p08.gov` | לא נבדקה: האתר עוד לא מחשב אג״ח ממשלתית לא צמודה בריבית קבועה. | the unlinked government bond row of P-08. Changed 2026-10-26 (closed-questions review): it said the coupon frequency was not in the rule base (GOV OQ4), but GOV-13 gives a yearly coupon and GOV OQ4 now asks only for the old "שחר" text |
+| `r5.exposure.p08.govCoupon` | לפי התקנות של הסוג הזה, הקופון משולם פעם בשנה | follows `p08.gov` in the row's reason, with the GOV-13 chip (2026-10-26) |
 | `r5.exposure.chart.loading · aria` | טוען… · גרף: הכסף בחשיפות לאורך `{שנים}` | the skeleton line and the chart's screen-reader name |
 | `r5.exposure.assumptions.ret · worst · accepted · holding · empty` | תשואה · ירידה צפויה · מסכימים לספוג · מוחזקת במוצר · לא הוזן | the per-exposure group's labels, and an empty value · changed 2026-10-24 (Hebrew editor); was ״מוחזקת ב״ |
 | `r5.exposure.rank · detail · detailTitle · checklist · failed` | מקום · פירוט · פירוט · מה לבדוק · האתר לא הצליח לחשב את ההשוואה. רעננו את העמוד ונסו שוב. | as 6.2 · changed 2026-10-24 (Hebrew editor); was ״לא הצלחנו לחשב את ההשוואה. רעננו את העמוד ונסו שוב.״ |

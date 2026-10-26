@@ -31,6 +31,20 @@ describe("extract-sources: fixture Source lines", () => {
     expect(s!.locator_he).toBe("סעיפים 64א2, 64א3(א)(1)");
   });
 
+  it("a passage after the first quoted one gets a source of its own, with its page and quote (TXF-28, 2026-10-26)", () => {
+    const line =
+      '[Irish Revenue, Tax and Duty Manual Part 27-01a-02](https://www.revenue.ie/x/27-01a-02.pdf), p.8, s.4.1 "on the making of a regular payment"; p.9, s.4.2.3 "units which are held in a recognised clearing system"; p.11, s.4.2.8 "an appropriate non-resident declaration" · checked 2026-10-26 · primary (foreign tax authority)';
+    const r = extractFromLine(line, ctx()).sources;
+    expect(r.map((s) => [s.locator, s.page])).toEqual([["p.8, s.4.1", 8], ["p.9, s.4.2.3", 9], ["p.11, s.4.2.8", 11]]);
+    expect(r.every((s) => s.url === "https://www.revenue.ie/x/27-01a-02.pdf" && s.checked === "2026-10-26" && s.strength === "primary" && s.qualifier === "(foreign tax authority)")).toBe(true);
+    const he = extractFromLine('[חוק](https://fs.knesset.gov.il/a.pdf), p.3, s.9 "הנכסים של העמית יוחזקו בנפרד"; p.10, s.13 "הממונה רשאי להורות על העברה" · checked 2026-10-26 · primary', ctx()).sources;
+    expect(he.map((s) => s.quote)).toEqual(["הנכסים של העמית יוחזקו בנפרד", "הממונה רשאי להורות על העברה"]);
+    // passages before the first quote stay in the one locator they always had; nothing already extracted changes
+    const before = extractFromLine('[כללים](https://www.boi.org.il/a.pdf), p.2, s.5(ב); p.3, Annex A "סוג ריבית קבועה או משתנה" · checked 2026-10-26 · primary', ctx()).sources;
+    expect(before).toHaveLength(1);
+    expect(before[0]).toMatchObject({ locator: "p.2, s.5(ב); p.3, Annex A", quote: "סוג ריבית קבועה או משתנה" });
+  });
+
   it("reference-style links resolve through the file's definitions, with angle brackets and parentheses in URLs", () => {
     const defs = { tr: "https://he.wikisource.org/wiki/תקנות_(קופות_גמל)_(העברת)", c17: "https://www.analyst.co.il/media/x/c17.pdf" };
     const line =

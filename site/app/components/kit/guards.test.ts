@@ -101,28 +101,40 @@ describe("ids go through IdRef", () => {
 });
 
 // 2026-10-26: a question the rule base has closed is never named as open. data/open-questions.json holds each question's status
-// (generated from the rule base's markdown); the content files, copy.ts and the playbook's step list may not name a closed one, in
-// an IdRef or in a string that IdText turns into chips. The not-covered page shows closures on purpose and is the one exception.
+// (generated from the rule base's markdown); no source of the site may name a closed one, in an IdRef, in a string that IdText
+// turns into chips, or typed bare in JSX text. The not-covered page reads its closures from the rule base at build time, so it
+// names no code in its source and needs no exception. The scanner does not pair quotes: a gershayim in Hebrew text (עו"ש, אג"ח)
+// broke the first version's string pairing and hid the IdRef that followed it (review, 2026-10-26).
 describe("no closed open question is named as open", () => {
   const questions = JSON.parse(readFileSync(join(root, "../../data/open-questions.json"), "utf8")) as { id: string; status: string }[];
   const closed = new Set(questions.filter((q) => q.status === "closed").map((q) => q.id));
-  const CLOSED_ALLOWED = new Set(["routes/not-covered.tsx"]);
-  const scanned = files.filter((f) => (rel(f).startsWith("content/") || ["copy.ts", "lib/playbook.ts"].includes(rel(f))) && !CLOSED_ALLOWED.has(rel(f)));
-  /** The string literals of a source (comments dropped; a `//` inside a string stays), and the `id="…"` attributes of its JSX. */
-  const literals = (src: string): string[] =>
-    [...src.matchAll(/"(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*'|`(?:[^`\\]|\\.)*`|\/\/[^\n]*|\/\*[\s\S]*?\*\//g)].map((m) => m[0]).filter((t) => !t.startsWith("//") && !t.startsWith("/*"));
+  const scanned = files.filter((f) => /\.tsx?$/.test(f) && !/\.test\.tsx?$/.test(f));
+  /** Source without comments: block and JSX comments, and `//` comments (a `//` after a colon or a quote, as in a URL, stays). */
+  const uncommented = (src: string): string => src.replace(/\/\*[\s\S]*?\*\//g, " ").replace(/(^|[^:"'`\\\w])\/\/[^\n]*/g, "$1");
+  /** The ids of `<IdRef … id="…">`, and of `id={"…"}`, `id={'…'}` or `` id={`…`} ``. */
+  const idRefIds = (src: string): string[] =>
+    [...uncommented(src).matchAll(/<IdRef\b[^>]*?\bid=(?:"([^"]*)"|\{\s*(["'`])(.*?)\2\s*\})/g)].map((m) => m[1] ?? m[3] ?? "");
   const codesIn = (text: string): string[] => [...text.matchAll(/\b([A-Z][A-Z0-9]*)[ -]OQ ?(\d+)\b/g)].map((m) => `${m[1]} OQ${m[2]}`);
+  /** Every code a source names: its IdRef ids, and any `<PREFIX> OQ<n>` or `<PREFIX>-OQ<n>` outside comments (JSX text, strings, keys). */
+  const named = (src: string): string[] => [...new Set([...idRefIds(src).flatMap(codesIn), ...codesIn(uncommented(src))])];
   it("the data file is there and has closed questions, and the scan reaches the files", () => {
     expect(closed.size).toBeGreaterThan(0);
-    expect(scanned.map(rel)).toEqual(expect.arrayContaining(["copy.ts", "lib/playbook.ts", "content/guide/pension-comprehensive.tsx"]));
+    expect(scanned.map(rel)).toEqual(expect.arrayContaining(["copy.ts", "lib/playbook.ts", "content/guide/pension-comprehensive.tsx", "routes/not-covered.tsx"]));
   });
-  it("names none in the content files, copy.ts or the playbook", () => {
+  it("names none in any source of the site", () => {
     const bad: string[] = [];
-    for (const f of scanned) for (const lit of literals(read(f))) for (const c of codesIn(lit)) if (closed.has(c)) bad.push(`${rel(f)}: ${c}`);
+    for (const f of scanned) for (const c of named(read(f))) if (closed.has(c)) bad.push(`${rel(f)}: ${c}`);
     expect(bad).toEqual([]);
   });
-  it("the scan sees the broken pattern and skips comments", () => {
-    const src = `// TXK OQ12 was closed\nconst a = <IdRef id="TXK OQ12" />; const b = { "SW-OQ6": "x" }; const url = "https://x.org/a"; // PEN OQ8\n`;
-    expect(literals(src).flatMap(codesIn)).toEqual(["TXK OQ12", "SW OQ6"]);
+  it("sees an IdRef after a gershayim, id={…}, a bare code in JSX text and a key, and skips comments", () => {
+    const src = [
+      `// TXK OQ12 was closed`,
+      `const a = <p>הפטור על ריבית בעו"ש לא ידוע. שאלה פתוחה: <IdRef id="TXI OQ11" />, ובבית השקעות שהוא חש"ב: <IdRef id="REG OQ9" />, <IdRef id={"REG OQ10"} /></p>;`,
+      `const b = <p>אג"ח: עוד לא ידוע, שאלה פתוחה GOV OQ6.</p>; const c = { "SW-OQ6": "x" };`,
+      `const url = "https://x.org/a"; // PEN OQ8`,
+      `const d = <p>{/* MF OQ4 in a JSX comment */}טקסט</p>;`,
+    ].join("\n");
+    expect(idRefIds(src)).toEqual(["TXI OQ11", "REG OQ9", "REG OQ10"]);
+    expect(named(src)).toEqual(["TXI OQ11", "REG OQ9", "REG OQ10", "GOV OQ6", "SW OQ6"]);
   });
 });

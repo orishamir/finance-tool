@@ -190,8 +190,7 @@ builders["money-market-fund-daily"] = (c) => {
   if (dep.rate) d.facts.depositRate = dep.rate;
   if (d.facts["deposit:term"]) d.facts.depositTerm = d.facts["deposit:term"]!;
   d.facts.cashRate = p05Value(c.p05, "cash_rate");
-  // MF OQ4: how many business days after the order the money is usable was not found; MF-35: the renewable fund's dates are chosen when buying
-  d.gaps.push("mmfPayoutDays");
+  // MF-11 (prices regulations reg. 15): when redemption money reaches the account, stated in the guide's prose (MF OQ4 closed 2026-10-26); MF-35: the renewable fund's dates are chosen when buying
   return withRules(d, "MF-10", "MF-11", "MF-34", "MF-35", "BANK-09", "BANK-13");
 };
 
