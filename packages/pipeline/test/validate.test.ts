@@ -438,6 +438,9 @@ describe("open questions (data-schema 3.15, 2026-10-26)", () => {
       expect.arrayContaining([expect.stringMatching(/^open_questions: TXP-OQ3 is closed/), expect.stringMatching(/^blocked_by: TXP-OQ3 is closed/), expect.stringMatching(/^dimensions.real-vs-nominal: PEN-OQ8 is closed/)]),
     );
     expect(messages.some((m) => m.includes("PEN-OQ7"))).toBe(false);
+  });
+});
+
 // D30 (research/specs/2026-10-25-rules-scope/spec.md §3): who a rule applies to, and where it may appear
 describe("scope", () => {
   const run = (files: Record<string, unknown>) => validateData({ dataDir: dataDir(files), ruleBase, formulas, warn: () => {} });

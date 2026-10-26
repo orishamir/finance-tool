@@ -103,6 +103,7 @@
   },
   "il_finance_file": "tax-insurance-and-amendment-190.md",
   "checked": "2026-10-26",
+  "scope": "general",
   "sources": [
     {
       "url": "https://secapp.taxes.gov.il/tmmisuyweb/frmShowLinkedAbs.aspx?num=20150026&new=true",
