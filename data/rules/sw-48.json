@@ -2,7 +2,7 @@
   "id": "SW-48",
   "title": "The Phoenix: after joining, the confirmation goes to the employer automatically",
   "title_he": "הפניקס: אישור הצטרפות נשלח למעסיק",
-  "text_he": "בהפניקס, אחרי פתיחת קופה, האישור נשלח למעסיק אוטומטית. מי חייב להודיע למעסיק להפנות את ההפקדות הבאות לא נקבע בחוזר, וזו שאלה פתוחה. הנוהג של חברות אחרות לא נבדק.",
+  "text_he": "בהפניקס, אחרי פתיחת קופה, האישור נשלח למעסיק אוטומטית. הנוהג של חברות אחרות לא נבדק.",
   "strength": "institution",
   "dimensions": [
     "transfer-switch-process"
