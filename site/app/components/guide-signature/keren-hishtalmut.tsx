@@ -14,7 +14,7 @@ import { p05Number, p05Value, type Bundle } from "../../lib/engine";
 import { useGoals } from "../../lib/goal";
 import { useInputs } from "../../lib/inputs";
 import { entered as enteredValue, type SiteValue } from "../../lib/value";
-import { Callout, GainBars, Marker, MarkerMark, NumberField, SegmentedControl, Sentence, useWidth } from "../kit";
+import { Callout, GainBars, InputSlot, Marker, MarkerMark, NumberField, SegmentedControl, Sentence, useWidth } from "../kit";
 import { Num, RulesLine, Term } from "../provenance";
 import { G2Gap, HoldRow, PlanInputs, text } from "./g2-parts";
 import { figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
@@ -216,7 +216,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
 
       <div className="flex flex-col gap-3">
         <p className="text-sm font-medium">
-          {copy.hishtalmut.at.before} <bdi>{fmt.years(years)}</bdi>
+          {copy.hishtalmut.at.before} <InputSlot chars={10}><bdi>{fmt.years(years)}</bdi></InputSlot>
           {copy.hishtalmut.at.after}
         </p>
         {gapText && (

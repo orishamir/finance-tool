@@ -200,7 +200,9 @@ export const guide = {
   termsShowAll: "הצגת כל המונחים של העמוד",
   termsHideAll: "הסתרת המונחים",
   graphTitle: "מה קורה לכסף לאורך הזמן",
-  headline: { before: "נשאר לכם אחרי", after: "אחרי דמי ניהול ומס, בכסף של היום", afterNominal: "אחרי דמי ניהול ומס, בשקלים של העתיד" },
+  // 2026-10-26 (founder): the sentence names only what the run has: fees and tax, tax alone, fees alone, or neither (a current account at 0%)
+  headline: { before: "נשאר לכם אחרי", afterBoth: "אחרי דמי ניהול ומס", afterTax: "אחרי מס", afterFees: "אחרי דמי ניהול", real: "בכסף של היום", nominal: "בשקלים של העתיד" },
+  editSlot: "שינוי של",
   // audit 2026-10-24 (A45): the headline says it is an example and names its inputs; each gap is filled by a Num
   headlineExample: { lead: "דוגמה:", plus: "ועוד", perMonth: "בחודש, בתשואה של", perMonthCash: "בחודש, בריבית של", perYear: "בשנה, משאירים לכם אחרי" }, // perMonthCash 2026-10-25: a cash-like page runs on a rate, not a return
   modes: { real: "בכסף של היום", nominal: "בשקלים של העתיד" },
@@ -214,8 +216,6 @@ export const guide = {
   markers: { free: "אפשר למשוך מכאן", age: "גיל" },
   enteredReturnCaption: "הקו המקווקו מבוסס על תשואה שהזנתם, לא על הערכה של האתר.",
   enteredRateCaption: "הקו המקווקו מבוסס על ריבית שהזנתם, לא על זו שפורסמה או על הנחה של האתר.", // 2026-10-25
-  feesIndependent: "לא תלויים ביתרה",
-  feesIndependentShort: "לא תלויים ביתרה",
   blockedBand: "לא מחושב: שאלה פתוחה",
   figureNotUpdated: { before: "הנתון לא עודכן:", middle: "היה בתוקף עד", after: "עד שהוא יעודכן, האתר לא מחשב את הגרף.", link: "לפרטים" },
   appliesToYou: "לפי מה שהזנתם",
@@ -3644,6 +3644,7 @@ export const kit = {
       ChipList: "רשימה שאפשר לבחור בה, להוסיף לה, לשנות שם ולמחוק: מטרות, מדדים. הפריט הנבחר מקבל עיפרון ופח; גרירה רק כשיש onMove; הפריט האחרון (add) מוסיף.",
       PlanChips: "שורת המספרים שהעמוד רץ עליהם: תווית וערך, כחול כשהוזן, תג כשהערך של האתר, ולחיצה פותחת את השדות. fixed: ערך שאי אפשר לשנות כאן.",
       ChoiceChips: "ארבע אפשרויות ומעלה או תוויות ארוכות, אחת נבחרת. עם wrap יורד שורה, בלעדיו גולל הצידה בטלפון.",
+      InputSlot: "מספר שהקוראים קובעים, בתוך משפט: רווח ברוחב קבוע, עם קו כמו בטופס ועיפרון שפותח את השדה, כדי שהמשפט לא יקפוץ כשהמספר משתנה.",
       Sentence: "טקסט שיש בו מספרים או קישורים. רצוף בלבד: אין לו מאפיין פריסה, ולכן מספר לא יכול ליפול לשורה משלו. הקטעים כילדים, או מחרוזת עם מקומות {name}.",
       Stat: "מספר עם שמו מעליו והערה מתחתיו; שניים עד ארבעה זה לצד זה. tone מוסיף את הצבע של העמודה או הקו שהוא נקרא על שמם.",
       KeyValue: "KeyValue: שם בתחילת השורה וערכו בסופה, בתוך dl. KeyValueList: עובדות ככרטיסים (רשימה בטלפון, רשת 2 על 2 מ־lg).",

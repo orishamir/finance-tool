@@ -14,7 +14,7 @@ import type { SiteValue } from "../../lib/value";
 import { AxisLabels, niceYearTicks } from "../chart/TimelineChart";
 import { IconAlert } from "../icons";
 import type { WorthFactRow } from "../guide/worth-knowing";
-import { ChartLegend, cx, Disclosure, NumberField, RangeField, Sentence, Stat, StatRow, Swatch, Tag, useWidth } from "../kit";
+import { ChartLegend, cx, Disclosure, InputSlot, NumberField, RangeField, Sentence, Stat, StatRow, Swatch, Tag, useWidth } from "../kit";
 import { Num, RuleRef, RulesLine } from "../provenance";
 import { Gap, SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, yearsRange, type VisualProps } from "./kit";
 
@@ -128,7 +128,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
       {model && values && change ? (
         <div className="flex flex-col gap-2 max-w-measure">
           <p className="text-lg lg:text-xl font-medium">
-            {copy.account.headline.lead} <Num value={yearsValue} display={fmt.years(years)} />, <Num value={balanceValue} />{" "}
+            {copy.account.headline.lead} <InputSlot chars={10}><Num value={yearsValue} display={fmt.years(years)} /></InputSlot>, <InputSlot chars={12}><Num value={balanceValue} /></InputSlot>{" "}
             {bank ? (
               <>
                 {copy.account.headline.inBank} <bdi>{bank.name}</bdi> {copy.account.headline.worth}

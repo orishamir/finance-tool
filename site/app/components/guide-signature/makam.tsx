@@ -8,7 +8,7 @@ import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact, makamModel } from "../../lib/guide-signature";
 import { entered as enteredValue } from "../../lib/value";
-import { Callout, Marker, MarkerMark, NumberField, Sentence, Stat, StatRow, useWidth } from "../kit";
+import { Callout, InputSlot, Marker, MarkerMark, NumberField, Sentence, Stat, StatRow, useWidth } from "../kit";
 import { Num, RuleRef, RulesLine } from "../provenance";
 import { SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
 
@@ -108,7 +108,7 @@ export function MakamVisual({ data, today }: VisualProps) {
       {model && v && (
         <div className="flex flex-col gap-3">
           <p className="text-sm font-medium">
-            {m >= term ? copy.makam.atRedemption : `${copy.makam.atSale} ${fmt.months(m)}`}:
+            {m >= term ? copy.makam.atRedemption : <>{copy.makam.atSale} <InputSlot chars={9}>{fmt.months(m)}</InputSlot></>}:
           </p>
           <StatRow cols={4}>
             <Stat label={copy.makam.figures.price}>

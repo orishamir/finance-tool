@@ -7,7 +7,7 @@ import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { breakKindOf, depositModel, fact, factNumber } from "../../lib/guide-signature";
 import { fmt } from "../../lib/format";
 import { entered as enteredValue, type SiteValue } from "../../lib/value";
-import { Callout, GainBars, KeyValue, Marker, MarkerMark, NumberField, Sentence, Stat, StatRow, useWidth } from "../kit";
+import { Callout, GainBars, InputSlot, KeyValue, Marker, MarkerMark, NumberField, Sentence, Stat, StatRow, useWidth } from "../kit";
 import { Num, RulesLine } from "../provenance";
 import { Gap, SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
 
@@ -138,7 +138,7 @@ export function BankDepositVisual({ data, today }: VisualProps) {
 
       <div className="flex flex-col gap-3">
         <p className="text-sm font-medium">
-          {copy.deposit.atMarker.lead} <bdi dir="ltr">{m}</bdi> {copy.deposit.atMarker.month}:
+          {copy.deposit.atMarker.lead} <InputSlot chars={3}><bdi dir="ltr">{m}</bdi></InputSlot> {copy.deposit.atMarker.month}:
         </p>
         <StatRow cols={2}>
           <Stat label={copy.deposit.atMarker.deposit} tone="value">
