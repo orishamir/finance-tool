@@ -181,10 +181,9 @@ function ManagerCompany({ data }: { data: CompanyData }) {
             )}
           </header>
 
-          {company && (
+          {side && (
             <div className="hidden lg:grid grid-cols-2 gap-4 items-start">
-              {side && <WrapperCard side={side} />}
-              <PasteCard />
+              <WrapperCard side={side} />
             </div>
           )}
 
@@ -269,7 +268,8 @@ function ManagerCompany({ data }: { data: CompanyData }) {
             </section>
           )}
           <CompanyTerms name={data.companyTerms.name} groups={data.companyTerms.groups} />
-          {company && <PasteCard className="lg:hidden" />}
+          {/* the fallback search comes after everything the page lists, at every width (founder, 2026-10-26: above the list it was in the way) */}
+          {company && <PasteCard className="lg:w-1/2" />}
         </div>
 
       </div>

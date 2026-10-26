@@ -397,7 +397,7 @@ What a managing company offers, decoded (flow 5). The default view shows what th
 
 **Amended 2026-10-24 (UX audit).** ~~Side cards beside the list on PC~~: the product-type and paste cards are a two-column row above the track list from `lg`, and the right-hand aside is gone at every width; classification and holdings are one cell (holdings as a muted second line), so the table has five columns. A side card's tariff link reads "לתעריפון (PDF)" with the format isolated at the end; "נכון ל־{date}" keeps its maqaf.
 
-**Amended 2026-10-26.** The product-type card ("סוג המוצר") shows only when the page holds one product type: one group of tracks and no funds or brokerage account. It used to show the first group's type, so a company running seven types (Altshuler Shaham, Meitav, Harel and 19 more) read "קופת גמל להשקעה". With several types the paste card stands alone; each group heading keeps its "מה זה" link.
+**Amended 2026-10-26.** The product-type card ("סוג המוצר") shows only when the page holds one product type: one group of tracks and no funds or brokerage account. It used to show the first group's type, so a company running seven types (Altshuler Shaham, Meitav, Harel and 19 more) read "קופת גמל להשקעה". Each group heading keeps its "מה זה" link. The paste card ("לא מצאתם שם?") moved to the end of the page at every width, half the width on PC (founder, 2026-10-26: above the list it was in the way).
 
 
 ---
