@@ -2,7 +2,7 @@
 // as /fees-data.json: P-03, the rule records the page quotes and the caps read, the F-68 regulator reference of
 // every provident-family class, the regulator's tracks in compact form (for ?track=), where P-05 sends each
 // wrapper, whose tariff a securities wrapper uses, and the link-outs (D20). Server-only.
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { cmaPeriodFile, type ParameterRecord, type RuleRecord, type ValueObject } from "@finance-tool/schema";
 import { latestTracks, type CmaTrack } from "@finance-tool/engine";
@@ -11,6 +11,7 @@ import { classificationToWrapper, loadFees, loadParameters, loadRules, pointedRe
 import { compactFee } from "./value";
 import type { FeesData, LinkOut, TrackLite } from "./fees";
 import { classKey } from "./fees";
+import { readParsedCached, readTextCached } from "./read-cache.server";
 
 /** The rules the page quotes (negotiation, caps, references, link-outs) and the cap and run rules read. */
 const quoted = ["PF-02", "PF-04", "PF-05", "PF-06", "PF-11", "PF-13", "PF-16", "PF-39", "PEN-21", "PEN-22", "KH-22", "KH-23", "MF-55", "MF-18", "MF-19", "ETF-17", "BRK-26", "BRK-33", "BRK-37", "CAT-35", "CAT-36", "CAT-37", "CAT-40", "BANK-32"];
@@ -21,14 +22,14 @@ function cmaFiles() {
   return readdirSync(dir)
     .filter((f) => f.endsWith(".json"))
     .sort()
-    .map((f) => cmaPeriodFile.parse(JSON.parse(readFileSync(join(dir, f), "utf8"))));
+    .map((f) => readParsedCached(join(dir, f), cmaPeriodFile));
 }
 
 /** A link written in an il-finance reference under a rule's heading, found by its link text. */
 function linkFrom(file: string, heading: string, text: RegExp): LinkOut | null {
   const path = join(root, ".claude/skills/il-finance/references", file);
   if (!existsSync(path)) return null;
-  const doc = readFileSync(path, "utf8");
+  const doc = readTextCached(path);
   const start = doc.indexOf(`### ${heading}`);
   if (start < 0) return null;
   const end = doc.indexOf("\n### ", start + 5);

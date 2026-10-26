@@ -2,7 +2,7 @@
 // document it points at, and the data records (tariffs, funds, deposit terms, series) as cards pointing at their pages.
 // Server-only. The sources of a rule are read loosely: the `sources` field is W1's, and a record without it contributes
 // only its figures' own sources.
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync } from "node:fs";
 import { join } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
 import { wikisourcePageTitle } from "./sources";
@@ -13,6 +13,7 @@ import type { Strength } from "./value";
 import * as dataServer from "./data.server";
 import { companyLinks, ownDocuments } from "./institutions.server";
 import { companyTermsHref } from "./scope";
+import { readJsonCached } from "./read-cache.server";
 
 export type SectionId = "laws" | "regulators" | "exchange" | "institutions" | "secondary";
 export const sectionOrder: SectionId[] = ["laws", "regulators", "exchange", "institutions", "secondary"];
@@ -97,7 +98,7 @@ function readJson<T>(rel: string, fallback: T, root: string): T {
   const p = join(root, rel);
   if (!existsSync(p)) return fallback;
   try {
-    return JSON.parse(readFileSync(p, "utf8")) as T;
+    return readJsonCached(p) as T;
   } catch {
     return fallback;
   }
@@ -272,7 +273,7 @@ export async function loadDocumentData(): Promise<DocumentData> {
   for (const id of ["cbs-cpi", "mof-child-savings-rates", "ecb-fx"]) {
     const p = join(root, "data/series", id + ".json");
     if (!existsSync(p)) continue;
-    const rec = JSON.parse(readFileSync(p, "utf8"));
+    const rec = readJsonCached<{ observations?: (import("./value").SiteValue & { date: string; key?: string })[]; names?: { he?: string[] }; terms_of_use?: { attribution?: string } }>(p);
     const newest = [...(rec.observations ?? [])].sort((a: { date: string }, b: { date: string }) => a.date.localeCompare(b.date)).at(-1);
     const single = newest && !newest.key;
     series.push({
