@@ -2,7 +2,7 @@
 // investing and the pensions. Server-only. Each builder is called from `builders` in guide-signature.server.ts with that file's context.
 // Nothing here types a rate or a date: a figure is a record's value object, a rule's figure or a P-05 parameter, and a missing one
 // becomes a `gap` (shown as "עוד לא חושב" with its reason).
-import type { CatalogEntry, DepositTerms, ExposureRecord, FundRecord, ParameterRecord, RuleRecord, ValueObject, WrapperRecord } from "@finance-tool/schema";
+import type { CatalogEntry, DepositTerms, ExposureRecord, FundRecord, ParameterRecord, RuleRecord, ValueObject, ProductRecord } from "@finance-tool/schema";
 import { loadCma, loadCmaFees, loadFees } from "./data.server";
 import type { Bundle } from "./engine";
 import { p05Number, p05Value } from "./engine";
@@ -16,7 +16,7 @@ import { cmaFeeValue, computed, ownBy, ruleFigure, type SiteValue } from "./valu
 export interface G2Ctx {
   p05: ParameterRecord;
   allRules: Record<string, RuleRecord>;
-  wrappers: WrapperRecord[];
+  wrappers: ProductRecord[];
   deposits: DepositTerms[];
   funds: FundRecord[];
   t: string;

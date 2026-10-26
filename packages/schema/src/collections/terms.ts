@@ -1,7 +1,7 @@
 // data/terms/<id>.json (term matching) and data/dimensions/<id>.json. docs/data-schema.md §3.11.
 // Strict: a field the doc does not name is an error.
 import { z } from "zod";
-import { isoDate, source, wrapperId } from "../value.ts";
+import { isoDate, productId, source } from "../value.ts";
 
 const termSource = source.extend({ checked: isoDate });
 const ruleIds = z.array(z.string().min(1));
@@ -15,7 +15,7 @@ export const termRecord = z.strictObject({
   en: z.string().min(1).nullable(),
   meaning: z.string().min(1),
   where: z.array(termWhere),
-  wrapper_ids: z.array(wrapperId),
+  wrapper_ids: z.array(productId),
   /** Exposure records (data/instruments/exposures/) the term belongs to; ids as in the exposure collection. */
   exposure_ids: z.array(z.string().regex(/^[a-z0-9-]+$/)).optional(),
   /** Other spellings of the term. */

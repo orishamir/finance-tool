@@ -11,6 +11,7 @@ import {
   parameterRecord,
   ruleRecord,
   termRecord,
+  securityRecord,
   wrapperRecord,
   type CmaPeriodFile,
   type FeesSnapshot,
@@ -19,6 +20,8 @@ import {
   type ValueObject,
   type WrapperId,
   type WrapperRecord,
+  type SecurityRecord,
+  type ProductRecord,
 } from "@finance-tool/schema";
 import type { z } from "zod";
 import { parseMdLink } from "./md-link";
@@ -91,8 +94,19 @@ export function loadParameters(): ParameterRecord[] {
   return readDir("data/parameters", parameterRecord);
 }
 
+/** The wrappers only (D6): the containers whose rules apply to whatever they hold. */
 export function loadWrappers(): WrapperRecord[] {
   return readDir("data/instruments/wrappers", wrapperRecord);
+}
+
+/** The securities (D6, amended 2026-10-26): makam, government bonds and the money-market funds, each held in a securities account. */
+export function loadSecurities(): SecurityRecord[] {
+  return readDir("data/instruments/securities", securityRecord);
+}
+
+/** Every product a person chooses between, a wrapper or a security held in one: what the guide, the comparison and the rules page list. */
+export function loadProducts(): ProductRecord[] {
+  return [...loadWrappers(), ...loadSecurities()];
 }
 
 export function loadFees(): FeesSnapshot[] {
@@ -373,7 +387,7 @@ export interface PinnedRules {
 /** data/parameters/home-guide-door.json (P-10): the guide pages the first page's guide door names, as id and name, in order. */
 export function loadHomeGuideDoor(): { id: string; name: string }[] {
   const ids = (JSON.parse(readFileSync(join(root, "data/parameters/home-guide-door.json"), "utf8")) as { wrappers: string[] }).wrappers;
-  const names = new Map<string, string>(loadWrappers().map((w) => [w.id, w.names.he[0]!]));
+  const names = new Map<string, string>(loadProducts().map((w) => [w.id, w.names.he[0]!]));
   return ids.filter((id) => names.has(id)).map((id) => ({ id, name: names.get(id)! }));
 }
 

@@ -178,6 +178,8 @@ export const guideIndex = {
 
 export const guide = {
   indexTitle: "בעמוד הזה",
+  // D6 (amended 2026-10-26): makam, a government bond and a money-market fund are bought inside an account, not a container of their own
+  heldIn: "את המוצר הזה קונים ומחזיקים בתוך {account}. מי יכול לפתוח את החשבון, מי מפקח עליו ואיך שומרים בו את הנכסים: בעמוד שלו.",
   sections: [
     { id: "what", title: "מה זה" },
     { id: "use", title: "למה משתמשים בזה" }, // audit 2026-10-24 (A42): directly under "מה זה"
@@ -194,6 +196,8 @@ export const guide = {
   // audit 2026-10-24 (A42, A43, A86)
   rulesToggle: { show: "הצגת החוקים והכללים", hide: "הסתרת החוקים והכללים" },
   exposuresRow: "במה אפשר להשקיע בתוכו:",
+  // D6 (2026-10-26): on a wrapper's page, the securities bought inside it that have a page of their own (makam, bonds, money-market funds)
+  securitiesRow: "מה קונים בתוכו, ולכל אחד עמוד משלו:",
   companiesShow: "הצגת החברות",
   companiesHide: "הסתרת החברות",
   companiesOpen: "פתוחות לכלל הציבור",
@@ -1195,7 +1199,7 @@ export const ownTermsCopy = {
   provider: {
     chosen: "בחרתם", // scenario fix 2026-10-24
     heading: "ספק שהתעריפון שלו ישמש בחישוב", // scenario fix 2026-10-24
-    hint: "הספקים שנאספו בעמוד הספקים, לפי מה שהאפשרות הזו משאירה בסוף. התעריפון הוא של הספק; הבחירה שלכם.", // scenario fix 2026-10-24
+    hint: "הבנקים ובתי ההשקעות שהתעריפון שלהם נאסף, לפי מה שהאפשרות הזו משאירה בסוף. התעריפון הוא של הספק; הבחירה שלכם.", // scenario fix 2026-10-24; review 2026-10-26: makam and bonds are not on the providers page
     pick: "לבחור", // scenario fix 2026-10-24
     channel: { direct: "ערוץ ישיר", branch: "סניף" } as Record<string, string>, // scenario fix 2026-10-24
     reset: "לחזור לספק שהאתר בחר", // scenario fix 2026-10-24
@@ -2500,6 +2504,9 @@ export const r5 = {
   },
   // 9.2 exposure result
   exposure: {
+    // D6 (2026-10-26): a security in the list of products that can hold an exposure is bought directly inside its account
+    heldDirect: "{name}, קנייה ישירה ב{account}",
+    heldFund: "{name}, יחידות קרן ב{account}",
     title: "{goal}: איזו חשיפה מתאימה",
     pageTitle: "איזו חשיפה מתאימה",
     headline: {

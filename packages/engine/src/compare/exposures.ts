@@ -1,7 +1,7 @@
 // Exposure mode (product 3.2, F-83 candidate set, F-71, F-80): which exposure type suits the horizon and the
 // person's loss filter, at returns the person entered or a sourced series gives. The caller names the wrapper
 // that holds each exposure; the engine never picks one.
-import { exposureRecord, type ExposureRecord, type ValueObject, type WrapperId } from "@finance-tool/schema";
+import { exposureRecord, type ExposureRecord, type ValueObject, type ProductId } from "@finance-tool/schema";
 import { RecordInputError, type InstrumentTerms } from "../inputs.ts";
 import type { RunContext } from "../result.ts";
 import { assertInvariant, coverageLine } from "./coverage.ts";
@@ -44,7 +44,7 @@ export interface ReturnLabel {
 }
 
 export interface ExposureCandidate extends Candidate {
-  wrapper?: WrapperId;
+  wrapper?: ProductId;
   lossFilter: LossVerdict;
   returnLabel?: ReturnLabel;
 }

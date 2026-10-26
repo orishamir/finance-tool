@@ -3,10 +3,10 @@
 import { pending as pendingFormulaReleases, type P05Input } from "@finance-tool/engine";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { companyTermRule, wrapperId as wrapperIdEnum, type ExposureRecord, type RuleRecord, type WrapperRecord } from "@finance-tool/schema";
+import { companyTermRule, isSecurity, productIds, type ExposureRecord, type RuleRecord, type ProductRecord } from "@finance-tool/schema";
 import { buildHishtalmutTerms, loadExposures } from "./instruments.server";
 import { providentTerms } from "./compare.server";
-import { loadChecklistRows, loadCma, loadFees, loadParameters, loadRules, loadTerms, loadWrappers, pointedRecords, root, today, type ChecklistRow, type TermRow } from "./data.server";
+import { loadChecklistRows, loadCma, loadFees, loadParameters, loadRules, loadTerms, loadProducts, pointedRecords, root, today, type ChecklistRow, type TermRow } from "./data.server";
 import { runTimeline, type Bundle, type Timeline } from "./engine";
 import { buildInstrumentBundle, familyOf, missingParts, rulesTouched, type NoGraph } from "./guide-signature-bundle.server";
 import { buildSignatureData } from "./guide-signature.server";
@@ -16,7 +16,7 @@ import { playbookWrappers } from "./playbook";
 import { ruleFigure, weaker, type SiteValue, type Strength } from "./value";
 
 export interface GuidePageData {
-  record: WrapperRecord;
+  record: ProductRecord;
   name: string;
   lede: string | null;
   bundle: Bundle | null;
@@ -26,7 +26,7 @@ export interface GuidePageData {
   /** The records those cards point at that the page does not cite (`pointedRecords`): only chips and cards read them. */
   pointed: Record<string, RuleRecord>;
   terms: TermRow[];
-  /** How many wrappers the site knows: a term that names this many is shared by every product (the guide shows it under "מונחים כלליים"). */
+  /** How many products the site knows (wrappers and securities): a term that names this many is shared by every product (the guide shows it under "מונחים כלליים"). */
   wrapperCount: number;
   termsById: Record<string, TermRow>;
   checklist: ChecklistRow[];
@@ -48,6 +48,13 @@ export interface GuidePageData {
   /** The record's formulas the engine does not compute yet, with the release number that brings each. */
   pendingFormulas: Record<string, string>;
   related: { href: string; label: string }[];
+  /**
+   * A security's wrapper (D6, amended 2026-10-26): the first of its record's `held_in`, the account its run and its page sit in, with
+   * the rules that say it is held there. Null for a wrapper.
+   */
+  heldIn: { id: string; name: string; ruleIds: string[] } | null;
+  /** On a wrapper's page, the securities whose record names it in `held_in` (D6, 2026-10-26), each with its own page. */
+  securities: { href: string; label: string }[];
   today: string;
 }
 
@@ -80,7 +87,7 @@ function collectRuleIds(node: unknown, out = new Set<string>()): Set<string> {
 }
 
 export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTermIds: string[] = []): GuidePageData | null {
-  const record = loadWrappers().find((w) => w.id === id);
+  const record = loadProducts().find((w) => w.id === id);
   if (!record) return null;
   const allRules = loadRules();
   const parameters = loadParameters();
@@ -189,15 +196,18 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
     .filter((e) => (e.wrapper_ids ?? []).includes(record.id))
     .map((e) => ({ id: e.id, name: e.names.he[0] ?? e.id }));
 
-  const wrappers = loadWrappers();
+  const wrappers = loadProducts();
   const related = record.transfer_routes
     .map((r) => r.to)
     .filter((to, i, a) => to !== id && a.indexOf(to) === i)
     .map((to) => wrappers.find((w) => w.id === to))
-    .filter((w): w is WrapperRecord => !!w)
+    .filter((w): w is ProductRecord => !!w)
     .map((w) => ({ href: `/guide/${w.id}`, label: w.names.he[0]! }));
+  const account = isSecurity(record) ? wrappers.find((w) => w.id === record.held_in.wrapper_ids[0]) : undefined;
+  const heldIn = isSecurity(record) && account ? { id: account.id, name: account.names.he[0]!, ruleIds: record.held_in.rule_ids } : null;
+  const securities = wrappers.filter((w) => isSecurity(w) && w.held_in.wrapper_ids.includes(record.id as never)).map((w) => ({ href: `/guide/${w.id}`, label: w.names.he[0]! }));
 
-  return { record, name: record.names.he[0]!, lede, bundle, initial, rules, pointed: pointedRecords(rules, allRules), terms, wrapperCount: wrapperIdEnum.options.length, termsById, checklist, dimensionNames, marks, companies, exposures, hasPlaybook: playbookWrappers.includes(record.id), exitTextRules, signature, noGraph, pendingFormulas, related, today: t };
+  return { record, name: record.names.he[0]!, lede, bundle, initial, rules, pointed: pointedRecords(rules, allRules), terms, wrapperCount: productIds.length, heldIn, securities, termsById, checklist, dimensionNames, marks, companies, exposures, hasPlaybook: playbookWrappers.includes(record.id), exitTextRules, signature, noGraph, pendingFormulas, related, today: t };
 }
 
 export { familyOf };
@@ -251,14 +261,14 @@ export function buildExposurePage(id: string, extraTermIds: string[] = []): Expo
   const record = loadExposures().find((e) => e.id === id);
   if (!record) return null;
   const allRules = loadRules();
-  const wrappers = loadWrappers();
+  const wrappers = loadProducts();
   const t = today();
 
   const cited = new Set<string>([...(record.rule_ids ?? []), ...(record.open_questions ?? [])]);
   scanRuleIds(`site/app/content/exposure/${id}.tsx`, allRules).forEach((r) => cited.add(r));
   const holders = (record.wrapper_ids ?? [])
     .map((wid) => wrappers.find((w) => w.id === wid))
-    .filter((w): w is WrapperRecord => !!w)
+    .filter((w): w is ProductRecord => !!w)
     .map((w) => {
       const blockedBy = [...new Set(w.tax_at_exit.blocked_by)];
       const openQuestions = (record.open_questions ?? []).filter((q) => w.open_questions.includes(q) && !blockedBy.includes(q));

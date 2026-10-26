@@ -3,12 +3,12 @@
 import type { SearchEntry } from "../lib/search";
 
 export async function loader() {
-  const { loadCma, loadTerms, loadWrappers, loadRules, loadParameters } = await import("../lib/data.server");
+  const { loadCma, loadTerms, loadProducts, loadRules, loadParameters } = await import("../lib/data.server");
   const { loadCatalog, loadExposures } = await import("../lib/instruments.server");
   const { normalize, pageAliases, ruleFigs } = await import("../lib/search");
   const { search, searchMore, sourceBlock, parametersPage, topicName } = await import("../copy");
   const entries: SearchEntry[] = [];
-  const wrappers = loadWrappers();
+  const wrappers = loadProducts();
   for (const w of wrappers) {
     for (const name of [...w.names.he, ...w.names.app, ...w.names.statement]) entries.push({ kind: "guide", name, line: search.groups.guide, href: `/guide/${w.id}`, norm: normalize(name) });
   }

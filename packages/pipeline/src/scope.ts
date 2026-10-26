@@ -238,7 +238,7 @@ export function checkScope(ctx: { dataDir: string; ruleBase: RuleBaseIds }, rule
   for (const [w, ids] of Object.entries(pinned?.guide_blocks ?? {})) for (const id of ids) if (rules.has(id) && !isGeneral(id)) report(pinnedPath, `pinned-rules: "שווה לדעת" of ${w} holds general rules only; ${id} is ${scopeWord(id)}`);
 
   // ---- wrappers: a product field never holds a company's term
-  for (const file of listJson(join(dataDir, "instruments/wrappers"))) {
+  for (const file of [...listJson(join(dataDir, "instruments/wrappers")), ...listJson(join(dataDir, "instruments/securities"))]) {
     const rec = readJson(file);
     // where a property is each company's own, the record names the companies' records: those must be company terms that carry it
     for (const [dim, refs] of Object.entries((rec as { company_terms?: Record<string, CompanyTermRef[]> } | undefined)?.company_terms ?? {})) {

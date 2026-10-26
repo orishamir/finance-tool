@@ -23,7 +23,7 @@ import { cmaFeeValue, compactFee, expandFee, feeYear, type CompactFee } from "..
 const classificationOrder = ["קופת גמל להשקעה", "קרנות השתלמות", "תגמולים ואישית לפיצויים", "קופת גמל להשקעה - חסכון לילד", "קרנות חדשות", "קרנות כלליות", "מרכזית לפיצויים", "מטרה אחרת"];
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const { loadCma, loadCmaFees, loadTerms, loadWrappers, today } = await import("../lib/data.server");
+  const { loadCma, loadCmaFees, loadTerms, loadProducts, today } = await import("../lib/data.server");
   const { fitTable, goalContext } = await import("../lib/compare.server");
   const { institutionCompanies, loadCatalog, resolutionOf, seenValue, seenWhere } = await import("../lib/instruments.server");
   const cma = loadCma();
@@ -35,7 +35,7 @@ export async function loader({ params }: Route.LoaderArgs) {
     if (!institution) throw new Response("Not found", { status: 404 });
     return { kind: "institution" as const, institution };
   }
-  const wrappers = loadWrappers();
+  const wrappers = loadProducts();
   const terms = loadTerms();
   const collator = new Intl.Collator("he");
   const tracks = cma.tracks.filter((t) => t.companyId === company.id).sort((a, b) => collator.compare(a.name, b.name));

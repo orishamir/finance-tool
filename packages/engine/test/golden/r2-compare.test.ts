@@ -3,7 +3,7 @@
 // Wrapper records here are minimal, schema-valid test records; no file under data/instruments/ is read.
 import { readdirSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import type { ValueObject, WrapperId, WrapperRecord } from "@finance-tool/schema";
+import { isSecurityId, type ValueObject, type ProductId, type ProductRecord, type WrapperRecord } from "@finance-tool/schema";
 import {
   buildCandidateSet,
   executeCandidate,
@@ -47,16 +47,20 @@ const vo = (value: number | string | boolean, unit: ValueObject["unit"], state: 
 const rate = (pct: number, state: ValueObject["state"] = "sourced") => vo(pct, "pct_per_year", state);
 
 interface WrapperOptions {
-  exit?: WrapperRecord["lawful_exit"];
-  ceiling?: WrapperRecord["ceiling"];
+  exit?: ProductRecord["lawful_exit"];
+  ceiling?: ProductRecord["ceiling"];
   eligibilityRules?: string[];
   blockedBy?: string[];
   depositSide?: string;
 }
 
+/** A test product: a security's id also gets what a security record carries (D6, amended 2026-10-26). */
+const asProduct = (r: Omit<WrapperRecord, "id"> & { id: ProductId }): ProductRecord =>
+  (isSecurityId(r.id) ? { ...r, held_as: "direct", held_in: { wrapper_ids: ["brokerage-account"], rule_ids: [], text: "held in a securities account" } } : r) as ProductRecord;
+
 /** A test record in the shape of data-schema §3.3. */
-function wrapper(id: WrapperId, during: string, exit: string, o: WrapperOptions = {}): WrapperRecord {
-  return {
+function wrapper(id: ProductId, during: string, exit: string, o: WrapperOptions = {}): ProductRecord {
+  return asProduct({
     id,
     names: { he: ["שם"], statement: [], app: [] },
     regulator: vo("CMA", "text"),
@@ -75,12 +79,12 @@ function wrapper(id: WrapperId, during: string, exit: string, o: WrapperOptions 
     tier: 1,
     open_questions: [],
     checked: "2026-10-23",
-  };
+  });
 }
 
-const ageExit = (rules: string[]): WrapperRecord["lawful_exit"] => ({ kind: "at_age", age: vo(60, "years", "sourced", rules) });
-const maturityExit: WrapperRecord["lawful_exit"] = { kind: "at_maturity" };
-const records: Record<WrapperId, WrapperRecord> = {
+const ageExit = (rules: string[]): ProductRecord["lawful_exit"] => ({ kind: "at_age", age: vo(60, "years", "sourced", rules) });
+const maturityExit: ProductRecord["lawful_exit"] = { kind: "at_maturity" };
+const records: Record<ProductId, ProductRecord> = {
   "current-account": wrapper("current-account", "F-26", "F-41"),
   "bank-deposit": wrapper("bank-deposit", "F-21", "F-41", { exit: maturityExit }),
   "savings-plan": wrapper("savings-plan", "F-22", "F-41", { exit: maturityExit }),
@@ -141,7 +145,7 @@ const terms = {
   },
 } satisfies Record<string, InstrumentTerms>;
 
-const input = (id: WrapperId, t?: InstrumentTerms, cashRatePct?: number): CandidateInput => ({
+const input = (id: ProductId, t?: InstrumentTerms, cashRatePct?: number): CandidateInput => ({
   record: records[id],
   ...(t ? { terms: t } : {}),
   ...(cashRatePct !== undefined ? { cashRate: rate(cashRatePct, "entered") } : {}),
