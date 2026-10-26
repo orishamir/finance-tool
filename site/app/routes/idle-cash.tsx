@@ -148,7 +148,7 @@ function Screen({ bundle, failed, rules, today, p03 }: { bundle: CompareBundle |
       <header className="flex flex-col gap-2">
         <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
         <p className="text-lg text-muted-foreground max-w-measure">{copy.lede}</p>
-        <NumberLegend institution={bundle ? anyWeak(bundle.wrappers.flatMap((w) => [w.cashRate, ...Object.values(w.feeValues)])) : false} />
+        <NumberLegend institution={outcome?.kind === "ok" ? anyWeak([outcome.headline, outcome.yearly, outcome.baseline?.rate, ...outcome.rows.flatMap((r) => [r.rate, r.cost])]) : false} />
       </header>
       <div className={cx("flex flex-col gap-6", resultShown && "lg:grid lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-x-12 lg:items-start")}>
         <div className="flex flex-col gap-6">
@@ -224,13 +224,8 @@ function Result({ outcome, bundle, ctx, over, onFull, offerGiven, termGiven, dep
       <Card className="flex flex-col gap-4">
         {view.headline ? (
           <div className="flex flex-col gap-1">
-            <Sentence size="lg">
-              {copy.headlineBefore} <Num value={view.amount} />{" "}
-              <LeadTail lead={copy.headlineMid}>
-                {" "}
-                <Num value={view.headline} size="figure" animate /> {copy.headlineAfter}
-              </LeadTail>
-            </Sentence>
+            <Sentence t={copy.headlineSplit} vars={{ amount: <Num value={view.amount} /> }} />
+            <Sentence size="lg" t={copy.headlineCost} vars={{ cost: <Num value={view.headline} size="figure" animate /> }} />
             {view.yearly && (
               <Sentence size="lg">
                 <LeadTail lead={copy.soWhat.before}>
@@ -254,6 +249,8 @@ function Result({ outcome, bundle, ctx, over, onFull, offerGiven, termGiven, dep
                 <>
                   {copy.baselineOwner.before} <bdi>{view.baseline.rate.own}</bdi> {copy.baselineOwner.after}
                 </>
+              ) : view.baseline.rate.source.title === "F-85" ? (
+                copy.baselineCommon
               ) : (
                 copy.baselineBefore
               )}{" "}

@@ -8,10 +8,10 @@ import NotFound from "./routes/not-found";
 import { PageShell } from "./components/shell";
 import { system } from "./copy";
 
-/** What every page's provenance sheet needs to know about the method: which parameters each formula uses and which parameter card each id belongs to (PageShell reads it). */
+/** What every page's provenance sheet needs to know: which parameters each formula uses, which parameter card each id belongs to, and the Hebrew name of each source host (PageShell reads it). */
 export async function loader() {
-  const { loadFormulaParameters, loadParameterAnchors } = await import("./lib/data.server");
-  return { formulaParameters: loadFormulaParameters(), parameterAnchors: loadParameterAnchors() };
+  const { loadFormulaParameters, loadParameterAnchors, loadPublishersHe } = await import("./lib/data.server");
+  return { formulaParameters: loadFormulaParameters(), parameterAnchors: loadParameterAnchors(), publishersHe: loadPublishersHe() };
 }
 
 export function links() {

@@ -24,10 +24,11 @@ const guideOf: Record<IdleRowView["id"], string> = {
   makam: "/guide/makam",
 };
 
+/** The date a published rate took effect, or the entered tag. A site parameter gets no tag: its number's sheet says so (founder, 2026-10-26). */
 function RateTag({ row }: { row: IdleRowView }) {
   if (row.label === "published") return <Tag icon={<IconFile size={14} />}>{copy.labels.published}{fmt.date(row.rate.effective_from ?? row.rate.checked)}</Tag>;
   if (row.label === "entered") return <Tag tone="entered" icon={<IconEdit size={14} />}>{copy.labels.entered}</Tag>;
-  return <Tag tone="parameter">{copy.labels.parameter}</Tag>;
+  return null;
 }
 
 /** One alternative: the name, the rate it rests on with its label, and the monthly cost of leaving the money. */

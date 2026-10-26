@@ -1274,9 +1274,9 @@ export const idle = {
   errBalance: "הזינו סכום גדול מאפס.",
   errKeep: "הסכום גדול מהיתרה בעו״ש.",
   fill: "מלאו את שני המספרים.",
-  headlineBefore: "להשאיר",
-  headlineMid: "בעו״ש עולה לכם עד",
-  headlineAfter: "בחודש",
+  // founder 2026-10-26: "להשאיר 10,000 ₪ בעו״ש" read as if the person chose to keep that sum; the sum is the part not needed at once
+  headlineSplit: "{amount} מהכסף בעו״ש לא צריכים להיות זמינים מיד.",
+  headlineCost: "אם הם נשארים בעו״ש, זה עולה לכם עד {cost} בחודש.",
   headlineLabel: "העלות החודשית הגבוהה ביותר מבין האפשרויות הנזילות",
   noCost: "לפי הנתונים של האתר אף אפשרות נזילה לא משלמת יותר מהעו״ש, ולכן להשאיר אותו שם לא עולה לכם כלום.",
   allKept: "כל הכסף צריך להישאר זמין, אין מה להשוות.",
@@ -1287,11 +1287,14 @@ export const idle = {
   mmfNote: "הריבית כאן משמשת כקירוב לתשואת הקרן.",
   makamNoCommission: "בלי עמלת קנייה",
   baselineBefore: "העו״ש משלם היום",
+  // F-85: the rate most collected banks print on a current account, not one bank's (founder, 2026-10-26)
+  baselineCommon: "הריבית הנפוצה ביותר על יתרה בעו״ש, בבנקים שהאתר אסף:",
   // D31: the bank whose published rate the baseline is
   baselineOwner: { before: "העו״ש של", after: "משלם היום" },
   rowOwner: "של",
   baselineAfter: ".",
-  baselineNone: "לפי הנתונים של האתר העו״ש לא משלם ריבית.",
+  // F-85: the rate most collected banks print is 0; some pay, with conditions, and the comparison does not assume the person meets them
+  baselineNone: "ברוב הבנקים שהאתר אסף העו״ש לא משלם ריבית על היתרה, ולכן ההשוואה מניחה שהכסף שם לא מרוויח כלום.",
   boiBefore: "הממוצע שבנק ישראל מפרסם לכל בנק לא מופיע כאן: תנאי השימוש של בנק ישראל לא מתירים לפרסם אותו מחדש בלי הסכמה בכתב.",
   boiLink: "לממוצעים של בנק ישראל",
   boiParam: "הריבית של הקרן הכספית והמק״מ היא פרמטר של האתר, לא נתון של בנק ישראל.",

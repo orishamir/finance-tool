@@ -11,6 +11,7 @@ import { evaluate, representativeFeeValue, type BundleDataFile, type ProviderTar
 import type { FitTableData } from "./fit";
 import { computed, ownBy, ownEach, type SiteValue } from "./value";
 import { publisherHe } from "./publisher-he.server";
+import { accountBanks, commonAccountRate, currentAccountRecords } from "./guide-signature-bundle.server";
 
 const tariffKeys: string[] = ["tradeRate", "tradeMin", "tradeMax", "custodyRate", "custodyMin", "custodyMax", "fxRate", "monthlyFee"];
 import { BROKERAGE, instrumentClassOf, providersOf, shortName } from "./providers";
@@ -63,7 +64,7 @@ function tier2List(): Tier2Row[] {
  * charged on the `track` P-05's entry names (method 2.4), labelled as an average. The pension and study-fund terms
  * that come from the person (employment, salary, insurance) are added when a run is built (compare.ts).
  */
-function providentTerms(
+export function providentTerms(
   id: string,
   snapshots: FeesSnapshot[],
   spec: NonNullable<ParameterRecord["instruments"]>[string] | undefined,
@@ -363,12 +364,18 @@ export function buildCompareBundle(): CompareBundle {
     }
     if (family === null) return { ...base, missing: [`${record.id}: no instrument terms are built for it`] };
     const built = buildInstrumentTerms(record.id, family, p05.instruments?.[record.id], sources);
-    const rate = depositRate(record.id, family, p05.instruments?.[record.id], sources.deposits);
+    // F-85 (founder, 2026-10-26: "almost nobody gets that 1%"): the current account runs on the rate most collected banks print, as on its
+    // guide page, not on the one bank P-05 names; idle cash's baseline and the comparison's current-account row read it
+    const common = record.id === "current-account" ? commonAccountRate(accountBanks(currentAccountRecords(sources.deposits)), allRules, t) : null;
+    const rate = common ? common.rate : depositRate(record.id, family, p05.instruments?.[record.id], sources.deposits);
     if ("missing" in built) return { ...base, missing: built.missing };
     const range = depositRange(record.id, family, p05.instruments?.[record.id], sources.deposits);
     const rep = repOf(record.id);
     // F-26 (2026-10-25): the current account's rate is paid on the balance up to the record's `amount_range.max` (BANK-09)
-    const ceiling = record.id === "current-account" && rate && range?.max && range.max.unit === "nis" && typeof range.max.value === "number" ? range.max.value : undefined;
+    const ceiling =
+      record.id !== "current-account" ? undefined
+      : common ? (common.ceiling && typeof common.ceiling.value === "number" ? common.ceiling.value : undefined)
+      : rate && range?.max && range.max.unit === "nis" && typeof range.max.value === "number" ? range.max.value : undefined;
     const terms = ceiling !== undefined && built.terms.deposit ? { ...built.terms, deposit: { ...built.terms.deposit, balanceCeiling: ceiling } } : built.terms;
     return { ...base, terms, feeValues: built.feeValues, ...(rate ? { cashRate: rate } : {}), ...(range ? { cashRange: range } : {}), ...(rep ? { representative: rep } : {}) };
   });
