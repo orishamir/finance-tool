@@ -35,7 +35,7 @@ const vo = (value: number | string | boolean, unit: ValueObject["unit"], state: 
 
 /** A test product: a security's id also gets what a security record carries (D6, amended 2026-10-26). */
 const asProduct = (r: Omit<WrapperRecord, "id"> & { id: ProductId }): ProductRecord =>
-  (isSecurityId(r.id) ? { ...r, held_as: "security", held_in: { wrapper_ids: ["brokerage-account"], rule_ids: [], text: "held in a securities account" } } : r) as ProductRecord;
+  (isSecurityId(r.id) ? { ...r, held_as: "direct", held_in: { wrapper_ids: ["brokerage-account"], rule_ids: [], text: "held in a securities account" } } : r) as ProductRecord;
 
 /** A test record in the shape of data-schema §3.3; no file under data/instruments/wrappers/ exists yet. */
 function wrapper(id: ProductId, during: string, exit: string): ProductRecord {
