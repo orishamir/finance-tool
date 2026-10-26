@@ -1,0 +1,247 @@
+[
+ {
+  "key": "ito",
+  "wikisource_title": "פקודת מס הכנסה",
+  "citations": 75
+ },
+ {
+  "key": "pfl",
+  "wikisource_title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל)",
+  "citations": 25
+ },
+ {
+  "key": "adv",
+  "wikisource_title": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות",
+  "citations": 18
+ },
+ {
+  "key": "sec",
+  "wikisource_title": "חוק ניירות ערך",
+  "citations": 13
+ },
+ {
+  "key": "pf-fees",
+  "wikisource_title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול)",
+  "citations": 12
+ },
+ {
+  "key": "jit",
+  "wikisource_title": "חוק השקעות משותפות בנאמנות",
+  "citations": 9
+ },
+ {
+  "key": "nii",
+  "wikisource_title": "חוק הביטוח הלאומי",
+  "citations": 8
+ },
+ {
+  "key": "pf-transfer",
+  "wikisource_title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל)",
+  "citations": 8
+ },
+ {
+  "key": "wh-int",
+  "wikisource_title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים)",
+  "citations": 8
+ },
+ {
+  "key": "cg-calc",
+  "wikisource_title": "תקנות מס הכנסה (חישוב רווח הון במכירת נייר ערך הנסחר בבורסה, מילווה המדינה או יחידה בקרן נאמנות)",
+  "citations": 6
+ },
+ {
+  "key": "jit-annual",
+  "wikisource_title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן)",
+  "citations": 5
+ },
+ {
+  "key": "retage",
+  "wikisource_title": "חוק גיל פרישה",
+  "citations": 5
+ },
+ {
+  "key": "pf-rules64",
+  "wikisource_title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל)",
+  "citations": 5
+ },
+ {
+  "key": "ins",
+  "wikisource_title": "חוק הפיקוח על שירותים פיננסיים (ביטוח)",
+  "citations": 5
+ },
+ {
+  "key": "nii-child",
+  "wikisource_title": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד)",
+  "citations": 4
+ },
+ {
+  "key": "jit-track",
+  "wikisource_title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות)",
+  "citations": 4
+ },
+ {
+  "key": "jit-foreign",
+  "wikisource_title": "תקנות השקעות משותפות בנאמנות (הצעת יחידות של קרן חוץ)",
+  "citations": 4
+ },
+ {
+  "key": "jit-assets",
+  "wikisource_title": "תקנות השקעות משותפות בנאמנות (נכסים שמותר לקנות ולהחזיק בקרן ושיעוריהם המרביים)",
+  "citations": 4
+ },
+ {
+  "key": "jit-class",
+  "wikisource_title": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום)",
+  "citations": 4
+ },
+ {
+  "key": "wage",
+  "wikisource_title": "חוק הגנת השכר",
+  "citations": 4
+ },
+ {
+  "key": "pen-adv",
+  "wikisource_title": "חוק הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים)",
+  "citations": 4
+ },
+ {
+  "key": "filing",
+  "wikisource_title": "תקנות מס הכנסה (פטור מהגשת דין וחשבון)",
+  "citations": 4
+ },
+ {
+  "key": "wh-sec",
+  "wikisource_title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית)",
+  "citations": 3
+ },
+ {
+  "key": "rating",
+  "wikisource_title": "חוק להסדרת פעילות חברות דירוג האשראי",
+  "citations": 2
+ },
+ {
+  "key": "sec-offer",
+  "wikisource_title": "תקנות ניירות ערך (אופן הצעת ניירות ערך לציבור)",
+  "citations": 2
+ },
+ {
+  "key": "jit-deriv",
+  "wikisource_title": "תקנות השקעות משותפות בנאמנות (אופציות, חוזים עתידיים ומכירות בחסר)",
+  "citations": 2
+ },
+ {
+  "key": "bank-lic",
+  "wikisource_title": "חוק הבנקאות (רישוי)",
+  "citations": 2
+ },
+ {
+  "key": "regfin",
+  "wikisource_title": "חוק הפיקוח על שירותים פיננסיים (שירותים פיננסיים מוסדרים)",
+  "citations": 2
+ },
+ {
+  "key": "adv-equity",
+  "wikisource_title": "תקנות הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות (הון עצמי וביטוח)",
+  "citations": 2
+ },
+ {
+  "key": "jit-prices",
+  "wikisource_title": "תקנות השקעות משותפות בנאמנות (מחירי קניה ומכירה של נכסי קרן ושווי נכסי קרן)",
+  "citations": 2
+ },
+ {
+  "key": "jit-distfee",
+  "wikisource_title": "תקנות השקעות משותפות בנאמנות (עמלת הפצה)",
+  "citations": 2
+ },
+ {
+  "key": "pf-direct",
+  "wikisource_title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות)",
+  "citations": 2
+ },
+ {
+  "key": "pf-locate",
+  "wikisource_title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (איתור עמיתים ומוטבים)",
+  "citations": 2
+ },
+ {
+  "key": "bank-cs",
+  "wikisource_title": "חוק הבנקאות (שירות ללקוח)",
+  "citations": 2
+ },
+ {
+  "key": "bank-disc",
+  "wikisource_title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים)",
+  "citations": 1
+ },
+ {
+  "key": "pf-ira",
+  "wikisource_title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי)",
+  "citations": 1
+ },
+ {
+  "key": "pf-invest",
+  "wikisource_title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (כללי השקעה החלים על גופים מוסדיים)",
+  "citations": 1
+ },
+ {
+  "key": "pf-payments",
+  "wikisource_title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (תשלומים לקופת גמל)",
+  "citations": 1
+ },
+ {
+  "key": "search",
+  "wikisource_title": "(search) עמלות+הפצה+השקעות+משותפות",
+  "citations": 1
+ },
+ {
+  "key": "eff-2017",
+  "wikisource_title": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2017 ו-2018)",
+  "citations": 1
+ },
+ {
+  "key": "bank-ord",
+  "wikisource_title": "פקודת הבנקאות",
+  "citations": 1
+ },
+ {
+  "key": "rules-transfer90",
+  "wikisource_title": "כללי מס הכנסה (פטור ממס בשל העברה ושינוי יעוד של כספים בקופות גמל)",
+  "citations": 1
+ },
+ {
+  "key": "health",
+  "wikisource_title": "חוק ביטוח בריאות ממלכתי",
+  "citations": 1
+ },
+ {
+  "key": "wh-hish",
+  "wikisource_title": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות)",
+  "citations": 1
+ },
+ {
+  "key": "order-hish",
+  "wikisource_title": "צו מס הכנסה (קביעת סכומים ששולמו מקרן השתלמות כהכנסה)",
+  "citations": 1
+ },
+ {
+  "key": "hish-accounts",
+  "wikisource_title": "תקנות מס הכנסה (כללים לתנאים שבהם חשבונות שונים בקרן השתלמות ייחשבו לחשבון אחד)",
+  "citations": 1
+ },
+ {
+  "key": "unapproved",
+  "wikisource_title": "תקנות מס הכנסה (כללים בדבר חיוב במס על תשלומים לקרן שלא אושרה ותשלומים שלא כדין)",
+  "citations": 1
+ },
+ {
+  "key": "infl-unit",
+  "wikisource_title": "תקנות מס הכנסה (חישוב סכום אינפלציוני במכירת יחידה בקרן נאמנות)",
+  "citations": 1
+ },
+ {
+  "key": "vat",
+  "wikisource_title": "חוק מס ערך מוסף",
+  "citations": 1
+ }
+]
