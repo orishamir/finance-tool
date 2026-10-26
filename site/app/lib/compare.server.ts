@@ -1,7 +1,7 @@
 // The data the browser needs for every comparison (flows 12 to 16), built once at build time and served as
 // /compare-bundle.json: the wrapper records, their instrument terms (the same ones the guide pages use), the
 // parameters, the rule records any run may read, the tier-2 list and the checklist rows. Server-only.
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import type { DepositTerms, FeesSnapshot, ParameterRecord, RuleRecord, ValueObject, ProductId, ProductRecord } from "@finance-tool/schema";
 import { buildTariff as engineTariff, memberKindOf, type InstrumentTerms, type WorkbenchInput } from "@finance-tool/engine";
@@ -16,6 +16,7 @@ import { accountBanks, commonAccountRate, currentAccountRecords } from "./guide-
 const tariffKeys: string[] = ["tradeRate", "tradeMin", "tradeMax", "custodyRate", "custodyMin", "custodyMax", "fxRate", "monthlyFee"];
 import { BROKERAGE, instrumentClassOf, providersOf, shortName } from "./providers";
 import { latestSnapshots } from "./providers.server";
+import { readJsonCached, readTextCached } from "./read-cache.server";
 
 const familyById: Partial<Record<ProductId, Family>> = {
   "kupat-gemel-lehashkaa": "provident",
@@ -49,7 +50,7 @@ export const tier2Table: { id: string; he: string; questions: string[]; display:
 
 function tier2List(): Tier2Row[] {
   const rows = new Map(loadNotCovered().map((r) => [r.he, r]));
-  const g24 = readFileSync(join(root, "docs/method.md"), "utf8").split("\n").find((l) => l.startsWith("| G-24 |")) ?? "";
+  const g24 = readTextCached(join(root, "docs/method.md")).split("\n").find((l) => l.startsWith("| G-24 |")) ?? "";
   return tier2Table.map((t) => {
     if (!rows.has(t.he)) throw new Error(`compare bundle: docs/glossary.md section 3 has no row "${t.he}" for tier-2 instrument ${t.id}`);
     for (const q of t.questions) if (!g24.includes(q)) throw new Error(`compare bundle: method G-24 does not name ${q} (tier-2 instrument ${t.id})`);
@@ -115,7 +116,7 @@ function collectRuleIds(node: unknown, out = new Set<string>()): Set<string> {
 function cashLink(): CompareBundle["cashLink"] {
   const file = join(root, ".claude/skills/il-finance/references/bank-current-account-deposits.md");
   if (!existsSync(file)) return null;
-  const text = readFileSync(file, "utf8");
+  const text = readTextCached(file);
   const start = text.indexOf("### BANK-22");
   if (start < 0) return null;
   const end = text.indexOf("\n### ", start + 5);
@@ -344,7 +345,7 @@ function dataFileVersions(): BundleDataFile[] {
     const abs = join(root, dir);
     if (!existsSync(abs)) continue;
     for (const f of readdirSync(abs).filter((n) => n.endsWith(".json")).sort()) {
-      const rec = JSON.parse(readFileSync(join(abs, f), "utf8")) as Record<string, unknown>;
+      const rec = readJsonCached(join(abs, f)) as Record<string, unknown>;
       out.push({ path: `${dir}/${f}`, checked: latestChecked(rec) ?? (typeof rec.snapshot === "string" ? rec.snapshot : null), for: feeds(rec) });
     }
   }

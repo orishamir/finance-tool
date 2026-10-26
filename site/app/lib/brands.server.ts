@@ -1,12 +1,13 @@
 // The brands (founder, 2026-10-26, D33): the companies of one group shown as one company under the name people know it by. One page
 // holds every product of every member (the managing company's tracks, the brokerage account, the funds its fund manager runs), each
 // under its own heading, and every member's old address shows that page. Server-only; the table is data/sources/brands.json.
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { brandsTable, institutionsTable, type FundRecord, type InstitutionRegistryRow } from "@finance-tool/schema";
 import { loadCma, root } from "./data.server";
 import { loadExposures, loadFunds } from "./instruments.server";
 import { ownBy, type SiteValue } from "./value";
+import { readParsedCached, readJsonCached } from "./read-cache.server";
 
 export interface Brand {
   id: string;
@@ -32,7 +33,7 @@ export function loadBrands(): Brand[] {
   const registry = new Map(institutionsRegistry().map((r) => [r.id, r]));
   const cmaIds = new Set(loadCma().companies.map((c) => c.id));
   const brokers = brokerSnapshotIds();
-  cache = brandsTable.parse(JSON.parse(readFileSync(path, "utf8"))).map((b) => {
+  cache = readParsedCached(path, brandsTable).map((b) => {
     const members = b.members.map((m) => registry.get(m)).filter((r): r is InstitutionRegistryRow => !!r);
     const cmaId = members.map((m) => m.cma_legal_id).find((id): id is string => !!id && cmaIds.has(id)) ?? null;
     const brokerId = members.map((m) => m.fees_id).find((id): id is string => !!id && brokers.has(id)) ?? null;
@@ -55,7 +56,7 @@ export function brandOfMember(registryId: string): Brand | undefined {
 
 function institutionsRegistry(): InstitutionRegistryRow[] {
   // read here rather than from institutions.server, which imports this module
-  return institutionsTable.parse(JSON.parse(readFileSync(join(root, "data/sources/institutions.json"), "utf8")));
+  return readParsedCached(join(root, "data/sources/institutions.json"), institutionsTable);
 }
 
 function brokerSnapshotIds(): Set<string> {
@@ -64,7 +65,7 @@ function brokerSnapshotIds(): Set<string> {
   if (!existsSync(dir)) return out;
   for (const f of readdirSync(dir)) {
     if (!f.endsWith(".json")) continue;
-    const s = JSON.parse(readFileSync(join(dir, f), "utf8")) as { id: string; provider: { class: string } };
+    const s = readJsonCached(join(dir, f)) as { id: string; provider: { class: string } };
     if (s.provider.class === "broker" || s.provider.class === "foreign_broker") out.add(s.id);
   }
   return out;

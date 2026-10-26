@@ -1,6 +1,6 @@
 // Reads data/, docs/ and research/ at build time for the route loaders (architecture 3.5: every page is
 // generated from data/ at build). Server-only: the `.server` suffix keeps node:fs out of the browser bundle.
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 import {
   cmaPeriodFile,
@@ -28,6 +28,7 @@ import { parseMdLink } from "./md-link";
 import { newestChecked } from "./data-as-of";
 import { staleCma, type SiteValue } from "./value";
 import { pointedIds } from "./scope";
+import { readJsonCached, readParsedCached, readTextCached } from "./read-cache.server";
 
 function findRoot(): string {
   let dir = process.cwd();
@@ -51,9 +52,7 @@ export function dataAsOf(): string {
 }
 
 function readJson<T extends z.ZodType>(path: string, schema: T): z.infer<T> {
-  const parsed = schema.safeParse(JSON.parse(readFileSync(path, "utf8")));
-  if (!parsed.success) throw new Error(`${path}: ${parsed.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`).join("; ")}`);
-  return parsed.data;
+  return readParsedCached(path, schema);
 }
 
 function readDir<T extends z.ZodType>(sub: string, schema: T): z.infer<T>[] {
@@ -298,7 +297,7 @@ export interface NotCoveredRow {
 
 /** docs/glossary.md section 3: the products the "not covered yet" page lists. */
 export function loadNotCovered(): NotCoveredRow[] {
-  const doc = readFileSync(join(root, "docs/glossary.md"), "utf8");
+  const doc = readTextCached(join(root, "docs/glossary.md"));
   const section = doc.slice(doc.indexOf("## 3. Not covered yet"), doc.indexOf("## 4. Missing from the rule base"));
   return [...section.matchAll(/^\| \*\*(.+?)\*\* \| (.*?) \| (.*?) \| (.*) \|$/gm)].map((m) => {
     const cell = m[4]!;
@@ -319,7 +318,7 @@ export function loadNotCovered(): NotCoveredRow[] {
 
 /** docs/method.md §2.3: which formulas each site parameter is used by. */
 export function loadParameterUses(): Record<string, string[]> {
-  const doc = readFileSync(join(root, "docs/method.md"), "utf8");
+  const doc = readTextCached(join(root, "docs/method.md"));
   const section = doc.slice(doc.indexOf("### 2.3"), doc.indexOf("### 2.4"));
   const out: Record<string, string[]> = {};
   for (const m of section.matchAll(/^\| (P-\d{2}) \| .+? \| (.+?) \|$/gm)) out[m[1]!] = [...m[2]!.matchAll(/F-\d{2}/g)].map((x) => x[0]);
@@ -335,7 +334,7 @@ export function loadFormulaParameters(): Record<string, string[]> {
 
 /** The Hebrew name of each source host (`data/sources/publishers.json`): a data file names its company in English ("Bank Leumi le-Israel B.M."), and the sheet's source line shows the Hebrew one (founder, 2026-10-26). */
 export function loadPublishersHe(): Record<string, string> {
-  const rows = JSON.parse(readFileSync(join(root, "data/sources/publishers.json"), "utf8")) as Record<string, { publisher_he?: string }>;
+  const rows = readJsonCached(join(root, "data/sources/publishers.json")) as Record<string, { publisher_he?: string }>;
   return Object.fromEntries(Object.entries(rows).flatMap(([host, r]) => (r.publisher_he ? [[host, r.publisher_he]] : [])));
 }
 
@@ -386,12 +385,12 @@ export interface PinnedRules {
 
 /** data/parameters/home-guide-door.json (P-10): the guide pages the first page's guide door names, as id and name, in order. */
 export function loadHomeGuideDoor(): { id: string; name: string }[] {
-  const ids = (JSON.parse(readFileSync(join(root, "data/parameters/home-guide-door.json"), "utf8")) as { wrappers: string[] }).wrappers;
+  const ids = (readJsonCached(join(root, "data/parameters/home-guide-door.json")) as { wrappers: string[] }).wrappers;
   const names = new Map<string, string>(loadProducts().map((w) => [w.id, w.names.he[0]!]));
   return ids.filter((id) => names.has(id)).map((id) => ({ id, name: names.get(id)! }));
 }
 
 /** data/parameters/pinned-rules.json (P-09): the questions at the top of the rules page and the facts per guide page. A site judgement, not a rule. */
 export function loadPinnedRules(): PinnedRules {
-  return JSON.parse(readFileSync(join(root, "data/parameters/pinned-rules.json"), "utf8")) as PinnedRules;
+  return readJsonCached(join(root, "data/parameters/pinned-rules.json")) as PinnedRules;
 }

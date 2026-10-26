@@ -1,7 +1,7 @@
 // Banks and brokers in the catalogue (flows 32, 33; design-spec 20): the institutions the fee snapshots and the
 // deposit records name, one page each. Server-only. Every number keeps its value object and its source; nothing is
 // computed here but the stale flag (D3: a snapshot older than three months, until the schema holds its own rule).
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { feesSnapshot, institutionsTable, ownDocumentCompanies, type DepositTerms, type FeeLine, type FeesSnapshot, type InstitutionRegistryRow, type RuleRecord, type ValueObject } from "@finance-tool/schema";
 import type {
@@ -22,6 +22,7 @@ import { ownBy, type SiteValue } from "./value";
 import { fileRank } from "./rule-shelves";
 import { listedCompanies, noPageAnchor, type CompanyLink, type OwnDocs } from "./scope";
 import { brandOfMember, brandOfPage, loadBrands } from "./brands.server";
+import { readParsedCached, readJsonCached, readTextCached } from "./read-cache.server";
 
 /** The cadence until `docs/data-schema.md` §3.6 writes `staleTariff` (flow 33 data note): 90 days. */
 const staleDays = 90;
@@ -38,7 +39,7 @@ export function latestSnapshots(): FeesSnapshot[] {
   if (!existsSync(dir)) return [];
   const best = new Map<string, { date: string; record: FeesSnapshot }>();
   for (const f of readdirSync(dir).filter((x) => x.endsWith(".json")).sort()) {
-    const record = feesSnapshot.parse(JSON.parse(readFileSync(join(dir, f), "utf8")));
+    const record = readParsedCached(join(dir, f), feesSnapshot);
     const date = /@(\d{4}-\d{2}-\d{2})\.json$/.exec(f)?.[1] ?? record.snapshot;
     const prev = best.get(record.id);
     if (!prev || date > prev.date) best.set(record.id, { date, record });
@@ -102,7 +103,7 @@ function rateTableUrl(bank: string): string | null {
   const label = rateTableLabel[bank];
   const path = join(root, ".claude/skills/il-finance/references/bank-product-names.md");
   if (!label || !existsSync(path)) return null;
-  const doc = readFileSync(path, "utf8");
+  const doc = readTextCached(path);
   const start = doc.indexOf("## Directive-447 publication: machine-readability per bank");
   if (start < 0) return null;
   const section = doc.slice(start);
@@ -348,7 +349,7 @@ export function institutionSearchEntries(words: { bank: string; broker: string }
 
 /** data/sources/institutions.json: every company a rule's scope can name (spec §3). */
 export function loadInstitutionRegistry(): InstitutionRegistryRow[] {
-  return institutionsTable.parse(JSON.parse(readFileSync(join(root, "data/sources/institutions.json"), "utf8")));
+  return readParsedCached(join(root, "data/sources/institutions.json"), institutionsTable);
 }
 
 /**
@@ -372,7 +373,7 @@ export function companyLinks(): Record<string, CompanyLink> {
 function loadCmaCompanyIds(): string[] {
   const ids = new Set<string>();
   for (const f of readdirSync(join(root, "data/cma")).filter((x) => x.endsWith(".json"))) {
-    const d = JSON.parse(readFileSync(join(root, "data/cma", f), "utf8")) as { funds: { managing_corporation: { legal_id: string } }[] };
+    const d = readJsonCached(join(root, "data/cma", f)) as { funds: { managing_corporation: { legal_id: string } }[] };
     for (const fund of d.funds) ids.add(fund.managing_corporation.legal_id);
   }
   return [...ids];
