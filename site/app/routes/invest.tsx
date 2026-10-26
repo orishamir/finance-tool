@@ -2,7 +2,7 @@
 // for owning it, the cheapest broker for each, and the cheapest complete way for the plan. `/indices` chooses nothing (D27);
 // `/indices/<x>` opens the known index `index-<x>` (pre-rendered); a custom index lives on the device and opens at `/indices?custom=<id>`.
 import { useEffect, useId, useMemo, useState } from "react";
-import { useLoaderData, useLocation, useNavigate } from "react-router";
+import { useLoaderData, useLocation, useNavigate, useParams } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import type { Route } from "./+types/invest";
 import { invest as c, site } from "../copy";
@@ -32,6 +32,13 @@ import { recordsById } from "../lib/scope";
 /** The data files this page fetches after it starts, requested with the HTML (audit 2026-10-24, A52). */
 export const links = () => bundleLinks("workbench-bundle.json", "compare-bundle.json");
 
+/** Every index is one route (`indices/:slug?`) whose data is the same for each: moving between indices, or to a custom one,
+ * keeps the loaded data and fetches nothing, so a click on a phone does not wait for the network. The index comes from the address. */
+export function shouldRevalidate() {
+  // asked only when this route stays on screen; its data is fixed at build
+  return false;
+}
+
 export async function loader({ params }: Route.LoaderArgs) {
   const { loadExposures } = await import("../lib/instruments.server");
   const { goalFormData } = await import("../lib/compare.server");
@@ -40,11 +47,18 @@ export async function loader({ params }: Route.LoaderArgs) {
     .map((e) => ({ id: e.id, name: e.names.he[0] ?? e.id, israeli: e.constituents_israeli === true }));
   const id = params.slug ? exposureIdOfSlug(params.slug) : null;
   if (id && !indices.some((i) => i.id === id)) throw new Response("Not found", { status: 404 });
-  return { ...goalFormData(), exposureId: id, indices };
+  return { ...goalFormData(), indices };
 }
 
-export function meta({ loaderData: data }: Route.MetaArgs) {
-  const name = data?.exposureId ? data.indices.find((i) => i.id === data.exposureId)?.name : null;
+/** The known index the address names (`/indices/<x>` is `index-<x>`), or null. */
+const exposureIdOf = (slug: string | undefined, indices: readonly { id: string }[]): string | null => {
+  const id = slug ? exposureIdOfSlug(slug) : null;
+  return id && indices.some((i) => i.id === id) ? id : null;
+};
+
+export function meta({ loaderData: data, params }: Route.MetaArgs) {
+  const id = data ? exposureIdOf(params.slug, data.indices) : null;
+  const name = id ? data?.indices.find((i) => i.id === id)?.name : null;
   return [{ title: `${c.metaTitle}${name ? ` · ${name}` : ""} · ${site.name}` }];
 }
 
@@ -106,6 +120,7 @@ function Page({ wb, compare, failed, data }: { wb: WorkbenchBundle | null; compa
 
 function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: CompareBundle; data: Data; search: string }) {
   const navigate = useNavigate();
+  const exposureId = exposureIdOf(useParams().slug, data.indices);
   const { current, resolved } = useGoals();
   const released = useInputs();
   const invest = useInvestState();
@@ -129,7 +144,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
 
   const customs: CustomIndex[] = invest.customIndices;
   const customId = new URLSearchParams(search).get("custom");
-  const index: IndexRef | null = useMemo(() => (data.exposureId ? indexById(wb, data.exposureId) : customId ? (customs.find((x) => x.id === customId) ? refOfCustom(customs.find((x) => x.id === customId)!) : null) : null), [wb, data.exposureId, customId, customs]);
+  const index: IndexRef | null = useMemo(() => (exposureId ? indexById(wb, exposureId) : customId ? (customs.find((x) => x.id === customId) ? refOfCustom(customs.find((x) => x.id === customId)!) : null) : null), [wb, exposureId, customId, customs]);
   const known: IndexRef[] = data.indices.map((i) => ({ id: i.id, name: i.name, israeli: i.israeli, exposure: null, custom: null, oneLine: null }));
 
   const brokers = useMemo(() => providersOfInvest(wb).filter((s) => !s.missing).map((s) => ({ id: s.id, name: s.provider.name_he })), [wb]);
@@ -177,7 +192,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
           {chips}
           <PlanBlock items={planItems} onOpen={() => setPanelOpen(true)} fx={wb.fx} today={data.today} brokers={brokers} yourBroker={yourBroker} onBroker={(id) => invest.setBroker(id)} hasGoal={plan.fromGoal} />
         </div>
-        {customId && !data.exposureId && !index && <Callout tone="caution">{c.custom.missing}</Callout>}
+        {customId && !exposureId && !index && <Callout tone="caution">{c.custom.missing}</Callout>}
         {!index || !view ? (
           <p className="text-muted-foreground">{c.chips.none}</p>
         ) : (
