@@ -12,6 +12,7 @@ import { fileProducts, commonRulesFile, shelfOf, tier2RuleFiles, type ShelfId } 
 import { playbookWrapperIds } from "./playbook.server";
 import { providerWrapperIds } from "./providers.server";
 import { workbenchWrapperIds } from "./workbench.server";
+import { shown } from "./review";
 
 export interface RuleUsePage {
   href: string;
@@ -194,7 +195,7 @@ function build(): Scan {
     if (!page) continue;
     const found = idsIn(readFileSync(file, "utf8"), quoted, known);
     for (const id of found) {
-      addPage(id, page);
+      if (shown(page.href)) addPage(id, page); // a page held for review is not linked from a rule card (lib/review.ts)
       bump(siteFiles, id);
     }
   }
