@@ -8,7 +8,7 @@ import { computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
 import { IconLock } from "../icons";
 import { IdRef, Num } from "../provenance";
-import { Button, Callout, Card, ChartLegend, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, CoverageFold, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, NumberField, ParameterLine, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, SourceLine, Stat, StatRow, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
+import { Button, Callout, Card, ChartLegend, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, CoverageFold, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, NumberField, ParameterLine, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -618,6 +618,24 @@ function ChartParts({ today }: { today: string }) {
   );
 }
 
+function Rings() {
+  return (
+    <Demo name="ShareRings" use={g.uses.ShareRings}>
+      <Grid>
+        <State label="two rings: 49% stocks outside, 21% currency inside">
+          <ShareRings rings={[{ id: "a", fraction: 0.49, className: "stroke-chart-stocks" }, { id: "b", fraction: 0.21, className: "stroke-chart-currency" }]} />
+        </State>
+        <State label="above 100% draws full; 0 draws an empty ring">
+          <ShareRings rings={[{ id: "a", fraction: 1.087, className: "stroke-chart-stocks" }, { id: "b", fraction: 0, className: "stroke-chart-currency" }]} />
+        </State>
+        <State label="one ring, size 48">
+          <ShareRings size={48} rings={[{ id: "a", fraction: 0.05, className: "stroke-chart-stocks" }]} />
+        </State>
+      </Grid>
+    </Demo>
+  );
+}
+
 export function KitGallery({ today }: { today: string }) {
   return (
     <div className="flex flex-col gap-section pt-6 lg:pt-10">
@@ -635,6 +653,7 @@ export function KitGallery({ today }: { today: string }) {
         <Fields />
         <MarkerDemo today={today} />
         <ChartParts today={today} />
+        <Rings />
       </div>
     </div>
   );

@@ -9,14 +9,14 @@ import { Num, NumAfter } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { Callout, Card, Sentence, Tag } from "../components/kit";
 import { cmaFeeValue, feeYear, type SiteValue } from "../lib/value";
-import { compactHoldings, holdingsTemplate, stockShare, type Holdings } from "../lib/track-exposure";
-import { StockNum } from "../components/decoder/tracks";
+import { compactHoldings, exposureShares, holdingsTemplate, type ExposureShares, type Holdings } from "../lib/track-exposure";
+import { ShareNum } from "../components/decoder/tracks";
 import { fmt } from "../lib/format";
 
-/** F-87 for one track; null when its data file has no amounts. */
-function stockOf(h: Holdings | undefined, period: string, today: string): SiteValue | null {
+/** F-87 and F-88 for one track; null when its data file has no amounts. */
+function exposureOf(h: Holdings | undefined, period: string, today: string): ExposureShares | null {
   const template = holdingsTemplate([h], period, today);
-  return stockShare(compactHoldings(h, template), template, period, today);
+  return exposureShares(compactHoldings(h, template), template, period, today);
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -74,7 +74,7 @@ export async function loader({ params }: Route.LoaderArgs) {
       fundId: sourced(String(track.fundId), "text"),
       period: cma.periodValue,
       inception: track.inception ? sourced(track.inception, "text") : null,
-      stock: stockOf(loadCmaHoldings().get(track.fundId), track.reportPeriod, t),
+      exposure: exposureOf(loadCmaHoldings().get(track.fundId), track.reportPeriod, t),
     },
     today: t,
   };
@@ -146,7 +146,8 @@ export default function TrackPage() {
             {track.targetPopulation && row(copy.labels.population, <bdi>{track.targetPopulation}</bdi>)}
             {row(feeText(copy.feeBalanceLabel, data.values.balanceFee), <FeeNum value={data.values.balanceFee} />)}
             {row(feeText(copy.feeDepositLabel, data.values.depositFee), <FeeNum value={data.values.depositFee} />)}
-            {data.values.stock && row(companyCopy.stock.column.replace("{period}", fmt.period(track.reportPeriod)), <StockNum value={data.values.stock} />)}
+            {data.values.exposure?.stock && row(companyCopy.stock.rowStock.replace("{period}", fmt.period(track.reportPeriod)), <ShareNum value={data.values.exposure.stock} />)}
+            {data.values.exposure?.currency && row(companyCopy.stock.rowCurrency.replace("{period}", fmt.period(track.reportPeriod)), <ShareNum value={data.values.exposure.currency} />)}
             {data.values.inception && row(copy.labels.inception, <Num value={data.values.inception} />)}
             {row(copy.labels.period, <Num value={data.values.period} />)}
           </dl>

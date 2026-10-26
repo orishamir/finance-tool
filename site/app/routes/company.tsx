@@ -17,7 +17,7 @@ import { Callout, Card, Disclosure } from "../components/kit";
 import type { SiteValue } from "../lib/value";
 import { fmt } from "../lib/format";
 import { cmaFeeValue, compactFee, expandFee, feeYear, type CompactFee } from "../lib/value";
-import { compactHoldings, holdingsTemplate, stockShare } from "../lib/track-exposure";
+import { compactHoldings, exposureShares, holdingsTemplate } from "../lib/track-exposure";
 
 const classificationOrder = ["קופת גמל להשקעה", "קרנות השתלמות", "תגמולים ואישית לפיצויים", "קופת גמל להשקעה - חסכון לילד", "קרנות חדשות", "קרנות כלליות", "מרכזית לפיצויים", "מטרה אחרת"];
 
@@ -53,7 +53,7 @@ export async function loader({ params }: Route.LoaderArgs) {
       const balances = list.map((x) => feesOf.get(x.fundId)!.balance);
       const template = cmaFeeValue(balances.find((b) => b.value !== null) ?? balances[0]!, t);
       const fees: Record<number, CompactFee> = Object.fromEntries(list.map((x, i) => [x.fundId, compactFee(balances[i]!, template)]));
-      // F-87 (D34): the same compaction for the two amounts the stock share is computed from
+      // F-87 and F-88 (D34): the same compaction for the amounts the exposure shares are computed from
       const period = list[0]!.reportPeriod;
       const stockTemplate = holdingsTemplate(list.map((x) => holdingsOf.get(x.fundId)), period, t);
       const holdings = Object.fromEntries(list.map((x) => [x.fundId, compactHoldings(holdingsOf.get(x.fundId), stockTemplate)]));
@@ -217,14 +217,14 @@ function ManagerCompany({ data }: { data: CompanyData }) {
                   )}
                   <TrackList
                     feeHead={feeHeadOf(g.feeTemplate) + (g.tracks[0]?.dataset === "pensia-net" ? ` ${copy.feeRowWhole}` : "")}
-                    stockHead={g.stockTemplate ? copy.stock.column.replace("{period}", fmt.period(g.period)) : undefined}
+                    exposureHead={g.stockTemplate ? copy.stock.column.replace("{period}", fmt.period(g.period)) : undefined}
                     groups={groupTracks(
                       g.tracks.map((t) => ({
                         track: t,
                         href: `/companies/${company.id}/${t.fundId}`,
                         isDefault: data.defaultIds.includes(t.fundId),
                         fee: expandFee(g.fees[t.fundId]!, g.feeTemplate),
-                        ...(g.stockTemplate ? { stock: stockShare(g.holdings[t.fundId] ?? null, g.stockTemplate, g.period, data.today) } : {}),
+                        ...(g.stockTemplate ? { exposure: exposureShares(g.holdings[t.fundId] ?? null, g.stockTemplate, g.period, data.today) } : {}),
                       })),
                       data.known,
                     )}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { stockExposureShare } from "../src/formulas/track-exposure.ts";
+import { currencyExposureShare, stockExposureShare } from "../src/formulas/track-exposure.ts";
 
 describe("F-87 stock exposure share", () => {
   it("divides the exposure by the assets, as a percent (CMA 2026-09, track 103)", () => {
@@ -17,5 +17,15 @@ describe("F-87 stock exposure share", () => {
 
   it("zero exposure is 0%", () => {
     expect(stockExposureShare(0, 960.64)).toBe(0);
+  });
+});
+
+describe("F-88 currency exposure share", () => {
+  it("divides the exposure by the assets, as a percent (CMA 2026-09, track 103)", () => {
+    expect(currencyExposureShare(5156.92, 25706.14)).toBeCloseTo(20.061, 3);
+  });
+
+  it("is null without assets", () => {
+    expect(currencyExposureShare(1, 0)).toBeNull();
   });
 });
