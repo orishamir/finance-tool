@@ -1914,13 +1914,14 @@ The founder, 2026-10-26: the company page's last column shows something other th
 
 | Where | Hebrew |
 |---|---|
-| Company page, column heading; track page, row label | חשיפה למניות בסוף `{חודש שנה}` |
-| Company page, phone line | חשיפה למניות: `{אחוז}` |
+| Company page, column heading | חשיפה בסוף `{חודש שנה}` |
+| Beside the rings, each with its colour dot (no legend above the table) | מניות `{אחוז}` · מט״ח `{אחוז}` |
+| Track page, row labels | חשיפה למניות בסוף `{חודש שנה}` · חשיפה למט״ח בסוף `{חודש שנה}` |
 | A track that did not report the amounts; one that reported assets of 0 | לא דווח · אין נכסים |
 | The sheet, the note on every share | לפי דיווח המסלול לרשות שוק ההון. הרשות לא מפרסמת אם החשיפה כוללת נגזרים או את מה שבתוך קרנות שהמסלול מחזיק, ולכן היא יכולה להיות גבוהה מ־100%. |
-| The sheet, what the figure is | החלק מנכסי המסלול שחשוף לשוק המניות בסוף `{חודש שנה}` |
-| The sheet, formula name (F-87) | החלק מנכסי המסלול שחשוף למניות |
-| The sheet, the two inputs | החשיפה לשוק המניות · סך נכסי המסלול |
+| The sheet, what the figure is | החלק מנכסי המסלול שחשוף לשוק המניות בסוף `{חודש שנה}` · החלק מנכסי המסלול שחשוף למטבע חוץ בסוף `{חודש שנה}` |
+| The sheet, formula names (F-87, F-88) | החלק מנכסי המסלול שחשוף למניות · החלק מנכסי המסלול שחשוף למטבע חוץ |
+| The sheet, the inputs | החשיפה לשוק המניות · החשיפה למטבע חוץ · סך נכסי המסלול |
 | The unit of the regulator's amounts | `{מספר}` מיליון ₪ |
 
 Removed the same day with the fit mark on these pages: the row mark (מתאים · לא מתאים · אין כלל לסיווג הזה, "התאמה למטרה:") and the strip's "ההתאמה לפי המטרה השמורה:" there; the workbench keeps them (`docs/roadmap.md`, "Not final").

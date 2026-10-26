@@ -7,10 +7,10 @@ import type { Track } from "../../lib/data.server";
 import type { SiteValue } from "../../lib/value";
 import { FeeNum } from "./fees";
 import { Num } from "../provenance";
-import { stockShareText } from "../../lib/track-exposure";
+import { ringFraction, shareText, type ExposureShares } from "../../lib/track-exposure";
 import { IconAlert, IconDrillIn, IconSearch } from "../icons";
 import { useOpenSearch } from "../shell";
-import { Card, cx, Tag } from "../kit";
+import { Card, cx, ShareRings, Swatch, Tag } from "../kit";
 
 export type Resolution = "distinct" | "twice" | "unresolved";
 
@@ -20,8 +20,8 @@ export interface TrackRowView {
   isDefault?: boolean;
   /** The regulator's balance-fee average of the track (not a ranking: the list keeps its order). */
   fee?: SiteValue;
-  /** F-87: the share of the track's assets exposed to shares; null or absent when the track's data file has no amounts. */
-  stock?: SiteValue | null;
+  /** F-87 and F-88: the shares of the track's assets exposed to stocks and to foreign currency; null or absent when its data file has no amounts. */
+  exposure?: ExposureShares | null;
 }
 
 export interface Group {
@@ -74,13 +74,37 @@ function Holds({ t }: { t: Track }) {
   );
 }
 
-/** F-87, the stock share (D34), through the provenance component; one that could not be computed says why in its words and sheet. */
-export function StockNum({ value, size = "inline" }: { value: SiteValue; size?: "inline" | "cell" }) {
-  return <Num value={value} size={size} display={stockShareText(value)} />;
+/** F-87 or F-88 (D34) through the provenance component; a share that could not be computed says why in its words and sheet. */
+export function ShareNum({ value, size = "inline" }: { value: SiteValue; size?: "inline" | "cell" }) {
+  return <Num value={value} size={size} display={shareText(value)} />;
 }
 
-export function TrackList({ groups, feeHead, stockHead }: { groups: Group[]; feeHead?: string; stockHead?: string }) {
-  const cols = 4 + (feeHead ? 1 : 0) + (stockHead ? 1 : 0);
+/** A track's exposure (D34): two rings, stocks outside and foreign currency inside, and beside them each share with its own dot and name. */
+export function ExposureCell({ value, size = "inline" }: { value: ExposureShares; size?: "inline" | "cell" }) {
+  const lines = [
+    { id: "stocks", v: value.stock, word: copy.stock.stocks, swatch: "bg-chart-stocks", ring: "stroke-chart-stocks" },
+    { id: "currency", v: value.currency, word: copy.stock.currency, swatch: "bg-chart-currency", ring: "stroke-chart-currency" },
+  ].filter((l): l is typeof l & { v: SiteValue } => !!l.v);
+  return (
+    <span className="inline-flex items-center gap-2.5">
+      <ShareRings rings={lines.map((l) => ({ id: l.id, fraction: ringFraction(l.v), className: l.ring }))} />
+      <span className="grid grid-cols-[auto_auto] items-center gap-x-2 gap-y-0.5 text-sm text-muted-foreground">
+        {lines.map((l) => (
+          <span key={l.id} className="contents">
+            <span className="inline-flex items-center gap-1.5">
+              <Swatch shape="box" className={l.swatch} />
+              {l.word}
+            </span>
+            <ShareNum value={l.v} size={size} />
+          </span>
+        ))}
+      </span>
+    </span>
+  );
+}
+
+export function TrackList({ groups, feeHead, exposureHead }: { groups: Group[]; feeHead?: string; exposureHead?: string }) {
+  const cols = 4 + (feeHead ? 1 : 0) + (exposureHead ? 1 : 0);
   const bannerId = useId();
   return (
     <>
@@ -109,7 +133,7 @@ export function TrackList({ groups, feeHead, stockHead }: { groups: Group[]; fee
               <th scope="col">{copy.pcColumns.fund}</th>
               <th scope="col">{copy.pcColumns.holds}</th>
               {feeHead && <th scope="col">{feeHead}</th>}
-              {stockHead && <th scope="col">{stockHead}</th>}
+              {exposureHead && <th scope="col">{exposureHead}</th>}
               <th scope="col" className="w-10 md:w-auto">
                 <span className="sr-only">{copy.pcColumns.open}</span>
               </th>
@@ -152,9 +176,9 @@ export function TrackList({ groups, feeHead, stockHead }: { groups: Group[]; fee
                       </span>
                     </td>
                     {feeHead && <td className="whitespace-nowrap">{r.fee && <FeeNum value={r.fee} size="cell" />}</td>}
-                    {stockHead && (
+                    {exposureHead && (
                       <td className="whitespace-nowrap">
-                        {r.stock && <StockNum value={r.stock} size="cell" />}
+                        {r.exposure && <ExposureCell value={r.exposure} size="cell" />}
                       </td>
                     )}
                     <td>
@@ -177,7 +201,7 @@ export function TrackList({ groups, feeHead, stockHead }: { groups: Group[]; fee
 function TrackRow({ row }: { row: TrackRowView }) {
   const { track: t } = row;
   // The fee and the stock share are provenance buttons, which cannot sit inside the link: each gets its own line under it.
-  const lines = !!row.fee || !!row.stock;
+  const lines = !!row.fee || !!row.exposure;
   return (
     <div className={cx("track", lines && "!flex-col !items-stretch !gap-1")}>
       <Link to={row.href} className="flex items-center justify-between gap-3 min-w-0">
@@ -200,12 +224,7 @@ function TrackRow({ row }: { row: TrackRowView }) {
           <FeeNum value={row.fee} />
         </span>
       )}
-      {row.stock && (
-        <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5">
-          {copy.stock.row}:
-          <StockNum value={row.stock} />
-        </span>
-      )}
+      {row.exposure && <ExposureCell value={row.exposure} />}
     </div>
   );
 }

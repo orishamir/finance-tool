@@ -222,6 +222,11 @@
   --chart-option-2: var(--palette-teal-400);
   --chart-option-3: var(--palette-teal-600);
   --chart-baseline: var(--palette-neutral-300); /* drawn dotted on the comparison chart (2026-10-26): any grey sits within 15 ΔE of one of the three teal steps */
+  /* a track's exposure rings (D34, 2026-10-26, the company page): the share in shares and the share in foreign currency, two separate
+     measures of the same assets, never slices of one whole. Teal and gold, the guide's value-and-alternative pair; the empty part is
+     the chart grid */
+  --chart-stocks: var(--palette-teal-400);
+  --chart-currency: var(--palette-gold-200);
   --chart-alt: var(--palette-gold-200); /* the nearest alternative in a guide page's two-line drawing (D29, 2026-10-25): gold against the teal value line; same pair as fee kinds 2 and 3 */
   /* how soon the money is back (2026-10-26, the daily money-market guide's table): the icon of a grey tag, warmer the longer the money is
      held (founder, 2026-10-26: option D of four; a fully coloured tag in teal, green, amber, red read like the flags of 3.2, and
@@ -382,4 +387,6 @@
   --color-chart-option-3: var(--chart-option-3);
   --color-chart-baseline: var(--chart-baseline);
   --color-chart-alt: var(--chart-alt);
+  --color-chart-stocks: var(--chart-stocks);
+  --color-chart-currency: var(--chart-currency);
 }

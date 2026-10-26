@@ -576,7 +576,7 @@ Why a strip and not a page: the goal is context for every other page (the fit ma
 
 ### 6.8 Fit mark
 
-*Amended 2026-10-26 (D34): the company page row mark and the track page card are removed; the company page's last column shows the stock exposure (F-87) through `StockNum`, and a row of the track page shows the same figure. The card (`FitMarkCard`) is kept for the goals page; the workbench keeps its row mark.*
+*Amended 2026-10-26 (D34): the company page row mark and the track page card are removed; the company page's last column shows the track's exposure as two rings (kit `ShareRings`: stocks outside in `chart-stocks`, teal-400; foreign currency inside in `chart-currency`, gold-200; the empty part `chart-grid`), each share beside them with its box swatch, name and `Num` (`ExposureCell`), and no legend above the table, which would repeat the row labels. Rings, not a pie: the two measures overlap. The track page shows both shares as rows. The card (`FitMarkCard`) is kept for the goals page; the workbench keeps its row mark.*
 
 Called for by 3.10 Out ("a fit mark against the person's saved goal, with a link to run the comparison"), roadmap R2, method F-70, P-04, D11 (loss filter deferred to R5), D17.
 

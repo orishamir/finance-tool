@@ -100,6 +100,7 @@ describe("normalise", () => {
       holdings: {
         total_assets: expect.objectContaining({ value: 25706.14, unit: "nis_millions", state: "sourced", effective_to: "2026-09-30", rule_ids: ["CAT-24"] }),
         stock_market_exposure: expect.objectContaining({ value: 12378.07, unit: "nis_millions", source: expect.objectContaining({ title: expect.stringContaining("STOCK_MARKET_EXPOSURE") }) }),
+        foreign_currency_exposure: expect.objectContaining({ value: 5156.92, unit: "nis_millions", notes: expect.stringContaining("מטבע חוץ") }),
       },
     });
     expect(file.checked).toBe("2026-10-23");
@@ -155,6 +156,9 @@ describe("holdings (F-87 inputs)", () => {
     expect(h.stock_market_exposure.notes).toContain("OQ4");
     expect(h.stock_market_exposure.notes).toContain("נגזרים");
     expect(buildHoldings(base, { raw_fields: { AVG_DEPOSIT_FEE: "0" } })).toBeUndefined();
+    // a file without the currency column has no currency value, and still has the other two
+    expect(h.foreign_currency_exposure).toBeUndefined();
+    expect(buildHoldings(base, { raw_fields: { TOTAL_ASSETS: "10", STOCK_MARKET_EXPOSURE: "5", FOREIGN_CURRENCY_EXPOSURE: "2" } })!.foreign_currency_exposure!.value).toBe(2);
   });
 });
 
