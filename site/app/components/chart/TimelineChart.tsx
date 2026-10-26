@@ -145,10 +145,11 @@ export function TimelineChart({ points, hover, onHover, markers = [], blocked, e
           <path d={bandTax(shown) ?? ""} className="fill-chart-tax" />
           <path d={bandFees(shown) ?? ""} className="fill-chart-fee" />
         </g>
-        <AxisLabels ticks={ticks} y={y} />
         {enteredReturn && <path d={topLine(shown) ?? ""} fill="none" className="stroke-chart-entered" strokeWidth="2" strokeDasharray="6 4" />}
         <path d={contribLine(shown) ?? ""} fill="none" className="stroke-chart-contributions" strokeWidth="1.5" />
         <path d={netLine(shown) ?? ""} fill="none" className={enteredReturn ? "stroke-chart-entered" : "stroke-chart-net"} strokeWidth="2" strokeDasharray={enteredReturn ? "6 4" : undefined} />
+        {/* after the lines, with the card-colour halo, so no line runs through a value label (2026-10-26) */}
+        <AxisLabels ticks={ticks} y={y} />
         {blocked && (
           <g>
             <rect x={x(blocked.fromYear)} y={TOP} width={Math.max(0, plotW - x(blocked.fromYear))} height={height - BOTTOM - TOP} fill="url(#chart-hatch)" />

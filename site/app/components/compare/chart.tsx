@@ -19,6 +19,10 @@ const BOTTOM = 26;
 const LABEL_H = 54;
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
+/** The baseline (the current account) is dotted: its grey sits within 15 ΔE of one of the three teal steps, and a dash already means an
+ * entered return (2026-10-26). */
+const BASELINE_DOTS = "0.1 5";
+
 const roleClass = {
   "option-1": { stroke: "stroke-chart-option-1", bg: "bg-chart-option-1", fill: "fill-chart-option-1", width: 2.5 },
   "option-2": { stroke: "stroke-chart-option-2", bg: "bg-chart-option-2", fill: "fill-chart-option-2", width: 2 },
@@ -157,7 +161,7 @@ export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dim
         )}
         <line x1={x(horizon)} x2={x(horizon)} y1={TOP} y2={height - BOTTOM} className="stroke-chart-marker" strokeWidth="1" />
         {[...lines].reverse().map((l) => (
-          <path key={l.id} d={path(shown[l.id] ?? []) ?? ""} fill="none" className={roleClass[l.role].stroke} strokeWidth={roleClass[l.role].width} strokeDasharray={l.enteredReturn ? "6 4" : undefined} strokeLinejoin="round" strokeLinecap="round" />
+          <path key={l.id} d={path(shown[l.id] ?? []) ?? ""} fill="none" className={roleClass[l.role].stroke} strokeWidth={l.role === "baseline" ? 2.5 : roleClass[l.role].width} strokeDasharray={l.enteredReturn ? "6 4" : l.role === "baseline" ? BASELINE_DOTS : undefined} strokeLinejoin="round" strokeLinecap="round" />
         ))}
         {/* after the lines, with the card-colour halo: on a phone the lines ran through "100 אלף ₪" (2026-10-26) */}
         <AxisLabels ticks={ticks} y={y} />
@@ -201,7 +205,7 @@ export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dim
 }
 
 export function ChartLegend({ lines }: { lines: SeriesLine[] }) {
-  return <Legend items={lines.map((l) => ({ id: l.id, swatch: l.enteredReturn ? <Swatch shape="entered-line" className={roleClass[l.role].stroke} /> : <Swatch className={roleClass[l.role].bg} />, label: <bdi>{l.name}</bdi> }))} />;
+  return <Legend items={lines.map((l) => ({ id: l.id, swatch: l.enteredReturn ? <Swatch shape="entered-line" className={roleClass[l.role].stroke} /> : l.role === "baseline" ? <Swatch shape="dotted-line" className={roleClass[l.role].stroke} /> : <Swatch className={roleClass[l.role].bg} />, label: <bdi>{l.name}</bdi> }))} />;
 }
 
 /** One row per line at the hovered year (or the horizon): swatch, name, value. */
@@ -213,7 +217,7 @@ export function ChartReadout({ lines, mode, year, ctx }: { lines: SeriesLine[]; 
         const p = l.points.find((q) => q.year === year) ?? l.points[l.points.length - 1]!;
         const opt = ctx.view.ranked.find((o) => o.id === l.id);
         const v = mode === "real" ? p.real : p.nominal;
-        return { id: l.id, swatch: <Swatch className={roleClass[l.role].bg} />, label: <bdi>{l.name}</bdi>, value: <Num value={ctx.mk.nis(v, mode === "real" ? "F-06" : "F-09", l.name, opt)} animate /> };
+        return { id: l.id, swatch: l.role === "baseline" ? <Swatch shape="dotted-line" className={roleClass[l.role].stroke} /> : <Swatch className={roleClass[l.role].bg} />, label: <bdi>{l.name}</bdi>, value: <Num value={ctx.mk.nis(v, mode === "real" ? "F-06" : "F-09", l.name, opt)} animate /> };
       })}
     />
   );

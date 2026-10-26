@@ -198,7 +198,8 @@ export function Num({ value, size = "inline", display, animate, className, prefi
       {value.stale && <IconClock size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
       {((showMark && fromDate) || markWeak) && <IconAlert size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
       {fromDate && size === "figure" && <span className="text-xs text-caution-foreground font-normal me-1 no-underline select-none">{numbers.startsOn}<bdi dir="ltr">{fmt.date(fromDate)}</bdi></span>}
-      <bdi dir={textDir(text)} className="whitespace-nowrap">{text}</bdi>
+      {/* a long text value (a fund's full name) may wrap: kept on one line it ran 73 px past a phone's edge (2026-10-26) */}
+      <bdi dir={textDir(text)} className={typeof value.value === "string" && text.length > 24 ? undefined : "whitespace-nowrap"}>{text}</bdi>
     </button>
   );
   return prefix ? <span className="whitespace-nowrap">{prefix}{button}</span> : button;
