@@ -136,8 +136,9 @@ function GroupLabel({ title, count }: { title: string; count?: string }) {
 }
 
 function ManagerCompany({ data }: { data: CompanyData }) {
-  const first = data.groups[0];
-  const side = first?.wrapper;
+  // the product-type card says what the page sells, so it shows only when that is one type: a single group of tracks and no funds
+  // or brokerage account (most managing companies run several types; each group heading links to its own guide)
+  const side = data.groups.length === 1 && data.funds.length === 0 && !data.brokerage ? data.groups[0]!.wrapper : null;
   const company = data.company;
   // the page's groups in one order: the managing company's products, the funds, the brokerage account; the first is open
   const firstOpen = company && data.groups.length > 0 ? "tracks" : data.funds.length > 0 ? "funds" : "brokerage";
