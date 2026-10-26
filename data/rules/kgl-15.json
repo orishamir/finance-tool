@@ -36,6 +36,13 @@
   },
   "il_finance_file": "kupat-gemel-lehashkaa.md",
   "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "meitav",
+      "name_he": "מיטב"
+    }
+  ],
   "sources": [
     {
       "url": "https://www.meitav.co.il/provident_pension/provident_invest/",

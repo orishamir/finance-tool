@@ -8,12 +8,19 @@ import { PageShell, useOpenSearch } from "../components/shell";
 import { normalize } from "../lib/search";
 import { fmt } from "../lib/format";
 import type { InstitutionRow } from "../components/decoder/institutions/types";
+import { NoPageCompanyTerms } from "../components/decoder/company-terms";
 
 export async function loader() {
   const { loadCma, today } = await import("../lib/data.server");
-  const { institutionRows } = await import("../lib/institutions.server");
+  const { institutionRows, noPageCompanyTerms } = await import("../lib/institutions.server");
+  const { loadChecklistRows, loadRules, pointedRecords } = await import("../lib/data.server");
   const cma = loadCma();
-  return { companies: cma.companies.map((c) => ({ id: c.id, name: c.name, line: c.classifications.join(" · ") })), institutions: institutionRows(), today: today() };
+  // the terms of the companies the site has no page for (fund managers, index providers, foreign brokers, the exchange), and the not-rules (D30)
+  const allRules = loadRules();
+  const noPage = noPageCompanyTerms(allRules);
+  const ids = [...noPage.companies.flatMap((c) => c.ids), ...noPage.none];
+  const rules = Object.fromEntries(ids.map((id) => [id, allRules[id]!]));
+  return { companies: cma.companies.map((c) => ({ id: c.id, name: c.name, line: c.classifications.join(" · ") })), institutions: institutionRows(), today: today(), noPage, rules, pointed: pointedRecords(rules, allRules), dimensions: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) };
 }
 
 export function meta() {
@@ -23,8 +30,11 @@ export function meta() {
 export default function Companies() {
   const data = useLoaderData<typeof loader>();
   return (
-    <PageShell current="decoder" data={{ rules: {}, terms: {}, dimensions: {}, today: data.today }}>
+    <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: data.dimensions, today: data.today }}>
       <Body companies={data.companies} institutions={data.institutions} />
+      <div className="pt-section">
+        <NoPageCompanyTerms companies={data.noPage.companies} none={data.noPage.none} />
+      </div>
     </PageShell>
   );
 }

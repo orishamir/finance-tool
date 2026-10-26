@@ -214,10 +214,9 @@
       "REG-23",
       "REG-18",
       "REG-19",
-      "CS-09",
       "CS-25"
     ],
-    "text": "the money belongs to the child, is held in trust by the parent who receives the allowance and cannot be transferred, pledged or attached; the fund's assets are held in trust, separately from the managing company's property, and if the company fails management moves to another company; there is no floor under the value in the provident option, and the default increased-risk track holds mostly equities, in Israel and abroad, with currency exposure (Harel's bylaw)"
+    "text": "the money belongs to the child, is held in trust by the parent who receives the allowance and cannot be transferred, pledged or attached; the fund's assets are held in trust, separately from the managing company's property, and if the company fails management moves to another company; there is no floor under the value in the provident option (what each company's default track holds is its own term, CS-09)"
   },
   "tier": 1,
   "open_questions": [
@@ -230,7 +229,6 @@
   "checked": "2026-10-23",
   "dimensions": {
     "age-or-use-exemption": "covered",
-    "currency": "covered",
     "deposit-ceiling": "covered",
     "distribution-policy": "covered",
     "eligibility": "covered",
@@ -250,5 +248,16 @@
     "tax-at-exit": "covered",
     "tax-during": "covered",
     "transfer-switch-process": "covered"
+  },
+  "company_terms": {
+    "currency": [
+      "CS-09"
+    ],
+    "fee-management-balance": [
+      "CS-30"
+    ],
+    "fee-deposit": [
+      "CS-30"
+    ]
   }
 }

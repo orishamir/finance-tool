@@ -78,6 +78,13 @@
   },
   "il_finance_file": "etfs-and-index-funds.md",
   "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "sp-dji",
+      "name_he": "S&P Dow Jones Indices"
+    }
+  ],
   "sources": [
     {
       "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",

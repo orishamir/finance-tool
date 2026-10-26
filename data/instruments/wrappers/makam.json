@@ -56,7 +56,8 @@
       "rule_ids": [
         "BRK-17",
         "BANK-18",
-        "BRK-16"
+        "BRK-16",
+        "BRK-52"
       ],
       "state": "sourced",
       "notes": "A bank may not charge \"דמי ניהול פיקדון ניירות ערך\" for makam (First Schedule part 4(א)(5) note 2). Buy, sell and redemption commissions in part 4 still apply, with a separate makam line priced by each bank (BRK-16). The ban binds banks only: no rule limits a non-bank TASE member's custody fee on makam (BRK-17, BRK-52; BRK open question 11 closed 2026-10-26), so its tariff applies as published."

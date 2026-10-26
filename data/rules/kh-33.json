@@ -1,0 +1,69 @@
+{
+  "id": "KH-33",
+  "title": "Altshuler Shaham, Harel and Meitav: how they state the study-fund fee",
+  "title_he": "אלטשולר שחם, הראל ומיטב: איך הן מנסחות את דמי הניהול בקרן ההשתלמות",
+  "text_he": "אלטשולר שחם מנכה את דמי הניהול כל חודש מהיתרה בסוף החודש, בשיעור שלא עולה על המקסימום שבחוק. הראל מנכה בסוף כל חודש וכותבת שהשיעור השנתי לא יעלה על ״שני אחוז אפקטיבי לשנה״ מנכסי הקרן. מיטב כותבת שהחברה רשאית להעלות את דמי הניהול בכפוף להוראות הדין. אלה הניסוחים של שלוש החברות; חברות אחרות לא נבדקו.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-26",
+  "il_finance_file": "keren-hishtalmut.md",
+  "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "altshuler-shaham",
+      "name_he": "אלטשולר שחם"
+    },
+    {
+      "id": "harel",
+      "name_he": "הראל"
+    },
+    {
+      "id": "meitav",
+      "name_he": "מיטב"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://as-invest.co.il/media/khpp32k5/אלטשולר-שחם-השתלמות-תקנון-מהדורת-שינויים-דצמבר-2024.pdf",
+      "title": "Altshuler bylaws 1.12.2024",
+      "title_he": "תקנון קרן ההשתלמות של אלטשולר שחם (מהדורת דצמבר 2024)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "s.24",
+      "locator_he": "סעיף 24",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://harel-group.co.il/long-term-savings/study-funds/plans/harel-funds/doclib/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%95%d7%a4%d7%94/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a8%d7%90%d7%9c%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa-%20%d7%9c%d7%90%d7%97%d7%a8%20%d7%94%d7%9e%d7%99%d7%96%d7%95%d7%92/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa%20%2007.2024.pdf",
+      "title": "Harel bylaws 07/2024",
+      "title_he": "תקנון קרן ההשתלמות של הראל (מהדורת 7/2024)",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "s.18",
+      "locator_he": "סעיף 18",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.meitav.co.il/provident_pension/hishtalmut/",
+      "title": "מיטב – קרנות השתלמות: כל המידע אודות קרן השתלמות",
+      "title_he": "מיטב – קרנות השתלמות: כל המידע אודות קרן השתלמות",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ],
+  "derived_from": [
+    "KH-22"
+  ]
+}

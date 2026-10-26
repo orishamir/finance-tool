@@ -12,6 +12,13 @@
   "recheck_date": "2027-04-01",
   "il_finance_file": "brokerage-account.md",
   "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "leumi",
+      "name_he": "בנק לאומי"
+    }
+  ],
   "sources": [
     {
       "url": "https://www.leumi.co.il/leumi-hebrew/s3fs-public/newsite/generalpages/general%20terms/General_Terms_and_Conditions_acc.pdf",

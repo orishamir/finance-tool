@@ -36,6 +36,13 @@
   },
   "il_finance_file": "switching-and-transfers.md",
   "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "phoenix",
+      "name_he": "הפניקס"
+    }
+  ],
   "sources": [
     {
       "url": "https://www.fnx.co.il/ishtalmutfund/faq/",

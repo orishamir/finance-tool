@@ -2129,7 +2129,7 @@ export const r4workbench = {
     notModelledOther: "עמלה שאינה חלק מעלות ההחזקה השוטפת.",
     noLine: (base: string) => `אין בתעריפון שורה ל${base}; לא נגבה בחישוב.`,
     /** 2026-10-26 (method F-14, F-63; BRK OQ11 closed): the note on a non-bank member's custody line when the fund is a money-market fund */
-    mmfCustodyNonBank: "בבנק אסור לגבות דמי ניהול פיקדון ניירות ערך על קרן כספית. אצל חבר בורסה שאינו בנק לא נמצא כלל שמגביל אותם, ולכן החישוב לפי התעריפון. רק חבר בורסה שיש לו הסכם הפצה לקרן הזאת חייב לפי תקנות עמלת הפצה לא לגבות עליה שום עמלה. לפי הדוח המשותף של הרגולטורים, אצל חברי בורסה שאינם בנקים יש פטור גורף מדמי משמרת, ודמי טיפול בפיקדון הם בדרך כלל סכום קבוע שלעתים קרובות מוחזר או לא נגבה. זה נוהג, לא תנאי בתעריפון.",
+    mmfCustodyNonBank: "בבנק אסור לגבות דמי ניהול פיקדון ניירות ערך על קרן כספית. אצל חבר בורסה שאינו בנק לא נמצא כלל שמגביל אותם, ולכן החישוב לפי התעריפון. רק חבר בורסה שאינו משווק השקעות ויש לו הסכם הפצה לקרן הזאת אסור לו, לפי תקנות עמלת הפצה, לגבות עליה עמלה. לפי הדוח המשותף של הרגולטורים, אצל חברי בורסה שאינם בנקים יש פטור גורף מדמי משמרת, ודמי טיפול בפיקדון הם בדרך כלל סכום קבוע שלעתים קרובות מוחזר או לא נגבה. זה נוהג, לא תנאי בתעריפון.",
     /** copy.md 8.1: the bases a missing line is named by, in the sentence above */
     noLineBases: { trade: "קנייה ומכירה", custody: "דמי ניהול פיקדון ניירות ערך", fx: "המרת מטבע" } as Record<string, string>,
     fixedSpread: (name: string) => `${name} נפרסו לחודשים.`,
@@ -2747,11 +2747,60 @@ export const updateRules = {
   frozen: "מוקפא בשנים {years}",
 } as const;
 
+/**
+ * Who a rule applies to (D30; research/specs/2026-10-25-rules-scope/spec.md §4, 2026-10-26): the rule card's label and lines by
+ * scope, the chip of a company's term, "תלוי בחברה", the company pages' section, the rules page's line and the search group.
+ * `{names}` is a Hebrew list ("הראל ואלטשולר שחם"), `{name}` one company.
+ */
+export const scopeWords = {
+  // "על {names}": a record about companies that rests on none of their documents (a press report, a forum post; review, 2026-10-26)
+  tag: { general: "חל על כולם", institution: "של {names}", unsettled: "לא הוכח שחל על כולם", about: "על {names}" },
+  line: {
+    institution: "נמצא במסמכים של {names}; בחברות אחרות זה יכול להיות אחרת.",
+    notTheirs: "המקורות כאן אינם מסמכים של {names}.",
+    unsettledSeen: "נמצא במסמכים של {names}. אולי כך בכל החברות; לא מצאנו לזה מקור רשמי.",
+    unsettled: "אולי כך בכל החברות; לא מצאנו לזה מקור רשמי.",
+  },
+  /** The card's foot: where the company's terms are listed, one link per company. */
+  allAt: "לכל מה שמצאנו אצל {name}",
+  allNoCompany: "לכל מה שלא נכלל ככלל",
+  /** A record the rule base keeps that is not a rule (a forum post, a press report, a list, a count, a site's terms, a company's tariff): its card's tag and, when it cites a company's document, its line (review, 2026-10-26). */
+  notRule: {
+    tag: "לא נכלל ככלל",
+    lineOwn: "נמצא במסמכים של {names}. האתר לא מציג את זה ככלל, ושומר אותו עם המקור בין מה שלא נכלל ככלל.",
+  },
+  /** The card's foot of a general rule on a page about one product. */
+  rulesOf: "לכל החוקים והכללים של {product}",
+  /** The chip of a record that names several companies: "לאומי ועוד 3". */
+  chipMore: { one: "ועוד אחת", two: "ועוד שתיים", many: "ועוד {n}" },
+  /** Where a property is each company's own: the guide's line and checklist mark, with the companies as links. */
+  varies: "תלוי בחברה",
+  variesBank: "תלוי בבנק",
+  section: {
+    title: "מה כתוב במסמכים של {name}",
+    line: "מה שנמצא רק במסמכים של החברה, לא בחוק ולא אצל הרשות, ולכן לא מופיע במדריך. ליד כל אחד המסמך והיום שבו האתר קרא אותו.",
+    unsettledMark: "אולי כך בכל החברות; לא מצאנו לזה מקור רשמי",
+  },
+  noPage: {
+    title: "מה כתוב במסמכים של חברות שאין להן עמוד כאן",
+    line: "מה שנמצא במסמכים של חברות שלאתר אין עליהן עמוד משלהן, לפי חברה.",
+    // what no company's section lists: the records the rule base keeps that are not rules (review, 2026-10-26)
+    none: { title: "לא נכלל ככלל: פרסומים, ספירות ונתונים", line: "מה שהאתר שומר עם המקור אבל לא מציג ככלל: סיפורים מפורומים, כתבות, רשימות וספירות, נתונים, תנאי שימוש של אתרים, תעריפים של חברות, ומקומות שבהם חיפשנו כלל ולא מצאנו." },
+  },
+  /** The rules page: company terms are not listed there. */
+  rulesLine: { before: "מה שנמצא רק במסמכים של חברה מסוימת מופיע בעמוד של אותה חברה, לא כאן.", link: "לרשימת החברות" },
+  searchGroup: "אצל חברות מסוימות",
+  /** "and" before the last name of a list: joined to a Hebrew name, with a maqaf before a Latin one (copy.md 10.4). */
+  and: { hebrew: "ו", latin: "ו־" },
+} as const;
+
 /** Additions to the rule card (synthesis §3.3). */
 export const ruleCardMore = {
   forTaxYear: "לשנת המס",
   derivedFrom: "נגזר מ־",
   derivedLine: "זו מסקנה משילוב של כמה חוקים וכללים, לא משפט אחד שנמצא במקור.",
+  /** A general rule's pointers to companies' terms (review, 2026-10-26): named examples, never a derivation. */
+  examples: "לדוגמה:",
   stable: "לא משתנה מעצמו",
   usesLead: "משפיע על",
   usesEngine: "החישובים באתר",
@@ -3240,7 +3289,7 @@ export const guideWorth = {
 
 /** Search additions (synthesis §3.6): the three new groups, their row lines and the empty states by query type. */
 export const searchMore = {
-  groups: { rule: "חוקים וכללים", parameter: "פרמטרים", document: "מסמכים" },
+  groups: { rule: "חוקים וכללים", companyRule: "אצל חברות מסוימות" /* D30, 2026-10-26: a company's own terms, each row naming the company */, parameter: "פרמטרים", document: "מסמכים" },
   parameterLine: "פרמטר של האתר",
   documentLine: "מסמך",
   figureLine: "מספר מתוך המאגר",
@@ -3587,7 +3636,7 @@ export const kit = {
       Card: "המשטח המורם היחיד. את הריפוד בוחרים ב־pad, את הפנים ב־className.",
       Section: "כותרת עם פתיחה ופעולה בקצה השורה, ואחריה הגוף. level: page, card או form.",
       Disclosure: "כל מה שהקורא יכול לפתוח: טבלה, הערה ארוכה, קבוצה ברשימה. התווית והחץ עוקבים אחרי מצב הקופסה עצמה, גם בתוך קופסה פתוחה אחרת.",
-      FoldGroup: "כותרת קבוצה עם הספירה שלה, בתוך רשימת כיסוי. כותרת ברמה 3 או 4.",
+      FoldGroup: "כותרת קבוצה עם הספירה שלה. list (ברירת המחדל): קבוצה בתוך רשימת כיסוי, כותרת ברמה 3 או 4. section: נושא של כרטיסים בעמוד (קבוצות החוקים והכללים, מה כתוב במסמכים של חברה), כותרת גדולה ושורה של 48 פיקסלים; open ו־onOpenChange כשהעמוד פותח קבוצה לפי הכתובת.",
       CoverageFold: "הכרטיס שמונה כל אפשרות פעם אחת: משפט של ספירות, שורת הצגה והסתרה, והרשימה מתחת לקו.",
       SegmentedControl: "שתיים עד ארבע אפשרויות קצרות ושוות, אחת תמיד נבחרת.",
       ChipList: "רשימה שאפשר לבחור בה, להוסיף לה, לשנות שם ולמחוק: מטרות, מדדים. הפריט הנבחר מקבל עיפרון ופח; גרירה רק כשיש onMove; הפריט האחרון (add) מוסיף.",
@@ -3607,6 +3656,7 @@ export const kit = {
       Marker: "סמן שנגררים אותו על ציר של תרשים: לחיצה בכל מקום בשטח מזיזה אותו, וגם מקשי החצים. Marker הוא המחוון הבלתי נראה; MarkerMark הוא מה שהתרשים מצייר.",
       GainBars: "שני סכומים כעמודות מאותה נקודת התחלה, וההפרש כסוגר עם מספר משלו (אף פעם לא עמודה שלישית).",
       ChartLegend: "שלושת החלקים סביב כל תרשים: מה כל סימן אומר, הערכים בשנה שמצביעים עליה, ואותם מספרים כטבלה.",
+      CompanyLinks: "פתיח ואחריו החברות שהוא עוסק בהן, כל אחת קישור לעמוד שלה: ״תלוי בחברה״ כשכל חברה קובעת לעצמה, ״לכל מה שמצאנו אצל״ מתחת לתנאי של חברה. רצוף: יכול לסגור משפט או לעמוד בשורה משלו.",
     },
     sample: {
       list: { heading: "הרשימה שלכם", note: "הערה קטנה ליד הכותרת, שיורדת שורה כשאין מקום", items: ["ראשון", "שני", "שלישי"], longItem: "פריט עם שם ארוך מאוד כדי לראות איך השורה יורדת", add: "פריט נוסף", confirm: "למחוק את הפריט?", yes: "מחיקה", no: "ביטול", rename: "שינוי השם", remove: "מחיקת הפריט", renameField: "שם הפריט", foot: "שורה מתחת לרשימה." },
@@ -3649,6 +3699,7 @@ export const kit = {
       coverOpen: "הצגת הרשימה",
       coverClose: "הסתרת הרשימה",
       group: "לא דורגו",
+      topic: "קרן השתלמות",
       rowA: "אפשרות ראשונה",
       rowB: "אפשרות שנייה",
       statLabels: ["אחרי הדמים", "בלי דמים", "העלות"],
@@ -3659,6 +3710,8 @@ export const kit = {
         { id: "b", label: "פטור ממס", line: "עוד שורה." },
       ],
       headCaption: "אחרי ניכוי דמים, במונחי היום",
+      companyLead: "תלוי בחברה",
+      companies: ["חברה ראשונה", "חברה שנייה", "חברה שלישית"],
     },
   },
 } as const;

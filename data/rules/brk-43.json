@@ -13,6 +13,13 @@
   "text_he": "לפי אינטראקטיב ברוקרס, החברה בקבוצה שמחזיקה בחשבון נקבעת בדרך כלל לפי מדינת המגורים החוקית של בעל החשבון, ואפשר לראות אותה בראש דוח הפעילות. הישות האמריקאית מפוקחת על ידי הרשויות בארצות הברית וחברה בקרן ההגנה על לקוחות ברוקרים, והישות האירית מפוקחת על ידי הבנק המרכזי של אירלנד. באף עמוד שנקרא לא כתוב איזו ישות משרתת תושב ישראל שפותח חשבון ישירות, ואם הוא רשאי לסחור שם בבורסת תל אביב.",
   "il_finance_file": "brokerage-account.md",
   "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "interactive-brokers",
+      "name_he": "Interactive Brokers"
+    }
+  ],
   "sources": [
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-627b50ab87f01/ListofCompanies130623.pdf",

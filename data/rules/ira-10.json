@@ -10,6 +10,7 @@
   "text_he": "בתקנות הניהול האישי אין סכום מינימום לפתיחה או להפקדה. חברה יכולה לומר מאיזה סכום המוצר מתאים לדעתה, אבל זו המלצה שלה, לא כלל.",
   "il_finance_file": "ira-self-directed.md",
   "checked": "2026-10-25",
+  "scope": "general",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=2",
@@ -17,7 +18,7 @@
       "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "law",
+      "kind": "regulation",
       "strength": "primary",
       "locator": "pp.2-6, regs. 1-13",
       "locator_he": "עמודים 2 עד 6, תקנות 1-13",
@@ -30,7 +31,7 @@
       "title_he": "תקנות הפיקוח על שירותים פיננסים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017 (קובץ התקנות 7819)",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "law",
+      "kind": "regulation",
       "strength": "primary",
       "locator": "pp.2-5, ss.1-8",
       "locator_he": "עמודים 2 עד 5, סעיפים 1-8",

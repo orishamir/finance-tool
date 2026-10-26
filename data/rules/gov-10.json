@@ -37,6 +37,7 @@
   },
   "il_finance_file": "government-bonds-and-makam.md",
   "checked": "2026-10-26",
+  "scope": "general",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=4",

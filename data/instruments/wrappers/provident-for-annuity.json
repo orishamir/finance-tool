@@ -280,5 +280,10 @@
     "tax-at-exit": "blocked:PEN-OQ19",
     "tax-during": "covered",
     "transfer-switch-process": "covered"
+  },
+  "company_terms": {
+    "fee-change-over-time": [
+      "PEN-47"
+    ]
   }
 }

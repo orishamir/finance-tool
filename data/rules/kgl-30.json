@@ -11,6 +11,17 @@
   "likely_to_change": "no",
   "il_finance_file": "kupat-gemel-lehashkaa.md",
   "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "altshuler-shaham",
+      "name_he": "אלטשולר שחם"
+    },
+    {
+      "id": "infinity",
+      "name_he": "אינפיניטי"
+    }
+  ],
   "sources": [
     {
       "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",

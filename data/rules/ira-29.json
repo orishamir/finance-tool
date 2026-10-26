@@ -40,6 +40,13 @@
   },
   "il_finance_file": "ira-self-directed.md",
   "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "meitav",
+      "name_he": "מיטב"
+    }
+  ],
   "sources": [
     {
       "url": "https://www.meitav.co.il/media/kiildnyn/נספח-להסכם-הצטרפות-לקרן-השתלמות-בניהול-אישי-115181124.pdf",

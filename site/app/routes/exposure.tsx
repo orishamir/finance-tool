@@ -52,7 +52,7 @@ export default function ExposurePage() {
       weak: allWeak ? (row.rules.some((id) => rules[id]?.strength === "secondary") ? "secondary" : "institution") : null,
     };
   });
-  const provenance = { rules, terms: data.termsById, dimensions: data.dimensionNames, today };
+  const provenance = { rules, pointed: data.pointed, terms: data.termsById, dimensions: data.dimensionNames, today };
   const kind = copy.kinds[record.kind] ?? record.kind;
   // audit A83: no terms table under three rows; the page's own terms first, the rest behind a toggle
   const terms = splitTerms(data.terms, content?.termIds ?? []);

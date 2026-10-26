@@ -121,6 +121,7 @@
   },
   "il_finance_file": "government-bonds-and-makam.md",
   "checked": "2026-10-26",
+  "scope": "general",
   "sources": [
     {
       "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",

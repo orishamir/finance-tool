@@ -7,7 +7,7 @@ import type { SiteValue } from "../../lib/value";
 import { computed, entered } from "../../lib/value";
 import { IconLock } from "../icons";
 import { IdRef, Num } from "../provenance";
-import { Button, Callout, Card, ChartLegend, ChartReadout, ChartTable, ChipList, ChoiceChips, CoverageFold, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, KeyValue, KeyValueList, LinkButton, Marker, MarkerMark, NumberField, ParameterLine, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, SourceLine, Stat, StatRow, Swatch, Tag, Tpl, cx, useWidth } from "./index";
+import { Button, Callout, Card, ChartLegend, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CoverageFold, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, KeyValue, KeyValueList, LinkButton, Marker, MarkerMark, NumberField, ParameterLine, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, SourceLine, Stat, StatRow, Swatch, Tag, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -128,6 +128,7 @@ function Basics() {
 
 function Folds() {
   const [open, setOpen] = useState(false);
+  const [topic, setTopic] = useState(true);
   return (
     <>
       <Demo name="Disclosure" use={g.uses.Disclosure}>
@@ -173,6 +174,16 @@ function Folds() {
           <State label={g.states.open}>
             <FoldGroup title={g.sample.group} count={3} level={4} defaultOpen>
               <p className="pb-2">{g.sample.body}</p>
+            </FoldGroup>
+          </State>
+          <State label={`variant=section, ${g.states.open}, controlled, id`}>
+            <FoldGroup variant="section" id="kit-fold-topic" title={g.sample.topic} count={12} open={topic} onOpenChange={setTopic}>
+              <p className="pt-1">{g.sample.body}</p>
+            </FoldGroup>
+          </State>
+          <State label={`variant=section, ${g.states.closed}`}>
+            <FoldGroup variant="section" title={g.sample.topic} count={1250}>
+              <p className="pt-1">{g.sample.body}</p>
             </FoldGroup>
           </State>
         </Grid>
@@ -342,6 +353,18 @@ function Words({ today }: { today: string }) {
           <RankBadge rank={2} label="2" />
           <RankBadge rank={3} label="3" flush />
         </div>
+      </Demo>
+      <Demo name="CompanyLinks" use={g.uses.CompanyLinks}>
+        <Grid>
+          <State label="size=sm, two companies">
+            <p>
+              <CompanyLinks lead={g.sample.companyLead} items={g.sample.companies.slice(0, 2).map((name) => ({ name, href: "/kit" }))} />
+            </p>
+          </State>
+          <State label="size=xs, one company">
+            <CompanyLinks size="xs" lead={g.sample.companyLead} items={[{ name: g.sample.companies[2]!, href: "/kit" }]} />
+          </State>
+        </Grid>
       </Demo>
       <Demo name="SourceLine, GapNote" use={g.uses.SourceLine}>
         <State label="SourceLine">

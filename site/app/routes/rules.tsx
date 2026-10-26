@@ -3,13 +3,13 @@
 // preset it. Light on purpose: the page ships a light list of all rules; the full records and their uses come per shelf from
 // /rules-data/<shelf>.json, fetched when a group opens, a filter shows cards, or the address names a rule.
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Link, useLoaderData, useLocation } from "react-router";
+import { Link, useLoaderData, useLocation, useNavigate } from "react-router";
 import type { Route } from "./+types/rules";
-import { rulesFront as copy, site, sourceBlock, system, topicName, ruleCardMore } from "../copy";
+import { rulesFront as copy, scopeWords, site, sourceBlock, system, topicName, ruleCardMore } from "../copy";
 import { IconSearch } from "../components/icons";
 import { NumberLegend, RuleCard, type RuleUses } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { Card, cx, Disclosure, Tag } from "../components/kit";
+import { Card, cx, Disclosure, FoldGroup, Tag } from "../components/kit";
 import { fmt } from "../lib/format";
 import { buildSections, emptyFilters, filtersToSearch, fullHaystack, isFiltering, lightHaystack, matchRules, norm, parseFilters, type Filters, type Group, type LightRule } from "../lib/rules-filter";
 import { shelfIds, type ShelfId } from "../lib/rule-shelves";
@@ -27,7 +27,8 @@ export async function loader() {
   const { ruleProducts, ruleScores } = await import("../lib/rule-uses.server");
   const { shelfOf } = await import("../lib/rule-shelves");
   const rules = loadRules();
-  const all = Object.values(rules);
+  // D30 (spec 2026-10-25-rules-scope §4): the rules page lists general rules only; a company's term is on that company's page
+  const all = Object.values(rules).filter((r) => r.scope === "general");
   const now = today();
   const scores = ruleScores();
   const products = ruleProducts();
@@ -62,8 +63,16 @@ export async function loader() {
     ...(productCounts.has("tier2") ? [{ id: "tier2", name: copy.products.tier2, n: productCounts.get("tier2")! }] : []),
   ];
 
+  // an old address that names a company's term (/rules#CS-30) goes on to where that term is listed now (D30)
+  const { companyLinks, ownDocuments } = await import("../lib/institutions.server");
+  const { companyTermsHref } = await import("../lib/scope");
+  const links = companyLinks();
+  const ownDocs = ownDocuments(rules);
+  const elsewhere = Object.fromEntries(Object.values(rules).filter((r) => r.scope !== "general").map((r) => [r.id, companyTermsHref(r, links, ownDocs)]));
+
   return {
     pinned: { rows },
+    elsewhere,
     light,
     productChips,
     dimensions: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])),
@@ -192,6 +201,13 @@ export default function Rules() {
   const filtering = isFiltering(filters);
   const q = norm(filters.q);
 
+  // a hash that names a company's term, which this page no longer lists (D30): on to where it is listed
+  const navigate = useNavigate();
+  useEffect(() => {
+    const to = target ? data.elsewhere[target] : undefined;
+    if (to) void navigate(to, { replace: true });
+  }, [target, data.elsewhere, navigate]);
+
   // a hash that names a rule the filters hide (an old link carrying another shelf's filter): on landing, the rule wins and the filters go
   const landed = useRef("");
   useEffect(() => {
@@ -289,6 +305,12 @@ export default function Rules() {
             {copy.questionsLine.before}{" "}
             <Link to="/questions" className="text-link hover:underline">
               {copy.questionsLine.link}
+            </Link>
+          </p>
+          <p className="text-sm text-muted-foreground max-w-measure">
+            {scopeWords.rulesLine.before}{" "}
+            <Link to="/companies" className="text-link hover:underline">
+              {scopeWords.rulesLine.link}
             </Link>
           </p>
         </header>
@@ -422,24 +444,7 @@ function GroupBlock({ g, open, onToggle, pd, failed, lightById }: { g: Group; op
   const missing = open && g.ids.some((id) => !pd.rules[id]);
   const broken = missing && g.ids.some((id) => !pd.rules[id] && failed.has(lightById.get(id)!.shelf));
   return (
-    <Disclosure
-      id={g.id}
-      open={open}
-      onOpenChange={onToggle}
-      className={cx("flex flex-col", scrollMargin)}
-      spread
-      size="field"
-      as="h3"
-      labelClassName="text-lg font-semibold flex flex-wrap items-baseline gap-x-2"
-      label={
-        <>
-          {title}
-          <span className="text-sm font-normal text-muted-foreground">
-            · <Num2 n={g.ids.length} />
-          </span>
-        </>
-      }
-    >
+    <FoldGroup variant="section" id={g.id} className={scrollMargin} title={title} count={g.ids.length} open={open} onOpenChange={onToggle}>
       {open && (
         <>
           {g.kind === "experience" && (
@@ -462,6 +467,6 @@ function GroupBlock({ g, open, onToggle, pd, failed, lightById }: { g: Group; op
           )}
         </>
       )}
-    </Disclosure>
+    </FoldGroup>
   );
 }

@@ -11,6 +11,7 @@
   "likely_to_change": "no",
   "il_finance_file": "provident-family-common.md",
   "checked": "2026-10-25",
+  "scope": "general",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4",
@@ -18,7 +19,7 @@
       "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131)",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "law",
+      "kind": "regulation",
       "strength": "primary",
       "locator": "p.4, reg. 2(ב)",
       "locator_he": "עמוד 4, תקנה 2(ב)",

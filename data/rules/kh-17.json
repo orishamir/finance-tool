@@ -11,6 +11,7 @@
   "likely_to_change": "no",
   "il_finance_file": "keren-hishtalmut.md",
   "checked": "2026-10-26",
+  "scope": "general",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=4",
@@ -58,7 +59,7 @@
       "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014 (קובץ התקנות 7407)",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "law",
+      "kind": "regulation",
       "strength": "primary",
       "locator": "p.4, s.5, reg. 9(ג)",
       "locator_he": "עמוד 4, סעיף 5, תקנה 9(ג)",

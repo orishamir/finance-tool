@@ -15,7 +15,7 @@ import { sourceLabel } from "../lib/source-label";
 import { provenance } from "../copy";
 
 export async function loader() {
-  const { loadNotCovered, loadRules, today } = await import("../lib/data.server");
+  const { loadNotCovered, loadRules, pointedRecords, today } = await import("../lib/data.server");
   const rows = loadNotCovered();
   const rules = loadRules();
   const { graduationStatuses, graduationRuleIds } = await import("../lib/graduation.server");
@@ -28,7 +28,8 @@ export async function loader() {
     if (r.source && w) r.source = { ...r.source, title: w.title, url: w.url };
   }
   const cited = new Set([...rows.flatMap((r) => r.ruleIds), ...graduationRuleIds(statuses)]);
-  return { rows, statuses, rules: Object.fromEntries(Object.values(rules).filter((r) => cited.has(r.id)).map((r) => [r.id, r])), today: today() };
+  const mine = Object.fromEntries(Object.values(rules).filter((r) => cited.has(r.id)).map((r) => [r.id, r]));
+  return { rows, statuses, rules: mine, pointed: pointedRecords(mine, rules), today: today() };
 }
 
 export function meta() {
@@ -117,7 +118,7 @@ function GraduationStatus({ s }: { s: GraduationStatusView }) {
 export default function NotCovered() {
   const data = useLoaderData<typeof loader>();
   return (
-    <PageShell current="other" data={{ rules: data.rules, terms: {}, dimensions: {}, today: data.today }}>
+    <PageShell current="other" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: {}, today: data.today }}>
       <div className="flex flex-col gap-section pt-6 lg:pt-10">
         <header className="flex flex-col gap-2">
           <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>

@@ -17,6 +17,7 @@ import { buildIdle, maxTermMonths, negotiateThreshold } from "../lib/idle";
 import { useOwnTerms } from "../lib/own-rate";
 import { anyWeak, ruleFigure, type SiteValue } from "../lib/value";
 import { bundleLinks } from "../lib/bundle";
+import { recordsById } from "../lib/scope";
 
 /** The data files this page fetches after it starts, requested with the HTML (audit 2026-10-24, A52). */
 export const links = () => bundleLinks("compare-bundle.json");
@@ -26,11 +27,12 @@ const quoted = ["TXI-03", "TXI-07", "TXS-12", "TXS-07", "MF-34", "BANK-06", "MF-
 
 export async function loader() {
   const { goalFormData } = await import("../lib/compare.server");
-  const { loadParameters, loadRules } = await import("../lib/data.server");
+  const { loadParameters, loadRules, pointedRecords } = await import("../lib/data.server");
   const all = loadRules();
   const data = goalFormData();
   const p03 = loadParameters().find((p) => (p as { method_id?: string }).method_id === "P-03") ?? null;
-  return { ...data, p03, rules: Object.fromEntries(quoted.filter((id) => all[id]).map((id) => [id, all[id]!])) };
+  const rules = Object.fromEntries(quoted.filter((id) => all[id]).map((id) => [id, all[id]!]));
+  return { ...data, p03, rules, pointed: pointedRecords(rules, all) };
 }
 
 export function meta() {
@@ -47,7 +49,7 @@ export default function IdleCashPage() {
   }, []);
   const provenance = useMemo(() => {
     const rules: Record<string, RuleRecord> = Object.fromEntries([...Object.values(data.rules), ...(bundle?.rules ?? [])].map((r) => [r.id, r as RuleRecord]));
-    return { rules, terms: {}, dimensions: Object.fromEntries((bundle?.checklist ?? []).map((c) => [c.id, c.name])), today: data.today };
+    return { rules, pointed: { ...(data.pointed as Record<string, RuleRecord>), ...recordsById(bundle?.pointed) }, terms: {}, dimensions: Object.fromEntries((bundle?.checklist ?? []).map((c) => [c.id, c.name])), today: data.today };
   }, [bundle, data.rules, data.today]);
   return (
     <GoalsProvider presets={presets}>

@@ -47,6 +47,8 @@ export interface WorkbenchBundle {
   fundLists: FundListFile[];
   /** The rule records a run may read, the protection rules and the rules the pages quote. */
   rules: RuleRecord[];
+  /** The records those rules' cards point at (derived_from, examples) that the bundle does not ship: only chips and cards read them (review, 2026-10-26). */
+  pointed?: RuleRecord[];
   /** P-01 (tie threshold) and P-05 (the representative instruments). */
   p01: ParameterRecord;
   p05: ParameterRecord;

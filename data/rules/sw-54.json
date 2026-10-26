@@ -58,6 +58,21 @@
   },
   "il_finance_file": "switching-and-transfers.md",
   "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "leumi",
+      "name_he": "בנק לאומי"
+    },
+    {
+      "id": "meitav-trade",
+      "name_he": "מיטב טרייד"
+    },
+    {
+      "id": "altshuler-trade",
+      "name_he": "אלטשולר שחם טרייד"
+    }
+  ],
   "sources": [
     {
       "url": "https://leumi.co.il/he/Articles/47356",

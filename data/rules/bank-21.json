@@ -39,6 +39,7 @@
   },
   "il_finance_file": "bank-current-account-deposits.md",
   "checked": "2026-10-26",
+  "scope": "general",
   "sources": [
     {
       "url": "https://www.boi.org.il/media/3bacxlsl/417.pdf",

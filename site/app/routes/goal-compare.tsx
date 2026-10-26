@@ -41,6 +41,7 @@ import { deleteSavedComparison, isoToday, saveComparisonRecord, type CompareMode
 import { anyWeak, computed, entered } from "../lib/value";
 import { r5 } from "../copy";
 import { bundleLinks } from "../lib/bundle";
+import { recordsById } from "../lib/scope";
 
 /** The data files this page fetches after it starts, requested with the HTML (audit 2026-10-24, A52). */
 export const links = () => bundleLinks("compare-bundle.json", "workbench-bundle.json");
@@ -72,7 +73,7 @@ export default function GoalComparePage() {
   }, []);
   const provenance = useMemo(() => {
     const rules: Record<string, RuleRecord> = Object.fromEntries((bundle?.rules ?? Object.values(data.rules)).map((r) => [r.id, r as RuleRecord]));
-    return { rules, terms: {}, dimensions: Object.fromEntries((bundle?.checklist ?? []).map((c) => [c.id, c.name])), today: data.today };
+    return { rules, pointed: { ...(data.pointed as Record<string, RuleRecord>), ...recordsById(bundle?.pointed) }, terms: {}, dimensions: Object.fromEntries((bundle?.checklist ?? []).map((c) => [c.id, c.name])), today: data.today };
   }, [bundle, data.rules, data.today]);
   return (
     <GoalsProvider presets={presets}>

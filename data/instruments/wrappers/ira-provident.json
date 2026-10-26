@@ -105,8 +105,7 @@
       "update_rule": "provider-set",
       "rule_ids": [
         "IRA-16",
-        "IRA-18",
-        "IRA-21"
+        "IRA-18"
       ],
       "state": "sourced",
       "notes": "No cap. Buy and sell commissions are charged to the fund on top of the management fee, at the tariff of the broker the member picks: one of the winners of the managing company's competitive process (at least every 3 years, at least 8 participants since 2017), or, under reg. 12(ג) as replaced in 2017, another broker the member chooses after being shown the winners' terms (IRA-18, updated 2026-10-25). Meitav's 2026 tariffs per broker are in IRA-21 and belong in data/fees/ (R4)."
@@ -126,8 +125,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "IRA-16",
-        "IRA-22"
+        "IRA-16"
       ],
       "state": "sourced",
       "notes": "No cap beyond: custody fees may not exceed what the same managing company's non-IRA funds pay (reg. 7(א)(2), 2017). Meitav Trade exempts custody inside an IRA; bank brokers charge per their tariff (IRA OQ6)."
@@ -330,5 +328,18 @@
     "tax-at-exit": "blocked:PEN-OQ7",
     "tax-during": "covered",
     "transfer-switch-process": "covered"
+  },
+  "company_terms": {
+    "fee-trade": [
+      "IRA-21"
+    ],
+    "fee-custody": [
+      "IRA-21",
+      "IRA-22"
+    ],
+    "fee-fx": [
+      "IRA-21",
+      "IRA-22"
+    ]
   }
 }

@@ -37,6 +37,7 @@
   },
   "il_finance_file": "bank-current-account-deposits.md",
   "checked": "2026-10-22",
+  "scope": "general",
   "sources": [
     {
       "url": "https://fs.knesset.gov.il/25/law/25_lsr_6913397.pdf",

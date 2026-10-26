@@ -36,6 +36,7 @@
       "notes": "US treaty withholding rate on dividends from US corporations paid to an Irish resident (general column), against 25% for an Israeli resident holding the US shares directly (TXF-12). Whether a given Irish fund in fact obtains this rate was not sourced (TXF open question 7; question 6, Irish tax on the fund's distributions, closed 2026-10-26 by TXF-28). Method A-11 cites it. Added 2026-10-23."
     }
   },
+  "scope": "general",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",

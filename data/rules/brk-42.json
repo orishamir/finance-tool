@@ -15,6 +15,13 @@
   "text_he": "לקוח ישיר של אינטראקטיב ברוקרס בוחר בין מסלול עמלה קבוע למסלול מדורג; המסלול בלי עמלות מיועד לתושבי ארצות הברית בלבד. הברוקר אינו גובה דמי משמרת, אין מינימום לפתיחת חשבון ואין דמי אי פעילות, ושתי משיכות בחודש חינם. המרת מטבע עולה שבר זעיר של אחוז עם מינימום בדולרים, או תוספת קטנה לשער בהמרה האוטומטית. התעריף הזה הוא ללקוחות ישירים; מי שהגיע דרך ברוקר מציג משלם את תעריף הברוקר המציג.",
   "il_finance_file": "brokerage-account.md",
   "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "interactive-brokers",
+      "name_he": "Interactive Brokers"
+    }
+  ],
   "sources": [
     {
       "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",

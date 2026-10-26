@@ -10,6 +10,13 @@
   "likely_to_change": "no",
   "il_finance_file": "brokerage-account.md",
   "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "tase",
+      "name_he": "הבורסה לניירות ערך בתל אביב"
+    }
+  ],
   "sources": [
     {
       "url": "https://content.tase.co.il/media/3fdpe5za/1150_nbcm_399328_eng.pdf",

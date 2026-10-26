@@ -82,6 +82,7 @@
   },
   "il_finance_file": "child-savings.md",
   "checked": "2026-10-26",
+  "scope": "general",
   "sources": [
     {
       "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
@@ -142,7 +143,7 @@
       "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131)",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "law",
+      "kind": "regulation",
       "strength": "primary",
       "locator": "p.4, reg. 2(א)(1)-(2); 2(ב)",
       "locator_he": "עמוד 4, תקנה 2(א)(1)-(2); 2(ב)",

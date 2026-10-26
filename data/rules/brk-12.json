@@ -35,6 +35,14 @@
   },
   "il_finance_file": "brokerage-account.md",
   "checked": "2026-10-26",
+  "scope": "unsettled",
+  "scope_institutions": [
+    {
+      "id": "tase",
+      "name_he": "הבורסה לניירות ערך בתל אביב"
+    }
+  ],
+  "scope_settle": "the TASE Clearing House rules (תקנון מסלקת הבורסה) on the central-counterparty guarantee, the risk fund and custodial members, or a current Securities Authority or Bank of Israel text describing them",
   "sources": [
     {
       "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a",

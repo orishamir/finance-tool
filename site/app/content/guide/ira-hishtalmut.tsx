@@ -2,7 +2,7 @@
 // Num). Written 2026-10-23 from the rule base (IRA, KH, TXH, TXK, PF, REG); each block ends with the rules it
 // rests on. NEW copy for the founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
-import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
+import { IdRef, Num, RuleRef, RulesLine, Term, VariesByCompany } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
 
 export const content: GuideContent = {
@@ -26,7 +26,10 @@ export const content: GuideContent = {
       <p className="max-w-measure">
         <Term id="חברה מנהלת">חברות מנהלות</Term> של קופות גמל שאושרה להן קרן בניהול אישי, בפיקוח רשות שוק ההון, ביטוח וחיסכון. המסחר עצמו מתבצע דרך ברוקר שבוחרים מרשימה שהחברה קובעת <Term prefix="ב" id="הליך תחרותי">הליך תחרותי</Term>.
       </p>
-      <RulesLine ids={["IRA-03", "IRA-18", "IRA-21"]} />
+      <p className="max-w-measure">
+        <VariesByCompany ids={["IRA-21"]} lead="אילו ברוקרים ובאילו עמלות תלוי בחברה המנהלת" />
+      </p>
+      <RulesLine ids={["IRA-03", "IRA-18"]} />
     </>
   ),
   switchLine: "קנייה ומכירה בתוך הקופה בלי מס; מעבר לקרן השתלמות אחרת או לקופה אישית אחרת, במזומן או בניירות",
@@ -39,7 +42,7 @@ export const content: GuideContent = {
       <Callout tone="caution" className="max-w-measure">
         <span className="font-medium">מה משלמים מעבר <Term prefix="ל" id="דמי ניהול">דמי הניהול</Term>.</span> <Term id="עמלות ברוקראז'">עמלות ברוקראז'</Term> על כל קנייה ומכירה, <Term id="דמי משמרת">דמי משמרת</Term> ודמי ניהול של הקרנות שמחזיקים נגבים מהקופה לפי תעריף הברוקר שבחרתם. התקרה לדמי הניהול של קופה אישית היא {cap ? <Num value={cap} /> : null} לשנה מהיתרה, ואין בתקנות דמי ניהול מהפקדה <RuleRef id="PF-06" />.
       </Callout>
-      <RulesLine ids={["IRA-16", "IRA-17", "PF-06", "IRA-21"]} />
+      <RulesLine ids={["IRA-16", "IRA-17", "PF-06"]} />
     </>
     );
   },

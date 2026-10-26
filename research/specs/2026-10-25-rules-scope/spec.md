@@ -22,6 +22,7 @@ Edge cases, decided:
 - **A mixed record** is split: the general part keeps the id, the company part gets a new id (the editor's step).
 - **A third-party copy of a regulator's text** (prisha.co.il hosting a CMA standard bylaw) is a general source with the host named ("primary, third-party host"); the scope is `general`.
 - **A count over only some institutions** ("in the three bylaws we read") is not a count over every collected institution: it is `unsettled` or several `institution` records, never a general statement.
+- **A record that rests only on the press, a forum or a regulator's announcement about a company** (2026-10-26, review round 3): a company's section lists only records that cite that company's own document (its site in the registry's `own_hosts`, or its Maya filing), and the validator fails a record that is not general, is not a not-rule, and cites no own document of a company it names. So an `unsettled` or `institution` record whose only sources are press reports, forum posts or a regulator's announcement can exist only as a not-rule (`notRules`, listed on /companies under "לא נכלל ככלל"). To keep it as a rule, find the company's own document, or a general source that makes it `general`.
 
 ## 2. How the classification is checked
 

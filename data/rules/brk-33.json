@@ -13,6 +13,7 @@
   "recheck_date": "2027-04-01",
   "il_finance_file": "brokerage-account.md",
   "checked": "2026-10-22",
+  "scope": "general",
   "sources": [
     {
       "url": "https://market.tase.co.il/he/market_data/trading_fees",

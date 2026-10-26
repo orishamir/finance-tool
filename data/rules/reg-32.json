@@ -1,0 +1,38 @@
+{
+  "id": "REG-32",
+  "title": "Tel Aviv Stock Exchange as a company: listed, its subsidiaries, as it describes itself",
+  "title_he": "הבורסה לניירות ערך כחברה: נסחרת, החברות הבנות שלה, כפי שהיא מתארת את עצמה",
+  "text_he": "הבורסה מתארת את עצמה כבורסה מפוקחת וגם כגוף שמפקח על חבריו בעצמו, בפיקוח רשות ניירות ערך. היא חברה נסחרת, והחברות הבנות שבבעלותה המלאה הן מסלקת הבורסה, מסלקת מעו״ף והחברה לרישומים. זו החוברת של הבורסה על עצמה, לא כלל של הבורסה; הרישיון והפיקוח על הבורסה קבועים בחוק.",
+  "strength": "institution",
+  "dimensions": [
+    "regulator"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "regulators-and-protection.md",
+  "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "tase",
+      "name_he": "הבורסה לניירות ערך בתל אביב"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://content.tase.co.il/media/xrwbgkhk/1150_remote_member_372145_eng.pdf",
+      "title": "TASE, How to become TASE Remote Member, January 2026",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "institution",
+      "locator": "pp.3-4",
+      "locator_he": "עמודים 3 עד 4",
+      "page": 3,
+      "checked": "2026-10-26",
+      "qualifier": "(TASE's own brochure)"
+    }
+  ],
+  "derived_from": [
+    "REG-13"
+  ]
+}

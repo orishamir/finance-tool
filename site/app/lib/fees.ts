@@ -64,6 +64,8 @@ export interface FeesData {
   today: string;
   p03: ParameterRecord;
   rules: RuleRecord[];
+  /** The records those rules' cards point at (derived_from, examples) that the bundle does not ship: only chips and cards read them (review, 2026-10-26). */
+  pointed?: RuleRecord[];
   /** F-68 for every provident-family class, by `classKey`. */
   references: Record<string, RegulatorReference>;
   /** The value object shared by a dataset's tracks (source, dates, rule ids), per fee. */

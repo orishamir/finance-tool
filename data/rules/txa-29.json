@@ -103,6 +103,13 @@
   },
   "il_finance_file": "tax-insurance-and-amendment-190.md",
   "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "phoenix-insurance",
+      "name_he": "הפניקס חברה לביטוח"
+    }
+  ],
   "sources": [
     {
       "url": "https://www.fnx.co.il/savings/savings-routes/faq/",

@@ -36,6 +36,13 @@
   },
   "il_finance_file": "regulators-and-protection.md",
   "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "tase",
+      "name_he": "הבורסה לניירות ערך בתל אביב"
+    }
+  ],
   "sources": [
     {
       "url": "https://content.tase.co.il/media/chilpz2c/1150_nbcm_372306_heb.pdf",

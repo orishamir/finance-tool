@@ -10,6 +10,13 @@
   "likely_to_change": "no",
   "il_finance_file": "pension-and-gemel-lekitzba.md",
   "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "mor",
+      "name_he": "מור"
+    }
+  ],
   "sources": [
     {
       "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",

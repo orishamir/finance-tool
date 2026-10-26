@@ -48,6 +48,7 @@ describe("rule record (data-schema §3.1)", () => {
     figures: { balance_cap: sourced },
     il_finance_file: "provident-family-common.md",
     checked: "2026-10-22",
+    scope: "general",
   };
 
   it("accepts a rule with figures", () => {
@@ -60,5 +61,19 @@ describe("rule record (data-schema §3.1)", () => {
 
   it("requires a recheck date when the rule is likely to change", () => {
     expect(ruleRecord.safeParse({ ...rule, likely_to_change: "yes" }).success).toBe(false);
+  });
+
+  // D30 (spec 2026-10-25-rules-scope §3): every rule says who it applies to
+  it("requires a scope, and the fields each scope needs", () => {
+    const { scope: _drop, ...noScope } = rule;
+    expect(ruleRecord.safeParse(noScope).success).toBe(false);
+    const harel = [{ id: "harel", name_he: "הראל" }];
+    expect(ruleRecord.safeParse({ ...rule, scope: "institution" }).success).toBe(false);
+    expect(ruleRecord.safeParse({ ...rule, scope: "institution", scope_institutions: harel }).success).toBe(true);
+    expect(ruleRecord.safeParse({ ...rule, scope: "unsettled" }).success).toBe(false);
+    expect(ruleRecord.safeParse({ ...rule, scope: "unsettled", scope_settle: "a CMA circular" }).success).toBe(true);
+    expect(ruleRecord.safeParse({ ...rule, scope: "unsettled", scope_settle: "a CMA circular", scope_institutions: harel }).success).toBe(true);
+    expect(ruleRecord.safeParse({ ...rule, scope_institutions: harel }).success).toBe(false);
+    expect(ruleRecord.safeParse({ ...rule, scope_settle: "x" }).success).toBe(false);
   });
 });

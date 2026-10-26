@@ -1,0 +1,40 @@
+{
+  "id": "PEN-45",
+  "title": "Mor: a member is joined to the general fund without a joining request",
+  "title_he": "מור: עמית מצורף לקרן הכללית בלי בקשת הצטרפות",
+  "text_he": "בתקנון הקרן הכללית של מור, עמית בקרן המקיפה שההפקדות שלו עוברות את תקרת ההפקדה החודשית, או עמית נכה שההפקדות שלו עוברות את התקרה המותרת לו, מצורף לקרן הכללית גם אם לא התקבלה בקשת הצטרפות שלו, ומועד ההצטרפות הוא היום שבו התקבלה ההפקדה שמעל התקרה. תקנונים של חברות אחרות לא נקראו.",
+  "strength": "institution",
+  "dimensions": [
+    "eligibility",
+    "deposit-ceiling"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "mor",
+      "name_he": "מור"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.moreinvest.co.il/media/hphjzxvl/תקנון-קרן-פנסיה-כללית.pdf",
+      "title": "Mor general bylaws 01.04.2026",
+      "title_he": "תקנון קרן הפנסיה הכללית של מור (מהדורת 1.4.2026)",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור גמל ופנסיה",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.16, s.14(א)-(ב)",
+      "locator_he": "עמוד 16, סעיף 14(א)-(ב)",
+      "page": 16,
+      "quote": "יצורף לקרן הכללית אף אם לא התקבלה בקרן בקשת הצטרפות בשלו",
+      "checked": "2026-10-26"
+    }
+  ],
+  "derived_from": [
+    "PEN-10"
+  ]
+}

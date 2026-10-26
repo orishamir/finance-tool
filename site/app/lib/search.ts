@@ -104,7 +104,10 @@ export const pageAliases: { href: string; line: string; names: string[] }[] = [
 
 // ------------------------------------------------------------------------------------------------ entries
 
-export type SearchKind = "product" | "track" | "term" | "guide" | "bank" | "company" | "notcovered" | "rule" | "parameter" | "document";
+export type SearchKind = "product" | "track" | "term" | "guide" | "bank" | "company" | "notcovered" | "rule" | "companyRule" | "parameter" | "document";
+
+/** A rule of either group (D30, spec 2026-10-25-rules-scope §4): "rule" holds the general ones, "companyRule" the companies' own terms and the unsettled ones. */
+export const isRuleKind = (kind: SearchKind) => kind === "rule" || kind === "companyRule";
 
 /** A number a rule carries: value, unit, the figure's Hebrew name and its key in the record. */
 export interface SearchFig {
@@ -149,7 +152,7 @@ export interface SearchHit {
 }
 
 /** Which kind comes first when two entries match equally well: pages that explain, then rules and parameters, then names, then the catalogue. */
-export const kindRank: Record<SearchKind, number> = { guide: 0, term: 1, rule: 2, parameter: 3, document: 4, notcovered: 5, company: 6, product: 7, bank: 8, track: 9 };
+export const kindRank: Record<SearchKind, number> = { guide: 0, term: 1, rule: 2, companyRule: 2.5, parameter: 3, document: 4, notcovered: 5, company: 6, product: 7, bank: 8, track: 9 };
 
 /**
  * The numeric figures of a rule for the index: the `value` of every value object under `figures` (bracket tables and
@@ -512,7 +515,7 @@ interface Scored {
 }
 
 function scoreFull(entry: SearchEntry, a: Analysis, docs: Map<string, TextDoc> | null): Scored | null {
-  const isRule = entry.kind === "rule";
+  const isRule = isRuleKind(entry.kind);
   // numbers: a rule answers only through its figures; every other kind keeps today's number matching (ids, names)
   if (a.type === "number" && a.num) {
     if (isRule) {
@@ -594,7 +597,7 @@ export function searchEntries(index: SearchEntry[], q: string, texts?: SearchTex
   scored.sort((x, y) => {
     const d = x.score - y.score || kindRank[x.entry.kind] - kindRank[y.entry.kind];
     if (d) return d;
-    if (x.entry.kind === "rule" && y.entry.kind === "rule") return ruleOrder(x, y);
+    if (isRuleKind(x.entry.kind) && isRuleKind(y.entry.kind)) return ruleOrder(x, y);
     return x.entry.name.length - y.entry.name.length;
   });
   const byKey = new Map<string, SearchHit>();
@@ -632,7 +635,7 @@ export function nearHits(index: SearchEntry[], a: Analysis, limit = 4): SearchHi
   const { n } = a.num;
   const out: SearchHit[] = [];
   for (const entry of index) {
-    if (entry.kind === "rule") {
+    if (isRuleKind(entry.kind)) {
       let best: SearchFig | undefined;
       let gap = Infinity;
       for (const f of entry.figs ?? []) {
@@ -658,7 +661,7 @@ export function relaxedHits(index: SearchEntry[], texts: SearchTexts | null | un
   const words = [...new Set(a.content.filter((w) => w.length >= 2 && !softWords.has(w)))];
   if (words.length === 0) return [];
   const docs = texts ? textDocs(texts) : null;
-  const rules = index.filter((e) => e.kind === "rule");
+  const rules = index.filter((e) => isRuleKind(e.kind));
   const wf = words.map(forms);
   const has = (e: SearchEntry, f: string[]) => f.some((x) => entryTokens(e).forms.has(x)) || (docs?.get(e.key ?? "")?.forms ? f.some((x) => docs!.get(e.key!)!.forms.has(x)) : false);
   const idf = wf.map((f) => {

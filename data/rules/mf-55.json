@@ -12,6 +12,13 @@
   "recheck_date": "2027-06-30",
   "il_finance_file": "mutual-funds-and-money-market-funds.md",
   "checked": "2026-10-23",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "isa",
+      "name_he": "רשות ניירות ערך"
+    }
+  ],
   "sources": [
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf",

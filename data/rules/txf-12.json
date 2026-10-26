@@ -37,6 +37,7 @@
   },
   "il_finance_file": "tax-securities-foreign.md",
   "checked": "2026-10-22",
+  "scope": "general",
   "sources": [
     {
       "url": "https://www.irs.gov/pub/irs-trty/israel.pdf",

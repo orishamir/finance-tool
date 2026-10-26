@@ -102,6 +102,17 @@ describe("extract-sources: fixture Source lines", () => {
     expect(r.raw).toContain("as in FXD-07");
   });
 
+  it("a general rule's pointer to a company's term is an example, not a derivation (review, 2026-10-26)", () => {
+    const scopeOf = new Map([["FXD-07", "general"], ["FXD-12", "institution"]]);
+    const general = extractFromLine("as in FXD-07; the company's statement: FXD-12 · checked 2026-10-22 · primary", ctx({ ruleScope: "general", scopeOf }));
+    expect(general.derived_from).toEqual(["FXD-07"]);
+    expect(general.examples).toEqual(["FXD-12"]);
+    // a company's own term may point to anything: it derives from what it names
+    const own = extractFromLine("as in FXD-07; FXD-12 · checked 2026-10-22 · institution", ctx({ ruleScope: "institution", scopeOf }));
+    expect(own.derived_from).toEqual(["FXD-07", "FXD-12"]);
+    expect(own.examples).toEqual([]);
+  });
+
   it("a quoted Hebrew phrase becomes the quote, an elided or English one does not", () => {
     const line =
       '[Harel ceilings](https://media.harel-group.co.il/a.pdf), p. 1 "תקרת הפקדה שנתית לגמל להשקעה" · checked 2026-10-22 · institution; [Other](https://example.org/b), "the annual ceiling for deposits" ; [Third](https://example.org/c), "החל מיום ... הפקדות חדשות בלבד" · institution';

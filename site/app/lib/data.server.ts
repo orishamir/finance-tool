@@ -24,6 +24,7 @@ import type { z } from "zod";
 import { parseMdLink } from "./md-link";
 import { newestChecked } from "./data-as-of";
 import { staleCma, type SiteValue } from "./value";
+import { pointedIds } from "./scope";
 
 function findRoot(): string {
   let dir = process.cwd();
@@ -63,6 +64,27 @@ function readDir<T extends z.ZodType>(sub: string, schema: T): z.infer<T>[] {
 
 export function loadRules(): Record<string, RuleRecord> {
   return Object.fromEntries(readDir("data/rules", ruleRecord).map((r) => [r.id, r]));
+}
+
+/**
+ * The records a page's rule cards point at (`derived_from`, and a general rule's `examples`), and the ones those point at in turn,
+ * that the page does not hold itself: a page passes them as `ProvenanceData.pointed`, so every chip on a card opens its record
+ * (review, 2026-10-26: BRK-35's "לדוגמה" chip opened an empty card on the brokerage guide). They never join the page's own rules,
+ * which its checklist and its runs read.
+ */
+export function pointedRecords(have: Record<string, RuleRecord> | readonly RuleRecord[], all: Record<string, RuleRecord> = loadRules()): Record<string, RuleRecord> {
+  const own = new Set(Array.isArray(have) ? have.map((r) => r.id) : Object.keys(have));
+  const out: Record<string, RuleRecord> = {};
+  const queue = (Array.isArray(have) ? [...have] : Object.values(have)) as RuleRecord[];
+  while (queue.length > 0) {
+    const r = queue.pop()!;
+    for (const id of pointedIds(r)) {
+      if (own.has(id) || out[id] || !all[id]) continue;
+      out[id] = all[id]!;
+      queue.push(all[id]!);
+    }
+  }
+  return out;
 }
 
 export function loadParameters(): ParameterRecord[] {

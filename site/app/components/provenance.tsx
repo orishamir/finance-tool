@@ -3,8 +3,8 @@
 // in the same sheet, with a back arrow when they were reached from a number.
 import { createContext, useCallback, useContext, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router";
-import type { RuleRecord } from "@finance-tool/schema";
-import { buttons, computedInputs, flags as flagCopy, formulaNames, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
+import { companyTermRule, type CompanyTermRef, type RuleRecord } from "@finance-tool/schema";
+import { buttons, computedInputs, flags as flagCopy, formulaNames, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
 import { fmt, formatValue } from "../lib/format";
 import { hasHebrew, hostOf, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/source-label";
@@ -16,7 +16,8 @@ import type { TermRow } from "../lib/data.server";
 import { IconAlert, IconCalculator, IconCheck, IconClock, IconCopy, IconExternal, IconFile, IconLock, IconPencil, IconReset } from "./icons";
 import { Sheet } from "./Sheet";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
-import { Tpl } from "./kit";
+import { CompanyLinks, Tpl } from "./kit";
+import { chipName, companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, scopeCompanies, shownCompanies, type CompanyLink, type OwnDocs } from "../lib/scope";
 
 // ---------------------------------------------------------------- context
 
@@ -53,6 +54,17 @@ export interface ProvenanceData {
   openQuestions?: Record<string, { status?: "open" | "narrowed" | "closed"; closed_on?: string; title_he?: string; status_he?: string; blocks_he?: string }>;
   /** Per source host, the company's Hebrew name (`data/sources/publishers.json`); PageShell fills it for every page. */
   publishersHe?: Record<string, string>;
+  /** Per company of `data/sources/institutions.json`, where its terms are listed (D30): its page, or its group on /companies. PageShell fills it for every page. */
+  companies?: Record<string, CompanyLink>;
+  /** Per record that is not general, the companies whose own document it cites (review, 2026-10-26): only they list it, and the card names only them. PageShell fills it for every page. */
+  ownDocs?: OwnDocs;
+  /**
+   * The records the page's rule cards point at (`derived_from`, `examples`) that the page does not hold itself, so each chip on a card
+   * opens its record (`pointedRecords` in data.server.ts). Only chips and cards read it; the page's own logic reads `rules`.
+   */
+  pointed?: Record<string, RuleRecord>;
+  /** On a company's page, its registry id: a chip of a term that names several companies shows this one's name. */
+  company?: string;
 }
 
 /** What a rule affects: links to pages that use it, and whether the calculation engine reads it. */
@@ -60,6 +72,9 @@ export interface RuleUses {
   pages: { href: string; label: string }[];
   engine: boolean;
 }
+
+/** A rule's record for a chip or a card: the page's own, else one of the records its cards point at (`pointed`). */
+const ruleOf = (data: ProvenanceData | null | undefined, id: string): RuleRecord | undefined => data?.rules[id] ?? data?.pointed?.[id];
 
 export function ProvenanceProvider({ data, children }: { data: ProvenanceData; children: ReactNode }) {
   const [stack, setStack] = useState<Item[]>([]);
@@ -101,6 +116,11 @@ export function ProvenanceProvider({ data, children }: { data: ProvenanceData; c
 
 /** The page's provenance data, for the chips that must know what exists (a parameter card, a formula). */
 const DataCtx = createContext<ProvenanceData | null>(null);
+
+/** The page's provenance data, for a block that lays out rule cards or company links (the company pages' section, "תלוי בחברה"). */
+export function useProvenanceData(): ProvenanceData | null {
+  return useContext(DataCtx);
+}
 
 const PushCtx = createContext<(item: Item) => void>(() => {});
 
@@ -341,20 +361,87 @@ export function IdText({ text }: { text: string }) {
   );
 }
 
-/** The rule chip: `IdRef` for a rule id, kept under its old name so nothing else changes. */
-export function RuleRef({ id, className }: { id: string; className?: string }) {
-  return <IdRef id={id} className={className} />;
+/**
+ * The rule chip: `IdRef` for a rule id. A company's term (scope `institution`, or `unsettled` seen at named companies) shows the
+ * company's name instead of the code (spec 2026-10-25-rules-scope §4): on that company's page its own name, elsewhere the first with
+ * "ועוד" and the count of the others. The code stays in the card it opens and in the chip's spoken name.
+ */
+export function RuleRef({ id, className, withId }: { id: string; className?: string; /** Adds the code after the name: a line where two chips would read the same (RulesLine sets it). */ withId?: boolean }) {
+  const open = useOpen();
+  const data = useContext(DataCtx);
+  const rule = ruleOf(data, id);
+  const name = rule && !isGeneral(rule) ? chipName(rule, data?.ownDocs, data?.company, chipMore) : null;
+  if (!name) return <IdRef id={id} className={className} />;
+  return (
+    <button type="button" className={cx("rule-chip", className)} onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} aria-label={`${ruleCopy.title} ${id}, ${scopeTag(rule!, data?.ownDocs)}`}>
+      <bdi className="whitespace-nowrap">{name}</bdi>
+      {withId && (
+        <>
+          {/* the chip lays its children out as flex items, so the separator carries its own space */}
+          <span aria-hidden="true" className="mx-1 text-muted-foreground">·</span>
+          <bdi dir="ltr" className="slashed-zero whitespace-nowrap">{id}</bdi>
+        </>
+      )}
+    </button>
+  );
+}
+
+/** The chip words a line would show for each id (a company's name, or null for a code), so a name two chips share can carry its code. */
+function useChipNames(ids: readonly string[]): (string | null)[] {
+  const data = useContext(DataCtx);
+  return ids.map((id) => {
+    const rule = ruleOf(data, id);
+    return rule && !isGeneral(rule) ? chipName(rule, data?.ownDocs, data?.company, chipMore) : null;
+  });
+}
+
+const chipMore = (n: number) => (n === 1 ? scopeWords.chipMore.one : n === 2 ? scopeWords.chipMore.two : scopeWords.chipMore.many.replace("{n}", String(n)));
+
+/**
+ * The card's scope label: "חל על כולם", "של הראל ואלטשולר שחם" (the companies whose own documents say it), "לא הוכח שחל על כולם";
+ * "על סלייס וגלובלנט" for a record about companies that rests on none of their documents (a press report, a forum post).
+ */
+function scopeTag(rule: RuleRecord, ownDocs: OwnDocs | undefined): string {
+  if (rule.scope === "general") return scopeWords.tag.general;
+  if (rule.scope === "unsettled") return scopeWords.tag.unsettled;
+  // the same companies the chip counts (`shownCompanies`): those whose own documents say it, else everyone it is about
+  const names = joinNames(shownCompanies(rule, ownDocs).map((c) => c.name_he));
+  return (ownDocCompanies(rule, ownDocs).length > 0 ? scopeWords.tag.institution : scopeWords.tag.about).replace("{names}", names);
+}
+
+/**
+ * "תלוי בחברה" and the companies, each a link to where its terms are listed: for a property each company sets for itself (spec §4: the
+ * guide never states one company's term as the product's). `ids` are the records that hold the companies' terms (a wrapper's
+ * `company_terms` entries: a record, or a record with the companies whose term on the property it states); the companies are those
+ * whose sections list them (their own documents say it), in order, once each. `lead` replaces "תלוי בחברה" ("תלוי בבנק"). Nothing
+ * renders when none of the records is on the page.
+ */
+export function VariesByCompany({ ids, lead = scopeWords.varies, size, className }: { ids: readonly CompanyTermRef[]; lead?: string; size?: "sm" | "xs"; className?: string }) {
+  const data = useContext(DataCtx);
+  const seen = new Set<string>();
+  const items = ids
+    .flatMap((ref) => {
+      const r = ruleOf(data, companyTermRule(ref));
+      if (!r) return [];
+      const listed = listedCompanies(r, data?.ownDocs);
+      return companyLinksOf(typeof ref === "string" ? listed : listed.filter((c) => ref.companies.includes(c.id)), data?.companies);
+    })
+    .filter((c) => !seen.has(c.id) && seen.add(c.id));
+  return <CompanyLinks lead={lead} items={items} size={size} className={className} />;
 }
 
 /** "כללים:" then the chips. Always the last line of its block, never inside a sentence (design review C1). */
 export function RulesLine({ ids, lead, className }: { ids: readonly string[]; lead?: ReactNode; className?: string }) {
+  const names = useChipNames(ids);
   if (ids.length === 0 && !lead) return null;
+  // a company's name shown on two chips of the line (four S&P rulebook records on the index page) keeps each chip's code beside it
+  const repeated = new Set(names.filter((n, i) => n !== null && names.indexOf(n) !== i));
   return (
     <p className={cx("rules-line text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1", className)}>
       {lead}
       {ids.length > 0 && <span>כללים:</span>}
-      {ids.map((id) => (
-        <RuleRef key={id} id={id} />
+      {ids.map((id, i) => (
+        <RuleRef key={id} id={id} withId={names[i] !== null && repeated.has(names[i]!)} />
       ))}
     </p>
   );
@@ -425,8 +512,15 @@ function Iso({ children, ltr }: { children: ReactNode; ltr?: boolean }) {
   return <bdi dir={ltr ? "ltr" : undefined}>{children}</bdi>;
 }
 
+/**
+ * Whether a source is the company's own document on its own term (D31): `true` for a figure's one source (`SiteValue.own`), or a test
+ * of each source on a rule card (a source on the named company's own sites; review, 2026-10-26: BRK-43 cites IB Ireland's page, which
+ * is not Interactive Brokers' own, so it keeps "לפי החברה").
+ */
+type OwnSource = boolean | ((source: RuleSource) => boolean);
+
 /** One source: the link line, the quoted words, then when it was read (synthesis 3.3). */
-function OneSource({ source, rule, today, english, own }: { source: RuleSource; rule?: Pick<SourcedRule, "likely_to_change" | "recheck_date">; today: string; english?: boolean; own?: boolean }) {
+function OneSource({ source, rule, today, english, own }: { source: RuleSource; rule?: Pick<SourcedRule, "likely_to_change" | "recheck_date">; today: string; english?: boolean; own?: OwnSource }) {
   // a data file names its company in English: the publishers table gives the Hebrew name by the source's host (founder, 2026-10-26)
   const publishersHe = useContext(DataCtx)?.publishersHe;
   const host = hostOf(source.url);
@@ -434,8 +528,10 @@ function OneSource({ source, rule, today, english, own }: { source: RuleSource; 
   const n = sourceLabel2(he ? { ...source, publisher_he: he } : source);
   const title = shownTitle(n.title, source.url, source.kind);
   const pubHebrew = hasHebrew(n.publisher);
-  // D31: a company's own figure on its own product is shown with a neutral source line, no "לפי החברה"
-  const weak = source.strength !== "primary" && !own ? sourceCopy.weak[source.strength] : null;
+  // D31: a company's own document on its own term is shown with a neutral source line, no "לפי החברה"; `own` lifts only that label,
+  // never "מקור משני" (a press article, a forum post) or "עותק" (a copy of an official text): review, 2026-10-26
+  const isOwn = typeof own === "function" ? own(source) : !!own;
+  const weak = source.strength !== "primary" && !(isOwn && source.strength === "institution") ? sourceCopy.weak[source.strength] : null;
   const changed = mayHaveChanged(rule ?? { likely_to_change: "no" }, source, today);
   const titleNode = <Iso ltr={title.host || !isHebrewTitle(n.title)}>{title.text}</Iso>;
   return (
@@ -485,7 +581,7 @@ function OneSource({ source, rule, today, english, own }: { source: RuleSource; 
  * The source block (synthesis 3.3): the first source in full; further ones behind "עוד מקור אחד" in the sheet and all
  * shown when `inline` (the rules pages). `english` keeps the English title in a collapsed line when the shown name is a host.
  */
-export function SourceBlock({ source, rule, today, inline, english, own }: { source: RuleSource | readonly RuleSource[]; rule?: Pick<SourcedRule, "likely_to_change" | "recheck_date">; today: string; inline?: boolean; english?: boolean; own?: boolean }) {
+export function SourceBlock({ source, rule, today, inline, english, own }: { source: RuleSource | readonly RuleSource[]; rule?: Pick<SourcedRule, "likely_to_change" | "recheck_date">; today: string; inline?: boolean; english?: boolean; own?: OwnSource }) {
   const list = Array.isArray(source) ? (source as readonly RuleSource[]) : [source as RuleSource];
   const [first, ...rest] = list;
   if (!first) return null;
@@ -859,7 +955,7 @@ export function ValueSheet({ value, exact, data, headId, descId }: { value: Site
                       <RuleRef id={r.id} />
                       <StrengthLabel strength={r.strength} />
                     </span>
-                    {data.rules[r.id] && <FirstSourceLine rule={data.rules[r.id]!} />}
+                    {ruleOf(data, r.id) && <FirstSourceLine rule={ruleOf(data, r.id)!} />}
                   </div>
                 ))}
               </div>
@@ -934,7 +1030,7 @@ function ShownRuleTitle({ rule }: { rule: RuleRecord }) {
 }
 
 export function RuleCard({ id, data, headId, inline }: { id: string; data: ProvenanceData; headId?: string; inline?: boolean }) {
-  const rule = data.rules[id];
+  const rule = ruleOf(data, id);
   if (!rule) {
     return (
       <div className="flex flex-col gap-2">
@@ -952,6 +1048,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
   const sources = pickSources(sourced);
   const uses = data.ruleUses?.[id];
   const derived = sourced.derived_from ?? [];
+  const examples = rule.examples ?? [];
   // the figure's Hebrew name when the record has one; else its key as written
   const figureLabel = (name: string) => (rule.figure_names_he?.[name] ? <span className="text-xs">{rule.figure_names_he[name]}</span> : <bdi dir="ltr" className="text-xs">{name}</bdi>);
   const unitSuffix = (unit: string) => (suffixUnits.has(unit) ? <span className="text-sm text-muted-foreground"> {unitWordOf(unit)}</span> : null);
@@ -996,11 +1093,17 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
           {!open && " · "}
           {!open && <ShownRuleTitle rule={rule} />}
         </h2>
-        {isExperience(id) ? (
-          <Tag tone="neutral">{ruleCardMore.experienceTag}</Tag>
-        ) : (
-          (rule.strength === "open" || rule.strength === "institution" || rule.strength === "secondary") && <StrengthLabel strength={rule.strength} />
-        )}
+        {/* who it applies to (D30): a neutral label, never a warning; the strength tag stays only for an open or second-hand source, or a general rule read from a company's document */}
+        <div className="flex flex-wrap items-center gap-1.5">
+          <Tag tone="neutral">{scopeTag(rule, data.ownDocs)}</Tag>
+          {/* a record the rule base keeps that is not a rule says so: its foot leads to "לא נכלל ככלל" on /companies (review, 2026-10-26) */}
+          {isNotRule(id) && !isGeneral(rule) && !isExperience(id) && <Tag tone="neutral">{scopeWords.notRule.tag}</Tag>}
+          {isExperience(id) ? (
+            <Tag tone="neutral">{ruleCardMore.experienceTag}</Tag>
+          ) : (
+            (rule.strength === "open" || rule.strength === "secondary" || (rule.strength === "institution" && rule.scope === "general")) && <StrengthLabel strength={rule.strength} />
+          )}
+        </div>
       </header>
       {open ? (
         <Callout tone="blocked">
@@ -1014,6 +1117,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
       ) : (
         <p className="text-sm text-muted-foreground">{ruleCopy.noText}</p>
       )}
+      {!isGeneral(rule) && <p className="text-sm text-muted-foreground">{scopeLine(rule, data.ownDocs)}</p>}
       {derived.length > 0 && (
         <div className="flex flex-col gap-1">
           <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -1025,8 +1129,18 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
           <p className="text-xs text-muted-foreground">{ruleCardMore.derivedLine}</p>
         </div>
       )}
+      {/* a general rule's pointers to companies' terms: named examples (spec §1), never "נגזר מ־" (review, 2026-10-26) */}
+      {examples.length > 0 && (
+        <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
+          <span>{ruleCardMore.examples}</span>
+          {examples.map((d) => (
+            <RuleRef key={d} id={d} />
+          ))}
+        </p>
+      )}
       {sources.length > 0 ? (
-        <SourceBlock source={sources} rule={sourced} today={data.today} inline={inline} />
+        // a company's term read from that company's own document is its own context (D31): the source line carries no "לפי החברה"
+        <SourceBlock source={sources} rule={sourced} today={data.today} inline={inline} own={rule.scope === "institution" ? (s) => isOwnSourceOf(rule, s, data.ownDocs, data.companies) : false} />
       ) : (
         // audit A26: rule records without a source link are shown as such, not hidden
         <p className="text-sm text-muted-foreground">{ruleCopy.sourceMissing}</p>
@@ -1110,9 +1224,43 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
       {/* the card's foot: pushed to the bottom, so cards side by side have it at one height */}
       <div className="mt-auto flex flex-col gap-3 pt-1">
         {sources[0] && <CitationBox text={citationText(sourced, sources[0], sources[0].checked)} />}
-        {!inline && <LinkButton to={`/rules#${id}`}>{ruleCopy.all}</LinkButton>}
+        {!inline && <CardFoot rule={rule} data={data} />}
       </div>
     </div>
+  );
+}
+
+/**
+ * "נמצא במסמכים של …; בחברות אחרות זה יכול להיות אחרת." for a company's term, naming only the companies whose own documents it cites;
+ * the unsettled line for a rule not shown to hold everywhere; "המקורות כאן אינם מסמכים של …" for a record about companies that cites
+ * none of their documents (a press report, a forum post: review, 2026-10-26). A not-rule that cites a company's document says it is
+ * kept, not shown as a rule, so its line agrees with its foot ("לכל מה שלא נכלל ככלל").
+ */
+function scopeLine(rule: RuleRecord, ownDocs: OwnDocs | undefined): string {
+  const own = joinNames(ownDocCompanies(rule, ownDocs).map((c) => c.name_he));
+  const named = joinNames(scopeCompanies(rule).map((c) => c.name_he));
+  if (own && isNotRule(rule.id)) return scopeWords.notRule.lineOwn.replace("{names}", own);
+  if (rule.scope === "institution") return own ? scopeWords.line.institution.replace("{names}", own) : scopeWords.line.notTheirs.replace("{names}", named);
+  return own ? scopeWords.line.unsettledSeen.replace("{names}", own) : scopeWords.line.unsettled;
+}
+
+/**
+ * Where to read on (spec §4): a general rule to the rules page, filtered to the page's product when there is one; a company's term to
+ * everything found at each company whose section lists it (one link per company), and a record no section lists (a not-rule) to its
+ * group on /companies.
+ */
+function CardFoot({ rule, data }: { rule: RuleRecord; data: ProvenanceData }) {
+  const close = useContext(CloseCtx);
+  if (isGeneral(rule)) {
+    return data.rulesOf ? <LinkButton to={`${data.rulesOf.href}#${rule.id}`} onClick={close}>{scopeWords.rulesOf.replace("{product}", data.rulesOf.name)}</LinkButton> : <LinkButton to={`/rules#${rule.id}`} onClick={close}>{ruleCopy.all}</LinkButton>;
+  }
+  const links = companyLinksOf(listedCompanies(rule, data.ownDocs), data.companies).map((c) => ({ name: c.name, href: c.hasPage ? `${c.href}#${rule.id}` : c.href }));
+  if (links.length === 0) return <LinkButton to={`/companies#${noCompanyAnchor}`} onClick={close}>{scopeWords.allNoCompany}</LinkButton>;
+  if (links.length === 1) return <LinkButton to={links[0]!.href} onClick={close}>{scopeWords.allAt.replace("{name}", links[0]!.name)}</LinkButton>;
+  return (
+    <span onClick={close}>
+      <CompanyLinks lead={scopeWords.allAt.replace(" {name}", "")} items={links} />
+    </span>
   );
 }
 
@@ -1176,7 +1324,8 @@ export function TermCard({ id, data, headId }: { id: string; data: ProvenanceDat
           </Row>
         </dl>
       )}
-      {term.ruleIds.length > 0 && <RulesLine ids={term.ruleIds} />}
+      {/* a definition rests on general rules only (D30): a company's term the glossary row cites is on that company's page */}
+      {generalOnly(term.ruleIds, data.rules).length > 0 && <RulesLine ids={generalOnly(term.ruleIds, data.rules)} />}
     </div>
   );
 }
