@@ -1924,6 +1924,8 @@ The founder, 2026-10-26: the company page's last column shows something other th
 | The sheet, the inputs | החשיפה לשוק המניות · החשיפה למטבע חוץ · סך נכסי המסלול |
 | The unit of the regulator's amounts | `{מספר}` מיליון ₪ |
 
+Fee cell and labels (D36, the same day): header "דמי ניהול, ממוצע `{שנה}`"; each cell "`{אחוז}` מהחיסכון" over "`{אחוז}` מההפקדות" (phone: "דמי ניהול, ממוצע: `{אחוז}` מהחיסכון `{אחוז}` מההפקדות"); under the table "התקרה בחוק: `{אחוז}` מהחיסכון, `{אחוז}` מההפקדות" and "בנוסף לדמי הניהול יורדות מהקופה הוצאות ישירות (עמלות מסחר, משמורת ועוד), שלא מופיעות כאן: הן נראות בתשואה, לא כשורה בחשבון." with the PF-10 chip; labels "חדש" · "לעובדי סקטור מסוים" · "לעובדי גוף מסוים" beside "ברירת המחדל".
+
 Removed the same day with the fit mark on these pages: the row mark (מתאים · לא מתאים · אין כלל לסיווג הזה, "התאמה למטרה:") and the strip's "ההתאמה לפי המטרה השמורה:" there; the workbench keeps them (`docs/roadmap.md`, "Not final").
 
 ## 9. Release 5 screens
