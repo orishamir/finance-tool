@@ -7,7 +7,7 @@ import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact, factNumber, planModel } from "../../lib/guide-signature";
 import { entered as enteredValue } from "../../lib/value";
-import { Callout, ChartLegend, Marker, MarkerMark, NumberField, SegmentedControl, Stat, StatRow, Swatch, useWidth } from "../kit";
+import { Callout, ChartLegend, InputSlot, Marker, MarkerMark, NumberField, SegmentedControl, Stat, StatRow, Swatch, useWidth } from "../kit";
 import { IdText, Num, RulesLine } from "../provenance";
 import { SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
 
@@ -131,7 +131,7 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
 
       <div className="flex flex-col gap-3">
         <p className="text-sm font-medium">
-          {copy.plan.at.before} <bdi dir="ltr">{m}</bdi> {copy.plan.at.after}:
+          {copy.plan.at.before} <InputSlot chars={3}><bdi dir="ltr">{m}</bdi></InputSlot> {copy.plan.at.after}:
         </p>
         <StatRow cols={3}>
           <Stat label={copy.plan.figures.free} tone="value">{free && <Num value={free} />}</Stat>

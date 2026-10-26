@@ -246,7 +246,8 @@ Why "למי ששלח לכם את האתר": every friend reached the site throug
 
 | Key in `copy.ts` | Hebrew | Note |
 |---|---|---|
-| `guide.headline.afterNominal` | אחרי דמי ניהול ומס, בשקלים של העתיד | the headline's tail when the switch is on future shekels |
+| `guide.headline.afterBoth` · `afterTax` · `afterFees` · `real` · `nominal` | אחרי דמי ניהול ומס · אחרי מס · אחרי דמי ניהול · בכסף של היום · בשקלים של העתיד | the headline's tail (changed 2026-10-26, founder): it names only the parts the run has, then the value mode. Was one string "אחרי דמי ניהול ומס, בשקלים של העתיד" and its real twin, which named fees and tax on a current account that has neither |
+| `guide.editSlot` | שינוי של | spoken name of the pencil beside a number the reader sets in the example sentence, before the field's name (kit `InputSlot`, 2026-10-26) |
 | `guide.modeLabel` | אופן הצגת הסכומים | screen-reader name of the real / nominal switch. Was "מטבע ההצגה": the switch is not about a currency |
 | `guide.feeNoteOther` | הסכומים בפועל נקבעים אצל הגורם המציע. כאן מופיעים סוגי העלויות, ותקרה כשיש תקרה בחוק. | the fee-table note for a product that is not a provident fund (the provident note is above) |
 | `guide.generalTermsLabel` | מונחים כלליים | disclosure under the term table |

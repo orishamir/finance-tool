@@ -222,6 +222,40 @@
     inset: -11px -4px;
   }
 
+  /* ---- a number the reader sets, inside a sentence (kit InputSlot, 2026-10-26): a fixed-width blank, so the line never jumps */
+  .input-slot {
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 2px;
+    padding-inline: 2px;
+    border-bottom: 1px dashed color-mix(in oklab, var(--entered) 55%, var(--border));
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .input-slot-value {
+    flex: 1;
+    text-align: center;
+  }
+  .input-slot-edit {
+    position: relative;
+    display: inline-flex;
+    align-self: center;
+    padding: 2px;
+    border-radius: 4px;
+    color: var(--entered);
+    cursor: pointer;
+  }
+  .input-slot-edit::after {
+    /* a 44 px touch target around a 16 px pencil */
+    content: "";
+    position: absolute;
+    inset: -14px -8px;
+  }
+  .input-slot-edit:hover {
+    background: var(--entered-subtle);
+  }
+
   /* ---- chips */
   .a-chip {
     display: inline-flex;

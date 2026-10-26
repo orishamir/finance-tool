@@ -13,7 +13,7 @@ import { useGoals } from "../../lib/goal";
 import { useInputs } from "../../lib/inputs";
 import { entered as enteredValue, type SiteValue } from "../../lib/value";
 import type { Bundle } from "../../lib/engine";
-import { Callout, GainBars, Marker, MarkerMark, NumberField, Sentence, useWidth } from "../kit";
+import { Callout, GainBars, InputSlot, Marker, MarkerMark, NumberField, Sentence, useWidth } from "../kit";
 import { Num, RuleRef, RulesLine, Term } from "../provenance";
 import { G2Gap, HoldRow, PlanInputs, text } from "./g2-parts";
 import { figure, inputSite, notFeeFlag, rulesOfBundle, runFigure, useSigInputs, yearsRange, type VisualProps } from "./kit";
@@ -224,7 +224,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
 
       <div className="flex flex-col gap-3">
         <p className="text-sm font-medium">
-          {copy.provident.at.before} <bdi>{fmt.years(years)}</bdi>
+          {copy.provident.at.before} <InputSlot chars={10}><bdi>{fmt.years(years)}</bdi></InputSlot>
           {model.ageAtExit !== null ? (
             <>
               {" "}

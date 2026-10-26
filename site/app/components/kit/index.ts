@@ -9,7 +9,7 @@ export { CoverageFold, Disclosure, FoldGroup, type DisclosureProps, type FoldGro
 export { ChoiceChips, SegmentedControl, type SegmentOption } from "./choice";
 export { ChipList, dropOrder, type ChipItem, type ChipListProps, type ChipListWords } from "./chip-list";
 export { PlanChips, type PlanChipItem } from "./plan-chips";
-export { Sentence, Tpl, fill } from "./sentence";
+export { InputSlot, Sentence, Tpl, fill } from "./sentence";
 export { HeadlineFigure, KeyValue, KeyValueList, Stat, StatRow, type KeyValueItem } from "./stat";
 export { GapNote, SourceLine } from "./notes";
 export { RankBadge } from "./rank";

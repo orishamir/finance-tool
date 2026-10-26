@@ -7,7 +7,7 @@ import type { SiteValue } from "../../lib/value";
 import { computed, entered } from "../../lib/value";
 import { IconLock } from "../icons";
 import { IdRef, Num } from "../provenance";
-import { Button, Callout, Card, ChartLegend, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CoverageFold, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, KeyValue, KeyValueList, LinkButton, Marker, MarkerMark, NumberField, ParameterLine, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, SourceLine, Stat, StatRow, Swatch, Tag, Tpl, cx, useWidth } from "./index";
+import { Button, Callout, Card, ChartLegend, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CoverageFold, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LinkButton, Marker, MarkerMark, NumberField, ParameterLine, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, SourceLine, Stat, StatRow, Swatch, Tag, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -306,6 +306,21 @@ function Words({ today }: { today: string }) {
           </State>
           <State label="Tpl">
             <Tpl t="{a} · {b}" vars={{ a: <Num value={s.sourced} display="8" />, b: <Num value={s.comp} /> }} />
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="InputSlot" use={g.uses.InputSlot}>
+        <Grid>
+          <State label={`${g.states.entered}, chars=10`}>
+            <Sentence size="sm" measure>
+              {g.sample.sentenceBefore} <InputSlot chars={10} onEdit={() => undefined} editLabel="שינוי">
+                <Num value={s.ent} />
+              </InputSlot>{" "}
+              {g.sample.sentenceMid} <InputSlot chars={8} onEdit={() => undefined} editLabel="שינוי">
+                <Num value={s.sourced} display="8" />
+              </InputSlot>
+              .
+            </Sentence>
           </State>
         </Grid>
       </Demo>
