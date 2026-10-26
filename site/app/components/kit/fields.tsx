@@ -170,16 +170,26 @@ export function NumberField(props: FieldProps) {
   );
 }
 
-/** The line under a field: "loading", or "entered by you" with a reset; nothing while the field holds its start value. */
-export function FieldState({ entered, onReset, disabled }: { entered: boolean; onReset: () => void; disabled?: boolean }) {
-  if (disabled) return <span className="text-xs text-muted-foreground">{copy.loading}</span>;
-  if (!entered) return null;
+/**
+ * The line under a field: "loading", or "entered by you" with a reset (`canReset` false leaves the tag alone); empty while the field holds
+ * its start value. The line keeps its height either way: the tag and the reset appearing used to push everything under the field down as
+ * a slider moved (founder, 2026-10-26).
+ */
+export function FieldState({ entered, onReset, disabled, canReset = true }: { entered: boolean; onReset: () => void; disabled?: boolean; canReset?: boolean }) {
   return (
-    <span className="flex items-center gap-2 flex-wrap">
-      <StateTag state="entered" />
-      <Button variant="quiet" className="text-sm -ms-2 min-h-target" onClick={onReset}>
-        <IconReset size={16} /> {buttons.resetOne}
-      </Button>
+    <span className="flex items-center gap-2 min-h-target">
+      {disabled ? (
+        <span className="text-xs text-muted-foreground">{copy.loading}</span>
+      ) : entered ? (
+        <>
+          <StateTag state="entered" />
+          {canReset && (
+            <Button variant="quiet" className="text-sm -ms-2 min-h-target" onClick={onReset}>
+              <IconReset size={16} /> {buttons.resetOne}
+            </Button>
+          )}
+        </>
+      ) : null}
     </span>
   );
 }
