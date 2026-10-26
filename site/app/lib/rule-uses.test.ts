@@ -2,11 +2,15 @@ import { describe, expect, it } from "vitest";
 import { loadRuleUses, ruleScores, ruleUseOf, scoreOf } from "./rule-uses.server";
 
 describe("rule uses", () => {
-  it("TXG-02 is read by the engine and shown on at least one page", () => {
-    const u = ruleUseOf("TXG-02");
+  // TXG-02 was the example until 2026-10-26; its only page, /holdings, is held for review (lib/review.ts)
+  it("TXI-03 is read by the engine and shown on at least one page", () => {
+    const u = ruleUseOf("TXI-03");
     expect(u.engine).toBe(true);
     expect(u.pages.length).toBeGreaterThan(0);
     expect(u.pages.every((p) => p.href.startsWith("/") && p.label.length > 0)).toBe(true);
+  });
+  it("a page held for review is not a use", () => {
+    expect(ruleUseOf("TXG-02").pages.some((p) => p.href === "/holdings")).toBe(false);
   });
   it("an unknown id has no uses", () => {
     expect(ruleUseOf("ZZZ-99")).toMatchObject({ pages: [], engine: false, collections: {}, score: 0 });

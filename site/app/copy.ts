@@ -9,6 +9,8 @@ export const site = {
   searchPlaceholder: "הדביקו שם של מוצר, מסלול או מונח",
   menu: "תפריט",
   close: "סגירה",
+  // 2026-10-26 (founder): a page or visual held for review (lib/review.ts) says so where it still shows
+  held: { title: "בבדיקה", page: "העמוד הזה עוד לא מקושר מהאתר: הוא מחכה לבדיקה של העיצוב והחוויה. אפשר להגיע אליו רק מהכתובת.", signature: "התרשים הזה מוסתר בעמוד: הוא מחכה לבדיקה. רואים אותו כאן רק בגלל ⁦?review⁩ בכתובת." },
   back: "חזרה",
   currentPage: "העמוד הנוכחי",
   menuItems: [
@@ -2901,7 +2903,7 @@ export const documents = {
  */
 export const guideSignature = {
   indexTitle: "מה מייחד",
-  titleBefore: "מה מייחד את",
+  titleBefore: "מה מייחד", // founder 2026-10-26: without "את" ("מה מייחד קרן כספית מתחדשת")
   pages: {
     "current-account": { name: "חשבון עובר ושב", question: "כמה עולה להשאיר כסף בעו״ש?", alt: "קרן כספית יומית", altId: "money-market-fund-daily", altLine: "אותו כסף, באותה זמינות, בקרן כספית יומית. כך נראה ההפרש." },
     "bank-deposit": { name: "פיקדון בנקאי", question: "על מה מוותרים כשנועלים את הכסף?", alt: "קרן כספית יומית", altId: "money-market-fund-daily", altLine: "אותו כסף בקרן כספית יומית, שאפשר לפדות בכל יום מסחר." },

@@ -3,11 +3,12 @@ import { createContext, useContext, useEffect, useId, useMemo, useRef, useState,
 import { Link, useLocation, useRouteLoaderData } from "react-router";
 import { companies as companiesCopy, formulaNames, home as homeCopy, knowledgeEntry, r3workbench, site } from "../copy";
 import { fmt } from "../lib/format";
+import { isHeld, shown } from "../lib/review";
 import { IconBack, IconMenu, IconSearch } from "./icons";
 import { ProvenanceProvider, type ProvenanceData } from "./provenance";
 import { SearchCombo, SearchSheet } from "./search";
 import { Sheet } from "./Sheet";
-import { Button, cx } from "./kit";
+import { Button, Callout, cx } from "./kit";
 
 export type Current = "guide" | "questions" | "decoder" | "rules" | "documents" | "parameters" | "home" | "goal" | "holdings" | "other";
 
@@ -27,7 +28,7 @@ const doorItems: NavItem[] = [
   { href: r3workbench.entry.holdings.href, label: r3workbench.entry.holdings.title, current: r3workbench.entry.holdings.current },
   byHref("/indices"),
   { href: homeCopy.door3.href, label: homeCopy.door3.title },
-];
+].filter((i) => shown(i.href)); // a page held for review has no menu item (lib/review.ts)
 /** "Behind the scenes": the rule base, the parameters, what is not covered, the tool for moving to another device. */
 const documentsItem: NavItem = { href: "/documents", label: knowledgeEntry.menuDocuments, current: "documents" };
 const behindItems: NavItem[] = [byHref("/rules"), documentsItem, byHref("/parameters"), { href: site.notCovered.href, label: site.notCovered.label }, { href: r3workbench.entry.transfer.href, label: r3workbench.entry.transfer.label }];
@@ -35,7 +36,7 @@ const behindItems: NavItem[] = [byHref("/rules"), documentsItem, byHref("/parame
 /** The footer links: the same pages, destinations first, then the reference pages, then the tool. */
 const footerLinks = (() => {
   const by = (href: string) => site.footer.find((f) => f.href === href)!;
-  return [by("/questions"), by("/goal"), { href: r3workbench.entry.holdings.href, label: r3workbench.entry.holdings.title }, by("/rules"), { href: documentsItem.href, label: documentsItem.label }, by("/parameters"), by("/not-covered"), { href: r3workbench.entry.transfer.href, label: r3workbench.entry.transfer.label }];
+  return [by("/questions"), by("/goal"), { href: r3workbench.entry.holdings.href, label: r3workbench.entry.holdings.title }, by("/rules"), { href: documentsItem.href, label: documentsItem.label }, by("/parameters"), by("/not-covered"), { href: r3workbench.entry.transfer.href, label: r3workbench.entry.transfer.label }].filter((i) => shown(i.href));
 })();
 
 /** A page is the current one when the address is under the item's, or the page says it belongs to the item. */
@@ -83,7 +84,14 @@ export function PageShell({ current, data: pageData, children, wide }: { current
       <SearchOpenCtx.Provider value={openSearch}>
         <div className="min-h-dvh flex flex-col">
           <Header current={current} ready={ready} onMenu={() => setMenuOpen(true)} onSearch={openSearch} />
-          <main className={cx("flex-1 w-full mx-auto px-gutter pb-10", wide ? "max-w-page" : "max-w-page")}>{children}</main>
+          <main className={cx("flex-1 w-full mx-auto px-gutter pb-10", wide ? "max-w-page" : "max-w-page")}>
+            {isHeld(location.pathname) && (
+              <Callout tone="caution" title={site.held.title} className="mt-4">
+                {site.held.page}
+              </Callout>
+            )}
+            {children}
+          </main>
           <Footer />
         </div>
         <ToTop />

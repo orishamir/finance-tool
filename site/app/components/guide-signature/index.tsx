@@ -2,11 +2,12 @@
 // the old illustrative timeline folded below) and the registry from wrapper id to its visual. A wrapper not in the registry has no
 // block and keeps its timeline open where it was (brokerage account, child savings, IRA study fund, IRA provident).
 // Builder G2 adds its visuals to `signatureRegistry` (and its data builders to `builders` in lib/guide-signature.server.ts).
-import type { ComponentType, ReactNode } from "react";
+import { useEffect, useState, type ComponentType, type ReactNode } from "react";
 import { Link } from "react-router";
-import { guideSignature as copy } from "../../copy";
+import { guideSignature as copy, site } from "../../copy";
+import { reviewParam } from "../../lib/review";
 import type { SignatureData } from "../../lib/guide-signature";
-import { Card, Disclosure } from "../kit";
+import { Callout, Card, Disclosure } from "../kit";
 import { BankDepositVisual } from "./bank-deposit";
 import { CurrentAccountVisual } from "./current-account";
 import { GovernmentBondVisual } from "./government-bond";
@@ -36,14 +37,29 @@ export const signatureRegistry: Record<string, ComponentType<VisualProps>> = {
 
 export const hasSignatureVisual = (id: string, data: SignatureData | null): data is SignatureData => !!data && id in signatureRegistry && id in copy.pages;
 
-/** Title of the section, "מה מייחד את …". */
+/**
+ * Whether the address asks for the visuals held for review (`?review`, lib/review.ts). Read after the first render: the page is
+ * pre-rendered without a query, so reading it during render would not match the HTML.
+ */
+export function useReviewMode(): boolean {
+  const [review, setReview] = useState(false);
+  useEffect(() => setReview(new URLSearchParams(window.location.search).has(reviewParam)), []);
+  return review;
+}
+
+/** Title of the section, "מה מייחד …". */
 export const signatureTitle = (id: string) => `${copy.titleBefore} ${copy.pages[id]!.name}`;
 
-export function SignatureFrame({ id, data, today, timeline }: { id: string; data: SignatureData; today: string; timeline: ReactNode }) {
+export function SignatureFrame({ id, data, today, timeline, held }: { id: string; data: SignatureData; today: string; timeline: ReactNode; held?: boolean }) {
   const Visual = signatureRegistry[id]!;
   const page = copy.pages[id]!;
   return (
     <>
+      {held && (
+        <Callout tone="caution" title={site.held.title}>
+          {site.held.signature}
+        </Callout>
+      )}
       {/* the question is the card's title: outside the card it read as a second heading under the section's on a phone */}
       <Card className="flex flex-col gap-4">
         <p className="text-lg font-semibold max-w-measure">{page.question}</p>

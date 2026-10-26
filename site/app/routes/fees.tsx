@@ -32,6 +32,7 @@ import { holdingName, useHolding } from "../lib/holdings";
 import { bundleLinks } from "../lib/bundle";
 import { playbookWrappers } from "../lib/playbook";
 import { recordsById } from "../lib/scope";
+import { shown } from "../lib/review";
 
 /** The data files this page fetches after it starts, requested with the HTML (audit 2026-10-24, A52). */
 export const links = () => bundleLinks("fees-data.json", "compare-bundle.json");
@@ -122,9 +123,11 @@ function NotFoundLinks() {
       <Link to="/guide" className="text-link hover:underline min-h-target inline-flex items-center">
         {r3fees.notFoundLinks.guide}
       </Link>
-      <Link to="/holdings" className="text-link hover:underline min-h-target inline-flex items-center">
-        {r3fees.notFoundLinks.holdings}
-      </Link>
+      {shown("/holdings") && (
+        <Link to="/holdings" className="text-link hover:underline min-h-target inline-flex items-center">
+          {r3fees.notFoundLinks.holdings}
+        </Link>
+      )}
     </span>
   );
 }
@@ -141,10 +144,15 @@ function errorText(e: PlanError, wrapperId: string): React.ReactNode {
     case "no-terms":
       return (
         <>
-          {r3fees.review.noTerms}{" "}
-          <Link to="/holdings" className="text-link hover:underline">
-            {r3fees.notFoundLinks.holdings}
-          </Link>
+          {r3fees.review.noTerms}
+          {shown("/holdings") && (
+            <>
+              {" "}
+              <Link to="/holdings" className="text-link hover:underline">
+                {r3fees.notFoundLinks.holdings}
+              </Link>
+            </>
+          )}
         </>
       );
     case "need-input":

@@ -12,6 +12,7 @@ import { Card, ChipList, Disclosure } from "../components/kit";
 import { GoalsProvider, isBlank, useGoals, type Presets } from "../lib/goal";
 import type { Range } from "../components/compare/goal-form";
 import { useHoldings } from "../lib/state";
+import { shown } from "../lib/review";
 
 // The strip (and the comparison code behind it) is fetched only when a goal is saved on the device (audit 2026-10-24, A52).
 const SavedGoalStrip = lazy(() => import("../components/compare/strip").then((m) => ({ default: m.SavedGoalStrip })));
@@ -142,7 +143,7 @@ function HomeBody({ presets, meta, today, bounds, questions, guideTypes }: { que
             the fourth (design-system 7.9, flows 12.5, "chosen 2026-10-23, revisable") is for his review the same way */}
         <div className="grid gap-4 md:grid-cols-2 lg:w-[calc(100%+8rem)] lg:-mx-16 xl:w-auto xl:mx-0 xl:grid-cols-1">
           <GuideDoor types={guideTypes} />
-          {[copy.door2, copy.door3, r3workbench.entry.holdings].map((door) => (
+          {[copy.door2, copy.door3, r3workbench.entry.holdings].filter((door) => shown(door.href)).map((door) => (
             <Link key={door.href} to={door.href} className="block group">
               <DoorCard title={door.title} line={door.line} extra={door.href === r3workbench.entry.holdings.href ? holdingsLine : null} />
             </Link>
