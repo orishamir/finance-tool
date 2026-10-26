@@ -150,13 +150,34 @@
   },
   "company_terms": {
     "real-vs-nominal": [
-      "BANK-36"
+      {
+        "rule": "BANK-36",
+        "companies": [
+          "leumi",
+          "yahav",
+          "discount"
+        ]
+      }
     ],
     "liquidity-lockup": [
-      "BANK-37"
+      {
+        "rule": "BANK-37",
+        "companies": [
+          "leumi",
+          "massad",
+          "yahav"
+        ]
+      }
     ],
     "minimum": [
-      "BANK-37"
+      {
+        "rule": "BANK-37",
+        "companies": [
+          "leumi",
+          "yahav",
+          "mercantile"
+        ]
+      }
     ]
   },
   "tier": 1,

@@ -67,10 +67,10 @@ export function loadRules(): Record<string, RuleRecord> {
 }
 
 /**
- * The records a page's rule cards point at (`derived_from`, and a general rule's `examples`), and the ones those point at in turn,
- * that the page does not hold itself: a page passes them as `ProvenanceData.pointed`, so every chip on a card opens its record
- * (review, 2026-10-26: BRK-35's "לדוגמה" chip opened an empty card on the brokerage guide). They never join the page's own rules,
- * which its checklist and its runs read.
+ * The records a page's rule cards point at (`derived_from`, a general rule's `examples`, and the rules its figures cite, which a
+ * figure's sheet shows as chips), and the ones those point at in turn, that the page does not hold itself: a page passes them as
+ * `ProvenanceData.pointed`, so every chip on a card opens its record (reviews, 2026-10-26: BRK-35's "לדוגמה" chip, then TXG-04's
+ * figure chips TXG-02 and TXG-03, opened empty cards). They never join the page's own rules, which its checklist and its runs read.
  */
 export function pointedRecords(have: Record<string, RuleRecord> | readonly RuleRecord[], all: Record<string, RuleRecord> = loadRules()): Record<string, RuleRecord> {
   const own = new Set(Array.isArray(have) ? have.map((r) => r.id) : Object.keys(have));

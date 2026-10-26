@@ -113,9 +113,22 @@ export function joinNames(names: readonly string[]): string {
   return `${names.slice(0, -1).join(", ")} ${/^[\u05D0-\u05EA]/.test(last) ? scopeWords.and.hebrew : scopeWords.and.latin}${last}`;
 }
 
-/** The records a rule card points at, its derivations and its examples (a general rule's companies' terms): they travel with the card, so its chips open. */
-export function pointedIds(rule: Pick<RuleRecord, "derived_from" | "examples">): string[] {
-  return [...(rule.derived_from ?? []), ...(rule.examples ?? [])];
+/** The rule ids a record's figures cite: each figure on the card opens a value sheet that shows them as chips (review, 2026-10-26). */
+export function figureRuleIds(rule: Pick<RuleRecord, "figures">): string[] {
+  const out: string[] = [];
+  for (const f of Object.values(rule.figures ?? {})) {
+    const values = Array.isArray(f) ? f.flatMap((b) => [b.up_to, b.rate]) : "by_tax_year" in f ? Object.values(f.by_tax_year) : [f];
+    for (const v of values) out.push(...(v.rule_ids ?? []));
+  }
+  return out;
+}
+
+/**
+ * The records a rule card points at: its derivations, its examples (a general rule's companies' terms) and the rules its figures cite.
+ * They travel with the card, so each chip on it, or on a figure's sheet, opens its record.
+ */
+export function pointedIds(rule: Pick<RuleRecord, "id" | "derived_from" | "examples" | "figures">): string[] {
+  return [...new Set([...(rule.derived_from ?? []), ...(rule.examples ?? []), ...figureRuleIds(rule)])].filter((id) => id !== rule.id);
 }
 
 /** Records by id from bundles' lists (a bundle's `pointed`), for `ProvenanceData.pointed` on a page built from bundles. */

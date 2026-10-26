@@ -243,14 +243,31 @@
   },
   "company_terms": {
     "eligibility": [
-      "KH-09"
+      {
+        "rule": "KH-09",
+        "companies": [
+          "harel",
+          "altshuler-shaham"
+        ]
+      }
     ],
     "fee-management-balance": [
-      "KH-33",
+      {
+        "rule": "KH-33",
+        "companies": [
+          "altshuler-shaham",
+          "harel"
+        ]
+      },
       "SW-56"
     ],
     "fee-change-over-time": [
-      "KH-33"
+      {
+        "rule": "KH-33",
+        "companies": [
+          "meitav"
+        ]
+      }
     ]
   }
 }

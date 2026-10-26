@@ -254,10 +254,22 @@
       "CS-09"
     ],
     "fee-management-balance": [
-      "CS-30"
+      {
+        "rule": "CS-30",
+        "companies": [
+          "harel",
+          "altshuler-shaham"
+        ]
+      }
     ],
     "fee-deposit": [
-      "CS-30"
+      {
+        "rule": "CS-30",
+        "companies": [
+          "harel",
+          "altshuler-shaham"
+        ]
+      }
     ]
   }
 }
