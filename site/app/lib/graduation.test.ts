@@ -18,6 +18,13 @@ describe("graduation status", () => {
     // a REIT's blocker in G-24 is TX2 OQ8, which has no institution answer; TX2-21 (split from TX2-20) answers OQ7, which G-24 no longer lists
     expect(by("reits").open.some((o) => o.institutionAnswer)).toBe(false);
   });
+  it("lists the Amendment 190 closures, one row per question, with their rule and date (2026-10-26)", () => {
+    const closed = by("amendment-190-deposits").closed;
+    expect(closed.map((c) => c.code)).toEqual(expect.arrayContaining(["TXA OQ9", "TXA OQ10", "TXA OQ11"]));
+    expect(closed.find((c) => c.code === "TXA OQ10")).toMatchObject({ closedOn: "2026-10-26", ruleIds: expect.arrayContaining(["TXA-30"]) });
+    expect(closed.find((c) => c.code === "TXA OQ11")).toMatchObject({ closedOn: "2026-10-26", ruleIds: expect.arrayContaining(["TXA-19"]) });
+    expect(by("amendment-190-deposits").open.map((o) => o.code)).toEqual(["TXA OQ14", "TXA OQ15"]);
+  });
   it("lists no closure where the status section names none", () => {
     expect(by("gold-via-funds").closed).toEqual([]);
     expect(by("executive-insurance").closed).toEqual([]);

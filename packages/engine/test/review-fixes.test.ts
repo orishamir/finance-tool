@@ -188,7 +188,7 @@ it("tests TXI-20 against income including the interest itself", () => {
   expect(r.taxDuring).toBeCloseTo(0.15 * (10_000 - r.detail.txi20Deduction!), 6);
 });
 
-it("does not apply the age-60 rules to a kupat gemel lehashkaa exit, and flags it (F-44, TXK OQ12)", () => {
+it("does not apply the age-60 brackets to a kupat gemel lehashkaa exit yet, and flags the relief left out (F-44, TXK-06)", () => {
   const r = runProvident(
     {
       wrapper: "kupat-gemel-lehashkaa",
@@ -200,7 +200,7 @@ it("does not apply the age-60 rules to a kupat gemel lehashkaa exit, and flags i
     ctx,
   );
   expect(ids(r)).not.toContain("TXS-23");
-  expect(codes(r)).toContain("TXK-OQ12");
+  expect(codes(r)).toContain("TXK-06");
 });
 
 it("raises the US estate-tax flag only when the dollar value is known (TXF-27)", () => {

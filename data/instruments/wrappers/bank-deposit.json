@@ -68,7 +68,8 @@
       "BANK-13",
       "BANK-14",
       "BANK-25",
-      "BANK-26"
+      "BANK-26",
+      "TXI-17"
     ]
   },
   "tax_at_exit": {
@@ -136,7 +137,7 @@
     "fee-exit": "covered",
     "fee-fx": "covered",
     "liquidity-lockup": "covered",
-    "loss-offset": "blocked:TXI-OQ7",
+    "loss-offset": "covered",
     "minimum": "covered",
     "protection": "covered",
     "real-vs-nominal": "covered",
@@ -152,7 +153,6 @@
     "TXI-OQ2",
     "TXI-OQ14",
     "TXI-OQ9",
-    "TXI-OQ7",
     "BANK-OQ5",
     "BANK-OQ8",
     "BANK-OQ14",

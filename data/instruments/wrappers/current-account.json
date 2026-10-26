@@ -50,7 +50,8 @@
       "TXI-08",
       "TXI-03",
       "TXI-04",
-      "BANK-09"
+      "BANK-09",
+      "TXI-17"
     ]
   },
   "tax_at_exit": {
@@ -103,9 +104,10 @@
     "rule_ids": [
       "BANK-01",
       "BANK-09",
-      "BANK-17"
+      "BANK-17",
+      "BANK-35"
     ],
-    "text": "any individual; a bank may not unreasonably refuse to open and run a current account that stays in credit (anti-money-laundering identification still applies); credit interest, where a bank pays any, may need a separate signature and carry conditions the bank must display; every bank must let any customer join the basic or the extended fee track"
+    "text": "any individual; a bank may not unreasonably refuse to open and run a current account that stays in credit (anti-money-laundering identification still applies); credit interest, where a bank pays any, may need a separate signature and carry conditions the bank must display; every bank must let any customer join the basic or the extended fee track (the basic track capped at NIS 10 a month, BANK-17); from 1.7.2027 the tracks end and payment-account management fees are capped instead (BANK-35)"
   },
   "protection": {
     "rule_ids": [
@@ -120,11 +122,12 @@
     "age-or-use-exemption": "blocked:TXI-OQ11",
     "currency": "covered",
     "eligibility": "covered",
-    "fee-deposit": "blocked:BANK-OQ9",
+    "fee-change-over-time": "covered",
+    "fee-deposit": "covered",
     "fee-exit": "covered",
     "fee-fx": "covered",
     "liquidity-lockup": "covered",
-    "loss-offset": "blocked:TXI-OQ7",
+    "loss-offset": "covered",
     "protection": "covered",
     "real-vs-nominal": "covered",
     "regulator": "covered",
@@ -137,8 +140,6 @@
   "tier": 1,
   "open_questions": [
     "BANK-OQ8",
-    "BANK-OQ9",
-    "TXI-OQ7",
     "TXI-OQ11",
     "REG-OQ13"
   ],

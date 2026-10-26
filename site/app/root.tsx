@@ -8,10 +8,14 @@ import NotFound from "./routes/not-found";
 import { PageShell } from "./components/shell";
 import { system } from "./copy";
 
-/** What every page's provenance sheet needs to know: which parameters each formula uses, which parameter card each id belongs to, and the Hebrew name of each source host (PageShell reads it). */
+/**
+ * What every page's provenance sheet needs to know: which parameters each formula uses, which parameter card each id belongs to,
+ * the Hebrew name of each source host, and the open questions' status and Hebrew lines from data/open-questions.json (2026-10-26).
+ * PageShell reads it.
+ */
 export async function loader() {
-  const { loadFormulaParameters, loadParameterAnchors, loadPublishersHe } = await import("./lib/data.server");
-  return { formulaParameters: loadFormulaParameters(), parameterAnchors: loadParameterAnchors(), publishersHe: loadPublishersHe() };
+  const { loadFormulaParameters, loadOpenQuestions, loadParameterAnchors, loadPublishersHe } = await import("./lib/data.server");
+  return { formulaParameters: loadFormulaParameters(), parameterAnchors: loadParameterAnchors(), publishersHe: loadPublishersHe(), openQuestions: loadOpenQuestions() };
 }
 
 export function links() {

@@ -1,0 +1,32 @@
+{
+  "id": "TXF-28",
+  "title": "Ireland deducts no tax from an Irish ETF's distributions or redemptions for an Israeli resident",
+  "title_he": "אירלנד לא מנכה מס מחלוקה או מפדיון של קרן סל אירית לתושב ישראל",
+  "text_he": "קרן אירית מנכה מס יציאה אירי באירוע חייב, וגם תשלום שוטף למחזיק, כמו דיבידנד שנתי, הוא אירוע כזה. לפי המדריך של רשות המסים האירית, פעולה ביחידות שמוחזקות במערכת סליקה מוכרת לא מחייבת ניכוי, וכך בקרן סל שנסחרת בבורסה ונסלקת במערכת כזו; וביחידות שאינן במערכת סליקה, אין ניכוי למחזיק שאינו תושב אירלנד ומסר לקרן הצהרת תושבות חוץ. לכן תושב ישראל מקבל את החלוקה של קרן סל אירית בלי מס אירי, וישראל ממסה אותה בלי מס זר לזכות מולו. מס שהקרן עצמה שילמה על ההחזקות שלה, למשל ניכוי אמריקאי, הוא עלות בתוך הקרן ואינו מזכה בזיכוי בישראל.",
+  "strength": "primary",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "distribution-policy",
+    "tax-during"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-10-26",
+  "sources": [
+    {
+      "url": "https://www.revenue.ie/en/tax-professionals/tdm/income-tax-capital-gains-tax-corporation-tax/part-27/27-01a-02.pdf",
+      "title": "Irish Revenue, Tax and Duty Manual Part 27-01a-02, Investment Undertakings (document last updated January 2026)",
+      "title_he": "Tax and Duty Manual Part 27-01a-02, Investment Undertakings (Irish Revenue)",
+      "publisher": "Irish Revenue",
+      "publisher_he": "רשות המסים של אירלנד",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.8, s.4.1",
+      "locator_he": "עמוד 8, סעיף 4.1",
+      "page": 8,
+      "checked": "2026-10-26",
+      "qualifier": "(foreign tax authority)"
+    }
+  ]
+}

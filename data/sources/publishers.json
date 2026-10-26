@@ -107,5 +107,8 @@
   "behar-law.co.il": { "publisher": "behar-law.co.il", "publisher_he": "behar-law.co.il", "kind": "other", "mirror": null },
   "free-justice.openapi.gov.il": { "publisher": "Reshumot (Ministry of Justice) – official gazette file service", "publisher_he": "רשומות (משרד המשפטים)", "kind": "law", "mirror": null },
   "tazkirim.gov.il": { "publisher": "Government legislation website (Ministry of Justice)", "publisher_he": "אתר החקיקה הממשלתי", "kind": "law", "mirror": null },
-  "www.tazkirim.gov.il": { "publisher": "Government legislation website (Ministry of Justice)", "publisher_he": "אתר החקיקה הממשלתי", "kind": "law", "mirror": null }
+  "www.tazkirim.gov.il": { "publisher": "Government legislation website (Ministry of Justice)", "publisher_he": "אתר החקיקה הממשלתי", "kind": "law", "mirror": null },
+  "revenue.ie": { "publisher": "Irish Revenue", "publisher_he": "רשות המסים של אירלנד", "kind": "official_pdf", "mirror": null },
+  "secapp.taxes.gov.il": { "publisher": "Israel Tax Authority", "publisher_he": "רשות המסים", "kind": "regulator_page", "mirror": null },
+  "misim.gov.il": { "publisher": "Israel Tax Authority", "publisher_he": "רשות המסים", "kind": "regulator_page", "mirror": null }
 }

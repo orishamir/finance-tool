@@ -37,6 +37,10 @@ export const content: GuideContent = {
           למי שההכנסה שלו ושל בן או בת הזוג בשנה {ceiling ? <>עד <Num value={ceiling} /> </> : "נמוכה "}יש <Term id="פטור למעוט הכנסה">פטור למעוט הכנסה</Term>{deduction ? <> של עד <Num value={deduction} /> בשנה</> : null} מהריבית על פיקדונות ותוכניות חיסכון. בדוח השנתי הוא מחושב אוטומטית; במהלך השנה מקבלים אותו דרך תיאום מס.
         </Sentence>
         <RulesLine ids={["TXI-20"]} />
+        <Sentence measure>
+          הפסד ממכירת ניירות ערך לא מקוזז כנגד ריבית על תוכנית חיסכון: הפסד הון מקוזז כנגד רווח הון, ובניירות ערך גם כנגד ריבית או דיבידנד על ניירות ערך, וריבית על תוכנית חיסכון אינה כזו <RuleRef id="TXI-17" />.
+        </Sentence>
+        <RulesLine ids={["TXI-17"]} />
         <Callout tone="blocked" className="max-w-measure">
           <span className="font-medium"><Term id="שבירת פיקדון">שבירה</Term> של תוכנית חיסכון: האתר לא מחשב אותה.</span> איך בנק מתמחר שבירה, האם לכל הפקדה חודשית נעילה משלה, ואיך המס מתייחס לתוכנית שנשברה עוד פתוח. שאלות פתוחות: <IdRef id="BANK OQ12" />, <IdRef id="TXI OQ14" />.
         </Callout>

@@ -32,14 +32,17 @@ export const content: GuideContent = {
   switchLine: "קנייה ומכירה בתוך הקופה בלי מס; מעבר לקרן השתלמות אחרת או לקופה אישית אחרת, במזומן או בניירות",
   switchRules: ["TXH-17", "IRA-23", "KH-17"],
   termIds: ["קופת גמל בניהול אישי", "ניהול עצמי", "מנהל תיקים", "ותק", "חברה מנהלת", "הליך תחרותי", "עמלות ברוקראז'", "דמי משמרת", "דמי ניהול", "הסכום הקובע", "משיכה", "עמית"],
-  afterTax: () => (
+  afterTax: ({ figure }) => {
+    const cap = figure("IRA-17", "balance_cap");
+    return (
     <>
       <Callout tone="caution" className="max-w-measure">
-        <span className="font-medium">מה משלמים מעבר <Term prefix="ל" id="דמי ניהול">דמי הניהול</Term>.</span> <Term id="עמלות ברוקראז'">עמלות ברוקראז'</Term> על כל קנייה ומכירה, <Term id="דמי משמרת">דמי משמרת</Term> ודמי ניהול של הקרנות שמחזיקים נגבים מהקופה לפי תעריף הברוקר שבחרתם. התקרה לדמי הניהול של קופה אישית אחרי תיקון התקנות לא אותרה; האתר מציג את תקרת תקנה 4. שאלה פתוחה: <IdRef id="IRA OQ3" />.
+        <span className="font-medium">מה משלמים מעבר <Term prefix="ל" id="דמי ניהול">דמי הניהול</Term>.</span> <Term id="עמלות ברוקראז'">עמלות ברוקראז'</Term> על כל קנייה ומכירה, <Term id="דמי משמרת">דמי משמרת</Term> ודמי ניהול של הקרנות שמחזיקים נגבים מהקופה לפי תעריף הברוקר שבחרתם. התקרה לדמי הניהול של קופה אישית היא {cap ? <Num value={cap} /> : null} לשנה מהיתרה, ואין בתקנות דמי ניהול מהפקדה <RuleRef id="PF-06" />.
       </Callout>
       <RulesLine ids={["IRA-16", "IRA-17", "PF-06", "IRA-21"]} />
     </>
-  ),
+    );
+  },
   risks: ({ figure }) => {
     const issuer = figure("IRA-12", "single_issuer_cap");
     return (

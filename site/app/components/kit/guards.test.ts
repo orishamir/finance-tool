@@ -3,7 +3,8 @@
 //  2. no `group-open:` anywhere: the CSS variant matches any open ancestor, so a closed fold inside an open one read as open;
 //  3. a <p>, or a <span> with words of its own, that holds a <Num> is flowed text: never a flex or grid container, whose children
 //     (each piece of text, each number) become separate items and lines (the fees page's "שווה … ב־8 שנים." sentence);
-//  4. the gallery at /kit stays out of the menu and the search.
+//  4. the gallery at /kit stays out of the menu and the search;
+//  5. a question data/open-questions.json has as closed is not named as open (2026-10-26).
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { join, relative } from "node:path";
@@ -96,5 +97,32 @@ describe("ids go through IdRef", () => {
     const bare = /<bdi\b[^>]*>(?:([^<{]*)|\{["'`]([^"'`]*)["'`]\})<\/bdi>/g;
     expect([...`<bdi dir="ltr">P-03</bdi>`.matchAll(bare)].length).toBe(1);
     expect([...`<bdi dir="ltr">{"BANK OQ12"}</bdi>`.matchAll(bare)].length).toBe(1);
+  });
+});
+
+// 2026-10-26: a question the rule base has closed is never named as open. data/open-questions.json holds each question's status
+// (generated from the rule base's markdown); the content files, copy.ts and the playbook's step list may not name a closed one, in
+// an IdRef or in a string that IdText turns into chips. The not-covered page shows closures on purpose and is the one exception.
+describe("no closed open question is named as open", () => {
+  const questions = JSON.parse(readFileSync(join(root, "../../data/open-questions.json"), "utf8")) as { id: string; status: string }[];
+  const closed = new Set(questions.filter((q) => q.status === "closed").map((q) => q.id));
+  const CLOSED_ALLOWED = new Set(["routes/not-covered.tsx"]);
+  const scanned = files.filter((f) => (rel(f).startsWith("content/") || ["copy.ts", "lib/playbook.ts"].includes(rel(f))) && !CLOSED_ALLOWED.has(rel(f)));
+  /** The string literals of a source (comments dropped; a `//` inside a string stays), and the `id="…"` attributes of its JSX. */
+  const literals = (src: string): string[] =>
+    [...src.matchAll(/"(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*'|`(?:[^`\\]|\\.)*`|\/\/[^\n]*|\/\*[\s\S]*?\*\//g)].map((m) => m[0]).filter((t) => !t.startsWith("//") && !t.startsWith("/*"));
+  const codesIn = (text: string): string[] => [...text.matchAll(/\b([A-Z][A-Z0-9]*)[ -]OQ ?(\d+)\b/g)].map((m) => `${m[1]} OQ${m[2]}`);
+  it("the data file is there and has closed questions, and the scan reaches the files", () => {
+    expect(closed.size).toBeGreaterThan(0);
+    expect(scanned.map(rel)).toEqual(expect.arrayContaining(["copy.ts", "lib/playbook.ts", "content/guide/pension-comprehensive.tsx"]));
+  });
+  it("names none in the content files, copy.ts or the playbook", () => {
+    const bad: string[] = [];
+    for (const f of scanned) for (const lit of literals(read(f))) for (const c of codesIn(lit)) if (closed.has(c)) bad.push(`${rel(f)}: ${c}`);
+    expect(bad).toEqual([]);
+  });
+  it("the scan sees the broken pattern and skips comments", () => {
+    const src = `// TXK OQ12 was closed\nconst a = <IdRef id="TXK OQ12" />; const b = { "SW-OQ6": "x" }; const url = "https://x.org/a"; // PEN OQ8\n`;
+    expect(literals(src).flatMap(codesIn)).toEqual(["TXK OQ12", "SW OQ6"]);
   });
 });

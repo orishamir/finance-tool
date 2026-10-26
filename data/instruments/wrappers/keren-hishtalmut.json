@@ -217,16 +217,9 @@
   },
   "tier": 1,
   "open_questions": [
-    "KH-OQ1",
-    "KH-OQ2",
     "KH-OQ3",
     "KH-OQ4",
-    "KH-OQ6",
-    "KH-OQ8",
-    "KH-OQ11",
-    "TXH-OQ1",
     "TXH-OQ2",
-    "TXH-OQ5",
     "TXH-OQ11"
   ],
   "checked": "2026-10-23",

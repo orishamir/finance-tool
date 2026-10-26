@@ -206,7 +206,7 @@
     "text": "assets are held in trust, separately from the managing company's property, and cannot be attached; if the company fails, management moves to another company; the state does not guarantee the fund's value"
   },
   "dimensions": {
-    "age-or-use-exemption": "blocked:TXK-OQ12",
+    "age-or-use-exemption": "covered",
     "deposit-ceiling": "covered",
     "distribution-policy": "covered",
     "eligibility": "covered",
@@ -227,10 +227,8 @@
   },
   "tier": 1,
   "open_questions": [
-    "TXK-OQ2",
     "TXK-OQ3",
-    "TXK-OQ10",
-    "TXK-OQ12"
+    "TXK-OQ10"
   ],
   "checked": "2026-10-23"
 }

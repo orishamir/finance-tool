@@ -1,0 +1,139 @@
+{
+  "id": "GOV-24",
+  "title": "TASE: trading unit, minimum order, price steps and last trading day for government bonds and makam",
+  "title_he": "המסחר בבורסה באג״ח ממשלתיות ובמק״מ: יחידת מסחר, פקודה מזערית ויום מסחר אחרון",
+  "text_he": "לפי הנחיות הבורסה, יחידת המסחר באיגרת חוב היא שקל אחד ערך נקוב. דירקטוריון הבורסה קבע את הגודל המזערי של פקודה בשלב המסחר הרציף: סכום כספי לאיגרות חוב שהנפיקה מדינת ישראל, וכמות בערך נקוב למק״מ; בשלב שלפני הפתיחה, במכרז פתיחה נוסף, בהפסקת תנודתיות, בשלב שלפני הנעילה ובפקודות TAL אפשר להגיש פקודה של יחידת מסחר אחת. יום המסחר האחרון במק״מ הוא כמה ימי מסחר לפני יום הפדיון, ובאיגרת חוב ממשלתית כמה ימי מסחר לפני יום הפדיון, או לפני המועד הקובע לפדיון כשהתקנות שלה קובעות מועד כזה. הבנק או הברוקר רשאים לקבוע מינימום משלהם בתעריפון, ומחזור הסליקה נקבע בחוקי המסלקה, שעוד לא נקראו.",
+  "figure_names_he": {
+    "trading_unit_face_value": "יחידת המסחר באיגרת חוב (ערך נקוב)",
+    "min_order_government_bond": "פקודה מזערית במסחר הרציף: איגרות חוב של המדינה",
+    "min_order_makam_face_value": "פקודה מזערית במסחר הרציף: מק״מ (ערך נקוב)",
+    "max_order_share": "פקודה מרבית: חלק מהכמות הרשומה של הסדרה",
+    "last_trading_days": "ימי מסחר בין יום המסחר האחרון ליום הפדיון"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "minimum",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "trading_unit_face_value": {
+      "value": 1,
+      "unit": "nis",
+      "source": {
+        "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",
+        "title": "TASE, מדריך המסחר – הנחיות על פי החלק השלישי לתקנון (doc. 274698), פרק ב' s.1(ב), p.ב5 (update 130, 5.2.24): \"בתעודות התחייבות - 1 ש\"ח ערך נקוב\"",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-24"
+      ],
+      "state": "sourced",
+      "notes": "The trading unit of a bond is NIS 1 face value. The unit chapter names no trading unit for makam."
+    },
+    "min_order_government_bond": {
+      "value": 10000,
+      "unit": "nis",
+      "source": {
+        "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",
+        "title": "TASE, מדריך המסחר (doc. 274698), p.ב27 (update 137, 4.5.25): \"הגודל המזערי של פקודה לביצוע בשלב המסחר הרציף של תעודות התחייבות שהונפקו על ידי מדינת ישראל\"",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-24"
+      ],
+      "state": "sourced",
+      "notes": "Minimum order in continuous trading for bonds issued by the State of Israel, in money value (TASE board decision). One trading unit is allowed outside continuous trading (p.ב28) and on a day with an opening parameter; the TASE general manager may set another minimum for a security on a given day."
+    },
+    "min_order_makam_face_value": {
+      "value": 10000,
+      "unit": "nis",
+      "source": {
+        "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",
+        "title": "TASE, מדריך המסחר (doc. 274698), p.ב27 (update 137, 4.5.25): \"הדירקטוריון החליט כי הגודל המזערי של פקודה לביצוע בשלב המסחר הרציף של מק\"מ הוא 10,000 ע\"נ מק\"מ\"",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-24"
+      ],
+      "state": "sourced",
+      "notes": "Minimum order in continuous trading for makam: 10,000 face value (not a money value)."
+    },
+    "max_order_share": {
+      "value": 10,
+      "unit": "pct",
+      "source": {
+        "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",
+        "title": "TASE, מדריך המסחר (doc. 274698), p.ב26 (update 139): maximum order",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-24"
+      ],
+      "state": "sourced",
+      "notes": "The maximum order is 10% of the listed quantity of a government bond or makam series."
+    },
+    "last_trading_days": {
+      "value": 3,
+      "unit": "count",
+      "source": {
+        "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",
+        "title": "TASE, מדריך המסחר (doc. 274698), פרק א' s.6, p.ב3 (update 144, 3.3.26): \"מק\"מ - שלושה ימי מסחר לפני יום הפדיון\"",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-24"
+      ],
+      "state": "sourced",
+      "notes": "Trading days: the last trading day is three trading days before the redemption day for makam, and for a government bond three trading days before the redemption day, or before the record date for redemption where its regulations set one."
+    }
+  },
+  "il_finance_file": "government-bonds-and-makam.md",
+  "checked": "2026-10-26",
+  "sources": [
+    {
+      "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",
+      "title": "TASE, מדריך המסחר – הנחיות על פי החלק השלישי לתקנון (doc. 274698)",
+      "title_he": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "פרק ב' s.1(ב), p.ב5",
+      "locator_he": "פרק ב' סעיף 1(ב), עמוד ב5",
+      "quote": "בתעודות התחייבות - 1 ש״ח ערך נקוב",
+      "checked": "2026-10-26"
+    }
+  ]
+}

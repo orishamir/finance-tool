@@ -2,7 +2,7 @@
   "id": "TXI-17",
   "title": "Securities losses can offset interest on securities in the same year",
   "title_he": "הפסד מניירות ערך מקזז ריבית על ניירות באותה שנה",
-  "text_he": "הפסד הון ממכירת ניירות ערך בשנת מס ניתן לקיזוז גם כנגד ריבית או דיבידנד ששולמו על אותו נייר, וכנגד ריבית או דיבידנד על ניירות ערך אחרים, בתנאי ששיעור המס על אותה ריבית אינו עולה על שיעור התקרה. אג״ח ממשלתיות ומק״ם הם ניירות ערך, ולכן הקופונים והניכיון שלהם נכללים. הקיזוז רק באותה שנת מס; הפסד שמועבר לשנים הבאות מקוזז רק כנגד רווחי הון. ריבית על פיקדון בנקאי אינה ריבית על נייר ערך, והנוסח לא מכסה אותה. בניכוי במקור, הבנק או חבר הבורסה מקזז הפסד מניירות ערך שבניהולו רק כנגד רווח באותה שנת מס, ולכן הפסד שלא נוצל לא עובר לניכוי של השנה הבאה; קיזוז בין מוסדות או לשנים הבאות דורש דוח שנתי.",
+  "text_he": "הפסד הון ממכירת ניירות ערך בשנת מס ניתן לקיזוז גם כנגד ריבית או דיבידנד ששולמו על אותו נייר, וכנגד ריבית או דיבידנד על ניירות ערך אחרים, בתנאי ששיעור המס על אותה ריבית אינו עולה על שיעור התקרה. אג״ח ממשלתיות ומק״ם הם ניירות ערך, ולכן הקופונים והניכיון שלהם נכללים. הקיזוז רק באותה שנת מס; הפסד שמועבר לשנים הבאות מקוזז רק כנגד רווחי הון. ריבית על פיקדון בנקאי או על תוכנית חיסכון אינה ריבית על נייר ערך, ולכן הפסד הון לא מקוזז כנגדה: הפקודה מונה את מה שהפסד הון מקוזז כנגדו, והפסד שנשאר מועבר לשנים הבאות כנגד רווח הון בלבד. בניכוי במקור, הבנק או חבר הבורסה מקזז הפסד מניירות ערך שבניהולו רק כנגד רווח באותה שנת מס, ולכן הפסד שלא נוצל לא עובר לניכוי של השנה הבאה; קיזוז בין מוסדות או לשנים הבאות דורש דוח שנתי.",
   "figure_names_he": {
     "max_interest_rate_for_offset": "שיעור המס המרבי על ריבית שאפשר לקזז כנגדה"
   },
@@ -30,7 +30,7 @@
         "TXI-17"
       ],
       "state": "sourced",
-      "notes": "s.92(a)(4): a same-year capital loss on securities may be offset against interest or dividends on securities, provided the rate on that interest does not exceed the s.125C(b) rate (25%). Government bonds and makam are securities (TXI-12). Bank-deposit interest is not covered by the wording (TXI open question 7)."
+      "notes": "s.92(a)(4): a same-year capital loss on securities may be offset against interest or dividends on securities, provided the rate on that interest does not exceed the s.125C(b) rate (25%). Government bonds and makam are securities (TXI-12). Bank-deposit and savings-plan interest is not interest on a security: s.92(a) lists what a capital loss offsets and s.92(b) carries the rest forward against capital gains only."
     }
   },
   "il_finance_file": "tax-interest-deposits-bonds.md",

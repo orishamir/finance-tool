@@ -214,7 +214,7 @@
     ],
     "blocked_by": [],
     "labels": [
-      "per-fund tax track: 2 of 73 money-market funds are taxable (TXS-24); taxable fund computed as 15% of nominal interest at fund level, derived (TXS-11, TXS OQ11)"
+      "per-fund tax track: 2 of 73 money-market funds are taxable (TXS-24); taxable fund computed as 15% of nominal interest at fund level, the individual's rate as circular 7/2003 s.2.1.1 says (TXS-11)"
     ]
   },
   "lawful_exit": {
@@ -300,14 +300,12 @@
   "tier": 1,
   "open_questions": [
     "MF-OQ1",
-    "MF-OQ2",
     "MF-OQ3",
     "MF-OQ4",
     "MF-OQ5",
     "MF-OQ11",
     "MF-OQ12",
     "MF-OQ17",
-    "TXS-OQ6",
     "TXS-OQ15",
     "BRK-OQ11"
   ],

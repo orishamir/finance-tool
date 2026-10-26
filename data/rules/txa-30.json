@@ -1,0 +1,145 @@
+{
+  "id": "TXA-30",
+  "title": "The Tax Authority's ruling 6849/15: when a fund withholds 15% on commuting a recognized annuity without an approval (age 60, minimum annuity and three payslips, age ceilings, the benefited layer)",
+  "title_he": "החלטת המיסוי של רשות המסים: ניכוי במקור בהיוון קצבה מוכרת בלי אישור פקיד השומה",
+  "text_he": "רשות המסים פרסמה החלטת מיסוי בהסכם שלפיה חברה מנהלת רשאית לנכות מס במקור בהיוון קצבה מוכרת בלי אישור פקיד השומה, כשכל התנאים מתקיימים: החברה מסמנת כתשלומים פטורים את ההפקדות שמעל תקרות הטבות המס ומפרידה בין כספי קצבה מוכרת לכספי קצבה מזכה; העמית הגיע לגיל שבהחלטה, מקבל קצבה מזערית והציג תלושי שכר; והתשלומים הפטורים שלו, יחד עם יתרות הקצבה המוכרת בכל החשבונות ומה שכבר נמשך או הוון, לא עוברים תקרה שהיא השכר הממוצע במשק כפול מכפיל ומקדם לפי הגיל בהפקדה. ההחלטה נעשתה בהסכם עם חברה מנהלת אחת, אבל רשות המסים מפרסמת את התמציות כעמדתה במקרים דומים, והתקרות בטבלאות הקופות מתאימות למקדמים שלה. הפקדה מעל התקרה מותרת, אבל היוון שלה נבדק אצל פקיד השומה.",
+  "figure_names_he": {
+    "multiplier_up_to_67": "מכפיל השכר הממוצע בתקרה, עד גיל 67",
+    "multiplier_after_67": "מכפיל השכר הממוצע בתקרה, אחרי גיל 67",
+    "factor_age_60_or_under": "מקדם להפקדה בגיל 60 או פחות",
+    "factor_age_67": "מקדם להפקדה בגיל 67"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "deposit-ceiling",
+    "eligibility",
+    "reporting-obligation",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "multiplier_up_to_67": {
+      "value": 4,
+      "unit": "count",
+      "source": {
+        "url": "https://secapp.taxes.gov.il/tmmisuyweb/frmShowLinkedAbs.aspx?num=20150026&new=true",
+        "title": "רשות המסים, החטיבה המקצועית: תמצית החלטת מיסוי 6849/15 \"הסדר ניכוי מס במקור בעת היוון קצבה מוכרת – החלטת מיסוי בהסכם\" (פורסמה 05/05/2015), p.1, fact 1.6: \"עד גיל 60 התקרה הינה הסכום הדרוש לקצבה של 4 פעמים השכר הממוצע במשק, כהגדרתו בסעיף 3(ה3) לפקודה, החל מגיל 60\"",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXA-30"
+      ],
+      "state": "sourced",
+      "notes": "Up to age 60, the ceiling is the sum needed for an annuity of 4 times the average wage (s.3(ה3)) from age 60; up to 67, for an annuity of 4 times the average wage from the deposit date. The average wage moves each year (TXP-03)."
+    },
+    "multiplier_after_67": {
+      "value": 5,
+      "unit": "count",
+      "source": {
+        "url": "https://secapp.taxes.gov.il/tmmisuyweb/frmShowLinkedAbs.aspx?num=20150026&new=true",
+        "title": "רשות המסים, החטיבה המקצועית: תמצית החלטת מיסוי 6849/15 \"הסדר ניכוי מס במקור בעת היוון קצבה מוכרת – החלטת מיסוי בהסכם\" (פורסמה 05/05/2015), p.1, fact 1.6",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXA-30"
+      ],
+      "state": "sourced",
+      "notes": "After age 67, 5 times the average wage, \"והכל על פי טבלת מקדמים שנקבעה לעניין זה בלבד\"."
+    },
+    "factor_age_60_or_under": {
+      "value": 217,
+      "unit": "count",
+      "source": {
+        "url": "https://secapp.taxes.gov.il/tmmisuyweb/frmShowLinkedAbs.aspx?num=20150026&new=true",
+        "title": "רשות המסים, החטיבה המקצועית: תמצית החלטת מיסוי 6849/15 \"הסדר ניכוי מס במקור בעת היוון קצבה מוכרת – החלטת מיסוי בהסכם\" (פורסמה 05/05/2015), p.2, s.3.5 (factor table)",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXA-30"
+      ],
+      "state": "sourced",
+      "notes": "Factor for a deposit at age 60 or under; the table runs to age 99 (33) and is the same for men and women (s.3.1)."
+    },
+    "factor_age_67": {
+      "value": 180,
+      "unit": "count",
+      "source": {
+        "url": "https://secapp.taxes.gov.il/tmmisuyweb/frmShowLinkedAbs.aspx?num=20150026&new=true",
+        "title": "רשות המסים, החטיבה המקצועית: תמצית החלטת מיסוי 6849/15 \"הסדר ניכוי מס במקור בעת היוון קצבה מוכרת – החלטת מיסוי בהסכם\" (פורסמה 05/05/2015), p.2, s.3.5 (factor table)",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXA-30"
+      ],
+      "state": "sourced",
+      "notes": "Factor for a deposit at age 67."
+    }
+  },
+  "il_finance_file": "tax-insurance-and-amendment-190.md",
+  "checked": "2026-10-26",
+  "sources": [
+    {
+      "url": "https://secapp.taxes.gov.il/tmmisuyweb/frmShowLinkedAbs.aspx?num=20150026&new=true",
+      "title": "רשות המסים, החטיבה המקצועית: תמצית החלטת מיסוי 6849/15 \"הסדר ניכוי מס במקור בעת היוון קצבה מוכרת – החלטת מיסוי בהסכם\" (פורסמה 05/05/2015)",
+      "title_he": "רשות המסים, החטיבה המקצועית: תמצית החלטת מיסוי 6849/15 \"הסדר ניכוי מס במקור בעת היוון קצבה מוכרת – החלטת מיסוי בהסכם\" (פורסמה 05/05/2015)",
+      "publisher": "Israel Tax Authority",
+      "publisher_he": "רשות המסים",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "quote": "עד גיל 60 התקרה הינה הסכום הדרוש לקצבה של 4 פעמים השכר הממוצע במשק, כהגדרתו בסעיף 3(ה3) לפקודה, החל מגיל 60",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://secapp.taxes.gov.il/tmmisuyweb/frmShowLinkedAbs.aspx?num=20150026&new=true",
+      "title": "רשות המסים, החטיבה המקצועית: תמצית החלטת מיסוי 6849/15 (פורסמה 05/05/2015)",
+      "title_he": "רשות המסים, החטיבה המקצועית: תמצית החלטת מיסוי 6849/15 (פורסמה 05/05/2015)",
+      "publisher": "Israel Tax Authority",
+      "publisher_he": "רשות המסים",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.2, s.2",
+      "locator_he": "עמוד 2, סעיף 2",
+      "quote": "במועד היוון הקצבה המוכרת על ידי קופות הגמל שבניהולה וללא צורך באישור פקיד השומה",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.misim.gov.il/tmmisuyweb/frmAbsSearch.aspx?cur=4",
+      "title": "רשות המסים, איתור תמצית מהחלטת מיסוי מקדמית",
+      "title_he": "רשות המסים, איתור תמצית מהחלטת מיסוי מקדמית",
+      "publisher": "Israel Tax Authority",
+      "publisher_he": "רשות המסים",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "quote": "יכול הציבור הרחב לצפות שרשות המיסים תנהג בסוגיות המתוארות באותו אופן שפורסם בתמציות החלטות מיסוי",
+      "checked": "2026-10-26"
+    }
+  ]
+}

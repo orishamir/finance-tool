@@ -28,12 +28,17 @@ export const content: GuideContent = {
   termIds: ["מסלול השקעה", "משיכה", "חברה מנהלת", "קופת גמל לקצבה", "קצבה"],
   afterTax: ({ figure }) => {
     const age = figure("TXK-10", "early_retirement_age");
+    const sixty = figure("TXG-04", "age");
     return (
       <>
         <Callout tone="blocked" className="max-w-measure">
           <span className="font-medium">מגיל {age ? <Num value={age} /> : null} אפשר להעביר את הכסף <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.</span> את <Term prefix="ה" id="קצבה">קצבה</Term> האתר עוד לא מחשב, כי חסרים מקדמי ההמרה. שאלה פתוחה: <IdRef id="PEN OQ7" />.
         </Callout>
         <RulesLine ids={["TXK-10", "KGL-09"]} />
+        <Callout tone="caution" className="max-w-measure">
+          <span className="font-medium">מגיל {sixty ? <Num value={sixty} /> : null} המס על הרווח במשיכה יכול להיות נמוך יותר.</span> השיעור על הרווח הוא שיעור מרבי, ולכן מדרגות המס הנמוכות של בני {sixty ? <Num value={sixty} /> : null} ומעלה חלות עליו קודם; מאחר שהרווח הוא המדרגה העליונה של ההכנסה, זה עוזר רק כשהכנסות אחרות משאירות את המדרגות האלה פנויות. האתר עוד לא מחשב את ההקלה הזאת <RuleRef id="TXK-06" />.
+        </Callout>
+        <RulesLine ids={["TXK-06", "TXG-04"]} />
       </>
     );
   },

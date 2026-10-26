@@ -2,12 +2,13 @@
   "id": "BANK-17",
   "title": "Current-account fee tracks: basic, extended, extended plus",
   "title_he": "מסלולי עמלות עובר ושב: בסיסי, מורחב ומורחב פלוס",
-  "text_he": "כל בנק חייב להציע מסלול בסיסי ומסלול מורחב לעמלות עובר ושב ולאפשר לכל לקוח להצטרף; המסלול הבסיסי כולל עד מספר פעולות בפקיד ועד מספר פעולות בערוץ ישיר בחודש, המסלול המורחב כולל יותר מכל אחד מהם, ומסלול מורחב פלוס מוסיף שירותים שהבנק קובע. פעולות מעבר למסלול מחויבות לפי התעריפון המלא, וההצטרפות והביטול נכנסים לתוקף בראשון לחודש שאחרי ההודעה. כל שנה הבנק בודק אם לקוחות מסוימים היו משלמים פחות במסלול, ואם כן מצרף אותם אליו עד הראשון במרץ ומודיע להם: אזרח ותיק ואדם עם מוגבלות נבדקים מול המסלול הבסיסי בלבד, ועסק קטן ועוסק מורשה מול המסלול הבסיסי או המורחב. הכללים מגדירים את המסלולים לפי התוכן שלהם, וכל בנק נותן להם שם משלו.",
+  "text_he": "כל בנק חייב להציע מסלול בסיסי ומסלול מורחב לעמלות עובר ושב ולאפשר לכל לקוח להצטרף; המסלול הבסיסי כולל עד מספר פעולות בפקיד ועד מספר פעולות בערוץ ישיר בחודש, המסלול המורחב כולל יותר מכל אחד מהם, ומסלול מורחב פלוס מוסיף שירותים שהבנק קובע. פעולות מעבר למסלול מחויבות לפי התעריפון המלא, וההצטרפות והביטול נכנסים לתוקף בראשון לחודש שאחרי ההודעה. כל שנה הבנק בודק אם לקוחות מסוימים היו משלמים פחות במסלול, ואם כן מצרף אותם אליו עד הראשון במרץ ומודיע להם: אזרח ותיק ואדם עם מוגבלות נבדקים מול המסלול הבסיסי בלבד, ועסק קטן ועוסק מורשה מול המסלול הבסיסי או המורחב. המחיר של המסלול הבסיסי מוגבל בצו לסכום מרבי בחודש, עד שהצו מבוטל ביולי 2027; מאז כללי העמלות כבר לא מגדירים את המסלולים, ותקרות לעמלה על ניהול חשבון תשלום באות במקומם. הכללים מגדירים את המסלולים לפי התוכן שלהם, וכל בנק נותן להם שם משלו.",
   "figure_names_he": {
     "basic_teller_actions": "פעולות בפקיד בחודש במסלול הבסיסי",
     "basic_direct_actions": "פעולות בערוץ ישיר בחודש במסלול הבסיסי",
     "extended_teller_actions": "פעולות בפקיד בחודש במסלול המורחב",
-    "extended_direct_actions": "פעולות בערוץ ישיר בחודש במסלול המורחב"
+    "extended_direct_actions": "פעולות בערוץ ישיר בחודש במסלול המורחב",
+    "basic_track_max_fee": "המחיר המרבי של המסלול הבסיסי"
   },
   "strength": "primary",
   "dimensions": [
@@ -15,7 +16,8 @@
     "eligibility",
     "age-or-use-exemption"
   ],
-  "likely_to_change": "no",
+  "likely_to_change": "yes",
+  "recheck_date": "2027-07-01",
   "figures": {
     "basic_teller_actions": {
       "value": 1,
@@ -35,7 +37,7 @@
         "BANK-17"
       ],
       "state": "sourced",
-      "notes": "Basic track (מסלול בסיסי): up to one teller action a month (fees rules s.1 definition). Every bank must offer it and let any customer join (s.4A). Its price is price-controlled; the order and the price were not read (BANK OQ9)."
+      "notes": "Basic track (מסלול בסיסי): up to one teller action a month (fees rules s.1 definition). Every bank must offer it and let any customer join (s.4A). Its price is capped at NIS 10 a month by the 2014 basic-track order (figure basic_track_max_fee) until that order is repealed on 1.7.2027 (BANK-35)."
     },
     "basic_direct_actions": {
       "value": 10,
@@ -96,6 +98,27 @@
       ],
       "state": "sourced",
       "notes": "Extended track: up to fifty direct-channel actions a month. Actions beyond a track are charged per the full tariff."
+    },
+    "basic_track_max_fee": {
+      "value": 10,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://olaw.org.il/takanot/takanot-7360.pdf",
+        "title": "צו הבנקאות (שירות ללקוח) (פיקוח על שירות מסלול בסיסי), התשע\"ד-2014, קובץ התקנות 7360 (26.3.2014), סריקת רשומות, p.1001, s.3: \"סכום העמלה המרבי, שניתן לגבות בעד שירות מסלול בסיסי, יהיה 10 שקלים חדשים בחודש\"",
+        "publisher": "Open Law (copy of Reshumot)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2014-04-01",
+      "effective_to": "2027-06-30",
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BANK-17",
+        "BANK-35"
+      ],
+      "state": "sourced",
+      "notes": "Maximum fee for the basic track, in force from 1.4.2014; the 2026 order (BANK-35) repeals the 2014 order on 1.7.2027 and caps payment-account management fees instead."
     }
   },
   "il_finance_file": "bank-current-account-deposits.md",

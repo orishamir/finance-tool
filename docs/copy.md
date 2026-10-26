@@ -453,11 +453,11 @@ Why "בשקלים של העתיד" rather than "נומינלי": the reader sees
 | `formulaNames.F-44` | מס במשיכה מקופת גמל להשקעה |  |
 | `formulaNames.F-67` | הגרף בעמודי המדריך |  |
 | `flags.G-02` | בסיס המס במשיכה: לפי החוק המס הוא על הרווח הריאלי, כי חלק ההצמדה פטור. האתר מציג גם את החלופה של שיעור נמוך יותר על הרווח הנומינלי, שלפי דברי ההסבר לחוק לא חלה כאן. | flags, one line each |
-| `flags.G-11` | דמי ביטוח לאומי על הרווח במשיכה: עוד לא ברור אם חלים. האתר לא מחשב אותם. |  |
+| `flags.G-11` | (removed 2026-10-26) | the lump sum's gains carry no National Insurance or health (TXK-27), so the engine no longer raises G-11; was "דמי ביטוח לאומי על הרווח במשיכה: עוד לא ברור אם חלים. האתר לא מחשב אותם." |
 | `flags.G-14` | הוצאות ישירות של המסלול לא נאספו עדיין, ולכן לא נכללו בחישוב. |  |
 | `flags.G-21` | חלק מהמס מוסדר דרך דוח שנתי, לא בניכוי במקור. |  |
 | `flags.PF-13` | ההנחה בדמי הניהול הוארכה לחמש שנים לפחות, לפי חוזר הרשות. |  |
-| `flags.TXK-OQ12` | מגיל הפרישה המוקדמת: האם מדרגות המס הנמוכות חלות על הרווח במשיכה, עוד לא ברור. האתר לא מחשב את ההקלה. | what an engine flag means, one line each; the code stays beside the words. "מגיל 60" is a **typed figure** (TXK OQ12) |
+| `flags.TXK-06` | מדרגות המס המופחתות לבני הגיל המבוגר חלות קודם גם על הרווח במשיכה, כי השיעור עליו הוא שיעור מרבי. האתר עוד לא מחשב את ההקלה הזאת. | what an engine flag means, one line each; the code stays beside the words. Changed 2026-10-26: TXK OQ12 closed (TXK-06), the flag was `TXK-OQ12` and said the answer was unclear; no typed age |
 | `computedInputs.amountNow` | סכום היום | labels of the values a computation read ("ערכים שנכנסו לחישוב") |
 | `computedInputs.monthly` | הפקדה חודשית |  |
 | `computedInputs.years` | שנים |  |
@@ -1736,7 +1736,7 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 | SW-21 | לאן אפשר להעביר קופת גמל להשקעה |
 | SW-01, SW-23 | לאן אפשר להעביר, ואילו כספים |
 | SW-24 | במזומן או בעין |
-| SW-10 | הודיעו למעסיק לאן להפקיד |
+| SW-10 | ודאו שהמעסיק מפקיד לקופה החדשה | (changed 2026-10-26: SW OQ6 closed, the receiving fund notifies the employer; was "הודיעו למעסיק לאן להפקיד") |
 | SW-04 | המועד הקובע: ההפקדה הראשונה בקופה החדשה |
 | SW-05 | צפו להודעת דחייה או עיכוב |
 | SW-12 | ביטוח בפנסיה: הטופס, הכיסוי וחודשי האכשרה |
@@ -1780,8 +1780,8 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 | `r4playbook.oq[SW OQ3]` | כלל על פניות שימור במוצרי גמל. | |
 | `r4playbook.oq[SW OQ4]` | האם הצעה שניתנה לפני ההצטרפות מחייבת. | |
 | `r4playbook.oq[SW OQ5]` | איך נבדקת הסכמת הלקוח להוצאת דוח מהמסלקה. | the price side closed 2026-10-24 (SW-44) |
-| `r4playbook.oq[SW OQ6]` | מי מודיע למעסיק להפנות את ההפקדות הבאות, ובתוך כמה זמן. | |
-| `r4playbook.oq[SW OQ9]` | אילו סוגי חשבונות ופעילות נכללים בכללי המעבר בין בנקים. | Was "אילו סוגי חשבונות ופעילות כללי המעבר בין בנקים כוללים." |
+| `r4playbook.oq[SW OQ6]` | (removed 2026-10-26) | closed by the joining circular s.4(ו)-(ז) (SW-10) |
+| `r4playbook.oq[SW OQ9]` | אילו בנקים פטורים מהמעבר, ואיך נספר יום העסקים השישי. | changed 2026-10-26: narrowed, the account and activity types are SW-26; was "אילו סוגי חשבונות ופעילות נכללים בכללי המעבר בין בנקים." |
 | `r4playbook.oq[SW OQ10]` | המחיר המפוקח להעברת ניירות ערך. | |
 | `r4playbook.oq[SW OQ11]` | המס על העברת ניירות ערך בין חשבונות של אותו בעלים. | |
 | `r4playbook.oq[SW OQ12]` | העברה בין מוסד ישראלי לברוקר זר. | |

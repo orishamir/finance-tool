@@ -1,0 +1,43 @@
+{
+  "id": "TXK-27",
+  "title": "Lump sum from a kupat gemel lehashkaa: no National Insurance or health contributions on the gains",
+  "title_he": "משיכה הונית מקופת גמל להשקעה: אין דמי ביטוח לאומי ומס בריאות על הרווח",
+  "text_he": "הרווח שיחיד מושך מקופת גמל להשקעה הוא הכנסה מריבית שחלים עליה שיעורי המס המיוחדים לריבית, וחוק הביטוח הלאומי לא מחשיב הכנסה כזו כהכנסה לעניין דמי ביטוח. מס בריאות נגבה על אותו בסיס של הביטוח הלאומי, ולכן גם הוא לא חל. הכלל לא חל כשהריבית ממוסה בשיעור השולי, למשל כהכנסה מעסק, ולא על קצבה מוכרת מכספי קופת גמל להשקעה: אם קצבה כזו לפני גיל הפרישה היא פנסיה מוקדמת לעניין הביטוח הלאומי עוד פתוח.",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
+  "checked": "2026-10-26",
+  "sources": [
+    {
+      "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
+      "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995, נוסח המוסד לביטוח לאומי",
+      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995, נוסח המוסד לביטוח לאומי",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "pp.245-246, s.350(א)(6)",
+      "locator_he": "עמודים 245 עד 246, סעיף 350(א)(6)",
+      "page": 245,
+      "quote": "הכנסה החייבת במס לפי הוראות סעיף 125ג(ב) או (ג) לפקודת מס הכנסה",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.204, s.125ג(ה)",
+      "locator_he": "עמוד 204, סעיף 125ג(ה)",
+      "page": 204,
+      "quote": "ואולם הוראות סעיף זה יחולו על ריבית ורווחים אחרים שרואים אותם כהכנסה מריבית לפי הוראות סעיף 3(ה4)(3)",
+      "checked": "2026-10-26"
+    }
+  ]
+}
