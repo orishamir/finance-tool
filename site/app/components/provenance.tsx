@@ -367,7 +367,8 @@ export function RuleRef({ id, className, withId }: { id: string; className?: str
       <bdi className="whitespace-nowrap">{name}</bdi>
       {withId && (
         <>
-          {" · "}
+          {/* the chip lays its children out as flex items, so the separator carries its own space */}
+          <span aria-hidden="true" className="mx-1 text-muted-foreground">·</span>
           <bdi dir="ltr" className="slashed-zero whitespace-nowrap">{id}</bdi>
         </>
       )}

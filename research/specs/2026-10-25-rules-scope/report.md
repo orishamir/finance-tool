@@ -1,0 +1,95 @@
+# Report: the rules-scope layout (spec sections 3 and 4), 2026-10-26
+
+Builder: Claude Opus 5.5, in the worktree `wt-scope` on branch `rules-scope-layout`, rebased on main at 2bac2df (after `closed-questions` landed as 4441e2b; its six new records took their scope from the extraction). Brief: `brief.md`; spec: `spec.md`; the open items are in `requests.md`. This file is written by `tools/write_report.py`, because the harness refused a direct write of a .md file.
+
+## What changed
+
+**Section 3, data and checks**
+- **Rule schema** (`packages/schema/src/collections/rules.ts`, `docs/data-schema.md` §3.1): required `scope` (`general`, `institution`, `unsettled`), `scope_institutions` (`{ id, name_he }`, required for `institution`, the companies "seen at" for `unsettled`), `scope_settle` (set exactly for `unsettled`). The shared lists live in `packages/schema/src/scope.ts`: the general source kinds, the not-rules allowance (`notRules`, from the scope settling requests §4) and the index pages that are their provider's own context (D31).
+- **Extraction**: `extract-sources.ts` reads the `- Scope:` line and writes the three keys with the sources (`packages/pipeline/src/scope.ts` parses the three forms and resolves the names). Re-running it changed nothing else: the extraction report and every source are as before, apart from ETF-44, ETF-45 and BRK-37, whose order follows a new rank rule (a company's own data page ranks with the institutions; scope settling requests §7).
+- **New records** (the lead's addition, 2026-10-26): `data/rules` records for the scope settling's new ids that company pages show, BANK-36, BANK-37, BANK-38, BRK-51, ETF-68, ETF-69, KH-33, PEN-45, PEN-47, REG-32, SW-56 and TXK-28 (with Harel's 25% that TXK-26 lost), and BRK-52 (general, now cited on the custody rows of the makam, both money-market and brokerage records, whose notes named it). Each is built from its block in its neighbours' shape (`tools/new-records.py`); figures only where the block gives them, as value objects with the block's source. Not made, as not rules (scope settling requests §4): PEN-46, PF-41, TXS-26, TXS-27, TXH-24. The new company records are linked from five guides through `company_terms` (bank-deposit, savings-plan, keren-hishtalmut, pension-general, provident-for-annuity). Their Hebrew text is mine and new.
+- **Institution registry** `data/sources/institutions.json`: 50 companies (id, Hebrew name, kind, the Scope-line names, CMA legal id, fee snapshot id, deposit bank id). A name two companies of one group share (IBI, Harel, Mor, Meitav, The Phoenix) carries `only_records` on one of them; my readings are listed in `requests.md` 12. 29 of the 50 have a page on the site.
+- **Validator** (`packages/pipeline/src/scope.ts`, one call in `validate.ts`, `docs/data-schema.md` §4 item 13): the record matches its Scope line; companies are in the registry under the same name; a general rule's first source is not a company's document; P-09's question rows and "שווה לדעת" blocks hold general rules only; a wrapper cites general rules only and holds no value sourced to one company's document; an exposure cites general rules only, except its index provider's own; the registry agrees with `data/cma`, `data/fees` and `data/terms/deposits`.
+- **Wrappers** get an optional `company_terms` (dimension → the company records): where a property is each company's own, the guide says "תלוי בחברה" and links to the companies, and those records mark no dimension.
+
+**Section 4, where each kind appears**
+- **Guide pages**: every list of rules on a guide (the record's fee rows, tax steps, the in-and-out cards, the checklist) is general only; the prose modules were rewritten where they named a company's term (table below); "תלוי בחברה" with links appears in the checklist rows and fee rows that `company_terms` names, and inline where the prose needs it (`VariesByCompany`). A site test (`site/app/lib/scope.test.ts`) fails a prose module that cites a company's term outside `VariesByCompany`.
+- **"חוקים וכללים"**: 482 general rules (from 596); the product filters follow; one line under the questions line points to the companies list. An old address of a company's term (`/rules#CS-30`) goes on to where it is listed now.
+- **The questions page**: unchanged on screen; the validator now holds its rows to general rules (all twelve were).
+- **Search**: two groups, "חוקים וכללים" and "אצל חברות מסוימות"; a row of the second names its companies (or "לא הוכח שחל על כולם") and leads to the rule's card on its company page. The documents page links a company's term there too.
+- **The rule card**: a neutral tag by kind ("חל על כולם", "של {company}", "לא הוכח שחל על כולם") in place of the amber "לפי החברה"; for a company's term a line that it may differ elsewhere, for an unsettled one "אולי כך בכל החברות; לא מצאנו לזה מקור רשמי"; the foot leads to the product's rules (a general rule on a guide) or to everything found at each company. A company's own document on its own term carries no "לפי החברה" (D31). The id stays in the card's title and in the chip's spoken name.
+- **The chip** of a company's term shows the company's name (on that company's page its own name; elsewhere the first, with "ועוד N"); where two chips of one line would read the same, each keeps its code beside the name. The glossary term card shows only the general rules a term cites.
+- **Company pages**: a new section "מה כתוב במסמכים של {company}" on managing companies' pages and on banks' and brokers' pages, grouped by topic, each item the inline rule card with its document and the date it was read; an address with a rule's id opens its group and scrolls to it. `/companies` lists the companies that have no page here (51 records, one fold each) and the four records that name no company.
+- **Kit**: one new piece, `CompanyLinks` (a lead and linked company names), with its gallery entry and its row in `docs/design-system.md` §11; the provenance layer adds the name chip, `VariesByCompany` and the card's foot.
+
+## The 28 records (scope settling requests §5) and what I did with each
+
+| Record | Scope | Where it was | What I did | Where it is now |
+|---|---|---|---|---|
+| BANK-34 | institution: Leumi, Hapoalim, Yahav | guides bank-deposit and savings-plan: prose "בלאומי, בפועלים וביהב העוגן הוא ריבית הפריים", rules lines | prose names no bank; "איזו ריבית היא העוגן תלוי בבנק" with links (BANK-25, general, says the directive fixes no anchor) | the three banks' pages |
+| BPN-10 | institution: Hapoalim | wrapper savings-plan eligibility; guide savings-plan, two sentences on Hapoalim's exit points | removed; the guide says exit points are set in each plan's agreement (BANK-28) and "תחנות היציאה תלויות בבנק: בנק הפועלים"; `company_terms` liquidity-lockup | Hapoalim's page |
+| BRK-12 | unsettled, seen at TASE | wrapper brokerage protection; guide brokerage risks line; term "מסלקת הבורסה"; fee snapshots | removed from wrapper and guide; the term card shows general rules only; fee snapshots unchanged (price lists, spec §4) | /companies, TASE |
+| BRK-13 | institution: TASE | wrapper brokerage (protection, the distribution-fee cap); guides brokerage, government-bond, makam ("בבנק הם רשומים דרך החברה לרישומים"); two terms; fee snapshots | removed; the clause dropped, the bank custody duty stays (BRK-10, general); fee snapshots unchanged | /companies, TASE |
+| BRK-23 | institution: Leumi | exposure index-sp500; wrapper brokerage fx fee; two terms | removed; `company_terms` fee-fx: the fx fee row and the checklist say "תלוי בחברה: בנק לאומי" | Leumi's page |
+| BRK-28 | institution: Leumi, Meitav Trade, Fair, Psagot | wrappers brokerage (eligibility, the monthly-fee cap) and both money-market funds (eligibility); a term | removed; the monthly-fee cap removed (its "אין תקרה בחוק" was sourced to four brokers' tariffs; the row now reads "לפי התעריפון של הגורם המציע"); `company_terms` eligibility, minimum, fee-account; the checklist rows those marks rested on now say "תלוי בחברה" | Leumi, Meitav Trade, Psagot pages; Fair on /companies |
+| BRK-36 | institution: Interactive Israel | term "ברוקר זר"; a code comment in the engine | term card general only; the comment stays | /companies, Interactive Israel |
+| BRK-37 | institution: TASE | fees, holdings, fund and provider pages (TASE's fee calculator) | unchanged: comparison and price-list pages (spec §4); the chip names TASE | /companies, TASE |
+| CS-09 | institution: Harel | wrapper child-savings-provident protection, and its English text "(Harel's bylaw)"; two terms | removed, with the clause; `company_terms` currency | Harel's page |
+| CS-29 | institution: Leumi, Yahav | wrapper child-savings-bank: payout within 3 business days, Leumi's own | the field removed (no general timetable, CS-14); `company_terms` liquidity-lockup: "תלוי בחברה: בנק לאומי, בנק יהב" | Leumi's and Yahav's pages |
+| CS-30 | institution: Harel, Altshuler Shaham, Yahav | guide child-savings-provident ("בהראל ובאלטשולר שחם 0.23%"); wrapper notes; engine F-54 | the guide states CS-18's cap (1.05% of the balance, 4% of each deposit) and "דמי הניהול אחרי גיל עשרים ואחת תלויים בחברה" with links; `company_terms` on the two fee rows; the engine is the lead's (`requests.md` 1) | the three companies' pages |
+| ETF-19 | institution: IBI's fund manager | exposures index-sp500, nasdaq100, msci-world, msci-acwi; fund records; a term | removed from the four exposures; the fund records keep it (the fund's own context) | /companies, IBI's funds |
+| ETF-27 | institution: BlackRock | exposure index-sp500 | removed | /companies, BlackRock |
+| ETF-30 | institution: iShares | exposure index-sp500 | removed | /companies, iShares |
+| ETF-37 to ETF-40 | institution: S&P Dow Jones Indices | exposure index-sp500, record and prose | kept: the index provider's rulebook on its own index page (D31; `ownContextExposures`); the four chips read "S&P Dow Jones Indices · ETF-37" and so on | also /companies, S&P |
+| IRA-21 | institution: Meitav | wrappers ira-* trade fee; guides ira-* (who, fees); two terms | removed; the guides' "who": "אילו ברוקרים ובאילו עמלות תלוי בחברה המנהלת: מיטב"; `company_terms` on the trade, custody and fx rows | Meitav's page |
+| IRA-22 | institution: Meitav Trade | wrappers ira-* custody fee; a term | removed; `company_terms` | Meitav Trade's page |
+| IRA-28 | institution: Slice, Globalnet | wrappers and guides ira-* | kept by the not-rules allowance (press); its chip names Slice | Slice's and Globalnet's pages |
+| KGL-26 | institution: Altshuler Shaham, Meitav, Hebrew University fund | term "מתנה בלתי חוזרת" | term card general only | the three pages |
+| KH-09 | institution: Harel, Altshuler Shaham | wrapper keren-hishtalmut eligibility, and its text "some funds stop accepting deposits"; a term | removed, with the clause; `company_terms` eligibility | Harel's and Altshuler Shaham's pages |
+| KH-13, KH-25, KH-27 | institution: Altshuler Shaham, Harel | terms; KH-27 also named in an English note of the wrapper (not cited) | term cards general only | the two pages |
+| REG-14 | institution: TASE | guide brokerage (the member count) | kept by the not-rules allowance (a list) | /companies, TASE |
+| REG-26 | institution: Interactive Israel | wrapper brokerage protection | removed | /companies, Interactive Israel |
+| SW-34 | unsettled, no company | wrapper brokerage transfer-out; the playbook | kept by the not-rules allowance ("no rule exists") | /companies, "לא נמצא אצל חברה מסוימת" |
+| CAT-43, MF-55 | institution: TASE; the Securities Authority | fund records and the fund page; the fees page | kept by the not-rules allowance (site terms) | /companies |
+
+Records the validator found beyond the list: none in product contexts. The sweep of `site/app` (`tools/sweep.mjs`) leaves only the allowed ones: the index page's S&P rulebook, the not-rules (IRA-28, REG-14, SW-34, MKT-01, MF-55), TASE's calculator on the comparison pages, BRK-40 on the index page's provider labels (Interactive Israel's own row), and the playbook (`requests.md` 3).
+
+## The validator's counts
+
+- `npm run validate`: data/ is valid. `scope: 482 general, 101 institution, 13 unsettled` (596 records: 577, the six of `closed-questions`, and the thirteen new ones). Before the rebase and the new records it read 475, 90 and 12. Warnings as before (490, 21, 7, 2; the three more first sources without a Hebrew title are ETF-68, ETF-69 and KH-33's English or Latin link titles), plus one new category: 24 glossary terms cite a company's term (the card leaves it out; `requests.md` 11).
+- When the checks were first switched on they reported 32 problems: 5 general records whose first source was not a general kind (ETF-44 and ETF-45, put right by the rank rule; BRK-35, KH-03 and TXI-25, accepted as official texts: a foreign regulator's page, a government form, a Supreme Court ruling) and 27 citations or values in product contexts (fixed in the records, above). Removing the citations left 6 dimension marks that only a company's term had carried (brokerage fee-account; child-savings-provident currency; both money-market funds' eligibility and fee-account); they were dropped, and the guide shows those rows as "תלוי בחברה".
+- Where the 114 records that are not general are listed: 63 on at least one company page, 51 only on `/companies` (4 of them name no company: SW-34, SW-X02, SW-X03, SW-X04).
+- `npx vitest run site packages/engine packages/pipeline packages/schema`: 75 files, 1,051 passed, 1 todo. `npm run typecheck`: clean. New tests: the schema's scope refinements, the validator's scope checks (Scope-line forms, shared names, general first source, P-09, wrappers, `company_terms`, registry), the prose test, the search's two groups.
+
+## On screen (built and served on port 4237, 1280 and 390 px; `shots/`, `-pc` and `-ph`)
+
+| Shot | What it shows | What I saw |
+|---|---|---|
+| 1a-guide-varies | child-savings-provident, "למה משתמשים בזה" | the law's cap, 1.05% and 4%, as sourced numbers; "דמי הניהול אחרי גיל עשרים ואחת תלויים בחברה: הראל, אלטשולר שחם, בנק יהב" as links; no company's 0.23% |
+| 1b-guide-checklist | the checklist (pc) and the fee rows (phone) of the same guide | the fee rows "נלקח בחשבון" with "תלוי בחברה: הראל, אלטשולר שחם, בנק יהב" under them |
+| 1c-guide-savings-plan | savings-plan, "מה זה" | the prose names no bank; two "תלוי בבנק" lines with the banks as links |
+| 1d-guide-fee-varies | ira-provident, the fee table | "אין תקרה בחוק" with only IRA-16 and IRA-18; "תלוי בחברה: מיטב" under trades, "מיטב, מיטב טרייד" under custody and fx |
+| 1e-exposure-own-context | the S&P 500 page's rules line | the four S&P rulebook chips read "ETF-37 · S&P Dow Jones Indices" and so on: the name, and the code because the name repeats in the line |
+| 2a-rules-product, 2b-rules-line | `/rules?product=keren-hishtalmut` | "הכול 482", 42 for the study fund; the line "מה שנמצא רק במסמכים של חברה מסוימת מופיע בעמוד של אותה חברה, לא כאן. לרשימת החברות" |
+| 3a-card-general | TXS-01 from the questions page | tag "חל על כולם", the Tax Authority's ordinance first |
+| 3b-chips-by-name | Leumi's brokerage card, "מה מגן על הכסף" | BRK-10 as a code; BRK-12 and BRK-13 as "הבורסה לניירות ערך בתל אביב" |
+| 3c-card-institution | BRK-13 | tag "של הבורסה לניירות ערך בתל אביב", "נמצא במסמכים של …; בחברות אחרות זה יכול להיות אחרת.", TASE's document with no "לפי החברה" |
+| 3d-card-unsettled | BRK-12 | tag "לא הוכח שחל על כולם", "… אולי כך בכל החברות; לא מצאנו לזה מקור רשמי." |
+| 4-search-two-groups | "דמי ניהול" | groups: מונחים, חוקים וכללים, אצל חברות מסוימות, פרמטרים, מסמכים; the second group's rows name מיטב, מור, הראל, אלטשולר שחם ובנק יהב |
+| 5a, 5b | Harel's page, its new section; then `#KH-09` | "מה כתוב במסמכים של הראל", the study-fund group open with KH-09 and KH-13; the address opens and scrolls to KH-09 |
+| 5c | Leumi's page | "מה כתוב במסמכים של בנק לאומי", grouped by topic: the deposits group holds BANK-34 and the new BANK-36 to BANK-38 |
+| 5d | `/companies` | "מה כתוב במסמכים של חברות שאין להן עמוד כאן": IBI's funds 12, Interactive Israel 8, TASE 8, and the rest |
+
+No console errors on any page the script opened. One wrinkle on a phone: a search row's line breaks a code at its hyphen ("CS-" then "30"); long lines did so before.
+
+## What is left
+
+In `requests.md`: the engine's child-savings fee (F-54 on CS-30); `IdRef`'s rule branch, now that `closed-questions` has landed; whether the playbook is a product context; pages for companies that have none; the fee snapshots' TASE chips; the not-rules allowance; the extraction for every new record; a Hebrew editor's pass on the thirteen new records; the Interactive snapshots' BRK-35 citations; three publisher rows and TASE's brochures in `data/sources/`; Hebrew for `scope_settle`; the glossary's company citations; and my readings of the shared company names.
+
+## Structure review (the builder's own pass; the lead decides)
+
+`node research/audit/tools/merge-review.mjs main`, on the committed branch: about 700 files changed, most of them rule records that only gained `scope` keys, so an independent reviewer is due.
+- **New kit piece `CompanyLinks`**: promoted, with its gallery entry and its row in design-system §11. No guard of its own: the prose test in `lib/scope.test.ts` guards the use that matters (a company's term in prose only inside `VariesByCompany`); `kit/guards.test.ts` belongs to the open `closed-questions` branch.
+- **`RuleRef` (name chip), `VariesByCompany`, `CardFoot`** in `provenance.tsx`: kept; the provenance layer sits outside the kit by design-system §11 ("where the kit stops").
+- **`CompanyTerms`, `NoPageCompanyTerms` (and their helpers `Cards`, `Count`)** in `components/decoder/company-terms.tsx`: kept as a feature block of the company pages, built from the kit's `Section`, `Disclosure` and `Card` and the provenance `RuleCard`, used by three company pages, all in the decoder feature. `Count` repeats the rules page's "· n" after a group title (`Num2` in `rules.tsx`); both could become one kit piece with `FoldGroup` if that took a controlled `open` and an `id`.
+- **Hebrew outside copy.ts**: the one hit (the list conjunction in `lib/scope.ts`) moved to `scopeWords.and`. The guide prose edits are in `content/guide/`, the prose files.
