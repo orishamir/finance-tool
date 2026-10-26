@@ -9,12 +9,13 @@ const page = (id: string) => buildGuidePage(id)!;
 const cashRate = (id: string) => ((page(id).bundle!.p05 as unknown as { inputs: { cash_rate: { value: number } } }).inputs.cash_rate.value);
 
 describe("timeline fixes on the cash-like pages", () => {
-  it("runs the deposit family on the record's published rate, not on P-05's 3.5", () => {
+  it("runs the deposit family on the record's published rate, not on P-05's cash rate", () => {
     expect(cashRate("bank-deposit")).toBe(1.8);
     expect(cashRate("savings-plan")).toBe(1.5);
     // 2026-10-25: the current account starts from the rate most of the collected banks publish (F-85), 0%, not Leumi's 1%
     expect(cashRate("current-account")).toBe(0);
-    expect(cashRate("makam")).toBe(3.5);
+    // 2026-10-26: the cash-like rate is the Bank of Israel's policy rate, quoted (D20 amended), not a round 3.5
+    expect(cashRate("makam")).toBe(3.25);
   });
   it("starts the current account's timeline from F-85, computed over the banks' printed rates, with no ceiling at a rate of 0", () => {
     const b = page("current-account").bundle!;
@@ -223,12 +224,12 @@ describe("the ladder", () => {
     const rows = ladderRows(d);
     expect(rows.map((r) => [r.id, r.rate.value, r.kind])).toEqual([
       ["current-account", 0, "common"],
-      ["money-market-fund-daily", 3.5, "assumption"],
-      ["money-market-fund-renewable", 3.5, "assumption"],
+      ["money-market-fund-daily", 3.25, "assumption"],
+      ["money-market-fund-renewable", 3.25, "assumption"],
       ["bank-deposit", 1.8, "published"],
     ]);
     expect(bestWithin(rows, "any-time")!.id).toBe("current-account");
-    expect(bestWithin(rows, "at-maturity")!.rate.value).toBe(3.5);
+    expect(bestWithin(rows, "at-maturity")!.rate.value).toBe(3.25);
   });
   it("shows the current account at the rate most banks publish, with the best a bank pays and the largest ceiling beside it", () => {
     const row = ladderRows(d)[0]!;
@@ -256,7 +257,7 @@ describe("makam", () => {
   const d = page("makam").signature!;
   it("prices by F-24 and takes gain, tax and net from the ledger run", () => {
     const m = makamModel(d, { amount: 10000, month: 6 })!;
-    expect(m.price).toBe(makamPrice(0.035, (365 * 6) / 12));
+    expect(m.price).toBe(makamPrice(0.0325, (365 * 6) / 12));
     const run = runAtMonths(d.bundles["makam"]!, { amount_now: 10000, monthly_deposit: 0 }, 6)!;
     expect(m.net).toBe(run.nominal);
     expect(m.tax).toBe(run.taxAtExit + run.taxDuring);
@@ -272,10 +273,10 @@ describe("government bond", () => {
     expect(bondModel(d, { amount: 10000, years: 10, shiftPct: 0 })!.price).toBeCloseTo(100, 9);
     const m = bondModel(d, { amount: 10000, years: 10, shiftPct: 1 })!;
     let pv = 0;
-    for (let k = 1; k <= 10; k++) pv += 3.5 / Math.pow(1.045, k);
-    pv += 100 / Math.pow(1.045, 10);
+    for (let k = 1; k <= 10; k++) pv += 3.25 / Math.pow(1.0425, k);
+    pv += 100 / Math.pow(1.0425, 10);
     expect(m.price).toBeCloseTo(pv, 9);
-    expect(m.price).toBe(bondPrice(0.035, 0.045, 10, 1));
+    expect(m.price).toBe(bondPrice(0.0325, 0.0425, 10, 1));
     expect(m.changePct).toBeLessThan(0);
     expect(Math.abs(m.makamChangePct)).toBeLessThan(Math.abs(m.changePct));
     expect(bondModel(d, { amount: 10000, years: 10, shiftPct: -1 })!.price).toBeGreaterThan(100);

@@ -2,9 +2,10 @@
   "id": "SW-33",
   "title": "Banks: a supervised price to move securities to your own account elsewhere, and at most NIS 10 on closing",
   "title_he": "העברת ניירות ערך מבנק: מחיר בפיקוח ותקרה בסגירה",
-  "text_he": "בתעריפון המלא לסעיף 'העברת ניירות ערך' שני מחירים: סכום בשקלים להעברה, בפיקוח, לחשבון של אותו לקוח בגוף פיננסי אחר, ואחוז עם מינימום ומקסימום לתיק לחשבון של לקוח אחר. חשבון של אותו לקוח כולל חשבון משותף עם בן או בת הזוג, והעברה לחשבון של אותו לקוח בעת סגירת החשבון לא תעלה על התקרה, כולל הוצאות צד שלישי; אותה תקרה חלה על העברת מטבע חוץ בסגירה. הכללים קובעים שהמחיר בפיקוח אבל לא נוקבים בו, והצו שקובע אותו לא נמצא; השתמשו בשורת התעריפון של הבנק שלכם.",
+  "text_he": "בתעריפון המלא לסעיף 'העברת ניירות ערך' שני מחירים: סכום בשקלים להעברה, בפיקוח, לחשבון של אותו לקוח בגוף פיננסי אחר, ואחוז עם מינימום ומקסימום לתיק לחשבון של לקוח אחר. חשבון של אותו לקוח כולל חשבון משותף עם בן או בת הזוג, והעברה לחשבון של אותו לקוח בעת סגירת החשבון לא תעלה על התקרה, כולל הוצאות צד שלישי; אותה תקרה חלה על העברת מטבע חוץ בסגירה. לפי בנק ישראל, העמלה המרבית להעברה לחשבון של אותו לקוח בגוף פיננסי אחר היא 5 ₪ בעד השירות, ועוד ההוצאה שהבנק שילם לצד שלישי, כמו הבורסה או ברוקר בחו״ל.",
   "figure_names_he": {
-    "closing_transfer_cap": "תקרת העמלה להעברה בעת סגירת החשבון"
+    "closing_transfer_cap": "תקרת העמלה להעברה בעת סגירת החשבון",
+    "same_client_transfer_cap": "העמלה המרבית להעברה לחשבון של אותו לקוח בגוף פיננסי אחר"
   },
   "strength": "primary",
   "dimensions": [
@@ -32,11 +33,31 @@
         "SW-33"
       ],
       "state": "sourced",
-      "notes": "Transfer of securities (and of foreign currency) to the same client's account on closing the account: not more than NIS 10 for the portfolio transfer and third-party costs. The rules make the same-client price a supervised item without stating it; the order that sets it was not found (SW OQ10, SW-52)."
+      "notes": "Transfer of securities (and of foreign currency) to the same client's account on closing the account: not more than NIS 10 for the portfolio transfer and third-party costs. The same-client price is NIS 5 for the service plus third-party cost (Bank of Israel fees page; same_client_transfer_cap)."
+    },
+    "same_client_transfer_cap": {
+      "value": 5,
+      "unit": "nis_per_transfer",
+      "source": {
+        "url": "https://boi.org.il/information/fees/",
+        "title": "בנק ישראל, מידע ושירות לציבור: עמלות, סעיף 'העברת ניירות ערך לחשבון אחר של אותו לקוח בגוף פיננסי אחר'",
+        "publisher": "Bank of Israel",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "SW-33"
+      ],
+      "state": "sourced",
+      "notes": "\"סכום העמלה המרבי שניתן לגבות בעד השירות יהיה 5 שקלים חדשים, בתוספת החזר ההוצאה ששילם התאגיד הבנקאי לצד שלישי (כגון: בורסה או ברוקר בחו\"ל) בשל ביצוע השירות\". Per service, plus the third party's cost (SW OQ10 closed 2026-10-26)."
     }
   },
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-25",
+  "checked": "2026-10-26",
   "scope": "general",
   "sources": [
     {
@@ -52,6 +73,17 @@
       "page": 17,
       "quote": "בעת סגירת חשבון לא תעלה על 10",
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://boi.org.il/information/fees/",
+      "title": "בנק ישראל, מידע ושירות לציבור: עמלות",
+      "title_he": "בנק ישראל, מידע ושירות לציבור: עמלות",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "quote": "העברת ניירות ערך לחשבון אחר של אותו לקוח בגוף פיננסי אחר",
+      "checked": "2026-10-26"
     }
   ]
 }

@@ -156,7 +156,7 @@ const tier2: Tier2Instrument[] = [
   ["foreign-currency-deposits", "foreign-currency deposits", "TX2 OQ2"],
   ["reits", "REITs", "TX2 OQ8"],
   ["gold-via-funds", "gold via funds", "TX2 OQ10"],
-  ["amendment-190-deposits", "Amendment 190 deposits", "TXA OQ14, TXA OQ15"],
+  ["amendment-190-deposits", "Amendment 190 deposits", "TXA OQ14"],
 ].map(([id, name, openQuestion]) => ({ id: id!, name: name!, openQuestion: openQuestion! }));
 
 const byId = (set: CandidateSet, id: string) => set.candidates.find((c) => c.id === id)!;

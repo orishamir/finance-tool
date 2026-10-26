@@ -23,7 +23,7 @@ describe("graduation status", () => {
     expect(closed.map((c) => c.code)).toEqual(expect.arrayContaining(["TXA OQ9", "TXA OQ10", "TXA OQ11"]));
     expect(closed.find((c) => c.code === "TXA OQ10")).toMatchObject({ closedOn: "2026-10-26", ruleIds: expect.arrayContaining(["TXA-30"]) });
     expect(closed.find((c) => c.code === "TXA OQ11")).toMatchObject({ closedOn: "2026-10-26", ruleIds: expect.arrayContaining(["TXA-19"]) });
-    expect(by("amendment-190-deposits").open.map((o) => o.code)).toEqual(["TXA OQ14", "TXA OQ15"]);
+    expect(by("amendment-190-deposits").open.map((o) => o.code)).toEqual(["TXA OQ14"]);
   });
   it("lists no closure where the status section names none", () => {
     expect(by("gold-via-funds").closed).toEqual([]);
