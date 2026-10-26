@@ -5,12 +5,12 @@ Tables read: publishers.json yes, documents.json yes.
 ## Headline
 
 - Rules: 596; with sources: 596; unresolved (sources_missing_reason): 0
-- Entries: 1788; with locator 1487, locator_he 1284, quote 701, anchor 18, page 1425
-- Entries with title_he: 1664; with publisher_he: 1785; rules whose first source lacks publisher_he: 0
+- Entries: 1794; with locator 1491, locator_he 1287, quote 703, anchor 18, page 1428
+- Entries with title_he: 1669; with publisher_he: 1791; rules whose first source lacks publisher_he: 0
 - Rules with derived_from: 148; general rules with examples (companies' terms they point to): 6
-- Strengths: primary 1409, primary-mirror 81, secondary 17, institution 281
+- Strengths: primary 1414, primary-mirror 82, secondary 17, institution 281
 - Rule strength realigned to its best source (primary/mirror pair only): 0
-- Kinds: regulator_page 161, circular 184, regulation 383, article 15, law 392, official_pdf 275, dataset 62, institution_doc 259, exchange_rules 25, other 23, form 9
+- Kinds: regulator_page 162, circular 188, regulation 384, article 15, law 392, official_pdf 275, dataset 62, institution_doc 259, exchange_rules 25, other 23, form 9
 
 ## Per rule base file
 
@@ -30,7 +30,7 @@ Tables read: publishers.json yes, documents.json yes.
 | provident-family-common.md | 29 | 77 | 0 |
 | regulators-and-protection.md | 20 | 40 | 0 |
 | savings-policies-and-executive-insurance.md | 2 | 8 | 0 |
-| switching-and-transfers.md | 60 | 164 | 0 |
+| switching-and-transfers.md | 60 | 170 | 0 |
 | tax-gemel-lehashkaa-ira-child.md | 19 | 66 | 0 |
 | tax-general.md | 14 | 47 | 0 |
 | tax-hishtalmut.md | 15 | 64 | 0 |
@@ -125,6 +125,7 @@ Tables read: publishers.json yes, documents.json yes.
 - 1 x Knesset OData KNS_Status 104
 - 1 x SIPC, What SIPC Protects
 - 1 x חוק הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים), התשס"ה-2005 (Wikisource, mirror of the law)
+- 1 x תקנות הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים) (אבטחת מידע במערכת סליקה פנסיונית מרכזית), התשע"ב-2012, קובץ התקנות 7157 (עותק הסריקה באתר olaw)
 - 1 x כללי הבנקאות (שירות ללקוח) (העברת פעילות פיננסית של לקוח בין בנקים), תש"ף-2019, נוסח עדכני נכון ליום 05-10-2026 (Nevo)
 - 1 x Reit 1, investor relations page, "שאלות ותשובות", "מהו שיעור המס שחל על דיבידנד?"
 - 1 x Convention between the United States and Ireland for the avoidance of double taxation (1997), IRS text
