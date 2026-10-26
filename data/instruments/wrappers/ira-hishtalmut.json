@@ -65,7 +65,7 @@
         "IRA-16"
       ],
       "state": "sourced",
-      "notes": "Management Fees Regulations 2012, reg. 4: a managing company of a keren hishtalmut or an IRA (קופת גמל בניהול אישי) may charge 'בשיעור שלא יעלה על 2% לשנה' of the balance. Which cap applies to IRA funds after the 2017 amendment deleted the reference to income-tax regulation 41ח(ב)(1) is IRA OQ3; PF reads reg. 4 at 2%. The member's own agreement sets the rate (IRA-17); Gemel-Net 202609 averages for IRA funds run 0.15% to 0.36%."
+      "notes": "Management Fees Regulations 2012, reg. 4: a managing company of a keren hishtalmut or an IRA (קופת גמל בניהול אישי) may charge 'בשיעור שלא יעלה על 2% לשנה' of the balance. Reg. 4 covers an IRA fund at 2% of the balance, with no deposit-fee item (PF-06, IRA-17). The member's own agreement sets the rate (IRA-17); Gemel-Net 202609 averages for IRA funds run 0.15% to 0.36%."
     },
     "deposit": {
       "value": 0,
@@ -293,14 +293,11 @@
   "open_questions": [
     "IRA-OQ1",
     "IRA-OQ2",
-    "IRA-OQ3",
     "IRA-OQ6",
     "IRA-OQ7",
-    "IRA-OQ8",
     "IRA-OQ11",
     "TXK-OQ7",
-    "TXK-OQ8",
-    "TXH-OQ1"
+    "TXK-OQ8"
   ],
   "checked": "2026-10-23",
   "dimensions": {

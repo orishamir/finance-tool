@@ -50,7 +50,8 @@
       "TXI-08",
       "TXI-03",
       "TXI-04",
-      "BANK-09"
+      "BANK-09",
+      "TXI-17"
     ]
   },
   "tax_at_exit": {
@@ -120,11 +121,11 @@
     "age-or-use-exemption": "blocked:TXI-OQ11",
     "currency": "covered",
     "eligibility": "covered",
-    "fee-deposit": "blocked:BANK-OQ9",
+    "fee-deposit": "covered",
     "fee-exit": "covered",
     "fee-fx": "covered",
     "liquidity-lockup": "covered",
-    "loss-offset": "blocked:TXI-OQ7",
+    "loss-offset": "covered",
     "protection": "covered",
     "real-vs-nominal": "covered",
     "regulator": "covered",
@@ -137,8 +138,6 @@
   "tier": 1,
   "open_questions": [
     "BANK-OQ8",
-    "BANK-OQ9",
-    "TXI-OQ7",
     "TXI-OQ11",
     "REG-OQ13"
   ],

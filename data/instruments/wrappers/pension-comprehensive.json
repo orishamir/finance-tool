@@ -146,12 +146,11 @@
       "PEN-28"
     ],
     "blocked_by": [
-      "PEN-OQ7",
-      "TXP-OQ3"
+      "PEN-OQ7"
     ],
     "labels": [
       "blocked: annuity conversion factors not collected (PEN OQ7); the page shows the gross balance and the exemption rule (G-03)",
-      "blocked: early withdrawal's taxable base open (TXP OQ3; G-06)",
+      "an early withdrawal is taxed at the higher of 35% and the marginal rate, on the whole amount paid (TXP-18); F-48 is not in the engine yet, so it is not computed (G-06, closed 2026-10-26)",
       "the exempt share of the qualifying-annuity ceiling steps up by law in 2027 and 2028 (TXP-14)"
     ]
   },
@@ -199,7 +198,7 @@
       "state": "sourced",
       "notes": "Rule 41יא(א) of the 1964 Income Tax Rules: a provident fund pays a withdrawal within 4 business days of the day the request reaches it; if that date falls in the month's first three business days it may defer to the 4th business day of the month. The law's timetable for every fund, not one company's (scope pass 2026-10-25). The CMA standard pension bylaw repeats it (s.108(ז)) and answers a withdrawal request within 2 days (s.108(ב)); the first pension payment is by the third of the month (s.46(א))."
     },
-    "text": "the lawful exit is an old-age pension from the minimum eligibility age, 60 (early retirement age); before that only the severance component on leaving a job and the narrow cases in the law (small balances past mandatory retirement age, pre-2000 money, health and income conditions) can be taken as a lump sum; any other withdrawal is a non-compliant withdrawal taxed at the higher of 35% and the marginal rate, whose taxable base is open (TXP OQ3), so early withdrawal is a blocked route (method F-48, G-06); the annuity itself needs conversion factors that are not collected (PEN OQ7), so the exit value is blocked too (F-49, G-03) and the page shows the gross balance with the exemption rule as text"
+    "text": "the lawful exit is an old-age pension from the minimum eligibility age, 60 (early retirement age); before that only the severance component on leaving a job and the narrow cases in the law (small balances past mandatory retirement age, pre-2000 money, health and income conditions) can be taken as a lump sum; any other withdrawal is a non-compliant withdrawal taxed at the higher of 35% and the marginal rate, on the whole amount paid (TXP-18); F-48 is not in the engine yet, so early withdrawal is not computed; the annuity itself needs conversion factors that are not collected (PEN OQ7), so the exit value is blocked too (F-49, G-03) and the page shows the gross balance with the exemption rule as text"
   },
   "switch_is_tax_event": {
     "value": false,
@@ -281,14 +280,8 @@
   },
   "tier": 1,
   "open_questions": [
-    "PEN-OQ5",
-    "PEN-OQ6",
     "PEN-OQ7",
-    "PEN-OQ8",
-    "PEN-OQ10",
-    "PEN-OQ13",
     "PEN-OQ21",
-    "TXP-OQ3",
     "TXP-OQ6",
     "SW-OQ8"
   ],
@@ -305,7 +298,7 @@
     "liquidity-lockup": "covered",
     "minimum": "covered",
     "protection": "covered",
-    "real-vs-nominal": "blocked:PEN-OQ8",
+    "real-vs-nominal": "covered",
     "regulator": "covered",
     "reporting-obligation": "covered",
     "switching-tax-event": "blocked:SW-OQ8",

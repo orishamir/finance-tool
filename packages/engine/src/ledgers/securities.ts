@@ -203,7 +203,9 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
       if (fund.domicile === "us") {
         foreignWithholding = fund.w8ben ? book.rate("TXF-12", "us_withholding") : book.rate("TXF-13", "us_withholding_without_form");
       } else {
-        tally.flag("G-05");
+        // An Irish ETF's distribution reaches an Israeli resident without Irish tax: units in a recognised clearing
+        // system, or a non-resident declaration (TXF-28; G-05 closed 2026-10-26), so the foreign withholding stays 0.
+        book.cite("TXF-28");
       }
       if (atForeignBroker) tally.flag("TXF-21");
     } else {

@@ -33,13 +33,14 @@ export const content: GuideContent = {
   termIds: ["קופת גמל בניהול אישי", "ניהול עצמי", "מנהל תיקים", "הסכום הקובע", "חברה מנהלת", "הליך תחרותי", "עמלות ברוקראז'", "דמי משמרת", "דמי ניהול", "משיכה", "עמית", "ותק"],
   afterTax: ({ figure }) => {
     const rate = figure("TXP-18", "minimum_rate");
+    const cap = figure("IRA-17", "balance_cap");
     return (
       <>
         <Callout tone="blocked" className="max-w-measure">
-          <span className="font-medium">את המס ביציאה האתר לא מחשב.</span> הקצבה דורשת מקדמי המרה שלא נאספו, והקופה עצמה לא משלמת קצבה. <Term id="משיכה">משיכה</Term> שלא כדין ממוסה ב{rate ? <Num value={rate} /> : null} לפחות, אבל על איזה סכום לא נמצא. שאלות פתוחות: <IdRef id="PEN OQ7" />, <IdRef id="TXP OQ3" />.
+          <span className="font-medium">את המס ביציאה האתר לא מחשב.</span> הקצבה דורשת מקדמי המרה שלא נאספו, והקופה עצמה לא משלמת קצבה. שאלה פתוחה: <IdRef id="PEN OQ7" />. <Term id="משיכה">משיכה</Term> שלא כדין ממוסה על כל הסכום שמשולם, בגבוה מבין {rate ? <Num value={rate} /> : null} והשיעור השולי <RuleRef id="TXP-18" />.
         </Callout>
         <Callout tone="caution" className="max-w-measure">
-          <span className="font-medium">מה משלמים מעבר <Term prefix="ל" id="דמי ניהול">דמי הניהול</Term>.</span> <Term id="עמלות ברוקראז'">עמלות ברוקראז'</Term> על כל קנייה ומכירה, <Term id="דמי משמרת">דמי משמרת</Term> ודמי ניהול של הקרנות שמחזיקים נגבים מהקופה לפי תעריף הברוקר שבחרתם. התקרה לדמי הניהול של קופה אישית אחרי תיקון התקנות לא אותרה. שאלה פתוחה: <IdRef id="IRA OQ3" />.
+          <span className="font-medium">מה משלמים מעבר <Term prefix="ל" id="דמי ניהול">דמי הניהול</Term>.</span> <Term id="עמלות ברוקראז'">עמלות ברוקראז'</Term> על כל קנייה ומכירה, <Term id="דמי משמרת">דמי משמרת</Term> ודמי ניהול של הקרנות שמחזיקים נגבים מהקופה לפי תעריף הברוקר שבחרתם. התקרה לדמי הניהול של קופה אישית היא {cap ? <Num value={cap} /> : null} לשנה מהיתרה, ואין בתקנות דמי ניהול מהפקדה <RuleRef id="PF-06" />.
         </Callout>
         <RulesLine ids={["TXP-14", "TXP-18", "PEN-30", "IRA-16", "IRA-17", "PF-06"]} />
       </>

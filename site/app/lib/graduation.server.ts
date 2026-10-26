@@ -46,6 +46,8 @@ const sources: Record<string, { file: string; block: RegExp | null; prefix: stri
   "managed-portfolios": { file: "managed-and-robo-portfolios.md", block: null, prefix: "MGD" },
   reits: { file: "reits-and-gold-funds.md", block: /^- \*\*Israeli REIT shares/, prefix: "RG" },
   "gold-via-funds": { file: "reits-and-gold-funds.md", block: /^- \*\*Israeli gold funds/, prefix: "RG" },
+  // added 2026-10-26: without it the closures of TXA OQ9 to OQ11 (ruling 6849/15, circular 2/2013) never reached the page
+  "amendment-190-deposits": { file: "tax-insurance-and-amendment-190.md", block: /^- \*\*Amendment 190 deposits/, prefix: "TXA" },
 };
 
 /** Where an institution's statement is the only answer to a blocking question (r5-tier2.md, D23; a REIT's TX2-21 answers TX2 OQ7, which G-24 no longer lists as blocking, so it is not a blocker line): checked against the rule record at build.
@@ -82,14 +84,27 @@ function closuresOf(prefix: string, lines: string[]): GraduationClosed[] {
       const rest = m[2]!;
       const date = /[Cc]losed[^\d]{0,12}(\d{4}-\d{2}-\d{2})/.exec(rest)?.[1];
       if (!/closed/i.test(rest) && !date) continue;
-      const q = /(?:\b([A-Z]{2,4}\d?) )?open questions? (\d+)/i.exec(struck);
+      const q = /(?:\b([A-Z]{2,4}\d?) )?open questions? (\d+(?:(?:,| and| to) \d+)*)/i.exec(struck);
       const rules = ruleIdsIn(rest);
       // the struck text itself is the rule base's English note, never shown (2026-10-26: "tax treatment in `tax-tier2-other.md`…"
-      // reached the page); a closure without a question number shows only the rules that closed it
-      out.push({ code: q ? `${q[1] ?? prefix} OQ${q[2]}` : "", ...(date ? { closedOn: date } : {}), ruleIds: rules });
+      // reached the page); a closure without a question number shows only the rules that closed it. "Open questions 9 and 10"
+      // is one closure line for two questions (2026-10-26): each gets its own row
+      const numbers = q ? questionNumbers(q[2]!) : [];
+      if (numbers.length === 0) out.push({ code: "", ...(date ? { closedOn: date } : {}), ruleIds: rules });
+      for (const n of numbers) out.push({ code: `${q![1] ?? prefix} OQ${n}`, ...(date ? { closedOn: date } : {}), ruleIds: rules });
     }
   }
   return out;
+}
+
+/** "9", "9 and 10", "9, 10 and 11", "9 to 11": the question numbers of a struck closure. */
+function questionNumbers(list: string): number[] {
+  const range = /^(\d+) to (\d+)$/.exec(list);
+  if (range) {
+    const [a, b] = [Number(range[1]), Number(range[2])];
+    return b >= a && b - a < 20 ? Array.from({ length: b - a + 1 }, (_, i) => a + i) : [a];
+  }
+  return list.split(/,| and /).map((x) => Number(x.trim())).filter((n) => Number.isInteger(n) && n > 0);
 }
 
 /** "TXA open question 1 ... narrowed ... (TXA-28)": a blocking question the status text says was narrowed, with the date and the rule. */

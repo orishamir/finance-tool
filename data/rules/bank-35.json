@@ -1,0 +1,119 @@
+{
+  "id": "BANK-35",
+  "title": "Current-account fee caps set in 2026: payment-account management from 1.7.2027, immediate-debit card from 1.10.2026",
+  "title_he": "התקרות החדשות לעמלות העו״ש: ניהול חשבון תשלום וכרטיס חיוב מיידי",
+  "text_he": "צו של נגיד בנק ישראל מכריז על ניהול חשבון תשלום, על דמי כרטיס חיוב מיידי ועל שינוי מועד התשלום החודשי של הלוואה לדיור כשירותים מפוקחים, וקובע תקרה לעמלה של כל אחד מהם; בניהול חשבון התקרה תלויה במספר הפעולות בחודש. הצו מבטל את הצו על מחיר המסלול הבסיסי ואת הצווים על המסלולים המורחבים, ותיקון לכללי העמלות מוחק את ההגדרות של המסלולים ומגדיר חשבון תשלום כך שהוא כולל חשבון עובר ושב. התקרה על כרטיס החיוב המיידי נכנסת לתוקף לפני השאר; עד שהצו נכנס לתוקף במלואו חלים כללי המסלולים ותקרת המחיר של המסלול הבסיסי. איך הכללים המתוקנים סופרים פעולה לצורך התקרה עוד לא נקרא.",
+  "figure_names_he": {
+    "account_fee_up_to_2_actions": "ניהול חשבון תשלום: תקרה בחודש עם עד שתי פעולות",
+    "account_fee_3_to_100_actions": "ניהול חשבון תשלום: תקרה בחודש עם שלוש עד מאה פעולות",
+    "account_fee_per_action_above_100": "ניהול חשבון תשלום: תקרה לכל פעולה מעל מאה",
+    "immediate_debit_card_fee": "דמי כרטיס חיוב מיידי: תקרה בחודש"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "fee-deposit",
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-07-01",
+  "figures": {
+    "account_fee_up_to_2_actions": {
+      "value": 5,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://olaw.org.il/takanot/takanot-12431.pdf",
+        "title": "צו הבנקאות (שירות ללקוח) (פיקוח על שירות ניהול חשבון תשלום, שירות דמי כרטיס חיוב מיידי, שירות שינויים במועד הפירעון החודשי של הלוואה לדיור), התשפ\"ו-2026, קובץ התקנות 12431 (17.6.2026), סריקת רשומות, p.2246, order s.3(1): \"בוצעו 0 עד 2 פעולות בחודש – עד חמישה שקלים חדשים\"",
+        "publisher": "Open Law (copy of Reshumot)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2027-07-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BANK-35"
+      ],
+      "state": "sourced",
+      "notes": "Cap on the fee for managing a payment account (full-tariff item 1(א)(1)) in a month with 0 to 2 actions, for a customer as defined in s.9ט(ו) of the law. In force 1.7.2027."
+    },
+    "account_fee_3_to_100_actions": {
+      "value": 10,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://olaw.org.il/takanot/takanot-12431.pdf",
+        "title": "צו הבנקאות (שירות ללקוח) (פיקוח על שירות ניהול חשבון תשלום, שירות דמי כרטיס חיוב מיידי, שירות שינויים במועד הפירעון החודשי של הלוואה לדיור), התשפ\"ו-2026, קובץ התקנות 12431 (17.6.2026), סריקת רשומות, p.2246, order s.3",
+        "publisher": "Open Law (copy of Reshumot)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2027-07-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BANK-35"
+      ],
+      "state": "sourced",
+      "notes": "Cap in a month with 3 to 100 actions. In force 1.7.2027."
+    },
+    "account_fee_per_action_above_100": {
+      "value": 1,
+      "unit": "nis",
+      "source": {
+        "url": "https://olaw.org.il/takanot/takanot-12431.pdf",
+        "title": "צו הבנקאות (שירות ללקוח) (פיקוח על שירות ניהול חשבון תשלום, שירות דמי כרטיס חיוב מיידי, שירות שינויים במועד הפירעון החודשי של הלוואה לדיור), התשפ\"ו-2026, קובץ התקנות 12431 (17.6.2026), סריקת רשומות, p.2246, order s.3",
+        "publisher": "Open Law (copy of Reshumot)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2027-07-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BANK-35"
+      ],
+      "state": "sourced",
+      "notes": "Cap for each action above the first 100 in a month. In force 1.7.2027. How the amended fee rules count an action was not read."
+    },
+    "immediate_debit_card_fee": {
+      "value": 7,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://olaw.org.il/takanot/takanot-12431.pdf",
+        "title": "צו הבנקאות (שירות ללקוח) (פיקוח על שירות ניהול חשבון תשלום, שירות דמי כרטיס חיוב מיידי, שירות שינויים במועד הפירעון החודשי של הלוואה לדיור), התשפ\"ו-2026, קובץ התקנות 12431 (17.6.2026), סריקת רשומות, p.2246, order s.4",
+        "publisher": "Open Law (copy of Reshumot)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "BANK-35"
+      ],
+      "state": "sourced",
+      "notes": "Cap on the immediate-debit card fee. In force 1.10.2026 (order s.2(ב) and s.4)."
+    }
+  },
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-26",
+  "sources": [
+    {
+      "url": "https://olaw.org.il/takanot/takanot-12431.pdf",
+      "title": "צו הבנקאות (שירות ללקוח) (פיקוח על שירות ניהול חשבון תשלום, שירות דמי כרטיס חיוב מיידי, שירות שינויים במועד הפירעון החודשי של הלוואה לדיור), התשפ\"ו-2026, וכללי הבנקאות (שירות ללקוח) (עמלות) (תיקון), התשפ\"ו-2026, קובץ התקנות 12431 (17.6.2026), סריקת רשומות",
+      "title_he": "צו הבנקאות (שירות ללקוח) (פיקוח על שירות ניהול חשבון תשלום, שירות דמי כרטיס חיוב מיידי, שירות שינויים במועד הפירעון החודשי של הלוואה לדיור), התשפ\"ו-2026, וכללי הבנקאות (שירות ללקוח) (עמלות) (תיקון), התשפ\"ו-2026, קובץ התקנות 12431 (17.6.2026), סריקת רשומות",
+      "publisher": "Open Law (copy of Reshumot)",
+      "publisher_he": "החוק הפתוח (צילום רשומות)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.2246",
+      "locator_he": "עמוד 2246",
+      "page": 2246,
+      "quote": "בוצעו 0 עד 2 פעולות בחודש – עד חמישה שקלים חדשים",
+      "checked": "2026-10-26"
+    }
+  ]
+}

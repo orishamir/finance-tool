@@ -299,15 +299,17 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     const nominalRate = book.rate("TXK-06", "nominal_rate");
     const real = realGain(benefited);
     const t = kglExitTax(real, nominalGain(benefited), realRate, nominalRate);
-    // The age-60 reduction is open for this deemed interest (TXK OQ12): not applied, and flagged.
-    if (reachesAgeInYear(profile, T, book.amount("TXG-04", "age"), first)) tally.flag("TXK-OQ12");
+    // From 60 the reduced brackets apply first to this deemed interest (s.125C(b) is a maximum rate; TXK-06, 2026-10-26).
+    // F-44 does not apply them yet (F-42 is not wired to this exit), so the run flags the relief it leaves out.
+    if (reachesAgeInYear(profile, T, book.amount("TXG-04", "age"), first)) tally.flag("TXK-06");
     const s = surtaxOn(book, profile, real);
     taxAtExit = exitTaxUnknown ? 0 : t.tax + s.general + s.onCapital;
     detail.realGain = real;
     detail.altTaxAtExit = t.alternative;
     detail.altNominal = gross - t.alternative;
     detail.altReal = (gross - t.alternative) / I[T]!;
-    tally.flag("G-11");
+    // No National Insurance or health contributions on the gains: they are income taxed under s.125C(b)-(c) (TXK-27, G-11 answered for the lump sum 2026-10-26).
+    book.cite("TXK-27");
     tally.flag("G-02");
     if (exitTaxUnknown) for (const k of ["realGain", "altTaxAtExit", "altNominal", "altReal"]) delete detail[k];
   } else {

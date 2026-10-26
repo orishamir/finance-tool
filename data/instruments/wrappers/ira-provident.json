@@ -66,7 +66,7 @@
         "IRA-16"
       ],
       "state": "sourced",
-      "notes": "Management Fees Regulations 2012, reg. 4: a managing company of a keren hishtalmut or an IRA (קופת גמל בניהול אישי) may charge 'בשיעור שלא יעלה על 2% לשנה' of the balance. Which cap applies to IRA funds after the 2017 amendment deleted the reference to income-tax regulation 41ח(ב)(1) is IRA OQ3; PF reads reg. 4 at 2%. The member's own agreement sets the rate (IRA-17); Gemel-Net 202609 averages for IRA funds run 0.15% to 0.36%."
+      "notes": "Management Fees Regulations 2012, reg. 4: a managing company of a keren hishtalmut or an IRA (קופת גמל בניהול אישי) may charge 'בשיעור שלא יעלה על 2% לשנה' of the balance. Reg. 4 covers an IRA fund at 2% of the balance, with no deposit-fee item (PF-06, IRA-17). The member's own agreement sets the rate (IRA-17); Gemel-Net 202609 averages for IRA funds run 0.15% to 0.36%."
     },
     "deposit": {
       "value": 0,
@@ -185,12 +185,11 @@
       "PEN-26"
     ],
     "blocked_by": [
-      "PEN-OQ7",
-      "TXP-OQ3"
+      "PEN-OQ7"
     ],
     "labels": [
       "blocked: the lawful exit is an annuity paid by a pension fund or an insurer the money is moved to, and no conversion factors are collected (F-49, G-03, PEN OQ7)",
-      "blocked: an early withdrawal is taxed at the higher of 35% and the marginal rate, with the taxable base open (F-48, G-06, TXP OQ3)",
+      "an early withdrawal is taxed at the higher of 35% and the marginal rate, on the whole amount paid (TXP-18); F-48 is not in the engine yet, so it is not computed (G-06, closed 2026-10-26)",
       "F-51: the IRA follows the tax of the wrapper it was approved as (TXK-17)"
     ]
   },
@@ -301,12 +300,8 @@
   "open_questions": [
     "IRA-OQ1",
     "IRA-OQ2",
-    "IRA-OQ3",
-    "IRA-OQ4",
-    "IRA-OQ8",
     "IRA-OQ11",
     "PEN-OQ7",
-    "TXP-OQ3",
     "TXK-OQ7",
     "TXK-OQ8"
   ],

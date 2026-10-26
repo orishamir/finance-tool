@@ -393,3 +393,45 @@ describe("fund lists (data-schema 3.14, terms gate)", () => {
     expect(problems.map((p) => p.message).join()).toMatch(/variants: fund:5100001 has no record under data\/funds\//);
   });
 });
+
+describe("open questions (data-schema 3.15, 2026-10-26)", () => {
+  const items = ruleBase.questions!;
+  const fromMarkdown = items.map((q) => ({ id: q.id, status: q.closedOn ? "closed" : "open", ...(q.closedOn ? { closed_on: q.closedOn } : {}) }));
+  const run = (files: Record<string, unknown>) => {
+    const lines: string[] = [];
+    const problems = validateData({ dataDir: dataDir(files), ruleBase, formulas, warn: (l) => lines.push(l) });
+    return { problems, lines };
+  };
+
+  it("reads every numbered item under the file's prefix, with the closures the audit struck", () => {
+    expect(items.length).toBe(493);
+    expect(items.find((q) => q.id === "TXP OQ3")).toMatchObject({ file: "tax-pension-gemel-lekitzba.md", closedOn: "2026-10-26" });
+    expect(items.find((q) => q.id === "PEN OQ7")?.closedOn).toBeNull();
+  });
+
+  it("passes a file that matches the markdown, and is strict", () => {
+    expect(run({ "open-questions.json": fromMarkdown }).problems).toEqual([]);
+    const bad = run({ "open-questions.json": [{ id: "TXP OQ3", status: "closed" }, { id: "PEN OQ7", status: "open", note: "x" }] }).problems;
+    expect(bad.map((p) => p.message).join("\n")).toMatch(/closed_on is set exactly when status is closed/);
+    expect(bad.map((p) => p.message).join("\n")).toMatch(/note/);
+  });
+
+  it("warns when the file is behind the markdown", () => {
+    const behind = fromMarkdown.filter((q) => q.id !== "BANK OQ1").map((q) => (q.id === "TXP OQ3" ? { id: q.id, status: "open" } : q));
+    const { problems, lines } = run({ "open-questions.json": [...behind, { id: "ZZZ OQ1", status: "open" }] });
+    expect(problems).toEqual([]);
+    const line = lines.find((l) => l.includes("behind the rule base"))!;
+    expect(line).toMatch(/BANK OQ1 missing/);
+    expect(line).toMatch(/TXP OQ3 closed 2026-10-26 in the markdown/);
+  });
+
+  it("fails a guide record that lists or blocks on a closed question", () => {
+    const wrapper = { id: "x", open_questions: ["TXP-OQ3", "PEN-OQ7"], tax_at_exit: { blocked_by: ["TXP-OQ3"] }, dimensions: { "real-vs-nominal": "blocked:PEN-OQ8" } };
+    const { problems } = run({ "open-questions.json": fromMarkdown, "instruments/exposures/x.json": wrapper });
+    const messages = problems.filter((p) => p.message.includes("data/open-questions.json")).map((p) => p.message);
+    expect(messages).toEqual(
+      expect.arrayContaining([expect.stringMatching(/^open_questions: TXP-OQ3 is closed/), expect.stringMatching(/^blocked_by: TXP-OQ3 is closed/), expect.stringMatching(/^dimensions.real-vs-nominal: PEN-OQ8 is closed/)]),
+    );
+    expect(messages.some((m) => m.includes("PEN-OQ7"))).toBe(false);
+  });
+});

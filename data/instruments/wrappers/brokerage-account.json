@@ -136,7 +136,7 @@
         "BRK-28"
       ],
       "state": "sourced",
-      "notes": "A monthly account fee (דמי טיפול, דמי שימוש, דמי ניהול תקופתיים) and a monthly fee for advanced systems or real-time quotes appear in non-bank tariffs; no cap found. Whether a bank may charge a monthly fee on a securities account that is not in part 4 of the tariff is open (BRK OQ10)."
+      "notes": "A monthly account fee (דמי טיפול, דמי שימוש, דמי ניהול תקופתיים) and a monthly fee for advanced systems or real-time quotes appear in non-bank tariffs; no cap found. A bank may charge only for services in the Governor's full tariff, or added with the Supervisor's approval (BANK-16, BRK-16)."
     },
     "distribution_handling": {
       "value": null,
@@ -298,7 +298,7 @@
       "REG-26",
       "REG-27"
     ],
-    "text": "at a non-bank member, TASE rules require client securities and cash to be held apart from the member's own, in trust, at the clearing house and at banks, with a yearly independent audit; no statute segregating them was found, and what happens if the member fails is open (REG OQ9, BRK OQ3). At a bank, securities are registered through the nominee company and kept apart from the bank's own in its books (one bank's terms); what happens to them if the bank fails is not sourced (REG OQ10, BRK OQ5), and deposits are not insured. The clearing house guarantees settlement between members, not a client's balance. No Israeli investor-compensation scheme was found. Abroad: SIPC for a US broker-dealer and the Irish scheme for IB Ireland, as stated by those bodies"
+    "text": "at a non-bank member, TASE rules require client securities and cash to be held apart from the member's own, in trust, at the clearing house and at banks, with a yearly independent audit; no statute segregating them was found, and what happens if the member fails is open (REG OQ9). At a bank, securities are registered through the nominee company and kept apart from the bank's own in its books (one bank's terms); what happens to them if the bank fails is not sourced (REG OQ10, BRK OQ5), and deposits are not insured. The clearing house guarantees settlement between members, not a client's balance. No Israeli investor-compensation scheme was found. Abroad: SIPC for a US broker-dealer and the Irish scheme for IB Ireland, as stated by those bodies"
   },
   "dimensions": {
     "age-or-use-exemption": "covered",
@@ -327,13 +327,10 @@
   },
   "tier": 1,
   "open_questions": [
-    "BRK-OQ3",
     "BRK-OQ5",
     "BRK-OQ9",
-    "BRK-OQ10",
     "BRK-OQ11",
     "BRK-OQ12",
-    "BRK-OQ16",
     "BRK-OQ17",
     "REG-OQ9",
     "REG-OQ10",

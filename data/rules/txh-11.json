@@ -35,7 +35,7 @@
         "TXH-11"
       ],
       "state": "sourced",
-      "notes": "Gains accrued from 1.1.2003 on deposits above the ceiling, withdrawn after the holding period: maximum rate \"שלא יעלה על 25%\" (s.125C(b), top slice of income); the fund withholds 25%. The base is the real gain (figure real_base, Chief Economist paper). Still unsettled: the treatment of the linkage part under s.3(ה4)(1), the guide's line that the s.9(13) linkage exemption does not apply to a provident fund account, and whether 15% (s.125C(c)) can ever apply (open question 1). Strength is primary (the Tax Authority guide)."
+      "notes": "Gains accrued from 1.1.2003 on deposits above the ceiling, withdrawn after the holding period: maximum rate \"שלא יעלה על 25%\" (s.125C(b), top slice of income); the fund withholds 25%. The base is the real gain (figure real_base, Chief Economist paper). The linkage part is linkage income under s.3(ה4)(1), exempt under s.9(13) since Amendment 190 deleted the provident-account exclusion from 1.1.2012 (the guide's p.89 line is the pre-2012 law), so the 15% of s.125C(c) does not reach these gains. Strength is primary (the Tax Authority guide)."
     },
     "real_base": {
       "value": true,

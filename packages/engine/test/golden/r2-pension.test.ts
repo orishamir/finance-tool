@@ -367,7 +367,8 @@ describe("S30 provident fund for annuity, same money as S27", () => {
 describe("F-45, F-48, F-49 blocked exits (G-03, G-06)", () => {
   it("return the gross balance, the gap and the rules, never a value after tax", () => {
     expect(blockedWrapperExit("F-45", 1_000)).toMatchObject({ blocked: true, gap: "G-03", grossBalance: 1_000 });
-    expect(blockedWrapperExit("F-48", 1_000)).toMatchObject({ blocked: true, gap: "G-06", openQuestions: ["TXP-OQ3"] });
+    // TXP OQ3 closed 2026-10-26: F-48 is blocked only because it is not built, with no open question behind it
+    expect(blockedWrapperExit("F-48", 1_000)).toMatchObject({ blocked: true, gap: "G-06", openQuestions: [] });
     expect(blockedWrapperExit("F-49", 1_000).ruleIds).toContain("TXP-14");
   });
 

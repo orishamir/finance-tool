@@ -2,7 +2,7 @@
 // the same day from TASE's own pages, ETF-41 and ETF-42 from TASE's index page and the part-seven guidelines;
 // ETF, TXS, MF, BRK, IRA). Each block ends with the rules it rests on. NEW copy for the founder to review.
 import type { ExposureContent } from "../guide/types";
-import { IdRef, Num, RulesLine, Term } from "../../components/provenance";
+import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Sentence } from "../../components/kit";
 
 export const content: ExposureContent = {
@@ -38,22 +38,25 @@ export const content: ExposureContent = {
     return (
       <>
         <Sentence measure>
-          בחשבון ניירות ערך ובניהול אישי קונים את הקרן בעצמכם, ומשלמים {rate ? <Num value={rate} /> : null} מהרווח הריאלי במכירה, מנוכה במקור; החלפה לקרן אחרת היא מכירה. בקופות הגמל ובקרנות ההשתלמות יש מסלולים "עוקבי מדדי מניות", אבל שום מקור שנקרא לא אומר שמסלול כזה עוקב דווקא אחרי ת"א-125, ולכן הם לא מופיעים כאן. שאלה פתוחה: <IdRef id="CAT OQ9" />.
+          בחשבון ניירות ערך ובניהול אישי קונים את הקרן בעצמכם, ומשלמים {rate ? <Num value={rate} /> : null} מהרווח הריאלי במכירה, מנוכה במקור; החלפה לקרן אחרת היא מכירה. בקופות הגמל ובקרנות ההשתלמות יש מסלולים "עוקב מדדי מניות", שם מתוך רשימת מסלולי ההשקעה של רשות שוק ההון <RuleRef id="CAT-23" />; המדיניות שהרשימה קובעת לשם הזה עוד לא נרשמה באתר, ולכן אין מקור שאומר שמסלול כזה עוקב דווקא אחרי ת"א-125, והם לא מופיעים כאן.
         </Sentence>
-        <RulesLine ids={["TXS-09", "TXS-13", "TXS-21", "IRA-11", "CAT-10", "BRK-16"]} />
+        <RulesLine ids={["TXS-09", "TXS-13", "TXS-21", "IRA-11", "CAT-10", "CAT-23", "BRK-16"]} />
       </>
     );
   },
-  risks: () => (
+  risks: ({ figure }) => {
+    const minOrder = figure("ETF-67", "min_order_equity_market");
+    return (
     <>
       <p className="max-w-measure">
         השווי עולה ויורד עם מניות החברות שבמדד. מחיר קרן סל בבורסה במהלך היום יכול להיות שונה משווי הנכסים שלה, אף שיש עושה שוק; קרן יכולה להתפרק בהודעה מראש, ומנהל רשאי להעלות דמי ניהול בתחילת שנה. הרכב המדד משתנה בכל עדכון, וקרן שעוקבת אחריו קונה ומוכרת מניות בהתאם.
       </p>
-      <p className="max-w-measure">
-        לא מתועד עדיין: חובות עושי השוק לגבי מרווח וגודל (<IdRef id="ETF OQ2" />) וגודל עסקה מינימלי ביחידות קרן סל (<IdRef id="ETF OQ12" />).
-      </p>
-      <RulesLine ids={["ETF-06", "ETF-04", "ETF-21", "ETF-14", "ETF-35", "TXS-16"]} />
+      <Sentence measure>
+        יחידת המסחר בקרן סל היא יחידה אחת, ובשלב המסחר הרציף פקודה בקרן על מדד מניות צריכה להיות בשווי של {minOrder ? <Num value={minOrder} /> : null} לפחות <RuleRef id="ETF-67" />. חובות עושי השוק לגבי מרווח וגודל עוד לא מתועדות (<IdRef id="ETF OQ2" />).
+      </Sentence>
+      <RulesLine ids={["ETF-06", "ETF-04", "ETF-21", "ETF-14", "ETF-35", "TXS-16", "ETF-67"]} />
     </>
-  ),
+    );
+  },
   termIds: ["ת\"א 125", "דיבידנד", "קרן סל", "קרן מחקה פתוחה", "מספר בורסה", "דמי ניהול משתנים", "הפרש עקיבה", "דמי ניהול קבועים", "פרופיל חשיפה", "קרן נאמנות פטורה", "מס רווחי הון", "יחידה"],
 };

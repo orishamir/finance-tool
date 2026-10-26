@@ -1,0 +1,117 @@
+{
+  "id": "ETF-67",
+  "title": "Trading unit and minimum order for ETF and foreign-fund units on TASE: one unit, and an order worth at least NIS 500 in continuous trading",
+  "title_he": "יחידת המסחר והפקודה המזערית בקרן סל ובקרן חוץ בבורסה",
+  "text_he": "לפי הנחיות הבורסה, יחידת המסחר בקרן סל היא יחידה אחת של הקרן, וכך גם בקרן חוץ. דירקטוריון הבורסה קבע את הגודל המזערי של פקודה בשלב המסחר הרציף: סכום אחד לקרנות סל ולקרנות חוץ שנסחרות בשוק המניות, וסכום גבוה יותר לאלה שנסחרות בשוק האג״ח, ולא יותר מהתקרה שבהנחיות. ביום שיש בו פרמטר פתיחה הפקודה המזערית היא יחידת מסחר אחת, ומנכ״ל הבורסה רשאי לקבוע לנייר מינימום אחר ליום מסוים, בהודעה. עמלת מינימום של הברוקר יכולה לייקר פקודה קטנה.",
+  "figure_names_he": {
+    "trading_unit": "יחידת המסחר (יחידות קרן)",
+    "min_order_equity_market": "פקודה מזערית במסחר הרציף: קרנות בשוק המניות",
+    "min_order_bond_market": "פקודה מזערית במסחר הרציף: קרנות בשוק האג״ח",
+    "min_order_cap": "התקרה שההנחיות קובעות לפקודה המזערית"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "minimum",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "trading_unit": {
+      "value": 1,
+      "unit": "count",
+      "source": {
+        "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",
+        "title": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון, file p.9, ch. ב' s.1(י)-(יא): \"בקרנות סל - יחידת מסחר הינה יחידת קרן סל אחת\"",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-67"
+      ],
+      "state": "sourced",
+      "notes": "One ETF unit (one unit of a foreign fund) is the trading unit on TASE."
+    },
+    "min_order_equity_market": {
+      "value": 500,
+      "unit": "nis",
+      "source": {
+        "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",
+        "title": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון, file pp.39-42, ch. ה' s.2ב(2)(א) and the board decision under it: \"ביתר ניירות הערך המוזכרים בסעיף זה - 500 ש\"ח\"",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-67"
+      ],
+      "state": "sourced",
+      "notes": "Minimum order in continuous trading for ETFs and foreign funds traded in the equity market (TASE board decision; guide pages updated to 4.5.25 and 10.8.25). On a day with an opening parameter the minimum is one trading unit; the TASE CEO may set another minimum for a security on a given day."
+    },
+    "min_order_bond_market": {
+      "value": 2000,
+      "unit": "nis",
+      "source": {
+        "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",
+        "title": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון, file pp.39-42, the board decision under ch. ה' s.2ב(2)(א): \"בתעודות פיקדון, בקרנות סל הנסחרות בשוק האג\"ח ובקרנות חוץ הנסחרות בשוק האג\"ח - 2,000 ש\"ח\"",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-67"
+      ],
+      "state": "sourced",
+      "notes": "Minimum order in continuous trading for ETFs and foreign funds traded in the bond market, and for deposit certificates."
+    },
+    "min_order_cap": {
+      "value": 10000,
+      "unit": "nis",
+      "source": {
+        "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",
+        "title": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון, ch. ה' s.2ב(2)(א): \"כמות ניירות ערך בשווי כספי כפי שיקבע הדירקטוריון, שלא יעלה על 10,000 ש\"ח\"",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-67"
+      ],
+      "state": "sourced",
+      "notes": "The guidelines cap the minimum order the board may set; recomputed monthly."
+    }
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-26",
+  "sources": [
+    {
+      "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",
+      "title": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון",
+      "title_he": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "quote": "בקרנות סל - יחידת מסחר הינה יחידת קרן סל אחת",
+      "checked": "2026-10-26",
+      "qualifier": "(exchange rules, ISA-approved)"
+    }
+  ]
+}

@@ -42,8 +42,8 @@ export const content: GuideContent = {
       <RulesLine ids={["TXP-01", "TXP-02", "TXP-10", "TXP-11"]} />
       <Callout tone="blocked" className="max-w-measure">
         <span className="font-medium">את הקצבה האתר עוד לא מחשב, כי חסרים מקדמי ההמרה.</span> שאלה פתוחה: <IdRef id="PEN OQ7" />. מגיל הפרישה חלק מהקצבה פטור ממס:{" "}
-        <N v={figure("TXP-14", "exempt_share")} /> מתקרה של <N v={figure("TXP-14", "annuity_ceiling")} /> בחודש, והשיעור עולה בחוק ב־2027 וב־2028. משיכה שלא כדין לפני הפרישה ממוסה לפחות ב־
-        <N v={figure("TXP-18", "minimum_rate")} />, ועל איזה סכום בדיוק: שאלה פתוחה <IdRef id="TXP OQ3" />.
+        <N v={figure("TXP-14", "exempt_share")} /> מתקרה של <N v={figure("TXP-14", "annuity_ceiling")} /> בחודש, והשיעור עולה בחוק ב־2027 וב־2028. משיכה שלא כדין לפני הפרישה ממוסה על כל הסכום שמשולם, בגבוה מבין{" "}
+        <N v={figure("TXP-18", "minimum_rate")} /> והשיעור השולי <RuleRef id="TXP-18" />.
       </Callout>
       <RulesLine ids={["TXP-14", "TXP-15", "TXP-18", "PEN-27", "PEN-30"]} />
     </>
@@ -53,7 +53,7 @@ export const content: GuideContent = {
       <p className="max-w-measure">הנכסים מוחזקים בנאמנות, בנפרד מהרכוש של החברה המנהלת, ואי אפשר לעקל אותם. אם החברה המנהלת קורסת, הניהול עובר לחברה אחרת.</p>
       <p className="max-w-measure">
         היתרה שלכם משתנה גם בלי קשר להשקעות: כל רבעון הקרן מעדכנת את כל החשבונות לפי העודף או הגירעון האקטוארי שנובע מגורמים דמוגרפיים, כמו תמותה ונכות; עודף או גירעון מתשואות חל רק על מקבלי הקצבה. דמי הביטוח יורדים מהחיסכון כל חודש. על <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים
-        המדינה משלימה תשואה ליעד של <N v={figure("PEN-18", "target_return")} /> בשנה, נבדק כל חמש שנים; אם היעד צמוד למדד: שאלה פתוחה <IdRef id="PEN OQ8" />. השאר עולה ויורד עם המסלול.
+        המדינה משלימה תשואה ליעד של <N v={figure("PEN-18", "target_return")} /> בשנה, צמוד למדד, ונבדק כל חמש שנים <RuleRef id="PEN-18" />. השאר עולה ויורד עם המסלול.
       </p>
       <RulesLine ids={["PF-29", "REG-18", "REG-19", "REG-21", "PEN-18", "PEN-19", "PEN-15"]} />
     </>

@@ -64,6 +64,10 @@ export const content: GuideContent = {
           למי שההכנסה שלו ושל בן או בת הזוג בשנה {ceiling ? <>עד <Num value={ceiling} /> </> : "נמוכה "}יש <Term id="פטור למעוט הכנסה">פטור למעוט הכנסה</Term>{deduction ? <> של עד <Num value={deduction} /> בשנה</> : null} מהריבית על פיקדונות ותוכניות חיסכון. בדוח השנתי הוא מחושב אוטומטית; במהלך השנה מקבלים אותו דרך תיאום מס.
         </Sentence>
         <RulesLine ids={["TXI-20"]} />
+        <Sentence measure>
+          הפסד ממכירת ניירות ערך לא מקוזז כנגד ריבית על פיקדון: הפסד הון מקוזז כנגד רווח הון, ובניירות ערך גם כנגד ריבית או דיבידנד על ניירות ערך, וריבית על פיקדון בנקאי אינה כזו <RuleRef id="TXI-17" />.
+        </Sentence>
+        <RulesLine ids={["TXI-17"]} />
         <Callout tone="blocked" className="max-w-measure">
           <span className="font-medium">שבירת פיקדון לפני הזמן: האתר לא מחשב אותה.</span> <Term prefix="ה" id="קנס שבירה">קנס</Term> הוא תנאי של הבנק, ואיך המס מתייחס לפיקדון שנשבר עוד פתוח. שאלה פתוחה: <IdRef id="TXI OQ14" />.
         </Callout>

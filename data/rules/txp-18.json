@@ -2,7 +2,7 @@
   "id": "TXP-18",
   "title": "Early or non-compliant withdrawal (`משיכה שלא כדין`)",
   "title_he": "משיכה שלא כדין: מוקדמת או בלי עמידה בתנאים",
-  "text_he": "משיכה מקופת גמל לקצבה, או משיכה מקופת גמל לפני זמנה, היא משיכה שלא כדין וממוסה בגבוה מבין שיעור המס המזערי והשיעור השולי; הקופה מנכה במקור את השיעור המזערי. בחישוב לפי השיעור המזערי ניתנות רק נקודות הזיכוי הבסיסיות, ובחישוב השולי ניתנים זיכויים, ניכויים וקיזוזים כמו בהכנסה מיגיעה אישית. לא ממוסה כך: משיכה בשל הכנסה נמוכה של בני הזוג, עד הפער משכר המינימום (כפול אם יש ילד קטין), בטופס לקופה; הוצאות רפואיות (לא שיניים) מעל מחצית ההכנסה השנתית; נכות קבועה בדרגה גבוהה של העמית או של קרוב שנקבעה אחרי תחילת ההפקדות; ומשיכת יורשים במות העמית. על איזה סכום בדיוק חל המס, כל המשיכה או רק ההפקדות המוטבות והרווחים, לא נאמר במקורות שנקראו.",
+  "text_he": "משיכה מקופת גמל לקצבה, או משיכה מקופת גמל לפני זמנה, היא משיכה שלא כדין וממוסה בגבוה מבין שיעור המס המזערי והשיעור השולי; הקופה מנכה במקור את השיעור המזערי. בחישוב לפי השיעור המזערי ניתנות רק נקודות הזיכוי הבסיסיות, ובחישוב השולי ניתנים זיכויים, ניכויים וקיזוזים כמו בהכנסה מיגיעה אישית. לא ממוסה כך: משיכה בשל הכנסה נמוכה של בני הזוג, עד הפער משכר המינימום (כפול אם יש ילד קטין), בטופס לקופה; הוצאות רפואיות (לא שיניים) מעל מחצית ההכנסה השנתית; נכות קבועה בדרגה גבוהה של העמית או של קרוב שנקבעה אחרי תחילת ההפקדות; ומשיכת יורשים במות העמית. המס חל על כל הסכום שמשולם: התקנות ממסות את העמית על אותם כספים בשיעור המזערי גם אם הוא פטור ממס או חייב בשיעור נמוך יותר, והפקודה מחילה במקומן את המס הרגיל כשהוא גבוה יותר.",
   "figure_names_he": {
     "minimum_rate": "שיעור המס המזערי על משיכה שלא כדין"
   },
@@ -32,7 +32,7 @@
         "TXP-18"
       ],
       "state": "sourced",
-      "notes": "A withdrawal the law does not allow is taxed at the higher of 35% and the marginal rate, and the fund withholds 35%. Exceptions: low household income (form 159א), medical expenses above half the annual income, permanent disability of 75% or more (form 159), and heirs on death. Which amount is the taxable base is open question 3, so the method does not compute it (G-06)."
+      "notes": "A withdrawal the law does not allow is taxed at the higher of 35% and the marginal rate, and the fund withholds 35%. Exceptions: low household income (form 159א), medical expenses above half the annual income, permanent disability of 75% or more (form 159), and heirs on death. The taxable base is the whole amount paid (reg. 3(1) of the 1962 regulations, \"על אותם כספים\"; s.87(ד) applies the ordinary tax where it is higher)."
     }
   },
   "il_finance_file": "tax-pension-gemel-lekitzba.md",

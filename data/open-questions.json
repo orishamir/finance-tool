@@ -1,0 +1,2209 @@
+[
+  {
+    "id": "BANK OQ1",
+    "status": "open"
+  },
+  {
+    "id": "BANK OQ2",
+    "status": "open"
+  },
+  {
+    "id": "BANK OQ3",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "BANK OQ4",
+    "status": "open"
+  },
+  {
+    "id": "BANK OQ5",
+    "status": "narrowed",
+    "title_he": "אילו בנקים נחשבים קטנים ופטורים, וממתי חל התיקון החדש"
+  },
+  {
+    "id": "BANK OQ6",
+    "status": "open"
+  },
+  {
+    "id": "BANK OQ7",
+    "status": "open"
+  },
+  {
+    "id": "BANK OQ8",
+    "status": "narrowed",
+    "title_he": "מה מגן על המפקידים אם בנק קורס"
+  },
+  {
+    "id": "BANK OQ9",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "BANK OQ10",
+    "status": "open"
+  },
+  {
+    "id": "BANK OQ11",
+    "status": "narrowed"
+  },
+  {
+    "id": "BANK OQ12",
+    "status": "narrowed",
+    "title_he": "בתוכנית חיסכון: האם לכל הפקדה נעילה משלה, ואיך בנק מתמחר שבירה",
+    "blocks_he": "שורת הנזילות של תוכנית חיסכון, וחישוב שבירה לפני הזמן"
+  },
+  {
+    "id": "BANK OQ13",
+    "status": "narrowed"
+  },
+  {
+    "id": "BANK OQ14",
+    "status": "open",
+    "title_he": "ההגדרה הרשמית של ריבית הפריים"
+  },
+  {
+    "id": "BANK OQ15",
+    "status": "narrowed"
+  },
+  {
+    "id": "BANK OQ16",
+    "status": "narrowed"
+  },
+  {
+    "id": "BANK OQ17",
+    "status": "open",
+    "title_he": "האם הריבית שבנק מפרסם לפיקדון צמוד מדד היא ריאלית או נומינלית"
+  },
+  {
+    "id": "BANK OQ18",
+    "status": "open"
+  },
+  {
+    "id": "BPN OQ1",
+    "status": "closed",
+    "closed_on": "2026-10-22"
+  },
+  {
+    "id": "BPN OQ2",
+    "status": "open"
+  },
+  {
+    "id": "BPN OQ3",
+    "status": "open"
+  },
+  {
+    "id": "BPN OQ4",
+    "status": "open"
+  },
+  {
+    "id": "BPN OQ5",
+    "status": "narrowed"
+  },
+  {
+    "id": "BPN OQ6",
+    "status": "open"
+  },
+  {
+    "id": "BPN OQ7",
+    "status": "open"
+  },
+  {
+    "id": "BPN OQ8",
+    "status": "narrowed"
+  },
+  {
+    "id": "BPN OQ9",
+    "status": "open"
+  },
+  {
+    "id": "BPN OQ10",
+    "status": "open"
+  },
+  {
+    "id": "BPN OQ11",
+    "status": "open"
+  },
+  {
+    "id": "BPN OQ12",
+    "status": "open"
+  },
+  {
+    "id": "BPN OQ13",
+    "status": "open"
+  },
+  {
+    "id": "BPN OQ14",
+    "status": "open"
+  },
+  {
+    "id": "BPN OQ15",
+    "status": "open"
+  },
+  {
+    "id": "BPN OQ16",
+    "status": "open"
+  },
+  {
+    "id": "BPN OQ17",
+    "status": "open"
+  },
+  {
+    "id": "BPN OQ18",
+    "status": "open"
+  },
+  {
+    "id": "BPN OQ19",
+    "status": "open"
+  },
+  {
+    "id": "BPN OQ20",
+    "status": "open"
+  },
+  {
+    "id": "BPN OQ21",
+    "status": "open"
+  },
+  {
+    "id": "BRK OQ1",
+    "status": "closed",
+    "closed_on": "2026-10-22"
+  },
+  {
+    "id": "BRK OQ2",
+    "status": "open"
+  },
+  {
+    "id": "BRK OQ3",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "BRK OQ4",
+    "status": "narrowed"
+  },
+  {
+    "id": "BRK OQ5",
+    "status": "narrowed",
+    "title_he": "מה קורה לניירות הערך של הלקוחות אם הבנק קורס"
+  },
+  {
+    "id": "BRK OQ6",
+    "status": "narrowed"
+  },
+  {
+    "id": "BRK OQ7",
+    "status": "narrowed"
+  },
+  {
+    "id": "BRK OQ8",
+    "status": "closed",
+    "closed_on": "2026-10-22"
+  },
+  {
+    "id": "BRK OQ9",
+    "status": "narrowed",
+    "title_he": "איזו חברה של אינטראקטיב ברוקרס ושל eToro משרתת תושב ישראל בחשבון ישיר"
+  },
+  {
+    "id": "BRK OQ10",
+    "status": "closed",
+    "closed_on": "2026-10-22"
+  },
+  {
+    "id": "BRK OQ11",
+    "status": "narrowed",
+    "title_he": "האם חבר בורסה שאינו בנק רשאי לגבות דמי משמרת על מק״מ ועל קרנות כספיות"
+  },
+  {
+    "id": "BRK OQ12",
+    "status": "narrowed",
+    "title_he": "המחיר המפוקח להעברת ניירות ערך לחשבון שלכם במוסד אחר"
+  },
+  {
+    "id": "BRK OQ13",
+    "status": "open"
+  },
+  {
+    "id": "BRK OQ14",
+    "status": "open"
+  },
+  {
+    "id": "BRK OQ15",
+    "status": "open"
+  },
+  {
+    "id": "BRK OQ16",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "BRK OQ17",
+    "status": "narrowed",
+    "title_he": "כללים לחשבון ניירות ערך של קטין ולחשבון משותף"
+  },
+  {
+    "id": "BRK OQ18",
+    "status": "open"
+  },
+  {
+    "id": "BRK OQ19",
+    "status": "closed",
+    "closed_on": "2026-10-22"
+  },
+  {
+    "id": "BRK OQ20",
+    "status": "open"
+  },
+  {
+    "id": "BRK OQ21",
+    "status": "narrowed"
+  },
+  {
+    "id": "CS OQ1",
+    "status": "closed",
+    "closed_on": "2026-10-22"
+  },
+  {
+    "id": "CS OQ2",
+    "status": "narrowed"
+  },
+  {
+    "id": "CS OQ3",
+    "status": "narrowed"
+  },
+  {
+    "id": "CS OQ4",
+    "status": "open",
+    "title_he": "איך הביטוח הלאומי בוחר קופה לילד ראשון כשההורים לא בחרו"
+  },
+  {
+    "id": "CS OQ5",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "CS OQ6",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "CS OQ7",
+    "status": "narrowed"
+  },
+  {
+    "id": "CS OQ8",
+    "status": "narrowed",
+    "title_he": "דמי הניהול שכל חברה גובה בפועל אחרי גיל 21"
+  },
+  {
+    "id": "CS OQ9",
+    "status": "narrowed"
+  },
+  {
+    "id": "CS OQ10",
+    "status": "narrowed",
+    "title_he": "האם הורה יכול לראות אם המסלול נבחר או שהוא ברירת מחדל",
+    "blocks_he": "הבדיקה בעמוד ההחזקות אם מסלול החיסכון לכל ילד נבחר או ברירת מחדל"
+  },
+  {
+    "id": "CS OQ11",
+    "status": "closed",
+    "closed_on": "2026-10-23"
+  },
+  {
+    "id": "CS OQ12",
+    "status": "open",
+    "title_he": "התנאים והריביות של חיסכון לכל ילד בכל בנק"
+  },
+  {
+    "id": "CS OQ13",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "CS OQ14",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "CS OQ15",
+    "status": "open"
+  },
+  {
+    "id": "CS OQ16",
+    "status": "narrowed",
+    "title_he": "האם הפקדות הביטוח הלאומי נספרות בתקרת ההפקדה לקופת גמל להשקעה"
+  },
+  {
+    "id": "CS OQ17",
+    "status": "narrowed"
+  },
+  {
+    "id": "CORP OQ1",
+    "status": "open"
+  },
+  {
+    "id": "CORP OQ2",
+    "status": "open"
+  },
+  {
+    "id": "CORP OQ3",
+    "status": "narrowed"
+  },
+  {
+    "id": "CORP OQ4",
+    "status": "open"
+  },
+  {
+    "id": "CORP OQ5",
+    "status": "open"
+  },
+  {
+    "id": "CORP OQ6",
+    "status": "narrowed"
+  },
+  {
+    "id": "CORP OQ7",
+    "status": "open"
+  },
+  {
+    "id": "CORP OQ8",
+    "status": "open"
+  },
+  {
+    "id": "CORP OQ9",
+    "status": "open"
+  },
+  {
+    "id": "CORP OQ10",
+    "status": "open"
+  },
+  {
+    "id": "CORP OQ11",
+    "status": "open"
+  },
+  {
+    "id": "CORP OQ12",
+    "status": "open"
+  },
+  {
+    "id": "CORP OQ13",
+    "status": "open"
+  },
+  {
+    "id": "CORP OQ14",
+    "status": "open"
+  },
+  {
+    "id": "CORP OQ15",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ1",
+    "status": "narrowed"
+  },
+  {
+    "id": "ETF OQ2",
+    "status": "open",
+    "title_he": "חובות עושי השוק בקרנות סל לגבי מרווח וגודל"
+  },
+  {
+    "id": "ETF OQ3",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ4",
+    "status": "narrowed",
+    "title_he": "רשימת קרנות החוץ הרשומות בישראל, ומי הנציג של כל אחת"
+  },
+  {
+    "id": "ETF OQ5",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ6",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ7",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ8",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ9",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "ETF OQ10",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ11",
+    "status": "narrowed",
+    "title_he": "האם מגבלות האיחוד האירופי מונעות מתושב ישראל לקנות קרנות אמריקאיות אצל ברוקר באירופה"
+  },
+  {
+    "id": "ETF OQ12",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "ETF OQ13",
+    "status": "narrowed"
+  },
+  {
+    "id": "ETF OQ14",
+    "status": "narrowed"
+  },
+  {
+    "id": "ETF OQ15",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ16",
+    "status": "narrowed"
+  },
+  {
+    "id": "ETF OQ17",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ18",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ19",
+    "status": "closed",
+    "closed_on": "2026-10-23"
+  },
+  {
+    "id": "ETF OQ20",
+    "status": "closed",
+    "closed_on": "2026-10-23"
+  },
+  {
+    "id": "ETF OQ21",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ22",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ23",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ24",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ25",
+    "status": "narrowed"
+  },
+  {
+    "id": "ETF OQ26",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ27",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ28",
+    "status": "open"
+  },
+  {
+    "id": "FXD OQ1",
+    "status": "open"
+  },
+  {
+    "id": "FXD OQ2",
+    "status": "narrowed"
+  },
+  {
+    "id": "FXD OQ3",
+    "status": "open"
+  },
+  {
+    "id": "FXD OQ4",
+    "status": "open"
+  },
+  {
+    "id": "FXD OQ5",
+    "status": "open"
+  },
+  {
+    "id": "FXD OQ6",
+    "status": "open"
+  },
+  {
+    "id": "FXD OQ7",
+    "status": "open"
+  },
+  {
+    "id": "FXD OQ8",
+    "status": "open"
+  },
+  {
+    "id": "FXD OQ9",
+    "status": "open"
+  },
+  {
+    "id": "FXD OQ10",
+    "status": "open"
+  },
+  {
+    "id": "FXD OQ11",
+    "status": "narrowed"
+  },
+  {
+    "id": "FXD OQ12",
+    "status": "open"
+  },
+  {
+    "id": "GOV OQ1",
+    "status": "closed",
+    "closed_on": "2026-10-22"
+  },
+  {
+    "id": "GOV OQ2",
+    "status": "narrowed",
+    "title_he": "סכום מינימלי ועמלה להזמנה של אדם פרטי במכרז מק״מ"
+  },
+  {
+    "id": "GOV OQ3",
+    "status": "narrowed",
+    "title_he": "האם מסמך התנאים הכלליים של בנק ישראל למק״מ עדכני"
+  },
+  {
+    "id": "GOV OQ4",
+    "status": "narrowed",
+    "title_he": "התקנות של הסדרות השקליות בריבית קבועה שנמכרות היום"
+  },
+  {
+    "id": "GOV OQ5",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "GOV OQ6",
+    "status": "narrowed",
+    "title_he": "האם לסדרה צמודת מדד יש רצפה בירידת מדד"
+  },
+  {
+    "id": "GOV OQ7",
+    "status": "narrowed",
+    "title_he": "מחזור הסליקה, מועדי האקס של הקופון ויחידת המסחר במק״מ",
+    "blocks_he": "שורת ״סכום מינימלי״ במק״מ ובאג״ח ממשלתית, ולכן בהשוואה הן מוצגות בלי דירוג"
+  },
+  {
+    "id": "GOV OQ8",
+    "status": "narrowed",
+    "title_he": "איך הזמנה של אדם פרטי מגיעה למכרז אג״ח ממשלתיות, ובאיזה סכום מינימלי"
+  },
+  {
+    "id": "GOV OQ9",
+    "status": "narrowed",
+    "title_he": "נוסח רשמי על סיכון המחיר של אג״ח ממשלתית לפני הפדיון"
+  },
+  {
+    "id": "GOV OQ10",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "GOV OQ11",
+    "status": "open"
+  },
+  {
+    "id": "GOV OQ12",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "GOV OQ13",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "GOV OQ14",
+    "status": "open"
+  },
+  {
+    "id": "IRA OQ1",
+    "status": "open",
+    "title_he": "הנוסח המשולב העדכני של תקנות הניהול האישי"
+  },
+  {
+    "id": "IRA OQ2",
+    "status": "open",
+    "title_he": "האם טיוטת התיקון האחרונה לתקנות הניהול האישי נחתמה, וממתי"
+  },
+  {
+    "id": "IRA OQ3",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "IRA OQ4",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "IRA OQ5",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "IRA OQ6",
+    "status": "open",
+    "title_he": "דמי משמרת, המרת מטבע ומינימום בבנקים בתוך קופה בניהול אישי"
+  },
+  {
+    "id": "IRA OQ7",
+    "status": "open",
+    "title_he": "התנאים של שאר החברות שמנהלות קופות בניהול אישי"
+  },
+  {
+    "id": "IRA OQ8",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "IRA OQ9",
+    "status": "open"
+  },
+  {
+    "id": "IRA OQ10",
+    "status": "narrowed"
+  },
+  {
+    "id": "IRA OQ11",
+    "status": "narrowed",
+    "title_he": "מה מגן על הנכסים בניהול אישי אם החברה או הברוקר קורסים"
+  },
+  {
+    "id": "IRA OQ12",
+    "status": "narrowed"
+  },
+  {
+    "id": "IRA OQ13",
+    "status": "open"
+  },
+  {
+    "id": "IRA OQ14",
+    "status": "open"
+  },
+  {
+    "id": "IRA OQ15",
+    "status": "open"
+  },
+  {
+    "id": "KH OQ1",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "KH OQ2",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "KH OQ3",
+    "status": "open",
+    "title_he": "האם צו הרחבה כללי מחייב קרן השתלמות"
+  },
+  {
+    "id": "KH OQ4",
+    "status": "narrowed",
+    "title_he": "תנאי ההלוואות מקרן השתלמות: חלק מהיתרה, ריבית ותקופה"
+  },
+  {
+    "id": "KH OQ5",
+    "status": "open"
+  },
+  {
+    "id": "KH OQ6",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "KH OQ7",
+    "status": "open"
+  },
+  {
+    "id": "KH OQ8",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "KH OQ9",
+    "status": "open"
+  },
+  {
+    "id": "KH OQ10",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "KH OQ11",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "KH OQ12",
+    "status": "open"
+  },
+  {
+    "id": "KH OQ13",
+    "status": "open"
+  },
+  {
+    "id": "KH OQ14",
+    "status": "narrowed"
+  },
+  {
+    "id": "KH OQ15",
+    "status": "narrowed"
+  },
+  {
+    "id": "KH OQ16",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "KGL OQ1",
+    "status": "closed",
+    "closed_on": "2026-10-22"
+  },
+  {
+    "id": "KGL OQ2",
+    "status": "open"
+  },
+  {
+    "id": "KGL OQ3",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "KGL OQ4",
+    "status": "narrowed"
+  },
+  {
+    "id": "KGL OQ5",
+    "status": "open"
+  },
+  {
+    "id": "KGL OQ6",
+    "status": "narrowed"
+  },
+  {
+    "id": "KGL OQ7",
+    "status": "open"
+  },
+  {
+    "id": "KGL OQ8",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "KGL OQ9",
+    "status": "narrowed"
+  },
+  {
+    "id": "KGL OQ10",
+    "status": "narrowed"
+  },
+  {
+    "id": "KGL OQ11",
+    "status": "open"
+  },
+  {
+    "id": "KGL OQ12",
+    "status": "open"
+  },
+  {
+    "id": "KGL OQ13",
+    "status": "open"
+  },
+  {
+    "id": "KGL OQ14",
+    "status": "closed",
+    "closed_on": "2026-10-23"
+  },
+  {
+    "id": "MGD OQ1",
+    "status": "narrowed"
+  },
+  {
+    "id": "MGD OQ2",
+    "status": "narrowed"
+  },
+  {
+    "id": "MGD OQ3",
+    "status": "open"
+  },
+  {
+    "id": "MGD OQ4",
+    "status": "open"
+  },
+  {
+    "id": "MGD OQ5",
+    "status": "open"
+  },
+  {
+    "id": "MGD OQ6",
+    "status": "narrowed"
+  },
+  {
+    "id": "MGD OQ7",
+    "status": "open"
+  },
+  {
+    "id": "MGD OQ8",
+    "status": "open"
+  },
+  {
+    "id": "MGD OQ9",
+    "status": "open"
+  },
+  {
+    "id": "MGD OQ10",
+    "status": "narrowed"
+  },
+  {
+    "id": "MGD OQ11",
+    "status": "open"
+  },
+  {
+    "id": "MGD OQ12",
+    "status": "open"
+  },
+  {
+    "id": "MGD OQ13",
+    "status": "open"
+  },
+  {
+    "id": "MGD OQ14",
+    "status": "open"
+  },
+  {
+    "id": "MGD OQ15",
+    "status": "closed",
+    "closed_on": "2026-10-24"
+  },
+  {
+    "id": "MGD OQ16",
+    "status": "open"
+  },
+  {
+    "id": "MGD OQ17",
+    "status": "open"
+  },
+  {
+    "id": "MF OQ1",
+    "status": "narrowed",
+    "title_he": "ההודעה ברשומות על הוראת רשות ניירות ערך לקרנות כספיות, והכללים לקרנות במועדים קבועים"
+  },
+  {
+    "id": "MF OQ2",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "MF OQ3",
+    "status": "open",
+    "title_he": "שעות ההוראה בקרנות לפי סוג, והאם קונים ופודים גם ביום שישי"
+  },
+  {
+    "id": "MF OQ4",
+    "status": "narrowed",
+    "title_he": "תוך כמה ימי עסקים הכסף מפדיון זמין בחשבון",
+    "blocks_he": "שורת הנזילות בקרנות הכספיות"
+  },
+  {
+    "id": "MF OQ5",
+    "status": "open",
+    "title_he": "האם הכלל שמנהל קרן מעלה דמי ניהול רק בתחילת שנה מחייב"
+  },
+  {
+    "id": "MF OQ6",
+    "status": "narrowed"
+  },
+  {
+    "id": "MF OQ7",
+    "status": "open"
+  },
+  {
+    "id": "MF OQ8",
+    "status": "open"
+  },
+  {
+    "id": "MF OQ9",
+    "status": "narrowed"
+  },
+  {
+    "id": "MF OQ10",
+    "status": "narrowed"
+  },
+  {
+    "id": "MF OQ11",
+    "status": "open",
+    "title_he": "אילו מנהלים מציעים קרנות כספיות מתחדשות, וכמה קרנות כאלה יש"
+  },
+  {
+    "id": "MF OQ12",
+    "status": "narrowed",
+    "title_he": "האם יש תיקונים מאוחרים לתקנות הקרנות שהאתר מצטט"
+  },
+  {
+    "id": "MF OQ13",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "MF OQ14",
+    "status": "open"
+  },
+  {
+    "id": "MF OQ15",
+    "status": "open"
+  },
+  {
+    "id": "MF OQ16",
+    "status": "open"
+  },
+  {
+    "id": "MF OQ17",
+    "status": "narrowed",
+    "title_he": "מה קובעים התיקונים האחרונים לחוק השקעות משותפות בנאמנות"
+  },
+  {
+    "id": "PEN OQ1",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "PEN OQ2",
+    "status": "open"
+  },
+  {
+    "id": "PEN OQ3",
+    "status": "open"
+  },
+  {
+    "id": "PEN OQ4",
+    "status": "closed",
+    "closed_on": "2026-10-22"
+  },
+  {
+    "id": "PEN OQ5",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "PEN OQ6",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "PEN OQ7",
+    "status": "narrowed",
+    "title_he": "טבלאות דמי הביטוח ומקדמי ההמרה לקצבה של כל קרן",
+    "blocks_he": "חישוב הקצבה והמס עליה בקרן פנסיה, בקופת גמל לקצבה ובניהול אישי לתגמולים; עד אז האתר מציג את היתרה לפני מס"
+  },
+  {
+    "id": "PEN OQ8",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "PEN OQ9",
+    "status": "open"
+  },
+  {
+    "id": "PEN OQ10",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "PEN OQ11",
+    "status": "open"
+  },
+  {
+    "id": "PEN OQ12",
+    "status": "open"
+  },
+  {
+    "id": "PEN OQ13",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "PEN OQ14",
+    "status": "narrowed"
+  },
+  {
+    "id": "PEN OQ15",
+    "status": "open"
+  },
+  {
+    "id": "PEN OQ16",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "PEN OQ17",
+    "status": "open"
+  },
+  {
+    "id": "PEN OQ18",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "PEN OQ19",
+    "status": "open",
+    "title_he": "מי מקבל כסף מקופת גמל לקצבה לתשלום קצבה, ובאילו מקדמים",
+    "blocks_he": "חישוב הקצבה מקופת גמל לקצבה"
+  },
+  {
+    "id": "PEN OQ20",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "PEN OQ21",
+    "status": "narrowed",
+    "title_he": "האם משהו מעבר לצו ההרחבה מחייב לבטח בפנסיה את השכר המלא"
+  },
+  {
+    "id": "PEN OQ22",
+    "status": "open"
+  },
+  {
+    "id": "PF OQ1",
+    "status": "open"
+  },
+  {
+    "id": "PF OQ2",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "PF OQ3",
+    "status": "open"
+  },
+  {
+    "id": "PF OQ4",
+    "status": "narrowed"
+  },
+  {
+    "id": "PF OQ5",
+    "status": "closed",
+    "closed_on": "2026-10-23"
+  },
+  {
+    "id": "PF OQ6",
+    "status": "narrowed",
+    "title_he": "המחיר שהמסלקה הפנסיונית גובה היום על שירות לחוסך"
+  },
+  {
+    "id": "PF OQ7",
+    "status": "closed",
+    "closed_on": "2026-10-22"
+  },
+  {
+    "id": "PF OQ8",
+    "status": "open"
+  },
+  {
+    "id": "PF OQ9",
+    "status": "narrowed"
+  },
+  {
+    "id": "PF OQ10",
+    "status": "open"
+  },
+  {
+    "id": "PF OQ11",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "PF OQ12",
+    "status": "narrowed"
+  },
+  {
+    "id": "PF OQ13",
+    "status": "open"
+  },
+  {
+    "id": "PF OQ14",
+    "status": "narrowed"
+  },
+  {
+    "id": "PF OQ15",
+    "status": "open"
+  },
+  {
+    "id": "PF OQ16",
+    "status": "narrowed",
+    "title_he": "האם טיוטת התיקון לחוזר הדוחות השנתיים אומצה"
+  },
+  {
+    "id": "REG OQ1",
+    "status": "closed",
+    "closed_on": "2026-10-22"
+  },
+  {
+    "id": "REG OQ2",
+    "status": "narrowed"
+  },
+  {
+    "id": "REG OQ3",
+    "status": "open"
+  },
+  {
+    "id": "REG OQ4",
+    "status": "open"
+  },
+  {
+    "id": "REG OQ5",
+    "status": "open"
+  },
+  {
+    "id": "REG OQ6",
+    "status": "open"
+  },
+  {
+    "id": "REG OQ7",
+    "status": "open"
+  },
+  {
+    "id": "REG OQ8",
+    "status": "open"
+  },
+  {
+    "id": "REG OQ9",
+    "status": "narrowed",
+    "title_he": "מה קורה לנכסי הלקוחות אם חבר בורסה שאינו בנק קורס",
+    "blocks_he": "שורת ההגנה בחשבון השקעות"
+  },
+  {
+    "id": "REG OQ10",
+    "status": "narrowed",
+    "title_he": "האם ניירות ערך של לקוחות נשארים מחוץ לנכסים של בנק שקורס"
+  },
+  {
+    "id": "REG OQ11",
+    "status": "open"
+  },
+  {
+    "id": "REG OQ12",
+    "status": "narrowed"
+  },
+  {
+    "id": "REG OQ13",
+    "status": "open",
+    "title_he": "על מה נשען הגיבוי הלא רשמי של המדינה למפקידים"
+  },
+  {
+    "id": "REG OQ14",
+    "status": "narrowed"
+  },
+  {
+    "id": "REG OQ15",
+    "status": "narrowed"
+  },
+  {
+    "id": "REG OQ16",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "REG OQ17",
+    "status": "open"
+  },
+  {
+    "id": "REG OQ18",
+    "status": "open"
+  },
+  {
+    "id": "REG OQ19",
+    "status": "narrowed"
+  },
+  {
+    "id": "REG OQ20",
+    "status": "narrowed"
+  },
+  {
+    "id": "REG OQ21",
+    "status": "narrowed",
+    "title_he": "האם ערבות מדינה לפיקדונות תספור חשבון נאמנות משותף של ברוקר לפי כל לקוח"
+  },
+  {
+    "id": "RG OQ1",
+    "status": "narrowed"
+  },
+  {
+    "id": "RG OQ2",
+    "status": "open"
+  },
+  {
+    "id": "RG OQ3",
+    "status": "closed",
+    "closed_on": "2026-10-26",
+    "title_he": "מה קורה לקרן להשקעות במקרקעין שלא חילקה כנדרש, ומי מאשר את מעמדה"
+  },
+  {
+    "id": "RG OQ4",
+    "status": "open"
+  },
+  {
+    "id": "RG OQ5",
+    "status": "open"
+  },
+  {
+    "id": "RG OQ6",
+    "status": "open"
+  },
+  {
+    "id": "RG OQ7",
+    "status": "open"
+  },
+  {
+    "id": "RG OQ8",
+    "status": "open"
+  },
+  {
+    "id": "RG OQ9",
+    "status": "open"
+  },
+  {
+    "id": "RG OQ10",
+    "status": "open"
+  },
+  {
+    "id": "RG OQ11",
+    "status": "open"
+  },
+  {
+    "id": "RG OQ12",
+    "status": "open"
+  },
+  {
+    "id": "RG OQ13",
+    "status": "open"
+  },
+  {
+    "id": "RG OQ14",
+    "status": "open"
+  },
+  {
+    "id": "RG OQ15",
+    "status": "open"
+  },
+  {
+    "id": "INS OQ1",
+    "status": "narrowed"
+  },
+  {
+    "id": "INS OQ2",
+    "status": "closed",
+    "closed_on": "2026-10-24",
+    "title_he": "תקרה בתקנות לדמי הניהול בפוליסת חיסכון"
+  },
+  {
+    "id": "INS OQ3",
+    "status": "narrowed"
+  },
+  {
+    "id": "INS OQ4",
+    "status": "open"
+  },
+  {
+    "id": "INS OQ5",
+    "status": "open"
+  },
+  {
+    "id": "INS OQ6",
+    "status": "open"
+  },
+  {
+    "id": "INS OQ7",
+    "status": "closed",
+    "closed_on": "2026-10-25",
+    "title_he": "האם אפשר להעביר פוליסת חיסכון לחברת ביטוח אחרת"
+  },
+  {
+    "id": "INS OQ8",
+    "status": "open"
+  },
+  {
+    "id": "INS OQ9",
+    "status": "open"
+  },
+  {
+    "id": "INS OQ10",
+    "status": "narrowed"
+  },
+  {
+    "id": "INS OQ11",
+    "status": "open"
+  },
+  {
+    "id": "INS OQ12",
+    "status": "open"
+  },
+  {
+    "id": "INS OQ13",
+    "status": "open"
+  },
+  {
+    "id": "INS OQ14",
+    "status": "open"
+  },
+  {
+    "id": "INS OQ15",
+    "status": "open"
+  },
+  {
+    "id": "INS OQ16",
+    "status": "open"
+  },
+  {
+    "id": "SW OQ1",
+    "status": "narrowed"
+  },
+  {
+    "id": "SW OQ2",
+    "status": "narrowed",
+    "title_he": "האם חוזר ההעברה חל על קופת גמל להשקעה",
+    "blocks_he": "השלבים ״לאן אפשר להעביר קופת גמל להשקעה״ ו״חתמו על בקשת ההעברה בקופה המקבלת״ במדריך המעבר"
+  },
+  {
+    "id": "SW OQ3",
+    "status": "open",
+    "title_he": "מה קובעים לגבי פניות שימור במוצרי גמל",
+    "blocks_he": "השלב ״שיחת שימור: לא נמצא כלל״ במדריך המעבר"
+  },
+  {
+    "id": "SW OQ4",
+    "status": "narrowed",
+    "title_he": "האם הצעה לדמי ניהול שניתנה לפני ההצטרפות מחייבת"
+  },
+  {
+    "id": "SW OQ5",
+    "status": "narrowed",
+    "title_he": "איך המסלקה בודקת את הסכמת החוסך להוצאת דוח",
+    "blocks_he": "השלב ״קבלו את הנתונים שלכם מהמסלקה הפנסיונית״ במדריך המעבר"
+  },
+  {
+    "id": "SW OQ6",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "SW OQ7",
+    "status": "open"
+  },
+  {
+    "id": "SW OQ8",
+    "status": "narrowed",
+    "title_he": "האם מעבר בין קרנות פנסיה וקופות גמל לקצבה פטור ממס",
+    "blocks_he": "שורת המס במעבר בקרן פנסיה ובקופת גמל לקצבה"
+  },
+  {
+    "id": "SW OQ9",
+    "status": "narrowed",
+    "title_he": "אילו בנקים פטורים מהמעבר, ואיך נספר יום העסקים השישי",
+    "blocks_he": "השלב ״בקשו את המעבר בבנק הקולט״ במדריך המעבר"
+  },
+  {
+    "id": "SW OQ10",
+    "status": "open",
+    "title_he": "המחיר המפוקח להעברת ניירות ערך מבנק",
+    "blocks_he": "השלב ״מה עולה להעביר ניירות ערך״ במדריך המעבר"
+  },
+  {
+    "id": "SW OQ11",
+    "status": "narrowed",
+    "title_he": "המס על העברת ניירות ערך בין חשבונות של אותו בעלים",
+    "blocks_he": "השלב ״מס במעבר ניירות ערך״ במדריך המעבר"
+  },
+  {
+    "id": "SW OQ12",
+    "status": "open",
+    "title_he": "העברת ניירות ערך בין מוסד ישראלי לברוקר זר",
+    "blocks_he": "השלב ״ברוקר זר: לא נמצא תהליך״ במדריך המעבר"
+  },
+  {
+    "id": "SW OQ13",
+    "status": "open"
+  },
+  {
+    "id": "SW OQ14",
+    "status": "open"
+  },
+  {
+    "id": "SW OQ15",
+    "status": "closed",
+    "closed_on": "2026-10-24"
+  },
+  {
+    "id": "SW OQ16",
+    "status": "open",
+    "title_he": "הסרת סוכן שכבר מחובר לחשבון",
+    "blocks_he": "השלב ״הצטרפו ישירות, או דרך סוכן אם תרצו״ במדריך המעבר"
+  },
+  {
+    "id": "TXK OQ1",
+    "status": "narrowed",
+    "title_he": "שיעור המס, הבסיס והניכוי במשיכה מחיסכון לכל ילד",
+    "blocks_he": "שורת המס במעבר בחיסכון לכל ילד; המס במשיכה מחושב לפי מקור משני"
+  },
+  {
+    "id": "TXK OQ2",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "TXK OQ3",
+    "status": "narrowed",
+    "title_he": "שיעור הניכוי במקור במשיכה מקופת גמל להשקעה"
+  },
+  {
+    "id": "TXK OQ4",
+    "status": "open"
+  },
+  {
+    "id": "TXK OQ5",
+    "status": "open"
+  },
+  {
+    "id": "TXK OQ6",
+    "status": "open"
+  },
+  {
+    "id": "TXK OQ7",
+    "status": "narrowed",
+    "title_he": "אישורים, ניכוי מס זר וניכוי במקור בקופה בניהול אישי"
+  },
+  {
+    "id": "TXK OQ8",
+    "status": "open",
+    "title_he": "מתי פעילות בקופה בניהול אישי נחשבת עסק"
+  },
+  {
+    "id": "TXK OQ9",
+    "status": "narrowed"
+  },
+  {
+    "id": "TXK OQ10",
+    "status": "open",
+    "title_he": "האם משיכה מתחת להפקדות יוצרת הפסד שאפשר לקזז",
+    "blocks_he": "שורת קיזוז ההפסדים בקופת גמל להשקעה, בניהול אישי ובחיסכון לכל ילד בקופה"
+  },
+  {
+    "id": "TXK OQ11",
+    "status": "closed",
+    "closed_on": "2026-10-22"
+  },
+  {
+    "id": "TXK OQ12",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "TXG OQ1",
+    "status": "open"
+  },
+  {
+    "id": "TXG OQ2",
+    "status": "narrowed"
+  },
+  {
+    "id": "TXG OQ3",
+    "status": "open"
+  },
+  {
+    "id": "TXG OQ4",
+    "status": "narrowed",
+    "title_he": "האם מי שמחזיק אצל ברוקר זר חייב להגיש דוח שנתי",
+    "blocks_he": "האילוץ ״בלי צורך בדוח שנתי למס״ בטופס המטרה"
+  },
+  {
+    "id": "TXG OQ5",
+    "status": "open"
+  },
+  {
+    "id": "TXG OQ6",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "TXG OQ7",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "TXG OQ8",
+    "status": "open"
+  },
+  {
+    "id": "TXG OQ9",
+    "status": "narrowed"
+  },
+  {
+    "id": "TXG OQ10",
+    "status": "open"
+  },
+  {
+    "id": "TXG OQ11",
+    "status": "open"
+  },
+  {
+    "id": "TXG OQ12",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "TXG OQ13",
+    "status": "narrowed"
+  },
+  {
+    "id": "TXH OQ1",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "TXH OQ2",
+    "status": "open",
+    "title_he": "שינויים בקרנות ההשתלמות בתקציב הבא"
+  },
+  {
+    "id": "TXH OQ3",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "TXH OQ4",
+    "status": "narrowed"
+  },
+  {
+    "id": "TXH OQ5",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "TXH OQ6",
+    "status": "open"
+  },
+  {
+    "id": "TXH OQ7",
+    "status": "open"
+  },
+  {
+    "id": "TXH OQ8",
+    "status": "open"
+  },
+  {
+    "id": "TXH OQ9",
+    "status": "open"
+  },
+  {
+    "id": "TXH OQ10",
+    "status": "open"
+  },
+  {
+    "id": "TXH OQ11",
+    "status": "narrowed",
+    "title_he": "נוסח מפורש שמעבר בין קרנות השתלמות אינו אירוע מס"
+  },
+  {
+    "id": "TXH OQ12",
+    "status": "narrowed"
+  },
+  {
+    "id": "TXH OQ13",
+    "status": "narrowed"
+  },
+  {
+    "id": "TXH OQ14",
+    "status": "open"
+  },
+  {
+    "id": "TXA OQ1",
+    "status": "narrowed",
+    "title_he": "האם השיעור על ריבית לא צמודה יכול לחול על רווח בפוליסת חיסכון",
+    "blocks_he": "הכיסוי של פוליסת חיסכון באתר: עד שתיסגר, הוא בעמוד ״מה האתר עוד לא מכסה״"
+  },
+  {
+    "id": "TXA OQ2",
+    "status": "open"
+  },
+  {
+    "id": "TXA OQ3",
+    "status": "closed",
+    "closed_on": "2026-10-25",
+    "title_he": "האם מעבר של פוליסת חיסכון לחברת ביטוח אחרת הוא אירוע מס"
+  },
+  {
+    "id": "TXA OQ4",
+    "status": "open"
+  },
+  {
+    "id": "TXA OQ5",
+    "status": "narrowed"
+  },
+  {
+    "id": "TXA OQ6",
+    "status": "open",
+    "title_he": "איך ממוסות הכנסות ההשקעה בתוך ביטוח מנהלים",
+    "blocks_he": "הכיסוי של ביטוח מנהלים באתר: עד שתיסגר, הוא בעמוד ״מה האתר עוד לא מכסה״"
+  },
+  {
+    "id": "TXA OQ7",
+    "status": "open"
+  },
+  {
+    "id": "TXA OQ8",
+    "status": "open"
+  },
+  {
+    "id": "TXA OQ9",
+    "status": "closed",
+    "closed_on": "2026-10-26",
+    "title_he": "המקור לתקרות הגיל בהיוון קצבה מוכרת"
+  },
+  {
+    "id": "TXA OQ10",
+    "status": "closed",
+    "closed_on": "2026-10-26",
+    "title_he": "על מה נשענים התנאים של גיל 60 ושל שלושה תלושי שכר בהיוון קצבה מוכרת"
+  },
+  {
+    "id": "TXA OQ11",
+    "status": "closed",
+    "closed_on": "2026-10-26",
+    "title_he": "האם תקרת ההיוון הפטור כוללת גם היוון של קצבה מוכרת"
+  },
+  {
+    "id": "TXA OQ12",
+    "status": "open"
+  },
+  {
+    "id": "TXA OQ13",
+    "status": "open"
+  },
+  {
+    "id": "TXA OQ14",
+    "status": "narrowed",
+    "title_he": "דמי ביטוח לאומי ומס בריאות על קצבה מוכרת ועל היוון שלה",
+    "blocks_he": "הכיסוי של הפקדות לפי תיקון 190 באתר: עד שתיסגר, הוא בעמוד ״מה האתר עוד לא מכסה״"
+  },
+  {
+    "id": "TXA OQ15",
+    "status": "narrowed",
+    "title_he": "האם מס יסף חל על הכנסה מהיוון קצבה מוכרת",
+    "blocks_he": "הכיסוי של הפקדות לפי תיקון 190 באתר: עד שתיסגר, הוא בעמוד ״מה האתר עוד לא מכסה״"
+  },
+  {
+    "id": "TXA OQ16",
+    "status": "open"
+  },
+  {
+    "id": "TXA OQ17",
+    "status": "open"
+  },
+  {
+    "id": "TXI OQ1",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "TXI OQ2",
+    "status": "open",
+    "title_he": "האם פיקדון צמוד פריים נחשב לעניין המס צמוד או לא צמוד"
+  },
+  {
+    "id": "TXI OQ3",
+    "status": "narrowed",
+    "title_he": "השורה במדריך רשות המסים שסותרת את החוק על המס על דמי ניכיון במק״מ"
+  },
+  {
+    "id": "TXI OQ4",
+    "status": "narrowed"
+  },
+  {
+    "id": "TXI OQ5",
+    "status": "open",
+    "title_he": "איך ממוסה ריבית צבורה כשקונים אג״ח בין מועדי קופון",
+    "blocks_he": "הדירוג של אג״ח ממשלתית בהשוואה: בלי הריבית הצבורה היא מוצגת בלי דירוג"
+  },
+  {
+    "id": "TXI OQ6",
+    "status": "narrowed",
+    "title_he": "המס על ירידת המחיר של אג״ח צמודה כשהמדד יורד"
+  },
+  {
+    "id": "TXI OQ7",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "TXI OQ8",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "TXI OQ9",
+    "status": "open",
+    "title_he": "האם השיעור על ריבית לא צמודה קבוע גם לבני 60 ומעלה",
+    "blocks_he": "ההקלה במס לפי גיל על ריבית לא צמודה במק״מ"
+  },
+  {
+    "id": "TXI OQ10",
+    "status": "open"
+  },
+  {
+    "id": "TXI OQ11",
+    "status": "narrowed",
+    "title_he": "האם הפטור למעוטי הכנסה חל גם על ריבית בעו״ש",
+    "blocks_he": "הפטור למעוטי הכנסה על ריבית בעו״ש"
+  },
+  {
+    "id": "TXI OQ12",
+    "status": "open"
+  },
+  {
+    "id": "TXI OQ13",
+    "status": "open"
+  },
+  {
+    "id": "TXI OQ14",
+    "status": "open",
+    "title_he": "המס על ריבית בפיקדון או בתוכנית חיסכון שנשברו",
+    "blocks_he": "חישוב שבירה של פיקדון או של תוכנית חיסכון לפני הזמן"
+  },
+  {
+    "id": "TXI OQ15",
+    "status": "closed",
+    "closed_on": "2026-10-22"
+  },
+  {
+    "id": "TXI OQ16",
+    "status": "open"
+  },
+  {
+    "id": "TXI OQ17",
+    "status": "narrowed"
+  },
+  {
+    "id": "TXI OQ18",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "TXP OQ1",
+    "status": "closed",
+    "closed_on": "2026-10-22"
+  },
+  {
+    "id": "TXP OQ2",
+    "status": "closed",
+    "closed_on": "2026-10-22"
+  },
+  {
+    "id": "TXP OQ3",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "TXP OQ4",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "TXP OQ5",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "TXP OQ6",
+    "status": "open",
+    "title_he": "האם השכר מחיל כל חודש את זיכוי המס על ההפקדה לפנסיה"
+  },
+  {
+    "id": "TXP OQ7",
+    "status": "narrowed"
+  },
+  {
+    "id": "TXP OQ8",
+    "status": "narrowed"
+  },
+  {
+    "id": "TXP OQ9",
+    "status": "open",
+    "title_he": "המס על רווחים בסכומים הוניים שמותר למשוך מקופת גמל לקצבה"
+  },
+  {
+    "id": "TXP OQ10",
+    "status": "open"
+  },
+  {
+    "id": "TXP OQ11",
+    "status": "open"
+  },
+  {
+    "id": "TXP OQ12",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "TXP OQ13",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "TXP OQ14",
+    "status": "narrowed"
+  },
+  {
+    "id": "TXP OQ15",
+    "status": "open"
+  },
+  {
+    "id": "TXP OQ16",
+    "status": "open"
+  },
+  {
+    "id": "TXF OQ1",
+    "status": "narrowed",
+    "title_he": "האם קרן זרה צוברת ממוסה רק במכירה",
+    "blocks_he": "הדירוג של קרן זרה צוברת בהשוואה: היא מחושבת לפי מקור משני ומוצגת בלי דירוג"
+  },
+  {
+    "id": "TXF OQ2",
+    "status": "narrowed"
+  },
+  {
+    "id": "TXF OQ3",
+    "status": "open",
+    "title_he": "האם בנק בישראל מנכה מדיבידנד זר את מלוא המס, או מקזז את המס הזר"
+  },
+  {
+    "id": "TXF OQ4",
+    "status": "open"
+  },
+  {
+    "id": "TXF OQ5",
+    "status": "narrowed"
+  },
+  {
+    "id": "TXF OQ6",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "TXF OQ7",
+    "status": "open",
+    "title_he": "איזה ניכוי אמריקאי קרן אירית סופגת בפועל"
+  },
+  {
+    "id": "TXF OQ8",
+    "status": "open"
+  },
+  {
+    "id": "TXF OQ9",
+    "status": "open"
+  },
+  {
+    "id": "TXF OQ10",
+    "status": "open"
+  },
+  {
+    "id": "TXF OQ11",
+    "status": "open"
+  },
+  {
+    "id": "TXF OQ12",
+    "status": "open"
+  },
+  {
+    "id": "TXF OQ13",
+    "status": "open"
+  },
+  {
+    "id": "TXF OQ14",
+    "status": "open"
+  },
+  {
+    "id": "TXF OQ15",
+    "status": "open"
+  },
+  {
+    "id": "TXF OQ16",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "TXF OQ17",
+    "status": "open"
+  },
+  {
+    "id": "TXS OQ1",
+    "status": "narrowed"
+  },
+  {
+    "id": "TXS OQ2",
+    "status": "closed",
+    "closed_on": "2026-10-25"
+  },
+  {
+    "id": "TXS OQ3",
+    "status": "open"
+  },
+  {
+    "id": "TXS OQ4",
+    "status": "open"
+  },
+  {
+    "id": "TXS OQ5",
+    "status": "open"
+  },
+  {
+    "id": "TXS OQ6",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "TXS OQ7",
+    "status": "open"
+  },
+  {
+    "id": "TXS OQ8",
+    "status": "narrowed"
+  },
+  {
+    "id": "TXS OQ9",
+    "status": "open"
+  },
+  {
+    "id": "TXS OQ10",
+    "status": "narrowed"
+  },
+  {
+    "id": "TXS OQ11",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "TXS OQ12",
+    "status": "narrowed",
+    "title_he": "האם בנקים מנכים דמי ניהול ודמי משמרת בחישוב המס במקור"
+  },
+  {
+    "id": "TXS OQ13",
+    "status": "open"
+  },
+  {
+    "id": "TXS OQ14",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "TXS OQ15",
+    "status": "narrowed",
+    "title_he": "מה קורה לבסיס המס כשהמדד יורד"
+  },
+  {
+    "id": "TX2 OQ1",
+    "status": "closed",
+    "closed_on": "2026-10-22",
+    "title_he": "המס על פיקדון במטבע חוץ כשהמטבע יורד"
+  },
+  {
+    "id": "TX2 OQ2",
+    "status": "open",
+    "title_he": "על איזה בסיס, ולפי איזה חוק, בנק מנכה מס מריבית על פיקדון במטבע חוץ",
+    "blocks_he": "הכיסוי של פיקדון במטבע חוץ באתר: עד שתיסגר, הוא בעמוד ״מה האתר עוד לא מכסה״"
+  },
+  {
+    "id": "TX2 OQ3",
+    "status": "narrowed"
+  },
+  {
+    "id": "TX2 OQ4",
+    "status": "open"
+  },
+  {
+    "id": "TX2 OQ5",
+    "status": "narrowed",
+    "title_he": "איך ממוסה כל סוג תשלום בפיקדון מובנה",
+    "blocks_he": "הכיסוי של פיקדון מובנה באתר: עד שתיסגר, הוא בעמוד ״מה האתר עוד לא מכסה״"
+  },
+  {
+    "id": "TX2 OQ6",
+    "status": "narrowed",
+    "title_he": "מתי נוצר הפסד כשאג״ח קונצרנית מפסיקה לשלם, ואיך בנקים מנכים מס במקרה כזה",
+    "blocks_he": "הכיסוי של אג״ח קונצרניות באתר: עד שתיסגר, הוא בעמוד ״מה האתר עוד לא מכסה״"
+  },
+  {
+    "id": "TX2 OQ7",
+    "status": "narrowed"
+  },
+  {
+    "id": "TX2 OQ8",
+    "status": "open",
+    "title_he": "האם חלים דמי ביטוח לאומי על חלוקה של קרן להשקעות במקרקעין",
+    "blocks_he": "הכיסוי של קרן להשקעות במקרקעין באתר: עד שתיסגר, הוא בעמוד ״מה האתר עוד לא מכסה״"
+  },
+  {
+    "id": "TX2 OQ9",
+    "status": "open"
+  },
+  {
+    "id": "TX2 OQ10",
+    "status": "open",
+    "title_he": "איך ממוסות תעודות זהב זרות וקרנות זהב אמריקאיות",
+    "blocks_he": "הכיסוי של השקעה בזהב דרך קרנות סל באתר: עד שתיסגר, הוא בעמוד ״מה האתר עוד לא מכסה״"
+  },
+  {
+    "id": "TX2 OQ11",
+    "status": "open"
+  },
+  {
+    "id": "TX2 OQ12",
+    "status": "closed",
+    "closed_on": "2026-10-24"
+  },
+  {
+    "id": "TX2 OQ13",
+    "status": "narrowed"
+  },
+  {
+    "id": "TX2 OQ14",
+    "status": "open"
+  },
+  {
+    "id": "TX2 OQ15",
+    "status": "open"
+  },
+  {
+    "id": "TX2 OQ16",
+    "status": "open"
+  },
+  {
+    "id": "TX2 OQ17",
+    "status": "narrowed"
+  },
+  {
+    "id": "CAT OQ1",
+    "status": "narrowed"
+  },
+  {
+    "id": "CAT OQ2",
+    "status": "narrowed",
+    "title_he": "איך רשות שוק ההון משקללת את דמי הניהול הממוצעים שהיא מפרסמת"
+  },
+  {
+    "id": "CAT OQ3",
+    "status": "open",
+    "title_he": "ההגדרות של שדות הסיכון בנתוני הרשות: אלפא, שארפ, סטיית תקן ונזילות"
+  },
+  {
+    "id": "CAT OQ4",
+    "status": "open"
+  },
+  {
+    "id": "CAT OQ5",
+    "status": "open"
+  },
+  {
+    "id": "CAT OQ6",
+    "status": "open"
+  },
+  {
+    "id": "CAT OQ7",
+    "status": "open"
+  },
+  {
+    "id": "CAT OQ8",
+    "status": "open"
+  },
+  {
+    "id": "CAT OQ9",
+    "status": "closed",
+    "closed_on": "2026-10-26"
+  },
+  {
+    "id": "CAT OQ10",
+    "status": "open"
+  },
+  {
+    "id": "CAT OQ11",
+    "status": "open",
+    "title_he": "האם תקופת המסלול הכספי חלה גם על קופת גמל להשקעה ועל קרן השתלמות"
+  },
+  {
+    "id": "CAT OQ12",
+    "status": "closed",
+    "closed_on": "2026-10-23"
+  },
+  {
+    "id": "CAT OQ13",
+    "status": "narrowed"
+  },
+  {
+    "id": "CAT OQ14",
+    "status": "closed",
+    "closed_on": "2026-10-22"
+  },
+  {
+    "id": "CAT OQ15",
+    "status": "closed",
+    "closed_on": "2026-10-23"
+  },
+  {
+    "id": "CAT OQ16",
+    "status": "open"
+  },
+  {
+    "id": "CAT OQ17",
+    "status": "open"
+  },
+  {
+    "id": "CAT OQ18",
+    "status": "open",
+    "title_he": "הכללים לתחילית בשמות המסלולים, וטיוטת התקנה עליהם"
+  },
+  {
+    "id": "CAT OQ19",
+    "status": "closed",
+    "closed_on": "2026-10-23"
+  },
+  {
+    "id": "CAT OQ20",
+    "status": "open"
+  },
+  {
+    "id": "CAT OQ21",
+    "status": "open"
+  },
+  {
+    "id": "CAT OQ22",
+    "status": "open"
+  },
+  {
+    "id": "CAT OQ23",
+    "status": "open"
+  }
+]

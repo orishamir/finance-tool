@@ -12,3 +12,4 @@ export * from "./collections/terms.ts";
 export * from "./collections/series.ts";
 export * from "./collections/fund-lists.ts";
 export * from "./collections/sources.ts";
+export * from "./collections/open-questions.ts";

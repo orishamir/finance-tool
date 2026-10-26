@@ -32,7 +32,7 @@ const T = {
   kglRoutes: "לאן אפשר להעביר קופת גמל להשקעה",
   routes: "לאן אפשר להעביר, ואילו כספים",
   inKind: "במזומן או בעין",
-  employer: "הודיעו למעסיק לאן להפקיד",
+  employer: "ודאו שהמעסיק מפקיד לקופה החדשה",
   determining: "המועד הקובע: ההפקדה הראשונה בקופה החדשה",
   rejection: "צפו להודעת דחייה או עיכוב",
   insurance: "ביטוח בפנסיה: הטופס, הכיסוי וחודשי האכשרה",
@@ -85,7 +85,8 @@ const retention = s(T.retention, ["SW-19"], { noRule: { known: ["SW-07", "PF-13"
 const verify = s(T.verify, ["SW-38"], { verify: true });
 const data = s(T.data, ["SW-18", "SW-44"], { openQuestions: ["SW OQ5"], named: ["SW-50"] });
 const agent = s(T.agent, ["SW-17"], { experience: ["SW-X04"], openQuestions: ["SW OQ16"], named: ["SW-49"] });
-const employer = s(T.employer, ["SW-10"], { openQuestions: ["SW OQ6"], named: ["SW-48"] });
+// SW OQ6 closed 2026-10-26: the receiving fund notifies the employer, who acts by the month after (SW-10)
+const employer = s(T.employer, ["SW-10"], { named: ["SW-48"] });
 // the companies' own sentences split out of the circular's steps on 2026-10-25 (SW-45 to SW-47, The Phoenix)
 const signNamed = { named: ["SW-45"] };
 const cancel = s(T.cancel, ["SW-07"], { named: ["SW-46"] });

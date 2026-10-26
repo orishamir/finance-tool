@@ -13,6 +13,8 @@ import {
   fundListFile,
   fundRecord,
   type FundListFile,
+  openQuestionsFile,
+  type OpenQuestionEntry,
   parameterRecord,
   ruleRecord,
   seriesRecord,
@@ -43,6 +45,7 @@ const collections: Record<string, z.ZodType> = {
   catalog: catalogEntry,
   series: seriesRecord,
   sources: sourcesFile,
+  "open-questions.json": openQuestionsFile,
 };
 
 export interface ValidationContext {
@@ -151,6 +154,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
   checkInstrumentsMap(files, ctx.dataDir, ruleDimensions, report);
   checkHoldingParameter(files, ctx.dataDir, report);
   checkPinnedRules(files, ctx.dataDir, ruleRecords, report);
+  checkOpenQuestions(files, ctx, report, warn);
   const emit = ctx.warn ?? ((line: string) => console.warn(line));
   for (const [category, ids] of warnings) {
     emit(`warning: ${category}: ${ids.length} (${ids.slice(0, 6).join(", ")}${ids.length > 6 ? ", ..." : ""})`);
@@ -286,6 +290,43 @@ function checkPinnedRules(files: string[], dataDir: string, all: Map<string, Rul
         const figures = (all.get(id) as { figures?: Record<string, unknown> } | undefined)?.figures ?? {};
         if (!(figure in figures)) report(file, `pinned-rules: the answer slot {${id}:${figure}} names a figure ${id} does not have (${Object.keys(figures).join(",") || "none"})`);
       }
+    }
+  }
+}
+
+/**
+ * data-schema §3.15 (2026-10-26): `data/open-questions.json` against the rule base and the guide records.
+ * Warns when the file is behind the markdown (an id missing or extra, or a closure the file does not have, or the other way);
+ * fails when a guide record lists a question the file has as closed (`open_questions`, `blocked_by`, a `blocked:` mark).
+ */
+function checkOpenQuestions(files: string[], ctx: ValidationContext, report: (file: string, message: string) => void, warn: (category: string, id: string) => void) {
+  const file = files.find((f) => relative(ctx.dataDir, f) === "open-questions.json");
+  if (!file) return;
+  const list = parseJson(readFileSync(file, "utf8")).value as OpenQuestionEntry[] | undefined;
+  if (!Array.isArray(list)) return;
+  const byId = new Map(list.map((q) => [q.id, q]));
+  const behind = "data/open-questions.json is behind the rule base (npm run gen:open-questions -w @finance-tool/pipeline)";
+  if (ctx.ruleBase.questions) {
+    const md = new Map(ctx.ruleBase.questions.map((q) => [q.id, q]));
+    for (const q of ctx.ruleBase.questions) {
+      const f = byId.get(q.id);
+      if (!f) warn(behind, `${q.id} missing`);
+      else if ((q.closedOn !== null) !== (f.status === "closed") || (q.closedOn !== null && q.closedOn !== f.closed_on))
+        warn(behind, `${q.id} ${q.closedOn ? `closed ${q.closedOn}` : "not closed"} in the markdown`);
+    }
+    for (const q of list) if (!md.has(q.id)) warn(behind, `${q.id} not in the markdown`);
+  }
+  const closed = (code: string) => byId.get(code.replace("-OQ", " OQ"))?.status === "closed";
+  for (const f of files) {
+    if (!relative(ctx.dataDir, f).split(/[\\/]/).join("/").startsWith("instruments/") || !f.endsWith(".json")) continue;
+    const rec = parseJson(readFileSync(f, "utf8")).value;
+    for (const key of ["open_questions", "blocked_by"]) {
+      for (const id of collectStrings(rec, key)) if (closed(id)) report(f, `${key}: ${id} is closed in data/open-questions.json; state the answer with its rule instead`);
+    }
+    const marks = ((rec as { dimensions?: unknown } | undefined)?.dimensions ?? {}) as Record<string, unknown>;
+    for (const [dim, mark] of Object.entries(marks)) {
+      if (typeof mark === "string" && mark.startsWith("blocked:") && closed(mark.slice("blocked:".length)))
+        report(f, `dimensions.${dim}: ${mark.slice("blocked:".length)} is closed in data/open-questions.json; unblock it`);
     }
   }
 }

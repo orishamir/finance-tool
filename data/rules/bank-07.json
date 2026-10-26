@@ -32,7 +32,7 @@
         "BANK-07"
       ],
       "state": "sourced",
-      "notes": "Before a non-renewing fixed-term deposit of one year or more is repaid, the bank notifies the amount, the crediting date and the consequences of not withdrawing, no later than 21 days before (s.11). The Schedule E exempt sum is not recorded here (BANK OQ3)."
+      "notes": "Before a non-renewing fixed-term deposit of one year or more is repaid, the bank notifies the amount, the crediting date and the consequences of not withdrawing, no later than 21 days before (s.11). The Schedule E exempt sum is not recorded here; the consolidated text (Wikisource mirror) shows Schedule E last amended in 1993 and ss.7-12 in 2003 or earlier."
     },
     "maturity_notice_max_days": {
       "value": 45,
