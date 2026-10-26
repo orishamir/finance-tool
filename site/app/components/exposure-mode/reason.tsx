@@ -10,6 +10,7 @@ import type { ResultCtx } from "../compare/ctx";
 import { IconExternal } from "../icons";
 import { Tpl } from "./tpl";
 import type { ExpCtx } from "./ctx";
+import { IdText } from "../provenance";
 
 /** The release 2 reason component takes a wrapper-mode page context; it reads only the names, the run date, the value factory and a field opener. */
 export function asResultCtx(ctx: ExpCtx): ResultCtx {
@@ -21,7 +22,7 @@ export function ExposureReason({ row, ctx }: { row: ExposureRowView; ctx: ExpCtx
   const one = (r: RowReason, i: number): ReactNode => {
     switch (r.code) {
       case "p08-gov":
-        return <span key={i} className="block">{r5.exposure.p08.gov}</span>;
+        return <span key={i} className="block"><IdText text={r5.exposure.p08.gov} /></span>;
       case "no-fund":
         return <span key={i} className="block">{c.noFund}</span>;
       case "no-terms":

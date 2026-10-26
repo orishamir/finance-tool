@@ -2,7 +2,7 @@
 // Num). Written 2026-10-23 from the rule base (IRA, KH, TXH, TXK, PF, REG); each block ends with the rules it
 // rests on. NEW copy for the founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
-import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
+import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
 
 export const content: GuideContent = {
@@ -35,7 +35,7 @@ export const content: GuideContent = {
   afterTax: () => (
     <>
       <Callout tone="caution" className="max-w-measure">
-        <span className="font-medium">מה משלמים מעבר <Term prefix="ל" id="דמי ניהול">דמי הניהול</Term>.</span> <Term id="עמלות ברוקראז'">עמלות ברוקראז'</Term> על כל קנייה ומכירה, <Term id="דמי משמרת">דמי משמרת</Term> ודמי ניהול של הקרנות שמחזיקים נגבים מהקופה לפי תעריף הברוקר שבחרתם. התקרה לדמי הניהול של קופה אישית אחרי תיקון התקנות לא אותרה; האתר מציג את תקרת תקנה 4. שאלה פתוחה: <bdi dir="ltr" className="whitespace-nowrap">IRA OQ3</bdi>.
+        <span className="font-medium">מה משלמים מעבר <Term prefix="ל" id="דמי ניהול">דמי הניהול</Term>.</span> <Term id="עמלות ברוקראז'">עמלות ברוקראז'</Term> על כל קנייה ומכירה, <Term id="דמי משמרת">דמי משמרת</Term> ודמי ניהול של הקרנות שמחזיקים נגבים מהקופה לפי תעריף הברוקר שבחרתם. התקרה לדמי הניהול של קופה אישית אחרי תיקון התקנות לא אותרה; האתר מציג את תקרת תקנה 4. שאלה פתוחה: <IdRef id="IRA OQ3" />.
       </Callout>
       <RulesLine ids={["IRA-16", "IRA-17", "PF-06", "IRA-21"]} />
     </>

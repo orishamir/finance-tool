@@ -11,15 +11,16 @@ import { hasHebrew, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/sour
 import { isExperience } from "../lib/rule-shelves";
 import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, sourceHref, sourceLabel2, shownTitle, type RuleSource, type SourcedRule } from "../lib/sources";
 import { useInputs } from "../lib/inputs";
-import { isParameter, isProvisional, strengthOf, type SiteValue, type Strength } from "../lib/value";
+import { isParameter, isProvisional, isWeak, strengthOf, type SiteValue, type Strength } from "../lib/value";
 import type { TermRow } from "../lib/data.server";
 import { IconAlert, IconCalculator, IconCheck, IconClock, IconCopy, IconExternal, IconFile, IconLock, IconPencil, IconReset } from "./icons";
 import { Sheet } from "./Sheet";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
+import { Tpl } from "./kit";
 
 // ---------------------------------------------------------------- context
 
-export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean } | { kind: "rule"; id: string } | { kind: "term"; id: string };
+export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean } | { kind: "rule"; id: string } | { kind: "term"; id: string } | { kind: "formula"; id: string } | { kind: "question"; id: string; /** The question was closed on this date (a closure on the not-covered page): the sheet says so. */ closedOn?: string };
 
 interface ProvenanceApi {
   open: (item: Item, anchor: HTMLElement | null) => void;
@@ -41,6 +42,12 @@ export interface ProvenanceData {
   rulesOf?: { name: string; href: string };
   /** Where each rule is used (the rules pages fill it): pages that show it, and whether the calculation engine reads it. */
   ruleUses?: Record<string, RuleUses>;
+  /** Per formula, its Hebrew name and the site parameters it uses (the formula sheet). A page that does not pass it still gets the name from `formulaNames`. */
+  formulas?: Record<string, { name: string; parameters: string[] }>;
+  /** Per id a card on /parameters answers to: `P-01` to itself, an `A-01` that is an input of a card to that card. PageShell fills it for every page. */
+  parameters?: Record<string, string>;
+  /** Per open question (`TX2 OQ6`): from data/open-questions.json once it exists; the question sheet shows these fields when the id is here. */
+  openQuestions?: Record<string, { title_he?: string; status_he?: string; blocks_he?: string }>;
 }
 
 /** What a rule affects: links to pages that use it, and whether the calculation engine reads it. */
@@ -71,17 +78,24 @@ export function ProvenanceProvider({ data, children }: { data: ProvenanceData; c
   const descId = useId();
   return (
     <Ctx.Provider value={api}>
+      <DataCtx.Provider value={data}>
       <TodayCtx.Provider value={data.today}>
       {children}
       <PushCtx.Provider value={push}>
+       <CloseCtx.Provider value={close}>
         <Sheet open={open} onClose={close} anchor={anchor} pc="popover" height={70} className="lg:max-h-[60vh] lg:backdrop:bg-transparent" labelledBy={headId} describedBy={descId} onBack={back}>
           {top && <SheetContent item={top} data={data} headId={headId} descId={descId} />}
         </Sheet>
+       </CloseCtx.Provider>
       </PushCtx.Provider>
       </TodayCtx.Provider>
+      </DataCtx.Provider>
     </Ctx.Provider>
   );
 }
+
+/** The page's provenance data, for the chips that must know what exists (a parameter card, a formula). */
+const DataCtx = createContext<ProvenanceData | null>(null);
 
 const PushCtx = createContext<(item: Item) => void>(() => {});
 
@@ -93,6 +107,8 @@ export function useOpen() {
 }
 
 const InsideSheetCtx = createContext(false);
+/** Closes the sheet: a link inside it that leaves the page calls it. */
+const CloseCtx = createContext<() => void>(() => {});
 
 // ---------------------------------------------------------------- Num
 
@@ -137,7 +153,7 @@ export function Num({ value, size = "inline", display, animate, className, prefi
   const roundState = keepDecimals ? undefined : value.state;
   const text = display ?? (shown !== null && typeof value.value === "number" ? formatValue(shown, value.unit, roundState, param) : formatValue(value.value, value.unit, roundState, param));
   const strength = strengthOf(value);
-  const weak = strength === "institution" || strength === "secondary" ? numbers.weak[strength] : null;
+  const weak = isWeak(value) && (strength === "institution" || strength === "secondary") ? numbers.weak[strength] : null;
   const fromDate = startsAfter(value, today);
   const future = fromDate ? `${numbers.startsOn}${fmt.date(fromDate)}` : null;
   const label = [text, stateWord[value.state], param ? numbers.parameter : null, weak, future, value.stale ? `${numbers.staleSince} ${fmt.date(staleDate(value))}` : null, numbers.details].filter(Boolean).join(", ");
@@ -249,14 +265,76 @@ export function StrengthLabel({ strength }: { strength: Strength }) {
   return <Tag tone="neutral">{label}</Tag>;
 }
 
-/** A rule chip: the ID in LTR with a slashed zero, a 44px tap area, opening the rule card. */
-export function RuleRef({ id, className }: { id: string; className?: string }) {
+export type IdKind = "rule" | "formula" | "parameter" | "assumption" | "question";
+const QUESTION_ID = /^([A-Z0-9]+)[ -]OQ(\d+)$/;
+/**
+ * What an id is, from its shape: `TX2 OQ6` a question; `F-80`, and any id `formulaNames` names (`A-06`, which is a method
+ * assumption that has a formula of its own), a formula; `P-01` a site parameter; any other `A-nn` an assumption of the
+ * method (a parameter card links to it only when the card has it as an input); `ABC-12` a rule. Anything else is null: no chip.
+ */
+export function idKind(id: string): IdKind | null {
+  if (QUESTION_ID.test(id)) return "question";
+  if (/^F-\d+$/.test(id) || (id !== "_other" && Object.hasOwn(formulaNames, id))) return "formula";
+  if (/^P-\d+$/.test(id)) return "parameter";
+  if (/^A-\d+$/.test(id)) return "assumption";
+  if (/^[A-Z][A-Z0-9]*-\d+$/.test(id)) return "rule";
+  return null;
+}
+
+/**
+ * One chip for any id the site shows (2026-10-26): a rule opens its card, a formula its sheet, an open question its sheet,
+ * a parameter goes to its card on the parameters page. The ID is LTR with a slashed zero and a 44px tap area.
+ * - `closedOn`: a question that was closed on that date; the chip looks the same, its sheet says it was closed.
+ * - `asLabel`: the id as a label that does nothing (a parameter's own card, which a link would only point back at).
+ * An empty id renders nothing; an id that is no kind, or an `A-nn` no card has, renders as plain text.
+ */
+export function IdRef({ id, className, closedOn, asLabel }: { id: string; className?: string; closedOn?: string; asLabel?: boolean }) {
   const open = useOpen();
+  const close = useContext(CloseCtx);
+  const data = useContext(DataCtx);
+  if (!id) return null;
+  const kind = idKind(id);
+  const plain = <bdi dir="ltr" className="slashed-zero whitespace-nowrap">{id}</bdi>;
+  if (!kind) return plain;
+  const shown = kind === "question" ? id.replace("-OQ", " OQ") : id;
+  if (asLabel) return <span className={cx("rule-chip pointer-events-none", className)}><bdi dir="ltr" className="whitespace-nowrap">{shown}</bdi></span>;
+  let card: string | undefined;
+  if (kind === "parameter") card = data?.parameters ? data.parameters[id] : id;
+  if (kind === "assumption") card = data?.parameters?.[id];
+  if ((kind === "parameter" || kind === "assumption") && !card) return plain;
+  if (card) {
+    return (
+      <Link to={`/parameters#${card}`} className={cx("rule-chip", className)} onClick={close} aria-label={`${copy.idRef.parameter} ${id}`}>
+        <bdi dir="ltr">{id}</bdi>
+      </Link>
+    );
+  }
+  const aria = kind === "rule" ? `${ruleCopy.title} ${id}` : kind === "formula" && id.startsWith("A-") ? `${copy.idRef.howComputed} ${id}` : `${copy.idRef[kind as "formula" | "question"]} ${shown}`;
+  const item: Item = kind === "question" ? { kind: "question", id: shown, ...(closedOn ? { closedOn } : {}) } : { kind: kind as "rule" | "formula", id: shown };
   return (
-    <button type="button" className={cx("rule-chip", className)} onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} aria-label={`${ruleCopy.title} ${id}`}>
-      <bdi dir="ltr">{id}</bdi>
+    <button type="button" className={cx("rule-chip", className)} onClick={(e) => open(item, e.currentTarget)} aria-label={aria}>
+      <bdi dir="ltr" className="whitespace-nowrap">{shown}</bdi>
     </button>
   );
+}
+
+/**
+ * Text that names open questions inside a sentence (a copy string that ends "... שאלה פתוחה SW OQ4"): each code in it becomes an `IdRef`.
+ * A string with no code comes back unchanged.
+ */
+export function IdText({ text }: { text: string }) {
+  const parts = text.split(/\b([A-Z0-9]+[ -]OQ\d+)\b/);
+  if (parts.length === 1) return <>{text}</>;
+  return (
+    <>
+      {parts.map((part, i) => (i % 2 === 1 ? <IdRef key={i} id={part} /> : part))}
+    </>
+  );
+}
+
+/** The rule chip: `IdRef` for a rule id, kept under its old name so nothing else changes. */
+export function RuleRef({ id, className }: { id: string; className?: string }) {
+  return <IdRef id={id} className={className} />;
 }
 
 /** "כללים:" then the chips. Always the last line of its block, never inside a sentence (design review C1). */
@@ -297,10 +375,10 @@ export function Term({ id, children, prefix }: { id: string; children?: ReactNod
 
 /**
  * The key to the number styles (copy 2). Samples are marks, not figures. The fourth item (audit A23) is the mark a figure
- * carries when it rests on a company's own document; `institution={false}` leaves it out on a page that has none. `term`
+ * carries when it rests on a company's document used out of its own context (D31); a page passes `institution` only when it has such a figure. `term`
  * adds the glossary-term sample (dashed teal underline, `.term`) for pages whose text has `Term`s (the guide, exposure pages; wp6, A78).
  */
-export function NumberLegend({ className, institution = true, term = false }: { className?: string; institution?: boolean; term?: boolean }) {
+export function NumberLegend({ className, institution = false, term = false }: { className?: string; institution?: boolean; term?: boolean }) {
   return (
     <p className={cx("flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground", className)} data-sample>
       <span>
@@ -339,11 +417,12 @@ function Iso({ children, ltr }: { children: ReactNode; ltr?: boolean }) {
 }
 
 /** One source: the link line, the quoted words, then when it was read (synthesis 3.3). */
-function OneSource({ source, rule, today, english }: { source: RuleSource; rule?: Pick<SourcedRule, "likely_to_change" | "recheck_date">; today: string; english?: boolean }) {
+function OneSource({ source, rule, today, english, own }: { source: RuleSource; rule?: Pick<SourcedRule, "likely_to_change" | "recheck_date">; today: string; english?: boolean; own?: boolean }) {
   const n = sourceLabel2(source);
   const title = shownTitle(n.title, source.url, source.kind);
   const pubHebrew = hasHebrew(n.publisher);
-  const weak = source.strength !== "primary" ? sourceCopy.weak[source.strength] : null;
+  // D31: a company's own figure on its own product is shown with a neutral source line, no "לפי החברה"
+  const weak = source.strength !== "primary" && !own ? sourceCopy.weak[source.strength] : null;
   const changed = mayHaveChanged(rule ?? { likely_to_change: "no" }, source, today);
   const titleNode = <Iso ltr={title.host || !isHebrewTitle(n.title)}>{title.text}</Iso>;
   return (
@@ -390,15 +469,15 @@ function OneSource({ source, rule, today, english }: { source: RuleSource; rule?
  * The source block (synthesis 3.3): the first source in full; further ones behind "עוד מקור אחד" in the sheet and all
  * shown when `inline` (the rules pages). `english` keeps the English title in a collapsed line when the shown name is a host.
  */
-export function SourceBlock({ source, rule, today, inline, english }: { source: RuleSource | readonly RuleSource[]; rule?: Pick<SourcedRule, "likely_to_change" | "recheck_date">; today: string; inline?: boolean; english?: boolean }) {
+export function SourceBlock({ source, rule, today, inline, english, own }: { source: RuleSource | readonly RuleSource[]; rule?: Pick<SourcedRule, "likely_to_change" | "recheck_date">; today: string; inline?: boolean; english?: boolean; own?: boolean }) {
   const list = Array.isArray(source) ? (source as readonly RuleSource[]) : [source as RuleSource];
   const [first, ...rest] = list;
   if (!first) return null;
   // no "לקריאה נוחה" copy after an official source any more: pickSources leaves copies out when there is one (2026-10-25)
-  const more = rest.map((s) => <OneSource key={s.url + (s.locator ?? "")} source={s} rule={rule} today={today} english={english} />);
+  const more = rest.map((s) => <OneSource key={s.url + (s.locator ?? "")} source={s} rule={rule} today={today} english={english} own={own} />);
   return (
     <div className="flex flex-col gap-3">
-      <OneSource source={first} rule={rule} today={today} english={english} />
+      <OneSource source={first} rule={rule} today={today} english={english} own={own} />
       {rest.length > 0 &&
         (inline ? (
           more
@@ -437,7 +516,70 @@ function SheetContent({ item, data, headId, descId }: { item: Item; data: Proven
       {item.kind === "value" && <ValueSheet value={item.value} exact={!!item.exact} data={data} headId={headId} descId={descId} />}
       {item.kind === "rule" && <RuleCard id={item.id} data={data} headId={headId} />}
       {item.kind === "term" && <TermCard id={item.id} data={data} headId={headId} />}
+      {item.kind === "formula" && <FormulaSheet id={item.id} data={data} headId={headId} />}
+      {item.kind === "question" && <QuestionSheet id={item.id} closedOn={item.closedOn} data={data} headId={headId} />}
     </InsideSheetCtx.Provider>
+  );
+}
+
+/** A formula's sheet: its Hebrew name, the site parameters it uses (only when the page passed `formulas`: otherwise the list is unknown, not empty) (each a chip to its card), and the full definition in method.md. */
+function FormulaSheet({ id, data, headId }: { id: string; data: ProvenanceData; headId: string }) {
+  const known = data.formulas?.[id];
+  const name = formulaNames[id] || known?.name || formulaNames._other;
+  const parameters = known?.parameters ?? [];
+  return (
+    <div className="flex flex-col gap-3">
+      <h2 id={headId} className="text-lg font-semibold">
+        {name} <bdi dir="ltr" className="slashed-zero text-muted-foreground text-base">{id}</bdi>
+      </h2>
+      {data.formulas && (
+        <div className="flex flex-col gap-1.5">
+          <span className="text-sm text-muted-foreground">{copy.formulaSheet.usesLabel}</span>
+          {parameters.length > 0 ? (
+            <span className="flex flex-wrap gap-2">
+              {parameters.map((p) => (
+                <IdRef key={p} id={p} />
+              ))}
+            </span>
+          ) : (
+            <span className="text-sm">{copy.formulaSheet.noParameters}</span>
+          )}
+        </div>
+      )}
+      <a href={METHOD_URL} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-start gap-1 text-sm hover:underline" dir="ltr">
+        <span className="min-w-0 [overflow-wrap:anywhere]">{copy.formulaSheet.full}</span>
+        <IconExternal size={16} className="shrink-0 mt-0.5" />
+      </a>
+    </div>
+  );
+}
+const METHOD_URL = "https://github.com/orishamir/finance-tool/blob/main/docs/method.md";
+
+/** An open question's sheet: what the term means on the site, and its title, status and what it blocks once data/open-questions.json has the id. */
+function QuestionSheet({ id, closedOn, data, headId }: { id: string; closedOn?: string; data: ProvenanceData; headId: string }) {
+  const q = data.openQuestions?.[id] ?? data.openQuestions?.[id.replace(" OQ", "-OQ")];
+  return (
+    <div className="flex flex-col gap-3">
+      <h2 id={headId} className="text-lg font-semibold">
+        {q?.title_he ?? copy.idRef.question} <bdi dir="ltr" className="slashed-zero text-muted-foreground text-base">{id}</bdi>
+      </h2>
+      {(q?.status_he || q?.blocks_he) && (
+        <dl className="sheet-dl">
+          {q.status_he && <Row label={copy.questionSheet.status}>{q.status_he}</Row>}
+          {q.blocks_he && <Row label={copy.questionSheet.blocks}>{q.blocks_he}</Row>}
+        </dl>
+      )}
+      {closedOn ? (
+        <p className="text-sm">
+          <Tpl t={copy.questionSheet.closed} vars={{ date: <bdi dir="ltr">{fmt.date(closedOn)}</bdi> }} />
+        </p>
+      ) : (
+        <>
+          <p className="text-sm">{copy.questionSheet.what}</p>
+          <p className="text-sm text-muted-foreground">{copy.questionSheet.onSite}</p>
+        </>
+      )}
+    </div>
   );
 }
 
@@ -482,8 +624,7 @@ export function weakInputNames(value: SiteValue): string[] {
   const out: string[] = [];
   for (const [key, input] of Object.entries((value.computed_from?.inputs ?? {}) as Record<string, SiteValue>)) {
     if (!input || typeof input !== "object" || !("state" in input)) continue;
-    const st = strengthOf(input);
-    if (st === "institution" || st === "secondary") out.push(inputName(key));
+    if (isWeak(input)) out.push(inputName(key));
   }
   return out;
 }
@@ -538,7 +679,7 @@ function FigureSource({ value, data }: { value: SiteValue; data: ProvenanceData 
   };
   // a figure's source can be a file of the site, not a web address: the old plain label stays for it
   if (!/^https?:/.test(source.url)) return <SourceLink url={source.url} title={source.title} />;
-  return <SourceBlock source={source} rule={owner} today={data.today} english />;
+  return <SourceBlock source={source} rule={owner} today={data.today} english own={!!value.own} />;
 }
 
 /**
@@ -661,12 +802,10 @@ export function ValueSheet({ value, exact, data, headId, descId }: { value: Site
       {value.state === "computed" && value.computed_from && (
         <>
           <dl className="sheet-dl">
-            <Row label={copy.computed.formula}>
+            <Row label={value.computed_from.formula.startsWith("A-") ? copy.idRef.howComputed : copy.computed.formula}>
               <span className="flex flex-wrap items-center gap-2">
                 <span>{formulaNames[value.computed_from.formula] ?? formulaNames._other}</span>
-                <span className="rule-chip rule-chip-static">
-                  <bdi dir="ltr">{value.computed_from.formula}</bdi>
-                </span>
+                <IdRef id={value.computed_from.formula} />
               </span>
             </Row>
           </dl>
@@ -731,7 +870,7 @@ export function ValueSheet({ value, exact, data, headId, descId }: { value: Site
         </div>
       )}
 
-      {(strength === "institution" || strength === "secondary" || strength === "primary-mirror" || strength === "open") && value.state !== "entered" && (
+      {(isWeak(value) || strength === "primary-mirror" || strength === "open") && value.state !== "entered" && (
         <Callout tone={strength === "open" ? "blocked" : strength === "primary-mirror" ? "info" : "caution"} title={strengthCopy[strength].label}>
           {strengthCopy[strength].line}
           {weakNames.length > 0 && (

@@ -2,7 +2,7 @@
 // Written 2026-10-23 from the il-finance rules cited under each block (BANK, TXI, REG, SW, MF); same shape
 // and register as kupat-gemel-lehashkaa.tsx. NEW copy for the founder to review.
 import type { GuideContent } from "./types";
-import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
+import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
 
 export const content: GuideContent = {
@@ -43,7 +43,7 @@ export const content: GuideContent = {
   afterTax: () => (
     <>
       <Callout tone="blocked" className="max-w-measure">
-        <span className="font-medium">הפטור למעוטי הכנסה על ריבית מפיקדון: לא ידוע אם הוא חל גם על ריבית בעו"ש.</span> האתר לא מחיל אותו כאן. שאלה פתוחה: <bdi dir="ltr" className="whitespace-nowrap">TXI OQ11</bdi>.
+        <span className="font-medium">הפטור למעוטי הכנסה על ריבית מפיקדון: לא ידוע אם הוא חל גם על ריבית בעו"ש.</span> האתר לא מחיל אותו כאן. שאלה פתוחה: <IdRef id="TXI OQ11" />.
       </Callout>
       <RulesLine ids={["TXI-20"]} />
     </>

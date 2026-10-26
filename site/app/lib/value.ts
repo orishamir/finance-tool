@@ -15,6 +15,12 @@ export interface SiteValue extends ValueObject {
   stale?: Staleness | null;
   /** The weakest strength among everything a computed value rests on (D10 labels travel). */
   weakest?: Strength;
+  /**
+   * D31: the name of the company whose own product this figure describes, set only where the figure is built for the row,
+   * card or page that names that product. A company's figure about its own product is official in that context:
+   * shown as sourced, with no "לפי החברה" caution.
+   */
+  own?: string;
   /** For a site parameter: its rationale and sign-off (copy 3.8). */
   parameter?: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null; provisional: boolean };
   /** Rules a computed value read, with the strength the run recorded. */
@@ -41,6 +47,36 @@ export function weaker(a: Strength | undefined, b: Strength | undefined): Streng
 /** The strength a number is labelled with: its own source, or the weakest thing a computation rests on. */
 export function strengthOf(v: SiteValue): Strength {
   return v.state === "computed" ? (v.weakest ?? "primary") : v.source.strength;
+}
+
+/** Whether a figure carries the caution flag (D7, D31): a secondary source, or a company's figure out of its own context. */
+export function isWeak(v: SiteValue): boolean {
+  const s = strengthOf(v);
+  return s === "secondary" || (s === "institution" && !v.own);
+}
+
+/**
+ * D31: marks a company's figure as its own, for the code that builds a value for the row, card or page that names that
+ * product or company. Only an institution-strength figure is touched; a figure with any other source is returned as it is.
+ */
+export function ownBy<T extends SiteValue | ValueObject>(v: T, company: string): T & { own?: string } {
+  return v.source.strength === "institution" ? { ...v, own: company } : v;
+}
+
+/** `ownBy` over a map of figures, for the keys `pick` accepts (all of them without it). */
+export function ownEach(values: Record<string, SiteValue>, company: string, pick: (key: string) => boolean = () => true): Record<string, SiteValue> {
+  return Object.fromEntries(Object.entries(values).map(([k, v]) => [k, pick(k) ? ownBy(v, company) : v]));
+}
+
+/** Whether any of the figures, or any input a computed one rests on, carries the caution (D31): what decides if a page's legend lists the company item. */
+export function anyWeak(values: Iterable<SiteValue | null | undefined>): boolean {
+  for (const v of values) {
+    if (!v || typeof v !== "object") continue;
+    if (isWeak(v)) return true;
+    const inputs = v.computed_from?.inputs as Record<string, SiteValue> | undefined;
+    if (inputs && anyWeak(Object.values(inputs))) return true;
+  }
+  return false;
 }
 
 export function isParameter(v: SiteValue): boolean {
@@ -75,7 +111,12 @@ export function computed(
   options: { today: string; rules?: { id: string; strength: Strength }[]; flags?: string[]; labels?: { code: string; ruleId: string }[]; about?: string; notes?: string } ,
 ): SiteValue {
   let weakest: Strength | undefined;
-  for (const input of Object.values(inputs)) weakest = weaker(weakest, input.state === "entered" ? "primary" : strengthOf(input));
+  for (const input of Object.values(inputs)) {
+    // D31: a company's figure about its own product does not weaken what is computed from it
+    const st = strengthOf(input);
+    const own = st === "institution" && !!input.own;
+    weakest = weaker(weakest, input.state === "entered" || own ? "primary" : st);
+  }
   for (const r of options.rules ?? []) weakest = weaker(weakest, r.strength);
   return {
     value,

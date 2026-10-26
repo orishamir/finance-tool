@@ -7,17 +7,20 @@ import { fmt } from "../../lib/format";
 import { ruleTitle } from "../../lib/rule-title";
 import type { SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
-import { Num, RuleRef } from "../provenance";
+import { IdRef, Num, RuleRef } from "../provenance";
 import { Tag } from "../kit";
 
 export type RuleMap = Record<string, RuleRecord>;
 
-/** "שאלה פתוחה CS OQ10": a lock, the word and the code; never a chip (an open question has no text to open). */
+/** "שאלה פתוחה CS OQ10": the lock tag and the code's chip, one inline unit (a flex row's gap never splits them); the chip opens the question's sheet. */
 export function OpenQuestion({ code }: { code: string }) {
   return (
-    <Tag tone="blocked" icon={<IconLock size={14} />}>
-      {copy.openQuestion} <bdi dir="ltr">{code}</bdi>
-    </Tag>
+    <span className="inline-flex items-center gap-1.5">
+      <Tag tone="blocked" icon={<IconLock size={14} />}>
+        {copy.openQuestion}
+      </Tag>
+      <IdRef id={code} />
+    </span>
   );
 }
 

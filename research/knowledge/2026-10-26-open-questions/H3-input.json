@@ -1,0 +1,1394 @@
+{
+ "files": [
+  "kupat-gemel-lehashkaa.md",
+  "keren-hishtalmut.md",
+  "provident-family-common.md",
+  "tax-hishtalmut.md",
+  "tax-gemel-lehashkaa-ira-child.md",
+  "ira-self-directed.md",
+  "child-savings.md"
+ ],
+ "items": [
+  {
+   "code": "CS OQ1",
+   "file": "child-savings.md",
+   "n": 1,
+   "line_at_extraction": 340,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**hly.gov.il blocked.** The current official list of approved funds and banks, and NII's track descriptions, are on hly.gov.il. NII's sub-pages redirect there, "
+  },
+  {
+   "code": "CS OQ2",
+   "file": "child-savings.md",
+   "n": 2,
+   "line_at_extraction": 341,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Clal.** Is Clal on the approved provident list, since when, and through which tender? Gemel-Net 202609 has four Clal child-savings tracks with inception 2026-"
+  },
+  {
+   "code": "CS OQ3",
+   "file": "child-savings.md",
+   "n": 3,
+   "line_at_extraction": 342,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Amendments to the 2016 regulations.** The Wikisource copy shows no amendments. Yet the default rules changed in 2020, 2022 and 2025, and law 74ב(ד)(1א) and (2"
+  },
+  {
+   "code": "CS OQ4",
+   "file": "child-savings.md",
+   "n": 4,
+   "line_at_extraction": 343,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "child-savings-provident"
+    ]
+   },
+   "start": "**First child's default fund.** How is the default fund for a first child picked today? The 2016 regulation 3(ב) used a fixed rotation, and Altshuler's page say"
+  },
+  {
+   "code": "CS OQ5",
+   "file": "child-savings.md",
+   "n": 5,
+   "line_at_extraction": 344,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "child-savings-bank",
+     "child-savings-provident"
+    ]
+   },
+   "start": "**Legal source of the age-18 grant (born up to 2016).** The current law 74ג(ב) mentions only the age-21 sum, and 74ג(א) was repealed. The age-18 grant is stated"
+  },
+  {
+   "code": "CS OQ6",
+   "file": "child-savings.md",
+   "n": 6,
+   "line_at_extraction": 345,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "rule record": [
+     "CS-15"
+    ]
+   },
+   "start": "**Medical early withdrawal.** Law 74ד(ב) (read as a mirror summary) says the age-3 and age-13 sums are added. NII's page says a NIS 582 grant is deposited. Whic"
+  },
+  {
+   "code": "CS OQ7",
+   "file": "child-savings.md",
+   "n": 7,
+   "line_at_extraction": 346,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "rule record": [
+     "CS-09"
+    ]
+   },
+   "start": "**Track definitions at other managers.** Only Harel's bylaw was read: equity 75%–120% in the increased-risk track, with the low and medium tracks at committee d"
+  },
+  {
+   "code": "CS OQ8",
+   "file": "child-savings.md",
+   "n": 8,
+   "line_at_extraction": 347,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "child-savings-bank",
+     "child-savings-provident"
+    ]
+   },
+   "start": "**Fee after 21 at every manager.** 0.23% of balance is sourced for Harel (bylaw) and Altshuler (Q&A) only. The bylaw cap \"דמי הניהול השנתי המרבי הקבוע בהסדר התח"
+  },
+  {
+   "code": "CS OQ9",
+   "file": "child-savings.md",
+   "n": 9,
+   "line_at_extraction": 348,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Gemel-Net fee field for child-savings tracks.** AVG_ANNUAL_MANAGEMENT_FEE is 0 to 0.02 (or null) for all 41 tracks, while NII pays 0.23%. Is the field the fee"
+  },
+  {
+   "code": "CS OQ10",
+   "file": "child-savings.md",
+   "n": 10,
+   "line_at_extraction": 349,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-17"
+    ],
+    "instrument record": [
+     "child-savings-provident"
+    ],
+    "site code": [
+     "components/holdings/consolidation.tsx:190",
+     "components/holdings/consolidation.tsx:3",
+     "components/holdings/shared.tsx:15",
+     "copy.ts:1741"
+    ]
+   },
+   "start": "**Can a parent see whether the child's track was chosen or defaulted?** Funds report this to NII (CS-20), but no statement field or NII-page field was found tha"
+  },
+  {
+   "code": "CS OQ11",
+   "file": "child-savings.md",
+   "n": 11,
+   "line_at_extraction": 350,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Annual statement layout for child savings.** The fields and labels were not found. The statement follows the Commissioner's format (Harel s.27). The answer is"
+  },
+  {
+   "code": "CS OQ12",
+   "file": "child-savings.md",
+   "n": 12,
+   "line_at_extraction": 351,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "child-savings-bank"
+    ]
+   },
+   "start": "**Per-bank terms.** Only Yahav's agreement (undated, 2017-era figures) was read. Leumi's terms PDF (https://www.leumi.co.il/leumi-hebrew/s3fs-public/2023-06/Sav"
+  },
+  {
+   "code": "CS OQ13",
+   "file": "child-savings.md",
+   "n": 13,
+   "line_at_extraction": 352,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "child-savings-provident"
+    ]
+   },
+   "start": "**After 18 or 21: moving into another product.** Can the child move the money into a regular (non-child) investment provident fund, or into another product, or "
+  },
+  {
+   "code": "CS OQ14",
+   "file": "child-savings.md",
+   "n": 14,
+   "line_at_extraction": 353,
+   "already_struck": true,
+   "closed_date": "2026-10-25",
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "child-savings-bank"
+    ]
+   },
+   "start": "~~**Bank-to-provident move: amendment and effective date.**~~ Closed 2026-10-25: NII's consolidated law text, p.50, footnote 32: s.74ב(א)(2א) was added by amend"
+  },
+  {
+   "code": "CS OQ15",
+   "file": "child-savings.md",
+   "n": 15,
+   "line_at_extraction": 354,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Retroactive parental addition.** Can a parent who turns on the addition late make up past months? No source says so. Sources only say it starts the month afte"
+  },
+  {
+   "code": "CS OQ16",
+   "file": "child-savings.md",
+   "n": 16,
+   "line_at_extraction": 355,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "child-savings-provident"
+    ]
+   },
+   "start": "**KGL rules that may or may not apply.** Does the general investment-provident-fund deposit ceiling or any other KGL rule apply to child-savings funds? Not foun"
+  },
+  {
+   "code": "CS OQ17",
+   "file": "child-savings.md",
+   "n": 17,
+   "line_at_extraction": 357,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Later amendments to the child-savings circular 2016-9-20.** Only the 2018-9-25 amendment (with its annexes) was read. Likely answer: the CMA regulation engine"
+  },
+  {
+   "code": "IRA OQ1",
+   "file": "ira-self-directed.md",
+   "n": 1,
+   "line_at_extraction": 406,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "ira-hishtalmut",
+     "ira-provident"
+    ]
+   },
+   "start": "**Current consolidated text of the IRA regulations.** Regulations 3, 4, 5(ב)-(ג), 6, 7(ב), 8, 11(א), 12 and 13 were read on Nevo through a fetch tool that summa"
+  },
+  {
+   "code": "IRA OQ2",
+   "file": "ira-self-directed.md",
+   "n": 2,
+   "line_at_extraction": 407,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "ira-hishtalmut",
+     "ira-provident"
+    ]
+   },
+   "start": "**Status of the 2025 draft.** Was it signed and published, and from what date? Tried: tazkirim.gov.il (certificate error) and gov.il legalInfo page regulation_0"
+  },
+  {
+   "code": "IRA OQ3",
+   "file": "ira-self-directed.md",
+   "n": 3,
+   "line_at_extraction": 408,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "ira-hishtalmut",
+     "ira-provident"
+    ]
+   },
+   "start": "**Management-fee cap for IRA funds.** The 2017 amendment deleted the reference to income-tax regulation 41ח(ב)(1) from reg. 7(א)(5). Does the general provident "
+  },
+  {
+   "code": "IRA OQ4",
+   "file": "ira-self-directed.md",
+   "n": 4,
+   "line_at_extraction": 409,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "ira-provident"
+    ]
+   },
+   "start": "**Can an investment provident fund (גמל להשקעה) be self-directed?** The law's definition as read does not list it, and Gemel-Net has none, but no explicit rule "
+  },
+  {
+   "code": "IRA OQ5",
+   "file": "ira-self-directed.md",
+   "n": 5,
+   "line_at_extraction": 410,
+   "already_struck": true,
+   "closed_date": "2026-10-25",
+   "site_dependent": false,
+   "deps": {},
+   "start": "~~**Can a member use a broker outside the manager's competitive-process list?**~~ Closed 2026-10-25: yes. Reg. 12(ג) as replaced in 2017 (קובץ התקנות 7880, p.3)"
+  },
+  {
+   "code": "IRA OQ6",
+   "file": "ira-self-directed.md",
+   "n": 6,
+   "line_at_extraction": 411,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "ira-hishtalmut"
+    ]
+   },
+   "start": "**Custody, FX conversion and minimum fees at the banks inside an IRA.** Leumi, Mizrahi, Binleumi and Hapoalim annexes say unlisted fees follow the bank's tariff"
+  },
+  {
+   "code": "IRA OQ7",
+   "file": "ira-self-directed.md",
+   "n": 7,
+   "line_at_extraction": 412,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "ira-hishtalmut"
+    ]
+   },
+   "start": "**Other managers' terms.** Phoenix, Migdal, Menora, Globalnet, Slice and Action: fee schedules, brokers offered and their tariffs, minimums, joining forms. Trie"
+  },
+  {
+   "code": "IRA OQ8",
+   "file": "ira-self-directed.md",
+   "n": 8,
+   "line_at_extraction": 413,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "ira-hishtalmut",
+     "ira-provident"
+    ]
+   },
+   "start": "**Official 2026 values for the IRA cap inputs.** הסכום הקובע ₪1,575,882 and the cap ₪6,303,528 come only from Meitav. The minimum pension amount ₪5,306 comes fr"
+  },
+  {
+   "code": "IRA OQ9",
+   "file": "ira-self-directed.md",
+   "n": 9,
+   "line_at_extraction": 414,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Which money types income-tax regulations 34(ב)(1) and 38(א)(2),(6) cover** (IRA-07 (א)(2)-(3)). Not read. Where: those regulations; tax file."
+  },
+  {
+   "code": "IRA OQ10",
+   "file": "ira-self-directed.md",
+   "n": 10,
+   "line_at_extraction": 415,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Definition of \"מדינת חוץ מאושרת\", \"קרן חוץ\" and \"צד קשור\"** in the 2012 institutional investment rules. Only Meitav's summary (BBB or OECD) was read. Where: t"
+  },
+  {
+   "code": "IRA OQ11",
+   "file": "ira-self-directed.md",
+   "n": 11,
+   "line_at_extraction": 416,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "ira-hishtalmut",
+     "ira-provident"
+    ]
+   },
+   "start": "**Protection of IRA assets if the managing company or broker fails.** Where are securities registered (in the fund's name at the broker?), and what happened to "
+  },
+  {
+   "code": "IRA OQ12",
+   "file": "ira-self-directed.md",
+   "n": 12,
+   "line_at_extraction": 417,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Gemel-Net field units and null fees.** Menora 15367 and Slice 1514 report no management fee in 202609, and TOTAL_ASSETS and fee units are undefined. Where: Ge"
+  },
+  {
+   "code": "IRA OQ13",
+   "file": "ira-self-directed.md",
+   "n": 13,
+   "line_at_extraction": 418,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Amendment 190 money in an IRA.** Meitav says it is allowed and lists the 2026 conditions. The rules belong to the pension and tax files and were not collected"
+  },
+  {
+   "code": "IRA OQ14",
+   "file": "ira-self-directed.md",
+   "n": 14,
+   "line_at_extraction": 419,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Insurance-plan IRAs** (law s.13(ב), s.56-57). Does any insurer offer one today? Bituach-Net not checked."
+  },
+  {
+   "code": "IRA OQ15",
+   "file": "ira-self-directed.md",
+   "n": 15,
+   "line_at_extraction": 420,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**CMA circulars specific to IRA** (codex chapters on disclosure, reporting and transfers for IRA funds). None located; gov.il blocks scripts."
+  },
+  {
+   "code": "KH OQ1",
+   "file": "keren-hishtalmut.md",
+   "n": 1,
+   "line_at_extraction": 406,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "keren-hishtalmut"
+    ]
+   },
+   "start": "**Legal source of the employee minimum of one third of the employer's deposit.** It is stated by Altshuler and Meitav only (KH-05). The one \"one third\" found in"
+  },
+  {
+   "code": "KH OQ2",
+   "file": "keren-hishtalmut.md",
+   "n": 2,
+   "line_at_extraction": 407,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "keren-hishtalmut"
+    ]
+   },
+   "start": "**Can an employee deposit without the employer?** Meitav says no (KH-02). No legal text was found. Probably in the 1964 Rules or the CMA standard bylaws (`תקנון"
+  },
+  {
+   "code": "KH OQ3",
+   "file": "keren-hishtalmut.md",
+   "n": 3,
+   "line_at_extraction": 408,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "keren-hishtalmut"
+    ]
+   },
+   "start": "**Extension orders and collective agreements requiring a study fund**, and whether any economy-wide order exists. Leads (titles from Nevo, text behind login): c"
+  },
+  {
+   "code": "KH OQ4",
+   "file": "keren-hishtalmut.md",
+   "n": 4,
+   "line_at_extraction": 409,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-25"
+    ],
+    "instrument record": [
+     "keren-hishtalmut"
+    ]
+   },
+   "start": "**Loan terms.** Bylaws allow loans (KH-21) but no manager's terms were read: share of balance, rate, term, lender entity, effect on the 6-year clock, whether th"
+  },
+  {
+   "code": "KH OQ5",
+   "file": "keren-hishtalmut.md",
+   "n": 5,
+   "line_at_extraction": 410,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-19"
+    ]
+   },
+   "start": "**Payslip line names** for study-fund deposits (employee deduction, employer contribution, taxable value above the ceiling). Not sourced; the search budget ran "
+  },
+  {
+   "code": "KH OQ6",
+   "file": "keren-hishtalmut.md",
+   "n": 6,
+   "line_at_extraction": 411,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "keren-hishtalmut"
+    ]
+   },
+   "start": "**Does a full transfer between study funds always carry the first payment date?** The transfer regulations read do not say so expressly. Harel s.3.3 and 4.1.1 a"
+  },
+  {
+   "code": "KH OQ7",
+   "file": "keren-hishtalmut.md",
+   "n": 7,
+   "line_at_extraction": 412,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**The 1997 Tax Authority rules on study withdrawals** (`כללי מס הכנסה (זכאות למשיכת סכומים להשתלמות מקרן השתלמות), התשנ\"ז-1997`), named in Altshuler s.18.7, wer"
+  },
+  {
+   "code": "KH OQ8",
+   "file": "keren-hishtalmut.md",
+   "n": 8,
+   "line_at_extraction": 413,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "keren-hishtalmut"
+    ]
+   },
+   "start": "**Which retirement age.** KH-12 infers s.3 of the Retirement Age Law. Confirm with a Tax Authority circular or a manager's form that states the age."
+  },
+  {
+   "code": "KH OQ9",
+   "file": "keren-hishtalmut.md",
+   "n": 9,
+   "line_at_extraction": 414,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Which general-public funds accept self-employed members, and which accept only salaried members** (Harel 154 appears salaried-only, KH-09). Not a Gemel-Net fi"
+  },
+  {
+   "code": "KH OQ10",
+   "file": "keren-hishtalmut.md",
+   "n": 10,
+   "line_at_extraction": 415,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Is there a CMA rule on the default track for study funds** (unlike the regulated default pension fund)? Only bylaws were read. Likely in the CMA investment-tr"
+  },
+  {
+   "code": "KH OQ11",
+   "file": "keren-hishtalmut.md",
+   "n": 11,
+   "line_at_extraction": 416,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "keren-hishtalmut"
+    ]
+   },
+   "start": "**Fee discounts and changes after leaving an employer.** How negotiated discounts are granted and how long they last, and whether a fund may raise the fee when "
+  },
+  {
+   "code": "KH OQ12",
+   "file": "keren-hishtalmut.md",
+   "n": 12,
+   "line_at_extraction": 417,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Eligibility for the 24 sector and employer study funds**, for example whether a family member or a former employee may join. Each fund's bylaws."
+  },
+  {
+   "code": "KH OQ13",
+   "file": "keren-hishtalmut.md",
+   "n": 13,
+   "line_at_extraction": 418,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Manager count discrepancy.** Discovery domain report §4.3 says 18 public managers. This query gives 15 with `TARGET_POPULATION = כלל האוכלוסיה`. Check whether"
+  },
+  {
+   "code": "KH OQ14",
+   "file": "keren-hishtalmut.md",
+   "n": 14,
+   "line_at_extraction": 419,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Exact wording on Nevo.** Nevo was read through a fetch tool that returns short quotes. Reg. 4 of the fee regulations was cross-checked on a second mirror. Re-"
+  },
+  {
+   "code": "KH OQ15",
+   "file": "keren-hishtalmut.md",
+   "n": 15,
+   "line_at_extraction": 420,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Reg. 8 of the fee regulations** (0.3% cap for lost or deceased members): its trigger conditions were only summarised. Hand to `provident-family-common.md`."
+  },
+  {
+   "code": "KH OQ16",
+   "file": "keren-hishtalmut.md",
+   "n": 16,
+   "line_at_extraction": 421,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Timetable in law for paying a withdrawal** (Altshuler's form says \"set in the law\"). Not read. Likely a CMA circular; hand to `provident-family-common.md`. **"
+  },
+  {
+   "code": "KGL OQ1",
+   "file": "kupat-gemel-lehashkaa.md",
+   "n": 1,
+   "line_at_extraction": 410,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Official 2026 ceiling (domain question 11): not closed.** **[2026-10-22 browser pass 3: Closed by KGL-24: the CBS calculator reproduces 83,641.09 from the law"
+  },
+  {
+   "code": "KGL OQ2",
+   "file": "kupat-gemel-lehashkaa.md",
+   "n": 2,
+   "line_at_extraction": 413,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Home-sale exception (section 22(א1)).**\n   - Open: which law added it (the Wikisource tags point to תשע\"ז־2), and whether it lapsed on its own date or was voi"
+  },
+  {
+   "code": "KGL OQ3",
+   "file": "kupat-gemel-lehashkaa.md",
+   "n": 3,
+   "line_at_extraction": 417,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Fee cap from the official text (domain question 8): closed for this product at mirror strength.**\n   - Regulations 2(א)(1)–(2) were read only on Wikisource. K"
+  },
+  {
+   "code": "KGL OQ4",
+   "file": "kupat-gemel-lehashkaa.md",
+   "n": 4,
+   "line_at_extraction": 420,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Deposits over the ceiling across managers.** How is a breach that spans two managers detected, and what happens to the excess: refund, refund with returns, or"
+  },
+  {
+   "code": "KGL OQ5",
+   "file": "kupat-gemel-lehashkaa.md",
+   "n": 5,
+   "line_at_extraction": 422,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Employer deposits.** The law's definition points to a self-paying member (\"עמית עצמאי\"). No source found says whether an employer may deposit into an employee"
+  },
+  {
+   "code": "KGL OQ6",
+   "file": "kupat-gemel-lehashkaa.md",
+   "n": 6,
+   "line_at_extraction": 424,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Residency and age.** Can a non-resident open or keep an account? From what age can a minor act without a guardian? **[2026-10-25 scope pass]** Partly answered"
+  },
+  {
+   "code": "KGL OQ7",
+   "file": "kupat-gemel-lehashkaa.md",
+   "n": 7,
+   "line_at_extraction": 427,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Minimum deposits** per manager. Only Altshuler was found (NIS 100 a month by standing order). Other managers' joining pages or forms have not been collected."
+  },
+  {
+   "code": "KGL OQ8",
+   "file": "kupat-gemel-lehashkaa.md",
+   "n": 8,
+   "line_at_extraction": 428,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Regulatory source of the two-year minimum for a fee discount**, and of the early-raise conditions. Only the bylaws were read. Probably a CMA circular on manag"
+  },
+  {
+   "code": "KGL OQ9",
+   "file": "kupat-gemel-lehashkaa.md",
+   "n": 9,
+   "line_at_extraction": 429,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Transfers into a gemel lehashkaa from other products** (study fund, tagmulim, policies), and from a gemel lehashkaa to products other than an annuity fund.\n  "
+  },
+  {
+   "code": "KGL OQ10",
+   "file": "kupat-gemel-lehashkaa.md",
+   "n": 10,
+   "line_at_extraction": 432,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Whether circular 2020-9-18 is still the binding track rule.** Its limit of ten specialised tracks (s.7(ה)) conflicts with the 202609 data: Meitav and Mor each"
+  },
+  {
+   "code": "KGL OQ11",
+   "file": "kupat-gemel-lehashkaa.md",
+   "n": 11,
+   "line_at_extraction": 434,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Eligibility for five sector funds** (domain question 13, partly closed): Gal, Handasaim and Technicians, the Hebrew University staff fund, Ami, and Machog. Ca"
+  },
+  {
+   "code": "KGL OQ12",
+   "file": "kupat-gemel-lehashkaa.md",
+   "n": 12,
+   "line_at_extraction": 437,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Status of the bill to raise the ceiling to NIS 300,000** (preliminary reading reported 20 Mar 2024; secondary source). Where the answer probably is: the Kness"
+  },
+  {
+   "code": "KGL OQ13",
+   "file": "kupat-gemel-lehashkaa.md",
+   "n": 13,
+   "line_at_extraction": 438,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Meitav's own gemel lehashkaa bylaws** were not found. The site footer links only to product pages. Needed to confirm Meitav's default track, loan clause and d"
+  },
+  {
+   "code": "KGL OQ14",
+   "file": "kupat-gemel-lehashkaa.md",
+   "n": 14,
+   "line_at_extraction": 440,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Units of the Gemel-Net fee fields** (AVG_ANNUAL_MANAGEMENT_FEE, AVG_DEPOSIT_FEE) are not defined in the dataset. This must be settled before fee figures are s"
+  },
+  {
+   "code": "PF OQ1",
+   "file": "provident-family-common.md",
+   "n": 1,
+   "line_at_extraction": 436,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Is CMA circular 2017-9-15 (fee discounts and increases) still in force as read, or has it been amended or folded into the consolidated circular (חוזר מאוחד / "
+  },
+  {
+   "code": "PF OQ2",
+   "file": "provident-family-common.md",
+   "n": 2,
+   "line_at_extraction": 437,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Minimum discount period: five years (circular 2017-9-15) or two years (Altshuler gemel lehashkaa bylaws s. 36.1)?** It is unclear whether gemel lehashkaa, and"
+  },
+  {
+   "code": "PF OQ3",
+   "file": "provident-family-common.md",
+   "n": 3,
+   "line_at_extraction": 438,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-14"
+    ]
+   },
+   "start": "**Each manager's published external management fee cap per track for 2026** (PF-11) was not collected. It is on each manager's website, published by 31 Dec 2025"
+  },
+  {
+   "code": "PF OQ4",
+   "file": "provident-family-common.md",
+   "n": 4,
+   "line_at_extraction": 439,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Child savings fee rule.** The fee regulations read here do not name child savings. Whether reg. 2 applies to the gemel route, and what the bank route charges,"
+  },
+  {
+   "code": "PF OQ5",
+   "file": "provident-family-common.md",
+   "n": 5,
+   "line_at_extraction": 440,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "site code": [
+     "copy.ts:1670",
+     "copy.ts:1672"
+    ]
+   },
+   "start": "**Uniform annual and quarterly report format and fields** (where exactly the fee rates, investment expenses, expected annual cost and track appear). Tried: law "
+  },
+  {
+   "code": "PF OQ6",
+   "file": "provident-family-common.md",
+   "n": 6,
+   "line_at_extraction": 441,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "site code": [
+     "copy.ts:1678"
+    ]
+   },
+   "start": "**Clearing-house consumer service:** is the consolidated view free, how a saver gets it, and the maximum fee under s. 31יד(ב). Tried: the law text. The CMA page"
+  },
+  {
+   "code": "PF OQ7",
+   "file": "provident-family-common.md",
+   "n": 7,
+   "line_at_extraction": 442,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Har HaKesef (unclaimed money lookup):** what it covers and what the regulator does automatically. Tried https://www.gov.il/he/service/har-hakesef: 403. Needs "
+  },
+  {
+   "code": "PF OQ8",
+   "file": "provident-family-common.md",
+   "n": 8,
+   "line_at_extraction": 443,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Automatic consolidation or transfer of inactive provident, hishtalmut or gemel lehashkaa accounts with small balances.** Only the pension rule (s. 24ב) and th"
+  },
+  {
+   "code": "PF OQ9",
+   "file": "provident-family-common.md",
+   "n": 9,
+   "line_at_extraction": 444,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Current version of transfer circular 2017-9-17,** and whether it has been amended after 2017 (besides the planned 2026 ID amendment). Only pp. 1 to 12 of 28 w"
+  },
+  {
+   "code": "PF OQ10",
+   "file": "provident-family-common.md",
+   "n": 10,
+   "line_at_extraction": 445,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**\"Arbitrage reform\" or any plan to merge wrappers:** no official source found. The CMA 2026 plan has no such item. Needs a search of Ministry of Finance and Kn"
+  },
+  {
+   "code": "PF OQ11",
+   "file": "provident-family-common.md",
+   "n": 11,
+   "line_at_extraction": 446,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Legal basis of track switching in gemel lehashkaa:** reg. 33ב(א) does not list gemel lehashkaa. Switching rests on the bylaws here. Likely answer: a later inc"
+  },
+  {
+   "code": "PF OQ12",
+   "file": "provident-family-common.md",
+   "n": 12,
+   "line_at_extraction": 447,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Can a manager limit the number of track switches, or set a minimum interval?** Not in reg. 33ב or the Altshuler bylaws. Check other managers' bylaws."
+  },
+  {
+   "code": "PF OQ13",
+   "file": "provident-family-common.md",
+   "n": 13,
+   "line_at_extraction": 448,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Legacy-money caps:** Menora's supplementary pension fund publishes \"up to 0.50% of total assets for deposits received before 31.12.2005, under the Income Tax "
+  },
+  {
+   "code": "PF OQ14",
+   "file": "provident-family-common.md",
+   "n": 14,
+   "line_at_extraction": 449,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Annuitant fee caps under reg. 2** (0.6% and 0.3%) were read only in summary. Quote the exact text when `pension-and-gemel-lekitzba.md` needs it."
+  },
+  {
+   "code": "PF OQ15",
+   "file": "provident-family-common.md",
+   "n": 15,
+   "line_at_extraction": 450,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Reg. 8(ב) reconnection rule** (resume fee, collect the difference up to 0.5% a year) was read only in summary. Quote before it computes."
+  },
+  {
+   "code": "PF OQ16",
+   "file": "provident-family-common.md",
+   "n": 16,
+   "line_at_extraction": 452,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "site code": [
+     "copy.ts:1671",
+     "copy.ts:1673"
+    ],
+    "rule record": [
+     "PF-33"
+    ]
+   },
+   "start": "**Is the draft amendment 2025-26 to the statement circular in force, and where is the gov.il copy of circular 2020-9-22?** The draft (6 Nov 2025, proposed start"
+  },
+  {
+   "code": "TXK OQ1",
+   "file": "tax-gemel-lehashkaa-ira-child.md",
+   "n": 1,
+   "line_at_extraction": 266,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "child-savings-bank",
+     "child-savings-provident"
+    ],
+    "instrument blocker": [
+     "child-savings-bank",
+     "child-savings-provident"
+    ]
+   },
+   "start": "**Child savings (tax report Q4, partly closed).** Closed: deposits, the parental addition and grants are not income (TXK-19); gains are taxed on withdrawal (TXK"
+  },
+  {
+   "code": "TXK OQ2",
+   "file": "tax-gemel-lehashkaa-ira-child.md",
+   "n": 2,
+   "line_at_extraction": 272,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-02"
+    ],
+    "instrument record": [
+     "kupat-gemel-lehashkaa"
+    ]
+   },
+   "start": "**Inflation part of a kupat gemel lehashkaa withdrawal.** s.3(ה4)(3) separates linkage differentials. s.9(13) would exempt them, but the 2025 Tax Authority guid"
+  },
+  {
+   "code": "TXK OQ3",
+   "file": "tax-gemel-lehashkaa-ira-child.md",
+   "n": 3,
+   "line_at_extraction": 273,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-02"
+    ],
+    "instrument record": [
+     "kupat-gemel-lehashkaa"
+    ]
+   },
+   "start": "**Withholding regulation for kupat gemel lehashkaa withdrawals.** The Wikisource text of the 2005 withholding regulations shows 20% (15% for older deposits) for"
+  },
+  {
+   "code": "TXK OQ4",
+   "file": "tax-gemel-lehashkaa-ira-child.md",
+   "n": 4,
+   "line_at_extraction": 274,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-03"
+    ],
+    "site code": [
+     "lib/guide-signature-g2.server.ts:297"
+    ]
+   },
+   "start": "**Capitalizing money moved from a kupat gemel lehashkaa to an annuity fund.** Reg. 2(ב)(2) says \"לשם קבלת קצבה בלבד\". Can it be capitalized, and if so does s.9A"
+  },
+  {
+   "code": "TXK OQ5",
+   "file": "tax-gemel-lehashkaa-ira-child.md",
+   "n": 5,
+   "line_at_extraction": 275,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Death before transfer.** What tax applies when beneficiaries or heirs withdraw a kupat gemel lehashkaa balance as a lump sum, and does s.9A(f)(2) cover a bala"
+  },
+  {
+   "code": "TXK OQ6",
+   "file": "tax-gemel-lehashkaa-ira-child.md",
+   "n": 6,
+   "line_at_extraction": 276,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Status of s.9(18ב) and Provident Funds Law s.22(א1)** after HCJ 10042/16 (Wikisource marks both repealed; Nevo shows text; the 2025 guide lists it as 9(18ג))."
+  },
+  {
+   "code": "TXK OQ7",
+   "file": "tax-gemel-lehashkaa-ira-child.md",
+   "n": 7,
+   "line_at_extraction": 277,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "OQ-tag": [
+     "site/app/content/exposure/index-sp500.tsx:48"
+    ],
+    "instrument record": [
+     "ira-hishtalmut",
+     "ira-provident"
+    ],
+    "instrument blocker": [
+     "ira-hishtalmut"
+    ],
+    "rule record": [
+     "TXK-18"
+    ]
+   },
+   "start": "**IRA (tax report Q13, partly closed).** Closed: an IRA is a provident fund in law, and no IRA-specific provision exists in the Ordinance by text search. Open:\n"
+  },
+  {
+   "code": "TXK OQ8",
+   "file": "tax-gemel-lehashkaa-ira-child.md",
+   "n": 8,
+   "line_at_extraction": 282,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "ira-hishtalmut",
+     "ira-provident"
+    ]
+   },
+   "start": "**s.9(2)(a) business-income exception** for an actively traded IRA: any ruling or circular?"
+  },
+  {
+   "code": "TXK OQ9",
+   "file": "tax-gemel-lehashkaa-ira-child.md",
+   "n": 9,
+   "line_at_extraction": 283,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-11"
+    ]
+   },
+   "start": "**NII and health contributions** on a recognized annuity that came from a kupat gemel lehashkaa, and on the deemed interest from a lump sum (link to tax report "
+  },
+  {
+   "code": "TXK OQ10",
+   "file": "tax-gemel-lehashkaa-ira-child.md",
+   "n": 10,
+   "line_at_extraction": 284,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument blocker": [
+     "child-savings-provident",
+     "ira-hishtalmut",
+     "ira-provident",
+     "kupat-gemel-lehashkaa"
+    ],
+    "instrument record": [
+     "kupat-gemel-lehashkaa"
+    ]
+   },
+   "start": "**Losses.** If a kupat gemel lehashkaa is withdrawn at a loss (less than deposits), can the loss offset other interest or capital gains (s.92)? No source found."
+  },
+  {
+   "code": "TXK OQ11",
+   "file": "tax-gemel-lehashkaa-ira-child.md",
+   "n": 11,
+   "line_at_extraction": 285,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Ceiling source (tax report Q12, partly closed).** No deduction or credit on deposits is closed (TXK-01). The ceiling rule is primary (s.22(a)). The 2026 figur"
+  },
+  {
+   "code": "TXK OQ12",
+   "file": "tax-gemel-lehashkaa-ira-child.md",
+   "n": 12,
+   "line_at_extraction": 286,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "kupat-gemel-lehashkaa"
+    ],
+    "instrument blocker": [
+     "kupat-gemel-lehashkaa"
+    ],
+    "site code": [
+     "copy.ts:584"
+    ]
+   },
+   "start": "**60+ brackets on deemed interest.** Whether a person aged 60 or older can use the lower brackets instead of the 25% cap on a lump sum (tax report Q16)."
+  },
+  {
+   "code": "TXH OQ1",
+   "file": "tax-hishtalmut.md",
+   "n": 1,
+   "line_at_extraction": 232,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "OQ-tag": [
+     "site/app/content/exposure/index-sp500.tsx:48"
+    ],
+    "instrument record": [
+     "ira-hishtalmut",
+     "keren-hishtalmut"
+    ]
+   },
+   "start": "**Real vs nominal, and rate, on gains from non-benefited deposits.** The Tax Authority guide says \"up to 25%\" with no base. s.3(e4)(1) separates linkage income,"
+  },
+  {
+   "code": "TXH OQ2",
+   "file": "tax-hishtalmut.md",
+   "n": 2,
+   "line_at_extraction": 233,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "keren-hishtalmut"
+    ]
+   },
+   "start": "**Q18 (2027 budget).** No 2027 budget bill, Arrangements Law draft or memorandum on study funds was found. Tried: press search (Calcalist 12.10.2026, Globes/N12"
+  },
+  {
+   "code": "TXH OQ3",
+   "file": "tax-hishtalmut.md",
+   "n": 3,
+   "line_at_extraction": 234,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Self-employed benefited deposit, update mechanism and 2027 value.** The law lists 20,520 (2024) and 20,566 (2025 and 2026), a change during the s.120B freeze."
+  },
+  {
+   "code": "TXH OQ4",
+   "file": "tax-hishtalmut.md",
+   "n": 4,
+   "line_at_extraction": 235,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**NII and health tax on employer study-fund deposits.** The MoF paper says they are exempt within the ceiling. The NII statute or NII page was not read. Hand to"
+  },
+  {
+   "code": "TXH OQ5",
+   "file": "tax-hishtalmut.md",
+   "n": 5,
+   "line_at_extraction": 236,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "keren-hishtalmut"
+    ]
+   },
+   "start": "**Which \"retirement age\" applies.** s.1 points to the Retirement Age Law 2004, which has more than one age. The Tax Authority 2026 booklet p.7 lists the women's"
+  },
+  {
+   "code": "TXH OQ6",
+   "file": "tax-hishtalmut.md",
+   "n": 6,
+   "line_at_extraction": 237,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Proof of study use.** s.9(16B) lets the Director set rules for study withdrawals. No such rules, and no fund requirement for the employee route, were found. L"
+  },
+  {
+   "code": "TXH OQ7",
+   "file": "tax-hishtalmut.md",
+   "n": 7,
+   "line_at_extraction": 238,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Statutory basis of the reduced self-employed ceiling** for someone who is also an employee (TXH-06). It is in the Tax Authority guide but did not appear in th"
+  },
+  {
+   "code": "TXH OQ8",
+   "file": "tax-hishtalmut.md",
+   "n": 8,
+   "line_at_extraction": 239,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Statutory basis of the pre-2003 gains exemption** (TXH-12). It is in the guide; the s.9(16A) text fetched has no 2003 date. It may be in a transitional provis"
+  },
+  {
+   "code": "TXH OQ9",
+   "file": "tax-hishtalmut.md",
+   "n": 9,
+   "line_at_extraction": 240,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Death and non-benefited gains.** Are gains on above-ceiling deposits exempt when heirs withdraw? Likely in the 1997 Order's definition (amounts \"before the pe"
+  },
+  {
+   "code": "TXH OQ10",
+   "file": "tax-hishtalmut.md",
+   "n": 10,
+   "line_at_extraction": 241,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Order of withdrawal between benefited and non-benefited money** outside the 2020 temporary order, and whether partial withdrawals are pro-rata. Income Tax Rul"
+  },
+  {
+   "code": "TXH OQ11",
+   "file": "tax-hishtalmut.md",
+   "n": 11,
+   "line_at_extraction": 242,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "keren-hishtalmut"
+    ]
+   },
+   "start": "**Explicit primary statement that a transfer between study funds is not a tax event** and keeps the first payment date (not only for the 1993 \"closed account\" c"
+  },
+  {
+   "code": "TXH OQ12",
+   "file": "tax-hishtalmut.md",
+   "n": 12,
+   "line_at_extraction": 243,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Exact wording and currency of the legislation.** All Ordinance and regulation text was read on Wikisource through a fetch tool that returns short quotes. The "
+  },
+  {
+   "code": "TXH OQ13",
+   "file": "tax-hishtalmut.md",
+   "n": 13,
+   "line_at_extraction": 244,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Account closure on withdrawal** (s.9(16A)(b), Income Tax Rules 37(a)). The law conditions the exemption on closing the account to further payments after any w"
+  },
+  {
+   "code": "TXH OQ14",
+   "file": "tax-hishtalmut.md",
+   "n": 14,
+   "line_at_extraction": 245,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Whether the 2024 s.124D memorandum was ever enacted** (TXH-23). It is historical only. Bizportal 27.10.2024 (secondary, opened) gives an unclear account and w"
+  }
+ ]
+}

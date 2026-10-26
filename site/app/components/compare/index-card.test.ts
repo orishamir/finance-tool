@@ -29,7 +29,7 @@ describe("the account's index card", () => {
     expect(out).toContain("לפי המדד שתבחרו");
     expect(out).toContain("האתר לא ממליץ על מדד");
     expect(out).not.toContain("הדרך הזולה:");
-    expect(out).not.toContain("/invest/");
+    expect(out).not.toContain("/indices/");
     for (const i of known) expect(out).toContain(i.name.replace(/&/g, "&amp;").replace(/"/g, "&quot;"));
   });
   it("after a choice: the cheapest way and the link to all ways with the index", () => {
@@ -37,7 +37,7 @@ describe("the account's index card", () => {
     expect(out).toContain("הדרך הזולה:");
     expect(out).toContain("פסגות");
     expect(out).toContain("כל הדרכים להשקיע במדד");
-    expect(out).toContain('href="/invest/index-sp500"');
+    expect(out).toContain('href="/indices/sp500"');
     expect(out).toContain("לבטל את בחירת המדד");
   });
 });

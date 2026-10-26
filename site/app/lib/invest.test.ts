@@ -112,6 +112,26 @@ describe("invest page computation", () => {
     expect(r.perIndex.length).toBeGreaterThan(3);
   });
 
+  it("the houses: ranked by what is left, the headline's own house first, each gap measured from the headline", () => {
+    const il = view.houses.filter((h) => h.group === "il" && h.best);
+    expect(il[0]!.provider.id).toBe(view.headline!.providerId);
+    expect(il[0]!.gap).toBeNull();
+    const left = il.map((h) => h.best!.price!.valueN);
+    expect([...left].sort((a, b) => b - a)).toEqual(left);
+    for (const h of il.slice(1)) expect(h.gap!.value as number).toBeCloseTo(view.headline!.valueN - h.best!.price!.valueN, 6);
+  });
+
+  it("the worth lines are slices through the headline's cell: same fund at other houses, same house with other funds", () => {
+    const h = view.headline!;
+    const w = view.worth!;
+    const sameFund = Object.values(h.fund.byHouse).flatMap((x) => ("value" in x && !x.open && x.providerId !== h.providerId ? [x.valueN] : []));
+    expect(w.houseCount).toBe(sameFund.length);
+    expect(w.house!.value as number).toBeCloseTo(h.valueN - Math.min(...sameFund), 6);
+    const sameHouse = view.options.filter((o) => o.id !== "abroad").flatMap((o) => o.funds).flatMap((f) => { const x = f.byHouse[h.providerId]; return f.rec.id !== h.fund.rec.id && x && "value" in x && !x.open ? [x.valueN] : []; });
+    expect(w.fundCount).toBe(sameHouse.length);
+    expect(w.fund!.value as number).toBeCloseTo(h.valueN - Math.min(...sameHouse), 6);
+  });
+
   it("reads the exchange a tariff band names", () => {
     expect(venueOfBand('מניות הנסחרות בארה"ב')).toBe("us");
     expect(venueOfBand("מניות ו-ETF הנסחרות בבורסות אירופה")).toBe("europe");

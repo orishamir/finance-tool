@@ -203,8 +203,9 @@ describe("rules in groups and the negatives", () => {
   it("still returns nothing for a loan or a partner", () => {
     expect(search("הלוואה")).toHaveLength(0);
     expect(search("בן זוג")).toHaveLength(0);
-    // the real rule base has rules about a spouse: only rules answer
-    expect(top("בן זוג").every((h) => h.entry.kind === "rule")).toBe(true);
+    // the real rule base has rules about a spouse, and since 2026-10-26 the survivors' pension term names "בן או בת הזוג"
+    // (its explanation now follows the CMA's standard bylaw): only rules and terms answer, nothing in the catalogue
+    expect(top("בן זוג").every((h) => h.entry.kind === "rule" || h.entry.kind === "term")).toBe(true);
     // the real rule base does have rules about loans against a fund, so "הלוואה" now finds those and nothing in the catalogue
     expect(top("הלוואה", false).every((h) => h.entry.kind === "rule" || h.entry.kind === "term")).toBe(true);
   });

@@ -2,7 +2,7 @@
   "id": "tkvpt-akshrh",
   "he": "תקופת אכשרה",
   "en": null,
-  "meaning": "תקופה מההצטרפות לקרן שבה אין כיסוי לנכות או למוות שנגרמו ממצב רפואי שהיה קיים לפני ההצטרפות",
+  "meaning": "תקופה מההצטרפות לקרן או מחידוש הביטוח שבה אין כיסוי לנכות או למוות שנגרמו ממצב רפואי שהתחיל לפני כן",
   "where": [],
   "wrapper_ids": [
     "pension-comprehensive",
@@ -14,10 +14,10 @@
     "PEN-14"
   ],
   "source": {
-    "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-    "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+    "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+    "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 10 ו-26 עד 27, ס' 1 ו-34",
     "publisher": "see title",
-    "strength": "institution",
-    "checked": "2026-10-22"
+    "strength": "primary-mirror",
+    "checked": "2026-10-26"
   }
 }

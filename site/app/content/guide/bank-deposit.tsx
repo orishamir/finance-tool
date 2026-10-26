@@ -2,7 +2,7 @@
 // Written 2026-10-23 from the il-finance rules cited under each block (BANK, TXI, REG, SW, MF); same shape
 // and register as kupat-gemel-lehashkaa.tsx. NEW copy for the founder to review.
 import type { GuideContent } from "./types";
-import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
+import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Link } from "react-router";
 import { Callout, Sentence } from "../../components/kit";
 
@@ -65,10 +65,10 @@ export const content: GuideContent = {
         </Sentence>
         <RulesLine ids={["TXI-20"]} />
         <Callout tone="blocked" className="max-w-measure">
-          <span className="font-medium">שבירת פיקדון לפני הזמן: האתר לא מחשב אותה.</span> <Term prefix="ה" id="קנס שבירה">קנס</Term> הוא תנאי של הבנק, ואיך המס מתייחס לפיקדון שנשבר עוד פתוח. שאלה פתוחה: <bdi dir="ltr" className="whitespace-nowrap">TXI OQ14</bdi>.
+          <span className="font-medium">שבירת פיקדון לפני הזמן: האתר לא מחשב אותה.</span> <Term prefix="ה" id="קנס שבירה">קנס</Term> הוא תנאי של הבנק, ואיך המס מתייחס לפיקדון שנשבר עוד פתוח. שאלה פתוחה: <IdRef id="TXI OQ14" />.
         </Callout>
         <p className="max-w-measure text-sm text-muted-foreground">
-          פיקדון צמוד פריים ממוסה כאן כפיקדון לא צמוד, לפי קריאה של הגדרת המדד בחוק ולא לפי פרסום רשמי. שאלה פתוחה: <bdi dir="ltr" className="whitespace-nowrap">TXI OQ2</bdi>.
+          פיקדון צמוד פריים ממוסה כאן כפיקדון לא צמוד, לפי קריאה של הגדרת המדד בחוק ולא לפי פרסום רשמי. שאלה פתוחה: <IdRef id="TXI OQ2" />.
         </p>
         <RulesLine ids={["BANK-06", "TXI-04"]} />
       </>

@@ -6,7 +6,7 @@ import { idle as copy, r2 } from "../../copy";
 import { fmt } from "../../lib/format";
 import type { IdleCoverageRow, IdleMateriality, IdleRowView, IdleVerdict, IdleView } from "../../lib/idle";
 import { IconClock, IconExternal, IconFile } from "../icons";
-import { Num, RulesLine } from "../provenance";
+import { IdRef, Num, RulesLine } from "../provenance";
 import type { SiteValue } from "../../lib/value";
 import { Card, CoverageFold, cx, Sentence, Tag } from "../kit";
 import { ReasonText } from "./reasons";
@@ -42,6 +42,12 @@ export function CostRow({ row, empty }: { row: IdleRowView | null; empty?: boole
           <Link to={guideOf[row.id]} className="text-link hover:underline">
             {name}
           </Link>
+          {row.rate.own && row.id === "bank-deposit:average" && (
+            <>
+              {" "}
+              {copy.rowOwner} <bdi>{row.rate.own}</bdi>
+            </>
+          )}
         </span>
         <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
           <span className="text-muted-foreground">{copy.rateOf}</span>
@@ -206,7 +212,7 @@ function Judged({ worth, below, yes, threshold, label }: { worth: boolean; below
       {!worth && (
         <>
           {" "}
-          (<bdi dir="ltr">P-03</bdi>)
+          (<IdRef id="P-03" />)
         </>
       )}
       <span className="text-sm text-muted-foreground whitespace-nowrap">

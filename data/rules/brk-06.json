@@ -15,6 +15,45 @@
   "checked": "2026-10-25",
   "sources": [
     {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-626a5f3377ef9/49A.pdf",
+      "title": "תנאי ההיתר הכללי לפי סעיף 49א, נוסח חדש דצמבר 2023",
+      "title_he": "תנאי ההיתר הכללי לפי סעיף 49א, נוסח חדש דצמבר 2023",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "pp.3, 6-8",
+      "locator_he": "עמודים 3, 6-8",
+      "page": 3,
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-626a5f3377ef9/QAA49a.pdf",
+      "title": "רשות ניירות ערך: שאלות ותשובות בעקבות פרסום תנאי ההיתר הכללי לפי סעיף 49א (עדכון 13.1.2025)",
+      "title_he": "רשות ניירות ערך: שאלות ותשובות בעקבות פרסום תנאי ההיתר הכללי לפי סעיף 49א (עדכון 13.1.2025)",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.3",
+      "locator_he": "עמוד 3",
+      "page": 3,
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-627b50ab87f01/ListofCompanies130623.pdf",
+      "title": "רשות ניירות ערך: רשימת גופים בעלי היתר לפי סעיף 49א לחוק ניירות ערך",
+      "title_he": "רשות ניירות ערך: רשימת גופים בעלי היתר לפי סעיף 49א לחוק ניירות ערך",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "pp.1, 4",
+      "locator_he": "עמודים 1, 4",
+      "page": 1,
+      "checked": "2026-10-26"
+    },
+    {
       "url": "https://www.new.isa.gov.il/en/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64d0945455c5c/Conditions_of_a_general.pdf",
       "title": "ISA, Conditions of the General Permit under Section 49A of the Securities Law, new version (December 2023), English translation",
       "title_he": "חוק ניירות ערך, התשכ״ח-1968",

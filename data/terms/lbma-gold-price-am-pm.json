@@ -2,7 +2,7 @@
   "id": "lbma-gold-price-am-pm",
   "he": "LBMA Gold Price AM / PM",
   "en": null,
-  "meaning": "מחיר הזהב בדולרים שנקבע פעמיים ביום במכרז בלונדון, בבוקר ואחר הצהריים.",
+  "meaning": "מחיר הייחוס העולמי לזהב, שנקבע בדולרים במכרז אלקטרוני בלונדון פעמיים ביום, בבוקר (AM) ואחר הצהריים (PM); מנהלת אותו ICE Benchmark Administration.",
   "where": [],
   "wrapper_ids": [],
   "variants": [
@@ -14,9 +14,9 @@
   ],
   "source": {
     "url": "https://www.ice.com/publicdocs/LBMA_Gold_Price_and_LBMA_Silver_Price_Calculation_Methodology.pdf",
-    "title": "ICE Benchmark Administration, LBMA Gold Price and LBMA Silver Price Methodology",
+    "title": "ICE Benchmark Administration, LBMA Gold Price and LBMA Silver Price Methodology, paras 1, 3, 4",
     "publisher": "see title",
     "strength": "institution",
-    "checked": "2026-10-22"
+    "checked": "2026-10-26"
   }
 }

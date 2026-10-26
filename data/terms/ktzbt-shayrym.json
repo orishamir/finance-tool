@@ -2,7 +2,7 @@
   "id": "ktzbt-shayrym",
   "he": "קצבת שאירים",
   "en": null,
-  "meaning": "תשלום חודשי מקרן הפנסיה לבן או בת הזוג ולילדים, אחרי מוות של בעל או בעלת החשבון",
+  "meaning": "תשלום חודשי מקרן הפנסיה לשאירים של חוסך שנפטר: בן או בת הזוג, יתומים (ילדים צעירים או עם מוגבלות), ובתנאים מסוימים הורים",
   "where": [
     "statement",
     "tax-form"
@@ -22,10 +22,10 @@
     "TXP-23"
   ],
   "source": {
-    "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-    "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+    "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+    "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 7, 9 ו-53 עד 57, ס' 1, 87 ו-94",
     "publisher": "see title",
-    "strength": "institution",
-    "checked": "2026-10-22"
+    "strength": "primary-mirror",
+    "checked": "2026-10-26"
   }
 }

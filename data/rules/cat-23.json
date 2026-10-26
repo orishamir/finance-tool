@@ -14,43 +14,18 @@
   "checked": "2026-10-25",
   "sources": [
     {
-      "url": "https://www.meitav.co.il/media/r0wh30iv/%D7%A8%D7%99%D7%9B%D7%95%D7%96-%D7%9E%D7%99%D7%96%D7%95%D7%92%D7%99%D7%9D-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf",
-      "title": "מיטב: ריכוז מיזוגים",
-      "title_he": "מיטב: ריכוז מיזוגים",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "pp.1 to 8",
-      "locator_he": "עמודים 1 עד 8",
-      "page": 1,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.meitav.co.il/media/53vlo3zc/שינוי-התמחות-גמל-להשקעה-7980.pdf",
-      "title": "מיטב: שינוי התמחות גמל להשקעה 7980",
-      "title_he": "מיטב: שינוי התמחות גמל להשקעה 7980",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.1",
-      "locator_he": "עמוד 1",
-      "page": 1,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.meitav.co.il/media/sisdprky/שינוי-התמחות-גמל-להשקעה-7861.pdf",
-      "title": "מיטב: שינוי התמחות גמל להשקעה 7861",
-      "title_he": "מיטב: שינוי התמחות גמל להשקעה 7861",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.1",
-      "locator_he": "עמוד 1",
-      "page": 1,
-      "checked": "2026-10-25"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf",
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
+      "title_he": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "quote": "מסלול כללי",
+      "checked": "2026-10-26"
     }
   ],
   "derived_from": [

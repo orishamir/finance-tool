@@ -9,7 +9,10 @@ import { loadChecklistRows, loadCma, loadCmaFees, loadFees, loadNotCovered, load
 import { buildInstrumentTerms, loadDepositTerms, loadExposures, loadFunds, regulatorAverageFees } from "./instruments.server";
 import { evaluate, representativeFeeValue, type BundleDataFile, type ProviderTariff, type CompareBundle, type ExposureEntry, type Family, type HoldingTerms, type IndexFundTerms, type RunGoal, type Tier2Row, type WrapperEntry } from "./compare";
 import type { FitTableData } from "./fit";
-import { computed, type SiteValue } from "./value";
+import { computed, ownBy, ownEach, type SiteValue } from "./value";
+import { publisherHe } from "./publisher-he.server";
+
+const tariffKeys: string[] = ["tradeRate", "tradeMin", "tradeMax", "custodyRate", "custodyMin", "custodyMax", "fxRate", "monthlyFee"];
 import { BROKERAGE, instrumentClassOf, providersOf } from "./providers";
 import { latestSnapshots } from "./providers.server";
 
@@ -32,15 +35,15 @@ const familyById: Partial<Record<WrapperId, Family>> = {
 
 /** The nine tier-2 instruments (product D2) with the glossary row that names each; the open questions are method G-24's. */
 export const tier2Table: { id: string; he: string; questions: string[]; display: string }[] = [
-  { id: "savings-policies", he: "פוליסת חיסכון", questions: ["TXA OQ1", "TXA OQ3"], display: "TXA OQ1, TXA OQ3" },
+  { id: "savings-policies", he: "פוליסת חיסכון", questions: ["TXA OQ1"], display: "TXA OQ1" },
   { id: "executive-insurance", he: "ביטוח מנהלים", questions: ["TXA OQ6"], display: "TXA OQ6" },
   { id: "structured-deposits", he: "פיקדון מובנה", questions: ["TX2 OQ5"], display: "TX2 OQ5" },
   { id: "corporate-bonds", he: 'אג"ח קונצרניות', questions: ["TX2 OQ6"], display: "TX2 OQ6" },
-  { id: "managed-portfolios", he: "ניהול תיקי השקעות", questions: ["TX2 OQ12", "MF-28"], display: "TX2 OQ12, MF-28" },
-  { id: "foreign-currency-deposits", he: "פיקדון במטבע חוץ", questions: ["TX2 OQ1", "TX2 OQ2"], display: "TX2 OQ1, TX2 OQ2" },
+  { id: "managed-portfolios", he: "ניהול תיקי השקעות", questions: ["MF-28"], display: "MF-28" },
+  { id: "foreign-currency-deposits", he: "פיקדון במטבע חוץ", questions: ["TX2 OQ2"], display: "TX2 OQ2" },
   { id: "reits", he: "קרן להשקעות במקרקעין", questions: ["TX2 OQ8"], display: "TX2 OQ8" },
   { id: "gold-via-funds", he: "השקעה בזהב דרך קרנות סל", questions: ["TX2 OQ10"], display: "TX2 OQ10" },
-  { id: "amendment-190-deposits", he: "תיקון 190", questions: ["TXA OQ9"], display: "TXA OQ9" },
+  { id: "amendment-190-deposits", he: "תיקון 190", questions: ["TXA OQ14", "TXA OQ15"], display: "TXA OQ14, TXA OQ15" },
 ];
 
 function tier2List(): Tier2Row[] {
@@ -139,7 +142,8 @@ function depositRate(wrapperId: string, family: string, spec: { deposit_terms?: 
   const rec = deposits.find((d) => d.id === spec.deposit_terms && d.wrapper_id === wrapperId);
   const rate = rec?.rate_offered;
   if (!rate || typeof rate.value !== "number" || rate.unit !== "pct_per_year") return null;
-  return { ...rate };
+  // D31: the idle-cash row and the comparison name the bank whose published rate this is
+  return ownBy({ ...rate }, publisherHe(rate as SiteValue));
 }
 
 /** A deposit wrapper's `amount_range` as its record holds it (audit 2026-10-24 (sweep)): the amounts the published rate applies to. */
@@ -206,7 +210,8 @@ function providerTariffs(wrapperId: string, instrumentClass: string): Record<str
           feeValues.monthlyFee = l.rate.unit === "nis_per_month" ? { ...l.rate } : { ...l.rate, value: built.tariff.monthlyFee, unit: "nis_per_month", state: "computed" };
         }
       }
-      out[snap.id] = { name: snap.provider.name_he, channel, tariff: built.tariff as ProviderTariff["tariff"], feeValues };
+      // D31: the card names the provider whose tariff the run reads, so its lines are that provider's own figures
+      out[snap.id] = { name: snap.provider.name_he, channel, tariff: built.tariff as ProviderTariff["tariff"], feeValues: ownEach(feeValues, snap.provider.name_he) };
       break;
     }
   }
@@ -283,7 +288,8 @@ function indexFundTerms(p05: ParameterRecord, sources: Parameters<typeof buildIn
     if (!rec.exposure_id || !indices.has(rec.exposure_id)) continue;
     const built = buildInstrumentTerms(BROKERAGE, "securities", { ...(own ?? {}), fund: rec.id }, sources);
     if ("missing" in built || !built.terms.fund) continue;
-    const feeValues = Object.fromEntries(Object.entries(built.feeValues).filter(([k]) => k.startsWith("fund") || k === "ninetyPercentTest"));
+    // D31: the way names the fund, so its costs are its manager's own figures
+    const feeValues = ownEach(Object.fromEntries(Object.entries(built.feeValues).filter(([k]) => k.startsWith("fund") || k === "ninetyPercentTest")), (f as { manager: string }).manager);
     out[rec.id] = { name: rec.names.he[0] ?? rec.names.en[0] ?? rec.id, fund: built.terms.fund, feeValues };
   }
   return out;
@@ -385,7 +391,12 @@ export function buildCompareBundle(): CompareBundle {
     const rate = w.feeValues.tradeRate?.value;
     const snap = named ? latestSnapshots().find((x) => x.id === named) : undefined;
     const channel = snap?.lines.find((l) => l.level === "list" && l.base === "trade" && l.rate.value === rate && (w.feeValues.tradeMin === undefined || l.min?.value === w.feeValues.tradeMin.value))?.channel;
-    w.representative = { ...w.representative, ...(fee ? { fee } : {}), ...(min ? { classMinFee: min } : {}), ...(named ? { providerId: named } : {}), ...(channel ? { channel } : {}) };
+    // D31: the card names the fund and the provider whose tariff it reads; their figures are those companies' own
+    const fundRecord = sources.funds.find((x) => x.id === String(p05.instruments?.[w.id]?.fund));
+    if (fundRecord) w.feeValues = ownEach(w.feeValues, fundRecord.manager, (k) => k.startsWith("fund"));
+    if (snap) w.feeValues = ownEach(w.feeValues, snap.provider.name_he, (k) => tariffKeys.includes(k));
+    const named2 = fundRecord ? representativeFeeValue(w, t) : fee;
+    w.representative = { ...w.representative, ...(named2 ? { fee: named2 } : {}), ...(min ? { classMinFee: min } : {}), ...(named ? { providerId: named } : {}), ...(channel ? { channel } : {}) };
   }
   for (const w of wrappers) {
     if (w.id !== BROKERAGE || !w.terms) continue;

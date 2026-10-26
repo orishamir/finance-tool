@@ -177,12 +177,15 @@ export function WorstFallField({ entry, value, onChange }: { entry: ExposureEntr
       onCommit={(n) => onChange(ent(n, "pct"))}
       onReset={() => onChange(undefined)}
       note={
-        value ? (
-          <span className="flex items-center gap-1.5 text-xs text-entered">
-            <IconPencil size={14} />
-            <StateTag state="entered" />
-          </span>
-        ) : undefined
+        // the line keeps its height when the tag comes and goes, as the kit's FieldState does (2026-10-26)
+        <span className="flex items-center gap-1.5 text-xs text-entered min-h-5">
+          {value ? (
+            <>
+              <IconPencil size={14} />
+              <StateTag state="entered" />
+            </>
+          ) : null}
+        </span>
       }
       optional
     />
