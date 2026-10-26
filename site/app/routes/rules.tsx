@@ -9,7 +9,7 @@ import { rulesFront as copy, scopeWords, site, sourceBlock, system, topicName, r
 import { IconSearch } from "../components/icons";
 import { NumberLegend, RuleCard, type RuleUses } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { Card, cx, Disclosure, Tag } from "../components/kit";
+import { Card, cx, Disclosure, FoldGroup, Tag } from "../components/kit";
 import { fmt } from "../lib/format";
 import { buildSections, emptyFilters, filtersToSearch, fullHaystack, isFiltering, lightHaystack, matchRules, norm, parseFilters, type Filters, type Group, type LightRule } from "../lib/rules-filter";
 import { shelfIds, type ShelfId } from "../lib/rule-shelves";
@@ -64,10 +64,11 @@ export async function loader() {
   ];
 
   // an old address that names a company's term (/rules#CS-30) goes on to where that term is listed now (D30)
-  const { companyLinks } = await import("../lib/institutions.server");
+  const { companyLinks, ownDocuments } = await import("../lib/institutions.server");
   const { companyTermsHref } = await import("../lib/scope");
   const links = companyLinks();
-  const elsewhere = Object.fromEntries(Object.values(rules).filter((r) => r.scope !== "general").map((r) => [r.id, companyTermsHref(r, links)]));
+  const ownDocs = ownDocuments(rules);
+  const elsewhere = Object.fromEntries(Object.values(rules).filter((r) => r.scope !== "general").map((r) => [r.id, companyTermsHref(r, links, ownDocs)]));
 
   return {
     pinned: { rows },
@@ -443,24 +444,7 @@ function GroupBlock({ g, open, onToggle, pd, failed, lightById }: { g: Group; op
   const missing = open && g.ids.some((id) => !pd.rules[id]);
   const broken = missing && g.ids.some((id) => !pd.rules[id] && failed.has(lightById.get(id)!.shelf));
   return (
-    <Disclosure
-      id={g.id}
-      open={open}
-      onOpenChange={onToggle}
-      className={cx("flex flex-col", scrollMargin)}
-      spread
-      size="field"
-      as="h3"
-      labelClassName="text-lg font-semibold flex flex-wrap items-baseline gap-x-2"
-      label={
-        <>
-          {title}
-          <span className="text-sm font-normal text-muted-foreground">
-            · <Num2 n={g.ids.length} />
-          </span>
-        </>
-      }
-    >
+    <FoldGroup variant="section" id={g.id} className={scrollMargin} title={title} count={g.ids.length} open={open} onOpenChange={onToggle}>
       {open && (
         <>
           {g.kind === "experience" && (
@@ -483,6 +467,6 @@ function GroupBlock({ g, open, onToggle, pd, failed, lightById }: { g: Group; op
           )}
         </>
       )}
-    </Disclosure>
+    </FoldGroup>
   );
 }

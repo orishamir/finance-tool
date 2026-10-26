@@ -11,7 +11,7 @@ import { mostlyHebrew } from "./source-label";
 import { ruleTitle } from "./rule-title";
 import type { Strength } from "./value";
 import * as dataServer from "./data.server";
-import { companyLinks } from "./institutions.server";
+import { companyLinks, ownDocuments } from "./institutions.server";
 import { companyTermsHref } from "./scope";
 
 export type SectionId = "laws" | "regulators" | "exchange" | "institutions" | "secondary";
@@ -212,7 +212,8 @@ export function loadDocuments(): DocumentCard[] {
   const rules = loadRules();
   // the rules page lists general rules only (D30): a company's term links to where it is listed
   const links = companyLinks();
-  const hrefOf = (id: string) => (rules[id] && rules[id]!.scope !== "general" ? companyTermsHref(rules[id]!, links) : `/rules#${id}`);
+  const ownDocs = ownDocuments(rules);
+  const hrefOf = (id: string) => (rules[id] && rules[id]!.scope !== "general" ? companyTermsHref(rules[id]!, links, ownDocs) : `/rules#${id}`);
   return groupDocuments(rules, Array.isArray(table) ? table : [], publishers, hrefOf);
 }
 

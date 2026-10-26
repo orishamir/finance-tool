@@ -117,6 +117,47 @@
       "state": "sourced",
       "notes": "No regulatory cap. A bank converts at its rate plus the conversion fee when a foreign security is paid for or sold without enough foreign currency in the account; non-bank members charge a conversion fee or a spread on the rate (מרווח המרה)."
     },
+    "fixed_period": {
+      "value": null,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://content.tase.co.il/media/q2mhob4u/274690.pdf",
+        "title": "מדריך לחברי הבורסה: החלק הראשון לתקנון (מעודכן עד 1.1.2026), עמוד 23, סעיף 18; עמוד 35, סעיף 29ב, 29ג(2)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BRK-24",
+        "BRK-16"
+      ],
+      "state": "sourced",
+      "notes": "No cap in law or in the exchange rules: every member reports its fees to TASE and states them in the client agreement, and no rule makes a published tariff a ceiling (BRK-24). A bank may charge only for services in the Governor's full tariff, or added with the Supervisor's approval (BRK-16, BANK-16). Whether a member charges a monthly account fee, and how much, is its own tariff (BRK-48, BRK-28, on the companies' pages)."
+    },
+    "distribution_handling": {
+      "value": null,
+      "unit": "pct",
+      "source": {
+        "url": "https://content.tase.co.il/media/q2mhob4u/274690.pdf",
+        "title": "מדריך לחברי הבורסה: החלק הראשון לתקנון (מעודכן עד 1.1.2026), עמוד 23, סעיף 18; עמוד 35, סעיף 29ב, 29ג(2)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BRK-24"
+      ],
+      "state": "sourced",
+      "notes": "No cap in law or in the exchange rules: every member reports its fees to TASE and states them in the client agreement, and no rule makes a published tariff a ceiling (BRK-24). Whether a member charges on interest, dividend and redemption payments is its own tariff (BRK-48, on the companies' pages)."
+    },
     "transfer_out": {
       "value": 10,
       "unit": "nis_per_transfer",
@@ -279,9 +320,6 @@
     "transfer-switch-process": "covered"
   },
   "company_terms": {
-    "eligibility": [
-      "BRK-28"
-    ],
     "minimum": [
       "BRK-28"
     ],

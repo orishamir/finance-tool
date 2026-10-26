@@ -7,6 +7,7 @@ import { IconDrillIn, IconSearch } from "../components/icons";
 import { PageShell, useOpenSearch } from "../components/shell";
 import { normalize } from "../lib/search";
 import { fmt } from "../lib/format";
+import { pointedIds } from "../lib/scope";
 import type { InstitutionRow } from "../components/decoder/institutions/types";
 import { NoPageCompanyTerms } from "../components/decoder/company-terms";
 
@@ -15,12 +16,12 @@ export async function loader() {
   const { institutionRows, noPageCompanyTerms } = await import("../lib/institutions.server");
   const { loadChecklistRows, loadRules } = await import("../lib/data.server");
   const cma = loadCma();
-  // the terms of the companies the site has no page for (fund managers, index providers, foreign brokers, the exchange), and of none (D30)
+  // the terms of the companies the site has no page for (fund managers, index providers, foreign brokers, the exchange), and the not-rules (D30)
   const allRules = loadRules();
   const noPage = noPageCompanyTerms(allRules);
   const ids = [...noPage.companies.flatMap((c) => c.ids), ...noPage.none];
   const rules = Object.fromEntries(ids.map((id) => [id, allRules[id]!]));
-  for (const id of ids) for (const d of (allRules[id] as { derived_from?: string[] }).derived_from ?? []) if (allRules[d]) rules[d] = allRules[d]!;
+  for (const id of ids) for (const d of pointedIds(allRules[id]!)) if (allRules[d]) rules[d] = allRules[d]!;
   return { companies: cma.companies.map((c) => ({ id: c.id, name: c.name, line: c.classifications.join(" · ") })), institutions: institutionRows(), today: today(), noPage, rules, dimensions: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) };
 }
 

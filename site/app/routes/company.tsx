@@ -19,6 +19,7 @@ import { fit as fitCopy } from "../copy";
 import type { SiteValue } from "../lib/value";
 import { fmt } from "../lib/format";
 import { cmaFeeValue, compactFee, expandFee, feeYear, type CompactFee } from "../lib/value";
+import { pointedIds } from "../lib/scope";
 
 const classificationOrder = ["קופת גמל להשקעה", "קרנות השתלמות", "תגמולים ואישית לפיצויים", "קופת גמל להשקעה - חסכון לילד", "קרנות חדשות", "קרנות כלליות", "מרכזית לפיצויים", "מטרה אחרת"];
 
@@ -68,7 +69,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const unassigned = mine
     .filter((c) => c.status === "not-catalogued-yet")
     .map((c) => ({ id: c.id, names: c.names.he, where: seenWhere(c), seen: seenValue(c) }));
-  // what the site found in the company's own documents (D30): the records that name it, by topic, with their cards' data
+  // what the site found in the company's own documents (D30): the records that cite them, by topic, with their cards' data
   const { companyTermGroups, registryIdsOfPage } = await import("../lib/institutions.server");
   const { loadChecklistRows, loadRules } = await import("../lib/data.server");
   const { topicName } = await import("../copy");
@@ -76,7 +77,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const registryIds = registryIdsOfPage(company.id);
   const termGroups = companyTermGroups(registryIds, allRules, topicName);
   const termRules = Object.fromEntries(termGroups.flatMap((g) => g.ids).map((id) => [id, allRules[id]!]));
-  for (const r of Object.values({ ...termRules })) for (const d of (r as { derived_from?: string[] }).derived_from ?? []) if (allRules[d]) termRules[d] = allRules[d]!;
+  for (const r of Object.values({ ...termRules })) for (const d of pointedIds(r)) if (allRules[d]) termRules[d] = allRules[d]!;
   const { loadInstitutionRegistry } = await import("../lib/institutions.server");
   const shortName = loadInstitutionRegistry().find((r) => r.id === registryIds[0])?.name_he ?? company.name;
   const companyTerms = { groups: termGroups, rules: termRules, company: registryIds[0] ?? null, name: shortName, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} };

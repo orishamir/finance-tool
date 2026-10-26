@@ -991,6 +991,13 @@
         "pattern": "^[A-Z0-9]+-[A-Z0-9]+$"
       }
     },
+    "examples": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z0-9]+-[A-Z0-9]+$"
+      }
+    },
     "il_finance_file": {
       "type": "string",
       "pattern": "\\.md$"

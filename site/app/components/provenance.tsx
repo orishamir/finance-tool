@@ -17,7 +17,7 @@ import { IconAlert, IconCalculator, IconCheck, IconClock, IconCopy, IconExternal
 import { Sheet } from "./Sheet";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
 import { CompanyLinks, Tpl } from "./kit";
-import { chipName, companyLinksOf, generalOnly, isGeneral, joinNames, noCompanyAnchor, type CompanyLink } from "../lib/scope";
+import { chipName, companyLinksOf, generalOnly, isGeneral, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, scopeCompanies, type CompanyLink, type OwnDocs } from "../lib/scope";
 
 // ---------------------------------------------------------------- context
 
@@ -56,6 +56,8 @@ export interface ProvenanceData {
   publishersHe?: Record<string, string>;
   /** Per company of `data/sources/institutions.json`, where its terms are listed (D30): its page, or its group on /companies. PageShell fills it for every page. */
   companies?: Record<string, CompanyLink>;
+  /** Per record that is not general, the companies whose own document it cites (review, 2026-10-26): only they list it, and the card names only them. PageShell fills it for every page. */
+  ownDocs?: OwnDocs;
   /** On a company's page, its registry id: a chip of a term that names several companies shows this one's name. */
   company?: string;
 }
@@ -363,7 +365,7 @@ export function RuleRef({ id, className, withId }: { id: string; className?: str
   const name = rule && !isGeneral(rule) ? chipName(rule, data?.company, chipMore) : null;
   if (!name) return <IdRef id={id} className={className} />;
   return (
-    <button type="button" className={cx("rule-chip", className)} onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} aria-label={`${ruleCopy.title} ${id}, ${scopeTag(rule!)}`}>
+    <button type="button" className={cx("rule-chip", className)} onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} aria-label={`${ruleCopy.title} ${id}, ${scopeTag(rule!, data?.ownDocs)}`}>
       <bdi className="whitespace-nowrap">{name}</bdi>
       {withId && (
         <>
@@ -387,17 +389,22 @@ function useChipNames(ids: readonly string[]): (string | null)[] {
 
 const chipMore = (n: number) => (n === 1 ? scopeWords.chipMore.one : n === 2 ? scopeWords.chipMore.two : scopeWords.chipMore.many.replace("{n}", String(n)));
 
-/** The card's scope label: "חל על כולם", "של הראל ואלטשולר שחם", "לא הוכח שחל על כולם". */
-function scopeTag(rule: RuleRecord): string {
+/**
+ * The card's scope label: "חל על כולם", "של הראל ואלטשולר שחם" (the companies whose own documents say it), "לא הוכח שחל על כולם";
+ * "על סלייס וגלובלנט" for a record about companies that rests on none of their documents (a press report, a forum post).
+ */
+function scopeTag(rule: RuleRecord, ownDocs: OwnDocs | undefined): string {
   if (rule.scope === "general") return scopeWords.tag.general;
   if (rule.scope === "unsettled") return scopeWords.tag.unsettled;
-  return scopeWords.tag.institution.replace("{names}", joinNames((rule.scope_institutions ?? []).map((c) => c.name_he)));
+  const own = ownDocCompanies(rule, ownDocs);
+  if (own.length > 0) return scopeWords.tag.institution.replace("{names}", joinNames(own.map((c) => c.name_he)));
+  return scopeWords.tag.about.replace("{names}", joinNames(scopeCompanies(rule).map((c) => c.name_he)));
 }
 
 /**
  * "תלוי בחברה" and the companies, each a link to where its terms are listed: for a property each company sets for itself (spec §4: the
  * guide never states one company's term as the product's). `ids` are the records that hold the companies' terms; the companies are
- * theirs, in order, once each. `lead` replaces "תלוי בחברה" ("תלוי בבנק"). Nothing renders when none of the records is on the page.
+ * those whose sections list them (their own documents say it), in order, once each. `lead` replaces "תלוי בחברה" ("תלוי בבנק"). Nothing renders when none of the records is on the page.
  */
 export function VariesByCompany({ ids, lead = scopeWords.varies, size, className }: { ids: readonly string[]; lead?: string; size?: "sm" | "xs"; className?: string }) {
   const data = useContext(DataCtx);
@@ -405,7 +412,7 @@ export function VariesByCompany({ ids, lead = scopeWords.varies, size, className
   const items = ids
     .map((id) => data?.rules[id])
     .filter((r): r is RuleRecord => !!r)
-    .flatMap((r) => companyLinksOf(r, data?.companies))
+    .flatMap((r) => companyLinksOf(listedCompanies(r, data?.ownDocs), data?.companies))
     .filter((c) => !seen.has(c.id) && seen.add(c.id));
   return <CompanyLinks lead={lead} items={items} size={size} className={className} />;
 }
@@ -501,8 +508,9 @@ function OneSource({ source, rule, today, english, own }: { source: RuleSource; 
   const n = sourceLabel2(he ? { ...source, publisher_he: he } : source);
   const title = shownTitle(n.title, source.url, source.kind);
   const pubHebrew = hasHebrew(n.publisher);
-  // D31: a company's own figure on its own product is shown with a neutral source line, no "לפי החברה"
-  const weak = source.strength !== "primary" && !own ? sourceCopy.weak[source.strength] : null;
+  // D31: a company's own document on its own term is shown with a neutral source line, no "לפי החברה"; `own` lifts only that label,
+  // never "מקור משני" (a press article, a forum post) or "עותק" (a copy of an official text): review, 2026-10-26
+  const weak = source.strength !== "primary" && !(own && source.strength === "institution") ? sourceCopy.weak[source.strength] : null;
   const changed = mayHaveChanged(rule ?? { likely_to_change: "no" }, source, today);
   const titleNode = <Iso ltr={title.host || !isHebrewTitle(n.title)}>{title.text}</Iso>;
   return (
@@ -1019,6 +1027,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
   const sources = pickSources(sourced);
   const uses = data.ruleUses?.[id];
   const derived = sourced.derived_from ?? [];
+  const examples = rule.examples ?? [];
   // the figure's Hebrew name when the record has one; else its key as written
   const figureLabel = (name: string) => (rule.figure_names_he?.[name] ? <span className="text-xs">{rule.figure_names_he[name]}</span> : <bdi dir="ltr" className="text-xs">{name}</bdi>);
   const unitSuffix = (unit: string) => (suffixUnits.has(unit) ? <span className="text-sm text-muted-foreground"> {unitWordOf(unit)}</span> : null);
@@ -1065,7 +1074,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
         </h2>
         {/* who it applies to (D30): a neutral label, never a warning; the strength tag stays only for an open or second-hand source, or a general rule read from a company's document */}
         <div className="flex flex-wrap items-center gap-1.5">
-          <Tag tone="neutral">{scopeTag(rule)}</Tag>
+          <Tag tone="neutral">{scopeTag(rule, data.ownDocs)}</Tag>
           {isExperience(id) ? (
             <Tag tone="neutral">{ruleCardMore.experienceTag}</Tag>
           ) : (
@@ -1085,7 +1094,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
       ) : (
         <p className="text-sm text-muted-foreground">{ruleCopy.noText}</p>
       )}
-      {!isGeneral(rule) && <p className="text-sm text-muted-foreground">{scopeLine(rule)}</p>}
+      {!isGeneral(rule) && <p className="text-sm text-muted-foreground">{scopeLine(rule, data.ownDocs)}</p>}
       {derived.length > 0 && (
         <div className="flex flex-col gap-1">
           <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -1097,9 +1106,18 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
           <p className="text-xs text-muted-foreground">{ruleCardMore.derivedLine}</p>
         </div>
       )}
+      {/* a general rule's pointers to companies' terms: named examples (spec §1), never "נגזר מ־" (review, 2026-10-26) */}
+      {examples.length > 0 && (
+        <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
+          <span>{ruleCardMore.examples}</span>
+          {examples.map((d) => (
+            <RuleRef key={d} id={d} />
+          ))}
+        </p>
+      )}
       {sources.length > 0 ? (
         // a company's term read from that company's own document is its own context (D31): the source line carries no "לפי החברה"
-        <SourceBlock source={sources} rule={sourced} today={data.today} inline={inline} own={rule.scope === "institution"} />
+        <SourceBlock source={sources} rule={sourced} today={data.today} inline={inline} own={rule.scope === "institution" && ownDocCompanies(rule, data.ownDocs).length > 0} />
       ) : (
         // audit A26: rule records without a source link are shown as such, not hidden
         <p className="text-sm text-muted-foreground">{ruleCopy.sourceMissing}</p>
@@ -1189,23 +1207,29 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
   );
 }
 
-/** "נמצא במסמכים של …; בחברות אחרות זה יכול להיות אחרת." for a company's term, the unsettled line for a rule not shown to hold everywhere. */
-function scopeLine(rule: RuleRecord): string {
-  const names = joinNames((rule.scope_institutions ?? []).map((c) => c.name_he));
-  if (rule.scope === "institution") return scopeWords.line.institution.replace("{names}", names);
-  return names ? scopeWords.line.unsettledSeen.replace("{names}", names) : scopeWords.line.unsettled;
+/**
+ * "נמצא במסמכים של …; בחברות אחרות זה יכול להיות אחרת." for a company's term, naming only the companies whose own documents it cites;
+ * the unsettled line for a rule not shown to hold everywhere; "המקורות כאן אינם מסמכים של …" for a record about companies that cites
+ * none of their documents (a press report, a forum post: review, 2026-10-26).
+ */
+function scopeLine(rule: RuleRecord, ownDocs: OwnDocs | undefined): string {
+  const own = joinNames(ownDocCompanies(rule, ownDocs).map((c) => c.name_he));
+  const named = joinNames(scopeCompanies(rule).map((c) => c.name_he));
+  if (rule.scope === "institution") return own ? scopeWords.line.institution.replace("{names}", own) : scopeWords.line.notTheirs.replace("{names}", named);
+  return own ? scopeWords.line.unsettledSeen.replace("{names}", own) : scopeWords.line.unsettled;
 }
 
 /**
  * Where to read on (spec §4): a general rule to the rules page, filtered to the page's product when there is one; a company's term to
- * everything found at that company (one link per company), and a record that names none to its group on /companies.
+ * everything found at each company whose section lists it (one link per company), and a record no section lists (a not-rule) to its
+ * group on /companies.
  */
 function CardFoot({ rule, data }: { rule: RuleRecord; data: ProvenanceData }) {
   const close = useContext(CloseCtx);
   if (isGeneral(rule)) {
     return data.rulesOf ? <LinkButton to={`${data.rulesOf.href}#${rule.id}`} onClick={close}>{scopeWords.rulesOf.replace("{product}", data.rulesOf.name)}</LinkButton> : <LinkButton to={`/rules#${rule.id}`} onClick={close}>{ruleCopy.all}</LinkButton>;
   }
-  const links = companyLinksOf(rule, data.companies).map((c) => ({ name: c.name, href: c.hasPage ? `${c.href}#${rule.id}` : c.href }));
+  const links = companyLinksOf(listedCompanies(rule, data.ownDocs), data.companies).map((c) => ({ name: c.name, href: c.hasPage ? `${c.href}#${rule.id}` : c.href }));
   if (links.length === 0) return <LinkButton to={`/companies#${noCompanyAnchor}`} onClick={close}>{scopeWords.allNoCompany}</LinkButton>;
   if (links.length === 1) return <LinkButton to={links[0]!.href} onClick={close}>{scopeWords.allAt.replace("{name}", links[0]!.name)}</LinkButton>;
   return (

@@ -54,6 +54,14 @@ export const institutionRow = z.strictObject({
   fees_id: z.string().min(1).nullable(),
   /** The `bank` of its records under data/terms/deposits/. */
   deposit_bank_id: z.string().min(1).nullable(),
+  /**
+   * The hosts of its own sites, without "www." (a subdomain counts; a group's site serves each of its companies). A source there is the
+   * company's own document, so a record that cites it is listed in the company's section; a press report or a forum post about the
+   * company is not (review, 2026-10-26). Empty when no document of the company is collected.
+   */
+  own_hosts: z.array(z.string().regex(/^[a-z0-9-]+(\.[a-z0-9-]+)+$/)),
+  /** The names its filings on a filing host (Maya) open with: "הראל" for "הראל, דוח שנתי …". A fund manager's documents are filings. */
+  filing_names: z.array(z.string().min(1)).min(1).optional(),
   /** Optional working note; never shown. */
   note: z.string().optional(),
 });

@@ -1,7 +1,8 @@
 // Who a rule applies to, on the site (D30; research/specs/2026-10-25-rules-scope/spec.md §4). Pure helpers, safe in the browser:
 // the record carries its scope and the companies it names (extracted from the rule base), and the root loader gives every page the
-// link of each company (`ProvenanceData.companies`).
-import type { RuleRecord } from "@finance-tool/schema";
+// link of each company (`ProvenanceData.companies`) and, per record that is not general, the companies whose own document it cites
+// (`ProvenanceData.ownDocs`): only those list it in their section (review, 2026-10-26).
+import { listedAt, type RuleRecord } from "@finance-tool/schema";
 import { scopeWords } from "../copy";
 
 export type Scope = RuleRecord["scope"];
@@ -17,8 +18,11 @@ export interface CompanyLink {
 /** The anchor of the company-terms section on a company page, and of a company's group on /companies. */
 export const companyTermsAnchor = "company-terms";
 export const noPageAnchor = (id: string) => `terms-${id}`;
-/** The group on /companies for records that name no company (unsettled, seen in the press or a forum only). */
+/** The group on /companies for records that are not general and that no company's section lists: the not-rules (a forum post, a press report, a list, a count, a site's terms). */
 export const noCompanyAnchor = "terms-none";
+
+/** Per record that is not general, the companies (registry ids) whose own document it cites; a record missing from the map cites none. */
+export type OwnDocs = Record<string, readonly string[]>;
 
 export const isGeneral = (rule: Pick<RuleRecord, "scope"> | undefined): boolean => rule?.scope === "general";
 
@@ -35,17 +39,32 @@ export function generalOnly(ids: readonly string[], rules: Record<string, Pick<R
   return ids.filter((id) => !rules[id] || isGeneral(rules[id]));
 }
 
-/** The link of each company a record names: the page's own map first, then the company's group on /companies. */
-export function companyLinksOf(rule: Pick<RuleRecord, "scope_institutions">, companies: Record<string, CompanyLink> | undefined): (CompanyLink & { id: string })[] {
-  return scopeCompanies(rule).map((c) => ({ id: c.id, name: c.name_he, href: companies?.[c.id]?.href ?? `/companies#${noPageAnchor(c.id)}`, hasPage: companies?.[c.id]?.hasPage ?? false }));
+/** Of the companies a record names, those whose own document it cites: the record is found in their documents. */
+export function ownDocCompanies(rule: Pick<RuleRecord, "id" | "scope_institutions">, ownDocs: OwnDocs | undefined): { id: string; name_he: string }[] {
+  const own = new Set(ownDocs?.[rule.id] ?? []);
+  return scopeCompanies(rule).filter((c) => own.has(c.id));
 }
 
 /**
- * Where a record that is not general is listed: the first company that has a page (its card on that page), else the first company's
- * group on /companies, else the /companies group of records that name no company.
+ * The companies whose section lists a record (spec §4; review, 2026-10-26): those whose own document it cites, never for a not-rule
+ * (`listedAt` in the schema, which the validator shares). A press report or a forum post about a company is not that company's.
  */
-export function companyTermsHref(rule: Pick<RuleRecord, "id" | "scope_institutions">, companies: Record<string, CompanyLink> | undefined): string {
-  const links = companyLinksOf(rule, companies);
+export function listedCompanies(rule: Pick<RuleRecord, "id" | "scope" | "scope_institutions">, ownDocs: OwnDocs | undefined): { id: string; name_he: string }[] {
+  const listed = new Set(listedAt(rule, ownDocs?.[rule.id] ?? []));
+  return scopeCompanies(rule).filter((c) => listed.has(c.id));
+}
+
+/** The link of each company: the page's own map first, then the company's group on /companies. */
+export function companyLinksOf(list: readonly { id: string; name_he: string }[], companies: Record<string, CompanyLink> | undefined): (CompanyLink & { id: string })[] {
+  return list.map((c) => ({ id: c.id, name: c.name_he, href: companies?.[c.id]?.href ?? `/companies#${noPageAnchor(c.id)}`, hasPage: companies?.[c.id]?.hasPage ?? false }));
+}
+
+/**
+ * Where a record that is not general is listed: its card on the first listing company that has a page, else that company's group on
+ * /companies, else the /companies group of what no company's section lists (the not-rules).
+ */
+export function companyTermsHref(rule: Pick<RuleRecord, "id" | "scope" | "scope_institutions">, companies: Record<string, CompanyLink> | undefined, ownDocs: OwnDocs | undefined): string {
+  const links = companyLinksOf(listedCompanies(rule, ownDocs), companies);
   const page = links.find((l) => l.hasPage);
   if (page) return `${page.href}#${rule.id}`;
   return links[0]?.href ?? `/companies#${noCompanyAnchor}`;
@@ -68,4 +87,9 @@ export function joinNames(names: readonly string[]): string {
   const last = names[names.length - 1]!;
   // a maqaf between the conjunction and a Latin name (copy.md 10.4), none before a Hebrew one
   return `${names.slice(0, -1).join(", ")} ${/^[\u05D0-\u05EA]/.test(last) ? scopeWords.and.hebrew : scopeWords.and.latin}${last}`;
+}
+
+/** The records a rule card points at, its derivations and its examples (a general rule's companies' terms): they travel with the card, so its chips open. */
+export function pointedIds(rule: Pick<RuleRecord, "derived_from" | "examples">): string[] {
+  return [...(rule.derived_from ?? []), ...(rule.examples ?? [])];
 }

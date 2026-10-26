@@ -6,6 +6,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
 import { guideIndex, idle, r2, r3fees, r3holdings, r3transfer, r3workbench, r4playbook, r4workbench, companies as companiesCopy } from "../copy";
+import { pointedIds } from "./scope";
 import { loadExposures } from "./instruments.server";
 import { loadRules, loadWrappers, root } from "./data.server";
 import { fileProducts, commonRulesFile, shelfOf, tier2RuleFiles, type ShelfId } from "./rule-shelves";
@@ -305,10 +306,10 @@ export function ruleProducts(): Record<string, string[]> {
 /** One shelf's data file (`/rules-data/<shelf>.json`): the full records of its rules, plus the records they derive from, and where each is used. */
 export function shelfBundle(shelf: ShelfId) {
   const all = loadRules();
-  // the rules page lists general rules only (D30); a company's term a card points at (derived_from) still travels below, so its chip opens
+  // the rules page lists general rules only (D30); a company's term a card points at (an example) still travels below, so its chip opens
   const mine = Object.values(all).filter((r) => r.scope === "general" && shelfOf(r) === shelf);
   const rules: Record<string, RuleRecord> = Object.fromEntries(mine.map((r) => [r.id, r]));
-  // a rule a card points at (derived_from) may live on another shelf: its record travels too, so the chip opens it
-  for (const r of mine) for (const d of (r as { derived_from?: string[] }).derived_from ?? []) if (all[d] && !rules[d]) rules[d] = all[d]!;
+  // a rule a card points at (derived_from, examples) may live on another shelf: its record travels too, so the chip opens it
+  for (const r of mine) for (const d of pointedIds(r)) if (all[d] && !rules[d]) rules[d] = all[d]!;
   return { rules, ruleUses: loadRuleUses(Object.keys(rules)) };
 }

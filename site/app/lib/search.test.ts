@@ -173,8 +173,8 @@ describe("the nineteen queries (top href)", () => {
     ["83,641", "/rules#KGL-03"],
     ["83641", "/rules#KGL-03"],
     ["15%", "/rules#TXI-03"],
-    // MKT-01 is J.P. Morgan's past-return slide (scope institution, 2026-10-26): it is listed with that company's terms on /companies (D30)
-    ["תשואה היסטורית", "/companies#terms-jpmorgan-am"],
+    // MKT-01, J.P. Morgan's past-return slide, is a not-rule: no company section lists it, so it leads to the not-rules' group (review, 2026-10-26)
+    ["תשואה היסטורית", "/companies#terms-none"],
   ];
   it.each(cases.map((c, i) => [i + 1, ...c] as const))("%i: %s", (_i, query, href) => {
     expect(top(query)[0]?.entry.href).toBe(href);

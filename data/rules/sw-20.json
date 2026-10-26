@@ -58,9 +58,11 @@
   ],
   "derived_from": [
     "PF-18",
-    "KH-09",
     "KH-14",
     "KH-17",
     "TXH-19"
+  ],
+  "examples": [
+    "KH-09"
   ]
 }

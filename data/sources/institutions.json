@@ -10,7 +10,10 @@
     ],
     "cma_legal_id": "513173393",
     "fees_id": null,
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "as-invest.co.il"
+    ]
   },
   {
     "id": "harel",
@@ -23,7 +26,10 @@
     ],
     "cma_legal_id": "512267592",
     "fees_id": null,
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "harel-group.co.il"
+    ]
   },
   {
     "id": "meitav",
@@ -36,7 +42,10 @@
     ],
     "cma_legal_id": "512065202",
     "fees_id": "meitav",
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "meitav.co.il"
+    ]
   },
   {
     "id": "mor",
@@ -49,7 +58,10 @@
     ],
     "cma_legal_id": "514956465",
     "fees_id": null,
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "moreinvest.co.il"
+    ]
   },
   {
     "id": "phoenix",
@@ -62,7 +74,10 @@
     ],
     "cma_legal_id": "513026484",
     "fees_id": "phoenix",
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "fnx.co.il"
+    ]
   },
   {
     "id": "migdal",
@@ -75,7 +90,8 @@
     ],
     "cma_legal_id": "512237744",
     "fees_id": null,
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": []
   },
   {
     "id": "clal",
@@ -88,7 +104,8 @@
     ],
     "cma_legal_id": "512244146",
     "fees_id": null,
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": []
   },
   {
     "id": "menora-mivtachim",
@@ -101,7 +118,8 @@
     ],
     "cma_legal_id": "512245812",
     "fees_id": null,
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": []
   },
   {
     "id": "infinity",
@@ -114,7 +132,10 @@
     ],
     "cma_legal_id": "513621110",
     "fees_id": null,
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "infinity.co.il"
+    ]
   },
   {
     "id": "analyst",
@@ -127,7 +148,10 @@
     ],
     "cma_legal_id": "511880460",
     "fees_id": null,
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "analyst.co.il"
+    ]
   },
   {
     "id": "yachad-rofim",
@@ -140,7 +164,10 @@
     ],
     "cma_legal_id": "510930654",
     "fees_id": null,
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "krn-rofim.co.il"
+    ]
   },
   {
     "id": "huji-provident",
@@ -153,7 +180,10 @@
     ],
     "cma_legal_id": "510960586",
     "fees_id": null,
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "gemel.huji.ac.il"
+    ]
   },
   {
     "id": "slice",
@@ -166,7 +196,8 @@
     ],
     "cma_legal_id": "514767490",
     "fees_id": null,
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": []
   },
   {
     "id": "globalnet",
@@ -179,7 +210,8 @@
     ],
     "cma_legal_id": "516463635",
     "fees_id": null,
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": []
   },
   {
     "id": "leumi",
@@ -192,7 +224,11 @@
     ],
     "cma_legal_id": null,
     "fees_id": "leumi",
-    "deposit_bank_id": "leumi"
+    "deposit_bank_id": "leumi",
+    "own_hosts": [
+      "leumi.co.il",
+      "bankleumi.co.il"
+    ]
   },
   {
     "id": "hapoalim",
@@ -205,7 +241,10 @@
     ],
     "cma_legal_id": null,
     "fees_id": "hapoalim",
-    "deposit_bank_id": "hapoalim"
+    "deposit_bank_id": "hapoalim",
+    "own_hosts": [
+      "bankhapoalim.co.il"
+    ]
   },
   {
     "id": "discount",
@@ -218,7 +257,10 @@
     ],
     "cma_legal_id": null,
     "fees_id": "discount",
-    "deposit_bank_id": "discount"
+    "deposit_bank_id": "discount",
+    "own_hosts": [
+      "discountbank.co.il"
+    ]
   },
   {
     "id": "mizrahi-tefahot",
@@ -231,7 +273,10 @@
     ],
     "cma_legal_id": null,
     "fees_id": "mizrahi-tefahot",
-    "deposit_bank_id": "mizrahi-tefahot"
+    "deposit_bank_id": "mizrahi-tefahot",
+    "own_hosts": [
+      "mizrahi-tefahot.co.il"
+    ]
   },
   {
     "id": "fibi",
@@ -244,7 +289,10 @@
     ],
     "cma_legal_id": null,
     "fees_id": "fibi",
-    "deposit_bank_id": "fibi"
+    "deposit_bank_id": "fibi",
+    "own_hosts": [
+      "fibi.co.il"
+    ]
   },
   {
     "id": "mercantile",
@@ -257,7 +305,10 @@
     ],
     "cma_legal_id": null,
     "fees_id": "mercantile",
-    "deposit_bank_id": "mercantile"
+    "deposit_bank_id": "mercantile",
+    "own_hosts": [
+      "mercantile.co.il"
+    ]
   },
   {
     "id": "massad",
@@ -270,7 +321,10 @@
     ],
     "cma_legal_id": null,
     "fees_id": "massad",
-    "deposit_bank_id": "massad"
+    "deposit_bank_id": "massad",
+    "own_hosts": [
+      "bankmassad.co.il"
+    ]
   },
   {
     "id": "yahav",
@@ -283,7 +337,10 @@
     ],
     "cma_legal_id": null,
     "fees_id": "yahav",
-    "deposit_bank_id": "yahav"
+    "deposit_bank_id": "yahav",
+    "own_hosts": [
+      "bank-yahav.co.il"
+    ]
   },
   {
     "id": "jerusalem",
@@ -296,7 +353,10 @@
     ],
     "cma_legal_id": null,
     "fees_id": "jerusalem",
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "bankjerusalem.co.il"
+    ]
   },
   {
     "id": "one-zero",
@@ -309,7 +369,10 @@
     ],
     "cma_legal_id": null,
     "fees_id": "one-zero",
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "onezerobank.com"
+    ]
   },
   {
     "id": "ibi",
@@ -323,6 +386,9 @@
     "cma_legal_id": null,
     "fees_id": "ibi",
     "deposit_bank_id": null,
+    "own_hosts": [
+      "ibi.co.il"
+    ],
     "note": "The broker (IBI Trade). In the fund records IBI is the fund manager: ibi-funds."
   },
   {
@@ -336,7 +402,10 @@
     ],
     "cma_legal_id": null,
     "fees_id": "meitav-trade",
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "meitav.co.il"
+    ]
   },
   {
     "id": "altshuler-trade",
@@ -349,7 +418,10 @@
     ],
     "cma_legal_id": null,
     "fees_id": "altshuler-trade",
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "as-invest.co.il"
+    ]
   },
   {
     "id": "psagot",
@@ -362,7 +434,10 @@
     ],
     "cma_legal_id": null,
     "fees_id": "psagot",
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "psagot.co.il"
+    ]
   },
   {
     "id": "excellence",
@@ -375,7 +450,10 @@
     ],
     "cma_legal_id": null,
     "fees_id": "excellence",
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "xnes.co.il"
+    ]
   },
   {
     "id": "fair",
@@ -389,6 +467,9 @@
     "cma_legal_id": null,
     "fees_id": null,
     "deposit_bank_id": null,
+    "own_hosts": [
+      "fair.co.il"
+    ],
     "note": "No fee snapshot collected yet, so no page."
   },
   {
@@ -403,6 +484,9 @@
     "cma_legal_id": null,
     "fees_id": "interactive-israel",
     "deposit_bank_id": null,
+    "own_hosts": [
+      "inter-il.com"
+    ],
     "note": "A foreign broker: the site gives foreign brokers no company page (invest.ts hasPage)."
   },
   {
@@ -416,7 +500,10 @@
     ],
     "cma_legal_id": null,
     "fees_id": "interactive-brokers",
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "interactivebrokers.com"
+    ]
   },
   {
     "id": "ib-ireland",
@@ -429,7 +516,10 @@
     ],
     "cma_legal_id": null,
     "fees_id": null,
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "interactivebrokers.ie"
+    ]
   },
   {
     "id": "ibi-funds",
@@ -459,6 +549,11 @@
     "cma_legal_id": null,
     "fees_id": null,
     "deposit_bank_id": null,
+    "own_hosts": [],
+    "filing_names": [
+      "IBI",
+      "אי.בי.אי"
+    ],
     "note": "The fund records name the manager אי.בי.אי קרנות נאמנות בע\"מ."
   },
   {
@@ -477,7 +572,11 @@
     ],
     "cma_legal_id": null,
     "fees_id": null,
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [],
+    "filing_names": [
+      "הראל"
+    ]
   },
   {
     "id": "mor-funds",
@@ -496,7 +595,11 @@
     ],
     "cma_legal_id": null,
     "fees_id": null,
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [],
+    "filing_names": [
+      "מור"
+    ]
   },
   {
     "id": "yalin-funds",
@@ -510,6 +613,11 @@
     "cma_legal_id": null,
     "fees_id": null,
     "deposit_bank_id": null,
+    "own_hosts": [],
+    "filing_names": [
+      "Yalin Lapidot",
+      "ילין לפידות"
+    ],
     "note": "Every record that names Yalin Lapidot is about its funds; its provident company (CMA 513611509) is named by none yet. A record about the provident company needs a row of its own and only_records here."
   },
   {
@@ -527,6 +635,11 @@
     "cma_legal_id": null,
     "fees_id": null,
     "deposit_bank_id": null,
+    "own_hosts": [],
+    "filing_names": [
+      "MTF",
+      "מגדל קרנות נאמנות"
+    ],
     "note": "MTF is Migdal's fund brand: the fund records name the manager מגדל קרנות נאמנות בע\"מ."
   },
   {
@@ -547,6 +660,12 @@
     "cma_legal_id": null,
     "fees_id": null,
     "deposit_bank_id": null,
+    "own_hosts": [
+      "meitav.co.il"
+    ],
+    "filing_names": [
+      "תכלית"
+    ],
     "note": "Tachlit is Meitav's fund brand: the fund records name the manager מיטב קרנות נאמנות בע\"מ. MF-56 quotes Meitav's fund pages."
   },
   {
@@ -560,7 +679,11 @@
     ],
     "cma_legal_id": null,
     "fees_id": null,
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [],
+    "filing_names": [
+      "קסם"
+    ]
   },
   {
     "id": "ishares",
@@ -573,7 +696,10 @@
     ],
     "cma_legal_id": null,
     "fees_id": null,
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "ishares.com"
+    ]
   },
   {
     "id": "blackrock",
@@ -586,7 +712,10 @@
     ],
     "cma_legal_id": null,
     "fees_id": null,
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "blackrock.com"
+    ]
   },
   {
     "id": "jpmorgan-am",
@@ -599,7 +728,10 @@
     ],
     "cma_legal_id": null,
     "fees_id": null,
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "am.jpmorgan.com"
+    ]
   },
   {
     "id": "tase",
@@ -613,6 +745,9 @@
     "cma_legal_id": null,
     "fees_id": null,
     "deposit_bank_id": null,
+    "own_hosts": [
+      "tase.co.il"
+    ],
     "note": "The exchange as a company (settled.md §3): its own documents about itself, its subsidiaries and its data products."
   },
   {
@@ -626,7 +761,10 @@
     ],
     "cma_legal_id": null,
     "fees_id": null,
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "spglobal.com"
+    ]
   },
   {
     "id": "nasdaq",
@@ -639,7 +777,10 @@
     ],
     "cma_legal_id": null,
     "fees_id": null,
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "indexes.nasdaqomx.com"
+    ]
   },
   {
     "id": "msci",
@@ -652,7 +793,10 @@
     ],
     "cma_legal_id": null,
     "fees_id": null,
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "msci.com"
+    ]
   },
   {
     "id": "isa",
@@ -666,6 +810,9 @@
     "cma_legal_id": null,
     "fees_id": null,
     "deposit_bank_id": null,
+    "own_hosts": [
+      "isa.gov.il"
+    ],
     "note": "As a site owner: its terms about its own content (MF-55)."
   },
   {
@@ -683,6 +830,9 @@
     "cma_legal_id": null,
     "fees_id": null,
     "deposit_bank_id": null,
+    "own_hosts": [
+      "fnx.co.il"
+    ],
     "note": "TXA-29 is about a Phoenix investment policy, an insurance product."
   },
   {
@@ -696,6 +846,9 @@
     ],
     "cma_legal_id": null,
     "fees_id": null,
-    "deposit_bank_id": null
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "reit1.co.il"
+    ]
   }
 ]

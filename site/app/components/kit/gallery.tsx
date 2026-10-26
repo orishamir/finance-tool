@@ -128,6 +128,7 @@ function Basics() {
 
 function Folds() {
   const [open, setOpen] = useState(false);
+  const [topic, setTopic] = useState(true);
   return (
     <>
       <Demo name="Disclosure" use={g.uses.Disclosure}>
@@ -173,6 +174,16 @@ function Folds() {
           <State label={g.states.open}>
             <FoldGroup title={g.sample.group} count={3} level={4} defaultOpen>
               <p className="pb-2">{g.sample.body}</p>
+            </FoldGroup>
+          </State>
+          <State label={`variant=section, ${g.states.open}, controlled, id`}>
+            <FoldGroup variant="section" id="kit-fold-topic" title={g.sample.topic} count={12} open={topic} onOpenChange={setTopic}>
+              <p className="pt-1">{g.sample.body}</p>
+            </FoldGroup>
+          </State>
+          <State label={`variant=section, ${g.states.closed}`}>
+            <FoldGroup variant="section" title={g.sample.topic} count={1250}>
+              <p className="pt-1">{g.sample.body}</p>
             </FoldGroup>
           </State>
         </Grid>

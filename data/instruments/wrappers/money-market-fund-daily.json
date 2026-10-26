@@ -244,6 +244,7 @@
   "transfer_routes": [],
   "eligibility": {
     "rule_ids": [
+      "BRK-01",
       "MF-15",
       "MF-11"
     ],
@@ -270,6 +271,7 @@
     "age-or-use-exemption": "covered",
     "currency": "covered",
     "distribution-policy": "covered",
+    "eligibility": "covered",
     "fee-change-over-time": "covered",
     "fee-custody": "covered",
     "fee-deposit": "covered",
@@ -292,7 +294,7 @@
     "transfer-switch-process": "covered"
   },
   "company_terms": {
-    "eligibility": [
+    "minimum": [
       "BRK-28"
     ],
     "fee-account": [

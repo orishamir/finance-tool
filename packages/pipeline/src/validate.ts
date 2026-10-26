@@ -175,6 +175,7 @@ export interface RuleLike {
   il_finance_file?: string;
   sources?: {
     url: string;
+    title: string;
     strength: string;
     kind: string;
     mirror_host?: string;
@@ -186,6 +187,7 @@ export interface RuleLike {
   }[];
   sources_missing_reason?: string;
   derived_from?: string[];
+  examples?: string[];
   scope?: string;
   scope_institutions?: { id: string; name_he: string }[];
   scope_settle?: string;
@@ -267,6 +269,9 @@ function checkRuleSources(rule: RuleLike, ctx: ValidationContext, all: Map<strin
   if (first && (!first.publisher_he || !first.title_he)) warn("first source lacks publisher_he or title_he", rule.id);
   for (const id of rule.derived_from ?? []) {
     if (!all.has(id)) out.push(`derived_from: ${id} has no record under data/rules/`);
+  }
+  for (const id of rule.examples ?? []) {
+    if (!all.has(id)) out.push(`examples: ${id} has no record under data/rules/`);
   }
   if (rule.recheck_date && rule.recheck_date < today) warn("recheck_date has passed", rule.id);
   const years = taxYears(rule.figures);

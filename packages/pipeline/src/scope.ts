@@ -3,7 +3,7 @@
 // (scripts/extract-sources.ts) writes what `scopeFromLine` returns; the validator re-reads the line and fails a record that drifted.
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join, relative } from "node:path";
-import { generalSourceKinds, notRules, ownContextExposures, type InstitutionRegistryRow, type RuleScope, type ScopeInstitution } from "@finance-tool/schema";
+import { generalSourceKinds, listedAt, notRuleAllowedIn, notRules, ownContextExposures, ownDocumentCompanies, type InstitutionRegistryRow, type RuleScope, type ScopeInstitution } from "@finance-tool/schema";
 import type { RuleBaseIds } from "./references.ts";
 
 export interface ScopeFields {
@@ -84,7 +84,9 @@ interface ScopedRule {
   scope?: string;
   scope_institutions?: { id: string; name_he: string }[];
   scope_settle?: string;
-  sources?: { kind: string; strength: string }[];
+  sources?: { url: string; title: string; title_he?: string; kind: string; strength: string }[];
+  derived_from?: string[];
+  examples?: string[];
 }
 
 type Report = (file: string, message: string) => void;
@@ -136,12 +138,18 @@ export interface ScopeCounts {
  *  - a `general` rule's first source is a company's document (kind `institution_doc` or strength `institution`), or is neither a general
  *    kind (law, regulation, circular, regulator page, official PDF, exchange rule, dataset) nor another official text of strength
  *    primary or primary-mirror (a court ruling, a government form, a foreign regulator's page: kinds `other` and `form`);
+ *  - a `general` rule derives from (`derived_from`) a rule that is not general, or names as an example (`examples`) one that is
+ *    (review, 2026-10-26: a company's term a general rule's Source line mentions is an example, never a derivation);
+ *  - a record that is not general, and not a not-rule, cites no own document of any company it names (the registry's `own_hosts` and
+ *    `filing_names`): a company's section lists only records from that company's own documents, so it would be listed nowhere;
  *  - the questions page rows and the "שווה לדעת" blocks (P-09) hold a rule that is not general;
  *  - a wrapper record cites a rule that is not general, or holds a value whose source is one company's document; its `company_terms`
  *    (a property each company sets) name records that are not general and carry that dimension;
- *  - an exposure record cites a rule that is not general, other than its index provider's own (D31).
- * The records the rule base keeps that are not rules (`notRules`) are skipped by the last three, by name. Warns: a general rule with no
- * source to check; a glossary term that cites a rule that is not general (the term card shows only the general ones).
+ *  - an exposure record cites a rule that is not general, other than the records `ownContextExposures` names for it (D31), each the
+ *    index provider's own.
+ * A record the rule base keeps that is not a rule (`notRules`) may stand only in the files its entry names (review, 2026-10-26), and a
+ * data file its entry names must still cite it (the list only shrinks). Warns: a general rule with no source to check; a glossary term
+ * that cites a rule that is not general (the term card shows only the general ones).
  */
 export function checkScope(ctx: { dataDir: string; ruleBase: RuleBaseIds }, rules: Map<string, ScopedRule>, report: Report, warn: (category: string, id: string) => void): ScopeCounts {
   const dataDir = ctx.dataDir;
@@ -194,7 +202,13 @@ export function checkScope(ctx: { dataDir: string; ruleBase: RuleBaseIds }, rule
       if (registry.length > 0 && !row) report(file, `scope_institutions: ${inst.id} is not in data/sources/institutions.json`);
       else if (row && row.name_he !== inst.name_he) report(file, `scope_institutions: ${inst.id} is "${row.name_he}" in the registry, not "${inst.name_he}"`);
     }
+    if (rule.scope !== "general" && !Object.hasOwn(notRules, rule.id) && registry.length > 0 && listedAt({ id: rule.id, scope: rule.scope }, ownDocumentCompanies(rule, byId)).length === 0) {
+      const names = (rule.scope_institutions ?? []).map((i) => i.id).join(", ") || "no company";
+      report(file, `scope: ${rule.id} is ${rule.scope} (${names}) but cites no own document of a company it names; a company's section lists only records from that company's own documents (add the company's site to own_hosts, or its filing names to filing_names, in data/sources/institutions.json)`);
+    }
     if (rule.scope === "general") {
+      for (const d of rule.derived_from ?? []) if (rules.has(d) && rules.get(d)!.scope !== "general") report(file, `derived_from: a general rule derives from general rules only; ${d} is ${rules.get(d)!.scope} (a company's term it mentions is an example: re-run npm run extract:sources -w @finance-tool/pipeline)`);
+      for (const d of rule.examples ?? []) if (rules.has(d) && rules.get(d)!.scope === "general") report(file, `examples: ${d} is general; a general rule it points to belongs in derived_from`);
       const first = rule.sources?.[0];
       if (!first) warn("general rule with no source to check", rule.id);
       else if (first.kind === "institution_doc" || first.strength === "institution") report(file, `scope: a general rule's first source is a company's document (${first.kind}, ${first.strength}); cite the law or regulator first, or the scope is not general`);
@@ -203,7 +217,10 @@ export function checkScope(ctx: { dataDir: string; ruleBase: RuleBaseIds }, rule
   }
 
   const isGeneral = (id: string) => rules.get(id)?.scope === "general";
-  const named = (id: string) => Object.hasOwn(notRules, id);
+  /** The file's path as the not-rules allowance writes it ("data/instruments/wrappers/x.json"), whatever folder the data sits in. */
+  const repoPath = (file: string) => `data/${relative(dataDir, file).split(/[\\/]/).join("/")}`;
+  /** Which not-rules each data file cites, for the allowance's "still needed" check. */
+  const notRuleCites = new Map<string, Set<string>>();
   const scopeWord = (id: string) => {
     const r = rules.get(id);
     if (!r) return "no record";
@@ -229,7 +246,10 @@ export function checkScope(ctx: { dataDir: string; ruleBase: RuleBaseIds }, rule
         else if (!(r.dimensions ?? []).includes(dim)) report(file, `company_terms.${dim}: ${id} does not carry the dimension ${dim}`);
       }
     }
-    for (const { id, path } of ruleIdsWithPaths(rec)) if (rules.has(id) && !isGeneral(id) && !named(id)) report(file, `${path}: a wrapper is a product context and cites general rules only; ${id} is ${scopeWord(id)} (D30)`);
+    for (const { id, path } of ruleIdsWithPaths(rec)) {
+      if (Object.hasOwn(notRules, id)) notRuleCites.set(repoPath(file), (notRuleCites.get(repoPath(file)) ?? new Set()).add(id));
+      if (rules.has(id) && !isGeneral(id) && !notRuleAllowedIn(id, repoPath(file))) report(file, `${path}: a wrapper is a product context and cites general rules only; ${id} is ${scopeWord(id)} (D30)${Object.hasOwn(notRules, id) ? "; it is a not-rule allowed only in its own files (notRules)" : ""}`);
+    }
     for (const { path, value } of valueObjects(rec)) if (value.source?.strength === "institution") report(file, `${path}: a product field holds a value whose source is a company's document ("${value.source.title ?? ""}"); a company's term belongs on its page (D30)`);
   }
 
@@ -238,10 +258,25 @@ export function checkScope(ctx: { dataDir: string; ruleBase: RuleBaseIds }, rule
     const rec = readJson(file) as { id?: string } | undefined;
     const own = new Set(ownContextExposures[rec?.id ?? ""] ?? []);
     for (const { id, path } of ruleIdsWithPaths(rec)) {
+      if (Object.hasOwn(notRules, id)) notRuleCites.set(repoPath(file), (notRuleCites.get(repoPath(file)) ?? new Set()).add(id));
       const r = rules.get(id);
-      if (!r || isGeneral(id) || named(id)) continue;
-      const ownOnly = (r.scope_institutions ?? []).length > 0 && (r.scope_institutions ?? []).every((i) => own.has(i.id));
-      if (!ownOnly) report(file, `${path}: an exposure page cites general rules only, and its index provider's own; ${id} is ${scopeWord(id)} (D30, D31)`);
+      if (!r || isGeneral(id) || notRuleAllowedIn(id, repoPath(file))) continue;
+      if (!own.has(id)) report(file, `${path}: an exposure page cites general rules only, and the records of its index provider that ownContextExposures names; ${id} is ${scopeWord(id)} (D30, D31)`);
+    }
+  }
+  // the index provider's records an exposure may cite are that provider's own (an index provider's terms, nobody else's)
+  for (const [exposure, ids] of Object.entries(ownContextExposures)) {
+    for (const id of ids) {
+      const r = rules.get(id);
+      const kinds = (r?.scope_institutions ?? []).map((i) => byId.get(i.id)?.kind);
+      if (r && registry.length > 0 && (r.scope === "general" || kinds.length === 0 || kinds.some((k) => k !== "index-provider"))) report(registryPath, `ownContextExposures: ${exposure} may cite ${id}, which is not an index provider's own term (${scopeWord(id)})`);
+    }
+  }
+  // the not-rules allowance only shrinks: a data file it names must still cite the record (the site's prose test checks the prose files)
+  if (rules.size > 0) {
+    for (const [id, entry] of Object.entries(notRules)) {
+      if (!rules.has(id) || isGeneral(id)) continue;
+      for (const f of entry.files) if (f.startsWith("data/") && existsSync(join(dataDir, f.slice("data/".length))) && !notRuleCites.get(f)?.has(id)) report(join(dataDir, f.slice("data/".length)), `notRules: ${id} no longer stands in ${f}; remove the file from its entry in packages/schema/src/scope.ts`);
     }
   }
 

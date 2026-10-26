@@ -47,9 +47,11 @@
   "derived_from": [
     "ETF-51",
     "ETF-14",
-    "ETF-47",
-    "ETF-49",
     "TXS-15",
     "TXF-16"
+  ],
+  "examples": [
+    "ETF-47",
+    "ETF-49"
   ]
 }

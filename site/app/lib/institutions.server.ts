@@ -3,7 +3,7 @@
 // computed here but the stale flag (D3: a snapshot older than three months, until the schema holds its own rule).
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { feesSnapshot, institutionsTable, type DepositTerms, type FeeLine, type FeesSnapshot, type InstitutionRegistryRow, type RuleRecord, type ValueObject } from "@finance-tool/schema";
+import { feesSnapshot, institutionsTable, ownDocumentCompanies, type DepositTerms, type FeeLine, type FeesSnapshot, type InstitutionRegistryRow, type RuleRecord, type ValueObject } from "@finance-tool/schema";
 import type {
   InstitutionKind,
   InstitutionPageData,
@@ -20,7 +20,7 @@ import { loadCatalog, loadDepositTerms, seenValue, seenWhere } from "./instrumen
 import { shortName } from "./providers";
 import { ownBy, type SiteValue } from "./value";
 import { fileRank } from "./rule-shelves";
-import { noPageAnchor, type CompanyLink } from "./scope";
+import { listedCompanies, noPageAnchor, pointedIds, type CompanyLink, type OwnDocs } from "./scope";
 
 /** The cadence until `docs/data-schema.md` §3.6 writes `staleTariff` (flow 33 data note): 90 days. */
 const staleDays = 90;
@@ -268,7 +268,7 @@ export function buildInstitution(id: string): InstitutionPageData | null {
   const termGroups = companyTermGroups(registryIds, allRules, topicName);
   for (const rid of termGroups.flatMap((g) => g.ids)) {
     rules[rid] = allRules[rid]!;
-    for (const d of (allRules[rid] as { derived_from?: string[] }).derived_from ?? []) if (allRules[d]) rules[d] = allRules[d]!;
+    for (const d of pointedIds(allRules[rid]!)) if (allRules[d]) rules[d] = allRules[d]!;
   }
 
   return {
@@ -363,10 +363,34 @@ export interface CompanyTermGroup {
   ids: string[];
 }
 
-/** Records that are not general and name one of these companies, grouped by topic in the rules pages' order (spec §4: "grouped by product"). */
-export function companyTermGroups(registryIds: readonly string[], rules: Record<string, RuleRecord>, topic: (file: string) => string): CompanyTermGroup[] {
+let ownDocsCache: { rules: Record<string, RuleRecord>; out: OwnDocs } | null = null;
+
+/**
+ * Per record that is not general, the companies it names whose own document it cites (the registry's `own_hosts` and
+ * `filing_names`; review, 2026-10-26). The root loader gives it to every page, so a rule card names only those and links only to
+ * where the record is listed. A record that cites none (a press report, a forum post) is left out of the map.
+ */
+export function ownDocuments(rules: Record<string, RuleRecord> = loadRules()): OwnDocs {
+  if (ownDocsCache?.rules === rules) return ownDocsCache.out;
+  const registry = new Map(loadInstitutionRegistry().map((r) => [r.id, r]));
+  const out: Record<string, string[]> = {};
+  for (const r of Object.values(rules)) {
+    if (r.scope === "general") continue;
+    const own = ownDocumentCompanies(r, registry);
+    if (own.length > 0) out[r.id] = own;
+  }
+  ownDocsCache = { rules, out };
+  return out;
+}
+
+/**
+ * The records a company's section lists (spec §4: "מה כתוב במסמכים של {company}", grouped by product), by topic in the rules pages'
+ * order: those that are not general and cite one of these companies' own documents; never a not-rule, and never a press report or a
+ * forum post about the company (review, 2026-10-26).
+ */
+export function companyTermGroups(registryIds: readonly string[], rules: Record<string, RuleRecord>, topic: (file: string) => string, ownDocs: OwnDocs = ownDocuments(rules)): CompanyTermGroup[] {
   const want = new Set(registryIds);
-  const mine = Object.values(rules).filter((r) => r.scope !== "general" && (r.scope_institutions ?? []).some((i) => want.has(i.id)));
+  const mine = Object.values(rules).filter((r) => listedCompanies(r, ownDocs).some((c) => want.has(c.id)));
   return groupByTopic(mine, topic);
 }
 
@@ -382,15 +406,21 @@ function groupByTopic(list: RuleRecord[], topic: (file: string) => string): Comp
   }));
 }
 
-/** /companies: the companies that have no page of their own and whose terms the site holds, each with its records; then the records that name no company. */
-export function noPageCompanyTerms(rules: Record<string, RuleRecord>): { companies: { id: string; name: string; ids: string[] }[]; none: string[] } {
+/**
+ * /companies: the companies that have no page of their own and whose terms the site holds, each with the records its section lists;
+ * then what no company's section lists (the not-rules: a forum post, a press report, a list, a count, a site's terms).
+ */
+export function noPageCompanyTerms(rules: Record<string, RuleRecord>, ownDocs: OwnDocs = ownDocuments(rules)): { companies: { id: string; name: string; ids: string[] }[]; none: string[] } {
   const links = companyLinks();
-  const nonGeneral = Object.values(rules).filter((r) => r.scope !== "general");
+  const byId = (a: string, b: string) => a.localeCompare(b, "en", { numeric: true });
+  const listed = Object.values(rules)
+    .filter((r) => r.scope !== "general")
+    .map((r) => ({ id: r.id, at: listedCompanies(r, ownDocs).map((c) => c.id) }));
   const companies = loadInstitutionRegistry()
     .filter((r) => !links[r.id]?.hasPage)
-    .map((r) => ({ id: r.id, name: r.name_he, ids: nonGeneral.filter((x) => (x.scope_institutions ?? []).some((i) => i.id === r.id)).map((x) => x.id).sort((a, b) => a.localeCompare(b, "en", { numeric: true })) }))
+    .map((r) => ({ id: r.id, name: r.name_he, ids: listed.filter((x) => x.at.includes(r.id)).map((x) => x.id).sort(byId) }))
     .filter((c) => c.ids.length > 0)
     .sort((a, b) => collator.compare(a.name, b.name));
-  const none = nonGeneral.filter((r) => (r.scope_institutions ?? []).length === 0).map((r) => r.id).sort((a, b) => a.localeCompare(b, "en", { numeric: true }));
+  const none = listed.filter((x) => x.at.length === 0).map((x) => x.id).sort(byId);
   return { companies, none };
 }

@@ -4,8 +4,28 @@ broker and managing company the site has a page for that a future Scope line may
 where it has the company, else the short name the site already uses (providers.ts SHORT_NAMES) or the CMA name without the suffix."""
 import json, os
 ROOT = "/home/ori/dev/finance-tool/.claude/worktrees/wt-scope"
+# Where each company's own documents live (review, 2026-10-26): the hosts of its sites as the rule sources, fee snapshots and deposit
+# records use them (tools/own-docs-survey.py, tools/hosts-survey.py), and for a fund manager the names its Maya filings open with.
+# A company none of whose documents is collected has no host: a record about it from the press or a forum is not its own document.
+OWN = {
+  "altshuler-shaham": ["as-invest.co.il"], "harel": ["harel-group.co.il"], "meitav": ["meitav.co.il"], "mor": ["moreinvest.co.il"],
+  "phoenix": ["fnx.co.il"], "infinity": ["infinity.co.il"], "analyst": ["analyst.co.il"], "yachad-rofim": ["krn-rofim.co.il"],
+  "huji-provident": ["gemel.huji.ac.il"], "leumi": ["leumi.co.il", "bankleumi.co.il"], "hapoalim": ["bankhapoalim.co.il"],
+  "discount": ["discountbank.co.il"], "mizrahi-tefahot": ["mizrahi-tefahot.co.il"], "fibi": ["fibi.co.il"], "mercantile": ["mercantile.co.il"],
+  "massad": ["bankmassad.co.il"], "yahav": ["bank-yahav.co.il"], "jerusalem": ["bankjerusalem.co.il"], "one-zero": ["onezerobank.com"],
+  "ibi": ["ibi.co.il"], "meitav-trade": ["meitav.co.il"], "altshuler-trade": ["as-invest.co.il"], "psagot": ["psagot.co.il"],
+  "excellence": ["xnes.co.il"], "fair": ["fair.co.il"], "interactive-israel": ["inter-il.com"], "interactive-brokers": ["interactivebrokers.com"],
+  "ib-ireland": ["interactivebrokers.ie"], "meitav-funds": ["meitav.co.il"], "ishares": ["ishares.com"], "blackrock": ["blackrock.com"],
+  "jpmorgan-am": ["am.jpmorgan.com"], "tase": ["tase.co.il"], "sp-dji": ["spglobal.com"], "nasdaq": ["indexes.nasdaqomx.com"],
+  "msci": ["msci.com"], "isa": ["isa.gov.il"], "phoenix-insurance": ["fnx.co.il"], "reit1": ["reit1.co.il"],
+}
+FILINGS = {
+  "ibi-funds": ["IBI", "אי.בי.אי"], "harel-funds": ["הראל"], "mor-funds": ["מור"], "yalin-funds": ["Yalin Lapidot", "ילין לפידות"],
+  "migdal-funds": ["MTF", "מגדל קרנות נאמנות"], "meitav-funds": ["תכלית"], "kesem": ["קסם"],
+}
 def row(id, he, kind, names, cma=None, fees=None, bank=None, note=None):
-    r = {"id": id, "name_he": he, "kind": kind, "scope_names": [n if isinstance(n, dict) else {"name": n} for n in names], "cma_legal_id": cma, "fees_id": fees, "deposit_bank_id": bank}
+    r = {"id": id, "name_he": he, "kind": kind, "scope_names": [n if isinstance(n, dict) else {"name": n} for n in names], "cma_legal_id": cma, "fees_id": fees, "deposit_bank_id": bank, "own_hosts": OWN.get(id, [])}
+    if id in FILINGS: r["filing_names"] = FILINGS[id]
     if note: r["note"] = note
     return r
 IBI_FUNDS = ["ETF-19", "ETF-55", "ETF-56", "ETF-57", "ETF-58", "ETF-59", "ETF-60", "ETF-61", "ETF-62", "ETF-64", "ETF-65", "ETF-66", "ETF-68", "ETF-69"]
@@ -68,6 +88,7 @@ rows = [
 ]
 ids = [r["id"] for r in rows]
 assert len(ids) == len(set(ids))
+assert set(OWN) <= set(ids) and set(FILINGS) <= set(ids)
 with open(os.path.join(ROOT, "data/sources/institutions.json"), "w", encoding="utf-8") as f:
     json.dump(rows, f, ensure_ascii=False, indent=2)
     f.write("\n")

@@ -76,8 +76,13 @@ export const ruleRecord = z
     sources: z.array(ruleSource).min(1).optional(),
     /** Why `sources` is absent: the raw Source line when it names no link. */
     sources_missing_reason: z.string().optional(),
-    /** Rules this one is derived from or points to (chips on the card). */
+    /** Rules this one is derived from or points to (chips on the card). A general rule's are general (D30: it never rests on a company's term). */
     derived_from: z.array(z.string().regex(/^[A-Z0-9]+-[A-Z0-9]+$/)).optional(),
+    /**
+     * A general rule's pointers to companies' terms (its Source line names them beside the general source): named examples of how a
+     * company applies it (spec §1), never a derivation. The card shows them under "לדוגמה" (review, 2026-10-26).
+     */
+    examples: z.array(z.string().regex(/^[A-Z0-9]+-[A-Z0-9]+$/)).optional(),
     il_finance_file: z.string().regex(/\.md$/),
     checked: isoDate,
   })
@@ -96,6 +101,10 @@ export const ruleRecord = z
   .refine((r) => (r.scope === "unsettled") === !!r.scope_settle, {
     message: "scope_settle is set exactly when the scope is unsettled (D30)",
     path: ["scope_settle"],
+  })
+  .refine((r) => r.scope === "general" || r.examples === undefined, {
+    message: "only a general rule carries examples (its pointers to companies' terms)",
+    path: ["examples"],
   })
   .refine((r) => r.scope !== "general" || r.scope_institutions === undefined, {
     message: "a general rule names no companies in scope_institutions (a company is a named example in its text)",

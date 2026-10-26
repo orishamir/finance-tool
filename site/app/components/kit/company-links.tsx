@@ -22,7 +22,8 @@ export function CompanyLinks({ lead, items, size = "sm", className }: { lead: st
       {items.map((c, i) => (
         <span key={c.href + c.name}>
           {i > 0 && ", "}
-          <Link to={c.href} className="text-link hover:underline">
+          {/* a two-word name ("מיטב טרייד") never breaks between its words; the line breaks between names */}
+          <Link to={c.href} className="text-link hover:underline whitespace-nowrap">
             <bdi>{c.name}</bdi>
           </Link>
         </span>

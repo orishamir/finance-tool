@@ -31,7 +31,9 @@
   ],
   "derived_from": [
     "IRA-15",
-    "IRA-21",
     "IRA-23"
+  ],
+  "examples": [
+    "IRA-21"
   ]
 }

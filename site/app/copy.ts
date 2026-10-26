@@ -2753,15 +2753,17 @@ export const updateRules = {
  * `{names}` is a Hebrew list ("הראל ואלטשולר שחם"), `{name}` one company.
  */
 export const scopeWords = {
-  tag: { general: "חל על כולם", institution: "של {names}", unsettled: "לא הוכח שחל על כולם" },
+  // "על {names}": a record about companies that rests on none of their documents (a press report, a forum post; review, 2026-10-26)
+  tag: { general: "חל על כולם", institution: "של {names}", unsettled: "לא הוכח שחל על כולם", about: "על {names}" },
   line: {
     institution: "נמצא במסמכים של {names}; בחברות אחרות זה יכול להיות אחרת.",
+    notTheirs: "המקורות כאן אינם מסמכים של {names}.",
     unsettledSeen: "נמצא במסמכים של {names}. אולי כך בכל החברות; לא מצאנו לזה מקור רשמי.",
     unsettled: "אולי כך בכל החברות; לא מצאנו לזה מקור רשמי.",
   },
   /** The card's foot: where the company's terms are listed, one link per company. */
   allAt: "לכל מה שמצאנו אצל {name}",
-  allNoCompany: "לכל מה שלא נמצא אצל חברה מסוימת",
+  allNoCompany: "לכל מה שאינו כלל ואינו תנאי של חברה",
   /** The card's foot of a general rule on a page about one product. */
   rulesOf: "לכל החוקים והכללים של {product}",
   /** The chip of a record that names several companies: "לאומי ועוד 3". */
@@ -2777,7 +2779,8 @@ export const scopeWords = {
   noPage: {
     title: "מה כתוב במסמכים של חברות שאין להן עמוד כאן",
     line: "מה שנמצא במסמכים של חברות שלאתר אין עליהן עמוד משלהן, לפי חברה.",
-    none: { title: "לא נמצא אצל חברה מסוימת", line: "נראה כמו כלל לכל החברות, אבל נמצא רק בכתבה או בפורום." },
+    // what no company's section lists: the records the rule base keeps that are not rules (review, 2026-10-26)
+    none: { title: "לא כלל ולא תנאי של חברה", line: "סיפורים מפורומים, כתבות, רשימות וספירות, תנאי שימוש של אתרים, ומקומות שבהם חיפשנו כלל ולא מצאנו. האתר שומר אותם עם המקור, אבל הם לא כלל שחל על כולם ולא תנאי שחברה קבעה במסמכים שלה." },
   },
   /** The rules page: company terms are not listed there. */
   rulesLine: { before: "מה שנמצא רק במסמכים של חברה מסוימת מופיע בעמוד של אותה חברה, לא כאן.", link: "לרשימת החברות" },
@@ -2791,6 +2794,8 @@ export const ruleCardMore = {
   forTaxYear: "לשנת המס",
   derivedFrom: "נגזר מ־",
   derivedLine: "זו מסקנה משילוב של כמה חוקים וכללים, לא משפט אחד שנמצא במקור.",
+  /** A general rule's pointers to companies' terms (review, 2026-10-26): named examples, never a derivation. */
+  examples: "לדוגמה:",
   stable: "לא משתנה מעצמו",
   usesLead: "משפיע על",
   usesEngine: "החישובים באתר",
@@ -3626,7 +3631,7 @@ export const kit = {
       Card: "המשטח המורם היחיד. את הריפוד בוחרים ב־pad, את הפנים ב־className.",
       Section: "כותרת עם פתיחה ופעולה בקצה השורה, ואחריה הגוף. level: page, card או form.",
       Disclosure: "כל מה שהקורא יכול לפתוח: טבלה, הערה ארוכה, קבוצה ברשימה. התווית והחץ עוקבים אחרי מצב הקופסה עצמה, גם בתוך קופסה פתוחה אחרת.",
-      FoldGroup: "כותרת קבוצה עם הספירה שלה, בתוך רשימת כיסוי. כותרת ברמה 3 או 4.",
+      FoldGroup: "כותרת קבוצה עם הספירה שלה. list (ברירת המחדל): קבוצה בתוך רשימת כיסוי, כותרת ברמה 3 או 4. section: נושא של כרטיסים בעמוד (קבוצות החוקים והכללים, מה כתוב במסמכים של חברה), כותרת גדולה ושורה של 48 פיקסלים; open ו־onOpenChange כשהעמוד פותח קבוצה לפי הכתובת.",
       CoverageFold: "הכרטיס שמונה כל אפשרות פעם אחת: משפט של ספירות, שורת הצגה והסתרה, והרשימה מתחת לקו.",
       SegmentedControl: "שתיים עד ארבע אפשרויות קצרות ושוות, אחת תמיד נבחרת.",
       ChipList: "רשימה שאפשר לבחור בה, להוסיף לה, לשנות שם ולמחוק: מטרות, מדדים. הפריט הנבחר מקבל עיפרון ופח; גרירה רק כשיש onMove; הפריט האחרון (add) מוסיף.",
@@ -3689,6 +3694,7 @@ export const kit = {
       coverOpen: "הצגת הרשימה",
       coverClose: "הסתרת הרשימה",
       group: "לא דורגו",
+      topic: "קרן השתלמות",
       rowA: "אפשרות ראשונה",
       rowB: "אפשרות שנייה",
       statLabels: ["אחרי הדמים", "בלי דמים", "העלות"],

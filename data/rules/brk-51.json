@@ -8,7 +8,7 @@
     "irish_scheme_cap": "תקרת הפיצוי למשקיע בתוכנית האירית",
     "sipc_cap": "תקרת SIPC",
     "sipc_cash_cap": "תקרת SIPC למזומן",
-    "excess_cap": "תקרת הביטוח העודף ללקוח"
+    "excess_cap": "תקרת הביטוח העודף"
   },
   "strength": "institution",
   "dimensions": [
@@ -115,7 +115,7 @@
         "BRK-51"
       ],
       "state": "sourced",
-      "notes": "IB's excess Lloyd's policy as IB Ireland states it: up to USD 30 million per client (cash USD 900,000, aggregate USD 150 million)."
+      "notes": "IB's excess Lloyd's policy as IB Ireland states it: up to USD 30 million (cash USD 900,000, aggregate USD 150 million)."
     }
   },
   "il_finance_file": "brokerage-account.md",

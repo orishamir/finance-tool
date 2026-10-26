@@ -19,7 +19,7 @@ export const content: GuideContent = {
         <VariesByCompany ids={["BANK-34"]} lead="איזו ריבית היא העוגן תלוי בבנק" />
         <VariesByCompany ids={["BPN-10"]} lead="תחנות היציאה תלויות בבנק" />
       </div>
-      <RulesLine ids={["BANK-28", "BANK-25", "BANK-26"]} />
+      <RulesLine ids={["BANK-28", "BANK-27", "BANK-25", "BANK-26"]} />
     </>
   ),
   who: () => (

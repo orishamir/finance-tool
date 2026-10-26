@@ -1,5 +1,6 @@
 // Extracts the `sources` of every rule record from the rule base markdown (`- Source:` line under `### <ID>`),
-// plus `derived_from` and `sources_missing_reason`, and, since 2026-10-26, who it applies to from the `- Scope:` line:
+// plus `derived_from` (and, for a general rule, `examples`: the companies' terms its line names, review 2026-10-26) and
+// `sources_missing_reason`, and, since 2026-10-26, who it applies to from the `- Scope:` line:
 // `scope`, `scope_institutions` and `scope_settle` (D30; research/specs/2026-10-25-rules-scope/spec.md §3), with the company names
 // resolved against data/sources/institutions.json. Re-runnable: it strips its own keys from a record and writes them again,
 // never touches any other field and never touches the markdown. Spec: research/knowledge/2026-10-24-synthesis.md 3.2,
@@ -55,6 +56,9 @@ export interface LineContext {
   ruleChecked: string;
   defs: Record<string, string>;
   knownIds: Set<string>;
+  /** The rule's own scope and every record's, from the Scope lines: a general rule's pointer to a rule that is not general is an example. */
+  ruleScope?: string;
+  scopeOf?: ReadonlyMap<string, string>;
   publishers?: Record<string, PublisherRow>;
   documents?: DocumentRow[];
 }
@@ -62,6 +66,8 @@ export interface LineContext {
 export interface LineResult {
   sources: ExtractedSource[];
   derived_from: string[];
+  /** A general rule's pointers to records that are not general (companies' terms named beside the general source): examples, never derivations. */
+  examples: string[];
   /** The raw line text, for `sources_missing_reason` when no entry has a URL. */
   raw: string;
   /** Link-less entries and unresolved reference links that were skipped. */
@@ -428,9 +434,14 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
 
   const outside = links.reduceRight((acc, l) => acc.slice(0, l.start) + " " + acc.slice(l.end), raw);
 
-  // derived_from: bare rule ids outside the links.
+  // derived_from: bare rule ids outside the links. The line cannot tell a derivation from a pointer ("see IRA-21", "Site terms: CAT-43"),
+  // but a general rule never rests on a company's term (D30): a pointer of a general rule to a record that is not general is an example
+  // of how a company applies it, shown under "לדוגמה", never a "נגזר מ־" chip (review, 2026-10-26).
   const ids = [...outside.matchAll(/\b[A-Z][A-Z0-9]*-\d+[A-Z]?\b/g)].map((m) => m[0]);
-  const derived = [...new Set(ids)].filter((id) => id !== ctx.ruleId && ctx.knownIds.has(id));
+  const pointed = [...new Set(ids)].filter((id) => id !== ctx.ruleId && ctx.knownIds.has(id));
+  const isExample = (id: string) => ctx.ruleScope === "general" && ctx.scopeOf?.has(id) === true && ctx.scopeOf.get(id) !== "general";
+  const derived = pointed.filter((id) => !isExample(id));
+  const examples = pointed.filter(isExample);
 
   // Dedupe (same url and locator), then sort by preference.
   const seen = new Set<string>();
@@ -449,7 +460,7 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
     if (a.checked !== b.checked) return a.checked < b.checked ? 1 : -1;
     return order.get(a)! - order.get(b)!;
   });
-  return { sources: unique, derived_from: derived, raw, skipped };
+  return { sources: unique, derived_from: derived, examples, raw, skipped };
 }
 
 // ---------------------------------------------------------------- records
@@ -464,12 +475,12 @@ export function sourceLineOf(body: string): string | undefined {
   return line;
 }
 
-const OWN_KEYS = ["scope", "scope_institutions", "scope_settle", "sources", "sources_missing_reason", "derived_from"];
+const OWN_KEYS = ["scope", "scope_institutions", "scope_settle", "sources", "sources_missing_reason", "derived_from", "examples"];
 
 /** Removes the keys this script wrote from the text of a record (they are always last, at two-space indent), then appends the new ones. */
 export function writeKeys(text: string, add: Record<string, unknown>): string {
   let body = text;
-  const cut = [...body.matchAll(/,\n  "(scope|scope_institutions|scope_settle|sources|sources_missing_reason|derived_from)":/g)].map((m) => m.index!);
+  const cut = [...body.matchAll(/,\n  "(scope|scope_institutions|scope_settle|sources|sources_missing_reason|derived_from|examples)":/g)].map((m) => m.index!);
   if (cut.length > 0) body = body.slice(0, Math.min(...cut)) + body.slice(body.lastIndexOf("\n}"));
   const close = body.lastIndexOf("}");
   const head = body.slice(0, close).replace(/\s+$/, "");
@@ -515,10 +526,18 @@ function main() {
   const scopeCounts: Record<string, number> = {};
   const files = readdirSync(rulesDir).filter((f) => f.endsWith(".json")).sort();
   const known = new Set(files.map((f) => (JSON.parse(readFileSync(join(rulesDir, f), "utf8")) as { id: string }).id));
+  // every record's scope from its Scope line, so a general rule's pointer to a company's term becomes an example (review, 2026-10-26)
+  const scopeOf = new Map<string, string>();
+  for (const id of known) {
+    const b = blocks.get(id);
+    const l = b ? scopeLineOf(b.body) : undefined;
+    const sc = l !== undefined ? scopeFromLine(l, id, registry).fields?.scope : undefined;
+    if (sc) scopeOf.set(id, sc);
+  }
 
   const rep: Report = {
     perFile: new Map(),
-    totals: { rules: 0, withSources: 0, entries: 0, locator: 0, locator_he: 0, quote: 0, anchor: 0, page: 0, title_he: 0, publisher_he: 0, derived: 0 },
+    totals: { rules: 0, withSources: 0, entries: 0, locator: 0, locator_he: 0, quote: 0, anchor: 0, page: 0, title_he: 0, publisher_he: 0, derived: 0, examples: 0 },
     strengths: {},
     realigned: [],
     kinds: {},
@@ -560,7 +579,7 @@ function main() {
       rep.unresolved.push({ id: rec.id, reason: String(add.sources_missing_reason) });
       pf.missing++;
     } else {
-      const res = extractFromLine(line, { ruleId: rec.id, ruleStrength: rec.strength, ruleChecked: rec.checked, defs: block!.defs, knownIds: known, publishers, documents });
+      const res = extractFromLine(line, { ruleId: rec.id, ruleStrength: rec.strength, ruleChecked: rec.checked, defs: block!.defs, knownIds: known, ruleScope: scopeOf.get(rec.id), scopeOf, publishers, documents });
       res.skipped.forEach((what) => rep.skipped.push({ id: rec.id, what }));
       if (res.sources.length > 0) {
         add.sources = res.sources;
@@ -590,6 +609,10 @@ function main() {
       if (res.derived_from.length > 0) {
         add.derived_from = res.derived_from;
         rep.totals.derived!++;
+      }
+      if (res.examples.length > 0) {
+        add.examples = res.examples;
+        rep.totals.examples!++;
       }
     }
     let out = writeKeys(text, add);
@@ -625,7 +648,7 @@ function renderReport(r: Report, tables: { publishers: boolean; documents: boole
   L.push(`- Rules: ${t.rules}; with sources: ${t.withSources}; unresolved (sources_missing_reason): ${r.unresolved.length}`);
   L.push(`- Entries: ${t.entries}; with locator ${t.locator}, locator_he ${t.locator_he}, quote ${t.quote}, anchor ${t.anchor}, page ${t.page}`);
   L.push(`- Entries with title_he: ${t.title_he}; with publisher_he: ${t.publisher_he}; rules whose first source lacks publisher_he: ${r.noPublisherHe.length}`);
-  L.push(`- Rules with derived_from: ${t.derived}`);
+  L.push(`- Rules with derived_from: ${t.derived}; general rules with examples (companies' terms they point to): ${t.examples}`);
   L.push(`- Strengths: ${Object.entries(r.strengths).map(([k, v]) => `${k} ${v}`).join(", ")}`);
   L.push(`- Rule strength realigned to its best source (primary/mirror pair only): ${r.realigned.length}${r.realigned.length ? ": " + r.realigned.join("; ") : ""}`);
   L.push(`- Kinds: ${Object.entries(r.kinds).map(([k, v]) => `${k} ${v}`).join(", ")}`, "");

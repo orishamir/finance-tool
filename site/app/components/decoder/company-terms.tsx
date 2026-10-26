@@ -1,14 +1,15 @@
 // What the site found in a company's own documents (D30; research/specs/2026-10-25-rules-scope/spec.md §4, 2026-10-26): on a managing
 // company's page and on a bank's or broker's page, "מה כתוב במסמכים של {company}", grouped by topic; and on /companies the same for
 // the companies the site has no page for, one fold per company. Each item is the rule card (inline), which names the document, the
-// date it was read and, for a rule not shown to hold everywhere, "אולי כך בכל החברות; לא מצאנו לזה מקור רשמי". Built from the kit's
-// Section, Disclosure and Card and the provenance layer's RuleCard; a feature block of the company pages.
+// date it was read and, for a rule not shown to hold everywhere, "אולי כך בכל החברות; לא מצאנו לזה מקור רשמי". A company's section
+// holds only records from its own documents (review, 2026-10-26); what no section lists, the not-rules, is the last fold on /companies.
+// Built from the kit's Section, FoldGroup (`variant="section"`, controlled) and Card and the provenance layer's RuleCard; a feature
+// block of the company pages.
 import { useEffect, useState } from "react";
 import { scopeWords } from "../../copy";
-import { fmt } from "../../lib/format";
 import { companyTermsAnchor, noCompanyAnchor, noPageAnchor } from "../../lib/scope";
 import { RuleCard, useProvenanceData } from "../provenance";
-import { Card, Disclosure, Section, cx } from "../kit";
+import { Card, FoldGroup, Section, cx } from "../kit";
 
 export interface TermGroup {
   key: string;
@@ -57,12 +58,6 @@ function Cards({ ids }: { ids: readonly string[] }) {
   );
 }
 
-const Count = ({ n }: { n: number }) => (
-  <span className="text-sm font-normal text-muted-foreground">
-    · <bdi dir="ltr" className="tabular-nums">{fmt.number(n)}</bdi>
-  </span>
-);
-
 /** One company's section: its terms by topic. Nothing renders when the site found none. */
 export function CompanyTerms({ name, groups }: { name: string; groups: readonly TermGroup[] }) {
   const hash = useHash();
@@ -78,24 +73,16 @@ export function CompanyTerms({ name, groups }: { name: string; groups: readonly 
     <Section id={companyTermsAnchor} title={scopeWords.section.title.replace("{name}", name)} lead={scopeWords.section.line}>
       <div className="flex flex-col gap-3">
         {groups.map((g) => (
-          <Disclosure
+          <FoldGroup
             key={g.key}
+            variant="section"
+            title={g.title}
+            count={g.ids.length}
             open={total <= openAllUpTo || opened.has(g.key)}
             onOpenChange={(now) => setOpened((o) => { const n = new Set(o); if (now) n.add(g.key); else n.delete(g.key); return n; })}
-            className="flex flex-col"
-            spread
-            size="field"
-            as="h3"
-            labelClassName="text-lg font-semibold flex flex-wrap items-baseline gap-x-2"
-            label={
-              <>
-                {g.title}
-                <Count n={g.ids.length} />
-              </>
-            }
           >
             <Cards ids={g.ids} />
-          </Disclosure>
+          </FoldGroup>
         ))}
       </div>
     </Section>
@@ -117,15 +104,15 @@ export function NoPageCompanyTerms({ companies, none }: { companies: readonly { 
     <Section id={companyTermsAnchor} title={scopeWords.noPage.title} lead={scopeWords.noPage.line}>
       <div className="flex flex-col gap-3">
         {companies.map((c) => (
-          <Disclosure key={c.id} id={noPageAnchor(c.id)} open={opened.has(c.id)} onOpenChange={toggle(c.id)} className={cx("flex flex-col", scrollMargin)} spread size="field" as="h3" labelClassName="text-lg font-semibold flex flex-wrap items-baseline gap-x-2" label={<><bdi>{c.name}</bdi><Count n={c.ids.length} /></>}>
+          <FoldGroup key={c.id} variant="section" id={noPageAnchor(c.id)} className={scrollMargin} title={<bdi>{c.name}</bdi>} count={c.ids.length} open={opened.has(c.id)} onOpenChange={toggle(c.id)}>
             <Cards ids={c.ids} />
-          </Disclosure>
+          </FoldGroup>
         ))}
         {none.length > 0 && (
-          <Disclosure id={noCompanyAnchor} open={opened.has(noCompanyAnchor)} onOpenChange={toggle(noCompanyAnchor)} className={cx("flex flex-col", scrollMargin)} spread size="field" as="h3" labelClassName="text-lg font-semibold flex flex-wrap items-baseline gap-x-2" label={<>{scopeWords.noPage.none.title}<Count n={none.length} /></>}>
+          <FoldGroup variant="section" id={noCompanyAnchor} className={scrollMargin} title={scopeWords.noPage.none.title} count={none.length} open={opened.has(noCompanyAnchor)} onOpenChange={toggle(noCompanyAnchor)}>
             <p className="text-sm text-muted-foreground max-w-measure pt-1">{scopeWords.noPage.none.line}</p>
             <Cards ids={none} />
-          </Disclosure>
+          </FoldGroup>
         )}
       </div>
     </Section>
