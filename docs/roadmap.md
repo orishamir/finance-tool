@@ -344,7 +344,11 @@ What continues, none of it a release:
   - source labels: regulations labelled as regulations.
 
   All of it was checked by a finance review and an independent review. Golden values come from a separate script.
-- **The rules-scope layout (spec sections 3 and 4).** General rules on guides and the rules page; a company's terms on its company page; search in two groups; validator checks. In its third review round at the time of writing.
+- **The rules-scope layout (spec sections 3 and 4), merged after four review rounds.**
+  - **Where things show:** general rules on guides, the rules page and the questions page. A company's terms only on that company's page, from the company's own documents, with "תלוי בחברה" links naming the companies the record states the property for. Press, forums, counts and site terms sit in a "לא נכלל ככלל" section on /companies.
+  - **Labels and chips:** "לפי החברה" drops only on the named company's own sites. Company terms appear on general rule cards as examples, not as derivations.
+  - **Search** has two groups.
+  - **The validator** enforces all of this, file by file.
 
 **What continues, in order:**
 
