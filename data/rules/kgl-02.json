@@ -36,8 +36,22 @@
     }
   },
   "il_finance_file": "kupat-gemel-lehashkaa.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-2829/he/regulation_hm_takanongemel.pdf",
+      "title": "תקנון תקני לקופת גמל להשקעה (רשות שוק ההון, נשלח לחברות המנהלות במכתב 2016-19364 מ־29.9.2016)",
+      "title_he": "תקנון תקני לקופת גמל להשקעה (רשות שוק ההון, נשלח לחברות המנהלות במכתב 2016-19364 מ־29.9.2016)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.5, s.8.1",
+      "locator_he": "עמוד 5, סעיף 8.1",
+      "page": 5,
+      "quote": "סך כל התשלומים שעמית יהיה רשאי להפקיד בכלל חשבונותיו בכל קופות הגמל להשקעה לא יעלו על 70,000 שקלים חדשים בכל שנת כספים",
+      "checked": "2026-10-26"
+    },
     {
       "url": "https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf",
       "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
@@ -49,18 +63,6 @@
       "locator": "p.2, s.3",
       "locator_he": "עמוד 2, סעיף 3",
       "page": 2,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-      "title": "Altshuler Shaham \"חיסכון פלוס\" bylaws, March 2025",
-      "title_he": "תקנון קופת הגמל להשקעה ״חיסכון פלוס״ של אלטשולר שחם (מרץ 2025)",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "clause 8.1",
-      "locator_he": "סעיף 8.1",
       "checked": "2026-10-25"
     }
   ]

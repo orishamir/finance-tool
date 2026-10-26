@@ -2,7 +2,7 @@
   "id": "PEN-29",
   "title": "Minimum pension and small balances",
   "title_he": "קצבת מינימום ויתרות קטנות",
-  "text_he": "קצבת מינימום היא קצבה שנמוכה מחלק קטן מהשכר הממוצע; מפנסיונר שקצבתו נמוכה ממנה הקרן רשאית לגבות דמי ניהול מההפרש, והעמית רשאי לדחות את הקצבה במקום. בנפרד, עמית שהגיע לגיל פרישת חובה, שסך יתרותיו לא עולה על סכום הצבירה המזערי ושאינו מקבל קצבה (או מקבל קצבאות עד הסכום המזערי), רשאי למשוך את הכסף כסכום חד פעמי. החוק גם מתיר משיכה בלי תנאים נוספים כשסך הכסף בחשבונות העמית באותה קופה קטן מסכום נמוך קבוע, לסוגי הקופות שבסעיף; אם קרנות פנסיה חדשות כלולות בכך לא אומת מהנוסח שנקרא. החוק נקרא בעותק בוויקיטקסט, והסכומים מתקנונים של חברה מנהלת.",
+  "text_he": "קצבת מינימום היא קצבה שנמוכה מחלק קטן מהשכר הממוצע; מפנסיונר שקצבתו נמוכה ממנה הקרן רשאית לגבות דמי ניהול מההפרש, והעמית רשאי לדחות את הקצבה במקום. בנפרד, עמית שהגיע לגיל פרישת חובה, שסך יתרותיו לא עולה על סכום הצבירה המזערי ושאינו מקבל קצבה, או שהקצבאות שלו עוברות את סכום הקצבה המזערי, רשאי למשוך את הכסף כסכום חד פעמי. החוק גם מתיר משיכה בלי תנאים נוספים כשסך הכסף בחשבונות העמית באותה קופה קטן מסכום נמוך קבוע, לסוגי הקופות שבסעיף; אם קרנות פנסיה חדשות כלולות בכך לא אומת מהנוסח שנקרא. החוק נקרא בספר החוקים של הכנסת, קצבת המינימום מוגדרת בתקנון האחיד של רשות שוק ההון, והסכומים של השנה מחוברת הניכויים של רשות המסים.",
   "figure_names_he": {
     "minimum_accumulation": "סכום הצבירה המזערי"
   },
@@ -32,11 +32,11 @@
         "PEN-29"
       ],
       "state": "sourced",
-      "notes": "Minimum accumulation amount (סכום צבירה מזערי) for 2026: a member past mandatory retirement age whose total balances do not exceed it, and who receives no annuity above the minimum annuity amount, may withdraw as a lump sum. CPI-linked."
+      "notes": "Minimum accumulation amount (סכום צבירה מזערי) for 2026: a member past mandatory retirement age whose total balances do not exceed it, and who receives no annuity, or annuities above the minimum annuity amount (law s.23(ב)(3)(ג)), may withdraw as a lump sum. CPI-linked."
     }
   },
   "il_finance_file": "pension-and-gemel-lekitzba.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
@@ -60,11 +60,11 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.4 (section 23(א)(1)(ב))",
-      "locator_he": "עמוד 4 (סעיף 23(א)(1)(ב))",
+      "locator": "p.4 (s.23(ב)(3)(א)-(ג))",
+      "locator_he": "עמוד 4 (סעיף 23(ב)(3)(א)-(ג))",
       "page": 4,
-      "quote": "הוא הגיע לגיל פרישת חובה",
-      "checked": "2026-10-25"
+      "quote": "עולה על סכום הקצבה המזערי",
+      "checked": "2026-10-26"
     },
     {
       "url": "https://fs.knesset.gov.il/18/law/18_lsr_301133.pdf",
@@ -94,29 +94,34 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "title": "Mor comprehensive bylaws 01.06.2025",
-      "title_he": "תקנון קרן הפנסיה המקיפה של מור (מהדורת 1.6.2025)",
-      "publisher": "Mor Investment House",
-      "publisher_he": "מור גמל ופנסיה",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.44, section 52 and section 1",
-      "page": 44,
-      "quote": "קצבת מינימום",
-      "checked": "2026-10-25"
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)",
+      "publisher": "Prisha.co.il",
+      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "p.9, s.1",
+      "locator_he": "עמוד 9, סעיף 1",
+      "page": 9,
+      "quote": "קצבה המשולמת לפנסיונר או לכלל שאיריו של עמית יחד, שסכומה נמוך מ-5% מהשכר הממוצע במשק",
+      "checked": "2026-10-26",
+      "qualifier": "(third-party host)"
     },
     {
-      "url": "https://www.moreinvest.co.il/media/hphjzxvl/תקנון-קרן-פנסיה-כללית.pdf",
-      "title": "Mor general bylaws 01.04.2026",
-      "title_he": "תקנון קרן הפנסיה הכללית של מור (מהדורת 1.4.2026)",
-      "publisher": "Mor Investment House",
-      "publisher_he": "מור גמל ופנסיה",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "section 1",
-      "locator_he": "סעיף 1",
-      "checked": "2026-10-25"
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)",
+      "publisher": "Prisha.co.il",
+      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "p.36, s.52",
+      "locator_he": "עמוד 36, סעיף 52",
+      "page": 36,
+      "quote": "עמית רשאי לדחות את מועד קבלת הקצבה",
+      "checked": "2026-10-26",
+      "qualifier": "(third-party host)"
     }
   ]
 }

@@ -2,7 +2,7 @@
   "id": "PEN-26",
   "title": "Retirement ages",
   "title_he": "גילי הפרישה בחוק",
-  "text_he": "חוק גיל פרישה קובע גיל פרישה לגברים וגיל פרישה לנשים, גיל פרישה מוקדמת משותף לשניהם, וגיל פרישת חובה משותף ששווה לגיל הפרישה לגברים. לנשים שנולדו עד סוף שנות השישים חל גיל פרישה מדורג לפי שנת הלידה; הגיל לנשים שמוצג כאן הוא הכלל למי שנולדו אחרי כן, לפי קריאת החוקר את הסעיף ואת השורה האחרונה בטבלה. בקרן הפנסיה גיל הזכאות המזערי לקצבת זקנה הוא גיל הפרישה המוקדמת. החוק נקרא בעותק בוויקיטקסט.",
+  "text_he": "חוק גיל פרישה קובע גיל פרישה לגברים וגיל פרישה לנשים, גיל פרישה מוקדמת משותף לשניהם, וגיל פרישת חובה משותף ששווה לגיל הפרישה לגברים. לנשים שנולדו עד סוף שנות השישים חל גיל פרישה מדורג לפי שנת הלידה; למי שנולדו אחרי כן חל הגיל הכללי לנשים, כך גם בטבלה שבחוברת הניכויים של רשות המסים. בקרן הפנסיה גיל הזכאות המזערי לקצבת זקנה הוא גיל הפרישה המוקדמת, לפי התקנון האחיד של רשות שוק ההון. החוק נקרא בספר החוקים של הכנסת.",
   "figure_names_he": {
     "early_retirement_age": "גיל פרישה מוקדמת",
     "retirement_age_men": "גיל פרישה לגברים",
@@ -78,8 +78,22 @@
     }
   },
   "il_finance_file": "pension-and-gemel-lekitzba.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+      "title": "חוברת ניכויים חודשית – לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה, 2026",
+      "title_he": "חוברת ניכויים חודשית – לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה, 2026",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.7",
+      "locator_he": "עמוד 7",
+      "page": 7,
+      "quote": "65 ינואר 1970 ואילך",
+      "checked": "2026-10-26"
+    },
     {
       "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",
       "title": "חוק גיל פרישה, התשס\"ד-2004",
@@ -122,16 +136,19 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "title": "Mor comprehensive bylaws 01.06.2025",
-      "title_he": "תקנון קרן הפנסיה המקיפה של מור (מהדורת 1.6.2025)",
-      "publisher": "Mor Investment House",
-      "publisher_he": "מור גמל ופנסיה",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "section 1",
-      "locator_he": "סעיף 1",
-      "checked": "2026-10-25"
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)",
+      "publisher": "Prisha.co.il",
+      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "p.5, s.1",
+      "locator_he": "עמוד 5, סעיף 1",
+      "page": 5,
+      "quote": "גיל פרישה מוקדמת כמשמעותו בחוק גיל פרישה",
+      "checked": "2026-10-26",
+      "qualifier": "(third-party host)"
     }
   ]
 }

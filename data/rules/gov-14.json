@@ -1,8 +1,8 @@
 {
   "id": "GOV-14",
-  "title": "Floating-rate bond (ממשלתית בריבית משתנה, formerly \"גילון\")",
-  "title_he": "אג\"ח ממשלתית בריבית משתנה (לשעבר גילון)",
-  "text_he": "לפי מילון יחידת ניהול החוב זו איגרת לא צמודה שהריבית בה נקבעת מתשואת המק\"ם הממוצעת לתקופה של שנה, ומונפקת לשנתיים או יותר. לפי תקנות \"גילון חדש\" הריבית היא ממוצע משוקלל של תשואות המק\"ם שנותרו לו בין שלושה חודשים לשנה, בימי המסחר שלפני סוף תקופת הריבית, בתוספת מרווח שנקבע בהנפקה עד תקרת המרווח; הקופון לא יורד מתחת לרצפה, ותקופות הריבית אחרי הראשונה הן באורך שבתקנות. שני המקורות מתארים את ריבית הייחוס אחרת, ואיזו תקנה חלה על הסדרות שמונפקות היום היא שאלה פתוחה. התקנות נקראו בעותק באתר נבו.",
+  "title": "Floating-rate bond (אג\"ח ממשלתית בריבית משתנה; the older type \"גילון חדש\" is separate)",
+  "title_he": "אג\"ח ממשלתית בריבית משתנה (וסוג ישן נפרד: גילון חדש)",
+  "text_he": "לפי מילון יחידת ניהול החוב זו איגרת לא צמודה שהריבית בה נקבעת מתשואת המק\"ם הממוצעת לתקופה של שנה. הסדרות שמונפקות היום הן מהסוג \"אג\"ח ממשלתית בריבית משתנה\", לפי התקנות של הסוג הזה: הריבית השנתית היא ממוצע של תשואות המק\"ם שנותרה לו כשנה לפדיון, בימי המסחר שלפני סוף תקופת הריבית, משוקלל לפי היקף העסקאות; תקופות הריבית הן של שלושה חודשים, ובנוסח התקנות אין מרווח ואין רצפה. לסוג הישן \"גילון חדש\", שכבר לא מונפק, יש תקנות נפרדות: ממוצע תשואות מק\"ם של שלושה חודשים עד שנה בתוספת מרווח שנקבע בהנפקה עד תקרת המרווח, וקופון שלא יורד מתחת לרצפה; אלה חלים רק על הסדרות הישנות.",
   "figure_names_he": {
     "linkage": "הצמדה",
     "coupon_every_months": "תדירות תשלום הקופון (חודשים)",
@@ -34,18 +34,18 @@
         "GOV-14"
       ],
       "state": "sourced",
-      "notes": "An unlinked government bond with a variable rate set from the average makam yield (glossary p. 41, \"אג\"ח בריבית משתנה\"; 1999 regulations). Whether every series auctioned now is unlinked is TXI open question 8; which regulation governs the current series is GOV open question 5."
+      "notes": "An unlinked government bond with a variable rate set from the average makam yield (glossary p. 41, \"אג\"ח בריבית משתנה\"). The Accountant General lists both floating-rate types under unlinked bonds (TXI open question 8 and GOV open question 5 closed 2026-10-26)."
     },
     "coupon_every_months": {
       "value": 3,
       "unit": "months",
       "source": {
-        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/eoe4vDYzpfM5D9J9SFlkgpyvqTXlCSUfYWr0ONo8ZQU=#page=2",
-        "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), התשנ\"ט-1999 (קובץ התקנות 5951), p.2, reg. 1 (תקופת ריבית)",
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=6",
+        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית - ריבית משתנה\"), התשס\"ו-2006 (קובץ התקנות 6457), p.6 (gazette p.404), reg. 1 (תקופת ריבית): \"ביום העסקים הבנקאי האחרון בחודש השלישי שקדם לו\"",
         "publisher": "Reshumot (Ministry of Justice)",
         "strength": "primary"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-10-26",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -54,7 +54,7 @@
         "GOV-14"
       ],
       "state": "sourced",
-      "notes": "Under the 1999 \"גילון חדש\" regulations, interest periods after the first are three months (regs. 4, 5, 7). It was not established which regulation governs the series auctioned now (GOV open question 5), so this frequency is the 1999 regulations' and must be checked against the series' terms before the run uses it."
+      "notes": "Under the 2006 regulations for the type auctioned now, \"אג\"ח ממשלתית בריבית משתנה\", each interest period ends on a payment day and starts on the last bank business day of the third month before it, so the coupon is paid every three months (reg. 1). The older \"גילון חדש\" type (1999 regulations, no longer issued) also has three-month periods after the first. The Accountant General's bond page lists the current type with interest \"אחת ל-3 חודשים\" (GOV open question 5 closed 2026-10-26)."
     },
     "margin_cap": {
       "value": 4,
@@ -74,7 +74,7 @@
         "GOV-14"
       ],
       "state": "sourced",
-      "notes": "Margin over the makam reference yield, set at issue, of no more than 4% (1999 regulations)."
+      "notes": "Margin over the makam reference yield, set at issue, of no more than 4%: the 1999 \"גילון חדש\" regulations only, which govern the older series and are no longer issued. The 2006 regulations for the type auctioned now have no margin."
     },
     "coupon_floor": {
       "value": 0,
@@ -94,11 +94,11 @@
         "GOV-14"
       ],
       "state": "sourced",
-      "notes": "The coupon \"לא יפחת מ-0%\" (1999 regulations, reg. 9)."
+      "notes": "The coupon \"לא יפחת מ-0%\" (1999 \"גילון חדש\" regulations, reg. 9): the older series only. The 2006 regulations for the type auctioned now have no floor."
     }
   },
   "il_finance_file": "government-bonds-and-makam.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=6",

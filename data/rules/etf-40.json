@@ -1,8 +1,8 @@
 {
   "id": "ETF-40",
-  "title": "The S&P 500 has three return versions: price return, gross total return (dividends reinvested before withholding tax) and net total return (dividends reinvested after withholding tax); the Israeli funds in ETF-10 track the net total return",
-  "title_he": "שלוש גרסאות למדד האמריקני; הקרנות הישראליות עוקבות אחרי נטו",
-  "strength": "primary",
+  "title": "The three S&P 500 return versions: price, gross total return, net total return",
+  "title_he": "שלוש גרסאות של המדד האמריקני, לפי עורך המדד",
+  "strength": "institution",
   "dimensions": [
     "distribution-policy",
     "currency",
@@ -31,12 +31,12 @@
       "notes": "Price Return, Gross Total Return and Net Total Return (methodology p.21, \"Calculation Return Types\"). The withholding-tax rate used in the net version is in the provider's Equity Indices Policies & Practices Methodology, not read."
     }
   },
-  "text_he": "עורך המדד מחשב שלוש גרסאות של המדד, שנבדלות בטיפול בדיבידנדים. גרסת המחיר מתעלמת מהדיבידנדים; גרסת התשואה הכוללת ברוטו משקיעה אותם מחדש במדד ביום האקס בלי להוריד מס; גרסת התשואה הכוללת נטו משקיעה אותם מחדש אחרי ניכוי מס במקור. הקרנות הישראליות על המדד עוקבות אחרי הגרסה נטו, כלומר מדד הייחוס שלהן כבר מניח שחלק מהדיבידנד הלך למס בארצות הברית.",
+  "text_he": "עורך המדד מחשב שלוש גרסאות של המדד, שנבדלות בטיפול בדיבידנדים. גרסת המחיר מתעלמת מהדיבידנדים; גרסת התשואה הכוללת ברוטו משקיעה אותם מחדש במדד ביום האקס בלי להוריד מס; גרסת התשואה הכוללת נטו משקיעה אותם מחדש אחרי ניכוי מס במקור. איזו גרסה קרן מסוימת עוקבת אחריה כתוב בתשקיף של הקרן, לא בכללי המדד.",
   "figure_names_he": {
     "return_versions": "מספר גרסאות התשואה של המדד"
   },
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-23",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
@@ -45,15 +45,15 @@
       "publisher": "S&P Dow Jones Indices",
       "publisher_he": "S&P Dow Jones Indices",
       "kind": "other",
-      "strength": "primary",
+      "strength": "institution",
       "locator": "p.22",
       "locator_he": "עמוד 22",
       "page": 22,
       "checked": "2026-10-25",
-      "qualifier": "(index provider; read in Chrome, curl returns 403)"
+      "qualifier": "(index provider's own document; read in Chrome, curl returns 403)"
     }
   ],
   "derived_from": [
-    "ETF-10"
+    "ETF-58"
   ]
 }

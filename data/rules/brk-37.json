@@ -1,9 +1,9 @@
 {
   "id": "BRK-37",
-  "title": "TASE fee calculator: the data definitions, the legal note and the site terms that govern reuse",
-  "title_he": "מחשבון העמלות של הבורסה: הגדרות הנתונים, ההערה המשפטית ותנאי השימוש",
-  "text_he": "במחשבון העמלות של הבורסה אפשר לבחור עמלות ממוצעות או עמלות תעריפון, סוג נייר, מדרגת שווי תיק וחבר בורסה, ולראות את העמלות הממוצעות שכל חבר גבה בפועל מיחידים ומעסקים קטנים. עמלת מסחר היא סכום העמלה חלקי סכום הפעולה, ודמי ניהול הם העמלה השנתית חלקי שווי הנייר. הבורסה מבהירה שהנתונים נמסרו על ידי החברים לפי חוק ניירות ערך ושהיא אינה אחראית לשלמותם. תנאי השימוש באתר מתירים שימוש לא מסחרי בלבד ואוסרים לפרסם את המידע או מוצר שמקורו בו בלי אישור הבורסה מראש ובכתב, ומתירים ציטוט מוגבל עם קישור לעמוד המקור. לכן האתר יכול לקשר למחשבון, ולא לפרסם את המספרים בלי הסכמה.",
-  "strength": "primary",
+  "title": "TASE's fee calculator page: TASE's legal note and the site terms that govern reuse of the figures",
+  "title_he": "מחשבון העמלות של הבורסה: ההערה המשפטית ותנאי השימוש של הבורסה",
+  "text_he": "בעמוד מחשבון העמלות הבורסה מבהירה שהנתונים נמסרו על ידי החברים לפי חוק ניירות ערך, שהם נועדו להשוואה כללית בלבד, ושהיא אינה אחראית לשלמותם. תנאי השימוש באתר הבורסה מתירים שימוש לא מסחרי בלבד ואוסרים לפרסם את המידע או מוצר שמקורו בו בלי אישור הבורסה מראש ובכתב, ומתירים ציטוט מוגבל עם קישור לעמוד המקור. לכן האתר יכול לקשר למחשבון, ולא לפרסם את המספרים בלי הסכמה. אלה תנאים של הבורסה כבעלת האתר, לא כללי מסחר.",
+  "strength": "institution",
   "dimensions": [
     "fee-trade",
     "fee-custody",
@@ -12,7 +12,7 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
   "il_finance_file": "brokerage-account.md",
-  "checked": "2026-10-23",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://market.tase.co.il/he/market_data/trading_fees",
@@ -21,8 +21,9 @@
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "dataset",
-      "strength": "primary",
-      "checked": "2026-10-25"
+      "strength": "institution",
+      "checked": "2026-10-25",
+      "qualifier": "(TASE's legal note)"
     },
     {
       "url": "https://www.tase.co.il/he/content/about/terms_of_service",
@@ -31,8 +32,12 @@
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
-      "strength": "primary",
-      "checked": "2026-10-25"
+      "strength": "institution",
+      "checked": "2026-10-25",
+      "qualifier": "(TASE's website terms)"
     }
+  ],
+  "derived_from": [
+    "BRK-33"
   ]
 }

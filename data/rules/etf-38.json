@@ -2,7 +2,7 @@
   "id": "ETF-38",
   "title": "S&P 500 eligibility and selection: U.S.-domiciled companies on a U.S. exchange with total market capitalisation of at least US$ 22.7 billion, liquid and profitable, chosen by the Index Committee to a fixed count of 500 with sector balance",
   "title_he": "המדד האמריקני: תנאי הכניסה והבחירה על ידי ועדת המדדים",
-  "strength": "primary",
+  "strength": "institution",
   "dimensions": [
     "eligibility"
   ],
@@ -161,7 +161,7 @@
     "wait_after_removal_years": "המתנה אחרי יציאה מהמדד, בשנים"
   },
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-23",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
@@ -170,12 +170,12 @@
       "publisher": "S&P Dow Jones Indices",
       "publisher_he": "S&P Dow Jones Indices",
       "kind": "other",
-      "strength": "primary",
+      "strength": "institution",
       "locator": "pp.8-13, 19",
       "locator_he": "עמודים 8 עד 13, 19",
       "page": 8,
       "checked": "2026-10-25",
-      "qualifier": "(index provider; read in Chrome, curl returns 403)"
+      "qualifier": "(index provider's own document; read in Chrome, curl returns 403)"
     }
   ]
 }

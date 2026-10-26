@@ -2,7 +2,7 @@
   "id": "CAT-24",
   "title": "Regulatory policy vs expected policy: the same track name can hold a changing mix",
   "title_he": "מדיניות תקנונית לעומת צפויה: אותו שם, תמהיל משתנה",
-  "text_he": "החוזר מבחין בין מדיניות השקעה תקנונית, זו שקבועה בתקנון או בנספח המסלולים, לבין מדיניות השקעה צפויה, זו שהגוף מצהיר עליה. שם המסלול קשור רק למדיניות התקנונית, ובתוכה התמהיל בפועל יכול להשתנות בלי שינוי שם: למשל מיטב הודיעה שמסלולי עוקב מדדים גמיש שלה עוברים מחשיפה של כמחצית מניות וכל ההשקעה בחו״ל למדיניות מאוזנת יותר עם הקצאה משתנה בין ישראל לחו״ל, בניהול אקטיבי. לכן החשיפה במילים פשוטות באתר באה משדות החשיפה המתוארכים של רשות שוק ההון, מסומנת כמחושבת עם התקופה, ולא משם המסלול. אותו שם סטנדרטי יכול להיות שונה מאוד בין גופים, כמו משולב סחיר של מיטב מול של הראל.",
+  "text_he": "החוזר מבחין בין מדיניות השקעה תקנונית, זו שקבועה בתקנון או בנספח המסלולים, לבין מדיניות השקעה צפויה, זו שהגוף מצהיר עליה. שם המסלול קשור רק למדיניות התקנונית, ובגבולות שהרשימה קובעת לשם גוף יכול לשנות גם את התמהיל בפועל וגם את המדיניות התקנונית שלו בלי לשנות שם: למשל מיטב הודיעה על שינוי מדיניות תקנונית במסלולי עוקב מדדים גמיש שלה, ממחצית מניות וכל ההשקעה בחו״ל למדיניות מאוזנת יותר בניהול אקטיבי. לכן החשיפה במילים פשוטות באתר באה משדות החשיפה המתוארכים של רשות שוק ההון, מסומנת כמחושבת עם התקופה, ולא משם המסלול. בנתוני הרשות אותו שם סטנדרטי שונה מאוד בין הגופים: במשולב סחיר בקופות גמל להשקעה החשיפה למניות נעה בין פחות מרבע לכמעט כל הנכסים, והחשיפה לחו״ל בין כמעט אפס ליותר מכל הנכסים.",
   "strength": "primary",
   "dimensions": [
     "currency",
@@ -11,7 +11,7 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
   "il_finance_file": "tracks-catalogue-and-decoder.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
@@ -25,6 +25,16 @@
       "locator_he": "עמודים 2 עד 3, סעיף 2",
       "page": 2,
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=1000&filters={\"REPORT_PERIOD\":202609,\"SUB_SPECIALIZATION\":\"משולב",
+      "title": "גמל-נט 202609: כל מסלולי \"משולב סחיר\"",
+      "title_he": "גמל-נט 202609: כל מסלולי \"משולב סחיר\"",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-26"
     },
     {
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&filters={\"FUND_ID\":15349,\"REPORT_PERIOD\":202609}",
@@ -44,17 +54,8 @@
       "publisher_he": "מיטב",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.harel-group.co.il/long-term-savings/information/reform",
-      "title": "הראל: רפורמה במסלולי השקעה",
-      "title_he": "הראל: רפורמה במסלולי השקעה",
-      "publisher": "Harel",
-      "publisher_he": "הראל",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "qualifier": "(named example)"
     }
   ]
 }

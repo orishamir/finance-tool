@@ -1,6 +1,6 @@
 {
   "id": "TX2-17",
-  "title": "VAT on portfolio-management fees: a dealer adds 18%; a bank or TASE member charges none",
+  "title": "VAT on portfolio-management fees: a manager that is not a financial institution adds 18%; banks, insurers and TASE members with 75% of turnover from that activity do not",
   "title_he": "מע\"מ על דמי ניהול תיק השקעות",
   "text_he": "מנהל תיקים שאינו מוסד כספי הוא עוסק, ולכן דמי הניהול שלו חייבים במס ערך מוסף בשיעור הקבוע בצו, שמתווסף לשיעור הנקוב. השיעור הנוכחי חל מ־1.1.2025. בנק, מבטח, וחבר בורסה שרוב מובהק ממחזורו נובע מפעילותו כחבר בורסה הם מוסד כספי, שמשלם מס שכר וריווח במקום מע\"מ ואינו מוסיף מע\"מ לעמלותיו; מ־2026 'בנק חברתי' אינו מוסד כספי. האם מנהל מסוים הוא מוסד כספי נקבע לפי מעמדו, וצריך לקרוא זאת מהתעריפון או מהחשבונית שלו.",
   "figure_names_he": {
@@ -58,7 +58,7 @@
     }
   },
   "il_finance_file": "tax-tier2-other.md",
-  "checked": "2026-10-25",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/ZsA~3yZgyGvixaLSmrNuT9FNV0Dr87ujJ8ymJhX0qnM=#page=2",
@@ -183,7 +183,7 @@
       "locator_he": "סעיף 4(ב)",
       "anchor": "סעיף_4.ב",
       "checked": "2026-10-25",
-      "qualifier": "(mirror; no official text of the current s.4(ב) wording found)"
+      "qualifier": "(mirror; no official text of the current s.4(ב) wording found, so the \"מס שכר וריווח\" sentence rests on the mirror only)"
     }
   ]
 }

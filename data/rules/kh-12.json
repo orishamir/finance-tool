@@ -2,7 +2,7 @@
   "id": "KH-12",
   "title": "Retirement age for the 3-year route",
   "title_he": "גיל הפרישה למסלול המשיכה המקוצר",
-  "text_he": "התקנונים משתמשים ב'גיל פרישה' כהגדרתו בהסדר התחיקתי, ופקודת מס הכנסה מפנה לחוק גיל פרישה. החוק קובע את גיל הפרישה לגברים ואת גיל הפרישה לנשים, עם לוח של גילים נמוכים יותר לנשים לפי שנת לידה. הקריאה הזו מצביעה על הגיל שהחוק עצמו מכנה 'גיל הפרישה', ולא על גיל הפרישה המוקדמת; זו הסקה מהמונח המוגדר, וחוזר של רשות המסים יאשר אותה. נוסח החוק נקרא באתר שמעתיק אותו.",
+  "text_he": "פקודת מס הכנסה מגדירה את 'גיל הפרישה' בהפניה לחוק גיל פרישה. החוק קובע את גיל הפרישה לגברים ואת גיל הפרישה לנשים, עם לוח של גילים נמוכים יותר לנשים לפי שנת לידה. זה הגיל שהחוק עצמו מכנה 'גיל הפרישה', ולא גיל הפרישה המוקדמת, שהחוק נותן לו שם אחר.",
   "figure_names_he": {
     "retirement_age_men": "גיל הפרישה לגברים",
     "retirement_age_women": "גיל הפרישה לנשים"
@@ -57,7 +57,7 @@
     }
   },
   "il_finance_file": "keren-hishtalmut.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
@@ -125,19 +125,6 @@
       "locator_he": "עמוד 172, סעיף 73",
       "page": 172,
       "quote": "לגבר וגיל 65 לאישה",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.as-invest.co.il/media/10040/בקשה-למשיכת-כספים-מקרן-השתלמות.pdf",
-      "title": "Altshuler withdrawal form",
-      "title_he": "בקשה למשיכת כספים מקרן השתלמות (טופס אלטשולר שחם)",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "form",
-      "strength": "institution",
-      "locator": "p.1, section 2 item 2",
-      "page": 1,
-      "quote": "גיל פרישה כהגדרתו בחוק גיל פרישה",
       "checked": "2026-10-25"
     }
   ]

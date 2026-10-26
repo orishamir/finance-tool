@@ -2,7 +2,7 @@
   "id": "PEN-07",
   "title": "Mandatory pension deposits for the self-employed",
   "title_he": "חובת הפקדה לפנסיה לעצמאים",
-  "text_he": "עצמאי חייב להפקיד לקופת גמל לקצבה, עד סוף שנת המס, את השיעור הנמוך מחלק ההכנסה החייבת בהפקדה שעד מחצית השכר הממוצע, ואת השיעור הגבוה מהחלק שמעל המחצית ועד השכר הממוצע; הפקדות שנעשו עבורו כשכיר על הכנסה מבוטחת מופחתות מהסכום. החובה לא חלה על מי שמתחת לגיל המינימום, מי שהגיע לגיל פרישה מוקדמת, מי שנרשם כעוסק לפני פחות מחצי שנה, ומי שהיה מבוגר ביום תחילת החוק. חלק מההפקדות של כל שנה מיועד לרכיב חיסכון למצב אבטלה. מי שחייב ולא הפקיד מקבל התראה ממרכז הגבייה, ואי תשלום הוא עבירה עם קנס; החוק נקרא בעותק בוויקיטקסט, והסכומים מטבלה של חברת ביטוח.",
+  "text_he": "עצמאי חייב להפקיד לקופת גמל לקצבה, עד סוף שנת המס, את השיעור הנמוך מחלק ההכנסה החייבת בהפקדה שעד מחצית השכר הממוצע, ואת השיעור הגבוה מהחלק שמעל המחצית ועד השכר הממוצע; הפקדות שנעשו עבורו כשכיר על הכנסה מבוטחת מופחתות מהסכום. החובה לא חלה על מי שמתחת לגיל המינימום, מי שהגיע לגיל פרישה מוקדמת, מי שנרשם כעוסק לפני פחות מחצי שנה, ומי שהיה מבוגר ביום תחילת החוק. חלק מההפקדות של כל שנה מיועד לרכיב חיסכון למצב אבטלה. מי שחייב ולא הפקיד מקבל התראה ממרכז הגבייה, ואי תשלום הוא עבירה עם קנס; החוק נקרא בספר החוקים של הכנסת, והסכומים של השנה מחושבים מהשכר הממוצע של הביטוח הלאומי.",
   "figure_names_he": {
     "rate_up_to_half_average_wage": "שיעור ההפקדה עד מחצית השכר הממוצע",
     "rate_half_to_full_average_wage": "שיעור ההפקדה ממחצית השכר הממוצע ועד השכר הממוצע"
@@ -55,12 +55,23 @@
         "PEN-07"
       ],
       "state": "sourced",
-      "notes": "Share of the part of income above half and up to the full average wage. 2026 maximum required: NIS 1,170.24 a month (Harel, institution). Deposits as an employee on insured income are deducted. Not liable: under 21, past early retirement age, under six months since VAT registration, or 55 or more on the law's effective date."
+      "notes": "Share of the part of income above half and up to the full average wage. 2026 maximum required: NIS 1,170.37 a month, computed as 4.45% plus 12.55% of half the NII average wage of NIS 13,769 (PEN-04). Deposits as an employee on insured income are deducted. Not liable: under 21, past early retirement age, under six months since VAT registration, or 55 or more on the law's effective date."
     }
   },
   "il_finance_file": "pension-and-gemel-lekitzba.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
+    {
+      "url": "https://www.btl.gov.il/Mediniyut/GeneralData/Pages/%D7%A9%D7%9B%D7%A8%20%D7%9E%D7%9E%D7%95%D7%A6%D7%A2.aspx",
+      "title": "ביטוח לאומי: שכר ממוצע לפי סעיפים 1 ו-2 לחוק הביטוח הלאומי",
+      "title_he": "ביטוח לאומי: שכר ממוצע לפי סעיפים 1 ו-2 לחוק הביטוח הלאומי",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "quote": "לפי סעיף 2 בחוק - קצבאות: 13,769 ש״ח",
+      "checked": "2026-10-26"
+    },
     {
       "url": "https://fs.knesset.gov.il/20/law/20_lsr_366872.pdf",
       "title": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2017 ו-2018), התשע\"ז-2016",
@@ -86,20 +97,6 @@
       "locator": "pp.3-9",
       "locator_he": "עמודים 3 עד 9",
       "page": 3,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://media.harel-group.co.il/media/eh3fyryd/תקרות-הפקדה-בקופות-הגמל-ובקרנות-השתלמות-2026.pdf",
-      "title": "Harel 2026 table",
-      "title_he": "תקרות וסכומים לשנת 2026 (הראל)",
-      "publisher": "Harel",
-      "publisher_he": "הראל",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.1",
-      "locator_he": "עמוד 1",
-      "page": 1,
-      "quote": "פנסיית חובה לעצמאים",
       "checked": "2026-10-25"
     }
   ]

@@ -33,10 +33,24 @@
       "kind": "circular",
       "strength": "primary-mirror",
       "mirror_host": "other",
+      "locator": "p.45, s.72(א)",
+      "locator_he": "עמוד 45, סעיף 72(א)",
+      "page": 45,
+      "quote": "החל ביום ה-61 שלאחר מועד האירוע המזכה בקצבת נכות",
+      "checked": "2026-10-26",
+      "qualifier": "(third-party host)"
+    },
+    {
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)",
+      "publisher": "Prisha.co.il",
+      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
       "locator": "pp.44-46, ss.69-74; p.8, s.1",
       "locator_he": "עמודים 44 עד 46, סעיפים 69-74; עמוד 8, סעיף 1",
       "page": 44,
-      "quote": "החל ביום ה-61 שלאחר מועד האירוע המזכה בקצבת נכות",
       "checked": "2026-10-25",
       "qualifier": "(third-party host)"
     }

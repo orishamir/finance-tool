@@ -9,39 +9,45 @@
     "protection"
   ],
   "likely_to_change": "no",
-  "text_he": "עסקת החלף לא ממומנת מחליפה את השינויים במחיר נכס הבסיס כנגד תשלום ריבית, בלי להעביר את סכום החשיפה. גרסת הנטו של מדד מניחה שהדיבידנדים מושקעים מחדש אחרי ניכוי מס שספק המדד קובע, ושני ספקי מדדים גדולים מנכים בה את שיעור הניכוי שלהם על דיבידנד אמריקני. דמי הניהול המשתנים הם חלק משכר המנהל שנגזר מתשואת הקרן ומהפרש העקיבה שלה, ולכן הם עולים כשהקרן עוקפת את נכס המעקב. מס שהקרן עצמה נושאת הוא עלות של הקרן, והחוסך לא מקבל עליו זיכוי.",
+  "text_he": "עסקת החלף לא ממומנת מחליפה את השינויים במחיר נכס הבסיס כנגד תשלום ריבית, בלי להעביר את סכום החשיפה. גרסת הנטו של מדד מניחה שהדיבידנדים מושקעים מחדש אחרי ניכוי מס, בשיעור שספק המדד קובע במתודולוגיה שלו. דמי הניהול המשתנים הם חלק משכר המנהל שנגזר מתשואת הקרן ומהפרש העקיבה שלה, ולכן הם עולים כשהקרן עוקפת את נכס המעקב. מס שהקרן עצמה נושאת הוא עלות של הקרן, והחוסך לא מקבל עליו זיכוי.",
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-25",
+  "checked": "2026-10-26",
   "sources": [
     {
-      "url": "https://www.msci.com/index/methodology/latest/IndexCalc",
-      "title": "MSCI, \"MSCI Index Calculation Methodology\", September 2026",
-      "publisher": "MSCI",
-      "publisher_he": "MSCI",
-      "kind": "other",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=2",
+      "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018 (קובץ התקנות 8038)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018 (קובץ התקנות 8038)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
       "strength": "primary",
-      "locator": "pp.25, 51",
-      "locator_he": "עמודים 25, 51",
-      "checked": "2026-10-25",
-      "qualifier": "(index provider)"
+      "locator": "p.2, reg. 1",
+      "locator_he": "עמוד 2, תקנה 1",
+      "page": 2,
+      "quote": "חלק משכר מנהל הקרן, הנגזר מתשואת הקרן ומהפרש העקיבה שלה",
+      "checked": "2026-10-26"
     },
     {
-      "url": "https://indexes.nasdaqomx.com/docs/NDX%20Versions.pdf",
-      "title": "Nasdaq, \"NDX Index Versions\"",
-      "publisher": "Nasdaq Global Indexes",
-      "publisher_he": "Nasdaq Global Indexes",
-      "kind": "other",
-      "strength": "primary",
-      "locator": "p.1",
-      "locator_he": "עמוד 1",
-      "page": 1,
-      "checked": "2026-10-25",
-      "qualifier": "(index provider)"
+      "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(נכסים_שמותר_לקנות_ולהחזיק_בקרן_ושיעוריהם_המרביים)",
+      "title": "תקנות השקעות משותפות בנאמנות (נכסים שמותר לקנות ולהחזיק בקרן ושיעוריהם המרביים), התשנ\"ה-1994",
+      "title_he": "תקנות השקעות משותפות בנאמנות (נכסים שמותר לקנות ולהחזיק בקרן ושיעוריהם המרביים), התשנ״ה-1994",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg. 1",
+      "locator_he": "תקנה 1",
+      "anchor": "סעיף_1",
+      "quote": "עסקת החלף שאינה במימון",
+      "checked": "2026-10-26"
     }
   ],
   "derived_from": [
     "ETF-51",
     "ETF-14",
+    "ETF-47",
+    "ETF-49",
     "TXS-15",
     "TXF-16"
   ]

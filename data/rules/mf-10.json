@@ -2,7 +2,7 @@
   "id": "MF-10",
   "title": "Forward pricing and the designated hour (השעה היעודה)",
   "title_he": "תמחור קדימה והשעה היעודה",
-  "text_he": "לכל קרן יש שעה יעודה שנקבעת בתשקיף שלה, לפי כללים של מסלקת הבורסה. הוראת קנייה או פדיון שמגיעה למסלקה לפני השעה היעודה מתבצעת במחיר של אותו יום; הוראה שמגיעה אחריה, או ביום שאינו יום חישוב מחירים, נחשבת כאילו הוגשה ביום חישוב המחירים הבא. לכן בזמן מתן ההוראה לא יודעים את המחיר המדויק. השעות בפועל לא נמצאו, וייתכן שהשתנו עם המעבר של הבורסה לימי מסחר חדשים.",
+  "text_he": "לכל קרן יש שעה יעודה שנקבעת בתשקיף שלה, לפי כללים של מסלקת הבורסה. הוראת קנייה או פדיון שמגיעה למסלקה לפני השעה היעודה מתבצעת במחיר של אותו יום; הוראה שמגיעה אחריה, או ביום שאינו יום חישוב מחירים, נחשבת כאילו הוגשה ביום חישוב המחירים הבא. לכן בזמן מתן ההוראה לא יודעים את המחיר המדויק. בקרן כספית במועדים קבועים הבנק חייב להציג את המועד והשעה הקרובים לביצוע הוראות, ותשקיף של קרן כזו מפרט מתי אפשר לתת הוראות ומתי הן מתבצעות. השעות שבתוקף בקרנות היומיות לא נמצאו.",
   "strength": "primary",
   "dimensions": [
     "liquidity-lockup"
@@ -10,8 +10,34 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-15",
   "il_finance_file": "mutual-funds-and-money-market-funds.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
+    {
+      "url": "https://boi.org.il/media/gcmk52bw/447a.pdf",
+      "title": "הוראת ניהול בנקאי תקין 447A: פרסום מידע מרוכז על קרנות כספיות ומק\"מ (04/25)",
+      "title_he": "הוראת ניהול בנקאי תקין 447א: פרסום מידע מרוכז על קרנות כספיות ומק״מ",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.4, appendix A",
+      "page": 4,
+      "quote": "יש לתת את ההוראות עד לשעה היעודה בתאריך המוצג",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf",
+      "title": "פעילות קרנות נאמנות בישראל 2025 (רשות ניירות ערך)",
+      "title_he": "פעילות קרנות נאמנות בישראל 2025",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.19",
+      "locator_he": "עמוד 19",
+      "page": 19,
+      "checked": "2026-10-26"
+    },
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
       "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
@@ -40,14 +66,17 @@
       "qualifier": "(dated; still linked by the ISA as its full guide)"
     },
     {
-      "url": "https://www.meitav.co.il/mutual_funds/",
-      "title": "מיטב, קרנות נאמנות",
-      "title_he": "מיטב, קרנות נאמנות",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
+      "url": "https://olaw.org.il/takanot/takanot-11476.pdf#page=6",
+      "title": "כללי השקעות משותפות בנאמנות (הוראות ליצירה ופדיון יחידות של קרן מועדים קבועים, גילוי פרטי תשקיף של קרן כספית ופרטים נוספים שיש להציג לגבי קרן כספית בפרסום), התשפ\"ד-2024 (קובץ התקנות 11476)",
+      "title_he": "כללי השקעות משותפות בנאמנות (הוראות ליצירה ופדיון יחידות של קרן מועדים קבועים, גילוי פרטי תשקיף של קרן כספית ופרטים נוספים שיש להציג לגבי קרן כספית בפרסום), התשפ\"ד-2024 (קובץ התקנות 11476)",
+      "publisher": "Open Law (copy of Reshumot)",
+      "publisher_he": "החוק הפתוח (צילום רשומות)",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "quote": "המועדים שבהם ניתן להגיש למפיץ הזמנות ליחידות הקרן והוראות לפדיונן",
+      "checked": "2026-10-26",
+      "qualifier": "(third-party host: olaw.org.il)"
     }
   ]
 }

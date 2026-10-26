@@ -70,12 +70,12 @@
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
-      "strength": "primary",
+      "strength": "institution",
       "locator": "p.10",
       "locator_he": "עמוד 10",
       "page": 10,
       "checked": "2026-10-25",
-      "qualifier": "(TASE publication)"
+      "qualifier": "(TASE's own guide, for what TASE states)"
     },
     {
       "url": "https://content.tase.co.il/media/xrwbgkhk/1150_remote_member_372145_eng.pdf",
@@ -83,12 +83,12 @@
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
-      "strength": "primary",
+      "strength": "institution",
       "locator": "p.4",
       "locator_he": "עמוד 4",
       "page": 4,
       "checked": "2026-10-25",
-      "qualifier": "(TASE publication)"
+      "qualifier": "(TASE's own guide, for what TASE states)"
     }
   ]
 }

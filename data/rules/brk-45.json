@@ -15,19 +15,19 @@
   "checked": "2026-10-25",
   "sources": [
     {
-      "url": "https://www.irs.gov/forms-pubs/about-form-w-8-ben",
-      "title": "IRS, About Form W-8BEN",
-      "title_he": "About Form W-8BEN (דף הטופס באתר ה-IRS)",
+      "url": "https://www.irs.gov/instructions/iw8ben",
+      "title": "IRS, Instructions for Form W-8BEN (rev. 10/2021)",
+      "title_he": "Instructions for Form W-8BEN (10/2021)",
       "publisher": "IRS",
       "publisher_he": "רשות המס האמריקאית (IRS)",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-25"
+      "checked": "2026-10-26"
     },
     {
-      "url": "https://www.irs.gov/instructions/iw8ben",
-      "title": "IRS, Instructions for Form W-8BEN (rev. 10/2021)",
-      "title_he": "Instructions for Form W-8BEN (10/2021)",
+      "url": "https://www.irs.gov/forms-pubs/about-form-w-8-ben",
+      "title": "IRS, About Form W-8BEN",
+      "title_he": "About Form W-8BEN (דף הטופס באתר ה-IRS)",
       "publisher": "IRS",
       "publisher_he": "רשות המס האמריקאית (IRS)",
       "kind": "regulator_page",

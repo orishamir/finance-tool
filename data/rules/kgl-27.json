@@ -2,38 +2,29 @@
   "id": "KGL-27",
   "title": "A minor's account: paid to the parent who is the guardian",
   "title_he": "חשבון של קטין: התשלום להורה שהוא האפוטרופוס",
-  "text_he": "בתקנון של אלטשולר שחם, כסף שקטין מושך משולם לחשבון של ההורה שהוא האפוטרופוס שלו, ולפי מיטב חשבון שנפתח על שם אדם אחר מנוהל על ידי אותו אדם, חוץ מקטין. זה נמצא רק במסמכים של שתי החברות האלה; מקור כללי לא נמצא. הנוסח מעתיק כלל שעוסק בקופות תגמולים ולא נוקב בקופת גמל להשקעה, ומה שיכריע הוא חוזר ההצטרפות של רשות שוק ההון.",
-  "strength": "institution",
+  "text_he": "לפי התקנון התקני של רשות שוק ההון לקופת גמל להשקעה, החברה המנהלת משלמת את הכסף שנצבר בחשבון של קטין להורה שהוא האפוטרופוס שלו.",
+  "strength": "primary",
   "dimensions": [
     "eligibility"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "kupat-gemel-lehashkaa.md",
-  "checked": "2026-10-25",
+  "checked": "2026-10-26",
   "sources": [
     {
-      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-      "title": "Altshuler bylaws March 2025",
-      "title_he": "תקנון קופת הגמל להשקעה ״חיסכון פלוס״ של אלטשולר שחם (מרץ 2025)",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "clause 11",
-      "locator_he": "סעיף 11",
-      "quote": "בחשבונו של ילדו הקטין, אם הוא אפוטרופסו",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.meitav.co.il/provident_pension/provident_invest/",
-      "title": "Meitav product page",
-      "title_he": "קופת גמל להשקעה: עמוד המוצר של מיטב",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-2829/he/regulation_hm_takanongemel.pdf",
+      "title": "תקנון תקני לקופת גמל להשקעה (רשות שוק ההון, נשלח לחברות המנהלות במכתב 2016-19364 מ־29.9.2016)",
+      "title_he": "תקנון תקני לקופת גמל להשקעה (רשות שוק ההון, נשלח לחברות המנהלות במכתב 2016-19364 מ־29.9.2016)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.5, s.11",
+      "locator_he": "עמוד 5, סעיף 11",
+      "page": 5,
+      "quote": "החברה המנהלת תשלם את הכספים שהצטברו בחשבונו של עמית בקופת גמל להשקעה או בחשבונו של ילדו הקטין, אם הוא אפוטרופסו",
+      "checked": "2026-10-26"
     }
   ],
   "derived_from": [

@@ -11,8 +11,22 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-25",
+  "checked": "2026-10-26",
   "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.43, s.57ב(1)-(2)",
+      "locator_he": "עמוד 43, סעיף 57ב(1)-(2)",
+      "page": 43,
+      "quote": "בסעיף קטן זה - יחידות רדומות",
+      "checked": "2026-10-26"
+    },
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf",
       "title": "פעילות קרנות נאמנות בישראל 2024",
@@ -50,19 +64,6 @@
       "locator": "p.5, regs. 6-9",
       "locator_he": "עמוד 5, תקנות 6-9",
       "page": 5,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
-      "title": "IBI ETF annual report 31.12.2025",
-      "title_he": "דוח שנתי ליום 31.12.2025 של אי.בי.אי. סל (4D) S&P 500",
-      "publisher": "Maya (TASE filings)",
-      "publisher_he": "אי.בי.אי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "pp.1, 4, 10-11",
-      "locator_he": "עמודים 1, 4, 10-11",
-      "page": 1,
       "checked": "2026-10-25"
     }
   ]

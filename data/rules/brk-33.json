@@ -22,7 +22,22 @@
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "qualifier": "(the publication s.45טז requires; read in a browser)"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_382526.pdf",
+      "title": "חוק ניירות ערך (תיקון מס' 63), התשע\"ז-2017",
+      "title_he": "חוק ניירות ערך (תיקון מס׳ 63), התשע״ז-2017 (ספר החוקים 2633)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.9, s.45טז",
+      "locator_he": "עמוד 9, סעיף 45טז",
+      "page": 9,
+      "quote": "חובה לפרסם עמלות מסחר וסליקה",
+      "checked": "2026-10-26"
     }
   ]
 }

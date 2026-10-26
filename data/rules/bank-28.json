@@ -2,7 +2,7 @@
   "id": "BANK-28",
   "title": "Savings plans (periodic deposits)",
   "title_he": "תוכניות חיסכון: הפקדות תקופתיות",
-  "text_he": "בפיקדון שמפקידים אליו מדי פעם לאורך יותר משנה, ההסכם חייב לציין גם את לוח ההפקדות ואת המגבלות על סכומי ההפקדה ומועדיה. לא נמצאה הוראה של בנק ישראל שמיוחדת לתוכניות חיסכון; הפרסום המרוכז מכסה אותן רק כ'סוגי פיקדונות נוספים' אם הבנק מציג אותן שם. בבנקים נראו הוראת קבע חודשית, חיסכון גמיש באפליקציה וחיסכון רב-שנתי בריבית מדורגת. האם לכל הפקדה חודשית יש נעילה ותחנות יציאה משלה לא נאמר באף מקור שנקרא.",
+  "text_he": "בפיקדון שמפקידים אליו מדי פעם לאורך יותר משנה, ההסכם חייב לציין גם את לוח ההפקדות ואת המגבלות על סכומי ההפקדה ומועדיה. לא נמצאה הוראה של בנק ישראל שמיוחדת לתוכניות חיסכון; הפרסום המרוכז מכסה אותן רק כ'סוגי פיקדונות נוספים' אם הבנק מציג אותן שם. אין כלל כללי שהופך כל הפקדה חודשית לפיקדון נפרד עם נעילה משלו; ההסכם מפרט גם את תנאי הפירעון המוקדם, ולכן הנעילה ומחיר השבירה הם תנאים של כל בנק.",
   "strength": "primary",
   "dimensions": [
     "liquidity-lockup",
@@ -12,7 +12,7 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "bank-current-account-deposits.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",
@@ -22,73 +22,39 @@
       "publisher_he": "בנק ישראל",
       "kind": "regulator_page",
       "strength": "primary",
-      "locator": "p.5, s.7(ב)(4)",
-      "locator_he": "עמוד 5, סעיף 7(ב)(4)",
+      "locator": "p.5, s.7(ב)(4)-(5)",
+      "locator_he": "עמוד 5, סעיף 7(ב)(4)-(5)",
       "page": 5,
-      "checked": "2026-10-25"
+      "quote": "תנאי הפרעון המוקדם",
+      "checked": "2026-10-26"
     },
     {
-      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-      "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
-      "title_he": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
-      "publisher": "Bank Yahav",
-      "publisher_he": "בנק יהב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "pp.2, 4",
-      "locator_he": "עמודים 2, 4",
-      "page": 2,
-      "checked": "2026-10-25"
+      "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
+      "title": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון (5/24)",
+      "title_he": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון (5/24)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.1, s.4(ב)",
+      "locator_he": "עמוד 1, סעיף 4(ב)",
+      "page": 1,
+      "quote": "תאגיד בנקאי המציע לציבור סוגי פיקדונות ומנגנוני תשלום ריבית על יתרות זכות בחשבון נוספים על המפורטים בנספח א'",
+      "checked": "2026-10-26"
     },
     {
-      "url": "https://www.leumi.co.il/he/savings/saving_by_touch",
-      "title": "לאומי: חיסכון בנגיעה",
-      "title_he": "לאומי: חיסכון בנגיעה",
-      "publisher": "Bank Leumi",
-      "publisher_he": "בנק לאומי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.leumi.co.il/he/savings",
-      "title": "לאומי: חסכונות",
-      "title_he": "לאומי: חסכונות",
-      "publisher": "Bank Leumi",
-      "publisher_he": "בנק לאומי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.fibi.co.il/private/depositsandsavings/savingtypes/",
-      "title": "הבינלאומי: סוגי חסכונות",
-      "title_he": "הבינלאומי: סוגי חסכונות",
-      "publisher": "First International Bank",
-      "publisher_he": "הבנק הבינלאומי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.bankmassad.co.il/private/depositsandsavings/savingtypes/",
-      "title": "מסד: סוגי חסכונות",
-      "title_he": "מסד: סוגי חסכונות",
-      "publisher": "Bank Massad",
-      "publisher_he": "בנק מסד",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.discountbank.co.il/private/savings-investments/savings-interest/",
-      "title": "דיסקונט: חיסכון וריבית",
-      "title_he": "דיסקונט: חיסכון וריבית",
-      "publisher": "Discount Bank",
-      "publisher_he": "בנק דיסקונט",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
+      "url": "https://boi.org.il/media/fdkmxbr0/221.pdf",
+      "title": "הוראת ניהול בנקאי תקין 221: יחס כיסוי הנזילות (9/25)",
+      "title_he": "הוראת ניהול בנקאי תקין 221: יחס כיסוי הנזילות (9/25)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.20",
+      "locator_he": "עמוד 20",
+      "page": 20,
+      "quote": "אם חלק מהפיקדון לזמן קצוב ניתן למשיכה מבלי לגרום לקנס כזה, רק אותו החלק ייחשב לפיקדון לפי דרישה",
+      "checked": "2026-10-26"
     }
   ]
 }

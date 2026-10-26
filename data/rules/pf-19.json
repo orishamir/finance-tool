@@ -35,7 +35,7 @@
     }
   },
   "il_finance_file": "provident-family-common.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=6",
@@ -76,30 +76,6 @@
       "locator_he": "עמוד 4, סעיף 4",
       "page": 4,
       "quote": "יזקוף הגוף המנהל של הקופה המקבלת",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-      "title": "אלטשולר שחם גמל להשקעה \"חיסכון פלוס\" – תקנון, מרץ 2025",
-      "title_he": "אלטשולר שחם גמל להשקעה \"חיסכון פלוס\" – תקנון, מרץ 2025",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.6, ss.16-19",
-      "locator_he": "עמוד 6, סעיפים 16-19",
-      "page": 6,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.fnx.co.il/gemel/gemelhashkaa/faq/",
-      "title": "הפניקס – קופת גמל להשקעה: שאלות ותשובות",
-      "title_he": "הפניקס – קופת גמל להשקעה: שאלות ותשובות",
-      "publisher": "The Phoenix",
-      "publisher_he": "הפניקס",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "מתבצע תוך עשרה ימי עסקים ממועד קבלת הבקשה חתומה ותקינה",
       "checked": "2026-10-25"
     }
   ]

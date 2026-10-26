@@ -64,19 +64,6 @@
       "locator_he": "עמוד 3",
       "page": 3,
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-      "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
-      "title_he": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
-      "publisher": "Bank Yahav",
-      "publisher_he": "בנק יהב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.6",
-      "locator_he": "עמוד 6",
-      "page": 6,
-      "checked": "2026-10-25"
     }
   ]
 }

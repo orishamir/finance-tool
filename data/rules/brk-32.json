@@ -21,7 +21,22 @@
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "qualifier": "(the exchange's own register; read in a browser)"
+    },
+    {
+      "url": "https://content.tase.co.il/media/q2mhob4u/274690.pdf",
+      "title": "מדריך לחברי הבורסה: החלק הראשון לתקנון (מעודכן עד 1.1.2026)",
+      "title_he": "מדריך לחברי הבורסה: החלק הראשון לתקנון (מעודכן עד 1.1.2026)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.4, s.1 definitions; p.8, s.2",
+      "page": 4,
+      "quote": "חבר בורסה הוא חברה שהתאגדה ונרשמה בישראל",
+      "checked": "2026-10-26",
+      "qualifier": "(exchange rules, ISA-approved; the member classes)"
     }
   ]
 }

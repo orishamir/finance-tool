@@ -12,7 +12,7 @@
   "likely_to_change": "no",
   "text_he": "מהקופה מותר לגבות רק: עמלות קנייה ומכירה; דמי משמרת ועמלת משמורת (לא יותר מבקופות הרגילות של אותה חברה); דמי ניהול ושכר נאמן של קרנות שמחזיקים; מסים; דמי ניהול לחברה המנהלת לפי ההסכם (מתוכם משולם מנהל התיקים); והוצאות השקעה בתעודת סל. שום דבר מעבר לרשימה.",
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=4",
@@ -40,20 +40,6 @@
       "locator_he": "עמוד 4, סעיף 5 (תקנה 7(א)(2), (3), (5), (6))",
       "page": 4,
       "quote": "ובלבד שדמי השמירה או העמלה לא יעלו על דמי השמירה או העמלה הנגבים מקופות הגמל שאינן קופות גמל בניהול אישי",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.meitav.co.il/media/kiildnyn/נספח-להסכם-הצטרפות-לקרן-השתלמות-בניהול-אישי-115181124.pdf",
-      "title": "מיטב – נספח להסכם הצטרפות לקרן השתלמות בניהול אישי (1.151.8.11.24)",
-      "title_he": "מיטב – נספח להסכם הצטרפות לקרן השתלמות בניהול אישי (1.151.8.11.24)",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.1",
-      "locator_he": "עמוד 1",
-      "page": 1,
-      "quote": "הוצאות ישירות בשל ביצוע עסקאות",
       "checked": "2026-10-25"
     }
   ]

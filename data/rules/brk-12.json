@@ -1,12 +1,12 @@
 {
   "id": "BRK-12",
-  "title": "The TASE clearing house: central counterparty with a risk fund; not a compensation scheme for a client whose member fails",
-  "title_he": "מסלקת הבורסה: צד נגדי מרכזי, לא תוכנית פיצוי ללקוח",
-  "text_he": "מסלקת הבורסה משמשת צד נגדי מרכזי לעסקאות בבורסה: היא ערבה לסליקה אם צד אחד נכשל, ומנהלת קרן סיכונים שחברי המסלקה מפקידים בה ביטחונות. בין חבריה בנק ישראל וחברים משמורנים, שאינם משתתפים בקרן הסיכונים ורשאים רק להחזיק ניירות ערך ולטפל בהם. חוק ניירות ערך נותן תוקף לכללי המסלקה על כשל של חבר, סיום מוקדם של עסקאות וקיזוז. ההגנה היא על סליקת העסקאות בין החברים; זו אינה תוכנית פיצוי ללקוח שחבר הבורסה שלו קרס.",
+  "title": "The TASE clearing house: central counterparty, risk fund, member failure",
+  "title_he": "מסלקת הבורסה: צד נגדי מרכזי וקרן סיכונים, לפי הבורסה",
+  "text_he": "לפי הבורסה, מסלקת הבורסה משמשת צד נגדי מרכזי לעסקאות בבורסה: היא ערבה לסליקה אם צד אחד נכשל, ומנהלת קרן סיכונים שחברי המסלקה מפקידים בה ביטחונות. בין חבריה בנק ישראל וחברים משמורנים, שאינם משתתפים בקרן הסיכונים ורשאים רק להחזיק ניירות ערך ולטפל בהם. המקורות מתארים הגנה על סליקת העסקאות בין החברים, ולא אומרים מה קורה ללקוח שחבר הבורסה שלו קרס. כללי המסלקה עצמם לא נקראו, ולכן זה תיאור של הבורסה ולא כלל שאומת.",
   "figure_names_he": {
     "clearing_members": "מספר חברי המסלקה"
   },
-  "strength": "primary",
+  "strength": "institution",
   "dimensions": [
     "protection"
   ],
@@ -34,7 +34,7 @@
     }
   },
   "il_finance_file": "brokerage-account.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a",
@@ -43,23 +43,25 @@
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "institution_doc",
-      "strength": "primary",
+      "strength": "institution",
       "locator": "pp.22 to 24, 76",
       "locator_he": "עמודים 22 עד 24, 76",
       "page": 22,
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "qualifier": "(TASE's own report)"
     },
     {
       "url": "https://content.tase.co.il/media/uqtbtwm3/1150_foreign_bank_372262_eng.pdf",
-      "title": "TASE foreign-bank guide, January 2026",
+      "title": "TASE, How to become TASE Foreign Bank Member, January 2026",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
-      "strength": "primary",
+      "strength": "institution",
       "locator": "p.4",
       "locator_he": "עמוד 4",
       "page": 4,
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "qualifier": "(TASE's explanatory brochure)"
     }
   ]
 }

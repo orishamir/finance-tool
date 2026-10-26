@@ -34,7 +34,8 @@
       "publisher_he": "רשות ניירות ערך",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "qualifier": "(recorded only: a JavaScript page)"
     },
     {
       "url": "https://www.new.isa.gov.il/nav-index/supervised-general/takanon2",
@@ -44,7 +45,8 @@
       "publisher_he": "רשות ניירות ערך",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "qualifier": "(recorded only: a JavaScript page)"
     }
   ]
 }

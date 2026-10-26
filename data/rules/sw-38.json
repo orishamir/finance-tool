@@ -90,16 +90,6 @@
       "locator_he": "עמוד 2",
       "page": 2,
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.fnx.co.il/ishtalmutfund/faq/",
-      "title": "Phoenix study-fund FAQ",
-      "title_he": "שאלות ותשובות על קרן ההשתלמות של הפניקס",
-      "publisher": "The Phoenix",
-      "publisher_he": "הפניקס",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
     }
   ]
 }

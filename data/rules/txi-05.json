@@ -2,7 +2,7 @@
   "id": "TXI-05",
   "title": "Linkage on a fully linked asset is exempt, so only real interest is taxed",
   "title_he": "הצמדה על נכס צמוד במלואו פטורה; הריבית הריאלית ממוסה",
-  "text_he": "הפרשי הצמדה שיחיד מקבל על נכס פטורים ממס, בתנאי שאינם הפרשי הצמדה חלקיים כפי ששר האוצר מגדיר, שהיחיד לא דרש הוצאות ריבית או הצמדה על הנכס, ושאינם הכנסה עסקית או רשומים בספרים. בפיקדון, תוכנית חיסכון או אג״ח שצמודים למדד במלואם, ההצמדה למדד פטורה והריבית שמעליה ממוסה עד התקרה. הפרשי הצמדה כוללים גם הפרשי שער. הגדרת השר ל'הפרשי הצמדה חלקיים' לא נמצאה.",
+  "text_he": "הפרשי הצמדה שיחיד מקבל על נכס פטורים ממס, בתנאי שאינם הפרשי הצמדה חלקיים, שהיחיד לא דרש הוצאות ריבית או הצמדה על הנכס, ושאינם הכנסה עסקית או רשומים בספרים. בפיקדון, תוכנית חיסכון או אג״ח שצמודים למדד במלואם, ההצמדה למדד פטורה והריבית שמעליה ממוסה עד התקרה. הפרשי הצמדה כוללים גם הפרשי שער. שר האוצר הגדיר בתקנות מה הם הפרשי הצמדה חלקיים: הצמדה על חלק מהסכום, לפי חלק מעליית המדד, מעבר לעליית המדד או לחלק מהתקופה.",
   "strength": "primary",
   "dimensions": [
     "real-vs-nominal",
@@ -10,8 +10,22 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "tax-interest-deposits-bonds.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3nwBbruf4iR7WF16iEKrq2yI=#page=9",
+      "title": "תקנות מס הכנסה (קביעת הפרשי הצמדה חלקיים), התשס\"ג-2003 (קובץ התקנות 6227)",
+      "title_he": "תקנות מס הכנסה (קביעת הפרשי הצמדה חלקיים), התשס״ג-2003 (קובץ התקנות 6227; תיקון: קובץ התקנות 6377)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.9, reg. 1",
+      "locator_he": "עמוד 9, תקנה 1",
+      "page": 9,
+      "quote": "הפרשי הצמדה חלקיים הם כל אחד מאלה",
+      "checked": "2026-10-26"
+    },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
       "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",

@@ -2,7 +2,7 @@
   "id": "PEN-28",
   "title": "Commutation and the minimum annuity amount",
   "title_he": "היוון קצבה וסכום הקצבה המזערי",
-  "text_he": "בבקשת הקצבה עמית רשאי להוון, כלומר לקבל כסכום חד פעמי, את חלק הקצבה שמעל סכום הקצבה המזערי, וכן להוון חלק מהקצבה לתקופה מוגבלת, בתנאי שהקצבה שנשארת לא נמוכה מהסכום המזערי. סכום הקצבה המזערי מוגדר בחוק קופות הגמל ומתעדכן בתחילת כל שנה לפי המדד. אי אפשר לבטל בקשת היוון אחרי התשלום הראשון; בהיוון לתקופה הקצבה מוקטנת ואחר כך חוזרת למלואה. החוק נקרא בעותק בוויקיטקסט, ותנאי הקרן מתקנון של חברה מנהלת.",
+  "text_he": "בבקשת הקצבה עמית רשאי להוון, כלומר לקבל כסכום חד פעמי, את חלק הקצבה שמעל סכום הקצבה המזערי, וכן להוון רבע מהקצבה לכל היותר לתקופה מוגבלת, רק כשקצבת הזקנה שווה לסכום המזערי או נמוכה ממנו. סכום הקצבה המזערי מוגדר בחוק קופות הגמל ומתעדכן בתחילת כל שנה לפי המדד. אי אפשר לבטל בקשת היוון אחרי התשלום הראשון; בהיוון לתקופה הקצבה מוקטנת ואחר כך חוזרת למלואה. החוק נקרא בספר החוקים של הכנסת, ותנאי ההיוון באים מהתקנון האחיד של רשות שוק ההון.",
   "figure_names_he": {
     "minimum_annuity": "סכום הקצבה המזערי"
   },
@@ -36,7 +36,7 @@
     }
   },
   "il_finance_file": "pension-and-gemel-lekitzba.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
@@ -50,7 +50,35 @@
       "locator_he": "עמוד 12",
       "page": 12,
       "quote": "סכום קצבה מזערי",
-      "checked": "2026-10-25"
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/17/law/17_lsr_300727.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 3), התשס\"ח-2008",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 3), התשס\"ח-2008",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.4",
+      "locator_he": "עמוד 4",
+      "page": 4,
+      "quote": "סכום קצבה מזערי",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_315848.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 13 והוראת שעה), התשע\"ו-2015",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 13 והוראת שעה), התשע\"ו-2015",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.5",
+      "locator_he": "עמוד 5",
+      "page": 5,
+      "quote": "ב–1 בינואר",
+      "checked": "2026-10-26"
     },
     {
       "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
@@ -66,45 +94,19 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://fs.knesset.gov.il/17/law/17_lsr_300727.pdf",
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 3), התשס\"ח-2008",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 3), התשס\"ח-2008",
-      "publisher": "The Knesset",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary",
-      "locator": "p.4",
-      "locator_he": "עמוד 4",
-      "page": 4,
-      "quote": "סכום קצבה מזערי",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "title": "Mor comprehensive bylaws 01.06.2025",
-      "title_he": "תקנון קרן הפנסיה המקיפה של מור (מהדורת 1.6.2025)",
-      "publisher": "Mor Investment House",
-      "publisher_he": "מור גמל ופנסיה",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "section 51, p.44",
-      "locator_he": "סעיף 51, עמוד 44",
-      "page": 44,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.moreinvest.co.il/media/hphjzxvl/תקנון-קרן-פנסיה-כללית.pdf",
-      "title": "Mor general bylaws 01.04.2026",
-      "title_he": "תקנון קרן הפנסיה הכללית של מור (מהדורת 1.4.2026)",
-      "publisher": "Mor Investment House",
-      "publisher_he": "מור גמל ופנסיה",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "section 1, p.10",
-      "locator_he": "סעיף 1, עמוד 10",
-      "page": 10,
-      "quote": "סכום קצבה מזערי",
-      "checked": "2026-10-25"
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)",
+      "publisher": "Prisha.co.il",
+      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "p.35, s.51(א)-(ה)",
+      "locator_he": "עמוד 35, סעיף 51(א)-(ה)",
+      "page": 35,
+      "quote": "ובלבד שסכום קצבת הזקנה נמוך מסכום הקצבה המזערי או שווה לו",
+      "checked": "2026-10-26",
+      "qualifier": "(third-party host)"
     }
   ]
 }

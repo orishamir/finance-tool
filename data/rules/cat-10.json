@@ -14,54 +14,34 @@
   "checked": "2026-10-22",
   "sources": [
     {
-      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22FUND_CLASSIFICATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22",
-      "title": "גמל-נט: ערכי סיווג הקופה",
-      "title_he": "גמל-נט: ערכי סיווג הקופה",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=1000&fields=FUND_CLASSIFICATION,TARGET_POPULATION,SPECIALIZATION,SUB_SPECIALIZATION&filters={\"REPORT_PERIOD\":202609}",
+      "title": "גמל-נט 202609: סיווג, אוכלוסיית יעד, התמחות ותת-התמחות של כל המסלולים",
+      "title_he": "גמל-נט 202609: סיווג, אוכלוסיית יעד, התמחות ותת-התמחות של כל המסלולים",
       "publisher": "data.gov.il",
       "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-25"
+      "checked": "2026-10-26"
     },
     {
-      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22SPECIALIZATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22",
-      "title": "גמל-נט: ערכי ההתמחות",
-      "title_he": "גמל-נט: ערכי ההתמחות",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=6d47d6b5-cb08-488b-b333-f1e717b1e1bd&limit=1000&fields=FUND_CLASSIFICATION&filters={\"REPORT_PERIOD\":202609}",
+      "title": "פנסיה-נט 202609: ערכי סיווג הקרן",
+      "title_he": "פנסיה-נט 202609: ערכי סיווג הקרן",
       "publisher": "data.gov.il",
       "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-25"
+      "checked": "2026-10-26"
     },
     {
-      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22TARGET_POPULATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22",
-      "title": "גמל-נט: ערכי אוכלוסיית היעד",
-      "title_he": "גמל-נט: ערכי אוכלוסיית היעד",
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=c6c62cc7-fe02-4b18-8f3e-813abfbb4647&limit=1000&fields=FUND_CLASSIFICATION&filters={\"REPORT_PERIOD\":202609}",
+      "title": "ביטוח-נט 202609: ערכי סיווג",
+      "title_he": "ביטוח-נט 202609: ערכי סיווג",
       "publisher": "data.gov.il",
       "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22FUND_CLASSIFICATION%22%20FROM%20%226d47d6b5-cb08-488b-b333-f1e717b1e1bd%22",
-      "title": "פנסיה-נט: ערכי סיווג הקרן",
-      "title_he": "פנסיה-נט: ערכי סיווג הקרן",
-      "publisher": "data.gov.il",
-      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
-      "kind": "dataset",
-      "strength": "primary",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22FUND_CLASSIFICATION%22%20FROM%20%22c6c62cc7-fe02-4b18-8f3e-813abfbb4647%22",
-      "title": "ביטוח-נט: ערכי סיווג",
-      "title_he": "ביטוח-נט: ערכי סיווג",
-      "publisher": "data.gov.il",
-      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
-      "kind": "dataset",
-      "strength": "primary",
-      "checked": "2026-10-25"
+      "checked": "2026-10-26"
     },
     {
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=2016d770-f094-4a2e-983e-797c26479720&limit=100&filters={\"REPORT_PERIOD\":[202301,202312],\"FUND_CLASSIFICATION\":\"קופת%20גמל%20להשקעה\"}&q=מיטב",

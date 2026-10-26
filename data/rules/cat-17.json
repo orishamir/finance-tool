@@ -2,7 +2,7 @@
   "id": "CAT-17",
   "title": "Track categories: general track, default track, specialized tracks in five clusters, the age-dependent model and hosted tracks",
   "title_he": "סוגי מסלולים: כללי, ברירת מחדל, מתמחים, תלוי גיל ומתארח",
-  "text_he": "החוזר מגדיר מסלול כללי, מסלול שאינו מתמחה, אינו ברירת מחדל ואינו מסלול לפורשים, ומסלול השקעה מתמחה, מסלול מהרשימה באחד מחמישה אשכולות: ניהול אקטיבי, ניהול אקטיבי עם דמי ניהול משתנים לפי התשואה, השקעה ישירה בנכסים סחירים, עוקבי מדדים, ואמונה וקיימות. הוא מגדיר גם את מודל ההשקעות תלוי הגיל, מסלול אירוח שבו מנהל השקעות חיצוני מנהל את כספי העמיתים, ומסלול עוקב מדדים. בנתונים ובאתרי הגופים הקטגוריות מופיעות בשמות מתמחים בניהול אקטיבי, מתמחים באפיקי השקעה סחירים, עוקבי מדדים ואמונה וקיימות; הקיבוץ של הראל לשמות הסטנדרטיים לא מלא.",
+  "text_he": "החוזר מגדיר מסלול כללי, מסלול שאינו מתמחה, אינו ברירת מחדל ואינו מסלול לפורשים, ומסלול השקעה מתמחה, מסלול מהרשימה באחד מחמישה אשכולות: ניהול אקטיבי, ניהול אקטיבי עם דמי ניהול משתנים לפי התשואה, השקעה ישירה בנכסים סחירים, עוקבי מדדים, ואמונה וקיימות. הוא מגדיר גם את מודל ההשקעות תלוי הגיל, מסלול אירוח שבו מנהל השקעות חיצוני מנהל את כספי העמיתים, ומסלול עוקב מדדים. רשימת מסלולי ההשקעה של הרשות מונה את השמות הסטנדרטיים בכל אשכול, ובנתונים הקטגוריות מופיעות בשמות מתמחים בניהול אקטיבי, מתמחים באפיקי השקעה סחירים, עוקבי מדדים וקיימות.",
   "strength": "primary",
   "dimensions": [
     "regulator",
@@ -11,7 +11,7 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
   "il_finance_file": "tracks-catalogue-and-decoder.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
@@ -27,15 +27,14 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.harel-group.co.il/long-term-savings/information/reform",
-      "title": "הראל: רפורמה במסלולי השקעה",
-      "title_he": "הראל: רפורמה במסלולי השקעה",
-      "publisher": "Harel",
-      "publisher_he": "הראל",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25",
-      "qualifier": "(institution describing the reform)"
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_word.docx",
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024), קובץ Word",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "quote": "אשכול 4 - מסלולים עוקבי מדדים",
+      "checked": "2026-10-26"
     }
   ]
 }

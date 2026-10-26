@@ -1,15 +1,15 @@
 {
   "id": "IRA-26",
-  "title": "Investment risk is the member's",
-  "title_he": "סיכון ההשקעה הוא של העמית",
+  "title": "The CMA's 2025 draft: the IRA's flexibility may expose the member to greater investment risk",
+  "title_he": "טיוטת הרשות: הגמישות בניהול אישי עלולה לחשוף לסיכון גדול יותר",
   "strength": "primary",
   "dimensions": [
     "protection"
   ],
   "likely_to_change": "no",
-  "text_he": "רשות שוק ההון כותבת בטיוטת 2025 שהגמישות של הקופה האישית 'עלולה לחשוף אותו לסיכוני השקעה גדולים יותר'. אין ועדת השקעות; העמית או מנהל התיקים שלו מחליטים.",
+  "text_he": "רשות שוק ההון כותבת בדברי ההסבר לטיוטת תיקון מ־2025 שהגמישות של הקופה האישית 'עלולה לחשוף אותו לסיכוני השקעה גדולים יותר'. אין ועדת השקעות; העמית או מנהל התיקים שלו מחליטים. פרסום של רשות שוק ההון, לא מחייב.",
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/regulation_0059/he/regulation_ira_pdf.pdf",

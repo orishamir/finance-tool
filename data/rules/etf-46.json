@@ -2,7 +2,7 @@
   "id": "ETF-46",
   "title": "NASDAQ-100: 100 of the largest non-financial Nasdaq-listed companies, modified market-cap weights with company and security caps, annual December reconstitution and quarterly rebalances",
   "title_he": "נאסד״ק 100: בחירה, משקלים ותקרות",
-  "strength": "primary",
+  "strength": "institution",
   "dimensions": [
     "currency",
     "eligibility"
@@ -99,7 +99,7 @@
     "min_advt": "מחזור יומי ממוצע מזערי"
   },
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-25",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://indexes.nasdaqomx.com/docs/Methodology_NDX.pdf",
@@ -107,12 +107,12 @@
       "publisher": "Nasdaq Global Indexes",
       "publisher_he": "Nasdaq Global Indexes",
       "kind": "other",
-      "strength": "primary",
+      "strength": "institution",
       "locator": "pp.1-9",
       "locator_he": "עמודים 1 עד 9",
       "page": 1,
       "checked": "2026-10-25",
-      "qualifier": "(index provider)"
+      "qualifier": "(index provider's own document)"
     },
     {
       "url": "https://indexes.nasdaqomx.com/docs/FS_NDX.pdf",
@@ -120,12 +120,12 @@
       "publisher": "Nasdaq Global Indexes",
       "publisher_he": "Nasdaq Global Indexes",
       "kind": "other",
-      "strength": "primary",
+      "strength": "institution",
       "locator": "p.1",
       "locator_he": "עמוד 1",
       "page": 1,
       "checked": "2026-10-25",
-      "qualifier": "(index provider)"
+      "qualifier": "(index provider's own document)"
     }
   ]
 }

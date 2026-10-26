@@ -2,7 +2,7 @@
   "id": "TXH-22",
   "title": "Proposals to narrow the benefit (not law), including the 2027 budget (Q18)",
   "title_he": "הצעות לצמצם את ההטבה, שאינן חוק",
-  "text_he": "לא נמצאה הצעת חוק או תזכיר לצמצום הטבת המס בקרן השתלמות לשנת התקציב הבאה; נכון למועד הבדיקה, ההצעות נדונות בתוך משרד האוצר. נייר מדיניות של הכלכלן הראשי ממליץ לצמצם את ההטבה באופן משמעותי, בעדיפות להורדת תקרת השכר, ובוחן גם ביטול הפטור על רווחי הון והגבלתו לשש השנים הראשונות; זה ניתוח, לא החלטה. כתבות מדווחות שהאוצר צפוי להמליץ שוב על ביטול או הגבלה במסגרת חוק ההסדרים הבא, בלי מסקנות ועם בחירות בדרך. ניסיונות קודמים לא חוקקו.",
+  "text_he": "לא נמצאה הצעת חוק או תזכיר לצמצום הטבת המס בקרן השתלמות לשנת התקציב הבאה. נייר מדיניות של הכלכלן הראשי במשרד האוצר ממליץ לצמצם את ההטבה באופן משמעותי, בעדיפות להורדת תקרת השכר, ובוחן גם ביטול הפטור על רווחי הון והגבלתו לשש השנים הראשונות; זה פרסום של משרד האוצר, לא מחייב, ניתוח ולא החלטה. ניסיונות קודמים לצמצם את ההטבה לא חוקקו.",
   "strength": "primary",
   "dimensions": [
     "tax-at-exit",
@@ -13,7 +13,7 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "tax-hishtalmut.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf",
@@ -23,39 +23,12 @@
       "publisher_he": "משרד האוצר",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "pp.3, 20-23",
-      "locator_he": "עמודים 3, 20-23",
+      "locator": "pp.3, 20-23, p.3",
+      "locator_he": "עמודים 3, 20-23, עמוד 3",
       "page": 3,
-      "checked": "2026-10-25",
+      "quote": "מומלץ לצמצם באופן משמעותי את הטבת המס בקרנות ההשתלמות",
+      "checked": "2026-10-26",
       "qualifier": "(policy analysis, not law)"
-    },
-    {
-      "url": "https://www.mako.co.il/news-money/2026_q2/Article-c2ada8e9a69de91026.htm",
-      "title": "תוכנית המגירה של האוצר לתקציב הבא נחשפת: סוכני הביטוח וקרנות ההשתלמות במוקד הגזרות (N12, מתוך גלובס, 18.06.2026)",
-      "publisher": "mako (N12)",
-      "publisher_he": "mako (N12)",
-      "kind": "article",
-      "strength": "secondary",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.calcalist.co.il/local_news/article/skys1wkozg",
-      "title": "מס ירושה לא, מס נטפליקס כן: מה מתכננת ועדת המיסוי באוצר? (כלכליסט, 12.10.2026)",
-      "title_he": "מס ירושה לא, מס נטפליקס כן: מה מתכננת ועדת המיסוי באוצר? (כלכליסט, 12.10.2026)",
-      "publisher": "Calcalist",
-      "publisher_he": "כלכליסט",
-      "kind": "article",
-      "strength": "secondary",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.calcalistech.com/ctechnews/article/bjxylm9ofl",
-      "title": "Calcalistech, 12.10.2026",
-      "publisher": "Calcalist (Calcalistech)",
-      "publisher_he": "כלכליסט",
-      "kind": "article",
-      "strength": "secondary",
-      "checked": "2026-10-25"
     }
   ]
 }

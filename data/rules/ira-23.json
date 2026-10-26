@@ -9,10 +9,24 @@
     "switching-tax-event"
   ],
   "likely_to_change": "no",
-  "text_he": "מקופה רגילה לקופה אישית הכסף עובר במזומן בלבד; בין קופות אישיות העמית בוחר מזומן או ניירות; מקופה אישית לקופה רגילה בוחרת הקופה הקולטת. בהעברה במזומן תקופת ההעברה מתחילה רק ביום שבו כל הנכסים הומרו למזומן. הוותק נשמר: לפי תקנות ההעברה, מועדי התשלום לקופה המעבירה נחשבים מועדי התשלום לקופה המקבלת.",
+  "text_he": "מקופה רגילה לקופה אישית הכסף עובר במזומן בלבד; בין קופות אישיות העמית בוחר מזומן או ניירות; מקופה אישית לקופה רגילה בוחרת הקופה הקולטת. בהעברה במזומן תקופת ההעברה מתחילה רק ביום שבו כל הנכסים הומרו למזומן. הוותק נשמר לעניין המס: לפי תקנות ההעברה, מועדי התשלום לקופה המעבירה נחשבים מועדי התשלום לקופה המקבלת.",
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-25",
+  "checked": "2026-10-26",
   "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=6",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.6, reg. 3(ב)(1)",
+      "locator_he": "עמוד 6, תקנה 3(ב)(1)",
+      "page": 6,
+      "quote": "ויראו לעניין דיני המס, את כל מועדי התשלום לקופה המעבירה כמועדי התשלום לקופה המקבלת",
+      "checked": "2026-10-26"
+    },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=5",
       "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",

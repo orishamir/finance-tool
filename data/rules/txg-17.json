@@ -2,7 +2,7 @@
   "id": "TXG-17",
   "title": "Exemption from filing: ceilings, and the salary-vs-surtax threshold",
   "title_he": "פטור מהגשת דוח: התקרות וסף השכר מול מס יסף",
-  "text_he": "תושב שהכנסתו היא רק מהסוגים המנויים, כל אחת מתחת לתקרה שלה ועם ניכוי מס מלא במקור (או פטור, או מקדמה כשהכלל מאפשר), פטור מהגשת דוח שנתי. תקרת הריבית מכסה ריבית, דמי ניכיון והצמדה מפיקדונות, תוכניות חיסכון, קופות גמל ואג״ח סחירות; תקרת ניירות הערך היא על תמורת המכירה (מחזור), לא על הרווח, וכוללת ניירות זרים ומק״ם. תקרת השכר לא קובעת בפועל, כי מי שחייב במס נוסף חייב להגיש דוח בכל מקרה. התקנות תוקנו ב־2024 וב־2025: הפטור הוגבל ליחיד תושב ישראל לגבי מי שנעשה תושב לראשונה או תושב חוזר ותיק מ־2026, ונוספה הכנסה מעסק זעיר בתנאים, ומ־2025 גם דמי מילואים ודמי לידה של בעל עסק זעיר. שתי התקרות מסומנות במקורות לשנת המס הקודמת; ההקפאה מרמזת שהן זהות השנה, אבל לא נמצא מקור שמסומן לשנה הנוכחית.",
+  "text_he": "תושב שהכנסתו היא רק מהסוגים המנויים, כל אחת מתחת לתקרה שלה ועם ניכוי מס מלא במקור (או פטור, או מקדמה כשהכלל מאפשר), פטור מהגשת דוח שנתי. תקרת הריבית מכסה ריבית, דמי ניכיון והצמדה מפיקדונות, תוכניות חיסכון, קופות גמל ואג״ח סחירות; תקרת ניירות הערך היא על תמורת המכירה (מחזור), לא על הרווח, וכוללת ניירות זרים ומק״ם. לפי התקנות היא חלה רק על מכירה שפטורה ממס או שנוכה ממנה מלוא המס; מכירה ששולמה עליה רק מקדמה נכללת בהכנסת חוץ, עם תקרה משלה, אף שהמדריך של רשות המסים מנסח את סעיף ניירות הערך בהרחבה. תקרת השכר לא קובעת בפועל, כי מי שחייב במס נוסף חייב להגיש דוח בכל מקרה. התקנות תוקנו ב־2024 וב־2025: הפטור הוגבל ליחיד תושב ישראל לגבי מי שנעשה תושב לראשונה או תושב חוזר ותיק מ־2026, ונוספה הכנסה מעסק זעיר בתנאים, ומ־2025 גם דמי מילואים ודמי לידה של בעל עסק זעיר. מדריך ההחזרים של רשות המסים מציג את אותן תקרות כנכונות לשנה הנוכחית.",
   "figure_names_he": {
     "interest_ceiling": "תקרת הריבית לפטור מהגשת דוח",
     "securities_proceeds_ceiling": "תקרת תמורת מכירת ניירות ערך לפטור מהגשת דוח"
@@ -18,46 +18,60 @@
       "value": 717000,
       "unit": "nis",
       "source": {
-        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
-        "title": "Tax Authority, דע זכויותיך וחובותיך 2025, p.6, item 5 (\"הכנסה מריבית עד 717,000 ₪\")",
+        "url": "https://www.gov.il/he/Departments/Guides/tax-return-application-guide",
+        "title": "Tax Authority, מדריך להגשת בקשה להחזר מס למי שאינו חייב בהגשת דו\"ח (updated 20.4.2026), chapter \"מי הם החייבים להגיש דוח שנתי למס הכנסה\" (\"נכון לשנת 2026\": \"ריבית (תוספת ה') 717,000\")",
         "publisher": "Israel Tax Authority",
         "strength": "primary"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-10-26",
       "effective_from": null,
       "effective_to": null,
-      "tax_year": 2025,
+      "tax_year": 2026,
       "update_rule": "frozen 2025-2027",
       "rule_ids": [
         "TXG-17"
       ],
       "state": "sourced",
-      "notes": "Interest, discount fees and linkage from deposits, savings plans, provident funds and traded bonds, where full tax was withheld (guide p.4). Labelled \"for tax year 2025\"; the 2026 value is expected to be the same because of the freeze (TXG-06), but no source labelled 2026 was found (TXG open question 5)."
+      "notes": "Interest, discount fees and linkage from deposits, savings plans, provident funds and traded bonds, where full tax was withheld (guide p.4). The Tax Authority's refund guide (updated 20.4.2026) gives this ceiling \"נכון לשנת 2026\"; the 2025 guide gave the same amount for 2025 (TXG open question 5 closed 2026-10-26)."
     },
     "securities_proceeds_ceiling": {
       "value": 2810000,
       "unit": "nis",
       "source": {
-        "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
-        "title": "Tax Authority, דע זכויותיך וחובותיך 2025, p.6, item 6 (\"הכנסה מניירות ערך (מחזור מכירות) עד 2,810,000 ₪\")",
+        "url": "https://www.gov.il/he/Departments/Guides/tax-return-application-guide",
+        "title": "Tax Authority, מדריך להגשת בקשה להחזר מס למי שאינו חייב בהגשת דו\"ח (updated 20.4.2026), chapter \"מי הם החייבים להגיש דוח שנתי למס הכנסה\" (\"נכון לשנת 2026\": \"ניירות ערך (תוספת ו') 2,810,000\")",
         "publisher": "Israel Tax Authority",
         "strength": "primary"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-10-26",
       "effective_from": null,
       "effective_to": null,
-      "tax_year": 2025,
+      "tax_year": 2026,
       "update_rule": "frozen 2025-2027",
       "rule_ids": [
         "TXG-17"
       ],
       "state": "sourced",
-      "notes": "Sale proceeds (turnover) from traded securities, including short-term loans, where full tax was withheld, an exemption applied or an advance was paid (guide p.4). Tax year 2025; see interest_ceiling."
+      "notes": "Sale proceeds (turnover) from traded securities, including short-term loans, where full tax was withheld or an exemption applied (Exemption Regulations reg. 1, \"הכנסה מנייר ערך\"; the 2025 guide p.4 adds \"or an advance was paid\", which is wider than the regulation, TXG-17). The Tax Authority's refund guide (updated 20.4.2026) gives this ceiling \"נכון לשנת 2026\"; the 2025 guide gave the same amount for 2025 (TXG open question 5 closed 2026-10-26)."
     }
   },
   "il_finance_file": "tax-general.md",
-  "checked": "2026-10-25",
+  "checked": "2026-10-26",
   "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/Rw7wUk704REbG2yxl42bdFeT2Z6A1RTn4GqifMATFc4=#page=8",
+      "title": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשס\"ד-2004 (קובץ התקנות 6317א)",
+      "title_he": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשס\"ד-2004 (קובץ התקנות 6317א)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.8, s.2",
+      "locator_he": "עמוד 8, סעיף 2",
+      "page": 8,
+      "quote": "יהא פטור מהגשת דין וחשבון",
+      "checked": "2026-10-26"
+    },
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
       "title": "Guide 2025",
@@ -83,20 +97,6 @@
       "locator_he": "עמוד 15",
       "page": 15,
       "quote": "פטור מהגשה דין וחשבון 134א",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/Rw7wUk704REbG2yxl42bdFeT2Z6A1RTn4GqifMATFc4=#page=8",
-      "title": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשס\"ד-2004 (קובץ התקנות 6317א)",
-      "title_he": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשס\"ד-2004 (קובץ התקנות 6317א)",
-      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-      "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "p.8, s.2",
-      "locator_he": "עמוד 8, סעיף 2",
-      "page": 8,
-      "quote": "יהא פטור מהגשת דין וחשבון",
       "checked": "2026-10-25"
     },
     {
@@ -151,6 +151,21 @@
       "page": 2,
       "quote": "והכנסה מדמי מילואים ודמי לידה של בעל עסק זעיר",
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(פטור_מהגשת_דין_וחשבון)?action=raw",
+      "title": "תקנות מס הכנסה (פטור מהגשת דין וחשבון), התשמ\"ח-1988, נוסח משולב (ויקיטקסט, מראה של התקנות)",
+      "title_he": "תקנות מס הכנסה (פטור מהגשת דין וחשבון), התשמ״ח-1988",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg. 1",
+      "locator_he": "תקנה 1",
+      "anchor": "סעיף_1",
+      "quote": "הכנסה מנייר ערך",
+      "checked": "2026-10-26"
     }
   ]
 }

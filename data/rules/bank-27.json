@@ -2,7 +2,7 @@
   "id": "BANK-27",
   "title": "Exit points, amount tiers and minimums are product terms",
   "title_he": "תחנות יציאה, טווחי סכום ומינימום הם תנאי מוצר",
-  "text_he": "תחנות יציאה הן מועדים במהלך חיי הפיקדון שבהם אפשר למשוך אותו בלי לשבור; הבנקים מציעים פיקדונות עם ובלי תחנות, והפרסום המרוכז מציג את קיומן ותדירותן בפיקדונות משנה ומעלה. הריבית משתנה לפי טווח הסכום, וכל טווח מוצג בשורה נפרדת. לא נמצא סכום הפקדה מינימלי שקבוע ברגולציה; המינימום נקבע לכל מוצר בנפרד.",
+  "text_he": "תחנות יציאה הן מועדים במהלך חיי הפיקדון שבהם אפשר למשוך אותו בלי לשבור; בפיקדונות משנה ומעלה הבנק חייב להציג בפרסום המרוכז אם יש תחנות ובאיזו תדירות. בנק שמשלם ריבית שונה לפי טווח הסכום מציג כל טווח בשורה נפרדת. כללי בנק ישראל לא קובעים סכום הפקדה מינימלי: את טווח הסכום להפקדה כל בנק קובע, ולכן המינימום הוא תנאי של כל מוצר.",
   "strength": "primary",
   "dimensions": [
     "liquidity-lockup",
@@ -11,7 +11,7 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "bank-current-account-deposits.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
@@ -21,59 +21,11 @@
       "publisher_he": "בנק ישראל",
       "kind": "regulator_page",
       "strength": "primary",
-      "locator": "pp.2 to 3, s.5(ג), Annex A",
+      "locator": "p.2, s.5(ג)",
+      "locator_he": "עמוד 2, סעיף 5(ג)",
       "page": 2,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.leumi.co.il/he/savings",
-      "title": "לאומי: חסכונות, שאלות ותשובות",
-      "title_he": "לאומי: חסכונות, שאלות ותשובות",
-      "publisher": "Bank Leumi",
-      "publisher_he": "בנק לאומי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.leumi.co.il/he/savings/interest-rate-table",
-      "title": "לאומי: טבלת שיעורי הריבית",
-      "title_he": "לאומי: טבלת שיעורי הריבית",
-      "publisher": "Bank Leumi",
-      "publisher_he": "בנק לאומי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.bankmassad.co.il/private/depositsandsavings/savingtypes/",
-      "title": "מסד: סוגי חסכונות",
-      "title_he": "מסד: סוגי חסכונות",
-      "publisher": "Bank Massad",
-      "publisher_he": "בנק מסד",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-      "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
-      "title_he": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
-      "publisher": "Bank Yahav",
-      "publisher_he": "בנק יהב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/deposits-without-account/",
-      "title": "מרכנתיל: פיקדונות ללא חשבון",
-      "title_he": "מרכנתיל: פיקדונות ללא חשבון",
-      "publisher": "Mercantile Discount Bank",
-      "publisher_he": "בנק מרכנתיל דיסקונט",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
+      "quote": "תאגיד בנקאי המציע בעבור אותו סוג פיקדון שיעורי ריבית שונים בהתאם לטווחי סכומים שונים להפקדה ,יציג את שיעורי הריבית ואת מאפייני הפיקדונות בעבור כל טווח סכומים בשורות נפרדות",
+      "checked": "2026-10-26"
     }
   ]
 }

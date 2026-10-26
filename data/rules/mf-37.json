@@ -2,7 +2,7 @@
   "id": "MF-37",
   "title": "The expected yield is net of fees, before tax, and not guaranteed",
   "title_he": "התשואה הצפויה: אחרי דמי ניהול, לפני מס, לא מובטחת",
-  "text_he": "התשואה הצפויה שהבנק מציג משקפת את האומדן של מנהל הקרן, היא לא מובטחת ונכונה לזמן ההצגה. היא מוצגת אחרי ניכוי דמי הניהול ושכר הנאמן של הקרן, ולפני מס רווח הון; לפי הדוגמה של הרשות היא גם לפני עמלות הבנק, אם הבנק רשאי לגבות אותן. קרנות מועדים קבועים שלא מדווחות תשואה צפויה לא מוצגות בתצוגה של הבנק. ההוראה של בנק ישראל נקראה מנוסח טיוטה, ויש לבדוק אותה מול הנוסח הסופי.",
+  "text_he": "התשואה הצפויה שהבנק מציג משקפת את האומדן של מנהל הקרן, היא לא מובטחת ונכונה לזמן ההצגה. היא מוצגת אחרי ניכוי דמי הניהול ושכר הנאמן של הקרן, ולפני מס רווח הון ולפני עמלות הבנק, אם הבנק רשאי לגבות אותן. קרנות מועדים קבועים שלא מדווחות תשואה צפויה לא מוצגות בתצוגה של הבנק.",
   "strength": "primary",
   "dimensions": [
     "fee-management-balance",
@@ -10,7 +10,7 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "mutual-funds-and-money-market-funds.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://boi.org.il/media/gcmk52bw/447a.pdf",
@@ -22,7 +22,8 @@
       "strength": "primary",
       "locator": "p.4, appendix A",
       "page": 4,
-      "checked": "2026-10-25"
+      "quote": "האומדן הוא לפני חישוב מס רווחי הון ועמלות בנקאיות",
+      "checked": "2026-10-26"
     },
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf",

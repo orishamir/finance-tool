@@ -35,8 +35,22 @@
     "choice_months": "חודשים לבחירה מהלידה"
   },
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1056/he/regulation_h2016-9-20a.pdf",
+      "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד (נספח לחוזר גופים מוסדיים 2016-9-20)",
+      "title_he": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד (נספח לחוזר גופים מוסדיים 2016-9-20)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.5, s.7.1",
+      "locator_he": "עמוד 5, סעיף 7.1",
+      "page": 5,
+      "quote": "הצטרפות עמית לראשונה לקופת הגמל תעשה באמצעות המוסד לביטוח לאומי, ובאמצעותו בלבד",
+      "checked": "2026-10-26"
+    },
     {
       "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
       "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995",
@@ -71,19 +85,6 @@
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
-      "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד: הראל חיסכון לכל ילד, מהדורה 3, 04/2026",
-      "title_he": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד: הראל חיסכון לכל ילד, מהדורה 3, 04/2026",
-      "publisher": "Harel",
-      "publisher_he": "הראל",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.5, s.7.1",
-      "locator_he": "עמוד 5, סעיף 7.1",
-      "page": 5,
       "checked": "2026-10-25"
     }
   ]

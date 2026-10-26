@@ -98,7 +98,7 @@
     "publication_before_update_trading_days": "פרסום העדכון מראש, בימי מסחר"
   },
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-23",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
@@ -108,24 +108,12 @@
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
       "strength": "primary",
-      "locator": "pp.14-15",
-      "locator_he": "עמודים 14 עד 15",
+      "locator": "pp.14 to 15, 31",
+      "locator_he": "עמודים 14 עד 15, 31",
       "page": 14,
-      "checked": "2026-10-25",
-      "qualifier": "(index provider)"
-    },
-    {
-      "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
-      "title": "הבורסה, \"הנחיות על פי החלק השביעי לתקנון\" (מדריך מעו\"ף, עמודים מעודכנים עד 4.8.2026)",
-      "title_he": "הנחיות על פי החלק השביעי לתקנון הבורסה (״מדריך מעו״ף״)",
-      "publisher": "Tel Aviv Stock Exchange",
-      "publisher_he": "הבורסה לניירות ערך בתל אביב",
-      "kind": "exchange_rules",
-      "strength": "primary",
-      "locator": "p.31, annex 3",
-      "page": 31,
-      "checked": "2026-10-25",
-      "qualifier": "(index provider)"
+      "quote": "המדד יחושב לפי נוסחת מדד תשואה כוללת ברוטו",
+      "checked": "2026-10-26",
+      "qualifier": "(exchange rules, ISA-approved)"
     },
     {
       "url": "https://market.tase.co.il/he/market_data/index/137/about",
@@ -134,9 +122,9 @@
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "regulator_page",
-      "strength": "primary",
+      "strength": "institution",
       "checked": "2026-10-25",
-      "qualifier": "(index provider; read in Chrome)"
+      "qualifier": "(TASE's market-data page; read in Chrome; for the identifiers)"
     }
   ]
 }

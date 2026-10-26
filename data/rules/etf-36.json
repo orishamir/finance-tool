@@ -2,7 +2,7 @@
   "id": "ETF-36",
   "title": "How a share's weight in a TASE share index is set: free-float value from five parameters, a per-index weight cap, a liquidity grade; computed every 15 seconds",
   "title_he": "איך נקבע משקל מניה במדד מניות של הבורסה",
-  "text_he": "משקל מניה במדד הוא שווי החזקות הציבור שלה המחושב למדד, מכפלה של חמישה פרמטרים: שער הבסיס, מספר המניות למדד שנקבע פעם ברבעון, שיעור החזקות הציבור המעוגל לאחוז שלם ושהשינוי בו בכל עדכון מוגבל, פקטור מגבלת המשקל ומדרגת הנזילות; רק השער דינמי, והשאר קבועים בין עדכון רבעוני לעדכון. פקטור מגבלת המשקל מתאים מניות גדולות לתקרת המשקל שנקבעה לכל מדד, ובין עדכונים משקל מניה מוגבלת נע עם המחירים; מדרגת הנזילות מסווגת כל מניה לקבוצות לפי הגבוה מבין מחזור יומי חציוני ומהירות מחזור חציונית בחלון החודשים שנקבע, מדרגה יכולה לזוז בצעד אחד לעדכון ומניה חדשה מתחילה בנמוכה. מאז המועד שנקבע הבורסה משקללת לפי שווי החזקות הציבור ולא לפי שווי שוק מלא, המתודולוגיה עוקבת אחרי עקרונות FTSE, ורוב המדדים מחושבים בזמן אמת. תקרת המשקל של כל מדד, ובהם ת\"א־125, קבועה בכללי המדד שלא נקראו.",
+  "text_he": "משקל מניה במדד הוא שווי החזקות הציבור שלה המחושב למדד, מכפלה של חמישה פרמטרים: שער הבסיס, מספר המניות למדד שנקבע פעם ברבעון, שיעור החזקות הציבור המעוגל לאחוז שלם ושהשינוי בו בכל עדכון מוגבל, פקטור מגבלת המשקל ומדרגת הנזילות; רק השער דינמי, והשאר קבועים בין עדכון רבעוני לעדכון. פקטור מגבלת המשקל מתאים מניות גדולות לתקרת המשקל שנקבעה לכל מדד, ובין עדכונים משקל מניה מוגבלת נע עם המחירים; מדרגת הנזילות מסווגת כל מניה לקבוצות לפי הגבוה מבין מחזור יומי חציוני ומהירות מחזור חציונית בחלון החודשים שנקבע, מדרגה יכולה לזוז בצעד אחד לעדכון ומניה חדשה מתחילה בנמוכה. מאז המועד שנקבע הבורסה משקללת לפי שווי החזקות הציבור ולא לפי שווי שוק מלא, המתודולוגיה עוקבת אחרי עקרונות FTSE, ורוב המדדים מחושבים בזמן אמת. תקרת המשקל של כל מדד קבועה בכללי המדד, והמדדים מחושבים ומתפרסמים בכל כמה שניות לפי החלטת ועדת המדדים.",
   "figure_names_he": {
     "public_holdings_change_cap": "השינוי המרבי בשיעור החזקות הציבור בעדכון",
     "liquidity_grades": "מספר מדרגות הנזילות",
@@ -98,8 +98,23 @@
     }
   },
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-23",
+  "checked": "2026-10-26",
   "sources": [
+    {
+      "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
+      "title": "הבורסה, \"הנחיות על פי החלק השביעי לתקנון\" (מדריך מעו\"ף, עמודים מעודכנים עד 4.8.2026)",
+      "title_he": "הנחיות על פי החלק השביעי לתקנון הבורסה (״מדריך מעו״ף״)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "pp.7, 15 to 17, 20 to 21, ss.8 to 9",
+      "locator_he": "עמודים 7, 15 עד 17, 20 עד 21, סעיפים 8 עד 9",
+      "page": 7,
+      "quote": "קביעת מקדם הנזילות",
+      "checked": "2026-10-26",
+      "qualifier": "(exchange rules, ISA-approved)"
+    },
     {
       "url": "https://www.tase.co.il/he/content/knowledge_center/calculating_shares_weight/",
       "title": "הבורסה, \"קביעת משקל המניה במדד\"",
@@ -107,9 +122,9 @@
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
-      "strength": "primary",
+      "strength": "institution",
       "checked": "2026-10-25",
-      "qualifier": "(index provider; read in Chrome)"
+      "qualifier": "(TASE's explanatory page; read in Chrome)"
     },
     {
       "url": "https://www.tase.co.il/he/content/knowledge_center/indices_overview/",
@@ -118,9 +133,9 @@
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
-      "strength": "primary",
+      "strength": "institution",
       "checked": "2026-10-25",
-      "qualifier": "(index provider; read in Chrome)"
+      "qualifier": "(TASE's explanatory page; read in Chrome)"
     }
   ]
 }

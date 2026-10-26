@@ -2,7 +2,7 @@
   "id": "TXS-12",
   "title": "Money-market funds: what a saver pays, and on what base (closes Q15)",
   "title_he": "קרנות כספיות: מה החוסך משלם ועל איזה בסיס",
-  "text_he": "לא נמצא כלל מס מיוחד לקרנות כספיות: הפקודה מכירה רק קרן פטורה וקרן חייבת, וקרן כספית ממוסה לפי מסלול המס שלה. בשני התשקיפים של קרנות כספיות שנקראו המסלול הוא פטורה, ואז לא משלמים כלום בזמן ההחזקה, משלמים את שיעור המס על הרווח הריאלי בפדיון, כלומר על הרווח שמעבר לעליית המדד בתקופת ההחזקה, בניכוי במקור, ומס על חלוקה אם יש. השיעור הנומינלי שחל על פיקדון שקלי או מק״מ שמחזיקים ישירות לא חל על חוסך בקרן כספית פטורה, והפסד בפדיון ניתן לקיזוז. אם קרן כספית היא קרן חייבת, הקרן נושאת לפי קריאת החוקר את שיעור המס ברמת הקרן והחוסך לא משלם ולא מקזז; את המסלול קוראים מהתשקיף של כל קרן, ואם ירידת מדד משנה את בסיס המס לא נמצא.",
+  "text_he": "לא נמצא כלל מס מיוחד לקרנות כספיות: הפקודה מכירה רק קרן פטורה וקרן חייבת, וקרן כספית ממוסה לפי מסלול המס שלה. בקרן כספית פטורה לא משלמים כלום בזמן ההחזקה, משלמים את שיעור המס על הרווח הריאלי בפדיון, כלומר על הרווח שמעבר לעליית המדד בתקופת ההחזקה, בניכוי במקור, ומס על חלוקה אם יש. השיעור הנומינלי שחל על פיקדון שקלי או מק״מ שמחזיקים ישירות לא חל על חוסך בקרן כספית פטורה, והפסד בפדיון ניתן לקיזוז. בקרן כספית חייבת הקרן נושאת את המס בשיעורים שחלים על יחיד, והחוסך לא משלם ולא מקזז. רוב הקרנות הכספיות פטורות ויש גם כמה חייבות, ולכן את המסלול קוראים לכל קרן בנפרד, בהסכם הקרן או בתשקיף שלה או בשדה מעמד המס במאיה. אם ירידת מדד משנה את בסיס המס לא נמצא.",
   "figure_names_he": {
     "rate": "שיעור המס על הרווח הריאלי בפדיון",
     "taxable_fund_rate": "שיעור המס ברמת הקרן בקרן חייבת"
@@ -41,12 +41,12 @@
       "value": 15,
       "unit": "pct",
       "source": {
-        "url": "https://www.bizportal.co.il/guides/news/article/20038659",
-        "title": "bizportal, \"מיסוי קרנות נאמנות: 25% ריאלי, 15% נומינלי\", 12.8.2026",
-        "publisher": "bizportal",
-        "strength": "secondary"
+        "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+        "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, p.204, s.125ג(ג)(1) \"תחויב הכנסתו של היחיד מריבית במס בשיעור של 15%\"; with Income Tax circular 7/2003 s.2.1.1 (a taxable fund pays an individual's rates)",
+        "publisher": "רשות המסים",
+        "strength": "primary"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-10-26",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -56,11 +56,11 @@
         "TXS-11"
       ],
       "state": "sourced",
-      "notes": "Applies only if a money-market fund is a taxable fund (none was found; the market was not surveyed, open question 1). il-finance TXS-12 condition (b) and TXS-11 mark this as DERIVED, not stated in one source: by s.129C(a)(2) with s.125C(c) and s.91(b)(3), a taxable fund holding unlinked shekel interest instruments bears 15% of the nominal interest and gains at fund level, and the saver pays nothing more and cannot offset a loss. No Tax Authority sentence says this in those words (open question 11). The only source that states it is the agreeing secondary article cited here, so strength is secondary."
+      "notes": "Applies only to a taxable money-market fund (Maya lists 2 of 73 on 2026-10-22, TXS-24). The Tax Authority's circular 7/2003 s.2.1.1 says a taxable fund pays the rates an individual not in business would pay (TXS-11, open question 11 closed 2026-10-26); an individual's rate on unlinked interest is 15% (s.125ג(ג)(1)) and on gains from unlinked bonds at most 15% of the whole gain (s.91(ב)(3)(א)). Re-sourced 2026-10-26 (scope settling) from a bizportal article (secondary) to the Ordinance and the circular."
     }
   },
   "il_finance_file": "tax-securities-israeli.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
@@ -123,32 +123,6 @@
       "strength": "primary",
       "locator": "p.1, reg. 2(ב), reg. 3א",
       "locator_he": "עמוד 1, תקנה 2(ב), תקנה 3א",
-      "page": 1,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629214-00.pdf",
-      "title": "ילין לפידות (00) כספית ניהול נזילות, תשקיף קרן חדשה מיום 26.11.2024",
-      "title_he": "ילין לפידות (00) כספית ניהול נזילות, תשקיף קרן חדשה מיום 26.11.2024",
-      "publisher": "Maya (TASE filings)",
-      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.1 and footnote 3, p.2 item 12",
-      "page": 1,
-      "quote": "סוג הקרן: קרן פתוחה, קרן כספית",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://mayafiles.tase.co.il/rpdf/878001-879000/p878453-00.pdf",
-      "title": "מגדל (00) כספית שקלית, תשקיף חלק א' מיום 17.2.2014",
-      "title_he": "מגדל (00) כספית שקלית, תשקיף חלק א' מיום 17.2.2014",
-      "publisher": "Maya (TASE filings)",
-      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.1",
-      "locator_he": "עמוד 1",
       "page": 1,
       "checked": "2026-10-25"
     },
