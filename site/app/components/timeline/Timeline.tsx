@@ -424,20 +424,20 @@ function ValuesPanel({ bundle, focusField, employment, showAge, cash, ownRate, s
   return (
     <div className="flex flex-col gap-4 lg:gap-[18px]">
       <ParameterLine />
-      <div data-field="amount_now">
+      <div data-field="amount_now" className="contents">
         <NumberField label={valuesCopy.fields.amount_now} unit="nis" value={current("amount_now")} isEntered={isEntered("amount_now")} validate={nonNegative} onCommit={commit("amount_now")} onReset={() => setEntered("amount_now", null)} disabled={!ready} autoFocus={focusField === "amount_now"} />
       </div>
-      <div data-field="monthly_deposit">
+      <div data-field="monthly_deposit" className="contents">
         <RangeField label={valuesCopy.fields.monthly_deposit} unit="nis_per_month" value={current("monthly_deposit")} isEntered={isEntered("monthly_deposit")} validate={nonNegative} onCommit={commit("monthly_deposit")} onReset={() => setEntered("monthly_deposit", null)} min={monthly?.min ?? 0} max={monthly?.max ?? 10000} step={monthly?.step ?? 100} disabled={!ready} autoFocus={focusField === "monthly_deposit"} />
       </div>
-      <div data-field="horizon_years">
+      <div data-field="horizon_years" className="contents">
         <RangeField label={valuesCopy.fields.horizon_years} unit="years" value={current("horizon_years")} isEntered={isEntered("horizon_years")} validate={between(years, valuesCopy.errors.years, true)} onCommit={commit("horizon_years")} onReset={() => setEntered("horizon_years", null)} min={years?.min ?? 1} max={years?.max ?? 40} step={years?.step ?? 1} inputMode="numeric" disabled={!ready} autoFocus={focusField === "horizon_years"} />
       </div>
       <div className="field-row grid grid-cols-2 gap-3">
         {cash ? (
-          <div data-field="cash_rate"><NumberField label={valuesCopy.fields.cash_rate} unit="pct_per_year" value={current("cash_rate")} isEntered={isEntered("cash_rate")} validate={between(pctRange, valuesCopy.errors.pct)} onCommit={(n) => setOwnRate(n === p05Number(p05, "cash_rate") ? null : n)} onReset={() => setOwnRate(null)} disabled={!ready} autoFocus={focusField === "cash_rate"} /></div>
+          <div data-field="cash_rate" className="contents"><NumberField label={valuesCopy.fields.cash_rate} unit="pct_per_year" value={current("cash_rate")} isEntered={isEntered("cash_rate")} validate={between(pctRange, valuesCopy.errors.pct)} onCommit={(n) => setOwnRate(n === p05Number(p05, "cash_rate") ? null : n)} onReset={() => setOwnRate(null)} disabled={!ready} autoFocus={focusField === "cash_rate"} /></div>
         ) : (
-          <div data-field="A-01"><NumberField label={valuesCopy.fields["A-01"]} unit="pct_per_year" value={current("A-01")} isEntered={isEntered("A-01")} validate={between(pctRange, valuesCopy.errors.pct)} onCommit={commit("A-01")} onReset={() => setEntered("A-01", null)} disabled={!ready} autoFocus={focusField === "A-01"} /></div>
+          <div data-field="A-01" className="contents"><NumberField label={valuesCopy.fields["A-01"]} unit="pct_per_year" value={current("A-01")} isEntered={isEntered("A-01")} validate={between(pctRange, valuesCopy.errors.pct)} onCommit={commit("A-01")} onReset={() => setEntered("A-01", null)} disabled={!ready} autoFocus={focusField === "A-01"} /></div>
         )}
         <NumberField label={valuesCopy.fields["A-02"]} unit="pct_per_year" value={current("A-02")} isEntered={isEntered("A-02")} validate={between(pctRange, valuesCopy.errors.pct)} onCommit={commit("A-02")} onReset={() => setEntered("A-02", null)} disabled={!ready} autoFocus={focusField === "A-02"} />
       </div>
