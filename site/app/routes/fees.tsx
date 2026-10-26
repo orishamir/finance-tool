@@ -91,9 +91,12 @@ function Page({ bundle, fees, failed, form, presets, meta, today, publisherNames
   // The pre-rendered page has no address to read: the first client render matches it, then the subject is read.
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
-  const frame = (body: React.ReactNode, back?: { href: string; label: string }) => (
+  // a body without its own heading (loading, nothing chosen, a failure) gets the page's: `/fees` with no subject showed a callout and
+  // no heading at all (2026-10-26)
+  const frame = (body: React.ReactNode, back?: { href: string; label: string }, ownHeading?: boolean) => (
     <div className="flex flex-col gap-6 pt-2 lg:pt-8">
       <Breadcrumb parent={back ?? { href: "/guide", label: site.menuItems[0].label }} current={r3fees.title} />
+      {!ownHeading && <h1 className="text-2xl lg:text-3xl font-semibold">{r3fees.title}</h1>}
       <SavedGoalStrip presets={presets} meta={meta} today={today} showResultLink note="" />
       {body}
     </div>
@@ -102,14 +105,8 @@ function Page({ bundle, fees, failed, form, presets, meta, today, publisherNames
   if (!subject)
     return frame(
       <Callout tone="info">
-        {r3fees.notFound}{" "}
-        <Link to="/guide" className="text-link hover:underline">
-          {r3fees.notFoundLinks.guide}
-        </Link>
-        {" · "}
-        <Link to="/holdings" className="text-link hover:underline">
-          {r3fees.notFoundLinks.holdings}
-        </Link>
+        {r3fees.notFound}
+        <NotFoundLinks />
       </Callout>,
     );
   if (failed) return frame(<Callout tone="caution">{r3fees.failed}</Callout>);
@@ -118,19 +115,27 @@ function Page({ bundle, fees, failed, form, presets, meta, today, publisherNames
   return <Body bundle={bundle} fees={fees} form={form} publisherNames={publisherNames} subject={subject} frame={frame} />;
 }
 
+/** Where to go from a page with nothing to show: the two links on their own line under the message, not run into its last line. */
+function NotFoundLinks() {
+  return (
+    <span className="flex flex-wrap gap-x-4 mt-1">
+      <Link to="/guide" className="text-link hover:underline min-h-target inline-flex items-center">
+        {r3fees.notFoundLinks.guide}
+      </Link>
+      <Link to="/holdings" className="text-link hover:underline min-h-target inline-flex items-center">
+        {r3fees.notFoundLinks.holdings}
+      </Link>
+    </span>
+  );
+}
+
 function errorText(e: PlanError, wrapperId: string): React.ReactNode {
   switch (e.kind) {
     case "no-wrapper":
       return (
         <>
-          {r3fees.notFound}{" "}
-          <Link to="/guide" className="text-link hover:underline">
-            {r3fees.notFoundLinks.guide}
-          </Link>
-          {" · "}
-          <Link to="/holdings" className="text-link hover:underline">
-            {r3fees.notFoundLinks.holdings}
-          </Link>
+          {r3fees.notFound}
+          <NotFoundLinks />
         </>
       );
     case "no-terms":
@@ -170,7 +175,7 @@ function errorText(e: PlanError, wrapperId: string): React.ReactNode {
   }
 }
 
-function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: CompareBundle; fees: FeesData; form: FormData; publisherNames: Record<string, string>; subject: SubjectSpec; frame: (b: React.ReactNode, back?: { href: string; label: string }) => React.ReactNode }) {
+function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: CompareBundle; fees: FeesData; form: FormData; publisherNames: Record<string, string>; subject: SubjectSpec; frame: (b: React.ReactNode, back?: { href: string; label: string }, ownHeading?: boolean) => React.ReactNode }) {
   const { current, resolved } = useGoals();
   const released = useInputs();
   const holding = useHolding(subject.kind === "holding" ? subject.holdingId : null);
@@ -252,6 +257,7 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
         )}
       </>,
       own ? { href: "/holdings", label: r3fees.notFoundLinks.holdings } : undefined,
+      true,
     );
   }
 
@@ -379,6 +385,7 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
       </Sheet>
     </>,
     back,
+    true,
   );
 }
 

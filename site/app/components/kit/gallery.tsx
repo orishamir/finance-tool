@@ -7,7 +7,7 @@ import type { SiteValue } from "../../lib/value";
 import { computed, entered } from "../../lib/value";
 import { IconLock } from "../icons";
 import { IdRef, Num } from "../provenance";
-import { Button, Callout, Card, ChartLegend, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CoverageFold, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LinkButton, Marker, MarkerMark, NumberField, ParameterLine, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, SourceLine, Stat, StatRow, Swatch, Tag, Tpl, cx, useWidth } from "./index";
+import { Button, Callout, Card, ChartLegend, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CoverageFold, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NumberField, ParameterLine, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, SourceLine, Stat, StatRow, StepButtons, Swatch, Tag, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -84,6 +84,11 @@ function Basics() {
             {g.states.withIcon}
           </Tag>
         </div>
+        <State label={`wrap, ${g.states.long}`}>
+          <div className="max-w-60 flex flex-wrap items-center gap-2">
+            <Tag wrap>{g.sample.longTag}</Tag>
+          </div>
+        </State>
       </Demo>
       <Demo name="Callout" use={g.uses.Callout}>
         <Grid>
@@ -410,6 +415,7 @@ function Fields() {
   const [years, setYears] = useState<number | null>(10);
   const [pct, setPct] = useState<number | null>(5);
   const [pick, setPick] = useState<string | null>(null);
+  const [count, setCount] = useState(1);
   return (
     <>
       <Demo name="NumberField" use={g.uses.NumberField}>
@@ -430,6 +436,18 @@ function Fields() {
             <NumberField label={g.sample.field} unit="nis" value={null} isEntered={false} validate={() => null} onCommit={() => undefined} onReset={() => undefined} disabled />
           </State>
         </div>
+      </Demo>
+      <Demo name="StepButtons" use={g.uses.StepButtons}>
+        <Grid>
+          <State label={g.states.interactive}>
+            <div className="flex items-end gap-2">
+              <div className="flex-1 min-w-0">
+                <NumberField label={g.sample.count} unit="count" value={count} isEntered={count !== 1} validate={(n) => (n < 1 || n > 9 ? g.sample.error : null)} onCommit={(n) => setCount(n)} onReset={() => setCount(1)} optional />
+              </div>
+              <StepButtons downLabel={g.sample.stepDown} upLabel={g.sample.stepUp} downDisabled={count <= 1} upDisabled={count >= 9} onDown={() => setCount(count - 1)} onUp={() => setCount(count + 1)} />
+            </div>
+          </State>
+        </Grid>
       </Demo>
       <Demo name="FieldState, ParameterLine" use={g.uses.FieldState}>
         <Grid>
@@ -488,12 +506,13 @@ function MarkerDemo({ today }: { today: string }) {
   const s = samples(today);
   return (
     <>
-      <Demo name="Marker, MarkerMark" use={g.uses.Marker}>
+      <Demo name="Marker, MarkerMark, LaneLabel" use={g.uses.Marker}>
         <State label={`${g.states.interactive}, ${g.states.draggable}`} wide>
           <div ref={box} className="relative w-full" dir="ltr" style={{ height: HEIGHT }}>
             <svg width={width} height={HEIGHT} viewBox={`0 0 ${width} ${HEIGHT}`} role="img" aria-label={g.sample.markerName} className="block select-none">
               <line x1={left} x2={left + w} y1={HEIGHT - 24} y2={HEIGHT - 24} className="stroke-chart-axis" strokeWidth="1" />
-              <rect x={left} y={HEIGHT - 40} width={(v / 20) * w} height={16} rx="2" className="fill-chart-value" fillOpacity="0.5" />
+              <rect x={left} y={HEIGHT - 52} width={w / 2} height={22} rx="3" className="fill-muted" />
+              <rect x={left + w / 2} y={HEIGHT - 52} width={w / 2} height={22} rx="3" className="fill-chart-value" fillOpacity="0.5" />
               <MarkerMark x={x} y1={10} y2={HEIGHT - 24} />
               <text x={left} y={HEIGHT - 6} className="text-xs fill-chart-text">
                 0
@@ -502,6 +521,12 @@ function MarkerDemo({ today }: { today: string }) {
                 20
               </text>
             </svg>
+            <LaneLabel from={left} to={left + w / 2} top={HEIGHT - 52} markerX={x}>
+              {g.sample.laneA}
+            </LaneLabel>
+            <LaneLabel from={left + w / 2} to={left + w} top={HEIGHT - 52} markerX={x} prefer="end">
+              {g.sample.laneB}
+            </LaneLabel>
             <Marker min={0} max={20} step={1} value={v} onChange={setV} label={g.sample.markerName} valueText={String(v)} left={left} top={0} width={w} height={HEIGHT} />
           </div>
         </State>

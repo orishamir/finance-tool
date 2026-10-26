@@ -2,8 +2,11 @@
 import type { ReactNode } from "react";
 import { cx } from "./cx";
 
-/** A short label with a tone: a state, a kind, a flag. One to three words; the tone never carries the meaning alone, so give it an icon or a word. */
-export function Tag({ tone = "neutral", icon, children, className }: { tone?: "neutral" | "computed" | "entered" | "caution" | "blocked" | "positive" | "parameter"; icon?: ReactNode; children: ReactNode; className?: string }) {
+/**
+ * A short label with a tone: a state, a kind, a flag. One to three words; the tone never carries the meaning alone, so give it an icon or a word.
+ * `wrap` lets a label that holds a name (a company's) break onto a second line instead of running past the edge of a phone (2026-10-26).
+ */
+export function Tag({ tone = "neutral", icon, children, className, wrap }: { tone?: "neutral" | "computed" | "entered" | "caution" | "blocked" | "positive" | "parameter"; icon?: ReactNode; children: ReactNode; className?: string; wrap?: boolean }) {
   const styles = {
     neutral: "bg-muted text-foreground",
     parameter: "bg-secondary text-foreground",
@@ -14,7 +17,7 @@ export function Tag({ tone = "neutral", icon, children, className }: { tone?: "n
     positive: "bg-positive-subtle text-positive-foreground",
   }[tone];
   return (
-    <span className={cx("inline-flex w-fit items-center gap-1 text-xs font-medium rounded-sm px-1.5 py-px whitespace-nowrap align-middle", styles, className)}>
+    <span className={cx("inline-flex w-fit items-center gap-1 text-xs font-medium rounded-sm px-1.5 py-px align-middle", wrap ? "max-w-full" : "whitespace-nowrap", styles, className)}>
       {icon}
       {children}
     </span>

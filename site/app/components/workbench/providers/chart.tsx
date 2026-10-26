@@ -114,7 +114,7 @@ export function CumulativeCostChart({ lines, years, today, hover, onHover, dimme
         {c.providers.chart.marker.horizon}
       </span>
       {yearOneX !== null && (
-        <span className="absolute bottom-6 text-[11px] text-chart-text whitespace-nowrap px-1 bg-card/80 rounded-sm" style={{ left: `${yearOneX + 3}px` }} dir="rtl">
+        <span className="absolute bottom-6 text-xs text-chart-text whitespace-nowrap px-1 bg-card/80 rounded-sm" style={{ left: `${yearOneX + 3}px` }} dir="rtl">
           {c.providers.chart.yearOneMarker}
         </span>
       )}

@@ -14,7 +14,7 @@ import { p05Number, p05Value, type Bundle } from "../../lib/engine";
 import { useGoals } from "../../lib/goal";
 import { useInputs } from "../../lib/inputs";
 import { entered as enteredValue, type SiteValue } from "../../lib/value";
-import { Callout, GainBars, InputSlot, Marker, MarkerMark, NumberField, SegmentedControl, Sentence, useWidth } from "../kit";
+import { Callout, GainBars, InputSlot, LaneLabel, Marker, MarkerMark, NumberField, SegmentedControl, Sentence, useWidth } from "../kit";
 import { Num, RulesLine, Term } from "../provenance";
 import { G2Gap, HoldRow, PlanInputs, text } from "./g2-parts";
 import { figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
@@ -198,14 +198,15 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
                 {t}
               </text>
             ))}
-            <MarkerMark x={x(years)} y1={LANE_Y - 10} y2={AXIS_Y + 2} />
+            {/* the line starts at the lane, so the row above it holds the bands' names clear of the marker (2026-10-26) */}
+            <MarkerMark x={x(years)} y1={LANE_Y - 2} y2={AXIS_Y + 2} />
           </svg>
-          <span className="absolute text-xs bg-card/85 rounded-sm px-1.5 py-0.5 whitespace-nowrap" dir="rtl" style={{ left: 4, top: LANE_Y + 4 }}>
+          <LaneLabel from={0} to={x(lock)} top={LANE_Y - 24}>
             {copy.hishtalmut.chart.locked}
-          </span>
-          <span className="absolute text-xs bg-card/85 rounded-sm px-1.5 py-0.5 whitespace-nowrap" dir="rtl" style={{ right: 4, top: LANE_Y + 4 }}>
+          </LaneLabel>
+          <LaneLabel from={x(lock)} to={plotW} top={LANE_Y - 24} prefer="end">
             {copy.hishtalmut.chart.open}
-          </span>
+          </LaneLabel>
           <span className="absolute text-xs text-chart-text" dir="rtl" style={{ right: 0, top: AXIS_Y + 18 }}>
             {copy.hishtalmut.unit}
           </span>
@@ -216,7 +217,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
 
       <div className="flex flex-col gap-3">
         <p className="text-sm font-medium">
-          {copy.hishtalmut.at.before} <InputSlot chars={10}><bdi>{fmt.years(years)}</bdi></InputSlot>
+          {copy.hishtalmut.at.before} <InputSlot chars={7}><bdi>{fmt.years(years)}</bdi></InputSlot>
           {copy.hishtalmut.at.after}
         </p>
         {gapText && (

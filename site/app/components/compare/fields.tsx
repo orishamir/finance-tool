@@ -6,8 +6,7 @@ import { buttons, r2, values as valuesCopy } from "../../copy";
 import type { FieldSource, PresetId } from "../../lib/goal";
 import { IconReset } from "../icons";
 import { StateTag } from "../provenance";
-import { Button, ChoiceChips, cx, FieldState, NumberField, RangeField } from "../kit";
-import { IconDash, IconPlus } from "./icons";
+import { ChoiceChips, cx, FieldState, NumberField, RangeField, StepButtons } from "../kit";
 
 export interface GoalNumberProps {
   label: ReactNode;
@@ -206,12 +205,7 @@ export function AgeStepper({ label, value, onChange, validate, hint }: { label: 
       <div className="flex-1 min-w-0">
         <GoalNumber label={label} unit="years" value={value} source={value === null ? "empty" : "entered"} onChange={onChange} validate={validate} hint={hint} bare inputMode="numeric" placeholder={valuesCopy.agePlaceholder} />
       </div>
-      <Button variant="icon" className="border border-input h-field w-11 shrink-0" aria-label={r2.form.ageDown} disabled={value === null || value <= 0} onClick={() => value !== null && onChange(value - 1)}>
-        <IconDash size={18} />
-      </Button>
-      <Button variant="icon" className="border border-input h-field w-11 shrink-0" aria-label={r2.form.ageUp} disabled={value === null} onClick={() => value !== null && onChange(value + 1)}>
-        <IconPlus size={18} />
-      </Button>
+      <StepButtons downLabel={r2.form.ageDown} upLabel={r2.form.ageUp} downDisabled={value === null || value <= 0} upDisabled={value === null} onDown={() => value !== null && onChange(value - 1)} onUp={() => value !== null && onChange(value + 1)} />
     </div>
   );
 }

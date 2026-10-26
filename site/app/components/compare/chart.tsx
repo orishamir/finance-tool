@@ -12,7 +12,8 @@ import { AxisLabels, niceYearTicks } from "../chart/TimelineChart";
 import { ChartLegend as Legend, ChartReadout as Readout, ChartTable as Table, Swatch, cx } from "../kit";
 import type { Mode, ResultCtx } from "./ctx";
 
-const STRIP = 104;
+/** The direct label's strip at the right of the plot; narrower on a phone, where the plot had 175 of 296 px (2026-10-26). */
+const strip = (width: number) => (width < 400 ? 84 : 104);
 const TOP = 20; // room for the top axis label above its gridline (audit 2026-10-24 (sweep))
 const BOTTOM = 26;
 const LABEL_H = 54;
@@ -28,6 +29,16 @@ const roleClass = {
 interface Pt {
   year: number;
   v: number;
+}
+
+/** A line's value at a year between its yearly points, read on the straight segment the chart draws there. */
+function valueAt(pts: Pt[], year: number): number {
+  const i = pts.findIndex((p) => p.year >= year);
+  if (i === -1) return pts[pts.length - 1]?.v ?? 0;
+  if (i === 0) return pts[0]!.v;
+  const a = pts[i - 1]!;
+  const b = pts[i]!;
+  return a.v + ((b.v - a.v) * (year - a.year)) / (b.year - a.year || 1);
 }
 
 const valueOf = (l: SeriesLine, mode: Mode): Pt[] => l.points.map((p) => ({ year: p.year, v: mode === "real" ? p.real : p.nominal }));
@@ -77,6 +88,7 @@ export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dim
   const target = Object.fromEntries(lines.map((l) => [l.id, valueOf(l, mode)]));
   const shown = useTween(target);
   const { width, height } = size;
+  const STRIP = strip(width);
   const plotW = width - STRIP;
   const x = scaleLinear().domain([0, Math.max(1, horizon)]).range([0, plotW]);
   const maxV = Math.max(1, ...Object.values(shown).flatMap((p) => p.map((q) => q.v)));
@@ -107,6 +119,17 @@ export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dim
     onHover(Math.max(0, Math.min(horizon, yr)));
   };
   const hovered = hover === null ? null : hover;
+  // Each ranked line carries its place in a small circle, the number its card shows: the three options are shades of one teal and
+  // often run on top of each other, so the colour alone could not tell them apart (V6, 2026-10-26). The circles stand at different
+  // years along the line, so two lines that meet still show both numbers.
+  const badges = lines
+    .map((l) => ({ l, rank: ctx.view.ranked.find((o) => o.id === l.id)?.rank ?? 0 }))
+    .filter((b) => b.rank > 0)
+    .sort((a, b) => a.rank - b.rank)
+    .map((b, i) => {
+      const at = Math.max(0, horizon * (0.92 - 0.12 * i));
+      return { ...b, x: x(at), y: y(valueAt(shown[b.l.id] ?? [], at)) };
+    });
   return (
     <div ref={box} className={cx("relative w-full h-[240px] lg:h-[320px] transition-opacity duration-[var(--duration-base)]", dimmed && "opacity-60")}>
       <svg
@@ -132,11 +155,22 @@ export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dim
             <line x1={0} x2={fallW} y1={y(fallStart - fallDrop)} y2={y(fallStart - fallDrop)} className="stroke-chart-marker" strokeWidth="1" strokeDasharray="2 3" />
           </g>
         )}
-        <AxisLabels ticks={ticks} y={y} />
         <line x1={x(horizon)} x2={x(horizon)} y1={TOP} y2={height - BOTTOM} className="stroke-chart-marker" strokeWidth="1" />
         {[...lines].reverse().map((l) => (
           <path key={l.id} d={path(shown[l.id] ?? []) ?? ""} fill="none" className={roleClass[l.role].stroke} strokeWidth={roleClass[l.role].width} strokeDasharray={l.enteredReturn ? "6 4" : undefined} strokeLinejoin="round" strokeLinecap="round" />
         ))}
+        {/* after the lines, with the card-colour halo: on a phone the lines ran through "100 אלף ₪" (2026-10-26) */}
+        <AxisLabels ticks={ticks} y={y} />
+        <g aria-hidden="true">
+          {badges.map((b) => (
+            <g key={b.l.id} transform={`translate(${b.x} ${b.y})`}>
+              <circle r="9.5" className={cx("fill-card", roleClass[b.l.role].stroke)} strokeWidth="1.5" />
+              <text y="0.5" textAnchor="middle" dominantBaseline="middle" direction="ltr" className="text-xs font-medium fill-foreground tabular-nums">
+                {b.rank}
+              </text>
+            </g>
+          ))}
+        </g>
         {yearTicks.map((yr) => (
           <text key={yr} x={x(yr)} y={height - 8} textAnchor={yr === 0 ? "start" : yr === horizon ? "end" : "middle"} direction="ltr" className="text-xs fill-chart-text" data-scale>
             {yr === 0 ? guideCopy.readout.today : yr}
@@ -158,7 +192,8 @@ export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dim
       {lead && (
         <div className="absolute text-xs leading-tight" style={{ left: `${plotW + 8}px`, top: `${leadY - LABEL_H / 2}px`, width: `${STRIP - 10}px`, height: `${LABEL_H}px` }}>
           <span className="line-clamp-2 font-medium">{lead.name}</span>
-          <Num value={leadValue} size="cell" />
+          {/* whole shekels, as on the ranked cards (design-system 2.7); "cell" kept the agorot */}
+          <Num value={leadValue} />
         </div>
       )}
     </div>
