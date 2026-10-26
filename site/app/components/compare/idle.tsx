@@ -42,6 +42,12 @@ export function CostRow({ row, empty }: { row: IdleRowView | null; empty?: boole
           <Link to={guideOf[row.id]} className="text-link hover:underline">
             {name}
           </Link>
+          {row.rate.own && row.id === "bank-deposit:average" && (
+            <>
+              {" "}
+              {copy.rowOwner} <bdi>{row.rate.own}</bdi>
+            </>
+          )}
         </span>
         <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
           <span className="text-muted-foreground">{copy.rateOf}</span>

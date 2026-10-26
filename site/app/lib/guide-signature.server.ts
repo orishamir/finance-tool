@@ -10,7 +10,8 @@ import { accountBanks, buildInstrumentBundle, commonAccountRate, currentAccountR
 import type { SignatureData } from "./guide-signature";
 import { loadDepositTerms, loadFunds } from "./instruments.server";
 import { buildPension, buildProvident, buildStudyFund } from "./guide-signature-g2.server";
-import { ruleFigure, type SiteValue } from "./value";
+import { ownBy, ruleFigure, type SiteValue } from "./value";
+import { shortName } from "./providers";
 
 interface Ctx {
   p05: ParameterRecord;
@@ -93,16 +94,20 @@ function depositFacts(d: SignatureData, c: Ctx, wrapperId: string, prefix = ""):
     d.gaps.push(`deposit:${wrapperId}`);
     return {};
   }
-  d.facts[`${prefix}rate`] = pub.rate;
+  // D31: the bank's own deposit terms, shown where the visual names the bank (the copy says "הפיקדון של לאומי")
+  const bank = shortName(pub.record.bank, pub.record.bank);
+  const own = (v: SiteValue): SiteValue => ownBy(v, bank);
+  const rate = own(pub.rate);
+  d.facts[`${prefix}rate`] = rate;
   const term = pub.record.term_months;
-  if (typeof term.value === "number") d.facts[`${prefix}term`] = { ...term } as SiteValue;
-  d.facts[`${prefix}break`] = breakFact(pub.record);
+  if (typeof term.value === "number") d.facts[`${prefix}term`] = own({ ...term } as SiteValue);
+  d.facts[`${prefix}break`] = own(breakFact(pub.record));
   if (pub.record.amount_range) {
-    d.facts[`${prefix}amountMin`] = { ...pub.record.amount_range.min } as SiteValue;
-    if (pub.record.amount_range.max) d.facts[`${prefix}amountMax`] = { ...pub.record.amount_range.max } as SiteValue;
+    d.facts[`${prefix}amountMin`] = own({ ...pub.record.amount_range.min } as SiteValue);
+    if (pub.record.amount_range.max) d.facts[`${prefix}amountMax`] = own({ ...pub.record.amount_range.max } as SiteValue);
   }
-  if (pub.ceiling) d.facts[`${prefix}ceiling`] = pub.ceiling;
-  return { rate: pub.rate, rec: pub.record };
+  if (pub.ceiling) d.facts[`${prefix}ceiling`] = own(pub.ceiling);
+  return { rate, rec: pub.record };
 }
 
 // ---------------------------------------------------------------- current account
@@ -157,8 +162,9 @@ builders["savings-plan"] = (c) => {
   // the nearest alternative: one lump sum in the bank deposit
   const lump = publishedDeposit("bank-deposit", c.p05.instruments?.["bank-deposit"], c.deposits);
   if (lump) {
-    d.facts.lumpRate = lump.rate;
-    if (typeof lump.record.term_months.value === "number") d.facts.lumpTerm = { ...lump.record.term_months } as SiteValue;
+    const lumpBank = shortName(lump.record.bank, lump.record.bank);
+    d.facts.lumpRate = ownBy(lump.rate, lumpBank);
+    if (typeof lump.record.term_months.value === "number") d.facts.lumpTerm = ownBy({ ...lump.record.term_months } as SiteValue, lumpBank);
   } else d.gaps.push("deposit:bank-deposit");
   // BANK-28 / BANK OQ12: whether each monthly instalment has its own lock-up is not said in any source read (the ladder is the F-22 reading)
   d.gaps.push("planLockPerDeposit");
@@ -200,18 +206,26 @@ builders["money-market-fund-renewable"] = (c) => {
   if (fund && m) {
     const src = fund.fees.fixed_management?.source ?? fund.fees.trustee?.source;
     if (src) {
-      d.facts.seriesDate = {
-        value: `${m[3]}-${m[2]}-${m[1]}`,
-        unit: "text",
-        source: src,
-        checked: fund.snapshot,
-        effective_from: null,
-        effective_to: null,
-        update_rule: "provider-set",
-        state: "sourced",
-        rule_ids: ["MF-35"],
-        notes: `תאריך הפדיון של הסדרה, כפי שהוא כתוב בשם הקרן (${name}). המספר בבורסה שייך לסדרה הזאת בלבד; הסדרה הבאה מקבלת מספר משלה.`,
-      };
+      // D31: the date is written in the fund's own name, so it is that series' own fact; the visual names the series beside it
+      d.facts.seriesDate = ownBy(
+        {
+          value: `${m[3]}-${m[2]}-${m[1]}`,
+          unit: "text",
+          source: src,
+          checked: fund.snapshot,
+          effective_from: null,
+          effective_to: null,
+          update_rule: "provider-set",
+          state: "sourced",
+          rule_ids: ["MF-35"],
+          notes: `תאריך הפדיון של הסדרה, כפי שהוא כתוב בשם הקרן (${name}). המספר בבורסה שייך לסדרה הזאת בלבד; הסדרה הבאה מקבלת מספר משלה.`,
+        } as SiteValue,
+        fund.manager,
+      );
+      d.facts.seriesName = ownBy(
+        { value: name, unit: "text", source: src, checked: fund.snapshot, effective_from: null, effective_to: null, update_rule: "provider-set", state: "sourced", about: "שם הסדרה, כפי שהמנהל מפרסם אותו" } as SiteValue,
+        fund.manager,
+      );
     } else d.gaps.push("seriesDate");
   } else d.gaps.push("seriesDate");
   const max = figureOf(c, "MF-08", "max_interval_months");

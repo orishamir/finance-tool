@@ -3,6 +3,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState, type Keyboar
 import type { SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
 import { cx } from "./cx";
+import { Tpl } from "./sentence";
 
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
@@ -108,8 +109,10 @@ export interface GainBar {
 /**
  * Two (or more) amounts as bars from the same start, the difference between the two ends as a bracket with its own number
  * (D29 rule 6: a difference is drawn as a difference, never as a third bar that reads like a third option). Bars grow from the start edge.
+ * `diffLabel` is a sentence with `{gap}` that says which side has more ("קרן ההשתלמות משאירה {gap} יותר"): the number sits in it under
+ * the bracket, not in the amounts' column, where a bare "400 ₪" read like a third amount with no sign (founder, 2026-10-26).
  */
-export function GainBars({ bars, diff, diffLabel }: { bars: GainBar[]; diff: SiteValue | null; diffLabel: ReactNode }) {
+export function GainBars({ bars, diff, diffLabel }: { bars: GainBar[]; diff: SiteValue | null; diffLabel: string }) {
   const nums = bars.map((b) => Math.max(0, Number(b.value.value) || 0));
   const max = Math.max(1e-9, ...nums);
   const hi = Math.max(...nums);
@@ -136,11 +139,11 @@ export function GainBars({ bars, diff, diffLabel }: { bars: GainBar[]; diff: Sit
               <div className="absolute top-0 h-3 border-x-2 border-b-2 border-foreground/60 rounded-b-sm" style={{ insetInlineStart: `${(lo / max) * 100}%`, width: `${((hi - lo) / max) * 100}%` }} />
             </div>
             {/* the label sits under the bracket's end of the row at full width: padding it to the bracket squeezed it into one word a line (2026-10-25) */}
-            <span className="block text-sm text-muted-foreground mt-0.5 text-end">{diffLabel}</span>
+            <p className="text-sm mt-0.5 text-end">
+              <Tpl t={diffLabel.includes("{gap}") ? diffLabel : `${diffLabel} {gap}`} vars={{ gap: <strong className="font-semibold"><Num value={diff} /></strong> }} />
+            </p>
           </div>
-          <span className="shrink-0 w-28 text-end font-semibold">
-            <Num value={diff} />
-          </span>
+          <span className="shrink-0 w-28" aria-hidden="true" />
         </div>
       )}
     </div>

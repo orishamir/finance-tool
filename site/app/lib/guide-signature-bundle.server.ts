@@ -14,7 +14,7 @@ import type { AccountBank } from "./guide-signature";
 import { buildInstrumentTerms, loadDepositTerms, loadFunds } from "./instruments.server";
 import { loadFees } from "./data.server";
 import { shortName } from "./providers";
-import { computed, type SiteValue, type Strength } from "./value";
+import { computed, ownBy, type SiteValue, type Strength } from "./value";
 
 export type NoGraph =
   | { kind: "missing"; parts: string[] }
@@ -91,13 +91,15 @@ export function accountBanks(records: DepositTerms[]): AccountBank[] {
     if (typeof r.rate_offered.value !== "number" || r.rate_offered.unit !== "pct_per_year") continue;
     const max = r.amount_range.max;
     // a doubt travels with the number: its sheet says it (the record's English notes stay in the data)
-    const rate = { ...r.rate_offered, ...(r.doubt_he ? { notes: r.doubt_he } : {}) } as SiteValue;
+    // D31: each rate and ceiling is the bank's own, shown on the line that names the bank
+    const name = shortName(r.bank, r.bank);
+    const rate = ownBy({ ...r.rate_offered, ...(r.doubt_he ? { notes: r.doubt_he } : {}) } as SiteValue, name);
     banks.push({
       id: r.id,
       bank: r.bank,
-      name: shortName(r.bank, r.bank),
+      name,
       rate,
-      ceiling: max && max.unit === "nis" && typeof max.value === "number" ? ({ ...max } as SiteValue) : null,
+      ceiling: max && max.unit === "nis" && typeof max.value === "number" ? ownBy({ ...max } as SiteValue, name) : null,
       conditions: r.conditions_he ?? null,
       doubt: r.doubt_he ?? null,
       until: r.rate_offered.effective_to,
@@ -187,11 +189,13 @@ export function buildInstrumentBundle(
   const published = family === "deposit" ? publishedDeposit(record.id, spec, deposits) : null;
   // the current account starts from the rate most banks pay (F-85, 2026-10-25), not from the one bank P-05 names
   const common = record.id === "current-account" ? commonAccountRate(accountBanks(currentAccountRecords(deposits)), allRules, t) : null;
-  const rate = common ? common.rate : published?.rate;
+  // D31: the guide page's terms block names the company whose document each figure comes from, so the figure is that company's own
+  const ownOf = (v: SiteValue): SiteValue => (v.state === "sourced" ? ownBy(v, v.source.publisher) : v);
+  const rate = common ? common.rate : published?.rate ? ownOf(published.rate) : undefined;
   const ceiling = common ? common.ceiling : published?.ceiling;
   const runP05 = rate ? withPublishedRate(p05, rate) : p05;
   const terms = ceiling && built.terms.deposit ? { ...built.terms, deposit: { ...built.terms.deposit, balanceCeiling: ceiling.value as number } } : built.terms;
-  const feeValues = { ...built.feeValues, ...(ceiling ? { balanceCeiling: ceiling } : {}) };
+  const feeValues = Object.fromEntries(Object.entries({ ...built.feeValues, ...(ceiling ? { balanceCeiling: ceiling } : {}) }).map(([k, v]) => [k, ownOf(v)]));
   const draft: Bundle = { record, p05: runP05, terms, feeValues, rules: Object.values(allRules), runDate: t };
   const probe = runTimeline(draft, { entered: {}, age: null });
   if (probe.kind === "failed") {

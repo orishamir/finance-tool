@@ -466,7 +466,7 @@ function MarkerDemo({ today }: { today: string }) {
                 { key: "b", label: g.sample.barB, value: s.comp2, tone: "alt" },
               ]}
               diff={computed(400, "nis", "F-08", {}, { today, about: g.sample.diff })}
-              diffLabel={g.sample.diff}
+              diffLabel={g.sample.diffLine}
             />
           </div>
         </State>

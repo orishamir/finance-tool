@@ -38,7 +38,7 @@ import { forgetRevisit, useRevisit } from "../components/revisit/use-revisit";
 import { Tpl } from "../components/exposure-mode/tpl";
 import { snapshotWrapper } from "../lib/revisit";
 import { deleteSavedComparison, isoToday, saveComparisonRecord, type CompareMode } from "../lib/state";
-import { computed, entered } from "../lib/value";
+import { anyWeak, computed, entered } from "../lib/value";
 import { r5 } from "../copy";
 import { bundleLinks } from "../lib/bundle";
 
@@ -260,7 +260,7 @@ function Body({ bundle: bundle0, wb, data, fit, frame, exposureId, registerSave 
         <h1 className="text-2xl lg:text-3xl font-semibold">
           <bdi>{title}</bdi>: {r2.result.title}
         </h1>
-        <NumberLegend />
+        <NumberLegend institution={bundle ? anyWeak(bundle.wrappers.flatMap((w) => [w.cashRate, ...Object.values(w.feeValues)])) : false} />
         {subject && subjectReturn && (
           <p className="text-sm flex flex-wrap items-center gap-2">
             <Tpl t={r5.exposure.wrapperSubject} vars={{ exposure: <bdi className="font-medium">{subject.name}</bdi>, rate: <Num value={subjectReturn as never} /> }} />

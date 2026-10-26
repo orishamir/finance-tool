@@ -18,6 +18,7 @@ import { FeeHeadline, ReasonWithCode, RemainderLine, SubjectStrip, ThresholdsLin
 import { FeeSensitivityPanel } from "../components/fees/sensitivity";
 import { IconLock } from "../components/icons";
 import { Num, NumberLegend, RuleRef, RulesLine } from "../components/provenance";
+import { anyWeak } from "../lib/value";
 import { Sheet } from "../components/Sheet";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { Callout, Card, PlanChips, Sentence } from "../components/kit";
@@ -234,7 +235,7 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
       <>
         <header className="flex flex-col gap-3">
           <h1 className="text-2xl lg:text-3xl font-semibold">{r3fees.title}</h1>
-          <NumberLegend />
+          <NumberLegend institution={bundle ? anyWeak(bundle.wrappers.flatMap((w) => [w.cashRate, ...Object.values(w.feeValues)])) : false} />
           {own && holding.holding && (
             <p className="text-lg">
               {r3fees.strip.holding}

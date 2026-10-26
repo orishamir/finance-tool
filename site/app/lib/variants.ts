@@ -20,7 +20,7 @@ import type { ExposureRecord, FundRecord, ValueObject } from "@finance-tool/sche
 import { deviceStore } from "./device-store";
 import { BROKERAGE, a28Value, instrumentClassOf, parameterValue, ruleContext, staleTariff, type FundAssumptions, type WorkbenchBundle, type WorkbenchInputs } from "./providers";
 import { nisPer } from "./fx";
-import { computed, weaker, type SiteValue, type Strength } from "./value";
+import { computed, ownBy, weaker, type SiteValue, type Strength } from "./value";
 
 /**
  * The page's inputs with the exposure's own entered return (D9, `goal.exposures[id].return`) in place of the goal's return,
@@ -218,7 +218,8 @@ function reasonOf(row: VariantRow): VariantReason | undefined {
 
 const feeValue = (rec: FundRecord, key: FeeKey): SiteValue | null => {
   const v = rec.fees[key];
-  return v && v.value !== null ? (v as SiteValue) : null;
+  // D31: the fund manager's own fee, shown on that fund's row
+  return v && v.value !== null ? ownBy(v as SiteValue, rec.manager) : null;
 };
 
 interface VariantArgs {
