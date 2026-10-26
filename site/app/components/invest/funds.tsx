@@ -10,11 +10,12 @@ import { IconCopy, IconExternal, IconLock } from "../icons";
 import { Num } from "../provenance";
 import { Button, Card, KeyValue, RankBadge, Section, SegmentedControl, SelectField, Tag } from "../kit";
 import { LabelRow, LabelsLegend, OptionTag, reasonText } from "./parts";
-import type { SiteValue } from "../../lib/value";
+import { ownBy, type SiteValue } from "../../lib/value";
 
 const feeOf = (rec: FundRecord, key: "fixed_management" | "variable_management" | "trustee"): SiteValue | null => {
   const v = rec.fees[key];
-  return v && v.value !== null ? (v as SiteValue) : null;
+  // D31: the fund manager's own fee, shown on that fund's row
+  return v && v.value !== null ? ownBy(v as SiteValue, rec.manager) : null;
 };
 
 function FeeValue({ value }: { value: SiteValue | null }) {

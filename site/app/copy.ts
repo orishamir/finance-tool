@@ -792,6 +792,7 @@ export const guideBlocks = {
   terms: {
     title: "תנאי המוצר בדוגמה",
     line: "הערכים האלה נלקחו מהנתונים של האתר. אי אפשר לשנות אותם מכאן.",
+    whose: "התנאים והתעריף בדוגמה הם של",
     labels: {
       term: "תקופה",
       linkage: "הצמדה",
@@ -1286,6 +1287,9 @@ export const idle = {
   mmfNote: "הריבית כאן משמשת כקירוב לתשואת הקרן.",
   makamNoCommission: "בלי עמלת קנייה",
   baselineBefore: "העו״ש משלם היום",
+  // D31: the bank whose published rate the baseline is
+  baselineOwner: { before: "העו״ש של", after: "משלם היום" },
+  rowOwner: "של",
   baselineAfter: ".",
   baselineNone: "לפי הנתונים של האתר העו״ש לא משלם ריבית.",
   boiBefore: "הממוצע שבנק ישראל מפרסם לכל בנק לא מופיע כאן: תנאי השימוש של בנק ישראל לא מתירים לפרסם אותו מחדש בלי הסכמה בכתב.",

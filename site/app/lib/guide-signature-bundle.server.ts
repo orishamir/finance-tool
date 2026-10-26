@@ -189,11 +189,13 @@ export function buildInstrumentBundle(
   const published = family === "deposit" ? publishedDeposit(record.id, spec, deposits) : null;
   // the current account starts from the rate most banks pay (F-85, 2026-10-25), not from the one bank P-05 names
   const common = record.id === "current-account" ? commonAccountRate(accountBanks(currentAccountRecords(deposits)), allRules, t) : null;
-  const rate = common ? common.rate : published?.rate;
+  // D31: the guide page's terms block names the company whose document each figure comes from, so the figure is that company's own
+  const ownOf = (v: SiteValue): SiteValue => (v.state === "sourced" ? ownBy(v, v.source.publisher) : v);
+  const rate = common ? common.rate : published?.rate ? ownOf(published.rate) : undefined;
   const ceiling = common ? common.ceiling : published?.ceiling;
   const runP05 = rate ? withPublishedRate(p05, rate) : p05;
   const terms = ceiling && built.terms.deposit ? { ...built.terms, deposit: { ...built.terms.deposit, balanceCeiling: ceiling.value as number } } : built.terms;
-  const feeValues = { ...built.feeValues, ...(ceiling ? { balanceCeiling: ceiling } : {}) };
+  const feeValues = Object.fromEntries(Object.entries({ ...built.feeValues, ...(ceiling ? { balanceCeiling: ceiling } : {}) }).map(([k, v]) => [k, ownOf(v)]));
   const draft: Bundle = { record, p05: runP05, terms, feeValues, rules: Object.values(allRules), runDate: t };
   const probe = runTimeline(draft, { entered: {}, age: null });
   if (probe.kind === "failed") {

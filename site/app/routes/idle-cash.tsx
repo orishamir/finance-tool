@@ -250,7 +250,14 @@ function Result({ outcome, bundle, ctx, over, onFull, offerGiven, termGiven, dep
         <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5">
           {view.baseline && Number(view.baseline.rate.value) > 0 ? (
             <span>
-              {copy.baselineBefore} <Num value={view.baseline.rate} />
+              {view.baseline.rate.own ? (
+                <>
+                  {copy.baselineOwner.before} <bdi>{view.baseline.rate.own}</bdi> {copy.baselineOwner.after}
+                </>
+              ) : (
+                copy.baselineBefore
+              )}{" "}
+              <Num value={view.baseline.rate} />
               {copy.baselineAfter}
             </span>
           ) : (
