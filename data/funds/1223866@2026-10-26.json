@@ -1,0 +1,171 @@
+{
+  "id": "1223866",
+  "names": {
+    "en": [],
+    "he": [
+      "אלטשולר שחם (00) כספית מתחדשת חודשי לפדיון 16/11/2026",
+      "אלטשולר שחם כספית מתחדשת חודשי לפדיון 16/11/2026"
+    ],
+    "tase": [
+      "1223866"
+    ]
+  },
+  "identifiers": {
+    "isin": null,
+    "tase_number": "1223866",
+    "cusip": null,
+    "ticker": {}
+  },
+  "manager": "אלטשולר שחם",
+  "domicile": "IL",
+  "legal_form": "קרן כספית מתחדשת (קרן מועדים קבועים), סדרה חודשית לפדיון 16/11/2026 (renewable fixed-date money-market fund, monthly series; MF-08, MF-35). The TASE number belongs to this series only; the next monthly series gets its own number",
+  "exposure_id": "shekel-cash",
+  "currency": "NIS",
+  "trading_currency_on_tase": null,
+  "distribution_policy": null,
+  "tax_status": {
+    "il_fund_tax_track": null,
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0.19,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.discountbank.co.il/private/savings-investments/savings-interest/",
+        "title": "בנק דיסקונט, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447A; הטבלה נטענת בדף מ-https://www.discountbank.co.il/api/MoneyMarket/MoneyMarketFunds?pageId=2620c969-c063-45bf-8ea4-7efe7b4e5210, 'lastUpdatedAt' 2026-10-26T10:04), טבלת 'קרנות כספיות שקליות', שורת 'אלטשולר שחם כספית מתחדשת חודשי לפדיון 16/11/2026' (1223866), עמודת 'דמי ניהול קרן (%)'",
+        "publisher": "Israel Discount Bank Ltd. (Directive 447A display of the figures as reported by the fund manager)",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-26",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-16",
+        "MF-35",
+        "MF-37",
+        "BANK-15"
+      ],
+      "state": "sourced",
+      "notes": "Fee as printed on Discount's Directive 447A page ('0.19'); the page says 'המידע המוצג הוא בהתאם לדיווח שבוצע על ידי מנהלי הקרנות'. The same row prints 'שיעור התשואה הצפויה נטו (נומינלי שנתי)' 2.81 (the column's note: reported by the manager, not guaranteed, before capital-gains tax and bank fees, net of the management and trustee fees; MF-37) and the next date 'המועד הקרוב לביצוע הפעולות הבאות' 16/11/2026 16:00, renewal 'מתחדשת אוטומטית, עד למתן הודעת פדיון על ידי הלקוח'. fundRecord has no field for the expected yield or the next date (see the branch report). Leumi's 447A page lists no renewing fund. The manager's page (https://www.as-invest.co.il/interstedin/קרנות-נאמנות/קרנות-כספיות/, read 2026-10-26) lists only each fund's name and TASE number and links its details to Maya and its prospectus to Magna, which block scripts; it prints no fee. Whether the figure includes the trustee fee is not stated. The series' TASE number belongs to this monthly series only; the next series gets its own number (MF-35)."
+    },
+    "trustee": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.as-invest.co.il/interstedin/קרנות-נאמנות/קרנות-כספיות/",
+        "title": "אלטשולר שחם בית השקעות, עמוד 'קרנות כספיות - קרן נאמנות כספית' (טבלת שם הקרן / מספר ני\"ע)",
+        "publisher": "אלטשולר שחם",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-20"
+      ],
+      "state": "sourced",
+      "notes": "Trustee fee not printed on the manager's page. The manager's page gives only the series' name and TASE number and links its details to Maya (maya.tase.co.il/he/funds/mutual-funds/1223866) and its prospectus to Magna, which block scripts; needs a person in a browser. Leumi's 447A page lists no renewing fund; Discount's 447A page prints the management fee only (re-read 2026-10-26)."
+    },
+    "variable_management": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.as-invest.co.il/interstedin/קרנות-נאמנות/קרנות-כספיות/",
+        "title": "אלטשולר שחם בית השקעות, עמוד 'קרנות כספיות - קרן נאמנות כספית' (טבלת שם הקרן / מספר ני\"ע)",
+        "publisher": "אלטשולר שחם",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-14"
+      ],
+      "state": "sourced",
+      "notes": "Not printed; a variable fee exists only in tracking funds (ETF-14), but the prospectus was not read, so left null rather than 0."
+    },
+    "tracking_difference_12m": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.as-invest.co.il/interstedin/קרנות-נאמנות/קרנות-כספיות/",
+        "title": "אלטשולר שחם בית השקעות, עמוד 'קרנות כספיות - קרן נאמנות כספית' (טבלת שם הקרן / מספר ני\"ע)",
+        "publisher": "אלטשולר שחם",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-07"
+      ],
+      "state": "sourced",
+      "notes": "Not applicable: not a tracking fund."
+    },
+    "median_spread": {
+      "value": null,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://www.as-invest.co.il/interstedin/קרנות-נאמנות/קרנות-כספיות/",
+        "title": "אלטשולר שחם בית השקעות, עמוד 'קרנות כספיות - קרן נאמנות כספית' (טבלת שם הקרן / מספר ני\"ע)",
+        "publisher": "אלטשולר שחם",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-35"
+      ],
+      "state": "sourced",
+      "notes": "Not applicable: open fund with liquidity only on the fixed date (MF-35), not exchange-traded."
+    },
+    "fund_level_withholding_drag": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.as-invest.co.il/interstedin/קרנות-נאמנות/קרנות-כספיות/",
+        "title": "אלטשולר שחם בית השקעות, עמוד 'קרנות כספיות - קרן נאמנות כספית' (טבלת שם הקרן / מספר ני\"ע)",
+        "publisher": "אלטשולר שחם",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-43",
+        "TXS-24"
+      ],
+      "state": "sourced",
+      "notes": "Shekel money-market fund (exposure code 00); no foreign withholding; no computation made here. Tax track not printed on the pages read and this series' presence in the 2026-10-22 Maya export behind TXS-24 is not certain, so il_fund_tax_track is left null."
+    }
+  },
+  "dimensions": {
+    "liquidity-lockup": "covered:MF-35",
+    "fee-custody": "covered:BRK-17",
+    "fee-management-balance": "covered:MF-16",
+    "protection": "covered:MF-02",
+    "currency": "covered:MF-43"
+  },
+  "prospectus": {
+    "url": "https://www.as-invest.co.il/interstedin/קרנות-נאמנות/קרנות-כספיות/",
+    "date": null
+  },
+  "exposure_code": "00",
+  "distribution_fee_type": null,
+  "creation_redemption_fee_category": null,
+  "snapshot": "2026-10-26"
+}

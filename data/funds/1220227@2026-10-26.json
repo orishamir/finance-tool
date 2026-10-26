@@ -1,0 +1,170 @@
+{
+  "id": "1220227",
+  "names": {
+    "en": [],
+    "he": [
+      "מיטב כספית מתחדשת חודשי ב- 13/11/2026"
+    ],
+    "tase": [
+      "1220227"
+    ]
+  },
+  "identifiers": {
+    "isin": null,
+    "tase_number": "1220227",
+    "cusip": null,
+    "ticker": {}
+  },
+  "manager": "מיטב קרנות נאמנות בע\"מ",
+  "domicile": "IL",
+  "legal_form": "קרן כספית מתחדשת (קרן מועדים קבועים), סדרה חודשית ב-13/11/2026 (renewable fixed-date money-market fund, monthly series, per Discount's 447A row: period 'חודש', 'מתחדשת אוטומטית, עד למתן הודעת פדיון על ידי הלקוח'; MF-08, MF-35). The TASE number belongs to this series only; the next monthly series gets its own number",
+  "exposure_id": "shekel-cash",
+  "currency": "NIS",
+  "trading_currency_on_tase": null,
+  "distribution_policy": null,
+  "tax_status": {
+    "il_fund_tax_track": null,
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0.2,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.discountbank.co.il/private/savings-investments/savings-interest/",
+        "title": "בנק דיסקונט, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447A; הטבלה נטענת בדף מ-https://www.discountbank.co.il/api/MoneyMarket/MoneyMarketFunds?pageId=2620c969-c063-45bf-8ea4-7efe7b4e5210, 'lastUpdatedAt' 2026-10-26T10:04), טבלת 'קרנות כספיות שקליות', שורת 'מיטב כספית מתחדשת חודשי ב- 13/11/2026' (1220227), עמודת 'דמי ניהול קרן (%)'",
+        "publisher": "Israel Discount Bank Ltd. (Directive 447A display of the figures as reported by the fund manager)",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-26",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-16",
+        "MF-35",
+        "MF-37",
+        "BANK-15"
+      ],
+      "state": "sourced",
+      "notes": "Fee as printed on Discount's Directive 447A page ('0.2'); the page says 'המידע המוצג הוא בהתאם לדיווח שבוצע על ידי מנהלי הקרנות'. The same row prints 'שיעור התשואה הצפויה נטו (נומינלי שנתי)' 2.75 (the column's note: reported by the manager, not guaranteed, before capital-gains tax and bank fees, net of the management and trustee fees; MF-37) and the next date 'המועד הקרוב לביצוע הפעולות הבאות' 13/11/2026 16:00, renewal 'מתחדשת אוטומטית, עד למתן הודעת פדיון על ידי הלקוח'. fundRecord has no field for the expected yield or the next date (see the branch report). Leumi's 447A page lists no renewing fund. The manager's mutual-funds page (https://www.meitav.co.il/mutual_funds/, read 2026-10-26) has no fund table and prints no fund's fee; no fund page was found in the site map. Whether the figure includes the trustee fee is not stated. The series' TASE number belongs to this monthly series only; the next series gets its own number (MF-35)."
+    },
+    "trustee": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.discountbank.co.il/private/savings-investments/savings-interest/",
+        "title": "בנק דיסקונט, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447A), טבלת 'קרנות כספיות שקליות', שורת 'מיטב כספית מתחדשת חודשי ב- 13/11/2026' (1220227)",
+        "publisher": "Israel Discount Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-20"
+      ],
+      "state": "sourced",
+      "notes": "Trustee fee not printed on Discount's 447A page. The manager's mutual-funds page (https://www.meitav.co.il/mutual_funds/, read 2026-10-26) has no fund table and prints no fund's fee; no fund page was found in the site map."
+    },
+    "variable_management": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.discountbank.co.il/private/savings-investments/savings-interest/",
+        "title": "בנק דיסקונט, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447A), טבלת 'קרנות כספיות שקליות', שורת 'מיטב כספית מתחדשת חודשי ב- 13/11/2026' (1220227)",
+        "publisher": "Israel Discount Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-14"
+      ],
+      "state": "sourced",
+      "notes": "Not printed; a variable fee exists only in tracking funds (ETF-14), but the prospectus was not read, so left null rather than 0."
+    },
+    "tracking_difference_12m": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.discountbank.co.il/private/savings-investments/savings-interest/",
+        "title": "בנק דיסקונט, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447A), טבלת 'קרנות כספיות שקליות', שורת 'מיטב כספית מתחדשת חודשי ב- 13/11/2026' (1220227)",
+        "publisher": "Israel Discount Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-07"
+      ],
+      "state": "sourced",
+      "notes": "Not applicable: not a tracking fund."
+    },
+    "median_spread": {
+      "value": null,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://www.discountbank.co.il/private/savings-investments/savings-interest/",
+        "title": "בנק דיסקונט, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447A), טבלת 'קרנות כספיות שקליות', שורת 'מיטב כספית מתחדשת חודשי ב- 13/11/2026' (1220227)",
+        "publisher": "Israel Discount Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-35"
+      ],
+      "state": "sourced",
+      "notes": "Not applicable: open fund with liquidity only on the fixed date (MF-35), not exchange-traded."
+    },
+    "fund_level_withholding_drag": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.discountbank.co.il/private/savings-investments/savings-interest/",
+        "title": "בנק דיסקונט, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447A), טבלת 'קרנות כספיות שקליות', שורת 'מיטב כספית מתחדשת חודשי ב- 13/11/2026' (1220227)",
+        "publisher": "Israel Discount Bank Ltd.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-43",
+        "TXS-24"
+      ],
+      "state": "sourced",
+      "notes": "Shekel money-market fund (Discount's table 'קרנות כספיות שקליות'); no foreign withholding; no computation made here. Tax track not printed on the page; Discount's feed field 'TaxStatusAsMeta' (not displayed) reads 'פטורה', and this series' presence in the 2026-10-22 Maya export behind TXS-24 is not certain, so il_fund_tax_track is left null."
+    }
+  },
+  "dimensions": {
+    "liquidity-lockup": "covered:MF-35",
+    "fee-custody": "covered:BRK-17",
+    "fee-management-balance": "covered:MF-16",
+    "protection": "covered:MF-02",
+    "currency": "covered:MF-43"
+  },
+  "prospectus": {
+    "url": "https://maya.tase.co.il/he/funds/mutual-funds/1220227",
+    "date": null
+  },
+  "exposure_code": null,
+  "distribution_fee_type": null,
+  "creation_redemption_fee_category": null,
+  "snapshot": "2026-10-26"
+}

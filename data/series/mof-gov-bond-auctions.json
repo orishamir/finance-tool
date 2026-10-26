@@ -1,0 +1,517 @@
+{
+  "id": "mof-gov-bond-auctions",
+  "names": {
+    "he": [
+      "הנפקת אג\"ח סחירות בשוק המקומי",
+      "נתוני החוב הממשלתי המקומי"
+    ],
+    "en": [
+      "Domestic tradable government bond issuance (auction results)"
+    ]
+  },
+  "publisher": "Ministry of Finance via data.gov.il",
+  "flow": "data.gov.il package goverment-domesticdebt (id d3c80c46-9d99-41a9-8b62-50b590011a60), organization mof (משרד האוצר)",
+  "series_code": "resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv",
+  "unit": "pct_per_year",
+  "cadence": "on change",
+  "stale_after_days": 14,
+  "terms_of_use": {
+    "status": "confirmed",
+    "fallback": "none needed",
+    "terms_url": "https://data.gov.il/he/terms-of-use",
+    "read_on": "2026-10-26",
+    "attribution": "מקור המידע: משרד האוצר, מאגר \"נתוני החוב הממשלתי המקומי\", משאב \"הנפקת אג\"ח סחירות בשוק המקומי\", data.gov.il (https://data.gov.il/dataset/goverment-domesticdebt), לפי רישיון השימוש במאגרי המידע באתר Data.gov.il"
+  },
+  "rule_ids": [
+    "GOV-19"
+  ],
+  "notes": "The latest auction per bond type in the Ministry of Finance's issuance file (columns ISSUANCEDATE, BONDS, SERIES, COUPON, GROSSAVGYIELD, GROSSCUTOFFYIELD and others; 1,942 rows from 10/01/2022 to 20/10/2026 when read). Each observation's key is '<bond type as printed in BONDS>|<SERIES (TASE number)>|<REDEMTIONDATE>|<metric>', metric one of coupon (COUPON), gross_avg_yield (GROSSAVGYIELD) and gross_cutoff_yield (GROSSCUTOFFYIELD). The resource's notes describe 'תשואות ממוצעות והתשואות הסגירה שנקבעו בהתאם למחיר' but state no unit; the values are kept as printed and read as percent a year (an interpretation, not printed). Bond types in the file: ממשלתית (fixed-rate unlinked), ממשלתית צמודה (CPI-linked), ממשלתית בריבית משתנה (floating), ממשלתית קצרה (short; its latest auction in the file is 15/09/2025). Licence: the package shows 'אחר (פתוח)' with no licence text attached, so the Data.gov.il licence applies (https://data.gov.il/he/terms-of-use, 'תאריך עדכון: 30/08/2025', read 2026-10-26): 'אתה רשאי להעתיק את המידע, להפיץ אותו, להעמיד אותו לרשות לציבור ... אתה רשאי לעשות שימוש במידע באופן מסחרי ובאופן שאינו מסחרי', with the source named ('ציון מקור המידע') and no misleading display. stale_after_days 14 is the collector's choice (auctions are held about weekly; the resource is updated daily), not a published figure. Staged on branch data-cash; no page reads it yet.",
+  "observations": [
+    {
+      "value": 0.0,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2025-09-15",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "COUPON as printed for series 1223924 (ממשלתית קצרה), auction of 2025-09-15: original term 1 years, remaining 0.7, redemption 31/05/2026, offered 500, purchased 500, average price 97.15, cut-off price 97.14, cover ratio 6.5.",
+      "date": "2025-09-15",
+      "key": "ממשלתית קצרה|1223924|31/05/2026|coupon"
+    },
+    {
+      "value": 4.18,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2025-09-15",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "GROSSAVGYIELD as printed for series 1223924 (ממשלתית קצרה), auction of 2025-09-15: original term 1 years, remaining 0.7, redemption 31/05/2026, offered 500, purchased 500, average price 97.15, cut-off price 97.14, cover ratio 6.5.",
+      "date": "2025-09-15",
+      "key": "ממשלתית קצרה|1223924|31/05/2026|gross_avg_yield"
+    },
+    {
+      "value": 4.19,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2025-09-15",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "GROSSCUTOFFYIELD as printed for series 1223924 (ממשלתית קצרה), auction of 2025-09-15: original term 1 years, remaining 0.7, redemption 31/05/2026, offered 500, purchased 500, average price 97.15, cut-off price 97.14, cover ratio 6.5.",
+      "date": "2025-09-15",
+      "key": "ממשלתית קצרה|1223924|31/05/2026|gross_cutoff_yield"
+    },
+    {
+      "value": 3.22,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-13",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "COUPON as printed for series 1205145 (ממשלתית בריבית משתנה), auction of 2026-10-13: original term 11 years, remaining 8.1, redemption 30/11/2034, offered 145, purchased 70, average price 97.38, cut-off price 97.38, cover ratio 0.5.",
+      "date": "2026-10-13",
+      "key": "ממשלתית בריבית משתנה|1205145|30/11/2034|coupon"
+    },
+    {
+      "value": 3.7,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-13",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "GROSSAVGYIELD as printed for series 1205145 (ממשלתית בריבית משתנה), auction of 2026-10-13: original term 11 years, remaining 8.1, redemption 30/11/2034, offered 145, purchased 70, average price 97.38, cut-off price 97.38, cover ratio 0.5.",
+      "date": "2026-10-13",
+      "key": "ממשלתית בריבית משתנה|1205145|30/11/2034|gross_avg_yield"
+    },
+    {
+      "value": 3.7,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-13",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "GROSSCUTOFFYIELD as printed for series 1205145 (ממשלתית בריבית משתנה), auction of 2026-10-13: original term 11 years, remaining 8.1, redemption 30/11/2034, offered 145, purchased 70, average price 97.38, cut-off price 97.38, cover ratio 0.5.",
+      "date": "2026-10-13",
+      "key": "ממשלתית בריבית משתנה|1205145|30/11/2034|gross_cutoff_yield"
+    },
+    {
+      "value": 2.0,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-20",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "COUPON as printed for series 1220722 (ממשלתית צמודה), auction of 2026-10-20: original term 6 years, remaining 4.5, redemption 30/04/2031, offered 113.5, purchased 105.6, average price 104.17, cut-off price 104.17, cover ratio 0.9.",
+      "date": "2026-10-20",
+      "key": "ממשלתית צמודה|1220722|30/04/2031|coupon"
+    },
+    {
+      "value": 2.01,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-20",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "GROSSAVGYIELD as printed for series 1220722 (ממשלתית צמודה), auction of 2026-10-20: original term 6 years, remaining 4.5, redemption 30/04/2031, offered 113.5, purchased 105.6, average price 104.17, cut-off price 104.17, cover ratio 0.9.",
+      "date": "2026-10-20",
+      "key": "ממשלתית צמודה|1220722|30/04/2031|gross_avg_yield"
+    },
+    {
+      "value": 2.01,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-20",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "GROSSCUTOFFYIELD as printed for series 1220722 (ממשלתית צמודה), auction of 2026-10-20: original term 6 years, remaining 4.5, redemption 30/04/2031, offered 113.5, purchased 105.6, average price 104.17, cut-off price 104.17, cover ratio 0.9.",
+      "date": "2026-10-20",
+      "key": "ממשלתית צמודה|1220722|30/04/2031|gross_cutoff_yield"
+    },
+    {
+      "value": 2.0,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-20",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "COUPON as printed for series 1230713 (ממשלתית צמודה), auction of 2026-10-20: original term 30 years, remaining 29.5, redemption 30/04/2056, offered 133.4, purchased 43.1, average price 88.18, cut-off price 88.18, cover ratio 0.3.",
+      "date": "2026-10-20",
+      "key": "ממשלתית צמודה|1230713|30/04/2056|coupon"
+    },
+    {
+      "value": 2.7,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-20",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "GROSSAVGYIELD as printed for series 1230713 (ממשלתית צמודה), auction of 2026-10-20: original term 30 years, remaining 29.5, redemption 30/04/2056, offered 133.4, purchased 43.1, average price 88.18, cut-off price 88.18, cover ratio 0.3.",
+      "date": "2026-10-20",
+      "key": "ממשלתית צמודה|1230713|30/04/2056|gross_avg_yield"
+    },
+    {
+      "value": 2.7,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-20",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "GROSSCUTOFFYIELD as printed for series 1230713 (ממשלתית צמודה), auction of 2026-10-20: original term 30 years, remaining 29.5, redemption 30/04/2056, offered 133.4, purchased 43.1, average price 88.18, cut-off price 88.18, cover ratio 0.3.",
+      "date": "2026-10-20",
+      "key": "ממשלתית צמודה|1230713|30/04/2056|gross_cutoff_yield"
+    },
+    {
+      "value": 1.85,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-20",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "COUPON as printed for series 1237205 (ממשלתית צמודה), auction of 2026-10-20: original term 11 years, remaining 10.9, redemption 31/08/2037, offered 109, purchased 107.6, average price 97.88, cut-off price 97.88, cover ratio 1.",
+      "date": "2026-10-20",
+      "key": "ממשלתית צמודה|1237205|31/08/2037|coupon"
+    },
+    {
+      "value": 2.29,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-20",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "GROSSAVGYIELD as printed for series 1237205 (ממשלתית צמודה), auction of 2026-10-20: original term 11 years, remaining 10.9, redemption 31/08/2037, offered 109, purchased 107.6, average price 97.88, cut-off price 97.88, cover ratio 1.",
+      "date": "2026-10-20",
+      "key": "ממשלתית צמודה|1237205|31/08/2037|gross_avg_yield"
+    },
+    {
+      "value": 2.29,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-20",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "GROSSCUTOFFYIELD as printed for series 1237205 (ממשלתית צמודה), auction of 2026-10-20: original term 11 years, remaining 10.9, redemption 31/08/2037, offered 109, purchased 107.6, average price 97.88, cut-off price 97.88, cover ratio 1.",
+      "date": "2026-10-20",
+      "key": "ממשלתית צמודה|1237205|31/08/2037|gross_cutoff_yield"
+    },
+    {
+      "value": 3.75,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-20",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "COUPON as printed for series 1140193 (ממשלתית), auction of 2026-10-20: original term 30 years, remaining 20.4, redemption 31/03/2047, offered 91.4, purchased 91.4, average price 91.6, cut-off price 91.6, cover ratio 1.",
+      "date": "2026-10-20",
+      "key": "ממשלתית|1140193|31/03/2047|coupon"
+    },
+    {
+      "value": 4.55,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-20",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "GROSSAVGYIELD as printed for series 1140193 (ממשלתית), auction of 2026-10-20: original term 30 years, remaining 20.4, redemption 31/03/2047, offered 91.4, purchased 91.4, average price 91.6, cut-off price 91.6, cover ratio 1.",
+      "date": "2026-10-20",
+      "key": "ממשלתית|1140193|31/03/2047|gross_avg_yield"
+    },
+    {
+      "value": 4.55,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-20",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "GROSSCUTOFFYIELD as printed for series 1140193 (ממשלתית), auction of 2026-10-20: original term 30 years, remaining 20.4, redemption 31/03/2047, offered 91.4, purchased 91.4, average price 91.6, cut-off price 91.6, cover ratio 1.",
+      "date": "2026-10-20",
+      "key": "ממשלתית|1140193|31/03/2047|gross_cutoff_yield"
+    },
+    {
+      "value": 4.15,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-20",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "COUPON as printed for series 1227784 (ממשלתית), auction of 2026-10-20: original term 10 years, remaining 9, redemption 31/10/2035, offered 105.2, purchased 105.2, average price 100.39, cut-off price 100.39, cover ratio 1.",
+      "date": "2026-10-20",
+      "key": "ממשלתית|1227784|31/10/2035|coupon"
+    },
+    {
+      "value": 4.65,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-20",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "GROSSAVGYIELD as printed for series 1227784 (ממשלתית), auction of 2026-10-20: original term 10 years, remaining 9, redemption 31/10/2035, offered 105.2, purchased 105.2, average price 100.39, cut-off price 100.39, cover ratio 1.",
+      "date": "2026-10-20",
+      "key": "ממשלתית|1227784|31/10/2035|gross_avg_yield"
+    },
+    {
+      "value": 4.65,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-20",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "GROSSCUTOFFYIELD as printed for series 1227784 (ממשלתית), auction of 2026-10-20: original term 10 years, remaining 9, redemption 31/10/2035, offered 105.2, purchased 105.2, average price 100.39, cut-off price 100.39, cover ratio 1.",
+      "date": "2026-10-20",
+      "key": "ממשלתית|1227784|31/10/2035|gross_cutoff_yield"
+    },
+    {
+      "value": 3.75,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-20",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "COUPON as printed for series 1233782 (ממשלתית), auction of 2026-10-20: original term 6 years, remaining 4.8, redemption 31/07/2031, offered 103.5, purchased 93.5, average price 100.82, cut-off price 100.82, cover ratio 0.9.",
+      "date": "2026-10-20",
+      "key": "ממשלתית|1233782|31/07/2031|coupon"
+    },
+    {
+      "value": 3.75,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-20",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "GROSSAVGYIELD as printed for series 1233782 (ממשלתית), auction of 2026-10-20: original term 6 years, remaining 4.8, redemption 31/07/2031, offered 103.5, purchased 93.5, average price 100.82, cut-off price 100.82, cover ratio 0.9.",
+      "date": "2026-10-20",
+      "key": "ממשלתית|1233782|31/07/2031|gross_avg_yield"
+    },
+    {
+      "value": 3.75,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-20",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "GROSSCUTOFFYIELD as printed for series 1233782 (ממשלתית), auction of 2026-10-20: original term 6 years, remaining 4.8, redemption 31/07/2031, offered 103.5, purchased 93.5, average price 100.82, cut-off price 100.82, cover ratio 0.9.",
+      "date": "2026-10-20",
+      "key": "ממשלתית|1233782|31/07/2031|gross_cutoff_yield"
+    },
+    {
+      "value": 3.55,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-20",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "COUPON as printed for series 1241991 (ממשלתית), auction of 2026-10-20: original term 4 years, remaining 3.6, redemption 31/05/2030, offered 128.8, purchased 118.8, average price 100.86, cut-off price 100.86, cover ratio 0.9.",
+      "date": "2026-10-20",
+      "key": "ממשלתית|1241991|31/05/2030|coupon"
+    },
+    {
+      "value": 3.68,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-20",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "GROSSAVGYIELD as printed for series 1241991 (ממשלתית), auction of 2026-10-20: original term 4 years, remaining 3.6, redemption 31/05/2030, offered 128.8, purchased 118.8, average price 100.86, cut-off price 100.86, cover ratio 0.9.",
+      "date": "2026-10-20",
+      "key": "ממשלתית|1241991|31/05/2030|gross_avg_yield"
+    },
+    {
+      "value": 3.68,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://data.gov.il/dataset/d3c80c46-9d99-41a9-8b62-50b590011a60/resource/c92fdda2-0939-4110-8ebc-edfcf35e8723/download/file.csv",
+        "title": "הנפקת אג\"ח סחירות בשוק המקומי (data.gov.il goverment-domesticdebt, resource c92fdda2-0939-4110-8ebc-edfcf35e8723, file.csv, Windows-1255)",
+        "publisher": "Ministry of Finance via data.gov.il",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2026-10-20",
+      "effective_to": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "GROSSCUTOFFYIELD as printed for series 1241991 (ממשלתית), auction of 2026-10-20: original term 4 years, remaining 3.6, redemption 31/05/2030, offered 128.8, purchased 118.8, average price 100.86, cut-off price 100.86, cover ratio 0.9.",
+      "date": "2026-10-20",
+      "key": "ממשלתית|1241991|31/05/2030|gross_cutoff_yield"
+    }
+  ]
+}

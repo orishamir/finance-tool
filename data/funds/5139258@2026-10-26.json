@@ -1,0 +1,173 @@
+{
+  "id": "5139258",
+  "names": {
+    "en": [],
+    "he": [
+      "ילין לפידות כספית ניהול נזילות",
+      "ילין לפידות (00) כספית ניהול נזילות"
+    ],
+    "tase": [
+      "5139258"
+    ]
+  },
+  "identifiers": {
+    "isin": null,
+    "tase_number": "5139258",
+    "cusip": null,
+    "ticker": {}
+  },
+  "manager": "ילין לפידות - ניהול קרנות נאמנות בע\"מ",
+  "domicile": "IL",
+  "legal_form": "קרן פתוחה, קרן כספית (prospectus of 26.11.2024: 'סוג הקרן: קרן פתוחה, קרן כספית'; 'סיווג הקרן בפרסום: קרן כספית, כספית שקלית, כספית שקלית עם קונצרני'); a daily fund (Leumi's 447A table 'יומיות': bought and redeemed on every trading day)",
+  "exposure_id": "shekel-cash",
+  "currency": "NIS",
+  "trading_currency_on_tase": null,
+  "distribution_policy": null,
+  "tax_status": {
+    "il_fund_tax_track": "exempt",
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0.19,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.leumi.co.il/he/savings/money-market-products",
+        "title": "בנק לאומי, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447A), טבלת 'קרנות כספיות שקליות', שורת 'ילין לפידות כספית ניהול נזילות, מספר הקרן: 5139258' (סוג 'יומיות'), עמודת 'דמי ניהול קרן'",
+        "publisher": "Bank Leumi le-Israel B.M. (Directive 447A display of the fee as reported by the fund manager)",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-16",
+        "MF-34",
+        "MF-39",
+        "TXS-24",
+        "TXS-26"
+      ],
+      "state": "sourced",
+      "notes": "Fee as printed on Leumi's Directive 447A page ('0.19%'), which states 'המידע המוצג הוא בהתאם לדיווח שבוצע על ידי מנהלי הקרנות' and that for daily funds it shows the management fee the managers charge; the page's as-of date is filled by script ('{asOfDate}') and was not visible, so effective_from is unknown. Discount's 447A feed (lastUpdatedAt 2026-10-26T10:04) prints the same figure. Whether the figure includes the trustee fee is not stated (read as the manager's fee only). The manager's site (https://www.yl-invest.co.il/) returns an Imperva (Incapsula) block page to scripts (2026-10-26); not read. Exempt tax track: the fund's prospectus of 26.11.2024 (TXS-26) prints 'מסלול המס: פטורה'; Discount's feed field 'TaxStatusAsMeta' (not displayed on the page) also reads 'פטורה'. CONFLICT, kept as a note: the manager's prospectus of 26.11.2024 prints 'שכר מנהל הקרן: 0.12% מהשווי הנקי השנתי הממוצע של נכסי הקרן' with footnote 4: 'מנהל הקרן יהיה רשאי להעלות את השכר בקרן ביום 01.01.2026'. Both banks' current displays print 0.19%, so the current figure is the banks' and the prospectus figure is history."
+    },
+    "trustee": {
+      "value": 0.01,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629214-00.pdf",
+        "title": "תשקיף קרן חדשה 'ילין לפידות (00) כספית ניהול נזילות' (מספר בורסה 5139258), תאריך התשקיף 26 בנובמבר 2024, ילין לפידות - ניהול קרנות נאמנות בע\"מ (Maya filing 1629214, PDF), עמ' 1, 'שכר נאמן'",
+        "publisher": "ילין לפידות - ניהול קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": "2024-11-26",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-20"
+      ],
+      "state": "sourced",
+      "notes": "'שכר נאמן: 0.01% מהשווי הנקי השנתי הממוצע של נכסי הקרן' as of the prospectus date (26.11.2024). The manager fee in the same document has since changed (see fixed_management), so this figure may be out of date; no later document was read."
+    },
+    "variable_management": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.leumi.co.il/he/savings/money-market-products",
+        "title": "בנק לאומי, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447A), טבלת 'קרנות כספיות שקליות', שורת 'ילין לפידות כספית ניהול נזילות, מספר הקרן: 5139258'",
+        "publisher": "Bank Leumi le-Israel B.M.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-14"
+      ],
+      "state": "sourced",
+      "notes": "Not printed. A variable management fee exists only in tracking funds (ETF-14); a money-market fund is not one, but the prospectus was not read for this purpose, so the value is left null rather than 0."
+    },
+    "tracking_difference_12m": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.leumi.co.il/he/savings/money-market-products",
+        "title": "בנק לאומי, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447A), טבלת 'קרנות כספיות שקליות', שורת 'ילין לפידות כספית ניהול נזילות, מספר הקרן: 5139258'",
+        "publisher": "Bank Leumi le-Israel B.M.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-07"
+      ],
+      "state": "sourced",
+      "notes": "Not applicable: not a tracking fund (money-market fund, MF-07)."
+    },
+    "median_spread": {
+      "value": null,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://www.leumi.co.il/he/savings/money-market-products",
+        "title": "בנק לאומי, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447A), טבלת 'קרנות כספיות שקליות', שורת 'ילין לפידות כספית ניהול נזילות, מספר הקרן: 5139258'",
+        "publisher": "Bank Leumi le-Israel B.M.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-09"
+      ],
+      "state": "sourced",
+      "notes": "Not applicable: open fund, units bought and redeemed at the manager's price, not traded on the exchange (MF-09, ETF-04)."
+    },
+    "fund_level_withholding_drag": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.leumi.co.il/he/savings/money-market-products",
+        "title": "בנק לאומי, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447A), טבלת 'קרנות כספיות שקליות', שורת 'ילין לפידות כספית ניהול נזילות, מספר הקרן: 5139258'",
+        "publisher": "Bank Leumi le-Israel B.M.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-43",
+        "MF-29"
+      ],
+      "state": "sourced",
+      "notes": "Shekel money-market fund (Leumi's table 'קרנות כספיות שקליות'); no foreign withholding applies and no computation is made here."
+    }
+  },
+  "dimensions": {
+    "fund-tax-track": "covered:TXS-24",
+    "liquidity-lockup": "covered:MF-34",
+    "fee-custody": "covered:BRK-17",
+    "fee-management-balance": "covered:MF-16",
+    "protection": "covered:MF-02",
+    "currency": "covered:MF-43"
+  },
+  "prospectus": {
+    "url": "https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629214-00.pdf",
+    "date": "2024-11-26"
+  },
+  "exposure_code": "00",
+  "distribution_fee_type": null,
+  "creation_redemption_fee_category": null,
+  "snapshot": "2026-10-26"
+}

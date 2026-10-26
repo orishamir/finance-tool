@@ -1,0 +1,171 @@
+{
+  "id": "5137740",
+  "names": {
+    "en": [],
+    "he": [
+      "קסם אקטיב כספית שקלית"
+    ],
+    "tase": [
+      "5137740"
+    ]
+  },
+  "identifiers": {
+    "isin": null,
+    "tase_number": "5137740",
+    "cusip": null,
+    "ticker": {}
+  },
+  "manager": "קסם קרנות נאמנות בע\"מ",
+  "domicile": "IL",
+  "legal_form": "קרן נאמנות כספית יומית (daily money-market fund: units bought and redeemed on every trading day, per Leumi's 447A table 'יומיות' and Discount's 'זמין לרכישה / לפדיון בכל יום מסחר'); open/closed form not printed on the pages read",
+  "exposure_id": "shekel-cash",
+  "currency": "NIS",
+  "trading_currency_on_tase": null,
+  "distribution_policy": null,
+  "tax_status": {
+    "il_fund_tax_track": "exempt",
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0.19,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.leumi.co.il/he/savings/money-market-products",
+        "title": "בנק לאומי, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447A), טבלת 'קרנות כספיות שקליות', שורת 'קסם אקטיב כספית שקלית, מספר הקרן: 5137740' (סוג 'יומיות'), עמודת 'דמי ניהול קרן'",
+        "publisher": "Bank Leumi le-Israel B.M. (Directive 447A display of the fee as reported by the fund manager)",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-16",
+        "MF-34",
+        "MF-39",
+        "TXS-24"
+      ],
+      "state": "sourced",
+      "notes": "Fee as printed on Leumi's Directive 447A page ('0.19%'), which states 'המידע המוצג הוא בהתאם לדיווח שבוצע על ידי מנהלי הקרנות' and that for daily funds it shows the management fee the managers charge; the page's as-of date is filled by script ('{asOfDate}') and was not visible, so effective_from is unknown. Discount's 447A feed (lastUpdatedAt 2026-10-26T10:04) prints the same figure. Whether the figure includes the trustee fee is not stated (read as the manager's fee only). The manager's own site was not located (a search returned only aggregators; ksm.co.il is unrelated), so no manager page was read. Exempt tax track: TXS-24 (Maya's export of 2026-10-22 lists two taxable money-market funds, named in TXS-26: 5103403 and 5137559); this fund is not one of them (its presence in the export was not re-checked). Discount's feed field 'TaxStatusAsMeta' (not displayed on the page) also reads 'פטורה'."
+    },
+    "trustee": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.leumi.co.il/he/savings/money-market-products",
+        "title": "בנק לאומי, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447A), טבלת 'קרנות כספיות שקליות', שורת 'קסם אקטיב כספית שקלית, מספר הקרן: 5137740'",
+        "publisher": "Bank Leumi le-Israel B.M.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-20"
+      ],
+      "state": "sourced",
+      "notes": "Trustee fee not printed on Leumi's or Discount's 447A pages. The manager's own site was not located (a search returned only aggregators; ksm.co.il is unrelated), so no manager page was read."
+    },
+    "variable_management": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.leumi.co.il/he/savings/money-market-products",
+        "title": "בנק לאומי, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447A), טבלת 'קרנות כספיות שקליות', שורת 'קסם אקטיב כספית שקלית, מספר הקרן: 5137740'",
+        "publisher": "Bank Leumi le-Israel B.M.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-14"
+      ],
+      "state": "sourced",
+      "notes": "Not printed. A variable management fee exists only in tracking funds (ETF-14); a money-market fund is not one, but the prospectus was not read for this purpose, so the value is left null rather than 0."
+    },
+    "tracking_difference_12m": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.leumi.co.il/he/savings/money-market-products",
+        "title": "בנק לאומי, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447A), טבלת 'קרנות כספיות שקליות', שורת 'קסם אקטיב כספית שקלית, מספר הקרן: 5137740'",
+        "publisher": "Bank Leumi le-Israel B.M.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-07"
+      ],
+      "state": "sourced",
+      "notes": "Not applicable: not a tracking fund (money-market fund, MF-07)."
+    },
+    "median_spread": {
+      "value": null,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://www.leumi.co.il/he/savings/money-market-products",
+        "title": "בנק לאומי, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447A), טבלת 'קרנות כספיות שקליות', שורת 'קסם אקטיב כספית שקלית, מספר הקרן: 5137740'",
+        "publisher": "Bank Leumi le-Israel B.M.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-09"
+      ],
+      "state": "sourced",
+      "notes": "Not applicable: open fund, units bought and redeemed at the manager's price, not traded on the exchange (MF-09, ETF-04)."
+    },
+    "fund_level_withholding_drag": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.leumi.co.il/he/savings/money-market-products",
+        "title": "בנק לאומי, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447A), טבלת 'קרנות כספיות שקליות', שורת 'קסם אקטיב כספית שקלית, מספר הקרן: 5137740'",
+        "publisher": "Bank Leumi le-Israel B.M.",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-43",
+        "MF-29"
+      ],
+      "state": "sourced",
+      "notes": "Shekel money-market fund (Leumi's table 'קרנות כספיות שקליות'); no foreign withholding applies and no computation is made here."
+    }
+  },
+  "dimensions": {
+    "fund-tax-track": "covered:TXS-24",
+    "liquidity-lockup": "covered:MF-34",
+    "fee-custody": "covered:BRK-17",
+    "fee-management-balance": "covered:MF-16",
+    "protection": "covered:MF-02",
+    "currency": "covered:MF-43"
+  },
+  "prospectus": {
+    "url": "https://maya.tase.co.il/he/funds/mutual-funds/5137740",
+    "date": null
+  },
+  "exposure_code": null,
+  "distribution_fee_type": null,
+  "creation_redemption_fee_category": null,
+  "snapshot": "2026-10-26"
+}
