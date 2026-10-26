@@ -268,5 +268,10 @@
     "tax-at-exit": "blocked:PEN-OQ7",
     "tax-during": "covered",
     "transfer-switch-process": "covered"
+  },
+  "company_terms": {
+    "eligibility": [
+      "PEN-45"
+    ]
   }
 }

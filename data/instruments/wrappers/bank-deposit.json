@@ -148,6 +148,17 @@
     "tax-during": "covered",
     "transfer-switch-process": "covered"
   },
+  "company_terms": {
+    "real-vs-nominal": [
+      "BANK-36"
+    ],
+    "liquidity-lockup": [
+      "BANK-37"
+    ],
+    "minimum": [
+      "BANK-37"
+    ]
+  },
   "tier": 1,
   "open_questions": [
     "TXI-OQ14",

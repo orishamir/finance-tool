@@ -122,7 +122,40 @@ def second_pass():
         save(p, d)
     print("\n".join(out))
 
+
+# ---- third pass (after the lead's addition of the new records, 2026-10-26): BRK-52 on the custody rows whose notes already name it,
+# and the new company records where a property is each company's own. Run: python3 fix-records.py --third
+def third_pass():
+    out = []
+    for w in ["makam", "money-market-fund-daily", "money-market-fund-renewable", "brokerage-account"]:
+        p, d = load("wrappers", w)
+        ids = d["fee_caps"]["custody"]["rule_ids"]
+        assert "BRK-52" in d["fee_caps"]["custody"]["notes"], w
+        if "BRK-52" not in ids:
+            ids.append("BRK-52")
+            out.append(f"{w} fee_caps.custody.rule_ids: + BRK-52")
+        save(p, d)
+    add = {
+        "bank-deposit": {"real-vs-nominal": ["BANK-36"], "liquidity-lockup": ["BANK-37"], "minimum": ["BANK-37"]},
+        "savings-plan": {"liquidity-lockup": ["BPN-10", "BANK-38"], "minimum": ["BANK-38"]},
+        "keren-hishtalmut": {"fee-management-balance": ["KH-33", "SW-56"], "fee-change-over-time": ["KH-33"]},
+        "pension-general": {"eligibility": ["PEN-45"]},
+        "provident-for-annuity": {"fee-change-over-time": ["PEN-47"]},
+    }
+    for w, terms in add.items():
+        p, d = load("wrappers", w)
+        ct = dict(d.get("company_terms") or {})
+        for dim, ids in terms.items():
+            ct[dim] = list(dict.fromkeys([*ct.get(dim, []), *ids]))
+        d["company_terms"] = ct
+        keys = [k for k in d.keys() if k != "company_terms"]
+        keys.insert(keys.index("dimensions") + 1, "company_terms")
+        d = {k: d[k] for k in keys}
+        out.append(f"{w} company_terms: {ct}")
+        save(p, d)
+    print("\n".join(out))
+
 import sys
 if __name__ == "__main__":
-    # run in this order, once each: python3 fix-records.py, then python3 fix-records.py --second
-    second_pass() if "--second" in sys.argv else first_pass()
+    # run in this order, once each: python3 fix-records.py, then --second, then --third
+    third_pass() if "--third" in sys.argv else second_pass() if "--second" in sys.argv else first_pass()

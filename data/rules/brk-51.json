@@ -1,0 +1,146 @@
+{
+  "id": "BRK-51",
+  "title": "Interactive Brokers Ireland: client-money segregation, its membership of the Irish scheme, and SIPC and excess cover through its US affiliate",
+  "title_he": "אינטראקטיב ברוקרס אירלנד: הפרדת כספי הלקוחות, תוכנית הפיצוי האירית, ו־SIPC וביטוח עודף דרך החברה האמריקנית",
+  "text_he": "אינטראקטיב ברוקרס אירלנד כותבת שהיא מחזיקה את כספי הלקוחות בחשבונות לקוח נפרדים ומתאמת אותם כל יום. לקוחות פרטיים זכאים שלה מכוסים בתוכנית הפיצוי למשקיעים של אירלנד: חלק מההפסד עד תקרה, אם החברה קורסת, ולא על הפסדי שוק. ניירות ערך שהיא מחזיקה אצל החברה הקשורה בארצות הברית מכוסים ב־SIPC עד תקרה, ומעליה בפוליסה של לוידס עד תקרה גבוהה יותר; חוזים עתידיים לא מכוסים. כל זה לפי החברה עצמה; איזו חברה של הקבוצה מחזיקה חשבון של תושב ישראל לא הוכרע.",
+  "figure_names_he": {
+    "irish_scheme_share": "חלק ההפסד שתוכנית הפיצוי האירית מכסה",
+    "irish_scheme_cap": "תקרת הפיצוי למשקיע בתוכנית האירית",
+    "sipc_cap": "תקרת SIPC",
+    "sipc_cash_cap": "תקרת SIPC למזומן",
+    "excess_cap": "תקרת הביטוח העודף ללקוח"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-26",
+  "figures": {
+    "irish_scheme_share": {
+      "value": 90,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.interactivebrokers.ie/en/general/security-investor-protection.php",
+        "title": "Interactive Brokers Ireland: investor protection",
+        "publisher": "Interactive Brokers Ireland",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "BRK-51"
+      ],
+      "state": "sourced",
+      "notes": "As IB Ireland states the Irish Investor Compensation Scheme (90% of the loss); the scheme's own terms are BRK-35."
+    },
+    "irish_scheme_cap": {
+      "value": 20000,
+      "unit": "eur",
+      "source": {
+        "url": "https://www.interactivebrokers.ie/en/general/security-investor-protection.php",
+        "title": "Interactive Brokers Ireland: investor protection",
+        "publisher": "Interactive Brokers Ireland",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "BRK-51"
+      ],
+      "state": "sourced",
+      "notes": "As IB Ireland states it: up to EUR 20,000 per investor."
+    },
+    "sipc_cap": {
+      "value": 500000,
+      "unit": "usd",
+      "source": {
+        "url": "https://www.interactivebrokers.ie/en/general/security-investor-protection.php",
+        "title": "Interactive Brokers Ireland: investor protection",
+        "publisher": "Interactive Brokers Ireland",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "BRK-51"
+      ],
+      "state": "sourced",
+      "notes": "As IB Ireland states SIPC cover at its US affiliate IBLLC; SIPC's own terms are REG-27."
+    },
+    "sipc_cash_cap": {
+      "value": 250000,
+      "unit": "usd",
+      "source": {
+        "url": "https://www.interactivebrokers.ie/en/general/security-investor-protection.php",
+        "title": "Interactive Brokers Ireland: investor protection",
+        "publisher": "Interactive Brokers Ireland",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "BRK-51"
+      ],
+      "state": "sourced",
+      "notes": "As IB Ireland states it: the cash sublimit of the SIPC cover."
+    },
+    "excess_cap": {
+      "value": 30000000,
+      "unit": "usd",
+      "source": {
+        "url": "https://www.interactivebrokers.ie/en/general/security-investor-protection.php",
+        "title": "Interactive Brokers Ireland: investor protection",
+        "publisher": "Interactive Brokers Ireland",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BRK-51"
+      ],
+      "state": "sourced",
+      "notes": "IB's excess Lloyd's policy as IB Ireland states it: up to USD 30 million per client (cash USD 900,000, aggregate USD 150 million)."
+    }
+  },
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "ib-ireland",
+      "name_he": "Interactive Brokers Ireland"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.interactivebrokers.ie/en/general/security-investor-protection.php",
+      "title": "אינטראקטיב ברוקרס אירלנד: הגנה על לקוחות",
+      "title_he": "אינטראקטיב ברוקרס אירלנד: הגנה על לקוחות",
+      "publisher": "Interactive Brokers Ireland",
+      "publisher_he": "Interactive Brokers",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "BRK-35",
+    "REG-27"
+  ]
+}

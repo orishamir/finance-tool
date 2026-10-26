@@ -1,0 +1,68 @@
+{
+  "id": "BANK-36",
+  "title": "Bank Leumi, Bank Yahav and Discount Bank: how they quote and build CPI-linked deposits",
+  "title_he": "לאומי, יהב ודיסקונט: איך הם מציגים ובונים פיקדונות צמודי מדד",
+  "text_he": "שלושת הבנקים שנבדקו מציגים פיקדון צמוד כריבית ריאלית בתוספת הצמדה למדד. בלאומי יש חיסכון צמוד מדד לשנה בריבית קבועה בלי תחנות יציאה, ותוכנית תשלומים צמודה למדד לטווח ארוך עם תחנות יציאה לקראת סופה. ביהב יש חיסכון צמוד לשנה או לשנתיים שמעניק הבטחת קרן, וחיסכון שבסוף שנה נותן ללקוח את הגבוה מבין ריבית קבועה צמודה וריבית קבועה לא צמודה. דיסקונט כותב שפיקדונות צמודי מדד צמודים למדד המחירים לצרכן. בנקים אחרים לא נבדקו, ולכן זו לא ספירה של כל הבנקים.",
+  "strength": "institution",
+  "dimensions": [
+    "real-vs-nominal",
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-26",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "leumi",
+      "name_he": "בנק לאומי"
+    },
+    {
+      "id": "yahav",
+      "name_he": "בנק יהב"
+    },
+    {
+      "id": "discount",
+      "name_he": "בנק דיסקונט"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+      "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "title_he": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.4, 6, 8",
+      "locator_he": "עמודים 4, 6, 8",
+      "page": 4,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.leumi.co.il/he/savings/interest-rate-table",
+      "title": "לאומי: טבלת שיעורי הריבית",
+      "title_he": "לאומי: טבלת שיעורי הריבית",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.discountbank.co.il/private/savings-investments/savings-interest/",
+      "title": "דיסקונט: חיסכון וריבית",
+      "title_he": "דיסקונט: חיסכון וריבית",
+      "publisher": "Discount Bank",
+      "publisher_he": "בנק דיסקונט",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "BANK-26"
+  ]
+}

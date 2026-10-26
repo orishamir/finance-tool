@@ -1,0 +1,64 @@
+{
+  "id": "TXK-28",
+  "title": "Harel says it withholds 25% on the real gain of a kupat gemel lehashkaa lump sum (unsettled)",
+  "title_he": "הראל: השיעור שהיא מנכה מהרווח הריאלי במשיכה מקופת גמל להשקעה",
+  "text_he": "הראל מתארת משיכה של כל הסכום מקופת הגמל להשקעה שלה בניכוי מס רווחי הון על הרווח הריאלי בלבד, בשיעור שהיא מציינת. זה שונה מהשיעור שבתקנת הניכוי במקור, בנוסח שנמצא, לריבית שקופת גמל משלמת ליחיד. לא נמצאו תיקון מאוחר של התקנה או הוראה של רשות המסים שקובעים שיעור אחר לתשלום הזה; אם יימצאו, השיעור כללי, ואם לא, זה הנוהג של הראל. מסמכים של חברות אחרות לא נקראו לעניין זה. המס הסופי לא תלוי בניכוי.",
+  "figure_names_he": {
+    "harel_stated_rate": "שיעור הניכוי לפי הראל"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "tax-at-exit",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "harel_stated_rate": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.harel-group.co.il/long-term-savings/funding-saving/join/doclib/%d7%92%d7%9e%d7%9c%20%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94.pdf",
+        "title": "קופת גמל להשקעה (עלון הראל, 2023), p.1: \"בניכוי 25% מס רווחי הון על הרווח הריאלי בלבד\"",
+        "publisher": "Harel Insurance and Finance",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TXK-28"
+      ],
+      "state": "sourced",
+      "notes": "Harel's statement of what it withholds (moved from TXK-26 on 2026-10-26). It departs from reg. 3(א)'s text as found (20%, TXK-26); no Tax Authority instruction was found either way."
+    }
+  },
+  "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
+  "checked": "2026-10-26",
+  "scope": "unsettled",
+  "scope_institutions": [
+    {
+      "id": "harel",
+      "name_he": "הראל"
+    }
+  ],
+  "scope_settle": "an amendment of reg. 3 after ק\"ת 7907 in Reshumot, or a Tax Authority instruction to managing companies setting the rate for this payment, or every manager's documents",
+  "sources": [
+    {
+      "url": "https://www.harel-group.co.il/long-term-savings/funding-saving/join/doclib/%d7%92%d7%9e%d7%9c%20%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94.pdf",
+      "title": "קופת גמל להשקעה (עלון הראל, 2023)",
+      "title_he": "קופת גמל להשקעה (עלון הראל, 2023)",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "בניכוי 25% מס רווחי הון על הרווח הריאלי בלבד",
+      "checked": "2026-10-25"
+    }
+  ]
+}

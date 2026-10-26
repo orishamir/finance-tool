@@ -26,6 +26,7 @@
     }
   ],
   "derived_from": [
+    "BRK-51",
     "REG-27"
   ]
 }

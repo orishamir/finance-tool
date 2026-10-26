@@ -1,0 +1,100 @@
+{
+  "id": "ETF-69",
+  "title": "MTF, Tachlit, IBI and Kesem: how their MSCI World and ACWI funds word the tracking asset (the net version in USD)",
+  "title_he": "MTF, תכלית, אי.בי.אי וקסם: איך קרנות MSCI World ו־ACWI שלהן מגדירות את נכס המעקב",
+  "text_he": "קרנות ה־MSCI World וה־ACWI הישראליות שהדוחות שלהן נקראו, של MTF, תכלית, אי.בי.אי וקסם, מגדירות את נכס המעקב כמדד במלואו ועוד חשיפה מלאה לדולר (ובקרנות הסל המנוטרלות דולר, כמדד במונחי דולר, והשפעת הנטרול מדווחת בנפרד), ואת אופן חישוב המדד כמדד השקעה נטו ממס. גרסת הנטו של MSCI מניחה את שיעור הניכוי המלא, בלי אמנה, ולכן מדד הייחוס של הקרנות האלה כבר מניח אותו. קרנות אחרות על המדדים האלה לא נבדקו.",
+  "strength": "institution",
+  "dimensions": [
+    "distribution-policy",
+    "currency",
+    "foreign-withholding-domicile"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-26",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "migdal-funds",
+      "name_he": "מגדל קרנות נאמנות"
+    },
+    {
+      "id": "meitav-funds",
+      "name_he": "מיטב קרנות נאמנות"
+    },
+    {
+      "id": "ibi-funds",
+      "name_he": "אי.בי.אי קרנות נאמנות"
+    },
+    {
+      "id": "kesem",
+      "name_he": "קסם קרנות נאמנות"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1729001-1730000/P1729627-00.pdf",
+      "title": "MTF, דוח שנתי \"MTF מחקה (MSCI World (4D\" (5122569), 31.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.2-3",
+      "locator_he": "עמודים 2 עד 3",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1731001-1732000/P1731275-00.pdf",
+      "title": "תכלית, דוח שנתי \"תכלית MSCI WORLD (4D) TTF\" (5124573), 31.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732496-00.pdf",
+      "title": "אי.בי.אי., דוח שנתי \"אי.בי.אי. מחקה (4D)י MSCI AC World\" (5139605), 31.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727505-00.pdf",
+      "title": "קסם, דוח שנתי \"קסם MSCI AC World (4A) ETF מנוטרלת דולר\" (1147362), 31.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.3, 11",
+      "locator_he": "עמודים 3, 11",
+      "page": 3,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1724001-1725000/P1724834-00.pdf",
+      "title": "קסם, דוח שנתי \"קסם MSCI World (4A) ETF מנוטרלת דולר\" (1147073), 31.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.3, 10",
+      "locator_he": "עמודים 3, 10",
+      "page": 3,
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "ETF-49"
+  ]
+}

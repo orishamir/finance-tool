@@ -139,7 +139,11 @@
   },
   "company_terms": {
     "liquidity-lockup": [
-      "BPN-10"
+      "BPN-10",
+      "BANK-38"
+    ],
+    "minimum": [
+      "BANK-38"
     ]
   },
   "tier": 1,

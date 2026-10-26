@@ -244,6 +244,13 @@
   "company_terms": {
     "eligibility": [
       "KH-09"
+    ],
+    "fee-management-balance": [
+      "KH-33",
+      "SW-56"
+    ],
+    "fee-change-over-time": [
+      "KH-33"
     ]
   }
 }

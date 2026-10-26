@@ -90,7 +90,8 @@
         "BRK-17",
         "BANK-18",
         "BRK-24",
-        "MF-26"
+        "MF-26",
+        "BRK-52"
       ],
       "state": "sourced",
       "notes": "No regulatory cap on the rate (banks: a percentage with a maximum per deposit, price set by the bank). Banks may not charge it at all on makam or on money-market fund units (BRK-17, BANK-18); the ban binds banks only, and no rule limits a non-bank member's custody fee on them (BRK-17, BRK-52; BRK open question 11 closed 2026-10-26). Non-bank members name it דמי משמרת or דמי ניהול/טיפול פיקדון ני\"ע."
