@@ -31,6 +31,18 @@ describe("extract-sources: fixture Source lines", () => {
     expect(s!.locator_he).toBe("סעיפים 64א2, 64א3(א)(1)");
   });
 
+  it("a documents row with hosts labels only links on those hosts; another copy keeps its own host's label (2026-10-26)", () => {
+    const documents = [{ id: "regs", match: ["ניכוי מריבית"], title_he: "תקנות (ניכוי מריבית)", publisher_he: "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)", kind: "regulation" as const, official_url: null, hosts: ["btl.gov.il"] }];
+    const publishers = { "he.wikisource.org": { publisher: "Hebrew Wikisource", publisher_he: "ויקיטקסט", kind: "law" as const, mirror: "wikisource" as const }, "free-justice.openapi.gov.il": { publisher: "Reshumot", publisher_he: "רשומות (משרד המשפטים)", kind: "law" as const, mirror: null } };
+    const at = (url: string, title: string) => extractFromLine(`[${title}](${url}) · checked 2026-10-26 · primary`, ctx({ documents, publishers })).sources[0]!;
+    expect(at("https://www.btl.gov.il/Laws1/02_0103_100269.pdf", "תקנות מס הכנסה (ניכוי מריבית), נוסח משולב").publisher_he).toBe("שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)");
+    const mirror = at("https://he.wikisource.org/wiki/x", "תקנות מס הכנסה (ניכוי מריבית), ויקיטקסט");
+    expect(mirror.publisher_he).toBe("ויקיטקסט");
+    expect(mirror.kind).toBe("regulation");
+    // the gazette host's "law" default gives way to a title that names regulations
+    expect(at("https://free-justice.openapi.gov.il/free/moj/x/Documents/y", "תקנות מס הכנסה (ניכוי מריבית) (תיקון)").kind).toBe("regulation");
+  });
+
   it("a passage after the first quoted one gets a source of its own, with its page and quote (TXF-28, 2026-10-26)", () => {
     const line =
       '[Irish Revenue, Tax and Duty Manual Part 27-01a-02](https://www.revenue.ie/x/27-01a-02.pdf), p.8, s.4.1 "on the making of a regular payment"; p.9, s.4.2.3 "units which are held in a recognised clearing system"; p.11, s.4.2.8 "an appropriate non-resident declaration" · checked 2026-10-26 · primary (foreign tax authority)';

@@ -36,7 +36,7 @@ P-05, `data/parameters/illustrative-scenario.json`, with the slider ranges (desi
 
 **Study fund run:** the `keren-hishtalmut` entry sets `employment` to `self-employed`, because an employee's run needs a salary, which comes from the person's entered profile and not from a site parameter; the self-employed run needs none (A-12, TXH-08).
 
-**Income (`annual_income`):** 144,000 NIS a year, the income of the founder's own case (12,000 a month), read only by runs that need an income (the self-employed study-fund deduction, TXH-05); the person's entered income replaces it. **Why:** chosen by Claude at the founder's request, 2026-10-23, the founder's own case; revisable.
+**Income (`annual_income`):** 144,000 NIS a year, the income of the founder's own case (12,000 a month), read only by runs that need an income: the self-employed study-fund deduction (TXH-05), the other income above which a gain is taxed from 60 (method F-42: the kupat gemel lehashkaa lump sum and the brokerage account, since 2026-10-26) and the surtax threshold (F-43); the person's entered income replaces it. **Why:** chosen by Claude at the founder's request, 2026-10-23, the founder's own case; revisable.
 
 ## Sensitivity bounds
 

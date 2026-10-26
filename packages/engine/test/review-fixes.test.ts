@@ -201,7 +201,9 @@ it("applies the age-60 brackets to a kupat gemel lehashkaa exit (F-44 with F-42,
   expect(r.taxAtExit).toBeCloseTo(0.1 * r.detail.realGain!, 6);
   expect(under60.taxAtExit).toBeCloseTo(0.25 * under60.detail.realGain!, 6);
   expect(ids(r)).not.toContain("TXS-23");
-  expect(codes(r)).toContain("G-21");
+  // The manager withholds 20% (TXK-26); the final tax is settled in the return (flag TXK-26, not G-21).
+  expect(codes(r)).toContain("TXK-26");
+  expect(codes(r)).not.toContain("G-21");
   expect(codes(r)).not.toContain("TXK-06");
 });
 

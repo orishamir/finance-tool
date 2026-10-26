@@ -2038,11 +2038,11 @@ def s51():
         f'| 2 | Lump sum: gains are interest income at up to 25%, on the real gain | {L("TXK-05", "TXK-06", "TXK-07")} | real gain {f2(ex["real_gain"])} |\n'
         f'| 3 | The person reaches 60 in the exit tax year: the reduced 10/14/20/31% brackets apply to all their taxable income; 25% is a maximum rate, so lower brackets apply first, and the gains are the top slice | {L("TXK-06", "TXG-04", "TXG-07")} | — |\n'
         f'| 4 | Tax = Σ over the slice from Y = 60,000 to Y + real of min(bracket rate, 25%) | {L("TXG-07")} | {f2(ts)} |\n'
-        f'| 5 | At the full rate it would be 25% of the real gain; the difference comes back through a return (A-14 on) | {L("TXG-25")} | full {f2(ex["tax25real"])}, relief {f2(ex["tax25real"] - ts)} |\n'
+        f'| 5 | At the full rate it would be 25% of the real gain. The manager withholds 20% (reg. 3(א)) and the final tax is settled against it in the return (A-14 on): every part of this slice is below 20%, so the difference comes back | {L("TXK-26", "TXG-25")} | full {f2(ex["tax25real"])}, relief {f2(ex["tax25real"] - ts)} |\n'
         f'| 6 | Surtax: Y + real is far below the threshold | {L("TXG-09")} | 0 |\n'
     )
     section('S51', 'Kupat gemel lehashkaa, lump sum at 60 with low other income', 'computed', body,
-            f'Gross balance {f2(res["B"])}; real gain {f2(ex["real_gain"])}; tax at the brackets {f2(ts)} (method F-44 with F-42); at the full 25% it would be {f2(ex["tax25real"])}, so the relief is {f2(ex["tax25real"] - ts)}; V_T {f2(V)}, real {f2(V / path.I(T))}; fees: balance {f2(res["fees"]["balance"])}, direct expenses {f2(res["fees"]["direct"])}; flag G-21 (settled through a return).')
+            f'Gross balance {f2(res["B"])}; real gain {f2(ex["real_gain"])}; tax at the brackets {f2(ts)} (method F-44 with F-42); at the full 25% it would be {f2(ex["tax25real"])}, so the relief is {f2(ex["tax25real"] - ts)}; V_T {f2(V)}, real {f2(V / path.I(T))}; fees: balance {f2(res["fees"]["balance"])}, direct expenses {f2(res["fees"]["direct"])}; flag TXK-26 (the manager withholds 20%; the final tax is settled in the return).')
 
 
 def s52():
@@ -2059,10 +2059,10 @@ def s52():
     fall_b = sum(l[1] * (1 - sb.path.X(60) / l[2]) for l in sb.lots)
     body = (
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
-        f'| 1 | As S16 (TASE foreign fund, 90% test met, so the exchange rate is the index) with the shekel strengthening: f = −3% a year, X_60 = {f6(pa.X(60))} | {L("TXF-04", "TXF-03")} | — |\n'
-        f'| 2 | (a) r_g 6% in shekels: each lot\'s inflationary amount would be negative; it is 0, so the real gain is the nominal gain, less the exit-year custody {f2(oa["deductible_exit_year"])} | {L("TXS-02", "TXF-03")} | nominal gain {f2(nom_a)}, real gain {f2(oa["real_gain"])} (without the rule {f2(ua)}) |\n'
+        f'| 1 | As S16 (TASE foreign fund, 90% test met, so the exchange rate is the index) with the shekel strengthening: f = −3% a year, X_60 = {f6(pa.X(60))} | {L("TXF-04")} | — |\n'
+        f'| 2 | (a) r_g 6% in shekels: each lot\'s inflationary amount would be negative; it is 0, so the real gain is the nominal gain, less the exit-year custody {f2(oa["deductible_exit_year"])} | {L("TXS-02", "TXF-04")} | nominal gain {f2(nom_a)}, real gain {f2(oa["real_gain"])} (without the rule {f2(ua)}) |\n'
         f'| 3 | (a) Tax 25% of that gain | {L("TXF-02", "TXS-09")} | {f2(oa["tax"])} |\n'
-        f'| 4 | (b) r_g −1% in shekels: the sale ends in a nominal loss of {f2(cost_b - ob["gross_or_B"])}, smaller than the part caused by the fall, {f2(fall_b)}; that part is not allowable, so no loss is left beyond the exit-year custody, and no tax | {L("TXS-02", "TXF-03")} | real gain {f2(ob["real_gain"])} (without the rule {f2(ub)}, which would have been taxed) |\n'
+        f'| 4 | (b) r_g −1% in shekels: the sale ends in a nominal loss of {f2(cost_b - ob["gross_or_B"])}, smaller than the part caused by the fall, {f2(fall_b)}; that part is not allowable, so no loss is left beyond the exit-year custody, and no tax | {L("TXS-02", "TXF-04")} | real gain {f2(ob["real_gain"])} (without the rule {f2(ub)}, which would have been taxed) |\n'
         f'| 5 | (b) Tax | {L("TXF-02")} | {f2(ob["tax"])} |\n\n'
         + f'(a) V_T {f2(oa["V"])}, real {f2(oa["real_V"])}; fees: {fees_line(sa, oa)}.  \n'
         + f'(b) V_T {f2(ob["V"])}, real {f2(ob["real_V"])}; fees: {fees_line(sb, ob)}.'

@@ -598,8 +598,10 @@ export function buildProviderWorkbench(a: BuildArgs): ProviderResult {
       const lvl = src?.level ?? "list";
       const avg = lvl !== "list" && lvl !== l.level ? s.averages.find((x) => x.line_id === id && x.level === lvl) : undefined;
       const isAvg = lvl !== "list";
-      // F-14 (2026-10-26): a non-bank member's custody line on a money-market fund is charged as published; its note says
-      // that the regulators report it customarily waived there, which is practice, not a term of the tariff.
+      // F-14 (2026-10-26): a non-bank member's custody line on a money-market fund is charged as published; its note says that
+      // no rule limiting it was found, that a member with a distribution agreement for the fund may charge nothing on it (MF-26),
+      // and what the regulators' report says of practice: a blanket waiver of custody proper only, a handling fee usually fixed
+      // and often refunded (BRK-52). Practice, not a term of the tariff.
       const rate = withStale(avg ? avg.rate : l.rate, stale, s.provider.name_he);
       const mmfNonBank = l.base === "custody" && subject.instrumentClass === "money_market_units" && s.provider.class !== "bank";
       return [{

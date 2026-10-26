@@ -292,7 +292,6 @@ export function buildProvident(c: G2Ctx): SignatureData {
     ["nominalRate", "TXK-06", "nominal_rate"],
     ["ceiling", "KGL-03", "ceiling"],
     ["brokerTaxRate", "TXS-09", "rate"],
-    ["sixtyAge", "TXG-04", "age"],
   ]);
   d.facts.returnPct = p05Value(c.p05, "A-01");
   d.facts.inflationPct = p05Value(c.p05, "A-02");

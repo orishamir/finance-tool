@@ -10,7 +10,7 @@ import { feeLines, withoutFeeLine, type FeeLine } from "../fees/materiality.ts";
 import type { Commission, Custody } from "../formulas/fees.ts";
 import type { Goal } from "../formulas/time.ts";
 import type { Profile } from "../ledgers/common.ts";
-import { runSecurities, type Fund, type SecuritiesInput } from "../ledgers/securities.ts";
+import { memberKindOf, runSecurities, type Fund, type SecuritiesInput } from "../ledgers/securities.ts";
 import { RecordInputError } from "../resolver.ts";
 import type { RunContext, RunResult } from "../result.ts";
 
@@ -479,8 +479,8 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       continue;
     }
 
-    // F-14: a money-market unit pays custody at a non-bank member's tariff, never at a bank's (BRK-17, BANK-18).
-    const memberKind = s.provider.class === "bank" ? "bank" : s.provider.class === "broker" ? "non-bank" : undefined;
+    // F-14: a money-market unit pays custody at a non-bank member's or a foreign broker's tariff, never at a bank's (BRK-17, BANK-18).
+    const memberKind = memberKindOf(s.provider.class);
     const planF = { run: "runSecurities", input: plan(built.tariff, horizon, memberKind) } as const;
     const run = runSecurities(planF.input, ctx);
     const run12 = runSecurities(plan(built.tariff, 12, memberKind), ctx);

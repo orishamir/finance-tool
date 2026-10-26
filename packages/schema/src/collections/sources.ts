@@ -22,6 +22,11 @@ export const documentRow = z.strictObject({
   publisher_he: z.string().min(1),
   kind: sourceKind,
   official_url: z.string().min(1).nullable(),
+  /**
+   * Optional: the hosts (without "www.") whose links the row may label (2026-10-26). A row that names where a copy is hosted ("נוסח
+   * משולב באתר המוסד לביטוח לאומי") is limited to that host, so another copy of the same document keeps its own host's label.
+   */
+  hosts: z.array(z.string().min(1)).min(1).optional(),
   /** Optional working note; never shown. */
   note: z.string().optional(),
 });

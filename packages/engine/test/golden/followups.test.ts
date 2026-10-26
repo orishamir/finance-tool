@@ -3,7 +3,7 @@
 // cap (CS-18) or an entered rate, and money-market custody at a non-bank member (F-14). Expected values are the independent
 // check's (tests/golden/expected_calc.py), never the engine's; golden() confirms each one is printed in its scenario.
 import { describe, expect, it } from "vitest";
-import { runChildSavings, runProvident, runSecurities, type RunResult, type SecuritiesInput } from "../../src/index.ts";
+import { memberKindOf, runChildSavings, runProvident, runSecurities, type RunResult, type SecuritiesInput } from "../../src/index.ts";
 import { context, golden } from "./harness.ts";
 
 const ctx = context();
@@ -37,7 +37,10 @@ describe("Part E: follow-ups of 2026-10-26", () => {
     g.value("balance fees", r.fees.balance, 3_638.76);
     g.value("direct expenses", r.fees.direct, 454.85);
     g.done();
-    expect(flagCodes(r)).toContain("G-21");
+    // The manager withholds 20% (TXK-26) and the final tax is settled in the return: flagged as TXK-26, not G-21 (a bank's withholding).
+    expect(flagCodes(r)).toContain("TXK-26");
+    expect(flagCodes(r)).not.toContain("G-21");
+    expect(ruleIds(r)).toContain("TXK-26");
     expect(flagCodes(r)).not.toContain("TXK-06");
     expect(r.formulas).toContain("F-42");
     // The manager's withholding has no age rule, but it is not the securities regulations' (TXS-23).
@@ -60,6 +63,7 @@ describe("Part E: follow-ups of 2026-10-26", () => {
     g.done();
     expect(flagCodes(r)).toContain("TXK-06");
     expect(flagCodes(r)).not.toContain("G-21");
+    expect(flagCodes(r)).not.toContain("TXK-26");
   });
 
   const s52 = (grossReturn: number): SecuritiesInput => ({
@@ -70,7 +74,7 @@ describe("Part E: follow-ups of 2026-10-26", () => {
     profile: {},
   });
 
-  it("S52 (a) TASE foreign fund when the shekel strengthens: the real gain is the nominal gain (TXS-02, TXF-03)", () => {
+  it("S52 (a) TASE foreign fund when the shekel strengthens: the real gain is the nominal gain (TXS-02, TXF-04)", () => {
     const r = runSecurities(s52(0.06), ctx);
     const g = golden("S52");
     g.value("real gain", r.detail.realGain, 30_052.89);
@@ -79,7 +83,9 @@ describe("Part E: follow-ups of 2026-10-26", () => {
     g.value("real", r.real, 105_763.45);
     g.done();
     expect(r.detail.realGain!).toBeLessThanOrEqual(r.detail.nominalGain!);
-    expect(ruleIds(r)).toEqual(expect.arrayContaining(["TXS-02", "TXF-03"]));
+    // A TASE foreign fund takes the exchange rate as its index under TXF-04, not TXF-03 (which sends such a fund to TXF-04).
+    expect(ruleIds(r)).toEqual(expect.arrayContaining(["TXS-02", "TXF-04"]));
+    expect(ruleIds(r)).not.toContain("TXF-03");
   });
 
   it("S52 (b) a nominal loss smaller than the currency's fall: none of it is allowable, and no tax", () => {
@@ -198,5 +204,20 @@ describe("Part E: follow-ups of 2026-10-26", () => {
     );
     expect(r.fees.custody).toBe(0);
     expect(ruleIds(r)).toContain("BANK-18");
+  });
+
+  it("only a bank is a bank for the custody ban: a broker and a foreign broker are non-bank (F-14, 2026-10-26 review)", () => {
+    expect(memberKindOf("bank")).toBe("bank");
+    expect(memberKindOf("broker")).toBe("non-bank");
+    expect(memberKindOf("foreign_broker")).toBe("non-bank");
+  });
+
+  it("a CPI-linked child-savings bank deposit with a falling CPI keeps the plain indexation, labelled a reading of TXI-25 (F-50)", () => {
+    const run = (inflation: number) => runChildSavings({ route: "bank", bankLinkage: "cpi", doubling: false, sex: "girl", months: 216, market: { rate: 0.01, inflation } }, ctx);
+    const falling = run(-0.01);
+    // The Supreme Court held it for a deposit linked to a foreign currency; for a CPI-linked deposit it is an inference (TXI-25).
+    expect(labelOf(falling, "TXI-25")).toBe("reading");
+    expect(falling.detail.realGain!).toBeGreaterThan(falling.detail.gain!);
+    expect(labelOf(run(0.02), "TXI-25")).toBeUndefined();
   });
 });

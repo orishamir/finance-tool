@@ -6,11 +6,11 @@ Tables read: publishers.json yes, documents.json yes.
 
 - Rules: 583; with sources: 583; unresolved (sources_missing_reason): 0
 - Entries: 1749; with locator 1463, locator_he 1262, quote 694, anchor 18, page 1403
-- Entries with title_he: 1633; with publisher_he: 1746; rules whose first source lacks publisher_he: 0
+- Entries with title_he: 1632; with publisher_he: 1746; rules whose first source lacks publisher_he: 0
 - Rules with derived_from: 137
 - Strengths: primary 1405, primary-mirror 77, secondary 17, institution 250
 - Rule strength realigned to its best source (primary/mirror pair only): 0
-- Kinds: regulator_page 160, circular 184, regulation 246, article 15, law 526, official_pdf 271, dataset 62, institution_doc 228, exchange_rules 25, other 23, form 9
+- Kinds: regulator_page 160, circular 184, regulation 283, article 15, law 489, official_pdf 271, dataset 62, institution_doc 228, exchange_rules 25, other 23, form 9
 
 ## Per rule base file
 
@@ -115,6 +115,7 @@ Tables read: publishers.json yes, documents.json yes.
 - 1 x תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (כללי השקעה החלים על גופים מוסדיים), התשע"ב-2012, Wikisource mirror
 - 1 x קובץ התקנות 5637 (10.11.1994), סריקה באתר olaw
 - 1 x קובץ התקנות 5987 (1.7.1999), סריקה באתר olaw
+- 1 x תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), Wikisource mirror
 - 1 x חוזר פנסיה 2017-3-7 – ... עדכון, 1.1.2018 (עותק באתר prisha.co.il)
 - 1 x חוזר פנסיה 2022-3-3 – הוראות לניהול קרן חדשה – תיקון, 27.7.2022 (עותק באתר prisha.co.il)
 - 1 x data.gov.il, בנק ישראל: רשימת תאגידים בנקאיים בישראל - כתובות וקישורים

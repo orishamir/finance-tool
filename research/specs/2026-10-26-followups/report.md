@@ -2,6 +2,12 @@
 
 Builder: Claude Opus 5.5. Brief: `brief.md` beside this report, sections A and B. Working scripts are in `tools/`, the screenshots in `shots/`. Main had not moved when this was committed (base `2bac2df`), so no rebase was needed. This file is written by `tools/write_report.py`, because the harness refuses a direct .md write from a builder.
 
+**Review round (2026-10-26).** A finance reviewer and an independent reviewer found 11 issues. Their fixes are in the section "Review round" at the end, which supersedes the first round below where the two differ:
+- the age-60 settlement is flagged TXK-26, not G-21;
+- the money-market custody note is narrower;
+- the child-savings sentence drops the deposit cap;
+- S52 cites TXF-04, not TXF-03.
+
 ## What changed
 
 ### A1. A falling index or currency never raises the taxable gain
@@ -183,3 +189,121 @@ Builder: Claude Opus 5.5. Brief: `brief.md` beside this report, sections A and B
   - a note on an existing provider line.
 - No new component.
 - The shots match the gallery's pieces: `Callout`, `Num` sheets, the worth list.
+
+## Review round (2026-10-26)
+
+Fixes for the finance reviewer's and the independent reviewer's findings. Every fact was checked in `.claude/skills/il-finance/references/`. No golden figure changed. The scripts are `tools/shots-r2.mjs`, `tools/write_requests.py` and `tools/income-scratch.test.ts.txt` (a scratch test, kept as text). The shots are `shots/r2-*`.
+
+### 1. The age-60 settlement follows TXK-26
+- **The rule.** The manager withholds 20% whatever the age (reg. 3(א), TXK-26). Withholding is an advance: the final tax is settled against it in the annual return. Money comes back only on a part whose bracket is below 20%, and more is due on a part above it. The 25% withholding is Harel's own unsettled statement (TXK-28).
+- **The guide** (`content/guide/kupat-gemel-lehashkaa.tsx`) now says so, with the 20% as TXK-26's figure and the chip TXK-26. It no longer says "וההפרש חוזר בדוח שנתי".
+- **The flag line `TXK-06`** (shown only with A-14 off, which no page sets) says that tax withheld beyond what is due comes back only through a return. It also says that the full rate kept in that case is above the actual tax on a part below the withholding rate.
+- **A new flag `TXK-26`** replaces G-21 at this exit. Its line gives the settlement and says the figure is the final tax after the return. The engine cites TXK-26 (`ledgers/provident.ts`), and G-21 is no longer raised there.
+- **Method.** F-44 is rewritten from TXK-26, TXK-06 and TXK-28. F-42 says this exit's settlement is F-44's. G-21's row says the kupat gemel lehashkaa exit is not its case.
+- **Golden check.** S51's workings now cite TXK-26 and TXG-25, wording only.
+
+### 2. The age-60 figures carry their rules (`components/guide-signature/kupat-gemel-lehashkaa.tsx`)
+- **From the run, not the bundle.** The tax, the amount left, the fund's gain and the brokerage gain now carry the rules their own run read, its flags and its labels (`runFigure` in `guide-signature/kit.tsx`). Before, they listed every rule the bundle holds and no flags.
+- **The tax at 60 or over** opens on F-42 ("מגיל שישים: מדרגות המס המופחתות על הרווח"). Its inputs are the real gain (F-44), the age, the year's income and the 25% cap. Its rules include TXG-04, TXG-07 and TXK-26. Its flags are TXK-26, G-02 and G-23; the fee flags stay on the figures they concern.
+- **The amount left** lists the tax among its inputs.
+- **Age and income.** The fund's gain, the brokerage gain, the difference and both ranges name the age and the income from 60, since the brokerage side now gets the same profile.
+- **Whether the exit year is at 60** is read off the run (it used F-42), not tested again on the page. The unused `sixtyAge` fact is gone.
+- **Under 60** the tax stays F-44 with the same inputs.
+
+### 3. The money-market custody note (`r4workbench.providers.mmfCustodyNonBank`, F-14, F-63)
+- **The note** now reads:
+  - "לא נמצא כלל שמגביל" (was "אין כלל");
+  - a member with a distribution agreement for the fund may charge nothing on it, under the distribution-fee regulations (reg. 2(ד), MF-26);
+  - the report's blanket waiver covers "דמי משמרת" only, while a handling fee ("דמי טיפול בפיקדון") is usually fixed and often refunded or not charged;
+  - practice, not a term.
+- **Method.** F-14 says the same, and that Excellence's and Altshuler Trade's lines are of the handling kind. F-63 no longer says the custody is "customarily waived".
+- **Sweep.** The two money-market guides said "בבית השקעות העמלות לפי התעריפון שלו". They now say no rule limiting a non-bank member's fees was found, and that one with a distribution agreement for the fund may not charge on it.
+- **On screen.** The note itself is still on no page: the provider page refuses cash-like funds.
+
+### 4. Bank or not, everywhere a provider's tariff is run
+- **`memberKindOf`** (`ledgers/securities.ts`): only `bank` is a bank. A `broker` and a `foreign_broker` are `non-bank`, as `providers.ts` already treats them.
+- **Who uses it:** the provider workbench (the foreign broker was the default bank before), the fund-variant runs (`variants/fund-variants.ts` takes `run.memberKind`, set in `site/app/lib/variants.ts`) and the switching cost (`site/app/lib/playbook.ts`, both legs).
+- **Numbers.** No figure moves today: these pages price funds that are not money-market units.
+
+### 5. A TASE foreign fund cites TXF-04
+At a falling exchange rate, `ledgers/securities.ts` cites TXF-03 for a foreign fund held abroad and TXF-04 for a TASE foreign fund. TXF-03 itself sends such a fund to TXF-04. `followups.test.ts` asserts TXS-02 and TXF-04, and no TXF-03. The S52 workings changed the same way. No number changed.
+
+### 6. F-50's CPI-linked bank route is a reading
+- **Method.** F-50 now says the Supreme Court held it for a deposit linked to a foreign currency, and that applying it to a CPI-linked deposit is an inference (TXI-25).
+- **Engine.** `ledgers/child-savings.ts` labels the run "reading" on TXI-25 when a deposit's CPI fell, as the other inferred steps are labelled. A new test covers it.
+
+### 7. Exit-year fees after the fall's cap: an open reading in G-07
+- **The question.** TXS-06 deducts them from the proceeds, so they arguably sit inside the nominal loss the cap limits.
+- **S52 (b).** The real gain is −548.57 with the fees after the cap, and would be 0 with them inside. The tax is 0 either way.
+- **Recorded, not changed.** The reading is in G-07's row, with comments in `securities.ts` and `bond.ts`.
+
+### 8. The falling-CPI floor in the provident ledgers
+Kept, labelled "reading" as before. `requests.md` (new, beside this report) asks the rule-base editor for the source on how TXK-07's and TXH-11's real gain treats a falling CPI. It sets out the two readings, and notes that Barel (TXI-25) points the other way. It also asks to align the scope requests' line on the custody waiver, and lists rules the site names in words only (TXG-25, TXK-28, BRK-52).
+
+### 9. The child-savings sentence
+- **The sentence** now reads "עד התקרה שבתקנות: עד 1.05% בשנה מהיתרה". The 4% of each deposit is dropped: deposits end at 18, and F-54 says that cap does not bite.
+- **Sweep.** The CS-18 flag line said "התקרה שבחוק" too, and now says "שבתקנות".
+- **Not changed.** The wrapper's legal-caps table (1.05% and 4%) is a correct statement of the regulation.
+
+### 10. Source labels: btl.gov.il rows
+- **The rows.** The six `documents.json` rows labelled "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)" now have `hosts: ["btl.gov.il"]`. The schema has the optional field, and `extract-sources.ts` skips a row whose hosts do not include the link's.
+- **The other copies keep their own host's label:**
+  - Wikisource (TXK-26, TXI-08, TXI-13, PEN-08): ויקיטקסט;
+  - olaw (TXK-26's ק"ת 7076): החוק הפתוח (צילום רשומות);
+  - Reshumot (KH-14, TXH-15): רשומות.
+  - Each gets its own title, so an amendment is no longer titled as the regulations it amends.
+- **A class fixed with it.** Without the row, the gazette host's default kind "law" would have mislabelled those regulations. A title that names regulations now outranks a host whose default is "law". That turns 37 regulation sources in 28 records from "law" to "regulation", all of them regulations or Banking Rules in the gazette.
+- **Runs and tests.** `npm run extract:sources` was re-run, and a pipeline test covers both. One Wikisource copy (PEN-08) lost its Hebrew title, since its link title is English; it is not a first source.
+
+### 11. Small ones
+- **P-05's `annual_income`** note, its Hebrew rationale, `docs/parameters-rationale.md` and method §3 now say it also drives the age-60 brackets (F-42) and the surtax (F-43).
+- **The "עד" test** is `isCapName`: a `cap` word, but not a minimum (`min_market_cap_usd`, `min_order_cap`) and not a market capitalisation.
+- **The G-23 line** stands alone ("נקודות זיכוי מקטינות את כל המס המחושב בשנה, גם את המס על רווחים ועל ריבית בשיעור מיוחד"). It adds that tax already withheld comes back only through a return or a refund request (TXG-25).
+- **`guide-signature-g2.ts`.** The study fund's comment now says the brokerage side takes the reader's income (the surtax), and that there is no age there.
+
+### The number that changed: the study-fund visual's brokerage side uses the reader's income
+- **The change.** In the study-fund visual (`hishtalmutModel`), the brokerage side used to run on P-05's income, 144,000. It now runs on the reader's income, 12 × the monthly salary in the visual.
+- **Where it shows.** Only the surtax reads it there (F-43, TXG-09, TXG-10), so a figure moves only once the income and the gain pass the threshold.
+- **Figures, at P-05's plan (10,000 now, 500 a month, 10 years), from `tools/income-scratch.test.ts.txt`:**
+
+| Monthly salary in the visual | Brokerage gain before | After | Study fund less brokerage, before | After |
+|---|---|---|---|---|
+| 12,000 (P-05's own) | 6,339.10 | 6,339.10 | 2,662.17 | 2,662.17 |
+| 40,000 | 6,339.10 | 6,339.10 | 3,009.40 | 3,009.40 |
+| 60,000 | 6,339.10 | 6,023.53 | 2,909.01 | 3,224.58 |
+| 60,000, 30 years | 60,890.36 | 57,918.10 | 21,221.38 | 24,193.64 |
+
+- **Before.** The before column runs the brokerage side without the reader's income. The study-fund side is the same in both.
+- **The fund's own visual** (`providentModel`) already ran the brokerage side on P-05's income. There the change is the age-60 profile, listed in the first round.
+
+### Checks (review round)
+- `npx vitest run site packages/engine packages/pipeline packages/schema`: 75 files, 1,031 passed, 1 todo. The 4 new tests: `memberKindOf`, the TXI-25 reading, the hosts-limited row, `isCapName`.
+- `npm run typecheck`: clean.
+- `npm run validate`: "data/ is valid", with the same warnings as before (490 source dates, 17 first sources without a Hebrew title, 7 strength, 2 tax-year).
+- `python3 tests/golden/expected_calc.py` then `tools/restore_notes.py`: only S51's and S52's wording, and a TXK-26 row in the rules table, changed in `workings.md`. No figure changed.
+
+### On screen (review round, `shots/r2-*`, 1280 and 390 px, every shot looked at)
+- **The kupat gemel lehashkaa guide at age 62**:
+  - The callout (`r2-kgl-callout-62-*`) gives the 20% withholding and the settlement, with the chip TXK-26.
+  - The lump sum is unchanged: tax 2,043, left 78,173, brokerage gain 6,929 (`r2-kgl-lump-62-*`).
+- **The tax figure's sheet at 62:**
+  - `r2-kgl-tax-sheet-62-*`: formula F-42; inputs: real gain 10,216, age 62, income 144,000, rate 25%.
+  - `r2-kgl-tax-sheet-62-rules-*`: rules TXG-04, TXG-07, TXK-26, TXG-09, TXG-10, TXK-27.
+  - `r2-kgl-tax-sheet-62-flags-*` and `-end-*`: flags TXK-26, G-02, G-23.
+- **Other sheets.** The amount left's sheet (`r2-kgl-net-sheet-62-*`) is F-44 with the age, the income and the tax. Under 60 (`r2-kgl-tax-sheet-30-*`) the tax is 2,554 on F-44, unchanged.
+- **The child-savings sentence** reads "עד התקרה שבתקנות: עד 1.05% בשנה מהיתרה" (`r2-child-savings-sentence-*`).
+- **The daily money-market guide's custody sentence** is the new one (`r2-mmf-daily-custody-text-*`). The provider note itself is on no page (see 3).
+
+### Left for the lead (review round)
+1. **A-14 off at the kupat gemel lehashkaa exit from 60.** Golden S51's A-14-off figure, 2,958.21, keeps the flat 25%. With a 20% withholding, a part whose bracket is below 20% costs the 20% withheld, not 25%, so the tax would be `max(20%, min(bracket, 25%))` a part. That is 2,366.57 for S51 by hand (20% × 11,832.84), not checked independently. Correcting it moves a golden figure, so per the brief it is not done. F-44, the engine comment and the flag line say the figure is an upper bound. No page turns A-14 off.
+2. **The source-kind class fix** (10) touches 28 rule records beyond the brief. On a conflict with the rules-scope branch, keep both and re-run `extract:sources`.
+3. **TXG-25, TXK-28 and BRK-52 have no `data/rules` record**, so the site names them in words only (`requests.md` §3).
+4. **The falling-CPI floor in the provident ledgers** waits on the rule-base editor (`requests.md` §1).
+
+### Structure review (review round, builder's self-check)
+- **Merge review.** `node research/audit/tools/merge-review.mjs main`: nothing to judge, no new piece outside the kit.
+- **New code:**
+  - `runFigure` and `notFeeFlag` in the visuals' own helper file (`guide-signature/kit.tsx`, not the shared kit): a figure built from one run, as `fees.ts` and `variants.ts` already do for theirs;
+  - `isCapName` beside `worthRows`.
+- **No new component and no new pattern.** The sheets are the existing `Num` sheet with one more input, a formula id and flags, which the sheet already draws.
+- **Branch size.** More than 30 files, so the branch wants the independent reviewer, as before.

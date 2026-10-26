@@ -106,6 +106,13 @@ export class NotEvaluatedError extends Error {
 }
 
 /**
+ * F-14 (2026-10-26): a provider class as `memberKind`. Only a bank is a bank: a broker (a TASE member that is not a bank)
+ * and a foreign broker are not bound by the banks' custody ban on money-market units (BRK-17, BANK-18; BRK-52), so their
+ * tariff's custody line applies. Every caller that prices a run on a provider's snapshot passes this.
+ */
+export const memberKindOf = (providerClass: string): NonNullable<SecuritiesInput["memberKind"]> => (providerClass === "bank" ? "bank" : "non-bank");
+
+/**
  * F-08 Month step for fund units. Each contribution is one order: FX fee, then trade value plus commission;
  * bought at the ask, so the lot's cost is the price paid. Distributions are taxed and the net reinvested as
  * a new lot; custody and account fees are paid by removing units oldest first.
@@ -303,13 +310,16 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
 
   const cost = lots.reduce((s, l) => s + l.basis, 0);
   // Each lot indexed by J_T / J_lot; when the index (CPI or exchange rate) fell, its inflationary amount is zero and
-  // the part of a nominal loss equal to the fall is not allowable (TXS-02, TXF-03; method F-09, 2026-10-26).
+  // the part of a nominal loss equal to the fall is not allowable (TXS-02; method F-09, 2026-10-26). With the exchange
+  // rate as the index, the rule that makes it the index is cited beside it: TXF-03 for a foreign-currency security held
+  // directly, TXF-04 for a TASE foreign fund (TXF-03 itself says such a fund follows TXF-04). The exit year's fees are
+  // deducted after the fall's cap (TXS-06); whether they sit inside the nominal loss the cap limits is an open reading (G-07).
   const adjusted = indexedCost(lots, J[T]!, nav * (1 - spread));
   const realGain = gross - adjusted.indexed - exitYearFees + adjusted.fallDisallowed;
   const nominalGain = gross - cost;
   book.cite("TXS-06");
   book.cite("TXS-02");
-  if (adjusted.fell && fxIndexed) book.cite("TXF-03");
+  if (adjusted.fell && fxIndexed) book.cite(fund.kind === "foreign-fund" ? "TXF-03" : "TXF-04");
 
   let outcome: Outcome = { code: "eligible" };
   let lossOffset = 0;
