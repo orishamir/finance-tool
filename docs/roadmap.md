@@ -1,7 +1,7 @@
 # Roadmap
 
 Written 2026-10-22 from `docs/product.md` (confirmed the same day, decisions D1 to D13, open to revision). Updated 2026-10-23 for D17, "no blind spots" (product.md appendix E).
-Status: **approved by the founder on 2026-10-22.** Updated 2026-10-24: all five releases are built, release 1 to release 5, each to the extent its data allows. The dated "Status" paragraphs under each release say what exists and what is open; the closing section "After release 5" says what work continues.
+Status: **approved by the founder on 2026-10-22.** Updated 2026-10-24: all five releases are built, release 1 to release 5, each to the extent its data allows. The dated "Status" paragraphs under each release say what exists and what is open; the closing section "After release 5" says what work continues. Updated 2026-10-26: "After release 5" now ends with what was built on 2026-10-25 and 2026-10-26 and the current list of open work.
 
 How to read it:
 
@@ -290,3 +290,85 @@ What continues, none of it a release:
 - **The founder's approvals**: the UI strings of `docs/copy.md` §7 to §9, the two unapproved doors on the first page, the playbook ticks as saved state, a second look at the parameters he signed off on trust (P-02 to P-08, "do whatever you think fits") once he has used the pages they drive, and the consent letters (Bank of Israel, TASE, ISA) if he chooses to send them.
 - **The knowledge layer (2026-10-24, D25).** After the release 5 build the rule base and the documents behind it became something a person can browse and check: every rule record carries its sources, the card puts the source first, the rules page, named "חוקים וכללים", is one page of filters over every rule, the twelve questions (P-09) have their own page with a one-line sourced answer each and a block on the home page (the five shelf pages of the first build were merged the same evening at the founder's request, and the questions left the rules page later that night), a documents page lists what the site read, search covers rules, parameters and documents, and each wrapper guide shows a "שווה לדעת" block. This is the founder's second goal made visible, not a new release. What stays open, each waiting for the founder (`research/knowledge/2026-10-24-synthesis.md` section 5): the conditions ("מתי זה לא חל") in Hebrew on every rule, starting with the 214 figure rules; the official Knesset or gazette publication beside the Wikisource copy for the roughly fifteen laws behind 144 mirror rules; records for the open questions that block a number; Hebrew records for the 360 research rules that have none; claim marks inside guide sentences; the tag "פירוש של האתר" for a conclusion the law does not state in one sentence; and the quoting decision (D22) that gates a cross-provider tariff table and the six rules that quote ISA directives. The pinned list itself shows "ערך זמני" until he signs it.
 - **The debts named in the status paragraphs**: F-18, the merge of the three side stores into the state document, the sensitivity panel in exposure mode, and the stale `it.todo`. (The first page's "since your last visit" line and the change-log page were dropped by D24 on 2026-10-24.)
+
+### 2026-10-25 and 2026-10-26
+
+*Written 2026-10-26.* Still no new release. The work deepened what exists, and most of it came from the founder using the live site.
+
+**Built:**
+
+- **The index page (D27, D28)**, "השקעה במדד":
+  - It lives at `/indices` and `/indices/<index>` since 2026-10-26, with no redirect from the old `/invest`.
+  - It answers where to hold an index, broker first:
+    - the cheapest complete way;
+    - two plain lines: the same fund in another securities account, and the same account with another fund;
+    - every bank and investment house with its cheapest way;
+    - then the funds on the index at a chosen account, with the fund type as a small tag and a link to each fund's Maya page.
+  - The plan is editable on the page, and the index pills use the site's one pill design. The worth bars and the ETF-versus-tracking-fund comparison moved into folds.
+  - The words separate the securities account ("חשבון ניירות ערך") from the fund's manager ("מנהלת הקרן").
+- **The shared component kit** (`site/app/components/kit/`, gallery at `/kit`). Guards and ratchets in its tests keep pages on it, and a structure review runs before every merge (CLAUDE.md). A fix in the kit reaches every page at once. On 2026-10-26 the kit fixed three things everywhere:
+  - a field's state line no longer pushes the page down;
+  - the chart table scrolls only sideways;
+  - the difference between two bars is a sentence that says which side has more.
+- **One chip for every id** (`IdRef`): rules, formulas, parameters and open questions all open their own sheet.
+- **Scope on every rule (D30).** Each rule is general, a named institution's own term, or unsettled. An independent reviewer re-read them all; settling the disagreements is under way.
+- **A company's own figure (D31).** A figure a company publishes about its own product, shown on that product, is plain sourced. The amber "לפי החברה" now marks only a company figure that stands for the market. Guide timelines name the company whose example they run on, and idle cash names the bank.
+- **Open questions.** An audit of all 493 open questions in the rule base closed 101 of them: 68 that were already answered and 33 settled from official sources. The tier-2 blockers follow from it:
+  - managed portfolios wait on MF-28 alone;
+  - FX deposits wait on TX2 OQ2 alone;
+  - Amendment 190 waits on TXA OQ14 and OQ15.
+- **Sources:**
+  - Interactive Brokers' Israeli permit (ISA s.49A) is recorded.
+  - 54 glossary entries are re-sourced from company pages to official ones.
+  - The documents page links the Income Tax Ordinance's own PDF.
+
+**Landed later on 2026-10-26 (overnight, with the founder's go to merge):**
+
+- **The site stops naming closed questions as open.**
+  - `data/open-questions.json` holds all the rule base's questions with their status.
+  - The question chips read their status from it.
+  - A guard fails the build if a page presents a closed question as open.
+  - Guide prose states the answers, and dimensions that waited on them are unblocked.
+- **The scope review is settled in the rule base:** 482 general, 101 institution and 13 unsettled records. Its text fixes include rules that were backwards: IRA-09, and PEN-28, PEN-29 and PEN-34. Both researchers' findings closed 8 more questions and narrowed 11.
+- **Idle cash.**
+  - The headline says the sum is the part not needed at once.
+  - The current account runs on the rate most collected banks print (F-85), not one bank's.
+  - Sheets name a source's company once, in Hebrew.
+  - Every select's option list is readable.
+- **Engine follow-ups:**
+  - a falling index or currency never raises the taxable gain (TXS-02, TXF-03, circular 10/2025);
+  - the relief from 60 at the kupat gemel lehashkaa exit, settled against the manager's 20% withholding (TXK-06, TXK-26);
+  - credit points flagged where not applied (G-23);
+  - the child-savings fee after 21 at the legal cap, labelled "עד" (CS-18);
+  - custody on money-market units at non-bank members (BRK-52);
+  - source labels: regulations labelled as regulations.
+
+  All of it was checked by a finance review and an independent review. Golden values come from a separate script.
+- **The rules-scope layout (spec sections 3 and 4), merged after four review rounds.**
+  - **Where things show:** general rules on guides, the rules page and the questions page. A company's terms only on that company's page, from the company's own documents, with "תלוי בחברה" links naming the companies the record states the property for. Press, forums, counts and site terms sit in a "לא נכלל ככלל" section on /companies.
+  - **Labels and chips:** "לפי החברה" drops only on the named company's own sites. Company terms appear on general rule cards as examples, not as derivations.
+  - **Search** has two groups.
+  - **The validator** enforces all of this, file by file.
+
+**What continues, in order:**
+
+1. **F-48, early pension withdrawal:** re-read TXP-18's official text, then build it.
+2. **The money-market and makam rate:** tie it to the Bank of Israel rate minus the fund's fees once a person reads the BoI page, which stops scripts. Today it is a round 3.5%.
+3. **The founder's calls:**
+   - a credit-points input (G-23);
+   - the minimum order that would rank makam and bonds (GOV OQ7, GOV-24);
+   - the tax when a refund at 60 is not claimed (the engine assumes 25%, an upper bound);
+   - kit round 2;
+   - whether the caution on accumulating foreign funds (TXF OQ1) stays.
+4. **Rule-base requests:**
+   - the source for a falling CPI in the provident products' real gain (`research/specs/2026-10-26-followups/requests.md`);
+   - the scope requests (`research/knowledge/2026-10-25-scope/requests.md`);
+   - the rules-scope requests (`research/specs/2026-10-25-rules-scope/requests.md`).
+5. **Pages for a person to open in a browser:**
+   - the Bank of Israel's prime-rate and deposit pages;
+   - TASE's content and trading-hours pages;
+   - the ISA's foreign-funds search and portfolio-manager register;
+   - EUR-Lex;
+   - the Supreme Court site;
+   - and the link check's 43 links.
+6. **Unchanged from the list above:** tier-2 graduation, data growth, the quarterly tariff refresh and the founder's approvals.

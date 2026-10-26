@@ -1,14 +1,8 @@
 // Exposure prose for מזומן שקלי (flows 6.6). Written 2026-10-23 from the rule base (BANK, TXI, MF, REG, CAT,
 // BRK); each block ends with the rules it rests on. NEW copy for the founder to review.
 import type { ExposureContent } from "../guide/types";
-import { Num, RulesLine, Term } from "../../components/provenance";
+import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Sentence } from "../../components/kit";
-
-const OQ = ({ id }: { id: string }) => (
-  <bdi dir="ltr" className="whitespace-nowrap">
-    {id}
-  </bdi>
-);
 
 export const content: ExposureContent = {
   what: ({ figure }) => {
@@ -28,7 +22,7 @@ export const content: ExposureContent = {
   holdNote: () => (
     <>
       <p className="max-w-measure">
-        בחשבון ניירות ערך הכסף הפנוי יושב ביתרת זכות, ואצל חש"ב הריבית עליה היא שורה בתעריפון עם תנאים. בקופת גמל להשקעה ובקרן השתלמות יש <Term id="מסלול השקעה">מסלול</Term> "כספי (שקלי)"; לפי נוסח התקנון של מיטב הוא מחזיק פיקדונות ואיגרות חוב שקליות, והרשימה של רשות שוק ההון שקובעת את המדיניות לא נקראה; בניהול אישי מותר להחזיק פיקדונות.
+        בחשבון ניירות ערך הכסף הפנוי יושב ביתרת זכות, ואצל חש"ב הריבית עליה היא שורה בתעריפון עם תנאים. בקופת גמל להשקעה ובקרן השתלמות יש <Term id="מסלול השקעה">מסלול</Term> "כספי (שקלי)"; לפי רשימת מסלולי ההשקעה של רשות שוק ההון הוא מחזיק נכסים שקליים לא צמודים: פיקדונות, מלוות ממשלה, הלוואות ואיגרות חוב בשקלים <RuleRef id="CAT-23" />; בניהול אישי מותר להחזיק פיקדונות.
       </p>
       <RulesLine ids={["BRK-25", "CAT-23", "CAT-20", "IRA-11", "MF-34", "MF-35"]} />
     </>
@@ -39,7 +33,7 @@ export const content: ExposureContent = {
         הסיכון העיקרי הוא שהמחירים עולים מהר מהריבית, וכוח הקנייה של הכסף נשחק. בפיקדון לתקופה הכסף נעול עד המועד או עד <Term id="תחנת יציאה">תחנת היציאה</Term>, ושבירה לפני כן תלויה בהסכמת הבנק ובמחיר שהוא קובע.
       </p>
       <p className="max-w-measure">
-        אין בישראל ביטוח פיקדונות. חוק משנת 2026 מחייב את שר האוצר ואת הנגיד לבחון אם צריך כזה. אם בנק נקלע לקשיים, הנגיד רשאי, באישור הממשלה, להכריז על ערבות לפיקדונות, אבל זו סמכות ולא חובה. מה הפיקוח מגן בפועל נשאר פתוח: <OQ id="BANK OQ8" />.
+        אין בישראל ביטוח פיקדונות. חוק משנת 2026 מחייב את שר האוצר ואת הנגיד לבחון אם צריך כזה. אם בנק נקלע לקשיים, הנגיד רשאי, באישור הממשלה, להכריז על ערבות לפיקדונות, אבל זו סמכות ולא חובה. מה הפיקוח מגן בפועל נשאר פתוח: <IdRef id="BANK OQ8" />.
       </p>
       <RulesLine ids={["TXI-25", "BANK-27", "BANK-06", "REG-04", "REG-06", "TXI-20"]} />
     </>

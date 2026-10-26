@@ -79,6 +79,7 @@
   },
   "il_finance_file": "child-savings.md",
   "checked": "2026-10-25",
+  "scope": "general",
   "sources": [
     {
       "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
@@ -98,7 +99,7 @@
       "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד (נספח לחוזר גופים מוסדיים 2016-9-20)",
       "title_he": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד (נספח לחוזר גופים מוסדיים 2016-9-20)",
       "publisher": "gov.il",
-      "publisher_he": "אתר הממשלה (gov.il)",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
       "locator": "p.5, ss.10.2, 10.4-10.5; p.6, s.11",
@@ -112,7 +113,7 @@
       "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
       "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
       "publisher": "National Insurance Institute",
-      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "publisher_he": "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)",
       "kind": "regulation",
       "strength": "primary",
       "locator": "p.16, reg. 41יא(א)",

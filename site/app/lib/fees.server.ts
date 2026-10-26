@@ -7,7 +7,7 @@ import { join } from "node:path";
 import { cmaPeriodFile, type ParameterRecord, type RuleRecord, type ValueObject } from "@finance-tool/schema";
 import { latestTracks, type CmaTrack } from "@finance-tool/engine";
 import { referenceOfClass } from "./class-reference";
-import { classificationToWrapper, loadFees, loadParameters, loadRules, root, today } from "./data.server";
+import { classificationToWrapper, loadFees, loadParameters, loadRules, pointedRecords, root, today } from "./data.server";
 import { compactFee } from "./value";
 import type { FeesData, LinkOut, TrackLite } from "./fees";
 import { classKey } from "./fees";
@@ -90,7 +90,7 @@ export function buildFeesData(): FeesData {
     tase: linkFrom("brokerage-account.md", "BRK-37", /market\.tase\.co\.il|trading_fees/),
     isa: linkFrom("mutual-funds-and-money-market-funds.md", "MF-55", /Funds_Report2025/),
   };
-  return { today: t, p03, rules, references, templates, tracks: lite, wrapperTrack, tariffClass, links };
+  return { today: t, p03, rules, pointed: Object.values(pointedRecords(rules, allRules)), references, templates, tracks: lite, wrapperTrack, tariffClass, links };
 }
 
 let cached: FeesData | null = null;

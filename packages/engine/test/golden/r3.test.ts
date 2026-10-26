@@ -348,7 +348,8 @@ describe("F-72 consolidation, on its own", () => {
   it("a wrapper whose record names no route to itself is 'transfer rules not sourced', with the record's open questions", () => {
     const r = consolidation(two("brokerage-account"), rulesOf).pairs[0]!.result;
     expect(r.kind).toBe("transfer-rules-not-sourced");
-    expect(r.kind === "transfer-rules-not-sourced" && r.openQuestions).toContain("BRK-OQ3");
+    // BRK OQ3 closed 2026-10-25 and left the record's list (2026-10-26); BRK OQ5 (client securities if a bank fails) is still open
+    expect(r.kind === "transfer-rules-not-sourced" && r.openQuestions).toContain("BRK-OQ5");
   });
 
   it("both child-savings wrappers are flagged blocked and never paired", () => {

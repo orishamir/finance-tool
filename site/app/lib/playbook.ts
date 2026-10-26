@@ -7,6 +7,7 @@
 // except the tick store at the end, and no fetch.
 import {
   buildTariff,
+  memberKindOf,
   RecordInputError,
   switchingCost,
   type RunContext,
@@ -32,7 +33,7 @@ const T = {
   kglRoutes: "לאן אפשר להעביר קופת גמל להשקעה",
   routes: "לאן אפשר להעביר, ואילו כספים",
   inKind: "במזומן או בעין",
-  employer: "הודיעו למעסיק לאן להפקיד",
+  employer: "ודאו שהמעסיק מפקיד לקופה החדשה",
   determining: "המועד הקובע: ההפקדה הראשונה בקופה החדשה",
   rejection: "צפו להודעת דחייה או עיכוב",
   insurance: "ביטוח בפנסיה: הטופס, הכיסוי וחודשי האכשרה",
@@ -83,9 +84,12 @@ export interface StepSpec {
 const s = (title: string, ruleIds: string[], more: Partial<StepSpec> = {}): StepSpec => ({ title, ruleIds, ...more });
 const retention = s(T.retention, ["SW-19"], { noRule: { known: ["SW-07", "PF-13", "PF-14"] }, experience: ["SW-X01", "SW-X02"], openQuestions: ["SW OQ3"], offerBefore: true });
 const verify = s(T.verify, ["SW-38"], { verify: true });
-const data = s(T.data, ["SW-18", "SW-44"], { openQuestions: ["SW OQ5"], named: ["SW-50"] });
-const agent = s(T.agent, ["SW-17"], { experience: ["SW-X04"], openQuestions: ["SW OQ16"], named: ["SW-49"] });
-const employer = s(T.employer, ["SW-10"], { openQuestions: ["SW OQ6"], named: ["SW-48"] });
+// SW OQ5 closed 2026-10-26: how the clearing house checks it is you (SW-18)
+const data = s(T.data, ["SW-18", "SW-44"], { named: ["SW-50"] });
+// SW OQ16 closed 2026-10-26: removing an agent (SW-17)
+const agent = s(T.agent, ["SW-17"], { experience: ["SW-X04"], named: ["SW-49"] });
+// SW OQ6 closed 2026-10-26: the receiving fund notifies the employer, who acts by the month after (SW-10)
+const employer = s(T.employer, ["SW-10"], { named: ["SW-48"] });
 // the companies' own sentences split out of the circular's steps on 2026-10-25 (SW-45 to SW-47, The Phoenix)
 const signNamed = { named: ["SW-45"] };
 const cancel = s(T.cancel, ["SW-07"], { named: ["SW-46"] });
@@ -142,7 +146,7 @@ export const STEP_LISTS: Record<string, StepSpec[]> = {
     // 2026-10-25 (scope pass): the bank's duty is directive 432 (SW-35); the institutions' own instructions are SW-54, the brokers' prices
     // SW-53, both named; the claims only companies make are unsettled records and stay step rules (SW-52 the supervised price, SW-55 own accounts)
     s(T.brokerOpen, ["SW-35"], { offerBefore: true, named: ["SW-54"] }),
-    s(T.brokerCost, ["SW-33", "SW-52", "SW-34"], { openQuestions: ["SW OQ10"], named: ["SW-53"] }),
+    s(T.brokerCost, ["SW-33", "SW-52", "SW-34"], { named: ["SW-53"] }), // SW OQ10 closed 2026-10-26: NIS 5 plus third-party cost (SW-33)
     s(T.brokerTax, ["SW-36", "SW-55"], { openQuestions: ["SW OQ11"] }),
     s(T.brokerForeign, ["SW-37"], { experience: ["SW-X03"], openQuestions: ["SW OQ12"] }),
     verify,
@@ -563,13 +567,13 @@ function tariffFor(wb: WorkbenchBundle, wanted: string | null, instrumentClass: 
       const t = currency && !isIls(currency) ? attempt(currency) : attempt(null);
       const { currency: _c, ...rest } = t as typeof t & { currency?: unknown };
       void _c;
-      return { id, tariff: rest };
+      return { id, tariff: rest, memberKind: memberKindOf(snap.provider.class) };
     } catch (e) {
       if (!(e instanceof RecordInputError)) throw e;
       try {
         const { currency: _c, ...rest } = attempt(null) as ReturnType<typeof attempt> & { currency?: unknown };
         void _c;
-        return { id, tariff: rest };
+        return { id, tariff: rest, memberKind: memberKindOf(snap.provider.class) };
       } catch (e2) {
         if (!(e2 instanceof RecordInputError)) throw e2;
       }
@@ -601,6 +605,8 @@ export function brokerageCost(args: { wb: WorkbenchBundle; fundFrom: string; fun
       market: { ...runA.market, inflation: inputs.inflation },
       fund: runA.fund,
       tariff: { ...tA.tariff, ...(runA.currency ? { currency: runA.currency } : {}) },
+      // F-14 (2026-10-26): bank or not, so a money-market unit pays custody only at a non-bank (BRK-17, BRK-52); leg B keeps it (one provider)
+      memberKind: tA.memberKind,
       profile,
       ordersPerMonth: 1,
     };

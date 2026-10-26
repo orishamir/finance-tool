@@ -2,7 +2,7 @@
   "id": "tyk-hshkavt-dygytly",
   "he": "תיק השקעות דיגיטלי",
   "en": null,
-  "meaning": "תיק השקעות מנוהל שמצטרפים אליו באינטרנט; שאלון קובע את רמת הסיכון ומדיניות ההשקעה.",
+  "meaning": "ניהול תיק השקעות שניתן באופן מקוון: את בירור הצרכים ואת ההסכם עושים באינטרנט, ואלגוריתם יכול לקבוע את רמת הסיכון ומדיניות ההשקעה.",
   "where": [],
   "wrapper_ids": [],
   "variants": [
@@ -14,10 +14,10 @@
     "MGD-21"
   ],
   "source": {
-    "url": "https://www.meitav.co.il/portfolio_management/manager/",
-    "title": "Meitav, מיטב מנג'ר product page",
-    "publisher": "see title",
-    "strength": "institution",
-    "checked": "2026-10-22"
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/horaa7822.pdf",
+    "title": "רשות ניירות ערך, הוראה לבעלי רישיון בקשר למתן שירותים תוך שימוש באמצעים טכנולוגיים, ס' 11 עד 18",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-26"
   }
 }

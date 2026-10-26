@@ -1,0 +1,3951 @@
+{
+ "ito": {
+  "title": "פקודת מס הכנסה",
+  "files": [
+   {
+    "name": "ito-btl",
+    "url": "https://www.btl.gov.il/Laws1/00_0103_000000.pdf",
+    "publisher": "המוסד לביטוח לאומי (נוסח משולב)",
+    "kind": "consolidated",
+    "date": "file 21.6.2026",
+    "covers": "amendments to No. 292 (ס\"ח 3531, 8.6.2026)"
+   },
+   {
+    "name": "ito-ta",
+    "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+    "publisher": "רשות המסים",
+    "kind": "consolidated",
+    "date": "file 15.1.2023",
+    "covers": "amendments to No. 262"
+   },
+   {
+    "name": "ito-25_lsr_9913658",
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_9913658.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשפ״ו, 26",
+    "covers": "תיקון מס׳ 283"
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "4830",
+    "label": "ק״ת תשמ״ה, 1616",
+    "title": "תקנות שעת חירום (הסדרים לשעת חירום במשק המדינה)"
+   },
+   {
+    "booklet": "6074",
+    "label": "ק״ת תשס״א, 232",
+    "title": "צו מס הכנסה (הוספת חוק לענין קביעת אחוז נכות)"
+   },
+   {
+    "booklet": "8011",
+    "label": "ק״ת תשע״ח, 2068",
+    "title": "צו הפיקוח על שירותים פיננסיים (שירותים פיננסיים מוסדרים) (דחיית יום התחילה המאוחר)"
+   },
+   {
+    "booklet": "8367",
+    "label": "תש״ף, 690",
+    "title": "צו ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2015 ו־2016) (תחילתו של סעיף 166(ב) לפקודת מס הכנסה)"
+   },
+   {
+    "booklet": "12523",
+    "label": "ק״ת תשפ״ו, 2616",
+    "title": "צו ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2015 ו–2016) (תחילתו של סעיף 135(1)(א1) לפקודת מס הכנסה)"
+   }
+  ]
+ },
+ "pfl": {
+  "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל)",
+  "files": [
+   {
+    "name": "pfl-16_lsr_299984",
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "ס״ח תשס״ה, 889",
+    "covers": "חוק הפיקוח על שירותים פיננסיים (קופות גמל)"
+   },
+   {
+    "name": "pfl-16_lsr_299748",
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299748.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "281",
+    "covers": "חוק תובענות ייצוגיות"
+   },
+   {
+    "name": "pfl-17_lsr_300638",
+    "url": "https://fs.knesset.gov.il/17/law/17_lsr_300638.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשס״ז, 60",
+    "covers": "חוק הסדרים במשק המדינה (תיקוני חקיקה להשגת יעדי התקציב והמדיניות הכלכלית לשנת הכספים 2007)"
+   },
+   {
+    "name": "pfl-17_lsr_300727",
+    "url": "https://fs.knesset.gov.il/17/law/17_lsr_300727.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשס״ח, 160",
+    "covers": "תיקון מס׳ 3"
+   },
+   {
+    "name": "pfl-18_lsr_301061",
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301061.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשס״ט, 190",
+    "covers": "חוק ההתייעלות הכלכלית (תיקוני חקיקה ליישום התכנית הכלכלית לשנים 2009 ו־2010)"
+   },
+   {
+    "name": "pfl-18_lsr_301133",
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301133.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״א, 50",
+    "covers": "תיקון מס׳ 5 והוראת שעה"
+   },
+   {
+    "name": "pfl-18_lsr_301291",
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301291.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "203",
+    "covers": "תיקון מס׳ 6 לחוק ההתייעלות הכלכלית (תיקוני חקיקה ליישום התכנית הכלכלית לשנים 2009 ו־2010)"
+   },
+   {
+    "name": "pfl-18_lsr_301283",
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "380",
+    "covers": "תיקון מס׳ 3 לחוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני)"
+   },
+   {
+    "name": "pfl-18_lsr_301368",
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301368.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "976",
+    "covers": "תיקון מס׳ 7 לחוק ההתייעלות הכלכלית (תיקוני חקיקה ליישום התכנית הכלכלית לשנים 2009 ו־2010)"
+   },
+   {
+    "name": "pfl-18_lsr_301378",
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301378.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "976",
+    "covers": "תיקון מס׳ 8 לחוק ההתייעלות הכלכלית (תיקוני חקיקה ליישום התכנית הכלכלית לשנים 2009 ו־2010)"
+   },
+   {
+    "name": "pfl-18_lsr_301269",
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301269.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "1135",
+    "covers": "חוק הגברת האכיפה בשוק ההון (תיקוני חקיקה)"
+   },
+   {
+    "name": "pfl-18_lsr_301456",
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301456.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״ב, 358",
+    "covers": "תיקון מס׳ 190 לפקודת מס הכנסה"
+   },
+   {
+    "name": "pfl-18_lsr_301358",
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301358.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "508",
+    "covers": "תיקון מס׳ 19 לחוק החברות"
+   },
+   {
+    "name": "pfl-19_lsr_301496",
+    "url": "https://fs.knesset.gov.il/19/law/19_lsr_301496.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״ד, 120",
+    "covers": "חוק לקידום התחרות ולצמצום הריכוזיות"
+   },
+   {
+    "name": "pfl-19_lsr_301605",
+    "url": "https://fs.knesset.gov.il/19/law/19_lsr_301605.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "258",
+    "covers": "הוראת שעה"
+   },
+   {
+    "name": "pfl-19_lsr_306600",
+    "url": "https://fs.knesset.gov.il/19/law/19_lsr_306600.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״ה, 63",
+    "covers": "חוק הפיקוח על שירותים פיננסיים (תיקוני חקיקה)"
+   },
+   {
+    "name": "pfl-20_lsr_313645",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_313645.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "236",
+    "covers": "תיקון מס׳ 12"
+   },
+   {
+    "name": "pfl-20_lsr_315848",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_315848.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״ו, 14",
+    "covers": "תיקון מס׳ 13 והוראת שעה"
+   },
+   {
+    "name": "pfl-20_lsr_316718",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_316718.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "61",
+    "covers": "חוק התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2015 ו־2016)"
+   },
+   {
+    "name": "pfl-20_lsr_343169",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "885",
+    "covers": "תיקון מס׳ 15"
+   },
+   {
+    "name": "pfl-20_lsr_343666",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_343666.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "896",
+    "covers": "תיקון מס׳ 16"
+   },
+   {
+    "name": "pfl-20_lsr_348687",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_348687.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "1259",
+    "covers": "חוק הפיקוח על שירותים פיננסיים (תיקוני חקיקה)"
+   },
+   {
+    "name": "pfl-20_lsr_366872",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_366872.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״ז, 222, 313",
+    "covers": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2017 ו־2018)"
+   },
+   {
+    "name": "pfl-20_lsr_366997",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_366997.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "336",
+    "covers": "תיקון מס׳ 20"
+   },
+   {
+    "name": "pfl-20_lsr_502710",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_502710.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״ח, 730",
+    "covers": "תיקון מס׳ 21"
+   },
+   {
+    "name": "pfl-20_lsr_504205",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_504205.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "881",
+    "covers": "תיקון מס׳ 57 לחוק הגנת הצרכן"
+   },
+   {
+    "name": "pfl-20_lsr_525578",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_525578.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״ט, 58",
+    "covers": "תיקון מס׳ 7 לחוק בנק ישראל"
+   },
+   {
+    "name": "pfl-20_lsr_528211",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_528211.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "98",
+    "covers": "תיקון מס׳ 30 לחוק הבנקאות (שירות ללקוח)"
+   },
+   {
+    "name": "pfl-23_lsr_578653",
+    "url": "https://fs.knesset.gov.il/23/law/23_lsr_578653.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תש״ף, 321",
+    "covers": "חוק התכנית לסיוע כלכלי (נגיף הקורונה החדש) (הוראת שעה)"
+   },
+   {
+    "name": "pfl-24_lsr_611567",
+    "url": "https://fs.knesset.gov.il/24/law/24_lsr_611567.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשפ״ב, 51",
+    "covers": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2021 ו־2022)"
+   },
+   {
+    "name": "pfl-24_lsr_628369",
+    "url": "https://fs.knesset.gov.il/24/law/24_lsr_628369.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "864",
+    "covers": "תיקון מס׳ 34 לחוק הבנקאות (שירות ללקוח)"
+   },
+   {
+    "name": "pfl-25_lsr_2620741",
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_2620741.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשפ״ג, 350",
+    "covers": "חוק התוכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2023 ו־2024)"
+   },
+   {
+    "name": "pfl-25_lsr_14187324",
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_14187324.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשפ״ו, 912",
+    "covers": "תיקון מס׳ 74 לחוק הגנת הצרכן"
+   }
+  ],
+  "booklets_without_official_link": []
+ },
+ "adv": {
+  "title": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות",
+  "files": [
+   {
+    "name": "adv-isa",
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf",
+    "publisher": "רשות ניירות ערך (הוצאת הלכות)",
+    "kind": "consolidated",
+    "date": "file 26.8.2026, pages dated to 1.7.2026",
+    "covers": "amendment list ends ס\"ח 3510 (31.3.2026)"
+   },
+   {
+    "name": "adv-25_lsr_12224370",
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_12224370.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשפ״ו, 360, 403",
+    "covers": "חוק התוכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנת התקציב 2026)"
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "7465",
+    "label": "ק״ת תשע״ה, 489",
+    "title": "תיקון התוספת השנייה לחוק"
+   },
+   {
+    "booklet": "7465",
+    "label": "490",
+    "title": "תיקון התוספת השלישית לחוק"
+   },
+   {
+    "booklet": "7465",
+    "label": "491",
+    "title": "תיקון התוספת הרביעית לחוק"
+   }
+  ]
+ },
+ "sec": {
+  "title": "חוק ניירות ערך",
+  "files": [
+   {
+    "name": "sec-isa",
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf",
+    "publisher": "רשות ניירות ערך (הוצאת הלכות)",
+    "kind": "consolidated",
+    "date": "file 26.8.2026",
+    "covers": "to be read from its amendment list"
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "6298",
+    "label": "ק״ת תשס״ד, 310",
+    "title": "שינוי התוספת הראשונה לחוק"
+   },
+   {
+    "booklet": "6394",
+    "label": "תשס״ה, 754",
+    "title": "התוספת השלישית לחוק"
+   },
+   {
+    "booklet": "6467",
+    "label": "תשס״ו, 580",
+    "title": "תיקון התוספת השלישית לחוק"
+   },
+   {
+    "booklet": "7012",
+    "label": "תשע״א, 1136",
+    "title": "תיקון התוספת הראשונה לחוק"
+   },
+   {
+    "booklet": "7182",
+    "label": "תשע״ג, 195",
+    "title": "תיקון התוספת החמישית לחוק"
+   },
+   {
+    "booklet": "7465",
+    "label": "תשע״ה, 491",
+    "title": "תיקון התוספת השישית לחוק"
+   },
+   {
+    "booklet": "7564",
+    "label": "תשע״ו, 102",
+    "title": "תיקון התוספת השלישית לחוק"
+   },
+   {
+    "booklet": "7607",
+    "label": "620",
+    "title": "החלפת התוספת הרביעית לחוק"
+   },
+   {
+    "booklet": "7622",
+    "label": "771",
+    "title": "תיקון התוספת הראשונה לחוק"
+   },
+   {
+    "booklet": "7796",
+    "label": "תשע״ז, 920",
+    "title": "תיקון התוספת החמישית לחוק"
+   },
+   {
+    "booklet": "7796",
+    "label": "922",
+    "title": "תיקון התוספת השביעית לחוק"
+   },
+   {
+    "booklet": "8008",
+    "label": "תשע״ח, 2006",
+    "title": "תיקון התוספת השנייה לחוק"
+   },
+   {
+    "booklet": "8027",
+    "label": "2227",
+    "title": "תיקון התוספת השלישית לחוק"
+   }
+  ]
+ },
+ "pf-fees": {
+  "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול)",
+  "files": [
+   {
+    "name": "pf-fees-kt7131",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "ק״ת תשע״ב, 1260",
+    "covers": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול)",
+    "booklet": "7131"
+   },
+   {
+    "name": "pf-fees-kt7358",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAeOdRzFXelp1D6CGA3tNK3g=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשע״ד, 977",
+    "covers": "תיקון",
+    "booklet": "7358"
+   },
+   {
+    "name": "pf-fees-kt9942",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8HBFRznZ1PqBBqBlhhXAb7L47e1dgbmyX~fXnBHkch8=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשפ״ב, 1812",
+    "covers": "תיקון",
+    "booklet": "9942"
+   }
+  ],
+  "booklets_without_official_link": []
+ },
+ "jit": {
+  "title": "חוק השקעות משותפות בנאמנות",
+  "files": [
+   {
+    "name": "jit-isa",
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "publisher": "רשות ניירות ערך (הוצאת הלכות)",
+    "kind": "consolidated",
+    "date": "file 31.8.2026, pages dated to 1.4.2026",
+    "covers": "amendment list ends Amendment 31 (ס\"ח 3232, 3.7.2024)"
+   },
+   {
+    "name": "jit-25_lsr_12224370",
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_12224370.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשפ״ו, 359",
+    "covers": "חוק התוכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנת התקציב 2026)"
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "7465",
+    "label": "ק״ת תשע״ה, 487",
+    "title": "תיקון התוספת הראשונה לחוק"
+   },
+   {
+    "booklet": "7465",
+    "label": "488",
+    "title": "תיקון התוספת השנייה לחוק"
+   },
+   {
+    "booklet": "7465",
+    "label": "489",
+    "title": "תיקון התוספת השלישית לחוק"
+   }
+  ]
+ },
+ "nii": {
+  "title": "חוק הביטוח הלאומי",
+  "files": [
+   {
+    "name": "nii-btl",
+    "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
+    "publisher": "המוסד לביטוח לאומי (נוסח משולב)",
+    "kind": "consolidated",
+    "date": "file 7.7.2026",
+    "covers": "to be read from its amendment list"
+   },
+   {
+    "name": "nii-kt5951",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/eoe4vDYzpfM5D9J9SFlkgpyvqTXlCSUfYWr0ONo8ZQU=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "ק״ת תשנ״ט, 350",
+    "covers": "שינוי לוח י״א",
+    "booklet": "5951"
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "2057",
+    "label": "ק״ת תשכ״ז, 2607",
+    "title": "תקנות־שעת־חירום (ביטוח מתנדבים לעבודה בשעת־חירום)"
+   },
+   {
+    "booklet": "4690",
+    "label": "ק״ת תשמ״ד, 2380",
+    "title": "תקנות שעת חירום (חישוב השכר הממוצע לפי חוק הביטוח הלאומי [נוסח משולב], התשכ״ח–1968), התשמ״ד–1984"
+   },
+   {
+    "booklet": "8428",
+    "label": "ק״ת תש״ף, 934",
+    "title": "תקנות שעת חירום (נגיף הקורונה החדש) (הוראות מיוחדות לעניין ביטוח אבטלה)"
+   },
+   {
+    "booklet": "8551",
+    "label": "ק״ת תש״ף, 1372",
+    "title": "תיקון לתקנות שעת חירום (נגיף הקורונה החדש) (הוראות מיוחדות לעניין ביטוח אבטלה)"
+   },
+   {
+    "booklet": "6102",
+    "label": "תשס״ב, 1258",
+    "title": "שינוי לוח י׳"
+   },
+   {
+    "booklet": "9031",
+    "label": "תשפ״א, 1214",
+    "title": "תיקון לוח ח׳2 לחוק (הוראת שעה)"
+   },
+   {
+    "booklet": "11657",
+    "label": "תשפ״ה, 764",
+    "title": "תיקון לוח ח׳2 לחוק (הוראת שעה) [תשפ״א] (תיקון)"
+   },
+   {
+    "booklet": "12183",
+    "label": "תשפ״ו, 700",
+    "title": "תיקון לוח ח׳2 לחוק (תיקון)"
+   },
+   {
+    "booklet": "12183",
+    "label": "700",
+    "title": "תיקון לוח ח׳2 לחוק (הוראת שעה)"
+   },
+   {
+    "booklet": "12381",
+    "label": "2052",
+    "title": "תיקון לוח ח׳2 לחוק (תיקון) (תיקון)"
+   },
+   {
+    "booklet": "6854",
+    "label": "ק״ת תש״ע, 615",
+    "title": "הארכת התקופה המרבית לדמי אבטלה (הוראת שעה)"
+   },
+   {
+    "booklet": "6858",
+    "label": "640",
+    "title": "ת״ט"
+   },
+   {
+    "booklet": "11097",
+    "label": "ק״ת תשפ״ד, 1440",
+    "title": "צו הביטוח הלאומי (תיקון מס׳ 238 – הוראת שעה – חרבות ברזל) (תגמולים למשרתים במילואים) (הארכת תקופת הוראת השעה)"
+   },
+   {
+    "booklet": "12129",
+    "label": "תשפ״ו, 390",
+    "title": "הארכת תוקפו של סימן א׳ לפרק י״ג2 לחוק"
+   },
+   {
+    "booklet": "12454",
+    "label": "2322",
+    "title": "תיקון מס׳ 246 – הוראת שעה – הארכת תוקף החוק"
+   }
+  ]
+ },
+ "pf-transfer": {
+  "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל)",
+  "files": [
+   {
+    "name": "pf-transfer-kt6657",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "ק״ת תשס״ח, 626",
+    "covers": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל)",
+    "booklet": "6657"
+   },
+   {
+    "name": "pf-transfer-kt7407",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZbYNmyK9Qa3gH~lF+jEWmc=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשע״ד, 1613",
+    "covers": "תיקון",
+    "booklet": "7407"
+   },
+   {
+    "name": "pf-transfer-kt8735",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/tZDvucD9RCpb4OFgftW2Mghx2FA7HU11Svr+ngxOA9o=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תש״ף, 2560",
+    "covers": "תיקון",
+    "booklet": "8735"
+   },
+   {
+    "name": "pf-transfer-kt10170",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/qa0DjAH11hv4cTvqv8pm34W06X1DvaxhWwgq239BXaQ=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשפ״ב, 2936",
+    "covers": "תיקון",
+    "booklet": "10170"
+   },
+   {
+    "name": "pf-transfer-kt10716",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/ZZKYP1JasTIK3+puGrB48nEoGOFH3NQjhXnAe4snPwo=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשפ״ג, 2099",
+    "covers": "תיקון",
+    "booklet": "10716"
+   }
+  ],
+  "booklets_without_official_link": []
+ },
+ "wh-int": {
+  "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים)",
+  "files": [
+   {
+    "name": "wh-int-btl",
+    "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
+    "publisher": "המוסד לביטוח לאומי (נוסח משולב)",
+    "kind": "consolidated",
+    "date": "",
+    "covers": ""
+   },
+   {
+    "name": "wh-int-kt6449",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "ק״ת תשס״ו, 287",
+    "covers": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים)",
+    "booklet": "6449"
+   },
+   {
+    "name": "wh-int-kt7076",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/DzPczTmtrnGUHE0weL5DG0SjCDtkVjFna+E7bhtrGSM=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשע״ב, 600",
+    "covers": "תיקון",
+    "booklet": "7076"
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "7907",
+    "label": "תשע״ח, 444",
+    "title": "תיקון"
+   }
+  ]
+ },
+ "cg-calc": {
+  "title": "תקנות מס הכנסה (חישוב רווח הון במכירת נייר ערך הנסחר בבורסה, מילווה המדינה או יחידה בקרן נאמנות)",
+  "files": [
+   {
+    "name": "cg-calc-btl",
+    "url": "https://www.btl.gov.il/Laws1/02_0103_100223.pdf",
+    "publisher": "המוסד לביטוח לאומי (נוסח משולב)",
+    "kind": "consolidated",
+    "date": "",
+    "covers": ""
+   },
+   {
+    "name": "cg-calc-kt6218",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n9TN+DoBVFvYjWC1z45JPDc=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "ק״ת תשס״ג, 387",
+    "covers": "תקנות מס הכנסה (חישוב רווח הון במכירת נייר ערך הנסחר בבורסה או יחידה בקרן נאמנות)",
+    "booklet": "6218"
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "6245",
+    "label": "786",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "6283",
+    "label": "תשס״ד, 128",
+    "title": "תיקון"
+   }
+  ]
+ },
+ "jit-annual": {
+  "title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן)",
+  "files": [],
+  "booklets_without_official_link": [
+   {
+    "booklet": "7646",
+    "label": "ק״ת תשע״ו, 1002",
+    "title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן)"
+   }
+  ]
+ },
+ "retage": {
+  "title": "חוק גיל פרישה",
+  "files": [
+   {
+    "name": "retage-11_lsr_210557",
+    "url": "https://fs.knesset.gov.il/11/law/11_lsr_210557.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "ס״ח תשמ״ז, 48",
+    "covers": "חוק גיל פרישה שווה לעובדת ולעובד"
+   },
+   {
+    "name": "retage-16_lsr_300990",
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "ס״ח תשס״ד, 46",
+    "covers": "חוק גיל פרישה"
+   },
+   {
+    "name": "retage-16_lsr_301004",
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_301004.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשס״ה, 359",
+    "covers": "חוק המדיניות הכלכלית לשנת הכספים 2005 (תיקוני חקיקה)"
+   },
+   {
+    "name": "retage-16_lsr_299984",
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "916",
+    "covers": "חוק הפיקוח על שירותים פיננסיים (קופות גמל)"
+   },
+   {
+    "name": "retage-18_lsr_301263",
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301263.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״ב, 92",
+    "covers": "תיקון מס׳ 3"
+   },
+   {
+    "name": "retage-19_lsr_306572",
+    "url": "https://fs.knesset.gov.il/19/law/19_lsr_306572.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״ד, 605",
+    "covers": "חוק להחלפת המונח מעביד (תיקוני חקיקה)"
+   },
+   {
+    "name": "retage-20_lsr_366872",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_366872.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״ז, 302",
+    "covers": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2017 ו־2018)"
+   },
+   {
+    "name": "retage-20_lsr_390349",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_390349.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "1053",
+    "covers": "תיקון מס׳ 6"
+   },
+   {
+    "name": "retage-24_lsr_611801",
+    "url": "https://fs.knesset.gov.il/24/law/24_lsr_611801.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשפ״ב, 250",
+    "covers": "חוק התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2021 ו־2022)"
+   }
+  ],
+  "booklets_without_official_link": []
+ },
+ "pf-rules64": {
+  "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל)",
+  "files": [
+   {
+    "name": "pf-rules64-btl",
+    "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
+    "publisher": "המוסד לביטוח לאומי (נוסח משולב)",
+    "kind": "consolidated",
+    "date": "file 18.8.2025",
+    "covers": ""
+   },
+   {
+    "name": "pf-rules64-kt4132",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/KyvxBcEw7jx5BmW90PVjDMbbzloLDvqysbFwywmwKio=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "1804",
+    "covers": "ת״ט",
+    "booklet": "4132"
+   },
+   {
+    "name": "pf-rules64-kt5637",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/HiehF7UL8gSftjhlpLxrKPH+yuGCEINw6ptzinFLzLk=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשנ״ה, 327",
+    "covers": "תיקון",
+    "booklet": "5637"
+   },
+   {
+    "name": "pf-rules64-kt5768",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/xWg5Wb1s~1+SWmSxyhcN08pvCeShseYQis75DpOs5z0=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "1348",
+    "covers": "תיקון מס׳ 3",
+    "booklet": "5768"
+   },
+   {
+    "name": "pf-rules64-kt6230",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n3MjnZfIqlxMHd2HyZwG6g0=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשס״ג, 575",
+    "covers": "תיקון",
+    "booklet": "6230"
+   },
+   {
+    "name": "pf-rules64-kt6270",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n~b7VXyTyYJCYD0R8CbjV2A=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "19",
+    "covers": "תיקון",
+    "booklet": "6270"
+   },
+   {
+    "name": "pf-rules64-kt6377",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3nwBbruf4iR7WF16iEKrq2yI=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "562",
+    "covers": "תיקון מס׳ 2",
+    "booklet": "6377"
+   },
+   {
+    "name": "pf-rules64-kt6657",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "633",
+    "covers": "תיקון",
+    "booklet": "6657"
+   },
+   {
+    "name": "pf-rules64-kt7131",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "1265",
+    "covers": "תיקון מס׳ 4",
+    "booklet": "7131"
+   },
+   {
+    "name": "pf-rules64-kt7608",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/RSGIGng1H6Aur9KieoRKYie4AhgrV76wSJ13gF5AdcI=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשע״ו, 631",
+    "covers": "הוראת שעה",
+    "booklet": "7608"
+   },
+   {
+    "name": "pf-rules64-kt10716",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/ZZKYP1JasTIK3+puGrB48nEoGOFH3NQjhXnAe4snPwo=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשפ״ג, 2098",
+    "covers": "תיקון",
+    "booklet": "10716"
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "1583",
+    "label": "ק״ת תשכ״ד, 1302",
+    "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל)"
+   },
+   {
+    "booklet": "1706",
+    "label": "תשכ״ה, 1693",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "2162",
+    "label": "תשכ״ח, 561",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "2387",
+    "label": "תשכ״ט, 1457",
+    "title": "ת״ט"
+   },
+   {
+    "booklet": "2495",
+    "label": "תש״ל, 602",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "2564",
+    "label": "1639",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "2685",
+    "label": "תשל״א, 836",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "2728",
+    "label": "1469",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "2803",
+    "label": "תשל״ב, 607",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "2855",
+    "label": "1250",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "2925",
+    "label": "תשל״ג, 178",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "2980",
+    "label": "913",
+    "title": "תיקון [צ״ל: תיקון מס׳ 2]"
+   },
+   {
+    "booklet": "3010",
+    "label": "1361",
+    "title": "תיקון מס׳ 2 [צ״ל: תיקון מס׳ 3]"
+   },
+   {
+    "booklet": "3238",
+    "label": "תשל״ה, 120",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "3281",
+    "label": "672",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "3428",
+    "label": "תשל״ו, 400",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "3447",
+    "label": "684",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "3460",
+    "label": "817",
+    "title": "תיקון מס׳ 3"
+   },
+   {
+    "booklet": "3619",
+    "label": "תשל״ז, 362",
+    "title": "תיקון מס׳ 4"
+   },
+   {
+    "booklet": "3629",
+    "label": "462",
+    "title": "תיקון מס׳ 5"
+   },
+   {
+    "booklet": "3733",
+    "label": "2100",
+    "title": "תיקון מס׳ 5 [צ״ל: תיקון מס׳ 6]"
+   },
+   {
+    "booklet": "3747",
+    "label": "2368",
+    "title": "תיקון [צ״ל: תיקון מס׳ 7]"
+   },
+   {
+    "booklet": "3850",
+    "label": "תשל״ח, 1330",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "3862",
+    "label": "1555",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "3868",
+    "label": "1688",
+    "title": "תיקון מס׳ 3"
+   },
+   {
+    "booklet": "3938",
+    "label": "תשל״ט, 540",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "3981",
+    "label": "1184",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "4008",
+    "label": "1626",
+    "title": "תיקון מס׳ 3"
+   },
+   {
+    "booklet": "4084",
+    "label": "תש״ם, 880",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "4096",
+    "label": "1084",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "4105",
+    "label": "1235",
+    "title": "תיקון מס׳ 3"
+   },
+   {
+    "booklet": "4144",
+    "label": "2067",
+    "title": "תיקון מס׳ 4"
+   },
+   {
+    "booklet": "4175",
+    "label": "תשמ״א, 112",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "4201",
+    "label": "409",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "4243",
+    "label": "1121",
+    "title": "תיקון מס׳ 3"
+   },
+   {
+    "booklet": "4306",
+    "label": "תשמ״ב, 487",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "4320",
+    "label": "630",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "4349",
+    "label": "971",
+    "title": "תיקון מס׳ 3"
+   },
+   {
+    "booklet": "4385",
+    "label": "1380",
+    "title": "תיקון מס׳ 4"
+   },
+   {
+    "booklet": "4411",
+    "label": "תשמ״ג, 27",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "4411",
+    "label": "40",
+    "title": "ת״ט"
+   },
+   {
+    "booklet": "4505",
+    "label": "1579",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "4583",
+    "label": "תשמ״ד, 854",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "4623",
+    "label": "1406",
+    "title": "ת״ט"
+   },
+   {
+    "booklet": "4629",
+    "label": "1460",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "4667",
+    "label": "1980",
+    "title": "ת״ט"
+   },
+   {
+    "booklet": "4860",
+    "label": "תשמ״ו, 20",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "4874",
+    "label": "194",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "4937",
+    "label": "954",
+    "title": "תיקון [צ״ל: תיקון מס׳ 3]"
+   },
+   {
+    "booklet": "4946",
+    "label": "1087",
+    "title": "תיקון מס׳ 4"
+   },
+   {
+    "booklet": "4946",
+    "label": "1087",
+    "title": "תיקון מס׳ 5"
+   },
+   {
+    "booklet": "4946",
+    "label": "1100",
+    "title": "ת״ט"
+   },
+   {
+    "booklet": "4962",
+    "label": "1348",
+    "title": "תיקון מס׳ 6"
+   },
+   {
+    "booklet": "4991",
+    "label": "תשמ״ז, 231",
+    "title": "תיקון מס׳ 7"
+   },
+   {
+    "booklet": "5009",
+    "label": "524",
+    "title": "ת״ט"
+   },
+   {
+    "booklet": "5022",
+    "label": "755",
+    "title": "תיקון מס׳ 8"
+   },
+   {
+    "booklet": "5059",
+    "label": "תשמ״ח, 34",
+    "title": "תיקון מס׳ 9"
+   },
+   {
+    "booklet": "5059",
+    "label": "35",
+    "title": "תיקון מס׳ 10"
+   },
+   {
+    "booklet": "5072",
+    "label": "278",
+    "title": "תיקון מס׳ 11"
+   },
+   {
+    "booklet": "5085",
+    "label": "472",
+    "title": "תיקון מס׳ 12"
+   },
+   {
+    "booklet": "5101",
+    "label": "719",
+    "title": "תיקון מס׳ 13"
+   },
+   {
+    "booklet": "5110",
+    "label": "876",
+    "title": "ת״ט"
+   },
+   {
+    "booklet": "5141",
+    "label": "תשמ״ט, 90",
+    "title": "תיקון מס׳ 14"
+   },
+   {
+    "booklet": "5150",
+    "label": "216",
+    "title": "ת״ט"
+   },
+   {
+    "booklet": "5164",
+    "label": "474",
+    "title": "תיקון מס׳ 15"
+   },
+   {
+    "booklet": "5200",
+    "label": "1097",
+    "title": "תיקון מס׳ 16"
+   },
+   {
+    "booklet": "5209",
+    "label": "1236",
+    "title": "תיקון מס׳ 17"
+   },
+   {
+    "booklet": "5232",
+    "label": "תש״ן, 107",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "5306",
+    "label": "תשנ״א, 190",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "5408",
+    "label": "תשנ״ב, 579",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "5526",
+    "label": "תשנ״ג, 870",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "5529",
+    "label": "910",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "5537",
+    "label": "1010",
+    "title": "תיקון מס׳ 2 (תיקון)"
+   },
+   {
+    "booklet": "5537",
+    "label": "1011",
+    "title": "תיקון מס׳ 3"
+   },
+   {
+    "booklet": "5598",
+    "label": "תשנ״ד, 871",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "5645",
+    "label": "418",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "5703",
+    "label": "1882",
+    "title": "תיקון מס׳ 3"
+   },
+   {
+    "booklet": "5721",
+    "label": "תשנ״ו, 226",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "5725",
+    "label": "306",
+    "title": "תיקון [צ״ל תיקון: מס׳ 2]"
+   },
+   {
+    "booklet": "5736",
+    "label": "554",
+    "title": "הוראת שעה לענין הגדרת ”משכורת“"
+   },
+   {
+    "booklet": "5795",
+    "label": "תשנ״ז, 140",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "5801",
+    "label": "276",
+    "title": "הוראת שעה"
+   },
+   {
+    "booklet": "5801",
+    "label": "277",
+    "title": "הוראת שעה לענין הגדרת ”משכורת“ (תיקון)"
+   },
+   {
+    "booklet": "5806",
+    "label": "340",
+    "title": "הוראת שעה (תיקון)"
+   },
+   {
+    "booklet": "5825",
+    "label": "588",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "5878",
+    "label": "תשנ״ח, 360",
+    "title": "הוראת שעה לענין הגדרת ”משכורת“ (תיקון)"
+   },
+   {
+    "booklet": "5919",
+    "label": "1148",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "5943",
+    "label": "תשנ״ט, 206",
+    "title": "הוראת שעה לענין הגדרת ”משכורת“ (תיקון)"
+   },
+   {
+    "booklet": "5947",
+    "label": "284",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "5953",
+    "label": "366",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "5960",
+    "label": "519",
+    "title": "תיקון מס׳ 3"
+   },
+   {
+    "booklet": "5977",
+    "label": "880",
+    "title": "ת״ט"
+   },
+   {
+    "booklet": "6034",
+    "label": "תש״ס, 570",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "6034",
+    "label": "572",
+    "title": "הוראת שעה לענין הגדרת ”משכורת“ (תיקון)"
+   },
+   {
+    "booklet": "6077",
+    "label": "תשס״א, 277",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "6092",
+    "label": "522",
+    "title": "הוראת שעה לענין הגדרת ”משכורת“ (תיקון)"
+   },
+   {
+    "booklet": "6106",
+    "label": "804",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "6149",
+    "label": "תשס״ב, 382",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "6163",
+    "label": "632",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "6245",
+    "label": "784",
+    "title": "תיקון מס׳ 2 [תשס״ב] (תיקון)"
+   },
+   {
+    "booklet": "6249",
+    "label": "827",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "6259",
+    "label": "1002",
+    "title": "תיקון מס׳ 3"
+   },
+   {
+    "booklet": "6266",
+    "label": "1136",
+    "title": "תיקון מס׳ 4"
+   },
+   {
+    "booklet": "6268",
+    "label": "תשס״ד, 8",
+    "title": "ת״ט"
+   },
+   {
+    "booklet": "6308",
+    "label": "441",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "6332",
+    "label": "856",
+    "title": "תיקון מס׳ 3"
+   },
+   {
+    "booklet": "6349",
+    "label": "תשס״ה, 162",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "6380",
+    "label": "602",
+    "title": "תיקון מס׳ 3"
+   },
+   {
+    "booklet": "6418",
+    "label": "936",
+    "title": "תיקון מס׳ 4"
+   },
+   {
+    "booklet": "6433",
+    "label": "תשס״ו, 58",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "6644",
+    "label": "תשס״ח, 432",
+    "title": "הוראת שעה"
+   },
+   {
+    "booklet": "6656",
+    "label": "619",
+    "title": "הוראת שעה (מס׳ 2)"
+   },
+   {
+    "booklet": "6689",
+    "label": "1120",
+    "title": "ת״ט"
+   },
+   {
+    "booklet": "6692",
+    "label": "1134",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "6731",
+    "label": "תשס״ט, 210",
+    "title": "הוראת שעה"
+   },
+   {
+    "booklet": "6758",
+    "label": "553",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "6761",
+    "label": "584",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "6788",
+    "label": "1068",
+    "title": "תיקון מס׳ 3"
+   },
+   {
+    "booklet": "6842",
+    "label": "תש״ע, 336",
+    "title": "הוראת שעה"
+   },
+   {
+    "booklet": "6960",
+    "label": "תשע״א, 435",
+    "title": "הוראת שעה"
+   },
+   {
+    "booklet": "6984",
+    "label": "748",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "7083",
+    "label": "תשע״ב, 702",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "7097",
+    "label": "850",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "7125",
+    "label": "1211",
+    "title": "תיקון מס׳ 3"
+   },
+   {
+    "booklet": "7143",
+    "label": "1494",
+    "title": "ת״ט"
+   },
+   {
+    "booklet": "7186",
+    "label": "תשע״ג, 226",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "7204",
+    "label": "504",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "7306",
+    "label": "תשע״ד, 247",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "7315",
+    "label": "314",
+    "title": "הוראת שעה"
+   },
+   {
+    "booklet": "7435",
+    "label": "תשע״ה, 55",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "7952",
+    "label": "תשע״ח, 1002",
+    "title": "תיקון"
+   }
+  ]
+ },
+ "ins": {
+  "title": "חוק הפיקוח על שירותים פיננסיים (ביטוח)",
+  "files": [
+   {
+    "name": "ins-1_lsr_209338",
+    "url": "https://fs.knesset.gov.il/1/law/1_lsr_209338.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "ס״ח תשי״א, 221",
+    "covers": "חוק הפיקוח על עסקי ביטוח"
+   },
+   {
+    "name": "ins-5_lsr_209337",
+    "url": "https://fs.knesset.gov.il/5/law/5_lsr_209337.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשכ״ב, 94",
+    "covers": "תיקון"
+   },
+   {
+    "name": "ins-5_lsr_209336",
+    "url": "https://fs.knesset.gov.il/5/law/5_lsr_209336.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשכ״ג, 30",
+    "covers": "תיקון [צ״ל: תיקון מס׳ 2]"
+   },
+   {
+    "name": "ins-9_lsr_209023",
+    "url": "https://fs.knesset.gov.il/9/law/9_lsr_209023.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשל״ח, 201",
+    "covers": "תיקון לפקודת הסטטיסטיקה"
+   },
+   {
+    "name": "ins-9_lsr_209335",
+    "url": "https://fs.knesset.gov.il/9/law/9_lsr_209335.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תש״ם, 26",
+    "covers": "תיקון מס׳ 4"
+   },
+   {
+    "name": "ins-9_lsr_209334",
+    "url": "https://fs.knesset.gov.il/9/law/9_lsr_209334.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "ס״ח תשמ״א, 208",
+    "covers": "חוק הפיקוח על עסקי ביטוח"
+   },
+   {
+    "name": "ins-9_lsr_ec_317815",
+    "url": "https://fs.knesset.gov.il/9/law/9_lsr_ec_317815.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "298",
+    "covers": "ת״ט"
+   },
+   {
+    "name": "ins-12_lsr_210838",
+    "url": "https://fs.knesset.gov.il/12/law/12_lsr_210838.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשנ״ב, 203",
+    "covers": "חוק הביקורת הפנימית"
+   },
+   {
+    "name": "ins-13_lsr_211015",
+    "url": "https://fs.knesset.gov.il/13/law/13_lsr_211015.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשנ״ד, 2",
+    "covers": "תיקון מס׳ 2"
+   },
+   {
+    "name": "ins-13_lsr_ec_317365",
+    "url": "https://fs.knesset.gov.il/13/law/13_lsr_ec_317365.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "4",
+    "covers": "ת״ט"
+   },
+   {
+    "name": "ins-13_lsr_211153",
+    "url": "https://fs.knesset.gov.il/13/law/13_lsr_211153.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשנ״ה, 158",
+    "covers": "תיקון מס׳ 4 לחוק הגנת הצרכן"
+   },
+   {
+    "name": "ins-13_lsr_211326",
+    "url": "https://fs.knesset.gov.il/13/law/13_lsr_211326.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשנ״ו, 45",
+    "covers": "תיקון מס׳ 4"
+   },
+   {
+    "name": "ins-14_lsr_211373",
+    "url": "https://fs.knesset.gov.il/14/law/14_lsr_211373.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשנ״ז, 32",
+    "covers": "חוק הסדרים במשק המדינה (תיקוני חקיקה להשגת יעדי התקציב לשנת 1997)"
+   },
+   {
+    "name": "ins-14_lsr_211426",
+    "url": "https://fs.knesset.gov.il/14/law/14_lsr_211426.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "221",
+    "covers": "תיקון מס׳ 6"
+   },
+   {
+    "name": "ins-14_lsr_211427",
+    "url": "https://fs.knesset.gov.il/14/law/14_lsr_211427.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "222",
+    "covers": "תיקון מס׳ 7"
+   },
+   {
+    "name": "ins-14_lsr_211461",
+    "url": "https://fs.knesset.gov.il/14/law/14_lsr_211461.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשנ״ח, 64",
+    "covers": "חוק להגברת הצמיחה והתעסוקה ולהשגת יעדי התקציב לשנת הכספים 1998 (תיקוני חקיקה)"
+   },
+   {
+    "name": "ins-15_lsr_300449",
+    "url": "https://fs.knesset.gov.il/15/law/15_lsr_300449.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשס״ב, 97",
+    "covers": "חוק חופש העיסוק (הקלה בהגבלות – גיל, תושבות ועיסוק אחר) (תיקוני חקיקה)"
+   },
+   {
+    "name": "ins-16_lsr_299931",
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299931.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשס״ג, 477",
+    "covers": "חוק התכנית להבראת כלכלת ישראל (תיקוני חקיקה להשגת יעדי התקציב והמדיניות הכלכלית לשנת הכספים 2003 ו־2004)"
+   },
+   {
+    "name": "ins-16_lsr_300990",
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשס״ד, 55",
+    "covers": "חוק גיל פרישה"
+   },
+   {
+    "name": "ins-16_lsr_299655",
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299655.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "370",
+    "covers": "תיקון מס׳ 12"
+   },
+   {
+    "name": "ins-16_lsr_299767",
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299767.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "433",
+    "covers": "תיקון מס׳ 12 (תיקון)"
+   },
+   {
+    "name": "ins-16_lsr_299916",
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299916.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשס״ה, 331",
+    "covers": "תיקון מס׳ 2 לחוק שוויון זכויות לאנשים עם מוגבלות"
+   },
+   {
+    "name": "ins-16_lsr_299878",
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299878.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "527",
+    "covers": "תיקון מס׳ 14"
+   },
+   {
+    "name": "ins-16_lsr_299604",
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299604.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "732",
+    "covers": "תיקון מס׳ 15"
+   },
+   {
+    "name": "ins-16_lsr_299983",
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299983.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "859",
+    "covers": "חוק להגברת התחרות ולצמצום הריכוזיות וניגודי העניינים בשוק ההון בישראל (תיקוני חקיקה)"
+   },
+   {
+    "name": "ins-16_lsr_299748",
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299748.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "279",
+    "covers": "חוק תובענות ייצוגיות"
+   },
+   {
+    "name": "ins-17_lsr_300816",
+    "url": "https://fs.knesset.gov.il/17/law/17_lsr_300816.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשס״ח, 121",
+    "covers": "חוק ההסדרים במשק המדינה (תיקוני חקיקה להשגת יעדי התקציב והמדיניות הכלכלית לשנת הכספים 2008)"
+   },
+   {
+    "name": "ins-17_lsr_300727",
+    "url": "https://fs.knesset.gov.il/17/law/17_lsr_300727.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "165",
+    "covers": "תיקון מס׳ 3 לחוק הפיקוח על שירותים פיננסיים (קופות גמל)"
+   },
+   {
+    "name": "ins-18_lsr_301033",
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301033.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשס״ט, 292",
+    "covers": "תיקון מס׳ 20"
+   },
+   {
+    "name": "ins-18_lsr_301176",
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301176.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תש״ע, 474",
+    "covers": "חוק בנק ישראל"
+   },
+   {
+    "name": "ins-18_lsr_301011",
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301011.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "515",
+    "covers": "תיקון מס׳ 3 לחוק החוזים האחידים"
+   },
+   {
+    "name": "ins-18_lsr_301211",
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301211.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "545",
+    "covers": "תיקון מס׳ 23"
+   },
+   {
+    "name": "ins-18_lsr_301133",
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301133.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״א, 53",
+    "covers": "תיקון מס׳ 5 לחוק הפיקוח על שירותים פיננסיים (קופות גמל)"
+   },
+   {
+    "name": "ins-18_lsr_301283",
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "380",
+    "covers": "תיקון מס׳ 3 לחוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני)"
+   },
+   {
+    "name": "ins-18_lsr_301269",
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301269.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "1120",
+    "covers": "חוק הגברת האכיפה בשוק ההון (תיקוני חקיקה)"
+   },
+   {
+    "name": "ins-19_lsr_301496",
+    "url": "https://fs.knesset.gov.il/19/law/19_lsr_301496.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״ד, 109",
+    "covers": "חוק לקידום התחרות ולצמצום הריכוזיות"
+   },
+   {
+    "name": "ins-19_lsr_306600",
+    "url": "https://fs.knesset.gov.il/19/law/19_lsr_306600.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״ה, 60",
+    "covers": "חוק הפיקוח על שירותים פיננסיים (תיקוני חקיקה)"
+   },
+   {
+    "name": "ins-20_lsr_315848",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_315848.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״ו, 26",
+    "covers": "תיקון מס׳ 13 לחוק הפיקוח על שירותים פיננסיים (קופות גמל)"
+   },
+   {
+    "name": "ins-20_lsr_316719",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_316719.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "252",
+    "covers": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2015 ו־2016)"
+   },
+   {
+    "name": "ins-20_lsr_348251",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_348251.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "1130",
+    "covers": "חוק הפיקוח על שירותים פיננסיים (שירותים פיננסיים מוסדרים)"
+   },
+   {
+    "name": "ins-20_lsr_348687",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_348687.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "1254",
+    "covers": "חוק הפיקוח על שירותים פיננסיים (תיקוני חקיקה)"
+   },
+   {
+    "name": "ins-20_lsr_367827",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_367827.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״ז, 342",
+    "covers": "תיקון מס׳ 33"
+   },
+   {
+    "name": "ins-20_lsr_369728",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_369728.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "427",
+    "covers": "תיקון מס׳ 192 לחוק הביטוח הלאומי"
+   },
+   {
+    "name": "ins-20_lsr_390346",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_390346.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "1048",
+    "covers": "תיקון מס׳ 35"
+   },
+   {
+    "name": "ins-20_lsr_502709",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_502709.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״ח, 739",
+    "covers": "תיקון מס׳ 18 לחוק שוויון זכויות לאנשים עם מוגבלות"
+   },
+   {
+    "name": "ins-20_lsr_504205",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_504205.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "880",
+    "covers": "תיקון מס׳ 57 לחוק הגנת הצרכן"
+   },
+   {
+    "name": "ins-20_lsr_519394",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_519394.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״ט, 40",
+    "covers": "תיקון מס׳ 38"
+   },
+   {
+    "name": "ins-20_lsr_525578",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_525578.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "63",
+    "covers": "תיקון מס׳ 7 לחוק בנק ישראל"
+   },
+   {
+    "name": "ins-20_lsr_528211",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_528211.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "99",
+    "covers": "תיקון מס׳ 30 לחוק הבנקאות (שירות ללקוח)"
+   },
+   {
+    "name": "ins-20_lsr_528257",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_528257.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "160",
+    "covers": "תיקון מס׳ 31 לחוק הבנקאות (שירות ללקוח)"
+   },
+   {
+    "name": "ins-24_lsr_628369",
+    "url": "https://fs.knesset.gov.il/24/law/24_lsr_628369.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשפ״ב, 864",
+    "covers": "תיקון מס׳ 34 לחוק הבנקאות (שירות ללקוח)"
+   },
+   {
+    "name": "ins-25_lsr_2620741",
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_2620741.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשפ״ג, 250",
+    "covers": "חוק התוכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2023 ו־2024)"
+   },
+   {
+    "name": "ins-25_lsr_3568695",
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_3568695.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשפ״ד, 161",
+    "covers": "תיקון מס׳ 9 לחוק פסיקת ריבית והצמדה"
+   },
+   {
+    "name": "ins-25_lsr_12224370",
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_12224370.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשפ״ו, 403",
+    "covers": "חוק התוכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנת התקציב 2026)"
+   },
+   {
+    "name": "ins-25_lsr_14187324",
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_14187324.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "909",
+    "covers": "תיקון מס׳ 74 לחוק הגנת הצרכן"
+   }
+  ],
+  "booklets_without_official_link": []
+ },
+ "nii-child": {
+  "title": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד)",
+  "files": [
+   {
+    "name": "nii-child-kt7727",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8OfazOM9J2n~VjyzV5AWsITYS27PjZHrqw3iJWE0YJI=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "ק״ת תשע״ז, 135",
+    "covers": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד)",
+    "booklet": "7727"
+   }
+  ],
+  "booklets_without_official_link": []
+ },
+ "jit-track": {
+  "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות)",
+  "files": [
+   {
+    "name": "jit-track-kt8038",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "ק״ת תשע״ח, 2394",
+    "covers": "תקנות השקעות משותפות בנאמנות (קרנות מחקות)",
+    "booklet": "8038"
+   }
+  ],
+  "booklets_without_official_link": []
+ },
+ "jit-foreign": {
+  "title": "תקנות השקעות משותפות בנאמנות (הצעת יחידות של קרן חוץ)",
+  "files": [
+   {
+    "name": "jit-foreign-kt7653",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "ק״ת תשע״ו, 1090",
+    "covers": "תקנות השקעות משותפות בנאמנות (הצעת יחידות של קרן חוץ)",
+    "booklet": "7653"
+   },
+   {
+    "name": "jit-foreign-kt10198",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/BTebX4k926xskBs4V~y+AuXSI0Ih1GZzIPSwKQOjGm4=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשפ״ב, 3134",
+    "covers": "תיקון",
+    "booklet": "10198"
+   }
+  ],
+  "booklets_without_official_link": []
+ },
+ "jit-assets": {
+  "title": "תקנות השקעות משותפות בנאמנות (נכסים שמותר לקנות ולהחזיק בקרן ושיעוריהם המרביים)",
+  "files": [
+   {
+    "name": "jit-assets-kt5637",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/HiehF7UL8gSftjhlpLxrKPH+yuGCEINw6ptzinFLzLk=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "ק״ת תשנ״ה, 317",
+    "covers": "תקנות השקעות משותפות בנאמנות (נכסים שמותר לקנות ולהחזיק בקרן ושיעוריהם המרביים)",
+    "booklet": "5637"
+   },
+   {
+    "name": "jit-assets-kt6625",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fphh3DPmvYX3FiarYq7bbZFo=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשס״ח, 130",
+    "covers": "תיקון",
+    "booklet": "6625"
+   },
+   {
+    "name": "jit-assets-kt7441",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZKDXbUdV2EdDbmN7uTh+Ns=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשע״ה, 213",
+    "covers": "תיקון",
+    "booklet": "7441"
+   },
+   {
+    "name": "jit-assets-kt7947",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/B~E3uFa1MXbFd5GDhXeWnp3HpjRP0vw~6D+s1wJH8x4=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשע״ח, 950",
+    "covers": "תיקון",
+    "booklet": "7947"
+   },
+   {
+    "name": "jit-assets-kt8038",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "2400",
+    "covers": "תיקון מס׳ 2",
+    "booklet": "8038"
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "5663",
+    "label": "868",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "5987",
+    "label": "תשנ״ט, 1022",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "6228",
+    "label": "תשס״ג, 542",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "6834",
+    "label": "תש״ע, 232",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "7087",
+    "label": "תשע״ב, 732",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "7401",
+    "label": "תשע״ד, 1549",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "7578",
+    "label": "תשע״ו, 256",
+    "title": "תיקון"
+   }
+  ]
+ },
+ "jit-class": {
+  "title": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום)",
+  "files": [
+   {
+    "name": "jit-class-kt6625",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fphh3DPmvYX3FiarYq7bbZFo=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "ק״ת תשס״ח, 152",
+    "covers": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום)",
+    "booklet": "6625"
+   },
+   {
+    "name": "jit-class-kt7441",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZKDXbUdV2EdDbmN7uTh+Ns=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשע״ה, 212",
+    "covers": "תיקון",
+    "booklet": "7441"
+   },
+   {
+    "name": "jit-class-kt7653",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשע״ו, 1098",
+    "covers": "תיקון",
+    "booklet": "7653"
+   },
+   {
+    "name": "jit-class-kt8038",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשע״ח, 2410",
+    "covers": "תיקון",
+    "booklet": "8038"
+   }
+  ],
+  "booklets_without_official_link": []
+ },
+ "wage": {
+  "title": "חוק הגנת השכר",
+  "files": [
+   {
+    "name": "wage-btl",
+    "url": "https://www.btl.gov.il/Laws1/00_0106_000000.pdf",
+    "publisher": "המוסד לביטוח לאומי (נוסח משולב)",
+    "kind": "consolidated",
+    "date": "",
+    "covers": ""
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "3022",
+    "label": "ק״ת תשל״ג, 1517",
+    "title": "תקנות בדבר עיקול, העברה ושעבוד"
+   },
+   {
+    "booklet": "3286",
+    "label": "תשל״ה, 754",
+    "title": "תקנות בדבר עיקול, העברה ושעבוד (תיקון)"
+   }
+  ]
+ },
+ "pen-adv": {
+  "title": "חוק הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים)",
+  "files": [
+   {
+    "name": "pen-adv-16_lsr_299985",
+    "url": "https://fs.knesset.gov.il/16/law/16_lsr_299985.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "ס״ח תשס״ה, 918",
+    "covers": "חוק הפיקוח על שירותים פיננסיים (עיסוק בייעוץ פנסיוני ובשיווק פנסיוני)"
+   },
+   {
+    "name": "pen-adv-17_lsr_300816",
+    "url": "https://fs.knesset.gov.il/17/law/17_lsr_300816.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשס״ח, 120",
+    "covers": "חוק ההסדרים במשק המדינה (תיקוני חקיקה להשגת יעדי התקציב והמדיניות הכלכלית לשנת הכספים 2008)"
+   },
+   {
+    "name": "pen-adv-17_lsr_300727",
+    "url": "https://fs.knesset.gov.il/17/law/17_lsr_300727.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "166",
+    "covers": "תיקון מס׳ 3 לחוק הפיקוח על שירותים פיננסיים (קופות גמל)"
+   },
+   {
+    "name": "pen-adv-18_lsr_301283",
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301283.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״א, 366",
+    "covers": "תיקון מס׳ 3"
+   },
+   {
+    "name": "pen-adv-18_lsr_301269",
+    "url": "https://fs.knesset.gov.il/18/law/18_lsr_301269.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "1139",
+    "covers": "חוק הגברת האכיפה בשוק ההון (תיקוני חקיקה)"
+   },
+   {
+    "name": "pen-adv-20_lsr_315848",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_315848.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״ו, 27",
+    "covers": "תיקון מס׳ 13 והוראת שעה לחוק הפיקוח על שירותים פיננסיים (קופות גמל)"
+   },
+   {
+    "name": "pen-adv-20_lsr_316718",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_316718.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "58",
+    "covers": "חוק התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2015 ו־2016)"
+   },
+   {
+    "name": "pen-adv-20_lsr_343169",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "886",
+    "covers": "תיקון מס׳ 15 לחוק הפיקוח על שירותים פיננסיים (קופות גמל)"
+   },
+   {
+    "name": "pen-adv-20_lsr_348687",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_348687.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "1261",
+    "covers": "חוק הפיקוח על שירותים פיננסיים (תיקוני חקיקה)"
+   },
+   {
+    "name": "pen-adv-20_lsr_366409",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_366409.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״ז, 153",
+    "covers": "חוק התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2017 ו־2018)"
+   },
+   {
+    "name": "pen-adv-20_lsr_525578",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_525578.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״ט, 58",
+    "covers": "תיקון מס׳ 7 לחוק בנק ישראל"
+   },
+   {
+    "name": "pen-adv-20_lsr_528392",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_528392.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "252",
+    "covers": "תיקון מס׳ 21 לחוק ההגבלים העסקיים"
+   },
+   {
+    "name": "pen-adv-25_lsr_2620741",
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_2620741.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשפ״ג, 193",
+    "covers": "חוק התוכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2023 ו־2024)"
+   },
+   {
+    "name": "pen-adv-25_lsr_3568695",
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_3568695.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשפ״ד, 175",
+    "covers": "תיקון מס׳ 9 לחוק פסיקת ריבית והצמדה"
+   },
+   {
+    "name": "pen-adv-25_lsr_4810658",
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_4810658.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "1491",
+    "covers": "תיקון מס׳ 13 לחוק הגנת הפרטיות"
+   },
+   {
+    "name": "pen-adv-25_lsr_14187324",
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_14187324.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשפ״ו, 912",
+    "covers": "תיקון מס׳ 74 לחוק הגנת הצרכן"
+   }
+  ],
+  "booklets_without_official_link": []
+ },
+ "filing": {
+  "title": "תקנות מס הכנסה (פטור מהגשת דין וחשבון)",
+  "files": [
+   {
+    "name": "filing-btl",
+    "url": "https://www.btl.gov.il/Laws1/02_0103_100009.pdf",
+    "publisher": "המוסד לביטוח לאומי (נוסח משולב)",
+    "kind": "consolidated",
+    "date": "",
+    "covers": ""
+   },
+   {
+    "name": "filing-kt6230",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n3MjnZfIqlxMHd2HyZwG6g0=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשס״ג, 575",
+    "covers": "תיקון",
+    "booklet": "6230"
+   },
+   {
+    "name": "filing-kt6317",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/Rw7wUk704REbG2yxl42bdFeT2Z6A1RTn4GqifMATFc4=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשס״ד, 558ב",
+    "covers": "תיקון",
+    "booklet": "6317"
+   },
+   {
+    "name": "filing-kt7405",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/ak9evgbauyE4aFg+Z1QNMGBl0iclUCMcryjwZ5y4OOE=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשע״ד, 1585",
+    "covers": "תיקון",
+    "booklet": "7405"
+   },
+   {
+    "name": "filing-kt7947",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/B~E3uFa1MXbFd5GDhXeWnp3HpjRP0vw~6D+s1wJH8x4=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "950",
+    "covers": "תיקון [צ״ל: תיקון מס׳ 2]",
+    "booklet": "7947"
+   },
+   {
+    "name": "filing-kt11460",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/7ImSG7R~31kgMHXzY2UjRTIi0nZwJhLAGkfNjyZo+zU=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשפ״ד, 3606",
+    "covers": "תיקון",
+    "booklet": "11460"
+   },
+   {
+    "name": "filing-kt11554",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKS~1BBjU32HN1nb8TNDx2wnFP3xGBckFAgJwavyX7I=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשפ״ה, 254",
+    "covers": "תיקון",
+    "booklet": "11554"
+   },
+   {
+    "name": "filing-kt12133",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/Uuh2ES8salCrWXzldTo5n6PYrwWKZUerq6Y+Md8drCE=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשפ״ו, 404",
+    "covers": "תיקון",
+    "booklet": "12133"
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "5091",
+    "label": "ק״ת תשמ״ח, 580",
+    "title": "תקנות מס הכנסה (פטור מהגשת דין־וחשבון)"
+   },
+   {
+    "booklet": "5150",
+    "label": "תשמ״ט, 202",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "5241",
+    "label": "תש״ן, 259",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "5321",
+    "label": "תשנ״א, 406",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "5413",
+    "label": "תשנ״ב, 640",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "5476",
+    "label": "תשנ״ג, 21",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "5492",
+    "label": "287",
+    "title": "תיקון [צ״ל: תיקון מס׳ 2]"
+   },
+   {
+    "booklet": "5570",
+    "label": "תשנ״ד, 319",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "5650",
+    "label": "תשנ״ה, 500",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "5725",
+    "label": "תשנ״ו, 306",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "5801",
+    "label": "תשנ״ז, 278",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "5817",
+    "label": "472",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "5879",
+    "label": "תשנ״ח, 378",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "5907",
+    "label": "944",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "5960",
+    "label": "תשנ״ט, 519",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "5960",
+    "label": "519",
+    "title": "תיקון מס׳ 2 [תשנ״ח] (תיקון)"
+   },
+   {
+    "booklet": "6034",
+    "label": "תש״ס, 569",
+    "title": "תיקון מס׳ 2 [תשנ״ח] (תיקון)"
+   },
+   {
+    "booklet": "6034",
+    "label": "570",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "6085",
+    "label": "תשס״א, 407",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "6085",
+    "label": "407",
+    "title": "תיקון מס׳ 2 [תשנ״ח] (תיקון)"
+   },
+   {
+    "booklet": "6149",
+    "label": "תשס״ב, 382",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "6149",
+    "label": "383",
+    "title": "תיקון מס׳ 2 [תשנ״ח] (תיקון)"
+   },
+   {
+    "booklet": "6254",
+    "label": "880",
+    "title": "הוראת שעה"
+   },
+   {
+    "booklet": "6325",
+    "label": "722",
+    "title": "ת״ט"
+   },
+   {
+    "booklet": "7931",
+    "label": "תשע״ח, 848",
+    "title": "תיקון"
+   }
+  ]
+ },
+ "wh-sec": {
+  "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית)",
+  "files": [
+   {
+    "name": "wh-sec-btl",
+    "url": "https://www.btl.gov.il/Laws1/02_0103_100228.pdf",
+    "publisher": "המוסד לביטוח לאומי (נוסח משולב)",
+    "kind": "consolidated",
+    "date": "",
+    "covers": ""
+   },
+   {
+    "name": "wh-sec-kt6218",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n9TN+DoBVFvYjWC1z45JPDc=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "ק״ת תשס״ג, 374",
+    "covers": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית)",
+    "booklet": "6218"
+   },
+   {
+    "name": "wh-sec-kt6449",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשס״ו, 284",
+    "covers": "תיקון",
+    "booklet": "6449"
+   },
+   {
+    "name": "wh-sec-kt7029",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ2fYurUQ637QU6g8aQkbVy0=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשע״א, 1351",
+    "covers": "תיקון",
+    "booklet": "7029"
+   },
+   {
+    "name": "wh-sec-kt7071",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/DzPczTmtrnGUHE0weL5DG~AS~aE2hUVRm3+mLSBTCnU=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשע״ב, 521",
+    "covers": "תיקון",
+    "booklet": "7071"
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "6240",
+    "label": "710",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "6281",
+    "label": "תשס״ד, 109",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "6326",
+    "label": "730",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "7335",
+    "label": "תשע״ד, 579",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "7907",
+    "label": "תשע״ח, 442",
+    "title": "תיקון"
+   }
+  ]
+ },
+ "rating": {
+  "title": "חוק להסדרת פעילות חברות דירוג האשראי",
+  "files": [
+   {
+    "name": "rating-19_lsr_301590",
+    "url": "https://fs.knesset.gov.il/19/law/19_lsr_301590.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "ס״ח תשע״ד, 418",
+    "covers": "חוק להסדרת פעילות חברות דירוג האשראי"
+   },
+   {
+    "name": "rating-20_lsr_525578",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_525578.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״ט, 64",
+    "covers": "תיקון מס׳ 7 לחוק בנק ישראל"
+   },
+   {
+    "name": "rating-25_lsr_3568695",
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_3568695.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשפ״ד, 183",
+    "covers": "תיקון מס׳ 9 לחוק פסיקת ריבית והצמדה"
+   }
+  ],
+  "booklets_without_official_link": []
+ },
+ "sec-offer": {
+  "title": "תקנות ניירות ערך (אופן הצעת ניירות ערך לציבור)",
+  "files": [],
+  "booklets_without_official_link": [
+   {
+    "booklet": "6574",
+    "label": "ק״ת תשס״ז, 656",
+    "title": "תקנות ניירות ערך (אופן הצעת ניירות ערך לציבור)"
+   },
+   {
+    "booklet": "6674",
+    "label": "תשס״ח, 910",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "6794",
+    "label": "תשס״ט, 1078",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "7564",
+    "label": "תשע״ו, 97",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "7667",
+    "label": "1193",
+    "title": "הוראת שעה"
+   }
+  ]
+ },
+ "jit-deriv": {
+  "title": "תקנות השקעות משותפות בנאמנות (אופציות, חוזים עתידיים ומכירות בחסר)",
+  "files": [
+   {
+    "name": "jit-deriv-kt6625",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fphh3DPmvYX3FiarYq7bbZFo=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשס״ח, 149",
+    "covers": "תיקון",
+    "booklet": "6625"
+   },
+   {
+    "name": "jit-deriv-kt8038",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשע״ח, 2409",
+    "covers": "תיקון",
+    "booklet": "8038"
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "6084",
+    "label": "ק״ת תשס״א, 389",
+    "title": "תקנות השקעות משותפות בנאמנות (אופציות, חוזים עתידיים ומכירות בחסר)"
+   },
+   {
+    "booklet": "7087",
+    "label": "תשע״ב, 737",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "7401",
+    "label": "תשע״ד, 1553",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "11098",
+    "label": "תשפ״ד, 1442",
+    "title": "תיקון"
+   }
+  ]
+ },
+ "bank-lic": {
+  "title": "חוק הבנקאות (רישוי)",
+  "files": [
+   {
+    "name": "bank-lic-boi",
+    "url": "https://boi.org.il/media/1l3izmkj/124.pdf",
+    "publisher": "בנק ישראל, קובץ חקיקה בנקאית פריט 124 (הוצאת הלכות)",
+    "kind": "consolidated",
+    "date": "file 24.8.2026",
+    "covers": ""
+   }
+  ],
+  "booklets_without_official_link": []
+ },
+ "regfin": {
+  "title": "חוק הפיקוח על שירותים פיננסיים (שירותים פיננסיים מוסדרים)",
+  "files": [
+   {
+    "name": "regfin-20_lsr_348251",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_348251.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "ס״ח תשע״ו, 1098",
+    "covers": "חוק הפיקוח על שירותים פיננסיים (שירותים פיננסיים מוסדרים)"
+   },
+   {
+    "name": "regfin-20_lsr_366409",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_366409.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״ז, 128",
+    "covers": "חוק התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2017 ו־2018)"
+   },
+   {
+    "name": "regfin-20_lsr_367942",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_367942.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "373",
+    "covers": "חוק להגברת התחרות ולצמצום הריכוזיות בשוק הבנקאות בישראל (תיקוני חקיקה)"
+   },
+   {
+    "name": "regfin-20_lsr_381148",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_381148.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "446",
+    "covers": "חוק חובת אזהרה בפרסום ובשיווק של הלוואה (תיקוני חקיקה)"
+   },
+   {
+    "name": "regfin-20_lsr_390377",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_390377.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "1067",
+    "covers": "תיקון מס׳ 4"
+   },
+   {
+    "name": "regfin-20_lsr_390431",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_390431.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "1156",
+    "covers": "תיקון מס׳ 53 לחוק הגנת הצרכן"
+   },
+   {
+    "name": "regfin-20_lsr_504205",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_504205.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״ח, 881",
+    "covers": "תיקון מס׳ 57 לחוק הגנת הצרכן"
+   },
+   {
+    "name": "regfin-20_lsr_525578",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_525578.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״ט, 64",
+    "covers": "תיקון מס׳ 7 לחוק בנק ישראל"
+   },
+   {
+    "name": "regfin-20_lsr_528211",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_528211.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "100",
+    "covers": "תיקון מס׳ 30 לחוק הבנקאות (שירות ללקוח)"
+   },
+   {
+    "name": "regfin-20_lsr_528257",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_528257.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "160",
+    "covers": "תיקון מס׳ 31 לחוק הבנקאות (שירות ללקוח)"
+   },
+   {
+    "name": "regfin-20_lsr_528386",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_528386.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "225",
+    "covers": "חוק שירותי תשלום"
+   },
+   {
+    "name": "regfin-20_lsr_528392",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_528392.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "255",
+    "covers": "תיקון מס׳ 21 לחוק ההגבלים העסקיים"
+   },
+   {
+    "name": "regfin-22_lsr_567851",
+    "url": "https://fs.knesset.gov.il/22/law/22_lsr_567851.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תש״ף, 14",
+    "covers": "תיקון לחוק שירותי תשלום"
+   },
+   {
+    "name": "regfin-24_lsr_611801",
+    "url": "https://fs.knesset.gov.il/24/law/24_lsr_611801.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשפ״ב, 328",
+    "covers": "חוק התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2021 ו־2022)"
+   },
+   {
+    "name": "regfin-24_lsr_628369",
+    "url": "https://fs.knesset.gov.il/24/law/24_lsr_628369.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "865",
+    "covers": "תיקון מס׳ 34 לחוק הבנקאות (שירות ללקוח)"
+   },
+   {
+    "name": "regfin-25_lsr_2620741",
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_2620741.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשפ״ג, 222, 347",
+    "covers": "חוק התוכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2023 ו־2024)"
+   },
+   {
+    "name": "regfin-25_lsr_3568695",
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_3568695.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשפ״ד, 187",
+    "covers": "תיקון מס׳ 9 לחוק פסיקת ריבית והצמדה"
+   },
+   {
+    "name": "regfin-25_lsr_12224370",
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_12224370.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשפ״ו, 358",
+    "covers": "חוק התוכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנת התקציב 2026)"
+   },
+   {
+    "name": "regfin-25_lsr_14187324",
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_14187324.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "910",
+    "covers": "תיקון מס׳ 74 לחוק הגנת הצרכן"
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "8011",
+    "label": "ק״ת תשע״ח, 2068",
+    "title": "צו הפיקוח על שירותים פיננסיים (שירותים פיננסיים מוסדרים) (דחיית יום התחילה המאוחר)"
+   }
+  ]
+ },
+ "adv-equity": {
+  "title": "תקנות הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות (הון עצמי וביטוח)",
+  "files": [],
+  "booklets_without_official_link": [
+   {
+    "booklet": "6016",
+    "label": "ק״ת תש״ס, 266",
+    "title": "תקנות הסדרת העיסוק בייעוץ השקעות ובניהול תיקי השקעות (הון עצמי וביטוח)"
+   },
+   {
+    "booklet": "6298",
+    "label": "תשס״ד, 311",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "6467",
+    "label": "תשס״ו, 580",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "6684",
+    "label": "תשס״ח, 1051",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "9811",
+    "label": "תשפ״ב, 1170",
+    "title": "תיקון"
+   }
+  ]
+ },
+ "jit-prices": {
+  "title": "תקנות השקעות משותפות בנאמנות (מחירי קניה ומכירה של נכסי קרן ושווי נכסי קרן)",
+  "files": [
+   {
+    "name": "jit-prices-kt5637",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/HiehF7UL8gSftjhlpLxrKPH+yuGCEINw6ptzinFLzLk=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "ק״ת תשנ״ה, 322",
+    "covers": "תקנות השקעות משותפות בנאמנות (מחירי קניה ומכירה של נכסי קרן ושווי נכסי קרן)",
+    "booklet": "5637"
+   },
+   {
+    "name": "jit-prices-kt6625",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fphh3DPmvYX3FiarYq7bbZFo=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשס״ח, 141",
+    "covers": "תיקון",
+    "booklet": "6625"
+   },
+   {
+    "name": "jit-prices-kt8038",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשע״ח, 2406",
+    "covers": "תיקון",
+    "booklet": "8038"
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "5987",
+    "label": "תשנ״ט, 1024",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "6228",
+    "label": "תשס״ג, 542",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "6834",
+    "label": "תש״ע, 234",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "7087",
+    "label": "תשע״ב, 739",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "7401",
+    "label": "תשע״ד, 1552",
+    "title": "תיקון"
+   }
+  ]
+ },
+ "jit-distfee": {
+  "title": "תקנות השקעות משותפות בנאמנות (עמלת הפצה)",
+  "files": [
+   {
+    "name": "jit-distfee-kt6464",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmfLeg7C4UCrAfbCcchwXa2I=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "ק״ת תשס״ו, 494",
+    "covers": "תקנות השקעות משותפות בנאמנות (עמלת הפצה)",
+    "booklet": "6464"
+   },
+   {
+    "name": "jit-distfee-kt6625",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fphh3DPmvYX3FiarYq7bbZFo=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשס״ח, 163",
+    "covers": "תיקון",
+    "booklet": "6625"
+   },
+   {
+    "name": "jit-distfee-kt7653",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשע״ו, 1097",
+    "covers": "תיקון",
+    "booklet": "7653"
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "6834",
+    "label": "תש״ע, 234",
+    "title": "תיקון"
+   }
+  ]
+ },
+ "pf-direct": {
+  "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות)",
+  "files": [
+   {
+    "name": "pf-direct-kt6652",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpsFM+Hq~v6+ysOsYBj7v7sI=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "ק״ת תשס״ח, 584",
+    "covers": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (הוצאות ישירות בשל ביצוע עסקאות)",
+    "booklet": "6652"
+   },
+   {
+    "name": "pf-direct-kt7071",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/DzPczTmtrnGUHE0weL5DG~AS~aE2hUVRm3+mLSBTCnU=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשע״ב, 521",
+    "covers": "תיקון",
+    "booklet": "7071"
+   },
+   {
+    "name": "pf-direct-kt8744",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/tZDvucD9RCpb4OFgftW2Mkr7NqSpiUfGbyQHeI17Cx8=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תש״ף, 2644",
+    "covers": "תיקון",
+    "booklet": "8744"
+   },
+   {
+    "name": "pf-direct-kt10377",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dRGsI+SrmavYbn73icZsjwvAYSdKZdahWniBQ2IENis=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשפ״ג, 212",
+    "covers": "תיקון",
+    "booklet": "10377"
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "7097",
+    "label": "860",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "7125",
+    "label": "1214",
+    "title": "תיקון מס׳ 3"
+   },
+   {
+    "booklet": "7321",
+    "label": "תשע״ד, 398",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "7363",
+    "label": "1028",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "8060",
+    "label": "תשע״ח, 2660",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "10034",
+    "label": "תשפ״ב, 2222",
+    "title": "הוראת שעה"
+   }
+  ]
+ },
+ "pf-locate": {
+  "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (איתור עמיתים ומוטבים)",
+  "files": [],
+  "booklets_without_official_link": [
+   {
+    "booklet": "7083",
+    "label": "ק״ת תשע״ב, 696",
+    "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (איתור עמיתים ומוטבים)"
+   }
+  ]
+ },
+ "bank-cs": {
+  "title": "חוק הבנקאות (שירות ללקוח)",
+  "files": [
+   {
+    "name": "bank-cs-boi",
+    "url": "https://boi.org.il/media/nvadftgk/150.pdf",
+    "publisher": "בנק ישראל, קובץ חקיקה בנקאית פריט 150 (הוצאת הלכות)",
+    "kind": "consolidated",
+    "date": "file 14.4.2026",
+    "covers": ""
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "8074",
+    "label": "ק״ת תשע״ט, 54",
+    "title": "צו נתוני אשראי (דחיית יום התחילה של החוק)"
+   },
+   {
+    "booklet": "8161",
+    "label": "1956",
+    "title": "צו להגברת התחרות ולצמצום הריכוזיות בשוק הבנקאות בישראל (תיקוני חקיקה) (דחיית מועד התחילה של סעיף 7ז לחוק הבנקאות (שירות ללקוח))"
+   },
+   {
+    "booklet": "8676",
+    "label": "תש״ף, 1880",
+    "title": "תקנות התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנת התקציב 2019) (דחיית תחילתו של פרק ב׳ לחוק)"
+   }
+  ]
+ },
+ "bank-disc": {
+  "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים)",
+  "files": [
+   {
+    "name": "bank-disc-boi",
+    "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
+    "publisher": "בנק ישראל, קובץ חקיקה בנקאית פריט 151",
+    "kind": "consolidated",
+    "date": "file 2.2.2015",
+    "covers": "amendments to 30.12.2014"
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "5471",
+    "label": "ק״ת תשנ״ב, 1512",
+    "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים)"
+   },
+   {
+    "booklet": "5491",
+    "label": "תשנ״ג, 284",
+    "title": "ת״ט"
+   },
+   {
+    "booklet": "5527",
+    "label": "889",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "5546",
+    "label": "1170",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "5555",
+    "label": "תשנ״ד, 84",
+    "title": "ת״ט"
+   },
+   {
+    "booklet": "5564",
+    "label": "244",
+    "title": "ת״ט"
+   },
+   {
+    "booklet": "5636",
+    "label": "תשנ״ה, 300",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "6211",
+    "label": "תשס״ג, 230",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "6219",
+    "label": "408",
+    "title": "ת״ט"
+   },
+   {
+    "booklet": "6226",
+    "label": "515",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "6261",
+    "label": "1082",
+    "title": "תיקון מס׳ 2 (תיקון)"
+   },
+   {
+    "booklet": "6673",
+    "label": "תשס״ח, 907",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "7430",
+    "label": "תשע״ה, 16",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "7443",
+    "label": "232",
+    "title": "ת״ט"
+   },
+   {
+    "booklet": "7469",
+    "label": "554",
+    "title": "תיקון מס׳ 2"
+   }
+  ]
+ },
+ "pf-ira": {
+  "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי)",
+  "files": [
+   {
+    "name": "pf-ira-kt6901",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/RATI4pBLty7qGIwDdx4vQyqqWGj~YlmHaa28WfpNxGU=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "1274",
+    "covers": "תיקון מס׳ 2",
+    "booklet": "6901"
+   },
+   {
+    "name": "pf-ira-kt7819",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשע״ז, 1138",
+    "covers": "תיקון",
+    "booklet": "7819"
+   },
+   {
+    "name": "pf-ira-kt7880",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/iXRl3JX663X67T342MLtmOhZrYskYBxrQk+FHRN~mJM=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשע״ח, 174",
+    "covers": "תיקון",
+    "booklet": "7880"
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "6829",
+    "label": "ק״ת תש״ע, 54",
+    "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי)"
+   },
+   {
+    "booklet": "6859",
+    "label": "642",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "7125",
+    "label": "תשע״ב, 1213",
+    "title": "תיקון"
+   }
+  ]
+ },
+ "pf-invest": {
+  "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (כללי השקעה החלים על גופים מוסדיים)",
+  "files": [
+   {
+    "name": "pf-invest-kt10170",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/qa0DjAH11hv4cTvqv8pm34W06X1DvaxhWwgq239BXaQ=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשפ״ב, 2934",
+    "covers": "תיקון",
+    "booklet": "10170"
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "7125",
+    "label": "ק״ת תשע״ב, 1190",
+    "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (כללי השקעה החלים על גופים מוסדיים)"
+   },
+   {
+    "booklet": "7162",
+    "label": "1672",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "9417",
+    "label": "תשפ״א, 3270",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "11466",
+    "label": "תשפ״ד, 3648",
+    "title": "[צ״ל: תיקון]"
+   }
+  ]
+ },
+ "pf-payments": {
+  "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (תשלומים לקופת גמל)",
+  "files": [
+   {
+    "name": "pf-payments-kt7407",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZbYNmyK9Qa3gH~lF+jEWmc=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "ק״ת תשע״ד, 1615",
+    "covers": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (תשלומים לקופת גמל)",
+    "booklet": "7407"
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "7435",
+    "label": "תשע״ה, 55",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "7448",
+    "label": "326",
+    "title": "תיקון מס׳ 2"
+   },
+   {
+    "booklet": "7587",
+    "label": "תשע״ו, 350",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "7677",
+    "label": "1458",
+    "title": "תיקון מס׳ 2"
+   }
+  ]
+ },
+ "eff-2017": {
+  "title": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2017 ו-2018)",
+  "files": [
+   {
+    "name": "eff-2017-20_lsr_366872",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_366872.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "ס״ח תשע״ז, 217",
+    "covers": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2017 ו־2018)"
+   },
+   {
+    "name": "eff-2017-20_lsr_369728",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_369728.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "428",
+    "covers": "תיקון מס׳ 192 לחוק הביטוח הלאומי"
+   },
+   {
+    "name": "eff-2017-20_lsr_382405",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_382405.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "572",
+    "covers": "חוק שינויים בהסדר תקופת הלידה וההורות (תיקוני חקיקה)"
+   },
+   {
+    "name": "eff-2017-20_lsr_489287",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_489287.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשע״ח, 164",
+    "covers": "תיקון מס׳ 200 לחוק הביטוח הלאומי"
+   },
+   {
+    "name": "eff-2017-20_lsr_491980",
+    "url": "https://fs.knesset.gov.il/20/law/20_lsr_491980.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "512, 523",
+    "covers": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנת התקציב 2019)"
+   },
+   {
+    "name": "eff-2017-23_lsr_583864",
+    "url": "https://fs.knesset.gov.il/23/law/23_lsr_583864.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשפ״א, 20",
+    "covers": "תיקון מס׳ 6"
+   },
+   {
+    "name": "eff-2017-24_lsr_611567",
+    "url": "https://fs.knesset.gov.il/24/law/24_lsr_611567.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשפ״ב, 42",
+    "covers": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2021 ו־2022)"
+   },
+   {
+    "name": "eff-2017-25_lsr_1783627",
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_1783627.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "תשפ״ג, 20",
+    "covers": "חוק לעניין ועדות הכנסת (תיקוני חקיקה והוראת שעה)"
+   },
+   {
+    "name": "eff-2017-25_lsr_2800099",
+    "url": "https://fs.knesset.gov.il/25/law/25_lsr_2800099.pdf",
+    "publisher": "הכנסת (ספר החוקים)",
+    "kind": "gazette",
+    "date": "512",
+    "covers": "תיקון מס׳ 9"
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "7767",
+    "label": "ק״ת תשע״ז, 602",
+    "title": "שינוי התוספת לפרק י״ב לחוק"
+   },
+   {
+    "booklet": "11999",
+    "label": "ק״ת תשפ״ה, 2364",
+    "title": "צו ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2017 ו–2018) (הארכת תקופת הוראת המעבר שבסעיף 25(א) לחוק)"
+   }
+  ]
+ },
+ "bank-ord": {
+  "title": "פקודת הבנקאות",
+  "files": [
+   {
+    "name": "bank-ord-boi",
+    "url": "https://boi.org.il/media/s5ub1z12/103.pdf",
+    "publisher": "בנק ישראל, קובץ חקיקה בנקאית פריט 103",
+    "kind": "consolidated",
+    "date": "file 14.1.2025",
+    "covers": "amendment lists end at התשפ\"ד"
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "0861",
+    "label": "ק״ת תשי״ט, 607",
+    "title": "צו (שינוי טופס תוספות) [1946] (תיקון)"
+   },
+   {
+    "booklet": "2939",
+    "label": "תשל״ג, 380",
+    "title": "צו (שינוי טופס בתוספת ראשונה)"
+   }
+  ]
+ },
+ "rules-transfer90": {
+  "title": "כללי מס הכנסה (פטור ממס בשל העברה ושינוי יעוד של כספים בקופות גמל)",
+  "files": [
+   {
+    "name": "rules-transfer90-kt5287",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/xYWY4f5V6gsVHq6NUDp~YKCeau4cX~kDyqy86zbS4NU=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "ק״ת תש״ן, 1003",
+    "covers": "כללי מס הכנסה (פטור ממס בשל העברה ושינוי יעוד של כספים בקופות גמל)",
+    "booklet": "5287"
+   }
+  ],
+  "booklets_without_official_link": []
+ },
+ "health": {
+  "title": "חוק ביטוח בריאות ממלכתי",
+  "files": [
+   {
+    "name": "health-btl",
+    "url": "https://www.btl.gov.il/Laws1/00_0003_000000.pdf",
+    "publisher": "המוסד לביטוח לאומי (נוסח משולב)",
+    "kind": "consolidated",
+    "date": "",
+    "covers": ""
+   },
+   {
+    "name": "health-kt5682",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/BTwXToK9tgT1T4C743xB1YM5f+QhBADNjCgwTr9rv3c=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "ק״ת תשנ״ה, 1459",
+    "covers": "שינוי התוספות השניה והשלישית לחוק",
+    "booklet": "5682"
+   },
+   {
+    "name": "health-kt6820",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תש״ע, 84",
+    "covers": "שינוי התוספת השניה לחוק",
+    "booklet": "6820"
+   },
+   {
+    "name": "health-kt6901",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/RATI4pBLty7qGIwDdx4vQyqqWGj~YlmHaa28WfpNxGU=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "1277",
+    "covers": "הוספת תחום בתוספת הראשונה לחוק (הוראת שעה)",
+    "booklet": "6901"
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "5791",
+    "label": "תשנ״ז, 79",
+    "title": "שינוי התוספות השניה והשלישית לחוק [תשנ״ה] (ביטול)"
+   },
+   {
+    "booklet": "5995",
+    "label": "תשנ״ט, 1132",
+    "title": "שינוי התוספת השניה לחוק"
+   },
+   {
+    "booklet": "6046",
+    "label": "תש״ס, 757",
+    "title": "שינוי התוספת השניה לחוק"
+   },
+   {
+    "booklet": "6133",
+    "label": "תשס״ב, 90",
+    "title": "שינוי התוספת השניה לחוק"
+   },
+   {
+    "booklet": "6213",
+    "label": "תשס״ג, 262",
+    "title": "שינוי התוספת השניה לחוק"
+   },
+   {
+    "booklet": "6316",
+    "label": "תשס״ד, 546",
+    "title": "שינוי התוספת השניה לחוק"
+   },
+   {
+    "booklet": "6490",
+    "label": "תשס״ו, 839",
+    "title": "שינוי התוספת החמישית לחוק"
+   },
+   {
+    "booklet": "6510",
+    "label": "1106",
+    "title": "שינוי התוספת השניה לחוק"
+   },
+   {
+    "booklet": "6643",
+    "label": "תשס״ח, 419",
+    "title": "שינוי התוספת השניה לחוק"
+   },
+   {
+    "booklet": "6646",
+    "label": "474",
+    "title": "ת״ט"
+   },
+   {
+    "booklet": "6899",
+    "label": "1250",
+    "title": "שינוי התוספת השניה לחוק (מס׳ 2)"
+   },
+   {
+    "booklet": "7033",
+    "label": "תשע״א, 1380",
+    "title": "שינוי התוספת השניה לחוק"
+   },
+   {
+    "booklet": "7115",
+    "label": "תשע״ב, 1095",
+    "title": "שינוי התוספת השנייה לחוק"
+   },
+   {
+    "booklet": "7154",
+    "label": "1600",
+    "title": "שינוי התוספות השנייה והשלישית לחוק"
+   },
+   {
+    "booklet": "7166",
+    "label": "תשע״ג, 14",
+    "title": "שינוי התוספות השנייה והשלישית לחוק"
+   },
+   {
+    "booklet": "7212",
+    "label": "630",
+    "title": "שינוי התוספת השנייה לחוק"
+   },
+   {
+    "booklet": "7316",
+    "label": "תשע״ד, 333",
+    "title": "תיקון התוספות השנייה והשלישית לחוק"
+   },
+   {
+    "booklet": "7426",
+    "label": "1795",
+    "title": "שינוי התוספת החמישית לחוק"
+   },
+   {
+    "booklet": "7477",
+    "label": "תשע״ה, 679",
+    "title": "תיקון התוספות השנייה והשלישית לחוק"
+   },
+   {
+    "booklet": "7574",
+    "label": "תשע״ו, 180",
+    "title": "תיקון התוספות השנייה והשלישית לחוק"
+   },
+   {
+    "booklet": "7853",
+    "label": "תשע״ז, 1684",
+    "title": "שינוי התוספת החמישית לחוק"
+   },
+   {
+    "booklet": "10152",
+    "label": "תשפ״ב, 2856",
+    "title": "שינוי התוספת השנייה לחוק"
+   },
+   {
+    "booklet": "10236",
+    "label": "3346",
+    "title": "שינוי התוספת השנייה לחוק (מס׳ 2)"
+   },
+   {
+    "booklet": "10353",
+    "label": "תשפ״ג, 94",
+    "title": "תיקון התוספות השנייה והשלישית לחוק"
+   },
+   {
+    "booklet": "10693",
+    "label": "1986",
+    "title": "תיקון התוספות השנייה והשלישית לחוק (תיקון)"
+   },
+   {
+    "booklet": "10762",
+    "label": "2422",
+    "title": "שינוי התוספות השנייה והשלישית לחוק"
+   },
+   {
+    "booklet": "10989",
+    "label": "תשפ״ד, 902",
+    "title": "תיקון התוספות השנייה והשלישית לחוק [תשפ״ג] (תיקון)"
+   },
+   {
+    "booklet": "11129",
+    "label": "1582",
+    "title": "שינוי התוספת השלישית לחוק"
+   },
+   {
+    "booklet": "11316",
+    "label": "2704",
+    "title": "ת״ט"
+   },
+   {
+    "booklet": "11488",
+    "label": "3768",
+    "title": "תיקון התוספות השנייה והשלישית לחוק [תשפ״ג] (תיקון מס׳ 2)"
+   },
+   {
+    "booklet": "11493",
+    "label": "3790",
+    "title": "שינוי התוספות השנייה והשלישית לחוק (מס׳ 2)"
+   },
+   {
+    "booklet": "11583",
+    "label": "תשפ״ה, 384",
+    "title": "שינוי התוספת השנייה לחוק"
+   },
+   {
+    "booklet": "5827",
+    "label": "ק״ת תשנ״ז, 634",
+    "title": "עדכון תשלומים בעד שירותי בריאות ותרופות"
+   },
+   {
+    "booklet": "6963",
+    "label": "ק״ת תשע״א, 485",
+    "title": "הארכת תקופת זכאות לשירותי רפואת שיניים כלליים בלא רישום"
+   },
+   {
+    "booklet": "7012",
+    "label": "1139",
+    "title": "הארכת תקופת זכאות לשירותי רפואת שיניים כלליים בלא רישום (מס׳ 2)"
+   },
+   {
+    "booklet": "7048",
+    "label": "תשע״ב, 105",
+    "title": "הארכת תקופת זכאות לשירותי רפואת שיניים כלליים בלא רישום"
+   }
+  ]
+ },
+ "wh-hish": {
+  "title": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות)",
+  "files": [
+   {
+    "name": "wh-hish-btl",
+    "url": "https://www.btl.gov.il/Laws1/02_0103_100097.pdf",
+    "publisher": "המוסד לביטוח לאומי (נוסח משולב)",
+    "kind": "consolidated",
+    "date": "",
+    "covers": ""
+   },
+   {
+    "name": "wh-hish-kt5861",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/qp4kOfn567Y9SVzCZ9fzttZlVRiBvp0mJWMdq5kP+yc=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "ק״ת תשנ״ח, 74",
+    "covers": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות)",
+    "booklet": "5861"
+   },
+   {
+    "name": "wh-hish-kt6214",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n7vDlZAqFcmNW1LZdFh7qw8=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשס״ג, 292",
+    "covers": "תיקון",
+    "booklet": "6214"
+   },
+   {
+    "name": "wh-hish-kt6230",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n3MjnZfIqlxMHd2HyZwG6g0=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "586",
+    "covers": "תיקון מס׳ 2",
+    "booklet": "6230"
+   },
+   {
+    "name": "wh-hish-kt6449",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשס״ו, 287",
+    "covers": "תיקון",
+    "booklet": "6449"
+   },
+   {
+    "name": "wh-hish-kt7080",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/DzPczTmtrnGUHE0weL5DG~faBlBOeyeFgfL5Y6ioRiw=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשע״ב, 660",
+    "covers": "תיקון",
+    "booklet": "7080"
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "6326",
+    "label": "תשס״ד, 730",
+    "title": "תיקון"
+   },
+   {
+    "booklet": "7907",
+    "label": "תשע״ח, 446",
+    "title": "תיקון"
+   }
+  ]
+ },
+ "order-hish": {
+  "title": "צו מס הכנסה (קביעת סכומים ששולמו מקרן השתלמות כהכנסה)",
+  "files": [
+   {
+    "name": "order-hish-kt5861",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/qp4kOfn567Y9SVzCZ9fzttZlVRiBvp0mJWMdq5kP+yc=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "ק״ת תשנ״ח, 74",
+    "covers": "צו מס הכנסה (קביעת סכומים ששולמו מקרן השתלמות כהכנסה)",
+    "booklet": "5861"
+   },
+   {
+    "name": "order-hish-kt6214",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n7vDlZAqFcmNW1LZdFh7qw8=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשס״ג, 292",
+    "covers": "תיקון",
+    "booklet": "6214"
+   }
+  ],
+  "booklets_without_official_link": []
+ },
+ "hish-accounts": {
+  "title": "תקנות מס הכנסה (כללים לתנאים שבהם חשבונות שונים בקרן השתלמות ייחשבו לחשבון אחד)",
+  "files": [
+   {
+    "name": "hish-accounts-btl",
+    "url": "https://www.btl.gov.il/Laws1/02_0103_100048.pdf",
+    "publisher": "המוסד לביטוח לאומי (נוסח משולב)",
+    "kind": "consolidated",
+    "date": "",
+    "covers": ""
+   },
+   {
+    "name": "hish-accounts-kt5517",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bMMl8kD79jjAGdMyfpq2CV~XoGoe1aVlkfbcWtF~mD4=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "ק״ת תשנ״ג, 766",
+    "covers": "תקנות מס הכנסה (כללים לתנאים שבהם חשבונות שונים בקרן השתלמות ייחשבו לחשבון אחד)",
+    "booklet": "5517"
+   },
+   {
+    "name": "hish-accounts-kt5768",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/xWg5Wb1s~1+SWmSxyhcN08pvCeShseYQis75DpOs5z0=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "תשנ״ו, 1348",
+    "covers": "תיקון",
+    "booklet": "5768"
+   }
+  ],
+  "booklets_without_official_link": []
+ },
+ "unapproved": {
+  "title": "תקנות מס הכנסה (כללים בדבר חיוב במס על תשלומים לקרן שלא אושרה ותשלומים שלא כדין)",
+  "files": [],
+  "booklets_without_official_link": [
+   {
+    "booklet": "1317",
+    "label": "ק״ת תשכ״ב, 2006",
+    "title": "תקנות מס הכנסה (כללים בדבר חיוב במס על תשלומים לקרן שלא אושרה ותשלומים שלא כדין)"
+   }
+  ]
+ },
+ "infl-unit": {
+  "title": "תקנות מס הכנסה (חישוב סכום אינפלציוני במכירת יחידה בקרן נאמנות)",
+  "files": [
+   {
+    "name": "infl-unit-kt6223",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3nxVBukfCLPiTSKOFP3CGC94=",
+    "publisher": "רשומות, משרד המשפטים (קובץ התקנות)",
+    "kind": "gazette",
+    "date": "ק״ת תשס״ג, 469",
+    "covers": "תקנות מס הכנסה (חישוב סכום אינפלציוני במכירת יחידה בקרן נאמנות)",
+    "booklet": "6223"
+   }
+  ],
+  "booklets_without_official_link": []
+ },
+ "vat": {
+  "title": "חוק מס ערך מוסף",
+  "files": [
+   {
+    "name": "vat-btl",
+    "url": "https://www.btl.gov.il/Laws1/00_0022_000000.pdf",
+    "publisher": "המוסד לביטוח לאומי (נוסח משולב)",
+    "kind": "consolidated",
+    "date": "",
+    "covers": ""
+   }
+  ],
+  "booklets_without_official_link": [
+   {
+    "booklet": "3775",
+    "label": "ק״ת תשל״ח, 179",
+    "title": "תקנות־שעת־חירום (ביטול מס נסיעות חוץ ומס יבוא שירותים ושינוי מס ערך מוסף)"
+   },
+   {
+    "booklet": "4990",
+    "label": "ק״ת תשמ״ז, 216",
+    "title": "תקנות מס הכנסה (תיאומים לגבי שנת המס 1986 ותיקונים שונים)"
+   },
+   {
+    "booklet": "5015",
+    "label": "638",
+    "title": "תקנות מס ערך מוסף (תיאומים לגבי שנת המס 1986)"
+   },
+   {
+    "booklet": "3539",
+    "label": "ק״ת תשל״ו, 1793",
+    "title": "תחילתו של החוק"
+   },
+   {
+    "booklet": "3550",
+    "label": "1951",
+    "title": "תחילתו של החוק לגבי מוסד כספי"
+   },
+   {
+    "booklet": "10752",
+    "label": "תשפ״ג, 2386",
+    "title": "הגדלת סכומי קנסות"
+   },
+   {
+    "booklet": "11333",
+    "label": "תשפ״ד, 2772",
+    "title": "הגדלת סכומי קנסות"
+   },
+   {
+    "booklet": "11668",
+    "label": "ק״ת תשפ״ה, 808",
+    "title": "צו ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2023 ו־2024) (החלת סעיף 38(א) ו־(ב) לחוק)"
+   }
+  ]
+ }
+}

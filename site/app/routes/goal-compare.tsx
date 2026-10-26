@@ -23,7 +23,7 @@ import { DetailSheetBody, HorizonDefaultedNote, HorizonHonestLine, PastRecordLin
 import type { FitTableData } from "../lib/fit";
 import { DimensionChecklist, type ChecklistRowView } from "../components/guide/sections";
 import { IconExternal } from "../components/icons";
-import { Num, NumberLegend, RulesLine } from "../components/provenance";
+import { IdRef, Num, NumberLegend, RulesLine } from "../components/provenance";
 import { Sheet } from "../components/Sheet";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { Callout, Card, Disclosure, SegmentedControl, Sentence, Tag } from "../components/kit";
@@ -38,9 +38,10 @@ import { forgetRevisit, useRevisit } from "../components/revisit/use-revisit";
 import { Tpl } from "../components/exposure-mode/tpl";
 import { snapshotWrapper } from "../lib/revisit";
 import { deleteSavedComparison, isoToday, saveComparisonRecord, type CompareMode } from "../lib/state";
-import { computed, entered } from "../lib/value";
+import { anyWeak, computed, entered } from "../lib/value";
 import { r5 } from "../copy";
 import { bundleLinks } from "../lib/bundle";
+import { recordsById } from "../lib/scope";
 
 /** The data files this page fetches after it starts, requested with the HTML (audit 2026-10-24, A52). */
 export const links = () => bundleLinks("compare-bundle.json", "workbench-bundle.json");
@@ -72,7 +73,7 @@ export default function GoalComparePage() {
   }, []);
   const provenance = useMemo(() => {
     const rules: Record<string, RuleRecord> = Object.fromEntries((bundle?.rules ?? Object.values(data.rules)).map((r) => [r.id, r as RuleRecord]));
-    return { rules, terms: {}, dimensions: Object.fromEntries((bundle?.checklist ?? []).map((c) => [c.id, c.name])), today: data.today };
+    return { rules, pointed: { ...(data.pointed as Record<string, RuleRecord>), ...recordsById(bundle?.pointed) }, terms: {}, dimensions: Object.fromEntries((bundle?.checklist ?? []).map((c) => [c.id, c.name])), today: data.today };
   }, [bundle, data.rules, data.today]);
   return (
     <GoalsProvider presets={presets}>
@@ -241,7 +242,7 @@ function Body({ bundle: bundle0, wb, data, fit, frame, exposureId, registerSave 
         {/* a covered row still shows the options blocked on it in their own record (scenario fix 2026-10-24: coverage is pooled across options) */}
         {m.blockedOptions && (
           <span className="text-xs text-blocked-foreground">
-            {scnCompare.blockedFor} {m.blockedOptions.options.map((id) => view.names[id] ?? id).join(", ")} (<bdi dir="ltr">{m.blockedOptions.code.replace("-OQ", " OQ")}</bdi>)
+            {scnCompare.blockedFor} {m.blockedOptions.options.map((id) => view.names[id] ?? id).join(", ")} (<IdRef id={m.blockedOptions.code} />)
           </span>
         )}
       </>
@@ -260,7 +261,7 @@ function Body({ bundle: bundle0, wb, data, fit, frame, exposureId, registerSave 
         <h1 className="text-2xl lg:text-3xl font-semibold">
           <bdi>{title}</bdi>: {r2.result.title}
         </h1>
-        <NumberLegend />
+        <NumberLegend institution={bundle ? anyWeak(bundle.wrappers.flatMap((w) => [w.cashRate, ...Object.values(w.feeValues)])) : false} />
         {subject && subjectReturn && (
           <p className="text-sm flex flex-wrap items-center gap-2">
             <Tpl t={r5.exposure.wrapperSubject} vars={{ exposure: <bdi className="font-medium">{subject.name}</bdi>, rate: <Num value={subjectReturn as never} /> }} />

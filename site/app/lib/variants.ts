@@ -6,6 +6,7 @@ import {
   buildTariff,
   coverageLine,
   fundVariants,
+  memberKindOf,
   outcomeOrder,
   rankCandidates,
   RecordInputError,
@@ -20,7 +21,7 @@ import type { ExposureRecord, FundRecord, ValueObject } from "@finance-tool/sche
 import { deviceStore } from "./device-store";
 import { BROKERAGE, a28Value, instrumentClassOf, parameterValue, ruleContext, staleTariff, type FundAssumptions, type WorkbenchBundle, type WorkbenchInputs } from "./providers";
 import { nisPer } from "./fx";
-import { computed, weaker, type SiteValue, type Strength } from "./value";
+import { computed, ownBy, weaker, type SiteValue, type Strength } from "./value";
 
 /**
  * The page's inputs with the exposure's own entered return (D9, `goal.exposures[id].return`) in place of the goal's return,
@@ -150,7 +151,7 @@ export type VariantResult = { kind: "ok"; view: FundVariantsView } | { kind: "er
 const isIls = (c: string) => c === "NIS" || c === "ILS";
 
 /** The tariff every variant runs on (flow 30 step 2): the chosen provider's list lines for the class of the exposure's funds, else P-05's. */
-function tariffFor(bundle: WorkbenchBundle, wanted: string | null, instrumentClass: string, exposureCurrency: string, ordersN: number): { tariff: Parameters<typeof fundVariants>[0]["run"]["tariff"]; provider: VariantProvider } | null {
+function tariffFor(bundle: WorkbenchBundle, wanted: string | null, instrumentClass: string, exposureCurrency: string, ordersN: number): { tariff: Parameters<typeof fundVariants>[0]["run"]["tariff"]; provider: VariantProvider; memberKind: ReturnType<typeof memberKindOf> } | null {
   const p05Tariff = ((bundle.p05.instruments ?? {})[BROKERAGE] ?? {}).tariff;
   const candidates: { id: string; fromP05: boolean; fellBack: boolean }[] = [];
   if (wanted) candidates.push({ id: wanted, fromP05: wanted === p05Tariff, fellBack: false });
@@ -171,17 +172,19 @@ function tariffFor(bundle: WorkbenchBundle, wanted: string | null, instrumentCla
     };
     // the FX line is read with the exposure's currency so a bound set in dollars is checked against it; no line if that fails
     const attempt = (currency: string | null) => buildTariff({ ...input, ...(currency ? { currency: { code: currency, startRate: 1 } } : {}) }, { snapshot: s, level: "list" }, s).tariff;
+    // F-14 (2026-10-26): bank or not, so a money-market unit pays custody only where the banks' ban does not reach (BRK-17, BRK-52)
+    const memberKind = memberKindOf(s.provider.class);
     try {
       const t = isIls(exposureCurrency) ? attempt(null) : attempt(exposureCurrency);
       const { currency: _drop, ...rest } = t;
       void _drop;
-      return { tariff: rest, provider: { id: s.id, name: s.provider.name_he, fromP05: c.fromP05, fellBack: c.fellBack } };
+      return { tariff: rest, provider: { id: s.id, name: s.provider.name_he, fromP05: c.fromP05, fellBack: c.fellBack }, memberKind };
     } catch (e) {
       if (!(e instanceof RecordInputError)) throw e;
       try {
         const { currency: _drop, ...rest } = attempt(null);
         void _drop;
-        return { tariff: rest, provider: { id: s.id, name: s.provider.name_he, fromP05: c.fromP05, fellBack: c.fellBack } };
+        return { tariff: rest, provider: { id: s.id, name: s.provider.name_he, fromP05: c.fromP05, fellBack: c.fellBack }, memberKind };
       } catch (e2) {
         if (!(e2 instanceof RecordInputError)) throw e2;
       }
@@ -218,7 +221,8 @@ function reasonOf(row: VariantRow): VariantReason | undefined {
 
 const feeValue = (rec: FundRecord, key: FeeKey): SiteValue | null => {
   const v = rec.fees[key];
-  return v && v.value !== null ? (v as SiteValue) : null;
+  // D31: the fund manager's own fee, shown on that fund's row
+  return v && v.value !== null ? ownBy(v as SiteValue, rec.manager) : null;
 };
 
 interface VariantArgs {
@@ -268,6 +272,7 @@ export function buildFundVariants(a: VariantArgs): VariantResult {
       inflation: inputs.inflation,
       ...(assumptions.fxChange !== undefined ? { fxChange: assumptions.fxChange / 100 } : {}),
       tariff: t.tariff,
+      memberKind: t.memberKind,
       profile: { ...(inputs.age !== null ? { ageAtStart: inputs.age } : {}), ...(inputs.income !== null && inputs.income > 0 ? { annualIncome: inputs.income } : {}) },
       ...(assumptions.w8ben !== undefined ? { w8ben: assumptions.w8ben } : {}),
       fxStartRates: startRateNumbers,

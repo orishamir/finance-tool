@@ -11,6 +11,7 @@
   "recheck_date": "2027-01-15",
   "il_finance_file": "regulators-and-protection.md",
   "checked": "2026-10-25",
+  "scope": "general",
   "sources": [
     {
       "url": "https://content.tase.co.il/media/q2mhob4u/274690.pdf",
@@ -23,7 +24,8 @@
       "locator": "pp.34 to 35, ss.25 to 26",
       "locator_he": "עמודים 34 עד 35, סעיפים 25 עד 26",
       "page": 34,
-      "checked": "2026-10-25",
+      "quote": "מעודכן עד ליום",
+      "checked": "2026-10-26",
       "qualifier": "(exchange rules, ISA-approved)"
     },
     {
@@ -37,7 +39,8 @@
       "locator": "pp.95 to 102, s.26",
       "locator_he": "עמודים 95 עד 102, סעיף 26",
       "page": 95,
-      "checked": "2026-10-25",
+      "quote": "מעודכן עד ליום",
+      "checked": "2026-10-26",
       "qualifier": "(exchange rules, ISA-approved)"
     }
   ],

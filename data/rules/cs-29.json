@@ -57,6 +57,17 @@
   },
   "il_finance_file": "child-savings.md",
   "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "leumi",
+      "name_he": "בנק לאומי"
+    },
+    {
+      "id": "yahav",
+      "name_he": "בנק יהב"
+    }
+  ],
   "sources": [
     {
       "url": "https://bank-yahav.co.il/media/qxed4yhi/השקעות-מונגש-חסכון-לכל-ילד-צפייה-בהסכם-חיסכון-לכל-ילד.pdf",

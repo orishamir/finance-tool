@@ -8,7 +8,7 @@ import { scaleLinear } from "d3-scale";
 import { guide as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
-import { durationChart } from "../provenance";
+import { IdRef, durationChart } from "../provenance";
 import { cx } from "../kit";
 
 export interface ChartPoint {
@@ -176,7 +176,7 @@ export function TimelineChart({ points, hover, onHover, markers = [], blocked, e
       ))}
       {blocked && (
         <span className="absolute text-xs text-blocked-foreground bg-blocked-subtle rounded-sm px-1.5 py-0.5 inline-flex items-center gap-1" style={{ left: `${x(blocked.fromYear) + 4}px`, top: `${TOP + 4}px` }}>
-          <IconLock size={14} className="text-blocked" /> {copy.blockedBand} <bdi dir="ltr">{blocked.code}</bdi>
+          <IconLock size={14} className="text-blocked" /> {copy.blockedBand} <IdRef id={blocked.code} />
         </span>
       )}
     </div>

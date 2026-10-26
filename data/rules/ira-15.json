@@ -11,7 +11,8 @@
   "recheck_date": "2027-01-01",
   "text_he": "החברה חותמת עם כל עמית הסכם בכתב שמפרט את דמי הניהול וההוצאות, כולל עמלות ודמי משמרת, ואת זכות העמית לבטל את ההסכם בכל עת בלי תשלום. תנאי שמוותר על חובות החברה בטל.",
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
+  "scope": "general",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=4",
@@ -19,13 +20,13 @@
       "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "law",
+      "kind": "regulation",
       "strength": "primary",
-      "locator": "p.4, reg. 6(א)-(ב)",
-      "locator_he": "עמוד 4, תקנה 6(א)-(ב)",
+      "locator": "p.4, reg. 6(א)-(ג)(5)",
+      "locator_he": "עמוד 4, תקנה 6(א)-(ג)(5)",
       "page": 4,
       "quote": "העמית רשאי לבטל בכל עת את ההסכם בינו לבין החברה המנהלת",
-      "checked": "2026-10-25"
+      "checked": "2026-10-26"
     },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/regulation_0059/he/regulation_ira_pdf.pdf",
@@ -39,7 +40,7 @@
       "locator_he": "עמוד 4, סעיף 6",
       "page": 4,
       "checked": "2026-10-25",
-      "qualifier": "(draft)"
+      "qualifier": "(draft; not binding)"
     }
   ]
 }

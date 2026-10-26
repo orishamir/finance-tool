@@ -1,0 +1,303 @@
+## BANK OQ5 [narrowed] Definition of a small bank and which banks are exempt
+  remains: Which banks are small or tiny today, and when the 2026 amendment took effect, are not known.
+  where: record bank-deposit
+## BANK OQ8 [narrowed] What protects depositors in a bank failure
+  remains: Any priority or compensation for depositors in a bank's liquidation is still unknown; only the discretionary guarantee power (s.8יא) and the authorised manager are sourced.
+  where: content/exposure/shekel-cash.tsx; record bank-deposit; record current-account; record savings-plan; record shekel-cash
+## BANK OQ12 [narrowed] Savings plans: instalment lock-up and break pricing
+  remains: Whether each instalment has its own lock-up, and how a break is priced, is known only for Bank Hapoalim (BPN-10).
+  where: blocked liquidity-lockup savings-plan; content/guide/savings-plan.tsx; copy.ts; record savings-plan; record shekel-cash
+## BANK OQ14 [open] Official definition of prime
+  remains: No Bank of Israel document defining prime was found; only banks and secondary sites say BoI rate plus 1.5%.
+  where: record bank-deposit; record shekel-cash
+## BANK OQ17 [open] 447 rates for CPI-linked deposits: real or nominal
+  remains: Whether the 447 rate for a CPI-linked type is real or nominal is not clarified by the BoI.
+  where: record bank-deposit; record savings-plan
+## BRK OQ5 [narrowed] Bank clients' securities if the bank fails
+  remains: No official text says what happens to a bank's clients' securities if the bank fails; the custody duties are sourced (BRK-10).
+  where: record brokerage-account
+## BRK OQ9 [narrowed] Direct Interactive Brokers and eToro accounts for Israelis
+  remains: Which Interactive Brokers company carries an Israeli resident's direct account, whether a retail Israeli may trade TASE there today, and which eToro company serves Israelis; the 49A permits of IB LLC, IB UK and two eToro companies are settled by the ISA list (BRK-43).
+  where: record brokerage-account
+## BRK OQ11 [narrowed] Custody fee on makam and money-market funds at non-banks
+  remains: Whether non-bank members may charge custody on makam (no rule found), and whether they hold distribution agreements, which decides whether reg. 2(ד) bars any holding fee on money-market units (MF-26).
+  where: record brokerage-account; record makam; record money-market-fund-daily; record money-market-fund-renewable
+## BRK OQ12 [narrowed] Supervised price to move securities to own account
+  remains: The amount and unit of the supervised price, and the order or list that set it; tariffs and press disagree (SW-52).
+  where: record brokerage-account
+## BRK OQ17 [narrowed] Minors' brokerage accounts and joint-account rules
+  remains: No TASE or ISA rule on minors' securities accounts, and no joint-account terms beyond Leumi's heading.
+  where: record brokerage-account
+## CAT OQ2 [narrowed] How the published average fee is weighted
+  remains: Period and basis are closed (CAT-36, CAT-37); the weighting (by assets or by members) is not stated by the CMA.
+  where: lib/workbench.ts
+## CAT OQ3 [open] Risk fields: alpha benchmark, Sharpe, deviation, liquidity
+  remains: The definitions are not in the dictionaries or the portal pages read.
+  where: record general-track
+## CAT OQ11 [open] Money-market track period: does it apply to KGL and KH
+  remains: s.6א of circular 2022-9-30 does not say whether it covers investment provident and study funds (CAT-20); Meitav's terms for 7861 are not seen.
+  where: record shekel-cash
+## CAT OQ18 [open] Track-name prefix rules and the 2024 draft regulation
+  remains: Seen only as search titles or snippets.
+  where: record general-track
+## CS OQ4 [open] How a first child's default fund is picked
+  remains: How NII picks the managing fund for a first child who defaulted is not stated anywhere read.
+  where: record child-savings-provident
+## CS OQ8 [narrowed] Fee after 21 at every manager
+  remains: The legal cap after 21 is reg. 2 (CS-18); each manager's actual rate after 21 is collected only for Harel and Altshuler Shaham (CS-30).
+  where: record child-savings-bank; record child-savings-provident
+## CS OQ10 [narrowed] Can a parent see chosen vs default track
+  remains: The statement template has no such field (CS-27) and the law's report duty covers the balance only (s.74ב(ז)); NII's personal-information service needs a login and was not checked.
+  where: copy.ts; record child-savings-provident
+## CS OQ12 [open] Per-bank child-savings terms and rates
+  remains: Only Yahav's agreement was read; Leumi's, FIBI's and Massad's terms and current bank rates are not collected.
+  where: record child-savings-bank
+## CS OQ16 [narrowed] Does the KGL deposit ceiling bind child savings
+  remains: Circular 2022-9-29 s.1 applies kupat gemel lehashkaa provisions (CS-18); law s.22(א) caps what a member may deposit, with no child-savings exception, while NII deposits and no other money may be added; whether NII's deposits count is not stated.
+  where: record child-savings-provident
+## ETF OQ2 [open] Market makers' spread and size duties in ETFs
+  remains: The spread and minimum-size duties of statutory ETF market makers, set in a TASE board decision not in the guide PDF.
+  where: content/exposure/index-ta125.tsx; record index-ta125
+## ETF OQ4 [narrowed] Foreign funds registered in Israel and representatives
+  remains: The 6 open foreign funds and every fund's Israeli representative (the 40 traded funds and their managers are ETF-32).
+  where: copy.ts
+## ETF OQ11 [narrowed] EU PRIIPs/KID limits for Israelis at EU brokers
+  remains: How IB Ireland treats a retail client resident outside the EEA, and the regulation's own text on territorial reach.
+  where: content/exposure/index-sp500.tsx; record index-sp500
+## GOV OQ2 [narrowed] Individual's makam auction order: minimum and fee
+  remains: The minimum and fee for an individual's order into a makam auction are not stated in any general source; individuals can bid through a bank or investment-house account (GOV-22).
+  where: content/exposure/makam.tsx; content/guide/makam.tsx; record makam
+## GOV OQ3 [narrowed] Is the BoI makam general-conditions document current
+  remains: The undated BoI conditions and the 1992 makam regulations are unread for currency; current issues run about one year (GOV-23).
+  where: record makam
+## GOV OQ4 [narrowed] Regulations for the fixed-rate shekel series
+  remains: The base text of the 1995 'שחר' regulations (for any שחר series still trading) and amendments after 2007 are unread; the current 'ממשלתית' type rests on the 2006 regulations.
+  where: content/exposure/government-bond-unlinked.tsx; copy.ts; record government-bond; record government-bond-unlinked
+## GOV OQ6 [narrowed] CPI-linked deflation floor per series
+  remains: The base text of the 1980 'גליל' regulations, for any Galil series still trading, is unread; the 2006 'ממשלתית צמודה' regulations have no floor.
+  where: content/exposure/government-bond-cpi.tsx; record government-bond; record government-bond-cpi
+## GOV OQ7 [narrowed] TASE trading unit, minimum, quotes, settlement
+  remains: The settlement cycle (clearing-house bylaws), coupon ex-dates, a makam trading unit, and whether bank screens separate makam from short bonds are still open.
+  where: blocked minimum government-bond; blocked minimum makam; content/guide/government-bond.tsx; content/guide/makam.tsx; record brokerage-account; record government-bond; record government-bond-cpi; record government-bond-unlinked; record makam
+## GOV OQ8 [narrowed] Retail order into a government-bond auction
+  remains: How a retail order reaches a weekly auction and any minimum order are not found; the fee type exists in the BoI full tariff, priced by each bank.
+  where: content/guide/government-bond.tsx; record government-bond; record government-bond-cpi; record government-bond-unlinked; record makam
+## GOV OQ9 [narrowed] Official investor risk statements on government bonds
+  remains: An official statement on government-bond price change before maturity is not found; BoI's makam page covers makam only (GOV-22).
+  where: content/exposure/government-bond-unlinked.tsx; record government-bond-cpi; record government-bond-unlinked
+## INS OQ2 [closed] Regulatory cap on savings-policy management fees
+  answer: reg. 6א of the Insurance Contract Terms Regulations caps the balance fee at 1% a year, 2% with the Commissioner's approval (INS-25)
+  where: not-covered closure
+## INS OQ7 [closed] Moving a savings policy to another insurer
+  answer: there is no such route; the Ministry of Finance team's February 2025 report, p.16: "מעבר בין גופים מבטחים ניתן לבצע רק דרך משיכה והנזלה של הכספים ומהווה אירוע חייב במס" (TXA-08, TXA-28)
+  where: not-covered closure
+## IRA OQ1 [open] Current consolidated text of the IRA regulations
+  remains: Whether a 2020 amendment exists and the full verbatim current text are not established.
+  where: record ira-hishtalmut; record ira-provident
+## IRA OQ2 [open] Status of the 2025 IRA draft amendment
+  remains: Whether the 2025 draft was signed and published, and from when, is not found.
+  where: record ira-hishtalmut; record ira-provident
+## IRA OQ6 [open] Bank custody, FX and minimum fees inside an IRA
+  remains: Each bank's tariff for IRA accounts (custody, FX conversion, minimums) is not collected.
+  where: record ira-hishtalmut
+## IRA OQ7 [open] Other IRA managers' terms
+  remains: Phoenix, Migdal, Menora, Globalnet, Slice and Action fee schedules, brokers and forms are not collected.
+  where: record ira-hishtalmut
+## IRA OQ11 [narrowed] Protection of IRA assets if manager or broker fails
+  remains: Fund assets are held in trust apart from the manager's property (law ss.3, 27, 30; PF-29); where IRA securities are registered at the broker and what happened to Slice members' holdings are not found.
+  where: record ira-hishtalmut; record ira-provident
+## KH OQ3 [open] Extension orders requiring a study fund
+  remains: Whether any economy-wide extension order requires a study fund, and whether 7.5% and 2.5% is the common split, is not sourced.
+  where: record keren-hishtalmut
+## KH OQ4 [narrowed] Loan terms in study funds
+  remains: The 2012 investment rules reg. 16 allow loans to members under the Commissioner's directions and set how a loan reduces a withdrawal; the directions (share of balance, rate, term) are not found.
+  where: record keren-hishtalmut
+## MF OQ1 [narrowed] Final ISA money-market directive and ISA rules
+  remains: The Reshumot notice of the directive and the ISA rules (התשפ"ד-2024) on fixed-date funds were not read; the 2024 file's p.1 heads the text as the published directive (MF-29).
+  where: record money-market-fund-daily; record money-market-fund-renewable
+## MF OQ3 [open] Fund order cut-off times and Friday orders
+  remains: The designated hours in force by fund type, the clearing-house rules that set them, and whether fund creations and redemptions happen on Fridays since 5.1.2026.
+  where: content/guide/money-market-fund-daily.tsx; record money-market-fund-daily; record money-market-fund-renewable
+## MF OQ4 [narrowed] When redemption cash is available to the holder
+  remains: The general rule (law, clearing-house rules or prospectus) for the day redemption cash reaches the holder; only one bank's statement is found.
+  where: blocked liquidity-lockup money-market-fund-daily; blocked liquidity-lockup money-market-fund-renewable; content/guide/money-market-fund-daily.tsx; content/guide/money-market-fund-renewable.tsx; copy.ts; record money-market-fund-daily; record money-market-fund-renewable; record shekel-cash
+## MF OQ5 [open] Is the 1 January fee-increase rule binding
+  remains: Whether the 1 January rule is law, regulation, an ISA directive or a voluntary outline, and its current text.
+  where: record money-market-fund-daily; record money-market-fund-renewable
+## MF OQ11 [open] ISA register and renewable money-market fund count
+  remains: The full register of managers and trustees and the list and number of renewable money-market funds.
+  where: content/guide/money-market-fund-renewable.tsx; record money-market-fund-renewable
+## MF OQ12 [narrowed] Are the law and regulation mirrors current
+  remains: Whether the assets regulations and the other regulations have amendments later than those cited; the law and several regulations are now cited from the ISA's consolidated text and gazette copies.
+  where: record money-market-fund-daily; record money-market-fund-renewable
+## MF OQ17 [narrowed] Content of the 5786 fund-law amendments
+  remains: The amendment at ס"ח התשפ"ו p.359 was not read; Amendment 33 (ס"ח 3579, p.1070) is now read.
+  where: record money-market-fund-renewable
+## PEN OQ7 [narrowed] Pension insurance tables and annuity conversion factors
+  remains: Each fund's Commissioner-approved premium and conversion-factor annex tables are not collected; the standard bylaw's method is sourced (PEN-15, PEN-27).
+  where: blocked age-or-use-exemption ira-provident; blocked tax-at-exit ira-provident; blocked tax-at-exit pension-comprehensive; blocked tax-at-exit pension-general; content/guide/ira-provident.tsx; content/guide/kupat-gemel-lehashkaa.tsx; content/guide/pension-comprehensive.tsx; content/guide/pension-general.tsx; copy.ts; exit blocker ira-provident; exit blocker pension-comprehensive; exit blocker pensi
+## PEN OQ19 [open] Who pays annuities from provident-fund money
+  remains: Which pension funds or insurers accept provident-fund money for an annuity, and on what conversion factors, is not sourced.
+  where: blocked tax-at-exit provident-for-annuity; content/guide/provident-for-annuity.tsx; exit blocker provident-for-annuity; record provident-for-annuity
+## PEN OQ21 [narrowed] Pension cover above the average wage
+  remains: Whether anything beyond the extension order requires insuring the full wage; that depends on each employment or collective agreement.
+  where: record pension-comprehensive
+## PF OQ6 [narrowed] Clearing-house consumer service and its price
+  remains: From 1.1.2027 the CMA caps a saver's request at NIS 11 (SW-44); the prices in force until then (circular 2022-10-5) and what the operator actually charges are not read.
+  where: copy.ts
+## PF OQ16 [narrowed] Statement-circular draft and gov.il copy
+  remains: The gov.il copy of circular 2020-9-22 exists and PF-33 cites it; whether the 2025-26 draft amendment was adopted is not found.
+  where: copy.ts; rule text PF-33
+## REG OQ9 [narrowed] Fate of client assets if a non-bank TASE member fails
+  remains: Segregation is sourced (REG-16, BRK-07, BRK-08) and the Trust Law keeps trust assets from the member's own creditors (derived); who moves the accounts and who bears a shortfall in client assets are not stated anywhere read.
+  where: blocked protection brokerage-account; record brokerage-account
+## REG OQ10 [narrowed] Client securities at a bank that fails
+  remains: A bank's custody duties are sourced (BRK-10), but no text read says whether client securities are outside a failing bank's estate.
+  where: content/guide/government-bond.tsx; content/guide/makam.tsx; record brokerage-account; record government-bond; record makam
+## REG OQ13 [open] Basis of the "informal" state backing of depositors
+  remains: No basis other than Banking Ordinance s.8יא was found.
+  where: record current-account
+## REG OQ21 [narrowed] Broker client cash in a bank trust account
+  remains: The broker's creditors cannot reach trust cash (derived) and the cash is exposed to the bank's failure with no deposit insurance; whether an s.8יא guarantee would count a pooled trust account per client is open.
+  where: record shekel-cash
+## RG OQ3 [closed] Consequence of a distribution shortfall; who confirms status
+  answer: Distributing under s.64A9 is a condition of REIT status (s.64A3(a)(7)), and a company in which a condition stops being met ceases to be a REIT (s.64A3(ד)(1)), with a three-month cure only for the (5א) tests; no authority confirms status: an auditor's certificate is attached to each annual return (s.
+  where: not-covered closure
+## SW OQ2 [narrowed] Transfer circular coverage of kupat gemel lehashkaa
+  remains: The transfer circular's Annex A form does not list kupat gemel lehashkaa; whether the circular governs it is not stated.
+  where: copy.ts; lib/playbook.ts
+## SW OQ3 [open] CMA rule on retention contacts in provident products
+  remains: No CMA rule on contacting a member who asked to transfer, or on retention offers, was found.
+  where: copy.ts; lib/playbook.ts
+## SW OQ4 [narrowed] Whether a pre-joining fee quote binds the fund
+  remains: That a fee quoted before joining binds the institution is not stated anywhere read.
+  where: components/playbook/offer-card.tsx; copy.ts
+## SW OQ5 [narrowed] Clearing house: price and consent checks
+  remains: How the clearing house checks a saver's consent beyond the law and the power-of-attorney circular.
+  where: copy.ts; lib/playbook.ts
+## SW OQ8 [narrowed] Tax neutrality of pension-to-pension transfers
+  remains: No Tax Authority or CMA text says a member's transfer between annuity funds is not a tax event; payment dates carry over (SW-40).
+  where: blocked switching-tax-event pension-comprehensive; blocked switching-tax-event pension-general; blocked switching-tax-event provident-for-annuity; record pension-comprehensive; record pension-general; record provident-for-annuity
+## SW OQ9 [narrowed] Bank of Israel rules on switching banks
+  remains: Which banks are exempt under s.5ב1(ה) of the law, and how directive 448's 'sixth business day' of the process is counted.
+  where: copy.ts; lib/playbook.ts
+## SW OQ10 [open] Supervised price for moving securities out of a bank
+  remains: The order that sets the supervised price and whether it is per transfer or per security.
+  where: copy.ts; lib/playbook.ts
+## SW OQ11 [narrowed] Tax on moving securities between own accounts
+  remains: No Tax Authority sentence says a move between accounts of the same owner is neutral (SW-55 unsettled).
+  where: components/playbook/cost.tsx; copy.ts; lib/playbook.ts; record brokerage-account
+## SW OQ12 [open] Moving securities to a foreign broker
+  remains: Feasibility, cost and withholding consequences of moving securities between an Israeli institution and a foreign broker.
+  where: copy.ts; lib/playbook.ts
+## SW OQ16 [open] Removing an agent attached to a provident account
+  remains: How a member removes an agent already attached to an account and whether an agent is re-attached on a direct transfer.
+  where: copy.ts; lib/playbook.ts
+## TX2 OQ1 [closed] FX deposit when the currency falls
+  answer: The interest is still taxed in full and the loss from negative linkage cannot be offset against it, as the Supreme Court held for a foreign-currency-linked bank deposit in עע"מ 7486/14 (TXI-25; the exchange difference is linkage under TX2-01).
+  where: not-covered closure
+## TX2 OQ2 [open] FX-deposit withholding base and legal basis
+  remains: Banks withhold 25% (TX2-02, institution) though the regulations' index points to s.88, which covers only securities; the base and legal basis are not found.
+  where: lib/compare.server.ts
+## TX2 OQ5 [narrowed] Structured-deposit payout classification
+  remains: Each payout type classifies from primary texts (TX2-18, derived); no Tax Authority text on structured deposits as such.
+  where: lib/compare.server.ts
+## TX2 OQ6 [narrowed] Corporate bonds in default
+  remains: Income Tax circular 2/2010 settles the holder's side of a court-approved debt settlement (deferral consideration is interest; redemption consideration goes first to accrued interest and discount); when the loss arises if a bond stops paying with no sale or settlement, and how banks withhold and net 
+  where: components/kit/gallery.tsx; lib/compare.server.ts
+## TX2 OQ8 [open] National Insurance on REIT distributions
+  remains: The NII Law's exemptions (s.350(a)(6), (7)) name s.125B and s.125C(b)/(c) income and s.122/122A rent, not REIT pass-through income; whether REIT income is in the NI base is not stated.
+  where: lib/compare.server.ts
+## TX2 OQ10 [open] Foreign gold ETCs and grantor-trust ETFs
+  remains: Whether an ETC is a bond under s.91(b)(3), and whether a US grantor-trust ETF is a security or look-through gold, are not found.
+  where: lib/compare.server.ts
+## TXA OQ1 [narrowed] Rate on savings-policy gains: 25% or 15%
+  remains: Whether s.125C(c)(1)'s 15% can reach a policy that is not profit-sharing, whether today's savings policies are approved as profit-sharing, and the notional redemption.
+  where: lib/compare.server.ts
+## TXA OQ3 [closed] Moving a savings policy to another insurer
+  answer: a move to another insurer is a withdrawal and a tax event, per the Ministry of Finance team's February 2025 report (TXA-08, TXA-28)
+  where: not-covered closure
+## TXA OQ6 [open] Tax on growth inside executive insurance
+  remains: How investment income attributable to executive-insurance members is taxed, and whether it reduces their return.
+  where: lib/compare.server.ts
+## TXA OQ9 [closed] Legal source of Amendment 190 age ceilings
+  answer: the Tax Authority's ruling 6849/15 (published 5.5.2015) lets a managing company withhold 15% on commuting a recognized annuity without an assessing officer's approval when exempt payments stay within age ceilings set by its factor table (4 or 5 times the average wage times the factor) and deposits a
+  where: not-covered closure
+## TXA OQ10 [closed] Basis of age-60 and three-payslip conditions
+  answer: both are conditions of the Tax Authority's ruling 6849/15 for withholding 15% without an approval: "העמית הינו בן 60 או יותר" and "העמית מקבל קצבה מזערית ... והציג שלושה תלושי שכר" (facts 1.4, 1.5) (TXA-30, TXA-22, TXA-27)
+  where: not-covered closure
+## TXA OQ11 [closed] Exempt commutation and the recognized annuity together
+  answer: yes; the exempt-commutation ceiling covers all commutations together, of a qualifying and of a recognized annuity, an exempt commutation of a recognized annuity reduces the balance left for exempt commutation by the whole amount commuted, and a recognized-annuity commutation above the ceiling pays 1
+  where: not-covered closure
+## TXA OQ14 [narrowed] NII on a recognized annuity and its commutation
+  remains: The NII and health treatment of the commuted amount, and an NII statement for either case.
+  where: lib/compare.server.ts
+## TXA OQ15 [narrowed] Surtax on the 15% commutation income
+  remains: Whether a recognized-annuity commutation is personal-effort income (outside the 2% on capital-source income); the 3% surtax reaches it only by a reading of s.121B(ג), (ה).
+  where: lib/compare.server.ts
+## TXF OQ1 [narrowed] Accumulating foreign funds taxed only on sale
+  remains: No Tax Authority statement that an accumulating foreign fund is taxed only on sale; the reading rests on the Ordinance (TXF-11) and one secondary source.
+  where: content/exposure/index-sp500.tsx; content/guide/brokerage-account.tsx; copy.ts; lib/variants.ts; record brokerage-account; record index-sp500
+## TXF OQ3 [open] Israeli withholding on top of foreign withholding
+  remains: Whether an Israeli bank withholds the full 25% on a foreign dividend or 25% less the foreign tax.
+  where: record brokerage-account
+## TXF OQ7 [open] US withholding an Irish fund actually suffers
+  remains: Whether a given Irish UCITS fund obtains the 15% US treaty rate, per its prospectus.
+  where: record index-sp500
+## TXG OQ4 [narrowed] Foreign-broker saver: annual return or not
+  remains: The regulations' text gives an exemption route only through the annual foreign-income advance (30 April, with a report) up to the schedule ד amount; whether the half-yearly advances count as or replace that advance, and how the guide's "you must file" sentence fits, are open.
+  where: copy.ts
+## TXH OQ2 [open] 2027 budget changes to study funds
+  remains: No 2027 budget bill or memorandum on study funds was found.
+  where: record keren-hishtalmut
+## TXH OQ11 [narrowed] Transfer between study funds not a tax event
+  remains: Payment dates carry over by reg. 3(ב)(1) (TXH-19); no text says in so many words that the transfer is not a tax event.
+  where: record keren-hishtalmut
+## TXI OQ2 [open] Prime-linked deposits: linked or unlinked
+  remains: No Tax Authority source names prime-based deposits; their 15% treatment rests on reading the statutory index (CPI or exchange rate).
+  where: content/guide/bank-deposit.tsx; record bank-deposit; record savings-plan; record shekel-cash
+## TXI OQ3 [narrowed] Makam discount 20% guide line and sale split
+  remains: A Tax Authority statement resolving the guide's '20% at realization' makam line, and rules splitting a pre-maturity sale price between discount and gain, are missing; the statute and BoI say 15%.
+  where: content/exposure/makam.tsx; content/guide/makam.tsx; record makam
+## TXI OQ5 [open] Accrued interest for a private bond buyer
+  remains: Whether an order under s.3(ח1) excludes traded bonds, and how banks withhold on accrued interest for a private buyer, are not found.
+  where: content/exposure/government-bond-cpi.tsx; content/exposure/government-bond-unlinked.tsx; content/guide/government-bond.tsx; record government-bond; record government-bond-cpi; record government-bond-unlinked; record makam
+## TXI OQ6 [narrowed] Deflation and negative real yield tax treatment
+  remains: The interest side is answered (TXI-25); a CPI-linked bond's price fall at sale under the capital-gains rules is open.
+  where: record government-bond-cpi
+## TXI OQ9 [open] Is 15% unlinked interest fixed for age 60+
+  remains: No Tax Authority sentence classes the 15% on unlinked interest (field 21) as a fixed rate; statute and guide wording only point that way.
+  where: blocked age-or-use-exemption makam; content/guide/makam.tsx; record bank-deposit; record government-bond; record makam; record savings-plan
+## TXI OQ11 [narrowed] Current-account interest and the s.125D deduction
+  remains: No Tax Authority text says current-account credit interest is 'interest on a deposit at a banking corporation' for s.125D, though the statutory definition reads that way.
+  where: blocked age-or-use-exemption current-account; record current-account
+## TXI OQ14 [open] Tax on an early-broken deposit or plan
+  remains: No source says in words how interest is taxed when a deposit is broken, or how interest credited during a multi-year plan is treated.
+  where: content/guide/bank-deposit.tsx; content/guide/savings-plan.tsx; record bank-deposit; record savings-plan; record shekel-cash
+## TXK OQ1 [narrowed] Child savings: tax on gains and payments
+  remains: Rate, base and withholding for both routes, tax on medical and death payments, and the basis of the annuity route have no official source (TXK-23 is an inference with a secondary source).
+  where: blocked switching-tax-event child-savings-bank; blocked switching-tax-event child-savings-provident; content/guide/child-savings-bank.tsx; content/guide/child-savings-provident.tsx; record child-savings-bank; record child-savings-provident
+## TXK OQ3 [narrowed] Withholding rate on a KGL lump sum
+  remains: Reg. 3 of the 2005 withholding regulations reads 20% in the text consolidated to 2017; whether it was later amended, or a Tax Authority instruction sets 25%, is not found.
+  where: record kupat-gemel-lehashkaa
+## TXK OQ7 [narrowed] IRA: confirmations, foreign withholding, manager withholding
+  remains: Treaty relief is narrowed (the US-Israel treaty has no pension-fund dividend rule; art. 12 caps at 25% for a resident and art. 3 counts a trust as resident only to the extent its income is taxed in Israel); whether an exempt Israeli provident fund gets 25% or the US statutory rate, a CMA or Tax Auth
+  where: content/exposure/index-sp500.tsx; record ira-hishtalmut; record ira-provident
+## TXK OQ8 [open] Business-income exception for an active IRA
+  remains: No ruling or circular on s.9(2)(א)'s business-income exception for a self-directed account was found.
+  where: record ira-hishtalmut; record ira-provident
+## TXK OQ10 [open] Losses on a KGL withdrawn below deposits
+  remains: Whether a withdrawal below deposits gives an offsettable loss is not found.
+  where: blocked loss-offset child-savings-provident; blocked loss-offset ira-hishtalmut; blocked loss-offset ira-provident; blocked loss-offset kupat-gemel-lehashkaa; record kupat-gemel-lehashkaa
+## TXP OQ6 [open] Whether payroll grants the 45A credit monthly
+  remains: Whether payroll applies the employee's s.45A credit each month and how a payslip shows it.
+  where: record pension-comprehensive
+## TXP OQ9 [open] Tax on gains in lawful annuity-fund lump sums
+  remains: How gains are taxed on the lump sums allowed from a provident fund for annuity, given s.9(18) names only a fund for benefits.
+  where: record provident-for-annuity
+## TXS OQ12 [narrowed] Do banks deduct fees when withholding
+  remains: Whether the Director approved or set rules under reg. 8, so that banks in fact deduct same-year management and custody fees at withholding.
+  where: record brokerage-account
+## TXS OQ15 [narrowed] Falling CPI and the taxable base
+  remains: No Tax Authority statement that the inflationary amount stops at zero when CPI falls; the s.88 text reads that way and a tax firm agrees for gains, and the loss case is unsettled.
+  where: content/exposure/government-bond-cpi.tsx; content/guide/money-market-fund-daily.tsx; content/guide/money-market-fund-renewable.tsx; record government-bond-cpi; record money-market-fund-daily; record money-market-fund-renewable

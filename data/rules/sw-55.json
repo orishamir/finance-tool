@@ -12,6 +12,18 @@
   "recheck_date": "2027-04-01",
   "il_finance_file": "switching-and-transfers.md",
   "checked": "2026-10-25",
+  "scope": "unsettled",
+  "scope_institutions": [
+    {
+      "id": "altshuler-trade",
+      "name_he": "אלטשולר שחם טרייד"
+    },
+    {
+      "id": "meitav-trade",
+      "name_he": "מיטב טרייד"
+    }
+  ],
+  "scope_settle": "a Tax Authority instruction to TASE members on transfers between accounts of the same owner",
   "sources": [
     {
       "url": "https://www.as-invest.co.il/trade/faq_transfer/",

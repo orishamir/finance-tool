@@ -2,7 +2,7 @@
   "id": "hbtcht-krn",
   "he": "הבטחת קרן",
   "en": null,
-  "meaning": "התחייבות בתנאי המוצר שלא תקבלו בחזרה פחות מהסכום שהפקדתם, למשל אם המדד ירד",
+  "meaning": "תנאי שיש בחלק מהפיקדונות הצמודים למדד: כשהמדד יורד, הירידה לא מקטינה את הסכום שלכם",
   "where": [
     "ad"
   ],
@@ -14,10 +14,10 @@
     "BANK-26"
   ],
   "source": {
-    "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-    "title": "Bank Yahav deposit rate board 13_26 (effective 06/10/2026)",
-    "publisher": "see title",
-    "strength": "institution",
-    "checked": "2026-10-22"
+    "url": "https://boi.org.il/media/0vsju2fr/%D7%A9%D7%90%D7%9C%D7%95%D7%AA-%D7%95%D7%AA%D7%A9%D7%95%D7%91%D7%95%D7%AA-31122023.pdf",
+    "title": "בנק ישראל, תקן בנקאות פתוחה: שאלות ותשובות (עדכון 31.12.2023), שאלה 9.4",
+    "publisher": "Bank of Israel",
+    "strength": "secondary",
+    "checked": "2026-10-26"
   }
 }

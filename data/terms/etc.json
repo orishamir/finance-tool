@@ -2,7 +2,7 @@
   "id": "etc",
   "he": "ETC",
   "en": null,
-  "meaning": "נייר ערך שמגובה במתכת, כמו זהב, שמוחזקת עבורו; אם הגיבוי לא מספיק, יתרת התביעות לא משולמת.",
+  "meaning": "איגרת חוב שהמנפיק מגבה בהשקעה ישירה בסחורות או בחוזים עליהן, ומחירה קשור לביצועי הסחורה.",
   "where": [],
   "wrapper_ids": [],
   "variants": [],
@@ -12,10 +12,10 @@
     "TX2-14"
   ],
   "source": {
-    "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/sgln-ishares-physical-gold-etc-fund-fact-sheet-en-gb.pdf",
-    "title": "iShares Physical Gold ETC factsheet, September 2026",
+    "url": "https://www.esma.europa.eu/publications-data/questions-answers/1275",
+    "title": "ESMA, Q&A 1275 (MiFID II, position limits): securitised derivatives and ETCs, 23.9.2022",
     "publisher": "see title",
-    "strength": "institution",
-    "checked": "2026-10-22"
+    "strength": "primary",
+    "checked": "2026-10-26"
   }
 }

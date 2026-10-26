@@ -1,0 +1,949 @@
+[
+ {
+  "id": "BANK OQ5",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "record bank-deposit"
+  ]
+ },
+ {
+  "id": "BANK OQ8",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "content/exposure/shekel-cash.tsx",
+   "record bank-deposit",
+   "record current-account",
+   "record savings-plan",
+   "record shekel-cash"
+  ]
+ },
+ {
+  "id": "BANK OQ12",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "blocked liquidity-lockup savings-plan",
+   "content/guide/savings-plan.tsx",
+   "copy.ts",
+   "record savings-plan",
+   "record shekel-cash"
+  ]
+ },
+ {
+  "id": "BANK OQ14",
+  "status": "open",
+  "title": false,
+  "where": [
+   "record bank-deposit",
+   "record shekel-cash"
+  ]
+ },
+ {
+  "id": "BANK OQ17",
+  "status": "open",
+  "title": false,
+  "where": [
+   "record bank-deposit",
+   "record savings-plan"
+  ]
+ },
+ {
+  "id": "BRK OQ5",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "record brokerage-account"
+  ]
+ },
+ {
+  "id": "BRK OQ9",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "record brokerage-account"
+  ]
+ },
+ {
+  "id": "BRK OQ11",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "record brokerage-account",
+   "record makam",
+   "record money-market-fund-daily",
+   "record money-market-fund-renewable"
+  ]
+ },
+ {
+  "id": "BRK OQ12",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "record brokerage-account"
+  ]
+ },
+ {
+  "id": "BRK OQ17",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "record brokerage-account"
+  ]
+ },
+ {
+  "id": "CAT OQ2",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "lib/workbench.ts"
+  ]
+ },
+ {
+  "id": "CAT OQ3",
+  "status": "open",
+  "title": false,
+  "where": [
+   "record general-track"
+  ]
+ },
+ {
+  "id": "CAT OQ11",
+  "status": "open",
+  "title": false,
+  "where": [
+   "record shekel-cash"
+  ]
+ },
+ {
+  "id": "CAT OQ18",
+  "status": "open",
+  "title": false,
+  "where": [
+   "record general-track"
+  ]
+ },
+ {
+  "id": "CS OQ4",
+  "status": "open",
+  "title": false,
+  "where": [
+   "record child-savings-provident"
+  ]
+ },
+ {
+  "id": "CS OQ8",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "record child-savings-bank",
+   "record child-savings-provident"
+  ]
+ },
+ {
+  "id": "CS OQ10",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "copy.ts",
+   "record child-savings-provident"
+  ]
+ },
+ {
+  "id": "CS OQ12",
+  "status": "open",
+  "title": false,
+  "where": [
+   "record child-savings-bank"
+  ]
+ },
+ {
+  "id": "CS OQ16",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "record child-savings-provident"
+  ]
+ },
+ {
+  "id": "ETF OQ2",
+  "status": "open",
+  "title": false,
+  "where": [
+   "content/exposure/index-ta125.tsx",
+   "record index-ta125"
+  ]
+ },
+ {
+  "id": "ETF OQ4",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "copy.ts"
+  ]
+ },
+ {
+  "id": "ETF OQ11",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "content/exposure/index-sp500.tsx",
+   "record index-sp500"
+  ]
+ },
+ {
+  "id": "GOV OQ2",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "content/exposure/makam.tsx",
+   "content/guide/makam.tsx",
+   "record makam"
+  ]
+ },
+ {
+  "id": "GOV OQ3",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "record makam"
+  ]
+ },
+ {
+  "id": "GOV OQ4",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "content/exposure/government-bond-unlinked.tsx",
+   "copy.ts",
+   "record government-bond",
+   "record government-bond-unlinked"
+  ]
+ },
+ {
+  "id": "GOV OQ6",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "content/exposure/government-bond-cpi.tsx",
+   "record government-bond",
+   "record government-bond-cpi"
+  ]
+ },
+ {
+  "id": "GOV OQ7",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "blocked minimum government-bond",
+   "blocked minimum makam",
+   "content/guide/government-bond.tsx",
+   "content/guide/makam.tsx",
+   "record brokerage-account",
+   "record government-bond",
+   "record government-bond-cpi",
+   "record government-bond-unlinked",
+   "record makam"
+  ]
+ },
+ {
+  "id": "GOV OQ8",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "content/guide/government-bond.tsx",
+   "record government-bond",
+   "record government-bond-cpi",
+   "record government-bond-unlinked",
+   "record makam"
+  ]
+ },
+ {
+  "id": "GOV OQ9",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "content/exposure/government-bond-unlinked.tsx",
+   "record government-bond-cpi",
+   "record government-bond-unlinked"
+  ]
+ },
+ {
+  "id": "INS OQ2",
+  "status": "closed",
+  "title": false,
+  "where": [
+   "not-covered closure"
+  ]
+ },
+ {
+  "id": "INS OQ7",
+  "status": "closed",
+  "title": false,
+  "where": [
+   "not-covered closure"
+  ]
+ },
+ {
+  "id": "IRA OQ1",
+  "status": "open",
+  "title": false,
+  "where": [
+   "record ira-hishtalmut",
+   "record ira-provident"
+  ]
+ },
+ {
+  "id": "IRA OQ2",
+  "status": "open",
+  "title": false,
+  "where": [
+   "record ira-hishtalmut",
+   "record ira-provident"
+  ]
+ },
+ {
+  "id": "IRA OQ6",
+  "status": "open",
+  "title": false,
+  "where": [
+   "record ira-hishtalmut"
+  ]
+ },
+ {
+  "id": "IRA OQ7",
+  "status": "open",
+  "title": false,
+  "where": [
+   "record ira-hishtalmut"
+  ]
+ },
+ {
+  "id": "IRA OQ11",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "record ira-hishtalmut",
+   "record ira-provident"
+  ]
+ },
+ {
+  "id": "KH OQ3",
+  "status": "open",
+  "title": false,
+  "where": [
+   "record keren-hishtalmut"
+  ]
+ },
+ {
+  "id": "KH OQ4",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "record keren-hishtalmut"
+  ]
+ },
+ {
+  "id": "MF OQ1",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "record money-market-fund-daily",
+   "record money-market-fund-renewable"
+  ]
+ },
+ {
+  "id": "MF OQ3",
+  "status": "open",
+  "title": false,
+  "where": [
+   "content/guide/money-market-fund-daily.tsx",
+   "record money-market-fund-daily",
+   "record money-market-fund-renewable"
+  ]
+ },
+ {
+  "id": "MF OQ4",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "blocked liquidity-lockup money-market-fund-daily",
+   "blocked liquidity-lockup money-market-fund-renewable",
+   "content/guide/money-market-fund-daily.tsx",
+   "content/guide/money-market-fund-renewable.tsx",
+   "copy.ts",
+   "record money-market-fund-daily",
+   "record money-market-fund-renewable",
+   "record shekel-cash"
+  ]
+ },
+ {
+  "id": "MF OQ5",
+  "status": "open",
+  "title": false,
+  "where": [
+   "record money-market-fund-daily",
+   "record money-market-fund-renewable"
+  ]
+ },
+ {
+  "id": "MF OQ11",
+  "status": "open",
+  "title": false,
+  "where": [
+   "content/guide/money-market-fund-renewable.tsx",
+   "record money-market-fund-renewable"
+  ]
+ },
+ {
+  "id": "MF OQ12",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "record money-market-fund-daily",
+   "record money-market-fund-renewable"
+  ]
+ },
+ {
+  "id": "MF OQ17",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "record money-market-fund-renewable"
+  ]
+ },
+ {
+  "id": "PEN OQ7",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "blocked age-or-use-exemption ira-provident",
+   "blocked tax-at-exit ira-provident",
+   "blocked tax-at-exit pension-comprehensive",
+   "blocked tax-at-exit pension-general",
+   "content/guide/ira-provident.tsx",
+   "content/guide/kupat-gemel-lehashkaa.tsx",
+   "content/guide/pension-comprehensive.tsx",
+   "content/guide/pension-general.tsx",
+   "copy.ts",
+   "exit blocker ira-provident",
+   "exit blocker pension-comprehensive",
+   "exit blocker pension-general",
+   "exit blocker provident-for-annuity",
+   "record ira-provident",
+   "record pension-comprehensive",
+   "record pension-general",
+   "record provident-for-annuity"
+  ]
+ },
+ {
+  "id": "PEN OQ19",
+  "status": "open",
+  "title": false,
+  "where": [
+   "blocked tax-at-exit provident-for-annuity",
+   "content/guide/provident-for-annuity.tsx",
+   "exit blocker provident-for-annuity",
+   "record provident-for-annuity"
+  ]
+ },
+ {
+  "id": "PEN OQ21",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "record pension-comprehensive"
+  ]
+ },
+ {
+  "id": "PF OQ6",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "copy.ts"
+  ]
+ },
+ {
+  "id": "PF OQ16",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "copy.ts",
+   "rule text PF-33"
+  ]
+ },
+ {
+  "id": "REG OQ9",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "blocked protection brokerage-account",
+   "record brokerage-account"
+  ]
+ },
+ {
+  "id": "REG OQ10",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "content/guide/government-bond.tsx",
+   "content/guide/makam.tsx",
+   "record brokerage-account",
+   "record government-bond",
+   "record makam"
+  ]
+ },
+ {
+  "id": "REG OQ13",
+  "status": "open",
+  "title": false,
+  "where": [
+   "record current-account"
+  ]
+ },
+ {
+  "id": "REG OQ21",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "record shekel-cash"
+  ]
+ },
+ {
+  "id": "RG OQ3",
+  "status": "closed",
+  "title": false,
+  "where": [
+   "not-covered closure"
+  ]
+ },
+ {
+  "id": "SW OQ2",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "copy.ts",
+   "lib/playbook.ts"
+  ]
+ },
+ {
+  "id": "SW OQ3",
+  "status": "open",
+  "title": false,
+  "where": [
+   "copy.ts",
+   "lib/playbook.ts"
+  ]
+ },
+ {
+  "id": "SW OQ4",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "components/playbook/offer-card.tsx",
+   "copy.ts"
+  ]
+ },
+ {
+  "id": "SW OQ5",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "copy.ts",
+   "lib/playbook.ts"
+  ]
+ },
+ {
+  "id": "SW OQ8",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "blocked switching-tax-event pension-comprehensive",
+   "blocked switching-tax-event pension-general",
+   "blocked switching-tax-event provident-for-annuity",
+   "record pension-comprehensive",
+   "record pension-general",
+   "record provident-for-annuity"
+  ]
+ },
+ {
+  "id": "SW OQ9",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "copy.ts",
+   "lib/playbook.ts"
+  ]
+ },
+ {
+  "id": "SW OQ10",
+  "status": "open",
+  "title": false,
+  "where": [
+   "copy.ts",
+   "lib/playbook.ts"
+  ]
+ },
+ {
+  "id": "SW OQ11",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "components/playbook/cost.tsx",
+   "copy.ts",
+   "lib/playbook.ts",
+   "record brokerage-account"
+  ]
+ },
+ {
+  "id": "SW OQ12",
+  "status": "open",
+  "title": false,
+  "where": [
+   "copy.ts",
+   "lib/playbook.ts"
+  ]
+ },
+ {
+  "id": "SW OQ16",
+  "status": "open",
+  "title": false,
+  "where": [
+   "copy.ts",
+   "lib/playbook.ts"
+  ]
+ },
+ {
+  "id": "TX2 OQ1",
+  "status": "closed",
+  "title": false,
+  "where": [
+   "not-covered closure"
+  ]
+ },
+ {
+  "id": "TX2 OQ2",
+  "status": "open",
+  "title": false,
+  "where": [
+   "lib/compare.server.ts"
+  ]
+ },
+ {
+  "id": "TX2 OQ5",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "lib/compare.server.ts"
+  ]
+ },
+ {
+  "id": "TX2 OQ6",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "components/kit/gallery.tsx",
+   "lib/compare.server.ts"
+  ]
+ },
+ {
+  "id": "TX2 OQ8",
+  "status": "open",
+  "title": false,
+  "where": [
+   "lib/compare.server.ts"
+  ]
+ },
+ {
+  "id": "TX2 OQ10",
+  "status": "open",
+  "title": false,
+  "where": [
+   "lib/compare.server.ts"
+  ]
+ },
+ {
+  "id": "TXA OQ1",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "lib/compare.server.ts"
+  ]
+ },
+ {
+  "id": "TXA OQ3",
+  "status": "closed",
+  "title": false,
+  "where": [
+   "not-covered closure"
+  ]
+ },
+ {
+  "id": "TXA OQ6",
+  "status": "open",
+  "title": false,
+  "where": [
+   "lib/compare.server.ts"
+  ]
+ },
+ {
+  "id": "TXA OQ9",
+  "status": "closed",
+  "title": false,
+  "where": [
+   "not-covered closure"
+  ]
+ },
+ {
+  "id": "TXA OQ10",
+  "status": "closed",
+  "title": false,
+  "where": [
+   "not-covered closure"
+  ]
+ },
+ {
+  "id": "TXA OQ11",
+  "status": "closed",
+  "title": false,
+  "where": [
+   "not-covered closure"
+  ]
+ },
+ {
+  "id": "TXA OQ14",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "lib/compare.server.ts"
+  ]
+ },
+ {
+  "id": "TXA OQ15",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "lib/compare.server.ts"
+  ]
+ },
+ {
+  "id": "TXF OQ1",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "content/exposure/index-sp500.tsx",
+   "content/guide/brokerage-account.tsx",
+   "copy.ts",
+   "lib/variants.ts",
+   "record brokerage-account",
+   "record index-sp500"
+  ]
+ },
+ {
+  "id": "TXF OQ3",
+  "status": "open",
+  "title": false,
+  "where": [
+   "record brokerage-account"
+  ]
+ },
+ {
+  "id": "TXF OQ7",
+  "status": "open",
+  "title": false,
+  "where": [
+   "record index-sp500"
+  ]
+ },
+ {
+  "id": "TXG OQ4",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "copy.ts"
+  ]
+ },
+ {
+  "id": "TXH OQ2",
+  "status": "open",
+  "title": false,
+  "where": [
+   "record keren-hishtalmut"
+  ]
+ },
+ {
+  "id": "TXH OQ11",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "record keren-hishtalmut"
+  ]
+ },
+ {
+  "id": "TXI OQ2",
+  "status": "open",
+  "title": false,
+  "where": [
+   "content/guide/bank-deposit.tsx",
+   "record bank-deposit",
+   "record savings-plan",
+   "record shekel-cash"
+  ]
+ },
+ {
+  "id": "TXI OQ3",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "content/exposure/makam.tsx",
+   "content/guide/makam.tsx",
+   "record makam"
+  ]
+ },
+ {
+  "id": "TXI OQ5",
+  "status": "open",
+  "title": false,
+  "where": [
+   "content/exposure/government-bond-cpi.tsx",
+   "content/exposure/government-bond-unlinked.tsx",
+   "content/guide/government-bond.tsx",
+   "record government-bond",
+   "record government-bond-cpi",
+   "record government-bond-unlinked",
+   "record makam"
+  ]
+ },
+ {
+  "id": "TXI OQ6",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "record government-bond-cpi"
+  ]
+ },
+ {
+  "id": "TXI OQ9",
+  "status": "open",
+  "title": false,
+  "where": [
+   "blocked age-or-use-exemption makam",
+   "content/guide/makam.tsx",
+   "record bank-deposit",
+   "record government-bond",
+   "record makam",
+   "record savings-plan"
+  ]
+ },
+ {
+  "id": "TXI OQ11",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "blocked age-or-use-exemption current-account",
+   "record current-account"
+  ]
+ },
+ {
+  "id": "TXI OQ14",
+  "status": "open",
+  "title": false,
+  "where": [
+   "content/guide/bank-deposit.tsx",
+   "content/guide/savings-plan.tsx",
+   "record bank-deposit",
+   "record savings-plan",
+   "record shekel-cash"
+  ]
+ },
+ {
+  "id": "TXK OQ1",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "blocked switching-tax-event child-savings-bank",
+   "blocked switching-tax-event child-savings-provident",
+   "content/guide/child-savings-bank.tsx",
+   "content/guide/child-savings-provident.tsx",
+   "record child-savings-bank",
+   "record child-savings-provident"
+  ]
+ },
+ {
+  "id": "TXK OQ3",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "record kupat-gemel-lehashkaa"
+  ]
+ },
+ {
+  "id": "TXK OQ7",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "content/exposure/index-sp500.tsx",
+   "record ira-hishtalmut",
+   "record ira-provident"
+  ]
+ },
+ {
+  "id": "TXK OQ8",
+  "status": "open",
+  "title": false,
+  "where": [
+   "record ira-hishtalmut",
+   "record ira-provident"
+  ]
+ },
+ {
+  "id": "TXK OQ10",
+  "status": "open",
+  "title": false,
+  "where": [
+   "blocked loss-offset child-savings-provident",
+   "blocked loss-offset ira-hishtalmut",
+   "blocked loss-offset ira-provident",
+   "blocked loss-offset kupat-gemel-lehashkaa",
+   "record kupat-gemel-lehashkaa"
+  ]
+ },
+ {
+  "id": "TXP OQ6",
+  "status": "open",
+  "title": false,
+  "where": [
+   "record pension-comprehensive"
+  ]
+ },
+ {
+  "id": "TXP OQ9",
+  "status": "open",
+  "title": false,
+  "where": [
+   "record provident-for-annuity"
+  ]
+ },
+ {
+  "id": "TXS OQ12",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "record brokerage-account"
+  ]
+ },
+ {
+  "id": "TXS OQ15",
+  "status": "narrowed",
+  "title": false,
+  "where": [
+   "content/exposure/government-bond-cpi.tsx",
+   "content/guide/money-market-fund-daily.tsx",
+   "content/guide/money-market-fund-renewable.tsx",
+   "record government-bond-cpi",
+   "record money-market-fund-daily",
+   "record money-market-fund-renewable"
+  ]
+ }
+]

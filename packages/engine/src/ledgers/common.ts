@@ -143,6 +143,10 @@ export class Tally {
       formulas: string[];
     },
   ): RunResult {
+    // G-23 (2026-10-26): credit points come off the whole computed tax, special-rate income included (TXG-05), but the
+    // engine has no input for the person's credit points (who gets how many is out of the rule base's scope). So a run that
+    // charges Israeli tax says that no credit was applied, rather than assume silently that none is left over.
+    if (this.taxDuring + r.taxAtExit - (r.detail?.foreignTax ?? 0) > 0) this.flag("G-23");
     return {
       exitMonth: r.exitMonth,
       nominal: r.nominal,

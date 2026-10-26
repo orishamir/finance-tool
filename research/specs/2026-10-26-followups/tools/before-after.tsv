@@ -1,0 +1,5 @@
+money-market-fund-daily	{"A-02":[-1,"pct_per_year"]}	{}	tax at exit (today's money)	4985.33	3947.94	real	84955.99	85993.38	flags	G-20	G-20|G-23
+brokerage-account	{"A-02":[-1,"pct_per_year"]}	{}	tax at exit (today's money)	6595.99	5654.09	real	84627.52	85569.41	flags	G-20	G-20|G-23
+kupat-gemel-lehashkaa	{"A-02":[-1,"pct_per_year"]}	{}	tax at exit (today's money)	6231.71	5194.32	real	88695.13	89732.52	flags	G-14|G-02	G-14|G-02|G-23
+kupat-gemel-lehashkaa	{}	{"ageAtStart":62}	tax at exit (today's money)	2315.90	1852.72	real	76947.69	77410.87	flags	G-14|TXK-06|G-02	G-14|G-21|G-02|G-23
+kupat-gemel-lehashkaa	{}	{"ageAtStart":30}	tax at exit (today's money)	2315.90	2315.90	real	76947.69	76947.69	flags	G-14|G-02	G-14|G-02|G-23

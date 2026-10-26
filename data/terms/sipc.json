@@ -12,7 +12,7 @@
   "variants": [],
   "rule_ids": [
     "BRK-14",
-    "BRK-35"
+    "REG-27"
   ],
   "source": {
     "url": "https://www.sipc.org/for-investors/what-sipc-protects",

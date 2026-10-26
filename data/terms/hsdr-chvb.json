@@ -2,7 +2,7 @@
   "id": "hsdr-chvb",
   "he": "הסדר חוב",
   "en": null,
-  "meaning": "שינוי בתנאי אגרות החוב כשהמנפיק בקשיים, כך שמשולם פחות ממה שהובטח במקור.",
+  "meaning": "הסדר בין חייב, למשל חברה שהנפיקה איגרות חוב, לבין הנושים שלו, שמשנה את תנאי הפירעון של החוב.",
   "where": [],
   "wrapper_ids": [],
   "variants": [
@@ -15,10 +15,10 @@
     "TX2-08"
   ],
   "source": {
-    "url": "https://midroogcoil.blob.core.windows.net/midroog-public-website-media/1566e0dd-2015-48f2-aa4c-560446ecabc2_סולמות%20והגדרות%20הדירוג%20של%20מידרוג%20060826%20נקי.pdf",
-    "title": "Midroog, סולמות והגדרות הדירוג של מידרוג, August 2026, p. 13",
+    "url": "https://he.wikisource.org/wiki/חוק_חדלות_פירעון_ושיקום_כלכלי",
+    "title": "חוק חדלות פירעון ושיקום כלכלי, התשע\"ח-2018, ס' 318 (Wikisource mirror)",
     "publisher": "see title",
-    "strength": "institution",
-    "checked": "2026-10-22"
+    "strength": "primary-mirror",
+    "checked": "2026-10-26"
   }
 }

@@ -6,7 +6,10 @@
 //
 // 2026-10-25 (current-account page, G3): the current account's illustrative run starts from the rate most of the collected banks
 // publish (F-85), not from one bank's rate; `commonAccountRate` makes that value and the page's counts from the bank records.
-import { mostCommonRate } from "@finance-tool/engine";
+//
+// 2026-10-26 (founder: a general page names no single bank's rate): the one-year deposit on the money-market ladder is the range
+// across the collected banks (F-86); `oneYearDepositRecords` and `depositRange` make it, and the bank-deposit page lists each bank.
+import { mostCommonRate, rateRange } from "@finance-tool/engine";
 import type { Bundle } from "./engine";
 import { p05Range, runTimeline } from "./engine";
 import type { DepositTerms, ParameterRecord, RuleRecord, ValueObject, WrapperId, WrapperRecord } from "@finance-tool/schema";
@@ -14,7 +17,8 @@ import type { AccountBank } from "./guide-signature";
 import { buildInstrumentTerms, loadDepositTerms, loadFunds } from "./instruments.server";
 import { loadFees } from "./data.server";
 import { shortName } from "./providers";
-import { computed, type SiteValue, type Strength } from "./value";
+import { computed, ownBy, type SiteValue, type Strength } from "./value";
+import { publisherHe } from "./publisher-he.server";
 
 export type NoGraph =
   | { kind: "missing"; parts: string[] }
@@ -84,6 +88,17 @@ export function currentAccountRecords(deposits: DepositTerms[]): DepositTerms[] 
   return [...latest.values()].sort((a, b) => (a.bank < b.bank ? -1 : 1));
 }
 
+/** One record per bank of a one-year deposit at a fixed rate with no linkage (F-86): the latest by snapshot. */
+export function oneYearDepositRecords(deposits: DepositTerms[]): DepositTerms[] {
+  const latest = new Map<string, DepositTerms>();
+  for (const d of deposits) {
+    if (d.wrapper_id !== "bank-deposit" || d.rate_type !== "fixed" || d.linkage !== "none" || d.term_months.value !== 12) continue;
+    const prev = latest.get(d.bank);
+    if (!prev || d.snapshot > prev.snapshot) latest.set(d.bank, d);
+  }
+  return [...latest.values()].sort((a, b) => (a.bank < b.bank ? -1 : 1));
+}
+
 /** The records as the page reads them: the printed rate and ceiling as sourced figures, with the record's own Hebrew text. A record whose rate is not a number is left out. */
 export function accountBanks(records: DepositTerms[]): AccountBank[] {
   const banks: AccountBank[] = [];
@@ -91,13 +106,15 @@ export function accountBanks(records: DepositTerms[]): AccountBank[] {
     if (typeof r.rate_offered.value !== "number" || r.rate_offered.unit !== "pct_per_year") continue;
     const max = r.amount_range.max;
     // a doubt travels with the number: its sheet says it (the record's English notes stay in the data)
-    const rate = { ...r.rate_offered, ...(r.doubt_he ? { notes: r.doubt_he } : {}) } as SiteValue;
+    // D31: each rate and ceiling is the bank's own, shown on the line that names the bank
+    const name = shortName(r.bank, r.bank);
+    const rate = ownBy({ ...r.rate_offered, ...(r.doubt_he ? { notes: r.doubt_he } : {}) } as SiteValue, name);
     banks.push({
       id: r.id,
       bank: r.bank,
-      name: shortName(r.bank, r.bank),
+      name,
       rate,
-      ceiling: max && max.unit === "nis" && typeof max.value === "number" ? ({ ...max } as SiteValue) : null,
+      ceiling: max && max.unit === "nis" && typeof max.value === "number" ? ownBy({ ...max } as SiteValue, name) : null,
       conditions: r.conditions_he ?? null,
       doubt: r.doubt_he ?? null,
       until: r.rate_offered.effective_to,
@@ -138,6 +155,25 @@ export function commonAccountRate(banks: AccountBank[], rules: Record<string, Ru
     of: make(result.of, "count", "כמה בנקים נאספו"),
     paying: make(result.paying, "count", "כמה בנקים מפרסמים ריבית מעל 0"),
     ceiling,
+  };
+}
+
+/** The range of a one-year deposit's rate across the banks (F-86) as computed values over the banks' printed rates. */
+export interface DepositRange {
+  lo: SiteValue;
+  hi: SiteValue;
+  count: SiteValue;
+}
+
+export function depositRange(banks: AccountBank[], today: string): DepositRange | null {
+  const result = rateRange(banks.map((b) => Number(b.rate.value)));
+  if (!result) return null;
+  const inputs = Object.fromEntries(banks.map((b) => [b.name, b.rate]));
+  const make = (value: number, unit: SiteValue["unit"], about: string) => computed(value, unit, "F-86", inputs, { today, about });
+  return {
+    lo: make(result.lo, "pct_per_year", "הריבית הנמוכה ביותר על פיקדון לשנה בריבית קבועה בבנקים שנאספו"),
+    hi: make(result.hi, "pct_per_year", "הריבית הגבוהה ביותר על פיקדון לשנה בריבית קבועה בבנקים שנאספו"),
+    count: make(result.count, "count", "כמה בנקים נאספו"),
   };
 }
 
@@ -187,11 +223,19 @@ export function buildInstrumentBundle(
   const published = family === "deposit" ? publishedDeposit(record.id, spec, deposits) : null;
   // the current account starts from the rate most banks pay (F-85, 2026-10-25), not from the one bank P-05 names
   const common = record.id === "current-account" ? commonAccountRate(accountBanks(currentAccountRecords(deposits)), allRules, t) : null;
-  const rate = common ? common.rate : published?.rate;
+  // D31: the guide page's terms block names the company each figure belongs to, so the figure is that company's own: the fund's figures
+  // its manager's, the tariff's lines its provider's, the deposit's terms its bank's (the source's host would name Maya for a fund report)
+  const fundRec = spec?.fund ? loadFunds().find((f) => f.id === spec.fund) : undefined;
+  const tariffSnap = spec?.tariff ? loadFees().filter((f) => f.id === spec.tariff).sort((a, b) => b.snapshot.localeCompare(a.snapshot))[0] : undefined;
+  const depositRec = spec?.deposit_terms ? deposits.find((d) => d.id === spec.deposit_terms) : undefined;
+  const ownerOf = (key: string, v: SiteValue): string =>
+    fundRec && (key.startsWith("fund") || key === "ninetyPercentTest") ? shortName("", fundRec.manager) : tariffSnap && !depositRec ? shortName(tariffSnap.id, tariffSnap.provider.name_he) : depositRec ? shortName(depositRec.bank, depositRec.bank) : publisherHe(v);
+  const ownOf = (v: SiteValue, key = ""): SiteValue => (v.state === "sourced" ? ownBy(v, ownerOf(key, v)) : v);
+  const rate = common ? common.rate : published?.rate ? ownOf(published.rate, "rate") : undefined;
   const ceiling = common ? common.ceiling : published?.ceiling;
   const runP05 = rate ? withPublishedRate(p05, rate) : p05;
   const terms = ceiling && built.terms.deposit ? { ...built.terms, deposit: { ...built.terms.deposit, balanceCeiling: ceiling.value as number } } : built.terms;
-  const feeValues = { ...built.feeValues, ...(ceiling ? { balanceCeiling: ceiling } : {}) };
+  const feeValues = Object.fromEntries(Object.entries({ ...built.feeValues, ...(ceiling ? { balanceCeiling: ceiling } : {}) }).map(([k, v]) => [k, ownOf(v, k)]));
   const draft: Bundle = { record, p05: runP05, terms, feeValues, rules: Object.values(allRules), runDate: t };
   const probe = runTimeline(draft, { entered: {}, age: null });
   if (probe.kind === "failed") {

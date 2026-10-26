@@ -24,10 +24,7 @@ export function Steps({ view, monthly }: { view: InvestView; monthly: import("..
   };
   const stay = !!yours && yours.id === p.id;
   return (
-    <section className="flex flex-col gap-3" aria-labelledby="invest-steps">
-      <h2 id="invest-steps" className="text-lg font-semibold">
-        {c.steps.heading}
-      </h2>
+    <div className="flex flex-col gap-3 pt-2">
       <ol className="flex flex-col gap-3 list-decimal ps-6 max-w-measure marker:font-semibold">
         <li className="ps-1">
           <span>
@@ -74,7 +71,7 @@ export function Steps({ view, monthly }: { view: InvestView; monthly: import("..
           </Sentence>
         </li>
       </ol>
-    </section>
+    </div>
   );
 }
 

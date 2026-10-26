@@ -102,7 +102,7 @@ const runOf: Partial<Record<WrapperId, Family>> = {
 const notRun: Partial<Record<WrapperId, string>> = {
   "child-savings-provident": "runs on the NII amounts (F-54), not on P-05",
   "child-savings-bank": "runs on the NII amounts (F-54), not on P-05",
-  "ira-provident": "exit F-48 and F-49 are blocked (G-03, G-06)",
+  "ira-provident": "exit F-49 is blocked (G-03) and F-48 is not built yet",
 };
 
 const termKeys: Record<Family, { required: (keyof InstrumentTerms)[]; optional: (keyof InstrumentTerms)[] }> = {

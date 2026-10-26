@@ -32,7 +32,7 @@ under each release say what exists and what is open, and its closing section
 "After release 5" lists the work that continues (tier-2 graduation, data
 growth, quarterly tariff refresh, my approvals). Data: about 500 rules, 20
 tariff snapshots for 17 providers (Meitav Trade still missing), 12 fund records,
-deposit terms (Leumi's 3, and seven more banks' current accounts since 2026-10-25), 2 series; no fund list, because TASE's terms forbid
+deposit terms (Leumi's 3, seven more banks' current accounts since 2026-10-25, and one-year deposits of Hapoalim, Discount and Mizrahi-Tefahot since 2026-10-26), 2 series; no fund list, because TASE's terms forbid
 republishing it (see `docs/data-inventory.md`). The saved state is version 3
 under `mekor.v2.state`; the entered offers, variant assumptions and playbook
 ticks are three side stores on the device pending a merge into it.
@@ -78,8 +78,9 @@ re-check the capabilities that depend on it.
 - **Shared components first** (founder, 2026-10-25). Before building any UI
   piece, look in the kit (`site/app/components/kit/`, gallery at `/kit`) and
   use the piece that fits. A new pattern goes into the kit, its gallery and,
-  where it can be named, a guard test in `kit/guards.test.ts`; never into a
-  feature folder. Every builder's brief says so.
+  where it can be named, a guard in `kit/guards.test.ts` or a ratchet in
+  `kit/ratchets.test.ts` (leftovers listed by name, the list only shrinks);
+  never into a feature folder. Every builder's brief says so.
 - **Structure review before every merge** (founder, 2026-10-25). The lead
   reviews each builder's branch for structure, not line by line:
   `node research/audit/tools/merge-review.mjs <base>` lists what the branch
@@ -126,8 +127,9 @@ Look approved by the founder (2026-10-23). Tokens live in `site/app/theme.css`;
   `muted-foreground`, `primary`, `border`, `input`, `ring`).
 - **Number states (D7).** Sourced: solid grey underline. Computed: dotted
   violet underline. Entered by you: blue ink on a blue highlight. Flags:
-  `caution` amber (stale, secondary source, a figure from the institution's own
-  document, labelled "לפי החברה"), `blocked` red with a lock (open rule),
+  `caution` amber (stale, secondary source, a company's figure used outside its
+  own context, labelled "לפי החברה"; a company's figure about its own product,
+  shown on that product, is plain sourced, D31), `blocked` red with a lock (open rule),
   `positive` green (dimension considered). Colour never works alone:
   each state also has a pattern, icon or word. Every number goes through the
   provenance component.

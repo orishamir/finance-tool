@@ -5,31 +5,33 @@
 import { useEffect, useId, useMemo, useState } from "react";
 import { Link, useLoaderData, useLocation } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
-import type { SiteValue } from "../lib/value";
 import { r3fees, r3holdings, site } from "../copy";
 import { AssumptionsPanel, type Suggestion } from "../components/compare/assumptions";
 import type { FormData } from "../components/compare/goal-form";
 import { goalTitle } from "../components/compare/goal-form";
 import { EmploymentInferredNote, employmentMatters } from "../components/compare/inferred";
 import { SavedGoalStrip } from "../components/compare/strip";
-import { FeeChips } from "../components/fees/chips";
+import { feePlanItems, ScenarioDefaults } from "../components/fees/chips";
 import { ChartLegend, ChartReadout, ChartTable, FeeDragChart } from "../components/fees/FeeDragChart";
 import { FeeRow, NotReportedRow } from "../components/fees/FeeRow";
 import { FeeHeadline, ReasonWithCode, RemainderLine, SubjectStrip, ThresholdsLine } from "../components/fees/parts";
 import { FeeSensitivityPanel } from "../components/fees/sensitivity";
 import { IconLock } from "../components/icons";
 import { Num, NumberLegend, RuleRef, RulesLine } from "../components/provenance";
+import { anyWeak } from "../lib/value";
 import { Sheet } from "../components/Sheet";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { Callout, Card, Sentence } from "../components/kit";
+import { Callout, Card, PlanChips, Sentence } from "../components/kit";
 import { loadBundle } from "../lib/bundle";
 import { runGoalOf, type CompareBundle } from "../lib/compare";
-import { buildFees, buildHoldingFees, feeInputs, type FeeInputs, feeSensitivity, headlineGap, loadFeesData, parseSubject, rankedFor, ruleMap, softensAvoid, type FeeSensitivity, type FeesData, type FeesResult, type PlanError, type SubjectSpec } from "../lib/fees";
+import { buildFees, buildHoldingFees, type FeeInputs, feeSensitivity, headlineGap, loadFeesData, parseSubject, rankedFor, ruleMap, softensAvoid, type FeeSensitivity, type FeesData, type FeesResult, type PlanError, type SubjectSpec } from "../lib/fees";
+import { planInputs } from "../lib/plan-inputs";
 import { GoalsProvider, hasMeaning, useGoals, type FieldKey, type Presets } from "../lib/goal";
 import { useInputs } from "../lib/inputs";
 import { holdingName, useHolding } from "../lib/holdings";
 import { bundleLinks } from "../lib/bundle";
 import { playbookWrappers } from "../lib/playbook";
+import { recordsById } from "../lib/scope";
 
 /** The data files this page fetches after it starts, requested with the HTML (audit 2026-10-24, A52). */
 export const links = () => bundleLinks("fees-data.json", "compare-bundle.json");
@@ -71,7 +73,7 @@ export default function FeesPage() {
   }, []);
   const provenance = useMemo(() => {
     const rules: Record<string, RuleRecord> = Object.fromEntries([...(bundle?.rules ?? Object.values(data.rules)), ...(fees?.rules ?? [])].map((r) => [r.id, r as RuleRecord]));
-    return { rules, terms: {}, dimensions: Object.fromEntries((bundle?.checklist ?? []).map((c) => [c.id, c.name])), today: data.today };
+    return { rules, pointed: recordsById(bundle?.pointed, fees?.pointed), terms: {}, dimensions: Object.fromEntries((bundle?.checklist ?? []).map((c) => [c.id, c.name])), today: data.today };
   }, [bundle, fees, data.rules, data.today]);
   return (
     <GoalsProvider presets={presets}>
@@ -168,40 +170,14 @@ function errorText(e: PlanError, wrapperId: string): React.ReactNode {
   }
 }
 
-/** With no saved goal the page runs on P-05's scenario: its numbers are shown on the sheet, each opening its source (B3). */
-function ScenarioDefaults({ inputs }: { inputs: FeeInputs }) {
-  const c = r3fees.chips;
-  const v = inputs.values;
-  const items: [string, SiteValue][] = [
-    [c.years, v.years],
-    [c.amount, v.amount],
-    [c.monthly, v.monthly],
-    [c.return, v.returnV],
-    [c.inflation, v.inflation],
-  ];
-  return (
-    <div className="flex flex-col gap-1 text-sm text-muted-foreground mb-4">
-      <p>
-        {r3fees.review.defaultsLead}
-        {items.map(([label, value], i) => (
-          <span key={label}>
-            {label} <Num value={value} />
-            {i < items.length - 1 ? ", " : "."}
-          </span>
-        ))}
-      </p>
-      <p>{r3fees.review.defaultsNote}</p>
-    </div>
-  );
-}
-
 function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: CompareBundle; fees: FeesData; form: FormData; publisherNames: Record<string, string>; subject: SubjectSpec; frame: (b: React.ReactNode, back?: { href: string; label: string }) => React.ReactNode }) {
   const { current, resolved } = useGoals();
   const released = useInputs();
   const holding = useHolding(subject.kind === "holding" ? subject.holdingId : null);
   const goalG = current && resolved && hasMeaning(resolved) ? runGoalOf(current, resolved) : null;
   const goalName = current ? goalTitle(current) : "";
-  const inputs = useMemo(() => feeInputs(bundle, goalG, released.state), [bundle, JSON.stringify(goalG), released.state]); // eslint-disable-line react-hooks/exhaustive-deps
+  // a goal begun with only an amount runs on that amount and the site's example for the rest (lib/plan-inputs.ts)
+  const inputs = useMemo(() => planInputs(bundle, current, resolved, released.state), [bundle, current, resolved, released.state]);
   const result: FeesResult | null = useMemo(() => {
     try {
       if (subject.kind === "holding") return holding.holding ? buildHoldingFees(bundle, fees, holding.holding, inputs, goalName) : null;
@@ -260,7 +236,7 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
       <>
         <header className="flex flex-col gap-3">
           <h1 className="text-2xl lg:text-3xl font-semibold">{r3fees.title}</h1>
-          <NumberLegend />
+          <NumberLegend institution={bundle ? anyWeak(bundle.wrappers.flatMap((w) => [w.cashRate, ...Object.values(w.feeValues)])) : false} />
           {own && holding.holding && (
             <p className="text-lg">
               {r3fees.strip.holding}
@@ -316,7 +292,7 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
         )}
         <ChartReadout an={an} year={hover ?? Math.round(an.series!.exitMonth / 12)} />
         <ChartTable an={an} />
-        <FeeChips inputs={result.inputs} onOpen={(f) => openField(f)} />
+        <PlanChips items={feePlanItems(result.inputs)} allLabel={r3fees.chips.all} onOpen={(f) => openField(f)} />
       </Card>
     </section>
   );

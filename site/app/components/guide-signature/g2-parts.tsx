@@ -4,7 +4,7 @@ import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { fact } from "../../lib/guide-signature";
 import type { SignatureData } from "../../lib/guide-signature";
 import type { Bundle } from "../../lib/engine";
-import { Num } from "../provenance";
+import { IdText, Num } from "../provenance";
 import { Disclosure, GapNote, NumberField, Sentence } from "../kit";
 import { SourceLine, inputSite, type SigInputs } from "./kit";
 
@@ -67,5 +67,5 @@ export function HoldRow({ tone, name, children }: { tone: "value" | "alt"; name:
 /** "עוד לא חושב" with its reason, from this wave's own reasons (copy `g2.gaps`). */
 export function G2Gap({ id, className }: { id: string; className?: string }) {
   const reason = (copy.g2.gaps as Record<string, string>)[id.split(":")[0]!] ?? copy.common.gapFallback;
-  return <GapNote reason={reason} className={className} />;
+  return <GapNote reason={<IdText text={reason} />} className={className} />;
 }

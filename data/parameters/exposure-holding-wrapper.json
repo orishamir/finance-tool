@@ -83,12 +83,11 @@
         "effective_from": "2026-10-24",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": "chosen by Claude at the founder's request, 2026-10-24, revisable; not evaluated until the coupon frequency of a fixed-rate series is in the rule base (GOV OQ4)",
-        "rationale_he": "אג״ח ממשלתית לא צמודה מוחזקת באותו מוצר, אבל האתר עוד לא מחשב אותה: תדירות הקופון של סדרה כזו עוד לא במאגר הכללים (שאלה פתוחה GOV OQ4)."
+        "notes": "chosen by Claude at the founder's request, 2026-10-24, revisable; not evaluated: the engine does not run a fixed-rate unlinked series yet. Its coupon frequency, yearly, is now in the rule base (GOV-13; GOV OQ4 narrowed to the old Shachar text, 2026-10-26), so whether to evaluate the row is the lead's call",
+        "rationale_he": "אג״ח ממשלתית לא צמודה מוחזקת באותו מוצר, אבל האתר עוד לא מחשב אותה."
       },
       "status": "not-evaluated",
-      "blocked_by": "GOV-OQ4",
-      "reason_he": "לא נבדקה: תדירות הקופון של סדרה לא צמודה עוד לא במאגר הכללים (GOV OQ4)."
+      "reason_he": "לא נבדקה: האתר עוד לא מחשב אג״ח ממשלתית לא צמודה בריבית קבועה."
     },
     "index-sp500": {
       "wrapper_id": {
@@ -159,7 +158,7 @@
       "reason_he": "המסלול הכללי מוחזק בקופת גמל להשקעה, בדמי הניהול שבתעריפון של מיטב."
     }
   },
-  "rationale": "In the comparison by exposure each exposure is held in one product that the site names. The default is the plain way to hold the exposure among the products it fits and that have collected terms: cash in a bank deposit at its published rate, makam in the makam product, the CPI-linked government bond in the government-bond product, the two indices in a brokerage account through a collected fund, the general track in a kupat gemel lehashkaa at the manager's list fees. The unlinked government bond is not evaluated yet (open question GOV OQ4). The person can change the product on each row; the choice is then theirs.",
+  "rationale": "In the comparison by exposure each exposure is held in one product that the site names. The default is the plain way to hold the exposure among the products it fits and that have collected terms: cash in a bank deposit at its published rate, makam in the makam product, the CPI-linked government bond in the government-bond product, the two indices in a brokerage account through a collected fund, the general track in a kupat gemel lehashkaa at the manager's list fees. The unlinked government bond is not evaluated yet: the engine does not run a fixed-rate unlinked series (its yearly coupon is GOV-13). The person can change the product on each row; the choice is then theirs.",
   "rationale_he": "בהשוואה לפי חשיפה כל חשיפה מוחזקת במוצר אחד שהאתר קובע. ברירת המחדל היא הדרך הפשוטה להחזיק את החשיפה, מבין המוצרים שהחשיפה מתאימה להם ושיש להם תנאים באתר: מזומן בפיקדון בבנק בריבית שפורסמה, מק״מ במוצר המק״מ, אג״ח ממשלתית צמודה במוצר האג״ח הממשלתית, שני המדדים בחשבון ניירות ערך דרך קרן שנאספה, והמסלול הכללי בקופת גמל להשקעה בדמי הניהול שבתעריפון. אג״ח ממשלתית לא צמודה עוד לא נבדקת, בגלל שאלה פתוחה GOV OQ4. אפשר להחליף מוצר בכל שורה, ואז הבחירה שלכם.",
   "chosen_by": "Claude, at the founder's request, 2026-10-24",
   "signed_off_by": "founder",

@@ -6,8 +6,8 @@ import { kit as copy } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { computed, entered } from "../../lib/value";
 import { IconLock } from "../icons";
-import { Num } from "../provenance";
-import { Button, Callout, Card, ChartLegend, ChartReadout, ChartTable, ChoiceChips, CoverageFold, Disclosure, FoldGroup, GainBars, GapNote, HeadlineFigure, KeyValue, KeyValueList, LinkButton, Marker, MarkerMark, NumberField, PercentField, RangeField, RankBadge, Section, SegmentedControl, Sentence, SourceLine, Stat, StatRow, Swatch, Tag, cx, useWidth } from "./index";
+import { IdRef, Num } from "../provenance";
+import { Button, Callout, Card, ChartLegend, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CoverageFold, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, KeyValue, KeyValueList, LinkButton, Marker, MarkerMark, NumberField, ParameterLine, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, SourceLine, Stat, StatRow, Swatch, Tag, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -128,6 +128,7 @@ function Basics() {
 
 function Folds() {
   const [open, setOpen] = useState(false);
+  const [topic, setTopic] = useState(true);
   return (
     <>
       <Demo name="Disclosure" use={g.uses.Disclosure}>
@@ -175,6 +176,16 @@ function Folds() {
               <p className="pb-2">{g.sample.body}</p>
             </FoldGroup>
           </State>
+          <State label={`variant=section, ${g.states.open}, controlled, id`}>
+            <FoldGroup variant="section" id="kit-fold-topic" title={g.sample.topic} count={12} open={topic} onOpenChange={setTopic}>
+              <p className="pt-1">{g.sample.body}</p>
+            </FoldGroup>
+          </State>
+          <State label={`variant=section, ${g.states.closed}`}>
+            <FoldGroup variant="section" title={g.sample.topic} count={1250}>
+              <p className="pt-1">{g.sample.body}</p>
+            </FoldGroup>
+          </State>
         </Grid>
       </Demo>
       <Demo name="CoverageFold" use={g.uses.CoverageFold}>
@@ -220,11 +231,70 @@ function Choices() {
   );
 }
 
+function Chips() {
+  const w = g.sample.list;
+  const words = { confirm: w.confirm, confirmYes: w.yes, confirmNo: w.no, rename: w.rename, remove: w.remove, renameField: w.renameField };
+  const [names, setNames] = useState<Record<string, string>>({});
+  const [order, setOrder] = useState(["a", "b", "c"]);
+  const [on, setOn] = useState<string | null>("b");
+  const [added, setAdded] = useState(false);
+  const label = (id: string) => names[id] ?? w.items[["a", "b", "c"].indexOf(id)]!;
+  const sites = [{ id: "x", label: w.items[0]!, href: "/kit" }, { id: "y", label: w.items[1]!, href: "/kit" }, { id: "z", label: w.longItem, href: "/kit" }];
+  return (
+    <>
+      <Demo name="ChipList" use={g.uses.ChipList}>
+        <State label="items (links), no editing">
+          <ChipList heading={w.heading} note={w.note} items={sites} value="y" words={words} />
+        </State>
+        <State label={`editable chosen item (pencil, bin), ${g.states.interactive}, ${g.states.draggable}`}>
+          <ChipList
+            heading={w.heading}
+            items={order.map((id) => ({ id, label: label(id), editable: true, movable: true }))}
+            value={on}
+            words={words}
+            onSelect={setOn}
+            onRename={(id, name) => setNames((n) => ({ ...n, [id]: name || label(id) }))}
+            onDelete={(id) => setOrder((o) => o.filter((x) => x !== id))}
+            onMove={(id, to) => setOrder((o) => { const r = o.filter((x) => x !== id); r.splice(to, 0, id); return r; })}
+            add={{ label: w.add, onClick: () => setOrder((o) => (o.length < 5 ? [...o, "n" + o.length] : o)) }}
+            footer={<p className="text-sm text-muted-foreground">{w.foot}</p>}
+          />
+        </State>
+        <State label="add pill alone, expanded">
+          <ChipList heading={w.heading} items={[]} value={null} words={words} add={{ label: w.add, onClick: () => setAdded((v) => !v), expanded: added }} />
+        </State>
+      </Demo>
+      <Demo name="PlanChips" use={g.uses.PlanChips}>
+        <State label={`${g.states.filled}, ${g.states.entered}, parameter, fixed`}>
+          <PlanChips
+            allLabel={g.sample.plan.all}
+            onOpen={() => undefined}
+            items={[
+              { field: "amountNow", label: g.sample.plan.amount, text: "10,000 ₪", entered: false },
+              { field: "monthly", label: g.sample.plan.monthly, text: "1,000 ₪", entered: true },
+              { field: "horizonYears", label: g.sample.plan.years, text: "10", entered: false, parameter: true },
+              { field: "return", label: g.sample.plan.ret, text: "5%", entered: true, fixed: true },
+            ]}
+          />
+        </State>
+      </Demo>
+    </>
+  );
+}
+
 function Words({ today }: { today: string }) {
   const s = samples(today);
   return (
     <>
-      <Demo name="Sentence" use={g.uses.Sentence}>
+      <Demo name="IdRef" use={g.uses.IdRef}>
+        <Grid>
+          <State label="rule: opens the rule card"><div><IdRef id="TXS-05" /></div></State>
+          <State label="formula: opens the formula sheet"><div><IdRef id="F-80" /></div></State>
+          <State label="parameter: goes to its card on /parameters"><div><IdRef id="P-01" /></div></State>
+          <State label="open question: opens the question sheet"><div><IdRef id="TX2 OQ6" /></div></State>
+        </Grid>
+      </Demo>
+      <Demo name="Sentence, Tpl" use={g.uses.Sentence}>
         <Grid>
           <State label={`${g.states.sourced} / ${g.states.computed} / ${g.states.entered}`}>
             <Sentence size="sm" measure>
@@ -233,6 +303,9 @@ function Words({ today }: { today: string }) {
           </State>
           <State label={`${g.states.stale}, tone=muted`}>
             <Sentence size="sm" tone="muted" t="{a} · {b}" vars={{ a: <Num value={s.stale} />, b: <Num value={s.rate} /> }} />
+          </State>
+          <State label="Tpl">
+            <Tpl t="{a} · {b}" vars={{ a: <Num value={s.sourced} display="8" />, b: <Num value={s.comp} /> }} />
           </State>
         </Grid>
       </Demo>
@@ -281,6 +354,18 @@ function Words({ today }: { today: string }) {
           <RankBadge rank={3} label="3" flush />
         </div>
       </Demo>
+      <Demo name="CompanyLinks" use={g.uses.CompanyLinks}>
+        <Grid>
+          <State label="size=sm, two companies">
+            <p>
+              <CompanyLinks lead={g.sample.companyLead} items={g.sample.companies.slice(0, 2).map((name) => ({ name, href: "/kit" }))} />
+            </p>
+          </State>
+          <State label="size=xs, one company">
+            <CompanyLinks size="xs" lead={g.sample.companyLead} items={[{ name: g.sample.companies[2]!, href: "/kit" }]} />
+          </State>
+        </Grid>
+      </Demo>
       <Demo name="SourceLine, GapNote" use={g.uses.SourceLine}>
         <State label="SourceLine">
           <SourceLine lead={g.sample.sourceLead} items={[...g.sample.sourceItems]} />
@@ -298,6 +383,7 @@ function Fields() {
   const [b, setB] = useState<number | null>(3000);
   const [years, setYears] = useState<number | null>(10);
   const [pct, setPct] = useState<number | null>(5);
+  const [pick, setPick] = useState<string | null>(null);
   return (
     <>
       <Demo name="NumberField" use={g.uses.NumberField}>
@@ -319,9 +405,22 @@ function Fields() {
           </State>
         </div>
       </Demo>
+      <Demo name="FieldState, ParameterLine" use={g.uses.FieldState}>
+        <Grid>
+          <State label={g.states.entered}>
+            <FieldState entered onReset={() => undefined} />
+          </State>
+          <State label={g.states.disabled}>
+            <FieldState entered={false} onReset={() => undefined} disabled />
+          </State>
+          <State label="ParameterLine">
+            <ParameterLine />
+          </State>
+        </Grid>
+      </Demo>
       <Demo name="RangeField" use={g.uses.RangeField}>
         <Grid>
-          <State label={g.states.interactive}>
+          <State label={`${g.states.interactive}, ${g.states.draggable}`}>
             <RangeField label={g.sample.range} unit="years" value={years} min={1} max={40} step={1} isEntered={years !== 10} validate={(n) => (n < 1 || n > 40 ? g.sample.error : null)} onCommit={(n) => setYears(n)} onReset={() => setYears(10)} inputMode="numeric" />
           </State>
           <State label={g.states.disabled}>
@@ -336,6 +435,16 @@ function Fields() {
           </State>
           <State label={g.states.error}>
             <PercentField label={g.sample.percent} value={120} range={{ min: 0, max: 50 }} isEntered onCommit={() => undefined} onReset={() => undefined} externalError="הזינו אחוז בין 0 ל־50." />
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="SelectField" use={g.uses.SelectField}>
+        <Grid>
+          <State label={`${g.states.empty}, ${g.states.interactive}`}>
+            <SelectField label={g.sample.select.label} none={g.sample.select.none} value={pick} options={[...g.sample.select.options]} onChange={setPick} help={g.sample.select.help} />
+          </State>
+          <State label={g.states.filled}>
+            <SelectField label={g.sample.select.label} value="b" options={[...g.sample.select.options]} onChange={() => undefined} />
           </State>
         </Grid>
       </Demo>
@@ -354,7 +463,7 @@ function MarkerDemo({ today }: { today: string }) {
   return (
     <>
       <Demo name="Marker, MarkerMark" use={g.uses.Marker}>
-        <State label={g.states.interactive} wide>
+        <State label={`${g.states.interactive}, ${g.states.draggable}`} wide>
           <div ref={box} className="relative w-full" dir="ltr" style={{ height: HEIGHT }}>
             <svg width={width} height={HEIGHT} viewBox={`0 0 ${width} ${HEIGHT}`} role="img" aria-label={g.sample.markerName} className="block select-none">
               <line x1={left} x2={left + w} y1={HEIGHT - 24} y2={HEIGHT - 24} className="stroke-chart-axis" strokeWidth="1" />
@@ -380,7 +489,7 @@ function MarkerDemo({ today }: { today: string }) {
                 { key: "b", label: g.sample.barB, value: s.comp2, tone: "alt" },
               ]}
               diff={computed(400, "nis", "F-08", {}, { today, about: g.sample.diff })}
-              diffLabel={g.sample.diff}
+              diffLabel={g.sample.diffLine}
             />
           </div>
         </State>
@@ -440,6 +549,7 @@ export function KitGallery({ today }: { today: string }) {
         <Basics />
         <Folds />
         <Choices />
+        <Chips />
         <Words today={today} />
         <Fields />
         <MarkerDemo today={today} />

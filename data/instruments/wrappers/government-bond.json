@@ -155,12 +155,10 @@
   "tier": 1,
   "open_questions": [
     "GOV-OQ4",
-    "GOV-OQ5",
     "GOV-OQ6",
     "GOV-OQ7",
     "GOV-OQ8",
     "TXI-OQ5",
-    "TXI-OQ8",
     "TXI-OQ9",
     "REG-OQ10"
   ],

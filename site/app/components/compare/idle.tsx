@@ -6,7 +6,7 @@ import { idle as copy, r2 } from "../../copy";
 import { fmt } from "../../lib/format";
 import type { IdleCoverageRow, IdleMateriality, IdleRowView, IdleVerdict, IdleView } from "../../lib/idle";
 import { IconClock, IconExternal, IconFile } from "../icons";
-import { Num, RulesLine } from "../provenance";
+import { IdRef, Num, RulesLine } from "../provenance";
 import type { SiteValue } from "../../lib/value";
 import { Card, CoverageFold, cx, Sentence, Tag } from "../kit";
 import { ReasonText } from "./reasons";
@@ -24,10 +24,11 @@ const guideOf: Record<IdleRowView["id"], string> = {
   makam: "/guide/makam",
 };
 
+/** The date a published rate took effect, or the entered tag. A site parameter gets no tag: its number's sheet says so (founder, 2026-10-26). */
 function RateTag({ row }: { row: IdleRowView }) {
   if (row.label === "published") return <Tag icon={<IconFile size={14} />}>{copy.labels.published}{fmt.date(row.rate.effective_from ?? row.rate.checked)}</Tag>;
   if (row.label === "entered") return <Tag tone="entered" icon={<IconEdit size={14} />}>{copy.labels.entered}</Tag>;
-  return <Tag tone="parameter">{copy.labels.parameter}</Tag>;
+  return null;
 }
 
 /** One alternative: the name, the rate it rests on with its label, and the monthly cost of leaving the money. */
@@ -42,6 +43,12 @@ export function CostRow({ row, empty }: { row: IdleRowView | null; empty?: boole
           <Link to={guideOf[row.id]} className="text-link hover:underline">
             {name}
           </Link>
+          {row.rate.own && row.id === "bank-deposit:average" && (
+            <>
+              {" "}
+              {copy.rowOwner} <bdi>{row.rate.own}</bdi>
+            </>
+          )}
         </span>
         <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
           <span className="text-muted-foreground">{copy.rateOf}</span>
@@ -206,7 +213,7 @@ function Judged({ worth, below, yes, threshold, label }: { worth: boolean; below
       {!worth && (
         <>
           {" "}
-          (<bdi dir="ltr">P-03</bdi>)
+          (<IdRef id="P-03" />)
         </>
       )}
       <span className="text-sm text-muted-foreground whitespace-nowrap">

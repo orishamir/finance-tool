@@ -8,7 +8,7 @@ import { checkGoal, childAgeFrom, filledFields, pctBoundsFor, presetNumbers, rec
 import { useGoals } from "../../lib/goal";
 import { IconCheck } from "../icons";
 import { Button, Callout, Card, cx, Disclosure, flushPendingFields, SegmentedControl } from "../kit";
-import { RuleRef } from "../provenance";
+import { IdRef, RuleRef } from "../provenance";
 import { AgeStepper, GoalNumber, GoalSlider, MonthField, NameField, PercentPair, PresetChips, SwitchRow } from "./fields";
 import { presetIds } from "../../lib/goal";
 import { AcceptedFallField } from "../exposure-mode/fields";
@@ -164,7 +164,7 @@ export function GoalFields({ data }: { data: FormData }) {
         />
         <Callout tone="blocked">
           <span className="flex flex-wrap items-center gap-x-1.5">
-            {r2.form.noReturnBefore} <bdi dir="ltr">{r2.form.noReturnCode}</bdi>
+            {r2.form.noReturnBefore} <IdRef id={r2.form.noReturnCode} />
           </span>
         </Callout>
         <AcceptedFallField />

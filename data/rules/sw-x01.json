@@ -8,6 +8,17 @@
   "likely_to_change": "no",
   "il_finance_file": "switching-and-transfers.md",
   "checked": "2026-10-22",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "migdal",
+      "name_he": "מגדל"
+    },
+    {
+      "id": "clal",
+      "name_he": "כלל"
+    }
+  ],
   "sources": [
     {
       "url": "https://www.hasolidit.com/kehila/threads/.36841/",

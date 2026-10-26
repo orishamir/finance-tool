@@ -93,7 +93,7 @@ export function TrackList({ groups, feeHead }: { groups: Group[]; feeHead?: stri
           ),
         )}
       </Card>
-      <Card className="hidden md:block p-0 md:p-0 overflow-x-auto">
+      <Card className="hidden md:block p-0 md:p-0 overflow-x-auto overflow-y-hidden">
         <table className="tbl">
           <thead>
             <tr>

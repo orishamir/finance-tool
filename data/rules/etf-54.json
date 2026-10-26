@@ -10,6 +10,7 @@
   "text_he": "כל דוח שנתי משווה את תשואת הקרן לשינוי בנכס הייחוס שלה, וכל מנהל מפרסם את הפרש העקיבה של שנים עשר החודשים האחרונים. רשות ניירות ערך ודפי הבורסה שנקראו לא מפרסמים השוואה של הפרש העקיבה לפי שיטת השכפול, ולכן אין מקור כללי שקובע ששיטה אחת מניבה יותר.",
   "il_finance_file": "etfs-and-index-funds.md",
   "checked": "2026-10-25",
+  "scope": "general",
   "sources": [
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf",
@@ -23,6 +24,22 @@
       "locator_he": "עמודים 1 עד 21",
       "page": 1,
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(דוח_שנתי_של_קרן)",
+      "title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016 (ויקיטקסט, מראה)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016 (ויקיטקסט, מראה)",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg. 18(ה)",
+      "locator_he": "תקנה 18(ה)",
+      "anchor": "סעיף_18.ה",
+      "quote": "תחת הכותרת",
+      "checked": "2026-10-26",
+      "qualifier": "(mirror; the gazette page's text layer is interleaved)"
     },
     {
       "url": "https://olaw.org.il/takanot/takanot-7646.pdf",

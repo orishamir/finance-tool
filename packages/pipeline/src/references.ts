@@ -17,6 +17,41 @@ export interface RuleBaseIds {
   blocks?: Map<string, RuleBlock>;
   /** Open questions as `<PREFIX>-OQ<n>`, e.g. `TXK-OQ2` (data-schema §3.3). */
   openQuestions: Set<string>;
+  /** Every numbered item of the open-question sections, under the file's own prefix, for data/open-questions.json; absent in hand-built contexts. */
+  questions?: OpenQuestionItem[];
+}
+
+/** One numbered item of a file's "## Open questions" section, as the site names it (`TX2 OQ6`, the prefix from the README's file table). */
+export interface OpenQuestionItem {
+  id: string;
+  file: string;
+  /** Struck in the format `~~…~~ Closed <date>`: the date. Otherwise the item is still open or narrowed (the markdown does not say which). */
+  closedOn: string | null;
+}
+
+/**
+ * The open questions of the rule base, in file order: `N. ` items of each file's "## Open questions" section, the prefix from
+ * the README's `| \`file.md\` | PFX |` table (a file the table does not name is skipped). An item counts as closed only when it
+ * starts struck and the struck part is followed by "Closed <date>" (the audit's format, research/knowledge/2026-10-26-open-questions.md).
+ */
+export function readOpenQuestionItems(referencesDir: string): OpenQuestionItem[] {
+  const prefixOf = new Map<string, string>();
+  for (const m of readFileSync(join(referencesDir, "README.md"), "utf8").matchAll(/^\| `([a-z0-9-]+\.md)` \| ([A-Z0-9]+) \|/gm)) prefixOf.set(m[1]!, m[2]!);
+  const out: OpenQuestionItem[] = [];
+  for (const file of readdirSync(referencesDir).filter((f) => f.endsWith(".md")).sort()) {
+    const prefix = prefixOf.get(file);
+    if (!prefix) continue;
+    const text = readFileSync(join(referencesDir, file), "utf8");
+    const oqStart = text.search(/^## Open questions/m);
+    if (oqStart < 0) continue;
+    const section = text.slice(oqStart).split(/^## (?!Open questions)/m)[0]!;
+    for (const m of section.matchAll(/^(\d+)\. (.*)$/gm)) {
+      const line = m[2]!;
+      const closed = line.trimStart().startsWith("~~") ? /^\s*~~[^~]+~~\s*\**\s*[Cc]losed[^\d]{0,12}(\d{4}-\d{2}-\d{2})/.exec(line) : null;
+      out.push({ id: `${prefix} OQ${m[1]}`, file, closedOn: closed ? closed[1]! : null });
+    }
+  }
+  return out;
 }
 
 export function readRuleBaseIds(referencesDir: string): RuleBaseIds {
@@ -39,7 +74,7 @@ export function readRuleBaseIds(referencesDir: string): RuleBaseIds {
       prefixes.forEach((p) => openQuestions.add(`${p}-OQ${m[1]}`));
     }
   }
-  return { rules, openQuestions, blocks };
+  return { rules, openQuestions, blocks, questions: readOpenQuestionItems(referencesDir) };
 }
 
 export function readFormulaIds(methodPath: string): Set<string> {

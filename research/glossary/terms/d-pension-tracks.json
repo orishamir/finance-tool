@@ -384,17 +384,17 @@
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf"
     },
     "variants_he": [],
-    "explain_he": "החלק בחשבון הפנסיה שבו נצברות ההפקדות שלכם ושל המעסיק לחיסכון, בלי הפיצויים",
+    "explain_he": "החלק בחשבון בקופת גמל לקצבה, כמו קרן פנסיה, שבו נמצאים כל התשלומים חוץ מכספי הפיצויים",
     "rule_ids": [
       "PEN-03",
       "PEN-30",
       "TXP-17"
     ],
     "source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ס' 23(ה) (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "guide:pension-and-gemel-lekitzba",
@@ -433,22 +433,22 @@
   {
     "term_he": "תקרת הפקדה חודשית",
     "term_source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 10 ו-17 עד 18, ס' 1, 16 ו-18(א)",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf"
     },
     "variants_he": [
       "תקרת הפקדה חודשית לקרן פנסיה מקיפה"
     ],
-    "explain_he": "הסכום המרבי שמותר להפקיד בכל חודש לקרן פנסיה מקיפה; מה שמעליו עובר לקרן הכללית",
+    "explain_he": "הסכום המרבי שמותר להפקיד בכל חודש לקרן פנסיה מקיפה; מה שמעליו עובר לחשבון שלכם בקרן הפנסיה הכללית של אותה חברה",
     "rule_ids": [
       "PEN-08",
       "PEN-10"
     ],
     "source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 10 ו-17 עד 18, ס' 1, 16 ו-18(א)",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "guide:pension-and-gemel-lekitzba",
@@ -459,20 +459,20 @@
   {
     "term_he": "שכר מבוטח",
     "term_source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 9 עד 10, ס' 1",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf"
     },
     "variants_he": [],
-    "explain_he": "השכר שקרן הפנסיה מסיקה מגובה ההפקדות החודשיות, ושממנו נגזר הביטוח לנכות ולמוות",
+    "explain_he": "השכר שקרן הפנסיה מחשבת מההפקדות לחיסכון בחודש ומשיעור ההפקדה; ממנו נגזר השכר הקובע, שלפיו נקבע הביטוח לנכות ולמוות",
     "rule_ids": [
       "PEN-09",
       "PEN-36"
     ],
     "source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 9 עד 10, ס' 1",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "guide:pension-and-gemel-lekitzba",
@@ -483,21 +483,21 @@
   {
     "term_he": "שכר קובע",
     "term_source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 9 עד 10, 45 ו-57, ס' 1, 69 ו-94",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf"
     },
     "variants_he": [],
-    "explain_he": "השכר שלפיו קרן הפנסיה מחשבת קצבת נכות או קצבה למשפחה, לפי ממוצעים של השכר המבוטח",
+    "explain_he": "השכר שלפיו קרן הפנסיה מחשבת קצבת נכות או קצבת שאירים: הגבוה מבין כמה ממוצעים של השכר המבוטח, עד תקרה",
     "rule_ids": [
       "PEN-09",
       "PEN-12",
       "PEN-13"
     ],
     "source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 9 עד 10, 45 ו-57, ס' 1, 69 ו-94",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "guide:pension-and-gemel-lekitzba",
@@ -508,21 +508,21 @@
   {
     "term_he": "מסלול ביטוח",
     "term_source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 22, ס' 24",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf"
     },
     "variants_he": [
       "מסלולי ביטוח"
     ],
-    "explain_he": "השילוב שבוחרים בקרן הפנסיה בין גובה הכיסוי לנכות לבין גובה הכיסוי למשפחה במקרה מוות",
+    "explain_he": "השילוב שבוחרים בקרן הפנסיה בין שיעור הכיסוי לנכות לבין שיעור הכיסוי לשאירים במקרה מוות",
     "rule_ids": [
       "PEN-11"
     ],
     "source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 22, ס' 24",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "guide:pension-and-gemel-lekitzba",
@@ -534,19 +534,19 @@
   {
     "term_he": "דמי ביטוח",
     "term_source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 6 ו-30 עד 31, ס' 1, 38 ו-40",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf"
     },
     "variants_he": [],
-    "explain_he": "הסכום שנגבה כל חודש מהחיסכון בקרן הפנסיה כדי לממן את הביטוח לנכות ולמקרה מוות",
+    "explain_he": "העלות של הביטוח לנכות ולמקרה מוות בקרן הפנסיה; היא יורדת כל חודש מההפקדות לחיסכון, כל עוד אתם מבוטחים",
     "rule_ids": [
       "PEN-15"
     ],
     "source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 6 ו-30 עד 31, ס' 1, 38 ו-40",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "guide:pension-and-gemel-lekitzba",
@@ -580,19 +580,19 @@
   {
     "term_he": "הסדר ביטוח",
     "term_source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 29 עד 30, ס' 37",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf"
     },
     "variants_he": [],
-    "explain_he": "בקשה להמשיך את הביטוח בקרן הפנסיה לתקופה מוגבלת אחרי שההפקדות נפסקו, בתשלום מהחיסכון או בהפקדה",
+    "explain_he": "הוראה לקרן הפנסיה להמשיך את הביטוח לתקופה מוגבלת אחרי שההפקדות נפסקו, בתשלום מהחיסכון או בהפקדה",
     "rule_ids": [
       "PEN-16"
     ],
     "source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 29 עד 30, ס' 37",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "guide:pension-and-gemel-lekitzba"
@@ -602,19 +602,19 @@
   {
     "term_he": "תקופת אכשרה",
     "term_source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 10 ו-26 עד 27, ס' 1 ו-34",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf"
     },
     "variants_he": [],
-    "explain_he": "תקופה מההצטרפות לקרן שבה אין כיסוי לנכות או למוות שנגרמו ממצב רפואי שהיה קיים לפני ההצטרפות",
+    "explain_he": "תקופה מההצטרפות לקרן או מחידוש הביטוח שבה אין כיסוי לנכות או למוות שנגרמו ממצב רפואי שהתחיל לפני כן",
     "rule_ids": [
       "PEN-14"
     ],
     "source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 10 ו-26 עד 27, ס' 1 ו-34",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "guide:pension-and-gemel-lekitzba"
@@ -624,20 +624,20 @@
   {
     "term_he": "חיתום רפואי",
     "term_source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 7 ו-27 עד 28, ס' 1 ו-35",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf"
     },
     "variants_he": [],
-    "explain_he": "בדיקה של מצב הבריאות שקרן הפנסיה רשאית לדרוש רק במקרים מסוימים, כמו הצטרפות או הגדלת ביטוח",
+    "explain_he": "הליך שבו מבקשים מכם בדיקות רפואיות, הצהרת בריאות או מסמכים רפואיים; קרן הפנסיה רשאית לדרוש אותו רק במקרים מסוימים, כמו הצטרפות או הגדלת הביטוח",
     "rule_ids": [
       "PEN-14",
       "PEN-16"
     ],
     "source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 7 ו-27 עד 28, ס' 1 ו-35",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "guide:pension-and-gemel-lekitzba"
@@ -672,20 +672,20 @@
   {
     "term_he": "עמית פעיל",
     "term_source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 8, ס' 1",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf"
     },
     "variants_he": [],
-    "explain_he": "מעמד בקרן כשמגיעות לחשבון הפקדות שוטפות; כשהן נפסקות, המעמד הוא עמית לא פעיל",
+    "explain_he": "מעמד בקרן כשמשולמות לה הפקדות בשבילכם; כשהן לא משולמות, המעמד הוא עמית לא פעיל",
     "rule_ids": [
       "PEN-16",
       "PF-28"
     ],
     "source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 8, ס' 1",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "guide:pension-and-gemel-lekitzba",
@@ -696,20 +696,20 @@
   {
     "term_he": "עמית לא מבוטח",
     "term_source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 6, 8 ו-28 עד 30, ס' 1, 36 ו-37",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf"
     },
     "variants_he": [],
-    "explain_he": "מעמד בקרן הפנסיה כשהחיסכון נשאר אבל אין ביטוח לנכות ולמוות, למשל אחרי הפסקת הפקדות ממושכת",
+    "explain_he": "מעמד בקרן הפנסיה כשהחיסכון נשאר אבל אין ביטוח לנכות או למוות, למשל כשההפקדות נפסקו לתקופה ממושכת, או מגיל תום תקופת הביטוח",
     "rule_ids": [
       "PEN-16",
       "PEN-11"
     ],
     "source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 6, 8 ו-28 עד 30, ס' 1, 36 ו-37",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "guide:pension-and-gemel-lekitzba",
@@ -775,20 +775,20 @@
   {
     "term_he": "קצבת זקנה",
     "term_source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 32 עד 33, ס' 42, 45 ו-46",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf"
     },
     "variants_he": [],
-    "explain_he": "התשלום החודשי שקרן הפנסיה משלמת מהכסף שנצבר בחשבון, מהגיל שבו מותר להתחיל לקבל אותו",
+    "explain_he": "התשלום החודשי שקרן הפנסיה משלמת מהכסף שנצבר בחשבון, מהגיל שבו מותר להתחיל לקבל אותו או מאוחר יותר, לפי בחירתכם",
     "rule_ids": [
       "PEN-27",
       "PEN-26"
     ],
     "source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 32 עד 33, ס' 42, 45 ו-46",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "guide:pension-and-gemel-lekitzba",
@@ -851,19 +851,19 @@
   {
     "term_he": "קצבת נכות",
     "term_source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 8 ו-44 עד 45, ס' 1 ו-69",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf"
     },
     "variants_he": [],
-    "explain_he": "תשלום חודשי מקרן הפנסיה כשמאבדים לתקופה ממושכת חלק משמעותי מהיכולת לעבוד",
+    "explain_he": "תשלום חודשי מקרן הפנסיה לחוסך מבוטח שמצב בריאותו פגע בחלק משמעותי מהיכולת שלו לעבוד, לתקופה ממושכת",
     "rule_ids": [
       "PEN-12"
     ],
     "source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 8 ו-44 עד 45, ס' 1 ו-69",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "guide:pension-and-gemel-lekitzba"
@@ -880,17 +880,17 @@
       "קצבת שארים",
       "קיצבת שאירים"
     ],
-    "explain_he": "תשלום חודשי מקרן הפנסיה לבן או בת הזוג ולילדים, אחרי מוות של בעל או בעלת החשבון",
+    "explain_he": "תשלום חודשי מקרן הפנסיה לשאירים של חוסך שנפטר: בן או בת הזוג, יתומים (ילדים צעירים או עם מוגבלות), ובתנאים מסוימים הורים",
     "rule_ids": [
       "PEN-13",
       "PEN-32",
       "TXP-23"
     ],
     "source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 7, 9 ו-53 עד 57, ס' 1, 87 ו-94",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "guide:pension-and-gemel-lekitzba",
@@ -903,19 +903,19 @@
   {
     "term_he": "מוטב",
     "term_source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 7, ס' 1",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf"
     },
     "variants_he": [],
-    "explain_he": "האדם שקבעתם בכתב שיקבל את הכסף בקופה אחרי מותכם, אם אין בני משפחה שזכאים לקצבה",
+    "explain_he": "מי שקבעתם בהודעה בכתב לקרן הפנסיה שיקבל את הכסף בה אחרי מותכם, אם אין בני משפחה שזכאים לקצבת שאירים",
     "rule_ids": [
       "PEN-32"
     ],
     "source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 7, ס' 1",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "guide:pension-and-gemel-lekitzba",
@@ -927,20 +927,20 @@
   {
     "term_he": "מקדם המרה",
     "term_source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 33, ס' 45",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf"
     },
     "variants_he": [],
-    "explain_he": "המספר שבו מחלקים את החיסכון בפרישה כדי לקבל את גובה הקצבה החודשית",
+    "explain_he": "המספר שבו מחלקים את החיסכון בפרישה כדי לקבל את הקצבה החודשית; הוא תלוי בגיל, בשנת הלידה, במין ובבחירות לגבי בני המשפחה",
     "rule_ids": [
       "PEN-27",
       "PEN-20"
     ],
     "source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 33, ס' 45",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "guide:pension-and-gemel-lekitzba",
@@ -951,20 +951,20 @@
   {
     "term_he": "תקופת תשלומים מובטחים",
     "term_source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 10 ו-34 עד 35, ס' 1 ו-50",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf"
     },
     "variants_he": [],
-    "explain_he": "תקופה שבוחרים בפרישה, שבה הקצבה מובטחת גם אם נפטרים לפני שהיא מסתיימת",
+    "explain_he": "תקופה שאפשר לבחור כשמבקשים קצבת זקנה: אם נפטרים לפני סופה, השאירים מקבלים עד סופה סכום בגובה קצבת הזקנה, ואם אין שאירים, המוטבים מקבלים את הקצבאות שנותרו בתשלום אחד",
     "rule_ids": [
       "PEN-27",
       "PEN-32"
     ],
     "source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 10 ו-34 עד 35, ס' 1 ו-50",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "guide:pension-and-gemel-lekitzba"
@@ -1088,16 +1088,16 @@
       "עודף או גירעון אקטוארי",
       "מאזן אקטוארי"
     ],
-    "explain_he": "עדכון של יתרות החוסכים בקרן פנסיה, למעלה או למטה, כשנתוני התמותה והנכות בקרן שונים מההנחות",
+    "explain_he": "עדכון רבעוני של יתרות החוסכים ושל הקצבאות בקרן פנסיה, למעלה או למטה, לפי העודף או הגירעון שנוצרו משיעורי התמותה והנכות בקרן",
     "rule_ids": [
       "PEN-19",
       "CAT-02"
     ],
     "source": {
-      "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "רשות שוק ההון, חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018 (עותק באתר prisha.co.il), עמ' 65, ס' 109",
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "guide:pension-and-gemel-lekitzba",
@@ -1619,19 +1619,19 @@
   {
     "term_he": "דין וחשבון רבעוני לעמית",
     "term_source": {
-      "title": "תקנון תקני לקופת גמל להשקעה אלטשולר שחם חיסכון פלוס, March 2025 (Altshuler Shaham)",
-      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf"
+      "title": "רשות שוק ההון, חוזר גופים מוסדיים 2020-9-22: דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון, ס' 4(א)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf"
     },
     "variants_he": [],
-    "explain_he": "דוח על החשבון שמוצג באזור האישי באתר בכל רבעון, חוץ מהרבעון האחרון של השנה",
+    "explain_he": "דוח על החשבון שהקופה מציגה בחשבון האישי באתר שלה בכל רבעון, חוץ מהרבעון האחרון בשנה",
     "rule_ids": [
       "PF-26"
     ],
     "source": {
-      "title": "תקנון תקני לקופת גמל להשקעה אלטשולר שחם חיסכון פלוס, March 2025 (Altshuler Shaham)",
-      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "רשות שוק ההון, חוזר גופים מוסדיים 2020-9-22: דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון, ס' 4(א)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary"
     },
     "where": [
       "guide:pension-and-gemel-lekitzba",
@@ -2518,17 +2518,17 @@
       "מסלול השקעה כספי",
       "שקלי טווח קצר"
     ],
-    "explain_he": "מסלול שמשקיע בעיקר בנכסים בשקלים שלא צמודים למדד, כמו פיקדונות ואיגרות חוב בשקלים",
+    "explain_he": "מסלול שחשוף בעיקר לנכסים בשקלים שלא צמודים ולא חשופים למטבע חוץ, כמו פיקדונות, הלוואות ואיגרות חוב בשקלים",
     "rule_ids": [
       "CAT-23",
       "CAT-20",
       "CAT-11"
     ],
     "source": {
-      "title": "שינוי שם ומדיניות השקעה תקנונית, track 7861 (Meitav)",
-      "url": "https://www.meitav.co.il/media/sisdprky/שינוי-התמחות-גמל-להשקעה-7861.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "רשות שוק ההון, רשימת מסלולי השקעה – תיקון (2024-1471, 17.4.2024), מסלולים מתמחים, אשכול 1, עמ' 4",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary"
     },
     "where": [
       "decoder:track",
@@ -2543,15 +2543,15 @@
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת גמל להשקעה\"}&q=מיטב"
     },
     "variants_he": [],
-    "explain_he": "מסלול שמשקיע בעיקר באיגרות חוב, בהלוואות ובפיקדונות, בישראל ובחוץ לארץ",
+    "explain_he": "מסלול שחשוף בעיקר לאיגרות חוב, להלוואות ולפיקדונות, בישראל ובחוץ לארץ",
     "rule_ids": [
       "CAT-23"
     ],
     "source": {
-      "title": "ריכוז מיזוגים, Meitav merger and policy summary (Meitav)",
-      "url": "https://www.meitav.co.il/media/r0wh30iv/%D7%A8%D7%99%D7%9B%D7%95%D7%96-%D7%9E%D7%99%D7%96%D7%95%D7%92%D7%99%D7%9D-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "רשות שוק ההון, רשימת מסלולי השקעה – תיקון (2024-1471, 17.4.2024), מסלולים מתמחים, אשכול 1, עמ' 4",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary"
     },
     "where": [
       "decoder:track",
@@ -2568,17 +2568,17 @@
     "variants_he": [
       "אשראי ואג\"ח עם מניות (עד 25% מניות)"
     ],
-    "explain_he": "מסלול שמשקיע בעיקר באיגרות חוב ובהלוואות, ועוד חלק קטן ומוגבל במניות",
+    "explain_he": "מסלול שחשוף בעיקר לאיגרות חוב, להלוואות ולפיקדונות, בישראל ובחוץ לארץ, ובחלק מוגבל גם למניות",
     "rule_ids": [
       "CAT-23",
       "CAT-17",
       "CAT-25"
     ],
     "source": {
-      "title": "שינוי שם ומדיניות השקעה תקנונית, track 7980 (Meitav)",
-      "url": "https://www.meitav.co.il/media/53vlo3zc/שינוי-התמחות-גמל-להשקעה-7980.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "רשות שוק ההון, רשימת מסלולי השקעה – תיקון (2024-1471, 17.4.2024), מסלולים מתמחים, אשכול 1, עמ' 4",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary"
     },
     "where": [
       "decoder:track",
@@ -2779,7 +2779,7 @@
       "עוקב מדדים - גמיש",
       "פאסיבי - כללי"
     ],
-    "explain_he": "מסלול שמשקיע באמצעות מוצרים שעוקבים אחרי כמה מדדים שונים של מניות ואיגרות חוב, בתמהיל שהחברה קובעת",
+    "explain_he": "מסלול שעוקב, באמצעות מוצרים עוקבי מדד, אחרי כמה מדדים שונים של מניות או של איגרות חוב; השיעור של כל מדד יכול לנוע בתוך טווח שנקבע",
     "rule_ids": [
       "CAT-23",
       "CAT-24",
@@ -2787,10 +2787,10 @@
       "CAT-26"
     ],
     "source": {
-      "title": "ריכוז מיזוגים, Meitav merger and policy summary (Meitav)",
-      "url": "https://www.meitav.co.il/media/r0wh30iv/%D7%A8%D7%99%D7%9B%D7%95%D7%96-%D7%9E%D7%99%D7%96%D7%95%D7%92%D7%99%D7%9D-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "רשות שוק ההון, רשימת מסלולי השקעה – תיקון (2024-1471, 17.4.2024), מסלולים מתמחים, אשכול 4, עמ' 9",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary"
     },
     "where": [
       "decoder:track",

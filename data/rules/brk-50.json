@@ -13,6 +13,17 @@
   "recheck_date": "2027-04-25",
   "il_finance_file": "brokerage-account.md",
   "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "interactive-brokers",
+      "name_he": "Interactive Brokers"
+    },
+    {
+      "id": "interactive-israel",
+      "name_he": "אינטראקטיב ישראל"
+    }
+  ],
   "sources": [
     {
       "url": "https://www.interactivebrokers.com/en/support/tax-nonus-initial.php",

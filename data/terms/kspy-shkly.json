@@ -2,7 +2,7 @@
   "id": "kspy-shkly",
   "he": "כספי (שקלי)",
   "en": null,
-  "meaning": "מסלול שמשקיע בעיקר בנכסים בשקלים שלא צמודים למדד, כמו פיקדונות ואיגרות חוב בשקלים",
+  "meaning": "מסלול שחשוף בעיקר לנכסים בשקלים שלא צמודים ולא חשופים למטבע חוץ, כמו פיקדונות, הלוואות ואיגרות חוב בשקלים",
   "where": [
     "app"
   ],
@@ -18,10 +18,10 @@
     "CAT-23"
   ],
   "source": {
-    "url": "https://www.meitav.co.il/media/sisdprky/שינוי-התמחות-גמל-להשקעה-7861.pdf",
-    "title": "שינוי שם ומדיניות השקעה תקנונית, track 7861 (Meitav)",
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf",
+    "title": "רשות שוק ההון, רשימת מסלולי השקעה – תיקון (2024-1471, 17.4.2024), מסלולים מתמחים, אשכול 1, עמ' 4",
     "publisher": "see title",
-    "strength": "institution",
-    "checked": "2026-10-22"
+    "strength": "primary",
+    "checked": "2026-10-26"
   }
 }

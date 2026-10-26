@@ -1,0 +1,174 @@
+{
+  "id": "BANK-38",
+  "title": "Five banks' savings plans: monthly standing orders, app saving and stepped rates",
+  "title_he": "חמישה בנקים: תוכניות חיסכון בהוראת קבע, חיסכון באפליקציה וריבית מדורגת",
+  "text_he": "המבנים שנמצאו: הפקדה חודשית בהוראת קבע (ביהב לשנתיים, בריבית משתנה על הפריים; גם בדיסקונט, בבינלאומי ובמסד); חיסכון גמיש באפליקציה (בלאומי: כמה הפקדות ביום בתוך טווח יומי, לשנה, בריבית הפריים פחות מרווח, עם תחנות יציאה אחרי חצי שנה ואחר כך כל חודש, וביטול באותו יום עסקים); וחיסכון רב־שנתי בריבית שעולה משנה לשנה (ביהב). לאומי כותב שבסוף התקופה הכסף חוזר אוטומטית לעו״ש ושאין עמלה על ניהול פיקדון. בנקים אחרים לא נבדקו; החוזים של בנק הפועלים נקראו בנפרד.",
+  "figure_names_he": {
+    "yahav_flexible_min_monthly": "הפקדה חודשית מינימלית בחיסכון הגמיש (יהב)",
+    "leumi_touch_daily_min": "סכום מינימלי ליום בחיסכון בנגיעה (לאומי)",
+    "leumi_touch_daily_max": "סכום מרבי ליום בחיסכון בנגיעה (לאומי)"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "liquidity-lockup",
+    "minimum",
+    "deposit-ceiling"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-26",
+  "figures": {
+    "yahav_flexible_min_monthly": {
+      "value": 200,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+        "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+        "publisher": "Bank Yahav",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-38"
+      ],
+      "state": "sourced",
+      "notes": "Bank Yahav \"חסכון גמיש חדש\": monthly standing order, from NIS 200 (BANK-38)."
+    },
+    "leumi_touch_daily_min": {
+      "value": 10,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.leumi.co.il/he/savings/saving_by_touch",
+        "title": "לאומי: חיסכון בנגיעה",
+        "publisher": "Bank Leumi",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-38"
+      ],
+      "state": "sourced",
+      "notes": "Bank Leumi \"חיסכון בטאצ'\": NIS 10 to 5,000 a day (BANK-38)."
+    },
+    "leumi_touch_daily_max": {
+      "value": 5000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.leumi.co.il/he/savings/saving_by_touch",
+        "title": "לאומי: חיסכון בנגיעה",
+        "publisher": "Bank Leumi",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-38"
+      ],
+      "state": "sourced",
+      "notes": "Bank Leumi \"חיסכון בטאצ'\": NIS 10 to 5,000 a day (BANK-38)."
+    }
+  },
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "yahav",
+      "name_he": "בנק יהב"
+    },
+    {
+      "id": "leumi",
+      "name_he": "בנק לאומי"
+    },
+    {
+      "id": "discount",
+      "name_he": "בנק דיסקונט"
+    },
+    {
+      "id": "fibi",
+      "name_he": "הבנק הבינלאומי"
+    },
+    {
+      "id": "massad",
+      "name_he": "בנק מסד"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+      "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "title_he": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.2, 4",
+      "locator_he": "עמודים 2, 4",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.leumi.co.il/he/savings/saving_by_touch",
+      "title": "לאומי: חיסכון בנגיעה",
+      "title_he": "לאומי: חיסכון בנגיעה",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.leumi.co.il/he/savings",
+      "title": "לאומי: חסכונות",
+      "title_he": "לאומי: חסכונות",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.fibi.co.il/private/depositsandsavings/savingtypes/",
+      "title": "הבינלאומי: סוגי חסכונות",
+      "title_he": "הבינלאומי: סוגי חסכונות",
+      "publisher": "First International Bank",
+      "publisher_he": "הבנק הבינלאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.bankmassad.co.il/private/depositsandsavings/savingtypes/",
+      "title": "מסד: סוגי חסכונות",
+      "title_he": "מסד: סוגי חסכונות",
+      "publisher": "Bank Massad",
+      "publisher_he": "בנק מסד",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.discountbank.co.il/private/savings-investments/savings-interest/",
+      "title": "דיסקונט: חיסכון וריבית",
+      "title_he": "דיסקונט: חיסכון וריבית",
+      "publisher": "Discount Bank",
+      "publisher_he": "בנק דיסקונט",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "BANK-28"
+  ]
+}

@@ -66,7 +66,7 @@
         "IRA-16"
       ],
       "state": "sourced",
-      "notes": "Management Fees Regulations 2012, reg. 4: a managing company of a keren hishtalmut or an IRA (קופת גמל בניהול אישי) may charge 'בשיעור שלא יעלה על 2% לשנה' of the balance. Which cap applies to IRA funds after the 2017 amendment deleted the reference to income-tax regulation 41ח(ב)(1) is IRA OQ3; PF reads reg. 4 at 2%. The member's own agreement sets the rate (IRA-17); Gemel-Net 202609 averages for IRA funds run 0.15% to 0.36%."
+      "notes": "Management Fees Regulations 2012, reg. 4: a managing company of a keren hishtalmut or an IRA (קופת גמל בניהול אישי) may charge 'בשיעור שלא יעלה על 2% לשנה' of the balance. Reg. 4 covers an IRA fund at 2% of the balance, with no deposit-fee item (PF-06, IRA-17). The member's own agreement sets the rate (IRA-17); Gemel-Net 202609 averages for IRA funds run 0.15% to 0.36%."
     },
     "deposit": {
       "value": 0,
@@ -105,8 +105,7 @@
       "update_rule": "provider-set",
       "rule_ids": [
         "IRA-16",
-        "IRA-18",
-        "IRA-21"
+        "IRA-18"
       ],
       "state": "sourced",
       "notes": "No cap. Buy and sell commissions are charged to the fund on top of the management fee, at the tariff of the broker the member picks: one of the winners of the managing company's competitive process (at least every 3 years, at least 8 participants since 2017), or, under reg. 12(ג) as replaced in 2017, another broker the member chooses after being shown the winners' terms (IRA-18, updated 2026-10-25). Meitav's 2026 tariffs per broker are in IRA-21 and belong in data/fees/ (R4)."
@@ -126,8 +125,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "IRA-16",
-        "IRA-22"
+        "IRA-16"
       ],
       "state": "sourced",
       "notes": "No cap beyond: custody fees may not exceed what the same managing company's non-IRA funds pay (reg. 7(א)(2), 2017). Meitav Trade exempts custody inside an IRA; bank brokers charge per their tariff (IRA OQ6)."
@@ -185,12 +183,11 @@
       "PEN-26"
     ],
     "blocked_by": [
-      "PEN-OQ7",
-      "TXP-OQ3"
+      "PEN-OQ7"
     ],
     "labels": [
       "blocked: the lawful exit is an annuity paid by a pension fund or an insurer the money is moved to, and no conversion factors are collected (F-49, G-03, PEN OQ7)",
-      "blocked: an early withdrawal is taxed at the higher of 35% and the marginal rate, with the taxable base open (F-48, G-06, TXP OQ3)",
+      "an early withdrawal is taxed at 35% at least, on the whole amount paid: the higher of 35% and the marginal rate from a provident fund for annuity, 35% from a provident fund for benefits (TXP-18); F-48 is not in the engine yet, so it is not computed (G-06, closed 2026-10-26)",
       "F-51: the IRA follows the tax of the wrapper it was approved as (TXK-17)"
     ]
   },
@@ -282,7 +279,7 @@
       "IRA-27",
       "IRA-15"
     ],
-    "text": "only listed kinds of provident money: capital money that is withdrawable at retirement, money invested in index-tracking funds or ETNs, money of a member who receives an old-age pension of at least the minimum pension amount (NIS 5,306 a month in 2026) or holds 'הסכום הקובע' (NIS 1,575,882 in 2026) in a non-IRA annuity fund, and money in a new account; pension-fund money cannot be self-directed and must first move to an IRA provident fund, losing its insurance cover; severance money needs the employer's approval; the member, or a licensed portfolio manager, gives the instructions; no regulatory minimum was found (Meitav suggests from about NIS 200,000); a 2025 draft would keep only members with twice the pension or savings test"
+    "text": "only listed kinds of provident money: capital money that is withdrawable at retirement, money invested in index-tracking funds or ETNs, money of a member who receives an old-age pension of at least the minimum pension amount (NIS 5,306 a month in 2026) or holds 'הסכום הקובע' (NIS 1,575,882 in 2026) in a non-IRA annuity fund, and money in a new account; pension-fund money cannot be self-directed and must first move to an IRA provident fund, losing its insurance cover; severance-component money that does not come in place of severance pay under section 14 needs the employer's approval (IRA-09); the member, or a licensed portfolio manager, gives the instructions; no regulatory minimum was found; a 2025 draft would keep only members with twice the pension or savings test"
   },
   "protection": {
     "rule_ids": [
@@ -301,12 +298,8 @@
   "open_questions": [
     "IRA-OQ1",
     "IRA-OQ2",
-    "IRA-OQ3",
-    "IRA-OQ4",
-    "IRA-OQ8",
     "IRA-OQ11",
     "PEN-OQ7",
-    "TXP-OQ3",
     "TXK-OQ7",
     "TXK-OQ8"
   ],
@@ -335,5 +328,18 @@
     "tax-at-exit": "blocked:PEN-OQ7",
     "tax-during": "covered",
     "transfer-switch-process": "covered"
+  },
+  "company_terms": {
+    "fee-trade": [
+      "IRA-21"
+    ],
+    "fee-custody": [
+      "IRA-21",
+      "IRA-22"
+    ],
+    "fee-fx": [
+      "IRA-21",
+      "IRA-22"
+    ]
   }
 }

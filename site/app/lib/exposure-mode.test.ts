@@ -61,7 +61,7 @@ describe("exposure mode", () => {
     expect(v.rows.find((r) => r.id === "index-sp500")).toMatchObject({ kind: "ranked", lossNote: "largest-fall-accepted" });
   });
 
-  it("does not evaluate the unlinked bond (P-08, GOV OQ4) and makam without a yield", () => {
+  it("does not evaluate the unlinked bond (P-08) and makam without a yield", () => {
     const v = run(goal());
     expect(v.rows.find((r) => r.id === "government-bond-unlinked")).toMatchObject({ kind: "not-evaluated", reasons: [{ code: "p08-gov" }] });
     expect(v.rows.find((r) => r.id === "makam")).toMatchObject({ kind: "not-evaluated", noSeries: true });

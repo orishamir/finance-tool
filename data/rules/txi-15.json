@@ -2,7 +2,7 @@
   "id": "TXI-15",
   "title": "Unlinked government bonds (Shahar type, fixed; Gilon type, variable): the rate follows linkage, not the product name",
   "title_he": "אג״ח ממשלתית לא צמודה: השיעור לפי ההצמדה, לא השם",
-  "text_he": "קופונים של אג״ח שאינה צמודה למדד ממוסים בשיעור הקבוע על הקופון הנומינלי ומנוכים במקור באותו שיעור; רווח ממכירה או מפדיון ממוסה עד אותו שיעור, כשכל הרווח נחשב ריאלי. קופון משתנה לא משנה זאת: המבחן הוא אם הקרן צמודה למדד, לא שם המוצר. האם כל סדרת גילון אינה צמודה לא אומת מתקנות ההנפקה שלה; סדרה צמודה חלקית הייתה נופלת באותו שיעור.",
+  "text_he": "קופונים של אג״ח שאינה צמודה למדד ממוסים בשיעור הקבוע על הקופון הנומינלי ומנוכים במקור באותו שיעור; רווח ממכירה או מפדיון ממוסה עד אותו שיעור, כשכל הרווח נחשב ריאלי. קופון משתנה לא משנה זאת: המבחן הוא אם הקרן צמודה למדד, לא שם המוצר. החשב הכללי מונה את כל סוגי האיגרות השקליות בריבית קבועה ובריבית משתנה בין האיגרות הלא צמודות, ובתקנות של הסוגים שמונפקים היום אין סעיף הצמדה; גם סדרה צמודה חלקית הייתה נופלת באותו שיעור.",
   "figure_names_he": {
     "rate": "שיעור המס על קופון ורווח מאג״ח לא צמודה"
   },
@@ -33,11 +33,12 @@
         "TXI-15"
       ],
       "state": "sourced",
-      "notes": "Unlinked government bonds (Shahar and Gilon types): coupons at 15% of the nominal coupon (TXI-03), sale or redemption gain at up to 15% with the whole gain treated as real (TXI-12). The test is whether the principal is CPI-linked, not the product name. Whether every Gilon series is unlinked was not confirmed (open question 8). Rate can be changed by ministerial order."
+      "notes": "Unlinked government bonds (Shahar and Gilon types): coupons at 15% of the nominal coupon (TXI-03), sale or redemption gain at up to 15% with the whole gain treated as real (TXI-12). The test is whether the principal is CPI-linked, not the product name. The Accountant General lists every fixed-rate and floating-rate shekel type under unlinked bonds, and the 2006 regulations for the current types have no linkage clause. Rate can be changed by ministerial order."
     }
   },
   "il_finance_file": "tax-interest-deposits-bonds.md",
   "checked": "2026-10-22",
+  "scope": "general",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
@@ -77,6 +78,17 @@
       "locator_he": "עמוד 41",
       "page": 41,
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/he/pages/govermental-bonds",
+      "title": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו",
+      "title_he": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "quote": "מאפייני אג״ח סחיר",
+      "checked": "2026-10-26"
     }
   ]
 }

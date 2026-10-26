@@ -1,0 +1,33 @@
+// Scratch (2026-10-26 follow-ups, not committed): the guide pages' numbers in the shots, with this branch's engine and with
+// the engine at HEAD (extracted to research/specs/2026-10-26-followups/tools/head-engine). Prints a table for report.md.
+import { it } from "vitest";
+import { runInputs as runNew, runPlanned as planNew } from "@finance-tool/engine";
+import { runInputs as runOld, runPlanned as planOld } from "../../../research/specs/2026-10-26-followups/tools/head-engine/packages/engine/src/index.ts";
+import { buildGuidePage } from "./guide.server";
+import { entered as enteredValue } from "./value";
+
+const cases: { id: string; entered: Record<string, [number, string]>; profile: Record<string, number> }[] = [
+  { id: "money-market-fund-daily", entered: { "A-02": [-1, "pct_per_year"] }, profile: {} },
+  { id: "brokerage-account", entered: { "A-02": [-1, "pct_per_year"] }, profile: {} },
+  { id: "kupat-gemel-lehashkaa", entered: { "A-02": [-1, "pct_per_year"] }, profile: {} },
+  { id: "kupat-gemel-lehashkaa", entered: {}, profile: { ageAtStart: 62 } },
+  { id: "kupat-gemel-lehashkaa", entered: {}, profile: { ageAtStart: 30 } },
+];
+
+it("prints before and after", () => {
+  const rows: string[] = [];
+  for (const c of cases) {
+    const page = buildGuidePage(c.id)!;
+    const b = page.bundle!;
+    const e: Record<string, unknown> = {};
+    for (const [k, [v, unit]] of Object.entries(c.entered)) e[k] = enteredValue(v, unit as never, b.runDate, k);
+    const ctx = { rules: b.rules, runDate: b.runDate };
+    const pn = runNew(b.record, [b.p05], b.terms, { entered: e as never, profile: c.profile, scenarioIncome: true });
+    const po = runOld(b.record as never, [b.p05] as never, b.terms as never, { entered: e as never, profile: c.profile, scenarioIncome: true });
+    const n = planNew(pn, ctx);
+    const o = planOld(po as never, ctx as never);
+    const idx = n.series[n.series.length - 1]!.index;
+    rows.push([c.id, JSON.stringify(c.entered), JSON.stringify(c.profile), "tax at exit (today's money)", (o.taxAtExit / idx).toFixed(2), (n.taxAtExit / idx).toFixed(2), "real", o.real.toFixed(2), n.real.toFixed(2), "flags", o.flags.map((f) => f.code).join("|"), n.flags.map((f) => f.code).join("|")].join("\t"));
+  }
+  console.log("\n" + rows.join("\n"));
+});

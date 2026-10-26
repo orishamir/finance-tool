@@ -1,0 +1,51 @@
+{
+ "seen": "2026-10-26",
+ "d20": "reference only; not for the site while D20 stands",
+ "policy_rate": {
+  "value_pct": 3.25,
+  "decided": "2026-10-21",
+  "next_decision": "2026-11-23",
+  "source": {
+   "url": "https://www.boi.org.il/publications/pressreleases/21-10-26b/",
+   "title": "בנק ישראל, הודעה לעיתונות 21.10.2026: הוועדה המוניטרית החליטה להותיר את הריבית ללא שינוי ברמה של 3.25%",
+   "publisher": "בנק ישראל",
+   "strength": "primary"
+  }
+ },
+ "makam_auction": {
+  "date": "2026-10-06",
+  "source": {
+   "url": "https://www.boi.org.il/roles/markets/monetarytools/makam/",
+   "title": "בנק ישראל, מכרזי מק\"מ: תוצאות מכרזי המק\"מ",
+   "publisher": "בנק ישראל",
+   "strength": "primary"
+  },
+  "series": [
+   {
+    "series": "1017",
+    "closing_yield_pct": 3.23,
+    "average_yield_pct": 3.21,
+    "average_price": 96.8982,
+    "redemption": "2027-10-06",
+    "days": 364
+   },
+   {
+    "series": "117",
+    "closing_yield_pct": 3.13,
+    "average_yield_pct": 3.12,
+    "average_price": 99.237,
+    "redemption": "2027-01-06",
+    "days": 91
+   }
+  ]
+ },
+ "next_makam_issue": {
+  "date": "2026-11-03",
+  "series": "1117",
+  "source": {
+   "url": "https://www.boi.org.il/boi_files/hanpaka.pdf",
+   "title": "בנק ישראל, מק\"מ - מועדי הנפקות עתידיים",
+   "strength": "primary"
+  }
+ }
+}

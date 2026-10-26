@@ -11,7 +11,7 @@ import { ruleFigure, weaker, type Strength } from "../lib/value";
 import type { RuleRecord } from "@finance-tool/schema";
 
 export async function loader() {
-  const { loadChecklistRows, loadPinnedRules, loadRules, today } = await import("../lib/data.server");
+  const { loadChecklistRows, loadPinnedRules, loadRules, pointedRecords, today } = await import("../lib/data.server");
   const { loadRuleUses } = await import("../lib/rule-uses.server");
   const rules = loadRules();
   const pinned = loadPinnedRules();
@@ -20,6 +20,7 @@ export async function loader() {
   return {
     rows,
     rules: used,
+    pointed: pointedRecords(used, rules),
     ruleUses: loadRuleUses(Object.keys(used)),
     dimensions: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])),
     today: today(),
@@ -53,7 +54,7 @@ function shortTitle(r: RuleRecord): string {
 export default function Questions() {
   const data = useLoaderData<typeof loader>();
   const rules = data.rules as Record<string, RuleRecord>;
-  const pd = { rules, terms: {}, dimensions: data.dimensions, today: data.today, ruleUses: data.ruleUses };
+  const pd = { rules, pointed: data.pointed as Record<string, RuleRecord>, terms: {}, dimensions: data.dimensions, today: data.today, ruleUses: data.ruleUses };
   return (
     <PageShell current="questions" data={pd}>
       <div className="pt-2 lg:pt-8 flex flex-col gap-section">

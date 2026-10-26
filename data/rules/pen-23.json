@@ -81,7 +81,21 @@
   },
   "il_finance_file": "pension-and-gemel-lekitzba.md",
   "checked": "2026-10-25",
+  "scope": "general",
   "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf",
+      "title": "חוזר גופים מוסדיים 2024-9-6 – הוראות לעניין בחירת קופת גמל – עדכון",
+      "title_he": "חוזר גופים מוסדיים 2024-9-6: הוראות לעניין בחירת קופת גמל – עדכון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.4, annex s.4(א)",
+      "page": 4,
+      "quote": "יקבע הממונה שתי קרנות פנסיה חדשות מקיפות לפחות",
+      "checked": "2026-10-26"
+    },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf",
       "title": "חוזר גופים מוסדיים 2024-9-6 – הוראות לעניין בחירת קופת גמל – עדכון",
@@ -93,6 +107,31 @@
       "locator": "pp.4-5, annex ss.2, 4, 5",
       "page": 4,
       "quote": "יהיו בתוקף למשך 10 שנים לפחות ממועד הצטרפותו לקרן",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf",
+      "title": "חוזר גופים מוסדיים 2024-9-6 – הוראות לעניין בחירת קופת גמל – עדכון",
+      "title_he": "חוזר גופים מוסדיים 2024-9-6: הוראות לעניין בחירת קופת גמל – עדכון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.12, annex ג'",
+      "page": 12,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf",
+      "title": "חוזר גופים מוסדיים 2024-9-6 – הוראות לעניין בחירת קופת גמל – עדכון",
+      "title_he": "חוזר גופים מוסדיים 2024-9-6: הוראות לעניין בחירת קופת גמל – עדכון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "pp.13-14",
+      "locator_he": "עמודים 13 עד 14",
+      "page": 13,
       "checked": "2026-10-25"
     },
     {

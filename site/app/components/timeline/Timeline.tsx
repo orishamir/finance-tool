@@ -322,11 +322,18 @@ function TermsList({ bundle }: { bundle: Bundle }) {
     if (v.unit === "months" && typeof v.value === "number") return fmt.months(v.value);
     return undefined;
   };
+  // D31: the company whose terms the example runs on is named here, so its figures are its own
+  const owners = [...new Set(Object.values(bundle.feeValues).map((v) => v.own).filter((n): n is string => !!n))];
   const unitWord = (v: SiteValue) => (provCopy.unit as Record<string, string>)[v.unit] ?? "";
   return (
     <div className="flex flex-col gap-2 border-t border-border pt-4 mt-1">
       <h4 className="font-medium">{guideBlocks.terms.title}</h4>
       <p className="text-xs text-muted-foreground">{guideBlocks.terms.line}</p>
+      {owners.length > 0 && (
+        <p className="text-sm">
+          {guideBlocks.terms.whose} <bdi className="font-medium">{owners.join(" · ")}</bdi>
+        </p>
+      )}
       <dl className="readout">
         {rows.map(([key, label]) => {
           const v = bundle.feeValues[key]!;

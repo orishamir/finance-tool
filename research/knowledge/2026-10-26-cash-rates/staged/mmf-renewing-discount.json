@@ -1,0 +1,29 @@
+{
+ "as_of": "2026-10-26",
+ "seen": "2026-10-26",
+ "source": {
+  "url": "https://www.discountbank.co.il/private/savings-investments/savings-interest/",
+  "title": "בנק דיסקונט, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447א)",
+  "publisher": "בנק דיסקונט",
+  "strength": "institution"
+ },
+ "page_note_he": "שיעור התשואה הצפויה נטו (נומינלי שנתי) (נתון זה יפורסם בעת דיווחו ע\"י מנהל הקרן ויתעדכן מספר ימים לפני המועד הקבוע)",
+ "funds": [
+  {
+   "tase_number": "1223866",
+   "name_he": "אלטשולר שחם כספית מתחדשת חודשי לפדיון 16/11/2026",
+   "next_date": "2026-11-16 16:00",
+   "expected_net_yield_pct": 2.81,
+   "management_fee_pct": 0.19,
+   "renewal_he": "מתחדשת אוטומטית, עד למתן הודעת פדיון על ידי הלקוח"
+  },
+  {
+   "tase_number": "1220227",
+   "name_he": "מיטב כספית מתחדשת חודשי ב- 13/11/2026",
+   "next_date": "2026-11-13 16:00",
+   "expected_net_yield_pct": 2.75,
+   "management_fee_pct": 0.2,
+   "renewal_he": "מתחדשת אוטומטית, עד למתן הודעת פדיון על ידי הלקוח"
+  }
+ ]
+}

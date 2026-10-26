@@ -40,6 +40,7 @@ const rule = {
   figures: { rate_on_real_gain: vo },
   il_finance_file: "tax-securities-israeli.md",
   checked: "2026-10-22",
+  scope: "general",
 };
 
 describe("reference IDs", () => {
@@ -391,5 +392,178 @@ describe("fund lists (data-schema 3.14, terms gate)", () => {
   it("exposure variants resolve against data/funds/ only, not the lists", () => {
     const problems = run({ [file]: list(), "instruments/exposures/a.json": { ...exposure, variants: ["fund:5100001"] }, "funds/ie00b5bmr087.json": fund });
     expect(problems.map((p) => p.message).join()).toMatch(/variants: fund:5100001 has no record under data\/funds\//);
+  });
+});
+
+describe("open questions (data-schema 3.15, 2026-10-26)", () => {
+  const items = ruleBase.questions!;
+  const fromMarkdown = items.map((q) => ({ id: q.id, status: q.closedOn ? "closed" : "open", ...(q.closedOn ? { closed_on: q.closedOn } : {}) }));
+  const run = (files: Record<string, unknown>) => {
+    const lines: string[] = [];
+    const problems = validateData({ dataDir: dataDir(files), ruleBase, formulas, warn: (l) => lines.push(l) });
+    return { problems, lines };
+  };
+
+  it("reads every numbered item under the file's prefix, with the closures the audit struck", () => {
+    // the audit's 493, and SW OQ17, opened by the scope settling on 2026-10-26
+    expect(items.length).toBe(494);
+    expect(items.find((q) => q.id === "TXP OQ3")).toMatchObject({ file: "tax-pension-gemel-lekitzba.md", closedOn: "2026-10-26" });
+    // a closure of the open-question hunt (main, 2026-10-26), struck with its bold title inside the strike
+    expect(items.find((q) => q.id === "BRK OQ11")).toMatchObject({ file: "brokerage-account.md", closedOn: "2026-10-26" });
+    expect(items.find((q) => q.id === "SW OQ17")?.closedOn).toBeNull();
+    expect(items.find((q) => q.id === "PEN OQ7")?.closedOn).toBeNull();
+  });
+
+  it("passes a file that matches the markdown, and is strict", () => {
+    expect(run({ "open-questions.json": fromMarkdown }).problems).toEqual([]);
+    const bad = run({ "open-questions.json": [{ id: "TXP OQ3", status: "closed" }, { id: "PEN OQ7", status: "open", note: "x" }] }).problems;
+    expect(bad.map((p) => p.message).join("\n")).toMatch(/closed_on is set exactly when status is closed/);
+    expect(bad.map((p) => p.message).join("\n")).toMatch(/note/);
+  });
+
+  it("warns when the file is behind the markdown", () => {
+    const behind = fromMarkdown.filter((q) => q.id !== "BANK OQ1").map((q) => (q.id === "TXP OQ3" ? { id: q.id, status: "open" } : q));
+    const { problems, lines } = run({ "open-questions.json": [...behind, { id: "ZZZ OQ1", status: "open" }] });
+    expect(problems).toEqual([]);
+    const line = lines.find((l) => l.includes("behind the rule base"))!;
+    expect(line).toMatch(/BANK OQ1 missing/);
+    expect(line).toMatch(/TXP OQ3 closed 2026-10-26 in the markdown/);
+  });
+
+  it("fails a guide record that lists or blocks on a closed question", () => {
+    const wrapper = { id: "x", open_questions: ["TXP-OQ3", "PEN-OQ7"], tax_at_exit: { blocked_by: ["TXP-OQ3"] }, dimensions: { "real-vs-nominal": "blocked:PEN-OQ8" } };
+    const { problems } = run({ "open-questions.json": fromMarkdown, "instruments/exposures/x.json": wrapper });
+    const messages = problems.filter((p) => p.message.includes("data/open-questions.json")).map((p) => p.message);
+    expect(messages).toEqual(
+      expect.arrayContaining([expect.stringMatching(/^open_questions: TXP-OQ3 is closed/), expect.stringMatching(/^blocked_by: TXP-OQ3 is closed/), expect.stringMatching(/^dimensions.real-vs-nominal: PEN-OQ8 is closed/)]),
+    );
+    expect(messages.some((m) => m.includes("PEN-OQ7"))).toBe(false);
+  });
+});
+
+// D30 (research/specs/2026-10-25-rules-scope/spec.md §3): who a rule applies to, and where it may appear
+describe("scope", () => {
+  const run = (files: Record<string, unknown>) => validateData({ dataDir: dataDir(files), ruleBase, formulas, warn: () => {} });
+  const harel = { id: "harel", name_he: "הראל", kind: "provident-manager", scope_names: [{ name: "Harel" }], cma_legal_id: null, fees_id: null, deposit_bank_id: null, own_hosts: ["harel-group.co.il"] };
+  const harelFunds = { id: "harel-funds", name_he: "הראל קרנות נאמנות", kind: "fund-manager", scope_names: [{ name: "Harel", only_records: ["ETF-64"] }], cma_legal_id: null, fees_id: null, deposit_bank_id: null, own_hosts: [], filing_names: ["הראל"] };
+  const src = (kind: string, strength: string) => ({ url: "https://example.org/x", title: "x", publisher: "x", kind, strength, checked: "2026-10-22" });
+  const cs30 = { ...rule, id: "CS-30", title: "Harel's fee after 21", il_finance_file: "child-savings.md", figures: undefined, dimensions: ["fee-management-balance"], scope: "institution", scope_institutions: [{ id: "harel", name_he: "הראל" }] };
+
+  it("reads the three Scope forms and resolves a shared name by its record", async () => {
+    const { scopeFromLine } = await import("../src/scope.ts");
+    const reg = [harel, harelFunds] as never;
+    expect(scopeFromLine("general", "X-1", reg).fields).toEqual({ scope: "general" });
+    expect(scopeFromLine("institution: Harel", "CS-30", reg).fields).toEqual({ scope: "institution", scope_institutions: [{ id: "harel", name_he: "הראל" }] });
+    expect(scopeFromLine("institution: Harel", "ETF-64", reg).fields?.scope_institutions).toEqual([{ id: "harel-funds", name_he: "הראל קרנות נאמנות" }]);
+    expect(scopeFromLine("unsettled: a CMA circular; seen at: Harel", "PEN-37", reg).fields).toEqual({ scope: "unsettled", scope_settle: "a CMA circular", scope_institutions: [{ id: "harel", name_he: "הראל" }] });
+    expect(scopeFromLine("unsettled; seen at: Harel", "TXK-28", reg).problems[0]).toMatch(/not what would settle it/);
+    expect(scopeFromLine("institution: Nobody", "X-1", reg).problems[0]).toMatch(/Nobody/);
+    expect(scopeFromLine("company: Harel", "X-1", reg).problems[0]).toMatch(/none of the three forms/);
+  });
+
+  it("fails a general rule whose first source is a company's document, and passes an official one", () => {
+    const bad = { ...rule, sources: [src("institution_doc", "institution")] };
+    expect(run({ "rules/txs-09.json": bad }).map((p) => p.message).join("\n")).toMatch(/first source is a company's document/);
+    expect(run({ "rules/txs-09.json": { ...rule, sources: [src("law", "primary")] } }).filter((p) => /scope/.test(p.message))).toEqual([]);
+    expect(run({ "rules/txs-09.json": { ...rule, sources: [src("other", "primary")] } }).filter((p) => /scope/.test(p.message))).toEqual([]);
+    expect(run({ "rules/txs-09.json": { ...rule, sources: [src("article", "secondary")] } }).map((p) => p.message).join("\n")).toMatch(/not a general source/);
+  });
+
+  it("fails a company's term in the questions page, the guide blocks, a wrapper's rule_ids and company_terms, and a company-sourced value", () => {
+    const pinned = { rows: [{ ids: ["CS-30"], question_he: "?" }], guide_blocks: { "child-savings-provident": ["CS-30"] } };
+    const files = { "rules/cs-30.json": cs30, "sources/institutions.json": [harel], "parameters/pinned-rules.json": pinned };
+    const messages = run(files).map((p) => p.message).join("\n");
+    expect(messages).toMatch(/questions page holds general rules only; CS-30/);
+    expect(messages).toMatch(/"שווה לדעת" of child-savings-provident holds general rules only/);
+    // a wrapper (partial on purpose: the schema reports the rest, the scope walk still reads it)
+    const wrapper = { fee_caps: { balance: { value: 0.23, unit: "pct_per_year", source: { url: "https://example.org", title: "Harel bylaw", publisher: "Harel", strength: "institution" }, rule_ids: ["CS-30"] } }, company_terms: { "fee-management-balance": ["TXS-09"], "fee-deposit": ["CS-30"] } };
+    const w = run({ "rules/cs-30.json": cs30, "rules/txs-09.json": rule, "sources/institutions.json": [harel], "instruments/wrappers/child-savings-provident.json": wrapper }).map((p) => p.message).join("\n");
+    expect(w).toMatch(/a wrapper is a product context and cites general rules only; CS-30/);
+    expect(w).toMatch(/holds a value whose source is a company's document \("Harel bylaw"\)/);
+    expect(w).toMatch(/company_terms.fee-management-balance: TXS-09 is general/);
+    expect(w).toMatch(/company_terms.fee-deposit: CS-30 does not carry the dimension fee-deposit/);
+  });
+
+  it("fails an institution rule naming a company the registry does not have, or under another name", () => {
+    const stranger = { ...cs30, scope_institutions: [{ id: "nobody", name_he: "אף אחד" }] };
+    expect(run({ "rules/cs-30.json": stranger, "sources/institutions.json": [harel] }).map((p) => p.message).join("\n")).toMatch(/nobody is not in data\/sources\/institutions.json/);
+    const renamed = { ...cs30, scope_institutions: [{ id: "harel", name_he: "הראל ביטוח" }] };
+    expect(run({ "rules/cs-30.json": renamed, "sources/institutions.json": [harel] }).map((p) => p.message).join("\n")).toMatch(/is "הראל" in the registry/);
+  });
+
+  // review, 2026-10-26
+  const harelDoc = { url: "https://media.harel-group.co.il/bylaw.pdf", title: "Harel bylaw", publisher: "Harel", kind: "institution_doc", strength: "institution", checked: "2026-10-22" };
+  const press = { url: "https://www.bizportal.co.il/a", title: "Harel in the press", publisher: "Bizportal", kind: "article", strength: "secondary", checked: "2026-10-22" };
+
+  it("fails a company's term that cites none of its company's own documents, and passes one that does", () => {
+    const fromPress = { ...cs30, sources: [press] };
+    expect(run({ "rules/cs-30.json": fromPress, "sources/institutions.json": [harel] }).map((p) => p.message).join("\n")).toMatch(/cites no own document of a company it names/);
+    const fromBylaw = { ...cs30, sources: [harelDoc] };
+    expect(run({ "rules/cs-30.json": fromBylaw, "sources/institutions.json": [harel] }).map((p) => p.message).join("\n")).not.toMatch(/cites no own document/);
+  });
+
+  it("fails a general rule that derives from a company's term, and an example that is general", () => {
+    const general = { ...rule, sources: [src("law", "primary")], derived_from: ["CS-30"] };
+    const files = { "rules/txs-09.json": general, "rules/cs-30.json": { ...cs30, sources: [harelDoc] }, "sources/institutions.json": [harel] };
+    expect(run(files).map((p) => p.message).join("\n")).toMatch(/a general rule derives from general rules only; CS-30 is institution/);
+    const asExample = { ...rule, sources: [src("law", "primary")], examples: ["CS-30"] };
+    expect(run({ ...files, "rules/txs-09.json": asExample }).map((p) => p.message).join("\n")).not.toMatch(/derives from|examples:/);
+    const generalExample = { ...cs30, id: "CS-18", scope: "general", scope_institutions: undefined, sources: [src("law", "primary")], examples: ["TXS-09"] };
+    expect(run({ "rules/txs-09.json": { ...rule, sources: [src("law", "primary")] }, "rules/cs-18.json": generalExample }).map((p) => p.message).join("\n")).toMatch(/examples: TXS-09 is general/);
+  });
+
+  it("allows a not-rule only in the files its entry names, and fails an entry whose file no longer cites it", () => {
+    const ira28 = { ...cs30, id: "IRA-28", il_finance_file: "ira-self-directed.md", dimensions: ["protection"], sources: [press] };
+    const wrapper = (id: string) => ({ protection: { rule_ids: [id] } });
+    const ok = run({ "rules/ira-28.json": ira28, "sources/institutions.json": [harel], "instruments/wrappers/ira-provident.json": wrapper("IRA-28"), "instruments/wrappers/ira-hishtalmut.json": wrapper("IRA-28") }).map((p) => p.message).join("\n");
+    expect(ok).not.toMatch(/IRA-28 is institution/);
+    expect(ok).not.toMatch(/no longer stands/);
+    const elsewhere = run({ "rules/ira-28.json": ira28, "sources/institutions.json": [harel], "instruments/wrappers/brokerage-account.json": wrapper("IRA-28") }).map((p) => p.message).join("\n");
+    expect(elsewhere).toMatch(/cites general rules only; IRA-28 is institution: harel \(D30\); it is a not-rule allowed only in its own files/);
+    const stale = run({ "rules/ira-28.json": ira28, "sources/institutions.json": [harel], "instruments/wrappers/ira-provident.json": wrapper("IRA-28"), "instruments/wrappers/ira-hishtalmut.json": wrapper("TXS-09"), "rules/txs-09.json": rule }).map((p) => p.message).join("\n");
+    expect(stale).toMatch(/notRules: IRA-28 no longer stands in data\/instruments\/wrappers\/ira-hishtalmut.json/);
+  });
+
+  // review round 3, 2026-10-26: every data file is read, and a named file that is gone fails
+  it("fails a not-rule cited in a data file its entry does not name, and an entry naming a file that does not exist", () => {
+    const ira28 = { ...cs30, id: "IRA-28", il_finance_file: "ira-self-directed.md", dimensions: ["protection"], sources: [press] };
+    const cite = { rule_ids: ["IRA-28"] };
+    const named = { "instruments/wrappers/ira-provident.json": { protection: cite }, "instruments/wrappers/ira-hishtalmut.json": { protection: cite }, "dimensions/protection.json": cite, "dimensions/regulator.json": cite };
+    const all = run({ "rules/ira-28.json": ira28, "sources/institutions.json": [harel], ...named }).map((p) => p.message).join("\n");
+    expect(all).not.toMatch(/notRules|does not name/);
+    const term = run({ "rules/ira-28.json": ira28, "sources/institutions.json": [harel], ...named, "terms/x.json": cite }).map((p) => p.message).join("\n");
+    expect(term).toMatch(/IRA-28 is a not-rule \(press report \(events at Slice and Globalnet\), institution: harel\) cited in data\/terms\/x.json, which its entry in notRules/);
+    const { "dimensions/regulator.json": _gone, ...withoutOne } = named;
+    const gone = run({ "rules/ira-28.json": ira28, "sources/institutions.json": [harel], ...withoutOne }).map((p) => p.message).join("\n");
+    expect(gone).toMatch(/notRules: IRA-28 names data\/dimensions\/regulator.json, which does not exist/);
+  });
+
+  it("fails a company_terms entry naming a company whose document the record does not cite", () => {
+    const leumi = { id: "leumi", name_he: "בנק לאומי", kind: "bank", scope_names: [{ name: "Bank Leumi" }], cma_legal_id: null, fees_id: null, deposit_bank_id: null, own_hosts: ["leumi.co.il"] };
+    const both = { ...cs30, dimensions: ["minimum"], scope_institutions: [{ id: "harel", name_he: "הראל" }, { id: "leumi", name_he: "בנק לאומי" }], sources: [harelDoc] };
+    const wrapper = (companies: string[]) => ({ company_terms: { minimum: [{ rule: "CS-30", companies }] } });
+    const files = { "rules/cs-30.json": both, "sources/institutions.json": [harel, leumi] };
+    expect(run({ ...files, "instruments/wrappers/child-savings-provident.json": wrapper(["harel"]) }).map((p) => p.message).join("\n")).not.toMatch(/is not listed at/);
+    expect(run({ ...files, "instruments/wrappers/child-savings-provident.json": wrapper(["leumi"]) }).map((p) => p.message).join("\n")).toMatch(/company_terms.minimum: CS-30 is not listed at leumi/);
+    // a record that names several companies, cited by its bare id, would name them all: the entry must say which
+    const bare = run({ ...files, "instruments/wrappers/child-savings-provident.json": { company_terms: { minimum: ["CS-30"] } } }).map((p) => p.message).join("\n");
+    expect(bare).toMatch(/company_terms.minimum: CS-30 names 2 companies; write \{ "rule": "CS-30", "companies": \[\.\.\.\] \}/);
+    const single = run({ "rules/cs-30.json": { ...cs30, dimensions: ["minimum"], sources: [harelDoc] }, "sources/institutions.json": [harel], "instruments/wrappers/child-savings-provident.json": { company_terms: { minimum: ["CS-30"] } } }).map((p) => p.message).join("\n");
+    expect(single).not.toMatch(/names \d companies/);
+  });
+
+  it("lets an index page cite only the provider records named for it", () => {
+    const sp = { id: "sp-dji", name_he: "S&P Dow Jones Indices", kind: "index-provider", scope_names: [{ name: "S&P Dow Jones Indices" }], cma_legal_id: null, fees_id: null, deposit_bank_id: null, own_hosts: ["spglobal.com"] };
+    const spDoc = { url: "https://www.spglobal.com/x.pdf", title: "S&P methodology", publisher: "S&P", kind: "other", strength: "institution", checked: "2026-10-22" };
+    const etf = (id: string) => ({ ...cs30, id, il_finance_file: "etfs-and-index-funds.md", dimensions: [], scope_institutions: [{ id: "sp-dji", name_he: "S&P Dow Jones Indices" }], sources: [spDoc] });
+    const exposure = (ids: string[]) => ({ id: "index-sp500", rules: { rule_ids: ids } });
+    const files = { "rules/etf-37.json": etf("ETF-37"), "rules/etf-46.json": etf("ETF-46"), "sources/institutions.json": [sp] };
+    expect(run({ ...files, "instruments/exposures/index-sp500.json": exposure(["ETF-37"]) }).map((p) => p.message).join("\n")).not.toMatch(/an exposure page cites/);
+    expect(run({ ...files, "instruments/exposures/index-sp500.json": exposure(["ETF-46"]) }).map((p) => p.message).join("\n")).toMatch(/an exposure page cites general rules only, and the records of its index provider that ownContextExposures names; ETF-46/);
+  });
+
+  it("fails two registry rows that both claim a name as their default", () => {
+    const twin = { ...harelFunds, scope_names: [{ name: "Harel" }] };
+    expect(run({ "sources/institutions.json": [harel, twin] }).map((p) => p.message).join("\n")).toMatch(/the name "Harel" is the default of harel and harel-funds/);
   });
 });

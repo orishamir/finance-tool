@@ -2,7 +2,7 @@
   "id": "TXP-11",
   "title": "Employer severance deposit: not taxed at deposit up to the severance ceiling",
   "title_he": "הפקדת המעסיק לפיצויים: לא ממוסה עד התקרה",
-  "text_he": "הפקדות המעסיקים למרכיב הפיצויים בקופות גמל לקצבה, מעל תקרת הפיצויים, הן הכנסת עבודה במועד ההפקדה; עד התקרה הן הכנסה רק כשהעובד מקבל אותן. תקרת הפיצויים היא שכר העובד במועד ההפקדה או הסכום הקבוע, הנמוך מביניהם, והסכום מתעדכן בתחילת כל שנה לפי עליית השכר הממוצע. להשלמת פיצויים יש תקרה נפרדת: תקרת הפיצויים כפול שנות העבודה אצל אותו מעסיק, בניכוי סכומים חייבים שכבר שולמו עבור השנים האלה. התקרה והסכום הקבוע הם הגדרות של פקודת מס הכנסה; התקנות רק מגבילות את הפקדת המעסיק לפיצויים לשיעור הדרוש לכיסוי חובתו. חוברת רשות המסים מסמנת את הסכום כשנתי, ואיך חלק השכר במועד ההפקדה מיושם על פני שנה הוא שאלה פתוחה.",
+  "text_he": "הפקדות המעסיקים למרכיב הפיצויים בקופות גמל לקצבה, מעל תקרת הפיצויים, הן הכנסת עבודה במועד ההפקדה; עד התקרה הן הכנסה רק כשהעובד מקבל אותן. תקרת הפיצויים היא שכר העובד במועד ההפקדה או הסכום הקבוע, הנמוך מביניהם, והסכום מתעדכן בתחילת כל שנה לפי עליית השכר הממוצע. להשלמת פיצויים יש תקרה נפרדת: תקרת הפיצויים כפול שנות העבודה אצל אותו מעסיק, בניכוי סכומים חייבים שכבר שולמו עבור השנים האלה. התקרה והסכום הקבוע הם הגדרות של פקודת מס הכנסה; התקנות רק מגבילות את הפקדת המעסיק לפיצויים לשיעור הדרוש לכיסוי חובתו. חוברת רשות המסים מסמנת את הסכום כשנתי, וחוזר של רשות המסים מחיל אותו כל חודש: הנמוך מבין השכר במועד ההפקדה כפול שיעור ההפקדה המרבי לפיצויים, וחלק אחד משנים עשר מהתקרה השנתית, על הפקדות כל המעסיקים יחד.",
   "figure_names_he": {
     "severance_ceiling": "תקרת הפיצויים (שנתי)"
   },
@@ -32,11 +32,12 @@
         "TXP-11"
       ],
       "state": "sourced",
-      "notes": "Employer severance deposits above the lower of the employee's salary on the deposit date and this amount are work income when paid. 44,100 (2025), 41,500 (2024), 39,300 (2023); 32,000 at the 2017 base. Indexed each 1 January by the rise in the average wage, rounded to 100 NIS; not frozen. How the \"salary on the deposit date\" limb is applied over a year is open question 5."
+      "notes": "Employer severance deposits above the lower of the employee's salary on the deposit date and this amount are work income when paid. 44,100 (2025), 41,500 (2024), 39,300 (2023); 32,000 at the 2017 base. Indexed each 1 January by the rise in the average wage, rounded to 100 NIS; not frozen. Income Tax circular 4/2019 s.2.1.1 applies it monthly: the lower of the salary on the deposit date times 8.33% and 1/12 of this yearly amount, tested on all employers' severance deposits together (open question 5 closed 2026-10-26)."
     }
   },
   "il_finance_file": "tax-pension-gemel-lekitzba.md",
   "checked": "2026-10-25",
+  "scope": "general",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
@@ -69,7 +70,7 @@
       "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
       "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ״ד-1964",
       "publisher": "National Insurance Institute",
-      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "publisher_he": "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)",
       "kind": "regulation",
       "strength": "primary",
       "locator": "pp.6-7, reg. 19(א)(1)(ב)(1)",
@@ -90,6 +91,20 @@
       "locator_he": "עמוד 10",
       "page": 10,
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.mvs.co.il/files/UpdatesEmployers/4-2019.pdf",
+      "title": "חוזר מס הכנסה 4/2019 – הפקדות מעסיק לקופות גמל לקצבה – תיקון 232 לפקודת מס הכנסה, 31.12.2019 (עותק באתר מבטחים, mvs.co.il)",
+      "publisher": "mvs.co.il",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "pp.1-2, s.2.1.1",
+      "locator_he": "עמודים 1 עד 2, סעיף 2.1.1",
+      "page": 1,
+      "quote": "תקרת הפיצויים בחישוב חודשי היא מכפלת משכורתו של העובד ביום ההפקדה בשיעור ההפקדה המרבי לרכיב הפיצויים בקופות גמל לקצבה (8.33%) או 2,833 ₪, שהם 1 חלקי 12 מ״תקרת הפיצויים",
+      "checked": "2026-10-26",
+      "qualifier": "(third-party host)"
     }
   ]
 }

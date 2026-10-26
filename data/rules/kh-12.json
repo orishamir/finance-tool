@@ -2,7 +2,7 @@
   "id": "KH-12",
   "title": "Retirement age for the 3-year route",
   "title_he": "גיל הפרישה למסלול המשיכה המקוצר",
-  "text_he": "התקנונים משתמשים ב'גיל פרישה' כהגדרתו בהסדר התחיקתי, ופקודת מס הכנסה מפנה לחוק גיל פרישה. החוק קובע את גיל הפרישה לגברים ואת גיל הפרישה לנשים, עם לוח של גילים נמוכים יותר לנשים לפי שנת לידה. הקריאה הזו מצביעה על הגיל שהחוק עצמו מכנה 'גיל הפרישה', ולא על גיל הפרישה המוקדמת; זו הסקה מהמונח המוגדר, וחוזר של רשות המסים יאשר אותה. נוסח החוק נקרא באתר שמעתיק אותו.",
+  "text_he": "פקודת מס הכנסה מגדירה את 'גיל הפרישה' בהפניה לחוק גיל פרישה, והחוק נותן את השם 'גיל הפרישה' רק לגיל שבסעיף 3: גיל לגברים וגיל לנשים, עם לוח של גילים נמוכים יותר לנשים לפי תאריך לידה. לגיל הפרישה המוקדמת ולגיל פרישת החובה החוק נותן שמות אחרים, ולכן זה הגיל שמקצר את תקופת ההמתנה; רשות המסים מציגה את לוח הגילים לנשים כשינוי ב'גיל הפרישה'.",
   "figure_names_he": {
     "retirement_age_men": "גיל הפרישה לגברים",
     "retirement_age_women": "גיל הפרישה לנשים"
@@ -33,7 +33,7 @@
         "KH-12"
       ],
       "state": "sourced",
-      "notes": "The age the law itself labels \"the retirement age\" (s.3), read as the age that shortens the study-fund period to 3 years. Inference from the Ordinance's defined term (tax-hishtalmut.md open question 5; keren-hishtalmut.md open question 8)."
+      "notes": "The age the law itself labels \"the retirement age\" (s.3), read as the age that shortens the study-fund period to 3 years. The law names only this age \"גיל הפרישה\" (s.3; the early age is \"גיל הפרישה המוקדמת\", s.5, and the mandatory age \"גיל פרישת חובה\", s.4), so the Ordinance's term points here (tax-hishtalmut.md open question 5 and keren-hishtalmut.md open question 8, closed 2026-10-26)."
     },
     "retirement_age_women": {
       "value": 65,
@@ -53,12 +53,26 @@
         "KH-12"
       ],
       "state": "sourced",
-      "notes": "65 for women, with a schedule of lower ages (62 to 64 years and 9 months) for women born up to 1969. Same inference as retirement_age_men."
+      "notes": "65 for women, with a schedule of lower ages (62 to 64 years and 9 months) for women born up to 1969. Same s.3 age as retirement_age_men; the Tax Authority prints the women's schedule as the change in \"גיל הפרישה\" (deductions booklet 2026, p.7)."
     }
   },
   "il_finance_file": "keren-hishtalmut.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
+  "scope": "general",
   "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+      "title": "Deductions booklet 2026",
+      "title_he": "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.7, item 4",
+      "page": 7,
+      "quote": "שינוי גיל הפרישה לנשים",
+      "checked": "2026-10-26"
+    },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
       "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
@@ -72,6 +86,20 @@
       "page": 12,
       "quote": "גיל הפרישה כמשמעותו בחוק גיל פרישה",
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",
+      "title": "חוק גיל פרישה, התשס\"ד-2004",
+      "title_he": "חוק גיל פרישה, התשס\"ד-2004",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.1, ss.3-5, s.3",
+      "locator_he": "עמוד 1, סעיפים 3-5, סעיף 3",
+      "page": 1,
+      "quote": "(בחוק זה – גיל הפרישה)",
+      "checked": "2026-10-26"
     },
     {
       "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",
@@ -98,19 +126,6 @@
       "locator_he": "עמוד 172, סעיף 73",
       "page": 172,
       "quote": "לגבר וגיל 65 לאישה",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.as-invest.co.il/media/10040/בקשה-למשיכת-כספים-מקרן-השתלמות.pdf",
-      "title": "Altshuler withdrawal form",
-      "title_he": "בקשה למשיכת כספים מקרן השתלמות (טופס אלטשולר שחם)",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "form",
-      "strength": "institution",
-      "locator": "p.1, section 2 item 2",
-      "page": 1,
-      "quote": "גיל פרישה כהגדרתו בחוק גיל פרישה",
       "checked": "2026-10-25"
     }
   ]

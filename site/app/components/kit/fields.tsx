@@ -170,16 +170,26 @@ export function NumberField(props: FieldProps) {
   );
 }
 
-/** The line under a field: "loading", or "entered by you" with a reset; nothing while the field holds its start value. */
-export function FieldState({ entered, onReset, disabled }: { entered: boolean; onReset: () => void; disabled?: boolean }) {
-  if (disabled) return <span className="text-xs text-muted-foreground">{copy.loading}</span>;
-  if (!entered) return null;
+/**
+ * The line under a field: "loading", or "entered by you" with a reset (`canReset` false leaves the tag alone); empty while the field holds
+ * its start value. The line keeps its height either way: the tag and the reset appearing used to push everything under the field down as
+ * a slider moved (founder, 2026-10-26).
+ */
+export function FieldState({ entered, onReset, disabled, canReset = true }: { entered: boolean; onReset: () => void; disabled?: boolean; canReset?: boolean }) {
   return (
-    <span className="flex items-center gap-2 flex-wrap">
-      <StateTag state="entered" />
-      <Button variant="quiet" className="text-sm -ms-2 min-h-target" onClick={onReset}>
-        <IconReset size={16} /> {buttons.resetOne}
-      </Button>
+    <span className="flex items-center gap-2 min-h-target">
+      {disabled ? (
+        <span className="text-xs text-muted-foreground">{copy.loading}</span>
+      ) : entered ? (
+        <>
+          <StateTag state="entered" />
+          {canReset && (
+            <Button variant="quiet" className="text-sm -ms-2 min-h-target" onClick={onReset}>
+              <IconReset size={16} /> {buttons.resetOne}
+            </Button>
+          )}
+        </>
+      ) : null}
     </span>
   );
 }
@@ -237,4 +247,25 @@ export function PercentField({ unit = "pct_per_year", range, validate, ...rest }
 /** The one line above a panel of fields: what an untouched field is (UX fix 17). */
 export function ParameterLine({ className }: { className?: string }) {
   return <p className={cx("text-xs text-muted-foreground", className)}>{copy.stateStart}</p>;
+}
+
+/** A choice from a list of names in a native select: a label above, an optional "none" first option, an optional help line under. The default for picking one item out of many (an account, a provider). */
+export function SelectField({ label, options, value, onChange, none, help, className }: { label: ReactNode; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void; /** The first option, chosen when `value` is null ("not chosen"); without it the list has no empty choice. */ none?: string; help?: ReactNode; className?: string }) {
+  const id = useId();
+  return (
+    <div className={cx("flex flex-col gap-1 max-w-measure", className)}>
+      <label htmlFor={id} className="text-sm font-medium">
+        {label}
+      </label>
+      <select id={id} value={value ?? ""} onChange={(e) => onChange(e.target.value || null)} className="h-field rounded-md bg-card border border-input px-3 max-w-72">
+        {none !== undefined && <option value="">{none}</option>}
+        {options.map((o) => (
+          <option key={o.id} value={o.id}>
+            {o.name}
+          </option>
+        ))}
+      </select>
+      {help && <span className="text-sm text-muted-foreground">{help}</span>}
+    </div>
+  );
 }

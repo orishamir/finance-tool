@@ -1,0 +1,30 @@
+import { createRequire } from "node:module";
+const require = createRequire(import.meta.url);
+const { chromium } = require("/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/playwright");
+const base = "http://127.0.0.1:4233/finance-tool";
+const out = new URL("../shots/", import.meta.url).pathname;
+const browser = await chromium.launch({ executablePath: "/home/ori/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome" });
+for (const [w, h, tag] of [[1280, 900, "pc"], [390, 844, "ph"]]) {
+  const page = await browser.newPage({ viewport: { width: w, height: h } });
+  const shot = (n) => page.screenshot({ path: `${out}${n}-${tag}.png` });
+  await page.goto(`${base}/parameters`); await page.waitForTimeout(800);
+  await shot("1-parameters");
+  const card = page.locator("#P-01");
+  await card.locator("button", { hasText: "F-80" }).first().click(); await page.waitForTimeout(500);
+  await shot("2-formula-sheet");
+  await page.locator("dialog[open] a", { hasText: "P-01" }).click(); await page.waitForTimeout(1200);
+  console.log(tag, "hash", page.url(), "dialogOpen", await page.locator("dialog[open]").count(), "cardTop", await card.evaluate((e) => Math.round(e.getBoundingClientRect().top)));
+  await shot("3-after-p01-click");
+  await page.goto(`${base}/guide/brokerage-account`); await page.waitForTimeout(800);
+  await page.locator("button", { hasText: /OQ\d/ }).first().scrollIntoViewIfNeeded();
+  await page.locator("button", { hasText: /OQ\d/ }).first().click(); await page.waitForTimeout(500);
+  await shot("4-guide-oq");
+  await page.goto(`${base}/not-covered`); await page.waitForTimeout(800);
+  const q = page.locator("button", { hasText: /OQ\d/ }).first(); await q.scrollIntoViewIfNeeded(); await q.click(); await page.waitForTimeout(500);
+  await shot("5-not-covered-oq");
+  await page.goto(`${base}/kit`); await page.waitForTimeout(800);
+  const k = page.locator("article[aria-label=IdRef]"); await k.scrollIntoViewIfNeeded(); await page.waitForTimeout(300);
+  await k.screenshot({ path: `${out}6-kit-${tag}.png` });
+  await page.close();
+}
+await browser.close();

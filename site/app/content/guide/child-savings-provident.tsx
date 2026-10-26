@@ -2,7 +2,7 @@
 // figure is a Num). Written 2026-10-23 from the rule base (CS, TXK, REG); each block ends with the rules it
 // rests on. NEW copy for the founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
-import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
+import { IdRef, Num, RuleRef, RulesLine, Term, VariesByCompany } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
 
 export const content: GuideContent = {
@@ -44,7 +44,7 @@ export const content: GuideContent = {
   afterTax: () => (
     <>
       <Callout tone="caution" className="max-w-measure">
-        <span className="font-medium">שיעור המס <Term prefix="ב" id="משיכה">משיכה</Term> מגיע ממקור משני.</span> הביטוח הלאומי אומר רק שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>, בלי שיעור; החוק מתייחס לקופת גמל להשקעה בלי לנקוב בחיסכון לכל ילד. שאלה פתוחה: <bdi dir="ltr" className="whitespace-nowrap">TXK OQ1</bdi>.
+        <span className="font-medium">שיעור המס <Term prefix="ב" id="משיכה">משיכה</Term> מגיע ממקור משני.</span> הביטוח הלאומי אומר רק שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>, בלי שיעור; החוק מתייחס לקופת גמל להשקעה בלי לנקוב בחיסכון לכל ילד. שאלה פתוחה: <IdRef id="TXK OQ1" />.
       </Callout>
       <Callout tone="blocked" className="max-w-measure">
         <span className="font-medium">הביטוח הלאומי מתאר גם מסלול <Term id="קצבה">קצבה</Term>:</span> להשאיר את הכסף בקופה עד הפרישה ולקבל אותו כקצבה בלי מס. הבסיס לכך בחוק לא נמצא, והאתר לא מחשב אותו.
@@ -60,13 +60,17 @@ export const content: GuideContent = {
     </>
   ),
   use: ({ figure }) => {
-    const after21 = figure("CS-30", "fee_after_21");
+    // D30: the cap after 21 is the law's (CS-18); each company's own rate is its term (CS-30), on the companies' pages
+    const balanceCap = figure("CS-18", "balance_cap_after_21");
     return (
     <>
       <p className="max-w-measure">
-        חיסכון שנפתח ממילא, ומי שלא צריך את הכסף עד שהילד מתבגר מרוויח ממנו פעמיים: הביטוח הלאומי משלם את <Term id="דמי ניהול">דמי הניהול</Term> עד גיל עשרים ואחת, והמענק האחרון ניתן רק למי שמחכה. אחרי גיל עשרים ואחת דמי הניהול יורדים מהחיסכון, עד התקרה שבחוק; בהראל ובאלטשולר שחם {after21 ? <Num value={after21} /> : null} בשנה מהיתרה בלבד, ובשאר החברות זה לא נבדק. ההחלטות שלכם הן שתיים: האם להכפיל את ההפקדה מקצבת הילדים, ובאיזו רמת סיכון. בלי בחירה הכסף הולך למסלול הסיכון המוגבר.
+        חיסכון שנפתח ממילא, ומי שלא צריך את הכסף עד שהילד מתבגר מרוויח ממנו פעמיים: הביטוח הלאומי משלם את <Term id="דמי ניהול">דמי הניהול</Term> עד גיל עשרים ואחת, והמענק האחרון ניתן רק למי שמחכה. אחרי גיל עשרים ואחת דמי הניהול יורדים מהחיסכון. כל חברה קובעת שיעור משלה, עד התקרה שבתקנות{balanceCap ? <>: עד <Num value={balanceCap} /> בשנה מהיתרה</> : null}. ההחלטות שלכם הן שתיים: האם להכפיל את ההפקדה מקצבת הילדים, ובאיזו רמת סיכון. בלי בחירה הכסף הולך למסלול הסיכון המוגבר.
       </p>
-      <RulesLine ids={["CS-04", "CS-18", "CS-30", "CS-13", "CS-07"]} />
+      <p className="max-w-measure">
+        <VariesByCompany ids={[{ rule: "CS-30", companies: ["harel", "altshuler-shaham"] }]} lead="דמי הניהול אחרי גיל עשרים ואחת תלויים בחברה" />
+      </p>
+      <RulesLine ids={["CS-04", "CS-18", "CS-13", "CS-07"]} />
     </>
     );
   },
