@@ -99,8 +99,14 @@ Choices made in carrying it out, open to the founder's revision:
 - **Money-market funds at a non-bank member in the comparison.** Kept on the bank case, as above. The provider workbench already prices them at brokers.
 - **A saved comparison made before today** names `data/instruments/wrappers/makam.json` among its data files. Its revisit shows that file as gone and `securities/makam.json` as new, which is what happened. No migration is needed.
 - **Savings plan and IRAs**: unchanged (section 1).
+- **One account or a pick per option (founder's call).** Makam and the bond each take the provider that leaves the goal the most for themselves, independently of the securities account's pick, and a provider the person chose for the account does not carry over to them. "Priced like the account" reads either way; the build takes the per-option reading, which never prices an option on a worse tariff than one it could have. If the founder means one account for everything a person holds there, the pick becomes one choice shared by the account and its securities.
+- **The government bond's minimum mark.** Its record now cites GOV-24 for the minimum order (NIS 10,000 in continuous trading), but the `minimum` dimension stays `blocked:GOV-OQ7`, which keeps the bond listed, not ranked. Whether GOV-24 settles the minimum for ranking is already on the roadmap as a founder call ("the minimum order that would rank makam and bonds").
 
-## 5. Re-check of the capabilities that depend on D6 (CLAUDE.md)
+## 5. Independent review (2026-10-26)
+
+A reviewer who saw the diff, not this note, found nothing blocking and six should-fix items, all fixed on the branch: money-market funds were labelled "direct purchase" in exposure mode (now "יחידות קרן ב…"); exposure mode priced makam and the bond on P-05's tariff while the comparison used the provider pick (exposure mode now applies the same pick); the makam run did not cite BRK-52 when charging a broker's custody or TXS-06 when deducting exit-year fees; the guide fee table left out the account fee the makam and bond runs now charge (`fixed_period` added); the P-05 path did not set the member's kind (now from the provider's class); the "held in" line was hand-styled and gendered (now the kit's `Sentence`, "את המוצר הזה קונים ומחזיקים בתוך …"). Also: the picker's reset and hint copy no longer speak of management fees or the providers page on makam and the bond, and the IRA tax claim in `held_in` cites TXK-16. The two remaining points are in section 4.
+
+## 6. Re-check of the capabilities that depend on D6 (CLAUDE.md)
 
 - **3.1 guide.** Every product keeps its page. A security's page names its account, and the account's page lists its securities.
 - **3.2 comparison.** The candidate set is the 17 product records. The count is unchanged and makam and the bond now carry the account's provider choice. Exposure mode loses one dead option.

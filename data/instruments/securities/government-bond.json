@@ -12,9 +12,10 @@
       "GOV-10",
       "GOV-17",
       "BRK-01",
-      "IRA-11"
+      "IRA-11",
+      "TXK-16"
     ],
-    "text": "a security held directly in a securities account at a bank or a TASE member: a tradable series is bought on TASE on any trading day, and sales to the public in the issue auctions go through banks and TASE members (GOV-21, GOV-10, GOV-17, BRK-01). A self-directed provident or study fund may hold it too (IRA-11), and there that wrapper's tax applies instead of this record's. Who may open the account, who supervises it and how client securities are kept are the account's (brokerage-account)."
+    "text": "a security held directly in a securities account at a bank or a TASE member: a tradable series is bought on TASE on any trading day, and sales to the public in the issue auctions go through banks and TASE members (GOV-21, GOV-10, GOV-17, BRK-01). A self-directed provident or study fund may hold it too (IRA-11), and there that wrapper's tax applies instead of this record's (TXK-16). Who may open the account, who supervises it and how client securities are kept are the account's (brokerage-account)."
   },
   "names": {
     "he": [
@@ -51,7 +52,8 @@
   },
   "fee_bases_allowed": [
     "trade",
-    "custody"
+    "custody",
+    "fixed_period"
   ],
   "fee_caps": {},
   "ceiling": null,

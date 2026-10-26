@@ -13,7 +13,7 @@ import { heldSignatures } from "../lib/review";
 import { accountWorthRow } from "../components/guide-signature/current-account";
 import { cashLikeIds } from "../lib/guide-signature";
 import { SavedGoalStrip } from "../components/compare/strip";
-import { Disclosure, Tag } from "../components/kit";
+import { Disclosure, Sentence, Tag } from "../components/kit";
 import { GoalsProvider, type Presets } from "../lib/goal";
 import { fmt } from "../lib/format";
 import { splitTerms } from "../lib/guide-nav";
@@ -404,13 +404,17 @@ export default function GuidePage() {
             {data.lede && <p className="text-lg text-muted-foreground max-w-measure">{data.lede}</p>}
             {data.heldIn && (
               <div className="flex flex-col gap-1 max-w-measure">
-                <p className="text-muted-foreground">
-                  {copy.heldIn.before}{" "}
-                  <Link to={`/guide/${data.heldIn.id}`} className="text-link hover:underline">
-                    {data.heldIn.name}
-                  </Link>
-                  . {copy.heldIn.after}
-                </p>
+                <Sentence
+                  tone="muted"
+                  t={copy.heldIn}
+                  vars={{
+                    account: (
+                      <Link to={`/guide/${data.heldIn.id}`} className="text-link hover:underline">
+                        {data.heldIn.name}
+                      </Link>
+                    ),
+                  }}
+                />
                 <RulesLine ids={gen(data.heldIn.ruleIds)} />
               </div>
             )}

@@ -12,9 +12,10 @@
       "GOV-22",
       "GOV-05",
       "BRK-01",
-      "IRA-11"
+      "IRA-11",
+      "TXK-16"
     ],
-    "text": "a security held directly in a securities account at a bank or a TASE member: an individual buys it on TASE or bids in the monthly issue through the account, and only clearing-house members bid directly (GOV-21, GOV-22, GOV-05, BRK-01). A self-directed provident or study fund may hold it too (IRA-11), and there that wrapper's tax applies instead of this record's. Who may open the account, who supervises it and how client securities are kept are the account's (brokerage-account)."
+    "text": "a security held directly in a securities account at a bank or a TASE member: an individual buys it on TASE or bids in the monthly issue through the account, and only clearing-house members bid directly (GOV-21, GOV-22, GOV-05, BRK-01). A self-directed provident or study fund may hold it too (IRA-11), and there that wrapper's tax applies instead of this record's (TXK-16). Who may open the account, who supervises it and how client securities are kept are the account's (brokerage-account)."
   },
   "names": {
     "he": [
@@ -50,7 +51,8 @@
   },
   "fee_bases_allowed": [
     "trade",
-    "custody"
+    "custody",
+    "fixed_period"
   ],
   "fee_caps": {
     "custody": {

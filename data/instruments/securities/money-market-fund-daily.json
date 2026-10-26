@@ -10,9 +10,10 @@
     "rule_ids": [
       "MF-11",
       "BRK-01",
-      "IRA-11"
+      "IRA-11",
+      "TXK-16"
     ],
-    "text": "units of a mutual fund, ordered through a distributor, a bank or TASE member with which the holder keeps a securities account, and held in that account (MF-11, BRK-01). A self-directed provident or study fund may hold units too (IRA-11), and there that wrapper's tax applies instead of this record's. Who may open the account, who supervises it and how client assets are kept are the account's (brokerage-account)."
+    "text": "units of a mutual fund, ordered through a distributor, a bank or TASE member with which the holder keeps a securities account, and held in that account (MF-11, BRK-01). A self-directed provident or study fund may hold units too (IRA-11), and there that wrapper's tax applies instead of this record's (TXK-16). Who may open the account, who supervises it and how client assets are kept are the account's (brokerage-account)."
   },
   "names": {
     "he": [

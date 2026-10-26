@@ -51,6 +51,7 @@ export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
   const discountRate = book.rate("TXI-11", "rate");
   const custodyFree = input.memberKind !== "non-bank";
   if (custodyFree) book.cite("BRK-17");
+  else if (tariff.custody) book.cite("BRK-52");
   const custodyLine = custodyFree ? undefined : tariff.custody;
   const tally = new Tally();
   tally.flag("G-09");
@@ -120,6 +121,7 @@ export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
         cashAtExit += gross - commission;
       }
       if (held.length > 0) {
+        if (exitYearFees > 0) book.cite("TXS-06");
         const exit = unlessBlocked(() => exitTax(book, profile, T, saleGain - exitYearFees, book.rate("TXI-12", "rate"), true, exitYearInterest, first));
         taxAtExit = exit.value?.tax ?? 0;
         blocked = exit.blocked;

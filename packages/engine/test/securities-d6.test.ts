@@ -34,6 +34,9 @@ describe("makam custody follows the account's member (F-14)", () => {
     expect(broker.fees.custody).toBeLessThan(760);
     expect(broker.real).toBeLessThan(bank.real);
     expect(broker.formulas).toContain("F-14");
+    // the figure rests on BRK-52 (no rule limits a non-bank member's custody on makam), not on the bank ban
+    expect(broker.rules.map((r) => r.id)).toContain("BRK-52");
+    expect(broker.rules.map((r) => r.id)).not.toContain("BRK-17");
   });
 
   it("a sale before redemption deducts the exit year's custody from the gain once (TXS-06)", () => {
@@ -41,6 +44,7 @@ describe("makam custody follows the account's member (F-14)", () => {
     const broker = runMakam({ ...sold, memberKind: "non-bank" }, ctx);
     const bank = runMakam({ ...sold, memberKind: "bank" }, ctx);
     expect(broker.taxAtExit).toBeLessThan(bank.taxAtExit);
+    expect(broker.rules.map((r) => r.id)).toContain("TXS-06");
   });
 });
 

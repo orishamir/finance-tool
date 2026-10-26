@@ -53,3 +53,9 @@ describe("the money-market funds keep the bank case", () => {
     expect(entry("money-market-fund-daily").record).toHaveProperty("held_in");
   });
 });
+
+describe("the P-05 path carries the member's kind (F-14)", () => {
+  it("makam on P-05's bank tariff runs as at a bank", () => {
+    expect(entry("makam").terms?.memberKind).toBe("bank");
+  });
+});

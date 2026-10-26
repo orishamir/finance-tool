@@ -108,7 +108,7 @@ export function Representative({ w, g, today, onFee, onRate, onProvider, outcome
               setOpen(false);
             }}
           >
-            {ownRate !== undefined && ownFee === undefined ? t.rateReset : t.reset}
+            {ownRate !== undefined && ownFee === undefined ? t.rateReset : ownFee === undefined && chosen ? tp.reset : t.reset}
           </Button>
         </div>
       )}

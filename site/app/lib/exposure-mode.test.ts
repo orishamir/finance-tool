@@ -67,6 +67,13 @@ describe("exposure mode", () => {
     expect(v.rows.find((r) => r.id === "makam")).toMatchObject({ kind: "not-evaluated", noSeries: true });
   });
 
+  it("names a security by how it is held in the account (D6, 2026-10-26)", () => {
+    const options = run(goal()).rows.find((r) => r.id === "makam")!.holding.options;
+    expect(options.find((o) => o.id === "makam")!.name).toMatch(/^מק.מ, קנייה ישירה בחשבון ניירות ערך$/);
+    expect(options.find((o) => o.id === "money-market-fund-daily")!.name).toMatch(/יחידות קרן בחשבון ניירות ערך$/);
+    expect(options.some((o) => o.id === "brokerage-account")).toBe(false);
+  });
+
   it("runs the TA-125 through the collected fund and draws at most three lines beside the reference", () => {
     const v = run(goal({ "index-ta125": { return: entered(6, "pct_per_year", day), worstFall: entered(20, "pct", day) } }));
     expect(v.rows.find((r) => r.id === "index-ta125")!.kind).toBe("ranked");

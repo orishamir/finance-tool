@@ -4,7 +4,7 @@
 // `data/` and keeps its value object, so the values sheet can show its source.
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import type { InstrumentTerms } from "@finance-tool/engine";
+import { memberKindOf, type InstrumentTerms } from "@finance-tool/engine";
 import {
   catalogEntry,
   depositTerms,
@@ -172,6 +172,9 @@ export function buildInstrumentTerms(wrapperId: string, family: Family, spec: In
     const isMmf = wrapperId === "money-market-fund-daily" || wrapperId === "money-market-fund-renewable";
     const tariff = isMmf ? buildMoneyMarketTariff(wrapperId, src, missing, feeValues) : buildTariff(wrapperId, "securities", spec, src, missing, feeValues);
     if (tariff) terms.tariff = tariff;
+    // F-14: the member's kind decides custody on money-market units; the money-market funds are modelled at a bank (MF-26, BANK-18)
+    const member = isMmf ? undefined : memberOf(src, spec.tariff);
+    if (tariff && member) terms.memberKind = member;
     if (wrapperId === "ira-hishtalmut") {
       const managerFee = buildIraFee(wrapperId, spec, src, missing, feeValues);
       if (managerFee !== null) terms.ira = { managerFee, clockStartMonth: 0 };
@@ -179,6 +182,9 @@ export function buildInstrumentTerms(wrapperId: string, family: Family, spec: In
   } else if (family === "makam") {
     const tariff = buildTariff(wrapperId, "makam", spec, src, missing, feeValues);
     if (tariff) terms.tariff = tariff;
+    // F-14: a bank may not charge custody on makam (BRK-17); P-05's tariff names its provider, whose class says which it is
+    const member = memberOf(src, spec.tariff);
+    if (tariff && member) terms.memberKind = member;
     // The series term is optional (GOV-22, GOV-23): read from the rule P-05 names, else the ledger's default.
     if (spec.series_rule) {
       const term = figure(src, spec.series_rule, "term_months");
@@ -235,6 +241,12 @@ export function buildHishtalmutTerms(wrapperId: string, spec: InstrumentSpec | u
       },
     },
   };
+}
+
+/** F-14: the member kind of the provider whose latest snapshot P-05's tariff entry names (`memberKindOf` its class). */
+function memberOf(src: InstrumentSources, provider: string | undefined): InstrumentTerms["memberKind"] | undefined {
+  const snap = provider ? src.fees.filter((f) => f.id === provider).sort((a, b) => a.snapshot.localeCompare(b.snapshot)).at(-1) : undefined;
+  return snap ? memberKindOf(snap.provider.class) : undefined;
 }
 
 function figure(src: InstrumentSources, ruleId: string, name: string): SiteValue | null {

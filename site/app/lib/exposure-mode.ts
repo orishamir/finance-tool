@@ -18,7 +18,7 @@ import {
   type RunResult,
 } from "@finance-tool/engine";
 import { isSecurity, type ParameterRecord, type ValueObject, type ProductId } from "@finance-tool/schema";
-import { comparisonGoal, equityFit, parameterOf, termsFor, yearSeries, type CompareBundle, type ExposureEntry, type RunGoal, type WrapperEntry } from "./compare";
+import { applyProviders, comparisonGoal, equityFit, parameterOf, termsFor, yearSeries, type CompareBundle, type ExposureEntry, type RunGoal, type WrapperEntry } from "./compare";
 import type { ExposureInputs, FieldKey, Goal } from "./goal";
 import { entered as enteredValue, type SiteValue } from "./value";
 import { r5 } from "../copy";
@@ -156,7 +156,9 @@ function wrapperName(bundle: CompareBundle, id: string): string {
   const r = w.record;
   const accountId = isSecurity(r) ? r.held_in.wrapper_ids[0] : undefined;
   const account = accountId ? bundle.wrappers.find((x) => x.id === accountId) : undefined;
-  return account ? r5.exposure.heldDirect.replace("{name}", w.name).replace("{account}", account.name) : w.name;
+  if (!account || !isSecurity(r)) return w.name;
+  // a security held directly (makam, a bond) is "bought directly"; fund units are bought in the account through the fund (review 2026-10-26)
+  return (r.held_as === "direct" ? r5.exposure.heldDirect : r5.exposure.heldFund).replace("{name}", w.name).replace("{account}", account.name);
 }
 
 type Plan = { entry: ExposureEntry; wrapperId: ProductId | null; fromParameter: boolean; blocked: RowReason | null; wrapper?: WrapperEntry; terms?: ExposureHolding["terms"]; gross?: ValueObject; published?: ExposureRowView["published"]; fromProduct?: ValueObject };
@@ -166,7 +168,9 @@ export function computeExposureMode({ bundle, g, goal }: ExposureModeInput): Exp
   const today = bundle.runDate;
   const ctx: RunContext = { rules: bundle.rules, runDate: bundle.runDate };
   const entries = bundle.exposures ?? [];
-  const byWrapper = new Map(bundle.wrappers.map((w) => [w.id as string, w]));
+  // a security held in the account (makam, a government bond) runs on the same provider the product comparison picks or the person
+  // chose (F-80, D6 as amended 2026-10-26), so both comparisons give it one figure (review 2026-10-26)
+  const byWrapper = new Map(applyProviders(bundle, g).wrappers.map((w) => [w.id as string, w]));
   const needs: Partial<Record<string, FieldKey>> = {};
   const inputsOf = (id: string): ExposureInputs => goal.exposures?.[id] ?? {};
 
