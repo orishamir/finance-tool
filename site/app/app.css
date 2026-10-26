@@ -294,7 +294,7 @@
     color: var(--background);
     font-weight: 500;
   }
-  /* The last pill of a ChipList: adds one. Dashed, no fill, a plus. Its own class (the site has no class merger). */
+  /* The kit's OtherChip: the last pill of a ChipList (adds one) or of ChoiceChips ("אחר"). Dashed, no fill, a plus; tinted while open. Its own class (the site has no class merger). */
   .sec-chip-add {
     display: inline-flex;
     align-items: center;
@@ -308,7 +308,8 @@
     white-space: nowrap;
     cursor: pointer;
   }
-  .sec-chip-add:hover {
+  .sec-chip-add:hover,
+  .sec-chip-add[aria-expanded="true"] {
     background: var(--accent);
   }
 

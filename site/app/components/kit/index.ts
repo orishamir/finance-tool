@@ -6,7 +6,7 @@ export { Tag } from "./tag";
 export { Callout } from "./callout";
 export { Card, Section, type CardPad, type SectionLevel } from "./card";
 export { CoverageFold, Disclosure, FoldGroup, type DisclosureProps, type FoldGroupProps } from "./disclosure";
-export { ChoiceChips, SegmentedControl, type SegmentOption } from "./choice";
+export { ChoiceChips, OtherChip, SegmentedControl, type SegmentOption } from "./choice";
 export { ChipList, dropOrder, type ChipItem, type ChipListProps, type ChipListWords } from "./chip-list";
 export { PlanChips, type PlanChipItem } from "./plan-chips";
 export { InputSlot, Sentence, Tpl, fill } from "./sentence";

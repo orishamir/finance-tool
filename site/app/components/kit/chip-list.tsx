@@ -5,8 +5,9 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router";
-import { GripVertical, Pencil, Plus, Trash2 } from "lucide-react";
+import { GripVertical, Pencil, Trash2 } from "lucide-react";
 import { Button } from "./button";
+import { OtherChip } from "./choice";
 import { cx } from "./cx";
 
 /** Pixels the pointer travels before a press on a pill becomes a drag; a shorter press is a click. */
@@ -281,9 +282,7 @@ export function ChipList({ heading, headingId, note, items, value, words, onSele
         })}
         {add && (
           <li style={slot ? { order: items.length } : undefined}>
-            <button type="button" aria-expanded={add.expanded} onClick={add.onClick} className="sec-chip-add gap-1.5">
-              <Plus size={16} {...ic} /> {add.label}
-            </button>
+            <OtherChip label={add.label} expanded={add.expanded} onClick={add.onClick} />
           </li>
         )}
       </ul>
