@@ -42,6 +42,8 @@ export interface DocumentRow {
   publisher_he?: string;
   kind?: SourceKind;
   official_url?: string | null;
+  /** Only links on these hosts take the row (2026-10-26): a row that names a copy's host labels that copy alone. */
+  hosts?: string[];
 }
 
 export interface LineContext {
@@ -285,7 +287,8 @@ function kindOf(url: string, host: string, title: string, locator: string, stren
   if (NEWS_HOSTS.includes(host)) return "article";
   if (host === "data.gov.il") return "dataset";
   if (/circular|חוזר/i.test(title)) return "circular";
-  if (publisherKind) return publisherKind;
+  // a gazette host prints laws and regulations alike: its "law" default gives way to a title that names regulations (2026-10-26)
+  if (publisherKind && !(publisherKind === "law" && /תקנות|\bRegulations?\b/.test(title))) return publisherKind;
   if (/תקנות|\bRegulations?\b/.test(title)) return "regulation";
   if (/\bחוק\b|\bLaw\b|Ordinance|פקודת/.test(title)) return "law";
   if (OFFICIAL(host) || host.endsWith(".gov") || host === "knesset.gov.il" || host.endsWith(".knesset.gov.il") || host === "btl.gov.il" || host.endsWith("isa.gov.il")) return isPdf(url) ? "official_pdf" : "regulator_page";
@@ -362,6 +365,7 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
     const title = link.title.replace(/\s+/g, " ").trim() || host;
     // the longest matching token wins across the table (tokens nest: "Law (Wikisource mirror)" sits inside "National Insurance Law (Wikisource mirror)"); a tie keeps the table's order
     const doc = (ctx.documents ?? [])
+      .filter((d) => !d.hosts || d.hosts.includes(host))
       .flatMap((d) => d.match.filter(Boolean).map((tok) => ({ d, tok })))
       .filter((c) => title.toLowerCase().includes(c.tok.toLowerCase()))
       .sort((a, b) => b.tok.length - a.tok.length)[0]?.d;

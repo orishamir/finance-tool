@@ -115,7 +115,8 @@ export function runBond(input: BondInput, ctx: RunContext): RunResult {
   const commission = tradeCommission(tariff.sell, gross, { fxRate: 1 });
   tally.fee("trade", commission);
   // A CPI-linked bond is a real-basis security: each lot indexed by I_T / I_lot, and when the CPI fell its
-  // inflationary amount is zero and the part of a nominal loss equal to the fall is not allowable (TXS-02; F-09).
+  // inflationary amount is zero and the part of a nominal loss equal to the fall is not allowable (TXS-02; F-09). The exit
+  // year's fees come off after that cap (TXS-06); whether they sit inside the nominal loss the cap limits is an open reading (G-07).
   const adjusted = linked ? indexedCost(lots, I[T]!, price(T) * (1 + (bond.exitPriceChange ?? 0))) : undefined;
   const gain = adjusted
     ? gross - adjusted.indexed - exitYearFees + adjusted.fallDisallowed

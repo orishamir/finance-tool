@@ -110,6 +110,12 @@ describe("provident fund for investing", () => {
     expect(old.lump!.tax).toBeLessThan(0.25 * old.realGain! - 1e-6);
     expect(old.lump!.net).toBeGreaterThan(m.lump!.net);
     expect(old.broker!.tax).toBeLessThan(m.broker!.tax);
+    // the visual reads the age-60 case off the run itself, and the figures carry that run's rules and flags (review 2026-10-26)
+    expect(old.lump!.run.formulas).toContain("F-42");
+    expect(m.lump!.run.formulas).not.toContain("F-42");
+    expect(old.lump!.run.rules.map((r) => r.id)).toEqual(expect.arrayContaining(["TXG-04", "TXG-07", "TXK-26"]));
+    expect(old.lump!.run.flags.map((f) => f.code)).toContain("TXK-26");
+    expect(old.lump!.run.flags.map((f) => f.code)).not.toContain("G-21");
     // the balance that moves to an annuity fund is the gross balance, before the lump-sum tax
     expect(m.transfer!).toBeGreaterThan(m.lump!.net);
     expect(m.diff).toBeCloseTo(m.lump!.gain - m.broker!.gain, 9);

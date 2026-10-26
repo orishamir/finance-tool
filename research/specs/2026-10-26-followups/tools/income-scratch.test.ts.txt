@@ -1,0 +1,27 @@
+// Scratch (2026-10-26 review round, not committed): the study-fund visual's brokerage side with P-05's income (before) and with the
+// reader's income (after this branch), at P-05's plan, for report.md.
+import { it } from "vitest";
+import { buildGuidePage } from "./guide.server";
+import { p05Number } from "./engine";
+import { runWith, sideOf, hishtalmutModel } from "./guide-signature-g2";
+
+it("prints the brokerage side before and after", () => {
+  const d = buildGuidePage("keren-hishtalmut")!.signature!;
+  const b = d.bundles["brokerage-account"]!;
+  const amount = p05Number(b.p05, "amount_now");
+  const monthly = p05Number(b.p05, "monthly_deposit");
+  const years = p05Number(b.p05, "horizon_years");
+  const rows: string[] = [`plan amount ${amount} monthly ${monthly} years ${years}; P-05 income ${p05Number(b.p05, "annual_income")}`];
+  for (const income of [12000, 40000, 60000, 100000]) {
+    for (const y of [years, 20, 30]) {
+      const entered = { amount_now: amount, monthly_deposit: monthly };
+      const before = runWith(b, entered, y * 12)!;
+      const after = runWith(b, entered, y * 12, { profile: { annualIncome: 12 * income } })!;
+      const sb = sideOf(before, amount);
+      const sa = sideOf(after, amount);
+      const m = hishtalmutModel(d, { amount, monthly, years: y, employment: "employee", income });
+      rows.push([`income/month ${income}`, `years ${y}`, `broker gain before ${sb.gain.toFixed(2)}`, `after ${sa.gain.toFixed(2)}`, `tax before ${sb.tax.toFixed(2)}`, `after ${sa.tax.toFixed(2)}`, `model broker gain ${m.broker?.gain.toFixed(2)}`, `diff ${m.diff?.toFixed(2)}`].join("\t"));
+    }
+  }
+  console.log("\n" + rows.join("\n"));
+});

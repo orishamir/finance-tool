@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { RuleRecord } from "@finance-tool/schema";
-import { worthRows } from "./worth-knowing";
+import { isCapName, worthRows } from "./worth-knowing";
 
 const rule = (id: string, extra: object = {}) => ({ id, title_he: `כלל ${id}`, strength: "primary", ...extra }) as unknown as RuleRecord;
 
@@ -14,6 +14,15 @@ describe("worthRows", () => {
     const fig = (value: number) => ({ value, unit: "pct_per_year", source: { url: "https://x", title: "t", publisher: "p", strength: "primary" }, checked: "2026-10-24", effective_from: null, effective_to: null, tax_year: null, update_rule: "fixed", rule_ids: ["A"], state: "sourced" });
     const rows = worthRows(["A", "B", "C"], { A: rule("A", { figures: { balance_cap_after_21: fig(1.05) } }), B: rule("B", { figures: { rate: fig(25) } }), C: rule("C", { figures: { capital_multiplier: fig(180) } }) }, "2026-10-24");
     expect(rows.map((r) => r.upTo)).toEqual([true, false, false]);
+  });
+  it("does not read a minimum or a market capitalisation as a cap (review 2026-10-26)", () => {
+    expect(isCapName("balance_cap_after_21")).toBe(true);
+    expect(isCapName("cap")).toBe(true);
+    expect(isCapName("min_market_cap_usd")).toBe(false);
+    expect(isCapName("market_cap_coverage")).toBe(false);
+    expect(isCapName("rimon_market_cap_rank")).toBe(false);
+    expect(isCapName("min_order_cap")).toBe(false);
+    expect(isCapName("capital_multiplier")).toBe(false);
   });
   it("marks weak strength", () => {
     expect(worthRows(["A"], { A: rule("A", { strength: "secondary" }) }, "2026-10-24")[0]!.weak).toBe("secondary");

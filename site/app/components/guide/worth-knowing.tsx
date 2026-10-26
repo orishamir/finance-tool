@@ -28,13 +28,19 @@ export interface WorthFactRow {
 }
 
 /** The rows for one wrapper: pinned ids whose record is loaded and has a Hebrew title, at most three. */
+/**
+ * A figure name that is a legal cap, shown with "עד" (2026-10-26): its name holds `cap` as a word (`balance_cap`, `deposit_cap_after_21`),
+ * but not a minimum (`min_market_cap_usd`) nor a market capitalisation (`market_cap_coverage`), which are no ceiling on what is charged.
+ */
+export const isCapName = (name: string) => /(^|_)cap(_|$)/.test(name) && !/(^|_)min(_|$)/.test(name) && !/(^|_)market_cap(_|$)/.test(name);
+
 export function worthRows(ids: readonly string[] | undefined, rules: Record<string, RuleRecord>, today: string): WorthRow[] {
   const rows: WorthRow[] = [];
   for (const id of ids ?? []) {
     const r = rules[id];
     if (!r?.title_he) continue;
     const first = Object.keys(r.figures ?? {}).find((n) => ruleFigure(r, n, today));
-    rows.push({ kind: "rule", id, title: r.title_he, figure: first ? ruleFigure(r, first, today) : null, upTo: first !== undefined && /(^|_)cap(_|$)/.test(first), weak: r.strength === "institution" || r.strength === "secondary" ? r.strength : null });
+    rows.push({ kind: "rule", id, title: r.title_he, figure: first ? ruleFigure(r, first, today) : null, upTo: first !== undefined && isCapName(first), weak: r.strength === "institution" || r.strength === "secondary" ? r.strength : null });
     if (rows.length === 3) break;
   }
   return rows;

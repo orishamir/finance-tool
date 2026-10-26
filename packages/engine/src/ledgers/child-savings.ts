@@ -98,13 +98,15 @@ export function runChildSavings(input: ChildSavingsInput, ctx: RunContext): Chil
   tally.point(0, 1, 0);
 
   // Provident route: when the CPI fell over a deposit's life its linkage is not a gain, so the taxable gain never exceeds the
-  // gains withdrawn (the kupat gemel lehashkaa base, TXK-07, read with TXS-02; F-50). A CPI-linked bank deposit's interest is
-  // taxed in full even when its linkage is negative (TXI-25), so the bank route keeps the plain indexation.
+  // gains withdrawn (the kupat gemel lehashkaa base, TXK-07, read with TXS-02; F-50). A CPI-linked bank deposit keeps the plain
+  // indexation, its interest taxed in full even when its linkage is negative: the Supreme Court held that for a deposit linked to
+  // a foreign currency, and applying it to a CPI-linked deposit is an inference (TXI-25), so a run where it bites is a "reading".
   const floorFall = provident;
   const checkpoint = (m: number): Checkpoint => {
     const paid = principal.reduce((s, p) => s + p.amount, 0);
     const gain = balance - paid;
     if (floorFall && principal.some((p) => I[m]! < p.index)) book.label("reading", "TXK-07");
+    if (linked && principal.some((p) => I[m]! < p.index)) book.label("reading", "TXI-25");
     const realGain = balance - principal.reduce((s, p) => s + (!floorFall || I[m]! >= p.index ? (p.amount * I[m]!) / p.index : p.amount), 0);
     const taxIfWithdrawn = childSavingsExitTax(taxOnReal ? realGain : gain, exitRate);
     return { month: m, balance, real: balance / I[m]!, paidIn: paid, gain, realGain, taxIfWithdrawn };

@@ -389,15 +389,15 @@ Exercises F-80 tie with P-01.
 Added 2026-10-26 with the follow-ups brief (`research/specs/2026-10-26-followups/brief.md`): the falling index (TXS-02, TXF-03), the relief from 60 on a kupat gemel lehashkaa lump sum (TXK-06), the child-savings fee after 21 at the legal cap (CS-18), and money-market custody at a non-bank member (F-14). The independent check computes them in `expected_calc.py` like the rest.
 
 ### S51 Kupat gemel lehashkaa, lump sum at 60 with low other income
-Exercises F-44 with F-42 (TXK-06, TXG-04, TXG-07), A-13, A-14.
+Exercises F-44 with F-42 (TXK-06, TXG-04, TXG-07; the withholding and its settlement, TXK-26), A-13, A-14.
 - Profile: age 55 at start; other income in the exit year 60,000.
 - Goal: 80,000 now (within the yearly ceiling); no monthly; horizon 5 years.
 - Market: r_g 6%; π = 2.5%. Fees as S20: balance 0.8%, direct expenses 0.1%, no deposit fee.
 - Expected: _(founder)_: tax at the brackets on the real gain, each slice capped at 25%, against the full 25%.
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S51): Gross balance 102,345.49; real gain 11,832.84; tax at the brackets 1,183.28 (method F-44 with F-42); at the full 25% it would be 2,958.21, so the relief is 1,774.93; V_T 101,162.21, real 89,412.65; fees: balance 3,638.76, direct expenses 454.85; flag G-21 (settled through a return).
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S51): Gross balance 102,345.49; real gain 11,832.84; tax at the brackets 1,183.28 (method F-44 with F-42); at the full 25% it would be 2,958.21, so the relief is 1,774.93; V_T 101,162.21, real 89,412.65; fees: balance 3,638.76, direct expenses 454.85; flag TXK-26 (the manager withholds 20%; the final tax is settled in the return).
 
 ### S52 TASE foreign fund when the shekel strengthens
-Exercises F-09 and F-40 with a falling index (TXS-02, TXF-03, TXF-04), G-07.
+Exercises F-09 and F-40 with a falling index (TXS-02, TXF-04: a TASE foreign fund takes the exchange rate under TXF-04, not TXF-03), G-07.
 - As S16 with f = −3% for the whole horizon; (a) r_g 6%, (b) r_g −1% (a nominal loss smaller than the currency's fall).
 - Expected: _(founder)_: (a) the real gain no larger than the nominal gain; (b) no tax and no allowable loss beyond the exit-year custody.
   - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S52): (a) r_g 6%: nominal gain 30,805.42; real gain 30,052.89 (the inflationary amount is 0, not negative; without the rule it would be 43,720.67); tax at exit 7,513.22; V_T 119,661.64, real 105,763.45. (b) r_g −1%: real gain -548.57 (the nominal loss is smaller than the fall, so none of it is allowable; without the rule 7,006.23); tax at exit 0.00; V_T 90,367.21, real 79,871.45; flag "real loss not carried, G-07".

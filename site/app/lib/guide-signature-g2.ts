@@ -152,8 +152,8 @@ export function hishtalmutModel(d: SignatureData, c: HishtalmutCase): Hishtalmut
     if (!settled(r.run)) return { side: null, gap: "blocked", detail: {} };
     return { side: sideOf(r.run, c.amount), gap: null, detail: r.run.detail };
   };
-  // The same profile on both sides (2026-10-26): from 60 the reduced brackets apply to the fund's lump sum (F-44 with F-42) and to the
-  // brokerage account's gain alike, so the comparison sets like against like.
+  // The same income on both sides (2026-10-26): the brokerage account's gain is taxed on top of the reader's yearly income (the surtax,
+  // F-43), as the study fund's excess is; before, that side took P-05's scenario income. No age is entered here, so no F-42 on either side.
   const brokerSide = (key: string): Side | null => {
     const b = d.bundles[key];
     const run = b ? runWith(b, entered, months, { profile }) : null;

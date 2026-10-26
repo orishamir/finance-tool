@@ -7,6 +7,7 @@
 // except the tick store at the end, and no fetch.
 import {
   buildTariff,
+  memberKindOf,
   RecordInputError,
   switchingCost,
   type RunContext,
@@ -564,13 +565,13 @@ function tariffFor(wb: WorkbenchBundle, wanted: string | null, instrumentClass: 
       const t = currency && !isIls(currency) ? attempt(currency) : attempt(null);
       const { currency: _c, ...rest } = t as typeof t & { currency?: unknown };
       void _c;
-      return { id, tariff: rest };
+      return { id, tariff: rest, memberKind: memberKindOf(snap.provider.class) };
     } catch (e) {
       if (!(e instanceof RecordInputError)) throw e;
       try {
         const { currency: _c, ...rest } = attempt(null) as ReturnType<typeof attempt> & { currency?: unknown };
         void _c;
-        return { id, tariff: rest };
+        return { id, tariff: rest, memberKind: memberKindOf(snap.provider.class) };
       } catch (e2) {
         if (!(e2 instanceof RecordInputError)) throw e2;
       }
@@ -602,6 +603,8 @@ export function brokerageCost(args: { wb: WorkbenchBundle; fundFrom: string; fun
       market: { ...runA.market, inflation: inputs.inflation },
       fund: runA.fund,
       tariff: { ...tA.tariff, ...(runA.currency ? { currency: runA.currency } : {}) },
+      // F-14 (2026-10-26): bank or not, so a money-market unit pays custody only at a non-bank (BRK-17, BRK-52); leg B keeps it (one provider)
+      memberKind: tA.memberKind,
       profile,
       ordersPerMonth: 1,
     };

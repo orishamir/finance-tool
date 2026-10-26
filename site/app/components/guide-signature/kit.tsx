@@ -1,13 +1,13 @@
 // The parts that belong to the "what makes it different" visuals alone (D29): the guide inputs they start from (rule 9 of the spec), the
 // run date and what a visual receives, and the lines that look their copy up (the source of a starting value, a gap). The parts any
 // page can use (marker, bars, stat, field, legend) live in the shared kit, components/kit.
-import type { P05Input } from "@finance-tool/engine";
+import type { P05Input, RunResult } from "@finance-tool/engine";
 import { guideSignature as copy } from "../../copy";
 import { p05Number, p05Range, p05Units, p05Value, type Bundle } from "../../lib/engine";
 import { useGoals } from "../../lib/goal";
 import type { SignatureData } from "../../lib/guide-signature";
 import { useInputs } from "../../lib/inputs";
-import { computed, entered as enteredValue, type SiteValue, type Strength } from "../../lib/value";
+import { computed, entered as enteredValue, weaker, type SiteValue, type Strength } from "../../lib/value";
 import { GapNote, SourceLine as SourceNote } from "../kit";
 import { IdText } from "../provenance";
 
@@ -67,6 +67,22 @@ export function Gap({ id, className }: { id: string; className?: string }) {
 /** A computed value of a visual: the engine run or formula that gave it, the inputs it read and the rules. */
 export function figure(value: number, unit: SiteValue["unit"], formula: string, inputs: Record<string, SiteValue>, today: string, about: string, rules: { id: string; strength: Strength }[] = []): SiteValue {
   return computed(value, unit, formula, inputs, { today, about, rules });
+}
+
+/**
+ * A figure that is one engine run's own number (2026-10-26 review): it carries the rules that run read, each at the weakest strength
+ * it carried, and the run's flags and labels, so its sheet shows what that run rested on, not every rule the bundle holds. `keepFlag`
+ * leaves out the flags that are about another figure of the run (a tax figure drops the fee flags, as the timeline does).
+ */
+export const notFeeFlag = (code: string) => code !== "G-14" && code !== "PF-13";
+export function runFigure(value: number, unit: SiteValue["unit"], formula: string, inputs: Record<string, SiteValue>, today: string, about: string, run: RunResult, keepFlag: (code: string) => boolean = () => true): SiteValue {
+  return computed(value, unit, formula, inputs, {
+    today,
+    about,
+    rules: run.rules.map((u) => ({ id: u.id, strength: u.figures.reduce<Strength>((w, f) => weaker(w, f.strength as Strength) ?? w, u.strength as Strength) })),
+    flags: [...new Set(run.flags.map((f) => f.code))].filter(keepFlag),
+    labels: run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })),
+  });
 }
 
 /** The rules a bundle's runs read, as the list a computed value carries. */

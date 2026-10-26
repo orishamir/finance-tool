@@ -29,6 +29,7 @@ export const content: GuideContent = {
   afterTax: ({ figure }) => {
     const age = figure("TXK-10", "early_retirement_age");
     const sixty = figure("TXG-04", "age");
+    const withheld = figure("TXK-26", "regulation_text_rate");
     return (
       <>
         <Callout tone="blocked" className="max-w-measure">
@@ -36,9 +37,9 @@ export const content: GuideContent = {
         </Callout>
         <RulesLine ids={["TXK-10", "KGL-09"]} />
         <Callout tone="caution" className="max-w-measure">
-          <span className="font-medium">מגיל {sixty ? <Num value={sixty} /> : null} המס על הרווח במשיכה יכול להיות נמוך יותר.</span> השיעור על הרווח הוא שיעור מרבי, ולכן מדרגות המס הנמוכות של בני {sixty ? <Num value={sixty} /> : null} ומעלה חלות עליו קודם; מאחר שהרווח הוא המדרגה העליונה של ההכנסה, זה עוזר רק כשהכנסות אחרות משאירות את המדרגות האלה פנויות. כשמזינים גיל, האתר מחשב את ההקלה לפי ההכנסה השנתית שבחישוב. החברה המנהלת מנכה במקור בלי להתחשב בגיל, וההפרש חוזר בדוח שנתי <RuleRef id="TXK-06" />.
+          <span className="font-medium">מגיל {sixty ? <Num value={sixty} /> : null} המס על הרווח במשיכה יכול להיות נמוך יותר.</span> השיעור על הרווח הוא שיעור מרבי, ולכן מדרגות המס הנמוכות של בני {sixty ? <Num value={sixty} /> : null} ומעלה חלות עליו קודם; מאחר שהרווח הוא המדרגה העליונה של ההכנסה, זה עוזר רק כשהכנסות אחרות משאירות את המדרגות האלה פנויות. כשמזינים גיל, האתר מחשב את ההקלה לפי ההכנסה השנתית שבחישוב. החברה המנהלת מנכה במקור {withheld ? <Num value={withheld} /> : "לפי התקנות"} מהרווח, בלי להתחשב בגיל, והמס הסופי נקבע מול הניכוי הזה בדוח השנתי: על חלק הרווח שהמדרגה שלו נמוכה משיעור הניכוי מקבלים החזר, ועל חלק שהמדרגה שלו גבוהה ממנו משלמים עוד, עד השיעור המרבי <RuleRef id="TXK-26" />.
         </Callout>
-        <RulesLine ids={["TXK-06", "TXG-04", "TXG-07"]} />
+        <RulesLine ids={["TXK-06", "TXG-04", "TXG-07", "TXK-26"]} />
       </>
     );
   },
