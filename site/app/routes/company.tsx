@@ -11,7 +11,7 @@ import { CompanyTerms } from "../components/decoder/company-terms";
 import { BrandFundList } from "../components/decoder/brand-funds";
 import { BrokerageGroupCard } from "../components/decoder/institutions/brokerage-card";
 import { IconDrillIn } from "../components/icons";
-import { NumAfter, NumberLegend } from "../components/provenance";
+import { IdRef, Num, NumAfter, NumberLegend } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { Callout, Card, Disclosure } from "../components/kit";
 import type { SiteValue } from "../lib/value";
@@ -22,7 +22,7 @@ import { compactHoldings, exposureShares, holdingsTemplate } from "../lib/track-
 const classificationOrder = ["קופת גמל להשקעה", "קרנות השתלמות", "תגמולים ואישית לפיצויים", "קופת גמל להשקעה - חסכון לילד", "קרנות חדשות", "קרנות כלליות", "מרכזית לפיצויים", "מטרה אחרת"];
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const { loadCma, loadCmaFees, loadCmaHoldings, loadTerms, loadProducts, today } = await import("../lib/data.server");
+  const { loadCma, loadCmaFees, loadCmaHoldings, loadTerms, loadProducts, loadWrappers, today } = await import("../lib/data.server");
   const { institutionCompanies, loadCatalog, resolutionOf, seenValue, seenWhere } = await import("../lib/instruments.server");
   const cma = loadCma();
   // D33: a brand's every address shows its one page: the managing company's tracks, the funds, the brokerage account
@@ -38,6 +38,11 @@ export async function loader({ params }: Route.LoaderArgs) {
     return { kind: "institution" as const, institution };
   }
   const wrappers = loadProducts();
+  const wrapperCaps = new Map<string, { balance: SiteValue | null; deposit: SiteValue | null }>(
+    loadWrappers()
+      .filter((w) => w.fee_caps?.balance || w.fee_caps?.deposit)
+      .map((w) => [w.id, { balance: (w.fee_caps?.balance?.value != null ? w.fee_caps.balance : null) as SiteValue | null, deposit: (w.fee_caps?.deposit?.value != null ? w.fee_caps.deposit : null) as SiteValue | null }]),
+  );
   const terms = loadTerms();
   const collator = new Intl.Collator("he");
   const tracks = cma.tracks.filter((t) => t.companyId === company?.id).sort((a, b) => collator.compare(a.name, b.name));
@@ -53,6 +58,13 @@ export async function loader({ params }: Route.LoaderArgs) {
       const balances = list.map((x) => feesOf.get(x.fundId)!.balance);
       const template = cmaFeeValue(balances.find((b) => b.value !== null) ?? balances[0]!, t);
       const fees: Record<number, CompactFee> = Object.fromEntries(list.map((x, i) => [x.fundId, compactFee(balances[i]!, template)]));
+      // the deposit fee, the fee cell's second line (D34), compacted the same way
+      const deposits = list.map((x) => feesOf.get(x.fundId)!.deposit);
+      const depositTemplate = cmaFeeValue(deposits.find((b) => b.value !== null) ?? deposits[0]!, t);
+      const depositFees: Record<number, CompactFee> = Object.fromEntries(list.map((x, i) => [x.fundId, compactFee(deposits[i]!, depositTemplate)]));
+      // the product's legal caps (its wrapper record's fee_caps, sourced to the regulations), for the line under the table
+      const wrapperId = list[0]!.wrapperId;
+      const caps = (wrapperId && wrapperCaps.get(wrapperId)) || null;
       // F-87 and F-88 (D34): the same compaction for the amounts the exposure shares are computed from
       const period = list[0]!.reportPeriod;
       const stockTemplate = holdingsTemplate(list.map((x) => holdingsOf.get(x.fundId)), period, t);
@@ -66,6 +78,9 @@ export async function loader({ params }: Route.LoaderArgs) {
         tracks: list,
         fees,
         feeTemplate: template,
+        depositFees,
+        depositTemplate,
+        caps,
         wrapper: wrapper ? { id: wrapper.id, name: wrapper.names.he[0]!, line: terms.find((t) => t.he === wrapper.names.he[0])?.explanation ?? null } : null,
       };
     });
@@ -224,10 +239,12 @@ function ManagerCompany({ data }: { data: CompanyData }) {
                         href: `/companies/${company.id}/${t.fundId}`,
                         isDefault: data.defaultIds.includes(t.fundId),
                         fee: expandFee(g.fees[t.fundId]!, g.feeTemplate),
+                        deposit: expandFee(g.depositFees[t.fundId]!, g.depositTemplate),
                         ...(g.stockTemplate ? { exposure: exposureShares(g.holdings[t.fundId] ?? null, g.stockTemplate, g.period, data.today) } : {}),
                       })),
                       data.known,
                     )}
+                    foot={<FeeFoot caps={g.caps} />}
                   />
                 </Disclosure>
               ))}
@@ -278,6 +295,32 @@ function ManagerCompany({ data }: { data: CompanyData }) {
 
       </div>
     </PageShell>
+  );
+}
+
+/** Under each track table (D34): the product's legal caps, then that the direct expenses come on top (PF-10). */
+function FeeFoot({ caps }: { caps: { balance: SiteValue | null; deposit: SiteValue | null } | null }) {
+  return (
+    <div className="flex flex-col gap-1 text-xs text-muted-foreground">
+      {caps && (caps.balance || caps.deposit) && (
+        <span>
+          {copy.fees.cap}{" "}
+          {caps.balance && (
+            <>
+              <Num value={caps.balance} /> {caps.deposit ? copy.fees.capSavings : copy.fees.savings}{" "}
+            </>
+          )}
+          {caps.deposit && (
+            <>
+              <Num value={caps.deposit} /> {copy.fees.capDeposits}
+            </>
+          )}
+        </span>
+      )}
+      <span>
+        {copy.fees.direct} <IdRef id="PF-10" />
+      </span>
+    </div>
   );
 }
 

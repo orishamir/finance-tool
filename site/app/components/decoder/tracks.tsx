@@ -8,6 +8,7 @@ import type { SiteValue } from "../../lib/value";
 import { FeeNum } from "./fees";
 import { Num } from "../provenance";
 import { ringFraction, shareText, type ExposureShares } from "../../lib/track-exposure";
+import { trackLabels } from "../../lib/track-labels";
 import { IconAlert, IconDrillIn, IconSearch } from "../icons";
 import { useOpenSearch } from "../shell";
 import { Card, cx, ShareRings, Swatch, Tag } from "../kit";
@@ -20,6 +21,8 @@ export interface TrackRowView {
   isDefault?: boolean;
   /** The regulator's balance-fee average of the track (not a ranking: the list keeps its order). */
   fee?: SiteValue;
+  /** The regulator's deposit-fee average of the track, the fee cell's second line (D34). */
+  deposit?: SiteValue;
   /** F-87 and F-88: the shares of the track's assets exposed to stocks and to foreign currency; null or absent when its data file has no amounts. */
   exposure?: ExposureShares | null;
 }
@@ -103,7 +106,39 @@ export function ExposureCell({ value, size = "inline" }: { value: ExposureShares
   );
 }
 
-export function TrackList({ groups, feeHead, exposureHead }: { groups: Group[]; feeHead?: string; exposureHead?: string }) {
+/** The default track's tag, then the facts about this track (lib/track-labels.ts). */
+function Labels({ row }: { row: TrackRowView }) {
+  const labels = trackLabels(row.track);
+  if (!row.isDefault && labels.length === 0) return null;
+  return (
+    <span className="inline-flex flex-wrap gap-1.5">
+      {row.isDefault && <Tag tone="parameter">{copy.default}</Tag>}
+      {labels.map((l) => (
+        <Tag key={l}>{copy.labels[l]}</Tag>
+      ))}
+    </span>
+  );
+}
+
+/** Both fee averages, each with its word: the balance fee, then the deposit fee (D34). */
+function FeeLines({ row, size = "inline", inline }: { row: TrackRowView; size?: "inline" | "cell"; inline?: boolean }) {
+  const lines = [
+    { id: "savings", v: row.fee, word: copy.fees.savings },
+    { id: "deposits", v: row.deposit, word: copy.fees.deposits },
+  ].filter((l): l is typeof l & { v: SiteValue } => !!l.v);
+  return (
+    <span className={cx("flex", inline ? "flex-wrap items-center gap-x-3 gap-y-1" : "flex-col gap-1")}>
+      {lines.map((l) => (
+        <span key={l.id} className="inline-flex items-center gap-1.5 whitespace-nowrap">
+          <FeeNum value={l.v} size={size} />
+          <span className="text-sm text-muted-foreground">{l.word}</span>
+        </span>
+      ))}
+    </span>
+  );
+}
+
+export function TrackList({ groups, feeHead, exposureHead, foot }: { groups: Group[]; feeHead?: string; exposureHead?: string; foot?: ReactNode }) {
   const cols = 4 + (feeHead ? 1 : 0) + (exposureHead ? 1 : 0);
   const bannerId = useId();
   return (
@@ -124,6 +159,7 @@ export function TrackList({ groups, feeHead, exposureHead }: { groups: Group[]; 
             <TrackRow key={g.key} row={g.tracks[0]!} />
           ),
         )}
+        {foot && <div className="px-4 py-3 border-t border-border">{foot}</div>}
       </Card>
       <Card className="hidden md:block p-0 md:p-0 overflow-x-auto overflow-y-hidden">
         <table className="tbl">
@@ -157,10 +193,12 @@ export function TrackList({ groups, feeHead, exposureHead }: { groups: Group[]; 
                 rows.push(
                   <tr key={r.track.fundId + r.track.name} className={cx(g.dup && "dup-row")}>
                     <td className={cx(g.dup && "border-s-[3px] border-s-caution")}>
-                      <Link to={r.href} className="font-medium hover:underline">
-                        <bdi>{r.track.name}</bdi>
-                      </Link>{" "}
-                      {r.isDefault && <Tag tone="parameter">{copy.default}</Tag>}
+                      <span className="flex flex-col items-start gap-1.5">
+                        <Link to={r.href} className="font-medium hover:underline">
+                          <bdi>{r.track.name}</bdi>
+                        </Link>
+                        <Labels row={r} />
+                      </span>
                     </td>
                     <td>
                       <bdi dir="ltr" className="num-id">{r.track.fundId}</bdi>
@@ -175,7 +213,7 @@ export function TrackList({ groups, feeHead, exposureHead }: { groups: Group[]; 
                         )}
                       </span>
                     </td>
-                    {feeHead && <td className="whitespace-nowrap">{r.fee && <FeeNum value={r.fee} size="cell" />}</td>}
+                    {feeHead && <td>{r.fee && <FeeLines row={r} size="cell" />}</td>}
                     {exposureHead && (
                       <td className="whitespace-nowrap">
                         {r.exposure && <ExposureCell value={r.exposure} size="cell" />}
@@ -193,6 +231,7 @@ export function TrackList({ groups, feeHead, exposureHead }: { groups: Group[]; 
           </tbody>
         </table>
         {groups.some((g) => g.tracks.some((r) => r.fee && r.fee.value === null)) && <p className="px-3 py-2 text-xs text-muted-foreground border-t border-border">{r3workbench.missingKey}</p>}
+        {foot && <div className="px-3 py-3 border-t border-border">{foot}</div>}
       </Card>
     </>
   );
@@ -208,7 +247,7 @@ function TrackRow({ row }: { row: TrackRowView }) {
         <span className="flex flex-col gap-0.5 min-w-0">
           <span className="font-medium flex flex-wrap items-center gap-2">
             <bdi>{t.name}</bdi>
-            {row.isDefault && <Tag tone="parameter">{copy.default}</Tag>}
+            <Labels row={row} />
           </span>
           <TrackLine t={t} />
           <Holds t={t} />
@@ -218,10 +257,10 @@ function TrackRow({ row }: { row: TrackRowView }) {
         </span>
       </Link>
       {row.fee && (
-        <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5">
+        <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5 gap-y-1">
           {copy.feeRow}
           {t.dataset === "pensia-net" && <> {copy.feeRowWhole}</>}:
-          <FeeNum value={row.fee} />
+          <FeeLines row={row} inline />
         </span>
       )}
       {row.exposure && <ExposureCell value={row.exposure} />}

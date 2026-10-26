@@ -475,8 +475,19 @@ export const companies = {
 export const company = {
   lineBefore: "כל מה שהחברה מציעה, עם הסבר לכל מסלול. המסלולים לפי נתוני רשות שוק ההון, ביטוח וחיסכון, נכון ל",
   feesLine: "דמי הניהול שמופיעים ליד כל מסלול הם ממוצע של כל העמיתים במסלול, אחרי הנחות, לפי דיווח המסלול לרשות שוק ההון. לא בהכרח מה שתשלמו אתם.",
-  feeColumn: "דמי ניהול מחיסכון, ממוצע {year}",
-  feeRow: "דמי ניהול מחיסכון, ממוצע",
+  feeColumn: "דמי ניהול, ממוצע {year}",
+  feeRow: "דמי ניהול, ממוצע",
+  /** D34 (founder, 2026-10-26): both fees on every row, the words after each figure; the legal cap and the direct expenses under the table. */
+  fees: {
+    savings: "מהחיסכון",
+    deposits: "מההפקדות",
+    cap: "התקרה בחוק:",
+    capSavings: "מהחיסכון,",
+    capDeposits: "מההפקדות",
+    direct: "בנוסף לדמי הניהול יורדות מהקופה הוצאות ישירות (עמלות מסחר, משמורת ועוד), שלא מופיעות כאן: הן נראות בתשואה, לא כשורה בחשבון.",
+  },
+  /** The labels beside a track's name (lib/track-labels.ts): facts about this track only (D35). */
+  labels: { new: "חדש", sector: "לעובדי סקטור מסוים", body: "לעובדי גוף מסוים" } as Record<string, string>,
   feeRowWhole: "לקרן כולה",
   listHeading: "כל המסלולים של",
   tracks: { one: "מסלול אחד", two: "שני מסלולים", many: "מסלולים" },

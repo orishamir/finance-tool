@@ -11,6 +11,7 @@ import { Callout, Card, Sentence, Tag } from "../components/kit";
 import { cmaFeeValue, feeYear, type SiteValue } from "../lib/value";
 import { compactHoldings, exposureShares, holdingsTemplate, type ExposureShares, type Holdings } from "../lib/track-exposure";
 import { ShareNum } from "../components/decoder/tracks";
+import { trackLabels } from "../lib/track-labels";
 import { fmt } from "../lib/format";
 
 /** F-87 and F-88 for one track; null when its data file has no amounts. */
@@ -103,6 +104,9 @@ export default function TrackPage() {
           <h1 className="text-2xl lg:text-3xl font-semibold flex flex-wrap items-center gap-3">
             <bdi>{track.name}</bdi>
             {data.isDefault && <Tag tone="parameter">{companyCopy.default}</Tag>}
+            {trackLabels(track).map((l) => (
+              <Tag key={l}>{companyCopy.labels[l]}</Tag>
+            ))}
           </h1>
           <Sentence tone="muted">
             {copy.fundLine} <Num value={data.values.fundId} />
