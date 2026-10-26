@@ -17,26 +17,6 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "figures": {
-    "nii_fee_to_funds": {
-      "value": 0.23,
-      "unit": "pct_per_year",
-      "source": {
-        "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
-        "title": "חיסכון ארוך-טווח לכל ילד וילדה – דוח הביטוח הלאומי לשנת 2025, p.1: \"ולקופות הגמל דמי ניהול בשיעור של 0.23% לשנה מהכספים הצבורים בקופות\"",
-        "publisher": "National Insurance Institute (BTL)",
-        "strength": "primary"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "CS-18"
-      ],
-      "state": "sourced",
-      "notes": "What NII pays provident funds a year, as a share of the accumulated assets, until the child is 21 (law 74ב(ה): NII bears the cost). Set by NII under the programme's tender, not by a manager, and not charged to the member."
-    },
     "balance_cap_after_21": {
       "value": 1.05,
       "unit": "pct_per_year",
@@ -78,6 +58,26 @@
       ],
       "state": "sourced",
       "notes": "The cap on the fee from each deposit after 21, on the same reasoning as balance_cap_after_21."
+    },
+    "nii_fee_to_funds": {
+      "value": 0.23,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
+        "title": "חיסכון ארוך-טווח לכל ילד וילדה – דוח הביטוח הלאומי לשנת 2025, p.1: \"ולקופות הגמל דמי ניהול בשיעור של 0.23% לשנה מהכספים הצבורים בקופות\"",
+        "publisher": "National Insurance Institute (BTL)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "CS-18"
+      ],
+      "state": "sourced",
+      "notes": "What NII pays provident funds a year, as a share of the accumulated assets, until the child is 21 (law 74ב(ה): NII bears the cost). Set by NII under the programme's tender, not by a manager, and not charged to the member."
     }
   },
   "il_finance_file": "child-savings.md",
@@ -155,7 +155,7 @@
       "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד (נספח לחוזר גופים מוסדיים 2016-9-20)",
       "title_he": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד (נספח לחוזר גופים מוסדיים 2016-9-20)",
       "publisher": "gov.il",
-      "publisher_he": "אתר הממשלה (gov.il)",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
       "locator": "p.9, s.31.1",
@@ -169,7 +169,7 @@
       "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד (נספח לחוזר גופים מוסדיים 2016-9-20)",
       "title_he": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד (נספח לחוזר גופים מוסדיים 2016-9-20)",
       "publisher": "gov.il",
-      "publisher_he": "אתר הממשלה (gov.il)",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
       "locator": "p.10, ss.32.1, 33.1-33.2",

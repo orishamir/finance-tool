@@ -30,6 +30,7 @@
   "sipc.org": { "publisher": "SIPC", "publisher_he": "SIPC", "kind": "regulator_page", "mirror": null },
   "spglobal.com": { "publisher": "S&P Dow Jones Indices", "publisher_he": "S&P Dow Jones Indices", "kind": "other", "mirror": null },
   "indexes.nasdaqomx.com": { "publisher": "Nasdaq Global Indexes", "publisher_he": "Nasdaq Global Indexes", "kind": "other", "mirror": null },
+  "ccpc.ie": { "publisher": "Competition and Consumer Protection Commission (Ireland)", "publisher_he": "רשות התחרות והגנת הצרכן של אירלנד (CCPC)", "kind": "regulator_page", "mirror": null },
   "msci.com": { "publisher": "MSCI", "publisher_he": "MSCI", "kind": "other", "mirror": null },
   "www-cdn.msci.com": { "publisher": "MSCI", "publisher_he": "MSCI", "kind": "other", "mirror": null },
   "am.jpmorgan.com": { "publisher": "J.P. Morgan Asset Management", "publisher_he": "J.P. Morgan Asset Management", "kind": "other", "mirror": null },

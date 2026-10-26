@@ -17,6 +17,11 @@ export interface ChildSavingsInput {
   market: { grossReturn?: number; rate?: number; inflation: number };
   /** Bank route: whether the plan is CPI-linked (default unlinked). */
   bankLinkage?: "unlinked" | "cpi";
+  /**
+   * Provident route, the yearly fee on the balance after 21 as a fraction, entered by the person from their own manager's
+   * bylaw. It replaces the legal cap and is bounded by it (CS-18). Absent: the run uses the cap, an upper bound ("עד").
+   */
+  feeAfter21?: number;
 }
 
 export interface Checkpoint {
@@ -29,14 +34,20 @@ export interface Checkpoint {
   taxIfWithdrawn: number;
 }
 
-export type ChildSavingsResult = RunResult & { checkpoints: Checkpoint[]; grants: { month: number; amount: number }[] };
+export type ChildSavingsResult = RunResult & {
+  checkpoints: Checkpoint[];
+  grants: { month: number; amount: number }[];
+  /** Provident route: the fee rate after 21 the run used, and whether it is the legal cap ("עד", CS-18) or the person's own rate. */
+  feeAfter21?: { rate: number; basis: "cap" | "entered" };
+};
 
 /**
  * F-54 Child savings accumulation. Monthly `58 × I` from NII, `I` the index at the last 1 January (CS-03),
  * doubled if the parent adds (CS-04), from birth to 18 (CS-02); grants at 3, 12 or 13, and 21 by cohort,
- * updated the same way (CS-13); no fees until 21 (NII pays, CS-18), then on the provident route the after-21 rate
- * Harel and Altshuler Shaham state (CS-30, a company rate inside CS-18's legal cap). Deposits and grants
- * are principal (TXK-19). Exit tax per F-50.
+ * updated the same way (CS-13); no fees until 21 (NII pays, CS-18), then on the provident route the yearly fee on the
+ * balance at CS-18's legal cap, an upper bound ("עד"), or at the rate the person enters from their manager's bylaw, bounded
+ * by the cap (2026-10-26; CS-30's 0.23% is two companies' own rate, a named example only). No deposits after 18, so the
+ * cap on deposits does not bite. Deposits and grants are principal (TXK-19). Exit tax per F-50.
  */
 export function runChildSavings(input: ChildSavingsInput, ctx: RunContext): ChildSavingsResult {
   const book = ruleBook(ctx);
@@ -58,9 +69,15 @@ export function runChildSavings(input: ChildSavingsInput, ctx: RunContext): Chil
     },
     { month: lastGrantMonth, amount: book.amount("CS-13", "grant_age_21") },
   ];
-  // the after-21 rate is a company's (CS-30, split from CS-18 on 2026-10-25); CS-18 holds who pays until 21 and the legal cap
+  // After 21 the fee comes out of the savings, within the general provident-fund cap (CS-18: up to 1.05% of the balance and
+  // 4% of deposits). The run uses the cap unless the person enters their manager's rate, which the cap bounds (F-15's rule).
   if (provident) book.cite("CS-18");
-  const feeAfter = provident ? book.rate("CS-30", "fee_after_21") : 0;
+  const feeCap = provident ? book.rate("CS-18", "balance_cap_after_21") : 0;
+  if (input.feeAfter21 !== undefined && (!Number.isFinite(input.feeAfter21) || input.feeAfter21 < 0)) {
+    throw new RangeError(`feeAfter21 ${input.feeAfter21} must be a fraction of zero or more`);
+  }
+  const feeAfter = provident ? Math.min(input.feeAfter21 ?? feeCap, feeCap) : 0;
+  const feeBasis: "cap" | "entered" = input.feeAfter21 === undefined ? "cap" : "entered";
   book.cite("TXK-19");
   book.cite("TXK-20");
 
@@ -80,10 +97,15 @@ export function runChildSavings(input: ChildSavingsInput, ctx: RunContext): Chil
   const checkpoints: Checkpoint[] = [];
   tally.point(0, 1, 0);
 
+  // Provident route: when the CPI fell over a deposit's life its linkage is not a gain, so the taxable gain never exceeds the
+  // gains withdrawn (the kupat gemel lehashkaa base, TXK-07, read with TXS-02; F-50). A CPI-linked bank deposit's interest is
+  // taxed in full even when its linkage is negative (TXI-25), so the bank route keeps the plain indexation.
+  const floorFall = provident;
   const checkpoint = (m: number): Checkpoint => {
     const paid = principal.reduce((s, p) => s + p.amount, 0);
     const gain = balance - paid;
-    const realGain = balance - principal.reduce((s, p) => s + (p.amount * I[m]!) / p.index, 0);
+    if (floorFall && principal.some((p) => I[m]! < p.index)) book.label("reading", "TXK-07");
+    const realGain = balance - principal.reduce((s, p) => s + (!floorFall || I[m]! >= p.index ? (p.amount * I[m]!) / p.index : p.amount), 0);
     const taxIfWithdrawn = childSavingsExitTax(taxOnReal ? realGain : gain, exitRate);
     return { month: m, balance, real: balance / I[m]!, paidIn: paid, gain, realGain, taxIfWithdrawn };
   };
@@ -98,6 +120,7 @@ export function runChildSavings(input: ChildSavingsInput, ctx: RunContext): Chil
     }
     balance *= 1 + g;
     if (m > lastGrantMonth && feeAfter > 0) {
+      if (feeBasis === "cap") tally.flag("CS-18", m);
       const fee = (feeAfter / 12) * balance;
       tally.fee("balance", fee);
       balance -= fee;
@@ -123,5 +146,5 @@ export function runChildSavings(input: ChildSavingsInput, ctx: RunContext): Chil
     detail: { grossBalance: balance, gain: atExit.gain, realGain: atExit.realGain },
     formulas: ["F-54", "F-50"],
   });
-  return { ...result, checkpoints, grants };
+  return { ...result, checkpoints, grants, ...(provident ? { feeAfter21: { rate: feeAfter, basis: feeBasis } } : {}) };
 }

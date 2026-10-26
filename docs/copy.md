@@ -456,8 +456,10 @@ Why "בשקלים של העתיד" rather than "נומינלי": the reader sees
 | `flags.G-11` | (removed 2026-10-26) | the lump sum's gains carry no National Insurance or health (TXK-27), so the engine no longer raises G-11; was "דמי ביטוח לאומי על הרווח במשיכה: עוד לא ברור אם חלים. האתר לא מחשב אותם." |
 | `flags.G-14` | הוצאות ישירות של המסלול לא נאספו עדיין, ולכן לא נכללו בחישוב. |  |
 | `flags.G-21` | חלק מהמס מוסדר דרך דוח שנתי, לא בניכוי במקור. |  |
+| `flags.G-23` | נקודות הזיכוי לא הופחתו מהמס הזה. הן מקטינות את כל המס המחושב, גם על הכנסה כזו, ולכן הן משנות את התוצאה רק כשהן גדולות מהמס על שאר ההכנסה שלכם, למשל בשנה בלי משכורת. האתר לא יודע כמה נקודות זיכוי יש לכם. | added 2026-10-26 (TXG-05, method G-23): every run that charges Israeli tax carries it, so the result never assumes silently that no credit is left over |
+| `flags.CS-18` | דמי הניהול אחרי גיל עשרים ואחת חושבו לפי התקרה שבחוק, ולכן הם ״עד״: בקופה שלכם השיעור יכול להיות נמוך יותר. | added 2026-10-26 (method F-54): the child-savings fee after 21 runs on CS-18's cap unless the person enters a rate; the age in words, no typed digits |
 | `flags.PF-13` | ההנחה בדמי הניהול הוארכה לחמש שנים לפחות, לפי חוזר הרשות. |  |
-| `flags.TXK-06` | מדרגות המס המופחתות לבני הגיל המבוגר חלות קודם גם על הרווח במשיכה, כי השיעור עליו הוא שיעור מרבי. האתר עוד לא מחשב את ההקלה הזאת. | what an engine flag means, one line each; the code stays beside the words. Changed 2026-10-26: TXK OQ12 closed (TXK-06), the flag was `TXK-OQ12` and said the answer was unclear; no typed age |
+| `flags.TXK-06` | מגיל שישים מדרגות המס המופחתות חלות קודם גם על הרווח במשיכה, אבל ההפרש חוזר רק בבקשת החזר מס. בלי בקשת החזר, החישוב נשאר בשיעור המלא. | what an engine flag means, one line each; the code stays beside the words. Changed 2026-10-26: TXK OQ12 closed (TXK-06), the flag was `TXK-OQ12` and said the answer was unclear; no typed age. Changed again 2026-10-26 (follow-ups): F-44 now applies the brackets, so the flag marks only a run with the refund not claimed (A-14 off); was "...האתר עוד לא מחשב את ההקלה הזאת." |
 | `flags.TXP-11` | הפקדת המעסיק לפיצויים עוברת את תקרת הפיצויים, שנבדקת כל חודש: החלק שמעל התקרה הוא הכנסת עבודה כבר במועד ההפקדה, והאתר עוד לא מחשב את המס עליו. | added 2026-10-26: TXP OQ5 closed (circular 4/2019 s.2.1.1 applies the ceiling monthly, TXP-11); the pension run's flag was `TXP-OQ5`, shown with the general line |
 | `computedInputs.amountNow` | סכום היום | labels of the values a computation read ("ערכים שנכנסו לחישוב") |
 | `computedInputs.monthly` | הפקדה חודשית |  |
@@ -1591,6 +1593,7 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 | `r4workbench.providers.formats` | PDF · דף אינטרנט · גיליון | the tariff link's file format |
 | `r4workbench.providers.notModelledF18 · notModelledOther` | הנוסחה לעמלה הזו עוד לא נכתבה. · עמלה שאינה חלק מעלות ההחזקה השוטפת. | the two reasons a tariff line is left out: the method has no formula (G-18), or the line is not a holding cost (a transfer out) |
 | `r4workbench.providers.noLineBases` | קנייה ומכירה · דמי ניהול פיקדון ניירות ערך · המרת מטבע | the `{בסיס}` of "אין בתעריפון שורה ל`{בסיס}`" |
+| `r4workbench.providers.mmfCustodyNonBank` | בבנק אסור לגבות דמי ניהול פיקדון ניירות ערך על קרן כספית. אצל חבר בורסה שאינו בנק אין כלל שמגביל אותם, ולכן החישוב לפי התעריפון. לפי הדוח המשותף של הרגולטורים, חברי בורסה שאינם בנקים נוהגים לוותר עליהם לכל הלקוחות: זה נוהג, לא תנאי בתעריפון. | added 2026-10-26 (method F-14, F-63; BRK OQ11 closed): the note in the sheet of a non-bank member's custody line when the fund is a money-market fund |
 | `r4workbench.providers.rowLinks.edit` | עריכת ההצעה שלכם | when an offer exists. Was "הצעה שלכם: עריכה" |
 | `r4workbench.providers.vsTag · vsSet · vsClear` | מושווה · להשוות אליו · ביטול ההשוואה | choosing which row "מכריע מול" is measured against. Were "השוו אליו · בטלו השוואה": buttons are nouns or infinitives (section 2) |
 | `r4workbench.providers.detail.remainder · rate · min · max · period · channel · level · fromAverage · rules · bases` | השפעה משולבת של העמלות · שיעור · מינימום · מקסימום · תקופה · ערוץ · רמה · ממוצע · הכללים שהחישוב נשען עליהם · קנייה ומכירה · דמי ניהול פיקדון · המרת מטבע · דמי חשבון קבועים | the row detail's labels. The rules heading was "הכללים שהחישוב קרא"; 6.2's is "הכללים שההשוואה נשענת עליהם" |
@@ -2747,6 +2750,7 @@ Removed with the round, nothing renders them: `rulesPage.ruleCount`, `rulesFront
 
 | Key | Text | Note |
 |---|---|---|
+| `guideWorth.upTo` | עד | added 2026-10-26: the word before a "worth knowing" figure that is a legal cap (its name holds `cap`), so a cap never reads as the rate charged (CS-18 after 21, IRA-17) |
 | `guideWorth.title` / `.line` | שווה לדעת · עובדות על המוצר הזה שרוב האנשים לא יודעים, כל אחת עם הכלל והמקור שלה. | changed (was "שתיים או שלוש עובדות שרוב האנשים לא יודעים על המוצר הזה"): the count is not promised, and the object follows the verb |
 | `searchMore.groups.*` | כללים · פרמטרים · מסמכים | |
 | `searchMore.ruleWord` / `.parameterLine` / `.documentLine` | כלל · פרמטר של האתר · מסמך | |

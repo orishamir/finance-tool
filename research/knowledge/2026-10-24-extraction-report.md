@@ -6,11 +6,11 @@ Tables read: publishers.json yes, documents.json yes.
 
 - Rules: 583; with sources: 583; unresolved (sources_missing_reason): 0
 - Entries: 1749; with locator 1463, locator_he 1262, quote 694, anchor 18, page 1403
-- Entries with title_he: 1630; with publisher_he: 1745; rules whose first source lacks publisher_he: 1
+- Entries with title_he: 1633; with publisher_he: 1746; rules whose first source lacks publisher_he: 0
 - Rules with derived_from: 137
 - Strengths: primary 1405, primary-mirror 77, secondary 17, institution 250
 - Rule strength realigned to its best source (primary/mirror pair only): 0
-- Kinds: regulator_page 171, circular 184, law 529, article 17, regulation 234, official_pdf 267, dataset 64, institution_doc 208, exchange_rules 40, other 26, form 9
+- Kinds: regulator_page 160, circular 184, regulation 246, article 15, law 526, official_pdf 271, dataset 62, institution_doc 228, exchange_rules 25, other 23, form 9
 
 ## Per rule base file
 
@@ -48,10 +48,9 @@ Tables read: publishers.json yes, documents.json yes.
 ## Skipped inside a line (entries without a link, unresolved references, bad URLs)
 
 
-## Hosts missing from publishers.json (3)
+## Hosts missing from publishers.json (2)
 
 - mvs.co.il: 2
-- ccpc.ie: 1
 - tahun.co.il: 1
 
 ## Most frequent document titles without title_he (title up to the locator)
@@ -77,8 +76,6 @@ Tables read: publishers.json yes, documents.json yes.
 - 1 x status 104
 - 1 x Knesset OData search of bill names containing "ביטוח פיקדונות"/"פקדונות"
 - 1 x ISA, Conditions of the General Permit under
-- 1 x TASE, How to become TASE Foreign Bank Member, January 2026
-- 1 x Competition and Consumer Protection Commission (Ireland): How does the Investor Compensation Scheme protect you
 - 1 x Interactive Brokers: Commissions Stocks, ETFs, Warrants and Structured Products
 - 1 x Interactive Brokers: Commissions Spot Currencies
 - 1 x Interactive Brokers: Required Minimums
@@ -125,7 +122,6 @@ Tables read: publishers.json yes, documents.json yes.
 - 1 x Knesset OData, KNS_IsraelLaw 2242328
 - 1 x Knesset OData KNS_Bill, PrivateNumber 6522
 - 1 x Knesset OData KNS_Status 104
-- 1 x TASE, How to become TASE Remote Member, January 2026
 - 1 x SIPC, What SIPC Protects
 - 1 x חוק הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים), התשס"ה-2005 (Wikisource, mirror of the law)
 - 1 x כללי הבנקאות (שירות ללקוח) (העברת פעילות פיננסית של לקוח בין בנקים), תש"ף-2019, נוסח עדכני נכון ליום 05-10-2026 (Nevo)
@@ -137,4 +133,4 @@ Tables read: publishers.json yes, documents.json yes.
 
 ## Rules whose first source lacks publisher_he
 
-BRK-35
+(none)

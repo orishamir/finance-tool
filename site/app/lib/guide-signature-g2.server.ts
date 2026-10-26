@@ -292,9 +292,12 @@ export function buildProvident(c: G2Ctx): SignatureData {
     ["nominalRate", "TXK-06", "nominal_rate"],
     ["ceiling", "KGL-03", "ceiling"],
     ["brokerTaxRate", "TXS-09", "rate"],
+    ["sixtyAge", "TXG-04", "age"],
   ]);
   d.facts.returnPct = p05Value(c.p05, "A-01");
   d.facts.inflationPct = p05Value(c.p05, "A-02");
+  // 2026-10-26: from 60 the lump sum's tax depends on the other income in the exit year (F-44 with F-42); the run takes P-05's
+  d.facts.incomeP05 = p05Value(c.p05, "annual_income");
   // TXK-OQ4 / PEN-OQ7: the annuity's size needs conversion factors the site does not hold
   d.gaps.push("annuityFactors");
   return withRules(d, "KGL-02", "KGL-03", "KGL-08", "TXK-01", "TXK-03", "TXK-04", "TXK-05", "TXK-06", "TXK-07", "TXK-08", "TXK-09", "TXK-10", "TXK-11", "TXK-12", "TXS-09");

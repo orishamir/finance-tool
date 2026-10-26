@@ -102,17 +102,6 @@
   "checked": "2026-10-26",
   "sources": [
     {
-      "url": "https://market.tase.co.il/he/market_data/index/142/about",
-      "title": "הבורסה, \"ת\"א-35 אודות המדד\" (מדד 142)",
-      "title_he": "הבורסה, \"ת\"א-35 אודות המדד\" (מדד 142)",
-      "publisher": "Tel Aviv Stock Exchange",
-      "publisher_he": "הבורסה לניירות ערך בתל אביב",
-      "kind": "dataset",
-      "strength": "institution",
-      "checked": "2026-10-25",
-      "qualifier": "(TASE's market-data page; read in Chrome; for its description and identifiers)"
-    },
-    {
       "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
       "title": "הבורסה, \"הנחיות על פי החלק השביעי לתקנון\" (מדריך מעו\"ף, עמודים מעודכנים עד 4.8.2026)",
       "title_he": "הנחיות על פי החלק השביעי לתקנון הבורסה (״מדריך מעו״ף״)",
@@ -124,6 +113,17 @@
       "page": 28,
       "checked": "2026-10-26",
       "qualifier": "(exchange rules, ISA-approved)"
+    },
+    {
+      "url": "https://market.tase.co.il/he/market_data/index/142/about",
+      "title": "הבורסה, \"ת\"א-35 אודות המדד\" (מדד 142)",
+      "title_he": "ת״א-35: אודות המדד",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25",
+      "qualifier": "(TASE's market-data page; read in Chrome; for its description and identifiers)"
     }
   ]
 }

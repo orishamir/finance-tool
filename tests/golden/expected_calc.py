@@ -181,6 +181,20 @@ def solve_buy(cash, spec):
     return max(v, 0.0), c
 
 
+def lot_real(cons, cost, j_buy, j_sale):
+    """Real gain of one lot sold for `cons` (TXS-02; TXF-03 for an exchange rate; added 2026-10-26).
+    Index rose: the inflationary amount cost × (J_sale/J_buy − 1) is exempt, so real = cons − cost × J_sale/J_buy.
+    Index fell: the inflationary amount is 0, not negative, and the whole nominal gain is real (circular 10/2025,
+    appendix, example 3). On a nominal loss, the part equal to the fall is not allowable: only the loss beyond
+    cost × (1 − J_sale/J_buy) counts (example 4; Supreme Court, Moses, para 26)."""
+    if j_sale >= j_buy:
+        return cons - cost * j_sale / j_buy
+    if cons >= cost:
+        return cons - cost
+    fall = cost * (1.0 - j_sale / j_buy)
+    return -max(0.0, (cost - cons) - fall)
+
+
 BRK60 = [(84120, .10), (120720, .14), (228000, .20), (301200, .31), (560280, .35), (math.inf, .47)]
 
 
@@ -311,7 +325,7 @@ class Sec:
         spread_cost = self.units() * self.P * self.spread
         c = comm_of(gross, self.comm)
         fxfee = self.fx * (gross - c)
-        per_lot = [(l[0] * self.P * (1.0 - self.spread)) - l[1] * jt / l[2] for l in self.lots]
+        per_lot = [lot_real(l[0] * self.P * (1.0 - self.spread), l[1], l[2], jt) for l in self.lots]
         nominal_gain = gross - sum(l[1] for l in self.lots) - ded
         real = sum(per_lot) - ded
         neg_lots = sum(1 for x in per_lot if x < 0)
@@ -387,8 +401,11 @@ def run_provident(T, sched, r, path, direct=0.0, balfee=lambda m: 0.0, depfee=0.
 
 
 def kgl_exit(res, path, T):
+    """F-44: 25% of the real gain. Gains withdrawn are interest; only gains equal to the linkage on the money are linkage
+    income (TXK-05, TXK-07). When the CPI fell over a deposit's life there is no such gain, so that deposit counts at its
+    amount and the base never exceeds the gains withdrawn (a reading, added 2026-10-26)."""
     dep_sum = sum(a for a, _, _ in res['deposits'])
-    indexed = sum(a * path.I(T) / path.I(j) for a, j, _ in res['deposits'])
+    indexed = sum(a * path.I(T) / path.I(j) if path.I(T) >= path.I(j) else a for a, j, _ in res['deposits'])
     nominal_gain = res['B'] - dep_sum
     real_gain = res['B'] - indexed
     t25 = 0.25 * max(0.0, real_gain)
@@ -683,7 +700,7 @@ def bond_run(T, cash, coupon, path, linked, coupon_tax, rate_exit=None):
     fees['trade'] += c
     ded = deductible[year]
     if linked:
-        real = sum(l[0] * price(T) - l[1] * path.I(T) / l[2] for l in lots) - ded
+        real = sum(lot_real(l[0] * price(T), l[1], l[2], path.I(T)) for l in lots) - ded
     else:
         real = gross - sum(l[1] for l in lots) - ded
     tax_exit = rate_exit * max(0.0, real)
@@ -736,7 +753,7 @@ def s08_s09_s10():
         f'| 1 | π = −1%: principal and coupon are reduced with the index, no floor | {L("GOV-12", "GOV-11")} | I_36 = {f6(pm.I(36))} |\n'
         f'| 2 | The reduced coupon is still taxed in full at 25%; interest and linkage are separate incomes (Supreme Court, applied here by analogy from an FX-linked deposit) | {L("TXI-25", "TXI-14")} | tax during {f2(r10["tax_during"])} |\n'
         f'| 3 | The negative linkage on the principal is not offset: a positive linkage would have been exempt | {L("TXI-25", "TXI-05")} | no loss carried |\n'
-        f'| 4 | Exit at indexed par: real gain per lot ≤ 0 → no exit tax. Whether the price loss could offset the year\'s coupon (s.92(a)(4)) is open (TXS OQ15) and worth at most about 410 NIS (0.4%), under the 0.5% line | {L("TXI-12", "TXS-17")} | tax at exit {f2(r10["tax_exit"])} |\n\n'
+        f'| 4 | Exit at indexed par: the CPI fell, so each lot\'s inflationary amount is 0 and its nominal loss counts only beyond the fall, which here takes it all; the exit-year custody is the only loss left → no exit tax (TXS OQ15 closed 2026-10-26) | {L("TXS-02", "TXI-12", "TXS-17")} | gain {f2(r10["real_gain"])}, tax at exit {f2(r10["tax_exit"])} |\n\n'
         + table(['Year', 'Indexed coupon', 'Tax 25%'], rows)
         + f'\n\nResult: V_T = {f2(r10["V"])}; real {f2(r10["real_V"])}; fees: trade {f2(r10["fees"]["trade"])}, custody {f2(r10["fees"]["custody"])}.'
     )
@@ -760,7 +777,7 @@ def s11_s13_s37():
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
         f'| 1 | Gross return of a daily money-market fund: the BoI rate, as the regulator describes these funds (proxy) | {L("MF-34")} | g = {f6(mrate(0.0325))} |\n'
         f'| 2 | Fund fees (management 0.16% + trustee 0.02%) are deducted inside the price: δ/12 a month | {L("MF-16", "MF-20")} | δ = 0.18% |\n'
-        f'| 3 | No commission at a bank under a distribution agreement; no custody on money-market funds | {L("MF-26", "BRK-17")} | 0 |\n'
+        f'| 3 | No commission at a bank under a distribution agreement; no custody on money-market funds at a bank | {L("MF-26", "BRK-17")} | 0 |\n'
         f'| 4 | Exempt fund: nothing while holding | {L("TXS-12", "TXS-08")} | 0 |\n'
         f'| 5 | Exit: 25% of the real gain, lots FIFO, inflationary amount = cost × (I_T/I_buy − 1) | {L("TXS-12", "TXS-09", "TXS-06", "TXG-12")} | real gain {f2(out["real_gain"])} → tax {f2(out["tax"])} |\n\n'
         + year_table(snaps)
@@ -804,7 +821,7 @@ def s11_s13_s37():
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
         f'| 1 | As S11 with BoI 1%: g = 1.01^(1/12) − 1, δ = 0.18% | {L("MF-34", "MF-16")} | g = {f6(mrate(0.01))} |\n'
         f'| 2 | Real gain = gain − inflationary amount; tax 25% of real gain; a negative real gain gives no tax | {L("TXS-09", "TXS-02", "TXG-12")} | real {f2(out37["real_gain"])} |\n'
-        f'| 3 | Whether the real loss is an allowable loss is open; it is not carried | {L("TXG-12")} (TXG OQ13, TXS OQ15) | flag |\n'
+        f'| 3 | The nominal gain is positive, so the CPI rise above it is exempt and no capital loss arises: a capital loss is measured in nominal terms only (TXG OQ13 closed 2026-10-26) | {L("TXG-12", "TXS-02")} | flag |\n'
     )
     section('S37', 'Negative real gain', 'computed', body,
             f'Real V_T/I_T = {f2(out37["real_V"])}; nominal V_T = {f2(out37["V"])}; nominal gain {f2(nominal)} (positive); real gain {f2(out37["real_gain"])} (negative); tax 0; fees: fund {f2(sec37.fees["fund"])}; flag "real loss not carried, G-07" (TXG OQ13).')
@@ -1133,7 +1150,7 @@ def s31_s32():
                 b18 = (B, list(principal))
 
         def exit_tax(bal, prin, T):
-            real = bal - sum(a * path.I(T) / path.I(j) for a, j in prin)
+            real = bal - sum(a * path.I(T) / path.I(j) if path.I(T) >= path.I(j) else a for a, j in prin)
             return real, 0.25 * max(0.0, real)
         r18, t18 = exit_tax(b18[0], b18[1], 216)
         r21, t21 = exit_tax(B, principal, 252)
@@ -1145,7 +1162,7 @@ def s31_s32():
         f'| 1 | NII deposits 58 a month (2026), updated once a year on 1 January by the CPI rise: year k deposit = 58 × I_(12(k−1)) (D7 closed: the rule\'s annual step) | {L("CS-03")} | — |\n'
         f'| 2 | Parental addition of the same amount from birth (doubling) → 116 a month in 2026; deposits months 1..216 | {L("CS-04")} | — |\n'
         f'| 3 | Born 2026-01-01 (2017+ cohort): 291 at age 3, 291 at 13 (boy) or 12 (girl), 582 at 21 if nothing was withdrawn; each CPI-updated each 1 January | {L("CS-13")} | sex not given (Q10): both shown |\n'
-        f'| 4 | Growth at r_g 6%; no management fees until 21 (NII pays); 0.23% of balance after 21 | {L("CS-18")} | — |\n'
+        f'| 4 | Growth at r_g 6%; no management fees until 21 (NII pays); after 21 up to the legal cap of 1.05% of the balance (not reached here) | {L("CS-18")} | — |\n'
         f'| 5 | Deposits, addition and grants are not income: they are principal | {L("TXK-19")} | — |\n'
         f'| 6 | Tax at withdrawal, provident route: 25% of the real gain, withheld (secondary source, TXK-23; no official rate) | {L("TXK-20", "TXK-23")} | see table |\n\n'
         + table(['Case', 'Paid in by 18', 'Balance at 18', 'Real gain at 18', 'Tax if withdrawn at 18', 'Balance at 21', 'Real gain at 21', 'Tax if withdrawn at 21'],
@@ -1154,7 +1171,7 @@ def s31_s32():
         + '\n\nGrants (nominal): ' + ', '.join(f'month {gm}: {f2(ga)}' for gm, ga in bo['grants'])
     )
     section('S31', 'Child savings, provident route, doubled', 'computed', body,
-            f'Gross balance at 18 = {f2(bo["b18"])} (boy) / {f2(gi["b18"])} (girl), real {f2(bo["b18"] / path.I(216))} / {f2(gi["b18"] / path.I(216))}; at 21 = {f2(bo["b21"])} / {f2(gi["b21"])}, real {f2(bo["b21"] / path.I(252))} / {f2(gi["b21"] / path.I(252))}. Tax if withdrawn at 21: {f2(bo["t21"])} / {f2(gi["t21"])} (25% of the real gain, label "secondary source", TXK-23); at 18: {f2(bo["t18"])} / {f2(gi["t18"])}. Grants: {f2(bo["grants"][0][1])} at 3, {f2(291 * path.I(156))} at 13 (boy) or {f2(291 * path.I(144))} at 12 (girl), {f2(bo["grants"][2][1])} at 21. Fees 0 until 21, then 0.23% of balance. Subject to Q10 (sex).')
+            f'Gross balance at 18 = {f2(bo["b18"])} (boy) / {f2(gi["b18"])} (girl), real {f2(bo["b18"] / path.I(216))} / {f2(gi["b18"] / path.I(216))}; at 21 = {f2(bo["b21"])} / {f2(gi["b21"])}, real {f2(bo["b21"] / path.I(252))} / {f2(gi["b21"] / path.I(252))}. Tax if withdrawn at 21: {f2(bo["t21"])} / {f2(gi["t21"])} (25% of the real gain, label "secondary source", TXK-23); at 18: {f2(bo["t18"])} / {f2(gi["t18"])}. Grants: {f2(bo["grants"][0][1])} at 3, {f2(291 * path.I(156))} at 13 (boy) or {f2(291 * path.I(144))} at 12 (girl), {f2(bo["grants"][2][1])} at 21. Fees 0 until 21, then up to 1.05% of the balance (CS-18; see S54). Subject to Q10 (sex).')
 
 
 
@@ -1204,7 +1221,7 @@ def s34_s35_s36_s38():
         f'| 3 | Real capital gain is taxed at a maximum rate of 25% as the top slice; lower brackets apply first | {L("TXG-07", "TXG-08", "TXS-01")} | — |\n'
         f'| 4 | Tax = Σ over the slice from Y = 60,000 to Y + real of min(bracket rate, 25%) | {L("TXG-07")} | {f2(ts)} |\n'
         f'| 5 | Bank withholds 25% regardless; difference refunded through a return or form 0135 (A-14 on) | {L("TXS-23", "TXS-05", "TXG-25")} | withheld {f2(w)}, refund {f2(w - ts)} |\n'
-        f'| 6 | Credit points against special-rate income are open; not applied | {L("TXG-05")} (TXG OQ6) | — |\n'
+        f'| 6 | Credit points come off the whole computed tax, special-rate income included; the person\'s points are not an input, so none are applied (flag G-23) | {L("TXG-05")} | — |\n'
     )
     section('S34', 'Exit at age 60 with low other income', 'computed', body,
             f'Real gain {f2(r)}; tax at the brackets {f2(ts)} (capped at 25% slice by slice, method F-42); 25% withheld {f2(w)}; refund {f2(w - ts)}; V_T after refund {f2(V)}, real {f2(V / path.I(60))}; fees: {fees_line(sec, out)}. Subject to Q2 (exit year = year 5, age 60 reached in it).')
@@ -2000,6 +2017,141 @@ def s40_fill():
             '. Fund variants, tracks and providers inside each wrapper: compared in the workbench (3.4). Filled in: every wrapper\'s terms from the earlier examples.')
 
 
+# --------------------------------------------------------------------------
+# Follow-ups, 2026-10-26: the falling index, the relief from 60 on a kupat gemel lehashkaa, the child-savings fee after
+# 21 at the legal cap, and money-market custody at a non-bank member. Same ledgers as above.
+# --------------------------------------------------------------------------
+
+def s51():
+    path = Path(0.025)
+    T = 60
+    sched = kgl_schedule(T, 80000.0, 0.0, path)
+    res = run_provident(T, sched, 0.06, path, direct=0.0010, balfee=lambda m: 0.008)
+    ex = kgl_exit(res, path, T)
+    Y = 60000.0
+    r = max(0.0, ex['real_gain'])
+    ts = slice_tax_capped(Y, r, 0.25)
+    V = res['B'] - ts
+    body = (
+        '| Step | What | Rule | Value |\n|---|---|---|---|\n'
+        f'| 1 | Ledger as S20 with 80,000 now (within the 83,641 ceiling), no monthly, 60 months | as S20; {L("KGL-03")} | gross {f2(res["B"])} |\n'
+        f'| 2 | Lump sum: gains are interest income at up to 25%, on the real gain | {L("TXK-05", "TXK-06", "TXK-07")} | real gain {f2(ex["real_gain"])} |\n'
+        f'| 3 | The person reaches 60 in the exit tax year: the reduced 10/14/20/31% brackets apply to all their taxable income; 25% is a maximum rate, so lower brackets apply first, and the gains are the top slice | {L("TXK-06", "TXG-04", "TXG-07")} | — |\n'
+        f'| 4 | Tax = Σ over the slice from Y = 60,000 to Y + real of min(bracket rate, 25%) | {L("TXG-07")} | {f2(ts)} |\n'
+        f'| 5 | At the full rate it would be 25% of the real gain; the difference comes back through a return (A-14 on) | {L("TXG-25")} | full {f2(ex["tax25real"])}, relief {f2(ex["tax25real"] - ts)} |\n'
+        f'| 6 | Surtax: Y + real is far below the threshold | {L("TXG-09")} | 0 |\n'
+    )
+    section('S51', 'Kupat gemel lehashkaa, lump sum at 60 with low other income', 'computed', body,
+            f'Gross balance {f2(res["B"])}; real gain {f2(ex["real_gain"])}; tax at the brackets {f2(ts)} (method F-44 with F-42); at the full 25% it would be {f2(ex["tax25real"])}, so the relief is {f2(ex["tax25real"] - ts)}; V_T {f2(V)}, real {f2(V / path.I(T))}; fees: balance {f2(res["fees"]["balance"])}, direct expenses {f2(res["fees"]["direct"])}; flag G-21 (settled through a return).')
+
+
+def s52():
+    common = dict(index='X', delta=0.0007 + 0.0023, spread=0.0, custody={'pct': 0.0015, 'min': 0.0})
+    sa, sna, oa, pa = run_etf(60, 100000.0, 0.0, 0.06, 0.025, f=-0.03, **common)
+    sb, snb, ob, pb = run_etf(60, 100000.0, 0.0, -0.01, 0.025, f=-0.03, **common)
+    # The same lots without the rule, for the record: cost indexed by X_T/X_buy whichever way X moved.
+    def unfloored(sec, out):
+        jt = sec.path.X(60)
+        return sum(l[0] * sec.P - l[1] * jt / l[2] for l in sec.lots) - out['deductible_exit_year']
+    ua, ub = unfloored(sa, oa), unfloored(sb, ob)
+    nom_a = oa['gross_or_B'] - sum(l[1] for l in sa.lots)
+    cost_b = sum(l[1] for l in sb.lots)
+    fall_b = sum(l[1] * (1 - sb.path.X(60) / l[2]) for l in sb.lots)
+    body = (
+        '| Step | What | Rule | Value |\n|---|---|---|---|\n'
+        f'| 1 | As S16 (TASE foreign fund, 90% test met, so the exchange rate is the index) with the shekel strengthening: f = −3% a year, X_60 = {f6(pa.X(60))} | {L("TXF-04", "TXF-03")} | — |\n'
+        f'| 2 | (a) r_g 6% in shekels: each lot\'s inflationary amount would be negative; it is 0, so the real gain is the nominal gain, less the exit-year custody {f2(oa["deductible_exit_year"])} | {L("TXS-02", "TXF-03")} | nominal gain {f2(nom_a)}, real gain {f2(oa["real_gain"])} (without the rule {f2(ua)}) |\n'
+        f'| 3 | (a) Tax 25% of that gain | {L("TXF-02", "TXS-09")} | {f2(oa["tax"])} |\n'
+        f'| 4 | (b) r_g −1% in shekels: the sale ends in a nominal loss of {f2(cost_b - ob["gross_or_B"])}, smaller than the part caused by the fall, {f2(fall_b)}; that part is not allowable, so no loss is left beyond the exit-year custody, and no tax | {L("TXS-02", "TXF-03")} | real gain {f2(ob["real_gain"])} (without the rule {f2(ub)}, which would have been taxed) |\n'
+        f'| 5 | (b) Tax | {L("TXF-02")} | {f2(ob["tax"])} |\n\n'
+        + f'(a) V_T {f2(oa["V"])}, real {f2(oa["real_V"])}; fees: {fees_line(sa, oa)}.  \n'
+        + f'(b) V_T {f2(ob["V"])}, real {f2(ob["real_V"])}; fees: {fees_line(sb, ob)}.'
+    )
+    section('S52', 'TASE foreign fund when the shekel strengthens', 'computed', body,
+            f'(a) r_g 6%: nominal gain {f2(nom_a)}; real gain {f2(oa["real_gain"])} (the inflationary amount is 0, not negative; without the rule it would be {f2(ua)}); tax at exit {f2(oa["tax"])}; V_T {f2(oa["V"])}, real {f2(oa["real_V"])}. (b) r_g −1%: real gain {f2(ob["real_gain"])} (the nominal loss is smaller than the fall, so none of it is allowable; without the rule {f2(ub)}); tax at exit {f2(ob["tax"])}; V_T {f2(ob["V"])}, real {f2(ob["real_V"])}; flag "real loss not carried, G-07".')
+
+
+def s53():
+    sec, snaps, out, path = run_etf(60, 20000.0, 2000.0, 0.06, -0.01)
+    pk = Path(-0.01)
+    sched = kgl_schedule(60, 20000.0, 2000.0, pk)
+    res = run_provident(60, sched, 0.06, pk, direct=0.0010, balfee=lambda m: 0.008)
+    ex = kgl_exit(res, pk, 60)
+    nom = out['gross_or_B'] - sum(l[1] for l in sec.lots)
+    body = (
+        '| Step | What | Rule | Value |\n|---|---|---|---|\n'
+        f'| 1 | (a) As S14 (Israeli ETF, CPI index) with π = −1%: monthly 2,000 × I_m, so contributions fall with the index; I_60 = {f6(path.I(60))} | method A-04; {L("TXS-14")} | — |\n'
+        f'| 2 | (a) Each lot was bought at a higher CPI than at the sale: its inflationary amount is 0, so the real gain is the nominal gain, less the exit-year custody {f2(out["deductible_exit_year"])} | {L("TXS-02", "TXG-12", "TXS-06")} | nominal {f2(nom)}, real {f2(out["real_gain"])} |\n'
+        f'| 3 | (a) Tax 25% | {L("TXS-13", "TXS-09")} | {f2(out["tax"])} |\n'
+        f'| 4 | (b) As S20 (kupat gemel lehashkaa) with π = −1%: with a falling CPI there is no gain equal to linkage, so each deposit counts at its amount and the base is the nominal gain (reading of s.3(ה4)(3) with s.9(13)) | {L("TXK-05", "TXK-07")} | real gain {f2(ex["real_gain"])} = nominal {f2(ex["nominal_gain"])} |\n'
+        f'| 5 | (b) Tax 25% | {L("TXK-07")} | {f2(ex["tax25real"])} |\n\n'
+        + f'(a) V_T {f2(out["V"])}, real {f2(out["real_V"])}; fees: {fees_line(sec, out)}.  \n'
+        + f'(b) gross {f2(res["B"])}; V_T {f2(ex["V25"])}, real {f2(ex["realV25"])}; fees: balance {f2(res["fees"]["balance"])}, direct {f2(res["fees"]["direct"])}.'
+    )
+    section('S53', 'Israeli ETF and kupat gemel lehashkaa under CPI deflation', 'computed', body,
+            f'(a) ETF: nominal gain {f2(nom)}; real gain {f2(out["real_gain"])} (inflationary amount 0); tax at exit {f2(out["tax"])}; V_T {f2(out["V"])}, real {f2(out["real_V"])}. (b) Kupat gemel lehashkaa: real gain {f2(ex["real_gain"])}, equal to the nominal gain; tax at exit {f2(ex["tax25real"])}; V_T {f2(ex["V25"])}, real {f2(ex["realV25"])}; label "reading" on TXK-07.')
+
+
+def s54():
+    path = Path(0.02)
+    out = {}
+    for name, fee in (('cap', 0.0105), ('entered', 0.0023)):
+        grants = [(36, 291.0 * path.I(36)), (156, 291.0 * path.I(156)), (252, 582.0 * path.I(252))]
+        g = mrate(0.06)
+        B, fees = 0.0, 0.0
+        principal = []
+        for m in range(1, 301):
+            if m <= 216:
+                k = (m - 1) // 12 + 1
+                amt = 2 * 58.0 * path.I(12 * (k - 1))
+                B += amt
+                principal.append((amt, m))
+            B *= (1.0 + g)
+            if m > 252:  # NII pays until 21; then the fee comes out of the savings (CS-18)
+                f = fee / 12.0 * B
+                fees += f
+                B -= f
+            for gm, ga in grants:
+                if gm == m:
+                    B += ga
+                    principal.append((ga, gm))
+        real = B - sum(a * path.I(300) / path.I(j) for a, j in principal)
+        tax = 0.25 * max(0.0, real)
+        out[name] = {'B': B, 'fees': fees, 'real_gain': real, 'tax': tax, 'V': B - tax}
+    c, e = out['cap'], out['entered']
+    body = (
+        '| Step | What | Rule | Value |\n|---|---|---|---|\n'
+        f'| 1 | As S31 (boy, doubled, r_g 6%, π 2%), withdrawn at 25 (month 300) | as S31 | — |\n'
+        f'| 2 | No fees until 21 (NII pays); after 21 the fee comes out of the savings, within the general cap: up to 1.05% a year of the balance and 4% of deposits (no deposits after 18) | {L("CS-18", "PF-02")} | — |\n'
+        f'| 3 | (a) The site\'s figure is the cap, an upper bound ("עד"): 1.05%/12 of the month-end balance, months 253 to 300 | {L("CS-18")} | fees {f2(c["fees"])} |\n'
+        f'| 4 | (b) A rate the person enters from their manager\'s bylaw replaces the cap; here 0.23%, the rate two companies state | {L("CS-30")} | fees {f2(e["fees"])} |\n'
+        f'| 5 | Tax at withdrawal: 25% of the real gain (secondary source) | {L("TXK-20", "TXK-23")} | (a) {f2(c["tax"])}, (b) {f2(e["tax"])} |\n\n'
+        + table(['Case', 'Balance at 25', 'Fees after 21', 'Real gain', 'Tax', 'Net', 'Net / I_300'],
+                [[lab, f2(r['B']), f2(r['fees']), f2(r['real_gain']), f2(r['tax']), f2(r['V']), f2(r['V'] / path.I(300))] for lab, r in (('(a) cap', c), ('(b) entered 0.23%', e))])
+    )
+    section('S54', 'Child savings, provident route, withdrawn at 25', 'computed', body,
+            f'(a) At the legal cap (1.05% of the balance after 21, labelled "עד"): balance at 25 {f2(c["B"])}; fees after 21 {f2(c["fees"])}; tax if withdrawn {f2(c["tax"])} (25% of the real gain {f2(c["real_gain"])}); net {f2(c["V"])}, real {f2(c["V"] / path.I(300))}; flag "fee after 21 at the cap". (b) With an entered 0.23%: balance {f2(e["B"])}; fees after 21 {f2(e["fees"])}; tax {f2(e["tax"])}; net {f2(e["V"])}, real {f2(e["V"] / path.I(300))}.')
+
+
+def s55():
+    path = Path(0.03)
+    sec = Sec(path, delta=0.0018, custody={'pct': 0.001, 'min': 0.0})
+    sched = contrib_schedule(24, 50000.0, 1000.0, path, True)
+    snaps = run_sec2(sec, 24, sched, mrate(0.0325))
+    out = sec.liquidate(24)
+    body = (
+        '| Step | What | Rule | Value |\n|---|---|---|---|\n'
+        f'| 1 | As S11 (daily money-market fund, BoI 3.25% as the proxy, δ 0.18%) at a TASE member that is not a bank | {L("MF-34", "MF-16")} | — |\n'
+        f'| 2 | A bank may not charge custody on money-market units; that ban binds banks only, and the distribution-fee regulations leave out an investment marketer, so no rule limits a non-bank member\'s custody: its tariff line applies (scenario: 0.1% a quarter, no minimum; regulators report it is customarily waived, which is practice, not a term) | {L("BRK-17", "MF-26", "MF-27")} | custody {f2(sec.fees["custody"])} |\n'
+        f'| 3 | Custody is paid by removing units oldest first; the exit-year custody is deducted from the gain once | {L("TXS-06")} | deducted {f2(out["deductible_exit_year"])} |\n'
+        f'| 4 | Exit: 25% of the real gain | {L("TXS-12", "TXS-09")} | real gain {f2(out["real_gain"])} → tax {f2(out["tax"])} |\n\n'
+        + year_table(snaps)
+        + f'\n\nResult: V_T = {f2(out["V"])}; real {f2(out["real_V"])}.'
+    )
+    section('S55', 'Daily money-market fund at a non-bank member', 'computed', body,
+            f'Real V_T/I_T = {f2(out["real_V"])}; nominal V_T = {f2(out["V"])}; fees: fund (δ) {f2(sec.fees["fund"])}, trade 0, custody {f2(sec.fees["custody"])}; tax at exit {f2(out["tax"])} (25% of real gain {f2(out["real_gain"])}).')
+
+
 def main():
     s01_s02_s04()
     s03()
@@ -2029,6 +2181,11 @@ def main():
     s47_fill()
     s49_fill()
     s50_fill()
+    s51()
+    s52()
+    s53()
+    s54()
+    s55()
     missing = sorted(i for i in USED if i not in RULES or not RULES[i]['url'])
     if missing:
         sys.exit('rules cited but not in the rule base: ' + ', '.join(missing))

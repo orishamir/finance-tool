@@ -84,10 +84,17 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
     ...(inflationPct ? { [copy.hishtalmut.inputNames.inflation]: inflationPct } : {}),
     ...(trackFee ? { [copy.hishtalmut.inputNames.trackFee]: trackFee } : {}),
   };
+  // 2026-10-26 (F-44 with F-42): once the exit year is at 60 or over, the reduced brackets apply first, so the tax and what is left
+  // depend on the age and on the other income in that year (the site's scenario income, P-05); the sheets name both.
+  const sixty = fact(data, "sixtyAge");
+  const incomeP05 = fact(data, "incomeP05");
+  const atSixty = model.ageAtExit !== null && typeof sixty?.value === "number" && model.ageAtExit >= sixty.value;
+  const ageInputs: Record<string, SiteValue> =
+    atSixty && age !== null ? { [copy.provident.ageLabel]: enteredValue(age, "years", today, copy.provident.ageLabel), ...(incomeP05 ? { [copy.provident.incomeName]: incomeP05 } : {}) } : {};
   const kglRules = kgl ? rulesOfBundle(kgl) : [];
   const v = {
-    net: model.lump ? figure(model.lump.net, "nis", "F-44", common, today, copy.provident.about.net, kglRules) : null,
-    tax: model.lump ? figure(model.lump.tax, "nis", "F-44", { ...common, ...(taxRate ? { [copy.provident.taxRate]: taxRate } : {}) }, today, copy.provident.about.tax, kglRules) : null,
+    net: model.lump ? figure(model.lump.net, "nis", "F-44", { ...common, ...ageInputs }, today, copy.provident.about.net, kglRules) : null,
+    tax: model.lump ? figure(model.lump.tax, "nis", "F-44", { ...common, ...ageInputs, ...(taxRate ? { [copy.provident.taxRate]: taxRate } : {}) }, today, copy.provident.about.tax, kglRules) : null,
     alt: model.alt ? figure(model.alt.tax, "nis", "F-44", { ...common, ...(nominalRate ? { [copy.provident.nominalRate]: nominalRate } : {}) }, today, copy.provident.about.alt, kglRules) : null,
     transfer: model.transfer !== null ? figure(model.transfer, "nis", "F-45", common, today, copy.provident.about.transfer, kglRules) : null,
     gain: model.lump ? figure(model.lump.gain, "nis", "F-67", common, today, copy.provident.about.gain, kglRules) : null,

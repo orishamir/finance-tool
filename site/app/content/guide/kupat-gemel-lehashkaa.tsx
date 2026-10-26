@@ -36,9 +36,9 @@ export const content: GuideContent = {
         </Callout>
         <RulesLine ids={["TXK-10", "KGL-09"]} />
         <Callout tone="caution" className="max-w-measure">
-          <span className="font-medium">מגיל {sixty ? <Num value={sixty} /> : null} המס על הרווח במשיכה יכול להיות נמוך יותר.</span> השיעור על הרווח הוא שיעור מרבי, ולכן מדרגות המס הנמוכות של בני {sixty ? <Num value={sixty} /> : null} ומעלה חלות עליו קודם; מאחר שהרווח הוא המדרגה העליונה של ההכנסה, זה עוזר רק כשהכנסות אחרות משאירות את המדרגות האלה פנויות. האתר עוד לא מחשב את ההקלה הזאת <RuleRef id="TXK-06" />.
+          <span className="font-medium">מגיל {sixty ? <Num value={sixty} /> : null} המס על הרווח במשיכה יכול להיות נמוך יותר.</span> השיעור על הרווח הוא שיעור מרבי, ולכן מדרגות המס הנמוכות של בני {sixty ? <Num value={sixty} /> : null} ומעלה חלות עליו קודם; מאחר שהרווח הוא המדרגה העליונה של ההכנסה, זה עוזר רק כשהכנסות אחרות משאירות את המדרגות האלה פנויות. כשמזינים גיל, האתר מחשב את ההקלה לפי ההכנסה השנתית שבחישוב. החברה המנהלת מנכה במקור בלי להתחשב בגיל, וההפרש חוזר בדוח שנתי <RuleRef id="TXK-06" />.
         </Callout>
-        <RulesLine ids={["TXK-06", "TXG-04"]} />
+        <RulesLine ids={["TXK-06", "TXG-04", "TXG-07"]} />
       </>
     );
   },

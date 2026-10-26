@@ -152,9 +152,11 @@ export function hishtalmutModel(d: SignatureData, c: HishtalmutCase): Hishtalmut
     if (!settled(r.run)) return { side: null, gap: "blocked", detail: {} };
     return { side: sideOf(r.run, c.amount), gap: null, detail: r.run.detail };
   };
+  // The same profile on both sides (2026-10-26): from 60 the reduced brackets apply to the fund's lump sum (F-44 with F-42) and to the
+  // brokerage account's gain alike, so the comparison sets like against like.
   const brokerSide = (key: string): Side | null => {
     const b = d.bundles[key];
-    const run = b ? runWith(b, entered, months) : null;
+    const run = b ? runWith(b, entered, months, { profile }) : null;
     return run && settled(run) ? sideOf(run, c.amount) : null;
   };
   const main = studyRun();
@@ -229,9 +231,11 @@ export function providentModel(d: SignatureData, c: ProvidentCase): ProvidentMod
     const run = runWith(kgl, entered, months, { profile, ...(feePct === undefined ? {} : { terms: withBalanceFee(kgl.terms, feePct) }) });
     return run && settled(run) ? run : null;
   };
+  // The same profile on both sides (2026-10-26): from 60 the reduced brackets apply to the fund's lump sum (F-44 with F-42) and to the
+  // brokerage account's gain alike, so the comparison sets like against like.
   const brokerSide = (key: string): Side | null => {
     const b = d.bundles[key];
-    const run = b ? runWith(b, entered, months) : null;
+    const run = b ? runWith(b, entered, months, { profile }) : null;
     return run && settled(run) ? sideOf(run, c.amount) : null;
   };
   const main = lumpRun();

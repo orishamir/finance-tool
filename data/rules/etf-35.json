@@ -75,10 +75,10 @@
     {
       "url": "https://www.tase.co.il/he/content/knowledge_center/indices_overview/",
       "title": "הבורסה, \"מדדי הבורסה\"",
-      "title_he": "הבורסה, \"מדדי הבורסה\"",
+      "title_he": "מדדי הבורסה (מרכז הידע של הבורסה)",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
-      "kind": "exchange_rules",
+      "kind": "institution_doc",
       "strength": "institution",
       "checked": "2026-10-25",
       "qualifier": "(TASE's explanatory page; read in Chrome; for the 2023 reform history)"
