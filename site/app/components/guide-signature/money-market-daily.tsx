@@ -5,7 +5,7 @@
 import { useState } from "react";
 import { guideSignature as copy } from "../../copy";
 import { fmt } from "../../lib/format";
-import { bestWithin, ladderRows, speedOrder, type Speed } from "../../lib/guide-signature";
+import { bestWithin, ladderRows, speedOrder, type LadderRow, type Speed } from "../../lib/guide-signature";
 import { Num, RulesLine } from "../provenance";
 import { cx, SegmentedControl, Sentence, Tag } from "../kit";
 import type { VisualProps } from "./kit";
@@ -33,7 +33,7 @@ export function MoneyMarketDailyVisual({ data }: VisualProps) {
             <li key={r.id} className={cx("rounded-md border p-3 flex flex-col gap-2 transition-opacity duration-[var(--duration-fast)]", mine ? "border-primary bg-card" : "border-border bg-card", !lit && "opacity-50")}>
               <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                 <span className="font-medium">
-                  {copy.ladder.rows[r.id] ?? r.id}
+                  <RowName row={r} />
                   {mine && <Tag tone="positive" className="ms-2">{copy.ladder.thisOne}</Tag>}
                 </span>
                 <span className="flex items-center gap-2">
@@ -80,7 +80,7 @@ export function MoneyMarketDailyVisual({ data }: VisualProps) {
 
       {best && (
         <Sentence measure>
-          {copy.ladder.best.before} <span className="font-medium">{copy.ladder.rows[best.id]}</span>, <Num value={best.rate} /> {copy.ladder.best.middle}.
+          {copy.ladder.best.before} <span className="font-medium"><RowName row={best} /></span>, <Num value={best.rate} /> {copy.ladder.best.middle}.
         </Sentence>
       )}
       <p className="text-sm text-muted-foreground max-w-measure">
@@ -88,5 +88,17 @@ export function MoneyMarketDailyVisual({ data }: VisualProps) {
       </p>
       <RulesLine ids={data.ruleIds} />
     </div>
+  );
+}
+
+/** A row's product, with the bank's name when its rate is one bank's own published figure (D30, D31): never a bank's rate as the product's. */
+function RowName({ row }: { row: LadderRow }) {
+  const name = copy.ladder.rows[row.id] ?? row.id;
+  return row.rate.own ? (
+    <>
+      {name} {copy.ladder.ofBank} <bdi>{row.rate.own}</bdi>
+    </>
+  ) : (
+    <>{name}</>
   );
 }
