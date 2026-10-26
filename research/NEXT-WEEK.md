@@ -20,34 +20,40 @@ A new researcher for any item gets its brief plus the line "resume: read what's 
 | Pension conversion and insurance factors per fund | `knowledge/2026-10-26-pension-factors/brief.md` | Downloads in `work/` (95 MB), one folder each for Altshuler Shaham, Clal, Harel, Infinity, Meitav, Menora, Migdal, Mor and Phoenix. Also the CMA standard bylaw, codex, circular 2016-3-4, notice 2024-087, the 2025 report chapter 4 and the gov.il new-pension-funds page. Tools: `tables.py`, `xlsx2tsv.py` and others. | Reading Infinity. No `report.md` or `staged/` yet. |
 | Savings policies and executive insurance tax (open-question round 3) | `knowledge/2026-10-26-oq-hunt/brief-3.md` | Only `tools/check_ins_quotes.py`. It had read the TXA file and was moving to the INS file. | No `insurance.jsonl` yet. Effectively a fresh start. |
 
-## 2. Done, waiting to be applied
-- **Open-question round 2** (`knowledge/2026-10-26-oq-hunt/switching.jsonl`, `held-products.jsonl`, `tier2.jsonl`, and the lead's browser reads in `lead-reads.md`): 4 closed, 17 narrowed. An editor applies them to `.claude/skills/il-finance/references/*.md`, then runs `npm run extract:sources -w @finance-tool/pipeline`, `npm run gen:open-questions -w @finance-tool/pipeline` and `npm run validate`.
-  - The open-questions file and the not-covered page will change, so this is a site change and needs the founder's go.
-  - Notable items:
-    - TXP-18's 35% withholding is reg. 4(1), not reg. 3;
-    - SW OQ10 closes at NIS 5 plus third-party cost;
-    - gov.il copies of the power-of-attorney circulars;
-    - directive 448 is now version 4 (11/25);
-    - TXA OQ15 closed (the 15% Amendment 190 commutation counts toward the 3% surtax);
-    - MGD-08's qualified-client sentence is wrong.
-- **Cash-products data**, branch `data-cash` (pushed, not merged; report `specs/2026-10-26-cash-data/report.md` on that branch). Before merging:
-  - settle Meitav Trade's custody (the tariff says 0.15%, minimum 270 ₪ a quarter; its own pages say custody is free);
-  - add First International's deposits from its public page;
-  - decide a field for the renewing funds' expected net yield (2.81%, 2.75%);
-  - check fund 5139258's fee (prospectus 0.12% against the banks' 0.19%).
-- **Cash rates** (`knowledge/2026-10-26-cash-rates/report.md`, staged files in `staged/`). The founder decides:
-  - replace the guides' round 3.5% with each product's own figure;
-  - whether to quote the single Bank of Israel rate (D20);
-  - add the prime explanation and glossary entries.
+## 2. Done on 2026-10-26 (live)
+- **Closed and applied:** SW OQ1, SW OQ5, SW OQ10, SW OQ16 and TXA OQ15. Rules SW-17, SW-18, SW-33, SW-41 and TXA-19 now state the answers, and the switching guide's lock lines for them are gone.
+- **The guides' cash-like rate** (P-05 `cash_rate`) is the Bank of Israel's 3.25%, quoted from its 21.10.2026 press release. The founder amended D20: one published figure may be quoted. **Recheck at the next decision, 23.11.2026.**
 
-## 3. Pages for the lead to read in the founder's Chrome
-- **First International:** one-year fixed and prime deposit rows, fibi.co.il/private/depositsandsavings/interest/. The collector's scripted request was refused by the permission system; read only the public page.
+## 3. Waiting to be applied
+- **The narrowed findings of round 2** (17; `knowledge/2026-10-26-oq-hunt/*.jsonl` and `lead-reads.md`): an editor writes what each narrowed into the references, then runs `extract:sources`, `gen:open-questions` and `validate`. Also:
+  - TXP-18's 35% withholding is reg. 4(1), not reg. 3, and reg. 3(2) is missing from it;
+  - MGD-08's qualified-client sentence is wrong;
+  - SW-43 should cite directive 448 version 4 (11/25);
+  - the clearing-house regulations of 2012 (SW-18) are cited from an olaw.org.il scan of the gazette: find the gov.il copy (job 1 above can).
+- **Cash-products data**, branch `data-cash` (pushed, not merged; report `specs/2026-10-26-cash-data/report.md` on that branch).
+  - Meitav Trade's tariff was taken out of it on the founder's word; see 4.
+  - Before merging:
+    - decide a field for the renewing funds' expected net yield (2.81%, 2.75%);
+    - check fund 5139258's fee (prospectus 0.12% against the banks' 0.19%);
+    - fix two side effects the collector found: the comparison's lowest money-market fee mixes daily and renewing funds, and exposure mode falls back to a different fund file.
+- **Each cash product on its own figure** (the step after the Bank of Israel rate; `knowledge/2026-10-26-cash-rates/report.md` section 6):
+  - a renewing fund on its manager's expected net yield (needs the schema field above);
+  - makam on a series' yield from a bank's 447A page;
+  - a daily fund on the Bank of Israel rate less its fee.
+
+  This is a method change, with golden values computed by the separate script.
+- **Prime on the site:** a general rule from the Knesset Research Center's definition and the Bank of Israel's 2023 review, the "P−x" notation, and glossary entries (cash-rates report section 1). This narrows BANK OQ14.
+
+## 4. Research needs added by the founder on 2026-10-26 (left out of the site for now)
+- **Meitav Trade:** its tariff 04/2026 (meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf) charges custody 0.15% with a 270 ₪ minimum a quarter, while its own pages say "פטור מדמי משמרת" and claim no FX conversion fee. Settle which applies, and whether the 0.15% is a quarter's or a year's rate, before it becomes a priced broker. The collected record is in the data-cash branch's history (commit 5d8fae5).
+- **First International (FIBI):** its one-year fixed and prime deposit rows. Read the public page fibi.co.il/private/depositsandsavings/interest/ in a browser. The collector's scripted call to its data feed was refused by the permission system and is not to be repeated.
+
+## 5. Pages for the lead to read in the founder's Chrome
 - **Harel:** the fund page for 5127790's fee.
 - **yl-invest.co.il:** the fees of 5139258 and 5141452.
-- **Meitav Trade:** /trade/independent_trading/ against its tariff 04/2026.
 - **new.isa.gov.il:** does the 2025 fund report rank single funds? And the directive "בירור צרכיו והנחיותיו של הלקוח".
 - **By the founder's hand:** Maya refuses automated browsing ("security violation"), including the 27 fund pages of the link check.
 
-## 4. Still open from the roadmap ("What continues, in order")
+## 6. Still open from the roadmap ("What continues, in order")
 - F-48, early pension withdrawal: the official text is now confirmed, so it can be built.
 - The founder's calls: credit points (G-23), GOV OQ7, the tax at 60 when no refund is claimed, kit round 2, the TXF OQ1 caution, the playbook as a product context.
