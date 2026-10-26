@@ -245,7 +245,7 @@ One brief per screen in section 4. They apply `docs/design-system.md`. Mockups f
 - The site name (h1) and one line: "להבין חיסכון והשקעה בישראל, עם מקור לכל מספר."
 - The search field, labelled "מה ראיתם?", placeholder "הדביקו שם של מוצר, מסלול או מונח". It opens search (6.3) on focus.
 - Two door cards:
-  - "להבין סוג של חיסכון", with "מה זה, כמה זה עולה ואיך זה ממוסה". Opens the guide list (6.4).
+  - "להבין סוג של חיסכון", with "מה זה, כמה זה עולה ואיך זה ממוסה". ~~Opens the guide list (6.4).~~ **Amended 2026-10-26 (founder, option A):** the card is not a link; it shows the kinds of P-10 (six today: קרן השתלמות, קופת גמל להשקעה, קרן כספית, פיקדון, חשבון ניירות ערך, חיסכון לכל ילד) as pills, each opening its own guide page (6.5), and the link "לכל סוגי החיסכון במדריך" to the guide list (6.4). Why: the door promised to explain a kind of saving and opened a list to choose from again.
   - "מה חברה מציעה לי", with "כל המוצרים והמסלולים שלה, עם הסבר לכל אחד". Opens the companies list (6.10).
 - A small link: "מה האתר עוד לא מכסה" (6.13).
 

@@ -42,9 +42,12 @@ export interface ChipListProps {
   /** Beside the heading, smaller and muted; wraps under it when the line is full. */
   note?: ReactNode;
   items: ChipItem[];
+  /** The heading names the list for a screen reader only, when the card around the list already shows its title (the first page's guide door, 2026-10-26). */
+  headingHidden?: boolean;
   /** The chosen pill's id. */
   value: string | null;
-  words: ChipListWords;
+  /** Needed only when a pill can be renamed or deleted. */
+  words?: ChipListWords;
   onSelect?: (id: string) => void;
   /** `name` is trimmed and may be empty; the page decides what an empty name means. */
   onRename?: (id: string, name: string) => void;
@@ -106,7 +109,7 @@ export function dropOrder(order: string[], id: string, x: number, y: number, rec
 
 const ic = { strokeWidth: 1.75, "aria-hidden": true } as const;
 
-export function ChipList({ heading, headingId, note, items, value, words, onSelect, onRename, onDelete, canRemove, onMove, renameInitial, renamePlaceholder, add, footer }: ChipListProps) {
+export function ChipList({ heading, headingHidden, headingId, note, items, value, words, onSelect, onRename, onDelete, canRemove, onMove, renameInitial, renamePlaceholder, add, footer }: ChipListProps) {
   const [drag, setDragState] = useState<Drag | null>(null);
   /** The drag as the pointer handlers last left it (they can run before React renders the previous move). */
   const live = useRef<Drag | null>(null);
@@ -197,12 +200,18 @@ export function ChipList({ heading, headingId, note, items, value, words, onSele
 
   return (
     <section aria-labelledby={headingId} aria-label={headingId ? undefined : heading} className="flex flex-col gap-3">
-      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
-        <h2 id={headingId} className="text-lg font-semibold">
+      {headingHidden ? (
+        <h2 id={headingId} className="sr-only">
           {heading}
         </h2>
-        {note && <p className="text-xs text-muted-foreground">{note}</p>}
-      </div>
+      ) : (
+        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
+          <h2 id={headingId} className="text-lg font-semibold">
+            {heading}
+          </h2>
+          {note && <p className="text-xs text-muted-foreground">{note}</p>}
+        </div>
+      )}
       <ul className="flex flex-wrap gap-2">
         {items.map((i) => {
           const on = i.id === value;
@@ -219,7 +228,7 @@ export function ChipList({ heading, headingId, note, items, value, words, onSele
               className={cx("relative inline-flex max-w-full items-center rounded-full border border-border bg-card select-none", lifted && "opacity-40 border-dashed")}
             >
               {renaming === i.id ? (
-                <RenameInput initial={renameInitial ? renameInitial(i.id) : i.label} placeholder={renamePlaceholder ? renamePlaceholder(i.id) : i.label} label={words.renameField} onDone={(name) => finishRename(i, name)} />
+                <RenameInput initial={renameInitial ? renameInitial(i.id) : i.label} placeholder={renamePlaceholder ? renamePlaceholder(i.id) : i.label} label={words?.renameField ?? ""} onDone={(name) => finishRename(i, name)} />
               ) : i.href ? (
                 <Link to={i.href} data-chip-face aria-current={on ? "page" : undefined} className={faceClass(i, false)}>
                   {inside(i)}
@@ -247,12 +256,12 @@ export function ChipList({ heading, headingId, note, items, value, words, onSele
               {renaming !== i.id && (
                 <>
                   {hasRename(i) && (
-                    <Button variant="icon" className="size-9 rounded-full" aria-label={words.rename} title={words.rename} onClick={() => setRenaming(i.id)}>
+                    <Button variant="icon" className="size-9 rounded-full" aria-label={words?.rename} title={words?.rename} onClick={() => setRenaming(i.id)}>
                       <Pencil size={16} {...ic} />
                     </Button>
                   )}
                   {hasBin(i) && (
-                    <Button variant="icon" className="size-9 rounded-full me-0.5" aria-label={words.remove} title={words.remove} aria-expanded={confirm?.id === i.id} onClick={() => askDelete(i)}>
+                    <Button variant="icon" className="size-9 rounded-full me-0.5" aria-label={words?.remove} title={words?.remove} aria-expanded={confirm?.id === i.id} onClick={() => askDelete(i)}>
                       <Trash2 size={16} {...ic} />
                     </Button>
                   )}
@@ -260,7 +269,7 @@ export function ChipList({ heading, headingId, note, items, value, words, onSele
               )}
               {confirm?.id === i.id && (
                 <div style={{ width: CONFIRM_WIDTH }} className={cx("absolute top-full mt-1 z-[var(--z-popover)] rounded-lg border border-border bg-popover p-3 shadow-md flex flex-col gap-2", confirm.edge === "start" ? "start-0" : "end-0")} onKeyDown={(e) => e.key === "Escape" && setConfirm(null)}>
-                  <span className="text-sm">{words.confirm}</span>
+                  <span className="text-sm">{words?.confirm}</span>
                   <span className="flex items-center gap-2">
                     <Button
                       variant="destructive"
@@ -269,10 +278,10 @@ export function ChipList({ heading, headingId, note, items, value, words, onSele
                         setConfirm(null);
                       }}
                     >
-                      {words.confirmYes}
+                      {words?.confirmYes}
                     </Button>
                     <Button variant="quiet" onClick={() => setConfirm(null)}>
-                      {words.confirmNo}
+                      {words?.confirmNo}
                     </Button>
                   </span>
                 </div>

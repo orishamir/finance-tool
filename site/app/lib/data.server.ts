@@ -370,6 +370,13 @@ export interface PinnedRules {
   signed_off_on: string;
 }
 
+/** data/parameters/home-guide-door.json (P-10): the guide pages the first page's guide door names, as id and name, in order. */
+export function loadHomeGuideDoor(): { id: string; name: string }[] {
+  const ids = (JSON.parse(readFileSync(join(root, "data/parameters/home-guide-door.json"), "utf8")) as { wrappers: string[] }).wrappers;
+  const names = new Map<string, string>(loadWrappers().map((w) => [w.id, w.names.he[0]!]));
+  return ids.filter((id) => names.has(id)).map((id) => ({ id, name: names.get(id)! }));
+}
+
 /** data/parameters/pinned-rules.json (P-09): the questions at the top of the rules page and the facts per guide page. A site judgement, not a rule. */
 export function loadPinnedRules(): PinnedRules {
   return JSON.parse(readFileSync(join(root, "data/parameters/pinned-rules.json"), "utf8")) as PinnedRules;

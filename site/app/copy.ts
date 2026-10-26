@@ -89,7 +89,8 @@ export const buttons = {
 
 export const home = {
   searchLabel: "מה ראיתם באפליקציה, בפרסומת או בדוח?",
-  door1: { title: "להבין סוג של חיסכון", line: "מה זה, כמה זה עולה ואיך זה ממוסה", href: "/guide" },
+  // 2026-10-26 (founder, option A): the door names the kinds itself (P-10) and links to the whole list
+  door1: { title: "להבין סוג של חיסכון", line: "מה זה, כמה זה עולה ואיך זה ממוסה", href: "/guide", all: "לכל סוגי החיסכון במדריך" },
   door2: { title: "מה חברה מציעה לי", line: "כל המוצרים והמסלולים שלה, עם הסבר לכל אחד", href: "/companies" },
   door3: { title: "כסף שיושב בעו״ש", line: "שני מספרים, ותראו כמה עולה להשאיר אותו שם", href: "/idle-cash" },
   // audit 2026-10-24 (A55): the count on the holdings door (the goal door of that audit became the question card below, 2026-10-24)
@@ -2701,6 +2702,7 @@ export const r5 = {
 
 // the parameters page's name and field labels for P-08 (docs/parameters-rationale.md, added 2026-10-24)
 Object.assign(parametersPage.names, { "P-08": "המוצר שמחזיק כל חשיפה, בהשוואה לפי חשיפה" });
+Object.assign(parametersPage.names, { "P-10": "סוגי החיסכון שהדלת למדריך בעמוד הראשון מציגה" }); // 2026-10-26
 for (const [id, he] of Object.entries({ "shekel-cash": "מזומן שקלי", makam: "מק״מ", "government-bond-cpi": "אג״ח ממשלתית צמודה", "government-bond-unlinked": "אג״ח ממשלתית לא צמודה", "index-sp500": "מדד S&P 500", "index-ta125": "מדד ת״א-125", "general-track": "מסלול כללי" })) {
   (parametersPage.fields as Record<string, string>)[`P-08.holding.${id}.wrapper_id`] = `${he}: המוצר שמחזיק אותה`;
 }

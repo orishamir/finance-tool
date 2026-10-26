@@ -265,6 +265,12 @@ function Chips() {
             footer={<p className="text-sm text-muted-foreground">{w.foot}</p>}
           />
         </State>
+        <State label="headingHidden, links in a card that shows its own title (the first page's guide door)">
+          <Card className="!p-5 flex flex-col gap-3">
+            <span className="text-lg font-semibold">{w.heading}</span>
+            <ChipList heading={w.heading} headingHidden items={sites} value={null} footer={<p className="text-sm text-muted-foreground">{w.foot}</p>} />
+          </Card>
+        </State>
         <State label="add pill alone, expanded">
           <ChipList heading={w.heading} items={[]} value={null} words={words} add={{ label: w.add, onClick: () => setAdded((v) => !v), expanded: added }} />
         </State>

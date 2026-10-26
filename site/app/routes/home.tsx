@@ -8,7 +8,7 @@ import { home as copy, knowledgeEntry, questions as questionsCopy, r3workbench, 
 import { IconDrillIn } from "../components/icons";
 import { PageSearchField, PageShell } from "../components/shell";
 import { QuickGoalCard } from "../components/compare/quick-goal";
-import { Card, Disclosure } from "../components/kit";
+import { Card, ChipList, Disclosure } from "../components/kit";
 import { GoalsProvider, isBlank, useGoals, type Presets } from "../lib/goal";
 import type { Range } from "../components/compare/goal-form";
 import { useHoldings } from "../lib/state";
@@ -18,10 +18,10 @@ const SavedGoalStrip = lazy(() => import("../components/compare/strip").then((m)
 
 export async function loader() {
   const { goalContext, goalFormData } = await import("../lib/compare.server");
-  const { loadPinnedRules } = await import("../lib/data.server");
+  const { loadHomeGuideDoor, loadPinnedRules } = await import("../lib/data.server");
   const { form } = goalFormData();
   // the question card validates with the goal form's ranges (P-07 horizon, P-05 monthly)
-  return { ...goalContext(), form: { horizon: form.horizon, monthly: form.monthly }, questions: loadPinnedRules().rows.slice(0, 3).map((r) => r.question_he) };
+  return { ...goalContext(), form: { horizon: form.horizon, monthly: form.monthly }, questions: loadPinnedRules().rows.slice(0, 3).map((r) => r.question_he), guideTypes: loadHomeGuideDoor() };
 }
 
 export function meta() {
@@ -29,11 +29,11 @@ export function meta() {
 }
 
 export default function Home() {
-  const { today, presets, meta, form, questions } = useLoaderData<typeof loader>();
+  const { today, presets, meta, form, questions, guideTypes } = useLoaderData<typeof loader>();
   return (
     <GoalsProvider presets={presets as Presets}>
       <PageShell current="home" data={{ rules: {}, terms: {}, dimensions: {}, today }}>
-        <HomeBody presets={presets as Presets} meta={meta} today={today} bounds={form} questions={questions} />
+        <HomeBody presets={presets as Presets} meta={meta} today={today} bounds={form} questions={questions} guideTypes={guideTypes} />
       </PageShell>
     </GoalsProvider>
   );
@@ -48,6 +48,31 @@ function DoorCard({ title, line, extra }: { title: string; line: string; extra?:
         {extra && <span className="text-sm text-foreground">{extra}</span>}
       </span>
       <IconDrillIn size={24} className="text-foreground/70 shrink-0 mt-0.5 transition-transform group-hover:-translate-x-1" />
+    </Card>
+  );
+}
+
+/** The guide door (founder 2026-10-26, option A): not a link to the list but the kinds themselves (P-10), each pill opening its own
+ * guide page, and a link to the whole list. The card keeps the other doors' title and line; the pills are the kit's ChipList. */
+function GuideDoor({ types }: { types: { id: string; name: string }[] }) {
+  return (
+    <Card className="h-full !p-5 flex flex-col gap-3">
+      <span className="flex flex-col gap-1">
+        <span className="text-lg font-semibold">{copy.door1.title}</span>
+        <span className="text-sm text-muted-foreground">{copy.door1.line}</span>
+      </span>
+      <ChipList
+        heading={copy.door1.title}
+        headingHidden
+        items={types.map((t) => ({ id: t.id, label: t.name, href: `/guide/${t.id}` }))}
+        value={null}
+        footer={
+          <Link to={copy.door1.href} className="text-sm text-link min-h-target inline-flex items-center gap-1 hover:underline self-start">
+            {copy.door1.all}
+            <IconDrillIn size={16} />
+          </Link>
+        }
+      />
     </Card>
   );
 }
@@ -76,7 +101,7 @@ function QuestionBlock({ presets, meta, today, bounds }: { presets: Presets; met
   );
 }
 
-function HomeBody({ presets, meta, today, bounds, questions }: { questions: string[]; presets: Presets; meta: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null }; today: string; bounds: Bounds }) {
+function HomeBody({ presets, meta, today, bounds, questions, guideTypes }: { questions: string[]; guideTypes: { id: string; name: string }[]; presets: Presets; meta: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null }; today: string; bounds: Bounds }) {
   const { ready, holdings } = useHoldings();
   const names = holdings.map((h) => h.track?.name ?? h.typedName ?? h.company.name);
   const holdingsLine = ready && holdings.length > 0 ? (holdings.length === 1 ? copy.holdingsSaved.one : copy.holdingsSaved.many).replace("{n}", String(holdings.length)).replace("{names}", names.slice(0, 2).join(", ") + (names.length > 2 ? "…" : "")) : null;
@@ -116,7 +141,8 @@ function HomeBody({ presets, meta, today, bounds, questions }: { questions: stri
         {/* NEW: the third door (design-system 6.9) was added after the founder approved the first page with two doors;
             the fourth (design-system 7.9, flows 12.5, "chosen 2026-10-23, revisable") is for his review the same way */}
         <div className="grid gap-4 md:grid-cols-2 lg:w-[calc(100%+8rem)] lg:-mx-16 xl:w-auto xl:mx-0 xl:grid-cols-1">
-          {[copy.door1, copy.door2, copy.door3, r3workbench.entry.holdings].map((door) => (
+          <GuideDoor types={guideTypes} />
+          {[copy.door2, copy.door3, r3workbench.entry.holdings].map((door) => (
             <Link key={door.href} to={door.href} className="block group">
               <DoorCard title={door.title} line={door.line} extra={door.href === r3workbench.entry.holdings.href ? holdingsLine : null} />
             </Link>

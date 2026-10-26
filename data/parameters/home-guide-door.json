@@ -1,0 +1,10 @@
+{
+  "id": "home-guide-door",
+  "method_id": "P-10",
+  "wrappers": ["keren-hishtalmut", "kupat-gemel-lehashkaa", "money-market-fund-daily", "bank-deposit", "brokerage-account", "child-savings-provident"],
+  "rationale": "The six kinds of saving the first page's guide door names as pills, each opening its own guide page; the rest are one link away in the guide list. Chosen as the kinds most people in the audience hold or are offered first (popular first), from the everyday short-term ones to the tax-benefit ones. Option A of the door sketch, approved by the founder on 2026-10-26; the six are revisable.",
+  "rationale_he": "שישת סוגי החיסכון שהדלת למדריך בעמוד הראשון מציגה, כל אחד מוביל ישר למדריך שלו; כל השאר נמצאים ברשימה המלאה. נבחרו הסוגים שרוב האנשים מחזיקים או שמציעים להם קודם.",
+  "signed_off_by": "founder",
+  "signed_off_on": "2026-10-26",
+  "shown_as": "site parameter"
+}
