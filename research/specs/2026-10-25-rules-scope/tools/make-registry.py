@@ -15,7 +15,7 @@ OWN = {
   "massad": ["bankmassad.co.il"], "yahav": ["bank-yahav.co.il"], "jerusalem": ["bankjerusalem.co.il"], "one-zero": ["onezerobank.com"],
   "ibi": ["ibi.co.il"], "meitav-trade": ["meitav.co.il"], "altshuler-trade": ["as-invest.co.il"], "psagot": ["psagot.co.il"],
   "excellence": ["xnes.co.il"], "fair": ["fair.co.il"], "interactive-israel": ["inter-il.com"], "interactive-brokers": ["interactivebrokers.com"],
-  "ib-ireland": ["interactivebrokers.ie"], "meitav-funds": ["meitav.co.il"], "ishares": ["ishares.com"], "blackrock": ["blackrock.com"],
+  "ib-ireland": ["interactivebrokers.ie"], "meitav-funds": ["meitav.co.il"], "ishares": ["ishares.com"], "blackrock": ["blackrock.com", "ishares.com"],
   "jpmorgan-am": ["am.jpmorgan.com"], "tase": ["tase.co.il"], "sp-dji": ["spglobal.com"], "nasdaq": ["indexes.nasdaqomx.com"],
   "msci": ["msci.com"], "isa": ["isa.gov.il"], "phoenix-insurance": ["fnx.co.il"], "reit1": ["reit1.co.il"],
 }

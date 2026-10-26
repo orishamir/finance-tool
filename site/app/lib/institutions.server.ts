@@ -14,13 +14,13 @@ import type {
   TariffCardData,
   TariffLineRow,
 } from "../components/decoder/institutions/types";
-import { loadChecklistRows, loadRules, loadWrappers, root, today } from "./data.server";
+import { loadChecklistRows, loadRules, loadWrappers, pointedRecords, root, today } from "./data.server";
 import { topicName } from "../copy";
 import { loadCatalog, loadDepositTerms, seenValue, seenWhere } from "./instruments.server";
 import { shortName } from "./providers";
 import { ownBy, type SiteValue } from "./value";
 import { fileRank } from "./rule-shelves";
-import { listedCompanies, noPageAnchor, pointedIds, type CompanyLink, type OwnDocs } from "./scope";
+import { listedCompanies, noPageAnchor, type CompanyLink, type OwnDocs } from "./scope";
 
 /** The cadence until `docs/data-schema.md` §3.6 writes `staleTariff` (flow 33 data note): 90 days. */
 const staleDays = 90;
@@ -266,10 +266,9 @@ export function buildInstitution(id: string): InstitutionPageData | null {
   // what the site found in the company's own documents (D30): the records that name it, by topic; their cards open from the same data
   const registryIds = registryIdsOfPage(id);
   const termGroups = companyTermGroups(registryIds, allRules, topicName);
-  for (const rid of termGroups.flatMap((g) => g.ids)) {
-    rules[rid] = allRules[rid]!;
-    for (const d of pointedIds(allRules[rid]!)) if (allRules[d]) rules[d] = allRules[d]!;
-  }
+  for (const rid of termGroups.flatMap((g) => g.ids)) rules[rid] = allRules[rid]!;
+  // the records those cards point at (derived_from, examples), so every chip on them opens
+  const pointed = pointedRecords(rules, allRules);
 
   return {
     id,
@@ -286,6 +285,7 @@ export function buildInstitution(id: string): InstitutionPageData | null {
     })(),
     catalogue,
     rules,
+    pointed,
     terms: { groups: termGroups, company: registryIds[0] ?? null, name: loadInstitutionRegistry().find((r) => r.id === registryIds[0])?.name_he ?? snap?.provider.name_he ?? id, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} },
   };
 }
@@ -335,7 +335,9 @@ export function companyLinks(): Record<string, CompanyLink> {
   const out: Record<string, CompanyLink> = {};
   for (const r of loadInstitutionRegistry()) {
     const page = r.cma_legal_id && cmaIds.has(r.cma_legal_id) ? r.cma_legal_id : r.fees_id && pages.has(r.fees_id) ? r.fees_id : r.deposit_bank_id && pages.has(r.deposit_bank_id) ? r.deposit_bank_id : null;
-    out[r.id] = page ? { name: r.name_he, href: `/companies/${page}`, hasPage: true } : { name: r.name_he, href: `/companies#${noPageAnchor(r.id)}`, hasPage: false };
+    // where its own documents live travels too: a rule card drops "לפי החברה" only on a source there (D31; review, 2026-10-26)
+    const docs = { own_hosts: r.own_hosts, ...(r.filing_names ? { filing_names: r.filing_names } : {}) };
+    out[r.id] = page ? { name: r.name_he, href: `/companies/${page}`, hasPage: true, docs } : { name: r.name_he, href: `/companies#${noPageAnchor(r.id)}`, hasPage: false, docs };
   }
   return out;
 }

@@ -51,7 +51,7 @@ export function InstitutionPage({ data }: { data: InstitutionPageData }) {
   const wrapperName = (id: string) => data.groups.find((g) => g.wrapperId === id)?.wrapperName ?? "";
   const brokerage = <BrokerageGroupCard id={data.id} tariff={tariff} kind={data.kind} />;
   return (
-    <PageShell current="decoder" data={{ rules: data.rules, terms: {}, dimensions: data.terms.dimensions, today: data.today, ...(data.terms.company ? { company: data.terms.company } : {}) }}>
+    <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: data.terms.dimensions, today: data.today, ...(data.terms.company ? { company: data.terms.company } : {}) }}>
       <div className="lg:flex lg:gap-12 lg:items-start pt-2 lg:pt-8">
         <div className="flex-1 min-w-0 flex flex-col gap-6 lg:gap-8">
           <header className="flex flex-col gap-3">

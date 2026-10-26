@@ -3,7 +3,7 @@
 // exposure records, the saved fund lists (none yet), the rule records a securities run may read, P-01 and P-05, and the
 // link-outs. Server-only.
 import type { ParameterRecord, RuleRecord } from "@finance-tool/schema";
-import { loadCma, loadFees, loadParameters, loadRules, today } from "./data.server";
+import { loadCma, loadFees, loadParameters, loadRules, pointedRecords, today } from "./data.server";
 import { loadExposures, loadFunds } from "./instruments.server";
 import { BROKERAGE, PROVIDENT_WRAPPERS, type WorkbenchBundle } from "./providers";
 import { loadFundLists, workbenchLinks } from "./variants.server";
@@ -65,7 +65,7 @@ export function buildWorkbenchBundle(): WorkbenchBundle {
   const rules: RuleRecord[] = Object.values(allRules).filter((r) => needed.has(r.id) || families.some((f) => r.id.startsWith(f)));
   const { providerCompany, wrapperCompanies } = companyLinks(snapshots);
   const fx = loadFx();
-  const bundle: WorkbenchBundle = { today: t, snapshots, funds, exposures, fundLists, rules, p01: find("P-01"), p05: find("P-05"), links: workbenchLinks(), providerCompany, wrapperCompanies, ...(fx ? { fx } : {}) };
+  const bundle: WorkbenchBundle = { today: t, snapshots, funds, exposures, fundLists, rules, pointed: Object.values(pointedRecords(rules, allRules)), p01: find("P-01"), p05: find("P-05"), links: workbenchLinks(), providerCompany, wrapperCompanies, ...(fx ? { fx } : {}) };
   console.log(`[workbench] bundle: ${snapshots.length} snapshots, ${funds.length} funds, ${exposures.length} exposures, ${fundLists.length} fund lists, ${rules.length} rules, ${(JSON.stringify(bundle).length / 1024).toFixed(0)} KB`);
   return bundle;
 }

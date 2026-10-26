@@ -6,7 +6,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import type { RuleRecord } from "@finance-tool/schema";
-import { sourceBlock } from "../copy";
+import { scopeWords, sourceBlock } from "../copy";
 import { ProvenanceProvider, RuleCard, SourceBlock } from "./provenance";
 
 const src = (strength: "primary" | "primary-mirror" | "institution" | "secondary", url: string) => ({ url, title: `מסמך ${strength}`, publisher: "x", strength, checked: "2026-10-25", ...(strength === "primary-mirror" ? { mirror_host: "other" as const } : {}) });
@@ -33,5 +33,25 @@ describe("the source lines of a company's own term", () => {
     expect(html).toContain(weak.secondary);
     expect(html).not.toContain("נמצא במסמכים של");
     expect(html).toContain("המקורות כאן אינם מסמכים של סלייס וגלובלנט");
+  });
+  // review round 3, 2026-10-26: the card's own data (the root loader's company links and own documents), as every page has them
+  const real = async () => {
+    const { loadRules } = await import("../lib/data.server");
+    const { companyLinks, ownDocuments } = await import("../lib/institutions.server");
+    const rules = loadRules();
+    return { rules, terms: {}, dimensions: {}, today: "2026-10-26", ownDocs: ownDocuments(rules), companies: companyLinks() };
+  };
+  it("BRK-43 (Interactive Brokers) keeps 'לפי החברה' on IB Ireland's page, which is not its own site, and drops it on its own", async () => {
+    const data = await real();
+    const html = render(createElement(RuleCard, { id: "BRK-43", data, inline: true }), data);
+    expect(html.split(weak.institution!).length - 1).toBe(1);
+  });
+  it("SW-53, a not-rule read from two brokers' tariffs: its tag, line and foot agree", async () => {
+    const data = await real();
+    const html = render(createElement(RuleCard, { id: "SW-53", data }), data);
+    expect(html).toContain(scopeWords.notRule.tag);
+    expect(html).toContain(scopeWords.notRule.lineOwn.replace("{names}", "אי.בי.אי ואלטשולר שחם טרייד"));
+    expect(html).toContain(scopeWords.allNoCompany);
+    expect(html).not.toContain("בחברות אחרות זה יכול להיות אחרת");
   });
 });

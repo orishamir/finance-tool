@@ -8,6 +8,7 @@
     "fee-custody",
     "fee-trade",
     "fee-fx",
+    "fee-account",
     "fee-exit"
   ],
   "likely_to_change": "yes",

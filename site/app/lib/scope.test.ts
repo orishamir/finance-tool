@@ -1,16 +1,16 @@
 // D30 on the site (research/specs/2026-10-25-rules-scope/spec.md §4): a guide or exposure page cites general rules only. The
 // validator checks the records under data/ (wrappers, exposures, P-09); this checks the prose modules, where a rule id is written by
 // hand. A company's term may appear only inside `<VariesByCompany ids={[…]}>` (the "תלוי בחברה" links), and an index page may cite
-// the records of its index provider that `ownContextExposures` names (D31). A record the rule base keeps that is not a rule may stand
-// only in the files its `notRules` entry names (review, 2026-10-26). Then the company sections: only records from the company's own
-// documents, never a not-rule (the same review).
-import { readdirSync, readFileSync } from "node:fs";
+// the records of its index provider that `ownContextExposures` names (D31). A record the rule base keeps that is not a rule, and is not
+// general, is quoted only in the site files its `notRules` entry names, every file under site/app (reviews, 2026-10-26; the validator
+// does the same for data/). Then the company sections: only records from the company's own documents, never a not-rule (the same review).
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { isOwnDocument, notRuleAllowedIn, notRules, ownContextExposures, type RuleRecord } from "@finance-tool/schema";
-import { chipName, companyTermsHref, generalOnly, joinNames, listedCompanies, ownDocCompanies } from "./scope";
-import { companyTermGroups, loadInstitutionRegistry, noPageCompanyTerms, ownDocuments, registryIdsOfPage } from "./institutions.server";
+import { chipName, companyTermsHref, generalOnly, isOwnSourceOf, joinNames, listedCompanies, ownDocCompanies, shownCompanies } from "./scope";
+import { companyLinks, companyTermGroups, loadInstitutionRegistry, noPageCompanyTerms, ownDocuments, registryIdsOfPage } from "./institutions.server";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const rules = new Map<string, { id: string; scope: string; scope_institutions?: { id: string; name_he: string }[]; sources?: { url: string; title: string; title_he?: string }[] }>();
@@ -38,8 +38,21 @@ describe("guide and exposure prose cites general rules only", () => {
       });
     }
   }
-  it("a not-rule's prose files still cite it (the allowance only shrinks)", () => {
-    const stale = Object.entries(notRules).flatMap(([id, e]) => (rules.get(id)?.scope === "general" ? [] : e.files.filter((f) => f.startsWith("site/") && !cites.get(f)?.includes(id)).map((f) => `${id} in ${f}`)));
+  // every site source file, not only the prose: the comparison (MKT-01) and the playbook (SW-X01 and the like) quote not-rules too
+  const walk = (d: string): string[] => readdirSync(d).flatMap((f) => (statSync(join(d, f)).isDirectory() ? walk(join(d, f)) : [join(d, f)]));
+  const code = (src: string) => src.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
+  const tracked = (id: string) => Object.hasOwn(notRules, id) && !!rules.get(id) && rules.get(id)!.scope !== "general";
+  const quotes = new Map<string, Set<string>>();
+  for (const f of walk(join(root, "site/app")).filter((x) => /\.tsx?$/.test(x) && !/\.test\.tsx?$/.test(x))) {
+    const ids = [...code(readFileSync(f, "utf8")).matchAll(/["'`]([A-Z][A-Z0-9]*-[A-Z0-9]+)["'`]/g)].map((m) => m[1]!).filter(tracked);
+    if (ids.length > 0) quotes.set(f.slice(root.length).split("\\").join("/"), new Set(ids));
+  }
+  it("a not-rule is quoted only in the site files its entry names", () => {
+    const bad = [...quotes].flatMap(([file, ids]) => [...ids].filter((id) => !notRuleAllowedIn(id, file)).map((id) => `${id} in ${file}`));
+    expect(bad).toEqual([]);
+  });
+  it("every site file a not-rule's entry names exists and still quotes it (the lists only shrink)", () => {
+    const stale = Object.entries(notRules).flatMap(([id, e]) => (tracked(id) ? e.files.filter((f) => f.startsWith("site/") && (!existsSync(join(root, f)) || !quotes.get(f)?.has(id))).map((f) => `${id} in ${f}`) : []));
     expect(stale).toEqual([]);
   });
   it("a not-rule is allowed in its own files only", () => {
@@ -57,10 +70,35 @@ describe("scope helpers", () => {
   const as = { id: "altshuler-shaham", name_he: "אלטשולר שחם" };
   const more = (n: number) => `ועוד ${n}`;
   it("names the chip by the page's company, else the first and the count of the others", () => {
-    expect(chipName({ scope_institutions: [harel, as] }, "altshuler-shaham", more)).toBe("אלטשולר שחם ועוד 1");
-    expect(chipName({ scope_institutions: [harel, as] }, undefined, more)).toBe("הראל ועוד 1");
-    expect(chipName({ scope_institutions: [harel] }, undefined, more)).toBe("הראל");
-    expect(chipName({}, undefined, more)).toBeNull();
+    const own = { "X-1": ["harel", "altshuler-shaham"], "X-2": ["harel"] };
+    expect(chipName({ id: "X-1", scope_institutions: [harel, as] }, own, "altshuler-shaham", more)).toBe("אלטשולר שחם ועוד 1");
+    expect(chipName({ id: "X-1", scope_institutions: [harel, as] }, own, undefined, more)).toBe("הראל ועוד 1");
+    expect(chipName({ id: "X-2", scope_institutions: [harel] }, own, undefined, more)).toBe("הראל");
+    expect(chipName({ id: "X-3" }, own, undefined, more)).toBeNull();
+  });
+  it("the chip counts the companies the card names: those whose documents it cites, else all it is about (review, 2026-10-26)", () => {
+    // PEN-37 names Meitav among five, but cites no document of Meitav: the chip says "ועוד 3", not "ועוד 4", as its card names four
+    const pen37 = rules.get("PEN-37")! as unknown as RuleRecord;
+    const own = ownDocuments(Object.fromEntries([...rules].map(([id, r]) => [id, r as unknown as RuleRecord])));
+    const shown = shownCompanies(pen37, own).map((c) => c.id);
+    expect(shown).not.toContain("meitav");
+    expect(chipName(pen37, own, undefined, more)).toBe(`${pen37.scope_institutions![0]!.name_he} ועוד ${shown.length - 1}`);
+    // a press report about two companies cites neither's document: it is about both
+    expect(shownCompanies(rules.get("IRA-28")! as unknown as RuleRecord, own).map((c) => c.id)).toEqual(["slice", "globalnet"]);
+  });
+  it("drops 'לפי החברה' only on a source on the named company's own sites (D31; review, 2026-10-26)", () => {
+    const all = Object.fromEntries([...rules].map(([id, r]) => [id, r as unknown as RuleRecord]));
+    const own = ownDocuments(all);
+    const links = companyLinks();
+    const brk43 = all["BRK-43"]!;
+    // Interactive Brokers' term cites IB Ireland's page: Ireland's, not Interactive Brokers' own
+    const ie = brk43.sources!.find((x) => x.url.includes("interactivebrokers.ie"))!;
+    const com = brk43.sources!.find((x) => x.url.includes("interactivebrokers.com"))!;
+    expect(isOwnSourceOf(brk43, ie, own, links)).toBe(false);
+    expect(isOwnSourceOf(brk43, com, own, links)).toBe(true);
+    // BlackRock's term cites ishares.com, BlackRock's own fund brand site
+    const etf27 = all["ETF-27"]!;
+    for (const x of etf27.sources!) expect(isOwnSourceOf(etf27, x, own, links), x.url).toBe(true);
   });
   it("joins Hebrew names with ו before the last, and a maqaf before a Latin one", () => {
     expect(joinNames(["הראל"])).toBe("הראל");

@@ -295,10 +295,16 @@
   },
   "company_terms": {
     "minimum": [
-      "BRK-28"
+      {
+        "rule": "BRK-28",
+        "companies": [
+          "meitav-trade",
+          "fair"
+        ]
+      }
     ],
     "fee-account": [
-      "BRK-28"
+      "BRK-48"
     ]
   },
   "tier": 1,

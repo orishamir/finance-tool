@@ -3,10 +3,10 @@
 import { pending as pendingFormulaReleases, type P05Input } from "@finance-tool/engine";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { wrapperId as wrapperIdEnum, type ExposureRecord, type RuleRecord, type WrapperRecord } from "@finance-tool/schema";
+import { companyTermRule, wrapperId as wrapperIdEnum, type ExposureRecord, type RuleRecord, type WrapperRecord } from "@finance-tool/schema";
 import { buildHishtalmutTerms, loadExposures } from "./instruments.server";
 import { providentTerms } from "./compare.server";
-import { loadChecklistRows, loadCma, loadFees, loadParameters, loadRules, loadTerms, loadWrappers, root, today, type ChecklistRow, type TermRow } from "./data.server";
+import { loadChecklistRows, loadCma, loadFees, loadParameters, loadRules, loadTerms, loadWrappers, pointedRecords, root, today, type ChecklistRow, type TermRow } from "./data.server";
 import { runTimeline, type Bundle, type Timeline } from "./engine";
 import { buildInstrumentBundle, familyOf, missingParts, rulesTouched, type NoGraph } from "./guide-signature-bundle.server";
 import { buildSignatureData } from "./guide-signature.server";
@@ -23,6 +23,8 @@ export interface GuidePageData {
   initial: Timeline | null;
   /** Rule records the page cites anywhere, for the rule cards. */
   rules: Record<string, RuleRecord>;
+  /** The records those cards point at that the page does not cite (`pointedRecords`): only chips and cards read them. */
+  pointed: Record<string, RuleRecord>;
   terms: TermRow[];
   /** How many wrappers the site knows: a term that names this many is shared by every product (the guide shows it under "מונחים כלליים"). */
   wrapperCount: number;
@@ -148,7 +150,7 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
   exitTextRules.forEach((r) => cited.add(r));
   extraRuleIds.forEach((r) => cited.add(r));
   // the companies' own terms the record names where a property is each company's (D30): their records give the guide's "תלוי בחברה" links
-  for (const ids of Object.values(record.company_terms ?? {})) ids.forEach((r) => cited.add(r));
+  for (const refs of Object.values(record.company_terms ?? {})) refs.forEach((r) => cited.add(companyTermRule(r)));
   // rules the prose module cites (<RulesLine>, <RuleRef>, figure(...)): found in its source so the cards are not empty
   scanRuleIds(`site/app/content/guide/${id}.tsx`, allRules).forEach((r) => cited.add(r));
   bundle?.rules.forEach((r) => cited.add(r.id));
@@ -195,7 +197,7 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
     .filter((w): w is WrapperRecord => !!w)
     .map((w) => ({ href: `/guide/${w.id}`, label: w.names.he[0]! }));
 
-  return { record, name: record.names.he[0]!, lede, bundle, initial, rules, terms, wrapperCount: wrapperIdEnum.options.length, termsById, checklist, dimensionNames, marks, companies, exposures, hasPlaybook: playbookWrappers.includes(record.id), exitTextRules, signature, noGraph, pendingFormulas, related, today: t };
+  return { record, name: record.names.he[0]!, lede, bundle, initial, rules, pointed: pointedRecords(rules, allRules), terms, wrapperCount: wrapperIdEnum.options.length, termsById, checklist, dimensionNames, marks, companies, exposures, hasPlaybook: playbookWrappers.includes(record.id), exitTextRules, signature, noGraph, pendingFormulas, related, today: t };
 }
 
 export { familyOf };
@@ -229,6 +231,8 @@ export interface ExposurePageData {
   name: string;
   lede: string | null;
   rules: Record<string, RuleRecord>;
+  /** The records those cards point at that the page does not cite (`pointedRecords`): only chips and cards read them. */
+  pointed: Record<string, RuleRecord>;
   terms: TermRow[];
   termsById: Record<string, TermRow>;
   /**
@@ -280,5 +284,5 @@ export function buildExposurePage(id: string, extraTermIds: string[] = []): Expo
   const name = record.names.he[0] ?? record.id;
   // the exposure record's own one-line description, else the glossary line (F: one_line_he)
   const lede = record.one_line_he ?? termsById[name]?.explanation ?? all.find((r) => r.he === name)?.explanation ?? null;
-  return { record, name, lede, rules, terms, termsById, holders, checklist, dimensionNames: Object.fromEntries(checklist.map((r) => [r.id, r.name])), today: t };
+  return { record, name, lede, rules, pointed: pointedRecords(rules, allRules), terms, termsById, holders, checklist, dimensionNames: Object.fromEntries(checklist.map((r) => [r.id, r.name])), today: t };
 }

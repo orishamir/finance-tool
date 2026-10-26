@@ -2763,7 +2763,12 @@ export const scopeWords = {
   },
   /** The card's foot: where the company's terms are listed, one link per company. */
   allAt: "לכל מה שמצאנו אצל {name}",
-  allNoCompany: "לכל מה שאינו כלל ואינו תנאי של חברה",
+  allNoCompany: "לכל מה שלא נכלל ככלל",
+  /** A record the rule base keeps that is not a rule (a forum post, a press report, a list, a count, a site's terms, a company's tariff): its card's tag and, when it cites a company's document, its line (review, 2026-10-26). */
+  notRule: {
+    tag: "לא נכלל ככלל",
+    lineOwn: "נמצא במסמכים של {names}. האתר לא מציג את זה ככלל, ושומר אותו עם המקור בין מה שלא נכלל ככלל.",
+  },
   /** The card's foot of a general rule on a page about one product. */
   rulesOf: "לכל החוקים והכללים של {product}",
   /** The chip of a record that names several companies: "לאומי ועוד 3". */
@@ -2780,7 +2785,7 @@ export const scopeWords = {
     title: "מה כתוב במסמכים של חברות שאין להן עמוד כאן",
     line: "מה שנמצא במסמכים של חברות שלאתר אין עליהן עמוד משלהן, לפי חברה.",
     // what no company's section lists: the records the rule base keeps that are not rules (review, 2026-10-26)
-    none: { title: "לא כלל ולא תנאי של חברה", line: "סיפורים מפורומים, כתבות, רשימות וספירות, תנאי שימוש של אתרים, ומקומות שבהם חיפשנו כלל ולא מצאנו. האתר שומר אותם עם המקור, אבל הם לא כלל שחל על כולם ולא תנאי שחברה קבעה במסמכים שלה." },
+    none: { title: "לא נכלל ככלל: פרסומים, ספירות ונתונים", line: "מה שהאתר שומר עם המקור אבל לא מציג ככלל: סיפורים מפורומים, כתבות, רשימות וספירות, נתונים, תנאי שימוש של אתרים, תעריפים של חברות, ומקומות שבהם חיפשנו כלל ולא מצאנו." },
   },
   /** The rules page: company terms are not listed there. */
   rulesLine: { before: "מה שנמצא רק במסמכים של חברה מסוימת מופיע בעמוד של אותה חברה, לא כאן.", link: "לרשימת החברות" },

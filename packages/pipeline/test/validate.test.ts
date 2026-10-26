@@ -524,6 +524,29 @@ describe("scope", () => {
     expect(stale).toMatch(/notRules: IRA-28 no longer stands in data\/instruments\/wrappers\/ira-hishtalmut.json/);
   });
 
+  // review round 3, 2026-10-26: every data file is read, and a named file that is gone fails
+  it("fails a not-rule cited in a data file its entry does not name, and an entry naming a file that does not exist", () => {
+    const ira28 = { ...cs30, id: "IRA-28", il_finance_file: "ira-self-directed.md", dimensions: ["protection"], sources: [press] };
+    const cite = { rule_ids: ["IRA-28"] };
+    const named = { "instruments/wrappers/ira-provident.json": { protection: cite }, "instruments/wrappers/ira-hishtalmut.json": { protection: cite }, "dimensions/protection.json": cite, "dimensions/regulator.json": cite };
+    const all = run({ "rules/ira-28.json": ira28, "sources/institutions.json": [harel], ...named }).map((p) => p.message).join("\n");
+    expect(all).not.toMatch(/notRules|does not name/);
+    const term = run({ "rules/ira-28.json": ira28, "sources/institutions.json": [harel], ...named, "terms/x.json": cite }).map((p) => p.message).join("\n");
+    expect(term).toMatch(/IRA-28 is a not-rule \(press report \(events at Slice and Globalnet\), institution: harel\) cited in data\/terms\/x.json, which its entry in notRules/);
+    const { "dimensions/regulator.json": _gone, ...withoutOne } = named;
+    const gone = run({ "rules/ira-28.json": ira28, "sources/institutions.json": [harel], ...withoutOne }).map((p) => p.message).join("\n");
+    expect(gone).toMatch(/notRules: IRA-28 names data\/dimensions\/regulator.json, which does not exist/);
+  });
+
+  it("fails a company_terms entry naming a company whose document the record does not cite", () => {
+    const leumi = { id: "leumi", name_he: "בנק לאומי", kind: "bank", scope_names: [{ name: "Bank Leumi" }], cma_legal_id: null, fees_id: null, deposit_bank_id: null, own_hosts: ["leumi.co.il"] };
+    const both = { ...cs30, dimensions: ["minimum"], scope_institutions: [{ id: "harel", name_he: "הראל" }, { id: "leumi", name_he: "בנק לאומי" }], sources: [harelDoc] };
+    const wrapper = (companies: string[]) => ({ company_terms: { minimum: [{ rule: "CS-30", companies }] } });
+    const files = { "rules/cs-30.json": both, "sources/institutions.json": [harel, leumi] };
+    expect(run({ ...files, "instruments/wrappers/child-savings-provident.json": wrapper(["harel"]) }).map((p) => p.message).join("\n")).not.toMatch(/is not listed at/);
+    expect(run({ ...files, "instruments/wrappers/child-savings-provident.json": wrapper(["leumi"]) }).map((p) => p.message).join("\n")).toMatch(/company_terms.minimum: CS-30 is not listed at leumi/);
+  });
+
   it("lets an index page cite only the provider records named for it", () => {
     const sp = { id: "sp-dji", name_he: "S&P Dow Jones Indices", kind: "index-provider", scope_names: [{ name: "S&P Dow Jones Indices" }], cma_legal_id: null, fees_id: null, deposit_bank_id: null, own_hosts: ["spglobal.com"] };
     const spDoc = { url: "https://www.spglobal.com/x.pdf", title: "S&P methodology", publisher: "S&P", kind: "other", strength: "institution", checked: "2026-10-22" };

@@ -23,27 +23,29 @@ export const generalSourceKinds: ReadonlySet<string> = new Set(["law", "regulati
 
 /**
  * Records the rule base keeps that are not rules (research/knowledge/2026-10-25-scope/requests.md §4, a judgement call: listed,
- * not moved). The lead's brief of 2026-10-26: leave them where they are for now. Each names the product-context files where it may
- * stand today (a wrapper or exposure record under data/, a guide or exposure prose module under site/app/content/), so a new use
- * fails (review, 2026-10-26); a record not general that stands in none has `files: []`. Each still carries its scope, and its card
- * says it. Never listed in a company's section ("מה כתוב במסמכים של …"): a not-rule is not a company's term. The list only shrinks
- * as each one moves to `data/` or the open questions.
+ * not moved). The lead's brief of 2026-10-26: leave them where they are for now. Each entry that is not general names every file
+ * that cites it today (reviews, 2026-10-26): a data file whose `rule_ids` hold it (the validator checks every file under data/ but
+ * data/rules and data/sources) and a site source file that quotes it (the site test `site/app/lib/scope.test.ts` checks every file
+ * under site/app). A use in a file the entry does not name fails, and so does a named file that is gone or no longer cites it: the
+ * lists only shrink. A general one may stand anywhere (D30), so its `files` stay empty. Each still carries its scope, and its card
+ * says it. Never listed in a company's section ("מה כתוב במסמכים של …"): a not-rule is not shown as a company's term; it is listed
+ * on /companies under "לא נכלל ככלל". The list only shrinks as each one moves to `data/` or the open questions.
  */
 export const notRules: Readonly<Record<string, { why: string; files: readonly string[] }>> = {
-  "SW-X01": { why: "forum post", files: [] },
-  "SW-X02": { why: "forum post", files: [] },
-  "SW-X03": { why: "forum post", files: [] },
-  "SW-X04": { why: "forum post", files: [] },
-  "IRA-28": { why: "press report (events at Slice and Globalnet)", files: ["data/instruments/wrappers/ira-hishtalmut.json", "data/instruments/wrappers/ira-provident.json", "site/app/content/guide/ira-hishtalmut.tsx", "site/app/content/guide/ira-provident.tsx"] },
+  "SW-X01": { why: "forum post", files: ["site/app/lib/playbook.ts", "site/app/lib/rule-shelves.ts"] },
+  "SW-X02": { why: "forum post", files: ["site/app/lib/playbook.ts", "site/app/lib/rule-shelves.ts"] },
+  "SW-X03": { why: "forum post", files: ["site/app/lib/playbook.ts", "site/app/lib/rule-shelves.ts"] },
+  "SW-X04": { why: "forum post", files: ["site/app/lib/playbook.ts", "site/app/lib/rule-shelves.ts"] },
+  "IRA-28": { why: "press report (events at Slice and Globalnet)", files: ["data/dimensions/protection.json", "data/dimensions/regulator.json", "data/instruments/wrappers/ira-hishtalmut.json", "data/instruments/wrappers/ira-provident.json", "site/app/content/guide/ira-hishtalmut.tsx", "site/app/content/guide/ira-provident.tsx"] },
   "TXH-24": { why: "press report", files: [] },
-  "MKT-01": { why: "a series (J.P. Morgan's past-return slide)", files: [] },
+  "MKT-01": { why: "a series (J.P. Morgan's past-return slide)", files: ["site/app/lib/compare.server.ts", "site/app/lib/rule-shelves.ts"] },
   "PEN-46": { why: "a per-fund series", files: [] },
   "PF-41": { why: "a per-fund series", files: [] },
   "MF-18": { why: "a series (the Securities Authority's yearly averages)", files: [] },
   "CS-20": { why: "a share (tracks chosen by parents)", files: [] },
   "CS-22": { why: "market shares", files: [] },
   "CS-08": { why: "figures (the rule part is general)", files: [] },
-  "SW-53": { why: "two brokers' tariffs (belong in data/fees)", files: [] },
+  "SW-53": { why: "two brokers' tariffs (belong in data/fees)", files: ["data/dimensions/fee-custody.json", "data/dimensions/fee-exit.json", "site/app/lib/playbook.ts", "site/app/lib/rule-shelves.ts"] },
   "TXS-26": { why: "a tax-track field of named funds", files: [] },
   "TXS-27": { why: "a tax-track field of named funds", files: [] },
   "IRA-03": { why: "a count", files: [] },
@@ -56,13 +58,13 @@ export const notRules: Readonly<Record<string, { why: string; files: readonly st
   "CAT-42": { why: "Maya's counts and download steps", files: [] },
   "MF-52": { why: "a count", files: [] },
   "REG-03": { why: "a list (the Bank of Israel's banking corporations)", files: [] },
-  "REG-14": { why: "a list (TASE's members)", files: ["site/app/content/guide/brokerage-account.tsx"] },
+  "REG-14": { why: "a list (TASE's members)", files: ["data/dimensions/regulator.json", "site/app/content/guide/brokerage-account.tsx"] },
   "MGD-23": { why: "a count", files: [] },
   "ETF-17": { why: "the Securities Authority's own count", files: [] },
   "ETF-18": { why: "the Securities Authority's own count", files: [] },
   "ETF-26": { why: "the Securities Authority's own count", files: [] },
-  "MF-55": { why: "website terms (the Securities Authority's)", files: [] },
-  "CAT-43": { why: "website terms (TASE's)", files: [] },
+  "MF-55": { why: "website terms (the Securities Authority's)", files: ["data/dimensions/fee-management-balance.json", "data/dimensions/regulator.json", "site/app/lib/fees.server.ts"] },
+  "CAT-43": { why: "website terms (TASE's)", files: ["data/dimensions/regulator.json"] },
   "GOV-19": { why: "where official yields are published", files: [] },
   "PF-39": { why: "website terms paragraph", files: [] },
   "KGL-24": { why: "a computation check", files: [] },
@@ -71,8 +73,8 @@ export const notRules: Readonly<Record<string, { why: string; files: readonly st
   "BANK-27": { why: "\"no rule exists\" record", files: [] },
   "IRA-10": { why: "\"no rule exists\" record", files: [] },
   "SW-19": { why: "\"no rule exists\" record", files: [] },
-  "SW-34": { why: "\"no rule exists\" record", files: ["data/instruments/wrappers/brokerage-account.json"] },
-  "SW-37": { why: "\"no rule exists\" record", files: [] },
+  "SW-34": { why: "\"no rule exists\" record", files: ["data/dimensions/fee-custody.json", "data/dimensions/fee-exit.json", "data/instruments/wrappers/brokerage-account.json", "site/app/components/playbook/cost.tsx", "site/app/lib/playbook.ts", "site/app/lib/rule-shelves.ts"] },
+  "SW-37": { why: "\"no rule exists\" record", files: ["data/dimensions/foreign-withholding-domicile.json", "data/dimensions/protection.json", "data/dimensions/transfer-switch-process.json", "site/app/lib/playbook.ts"] },
 };
 
 /** Whether a not-rule may stand in this product-context file (a repo path, "data/instruments/wrappers/x.json"). */

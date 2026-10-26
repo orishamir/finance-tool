@@ -61,7 +61,7 @@ export async function loader() {
   const strengthRank: Record<string, number> = { primary: 0, "primary-mirror": 1, entered: 1, institution: 2, secondary: 3, open: 4 };
   // D30 (spec 2026-10-25-rules-scope §4): two groups; a company's term (or an unsettled one) names its company and leads to where it is listed
   const { companyLinks, ownDocuments } = await import("../lib/institutions.server");
-  const { companyTermsHref, joinNames, listedCompanies } = await import("../lib/scope");
+  const { companyTermsHref, joinNames, listedCompanies, ownDocCompanies } = await import("../lib/scope");
   const { scopeWords } = await import("../copy");
   const links = companyLinks();
   const ownDocs = ownDocuments();
@@ -69,10 +69,12 @@ export async function loader() {
     const title = ruleTitle(rule).text;
     const topic = topicName(rule.il_finance_file);
     if (rule.scope !== "general") {
-      // the row names the companies whose sections list it (review, 2026-10-26); a not-rule, which none lists, names its group on
-      // /companies, where it leads; every company it names still finds it
+      // the row names the companies whose sections list it (review, 2026-10-26); a not-rule, which none lists, says "לא נכלל ככלל",
+      // after the companies whose documents it was read from, if any, and leads to that section of /companies; every company it
+      // names still finds it
       const listed = listedCompanies(rule, ownDocs);
-      const who = listed.length > 0 ? joinNames(listed.map((c) => c.name_he)) : scopeWords.noPage.none.title;
+      const own = ownDocCompanies(rule, ownDocs);
+      const who = listed.length > 0 ? joinNames(listed.map((c) => c.name_he)) : [joinNames(own.map((c) => c.name_he)), scopeWords.notRule.tag].filter(Boolean).join(" · ");
       const named = joinNames((rule.scope_institutions ?? []).map((c) => c.name_he));
       const firstSourceHe = (rule as { sources?: { title_he?: string }[] }).sources?.[0]?.title_he;
       const altC = normalize([...Object.values(rule.figure_names_he ?? {}), topic, named, firstSourceHe ?? ""].join(" "));

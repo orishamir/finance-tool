@@ -3,7 +3,7 @@
 // averages (compact), the fit table (P-04), the rule texts the statement disclosure and the consolidation cards quote,
 // the glossary's other spellings of the statement's terms, and the site and data ids the export file carries. Server-only.
 import type { RuleRecord, WrapperId } from "@finance-tool/schema";
-import { loadCma, loadCmaFees, loadRules, loadTerms, loadWrappers, today } from "./data.server";
+import { loadCma, loadCmaFees, loadRules, loadTerms, loadWrappers, pointedRecords, today } from "./data.server";
 import { fitTable } from "./compare.server";
 import type { HoldingsBundle, HTrack, HWrapper } from "./holdings";
 import { cmaFeeValue, compactFee, type SiteValue } from "./value";
@@ -115,6 +115,7 @@ export function buildHoldingsBundle(): HoldingsBundle {
     tracks,
     fees: templates,
     rules: shipped,
+    pointed: Object.values(pointedRecords(shipped, rules)),
     spellings,
   };
 }

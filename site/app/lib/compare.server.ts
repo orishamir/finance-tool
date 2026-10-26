@@ -5,7 +5,7 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { DepositTerms, FeesSnapshot, ParameterRecord, RuleRecord, ValueObject, WrapperId, WrapperRecord } from "@finance-tool/schema";
 import { buildTariff as engineTariff, type InstrumentTerms, type WorkbenchInput } from "@finance-tool/engine";
-import { loadChecklistRows, loadCma, loadCmaFees, loadFees, loadNotCovered, loadParameters, loadRules, loadWrappers, root, today } from "./data.server";
+import { loadChecklistRows, loadCma, loadCmaFees, loadFees, loadNotCovered, loadParameters, loadRules, loadWrappers, pointedRecords, root, today } from "./data.server";
 import { buildInstrumentTerms, loadDepositTerms, loadExposures, loadFunds, regulatorAverageFees } from "./instruments.server";
 import { evaluate, representativeFeeValue, type BundleDataFile, type ProviderTariff, type CompareBundle, type ExposureEntry, type Family, type HoldingTerms, type IndexFundTerms, type RunGoal, type Tier2Row, type WrapperEntry } from "./compare";
 import type { FitTableData } from "./fit";
@@ -449,7 +449,7 @@ export function buildCompareBundle(): CompareBundle {
   const rules: RuleRecord[] = Object.values(allRules).filter((r) => needed.has(r.id));
   const missingRules = [...needed].filter((id) => !allRules[id] && !/OQ/.test(id));
   if (missingRules.length > 0) console.log(`[compare] cited but not in data/rules/: ${missingRules.join(", ")}`);
-  const bundle: CompareBundle = { ...draft, rules };
+  const bundle: CompareBundle = { ...draft, rules, pointed: Object.values(pointedRecords(rules, allRules)) };
   console.log(`[compare] bundle: ${wrappers.length} wrappers, ${wrappers.filter((w) => w.terms).length} with terms, ${rules.length} of ${Object.keys(allRules).length} rules, ${runs} probe runs, ${(JSON.stringify(bundle).length / 1024).toFixed(0)} KB`);
   return bundle;
 }
@@ -493,6 +493,7 @@ export function goalFormData() {
       payslipText: (pen36 as { text_he?: string } | null)?.text_he ?? null,
     },
     rules: pen36 ? { "PEN-36": pen36 } : {},
+    pointed: pen36 ? pointedRecords({ "PEN-36": pen36 }, rules) : {},
   };
 }
 

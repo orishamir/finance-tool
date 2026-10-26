@@ -21,6 +21,7 @@ import { checklistFor, parsePlaybookQuery, playbookQueryString, SWITCH_RULES_HRE
 import { BROKERAGE } from "../lib/providers";
 import { useHoldings } from "../lib/state";
 import { useInputs } from "../lib/inputs";
+import { recordsById } from "../lib/scope";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { playbookPage } = await import("../lib/playbook.server");
@@ -134,7 +135,7 @@ function Body() {
     ) : null;
 
   return (
-    <PageShell current="other" data={{ rules: provenanceRules, terms: {}, dimensions: {}, today: data.today }}>
+    <PageShell current="other" data={{ rules: provenanceRules, pointed: { ...(data.pointed as unknown as Record<string, RuleRecord>), ...recordsById(wb?.pointed) }, terms: {}, dimensions: {}, today: data.today }}>
       <div className="flex flex-col gap-5 lg:gap-6 pt-2 lg:pt-8">
         <header className="flex flex-col gap-3 max-w-page">
           <Breadcrumb parent={{ href: "/holdings", label: c.back }} current={`${c.title.before}${data.wrapperName}${c.title.after}`} />

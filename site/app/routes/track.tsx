@@ -14,7 +14,7 @@ import { GoalsProvider, type Presets } from "../lib/goal";
 import { cmaFeeValue, feeYear, type SiteValue } from "../lib/value";
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const { loadChecklistRows, loadCma, loadCmaFees, loadRules, loadWrappers, today } = await import("../lib/data.server");
+  const { loadChecklistRows, loadCma, loadCmaFees, loadRules, loadWrappers, pointedRecords, today } = await import("../lib/data.server");
   const { fitTable, goalContext } = await import("../lib/compare.server");
   const { institutionCompanies, loadCatalog, seenValue, seenWhere } = await import("../lib/instruments.server");
   const cma = loadCma();
@@ -61,6 +61,7 @@ export async function loader({ params }: Route.LoaderArgs) {
     wrapper: wrapper ? { id: wrapper.id, name: wrapper.names.he[0]! } : null,
     checklist,
     rules: citedRules,
+    pointed: pointedRecords(citedRules, rules),
     dimensionNames: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])),
     values: {
       balanceFee: cmaFeeValue(fees.balance, t),
@@ -93,7 +94,7 @@ export default function TrackPage() {
   const feeText = (template: string, v: SiteValue) => feeLabel(template, feeYear(v)) + (track.dataset === "pensia-net" ? ` ${copy.feeWhole}` : "");
   return (
     <GoalsProvider presets={data.goal.presets as Presets}>
-    <PageShell current="decoder" data={{ rules: data.rules, terms: {}, dimensions: data.dimensionNames, today: data.today }}>
+    <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: data.dimensionNames, today: data.today }}>
       <div className="flex flex-col gap-8 pt-2 lg:pt-8 max-w-page">
         <header className="flex flex-col gap-3">
           <Breadcrumb parent={{ href: `/companies/${track.companyId}`, label: track.companyName }} current={track.name} />

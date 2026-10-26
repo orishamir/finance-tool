@@ -2,7 +2,8 @@
 // company's page and on a bank's or broker's page, "מה כתוב במסמכים של {company}", grouped by topic; and on /companies the same for
 // the companies the site has no page for, one fold per company. Each item is the rule card (inline), which names the document, the
 // date it was read and, for a rule not shown to hold everywhere, "אולי כך בכל החברות; לא מצאנו לזה מקור רשמי". A company's section
-// holds only records from its own documents (review, 2026-10-26); what no section lists, the not-rules, is the last fold on /companies.
+// holds only records from its own documents (review, 2026-10-26); what no section lists, the not-rules, has a section of its own at
+// the end of /companies, "לא נכלל ככלל".
 // Built from the kit's Section, FoldGroup (`variant="section"`, controlled) and Card and the provenance layer's RuleCard; a feature
 // block of the company pages.
 import { useEffect, useState } from "react";
@@ -89,7 +90,11 @@ export function CompanyTerms({ name, groups }: { name: string; groups: readonly 
   );
 }
 
-/** /companies: the terms of the companies the site has no page for, a fold each, and the records that name no company. */
+/**
+ * /companies: the terms of the companies the site has no page for, a fold each; then, in a section of its own, what the site keeps but
+ * does not show as a rule, which no company's section lists (the not-rules: a forum post, a press report, a list, a count, a site's
+ * terms, a company's tariff; review, 2026-10-26), its cards shown in full.
+ */
 export function NoPageCompanyTerms({ companies, none }: { companies: readonly { id: string; name: string; ids: string[] }[]; none: readonly string[] }) {
   const hash = useHash();
   const [opened, setOpened] = useState<Set<string>>(() => new Set());
@@ -97,24 +102,27 @@ export function NoPageCompanyTerms({ companies, none }: { companies: readonly { 
   useEffect(() => {
     if (named) setOpened((o) => (o.has(named) ? o : new Set(o).add(named)));
   }, [named]);
-  useScrollToHash(hash, !!named && opened.has(named));
+  useScrollToHash(hash, !!named && (named === noCompanyAnchor || opened.has(named)));
   if (companies.length === 0 && none.length === 0) return null;
   const toggle = (key: string) => (now: boolean) => setOpened((o) => { const n = new Set(o); if (now) n.add(key); else n.delete(key); return n; });
   return (
-    <Section id={companyTermsAnchor} title={scopeWords.noPage.title} lead={scopeWords.noPage.line}>
-      <div className="flex flex-col gap-3">
-        {companies.map((c) => (
-          <FoldGroup key={c.id} variant="section" id={noPageAnchor(c.id)} className={scrollMargin} title={<bdi>{c.name}</bdi>} count={c.ids.length} open={opened.has(c.id)} onOpenChange={toggle(c.id)}>
-            <Cards ids={c.ids} />
-          </FoldGroup>
-        ))}
-        {none.length > 0 && (
-          <FoldGroup variant="section" id={noCompanyAnchor} className={scrollMargin} title={scopeWords.noPage.none.title} count={none.length} open={opened.has(noCompanyAnchor)} onOpenChange={toggle(noCompanyAnchor)}>
-            <p className="text-sm text-muted-foreground max-w-measure pt-1">{scopeWords.noPage.none.line}</p>
-            <Cards ids={none} />
-          </FoldGroup>
-        )}
-      </div>
-    </Section>
+    <>
+      {companies.length > 0 && (
+        <Section id={companyTermsAnchor} title={scopeWords.noPage.title} lead={scopeWords.noPage.line}>
+          <div className="flex flex-col gap-3">
+            {companies.map((c) => (
+              <FoldGroup key={c.id} variant="section" id={noPageAnchor(c.id)} className={scrollMargin} title={<bdi>{c.name}</bdi>} count={c.ids.length} open={opened.has(c.id)} onOpenChange={toggle(c.id)}>
+                <Cards ids={c.ids} />
+              </FoldGroup>
+            ))}
+          </div>
+        </Section>
+      )}
+      {none.length > 0 && (
+        <Section id={noCompanyAnchor} title={scopeWords.noPage.none.title} lead={scopeWords.noPage.none.line}>
+          <Cards ids={none} />
+        </Section>
+      )}
+    </>
   );
 }

@@ -714,7 +714,8 @@
     "fees_id": null,
     "deposit_bank_id": null,
     "own_hosts": [
-      "blackrock.com"
+      "blackrock.com",
+      "ishares.com"
     ]
   },
   {

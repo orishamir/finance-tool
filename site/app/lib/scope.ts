@@ -2,7 +2,7 @@
 // the record carries its scope and the companies it names (extracted from the rule base), and the root loader gives every page the
 // link of each company (`ProvenanceData.companies`) and, per record that is not general, the companies whose own document it cites
 // (`ProvenanceData.ownDocs`): only those list it in their section (review, 2026-10-26).
-import { listedAt, type RuleRecord } from "@finance-tool/schema";
+import { isOwnDocument, listedAt, notRules, type OwnDocumentKeys, type RuleRecord } from "@finance-tool/schema";
 import { scopeWords } from "../copy";
 
 export type Scope = RuleRecord["scope"];
@@ -13,6 +13,8 @@ export interface CompanyLink {
   href: string;
   /** False when the site has no page of its own for the company (a fund manager, an index provider, a foreign broker): `href` is then its group on /companies. */
   hasPage: boolean;
+  /** Where its own documents live (the registry's `own_hosts`, `filing_names`): a rule card drops "לפי החברה" only on a source there (D31; review, 2026-10-26). */
+  docs?: OwnDocumentKeys;
 }
 
 /** The anchor of the company-terms section on a company page, and of a company's group on /companies. */
@@ -38,6 +40,9 @@ export function scopeCompanies(rule: Pick<RuleRecord, "scope_institutions">): { 
 export function generalOnly(ids: readonly string[], rules: Record<string, Pick<RuleRecord, "scope">>): string[] {
   return ids.filter((id) => !rules[id] || isGeneral(rules[id]));
 }
+
+/** Whether a record is one the rule base keeps that is not a rule (a forum post, a press report, a list, a count, a site's terms): never in a company's section, listed on /companies under "לא נכלל ככלל". */
+export const isNotRule = (id: string): boolean => Object.hasOwn(notRules, id);
 
 /** Of the companies a record names, those whose own document it cites: the record is found in their documents. */
 export function ownDocCompanies(rule: Pick<RuleRecord, "id" | "scope_institutions">, ownDocs: OwnDocs | undefined): { id: string; name_he: string }[] {
@@ -71,11 +76,30 @@ export function companyTermsHref(rule: Pick<RuleRecord, "id" | "scope" | "scope_
 }
 
 /**
- * The chip's words for a record that is not general (spec §4: the chip shows the company's name, not a code): the page's own company
- * when the record names it, else the first company, with "and N more" (copy) and the count of the others. Null when it names none (the code stays).
+ * The companies a record is shown as from (its chip, its tag, its card's line): those whose own documents it cites; a record that cites
+ * none of their documents (a press report, a forum post) is shown as about every company it names (review, 2026-10-26: PEN-37 names
+ * Meitav, but cites no document of Meitav, so neither its chip nor its card counts Meitav).
  */
-export function chipName(rule: Pick<RuleRecord, "scope_institutions">, current: string | undefined, more: (n: number) => string): string | null {
-  const list = scopeCompanies(rule);
+export function shownCompanies(rule: Pick<RuleRecord, "id" | "scope_institutions">, ownDocs: OwnDocs | undefined): { id: string; name_he: string }[] {
+  const own = ownDocCompanies(rule, ownDocs);
+  return own.length > 0 ? own : scopeCompanies(rule);
+}
+
+/** Whether a source on a company's term is one of that company's own documents (D31: only such a source drops "לפי החברה"). */
+export function isOwnSourceOf(rule: Pick<RuleRecord, "id" | "scope_institutions">, source: { url: string; title: string; title_he?: string }, ownDocs: OwnDocs | undefined, companies: Record<string, CompanyLink> | undefined): boolean {
+  return ownDocCompanies(rule, ownDocs).some((c) => {
+    const docs = companies?.[c.id]?.docs;
+    return !!docs && isOwnDocument(source, docs);
+  });
+}
+
+/**
+ * The chip's words for a record that is not general (spec §4: the chip shows the company's name, not a code): the page's own company
+ * when the record shows it, else the first, with "and N more" (copy) and the count of the others, over the same companies the card
+ * names (`shownCompanies`). Null when it names none (the code stays).
+ */
+export function chipName(rule: Pick<RuleRecord, "id" | "scope_institutions">, ownDocs: OwnDocs | undefined, current: string | undefined, more: (n: number) => string): string | null {
+  const list = shownCompanies(rule, ownDocs);
   if (list.length === 0) return null;
   const first = list.find((c) => c.id === current) ?? list[0]!;
   return list.length === 1 ? first.name_he : `${first.name_he} ${more(list.length - 1)}`;
@@ -92,4 +116,9 @@ export function joinNames(names: readonly string[]): string {
 /** The records a rule card points at, its derivations and its examples (a general rule's companies' terms): they travel with the card, so its chips open. */
 export function pointedIds(rule: Pick<RuleRecord, "derived_from" | "examples">): string[] {
   return [...(rule.derived_from ?? []), ...(rule.examples ?? [])];
+}
+
+/** Records by id from bundles' lists (a bundle's `pointed`), for `ProvenanceData.pointed` on a page built from bundles. */
+export function recordsById(...lists: (readonly RuleRecord[] | undefined)[]): Record<string, RuleRecord> {
+  return Object.fromEntries(lists.flatMap((l) => l ?? []).map((r) => [r.id, r]));
 }

@@ -19,7 +19,6 @@ import { fit as fitCopy } from "../copy";
 import type { SiteValue } from "../lib/value";
 import { fmt } from "../lib/format";
 import { cmaFeeValue, compactFee, expandFee, feeYear, type CompactFee } from "../lib/value";
-import { pointedIds } from "../lib/scope";
 
 const classificationOrder = ["קופת גמל להשקעה", "קרנות השתלמות", "תגמולים ואישית לפיצויים", "קופת גמל להשקעה - חסכון לילד", "קרנות חדשות", "קרנות כלליות", "מרכזית לפיצויים", "מטרה אחרת"];
 
@@ -71,16 +70,15 @@ export async function loader({ params }: Route.LoaderArgs) {
     .map((c) => ({ id: c.id, names: c.names.he, where: seenWhere(c), seen: seenValue(c) }));
   // what the site found in the company's own documents (D30): the records that cite them, by topic, with their cards' data
   const { companyTermGroups, registryIdsOfPage } = await import("../lib/institutions.server");
-  const { loadChecklistRows, loadRules } = await import("../lib/data.server");
+  const { loadChecklistRows, loadRules, pointedRecords } = await import("../lib/data.server");
   const { topicName } = await import("../copy");
   const allRules = loadRules();
   const registryIds = registryIdsOfPage(company.id);
   const termGroups = companyTermGroups(registryIds, allRules, topicName);
   const termRules = Object.fromEntries(termGroups.flatMap((g) => g.ids).map((id) => [id, allRules[id]!]));
-  for (const r of Object.values({ ...termRules })) for (const d of pointedIds(r)) if (allRules[d]) termRules[d] = allRules[d]!;
   const { loadInstitutionRegistry } = await import("../lib/institutions.server");
   const shortName = loadInstitutionRegistry().find((r) => r.id === registryIds[0])?.name_he ?? company.name;
-  const companyTerms = { groups: termGroups, rules: termRules, company: registryIds[0] ?? null, name: shortName, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} };
+  const companyTerms = { groups: termGroups, rules: termRules, pointed: pointedRecords(termRules, allRules), company: registryIds[0] ?? null, name: shortName, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} };
   return { kind: "company" as const, company, groups, period: cma.periodValue, defaultIds, known, unassigned, today: t, goal: goalContext(), fit: fitTable(), companyTerms };
 }
 
@@ -111,7 +109,7 @@ function ManagerCompany({ data }: { data: Extract<ReturnType<typeof useLoaderDat
   return (
     <GoalsProvider presets={data.goal.presets as Presets}>
     <FitProvider table={data.fit} stale={data.period.stale ?? null}>
-    <PageShell current="decoder" data={{ rules: data.companyTerms.rules, terms: {}, dimensions: data.companyTerms.dimensions, today: data.today, ...(data.companyTerms.company ? { company: data.companyTerms.company } : {}) }}>
+    <PageShell current="decoder" data={{ rules: data.companyTerms.rules, pointed: data.companyTerms.pointed, terms: {}, dimensions: data.companyTerms.dimensions, today: data.today, ...(data.companyTerms.company ? { company: data.companyTerms.company } : {}) }}>
       <div className="pt-2 lg:pt-8">
         <div className="flex-1 min-w-0 flex flex-col gap-6 lg:gap-8">
           <header className="flex flex-col gap-3">

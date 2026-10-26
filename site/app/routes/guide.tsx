@@ -64,12 +64,13 @@ export async function loader({ params }: Route.LoaderArgs) {
   if (!data) throw new Response("Not found", { status: 404 });
   const { goalContext } = await import("../lib/compare.server");
   // the pinned facts of this wrapper (P-09 guide_blocks); their rules join the page's provenance data
-  const { loadPinnedRules, loadRules } = await import("../lib/data.server");
+  const { loadPinnedRules, loadRules, pointedRecords } = await import("../lib/data.server");
   const worthIds = loadPinnedRules().guide_blocks?.[params.id] ?? [];
-  const allRules = worthIds.some((id) => !data.rules[id]) ? loadRules() : {};
+  const allRules = loadRules();
   const rules = { ...data.rules };
   for (const id of worthIds) if (!rules[id] && allRules[id]) rules[id] = allRules[id]!;
-  return { ...data, rules, worthIds, goal: goalContext() };
+  // the records the cards point at, the pinned facts' too, travel beside the page's own rules (only chips and cards read them)
+  return { ...data, rules, pointed: pointedRecords(rules, allRules), worthIds, goal: goalContext() };
 }
 
 export function meta({ loaderData: data }: Route.MetaArgs) {
@@ -368,7 +369,7 @@ export default function GuidePage() {
   });
 
   const regulatorName = blocks.regulatorNames[String(record.regulator.value)] ?? String(record.regulator.value);
-  const provenance = { rules, terms: data.termsById, dimensions: data.dimensionNames, today, rulesOf: { name: data.name, href: `/rules?product=${record.id}` } }; // the rules page's product filter (2026-10-25): the old `#<file>` anchor stopped existing when groups became `<shelf>-<file>`
+  const provenance = { rules, pointed: data.pointed, terms: data.termsById, dimensions: data.dimensionNames, today, rulesOf: { name: data.name, href: `/rules?product=${record.id}` } }; // the rules page's product filter (2026-10-25): the old `#<file>` anchor stopped existing when groups became `<shelf>-<file>`
   const cp = { figure };
   const signature = hasSignatureVisual(record.id, data.signature) ? data.signature : null;
   // the current account starts from the rate most of the collected banks publish (F-85), and says how many do
