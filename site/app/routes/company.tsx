@@ -13,20 +13,16 @@ import { BrokerageGroupCard } from "../components/decoder/institutions/brokerage
 import { IconDrillIn } from "../components/icons";
 import { NumAfter, NumberLegend } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { FitProvider } from "../components/compare/fit";
-import { SavedGoalStrip } from "../components/compare/strip";
 import { Callout, Card, Disclosure } from "../components/kit";
-import { GoalsProvider, type Presets } from "../lib/goal";
-import { fit as fitCopy } from "../copy";
 import type { SiteValue } from "../lib/value";
 import { fmt } from "../lib/format";
 import { cmaFeeValue, compactFee, expandFee, feeYear, type CompactFee } from "../lib/value";
+import { compactHoldings, holdingsTemplate, stockShare } from "../lib/track-exposure";
 
 const classificationOrder = ["קופת גמל להשקעה", "קרנות השתלמות", "תגמולים ואישית לפיצויים", "קופת גמל להשקעה - חסכון לילד", "קרנות חדשות", "קרנות כלליות", "מרכזית לפיצויים", "מטרה אחרת"];
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const { loadCma, loadCmaFees, loadTerms, loadProducts, today } = await import("../lib/data.server");
-  const { fitTable, goalContext } = await import("../lib/compare.server");
+  const { loadCma, loadCmaFees, loadCmaHoldings, loadTerms, loadProducts, today } = await import("../lib/data.server");
   const { institutionCompanies, loadCatalog, resolutionOf, seenValue, seenWhere } = await import("../lib/instruments.server");
   const cma = loadCma();
   // D33: a brand's every address shows its one page: the managing company's tracks, the funds, the brokerage account
@@ -46,6 +42,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const collator = new Intl.Collator("he");
   const tracks = cma.tracks.filter((t) => t.companyId === company?.id).sort((a, b) => collator.compare(a.name, b.name));
   const feesOf = loadCmaFees();
+  const holdingsOf = loadCmaHoldings();
   const t = today();
   const groups = [...new Set(tracks.map((t) => t.classification))]
     .sort((a, b) => (classificationOrder.indexOf(a) + 1 || 99) - (classificationOrder.indexOf(b) + 1 || 99))
@@ -56,8 +53,15 @@ export async function loader({ params }: Route.LoaderArgs) {
       const balances = list.map((x) => feesOf.get(x.fundId)!.balance);
       const template = cmaFeeValue(balances.find((b) => b.value !== null) ?? balances[0]!, t);
       const fees: Record<number, CompactFee> = Object.fromEntries(list.map((x, i) => [x.fundId, compactFee(balances[i]!, template)]));
+      // F-87 (D34): the same compaction for the two amounts the stock share is computed from
+      const period = list[0]!.reportPeriod;
+      const stockTemplate = holdingsTemplate(list.map((x) => holdingsOf.get(x.fundId)), period, t);
+      const holdings = Object.fromEntries(list.map((x) => [x.fundId, compactHoldings(holdingsOf.get(x.fundId), stockTemplate)]));
       return {
         classification,
+        period,
+        stockTemplate,
+        holdings,
         workbenchId: list[0]!.wrapperId,
         tracks: list,
         fees,
@@ -92,7 +96,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   // the legal companies the page stands for, as their own data writes them (the CMA, the tariff, the fund records)
   const members = brand ? [...new Set([company?.name, brokerage?.tariff.providerName, ...brand.fundManagers].filter((x): x is string => !!x))] : [];
   const brokerageCard = brokerage && brand?.brokerId ? { id: brand.brokerId, kind: brokerage.kind, tariff: brokerage.tariff } : null;
-  return { kind: "company" as const, name, company: company ?? null, groups, funds, brokerage: brokerageCard, members, period: cma.periodValue, defaultIds, known, unassigned, today: t, goal: goalContext(), fit: fitTable(), companyTerms };
+  return { kind: "company" as const, name, company: company ?? null, groups, funds, brokerage: brokerageCard, members, period: cma.periodValue, defaultIds, known, unassigned, today: t, companyTerms };
 }
 
 export function meta({ loaderData: data }: Route.MetaArgs) {
@@ -143,8 +147,6 @@ function ManagerCompany({ data }: { data: CompanyData }) {
   // the page's groups in one order: the managing company's products, the funds, the brokerage account; the first is open
   const firstOpen = company && data.groups.length > 0 ? "tracks" : data.funds.length > 0 ? "funds" : "brokerage";
   return (
-    <GoalsProvider presets={data.goal.presets as Presets}>
-    <FitProvider table={data.fit} stale={data.period.stale ?? null}>
     <PageShell current="decoder" data={{ rules: data.companyTerms.rules, pointed: data.companyTerms.pointed, terms: {}, dimensions: data.companyTerms.dimensions, today: data.today, ...(data.companyTerms.company ? { company: data.companyTerms.company } : {}) }}>
       <div className="pt-2 lg:pt-8">
         <div className="flex-1 min-w-0 flex flex-col gap-6 lg:gap-8">
@@ -194,12 +196,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
               </h2>
               {company && <span className="hidden lg:inline text-sm text-muted-foreground">{"בחרו מסלול כדי לראות את כל הפרטים ומה לבדוק"}</span>}
             </div>
-            {company && (
-              <>
-                <Callout tone="info">{copy.feesLine}</Callout>
-                <SavedGoalStrip variant="compact" label={fitCopy.companyLine} presets={data.goal.presets as Presets} meta={data.goal.meta} today={data.today} />
-              </>
-            )}
+            {company && <Callout tone="info">{copy.feesLine}</Callout>}
 
             {company &&
               data.groups.map((g, i) => (
@@ -220,8 +217,15 @@ function ManagerCompany({ data }: { data: CompanyData }) {
                   )}
                   <TrackList
                     feeHead={feeHeadOf(g.feeTemplate) + (g.tracks[0]?.dataset === "pensia-net" ? ` ${copy.feeRowWhole}` : "")}
+                    stockHead={g.stockTemplate ? copy.stock.column.replace("{period}", fmt.period(g.period)) : undefined}
                     groups={groupTracks(
-                      g.tracks.map((t) => ({ track: t, href: `/companies/${company.id}/${t.fundId}`, isDefault: data.defaultIds.includes(t.fundId), fee: expandFee(g.fees[t.fundId]!, g.feeTemplate) })),
+                      g.tracks.map((t) => ({
+                        track: t,
+                        href: `/companies/${company.id}/${t.fundId}`,
+                        isDefault: data.defaultIds.includes(t.fundId),
+                        fee: expandFee(g.fees[t.fundId]!, g.feeTemplate),
+                        ...(g.stockTemplate ? { stock: stockShare(g.holdings[t.fundId] ?? null, g.stockTemplate, g.period, data.today) } : {}),
+                      })),
                       data.known,
                     )}
                   />
@@ -274,8 +278,6 @@ function ManagerCompany({ data }: { data: CompanyData }) {
 
       </div>
     </PageShell>
-    </FitProvider>
-    </GoalsProvider>
   );
 }
 

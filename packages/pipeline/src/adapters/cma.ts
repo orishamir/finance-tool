@@ -68,6 +68,37 @@ export const REQUIRED_COLUMNS = [
 /** Columns only gemelnet carries; pensia-net has none of them and the snapshot stores "" (hand collection). */
 export const GEMEL_ONLY_COLUMNS = ["TARGET_POPULATION", "SPECIALIZATION", "SUB_SPECIALIZATION"] as const;
 
+/**
+ * Amount columns kept when the file has them (D34, 2026-10-26: the company page's stock-exposure column, F-87). Not required: a file
+ * without them still writes, and its funds carry no `holdings`. NIS millions at the period end (CAT-03, research note).
+ */
+export const HOLDINGS_COLUMNS = ["TOTAL_ASSETS", "STOCK_MARKET_EXPOSURE"] as const;
+
+/**
+ * Further columns kept as received in `raw_fields`, for later use (founder, 2026-10-26): no page reads them and none has a value
+ * object yet; a page that shows one first gives it a value object as `buildHoldings` does. Past returns among them are history,
+ * never a ranking key (product.md section 2). Pension-net names its monthly deposits MONTHLY_DEPOSITS.
+ */
+export const KEPT_COLUMNS = [
+  "FOREIGN_EXPOSURE",
+  "FOREIGN_CURRENCY_EXPOSURE",
+  "LIQUID_ASSETS_PERCENT",
+  "DEPOSITS",
+  "MONTHLY_DEPOSITS",
+  "WITHDRAWLS",
+  "INTERNAL_TRANSFERS",
+  "NET_MONTHLY_DEPOSITS",
+  "MONTHLY_YIELD",
+  "YEAR_TO_DATE_YIELD",
+  "YIELD_TRAILING_3_YRS",
+  "YIELD_TRAILING_5_YRS",
+  "AVG_ANNUAL_YIELD_TRAILING_3YRS",
+  "AVG_ANNUAL_YIELD_TRAILING_5YRS",
+  "STANDARD_DEVIATION",
+  "ALPHA",
+  "SHARPE_RATIO",
+] as const;
+
 /** Text columns checked for replacement characters (decode failure). */
 const TEXT_COLUMNS = [
   "FUND_NAME",
@@ -209,9 +240,72 @@ export function buildFees(
   return { avg_annual_management_fee: make(FEE_FIELDS[0]), avg_deposit_fee: make(FEE_FIELDS[1]) };
 }
 
-/** Rebuild `fees` of every fund from the stored raw_fields; nothing else changes. */
+const HOLDINGS_FIELDS = [
+  { key: "total_assets", raw: "TOTAL_ASSETS", heName: "סך נכסים" },
+  { key: "stock_market_exposure", raw: "STOCK_MARKET_EXPOSURE", heName: "חשיפה לשוק המניות" },
+] as const;
+
+/** The last day of a report period, "2026-09" -> "2026-09-30". */
+const periodEnd = (period: string): string => {
+  const [y, m] = period.split("-").map(Number) as [number, number];
+  return new Date(Date.UTC(y, m, 0)).toISOString().slice(0, 10);
+};
+
+/**
+ * CMA amount fields to value objects, in NIS millions at the period end (CAT-03 for the unit of TOTAL_ASSETS; the unit of
+ * STOCK_MARKET_EXPOSURE is read the same way, inferred: the dictionary does not state it, CAT OQ4). Null when the file has
+ * neither column. Pure.
+ */
+export function buildHoldings(
+  file: Pick<CmaPeriodFile, "dataset" | "report_period" | "checked" | "source">,
+  fund: Pick<CmaFund, "raw_fields">,
+): CmaFund["holdings"] | undefined {
+  if (!HOLDINGS_FIELDS.some((f) => f.raw in fund.raw_fields)) return undefined;
+  const config = DATASETS.find((d) => d.dataset === file.dataset)!;
+  const make = (f: (typeof HOLDINGS_FIELDS)[number]) => {
+    const rawText = (fund.raw_fields[f.raw] ?? "").trim();
+    const n = rawText === "" ? null : Number(rawText);
+    const value = n !== null && Number.isFinite(n) ? n : null;
+    const notes =
+      value === null
+        ? "לא דווח."
+        : f.key === "total_assets"
+          ? `סך נכסי המסלול בסוף ${file.report_period}, במיליוני ש״ח כפי שהרשות מדווחת.`
+          : `החשיפה של המסלול לשוק המניות בסוף ${file.report_period}, במיליוני ש״ח (היחידה לא כתובה במילון השדות; היא נקראת כמו סך הנכסים, CAT OQ4). לא פורסם אם החשיפה נמדדת כולל נגזרים או דרך קרנות שהמסלול מחזיק.`;
+    return {
+      value,
+      unit: "nis_millions" as const,
+      source: {
+        url: file.source.url,
+        title: `${config.heTitle}, resource 2024-today, field ${f.raw} ("${f.heName}"), REPORT_PERIOD ${file.report_period.replace("-", "")}`,
+        publisher: file.source.publisher,
+        strength: "primary" as const,
+      },
+      checked: file.checked,
+      effective_from: `${file.report_period}-01`,
+      effective_to: periodEnd(file.report_period),
+      tax_year: null,
+      update_rule: "market" as const,
+      rule_ids: ["CAT-24"],
+      state: "sourced" as const,
+      notes,
+    };
+  };
+  return { total_assets: make(HOLDINGS_FIELDS[0]), stock_market_exposure: make(HOLDINGS_FIELDS[1]) };
+}
+
+/** Attach a fund's derived value objects (fees, and holdings when its raw fields have them). */
+const derive = (file: Pick<CmaPeriodFile, "dataset" | "report_period" | "checked" | "source">, f: CmaFund): CmaFund => {
+  const next: CmaFund = { ...f, fees: buildFees(file, f) };
+  const holdings = buildHoldings(file, f);
+  if (holdings) next.holdings = holdings;
+  else delete next.holdings;
+  return next;
+};
+
+/** Rebuild `fees` and `holdings` of every fund from the stored raw_fields; nothing else changes. */
 export function renormaliseFees(file: CmaPeriodFile): CmaPeriodFile {
-  return { ...file, funds: file.funds.map((f) => ({ ...f, fees: buildFees(file, f) })) };
+  return { ...file, funds: file.funds.map((f) => derive(file, f)) };
 }
 
 export const archiveKey = (dataset: CmaDataset, runDate: string): string => `cma/${dataset}/${runDate}.csv.gz`;
@@ -293,6 +387,7 @@ export function normalise(csvText: string, ctx: NormaliseContext): NormaliseResu
       raw_fields: {
         AVG_ANNUAL_MANAGEMENT_FEE: get(r, "AVG_ANNUAL_MANAGEMENT_FEE"),
         AVG_DEPOSIT_FEE: get(r, "AVG_DEPOSIT_FEE"),
+        ...Object.fromEntries([...HOLDINGS_COLUMNS, ...KEPT_COLUMNS].filter((c) => c in col).map((c) => [c, get(r, c)])),
       },
       fees: null as unknown as CmaFund["fees"], // filled below, once the file-level fields exist
     });
@@ -315,7 +410,7 @@ export function normalise(csvText: string, ctx: NormaliseContext): NormaliseResu
     raw: { archive_key: archiveKey(config.dataset, ctx.runDate), sha256: ctx.sha256 },
     funds,
   };
-  for (const f of candidate.funds) f.fees = buildFees(candidate as CmaPeriodFile, f);
+  candidate.funds = candidate.funds.map((f) => derive(candidate as CmaPeriodFile, f));
   const parsed = cmaPeriodFile.safeParse(candidate);
   if (!parsed.success) {
     const first = parsed.error.issues.slice(0, 5).map((i) => `${i.path.join(".")}: ${i.message}`);
@@ -363,7 +458,7 @@ const FIELDS: [string, (f: CmaFund) => unknown][] = [
   ["specialization", (f) => f.specialization],
   ["sub_specialization", (f) => f.sub_specialization],
   ["inception_date", (f) => f.inception_date],
-  ...["AVG_ANNUAL_MANAGEMENT_FEE", "AVG_DEPOSIT_FEE"].map(
+  ...["AVG_ANNUAL_MANAGEMENT_FEE", "AVG_DEPOSIT_FEE", ...HOLDINGS_COLUMNS, ...KEPT_COLUMNS].map(
     (k): [string, (f: CmaFund) => unknown] => [`raw_fields.${k}`, (f) => f.raw_fields[k] ?? null],
   ),
   ...["avg_annual_management_fee", "avg_deposit_fee"].map(

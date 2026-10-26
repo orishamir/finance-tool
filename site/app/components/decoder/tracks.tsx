@@ -6,9 +6,10 @@ import { company as copy, r3workbench } from "../../copy";
 import type { Track } from "../../lib/data.server";
 import type { SiteValue } from "../../lib/value";
 import { FeeNum } from "./fees";
+import { Num } from "../provenance";
+import { stockShareText } from "../../lib/track-exposure";
 import { IconAlert, IconDrillIn, IconSearch } from "../icons";
 import { useOpenSearch } from "../shell";
-import { RowFit } from "../compare/fit";
 import { Card, cx, Tag } from "../kit";
 
 export type Resolution = "distinct" | "twice" | "unresolved";
@@ -19,6 +20,8 @@ export interface TrackRowView {
   isDefault?: boolean;
   /** The regulator's balance-fee average of the track (not a ranking: the list keeps its order). */
   fee?: SiteValue;
+  /** F-87: the share of the track's assets exposed to shares; null when not reported, absent when the table has no such column. */
+  stock?: SiteValue | null;
 }
 
 export interface Group {
@@ -71,8 +74,14 @@ function Holds({ t }: { t: Track }) {
   );
 }
 
-export function TrackList({ groups, feeHead }: { groups: Group[]; feeHead?: string }) {
-  const cols = feeHead ? 5 : 4;
+/** The stock share, or the muted word for a track that did not report it (D34). */
+function StockCell({ value, size }: { value: SiteValue | null; size?: "inline" | "cell" }) {
+  if (!value) return <span className="text-sm text-muted-foreground">{copy.stock.missing}</span>;
+  return <Num value={value} size={size} display={stockShareText(value)} />;
+}
+
+export function TrackList({ groups, feeHead, stockHead }: { groups: Group[]; feeHead?: string; stockHead?: string }) {
+  const cols = 4 + (feeHead ? 1 : 0) + (stockHead ? 1 : 0);
   const bannerId = useId();
   return (
     <>
@@ -101,6 +110,7 @@ export function TrackList({ groups, feeHead }: { groups: Group[]; feeHead?: stri
               <th scope="col">{copy.pcColumns.fund}</th>
               <th scope="col">{copy.pcColumns.holds}</th>
               {feeHead && <th scope="col">{feeHead}</th>}
+              {stockHead && <th scope="col">{stockHead}</th>}
               <th scope="col" className="w-10 md:w-auto">
                 <span className="sr-only">{copy.pcColumns.open}</span>
               </th>
@@ -143,13 +153,15 @@ export function TrackList({ groups, feeHead }: { groups: Group[]; feeHead?: stri
                       </span>
                     </td>
                     {feeHead && <td className="whitespace-nowrap">{r.fee && <FeeNum value={r.fee} size="cell" />}</td>}
+                    {stockHead && (
+                      <td className="whitespace-nowrap">
+                        <StockCell value={r.stock ?? null} size="cell" />
+                      </td>
+                    )}
                     <td>
-                      <span className="inline-flex items-center gap-2 whitespace-nowrap">
-                        <RowFit track={r.track} />
-                        <Link to={r.href} aria-label={r.track.name} className="inline-flex size-target items-center justify-center -my-2">
-                          <IconDrillIn className="text-muted-foreground" />
-                        </Link>
-                      </span>
+                      <Link to={r.href} aria-label={r.track.name} className="inline-flex size-target items-center justify-center -my-2">
+                        <IconDrillIn className="text-muted-foreground" />
+                      </Link>
                     </td>
                   </tr>,
                 );
@@ -165,9 +177,10 @@ export function TrackList({ groups, feeHead }: { groups: Group[]; feeHead?: stri
 
 function TrackRow({ row }: { row: TrackRowView }) {
   const { track: t } = row;
-  // The fee is a provenance button, which cannot sit inside the link: it gets its own line under it.
+  // The fee and the stock share are provenance buttons, which cannot sit inside the link: each gets its own line under it.
+  const lines = !!row.fee || row.stock !== undefined;
   return (
-    <div className={cx("track", row.fee && "!flex-col !items-stretch !gap-1")}>
+    <div className={cx("track", lines && "!flex-col !items-stretch !gap-1")}>
       <Link to={row.href} className="flex items-center justify-between gap-3 min-w-0">
         <span className="flex flex-col gap-0.5 min-w-0">
           <span className="font-medium flex flex-wrap items-center gap-2">
@@ -176,7 +189,6 @@ function TrackRow({ row }: { row: TrackRowView }) {
           </span>
           <TrackLine t={t} />
           <Holds t={t} />
-          <RowFit track={t} />
         </span>
         <span className="flex items-center gap-2 shrink-0">
           <IconDrillIn className="text-muted-foreground" />
@@ -187,6 +199,12 @@ function TrackRow({ row }: { row: TrackRowView }) {
           {copy.feeRow}
           {t.dataset === "pensia-net" && <> {copy.feeRowWhole}</>}:
           <FeeNum value={row.fee} />
+        </span>
+      )}
+      {row.stock !== undefined && (
+        <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5">
+          {copy.stock.row}:
+          <StockCell value={row.stock} />
         </span>
       )}
     </div>

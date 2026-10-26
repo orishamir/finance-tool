@@ -6,6 +6,7 @@ export const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "date must be YYY
 /** data-schema §2, units. */
 export const unit = z.enum([
   "nis",
+  "nis_millions",
   "usd",
   "eur",
   "pct",

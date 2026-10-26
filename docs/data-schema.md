@@ -65,9 +65,11 @@ Field rules:
 
 ## 2. Units and enumerations
 
-Units: `nis`, `usd`, `eur`, `pct` (a share), `pct_per_year`, `pct_of_deposit`, `pct_of_trade`, `pct_of_balance_per_period`, `nis_per_month`, `nis_per_trade`, `nis_per_transfer`, `usd_per_share`, `usd_per_trade`, `gbp_per_trade`, `fx_per_eur`, `months`, `years`, `days`, `business_days`, `index_points`, `count`, `boolean`, `text`.
+Units: `nis`, `nis_millions`, `usd`, `eur`, `pct` (a share), `pct_per_year`, `pct_of_deposit`, `pct_of_trade`, `pct_of_balance_per_period`, `nis_per_month`, `nis_per_trade`, `nis_per_transfer`, `usd_per_share`, `usd_per_trade`, `gbp_per_trade`, `fx_per_eur`, `months`, `years`, `days`, `business_days`, `index_points`, `count`, `boolean`, `text`.
 
 **2026-10-25 (invest page).** `usd_per_share` (a dollar amount per share, a per-share commission rate), `usd_per_trade` and `gbp_per_trade` (a dollar or pound amount per trade: a minimum or maximum commission in a foreign currency) were added for the foreign brokers' tariffs; the engine converts them at the run's exchange rate. `fx_per_eur` (units of a currency per one euro, the ECB reference rate) was added for the FX series `data/series/ecb-fx.json` (request of agent A3).
+
+**2026-10-26 (D34, the company page's stock-exposure column).** `nis_millions` (an amount in millions of shekels, as the CMA datasets report amounts, CAT-03) was added for the `holdings` of §3.13; the site shows it as `25,706.14 מיליון ₪` and does not convert it.
 
 Fee bases (`fee.base`): `deposit`, `balance`, `trade`, `custody`, `fx`, `exit`, `fixed_period`, `distribution_handling`, `spread`, `creation_redemption`, `transfer_out`, `load`, `redemption_deduction`, `variable_management`, `trustee`, `direct_expenses`, `insurance_premium`.
 
@@ -451,10 +453,14 @@ Added 2026-10-22 (approved by the founder, `docs/architecture.md` gap 8.1). One 
       "specialization": "<SPECIALIZATION>",
       "sub_specialization": "<SUB_SPECIALIZATION>",
       "inception_date": "YYYY-MM-DD",
-      "raw_fields": { "AVG_ANNUAL_MANAGEMENT_FEE": "<as received>", "AVG_DEPOSIT_FEE": "<as received>" },
+      "raw_fields": { "AVG_ANNUAL_MANAGEMENT_FEE": "<as received>", "AVG_DEPOSIT_FEE": "<as received>", "TOTAL_ASSETS": "<as received>", "STOCK_MARKET_EXPOSURE": "<as received>", "...": "the kept columns, below" },
       "fees": {
         "avg_annual_management_fee": { "value": 0.61, "unit": "pct_per_year", "...": "value object, below" },
         "avg_deposit_fee": { "value": 0, "unit": "pct_of_deposit", "...": "value object, below" }
+      },
+      "holdings": {
+        "total_assets": { "value": 3884.43, "unit": "nis_millions", "...": "value object, below" },
+        "stock_market_exposure": { "value": 1933.12, "unit": "nis_millions", "...": "value object, below" }
       }
     }
   ]
@@ -462,7 +468,8 @@ Added 2026-10-22 (approved by the founder, `docs/architecture.md` gap 8.1). One 
 ```
 
 - Text fields are stored exactly as the source spells them (§1, Hebrew), after decoding the CSV from Windows-1255.
-- Only the fields a formula or capability uses are kept: identity, names, manager and classification for the catalogue (3.10) and the fit mark (F-70), and the two fee fields for the track workbench (F-64). Other CMA fields are added when a capability needs them.
+- Identity, names, manager and classification serve the catalogue (3.10) and the fit mark (F-70), the two fee fields the track workbench (F-64), and the two amounts of `holdings` the stock-exposure share (F-87). **Kept columns (2026-10-26, the founder: "for future use").** `raw_fields` also keeps, as received and only when the file has them, `FOREIGN_EXPOSURE`, `FOREIGN_CURRENCY_EXPOSURE`, `LIQUID_ASSETS_PERCENT`, `DEPOSITS`, `MONTHLY_DEPOSITS`, `WITHDRAWLS`, `INTERNAL_TRANSFERS`, `NET_MONTHLY_DEPOSITS`, `MONTHLY_YIELD`, `YEAR_TO_DATE_YIELD`, `YIELD_TRAILING_3_YRS`, `YIELD_TRAILING_5_YRS`, `AVG_ANNUAL_YIELD_TRAILING_3YRS`, `AVG_ANNUAL_YIELD_TRAILING_5YRS`, `STANDARD_DEVIATION`, `ALPHA` and `SHARPE_RATIO` (the adapter's `KEPT_COLUMNS`). No page reads them and none has a value object; a capability that shows one first adds its value object beside `fees` and `holdings`, with its unit from the dictionary (CAT-03), and a past return stays history, never a ranking key (product.md section 2). The refresh diff compares them, so a change writes the file.
+- **Holdings (2026-10-26, D34, F-87).** Optional: a file written before 2026-10-26 has none, and the adapter writes it only when the CSV has `TOTAL_ASSETS` or `STOCK_MARKET_EXPOSURE`. `total_assets` and `stock_market_exposure` are value objects in `nis_millions` at the end of the report period: `effective_from` and `effective_to` are the period's first and last day, `rule_ids` is `CAT-24`, `state` is `sourced`, `source` is the dataset source with the field name in the title. The unit of `TOTAL_ASSETS` is the dictionary's (CAT-03); that of `STOCK_MARKET_EXPOSURE` is read the same way, which the dictionary does not state (CAT OQ4), and the note says so, and that the regulator does not publish whether the exposure counts derivatives or looks through the funds a track holds. An empty field is `value: null` with the note "לא דווח."; the site marks both stale by the monthly rule (`staleCma`).
 - **Fee fields (definitions confirmed 2026-10-23, CAT-35 to CAT-39, CAT-06).** `raw_fields` keeps the two fields as received; `fees` is required and holds `avg_annual_management_fee` (unit `pct_per_year`, from `AVG_ANNUAL_MANAGEMENT_FEE`) and `avg_deposit_fee` (unit `pct_of_deposit`, from `AVG_DEPOSIT_FEE`) as value objects. Both are percent (0.61 is 0.61%). Each is the average fee actually charged from all members, after discounts, over the last completed calendar year, so a row of report year Y holds the Y−1 average (CAT-36, CAT-37): `effective_from`/`effective_to` are 1 January and 31 December of Y−1, `tax_year` is `null`, `update_rule` is `market`, `state` is `sourced`, `checked` is the file's `checked`, and `source` is the dataset source with the field name in the title. `rule_ids` are `CAT-35`, `CAT-36`, `CAT-37`, `CAT-06` (pensia-net adds `CAT-39`: the pair is per fund, every track of a fund carries the fund's values). An empty raw field gives `value: null` with `notes` starting "לא דווח" and the reason (no full calendar year yet, or unknown, CAT OQ22); empty is not zero, and zero is a reported 0.00%. A negative value is kept as reported, with a note (it can be a refund, CAT-40). The weighting of the average (by assets or by members) is not published and stays open (CAT OQ2, OQ23): the site says "ממוצע" and the year, never "משוקלל". The site marks the figure stale when the previous calendar year is older than the fee's year (`staleCmaFee`), not by the monthly rule.
 
 ---
