@@ -20,7 +20,7 @@ export interface TrackRowView {
   isDefault?: boolean;
   /** The regulator's balance-fee average of the track (not a ranking: the list keeps its order). */
   fee?: SiteValue;
-  /** F-87: the share of the track's assets exposed to shares; null when not reported, absent when the table has no such column. */
+  /** F-87: the share of the track's assets exposed to shares; null or absent when the track's data file has no amounts. */
   stock?: SiteValue | null;
 }
 
@@ -74,9 +74,8 @@ function Holds({ t }: { t: Track }) {
   );
 }
 
-/** The stock share, or the muted word for a track that did not report it (D34). */
-function StockCell({ value, size }: { value: SiteValue | null; size?: "inline" | "cell" }) {
-  if (!value) return <span className="text-sm text-muted-foreground">{copy.stock.missing}</span>;
+/** F-87, the stock share (D34), through the provenance component; one that could not be computed says why in its words and sheet. */
+export function StockNum({ value, size = "inline" }: { value: SiteValue; size?: "inline" | "cell" }) {
   return <Num value={value} size={size} display={stockShareText(value)} />;
 }
 
@@ -155,7 +154,7 @@ export function TrackList({ groups, feeHead, stockHead }: { groups: Group[]; fee
                     {feeHead && <td className="whitespace-nowrap">{r.fee && <FeeNum value={r.fee} size="cell" />}</td>}
                     {stockHead && (
                       <td className="whitespace-nowrap">
-                        <StockCell value={r.stock ?? null} size="cell" />
+                        {r.stock && <StockNum value={r.stock} size="cell" />}
                       </td>
                     )}
                     <td>
@@ -178,7 +177,7 @@ export function TrackList({ groups, feeHead, stockHead }: { groups: Group[]; fee
 function TrackRow({ row }: { row: TrackRowView }) {
   const { track: t } = row;
   // The fee and the stock share are provenance buttons, which cannot sit inside the link: each gets its own line under it.
-  const lines = !!row.fee || row.stock !== undefined;
+  const lines = !!row.fee || !!row.stock;
   return (
     <div className={cx("track", lines && "!flex-col !items-stretch !gap-1")}>
       <Link to={row.href} className="flex items-center justify-between gap-3 min-w-0">
@@ -201,10 +200,10 @@ function TrackRow({ row }: { row: TrackRowView }) {
           <FeeNum value={row.fee} />
         </span>
       )}
-      {row.stock !== undefined && (
+      {row.stock && (
         <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5">
           {copy.stock.row}:
-          <StockCell value={row.stock} />
+          <StockNum value={row.stock} />
         </span>
       )}
     </div>

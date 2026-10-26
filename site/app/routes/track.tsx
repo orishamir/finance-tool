@@ -9,12 +9,12 @@ import { Num, NumAfter } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { Callout, Card, Sentence, Tag } from "../components/kit";
 import { cmaFeeValue, feeYear, type SiteValue } from "../lib/value";
-import { compactHoldings, holdingsTemplate, stockShare, stockShareText, type Holdings } from "../lib/track-exposure";
+import { compactHoldings, holdingsTemplate, stockShare, type Holdings } from "../lib/track-exposure";
+import { StockNum } from "../components/decoder/tracks";
 import { fmt } from "../lib/format";
 
-/** F-87 for one track: undefined when its data file has no amounts, null when the track did not report them. */
-function stockOf(h: Holdings | undefined, period: string, today: string): SiteValue | null | undefined {
-  if (!h) return undefined;
+/** F-87 for one track; null when its data file has no amounts. */
+function stockOf(h: Holdings | undefined, period: string, today: string): SiteValue | null {
   const template = holdingsTemplate([h], period, today);
   return stockShare(compactHoldings(h, template), template, period, today);
 }
@@ -146,11 +146,7 @@ export default function TrackPage() {
             {track.targetPopulation && row(copy.labels.population, <bdi>{track.targetPopulation}</bdi>)}
             {row(feeText(copy.feeBalanceLabel, data.values.balanceFee), <FeeNum value={data.values.balanceFee} />)}
             {row(feeText(copy.feeDepositLabel, data.values.depositFee), <FeeNum value={data.values.depositFee} />)}
-            {data.values.stock !== undefined &&
-              row(
-                companyCopy.stock.column.replace("{period}", fmt.period(track.reportPeriod)),
-                data.values.stock ? <Num value={data.values.stock} display={stockShareText(data.values.stock)} /> : <span className="text-muted-foreground">{companyCopy.stock.missing}</span>,
-              )}
+            {data.values.stock && row(companyCopy.stock.column.replace("{period}", fmt.period(track.reportPeriod)), <StockNum value={data.values.stock} />)}
             {data.values.inception && row(copy.labels.inception, <Num value={data.values.inception} />)}
             {row(copy.labels.period, <Num value={data.values.period} />)}
           </dl>

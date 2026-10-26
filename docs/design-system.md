@@ -389,7 +389,7 @@ Called for by 3.10 (R1: managers in the CMA data), 3.1 term matching, § 6 and a
 | **Track list and track row** | Each row: the track name exactly as the source spells it; the fund number (identifier style); the CMA classification; the exposure in plain Hebrew; the fee as a Num once the field definitions are confirmed, otherwise the fee-pending note; the report period. A "ברירת המחדל" tag on the company's default or "most common" track. A mirrored chevron to the track page. One line under the name: why a person might pick this track. |
 | **Near-duplicate group** | Rows that share a name are drawn together, joined by a bracket at the inline start, under a banner with the resolution from the data: two separate funds, one fund listed twice, or unresolved (caution style). |
 | **Fee-pending note** | Until the CMA field definitions are confirmed (product.md dependency 4, data-schema §3.13), every fee slot shows a short `muted` note instead of a value. A page-level caution callout explains it once. |
-| **Track page** | The fund record as a key-value list (fund number, manager, classification, fee, report period, all as Nums or identifiers), the exposure in plain Hebrew, the dimension checklist (3.6) and a link to the wrapper's guide page. A reserved slot for the fit mark arrives with R2. |
+| **Track page** | The fund record as a key-value list (fund number, manager, classification, fee, report period, all as Nums or identifiers), the exposure in plain Hebrew, the dimension checklist (3.6) and a link to the wrapper's guide page. A reserved slot for the fit mark arrives with R2 *(removed 2026-10-26, D34: the row "חשיפה למניות" takes its place in the list)*. |
 | **Stale flag** | Where the CMA period shown is older than its monthly cadence (§ 6), a caution banner at the top of the manager and track pages ("לא עודכן מאז …"), as well as the flag on each Num. |
 
 ### 3.8 Reference pages
@@ -575,6 +575,8 @@ Why a strip and not a page: the goal is context for every other page (the fit ma
 **Amended 2026-10-25 (the founder: "maybe the different goals should be displayed each in a row, like the Doron one").** On the first page every goal is a row of its own, in the goals' order (`SavedGoalStrip all`, `GoalRow` in `components/compare/strip.tsx`): its name, "{שנים} · {סכום}", its saved comparison's line, "לתוצאה", "עריכה" and its own menu (whose delete removes that goal). A row's link first makes its goal the current one, then opens the page. A goal that holds nothing yet reads "עוד לא מולאה", with "למילוי" in place of the two links; one line under the rows, "נשמרו במכשיר הזה" ("נשמר…" with one goal). The rows show whenever any goal holds something. The comparison and the fee page keep the current goal's row and the others as chips, since there a chip switches which goal the page computes.
 
 ### 6.8 Fit mark
+
+*Amended 2026-10-26 (D34): the company page row mark and the track page card are removed; the company page's last column shows the stock exposure (F-87) through `StockNum`, and a row of the track page shows the same figure. The card (`FitMarkCard`) is kept for the goals page; the workbench keeps its row mark.*
 
 Called for by 3.10 Out ("a fit mark against the person's saved goal, with a link to run the comparison"), roadmap R2, method F-70, P-04, D11 (loss filter deferred to R5), D17.
 
