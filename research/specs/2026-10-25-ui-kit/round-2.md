@@ -41,6 +41,7 @@ The structure review asks one question of every new piece: which layer?
 | `FitMark` (fit icon and word) | `compare/fit.tsx` and `workbench/group.tsx`, two sizes | 2 |
 | `NameLink` | `compare/why.tsx` and `exposure-mode/result.tsx`, near-identical | 2 |
 | Tag variants | `ExclusionTag`, `StrengthChip`, `ImportedTag`: tags with their own markup | 3 |
+| `IdRef` | **Built 2026-10-26** in `provenance.tsx`, beside `RuleRef` (now its alias): one chip for rule, formula, parameter and open-question ids; formula and open-question sheets. Replaced the static chips on `/parameters` and in the computed-value sheet, the ten local `OQ` components, and the bare ids in guide prose | founder, on /parameters: "you cant click F-80" |
 
 ## Stays feature-specific
 - The guide visuals' plots.

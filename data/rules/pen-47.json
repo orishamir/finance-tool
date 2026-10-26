@@ -1,0 +1,104 @@
+{
+  "id": "PEN-47",
+  "title": "Mor: its provident bylaws still print a two-year discount",
+  "title_he": "מור: התקנון של קופת הגמל שלה עוד מציין הנחה לתקופה קצרה מזו שבחוזר",
+  "text_he": "בתקנון קופת הגמל לחיסכון של מור, החברה רשאית להציע דמי ניהול נמוכים מהמקסימום ובלבד שההצעה תקפה לתקופה מינימלית, ורשאית להעלות אותם מוקדם יותר במקרים שנמנו אם הודיעה על כך לעמית במסמך נפרד בתוך זמן קצוב מההנחה; העלאה נכנסת לתוקף זמן קצוב אחרי ההודעה. חוזר רשות שוק ההון קובע תקופה מינימלית ארוכה יותר, ולכן הנוסח של מור, מהחוזר הקודם, אינו מעודכן. תקנונים של חברות אחרות לא נקראו לעניין זה.",
+  "figure_names_he": {
+    "min_discount_period": "התקופה המינימלית של הנחה, לפי התקנון של מור",
+    "early_raise_notice_window": "הזמן להודעה על העלאה מוקדמת, לפי התקנון של מור",
+    "raise_effective_after": "מתי העלאה נכנסת לתוקף אחרי ההודעה, לפי התקנון של מור"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-26",
+  "figures": {
+    "min_discount_period": {
+      "value": 2,
+      "unit": "years",
+      "source": {
+        "url": "https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf",
+        "title": "Mor gemel standard bylaws 18.02.2026, p.13, s.45.1",
+        "publisher": "Mor",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "PEN-47"
+      ],
+      "state": "sourced",
+      "notes": "Mor's bylaws s.45.1; out of date: circular 2017-9-15 sets five years (PEN-25)."
+    },
+    "early_raise_notice_window": {
+      "value": 3,
+      "unit": "months",
+      "source": {
+        "url": "https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf",
+        "title": "Mor gemel standard bylaws 18.02.2026, s.45.2",
+        "publisher": "Mor",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "PEN-47"
+      ],
+      "state": "sourced",
+      "notes": "Mor's bylaws s.45.2: the member told in a separate document within three months of the discount."
+    },
+    "raise_effective_after": {
+      "value": 2,
+      "unit": "months",
+      "source": {
+        "url": "https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf",
+        "title": "Mor gemel standard bylaws 18.02.2026, s.46",
+        "publisher": "Mor",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "PEN-47"
+      ],
+      "state": "sourced",
+      "notes": "Mor's bylaws s.46: a raise takes effect two months after notice."
+    }
+  },
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "mor",
+      "name_he": "מור"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf",
+      "title": "Mor gemel standard bylaws 18.02.2026",
+      "title_he": "תקנון תקני לקופת גמל לחיסכון של מור (18.2.2026)",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור גמל ופנסיה",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.13, s.45.1",
+      "locator_he": "עמוד 13, סעיף 45.1",
+      "page": 13,
+      "quote": "ובלבד שההצעה האמורה תהיה תקפה במהלך תקופה של לפחות שנתיים",
+      "checked": "2026-10-26"
+    }
+  ]
+}

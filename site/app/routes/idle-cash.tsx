@@ -15,8 +15,9 @@ import type { CompareBundle } from "../lib/compare";
 import { GoalsProvider, isBlank, useGoals, type Presets } from "../lib/goal";
 import { buildIdle, maxTermMonths, negotiateThreshold } from "../lib/idle";
 import { useOwnTerms } from "../lib/own-rate";
-import { ruleFigure, type SiteValue } from "../lib/value";
+import { anyWeak, ruleFigure, type SiteValue } from "../lib/value";
 import { bundleLinks } from "../lib/bundle";
+import { recordsById } from "../lib/scope";
 
 /** The data files this page fetches after it starts, requested with the HTML (audit 2026-10-24, A52). */
 export const links = () => bundleLinks("compare-bundle.json");
@@ -26,11 +27,12 @@ const quoted = ["TXI-03", "TXI-07", "TXS-12", "TXS-07", "MF-34", "BANK-06", "MF-
 
 export async function loader() {
   const { goalFormData } = await import("../lib/compare.server");
-  const { loadParameters, loadRules } = await import("../lib/data.server");
+  const { loadParameters, loadRules, pointedRecords } = await import("../lib/data.server");
   const all = loadRules();
   const data = goalFormData();
   const p03 = loadParameters().find((p) => (p as { method_id?: string }).method_id === "P-03") ?? null;
-  return { ...data, p03, rules: Object.fromEntries(quoted.filter((id) => all[id]).map((id) => [id, all[id]!])) };
+  const rules = Object.fromEntries(quoted.filter((id) => all[id]).map((id) => [id, all[id]!]));
+  return { ...data, p03, rules, pointed: pointedRecords(rules, all) };
 }
 
 export function meta() {
@@ -47,7 +49,7 @@ export default function IdleCashPage() {
   }, []);
   const provenance = useMemo(() => {
     const rules: Record<string, RuleRecord> = Object.fromEntries([...Object.values(data.rules), ...(bundle?.rules ?? [])].map((r) => [r.id, r as RuleRecord]));
-    return { rules, terms: {}, dimensions: Object.fromEntries((bundle?.checklist ?? []).map((c) => [c.id, c.name])), today: data.today };
+    return { rules, pointed: { ...(data.pointed as Record<string, RuleRecord>), ...recordsById(bundle?.pointed) }, terms: {}, dimensions: Object.fromEntries((bundle?.checklist ?? []).map((c) => [c.id, c.name])), today: data.today };
   }, [bundle, data.rules, data.today]);
   return (
     <GoalsProvider presets={presets}>
@@ -71,7 +73,7 @@ const validateOffer = (n: number): ReactNode | null =>
   ) : null;
 
 type TermKey = "1" | "3" | "12" | "other";
-const termIds: TermKey[] = ["1", "3", "12", "other"];
+const termIds: TermKey[] = ["1", "3", "12"];
 const validateMonths = (n: number) => (!Number.isInteger(n) || n < 1 || n > maxTermMonths ? copy.term.errMonths : null);
 
 function Screen({ bundle, failed, rules, today, p03 }: { bundle: CompareBundle | null; failed: boolean; rules: Record<string, RuleRecord>; today: string; p03: unknown }) {
@@ -148,7 +150,7 @@ function Screen({ bundle, failed, rules, today, p03 }: { bundle: CompareBundle |
       <header className="flex flex-col gap-2">
         <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
         <p className="text-lg text-muted-foreground max-w-measure">{copy.lede}</p>
-        <NumberLegend />
+        <NumberLegend institution={outcome?.kind === "ok" ? anyWeak([outcome.headline, outcome.yearly, outcome.baseline?.rate, ...outcome.rows.flatMap((r) => [r.rate, r.cost])]) : false} />
       </header>
       <div className={cx("flex flex-col gap-6", resultShown && "lg:grid lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-x-12 lg:items-start")}>
         <div className="flex flex-col gap-6">
@@ -167,7 +169,7 @@ function Screen({ bundle, failed, rules, today, p03 }: { bundle: CompareBundle |
               </RawWatch>
               <div className="flex flex-col gap-2">
                 <span className="field-label">{copy.term.label}</span>
-                <ChoiceChips ids={termIds} labels={copy.term.options} value={termKey} onChange={(id) => setTermKey((k) => (k === id ? null : id))} ariaLabel={copy.term.label} wrap />
+                <ChoiceChips ids={termIds} labels={copy.term.options} value={termKey} onChange={(id) => setTermKey((k) => (k === id ? null : id))} ariaLabel={copy.term.label} wrap other={{ label: copy.term.options.other!, open: termKey === "other", onToggle: () => setTermKey((k) => (k === "other" ? null : "other")) }} />
                 {termKey === "other" && (
                   <RawWatch onRaw={watch("months", validateMonths)}>
                     <NumberField label={copy.term.otherLabel} unit="months" value={otherMonths} isEntered={otherMonths !== null} validate={validateMonths} onCommit={setOtherMonths} onReset={() => setOtherMonths(null)} optional inputMode="numeric" />
@@ -224,13 +226,8 @@ function Result({ outcome, bundle, ctx, over, onFull, offerGiven, termGiven, dep
       <Card className="flex flex-col gap-4">
         {view.headline ? (
           <div className="flex flex-col gap-1">
-            <Sentence size="lg">
-              {copy.headlineBefore} <Num value={view.amount} />{" "}
-              <LeadTail lead={copy.headlineMid}>
-                {" "}
-                <Num value={view.headline} size="figure" animate /> {copy.headlineAfter}
-              </LeadTail>
-            </Sentence>
+            <Sentence t={copy.headlineSplit} vars={{ amount: <Num value={view.amount} /> }} />
+            <Sentence size="lg" t={copy.headlineCost} vars={{ cost: <Num value={view.headline} size="figure" animate /> }} />
             {view.yearly && (
               <Sentence size="lg">
                 <LeadTail lead={copy.soWhat.before}>
@@ -250,7 +247,16 @@ function Result({ outcome, bundle, ctx, over, onFull, offerGiven, termGiven, dep
         <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5">
           {view.baseline && Number(view.baseline.rate.value) > 0 ? (
             <span>
-              {copy.baselineBefore} <Num value={view.baseline.rate} />
+              {view.baseline.rate.own ? (
+                <>
+                  {copy.baselineOwner.before} <bdi>{view.baseline.rate.own}</bdi> {copy.baselineOwner.after}
+                </>
+              ) : view.baseline.rate.source.title === "F-85" ? (
+                copy.baselineCommon
+              ) : (
+                copy.baselineBefore
+              )}{" "}
+              <Num value={view.baseline.rate} />
               {copy.baselineAfter}
             </span>
           ) : (

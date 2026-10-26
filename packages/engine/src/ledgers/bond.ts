@@ -1,11 +1,12 @@
-// Government bonds held in a brokerage account: F-25 with F-12 commissions, F-14 custody and the F-40 exit.
-import { buyWithCash, custodyFee, tradeCommission, type Commission, type Custody } from "../formulas/fees.ts";
+// Government bonds held directly in a securities account (a security, not a wrapper: D6 amended 2026-10-26): F-25 with F-12 commissions, F-14
+// custody, the account's F-17 monthly fee and the F-40 exit.
+import { buyWithCash, custodyFee, fixedFee, tradeCommission, type Commission, type Custody } from "../formulas/fees.ts";
 import { bondCoupon } from "../formulas/holding-tax.ts";
 import { closesTaxYear, contributions, cpiPath, taxYearOf, type Goal } from "../formulas/time.ts";
 import { ruleBook } from "../resolver.ts";
 import type { RunContext, RunResult } from "../result.ts";
 import { exitTax, maxRateTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
-import { removeFifo, type Lot } from "./lots.ts";
+import { indexedCost, removeFifo, type Lot } from "./lots.ts";
 
 export interface BondInput {
   goal: Goal;
@@ -19,7 +20,8 @@ export interface BondInput {
     /** A-27 price change at exit, as a fraction of par; default 0. */
     exitPriceChange?: number;
   };
-  tariff: { buy?: Commission; sell?: Commission; custody?: Custody };
+  /** The account's lines for bonds: F-12 commissions, F-14 custody, and its F-17 monthly fee in NIS (an account fee, on whatever it holds). */
+  tariff: { buy?: Commission; sell?: Commission; custody?: Custody; monthlyFee?: number };
   profile: Profile;
 }
 
@@ -84,10 +86,12 @@ export function runBond(input: BondInput, ctx: RunContext): RunResult {
 
     const value = lots.reduce((s, l) => s + l.units, 0) * price(m);
     const fee = custodyFee(tariff.custody, m, value);
-    if (fee > 0) {
-      lots = removeFifo(lots, fee / price(m));
+    const fixed = fixedFee(tariff.monthlyFee, value - fee);
+    if (fee + fixed > 0) {
+      lots = removeFifo(lots, (fee + fixed) / price(m));
       tally.fee("custody", fee);
-      if (taxYearOf(m, first) === taxYearOf(T, first)) exitYearFees += fee;
+      tally.fee("fixed", fixed);
+      if (taxYearOf(m, first) === taxYearOf(T, first)) exitYearFees += fee + fixed;
     }
     if (closesTaxYear(m, T, first)) {
       // A linked coupon is a "maximum rate" item: at 60 or over the brackets apply, settled through the
@@ -114,9 +118,14 @@ export function runBond(input: BondInput, ctx: RunContext): RunResult {
   const gross = units * price(T) * (1 + (bond.exitPriceChange ?? 0));
   const commission = tradeCommission(tariff.sell, gross, { fxRate: 1 });
   tally.fee("trade", commission);
-  const gain = linked
-    ? gross - lots.reduce((s, l) => s + (l.basis * I[T]!) / l.index, 0) - exitYearFees
+  // A CPI-linked bond is a real-basis security: each lot indexed by I_T / I_lot, and when the CPI fell its
+  // inflationary amount is zero and the part of a nominal loss equal to the fall is not allowable (TXS-02; F-09). The exit
+  // year's fees come off after that cap (TXS-06); whether they sit inside the nominal loss the cap limits is an open reading (G-07).
+  const adjusted = linked ? indexedCost(lots, I[T]!, price(T) * (1 + (bond.exitPriceChange ?? 0))) : undefined;
+  const gain = adjusted
+    ? gross - adjusted.indexed - exitYearFees + adjusted.fallDisallowed
     : gross - lots.reduce((s, l) => s + l.basis, 0) - exitYearFees;
+  if (adjusted) book.cite("TXS-02");
   if (gain < 0) tally.flag("G-07");
   tally.flag("G-20");
   const exit = unlessBlocked(() =>
@@ -135,6 +144,6 @@ export function runBond(input: BondInput, ctx: RunContext): RunResult {
     taxAtExit,
     outcome: exit.blocked ? { code: "listed-not-ranked", reason: exit.blocked } : undefined,
     detail: { ...detail, gain, exitYearFees },
-    formulas: ["F-25", "F-12", "F-14", "F-09", "F-40"],
+    formulas: ["F-25", "F-12", "F-14", ...(tariff.monthlyFee ? ["F-17"] : []), "F-09", "F-40"],
   });
 }

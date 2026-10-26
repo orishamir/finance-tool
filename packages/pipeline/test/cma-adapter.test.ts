@@ -14,6 +14,8 @@ import {
   inceptionDate,
   normalise,
   buildFees,
+  buildHoldings,
+  KEPT_COLUMNS,
   feeYear,
   renormaliseFees,
   parseCsv,
@@ -79,7 +81,7 @@ describe("normalise", () => {
       specialization: "מדרגות",
       sub_specialization: "50-60",
       inception_date: "1970-01-01",
-      raw_fields: { AVG_ANNUAL_MANAGEMENT_FEE: "0.53", AVG_DEPOSIT_FEE: "0.05" },
+      raw_fields: expect.objectContaining({ AVG_ANNUAL_MANAGEMENT_FEE: "0.53", AVG_DEPOSIT_FEE: "0.05", TOTAL_ASSETS: "25706.14", STOCK_MARKET_EXPOSURE: "12378.07" }),
       fees: expect.objectContaining({
         avg_annual_management_fee: expect.objectContaining({
           value: 0.53,
@@ -95,6 +97,10 @@ describe("normalise", () => {
         }),
         avg_deposit_fee: expect.objectContaining({ value: 0.05, unit: "pct_of_deposit" }),
       }),
+      holdings: {
+        total_assets: expect.objectContaining({ value: 25706.14, unit: "nis_millions", state: "sourced", effective_to: "2026-09-30", rule_ids: ["CAT-24"] }),
+        stock_market_exposure: expect.objectContaining({ value: 12378.07, unit: "nis_millions", source: expect.objectContaining({ title: expect.stringContaining("STOCK_MARKET_EXPOSURE") }) }),
+      },
     });
     expect(file.checked).toBe("2026-10-23");
     expect(file.raw).toEqual({ archive_key: "cma/gemelnet/2026-10-23.csv.gz", sha256: "a".repeat(64) });
@@ -107,9 +113,10 @@ describe("normalise", () => {
   it("keeps text exactly as received (trailing spaces, newlines in names) and empty fees as empty strings", () => {
     expect(file.funds.find((f) => f.fund_id === 229)!.managing_corporation.name.endsWith(" ")).toBe(true);
     expect(file.funds.find((f) => f.fund_id === 7635)!.names.cma[0]).toContain("\n");
-    expect(file.funds.find((f) => f.fund_id === 15995)!.raw_fields).toEqual({
+    expect(file.funds.find((f) => f.fund_id === 15995)!.raw_fields).toMatchObject({
       AVG_ANNUAL_MANAGEMENT_FEE: "",
       AVG_DEPOSIT_FEE: "",
+      SHARPE_RATIO: "",
     });
   });
 
@@ -121,6 +128,33 @@ describe("normalise", () => {
     expect(r.problems).toEqual([]);
     expect(r.file!.dataset).toBe("pensia-net");
     expect(r.file!.funds[0]).toMatchObject({ target_population: "", specialization: "", sub_specialization: "" });
+    // a file without the amount columns writes no holdings and keeps only the columns it has
+    expect(r.file!.funds[0]!.holdings).toBeUndefined();
+    expect(Object.keys(r.file!.funds[0]!.raw_fields)).toEqual(["AVG_ANNUAL_MANAGEMENT_FEE", "AVG_DEPOSIT_FEE"]);
+  });
+
+  it("keeps every further numeric column as received, for later use", () => {
+    const raw = good().funds.find((f) => f.fund_id === 103)!.raw_fields;
+    for (const c of KEPT_COLUMNS.filter((c) => c !== "MONTHLY_DEPOSITS")) expect(raw).toHaveProperty(c);
+    expect(raw.SHARPE_RATIO).toBe("1.09");
+  });
+});
+
+describe("holdings (F-87 inputs)", () => {
+  const base = { dataset: "gemelnet" as const, report_period: "2026-09", checked: "2026-10-23", source: good().source };
+
+  it("an empty amount is null with a note, not zero; zero stays zero", () => {
+    const h = buildHoldings(base, { raw_fields: { TOTAL_ASSETS: "0", STOCK_MARKET_EXPOSURE: "" } })!;
+    expect(h.total_assets.value).toBe(0);
+    expect(h.stock_market_exposure.value).toBeNull();
+    expect(h.stock_market_exposure.notes).toMatch(/^לא דווח/);
+  });
+
+  it("says the exposure unit is read like the assets, and the measure is unpublished", () => {
+    const h = buildHoldings(base, { raw_fields: { TOTAL_ASSETS: "10", STOCK_MARKET_EXPOSURE: "5" } })!;
+    expect(h.stock_market_exposure.notes).toContain("OQ4");
+    expect(h.stock_market_exposure.notes).toContain("נגזרים");
+    expect(buildHoldings(base, { raw_fields: { AVG_DEPOSIT_FEE: "0" } })).toBeUndefined();
   });
 });
 
@@ -174,7 +208,10 @@ describe("fees", () => {
 
   it("renormaliseFees rebuilds fees from raw_fields and touches nothing else", () => {
     const stripped = clone(file);
-    for (const x of stripped.funds) (x as { fees: unknown }).fees = null;
+    for (const x of stripped.funds) {
+      (x as { fees: unknown }).fees = null;
+      delete x.holdings;
+    }
     expect(renormaliseFees(stripped)).toEqual(file);
   });
 });
@@ -252,6 +289,17 @@ describe("diff", () => {
     expect(d.added).toEqual([20000]);
     expect(d.removed).toEqual([117]);
     expect(d.changed).toEqual([{ fund_id: 103, fields: ["raw_fields.AVG_ANNUAL_MANAGEMENT_FEE"] }]);
+  });
+
+  it("a file written before the amount columns were kept differs from one with them, so the refresh writes it", () => {
+    const old = clone(good());
+    for (const f of old.funds) {
+      f.raw_fields = { AVG_ANNUAL_MANAGEMENT_FEE: f.raw_fields.AVG_ANNUAL_MANAGEMENT_FEE!, AVG_DEPOSIT_FEE: f.raw_fields.AVG_DEPOSIT_FEE! };
+      delete f.holdings;
+    }
+    const d = diffFiles(old, good());
+    expect(d.isEmpty).toBe(false);
+    expect(d.changed[0]!.fields).toContain("raw_fields.STOCK_MARKET_EXPOSURE");
   });
 });
 

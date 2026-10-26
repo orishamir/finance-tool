@@ -1,15 +1,17 @@
 // Reads data/, docs/ and research/ at build time for the route loaders (architecture 3.5: every page is
 // generated from data/ at build). Server-only: the `.server` suffix keeps node:fs out of the browser bundle.
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 import {
   cmaPeriodFile,
   dimensionId,
   dimensionRecord,
   feesSnapshot,
+  openQuestionsFile,
   parameterRecord,
   ruleRecord,
   termRecord,
+  securityRecord,
   wrapperRecord,
   type CmaPeriodFile,
   type FeesSnapshot,
@@ -18,11 +20,15 @@ import {
   type ValueObject,
   type WrapperId,
   type WrapperRecord,
+  type SecurityRecord,
+  type ProductRecord,
 } from "@finance-tool/schema";
 import type { z } from "zod";
 import { parseMdLink } from "./md-link";
 import { newestChecked } from "./data-as-of";
 import { staleCma, type SiteValue } from "./value";
+import { pointedIds } from "./scope";
+import { readJsonCached, readParsedCached, readTextCached } from "./read-cache.server";
 
 function findRoot(): string {
   let dir = process.cwd();
@@ -46,9 +52,7 @@ export function dataAsOf(): string {
 }
 
 function readJson<T extends z.ZodType>(path: string, schema: T): z.infer<T> {
-  const parsed = schema.safeParse(JSON.parse(readFileSync(path, "utf8")));
-  if (!parsed.success) throw new Error(`${path}: ${parsed.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`).join("; ")}`);
-  return parsed.data;
+  return readParsedCached(path, schema);
 }
 
 function readDir<T extends z.ZodType>(sub: string, schema: T): z.infer<T>[] {
@@ -64,12 +68,44 @@ export function loadRules(): Record<string, RuleRecord> {
   return Object.fromEntries(readDir("data/rules", ruleRecord).map((r) => [r.id, r]));
 }
 
+/**
+ * The records a page's rule cards point at (`derived_from`, a general rule's `examples`, and the rules its figures cite, which a
+ * figure's sheet shows as chips), and the ones those point at in turn, that the page does not hold itself: a page passes them as
+ * `ProvenanceData.pointed`, so every chip on a card opens its record (reviews, 2026-10-26: BRK-35's "לדוגמה" chip, then TXG-04's
+ * figure chips TXG-02 and TXG-03, opened empty cards). They never join the page's own rules, which its checklist and its runs read.
+ */
+export function pointedRecords(have: Record<string, RuleRecord> | readonly RuleRecord[], all: Record<string, RuleRecord> = loadRules()): Record<string, RuleRecord> {
+  const own = new Set(Array.isArray(have) ? have.map((r) => r.id) : Object.keys(have));
+  const out: Record<string, RuleRecord> = {};
+  const queue = (Array.isArray(have) ? [...have] : Object.values(have)) as RuleRecord[];
+  while (queue.length > 0) {
+    const r = queue.pop()!;
+    for (const id of pointedIds(r)) {
+      if (own.has(id) || out[id] || !all[id]) continue;
+      out[id] = all[id]!;
+      queue.push(all[id]!);
+    }
+  }
+  return out;
+}
+
 export function loadParameters(): ParameterRecord[] {
   return readDir("data/parameters", parameterRecord);
 }
 
+/** The wrappers only (D6): the containers whose rules apply to whatever they hold. */
 export function loadWrappers(): WrapperRecord[] {
   return readDir("data/instruments/wrappers", wrapperRecord);
+}
+
+/** The securities (D6, amended 2026-10-26): makam, government bonds and the money-market funds, each held in a securities account. */
+export function loadSecurities(): SecurityRecord[] {
+  return readDir("data/instruments/securities", securityRecord);
+}
+
+/** Every product a person chooses between, a wrapper or a security held in one: what the guide, the comparison and the rules page list. */
+export function loadProducts(): ProductRecord[] {
+  return [...loadWrappers(), ...loadSecurities()];
 }
 
 export function loadFees(): FeesSnapshot[] {
@@ -140,6 +176,13 @@ function latestCmaFiles(): Map<string, CmaPeriodFile> {
 export function loadCmaFees(): Map<number, { balance: ValueObject; deposit: ValueObject }> {
   const out = new Map<number, { balance: ValueObject; deposit: ValueObject }>();
   for (const f of latestCmaFiles().values()) for (const fund of f.funds) out.set(fund.fund_id, { balance: fund.fees.avg_annual_management_fee, deposit: fund.fees.avg_deposit_fee });
+  return out;
+}
+
+/** Each track's two amounts for F-87 (data-schema 3.13 `holdings`), by fund id; a track of a file without them is absent. */
+export function loadCmaHoldings(): Map<number, NonNullable<CmaPeriodFile["funds"][number]["holdings"]>> {
+  const out = new Map<number, NonNullable<CmaPeriodFile["funds"][number]["holdings"]>>();
+  for (const f of latestCmaFiles().values()) for (const fund of f.funds) if (fund.holdings) out.set(fund.fund_id, fund.holdings);
   return out;
 }
 
@@ -261,7 +304,7 @@ export interface NotCoveredRow {
 
 /** docs/glossary.md section 3: the products the "not covered yet" page lists. */
 export function loadNotCovered(): NotCoveredRow[] {
-  const doc = readFileSync(join(root, "docs/glossary.md"), "utf8");
+  const doc = readTextCached(join(root, "docs/glossary.md"));
   const section = doc.slice(doc.indexOf("## 3. Not covered yet"), doc.indexOf("## 4. Missing from the rule base"));
   return [...section.matchAll(/^\| \*\*(.+?)\*\* \| (.*?) \| (.*?) \| (.*) \|$/gm)].map((m) => {
     const cell = m[4]!;
@@ -282,10 +325,57 @@ export function loadNotCovered(): NotCoveredRow[] {
 
 /** docs/method.md §2.3: which formulas each site parameter is used by. */
 export function loadParameterUses(): Record<string, string[]> {
-  const doc = readFileSync(join(root, "docs/method.md"), "utf8");
+  const doc = readTextCached(join(root, "docs/method.md"));
   const section = doc.slice(doc.indexOf("### 2.3"), doc.indexOf("### 2.4"));
   const out: Record<string, string[]> = {};
   for (const m of section.matchAll(/^\| (P-\d{2}) \| .+? \| (.+?) \|$/gm)) out[m[1]!] = [...m[2]!.matchAll(/F-\d{2}/g)].map((x) => x[0]);
+  return out;
+}
+
+/** The inverse of `loadParameterUses`: per formula, the site parameters it uses (the formula sheet's list). */
+export function loadFormulaParameters(): Record<string, string[]> {
+  const out: Record<string, string[]> = {};
+  for (const [param, formulas] of Object.entries(loadParameterUses())) for (const f of formulas) (out[f] ??= []).push(param);
+  return out;
+}
+
+/** The Hebrew name of each source host (`data/sources/publishers.json`): a data file names its company in English ("Bank Leumi le-Israel B.M."), and the sheet's source line shows the Hebrew one (founder, 2026-10-26). */
+export function loadPublishersHe(): Record<string, string> {
+  const rows = readJsonCached(join(root, "data/sources/publishers.json")) as Record<string, { publisher_he?: string }>;
+  return Object.fromEntries(Object.entries(rows).flatMap(([host, r]) => (r.publisher_he ? [[host, r.publisher_he]] : [])));
+}
+
+/** What a question sheet knows about an open question, by its code (`TX2 OQ6`): its status, the closing date, and its Hebrew lines. */
+export type OpenQuestionView = { status: "open" | "narrowed" | "closed"; closed_on?: string; title_he?: string; blocks_he?: string };
+
+/**
+ * data/open-questions.json (data-schema 3.15) for every page's sheets, through the root loader (2026-10-26). Only the questions a
+ * sheet has something to say about: a closed one (its chip shows the closure wherever it appears) and one with Hebrew lines (every
+ * question the site names). Any other code opens the sheet's general lines, which are true of an open question.
+ */
+export function loadOpenQuestions(): Record<string, OpenQuestionView> {
+  const out: Record<string, OpenQuestionView> = {};
+  for (const q of readJson(join(root, "data/open-questions.json"), openQuestionsFile)) {
+    if (q.status !== "closed" && !q.title_he && !q.blocks_he) continue;
+    out[q.id] = { status: q.status, ...(q.closed_on ? { closed_on: q.closed_on } : {}), ...(q.title_he ? { title_he: q.title_he } : {}), ...(q.blocks_he ? { blocks_he: q.blocks_he } : {}) };
+  }
+  return out;
+}
+
+/** Which card on /parameters each id answers to: `P-01` to itself, and an `A-01` that a card holds as an input key to that card. */
+export function loadParameterAnchors(): Record<string, string> {
+  const out: Record<string, string> = {};
+  const scan = (node: unknown, card: string) => {
+    if (Array.isArray(node)) node.forEach((n) => scan(n, card));
+    else if (node && typeof node === "object")
+      for (const [k, v] of Object.entries(node)) {
+        if (/^A-\d+$/.test(k)) out[k] ??= card;
+        scan(v, card);
+      }
+  };
+  const cards = loadParameters().sort((a, b) => a.method_id.localeCompare(b.method_id));
+  for (const p of cards) out[p.method_id] = p.method_id;
+  for (const p of cards) scan(p, p.method_id);
   return out;
 }
 
@@ -300,7 +390,14 @@ export interface PinnedRules {
   signed_off_on: string;
 }
 
+/** data/parameters/home-guide-door.json (P-10): the guide pages the first page's guide door names, as id and name, in order. */
+export function loadHomeGuideDoor(): { id: string; name: string }[] {
+  const ids = (readJsonCached(join(root, "data/parameters/home-guide-door.json")) as { wrappers: string[] }).wrappers;
+  const names = new Map<string, string>(loadProducts().map((w) => [w.id, w.names.he[0]!]));
+  return ids.filter((id) => names.has(id)).map((id) => ({ id, name: names.get(id)! }));
+}
+
 /** data/parameters/pinned-rules.json (P-09): the questions at the top of the rules page and the facts per guide page. A site judgement, not a rule. */
 export function loadPinnedRules(): PinnedRules {
-  return JSON.parse(readFileSync(join(root, "data/parameters/pinned-rules.json"), "utf8")) as PinnedRules;
+  return readJsonCached(join(root, "data/parameters/pinned-rules.json")) as PinnedRules;
 }

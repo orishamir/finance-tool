@@ -140,7 +140,9 @@ describe("the site's pick of the brokerage tariff (F-80, 2026-10-24, Doron's cas
     const w = own.wrappers.find((x) => x.id === BRK)!;
     expect(w.representative).toMatchObject({ providerId: "ibi", chosen: true });
     expect(w.representative!.pickedBy).toBeUndefined();
-    expect(applyProviders(bundle, { ...doron, returnPct: null })).toBe(bundle);
+    // the account's entry is P-05's (makam and the bond, securities held in the account since D6 2026-10-26, need no return and are picked)
+    const noReturn = applyProviders(bundle, { ...doron, returnPct: null });
+    expect(noReturn.wrappers.find((x) => x.id === BRK)).toBe(bundle.wrappers.find((x) => x.id === BRK));
   });
   it("marks the pick in the picker instead of adding the site's row", () => {
     const b = applyProviders(bundle, doron);

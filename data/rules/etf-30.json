@@ -39,6 +39,13 @@
   },
   "il_finance_file": "etfs-and-index-funds.md",
   "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "ishares",
+      "name_he": "iShares"
+    }
+  ],
   "sources": [
     {
       "url": "https://www.ishares.com/us/products/239726/ishares-core-sp-500-etf",

@@ -1,0 +1,1359 @@
+{
+ "files": [
+  "bank-current-account-deposits.md",
+  "bank-product-names.md",
+  "government-bonds-and-makam.md",
+  "tax-interest-deposits-bonds.md",
+  "fx-and-structured-deposits.md",
+  "corporate-bonds.md"
+ ],
+ "items": [
+  {
+   "code": "BANK OQ1",
+   "file": "bank-current-account-deposits.md",
+   "n": 1,
+   "line_at_extraction": 394,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**BoI circular deferring 447A to 19.10.2025.** Only a press report (Funder, 25 Sep 2025) was read; the regulatory impact report says \"from 02/10/25, staged\" and"
+  },
+  {
+   "code": "BANK OQ2",
+   "file": "bank-current-account-deposits.md",
+   "n": 2,
+   "line_at_extraction": 395,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "rule record": [
+     "BANK-13"
+    ]
+   },
+   "start": "**Current versions of directives 447 and 417.** Read 447 v1 (5/24) and 417 v4 (5/24). Whether either was amended (for example 417 after s.5B2 took effect on 1.1"
+  },
+  {
+   "code": "BANK OQ3",
+   "file": "bank-current-account-deposits.md",
+   "n": 3,
+   "line_at_extraction": 396,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "rule record": [
+     "BANK-07"
+    ]
+   },
+   "start": "**Consolidated disclosure rules after 2014.** The BoI copy lists amendments to 30.12.2014 only; later amendments (if any) to s.7-14, 30, 33B or Schedule E amoun"
+  },
+  {
+   "code": "BANK OQ4",
+   "file": "bank-current-account-deposits.md",
+   "n": 4,
+   "line_at_extraction": 397,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Banking (Customer Service) Law consolidated text.** The BoI consolidation read is version 10/11; Amendments 37, 38, 39 were read separately from Reshumot; oth"
+  },
+  {
+   "code": "BANK OQ5",
+   "file": "bank-current-account-deposits.md",
+   "n": 5,
+   "line_at_extraction": 398,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "bank-deposit"
+    ],
+    "rule record": [
+     "BANK-21"
+    ]
+   },
+   "start": "**Definition of \"בנק בעל היקף פעילות קטן\" (s.5B1(a)) and which banks are currently exempt from s.5B2.** Search budget ran out; the s.5B1 text was not read. Like"
+  },
+  {
+   "code": "BANK OQ6",
+   "file": "bank-current-account-deposits.md",
+   "n": 6,
+   "line_at_extraction": 399,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Competition Authority decision text** (declaration and deposit directives, May 2026), its effective date, and the status of the five appeals at the Competitio"
+  },
+  {
+   "code": "BANK OQ7",
+   "file": "bank-current-account-deposits.md",
+   "n": 7,
+   "line_at_extraction": 400,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Deposit-insurance bill P/6522/25**: status closed for now (on the table for preliminary discussion, unchanged since 2 Feb 2026). Watch for a preliminary-readi"
+  },
+  {
+   "code": "BANK OQ8",
+   "file": "bank-current-account-deposits.md",
+   "n": 8,
+   "line_at_extraction": 401,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "OQ-tag": [
+     "site/app/content/exposure/shekel-cash.tsx:42"
+    ],
+    "instrument record": [
+     "bank-deposit",
+     "current-account",
+     "savings-plan",
+     "shekel-cash"
+    ],
+    "site code": [
+     "lib/guide.server.ts:261"
+    ]
+   },
+   "start": "**What BoI supervision protects in a bank failure.** No BoI or legislative text read states any guarantee, priority or compensation for depositors; BoI consumer"
+  },
+  {
+   "code": "BANK OQ9",
+   "file": "bank-current-account-deposits.md",
+   "n": 9,
+   "line_at_extraction": 402,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "current-account"
+    ],
+    "instrument blocker": [
+     "current-account"
+    ],
+    "rule record": [
+     "BANK-17"
+    ]
+   },
+   "start": "**Basic-track price cap.** The schedule marks the basic track \"(בפיקוח)\"; the controlling order and its current price were not read. Data-track item but the leg"
+  },
+  {
+   "code": "BANK OQ10",
+   "file": "bank-current-account-deposits.md",
+   "n": 10,
+   "line_at_extraction": 403,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Bank Esh Israel**: in the register with no website; whether it serves individuals and takes deposits. Tried: one web search, nothing found."
+  },
+  {
+   "code": "BANK OQ11",
+   "file": "bank-current-account-deposits.md",
+   "n": 11,
+   "line_at_extraction": 404,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**One Zero and Bank of Jerusalem**: sites blocked (403 / Radware); product names, accountless-deposit terms and tariff location unverified."
+  },
+  {
+   "code": "BANK OQ12",
+   "file": "bank-current-account-deposits.md",
+   "n": 12,
+   "line_at_extraction": 405,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-16"
+    ],
+    "instrument record": [
+     "savings-plan",
+     "shekel-cash"
+    ],
+    "instrument blocker": [
+     "savings-plan"
+    ],
+    "site code": [
+     "copy.ts:2872",
+     "lib/guide-signature.server.ts:163"
+    ]
+   },
+   "start": "**Savings plans**: whether each monthly instalment is a separate sub-deposit with its own lock-up and exit points, and how breaking a plan is priced. No source "
+  },
+  {
+   "code": "BANK OQ13",
+   "file": "bank-current-account-deposits.md",
+   "n": 13,
+   "line_at_extraction": 406,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Expansion of \"פק\"מ\"** as used in Leumi product names: not found in any source read. **[2026-10-22 browser pass: Closed by BANK-30 (institution strength).]**"
+  },
+  {
+   "code": "BANK OQ14",
+   "file": "bank-current-account-deposits.md",
+   "n": 14,
+   "line_at_extraction": 407,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "bank-deposit",
+     "shekel-cash"
+    ]
+   },
+   "start": "**Official definition of prime.** Only bank definitions (Leumi, Hapoalim) were read; no BoI document; EDGE has no prime series (data-landscape 1.3.1). **[2026-1"
+  },
+  {
+   "code": "BANK OQ15",
+   "file": "bank-current-account-deposits.md",
+   "n": 15,
+   "line_at_extraction": 408,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Hapoalim deposit product pages and concentrated publication**: the guessed URL /he/deposits returned 404; the home page links only to logged-in actions."
+  },
+  {
+   "code": "BANK OQ16",
+   "file": "bank-current-account-deposits.md",
+   "n": 16,
+   "line_at_extraction": 409,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Foreign bank branches and Altshuler Shaham Financial Services**: whether they take deposits from individuals in Israel."
+  },
+  {
+   "code": "BANK OQ17",
+   "file": "bank-current-account-deposits.md",
+   "n": 17,
+   "line_at_extraction": 410,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "bank-deposit",
+     "savings-plan"
+    ]
+   },
+   "start": "**Whether rates in the 447 publication for CPI-linked types are real or nominal**: the template says \"nominal annual\"; Yahav shows linked products as \"+ הצמדה ל"
+  },
+  {
+   "code": "BANK OQ18",
+   "file": "bank-current-account-deposits.md",
+   "n": 18,
+   "line_at_extraction": 411,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**BoI consumer page \"פיקדון בנקאי\" and the BoI comparison tool** (`/information/interestrates/compare/`): Radware-blocked; content unverified."
+  },
+  {
+   "code": "BPN OQ1",
+   "file": "bank-product-names.md",
+   "n": 1,
+   "line_at_extraction": 529,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Discount product names.** The money-market page shows filters only; tables are script-loaded and returned \"המידע אינו זמין כעת\". Likely answer: the page in a "
+  },
+  {
+   "code": "BPN OQ2",
+   "file": "bank-product-names.md",
+   "n": 2,
+   "line_at_extraction": 530,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Hapoalim 447 table content** (names in \"ריבית בפיקדונות נוספים\", the current-account row). Page renders by script. Browser needed."
+  },
+  {
+   "code": "BPN OQ3",
+   "file": "bank-product-names.md",
+   "n": 3,
+   "line_at_extraction": 531,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Mizrahi 447 table content** (the \"שם הפיקדון\" column, current-account interest). Same."
+  },
+  {
+   "code": "BPN OQ4",
+   "file": "bank-product-names.md",
+   "n": 4,
+   "line_at_extraction": 532,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**FIBI-group PortalNG data source.** Whether online.fibi.co.il exposes a JSON endpoint behind \"deposits-details\"; Massad's code in the same app. Browser develop"
+  },
+  {
+   "code": "BPN OQ5",
+   "file": "bank-product-names.md",
+   "n": 5,
+   "line_at_extraction": 533,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Bank of Jerusalem, One Zero, Esh Israel.** Blocked or no site. Browser by hand, or app screens typed in by a customer. **[2026-10-22 browser pass: Partly clos"
+  },
+  {
+   "code": "BPN OQ6",
+   "file": "bank-product-names.md",
+   "n": 6,
+   "line_at_extraction": 534,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Pagi brand.** pagi.co.il is linked from Otzar's footer; whether it still sells deposits under its own names was not checked."
+  },
+  {
+   "code": "BPN OQ7",
+   "file": "bank-product-names.md",
+   "n": 7,
+   "line_at_extraction": 535,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Leumi PDF pages 40-68** were not read page by page (FX by currency assumed from pages 37-39 and 69-72)."
+  },
+  {
+   "code": "BPN OQ8",
+   "file": "bank-product-names.md",
+   "n": 8,
+   "line_at_extraction": 536,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Expansions**: \"פק\"מ\" (Leumi, Mercantile), \"לל\"ת\" and \"מני\"ע\" (Leumi), \"(פ)\" (Hapoalim fee track). Not stated in any source read. **[2026-10-22 browser pass: \""
+  },
+  {
+   "code": "BPN OQ9",
+   "file": "bank-product-names.md",
+   "n": 9,
+   "line_at_extraction": 537,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Hapoalim \"פיקדון מטרה\"** vs \"פיקדון בריבית קבועה\": page 1 identical; read page 2 or the transaction details."
+  },
+  {
+   "code": "BPN OQ10",
+   "file": "bank-product-names.md",
+   "n": 10,
+   "line_at_extraction": 538,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Hapoalim \"חיסכון גמיש\"** rate type and term: contract page 1 silent; the brochure https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/פקדונות/gamish"
+  },
+  {
+   "code": "BPN OQ11",
+   "file": "bank-product-names.md",
+   "n": 11,
+   "line_at_extraction": 539,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Mercantile \"פיקדון לשנה בריבית משתנה ללקוחות כל הבנקים\"**: product name and rate are variable, description says fixed."
+  },
+  {
+   "code": "BPN OQ12",
+   "file": "bank-product-names.md",
+   "n": 12,
+   "line_at_extraction": 540,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Mercantile code 154 / 0154** shown under two names."
+  },
+  {
+   "code": "BPN OQ13",
+   "file": "bank-product-names.md",
+   "n": 13,
+   "line_at_extraction": 541,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Mizrahi קוקוס minimum**: 5,000 (kids page) vs 1,000 or 100,000 (main page per product)."
+  },
+  {
+   "code": "BPN OQ14",
+   "file": "bank-product-names.md",
+   "n": 14,
+   "line_at_extraction": 542,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Mizrahi \"פיקדון עד שצריך\" and \"פיקדון רימונים עד שקונים\"**: codes inferred from URL slugs cd-259 and cd-256 only."
+  },
+  {
+   "code": "BPN OQ15",
+   "file": "bank-product-names.md",
+   "n": 15,
+   "line_at_extraction": 543,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**FIBI and Massad shared names** (ארבל, איתן, סער, גולן; אופק vs אופק להשתלמות): one product or two; whether Otzar's sub-pages carry the same products."
+  },
+  {
+   "code": "BPN OQ16",
+   "file": "bank-product-names.md",
+   "n": 16,
+   "line_at_extraction": 544,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**EDGE INTEREST_DASH series meaning**: codelist CL_BNK_WEB (about 1 MB) not decoded; reporting directive \"D823A\" not read. Likely in the BoI EDGE series browser"
+  },
+  {
+   "code": "BPN OQ17",
+   "file": "bank-product-names.md",
+   "n": 17,
+   "line_at_extraction": 545,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Fee-track names** at Mizrahi, Yahav, Massad, Jerusalem, One Zero not checked; Leumi \"Total Digital\"; Discount's 01-312 form is from 2015."
+  },
+  {
+   "code": "BPN OQ18",
+   "file": "bank-product-names.md",
+   "n": 18,
+   "line_at_extraction": 546,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Child-savings track names** at Discount (agreement 04-183 dated 01/01/17 seen only as a search result), Mercantile, Mizrahi (no NII page found), Massad (six p"
+  },
+  {
+   "code": "BPN OQ19",
+   "file": "bank-product-names.md",
+   "n": 19,
+   "line_at_extraction": 547,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Yahav 447 pages lag the board** (11_26 of 24/09/2026 inside board 13_26 of 06/10/2026): whether the 447 rows were current."
+  },
+  {
+   "code": "BPN OQ20",
+   "file": "bank-product-names.md",
+   "n": 20,
+   "line_at_extraction": 548,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**App-only names**: every bank's app shows names after login that public pages may not (success criterion 5). Only the founder or a friend can supply them."
+  },
+  {
+   "code": "BPN OQ21",
+   "file": "bank-product-names.md",
+   "n": 21,
+   "line_at_extraction": 549,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Statement names**: whether Leumi statements show the \"דגם\" code; no statement was seen."
+  },
+  {
+   "code": "CORP OQ1",
+   "file": "corporate-bonds.md",
+   "n": 1,
+   "line_at_extraction": 269,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Registered rating companies.** Which companies are registered with the ISA under the 2014 rating law today. Tried: one web search (no official list), Midroog "
+  },
+  {
+   "code": "CORP OQ2",
+   "file": "corporate-bonds.md",
+   "n": 2,
+   "line_at_extraction": 270,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Registered trustees.** Names of the companies in the ISA trustees register. Tried: one web search, which returned only law-firm summaries and one bank trust c"
+  },
+  {
+   "code": "CORP OQ3",
+   "file": "corporate-bonds.md",
+   "n": 3,
+   "line_at_extraction": 271,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**S&P Maalot scale definitions**, and the exact quorum and majority for a holders' acceleration decision (s. 35ט1(ד)), which was only read in summary. Tried: ma"
+  },
+  {
+   "code": "CORP OQ4",
+   "file": "corporate-bonds.md",
+   "n": 4,
+   "line_at_extraction": 272,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Is a rating mandatory** for a public bond offering, a TASE listing, or listed commercial paper? Nothing read says so. Likely place: TASE rules part 2 (listing"
+  },
+  {
+   "code": "CORP OQ5",
+   "file": "corporate-bonds.md",
+   "n": 5,
+   "line_at_extraction": 273,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Public tender in practice.** Is the 2007 offering regulations text current (Wikisource shows amendments only to 2016)? How does an individual's order reach a "
+  },
+  {
+   "code": "CORP OQ6",
+   "file": "corporate-bonds.md",
+   "n": 6,
+   "line_at_extraction": 274,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**TASE trading details for bonds:** how prices are quoted (agorot per NIS 1 or per 100 face value), the settlement cycle, ex-date and record date for coupons, a"
+  },
+  {
+   "code": "CORP OQ7",
+   "file": "corporate-bonds.md",
+   "n": 7,
+   "line_at_extraction": 275,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**TASE-UP and institutional-only securities:** what they are and whether an individual can buy them. Seen only as labels in the TASE report and guide."
+  },
+  {
+   "code": "CORP OQ8",
+   "file": "corporate-bonds.md",
+   "n": 8,
+   "line_at_extraction": 276,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Tel-Bond methodology:** the current rules document, index list (Tel-Bond 20/40/60, Tel-Bond Shekel, sub-indices), thresholds and weights. Tried: one web searc"
+  },
+  {
+   "code": "CORP OQ9",
+   "file": "corporate-bonds.md",
+   "n": 9,
+   "line_at_extraction": 277,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**CPI-linkage terms in corporate bonds:** whether series commonly protect principal if the CPI falls below the base index. Per-deed; no market-wide source found"
+  },
+  {
+   "code": "CORP OQ10",
+   "file": "corporate-bonds.md",
+   "n": 10,
+   "line_at_extraction": 278,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Default and debt-settlement history from an official source** (number of defaults, recovery rates). Only press articles citing Midroog studies were found, and"
+  },
+  {
+   "code": "CORP OQ11",
+   "file": "corporate-bonds.md",
+   "n": 11,
+   "line_at_extraction": 279,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**ISA staff legal position 108-5 (24.9.2024)** in the ISA's own text. Only Meitar's summary was read (CORP-10, CORP-12)."
+  },
+  {
+   "code": "CORP OQ12",
+   "file": "corporate-bonds.md",
+   "n": 12,
+   "line_at_extraction": 280,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Insolvency law and bondholders:** creditors' arrangement majorities, court approval, the order of priority between secured and unsecured holders (חוק חדלות פי"
+  },
+  {
+   "code": "CORP OQ13",
+   "file": "corporate-bonds.md",
+   "n": 13,
+   "line_at_extraction": 281,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Disclosure content:** which periodic and immediate reports an issuer must publish, including covenant compliance and rating changes (Securities Regulations on"
+  },
+  {
+   "code": "CORP OQ14",
+   "file": "corporate-bonds.md",
+   "n": 14,
+   "line_at_extraction": 282,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Market value of corporate bonds outstanding at end-2025.** Not found in the TASE report pages read."
+  },
+  {
+   "code": "CORP OQ15",
+   "file": "corporate-bonds.md",
+   "n": 15,
+   "line_at_extraction": 283,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Unlisted commercial paper:** whether it is offered to the public, and on what terms. Not found."
+  },
+  {
+   "code": "FXD OQ1",
+   "file": "fx-and-structured-deposits.md",
+   "n": 1,
+   "line_at_extraction": 287,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**BoI rules or guidance specific to FX deposits** (beyond the disclosure rules and the fee rules). Tried: directive 447 (no FX), the fee rules, and the disclosu"
+  },
+  {
+   "code": "FXD OQ2",
+   "file": "fx-and-structured-deposits.md",
+   "n": 2,
+   "line_at_extraction": 288,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**Conversion spread vs conversion fee.** Part 5 allows a conversion fee \"לפי פירוט שיקבע התאגיד הבנקאי\". Nothing read says whether, or how, the bank's own buy a"
+  },
+  {
+   "code": "FXD OQ3",
+   "file": "fx-and-structured-deposits.md",
+   "n": 3,
+   "line_at_extraction": 289,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Part 5 tariffs at the other banks** (Hapoalim, Discount, Mizrahi, FIBI, Yahav, Massad, Mercantile). Only Leumi's was read. These go to the data track as dated"
+  },
+  {
+   "code": "FXD OQ4",
+   "file": "fx-and-structured-deposits.md",
+   "n": 4,
+   "line_at_extraction": 290,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**FX deposit agreement terms**: break penalty, day count, how the rate is derived, renewal at maturity. Lead: Mizrahi's sample agreement \"הסכם לדוגמא הפקדה לפיק"
+  },
+  {
+   "code": "FXD OQ5",
+   "file": "fx-and-structured-deposits.md",
+   "n": 5,
+   "line_at_extraction": 291,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**FX-linked shekel deposit agreements** (Discount, Yahav, Leumi): whether linkage applies when the dollar falls, and whether principal can fall below the shekel"
+  },
+  {
+   "code": "FXD OQ6",
+   "file": "fx-and-structured-deposits.md",
+   "n": 6,
+   "line_at_extraction": 292,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Is a principal-guaranteed deposit with a conditional grant a \"מוצר מובנה\"?** Discount says its product is not a \"נכס פיננסי\". The law's exclusion covers guara"
+  },
+  {
+   "code": "FXD OQ7",
+   "file": "fx-and-structured-deposits.md",
+   "n": 7,
+   "line_at_extraction": 293,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**BoI public information on structured deposits** (2003 page, domain-landscape S28b) and any current directive on their disclosure, break terms or suitability. "
+  },
+  {
+   "code": "FXD OQ8",
+   "file": "fx-and-structured-deposits.md",
+   "n": 8,
+   "line_at_extraction": 294,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Altshuler Shaham Financial Services' regulator for deposits.** It is listed by the BoI as a \"מוסד כספי\" (code 60), and its site cites CMA licence 56881. Which"
+  },
+  {
+   "code": "FXD OQ9",
+   "file": "fx-and-structured-deposits.md",
+   "n": 9,
+   "line_at_extraction": 295,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Safeguarding of payment-wallet balances (LAYA)** under the Payment and Payment Initiation Services Law 2023, and whether the ISA licence list confirms LAYA Gl"
+  },
+  {
+   "code": "FXD OQ10",
+   "file": "fx-and-structured-deposits.md",
+   "n": 10,
+   "line_at_extraction": 296,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Can Israeli residents buy Israel Bonds, and through whom?** The US prospectus does not say. www.israelbonds.co.il does not resolve. The government-bonds file "
+  },
+  {
+   "code": "FXD OQ11",
+   "file": "fx-and-structured-deposits.md",
+   "n": 11,
+   "line_at_extraction": 297,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**What the FX \"exempt\" (בעל פטור) and \"severance\" (פיצויים) deposit lines are**: who qualifies, and what changes in the deposit beyond tax. Pass to `tax-tier2-o"
+  },
+  {
+   "code": "FXD OQ12",
+   "file": "fx-and-structured-deposits.md",
+   "n": 12,
+   "line_at_extraction": 298,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Directive 447 and FX deposits**: whether banks must list FX deposits under \"additional types\" in the concentrated publication. The text is silent."
+  },
+  {
+   "code": "GOV OQ1",
+   "file": "government-bonds-and-makam.md",
+   "n": 1,
+   "line_at_extraction": 251,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Makam issuance cadence, schedule and results now.** BoI pages returned a Radware interstitial: https://www.boi.org.il/roles/markets/monetarytools/מכרזי-מקמ/, "
+  },
+  {
+   "code": "GOV OQ2",
+   "file": "government-bonds-and-makam.md",
+   "n": 2,
+   "line_at_extraction": 252,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "OQ-tag": [
+     "site/app/content/exposure/makam.tsx:53",
+     "site/app/content/guide/makam.tsx:40"
+    ],
+    "instrument record": [
+     "makam"
+    ]
+   },
+   "start": "**Can an individual bid in a makam auction through a bank or broker, and how?** The BoI conditions allow only clearing-house members. Nothing read says whether "
+  },
+  {
+   "code": "GOV OQ3",
+   "file": "government-bonds-and-makam.md",
+   "n": 3,
+   "line_at_extraction": 253,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "makam"
+    ]
+   },
+   "start": "**Is the BoI makam general-conditions document current?** It is undated; the PDF metadata says it was created in 2014. Its 13-month maximum term conflicts with "
+  },
+  {
+   "code": "GOV OQ4",
+   "file": "government-bonds-and-makam.md",
+   "n": 4,
+   "line_at_extraction": 254,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "OQ-tag": [
+     "site/app/content/exposure/government-bond-unlinked.tsx:45"
+    ],
+    "instrument record": [
+     "government-bond",
+     "government-bond-unlinked"
+    ],
+    "site code": [
+     "copy.ts:2577"
+    ],
+    "parameter": [
+     "EXPOSURE-HOLDING-WRAPPER"
+    ]
+   },
+   "start": "**Regulations for the fixed-rate shekel series (ממשלתית שקלית / שחר):** face value, coupon frequency and record date. Not found on Nevo by search. The search bu"
+  },
+  {
+   "code": "GOV OQ5",
+   "file": "government-bonds-and-makam.md",
+   "n": 5,
+   "line_at_extraction": 255,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "OQ-tag": [
+     "site/app/content/exposure/government-bond-unlinked.tsx:45"
+    ],
+    "instrument record": [
+     "government-bond",
+     "government-bond-unlinked"
+    ]
+   },
+   "start": "**Which regulation governs the floating-rate series auctioned now** (for example 1205145), and what its exact reference rate and payment frequency are. The glos"
+  },
+  {
+   "code": "GOV OQ6",
+   "file": "government-bonds-and-makam.md",
+   "n": 6,
+   "line_at_extraction": 256,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "OQ-tag": [
+     "site/app/content/exposure/government-bond-cpi.tsx:46"
+    ],
+    "instrument record": [
+     "government-bond",
+     "government-bond-cpi"
+    ]
+   },
+   "start": "**CPI-linked deflation treatment per series.** The 2006 regulation text has no floor (GOV-12). The Accountant General's \"תקנות אג\"ח סחיר\" page linked from the 2"
+  },
+  {
+   "code": "GOV OQ7",
+   "file": "government-bonds-and-makam.md",
+   "n": 7,
+   "line_at_extraction": 257,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "OQ-tag": [
+     "site/app/content/guide/government-bond.tsx:32",
+     "site/app/content/guide/makam.tsx:40"
+    ],
+    "instrument record": [
+     "brokerage-account",
+     "government-bond",
+     "government-bond-cpi",
+     "government-bond-unlinked",
+     "makam"
+    ],
+    "instrument blocker": [
+     "government-bond",
+     "makam"
+    ],
+    "site code": [
+     "lib/compare.ts:620",
+     "lib/compare.ts:630",
+     "lib/idle.ts:101"
+    ]
+   },
+   "start": "**TASE facts:** trading unit and minimum trade for government bonds and makam; how price is quoted (A447 shows \"שער אחרון (באגורות)\"); trading hours; settlement"
+  },
+  {
+   "code": "GOV OQ8",
+   "file": "government-bonds-and-makam.md",
+   "n": 8,
+   "line_at_extraction": 258,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "OQ-tag": [
+     "site/app/content/guide/government-bond.tsx:32"
+    ],
+    "instrument record": [
+     "government-bond",
+     "government-bond-cpi",
+     "government-bond-unlinked",
+     "makam"
+    ]
+   },
+   "start": "**How a retail order reaches a weekly government-bond auction:** process, minimum and fees. The law says sales to the public go through banks and TASE members ("
+  },
+  {
+   "code": "GOV OQ9",
+   "file": "government-bonds-and-makam.md",
+   "n": 9,
+   "line_at_extraction": 259,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "OQ-tag": [
+     "site/app/content/exposure/government-bond-unlinked.tsx:45"
+    ],
+    "instrument record": [
+     "government-bond-cpi",
+     "government-bond-unlinked"
+    ]
+   },
+   "start": "**Official investor-facing risk statements** (price change before maturity, reinvestment, liquidity of short-dated linked bonds) from the ISA, TASE or BoI consu"
+  },
+  {
+   "code": "GOV OQ10",
+   "file": "government-bonds-and-makam.md",
+   "n": 10,
+   "line_at_extraction": 260,
+   "already_struck": true,
+   "closed_date": "2026-10-25",
+   "site_dependent": false,
+   "deps": {},
+   "start": "~~**Final text and effective date of directive 447A.**~~ Closed 2026-10-25: the final text, version 1, circular 2813 of 09/04/25, was read (GOV-20, GOV-21). Ear"
+  },
+  {
+   "code": "GOV OQ11",
+   "file": "government-bonds-and-makam.md",
+   "n": 11,
+   "line_at_extraction": 261,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**State retail savings instrument for residents (domain question 19).** None was found in shekels. The State of Israel Savings Bonds and Jubilee bonds sold by D"
+  },
+  {
+   "code": "GOV OQ12",
+   "file": "government-bonds-and-makam.md",
+   "n": 12,
+   "line_at_extraction": 262,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "government-bond-cpi",
+     "government-bond-unlinked"
+    ]
+   },
+   "start": "**Official source for the renaming** (שחר → ממשלתית שקלית, גליל → ממשלתית צמודה, גילון → ממשלתית משתנה) and its date. The mapping comes only from Hebrew Wikiped"
+  },
+  {
+   "code": "GOV OQ13",
+   "file": "government-bonds-and-makam.md",
+   "n": 13,
+   "line_at_extraction": 263,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Status of \"מירון\"** designated bonds. Only a chart legend in the 2025 report and Wikipedia mention it."
+  },
+  {
+   "code": "GOV OQ14",
+   "file": "government-bonds-and-makam.md",
+   "n": 14,
+   "line_at_extraction": 264,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Tuesday entries in the MoF auction data** (GOV-09): what they are (for example a follow-on round for primary market makers) was not found."
+  },
+  {
+   "code": "TXI OQ1",
+   "file": "tax-interest-deposits-bonds.md",
+   "n": 1,
+   "line_at_extraction": 299,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Partial linkage differentials.** s.9(13)(1) leaves \"הפרשי הצמדה חלקיים\" to a ministerial definition, which I did not find. It matters for any product sold as "
+  },
+  {
+   "code": "TXI OQ2",
+   "file": "tax-interest-deposits-bonds.md",
+   "n": 2,
+   "line_at_extraction": 300,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "bank-deposit",
+     "savings-plan",
+     "shekel-cash"
+    ],
+    "site code": [
+     "lib/guide.server.ts:261"
+    ]
+   },
+   "start": "**Prime-linked and other floating-rate deposits.** No source names them. TXI-04 applies the statutory definition of the index (CPI or exchange rate), under whic"
+  },
+  {
+   "code": "TXI OQ3",
+   "file": "tax-interest-deposits-bonds.md",
+   "n": 3,
+   "line_at_extraction": 301,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "OQ-tag": [
+     "site/app/content/exposure/makam.tsx:53",
+     "site/app/content/guide/makam.tsx:57"
+    ],
+    "method gap": [
+     "G-09"
+    ],
+    "instrument record": [
+     "makam"
+    ],
+    "instrument blocker": [
+     "makam"
+    ],
+    "site code": [
+     "lib/guide.server.ts:261",
+     "lib/guide.server.ts:63"
+    ]
+   },
+   "start": "**Makam discount: the 2025 guide's \"20% at realization\" line, and the split on sale.** Guide printed p.39, item 3 under \"ריבית על אגרות חוב\", reads that discoun"
+  },
+  {
+   "code": "TXI OQ4",
+   "file": "tax-interest-deposits-bonds.md",
+   "n": 4,
+   "line_at_extraction": 302,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**FX deposits (Q2), withholding side.** The guide (TXI-04) settles the bucket: FX-linked or FX-denominated deposits are \"linked\", taxed at up to 25% above the e"
+  },
+  {
+   "code": "TXI OQ5",
+   "file": "tax-interest-deposits-bonds.md",
+   "n": 5,
+   "line_at_extraction": 303,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "OQ-tag": [
+     "site/app/content/exposure/government-bond-cpi.tsx:46",
+     "site/app/content/exposure/government-bond-unlinked.tsx:45",
+     "site/app/content/guide/government-bond.tsx:49"
+    ],
+    "method gap": [
+     "G-10"
+    ],
+    "instrument record": [
+     "government-bond",
+     "government-bond-cpi",
+     "government-bond-unlinked",
+     "makam"
+    ],
+    "instrument blocker": [
+     "government-bond"
+    ],
+    "rule record": [
+     "TXI-16"
+    ]
+   },
+   "start": "**Accrued interest (s.3(h)) for a private buyer of traded government bonds.** Two points are open: whether an order under s.3(h1) excludes traded bonds, and how"
+  },
+  {
+   "code": "TXI OQ6",
+   "file": "tax-interest-deposits-bonds.md",
+   "n": 6,
+   "line_at_extraction": 304,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "government-bond-cpi"
+    ]
+   },
+   "start": "**Deflation and negative real yield.** If the CPI falls, the Galil regulations reduce principal and interest. It is not known whether negative linkage reduces t"
+  },
+  {
+   "code": "TXI OQ7",
+   "file": "tax-interest-deposits-bonds.md",
+   "n": 7,
+   "line_at_extraction": 305,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "bank-deposit",
+     "current-account",
+     "savings-plan"
+    ],
+    "instrument blocker": [
+     "bank-deposit",
+     "current-account",
+     "savings-plan"
+    ]
+   },
+   "start": "**Securities losses against bank-deposit interest.** s.92(a)(4) covers interest on securities only. I found no rule allowing offset against deposit interest, an"
+  },
+  {
+   "code": "TXI OQ8",
+   "file": "tax-interest-deposits-bonds.md",
+   "n": 8,
+   "line_at_extraction": 306,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "government-bond",
+     "government-bond-unlinked"
+    ]
+   },
+   "start": "**Gilon and series linkage.** I did not open the issue regulations for variable-rate (\"gilon\") or unlinked fixed (\"shahar\") government bonds, because the search"
+  },
+  {
+   "code": "TXI OQ9",
+   "file": "tax-interest-deposits-bonds.md",
+   "n": 9,
+   "line_at_extraction": 307,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "OQ-tag": [
+     "site/app/content/guide/makam.tsx:60"
+    ],
+    "instrument record": [
+     "bank-deposit",
+     "government-bond",
+     "makam",
+     "savings-plan"
+    ],
+    "instrument blocker": [
+     "makam"
+    ]
+   },
+   "start": "**Is 15% on unlinked interest a fixed rate for people aged 60 or over?** The statute wording points to a fixed rate. The guide's maximum-rate list says \"for exa"
+  },
+  {
+   "code": "TXI OQ10",
+   "file": "tax-interest-deposits-bonds.md",
+   "n": 10,
+   "line_at_extraction": 308,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Q3, history of the 15% power.** No order under s.125C(c)(2) or s.91(b)(3)(b) was found. The rate in force is 15% according to the consolidated text, the 2025 "
+  },
+  {
+   "code": "TXI OQ11",
+   "file": "tax-interest-deposits-bonds.md",
+   "n": 11,
+   "line_at_extraction": 309,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "current-account"
+    ],
+    "instrument blocker": [
+     "current-account"
+    ]
+   },
+   "start": "**Current-account credit interest and s.125D.** Withholding covers it (reg. 4: any interest a bank pays). It is not known whether it is \"a deposit at a banking "
+  },
+  {
+   "code": "TXI OQ12",
+   "file": "tax-interest-deposits-bonds.md",
+   "n": 12,
+   "line_at_extraction": 310,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Retirement age in s.125D(c).** The guide says 67 and the 2026 booklet's line heading says 65; the law refers to the Retirement Age Law. This is moot for anyon"
+  },
+  {
+   "code": "TXI OQ13",
+   "file": "tax-interest-deposits-bonds.md",
+   "n": 13,
+   "line_at_extraction": 311,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**s.125E maximum: 39,605 or 39,606 NIS.** The statutory footnote and the 2026 booklet differ by 1 NIS."
+  },
+  {
+   "code": "TXI OQ14",
+   "file": "tax-interest-deposits-bonds.md",
+   "n": 14,
+   "line_at_extraction": 312,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-16"
+    ],
+    "instrument record": [
+     "bank-deposit",
+     "savings-plan",
+     "shekel-cash"
+    ],
+    "site code": [
+     "lib/guide.server.ts:261"
+    ]
+   },
+   "start": "**Early break of a deposit or savings plan.** No explicit rule was found. Taxing the interest actually paid follows from reg. 4, but no source says so in words."
+  },
+  {
+   "code": "TXI OQ15",
+   "file": "tax-interest-deposits-bonds.md",
+   "n": 15,
+   "line_at_extraction": 313,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**National Insurance and health on interest** (tax Q10). Owned by `tax-general.md`. Until it is closed, the net figures above are income tax only."
+  },
+  {
+   "code": "TXI OQ16",
+   "file": "tax-interest-deposits-bonds.md",
+   "n": 16,
+   "line_at_extraction": 314,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**2026 edition of the annual guide.** I used the 2025 guide (tax year 2025). The 2026 edition was not checked because the search budget ran out."
+  },
+  {
+   "code": "TXI OQ17",
+   "file": "tax-interest-deposits-bonds.md",
+   "n": 17,
+   "line_at_extraction": 315,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Exact wording.** The guide, booklet and btl regulation PDFs had no extractable text and were read as page images. Ordinance quotes came through a tool that li"
+  },
+  {
+   "code": "TXI OQ18",
+   "file": "tax-interest-deposits-bonds.md",
+   "n": 18,
+   "line_at_extraction": 316,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "rule record": [
+     "TXI-08"
+    ]
+   },
+   "start": "**Later amendments to the 2005 withholding regulations** (after 27.12.2017) and to the 2002 capital-gain computation regulations (after 1.1.2004) were not check"
+  }
+ ]
+}

@@ -1,0 +1,63 @@
+{
+  "id": "SW-56",
+  "title": "The Phoenix: the management fee for members who join its study fund digitally",
+  "title_he": "הפניקס: דמי הניהול למי שמצטרף לקרן ההשתלמות שלה באופן דיגיטלי",
+  "text_he": "בשאלות ותשובות על קרן ההשתלמות שלה, ליד טופס ההצטרפות המקוון, הפניקס כותבת שדמי הניהול בהצטרפות הדיגיטלית עומדים על שיעור קבוע. היא לא כותבת אם השיעור הוא מהיתרה או מההפקדות. חברות אחרות לא נבדקו.",
+  "figure_names_he": {
+    "digital_joining_fee": "דמי הניהול בהצטרפות דיגיטלית, לפי הפניקס"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "fee-management-balance",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-26",
+  "figures": {
+    "digital_joining_fee": {
+      "value": 0.75,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.fnx.co.il/ishtalmutfund/faq/",
+        "title": "Phoenix study-fund FAQ: \"דמי הניהול בהצטרפות הדיגיטלית עומדים על 0.75%\"",
+        "publisher": "The Phoenix",
+        "strength": "institution"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "SW-56"
+      ],
+      "state": "sourced",
+      "notes": "The FAQ does not say whether it is of the balance or of deposits."
+    }
+  },
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "phoenix",
+      "name_he": "הפניקס"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.fnx.co.il/ishtalmutfund/faq/",
+      "title": "Phoenix study-fund FAQ",
+      "title_he": "שאלות ותשובות על קרן ההשתלמות של הפניקס",
+      "publisher": "The Phoenix",
+      "publisher_he": "הפניקס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "דמי הניהול בהצטרפות הדיגיטלית עומדים על 0.75%",
+      "checked": "2026-10-26"
+    }
+  ],
+  "derived_from": [
+    "KH-22"
+  ]
+}

@@ -1,31 +1,43 @@
 // "השקעה במדד" (D28, spec research/specs/2026-10-25-invest-page/spec.md): for an index the person chooses (or adds), the options
-// for owning it, the cheapest broker for each, and the cheapest complete way for the plan. `/invest` chooses nothing (D27);
-// `/invest/:exposureId` opens one known index (pre-rendered); a custom index lives on the device and opens at `/invest?custom=<id>`.
-import { useEffect, useMemo, useState } from "react";
-import { useLoaderData, useLocation, useNavigate } from "react-router";
+// for owning it, the cheapest broker for each, and the cheapest complete way for the plan. `/indices` chooses nothing (D27);
+// `/indices/<x>` opens the known index `index-<x>` (pre-rendered); a custom index lives on the device and opens at `/indices?custom=<id>`.
+import { useEffect, useId, useMemo, useState } from "react";
+import { useLoaderData, useLocation, useNavigate, useParams } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import type { Route } from "./+types/invest";
 import { invest as c, site } from "../copy";
-import { IndexChips, PlanChips } from "../components/invest/chips";
-import { BrokerGrid } from "../components/invest/grid";
+import { AssumptionsPanel } from "../components/compare/assumptions";
+import type { FormData } from "../components/compare/goal-form";
+import { feePlanItems, ScenarioDefaults } from "../components/fees/chips";
+import { IndexChips, PlanBlock } from "../components/invest/chips";
+import { HousesSection } from "../components/invest/houses";
 import { FundsSection } from "../components/invest/funds";
 import { LabelSheetHost } from "../components/invest/parts";
-import { Headline, IndexHeader, Options, Worth } from "../components/invest/sections";
+import { Headline, IndexHeader, Matters, OptionsCompare, WorthBars } from "../components/invest/sections";
 import { Foot, Steps } from "../components/invest/steps";
-import { Callout } from "../components/kit";
+import { Callout, Disclosure } from "../components/kit";
+import { Sheet } from "../components/Sheet";
 import { PageShell } from "../components/shell";
 import { RulesLine } from "../components/provenance";
 import { loadBundle, bundleLinks } from "../lib/bundle";
-import { runGoalOf, type CompareBundle } from "../lib/compare";
-import { feeInputs } from "../lib/fees";
-import { GoalsProvider, hasMeaning, useGoals, type Presets } from "../lib/goal";
+import { type CompareBundle } from "../lib/compare";
+import { planInputs } from "../lib/plan-inputs";
+import { GoalsProvider, useGoals, type Presets } from "../lib/goal";
 import { useInputs } from "../lib/inputs";
-import { buildInvest, indexById, providersOfInvest, refOfCustom, type CustomIndex, type IndexRef, type OptionId } from "../lib/invest";
+import { buildInvest, exposureIdOfSlug, indexById, INDICES_PATH, providersOfInvest, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
 import { loadWorkbenchBundle, type WorkbenchBundle, type WorkbenchInputs } from "../lib/providers";
 import { useInvestState } from "../lib/state";
+import { recordsById } from "../lib/scope";
 
 /** The data files this page fetches after it starts, requested with the HTML (audit 2026-10-24, A52). */
 export const links = () => bundleLinks("workbench-bundle.json", "compare-bundle.json");
+
+/** Every index is one route (`indices/:slug?`) whose data is the same for each: moving between indices, or to a custom one,
+ * keeps the loaded data and fetches nothing, so a click on a phone does not wait for the network. The index comes from the address. */
+export function shouldRevalidate() {
+  // asked only when this route stays on screen; its data is fixed at build
+  return false;
+}
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { loadExposures } = await import("../lib/instruments.server");
@@ -33,13 +45,20 @@ export async function loader({ params }: Route.LoaderArgs) {
   const indices = loadExposures()
     .filter((e) => e.kind === "equity_index")
     .map((e) => ({ id: e.id, name: e.names.he[0] ?? e.id, israeli: e.constituents_israeli === true }));
-  const id = params.exposureId ?? null;
+  const id = params.slug ? exposureIdOfSlug(params.slug) : null;
   if (id && !indices.some((i) => i.id === id)) throw new Response("Not found", { status: 404 });
-  return { ...goalFormData(), exposureId: id, indices };
+  return { ...goalFormData(), indices };
 }
 
-export function meta({ loaderData: data }: Route.MetaArgs) {
-  const name = data?.exposureId ? data.indices.find((i) => i.id === data.exposureId)?.name : null;
+/** The known index the address names (`/indices/<x>` is `index-<x>`), or null. */
+const exposureIdOf = (slug: string | undefined, indices: readonly { id: string }[]): string | null => {
+  const id = slug ? exposureIdOfSlug(slug) : null;
+  return id && indices.some((i) => i.id === id) ? id : null;
+};
+
+export function meta({ loaderData: data, params }: Route.MetaArgs) {
+  const id = data ? exposureIdOf(params.slug, data.indices) : null;
+  const name = id ? data?.indices.find((i) => i.id === id)?.name : null;
   return [{ title: `${c.metaTitle}${name ? ` · ${name}` : ""} · ${site.name}` }];
 }
 
@@ -61,7 +80,7 @@ export default function Invest() {
   }, []);
   const provenance = useMemo(() => {
     const rules: Record<string, RuleRecord> = Object.fromEntries([...(compare?.rules ?? []), ...(wb?.rules ?? [])].map((r) => [r.id, r as RuleRecord]));
-    return { rules, terms: {}, dimensions: Object.fromEntries((compare?.checklist ?? []).map((x) => [x.id, x.name])), today: data.today };
+    return { rules, pointed: recordsById(compare?.pointed, wb?.pointed), terms: {}, dimensions: Object.fromEntries((compare?.checklist ?? []).map((x) => [x.id, x.name])), today: data.today };
   }, [compare, wb, data.today]);
   return (
     <GoalsProvider presets={presets}>
@@ -101,11 +120,12 @@ function Page({ wb, compare, failed, data }: { wb: WorkbenchBundle | null; compa
 
 function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: CompareBundle; data: Data; search: string }) {
   const navigate = useNavigate();
+  const exposureId = exposureIdOf(useParams().slug, data.indices);
   const { current, resolved } = useGoals();
   const released = useInputs();
   const invest = useInvestState();
-  const goalG = current && resolved && hasMeaning(resolved) ? runGoalOf(current, resolved) : null;
-  const fi = useMemo(() => feeInputs(compare, goalG, released.state), [compare, JSON.stringify(goalG), released.state]); // eslint-disable-line react-hooks/exhaustive-deps
+  // The person may type only one number here (this page may be all they use): the goal's empty numbers take the site's example.
+  const fi = useMemo(() => planInputs(compare, current, resolved, released.state), [compare, current, resolved, released.state]);
   const plan: WorkbenchInputs = useMemo(
     () => ({
       amountNow: Math.max(0, fi.g.amountNow - fi.g.available),
@@ -124,15 +144,27 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
 
   const customs: CustomIndex[] = invest.customIndices;
   const customId = new URLSearchParams(search).get("custom");
-  const index: IndexRef | null = useMemo(() => (data.exposureId ? indexById(wb, data.exposureId) : customId ? (customs.find((x) => x.id === customId) ? refOfCustom(customs.find((x) => x.id === customId)!) : null) : null), [wb, data.exposureId, customId, customs]);
+  const index: IndexRef | null = useMemo(() => (exposureId ? indexById(wb, exposureId) : customId ? (customs.find((x) => x.id === customId) ? refOfCustom(customs.find((x) => x.id === customId)!) : null) : null), [wb, exposureId, customId, customs]);
   const known: IndexRef[] = data.indices.map((i) => ({ id: i.id, name: i.name, israeli: i.israeli, exposure: null, custom: null, oneLine: null }));
 
   const brokers = useMemo(() => providersOfInvest(wb).filter((s) => !s.missing).map((s) => ({ id: s.id, name: s.provider.name_he })), [wb]);
   const yourBroker = invest.broker && brokers.some((b) => b.id === invest.broker) ? invest.broker : null;
   const view = useMemo(() => (index ? buildInvest({ bundle: wb, index, plan, yourBroker }) : null), [wb, index, plan, yourBroker]);
 
-  const [picked, setPicked] = useState<{ index: string; option: OptionId } | null>(null);
-  const selected = picked && index && picked.index === index.id ? picked.option : view?.headline?.option ?? view?.options.find((o) => o.exists && o.bestWay)?.id ?? view?.options.find((o) => o.exists)?.id ?? null;
+  const [panelOpen, setPanelOpen] = useState(false);
+  const headId = useId();
+  // A chip opens the same fields the fees page opens, on the same current goal: a value typed here is the value there.
+  const planItems = feePlanItems(fi, { return: plan.returnFromParameter ? c.plan.retExample : c.plan.retEntered });
+
+  // the house whose funds are listed: the person's click, else their own account, else the cheapest way's house
+  const [picked, setPicked] = useState<{ index: string; house: string } | null>(null);
+  const pickable = (id: string | null) => !!id && !!view?.houses.some((h) => h.provider.id === id && (h.best || h.generic));
+  const house = picked && index && picked.index === index.id && pickable(picked.house) ? picked.house : pickable(yourBroker) ? yourBroker : view?.headline?.providerId ?? view?.genericHeadline?.cell.providerId ?? view?.houses.find((h) => h.best || h.generic)?.provider.id ?? null;
+  const pickHouse = (id: string) => {
+    if (!index) return;
+    setPicked({ index: index.id, house: id });
+    requestAnimationFrame(() => document.getElementById("invest-funds-section")?.scrollIntoView({ behavior: "smooth", block: "start" }));
+  };
 
   const rules = ["ETF-31", "ETF-24", "ETF-51", "TXS-09", "TXF-22"].filter((id) => wb.rules.some((r) => r.id === id));
 
@@ -144,8 +176,9 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
       bundle={wb}
       onRemove={(id) => {
         invest.remove(id);
-        if (index?.id === id) navigate("/invest");
+        if (index?.id === id) navigate(INDICES_PATH);
       }}
+      onRename={invest.rename}
       onSave={(x) => invest.add(x)}
       onGo={(p) => navigate(p)}
     />
@@ -157,25 +190,41 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
         <div className="flex flex-col gap-5">
           <Head />
           {chips}
-          <PlanChips plan={plan} fx={wb.fx} today={data.today} brokers={brokers} yourBroker={yourBroker} onBroker={(id) => invest.setBroker(id)} hasGoal={plan.fromGoal} />
+          <PlanBlock items={planItems} onOpen={() => setPanelOpen(true)} fx={wb.fx} today={data.today} brokers={brokers} yourBroker={yourBroker} onBroker={(id) => invest.setBroker(id)} hasGoal={plan.fromGoal} />
         </div>
-        {customId && !data.exposureId && !index && <Callout tone="caution">{c.custom.missing}</Callout>}
+        {customId && !exposureId && !index && <Callout tone="caution">{c.custom.missing}</Callout>}
         {!index || !view ? (
           <p className="text-muted-foreground">{c.chips.none}</p>
         ) : (
           <>
             <IndexHeader view={view} onChangeAnswer={index.custom ? () => invest.add({ ...index.custom!, israeli: !index.custom!.israeli }) : null} />
             <Headline view={view} />
-            <Worth view={view} />
-            <Options view={view} selected={selected} onSelect={(id) => setPicked({ index: index.id, option: id })} />
-            <BrokerGrid view={view} />
-            <FundsSection view={view} optionId={selected} mayaHref={wb.links.maya?.href ?? null} />
-            <Steps view={view} monthly={plan.values.monthly} />
+            <Matters view={view} years={plan.values.years} />
+            <HousesSection view={view} chosen={house} onPick={pickHouse} />
+            <FundsSection view={view} houseId={house} onHouse={(id) => setPicked({ index: index.id, house: id })} mayaHref={wb.links.maya?.href ?? null} />
+            <div className="flex flex-col divide-y divide-border border-y border-border">
+              <Disclosure label={c.folds.worth} spread>
+                <WorthBars view={view} />
+              </Disclosure>
+              <Disclosure label={c.options.foldLabel} spread>
+                <OptionsCompare view={view} />
+              </Disclosure>
+              <Disclosure label={c.folds.steps} spread>
+                <Steps view={view} monthly={plan.values.monthly} />
+              </Disclosure>
+            </div>
             <Foot view={view} />
             <RulesLine ids={rules} />
           </>
         )}
       </div>
+      <Sheet open={panelOpen} onClose={() => setPanelOpen(false)} pc="center" height={78} labelledBy={`${headId}-as`}>
+        <h2 id={`${headId}-as`} className="text-lg font-semibold mb-3">
+          {c.plan.panelTitle}
+        </h2>
+        {panelOpen && !fi.fromGoal && <ScenarioDefaults inputs={fi} />}
+        {panelOpen && <AssumptionsPanel data={data.form as FormData} suggestion={null} onAdopted={() => {}} />}
+      </Sheet>
     </LabelSheetHost>
   );
 }

@@ -342,7 +342,7 @@
       "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf"
     },
     "variants_he": [],
-    "explain_he": "תוספת שהבנק או בית ההשקעות מוסיפים לשער המטבע בהמרה; עלות שלא תמיד מופיעה כעמלה נפרדת.",
+    "explain_he": "ההפרש בין השער שמקבלים בהמרת מטבע לבין מחיר הביצוע בשוק; ב־IBI, למשל, זו כל עלות ההמרה, בלי עמלה נפרדת.",
     "rule_ids": [
       "BRK-24",
       "BRK-23"
@@ -350,7 +350,7 @@
     "source": {
       "title": "IBI, תעריפון עמלות, נכון ל-1.7.2026",
       "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
-      "checked": "2026-10-22",
+      "checked": "2026-10-26",
       "strength": "institution"
     },
     "where": [
@@ -371,14 +371,14 @@
       "דמי שימוש / דמי טיפול",
       "דמי ניהול תקופתיים"
     ],
-    "explain_he": "עמלה חודשית קבועה שחלק מבתי ההשקעות גובים על עצם החזקת החשבון, בלי קשר לפעולות.",
+    "explain_he": "עמלה חודשית על החשבון עצמו; ב־IBI, למשל, היא נקראת ״דמי שימוש / דמי טיפול״ ונגבית פעם בחודש.",
     "rule_ids": [
       "BRK-24"
     ],
     "source": {
       "title": "IBI, תעריפון עמלות, נכון ל-1.7.2026",
       "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
-      "checked": "2026-10-22",
+      "checked": "2026-10-26",
       "strength": "institution"
     },
     "where": [
@@ -712,21 +712,21 @@
   {
     "term_he": "דמי ניהול קבועים",
     "term_source": {
-      "title": "IBI, דוח שנתי \"אי.בי.אי. סל (4D) S&P 500\" (1148162), 31.12.2025",
-      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf"
+      "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018, תקנה 1",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=2"
     },
     "variants_he": [],
-    "explain_he": "אחוז שנתי קבוע משווי נכסי הקרן שמנהל הקרן לוקח כשכר; יורד מהתשואה של המשקיעים.",
+    "explain_he": "שכר מנהל הקרן שלא תלוי בתשואת הקרן; בקרן מחקה יכולים להיות לצדו גם דמי ניהול משתנים, שנגזרים מהתשואה ומהפרש העקיבה.",
     "rule_ids": [
       "ETF-13",
       "ETF-15",
       "ETF-17"
     ],
     "source": {
-      "title": "IBI, דוח שנתי \"אי.בי.אי. סל (4D) S&P 500\" (1148162), 31.12.2025",
-      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018, תקנה 1",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=2",
+      "checked": "2026-10-26",
+      "strength": "primary"
     },
     "where": [
       "guide:etfs-and-index-funds",
@@ -943,7 +943,7 @@
     "term_he": "קרן זרה",
     "term_source": null,
     "variants_he": [],
-    "explain_he": "קרן שהוקמה ונרשמה בחו\"ל, למשל באירלנד או בארה\"ב, ונקנית בבורסה זרה דרך ברוקר.",
+    "explain_he": "קרן להשקעה משותפת בניירות ערך שהוקמה במדינה אחרת, לפי הדינים שלה; בחוק היא נקראת קרן חוץ.",
     "rule_ids": [
       "ETF-28",
       "ETF-29",
@@ -954,10 +954,10 @@
       "TXF-27"
     ],
     "source": {
-      "title": "iShares Core S&P 500 UCITS ETF USD (Acc) factsheet, Sep 2026",
-      "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/cspx-ishares-core-s-p-500-ucits-etf-fund-fact-sheet-en-gb.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, ס' 113א, \"קרן חוץ\" (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "guide:etfs-and-index-funds",
@@ -1022,20 +1022,20 @@
   {
     "term_he": "TER",
     "term_source": {
-      "title": "iShares Core S&P 500 UCITS ETF USD (Acc) factsheet",
-      "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/cspx-ishares-core-s-p-500-ucits-etf-fund-fact-sheet-en-gb.pdf"
+      "title": "CESR/05-302b (July 2005), Annex I: Commission Recommendation 2004/384/EC, Total expense ratio (TER)",
+      "url": "https://www.esma.europa.eu/sites/default/files/library/2015/11/05_302b.pdf"
     },
     "variants_he": [],
-    "explain_he": "סך העלויות השנתיות של קרן זרה, באחוז משווי ההשקעה בה; יורדות מהתשואה.",
+    "explain_he": "כל ההוצאות שיורדות בשנה מנכסי קרן אירופית מסוג UCITS, כאחוז מהשווי הנקי הממוצע שלה; עלויות המסחר של הקרן ועמלות שהמשקיע משלם ישירות לא נכללות.",
     "rule_ids": [
       "ETF-28",
       "ETF-30"
     ],
     "source": {
-      "title": "iShares Core S&P 500 UCITS ETF USD (Acc) factsheet, Sep 2026",
-      "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/cspx-ishares-core-s-p-500-ucits-etf-fund-fact-sheet-en-gb.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "CESR/05-302b (July 2005), Annex I: Commission Recommendation 2004/384/EC, Total expense ratio (TER)",
+      "url": "https://www.esma.europa.eu/sites/default/files/library/2015/11/05_302b.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "guide:index-sp500",
@@ -1047,20 +1047,20 @@
   {
     "term_he": "ISIN",
     "term_source": {
-      "title": "iShares Core S&P 500 UCITS ETF USD (Acc) factsheet",
-      "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/cspx-ishares-core-s-p-500-ucits-etf-fund-fact-sheet-en-gb.pdf"
+      "title": "ANNA (ISO 6166 registration authority), Identifiers: International Securities Identification Number (ISIN)",
+      "url": "https://anna-web.org/identifiers/"
     },
     "variants_he": [],
-    "explain_he": "קוד שמזהה כל נייר ערך זר, ואף כל גרסה של אותה קרן; תחילת הקוד מראה את מדינת הרישום.",
+    "explain_he": "קוד בינלאומי שמזהה נייר ערך או מכשיר פיננסי אחד; שתי האותיות הראשונות הן המדינה שבה רשום המנפיק, ובאיגרת חוב המדינה של הגוף שהקצה את הקוד.",
     "rule_ids": [
       "ETF-28",
       "ETF-27"
     ],
     "source": {
-      "title": "iShares Core S&P 500 UCITS ETF USD (Acc) factsheet, Sep 2026",
-      "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/cspx-ishares-core-s-p-500-ucits-etf-fund-fact-sheet-en-gb.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "ANNA (ISO 6166 registration authority), Identifiers: International Securities Identification Number (ISIN)",
+      "url": "https://anna-web.org/identifiers/",
+      "checked": "2026-10-26",
+      "strength": "primary"
     },
     "where": [
       "guide:index-sp500",
@@ -1072,20 +1072,20 @@
   {
     "term_he": "ticker",
     "term_source": {
-      "title": "iShares Core S&P 500 UCITS ETF USD (Acc) factsheet",
-      "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/cspx-ishares-core-s-p-500-ucits-etf-fund-fact-sheet-en-gb.pdf"
+      "title": "תקנות השקעות משותפות בנאמנות (הצעת יחידות של קרן חוץ), התשע\"ו-2016, תקנה 4(ב)",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=#page=5"
     },
     "variants_he": [],
-    "explain_he": "הסימן של נייר ערך בבורסה מסוימת; אותה קרן יכולה להיסחר בכמה בורסות ובכמה מטבעות.",
+    "explain_he": "הסימן של קרן בבורסה שבה היא נסחרת; אם היא רשומה למסחר גם בבורסה בישראל, יש לה סימן גם שם.",
     "rule_ids": [
       "ETF-28",
       "ETF-24"
     ],
     "source": {
-      "title": "iShares Core S&P 500 UCITS ETF USD (Acc) factsheet, Sep 2026",
-      "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/cspx-ishares-core-s-p-500-ucits-etf-fund-fact-sheet-en-gb.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "תקנות השקעות משותפות בנאמנות (הצעת יחידות של קרן חוץ), התשע\"ו-2016, תקנה 4(ב)",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=#page=5",
+      "checked": "2026-10-26",
+      "strength": "primary"
     },
     "where": [
       "guide:index-sp500",

@@ -1,0 +1,72 @@
+{
+  "id": "ETF-68",
+  "title": "IBI, Mor and MTF: how their NASDAQ-100 funds word the tracking asset (a net version, NNDX)",
+  "title_he": "אי.בי.אי, מור ו־MTF: איך קרנות הנאסד״ק 100 שלהן מגדירות את נכס המעקב",
+  "text_he": "קרנות הנאסד״ק 100 הישראליות שהדוחות השנתיים שלהן נקראו, של אי.בי.אי, מור ו־MTF, מגדירות את נכס המעקב כמדד במלואו ועוד חשיפה מלאה לדולר, ואת אופן חישוב המדד כמדד השקעה נטו ממס. אי.בי.אי ומור נותנות לו את הסימול NNDX. אם זו גרסת הנטו של נאסד״ק, מדד הייחוס של הקרנות כבר מניח שחלק מהדיבידנד נוכה כמס לפני ההשקעה מחדש; זה לא אושר. קרנות אחרות על המדד לא נבדקו.",
+  "strength": "institution",
+  "dimensions": [
+    "distribution-policy",
+    "currency",
+    "foreign-withholding-domicile"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-26",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "ibi-funds",
+      "name_he": "אי.בי.אי קרנות נאמנות"
+    },
+    {
+      "id": "mor-funds",
+      "name_he": "מור קרנות נאמנות"
+    },
+    {
+      "id": "migdal-funds",
+      "name_he": "מגדל קרנות נאמנות"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1729001-1730000/P1729157-00.pdf",
+      "title": "אי.בי.אי., דוח שנתי \"אי.בי.אי. מחקה (4D)י Nasdaq 100\" (5127766), 31.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1729001-1730000/P1729977-00.pdf",
+      "title": "מור, דוח שנתי \"מור מחקה (4D)י NASDAQ 100\" (5117585), 31.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1730001-1731000/P1730711-00.pdf",
+      "title": "MTF, דוח שנתי \"MTF מחקה (Nasdaq 100 (4D\" (5134531), 31.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.2-3",
+      "locator_he": "עמודים 2 עד 3",
+      "page": 2,
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "ETF-47"
+  ]
+}

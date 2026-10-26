@@ -11,6 +11,7 @@
   "likely_to_change": "no",
   "il_finance_file": "switching-and-transfers.md",
   "checked": "2026-10-22",
+  "scope": "general",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZbYNmyK9Qa3gH~lF+jEWmc=#page=3",
@@ -18,7 +19,7 @@
       "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014 (קובץ התקנות 7407)",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "law",
+      "kind": "regulation",
       "strength": "primary",
       "locator": "p.3, s.3",
       "locator_he": "עמוד 3, סעיף 3",
@@ -31,7 +32,7 @@
       "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשפ\"ב-2022 (קובץ התקנות 10170)",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "law",
+      "kind": "regulation",
       "strength": "primary",
       "locator": "p.7, s.2",
       "locator_he": "עמוד 7, סעיף 2",

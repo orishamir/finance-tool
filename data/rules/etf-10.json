@@ -10,6 +10,7 @@
   "likely_to_change": "no",
   "il_finance_file": "etfs-and-index-funds.md",
   "checked": "2026-10-25",
+  "scope": "general",
   "sources": [
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf",
@@ -39,7 +40,8 @@
     },
     {
       "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(דוח_שנתי_של_קרן)",
-      "title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן) (Wikisource mirror)",
+      "title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016 (ויקיטקסט, מראה)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016 (ויקיטקסט, מראה)",
       "publisher": "Hebrew Wikisource",
       "publisher_he": "ויקיטקסט",
       "kind": "regulation",

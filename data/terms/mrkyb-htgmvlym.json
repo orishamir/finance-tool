@@ -2,7 +2,7 @@
   "id": "mrkyb-htgmvlym",
   "he": "מרכיב התגמולים",
   "en": null,
-  "meaning": "החלק בחשבון הפנסיה שבו נצברות ההפקדות שלכם ושל המעסיק לחיסכון, בלי הפיצויים",
+  "meaning": "החלק בחשבון בקופת גמל לקצבה, כמו קרן פנסיה, שבו נמצאים כל התשלומים חוץ מכספי הפיצויים",
   "where": [
     "statement"
   ],
@@ -18,10 +18,10 @@
     "TXP-17"
   ],
   "source": {
-    "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-    "title": "תקנון קרן פנסיה נבחרת, מור פנסיה מקיפה, version 01.06.2025 (Mor)",
+    "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+    "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ס' 23(ה) (Wikisource mirror)",
     "publisher": "see title",
-    "strength": "institution",
-    "checked": "2026-10-22"
+    "strength": "primary-mirror",
+    "checked": "2026-10-26"
   }
 }

@@ -73,6 +73,8 @@ export interface HoldingsBundle {
   tracks: HTrack[];
   fees: Partial<Record<"gemelnet" | "pensia-net", { balance: SiteValue; deposit: SiteValue }>>;
   rules: RuleRecord[];
+  /** The records those rules' cards point at (derived_from, examples) that the bundle does not ship: only chips and cards read them (review, 2026-10-26). */
+  pointed?: RuleRecord[];
   spellings: { balanceFee: string[]; depositFee: string[]; balance: string[]; direct: string[] };
 }
 

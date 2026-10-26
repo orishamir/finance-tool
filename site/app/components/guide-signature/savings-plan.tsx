@@ -7,8 +7,8 @@ import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact, factNumber, planModel } from "../../lib/guide-signature";
 import { entered as enteredValue } from "../../lib/value";
-import { Callout, ChartLegend, Marker, MarkerMark, NumberField, SegmentedControl, Stat, StatRow, Swatch, useWidth } from "../kit";
-import { Num, RulesLine } from "../provenance";
+import { Callout, ChartLegend, InputSlot, Marker, MarkerMark, NumberField, SegmentedControl, Stat, StatRow, Swatch, useWidth } from "../kit";
+import { IdText, Num, RulesLine } from "../provenance";
 import { SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
 
 const TOP = 22;
@@ -121,17 +121,16 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
             ))}
             <MarkerMark x={x(m)} y1={TOP - 10} y2={height - AXIS + 2} />
           </svg>
-          <span className="absolute text-xs text-chart-text" dir="rtl" style={{ right: 0, top: height - 16 }}>
-            {copy.plan.unit}
-          </span>
           <Marker min={0} max={last} step={1} value={m} onChange={setMonth} label={copy.plan.marker} valueText={`${m} ${copy.plan.unit}`} left={0} top={TOP - 12} width={plotW} height={height - AXIS - TOP + 14} />
         </div>
+        {/* under the month numbers, not on their line: on a phone it covered "24" and "36" (2026-10-26) */}
+        <span className="block text-xs text-chart-text -mt-1.5">{copy.plan.unit}</span>
         <p className="text-xs text-muted-foreground">{copy.common.drag}</p>
       </div>
 
       <div className="flex flex-col gap-3">
         <p className="text-sm font-medium">
-          {copy.plan.at.before} <bdi dir="ltr">{m}</bdi> {copy.plan.at.after}:
+          {copy.plan.at.before} <InputSlot chars={3}><bdi dir="ltr">{m}</bdi></InputSlot> {copy.plan.at.after}:
         </p>
         <StatRow cols={3}>
           <Stat label={copy.plan.figures.free} tone="value">{free && <Num value={free} />}</Stat>
@@ -146,12 +145,12 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
         </p>
         {lumpTerm && lumpRate && lastUnlock && (
           <p>
-            {copy.plan.alt.before} <Num value={lumpTerm} display={fmt.months(Number(lumpTerm.value))} /> ({copy.plan.alt.rate} <Num value={lumpRate} />) {copy.plan.alt.middle} <Num value={lastUnlock} />.
+            {copy.plan.alt.before}{lumpRate.own && <> {copy.plan.alt.ofBank} <bdi>{lumpRate.own}</bdi></>} {copy.plan.alt.forTerm} <Num value={lumpTerm} display={fmt.months(Number(lumpTerm.value))} /> ({copy.plan.alt.rate} <Num value={lumpRate} />) {copy.plan.alt.middle} <Num value={lastUnlock} />.
           </p>
         )}
         <p className="text-muted-foreground">{copy.common.onlyLeumi}</p>
       </div>
-      <Callout tone="caution">{copy.common.gaps.planLockPerDeposit}</Callout>
+      <Callout tone="caution"><IdText text={copy.common.gaps.planLockPerDeposit ?? ""} /></Callout>
       <RulesLine ids={data.ruleIds} />
     </div>
   );

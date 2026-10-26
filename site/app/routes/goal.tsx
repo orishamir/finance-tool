@@ -25,7 +25,7 @@ export default function GoalPage() {
   const presets = data.presets as Presets;
   return (
     <GoalsProvider presets={presets}>
-      <PageShell current="goal" data={{ rules: data.rules as never, terms: {}, dimensions: {}, today: data.today }}>
+      <PageShell current="goal" data={{ rules: data.rules as never, pointed: data.pointed as never, terms: {}, dimensions: {}, today: data.today }}>
         <Form data={data.form as FormData} presets={presets} meta={data.meta} today={data.today} />
       </PageShell>
     </GoalsProvider>

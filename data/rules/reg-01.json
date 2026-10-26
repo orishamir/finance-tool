@@ -10,6 +10,7 @@
   "likely_to_change": "no",
   "il_finance_file": "regulators-and-protection.md",
   "checked": "2026-10-22",
+  "scope": "general",
   "sources": [
     {
       "url": "https://boi.org.il/media/s5ub1z12/103.pdf",
@@ -22,7 +23,8 @@
       "locator": "p.4, s.5(א)",
       "locator_he": "עמוד 4, סעיף 5(א)",
       "page": 4,
-      "checked": "2026-10-25"
+      "quote": "ובידיו יהיו הפיקוח הכללי והביקורת על כל תאגיד בנקאי",
+      "checked": "2026-10-26"
     }
   ]
 }

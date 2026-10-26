@@ -13,16 +13,20 @@ import {
   fundListFile,
   fundRecord,
   type FundListFile,
+  openQuestionsFile,
+  type OpenQuestionEntry,
   parameterRecord,
   ruleRecord,
   seriesRecord,
   termRecord,
-  wrapperId,
+  securityRecord,
+  productId,
   wrapperRecord,
   type SeriesRecord,
   sourcesFile,
 } from "@finance-tool/schema";
 import { urlInBlock, type RuleBaseIds } from "./references.ts";
+import { checkScope } from "./scope.ts";
 
 /**
  * Collection folder → schema. A file in a folder with no schema yet is an error: schema first, then data.
@@ -33,6 +37,7 @@ const collections: Record<string, z.ZodType> = {
   parameters: parameterRecord,
   cma: cmaPeriodFile,
   "instruments/wrappers": wrapperRecord,
+  "instruments/securities": securityRecord,
   "instruments/exposures": exposureRecord,
   fees: feesSnapshot,
   funds: fundRecord,
@@ -43,6 +48,7 @@ const collections: Record<string, z.ZodType> = {
   catalog: catalogEntry,
   series: seriesRecord,
   sources: sourcesFile,
+  "open-questions.json": openQuestionsFile,
 };
 
 export interface ValidationContext {
@@ -144,14 +150,19 @@ export function validateData(ctx: ValidationContext): Problem[] {
           report(file, `variants: ${v} has no record under data/funds/ (data-schema §3.4)`);
       }
     }
-    if (collection === "instruments/wrappers" && result.success) {
+    if ((collection === "instruments/wrappers" || collection === "instruments/securities") && result.success) {
       for (const message of checkDimensionMarks(parsed.value as Record<string, unknown>, ruleDimensions, ctx.ruleBase)) report(file, message);
     }
   }
   checkInstrumentsMap(files, ctx.dataDir, ruleDimensions, report);
   checkHoldingParameter(files, ctx.dataDir, report);
   checkPinnedRules(files, ctx.dataDir, ruleRecords, report);
+  checkHomeGuideDoor(files, ctx.dataDir, report);
+  checkOpenQuestions(files, ctx, report, warn);
+  // who each rule applies to and where it may appear (D30; research/specs/2026-10-25-rules-scope/spec.md §3): scope.ts
+  const scopeCounts = checkScope(ctx, ruleRecords, report, warn);
   const emit = ctx.warn ?? ((line: string) => console.warn(line));
+  emit(`scope: ${scopeCounts.general} general, ${scopeCounts.institution} institution, ${scopeCounts.unsettled} unsettled`);
   for (const [category, ids] of warnings) {
     emit(`warning: ${category}: ${ids.length} (${ids.slice(0, 6).join(", ")}${ids.length > 6 ? ", ..." : ""})`);
   }
@@ -167,6 +178,7 @@ export interface RuleLike {
   il_finance_file?: string;
   sources?: {
     url: string;
+    title: string;
     strength: string;
     kind: string;
     mirror_host?: string;
@@ -178,6 +190,10 @@ export interface RuleLike {
   }[];
   sources_missing_reason?: string;
   derived_from?: string[];
+  examples?: string[];
+  scope?: string;
+  scope_institutions?: { id: string; name_he: string }[];
+  scope_settle?: string;
 }
 
 const STRENGTH_RANK: Record<string, number> = { primary: 3, "primary-mirror": 2, institution: 1, secondary: 0 };
@@ -257,6 +273,9 @@ function checkRuleSources(rule: RuleLike, ctx: ValidationContext, all: Map<strin
   for (const id of rule.derived_from ?? []) {
     if (!all.has(id)) out.push(`derived_from: ${id} has no record under data/rules/`);
   }
+  for (const id of rule.examples ?? []) {
+    if (!all.has(id)) out.push(`examples: ${id} has no record under data/rules/`);
+  }
   if (rule.recheck_date && rule.recheck_date < today) warn("recheck_date has passed", rule.id);
   const years = taxYears(rule.figures);
   if (years.length > 0 && Math.max(...years) < Number(today.slice(0, 4))) warn("figures are behind the current tax year", rule.id);
@@ -286,6 +305,59 @@ function checkPinnedRules(files: string[], dataDir: string, all: Map<string, Rul
         const figures = (all.get(id) as { figures?: Record<string, unknown> } | undefined)?.figures ?? {};
         if (!(figure in figures)) report(file, `pinned-rules: the answer slot {${id}:${figure}} names a figure ${id} does not have (${Object.keys(figures).join(",") || "none"})`);
       }
+    }
+  }
+}
+
+/** P-10 (`data/parameters/home-guide-door.json`): every product id it names has a record under data/instruments/wrappers/ or securities/, once. */
+function checkHomeGuideDoor(files: string[], dataDir: string, report: (file: string, message: string) => void) {
+  const at = (f: string) => relative(dataDir, f).replace(/\\/g, "/");
+  const file = files.find((f) => at(f) === "parameters/home-guide-door.json");
+  if (!file) return;
+  const rec = parseJson(readFileSync(file, "utf8")).value as { wrappers?: unknown } | undefined;
+  if (!Array.isArray(rec?.wrappers) || rec.wrappers.length === 0) return report(file, "home-guide-door: `wrappers` must be a non-empty list of wrapper ids");
+  const known = new Set(files.filter((f) => (at(f).startsWith("instruments/wrappers/") || at(f).startsWith("instruments/securities/")) && f.endsWith(".json")).map((f) => (parseJson(readFileSync(f, "utf8")).value as { id?: string } | undefined)?.id));
+  const seen = new Set<string>();
+  for (const id of rec.wrappers as string[]) {
+    if (!known.has(id)) report(file, `home-guide-door: ${id} has no record under data/instruments/wrappers/ or securities/`);
+    if (seen.has(id)) report(file, `home-guide-door: ${id} is listed twice`);
+    seen.add(id);
+  }
+}
+
+/**
+ * data-schema §3.15 (2026-10-26): `data/open-questions.json` against the rule base and the guide records.
+ * Warns when the file is behind the markdown (an id missing or extra, or a closure the file does not have, or the other way);
+ * fails when a guide record lists a question the file has as closed (`open_questions`, `blocked_by`, a `blocked:` mark).
+ */
+function checkOpenQuestions(files: string[], ctx: ValidationContext, report: (file: string, message: string) => void, warn: (category: string, id: string) => void) {
+  const file = files.find((f) => relative(ctx.dataDir, f) === "open-questions.json");
+  if (!file) return;
+  const list = parseJson(readFileSync(file, "utf8")).value as OpenQuestionEntry[] | undefined;
+  if (!Array.isArray(list)) return;
+  const byId = new Map(list.map((q) => [q.id, q]));
+  const behind = "data/open-questions.json is behind the rule base (npm run gen:open-questions -w @finance-tool/pipeline)";
+  if (ctx.ruleBase.questions) {
+    const md = new Map(ctx.ruleBase.questions.map((q) => [q.id, q]));
+    for (const q of ctx.ruleBase.questions) {
+      const f = byId.get(q.id);
+      if (!f) warn(behind, `${q.id} missing`);
+      else if ((q.closedOn !== null) !== (f.status === "closed") || (q.closedOn !== null && q.closedOn !== f.closed_on))
+        warn(behind, `${q.id} ${q.closedOn ? `closed ${q.closedOn}` : "not closed"} in the markdown`);
+    }
+    for (const q of list) if (!md.has(q.id)) warn(behind, `${q.id} not in the markdown`);
+  }
+  const closed = (code: string) => byId.get(code.replace("-OQ", " OQ"))?.status === "closed";
+  for (const f of files) {
+    if (!relative(ctx.dataDir, f).split(/[\\/]/).join("/").startsWith("instruments/") || !f.endsWith(".json")) continue;
+    const rec = parseJson(readFileSync(f, "utf8")).value;
+    for (const key of ["open_questions", "blocked_by"]) {
+      for (const id of collectStrings(rec, key)) if (closed(id)) report(f, `${key}: ${id} is closed in data/open-questions.json; state the answer with its rule instead`);
+    }
+    const marks = ((rec as { dimensions?: unknown } | undefined)?.dimensions ?? {}) as Record<string, unknown>;
+    for (const [dim, mark] of Object.entries(marks)) {
+      if (typeof mark === "string" && mark.startsWith("blocked:") && closed(mark.slice("blocked:".length)))
+        report(f, `dimensions.${dim}: ${mark.slice("blocked:".length)} is closed in data/open-questions.json; unblock it`);
     }
   }
 }
@@ -357,7 +429,7 @@ function checkInstrumentsMap(files: string[], dataDir: string, ruleIds: Map<stri
     if (rec?.method_id !== "P-05" || typeof rec.instruments !== "object" || rec.instruments === null) continue;
     for (const [wrapper, spec] of Object.entries(rec.instruments as Record<string, Record<string, unknown>>)) {
       const at = `instruments.${wrapper}`;
-      if (!wrapperId.safeParse(wrapper).success) report(file, `${at}: ${wrapper} is not a wrapper id`);
+      if (!productId.safeParse(wrapper).success) report(file, `${at}: ${wrapper} is not a wrapper or security id`);
       const check = (key: string, known: boolean, where: string) => {
         const id = spec?.[key];
         if (typeof id === "string" && !known) report(file, `${at}.${key}: "${id}" ${where}`);
@@ -446,23 +518,30 @@ function readRuleDimensions(files: string[], dataDir: string): Map<string, strin
  */
 function checkDimensionMarks(record: Record<string, unknown>, ruleDimensions: Map<string, string[]>, ruleBase: RuleBaseIds): string[] {
   const out: string[] = [];
-  const cited = new Set(collectStrings(record, "rule_ids"));
-  const union = new Set<string>();
-  for (const id of cited) {
-    const dims = ruleDimensions.get(id);
-    if (!dims) {
-      out.push(`rule ${id} is cited but has no record under data/rules/`);
-      continue;
+  // a security's `held_in` rules (where it is held) can cover a dimension, but a dimension only they carry need not be marked:
+  // the wrapper's own dimensions are that wrapper's record's
+  const { held_in: _heldIn, ...own } = record;
+  const dimsOf = (ids: Iterable<string>) => {
+    const union = new Set<string>();
+    for (const id of ids) {
+      const dims = ruleDimensions.get(id);
+      if (!dims) {
+        out.push(`rule ${id} is cited but has no record under data/rules/`);
+        continue;
+      }
+      dims.forEach((d) => union.add(d));
     }
-    dims.forEach((d) => union.add(d));
-  }
+    return union;
+  };
+  const ownUnion = dimsOf(new Set(collectStrings(own, "rule_ids")));
+  const heldUnion = _heldIn ? dimsOf(new Set(collectStrings(_heldIn, "rule_ids"))) : new Set<string>();
   const marks = (record.dimensions ?? {}) as Record<string, string>;
   for (const [dim, mark] of Object.entries(marks)) {
-    if (mark === "covered" && !union.has(dim)) out.push(`dimensions.${dim}: marked covered, but no cited rule carries it (§4 item 9)`);
+    if (mark === "covered" && !ownUnion.has(dim) && !heldUnion.has(dim)) out.push(`dimensions.${dim}: marked covered, but no cited rule carries it (§4 item 9)`);
     if (mark.startsWith("blocked:") && !ruleBase.openQuestions.has(mark.slice("blocked:".length)))
       out.push(`dimensions.${dim}: ${mark.slice("blocked:".length)} is not an open question in il-finance`);
   }
-  for (const dim of union) {
+  for (const dim of ownUnion) {
     if (!(dim in marks)) out.push(`dimensions.${dim}: a cited rule carries it, but it is not marked (§4 item 9)`);
   }
   return out;

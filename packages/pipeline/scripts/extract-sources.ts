@@ -1,11 +1,15 @@
 // Extracts the `sources` of every rule record from the rule base markdown (`- Source:` line under `### <ID>`),
-// plus `derived_from` and `sources_missing_reason`. Re-runnable: it strips its own keys from a record and writes them again,
+// plus `derived_from` (and, for a general rule, `examples`: the companies' terms its line names, review 2026-10-26) and
+// `sources_missing_reason`, and, since 2026-10-26, who it applies to from the `- Scope:` line:
+// `scope`, `scope_institutions` and `scope_settle` (D30; research/specs/2026-10-25-rules-scope/spec.md §3), with the company names
+// resolved against data/sources/institutions.json. Re-runnable: it strips its own keys from a record and writes them again,
 // never touches any other field and never touches the markdown. Spec: research/knowledge/2026-10-24-synthesis.md 3.2,
 // docs/data-schema.md 3.1. Run: `npm run extract:sources -w @finance-tool/pipeline` (add `--dry` to only print the report).
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { readRuleBaseIds, rewriteRawWikisource, type RuleBlock } from "../src/references.ts";
+import { readRegistry, scopeFromLine, scopeLineOf } from "../src/scope.ts";
 
 export type SourceKind = "law" | "regulation" | "circular" | "regulator_page" | "official_pdf" | "exchange_rules" | "institution_doc" | "article" | "dataset" | "form" | "other";
 export type SourceStrength = "primary" | "primary-mirror" | "institution" | "secondary";
@@ -42,6 +46,8 @@ export interface DocumentRow {
   publisher_he?: string;
   kind?: SourceKind;
   official_url?: string | null;
+  /** Only links on these hosts take the row (2026-10-26): a row that names a copy's host labels that copy alone. */
+  hosts?: string[];
 }
 
 export interface LineContext {
@@ -50,6 +56,9 @@ export interface LineContext {
   ruleChecked: string;
   defs: Record<string, string>;
   knownIds: Set<string>;
+  /** The rule's own scope and every record's, from the Scope lines: a general rule's pointer to a rule that is not general is an example. */
+  ruleScope?: string;
+  scopeOf?: ReadonlyMap<string, string>;
   publishers?: Record<string, PublisherRow>;
   documents?: DocumentRow[];
 }
@@ -57,6 +66,8 @@ export interface LineContext {
 export interface LineResult {
   sources: ExtractedSource[];
   derived_from: string[];
+  /** A general rule's pointers to records that are not general (companies' terms named beside the general source): examples, never derivations. */
+  examples: string[];
   /** The raw line text, for `sources_missing_reason` when no entry has a URL. */
   raw: string;
   /** Link-less entries and unresolved reference links that were skipped. */
@@ -285,7 +296,8 @@ function kindOf(url: string, host: string, title: string, locator: string, stren
   if (NEWS_HOSTS.includes(host)) return "article";
   if (host === "data.gov.il") return "dataset";
   if (/circular|חוזר/i.test(title)) return "circular";
-  if (publisherKind) return publisherKind;
+  // a gazette host prints laws and regulations alike: its "law" default gives way to a title that names regulations (2026-10-26)
+  if (publisherKind && !(publisherKind === "law" && /תקנות|\bRegulations?\b/.test(title))) return publisherKind;
   if (/תקנות|\bRegulations?\b/.test(title)) return "regulation";
   if (/\bחוק\b|\bLaw\b|Ordinance|פקודת/.test(title)) return "law";
   if (OFFICIAL(host) || host.endsWith(".gov") || host === "knesset.gov.il" || host.endsWith(".knesset.gov.il") || host === "btl.gov.il" || host.endsWith("isa.gov.il")) return isPdf(url) ? "official_pdf" : "regulator_page";
@@ -301,7 +313,9 @@ function rankOf(s: ExtractedSource, host: string): number {
   if (host === "nevo.co.il") return 3;
   if (host === "fs.knesset.gov.il" || host === "knesset.gov.il") return 1;
   if (s.kind === "article" || s.strength === "secondary") return 5;
-  if (OFFICIAL(host) || host.endsWith(".gov") || host === "btl.gov.il" || host.endsWith("isa.gov.il") || s.kind === "dataset") return 0;
+  // a company's own data page (TASE's index pages, labelled a dataset by host) is that company's document, not a regulator's: it ranks
+  // with the institutions, after the exchange's guidelines (scope settling requests §7, ETF-44 and ETF-45; 2026-10-26)
+  if (OFFICIAL(host) || host.endsWith(".gov") || host === "btl.gov.il" || host.endsWith("isa.gov.il") || (s.kind === "dataset" && s.strength !== "institution")) return 0;
   return 4;
 }
 
@@ -362,6 +376,7 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
     const title = link.title.replace(/\s+/g, " ").trim() || host;
     // the longest matching token wins across the table (tokens nest: "Law (Wikisource mirror)" sits inside "National Insurance Law (Wikisource mirror)"); a tie keeps the table's order
     const doc = (ctx.documents ?? [])
+      .filter((d) => !d.hosts || d.hosts.includes(host))
       .flatMap((d) => d.match.filter(Boolean).map((tok) => ({ d, tok })))
       .filter((c) => title.toLowerCase().includes(c.tok.toLowerCase()))
       .sort((a, b) => b.tok.length - a.tok.length)[0]?.d;
@@ -378,31 +393,55 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
     const publisherHe = doc?.publisher_he ?? pub?.publisher_he;
     if (publisherHe) entry.publisher_he = publisherHe;
     if (mirrorHost) entry.mirror_host = mirrorHost;
-    if (locator) {
-      entry.locator = locator;
-      const he = toHebrewLocator(locator);
-      if (he) entry.locator_he = he;
-      const page = firstPage(locator, url);
-      if (page) entry.page = page;
-      if (host === "he.wikisource.org" && /\/wiki\//.test(url)) {
-        const anchor = wikisourceAnchor(locator);
-        if (anchor) entry.anchor = anchor;
+    const locate = (e: ExtractedSource, loc: string, quoteText: string) => {
+      if (loc) {
+        e.locator = loc;
+        const he = toHebrewLocator(loc);
+        if (he) e.locator_he = he;
+        const page = firstPage(loc, url);
+        if (page) e.page = page;
+        if (host === "he.wikisource.org" && /\/wiki\//.test(url)) {
+          const anchor = wikisourceAnchor(loc);
+          if (anchor) e.anchor = anchor;
+        }
       }
-    }
-    const quote = findQuote(rest.slice(0, rest.includes("·") ? rest.indexOf("·") : rest.length));
-    if (quote) entry.quote = quote;
+      const quote = findQuote(quoteText);
+      if (quote) e.quote = quote;
+    };
+    const body = rest.slice(0, rest.includes("·") ? rest.indexOf("·") : rest.length);
+    // One link may cite several passages of its document, each from its own page ("p.8, s.4.1 "…"; p.9, s.4.2.3 "…"; p.11,
+    // s.4.2.8 "…""). The locator above runs up to the first quote mark, so it covers the passages up to the first quoted one;
+    // each passage after that becomes a source of its own, with its locator, page and quote, so the rule card shows every
+    // passage the rule rests on (TXF-28's two exempting passages were dropped; review, 2026-10-26).
+    const passages = body.split(/;\s*(?=pp?\.\s*\d)/);
+    const firstQuoted = passages.findIndex((x) => /["“]/.test(x.replace(/(?<=[\u05D0-\u05EA])"(?=[\u05D0-\u05EA])/g, "")));
+    const covered = firstQuoted < 0 ? passages : passages.slice(0, firstQuoted + 1);
+    locate(entry, locator, covered.join("; "));
     if (note && !/^\(\s*(nevo |wikisource )?mirror\s*\)$/i.test(note)) {
       if (note.length <= 120) entry.qualifier = note;
       else entry.note = note;
     }
     sources.push(orderKeys(entry));
+    for (const passage of passages.slice(covered.length)) {
+      const loc = cleanLocator(passage);
+      if (!loc) continue;
+      const more: ExtractedSource = { ...entry };
+      for (const k of ["locator", "locator_he", "page", "anchor", "quote"] as const) delete more[k];
+      locate(more, loc, passage);
+      sources.push(orderKeys(more));
+    }
   });
 
   const outside = links.reduceRight((acc, l) => acc.slice(0, l.start) + " " + acc.slice(l.end), raw);
 
-  // derived_from: bare rule ids outside the links.
+  // derived_from: bare rule ids outside the links. The line cannot tell a derivation from a pointer ("see IRA-21", "Site terms: CAT-43"),
+  // but a general rule never rests on a company's term (D30): a pointer of a general rule to a record that is not general is an example
+  // of how a company applies it, shown under "לדוגמה", never a "נגזר מ־" chip (review, 2026-10-26).
   const ids = [...outside.matchAll(/\b[A-Z][A-Z0-9]*-\d+[A-Z]?\b/g)].map((m) => m[0]);
-  const derived = [...new Set(ids)].filter((id) => id !== ctx.ruleId && ctx.knownIds.has(id));
+  const pointed = [...new Set(ids)].filter((id) => id !== ctx.ruleId && ctx.knownIds.has(id));
+  const isExample = (id: string) => ctx.ruleScope === "general" && ctx.scopeOf?.has(id) === true && ctx.scopeOf.get(id) !== "general";
+  const derived = pointed.filter((id) => !isExample(id));
+  const examples = pointed.filter(isExample);
 
   // Dedupe (same url and locator), then sort by preference.
   const seen = new Set<string>();
@@ -421,7 +460,7 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
     if (a.checked !== b.checked) return a.checked < b.checked ? 1 : -1;
     return order.get(a)! - order.get(b)!;
   });
-  return { sources: unique, derived_from: derived, raw, skipped };
+  return { sources: unique, derived_from: derived, examples, raw, skipped };
 }
 
 // ---------------------------------------------------------------- records
@@ -436,12 +475,12 @@ export function sourceLineOf(body: string): string | undefined {
   return line;
 }
 
-const OWN_KEYS = ["sources", "sources_missing_reason", "derived_from"];
+const OWN_KEYS = ["scope", "scope_institutions", "scope_settle", "sources", "sources_missing_reason", "derived_from", "examples"];
 
 /** Removes the keys this script wrote from the text of a record (they are always last, at two-space indent), then appends the new ones. */
 export function writeKeys(text: string, add: Record<string, unknown>): string {
   let body = text;
-  const cut = [...body.matchAll(/,\n  "(sources|sources_missing_reason|derived_from)":/g)].map((m) => m.index!);
+  const cut = [...body.matchAll(/,\n  "(scope|scope_institutions|scope_settle|sources|sources_missing_reason|derived_from|examples)":/g)].map((m) => m.index!);
   if (cut.length > 0) body = body.slice(0, Math.min(...cut)) + body.slice(body.lastIndexOf("\n}"));
   const close = body.lastIndexOf("}");
   const head = body.slice(0, close).replace(/\s+$/, "");
@@ -482,12 +521,23 @@ function main() {
   const documentsPath = join(root, "data/sources/documents.json");
   const publishers = existsSync(publishersPath) ? (JSON.parse(readFileSync(publishersPath, "utf8")) as Record<string, PublisherRow>) : undefined;
   const documents = existsSync(documentsPath) ? (JSON.parse(readFileSync(documentsPath, "utf8")) as DocumentRow[]) : undefined;
+  const registry = readRegistry(join(root, "data"));
+  const scopeProblems: string[] = [];
+  const scopeCounts: Record<string, number> = {};
   const files = readdirSync(rulesDir).filter((f) => f.endsWith(".json")).sort();
   const known = new Set(files.map((f) => (JSON.parse(readFileSync(join(rulesDir, f), "utf8")) as { id: string }).id));
+  // every record's scope from its Scope line, so a general rule's pointer to a company's term becomes an example (review, 2026-10-26)
+  const scopeOf = new Map<string, string>();
+  for (const id of known) {
+    const b = blocks.get(id);
+    const l = b ? scopeLineOf(b.body) : undefined;
+    const sc = l !== undefined ? scopeFromLine(l, id, registry).fields?.scope : undefined;
+    if (sc) scopeOf.set(id, sc);
+  }
 
   const rep: Report = {
     perFile: new Map(),
-    totals: { rules: 0, withSources: 0, entries: 0, locator: 0, locator_he: 0, quote: 0, anchor: 0, page: 0, title_he: 0, publisher_he: 0, derived: 0 },
+    totals: { rules: 0, withSources: 0, entries: 0, locator: 0, locator_he: 0, quote: 0, anchor: 0, page: 0, title_he: 0, publisher_he: 0, derived: 0, examples: 0 },
     strengths: {},
     realigned: [],
     kinds: {},
@@ -511,12 +561,25 @@ function main() {
     pf.rules++;
     const line = block ? sourceLineOf(block.body) : undefined;
     const add: Record<string, unknown> = {};
+    // who it applies to, first among this script's keys (D30): a record whose Scope line is missing or does not resolve is reported and left without
+    const scopeLine = block ? scopeLineOf(block.body) : undefined;
+    if (scopeLine === undefined) scopeProblems.push(`${rec.id}: ${block ? "no Scope line in its block" : "no block in the rule base"}`);
+    else {
+      const { fields, problems } = scopeFromLine(scopeLine, rec.id, registry);
+      problems.forEach((p) => scopeProblems.push(`${rec.id}: ${p}`));
+      if (fields) {
+        add.scope = fields.scope;
+        if (fields.scope_institutions) add.scope_institutions = fields.scope_institutions;
+        if (fields.scope_settle) add.scope_settle = fields.scope_settle;
+        scopeCounts[fields.scope] = (scopeCounts[fields.scope] ?? 0) + 1;
+      }
+    }
     if (line === undefined) {
       add.sources_missing_reason = block ? "no Source line in the rule base block" : "no block for this rule in the rule base";
       rep.unresolved.push({ id: rec.id, reason: String(add.sources_missing_reason) });
       pf.missing++;
     } else {
-      const res = extractFromLine(line, { ruleId: rec.id, ruleStrength: rec.strength, ruleChecked: rec.checked, defs: block!.defs, knownIds: known, publishers, documents });
+      const res = extractFromLine(line, { ruleId: rec.id, ruleStrength: rec.strength, ruleChecked: rec.checked, defs: block!.defs, knownIds: known, ruleScope: scopeOf.get(rec.id), scopeOf, publishers, documents });
       res.skipped.forEach((what) => rep.skipped.push({ id: rec.id, what }));
       if (res.sources.length > 0) {
         add.sources = res.sources;
@@ -547,6 +610,10 @@ function main() {
         add.derived_from = res.derived_from;
         rep.totals.derived!++;
       }
+      if (res.examples.length > 0) {
+        add.examples = res.examples;
+        rep.totals.examples!++;
+      }
     }
     let out = writeKeys(text, add);
     // The record's strength follows its best source for the primary/mirror pair only (lead, 2026-10-24): a rule marked
@@ -565,6 +632,9 @@ function main() {
 
   const md = renderReport(rep, { publishers: !!publishers, documents: !!documents });
   console.log(md);
+  console.log(`Scope: ${Object.entries(scopeCounts).map(([k, v]) => `${k} ${v}`).join(", ")}; problems ${scopeProblems.length}`);
+  for (const p of scopeProblems) console.error(`scope: ${p}`);
+  if (scopeProblems.length > 0) process.exitCode = 1;
   if (!dry) writeFileSync(join(root, "research/knowledge/2026-10-24-extraction-report.md"), md);
 }
 
@@ -578,7 +648,7 @@ function renderReport(r: Report, tables: { publishers: boolean; documents: boole
   L.push(`- Rules: ${t.rules}; with sources: ${t.withSources}; unresolved (sources_missing_reason): ${r.unresolved.length}`);
   L.push(`- Entries: ${t.entries}; with locator ${t.locator}, locator_he ${t.locator_he}, quote ${t.quote}, anchor ${t.anchor}, page ${t.page}`);
   L.push(`- Entries with title_he: ${t.title_he}; with publisher_he: ${t.publisher_he}; rules whose first source lacks publisher_he: ${r.noPublisherHe.length}`);
-  L.push(`- Rules with derived_from: ${t.derived}`);
+  L.push(`- Rules with derived_from: ${t.derived}; general rules with examples (companies' terms they point to): ${t.examples}`);
   L.push(`- Strengths: ${Object.entries(r.strengths).map(([k, v]) => `${k} ${v}`).join(", ")}`);
   L.push(`- Rule strength realigned to its best source (primary/mirror pair only): ${r.realigned.length}${r.realigned.length ? ": " + r.realigned.join("; ") : ""}`);
   L.push(`- Kinds: ${Object.entries(r.kinds).map(([k, v]) => `${k} ${v}`).join(", ")}`, "");

@@ -11,6 +11,13 @@
   "likely_to_change": "no",
   "il_finance_file": "keren-hishtalmut.md",
   "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "altshuler-shaham",
+      "name_he": "אלטשולר שחם"
+    }
+  ],
   "sources": [
     {
       "url": "https://www.as-invest.co.il/media/10040/בקשה-למשיכת-כספים-מקרן-השתלמות.pdf",

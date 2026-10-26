@@ -162,7 +162,7 @@ Added 2026-10-24 (dilemma-first home), after the founder asked that the part of 
 ```ts
 interface QuickGoalCardProps {
   bounds: { horizon: Range; monthly: Range }; // the loader's form.horizon and form.monthly
-  mode: "current" | "new";                    // "new" adds a second goal first (the closed "שאלה נוספת")
+  mode: "current" | "new";                    // "new" adds a second goal first (the closed "מטרה נוספת", until 2026-10-26 "שאלה נוספת")
   className?: string;
 }
 ```
@@ -396,6 +396,8 @@ What a managing company offers, decoded (flow 5). The default view shows what th
 - **A catalogue entry whose fund number has left the regulator's data:** the row shows the name with "לא נמצא בנתוני הרשות" in `muted-foreground` and no link (data-schema §4 item 10 reports it to the founder).
 
 **Amended 2026-10-24 (UX audit).** ~~Side cards beside the list on PC~~: the product-type and paste cards are a two-column row above the track list from `lg`, and the right-hand aside is gone at every width; classification and holdings are one cell (holdings as a muted second line), so the table has five columns. A side card's tariff link reads "לתעריפון (PDF)" with the format isolated at the end; "נכון ל־{date}" keeps its maqaf.
+
+**Amended 2026-10-26.** The product-type card ("סוג המוצר") shows only when the page holds one product type: one group of tracks and no funds or brokerage account. It used to show the first group's type, so a company running seven types (Altshuler Shaham, Meitav, Harel and 19 more) read "קופת גמל להשקעה". Each group heading keeps its "מה זה" link. The paste card ("לא מצאתם שם?") moved to the end of the page at every width, half the width on PC (founder, 2026-10-26: above the list it was in the way).
 
 
 ---
@@ -734,6 +736,8 @@ Two inputs and the person's own offer (the balance can arrive prefilled from the
 ---
 
 ## 10. Screen 8: saved-goal strip and fit mark
+
+*Amended 2026-10-26 (D34): the company and track pages no longer show the strip or the fit mark; the company page's last column shows the track's stock exposure (F-87) instead. Goal UI moves to the goals page; the workbench keeps its own for now (roadmap "Not final").*
 
 ### Overview
 

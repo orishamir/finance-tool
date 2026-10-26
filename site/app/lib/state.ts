@@ -672,6 +672,13 @@ export function saveCustomIndex(c: CustomIndex): void {
   });
 }
 
+/** Renames a custom index; its id stays (it is in the address). An empty name changes nothing. */
+export function renameCustomIndex(id: string, name: string): void {
+  const next = name.trim();
+  if (!next) return;
+  updateState((s) => ({ ...s, customIndices: (s.customIndices ?? []).map((x) => (x.id === id ? { ...x, name: next } : x)) }));
+}
+
 export function removeCustomIndex(id: string): void {
   updateState((s) => {
     const next = (s.customIndices ?? []).filter((x) => x.id !== id);
@@ -692,7 +699,7 @@ export function setCurrentBroker(id: string | null): void {
 
 export function useInvestState() {
   const snapshot = useStateStore();
-  return { ready: snapshot.ready, status: snapshot.status, customIndices: snapshot.state.customIndices ?? [], broker: snapshot.state.broker ?? null, saved: snapshot.saved, add: saveCustomIndex, remove: removeCustomIndex, setBroker: setCurrentBroker };
+  return { ready: snapshot.ready, status: snapshot.status, customIndices: snapshot.state.customIndices ?? [], broker: snapshot.state.broker ?? null, saved: snapshot.saved, add: saveCustomIndex, rename: renameCustomIndex, remove: removeCustomIndex, setBroker: setCurrentBroker };
 }
 
 // ---------------------------------------------------------------- saved comparisons

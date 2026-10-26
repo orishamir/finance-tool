@@ -15,6 +15,7 @@
   "recheck_date": "2027-03-31",
   "il_finance_file": "tax-insurance-and-amendment-190.md",
   "checked": "2026-10-25",
+  "scope": "general",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
@@ -24,9 +25,9 @@
       "publisher_he": "רשות המסים",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.21, s.3(ה5)",
-      "locator_he": "עמוד 21, סעיף 3(ה5)",
-      "page": 21,
+      "locator": "p.22, s.3(ה5)",
+      "locator_he": "עמוד 22, סעיף 3(ה5)",
+      "page": 22,
       "quote": "ואולם רווחים שקיבל כאמור בסכום הפרשי הצמדה שחושבו על תשלומים ששולמו לתכנית החיסכון, יראו אותם כהכנסה מהפרשי הצמדה",
       "checked": "2026-10-25"
     },

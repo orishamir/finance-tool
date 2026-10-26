@@ -1,5 +1,6 @@
 // Choosing one of a few options (design-spec 1.3): a segmented control, or a row of chips.
 import { useRef, type KeyboardEvent } from "react";
+import { Plus } from "lucide-react";
 import { IconCheck } from "../icons";
 import { cx } from "./cx";
 
@@ -44,7 +45,7 @@ export function SegmentedControl<T extends string>({ label, options, value, onCh
 }
 
 /** Four or more options, or longer labels: a row of chips, one chosen at a time; scrolls sideways on a phone and wraps from md (or wraps always with `wrap`). A chip never submits. `value` may be null (nothing chosen). */
-export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ariaLabel, bleed = "-mx-gutter px-gutter", wrap }: { ids: readonly T[]; labels: Record<string, string>; value: T | null; onChange: (id: T) => void; ariaLabel: string; /** Wrap into rows on a phone too, instead of scrolling sideways (the goal form's preset row, scenario fix 2026-10-24). */ wrap?: boolean; /** The phone bleed to the edge of whatever holds the row (a card pads 16px, the page pads its gutter). */ bleed?: string }) {
+export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ariaLabel, bleed = "-mx-gutter px-gutter", wrap, other }: { ids: readonly T[]; labels: Record<string, string>; value: T | null; onChange: (id: T) => void; ariaLabel: string; /** Wrap into rows on a phone too, instead of scrolling sideways (the goal form's preset row, scenario fix 2026-10-24). */ wrap?: boolean; /** The phone bleed to the edge of whatever holds the row (a card pads 16px, the page pads its gutter). */ bleed?: string; /** "אחר": the last pill, the kit's `OtherChip`; the page opens its own field under the row while `open`, and no preset is chosen then (2026-10-26). */ other?: { label: string; open: boolean; onToggle: () => void } }) {
   return (
     <div role="radiogroup" aria-label={ariaLabel} className={wrap ? "flex flex-wrap gap-2" : cx(bleed, "md:mx-0 md:px-0 flex gap-2 overflow-x-auto md:flex-wrap md:overflow-visible pb-1 scrollbar-none")}>
       {ids.map((id) => (
@@ -52,6 +53,16 @@ export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ar
           {labels[id]}
         </button>
       ))}
+      {other && <OtherChip label={other.label} expanded={other.open} onClick={other.onToggle} />}
     </div>
+  );
+}
+
+/** The pill that opens the person's own value: "אחר" after a row of choices, or the add pill closing a `ChipList`. Dashed, no fill, a plus; tinted while what it opens is open (2026-10-26: one look for "אחר" on every page). */
+export function OtherChip({ label, expanded, onClick }: { label: string; expanded?: boolean; onClick: () => void }) {
+  return (
+    <button type="button" aria-expanded={expanded} onClick={onClick} className="sec-chip-add gap-1.5 shrink-0">
+      <Plus size={16} strokeWidth={1.75} aria-hidden /> {label}
+    </button>
   );
 }

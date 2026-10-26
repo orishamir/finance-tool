@@ -10,12 +10,14 @@ import {
   exposureRecord,
   fundListFile,
   fundRecord,
+  openQuestionsFile,
   parameterRecord,
   ruleRecord,
   seriesRecord,
   termRecord,
   valueObject,
   wrapperRecord,
+  securityRecord,
 } from "../src/index.ts";
 
 const out = fileURLToPath(new URL("../json/", import.meta.url));
@@ -27,6 +29,7 @@ const schemas = {
   "cma-period": cmaPeriodFile,
   "fund-list": fundListFile,
   wrapper: wrapperRecord,
+  security: securityRecord,
   exposure: exposureRecord,
   fund: fundRecord,
   "deposit-terms": depositTerms,
@@ -34,6 +37,7 @@ const schemas = {
   term: termRecord,
   dimension: dimensionRecord,
   series: seriesRecord,
+  "open-questions": openQuestionsFile,
 };
 for (const [name, schema] of Object.entries(schemas)) {
   writeFileSync(`${out}${name}.schema.json`, JSON.stringify(z.toJSONSchema(schema, { unrepresentable: "any" }), null, 2) + "\n");

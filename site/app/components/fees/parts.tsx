@@ -3,10 +3,10 @@
 import { Link } from "react-router";
 import { r3fees } from "../../copy";
 import { headlineGap, type CapView, type LineView, type NoRefReason, type ReferenceView, type SubjectView } from "../../lib/fees";
-import type { SiteValue } from "../../lib/value";
+import { anyWeak, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconAlert, IconExternal, IconLock } from "../icons";
-import { LeadTail, Num, NumberLegend, RuleRef, StateTag, StrengthLabel } from "../provenance";
+import { IdRef, LeadTail, Num, NumberLegend, RuleRef, StateTag, StrengthLabel } from "../provenance";
 import { Callout, Card, cx, Sentence, Tag } from "../kit";
 import { IconNotWorth, IconPhone, IconSwap, IconUnevaluated } from "./icons";
 
@@ -108,7 +108,7 @@ export function FeeHeadline({ product, total, withFees, withoutFees, years, preT
   return (
     <header className="flex flex-col gap-3">
       <h1 className="text-2xl lg:text-3xl font-semibold">{r3fees.title}</h1>
-      <NumberLegend />
+      <NumberLegend institution={anyWeak([total, withFees, withoutFees])} />
       {/* the one plain sentence first (audit 2026-10-24, A18): what bringing the fee to the average is worth, from the figure of the "אם יורידו ל־" field */}
       {gap && (
         <p className="text-lg font-medium">
@@ -362,8 +362,7 @@ export function CapLine({ cap }: { cap: CapView }) {
       <p className="text-sm text-muted-foreground flex items-center gap-2">
         <IconLock size={16} className="text-blocked shrink-0" />
         <span>
-          {c.open}
-          <bdi dir="ltr">{cap.code}</bdi>
+          {c.open} <IdRef id={cap.code} />
         </span>
       </p>
     );

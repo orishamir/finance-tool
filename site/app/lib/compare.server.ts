@@ -1,19 +1,24 @@
 // The data the browser needs for every comparison (flows 12 to 16), built once at build time and served as
 // /compare-bundle.json: the wrapper records, their instrument terms (the same ones the guide pages use), the
 // parameters, the rule records any run may read, the tier-2 list and the checklist rows. Server-only.
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import type { DepositTerms, FeesSnapshot, ParameterRecord, RuleRecord, ValueObject, WrapperId, WrapperRecord } from "@finance-tool/schema";
-import { buildTariff as engineTariff, type InstrumentTerms, type WorkbenchInput } from "@finance-tool/engine";
-import { loadChecklistRows, loadCma, loadCmaFees, loadFees, loadNotCovered, loadParameters, loadRules, loadWrappers, root, today } from "./data.server";
+import type { DepositTerms, FeesSnapshot, ParameterRecord, RuleRecord, ValueObject, ProductId, ProductRecord } from "@finance-tool/schema";
+import { buildTariff as engineTariff, memberKindOf, type InstrumentTerms, type WorkbenchInput } from "@finance-tool/engine";
+import { loadChecklistRows, loadCma, loadCmaFees, loadFees, loadNotCovered, loadParameters, loadRules, loadProducts, pointedRecords, root, today } from "./data.server";
 import { buildInstrumentTerms, loadDepositTerms, loadExposures, loadFunds, regulatorAverageFees } from "./instruments.server";
 import { evaluate, representativeFeeValue, type BundleDataFile, type ProviderTariff, type CompareBundle, type ExposureEntry, type Family, type HoldingTerms, type IndexFundTerms, type RunGoal, type Tier2Row, type WrapperEntry } from "./compare";
 import type { FitTableData } from "./fit";
-import { computed, type SiteValue } from "./value";
-import { BROKERAGE, instrumentClassOf, providersOf } from "./providers";
-import { latestSnapshots } from "./providers.server";
+import { computed, ownBy, ownEach, type SiteValue } from "./value";
+import { publisherHe } from "./publisher-he.server";
+import { accountBanks, commonAccountRate, currentAccountRecords } from "./guide-signature-bundle.server";
 
-const familyById: Partial<Record<WrapperId, Family>> = {
+const tariffKeys: string[] = ["tradeRate", "tradeMin", "tradeMax", "custodyRate", "custodyMin", "custodyMax", "fxRate", "monthlyFee"];
+import { BROKERAGE, instrumentClassOf, providersOf, shortName } from "./providers";
+import { latestSnapshots } from "./providers.server";
+import { readJsonCached, readTextCached } from "./read-cache.server";
+
+const familyById: Partial<Record<ProductId, Family>> = {
   "kupat-gemel-lehashkaa": "provident",
   "keren-hishtalmut": "provident",
   "pension-comprehensive": "pension",
@@ -32,20 +37,20 @@ const familyById: Partial<Record<WrapperId, Family>> = {
 
 /** The nine tier-2 instruments (product D2) with the glossary row that names each; the open questions are method G-24's. */
 export const tier2Table: { id: string; he: string; questions: string[]; display: string }[] = [
-  { id: "savings-policies", he: "פוליסת חיסכון", questions: ["TXA OQ1", "TXA OQ3"], display: "TXA OQ1, TXA OQ3" },
+  { id: "savings-policies", he: "פוליסת חיסכון", questions: ["TXA OQ1"], display: "TXA OQ1" },
   { id: "executive-insurance", he: "ביטוח מנהלים", questions: ["TXA OQ6"], display: "TXA OQ6" },
   { id: "structured-deposits", he: "פיקדון מובנה", questions: ["TX2 OQ5"], display: "TX2 OQ5" },
   { id: "corporate-bonds", he: 'אג"ח קונצרניות', questions: ["TX2 OQ6"], display: "TX2 OQ6" },
-  { id: "managed-portfolios", he: "ניהול תיקי השקעות", questions: ["TX2 OQ12", "MF-28"], display: "TX2 OQ12, MF-28" },
-  { id: "foreign-currency-deposits", he: "פיקדון במטבע חוץ", questions: ["TX2 OQ1", "TX2 OQ2"], display: "TX2 OQ1, TX2 OQ2" },
+  { id: "managed-portfolios", he: "ניהול תיקי השקעות", questions: ["MF-28"], display: "MF-28" },
+  { id: "foreign-currency-deposits", he: "פיקדון במטבע חוץ", questions: ["TX2 OQ2"], display: "TX2 OQ2" },
   { id: "reits", he: "קרן להשקעות במקרקעין", questions: ["TX2 OQ8"], display: "TX2 OQ8" },
   { id: "gold-via-funds", he: "השקעה בזהב דרך קרנות סל", questions: ["TX2 OQ10"], display: "TX2 OQ10" },
-  { id: "amendment-190-deposits", he: "תיקון 190", questions: ["TXA OQ9"], display: "TXA OQ9" },
+  { id: "amendment-190-deposits", he: "תיקון 190", questions: ["TXA OQ14"], display: "TXA OQ14" },
 ];
 
 function tier2List(): Tier2Row[] {
   const rows = new Map(loadNotCovered().map((r) => [r.he, r]));
-  const g24 = readFileSync(join(root, "docs/method.md"), "utf8").split("\n").find((l) => l.startsWith("| G-24 |")) ?? "";
+  const g24 = readTextCached(join(root, "docs/method.md")).split("\n").find((l) => l.startsWith("| G-24 |")) ?? "";
   return tier2Table.map((t) => {
     if (!rows.has(t.he)) throw new Error(`compare bundle: docs/glossary.md section 3 has no row "${t.he}" for tier-2 instrument ${t.id}`);
     for (const q of t.questions) if (!g24.includes(q)) throw new Error(`compare bundle: method G-24 does not name ${q} (tier-2 instrument ${t.id})`);
@@ -60,7 +65,7 @@ function tier2List(): Tier2Row[] {
  * charged on the `track` P-05's entry names (method 2.4), labelled as an average. The pension and study-fund terms
  * that come from the person (employment, salary, insurance) are added when a run is built (compare.ts).
  */
-function providentTerms(
+export function providentTerms(
   id: string,
   snapshots: FeesSnapshot[],
   spec: NonNullable<ParameterRecord["instruments"]>[string] | undefined,
@@ -75,18 +80,20 @@ function providentTerms(
   const deposit = line("deposit");
   const direct = line("direct_expenses");
   const pct = (v: ValueObject) => (v.value as number) / 100;
+  // D31: a list fee is that company's own; the guide's terms block and the comparison name the company whose list the example reads
+  const own = (v: ValueObject): SiteValue => (snap ? ownBy({ ...v } as SiteValue, shortName(snap.id, snap.provider.name_he)) : ({ ...v } as SiteValue));
   if (balance && deposit) {
-    const feeValues: Record<string, SiteValue> = { balance: { ...balance.rate }, deposit: { ...deposit.rate } };
-    if (direct) feeValues.direct = { ...direct.rate };
+    const feeValues: Record<string, SiteValue> = { balance: own(balance.rate), deposit: own(deposit.rate) };
+    if (direct) feeValues.direct = own(direct.rate);
     return { terms: { fees: { deposit: pct(deposit.rate), balance: pct(balance.rate), direct: direct ? pct(direct.rate) : 0 } }, feeValues, missing: [] };
   }
   const reg = regulatorAverageFees(id, spec, loadCmaFees(), allRules, today, { balance: !!balance, deposit: !!deposit });
   if (!reg) return { feeValues: {}, missing: [snap ? `${id}: ${snap.id} has no list ${balance ? "deposit" : "balance"} line for it and P-05 names no track` : `${id}: no list-fee snapshot in data/fees/ covers it and P-05 names no track`] };
   if ("missing" in reg) return { feeValues: {}, missing: reg.missing };
   const feeValues: Record<string, SiteValue> = { ...reg.feeValues };
-  if (balance) feeValues.balance = { ...balance.rate };
-  if (deposit) feeValues.deposit = { ...deposit.rate };
-  if (direct) feeValues.direct = { ...direct.rate };
+  if (balance) feeValues.balance = own(balance.rate);
+  if (deposit) feeValues.deposit = own(deposit.rate);
+  if (direct) feeValues.direct = own(direct.rate);
   return {
     terms: { fees: { balance: balance ? pct(balance.rate) : reg.fees.balance, deposit: deposit ? pct(deposit.rate) : reg.fees.deposit, direct: direct ? pct(direct.rate) : 0 } },
     feeValues,
@@ -109,7 +116,7 @@ function collectRuleIds(node: unknown, out = new Set<string>()): Set<string> {
 function cashLink(): CompareBundle["cashLink"] {
   const file = join(root, ".claude/skills/il-finance/references/bank-current-account-deposits.md");
   if (!existsSync(file)) return null;
-  const text = readFileSync(file, "utf8");
+  const text = readTextCached(file);
   const start = text.indexOf("### BANK-22");
   if (start < 0) return null;
   const end = text.indexOf("\n### ", start + 5);
@@ -139,7 +146,8 @@ function depositRate(wrapperId: string, family: string, spec: { deposit_terms?: 
   const rec = deposits.find((d) => d.id === spec.deposit_terms && d.wrapper_id === wrapperId);
   const rate = rec?.rate_offered;
   if (!rate || typeof rate.value !== "number" || rate.unit !== "pct_per_year") return null;
-  return { ...rate };
+  // D31: the idle-cash row and the comparison name the bank whose published rate this is
+  return ownBy({ ...rate }, publisherHe(rate as SiteValue));
 }
 
 /** A deposit wrapper's `amount_range` as its record holds it (audit 2026-10-24 (sweep)): the amounts the published rate applies to. */
@@ -174,19 +182,28 @@ function representativeOf(
  * workbench's default, direct, and the branch one only where the snapshot has no direct trade line. FX is left out as it is in the
  * run (a fund in shekels). A provider whose snapshot is missing, ambiguous or has no trade line is left out. Only the lines the
  * run reads are kept, each as its record's value object.
+ *
+ * A security run in the securities account (D6, amended 2026-10-26: makam and a government bond held directly) takes the same choice:
+ * `productId` is the security, the lines are the account's for its class, and only the lines its run reads are
+ * kept (commissions, custody, the account's monthly fee). The member's kind travels with the tariff (F-14: a bank may not charge
+ * custody on makam, BRK-17; a non-bank member's line applies).
  */
-function providerTariffs(wrapperId: string, instrumentClass: string): Record<string, ProviderTariff> {
+function providerTariffs(productId: string, instrumentClass: string): Record<string, ProviderTariff> {
   const out: Record<string, ProviderTariff> = {};
-  for (const snap of providersOf({ snapshots: latestSnapshots() }, wrapperId)) {
+  const direct = productId !== BROKERAGE;
+  for (const snap of providersOf({ snapshots: latestSnapshots() }, BROKERAGE)) {
     if (snap.missing) continue;
+    // a security held directly is bought on TASE through an Israeli member; a foreign broker does not sell makam or Israeli government bonds
+    if (direct && snap.provider.class === "foreign_broker") continue;
     for (const channel of ["direct", "branch"]) {
       let built: ReturnType<typeof engineTariff>;
       try {
-        built = engineTariff({ instrumentClass, wrapper: wrapperId, channel } as WorkbenchInput, { snapshot: snap, level: "list" }, snap);
+        built = engineTariff({ instrumentClass, wrapper: BROKERAGE, channel } as WorkbenchInput, { snapshot: snap, level: "list" }, snap);
       } catch {
         break;
       }
       if (built.noLine.includes("trade") || !built.tariff.buy) continue;
+      const tariff = direct ? pickLines(built.tariff, ["buy", "sell", "custody", "monthlyFee"]) : built.tariff;
       const feeValues: Record<string, SiteValue> = {};
       for (const id of built.linesUsed) {
         const l = snap.lines.find((x) => x.id === id);
@@ -197,21 +214,30 @@ function providerTariffs(wrapperId: string, instrumentClass: string): Record<str
           const lo = bound(l.min), hi = bound(l.max);
           if (lo) feeValues.tradeMin = lo;
           if (hi) feeValues.tradeMax = hi;
-        } else if (l.base === "custody") {
+        } else if (l.base === "custody" && tariff.custody) {
           feeValues.custodyRate = { ...l.rate };
           const lo = bound(l.min), hi = bound(l.max);
           if (lo) feeValues.custodyMin = lo;
           if (hi) feeValues.custodyMax = hi;
-        } else if (l.base === "fixed_period" && built.tariff.monthlyFee !== undefined) {
-          feeValues.monthlyFee = l.rate.unit === "nis_per_month" ? { ...l.rate } : { ...l.rate, value: built.tariff.monthlyFee, unit: "nis_per_month", state: "computed" };
+        } else if (l.base === "fixed_period" && tariff.monthlyFee !== undefined) {
+          feeValues.monthlyFee = l.rate.unit === "nis_per_month" ? { ...l.rate } : { ...l.rate, value: tariff.monthlyFee, unit: "nis_per_month", state: "computed" };
         }
       }
-      out[snap.id] = { name: snap.provider.name_he, channel, tariff: built.tariff as ProviderTariff["tariff"], feeValues };
+      // D31: the card names the provider whose tariff the run reads, so its lines are that provider's own figures
+      out[snap.id] = { name: snap.provider.name_he, channel, tariff: tariff as ProviderTariff["tariff"], feeValues: ownEach(feeValues, snap.provider.name_he), memberKind: memberKindOf(snap.provider.class) };
       break;
     }
   }
   return out;
 }
+
+/** The tariff with only the lines a run reads (a makam or bond run refuses any other, `runInputs`). */
+function pickLines<T extends Record<string, unknown>>(tariff: T, keys: readonly string[]): T {
+  return Object.fromEntries(Object.entries(tariff).filter(([k]) => keys.includes(k))) as T;
+}
+
+/** The security class each security held directly in the securities account is priced at (data-schema §2, `fee.applies_to`). */
+const securityClass: Partial<Record<ProductId, string>> = { makam: "makam", "government-bond": "tase_bonds" };
 
 /**
  * The lowest in-fund cost (fixed and variable management and trustee, the same measure as the run's fee) among the fund records
@@ -237,7 +263,7 @@ function classMinFee(spec: { fund?: string | number } | undefined, funds: Return
 }
 
 /** Wrappers whose fund (and so whose terms) depend on the exposure they hold: the fund collected for the exposure (`exposure_id`) gives the terms. */
-const fundHoldingWrappers: WrapperId[] = ["brokerage-account", "money-market-fund-daily", "money-market-fund-renewable"];
+const fundHoldingWrappers: ProductId[] = ["brokerage-account", "money-market-fund-daily", "money-market-fund-renewable"];
 
 /**
  * Release 5, exposure mode: every exposure record, and for each exposure the terms of a securities wrapper that holds
@@ -283,7 +309,8 @@ function indexFundTerms(p05: ParameterRecord, sources: Parameters<typeof buildIn
     if (!rec.exposure_id || !indices.has(rec.exposure_id)) continue;
     const built = buildInstrumentTerms(BROKERAGE, "securities", { ...(own ?? {}), fund: rec.id }, sources);
     if ("missing" in built || !built.terms.fund) continue;
-    const feeValues = Object.fromEntries(Object.entries(built.feeValues).filter(([k]) => k.startsWith("fund") || k === "ninetyPercentTest"));
+    // D31: the way names the fund, so its costs are its manager's own figures
+    const feeValues = ownEach(Object.fromEntries(Object.entries(built.feeValues).filter(([k]) => k.startsWith("fund") || k === "ninetyPercentTest")), (f as { manager: string }).manager);
     out[rec.id] = { name: rec.names.he[0] ?? rec.names.en[0] ?? rec.id, fund: built.terms.fund, feeValues };
   }
   return out;
@@ -308,6 +335,7 @@ function dataFileVersions(): BundleDataFile[] {
   const out: BundleDataFile[] = [];
   const dirs: { dir: string; feeds: (rec: Record<string, unknown>) => string[] }[] = [
     { dir: "data/instruments/wrappers", feeds: (r) => [String(r.id)] },
+    { dir: "data/instruments/securities", feeds: (r) => [String(r.id)] },
     { dir: "data/instruments/exposures", feeds: (r) => [String(r.id)] },
     { dir: "data/terms/deposits", feeds: (r) => (typeof r.wrapper_id === "string" ? [r.wrapper_id] : []) },
     { dir: "data/funds", feeds: (r) => [String(r.exposure_id ?? ""), ...fundHoldingWrappers].filter(Boolean) },
@@ -317,7 +345,7 @@ function dataFileVersions(): BundleDataFile[] {
     const abs = join(root, dir);
     if (!existsSync(abs)) continue;
     for (const f of readdirSync(abs).filter((n) => n.endsWith(".json")).sort()) {
-      const rec = JSON.parse(readFileSync(join(abs, f), "utf8")) as Record<string, unknown>;
+      const rec = readJsonCached(join(abs, f)) as Record<string, unknown>;
       out.push({ path: `${dir}/${f}`, checked: latestChecked(rec) ?? (typeof rec.snapshot === "string" ? rec.snapshot : null), for: feeds(rec) });
     }
   }
@@ -345,7 +373,7 @@ export function buildCompareBundle(): CompareBundle {
   const sources = { fees, funds: loadFunds(), deposits: loadDepositTerms(), rules: allRules, today: t };
   const cmaTracks = loadCma().tracks;
   const repOf = (id: string) => representativeOf(p05.instruments?.[id] as never, sources.funds as never, cmaTracks, fees);
-  const wrappers: WrapperEntry[] = loadWrappers().map((record: WrapperRecord): WrapperEntry => {
+  const wrappers: WrapperEntry[] = loadProducts().map((record: ProductRecord): WrapperEntry => {
     const family = familyById[record.id] ?? null;
     const base = { id: record.id, name: record.names.he[0]!, family, record, feeValues: {} as Record<string, SiteValue>, missing: [] as string[] };
     if (family === "provident" || family === "pension") {
@@ -355,12 +383,18 @@ export function buildCompareBundle(): CompareBundle {
     }
     if (family === null) return { ...base, missing: [`${record.id}: no instrument terms are built for it`] };
     const built = buildInstrumentTerms(record.id, family, p05.instruments?.[record.id], sources);
-    const rate = depositRate(record.id, family, p05.instruments?.[record.id], sources.deposits);
+    // F-85 (founder, 2026-10-26: "almost nobody gets that 1%"): the current account runs on the rate most collected banks print, as on its
+    // guide page, not on the one bank P-05 names; idle cash's baseline and the comparison's current-account row read it
+    const common = record.id === "current-account" ? commonAccountRate(accountBanks(currentAccountRecords(sources.deposits)), allRules, t) : null;
+    const rate = common ? common.rate : depositRate(record.id, family, p05.instruments?.[record.id], sources.deposits);
     if ("missing" in built) return { ...base, missing: built.missing };
     const range = depositRange(record.id, family, p05.instruments?.[record.id], sources.deposits);
     const rep = repOf(record.id);
     // F-26 (2026-10-25): the current account's rate is paid on the balance up to the record's `amount_range.max` (BANK-09)
-    const ceiling = record.id === "current-account" && rate && range?.max && range.max.unit === "nis" && typeof range.max.value === "number" ? range.max.value : undefined;
+    const ceiling =
+      record.id !== "current-account" ? undefined
+      : common ? (common.ceiling && typeof common.ceiling.value === "number" ? common.ceiling.value : undefined)
+      : rate && range?.max && range.max.unit === "nis" && typeof range.max.value === "number" ? range.max.value : undefined;
     const terms = ceiling !== undefined && built.terms.deposit ? { ...built.terms, deposit: { ...built.terms.deposit, balanceCeiling: ceiling } } : built.terms;
     return { ...base, terms, feeValues: built.feeValues, ...(rate ? { cashRate: rate } : {}), ...(range ? { cashRange: range } : {}), ...(rep ? { representative: rep } : {}) };
   });
@@ -385,7 +419,12 @@ export function buildCompareBundle(): CompareBundle {
     const rate = w.feeValues.tradeRate?.value;
     const snap = named ? latestSnapshots().find((x) => x.id === named) : undefined;
     const channel = snap?.lines.find((l) => l.level === "list" && l.base === "trade" && l.rate.value === rate && (w.feeValues.tradeMin === undefined || l.min?.value === w.feeValues.tradeMin.value))?.channel;
-    w.representative = { ...w.representative, ...(fee ? { fee } : {}), ...(min ? { classMinFee: min } : {}), ...(named ? { providerId: named } : {}), ...(channel ? { channel } : {}) };
+    // D31: the card names the fund and the provider whose tariff it reads; their figures are those companies' own
+    const fundRecord = sources.funds.find((x) => x.id === String(p05.instruments?.[w.id]?.fund));
+    if (fundRecord) w.feeValues = ownEach(w.feeValues, fundRecord.manager, (k) => k.startsWith("fund"));
+    if (snap) w.feeValues = ownEach(w.feeValues, snap.provider.name_he, (k) => tariffKeys.includes(k));
+    const named2 = fundRecord ? representativeFeeValue(w, t) : fee;
+    w.representative = { ...w.representative, ...(named2 ? { fee: named2 } : {}), ...(min ? { classMinFee: min } : {}), ...(named ? { providerId: named } : {}), ...(channel ? { channel } : {}) };
   }
   for (const w of wrappers) {
     if (w.id !== BROKERAGE || !w.terms) continue;
@@ -393,6 +432,15 @@ export function buildCompareBundle(): CompareBundle {
     const fundRec = sources.funds.find((x) => x.id === String(p05.instruments?.[w.id]?.fund));
     const fundClass = fundRec ? instrumentClassOf(fundRec, loadExposures().find((e) => e.id === fundRec.exposure_id)) : "etf_units";
     const providers = providerTariffs(w.id, fundClass);
+    if (Object.keys(providers).length > 0) w.providers = providers;
+  }
+  // D6 (amended 2026-10-26): makam and a government bond are held in the securities account, so the account's choice of provider
+  // (F-80) prices them too, at the lines for their own class. The money-market funds keep the bank case P-05 names: at a bank with a
+  // distribution agreement the holder pays nothing to buy, hold or redeem them (MF-26, BANK-18), which no tariff can undercut.
+  for (const w of wrappers) {
+    const cls = securityClass[w.id];
+    if (!cls || !w.terms) continue;
+    const providers = providerTariffs(w.id, cls);
     if (Object.keys(providers).length > 0) w.providers = providers;
   }
   for (const w of wrappers) for (const m of w.missing) console.log(`[compare] ${w.id}: no terms: ${m}`);
@@ -429,7 +477,7 @@ export function buildCompareBundle(): CompareBundle {
   const rules: RuleRecord[] = Object.values(allRules).filter((r) => needed.has(r.id));
   const missingRules = [...needed].filter((id) => !allRules[id] && !/OQ/.test(id));
   if (missingRules.length > 0) console.log(`[compare] cited but not in data/rules/: ${missingRules.join(", ")}`);
-  const bundle: CompareBundle = { ...draft, rules };
+  const bundle: CompareBundle = { ...draft, rules, pointed: Object.values(pointedRecords(rules, allRules)) };
   console.log(`[compare] bundle: ${wrappers.length} wrappers, ${wrappers.filter((w) => w.terms).length} with terms, ${rules.length} of ${Object.keys(allRules).length} rules, ${runs} probe runs, ${(JSON.stringify(bundle).length / 1024).toFixed(0)} KB`);
   return bundle;
 }
@@ -473,6 +521,7 @@ export function goalFormData() {
       payslipText: (pen36 as { text_he?: string } | null)?.text_he ?? null,
     },
     rules: pen36 ? { "PEN-36": pen36 } : {},
+    pointed: pen36 ? pointedRecords({ "PEN-36": pen36 }, rules) : {},
   };
 }
 

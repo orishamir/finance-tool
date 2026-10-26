@@ -107,7 +107,7 @@ describe("Part A: the ledger on single instruments", () => {
     g.done();
   });
 
-  it("S04 prime-linked monthly deposit, 15% bucket by reading", () => {
+  it("S04 prime-linked monthly deposit, 15% bucket (TXI-04)", () => {
     const r = runDeposit(
       {
         goal: { amountNow: 50_000, monthly: 1_000, months: 36 },
@@ -123,7 +123,9 @@ describe("Part A: the ledger on single instruments", () => {
     g.value("tax during", r.taxDuring, 1_064.89);
     g.value("tax at exit", r.taxAtExit, 0);
     g.done();
-    expect(labelOf(r, "TXI-04")).toBe("reading");
+    // TXI OQ2 closed 2026-10-26: TXI-04 states the prime case (the statutory index is the CPI or an exchange rate), so it is cited, not labelled a reading
+    expect(labelOf(r, "TXI-04")).toBeUndefined();
+    expect(r.rules.map((u) => u.id)).toContain("TXI-04");
   });
 
   it("S05 current-account credit balance", () => {
@@ -241,6 +243,8 @@ describe("Part A: the ledger on single instruments", () => {
       ctx,
     );
     const g = golden("S10");
+    // 2026-10-26: the CPI fell, so each lot's inflationary amount is zero and the nominal loss counts only beyond the fall (TXS-02).
+    g.value("gain at exit", r.detail.gain, -395.95);
     g.value("real", r.real, 102_622.17);
     g.value("nominal", r.nominal, 99_574.19);
     g.value("trade", r.fees.trade, 456.34);
@@ -450,7 +454,9 @@ describe("Part A: the ledger on single instruments", () => {
     g.value("Israeli tax", r.detail.israeliTaxOnDistributions, 3_103.69);
     g.value("tax at exit", r.taxAtExit, 10_080.97);
     g.done();
-    expect(flagCodes(r)).toContain("G-05");
+    // 2026-10-26: Ireland deducts nothing from an Irish ETF's distribution to an Israeli resident (TXF-28), so G-05 is closed and no longer flagged.
+    expect(flagCodes(r)).not.toContain("G-05");
+    expect(r.rules.map((u) => u.id)).toContain("TXF-28");
     expect(flagCodes(r)).not.toContain("TXF-27");
   });
 });
@@ -481,7 +487,10 @@ describe("Part B: provident-family wrappers", () => {
     g.value("year 2 balance", yearEnd(r, 2).balance, 73_920.26);
     g.done();
     expect(r.routed).toEqual([]);
-    expect(flagCodes(r)).toEqual(expect.arrayContaining(["G-11", "G-02"]));
+    expect(flagCodes(r)).toEqual(expect.arrayContaining(["G-02"]));
+    // 2026-10-26: no National Insurance on the lump sum's gains (TXK-27), so G-11 is no longer flagged for it.
+    expect(flagCodes(r)).not.toContain("G-11");
+    expect(r.rules.map((u) => u.id)).toContain("TXK-27");
     // 2026-10-25 tax-bases research: TXK-07's base and rate rest on the Ordinance (s.3(ה4)(3), s.9(13), s.125ג) and the 2016 bill's notes, so no institution label.
     expect(labelOf(r, "TXK-07")).toBeUndefined();
   });

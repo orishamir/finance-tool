@@ -6,24 +6,7 @@ import { buttons, r2, values as valuesCopy } from "../../copy";
 import type { FieldSource, PresetId } from "../../lib/goal";
 import { IconReset } from "../icons";
 import { StateTag } from "../provenance";
-import { Button, ChoiceChips, cx, NumberField, RangeField } from "../kit";
-import { IconDash, IconPlus } from "./icons";
-
-/** The state line under a field: "הוזן על ידך" with a reset, or the site parameter a preset filled in. */
-export function StateLine({ source, canReset, onReset }: { source: FieldSource; canReset: boolean; onReset: () => void }) {
-  if (source === "entered")
-    return (
-      <span className="flex items-center gap-2 flex-wrap">
-        <StateTag state="entered" />
-        {canReset && (
-          <Button variant="quiet" className="text-sm -ms-2 min-h-target" onClick={onReset}>
-            <IconReset size={16} /> {buttons.resetOne}
-          </Button>
-        )}
-      </span>
-    );
-  return null;
-}
+import { ChoiceChips, cx, FieldState, NumberField, RangeField, StepButtons } from "../kit";
 
 export interface GoalNumberProps {
   label: ReactNode;
@@ -60,7 +43,7 @@ export function GoalNumber({ label, unit, value, source, presetValue, onChange, 
       note={
         <>
           {note}
-          {!bare && !compact && <StateLine source={source} canReset={presetValue !== undefined && presetValue !== null} onReset={() => onChange(null)} />}
+          {!bare && !compact && <FieldState entered={source === "entered"} canReset={presetValue !== undefined && presetValue !== null} onReset={() => onChange(null)} />}
         </>
       }
       placeholder={placeholder}
@@ -111,7 +94,7 @@ export function GoalSlider({
       step={step}
       inputMode={inputMode}
       optional
-      footer={<StateLine source={source} canReset={presetValue !== undefined && presetValue !== null} onReset={() => onChange(null)} />}
+      footer={<FieldState entered={source === "entered"} canReset={presetValue !== undefined && presetValue !== null} onReset={() => onChange(null)} />}
     />
   );
 }
@@ -197,7 +180,7 @@ export function SwitchRow({ label, checked, onChange, source, onReset }: { label
           <span className={cx("absolute top-0.5 size-5 rounded-full transition-all duration-[var(--duration-fast)]", checked ? "bg-background start-6" : "bg-muted-foreground start-0.5")} />
         </button>
       </div>
-      <StateLine source={source} canReset={false} onReset={onReset} />
+      <FieldState entered={source === "entered"} canReset={false} onReset={onReset} />
     </div>
   );
 }
@@ -222,12 +205,7 @@ export function AgeStepper({ label, value, onChange, validate, hint }: { label: 
       <div className="flex-1 min-w-0">
         <GoalNumber label={label} unit="years" value={value} source={value === null ? "empty" : "entered"} onChange={onChange} validate={validate} hint={hint} bare inputMode="numeric" placeholder={valuesCopy.agePlaceholder} />
       </div>
-      <Button variant="icon" className="border border-input h-field w-11 shrink-0" aria-label={r2.form.ageDown} disabled={value === null || value <= 0} onClick={() => value !== null && onChange(value - 1)}>
-        <IconDash size={18} />
-      </Button>
-      <Button variant="icon" className="border border-input h-field w-11 shrink-0" aria-label={r2.form.ageUp} disabled={value === null} onClick={() => value !== null && onChange(value + 1)}>
-        <IconPlus size={18} />
-      </Button>
+      <StepButtons downLabel={r2.form.ageDown} upLabel={r2.form.ageUp} downDisabled={value === null || value <= 0} upDisabled={value === null} onDown={() => value !== null && onChange(value - 1)} onUp={() => value !== null && onChange(value + 1)} />
     </div>
   );
 }

@@ -36,6 +36,8 @@ export interface VariantExposure {
     /** The provider's tariff, the same for every variant. */
     tariff: SecuritiesInput["tariff"];
     broker?: SecuritiesInput["broker"];
+    /** F-14 (2026-10-26): the provider whose tariff this is, bank or not (`memberKindOf`): a money-market unit pays custody only at a non-bank. */
+    memberKind?: SecuritiesInput["memberKind"];
     profile: Profile;
     /** W-8BEN on file (TXF-13), the person's own fact. */
     w8ben?: boolean;
@@ -234,6 +236,7 @@ function evaluate(c: Cand, exposure: VariantExposure, ctx: RunContext): VariantR
   }
   const input: SecuritiesInput = { goal: x.goal, market, fund: built.fund, tariff, profile: x.profile };
   if (x.broker) input.broker = x.broker;
+  if (x.memberKind) input.memberKind = x.memberKind;
   if (x.ordersPerMonth !== undefined) input.ordersPerMonth = x.ordersPerMonth;
   const plan: RunPlan = { run: "runSecurities", input };
   let run: RunResult;

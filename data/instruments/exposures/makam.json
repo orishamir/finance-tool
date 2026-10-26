@@ -22,7 +22,6 @@
   "variants": [],
   "wrapper_ids": [
     "makam",
-    "brokerage-account",
     "ira-hishtalmut",
     "ira-provident",
     "money-market-fund-daily",
@@ -60,8 +59,7 @@
     "GOV-OQ7",
     "GOV-OQ8",
     "TXI-OQ3",
-    "TXI-OQ5",
-    "BRK-OQ11"
+    "TXI-OQ5"
   ],
   "checked": "2026-10-23"
 }

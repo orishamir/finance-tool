@@ -2,7 +2,7 @@
   "id": "dmy-nyhvl-kbvaym",
   "he": "דמי ניהול קבועים",
   "en": null,
-  "meaning": "אחוז שנתי קבוע משווי נכסי הקרן שמנהל הקרן לוקח כשכר; יורד מהתשואה של המשקיעים.",
+  "meaning": "שכר מנהל הקרן שלא תלוי בתשואת הקרן; בקרן מחקה יכולים להיות לצדו גם דמי ניהול משתנים, שנגזרים מהתשואה ומהפרש העקיבה.",
   "where": [
     "app",
     "prospectus"
@@ -21,10 +21,10 @@
     "ETF-17"
   ],
   "source": {
-    "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
-    "title": "IBI, דוח שנתי \"אי.בי.אי. סל (4D) S&P 500\" (1148162), 31.12.2025",
-    "publisher": "Tel Aviv Stock Exchange",
-    "strength": "institution",
-    "checked": "2026-10-22"
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=2",
+    "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018, תקנה 1",
+    "publisher": "see title",
+    "strength": "primary",
+    "checked": "2026-10-26"
   }
 }

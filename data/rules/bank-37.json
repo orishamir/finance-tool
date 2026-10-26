@@ -1,0 +1,177 @@
+{
+  "id": "BANK-37",
+  "title": "Bank Leumi, Bank Massad, Bank Yahav and Mercantile: their exit points and minimum deposits",
+  "title_he": "לאומי, מסד, יהב ומרכנתיל: תחנות היציאה והסכום המינימלי בפיקדונות שלהם",
+  "text_he": "תחנות היציאה שנמצאו: כל יום (בלאומי), כל שבוע (בלאומי ובמסד), כל רבעון (בלאומי ובמסד), אחרי חצי שנה ואחר כך כל חודש (בלאומי), כל שנה (בלאומי), ומשיכה בהודעה מוקדמת (במסד). הסכום המינימלי שונה לפי בנק ומוצר: בחיסכון בנגיעה של לאומי לכל הפקדה, ביהב לפי המוצר, ובמרכנתיל לפיקדון של מי שאינו לקוח הבנק. ביהב, מועד חידוש או פירעון שאינו יום עסקים עובר ליום העסקים הבא. בנקים ומוצרים אחרים לא נבדקו.",
+  "figure_names_he": {
+    "leumi_touch_min_deposit": "הפקדה מינימלית בחיסכון בנגיעה (לאומי)",
+    "yahav_min_deposit_low": "פיקדון מינימלי, הנמוך שבין המוצרים (יהב)",
+    "yahav_min_deposit_high": "פיקדון מינימלי, הגבוה שבין המוצרים (יהב)",
+    "mercantile_non_customer_min": "פיקדון מינימלי למי שאינו לקוח (מרכנתיל)"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "liquidity-lockup",
+    "minimum"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-26",
+  "figures": {
+    "leumi_touch_min_deposit": {
+      "value": 10,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.leumi.co.il/he/savings",
+        "title": "לאומי: חסכונות, שאלות ותשובות",
+        "publisher": "Bank Leumi",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-37"
+      ],
+      "state": "sourced",
+      "notes": "Bank Leumi's touch savings: NIS 10 per deposit (BANK-37, read 2026-10-22)."
+    },
+    "yahav_min_deposit_low": {
+      "value": 50,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+        "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+        "publisher": "Bank Yahav",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-37"
+      ],
+      "state": "sourced",
+      "notes": "Bank Yahav: from NIS 50 or NIS 1,000 depending on the product (BANK-37)."
+    },
+    "yahav_min_deposit_high": {
+      "value": 1000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+        "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+        "publisher": "Bank Yahav",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-37"
+      ],
+      "state": "sourced",
+      "notes": "Bank Yahav: from NIS 50 or NIS 1,000 depending on the product (BANK-37)."
+    },
+    "mercantile_non_customer_min": {
+      "value": 250,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/deposits-without-account/",
+        "title": "מרכנתיל: פיקדונות ללא חשבון",
+        "publisher": "Mercantile Discount Bank",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-37"
+      ],
+      "state": "sourced",
+      "notes": "Mercantile Discount Bank's deposits for non-customers: NIS 250 (BANK-37)."
+    }
+  },
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "leumi",
+      "name_he": "בנק לאומי"
+    },
+    {
+      "id": "massad",
+      "name_he": "בנק מסד"
+    },
+    {
+      "id": "yahav",
+      "name_he": "בנק יהב"
+    },
+    {
+      "id": "mercantile",
+      "name_he": "בנק מרכנתיל דיסקונט"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.leumi.co.il/he/savings",
+      "title": "לאומי: חסכונות, שאלות ותשובות",
+      "title_he": "לאומי: חסכונות, שאלות ותשובות",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.leumi.co.il/he/savings/interest-rate-table",
+      "title": "לאומי: טבלת שיעורי הריבית",
+      "title_he": "לאומי: טבלת שיעורי הריבית",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.bankmassad.co.il/private/depositsandsavings/savingtypes/",
+      "title": "מסד: סוגי חסכונות",
+      "title_he": "מסד: סוגי חסכונות",
+      "publisher": "Bank Massad",
+      "publisher_he": "בנק מסד",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+      "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "title_he": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/deposits-without-account/",
+      "title": "מרכנתיל: פיקדונות ללא חשבון",
+      "title_he": "מרכנתיל: פיקדונות ללא חשבון",
+      "publisher": "Mercantile Discount Bank",
+      "publisher_he": "בנק מרכנתיל דיסקונט",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "BANK-27"
+  ]
+}

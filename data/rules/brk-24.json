@@ -8,12 +8,14 @@
     "fee-custody",
     "fee-trade",
     "fee-fx",
+    "fee-account",
     "fee-exit"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
   "il_finance_file": "brokerage-account.md",
   "checked": "2026-10-25",
+  "scope": "general",
   "sources": [
     {
       "url": "https://content.tase.co.il/media/q2mhob4u/274690.pdf",

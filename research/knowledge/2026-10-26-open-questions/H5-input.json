@@ -1,0 +1,1370 @@
+{
+ "files": [
+  "tax-general.md",
+  "regulators-and-protection.md",
+  "tracks-catalogue-and-decoder.md",
+  "reits-and-gold-funds.md",
+  "managed-and-robo-portfolios.md",
+  "tax-tier2-other.md"
+ ],
+ "items": [
+  {
+   "code": "MGD OQ1",
+   "file": "managed-and-robo-portfolios.md",
+   "n": 1,
+   "line_at_extraction": 537,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Names of the 131 licensed portfolio managers, and which offer digital or low-minimum portfolios.** Tried: ISA register (JS); ISA report (counts only); Superma"
+  },
+  {
+   "code": "MGD OQ2",
+   "file": "managed-and-robo-portfolios.md",
+   "n": 2,
+   "line_at_extraction": 538,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**ISA directives' text.** Needed: needs clarification (new version 2021) and services through technological means (2016, as amended), including any rules on alg"
+  },
+  {
+   "code": "MGD OQ3",
+   "file": "managed-and-robo-portfolios.md",
+   "n": 3,
+   "line_at_extraction": 539,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**ISA \"קול קורא – ניהול תיקים 2.0\" (2 Apr 2019).** Bizportal (secondary) reports it as a model where a manager invests through a dedicated fund, joined online, "
+  },
+  {
+   "code": "MGD OQ4",
+   "file": "managed-and-robo-portfolios.md",
+   "n": 4,
+   "line_at_extraction": 540,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Meitav Manager details.**\n   - Where the account is held and in whose name (Meitav Trade? a bank?).\n   - The Meitav funds used per track, and their fees.\n   -"
+  },
+  {
+   "code": "MGD OQ5",
+   "file": "managed-and-robo-portfolios.md",
+   "n": 5,
+   "line_at_extraction": 546,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Meitav private-client fee rates by portfolio size.** The page says the fee falls with size but gives no rates. Not published on the pages read."
+  },
+  {
+   "code": "MGD OQ6",
+   "file": "managed-and-robo-portfolios.md",
+   "n": 6,
+   "line_at_extraction": 547,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Phoenix digital portfolio.** Fee, custodian, the legal entity's full name, and whether its funds are group funds (Kesem). Tried: product page. Probably the XN"
+  },
+  {
+   "code": "MGD OQ7",
+   "file": "managed-and-robo-portfolios.md",
+   "n": 7,
+   "line_at_extraction": 548,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Equity and security amounts for portfolio managers.** The regulations as read give NIS 200,000 CPI-linked, with no AUM tier and no minimum security amount. Ve"
+  },
+  {
+   "code": "MGD OQ8",
+   "file": "managed-and-robo-portfolios.md",
+   "n": 8,
+   "line_at_extraction": 549,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Altshuler digital route minimum, and supported banks.** Not stated on the pages read."
+  },
+  {
+   "code": "MGD OQ9",
+   "file": "managed-and-robo-portfolios.md",
+   "n": 9,
+   "line_at_extraction": 550,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**ISA draft directive on outsourcing in hosting** (named in the ISA 2025 report, p.19). Text and status not read."
+  },
+  {
+   "code": "MGD OQ10",
+   "file": "managed-and-robo-portfolios.md",
+   "n": 10,
+   "line_at_extraction": 551,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Fjord's licence and custody, and VIDEA's status.** The ISA register is unreadable; videa.co.il does not resolve."
+  },
+  {
+   "code": "MGD OQ11",
+   "file": "managed-and-robo-portfolios.md",
+   "n": 11,
+   "line_at_extraction": 552,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**What a qualified client gives up.** Which duties of the Investment Advice Law, the regulations or ISA directives do not apply to a \"לקוח כשיר\". Also whether t"
+  },
+  {
+   "code": "MGD OQ12",
+   "file": "managed-and-robo-portfolios.md",
+   "n": 12,
+   "line_at_extraction": 553,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**ISA complaints channel for portfolio-management clients.** Same as REG open question 5."
+  },
+  {
+   "code": "MGD OQ13",
+   "file": "managed-and-robo-portfolios.md",
+   "n": 13,
+   "line_at_extraction": 554,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Termination fees.** Whether a manager may charge for ending the agreement, or for transferring securities out. The law read only says the client may cancel at"
+  },
+  {
+   "code": "MGD OQ14",
+   "file": "managed-and-robo-portfolios.md",
+   "n": 14,
+   "line_at_extraction": 555,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**\"Special risk\" trades (s.18).** Which trades count. Section 18 was read only in summary."
+  },
+  {
+   "code": "MGD OQ15",
+   "file": "managed-and-robo-portfolios.md",
+   "n": 15,
+   "line_at_extraction": 556,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**VAT on portfolio-management fees.** Fjord states \"בתוספת מע\"מ\"; the others do not say. This is a tax question for `tax-tier2-other.md`. **[2026-10-24 R5 pass:"
+  },
+  {
+   "code": "MGD OQ16",
+   "file": "managed-and-robo-portfolios.md",
+   "n": 16,
+   "line_at_extraction": 557,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Investor compensation beyond the manager's security.** Whether any scheme covers a client loss from the manager's misconduct beyond reg. 3 security. None foun"
+  },
+  {
+   "code": "MGD OQ17",
+   "file": "managed-and-robo-portfolios.md",
+   "n": 17,
+   "line_at_extraction": 558,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Psagot's managed-portfolio offering and minimums.** The own site shows only a client login."
+  },
+  {
+   "code": "REG OQ1",
+   "file": "regulators-and-protection.md",
+   "n": 1,
+   "line_at_extraction": 419,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Full TASE member list (25 members).** Tried: the TASE Hebrew and English member pages (JS shell); info.tase.co.il (DNS fails). Found counts and clearing membe"
+  },
+  {
+   "code": "REG OQ2",
+   "file": "regulators-and-protection.md",
+   "n": 2,
+   "line_at_extraction": 420,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**ISA licensee names (131 portfolio-management companies) and which offer digital or low-minimum portfolios.** Tried: investors.isa.gov.il/page/search-advisor ("
+  },
+  {
+   "code": "REG OQ3",
+   "file": "regulators-and-protection.md",
+   "n": 3,
+   "line_at_extraction": 421,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**CMA financial-service-provider registry** (P2P, crypto, cooperatives): https://cmainfo.cma.gov.il/fslproviders returned 403. Needs a browser."
+  },
+  {
+   "code": "REG OQ4",
+   "file": "regulators-and-protection.md",
+   "n": 4,
+   "line_at_extraction": 422,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**BoI list detail.**\n   - Is Esh open to the public? It is listed with no website.\n   - Is data.gov.il dataset 375 the complete licensing register? For example,"
+  },
+  {
+   "code": "REG OQ5",
+   "file": "regulators-and-protection.md",
+   "n": 5,
+   "line_at_extraction": 426,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**ISA public-complaints channel and legal basis**, and whether fund managers or TASE members must appoint a complaints officer. Candidate forms from the ISA sit"
+  },
+  {
+   "code": "REG OQ6",
+   "file": "regulators-and-protection.md",
+   "n": 6,
+   "line_at_extraction": 427,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**BoI public-enquiries page** (how to file, response time): https://www.boi.org.il/roles/supervisionregulation/bank-sup/public-inquiries/ is behind Radware."
+  },
+  {
+   "code": "REG OQ7",
+   "file": "regulators-and-protection.md",
+   "n": 7,
+   "line_at_extraction": 428,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**CMA public-enquiries page and process** (gov.il returned 403). The legal basis is in REG-20."
+  },
+  {
+   "code": "REG OQ8",
+   "file": "regulators-and-protection.md",
+   "n": 8,
+   "line_at_extraction": 429,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Tax Authority ombudsman (נציבות קבילות הציבור)**: gov.il returned 403. Web search budget for this session was exhausted before an alternative could be found."
+  },
+  {
+   "code": "REG OQ9",
+   "file": "regulators-and-protection.md",
+   "n": 9,
+   "line_at_extraction": 430,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "OQ-tag": [
+     "site/app/content/guide/brokerage-account.tsx:96"
+    ],
+    "instrument record": [
+     "brokerage-account"
+    ],
+    "instrument blocker": [
+     "brokerage-account"
+    ]
+   },
+   "start": "**Statutory or TASE-rule segregation of client assets at a TASE member, and what happens to client securities and cash if a non-bank member fails.** The Securit"
+  },
+  {
+   "code": "REG OQ10",
+   "file": "regulators-and-protection.md",
+   "n": 10,
+   "line_at_extraction": 431,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "OQ-tag": [
+     "site/app/content/guide/brokerage-account.tsx:96",
+     "site/app/content/guide/government-bond.tsx:61",
+     "site/app/content/guide/makam.tsx:72"
+    ],
+    "instrument record": [
+     "brokerage-account",
+     "government-bond",
+     "makam"
+    ]
+   },
+   "start": "**Client securities held at a bank that fails.** Are they outside the bank's estate? No source found. Likely in the Banking Ordinance or the TASE clearing-house"
+  },
+  {
+   "code": "REG OQ11",
+   "file": "regulators-and-protection.md",
+   "n": 11,
+   "line_at_extraction": 432,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**TASE Clearing House Risk Fund**: does it cover anything for end clients? Only \"participate in the Risk Fund\" was found (TASE NBCM guide p.10)."
+  },
+  {
+   "code": "REG OQ12",
+   "file": "regulators-and-protection.md",
+   "n": 12,
+   "line_at_extraction": 433,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "rule record": [
+     "REG-04"
+    ]
+   },
+   "start": "**Commencement date of the 2026 competition law (יום התחילה)** and whether the six-month deposit-insurance progress report (s.16(ג)) was delivered. Probable sou"
+  },
+  {
+   "code": "REG OQ13",
+   "file": "regulators-and-protection.md",
+   "n": 13,
+   "line_at_extraction": 434,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "current-account"
+    ]
+   },
+   "start": "**Whether the press's \"informal\" state backing of depositors has any basis other than Banking Ordinance s.8יא.** None found."
+  },
+  {
+   "code": "REG OQ14",
+   "file": "regulators-and-protection.md",
+   "n": 14,
+   "line_at_extraction": 435,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**IBKR's own investor-protection pages** (interactivebrokers.com and .ie returned 403); the Irish investor-compensation scheme amount from an official Irish sou"
+  },
+  {
+   "code": "REG OQ15",
+   "file": "regulators-and-protection.md",
+   "n": 15,
+   "line_at_extraction": 436,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Meitav naming.** **[2026-10-22 browser pass: Portfolio-management line closed by REG-31.]**\n    - \"מיטב תכלית קרנות נאמנות בע\"מ\" (an executive title on the Me"
+  },
+  {
+   "code": "REG OQ16",
+   "file": "regulators-and-protection.md",
+   "n": 16,
+   "line_at_extraction": 441,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Issuer and legal basis of makam (BoI) and government bonds (Accountant General).** Not verified in this pass (Wikisource title for חוק מלוות קצר מועד not foun"
+  },
+  {
+   "code": "REG OQ17",
+   "file": "regulators-and-protection.md",
+   "n": 17,
+   "line_at_extraction": 442,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Which bodies the State Comptroller's Ombudsman covers** (BoI, ISA, CMA, NII, Tax Authority). Source: State Comptroller Law, complaints chapter."
+  },
+  {
+   "code": "REG OQ18",
+   "file": "regulators-and-protection.md",
+   "n": 18,
+   "line_at_extraction": 443,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Return-guarantee determining date**: the text says 1 July 2022, and a Wikisource annotation says it was postponed to 1.10.2022. Verify in Reshumot."
+  },
+  {
+   "code": "REG OQ19",
+   "file": "regulators-and-protection.md",
+   "n": 19,
+   "line_at_extraction": 444,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Minimum equity and insurance amounts for ISA licensees** (regulations under s.8(ב)). Not read."
+  },
+  {
+   "code": "REG OQ20",
+   "file": "regulators-and-protection.md",
+   "n": 20,
+   "line_at_extraction": 445,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**All law texts here were read from Wikisource's consolidated versions**, plus one BoI-hosted PDF. Before rule-base use, verify each cited section against the o"
+  },
+  {
+   "code": "REG OQ21",
+   "file": "regulators-and-protection.md",
+   "n": 21,
+   "line_at_extraction": 446,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "shekel-cash"
+    ]
+   },
+   "start": "**Bank exposure of a broker's client cash in a \"bank trust account\"**: does it count as the client's money, and is it exposed to that bank's failure? Not found."
+  },
+  {
+   "code": "RG OQ1",
+   "file": "reits-and-gold-funds.md",
+   "n": 1,
+   "line_at_extraction": 386,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**Official text of ss. 64A2 to 64A11.** Only the Wikisource mirror was read, and it shows a תשפ\"ו amendment. Check Nevo or Reshumot for the current text, especi"
+  },
+  {
+   "code": "RG OQ2",
+   "file": "reits-and-gold-funds.md",
+   "n": 2,
+   "line_at_extraction": 387,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Can a REIT hold real estate through unlisted subsidiaries?** The s. 64A3(a)(5) list as read does not say. The answer is probably elsewhere in the chapter, in "
+  },
+  {
+   "code": "RG OQ3",
+   "file": "reits-and-gold-funds.md",
+   "n": 3,
+   "line_at_extraction": 388,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**What happens if a REIT distributes less than 90%, and who confirms REIT status (the Tax Authority?).** Section 64A9 states no consequence. Probably in ss. 64A"
+  },
+  {
+   "code": "RG OQ4",
+   "file": "reits-and-gold-funds.md",
+   "n": 4,
+   "line_at_extraction": 389,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**Official, current list of REITs.** Searches for a list found only Calcalist (January 2025). TASE pages render empty to scripts. A TASE sector list, the Tax Au"
+  },
+  {
+   "code": "RG OQ5",
+   "file": "reits-and-gold-funds.md",
+   "n": 5,
+   "line_at_extraction": 390,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**Current management agreements and fees of each REIT.** Press only. They are in each REIT's periodic report on Maya."
+  },
+  {
+   "code": "RG OQ6",
+   "file": "reits-and-gold-funds.md",
+   "n": 6,
+   "line_at_extraction": 391,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**Foreign REITs dual-listed on TASE.** Only an undated secondary item was found. Both the TASE rule and the names of any listed REITs are open. Likely in the TA"
+  },
+  {
+   "code": "RG OQ7",
+   "file": "reits-and-gold-funds.md",
+   "n": 7,
+   "line_at_extraction": 392,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**Israeli funds that hold REITs or Israeli real-estate shares, and whether any tracks a REIT index.** Not researched beyond a search snippet. Likely in TASE ind"
+  },
+  {
+   "code": "RG OQ8",
+   "file": "reits-and-gold-funds.md",
+   "n": 8,
+   "line_at_extraction": 393,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**How each Israeli gold fund holds its exposure (futures, swaps, ETCs), and a complete list of gold funds.** No gold fund's prospectus or annual report was reac"
+  },
+  {
+   "code": "RG OQ9",
+   "file": "reits-and-gold-funds.md",
+   "n": 9,
+   "line_at_extraction": 394,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**TheMarker's \"variable fee maximum 1.00%\" for IBI 1147875.** It conflicts with the regulatory cap of 0.1% to 0.3% (ETF-14). Check the fund's prospectus."
+  },
+  {
+   "code": "RG OQ10",
+   "file": "reits-and-gold-funds.md",
+   "n": 10,
+   "line_at_extraction": 395,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Cost of currency hedging in hedged gold funds, and each gold fund's 12-month tracking difference** (published under ETF-07). Managers' sites and annual report"
+  },
+  {
+   "code": "RG OQ11",
+   "file": "reits-and-gold-funds.md",
+   "n": 11,
+   "line_at_extraction": 396,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**Custodian and vault of the iShares Physical Gold ETC, and what happens to holders if the issuer fails** beyond \"limited recourse\". In the base prospectus."
+  },
+  {
+   "code": "RG OQ12",
+   "file": "reits-and-gold-funds.md",
+   "n": 12,
+   "line_at_extraction": 397,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**GLD's 1940 Act status in its own words.** The GLD prospectus URL tried returned 404. IAU's statement was found."
+  },
+  {
+   "code": "RG OQ13",
+   "file": "reits-and-gold-funds.md",
+   "n": 13,
+   "line_at_extraction": 398,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Is any physically backed gold ETC or trust listed on TASE** (by dual listing or otherwise)? Not found. The ISA foreign-fund register and the TASE list are unr"
+  },
+  {
+   "code": "RG OQ14",
+   "file": "reits-and-gold-funds.md",
+   "n": 14,
+   "line_at_extraction": 399,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Do the 6 open foreign funds or 40 foreign ETFs on TASE (ETF-26) include any REIT or gold product?** The BlackRock brochure table is unreadable (ETF open quest"
+  },
+  {
+   "code": "RG OQ15",
+   "file": "reits-and-gold-funds.md",
+   "n": 15,
+   "line_at_extraction": 400,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Real-estate crowdfunding and investment-house real-estate funds** (discovery 4.5: IBI Pillar, Altshuler overseas real estate). Outside this file's scope as br"
+  },
+  {
+   "code": "TXG OQ1",
+   "file": "tax-general.md",
+   "n": 1,
+   "line_at_extraction": 361,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Q3 (remaining part): has the Minister ever used s.125C(c)(2) or s.91(b)(3)(b)?** The power exists, tied to CPI changes, and the rate in force for 2026 is stil"
+  },
+  {
+   "code": "TXG OQ2",
+   "file": "tax-general.md",
+   "n": 2,
+   "line_at_extraction": 362,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-27"
+    ]
+   },
+   "start": "**Q10 (remaining parts): National Insurance and health on passive income.** Closed: dividends and special-rate interest are exempt from NI (s.350(a)(6)); s.122/"
+  },
+  {
+   "code": "TXG OQ3",
+   "file": "tax-general.md",
+   "n": 3,
+   "line_at_extraction": 363,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Q18: 2027 budget.** As of the Calcalist report of 12.10.2026 (secondary), no 2027 budget has been drafted, pending elections and a new Finance Minister. No of"
+  },
+  {
+   "code": "TXG OQ4",
+   "file": "tax-general.md",
+   "n": 4,
+   "line_at_extraction": 364,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-22"
+    ],
+    "site code": [
+     "copy.ts:891"
+    ]
+   },
+   "start": "**Foreign broker: annual return or not?** Guide p.46 says that if tax on traded securities was not fully withheld, \"you must file an annual return\" and report t"
+  },
+  {
+   "code": "TXG OQ5",
+   "file": "tax-general.md",
+   "n": 5,
+   "line_at_extraction": 365,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**2026 filing-exemption amounts.** Both Tax Authority sources label 723,000 / 717,000 / 2,810,000 / 375,000 / 2,086,000 \"for tax year 2025\". The freeze implies "
+  },
+  {
+   "code": "TXG OQ6",
+   "file": "tax-general.md",
+   "n": 6,
+   "line_at_extraction": 366,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-23"
+    ]
+   },
+   "start": "**Credit points against special-rate capital income.** Can credit points reduce tax on interest, dividends or capital gains taxed at 15% or 25%? This matters fo"
+  },
+  {
+   "code": "TXG OQ7",
+   "file": "tax-general.md",
+   "n": 7,
+   "line_at_extraction": 367,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-21"
+    ]
+   },
+   "start": "**60+ at source.** Does an Israeli bank withhold at the full rate from a 60+ customer, so that the bracket benefit (TXG-08) is recovered only through a return o"
+  },
+  {
+   "code": "TXG OQ8",
+   "file": "tax-general.md",
+   "n": 8,
+   "line_at_extraction": 368,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Indexation on 1.1.2028.** s.120B(e)(2) indexes the 1.1.2024 amounts using \"the index of tax year 2027\" as the previous-year index. Does that recover the CPI r"
+  },
+  {
+   "code": "TXG OQ9",
+   "file": "tax-general.md",
+   "n": 9,
+   "line_at_extraction": 369,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Q11 (formally closed by the statute): Tax Authority circular on the 2% surtax.** The statute (SH 3342) states the test explicitly, so the rule computes as pri"
+  },
+  {
+   "code": "TXG OQ10",
+   "file": "tax-general.md",
+   "n": 10,
+   "line_at_extraction": 370,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Q16 (remaining part, for TXS and TXI): dividends and unlinked-bond gains for 60+.** s.125B reads \"25%\" with no \"not exceeding\", and the guide's list of maximu"
+  },
+  {
+   "code": "TXG OQ11",
+   "file": "tax-general.md",
+   "n": 11,
+   "line_at_extraction": 371,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Return deadline for tax year 2025.** The guide page read here gives 30.4.2026 for non-double-entry filers and employees and 31.5.2026 for online filers. The d"
+  },
+  {
+   "code": "TXG OQ12",
+   "file": "tax-general.md",
+   "n": 12,
+   "line_at_extraction": 372,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-21"
+    ]
+   },
+   "start": "**Surtax at source on capital income.** Do Israeli banks or brokers withhold the 3% and 2% surtax on interest or capital gains, or is it settled only in the ret"
+  },
+  {
+   "code": "TXG OQ13",
+   "file": "tax-general.md",
+   "n": 13,
+   "line_at_extraction": 373,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "method gap": [
+     "G-07"
+    ]
+   },
+   "start": "**Real loss (for TXS).** How is a nominal gain smaller than the inflationary amount treated (no tax and no loss, or an allowable loss)? s.88 as read does not re"
+  },
+  {
+   "code": "TX2 OQ1",
+   "file": "tax-tier2-other.md",
+   "n": 1,
+   "line_at_extraction": 234,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "G-24 blocker": [
+     "G-24"
+    ],
+    "site code": [
+     "lib/compare.server.ts:40"
+    ],
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**FX weakening against the shekel.** If the deposit currency falls, does the negative exchange difference reduce taxable interest, create a loss, or vanish? Sam"
+  },
+  {
+   "code": "TX2 OQ2",
+   "file": "tax-tier2-other.md",
+   "n": 2,
+   "line_at_extraction": 235,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "G-24 blocker": [
+     "G-24"
+    ],
+    "site code": [
+     "lib/compare.server.ts:40"
+    ]
+   },
+   "start": "**FX-deposit withholding base and legal basis.** **[2026-10-24 R5 pass: exact wording of reg. 1 and s.88 confirmed (TX2-02 annotation); still open. Browser to-d"
+  },
+  {
+   "code": "TX2 OQ3",
+   "file": "tax-tier2-other.md",
+   "n": 3,
+   "line_at_extraction": 236,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**The olim and returning-resident FX-deposit orders.** **[2026-10-24 R5 pass: both orders read in full (TX2-19); only the 2026-olim-reform check remains.]** The"
+  },
+  {
+   "code": "TX2 OQ4",
+   "file": "tax-tier2-other.md",
+   "n": 4,
+   "line_at_extraction": 237,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**FX outside a bank: banknotes, and cash at a foreign broker.** Is a conversion gain a capital gain, measured against CPI, and is a loss allowable? Only the def"
+  },
+  {
+   "code": "TX2 OQ5",
+   "file": "tax-tier2-other.md",
+   "n": 5,
+   "line_at_extraction": 238,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "G-24 blocker": [
+     "G-24"
+    ],
+    "site code": [
+     "lib/compare.server.ts:37"
+    ]
+   },
+   "start": "**Structured-deposit classification.** **[2026-10-24 R5 pass: narrowed. The partial-linkage regulations and s.3(ה6) are read; each payout type classifies from p"
+  },
+  {
+   "code": "TX2 OQ6",
+   "file": "tax-tier2-other.md",
+   "n": 6,
+   "line_at_extraction": 239,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "G-24 blocker": [
+     "G-24"
+    ],
+    "site code": [
+     "lib/compare.server.ts:38"
+    ]
+   },
+   "start": "**Corporate-bond default.** Timing of the loss when a bond stops paying without a sale event; treatment of unpaid accrued interest; how banks withhold and net i"
+  },
+  {
+   "code": "TX2 OQ7",
+   "file": "tax-tier2-other.md",
+   "n": 7,
+   "line_at_extraction": 240,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "site code": [
+     "lib/graduation.server.ts:51"
+    ]
+   },
+   "start": "**REIT \"other income\" withholding rate.** **[2026-10-24 R5 pass: narrowed. s.64A5(a)(3) re-read verbatim; Reit 1 states it withholds the profit component at the"
+  },
+  {
+   "code": "TX2 OQ8",
+   "file": "tax-tier2-other.md",
+   "n": 8,
+   "line_at_extraction": 241,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "G-24 blocker": [
+     "G-24"
+    ],
+    "site code": [
+     "lib/compare.server.ts:41"
+    ]
+   },
+   "start": "**National Insurance and health on REIT distributions.** TXG-27's statutory exemptions name s.125B dividends and s.122/122A rent, not REIT pass-through income. "
+  },
+  {
+   "code": "TX2 OQ9",
+   "file": "tax-tier2-other.md",
+   "n": 9,
+   "line_at_extraction": 242,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Gold funds and the foreign-investment-fund status.** Can an Israeli fund holding gold (physical, ETCs, miners) meet the 90% principal-currency test (TXS-14), "
+  },
+  {
+   "code": "TX2 OQ10",
+   "file": "tax-tier2-other.md",
+   "n": 10,
+   "line_at_extraction": 243,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "G-24 blocker": [
+     "G-24"
+    ],
+    "site code": [
+     "lib/compare.server.ts:42"
+    ],
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**Foreign gold ETCs and grantor-trust ETFs.** Is an ETC \"איגרת חוב\" under s.91(b)(3)? Is a US grantor-trust gold ETF a security or a look-through holding of gol"
+  },
+  {
+   "code": "TX2 OQ11",
+   "file": "tax-tier2-other.md",
+   "n": 11,
+   "line_at_extraction": 244,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Fees in a year with no gains.** Does s.92(a)(5) turn unused same-year management and custody fees into a carried-forward securities loss? That needs a Ministe"
+  },
+  {
+   "code": "TX2 OQ12",
+   "file": "tax-tier2-other.md",
+   "n": 12,
+   "line_at_extraction": 245,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "G-24 blocker": [
+     "G-24"
+    ],
+    "site code": [
+     "lib/compare.server.ts:39"
+    ],
+    "graduation-status mention (same file)": [
+     "yes"
+    ]
+   },
+   "start": "**VAT on portfolio-management fees.** **[2026-10-24 R5 pass: closed at the law level (TX2-17): 18% on a dealer's fee; none from a bank or TASE member, which pay"
+  },
+  {
+   "code": "TX2 OQ13",
+   "file": "tax-tier2-other.md",
+   "n": 13,
+   "line_at_extraction": 246,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Robo and managed portfolios that hold funds rather than securities.** Nothing specific was found; the TXS fund rules apply. A manager's own disclosure on tax "
+  },
+  {
+   "code": "TX2 OQ14",
+   "file": "tax-tier2-other.md",
+   "n": 14,
+   "line_at_extraction": 247,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Corporate bonds bought below par.** The split between discount (interest) and capital gain on redemption, when there is a gain, is the same as TXI open questi"
+  },
+  {
+   "code": "TX2 OQ15",
+   "file": "tax-tier2-other.md",
+   "n": 15,
+   "line_at_extraction": 248,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**REIT foreign holdings and partial-year property sales.** Fund-level detail; not researched."
+  },
+  {
+   "code": "TX2 OQ16",
+   "file": "tax-tier2-other.md",
+   "n": 16,
+   "line_at_extraction": 249,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Israeli structured notes (\"תעודות מובנות\") and bank-issued linked bonds** were not covered: they are securities, not deposits, and fall under TX2-07 or TXS by"
+  },
+  {
+   "code": "TX2 OQ17",
+   "file": "tax-tier2-other.md",
+   "n": 17,
+   "line_at_extraction": 250,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Exact wording.** All Ordinance and regulation quotes came through a fetch tool limited to 125-character quotes; the guide and bank PDFs were read as page imag"
+  },
+  {
+   "code": "CAT OQ1",
+   "file": "tracks-catalogue-and-decoder.md",
+   "n": 1,
+   "line_at_extraction": 574,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**CMA \"sources and assumptions\" pages (discovery O11, remainder).** The dictionaries (CAT-02) define units and the gross basis, but not averaging, risk-measure "
+  },
+  {
+   "code": "CAT OQ2",
+   "file": "tracks-catalogue-and-decoder.md",
+   "n": 2,
+   "line_at_extraction": 575,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "site code": [
+     "lib/workbench.ts:198"
+    ]
+   },
+   "start": "**Fee averaging.** How `AVG_ANNUAL_MANAGEMENT_FEE` and `AVG_DEPOSIT_FEE` are averaged (by assets or by members), over which period, and whether they include dis"
+  },
+  {
+   "code": "CAT OQ3",
+   "file": "tracks-catalogue-and-decoder.md",
+   "n": 3,
+   "line_at_extraction": 576,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "general-track"
+    ]
+   },
+   "start": "**Risk fields.** The alpha benchmark, the Sharpe risk-free index, whether the standard deviation is annualised, and the definition of \"liquid\" for `LIQUID_ASSET"
+  },
+  {
+   "code": "CAT OQ4",
+   "file": "tracks-catalogue-and-decoder.md",
+   "n": 4,
+   "line_at_extraction": 577,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Exposure fields.** The NIS-millions unit is inferred (CAT-03). Whether exposure is delta- or derivative-adjusted, by look-through, and how FX hedging counts i"
+  },
+  {
+   "code": "CAT OQ5",
+   "file": "tracks-catalogue-and-decoder.md",
+   "n": 5,
+   "line_at_extraction": 578,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Liquidity semantics.** Covered by item 3."
+  },
+  {
+   "code": "CAT OQ6",
+   "file": "tracks-catalogue-and-decoder.md",
+   "n": 6,
+   "line_at_extraction": 579,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**INCEPTION_DATE.** 1970-01-01 appears for track 103 (a placeholder?). CMA dates differ from Meitav's founding dates (2016-11-10 vs 13/11/2016; 2024-06-23 vs 01"
+  },
+  {
+   "code": "CAT OQ7",
+   "file": "tracks-catalogue-and-decoder.md",
+   "n": 7,
+   "line_at_extraction": 580,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Revisions and completeness.** Whether past periods are revised, and whether a new period appears complete on first publication. Row counts differed across 202"
+  },
+  {
+   "code": "CAT OQ8",
+   "file": "tracks-catalogue-and-decoder.md",
+   "n": 8,
+   "line_at_extraction": 581,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Merger representation.** One case shows that mergers are not recorded in `INTERNAL_TRANSFERS` (CAT-08). Confirm on more mergers."
+  },
+  {
+   "code": "CAT OQ9",
+   "file": "tracks-catalogue-and-decoder.md",
+   "n": 9,
+   "line_at_extraction": 582,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "OQ-tag": [
+     "site/app/content/exposure/general-track.tsx:45",
+     "site/app/content/exposure/index-ta125.tsx:47"
+    ],
+    "instrument record": [
+     "general-track",
+     "index-sp500",
+     "index-ta125"
+    ]
+   },
+   "start": "**The CMA list of investment tracks** (\"רשימת מסלולי השקעה\", circular s.10) with each name's regulatory policy was not obtained. Web search for it returned only"
+  },
+  {
+   "code": "CAT OQ10",
+   "file": "tracks-catalogue-and-decoder.md",
+   "n": 10,
+   "line_at_extraction": 583,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Start-date deferral.** The CMA instrument that moved the start from 1.1.2024 (circular 2022-9-30) to 1.7.2024 (as stated by Meitav and Harel) was not seen. It"
+  },
+  {
+   "code": "CAT OQ11",
+   "file": "tracks-catalogue-and-decoder.md",
+   "n": 11,
+   "line_at_extraction": 584,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "shekel-cash"
+    ]
+   },
+   "start": "**Money-market track period (s.6א).** Whether it applies to investment provident funds and study funds, and how Meitav implements it for 7861. Sources: Meitav b"
+  },
+  {
+   "code": "CAT OQ12",
+   "file": "tracks-catalogue-and-decoder.md",
+   "n": 12,
+   "line_at_extraction": 585,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Meitav app (product.md 3.10 example).** The \"open a new saving\" button, the 8 tracks shown, the \"general, most common\" and \"choose myself\" options, and the du"
+  },
+  {
+   "code": "CAT OQ13",
+   "file": "tracks-catalogue-and-decoder.md",
+   "n": 13,
+   "line_at_extraction": 586,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**\"מיטב קידס\".** Whether it is fund 7857 (same join URL) or a separate fund. Source: Meitav Kids terms or the founder's app."
+  },
+  {
+   "code": "CAT OQ14",
+   "file": "tracks-catalogue-and-decoder.md",
+   "n": 14,
+   "line_at_extraction": 587,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**ISA mutual-fund list.** Where the public list with names, classification and exposure codes is published and in what format. Tried: `https://www.new.isa.gov.i"
+  },
+  {
+   "code": "CAT OQ15",
+   "file": "tracks-catalogue-and-decoder.md",
+   "n": 15,
+   "line_at_extraction": 588,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Pension fees reported at fund level?** All Meitav comprehensive-pension tracks show 0.11 and 1.25 in 202609. Same sources as item 1. **[2026-10-23 browser pas"
+  },
+  {
+   "code": "CAT OQ16",
+   "file": "tracks-catalogue-and-decoder.md",
+   "n": 16,
+   "line_at_extraction": 589,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Operator codes.** The meaning and use of \"קוד מזרחי\", \"קוד נס פנסיה\" and the \"קידוד\" string (512065202000000000078570000000) on Meitav notices; possibly clear"
+  },
+  {
+   "code": "CAT OQ17",
+   "file": "tracks-catalogue-and-decoder.md",
+   "n": 17,
+   "line_at_extraction": 590,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Track 15472 \"אג\"ח ממשלות\".** CMA inception 2024-12-17, but Meitav's founding date is 01/07/2026, YTD yield is null in both sources, and assets are 4.7 NIS m. "
+  },
+  {
+   "code": "CAT OQ18",
+   "file": "tracks-catalogue-and-decoder.md",
+   "n": 18,
+   "line_at_extraction": 591,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": true,
+   "deps": {
+    "instrument record": [
+     "general-track"
+    ]
+   },
+   "start": "**Track-name prefix rules and the 2024 draft regulation** on moving default-track members to age-matched tracks. Both were seen only as search titles or snippet"
+  },
+  {
+   "code": "CAT OQ19",
+   "file": "tracks-catalogue-and-decoder.md",
+   "n": 19,
+   "line_at_extraction": 592,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Which of Meitav's other products** (IRA \"בניהול אישי\" in tagmulim 1486 and study fund 1487, Kids) the app offers under \"open a new saving\". Same as item 12. *"
+  },
+  {
+   "code": "CAT OQ20",
+   "file": "tracks-catalogue-and-decoder.md",
+   "n": 20,
+   "line_at_extraction": 593,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Exact spellings** in classification values (מסוים vs מסויים, שיקלי vs שקלי) for string matching. Confirm from the raw cp1255 CSV."
+  },
+  {
+   "code": "CAT OQ21",
+   "file": "tracks-catalogue-and-decoder.md",
+   "n": 21,
+   "line_at_extraction": 594,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Dictionary vs data mismatches.** The gemel dictionary lists \"קופת גמל להשקעה חיסכון לכל ילד\", while the data has \"קופת גמל להשקעה - חסכון לילד\". Pension's net"
+  },
+  {
+   "code": "CAT OQ22",
+   "file": "tracks-catalogue-and-decoder.md",
+   "n": 22,
+   "line_at_extraction": 595,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**Thirteen tracks opened in 2024 with no fee value in 202609** (Clal 15424 to 15431, 15376, 15377, 15444, 15472, 15482; CAT-40). Under CAT-36 they should have h"
+  },
+  {
+   "code": "CAT OQ23",
+   "file": "tracks-catalogue-and-decoder.md",
+   "n": 23,
+   "line_at_extraction": 596,
+   "already_struck": false,
+   "closed_date": null,
+   "site_dependent": false,
+   "deps": {},
+   "start": "**The computation of the published annual average.** No CMA text read states the formula or the weighting of \"שיעור דמי ניהול ממוצע לשנת X\" (CAT-36, CAT-37), no"
+  }
+ ]
+}

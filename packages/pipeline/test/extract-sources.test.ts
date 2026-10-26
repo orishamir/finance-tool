@@ -31,6 +31,32 @@ describe("extract-sources: fixture Source lines", () => {
     expect(s!.locator_he).toBe("סעיפים 64א2, 64א3(א)(1)");
   });
 
+  it("a documents row with hosts labels only links on those hosts; another copy keeps its own host's label (2026-10-26)", () => {
+    const documents = [{ id: "regs", match: ["ניכוי מריבית"], title_he: "תקנות (ניכוי מריבית)", publisher_he: "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)", kind: "regulation" as const, official_url: null, hosts: ["btl.gov.il"] }];
+    const publishers = { "he.wikisource.org": { publisher: "Hebrew Wikisource", publisher_he: "ויקיטקסט", kind: "law" as const, mirror: "wikisource" as const }, "free-justice.openapi.gov.il": { publisher: "Reshumot", publisher_he: "רשומות (משרד המשפטים)", kind: "law" as const, mirror: null } };
+    const at = (url: string, title: string) => extractFromLine(`[${title}](${url}) · checked 2026-10-26 · primary`, ctx({ documents, publishers })).sources[0]!;
+    expect(at("https://www.btl.gov.il/Laws1/02_0103_100269.pdf", "תקנות מס הכנסה (ניכוי מריבית), נוסח משולב").publisher_he).toBe("שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)");
+    const mirror = at("https://he.wikisource.org/wiki/x", "תקנות מס הכנסה (ניכוי מריבית), ויקיטקסט");
+    expect(mirror.publisher_he).toBe("ויקיטקסט");
+    expect(mirror.kind).toBe("regulation");
+    // the gazette host's "law" default gives way to a title that names regulations
+    expect(at("https://free-justice.openapi.gov.il/free/moj/x/Documents/y", "תקנות מס הכנסה (ניכוי מריבית) (תיקון)").kind).toBe("regulation");
+  });
+
+  it("a passage after the first quoted one gets a source of its own, with its page and quote (TXF-28, 2026-10-26)", () => {
+    const line =
+      '[Irish Revenue, Tax and Duty Manual Part 27-01a-02](https://www.revenue.ie/x/27-01a-02.pdf), p.8, s.4.1 "on the making of a regular payment"; p.9, s.4.2.3 "units which are held in a recognised clearing system"; p.11, s.4.2.8 "an appropriate non-resident declaration" · checked 2026-10-26 · primary (foreign tax authority)';
+    const r = extractFromLine(line, ctx()).sources;
+    expect(r.map((s) => [s.locator, s.page])).toEqual([["p.8, s.4.1", 8], ["p.9, s.4.2.3", 9], ["p.11, s.4.2.8", 11]]);
+    expect(r.every((s) => s.url === "https://www.revenue.ie/x/27-01a-02.pdf" && s.checked === "2026-10-26" && s.strength === "primary" && s.qualifier === "(foreign tax authority)")).toBe(true);
+    const he = extractFromLine('[חוק](https://fs.knesset.gov.il/a.pdf), p.3, s.9 "הנכסים של העמית יוחזקו בנפרד"; p.10, s.13 "הממונה רשאי להורות על העברה" · checked 2026-10-26 · primary', ctx()).sources;
+    expect(he.map((s) => s.quote)).toEqual(["הנכסים של העמית יוחזקו בנפרד", "הממונה רשאי להורות על העברה"]);
+    // passages before the first quote stay in the one locator they always had; nothing already extracted changes
+    const before = extractFromLine('[כללים](https://www.boi.org.il/a.pdf), p.2, s.5(ב); p.3, Annex A "סוג ריבית קבועה או משתנה" · checked 2026-10-26 · primary', ctx()).sources;
+    expect(before).toHaveLength(1);
+    expect(before[0]).toMatchObject({ locator: "p.2, s.5(ב); p.3, Annex A", quote: "סוג ריבית קבועה או משתנה" });
+  });
+
   it("reference-style links resolve through the file's definitions, with angle brackets and parentheses in URLs", () => {
     const defs = { tr: "https://he.wikisource.org/wiki/תקנות_(קופות_גמל)_(העברת)", c17: "https://www.analyst.co.il/media/x/c17.pdf" };
     const line =
@@ -74,6 +100,17 @@ describe("extract-sources: fixture Source lines", () => {
     expect(r.sources).toEqual([]);
     expect(r.derived_from).toEqual(["FXD-07", "FXD-12"]);
     expect(r.raw).toContain("as in FXD-07");
+  });
+
+  it("a general rule's pointer to a company's term is an example, not a derivation (review, 2026-10-26)", () => {
+    const scopeOf = new Map([["FXD-07", "general"], ["FXD-12", "institution"]]);
+    const general = extractFromLine("as in FXD-07; the company's statement: FXD-12 · checked 2026-10-22 · primary", ctx({ ruleScope: "general", scopeOf }));
+    expect(general.derived_from).toEqual(["FXD-07"]);
+    expect(general.examples).toEqual(["FXD-12"]);
+    // a company's own term may point to anything: it derives from what it names
+    const own = extractFromLine("as in FXD-07; FXD-12 · checked 2026-10-22 · institution", ctx({ ruleScope: "institution", scopeOf }));
+    expect(own.derived_from).toEqual(["FXD-07", "FXD-12"]);
+    expect(own.examples).toEqual([]);
   });
 
   it("a quoted Hebrew phrase becomes the quote, an elided or English one does not", () => {

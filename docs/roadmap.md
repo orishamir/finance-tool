@@ -1,7 +1,7 @@
 # Roadmap
 
 Written 2026-10-22 from `docs/product.md` (confirmed the same day, decisions D1 to D13, open to revision). Updated 2026-10-23 for D17, "no blind spots" (product.md appendix E).
-Status: **approved by the founder on 2026-10-22.** Updated 2026-10-24: all five releases are built, release 1 to release 5, each to the extent its data allows. The dated "Status" paragraphs under each release say what exists and what is open; the closing section "After release 5" says what work continues.
+Status: **approved by the founder on 2026-10-22.** Updated 2026-10-24: all five releases are built, release 1 to release 5, each to the extent its data allows. The dated "Status" paragraphs under each release say what exists and what is open; the closing section "After release 5" says what work continues. Updated 2026-10-26: "After release 5" now ends with what was built on 2026-10-25 and 2026-10-26 and the current list of open work.
 
 How to read it:
 
@@ -276,6 +276,20 @@ Approval of this document fixes the release contents and order. It did not start
 
 ---
 
+## Held for review
+
+*Written 2026-10-26 (D32).* The founder holds these back until he has reviewed their design and UX. They are not linked from anywhere on the site, but their addresses work, with a note at the top saying they are waiting for review. The list is `site/app/lib/review.ts`; to bring an item back, remove it from there and record the change here.
+
+- **The idle-cash page (`/idle-cash`).** The founder finds the page "a bit weird". Held with it: the home card's "כרית ביטחון" chip and its "יש לכם כבר פיקדון" pill (both lead there), the menu item and home door "כסף שיושב בעו״ש", the comparison's next step and the deposit guide's "קיבלתם הצעה מהבנק?" line. **Before it returns:** the founder walks through it as a friend with money in a current account, and says what the page should answer and in what order; the page is reworked to that, keeping F-60 and the D20 rule (entered rates, no Bank of Israel numbers); then where a cushion on the home card should land is decided again.
+- **The holdings page (`/holdings`).** Held with it: the home door and menu item "מה כבר יש לכם", the home card's "יש לכם כבר קרן השתלמות" pill, and the links back to it from the fee page, the switching playbook (whose breadcrumb now leads to the product's guide page) and the transfer page. The fee page and the playbook still work when reached from elsewhere. **Before it returns:** the founder enters his own holdings from his annual statements and reviews the flow: adding a holding, the fit mark, consolidation, child savings, and the hand-off to the fee page and the playbook; what he changes is built, and the three side stores are merged into the saved state if he wants that first.
+- **Three "מה מייחד" visuals (D29):** the renewable money-market fund, the bank deposit and the provident fund for investing. Their pages keep the timeline open, as a page without a visual does; `?review` in the address shows the visual with a note. **Before they return:** for the provident fund for investing, the founder finds the comparison with the securities account unfair; the comparison is rebuilt so both sides carry the same assumptions (the same index and fund costs, the broker priced the way F-80 prices it, the tax at exit on both sides at the same age) and the founder agrees it is fair. For the renewable fund and the bank deposit, the founder decides what question each visual answers and approves a mockup, by the reading test of design-system 2.3.
+
+## Not final
+
+*Written 2026-10-26.* Built and linked from the site, but not final: the founder has not settled their design and UX, and they may change. Unlike the held items above they stay reachable from the company pages, the guides and search.
+
+- **The workbench pages (`/workbench/*`):** the tracks of a product across every company (`/workbench/tracks/<wrapper>`, F-64), the banks and investment houses for a fund (`/workbench/providers/<wrapper>`, F-63) and the fund variants of an exposure (`/workbench/funds/<exposure>`, F-65). They still carry the saved-goal strip and a fit mark on each track, which D34 moves off the company and track pages to the goals page. **Before they are final:** the founder walks through them and says what each should answer and in what order; whether their goal UI stays or moves with D34 is decided then.
+
 ## After release 5
 
 *Written 2026-10-24.*
@@ -290,3 +304,105 @@ What continues, none of it a release:
 - **The founder's approvals**: the UI strings of `docs/copy.md` §7 to §9, the two unapproved doors on the first page, the playbook ticks as saved state, a second look at the parameters he signed off on trust (P-02 to P-08, "do whatever you think fits") once he has used the pages they drive, and the consent letters (Bank of Israel, TASE, ISA) if he chooses to send them.
 - **The knowledge layer (2026-10-24, D25).** After the release 5 build the rule base and the documents behind it became something a person can browse and check: every rule record carries its sources, the card puts the source first, the rules page, named "חוקים וכללים", is one page of filters over every rule, the twelve questions (P-09) have their own page with a one-line sourced answer each and a block on the home page (the five shelf pages of the first build were merged the same evening at the founder's request, and the questions left the rules page later that night), a documents page lists what the site read, search covers rules, parameters and documents, and each wrapper guide shows a "שווה לדעת" block. This is the founder's second goal made visible, not a new release. What stays open, each waiting for the founder (`research/knowledge/2026-10-24-synthesis.md` section 5): the conditions ("מתי זה לא חל") in Hebrew on every rule, starting with the 214 figure rules; the official Knesset or gazette publication beside the Wikisource copy for the roughly fifteen laws behind 144 mirror rules; records for the open questions that block a number; Hebrew records for the 360 research rules that have none; claim marks inside guide sentences; the tag "פירוש של האתר" for a conclusion the law does not state in one sentence; and the quoting decision (D22) that gates a cross-provider tariff table and the six rules that quote ISA directives. The pinned list itself shows "ערך זמני" until he signs it.
 - **The debts named in the status paragraphs**: F-18, the merge of the three side stores into the state document, the sensitivity panel in exposure mode, and the stale `it.todo`. (The first page's "since your last visit" line and the change-log page were dropped by D24 on 2026-10-24.)
+
+### 2026-10-25 and 2026-10-26
+
+*Written 2026-10-26.* Still no new release. The work deepened what exists, and most of it came from the founder using the live site.
+
+**Built:**
+
+- **The index page (D27, D28)**, "השקעה במדד":
+  - It lives at `/indices` and `/indices/<index>` since 2026-10-26, with no redirect from the old `/invest`.
+  - It answers where to hold an index, broker first:
+    - the cheapest complete way;
+    - two plain lines: the same fund in another securities account, and the same account with another fund;
+    - every bank and investment house with its cheapest way;
+    - then the funds on the index at a chosen account, with the fund type as a small tag and a link to each fund's Maya page.
+  - The plan is editable on the page, and the index pills use the site's one pill design. The worth bars and the ETF-versus-tracking-fund comparison moved into folds.
+  - The words separate the securities account ("חשבון ניירות ערך") from the fund's manager ("מנהלת הקרן").
+- **The shared component kit** (`site/app/components/kit/`, gallery at `/kit`). Guards and ratchets in its tests keep pages on it, and a structure review runs before every merge (CLAUDE.md). A fix in the kit reaches every page at once. On 2026-10-26 the kit fixed three things everywhere:
+  - a field's state line no longer pushes the page down;
+  - the chart table scrolls only sideways;
+  - the difference between two bars is a sentence that says which side has more.
+- **One chip for every id** (`IdRef`): rules, formulas, parameters and open questions all open their own sheet.
+- **Scope on every rule (D30).** Each rule is general, a named institution's own term, or unsettled. An independent reviewer re-read them all; settling the disagreements is under way.
+- **A company's own figure (D31).** A figure a company publishes about its own product, shown on that product, is plain sourced. The amber "לפי החברה" now marks only a company figure that stands for the market. Guide timelines name the company whose example they run on, and idle cash names the bank.
+- **Open questions.** An audit of all 493 open questions in the rule base closed 101 of them: 68 that were already answered and 33 settled from official sources. The tier-2 blockers follow from it:
+  - managed portfolios wait on MF-28 alone;
+  - FX deposits wait on TX2 OQ2 alone;
+  - Amendment 190 waits on TXA OQ14 and OQ15.
+- **Sources:**
+  - Interactive Brokers' Israeli permit (ISA s.49A) is recorded.
+  - 54 glossary entries are re-sourced from company pages to official ones.
+  - The documents page links the Income Tax Ordinance's own PDF.
+
+**Landed later on 2026-10-26 (overnight, with the founder's go to merge):**
+
+- **The site stops naming closed questions as open.**
+  - `data/open-questions.json` holds all the rule base's questions with their status.
+  - The question chips read their status from it.
+  - A guard fails the build if a page presents a closed question as open.
+  - Guide prose states the answers, and dimensions that waited on them are unblocked.
+- **The scope review is settled in the rule base:** 482 general, 101 institution and 13 unsettled records. Its text fixes include rules that were backwards: IRA-09, and PEN-28, PEN-29 and PEN-34. Both researchers' findings closed 8 more questions and narrowed 11.
+- **Idle cash.**
+  - The headline says the sum is the part not needed at once.
+  - The current account runs on the rate most collected banks print (F-85), not one bank's.
+  - Sheets name a source's company once, in Hebrew.
+  - Every select's option list is readable.
+- **Engine follow-ups:**
+  - a falling index or currency never raises the taxable gain (TXS-02, TXF-03, circular 10/2025);
+  - the relief from 60 at the kupat gemel lehashkaa exit, settled against the manager's 20% withholding (TXK-06, TXK-26);
+  - credit points flagged where not applied (G-23);
+  - the child-savings fee after 21 at the legal cap, labelled "עד" (CS-18);
+  - custody on money-market units at non-bank members (BRK-52);
+  - source labels: regulations labelled as regulations.
+
+  All of it was checked by a finance review and an independent review. Golden values come from a separate script.
+- **The rules-scope layout (spec sections 3 and 4), merged after four review rounds.**
+  - **Where things show:** general rules on guides, the rules page and the questions page. A company's terms only on that company's page, from the company's own documents, with "תלוי בחברה" links naming the companies the record states the property for. Press, forums, counts and site terms sit in a "לא נכלל ככלל" section on /companies.
+  - **Labels and chips:** "לפי החברה" drops only on the named company's own sites. Company terms appear on general rule cards as examples, not as derivations.
+  - **Search** has two groups.
+  - **The validator** enforces all of this, file by file.
+
+- **Wrappers and securities (D6 amended, 2026-10-26, founder: "change D6").** Makam, government bonds and the two money-market funds are securities bought in a securities account, not wrappers. Their records moved to `data/instruments/securities/` with `held_in`; IDs, pages and saved keys stay. What changed for a person:
+  - the comparison prices makam and the government bond on the provider that leaves the goal the most, as it already did the account (F-80), with each provider's own lines for the class;
+  - makam at a non-bank member pays that member's custody line, and any account's monthly fee follows a security into the account (F-14, F-17); before, the makam run read neither;
+  - exposure mode no longer lists the securities account beside makam as a second way that never ran; the makam choice reads "מק״מ, קנייה ישירה בחשבון ניירות ערך";
+  - a security's guide page names the account it is bought in, and the account's page lists the securities bought in it; the account's eligibility, supervision and protection text is no longer copied into four records.
+
+  Research and the full list: `research/discovery/2026-10-26-wrappers-and-securities.md`.
+
+**Later on 2026-10-26 (the founder, on the company page, D34):**
+
+- **No goal on the company and track pages.** The saved-goal strip, the fit mark on each track row and the track page's "מתאים למטרה שלכם?" card are gone; goal UI comes back on the goals page.
+- **Stock exposure instead.** The track table's last column, and a row of the track page, show the share of the track's assets exposed to shares at the end of the latest report period (F-87, computed from the CMA's own amounts, CAT-24). The CMA adapter now keeps `TOTAL_ASSETS` and `STOCK_MARKET_EXPOSURE` as value objects (`holdings`, data-schema 3.13), and the CSV's other numeric columns as received for later use.
+- **A fund's "עוקבת אחרי" link** on a company page leads to the index's guide page (`/exposure/<index>`), not to the index comparison.
+- **The workbench pages are listed as not final** (section "Not final" above).
+
+**What continues, in order:**
+
+1. **F-48, early pension withdrawal:** re-read TXP-18's official text, then build it.
+2. **The money-market and makam rate:** tie it to the Bank of Israel rate minus the fund's fees once a person reads the BoI page, which stops scripts. Today it is a round 3.5%.
+3. **The founder's calls:**
+   - a credit-points input (G-23);
+   - the minimum order that would rank makam and bonds (GOV OQ7, GOV-24);
+   - the tax when a refund at 60 is not claimed (the engine assumes 25%, an upper bound);
+   - kit round 2;
+   - whether the caution on accumulating foreign funds (TXF OQ1) stays.
+4. **Rule-base requests:**
+   - the source for a falling CPI in the provident products' real gain (`research/specs/2026-10-26-followups/requests.md`);
+   - the scope requests (`research/knowledge/2026-10-25-scope/requests.md`);
+   - the rules-scope requests (`research/specs/2026-10-25-rules-scope/requests.md`).
+5. **Pages for a person to open in a browser:**
+   - the Bank of Israel's prime-rate and deposit pages;
+   - TASE's content and trading-hours pages;
+   - the ISA's foreign-funds search and portfolio-manager register;
+   - EUR-Lex;
+   - the Supreme Court site;
+   - and the link check's 43 links.
+6. **Unchanged from the list above:** tier-2 graduation, data growth, the quarterly tariff refresh and the founder's approvals. Corporate bonds and REITs graduate as securities held in the securities account (D6 as amended 2026-10-26), not as wrappers.
+7. **Securities in the account, what is left (D6, 2026-10-26):**
+   - **The "which bank or investment house" page (F-63) for makam and government bonds.** It still ranks funds only: its run is the fund run and its subject is a fund record. It needs a makam and a bond subject that run the makam and bond ledgers on every provider's lines for their class, as the comparison card's picker already does.
+   - **Money-market funds at a non-bank member in the comparison.** The comparison keeps the bank case, where a bank with a distribution agreement charges the holder nothing (MF-26, BANK-18). At a non-bank member that is an investment marketer, MF-26 does not bind and the tariff applies (BRK-52), so a person who already holds an account at such a member is priced as if they bought at a bank. Needs: the provider pick for the money-market securities, with each member's `money_market_units` lines and the bank case as one of the options.
+   - **One account or a pick per option.** Makam and the bond each take their own cheapest provider, and a provider the person chose for the securities account does not carry over to them. If the founder means one account for everything held there, the pick becomes one choice shared by the account and its securities.
+   - **The general track is not an exposure.** `data/instruments/exposures/general-track.json` names no contents: its own line says the mix is up to each manager's investment committee with no committed equity range, so two general tracks can hold different things. It exists only inside provident wrappers (kupat gemel lehashkaa, keren hishtalmut), which makes it a track, the provident counterpart of a fund in a securities account, and D18 already said track classifications get no exposure page. Today exposure mode asks for a return for an undefined mix and judges it at P-04's "כללי" row. A decision for the founder, since it is exposure mode's only mixed option: drop it from the exposures, or model tracks as the layer inside the provident wrappers and rank them by the asset mix each manager publishes.

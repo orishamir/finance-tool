@@ -299,7 +299,7 @@
           "BRK-15"
         ],
         "state": "sourced",
-        "notes": "'0.15%, מינימום ₪ 75 לחודש', charged once a month ('אחת לחודש'), computed on the portfolio value including financial assets and fund units. The tariff does not say whether 0.15% is a monthly or an annual rate; recorded per the monthly charging period as printed, unconfirmed. The tariff prints no exemption of makam or money-market funds from custody; the bank ban (BRK-17) does not apply to a non-bank member (BRK OQ11), so no excludes are recorded."
+        "notes": "'0.15%, מינימום ₪ 75 לחודש', charged once a month ('אחת לחודש'), computed on the portfolio value including financial assets and fund units. The tariff does not say whether 0.15% is a monthly or an annual rate; recorded per the monthly charging period as printed, unconfirmed. The tariff prints no exemption of makam or money-market funds from custody; the bank ban (BRK-17) does not apply to a non-bank member, and no rule limits its custody fee on them (BRK-52; BRK open question 11 closed 2026-10-26), so no excludes are recorded."
       },
       "min": {
         "value": 75,

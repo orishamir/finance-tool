@@ -1,6 +1,6 @@
 // F-60 Idle-cash preset: the monthly cost of leaving money in the current account instead of a liquid option,
 // after tax, with the coverage line over the full candidate set (F-83, G-28).
-import { wrapperId, type ValueObject, type WrapperId } from "@finance-tool/schema";
+import { productIds, type ValueObject, type ProductId } from "@finance-tool/schema";
 import { RecordInputError } from "../inputs.ts";
 import type { RunContext, RunResult } from "../result.ts";
 import { assertInvariant, coverageLine } from "./coverage.ts";
@@ -40,7 +40,7 @@ export interface IdleCashInput {
 
 export interface IdleCashRow {
   id: string;
-  wrapper: WrapperId;
+  wrapper: ProductId;
   label: RateLabel;
   rate: ValueObject;
   /** The alternative's net annual rate after tax, from its run over one year. */
@@ -70,7 +70,7 @@ export interface IdleCash {
   coverage: CoverageLine<IdleKind>;
 }
 
-const cashOptions: readonly WrapperId[] = ["bank-deposit", "makam", "money-market-fund-daily"];
+const cashOptions: readonly ProductId[] = ["bank-deposit", "makam", "money-market-fund-daily"];
 
 /**
  * F-60 Idle-cash preset. `B` is the balance less the part that must stay available. Each option's net rate is
@@ -93,7 +93,7 @@ export function idleCash(input: IdleCashInput, ctx: RunContext): IdleCash {
     return ex.ok ? { run: ex.run, netRate: ex.run.nominal / amount - 1 } : ex;
   };
 
-  const byId = new Map<WrapperId, CandidateInput>();
+  const byId = new Map<ProductId, CandidateInput>();
   const candidates: IdleCandidate[] = [];
   const seen = new Set<string>();
   const parsed = input.wrappers.map((c) => ({ c, w: parseWrapper(c.record) }));
@@ -109,8 +109,8 @@ export function idleCash(input: IdleCashInput, ctx: RunContext): IdleCash {
   if (!("run" in baseRun)) throw new RecordInputError(`idle cash: the baseline cannot be run: ${baseRun.reason.code}`);
 
   const rows: IdleCashRow[] = [];
-  const failed = new Map<WrapperId, Reason>();
-  const alternatives: { wrapper: WrapperId; id: string; label: RateLabel; rate: ValueObject | undefined }[] = [
+  const failed = new Map<ProductId, Reason>();
+  const alternatives: { wrapper: ProductId; id: string; label: RateLabel; rate: ValueObject | undefined }[] = [
     { wrapper: "bank-deposit", id: "bank-deposit:average", label: "average-paid-last-month", rate: input.bankAverage },
     { wrapper: "bank-deposit", id: "bank-deposit:own-offer", label: "entered-by-you", rate: input.ownOffer },
     { wrapper: "makam", id: "makam", label: byId.get("makam")?.cashRate?.state === "entered" ? "entered-by-you" : "sourced", rate: byId.get("makam")?.cashRate },
@@ -121,7 +121,7 @@ export function idleCash(input: IdleCashInput, ctx: RunContext): IdleCash {
       rate: byId.get("money-market-fund-daily")?.cashRate,
     },
   ];
-  const ran = new Set<WrapperId>();
+  const ran = new Set<ProductId>();
   for (const a of alternatives) {
     const c = byId.get(a.wrapper);
     if (!c) continue;
@@ -164,7 +164,7 @@ export function idleCash(input: IdleCashInput, ctx: RunContext): IdleCash {
     candidates.push(cand);
   }
   if (!input.restricted) {
-    for (const id of wrapperId.options) {
+    for (const id of productIds) {
       if (!seen.has(id)) candidates.push({ id, tier: 1, kind: "not-evaluated", reasons: [{ code: "missing-record", ruleIds: [], gapIds: [], detail: id }] });
     }
   }

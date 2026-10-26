@@ -1,7 +1,7 @@
 // data/instruments/exposures/: one record per exposure type. docs/data-schema.md §3.4.
 // Strict: a field the doc does not name is an error.
 import { z } from "zod";
-import { isoDate, wrapperId } from "../value.ts";
+import { isoDate, productId } from "../value.ts";
 
 /** data-schema §3.4, `kind`. */
 export const exposureKind = z.enum(["equity_index", "bond_index", "cash_like", "mixed", "commodity", "other"]);
@@ -19,7 +19,7 @@ export const exposureRecord = z.strictObject({
   /** Fund records under data/funds/, as `fund:<id>`; other entries are free text until the fund record exists. */
   variants: z.array(z.string().min(1)),
   /** Wrappers that can hold this exposure (data-schema §3.4). */
-  wrapper_ids: z.array(wrapperId).optional(),
+  wrapper_ids: z.array(productId).optional(),
   rule_ids: z.array(z.string().min(1)).optional(),
   open_questions: z.array(z.string().min(1)).optional(),
   /** S5 (2026-10-25): true when the index is made of Israeli companies. Left out for cash, bond and general tracks. */

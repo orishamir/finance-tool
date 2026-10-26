@@ -21,6 +21,8 @@ import { checklistFor, parsePlaybookQuery, playbookQueryString, SWITCH_RULES_HRE
 import { BROKERAGE } from "../lib/providers";
 import { useHoldings } from "../lib/state";
 import { useInputs } from "../lib/inputs";
+import { recordsById } from "../lib/scope";
+import { shown } from "../lib/review";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { playbookPage } = await import("../lib/playbook.server");
@@ -134,10 +136,10 @@ function Body() {
     ) : null;
 
   return (
-    <PageShell current="other" data={{ rules: provenanceRules, terms: {}, dimensions: {}, today: data.today }}>
+    <PageShell current="other" data={{ rules: provenanceRules, pointed: { ...(data.pointed as unknown as Record<string, RuleRecord>), ...recordsById(wb?.pointed) }, terms: {}, dimensions: {}, today: data.today }}>
       <div className="flex flex-col gap-5 lg:gap-6 pt-2 lg:pt-8">
         <header className="flex flex-col gap-3 max-w-page">
-          <Breadcrumb parent={{ href: "/holdings", label: c.back }} current={`${c.title.before}${data.wrapperName}${c.title.after}`} />
+          <Breadcrumb parent={shown("/holdings") ? { href: "/holdings", label: c.back } : { href: `/guide/${data.wrapperId}`, label: data.wrapperName }} current={`${c.title.before}${data.wrapperName}${c.title.after}`} />
           <h1 className="text-2xl lg:text-3xl font-semibold">
             {c.title.before}
             <bdi>{data.wrapperName}</bdi>
@@ -201,9 +203,11 @@ function Body() {
             </section>
             {checklistBlock && <div className="lg:hidden">{checklistBlock}</div>}
             <nav className="flex flex-wrap gap-x-6 text-sm" aria-label="קישורים">
-              <Link to="/holdings" className="text-link hover:underline min-h-target inline-flex items-center">
-                {c.links.holdings}
-              </Link>
+              {shown("/holdings") && (
+                <Link to="/holdings" className="text-link hover:underline min-h-target inline-flex items-center">
+                  {c.links.holdings}
+                </Link>
+              )}
               {data.hasProviders && (
                 <Link to={`/workbench/providers/${data.wrapperId}`} className="text-link hover:underline min-h-target inline-flex items-center">
                   {c.links.providers}

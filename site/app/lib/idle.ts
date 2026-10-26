@@ -4,7 +4,7 @@
 // own offer is a one-month deposit (A-26), so it runs on a one-month term, a second call of the same function.
 import { idleCash, type CandidateInput, type IdleCash, type IdleKind, type RunContext } from "@finance-tool/engine";
 import { asParameter, cashRateOf, openConstraintOf, parameterOf, type CompareBundle } from "./compare";
-import { computed, entered as enteredValue, type SiteValue } from "./value";
+import { computed, entered as enteredValue, ownBy, type SiteValue } from "./value";
 import type { ValueObject } from "@finance-tool/schema";
 import type { Reason } from "@finance-tool/engine";
 
@@ -143,8 +143,12 @@ export function buildIdle(bundle: CompareBundle, balance: number | null, keep: n
       const r = rowsById.get(id);
       if (!r) continue;
       const label: IdleLabel = id === "bank-deposit:average" ? "published" : id === "bank-deposit:own-offer" ? "entered" : "parameter";
-      const cost = computed(r.monthlyCost, "nis", "F-60", { amount: enteredValue(main.amount, "nis", today), rate: r.rate as SiteValue, baseline: main.baseline.rate as SiteValue }, { today, about: id, rules: r.run.rules.map((u) => ({ id: u.id, strength: u.strength as SiteValue["source"]["strength"] })), flags: r.run.flags.map((f) => f.code) });
-      rows.push({ id, label, rate: r.rate as SiteValue, cost, monthlyCost: r.monthlyCost, notes: r.notes });
+      // D31: the bank's published rate on the bank's own row; the row names the bank (the engine's copy of the value may drop the mark)
+      const owner = id === "bank-deposit:average" ? (bankRate as SiteValue | undefined)?.own : undefined;
+      const rate = owner ? ownBy(r.rate as SiteValue, owner) : (r.rate as SiteValue);
+      const baseline = current.cashRate!.own ? ownBy(main.baseline.rate as SiteValue, current.cashRate!.own) : (main.baseline.rate as SiteValue);
+      const cost = computed(r.monthlyCost, "nis", "F-60", { amount: enteredValue(main.amount, "nis", today), rate, baseline }, { today, about: id, rules: r.run.rules.map((u) => ({ id: u.id, strength: u.strength as SiteValue["source"]["strength"] })), flags: r.run.flags.map((f) => f.code) });
+      rows.push({ id, label, rate, cost, monthlyCost: r.monthlyCost, notes: r.notes });
     }
     const failed: IdleFailedRow[] = main.candidates.filter((c) => c.tier === 1 && cashOptions.has(c.id) && c.kind === "not-evaluated").map((c) => ({ id: c.id, reasons: c.reasons }));
     const top = rows.length > 0 ? rows.reduce((a, b) => (b.monthlyCost > a.monthlyCost ? b : a)) : null;
@@ -168,7 +172,7 @@ export function buildIdle(bundle: CompareBundle, balance: number | null, keep: n
     for (const w of bundle.wrappers) names[w.id] = w.name;
     for (const t of bundle.tier2) names[t.id] = t.name;
     const coverageRows: IdleCoverageRow[] = main.candidates.map((c) => ({ id: c.id, name: names[c.id] ?? c.name ?? c.id, tier: c.tier, kind: c.kind, reasons: c.reasons, ...(c.tier === 1 ? { href: `/guide/${c.id}` } : {}) }));
-    return { kind: "ok", amount, rows, failed, baseline: { rate: main.baseline.rate as SiteValue }, headline, yearly, verdict, materiality, smallSum, coverage: main.coverage, coverageRows, names };
+    return { kind: "ok", amount, rows, failed, baseline: { rate: current.cashRate.own ? ownBy(main.baseline.rate as SiteValue, current.cashRate.own) : (main.baseline.rate as SiteValue) }, headline, yearly, verdict, materiality, smallSum, coverage: main.coverage, coverageRows, names };
   } catch (e) {
     return { kind: "error", message: e instanceof Error ? e.message : String(e) };
   }

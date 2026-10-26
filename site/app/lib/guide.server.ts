@@ -1,11 +1,11 @@
 // Builds the data of one guide page at build time (design-spec 2): the wrapper record, its rule figures,
 // the engine bundle and its first run on P-05, the checklist marks, the terms and the companies that offer it.
 import { pending as pendingFormulaReleases, type P05Input } from "@finance-tool/engine";
-import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { wrapperId as wrapperIdEnum, type ExposureRecord, type RuleRecord, type ValueObject, type WrapperId, type WrapperRecord } from "@finance-tool/schema";
-import { buildHishtalmutTerms, loadExposures, regulatorAverageFees } from "./instruments.server";
-import { loadChecklistRows, loadCma, loadCmaFees, loadFees, loadParameters, loadRules, loadTerms, loadWrappers, root, today, type ChecklistRow, type TermRow } from "./data.server";
+import { companyTermRule, isSecurity, productIds, type ExposureRecord, type RuleRecord, type ProductRecord } from "@finance-tool/schema";
+import { buildHishtalmutTerms, loadExposures } from "./instruments.server";
+import { providentTerms } from "./compare.server";
+import { loadChecklistRows, loadCma, loadFees, loadParameters, loadRules, loadTerms, loadProducts, pointedRecords, root, today, type ChecklistRow, type TermRow } from "./data.server";
 import { runTimeline, type Bundle, type Timeline } from "./engine";
 import { buildInstrumentBundle, familyOf, missingParts, rulesTouched, type NoGraph } from "./guide-signature-bundle.server";
 import { buildSignatureData } from "./guide-signature.server";
@@ -13,17 +13,20 @@ import type { SignatureData } from "./guide-signature";
 import { isClosedAudience } from "./guide-nav";
 import { playbookWrappers } from "./playbook";
 import { ruleFigure, weaker, type SiteValue, type Strength } from "./value";
+import { readTextCached } from "./read-cache.server";
 
 export interface GuidePageData {
-  record: WrapperRecord;
+  record: ProductRecord;
   name: string;
   lede: string | null;
   bundle: Bundle | null;
   initial: Timeline | null;
   /** Rule records the page cites anywhere, for the rule cards. */
   rules: Record<string, RuleRecord>;
+  /** The records those cards point at that the page does not cite (`pointedRecords`): only chips and cards read them. */
+  pointed: Record<string, RuleRecord>;
   terms: TermRow[];
-  /** How many wrappers the site knows: a term that names this many is shared by every product (the guide shows it under "מונחים כלליים"). */
+  /** How many products the site knows (wrappers and securities): a term that names this many is shared by every product (the guide shows it under "מונחים כלליים"). */
   wrapperCount: number;
   termsById: Record<string, TermRow>;
   checklist: ChecklistRow[];
@@ -45,6 +48,13 @@ export interface GuidePageData {
   /** The record's formulas the engine does not compute yet, with the release number that brings each. */
   pendingFormulas: Record<string, string>;
   related: { href: string; label: string }[];
+  /**
+   * A security's wrapper (D6, amended 2026-10-26): the first of its record's `held_in`, the account its run and its page sit in, with
+   * the rules that say it is held there. Null for a wrapper.
+   */
+  heldIn: { id: string; name: string; ruleIds: string[] } | null;
+  /** On a wrapper's page, the securities whose record names it in `held_in` (D6, 2026-10-26), each with its own page. */
+  securities: { href: string; label: string }[];
   today: string;
 }
 
@@ -54,7 +64,7 @@ export type { NoGraph };
 function scanRuleIds(relPath: string, allRules: Record<string, RuleRecord>): string[] {
   let src = "";
   try {
-    src = readFileSync(join(root, relPath), "utf8");
+    src = readTextCached(join(root, relPath));
   } catch {
     return [];
   }
@@ -77,7 +87,7 @@ function collectRuleIds(node: unknown, out = new Set<string>()): Set<string> {
 }
 
 export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTermIds: string[] = []): GuidePageData | null {
-  const record = loadWrappers().find((w) => w.id === id);
+  const record = loadProducts().find((w) => w.id === id);
   if (!record) return null;
   const allRules = loadRules();
   const parameters = loadParameters();
@@ -94,38 +104,12 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
   const pendingFormulas: Record<string, string> = {};
   for (const f of recordFormulas) if (pendingFormulaReleases[f]) pendingFormulas[f] = /^R(\d+)/.exec(pendingFormulaReleases[f]!)?.[1] ?? "";
   if (family === "provident") {
-    const snapshots = loadFees().filter((f) => f.lines.some((l) => l.applies_to.includes(id) && l.level === "list"));
-    if (snapshots.length > 1) throw new Error(`${id}: ${snapshots.length} fee snapshots cover it; the guide timeline needs one (choose it in a site parameter)`);
-    // The fees of the run: the provider's list fees, or, when none covers the wrapper and P-05 names a `track`, the
-    // regulator's average actually charged on that track (method §2.4; labelled as an average, not a list price).
-    let fees: { deposit: number; balance: number; direct: number } | null = null;
-    let feeValues: Record<string, SiteValue> = {};
-    let missing: string[] = [];
-    const snap = snapshots[0];
-    const line = (base: string) => snap?.lines.find((l) => l.applies_to.includes(id) && l.level === "list" && l.base === base);
-    const balance = line("balance");
-    const deposit = line("deposit");
-    const direct = line("direct_expenses");
-    const pct = (v: ValueObject) => (v.value as number) / 100;
-    if (balance && deposit) {
-      feeValues = { balance: { ...balance.rate }, deposit: { ...deposit.rate } };
-      if (direct) feeValues.direct = { ...direct.rate };
-      fees = { deposit: pct(deposit.rate), balance: pct(balance.rate), direct: direct ? pct(direct.rate) : 0 };
-    } else {
-      // a fee the list does not give comes from the regulator's average on the named track (labelled as such)
-      const reg = regulatorAverageFees(id, p05.instruments?.[id], loadCmaFees(), allRules, t, { balance: !!balance, deposit: !!deposit });
-      if (reg && "missing" in reg) missing = reg.missing;
-      else if (reg) {
-        feeValues = { ...reg.feeValues };
-        if (balance) feeValues.balance = { ...balance.rate };
-        if (deposit) feeValues.deposit = { ...deposit.rate };
-        if (direct) feeValues.direct = { ...direct.rate };
-        fees = { balance: balance ? pct(balance.rate) : reg.fees.balance, deposit: deposit ? pct(deposit.rate) : reg.fees.deposit, direct: direct ? pct(direct.rate) : 0 };
-      } else {
-        console.log(`[guide] ${id}: no timeline: ${snap ? `${snap.id} has no list ${balance ? "deposit" : "balance"} line for it` : "no list-fee snapshot in data/fees/ covers it"} and P-05 names no track`);
-        noGraph = { kind: "missing", parts: ["tariff"] };
-      }
-    }
+    // The fees of the run: the provider's list fees, or, when none covers the wrapper and P-05 names a `track`, the regulator's average
+    // actually charged on that track (method §2.4). The comparison's own function, so a list fee carries its company (D31) here too.
+    const r = providentTerms(id, loadFees(), p05.instruments?.[id], allRules, t);
+    const feeValues: Record<string, SiteValue> = { ...r.feeValues };
+    let missing: string[] = [...r.missing];
+    const fees = r.terms?.fees ?? null;
     if (fees) {
       const terms: Bundle["terms"] = { fees };
       if (id === "keren-hishtalmut") {
@@ -172,6 +156,8 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
   const exitTextRules = [...new Set(record.lawful_exit.text?.match(/\b[A-Z0-9]{2,6}-[A-Z0-9]{1,5}\b/g) ?? [])].filter((r) => !!allRules[r]?.text_he);
   exitTextRules.forEach((r) => cited.add(r));
   extraRuleIds.forEach((r) => cited.add(r));
+  // the companies' own terms the record names where a property is each company's (D30): their records give the guide's "תלוי בחברה" links
+  for (const refs of Object.values(record.company_terms ?? {})) refs.forEach((r) => cited.add(companyTermRule(r)));
   // rules the prose module cites (<RulesLine>, <RuleRef>, figure(...)): found in its source so the cards are not empty
   scanRuleIds(`site/app/content/guide/${id}.tsx`, allRules).forEach((r) => cited.add(r));
   bundle?.rules.forEach((r) => cited.add(r.id));
@@ -210,15 +196,18 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
     .filter((e) => (e.wrapper_ids ?? []).includes(record.id))
     .map((e) => ({ id: e.id, name: e.names.he[0] ?? e.id }));
 
-  const wrappers = loadWrappers();
+  const wrappers = loadProducts();
   const related = record.transfer_routes
     .map((r) => r.to)
     .filter((to, i, a) => to !== id && a.indexOf(to) === i)
     .map((to) => wrappers.find((w) => w.id === to))
-    .filter((w): w is WrapperRecord => !!w)
+    .filter((w): w is ProductRecord => !!w)
     .map((w) => ({ href: `/guide/${w.id}`, label: w.names.he[0]! }));
+  const account = isSecurity(record) ? wrappers.find((w) => w.id === record.held_in.wrapper_ids[0]) : undefined;
+  const heldIn = isSecurity(record) && account ? { id: account.id, name: account.names.he[0]!, ruleIds: record.held_in.rule_ids } : null;
+  const securities = wrappers.filter((w) => isSecurity(w) && w.held_in.wrapper_ids.includes(record.id as never)).map((w) => ({ href: `/guide/${w.id}`, label: w.names.he[0]! }));
 
-  return { record, name: record.names.he[0]!, lede, bundle, initial, rules, terms, wrapperCount: wrapperIdEnum.options.length, termsById, checklist, dimensionNames, marks, companies, exposures, hasPlaybook: playbookWrappers.includes(record.id), exitTextRules, signature, noGraph, pendingFormulas, related, today: t };
+  return { record, name: record.names.he[0]!, lede, bundle, initial, rules, pointed: pointedRecords(rules, allRules), terms, wrapperCount: productIds.length, heldIn, securities, termsById, checklist, dimensionNames, marks, companies, exposures, hasPlaybook: playbookWrappers.includes(record.id), exitTextRules, signature, noGraph, pendingFormulas, related, today: t };
 }
 
 export { familyOf };
@@ -252,13 +241,15 @@ export interface ExposurePageData {
   name: string;
   lede: string | null;
   rules: Record<string, RuleRecord>;
+  /** The records those cards point at that the page does not cite (`pointedRecords`): only chips and cards read them. */
+  pointed: Record<string, RuleRecord>;
   terms: TermRow[];
   termsById: Record<string, TermRow>;
   /**
    * Wrappers that can hold this exposure. `blockedBy` are the wrapper's own exit-tax blockers (its record's
    * `tax_at_exit.blocked_by`): only these make the card say the tax is unclear (audit A85). `openQuestions` are the open
    * questions the wrapper and the exposure both carry and the wrapper does not list as exit-tax blockers: some are tax questions that
-   * do not block the run (TXI-OQ2, TXI-OQ14, TXI-OQ3), others are not tax questions (BANK-OQ8, MF-OQ4), so the card shows them in a neutral tag.
+   * do not block the run (TXI-OQ14, TXI-OQ3), others are not tax questions (BANK-OQ8, MF-OQ3), so the card shows them in a neutral tag.
    */
   holders: { id: string; name: string; blockedBy: string[]; openQuestions: string[] }[];
   checklist: (ChecklistRow & { mark: "covered" | "na"; rules: string[] })[];
@@ -270,14 +261,14 @@ export function buildExposurePage(id: string, extraTermIds: string[] = []): Expo
   const record = loadExposures().find((e) => e.id === id);
   if (!record) return null;
   const allRules = loadRules();
-  const wrappers = loadWrappers();
+  const wrappers = loadProducts();
   const t = today();
 
   const cited = new Set<string>([...(record.rule_ids ?? []), ...(record.open_questions ?? [])]);
   scanRuleIds(`site/app/content/exposure/${id}.tsx`, allRules).forEach((r) => cited.add(r));
   const holders = (record.wrapper_ids ?? [])
     .map((wid) => wrappers.find((w) => w.id === wid))
-    .filter((w): w is WrapperRecord => !!w)
+    .filter((w): w is ProductRecord => !!w)
     .map((w) => {
       const blockedBy = [...new Set(w.tax_at_exit.blocked_by)];
       const openQuestions = (record.open_questions ?? []).filter((q) => w.open_questions.includes(q) && !blockedBy.includes(q));
@@ -303,5 +294,5 @@ export function buildExposurePage(id: string, extraTermIds: string[] = []): Expo
   const name = record.names.he[0] ?? record.id;
   // the exposure record's own one-line description, else the glossary line (F: one_line_he)
   const lede = record.one_line_he ?? termsById[name]?.explanation ?? all.find((r) => r.he === name)?.explanation ?? null;
-  return { record, name, lede, rules, terms, termsById, holders, checklist, dimensionNames: Object.fromEntries(checklist.map((r) => [r.id, r.name])), today: t };
+  return { record, name, lede, rules, pointed: pointedRecords(rules, allRules), terms, termsById, holders, checklist, dimensionNames: Object.fromEntries(checklist.map((r) => [r.id, r.name])), today: t };
 }

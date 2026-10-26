@@ -15,6 +15,8 @@ export interface WorthRow {
   id: string;
   title: string;
   figure: SiteValue | null;
+  /** The figure is a legal cap (its name holds `cap`, as `balance_cap`): shown with "עד" so it never reads as the rate charged (2026-10-26). */
+  upTo?: boolean;
   weak: "institution" | "secondary" | null;
 }
 
@@ -26,13 +28,19 @@ export interface WorthFactRow {
 }
 
 /** The rows for one wrapper: pinned ids whose record is loaded and has a Hebrew title, at most three. */
+/**
+ * A figure name that is a legal cap, shown with "עד" (2026-10-26): its name holds `cap` as a word (`balance_cap`, `deposit_cap_after_21`),
+ * but not a minimum (`min_market_cap_usd`) nor a market capitalisation (`market_cap_coverage`), which are no ceiling on what is charged.
+ */
+export const isCapName = (name: string) => /(^|_)cap(_|$)/.test(name) && !/(^|_)min(_|$)/.test(name) && !/(^|_)market_cap(_|$)/.test(name);
+
 export function worthRows(ids: readonly string[] | undefined, rules: Record<string, RuleRecord>, today: string): WorthRow[] {
   const rows: WorthRow[] = [];
   for (const id of ids ?? []) {
     const r = rules[id];
     if (!r?.title_he) continue;
     const first = Object.keys(r.figures ?? {}).find((n) => ruleFigure(r, n, today));
-    rows.push({ kind: "rule", id, title: r.title_he, figure: first ? ruleFigure(r, first, today) : null, weak: r.strength === "institution" || r.strength === "secondary" ? r.strength : null });
+    rows.push({ kind: "rule", id, title: r.title_he, figure: first ? ruleFigure(r, first, today) : null, upTo: first !== undefined && isCapName(first), weak: r.strength === "institution" || r.strength === "secondary" ? r.strength : null });
     if (rows.length === 3) break;
   }
   return rows;
@@ -49,6 +57,7 @@ export function WorthKnowing({ rows, facts = [] }: { rows: WorthRow[]; facts?: W
             <span>{r.title}</span>
             {r.figure && (
               <span className="whitespace-nowrap">
+                {r.upTo && <>{copy.upTo} </>}
                 <Num value={r.figure} />
                 {["months", "years", "days", "business_days", "usd", "eur"].includes(r.figure.unit) && (provCopy.unit as Record<string, string>)[r.figure.unit] && <span className="text-muted-foreground"> {(provCopy.unit as Record<string, string>)[r.figure.unit]}</span>}
               </span>

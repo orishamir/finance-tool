@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router";
 import { buttons, search as searchCopy, searchMore, site } from "../copy";
 import { formatValue } from "../lib/format";
 import { rememberUncatalogued } from "../lib/inputs";
-import { analyze, contentWords, groupHits, highlightRanges, nearHits, normalize, relaxedHits, searchEntries, snippetOf, type Analysis, type SearchEntry, type SearchHit, type SearchKind, type SearchTexts } from "../lib/search";
+import { analyze, contentWords, groupHits, highlightRanges, isRuleKind, nearHits, normalize, relaxedHits, searchEntries, snippetOf, type Analysis, type SearchEntry, type SearchHit, type SearchKind, type SearchTexts } from "../lib/search";
 import { IconClose, IconCopy, IconDrillIn, IconLock, IconSearch } from "./icons";
 import { Sheet } from "./Sheet";
 import { Button, cx } from "./kit";
@@ -100,7 +100,7 @@ function RowLine({ hit, found, text }: { hit: SearchHit; found: Found; text: str
     const raw = found.texts[r.key];
     const snippet = raw ? snippetOf(raw, found.analysis) : null;
     if (snippet) {
-      const tail = r.kind === "rule" || r.kind === "parameter" ? ` · ${r.key}` : "";
+      const tail = isRuleKind(r.kind) || r.kind === "parameter" ? ` · ${r.key}` : "";
       return (
         <>
           <Marked text={snippet} query={text} />
@@ -165,7 +165,7 @@ function SearchBody({ text, setText, found }: { text: string; setText: (t: strin
                             <bdi>
                               <Marked text={r.name} query={text} />
                             </bdi>
-                            {r.kind === "rule" && r.st === 4 && <IconLock size={14} className="text-muted-foreground shrink-0" />}
+                            {isRuleKind(r.kind) && r.st === 4 && <IconLock size={14} className="text-muted-foreground shrink-0" />}
                           </span>
                           <span className="text-sm text-muted-foreground">
                             <RowLine hit={hit} found={found} text={text} />

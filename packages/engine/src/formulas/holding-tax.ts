@@ -72,7 +72,9 @@ export function currentAccountInterest(balance: number, monthlyRate: number): nu
 
 /**
  * F-28 National Insurance and health contributions: zero on everything the engine models (TXG-27, TXG-28,
- * TXG-34); kept as a formula so the zero is explicit and the G-11 and G-27 flags have a home.
+ * TXG-34, and the kupat gemel lehashkaa lump sum's gains, TXK-27); kept as a formula so the zero is explicit and the
+ * G-27 flag has a home. G-11 was answered for the lump sum on 2026-10-26; it stays open only for a recognized annuity,
+ * which the engine does not model.
  */
 export function socialContributions(): number {
   return 0;

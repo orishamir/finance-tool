@@ -8,12 +8,32 @@
     "fee-custody",
     "fee-trade",
     "fee-fx",
+    "fee-account",
     "fee-exit"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
   "il_finance_file": "brokerage-account.md",
   "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "ibi",
+      "name_he": "אי.בי.אי"
+    },
+    {
+      "id": "excellence",
+      "name_he": "אקסלנס"
+    },
+    {
+      "id": "altshuler-trade",
+      "name_he": "אלטשולר שחם טרייד"
+    },
+    {
+      "id": "psagot",
+      "name_he": "פסגות"
+    }
+  ],
   "sources": [
     {
       "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
@@ -37,7 +57,8 @@
     },
     {
       "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
-      "title": "Altshuler Shaham Trade tariff (no date on document)",
+      "title": "אלטשולר שחם טרייד: תעריפון מלא (בלי תאריך על המסמך)",
+      "title_he": "אלטשולר שחם טרייד: תעריפון מלא (בלי תאריך על המסמך)",
       "publisher": "Altshuler Shaham",
       "publisher_he": "אלטשולר שחם",
       "kind": "institution_doc",

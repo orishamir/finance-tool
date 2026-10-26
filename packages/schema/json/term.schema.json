@@ -51,25 +51,34 @@
     "wrapper_ids": {
       "type": "array",
       "items": {
-        "type": "string",
-        "enum": [
-          "current-account",
-          "bank-deposit",
-          "savings-plan",
-          "money-market-fund-daily",
-          "money-market-fund-renewable",
-          "makam",
-          "government-bond",
-          "brokerage-account",
-          "kupat-gemel-lehashkaa",
-          "keren-hishtalmut",
-          "pension-comprehensive",
-          "pension-general",
-          "provident-for-annuity",
-          "child-savings-provident",
-          "child-savings-bank",
-          "ira-hishtalmut",
-          "ira-provident"
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "current-account",
+              "bank-deposit",
+              "savings-plan",
+              "brokerage-account",
+              "kupat-gemel-lehashkaa",
+              "keren-hishtalmut",
+              "pension-comprehensive",
+              "pension-general",
+              "provident-for-annuity",
+              "child-savings-provident",
+              "child-savings-bank",
+              "ira-hishtalmut",
+              "ira-provident"
+            ]
+          },
+          {
+            "type": "string",
+            "enum": [
+              "makam",
+              "government-bond",
+              "money-market-fund-daily",
+              "money-market-fund-renewable"
+            ]
+          }
         ]
       }
     },

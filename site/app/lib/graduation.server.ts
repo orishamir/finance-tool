@@ -3,11 +3,12 @@
 // G-24's open questions (the table in compare.server.ts); never typed by hand. The `data/instruments/tier2/` files the
 // design spec proposes do not exist, so a closure is a struck-through item with "closed <date>" in a status section,
 // and an instrument with none shows "עוד לא נרשמו סגירות". Server-only.
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { loadRules, root } from "./data.server";
 import { tier2Table } from "./compare.server";
 import { parseMdLink } from "./md-link";
+import { readTextCached } from "./read-cache.server";
 
 export interface GraduationOpen {
   code: string;
@@ -46,6 +47,8 @@ const sources: Record<string, { file: string; block: RegExp | null; prefix: stri
   "managed-portfolios": { file: "managed-and-robo-portfolios.md", block: null, prefix: "MGD" },
   reits: { file: "reits-and-gold-funds.md", block: /^- \*\*Israeli REIT shares/, prefix: "RG" },
   "gold-via-funds": { file: "reits-and-gold-funds.md", block: /^- \*\*Israeli gold funds/, prefix: "RG" },
+  // added 2026-10-26: without it the closures of TXA OQ9 to OQ11 (ruling 6849/15, circular 2/2013) never reached the page
+  "amendment-190-deposits": { file: "tax-insurance-and-amendment-190.md", block: /^- \*\*Amendment 190 deposits/, prefix: "TXA" },
 };
 
 /** Where an institution's statement is the only answer to a blocking question (r5-tier2.md, D23; a REIT's TX2-21 answers TX2 OQ7, which G-24 no longer lists as blocking, so it is not a blocker line): checked against the rule record at build.
@@ -55,7 +58,7 @@ const institutionAnswers: { instrument: string; code: string; ruleId: string }[]
 function statusSection(file: string): string[] {
   const path = join(root, REFS, file);
   if (!existsSync(path)) return [];
-  const lines = readFileSync(path, "utf8").split("\n");
+  const lines = readTextCached(path).split("\n");
   const start = lines.findIndex((l) => /^## Graduation status/.test(l));
   if (start < 0) return [];
   const end = lines.findIndex((l, i) => i > start && /^## /.test(l));
@@ -82,12 +85,27 @@ function closuresOf(prefix: string, lines: string[]): GraduationClosed[] {
       const rest = m[2]!;
       const date = /[Cc]losed[^\d]{0,12}(\d{4}-\d{2}-\d{2})/.exec(rest)?.[1];
       if (!/closed/i.test(rest) && !date) continue;
-      const oq = /open questions? (\d+)/i.exec(struck)?.[1];
+      const q = /(?:\b([A-Z]{2,4}\d?) )?open questions? (\d+(?:(?:,| and| to) \d+)*)/i.exec(struck);
       const rules = ruleIdsIn(rest);
-      out.push({ code: oq ? `${prefix} OQ${oq}` : struck.replace(/^\W+|\W+$/g, "").slice(0, 80), ...(date ? { closedOn: date } : {}), ruleIds: rules });
+      // the struck text itself is the rule base's English note, never shown (2026-10-26: "tax treatment in `tax-tier2-other.md`…"
+      // reached the page); a closure without a question number shows only the rules that closed it. "Open questions 9 and 10"
+      // is one closure line for two questions (2026-10-26): each gets its own row
+      const numbers = q ? questionNumbers(q[2]!) : [];
+      if (numbers.length === 0) out.push({ code: "", ...(date ? { closedOn: date } : {}), ruleIds: rules });
+      for (const n of numbers) out.push({ code: `${q![1] ?? prefix} OQ${n}`, ...(date ? { closedOn: date } : {}), ruleIds: rules });
     }
   }
   return out;
+}
+
+/** "9", "9 and 10", "9, 10 and 11", "9 to 11": the question numbers of a struck closure. */
+function questionNumbers(list: string): number[] {
+  const range = /^(\d+) to (\d+)$/.exec(list);
+  if (range) {
+    const [a, b] = [Number(range[1]), Number(range[2])];
+    return b >= a && b - a < 20 ? Array.from({ length: b - a + 1 }, (_, i) => a + i) : [a];
+  }
+  return list.split(/,| and /).map((x) => Number(x.trim())).filter((n) => Number.isInteger(n) && n > 0);
 }
 
 /** "TXA open question 1 ... narrowed ... (TXA-28)": a blocking question the status text says was narrowed, with the date and the rule. */
@@ -133,7 +151,7 @@ export function graduationRuleIds(list: GraduationStatusView[]): string[] {
  * parentheses (audit A28). `loadNotCovered` (data.server.ts) still cuts a url at its first ")"; the page prefers this.
  */
 export function notCoveredSources(): Map<string, { title: string; url: string }> {
-  const doc = readFileSync(join(root, "docs/glossary.md"), "utf8");
+  const doc = readTextCached(join(root, "docs/glossary.md"));
   const section = doc.slice(doc.indexOf("## 3. Not covered yet"), doc.indexOf("## 4. Missing from the rule base"));
   const out = new Map<string, { title: string; url: string }>();
   for (const m of section.matchAll(/^\| \*\*(.+?)\*\* \| (.*?) \| (.*?) \| (.*) \|$/gm)) {

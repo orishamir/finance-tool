@@ -2,7 +2,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import fc from "fast-check";
 import { describe, expect, it } from "vitest";
-import type { ValueObject, WrapperId, WrapperRecord } from "@finance-tool/schema";
+import { isSecurityId, type ValueObject, type ProductId, type ProductRecord, type WrapperRecord } from "@finance-tool/schema";
 import {
   NotEvaluatedError,
   RecordInputError,
@@ -33,9 +33,13 @@ const vo = (value: number | string | boolean, unit: ValueObject["unit"], state: 
   state,
 });
 
+/** A test product: a security's id also gets what a security record carries (D6, amended 2026-10-26). */
+const asProduct = (r: Omit<WrapperRecord, "id"> & { id: ProductId }): ProductRecord =>
+  (isSecurityId(r.id) ? { ...r, held_as: "direct", held_in: { wrapper_ids: ["brokerage-account"], rule_ids: [], text: "held in a securities account" } } : r) as ProductRecord;
+
 /** A test record in the shape of data-schema §3.3; no file under data/instruments/wrappers/ exists yet. */
-function wrapper(id: WrapperId, during: string, exit: string): WrapperRecord {
-  return {
+function wrapper(id: ProductId, during: string, exit: string): ProductRecord {
+  return asProduct({
     id,
     names: { he: ["שם"], statement: [], app: [] },
     regulator: vo("CMA", "text"),
@@ -54,7 +58,7 @@ function wrapper(id: WrapperId, during: string, exit: string): WrapperRecord {
     tier: 1,
     open_questions: [],
     checked: "2026-10-23",
-  };
+  });
 }
 
 const records = {
@@ -192,7 +196,7 @@ describe("a record's values reach the engine unchanged", () => {
     const plan = runInputs(records.hishtalmut, parameters, { fees, hishtalmut });
     expect(plan.input).toMatchObject({ wrapper: "keren-hishtalmut", fees, hishtalmut });
     const current = runInputs(records.current, parameters, { deposit: { termMonths: 1, linkage: "unlinked" } });
-    expect(current.input).toMatchObject({ deposit: { kind: "current-account", rate: 0.035 } });
+    expect(current.input).toMatchObject({ deposit: { kind: "current-account", rate: 0.0325 } });
   });
 });
 
@@ -223,7 +227,7 @@ describe("a missing or unexpected field fails loudly", () => {
     expect(() => runInputs(records.renewable, parameters, renewable)).toThrow(NotEvaluatedError);
     expect(() => runInputs(records.renewable, parameters, renewable)).toThrow(/G-30/);
     const once = runInputs(records.renewable, parameters, renewable, { entered: { monthly_deposit: vo(0, "nis_per_month", "entered") } });
-    expect(once.input).toMatchObject({ market: { grossReturn: 0.035 }, goal: { monthly: 0 } });
+    expect(once.input).toMatchObject({ market: { grossReturn: 0.0325 }, goal: { monthly: 0 } });
   });
 
   it("in P-05", () => {
@@ -258,7 +262,8 @@ describe("a missing or unexpected field fails loudly", () => {
     // A field inside a term that would override a P-05 value.
     fails(() => runInputs(records.deposit, parameters, { deposit: { ...terms.deposit.deposit, rate: 0.05 } as never }), /deposit\.rate/);
     fails(() => runInputs(records.bond, parameters, { bond: { linkage: "cpi", couponEveryMonths: 12, coupon: 0.02 } as never, tariff: {} }), /bond\.coupon/);
-    fails(() => runInputs(records.makam, parameters, { tariff: { custody: { rate: 0.001, everyMonths: 3 } } }), /tariff\.custody/);
+    // makam reads a custody line since 2026-10-26 (F-14: charged at a non-bank member, BRK-17); an FX line it never reads
+    fails(() => runInputs(records.makam, parameters, { tariff: { fx: 0.001 } }), /tariff\.fx/);
   });
 });
 
@@ -266,7 +271,9 @@ describe("a golden scenario rebuilt from equivalent records gives the golden res
   it("S47 illustrative timeline, from the P-05 file", () => {
     const goal = { amountNow: 10_000, monthly: 500, months: 120 };
     const built = timeline({
-      deposit: () => runPlanned(runInputs(records.deposit, parameters, terms.deposit), ctx),
+      // S47 runs the deposit at its own 3.5% (golden literal); P-05's cash rate is the Bank of Israel's since 2026-10-26: entered here to match.
+      deposit: () =>
+        runPlanned(runInputs(records.deposit, parameters, terms.deposit, { entered: { cash_rate: vo(3.5, "pct_per_year", "entered") } }), ctx),
       // S47 runs the daily fund at S11's 3.25%, not P-05's 3.5% cash rate: entered here to match.
       mmf: () =>
         runPlanned(runInputs(records.mmf, parameters, terms.mmf, { entered: { cash_rate: vo(3.25, "pct_per_year", "entered") } }), ctx),

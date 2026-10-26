@@ -10,12 +10,12 @@ import { Card } from "../components/kit";
 import { groupGuides } from "../lib/guide-nav";
 
 export async function loader() {
-  const { loadTerms, loadWrappers, today } = await import("../lib/data.server");
+  const { loadTerms, loadProducts, today } = await import("../lib/data.server");
   const { loadExposures } = await import("../lib/instruments.server");
   const terms = loadTerms();
   const line = (name: string) => terms.find((t) => t.he === name)?.explanation ?? null;
   // a name that must be decoded also shows the plain name the product's own record carries (audit A44)
-  const wrappers = loadWrappers().map((w) => ({ id: w.id, name: w.names.he[0]!, line: line(w.names.he[0]!), plain: (copy.plainSubtitleFor as readonly string[]).includes(w.id) ? (w.names.he[1] ?? null) : null }));
+  const wrappers = loadProducts().map((w) => ({ id: w.id, name: w.names.he[0]!, line: line(w.names.he[0]!), plain: (copy.plainSubtitleFor as readonly string[]).includes(w.id) ? (w.names.he[1] ?? null) : null }));
   const { goalContext } = await import("../lib/compare.server");
   return { wrappers, exposures: loadExposures().map((e) => ({ id: e.id, name: e.names.he[0] ?? e.id, line: e.one_line_he ?? line(e.names.he[0] ?? "") })), today: today(), goal: goalContext() };
 }

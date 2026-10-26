@@ -32,7 +32,7 @@
         "TXI-08"
       ],
       "state": "sourced",
-      "notes": "A banking corporation that pays interest to an individual withholds 25% (reg. 4). Covers any interest a bank pays to an individual, so it reaches current-account credit interest as well as deposits and plans. Regulations in force from 1.1.2006; later amendments after 27.12.2017 not checked (TXI OQ18)."
+      "notes": "A banking corporation that pays interest to an individual withholds 25% (reg. 4). Covers any interest a bank pays to an individual, so it reaches current-account credit interest as well as deposits and plans. Regulations in force from 1.1.2006; the consolidated text (Wikisource mirror) lists no amendment after ק\"ת תשע\"ח p.444 (2017)."
     },
     "withholding_rate_unlinked": {
       "value": 15,
@@ -57,13 +57,14 @@
   },
   "il_finance_file": "tax-interest-deposits-bonds.md",
   "checked": "2026-10-22",
+  "scope": "general",
   "sources": [
     {
       "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
       "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005",
       "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
       "publisher": "National Insurance Institute",
-      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "publisher_he": "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)",
       "kind": "regulation",
       "strength": "primary",
       "locator": "p.2, reg. 4",
@@ -77,7 +78,7 @@
       "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005",
       "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
       "publisher": "National Insurance Institute",
-      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "publisher_he": "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)",
       "kind": "regulation",
       "strength": "primary",
       "locator": "p.3, regs. 8, 9",
@@ -90,7 +91,7 @@
       "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005",
       "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
       "publisher": "National Insurance Institute",
-      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "publisher_he": "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)",
       "kind": "regulation",
       "strength": "primary",
       "locator": "p.4, regs. 16, 17",
@@ -110,6 +111,18 @@
       "locator_he": "עמודים 5 עד 6, 42",
       "page": 5,
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מריבית,_מדיבידנד_ומרווחים_מסוימים)",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, נוסח משולב (ויקיטקסט, מראה של החוק)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, נוסח משולב (ויקיטקסט, מראה של החוק)",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "quote": "ק״ת תשס״ו, 287",
+      "checked": "2026-10-26"
     }
   ]
 }

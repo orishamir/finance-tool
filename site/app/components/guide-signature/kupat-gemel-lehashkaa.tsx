@@ -13,10 +13,10 @@ import { useGoals } from "../../lib/goal";
 import { useInputs } from "../../lib/inputs";
 import { entered as enteredValue, type SiteValue } from "../../lib/value";
 import type { Bundle } from "../../lib/engine";
-import { Callout, GainBars, Marker, MarkerMark, NumberField, Sentence, useWidth } from "../kit";
+import { Callout, GainBars, InputSlot, LaneLabel, Marker, MarkerMark, NumberField, Sentence, useWidth } from "../kit";
 import { Num, RuleRef, RulesLine, Term } from "../provenance";
 import { G2Gap, HoldRow, PlanInputs, text } from "./g2-parts";
-import { figure, inputSite, rulesOfBundle, useSigInputs, yearsRange, type VisualProps } from "./kit";
+import { figure, inputSite, notFeeFlag, rulesOfBundle, runFigure, useSigInputs, yearsRange, type VisualProps } from "./kit";
 
 const HEIGHT = 92;
 const LANE_Y = 26;
@@ -84,17 +84,33 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
     ...(inflationPct ? { [copy.hishtalmut.inputNames.inflation]: inflationPct } : {}),
     ...(trackFee ? { [copy.hishtalmut.inputNames.trackFee]: trackFee } : {}),
   };
+  // 2026-10-26 (F-44 with F-42): once the exit year is at 60 or over, the reduced brackets apply first, so the tax and what is left
+  // depend on the age and on the other income in that year (the site's scenario income, P-05); the sheets name both. The brokerage
+  // side runs with the same profile, so its gain, the difference and the ranges move with the age too and name it as well.
+  // Whether the exit year is at 60 is the engine's own answer (the run used F-42), not a second test here.
+  const incomeP05 = fact(data, "incomeP05");
+  const atSixty = model.lump !== null && model.lump.run.formulas.includes("F-42");
+  const ageInputs: Record<string, SiteValue> =
+    atSixty && age !== null ? { [copy.provident.ageLabel]: enteredValue(age, "years", today, copy.provident.ageLabel), ...(incomeP05 ? { [copy.provident.incomeName]: incomeP05 } : {}) } : {};
   const kglRules = kgl ? rulesOfBundle(kgl) : [];
+  // The tax and what is left are the lump sum run's own numbers: they carry the rules that run read (TXG-04, TXG-07 and TXK-26 from 60),
+  // its flags and its labels (review 2026-10-26). From 60 the tax is F-42 over the real gain F-44 sets: the slice above the income.
+  const realGainFig = model.lump && model.realGain !== null ? runFigure(model.realGain, "nis", "F-44", common, today, copy.provident.about.realGain, model.lump.run, (c) => !notFeeFlag(c)) : null;
+  const taxFig = !model.lump
+    ? null
+    : atSixty && realGainFig
+      ? runFigure(model.lump.tax, "nis", "F-42", { [copy.provident.realGainName]: realGainFig, ...ageInputs, ...(taxRate ? { [copy.provident.taxRate]: taxRate } : {}) }, today, copy.provident.about.tax, model.lump.run, notFeeFlag)
+      : runFigure(model.lump.tax, "nis", "F-44", { ...common, ...(taxRate ? { [copy.provident.taxRate]: taxRate } : {}) }, today, copy.provident.about.tax, model.lump.run, notFeeFlag);
   const v = {
-    net: model.lump ? figure(model.lump.net, "nis", "F-44", common, today, copy.provident.about.net, kglRules) : null,
-    tax: model.lump ? figure(model.lump.tax, "nis", "F-44", { ...common, ...(taxRate ? { [copy.provident.taxRate]: taxRate } : {}) }, today, copy.provident.about.tax, kglRules) : null,
+    net: model.lump ? runFigure(model.lump.net, "nis", "F-44", { ...common, ...ageInputs, ...(atSixty && taxFig ? { [copy.provident.taxLine]: taxFig } : {}) }, today, copy.provident.about.net, model.lump.run) : null,
+    tax: taxFig,
     alt: model.alt ? figure(model.alt.tax, "nis", "F-44", { ...common, ...(nominalRate ? { [copy.provident.nominalRate]: nominalRate } : {}) }, today, copy.provident.about.alt, kglRules) : null,
     transfer: model.transfer !== null ? figure(model.transfer, "nis", "F-45", common, today, copy.provident.about.transfer, kglRules) : null,
-    gain: model.lump ? figure(model.lump.gain, "nis", "F-67", common, today, copy.provident.about.gain, kglRules) : null,
-    brokerGain: model.broker && broker ? figure(model.broker.gain, "nis", "F-67", common, today, copy.provident.about.brokerGain, rulesOfBundle(broker)) : null,
+    gain: model.lump ? runFigure(model.lump.gain, "nis", "F-67", { ...common, ...ageInputs }, today, copy.provident.about.gain, model.lump.run) : null,
+    brokerGain: model.broker && broker ? runFigure(model.broker.gain, "nis", "F-67", { ...common, ...ageInputs }, today, copy.provident.about.brokerGain, model.broker.run) : null,
   };
-  const diff = v.gain && v.brokerGain && model.diff !== null ? figure(Math.abs(model.diff), "nis", "F-67", { [copy.provident.lump]: v.gain, [copy.hishtalmut.broker]: v.brokerGain }, today, copy.provident.about.diff) : null;
-  const rangeFig = (r: { low: number; high: number } | null, about: string) => (r ? { low: figure(r.low, "nis", "F-67", common, today, about), high: figure(r.high, "nis", "F-67", common, today, about) } : null);
+  const diff = v.gain && v.brokerGain && model.diff !== null ? figure(Math.abs(model.diff), "nis", "F-67", { [copy.provident.lump]: v.gain, [copy.hishtalmut.broker]: v.brokerGain, ...ageInputs }, today, copy.provident.about.diff) : null;
+  const rangeFig = (r: { low: number; high: number } | null, about: string) => (r ? { low: figure(r.low, "nis", "F-67", { ...common, ...ageInputs }, today, about), high: figure(r.high, "nis", "F-67", { ...common, ...ageInputs }, today, about) } : null);
   const brokerRange = rangeFig(model.range.broker, copy.provident.about.rangeBroker);
   const managerRange = rangeFig(model.range.manager, copy.provident.about.rangeManager);
 
@@ -176,19 +192,20 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
                 {t}
               </text>
             ))}
-            <MarkerMark x={x(years)} y1={LANE_Y - 10} y2={AXIS_Y + 2} />
+            {/* the line starts at the lane, so the row above it holds the bands' names clear of the marker (2026-10-26) */}
+            <MarkerMark x={x(years)} y1={LANE_Y - 2} y2={AXIS_Y + 2} />
           </svg>
           {earlyYears === null ? null : (
             <>
               {earlyYears > 0 && x(earlyYears) > 110 && (
-                <span className="absolute text-xs bg-card/85 rounded-sm px-1.5 py-0.5 whitespace-nowrap" dir="rtl" style={{ left: 4, top: LANE_Y + 4 }}>
+                <LaneLabel from={0} to={clamp(x(earlyYears), 0, plotW)} top={LANE_Y - 24}>
                   {copy.provident.chart.one}
-                </span>
+                </LaneLabel>
               )}
               {x(earlyYears) < plotW - 130 && (
-                <span className="absolute text-xs bg-card/85 rounded-sm px-1.5 py-0.5 whitespace-nowrap" dir="rtl" style={{ right: 4, top: LANE_Y + 4 }}>
+                <LaneLabel from={clamp(x(earlyYears), 0, plotW)} to={plotW} top={LANE_Y - 24} prefer="end">
                   {copy.provident.chart.two}
-                </span>
+                </LaneLabel>
               )}
             </>
           )}
@@ -208,7 +225,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
 
       <div className="flex flex-col gap-3">
         <p className="text-sm font-medium">
-          {copy.provident.at.before} <bdi>{fmt.years(years)}</bdi>
+          {copy.provident.at.before} <InputSlot chars={7}><bdi>{fmt.years(years)}</bdi></InputSlot>
           {model.ageAtExit !== null ? (
             <>
               {" "}
@@ -316,7 +333,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
                   </>
                 ) : null}
                 .{" "}
-                <Link to="/invest" className="text-link hover:underline">
+                <Link to="/indices" className="text-link hover:underline">
                   {copy.hishtalmut.rangeBroker.more}
                 </Link>
               </li>

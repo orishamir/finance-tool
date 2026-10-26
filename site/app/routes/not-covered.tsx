@@ -6,7 +6,7 @@ import { notCovered as copy, r5, site } from "../copy";
 import { IconExternal, IconLock, IconCheck } from "../components/icons";
 import { IconDashed } from "../components/compare/icons";
 import { Tpl } from "../components/exposure-mode/tpl";
-import { RuleRef, RulesLine, StrengthLabel } from "../components/provenance";
+import { IdRef, RuleRef, RulesLine, StrengthLabel } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { Callout, Card, Disclosure, Tag } from "../components/kit";
 import type { GraduationStatusView } from "../lib/graduation.server";
@@ -15,7 +15,7 @@ import { sourceLabel } from "../lib/source-label";
 import { provenance } from "../copy";
 
 export async function loader() {
-  const { loadNotCovered, loadRules, today } = await import("../lib/data.server");
+  const { loadNotCovered, loadRules, pointedRecords, today } = await import("../lib/data.server");
   const rows = loadNotCovered();
   const rules = loadRules();
   const { graduationStatuses, graduationRuleIds } = await import("../lib/graduation.server");
@@ -28,7 +28,8 @@ export async function loader() {
     if (r.source && w) r.source = { ...r.source, title: w.title, url: w.url };
   }
   const cited = new Set([...rows.flatMap((r) => r.ruleIds), ...graduationRuleIds(statuses)]);
-  return { rows, statuses, rules: Object.fromEntries(Object.values(rules).filter((r) => cited.has(r.id)).map((r) => [r.id, r])), today: today() };
+  const mine = Object.fromEntries(Object.values(rules).filter((r) => cited.has(r.id)).map((r) => [r.id, r]));
+  return { rows, statuses, rules: mine, pointed: pointedRecords(mine, rules), today: today() };
 }
 
 export function meta() {
@@ -67,7 +68,7 @@ function GraduationStatus({ s }: { s: GraduationStatusView }) {
             <div key={o.code} className="flex flex-col gap-1">
               <span className="flex items-center gap-2 text-sm text-blocked-foreground">
                 <IconLock size={16} className="text-blocked shrink-0" />
-                <Tpl t={g.blockerShort} vars={{ code: <bdi dir="ltr">{o.code}</bdi> }} />
+                <Tpl t={g.blockerShort} vars={{ code: <IdRef id={o.code} /> }} />
               </span>
               {o.narrowedOn && o.narrowedBy && (
                 <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-1.5">
@@ -89,10 +90,10 @@ function GraduationStatus({ s }: { s: GraduationStatusView }) {
           <p className="text-sm text-muted-foreground">{g.none}</p>
         ) : (
           <ul className="flex flex-col gap-1">
-            {s.closed.map((c) => (
-              <li key={c.code} className={`text-sm flex flex-wrap items-center gap-1.5 ${c.closedOn ? "text-muted-foreground" : "text-caution-foreground"}`}>
+            {s.closed.map((c, i) => (
+              <li key={`${c.code}-${i}`} className={`text-sm flex flex-wrap items-center gap-1.5 ${c.closedOn ? "text-muted-foreground" : "text-caution-foreground"}`}>
                 <span className="line-through">
-                  {c.closedOn ? <Tpl t={g.closure} vars={{ date: dateNode(c.closedOn), rule: <bdi dir="ltr" className="num-id">{c.code}</bdi> }} /> : <Tpl t={g.closureNoDate} vars={{ rule: <bdi dir="ltr" className="num-id">{c.code}</bdi> }} />}
+                  {c.closedOn ? <Tpl t={g.closure} vars={{ date: dateNode(c.closedOn), rule: <IdRef id={c.code} closedOn={c.closedOn} /> }} /> : <Tpl t={g.closureNoDate} vars={{ rule: <IdRef id={c.code} closedOn={c.closedOn} /> }} />}
                 </span>
                 {c.ruleIds.map((id) => (
                   <RuleRef key={id} id={id} />
@@ -117,7 +118,7 @@ function GraduationStatus({ s }: { s: GraduationStatusView }) {
 export default function NotCovered() {
   const data = useLoaderData<typeof loader>();
   return (
-    <PageShell current="other" data={{ rules: data.rules, terms: {}, dimensions: {}, today: data.today }}>
+    <PageShell current="other" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: {}, today: data.today }}>
       <div className="flex flex-col gap-section pt-6 lg:pt-10">
         <header className="flex flex-col gap-2">
           <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>

@@ -7,7 +7,7 @@ import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { breakKindOf, depositModel, fact, factNumber } from "../../lib/guide-signature";
 import { fmt } from "../../lib/format";
 import { entered as enteredValue, type SiteValue } from "../../lib/value";
-import { Callout, GainBars, Marker, MarkerMark, NumberField, Sentence, Stat, StatRow, useWidth } from "../kit";
+import { Callout, GainBars, InputSlot, KeyValue, LaneLabel, Marker, MarkerMark, NumberField, Sentence, Stat, StatRow, useWidth } from "../kit";
 import { Num, RulesLine } from "../provenance";
 import { Gap, SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
 
@@ -25,6 +25,9 @@ export function BankDepositVisual({ data, today }: VisualProps) {
   const termFact = fact(data, "term")!;
   const brk = fact(data, "break");
   const cash = fact(data, "cashRate")!;
+  const banks = data.depositBanks ?? [];
+  const lo = fact(data, "depositLo");
+  const hi = fact(data, "depositHi");
   const kind = breakKindOf(brk);
   const model = useMemo(() => depositModel(data, { amount: inputs.amount }), [data, inputs.amount]);
   const term = model?.term ?? factNumber(data, "term") ?? 12;
@@ -102,14 +105,16 @@ export function BankDepositVisual({ data, today }: VisualProps) {
             ) : (
               <rect x={0} y={DEPOSIT_Y} width={plotW} height={LANE_H} rx={3} fill={`url(#${pid}-lock)`} />
             )}
-            <rect x={0} y={FUND_Y} width={plotW} height={LANE_H} rx={3} className="fill-chart-alt" fillOpacity="0.55" />
+            {/* the fund's gold at full strength, as in the bars under it: at 55% it read as a dull olive, another colour for the same fund (2026-10-26) */}
+            <rect x={0} y={FUND_Y} width={plotW} height={LANE_H} rx={3} className="fill-chart-alt" />
             <line x1={0} x2={plotW} y1={AXIS_Y - 6} y2={AXIS_Y - 6} className="stroke-chart-axis" strokeWidth="1" />
             {ticks.map((t) => (
               <text key={t} x={x(t)} y={AXIS_Y + 12} textAnchor={t === 0 ? "start" : t === term ? "end" : "middle"} className="text-xs fill-chart-text" data-scale>
                 {t}
               </text>
             ))}
-            <MarkerMark x={x(m)} y1={DEPOSIT_Y - 12} y2={FUND_Y + LANE_H + 8} />
+            {/* the line starts at the deposit's lane, so the deposit's state, in the row above it, stays clear of the marker (2026-10-26) */}
+            <MarkerMark x={x(m)} y1={DEPOSIT_Y - 2} y2={FUND_Y + LANE_H + 8} />
           </svg>
           <span className="absolute text-xs text-chart-text" dir="rtl" style={{ left: 0, top: DEPOSIT_Y - 17 }}>
             {copy.deposit.lanes.deposit}
@@ -118,13 +123,14 @@ export function BankDepositVisual({ data, today }: VisualProps) {
             {copy.deposit.lanes.fund}
           </span>
           {kind === "not-allowed" && (
-            <span className="absolute text-xs bg-card/85 rounded-sm px-1.5 py-0.5 whitespace-nowrap" dir="rtl" style={{ left: Math.max(4, plotW / 2 - 70), top: DEPOSIT_Y + 4 }}>
+            <LaneLabel from={0} to={plotW} top={DEPOSIT_Y - 25} prefer="end">
               {copy.deposit.locked}: {copy.deposit.noBreak}
-            </span>
+            </LaneLabel>
           )}
-          <span className="absolute text-xs bg-card/85 rounded-sm px-1.5 py-0.5 whitespace-nowrap" dir="rtl" style={{ left: Math.max(4, plotW / 2 - 50), top: FUND_Y + 4 }}>
+          {/* beside the fund's name, in the row the marker crosses: it steps aside from the marker, and fades when there is no room */}
+          <LaneLabel from={plotW / 2} to={plotW} top={FUND_Y - 25} markerX={x(m)} prefer="end">
             {copy.deposit.open}
-          </span>
+          </LaneLabel>
           <span className="absolute text-xs text-chart-text" dir="rtl" style={{ right: 0, top: AXIS_Y + 14 - 2 }}>
             {copy.deposit.unit}
           </span>
@@ -135,7 +141,7 @@ export function BankDepositVisual({ data, today }: VisualProps) {
 
       <div className="flex flex-col gap-3">
         <p className="text-sm font-medium">
-          {copy.deposit.atMarker.lead} <bdi dir="ltr">{m}</bdi> {copy.deposit.atMarker.month}:
+          {copy.deposit.atMarker.lead} <InputSlot chars={3}><bdi dir="ltr">{m}</bdi></InputSlot> {copy.deposit.atMarker.month}:
         </p>
         <StatRow cols={2}>
           <Stat label={copy.deposit.atMarker.deposit} tone="value">
@@ -185,6 +191,22 @@ export function BankDepositVisual({ data, today }: VisualProps) {
           {copy.common.fundAssumption.before} <Num value={cash} /> {copy.common.fundAssumption.after}
         </Sentence>
       </div>
+      {banks.length > 0 && lo && hi && (
+        // the list the money-market ladder links to (F-86): each bank's rate on the line that names it (D31)
+        <section id={copy.ladder.range.anchorId} className="flex flex-col gap-2 max-w-measure scroll-mt-[112px] lg:scroll-mt-[88px]">
+          <h3 className="text-sm font-medium">{copy.deposit.banks.title}</h3>
+          <dl className="flex flex-col gap-1">
+            {banks.map((b) => (
+              <KeyValue key={b.id} label={<bdi>{b.name}</bdi>}>
+                <Num value={b.rate} />
+              </KeyValue>
+            ))}
+          </dl>
+          <Sentence size="sm" tone="muted">
+            {copy.deposit.banks.range.before} <Num value={lo} /> <Num value={hi} prefix={copy.deposit.banks.range.middle} /> {copy.deposit.banks.range.after}
+          </Sentence>
+        </section>
+      )}
       <RulesLine ids={data.ruleIds} />
     </div>
   );

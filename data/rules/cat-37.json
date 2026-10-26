@@ -11,6 +11,7 @@
   "text_he": "הרשות מגדירה את הממוצע בדוח לעמיתים כשיעור דמי הניהול שנגבו בפועל מכלל העמיתים, כלומר אחרי הנחות. לכן זה אינו מחיר מחירון. ההגדרה רשמית, אך הזהות בינה לבין השדה במאגר היא הסקה. שיטת השקלול לא פורסמה, ולכן אין לכתוב ממוצע משוקלל.",
   "il_finance_file": "tracks-catalogue-and-decoder.md",
   "checked": "2026-10-23",
+  "scope": "general",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",

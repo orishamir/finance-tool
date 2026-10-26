@@ -8,10 +8,6 @@
         "current-account",
         "bank-deposit",
         "savings-plan",
-        "money-market-fund-daily",
-        "money-market-fund-renewable",
-        "makam",
-        "government-bond",
         "brokerage-account",
         "kupat-gemel-lehashkaa",
         "keren-hishtalmut",
@@ -69,6 +65,7 @@
           "type": "string",
           "enum": [
             "nis",
+            "nis_millions",
             "usd",
             "eur",
             "pct",
@@ -305,6 +302,7 @@
             "type": "string",
             "enum": [
               "nis",
+              "nis_millions",
               "usd",
               "eur",
               "pct",
@@ -502,6 +500,7 @@
                   "type": "string",
                   "enum": [
                     "nis",
+                    "nis_millions",
                     "usd",
                     "eur",
                     "pct",
@@ -785,6 +784,7 @@
               "type": "string",
               "enum": [
                 "nis",
+                "nis_millions",
                 "usd",
                 "eur",
                 "pct",
@@ -972,6 +972,7 @@
               "type": "string",
               "enum": [
                 "nis",
+                "nis_millions",
                 "usd",
                 "eur",
                 "pct",
@@ -1159,6 +1160,7 @@
               "type": "string",
               "enum": [
                 "nis",
+                "nis_millions",
                 "usd",
                 "eur",
                 "pct",
@@ -1346,6 +1348,7 @@
               "type": "string",
               "enum": [
                 "nis",
+                "nis_millions",
                 "usd",
                 "eur",
                 "pct",
@@ -1543,6 +1546,7 @@
           "type": "string",
           "enum": [
             "nis",
+            "nis_millions",
             "usd",
             "eur",
             "pct",
@@ -1721,25 +1725,34 @@
         "type": "object",
         "properties": {
           "to": {
-            "type": "string",
-            "enum": [
-              "current-account",
-              "bank-deposit",
-              "savings-plan",
-              "money-market-fund-daily",
-              "money-market-fund-renewable",
-              "makam",
-              "government-bond",
-              "brokerage-account",
-              "kupat-gemel-lehashkaa",
-              "keren-hishtalmut",
-              "pension-comprehensive",
-              "pension-general",
-              "provident-for-annuity",
-              "child-savings-provident",
-              "child-savings-bank",
-              "ira-hishtalmut",
-              "ira-provident"
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "current-account",
+                  "bank-deposit",
+                  "savings-plan",
+                  "brokerage-account",
+                  "kupat-gemel-lehashkaa",
+                  "keren-hishtalmut",
+                  "pension-comprehensive",
+                  "pension-general",
+                  "provident-for-annuity",
+                  "child-savings-provident",
+                  "child-savings-bank",
+                  "ira-hishtalmut",
+                  "ira-provident"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "makam",
+                  "government-bond",
+                  "money-market-fund-daily",
+                  "money-market-fund-renewable"
+                ]
+              }
             ]
           },
           "condition": {
@@ -1811,6 +1824,46 @@
       "additionalProperties": {
         "type": "string",
         "pattern": "^(covered|blocked)(:[A-Z0-9-]+)?$"
+      }
+    },
+    "company_terms": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "minItems": 1,
+        "type": "array",
+        "items": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Z0-9]+-[A-Z0-9]+$"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "rule": {
+                  "type": "string",
+                  "pattern": "^[A-Z0-9]+-[A-Z0-9]+$"
+                },
+                "companies": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9-]+$"
+                  }
+                }
+              },
+              "required": [
+                "rule",
+                "companies"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
       }
     },
     "tier": {

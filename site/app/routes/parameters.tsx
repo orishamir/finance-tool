@@ -2,7 +2,7 @@
 import { useLoaderData } from "react-router";
 import type { Route } from "./+types/parameters";
 import { parametersPage as copy, provenance as provCopy, site } from "../copy";
-import { Num } from "../components/provenance";
+import { IdRef, IdText, Num } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { Card, Tag } from "../components/kit";
 import { fmt } from "../lib/format";
@@ -58,12 +58,10 @@ export default function Parameters() {
         </header>
         <ul className="grid gap-4 lg:grid-cols-2">
           {data.parameters.map((p) => (
-            <Card as="li" key={p.id} id={p.methodId} className="flex flex-col gap-3">
+            <Card as="li" key={p.id} id={p.methodId} className="flex flex-col gap-3 scroll-mt-24">
               <header className="flex flex-wrap items-center gap-2">
                 <h2 className="text-lg font-semibold">{copy.names[p.methodId] ?? p.id}</h2>
-                <span className="rule-chip rule-chip-static">
-                  <bdi dir="ltr">{p.methodId}</bdi>
-                </span>
+                <IdRef id={p.methodId} asLabel />
               </header>
               {p.values.length === 0 ? (
                 <p className="text-muted-foreground">{copy.notSet}</p>
@@ -71,7 +69,9 @@ export default function Parameters() {
                 <dl className="readout">
                   {p.values.map((e) => (
                     <div key={e.path} className="readout-row">
-                      <dt>{e.label}</dt>
+                      <dt>
+                        <IdText text={e.label} assumptions />
+                      </dt>
                       <dd>
                         <Num value={e.value} display={unitText(e.path, e.value).display} />
                         {unitText(e.path, e.value).suffix && <span className="text-sm text-muted-foreground">{unitText(e.path, e.value).suffix}</span>}
@@ -93,9 +93,7 @@ export default function Parameters() {
                     <dt className="text-sm text-muted-foreground">{copy.rows.usedIn}</dt>
                     <dd className="flex flex-wrap gap-2">
                       {p.usedIn.map((f) => (
-                        <span key={f} className="rule-chip rule-chip-static">
-                          <bdi dir="ltr">{f}</bdi>
-                        </span>
+                        <IdRef key={f} id={f} />
                       ))}
                     </dd>
                   </>

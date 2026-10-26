@@ -1,93 +1,141 @@
-// Daily money-market fund (D29): how fast can I get my money, and what does it pay? A ladder of four cash products from the fastest to
-// the slowest way back, each with its yearly rate and where the rate comes from (a bank's published table, the rate most of the
-// collected banks publish, or the site's assumption, D20), this product highlighted. One control: when the money is needed; the rows
-// that bring it back in time stay lit.
-import { useState } from "react";
+// Daily money-market fund (D29): how fast can I get my money, and what does it pay? A table of four cash products from the fastest to
+// the slowest way back (founder, 2026-10-26): how soon the money is back is a coloured tag with an icon and a word (an order, not a
+// measure, so no bar), and the rate is a bar with its figure, all on one scale. Each rate says where it comes from (the rate most of the
+// collected banks publish, F-85, in the notes; the range across the collected banks, F-86; the site's assumption, D20). The other
+// products link to their own guide pages. Until 2026-10-26 it was a filter over cards ("when do you need the money?"), with bars measured
+// against the highest rate.
+import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
+import { Link } from "react-router";
 import { guideSignature as copy } from "../../copy";
-import { fmt } from "../../lib/format";
-import { bestWithin, ladderRows, speedOrder, type Speed } from "../../lib/guide-signature";
+import { fact, ladderRows, slowerPayNoMore, speedOrder, type LadderRow, type Speed } from "../../lib/guide-signature";
 import { Num, RulesLine } from "../provenance";
-import { cx, SegmentedControl, Sentence, Tag } from "../kit";
-import { Gap, type VisualProps } from "./kit";
+import { ChartLegend, CompareTable, NoteList, Sentence, StepTag, Swatch, Tag, ValueBar } from "../kit";
+import { CommonRateLine, type VisualProps } from "./kit";
+
+const icons: Record<Speed, React.ReactNode> = { "any-time": <Zap aria-hidden="true" />, "trading-day": <CalendarCheck aria-hidden="true" />, "fixed-dates": <CalendarDays aria-hidden="true" />, "at-maturity": <Lock aria-hidden="true" /> };
 
 export function MoneyMarketDailyVisual({ data }: VisualProps) {
   const rows = ladderRows(data);
-  const [need, setNeed] = useState<Speed>("trading-day");
-  const best = bestWithin(rows, need);
-  const maxRate = Math.max(1e-9, ...rows.map((r) => Number(r.rate.value) || 0));
-  const reach = speedOrder.indexOf(need);
+  // the rate column's scale: the next whole percent above the highest rate, the same in every row
+  const scale = Math.max(1, Math.ceil(Math.max(...rows.map((r) => Number(r.rate.value) || 0)) + 1e-9));
+  const interval = fact(data, "maxInterval");
+  const noExit = fact(data, "depositNoExitCount");
+  const deposit = rows.find((r) => r.range);
+  const current = rows.find((r) => r.banks);
   return (
-    <div className="flex flex-col gap-5">
-      <div className="flex flex-col gap-1.5">
-        <span className="field-label" id="sig-ladder-need">
-          {copy.ladder.need}
-        </span>
-        <SegmentedControl<Speed> labelledBy="sig-ladder-need" options={speedOrder.map((s) => ({ value: s, label: copy.ladder.speeds[s]! }))} value={need} onChange={setNeed} />
-      </div>
+    <div className="flex flex-col gap-4">
+      {slowerPayNoMore(rows, data.id) && <Sentence measure>{copy.ladder.take}</Sentence>}
 
-      <ol className="flex flex-col gap-2" aria-label={copy.ladder.chart.aria}>
-        {rows.map((r) => {
+      <CompareTable
+        caption={copy.ladder.caption}
+        columns={[copy.ladder.columns.product, copy.ladder.columns.when, copy.ladder.columns.rate]}
+        rows={rows.map((r) => {
           const mine = r.id === data.id;
-          const lit = speedOrder.indexOf(r.speed) <= reach;
-          return (
-            <li key={r.id} className={cx("rounded-md border p-3 flex flex-col gap-2 transition-opacity duration-[var(--duration-fast)]", mine ? "border-primary bg-card" : "border-border bg-card", !lit && "opacity-50")}>
-              <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-                <span className="font-medium">
-                  {copy.ladder.rows[r.id] ?? r.id}
-                  {mine && <Tag tone="positive" className="ms-2">{copy.ladder.thisOne}</Tag>}
-                </span>
-                <span className="flex items-center gap-2">
-                  <Tag tone={r.kind === "assumption" ? "parameter" : "neutral"}>{copy.ladder.kinds[r.kind]}</Tag>
-                  <span className="font-semibold text-lg">
-                    <Num value={r.rate} />
-                  </span>
-                </span>
-              </div>
-              <div className="h-3 rounded-sm bg-muted overflow-hidden" aria-hidden="true">
-                <div className={cx("h-full rounded-sm", mine ? "bg-chart-value" : "bg-chart-alt")} style={{ width: `${Math.max(1, ((Number(r.rate.value) || 0) / maxRate) * 100)}%` }} />
-              </div>
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-sm text-muted-foreground">
-                <span className="font-medium text-foreground">{copy.ladder.speeds[r.speed]}</span>
-                <span>{copy.ladder.wait[r.speed]}</span>
-                {r.term && (
-                  <span>
-                    {copy.ladder.term} <Num value={r.term} display={fmt.months(Number(r.term.value))} />
-                  </span>
-                )}
-              </div>
-              {r.banks && (
-                <Sentence size="sm" tone="muted">
-                  <Num value={r.banks.count} /> {copy.ladder.common.of} <Num value={r.banks.of} /> {copy.ladder.common.after}
-                </Sentence>
-              )}
-              {r.top && (
-                // the best a bank pays, with its conditions: a few banks pay up to this, on a small balance only
-                <Sentence size="sm" tone="muted">
-                  {copy.ladder.top.before} <Num value={r.top.rate} /> (<bdi>{r.top.name}</bdi>),{" "}
-                  {r.top.ceiling ? (
-                    <>
-                      {copy.ladder.top.conditions} <Num value={r.top.ceiling} display={fmt.nisWhole(Number(r.top.ceiling.value))} /> {copy.ladder.top.only}.
-                    </>
+          return {
+            key: r.id,
+            highlight: mine,
+            head: mine ? (
+              <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1">
+                <RowName row={r} />
+                <Tag tone="positive">{copy.ladder.thisOne}</Tag>
+              </span>
+            ) : (
+              <Link to={`/guide/${r.id}`} className="text-link hover:underline">
+                <RowName row={r} />
+              </Link>
+            ),
+            cells: [
+              <div key="when" className="flex flex-col gap-1">
+                <StepTag step={(speedOrder.indexOf(r.speed) + 1) as 1 | 2 | 3 | 4} icon={icons[r.speed]}>
+                  {copy.ladder.when[r.speed]}
+                </StepTag>
+                <WhenNote speed={r.speed} interval={interval} />
+              </div>,
+              <ValueBar
+                key="rate"
+                value={
+                  r.range ? (
+                    <span dir="ltr" className="inline-block">
+                      <Num value={r.range.lo} />–<Num value={r.rate} />
+                    </span>
                   ) : (
-                    <>{copy.ladder.top.conditionsNoCeiling}.</>
-                  )}
-                </Sentence>
-              )}
-            </li>
-          );
+                    <Num value={r.rate} />
+                  )
+                }
+                frac={(Number(r.rate.value) || 0) / scale}
+                lo={r.range ? (Number(r.range.lo.value) || 0) / scale : undefined}
+                note={
+                  r.kind === "assumption" ? (
+                    copy.ladder.kinds.assumption
+                  ) : r.range ? (
+                    <>
+                      {copy.ladder.kinds.range.before}
+                      <Num value={r.range.count} /> {copy.ladder.kinds.range.after}
+                    </>
+                  ) : undefined
+                }
+              />,
+            ],
+          };
         })}
-      </ol>
+      />
 
-      {best && (
-        <Sentence measure>
-          {copy.ladder.best.before} <span className="font-medium">{copy.ladder.rows[best.id]}</span>, <Num value={best.rate} /> {copy.ladder.best.middle}.
-        </Sentence>
-      )}
-      <p className="text-sm text-muted-foreground max-w-measure">
-        {copy.ladder.foot} {copy.ladder.depositFoot}
-      </p>
-      <Gap id="mmfPayoutDays" />
+      <ChartLegend
+        items={[
+          { id: "rate", swatch: <Swatch shape="box" className="bg-chart-value" />, label: copy.ladder.legend.rate },
+          ...(deposit ? [{ id: "range", swatch: <Swatch shape="box" className="hatch-value" />, label: copy.ladder.legend.range }] : []),
+        ]}
+      />
+
+      <NoteList
+        items={[
+          copy.ladder.notes.beforeTax,
+          copy.ladder.notes.assumption,
+          ...(current?.banks ? [<CommonRateLine key="common" rate={current.rate} count={current.banks.count} of={current.banks.of} />] : []),
+          ...(deposit?.range && noExit
+            ? [
+                <span key="exit">
+                  {Number(noExit.value) === Number(deposit.range.count.value) ? (
+                    copy.ladder.notes.exit.all
+                  ) : (
+                    <>
+                      {copy.ladder.notes.exit.before}
+                      <Num value={noExit} /> {copy.ladder.notes.exit.of} <Num value={deposit.range.count} /> {copy.ladder.notes.exit.after}
+                    </>
+                  )}{" "}
+                  <Link to={`/guide/bank-deposit#${copy.ladder.range.anchorId}`} className="text-link hover:underline">
+                    {copy.ladder.notes.banksLink}
+                  </Link>
+                </span>,
+              ]
+            : []),
+        ]}
+      />
       <RulesLine ids={data.ruleIds} />
     </div>
+  );
+}
+
+/** The line under a tag, where the word alone leaves out how: the fund's set hour (MF-10, MF-11), the longest wait between fixed dates (MF-08). */
+function WhenNote({ speed, interval }: { speed: Speed; interval: ReturnType<typeof fact> }) {
+  if (speed === "trading-day") return <span className="text-sm text-muted-foreground">{copy.ladder.tradingDay}</span>;
+  if (speed === "fixed-dates" && interval)
+    return (
+      <span className="text-sm text-muted-foreground">
+        {copy.ladder.interval.before} <Num value={interval} display={String(interval.value)} /> {copy.ladder.interval.after}
+      </span>
+    );
+  return null;
+}
+
+/** A row's product, with the bank's name when its rate is one bank's own published figure (D30, D31): never a bank's rate as the product's. */
+function RowName({ row }: { row: LadderRow }) {
+  const name = copy.ladder.rows[row.id] ?? row.id;
+  return row.rate.own ? (
+    <>
+      {name} {copy.ladder.ofBank} <bdi>{row.rate.own}</bdi>
+    </>
+  ) : (
+    <>{name}</>
   );
 }

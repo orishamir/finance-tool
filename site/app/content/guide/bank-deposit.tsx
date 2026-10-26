@@ -2,9 +2,10 @@
 // Written 2026-10-23 from the il-finance rules cited under each block (BANK, TXI, REG, SW, MF); same shape
 // and register as kupat-gemel-lehashkaa.tsx. NEW copy for the founder to review.
 import type { GuideContent } from "./types";
-import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
+import { IdRef, Num, RuleRef, RulesLine, Term, VariesByCompany } from "../../components/provenance";
 import { Link } from "react-router";
 import { Callout, Sentence } from "../../components/kit";
+import { shown } from "../../lib/review";
 
 export const content: GuideContent = {
   what: ({ figure }) => {
@@ -12,7 +13,7 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          כסף שמפקידים בבנק לתקופה קצובה, מיום אחד ועד כמה שנים, והבנק משלם עליו ריבית: <Term id="ריבית קבועה">קבועה</Term>, שידועה מראש, או <Term id="ריבית משתנה">משתנה</Term>, לפי ריבית עוגן ומרווח שהבנק מפרסם (בלאומי, בפועלים וביהב העוגן הוא <Term id="ריבית הפריים">ריבית הפריים</Term>). בסוף התקופה הכסף חוזר לעו"ש או <Term id="חידוש אוטומטי">מתחדש אוטומטית</Term>, לפי מה שבחרתם.
+          כסף שמפקידים בבנק לתקופה קצובה, מיום אחד ועד כמה שנים, והבנק משלם עליו ריבית: <Term id="ריבית קבועה">קבועה</Term>, שידועה מראש, או <Term id="ריבית משתנה">משתנה</Term>, לפי ריבית עוגן ומרווח שהבנק מפרסם. בסוף התקופה הכסף חוזר לעו"ש או <Term id="חידוש אוטומטי">מתחדש אוטומטית</Term>, לפי מה שבחרתם.
         </p>
         <Sentence measure>
           כל בנק חייב לפרסם טבלה אחידה של {types ? <Num value={types} /> : null} <Term id="סוגי הפיקדונות השקליים המקובלים">סוגי פיקדון מקובלים</Term>, עם <Term id="שיעור הריבית המוצעת">הריבית המוצעת</Term>, אפשרות <Term prefix="ה" id="שבירת פיקדון">שבירה</Term> <Term prefix="ו" id="תחנת יציאה">תחנות היציאה</Term>; כך משווים בין בנקים. הריבית בטבלה היא לשנה, לפני מס.
@@ -20,7 +21,11 @@ export const content: GuideContent = {
         <p className="max-w-measure">
           פיקדון <Term id="לא צמוד">לא צמוד</Term> מחזיר את הקרן ועוד ריבית, גם אם המחירים עלו; פיקדון <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term> מעדכן את הקרן לפי המדד, והריבית באה בנוסף. האם הקרן מוגנת כשהמדד יורד הוא תנאי של המוצר (<Term id="הבטחת קרן">הבטחת קרן</Term>), לא משהו שהחוק קובע.
         </p>
-        <RulesLine ids={["BANK-13", "BANK-14", "BANK-25", "BANK-34", "BANK-26", "BANK-05"]} />
+        {/* D30: which rate is the anchor is each bank's own term (BANK-25 sets no anchor; BANK-34 holds three banks' definitions) */}
+        <p className="max-w-measure">
+          <VariesByCompany ids={[{ rule: "BANK-34", companies: ["leumi", "hapoalim", "yahav"] }]} lead="איזו ריבית היא העוגן תלוי בבנק" />
+        </p>
+        <RulesLine ids={["BANK-13", "BANK-14", "BANK-25", "BANK-26", "BANK-05"]} />
       </>
     );
   },
@@ -64,11 +69,15 @@ export const content: GuideContent = {
           למי שההכנסה שלו ושל בן או בת הזוג בשנה {ceiling ? <>עד <Num value={ceiling} /> </> : "נמוכה "}יש <Term id="פטור למעוט הכנסה">פטור למעוט הכנסה</Term>{deduction ? <> של עד <Num value={deduction} /> בשנה</> : null} מהריבית על פיקדונות ותוכניות חיסכון. בדוח השנתי הוא מחושב אוטומטית; במהלך השנה מקבלים אותו דרך תיאום מס.
         </Sentence>
         <RulesLine ids={["TXI-20"]} />
+        <Sentence measure>
+          הפסד ממכירת ניירות ערך לא מקוזז כנגד ריבית על פיקדון: הפסד הון מקוזז כנגד רווח הון, ובניירות ערך גם כנגד ריבית או דיבידנד על ניירות ערך, וריבית על פיקדון בנקאי אינה כזו <RuleRef id="TXI-17" />.
+        </Sentence>
+        <RulesLine ids={["TXI-17"]} />
         <Callout tone="blocked" className="max-w-measure">
-          <span className="font-medium">שבירת פיקדון לפני הזמן: האתר לא מחשב אותה.</span> <Term prefix="ה" id="קנס שבירה">קנס</Term> הוא תנאי של הבנק, ואיך המס מתייחס לפיקדון שנשבר עוד פתוח. שאלה פתוחה: <bdi dir="ltr" className="whitespace-nowrap">TXI OQ14</bdi>.
+          <span className="font-medium">שבירת פיקדון לפני הזמן: האתר לא מחשב אותה.</span> <Term prefix="ה" id="קנס שבירה">קנס</Term> הוא תנאי של הבנק, ואיך המס מתייחס לפיקדון שנשבר עוד פתוח. שאלה פתוחה: <IdRef id="TXI OQ14" />.
         </Callout>
         <p className="max-w-measure text-sm text-muted-foreground">
-          פיקדון צמוד פריים ממוסה כאן כפיקדון לא צמוד, לפי קריאה של הגדרת המדד בחוק ולא לפי פרסום רשמי. שאלה פתוחה: <bdi dir="ltr" className="whitespace-nowrap">TXI OQ2</bdi>.
+          פיקדון צמוד פריים ממוסה כפיקדון לא צמוד: המדד בחוק הוא מדד המחירים לצרכן או שער של מטבע חוץ, והפריים אינו אף אחד מהם, ולכן כל הריבית ממוסה ומנוכה בשיעור של פיקדון לא צמוד <RuleRef id="TXI-04" />.
         </p>
         <RulesLine ids={["BANK-06", "TXI-04"]} />
       </>
@@ -85,8 +94,8 @@ export const content: GuideContent = {
         <Sentence measure>
           חוק חדש מחייב לבחון {months ? <>תוך <Num value={months} /> חודשים </> : null}אם צריך ביטוח פיקדונות, והצעת חוק פרטית מציעה ערבות {proposed ? <>של <Num value={proposed} /> </> : null}בבנקים קטנים; היא רק הצעה.
         </Sentence>
-        <p className="max-w-measure">פיקדון בריבית משתנה זז עם ריבית העוגן שלו (בלאומי, בפועלים וביהב: הפריים). פיקדון לא צמוד לא מגן מעליית מחירים.</p>
-        <RulesLine ids={["REG-04", "REG-05", "REG-06", "BANK-23", "BANK-25", "BANK-34", "BANK-26"]} />
+        <p className="max-w-measure">פיקדון בריבית משתנה זז עם ריבית העוגן שלו. פיקדון לא צמוד לא מגן מעליית מחירים.</p>
+        <RulesLine ids={["REG-04", "REG-05", "REG-06", "BANK-23", "BANK-25", "BANK-26"]} />
       </>
     );
   },
@@ -99,14 +108,17 @@ export const content: GuideContent = {
         פיקדון עדיף על קרן כספית יומית כשרוצים ריבית שנקבעת ביום ההפקדה: בקרן היומית התשואה לא ידועה מראש וזזה עם ריבית בנק ישראל, ובפיקדון בריבית קבועה היא ננעלת לכל התקופה.
       </p>
       <RulesLine ids={["BANK-15", "BANK-25", "MF-34", "MF-41"]} />
-      {/* NEW 2026-10-24 (scenario audit 7): the door from the guide to the page that checks a bank's offer */}
-      <p className="max-w-measure">
-        קיבלתם הצעה מהבנק?{" "}
-        <Link to="/idle-cash" className="text-link hover:underline">
-          בדקו אותה בעמוד כסף שיושב בעו״ש
-        </Link>
-        .
-      </p>
+      {/* NEW 2026-10-24 (scenario audit 7): the door from the guide to the page that checks a bank's offer; hidden while that
+          page is held for review (lib/review.ts) */}
+      {shown("/idle-cash") && (
+        <p className="max-w-measure">
+          קיבלתם הצעה מהבנק?{" "}
+          <Link to="/idle-cash" className="text-link hover:underline">
+            בדקו אותה בעמוד כסף שיושב בעו״ש
+          </Link>
+          .
+        </p>
+      )}
     </>
   ),
 };

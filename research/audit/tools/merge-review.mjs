@@ -96,8 +96,10 @@ const gallery = (() => {
 for (const n of kitNames) if (!baseIndex.includes(n)) note("New kit piece", `${KIT}index.ts`, `${n}${gallery.includes(n) ? "" : " (not in the gallery)"}`);
 
 const total = changed.length;
+// research files (screenshots, reports, tools) don't make a branch large; code and docs do
+const code = changed.filter(([, f]) => f && !f.startsWith("research/")).length;
 console.log(`# Structure review: ${range}\n`);
-console.log(`${total} files changed${total > LARGE ? ` (more than ${LARGE}: add an independent reviewer that sees the diff and the kit, not the builder's report)` : ""}.\n`);
+console.log(`${total} files changed, ${code} of them code or docs${code > LARGE ? ` (more than ${LARGE}: add an independent reviewer that sees the diff and the kit, not the builder's report)` : ""}.\n`);
 if (findings.size === 0) console.log("Nothing to judge: no new pieces outside the kit.");
 for (const [group, items] of findings) {
   console.log(`## ${group} (${items.length})`);

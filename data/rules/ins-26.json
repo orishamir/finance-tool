@@ -37,6 +37,7 @@
   },
   "il_finance_file": "savings-policies-and-executive-insurance.md",
   "checked": "2026-10-24",
+  "scope": "general",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/E5dM3Lqs3zVhAvU4rMf6c5wNTVAGlOIVXHsJEoAgsJ4=#page=2",
@@ -44,7 +45,7 @@
       "title_he": "תקנות פיקוח על עסקי ביטוח (תנאים בחוזי ביטוח) (תיקון), התשנ\"ז-1996 (קובץ התקנות 5804)",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "law",
+      "kind": "regulation",
       "strength": "primary",
       "locator": "pp.2-3, s.2",
       "locator_he": "עמודים 2 עד 3, סעיף 2",

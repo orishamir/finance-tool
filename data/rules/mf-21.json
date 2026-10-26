@@ -10,6 +10,7 @@
   "likely_to_change": "no",
   "il_finance_file": "mutual-funds-and-money-market-funds.md",
   "checked": "2026-10-22",
+  "scope": "general",
   "sources": [
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
@@ -63,6 +64,21 @@
       "page": 6,
       "checked": "2026-10-25",
       "qualifier": "(dated; still linked by the ISA as its full guide)"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(סיווג_קרנות_לצורך_פרסום)",
+      "title": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום), התשס\"ח-2007 (Wikisource mirror)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום), התשס״ח-2007 (קובץ התקנות 6625)",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "locator": "reg. 3(א)(8)",
+      "locator_he": "תקנה 3(א)(8)",
+      "anchor": "סעיף_3.א",
+      "quote": "שיעור הוספה בקרן אם נגבית הוספה",
+      "checked": "2026-10-26"
     }
   ]
 }

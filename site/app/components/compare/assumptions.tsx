@@ -1,11 +1,11 @@
 // The comparison's assumptions (design-system 6.2, flow 16): the chips under the chart and the panel of fields
 // (a sheet on a phone, a panel beside the chart on PC). A sensitivity row opens it with a suggestion the person must adopt.
-import { buttons, numbers, r2, r5, values as valuesCopy } from "../../copy";
+import { buttons, r2, r5, values as valuesCopy } from "../../copy";
 import { AcceptedFallField } from "../exposure-mode/fields";
 import { fmt } from "../../lib/format";
 import { useGoals, type FieldKey } from "../../lib/goal";
 import type { RunGoal } from "../../lib/compare";
-import { Button, cx, ParameterLine, Tag } from "../kit";
+import { Button, ParameterLine, PlanChips, type PlanChipItem } from "../kit";
 import { availableTooBig, InsuranceField, type FormData } from "./goal-form";
 import { GoalNumber, GoalSlider, SwitchRow } from "./fields";
 
@@ -19,7 +19,7 @@ const between = (r: { min: number; max: number }, msg: readonly [string, string]
 /** The chips under the chart: years, amounts, return, inflation; entered ones in blue, an empty return says so. */
 export function AssumptionChips({ g, sources, onOpen, exposure }: { g: RunGoal; sources: { horizon: boolean; amountNow: boolean; monthly: boolean; available: boolean; inflation: boolean }; onOpen: (f: FieldKey | "all") => void; exposure?: { acceptedFall: number | null } }) {
   // a horizon the preset gave ("לא יודעים" on the home page, D7) wears the site-parameter tag
-  const chips: { field: FieldKey; label: string; text: string; entered: boolean; parameter?: boolean }[] = [
+  const chips: PlanChipItem[] = [
     { field: "horizonYears", label: r2.result.chips.years, text: fmt.years(g.horizonYears), entered: sources.horizon, parameter: g.fromPreset.horizon && !sources.horizon },
     { field: "amountNow", label: r2.result.chips.amountNow, text: fmt.nisWhole(g.amountNow), entered: sources.amountNow },
     { field: "monthly", label: r2.result.chips.monthly, text: fmt.nisWhole(g.monthly), entered: sources.monthly },
@@ -30,24 +30,7 @@ export function AssumptionChips({ g, sources, onOpen, exposure }: { g: RunGoal; 
       : { field: "return", label: r2.result.chips.return, text: g.returnPct === null ? r2.result.chipEmpty : fmt.pct(g.returnPct), entered: g.returnPct !== null },
     { field: "inflation", label: r2.result.chips.inflation, text: g.inflationPct === null ? "" : fmt.pct(g.inflationPct), entered: g.inflationPct !== null },
   ];
-  return (
-    <div className="-mx-4 px-4 md:mx-0 md:px-0 overflow-x-auto md:overflow-visible flex md:flex-wrap gap-2 pb-1 scrollbar-none">
-      {chips.map((c) => (
-        <button key={c.field} type="button" onClick={() => onOpen(c.field)} className={cx("a-chip shrink-0", c.entered && "a-chip-entered")}>
-          <span className="text-muted-foreground">{c.label}</span>
-          {c.text && (
-            <bdi dir="ltr" className={cx("font-medium", c.entered && "text-entered")}>
-              {c.text}
-            </bdi>
-          )}
-          {c.parameter && <Tag tone="parameter">{numbers.parameter}</Tag>}
-        </button>
-      ))}
-      <button type="button" onClick={() => onOpen("all")} className="a-chip shrink-0">
-        {r2.result.chips.all}
-      </button>
-    </div>
-  );
+  return <PlanChips items={chips} allLabel={r2.result.chips.all} onOpen={onOpen} />;
 }
 
 function Suggest({ s, field, onAdopt, children }: { s: Suggestion | null; field: FieldKey; onAdopt: (v: number) => void; children: React.ReactNode }) {

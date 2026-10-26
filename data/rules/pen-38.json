@@ -37,6 +37,13 @@
   },
   "il_finance_file": "pension-and-gemel-lekitzba.md",
   "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "mor",
+      "name_he": "מור"
+    }
+  ],
   "sources": [
     {
       "url": "https://www.moreinvest.co.il/media/hphjzxvl/תקנון-קרן-פנסיה-כללית.pdf",

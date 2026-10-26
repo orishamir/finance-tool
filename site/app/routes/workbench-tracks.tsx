@@ -19,7 +19,7 @@ const ruleIds = ["CAT-36", "CAT-37", "CAT-10"] as const;
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { buildWorkbench } = await import("../lib/workbench.server");
-  const { loadRules } = await import("../lib/data.server");
+  const { loadRules, pointedRecords } = await import("../lib/data.server");
   const { goalContext } = await import("../lib/compare.server");
   const { providerWrapperIds } = await import("../lib/providers.server");
   const wb = buildWorkbench(params.wrapper);
@@ -28,7 +28,8 @@ export async function loader({ params }: Route.LoaderArgs) {
   const ids = wb.dataset === "pensia-net" ? [...ruleIds, "CAT-39"] : [...ruleIds];
   // the "לפי ספק" tab leads to a page that is built only for these wrappers
   const hasProviders = providerWrapperIds().includes(wb.wrapperId);
-  return { wb, hasProviders, goal: goalContext(), rules: Object.fromEntries(ids.filter((id) => rules[id]).map((id) => [id, rules[id]!])), ruleIds: ids.filter((id) => rules[id]) };
+  const mine = Object.fromEntries(ids.filter((id) => rules[id]).map((id) => [id, rules[id]!]));
+  return { wb, hasProviders, goal: goalContext(), rules: mine, pointed: pointedRecords(mine, rules), ruleIds: ids.filter((id) => rules[id]) };
 }
 
 export function meta({ loaderData: data }: Route.MetaArgs) {
@@ -51,11 +52,11 @@ function NoGoalLine() {
 }
 
 export default function WorkbenchTracks() {
-  const { wb, hasProviders, goal, rules, ruleIds: ids } = useLoaderData<typeof loader>();
+  const { wb, hasProviders, goal, rules, pointed, ruleIds: ids } = useLoaderData<typeof loader>();
   const year = wb.feeYear ? feeYear(wb.feeYear) : null;
   return (
     <GoalsProvider presets={goal.presets as Presets}>
-      <PageShell current="decoder" data={{ rules, terms: {}, dimensions: {}, today: goal.today }}>
+      <PageShell current="decoder" data={{ rules, pointed, terms: {}, dimensions: {}, today: goal.today }}>
         <div className="flex flex-col gap-5 lg:gap-6 pt-2 lg:pt-8 max-w-page">
           <header className="flex flex-col gap-3">
             <Breadcrumb parent={{ href: "/companies", label: companiesCopy.back }} current={`${copy.title.before}${wb.wrapperName}${copy.title.after}`} />

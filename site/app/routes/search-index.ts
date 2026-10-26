@@ -3,12 +3,12 @@
 import type { SearchEntry } from "../lib/search";
 
 export async function loader() {
-  const { loadCma, loadTerms, loadWrappers, loadRules, loadParameters } = await import("../lib/data.server");
+  const { loadCma, loadTerms, loadProducts, loadRules, loadParameters } = await import("../lib/data.server");
   const { loadCatalog, loadExposures } = await import("../lib/instruments.server");
   const { normalize, pageAliases, ruleFigs } = await import("../lib/search");
   const { search, searchMore, sourceBlock, parametersPage, topicName } = await import("../copy");
   const entries: SearchEntry[] = [];
-  const wrappers = loadWrappers();
+  const wrappers = loadProducts();
   for (const w of wrappers) {
     for (const name of [...w.names.he, ...w.names.app, ...w.names.statement]) entries.push({ kind: "guide", name, line: search.groups.guide, href: `/guide/${w.id}`, norm: normalize(name) });
   }
@@ -18,6 +18,10 @@ export async function loader() {
   for (const t of cma.tracks) entries.push({ kind: "track", name: t.name, line: `${t.companyName} · ${t.classification} · ${idLine(t.fundId)}`, href: `/companies/${t.companyId}/${t.fundId}`, norm: normalize(t.name), ids: [String(t.fundId)] });
   // audit 2026-10-24 (A92): the managing companies are results, by name and by company number
   for (const c of cma.companies) entries.push({ kind: "company", name: c.name, line: search.groups.company, href: `/companies/${c.id}`, norm: normalize(c.name), ids: [c.id] });
+  // D33: a brand is a result by the name the site shows and by its fund managers' names; each leads to the brand's one page
+  const { loadBrands } = await import("../lib/brands.server");
+  const { brands: brandWords } = await import("../copy");
+  for (const b of loadBrands()) for (const name of [b.name, ...b.fundManagers]) entries.push({ kind: "company", name, line: brandWords.searchLine, href: `/companies/${b.page}`, norm: normalize(name) });
   for (const a of pageAliases) for (const name of a.names) entries.push({ kind: "guide", name, line: a.line, href: a.href, norm: normalize(name) });
   const exposures = loadExposures();
   for (const e of exposures) for (const name of [...e.names.he, ...e.names.en]) entries.push({ kind: "guide", name, line: search.groups.guide, href: `/exposure/${e.id}`, norm: normalize(name) });
@@ -59,9 +63,39 @@ export async function loader() {
   // knowledge layer (synthesis 3.6): rules by title, id and figures; parameters by name and id; documents by title
   const { ruleTitle } = await import("../lib/rule-title");
   const strengthRank: Record<string, number> = { primary: 0, "primary-mirror": 1, entered: 1, institution: 2, secondary: 3, open: 4 };
+  // D30 (spec 2026-10-25-rules-scope §4): two groups; a company's term (or an unsettled one) names its company and leads to where it is listed
+  const { companyLinks, ownDocuments } = await import("../lib/institutions.server");
+  const { companyTermsHref, joinNames, listedCompanies, ownDocCompanies } = await import("../lib/scope");
+  const { scopeWords } = await import("../copy");
+  const links = companyLinks();
+  const ownDocs = ownDocuments();
   for (const rule of Object.values(loadRules())) {
     const title = ruleTitle(rule).text;
     const topic = topicName(rule.il_finance_file);
+    if (rule.scope !== "general") {
+      // the row names the companies whose sections list it (review, 2026-10-26); a not-rule, which none lists, says "לא נכלל ככלל",
+      // after the companies whose documents it was read from, if any, and leads to that section of /companies; every company it
+      // names still finds it
+      const listed = listedCompanies(rule, ownDocs);
+      const own = ownDocCompanies(rule, ownDocs);
+      const who = listed.length > 0 ? joinNames(listed.map((c) => c.name_he)) : [joinNames(own.map((c) => c.name_he)), scopeWords.notRule.tag].filter(Boolean).join(" · ");
+      const named = joinNames((rule.scope_institutions ?? []).map((c) => c.name_he));
+      const firstSourceHe = (rule as { sources?: { title_he?: string }[] }).sources?.[0]?.title_he;
+      const altC = normalize([...Object.values(rule.figure_names_he ?? {}), topic, named, firstSourceHe ?? ""].join(" "));
+      const figsC = ruleFigs(rule.figures, rule.figure_names_he);
+      entries.push({
+        kind: "companyRule",
+        name: title,
+        line: [who, topic, rule.id].join(" · "),
+        href: companyTermsHref(rule, links, ownDocs),
+        norm: normalize(title),
+        key: rule.id,
+        st: strengthRank[rule.strength] ?? 3,
+        ...(altC ? { alt: altC } : {}),
+        ...(figsC.length > 0 ? { figs: figsC } : {}),
+      });
+      continue;
+    }
     const weak = sourceBlock.weak[rule.strength];
     // W1 adds sources[]; the first source's Hebrew title is one more word the rule can be found by
     const firstSource = (rule as { sources?: { title_he?: string }[] }).sources?.[0]?.title_he;

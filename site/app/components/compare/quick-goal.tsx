@@ -9,11 +9,12 @@ import { home as copy, r2, values as valuesCopy } from "../../copy";
 import { fmt, parseNumber } from "../../lib/format";
 import { childAgeFrom, useGoals, type Presets } from "../../lib/goal";
 import { asPresetParam, type PresetMeta } from "../../lib/goal-values";
+import { shown } from "../../lib/review";
 import { presetFor, purposeIds, quickFields, quickGoalPlan, type PurposeId, type QuickInput, type QuickMessages, type QuickPlan } from "../../lib/quick-goal";
 import { Tpl } from "../exposure-mode/tpl";
 import { RawWatch } from "../holdings/fields";
 import { Num } from "../provenance";
-import { Button, Card, ChoiceChips, cx, flushPendingFields, NumberField } from "../kit";
+import { Button, Card, ChipList, ChoiceChips, cx, flushPendingFields, NumberField } from "../kit";
 import type { Range } from "./goal-form";
 
 export interface QuickGoalCardProps {
@@ -31,6 +32,13 @@ type Typed = "amountNow" | "monthly" | "years" | "childAge" | "targetCost";
 
 const iso = (n: number) => `⁦${fmt.number(n)}⁩`;
 const raw = (t: string): number | null => (t.trim() === "" ? null : parseNumber(t));
+
+// the cushion goes to the idle-cash page (quickGoalPlan), so its chip waits while that page is held for review (lib/review.ts)
+const shownPurposes = purposeIds.filter((p) => p !== "cushion" || shown("/idle-cash"));
+const alreadyItems = [
+  { id: "deposit", label: copy.quick.alreadyDeposit, href: "/idle-cash" },
+  { id: "study-fund", label: copy.quick.alreadyStudyFund, href: "/holdings" },
+].filter((i) => shown(i.href));
 
 export function QuickGoalCard({ bounds, presets, meta, today, mode, className }: QuickGoalCardProps) {
   const { status, update, add } = useGoals();
@@ -125,16 +133,17 @@ export function QuickGoalCard({ bounds, presets, meta, today, mode, className }:
         <div className="flex flex-col gap-2">
           <span className="field-label">{copy.quick.purposeLabel}</span>
           {/* wraps on a phone too: the first question shows all its answers (two of seven scrolled out of sight before) */}
-          <ChoiceChips ids={purposeIds} labels={copy.quick.purposes} value={purpose} onChange={(id) => setPurpose((p) => (p === id ? null : id))} ariaLabel={copy.quick.purposeLabel} wrap />
-          <div className="-mx-4 px-4 md:mx-0 md:px-0 flex items-center gap-2 overflow-x-auto md:flex-wrap md:overflow-visible pb-1 scrollbar-none">
-            <span className="text-sm text-muted-foreground shrink-0">{copy.quick.already}</span>
-            <Link to="/idle-cash" className="sec-chip !min-h-8 !px-3 border border-border bg-card hover:bg-accent shrink-0">
-              {copy.quick.alreadyDeposit}
-            </Link>
-            <Link to="/holdings" className="sec-chip !min-h-8 !px-3 border border-border bg-card hover:bg-accent shrink-0">
-              {copy.quick.alreadyStudyFund}
-            </Link>
-          </div>
+          <ChoiceChips ids={shownPurposes} labels={copy.quick.purposes} value={purpose} onChange={(id) => setPurpose((p) => (p === id ? null : id))} ariaLabel={copy.quick.purposeLabel} wrap />
+          {/* the kit's link pills, wrapping like the purposes above: as a sideways row of 32 px pills the second was cut at the
+              card's edge on a phone (2026-10-26) */}
+          {alreadyItems.length > 0 && (
+            <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-3">
+              <span className="text-sm text-muted-foreground shrink-0" aria-hidden="true">
+                {copy.quick.already}
+              </span>
+              <ChipList heading={copy.quick.already} headingHidden items={alreadyItems} value={null} />
+            </div>
+          )}
         </div>
         {/* a field row (app.css): the boxes line up even where a label wraps (2026-10-24 night, the founder's screenshot); the
             wrappers are `contents` so each field is the row's own item, and the years slot is a cell with the chip beside the box

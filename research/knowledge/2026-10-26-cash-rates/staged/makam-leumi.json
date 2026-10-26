@@ -1,0 +1,109 @@
+{
+ "as_of": "2026-10-23",
+ "seen": "2026-10-26",
+ "source": {
+  "url": "https://www.leumi.co.il/he/savings/money-market-products",
+  "title": "בנק לאומי, 'מוצרי שוק הכסף' (פרסום לפי הוראה 447א)",
+  "publisher": "בנק לאומי",
+  "strength": "institution"
+ },
+ "page_note_he": "התשואה המוצגת היא ברוטו ואינה כוללת עמלות קניה ומכירה ומס רווחי הון",
+ "series": [
+  {
+   "series": "1116",
+   "tase_number": "8261117",
+   "last_price": 99.91,
+   "days_to_redemption": 9,
+   "redemption": "2026-11-04",
+   "yield_to_redemption_pct": 5.35
+  },
+  {
+   "series": "1216",
+   "tase_number": "8261216",
+   "last_price": 99.69,
+   "days_to_redemption": 37,
+   "redemption": "2026-12-02",
+   "yield_to_redemption_pct": 3.51
+  },
+  {
+   "series": "117",
+   "tase_number": "8270118",
+   "last_price": 99.41,
+   "days_to_redemption": 72,
+   "redemption": "2027-01-06",
+   "yield_to_redemption_pct": 3.24
+  },
+  {
+   "series": "217",
+   "tase_number": "8270217",
+   "last_price": 99.2,
+   "days_to_redemption": 100,
+   "redemption": "2027-02-03",
+   "yield_to_redemption_pct": 3.11
+  },
+  {
+   "series": "317",
+   "tase_number": "8270316",
+   "last_price": 99.0,
+   "days_to_redemption": 128,
+   "redemption": "2027-03-03",
+   "yield_to_redemption_pct": 3.01
+  },
+  {
+   "series": "417",
+   "tase_number": "8270415",
+   "last_price": 98.73,
+   "days_to_redemption": 163,
+   "redemption": "2027-04-07",
+   "yield_to_redemption_pct": 2.99
+  },
+  {
+   "series": "517",
+   "tase_number": "8270514",
+   "last_price": 98.47,
+   "days_to_redemption": 191,
+   "redemption": "2027-05-05",
+   "yield_to_redemption_pct": 3.08
+  },
+  {
+   "series": "617",
+   "tase_number": "8270613",
+   "last_price": 98.21,
+   "days_to_redemption": 219,
+   "redemption": "2027-06-02",
+   "yield_to_redemption_pct": 3.12
+  },
+  {
+   "series": "717",
+   "tase_number": "8270712",
+   "last_price": 97.93,
+   "days_to_redemption": 254,
+   "redemption": "2027-07-07",
+   "yield_to_redemption_pct": 3.12
+  },
+  {
+   "series": "817",
+   "tase_number": "8270811",
+   "last_price": 97.7,
+   "days_to_redemption": 282,
+   "redemption": "2027-08-04",
+   "yield_to_redemption_pct": 3.12
+  },
+  {
+   "series": "927",
+   "tase_number": "8270928",
+   "last_price": 97.41,
+   "days_to_redemption": 317,
+   "redemption": "2027-09-08",
+   "yield_to_redemption_pct": 3.09
+  },
+  {
+   "series": "1017",
+   "tase_number": "8271017",
+   "last_price": 97.19,
+   "days_to_redemption": 345,
+   "redemption": "2027-10-06",
+   "yield_to_redemption_pct": 3.1
+  }
+ ]
+}

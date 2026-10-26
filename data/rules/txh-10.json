@@ -2,7 +2,7 @@
   "id": "TXH-10",
   "title": "Exempt withdrawal after 3 years: retirement age, or used for study",
   "title_he": "משיכה פטורה בתקופה מקוצרת: גיל פרישה או השתלמות",
-  "text_he": "התקופה מתקצרת לשנות ההמתנה המקוצרות ממועד התשלום הראשון למי שהגיע לגיל הפרישה, ולסכומים ששימשו להשתלמות של העמית; לעצמאי ההשתלמות צריכה לשמור על רמתו המקצועית בתחום עיסוקו. משיכה להשתלמות בארץ של עד שליש מהיתרה לא סוגרת את החשבון, אם לא הייתה משיכה כזו בשנים-עשר החודשים שלפניה. 'גיל הפרישה' מוגדר בפקודה לפי חוק גיל פרישה; איזה גיל מהחוק חל, ואיזה אישורים הקרן דורשת להשתלמות, לא ממוקרים.",
+  "text_he": "התקופה מתקצרת לשנות ההמתנה המקוצרות ממועד התשלום הראשון למי שהגיע לגיל הפרישה, ולסכומים ששימשו להשתלמות של העמית; לעצמאי ההשתלמות צריכה לשמור על רמתו המקצועית בתחום עיסוקו. משיכה להשתלמות בארץ של עד שליש מהיתרה לא סוגרת את החשבון, אם לא הייתה משיכה כזו בשנים-עשר החודשים שלפניה. 'גיל הפרישה' מוגדר בפקודה לפי חוק גיל פרישה, והחוק נותן את השם הזה רק לגיל שבסעיף 3, לגברים ולנשים, עם לוח לנשים לפי תאריך לידה; לגיל הפרישה המוקדמת ולגיל פרישת החובה הוא נותן שמות אחרים, ולכן המסלול המקוצר נפתח בגיל שבסעיף 3. איזה אישורים הקרן דורשת להשתלמות לא ממוקר.",
   "figure_names_he": {
     "lock_years": "שנות ההמתנה המקוצרות"
   },
@@ -31,12 +31,26 @@
         "TXH-10"
       ],
       "state": "sourced",
-      "notes": "3 years from the first payment date for an employee or self-employed individual who has reached retirement age, and for amounts used for the member's study. A study withdrawal in Israel of up to one third of the balance does not close the account if no such withdrawal was made in the preceding 12 months (s.9(16A)(b)). Which age in the Retirement Age Law applies is open question 5 (KH-12 infers s.3: 67 men, 65 women)."
+      "notes": "3 years from the first payment date for an employee or self-employed individual who has reached retirement age, and for amounts used for the member's study. A study withdrawal in Israel of up to one third of the balance does not close the account if no such withdrawal was made in the preceding 12 months (s.9(16A)(b)). The retirement age is the s.3 age of the Retirement Age Law (67 men, 65 women, with a schedule for women born up to 1969), the only age that law names \"גיל הפרישה\" (KH-12; open question 5 closed 2026-10-26)."
     }
   },
   "il_finance_file": "tax-hishtalmut.md",
   "checked": "2026-10-22",
+  "scope": "general",
   "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
+      "title": "Deductions booklet 2026",
+      "title_he": "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.7, item 4",
+      "page": 7,
+      "quote": "שינוי גיל הפרישה לנשים",
+      "checked": "2026-10-26"
+    },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
       "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
@@ -88,6 +102,20 @@
       "locator_he": "עמוד 89",
       "page": 89,
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",
+      "title": "חוק גיל פרישה, התשס\"ד-2004",
+      "title_he": "חוק גיל פרישה, התשס\"ד-2004",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.1, ss.3-5, s.3",
+      "locator_he": "עמוד 1, סעיפים 3-5, סעיף 3",
+      "page": 1,
+      "quote": "(בחוק זה – גיל הפרישה)",
+      "checked": "2026-10-26"
     }
   ]
 }

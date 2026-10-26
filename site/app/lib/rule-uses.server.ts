@@ -2,16 +2,18 @@
 // calculation engine reads it, which data collections reference it, and a score that orders rules inside a group.
 // Computed once per build from the source files themselves (a quoted id in content/, routes/, components/, a few lib/ files),
 // so a page that starts citing a rule shows up here with no table to maintain.
-import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { existsSync, readdirSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
 import { guideIndex, idle, r2, r3fees, r3holdings, r3transfer, r3workbench, r4playbook, r4workbench, companies as companiesCopy } from "../copy";
 import { loadExposures } from "./instruments.server";
-import { loadRules, loadWrappers, root } from "./data.server";
+import { loadRules, loadProducts, pointedRecords, root } from "./data.server";
 import { fileProducts, commonRulesFile, shelfOf, tier2RuleFiles, type ShelfId } from "./rule-shelves";
 import { playbookWrapperIds } from "./playbook.server";
 import { providerWrapperIds } from "./providers.server";
 import { workbenchWrapperIds } from "./workbench.server";
+import { shown } from "./review";
+import { readTextCached } from "./read-cache.server";
 
 export interface RuleUsePage {
   href: string;
@@ -82,7 +84,7 @@ function pageTable(): Record<string, RuleUsePage> {
   if (sw) t.switch = { href: `/switch/${sw}`, label: trimColon(r4playbook.title.before) };
   if (pw) t.providers = { href: `/workbench/providers/${pw}`, label: trimColon(r4workbench.providers.title.before) };
   if (wb) {
-    const name = loadWrappers().find((w) => w.id === wb)?.names.he[0] ?? "";
+    const name = loadProducts().find((w) => w.id === wb)?.names.he[0] ?? "";
     t.tracks = { href: `/workbench/tracks/${wb}`, label: `${r3workbench.title.before}${name}${r3workbench.title.after}` };
   }
   if (fx) t.funds = { href: `/workbench/funds/${fx}`, label: trimColon(r4workbench.funds.title.before) };
@@ -150,7 +152,7 @@ function build(): Scan {
   const known = new Set(Object.keys(rules));
   const table = pageTable();
   const appDir = join(root, "site", "app");
-  const wrappers = loadWrappers();
+  const wrappers = loadProducts();
   const wrapperName = new Map<string, string>(wrappers.map((w) => [w.id, w.names.he[0] ?? w.id]));
 
   const pages = new Map<string, Map<string, RuleUsePage>>();
@@ -192,16 +194,16 @@ function build(): Scan {
       page = k ? table[k] ?? null : null;
     }
     if (!page) continue;
-    const found = idsIn(readFileSync(file, "utf8"), quoted, known);
+    const found = idsIn(readTextCached(file), quoted, known);
     for (const id of found) {
-      addPage(id, page);
+      if (shown(page.href)) addPage(id, page); // a page held for review is not linked from a rule card (lib/review.ts)
       bump(siteFiles, id);
     }
   }
 
   // the engine
   for (const file of walk(join(root, "packages", "engine", "src"), /\.ts$/)) {
-    for (const id of idsIn(readFileSync(file, "utf8"), bare, known)) bump(engineFiles, id);
+    for (const id of idsIn(readTextCached(file), bare, known)) bump(engineFiles, id);
   }
 
   // data collections (not the rules themselves, the regulator's bulk files or the pinned list)
@@ -211,12 +213,12 @@ function build(): Scan {
     const parts = relative(dataDir, file).split(sep);
     if (skip.has(parts[0]!) || parts[parts.length - 1] === "pinned-rules.json") continue;
     const name = parts[0] === "instruments" || parts[0] === "terms" ? parts.slice(0, parts.length > 2 ? 2 : 1).join("/") : parts[0]!;
-    const found = idsIn(readFileSync(file, "utf8"), quoted, known);
+    const found = idsIn(readTextCached(file), quoted, known);
     for (const id of found) {
       const m = collections.get(id) ?? new Map<string, number>();
       bump(m, name);
       collections.set(id, m);
-      if (name === "instruments/wrappers") {
+      if (name === "instruments/wrappers" || name === "instruments/securities") {
         const wid = parts[parts.length - 1]!.replace(/\.json$/, "");
         addPage(id, { href: `/guide/${wid}`, label: wrapperName.get(wid) ?? wid });
       }
@@ -290,8 +292,8 @@ export function ruleProducts(): Record<string, string[]> {
     const list = (out[id] ??= []);
     if (!list.includes(p)) list.push(p);
   };
-  for (const w of loadWrappers()) {
-    const text = readFileSync(join(root, "data/instruments/wrappers", `${w.id}.json`), "utf8");
+  for (const w of loadProducts()) {
+    const text = readTextCached(join(root, "data/instruments", "held_in" in w ? "securities" : "wrappers", `${w.id}.json`));
     for (const m of text.matchAll(/"([A-Z][A-Z0-9]*-[A-Z0-9]+)"/g)) if (known.has(m[1]!)) add(m[1]!, w.id);
   }
   for (const r of Object.values(all)) {
@@ -305,9 +307,10 @@ export function ruleProducts(): Record<string, string[]> {
 /** One shelf's data file (`/rules-data/<shelf>.json`): the full records of its rules, plus the records they derive from, and where each is used. */
 export function shelfBundle(shelf: ShelfId) {
   const all = loadRules();
-  const mine = Object.values(all).filter((r) => shelfOf(r) === shelf);
+  // the rules page lists general rules only (D30); a company's term a card points at (an example) still travels below, so its chip opens
+  const mine = Object.values(all).filter((r) => r.scope === "general" && shelfOf(r) === shelf);
   const rules: Record<string, RuleRecord> = Object.fromEntries(mine.map((r) => [r.id, r]));
-  // a rule a card points at (derived_from) may live on another shelf: its record travels too, so the chip opens it
-  for (const r of mine) for (const d of (r as { derived_from?: string[] }).derived_from ?? []) if (all[d] && !rules[d]) rules[d] = all[d]!;
+  // a rule a card points at (derived_from, examples) may live on another shelf: its record travels too, so the chip opens it
+  Object.assign(rules, pointedRecords(rules, all));
   return { rules, ruleUses: loadRuleUses(Object.keys(rules)) };
 }

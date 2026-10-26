@@ -6,6 +6,7 @@ import { fmt } from "../../../lib/format";
 import { draftOf, hasErrors, offerFromDraft, validateDraft, type DraftErrors, type EnteredOffer, type OfferDraft } from "../../../lib/offers";
 import type { ProviderRowView } from "../../../lib/providers";
 import { Button, cx, NumberField } from "../../kit";
+import { IdText } from "../../provenance";
 
 const monthsOf = { month: 1, quarter: 3, year: 12 } as const;
 const periodOfMonths = (m: number): "month" | "quarter" | "year" => (m === 1 ? "month" : m === 3 ? "quarter" : "year");
@@ -104,7 +105,7 @@ export function EnteredOfferCard({ view, offer, today, writable, showFx, onSave,
           {err("offeredOn") && <span className="text-xs text-destructive">{err("offeredOn")}</span>}
         </div>
       </Group>
-      <p className="text-xs text-muted-foreground">{t.binding}</p>
+      <p className="text-xs text-muted-foreground"><IdText text={t.binding} /></p>
       {errors.empty && <p className="text-sm text-destructive">{t.empty}</p>}
       {!writable && <p className="text-xs text-caution-foreground">{t.noStorage}</p>}
       <div className="flex flex-wrap gap-2 pt-1">

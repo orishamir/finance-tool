@@ -1,7 +1,7 @@
 // F-85 (the rate most banks pay on a current account) and the F-26 yearly reading used by the current-account page.
 import { readdirSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { currentAccountYearlyInterest, formulas, mostCommonRate } from "../src/index.ts";
+import { currentAccountYearlyInterest, formulas, mostCommonRate, rateRange } from "../src/index.ts";
 
 describe("F-85 the rate most banks pay", () => {
   it("is registered", () => {
@@ -34,6 +34,21 @@ describe("F-85 the rate most banks pay", () => {
     expect(records.every((r) => r.wrapper_id === "current-account")).toBe(true);
     expect(new Set(records.map((r) => r.bank)).size).toBe(8);
     expect(mostCommonRate(records.map((r) => r.rate_offered.value))).toEqual({ rate: 0, count: 4, of: 8, paying: 4 });
+  });
+});
+
+describe("F-86 the range of a deposit's rate across the banks", () => {
+  it("is registered", () => {
+    expect(formulas["F-86"]).toBe(rateRange);
+  });
+
+  it("takes the lowest and the highest rate and counts the banks", () => {
+    expect(rateRange([1.8, 1.74, 2.25, 1.55])).toEqual({ lo: 1.55, hi: 2.25, count: 4 });
+    expect(rateRange([2])).toEqual({ lo: 2, hi: 2, count: 1 });
+  });
+
+  it("is null with no bank", () => {
+    expect(rateRange([])).toBeNull();
   });
 });
 

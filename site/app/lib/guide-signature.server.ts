@@ -2,20 +2,21 @@
 // the sourced figures it shows by name, and what the data does not hold yet. One builder per wrapper id; builder G2 adds its own
 // entries to `builders`. Server-only. Nothing here types a rate or a date: every figure is a record's value object, a rule's
 // figure, or a P-05 parameter, and a missing one becomes a `gap` (shown as "עוד לא חושב" with its reason).
-import type { DepositTerms, FundRecord, ParameterRecord, RuleRecord, WrapperRecord } from "@finance-tool/schema";
-import { loadParameters, loadRules, loadWrappers, today } from "./data.server";
+import type { DepositTerms, FundRecord, ParameterRecord, RuleRecord, ProductRecord } from "@finance-tool/schema";
+import { loadParameters, loadRules, loadProducts, today } from "./data.server";
 import type { Bundle } from "./engine";
 import { p05Value } from "./engine";
-import { accountBanks, buildInstrumentBundle, commonAccountRate, currentAccountRecords, familyOf, publishedDeposit, type InstrumentFamily } from "./guide-signature-bundle.server";
+import { accountBanks, buildInstrumentBundle, commonAccountRate, currentAccountRecords, depositRange, familyOf, oneYearDepositRecords, publishedDeposit, type InstrumentFamily } from "./guide-signature-bundle.server";
 import type { SignatureData } from "./guide-signature";
 import { loadDepositTerms, loadFunds } from "./instruments.server";
 import { buildPension, buildProvident, buildStudyFund } from "./guide-signature-g2.server";
-import { ruleFigure, type SiteValue } from "./value";
+import { computed, ownBy, ruleFigure, type SiteValue } from "./value";
+import { shortName } from "./providers";
 
 interface Ctx {
   p05: ParameterRecord;
   allRules: Record<string, RuleRecord>;
-  wrappers: WrapperRecord[];
+  wrappers: ProductRecord[];
   deposits: DepositTerms[];
   funds: FundRecord[];
   t: string;
@@ -39,7 +40,7 @@ export function buildSignatureData(id: string, own: Bundle | null): SignatureDat
   if (!build) return null;
   const p05 = loadParameters().find((p) => p.method_id === "P-05");
   if (!p05) throw new Error("data/parameters/ holds no P-05 record");
-  return build({ p05, allRules: loadRules(), wrappers: loadWrappers(), deposits: loadDepositTerms(), funds: loadFunds(), t: today(), own, id });
+  return build({ p05, allRules: loadRules(), wrappers: loadProducts(), deposits: loadDepositTerms(), funds: loadFunds(), t: today(), own, id });
 }
 
 // ---------------------------------------------------------------- helpers
@@ -93,16 +94,29 @@ function depositFacts(d: SignatureData, c: Ctx, wrapperId: string, prefix = ""):
     d.gaps.push(`deposit:${wrapperId}`);
     return {};
   }
-  d.facts[`${prefix}rate`] = pub.rate;
+  // D31: the bank's own deposit terms, shown where the visual names the bank (the copy says "הפיקדון של לאומי")
+  const bank = shortName(pub.record.bank, pub.record.bank);
+  const own = (v: SiteValue): SiteValue => ownBy(v, bank);
+  const rate = own(pub.rate);
+  d.facts[`${prefix}rate`] = rate;
   const term = pub.record.term_months;
-  if (typeof term.value === "number") d.facts[`${prefix}term`] = { ...term } as SiteValue;
-  d.facts[`${prefix}break`] = breakFact(pub.record);
+  if (typeof term.value === "number") d.facts[`${prefix}term`] = own({ ...term } as SiteValue);
+  d.facts[`${prefix}break`] = own(breakFact(pub.record));
   if (pub.record.amount_range) {
-    d.facts[`${prefix}amountMin`] = { ...pub.record.amount_range.min } as SiteValue;
-    if (pub.record.amount_range.max) d.facts[`${prefix}amountMax`] = { ...pub.record.amount_range.max } as SiteValue;
+    d.facts[`${prefix}amountMin`] = own({ ...pub.record.amount_range.min } as SiteValue);
+    if (pub.record.amount_range.max) d.facts[`${prefix}amountMax`] = own({ ...pub.record.amount_range.max } as SiteValue);
   }
-  if (pub.ceiling) d.facts[`${prefix}ceiling`] = pub.ceiling;
-  return { rate: pub.rate, rec: pub.record };
+  if (pub.ceiling) d.facts[`${prefix}ceiling`] = own(pub.ceiling);
+  return { rate, rec: pub.record };
+}
+
+/** The banks' one-year fixed-rate deposits and their range (F-86), on `d`: the ladder's deposit row and the bank-deposit page's list. */
+function addDepositBanks(d: SignatureData, c: Ctx): ReturnType<typeof depositRange> {
+  const banks = accountBanks(oneYearDepositRecords(c.deposits));
+  d.depositBanks = banks;
+  const range = depositRange(banks, c.t);
+  if (!range) d.gaps.push("depositBanks");
+  return range;
 }
 
 // ---------------------------------------------------------------- current account
@@ -142,6 +156,13 @@ builders["bank-deposit"] = (c) => {
   addBundle(d, c, "bank-deposit");
   addBundle(d, c, "money-market-fund-daily");
   depositFacts(d, c, "bank-deposit");
+  // the list the money-market ladder links to: each collected bank's one-year fixed-rate deposit (F-86)
+  const range = addDepositBanks(d, c);
+  if (range) {
+    d.facts.depositLo = range.lo;
+    d.facts.depositHi = range.hi;
+    d.facts.depositCount = range.count;
+  }
   d.facts.cashRate = p05Value(c.p05, "cash_rate");
   const brk = d.facts.break;
   if (brk && brk.value !== "not_allowed" && brk.value !== "none") d.gaps.push("depositBreak");
@@ -157,8 +178,9 @@ builders["savings-plan"] = (c) => {
   // the nearest alternative: one lump sum in the bank deposit
   const lump = publishedDeposit("bank-deposit", c.p05.instruments?.["bank-deposit"], c.deposits);
   if (lump) {
-    d.facts.lumpRate = lump.rate;
-    if (typeof lump.record.term_months.value === "number") d.facts.lumpTerm = { ...lump.record.term_months } as SiteValue;
+    const lumpBank = shortName(lump.record.bank, lump.record.bank);
+    d.facts.lumpRate = ownBy(lump.rate, lumpBank);
+    if (typeof lump.record.term_months.value === "number") d.facts.lumpTerm = ownBy({ ...lump.record.term_months } as SiteValue, lumpBank);
   } else d.gaps.push("deposit:bank-deposit");
   // BANK-28 / BANK OQ12: whether each monthly instalment has its own lock-up is not said in any source read (the ladder is the F-22 reading)
   d.gaps.push("planLockPerDeposit");
@@ -174,19 +196,34 @@ builders["money-market-fund-daily"] = (c) => {
   addBundle(d, c, "money-market-fund-daily");
   // the current-account row is the rate most of the collected banks publish (F-85), with the best a bank pays beside it
   const { common } = addAccountBanks(d, c);
-  const dep = depositFacts(d, c, "bank-deposit", "deposit:");
+  // the one-year deposit row is the range across the collected banks (F-86), never one bank's rate (founder, 2026-10-26)
+  const range = addDepositBanks(d, c);
   // names the ladder reads
   if (common) {
     d.facts.currentRate = common.rate;
     d.facts.currentCount = common.count;
     d.facts.currentBankCount = common.of;
   }
-  if (dep.rate) d.facts.depositRate = dep.rate;
-  if (d.facts["deposit:term"]) d.facts.depositTerm = d.facts["deposit:term"]!;
+  if (range) {
+    d.facts.depositLo = range.lo;
+    d.facts.depositHi = range.hi;
+    d.facts.depositCount = range.count;
+  }
+  // F-86: of the same deposits, how many forbid taking the money out before the end of the term (each record's 447 column); a count
+  // over the collected banks, naming none (D30)
+  const depositRecords = oneYearDepositRecords(c.deposits);
+  if (range && depositRecords.length) {
+    const inputs = Object.fromEntries(depositRecords.map((r) => [shortName(r.bank, r.bank), breakFact(r)]));
+    d.facts.depositNoExitCount = computed(depositRecords.filter((r) => !r.break.allowed).length, "count", "F-86", inputs, { today: c.t, about: "בכמה מהבנקים שנאספו אי אפשר למשוך מהפיקדון לפני סוף התקופה" });
+  }
   d.facts.cashRate = p05Value(c.p05, "cash_rate");
-  // MF OQ4: how many business days after the order the money is usable was not found; MF-35: the renewable fund's dates are chosen when buying
-  d.gaps.push("mmfPayoutDays");
-  return withRules(d, "MF-10", "MF-11", "MF-34", "MF-35", "BANK-09", "BANK-13");
+  // MF-08: the longest a renewable fund's money can wait for its next date, by the law's default
+  const max = figureOf(c, "MF-08", "max_interval_months");
+  if (max) d.facts.maxInterval = max;
+  else d.gaps.push("maxInterval");
+  // MF-10, MF-11 (prices regulations reg. 15): an order before the fund's set hour is redeemed that day and the distributor pays the same day
+  // (MF OQ4 closed 2026-10-26); MF-35: the renewable fund's dates are chosen when buying
+  return withRules(d, "MF-08", "MF-10", "MF-11", "MF-34", "MF-35", "BANK-06", "BANK-09", "BANK-13");
 };
 
 // ---------------------------------------------------------------- renewable money-market fund
@@ -200,18 +237,26 @@ builders["money-market-fund-renewable"] = (c) => {
   if (fund && m) {
     const src = fund.fees.fixed_management?.source ?? fund.fees.trustee?.source;
     if (src) {
-      d.facts.seriesDate = {
-        value: `${m[3]}-${m[2]}-${m[1]}`,
-        unit: "text",
-        source: src,
-        checked: fund.snapshot,
-        effective_from: null,
-        effective_to: null,
-        update_rule: "provider-set",
-        state: "sourced",
-        rule_ids: ["MF-35"],
-        notes: `תאריך הפדיון של הסדרה, כפי שהוא כתוב בשם הקרן (${name}). המספר בבורסה שייך לסדרה הזאת בלבד; הסדרה הבאה מקבלת מספר משלה.`,
-      };
+      // D31: the date is written in the fund's own name, so it is that series' own fact; the visual names the series beside it
+      d.facts.seriesDate = ownBy(
+        {
+          value: `${m[3]}-${m[2]}-${m[1]}`,
+          unit: "text",
+          source: src,
+          checked: fund.snapshot,
+          effective_from: null,
+          effective_to: null,
+          update_rule: "provider-set",
+          state: "sourced",
+          rule_ids: ["MF-35"],
+          notes: `תאריך הפדיון של הסדרה, כפי שהוא כתוב בשם הקרן (${name}). המספר בבורסה שייך לסדרה הזאת בלבד; הסדרה הבאה מקבלת מספר משלה.`,
+        } as SiteValue,
+        fund.manager,
+      );
+      d.facts.seriesName = ownBy(
+        { value: name, unit: "text", source: src, checked: fund.snapshot, effective_from: null, effective_to: null, update_rule: "provider-set", state: "sourced", about: "שם הסדרה, כפי שהמנהל מפרסם אותו" } as SiteValue,
+        fund.manager,
+      );
     } else d.gaps.push("seriesDate");
   } else d.gaps.push("seriesDate");
   const max = figureOf(c, "MF-08", "max_interval_months");

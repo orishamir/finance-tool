@@ -182,6 +182,13 @@
   },
   "il_finance_file": "etfs-and-index-funds.md",
   "checked": "2026-10-24",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "jpmorgan-am",
+      "name_he": "J.P. Morgan Asset Management"
+    }
+  ],
   "sources": [
     {
       "url": "https://am.jpmorgan.com/us/en/asset-management/adv/insights/market-insights/guide-to-the-markets/",

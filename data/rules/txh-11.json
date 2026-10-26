@@ -35,7 +35,7 @@
         "TXH-11"
       ],
       "state": "sourced",
-      "notes": "Gains accrued from 1.1.2003 on deposits above the ceiling, withdrawn after the holding period: maximum rate \"שלא יעלה על 25%\" (s.125C(b), top slice of income); the fund withholds 25%. The base is the real gain (figure real_base, Chief Economist paper). Still unsettled: the treatment of the linkage part under s.3(ה4)(1), the guide's line that the s.9(13) linkage exemption does not apply to a provident fund account, and whether 15% (s.125C(c)) can ever apply (open question 1). Strength is primary (the Tax Authority guide)."
+      "notes": "Gains accrued from 1.1.2003 on deposits above the ceiling, withdrawn after the holding period: maximum rate \"שלא יעלה על 25%\" (s.125C(b), top slice of income); the fund withholds 25%. The base is the real gain (figure real_base, Chief Economist paper). The linkage part is linkage income under s.3(ה4)(1), exempt under s.9(13) since Amendment 190 deleted the provident-account exclusion from 1.1.2012 (the guide's p.89 line is the pre-2012 law), so the 15% of s.125C(c) does not reach these gains. Strength is primary (the Tax Authority guide)."
     },
     "real_base": {
       "value": true,
@@ -60,7 +60,22 @@
   },
   "il_finance_file": "tax-hishtalmut.md",
   "checked": "2026-10-25",
+  "scope": "general",
   "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf",
+      "title": "Chief Economist paper Oct 2025",
+      "title_he": "על הטבת המס בקרן השתלמות – ניתוח מדיניות (אגף הכלכלן הראשי, אוקטובר 2025)",
+      "publisher": "gov.il",
+      "publisher_he": "משרד האוצר",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.5",
+      "locator_he": "עמוד 5",
+      "page": 5,
+      "quote": "רווחים נומינליים בניכוי העליות המצטברות במדד המחיר לצרכן",
+      "checked": "2026-10-26"
+    },
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
       "title": "Tax Authority guide 2025",
@@ -120,7 +135,7 @@
       "title": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות), התשנ\"ח-1997",
       "title_he": "תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות), התשנ״ח-1997",
       "publisher": "National Insurance Institute",
-      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "publisher_he": "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)",
       "kind": "regulation",
       "strength": "primary",
       "locator": "p.1, reg. 2(ב)",
@@ -167,6 +182,19 @@
       "locator_he": "עמוד 359, סעיף 4(2)",
       "page": 359,
       "quote": "בפסקה (13), הסיפה החל במילים",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/18/law/18_lsr_301456.pdf",
+      "title": "חוק לתיקון פקודת מס הכנסה (מס' 190 והוראת שעה), התשע\"ב-2012, ספר החוקים 2354",
+      "title_he": "חוק לתיקון פקודת מס הכנסה (מס' 190 והוראת שעה), התשע\"ב-2012, ספר החוקים 2354",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.363, s.12(א)",
+      "locator_he": "עמוד 363, סעיף 12(א)",
+      "page": 363,
       "checked": "2026-10-25"
     }
   ]

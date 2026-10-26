@@ -224,7 +224,7 @@
     "source": {
       "title": "Meitav, מיטב קידס / קופת גמל לילדים product page",
       "url": "https://www.meitav.co.il/provident_pension/saving_kids/",
-      "checked": "2026-10-22",
+      "checked": "2026-10-26",
       "strength": "institution"
     },
     "where": [
@@ -381,24 +381,24 @@
   {
     "term_he": "הוראת מינוי מוטבים",
     "term_source": {
-      "title": "תקנון תקני לקופת גמל להשקעה, אלטשולר שחם חיסכון פלוס, מרץ 2025",
-      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf"
+      "title": "רשות שוק ההון, חוזר גופים מוסדיים 2016-9-19: הצטרפות לקרן פנסיה או לקופת גמל, ס' 12",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1071/he/regulation_h_2016-9-19.pdf"
     },
     "variants_he": [
       "מוטב",
       "הוראת מוטבים"
     ],
-    "explain_he": "הוראה שנותנים לקופה מי יקבלו את הכסף שבה במקרה של פטירה",
+    "explain_he": "הוראה שנותנים לקופה מי יקבלו את הכסף שבה אחרי הפטירה; בקופת גמל, בלי הוראה כזו הכסף עובר ליורשים על פי דין או על פי צוואה",
     "rule_ids": [
       "KGL-17",
       "KH-26",
       "CS-17"
     ],
     "source": {
-      "title": "תקנון תקני לקופת גמל להשקעה, אלטשולר שחם חיסכון פלוס, מרץ 2025",
-      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "רשות שוק ההון, חוזר גופים מוסדיים 2016-9-19: הצטרפות לקרן פנסיה או לקופת גמל, ס' 12",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1071/he/regulation_h_2016-9-19.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary"
     },
     "where": [
       "guide:kupat-gemel-lehashkaa",
@@ -412,19 +412,19 @@
   {
     "term_he": "מתנה בלתי חוזרת",
     "term_source": {
-      "title": "Meitav, קופת גמל להשקעה product page",
+      "title": "מיטב: קופת גמל להשקעה",
       "url": "https://www.meitav.co.il/provident_pension/provident_invest/"
     },
     "variants_he": [],
-    "explain_he": "הנוסח של מיטב לפתיחת קופה על שם מישהו אחר, למשל ילד: לפי מיטב, הכסף כבר לא שלכם ואי אפשר לקחת אותו בחזרה",
+    "explain_he": "הנוסח של מיטב לפתיחת קופת גמל להשקעה על שם אדם אחר: לפי מיטב זו מתנה שאי אפשר לחזור ממנה, ורק אותו אדם מנהל ומושך את הכסף, אלא אם הוא קטין",
     "rule_ids": [
       "KGL-26",
       "KGL-21"
     ],
     "source": {
-      "title": "Meitav, קופת גמל להשקעה product page",
+      "title": "מיטב: קופת גמל להשקעה",
       "url": "https://www.meitav.co.il/provident_pension/provident_invest/",
-      "checked": "2026-10-22",
+      "checked": "2026-10-26",
       "strength": "institution"
     },
     "where": [
@@ -1362,11 +1362,11 @@
   {
     "term_he": "הלוואות לעמיתים",
     "term_source": {
-      "title": "תקנון תקני לקופת גמל להשקעה, אינפיניטי גמל להשקעה, 1.7.2024",
-      "url": "https://infinity.co.il/wp-content/uploads/2025/07/תקנון-גמל-להשקעה-בתוקף-מיום-1.7.2024.pdf"
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (כללי השקעה החלים על גופים מוסדיים), התשע\"ב-2012, תקנה 16 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(כללי_השקעה_החלים_על_גופים_מוסדיים)"
     },
     "variants_he": [],
-    "explain_he": "הלוואה שחלק מהקופות נותנות לחוסכים בהן; מה שלא הוחזר יורד מהסכום כשמושכים",
+    "explain_he": "הלוואה שקופה רשאית לתת לחוסכים בה, לפי הוראות הממונה; מה שלא הוחזר יורד מהסכום כשמושכים",
     "rule_ids": [
       "KGL-18",
       "KGL-10",
@@ -1374,10 +1374,10 @@
       "IRA-13"
     ],
     "source": {
-      "title": "תקנון תקני לקופת גמל להשקעה, אינפיניטי גמל להשקעה, 1.7.2024",
-      "url": "https://infinity.co.il/wp-content/uploads/2025/07/תקנון-גמל-להשקעה-בתוקף-מיום-1.7.2024.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (כללי השקעה החלים על גופים מוסדיים), התשע\"ב-2012, תקנה 16 (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(כללי_השקעה_החלים_על_גופים_מוסדיים)",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "guide:kupat-gemel-lehashkaa",
@@ -1588,15 +1588,15 @@
       "url": "https://as-invest.co.il/media/khpp32k5/אלטשולר-שחם-השתלמות-תקנון-מהדורת-שינויים-דצמבר-2024.pdf"
     },
     "variants_he": [],
-    "explain_he": "ביטוח למקרה פטירה שחלק מקרנות ההשתלמות מציעות; התשלום עליו יורד מהכסף שבקרן",
+    "explain_he": "ביטוח למקרה פטירה שקופה יכולה לקבוע לעמיתים בתקנון שלה; דמי הביטוח נגבים מהכסף שבקופה או מההפקדות אליה",
     "rule_ids": [
       "KH-25"
     ],
     "source": {
-      "title": "Harel, תקנון קרן השתלמות, fund 154, edition 07/2024",
-      "url": "https://harel-group.co.il/long-term-savings/study-funds/plans/harel-funds/doclib/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%95%d7%a4%d7%94/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a8%d7%90%d7%9c%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa-%20%d7%9c%d7%90%d7%97%d7%a8%20%d7%94%d7%9e%d7%99%d7%96%d7%95%d7%92/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa%20%2007.2024.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, ס' 16(ד)(6) ו-32(א)(3) (Wikisource mirror)",
+      "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
+      "checked": "2026-10-26",
+      "strength": "primary-mirror"
     },
     "where": [
       "guide:keren-hishtalmut",
@@ -1960,19 +1960,19 @@
   {
     "term_he": "הרווח הריאלי",
     "term_source": {
-      "title": "Harel, קופת גמל להשקעה flyer (2023)",
-      "url": "https://www.harel-group.co.il/long-term-savings/funding-saving/join/doclib/%d7%92%d7%9e%d7%9c%20%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94.pdf"
+      "title": "פקודת מס הכנסה (נוסח חדש), נוסח רשות המסים, ס' 88, 3(ה4)(3) ו-9(13)",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf"
     },
     "variants_he": [],
-    "explain_he": "הרווח אחרי שמורידים ממנו את עליית המחירים; עליו הקופות מנכות את המס במשיכה",
+    "explain_he": "הרווח פחות החלק שנובע מעליית המדד; במשיכה מקופת גמל להשקעה החלק הזה הוא הפרשי הצמדה, הפטורים ממס בתנאים שבחוק",
     "rule_ids": [
       "TXK-07"
     ],
     "source": {
-      "title": "Harel, קופת גמל להשקעה flyer (2023)",
-      "url": "https://www.harel-group.co.il/long-term-savings/funding-saving/join/doclib/%d7%92%d7%9e%d7%9c%20%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "פקודת מס הכנסה (נוסח חדש), נוסח רשות המסים, ס' 88, 3(ה4)(3) ו-9(13)",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary"
     },
     "where": [
       "guide:kupat-gemel-lehashkaa",

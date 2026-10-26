@@ -8,7 +8,7 @@ import { scaleLinear } from "d3-scale";
 import { guide as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
-import { durationChart } from "../provenance";
+import { IdRef, durationChart } from "../provenance";
 import { cx } from "../kit";
 
 export interface ChartPoint {
@@ -145,10 +145,11 @@ export function TimelineChart({ points, hover, onHover, markers = [], blocked, e
           <path d={bandTax(shown) ?? ""} className="fill-chart-tax" />
           <path d={bandFees(shown) ?? ""} className="fill-chart-fee" />
         </g>
-        <AxisLabels ticks={ticks} y={y} />
         {enteredReturn && <path d={topLine(shown) ?? ""} fill="none" className="stroke-chart-entered" strokeWidth="2" strokeDasharray="6 4" />}
         <path d={contribLine(shown) ?? ""} fill="none" className="stroke-chart-contributions" strokeWidth="1.5" />
         <path d={netLine(shown) ?? ""} fill="none" className={enteredReturn ? "stroke-chart-entered" : "stroke-chart-net"} strokeWidth="2" strokeDasharray={enteredReturn ? "6 4" : undefined} />
+        {/* after the lines, with the card-colour halo, so no line runs through a value label (2026-10-26) */}
+        <AxisLabels ticks={ticks} y={y} />
         {blocked && (
           <g>
             <rect x={x(blocked.fromYear)} y={TOP} width={Math.max(0, plotW - x(blocked.fromYear))} height={height - BOTTOM - TOP} fill="url(#chart-hatch)" />
@@ -176,7 +177,7 @@ export function TimelineChart({ points, hover, onHover, markers = [], blocked, e
       ))}
       {blocked && (
         <span className="absolute text-xs text-blocked-foreground bg-blocked-subtle rounded-sm px-1.5 py-0.5 inline-flex items-center gap-1" style={{ left: `${x(blocked.fromYear) + 4}px`, top: `${TOP + 4}px` }}>
-          <IconLock size={14} className="text-blocked" /> {copy.blockedBand} <bdi dir="ltr">{blocked.code}</bdi>
+          <IconLock size={14} className="text-blocked" /> {copy.blockedBand} <IdRef id={blocked.code} />
         </span>
       )}
     </div>

@@ -1,4 +1,5 @@
 export * from "./value.ts";
+export * from "./scope.ts";
 export * from "./collections/rules.ts";
 export * from "./collections/parameters.ts";
 export * from "./collections/cma.ts";
@@ -12,3 +13,4 @@ export * from "./collections/terms.ts";
 export * from "./collections/series.ts";
 export * from "./collections/fund-lists.ts";
 export * from "./collections/sources.ts";
+export * from "./collections/open-questions.ts";

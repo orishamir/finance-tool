@@ -1,0 +1,17 @@
+import { createRequire } from "node:module";
+const require = createRequire(import.meta.url);
+const { chromium } = require("/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/playwright");
+const b = await chromium.launch({ executablePath: "/home/ori/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome" });
+const p = await (await b.newContext({ viewport: { width: 1280, height: 900 } })).newPage();
+p.on("pageerror", (e) => console.log("ERR", e.message.slice(0, 200)));
+await p.goto("http://127.0.0.1:4235/finance-tool/invest/index-sp500");
+await p.waitForTimeout(4000);
+const n = async (t) => console.log(t, await p.locator("#invest-houses").count(), (await p.locator("main").innerText()).length, await p.locator("#invest-houses li").count(), await p.locator("#invest-houses ol").count());
+await n("loaded");
+await p.selectOption("select >> nth=0", "mizrahi-tefahot");
+await p.waitForTimeout(2500);
+await n("bank");
+await p.selectOption("select >> nth=0", "");
+await p.waitForTimeout(2500);
+await n("none");
+await b.close();

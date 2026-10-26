@@ -11,6 +11,7 @@ import { feeInputs } from "./fees";
 import { fxRunInput } from "./fx";
 import { cheapestWay, indexById, knownIndices, rangeOverKnownIndices, scoped, type CheapestWay, type IndexRef } from "./invest";
 import { BROKERAGE as BROKERAGE_ID, instrumentClassOf, type WorkbenchBundle, type WorkbenchInputs } from "./providers";
+import { ownBy } from "./value";
 
 /** The run the invest page makes for the same goal: the same plan, so the account's way here is the way there (`routes/invest.tsx`). */
 export function planOfGoal(bundle: CompareBundle, g: RunGoal, state: Parameters<typeof feeInputs>[2]): WorkbenchInputs {
@@ -91,6 +92,8 @@ export function applyIndexWay(bundle: CompareBundle, wb: WorkbenchBundle, way: C
       feeValues.monthlyFee = l.rate.unit === "nis_per_month" ? { ...l.rate } : { ...l.rate, value: built.tariff.monthlyFee, unit: "nis_per_month", state: "computed" };
     }
   }
+  // D31: the card names this provider and fund, so the tariff lines are the provider's own figures
+  for (const k of TARIFF_KEYS) if (feeValues[k]) feeValues[k] = ownBy(feeValues[k]!, snap.provider.name_he);
   const terms = { ...w.terms, fund: ft.fund, tariff: built.tariff as NonNullable<typeof w.terms.tariff> };
   const next: WrapperEntry = { ...w, terms, feeValues };
   const fee = representativeFeeValue(next, bundle.runDate);

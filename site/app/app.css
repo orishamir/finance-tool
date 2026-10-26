@@ -201,13 +201,6 @@
   .rule-chip:hover {
     text-decoration: underline;
   }
-  .rule-chip-static {
-    color: var(--foreground);
-    cursor: default;
-  }
-  .rule-chip-static::after {
-    content: none;
-  }
   /* A glossary term: a dashed teal underline, a third pattern next to the solid grey (sourced) and dotted violet
      (computed) of numbers (audit 2026-10-24, A78). */
   .term {
@@ -227,6 +220,40 @@
     content: "";
     position: absolute;
     inset: -11px -4px;
+  }
+
+  /* ---- a number the reader sets, inside a sentence (kit InputSlot, 2026-10-26): a fixed-width blank, so the line never jumps */
+  .input-slot {
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 2px;
+    padding-inline: 2px;
+    border-bottom: 1px dashed color-mix(in oklab, var(--entered) 55%, var(--border));
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .input-slot-value {
+    flex: 1;
+    text-align: center;
+  }
+  .input-slot-edit {
+    position: relative;
+    display: inline-flex;
+    align-self: center;
+    padding: 2px;
+    border-radius: 4px;
+    color: var(--entered);
+    cursor: pointer;
+  }
+  .input-slot-edit::after {
+    /* a 44 px touch target around a 16 px pencil */
+    content: "";
+    position: absolute;
+    inset: -14px -8px;
+  }
+  .input-slot-edit:hover {
+    background: var(--entered-subtle);
   }
 
   /* ---- chips */
@@ -267,8 +294,30 @@
     color: var(--background);
     font-weight: 500;
   }
+  /* The kit's OtherChip: the last pill of a ChipList (adds one) or of ChoiceChips ("אחר"). Dashed, no fill, a plus; tinted while open. Its own class (the site has no class merger). */
+  .sec-chip-add {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--target);
+    padding: 0 14px;
+    border-radius: 999px;
+    border: 1px dashed var(--input);
+    background: transparent;
+    color: var(--foreground);
+    font-size: var(--text-sm);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .sec-chip-add:hover,
+  .sec-chip-add[aria-expanded="true"] {
+    background: var(--accent);
+  }
 
   /* ---- readout and definition lists in sheets */
+  /* the part of a bar that is a range, not a value: stripes of the bar's own colour (ValueBar, 2026-10-26) */
+  .hatch-value {
+    background-image: repeating-linear-gradient(135deg, var(--chart-value) 0 3px, transparent 3px 6px);
+  }
   .readout {
     display: flex;
     flex-direction: column;
@@ -509,6 +558,14 @@
   .text-mixed {
     unicode-bidi: plaintext;
     text-align: right !important;
+  }
+  /* A native select's option list is drawn by the browser: with a see-through select (a field-input inside its box) Chrome on Windows
+     painted it white while the options kept the light text, so every option was invisible until hovered (founder, 2026-10-26, the
+     holdings sheet). The list takes the popover's colours whatever the select's own background. */
+  select option,
+  select optgroup {
+    background-color: var(--popover);
+    color: var(--popover-foreground);
   }
   .field-input {
     flex: 1;

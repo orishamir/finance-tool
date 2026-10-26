@@ -2,7 +2,7 @@
   "id": "avkb-mddym-gmysh",
   "he": "עוקב מדדים גמיש",
   "en": null,
-  "meaning": "מסלול שמשקיע באמצעות מוצרים שעוקבים אחרי כמה מדדים שונים של מניות ואיגרות חוב, בתמהיל שהחברה קובעת",
+  "meaning": "מסלול שעוקב, באמצעות מוצרים עוקבי מדד, אחרי כמה מדדים שונים של מניות או של איגרות חוב; השיעור של כל מדד יכול לנוע בתוך טווח שנקבע",
   "where": [
     "app"
   ],
@@ -18,10 +18,10 @@
     "CAT-26"
   ],
   "source": {
-    "url": "https://www.meitav.co.il/media/r0wh30iv/%D7%A8%D7%99%D7%9B%D7%95%D7%96-%D7%9E%D7%99%D7%96%D7%95%D7%92%D7%99%D7%9D-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf",
-    "title": "ריכוז מיזוגים, Meitav merger and policy summary (Meitav)",
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf",
+    "title": "רשות שוק ההון, רשימת מסלולי השקעה – תיקון (2024-1471, 17.4.2024), מסלולים מתמחים, אשכול 4, עמ' 9",
     "publisher": "see title",
-    "strength": "institution",
-    "checked": "2026-10-22"
+    "strength": "primary",
+    "checked": "2026-10-26"
   }
 }

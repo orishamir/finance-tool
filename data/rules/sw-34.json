@@ -12,6 +12,8 @@
   "recheck_date": "2027-04-01",
   "il_finance_file": "switching-and-transfers.md",
   "checked": "2026-10-25",
+  "scope": "unsettled",
+  "scope_settle": "the TASE rules and directives on what members may charge to move securities out, or an Israel Securities Authority statement",
   "sources": [
     {
       "url": "https://www.calcalist.co.il/article/hj55ri2pgx",

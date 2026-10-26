@@ -2,7 +2,7 @@
 // Num). Wording follows the approved mockup of 2026-10-23, checked against the rule base; each block
 // ends with the rules it rests on. NEW copy for the founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
-import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
+import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
 
 export const content: GuideContent = {
@@ -28,12 +28,18 @@ export const content: GuideContent = {
   termIds: ["מסלול השקעה", "משיכה", "חברה מנהלת", "קופת גמל לקצבה", "קצבה"],
   afterTax: ({ figure }) => {
     const age = figure("TXK-10", "early_retirement_age");
+    const sixty = figure("TXG-04", "age");
+    const withheld = figure("TXK-26", "regulation_text_rate");
     return (
       <>
         <Callout tone="blocked" className="max-w-measure">
-          <span className="font-medium">מגיל {age ? <Num value={age} /> : null} אפשר להעביר את הכסף <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.</span> את <Term prefix="ה" id="קצבה">קצבה</Term> האתר עוד לא מחשב, כי חסרים מקדמי ההמרה. שאלה פתוחה: <bdi dir="ltr" className="whitespace-nowrap">PEN OQ7</bdi>.
+          <span className="font-medium">מגיל {age ? <Num value={age} /> : null} אפשר להעביר את הכסף <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.</span> את <Term prefix="ה" id="קצבה">קצבה</Term> האתר עוד לא מחשב, כי חסרים מקדמי ההמרה. שאלה פתוחה: <IdRef id="PEN OQ7" />.
         </Callout>
         <RulesLine ids={["TXK-10", "KGL-09"]} />
+        <Callout tone="caution" className="max-w-measure">
+          <span className="font-medium">מגיל {sixty ? <Num value={sixty} /> : null} המס על הרווח במשיכה יכול להיות נמוך יותר.</span> השיעור על הרווח הוא שיעור מרבי, ולכן מדרגות המס הנמוכות של בני {sixty ? <Num value={sixty} /> : null} ומעלה חלות עליו קודם; מאחר שהרווח הוא המדרגה העליונה של ההכנסה, זה עוזר רק כשהכנסות אחרות משאירות את המדרגות האלה פנויות. כשמזינים גיל, האתר מחשב את ההקלה לפי ההכנסה השנתית שבחישוב. החברה המנהלת מנכה במקור {withheld ? <Num value={withheld} /> : "לפי התקנות"} מהרווח, בלי להתחשב בגיל, והמס הסופי נקבע מול הניכוי הזה בדוח השנתי: על חלק הרווח שהמדרגה שלו נמוכה משיעור הניכוי מקבלים החזר, ועל חלק שהמדרגה שלו גבוהה ממנו משלמים עוד, עד השיעור המרבי <RuleRef id="TXK-26" />.
+        </Callout>
+        <RulesLine ids={["TXK-06", "TXG-04", "TXG-07", "TXK-26"]} />
       </>
     );
   },

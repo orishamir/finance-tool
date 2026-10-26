@@ -102,6 +102,7 @@ The numbers match the briefs in `docs/flows.md` section 6.
 | Search placeholder | הדביקו שם של מוצר, מסלול או מונח |
 | Door 1 | להבין סוג של חיסכון |
 | Door 1, line | מה זה, כמה זה עולה ואיך זה ממוסה |
+| Door 1, link to the list (`home.door1.all`) | לכל סוגי החיסכון במדריך (2026-10-26: the door is no longer a link; it shows the P-10 kinds as pills, each named as its wrapper record names it, and this link) |
 | Door 2 | מה חברה מציעה לי |
 | Door 2, line | כל המוצרים והמסלולים שלה, עם הסבר לכל אחד |
 | Small link | מה האתר עוד לא מכסה |
@@ -128,7 +129,7 @@ Why A: the reader learns what the site does and the one thing that sets it apart
 
 | Key in `copy.ts` | Hebrew | Note |
 |---|---|---|
-| `home.quick.heading` | מה השאלה שלכם? | h2 of the card |
+| `home.quick.heading` | ~~מה השאלה שלכם?~~ מה המטרה שלכם? | h2 of the card (founder 2026-10-26: the card sets a goal, so it asks for the goal) |
 | `home.quick.amountNow` | יש לכם היום | field label; ₪ |
 | `home.quick.monthly` | ובכל חודש | field label; ₪ |
 | `home.quick.years` | כמה שנים עד שתצטרכו את הכסף | field label, in place of the goal form's "שנים עד המטרה" |
@@ -150,7 +151,7 @@ Why A: the reader learns what the site does and the one thing that sets it apart
 | `home.quick.needAmount` | הזינו סכום: היום או בכל חודש. | under the button when no sum above zero is typed |
 | `home.quick.line` | הכול נשמר במכשיר הזה. גיל, שכר ותשואה אפשר להוסיף בתוצאה, אם תרצו. | `text-xs muted` under the button |
 | `home.quick.allFields` | לכל השדות | quiet link to the full goal form |
-| `home.quick.another` | שאלה נוספת | the closed disclosure under the saved-goal strip; adds a second goal (D12) |
+| `home.quick.another` | ~~שאלה נוספת~~ מטרה נוספת (2026-10-26) | the closed disclosure under the saved-goal strip; adds a second goal (D12) |
 | `r2.strip.blank · fill · savedAll` | עוד לא מולאה · למילוי · נשמרו במכשיר הזה | added 2026-10-25: the first page's goal rows, a goal that holds nothing yet, and the line under several rows |
 | `r2.result.horizonDefaulted.before / mid / after / change` | לא ידעתם כמה שנים, ולכן ההשוואה רצה על {n} שנים, נקודת ההתחלה של ״{preset}״. לשנות | note under the result's headline when the years came from the preset; {n} a site-parameter `Num`; "לשנות" opens the assumptions at the years. Same pattern as `employmentInferred` |
 | `r2.result.horizonHonest.cannot` | האתר לא קובע אם {years} שנים מספיקות למניות: אין לו תשואה צפויה ואין לו נתון על ירידות. | product mode, when the years are below P-04's equity minimum; the site says what it does not know (D9, D11) |
@@ -215,7 +216,7 @@ Why "למי ששלח לכם את האתר": every friend reached the site throug
 | Headline label | נשאר לכם אחרי `{שנים}`, אחרי דמי ניהול ומס, בכסף של היום |
 | Switch | בכסף של היום · בשקלים של העתיד |
 | Legend | נשאר לכם · מס · דמי ניהול · ההפקדות שלכם |
-| Value chips | סכום היום · הפקדה חודשית · שנים · תשואה בשנה · אינפלציה בשנה · כל ההנחות |
+| Value chips | סכום היום · הפקדה חודשית · תקופה · תשואה בשנה · אינפלציה בשנה · כל ההנחות |
 | Readout heading | היום / שנה `{n}` |
 | Table headings | שנה · ההפקדות שלכם · דמי ניהול · מס · נשאר לכם |
 | Graph's screen-reader name | גרף: הכסף לאורך `{שנים}`. הנתונים המלאים בטבלה. |
@@ -246,7 +247,8 @@ Why "למי ששלח לכם את האתר": every friend reached the site throug
 
 | Key in `copy.ts` | Hebrew | Note |
 |---|---|---|
-| `guide.headline.afterNominal` | אחרי דמי ניהול ומס, בשקלים של העתיד | the headline's tail when the switch is on future shekels |
+| `guide.headline.afterBoth` · `afterTax` · `afterFees` · `real` · `nominal` | אחרי דמי ניהול ומס · אחרי מס · אחרי דמי ניהול · בכסף של היום · בשקלים של העתיד | the headline's tail (changed 2026-10-26, founder): it names only the parts the run has, then the value mode. Was one string "אחרי דמי ניהול ומס, בשקלים של העתיד" and its real twin, which named fees and tax on a current account that has neither |
+| `guide.editSlot` | שינוי של | spoken name of the pencil beside a number the reader sets in the example sentence, before the field's name (kit `InputSlot`, 2026-10-26) |
 | `guide.modeLabel` | אופן הצגת הסכומים | screen-reader name of the real / nominal switch. Was "מטבע ההצגה": the switch is not about a currency |
 | `guide.feeNoteOther` | הסכומים בפועל נקבעים אצל הגורם המציע. כאן מופיעים סוגי העלויות, ותקרה כשיש תקרה בחוק. | the fee-table note for a product that is not a provident fund (the provident note is above) |
 | `guide.generalTermsLabel` | מונחים כלליים | disclosure under the term table |
@@ -451,13 +453,18 @@ Why "בשקלים של העתיד" rather than "נומינלי": the reader sees
 | `formulaNames.F-33` | הפקדה בלי הטבת מס |  |
 | `formulaNames.F-43` | מס נוסף על הכנסה גבוהה |  |
 | `formulaNames.F-44` | מס במשיכה מקופת גמל להשקעה |  |
+| `formulaNames.F-42` | מגיל שישים: מדרגות המס המופחתות על הרווח | added 2026-10-26 (review): the kupat gemel lehashkaa lump sum's tax figure from 60 opens on it, with the real gain (F-44) as its input |
 | `formulaNames.F-67` | הגרף בעמודי המדריך |  |
 | `flags.G-02` | בסיס המס במשיכה: לפי החוק המס הוא על הרווח הריאלי, כי חלק ההצמדה פטור. האתר מציג גם את החלופה של שיעור נמוך יותר על הרווח הנומינלי, שלפי דברי ההסבר לחוק לא חלה כאן. | flags, one line each |
-| `flags.G-11` | דמי ביטוח לאומי על הרווח במשיכה: עוד לא ברור אם חלים. האתר לא מחשב אותם. |  |
+| `flags.G-11` | (removed 2026-10-26) | the lump sum's gains carry no National Insurance or health (TXK-27), so the engine no longer raises G-11; was "דמי ביטוח לאומי על הרווח במשיכה: עוד לא ברור אם חלים. האתר לא מחשב אותם." |
 | `flags.G-14` | הוצאות ישירות של המסלול לא נאספו עדיין, ולכן לא נכללו בחישוב. |  |
 | `flags.G-21` | חלק מהמס מוסדר דרך דוח שנתי, לא בניכוי במקור. |  |
+| `flags.G-23` | נקודות הזיכוי לא הופחתו מהמס הזה. נקודות זיכוי מקטינות את כל המס המחושב בשנה, גם את המס על רווחים ועל ריבית בשיעור מיוחד, ולכן הן משנות את התוצאה רק כשהן גדולות מהמס על שאר ההכנסה שלכם באותה שנה, למשל בשנה בלי משכורת. מס שכבר נוכה במקור חוזר רק דרך דוח שנתי או בקשת החזר מס. האתר לא יודע כמה נקודות זיכוי יש לכם. | added 2026-10-26 (TXG-05, method G-23): every run that charges Israeli tax carries it, so the result never assumes silently that no credit is left over. Changed 2026-10-26 (review): stands alone in a figure's sheet (was "גם על הכנסה כזו", with nothing to refer to), and says that tax withheld comes back only through a return (TXG-25) |
+| `flags.CS-18` | דמי הניהול אחרי גיל עשרים ואחת חושבו לפי התקרה שבתקנות, ולכן הם ״עד״: בקופה שלכם השיעור יכול להיות נמוך יותר. | added 2026-10-26 (method F-54): the child-savings fee after 21 runs on CS-18's cap unless the person enters a rate; the age in words, no typed digits. "שבתקנות" for "שבחוק" (review 2026-10-26): the cap is in the fee regulations |
 | `flags.PF-13` | ההנחה בדמי הניהול הוארכה לחמש שנים לפחות, לפי חוזר הרשות. |  |
-| `flags.TXK-OQ12` | מגיל הפרישה המוקדמת: האם מדרגות המס הנמוכות חלות על הרווח במשיכה, עוד לא ברור. האתר לא מחשב את ההקלה. | what an engine flag means, one line each; the code stays beside the words. "מגיל 60" is a **typed figure** (TXK OQ12) |
+| `flags.TXK-06` | מגיל שישים מדרגות המס המופחתות חלות קודם גם על הרווח במשיכה, וכסף שנוכה במקור ביותר חוזר רק דרך דוח שנתי או בקשת החזר מס. החישוב הזה הוא בלי בקשת החזר, והאתר השאיר בו את השיעור המלא, בלי ההקלה. על חלק הרווח שהמדרגה שלו נמוכה משיעור הניכוי במקור זה יותר מהמס בפועל, כי שם המס הוא הניכוי עצמו. | what an engine flag means, one line each; the code stays beside the words. Changed 2026-10-26: TXK OQ12 closed (TXK-06), the flag was `TXK-OQ12` and said the answer was unclear; no typed age. Changed again 2026-10-26 (follow-ups): F-44 now applies the brackets, so the flag marks only a run with the refund not claimed (A-14 off). Changed again 2026-10-26 (finance review): the manager withholds 20% (TXK-26), so money comes back only on a part below that rate, and the flat rate kept here is an upper bound; was "...אבל ההפרש חוזר רק בבקשת החזר מס. בלי בקשת החזר, החישוב נשאר בשיעור המלא." |
+| `flags.TXK-26` | החברה המנהלת מנכה במקור לפי שיעור התקנות, בלי להתחשב בגיל, והמס הסופי נקבע מול הניכוי בדוח השנתי: על חלק הרווח שהמדרגה שלו נמוכה משיעור הניכוי מקבלים החזר, ועל חלק שהמדרגה שלו גבוהה ממנו משלמים עוד, עד השיעור המרבי. המספר כאן הוא המס הסופי, אחרי ההתחשבנות בדוח. | added 2026-10-26 (finance review, method F-44): the kupat gemel lehashkaa exit from 60 settles against reg. 3(א)'s withholding (TXK-26); it replaces G-21 there, whose evidence is a bank's or TASE member's withholding. No typed rate: the rate is the rule's figure |
+| `flags.TXP-11` | הפקדת המעסיק לפיצויים עוברת את תקרת הפיצויים, שנבדקת כל חודש: החלק שמעל התקרה הוא הכנסת עבודה כבר במועד ההפקדה, והאתר עוד לא מחשב את המס עליו. | added 2026-10-26: TXP OQ5 closed (circular 4/2019 s.2.1.1 applies the ceiling monthly, TXP-11); the pension run's flag was `TXP-OQ5`, shown with the general line |
 | `computedInputs.amountNow` | סכום היום | labels of the values a computation read ("ערכים שנכנסו לחישוב") |
 | `computedInputs.monthly` | הפקדה חודשית |  |
 | `computedInputs.years` | שנים |  |
@@ -880,7 +887,7 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 9 and the handoff in 
 | Chart, tie bracket | שקולות |
 | Chart caption, entered return | הקווים המקווקווים מבוססים על תשואה שהזנתם, לא על הערכה של האתר. |
 | Chart, nothing to draw | אין אפשרויות מדורגות להצגה. |
-| Assumption chips | שנים · סכום היום · הפקדה חודשית · זמין מיד · תשואה · אינפלציה · כל ההנחות |
+| Assumption chips | תקופה · סכום היום · הפקדה חודשית · זמין מיד · תשואה · אינפלציה · כל ההנחות |
 | Assumptions sheet title | ההנחות של ההשוואה |
 | Coverage sentence | נבדקו `{מספר}` אפשרויות: `{מספר}` דורגו, `{מספר}` מוצגות בלי דירוג, `{מספר}` לא מתאימות לכם, `{מספר}` נפסלו לפי האילוצים שלכם, `{מספר}` עוד לא נבדקו. |
 | Coverage, open / close | כל האפשרויות ולמה · הסתרת הרשימה |
@@ -1145,7 +1152,7 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 12 and the handoff in
 | Chart, not reported in legend | לא דווח |
 | Chart marker, no goal | סוף התקופה |
 | Chart's screen-reader name | גרף: העלות של `{מספר}` עמלות לאורך `{שנים}`. הנתונים המלאים בטבלה. |
-| Assumption chips | סכום · הפקדה חודשית · שנים · תשואה · אינפלציה · כל ההנחות |
+| Assumption chips | סכום · הפקדה חודשית · תקופה · תשואה · אינפלציה · כל ההנחות |
 | Assumptions sheet title | ההנחות של חישוב העמלות |
 | Sensitivity title | מה היה משנה את המסקנה |
 | Sensitivity, flips a verdict | המסקנה על `{עמלה}` מתהפכת אם `{הנחה}` תעבור מ־`{ערך}` ל־`{ערך}`: אז `{פסק הדין}`. |
@@ -1584,12 +1591,13 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 | `r4workbench.providers.back` | המדריך למוצר | the breadcrumb parent |
 | `r4workbench.providers.noGoal` | אין מטרה שמורה: ההשוואה לפי התרחיש לדוגמה של האתר. | Was "…ההשוואה רצה על התרחיש המייצג של האתר.": P-05 is "התרחיש לדוגמה" (3.15) |
 | `r4workbench.providers.behaviour.ordersUp · ordersDown` | עוד פעולה בחודש · פחות פעולות בחודש | the stepper's screen-reader names |
-| `r4workbench.providers.behaviour.chips` | סכום · הפקדה חודשית · שנים · כל ההנחות | the amounts chips |
+| `r4workbench.providers.behaviour.chips` | סכום · הפקדה חודשית · תקופה · כל ההנחות | the amounts chips |
 | `r4workbench.providers.columns` | דירוג · ספק · עלות · בשנה הראשונה · לפי סוג עמלה · תעריפון מ־ · מינימום · פיקוח · פתיחה | PC column heads |
 | `r4workbench.providers.tariffLine.collected` | נאסף ב־`{תאריך}` | the tariff line when no published date exists |
 | `r4workbench.providers.formats` | PDF · דף אינטרנט · גיליון | the tariff link's file format |
 | `r4workbench.providers.notModelledF18 · notModelledOther` | הנוסחה לעמלה הזו עוד לא נכתבה. · עמלה שאינה חלק מעלות ההחזקה השוטפת. | the two reasons a tariff line is left out: the method has no formula (G-18), or the line is not a holding cost (a transfer out) |
 | `r4workbench.providers.noLineBases` | קנייה ומכירה · דמי ניהול פיקדון ניירות ערך · המרת מטבע | the `{בסיס}` of "אין בתעריפון שורה ל`{בסיס}`" |
+| `r4workbench.providers.mmfCustodyNonBank` | בבנק אסור לגבות דמי ניהול פיקדון ניירות ערך על קרן כספית. אצל חבר בורסה שאינו בנק לא נמצא כלל שמגביל אותם, ולכן החישוב לפי התעריפון. רק חבר בורסה שיש לו הסכם הפצה לקרן הזאת חייב לפי תקנות עמלת הפצה לא לגבות עליה שום עמלה. לפי הדוח המשותף של הרגולטורים, אצל חברי בורסה שאינם בנקים יש פטור גורף מדמי משמרת, ודמי טיפול בפיקדון הם בדרך כלל סכום קבוע שלעתים קרובות מוחזר או לא נגבה. זה נוהג, לא תנאי בתעריפון. | added 2026-10-26 (method F-14, F-63; BRK OQ11 closed): the note in the sheet of a non-bank member's custody line when the fund is a money-market fund. Changed 2026-10-26 (finance review): the report's blanket waiver covers "דמי משמרת" only, a handling line ("דמי טיפול בפיקדון", Excellence's and Altshuler Trade's) is usually fixed and often refunded; "לא נמצא כלל" for "אין כלל"; a member with a distribution agreement falls under reg. 2(ד) (MF-26); was "...אין כלל שמגביל אותם... חברי בורסה שאינם בנקים נוהגים לוותר עליהם לכל הלקוחות..." |
 | `r4workbench.providers.rowLinks.edit` | עריכת ההצעה שלכם | when an offer exists. Was "הצעה שלכם: עריכה" |
 | `r4workbench.providers.vsTag · vsSet · vsClear` | מושווה · להשוות אליו · ביטול ההשוואה | choosing which row "מכריע מול" is measured against. Were "השוו אליו · בטלו השוואה": buttons are nouns or infinitives (section 2) |
 | `r4workbench.providers.detail.remainder · rate · min · max · period · channel · level · fromAverage · rules · bases` | השפעה משולבת של העמלות · שיעור · מינימום · מקסימום · תקופה · ערוץ · רמה · ממוצע · הכללים שהחישוב נשען עליהם · קנייה ומכירה · דמי ניהול פיקדון · המרת מטבע · דמי חשבון קבועים | the row detail's labels. The rules heading was "הכללים שהחישוב קרא"; 6.2's is "הכללים שההשוואה נשענת עליהם" |
@@ -1613,7 +1621,7 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 | List line, TASE list not collected | רשימת קרנות החוץ של הבורסה עוד לא נאספה. הרשימה המלאה באתר הבורסה. |
 | List links | לרשימת הקרנות במאיה · לרשימת קרנות החוץ באתר הבורסה |
 | Old list | הרשימה לא עודכנה מאז `{תאריך}`. |
-| Assumption chips | סכום · הפקדה חודשית · שנים · תשואה ב`{מטבע}` · אינפלציה · שינוי שער `{מטבע}` · שער `{מטבע}` היום · W-8BEN · התעריפון של `{ספק}` · פעולות בחודש · כל ההנחות |
+| Assumption chips | סכום · הפקדה חודשית · תקופה · תשואה ב`{מטבע}` · אינפלציה · שינוי שער `{מטבע}` · שער `{מטבע}` היום · W-8BEN · התעריפון של `{ספק}` · פעולות בחודש · כל ההנחות |
 | Assumptions sheet title | ההנחות של השוואת הקרנות |
 | W-8BEN field | יש לכם טופס W-8BEN אצל הברוקר? · כן · לא |
 | W-8BEN, line | עובדה שלכם, לא כלל. |
@@ -1736,7 +1744,7 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 | SW-21 | לאן אפשר להעביר קופת גמל להשקעה |
 | SW-01, SW-23 | לאן אפשר להעביר, ואילו כספים |
 | SW-24 | במזומן או בעין |
-| SW-10 | הודיעו למעסיק לאן להפקיד |
+| SW-10 | ודאו שהמעסיק מפקיד לקופה החדשה | (changed 2026-10-26: SW OQ6 closed, the receiving fund notifies the employer; was "הודיעו למעסיק לאן להפקיד") |
 | SW-04 | המועד הקובע: ההפקדה הראשונה בקופה החדשה |
 | SW-05 | צפו להודעת דחייה או עיכוב |
 | SW-12 | ביטוח בפנסיה: הטופס, הכיסוי וחודשי האכשרה |
@@ -1780,8 +1788,8 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 | `r4playbook.oq[SW OQ3]` | כלל על פניות שימור במוצרי גמל. | |
 | `r4playbook.oq[SW OQ4]` | האם הצעה שניתנה לפני ההצטרפות מחייבת. | |
 | `r4playbook.oq[SW OQ5]` | איך נבדקת הסכמת הלקוח להוצאת דוח מהמסלקה. | the price side closed 2026-10-24 (SW-44) |
-| `r4playbook.oq[SW OQ6]` | מי מודיע למעסיק להפנות את ההפקדות הבאות, ובתוך כמה זמן. | |
-| `r4playbook.oq[SW OQ9]` | אילו סוגי חשבונות ופעילות נכללים בכללי המעבר בין בנקים. | Was "אילו סוגי חשבונות ופעילות כללי המעבר בין בנקים כוללים." |
+| `r4playbook.oq[SW OQ6]` | (removed 2026-10-26) | closed by the joining circular s.4(ו)-(ז) (SW-10) |
+| `r4playbook.oq[SW OQ9]` | אילו בנקים פטורים מהמעבר, ואיך נספר יום העסקים השישי. | changed 2026-10-26: narrowed, the account and activity types are SW-26; was "אילו סוגי חשבונות ופעילות נכללים בכללי המעבר בין בנקים." |
 | `r4playbook.oq[SW OQ10]` | המחיר המפוקח להעברת ניירות ערך. | |
 | `r4playbook.oq[SW OQ11]` | המס על העברת ניירות ערך בין חשבונות של אותו בעלים. | |
 | `r4playbook.oq[SW OQ12]` | העברה בין מוסד ישראלי לברוקר זר. | |
@@ -1880,6 +1888,41 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 - **"שיעור הריבית המוצעת (נומינלי שנתי), לפני מס"** is directive 447's own label (BANK-13), kept verbatim so the row matches the bank's table a friend is looking at.
 - **"מה חותמים / מה לצפות"** as the two labelled lines of a step: product 3.7 Out names exactly these two things for every step; the labels make them scannable.
 - **Added 2026-10-24** (the build's strings, folded the same day): **"כמה עולה המעבר"** for the cost block, the question a person asks (not "מה עולה"). **"הפקדה אחת בכל חודש של השנה"** says A-28's twelve deposits without a digit. **"להשוות אליו · ביטול ההשוואה"** as infinitive and noun, like every other button. **"הכללים שהחישוב נשען עליהם"** mirrors 6.2's "הכללים שההשוואה נשענת עליהם". **"מחיסכון · מהפקדה"** in the provident listing, the glossary's words, never "מצבירה".
+
+### 8.7 Brands: a group's companies as one (D33, 2026-10-26)
+
+The founder, 2026-10-26: someone browsing the companies wants a company's products, not its legal structure. A group's managing company, broker and fund manager are one row and one page, under the name people use (`data/sources/brands.json`).
+
+| Where | Hebrew |
+|---|---|
+| Companies list, first heading | בתי השקעות |
+| Companies list, a brand's quiet line | its product kinds, joined with " · ": the CMA classifications, then קרנות סל · קרנות מחקות · קרנות כספיות, then חשבון השקעות |
+| Search, a brand's row line | בית השקעות |
+| Brand page, lede without CMA tracks | כל מה שהחברה מציעה, כל סוג מוצר תחת כותרת משלו. |
+| Brand page, the companies line | כולל את החברות: `{שם חוקי}` · `{שם חוקי}` |
+| Brand page, list heading | כל המוצרים של `{שם}` |
+| Fund groups | קרנות סל · קרנות מחקות · קרנות כספיות · קרנות נאמנות |
+| Fund group count | קרן אחת · שתי קרנות · `{מספר}` קרנות |
+| Fund group note | רק הקרנות שהאתר אסף עליהן דוח, לא כל הקרנות של החברה. דמי הניהול לפי הדוח של כל קרן. |
+| Fund row, what it follows (link to the index's guide page, `/exposure/<index>` since 2026-10-26, or the money-market guide) | עוקבת אחרי `{מדד}` · קרן כספית |
+
+The fund row's other words (מנהלת הקרן, מספר נייר, בדף הקרן במאיה, the three fee names, לא נאסף) are the index page's (`invest.funds` in `site/app/copy.ts`).
+
+### 8.8 Stock exposure of a track (D34, 2026-10-26)
+
+The founder, 2026-10-26: the company page's last column shows something other than the goal fit, and no goal UI on the company and track pages. The figure is F-87, computed; the words are `company.stock` in `site/app/copy.ts`.
+
+| Where | Hebrew |
+|---|---|
+| Company page, column heading; track page, row label | חשיפה למניות בסוף `{חודש שנה}` |
+| Company page, phone line | חשיפה למניות: `{אחוז}` |
+| A track that did not report the amounts | לא דווח |
+| The sheet, what the figure is | החלק מנכסי המסלול שחשוף לשוק המניות בסוף `{חודש שנה}` |
+| The sheet, formula name (F-87) | החלק מנכסי המסלול שחשוף למניות |
+| The sheet, the two inputs | החשיפה לשוק המניות · סך נכסי המסלול |
+| The unit of the regulator's amounts | `{מספר}` מיליון ₪ |
+
+Removed the same day with the fit mark on these pages: the row mark (מתאים · לא מתאים · אין כלל לסיווג הזה, "התאמה למטרה:") and the strip's "ההתאמה לפי המטרה השמורה:" there; the workbench keeps them (`docs/roadmap.md`, "Not final").
 
 ## 9. Release 5 screens
 
@@ -1982,7 +2025,7 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 18 and the handoff in
 | Reference line label | מזומן, להשוואה |
 | Chart caption (always) | הקווים המקווקווים מבוססים על תשואות שהזנתם, לא על הערכה של האתר. |
 | Chart, nothing to draw | אין חשיפות מדורגות להצגה. |
-| Assumption chips | שנים · סכום היום · הפקדה חודשית · זמין מיד · אינפלציה · מסכימים לספוג עד · כל ההנחות |
+| Assumption chips | תקופה · סכום היום · הפקדה חודשית · זמין מיד · אינפלציה · מסכימים לספוג עד · כל ההנחות |
 | Assumptions sheet title | ההנחות של ההשוואה לפי חשיפה |
 | Assumptions sheet, per-exposure group | `{חשיפה}`: תשואה · ירידה צפויה · מסכימים לספוג · מוחזקת במוצר · changed 2026-10-24 (Hebrew editor); was ״מוחזקת ב״ |
 | Coverage sentence | נבדקו `{מספר}` חשיפות: `{מספר}` דורגו, `{מספר}` מוצגות בלי דירוג, `{מספר}` נפסלו לפי מסנן הירידה, `{מספר}` עוד לא נבדקו. |
@@ -2010,7 +2053,8 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 18 and the handoff in
 | `r5.exposure.fields.worstInfo · holdingAria · holdingDone` | על ההערכה · באיזה מוצר להחזיק · סגירה | screen-reader names of the worst-fall info button and the holding-wrapper chooser, and its close |
 | `r5.exposure.notes.passedEqual` | עברה את מסנן הירידה: `{אחוז}`, בדיוק המספר שתסכימו לספוג. ירידה שווה למספר שלכם נשארת בהשוואה. | F-71 keeps an equal fall; said on the row. Was "…, בדיוק כמו המספר שתסכימו לספוג (שווה נשאר)." |
 | `r5.exposure.coverageReasons.cannotHold · noFund · noTerms` | `{מוצר}` לא מחזיק את החשיפה הזו · לא נבדקה: פרטי הקרן עוד לא נאספו. · עוד אין לאתר את תנאי המוצר | engine reason `wrapper-cannot-hold`; a P-08 row waiting for a fund record; a wrapper without terms |
-| `r5.exposure.p08.gov` | לא נבדקה: תדירות הקופון של סדרה לא צמודה עוד לא במאגר הכללים. שאלה פתוחה GOV OQ4 | the unlinked government bond row of P-08. Was "…במאגר הכללים (GOV OQ4).": a code is never in brackets at the end of a sentence (section 1) |
+| `r5.exposure.p08.gov` | לא נבדקה: האתר עוד לא מחשב אג״ח ממשלתית לא צמודה בריבית קבועה. | the unlinked government bond row of P-08. Changed 2026-10-26 (closed-questions review): it said the coupon frequency was not in the rule base (GOV OQ4), but GOV-13 gives a yearly coupon and GOV OQ4 now asks only for the old "שחר" text |
+| `r5.exposure.p08.govCoupon` | לפי התקנות של הסוג הזה, הקופון משולם פעם בשנה | follows `p08.gov` in the row's reason, with the GOV-13 chip (2026-10-26) |
 | `r5.exposure.chart.loading · aria` | טוען… · גרף: הכסף בחשיפות לאורך `{שנים}` | the skeleton line and the chart's screen-reader name |
 | `r5.exposure.assumptions.ret · worst · accepted · holding · empty` | תשואה · ירידה צפויה · מסכימים לספוג · מוחזקת במוצר · לא הוזן | the per-exposure group's labels, and an empty value · changed 2026-10-24 (Hebrew editor); was ״מוחזקת ב״ |
 | `r5.exposure.rank · detail · detailTitle · checklist · failed` | מקום · פירוט · פירוט · מה לבדוק · האתר לא הצליח לחשב את ההשוואה. רעננו את העמוד ונסו שוב. | as 6.2 · changed 2026-10-24 (Hebrew editor); was ״לא הצלחנו לחשב את ההשוואה. רעננו את העמוד ונסו שוב.״ |
@@ -2093,7 +2137,7 @@ Removed 2026-10-24 (D24): the page and its strings (`r5.changes`) are gone from 
 | Counts line, whole log | מאז תחילת היומן, `{תאריך}` |
 | Precise-test line | האם שינוי נגע להשוואה ששמרתם, בודקים בעמוד ההשוואה. |
 | Group headings | משפיע על דירוגים · לא משפיע על דירוגים |
-| Collection names (by file key) | rules: כללים · parameters: פרמטרים · fees: תעריפונים · terms/deposits: תנאי פיקדונות · terms: מונחים · dimensions: מימדים לבדיקה · catalog: קטלוג · funds: רשומות קרנות · series: סדרות · instruments/wrappers: רשומות מוצרים · instruments/exposures: רשומות חשיפות · cma: נתוני רשות שוק ההון · site/content: תוכן האתר · site/content/guide: עמודי המדריך · il-finance: מאגר הכללים |
+| Collection names (by file key) | rules: כללים · parameters: פרמטרים · fees: תעריפונים · terms/deposits: תנאי פיקדונות · terms: מונחים · dimensions: מימדים לבדיקה · catalog: קטלוג · funds: רשומות קרנות · series: סדרות · instruments/wrappers: רשומות מוצרים · instruments/securities: רשומות ניירות ערך · instruments/exposures: רשומות חשיפות · cma: נתוני רשות שוק ההון · site/content: תוכן האתר · site/content/guide: עמודי המדריך · il-finance: מאגר הכללים |
 | Columns | תאריך · מה · שדה · היה · עכשיו · למה |
 | Values | לא היה · הוסר · פירוט |
 | Reason label (screen-reader name) | הסיבה כפי שנרשמה ביומן |
@@ -2514,6 +2558,11 @@ Every string edit of the day, as applied to `site/app/copy.ts` (the rows above c
 
 Also fixed outside `copy.ts` the same day, at the lead's request: "הודעו" → "הודיעו" (`site/app/lib/playbook.ts`, the employer step title), "והותק" → "והוותק" (`site/app/content/guide/keren-hishtalmut.tsx`), and מק"מ → מק״מ in the site's own prose under `site/app/content/` (26 places; glossary `Term` ids unchanged).
 
+
+### 10.x Chip labels (2026-10-26)
+
+- תווית של צ'יפ לא חוזרת על היחידה שכבר יש בערך שלו: "תקופה 10 שנים", לא "שנים 10 שנים". שש שורות הצ'יפים (ההשוואה, דמי הניהול, ההשקעה במדד, שני ספסלי העבודה, ציר הזמן במדריך) עברו ל"תקופה" אחרי שהמייסד ראה את הכפילות בעמוד ההשקעה במדד.
+
 ## Added 2026-10-24 (audit wave, WP9: workbench and catalogue)
 
 | Key | Text | Note |
@@ -2740,6 +2789,7 @@ Removed with the round, nothing renders them: `rulesPage.ruleCount`, `rulesFront
 
 | Key | Text | Note |
 |---|---|---|
+| `guideWorth.upTo` | עד | added 2026-10-26: the word before a "worth knowing" figure that is a legal cap (its name holds `cap`), so a cap never reads as the rate charged (CS-18 after 21, IRA-17) |
 | `guideWorth.title` / `.line` | שווה לדעת · עובדות על המוצר הזה שרוב האנשים לא יודעים, כל אחת עם הכלל והמקור שלה. | changed (was "שתיים או שלוש עובדות שרוב האנשים לא יודעים על המוצר הזה"): the count is not promised, and the object follows the verb |
 | `searchMore.groups.*` | כללים · פרמטרים · מסמכים | |
 | `searchMore.ruleWord` / `.parameterLine` / `.documentLine` | כלל · פרמטר של האתר · מסמך | |

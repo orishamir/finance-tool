@@ -22,6 +22,7 @@ import { GoalsProvider, isBlank, useGoals, type Presets } from "../lib/goal";
 import { buildCtx, consolidationGroups, isChild, loadHoldingsBundle, viewOf, type HoldingsBundle } from "../lib/holdings";
 import { useHoldings, type Holding } from "../lib/state";
 import { bundleLinks } from "../lib/bundle";
+import { recordsById } from "../lib/scope";
 
 /** The data files this page fetches after it starts, requested with the HTML (audit 2026-10-24, A52). */
 export const links = () => bundleLinks("holdings-bundle.json", "compare-bundle.json");
@@ -47,7 +48,7 @@ export default function HoldingsPage() {
   }, []);
   const provenance = useMemo(() => {
     const rules: Record<string, RuleRecord> = Object.fromEntries([...(cb?.rules ?? []), ...(hb?.rules ?? [])].map((r) => [r.id, r as RuleRecord]));
-    return { rules, terms: {}, dimensions: Object.fromEntries((cb?.checklist ?? []).map((c) => [c.id, c.name])), today: data.today };
+    return { rules, pointed: recordsById(cb?.pointed, hb?.pointed), terms: {}, dimensions: Object.fromEntries((cb?.checklist ?? []).map((c) => [c.id, c.name])), today: data.today };
   }, [cb, hb, data.today]);
   return (
     <GoalsProvider presets={presets}>

@@ -1,9 +1,9 @@
 // Banks and brokers in the catalogue (flows 32, 33; design-spec 20): the institutions the fee snapshots and the
 // deposit records name, one page each. Server-only. Every number keeps its value object and its source; nothing is
 // computed here but the stale flag (D3: a snapshot older than three months, until the schema holds its own rule).
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { feesSnapshot, type DepositTerms, type FeeLine, type FeesSnapshot, type RuleRecord, type ValueObject } from "@finance-tool/schema";
+import { feesSnapshot, institutionsTable, ownDocumentCompanies, type DepositTerms, type FeeLine, type FeesSnapshot, type InstitutionRegistryRow, type RuleRecord, type ValueObject } from "@finance-tool/schema";
 import type {
   InstitutionKind,
   InstitutionPageData,
@@ -14,9 +14,15 @@ import type {
   TariffCardData,
   TariffLineRow,
 } from "../components/decoder/institutions/types";
-import { loadRules, loadWrappers, root, today } from "./data.server";
+import { loadChecklistRows, loadRules, loadProducts, pointedRecords, root, today } from "./data.server";
+import { topicName } from "../copy";
 import { loadCatalog, loadDepositTerms, seenValue, seenWhere } from "./instruments.server";
-import type { SiteValue } from "./value";
+import { shortName } from "./providers";
+import { ownBy, type SiteValue } from "./value";
+import { fileRank } from "./rule-shelves";
+import { listedCompanies, noPageAnchor, type CompanyLink, type OwnDocs } from "./scope";
+import { brandOfMember, brandOfPage, loadBrands } from "./brands.server";
+import { readParsedCached, readJsonCached, readTextCached } from "./read-cache.server";
 
 /** The cadence until `docs/data-schema.md` §3.6 writes `staleTariff` (flow 33 data note): 90 days. */
 const staleDays = 90;
@@ -33,7 +39,7 @@ export function latestSnapshots(): FeesSnapshot[] {
   if (!existsSync(dir)) return [];
   const best = new Map<string, { date: string; record: FeesSnapshot }>();
   for (const f of readdirSync(dir).filter((x) => x.endsWith(".json")).sort()) {
-    const record = feesSnapshot.parse(JSON.parse(readFileSync(join(dir, f), "utf8")));
+    const record = readParsedCached(join(dir, f), feesSnapshot);
     const date = /@(\d{4}-\d{2}-\d{2})\.json$/.exec(f)?.[1] ?? record.snapshot;
     const prev = best.get(record.id);
     if (!prev || date > prev.date) best.set(record.id, { date, record });
@@ -57,7 +63,13 @@ export function institutionIds(): string[] {
   return [...ids];
 }
 
+/** The companies list's banks and brokers: those that are not a brand's member (a brand has its own row, D33). */
 export function institutionRows(): InstitutionRow[] {
+  const inBrand = new Set(loadBrands().flatMap((b) => b.pageIds));
+  return allInstitutionRows().filter((r) => !inBrand.has(r.id));
+}
+
+function allInstitutionRows(): InstitutionRow[] {
   const snaps = institutionSnapshots();
   const rows: InstitutionRow[] = snaps.map((s) => ({ id: s.id, name: s.provider.name_he, kind: s.kind, published: s.tariff.published, missing: s.missing, noSnapshot: false }));
   for (const d of loadDepositTerms()) {
@@ -91,7 +103,7 @@ function rateTableUrl(bank: string): string | null {
   const label = rateTableLabel[bank];
   const path = join(root, ".claude/skills/il-finance/references/bank-product-names.md");
   if (!label || !existsSync(path)) return null;
-  const doc = readFileSync(path, "utf8");
+  const doc = readTextCached(path);
   const start = doc.indexOf("## Directive-447 publication: machine-readability per bank");
   if (start < 0) return null;
   const section = doc.slice(start);
@@ -105,12 +117,13 @@ function rateTableUrl(bank: string): string | null {
 
 // ---------------------------------------------------------------- value objects
 
-function site(v: ValueObject, t: string, snapshot: string): SiteValue {
-  return { ...v, stale: isStale(snapshot, t) ? { since: snapshot, cadence: "quarterly" } : null };
+// D31: everything on a company's page is that company's own figure about its own product
+function site(v: ValueObject, t: string, snapshot: string, owner: string): SiteValue {
+  return ownBy({ ...v, stale: isStale(snapshot, t) ? { since: snapshot, cadence: "quarterly" } : null } as SiteValue, owner);
 }
 
-function dateValue(date: string, from: Pick<ValueObject, "source">, checked: string, t: string, snapshot: string): SiteValue {
-  return {
+function dateValue(date: string, from: Pick<ValueObject, "source">, checked: string, t: string, snapshot: string, owner: string): SiteValue {
+  return ownBy({
     value: date,
     unit: "text",
     source: from.source,
@@ -121,11 +134,11 @@ function dateValue(date: string, from: Pick<ValueObject, "source">, checked: str
     state: "sourced",
     stale: isStale(snapshot, t) ? { since: snapshot, cadence: "quarterly" } : null,
     notes: "",
-  };
+  } as SiteValue, owner);
 }
 
-function textValue(value: string, from: { source: ValueObject["source"]; checked: string }, notes: string): SiteValue {
-  return { value, unit: "text", source: from.source, checked: from.checked, effective_from: null, effective_to: null, update_rule: "provider-set", state: "sourced", notes };
+function textValue(value: string, from: { source: ValueObject["source"]; checked: string }, notes: string, owner: string): SiteValue {
+  return ownBy({ value, unit: "text", source: from.source, checked: from.checked, effective_from: null, effective_to: null, update_rule: "provider-set", state: "sourced", notes } as SiteValue, owner);
 }
 
 // ---------------------------------------------------------------- deposits
@@ -144,7 +157,8 @@ function productRow(d: DepositTerms, t: string): ProductRowData {
   const current = d.wrapper_id === "current-account";
   const asOfDate = d.rate_offered.effective_from;
   const stale = isStale(d.snapshot, t);
-  const mark = (v: ValueObject) => site(v, t, d.snapshot);
+  const owner = shortName(d.bank, d.bank);
+  const mark = (v: ValueObject) => site(v, t, d.snapshot, owner);
   return {
     id: d.id,
     name,
@@ -158,10 +172,10 @@ function productRow(d: DepositTerms, t: string): ProductRowData {
     anchor: d.anchor ?? null,
     spread: d.spread ? mark(d.spread) : null,
     rate: mark(d.rate_offered),
-    asOf: dateValue(asOfDate ?? d.snapshot, d.rate_offered, d.rate_offered.checked, t, d.snapshot),
+    asOf: dateValue(asOfDate ?? d.snapshot, d.rate_offered, d.rate_offered.checked, t, d.snapshot, owner),
     asOfAfterRead: !!asOfDate && asOfDate > d.rate_offered.checked,
     linkage: d.linkage,
-    linkageValue: textValue(d.linkage, { source: d.source, checked: d.snapshot }, `linkage "${d.linkage}" as the record holds it`),
+    linkageValue: textValue(d.linkage, { source: d.source, checked: d.snapshot }, `linkage "${d.linkage}" as the record holds it`, owner),
     taxBucket: mark(d.tax_bucket),
     amountMin: mark(d.amount_range.min),
     amountMax: d.amount_range.max ? mark(d.amount_range.max) : null,
@@ -179,16 +193,16 @@ function productRow(d: DepositTerms, t: string): ProductRowData {
 const tasePapers = ["tase_shares_bonds", "etf_units"];
 const custodyPapers = [...tasePapers, "foreign_securities"];
 
-function lineRow(l: FeeLine, t: string, snapshot: string): TariffLineRow {
+function lineRow(l: FeeLine, t: string, snapshot: string, owner: string): TariffLineRow {
   return {
     id: l.id,
     base: l.base as LineBase,
     classes: l.applies_to,
     channel: l.channel === "direct" || l.channel === "branch" ? l.channel : null,
-    rate: site(l.rate, t, snapshot),
+    rate: site(l.rate, t, snapshot, owner),
     period: l.period,
-    min: l.min ? site(l.min, t, snapshot) : null,
-    max: l.max ? site(l.max, t, snapshot) : null,
+    min: l.min ? site(l.min, t, snapshot, owner) : null,
+    max: l.max ? site(l.max, t, snapshot, owner) : null,
   };
 }
 
@@ -199,9 +213,9 @@ function tariffCard(s: FeesSnapshot, rules: Record<string, RuleRecord>, t: strin
   for (const l of s.lines) {
     if (l.level !== "list") continue;
     const covers = (papers: string[]) => l.applies_to.some((a) => papers.includes(a));
-    if (l.base === "trade" && covers(tasePapers)) lines.push(lineRow(l, t, s.snapshot));
-    else if (l.base === "custody" && covers(custodyPapers)) lines.push(lineRow(l, t, s.snapshot));
-    else if (l.base === "fx") lines.push(lineRow(l, t, s.snapshot));
+    if (l.base === "trade" && covers(tasePapers)) lines.push(lineRow(l, t, s.snapshot, s.provider.name_he));
+    else if (l.base === "custody" && covers(custodyPapers)) lines.push(lineRow(l, t, s.snapshot, s.provider.name_he));
+    else if (l.base === "fx") lines.push(lineRow(l, t, s.snapshot, s.provider.name_he));
   }
   const bases = [...new Set(s.lines.map((l) => l.base as string))];
   const min = s.minimums.account_opening;
@@ -211,13 +225,13 @@ function tariffCard(s: FeesSnapshot, rules: Record<string, RuleRecord>, t: strin
     title: s.tariff.title,
     url: s.tariff.url,
     format: s.tariff.format,
-    published: s.tariff.published ? dateValue(s.tariff.published, from, s.snapshot, t, s.snapshot) : null,
-    snapshot: dateValue(s.snapshot, from, s.snapshot, t, s.snapshot),
+    published: s.tariff.published ? dateValue(s.tariff.published, from, s.snapshot, t, s.snapshot, s.provider.name_he) : null,
+    snapshot: dateValue(s.snapshot, from, s.snapshot, t, s.snapshot, s.provider.name_he),
     stale,
     lineCount: s.lines.length,
     bases,
     lines,
-    minimum: min ? site(min, t, s.snapshot) : null,
+    minimum: min ? site(min, t, s.snapshot, s.provider.name_he) : null,
     regulator: s.provider.regulator,
     ...(s.provider.regulator_foreign ? { foreignRegulator: s.provider.regulator_foreign.name_he } : {}),
     tase: s.provider.tase_member,
@@ -225,6 +239,20 @@ function tariffCard(s: FeesSnapshot, rules: Record<string, RuleRecord>, t: strin
     notice: s.notice_rule_ids.filter((id) => rules[id]),
     providerName: s.provider.name_he,
   };
+}
+
+// ---------------------------------------------------------------- a brand's brokerage account (D33)
+
+/** The tariff card of a broker or a foreign broker, with the records its card cites; null when no snapshot has that id. */
+export function brokeragePart(id: string): { kind: InstitutionKind; tariff: TariffCardData; rules: Record<string, RuleRecord> } | null {
+  const snap = latestSnapshots().find((s) => s.id === id && (s.provider.class === "broker" || s.provider.class === "foreign_broker"));
+  if (!snap) return null;
+  const allRules = loadRules();
+  const cited = new Set<string>(["BRK-20", "BRK-21", "BRK-16"]);
+  for (const r of [...snap.provider.protection_rule_ids, ...snap.notice_rule_ids]) cited.add(r);
+  for (const l of snap.lines) for (const r of l.rate.rule_ids ?? []) cited.add(r);
+  const rules = Object.fromEntries([...cited].filter((r) => allRules[r]).map((r) => [r, allRules[r]!]));
+  return { kind: "broker", tariff: tariffCard(snap, allRules, today()), rules };
 }
 
 // ---------------------------------------------------------------- the page
@@ -235,7 +263,7 @@ export function buildInstitution(id: string): InstitutionPageData | null {
   const deposits = loadDepositTerms().filter((d) => d.bank === id);
   if (!snap && deposits.length === 0) return null;
   const allRules = loadRules();
-  const wrappers = loadWrappers();
+  const wrappers = loadProducts();
   const rows = deposits.map((d) => productRow(d, t));
   const groups: ProductGroup[] = wrapperOrder
     .map((w) => ({ wrapperId: w, wrapperName: wrappers.find((x) => x.id === w)?.names.he[0] ?? w, products: rows.filter((r) => r.wrapperId === w).sort((a, b) => collator.compare(a.name, b.name)) }))
@@ -257,6 +285,12 @@ export function buildInstitution(id: string): InstitutionPageData | null {
     for (const l of snap.lines) for (const r of l.rate.rule_ids ?? []) cited.add(r);
   }
   const rules = Object.fromEntries([...cited].filter((r) => allRules[r]).map((r) => [r, allRules[r]!]));
+  // what the site found in the company's own documents (D30): the records that name it, by topic; their cards open from the same data
+  const registryIds = registryIdsOfPage(id);
+  const termGroups = companyTermGroups(registryIds, allRules, topicName);
+  for (const rid of termGroups.flatMap((g) => g.ids)) rules[rid] = allRules[rid]!;
+  // the records those cards point at (derived_from, examples), so every chip on them opens
+  const pointed = pointedRecords(rules, allRules);
 
   return {
     id,
@@ -273,6 +307,8 @@ export function buildInstitution(id: string): InstitutionPageData | null {
     })(),
     catalogue,
     rules,
+    pointed,
+    terms: { groups: termGroups, company: registryIds[0] ?? null, name: loadInstitutionRegistry().find((r) => r.id === registryIds[0])?.name_he ?? snap?.provider.name_he ?? id, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} },
   };
 }
 
@@ -290,7 +326,12 @@ export function institutionSearchEntries(words: { bank: string; broker: string }
   const out: InstitutionSearchEntry[] = [];
   const names = new Map<string, string>(institutionRows().map((r) => [r.id, r.name]));
   for (const r of institutionRows()) out.push({ name: r.name, line: r.kind === "bank" ? words.bank : words.broker, href: `/companies/${r.id}`, extra: r.id });
-  const wrappers = loadWrappers();
+  // a brand member's legal name finds the brand's page (D33)
+  for (const r of allInstitutionRows()) {
+    const brand = brandOfPage(r.id);
+    if (brand) out.push({ name: r.name, line: brand.name, href: `/companies/${brand.page}`, extra: r.id });
+  }
+  const wrappers = loadProducts();
   for (const d of loadDepositTerms()) {
     const wrapper = wrappers.find((w) => w.id === d.wrapper_id)?.names.he[0] ?? "";
     const line = [names.get(d.bank) ?? d.bank, wrapper].filter(Boolean).join(" · ");
@@ -302,4 +343,116 @@ export function institutionSearchEntries(words: { bank: string; broker: string }
     }
   }
   return out;
+}
+
+// ---------------------------------------------------------------- who a rule applies to (D30, spec 2026-10-25-rules-scope §4)
+
+/** data/sources/institutions.json: every company a rule's scope can name (spec §3). */
+export function loadInstitutionRegistry(): InstitutionRegistryRow[] {
+  return readParsedCached(join(root, "data/sources/institutions.json"), institutionsTable);
+}
+
+/**
+ * Every company's link, for every page's sheets (the root loader): a managing company's page by its CMA id, a bank's or broker's by
+ * its snapshot or deposit id, else its group on /companies (a company with no page of its own here).
+ */
+export function companyLinks(): Record<string, CompanyLink> {
+  const cmaIds = new Set(loadCmaCompanyIds());
+  const pages = new Set(institutionIds());
+  const out: Record<string, CompanyLink> = {};
+  for (const r of loadInstitutionRegistry()) {
+    const brand = brandOfMember(r.id);
+    const page = brand ? brand.page : r.cma_legal_id && cmaIds.has(r.cma_legal_id) ? r.cma_legal_id : r.fees_id && pages.has(r.fees_id) ? r.fees_id : r.deposit_bank_id && pages.has(r.deposit_bank_id) ? r.deposit_bank_id : null;
+    // where its own documents live travels too: a rule card drops "לפי החברה" only on a source there (D31; review, 2026-10-26)
+    const docs = { own_hosts: r.own_hosts, ...(r.filing_names ? { filing_names: r.filing_names } : {}) };
+    out[r.id] = page ? { name: r.name_he, href: `/companies/${page}`, hasPage: true, docs } : { name: r.name_he, href: `/companies#${noPageAnchor(r.id)}`, hasPage: false, docs };
+  }
+  return out;
+}
+
+function loadCmaCompanyIds(): string[] {
+  const ids = new Set<string>();
+  for (const f of readdirSync(join(root, "data/cma")).filter((x) => x.endsWith(".json"))) {
+    const d = readJsonCached(join(root, "data/cma", f)) as { funds: { managing_corporation: { legal_id: string } }[] };
+    for (const fund of d.funds) ids.add(fund.managing_corporation.legal_id);
+  }
+  return [...ids];
+}
+
+/** The registry ids a company page stands for: the rows whose CMA id, snapshot id or deposit id is the page's id. */
+export function registryIdsOfPage(pageId: string): string[] {
+  const brand = brandOfPage(pageId);
+  if (brand) return brand.members.map((m) => m.id);
+  return loadInstitutionRegistry()
+    .filter((r) => r.cma_legal_id === pageId || r.fees_id === pageId || r.deposit_bank_id === pageId)
+    .map((r) => r.id);
+}
+
+export interface CompanyTermGroup {
+  /** The topic's key (the rule-base file) and its Hebrew name. */
+  key: string;
+  title: string;
+  ids: string[];
+}
+
+let ownDocsCache: { rules: Record<string, RuleRecord>; out: OwnDocs } | null = null;
+
+/**
+ * Per record that is not general, the companies it names whose own document it cites (the registry's `own_hosts` and
+ * `filing_names`; review, 2026-10-26). The root loader gives it to every page, so a rule card names only those and links only to
+ * where the record is listed. A record that cites none (a press report, a forum post) is left out of the map.
+ */
+export function ownDocuments(rules: Record<string, RuleRecord> = loadRules()): OwnDocs {
+  if (ownDocsCache?.rules === rules) return ownDocsCache.out;
+  const registry = new Map(loadInstitutionRegistry().map((r) => [r.id, r]));
+  const out: Record<string, string[]> = {};
+  for (const r of Object.values(rules)) {
+    if (r.scope === "general") continue;
+    const own = ownDocumentCompanies(r, registry);
+    if (own.length > 0) out[r.id] = own;
+  }
+  ownDocsCache = { rules, out };
+  return out;
+}
+
+/**
+ * The records a company's section lists (spec §4: "מה כתוב במסמכים של {company}", grouped by product), by topic in the rules pages'
+ * order: those that are not general and cite one of these companies' own documents; never a not-rule, and never a press report or a
+ * forum post about the company (review, 2026-10-26).
+ */
+export function companyTermGroups(registryIds: readonly string[], rules: Record<string, RuleRecord>, topic: (file: string) => string, ownDocs: OwnDocs = ownDocuments(rules)): CompanyTermGroup[] {
+  const want = new Set(registryIds);
+  const mine = Object.values(rules).filter((r) => listedCompanies(r, ownDocs).some((c) => want.has(c.id)));
+  return groupByTopic(mine, topic);
+}
+
+function groupByTopic(list: RuleRecord[], topic: (file: string) => string): CompanyTermGroup[] {
+  const files = [...new Set(list.map((r) => r.il_finance_file))].sort((a, b) => fileRank(a) - fileRank(b));
+  return files.map((f) => ({
+    key: f,
+    title: topic(f),
+    ids: list
+      .filter((r) => r.il_finance_file === f)
+      .map((r) => r.id)
+      .sort((a, b) => a.localeCompare(b, "en", { numeric: true })),
+  }));
+}
+
+/**
+ * /companies: the companies that have no page of their own and whose terms the site holds, each with the records its section lists;
+ * then what no company's section lists (the not-rules: a forum post, a press report, a list, a count, a site's terms).
+ */
+export function noPageCompanyTerms(rules: Record<string, RuleRecord>, ownDocs: OwnDocs = ownDocuments(rules)): { companies: { id: string; name: string; ids: string[] }[]; none: string[] } {
+  const links = companyLinks();
+  const byId = (a: string, b: string) => a.localeCompare(b, "en", { numeric: true });
+  const listed = Object.values(rules)
+    .filter((r) => r.scope !== "general")
+    .map((r) => ({ id: r.id, at: listedCompanies(r, ownDocs).map((c) => c.id) }));
+  const companies = loadInstitutionRegistry()
+    .filter((r) => !links[r.id]?.hasPage)
+    .map((r) => ({ id: r.id, name: r.name_he, ids: listed.filter((x) => x.at.includes(r.id)).map((x) => x.id).sort(byId) }))
+    .filter((c) => c.ids.length > 0)
+    .sort((a, b) => collator.compare(a.name, b.name));
+  const none = listed.filter((x) => x.at.length === 0).map((x) => x.id).sort(byId);
+  return { companies, none };
 }

@@ -498,22 +498,22 @@
   {
     "term_he": "ריבית הפריים",
     "term_source": {
-      "title": "Bank Hapoalim, \"שינויים בריבית בנק ישראל וריבית הפריים\"",
-      "url": "https://www.bankhapoalim.co.il/interest-update"
+      "title": "צו הריבית (קביעת שיעור הריבית המכסימלי), התש\"ל-1970, נוסח משולב (בנק ישראל), ס' 1",
+      "url": "https://www.boi.org.il/media/nwjkv14l/184b.pdf"
     },
     "variants_he": [
       "פריים",
       "ריבית פריים"
     ],
-    "explain_he": "ריבית הבסיס של הבנקים, שזזה יחד עם ריבית בנק ישראל; לפיה נקבעת הריבית ברוב הפיקדונות בריבית משתנה",
+    "explain_he": "ריבית הבסיס שבתעריף הבנק ללקוחות מועדפים שהחשבון שלהם ביתרת חובה",
     "rule_ids": [
       "BANK-25"
     ],
     "source": {
-      "title": "Bank Hapoalim, \"שינויים בריבית בנק ישראל וריבית הפריים\"",
-      "url": "https://www.bankhapoalim.co.il/interest-update",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "צו הריבית (קביעת שיעור הריבית המכסימלי), התש\"ל-1970, נוסח משולב (בנק ישראל), ס' 1",
+      "url": "https://www.boi.org.il/media/nwjkv14l/184b.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary"
     },
     "where": [
       "guide:bank-deposit",
@@ -763,19 +763,19 @@
   {
     "term_he": "הבטחת קרן",
     "term_source": {
-      "title": "Bank Yahav deposit rate board 13_26 (effective 06/10/2026)",
-      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf"
+      "title": "בנק ישראל, תקן בנקאות פתוחה: שאלות ותשובות (עדכון 31.12.2023), שאלה 9.4",
+      "url": "https://boi.org.il/media/0vsju2fr/%D7%A9%D7%90%D7%9C%D7%95%D7%AA-%D7%95%D7%AA%D7%A9%D7%95%D7%91%D7%95%D7%AA-31122023.pdf"
     },
     "variants_he": [],
-    "explain_he": "התחייבות בתנאי המוצר שלא תקבלו בחזרה פחות מהסכום שהפקדתם, למשל אם המדד ירד",
+    "explain_he": "תנאי שיש בחלק מהפיקדונות הצמודים למדד: כשהמדד יורד, הירידה לא מקטינה את הסכום שלכם",
     "rule_ids": [
       "BANK-26"
     ],
     "source": {
-      "title": "Bank Yahav deposit rate board 13_26 (effective 06/10/2026)",
-      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "בנק ישראל, תקן בנקאות פתוחה: שאלות ותשובות (עדכון 31.12.2023), שאלה 9.4",
+      "url": "https://boi.org.il/media/0vsju2fr/%D7%A9%D7%90%D7%9C%D7%95%D7%AA-%D7%95%D7%AA%D7%A9%D7%95%D7%91%D7%95%D7%AA-31122023.pdf",
+      "checked": "2026-10-26",
+      "strength": "secondary"
     },
     "where": [
       "guide:bank-deposit",
@@ -837,21 +837,21 @@
   {
     "term_he": "פק\"מ",
     "term_source": {
-      "title": "Bank of Jerusalem, פק\"מ או פיקדון מובנה",
+      "title": "בנק ירושלים: פק\"מ או פיקדון מובנה, מה הפיתרון המתאים עבורך?",
       "url": "https://www.bankjerusalem.co.il/deposits-savings/deposit-types-and-differences/"
     },
     "variants_he": [
       "פיקדון קצר מועד"
     ],
-    "explain_he": "קיצור של פיקדון קצר מועד: פיקדון בנקאי לתקופה קבועה, בריבית קבועה או משתנה, שלא נסחר בבורסה",
+    "explain_he": "קיצור של פיקדון קצר מועד; בנק ירושלים מתאר אותו כפיקדון בנקאי לתקופה מוגדרת, בריבית קבועה או משתנה, שלא נסחר בבורסה",
     "rule_ids": [
       "BANK-30",
       "BANK-31"
     ],
     "source": {
-      "title": "Bank of Jerusalem, פק\"מ או פיקדון מובנה",
+      "title": "בנק ירושלים: פק\"מ או פיקדון מובנה, מה הפיתרון המתאים עבורך?",
       "url": "https://www.bankjerusalem.co.il/deposits-savings/deposit-types-and-differences/",
-      "checked": "2026-10-22",
+      "checked": "2026-10-26",
       "strength": "institution"
     },
     "where": [
@@ -864,16 +864,16 @@
   {
     "term_he": "פר\"י",
     "term_source": {
-      "title": "Bank Yahav deposit rate board 13_26 (effective 06/10/2026)",
+      "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26 (בתוקף מ-06.10.2026), עמ' 2",
       "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf"
     },
     "variants_he": [],
-    "explain_he": "שם בבנקים לפיקדון בריבית יומית, שהריבית בו משתנה",
+    "explain_he": "קיצור של פיקדון בריבית יומית, שהריבית בו משתנה; כך מגדיר אותו בנק יהב",
     "rule_ids": [],
     "source": {
-      "title": "Bank Yahav deposit rate board 13_26 (effective 06/10/2026)",
+      "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26 (בתוקף מ-06.10.2026), עמ' 2",
       "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-      "checked": "2026-10-22",
+      "checked": "2026-10-26",
       "strength": "institution"
     },
     "where": [
@@ -943,23 +943,23 @@
   {
     "term_he": "פיקדון בהוראת קבע",
     "term_source": {
-      "title": "Discount 447 table, \"פיקדון בהוראת קבע\" filter",
-      "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/"
+      "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל), ס' 7(ב)(4)",
+      "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf"
     },
     "variants_he": [
       "הוראות קבע",
       "הו\"ק"
     ],
-    "explain_he": "חיסכון שאליו עובר סכום קבוע מהעו\"ש באופן אוטומטי כל חודש",
+    "explain_he": "פיקדון שמפקידים אליו מזמן לזמן, למשל בהוראת קבע; בפיקדון ליותר משנה, ההסכם צריך לפרט את סדרי ההפקדות ואת המגבלות על הסכומים ועל המועדים",
     "rule_ids": [
       "BANK-28",
       "BANK-31"
     ],
     "source": {
-      "title": "Discount 447 table, \"פיקדון בהוראת קבע\" filter",
-      "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
-      "checked": "2026-10-22",
-      "strength": "institution"
+      "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל), ס' 7(ב)(4)",
+      "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",
+      "checked": "2026-10-26",
+      "strength": "primary"
     },
     "where": [
       "guide:savings-plan",

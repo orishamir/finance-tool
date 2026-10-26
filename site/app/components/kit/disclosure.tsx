@@ -3,6 +3,7 @@
 // open while closed (2026-10-25); no fold in the site may use it (a test guards that).
 import { useState, type ReactNode, type Ref } from "react";
 import { IconChevronDown } from "../icons";
+import { fmt } from "../../lib/format";
 import { cx } from "./cx";
 
 const SUMMARY_BASE = "cursor-pointer list-none [&::-webkit-details-marker]:hidden";
@@ -69,25 +70,58 @@ function LabelAs({ as: H, className, children }: { as: "h2" | "h3" | "h4"; class
   return <H className={className}>{children}</H>;
 }
 
-/** A group header inside a coverage list: a heading with its count and a chevron; the rows are the children. */
-export function FoldGroup({ title, count, level = 3, defaultOpen, children, className }: { title: ReactNode; count?: number; level?: 3 | 4; defaultOpen?: boolean; children: ReactNode; className?: string }) {
+export interface FoldGroupProps {
+  title: ReactNode;
+  /** The number of rows or cards in the group, after the title. */
+  count?: number;
+  level?: 3 | 4;
+  /** Starts open (uncontrolled). */
+  defaultOpen?: boolean;
+  /** Controlled: the parent owns the state (an address names a card inside, a filter opens the group). Pair with `onOpenChange`. */
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  /** The anchor of an in-page link; add the scroll margin with `className`. */
+  id?: string;
+  /**
+   * `list` (the default): a group inside a coverage list, a medium heading with "(3)". `section`: a topic of cards on a page (the
+   * rules page's groups, a company's terms), a larger heading with "· 3", the chevron at the far end of a 48 px row.
+   */
+  variant?: "list" | "section";
+  children: ReactNode;
+  className?: string;
+}
+
+/** A group header with its count and a chevron; the rows (or cards) are the children. */
+export function FoldGroup({ title, count, level = 3, defaultOpen, open, onOpenChange, id, variant = "list", children, className }: FoldGroupProps) {
+  const section = variant === "section";
+  const counted =
+    count === undefined ? null : section ? (
+      <span className="text-sm font-normal text-muted-foreground">
+        · <bdi dir="ltr" className="tabular-nums">{fmt.number(count)}</bdi>
+      </span>
+    ) : (
+      <>
+        {" "}
+        <span className="text-muted-foreground font-normal">
+          (<bdi dir="ltr">{count}</bdi>)
+        </span>
+      </>
+    );
   return (
     <Disclosure
-      className={className}
+      id={id}
+      className={cx(section && "flex flex-col", className)}
       defaultOpen={defaultOpen}
+      open={open}
+      onOpenChange={onOpenChange}
       as={level === 3 ? "h3" : "h4"}
-      labelClassName="font-medium"
+      spread={section}
+      size={section ? "field" : "target"}
+      labelClassName={section ? "text-lg font-semibold flex flex-wrap items-baseline gap-x-2" : "font-medium"}
       label={
         <>
           {title}
-          {count !== undefined && (
-            <>
-              {" "}
-              <span className="text-muted-foreground font-normal">
-                (<bdi dir="ltr">{count}</bdi>)
-              </span>
-            </>
-          )}
+          {counted}
         </>
       }
     >

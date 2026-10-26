@@ -2,7 +2,8 @@
 // Written 2026-10-23 from the il-finance rules cited under each block (BANK, TXI, REG, SW, MF); same shape
 // and register as kupat-gemel-lehashkaa.tsx. NEW copy for the founder to review.
 import type { GuideContent } from "./types";
-import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
+import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
+import { effectiveFromValue } from "../../lib/value";
 import { Callout, Sentence } from "../../components/kit";
 
 export const content: GuideContent = {
@@ -12,6 +13,10 @@ export const content: GuideContent = {
     const basicDirect = figure("BANK-17", "basic_direct_actions");
     const extendedTeller = figure("BANK-17", "extended_teller_actions");
     const extendedDirect = figure("BANK-17", "extended_direct_actions");
+    const basicCap = figure("BANK-17", "basic_track_max_fee");
+    const cardCap = figure("BANK-35", "immediate_debit_card_fee");
+    const cardFrom = effectiveFromValue(cardCap, "המועד שבו התקרה לדמי כרטיס חיוב מיידי נכנסה לתוקף");
+    const accountFrom = effectiveFromValue(figure("BANK-35", "account_fee_3_to_100_actions"), "המועד שבו התקרות לעמלת ניהול חשבון נכנסות לתוקף והמסלולים מתבטלים");
     return (
       <>
         <p className="max-w-measure">
@@ -23,9 +28,9 @@ export const content: GuideContent = {
         <Sentence measure>
           העלות היא מסלול העמלות: <Term prefix="ה" id="מסלול בסיסי">מסלול הבסיסי</Term> כולל {basicTeller ? <>עד <Num value={basicTeller} /> פעולה בפקיד ו</> : null}
           {basicDirect ? <>עד <Num value={basicDirect} /> פעולות בערוץ ישיר בחודש</> : "מעט פעולות בחודש"}, <Term prefix="ה" id="מסלול מורחב">מורחב</Term>{" "}
-          {extendedTeller && extendedDirect ? <>עד <Num value={extendedTeller} /> ו־<Num value={extendedDirect} /></> : "יותר"}. כל בנק חייב להציע את שניהם ולתת לכל לקוח להצטרף.
+          {extendedTeller && extendedDirect ? <>עד <Num value={extendedTeller} /> ו־<Num value={extendedDirect} /></> : "יותר"}. כל בנק חייב להציע את שניהם ולתת לכל לקוח להצטרף, ובמסלול הבסיסי העמלה מוגבלת בצו{basicCap ? <>: עד <Num value={basicCap} /> בחודש</> : null} <RuleRef id="BANK-17" />. צו חדש קבע תקרה לדמי כרטיס חיוב מיידי{cardCap ? <>, עד <Num value={cardCap} /> בחודש,</> : null} שחלה {cardFrom ? <Num value={cardFrom} prefix="מ־" /> : "כבר"}; {accountFrom ? <Num value={accountFrom} prefix="מ־" /> : "בהמשך"} אותו צו יבטל את המסלולים ויקבע במקומם תקרה לעמלת ניהול חשבון, לפי מספר הפעולות בחודש <RuleRef id="BANK-35" />.
         </Sentence>
-        <RulesLine ids={["BANK-01", "BANK-09", "BANK-20", "BANK-17", "TXI-08"]} />
+        <RulesLine ids={["BANK-01", "BANK-09", "BANK-20", "BANK-17", "BANK-35", "TXI-08"]} />
       </>
     );
   },
@@ -43,9 +48,13 @@ export const content: GuideContent = {
   afterTax: () => (
     <>
       <Callout tone="blocked" className="max-w-measure">
-        <span className="font-medium">הפטור למעוטי הכנסה על ריבית מפיקדון: לא ידוע אם הוא חל גם על ריבית בעו"ש.</span> האתר לא מחיל אותו כאן. שאלה פתוחה: <bdi dir="ltr" className="whitespace-nowrap">TXI OQ11</bdi>.
+        <span className="font-medium">הפטור למעוטי הכנסה על ריבית מפיקדון: לא ידוע אם הוא חל גם על ריבית בעו"ש.</span> האתר לא מחיל אותו כאן. שאלה פתוחה: <IdRef id="TXI OQ11" />.
       </Callout>
       <RulesLine ids={["TXI-20"]} />
+      <Sentence measure>
+        הפסד ממכירת ניירות ערך לא מקוזז כנגד ריבית שהבנק משלם: הפסד הון מקוזז כנגד רווח הון, ובניירות ערך גם כנגד ריבית או דיבידנד על ניירות ערך, והפסד שנשאר עובר לשנים הבאות כנגד רווח הון בלבד <RuleRef id="TXI-17" />.
+      </Sentence>
+      <RulesLine ids={["TXI-17"]} />
     </>
   ),
   risks: ({ figure }) => {

@@ -2,7 +2,7 @@
   "id": "pykdvn-mvbnh",
   "he": "פיקדון מובנה",
   "en": null,
-  "meaning": "פיקדון בבנק שהרווח בו תלוי בתנועה של מדד, מניה או שער מטבע; הקרן בדרך כלל מובטחת.",
+  "meaning": "פיקדון שהתשואה עליו או הסיכון בו נקבעים לפי נוסחה שתלויה במדד, במחיר של ניירות ערך או סחורות, בריבית או בשערי מטבע; בחוק זה ״מוצר מובנה״.",
   "where": [],
   "wrapper_ids": [],
   "variants": [
@@ -16,10 +16,10 @@
     "TX2-05"
   ],
   "source": {
-    "url": "https://www.fibi.co.il/private/depositsandsavings/structured/",
-    "title": "FIBI, פיקדונות מובנים page",
+    "url": "https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות",
+    "title": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ\"ה-1995, ס' 1, \"מוצר מובנה\" (Wikisource mirror)",
     "publisher": "see title",
-    "strength": "institution",
-    "checked": "2026-10-22"
+    "strength": "primary-mirror",
+    "checked": "2026-10-26"
   }
 }

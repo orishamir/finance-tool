@@ -5,9 +5,10 @@ import { Link } from "react-router";
 import { kit as copy } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { computed, entered } from "../../lib/value";
+import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
 import { IconLock } from "../icons";
-import { Num } from "../provenance";
-import { Button, Callout, Card, ChartLegend, ChartReadout, ChartTable, ChoiceChips, CoverageFold, Disclosure, FoldGroup, GainBars, GapNote, HeadlineFigure, KeyValue, KeyValueList, LinkButton, Marker, MarkerMark, NumberField, PercentField, RangeField, RankBadge, Section, SegmentedControl, Sentence, SourceLine, Stat, StatRow, Swatch, Tag, cx, useWidth } from "./index";
+import { IdRef, Num } from "../provenance";
+import { Button, Callout, Card, ChartLegend, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, CoverageFold, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, NumberField, ParameterLine, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, SourceLine, Stat, StatRow, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -84,6 +85,11 @@ function Basics() {
             {g.states.withIcon}
           </Tag>
         </div>
+        <State label={`wrap, ${g.states.long}`}>
+          <div className="max-w-60 flex flex-wrap items-center gap-2">
+            <Tag wrap>{g.sample.longTag}</Tag>
+          </div>
+        </State>
       </Demo>
       <Demo name="Callout" use={g.uses.Callout}>
         <Grid>
@@ -128,6 +134,7 @@ function Basics() {
 
 function Folds() {
   const [open, setOpen] = useState(false);
+  const [topic, setTopic] = useState(true);
   return (
     <>
       <Demo name="Disclosure" use={g.uses.Disclosure}>
@@ -175,6 +182,16 @@ function Folds() {
               <p className="pb-2">{g.sample.body}</p>
             </FoldGroup>
           </State>
+          <State label={`variant=section, ${g.states.open}, controlled, id`}>
+            <FoldGroup variant="section" id="kit-fold-topic" title={g.sample.topic} count={12} open={topic} onOpenChange={setTopic}>
+              <p className="pt-1">{g.sample.body}</p>
+            </FoldGroup>
+          </State>
+          <State label={`variant=section, ${g.states.closed}`}>
+            <FoldGroup variant="section" title={g.sample.topic} count={1250}>
+              <p className="pt-1">{g.sample.body}</p>
+            </FoldGroup>
+          </State>
         </Grid>
       </Demo>
       <Demo name="CoverageFold" use={g.uses.CoverageFold}>
@@ -203,6 +220,7 @@ function Folds() {
 function Choices() {
   const [seg, setSeg] = useState<"a" | "b" | "c">("a");
   const [chip, setChip] = useState<string | null>("0");
+  const [own, setOwn] = useState<string | null>(null);
   const labels = Object.fromEntries(g.sample.chip.map((c, i) => [String(i), c]));
   return (
     <>
@@ -215,6 +233,67 @@ function Choices() {
         <State label={`wrap, ${g.states.interactive}`}>
           <ChoiceChips ids={["0", "1", "2", "3"]} labels={labels} value={chip} onChange={setChip} ariaLabel={g.sample.title} wrap />
         </State>
+        <State label={`other, ${g.states.interactive}`}>
+          <ChoiceChips ids={["0", "1", "2"]} labels={labels} value={own} onChange={(id) => setOwn((k) => (k === id ? null : id))} ariaLabel={g.sample.title} wrap other={{ label: g.sample.other, open: own === "other", onToggle: () => setOwn((k) => (k === "other" ? null : "other")) }} />
+          {own === "other" && <NumberField label={g.sample.otherField} unit="months" value={null} isEntered={false} validate={() => null} onCommit={() => {}} onReset={() => {}} optional inputMode="numeric" />}
+        </State>
+      </Demo>
+    </>
+  );
+}
+
+function Chips() {
+  const w = g.sample.list;
+  const words = { confirm: w.confirm, confirmYes: w.yes, confirmNo: w.no, rename: w.rename, remove: w.remove, renameField: w.renameField };
+  const [names, setNames] = useState<Record<string, string>>({});
+  const [order, setOrder] = useState(["a", "b", "c"]);
+  const [on, setOn] = useState<string | null>("b");
+  const [added, setAdded] = useState(false);
+  const label = (id: string) => names[id] ?? w.items[["a", "b", "c"].indexOf(id)]!;
+  const sites = [{ id: "x", label: w.items[0]!, href: "/kit" }, { id: "y", label: w.items[1]!, href: "/kit" }, { id: "z", label: w.longItem, href: "/kit" }];
+  return (
+    <>
+      <Demo name="ChipList" use={g.uses.ChipList}>
+        <State label="items (links), no editing">
+          <ChipList heading={w.heading} note={w.note} items={sites} value="y" words={words} />
+        </State>
+        <State label={`editable chosen item (pencil, bin), ${g.states.interactive}, ${g.states.draggable}`}>
+          <ChipList
+            heading={w.heading}
+            items={order.map((id) => ({ id, label: label(id), editable: true, movable: true }))}
+            value={on}
+            words={words}
+            onSelect={setOn}
+            onRename={(id, name) => setNames((n) => ({ ...n, [id]: name || label(id) }))}
+            onDelete={(id) => setOrder((o) => o.filter((x) => x !== id))}
+            onMove={(id, to) => setOrder((o) => { const r = o.filter((x) => x !== id); r.splice(to, 0, id); return r; })}
+            add={{ label: w.add, onClick: () => setOrder((o) => (o.length < 5 ? [...o, "n" + o.length] : o)) }}
+            footer={<p className="text-sm text-muted-foreground">{w.foot}</p>}
+          />
+        </State>
+        <State label="headingHidden, links in a card that shows its own title (the first page's guide door)">
+          <Card className="!p-5 flex flex-col gap-3">
+            <span className="text-lg font-semibold">{w.heading}</span>
+            <ChipList heading={w.heading} headingHidden items={sites} value={null} footer={<p className="text-sm text-muted-foreground">{w.foot}</p>} />
+          </Card>
+        </State>
+        <State label="add pill alone, expanded">
+          <ChipList heading={w.heading} items={[]} value={null} words={words} add={{ label: w.add, onClick: () => setAdded((v) => !v), expanded: added }} />
+        </State>
+      </Demo>
+      <Demo name="PlanChips" use={g.uses.PlanChips}>
+        <State label={`${g.states.filled}, ${g.states.entered}, parameter, fixed`}>
+          <PlanChips
+            allLabel={g.sample.plan.all}
+            onOpen={() => undefined}
+            items={[
+              { field: "amountNow", label: g.sample.plan.amount, text: "10,000 ₪", entered: false },
+              { field: "monthly", label: g.sample.plan.monthly, text: "1,000 ₪", entered: true },
+              { field: "horizonYears", label: g.sample.plan.years, text: "10", entered: false, parameter: true },
+              { field: "return", label: g.sample.plan.ret, text: "5%", entered: true, fixed: true },
+            ]}
+          />
+        </State>
       </Demo>
     </>
   );
@@ -224,7 +303,15 @@ function Words({ today }: { today: string }) {
   const s = samples(today);
   return (
     <>
-      <Demo name="Sentence" use={g.uses.Sentence}>
+      <Demo name="IdRef" use={g.uses.IdRef}>
+        <Grid>
+          <State label="rule: opens the rule card"><div><IdRef id="TXS-05" /></div></State>
+          <State label="formula: opens the formula sheet"><div><IdRef id="F-80" /></div></State>
+          <State label="parameter: goes to its card on /parameters"><div><IdRef id="P-01" /></div></State>
+          <State label="open question: opens the question sheet"><div><IdRef id="TX2 OQ6" /></div></State>
+        </Grid>
+      </Demo>
+      <Demo name="Sentence, Tpl" use={g.uses.Sentence}>
         <Grid>
           <State label={`${g.states.sourced} / ${g.states.computed} / ${g.states.entered}`}>
             <Sentence size="sm" measure>
@@ -233,6 +320,24 @@ function Words({ today }: { today: string }) {
           </State>
           <State label={`${g.states.stale}, tone=muted`}>
             <Sentence size="sm" tone="muted" t="{a} · {b}" vars={{ a: <Num value={s.stale} />, b: <Num value={s.rate} /> }} />
+          </State>
+          <State label="Tpl">
+            <Tpl t="{a} · {b}" vars={{ a: <Num value={s.sourced} display="8" />, b: <Num value={s.comp} /> }} />
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="InputSlot" use={g.uses.InputSlot}>
+        <Grid>
+          <State label={`${g.states.entered}, chars=10`}>
+            <Sentence size="sm" measure>
+              {g.sample.sentenceBefore} <InputSlot chars={10} onEdit={() => undefined} editLabel="שינוי">
+                <Num value={s.ent} />
+              </InputSlot>{" "}
+              {g.sample.sentenceMid} <InputSlot chars={8} onEdit={() => undefined} editLabel="שינוי">
+                <Num value={s.sourced} display="8" />
+              </InputSlot>
+              .
+            </Sentence>
           </State>
         </Grid>
       </Demo>
@@ -281,6 +386,23 @@ function Words({ today }: { today: string }) {
           <RankBadge rank={3} label="3" flush />
         </div>
       </Demo>
+      <Demo name="CompanyLinks" use={g.uses.CompanyLinks}>
+        <Grid>
+          <State label="size=sm, two companies">
+            <p>
+              <CompanyLinks lead={g.sample.companyLead} items={g.sample.companies.slice(0, 2).map((name) => ({ name, href: "/kit" }))} />
+            </p>
+          </State>
+          <State label="size=xs, one company">
+            <CompanyLinks size="xs" lead={g.sample.companyLead} items={[{ name: g.sample.companies[2]!, href: "/kit" }]} />
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="NoteList" use={g.uses.NoteList}>
+        <State label="NoteList" wide>
+          <NoteList items={[...g.sample.notes]} />
+        </State>
+      </Demo>
       <Demo name="SourceLine, GapNote" use={g.uses.SourceLine}>
         <State label="SourceLine">
           <SourceLine lead={g.sample.sourceLead} items={[...g.sample.sourceItems]} />
@@ -298,6 +420,8 @@ function Fields() {
   const [b, setB] = useState<number | null>(3000);
   const [years, setYears] = useState<number | null>(10);
   const [pct, setPct] = useState<number | null>(5);
+  const [pick, setPick] = useState<string | null>(null);
+  const [count, setCount] = useState(1);
   return (
     <>
       <Demo name="NumberField" use={g.uses.NumberField}>
@@ -319,9 +443,34 @@ function Fields() {
           </State>
         </div>
       </Demo>
-      <Demo name="RangeField" use={g.uses.RangeField}>
+      <Demo name="StepButtons" use={g.uses.StepButtons}>
         <Grid>
           <State label={g.states.interactive}>
+            <div className="flex items-end gap-2">
+              <div className="flex-1 min-w-0">
+                <NumberField label={g.sample.count} unit="count" value={count} isEntered={count !== 1} validate={(n) => (n < 1 || n > 9 ? g.sample.error : null)} onCommit={(n) => setCount(n)} onReset={() => setCount(1)} optional />
+              </div>
+              <StepButtons downLabel={g.sample.stepDown} upLabel={g.sample.stepUp} downDisabled={count <= 1} upDisabled={count >= 9} onDown={() => setCount(count - 1)} onUp={() => setCount(count + 1)} />
+            </div>
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="FieldState, ParameterLine" use={g.uses.FieldState}>
+        <Grid>
+          <State label={g.states.entered}>
+            <FieldState entered onReset={() => undefined} />
+          </State>
+          <State label={g.states.disabled}>
+            <FieldState entered={false} onReset={() => undefined} disabled />
+          </State>
+          <State label="ParameterLine">
+            <ParameterLine />
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="RangeField" use={g.uses.RangeField}>
+        <Grid>
+          <State label={`${g.states.interactive}, ${g.states.draggable}`}>
             <RangeField label={g.sample.range} unit="years" value={years} min={1} max={40} step={1} isEntered={years !== 10} validate={(n) => (n < 1 || n > 40 ? g.sample.error : null)} onCommit={(n) => setYears(n)} onReset={() => setYears(10)} inputMode="numeric" />
           </State>
           <State label={g.states.disabled}>
@@ -339,6 +488,16 @@ function Fields() {
           </State>
         </Grid>
       </Demo>
+      <Demo name="SelectField" use={g.uses.SelectField}>
+        <Grid>
+          <State label={`${g.states.empty}, ${g.states.interactive}`}>
+            <SelectField label={g.sample.select.label} none={g.sample.select.none} value={pick} options={[...g.sample.select.options]} onChange={setPick} help={g.sample.select.help} />
+          </State>
+          <State label={g.states.filled}>
+            <SelectField label={g.sample.select.label} value="b" options={[...g.sample.select.options]} onChange={() => undefined} />
+          </State>
+        </Grid>
+      </Demo>
     </>
   );
 }
@@ -353,12 +512,13 @@ function MarkerDemo({ today }: { today: string }) {
   const s = samples(today);
   return (
     <>
-      <Demo name="Marker, MarkerMark" use={g.uses.Marker}>
-        <State label={g.states.interactive} wide>
+      <Demo name="Marker, MarkerMark, LaneLabel" use={g.uses.Marker}>
+        <State label={`${g.states.interactive}, ${g.states.draggable}`} wide>
           <div ref={box} className="relative w-full" dir="ltr" style={{ height: HEIGHT }}>
             <svg width={width} height={HEIGHT} viewBox={`0 0 ${width} ${HEIGHT}`} role="img" aria-label={g.sample.markerName} className="block select-none">
               <line x1={left} x2={left + w} y1={HEIGHT - 24} y2={HEIGHT - 24} className="stroke-chart-axis" strokeWidth="1" />
-              <rect x={left} y={HEIGHT - 40} width={(v / 20) * w} height={16} rx="2" className="fill-chart-value" fillOpacity="0.5" />
+              <rect x={left} y={HEIGHT - 52} width={w / 2} height={22} rx="3" className="fill-muted" />
+              <rect x={left + w / 2} y={HEIGHT - 52} width={w / 2} height={22} rx="3" className="fill-chart-value" fillOpacity="0.5" />
               <MarkerMark x={x} y1={10} y2={HEIGHT - 24} />
               <text x={left} y={HEIGHT - 6} className="text-xs fill-chart-text">
                 0
@@ -367,8 +527,37 @@ function MarkerDemo({ today }: { today: string }) {
                 20
               </text>
             </svg>
+            <LaneLabel from={left} to={left + w / 2} top={HEIGHT - 52} markerX={x}>
+              {g.sample.laneA}
+            </LaneLabel>
+            <LaneLabel from={left + w / 2} to={left + w} top={HEIGHT - 52} markerX={x} prefer="end">
+              {g.sample.laneB}
+            </LaneLabel>
             <Marker min={0} max={20} step={1} value={v} onChange={setV} label={g.sample.markerName} valueText={String(v)} left={left} top={0} width={w} height={HEIGHT} />
           </div>
+        </State>
+      </Demo>
+      <Demo name="StepTag" use={g.uses.StepTag}>
+        <State label="step 1 to 4" wide>
+          <div className="flex flex-wrap gap-2">
+            {([<Zap key="1" aria-hidden="true" />, <CalendarCheck key="2" aria-hidden="true" />, <CalendarDays key="3" aria-hidden="true" />, <Lock key="4" aria-hidden="true" />] as ReactNode[]).map((icon, i) => (
+              <StepTag key={i} step={(i + 1) as 1 | 2 | 3 | 4} icon={icon}>
+                {g.sample.steps[i]}
+              </StepTag>
+            ))}
+          </div>
+        </State>
+      </Demo>
+      <Demo name="CompareTable, ValueBar" use={g.uses.CompareTable}>
+        <State label="three rows, the page's option tinted, a zero and a range" wide>
+          <CompareTable
+            columns={[g.sample.compare.product, g.sample.compare.when, g.sample.compare.rate]}
+            rows={[
+              { key: "a", head: g.sample.compare.a, cells: [<StepTag key="w" step={1} icon={<Zap aria-hidden="true" />}>{g.sample.steps[0]}</StepTag>, <ValueBar key="r" value={<Num value={{ ...s.rate, value: 0 }} />} frac={0} />] },
+              { key: "b", head: g.sample.compare.b, highlight: true, cells: [<StepTag key="w" step={2} icon={<CalendarCheck aria-hidden="true" />}>{g.sample.steps[1]}</StepTag>, <ValueBar key="r" value={<Num value={s.rate} />} frac={5 / 6} note={g.sample.compare.mine} />] },
+              { key: "c", head: g.sample.compare.c, cells: [<StepTag key="w" step={4} icon={<Lock aria-hidden="true" />}>{g.sample.steps[3]}</StepTag>, <ValueBar key="r" value={<Num value={{ ...s.rate, value: 4 }} />} frac={4 / 6} lo={2 / 6} note={g.sample.compare.range} />] },
+            ]}
+          />
         </State>
       </Demo>
       <Demo name="GainBars" use={g.uses.GainBars}>
@@ -380,7 +569,7 @@ function MarkerDemo({ today }: { today: string }) {
                 { key: "b", label: g.sample.barB, value: s.comp2, tone: "alt" },
               ]}
               diff={computed(400, "nis", "F-08", {}, { today, about: g.sample.diff })}
-              diffLabel={g.sample.diff}
+              diffLabel={g.sample.diffLine}
             />
           </div>
         </State>
@@ -400,6 +589,7 @@ function ChartParts({ today }: { today: string }) {
             { id: "b", swatch: <Swatch shape="box" className="bg-chart-fee" />, label: <bdi>{g.sample.fee}</bdi> },
             { id: "c", swatch: <Swatch shape="entered-line" className="stroke-chart-entered" />, label: <bdi>{g.sample.seriesC}</bdi> },
             { id: "d", swatch: <Swatch shape="rule" className="border-chart-baseline" />, label: g.sample.today },
+            { id: "e", swatch: <Swatch shape="dotted-line" className="stroke-chart-baseline" />, label: g.sample.baselineDots },
             { id: "e", label: g.sample.note },
           ]}
         />
@@ -440,6 +630,7 @@ export function KitGallery({ today }: { today: string }) {
         <Basics />
         <Folds />
         <Choices />
+        <Chips />
         <Words today={today} />
         <Fields />
         <MarkerDemo today={today} />

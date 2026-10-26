@@ -1,0 +1,870 @@
+[
+  {
+    "id": "altshuler-shaham",
+    "name_he": "אלטשולר שחם",
+    "kind": "provident-manager",
+    "scope_names": [
+      {
+        "name": "Altshuler Shaham"
+      }
+    ],
+    "cma_legal_id": "513173393",
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "as-invest.co.il"
+    ]
+  },
+  {
+    "id": "harel",
+    "name_he": "הראל",
+    "kind": "provident-manager",
+    "scope_names": [
+      {
+        "name": "Harel"
+      }
+    ],
+    "cma_legal_id": "512267592",
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "harel-group.co.il"
+    ]
+  },
+  {
+    "id": "meitav",
+    "name_he": "מיטב",
+    "kind": "provident-manager",
+    "scope_names": [
+      {
+        "name": "Meitav"
+      }
+    ],
+    "cma_legal_id": "512065202",
+    "fees_id": "meitav",
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "meitav.co.il"
+    ]
+  },
+  {
+    "id": "mor",
+    "name_he": "מור",
+    "kind": "provident-manager",
+    "scope_names": [
+      {
+        "name": "Mor"
+      }
+    ],
+    "cma_legal_id": "514956465",
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "moreinvest.co.il"
+    ]
+  },
+  {
+    "id": "phoenix",
+    "name_he": "הפניקס",
+    "kind": "provident-manager",
+    "scope_names": [
+      {
+        "name": "The Phoenix"
+      }
+    ],
+    "cma_legal_id": "513026484",
+    "fees_id": "phoenix",
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "fnx.co.il"
+    ]
+  },
+  {
+    "id": "migdal",
+    "name_he": "מגדל",
+    "kind": "provident-manager",
+    "scope_names": [
+      {
+        "name": "Migdal"
+      }
+    ],
+    "cma_legal_id": "512237744",
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": []
+  },
+  {
+    "id": "clal",
+    "name_he": "כלל",
+    "kind": "provident-manager",
+    "scope_names": [
+      {
+        "name": "Clal"
+      }
+    ],
+    "cma_legal_id": "512244146",
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": []
+  },
+  {
+    "id": "menora-mivtachim",
+    "name_he": "מנורה מבטחים",
+    "kind": "provident-manager",
+    "scope_names": [
+      {
+        "name": "Menora Mivtachim"
+      }
+    ],
+    "cma_legal_id": "512245812",
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": []
+  },
+  {
+    "id": "infinity",
+    "name_he": "אינפיניטי",
+    "kind": "provident-manager",
+    "scope_names": [
+      {
+        "name": "Infinity"
+      }
+    ],
+    "cma_legal_id": "513621110",
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "infinity.co.il"
+    ]
+  },
+  {
+    "id": "analyst",
+    "name_he": "אנליסט",
+    "kind": "provident-manager",
+    "scope_names": [
+      {
+        "name": "Analyst"
+      }
+    ],
+    "cma_legal_id": "511880460",
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "analyst.co.il"
+    ]
+  },
+  {
+    "id": "yachad-rofim",
+    "name_he": "יחד רופאים",
+    "kind": "provident-manager",
+    "scope_names": [
+      {
+        "name": "Yachad Rofim"
+      }
+    ],
+    "cma_legal_id": "510930654",
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "krn-rofim.co.il"
+    ]
+  },
+  {
+    "id": "huji-provident",
+    "name_he": "קופת הגמל של עובדי האוניברסיטה העברית",
+    "kind": "provident-manager",
+    "scope_names": [
+      {
+        "name": "Hebrew University provident fund"
+      }
+    ],
+    "cma_legal_id": "510960586",
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "gemel.huji.ac.il"
+    ]
+  },
+  {
+    "id": "slice",
+    "name_he": "סלייס",
+    "kind": "provident-manager",
+    "scope_names": [
+      {
+        "name": "Slice"
+      }
+    ],
+    "cma_legal_id": "514767490",
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": []
+  },
+  {
+    "id": "globalnet",
+    "name_he": "גלובלנט",
+    "kind": "provident-manager",
+    "scope_names": [
+      {
+        "name": "Globalnet"
+      }
+    ],
+    "cma_legal_id": "516463635",
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": []
+  },
+  {
+    "id": "yalin-lapidot",
+    "name_he": "ילין לפידות",
+    "kind": "provident-manager",
+    "scope_names": [
+      {
+        "name": "Yalin Lapidot provident"
+      }
+    ],
+    "cma_legal_id": "513611509",
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [],
+    "note": "Added 2026-10-26 for the Yalin Lapidot brand page (D33): the managing company of its provident and study funds in the CMA data. The rule base names only the fund manager (yalin-funds)."
+  },
+  {
+    "id": "leumi",
+    "name_he": "בנק לאומי",
+    "kind": "bank",
+    "scope_names": [
+      {
+        "name": "Bank Leumi"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": "leumi",
+    "deposit_bank_id": "leumi",
+    "own_hosts": [
+      "leumi.co.il",
+      "bankleumi.co.il"
+    ]
+  },
+  {
+    "id": "hapoalim",
+    "name_he": "בנק הפועלים",
+    "kind": "bank",
+    "scope_names": [
+      {
+        "name": "Bank Hapoalim"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": "hapoalim",
+    "deposit_bank_id": "hapoalim",
+    "own_hosts": [
+      "bankhapoalim.co.il"
+    ]
+  },
+  {
+    "id": "discount",
+    "name_he": "בנק דיסקונט",
+    "kind": "bank",
+    "scope_names": [
+      {
+        "name": "Discount Bank"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": "discount",
+    "deposit_bank_id": "discount",
+    "own_hosts": [
+      "discountbank.co.il"
+    ]
+  },
+  {
+    "id": "mizrahi-tefahot",
+    "name_he": "בנק מזרחי טפחות",
+    "kind": "bank",
+    "scope_names": [
+      {
+        "name": "Mizrahi Tefahot Bank"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": "mizrahi-tefahot",
+    "deposit_bank_id": "mizrahi-tefahot",
+    "own_hosts": [
+      "mizrahi-tefahot.co.il"
+    ]
+  },
+  {
+    "id": "fibi",
+    "name_he": "הבנק הבינלאומי",
+    "kind": "bank",
+    "scope_names": [
+      {
+        "name": "First International Bank"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": "fibi",
+    "deposit_bank_id": "fibi",
+    "own_hosts": [
+      "fibi.co.il"
+    ]
+  },
+  {
+    "id": "mercantile",
+    "name_he": "בנק מרכנתיל דיסקונט",
+    "kind": "bank",
+    "scope_names": [
+      {
+        "name": "Mercantile Discount Bank"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": "mercantile",
+    "deposit_bank_id": "mercantile",
+    "own_hosts": [
+      "mercantile.co.il"
+    ]
+  },
+  {
+    "id": "massad",
+    "name_he": "בנק מסד",
+    "kind": "bank",
+    "scope_names": [
+      {
+        "name": "Bank Massad"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": "massad",
+    "deposit_bank_id": "massad",
+    "own_hosts": [
+      "bankmassad.co.il"
+    ]
+  },
+  {
+    "id": "yahav",
+    "name_he": "בנק יהב",
+    "kind": "bank",
+    "scope_names": [
+      {
+        "name": "Bank Yahav"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": "yahav",
+    "deposit_bank_id": "yahav",
+    "own_hosts": [
+      "bank-yahav.co.il"
+    ]
+  },
+  {
+    "id": "jerusalem",
+    "name_he": "בנק ירושלים",
+    "kind": "bank",
+    "scope_names": [
+      {
+        "name": "Bank of Jerusalem"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": "jerusalem",
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "bankjerusalem.co.il"
+    ]
+  },
+  {
+    "id": "one-zero",
+    "name_he": "וואן זירו",
+    "kind": "bank",
+    "scope_names": [
+      {
+        "name": "One Zero Bank"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": "one-zero",
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "onezerobank.com"
+    ]
+  },
+  {
+    "id": "ibi",
+    "name_he": "אי.בי.אי",
+    "kind": "broker",
+    "scope_names": [
+      {
+        "name": "IBI"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": "ibi",
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "ibi.co.il"
+    ],
+    "note": "The broker (IBI Trade). In the fund records IBI is the fund manager: ibi-funds."
+  },
+  {
+    "id": "meitav-trade",
+    "name_he": "מיטב טרייד",
+    "kind": "broker",
+    "scope_names": [
+      {
+        "name": "Meitav Trade"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": "meitav-trade",
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "meitav.co.il"
+    ]
+  },
+  {
+    "id": "altshuler-trade",
+    "name_he": "אלטשולר שחם טרייד",
+    "kind": "broker",
+    "scope_names": [
+      {
+        "name": "Altshuler Shaham Trade"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": "altshuler-trade",
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "as-invest.co.il"
+    ]
+  },
+  {
+    "id": "psagot",
+    "name_he": "פסגות",
+    "kind": "broker",
+    "scope_names": [
+      {
+        "name": "Psagot"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": "psagot",
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "psagot.co.il"
+    ]
+  },
+  {
+    "id": "excellence",
+    "name_he": "אקסלנס",
+    "kind": "broker",
+    "scope_names": [
+      {
+        "name": "Excellence"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": "excellence",
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "xnes.co.il"
+    ]
+  },
+  {
+    "id": "fair",
+    "name_he": "פייר",
+    "kind": "broker",
+    "scope_names": [
+      {
+        "name": "Fair"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "fair.co.il"
+    ],
+    "note": "No fee snapshot collected yet, so no page."
+  },
+  {
+    "id": "interactive-israel",
+    "name_he": "אינטראקטיב ישראל",
+    "kind": "foreign-broker",
+    "scope_names": [
+      {
+        "name": "Interactive Israel"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": "interactive-israel",
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "inter-il.com"
+    ],
+    "note": "A foreign broker: the site gives foreign brokers no company page (invest.ts hasPage)."
+  },
+  {
+    "id": "interactive-brokers",
+    "name_he": "Interactive Brokers",
+    "kind": "foreign-broker",
+    "scope_names": [
+      {
+        "name": "Interactive Brokers"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": "interactive-brokers",
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "interactivebrokers.com"
+    ]
+  },
+  {
+    "id": "ib-ireland",
+    "name_he": "Interactive Brokers Ireland",
+    "kind": "foreign-broker",
+    "scope_names": [
+      {
+        "name": "Interactive Brokers Ireland"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "interactivebrokers.ie"
+    ]
+  },
+  {
+    "id": "ibi-funds",
+    "name_he": "אי.בי.אי קרנות נאמנות",
+    "kind": "fund-manager",
+    "scope_names": [
+      {
+        "name": "IBI",
+        "only_records": [
+          "ETF-19",
+          "ETF-55",
+          "ETF-56",
+          "ETF-57",
+          "ETF-58",
+          "ETF-59",
+          "ETF-60",
+          "ETF-61",
+          "ETF-62",
+          "ETF-64",
+          "ETF-65",
+          "ETF-66",
+          "ETF-68",
+          "ETF-69"
+        ]
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [],
+    "filing_names": [
+      "IBI",
+      "אי.בי.אי"
+    ],
+    "note": "The fund records name the manager אי.בי.אי קרנות נאמנות בע\"מ."
+  },
+  {
+    "id": "harel-funds",
+    "name_he": "הראל קרנות נאמנות",
+    "kind": "fund-manager",
+    "scope_names": [
+      {
+        "name": "Harel",
+        "only_records": [
+          "ETF-64",
+          "ETF-66",
+          "TXS-26"
+        ]
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [],
+    "filing_names": [
+      "הראל"
+    ]
+  },
+  {
+    "id": "mor-funds",
+    "name_he": "מור קרנות נאמנות",
+    "kind": "fund-manager",
+    "scope_names": [
+      {
+        "name": "Mor",
+        "only_records": [
+          "ETF-64",
+          "ETF-65",
+          "ETF-66",
+          "ETF-68"
+        ]
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [],
+    "filing_names": [
+      "מור"
+    ]
+  },
+  {
+    "id": "yalin-funds",
+    "name_he": "ילין לפידות קרנות נאמנות",
+    "kind": "fund-manager",
+    "scope_names": [
+      {
+        "name": "Yalin Lapidot"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [],
+    "filing_names": [
+      "Yalin Lapidot",
+      "ילין לפידות"
+    ],
+    "note": "Every record that names Yalin Lapidot is about its funds; its provident company (CMA 513611509) is named by none yet. A record about the provident company needs a row of its own and only_records here."
+  },
+  {
+    "id": "migdal-funds",
+    "name_he": "מגדל קרנות נאמנות",
+    "kind": "fund-manager",
+    "scope_names": [
+      {
+        "name": "Migdal Mutual Funds"
+      },
+      {
+        "name": "MTF"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [],
+    "filing_names": [
+      "MTF",
+      "מגדל קרנות נאמנות"
+    ],
+    "note": "MTF is Migdal's fund brand: the fund records name the manager מגדל קרנות נאמנות בע\"מ."
+  },
+  {
+    "id": "meitav-funds",
+    "name_he": "מיטב קרנות נאמנות",
+    "kind": "fund-manager",
+    "scope_names": [
+      {
+        "name": "Tachlit"
+      },
+      {
+        "name": "Meitav",
+        "only_records": [
+          "MF-56"
+        ]
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "meitav.co.il"
+    ],
+    "filing_names": [
+      "תכלית"
+    ],
+    "note": "Tachlit is Meitav's fund brand: the fund records name the manager מיטב קרנות נאמנות בע\"מ. MF-56 quotes Meitav's fund pages."
+  },
+  {
+    "id": "kesem",
+    "name_he": "קסם קרנות נאמנות",
+    "kind": "fund-manager",
+    "scope_names": [
+      {
+        "name": "Kesem"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [],
+    "filing_names": [
+      "קסם"
+    ]
+  },
+  {
+    "id": "ishares",
+    "name_he": "iShares",
+    "kind": "fund-manager",
+    "scope_names": [
+      {
+        "name": "iShares"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "ishares.com"
+    ]
+  },
+  {
+    "id": "blackrock",
+    "name_he": "BlackRock",
+    "kind": "fund-manager",
+    "scope_names": [
+      {
+        "name": "BlackRock"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "blackrock.com",
+      "ishares.com"
+    ]
+  },
+  {
+    "id": "jpmorgan-am",
+    "name_he": "J.P. Morgan Asset Management",
+    "kind": "fund-manager",
+    "scope_names": [
+      {
+        "name": "J.P. Morgan Asset Management"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "am.jpmorgan.com"
+    ]
+  },
+  {
+    "id": "tase",
+    "name_he": "הבורסה לניירות ערך בתל אביב",
+    "kind": "exchange",
+    "scope_names": [
+      {
+        "name": "Tel Aviv Stock Exchange"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "tase.co.il"
+    ],
+    "note": "The exchange as a company (settled.md §3): its own documents about itself, its subsidiaries and its data products."
+  },
+  {
+    "id": "sp-dji",
+    "name_he": "S&P Dow Jones Indices",
+    "kind": "index-provider",
+    "scope_names": [
+      {
+        "name": "S&P Dow Jones Indices"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "spglobal.com"
+    ]
+  },
+  {
+    "id": "nasdaq",
+    "name_he": "Nasdaq",
+    "kind": "index-provider",
+    "scope_names": [
+      {
+        "name": "Nasdaq"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "indexes.nasdaqomx.com"
+    ]
+  },
+  {
+    "id": "msci",
+    "name_he": "MSCI",
+    "kind": "index-provider",
+    "scope_names": [
+      {
+        "name": "MSCI"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "msci.com"
+    ]
+  },
+  {
+    "id": "isa",
+    "name_he": "רשות ניירות ערך",
+    "kind": "regulator",
+    "scope_names": [
+      {
+        "name": "Israel Securities Authority"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "isa.gov.il"
+    ],
+    "note": "As a site owner: its terms about its own content (MF-55)."
+  },
+  {
+    "id": "phoenix-insurance",
+    "name_he": "הפניקס חברה לביטוח",
+    "kind": "insurer",
+    "scope_names": [
+      {
+        "name": "The Phoenix",
+        "only_records": [
+          "TXA-29"
+        ]
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "fnx.co.il"
+    ],
+    "note": "TXA-29 is about a Phoenix investment policy, an insurance product."
+  },
+  {
+    "id": "reit1",
+    "name_he": "ריט 1",
+    "kind": "other",
+    "scope_names": [
+      {
+        "name": "Reit 1"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "reit1.co.il"
+    ]
+  }
+]
